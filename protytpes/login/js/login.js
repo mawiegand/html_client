@@ -30,6 +30,31 @@ $(document).ready(function() {
     }); 
   })(jQuery);
   
+  /** extension of $.getJSON to allow setting and automatic inclusions of default arguments. */
+  (function ($) { 
+    var _getJSON = $.getJSON; 
+    $.extend({
+      getJSON: function(options) {
+        if ($.ajax.data) {
+          if(options.data) { 
+            if(typeof options.data !== 'string') 
+              options.data = $.param(options.data); 
+
+            if(typeof $.ajax.data !== 'string') 
+              $.ajax.data = $.param(this.data); 
+
+            options.data += '&' + $.ajax.data; 
+          } 
+          else {
+            options.data = $.ajax.data; 
+          }
+        }
+        return _getJSON.call(this,options); 
+      }
+    }); 
+  })(jQuery);
+  
+  
   $(document).bind('ajaxSend', function(event, xhr) {
     if (currentUser && currentUser['access_token']) {
       if (!clientLosesAuthHeaderOnRedirect) {   // otherwise, the access token will be in the data section / query string
