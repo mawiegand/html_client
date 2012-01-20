@@ -47,3 +47,14 @@ body {
   position: relative; top: 0px; left: 0px;
   font-family: 'Helvetica Neue', Arial, sans-serif;
 }
+
+
+#current_user-info {
+  color: #FFF;
+  font-size: 16pt;
+}
+
+#reload-button {
+  font-size: 16pt;
+  padding: 3px 20px;
+}

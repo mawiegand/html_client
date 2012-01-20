@@ -65,19 +65,29 @@ $(document).ready(function() {
     xhr.setRequestHeader('Accept', 'application/json');
   });
   
+  var fetchSelf = function() {
+    $.getJSON(RAILS_APP + '/identities/self')
+      .success(function(data, textStatus, jqXHR) {
+        $('#current_user-info').html("Signed-in as " + data['nickname'] + " / " + data['email']);
+      })
+      .error(function(jqXHR, textStatus, errorThrown) {
+        alert("Error: " + $.param(data));
+      });
+  };
+  
+  $('#reload-button').click(function() {
+    fetchSelf();
+  });
+  
   var setCurrentUser = function(data) {
     currentUser = data;
 
     if (clientLosesAuthHeaderOnRedirect) { // auto-append access-token to query string / post data
       $.ajax.data = { access_token: data['access_token'] };
     }
-    $.getJSON(RAILS_APP + '/identities/self')
-    .success(function(data, textStatus, jqXHR) {
-      alert("Success: " + $.param(data));
-    })
-    .error(function(jqXHR, textStatus, errorThrown) {
-      alert("Error: " + $.param(data));
-    });
+    
+    fetchSelf();
+
   };
   
   var attachClear = function() {
