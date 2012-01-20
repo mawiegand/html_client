@@ -20,12 +20,12 @@ $(document).ready(function() {
   
   var setCurrentUser = function(data) {
     currentUser = data;
-    $.ajax({
-      type: 'GET',
-      url: RAILS_APP + '/identities/self',
-      success: function(data, textStatus, jqXHR) {
-        alert($.param(data));
-      },
+    $.getJSON(RAILS_APP + '/identities/self')
+    .success(function(data, textStatus, jqXHR) {
+      alert("Success: " + $.param(data));
+    })
+    .error(function(jqXHR, textStatus, errorThrown) {
+      alert("Error: " + $.param(data));
     });
   };
   
@@ -125,10 +125,25 @@ $(document).ready(function() {
             url: RAILS_APP + '/oauth2/access_token',
             data: params ,
             success: function(data, textStatus, jqXHR) {
-              if (data['access_token']) {
-                setCurrentUser(data);
-                $('#login-dialog').dialog('close');
+              switch(jqXHR.status) {
+              	case 200:
+	              if (data['access_token']) {
+    	            setCurrentUser(data);
+        	        $('#login-dialog').dialog('close');
+            	  }
+            	  break;
+            	default:
+            	  msgObj = $.parseJSON(jqXHR.responseText);
+            	  $('#login-message').text(msgObj.error + ": " + msgObj.error_description);
               }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              switch(jqXHR.status) {
+              	case 400:
+				default:
+              	  errObj = $.parseJSON(jqXHR.responseText);
+           	  	  $('#login-message').text(errObj.error + ": " + errObj.error_description);
+           	  }                          
             }
           });
         }
