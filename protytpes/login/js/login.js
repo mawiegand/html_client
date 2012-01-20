@@ -3,6 +3,29 @@ $(document).ready(function() {
   var currentUser = null;
   var clientLosesAuthHeaderOnRedirect = true;
   
+  
+  (function ($) { 
+
+    var _ajax = $.ajax, 
+    A = $.ajax = function(options) { 
+        if (A.data) 
+                        if(options.data) { 
+                                if(typeof options.data !== 'string') 
+                                        options.data = $.param(options.data); 
+
+                                if(typeof A.data !== 'string') 
+                                        A.data = $.param(A.data); 
+
+                                options.data += '&' + A.data; 
+                        } else 
+                                options.data = A.data; 
+
+        return _ajax(options); 
+    }; 
+
+  })(jQuery); 
+  $.ajax.data = { auto: 'append'}
+  
   $(document).bind('ajaxSend', function(event, xhr) {
     if (currentUser && currentUser['access_token']) {
       if (clientLosesAuthHeaderOnRedirect) {
