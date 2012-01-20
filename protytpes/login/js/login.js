@@ -96,21 +96,29 @@ $(document).ready(function() {
   
     $('body').append('<div id="login-dialog"> \
   	  <form id="login-form">\
-	      <fieldset>\
-	        <div class="input-wrapper text ui-widget-content ui-corner-all">\
-		        <input type="text" name="username" id="username" value="" class="clear" />\
-	        	<label for="username">Email or Nickname</label>\
-          </div>\
-          <div class="input-wrapper text ui-widget-content ui-corner-all">\
-		        <input type="password" name="password" id="password" value="" class="clear" />\
-	        	<label for="password">Password</label>\
-          </div>\
-          <div id="login-message"></div>\
-	      </fieldset>\
-	      </form>\
-      </div>');
+	      <div class="input-wrapper text ui-widget-content ui-corner-all">\
+		      <input type="text" name="username" id="username" value="" class="clear" />\
+	        <label for="username">Email or Nickname</label>\
+        </div>\
+        <div class="input-wrapper text ui-widget-content ui-corner-all">\
+		      <input type="password" name="password" id="password" value="" class="clear" />\
+	        <label for="password">Password</label>\
+        </div>\
+        <div id="login-message"></div>\
+	    </form>\
+    </div>');
       
+    // catch return - key to submit form (necessary for Safari, as invisible input submit element does not help)
+    $('#login-dialog input').each(function() {
+      $(this)
+        .keydown(function(event) {
+          if (event.keyCode == 13) {
+            $('#login-form').submit();
+          }
+        });
+    });  
       
+    // clear hint text
     $('#login-dialog input.clear').each(function() {
       $(this)
         .keydown(function(event) {               // necessary to remove label immediately for the case, where the user holds the key
@@ -139,6 +147,55 @@ $(document).ready(function() {
           }
         });
     });
+    
+    $('#login-form').submit(function() {
+      if ($('#login-form #username').val() == '' ||
+          $('#login-form #password').val() == '') {
+        $('div#login-message').html('Please provide your credentials.');
+        return false; // prevent default behaviour
+      }
+      var params = $('#login-form').serializeArray();
+      params.push({
+        name: 'client_id',
+        value: 'XYZ'
+      });
+      params.push({
+        name: 'scope',
+        value: '5dentity wackadoo'
+      });
+      params.push({
+        name: 'grant_type',
+        value: 'password'
+      });
+
+      $.ajax({
+        type: 'POST',
+        url: RAILS_APP + '/oauth2/access_token',
+        data: params,
+        success: function(data, textStatus, jqXHR) {
+          switch(jqXHR.status) {
+            case 200:
+            if (data['access_token']) {
+              setCurrentUser(data);
+              $('#login-dialog').dialog('close');
+            }
+            break;
+            default:
+            msgObj = $.parseJSON(jqXHR.responseText);
+            $('#login-message').text(msgObj.error + ": " + msgObj.error_description);
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          switch(jqXHR.status) {
+            case 400:
+            default:
+            errObj = $.parseJSON(jqXHR.responseText);
+            $('#login-message').text(errObj.error + ": " + errObj.error_description);
+          }                          
+        }
+      });
+      return false; // prevent default behavior
+    });
   
     $('#login-dialog').dialog({
       modal: true,
@@ -153,56 +210,7 @@ $(document).ready(function() {
       {
         text: 'Send',
         click: function() {
-          if ($('#login-form #username').val() == '' ||
-              $('#login-form #password').val() == '') {
-            $('div#login-message').html('Please provide your credentials.');
-            return ;
-          }
-          var params = $('#login-form').serializeArray();
-          params.push({
-            name: 'client_id',
-            value: 'XYZ'
-          });
-          params.push({
-            name: 'scope',
-            value: '5dentity wackadoo'
-          });
-          params.push({
-            name: 'grant_type',
-            value: 'password'
-          });
-                  console.log('before');
-
-          
-          $.ajax({
-            type: 'POST',
-            url: RAILS_APP + '/oauth2/access_token',
-            data: params,
-            success: function(data, textStatus, jqXHR) {
-              switch(jqXHR.status) {
-              	case 200:
-	              if (data['access_token']) {
-    	            setCurrentUser(data);
-        	        $('#login-dialog').dialog('close');
-            	  }
-            	  break;
-            	default:
-            	  msgObj = $.parseJSON(jqXHR.responseText);
-            	  $('#login-message').text(msgObj.error + ": " + msgObj.error_description);
-              }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-              switch(jqXHR.status) {
-              	case 400:
-				default:
-              	  errObj = $.parseJSON(jqXHR.responseText);
-           	  	  $('#login-message').text(errObj.error + ": " + errObj.error_description);
-           	  }                          
-            }
-          });
-        
-                          console.log('after');
-
+          $('#login-form').submit();
         }
       }
       ]
