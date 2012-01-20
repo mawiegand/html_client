@@ -3,14 +3,36 @@ $(document).ready(function() {
   var RAILS_APP = 'http://localhost:3000/identity_provider';
   
   var currentUser = null;
-  var clientLosesAuthHeaderOnRedirect = true;
+  var clientLosesAuthHeaderOnRedirect = true;   // TODO: should test automatically
+
+  
+  /** extension of $.ajax to allow setting and automatic inclusions of default arguments. */
+  (function ($) { 
+    var _ajax = $.ajax; 
+    $.extend({
+      ajax: function(options) {
+        if ($.ajax.data) {
+          if(options.data) { 
+            if(typeof options.data !== 'string') 
+              options.data = $.param(options.data); 
+
+            if(typeof $.ajax.data !== 'string') 
+              $.ajax.data = $.param(this.data); 
+
+            options.data += '&' + $.ajax.data; 
+          } 
+          else {
+            options.data = $.ajax.data; 
+          }
+        }
+        return _ajax.call(this,options); 
+      }
+    }); 
+  })(jQuery);
   
   $(document).bind('ajaxSend', function(event, xhr) {
     if (currentUser && currentUser['access_token']) {
-      if (clientLosesAuthHeaderOnRedirect) {
-        
-      }
-      else {
+      if (!clientLosesAuthHeaderOnRedirect) {   // otherwise, the access token will be in the data section / query string
         var token = (currentUser && currentUser['access_token']) ? currentUser['access_token'] : "";
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
       }
@@ -20,6 +42,10 @@ $(document).ready(function() {
   
   var setCurrentUser = function(data) {
     currentUser = data;
+
+    if (clientLosesAuthHeaderOnRedirect) { // auto-append access-token to query string / post data
+      $.ajax.data = { access_token: data['access_token'] };
+    }
     $.getJSON(RAILS_APP + '/identities/self')
     .success(function(data, textStatus, jqXHR) {
       alert("Success: " + $.param(data));
@@ -120,10 +146,13 @@ $(document).ready(function() {
             name: 'grant_type',
             value: 'password'
           });
+                  console.log('before');
+
+          
           $.ajax({
             type: 'POST',
             url: RAILS_APP + '/oauth2/access_token',
-            data: params ,
+            data: params,
             success: function(data, textStatus, jqXHR) {
               switch(jqXHR.status) {
               	case 200:
@@ -146,6 +175,9 @@ $(document).ready(function() {
            	  }                          
             }
           });
+        
+                          console.log('after');
+
         }
       }
       ]
