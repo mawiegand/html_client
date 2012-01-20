@@ -1,4 +1,6 @@
 $(document).ready(function() {
+
+  var RAILS_APP = 'http://localhost:3000/identity_provider';
   
   var currentUser = null;
   var clientLosesAuthHeaderOnRedirect = true;
@@ -20,7 +22,7 @@ $(document).ready(function() {
     currentUser = data;
     $.ajax({
       type: 'GET',
-      url: 'http://localhost:3000/identities/self',
+      url: RAILS_APP + '/identities/self',
       success: function(data, textStatus, jqXHR) {
         alert($.param(data));
       },
@@ -120,7 +122,7 @@ $(document).ready(function() {
           });
           $.ajax({
             type: 'POST',
-            url: 'http://localhost:3000/oauth2/access_token',
+            url: RAILS_APP + '/oauth2/access_token',
             data: params ,
             success: function(data, textStatus, jqXHR) {
               if (data['access_token']) {
