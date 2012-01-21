@@ -1,78 +1,89 @@
+/** 
+ * Copyright (c) 2011 5D Lab
+ * Authored by Sascha Lange, Patrick Fox */
 $(document).ready(function() {
-
-  var RAILS_APP = 'http://localhost:3000/identity_provider';
   
-  var currentUser = null;
-  var clientLosesAuthHeaderOnRedirect = true;   // TODO: should test automatically
+  var APP = {};
 
+  APP.currentUser = null;
+  APP.config = { 
+    clientLosesAuthHeaderOnRedirect: false,
+    identity_provider_base: 'http://localhost:3000/identity_provider'
+  };
   
-  /** extension of $.ajax to allow setting and automatic inclusions of default arguments. */
-  (function ($) { 
-    var _ajax = $.ajax; 
-    $.extend({
-      ajax: function(options) {
-        if ($.ajax.data) {
-          if(options.data) { 
-            if(typeof options.data !== 'string') 
-              options.data = $.param(options.data); 
+  APP.setup = function () {
+    
+    var that = this;
+        
+    /** extension of $.ajax to allow setting and automatic inclusions of default arguments. */
+    (function ($) { 
+      var _ajax = $.ajax; 
+      $.extend({
+        ajax: function(options) {
+          if ($.ajax.data) {
+            if(options.data) { 
+              if(typeof options.data !== 'string') 
+                options.data = $.param(options.data); 
 
-            if(typeof $.ajax.data !== 'string') 
-              $.ajax.data = $.param(this.data); 
+              if(typeof $.ajax.data !== 'string') 
+                $.ajax.data = $.param(this.data); 
 
-            options.data += '&' + $.ajax.data; 
-          } 
-          else {
-            options.data = $.ajax.data; 
+              options.data += '&' + $.ajax.data; 
+            } 
+            else {
+              options.data = $.ajax.data; 
+            }
           }
+          return _ajax.call(this,options); 
         }
-        return _ajax.call(this,options); 
-      }
-    }); 
-  })(jQuery);
+      }); 
+    })(jQuery);
   
-  /** extension of $.getJSON to allow setting and automatic inclusions of default arguments. */
-  (function ($) { 
-    var _getJSON = $.getJSON; 
-    $.extend({
-      getJSON: function(options) {
-        if ($.ajax.data) {
-          if(options.data) { 
-            if(typeof options.data !== 'string') 
-              options.data = $.param(options.data); 
+    /** extension of $.getJSON to allow setting and automatic inclusions of default arguments. */
+    (function ($) { 
+      var _getJSON = $.getJSON; 
+      $.extend({
+        getJSON: function(options) {
+          if ($.ajax.data) {
+            if(options.data) { 
+              if(typeof options.data !== 'string') 
+                options.data = $.param(options.data); 
 
-            if(typeof $.ajax.data !== 'string') 
-              $.ajax.data = $.param(this.data); 
+              if(typeof $.ajax.data !== 'string') 
+                $.ajax.data = $.param(this.data); 
 
-            options.data += '&' + $.ajax.data; 
-          } 
-          else {
-            options.data = $.ajax.data; 
+              options.data += '&' + $.ajax.data; 
+            } 
+            else {
+              options.data = $.ajax.data; 
+            }
           }
+          return _getJSON.call(this,options); 
         }
-        return _getJSON.call(this,options); 
+      }); 
+    })(jQuery);
+  
+  
+    $(document).bind('ajaxSend', function(event, xhr) {
+      if (that.currentUser && that.currentUser['access_token']) {
+        if (!that.config.clientLosesAuthHeaderOnRedirect) {   // otherwise, the access token will be in the data section / query string
+          var token = (that.currentUser && that.currentUser['access_token']) ? that.currentUser['access_token'] : "";
+          xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+        }
       }
-    }); 
-  })(jQuery);
+      xhr.setRequestHeader('Accept', 'application/json');
+    });
   
-  
-  $(document).bind('ajaxSend', function(event, xhr) {
-    if (currentUser && currentUser['access_token']) {
-      if (!clientLosesAuthHeaderOnRedirect) {   // otherwise, the access token will be in the data section / query string
-        var token = (currentUser && currentUser['access_token']) ? currentUser['access_token'] : "";
-        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+    $(document).ajaxError(function(event, xhr, settings, exception) {
+      if (xhr.status == 401) {
+        obtainUserAuthorization();
       }
-    }
-    xhr.setRequestHeader('Accept', 'application/json');
-  });
-  
-  $(document).ajaxError(function(event, xhr, settings, exception) {
-    if (xhr.status == 401) {
-      obtainUserAuthorization();
-    }
-  });
+    });
+    
+  }
   
   var fetchSelf = function() {
-    $.getJSON(RAILS_APP + '/identities/self')
+    $.getJSON(APP.config.identity_provider_base + '/identities/self')
       .success(function(data, textStatus, jqXHR) {
         $('#current_user-info').html("Signed-in as " + data['nickname'] + " / " + data['email']);
       })
@@ -86,11 +97,11 @@ $(document).ready(function() {
   });
   
   var setCurrentUser = function(data) {
-    currentUser = data;
+    APP.currentUser = data;
 
-    if (clientLosesAuthHeaderOnRedirect) { // auto-append access-token to query string / post data
+    if (APP.config.clientLosesAuthHeaderOnRedirect) { // auto-append access-token to query string / post data
       $.ajax.data = { access_token: data['access_token'] };
-    }
+    } 
     
     fetchSelf();
 
@@ -187,7 +198,7 @@ $(document).ready(function() {
 
       $.ajax({
         type: 'POST',
-        url: RAILS_APP + '/oauth2/access_token',
+        url: APP.config.identity_provider_base + '/oauth2/access_token',
         data: params,
         success: function(data, textStatus, jqXHR) {
           switch(jqXHR.status) {
@@ -253,7 +264,49 @@ $(document).ready(function() {
     
   };
   
-  obtainUserAuthorization();
   
-  //('<div id="login-dialog"></div>').appendTo('body').dialog();
+  
+  /***************************************************************************
+   * Start the App.
+   * 
+   * First, runs a test to determine whether or not the client loses the 
+   * authorization header on rediretcs. Then, sets config parameters 
+   * accordingly, setups the app and starts it by requesting user 
+   * authorization. if the test fails completely (no connection), fail 
+   * with an alert.
+   **************************************************************************/
+   
+  // bind a helper modifying the request headers. It's just used for the 
+  // redirect test and unbinded directly afterwards.
+  $(document).bind('ajaxSend', function(event, xhr) {
+    xhr.setRequestHeader('Authorization', 'Bearer test_token');
+    xhr.setRequestHeader('Accept', 'application/json');
+  });
+  
+  // now start the redirect test and setupt & start the app after receiving
+  // and analyzing the response.
+  $.getJSON(APP.config.identity_provider_base + '/oauth2/redirect_test_start')
+    .success(function(data, textStatus, jqXHR) {
+      console.log(data);
+      $(document).unbind('ajaxSend');
+      if (!data.ok) {
+        if (!data.authorization_header || 
+            data.authorization_header != 'Bearer test_token') {
+          APP.config.clientLosesAuthHeaderOnRedirect = true ;
+        }
+        if (!data.accept_header || data.accept_header != 'application/json') {
+          alert('Lost accept header. The client really needs to handle this,'+
+                ' otherwise the server might send HTML!!!');
+          exit(1);
+        }        
+      }
+      APP.setup();
+      obtainUserAuthorization();
+    })
+    .error(function(jqXHR, textStatus, errorThrown) {
+      alert('Server error. Could not connect.');
+    });
+     
+  /**************************************************************************/   
+  
 });
