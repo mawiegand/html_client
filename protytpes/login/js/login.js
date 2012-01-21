@@ -65,13 +65,19 @@ $(document).ready(function() {
     xhr.setRequestHeader('Accept', 'application/json');
   });
   
+  $(document).ajaxError(function(event, xhr, settings, exception) {
+    if (xhr.status == 401) {
+      obtainUserAuthorization();
+    }
+  });
+  
   var fetchSelf = function() {
     $.getJSON(RAILS_APP + '/identities/self')
       .success(function(data, textStatus, jqXHR) {
         $('#current_user-info').html("Signed-in as " + data['nickname'] + " / " + data['email']);
       })
       .error(function(jqXHR, textStatus, errorThrown) {
-        alert("Error: " + $.param(data));
+          // add something here
       });
   };
   
@@ -104,39 +110,40 @@ $(document).ready(function() {
   
   var obtainUserAuthorization = function () {
   
-    $('body').append('<div id="login-dialog"> \
-  	  <form id="login-form">\
-	      <div class="input-wrapper text ui-widget-content ui-corner-all">\
-		      <input type="text" name="username" id="username" value="" class="clear" />\
-	        <label for="username">Email or Nickname</label>\
-        </div>\
-        <div class="input-wrapper text ui-widget-content ui-corner-all">\
-		      <input type="password" name="password" id="password" value="" class="clear" />\
-	        <label for="password">Password</label>\
-        </div>\
-        <div id="login-message"></div>\
-	    </form>\
-    </div>');
-      
-    // catch return - key to submit form (necessary for Safari, as invisible input submit element does not help)
-    $('#login-dialog input').each(function() {
-      $(this)
+    if ($('#login-dialog').length == 0) {  // on first call attach some html to the document for the view
+      $('body').append('<div id="login-dialog"> \
+    	  <form id="login-form">\
+  	      <div class="input-wrapper text ui-widget-content ui-corner-all">\
+  		      <input type="text" name="username" id="username" value="" class="clear" />\
+  	        <label for="username">Email or Nickname</label>\
+          </div>\
+          <div class="input-wrapper text ui-widget-content ui-corner-all">\
+  		      <input type="password" name="password" id="password" value="" class="clear" />\
+  	        <label for="password">Password</label>\
+          </div>\
+          <div id="login-message"></div>\
+  	    </form>\
+      </div>');
+
+      // catch return - key to submit form (necessary for Safari, as invisible input submit element does not help)
+      $('#login-dialog input').each(function() {
+        $(this)
         .keydown(function(event) {
           if (event.keyCode == 13) {
             $('#login-form').submit();
           }
         });
-    });  
-      
-    // clear hint text
-    $('#login-dialog input.clear').each(function() {
-      $(this)
+      });  
+
+      // clear hint text
+      $('#login-dialog input.clear').each(function() {
+        $(this)
         .keydown(function(event) {               // necessary to remove label immediately for the case, where the user holds the key
           if (event.keyCode != 13 &&
-              event.keyCode != 8 &&
-              event.keyCode != 9 &&
-              event.keyCode != 16
-            ) {
+            event.keyCode != 8 &&
+            event.keyCode != 9 &&
+            event.keyCode != 16
+          ) {
             $(this).siblings('label').hide();
           }
         })
@@ -157,10 +164,10 @@ $(document).ready(function() {
           }
         });
     });
-    
+
     $('#login-form').submit(function() {
       if ($('#login-form #username').val() == '' ||
-          $('#login-form #password').val() == '') {
+      $('#login-form #password').val() == '') {
         $('div#login-message').html('Please provide your credentials.');
         return false; // prevent default behaviour
       }
@@ -206,10 +213,11 @@ $(document).ready(function() {
       });
       return false; // prevent default behavior
     });
-  
+
     $('#login-dialog').dialog({
       modal: true,
       resizable: false,
+      autoOpen: false,
       dialogClass: 'login-dialog',
       closeOnEscape: false,
       draggable: false,
@@ -224,9 +232,24 @@ $(document).ready(function() {
         }
       }
       ]
-    });
+    }).dialog('open');
 
     $('input').blur();
+  }
+  else {   // this is at least the second time the client displays the login-dialog
+  
+    $('#login-dialog').dialog('open');  
+    $('input#password')
+      .val('')    // reset password to prevent unauthorized access
+      .siblings('label').show();
+    
+    if ($('input#username').val() == '') {
+      $('input#username').focus(); // focus at username, if it hasn't been entered, yet
+    }
+    else {
+      $('input#password').focus(); // focus at password, as we've resetted this value
+    }
+  }
     
   };
   
