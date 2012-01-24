@@ -89,7 +89,91 @@ a:hover { color: #036; }
 
 
 
+body {
+  background-color: #68A;
+}
 
+.panel, .drop-shadow {
+  -moz-box-shadow: 3px 3px 4px RGBA(0,0,0,.3) ;
+  -webkit-box-shadow: 3px 3px 4px RGBA(0,0,0,.3);
+  box-shadow: 3px 3px 4px RGBA(0,0,0,.3);  
+}
+
+.panel, .rounded-corners-20 {
+  border-radius: 20px;
+}
+
+.rounded-corners-4 {
+  border-radius: 4px;
+}
+
+.ui-widget-overlay { 
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: #666666 url(images/ui-bg_diagonals-thick_20_666666_40x40.png) 50% 50% repeat; 
+  opacity: .50;filter:Alpha(Opacity=50); 
+}
+
+button {
+  font-size: 24px;
+  background-color: #EEE;
+  padding: 4px 20px;
+}
+
+.panel {
+  background-color: #DDD;
+  border: 6px solid black;
+  padding: 10px 16px;
+}
+
+.login-dialog {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -200px;
+  margin-top: -100px;
+  width: 400px;
+  height: 192px;
+}
+
+.login-dialog .ui-dialog-titlebar { 
+  background: none; 
+  border: none; 
+  color: #333; 
+  font-size: 26px;
+  margin-bottom: 8px;
+}
+
+
+.login-dialog input {
+  width: 100%;
+  border: 1px solid #AAA;
+  font-size: 24px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  margin: 5px 0px;
+  padding: 4px 2px;
+}
+
+.login-dialog button {
+  margin-top: 8px;
+  float: right;
+}
+
+.login-dialog #login-message {
+  margin-top: 10px;
+  color: #D22;
+}
+
+
+#current-user-info {
+  color: #FFF;
+  font-size: 16pt;
+}
+
+#reload-button {
+  font-size: 16pt;
+  padding: 3px 20px;
+}
 
 
 
