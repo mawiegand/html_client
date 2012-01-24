@@ -1,0 +1,30 @@
+<div id="login-dialog" style="outline-width: 0px; outline-style: initial; outline-color: initial; height: auto; width: 400px; top: 418px; left: 596px; display: block; z-index: 1002;" class="ui-dialog ui-widget ui-widget-content ui-corner-all login-dialog" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-login-dialog">
+  <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+    <span class="ui-dialog-title" id="ui-dialog-title-login-dialog">Please Sign-In</span>
+    <a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button">
+      <span class="ui-icon ui-icon-closethick">close</span>
+    </a>
+  </div>
+  <div class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 0px; height: auto; " scrolltop="0" scrollleft="0">
+    <form id="login-form">
+      <div class="input-wrapper text ui-widget-content ui-corner-all">
+        <input type="text" name="username" id="username" value="" class="clear" />
+        <label for="username">Email or Nickname</label>
+      </div>
+      <div class="input-wrapper text ui-widget-content ui-corner-all">
+        <input type="password" name="password" id="password" value="" class="clear" />
+        <label for="password">Password</label>
+      </div>
+      <div id="login-message"></div>
+    </form>
+  </div>
+  <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+    <div class="ui-dialog-buttonset">
+      <button id="send-button" type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+        <span class="ui-button-text">Send</span>
+      </button>
+    </div>
+  </div>
+</div>
+<div id="widget-overlay" class="ui-widget-overlay" style="z-index: 1001; width: 100%; height: 100%; "></div>
+

@@ -1,0 +1,60 @@
+body {
+  background-color: #68A;
+}
+
+.login-dialog {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.login-dialog .ui-dialog-titlebar-close {
+  display: none;
+}
+
+.login-dialog .ui-dialog-titlebar { 
+  background: none; 
+  border: none; 
+  color: #333; 
+  font-weight: normal; 
+  font-size: 26px;
+}
+
+.login-dialog fieldset {
+  border: none;
+}
+
+.login-dialog .input-wrapper {
+  position: relative;
+  padding: 0px;
+  font-size: 24px;
+  border: 1px solid #AAA;
+  width: 100%;
+  margin: 10px 0px;
+}
+
+.login-dialog label {
+  width: 100%;
+  position: absolute; top: 0px; left: 0px;
+  padding: 0px;
+  margin: 0px;
+  color: #BBB;
+}
+
+.login-dialog input {
+  border:none;
+  background-color: transparent;
+  width: 100%;
+  padding; 0px; margin: 0px;
+  position: relative; top: 0px; left: 0px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+
+#current_user-info {
+  color: #FFF;
+  font-size: 16pt;
+}
+
+#reload-button {
+  font-size: 16pt;
+  padding: 3px 20px;
+}
