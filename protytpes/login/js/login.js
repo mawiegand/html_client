@@ -8,7 +8,7 @@ $(document).ready(function() {
   APP.currentUser = null;
   APP.config = { 
     clientLosesAuthHeaderOnRedirect: false,
-    identity_provider_base: 'http://localhost:3000/identity_provider'
+    identity_provider_base: 'https://localhost/identity_provider'
   };
   
   APP.setup = function () {
