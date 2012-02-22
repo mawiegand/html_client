@@ -5,7 +5,7 @@ LoginApp.Views = {};
 LoginApp.Models = Ember.Object.create({});
 
 LoginApp.Config = {
-  identityProviderBase: 'https://localhost/identity_provider/',
+  identityProviderBase: 'https://heldenduell.de/identity_provider/',
   clientLosesAuthHeaderOnRedirect: false,            // standard setting
   autoDetectRedirectFlaws: true,                     // detect redirect flaws and set config appropriately
 };

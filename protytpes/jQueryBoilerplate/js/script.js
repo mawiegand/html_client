@@ -9,7 +9,7 @@ $(document).ready(function() {
   APP.currentUser = null;
   APP.config = { 
     clientLosesAuthHeaderOnRedirect: false,
-    identity_provider_base: 'https://localhost/identity_provider'
+    identity_provider_base: 'https://heldenduell.de/identity_provider'
   };
   
   APP.setup = function () {
