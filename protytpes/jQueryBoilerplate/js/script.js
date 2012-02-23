@@ -6,7 +6,6 @@ $(document).ready(function() {
   
   var APP = window.APP || (window.App = {});
 
-  APP.currentUser = null;
   APP.config = { 
     clientLosesAuthHeaderOnRedirect: false,
     identity_provider_base: 'https://localhost/identity_provider'

@@ -9,7 +9,7 @@ APP.LoginForm = function () {   // use closure to hide private vars
   
   var _initialized = false;
   var _html = 
-    '<div id="login-dialog"> \
+    '<div id="login-dialog">\
       <form id="login-form">\
   	    <div class="input-wrapper text ui-widget-content ui-corner-all">\
   		    <input type="text" name="username" id="username" value="" class="clear" />\
