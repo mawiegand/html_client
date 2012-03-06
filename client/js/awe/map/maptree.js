@@ -80,7 +80,7 @@ AWE.Map = AWE.Map || function() {
        * a leaf node up to inserting this childNode. */
       that.insertAsChild = function(qtPath, childNode) {
         that.setChild(qtPath, childNode);
-        childNode.setParaent(that);
+        childNode.setParent(that);
       };
       
       that.toString = function (traverse) {
@@ -94,19 +94,30 @@ AWE.Map = AWE.Map || function() {
         return string;
       }
       
+      that.traverse = function(qtPath) {
+        if (!qtPath || qtPath == "") {
+          return that;
+        }
+        var p = parseInt(qtPath[0]);
+        if (!that.child(p)) {
+          return null;
+        }
+        return that.child(p).traverse(qtPath.substring(1));
+      }
+      
       /** further initialize the node from the spec (set and expand children) */
       if (spec.c0 || spec.c1 || spec.c2 || spec.c3) {
         if (spec.c0) {
-          that.setChild(0, AWE.Map.node(spec.c0));
+          that.insertAsChild(0, AWE.Map.node(spec.c0));
         }
         if (spec.c1) {
-          that.setChild(1, AWE.Map.node(spec.c1));
+          that.insertAsChild(1, AWE.Map.node(spec.c1));
         }
         if (spec.c2) {
-          that.setChild(2, AWE.Map.node(spec.c2));
+          that.insertAsChild(2, AWE.Map.node(spec.c2));
         }
         if (spec.c3) {
-          that.setChild(3, AWE.Map.node(spec.c3));
+          that.insertAsChild(3, AWE.Map.node(spec.c3));
         }
       }
       
