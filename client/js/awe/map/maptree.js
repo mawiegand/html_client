@@ -2,6 +2,7 @@
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
+
  
 var AWE = window.AWE || {};
 
@@ -20,6 +21,7 @@ AWE.Map = AWE.Map || function() {
       var that = {};
       
       var _id = spec.id || 0;
+      var _path = spec.path || '';
       
       var _updated_at = spec.updated_at || null;
       var _created_at = spec.created_at || null;
@@ -33,6 +35,10 @@ AWE.Map = AWE.Map || function() {
       
       var _children = null;
 
+      /** returns the quad-tree path of the node */
+      that.path = function() {
+        return _path;
+      }
       
       /** true, in case the node is a leaf-node (has no children) */
       that.isLeaf = function() {
@@ -78,7 +84,7 @@ AWE.Map = AWE.Map || function() {
       };
       
       that.toString = function (traverse) {
-        var string = "Node with id " + _id + " at level " + _level + " isLeaf: " + (_leaf ? 'true' : 'false');
+        var string = "" + _path + "\t Node with id " + _id + " at level " + _level + " isLeaf: " + (_leaf ? 'true' : 'false');
         if (traverse && _children) {
           string += "\n" + _children[0].toString(true);
           string += "\n" + _children[1].toString(true);
@@ -107,18 +113,24 @@ AWE.Map = AWE.Map || function() {
       return that;
     },
   };
-  
+    
 }();
 
 
-// embedded tests below here (delete or comment-out in production environment).
+// embedded tests below here (delete in production environment).
 
-var node = AWE.Map.node();
-console.log('Created node: ' + node);
+$(document).ready(function() {
 
-$.getJSON('http://localhost:3000/game_server/map/subtrees/root.json?levels=2', function(data) {
-  var root = AWE.Map.node(data);
-  console.log('Obtained node from server: ' + root.toString(true));
+  if (!AWE.Config.MAP_RUN_TESTS) return ;
+
+  var node = AWE.Map.node();
+  console.log('Created node: ' + node);
+
+  $.getJSON('http://localhost:3000/game_server/map/subtrees/root.json?levels=3', function(data) {
+    var root = AWE.Map.node(data);
+    console.log('Obtained node(s) from server:\n' + root.toString(true));
+  });
+
 });
 
 
