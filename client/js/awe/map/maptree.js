@@ -34,11 +34,35 @@ AWE.Map = (function(module) {
       var _parent = null;
       
       var _children = null;
+      
+      var _upperLeft = {
+        x: spec.min_x,
+        y: spec.min_y
+      };
+      
+      var _lowerRight = {
+        x: spec.max_x,
+        y: spec.max_y
+      };
 
       /** returns the quad-tree path of the node */
       that.path = function() {
         return _path;
-      }
+      };
+      
+      that.origin = function() {
+        return _upperLeft;
+      };
+  
+      that.size = function() {
+        return { width: _lowerRight.x - _upperLeft.x, 
+                 height: _lowerRight.y - _upperLeft.y };
+      };
+            
+      that.frame = function () {
+        return { origin: that.origin(),
+                 size: that.size() };
+      };
       
       /** true, in case the node is a leaf-node (has no children) */
       that.isLeaf = function() {
