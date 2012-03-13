@@ -67,7 +67,7 @@ $(document).ready(function() {
     var clickedNode = AWE.MapManager.rootNode().traverse(path);
  
     $.getJSON('http://localhost:3000/game_server/map/subtrees/qt'+path+'?levels=1', function(data) {
-      clickedNode.parent().insertAsChild(parseInt(path.substring(path.length-1)), AWE.Map.node(data));
+      clickedNode.parent().insertAsChild(parseInt(path.substring(path.length-1)), AWE.Map.createNode(data));
       var map = AWE.MapDebug.showTree(AWE.MapManager.rootNode(), 1024, 7);
       $('#map').empty();
       $('#map').append(map);

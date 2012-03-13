@@ -6,16 +6,18 @@
  
 var AWE = window.AWE || {};
 
-AWE.Map = AWE.Map || function() {
+AWE.Map = AWE.Map || {};
+
+(function(module) {
   
-  return {
+
     
     /** creates a node-object from the given spec, or, if no specs given, sets
      * all values to defaults appropriate for a root node. Spec could be JSON
      * data send by the game_server and could contain the spec for a complete
      * subtree. In this case, this method creates child-nodes as needed and
      * returns a complete subtree matching the spec. */
-    node: function(spec) {
+ module.createNode = function(spec) {
       spec = spec || {};    // default value for spec: empty spec
       
       var that = {};
@@ -108,24 +110,23 @@ AWE.Map = AWE.Map || function() {
       /** further initialize the node from the spec (set and expand children) */
       if (spec.c0 || spec.c1 || spec.c2 || spec.c3) {
         if (spec.c0) {
-          that.insertAsChild(0, AWE.Map.node(spec.c0));
+          that.insertAsChild(0, AWE.Map.createNode(spec.c0));
         }
         if (spec.c1) {
-          that.insertAsChild(1, AWE.Map.node(spec.c1));
+          that.insertAsChild(1, AWE.Map.createNode(spec.c1));
         }
         if (spec.c2) {
-          that.insertAsChild(2, AWE.Map.node(spec.c2));
+          that.insertAsChild(2, AWE.Map.createNode(spec.c2));
         }
         if (spec.c3) {
-          that.insertAsChild(3, AWE.Map.node(spec.c3));
+          that.insertAsChild(3, AWE.Map.createNode(spec.c3));
         }
       }
       
       return that;
-    },
-  };
+  }
     
-}();
+}(AWE.Map));
 
 
 // embedded tests below here (delete in production environment).
@@ -134,11 +135,11 @@ $(document).ready(function() {
 
   if (!AWE.Config.MAP_RUN_TESTS) return ;
 
-  var node = AWE.Map.node();
+  var node = AWE.Map.createNode();
   console.log('Created node: ' + node);
 
   $.getJSON('http://localhost:3000/game_server/map/subtrees/root.json?levels=3', function(data) {
-    var root = AWE.Map.node(data);
+    var root = AWE.Map.createNode(data);
     console.log('Obtained node(s) from server:\n' + root.toString(true));
   });
 
