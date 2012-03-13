@@ -6,10 +6,6 @@
  
 var AWE = window.AWE || {};
 
-AWE.Config = AWE.Config || {};
-
-AWE.Config.MAP_RUN_TESTS = true;
-AWE.Config.MAP_SERVER_BASE = 'http://localhost:3000/game_server/map/';
 
 
 AWE.MapDebug = AWE.MapDebug || function() {
@@ -57,18 +53,18 @@ $(document).ready(function() {
   
   if (!AWE.Config.MAP_RUN_TESTS) return ;
   
-  AWE.MapManager.init(2, function(rootNode) {
+  AWE.Map.Manager.init(2, function(rootNode) {
     var map = AWE.MapDebug.showTree(rootNode, 1024, 2);
     $('#map').append(map);
   });
   
   $('#map').on("click", ".subtree", function(eventObject) {  // event handler attached at #map (delegate) for all future .subtree elements        
     var path = $(this).text();
-    var clickedNode = AWE.MapManager.rootNode().traverse(path);
+    var clickedNode = AWE.Map.Manager.rootNode().traverse(path);
  
     $.getJSON('http://localhost:3000/game_server/map/subtrees/qt'+path+'?levels=1', function(data) {
       clickedNode.parent().insertAsChild(parseInt(path.substring(path.length-1)), AWE.Map.createNode(data));
-      var map = AWE.MapDebug.showTree(AWE.MapManager.rootNode(), 1024, 7);
+      var map = AWE.MapDebug.showTree(AWE.Map.Manager.rootNode(), 1024, 7);
       $('#map').empty();
       $('#map').append(map);
     });

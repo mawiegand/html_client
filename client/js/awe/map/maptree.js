@@ -6,9 +6,7 @@
  
 var AWE = window.AWE || {};
 
-AWE.Map = AWE.Map || {};
-
-(function(module) {
+AWE.Map = (function(module) {
   
 
     
@@ -125,8 +123,10 @@ AWE.Map = AWE.Map || {};
       
       return that;
   }
+  
+  return module;
     
-}(AWE.Map));
+}(AWE.Map || {}));
 
 
 // embedded tests below here (delete in production environment).

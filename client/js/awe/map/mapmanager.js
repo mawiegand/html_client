@@ -1,10 +1,10 @@
 
 var AWE = window.AWE || {};
 
-AWE.MapManager = AWE.MapManager || function() {
+AWE.Map = (function(module) {
 
   // creates a singleton object for handling one single map.
-  return function() {
+  module.Manager = function() {
     
     var that = {};    
     var _root = null;
@@ -47,5 +47,7 @@ AWE.MapManager = AWE.MapManager || function() {
     return that;
     
   }(); 
+  
+  return module;
 
-}();
+}(AWE.Map || {}));
