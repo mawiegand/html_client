@@ -8,6 +8,7 @@ var AWE = window.AWE || {};
 
 AWE.Geometry = (function(module) {
   
+  /** creates a 2d point with x,y-coordinates */
   module.createPoint = function(_x, _y) {
     return {
       x: _x,
@@ -15,6 +16,7 @@ AWE.Geometry = (function(module) {
     };
   };
   
+  /** creates a "size" in two dimensions given a width and a height. */
   module.createSize = function(_width, _height) {
     return {
       width: _width,
@@ -22,12 +24,16 @@ AWE.Geometry = (function(module) {
     };
   };
 
+  /** creates a 2d, axis-aligned rectangle given its upper left corner (origin) and
+   * its width and height. */
   module.createRect = function (_x,_y, _width, _height) {
     
     return {
       origin: module.createPoint(_x,_y),
       size: module.createSize(_width,_height),
       
+      /** checks whether this rectangle contains the given geometrical object. 
+       * Presently supports points and other rectangles. */
       contains: function(geom) {
         
         if (geom.size && geom.origin) {  // should be a rectangle
