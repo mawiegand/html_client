@@ -154,8 +154,12 @@ AWE.Map = (function(module) {
       }
       else if (presentNode.isLeaf() ||            // this is a leaf node
                presentNode.level() == level ||    // this is a node at the desired level of complexity
-               !presentNode.children) {           // no more information (incomplete tree)
-        nodes.push(presentNode);
+               !presentNode.children()) {           // no more information (e.g. due to incomplete tree)
+         
+        // handle the optional completely-inside-flag          
+        if (!onlyCompletelyInside || frame.contains(presentNode.frame())) {        
+          nodes.push(presentNode);
+        }
         return  ;
       }
       else {
@@ -191,7 +195,7 @@ $(document).ready(function() {
     console.log('Obtained node(s) from server:\n' + root.toString(true));
 
     // lookup nodes in 1000-km tile centered at 0,0 (somewhere on aequator in africa), this touches at least 4 nodes
-    var nodesInArea = AWE.Map.getNodesInAreaAtLevel(root, AWE.Geometry.createRect(-500000,-500000,1000000,1000000), 2, true);
+    var nodesInArea = AWE.Map.getNodesInAreaAtLevel(root, AWE.Geometry.createRect(-500000,-500000,1000000,1000000), 2, false);
     
     for (var i=0; i < nodesInArea.length; i++) {
       console.log('Node ' + i + ': ' + nodesInArea[i]);
