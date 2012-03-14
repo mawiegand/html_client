@@ -34,7 +34,9 @@ AWE.Map = (function(module) {
       
       var _children = null;
       
-      var _frame = AWE.Geometry.createRect(spec.min_x, spec.min_y, spec.max_x - spec.min_x, spec.max_y - spec.min_y);
+      var _frame = AWE.Geometry.createRect(parseFloat(spec.min_x), parseFloat(spec.min_y), 
+                                           parseFloat(spec.max_x) - parseFloat(spec.min_x), 
+                                           parseFloat(spec.max_y) - parseFloat(spec.min_y));
 
       /** returns the quad-tree path of the node */
       that.path = function() {
@@ -147,7 +149,7 @@ AWE.Map = (function(module) {
   module.getNodesInAreaAtLevel = function(rootNode, frame, level, onlyCompletelyInside)  {
     
     var collectNodes = function(nodes, presentNode) {
-      if (!presentNode.frame().isInside(frame)) { // stop here!
+      if (! presentNode.frame().intersects(frame)  ) { // no overlap, stop here!
         return ;
       }
       else if (presentNode.isLeaf() ||            // this is a leaf node
@@ -188,7 +190,8 @@ $(document).ready(function() {
     var root = AWE.Map.createNode(data);
     console.log('Obtained node(s) from server:\n' + root.toString(true));
 
-    var nodesInArea = AWE.Map.getNodesInAreaAtLevel(root, AWE.Map.createFrame(-20000,-20000,20000,20000), 2, true);
+    // lookup nodes in 1000-km tile centered at 0,0 (somewhere on aequator in africa), this touches at least 4 nodes
+    var nodesInArea = AWE.Map.getNodesInAreaAtLevel(root, AWE.Geometry.createRect(-500000,-500000,1000000,1000000), 2, true);
     
     for (var i=0; i < nodesInArea.length; i++) {
       console.log('Node ' + i + ': ' + nodesInArea[i]);

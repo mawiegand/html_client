@@ -55,11 +55,28 @@ AWE.Geometry = (function(module) {
         }
       },
       
+      /** returns whether two rectangles intersect (overlap). The method returns
+       * true in case the intersection of the two rectangles is not the null rectangle. */
+      intersects: function(rect) {
+        var inter = this.intersection(rect);
+
+        return inter.size.width > 0  || inter.size.height > 0; // TODO: || or && ?
+      },
+      
+      /** creates the intersection of two rectangles, that is a rectangle with the area 
+       * that is contained within both rectangles. */
+      intersection: function(rect) {        
+        var min_x = Math.max(this.origin.x, rect.origin.x);
+        var min_y = Math.max(this.origin.y, rect.origin.y);
+        var max_x = Math.min(this.origin.x+this.size.width, rect.origin.x+rect.size.width);
+        var max_y = Math.min(this.origin.y+this.size.height, rect.origin.y+rect.size.height);
+                
+        return module.createRect(min_x, min_y, max_x-min_x, max_y-min_y);
+      },
+      
       toString: function() {
         return "("+this.origin.x+", "+this.origin.y+" -- "+this.size.width+", "+this.size.height+")";
       },
-
-      
     };
   };
   
