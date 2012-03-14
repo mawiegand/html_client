@@ -23,7 +23,7 @@ AWE.Map = (function(module) {
       
     };
     
-    that.initialized = function() {
+    that.isInitialized = function() {
       return _initialized;
     }
     
