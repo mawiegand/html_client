@@ -65,6 +65,9 @@ AWE.Map = (function(module) {
      * is quicker and results in a smaller response than using fetchSubtreeForPath for a 
      * path _disconnected_ from the tree. */ 
     that.fetchSubtree = function(node, levels, conditional, callback) {
+      
+      // TODO: use optional conditional get!
+      
       if (node) {
         $.getJSON(AWE.Config.MAP_SERVER_BASE+'subtrees/qt'+node.path()+'?levels='+levels, function(data) {
           var subtree = AWE.Map.createNode(data);
@@ -77,6 +80,15 @@ AWE.Map = (function(module) {
     /** updates a given node and incorporates the received data into the tree. */
     that.updateNode = function(node, conditional, callback) {
       
+      // TODO: use optional conditional get!
+
+      if (node) {
+        $.getJSON(AWE.Config.MAP_SERVER_BASE+'nodes/qt'+node.path(), function(data) {
+          var node = AWE.Map.createNode(data);
+          if (_root) _root.importSubtree(node);
+          if (callback) callback(_root);
+        }); 
+      }
     };
     
     return that;

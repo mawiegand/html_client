@@ -43,6 +43,13 @@ AWE.Map = (function(module) {
         return _path;
       };
       
+      that.id = function() {
+        return _id;
+      }
+      
+      that.updatedAt = function() { return _updated_at; }
+      that.createdAt = function() { return _created_at; }
+      
       that.origin = function() {
         return _frame.origin;
       };
@@ -138,9 +145,22 @@ AWE.Map = (function(module) {
        * This only concerns the 'local' data, that is level, path, etc. Children
        * are _not_ touched and will not be imported from the given node. */
       that.updateNodeFrom = function(node) {
+        console.log('Updating node at '+_path+'.');
+
         if (node.path() != _path) {
           console.log('WARNING: updating data at node ' + _path + ' from a node with different path '+ node.path() + '.');
         }
+        
+        _id = node.id();
+        _path = node.path();
+      
+        _updated_at = node.updatedAt();
+        _created_at = node.createdAt();
+      
+        _leaf = node.isLeaf();
+        _level = node.level();
+      
+        _frame = AWE.Geometry.createRect(node.origin().x, node.origin().y, node.size().width, node.size().height);
       };
       
       /** method to import the given subtree into the tree. Attention: this may modify the 
