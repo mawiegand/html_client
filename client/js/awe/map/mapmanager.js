@@ -111,7 +111,7 @@ AWE.Map = (function(module) {
         return ;
       }
 
-      else {                                    // Case V: decide for each child what to do
+      else {                                    // Case IV: decide for each child what to do
  
         for (var i=0; i < 4; i++) {
           if (!node.child(i)) {                 //   A: need to request child
@@ -120,7 +120,7 @@ AWE.Map = (function(module) {
               that.fetchSubtreeForPath(node.path()+i, level-node.level());
             }
             else {                              //   A.2: intersects: fetch just the next level, and continue there
-              that.fetchSubtreeForPath(node.path()+i, 0, false, (function() {
+              that.fetchSubtreeForPath(node.path()+i, 0, (function() {
                 var iCopy = i; // need to store this value
                 return function() {
                   that.fetchMissingNodesForArea(node.child(iCopy), frame, level, onlyCompletelyInside);

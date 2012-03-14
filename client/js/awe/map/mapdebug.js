@@ -53,8 +53,13 @@ $(document).ready(function() {
   if (!AWE.Config.MAP_RUN_TESTS) return ;
   
   AWE.Map.Manager.init(2, function(rootNode) {
+    
+    AWE.Map.Manager.fetchMissingNodesForArea(AWE.Map.Manager.rootNode(),
+                                             AWE.Geometry.createRect(-500000,-500000,1000000,1000000),
+                                             5, true);
+    
     AWE.Map.Manager.updateNode(rootNode, false, function() {
-      AWE.Map.Manager.fetchSubtreeForPath('0113', 1, function() {
+      AWE.Map.Manager.fetchSubtreeForPath('011', 1, function() {
         AWE.Map.Manager.fetchSubtreeForPath('11', 1, function() {
           var map = AWE.MapDebug.showTree(AWE.Map.Manager.rootNode(), 1024, 7); // everything that's available (has mamimal 7 levels)
           $('#map').append(map);
