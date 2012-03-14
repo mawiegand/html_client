@@ -8,14 +8,13 @@ var AWE = window.AWE || {};
 
 AWE.Map = (function(module) {
   
-
     
-    /** creates a node-object from the given spec, or, if no specs given, sets
-     * all values to defaults appropriate for a root node. Spec could be JSON
-     * data send by the game_server and could contain the spec for a complete
-     * subtree. In this case, this method creates child-nodes as needed and
-     * returns a complete subtree matching the spec. */
- module.createNode = function(spec) {
+  /** creates a node-object from the given spec, or, if no specs given, sets
+   * all values to defaults appropriate for a root node. Spec could be JSON
+   * data send by the game_server and could contain the spec for a complete
+   * subtree. In this case, this method creates child-nodes as needed and
+   * returns a complete subtree matching the spec. */
+  module.createNode = function(spec) {
       spec = spec || {};    // default value for spec: empty spec
       
       var that = {};
@@ -35,15 +34,7 @@ AWE.Map = (function(module) {
       
       var _children = null;
       
-      var _upperLeft = {
-        x: spec.min_x,
-        y: spec.min_y
-      };
-      
-      var _lowerRight = {
-        x: spec.max_x,
-        y: spec.max_y
-      };
+      var _frame = AWE.Geometry.createRect(spec.min_x, spec.min_y, spec.max_x - spec.min_x, spec.max_y - spec.min_y);
 
       /** returns the quad-tree path of the node */
       that.path = function() {
@@ -51,17 +42,19 @@ AWE.Map = (function(module) {
       };
       
       that.origin = function() {
-        return _upperLeft;
+        return _frame.origin;
       };
   
       that.size = function() {
-        return { width: _lowerRight.x - _upperLeft.x, 
-                 height: _lowerRight.y - _upperLeft.y };
+        return _frame.size;
       };
             
       that.frame = function () {
-        return { origin: that.origin(),
-                 size: that.size() };
+        return _frame;
+      };
+      
+      that.level = function() {
+        return _level;
       };
       
       /** true, in case the node is a leaf-node (has no children) */
@@ -108,7 +101,7 @@ AWE.Map = (function(module) {
       };
       
       that.toString = function (traverse) {
-        var string = "" + _path + "\t Node with id " + _id + " at level " + _level + " isLeaf: " + (_leaf ? 'true' : 'false');
+        var string = "" + _path + "\t Node with id " + _id + " at level " + _level + " isLeaf: " + (_leaf ? 'true' : 'false') + " frame: " + _frame;
         if (traverse && _children) {
           string += "\n" + _children[0].toString(true);
           string += "\n" + _children[1].toString(true);
@@ -146,7 +139,36 @@ AWE.Map = (function(module) {
       }
       
       return that;
-  }
+  };
+  
+  /** returns all nodes that are in the given area. The area is specified as a frame
+   * (origin, size). The third boolean argument controls whether only nodes completely inside
+   * the area or although interesecting nodes are returned. */
+  module.getNodesInAreaAtLevel = function(rootNode, frame, level, onlyCompletelyInside)  {
+    
+    var collectNodes = function(nodes, presentNode) {
+      if (!presentNode.frame().isInside(frame)) { // stop here!
+        return ;
+      }
+      else if (presentNode.isLeaf() ||            // this is a leaf node
+               presentNode.level() == level ||    // this is a node at the desired level of complexity
+               !presentNode.children) {           // no more information (incomplete tree)
+        nodes.push(presentNode);
+        return  ;
+      }
+      else {
+        for (var i=0; i < 4; i++) {
+          collectNodes(nodes, presentNode.child(i));
+        }
+        return ;
+      }
+    };
+    
+    var result = [];
+    collectNodes(result, rootNode);
+    
+    return result;    
+  };
   
   return module;
     
@@ -165,7 +187,15 @@ $(document).ready(function() {
   $.getJSON('http://localhost:3000/game_server/map/subtrees/root.json?levels=3', function(data) {
     var root = AWE.Map.createNode(data);
     console.log('Obtained node(s) from server:\n' + root.toString(true));
+
+    var nodesInArea = AWE.Map.getNodesInAreaAtLevel(root, AWE.Map.createFrame(-20000,-20000,20000,20000), 2, true);
+    
+    for (var i=0; i < nodesInArea.length; i++) {
+      console.log('Node ' + i + ': ' + nodesInArea[i]);
+    }
+    
   });
+  
 
 });
 
