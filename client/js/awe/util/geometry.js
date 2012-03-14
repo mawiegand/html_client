@@ -60,7 +60,7 @@ AWE.Geometry = (function(module) {
       intersects: function(rect) {
         var inter = this.intersection(rect);
 
-        return inter.size.width > 0  || inter.size.height > 0; // TODO: || or && ?
+        return inter.size.width > 0  && inter.size.height > 0; // must be '&&', when using the present implementation of intersection
       },
       
       /** creates the intersection of two rectangles, that is a rectangle with the area 
