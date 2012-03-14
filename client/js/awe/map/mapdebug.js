@@ -52,9 +52,11 @@ $(document).ready(function() {
   
   if (!AWE.Config.MAP_RUN_TESTS) return ;
   
-  AWE.Map.Manager.init(2, function(rootNode) {
-    var map = AWE.MapDebug.showTree(rootNode, 1024, 2);
-    $('#map').append(map);
+  AWE.Map.Manager.init(2, function() {
+    AWE.Map.Manager.fetchSubtreeForPath('011', 1, function() {
+      var map = AWE.MapDebug.showTree(AWE.Map.Manager.rootNode(), 1024, 3);
+      $('#map').append(map);
+    });
   });
   
   $('#map').on("click", ".subtree", function(eventObject) {  // event handler attached at #map (delegate) for all future .subtree elements        

@@ -94,6 +94,16 @@ AWE.Map = (function(module) {
         _children[qtPath] = childNode;
       };
       
+      /** prunes a given child (and its subtree) from the tree and returns it afterwards. */
+      that.pruneChild = function(qtPath) {
+        var node = that.child(qtPath);
+        if (node) {
+          node.setParent(null);
+          _children[qtPath] = null;
+        }
+        return node;
+      };
+      
       /** use this method to hook a node into an existing tree. Replaces any
        * previously set child, makes the node to a non-leaf node, if it was
        * a leaf node up to inserting this childNode. */
@@ -122,6 +132,81 @@ AWE.Map = (function(module) {
           return null;
         }
         return that.child(p).traverse(qtPath.substring(1));
+      }
+      
+      /** this method updates the data stored at the local node from the given node. 
+       * This only concerns the 'local' data, that is level, path, etc. Children
+       * are _not_ touched and will not be imported from the given node. */
+      that.updateNodeFrom = function(node) {
+        console.log('Updating node ' + node.path());
+        if (node.path() != _path) {
+          console.log('WARNING: updating data at node ' + _path + ' from a node with different path '+ node.path() + '.');
+        }
+      };
+      
+      /** method to import the given subtree into the tree. Attention: this may modify the 
+       * subtree by 'pruning' whole branches from the subtree and incorporating them into
+       * the tree. Other parts of the subtree, that are already available in the tree, 
+       * are not touched and may be re-used or discarded afterwards. But please note:
+       * most likely the given subtree is not complete anymore after a call to this method. 
+       *
+       * Returns true on suceess and false if nothing or not the complete subtree could
+       * incorporated. */
+      that.importSubtree = function(subtree) {
+        
+        // implementation is recursive. 
+        // three cases to distinguish:
+        
+        if (!subtree) return true;          // Case I: nothing (left) to import
+        
+        else if (_path == subtree.path()) { // Case II: at the right place for import
+          console.log('Importing subtree at ' + subtree.path());
+        
+          // Step A: update local node
+          that.updateNodeFrom(subtree);   
+          
+          var result = true;
+          
+          // Step B: continue with child nodes (if necessary)
+          if (!subtree.children()) {
+            return result ;
+          }
+          
+          for (var i=0; i < 4; i++) {
+            if (!subtree.child(i)) continue ;         // that particular child is not in the new subtree
+            
+            if (!that.children() || !that.child(i)) { // this child is not yet in the tree
+              var node = subtree.pruneChild(i);       // prune child from one tree (subtree)
+              that.insertAsChild(i, node);            // and add it to the other tree (node at hand)
+              
+              console.log('Importing child '+i+' into node at '+_path+'.');
+            }
+            else {
+              result = result && that.child(i).importSubtree(subtree.child(i));
+            }            
+          }
+          
+          return result;
+        }
+        
+        else {                              // Case III: must walk to the right place in the tree (might occur initially)
+          
+          var node = null;
+          
+          if (subtree.path().length >= _path.length &&
+              (subtree.path().substr(0,_path.length) == _path)
+              ) {
+            var node = that.traverse(subtree.path().substr(_path.length));
+          }
+          
+          if (!node) {
+            console.log('Faild to incorporate subtree with path ' + subtree.path() + ' into tree from path ' + _path + '.' );
+            return false ;      
+          }
+          else {
+            return node.importSubtree(subtree); 
+          }
+        }
       }
       
       /** further initialize the node from the spec (set and expand children) */

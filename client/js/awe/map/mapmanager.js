@@ -38,6 +38,22 @@ AWE.Map = (function(module) {
      * into the existing local tree structure. */
     that.fetchSubtreeForPath = function(path, levels, callback) {
       
+      var node = null;
+      
+      if (that.isInitialized()) {
+        node = _root.traverse(path);  // may set node to zero, if local tree hasn't been expanded up to path
+      }
+      
+      if (!node) {   // the requested node is not available!
+        $.getJSON(AWE.Config.MAP_SERVER_BASE+'subtrees/qt'+path+'?levels='+levels+'&ancestors=true', function(data) {
+          var subtree = AWE.Map.createNode(data);
+          if (_root) _root.importSubtree(subtree);
+          if (callback) callback(_root);
+        });        
+      }
+      else {
+        that.fetchSubtree(node, levels, false, callback);
+      }
     };
     
     /** obtains a subtree starting with the given node and expanding for the given
