@@ -149,12 +149,12 @@ AWE.Map = (function(module) {
   module.getNodesInAreaAtLevel = function(rootNode, frame, level, onlyCompletelyInside)  {
     
     var collectNodes = function(nodes, presentNode) {
-      if (! presentNode.frame().intersects(frame)  ) { // no overlap, stop here!
+      if (! presentNode.frame().intersects(frame)  ) { // no overlap, stop expansion here!
         return ;
       }
       else if (presentNode.isLeaf() ||            // this is a leaf node
                presentNode.level() == level ||    // this is a node at the desired level of complexity
-               !presentNode.children()) {           // no more information (e.g. due to incomplete tree)
+               !presentNode.children()) {         // there is no more information (e.g. due to incomplete tree)
          
         // handle the optional completely-inside-flag          
         if (!onlyCompletelyInside || frame.contains(presentNode.frame())) {        
@@ -162,7 +162,7 @@ AWE.Map = (function(module) {
         }
         return  ;
       }
-      else {
+      else {  // continue traversal and expand the child nodes
         for (var i=0; i < 4; i++) {
           collectNodes(nodes, presentNode.child(i));
         }
