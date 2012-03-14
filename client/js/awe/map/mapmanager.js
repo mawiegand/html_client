@@ -91,6 +91,50 @@ AWE.Map = (function(module) {
       }
     };
     
+    /** fetches all nodes that are in the given area. The area is specified as a frame
+     * (origin, size). The third boolean argument controls whether only nodes completely inside
+     * the area or although interesecting nodes should be fetched. Does not update existing nodes, 
+     * only fetches missing nodes from server. This request may create multiple small requser
+     * for fetching small subtrees.
+     */
+    that.fetchMissingNodesForArea = function(node, frame, level, onlyCompletelyInside)  {
+
+      if (! node.frame().intersects(frame)  ) { // Case I: no overlap, stop expansion here!
+        return ;
+      }
+
+      else if (node.isLeaf()) {                 // Case II: tree ends here
+        return ;
+      }
+
+      else if (node.level() == level) {         // Case III: should stop querying here
+        return ;
+      }
+
+      else {                                    // Case V: decide for each child what to do
+ 
+        for (var i=0; i < 4; i++) {
+          if (!node.child(i)) {                 //   A: need to request child
+     
+            if (frame.contains(node.frame())) { //   A.1: frame completely inside requested area: fetch everything and forget
+              that.fetchSubtreeForPath(node.path()+i, level-node.level());
+            }
+            else {                              //   A.2: intersects: fetch just the next level, and continue there
+              that.fetchSubtreeForPath(node.path()+i, 0, false, (function() {
+                var iCopy = i; // need to store this value
+                return function() {
+                  that.fetchMissingNodesForArea(node.child(iCopy), frame, level, onlyCompletelyInside);
+                };
+              }())); 
+            }
+          }
+          else {                                 //   B: child is already there, traverse
+            that.fetchMissingNodesForArea(node.child(i), frame, level, onlyCompletelyInside);
+          }
+        }
+      }   
+    };
+    
     return that;
     
   }(); 
