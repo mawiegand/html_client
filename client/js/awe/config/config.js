@@ -8,7 +8,7 @@ var AWE = window.AWE || {};
 AWE.Config = (function(module) { 
   
   module.MAP_RUN_TESTS = true;
-  module.MAP_SERVER_BASE = 'http://132.230.105.86:3000/game_server/map/';
+  module.MAP_SERVER_BASE = 'http://localhost:3000/game_server/map/';
   
   return module;
   

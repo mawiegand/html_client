@@ -135,6 +135,19 @@ AWE.Map = (function(module) {
       }   
     };
     
+    /** fetches all nodes that are in the given area. The area is specified as a frame
+     * (origin, size). Does also update existing nodes. This request creates just
+     * one (large) request to the server resulting in a possibly large answer.
+     */
+    that.fetchNodesForArea = function(frame, level, callback)  {
+      $.getJSON(AWE.Config.MAP_SERVER_BASE+'area?x='+frame.origin.x+'&y='+frame.origin.y+
+                '&width='+frame.size.width+'&height='+frame.size.height+'&level='+level, function(data) {
+        var node = AWE.Map.createNode(data);
+        if (_root) _root.importSubtree(node);
+        if (callback) callback(_root);
+      }); 
+    };
+    
     return that;
     
   }(); 
