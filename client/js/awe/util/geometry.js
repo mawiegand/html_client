@@ -2,7 +2,6 @@
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
-
  
 var AWE = window.AWE || {};
 
@@ -12,7 +11,30 @@ AWE.Geometry = (function(module) {
   module.createPoint = function(_x, _y) {
     return {
       x: _x,
-      y: _y
+      y: _y,
+      
+      moveBy: function(point) {
+        this.x += point.x;
+        this.y += point.y;
+      },
+
+      moveTo: function(point) {
+        this.x = point.x;
+        this.y = point.y;
+      },
+
+      scale: function(f) {
+        this.x *= f;
+        this.y *= f;
+      },
+      
+      copy: function() {
+        return module.createPoint(this.x, this.y);
+      },
+      
+      toString: function() {
+        return '(' + this.x + ', ' + this.y + ')';
+      }
     };
   };
   
@@ -20,7 +42,14 @@ AWE.Geometry = (function(module) {
   module.createSize = function(_width, _height) {
     return {
       width: _width,
-      height: _height
+      height: _height,
+      scale: function(f) {
+        this.width *= f;
+        this.height *= f;
+      }, 
+      copy: function() {
+        return module.createSize(this.width, this.height);
+      },
     };
   };
 
@@ -31,6 +60,10 @@ AWE.Geometry = (function(module) {
     return {
       origin: module.createPoint(_x,_y),
       size: module.createSize(_width,_height),
+      
+      copy: function() {
+        return module.createRect(this.origin.x, this.origin.y, this.size.width, this.size.height);
+      },
       
       /** checks whether this rectangle contains the given geometrical object. 
        * Presently supports points and other rectangles. */
