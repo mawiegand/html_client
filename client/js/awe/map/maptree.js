@@ -145,7 +145,7 @@ AWE.Map = (function(module) {
        * This only concerns the 'local' data, that is level, path, etc. Children
        * are _not_ touched and will not be imported from the given node. */
       that.updateNodeFrom = function(node) {
-        console.log('Updating node at '+_path+'.');
+        //console.log('Updating node at '+_path+'.');
 
         if (node.path() != _path) {
           console.log('WARNING: updating data at node ' + _path + ' from a node with different path '+ node.path() + '.');
@@ -197,7 +197,7 @@ AWE.Map = (function(module) {
               var node = subtree.pruneChild(i);       // prune child from one tree (subtree)
               that.insertAsChild(i, node);            // and add it to the other tree (node at hand)
               
-              console.log('Importing child '+i+' into node at '+_path+'.');
+              //console.log('Importing child '+i+' into node at '+_path+'.');
             }
             else {
               result = result && that.child(i).importSubtree(subtree.child(i));

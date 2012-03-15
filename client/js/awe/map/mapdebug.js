@@ -60,7 +60,7 @@ $(document).ready(function() {
     
     AWE.Map.Manager.fetchMissingNodesForArea(AWE.Map.Manager.rootNode(),
                                              AWE.Geometry.createRect(-500000,-500000,1000000,1000000),
-                                             5, true);
+                                             3, true);
     
     AWE.Map.Manager.updateNode(rootNode, false, function() {
       AWE.Map.Manager.fetchNodesForArea(AWE.Geometry.createRect(-15000000,5000000,1000000,1000000),

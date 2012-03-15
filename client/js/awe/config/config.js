@@ -10,6 +10,8 @@ AWE.Config = (function(module) {
   module.MAP_RUN_TESTS = true;
   module.MAP_SERVER_BASE = 'http://localhost:3000/game_server/map/';
   
+  module.MAPPING_TILE_SIZE = 256;
+  
   return module;
   
 }(AWE.Config || {}));
