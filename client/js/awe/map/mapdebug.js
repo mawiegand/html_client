@@ -53,16 +53,20 @@ $(document).ready(function() {
   if (!AWE.Config.MAP_RUN_TESTS) return ;
   
   AWE.Map.Manager.init(2, function(rootNode) {
-    var map = AWE.MapDebug.showTree(rootNode, 1024, 2);
-    $('#map').append(map);
+    AWE.Map.Manager.updateNode(rootNode, false, function() {
+      AWE.Map.Manager.fetchSubtreeForPath('0113', 1, function() {
+        AWE.Map.Manager.fetchSubtreeForPath('11', 1, function() {
+          var map = AWE.MapDebug.showTree(AWE.Map.Manager.rootNode(), 1024, 7); // everything that's available (has mamimal 7 levels)
+          $('#map').append(map);
+        });
+      });
+    });
   });
   
   $('#map').on("click", ".subtree", function(eventObject) {  // event handler attached at #map (delegate) for all future .subtree elements        
     var path = $(this).text();
-    var clickedNode = AWE.Map.Manager.rootNode().traverse(path);
- 
-    $.getJSON('http://localhost:3000/game_server/map/subtrees/qt'+path+'?levels=1', function(data) {
-      clickedNode.parent().insertAsChild(parseInt(path.substring(path.length-1)), AWE.Map.createNode(data));
+    
+    AWE.Map.Manager.fetchSubtreeForPath(path, 1, function () {
       var map = AWE.MapDebug.showTree(AWE.Map.Manager.rootNode(), 1024, 7);
       $('#map').empty();
       $('#map').append(map);
