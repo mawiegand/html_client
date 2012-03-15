@@ -37,11 +37,14 @@
   </header>
   
   <div role="main">
-    <button id="update">Button</button> 
-    <canvas id="mapCanvas" ></canvas>
+    <canvas id="layer0" ></canvas>
+    <canvas id="layer1" ></canvas>
+    <canvas id="layer2" ></canvas>
+    <div id="debug"></div>
+    <div id="debug2"></div>
   </div>
   
-  <footer id="footer">
+  <footer>
   </footer>
 
 
@@ -58,8 +61,14 @@
   <script src="js/libs/easel.js"></script>
 
   <!-- scripts concatenated and minified via build script -->
+  <script src="js/awe/config/config.js"></script>
+  <script src="js/awe/network/network.js"></script>
+  <script src="js/awe/util/geometry.js"></script>
+  <script src="js/awe/map/maptree.js"></script>
+<!--   <script src="js/awe/map/mapdebug.js"></script> -->
   <script src="js/awe/map/mapmanager.js"></script>
-  <script src="js/awe/map/mapmodel.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/script.js"></script>
   <script src="js/awe/UI/util.js"></script>
   <script src="js/awe/UI/UImap.js"></script>
   <script src="js/plugins.js"></script>
