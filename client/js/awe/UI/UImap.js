@@ -146,20 +146,20 @@ AWE.UI = (function(module) {
       );
     };
     
-    that.zoom = function(zoomin) {
+    that.zoom = function(dScale, zoomin) {
       
-      var scale = 1.1;
+      var scale = 1 + dScale;
       var center = AWE.Geometry.createPoint(-windowSize.width / 2, -windowSize.height / 2);
       var centerInv = AWE.Geometry.createPoint(windowSize.width / 2, windowSize.height / 2);
 
       mc2vcTrans.moveBy(center);      
       if (zoomin) {
-        mc2vcScale *= 1.1;
-        mc2vcTrans.scale(1.1);
+        mc2vcScale *= scale;
+        mc2vcTrans.scale(scale);
       }
       else {
-        mc2vcScale /= 1.1;
-        mc2vcTrans.scale(1/1.1);
+        mc2vcScale /= scale;
+        mc2vcTrans.scale(1 / scale);
       }
       mc2vcTrans.moveBy(centerInv);
     };
@@ -230,6 +230,42 @@ AWE.UI = (function(module) {
       };
     }
     
+    $(window).bind('mousewheel', function() {
+      var delta = 0;
+      
+      if (!event) { /* For IE. */
+        event = window.event;
+      }
+            
+      if (event.wheelDelta) { /* IE/Opera. */
+        delta = event.wheelDelta/120;
+      }
+      else if (event.detail) { /** Mozilla case. */
+
+        /** In Mozilla, sign of delta is different than in IE.
+         * Also, delta is multiple of 3.
+         */
+        delta = -event.detail/3;
+      }
+
+      /** If delta is nonzero, handle it.
+       * Basically, delta is now positive if wheel was scrolled up,
+       * and negative, if wheel was scrolled down.
+       */
+      if (delta) {
+        that.zoom(0.02, delta > 0);
+      }
+
+      /** Prevent default actions caused by mouse wheel.
+       * That might be ugly, but we handle scrolls somehow
+       * anyway, so don't bother here..
+       */
+      if (event.preventDefault) {
+        event.preventDefault();
+      }
+      event.returnValue = false;
+    });
+    
     return that;
   }());  
   
@@ -254,8 +290,8 @@ AWE.UI = (function(module) {
 
 $(function(){
   AWE.UI.init();
-  $('#zoomin').click(function(){AWE.UI.Map.zoom(true)});
-  $('#zoomout').click(function(){AWE.UI.Map.zoom(false)});
+  $('#zoomin').click(function(){AWE.UI.Map.zoom(.1, true)});
+  $('#zoomout').click(function(){AWE.UI.Map.zoom(.1, false)});
 });
 
 
