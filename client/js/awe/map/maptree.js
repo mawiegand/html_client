@@ -249,35 +249,58 @@ AWE.Map = (function(module) {
   /** returns all nodes that are in the given area. The area is specified as a frame
    * (origin, size). The third boolean argument controls whether only nodes completely inside
    * the area or although interesecting nodes are returned. */
-  module.getNodesInAreaAtLevel = function(rootNode, frame, level, onlyCompletelyInside)  {
+  module.getNodesInAreaAtLevel = (function()  {
     
-    var collectNodes = function(nodes, presentNode) {
-      if (! presentNode.frame().intersects(frame)  ) { // no overlap, stop expansion here!
-        return ;
-      }
-      else if (presentNode.isLeaf() ||            // this is a leaf node
-               presentNode.level() == level ||    // this is a node at the desired level of complexity
-               !presentNode.children()) {         // there is no more information (e.g. due to incomplete tree)
+    var memoizer = AWE.Memoization.createMemoizer(10);
+    
+    return function(rootNode, frame, level, onlyCompletelyInside) {
+    
+      var argument = {
+        rootNode: rootNode,
+        frame: frame,
+        level: level,
+        onlyCompletelyInside: onlyCompletelyInside,
+        equals: function(other) {
+          return this.rootNode === other.rootNode && this.frame.equals(other.frame) && this.level === other.level &&
+                 this.onlyCompletelyInside === other.onlyCompletelyInside;
+        },
+      };
+      
+      var result = memoizer.getResult(argument);
+
+      if (!result) {
+
+        var collectNodes = function collectNodes(nodes, presentNode) {
+          
+          if (! presentNode.frame().intersects(frame)  ) { // no overlap, stop expansion here!
+            return ;
+          }
+          else if (presentNode.isLeaf() ||            // this is a leaf node
+                   presentNode.level() == level ||    // this is a node at the desired level of complexity
+                   !presentNode.children()) {         // there is no more information (e.g. due to incomplete tree)
          
-        // handle the optional completely-inside-flag          
-        if (!onlyCompletelyInside || frame.contains(presentNode.frame())) {        
-          nodes.push(presentNode);
-        }
-        return  ;
+            // handle the optional completely-inside-flag          
+            if (!onlyCompletelyInside || frame.contains(presentNode.frame())) {        
+              nodes.push(presentNode);
+            }
+            return  ;
+          }
+          else {  // continue traversal and expand the child nodes
+            for (var i=0; i < 4; i++) {
+              collectNodes(nodes, presentNode.child(i));
+            }
+            return ;
+          }
+        };
+        result = [];
+        collectNodes(result, rootNode);
+        
+        memoizer.storeResult(argument, result);
       }
-      else {  // continue traversal and expand the child nodes
-        for (var i=0; i < 4; i++) {
-          collectNodes(nodes, presentNode.child(i));
-        }
-        return ;
-      }
-    };
     
-    var result = [];
-    collectNodes(result, rootNode);
-    
-    return result;    
-  };
+      return result;  
+    }  
+  }());
   
   return module;
     
@@ -287,6 +310,23 @@ AWE.Map = (function(module) {
 // embedded tests below here (delete in production environment).
 
 $(document).ready(function() {
+  
+  var f1 = AWE.Geometry.createRect(0,0,10,10);
+  var f2 = AWE.Geometry.createRect(0,0,10,10);
+  
+  console.log('equals f: ' + (f1.equals(f2)));
+  
+  var s1 = AWE.Geometry.createSize(10,10);
+  var s2 = AWE.Geometry.createSize(10,10);
+  
+  console.log('equals s: ' + (s1.equals(s2)));
+
+  var p1 = AWE.Geometry.createPoint(10,10);
+  var p2 = AWE.Geometry.createPoint(10,10);
+
+  console.log('equals p: ' + (p1.equals(p2)));
+  
+  
 
   if (!AWE.Config.MAP_RUN_TESTS) return ;
 

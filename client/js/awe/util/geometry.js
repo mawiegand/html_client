@@ -8,7 +8,7 @@ var AWE = window.AWE || {};
 AWE.Geometry = (function(module) {
   
   /** creates a 2d point with x,y-coordinates */
-  module.createPoint = function(_x, _y) {
+  module.createPoint = function createPoint(_x, _y) {
     return {
       x: _x,
       y: _y,
@@ -29,40 +29,50 @@ AWE.Geometry = (function(module) {
       },
       
       copy: function() {
-        return module.createPoint(this.x, this.y);
+        return createPoint(this.x, this.y);
+      },
+      
+      equals: function(other) {
+        return this.x === other.x && this.y === other.y;
       },
       
       toString: function() {
         return '(' + this.x + ', ' + this.y + ')';
-      }
+      },
     };
   };
   
   /** creates a "size" in two dimensions given a width and a height. */
-  module.createSize = function(_width, _height) {
+  module.createSize = function createSize(_width, _height) {
     return {
       width: _width,
       height: _height,
+
       scale: function(f) {
         this.width *= f;
         this.height *= f;
       }, 
+      
       copy: function() {
-        return module.createSize(this.width, this.height);
+        return createSize(this.width, this.height);
+      },
+      
+      equals: function(other) {
+        return this.width === other.width && this.height === other.height;
       },
     };
   };
 
   /** creates a 2d, axis-aligned rectangle given its upper left corner (origin) and
    * its width and height. */
-  module.createRect = function (_x,_y, _width, _height) {
+  module.createRect = function createRect (_x,_y, _width, _height) {
     
     return {
       origin: module.createPoint(_x,_y),
       size: module.createSize(_width,_height),
       
       copy: function() {
-        return module.createRect(this.origin.x, this.origin.y, this.size.width, this.size.height);
+        return createRect(this.origin.x, this.origin.y, this.size.width, this.size.height);
       },
       
       /** checks whether this rectangle contains the given geometrical object. 
@@ -105,6 +115,10 @@ AWE.Geometry = (function(module) {
         var max_y = Math.min(this.origin.y+this.size.height, rect.origin.y+rect.size.height);
                 
         return module.createRect(min_x, min_y, max_x-min_x, max_y-min_y);
+      },
+      
+      equals: function(other) {
+        return this.origin.equals(other.origin) && this.size.equals(other.size);
       },
       
       toString: function() {
