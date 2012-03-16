@@ -333,15 +333,15 @@ $(document).ready(function() {
   var node = AWE.Map.createNode();
   console.log('Created node: ' + node);
 
-  $.getJSON('http://localhost:3000/game_server/map/subtrees/root.json?levels=3', function(data) {
+  $.getJSON('http://localhost:3000/game_server/map/subtrees/root.json?levels=7', function(data) {
     var root = AWE.Map.createNode(data);
-    console.log('Obtained node(s) from server:\n' + root.toString(true));
+    // console.log('Obtained node(s) from server:\n' + root.toString(true));
 
     // lookup nodes in 1000-km tile centered at 0,0 (somewhere on aequator in africa), this touches at least 4 nodes
     var nodesInArea = AWE.Map.getNodesInAreaAtLevel(root, AWE.Geometry.createRect(-500000,-500000,1000000,1000000), 2, false);
     
     for (var i=0; i < nodesInArea.length; i++) {
-      console.log('Node ' + i + ': ' + nodesInArea[i]);
+      // console.log('Node ' + i + ': ' + nodesInArea[i]);
     }
     
   });

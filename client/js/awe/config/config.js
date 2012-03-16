@@ -12,6 +12,9 @@ AWE.Config = (function(module) {
   
   module.MAPPING_TILE_SIZE = 256;
   
+  // how many tiles showing minimum when not at leaf level
+  module.MAP_MIN_VISIBLE_TILES = 128;
+  
   return module;
   
 }(AWE.Config || {}));
