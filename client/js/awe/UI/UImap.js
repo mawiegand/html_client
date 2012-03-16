@@ -15,7 +15,7 @@ AWE.UI = (function(module) {
   module.Map = (function() {
   
     var that = {};
-    
+        
     var windowSize;
     
     var mc2vcScale;
@@ -92,6 +92,12 @@ AWE.UI = (function(module) {
       that.update();
     };
     
+    var _leafImage = new Image();
+    _leafImage.src = "images/leaf.png";
+    _leafImage.onload = function() {
+      that.update();
+    };
+    
     var _armyImage = new Image();
     _armyImage.src = "images/army.png";
     _armyImage.onload = function() {
@@ -106,12 +112,12 @@ AWE.UI = (function(module) {
       var frame = node.frame();
       var frameVC = mc2vc(frame);
       
-      var bitmap = new Bitmap(_regionImage);
+      var bitmap = new Bitmap(node.isLeaf() ? _leafImage : _regionImage);
       bitmap.name = 'region' + node.path();
       bitmap.x = frameVC.origin.x;
       bitmap.y = frameVC.origin.y;
-      bitmap.scaleX = frame.size.width * mc2vcScale / 128;
-      bitmap.scaleY = frame.size.height * mc2vcScale / 128;
+      bitmap.scaleX = frame.size.width * mc2vcScale / AWE.Config.MAPPING_TILE_SIZE;
+      bitmap.scaleY = frame.size.height * mc2vcScale / AWE.Config.MAPPING_TILE_SIZE;
       _layer0.addChild(bitmap);
             
       // for (var i = 0; i < 100; i++) {
@@ -148,22 +154,39 @@ AWE.UI = (function(module) {
     
     that.zoom = function(dScale, zoomin) {
       
-      var scale = 1 + dScale;
-      var center = AWE.Geometry.createPoint(-windowSize.width / 2, -windowSize.height / 2);
-      var centerInv = AWE.Geometry.createPoint(windowSize.width / 2, windowSize.height / 2);
-
-      mc2vcTrans.moveBy(center);      
-      if (zoomin) {
-        mc2vcScale *= scale;
-        mc2vcTrans.scale(scale);
-      }
-      else {
-        mc2vcScale /= scale;
-        mc2vcTrans.scale(1 / scale);
-      }
-      mc2vcTrans.moveBy(centerInv);
+      // if (zoomin && mc2vcScale < 0.02 || !zoomin && 1 < mc2vcScale) {  // TODO: calc value from maptree
+        var scale = 1 + dScale;
+        var center = AWE.Geometry.createPoint(-windowSize.width / 2, -windowSize.height / 2);
+        var centerInv = AWE.Geometry.createPoint(windowSize.width / 2, windowSize.height / 2);
+  
+        mc2vcTrans.moveBy(center);      
+        if (zoomin) {
+          mc2vcScale *= scale;
+          mc2vcTrans.scale(scale);
+        }
+        else {
+          mc2vcScale /= scale;
+          mc2vcTrans.scale(1 / scale);
+        }
+        mc2vcTrans.moveBy(centerInv);
+      // }
     };
       
+    var level = function() {
+      // var rootLevel = module.rootNode.frame().size.width * AWE.Config.MAP_MIN_VISIBLE_TILES / windowSize.width;
+      var level = 0;
+      var rootWidthVC = mc2vc(module.rootNode.frame().size.width);
+      
+      while (rootWidthVC > AWE.Config.MAP_MIN_VISIBLE_TILES * 2) {
+        level++;
+        rootWidthVC /= 2;
+      }
+      
+      log('test', rootWidthVC);
+      
+      
+      return level;
+    };
     
     that.render = function() {
       
@@ -196,9 +219,9 @@ AWE.UI = (function(module) {
         
         var rect = AWE.Geometry.createRect(0, 0, windowSize.width, windowSize.height);
         
-        $('#debug2').text(vc2mc(rect).toString());
-        
-        var nodes = AWE.Map.getNodesInAreaAtLevel(rootNode, vc2mc(rect), 3, false);
+        $('#debug2').text('mc2vcScale: ' + mc2vcScale);
+               
+        var nodes = AWE.Map.getNodesInAreaAtLevel(module.rootNode, vc2mc(rect), level(), false);
         
         // log('count', nodes.length);
 
@@ -275,9 +298,10 @@ AWE.UI = (function(module) {
   module.init = function() {
           
     AWE.Network.init();
-    AWE.Map.Manager.init(3, function(){
-      rootNode = AWE.Map.Manager.rootNode();
-    });
+    AWE.Map.Manager.init(5, function(){
+      module.rootNode = AWE.Map.Manager.rootNode();
+      log('rootNode', module.rootNode.toString());      
+    });    
     
     AWE.UI.Map.init(AWE.Geometry.createRect(-1000000,-1000000,10000000,10000000));
     AWE.UI.Map.render();
