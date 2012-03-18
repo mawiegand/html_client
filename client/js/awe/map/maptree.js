@@ -246,6 +246,41 @@ AWE.Map = (function(module) {
       return that;
   };
   
+  /** returns an estimate of the number of missing nodes in a given area and level. */
+  module.numMissingNodesInAreaAtLevel = function(startNode, frame, level) {
+    
+    var count = 0;
+    
+    (function countMissingNodes(node) {
+      
+      if (!node.frame().intersects(frame)) {
+        return ;
+      }
+      else if (node.isLeaf() || node.level == level) {
+        return ;
+      }
+      else if (!node.children()) {
+        count += Math.pow(4, level - node.level);
+      }
+      else {
+        for (var i=0; i < 4; i++) {
+          if (node.child(i)) {
+            countMissingNodes(node.child(i));
+          }
+          else {
+            count += 1;
+            if (node.level+1 < level) {
+               Math.pow(4, level - (node.level+1));
+             }
+          }
+        }
+      }
+      
+    }(startNode));
+    
+    return count ;
+  };
+  
   /** returns all nodes that are in the given area. The area is specified as a frame
    * (origin, size). The third boolean argument controls whether only nodes completely inside
    * the area or although interesecting nodes are returned. */
@@ -253,7 +288,7 @@ AWE.Map = (function(module) {
     
     var memoizer = AWE.Memoization.createMemoizer(10);
     
-    return function(rootNode, frame, level, onlyCompletelyInside) {
+    return function(rootNode, frame, level, onlyCompletelyInside, forceRecalc) {
     
       var argument = {
         rootNode: rootNode,
@@ -268,7 +303,7 @@ AWE.Map = (function(module) {
       
       var result = memoizer.getResult(argument);
 
-      if (!result) {
+      if (!result || forceRecalc) {
 
         var collectNodes = function collectNodes(nodes, presentNode) {
           
