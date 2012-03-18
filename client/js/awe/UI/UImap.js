@@ -108,6 +108,11 @@ AWE.UI = (function(module) {
     var date = 0;
     var frame =0;
     var requestingMapNodesFromServer = false;
+    var needRedraw;
+    
+    that.updateView = function() {
+      needRedraw = true;
+    }
 
     that.addRegion = function(node) {
             
@@ -225,7 +230,7 @@ AWE.UI = (function(module) {
         
         $('#debug2').text('mc2vcScale: ' + mc2vcScale);
                
-        var nodes = AWE.Map.getNodesInAreaAtLevel(module.rootNode, vc2mc(rect), level(), false);
+        var nodes = AWE.Map.getNodesInAreaAtLevel(module.rootNode, vc2mc(rect), level(), false, needRedraw);
         
         if (frame % 30 == 0) {
           if (! requestingMapNodesFromServer &&
@@ -235,6 +240,7 @@ AWE.UI = (function(module) {
             console.log('requesting more nodes for level: ' + level());
             AWE.Map.Manager.fetchNodesForArea(vc2mc(rect), level(), function() {
               requestingMapNodesFromServer = false;
+              that.updateView();
             })
           }
         };
@@ -244,6 +250,8 @@ AWE.UI = (function(module) {
         for(var i = 0; i < nodes.length; i++) {
           that.addRegion(nodes[i]);
         }
+        
+        needRedraw = false;
       }
 
       // update region canvas to repaint

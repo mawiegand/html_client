@@ -18,24 +18,38 @@ AWE.Memoization = (function(module) {
       
       var that = {};
       
-      that.getResult = function(argument) {
+      var findResult = function(argument) {
         for (var i=0; i < count; i++) {
           var index = (first+i)%numElements;
 
           if (memo[index] != null && memo[index].argument.equals(argument)) {
-            return memo[index].result;
+            return index;
           }
         }
-        return null;
+        return -1;
+      };
+      
+      that.getResult = function(argument) {
+        var index = findResult(argument);
+        
+        return (index >= 0) ?  memo[index].result : null;
       };
       
       that.storeResult = function(argument, result) {
-        if (count == numElements) {
-          first = (first+1) % numElements;  // practically delete oldest result from memo
-          count--;
+        
+        var index = findResult(argument);
+        if (index >= 0) {   // already have a result for that argument, thus overwrite
+          memo[index].result = result;
         }
-        memo[(first+count)%numElements] = { argument: argument, result: result };
-        count++;
+        else {              // this is new argument, store as new entry
+        
+          if (count == numElements) {
+            first = (first+1) % numElements;  // practically delete oldest result from memo
+            count--;
+          }
+          memo[(first+count)%numElements] = { argument: argument, result: result };
+          count++;
+        }
       };
       
       that.clear = function() {
