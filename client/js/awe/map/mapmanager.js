@@ -140,8 +140,8 @@ AWE.Map = (function(module) {
      * one (large) request to the server resulting in a possibly large answer.
      */
     that.fetchNodesForArea = function(frame, level, callback)  {
-      $.getJSON(AWE.Config.MAP_SERVER_BASE+'area?x='+frame.origin.x+'&y='+frame.origin.y+
-                '&width='+frame.size.width+'&height='+frame.size.height+'&level='+level, function(data) {
+      $.getJSON(AWE.Config.MAP_SERVER_BASE+'area?x='+frame.origin.x.extendInteger()+'&y='+frame.origin.y.extendInteger()+
+                '&width='+(frame.size.width.extendInteger()+1)+'&height='+(frame.size.height.extendInteger()+1)+'&level='+level, function(data) {
         var node = AWE.Map.createNode(data);
         if (_root) _root.importSubtree(node);
         if (callback) callback(_root);

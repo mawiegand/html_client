@@ -7,6 +7,10 @@ var AWE = window.AWE || {};
 
 AWE.Geometry = (function(module) {
   
+  Number.prototype.extendInteger = function() {
+    return Math[(this > 0 ? 'ceil' : 'floor')](this);
+  };
+  
   /** creates a 2d point with x,y-coordinates */
   module.createPoint = function createPoint(_x, _y) {
     return {

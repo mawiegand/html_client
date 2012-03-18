@@ -252,15 +252,15 @@ AWE.Map = (function(module) {
     var count = 0;
     
     (function countMissingNodes(node) {
-      
+            
       if (!node.frame().intersects(frame)) {
         return ;
       }
-      else if (node.isLeaf() || node.level == level) {
+      else if (node.isLeaf() || node.level() == level) {
         return ;
       }
       else if (!node.children()) {
-        count += Math.pow(4, level - node.level);
+        count += Math.pow(4, level - node.level());
       }
       else {
         for (var i=0; i < 4; i++) {
@@ -269,8 +269,9 @@ AWE.Map = (function(module) {
           }
           else {
             count += 1;
-            if (node.level+1 < level) {
-               Math.pow(4, level - (node.level+1));
+            if (node.level()+1 < level) {
+               Math.pow(4, level - (node.level()+1));
+
              }
           }
         }

@@ -106,6 +106,8 @@ AWE.UI = (function(module) {
     
 
     var date = 0;
+    var frame =0;
+    var requestingMapNodesFromServer = false;
 
     that.addRegion = function(node) {
             
@@ -182,7 +184,7 @@ AWE.UI = (function(module) {
         rootWidthVC /= 2;
       }
       
-      log('test', rootWidthVC);
+      //log('test', rootWidthVC);
       
       
       return level;
@@ -217,11 +219,25 @@ AWE.UI = (function(module) {
       
       if(AWE.Map.Manager.isInitialized()) {
         
+        frame++;
+        
         var rect = AWE.Geometry.createRect(0, 0, windowSize.width, windowSize.height);
         
         $('#debug2').text('mc2vcScale: ' + mc2vcScale);
                
         var nodes = AWE.Map.getNodesInAreaAtLevel(module.rootNode, vc2mc(rect), level(), false);
+        
+        if (frame % 30 == 0) {
+          if (! requestingMapNodesFromServer &&
+              AWE.Map.numMissingNodesInAreaAtLevel(module.rootNode, vc2mc(rect), level()) > 0) {
+                
+            requestingMapNodesFromServer = true;
+            console.log('requesting more nodes for level: ' + level());
+            AWE.Map.Manager.fetchNodesForArea(vc2mc(rect), level(), function() {
+              requestingMapNodesFromServer = false;
+            })
+          }
+        };
         
         // log('count', nodes.length);
 
@@ -298,12 +314,12 @@ AWE.UI = (function(module) {
   module.init = function() {
           
     AWE.Network.init();
-    AWE.Map.Manager.init(5, function(){
+    AWE.Map.Manager.init(2, function(){
       module.rootNode = AWE.Map.Manager.rootNode();
       log('rootNode', module.rootNode.toString());      
     });    
     
-    AWE.UI.Map.init(AWE.Geometry.createRect(-1000000,-1000000,10000000,10000000));
+    AWE.UI.Map.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));
     AWE.UI.Map.render();
   };
     
