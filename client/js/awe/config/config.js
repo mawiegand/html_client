@@ -12,6 +12,7 @@ AWE.Config = (function(module) {
   module.MAP_SERVER_BASE = 'http://localhost:3000/game_server/map/';
   
   module.MAPPING_TILE_SIZE = 256;
+  module.MAPPING_FORTRESS_SIZE = 64;
   
   // how many tiles showing minimum when not at leaf level
   module.MAP_MIN_VISIBLE_TILES = 64;
