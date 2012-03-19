@@ -89,19 +89,25 @@ AWE.UI = (function(module) {
     var _regionImage = new Image();
     _regionImage.src = "images/region.png";
     _regionImage.onload = function() {
-      that.update();
+      that.updateView();
     };
     
     var _leafImage = new Image();
     _leafImage.src = "images/leaf.png";
     _leafImage.onload = function() {
-      that.update();
+      that.updateView();
+    };
+    
+    var _fortressImage = new Image();
+    _fortressImage.src = "images/fortress.png";
+    _fortressImage.onload = function() {
+      that.updateView();
     };
     
     var _armyImage = new Image();
     _armyImage.src = "images/army.png";
     _armyImage.onload = function() {
-      that.update();
+      that.updateView();
     };
     
 
@@ -123,19 +129,23 @@ AWE.UI = (function(module) {
       bitmap.name = 'region' + node.path();
       bitmap.x = frameVC.origin.x;
       bitmap.y = frameVC.origin.y;
-      bitmap.scaleX = frame.size.width * mc2vcScale / AWE.Config.MAPPING_TILE_SIZE;
-      bitmap.scaleY = frame.size.height * mc2vcScale / AWE.Config.MAPPING_TILE_SIZE;
+      bitmap.scaleX = frameVC.size.width / AWE.Config.MAPPING_TILE_SIZE;
+      bitmap.scaleY = frameVC.size.height / AWE.Config.MAPPING_TILE_SIZE;
       _layer0.addChild(bitmap);
+    };
+
+    that.addFortress = function(node) {
             
-      // for (var i = 0; i < 100; i++) {
-        // bitmap = new Bitmap(_armyImage);
-        // bitmap.name = 'army' + i;
-        // bitmap.x = i ;
-        // bitmap.y = i ;
-        // bitmap.scaleX = 1;
-        // bitmap.scaleY = 1;
-        // _layer0.addChild(bitmap);
-      // }
+      var frame = node.frame();
+      var frameVC = mc2vc(frame);
+      
+      var bitmap = new Bitmap(_fortressImage);
+      bitmap.name = 'fortress' + node.path();
+      bitmap.x = frameVC.origin.x + frameVC.size.width / 2 - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+      bitmap.y = frameVC.origin.y + frameVC.size.height / 2 - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+      // bitmap.scaleX = frameVC.size.width / AWE.Config.MAPPING_TILE_SIZE;
+      // bitmap.scaleY = frameVC.size.height / AWE.Config.MAPPING_TILE_SIZE;
+      _layer1.addChild(bitmap);
     };
 
     that.toString = function() {
@@ -144,6 +154,7 @@ AWE.UI = (function(module) {
     that.update = function() {
       _layer0.update();
       _layer1.update();
+      _layer2.update();
     };
     
     that.init = function(startRectMC) {
@@ -152,6 +163,12 @@ AWE.UI = (function(module) {
       _canvas0.width = windowSize.width;
       _canvas0.height = windowSize.height;
     
+      _canvas1.width = windowSize.width;
+      _canvas1.height = windowSize.height;
+    
+      _canvas2.width = windowSize.width;
+      _canvas2.height = windowSize.height;    
+
       mc2vcScale = 1. * windowSize.width / startRectMC.size.width;
       mc2vcTrans = AWE.Geometry.createPoint(
         -1. * startRectMC.origin.x * windowSize.width / startRectMC.size.width,
@@ -252,6 +269,9 @@ AWE.UI = (function(module) {
 
           for(var i = 0; i < nodes.length; i++) {
             that.addRegion(nodes[i]);
+            if (nodes[i].isLeaf()) {
+              that.addFortress(nodes[i]);
+            }
           }
         
           needRedraw = false;
@@ -266,23 +286,32 @@ AWE.UI = (function(module) {
         window.requestAnimFrame(that.render);
     };
 
-    _layer0.onPress = function(evt) {
+    
+    // scrolling
+    $('#layers').mousedown(function(evt) {
              
-      var clickPosVC = AWE.Geometry.createPoint(evt.stageX, evt.stageY);
+      log('Klick', evt);       
+      var clickPosVC = AWE.Geometry.createPoint(evt.pageX, evt.pageY);
       var vcStart = mc2vcTrans.copy();
       
-      evt.onMouseMove = function(ev) {
+      $('#layers').mousemove(function(ev) {
         
-        var pos = AWE.Geometry.createPoint(vcStart.x + ev.stageX - clickPosVC.x, vcStart.y + ev.stageY - clickPosVC.y);        
+        var pos = AWE.Geometry.createPoint(vcStart.x + ev.pageX - clickPosVC.x, vcStart.y + ev.pageY - clickPosVC.y);        
         mc2vcTrans.moveTo(pos);
 
         that.updateView();
-      };
+      });
       
-      evt.onMouseUp = function(ev) {
-      };      
-    }
+      $('body').mouseup(function(ev) {
+        $('#layers').unbind('mousemove');
+      });      
+
+      $('body').mouseleave(function(ev) {
+        $('#layers').unbind('mousemove');
+      });      
+    });
     
+    // zooming with mousewheel
     $(window).bind('mousewheel', function() {
       var delta = 0;
       
