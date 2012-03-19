@@ -344,6 +344,14 @@ AWE.UI = (function(module) {
           }
         };
         
+        if ((frame+15) % 30 == 0) {
+          if (! requestingMapNodesFromServer) {
+            AWE.Map.Manager.fetchMissingRegionsForArea(module.rootNode, vc2mc(rect), level(), function() {
+              that.updateView();
+            })
+          }
+        };
+        
         // log('count', nodes.length);
         if (needRedraw) {
           // reload regions

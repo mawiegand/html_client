@@ -148,6 +148,92 @@ AWE.Map = (function(module) {
       }); 
     };
     
+    that.updateRegionForNode = function(node, callback) {
+      if (!node.isLeaf()) {
+        return false;
+      }
+      if (node.region()) { // update
+         if (node.region().isUpdating()) {
+          return false ; // presently updating
+        }
+        else {
+          node.region().startUpdate();
+          $.getJSON(AWE.Config.MAP_SERVER_BASE+'regions/'+node.region().id(), function(data) {
+            var region = AWE.Map.createRegion(data);
+            node.region().updateFromRegion(region);
+            node.region().endUpdate();
+            if (callback) callback(node.region());
+          });           
+        }       
+      }
+      else { // fetch for the first time
+        if (node.isUpdating()) {
+          return false ; // presently updating
+        }
+        else {
+          node.startUpdate();
+          $.getJSON(AWE.Config.MAP_SERVER_BASE+'nodes/'+node.id()+'/regions', function(data) {
+            var region = AWE.Map.createRegion(data);
+            region.setNode(node);
+            node.setRegion(region);
+            node.endUpdate();
+            if (callback) callback(region);
+          });           
+        }
+      }
+      return true;
+    };
+    
+    that.fetchMissingRegionsForArea = (function() { 
+      var numRunningUpdates = 0;
+      var recLevel = 0;
+      
+      return function fetchRegions(node, frame, level, callback) {
+        recLevel += 1;
+      
+        if (! node) {
+          recLevel -= 1;
+          return ;
+        }
+      
+        else if (! node.frame().intersects(frame)  ) {  // Case I: no overlap, stop expansion here!
+          recLevel -= 1;
+          return ;
+        }
+
+        else if (node.isLeaf() && !node.region()) {// Case II: tree ends here
+          numRunningUpdates += 1;
+          var retVal = that.updateRegionForNode(node, function() {
+            numRunningUpdates -= 1;
+            if (recLevel <= 0 && numRunningUpdates == 0) {  // finished everything!!!
+              console.log ('finished updating regions in area.');
+              if (callback) {
+                callback();
+              }
+            }
+          }) ;
+          if (retVal == false) {
+            numRunningUpdates -= 1;
+          }
+        }
+
+        else if (node.level() == level) {          // Case III: should stop querying here
+          recLevel -= 1;
+          return ;
+        }
+
+        else {                                     // Case IV: continue for each child 
+ 
+          for (var i=0; i < 4; i++) {
+            if (node.child(i)) {              
+              fetchRegions(node.child(i), frame, level, callback);
+            }
+          }
+        }
+        recLevel -= 1;
+      };       
+    }());
+    
     return that;
     
   }(); 

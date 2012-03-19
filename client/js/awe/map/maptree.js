@@ -8,6 +8,95 @@ var AWE = window.AWE || {};
 
 AWE.Map = (function(module) {
   
+  var addUpdateTracking = function(obj) {
+    var isUpdating = false;
+    
+    if (!obj.isUpdating) {
+      obj.isUpdating = function() { return isUpdating; }
+    }
+    if (!obj.startUpdate) {
+      obj.startUpdate = function() { isUpdating = true; }
+    }
+    if (!obj.endUpdate) {
+      obj.endUpdate = function() { isUpdating = false; }
+    }
+  };
+  
+  module.createRegion = function(spec) {
+    spec = spec || {};    // default value for spec: empty spec
+ 
+    var _id = spec.id || 0;
+      
+    var _updated_at = spec.updated_at || null;
+    var _created_at = spec.created_at || null;
+    
+    var _nodeId = spec.node_id || 0;
+    var _name = spec.name || 'Ödland';
+    var _ownerId = spec.owner_id || 0;
+    var _ownerName = spec.owner_name || null;
+    var _allianceId = spec.alliance_id || 0;
+    var _allianceTag = spec.alliance_tag;
+    var _countOutposts = spec.count_outposts || 0;
+    var _countSettlements = spec.count_settlements || 0;
+    var _terrain = spec.terrain || 0;
+    
+    var _level = spec.level || 0;
+    
+    var _node = null;
+    
+    var that = {};
+    addUpdateTracking(that);  // adds methods for update tracking.
+    
+    /** return the region's id */
+    that.id = function() { return _id; }
+    
+    /** returns the regions name; */
+    that.name = function() { return _name; }
+    
+    /** returns the node the region is associated with. */
+    that.node = function() { return node; }
+    
+    /** sets the node the region is associated with. */
+    that.setNode = function(node) { _node = node; _nodeId = node.id(); }
+    
+    that.ownerName = function() { return _ownerName; }
+    that.ownerId = function() { return _ownerId; }
+
+    that.allianceTag = function() { return _allianceTag; }
+    that.allianceId = function() { return _allianceId; }
+
+    that.fortressLevel = function() { return _level; }
+    
+    /** this method updates the data stored at the local region from the given 
+     * region. Does not change the association to a node. */ 
+    that.updateRegionFrom = function(region) {
+
+      if (region.id() != _id) {
+        console.log('WARNING: updating data of region ' + _id + ' from a different region with id '+ region.id() + '.');
+      }
+        
+      _id = region.id();
+      
+      _updated_at = region.updatedAt();
+      _created_at = region.createdAt();
+      
+      _name = region.name || _name;
+      _ownerId = region.owner_id || 0;
+      _ownerName = region.owner_name || null;
+      _allianceId = region.alliance_id || 0;
+      _allianceTag = region.alliance_tag || null;
+      _countOutposts = region.count_outposts || 0;
+      _countSettlements = region.count_settlements || 0;
+      _terrain = region.terrain || 0;
+      _level = region.level || 0;      
+    };
+    
+    return that;      
+  };
+  
+  module.createLocation = function(spec) {
+    
+  };
     
   /** creates a node-object from the given spec, or, if no specs given, sets
    * all values to defaults appropriate for a root node. Spec could be JSON
@@ -17,8 +106,8 @@ AWE.Map = (function(module) {
   module.createNode = function(spec) {
       spec = spec || {};    // default value for spec: empty spec
       
-      var that = {};
-      
+
+
       var _id = spec.id || 0;
       var _path = spec.path || '';
       
@@ -33,11 +122,15 @@ AWE.Map = (function(module) {
       var _parent = null;
       
       var _children = null;
+      var _region = null;
       
       var _frame = AWE.Geometry.createRect(parseFloat(spec.min_x), parseFloat(spec.min_y), 
                                            parseFloat(spec.max_x) - parseFloat(spec.min_x), 
                                            parseFloat(spec.max_y) - parseFloat(spec.min_y));
-
+        
+      var that = {};
+      addUpdateTracking(that);  // adds methods for update tracking.  
+                                           
       /** returns the quad-tree path of the node */
       that.path = function() {
         return _path;
@@ -75,6 +168,14 @@ AWE.Map = (function(module) {
        * node. */
       that.parent = function () {
         return _parent;
+      };
+      
+      that.region = function() {
+        return _region;
+      };
+      
+      that.setRegion = function(region) {
+        _region = region;
       };
       
       /** sets the parent of the node. Should be used with caution; you need
@@ -366,21 +467,6 @@ $(document).ready(function() {
 
   if (!AWE.Config.MAP_RUN_TESTS) return ;
 
-  var node = AWE.Map.createNode();
-  console.log('Created node: ' + node);
-
-  $.getJSON('http://localhost:3000/game_server/map/subtrees/root.json?levels=7', function(data) {
-    var root = AWE.Map.createNode(data);
-    // console.log('Obtained node(s) from server:\n' + root.toString(true));
-
-    // lookup nodes in 1000-km tile centered at 0,0 (somewhere on aequator in africa), this touches at least 4 nodes
-    var nodesInArea = AWE.Map.getNodesInAreaAtLevel(root, AWE.Geometry.createRect(-500000,-500000,1000000,1000000), 2, false);
-    
-    for (var i=0; i < nodesInArea.length; i++) {
-      // console.log('Node ' + i + ': ' + nodesInArea[i]);
-    }
-    
-  });
   
 
 });
