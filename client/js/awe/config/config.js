@@ -3,6 +3,7 @@
  * Do not copy, do not distribute. All rights reserved.
  */
 
+
 var AWE = window.AWE || {};
 
 AWE.Config = (function(module) { 
@@ -13,7 +14,7 @@ AWE.Config = (function(module) {
   module.MAPPING_TILE_SIZE = 256;
   
   // how many tiles showing minimum when not at leaf level
-  module.MAP_MIN_VISIBLE_TILES = 128;
+  module.MAP_MIN_VISIBLE_TILES = 64;
   
   return module;
   
