@@ -8,9 +8,57 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
           
-  /*** map ***/
- 
   module.rootNode = null;
+  
+  /*** AWE.UI.View ***/
+ 
+  module.createView = function(spec) {
+    var _view = {};
+    
+    var _pos = spec.pos;
+    var _alphaMin = spec.alphaMin;
+    var _alphaMax = spec.alphaMax;
+        
+    var _image = new Image();
+    _image.src = spec.imageSrc;
+    // _fortressImage.onload = function() {
+      // that.updateView();
+    // };
+    
+    _view.alpha = function(val) {
+      var alpha = (val - _alphaMin ) / (_alphaMax - _alphaMin);
+      
+      if (alpha > 1) alpha = 1;
+      if (alpha < 0) alpha = 0;
+      
+      return alpha;      
+    };
+    
+    _view.image = function() {
+      return _image;
+    };
+    
+    _view.position = function() {
+      return _pos;
+    };
+    
+    return _view;
+  };
+  
+  module.createFortressView = function(frame) {
+
+    var spec = {
+      alphaMin: AWE.Config.MAPPING_FORTRESS_SIZE + 20,
+      alphaMax: AWE.Config.MAPPING_FORTRESS_SIZE * 2,
+      imageSrc: AWE.Config.MAP_FORTRESS_IMAGE_URL,
+      pos: frame.origin
+    };
+       
+    return module.createView(spec);
+  };
+  
+  
+  /*** Map ***/
   
   module.Map = (function() {
   
@@ -116,6 +164,23 @@ AWE.UI = (function(module) {
     var requestingMapNodesFromServer = false;
     var needRedraw;
     
+    /*
+     * calculates an alpha value between 0 and 1 according to val between min and max
+     */
+    var locationAlpha = function(min, max, val) {
+      var alpha = (val - min ) / (max - min);
+      
+      if (alpha > 1) {
+        alpha = 1;
+      }
+      
+      if (alpha < 0) {
+        alpha = 0;
+      }
+      
+      return alpha;      
+    };
+    
     that.updateView = function() {
       needRedraw = true;
     }
@@ -139,14 +204,34 @@ AWE.UI = (function(module) {
       var frame = node.frame();
       var frameVC = mc2vc(frame);
       
-      var bitmap = new Bitmap(_fortressImage);
+      var bitmap = new Bitmap(_armyImage);
       bitmap.name = 'fortress' + node.path();
       bitmap.x = frameVC.origin.x + frameVC.size.width / 2 - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
       bitmap.y = frameVC.origin.y + frameVC.size.height / 2 - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-      // bitmap.scaleX = frameVC.size.width / AWE.Config.MAPPING_TILE_SIZE;
-      // bitmap.scaleY = frameVC.size.height / AWE.Config.MAPPING_TILE_SIZE;
-      _layer1.addChild(bitmap);
+      // TODO evtl. Scale anhand des Scale der Region anpassen
+
+      // TODO Alpha-Wert berechnen, um je nach Größe ausblenden zu können      
+      var alpha = locationAlpha(AWE.Config.MAPPING_FORTRESS_SIZE + 20, AWE.Config.MAPPING_FORTRESS_SIZE * 2, frameVC.size.width);
+      if (alpha > 0) {
+        bitmap.alpha = alpha;
+        _layer1.addChild(bitmap);
+      }
     };
+    
+    that.addView = function(view, layer) {
+      var alpha = 1; //view.alpha();
+      
+      if (alpha > 0) {
+        var bitmap = new Bitmap(view.image());
+        var pos = mc2vc(view.position());
+        log('position', view.position());
+        log('pos', pos);
+        bitmap.x = pos.x;
+        bitmap.y = pos.y;
+        bitmap.alpha = alpha;
+        layer.addChild(bitmap);
+      }
+    }
 
     that.toString = function() {
     };
@@ -269,8 +354,9 @@ AWE.UI = (function(module) {
 
           for(var i = 0; i < nodes.length; i++) {
             that.addRegion(nodes[i]);
-            if (nodes[i].isLeaf()) {
-              that.addFortress(nodes[i]);
+            if (nodes[i].isLeaf()) {              
+              // that.addFortress(nodes[i]);
+              that.addView(module.createFortressView(nodes[i].frame()), _layer1);
             }
           }
         
@@ -290,7 +376,6 @@ AWE.UI = (function(module) {
     // scrolling
     $('#layers').mousedown(function(evt) {
              
-      log('Klick', evt);       
       var clickPosVC = AWE.Geometry.createPoint(evt.pageX, evt.pageY);
       var vcStart = mc2vcTrans.copy();
       
@@ -346,6 +431,10 @@ AWE.UI = (function(module) {
         event.preventDefault();
       }
       event.returnValue = false;
+    });
+    
+    $(window).resize(function(){
+      that.updateView();
     });
     
     return that;
