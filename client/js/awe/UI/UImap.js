@@ -176,6 +176,8 @@ AWE.UI = (function(module) {
           mc2vcTrans.scale(1 / scale);
         }
         mc2vcTrans.moveBy(centerInv);
+        
+        that.updateView();
       // }
     };
       
@@ -216,12 +218,7 @@ AWE.UI = (function(module) {
         _canvas1.height = newWindowSize.height;
         windowSize.height = newWindowSize.height; 
       }     
-      
-      // reload regions
-      _layer0.removeAllChildren();
-      _layer1.removeAllChildren();
-      _layer2.removeAllChildren();
-      
+            
       if(AWE.Map.Manager.isInitialized()) {
         
         frame++;
@@ -237,7 +234,7 @@ AWE.UI = (function(module) {
               AWE.Map.numMissingNodesInAreaAtLevel(module.rootNode, vc2mc(rect), level()) > 0) {
                 
             requestingMapNodesFromServer = true;
-            console.log('requesting more nodes for level: ' + level());
+            log('requesting more nodes for level: ' + level());
             AWE.Map.Manager.fetchNodesForArea(vc2mc(rect), level(), function() {
               requestingMapNodesFromServer = false;
               that.updateView();
@@ -246,12 +243,19 @@ AWE.UI = (function(module) {
         };
         
         // log('count', nodes.length);
+        if (needRedraw) {
+          // reload regions
+          _layer0.removeAllChildren();
+          _layer1.removeAllChildren();
+          _layer2.removeAllChildren();
 
-        for(var i = 0; i < nodes.length; i++) {
-          that.addRegion(nodes[i]);
-        }
+
+          for(var i = 0; i < nodes.length; i++) {
+            that.addRegion(nodes[i]);
+          }
         
-        needRedraw = false;
+          needRedraw = false;
+        }
       }
 
       // update region canvas to repaint
@@ -271,10 +275,12 @@ AWE.UI = (function(module) {
         
         var pos = AWE.Geometry.createPoint(vcStart.x + ev.stageX - clickPosVC.x, vcStart.y + ev.stageY - clickPosVC.y);        
         mc2vcTrans.moveTo(pos);
+
+        that.updateView();
       };
       
       evt.onMouseUp = function(ev) {
-      };
+      };      
     }
     
     $(window).bind('mousewheel', function() {
