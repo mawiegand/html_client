@@ -107,22 +107,40 @@ AWE.UI = (function(module) {
           //get direction
           var iFrame = neighbours[i].frame();
           var dir = {
-            x: iFrame.origin.x - frame.origin.x,
-            y: iFrame.origin.y - frame.origin.y
+            x: iFrame.origin.x + iFrame.size.width/2 - frame.origin.x - frame.size.width/2,
+            y: iFrame.origin.y + iFrame.size.height/2 - frame.origin.y - frame.size.height/2
           };
 
+          if (Math.abs(dir.x) > Math.abs(dir.y)) {
+            if (dir.x > 0) dir.x = transformedFrame.size.width / 2;
+            if (dir.x < 0) dir.x = transformedFrame.size.width / -2;
+            dir.y = 0;
+          } else {
+            if (dir.y > 0) dir.y = transformedFrame.size.height / 2;
+            if (dir.y < 0) dir.y = transformedFrame.size.height / -2;
+            dir.x = 0;
+          }
+
           if (neighbours[i].level() == _node.level() && !neighbours[i].isLeaf()) {
+            var extraDir = {x: dir.y/2, y: dir.x/2};
+
+            var shape = new Shape();
+            shape.graphics.beginStroke("#444")
+              .moveTo(start.x, start.y)
+              .lineTo(start.x + dir.x + extraDir.x, start.y + dir.y + extraDir.y)
+              .endStroke()
+              .closePath();
+            that.container().addChild(shape);
+
+            shape = new Shape();
+            shape.graphics.beginStroke("#444")
+              .moveTo(start.x, start.y)
+              .lineTo(start.x + dir.x - extraDir.x, start.y + dir.y - extraDir.y)
+              .endStroke()
+              .closePath();
+            that.container().addChild(shape);
 
           } else {
-            if (Math.abs(dir.x) > Math.abs(dir.y)) {
-              if (dir.x > 0) dir.x = transformedFrame.size.width / 2;
-              if (dir.x < 0) dir.x = transformedFrame.size.width / -2;
-              dir.y = 0;
-            } else {
-              if (dir.y > 0) dir.y = transformedFrame.size.height / 2;
-              if (dir.y < 0) dir.y = transformedFrame.size.height / -2;
-              dir.x = 0;
-            }
             var shape = new Shape();
             shape.graphics.beginStroke("#444")
               .moveTo(start.x, start.y)
