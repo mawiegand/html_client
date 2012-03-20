@@ -177,7 +177,7 @@ AWE.UI = (function(module) {
     var image = null;
     var _bgBitmap =null;
     
-    //console.log('creating new view for node ' + _node.path());
+    console.log('creating new view for node ' + _node.path());
 
     var selectBackgroundImage = function(detail) {
       var newImage = null;
@@ -319,6 +319,7 @@ AWE.UI = (function(module) {
     var _selected = false;
     var _mouseover = false;
     
+    var _fieldBitmap = null;
     
     if (!_node.region()) {
       console.log('ERROR: should create fortress for node ' + _node.path() + ' but region information is missing!');
@@ -344,11 +345,15 @@ AWE.UI = (function(module) {
       }
     };
     _fieldBitmap.onMouseOver = function(evt) {
+      log('rein');
       _mouseover = true;
+      module.Map.updateView();
     };
     _fieldBitmap.onMouseOut = function(evt) {
+      log('raus');
       _mouseover = false;
-      // _view.container().removeChildAt(2);
+      _view.container().removeChild(_easementBitmap);
+      module.Map.updateView();
     };
     
     var _easementBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/easement"));
@@ -526,9 +531,11 @@ AWE.UI = (function(module) {
    
     var _canvas1 = $('#layer1')[0];
     var _layer1 = new Stage(_canvas1);
+    _layer1.enableMouseOver()
     
     var _canvas2 = $('#layer2')[0];
     var _layer2 = new Stage(_canvas2);
+    _layer2.enableMouseOver()
         
     var startTime = 0;
     var numFrames = 0;
@@ -731,7 +738,6 @@ AWE.UI = (function(module) {
         scrollingStarted = false;
       }
     });
-
     
     // scrolling
     $('#layers').mousedown(function(evt) {
