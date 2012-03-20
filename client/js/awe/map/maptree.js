@@ -7,21 +7,7 @@
 var AWE = window.AWE || {};
 
 AWE.Map = (function(module) {
-  
-  var addUpdateTracking = function(obj) {
-    var isUpdating = false;
-    
-    if (!obj.isUpdating) {
-      obj.isUpdating = function() { return isUpdating; }
-    }
-    if (!obj.startUpdate) {
-      obj.startUpdate = function() { isUpdating = true; }
-    }
-    if (!obj.endUpdate) {
-      obj.endUpdate = function() { isUpdating = false; }
-    }
-  };
-  
+
   module.createRegion = function(spec) {
     spec = spec || {};    // default value for spec: empty spec
  
@@ -29,6 +15,7 @@ AWE.Map = (function(module) {
       
     var _updated_at = spec.updated_at || null;
     var _created_at = spec.created_at || null;
+    var _lastChange = new Date();
     
     var _nodeId = spec.node_id || 0;
     var _name = spec.name || 'Ödland';
@@ -45,10 +32,13 @@ AWE.Map = (function(module) {
     var _node = null;
     
     var that = {};
-    addUpdateTracking(that);  // adds methods for update tracking.
+    AWE.Partials.addUpdateTracking(that);  // adds methods for update tracking.
+    AWE.Partials.addChangeTracking(that);
     
     /** return the region's id */
     that.id = function() { return _id; }
+    
+    that.updatedAt = function() { return _updated_at; }
     
     /** returns the regions name; */
     that.name = function() { return _name; }
@@ -66,6 +56,8 @@ AWE.Map = (function(module) {
     that.allianceId = function() { return _allianceId; }
 
     that.fortressLevel = function() { return _level; }
+    
+
     
     /** this method updates the data stored at the local region from the given 
      * region. Does not change the association to a node. */ 
@@ -88,7 +80,9 @@ AWE.Map = (function(module) {
       _countOutposts = region.count_outposts || 0;
       _countSettlements = region.count_settlements || 0;
       _terrain = region.terrain || 0;
-      _level = region.level || 0;      
+      _level = region.level || 0;    
+      
+      that.setChangedNow();  
     };
     
     return that;      
@@ -129,7 +123,18 @@ AWE.Map = (function(module) {
                                            parseFloat(spec.max_y) - parseFloat(spec.min_y));
         
       var that = {};
-      addUpdateTracking(that);  // adds methods for update tracking.  
+      AWE.Partials.addUpdateTracking(that);   // adds methods for update tracking.  
+      AWE.Partials.addChangeTracking(that);   // basic change tracking.
+      
+      var superLastChange = that.lastChange;  // copy of original method
+      that.lastChange = function() {          // also check for a change of the region.
+        if (_region && _region.lastChange() > superLastChange()) {
+          return _region.lastChange();
+        }
+        else {
+          return superLastChange();
+        }
+      };
                                            
       /** returns the quad-tree path of the node */
       that.path = function() {
@@ -175,6 +180,11 @@ AWE.Map = (function(module) {
       };
       
       that.setRegion = function(region) {
+        if (_region != region &&
+            (!_region || !region || _region.updatedAt() != region.updatedAt())) {
+          that.setChangedNow();  // need to set change manually, as the region property has changed by this assignement    
+        }
+            
         _region = region;
       };
       
@@ -183,6 +193,7 @@ AWE.Map = (function(module) {
        * method. */
       that.setParent = function(newParent) {
         _parent = newParent;
+        that.setChangedNow();
       };
       
       that.children = function() {
@@ -200,6 +211,7 @@ AWE.Map = (function(module) {
           _leaf = false;
         }
         _children[qtPath] = childNode;
+        that.setChangedNow();
       };
       
       /** prunes a given child (and its subtree) from the tree and returns it afterwards. */
@@ -209,6 +221,7 @@ AWE.Map = (function(module) {
           node.setParent(null);
           _children[qtPath] = null;
         }
+        that.setChangedNow();
         return node;
       };
       
@@ -262,6 +275,8 @@ AWE.Map = (function(module) {
         _level = node.level();
       
         _frame = AWE.Geometry.createRect(node.origin().x, node.origin().y, node.size().width, node.size().height);
+        
+        that.setChangedNow();
       };
       
       /** method to import the given subtree into the tree. Attention: this may modify the 
