@@ -60,7 +60,10 @@ AWE.UI = (function(module) {
     
     _view.showInfo = function(){
       log('show info', _view);
-      alert("hallo Welt");
+    };
+    
+    _view.redraw = function() {
+      log('redraw', _view);
     };
     
     return _view;
@@ -321,14 +324,14 @@ AWE.UI = (function(module) {
 
           for(var i = 0; i < nodes.length; i++) {
             
-            regionViews[i]  = module.createRegionView(i, nodes[i].frame(), nodes[i].isLeaf());
-            that.addView(regionViews[i], _layer0);
+            regionViews[i]  = module.createRegionView(i, nodes[i].frame(), nodes[i].isLeaf(), _layer0);
+            regionViews[i].redraw();
             
             if (nodes[i].isLeaf()) {
               
               // voruebergehend zum Testen 
-              fortressViews[i] = module.createFortressView(i, nodes[i].frame());                           
-              that.addView(fortressViews[i], _layer1);
+              fortressViews[i] = module.createFortressView(i, nodes[i].frame(), _layer1);                           
+              fortressViews[i].redraw();
             }
           }
         
