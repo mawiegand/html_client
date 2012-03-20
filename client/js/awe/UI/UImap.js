@@ -72,62 +72,72 @@ AWE.UI = (function(module) {
     return _view;
   };
 
-  module.createStreets = function(_node, _nonScalingContainer) {
+  module.createStreets = function(_node) {
 
-    /*var that = {};
+    var that = {};
     
     var _node = _node;
     var _container = new Container();
 
+    that.container = function() { return _container; }
+
     that.redraw = function () {
+      _container.removeAllChildren();
+
+      var frame = _node.frame();
+      var transformedFrame = AWE.UI.Map.mc2vc(_node.frame());
+
+      if (_node.isLeaf()) {
+        var neighbours = _node.getNeighbourNodes();
+        var start = {
+          x: transformedFrame.size.width / 2,
+          y: transformedFrame.size.height / 2
+        };
+
+        var _text = new Text();
+        _text.font = "12px Arial";
+        _text.x = transformedFrame.size.width / 2;
+        _text.textBaseline = "top";
+        _text.y = transformedFrame.size.height -50;
+
+        _text.text = neighbours.length.toString();
+        that.container().addChild(_text);
+
+        for (var i = 0; i < neighbours.length; i++) {
+          //get direction
+          var iFrame = neighbours[i].frame();
+          var dir = {
+            x: iFrame.origin.x - frame.origin.x,
+            y: iFrame.origin.y - frame.origin.y
+          };
+
+          if (neighbours[i].level() == _node.level() && !neighbours[i].isLeaf()) {
+
+          } else {
+            if (Math.abs(dir.x) > Math.abs(dir.y)) {
+              if (dir.x > 0) dir.x = transformedFrame.size.width / 2;
+              if (dir.x < 0) dir.x = transformedFrame.size.width / -2;
+              dir.y = 0;
+            } else {
+              if (dir.y > 0) dir.y = transformedFrame.size.height / 2;
+              if (dir.y < 0) dir.y = transformedFrame.size.height / -2;
+              dir.x = 0;
+            }
+            var shape = new Shape();
+            shape.graphics.beginStroke("#444")
+              .moveTo(start.x, start.y)
+              .lineTo(start.x + dir.x, start.y + dir.y)
+              .endStroke()
+              .closePath();
+
+            that.container().addChild(shape);
+          }
+        }
+      }
 
     }
 
-    var frame = _node.frame();
-    var transformedFrame = AWE.UI.Map.mc2vc(_node.frame());
-
-    if (_node.isLeaf()) {
-      var neighbours = _node.getNeighbourNodes();
-      var start = {
-        /*x: transformedFrame.size.width / 2,
-        y: transformedFrame.size.height / 2*/
-        /*x: transformedFrame.size.width / 2,
-        y: transformedFrame.size.height / 2
-      };
-      for (var i = 0; i < neighbours.length; i++) {
-        //get direction
-        var iFrame = neighbours[i].frame();
-        var dir = {
-          x: iFrame.origin.x - frame.origin.x,
-          y: iFrame.origin.y - frame.origin.y
-        };
-
-        if (neighbours[i].level() == _node.level() && !neighbours[i].isLeaf()) {
-
-        } else {
-          //log(start, dir);
-          /*if (dir.x > 0) dir.x = transformedFrame.size.width / 2;
-          if (dir.x < 0) dir.x = transformedFrame.size.width / -2;
-          if (dir.y > 0) dir.y = transformedFrame.size.height / 2;
-          if (dir.y < 0) dir.y = transformedFrame.size.height / -2;*/
-          /*if (dir.x > 0) dir.x = transformedFrame.size.width / 2;
-          if (dir.x < 0) dir.x = transformedFrame.size.width / -2;
-          if (dir.y > 0) dir.y = transformedFrame.size.height / 2;
-          if (dir.y < 0) dir.y = transformedFrame.size.height / -2;
-          var shape = new Shape();
-          shape.graphics.beginStroke("#444")
-            .moveTo(start.x, start.y)
-            .lineTo(start.x + dir.x, start.y + dir.y)
-            .endStroke()
-            .closePath();
-          _nonScalingContainer.addChild(shape);
-          var bitmap =  new Bitmap(module.ImageCache.getImage("map/region/icon"));
-          bitmap.x = start.x + dir.x;
-          bitmap.y = start.y + dir.y;
-          _nonScalingContainer.addChild(bitmap);
-        }
-      }
-    }*/
+    return that;
   }
 
   module.createRegionView = function(_node, _layer) {
@@ -164,8 +174,9 @@ AWE.UI = (function(module) {
     _text.text = _node.id().toString();
     _nonScalingContainer.addChild(_text);
 
-    //done
-    module.createStreets(_node, _nonScalingContainer);
+    //streets
+    var streets = module.createStreets(_node);
+    _nonScalingContainer.addChild(streets.container());
 
     _view.position = function() {
       return _view.frame().origin;
@@ -190,6 +201,9 @@ AWE.UI = (function(module) {
       _nonScalingContainer.y = frame.origin.y;
 
       _nonScalingContainer.alpha = alpha;
+
+      //streets
+      streets.redraw();
 
       //add to layer
       _view.layer().addChild(container);
