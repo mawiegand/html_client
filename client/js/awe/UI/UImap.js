@@ -73,7 +73,7 @@ AWE.UI = (function(module) {
   };
 
   module.addStreets = function(_node, _view, _nonScalingContainer) {
-
+    _node.getNeighbourNodes();
   }
 
   module.createRegionView = function(_node, _layer) {
