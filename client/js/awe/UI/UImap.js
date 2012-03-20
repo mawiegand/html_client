@@ -151,31 +151,42 @@ AWE.UI = (function(module) {
     var selectBackgroundImage = function(tileSize) {
       var newImage = null;
       
+      var size = '128';
+      if (tileSize) {
+        if (tileSize.width > 128) {
+          size = '256';
+        }
+        /*else if (tileSize.height() > 256) {
+          size = '512';
+        }*/
+      }
+      
       if (!_node.isLeaf()) {       // not a leaf node, splits further
-        newImage = AWE.UI.ImageCache.getImage("map/tiles/split128");
+        newImage = AWE.UI.ImageCache.getImage("map/tiles/split"+size);
       }
       else if (_node.region()) {   // terrain available, select appropriate tile
         if (_node.region().terrainId() < 2) {
-          newImage = AWE.UI.ImageCache.getImage("map/tiles/forest128");      
+          newImage = AWE.UI.ImageCache.getImage("map/tiles/forest"+size);      
         }
         else {
-          newImage = AWE.UI.ImageCache.getImage("map/tiles/plain128");              
+          newImage = AWE.UI.ImageCache.getImage("map/tiles/plain"+size);              
         }
       }
       else {                       // don't know terrain, yet. thus, select base tile
-        newImage = AWE.UI.ImageCache.getImage("map/tiles/base128");
+        newImage = AWE.UI.ImageCache.getImage("map/tiles/base"+size);
       }
       
       if (newImage != image) {
         image = newImage;
+        if (_bgBitmap) {
+          _view.container().removeChildAt(0);
+        }
         _bgBitmap = new Bitmap(image);
+        _view.container().addChildAt(_bgBitmap, 0);
       }    
     };
     
-    selectBackgroundImage(null);
-
-
-    _view.container().addChild(_bgBitmap);
+    selectBackgroundImage();
 
     var _nonScalingContainer = new Container();
 
@@ -208,6 +219,10 @@ AWE.UI = (function(module) {
       var frame = AWE.UI.Map.mc2vc(_view.frame());
       var alpha = _view.alpha(frame.size.width);
       var container = _view.container();
+      
+      //check for correct background image
+      selectBackgroundImage(frame.size);
+
       
       //scaling container
       container.scaleX = frame.size.width / _bgBitmap.image.width;
