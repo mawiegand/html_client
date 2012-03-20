@@ -59,8 +59,8 @@ AWE.UI = (function(module) {
       return _scaled;
     };
     
-    _view.showInfo = function(){
-      log('show info', _view);
+    _view.click = function(){
+      log('View.click()');
     };
     
     _view.redraw = function() {
@@ -113,7 +113,11 @@ AWE.UI = (function(module) {
 
       _view.layer().addChild(_view.container());
     };
-        
+
+    _view.click = function(){
+      log('RegionView.click()');
+    };
+            
     return _view;
   };
   
@@ -161,6 +165,10 @@ AWE.UI = (function(module) {
       _view.layer().addChild(_view.container());
     };
 
+    _view.click = function(){
+      log('FortressView.click()');
+    };
+    
     return _view;
   };
 
@@ -395,7 +403,7 @@ AWE.UI = (function(module) {
               newRegionViews[nodes[i].id()] = view;
             }
             else {
-              newRegionViews[nodes[i].id()] = module.createRegionView(i, nodes[i].frame(), nodes[i].isLeaf(), _layer0);
+              newRegionViews[nodes[i].id()] = module.createRegionView(nodes[i].id(), nodes[i].frame(), nodes[i].isLeaf(), _layer0);
             }
           }
           // new hash is old hash
@@ -415,7 +423,7 @@ AWE.UI = (function(module) {
               newFortressViews[nodes[i].id()] = view;
             }
             else if (nodes[i].isLeaf()) {
-              newFortressViews[nodes[i].id()] = module.createFortressView(i, nodes[i].frame(), _layer1);     
+              newFortressViews[nodes[i].id()] = module.createFortressView(nodes[i].id(), nodes[i].frame(), _layer1);     
             }
           }
           fortressViews = newFortressViews;
@@ -441,25 +449,17 @@ AWE.UI = (function(module) {
     // click-events in layers
     $('#layers').mouseup(function(evt){
       if (!scrollingStarted) {
+        var view;
         if (_layer2.hitTest(evt.pageX, evt.pageY)) {
-          log('klick layer2', _layer2.getObjectUnderPoint(evt.pageX, evt.pageY));
-          if (_layer2.getObjectUnderPoint(evt.pageX, evt.pageY).showInfo) {
-            _layer2.getObjectUnderPoint(evt.pageX, evt.pageY).showInfo();
-          }
+          // view = armyViews[_layer1.getObjectUnderPoint(evt.pageX, evt.pageY).name];
         }
         else if (_layer1.hitTest(evt.pageX, evt.pageY)) {
-          log('klick layer1', _layer1.getObjectUnderPoint(evt.pageX, evt.pageY));
-          var obj = _layer1.getObjectUnderPoint(evt.pageX, evt.pageY);
-          if (_layer1.getObjectUnderPoint(evt.pageX, evt.pageY).showInfo) {
-            _layer1.getObjectUnderPoint(evt.pageX, evt.pageY).showInfo();
-          }
+          view = fortressViews[_layer1.getObjectUnderPoint(evt.pageX, evt.pageY).name];
         }
         else if (_layer0.hitTest(evt.pageX, evt.pageY)) {
-          log('klick layer0', _layer0.getObjectUnderPoint(evt.pageX, evt.pageY));
-          if (_layer0.getObjectUnderPoint(evt.pageX, evt.pageY).showInfo) {
-            _layer0.getObjectUnderPoint(evt.pageX, evt.pageY).showInfo();
-          }
+          view = regionViews[_layer0.getObjectUnderPoint(evt.pageX, evt.pageY).name];
         }
+        if (view && view.click) view.click();
       }
       else {
         scrollingStarted = false;
@@ -567,7 +567,7 @@ AWE.UI = (function(module) {
     AWE.Network.init();
     AWE.Map.Manager.init(2, function(){
       module.rootNode = AWE.Map.Manager.rootNode();
-      log('rootNode', module.rootNode.toString());      
+      log('rootNode', module.rootNode.toString());
     });
 
     AWE.UI.ImageCache.init();
