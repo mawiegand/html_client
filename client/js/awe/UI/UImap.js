@@ -363,7 +363,7 @@ AWE.UI = (function(module) {
               AWE.Map.numMissingNodesInAreaAtLevel(module.rootNode, vc2mc(rect), level()) > 0) {
                 
             requestingMapNodesFromServer = true;
-            log('requesting more nodes for level: ' + level());
+            // log('requesting more nodes for level: ' + level());
             AWE.Map.Manager.fetchNodesForArea(vc2mc(rect), level(), function() {
               requestingMapNodesFromServer = false;
               that.updateView();
@@ -379,58 +379,52 @@ AWE.UI = (function(module) {
           }
         };
         
-        // render layer0
-        for (var i = 0; i < nodes.length; i++) {
-          if (!fortressViews[nodes[i].id()] || fortressViews[nodes[i].id()].isUpdated()) {            
-            fortressViews[nodes[i].id()] = createRegionView(i, nodes[i].frame(), nodes[i].isLeaf(), _layer0);
-          }
-        }
+        var view;
         
-        _layer0.removeAllChildren();
-        
-        for (var i = 0; i < fortressViews.length; i++) {
-          fortressView
-
-
-        
-        
-        
-        
-        
-        
-                
-        // log('count', nodes.length);
         if (needRedraw) {
-          // reload regions
-          _layer1.removeAllChildren();
-          _layer2.removeAllChildren();
-
-          regionViews = [];
-          fortressViews = [];
-
-          for(var i = 0; i < nodes.length; i++) {
-            
-            // regionViews[i]  = module.createRegionView(i, nodes[i].frame(), nodes[i].isLeaf(), _layer0);
-            // regionViews[i].redraw();
-//             
-            // if (nodes[i].isLeaf()) {
-//               
-              // // voruebergehend zum Testen 
-              // fortressViews[i] = module.createFortressView(i, nodes[i].frame(), _layer1);                           
-              // fortressViews[i].redraw();
-            // }
-
-            regionViews[i]  = module.createRegionView(i, nodes[i].frame(), nodes[i].isLeaf());
-            that.addView(regionViews[i], _layer0);
-            
-            if (nodes[i].isLeaf()) {
-              
-              // voruebergehend zum Testen 
-              fortressViews[i] = module.createFortressView(i, nodes[i].frame());                           
-              that.addView(fortressViews[i], _layer1);
-            }            
+          log('redraw');
+       
+          // layer0: regions
+          // create new viewHash
+          var newRegionViews = {};          
+          // fill new viewHash with all visible, old an new views
+          for (var i = 0; i < nodes.length; i++) {
+            if (view = regionViews[nodes[i].id()]) { // und nicht geändert
+              newRegionViews[nodes[i].id()] = view;
+            }
+            else {
+              newRegionViews[nodes[i].id()] = module.createRegionView(i, nodes[i].frame(), nodes[i].isLeaf(), _layer0);
+  
+            }
           }
-        
+          // new hash is old hash
+          regionViews = newRegionViews;        
+          // clear layer0
+          _layer0.removeAllChildren();
+          // redraw all views in viewHash        
+          for (var id in regionViews) {
+             regionViews[id].redraw();
+          }
+          
+          
+          // layer 1: locations
+          var newFortressViews = {}
+          for (var i = 0; i < nodes.length; i++) {
+            if (view = fortressViews[nodes[i].id()]) { // und nicht geändert
+              newFortressViews[nodes[i].id()] = view;
+            }
+            else if (nodes[i].isLeaf()) {
+              newFortressViews[nodes[i].id()] = module.createFortressView(i, nodes[i].frame(), _layer1);     
+            }
+          }
+          fortressViews = newFortressViews;
+          _layer1.removeAllChildren();
+          for (var id in fortressViews) {
+             fortressViews[id].redraw();
+          }
+          
+          
+          // old flag, TODO remove?
           needRedraw = false;
         }
       }
