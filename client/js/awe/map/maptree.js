@@ -203,6 +203,10 @@ AWE.Map = (function(module) {
       _locations = locations;
     };
     
+    that.countSettlements = function() {
+      return _countSettlements;
+    }
+    
     /** this method updates the data stored at the local region from the given 
      * region. Does not change the association to a node. */ 
     that.updateRegionFrom = function(region) {
@@ -264,7 +268,7 @@ AWE.Map = (function(module) {
       var _children = null;
       var _region = null;
       
-      var _count_settlements = spec.count_settlements || 0;
+      var _countSettlements = spec.count_settlements || 0;
       var _total_army_strength = spec.total_army_strength || 0;
       
       var _frame = AWE.Geometry.createRect(parseFloat(spec.min_x), parseFloat(spec.min_y), 
@@ -312,6 +316,10 @@ AWE.Map = (function(module) {
       that.level = function() {
         return _level;
       };
+      
+      that.countSettlements = function() {
+        return _countSettlements;
+      }
       
       /** true, in case the node is a leaf-node (has no children) */
       that.isLeaf = function() {
