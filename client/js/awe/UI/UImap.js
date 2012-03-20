@@ -148,18 +148,16 @@ AWE.UI = (function(module) {
     var image = null;
     var _bgBitmap =null;
 
-    var selectBackgroundImage = function(tileSize) {
+    var selectBackgroundImage = function(detail) {
       var newImage = null;
       
       var size = '128';
-      if (tileSize) {
-        if (tileSize.width > 128) {
+      if (detail > 0) {
           size = '256';
-        }
-        /*else if (tileSize.height() > 256) {
+      }
+        /*else if (detail > 1) {
           size = '512';
         }*/
-      }
       
       if (!_node.isLeaf()) {       // not a leaf node, splits further
         newImage = AWE.UI.ImageCache.getImage("map/tiles/split"+size);
@@ -186,7 +184,7 @@ AWE.UI = (function(module) {
       }    
     };
     
-    selectBackgroundImage();
+    selectBackgroundImage(0);
 
     var _nonScalingContainer = new Container();
 
@@ -213,6 +211,22 @@ AWE.UI = (function(module) {
     _view.position = function() {
       return _view.frame().origin;
     };
+    
+    _view.detailLevel = function() {
+      var frame = AWE.UI.Map.mc2vc(_view.frame());      
+      if (frame.size.width < 128) {
+        return 0;
+      }
+      else if (frame.size.width < 256) {
+        return 1;
+      }
+      else if (frame.size.width < 512) {
+        return 2;
+      }
+      else {
+        return 3;
+      }
+    }
 
     _view.redraw = function() {
 
@@ -221,7 +235,7 @@ AWE.UI = (function(module) {
       var container = _view.container();
       
       //check for correct background image
-      selectBackgroundImage(frame.size);
+      selectBackgroundImage(_view.detailLevel());
 
       
       //scaling container
