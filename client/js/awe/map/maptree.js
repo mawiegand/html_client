@@ -398,11 +398,13 @@ AWE.Map = (function(module) {
           return that;
         }
         var p = parseInt(qtPath[0]);
-        if (!that.child(p)) {
-          if (returnLast) return that;
+        if (that.isLeaf() || !that.child(p)) {
+          if (returnLast) {
+            return that;
+          }
           return null;
         }
-        return that.child(p).traverse(qtPath.substring(1));
+        return that.child(p).traverse(qtPath.substring(1), returnLast);
       }
       
       /** this method updates the data stored at the local node from the given node. 
@@ -497,22 +499,22 @@ AWE.Map = (function(module) {
       that.getNeighbourNodes = function () {
 
         var nodes = [];
-
+        //log("getNeighbourNodes for ",that);
         var addNeighbour = function (tms, level) {
           var path = AWE.Mapping.GlobalMercator.TMSToQuadTreeTileCode(tms.x, tms.y, level);
-          var node = AWE.Map.Manager.rootNode().traverse(path);
+          //console.log(path);
+          var rootNode = AWE.Map.Manager.rootNode();
+          var node = rootNode.traverse(path, true);
           if (node) {
             nodes.push(node);
           } else {
-            //console.warn("no node found for path", path);
+            console.warn("no node found for path", path);
           }
         }
-        
-        console.log(AWE.Mapping);
 
         var tms = AWE.Mapping.GlobalMercator.QuadTreeToTMSTileCode(that.path());
         if (tms.x > 0) {
-          addNeighbour({ x: tms.x-1, y: tms.y, zoom: tms.zoom }, that.level());
+          addNeighbour({ x: tms.x-1, y: tms.y, zoom:tms.zoom }, that.level());
         }
         if (tms.y > 0) {
           addNeighbour({ x: tms.x, y: tms.y-1, zoom:tms.zoom }, that.level()); 
