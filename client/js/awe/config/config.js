@@ -16,6 +16,12 @@ AWE.Config = (function(module) {
   // how many tiles showing minimum when not at leaf level
   module.MAP_MIN_VISIBLE_TILES = 64;
 
+  module.MAP_REGION_STREETS_COLOR = "#857d66"; //#444
+  module.MAP_REGION_STREETS_WIDTH = 2; 
+
+  module.MAP_VILLAGE_SPOT_WIDTH = 20;
+  module.MAP_VILLAGE_SPOT_HEIGHT = 10;
+
   //image cache
   module.IMAGE_CACHE_LOAD_LIST = {
     "map/tiles/split128": 'images/tiles/split128.png',
