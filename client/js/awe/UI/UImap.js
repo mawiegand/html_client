@@ -143,17 +143,35 @@ AWE.UI = (function(module) {
     _view.container().name = _view.id();
 
     var image = null;
-    if (!_node.isLeaf()) {       // not a leaf node, splits further
-      image = AWE.UI.ImageCache.getImage("map/tiles/split128");
-    }
-    else if (_node.region()) {   // terrain available, select appropriate tile
-      image = AWE.UI.ImageCache.getImage("map/tiles/forest128");      
-    }
-    else {                       // don't know terrain, yet. thus, select base tile
-      image = AWE.UI.ImageCache.getImage("map/tiles/base128");
-    }
+    var _bgBitmap =null;
 
-    var _bgBitmap = new Bitmap(image);
+    var selectBackgroundImage = function(tileSize) {
+      var newImage = null;
+      
+      if (!_node.isLeaf()) {       // not a leaf node, splits further
+        newImage = AWE.UI.ImageCache.getImage("map/tiles/split128");
+      }
+      else if (_node.region()) {   // terrain available, select appropriate tile
+        if (_node.region().terrainId() < 2) {
+          newImage = AWE.UI.ImageCache.getImage("map/tiles/forest128");      
+        }
+        else {
+          newImage = AWE.UI.ImageCache.getImage("map/tiles/plain128");              
+        }
+      }
+      else {                       // don't know terrain, yet. thus, select base tile
+        newImage = AWE.UI.ImageCache.getImage("map/tiles/base128");
+      }
+      
+      if (newImage != image) {
+        image = newImage;
+        _bgBitmap = new Bitmap(image);
+      }    
+    };
+    
+    selectBackgroundImage(null);
+
+
     _view.container().addChild(_bgBitmap);
 
     var _nonScalingContainer = new Container();
@@ -186,8 +204,8 @@ AWE.UI = (function(module) {
 
       var frame = AWE.UI.Map.mc2vc(_view.frame());
       var alpha = _view.alpha(frame.size.width);
-      var container = _view.container()
-
+      var container = _view.container();
+      
       //scaling container
       container.scaleX = frame.size.width / _bgBitmap.image.width;
       container.scaleY = frame.size.height / _bgBitmap.image.height;
