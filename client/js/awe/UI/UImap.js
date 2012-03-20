@@ -72,15 +72,15 @@ AWE.UI = (function(module) {
     return _view;
   };
 
-  module.addStreets = function(_view) {
+  module.addStreets = function(_node, _view, _nonScalingContainer) {
 
   }
 
-  module.createRegionView = function(_id, _frame, _isLeaf, _layer) {
+  module.createRegionView = function(_node, _layer) {
 
     var spec = {
-      id: _id,
-      frame: _frame,
+      id: _node.id(),
+      frame: _node.frame(),
       scaled: true,
       layer: _layer
     };
@@ -88,7 +88,7 @@ AWE.UI = (function(module) {
     var _view = module.createView(spec);
     _view.container().name = _view.id();
 
-    var _bgBitmap = new Bitmap(_isLeaf ? AWE.UI.ImageCache.getImage("map/leaf") : AWE.UI.ImageCache.getImage("map/region"));
+    var _bgBitmap = new Bitmap(_node.isLeaf() ? AWE.UI.ImageCache.getImage("map/leaf") : AWE.UI.ImageCache.getImage("map/region"));
     _view.container().addChild(_bgBitmap);
 
     var _nonScalingContainer = new Container();
@@ -107,11 +107,11 @@ AWE.UI = (function(module) {
     _text.y = _iconBitmap.image.height/2 - _text.getMeasuredLineHeight()/2;
 
     _text.maxWidth = _bgBitmap.image.width-_iconBitmap.image.width;
-    _text.text = _id.toString();
+    _text.text = _node.id().toString();
     _nonScalingContainer.addChild(_text);
 
     //done
-    module.addStreets(_view);
+    module.addStreets(_node, _view, _nonScalingContainer);
 
     _view.position = function() {
       return _view.frame().origin;
@@ -417,6 +417,19 @@ AWE.UI = (function(module) {
           }
         };
         
+        if ((frame % 30 == 0)) {
+          if (! requestingMapNodesFromServer) {
+
+            for (var i=0; i < nodes.length; i++) {
+              if (nodes[i].isLeaf() && nodes[i].region() && !nodes[i].region().locations() && nodes[i].level() <= level()-2) {
+                AWE.Map.Manager.fetchLocationsForRegion(nodes[i].region(), function() {
+                  that.updateView();
+                });
+              }
+            }
+          }
+        };
+        
         var view;
         
         if (needRedraw) {
@@ -433,7 +446,7 @@ AWE.UI = (function(module) {
               newRegionViews[nodes[i].id()] = view;
             }
             else {
-              newRegionViews[nodes[i].id()] = module.createRegionView(nodes[i].id(), nodes[i].frame(), nodes[i].isLeaf(), _layer0);
+              newRegionViews[nodes[i].id()] = module.createRegionView(nodes[i], _layer0);
             }
           }
           // new hash is old hash
