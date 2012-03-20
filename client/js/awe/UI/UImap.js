@@ -72,8 +72,62 @@ AWE.UI = (function(module) {
     return _view;
   };
 
-  module.addStreets = function(_node, _view, _nonScalingContainer) {
+  module.createStreets = function(_node, _nonScalingContainer) {
 
+    /*var that = {};
+    
+    var _node = _node;
+    var _container = new Container();
+
+    that.redraw = function () {
+
+    }
+
+    var frame = _node.frame();
+    var transformedFrame = AWE.UI.Map.mc2vc(_node.frame());
+
+    if (_node.isLeaf()) {
+      var neighbours = _node.getNeighbourNodes();
+      var start = {
+        /*x: transformedFrame.size.width / 2,
+        y: transformedFrame.size.height / 2*/
+        /*x: transformedFrame.size.width / 2,
+        y: transformedFrame.size.height / 2
+      };
+      for (var i = 0; i < neighbours.length; i++) {
+        //get direction
+        var iFrame = neighbours[i].frame();
+        var dir = {
+          x: iFrame.origin.x - frame.origin.x,
+          y: iFrame.origin.y - frame.origin.y
+        };
+
+        if (neighbours[i].level() == _node.level() && !neighbours[i].isLeaf()) {
+
+        } else {
+          //log(start, dir);
+          /*if (dir.x > 0) dir.x = transformedFrame.size.width / 2;
+          if (dir.x < 0) dir.x = transformedFrame.size.width / -2;
+          if (dir.y > 0) dir.y = transformedFrame.size.height / 2;
+          if (dir.y < 0) dir.y = transformedFrame.size.height / -2;*/
+          /*if (dir.x > 0) dir.x = transformedFrame.size.width / 2;
+          if (dir.x < 0) dir.x = transformedFrame.size.width / -2;
+          if (dir.y > 0) dir.y = transformedFrame.size.height / 2;
+          if (dir.y < 0) dir.y = transformedFrame.size.height / -2;
+          var shape = new Shape();
+          shape.graphics.beginStroke("#444")
+            .moveTo(start.x, start.y)
+            .lineTo(start.x + dir.x, start.y + dir.y)
+            .endStroke()
+            .closePath();
+          _nonScalingContainer.addChild(shape);
+          var bitmap =  new Bitmap(module.ImageCache.getImage("map/region/icon"));
+          bitmap.x = start.x + dir.x;
+          bitmap.y = start.y + dir.y;
+          _nonScalingContainer.addChild(bitmap);
+        }
+      }
+    }*/
   }
 
   module.createRegionView = function(_node, _layer) {
@@ -114,7 +168,7 @@ AWE.UI = (function(module) {
     _nonScalingContainer.addChild(_text);
 
     //done
-    module.addStreets(_node, _view, _nonScalingContainer);
+    module.createStreets(_node, _nonScalingContainer);
 
     _view.position = function() {
       return _view.frame().origin;

@@ -500,14 +500,16 @@ AWE.Map = (function(module) {
 
         var addNeighbour = function (tms, level) {
           var path = AWE.Mapping.GlobalMercator.TMSToQuadTreeTileCode(tms.x, tms.y, level);
-          var node = AWE.Map.MapManager.rootNode().traverse(path);
+          var node = AWE.Map.Manager.rootNode().traverse(path);
           if (node) {
             nodes.push(node);
           } else {
-            console.warn("no node found for path", path);
+            //console.warn("no node found for path", path);
           }
         }
         
+        console.log(AWE.Mapping);
+
         var tms = AWE.Mapping.GlobalMercator.QuadTreeToTMSTileCode(that.path());
         if (tms.x > 0) {
           addNeighbour({ x: tms.x-1, y: tms.y, zoom: tms.zoom }, that.level());
