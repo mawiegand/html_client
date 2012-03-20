@@ -141,7 +141,7 @@ AWE.UI = (function(module) {
   }
 
   module.createRegionView = function(_node, _layer) {
-
+    
     var spec = {
       id: _node.id(),
       frame: _node.frame(),
@@ -151,8 +151,40 @@ AWE.UI = (function(module) {
     
     var _view = module.createView(spec);
     _view.container().name = _view.id();
+    _view.container().onClick = function (evt) {
+      log('klick in container layer0');
+    };
 
-    var _bgBitmap = new Bitmap(_node.isLeaf() ? AWE.UI.ImageCache.getImage("map/leaf") : AWE.UI.ImageCache.getImage("map/region"));
+    var image = null;
+    var _bgBitmap =null;
+
+    var selectBackgroundImage = function(tileSize) {
+      var newImage = null;
+      
+      if (!_node.isLeaf()) {       // not a leaf node, splits further
+        newImage = AWE.UI.ImageCache.getImage("map/tiles/split128");
+      }
+      else if (_node.region()) {   // terrain available, select appropriate tile
+        if (_node.region().terrainId() < 2) {
+          newImage = AWE.UI.ImageCache.getImage("map/tiles/forest128");      
+        }
+        else {
+          newImage = AWE.UI.ImageCache.getImage("map/tiles/plain128");              
+        }
+      }
+      else {                       // don't know terrain, yet. thus, select base tile
+        newImage = AWE.UI.ImageCache.getImage("map/tiles/base128");
+      }
+      
+      if (newImage != image) {
+        image = newImage;
+        _bgBitmap = new Bitmap(image);
+      }    
+    };
+    
+    selectBackgroundImage(null);
+
+
     _view.container().addChild(_bgBitmap);
 
     var _nonScalingContainer = new Container();
@@ -186,11 +218,11 @@ AWE.UI = (function(module) {
 
       var frame = AWE.UI.Map.mc2vc(_view.frame());
       var alpha = _view.alpha(frame.size.width);
-      var container = _view.container()
-
+      var container = _view.container();
+      
       //scaling container
-      container.scaleX = frame.size.width / AWE.Config.MAPPING_TILE_SIZE;
-      container.scaleY = frame.size.height / AWE.Config.MAPPING_TILE_SIZE;
+      container.scaleX = frame.size.width / _bgBitmap.image.width;
+      container.scaleY = frame.size.height / _bgBitmap.image.height;
       container.x = frame.origin.x;
       container.y = frame.origin.y;
       
@@ -210,20 +242,24 @@ AWE.UI = (function(module) {
       _view.layer().addChild(_nonScalingContainer);
     };
 
-    _view.click = function(){
-      log('RegionView.click()');
-    };
+    _view.unselect = function() {
+      log('unselect');
+      _selected = false;
+      module.Map.selectedView = null;
+      _view.container().removeChildAt(1);
+      module.Map.updateView();
+    }
             
     return _view;
   };
   
-  module.createFortressView = function(_id, _frame, _layer) {
+  module.createFortressView = function(_node, _layer) {
 
     var spec = {
-      id: _id,
+      id: _node.id(),
       alphaMin: AWE.Config.MAPPING_FORTRESS_SIZE + 20,
       alphaMax: AWE.Config.MAPPING_FORTRESS_SIZE * 2,
-      frame: _frame,
+      frame: _node.frame(),
       scaled: false,
       layer: _layer
     };
@@ -232,7 +268,19 @@ AWE.UI = (function(module) {
     _view.container().name = _view.id();
 
     var _fieldBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/fortress"));
-    _view.container().addChild(_fieldBitmap);
+    _fieldBitmap.onClick = function(evt) {
+      log('evt', evt);
+      if (_selected) {
+        _view.unselect();
+      }
+      else {
+        _view.select();
+      }
+    };
+    
+    var _easementBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/easement"));
+    
+    var _selected = false;
 
     _view.position = function() {
       return AWE.Geometry.createPoint(_view.frame().origin.x + _view.frame().size.width / 2, _view.frame().origin.y + _view.frame().size.height / 2);
@@ -244,25 +292,37 @@ AWE.UI = (function(module) {
       var alpha = _view.alpha(frame.size.width);
       var container = _view.container();
 
-      if (_view.isScaled()) {
-        container.scaleX = frame.size.width / AWE.Config.MAPPING_TILE_SIZE;
-        container.scaleY = frame.size.height / AWE.Config.MAPPING_TILE_SIZE;
-        container.x = frame.origin.x;
-        container.y = frame.origin.y;
+      container.addChildAt(_fieldBitmap, 0);
+      if (_selected) {
+        _easementBitmap.y = -AWE.Config.MAPPING_FORTRESS_SIZE;
+        container.addChildAt(_easementBitmap, 1);
       }
-      else {
-        var pos = AWE.UI.Map.mc2vc(_view.position());        
-        container.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-        container.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-      } 
+
+      var pos = AWE.UI.Map.mc2vc(_view.position());        
+      container.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+      container.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
       container.alpha = alpha;
 
       _view.layer().addChild(container);
     };
 
-    _view.click = function(){
-      log('FortressView.click()');
-    };
+    _view.select = function() {
+      log('select');
+      _selected = true;
+      if (module.Map.selectedView && module.Map.selectedView.unselect) {
+        module.Map.selectedView.unselect();
+      }
+      module.Map.selectedView = _view;
+      module.Map.updateView();
+    }
+    
+    _view.unselect = function() {
+      log('unselect');
+      _selected = false;
+      module.Map.selectedView = null;
+      _view.container().removeChildAt(1);
+      module.Map.updateView();
+    }
     
     return _view;
   };
@@ -320,6 +380,8 @@ AWE.UI = (function(module) {
     
     var mc2vcScale;
     var mc2vcTrans;
+    
+    that.selectedView = false;
     
     that.mc2vc = function(obj) {
       
@@ -379,6 +441,11 @@ AWE.UI = (function(module) {
 
     var _canvas0 = $('#layer0')[0];
     var _layer0 = new Stage(_canvas0);
+    _layer0.onClick = function() {
+      if (that.selectedView && that.selectedView.unselect) {
+        that.selectedView.unselect();
+      }
+    };
    
     var _canvas1 = $('#layer1')[0];
     var _layer1 = new Stage(_canvas1);
@@ -510,7 +577,7 @@ AWE.UI = (function(module) {
           for (var i = 0; i < nodes.length; i++) {
             // if view is already created and did not change
             view = regionViews[nodes[i].id()];
-            if (view && view.lastChange() < nodes[i].lastChange()) {
+            if (view && view.lastChange() >= nodes[i].lastChange()) {              
               newRegionViews[nodes[i].id()] = view;
             }
             else {
@@ -534,7 +601,7 @@ AWE.UI = (function(module) {
               newFortressViews[nodes[i].id()] = view;
             }
             else if (nodes[i].isLeaf()) {
-              newFortressViews[nodes[i].id()] = module.createFortressView(nodes[i].id(), nodes[i].frame(), _layer1);     
+              newFortressViews[nodes[i].id()] = module.createFortressView(nodes[i], _layer1);     
             }
           }
           fortressViews = newFortressViews;
@@ -560,17 +627,21 @@ AWE.UI = (function(module) {
     // click-events in layers
     $('#layers').mouseup(function(evt){
       if (!scrollingStarted) {
-        var view;
+        var cObj;
         if (_layer2.hitTest(evt.pageX, evt.pageY)) {
-          // view = armyViews[_layer1.getObjectUnderPoint(evt.pageX, evt.pageY).name];
+          //
         }
         else if (_layer1.hitTest(evt.pageX, evt.pageY)) {
-          view = fortressViews[_layer1.getObjectUnderPoint(evt.pageX, evt.pageY).name];
+          cObj = _layer1.getObjectUnderPoint(evt.pageX, evt.pageY);
+          if (cObj && cObj.onClick) {
+            cObj.onClick();
+          }
         }
         else if (_layer0.hitTest(evt.pageX, evt.pageY)) {
-          view = regionViews[_layer0.getObjectUnderPoint(evt.pageX, evt.pageY).name];
+          if (_layer0.onClick) {
+            _layer0.onClick(evt);
+          }         
         }
-        if (view && view.click) view.click();
       }
       else {
         scrollingStarted = false;
