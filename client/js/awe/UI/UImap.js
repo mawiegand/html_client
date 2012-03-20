@@ -177,7 +177,7 @@ AWE.UI = (function(module) {
     var image = null;
     var _bgBitmap =null;
     
-    console.log('creating new view for node ' + _node.path());
+    //console.log('creating new view for node ' + _node.path());
 
     var selectBackgroundImage = function(detail) {
       var newImage = null;
