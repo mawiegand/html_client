@@ -88,7 +88,18 @@ AWE.UI = (function(module) {
     var _view = module.createView(spec);
     _view.container().name = _view.id();
 
-    var _bgBitmap = new Bitmap(_node.isLeaf() ? AWE.UI.ImageCache.getImage("map/leaf") : AWE.UI.ImageCache.getImage("map/region"));
+    var image = null;
+    if (!_node.isLeaf()) {       // not a leaf node, splits further
+      image = AWE.UI.ImageCache.getImage("map/tiles/split128");
+    }
+    else if (_node.region()) {   // terrain available, select appropriate tile
+      image = AWE.UI.ImageCache.getImage("map/tiles/forest128");      
+    }
+    else {                       // don't know terrain, yet. thus, select base tile
+      image = AWE.UI.ImageCache.getImage("map/tiles/base128");
+    }
+
+    var _bgBitmap = new Bitmap(image);
     _view.container().addChild(_bgBitmap);
 
     var _nonScalingContainer = new Container();
@@ -124,8 +135,8 @@ AWE.UI = (function(module) {
       var container = _view.container()
 
       //scaling container
-      container.scaleX = frame.size.width / AWE.Config.MAPPING_TILE_SIZE;
-      container.scaleY = frame.size.height / AWE.Config.MAPPING_TILE_SIZE;
+      container.scaleX = frame.size.width / _bgBitmap.image.width;
+      container.scaleY = frame.size.height / _bgBitmap.image.height;
       container.x = frame.origin.x;
       container.y = frame.origin.y;
       
