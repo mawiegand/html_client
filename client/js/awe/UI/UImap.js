@@ -108,7 +108,14 @@ AWE.UI = (function(module) {
     that.regionStreets = function() {return _regionStreets; };
     that.villiageSpots = function() { return _villiageSpots };
 
-    var updateRegionStreets = function {
+    var updateRegionStreets = function() {
+
+      var sgn = function(a) {
+        if (a > 0) return 1;
+        if (a < 0) return -1;
+        return 0;
+      };
+
       _regionStreets = [];
       _container.removeAllChildren();
 
@@ -160,7 +167,6 @@ AWE.UI = (function(module) {
               AWE.Config.MAP_REGION_STREETS_COLOR,
               AWE.Config.MAP_REGION_STREETS_WIDTH
             );
-            re.push
             that.container().addChild(street1.generateGraphicObject());
 
             _regionStreets.push([street0, street1]);
