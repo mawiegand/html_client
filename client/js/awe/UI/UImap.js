@@ -147,6 +147,8 @@ AWE.UI = (function(module) {
 
     var image = null;
     var _bgBitmap =null;
+    
+    console.log('creating new view for node ' + _node.path());
 
     var selectBackgroundImage = function(detail) {
       var newImage = null;
@@ -468,7 +470,9 @@ AWE.UI = (function(module) {
     var _canvas2 = $('#layer2')[0];
     var _layer2 = new Stage(_canvas2);
         
-    var date = 0;
+    var startTime = 0;
+    var numFrames = 0;
+    var fps = 60;
     var frame = 0;
     var requestingMapNodesFromServer = false;
     var needRedraw;
@@ -518,8 +522,12 @@ AWE.UI = (function(module) {
       
       // fps
       var now = +new Date();
-      $('#debug').text(Math.round(1000 / (now - date)));
-      date = now;
+      var alpha = 0.05; // smoothing factor
+      if (startTime > 0) {
+        fps = fps * (1.0-alpha) + (1000.0 / (now-startTime)) * alpha;
+        $('#debug').text(Math.round(fps));
+      }
+      startTime = now;
       
       // Adjust canvas sizes, if window size cghanges
       newWindowSize = AWE.Geometry.createSize($(window).width(), $(window).height());
