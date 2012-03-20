@@ -317,7 +317,22 @@ AWE.UI = (function(module) {
     var _view = module.createView(spec);
     _view.container().name = _view.id();
 
-    var _fieldBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/fortress"));
+    
+    var _fieldBitmap = null;
+    
+    if (!_node.region()) {
+      console.log('ERROR: should create fortress for node ' + _node.path() + ' but region information is missing!');
+    }
+    
+    var fortressImageName = 'map/fortress/small';
+    if (_node.region() && _node.region().fortressLevel() > 3) {
+      fortressImageName = 'map/fortress/middle';
+    }
+    if (_node.region() && _node.region().fortressLevel() > 7) {
+      fortressImageName = 'map/fortress/large';
+    }
+    
+    _fieldBitmap = new Bitmap(AWE.UI.ImageCache.getImage(fortressImageName));
     _fieldBitmap.onClick = function(evt) {
       log('evt', evt);
       if (_selected) {
@@ -341,7 +356,7 @@ AWE.UI = (function(module) {
       var frame = AWE.UI.Map.mc2vc(_view.frame());
       var alpha = _view.alpha(frame.size.width);
       var container = _view.container();
-
+      
       container.addChildAt(_fieldBitmap, 0);
       if (_selected) {
         _easementBitmap.y = -AWE.Config.MAPPING_FORTRESS_SIZE;
@@ -350,7 +365,7 @@ AWE.UI = (function(module) {
 
       var pos = AWE.UI.Map.mc2vc(_view.position());        
       container.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-      container.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+      container.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 1.4;
       container.alpha = alpha;
 
       _view.layer().addChild(container);
@@ -656,7 +671,7 @@ AWE.UI = (function(module) {
             if (view = fortressViews[nodes[i].id()]) { // und nicht geändert
               newFortressViews[nodes[i].id()] = view;
             }
-            else if (nodes[i].isLeaf()) {
+            else if (nodes[i].isLeaf() && nodes[i].region()) {
               newFortressViews[nodes[i].id()] = module.createFortressView(nodes[i], _layer1);     
             }
           }
