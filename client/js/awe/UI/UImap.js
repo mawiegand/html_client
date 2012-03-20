@@ -104,6 +104,7 @@ AWE.UI = (function(module) {
     var _regionStreets = [];
 
     that.container = function() { return _container; }
+    that.regionStreets = function() {return _regionStreets; }
 
     that.update = function () {
 
@@ -151,22 +152,23 @@ AWE.UI = (function(module) {
               y: dir.x/2 + sgn(dir.y)
             };
 
-            var street = createStreet(
+            var street0 = createStreet(
               start, 
               AWE.Geometry.createPoint(start.x + dir.x + extraDir.x, start.y + dir.y + extraDir.y),
               AWE.Config.MAP_REGION_STREETS_COLOR,
               AWE.Config.MAP_REGION_STREETS_WIDTH
             );
-            _regionStreets.push(street);
-            that.container().addChild(street.generateGraphicObject());
-            street = createStreet(
+            that.container().addChild(street0.generateGraphicObject());
+            var street1 = createStreet(
               start, 
               AWE.Geometry.createPoint(start.x + dir.x - extraDir.x, start.y + dir.y - extraDir.y),
               AWE.Config.MAP_REGION_STREETS_COLOR,
               AWE.Config.MAP_REGION_STREETS_WIDTH
             );
-            _regionStreets.push(street);
-            that.container().addChild(street.generateGraphicObject());
+            re.push
+            that.container().addChild(street1.generateGraphicObject());
+
+            _regionStreets.push([street0, street1]);
 
           } else {
             var street = createStreet(
@@ -175,7 +177,7 @@ AWE.UI = (function(module) {
               AWE.Config.MAP_REGION_STREETS_COLOR,
               AWE.Config.MAP_REGION_STREETS_WIDTH
             );
-            _regionStreets.push(street);
+            _regionStreets.push([street]);
             that.container().addChild(street.generateGraphicObject());
           }
         }
