@@ -27,6 +27,7 @@ AWE.Config = (function(module) {
     "map/leaf": module.MAP_LEAF_IMAGE_URL,
     "map/region": module.MAP_REGION_IMAGE_URL,
     "map/fortress": module.MAP_FORTRESS_IMAGE_URL,
+    "map/easement": "images/verbot.png",
     "map/region/icon": "images/dot.png"
   };
   
