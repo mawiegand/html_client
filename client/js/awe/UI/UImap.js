@@ -131,7 +131,7 @@ AWE.UI = (function(module) {
   }
 
   module.createRegionView = function(_node, _layer) {
-
+    
     var spec = {
       id: _node.id(),
       frame: _node.frame(),
@@ -427,6 +427,11 @@ AWE.UI = (function(module) {
 
     var _canvas0 = $('#layer0')[0];
     var _layer0 = new Stage(_canvas0);
+    _layer0.onClick = function() {
+      if (that.selectedView && that.selectedView.unselect) {
+        that.selectedView.unselect();
+      }
+    };
    
     var _canvas1 = $('#layer1')[0];
     var _layer1 = new Stage(_canvas1);
@@ -558,7 +563,7 @@ AWE.UI = (function(module) {
           for (var i = 0; i < nodes.length; i++) {
             // if view is already created and did not change
             view = regionViews[nodes[i].id()];
-            if (view && view.lastChange() < nodes[i].lastChange()) {
+            if (view && view.lastChange() >= nodes[i].lastChange()) {              
               newRegionViews[nodes[i].id()] = view;
             }
             else {
@@ -608,23 +613,20 @@ AWE.UI = (function(module) {
     // click-events in layers
     $('#layers').mouseup(function(evt){
       if (!scrollingStarted) {
-        var view;
+        var cObj;
         if (_layer2.hitTest(evt.pageX, evt.pageY)) {
-          // view = armyViews[_layer1.getObjectUnderPoint(evt.pageX, evt.pageY).name];
+          //
         }
         else if (_layer1.hitTest(evt.pageX, evt.pageY)) {
-          view = _layer1.getObjectUnderPoint(evt.pageX, evt.pageY);
-          log('klick layer1');
+          cObj = _layer1.getObjectUnderPoint(evt.pageX, evt.pageY);
+          if (cObj && cObj.onClick) {
+            cObj.onClick();
+          }
         }
         else if (_layer0.hitTest(evt.pageX, evt.pageY)) {
-          view = _layer0.getObjectUnderPoint(evt.pageX, evt.pageY);
-          log('klick layer0');
-        }
-        if (view) {
-          var evObj = document.createEvent('MouseEvents');
-          evObj.initEvent( 'click', true, true );
-          _canvas1.dispatchEvent(evObj);
-          // view.onClick(evt);
+          if (_layer0.onClick) {
+            _layer0.onClick(evt);
+          }         
         }
       }
       else {
