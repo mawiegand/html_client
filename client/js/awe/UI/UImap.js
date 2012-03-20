@@ -224,6 +224,9 @@ AWE.UI = (function(module) {
     };
 
     that.getImage = function(name) {
+      if (!(name in _images)) {
+        console.error("tried to get the image with the name '"+name+"' that has no cache entry");
+      }
       return _images[name];
     }
 
