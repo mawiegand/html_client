@@ -67,6 +67,8 @@ AWE.UI = (function(module) {
       log('redraw', _view);
     };
     
+    AWE.Partials.addChangeTracking(_view);
+    
     return _view;
   };
 
@@ -210,7 +212,7 @@ AWE.UI = (function(module) {
       image.src = src;
       image.onload = function(event) {
         delete _outstandingImages[name];
-        console.log("loaded image '"+name+"' from '"+src+"'");
+        log("loaded image", name, src);
       };
     };
 
@@ -314,36 +316,7 @@ AWE.UI = (function(module) {
       needRedraw = true;
     }
     
-    that.addView = function(view, layer) {
-      var frame = mc2vc(view.frame());
-      var alpha = view.alpha(frame.size.width);
-      
-      if (alpha > 0) {
-        var bitmap = new Bitmap(view.image());
-        bitmap.name = view.id();
-        if (view.isScaled()) {
-          bitmap.scaleX = frame.size.width / AWE.Config.MAPPING_TILE_SIZE;
-          bitmap.scaleY = frame.size.height / AWE.Config.MAPPING_TILE_SIZE;
-          bitmap.x = frame.origin.x;
-          bitmap.y = frame.origin.y;
-        }
-        else {
-          var pos = mc2vc(view.position());        
-          bitmap.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-          bitmap.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-        }        
-        bitmap.alpha = alpha;
-        layer.addChild(bitmap);
-      }
-    }
-
     that.toString = function() {
-    };
-      
-    that.update = function() {
-      _layer0.update();
-      _layer1.update();
-      _layer2.update();
     };
     
     that.init = function(startRectMC) {
@@ -436,19 +409,20 @@ AWE.UI = (function(module) {
         var view;
         
         if (needRedraw) {
-          log('redraw');
+          log('level', level());
        
           // layer0: regions
           // create new viewHash
           var newRegionViews = {};          
           // fill new viewHash with all visible, old an new views
           for (var i = 0; i < nodes.length; i++) {
-            if (view = regionViews[nodes[i].id()]) { // und nicht geändert
+            // if view is already created and did not change
+            view = regionViews[nodes[i].id()];
+            if (view && view.lastChange() < nodes[i].lastChange()) {
               newRegionViews[nodes[i].id()] = view;
             }
             else {
               newRegionViews[nodes[i].id()] = module.createRegionView(i, nodes[i].frame(), nodes[i].isLeaf(), _layer0);
-  
             }
           }
           // new hash is old hash
@@ -459,7 +433,7 @@ AWE.UI = (function(module) {
           for (var id in regionViews) {
              regionViews[id].redraw();
           }
-          
+          _layer0.update();
           
           // layer 1: locations
           var newFortressViews = {}
@@ -476,6 +450,7 @@ AWE.UI = (function(module) {
           for (var id in fortressViews) {
              fortressViews[id].redraw();
           }
+          _layer1.update();
           
           
           // old flag, TODO remove?
@@ -483,9 +458,6 @@ AWE.UI = (function(module) {
         }
       }
 
-      // update region canvas to repaint
-      that.update();
-            
       // and repeat from beginning
       // if(!AWE.Map.Manager.isInitialized()) 
         window.requestAnimFrame(that.render);
@@ -493,6 +465,7 @@ AWE.UI = (function(module) {
     
     var scrollingStarted = false;
     
+    // click-events in layers
     $('#layers').mouseup(function(evt){
       if (!scrollingStarted) {
         if (_layer2.hitTest(evt.pageX, evt.pageY)) {
@@ -500,13 +473,12 @@ AWE.UI = (function(module) {
           if (_layer2.getObjectUnderPoint(evt.pageX, evt.pageY).showInfo) {
             _layer2.getObjectUnderPoint(evt.pageX, evt.pageY).showInfo();
           }
-          // View finden und feuern
         }
         else if (_layer1.hitTest(evt.pageX, evt.pageY)) {
           log('klick layer1', _layer1.getObjectUnderPoint(evt.pageX, evt.pageY));
           var obj = _layer1.getObjectUnderPoint(evt.pageX, evt.pageY);
-          if (obj) {
-            fortressViews[obj.name].showInfo();
+          if (_layer1.getObjectUnderPoint(evt.pageX, evt.pageY).showInfo) {
+            _layer1.getObjectUnderPoint(evt.pageX, evt.pageY).showInfo();
           }
         }
         else if (_layer0.hitTest(evt.pageX, evt.pageY)) {
