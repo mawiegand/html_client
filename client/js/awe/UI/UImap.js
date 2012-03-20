@@ -67,8 +67,14 @@ AWE.UI = (function(module) {
       log('redraw', _view);
     };
     
+    AWE.Partials.addChangeTracking(_view);
+    
     return _view;
   };
+
+  module.addStreets = function(_view) {
+
+  }
 
   module.createRegionView = function(_id, _frame, _isLeaf, _layer) {
 
@@ -80,11 +86,32 @@ AWE.UI = (function(module) {
     };
     
     var _view = module.createView(spec);
+    _view.container().name = _view.id();
 
-    var bitmap = new Bitmap(_isLeaf ? AWE.UI.ImageCache.getImage("map/leaf") : AWE.UI.ImageCache.getImage("map/region"));
-    
-    _view.bitmap = function () { return bitmap; }; 
-    _view.container().addChild(bitmap);
+    var _bgBitmap = new Bitmap(_isLeaf ? AWE.UI.ImageCache.getImage("map/leaf") : AWE.UI.ImageCache.getImage("map/region"));
+    _view.container().addChild(_bgBitmap);
+
+    var _nonScalingContainer = new Container();
+
+    //icon demo
+    var _iconBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/region/icon"));
+    _iconBitmap.x = 0;
+    _iconBitmap.y = 0;
+    _nonScalingContainer.addChild(_iconBitmap);
+
+    //text demo
+    var _text = new Text();
+    _text.font = "12px Arial";
+    _text.x = _iconBitmap.image.width;
+    _text.textBaseline = "top";
+    _text.y = _iconBitmap.image.height/2 - _text.getMeasuredLineHeight()/2;
+
+    _text.maxWidth = _bgBitmap.image.width-_iconBitmap.image.width;
+    _text.text = _id.toString();
+    _nonScalingContainer.addChild(_text);
+
+    //done
+    module.addStreets(_view);
 
     _view.position = function() {
       return _view.frame().origin;
@@ -94,22 +121,25 @@ AWE.UI = (function(module) {
 
       var frame = AWE.UI.Map.mc2vc(_view.frame());
       var alpha = _view.alpha(frame.size.width);
+      var container = _view.container()
 
-      bitmap.name = _view.id();
-      if (_view.isScaled()) {
-        bitmap.scaleX = frame.size.width / AWE.Config.MAPPING_TILE_SIZE;
-        bitmap.scaleY = frame.size.height / AWE.Config.MAPPING_TILE_SIZE;
-        bitmap.x = frame.origin.x;
-        bitmap.y = frame.origin.y;
-      }
-      else {
-        var pos = AWE.UI.Map.mc2vc(_view.position());        
-        bitmap.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-        bitmap.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-      } 
-      bitmap.alpha = alpha;
+      //scaling container
+      container.scaleX = frame.size.width / AWE.Config.MAPPING_TILE_SIZE;
+      container.scaleY = frame.size.height / AWE.Config.MAPPING_TILE_SIZE;
+      container.x = frame.origin.x;
+      container.y = frame.origin.y;
+      
+      container.alpha = alpha;
 
-      _view.layer().addChild(_view.container());
+      //non scaling container
+      _nonScalingContainer.x = frame.origin.x;
+      _nonScalingContainer.y = frame.origin.y;
+
+      _nonScalingContainer.alpha = alpha;
+
+      //add to layer
+      _view.layer().addChild(container);
+      _view.layer().addChild(_nonScalingContainer);
     };
         
     return _view;
@@ -127,11 +157,10 @@ AWE.UI = (function(module) {
     };
     
     var _view = module.createView(spec);
+    _view.container().name = _view.id();
 
-    var bitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/fortress"));
-    
-    _view.bitmap = function () { return bitmap; }; 
-    _view.container().addChild(bitmap);
+    var _fieldBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/fortress"));
+    _view.container().addChild(_fieldBitmap);
 
     _view.position = function() {
       return AWE.Geometry.createPoint(_view.frame().origin.x + _view.frame().size.width / 2, _view.frame().origin.y + _view.frame().size.height / 2);
@@ -141,22 +170,22 @@ AWE.UI = (function(module) {
 
       var frame = AWE.UI.Map.mc2vc(_view.frame());
       var alpha = _view.alpha(frame.size.width);
+      var container = _view.container();
 
-      bitmap.name = _view.id();
       if (_view.isScaled()) {
-        bitmap.scaleX = frame.size.width / AWE.Config.MAPPING_TILE_SIZE;
-        bitmap.scaleY = frame.size.height / AWE.Config.MAPPING_TILE_SIZE;
-        bitmap.x = frame.origin.x;
-        bitmap.y = frame.origin.y;
+        container.scaleX = frame.size.width / AWE.Config.MAPPING_TILE_SIZE;
+        container.scaleY = frame.size.height / AWE.Config.MAPPING_TILE_SIZE;
+        container.x = frame.origin.x;
+        container.y = frame.origin.y;
       }
       else {
         var pos = AWE.UI.Map.mc2vc(_view.position());        
-        bitmap.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-        bitmap.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+        container.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+        container.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
       } 
-      bitmap.alpha = alpha;
+      container.alpha = alpha;
 
-      _view.layer().addChild(_view.container());
+      _view.layer().addChild(container);
     };
 
     return _view;
@@ -183,7 +212,7 @@ AWE.UI = (function(module) {
       image.src = src;
       image.onload = function(event) {
         delete _outstandingImages[name];
-        console.log("loaded image '"+name+"' from '"+src+"'");
+        log("loaded image", name, src);
       };
     };
 
@@ -195,6 +224,9 @@ AWE.UI = (function(module) {
     };
 
     that.getImage = function(name) {
+      if (!(name in _images)) {
+        console.error("tried to get the image with the name '"+name+"' that has no cache entry");
+      }
       return _images[name];
     }
 
@@ -287,36 +319,7 @@ AWE.UI = (function(module) {
       needRedraw = true;
     }
     
-    that.addView = function(view, layer) {
-      var frame = mc2vc(view.frame());
-      var alpha = view.alpha(frame.size.width);
-      
-      if (alpha > 0) {
-        var bitmap = new Bitmap(view.image());
-        bitmap.name = view.id();
-        if (view.isScaled()) {
-          bitmap.scaleX = frame.size.width / AWE.Config.MAPPING_TILE_SIZE;
-          bitmap.scaleY = frame.size.height / AWE.Config.MAPPING_TILE_SIZE;
-          bitmap.x = frame.origin.x;
-          bitmap.y = frame.origin.y;
-        }
-        else {
-          var pos = mc2vc(view.position());        
-          bitmap.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-          bitmap.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-        }        
-        bitmap.alpha = alpha;
-        layer.addChild(bitmap);
-      }
-    }
-
     that.toString = function() {
-    };
-      
-    that.update = function() {
-      _layer0.update();
-      _layer1.update();
-      _layer2.update();
     };
     
     that.init = function(startRectMC) {
@@ -422,19 +425,20 @@ AWE.UI = (function(module) {
         var view;
         
         if (needRedraw) {
-          log('redraw');
+          log('level', level());
        
           // layer0: regions
           // create new viewHash
           var newRegionViews = {};          
           // fill new viewHash with all visible, old an new views
           for (var i = 0; i < nodes.length; i++) {
-            if (view = regionViews[nodes[i].id()]) { // und nicht geändert
+            // if view is already created and did not change
+            view = regionViews[nodes[i].id()];
+            if (view && view.lastChange() < nodes[i].lastChange()) {
               newRegionViews[nodes[i].id()] = view;
             }
             else {
               newRegionViews[nodes[i].id()] = module.createRegionView(i, nodes[i].frame(), nodes[i].isLeaf(), _layer0);
-  
             }
           }
           // new hash is old hash
@@ -445,7 +449,7 @@ AWE.UI = (function(module) {
           for (var id in regionViews) {
              regionViews[id].redraw();
           }
-          
+          _layer0.update();
           
           // layer 1: locations
           var newFortressViews = {}
@@ -462,6 +466,7 @@ AWE.UI = (function(module) {
           for (var id in fortressViews) {
              fortressViews[id].redraw();
           }
+          _layer1.update();
           
           
           // old flag, TODO remove?
@@ -469,9 +474,6 @@ AWE.UI = (function(module) {
         }
       }
 
-      // update region canvas to repaint
-      that.update();
-            
       // and repeat from beginning
       // if(!AWE.Map.Manager.isInitialized()) 
         window.requestAnimFrame(that.render);
@@ -479,6 +481,7 @@ AWE.UI = (function(module) {
     
     var scrollingStarted = false;
     
+    // click-events in layers
     $('#layers').mouseup(function(evt){
       if (!scrollingStarted) {
         if (_layer2.hitTest(evt.pageX, evt.pageY)) {
@@ -486,13 +489,12 @@ AWE.UI = (function(module) {
           if (_layer2.getObjectUnderPoint(evt.pageX, evt.pageY).showInfo) {
             _layer2.getObjectUnderPoint(evt.pageX, evt.pageY).showInfo();
           }
-          // View finden und feuern
         }
         else if (_layer1.hitTest(evt.pageX, evt.pageY)) {
           log('klick layer1', _layer1.getObjectUnderPoint(evt.pageX, evt.pageY));
           var obj = _layer1.getObjectUnderPoint(evt.pageX, evt.pageY);
-          if (obj) {
-            fortressViews[obj.name].showInfo();
+          if (_layer1.getObjectUnderPoint(evt.pageX, evt.pageY).showInfo) {
+            _layer1.getObjectUnderPoint(evt.pageX, evt.pageY).showInfo();
           }
         }
         else if (_layer0.hitTest(evt.pageX, evt.pageY)) {
@@ -612,9 +614,12 @@ AWE.UI = (function(module) {
     });
 
     AWE.UI.ImageCache.init();
-    AWE.UI.ImageCache.loadImage("map/leaf", AWE.Config.MAP_LEAF_IMAGE_URL);
-    AWE.UI.ImageCache.loadImage("map/region", AWE.Config.MAP_REGION_IMAGE_URL);
-    AWE.UI.ImageCache.loadImage("map/fortress", AWE.Config.MAP_FORTRESS_IMAGE_URL);
+    for (k in AWE.Config.IMAGE_CACHE_LOAD_LIST) {
+      if (AWE.Config.IMAGE_CACHE_LOAD_LIST.hasOwnProperty(k)) {
+        AWE.UI.ImageCache.loadImage(k, AWE.Config.IMAGE_CACHE_LOAD_LIST[k]);
+      }
+    }
+    
     
     AWE.UI.Map.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));
     AWE.UI.Map.render();
