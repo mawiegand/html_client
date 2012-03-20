@@ -75,14 +75,46 @@ AWE.UI = (function(module) {
   module.createStreets = function(_node, _view) {
 
     var that = {};
+
+    var createStreet = function (from, to, color, stroke) {
+      var that = {};
+
+      that.from = from;
+      that.to = to;
+      that.color = color;
+      that.stroke = stroke;
+
+      that.generateGraphicObject = function() {
+        var shape = new Shape();
+            shape.graphics.setStrokeStyle(stroke)
+              .beginStroke(color)
+              .moveTo(from.x, from.y)
+              .lineTo(to.x, to.y)
+              .endStroke()
+              .closePath();
+        return shape;
+      }
+      return that;
+    }
     
     var _node = _node;
     var _container = new Container();
     var _view = _view;
 
-    that.container = function() { return _container; }
+    var _regionStreets = [];
 
-    that.redraw = function () {
+    that.container = function() { return _container; }
+    that.regionStreets = function() {return _regionStreets; }
+
+    that.update = function () {
+
+      var sgn = function(a) {
+        if (a > 0) return 1;
+        if (a < 0) return -1;
+        return 0;
+      }
+
+      _regionStreets = [];
       _container.removeAllChildren();
 
       var frame = _node.frame();
@@ -90,19 +122,10 @@ AWE.UI = (function(module) {
 
       if (_node.isLeaf() && _view.detailLevel() > 0) {
         var neighbours = _node.getNeighbourNodes();
-        var start = {
-          x: transformedFrame.size.width / 2,
-          y: transformedFrame.size.height / 2
-        };
-
-        var _text = new Text();
-        _text.font = "12px Arial";
-        _text.x = transformedFrame.size.width / 2;
-        _text.textBaseline = "top";
-        _text.y = transformedFrame.size.height -50;
-
-        _text.text = neighbours.length.toString();
-        that.container().addChild(_text);
+        var start = AWE.Geometry.createPoint(
+          transformedFrame.size.width / 2,
+          transformedFrame.size.height / 2
+        );
 
         for (var i = 0; i < neighbours.length; i++) {
           //get direction
@@ -123,33 +146,39 @@ AWE.UI = (function(module) {
           }
 
           if (neighbours[i].level() == _node.level() && !neighbours[i].isLeaf()) {
-            var extraDir = {x: dir.y/2, y: dir.x/2};
 
-            var shape = new Shape();
-            shape.graphics.beginStroke("#444")
-              .moveTo(start.x, start.y)
-              .lineTo(start.x + dir.x + extraDir.x, start.y + dir.y + extraDir.y)
-              .endStroke()
-              .closePath();
-            that.container().addChild(shape);
+            var extraDir = {
+              x: dir.y/2 + sgn(dir.x),
+              y: dir.x/2 + sgn(dir.y)
+            };
 
-            shape = new Shape();
-            shape.graphics.beginStroke("#444")
-              .moveTo(start.x, start.y)
-              .lineTo(start.x + dir.x - extraDir.x, start.y + dir.y - extraDir.y)
-              .endStroke()
-              .closePath();
-            that.container().addChild(shape);
+            var street0 = createStreet(
+              start, 
+              AWE.Geometry.createPoint(start.x + dir.x + extraDir.x, start.y + dir.y + extraDir.y),
+              AWE.Config.MAP_REGION_STREETS_COLOR,
+              AWE.Config.MAP_REGION_STREETS_WIDTH
+            );
+            that.container().addChild(street0.generateGraphicObject());
+            var street1 = createStreet(
+              start, 
+              AWE.Geometry.createPoint(start.x + dir.x - extraDir.x, start.y + dir.y - extraDir.y),
+              AWE.Config.MAP_REGION_STREETS_COLOR,
+              AWE.Config.MAP_REGION_STREETS_WIDTH
+            );
+            re.push
+            that.container().addChild(street1.generateGraphicObject());
+
+            _regionStreets.push([street0, street1]);
 
           } else {
-            var shape = new Shape();
-            shape.graphics.beginStroke("#444")
-              .moveTo(start.x, start.y)
-              .lineTo(start.x + dir.x, start.y + dir.y)
-              .endStroke()
-              .closePath();
-
-            that.container().addChild(shape);
+            var street = createStreet(
+              start, 
+              AWE.Geometry.createPoint(start.x + dir.x, start.y + dir.y),
+              AWE.Config.MAP_REGION_STREETS_COLOR,
+              AWE.Config.MAP_REGION_STREETS_WIDTH
+            );
+            _regionStreets.push([street]);
+            that.container().addChild(street.generateGraphicObject());
           }
         }
       }
@@ -324,7 +353,7 @@ AWE.UI = (function(module) {
       _nonScalingContainer.alpha = alpha;
 
       //streets
-      streets.redraw();
+      streets.update();
 
       //add to layer
       _view.layer().addChild(container);
