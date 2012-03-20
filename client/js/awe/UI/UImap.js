@@ -72,12 +72,13 @@ AWE.UI = (function(module) {
     return _view;
   };
 
-  module.createStreets = function(_node) {
+  module.createStreets = function(_node, _view) {
 
     var that = {};
     
     var _node = _node;
     var _container = new Container();
+    var _view = _view;
 
     that.container = function() { return _container; }
 
@@ -87,7 +88,7 @@ AWE.UI = (function(module) {
       var frame = _node.frame();
       var transformedFrame = AWE.UI.Map.mc2vc(_node.frame());
 
-      if (_node.isLeaf()) {
+      if (_node.isLeaf() && _view.detailLevel() > 0) {
         var neighbours = _node.getNeighbourNodes();
         var start = {
           x: transformedFrame.size.width / 2,
@@ -234,7 +235,7 @@ AWE.UI = (function(module) {
     _nonScalingContainer.addChild(_text);
 
     //streets
-    var streets = module.createStreets(_node);
+    var streets = module.createStreets(_node, _view);
     _nonScalingContainer.addChild(streets.container());
 
     _view.position = function() {
