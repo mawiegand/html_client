@@ -286,6 +286,7 @@ AWE.UI = (function(module) {
     
     var _fieldBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/fortress"));
     _fieldBitmap.onClick = function(evt) {
+      log('selected', _selected);
       if (_selected) {
         _view.unselect();
       }
@@ -334,17 +335,17 @@ AWE.UI = (function(module) {
     };
 
     _view.select = function() {
-      log('select');
-      _selected = true;
+      log('select', _view.id());
       if (module.Map.selectedView && module.Map.selectedView.unselect) {
         module.Map.selectedView.unselect();
       }
+      _selected = true;
       module.Map.selectedView = _view;
       module.Map.updateView();
     }
     
     _view.unselect = function() {
-      log('unselect');
+      log('unselect', _view.id());
       _selected = false;
       module.Map.selectedView = null;
       _view.container().removeChildAt(1);
@@ -661,6 +662,7 @@ AWE.UI = (function(module) {
         else if (_layer1.hitTest(evt.pageX, evt.pageY)) {
           cObj = _layer1.getObjectUnderPoint(evt.pageX, evt.pageY);
           if (cObj && cObj.onClick) {
+            log('klick');
             cObj.onClick();
           }
         }
