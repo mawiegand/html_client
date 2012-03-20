@@ -11,11 +11,6 @@ AWE.Config = (function(module) {
   module.MAP_RUN_TESTS = true;
   module.MAP_SERVER_BASE = 'http://localhost:3000/game_server/map/';
   
-  module.MAP_REGION_IMAGE_URL = 'images/region.png';
-  module.MAP_LEAF_IMAGE_URL = 'images/leaf.png';
-
-  module.MAP_FORTRESS_IMAGE_URL = 'images/army.png';
-  
   module.MAPPING_TILE_SIZE = 256;
   module.MAPPING_FORTRESS_SIZE = 64;
   
@@ -24,10 +19,10 @@ AWE.Config = (function(module) {
 
   //image cache
   module.IMAGE_CACHE_LOAD_LIST = {
-    "map/leaf": module.MAP_LEAF_IMAGE_URL,
-    "map/region": module.MAP_REGION_IMAGE_URL,
-    "map/fortress": module.MAP_FORTRESS_IMAGE_URL,
-    "map/region/icon": "images/dot.png"
+    "map/leaf": 'images/leaf.png',
+    "map/region": 'images/region.png',
+    "map/fortress": 'images/army.png',
+    "map/region/icon": 'images/dot.png'
   };
   
   return module;
