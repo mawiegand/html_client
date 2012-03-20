@@ -219,23 +219,61 @@ AWE.UI = (function(module) {
 
     var _nonScalingContainer = new Container();
 
-    //icon demo
-    var _iconBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/region/icon"));
-    _iconBitmap.x = 0;
-    _iconBitmap.y = 0;
-    _nonScalingContainer.addChild(_iconBitmap);
 
-    //text demo
-    var _text = new Text();
-    _text.font = "12px Arial";
-    _text.x = _iconBitmap.image.width;
-    _text.textBaseline = "top";
-    _text.y = _iconBitmap.image.height/2 - _text.getMeasuredLineHeight()/2;
+    var _debugText = null;
+    var _settlementsIcon = null;
+    var _settlementsText = null;
+    var _armyStrengthIcon = null;
+    var _armyStrengthText = null;
+    var _regionNameText = null;
 
-    _text.maxWidth = _bgBitmap.image.width-_iconBitmap.image.width;
-    _text.text = _node.id().toString();
-    _nonScalingContainer.addChild(_text);
+    var updateInformation = function(detail) {
+      
+      var frame = AWE.UI.Map.mc2vc(_view.frame());      
+      
+      if (!_debugText && detail > -1) {
+        _debugText = new Text();
+        _debugText.font = "10px Arial";
+        _debugText.text = "id " + _node.id().toString() + "\nqt" + _node.path();
+        _nonScalingContainer.addChild(_debugText);
+      }
+      if (_debugText && detail < 0) {
+        _nonScalingContainer.removeChild(_debugText);
+        _debugText = null;
+      } 
+      if (_debugText) {
+        _debugText.x = 4;
+        _debugText.y = frame.size.height / 2.0;
+      }
+      
+      if (!_settlementsIcon) {
+        _settlementsIcon = new Bitmap(AWE.UI.ImageCache.getImage("map/region/icon"));
+        _nonScalingContainer.addChild(_settlementsIcon);
+        
+        _settlementsText = new Text();
+        _settlementsText.font = "12px Arial";
+        _settlementsText.textBaseline = "top";
 
+        //_settlementsText.maxWidth = _bgBitmap.image.width-_settlementsIcon.image.width;
+        _settlementsText.text = _node.region() ? _node.region().countSettlements().toString() : _node.countSettlements().toString();
+        _nonScalingContainer.addChild(_settlementsText);
+        
+      }
+      if (_settlementsIcon) {
+        if (detail < 1) {
+          _settlementsIcon.x = 0;
+          _settlementsIcon.y = 0;        
+        }
+        else {
+          _settlementsIcon.x = 0;
+          _settlementsIcon.y = frame.size.height - 30;                  
+        }
+        
+        _settlementsText.x = _settlementsIcon.image.width;
+        _settlementsText.y = _settlementsIcon.y + _settlementsIcon.image.height/2 - _settlementsText.getMeasuredLineHeight()/2;        
+      }      
+    }
+    
     //streets
     var streets = module.createStreets(_node, _view);
     _nonScalingContainer.addChild(streets.container());
@@ -268,6 +306,7 @@ AWE.UI = (function(module) {
       
       //check for correct background image
       selectBackgroundImage(_view.detailLevel());
+      updateInformation(_view.detailLevel());
 
       
       //scaling container
