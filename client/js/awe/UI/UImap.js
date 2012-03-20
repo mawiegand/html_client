@@ -141,6 +141,9 @@ AWE.UI = (function(module) {
     
     var _view = module.createView(spec);
     _view.container().name = _view.id();
+    _view.container().onClick = function (evt) {
+      log('klick in container layer0');
+    };
 
     var image = null;
     var _bgBitmap =null;
@@ -225,20 +228,24 @@ AWE.UI = (function(module) {
       _view.layer().addChild(_nonScalingContainer);
     };
 
-    _view.click = function(){
-      log('RegionView.click()');
-    };
+    _view.unselect = function() {
+      log('unselect');
+      _selected = false;
+      module.Map.selectedView = null;
+      _view.container().removeChildAt(1);
+      module.Map.updateView();
+    }
             
     return _view;
   };
   
-  module.createFortressView = function(_id, _frame, _layer) {
+  module.createFortressView = function(_node, _layer) {
 
     var spec = {
-      id: _id,
+      id: _node.id(),
       alphaMin: AWE.Config.MAPPING_FORTRESS_SIZE + 20,
       alphaMax: AWE.Config.MAPPING_FORTRESS_SIZE * 2,
-      frame: _frame,
+      frame: _node.frame(),
       scaled: false,
       layer: _layer
     };
@@ -247,7 +254,14 @@ AWE.UI = (function(module) {
     _view.container().name = _view.id();
 
     var _fieldBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/fortress"));
-    _view.container().addChild(_fieldBitmap);
+    _fieldBitmap.onClick = function(evt) {
+      log('evt', evt);
+      _view.select();
+    };
+    
+    var _easementBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/easement"));
+    
+    var _selected = false;
 
     _view.position = function() {
       return AWE.Geometry.createPoint(_view.frame().origin.x + _view.frame().size.width / 2, _view.frame().origin.y + _view.frame().size.height / 2);
@@ -259,25 +273,37 @@ AWE.UI = (function(module) {
       var alpha = _view.alpha(frame.size.width);
       var container = _view.container();
 
-      if (_view.isScaled()) {
-        container.scaleX = frame.size.width / AWE.Config.MAPPING_TILE_SIZE;
-        container.scaleY = frame.size.height / AWE.Config.MAPPING_TILE_SIZE;
-        container.x = frame.origin.x;
-        container.y = frame.origin.y;
+      container.addChildAt(_fieldBitmap, 0);
+      if (_selected) {
+        _easementBitmap.y = -AWE.Config.MAPPING_FORTRESS_SIZE;
+        container.addChildAt(_easementBitmap, 1);
       }
-      else {
-        var pos = AWE.UI.Map.mc2vc(_view.position());        
-        container.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-        container.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-      } 
+
+      var pos = AWE.UI.Map.mc2vc(_view.position());        
+      container.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+      container.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
       container.alpha = alpha;
 
       _view.layer().addChild(container);
     };
 
-    _view.click = function(){
-      log('FortressView.click()');
-    };
+    _view.select = function() {
+      log('select');
+      _selected = true;
+      if (module.Map.selectedView && module.Map.selectedView.unselect) {
+        module.Map.selectedView.unselect();
+      }
+      module.Map.selectedView = _view;
+      module.Map.updateView();
+    }
+    
+    _view.unselect = function() {
+      log('unselect');
+      _selected = false;
+      module.Map.selectedView = null;
+      _view.container().removeChildAt(1);
+      module.Map.updateView();
+    }
     
     return _view;
   };
@@ -335,6 +361,8 @@ AWE.UI = (function(module) {
     
     var mc2vcScale;
     var mc2vcTrans;
+    
+    that.selectedView = false;
     
     that.mc2vc = function(obj) {
       
@@ -549,7 +577,7 @@ AWE.UI = (function(module) {
               newFortressViews[nodes[i].id()] = view;
             }
             else if (nodes[i].isLeaf()) {
-              newFortressViews[nodes[i].id()] = module.createFortressView(nodes[i].id(), nodes[i].frame(), _layer1);     
+              newFortressViews[nodes[i].id()] = module.createFortressView(nodes[i], _layer1);     
             }
           }
           fortressViews = newFortressViews;
@@ -580,12 +608,16 @@ AWE.UI = (function(module) {
           // view = armyViews[_layer1.getObjectUnderPoint(evt.pageX, evt.pageY).name];
         }
         else if (_layer1.hitTest(evt.pageX, evt.pageY)) {
-          view = fortressViews[_layer1.getObjectUnderPoint(evt.pageX, evt.pageY).name];
+          view = _layer1.getObjectUnderPoint(evt.pageX, evt.pageY);
+          log('klick layer1');
         }
         else if (_layer0.hitTest(evt.pageX, evt.pageY)) {
-          view = regionViews[_layer0.getObjectUnderPoint(evt.pageX, evt.pageY).name];
+          view = _layer0.getObjectUnderPoint(evt.pageX, evt.pageY);
+          log('klick layer0');
         }
-        if (view && view.click) view.click();
+        if (view && view.onClick) {
+          view.onClick(evt);
+        }
       }
       else {
         scrollingStarted = false;
