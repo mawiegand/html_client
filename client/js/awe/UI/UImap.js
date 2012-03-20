@@ -20,8 +20,6 @@ AWE.UI = (function(module) {
     var _alphaMin = spec.alphaMin || 0;
     var _alphaMax = spec.alphaMax || 0;
     var _scaled = spec.scaled || false;
-        
-    var _image = spec.image || null;
 
     var _layer = spec.layer || null;
     var _container = new Container();
@@ -43,10 +41,6 @@ AWE.UI = (function(module) {
     
     _view.id = function() {
       return _id;
-    };
-    
-    _view.image = function() {
-      return _image;
     };
 
     _view.layer = function() {
@@ -80,7 +74,6 @@ AWE.UI = (function(module) {
 
     var spec = {
       id: _id,
-      image: _isLeaf ? AWE.UI.ImageCache.getImage("map/leaf") : AWE.UI.ImageCache.getImage("map/region"),
       frame: _frame,
       scaled: true,
       layer: _layer
@@ -88,7 +81,7 @@ AWE.UI = (function(module) {
     
     var _view = module.createView(spec);
 
-    var bitmap = new Bitmap(_view.image());
+    var bitmap = new Bitmap(_isLeaf ? AWE.UI.ImageCache.getImage("map/leaf") : AWE.UI.ImageCache.getImage("map/region"));
     
     _view.bitmap = function () { return bitmap; }; 
     _view.container().addChild(bitmap);
@@ -128,7 +121,6 @@ AWE.UI = (function(module) {
       id: _id,
       alphaMin: AWE.Config.MAPPING_FORTRESS_SIZE + 20,
       alphaMax: AWE.Config.MAPPING_FORTRESS_SIZE * 2,
-      image: AWE.UI.ImageCache.getImage("map/fortress"),
       frame: _frame,
       scaled: false,
       layer: _layer
@@ -136,7 +128,7 @@ AWE.UI = (function(module) {
     
     var _view = module.createView(spec);
 
-    var bitmap = new Bitmap(_view.image());
+    var bitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/fortress"));
     
     _view.bitmap = function () { return bitmap; }; 
     _view.container().addChild(bitmap);
