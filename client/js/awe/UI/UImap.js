@@ -26,6 +26,9 @@ AWE.UI = (function(module) {
     _image.onload = function() {
       module.Map.updateView();
     };
+
+    var _layer = spec.layer || null;
+    var _container = new Container();
     
     _view.alpha = function(width) {
       
@@ -49,6 +52,14 @@ AWE.UI = (function(module) {
     _view.image = function() {
       return _image;
     };
+
+    _view.layer = function() {
+      return _layer;
+    }
+
+    _view.container = function() {
+      return _container;
+    };
     
     _view.frame = function() {
       return _frame;
@@ -69,25 +80,53 @@ AWE.UI = (function(module) {
     return _view;
   };
 
-  module.createRegionView = function(_id, _frame, _isLeaf) {
+  module.createRegionView = function(_id, _frame, _isLeaf, _layer) {
 
     var spec = {
       id: _id,
       imageSrc: _isLeaf ? AWE.Config.MAP_LEAF_IMAGE_URL : AWE.Config.MAP_REGION_IMAGE_URL,
       frame: _frame,
-      scaled: true
+      scaled: true,
+      layer: _layer
     };
     
     var _view = module.createView(spec);
+
+    var bitmap = new Bitmap(_view.image());
     
+    _view.bitmap = function () { return bitmap; }; 
+    _view.container().addChild(bitmap);
+
     _view.position = function() {
       return _view.frame().origin;
+    };
+
+    _view.redraw = function() {
+
+      var frame = AWE.UI.Map.mc2vc(_view.frame());
+      var alpha = _view.alpha(frame.size.width);
+
+      bitmap.name = _view.id();
+      if (_view.isScaled()) {
+        bitmap.scaleX = frame.size.width / AWE.Config.MAPPING_TILE_SIZE;
+        bitmap.scaleY = frame.size.height / AWE.Config.MAPPING_TILE_SIZE;
+        bitmap.x = frame.origin.x;
+        bitmap.y = frame.origin.y;
+      }
+      else {
+        var pos = AWE.UI.Map.mc2vc(_view.position());        
+        bitmap.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+        bitmap.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+      } 
+      bitmap.alpha = alpha;
+
+      _view.layer().addChild(_view.container());
     };
         
     return _view;
   };
   
-  module.createFortressView = function(_id, _frame) {
+  module.createFortressView = function(_id, _frame, _layer) {
 
     var spec = {
       id: _id,
@@ -95,15 +134,43 @@ AWE.UI = (function(module) {
       alphaMax: AWE.Config.MAPPING_FORTRESS_SIZE * 2,
       imageSrc: AWE.Config.MAP_FORTRESS_IMAGE_URL,
       frame: _frame,
-      scaled: false
+      scaled: false,
+      layer: _layer
     };
     
     var _view = module.createView(spec);
-        
+
+    var bitmap = new Bitmap(_view.image());
+    
+    _view.bitmap = function () { return bitmap; }; 
+    _view.container().addChild(bitmap);
+
     _view.position = function() {
       return AWE.Geometry.createPoint(_view.frame().origin.x + _view.frame().size.width / 2, _view.frame().origin.y + _view.frame().size.height / 2);
     };
-    
+
+    _view.redraw = function() {
+
+      var frame = AWE.UI.Map.mc2vc(_view.frame());
+      var alpha = _view.alpha(frame.size.width);
+
+      bitmap.name = _view.id();
+      if (_view.isScaled()) {
+        bitmap.scaleX = frame.size.width / AWE.Config.MAPPING_TILE_SIZE;
+        bitmap.scaleY = frame.size.height / AWE.Config.MAPPING_TILE_SIZE;
+        bitmap.x = frame.origin.x;
+        bitmap.y = frame.origin.y;
+      }
+      else {
+        var pos = AWE.UI.Map.mc2vc(_view.position());        
+        bitmap.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+        bitmap.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+      } 
+      bitmap.alpha = alpha;
+
+      _view.layer().addChild(_view.container());
+    };
+
     return _view;
   };
   
@@ -119,7 +186,7 @@ AWE.UI = (function(module) {
     var mc2vcScale;
     var mc2vcTrans;
     
-    var mc2vc = function(obj) {
+    that.mc2vc = function(obj) {
       
       // if obj os rect
       if (obj.origin !== undefined && obj.size !== undefined) {
@@ -246,7 +313,7 @@ AWE.UI = (function(module) {
     
     var level = function() {
       var level = 0;
-      var rootWidthVC = mc2vc(module.rootNode.frame().size.width);
+      var rootWidthVC = AWE.UI.Map.mc2vc(module.rootNode.frame().size.width);
       
       while (rootWidthVC > AWE.Config.MAP_MIN_VISIBLE_TILES * 2) {
         level++;
