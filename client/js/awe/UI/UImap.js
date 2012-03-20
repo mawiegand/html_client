@@ -238,7 +238,12 @@ AWE.UI = (function(module) {
     var _fieldBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/fortress"));
     _fieldBitmap.onClick = function(evt) {
       log('evt', evt);
-      _view.select();
+      if (_selected) {
+        _view.unselect();
+      }
+      else {
+        _view.select();
+      }
     };
     
     var _easementBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/easement"));
@@ -597,8 +602,11 @@ AWE.UI = (function(module) {
           view = _layer0.getObjectUnderPoint(evt.pageX, evt.pageY);
           log('klick layer0');
         }
-        if (view && view.onClick) {
-          view.onClick(evt);
+        if (view) {
+          var evObj = document.createEvent('MouseEvents');
+          evObj.initEvent( 'click', true, true );
+          _canvas1.dispatchEvent(evObj);
+          // view.onClick(evt);
         }
       }
       else {
