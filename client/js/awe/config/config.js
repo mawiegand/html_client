@@ -28,7 +28,7 @@ AWE.Config = (function(module) {
     "map/tiles/forest256": 'images/tiles/forest256.png',
     "map/tiles/plain256": 'images/tiles/plain256.png',
     
-    "map/fortress": 'images/army.png',
+    "map/fortress": 'images/fortress.png',
     "map/easement": "images/verbot.png",
     "map/region/icon": "images/dot.png"
   };
