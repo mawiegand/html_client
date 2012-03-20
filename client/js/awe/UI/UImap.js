@@ -256,8 +256,8 @@ AWE.UI = (function(module) {
       return level;
     };
     
-    var fortressViews = [];
-    var regionViews = [];
+    var fortressViews = {};
+    var regionViews = {};
     
     that.render = function() {
       
@@ -312,10 +312,29 @@ AWE.UI = (function(module) {
           }
         };
         
+        // render layer0
+        for (var i = 0; i < nodes.length; i++) {
+          if (!fortressViews[nodes[i].id()] || fortressViews[nodes[i].id()].isUpdated()) {            
+            fortressViews[nodes[i].id()] = createRegionView(i, nodes[i].frame(), nodes[i].isLeaf(), _layer0);
+          }
+        }
+        
+        _layer0.removeAllChildren();
+        
+        for (var i = 0; i < fortressViews.length; i++) {
+          fortressView
+
+
+        
+        
+        
+        
+        
+        
+                
         // log('count', nodes.length);
         if (needRedraw) {
           // reload regions
-          _layer0.removeAllChildren();
           _layer1.removeAllChildren();
           _layer2.removeAllChildren();
 
@@ -324,15 +343,25 @@ AWE.UI = (function(module) {
 
           for(var i = 0; i < nodes.length; i++) {
             
-            regionViews[i]  = module.createRegionView(i, nodes[i].frame(), nodes[i].isLeaf(), _layer0);
-            regionViews[i].redraw();
+            // regionViews[i]  = module.createRegionView(i, nodes[i].frame(), nodes[i].isLeaf(), _layer0);
+            // regionViews[i].redraw();
+//             
+            // if (nodes[i].isLeaf()) {
+//               
+              // // voruebergehend zum Testen 
+              // fortressViews[i] = module.createFortressView(i, nodes[i].frame(), _layer1);                           
+              // fortressViews[i].redraw();
+            // }
+
+            regionViews[i]  = module.createRegionView(i, nodes[i].frame(), nodes[i].isLeaf());
+            that.addView(regionViews[i], _layer0);
             
             if (nodes[i].isLeaf()) {
               
               // voruebergehend zum Testen 
-              fortressViews[i] = module.createFortressView(i, nodes[i].frame(), _layer1);                           
-              fortressViews[i].redraw();
-            }
+              fortressViews[i] = module.createFortressView(i, nodes[i].frame());                           
+              that.addView(fortressViews[i], _layer1);
+            }            
           }
         
           needRedraw = false;
