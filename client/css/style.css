@@ -219,10 +219,10 @@ td { vertical-align: top; }
    ========================================================================== */
 
 #layers {
-  background-color: #800;
 }
 
 #layer0 {
+  background-color: #333;
   position: absolute;
   top: 0px;
   left: 0px; 
