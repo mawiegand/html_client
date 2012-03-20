@@ -11,12 +11,6 @@ AWE.Config = (function(module) {
   module.MAP_RUN_TESTS = true;
   module.MAP_SERVER_BASE = 'http://localhost:3000/game_server/map/';
   
-  module.MAP_REGION_IMAGE_URL = 'images/region.png';
-  module.MAP_LEAF_IMAGE_URL = 'images/leaf.png';
-
-  module.MAP_FORTRESS_IMAGE_URL = 'images/army.png';
-  
-  module.MAPPING_TILE_SIZE = 128;
   module.MAPPING_FORTRESS_SIZE = 64;
   
   // how many tiles showing minimum when not at leaf level
@@ -27,7 +21,7 @@ AWE.Config = (function(module) {
     "map/tiles/split128": 'images/tiles/split128.png',
     "map/tiles/base128": 'images/tiles/base128.png',
     "map/tiles/forest128": 'images/tiles/forest128.png',
-    "map/fortress": module.MAP_FORTRESS_IMAGE_URL,
+    "map/fortress": 'images/army.png',
     "map/region/icon": "images/dot.png"
   };
   
