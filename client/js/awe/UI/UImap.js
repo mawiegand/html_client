@@ -72,62 +72,91 @@ AWE.UI = (function(module) {
     return _view;
   };
 
-  module.createStreets = function(_node, _nonScalingContainer) {
+  module.createStreets = function(_node, _view) {
 
-    /*var that = {};
+    var that = {};
     
     var _node = _node;
     var _container = new Container();
+    var _view = _view;
+
+    that.container = function() { return _container; }
 
     that.redraw = function () {
+      _container.removeAllChildren();
+
+      var frame = _node.frame();
+      var transformedFrame = AWE.UI.Map.mc2vc(_node.frame());
+
+      if (_node.isLeaf() && _view.detailLevel() > 0) {
+        var neighbours = _node.getNeighbourNodes();
+        var start = {
+          x: transformedFrame.size.width / 2,
+          y: transformedFrame.size.height / 2
+        };
+
+        var _text = new Text();
+        _text.font = "12px Arial";
+        _text.x = transformedFrame.size.width / 2;
+        _text.textBaseline = "top";
+        _text.y = transformedFrame.size.height -50;
+
+        _text.text = neighbours.length.toString();
+        that.container().addChild(_text);
+
+        for (var i = 0; i < neighbours.length; i++) {
+          //get direction
+          var iFrame = neighbours[i].frame();
+          var dir = {
+            x: iFrame.origin.x + iFrame.size.width/2 - frame.origin.x - frame.size.width/2,
+            y: iFrame.origin.y + iFrame.size.height/2 - frame.origin.y - frame.size.height/2
+          };
+
+          if (Math.abs(dir.x) > Math.abs(dir.y)) {
+            if (dir.x > 0) dir.x = transformedFrame.size.width / 2;
+            if (dir.x < 0) dir.x = transformedFrame.size.width / -2;
+            dir.y = 0;
+          } else {
+            if (dir.y > 0) dir.y = transformedFrame.size.height / 2;
+            if (dir.y < 0) dir.y = transformedFrame.size.height / -2;
+            dir.x = 0;
+          }
+
+          if (neighbours[i].level() == _node.level() && !neighbours[i].isLeaf()) {
+            var extraDir = {x: dir.y/2, y: dir.x/2};
+
+            var shape = new Shape();
+            shape.graphics.beginStroke("#444")
+              .moveTo(start.x, start.y)
+              .lineTo(start.x + dir.x + extraDir.x, start.y + dir.y + extraDir.y)
+              .endStroke()
+              .closePath();
+            that.container().addChild(shape);
+
+            shape = new Shape();
+            shape.graphics.beginStroke("#444")
+              .moveTo(start.x, start.y)
+              .lineTo(start.x + dir.x - extraDir.x, start.y + dir.y - extraDir.y)
+              .endStroke()
+              .closePath();
+            that.container().addChild(shape);
+
+          } else {
+            var shape = new Shape();
+            shape.graphics.beginStroke("#444")
+              .moveTo(start.x, start.y)
+              .lineTo(start.x + dir.x, start.y + dir.y)
+              .endStroke()
+              .closePath();
+
+            that.container().addChild(shape);
+          }
+        }
+      }
 
     }
 
-    var frame = _node.frame();
-    var transformedFrame = AWE.UI.Map.mc2vc(_node.frame());
-
-    if (_node.isLeaf()) {
-      var neighbours = _node.getNeighbourNodes();
-      var start = {
-        /*x: transformedFrame.size.width / 2,
-        y: transformedFrame.size.height / 2*/
-        /*x: transformedFrame.size.width / 2,
-        y: transformedFrame.size.height / 2
-      };
-      for (var i = 0; i < neighbours.length; i++) {
-        //get direction
-        var iFrame = neighbours[i].frame();
-        var dir = {
-          x: iFrame.origin.x - frame.origin.x,
-          y: iFrame.origin.y - frame.origin.y
-        };
-
-        if (neighbours[i].level() == _node.level() && !neighbours[i].isLeaf()) {
-
-        } else {
-          //log(start, dir);
-          /*if (dir.x > 0) dir.x = transformedFrame.size.width / 2;
-          if (dir.x < 0) dir.x = transformedFrame.size.width / -2;
-          if (dir.y > 0) dir.y = transformedFrame.size.height / 2;
-          if (dir.y < 0) dir.y = transformedFrame.size.height / -2;*/
-          /*if (dir.x > 0) dir.x = transformedFrame.size.width / 2;
-          if (dir.x < 0) dir.x = transformedFrame.size.width / -2;
-          if (dir.y > 0) dir.y = transformedFrame.size.height / 2;
-          if (dir.y < 0) dir.y = transformedFrame.size.height / -2;
-          var shape = new Shape();
-          shape.graphics.beginStroke("#444")
-            .moveTo(start.x, start.y)
-            .lineTo(start.x + dir.x, start.y + dir.y)
-            .endStroke()
-            .closePath();
-          _nonScalingContainer.addChild(shape);
-          var bitmap =  new Bitmap(module.ImageCache.getImage("map/region/icon"));
-          bitmap.x = start.x + dir.x;
-          bitmap.y = start.y + dir.y;
-          _nonScalingContainer.addChild(bitmap);
-        }
-      }
-    }*/
+    return that;
   }
 
   module.createRegionView = function(_node, _layer) {
@@ -147,6 +176,8 @@ AWE.UI = (function(module) {
 
     var image = null;
     var _bgBitmap =null;
+    
+    console.log('creating new view for node ' + _node.path());
 
     var selectBackgroundImage = function(detail) {
       var newImage = null;
@@ -205,8 +236,9 @@ AWE.UI = (function(module) {
     _text.text = _node.id().toString();
     _nonScalingContainer.addChild(_text);
 
-    //done
-    module.createStreets(_node, _nonScalingContainer);
+    //streets
+    var streets = module.createStreets(_node, _view);
+    _nonScalingContainer.addChild(streets.container());
 
     _view.position = function() {
       return _view.frame().origin;
@@ -252,6 +284,9 @@ AWE.UI = (function(module) {
 
       _nonScalingContainer.alpha = alpha;
 
+      //streets
+      streets.redraw();
+
       //add to layer
       _view.layer().addChild(container);
       _view.layer().addChild(_nonScalingContainer);
@@ -284,7 +319,21 @@ AWE.UI = (function(module) {
     var _selected = false;
     var _mouseover = false;
     
-    var _fieldBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/fortress"));
+    
+    if (!_node.region()) {
+      console.log('ERROR: should create fortress for node ' + _node.path() + ' but region information is missing!');
+    }
+    
+    var fortressImageName = 'map/fortress/small';
+    if (_node.region() && _node.region().fortressLevel() > 3) {
+      fortressImageName = 'map/fortress/middle';
+    }
+    if (_node.region() && _node.region().fortressLevel() > 7) {
+      fortressImageName = 'map/fortress/large';
+    }
+    
+    _fieldBitmap = new Bitmap(AWE.UI.ImageCache.getImage(fortressImageName));
+
     _fieldBitmap.onClick = function(evt) {
       log('selected', _selected);
       if (_selected) {
@@ -314,7 +363,7 @@ AWE.UI = (function(module) {
       var frame = AWE.UI.Map.mc2vc(_view.frame());
       var alpha = _view.alpha(frame.size.width);
       var container = _view.container();
-
+      
       container.addChildAt(_fieldBitmap, 0);
       if (_selected) {
         _buttonBitmap.x = -AWE.Config.MAPPING_FORTRESS_SIZE;
@@ -328,7 +377,7 @@ AWE.UI = (function(module) {
 
       var pos = AWE.UI.Map.mc2vc(_view.position());        
       container.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-      container.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+      container.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 1.4;
       container.alpha = alpha;
 
       _view.layer().addChild(container);
@@ -481,7 +530,9 @@ AWE.UI = (function(module) {
     var _canvas2 = $('#layer2')[0];
     var _layer2 = new Stage(_canvas2);
         
-    var date = 0;
+    var startTime = 0;
+    var numFrames = 0;
+    var fps = 60;
     var frame = 0;
     var requestingMapNodesFromServer = false;
     var needRedraw;
@@ -531,8 +582,12 @@ AWE.UI = (function(module) {
       
       // fps
       var now = +new Date();
-      $('#debug').text(Math.round(1000 / (now - date)));
-      date = now;
+      var alpha = 0.05; // smoothing factor
+      if (startTime > 0) {
+        fps = fps * (1.0-alpha) + (1000.0 / (now-startTime)) * alpha;
+        $('#debug').text(Math.round(fps));
+      }
+      startTime = now;
       
       // Adjust canvas sizes, if window size cghanges
       newWindowSize = AWE.Geometry.createSize($(window).width(), $(window).height());
@@ -628,7 +683,7 @@ AWE.UI = (function(module) {
             if (view = fortressViews[nodes[i].id()]) { // und nicht geändert
               newFortressViews[nodes[i].id()] = view;
             }
-            else if (nodes[i].isLeaf()) {
+            else if (nodes[i].isLeaf() && nodes[i].region()) {
               newFortressViews[nodes[i].id()] = module.createFortressView(nodes[i], _layer1);     
             }
           }
