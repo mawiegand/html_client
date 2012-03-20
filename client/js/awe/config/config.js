@@ -21,6 +21,14 @@ AWE.Config = (function(module) {
   
   // how many tiles showing minimum when not at leaf level
   module.MAP_MIN_VISIBLE_TILES = 64;
+
+  //image cache
+  module.IMAGE_CACHE_LOAD_LIST = {
+    "map/leaf": module.MAP_LEAF_IMAGE_URL,
+    "map/region": module.MAP_REGION_IMAGE_URL,
+    "map/fortress": module.MAP_FORTRESS_IMAGE_URL,
+    "map/region/icon": "images/dot.png"
+  };
   
   return module;
   
