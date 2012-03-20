@@ -203,6 +203,8 @@ AWE.UI = (function(module) {
 
     var image = null;
     var _bgBitmap =null;
+    
+    //console.log('creating new view for node ' + _node.path());
 
     var selectBackgroundImage = function(detail) {
       var newImage = null;
@@ -342,7 +344,22 @@ AWE.UI = (function(module) {
     var _view = module.createView(spec);
     _view.container().name = _view.id();
 
-    var _fieldBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/fortress"));
+    
+    var _fieldBitmap = null;
+    
+    if (!_node.region()) {
+      console.log('ERROR: should create fortress for node ' + _node.path() + ' but region information is missing!');
+    }
+    
+    var fortressImageName = 'map/fortress/small';
+    if (_node.region() && _node.region().fortressLevel() > 3) {
+      fortressImageName = 'map/fortress/middle';
+    }
+    if (_node.region() && _node.region().fortressLevel() > 7) {
+      fortressImageName = 'map/fortress/large';
+    }
+    
+    _fieldBitmap = new Bitmap(AWE.UI.ImageCache.getImage(fortressImageName));
     _fieldBitmap.onClick = function(evt) {
       log('evt', evt);
       if (_selected) {
@@ -366,7 +383,7 @@ AWE.UI = (function(module) {
       var frame = AWE.UI.Map.mc2vc(_view.frame());
       var alpha = _view.alpha(frame.size.width);
       var container = _view.container();
-
+      
       container.addChildAt(_fieldBitmap, 0);
       if (_selected) {
         _easementBitmap.y = -AWE.Config.MAPPING_FORTRESS_SIZE;
@@ -375,7 +392,7 @@ AWE.UI = (function(module) {
 
       var pos = AWE.UI.Map.mc2vc(_view.position());        
       container.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-      container.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+      container.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 1.4;
       container.alpha = alpha;
 
       _view.layer().addChild(container);
@@ -528,7 +545,9 @@ AWE.UI = (function(module) {
     var _canvas2 = $('#layer2')[0];
     var _layer2 = new Stage(_canvas2);
         
-    var date = 0;
+    var startTime = 0;
+    var numFrames = 0;
+    var fps = 60;
     var frame = 0;
     var requestingMapNodesFromServer = false;
     var needRedraw;
@@ -578,8 +597,12 @@ AWE.UI = (function(module) {
       
       // fps
       var now = +new Date();
-      $('#debug').text(Math.round(1000 / (now - date)));
-      date = now;
+      var alpha = 0.05; // smoothing factor
+      if (startTime > 0) {
+        fps = fps * (1.0-alpha) + (1000.0 / (now-startTime)) * alpha;
+        $('#debug').text(Math.round(fps));
+      }
+      startTime = now;
       
       // Adjust canvas sizes, if window size cghanges
       newWindowSize = AWE.Geometry.createSize($(window).width(), $(window).height());
@@ -675,7 +698,7 @@ AWE.UI = (function(module) {
             if (view = fortressViews[nodes[i].id()]) { // und nicht geändert
               newFortressViews[nodes[i].id()] = view;
             }
-            else if (nodes[i].isLeaf()) {
+            else if (nodes[i].isLeaf() && nodes[i].region()) {
               newFortressViews[nodes[i].id()] = module.createFortressView(nodes[i], _layer1);     
             }
           }
