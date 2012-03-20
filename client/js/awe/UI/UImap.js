@@ -102,18 +102,13 @@ AWE.UI = (function(module) {
     var _view = _view;
 
     var _regionStreets = [];
+    var _villiageSpots = [];
 
-    that.container = function() { return _container; }
-    that.regionStreets = function() {return _regionStreets; }
+    that.container = function() { return _container; };
+    that.regionStreets = function() {return _regionStreets; };
+    that.villiageSpots = function() { return _villiageSpots };
 
-    that.update = function () {
-
-      var sgn = function(a) {
-        if (a > 0) return 1;
-        if (a < 0) return -1;
-        return 0;
-      }
-
+    var updateRegionStreets = function {
       _regionStreets = [];
       _container.removeAllChildren();
 
@@ -182,8 +177,21 @@ AWE.UI = (function(module) {
           }
         }
       }
+    };
 
+    var updateVillagePositions = function() {
+      _villiageSpots = [];
+      for (var y = -1; y <= 1; y++) {
+
+      }
     }
+
+    that.update = function () {
+
+      updateRegionStreets();
+
+
+    };
 
     return that;
   }
