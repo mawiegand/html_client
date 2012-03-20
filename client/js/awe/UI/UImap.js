@@ -251,11 +251,12 @@ AWE.UI = (function(module) {
     };
     
     var _view = module.createView(spec);
-    _view.container().name = _view.id();
 
+    var _selected = false;
+    var _mouseover = false;
+    
     var _fieldBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/fortress"));
     _fieldBitmap.onClick = function(evt) {
-      log('evt', evt);
       if (_selected) {
         _view.unselect();
       }
@@ -263,11 +264,17 @@ AWE.UI = (function(module) {
         _view.select();
       }
     };
+    _fieldBitmap.onMouseOver = function(evt) {
+      _mouseover = true;
+    };
+    _fieldBitmap.onMouseOut = function(evt) {
+      _mouseover = false;
+      // _view.container().removeChildAt(2);
+    };
     
     var _easementBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/easement"));
+    var _buttonBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/button"));
     
-    var _selected = false;
-
     _view.position = function() {
       return AWE.Geometry.createPoint(_view.frame().origin.x + _view.frame().size.width / 2, _view.frame().origin.y + _view.frame().size.height / 2);
     };
@@ -280,8 +287,13 @@ AWE.UI = (function(module) {
 
       container.addChildAt(_fieldBitmap, 0);
       if (_selected) {
+        _buttonBitmap.x = -AWE.Config.MAPPING_FORTRESS_SIZE;
+        _buttonBitmap.y = +AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+        container.addChildAt(_buttonBitmap, 1);
+      }
+      if (_mouseover) {
         _easementBitmap.y = -AWE.Config.MAPPING_FORTRESS_SIZE;
-        container.addChildAt(_easementBitmap, 1);
+        container.addChildAt(_easementBitmap, 2);
       }
 
       var pos = AWE.UI.Map.mc2vc(_view.position());        
