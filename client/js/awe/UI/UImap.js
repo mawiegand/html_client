@@ -148,34 +148,43 @@ AWE.UI = (function(module) {
     var image = null;
     var _bgBitmap =null;
 
-    var selectBackgroundImage = function(tileSize) {
+    var selectBackgroundImage = function(detail) {
       var newImage = null;
       
+      var size = '128';
+      if (detail > 0) {
+          size = '256';
+      }
+        /*else if (detail > 1) {
+          size = '512';
+        }*/
+      
       if (!_node.isLeaf()) {       // not a leaf node, splits further
-        newImage = AWE.UI.ImageCache.getImage("map/tiles/split128");
+        newImage = AWE.UI.ImageCache.getImage("map/tiles/split"+size);
       }
       else if (_node.region()) {   // terrain available, select appropriate tile
         if (_node.region().terrainId() < 2) {
-          newImage = AWE.UI.ImageCache.getImage("map/tiles/forest128");      
+          newImage = AWE.UI.ImageCache.getImage("map/tiles/forest"+size);      
         }
         else {
-          newImage = AWE.UI.ImageCache.getImage("map/tiles/plain128");              
+          newImage = AWE.UI.ImageCache.getImage("map/tiles/plain"+size);              
         }
       }
       else {                       // don't know terrain, yet. thus, select base tile
-        newImage = AWE.UI.ImageCache.getImage("map/tiles/base128");
+        newImage = AWE.UI.ImageCache.getImage("map/tiles/base"+size);
       }
       
       if (newImage != image) {
         image = newImage;
+        if (_bgBitmap) {
+          _view.container().removeChildAt(0);
+        }
         _bgBitmap = new Bitmap(image);
+        _view.container().addChildAt(_bgBitmap, 0);
       }    
     };
     
-    selectBackgroundImage(null);
-
-
-    _view.container().addChild(_bgBitmap);
+    selectBackgroundImage(0);
 
     var _nonScalingContainer = new Container();
 
@@ -202,12 +211,32 @@ AWE.UI = (function(module) {
     _view.position = function() {
       return _view.frame().origin;
     };
+    
+    _view.detailLevel = function() {
+      var frame = AWE.UI.Map.mc2vc(_view.frame());      
+      if (frame.size.width < 128) {
+        return 0;
+      }
+      else if (frame.size.width < 256) {
+        return 1;
+      }
+      else if (frame.size.width < 512) {
+        return 2;
+      }
+      else {
+        return 3;
+      }
+    }
 
     _view.redraw = function() {
 
       var frame = AWE.UI.Map.mc2vc(_view.frame());
       var alpha = _view.alpha(frame.size.width);
       var container = _view.container();
+      
+      //check for correct background image
+      selectBackgroundImage(_view.detailLevel());
+
       
       //scaling container
       container.scaleX = frame.size.width / _bgBitmap.image.width;
