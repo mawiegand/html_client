@@ -9,6 +9,108 @@ var AWE = window.AWE || {};
 AWE.Map = (function(module) {
   
   module.terrainTypes = [ 'plain', 'forest', 'hill' ];
+  module.locationTypes = [ 'empty', 'fortress', 'settlement', 'outpost'];
+
+
+  /** represents one location within a map region. Locations can be entered by armies
+   * and can be settled by players. Location slot 0 always represents the region's
+   * fortress controlling all access from and to the region. The owner of location 0
+   * is also considered the owner of the region. */
+  module.createLocation = function(spec) {
+    spec = spec || {};
+    
+    var _id = spec.id || 0;
+      
+    var _updated_at = spec.updated_at || null;
+    var _created_at = spec.created_at || null;
+    
+    var _regionId = spec.region_id || 0;
+    var _slot = spec.slot || 0;
+    var _typeId = spec.type_id || 0;
+    var _name = spec.name || 'Lagerplatz';
+    var _ownerId = spec.owner_id || 0;
+    var _ownerName = spec.owner_name || null;
+    var _allianceId = spec.alliance_id || 0;
+    var _allianceTag = spec.alliance_tag;
+    
+    var _level = spec.level || 0;
+    
+    var _region = null;
+    
+    var that = {};
+    AWE.Partials.addUpdateTracking(that);  // adds methods for update tracking.
+    AWE.Partials.addChangeTracking(that);
+    
+    /** return the region's id */
+    that.id = function() { return _id; }
+    
+    /** returns the timestamp of the last change in the database. Use with caution:
+     * it's really only information about the database, it does not consider local 
+     * changes or changes in 'sub-properties' like the region; use lastChange() 
+     * instead! */
+    that.updatedAt = function() { return _updated_at; }
+    
+    /** returns the regions name; */
+    that.name = function() { return _name; }
+    
+    /** returns the region the location is associated with. */
+    that.region = function() { return _region; }
+    
+    /** returns the slot of the location. Each regions has 9 or more slots. Slot 0 is
+     * reserved for the fortress in the center of each region. */
+    that.slot = function() { return _slot; }
+    
+    /** sets the region the loation is associated with. */
+    that.setRegion = function(region) { _node = region; _regionId = region.id(); }
+
+    /** returns the type of the settlement; */
+    that.typeId = function() { return _typeId; }
+
+    /** returns the name of the character owning the region (fortress). */
+    that.ownerName = function() { return _ownerName; }
+    
+    /** returns the id of the character owning the region (fortress). 0 for
+     * neutral fortress (not owned by any character, NPC-owned). */
+    that.ownerId = function() { return _ownerId; }
+
+    /** returns the tag of the alliance owning the region (owner of fortress). */
+    that.allianceTag = function() { return _allianceTag; }
+    
+    /** returns the id of the alliance owning the region (owner of fortress). 0 for 
+     * no alliance. */
+    that.allianceId = function() { return _allianceId; }
+
+    /** returns the level of the settlement / fortress / outpost (0 to 10). */
+    that.level = function() { return _level; }
+        
+    /** this method updates the data stored at the local region from the given 
+     * region. Does not change the association to a node. */ 
+    that.updateLocationFrom = function(location) {
+
+      if (location.id() != _id) {
+        console.log('WARNING: updating data of location ' + _id + ' from a different location with id '+ location.id() + '.');
+      }
+        
+      _id = location.id();
+      
+      _updated_at = location.updatedAt();
+      _created_at = location.createdAt();
+      
+      _name = location.name() || _name;
+      _slot = location.slot() || 0;
+      _ownerId = location.ownerId() || 0;
+      _ownerName = location.ownerName() || null;
+      _allianceId = location.allianceId() || 0;
+      _allianceTag = location.allianceTag() || null;
+      _typeId = location.typeId() || 0;
+      _level = location.level() || 0;    
+      
+      that.setChangedNow();  
+    };
+    
+    return that;  
+    
+  };
 
   /** every leaf-node is associated with a region object. Each Region represents one
    * field on the map, the user may enter, own or settle in. The region has several
@@ -24,7 +126,6 @@ AWE.Map = (function(module) {
       
     var _updated_at = spec.updated_at || null;
     var _created_at = spec.created_at || null;
-    var _lastChange = new Date();
     
     var _nodeId = spec.node_id || 0;
     var _name = spec.name || 'Ödland';
@@ -36,7 +137,7 @@ AWE.Map = (function(module) {
     var _countSettlements = spec.count_settlements || 0;
     var _terrain_id = spec.terrain_id || 0;
     
-    var _level = spec.level || 0;
+    var _fortress_level = spec.fortress_level || 0;
     
     var _node = null;
     
@@ -77,13 +178,11 @@ AWE.Map = (function(module) {
     that.allianceId = function() { return _allianceId; }
 
     /** returns the level of the fortress (0 to 10). */
-    that.fortressLevel = function() { return _level; }
+    that.fortressLevel = function() { return _fortress_level; }
     
     /** returns the type of the terrain of that region. Later terrain types should
      * be defined in the game rules. */
     that.terrainId = function() { return _terrain_id; }
-    
-
     
     /** this method updates the data stored at the local region from the given 
      * region. Does not change the association to a node. */ 
@@ -113,10 +212,7 @@ AWE.Map = (function(module) {
     
     return that;      
   };
-  
-  module.createLocation = function(spec) {
-    
-  };
+
     
   /** creates a node-object from the given spec, or, if no specs given, sets
    * all values to defaults appropriate for a root node. Spec could be JSON
