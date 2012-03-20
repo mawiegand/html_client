@@ -409,6 +409,19 @@ AWE.UI = (function(module) {
           }
         };
         
+        if ((frame % 30 == 0)) {
+          if (! requestingMapNodesFromServer) {
+
+            for (var i=0; i < nodes.length; i++) {
+              if (nodes[i].isLeaf() && nodes[i].region() && !nodes[i].region().locations() && nodes[i].level() <= level()-2) {
+                AWE.Map.Manager.fetchLocationsForRegion(nodes[i].region(), function() {
+                  that.updateView();
+                });
+              }
+            }
+          }
+        };
+        
         var view;
         
         if (needRedraw) {

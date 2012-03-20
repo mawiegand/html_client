@@ -123,7 +123,7 @@ AWE.Map = (function(module) {
     spec = spec || {};    // default value for spec: empty spec
  
     var _id = spec.id || 0;
-      
+          
     var _updated_at = spec.updated_at || null;
     var _created_at = spec.created_at || null;
     
@@ -141,9 +141,13 @@ AWE.Map = (function(module) {
     
     var _node = null;
     
+    var _locations = null;
+    
     var that = {};
     AWE.Partials.addUpdateTracking(that);  // adds methods for update tracking.
     AWE.Partials.addChangeTracking(that);
+    
+    // TODO: watch change of locations!
     
     /** return the region's id */
     that.id = function() { return _id; }
@@ -184,6 +188,21 @@ AWE.Map = (function(module) {
      * be defined in the game rules. */
     that.terrainId = function() { return _terrain_id; }
     
+    /** returns an array of all locations within the region, or null, if this data
+     * hasn't been fetched, yet. */
+    that.locations = function() { return _locations; }
+    
+    /** returns the location for the given slot */
+    that.location = function(slot) { return _locations ? null : _locations[slot]; }
+    
+    /** sets the locations to the given array of locations */
+    that.setLocations = function(locations) {
+      if (_locations != locations) {
+        that.setChangedNow();  // need to set change manually, as the locations property has changed by this assignement    
+      }            
+      _locations = locations;
+    };
+    
     /** this method updates the data stored at the local region from the given 
      * region. Does not change the association to a node. */ 
     that.updateRegionFrom = function(region) {
@@ -209,6 +228,11 @@ AWE.Map = (function(module) {
       
       that.setChangedNow();  
     };
+    
+    that.toString = function (traverse) {
+      var string = " Region with id: " + _id + " name: " + name + " for node: qt" + _node.path() + ".";
+      return string;
+    }
     
     return that;      
   };

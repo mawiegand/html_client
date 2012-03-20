@@ -173,7 +173,8 @@ AWE.Map = (function(module) {
         else {
           node.startUpdate();
           $.getJSON(AWE.Config.MAP_SERVER_BASE+'nodes/'+node.id()+'/regions', function(data) {
-            var region = AWE.Map.createRegion(data);
+            // TODO: check for error
+            var region = AWE.Map.createRegion(data[0]);
             region.setNode(node);
             node.setRegion(region);
             node.endUpdate();
@@ -233,10 +234,38 @@ AWE.Map = (function(module) {
         recLevel -= 1;
       };       
     }());
+
+    that.fetchLocationsForRegion = function(region, callback) {
+      if (region.isUpdating()) {
+        return false ; // presently updating
+      }
+      else {
+        region.startUpdate();
+        console.log ( 'Fetch locations for ' + region);
+        $.getJSON(AWE.Config.MAP_SERVER_BASE+'regions/'+region.id()+'/locations', function(data) {
+          if (data && data.length > 0) {
+            var locations = new Array(data.length);
+            for (var i=0; i < data.length; i++) {
+              var location = AWE.Map.createLocation(data[i]);
+              location.setRegion(region);
+              locations[i] = location;
+            }
+            region.setLocations(locations);
+          }
+          region.endUpdate();
+          if (callback) callback(region);
+        });           
+      }
+      return true;
+    };
+
     
     return that;
     
   }(); 
+  
+  
+
   
   return module;
 
