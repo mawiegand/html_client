@@ -7,7 +7,16 @@
 var AWE = window.AWE || {};
 
 AWE.Map = (function(module) {
+  
+  module.terrainTypes = [ 'plain', 'forest', 'hill' ];
 
+  /** every leaf-node is associated with a region object. Each Region represents one
+   * field on the map, the user may enter, own or settle in. The region has several
+   * locations within it's borders, where location slot 0 is the fortress and the
+   * other locations are spots for moving and settling. Furthermore, the region
+   * offers a few properties with aggregate information, like the number
+   * of settlements in its borders and its owner (copy of owner of location slot 0).
+   */
   module.createRegion = function(spec) {
     spec = spec || {};    // default value for spec: empty spec
  
@@ -25,7 +34,7 @@ AWE.Map = (function(module) {
     var _allianceTag = spec.alliance_tag;
     var _countOutposts = spec.count_outposts || 0;
     var _countSettlements = spec.count_settlements || 0;
-    var _terrain = spec.terrain || 0;
+    var _terrain_id = spec.terrain_id || 0;
     
     var _level = spec.level || 0;
     
@@ -38,6 +47,10 @@ AWE.Map = (function(module) {
     /** return the region's id */
     that.id = function() { return _id; }
     
+    /** returns the timestamp of the last change in the database. Use with caution:
+     * it's really only information about the database, it does not consider local 
+     * changes or changes in 'sub-properties' like the region; use lastChange() 
+     * instead! */
     that.updatedAt = function() { return _updated_at; }
     
     /** returns the regions name; */
@@ -49,13 +62,26 @@ AWE.Map = (function(module) {
     /** sets the node the region is associated with. */
     that.setNode = function(node) { _node = node; _nodeId = node.id(); }
     
+    /** returns the name of the character owning the region (fortress). */
     that.ownerName = function() { return _ownerName; }
+    
+    /** returns the id of the character owning the region (fortress). 0 for
+     * neutral fortress (not owned by any character, NPC-owned). */
     that.ownerId = function() { return _ownerId; }
 
+    /** returns the tag of the alliance owning the region (owner of fortress). */
     that.allianceTag = function() { return _allianceTag; }
+    
+    /** returns the id of the alliance owning the region (owner of fortress). 0 for 
+     * no alliance. */
     that.allianceId = function() { return _allianceId; }
 
+    /** returns the level of the fortress (0 to 10). */
     that.fortressLevel = function() { return _level; }
+    
+    /** returns the type of the terrain of that region. Later terrain types should
+     * be defined in the game rules. */
+    that.terrainId = function() { return _terrain_id; }
     
 
     
@@ -117,6 +143,9 @@ AWE.Map = (function(module) {
       
       var _children = null;
       var _region = null;
+      
+      var _count_settlements = spec.count_settlements || 0;
+      var _total_army_strength = spec.total_army_strength || 0;
       
       var _frame = AWE.Geometry.createRect(parseFloat(spec.min_x), parseFloat(spec.min_y), 
                                            parseFloat(spec.max_x) - parseFloat(spec.min_x), 
