@@ -3,7 +3,6 @@
  * Do not copy, do not distribute. All rights reserved.
  */
 
-
 var AWE = AWE || {};
 
 AWE.UI = (function(module) {
@@ -57,10 +56,6 @@ AWE.UI = (function(module) {
     
     _view.isScaled = function() {
       return _scaled;
-    };
-    
-    _view.click = function(){
-      log('View.click()');
     };
     
     _view.redraw = function() {
@@ -418,7 +413,7 @@ AWE.UI = (function(module) {
     _fieldBitmap = new Bitmap(AWE.UI.ImageCache.getImage(fortressImageName));
 
     _fieldBitmap.onClick = function(evt) {
-      log('selected', _selected);
+      log('bitmap', _fieldBitmap);
       if (_selected) {
         _view.unselect();
       }
@@ -438,7 +433,9 @@ AWE.UI = (function(module) {
       module.Map.updateView();
     };
     
-    var _easementBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/easement"));
+    _fieldBitmap.view = _view;
+    
+    var _easementBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/easement"));    
     var _buttonBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/button"));
     
     _view.position = function() {
@@ -533,9 +530,7 @@ AWE.UI = (function(module) {
     return that;
   }());
   
-  
-  /*** Map ***/
-  
+  /*** Map ***/  
   module.Map = (function() {
   
     var that = {};
@@ -806,7 +801,6 @@ AWE.UI = (function(module) {
         else if (_layer1.hitTest(evt.pageX, evt.pageY)) {
           cObj = _layer1.getObjectUnderPoint(evt.pageX, evt.pageY);
           if (cObj && cObj.onClick) {
-            log('klick');
             cObj.onClick();
           }
         }
@@ -913,9 +907,7 @@ AWE.UI = (function(module) {
     return that;
   }());  
   
-
-  /*** initializer ***/
-    
+  /*** initializer ***/    
   module.init = function() {
           
     AWE.Network.init();
@@ -931,7 +923,7 @@ AWE.UI = (function(module) {
       }
     }
     
-    
+    // TODO init with users main location
     AWE.UI.Map.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));
     AWE.UI.Map.render();
   };
