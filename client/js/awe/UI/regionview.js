@@ -39,7 +39,6 @@ AWE.UI = (function(module) {
     /** generates a DisplayObject for a given villageSpot **/
     var _generateGraphics = function(location, color) {
       var p = _globalToLocalCooridnates(location.position());
-      log("x", p.x, "y", p.y);
       var g = new Graphics();
       g.setStrokeStyle(1);
       g.beginFill(color);
@@ -63,7 +62,7 @@ AWE.UI = (function(module) {
     that.update = function() {
 
       //_villiageSpots = [];
-      that.container().removeAllChildren();
+      //that.container().removeAllChildren();
       if (_node.isLeaf() && _view.detailLevel() >= 2 && _node.region() != null && _node.region().locations() != null) {
         _container.visible = true;
         var locations = _node.region().locations();
@@ -71,14 +70,10 @@ AWE.UI = (function(module) {
           if (i > 8) {
             console.error("there were more locations than expected");
           }
-          _villiageSpotsShapes[i-1] = new Shape(_generateGraphics(locations[i], AWE.Config.MAP_VILLAGE_SPOT_COLOR));
-          //_villiageSpotsShapes[i-1].graphics = _generateGraphics(locations[i]);
-          that.container().addChild(_villiageSpotsShapes[i-1]);
-          that.container().addChild(_generateDebugCross(_globalToLocalCooridnates(locations[i].position()), "#FF0"));
+          _villiageSpotsShapes[i-1].graphics = _generateGraphics(locations[i], AWE.Config.MAP_VILLAGE_SPOT_COLOR);
         }
-        that.container().addChild(_generateDebugCross({x: 10, y: 20}, "#F00"));
       } else{
-        //_container.visible = false;
+        _container.visible = false;
       } 
     };
 
@@ -193,6 +188,14 @@ AWE.UI = (function(module) {
           }
         }
       }
+    };
+
+    var _updateVillageStreets = function() {
+
+    };
+
+    that.update = function() {
+
     };
 
     return that;
@@ -348,11 +351,13 @@ AWE.UI = (function(module) {
     
     //streets
     var streetsManager = module.createStreetsManager(_node, _view);
-    _nonScalingContainer.addChild(streetsManager.container());
 
     //village spots
     var villageSpotsManager = module.createVillageSpotsManager(_node, _view);
     _nonScalingContainer.addChild(villageSpotsManager.container());
+
+    //add the streets
+    _nonScalingContainer.addChild(streetsManager.container());
 
     _view.position = function() {
       return _view.frame().origin;

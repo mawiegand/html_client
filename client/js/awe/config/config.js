@@ -30,7 +30,7 @@ AWE.Config = (function(module) {
   module.MAP_VILLAGE_SPOT_HEIGHT = 15;
   //frame.width * MAP_REGION_STREETS_WIDTH = offset from the broder away
   module.MAP_VILLAGE_SPOT_BORDER_MARGIN = 0.1;
-  module.MAP_VILLAGE_SPOT_COLOR = Graphics.getRGB(0,0,0,0.3);
+  module.MAP_VILLAGE_SPOT_COLOR = Graphics.getRGB(0,0,0,1.0);
 
   //image cache
   module.IMAGE_CACHE_LOAD_LIST = {
