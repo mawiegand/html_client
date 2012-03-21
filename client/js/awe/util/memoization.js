@@ -13,6 +13,7 @@ AWE.memoizer = function(memo, formula) {
       result = formula(recur);
       memo = result;
     }
+    return result;
   };
   return recur;
 };

@@ -61,7 +61,7 @@ AWE.Map = (function(module) {
     that.slot = function() { return _slot; }
     
     /** sets the region the loation is associated with. */
-    that.setRegion = function(region) { _node = region; _regionId = region.id(); }
+    that.setRegion = function(region) { _region = region; _regionId = region.id(); }
 
     /** returns the type of the settlement; */
     that.typeId = function() { return _typeId; }
@@ -107,34 +107,95 @@ AWE.Map = (function(module) {
       
       that.setChangedNow();  
     };
-
-  that.position = AWE.memoizer(
+  /** Returns the position of the village on the map */
+  that.position = AWE.memoizer(null,
     function () {
       var frame = that.region().node().frame();
       //for the fortress return the center
       if (_slot == 0) {
-        AWE.createPoint(
+        AWE.Geometry.createPoint(
           frame.origin.x + frame.size.width/2,
-          frame.origin.y + frame.size.height/2,
+          frame.origin.y + frame.size.height/2
         );
       //callculate village positon
       } else {
         //callculate base position
         var basePositon;
+        var offDir;
+        var streetEndPosition;
         if (_slot < 3) {
           //slot 1,2 top
-
+          basePositon = {
+            x: frame.origin.x + frame.size.width/2,
+            y: frame.origin.y
+          };
+          offDir = {x: -1, y: 0};
+          streetEndPosition = {
+            x: basePositon.x + frame.size.width/4, 
+            y: basePositon.y };
+          basePositon.y += frame.size.height*AWE.Config.MAP_VILLAGE_SPOT_BORDER_MARGIN;
         } else if (_slot < 5) {
           //slot 3,4 right
-
+          basePositon = {
+            x: frame.origin.x + frame.size.width,
+            y: frame.origin.y + frame.size.height/2
+          };
+          offDir = {x: 0, y: -1};
+          streetEndPosition = {
+            x: basePositon.x, 
+            y: basePositon.y + frame.size.height/4};
+          basePositon.x -= frame.size.width*AWE.Config.MAP_VILLAGE_SPOT_BORDER_MARGIN;
         } else if (_slot < 7) {
-          //
-
+          //slot 5,6 bottom
+          basePositon = {
+            x: frame.origin.x + frame.size.width/2,
+            y: frame.origin.y + frame.size.height
+          };
+          offDir = {x: 1, y: 0};
+          streetEndPosition = {
+            x: basePositon.x + frame.size.width/4, 
+            y: basePositon.y};
+          basePositon.y -= frame.size.height*AWE.Config.MAP_VILLAGE_SPOT_BORDER_MARGIN;
         } else if (_slot < 9){
-
+          //slot 7,8 left
+          basePositon = {
+            x: frame.origin.x,
+            y: frame.origin.y + frame.size.height/2
+          };
+          offDir = {x: 0, y: 1};
+          streetEndPosition = {
+            x: basePositon.x, 
+            y: basePositon.y + frame.size.height/4};
+          basePositon.x += frame.size.width*AWE.Config.MAP_VILLAGE_SPOT_BORDER_MARGIN; 
         } else {
           console.error("Can't callculate positon for slot that have a higher number than 8");
         }
+        //callculate the offset dir
+        var mod = _slot/2;
+        if (Math.floor(mod) == mod) {
+          offDir.x *= -1;
+          offDir.y *= -1;
+        }
+
+        //callculate the length of the offset dir
+        var v = {
+          x: frame.origin.x + frame.size.width/2 - streetEndPosition.x,
+          y: frame.origin.y + frame.size.height/2 - streetEndPosition.y
+        };
+        var alpha;
+        if (offDir.x == 0) {
+          alpha = (basePositon.x - streetEndPosition.x)/v.x;
+        } else {
+          alpha = (basePositon.y - streetEndPosition.y)/v.y;
+        }
+        streetEndPosition.x += v.x*alpha;
+        streetEndPosition.y += v.y*alpha;
+        offDir.x = offDir.x * (streetEndPosition.x - basePositon.x)/2;
+        offDir.y = offDir.y * (streetEndPosition.y - basePositon.y)/2;
+
+        return AWE.Geometry.createPoint(
+          basePositon.x + offDir.x,
+          basePositon.y + offDir.y);
       } 
     });
     
@@ -195,7 +256,7 @@ AWE.Map = (function(module) {
     that.name = function() { return _name; }
     
     /** returns the node the region is associated with. */
-    that.node = function() { return node; }
+    that.node = function() { return _node; }
     
     /** sets the node the region is associated with. */
     that.setNode = function(node) { _node = node; _nodeId = node.id(); }

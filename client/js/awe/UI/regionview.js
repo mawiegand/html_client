@@ -11,64 +11,40 @@ AWE.UI = (function(module) {
   
   /*** AWE.UI.View ***/
 
-  module.createVillageSpotsManager = function(_node, _view, _streets) {
+  module.createVillageSpotsManager = function(_node, _view) {
     var that = {};
 
     var _node = _node;
     var _view = _view;
     var _container = new Container();
-    var _streets = _streets;
-    var _villiageSpots = [];
+
+    var _villiageSpotsShapes = [];
+    for (var i = 0; i < 8; i++) {
+      var s = new Shape();
+      _villiageSpotsShapes.push(s);
+      _container.addChild(s);
+    }
 
     that.container = function() { return _container; };
-    that.villageSpots = function() { return _villiageSpots; };
 
-    /** Returns the offset vector that is needed form the border for the village spots.
-     *  Based on AWE.Config.MAP_VILLAGE_SPOT_BORDER_MARGIN and the direction of a street. **/
-    var _getBorderOffset = function(dir) {
-      if (Math.abs(dir.x) > Math.abs(dir.y)) {
-        return { x: -1*AWE.Config.MAP_VILLAGE_SPOT_BORDER_MARGIN*dir.x, y: 0};
-      } else {
-        return {x:0,  y: -1*AWE.Config.MAP_VILLAGE_SPOT_BORDER_MARGIN*dir.y};
-      }
-    };
-
-    var _getDirOffset = function(street, streetDir, offsetPoint) {
+    var _globalToLocalCooridnates = function(position) {
       var frame = _node.frame();
-      var transformedFrame = AWE.UI.Map.mc2vc(_node.frame());
-
-      var p;
-      if (Math.abs(streetDir.x) > Math.abs(streetDir.y)) {
-        p = { x: street.to.x, y: transformedFrame.size.height*3/4 };
-      } else {
-        p = { x: transformedFrame.size.width*3/4, y: street.to.y };
-      }
-      _container.addChild(_generateDebugCross(p, "#F0F"));
-      var v = {
-        x: street.from.x - p.x,
-        y: street.from.y - p.y
-      };
-
-      var alpha = 0.0;
-      if (Math.abs(streetDir.x) > Math.abs(streetDir.y)) {
-        alpha = (offsetPoint.x - p.x)/v.x;
-      } else {
-        alpha = (offsetPoint.y - p.y)/v.y;
-      }
-
-      return {
-        x: (p.x + v.x*alpha - offsetPoint.x)*2/3,
-        y: (p.y + v.y*alpha - offsetPoint.y)*2/3
-      }
-
+      var transformedFrame = AWE.UI.Map.mc2vc(frame);
+      return AWE.Geometry.createPoint(
+        (position.x - frame.origin.x)*transformedFrame.size.width/frame.size.width,
+        (position.y - frame.origin.y)*transformedFrame.size.height/frame.size.height
+      );
     };
+
     /** generates a DisplayObject for a given villageSpot **/
-    var _generateDisplayObject = function(spot, color) {
+    var _generateGraphics = function(location, color) {
+      var p = _globalToLocalCooridnates(location.position());
+      log("x", p.x, "y", p.y);
       var g = new Graphics();
       g.setStrokeStyle(1);
       g.beginFill(color);
-      g.drawEllipse(spot.x - AWE.Config.MAP_VILLAGE_SPOT_WIDTH/2, spot.y - AWE.Config.MAP_VILLAGE_SPOT_HEIGHT/2, AWE.Config.MAP_VILLAGE_SPOT_WIDTH, AWE.Config.MAP_VILLAGE_SPOT_HEIGHT);
-      return new Shape(g);
+      g.drawEllipse(p.x - AWE.Config.MAP_VILLAGE_SPOT_WIDTH/2, p.y - AWE.Config.MAP_VILLAGE_SPOT_HEIGHT/2, AWE.Config.MAP_VILLAGE_SPOT_WIDTH, AWE.Config.MAP_VILLAGE_SPOT_HEIGHT);
+      return g;
     };
 
     var _generateDebugCross = function(spot, color) {
@@ -86,55 +62,23 @@ AWE.UI = (function(module) {
     /** Updates all village spot locations and generates new DisplayObjects in the container **/
     that.update = function() {
 
-      _villiageSpots = [];
+      //_villiageSpots = [];
       that.container().removeAllChildren();
-      if (_node.isLeaf() && _view.detailLevel() >= 2) {
-        //update the spots
-        for (var i = 0; i < _streets.regionStreets().length; i++) {
-          var curStreets = _streets.regionStreets()[i];
-          if (curStreets.length > 2 || curStreets.length < 1) {
-            console.error("not suported number of connecting streets");
-          } else {
-            var street = curStreets[0];
-            var directionVector = street.getDirectionVector();
-            var offsetPoint = _getBorderOffset(directionVector);
-            if (curStreets.length < 2) {
-              offsetPoint.x += street.to.x;
-              offsetPoint.y += street.to.y;
-            } else {
-              var sumTo = {x: 0, y:0 };
-              for (var i2 = 0; i2 < curStreets.length; i2++) {
-                sumTo.x += curStreets[i2].to.x;
-                sumTo.y += curStreets[i2].to.y;
-              }
-              sumTo.x /= curStreets.length;
-              sumTo.y /= curStreets.length;
-              offsetPoint.x += sumTo.x;
-              offsetPoint.y += sumTo.y;
-
-              _container.addChild(_generateDebugCross(sumTo, "#0FF"));
-            }
-
-            _container.addChild(_generateDebugCross(offsetPoint, "#00F"));
-
-            var dirOffset = _getDirOffset(street, directionVector, offsetPoint);
-            //generate two village spots
-            var spot = AWE.Geometry.createPoint(
-              offsetPoint.x + dirOffset.x,
-              offsetPoint.y + dirOffset.y
-            );
-            _villiageSpots.push(spot);
-            spot = AWE.Geometry.createPoint(
-              offsetPoint.x - dirOffset.x,
-              offsetPoint.y - dirOffset.y
-            );
-            _villiageSpots.push(spot);
+      if (_node.isLeaf() && _view.detailLevel() >= 2 && _node.region() != null && _node.region().locations() != null) {
+        _container.visible = true;
+        var locations = _node.region().locations();
+        for (var i = 1; i < locations.length; i++) {
+          if (i > 8) {
+            console.error("there were more locations than expected");
           }
+          _villiageSpotsShapes[i-1] = new Shape(_generateGraphics(locations[i], AWE.Config.MAP_VILLAGE_SPOT_COLOR));
+          //_villiageSpotsShapes[i-1].graphics = _generateGraphics(locations[i]);
+          that.container().addChild(_villiageSpotsShapes[i-1]);
+          that.container().addChild(_generateDebugCross(_globalToLocalCooridnates(locations[i].position()), "#FF0"));
         }
-        //generate the needed DisplayObject
-        for (var i = 0; i < _villiageSpots.length; i++) {
-          _container.addChild(_generateDisplayObject(_villiageSpots[i], AWE.Config.MAP_VILLAGE_SPOT_COLOR));
-        }
+        that.container().addChild(_generateDebugCross({x: 10, y: 20}, "#F00"));
+      } else{
+        //_container.visible = false;
       } 
     };
 
@@ -407,7 +351,7 @@ AWE.UI = (function(module) {
     _nonScalingContainer.addChild(streetsManager.container());
 
     //village spots
-    var villageSpotsManager = module.createVillageSpotsManager(_node, _view, streetsManager);
+    var villageSpotsManager = module.createVillageSpotsManager(_node, _view);
     _nonScalingContainer.addChild(villageSpotsManager.container());
 
     _view.position = function() {
