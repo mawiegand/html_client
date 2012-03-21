@@ -157,6 +157,9 @@ AWE.Map = (function(module) {
      * changes or changes in 'sub-properties' like the region; use lastChange() 
      * instead! */
     that.updatedAt = function() { return _updated_at; }
+
+    that.createdAt = function() { return _created_at; }
+
     
     /** returns the regions name; */
     that.name = function() { return _name; }
@@ -207,6 +210,10 @@ AWE.Map = (function(module) {
       return _countSettlements;
     }
     
+    that.countOutposts = function() {
+      return _countOutposts;
+    }
+    
     /** this method updates the data stored at the local region from the given 
      * region. Does not change the association to a node. */ 
     that.updateRegionFrom = function(region) {
@@ -220,15 +227,15 @@ AWE.Map = (function(module) {
       _updated_at = region.updatedAt();
       _created_at = region.createdAt();
       
-      _name = region.name || _name;
-      _ownerId = region.owner_id || 0;
-      _ownerName = region.owner_name || null;
-      _allianceId = region.alliance_id || 0;
-      _allianceTag = region.alliance_tag || null;
-      _countOutposts = region.count_outposts || 0;
-      _countSettlements = region.count_settlements || 0;
-      _terrain = region.terrain || 0;
-      _level = region.level || 0;    
+      _name = region.name() || _name;
+      _ownerId = region.ownerId() || 0;
+      _ownerName = region.ownerName() || null;
+      _allianceId = region.allianceId() || 0;
+      _allianceTag = region.allianceTag() || null;
+      _countOutposts = region.countOutposts() || 0;
+      _countSettlements = region.countSettlements() || 0;
+      _terrain_id = region.terrainId() || 0;
+      _fortress_level = region.fortressLevel() || 0;    
       
       that.setChangedNow();  
     };
@@ -348,7 +355,6 @@ AWE.Map = (function(module) {
         }
             
         _region = region;
-        region.setNode(that);
       };
       
       /** sets the parent of the node. Should be used with caution; you need
@@ -442,10 +448,10 @@ AWE.Map = (function(module) {
       
         _frame = AWE.Geometry.createRect(node.origin().x, node.origin().y, node.size().width, node.size().height);
         
-        /*
+        
         if (node.region() && _region) {
           _region.updateRegionFrom(node.region());
-        }*/
+        }
         
         that.setChangedNow();
       };
@@ -553,6 +559,7 @@ AWE.Map = (function(module) {
       // further initialize the node from the spec (set region and expand children) 
       if (spec.region) {
         that.setRegion(module.createRegion(spec.region));
+        that.region().setNode(that);
       }
       
       if (spec.c0 || spec.c1 || spec.c2 || spec.c3) {

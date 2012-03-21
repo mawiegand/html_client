@@ -241,7 +241,7 @@ AWE.Map = (function(module) {
       }
       else {
         region.startUpdate();
-        console.log ( 'Fetch locations for ' + region);
+        //console.log ( 'Fetch locations for ' + region);
         $.getJSON(AWE.Config.MAP_SERVER_BASE+'regions/'+region.id()+'/locations', function(data) {
           if (data && data.length > 0) {
             var locations = new Array(data.length);
