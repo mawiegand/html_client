@@ -1,13 +1,14 @@
 
 window.WACKADOO = (function(module) {
   
-  /** creates an application singleton. */
+  /** creates an application singleton */
   module.createApplication = function() {
     
-    var _rootViewController = null;
+    var _rootScreenController = null;
     
     var that = {};
     
+    /** initializes needed modules and creates a root view controller. */
     that.init = function() {
       AWE.Network.init();                               // initialize the network stack
       AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
@@ -21,20 +22,28 @@ window.WACKADOO = (function(module) {
         }
       }
     
-      AWE.UI.Map.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
       
-      _rootViewController = AWE.Controller.createViewController(AWE.UI.Map);
+      _rootScreenController = AWE.Controller.createMapController('#layers');
+      _rootScreenController.init();
+      _rootScreenController.initPosition(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
     };
     
+    /** starts the application, enters an infinite loop triggered by window.requestAnimFrame. */
     that.run = function() {
       window.requestAnimFrame(that.runloop);
     };
     
+    /** the application's runloop. Does basic stuff needed by the application and then hands over
+     * control to the view controller that has to do all the real work. The idea behind implementing
+     * the runloop inside view controllers is to spread the application logic for different screens
+     * (map screen, settlement screen, news screen, message center) among individual, unrelated
+     * classes. That is, each screen should be able to implement it's own application logic, so that
+     * it can choose the best technique for the particular task (e.g. canvas for the map, basic HTML
+     * for sending and receiving messages.) */
     that.runloop = function() {
-      _rootViewController.runloop();  // hand over control to present view controller
-      
+      _rootScreenController.runloop();        // hand over control to present screen controller
       window.requestAnimFrame(that.runloop);  // request next animation frame that will initiate the next cycle of the runloop
-    }
+    };
     
     return that;
   };

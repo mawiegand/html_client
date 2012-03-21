@@ -7,7 +7,7 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
           
-  module.createFortressView = function(_node, _layer) {
+  module.createFortressView = function(_node, _layer, _controller) {
 
     var spec = {
       id: _node.id(),
@@ -51,13 +51,13 @@ AWE.UI = (function(module) {
     _fieldBitmap.onMouseOver = function(evt) {
       log('rein');
       _mouseover = true;
-      module.Map.updateView();
+      _controller.updateView();
     };
     _fieldBitmap.onMouseOut = function(evt) {
       log('raus');
       _mouseover = false;
       _view.container().removeChild(_easementBitmap);
-      module.Map.updateView();
+      _controller.updateView();
     };
     
     _fieldBitmap.view = _view;
@@ -96,20 +96,20 @@ AWE.UI = (function(module) {
 
     _view.select = function() {
       log('select', _view.id());
-      if (module.Map.selectedView && module.Map.selectedView.unselect) {
-        module.Map.selectedView.unselect();
+      if (_controller.selectedView && _controller.selectedView.unselect) {
+        _controller.selectedView.unselect();
       }
       _selected = true;
-      module.Map.selectedView = _view;
-      module.Map.updateView();
+      _controller.selectedView = _view;
+      _controller.updateView();
     }
     
     _view.unselect = function() {
       log('unselect', _view.id());
       _selected = false;
-      module.Map.selectedView = null;
+      _controller.selectedView = null;
       _view.container().removeChildAt(1);
-      module.Map.updateView();
+      _controller.updateView();
     }
     
     return _view;
