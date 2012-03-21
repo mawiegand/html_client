@@ -30,7 +30,7 @@ AWE.Config = (function(module) {
   module.MAP_LOCATION_STREETS_COLOR = "#b1ad6e"; //#444
   module.MAP_LOCATION_STREETS_WIDTH = 1; 
 
-  module.MAP_LOCATION_SPOT_WIDTH = 55;
+  module.MAP_LOCATION_SPOT_WIDTH = 49;
   module.MAP_LOCATION_SPOT_HEIGHT = 30;
   //frame.width * MAP_REGION_STREETS_WIDTH = offset from the broder away
   module.MAP_LOCATION_SPOT_BORDER_MARGIN = 0.1;
