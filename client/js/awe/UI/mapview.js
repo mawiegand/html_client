@@ -9,7 +9,6 @@ AWE.UI = (function(module) {
           
   
   /*** AWE.UI.View ***/
- 
   module.createView = function(spec) {
     var _view = {};
     
@@ -21,6 +20,21 @@ AWE.UI = (function(module) {
 
     var _layer = spec.layer || null;
     var _container = new Container();
+    
+    var _controller = spec.controller || null;
+    
+    _view.initWithController = function(controller, frame) {
+      _frame = frame || _frame;
+      _controller = controller || _controller;
+    };
+    
+    _view.controller = function() {
+      return _controller;
+    }
+    
+    _view.setController = function(controller) {
+      _controller = controller;
+    }
     
     _view.alpha = function(width) {
       
@@ -51,6 +65,10 @@ AWE.UI = (function(module) {
     
     _view.frame = function() {
       return _frame;
+    };
+    
+    _view.setFrame = function(frame) {
+      _frame = frame;
     };
     
     _view.isScaled = function() {

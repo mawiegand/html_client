@@ -109,10 +109,10 @@ AWE.Controller = (function(module) {
       }
     }
     
-    AWE.UI.Map = {
+   /* AWE.UI.Map = {
       mc2vc: that.mc2vc,
       vc2mc: that.vc2mc,
-    };
+    };*/
 
         
     var startTime = 0;
@@ -236,7 +236,7 @@ AWE.Controller = (function(module) {
         
         var view;
         
-        if (needRedraw) {
+        if (1 || needRedraw) {
           //log('level', level());
        
           // layer0: regions
@@ -250,7 +250,7 @@ AWE.Controller = (function(module) {
               newRegionViews[nodes[i].id()] = view;
             }
             else {
-              newRegionViews[nodes[i].id()] = AWE.UI.createRegionView(nodes[i], _stages[0]);
+              newRegionViews[nodes[i].id()] = AWE.UI.createRegionView(nodes[i], _stages[0], that);
             }
           }
           // new hash is old hash

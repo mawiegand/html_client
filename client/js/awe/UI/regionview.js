@@ -29,7 +29,7 @@ AWE.UI = (function(module) {
 
     var _globalToLocalCooridnates = function(position) {
       var frame = _node.frame();
-      var transformedFrame = AWE.UI.Map.mc2vc(frame);
+      var transformedFrame = _view.controller().mc2vc(frame);
       return AWE.Geometry.createPoint(
         (position.x - frame.origin.x)*transformedFrame.size.width/frame.size.width,
         (position.y - frame.origin.y)*transformedFrame.size.height/frame.size.height
@@ -123,7 +123,7 @@ AWE.UI = (function(module) {
 
     var _globalToLocalCooridnates = function(position) {
       var frame = _node.frame();
-      var transformedFrame = AWE.UI.Map.mc2vc(frame);
+      var transformedFrame = _view.controller().mc2vc(frame);
       return AWE.Geometry.createPoint(
         (position.x - frame.origin.x)*transformedFrame.size.width/frame.size.width,
         (position.y - frame.origin.y)*transformedFrame.size.height/frame.size.height
@@ -133,7 +133,7 @@ AWE.UI = (function(module) {
     var _updateRegionStreets = function() {
 
       var frame = _node.frame();
-      var transformedFrame = AWE.UI.Map.mc2vc(_node.frame());
+      var transformedFrame = _view.controller().mc2vc(_node.frame());
 
       if (_node.isLeaf() && _view.detailLevel() >= AWE.Config.MAP_REGION_STREETS_MIN_DETAIL_LEVEL) {
         _regionStreetsContainer.visible = true;
@@ -210,7 +210,7 @@ AWE.UI = (function(module) {
 
     var _updateVillageStreets = function() {
       var frame = _node.frame();
-      var transformedFrame = AWE.UI.Map.mc2vc(_node.frame());
+      var transformedFrame = _view.controller().mc2vc(_node.frame());
 
       if (_view.detailLevel() >= AWE.Config.MAP_LOCATION_MIN_DETAIL_LEVEL && _node.region() != null && _node.region().locations() != null) {
         _villageStreetsContainer.visible = true;
@@ -253,13 +253,14 @@ AWE.UI = (function(module) {
     return that;
   };
 
-  module.createRegionView = function(_node, _layer) {
+  module.createRegionView = function(_node, _layer, _controller) {
     
     var spec = {
       id: _node.id(),
       frame: _node.frame(),
       scaled: true,
-      layer: _layer
+      layer: _layer,
+      controller: _controller,
     };
     
     var _view = module.createView(spec);
@@ -323,7 +324,7 @@ AWE.UI = (function(module) {
 
     var updateInformation = function(detail) {
       
-      var frame = AWE.UI.Map.mc2vc(_view.frame());      
+      var frame = _view.controller().mc2vc(_view.frame());      
       
       if (!_debugText && detail > -1 && AWE.Config.MAP_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
         _debugText = new Text();
@@ -414,7 +415,7 @@ AWE.UI = (function(module) {
     };
     
     _view.detailLevel = function() {
-      var frame = AWE.UI.Map.mc2vc(_view.frame());      
+      var frame = _view.controller().mc2vc(_view.frame());      
       if (frame.size.width < 128) {
         return 0;
       }
@@ -431,7 +432,7 @@ AWE.UI = (function(module) {
 
     _view.redraw = function() {
 
-      var frame = AWE.UI.Map.mc2vc(_view.frame());
+      var frame = _view.controller().mc2vc(_view.frame());
       var alpha = _view.alpha(frame.size.width);
       var container = _view.container();
       

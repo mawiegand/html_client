@@ -16,13 +16,14 @@ AWE.UI = (function(module) {
       alphaMax: AWE.Config.MAPPING_FORTRESS_SIZE * 2,
       frame: _node.frame(),
       scaled: false,
-      layer: _layer
+      layer: _layer,
+      controller: _controller,
     };
 
     var _node = _node;
     var _view = module.createView(spec);
     _view.detailLevel = function() {
-      var frame = AWE.UI.Map.mc2vc(_view.frame());      
+      var frame = _view.controller().mc2vc(_view.frame());      
       if (frame.size.width < 128) {
         return 0;
       }
@@ -36,13 +37,12 @@ AWE.UI = (function(module) {
         return 3;
       }
     }
-    var _controller = _controller;
 
     var _locationCache = [];
 
     var _globalToLocalCooridnates = function(position) {
       var frame = _node.frame();
-      var transformedFrame = AWE.UI.Map.mc2vc(frame);
+      var transformedFrame = _view.controller().mc2vc(frame);
       return AWE.Geometry.createPoint(
         (position.x - frame.origin.x)*transformedFrame.size.width/frame.size.width,
         (position.y - frame.origin.y)*transformedFrame.size.height/frame.size.height
@@ -50,7 +50,7 @@ AWE.UI = (function(module) {
     };
 
     that.redraw = function() {
-      var frame = AWE.UI.Map.mc2vc(_view.frame());
+      var frame = _view.controller().mc2vc(_view.frame());
       var container = _view.container();
       container.x = frame.origin.x;
       container.y = frame.origin.y;
@@ -135,7 +135,8 @@ AWE.UI = (function(module) {
       alphaMax: AWE.Config.MAPPING_FORTRESS_SIZE * 2,
       frame: node.frame(),
       scaled: false,
-      layer: _layer
+      layer: _layer,
+      controller: _controller,
     };
     
     var _view = module.createView(spec);
@@ -173,12 +174,12 @@ AWE.UI = (function(module) {
     };
     _fieldBitmap.onMouseOver = function(evt) {
       _mouseover = true;
-      _controller.updateView();
+      _view.controller().updateView();
     };
     _fieldBitmap.onMouseOut = function(evt) {
       _mouseover = false;
       _view.container().removeChild(_easementBitmap);
-      _controller.updateView();
+      _view.controller().updateView();
     };
     
     _fieldBitmap.view = _view;
@@ -241,7 +242,7 @@ AWE.UI = (function(module) {
 
     _view.redraw = function() {
 
-      var frame = AWE.UI.Map.mc2vc(_view.frame());
+      var frame = _view.controller().mc2vc(_view.frame());
       var alpha = _view.alpha(frame.size.width);
       var container = _view.container();
       
@@ -259,7 +260,7 @@ AWE.UI = (function(module) {
       container.addChildAt(_ownerNameText);
       container.addChildAt(_ownerNameShape);
       
-      var pos = AWE.UI.Map.mc2vc(_view.position());        
+      var pos = _view.controller().mc2vc(_view.position());        
       container.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
       container.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 1.4;
       container.alpha = alpha;
@@ -268,23 +269,23 @@ AWE.UI = (function(module) {
     };
 
     _view.select = function() {
-      if (_controller.selectedView && _controller.selectedView.unselect) {
-        _controller.selectedView.unselect();
+      if (_view.controller().selectedView && _view.controller().selectedView.unselect) {
+        _view.controller().selectedView.unselect();
       }
       _selected = true;
-      _controller.selectedView = _view;
-      _controller.updateView();
+      _view.controller().selectedView = _view;
+      _view.controller().updateView();
     }
     
     _view.unselect = function() {
       _selected = false;
-      _controller.selectedView = null;
+      _view.controller().selectedView = null;
       _view.container().removeChild(_enterButtonBitmap);
       _view.container().removeChild(_enterButtonText);
       _view.container().removeChild(_attackButtonBitmap);
       _view.container().removeChild(_attackButtonText);
       _view.container().removeChild(_selectShape);
-      _controller.updateView();
+      _view.controller().updateView();
     }
     
     return _view;
