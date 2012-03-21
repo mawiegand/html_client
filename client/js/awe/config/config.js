@@ -26,11 +26,14 @@ AWE.Config = (function(module) {
   module.MAP_REGION_STREETS_COLOR = "#857d66"; //#444
   module.MAP_REGION_STREETS_WIDTH = 2; 
 
+  module.MAP_VILLAGE_STREETS_COLOR = "#EEE894"; //#444
+  module.MAP_VILLAGE_STREETS_WIDTH = 2; 
+
   module.MAP_VILLAGE_SPOT_WIDTH = 25;
   module.MAP_VILLAGE_SPOT_HEIGHT = 15;
   //frame.width * MAP_REGION_STREETS_WIDTH = offset from the broder away
   module.MAP_VILLAGE_SPOT_BORDER_MARGIN = 0.1;
-  module.MAP_VILLAGE_SPOT_COLOR = Graphics.getRGB(0,0,0,1.0);
+  module.MAP_VILLAGE_SPOT_COLOR = "#EEE894";
 
   //image cache
   module.IMAGE_CACHE_LOAD_LIST = {
