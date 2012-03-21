@@ -6,6 +6,18 @@
  
 var AWE = window.AWE || {};
 
+AWE.memoizer = function(memo, formula) {
+  var recur = function () {
+    var result = memo;
+    if (memo == null) {
+      result = formula(recur);
+      memo = result;
+    }
+    return result;
+  };
+  return recur;
+};
+
 AWE.Memoization = (function(module) {
   
   return {

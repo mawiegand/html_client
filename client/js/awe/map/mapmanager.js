@@ -160,6 +160,7 @@ AWE.Map = (function(module) {
           node.region().startUpdate();
           $.getJSON(AWE.Config.MAP_SERVER_BASE+'regions/'+node.region().id(), function(data) {
             var region = AWE.Map.createRegion(data);
+            region.setNode(node);
             node.region().updateFromRegion(region);
             node.region().endUpdate();
             if (callback) callback(node.region());
