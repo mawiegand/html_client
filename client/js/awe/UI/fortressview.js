@@ -7,18 +7,20 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
           
-  module.createFortressView = function(_node, _layer, _controller) {
+  module.createFortressView = function(node, _layer, _controller) {
 
     var spec = {
-      id: _node.id(),
+      id: node.id(),
       alphaMin: AWE.Config.MAPPING_FORTRESS_SIZE + 20,
       alphaMax: AWE.Config.MAPPING_FORTRESS_SIZE * 2,
-      frame: _node.frame(),
+      frame: node.frame(),
       scaled: false,
       layer: _layer
     };
     
     var _view = module.createView(spec);
+    
+    var _node = node;
 
     var _selected = false;
     var _mouseover = false;
@@ -38,6 +40,7 @@ AWE.UI = (function(module) {
     }
     
     _fieldBitmap = new Bitmap(AWE.UI.ImageCache.getImage(fortressImageName));
+    
 
     _fieldBitmap.onClick = function(evt) {
       log('bitmap', _fieldBitmap);
@@ -49,12 +52,10 @@ AWE.UI = (function(module) {
       }
     };
     _fieldBitmap.onMouseOver = function(evt) {
-      log('rein');
       _mouseover = true;
       _controller.updateView();
     };
     _fieldBitmap.onMouseOut = function(evt) {
-      log('raus');
       _mouseover = false;
       _view.container().removeChild(_easementBitmap);
       _controller.updateView();
@@ -62,12 +63,40 @@ AWE.UI = (function(module) {
     
     _fieldBitmap.view = _view;
     
-    var _easementBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/easement"));    
+    var _easementBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/easement"));
+    _easementBitmap.y = -AWE.Config.MAPPING_FORTRESS_SIZE;
+        
     var _buttonBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/button"));
+    _buttonBitmap.x = -AWE.Config.MAPPING_FORTRESS_SIZE;
+    _buttonBitmap.y = +AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+    _buttonBitmap.onClick = function() {
+      log('button onClick');
+    };
+   
+    var _ownerNameText = new Text(_node.region().ownerName(), "12px Arial", "#000");
+    _ownerNameText.textAlign = "center";
+    _ownerNameText.textBaseline = "top";
+    _ownerNameText.x = AWE.Config.MAPPING_FORTRESS_SIZE / 2
+    _ownerNameText.y = AWE.Config.MAPPING_FORTRESS_SIZE;
+    
+    
+    // var color;
+    // if (node.region())
+    
+    // 'rgba(0, 0, 0 ,0.5)'
+    
+    var _g = new Graphics();
+    _g.setStrokeStyle(1);
+    _g.beginStroke(Graphics.getRGB(0,0,0));
+    _g.beginFill(Graphics.getRGB(255,0,0));
+    _g.drawEllipse(0,  AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
+    var _selectShape = new Shape(_g);    
     
     _view.position = function() {
       return AWE.Geometry.createPoint(_view.frame().origin.x + _view.frame().size.width / 2, _view.frame().origin.y + _view.frame().size.height / 2);
     };
+    
+    _view.node = function(){ return _node};
 
     _view.redraw = function() {
 
@@ -77,14 +106,13 @@ AWE.UI = (function(module) {
       
       container.addChildAt(_fieldBitmap, 0);
       if (_selected) {
-        _buttonBitmap.x = -AWE.Config.MAPPING_FORTRESS_SIZE;
-        _buttonBitmap.y = +AWE.Config.MAPPING_FORTRESS_SIZE / 2;
         container.addChildAt(_buttonBitmap, 1);
+        container.addChildAt(_selectShape, 0);
       }
       if (_mouseover) {
-        _easementBitmap.y = -AWE.Config.MAPPING_FORTRESS_SIZE;
         container.addChildAt(_easementBitmap, 2);
       }
+      container.addChildAt(_ownerNameText);
 
       var pos = AWE.UI.Map.mc2vc(_view.position());        
       container.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
@@ -95,7 +123,6 @@ AWE.UI = (function(module) {
     };
 
     _view.select = function() {
-      log('select', _view.id());
       if (_controller.selectedView && _controller.selectedView.unselect) {
         _controller.selectedView.unselect();
       }
@@ -105,10 +132,10 @@ AWE.UI = (function(module) {
     }
     
     _view.unselect = function() {
-      log('unselect', _view.id());
       _selected = false;
-      _controller.selectedView = null;
-      _view.container().removeChildAt(1);
+      module.Map.selectedView = null;
+      _view.container().removeChild(_buttonBitmap);
+      _view.container().removeChild(_selectShape);
       _controller.updateView();
     }
     
