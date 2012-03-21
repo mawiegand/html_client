@@ -1,23 +1,57 @@
-/* Author: Patrick Fox <patrick@5dlab.com>
+/* Author: Sascha Lange <sascha@5dlab.com>
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
 
 var AWE = AWE || {};
 
-AWE.UI = (function(module) {
+AWE.Controller = (function(module) {
           
-  /*** Map ***/  
-  module.Map = (function() {
-  
-    var that = {};
-        
+  module.createMapController = function(anchor) {
+    
+    var _stages = new Array(3);
+    var _canvas = new Array(3);
+    
+    var that = module.createScreenController(anchor);   
+    
+    var _super = {};
+    _super.init = that.init; 
+    
+    that.selectedView = false;
+    
+    /** intializes three stages for displaying the map-background,
+     * the playing pieces (armies, fortresses, settlements), and 
+     * the HUD. */
+    that.init = function() {
+      
+      _super.init();
+      
+      that.anchor().append('<canvas id="layer0"></canvas>');
+      _canvas[0] = $('#layer0')[0];
+      _stages[0] = new Stage(_canvas[0]);
+      _stages[0].onClick = function() { 
+        if (that.selectedView && that.selectedView.unselect) {
+          that.selectedView.unselect();
+        }
+      };
+   
+      that.anchor().append('<canvas id="layer1"></canvas>');
+      _canvas[1] = $('#layer1')[0];
+      _stages[1] = new Stage(_canvas[1]);
+      _stages[1].enableMouseOver();
+      
+      that.anchor().append('<canvas id="layer2"></canvas>');
+      _canvas[2] = $('#layer2')[0];
+      _stages[2] = new Stage(_canvas[2]);
+      _stages[2].enableMouseOver();
+    };
+    
+    
     var windowSize;
     
     var mc2vcScale;
     var mc2vcTrans;
     
-    that.selectedView = false;
     
     that.mc2vc = function(obj) {
       
@@ -74,22 +108,12 @@ AWE.UI = (function(module) {
         return obj / mc2vcScale;
       }
     }
-
-    var _canvas0 = $('#layer0')[0];
-    var _layer0 = new Stage(_canvas0);
-    _layer0.onClick = function() {
-      if (that.selectedView && that.selectedView.unselect) {
-        that.selectedView.unselect();
-      }
-    };
-   
-    var _canvas1 = $('#layer1')[0];
-    var _layer1 = new Stage(_canvas1);
-    _layer1.enableMouseOver()
     
-    var _canvas2 = $('#layer2')[0];
-    var _layer2 = new Stage(_canvas2);
-    _layer2.enableMouseOver()
+    AWE.UI.Map = {
+      mc2vc: that.mc2vc,
+      vc2mc: that.vc2mc,
+    };
+
         
     var startTime = 0;
     var numFrames = 0;
@@ -105,17 +129,17 @@ AWE.UI = (function(module) {
     that.toString = function() {
     };
     
-    that.init = function(startRectMC) {
+    that.initPosition = function(startRectMC) {
       windowSize = AWE.Geometry.createSize($(window).width(), $(window).height());
       
-      _canvas0.width = windowSize.width;
-      _canvas0.height = windowSize.height;
+      _canvas[0].width = windowSize.width;
+      _canvas[0].height = windowSize.height;
     
-      _canvas1.width = windowSize.width;
-      _canvas1.height = windowSize.height;
+      _canvas[1].width = windowSize.width;
+      _canvas[1].height = windowSize.height;
     
-      _canvas2.width = windowSize.width;
-      _canvas2.height = windowSize.height;    
+      _canvas[2].width = windowSize.width;
+      _canvas[2].height = windowSize.height;    
 
       mc2vcScale = 1. * windowSize.width / startRectMC.size.width;
       mc2vcTrans = AWE.Geometry.createPoint(
@@ -126,7 +150,7 @@ AWE.UI = (function(module) {
     
     var level = function() {
       var level = 0;
-      var rootWidthVC = AWE.UI.Map.mc2vc(module.rootNode.frame().size.width);
+      var rootWidthVC = that.mc2vc(AWE.Map.Manager.rootNode().frame().size.width);
       
       while (rootWidthVC > AWE.Config.MAP_MIN_VISIBLE_TILES * 2) {
         level++;
@@ -173,11 +197,11 @@ AWE.UI = (function(module) {
         
         $('#debug2').text('mc2vcScale: ' + mc2vcScale);
                
-        var nodes = AWE.Map.getNodesInAreaAtLevel(module.rootNode, vc2mc(rect), level(), false, needRedraw);
+        var nodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), vc2mc(rect), level(), false, needRedraw);
         
         if (frame % 30 == 0) {
           if (! requestingMapNodesFromServer &&
-              AWE.Map.numMissingNodesInAreaAtLevel(module.rootNode, vc2mc(rect), level()) > 0) {
+              AWE.Map.numMissingNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), vc2mc(rect), level()) > 0) {
                 
             requestingMapNodesFromServer = true;
             // log('requesting more nodes for level: ' + level());
@@ -190,7 +214,7 @@ AWE.UI = (function(module) {
         
         if ((frame+15) % 30 == 0) {
           if (! requestingMapNodesFromServer) {
-            AWE.Map.Manager.fetchMissingRegionsForArea(module.rootNode, vc2mc(rect), level(), function() {
+            AWE.Map.Manager.fetchMissingRegionsForArea(AWE.Map.Manager.rootNode(), vc2mc(rect), level(), function() {
               that.updateView();
             })
           }
@@ -225,18 +249,18 @@ AWE.UI = (function(module) {
               newRegionViews[nodes[i].id()] = view;
             }
             else {
-              newRegionViews[nodes[i].id()] = module.createRegionView(nodes[i], _layer0);
+              newRegionViews[nodes[i].id()] = AWE.UI.createRegionView(nodes[i], _stages[0]);
             }
           }
           // new hash is old hash
           regionViews = newRegionViews;        
-          // clear layer0
-          _layer0.removeAllChildren();
+          // clear _stages[0]
+          _stages[0].removeAllChildren();
           // redraw all views in viewHash        
           for (var id in regionViews) {
              regionViews[id].redraw();
           }
-          _layer0.update();
+          _stages[0].update();
           
           // layer 1: locations
           var newFortressViews = {}
@@ -245,15 +269,15 @@ AWE.UI = (function(module) {
               newFortressViews[nodes[i].id()] = view;
             }
             else if (nodes[i].isLeaf() && nodes[i].region()) {
-              newFortressViews[nodes[i].id()] = module.createFortressView(nodes[i], _layer1);     
+              newFortressViews[nodes[i].id()] = AWE.UI.createFortressView(nodes[i], _stages[1], that);     
             }
           }
           fortressViews = newFortressViews;
-          _layer1.removeAllChildren();
+          _stages[1].removeAllChildren();
           for (var id in fortressViews) {
              fortressViews[id].redraw();
           }
-          _layer1.update();
+          _stages[1].update();
           
           
           // old flag, TODO remove?
@@ -271,18 +295,18 @@ AWE.UI = (function(module) {
     $('#layers').mouseup(function(evt){
       if (!scrollingStarted) {
         var cObj;
-        if (_layer2.hitTest(evt.pageX, evt.pageY)) {
+        if (_stages[2].hitTest(evt.pageX, evt.pageY)) {
           //
         }
-        else if (_layer1.hitTest(evt.pageX, evt.pageY)) {
-          cObj = _layer1.getObjectUnderPoint(evt.pageX, evt.pageY);
+        else if (_stages[1].hitTest(evt.pageX, evt.pageY)) {
+          cObj = _stages[1].getObjectUnderPoint(evt.pageX, evt.pageY);
           if (cObj && cObj.onClick) {
             cObj.onClick();
           }
         }
-        else if (_layer0.hitTest(evt.pageX, evt.pageY)) {
-          if (_layer0.onClick) {
-            _layer0.onClick(evt);
+        else if (_stages[0].hitTest(evt.pageX, evt.pageY)) {
+          if (_stages[0].onClick) {
+            _stages[0].onClick(evt);
           }         
         }
       }
@@ -379,14 +403,19 @@ AWE.UI = (function(module) {
     $(window).resize(function(){
       that.updateView();
     });
+
+
+    that.runloop = function() {
+      that.render();
+    };
     
     return that;
-  }());  
-      
+  };
+    
+    
   return module;
     
-}(AWE.UI || {}));
-
+}(AWE.Controller || {}));
 
 
 

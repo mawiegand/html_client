@@ -7,22 +7,27 @@ var AWE = AWE || {};
 
 AWE.Controller = (function(module) {
           
-  module.createViewController = function(view) {
+  module.createScreenController = function(anchor) {
     
-    var _view = view;
+    var _domElement = $(anchor);
     
-    that = {};
+    var that = {};
     
-    that.view = function() { return view; };
-    that.setView = function(view) { _view = view; };
+    that.anchor = function() {
+      return _domElement;
+    };
     
+    that.init = function() {
+    };
+        
     that.runloop = function() {
-      view.render();
     };
     
     return that;
     
   };
+
+    
     
   return module;
     
