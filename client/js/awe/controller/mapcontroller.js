@@ -178,14 +178,14 @@ AWE.Controller = (function(module) {
       newWindowSize = AWE.Geometry.createSize($(window).width(), $(window).height());
        
       if (windowSize.width !== newWindowSize.width) {
-        _canvas0.width = newWindowSize.width;
-        _canvas1.width = newWindowSize.width;
+        _canvas[0].width = newWindowSize.width;
+        _canvas[1].width = newWindowSize.width;
         windowSize.width = newWindowSize.width;
        }
        
        if (windowSize.height !== newWindowSize.height) {
-        _canvas0.height = newWindowSize.height;
-        _canvas1.height = newWindowSize.height;
+        _canvas[0].height = newWindowSize.height;
+        _canvas[1].height = newWindowSize.height;
         windowSize.height = newWindowSize.height; 
       }     
             
