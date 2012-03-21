@@ -98,12 +98,11 @@ AWE.UI = (function(module) {
     var requestingMapNodesFromServer = false;
     var needRedraw;
     
-    that.updateView = function() {
-      needRedraw = true;
-    }
+    that.updateView = function() { needRedraw = true; }
     
-    that.toString = function() {
-    };
+    that.toString = function() {};
+    
+    that.windowSize = function() { return windowSize; };
     
     that.init = function(startRectMC) {
       windowSize = AWE.Geometry.createSize($(window).width(), $(window).height());
@@ -254,7 +253,10 @@ AWE.UI = (function(module) {
              fortressViews[id].redraw();
           }
           _layer1.update();
-          
+
+          _layer2.removeAllChildren();          
+          module.createDetailView(windowSize, _layer2).redraw();
+          _layer2.update();
           
           // old flag, TODO remove?
           needRedraw = false;
@@ -266,9 +268,9 @@ AWE.UI = (function(module) {
     };
     
     var scrollingStarted = false;
-    
+        
     // click-events in layers
-    $('#layers').mouseup(function(evt){
+    $('#layers').click(function(evt){
       if (!scrollingStarted) {
         var cObj;
         if (_layer2.hitTest(evt.pageX, evt.pageY)) {
