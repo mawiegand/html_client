@@ -102,7 +102,9 @@ AWE.UI = (function(module) {
             if (_locationCache[i].bitmap != null) {
               var bitmap = _locationCache[i].bitmap;
               bitmap.regX = bitmap.image.width/2;
-              bitmap.regY = bitmap.image.width/2;
+              bitmap.regY = bitmap.image.height*0.78;
+              bitmap.scaleX = 0.8;
+              bitmap.scaleY = 0.8;
             }
           }
         }
