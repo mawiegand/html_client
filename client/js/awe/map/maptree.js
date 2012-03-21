@@ -133,7 +133,7 @@ AWE.Map = (function(module) {
           streetEndPosition = {
             x: basePositon.x + frame.size.width/4, 
             y: basePositon.y };
-          basePositon.y += frame.size.height*AWE.Config.MAP_VILLAGE_SPOT_BORDER_MARGIN;
+          basePositon.y += frame.size.height*AWE.Config.MAP_LOCATION_SPOT_BORDER_MARGIN;
         } else if (_slot < 5) {
           //slot 3,4 right
           basePositon = {
@@ -144,7 +144,7 @@ AWE.Map = (function(module) {
           streetEndPosition = {
             x: basePositon.x, 
             y: basePositon.y + frame.size.height/4};
-          basePositon.x -= frame.size.width*AWE.Config.MAP_VILLAGE_SPOT_BORDER_MARGIN;
+          basePositon.x -= frame.size.width*AWE.Config.MAP_LOCATION_SPOT_BORDER_MARGIN;
         } else if (_slot < 7) {
           //slot 5,6 bottom
           basePositon = {
@@ -155,7 +155,7 @@ AWE.Map = (function(module) {
           streetEndPosition = {
             x: basePositon.x + frame.size.width/4, 
             y: basePositon.y};
-          basePositon.y -= frame.size.height*AWE.Config.MAP_VILLAGE_SPOT_BORDER_MARGIN;
+          basePositon.y -= frame.size.height*AWE.Config.MAP_LOCATION_SPOT_BORDER_MARGIN;
         } else if (_slot < 9){
           //slot 7,8 left
           basePositon = {
@@ -166,7 +166,7 @@ AWE.Map = (function(module) {
           streetEndPosition = {
             x: basePositon.x, 
             y: basePositon.y + frame.size.height/4};
-          basePositon.x += frame.size.width*AWE.Config.MAP_VILLAGE_SPOT_BORDER_MARGIN; 
+          basePositon.x += frame.size.width*AWE.Config.MAP_LOCATION_SPOT_BORDER_MARGIN; 
         } else {
           console.error("Can't callculate positon for slot that have a higher number than 8");
         }

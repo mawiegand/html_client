@@ -27,16 +27,18 @@ AWE.Config = (function(module) {
   module.MAP_REGION_STREETS_WIDTH = 2; 
   module.MAP_REGION_STREETS_MIN_DETAIL_LEVEL = 1;
 
-  module.MAP_VILLAGE_STREETS_COLOR = "#b1ad6e"; //#444
-  module.MAP_VILLAGE_STREETS_WIDTH = 1; 
-  module.MAP_VILLAGE_STREETS_MIN_DETAIL_LEVEL = 2;
+  module.MAP_LOCATION_STREETS_COLOR = "#b1ad6e"; //#444
+  module.MAP_LOCATION_STREETS_WIDTH = 1; 
+  //module.MAP_LOCATION_STREETS_MIN_DETAIL_LEVEL = 2;
 
-  module.MAP_VILLAGE_SPOT_WIDTH = 25;
-  module.MAP_VILLAGE_SPOT_HEIGHT = 15;
-  module.MAP_VILLAGE_SPOT_MIN_DETAIL_LEVEL = 2;
+  module.MAP_LOCATION_SPOT_WIDTH = 25;
+  module.MAP_LOCATION_SPOT_HEIGHT = 15;
+  //module.MAP_LOCATION_SPOT_MIN_DETAIL_LEVEL = 2;
   //frame.width * MAP_REGION_STREETS_WIDTH = offset from the broder away
-  module.MAP_VILLAGE_SPOT_BORDER_MARGIN = 0.1;
-  module.MAP_VILLAGE_SPOT_COLOR = "#b1ad6e";//"#EEE894";
+  module.MAP_LOCATION_SPOT_BORDER_MARGIN = 0.1;
+  module.MAP_LOCATION_SPOT_COLOR = "#b1ad6e";//"#EEE894";
+
+  module.MAP_LOCATION_MIN_DETAIL_LEVEL = 2;
 
   //image cache
   module.IMAGE_CACHE_LOAD_LIST = {
@@ -57,6 +59,12 @@ AWE.Config = (function(module) {
     "map/button1": 'images/green_button.png',
     "map/button2": 'images/red_button.png',
     "map/button3": 'images/blue_button.png',
+    "map/colony/small": "images/settlements/colonysmall.png",
+    "map/colony/middle": "images/settlements/colonymiddle.png",
+    "map/colony/big": "images/settlements/colonybig.png",
+
+    "map/outpost" : "images/settlements/outpost.png",
+
     "map/easement": "images/verbot.png",
     "map/region/icon": "images/dot.png"
   };
