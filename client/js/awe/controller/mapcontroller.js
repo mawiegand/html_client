@@ -278,6 +278,13 @@ AWE.Controller = (function(module) {
           for (var id in fortressViews) {
              fortressViews[id].redraw();
           }
+          //locations
+          ///TODO don't recreate
+          var newLocationViews = {};
+          for (var i = 0; i < nodes.length; i++) {
+            newLocationViews[nodes[i].id()] = AWE.UI.createLocationsView(nodes[i], _stages[1], that);
+            newLocationViews[nodes[i].id()].redraw();
+          }
 
           _stages[1].update();
 
