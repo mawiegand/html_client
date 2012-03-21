@@ -17,4 +17,10 @@ window.requestAnimFrame = (function(callback){
 
 window.random = function(max) {
   return Math.floor(Math.random() * max);
-}
+};
+
+window.sign = function(x) {
+	if (x > 0) return 1;
+	if (x < 0) return -1;
+	return 0;
+};
