@@ -4,6 +4,8 @@ window.WACKADOO = (function(module) {
   /** creates an application singleton. */
   module.createApplication = function() {
     
+    var _rootViewController = null;
+    
     var that = {};
     
     that.init = function() {
@@ -20,6 +22,8 @@ window.WACKADOO = (function(module) {
       }
     
       AWE.UI.Map.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
+      
+      _rootViewController = AWE.Controller.createViewController(AWE.UI.Map);
     };
     
     that.run = function() {
@@ -27,10 +31,9 @@ window.WACKADOO = (function(module) {
     };
     
     that.runloop = function() {
+      _rootViewController.runloop();  // hand over control to present view controller
       
-      AWE.UI.Map.render();
-      
-      window.requestAnimFrame(that.runloop); // request next animation frame
+      window.requestAnimFrame(that.runloop);  // request next animation frame that will initiate the next cycle of the runloop
     }
     
     return that;
