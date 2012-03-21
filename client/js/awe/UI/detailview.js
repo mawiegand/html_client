@@ -7,7 +7,7 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
           
-  module.createDetailView = function(_windowSize, _layer) {
+  module.createDetailView = function(_windowSize, _layer, _controller) {
 
     var spec = {
       frame: AWE.Geometry.createRect(0, 0, _windowSize.width, _windowSize.height),
@@ -40,18 +40,18 @@ AWE.UI = (function(module) {
 
     _view.redraw = function() {
 
-      if (module.Map.selectedView) {
+      if (_controller.selectedView) {
         var alpha = 1;
         var container = _view.container();
         
-        var node = module.Map.selectedView.node();
+        var node = _controller.selectedView.node();
         var region = node.region();
         
         _ownerNameText.text = region.ownerName();
         _allianceNameText.text = region.allianceTag();
                 
-        container.x = module.Map.windowSize().width - 400;
-        container.y = module.Map.windowSize().height - 150;
+        container.x = _controller.windowSize().width - 400;
+        container.y = _controller.windowSize().height - 150;
         container.alpha = alpha;
   
         container.addChildAt(_ownerNameText);

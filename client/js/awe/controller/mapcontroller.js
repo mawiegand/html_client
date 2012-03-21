@@ -280,7 +280,7 @@ AWE.Controller = (function(module) {
           _stages[1].update();
 
           _stages[2].removeAllChildren();          
-          module.createDetailView(windowSize, _layer2).redraw();
+          AWE.UI.createDetailView(windowSize, _stages[2], that).redraw();
           _stages[2].update();
           _stages[2].update();
                     
