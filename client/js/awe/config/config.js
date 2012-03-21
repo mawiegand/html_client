@@ -54,7 +54,9 @@ AWE.Config = (function(module) {
     "map/fortress/middle": 'images/settlements/fortressmiddle.png',
     "map/fortress/large": 'images/settlements/fortresslarge.png',
 
-    "map/button": 'images/army.png',
+    "map/button1": 'images/green_button.png',
+    "map/button2": 'images/red_button.png',
+    "map/button3": 'images/blue_button.png',
     "map/easement": "images/verbot.png",
     "map/region/icon": "images/dot.png"
   };

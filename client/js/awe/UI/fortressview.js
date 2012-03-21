@@ -66,31 +66,52 @@ AWE.UI = (function(module) {
     var _easementBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/easement"));
     _easementBitmap.y = -AWE.Config.MAPPING_FORTRESS_SIZE;
         
-    var _buttonBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/button"));
-    _buttonBitmap.x = -AWE.Config.MAPPING_FORTRESS_SIZE;
-    _buttonBitmap.y = +AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-    _buttonBitmap.onClick = function() {
-      log('button onClick');
+    var _enterButtonBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/button1"));
+    _enterButtonBitmap.x = -AWE.Config.MAPPING_FORTRESS_SIZE;
+    _enterButtonBitmap.y = +AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+    _enterButtonBitmap.onClick = function() {
+      log('_enterButtonBitmap onClick');
+    };
+    
+    var _enterButtonText = new Text('Enter', "12px Arial", "#000");
+    _enterButtonText.textAlign = "center";
+    _enterButtonText.textBaseline = "middle";
+    _enterButtonText.x = -AWE.Config.MAPPING_FORTRESS_SIZE / 2
+    _enterButtonText.y = AWE.Config.MAPPING_FORTRESS_SIZE;
+
+    var _attackButtonBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/button2"));
+    _attackButtonBitmap.x = AWE.Config.MAPPING_FORTRESS_SIZE;
+    _attackButtonBitmap.y = AWE.Config.MAPPING_FORTRESS_SIZE / 2;
+    _attackButtonBitmap.onClick = function() {
+      log('_attackButtonBitmap onClick');
     };
    
-    var _ownerNameText = new Text(_node.region().ownerName(), "12px Arial", "#000");
+    var _attackButtonText = new Text('Attack', "12px Arial", "#000");
+    _attackButtonText.textAlign = "center";
+    _attackButtonText.textBaseline = "middle";
+    _attackButtonText.x = AWE.Config.MAPPING_FORTRESS_SIZE * 3 / 2
+    _attackButtonText.y = AWE.Config.MAPPING_FORTRESS_SIZE;
+
+    var _ownerNameText = new Text(_node.region().ownerName(), "12px Arial", "#FFF");
     _ownerNameText.textAlign = "center";
     _ownerNameText.textBaseline = "top";
     _ownerNameText.x = AWE.Config.MAPPING_FORTRESS_SIZE / 2
     _ownerNameText.y = AWE.Config.MAPPING_FORTRESS_SIZE;
     
+    log('_ownerNameText', _ownerNameText.getMeasuredWidth());
     
-    // var color;
-    // if (node.region())
-    
-    // 'rgba(0, 0, 0 ,0.5)'
-    
-    var _g = new Graphics();
-    _g.setStrokeStyle(1);
-    _g.beginStroke(Graphics.getRGB(0,0,0));
-    _g.beginFill(Graphics.getRGB(255,0,0));
-    _g.drawEllipse(0,  AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
-    var _selectShape = new Shape(_g);    
+    var _ownerNameGraphics = new Graphics();
+    _ownerNameGraphics.setStrokeStyle(0);
+    _ownerNameGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
+    _ownerNameGraphics.drawRoundRect((AWE.Config.MAPPING_FORTRESS_SIZE - _ownerNameText.getMeasuredWidth()) / 2 - 5, AWE.Config.MAPPING_FORTRESS_SIZE - 4, _ownerNameText.getMeasuredWidth() + 10, _ownerNameText.getMeasuredLineHeight() + 10, 3);
+    var _ownerNameShape = new Shape(_ownerNameGraphics);
+
+    var _selectGraphics = new Graphics();
+    _selectGraphics.setStrokeStyle(1);
+    _selectGraphics.beginStroke(Graphics.getRGB(0,0,0));
+    _selectGraphics.beginFill(Graphics.getRGB(255,0,0));
+    _selectGraphics.drawEllipse(0,  AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
+    var _selectShape = new Shape(_selectGraphics);    
     
     _view.position = function() {
       return AWE.Geometry.createPoint(_view.frame().origin.x + _view.frame().size.width / 2, _view.frame().origin.y + _view.frame().size.height / 2);
@@ -104,16 +125,20 @@ AWE.UI = (function(module) {
       var alpha = _view.alpha(frame.size.width);
       var container = _view.container();
       
-      container.addChildAt(_fieldBitmap, 0);
+      container.addChild(_fieldBitmap);
       if (_selected) {
-        container.addChildAt(_buttonBitmap, 1);
+        container.addChild(_enterButtonBitmap);
+        container.addChild(_enterButtonText);
+        container.addChild(_attackButtonBitmap);
+        container.addChild(_attackButtonText);
         container.addChildAt(_selectShape, 0);
       }
       if (_mouseover) {
-        container.addChildAt(_easementBitmap, 2);
+        container.addChild(_easementBitmap);
       }
       container.addChildAt(_ownerNameText);
-
+      container.addChildAt(_ownerNameShape);
+      
       var pos = AWE.UI.Map.mc2vc(_view.position());        
       container.x = pos.x - AWE.Config.MAPPING_FORTRESS_SIZE / 2;
       container.y = pos.y - AWE.Config.MAPPING_FORTRESS_SIZE / 1.4;
@@ -134,7 +159,10 @@ AWE.UI = (function(module) {
     _view.unselect = function() {
       _selected = false;
       _controller.selectedView = null;
-      _view.container().removeChild(_buttonBitmap);
+      _view.container().removeChild(_enterButtonBitmap);
+      _view.container().removeChild(_enterButtonText);
+      _view.container().removeChild(_attackButtonBitmap);
+      _view.container().removeChild(_attackButtonText);
       _view.container().removeChild(_selectShape);
       _controller.updateView();
     }

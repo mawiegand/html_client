@@ -157,7 +157,7 @@ AWE.UI = (function(module) {
           for (var i = 0; i < numStreets; i++) {
             var s = createStreet(start, start, AWE.Config.MAP_REGION_STREETS_COLOR, AWE.Config.MAP_REGION_STREETS_WIDTH);
             _regionStreets.push(s);
-            console.log(s);
+            // console.log(s);
             _regionStreetsContainer.addChild(s.shape);
           }
         }
