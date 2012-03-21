@@ -7,7 +7,7 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
           
-  module.createFortressView = function(node, _layer) {
+  module.createFortressView = function(node, _layer, _controller) {
 
     var spec = {
       id: node.id(),
@@ -53,12 +53,12 @@ AWE.UI = (function(module) {
     };
     _fieldBitmap.onMouseOver = function(evt) {
       _mouseover = true;
-      module.Map.updateView();
+      _controller.updateView();
     };
     _fieldBitmap.onMouseOut = function(evt) {
       _mouseover = false;
       _view.container().removeChild(_easementBitmap);
-      module.Map.updateView();
+      _controller.updateView();
     };
     
     _fieldBitmap.view = _view;
@@ -123,12 +123,12 @@ AWE.UI = (function(module) {
     };
 
     _view.select = function() {
-      if (module.Map.selectedView && module.Map.selectedView.unselect) {
-        module.Map.selectedView.unselect();
+      if (_controller.selectedView && _controller.selectedView.unselect) {
+        _controller.selectedView.unselect();
       }
       _selected = true;
-      module.Map.selectedView = _view;
-      module.Map.updateView();
+      _controller.selectedView = _view;
+      _controller.updateView();
     }
     
     _view.unselect = function() {
@@ -136,7 +136,7 @@ AWE.UI = (function(module) {
       module.Map.selectedView = null;
       _view.container().removeChild(_buttonBitmap);
       _view.container().removeChild(_selectShape);
-      module.Map.updateView();
+      _controller.updateView();
     }
     
     return _view;
