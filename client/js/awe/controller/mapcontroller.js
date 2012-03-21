@@ -77,16 +77,15 @@ AWE.Controller = (function(module) {
         -1. * initialFrameModelCoordinates.origin.y * _frame.size.height / initialFrameModelCoordinates.size.height
       );
     };
-    
+        
     
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Coordinate Transformation
     //
     // ///////////////////////////////////////////////////////////////////////
-    
-    
-    
+
+    /** transform model coordinates to view coordinates */
     that.mc2vc = function(obj) {
       
       // if obj os rect
@@ -115,6 +114,7 @@ AWE.Controller = (function(module) {
       }
     }
 
+    /** transform view coordinates to model coordinates */
     var vc2mc = function(obj) {
       
       // if obj os rect
@@ -142,12 +142,7 @@ AWE.Controller = (function(module) {
         return obj / mc2vcScale;
       }
     }
-    
-   /* AWE.UI.Map = {
-      mc2vc: that.mc2vc,
-      vc2mc: that.vc2mc,
-    };*/
-
+  
 
     that.selectedView = function() {
       return _selectedView;
