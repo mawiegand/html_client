@@ -25,12 +25,15 @@ AWE.Config = (function(module) {
 
   module.MAP_REGION_STREETS_COLOR = "#857d66"; //#444
   module.MAP_REGION_STREETS_WIDTH = 2; 
+  module.MAP_REGION_STREETS_MIN_DETAIL_LEVEL = 1;
 
   module.MAP_VILLAGE_STREETS_COLOR = "#b1ad6e"; //#444
-  module.MAP_VILLAGE_STREETS_WIDTH = 2; 
+  module.MAP_VILLAGE_STREETS_WIDTH = 1; 
+  module.MAP_VILLAGE_STREETS_MIN_DETAIL_LEVEL = 2;
 
   module.MAP_VILLAGE_SPOT_WIDTH = 25;
   module.MAP_VILLAGE_SPOT_HEIGHT = 15;
+  module.MAP_VILLAGE_SPOT_MIN_DETAIL_LEVEL = 2;
   //frame.width * MAP_REGION_STREETS_WIDTH = offset from the broder away
   module.MAP_VILLAGE_SPOT_BORDER_MARGIN = 0.1;
   module.MAP_VILLAGE_SPOT_COLOR = "#b1ad6e";//"#EEE894";

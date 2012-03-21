@@ -60,7 +60,7 @@ AWE.UI = (function(module) {
 
     /** Updates all village spot locations and generates new DisplayObjects in the container **/
     that.update = function() {
-      if (_node.isLeaf() && _view.detailLevel() >= 2 && _node.region() != null && _node.region().locations() != null) {
+      if (_node.isLeaf() && _view.detailLevel() >= AWE.Config.MAP_VILLAGE_SPOT_MIN_DETAIL_LEVEL && _node.region() != null && _node.region().locations() != null) {
         _container.visible = true;
         var locations = _node.region().locations();
         for (var i = 1; i < locations.length; i++) {
@@ -110,12 +110,16 @@ AWE.UI = (function(module) {
     var _container = new Container();
     var _view = _view;
 
+    var _regionStreetsContainer = new Container();
+    _container.addChild(_regionStreetsContainer);
+    var _villageStreetsContainer = new Container();
+    _container.addChild(_villageStreetsContainer);
+
     var _regionStreets = [];
     var _villageStreets = [];
 
     that.container = function() { return _container; };
     that.regionStreets = function() {return _regionStreets; };
-    that.villiageSpots = function() { return _villiageSpots };
 
     var _globalToLocalCooridnates = function(position) {
       var frame = _node.frame();
@@ -131,7 +135,9 @@ AWE.UI = (function(module) {
       var frame = _node.frame();
       var transformedFrame = AWE.UI.Map.mc2vc(_node.frame());
 
-      if (_node.isLeaf() && _view.detailLevel() > 0) {
+      if (_node.isLeaf() && _view.detailLevel() >= AWE.Config.MAP_REGION_STREETS_MIN_DETAIL_LEVEL) {
+        _regionStreetsContainer.visible = true;
+
         var neighbours = _node.getNeighbourNodes();
 
         var start = AWE.Geometry.createPoint(
@@ -151,7 +157,8 @@ AWE.UI = (function(module) {
           for (var i = 0; i < numStreets; i++) {
             var s = createStreet(start, start, AWE.Config.MAP_REGION_STREETS_COLOR, AWE.Config.MAP_REGION_STREETS_WIDTH);
             _regionStreets.push(s);
-            _container.addChild(s.shape);
+            console.log(s);
+            _regionStreetsContainer.addChild(s.shape);
           }
         }
 
@@ -197,6 +204,8 @@ AWE.UI = (function(module) {
             streetI++;
           }
         }
+      } else {
+        _regionStreetsContainer.visible = false;
       }
     };
 
@@ -204,7 +213,9 @@ AWE.UI = (function(module) {
       var frame = _node.frame();
       var transformedFrame = AWE.UI.Map.mc2vc(_node.frame());
 
-      if (_node.isLeaf() && _view.detailLevel() > 0 && _node.region() != null && _node.region().locations() != null) {
+      if (_view.detailLevel() >= AWE.Config.MAP_VILLAGE_STREETS_MIN_DETAIL_LEVEL && _node.region() != null && _node.region().locations() != null) {
+        _villageStreetsContainer.visible = true;
+
         var locations = _node.region().locations();
         var start = AWE.Geometry.createPoint(
           transformedFrame.size.width / 2,
@@ -215,7 +226,7 @@ AWE.UI = (function(module) {
           for (var i = 1; i < locations.length; i++) {
             var s = createStreet(start, start, AWE.Config.MAP_VILLAGE_STREETS_COLOR, AWE.Config.MAP_VILLAGE_STREETS_WIDTH);
             _villageStreets.push(s);
-            _container.addChild(s.shape);
+            _villageStreetsContainer.addChild(s.shape);
           }
         }
         //update the positions of the streets
@@ -225,11 +236,13 @@ AWE.UI = (function(module) {
           _villageStreets[i-1].update();
         }
 
+      } else {
+        _villageStreetsContainer.visible = false;
       }
     };
 
     that.update = function() {
-      if (_node.isLeaf() && _view.detailLevel() > 0) { 
+      if (_node.isLeaf()) { 
         _container.visible = true;
         _updateRegionStreets();
         _updateVillageStreets();
