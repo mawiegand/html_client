@@ -14,6 +14,11 @@ AWE.Controller = (function(module) {
 
     var _selectedView = null;    ///< there can be only one selected view!
     
+    var _frame = null;           ///< size of window in view coordinates
+    var _mc2vcScale;             ///< scaling
+    var _mc2vcTrans;             ///< translation
+
+    
     var that = module.createScreenController(anchor); ///< create base object
     
     var _super = {};             ///< store locally overwritten methods of super object
@@ -30,7 +35,7 @@ AWE.Controller = (function(module) {
     /** intializes three stages for displaying the map-background,
      * the playing pieces (armies, fortresses, settlements), and 
      * the HUD. */
-    that.init = function() {
+    that.init = function(initialFrameModelCoordinates) {
       _super.init();
       
       // background layer, displays region tiles
@@ -54,6 +59,23 @@ AWE.Controller = (function(module) {
       _canvas[2] = $('#layer2')[0];
       _stages[2] = new Stage(_canvas[2]);
       _stages[2].enableMouseOver();
+      
+      _frame = AWE.Geometry.createRect(0,0, $(window).width(), $(window).height());
+      
+      _canvas[0].width = _frame.size.width;
+      _canvas[0].height = _frame.size.height;
+    
+      _canvas[1].width = _frame.size.width;
+      _canvas[1].height = _frame.size.height;
+    
+      _canvas[2].width = _frame.size.width;
+      _canvas[2].height = _frame.size.height;    
+
+      mc2vcScale = 1. * _frame.size.width / initialFrameModelCoordinates.size.width;
+      mc2vcTrans = AWE.Geometry.createPoint(
+        -1. * initialFrameModelCoordinates.origin.x * _frame.size.width / initialFrameModelCoordinates.size.width,
+        -1. * initialFrameModelCoordinates.origin.y * _frame.size.height / initialFrameModelCoordinates.size.height
+      );
     };
     
     
@@ -63,10 +85,6 @@ AWE.Controller = (function(module) {
     //
     // ///////////////////////////////////////////////////////////////////////
     
-    var windowSize;
-    
-    var mc2vcScale;
-    var mc2vcTrans;
     
     
     that.mc2vc = function(obj) {
@@ -150,26 +168,9 @@ AWE.Controller = (function(module) {
     
     that.toString = function() {};
     
-    that.windowSize = function() { return windowSize; };
+    that.windowSize = function() { return _frame; };
     
-    that.initPosition = function(startRectMC) {
-      windowSize = AWE.Geometry.createSize($(window).width(), $(window).height());
-      
-      _canvas[0].width = windowSize.width;
-      _canvas[0].height = windowSize.height;
-    
-      _canvas[1].width = windowSize.width;
-      _canvas[1].height = windowSize.height;
-    
-      _canvas[2].width = windowSize.width;
-      _canvas[2].height = windowSize.height;    
 
-      mc2vcScale = 1. * windowSize.width / startRectMC.size.width;
-      mc2vcTrans = AWE.Geometry.createPoint(
-        -1. * startRectMC.origin.x * windowSize.width / startRectMC.size.width,
-        -1. * startRectMC.origin.y * windowSize.height / startRectMC.size.height
-      );
-    };
     
     var level = function() {
       var level = 0;
@@ -200,25 +201,25 @@ AWE.Controller = (function(module) {
       // Adjust canvas sizes, if window size cghanges
       newWindowSize = AWE.Geometry.createSize($(window).width(), $(window).height());
        
-      if (windowSize.width !== newWindowSize.width) {
+      if (_frame.size.width !== newWindowSize.width) {
         _canvas[0].width = newWindowSize.width;
         _canvas[1].width = newWindowSize.width;
         _canvas[2].width = newWindowSize.width;
-        windowSize.width = newWindowSize.width;
+        _frame.size.width = newWindowSize.width;
        }
        
-       if (windowSize.height !== newWindowSize.height) {
+       if (_frame.size.height !== newWindowSize.height) {
         _canvas[0].height = newWindowSize.height;
         _canvas[1].height = newWindowSize.height;
         _canvas[2].height = newWindowSize.height;
-        windowSize.height = newWindowSize.height; 
+        _frame.size.height = newWindowSize.height; 
       }     
             
       if(AWE.Map.Manager.isInitialized()) {
         
         frame++;
         
-        var rect = AWE.Geometry.createRect(0, 0, windowSize.width, windowSize.height);
+        var rect = AWE.Geometry.createRect(0, 0, _frame.size.width, _frame.size.height);
         
         $('#debug2').text('mc2vcScale: ' + mc2vcScale);
                
@@ -313,7 +314,7 @@ AWE.Controller = (function(module) {
           _stages[1].update();
 
           _stages[2].removeAllChildren();          
-          AWE.UI.createDetailView(windowSize, _stages[2], that).redraw();
+          AWE.UI.createDetailView(_frame.size, _stages[2], that).redraw();
           _stages[2].update();
                     
           // old flag, TODO remove?
@@ -418,8 +419,8 @@ AWE.Controller = (function(module) {
       
       // TODO: calc max and min zoom value
         var scale = 1 + dScale;
-        var center = AWE.Geometry.createPoint(-windowSize.width / 2, -windowSize.height / 2);
-        var centerInv = AWE.Geometry.createPoint(windowSize.width / 2, windowSize.height / 2);
+        var center = AWE.Geometry.createPoint(-_frame.size.width / 2, -_frame.size.height / 2);
+        var centerInv = AWE.Geometry.createPoint(_frame.size.width / 2, _frame.size.height / 2);
   
         mc2vcTrans.moveBy(center);      
         if (zoomin) {

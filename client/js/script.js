@@ -24,8 +24,7 @@ window.WACKADOO = (function(module) {
     
       
       _rootScreenController = AWE.Controller.createMapController('#layers');
-      _rootScreenController.init();
-      _rootScreenController.initPosition(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
+      _rootScreenController.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
     };
     
     /** starts the application, enters an infinite loop triggered by window.requestAnimFrame. */
