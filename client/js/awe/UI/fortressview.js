@@ -269,17 +269,17 @@ AWE.UI = (function(module) {
     };
 
     _view.select = function() {
-      if (_view.controller().selectedView && _view.controller().selectedView.unselect) {
-        _view.controller().selectedView.unselect();
+      if (_view.controller().selectedView() && _view.controller().selectedView().unselect) {
+        _view.controller().selectedView().unselect();
       }
       _selected = true;
-      _view.controller().selectedView = _view;
+      _view.controller().setSelectedView(_view);
       _view.controller().updateView();
     }
     
     _view.unselect = function() {
       _selected = false;
-      _view.controller().selectedView = null;
+      _view.controller().setSelectedView(null);
       _view.container().removeChild(_enterButtonBitmap);
       _view.container().removeChild(_enterButtonText);
       _view.container().removeChild(_attackButtonBitmap);

@@ -9,43 +9,59 @@ AWE.Controller = (function(module) {
           
   module.createMapController = function(anchor) {
     
-    var _stages = new Array(3);
-    var _canvas = new Array(3);
+    var _stages = new Array(3);  ///< three easelJS stages for displaying background, objects and HUD
+    var _canvas = new Array(3);  ///< canvas elements for the three stages
+
+    var _selectedView = null;    ///< there can be only one selected view!
     
-    var that = module.createScreenController(anchor);   
+    var that = module.createScreenController(anchor); ///< create base object
     
-    var _super = {};
+    var _super = {};             ///< store locally overwritten methods of super object
     _super.init = that.init; 
+    _super.runloop = that.runloop;
     
-    that.selectedView = false;
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Initialization
+    //
+    // ///////////////////////////////////////////////////////////////////////
     
     /** intializes three stages for displaying the map-background,
      * the playing pieces (armies, fortresses, settlements), and 
      * the HUD. */
     that.init = function() {
-      
       _super.init();
       
+      // background layer, displays region tiles
       that.anchor().append('<canvas id="layer0"></canvas>');
       _canvas[0] = $('#layer0')[0];
       _stages[0] = new Stage(_canvas[0]);
-      _stages[0].onClick = function() { 
-        if (that.selectedView && that.selectedView.unselect) {
-          that.selectedView.unselect();
+      _stages[0].onClick = function() {   // click into background unselects selected object
+        if (_selectedView && _selectedView.unselect) {
+          _selectedView.unselect();
         }
       };
    
+      // selectable gaming pieces layer (fortresses, armies, etc.)
       that.anchor().append('<canvas id="layer1"></canvas>');
       _canvas[1] = $('#layer1')[0];
       _stages[1] = new Stage(_canvas[1]);
       _stages[1].enableMouseOver();
       
+      // HUD layer ("static", not zoomable, not moveable)
       that.anchor().append('<canvas id="layer2"></canvas>');
       _canvas[2] = $('#layer2')[0];
       _stages[2] = new Stage(_canvas[2]);
       _stages[2].enableMouseOver();
     };
     
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Coordinate Transformation
+    //
+    // ///////////////////////////////////////////////////////////////////////
     
     var windowSize;
     
@@ -114,6 +130,14 @@ AWE.Controller = (function(module) {
       vc2mc: that.vc2mc,
     };*/
 
+
+    that.selectedView = function() {
+      return _selectedView;
+    };
+    
+    that.setSelectedView = function(view) {
+      _selectedView = view;
+    };
         
     var startTime = 0;
     var numFrames = 0;

@@ -12,7 +12,8 @@ AWE.UI = (function(module) {
     var spec = {
       frame: AWE.Geometry.createRect(0, 0, _windowSize.width, _windowSize.height),
       scaled: false,
-      layer: _layer
+      layer: _layer,
+      controller: _controller
     };
     
     var _view = module.createView(spec);
@@ -40,11 +41,11 @@ AWE.UI = (function(module) {
 
     _view.redraw = function() {
 
-      if (_controller.selectedView) {
+      if (_view.controller().selectedView()) {
         var alpha = 1;
         var container = _view.container();
         
-        var node = _controller.selectedView.node();
+        var node = _controller.selectedView().node();
         var region = node.region();
         
         _ownerNameText.text = region.ownerName();
