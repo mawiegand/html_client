@@ -100,10 +100,11 @@ AWE.UI = (function(module) {
 
       var p;
       if (Math.abs(streetDir.x) > Math.abs(streetDir.y)) {
-        p = { x: street.to.x, y: transformedFrame.size.height };
+        p = { x: street.to.x, y: transformedFrame.size.height*3/4 };
       } else {
-        p = { x: transformedFrame.size.width, y: street.from.y };
+        p = { x: transformedFrame.size.width*3/4, y: street.to.y };
       }
+      _container.addChild(_generateDebugCross(p, "#F0F"));
       var v = {
         x: street.from.x - p.x,
         y: street.from.y - p.y
@@ -127,7 +128,7 @@ AWE.UI = (function(module) {
       var g = new Graphics();
       g.setStrokeStyle(1);
       g.beginFill(color);
-      g.drawEllipse(spot.x,spot.y, AWE.Config.MAP_VILLAGE_SPOT_WIDTH, AWE.Config.MAP_VILLAGE_SPOT_HEIGHT);
+      g.drawEllipse(spot.x - AWE.Config.MAP_VILLAGE_SPOT_WIDTH/2, spot.y - AWE.Config.MAP_VILLAGE_SPOT_HEIGHT/2, AWE.Config.MAP_VILLAGE_SPOT_WIDTH, AWE.Config.MAP_VILLAGE_SPOT_HEIGHT);
       return new Shape(g);
     };
 
@@ -148,7 +149,7 @@ AWE.UI = (function(module) {
 
       _villiageSpots = [];
       that.container().removeAllChildren();
-      if (_node.isLeaf() && _view.detailLevel() > 0) {
+      if (_node.isLeaf() && _view.detailLevel() >= 2) {
         //update the spots
         for (var i = 0; i < _streets.regionStreets().length; i++) {
           var curStreets = _streets.regionStreets()[i];
