@@ -107,6 +107,36 @@ AWE.Map = (function(module) {
       
       that.setChangedNow();  
     };
+
+  that.position = AWE.memoizer(
+    function () {
+      var frame = that.region().node().frame();
+      //for the fortress return the center
+      if (_slot == 0) {
+        AWE.createPoint(
+          frame.origin.x + frame.size.width/2,
+          frame.origin.y + frame.size.height/2,
+        );
+      //callculate village positon
+      } else {
+        //callculate base position
+        var basePositon;
+        if (_slot < 3) {
+          //slot 1,2 top
+
+        } else if (_slot < 5) {
+          //slot 3,4 right
+
+        } else if (_slot < 7) {
+          //
+
+        } else if (_slot < 9){
+
+        } else {
+          console.error("Can't callculate positon for slot that have a higher number than 8");
+        }
+      } 
+    });
     
     return that;  
     
