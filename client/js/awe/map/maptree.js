@@ -274,6 +274,7 @@ AWE.Map = (function(module) {
       var _frame = AWE.Geometry.createRect(parseFloat(spec.min_x), parseFloat(spec.min_y), 
                                            parseFloat(spec.max_x) - parseFloat(spec.min_x), 
                                            parseFloat(spec.max_y) - parseFloat(spec.min_y));
+                                           
         
       var that = {};
       AWE.Partials.addUpdateTracking(that);   // adds methods for update tracking.  
@@ -347,6 +348,7 @@ AWE.Map = (function(module) {
         }
             
         _region = region;
+        region.setNode(that);
       };
       
       /** sets the parent of the node. Should be used with caution; you need
@@ -439,6 +441,11 @@ AWE.Map = (function(module) {
         _level = node.level();
       
         _frame = AWE.Geometry.createRect(node.origin().x, node.origin().y, node.size().width, node.size().height);
+        
+        /*
+        if (node.region() && _region) {
+          _region.updateRegionFrom(node.region());
+        }*/
         
         that.setChangedNow();
       };
@@ -541,7 +548,13 @@ AWE.Map = (function(module) {
       }
       
       
-      /** further initialize the node from the spec (set and expand children) */
+      
+      
+      // further initialize the node from the spec (set region and expand children) 
+      if (spec.region) {
+        that.setRegion(module.createRegion(spec.region));
+      }
+      
       if (spec.c0 || spec.c1 || spec.c2 || spec.c3) {
         if (spec.c0) {
           that.insertAsChild(0, AWE.Map.createNode(spec.c0));

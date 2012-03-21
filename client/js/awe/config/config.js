@@ -53,5 +53,3 @@ AWE.Config = (function(module) {
   return module;
   
 }(AWE.Config || {}));
-
-  module.DEBUG_LEVEL_INFO = 0;
