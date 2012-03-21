@@ -215,7 +215,7 @@ AWE.UI = (function(module) {
     var image = null;
     var _bgBitmap =null;
     
-    console.log('creating new view for node ' + _node.path());
+    //console.log('creating new view for node ' + _node.path());
 
     var selectBackgroundImage = function(detail) {
       var newImage = null;
@@ -269,7 +269,7 @@ AWE.UI = (function(module) {
       
       var frame = AWE.UI.Map.mc2vc(_view.frame());      
       
-      if (!_debugText && detail > -1) {
+      if (!_debugText && detail > -1 && AWE.Config.MAP_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
         _debugText = new Text();
         _debugText.font = "10px Arial";
         _debugText.text = "id " + _node.id().toString() + "\nqt" + _node.path();
@@ -296,20 +296,53 @@ AWE.UI = (function(module) {
         _settlementsText.text = _node.region() ? _node.region().countSettlements().toString() : _node.countSettlements().toString();
         _nonScalingContainer.addChild(_settlementsText);
         
+        _armyStrengthIcon = new Bitmap(AWE.UI.ImageCache.getImage("map/region/icon"));
+        _nonScalingContainer.addChild(_armyStrengthIcon);
+        
+        _armyStrengthText = new Text();
+        _armyStrengthText.font = "12px Arial";
+        _armyStrengthText.textBaseline = "top";
+
+        //_settlementsText.maxWidth = _bgBitmap.image.width-_settlementsIcon.image.width;
+        _armyStrengthText.text = _node.totalArmyStrength().toString();
+        _nonScalingContainer.addChild(_armyStrengthText);
+        
       }
       if (_settlementsIcon) {
         if (detail < 1) {
           _settlementsIcon.x = 0;
-          _settlementsIcon.y = 0;        
+          _settlementsIcon.y = 0;       
+          _armyStrengthIcon.x = 0;
+          _armyStrengthIcon.y = 28; 
         }
         else {
           _settlementsIcon.x = 0;
           _settlementsIcon.y = frame.size.height - 30;                  
+          _armyStrengthIcon.x = frame.size.width / 2.0;
+          _armyStrengthIcon.y = frame.size.height - 30;                  
         }
         
-        _settlementsText.x = _settlementsIcon.image.width;
+        _settlementsText.x = _settlementsIcon.x + _settlementsIcon.image.width;
         _settlementsText.y = _settlementsIcon.y + _settlementsIcon.image.height/2 - _settlementsText.getMeasuredLineHeight()/2;        
-      }      
+        _armyStrengthText.x = _armyStrengthIcon.x + _armyStrengthIcon.image.width;
+        _armyStrengthText.y = _armyStrengthIcon.y + _armyStrengthIcon.image.height/2 - _armyStrengthText.getMeasuredLineHeight()/2;        
+      }     
+      
+      if (!_regionNameText && detail >= 1 && _node.region()) {
+        _regionNameText = new Text();
+        _regionNameText.font = "12px Arial";
+        _regionNameText.text = _node.region().name();
+        _regionNameText.textBaseline = "top";
+        _nonScalingContainer.addChild(_regionNameText);
+      }
+      if (_regionNameText && detail < 1) {
+        _nonScalingContainer.removeChild(_regionNameText);
+        _regionNameText = null;
+      } 
+      if (_regionNameText) {
+        _regionNameText.x = 4;
+        _regionNameText.y = 4;
+      } 
     }
     
     //streets
@@ -735,7 +768,7 @@ AWE.UI = (function(module) {
         var view;
         
         if (needRedraw) {
-          log('level', level());
+          //log('level', level());
        
           // layer0: regions
           // create new viewHash

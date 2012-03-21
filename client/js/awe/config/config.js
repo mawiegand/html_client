@@ -8,6 +8,13 @@ var AWE = window.AWE || {};
 
 AWE.Config = (function(module) { 
   
+  module.DEBUG_LEVEL_ERROR   = 0;
+  module.DEBUG_LEVEL_WARNING = 1;
+  module.DEBUG_LEVEL_INFO    = 2;
+  module.DEBUG_LEVEL_DEBUG   = 3;
+  
+  module.MAP_DEBUG_LEVEL = module.DEBUG_LEVEL_ERROR;
+  
   module.MAP_RUN_TESTS = true;
   module.MAP_SERVER_BASE = 'http://localhost:3000/game_server/map/';
   
@@ -46,4 +53,3 @@ AWE.Config = (function(module) {
   return module;
   
 }(AWE.Config || {}));
-
