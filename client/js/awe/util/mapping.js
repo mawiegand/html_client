@@ -99,6 +99,8 @@ AWE.Mapping = (function(module) {
 
 $(document).ready(function() {
   
+  if (!AWE.Config.MAP_RUN_TESTS) return ;
+  
   var gtc = AWE.Mapping.GlobalMercator.TMSToGoogleTileCode(4,4,10);
   console.log("google x: " + gtc.x + " y: " + gtc.y + " zoom: " + gtc.zoom); 
 

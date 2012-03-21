@@ -7,8 +7,6 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
           
-  module.rootNode = null;
-  
   /*** Map ***/  
   module.Map = (function() {
   
@@ -265,7 +263,6 @@ AWE.UI = (function(module) {
 
       // and repeat from beginning
       // if(!AWE.Map.Manager.isInitialized()) 
-        window.requestAnimFrame(that.render);
     };
     
     var scrollingStarted = false;
@@ -385,38 +382,11 @@ AWE.UI = (function(module) {
     
     return that;
   }());  
-  
-  /*** initializer ***/    
-  module.init = function() {
-          
-    AWE.Network.init();
-    AWE.Map.Manager.init(2, function(){
-      module.rootNode = AWE.Map.Manager.rootNode();
-      log('rootNode', module.rootNode.toString());
-    });
-
-    AWE.UI.ImageCache.init();
-    for (k in AWE.Config.IMAGE_CACHE_LOAD_LIST) {
-      if (AWE.Config.IMAGE_CACHE_LOAD_LIST.hasOwnProperty(k)) {
-        AWE.UI.ImageCache.loadImage(k, AWE.Config.IMAGE_CACHE_LOAD_LIST[k]);
-      }
-    }
-    
-    // TODO init with users main location
-    AWE.UI.Map.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));
-    AWE.UI.Map.render();
-  };
-    
+      
   return module;
     
 }(AWE.UI || {}));
 
-
-$(function(){
-  AWE.UI.init();
-  $('#zoomin').click(function(){AWE.UI.Map.zoom(.1, true)});
-  $('#zoomout').click(function(){AWE.UI.Map.zoom(.1, false)});
-});
 
 
 

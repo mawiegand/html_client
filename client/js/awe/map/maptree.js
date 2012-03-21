@@ -707,32 +707,4 @@ AWE.Map = (function(module) {
 }(AWE.Map || {}));
 
 
-// embedded tests below here (delete in production environment).
-
-$(document).ready(function() {
-  
-  var f1 = AWE.Geometry.createRect(0,0,10,10);
-  var f2 = AWE.Geometry.createRect(0,0,10,10);
-  
-  console.log('equals f: ' + (f1.equals(f2)));
-  
-  var s1 = AWE.Geometry.createSize(10,10);
-  var s2 = AWE.Geometry.createSize(10,10);
-  
-  console.log('equals s: ' + (s1.equals(s2)));
-
-  var p1 = AWE.Geometry.createPoint(10,10);
-  var p2 = AWE.Geometry.createPoint(10,10);
-
-  console.log('equals p: ' + (p1.equals(p2)));
-  
-  
-
-  if (!AWE.Config.MAP_RUN_TESTS) return ;
-
-  
-
-});
-
-
 
