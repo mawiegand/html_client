@@ -229,8 +229,13 @@ AWE.UI = (function(module) {
     };
 
     that.update = function() {
-      _updateRegionStreets();
-      _updateVillageStreets();
+      if (_node.isLeaf() && _view.detailLevel() > 0) { 
+        _container.visible = true;
+        _updateRegionStreets();
+        _updateVillageStreets();
+      } else {
+        _container.visible = false;
+      }
     };
 
     return that;
@@ -384,13 +389,13 @@ AWE.UI = (function(module) {
       } 
     }
     
-    //village spots
-    var villageSpotsManager = module.createVillageSpotsManager(_node, _view);
-    _nonScalingContainer.addChild(villageSpotsManager.container());
-
     //streets
     var streetsManager = module.createStreetsManager(_node, _view);
     _nonScalingContainer.addChild(streetsManager.container());
+
+    //village spots
+    var villageSpotsManager = module.createVillageSpotsManager(_node, _view);
+    _nonScalingContainer.addChild(villageSpotsManager.container());
 
     _view.position = function() {
       return _view.frame().origin;
