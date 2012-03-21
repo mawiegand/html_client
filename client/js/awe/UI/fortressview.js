@@ -133,7 +133,7 @@ AWE.UI = (function(module) {
     
     _view.unselect = function() {
       _selected = false;
-      module.Map.selectedView = null;
+      _controller.selectedView = null;
       _view.container().removeChild(_buttonBitmap);
       _view.container().removeChild(_selectShape);
       _controller.updateView();
