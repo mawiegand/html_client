@@ -320,6 +320,10 @@ AWE.Map = (function(module) {
       that.countSettlements = function() {
         return _countSettlements;
       }
+
+      that.totalArmyStrength = function() {      
+        return _total_army_strength;
+      }
       
       /** true, in case the node is a leaf-node (has no children) */
       that.isLeaf = function() {
