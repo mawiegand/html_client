@@ -36,6 +36,8 @@ AWE.Controller = (function(module) {
     
     var _modelChanged = false;
     
+    var requestingMapNodesFromServer = false;
+    
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -202,6 +204,27 @@ AWE.Controller = (function(module) {
       );
     }
     
+    /** zoom in and out. */
+    that.zoom = function(dScale, zoomin) {
+      // TODO: calc max and min zoom value
+      var scale = 1 + dScale;
+      var center = AWE.Geometry.createPoint(-_windowSize.width / 2, -_windowSize.height / 2);
+      var centerInv = AWE.Geometry.createPoint(_windowSize.width / 2, _windowSize.height / 2);
+  
+      mc2vcTrans.moveBy(center);      
+      if (zoomin) {
+        mc2vcScale *= scale;
+        mc2vcTrans.scale(scale);
+      }
+      else {
+        mc2vcScale /= scale;
+        mc2vcTrans.scale(1 / scale);
+      }
+      mc2vcTrans.moveBy(centerInv);
+        
+      that.updateView();
+    };  
+    
     /** calculate and returns the presently visible map level in dependence of the
      * present scale. Uses memoization to cache result. */
     var level = (function() {
@@ -235,7 +258,12 @@ AWE.Controller = (function(module) {
     //
     // ///////////////////////////////////////////////////////////////////////   
     
+    /** set to true in case the window needs to be layouted again (e.g. after
+     * a resize event). */
     that.setNeedsLayout = function() { _needsLayout = true; }    
+    
+    /** reset the size of the "window" (canvas) in case its dimension has 
+     * changed. */
     that.layoutIfNeeded = function() {
       if (_needsLayout) {
         if (_canvas[0].width != _windowSize.width || _canvas[0].height != _windowSize.height) {
@@ -253,6 +281,7 @@ AWE.Controller = (function(module) {
       _needsLayout = false;
     }
     
+    /** set to true in case the whole window needs to be repainted. */
     that.setNeedsDisplay = function() { _needsDisplay = true; }
     
     
@@ -357,27 +386,6 @@ AWE.Controller = (function(module) {
       event.returnValue = false;
     };
     
-    that.zoom = function(dScale, zoomin) {
-      // TODO: calc max and min zoom value
-      var scale = 1 + dScale;
-      var center = AWE.Geometry.createPoint(-_windowSize.width / 2, -_windowSize.height / 2);
-      var centerInv = AWE.Geometry.createPoint(_windowSize.width / 2, _windowSize.height / 2);
-  
-      mc2vcTrans.moveBy(center);      
-      if (zoomin) {
-        mc2vcScale *= scale;
-        mc2vcTrans.scale(scale);
-      }
-      else {
-        mc2vcScale /= scale;
-        mc2vcTrans.scale(1 / scale);
-      }
-      mc2vcTrans.moveBy(centerInv);
-        
-      that.updateView();
-    };      
-
-    
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -386,7 +394,6 @@ AWE.Controller = (function(module) {
     // /////////////////////////////////////////////////////////////////////// 
     
     that.toString = function() {};
-
 
 
     // ///////////////////////////////////////////////////////////////////////
@@ -425,6 +432,8 @@ AWE.Controller = (function(module) {
             requestingMapNodesFromServer = false;
             that.setModelChanged();
           });
+          
+          previousVisisbleAreaMC = visibleAreaMC; 
         }
         
         // in case the viewport has changed or the model has changed (more nodes?!) we need to check for missing regions.
@@ -450,11 +459,9 @@ AWE.Controller = (function(module) {
             }
           }
         }
-      
-       // previousVisisbleAreaMC = visibleAreaMC; 
-
       };
     }());
+    
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -462,23 +469,12 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
-    
-    // ///////////////////////////////////////////////////////////////////////
-    //
-    //   Runloop
-    //
-    // /////////////////////////////////////////////////////////////////////// 
-    
-        
-        
     var startTime = 0;
     var numFrames = 0;
     var fps = 60;
-    var requestingMapNodesFromServer = false;
     var needRedraw;
     
     that.updateView = function() { needRedraw = true; }
-    
     
     var fortressViews = {};
     var regionViews = {};
@@ -498,8 +494,6 @@ AWE.Controller = (function(module) {
             
         
         _frameCounter++;
-        
-
         
         var view;
         
@@ -568,9 +562,15 @@ AWE.Controller = (function(module) {
 
       // and repeat from beginning
       // if(!AWE.Map.Manager.isInitialized()) 
-    };
-
-
+    };    
+    
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Runloop
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
 
     that.runloop = function() {
       if(AWE.Map.Manager.isInitialized()) {
