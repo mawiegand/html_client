@@ -27,6 +27,8 @@ window.WACKADOO = (function(module) {
       _rootScreenController.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
     };
     
+    that.rootScreenController = function() { return _rootScreenController; }
+    
     /** starts the application, enters an infinite loop triggered by window.requestAnimFrame. */
     that.run = function() {
       window.requestAnimFrame(that.runloop);
@@ -58,8 +60,8 @@ $(document).ready(function() {
   var application = WACKADOO.createApplication();
   application.init();
   
-  $('#zoomin').click(function(){AWE.UI.Map.zoom(.1, true)});
-  $('#zoomout').click(function(){AWE.UI.Map.zoom(.1, false)});
+  $('#zoomin').click(function(){application.rootScreenController().zoom(.1, true)});
+  $('#zoomout').click(function(){application.rootScreenController().zoom(.1, false)});
   
   application.run();
   

@@ -18,6 +18,12 @@ AWE.Controller = (function(module) {
     var _mc2vcScale;             ///< scaling
     var _mc2vcTrans;             ///< translation
 
+    var _needsLayout;            ///< true, in case e.g. the window has changed, causing a new laoyut of the map
+    var _needsDisplay;           ///< true, in case something (data, subwview) has changed causing a need for a redraw
+    
+    var _scrollingStarted = false;///< user is presently scrolling
+    var _scrollingStartedAtVC;
+    var _scrollingOriginalTranslationVC;
     
     var that = module.createScreenController(anchor); ///< create base object
     
@@ -62,6 +68,27 @@ AWE.Controller = (function(module) {
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
+      
+      // register controller to receive window-resize events (from browser window) 
+      // in order to adapt it's own window / display area
+      $(window).resize(function(){
+        that.setNeedsLayout();
+      });
+      
+      // register controller to receive click events in screen
+      $('#layers').click(function(evt) {
+        that.handleClick(evt);
+      });
+      
+      // register controller to receive mouse-down events in screen
+      $('#layers').mousedown(function(evt) {
+        that.handleMouseDown(evt);
+      });
+      
+      // register controller to receive mouse-wheel events in screen
+      $(window).bind('mousewheel', function() {
+        that.handleMouseWheel();
+      });
     };
         
     
@@ -132,7 +159,7 @@ AWE.Controller = (function(module) {
     
     // ///////////////////////////////////////////////////////////////////////
     //
-    //   Viewport, Visible area, etc.
+    //   Map: Viewport, Visible area, etc.
     //
     // ///////////////////////////////////////////////////////////////////////
     
@@ -191,6 +218,16 @@ AWE.Controller = (function(module) {
       }      
     }());
     
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Laying out Map
+    //
+    // ///////////////////////////////////////////////////////////////////////   
+    
+    that.setNeedsLayout = function() { _needsLayout = true; }
+    
+    that.setNeedsDisplay = function() { _needsDisplay = true; }
+    
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -198,13 +235,153 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
+    /** returns the single map view that is presently selected by the user. 
+     * this can be any of the gaming pieces (armies), markers or settlements.*/
     that.selectedView = function() {
       return _selectedView;
     };
     
+    /** sets the selected view */
     that.setSelectedView = function(view) {
       _selectedView = view;
     };
+        
+    that.handleClick = function(evt) {
+      if (!_scrollingStarted) {
+        var cObj;
+        if (_stages[2].hitTest(evt.pageX, evt.pageY)) {
+        //
+        }
+        else if (_stages[1].hitTest(evt.pageX, evt.pageY)) {
+          cObj = _stages[1].getObjectUnderPoint(evt.pageX, evt.pageY);
+          if (cObj && cObj.onClick) {
+            cObj.onClick();
+          }
+        }
+        else if (_stages[0].hitTest(evt.pageX, evt.pageY)) {
+          if (_stages[0].onClick) {
+            _stages[0].onClick(evt);
+          }         
+        }
+      }
+      else {
+        _scrollingStarted = false;
+      }
+    }
+    
+    that.handleMouseDown = function(evt) {
+             
+      _scrollingStartedAtVC = AWE.Geometry.createPoint(evt.pageX, evt.pageY);
+      _scrollingOriginalTranslation = mc2vcTrans.copy();
+      
+      $('#layers').mousemove(function(ev) {
+        that.handleMouseMove(ev);
+      });
+      
+      $('body').mouseup(function() {
+        $('#layers').unbind('mousemove');
+      });      
+
+      $('body').mouseleave(function() {
+        $('#layers').unbind('mousemove');
+      });      
+    };
+    
+    that.handleMouseMove = function(event) {
+      // here we can assume, that the mouse is pressed right now!
+      _scrollingStarted = true;
+      var pos = AWE.Geometry.createPoint(_scrollingOriginalTranslation.x + event.pageX - _scrollingStartedAtVC.x, 
+                                         _scrollingOriginalTranslation.y + event.pageY - _scrollingStartedAtVC.y);        
+      mc2vcTrans.moveTo(pos);
+      that.setNeedsLayout();
+    };
+    
+    that.handleMouseWheel = function(ev) {
+      var event = ev || window.event;
+      
+      var delta = 0;
+      
+      if (event.wheelDelta) { /* IE/Opera. */
+        delta = event.wheelDelta/120;
+      }
+      else if (event.detail) { /** Mozilla case. */
+
+        /** In Mozilla, sign of delta is different than in IE.
+         * Also, delta is multiple of 3.
+         */
+        delta = -event.detail/3;
+      }
+
+      /** If delta is nonzero, handle it.
+       * Basically, delta is now positive if wheel was scrolled up,
+       * and negative, if wheel was scrolled down.
+       */
+      if (delta) {
+        that.zoom(0.04 * Math.abs(delta), delta > 0);
+      }
+
+      /** Prevent default actions caused by mouse wheel.
+       * That might be ugly, but we handle scrolls somehow
+       * anyway, so don't bother here..
+       */
+      if (event.preventDefault) {
+        event.preventDefault();
+      }
+      event.returnValue = false;
+    };
+    
+    that.zoom = function(dScale, zoomin) {
+      // TODO: calc max and min zoom value
+      var scale = 1 + dScale;
+      var center = AWE.Geometry.createPoint(-_windowSize.width / 2, -_windowSize.height / 2);
+      var centerInv = AWE.Geometry.createPoint(_windowSize.width / 2, _windowSize.height / 2);
+  
+      mc2vcTrans.moveBy(center);      
+      if (zoomin) {
+        mc2vcScale *= scale;
+        mc2vcTrans.scale(scale);
+      }
+      else {
+        mc2vcScale /= scale;
+        mc2vcTrans.scale(1 / scale);
+      }
+      mc2vcTrans.moveBy(centerInv);
+        
+      that.updateView();
+    };      
+
+    
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Serialization, inspection & debugging
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
+    that.toString = function() {};
+
+
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Remote Data Handling
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Rendering
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Runloop
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
         
     var startTime = 0;
     var numFrames = 0;
@@ -215,12 +392,6 @@ AWE.Controller = (function(module) {
     
     that.updateView = function() { needRedraw = true; }
     
-    that.toString = function() {};
-    
-    
-
-    
-
     
     var fortressViews = {};
     var regionViews = {};
@@ -299,9 +470,10 @@ AWE.Controller = (function(module) {
         
         var view;
         
-        if (needRedraw) {
+        if (needRedraw || _needsLayout || _needsDisplay) {
           //log('level', level());
        
+          _needsLayout = _needsDisplay = false;
           // layer0: regions
           // create new viewHash
           var newRegionViews = {};          
@@ -363,121 +535,7 @@ AWE.Controller = (function(module) {
       // and repeat from beginning
       // if(!AWE.Map.Manager.isInitialized()) 
     };
-    
-    var scrollingStarted = false;
-        
-    // click-events in layers
-    $('#layers').click(function(evt){
-      if (!scrollingStarted) {
-        var cObj;
-        if (_stages[2].hitTest(evt.pageX, evt.pageY)) {
-          //
-        }
-        else if (_stages[1].hitTest(evt.pageX, evt.pageY)) {
-          cObj = _stages[1].getObjectUnderPoint(evt.pageX, evt.pageY);
-          if (cObj && cObj.onClick) {
-            cObj.onClick();
-          }
-        }
-        else if (_stages[0].hitTest(evt.pageX, evt.pageY)) {
-          if (_stages[0].onClick) {
-            _stages[0].onClick(evt);
-          }         
-        }
-      }
-      else {
-        scrollingStarted = false;
-      }
-    });
-    
-    // scrolling
-    $('#layers').mousedown(function(evt) {
-             
-      var clickPosVC = AWE.Geometry.createPoint(evt.pageX, evt.pageY);
-      var vcStart = mc2vcTrans.copy();
-      
-      $('#layers').mousemove(function(ev) {
-        
-        scrollingStarted = true;
-        
-        var pos = AWE.Geometry.createPoint(vcStart.x + ev.pageX - clickPosVC.x, vcStart.y + ev.pageY - clickPosVC.y);        
-        mc2vcTrans.moveTo(pos);
 
-        that.updateView();
-      });
-      
-      $('body').mouseup(function(ev) {
-        $('#layers').unbind('mousemove');
-      });      
-
-      $('body').mouseleave(function(ev) {
-        $('#layers').unbind('mousemove');
-      });      
-    });
-    
-    // zooming with mousewheel
-    $(window).bind('mousewheel', function() {
-
-      var delta = 0;
-      
-      if (!event) { /* For IE. */
-        event = window.event;
-      }
-            
-      if (event.wheelDelta) { /* IE/Opera. */
-        delta = event.wheelDelta/120;
-      }
-      else if (event.detail) { /** Mozilla case. */
-
-        /** In Mozilla, sign of delta is different than in IE.
-         * Also, delta is multiple of 3.
-         */
-        delta = -event.detail/3;
-      }
-
-      /** If delta is nonzero, handle it.
-       * Basically, delta is now positive if wheel was scrolled up,
-       * and negative, if wheel was scrolled down.
-       */
-      if (delta) {
-        that.zoom(0.02, delta > 0);
-      }
-
-      /** Prevent default actions caused by mouse wheel.
-       * That might be ugly, but we handle scrolls somehow
-       * anyway, so don't bother here..
-       */
-      if (event.preventDefault) {
-        event.preventDefault();
-      }
-      event.returnValue = false;
-    });
-    
-    that.zoom = function(dScale, zoomin) {
-      
-      // TODO: calc max and min zoom value
-        var scale = 1 + dScale;
-        var center = AWE.Geometry.createPoint(-_windowSize.width / 2, -_windowSize.height / 2);
-        var centerInv = AWE.Geometry.createPoint(_windowSize.width / 2, _windowSize.height / 2);
-  
-        mc2vcTrans.moveBy(center);      
-        if (zoomin) {
-          mc2vcScale *= scale;
-          mc2vcTrans.scale(scale);
-        }
-        else {
-          mc2vcScale /= scale;
-          mc2vcTrans.scale(1 / scale);
-        }
-        mc2vcTrans.moveBy(centerInv);
-        
-        that.updateView();
-    };      
-
-    
-    $(window).resize(function(){
-      that.updateView();
-    });
 
 
     that.runloop = function() {
