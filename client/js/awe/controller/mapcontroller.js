@@ -31,6 +31,11 @@ AWE.Controller = (function(module) {
     _super.init = that.init; 
     _super.runloop = that.runloop;
     
+    var _loopCounter = 0;        ///< counts every cycle through the loop
+    var _frameCounter = 0;       ///< counts every rendered frame
+    
+    var _modelChanged = false;
+    
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -68,11 +73,12 @@ AWE.Controller = (function(module) {
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
+      that.setNeedsLayout();
       
       // register controller to receive window-resize events (from browser window) 
       // in order to adapt it's own window / display area
       $(window).resize(function(){
-        that.setNeedsLayout();
+        that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       });
       
       // register controller to receive click events in screen
@@ -166,16 +172,10 @@ AWE.Controller = (function(module) {
     /** sets the canvas' width and height, sets-up the internal coordinate
      * systems */
     that.setWindowSize = function(size) {
-      _windowSize = size;
-    
-      _canvas[0].width = _windowSize.width;
-      _canvas[0].height = _windowSize.height;
-    
-      _canvas[1].width = _windowSize.width;
-      _canvas[1].height = _windowSize.height;
-    
-      _canvas[2].width = _windowSize.width;
-      _canvas[2].height = _windowSize.height;    
+      if (! _windowSize || _windowSize.width != size.width || _windowSize.height != size.height) {
+        _windowSize = size;
+        that.setNeedsLayout(); 
+      }
     };
     
     /** returns the window size (canvas internal view coordinates). */
@@ -220,11 +220,27 @@ AWE.Controller = (function(module) {
     
     // ///////////////////////////////////////////////////////////////////////
     //
-    //   Laying out Map
+    //   Laying out the Map
     //
     // ///////////////////////////////////////////////////////////////////////   
     
-    that.setNeedsLayout = function() { _needsLayout = true; }
+    that.setNeedsLayout = function() { _needsLayout = true; }    
+    that.layoutIfNeeded = function() {
+      if (_needsLayout) {
+        if (_canvas[0].width != _windowSize.width || _canvas[0].height != _windowSize.height) {
+          _canvas[0].width  = _windowSize.width;
+          _canvas[0].height = _windowSize.height;
+    
+          _canvas[1].width  = _windowSize.width;
+          _canvas[1].height = _windowSize.height;
+    
+          _canvas[2].width  = _windowSize.width;
+          _canvas[2].height = _windowSize.height;             
+        };
+        that.setNeedsDisplay();
+      };
+      _needsLayout = false;
+    }
     
     that.setNeedsDisplay = function() { _needsDisplay = true; }
     
@@ -368,6 +384,66 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
+    
+    that.modelChanged = function() {
+      return _modelChanged;
+    }
+    
+    that.setModelChanged = function() {
+      _modelChanged = true;
+    }
+    
+    that.updateModel = (function() {
+      
+      var previousVisibleAreaMC = null;
+      
+      var viewportHasChanged = function(rect) {
+        return (!previousVisibleAreaMC && rect) || !previousVisibleAreaMC.equals(rect);
+      };
+      
+      return function(visibleAreaMC) {
+        
+        //console.log('update model ' + visibleAreaMC + ' changed: ' + viewportHasChanged(visibleAreaMC) + ' ongoing: ' + requestingMapNodesFromServer);
+
+        // viewport change -> time to check for the need for additional map nodes.
+        if (viewportHasChanged(visibleAreaMC) && !requestingMapNodesFromServer &&
+          AWE.Map.numMissingNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level()) > 0) {
+                        
+          requestingMapNodesFromServer = true;
+          AWE.Map.Manager.fetchNodesForArea(visibleAreaMC, level(), function() {
+            requestingMapNodesFromServer = false;
+            that.setModelChanged();
+          });
+        }
+        
+        // in case the viewport has changed or the model has changed (more nodes?!) we need to check for missing regions.
+        if ((viewportHasChanged(visibleAreaMC) || that.modelChanged()) && ! requestingMapNodesFromServer) {
+          
+          //requestingMapNodesFromServer = true;
+          AWE.Map.Manager.fetchMissingRegionsForArea(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), function() {
+           // requestingMapNodesFromServer = false;
+            that.setModelChanged();
+          });
+        }
+        
+        // in case the viewport has changed or the model has changed (more nodes or regions?!) we need to check for missing locations.
+        if ((viewportHasChanged(visibleAreaMC) || that.modelChanged()) && ! requestingMapNodesFromServer) {
+
+          var nodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, that.modelChanged()); // this is memoized, no problem to call it twice in one cycle!
+
+          for (var i=0; i < nodes.length; i++) {
+            if (nodes[i].isLeaf() && nodes[i].region() && !nodes[i].region().locations() && nodes[i].level() <= level()-2) {
+              AWE.Map.Manager.fetchLocationsForRegion(nodes[i].region(), function() {
+                that.setModelChanged();
+              });
+            }
+          }
+        }
+      
+       // previousVisisbleAreaMC = visibleAreaMC; 
+
+      };
+    }());
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -383,10 +459,10 @@ AWE.Controller = (function(module) {
     // /////////////////////////////////////////////////////////////////////// 
     
         
+        
     var startTime = 0;
     var numFrames = 0;
     var fps = 60;
-    var frame = 0;
     var requestingMapNodesFromServer = false;
     var needRedraw;
     
@@ -396,81 +472,27 @@ AWE.Controller = (function(module) {
     var fortressViews = {};
     var regionViews = {};
     
-    that.render = function() {
+    that.render = function(nodes) {
       
       // fps
       var now = +new Date();
-      var alpha = 0.05; // smoothing factor
+      var alpha = 0.1; // smoothing factor
       if (startTime > 0) {
         fps = fps * (1.0-alpha) + (1000.0 / (now-startTime)) * alpha;
         $('#debug').text(Math.round(fps));
       }
       startTime = now;
       
-      // Adjust canvas sizes, if window size cghanges
-      newWindowSize = AWE.Geometry.createSize($(window).width(), $(window).height());
-       
-      if (_windowSize.width !== newWindowSize.width) {
-        _canvas[0].width = newWindowSize.width;
-        _canvas[1].width = newWindowSize.width;
-        _canvas[2].width = newWindowSize.width;
-        _windowSize.width = newWindowSize.width;
-       }
-       
-       if (_windowSize.height !== newWindowSize.height) {
-        _canvas[0].height = newWindowSize.height;
-        _canvas[1].height = newWindowSize.height;
-        _canvas[2].height = newWindowSize.height;
-        _windowSize.height = newWindowSize.height; 
-      }     
+      // Re-layout views, if needed       
             
-      if(AWE.Map.Manager.isInitialized()) {
         
-        frame++;
+        _frameCounter++;
         
-        var rect = AWE.Geometry.createRect(0, 0, _windowSize.width,_windowSize.height);
-        
-        $('#debug2').text('mc2vcScale: ' + mc2vcScale);
-               
-        var nodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), vc2mc(rect), level(), false, needRedraw);
-        
-        if (frame % 30 == 0) {
-          if (! requestingMapNodesFromServer &&
-              AWE.Map.numMissingNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), vc2mc(rect), level()) > 0) {
-                
-            requestingMapNodesFromServer = true;
-            // log('requesting more nodes for level: ' + level());
-            AWE.Map.Manager.fetchNodesForArea(vc2mc(rect), level(), function() {
-              requestingMapNodesFromServer = false;
-              that.updateView();
-            })
-          }
-        };
-        
-        if ((frame+15) % 30 == 0) {
-          if (! requestingMapNodesFromServer) {
-            AWE.Map.Manager.fetchMissingRegionsForArea(AWE.Map.Manager.rootNode(), vc2mc(rect), level(), function() {
-              that.updateView();
-            })
-          }
-        };
-        
-        if ((frame % 30 == 0)) {
-          if (! requestingMapNodesFromServer) {
 
-            for (var i=0; i < nodes.length; i++) {
-              if (nodes[i].isLeaf() && nodes[i].region() && !nodes[i].region().locations() && nodes[i].level() <= level()-2) {
-                AWE.Map.Manager.fetchLocationsForRegion(nodes[i].region(), function() {
-                  that.updateView();
-                });
-              }
-            }
-          }
-        };
         
         var view;
         
-        if (needRedraw || _needsLayout || _needsDisplay) {
+        if (1) {
           //log('level', level());
        
           _needsLayout = _needsDisplay = false;
@@ -530,7 +552,7 @@ AWE.Controller = (function(module) {
           // old flag, TODO remove?
           needRedraw = false;
         }
-      }
+
 
       // and repeat from beginning
       // if(!AWE.Map.Manager.isInitialized()) 
@@ -539,7 +561,20 @@ AWE.Controller = (function(module) {
 
 
     that.runloop = function() {
-      that.render();
+      if(AWE.Map.Manager.isInitialized()) {
+        
+        var visibleArea = vc2mc(AWE.Geometry.createRect(0, 0, _windowSize.width,_windowSize.height));
+        
+        that.updateModel(visibleArea);
+        that.layoutIfNeeded();   
+        
+        if (needRedraw || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged()) {
+          var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());
+          that.render(visibleNodes);
+        }
+      }
+      _modelChanged = false;
+      _loopCounter++;
     };
     
     return that;
