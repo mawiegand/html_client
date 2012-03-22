@@ -59,6 +59,17 @@ AWE.Controller = (function(module) {
       _canvas[2] = $('#layer2')[0];
       _stages[2] = new Stage(_canvas[2]);
       _stages[2].enableMouseOver();
+
+      // disable onMouseOver for stage1 when onMouseOver on stage2 is active          
+      _stages[2].onMouseOver = function() {
+        log('onmouseover');
+        _stages[1].enableMouseOver(0);     
+      };
+  
+      _stages[2].onMouseOut = function() {
+        log('onmouseout');
+        _stages[1].enableMouseOver();
+      };
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
@@ -352,6 +363,7 @@ AWE.Controller = (function(module) {
           _stages[1].update();
 
           _stages[2].removeAllChildren();          
+          AWE.UI.createMaincontrolsView(_windowSize, _stages[2], that).redraw();
           AWE.UI.createDetailView(_windowSize, _stages[2], that).redraw();
           _stages[2].update();
                     
