@@ -60,13 +60,8 @@ AWE.Controller = (function(module) {
       _stages[2] = new Stage(_canvas[2]);
       _stages[2].enableMouseOver();
       
-      that.setSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
-
-      mc2vcScale = 1. * _windowSize.width / initialFrameModelCoordinates.size.width;
-      mc2vcTrans = AWE.Geometry.createPoint(
-        -1. * initialFrameModelCoordinates.origin.x * _windowSize.width / initialFrameModelCoordinates.size.width,
-        -1. * initialFrameModelCoordinates.origin.y * _windowSize.height / initialFrameModelCoordinates.size.height
-      );
+      that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
+      that.setViewport(initialFrameModelCoordinates);
     };
         
     
@@ -76,10 +71,11 @@ AWE.Controller = (function(module) {
     //
     // ///////////////////////////////////////////////////////////////////////
 
-    /** transform model coordinates to view coordinates */
+    /** transform model coordinates to view coordinates. accepts points, 
+     * rectangles and size for transformation. */
     that.mc2vc = function(obj) {
       
-      // if obj os rect
+      // if obj is rect
       if (obj.origin !== undefined && obj.size !== undefined) {
         var rect = obj.copy();
         rect.origin.scale(mc2vcScale);
@@ -136,11 +132,13 @@ AWE.Controller = (function(module) {
     
     // ///////////////////////////////////////////////////////////////////////
     //
-    //   Appearance & Layout
+    //   Viewport, Visible area, etc.
     //
     // ///////////////////////////////////////////////////////////////////////
     
-    that.setSize = function(size) {
+    /** sets the canvas' width and height, sets-up the internal coordinate
+     * systems */
+    that.setWindowSize = function(size) {
       _windowSize = size;
     
       _canvas[0].width = _windowSize.width;
@@ -151,10 +149,55 @@ AWE.Controller = (function(module) {
     
       _canvas[2].width = _windowSize.width;
       _canvas[2].height = _windowSize.height;    
+    };
     
+    /** returns the window size (canvas internal view coordinates). */
+    that.windowSize = function() { return _windowSize; };
+    
+    /** sets the map to display the specified region (in model coordinates).
+     */
+    that.setViewport = function(visibleRectMC) {
+      mc2vcScale = 1. * _windowSize.width / visibleRectMC.size.width;
+      mc2vcTrans = AWE.Geometry.createPoint(
+        -1. * visibleRectMC.origin.x * _windowSize.width  / visibleRectMC.size.width,
+        -1. * visibleRectMC.origin.y * _windowSize.height / visibleRectMC.size.height
+      );
     }
-
-
+    
+    /** calculate and returns the presently visible map level in dependence of the
+     * present scale. Uses memoization to cache result. */
+    var level = (function() {
+      
+      var _level = null;
+      var _memRootNodeWidth;
+      var _memMc2vcScale;
+      
+      return function() {
+        if (_level && _memRootNodeWidth === AWE.Map.Manager.rootNode().frame().size.width && _memMc2vcScale === mc2vcScale) {
+          return _level;
+        }
+        else {
+          _level = 0;
+          _memRootNodeWidth = AWE.Map.Manager.rootNode().frame().size.width;
+          _memMc2vcScale = mc2vcScale;
+          var rootWidthVC = that.mc2vc(_memRootNodeWidth);
+      
+          while (rootWidthVC > AWE.Config.MAP_MIN_VISIBLE_TILES * 2) {
+            _level++;
+            rootWidthVC /= 2;
+          }
+          return _level;
+        }
+      }      
+    }());
+    
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Mouse-Over and Object Selection
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
     that.selectedView = function() {
       return _selectedView;
     };
@@ -174,21 +217,10 @@ AWE.Controller = (function(module) {
     
     that.toString = function() {};
     
-    that.windowSize = function() { return _windowSize; };
     
 
     
-    var level = function() {
-      var level = 0;
-      var rootWidthVC = that.mc2vc(AWE.Map.Manager.rootNode().frame().size.width);
-      
-      while (rootWidthVC > AWE.Config.MAP_MIN_VISIBLE_TILES * 2) {
-        level++;
-        rootWidthVC /= 2;
-      }      
-      
-      return level;
-    };
+
     
     var fortressViews = {};
     var regionViews = {};
@@ -267,7 +299,7 @@ AWE.Controller = (function(module) {
         
         var view;
         
-        if (1 || needRedraw) {
+        if (needRedraw) {
           //log('level', level());
        
           // layer0: regions
