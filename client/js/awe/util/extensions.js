@@ -6,7 +6,7 @@
 var AWE = window.AWE || {};
 
 /** extensions of JavaScript base types. */
-AWE.Extensions = (function(module) {
+AWE.Ext = (function(module) {
   
   /** returns the next absolutely larger integer; that is returns
    * the floor for negative numbers and the ceil for positive numbers. This method
@@ -16,7 +16,27 @@ AWE.Extensions = (function(module) {
     return Math[(this > 0 ? 'ceil' : 'floor')](this);
   };
   
+  module.isArray = function(_obj) {
+    return _obj && typeof _obj === 'object' && _obj.constructor === Array;
+  };
+  
+  
+  module.applyFunction = function(_function, _obj, _params) {
+    if (module.isArray(_obj)) {
+      for (var o in _obj) {
+        if (typeof _obj[o] === 'object') {
+          _function.apply(_obj[o], _params);
+        }
+      }
+    }
+    else if (_obj) {
+      if (typeof _obj === 'object') {
+          _function.apply(_obj, _params);
+      }
+    }
+  }      
+
   return module;
   
-}(AWE.Extensions || {}));
+}(AWE.Ext || {}));
   
