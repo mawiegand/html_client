@@ -104,13 +104,17 @@ AWE.UI = (function(module) {
     
     that.addChild = function(view) { 
       _subviews.push(view);
-      _container.addChild(view.displayObject());
+      AWE.Ext.applyFunction(view.displayObject(), function(obj){
+        _container.addChild(obj);
+      });
     };
     
     that.removeChild = function(view) {
       var index = _subviews.indexOf(view);     
       if (index >= 0) {
-        _container.removeChild(view.displayObject());
+        AWE.Ext.applyFunction(view.displayObject(), function(obj){
+          _container.removeChild(obj);
+        });
         _subviews.splice(index,1);
       }
     }

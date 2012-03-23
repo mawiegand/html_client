@@ -64,7 +64,6 @@ $(document).ready(function() {
   $('#zoomout').click(function(){application.rootScreenController().zoom(.1, false)});
   
   application.run();
-  
 });
 
 

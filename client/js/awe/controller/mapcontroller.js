@@ -494,27 +494,11 @@ AWE.Controller = (function(module) {
       _frameCounter++;
   
       var addDisplayObjectsToStage = function(stage, v) {
-        var dis = v.displayObject();
-        if (dis && dis.length !== undefined) {
-          for (var o in dis) {
-            stage.addChild(o);
-          }
-        }
-        else if (dis) {
-          stage.addChild(dis);
-        }
+        AWE.Ext.applyFunction(v.displayObject(), function(obj) {stage.addChild(obj); });
       }
       
       var removeDisplayObjectsFromStage = function(stage, v) {
-        var dis = v.displayObject();
-        if (dis && dis.length !== undefined) {
-          for (var o in dis) {
-            stage.removeChild(o);
-          }
-        }
-        else if (dis) {
-          stage.removeChild(dis);
-        }
+        AWE.Ext.applyFunction(v.displayObject(), function(obj) {stage.removeChild(obj); });
       }
         
       // layer0: regions
