@@ -289,9 +289,15 @@ AWE.UI = (function(module) {
         newImage = AWE.UI.ImageCache.getImage("map/tiles/split"+size);
       }
       else if (_node.region()) {   // terrain available, select appropriate tile
-        if (_node.region().terrainId() < 2) {
+        if (_node.region().terrainId() == 1) {
           newImage = AWE.UI.ImageCache.getImage("map/tiles/forest"+size);      
         }
+        else if (_node.region().terrainId() == 2) {
+          newImage = AWE.UI.ImageCache.getImage("map/tiles/mountains"+size);      
+        }
+      /*  else if (_node.region().terrainId() == 3) {
+          newImage = AWE.UI.ImageCache.getImage("map/tiles/mud"+size);      
+        }*/
         else {
           newImage = AWE.UI.ImageCache.getImage("map/tiles/plain"+size);              
         }
