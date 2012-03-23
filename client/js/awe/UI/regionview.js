@@ -263,9 +263,12 @@ AWE.UI = (function(module) {
       controller: _controller,
     };
     
-    var _view = module.createView(spec);
-    _view.container().name = _view.id();
-    _view.container().onClick = function (evt) {
+    var _view = module.createContainer();
+    
+    _view.initWithController(_controller, _node.frame());
+    
+    _view.displayObject().name = _node.id();
+    _view.displayObject().onClick = function (evt) {
       log('klick in container layer0');
     };
 
@@ -309,10 +312,10 @@ AWE.UI = (function(module) {
       if (newImage != image) {
         image = newImage;
         if (_bgBitmap) {
-          _view.container().removeChildAt(0);
+          _view.displayObject().removeChildAt(0);
         }
         _bgBitmap = new Bitmap(image);
-        _view.container().addChildAt(_bgBitmap, 0);
+        _view.displayObject().addChildAt(_bgBitmap, 0);
       }    
     };
     
@@ -441,8 +444,8 @@ AWE.UI = (function(module) {
     _view.redraw = function() {
 
       var frame = _view.controller().mc2vc(_view.frame());
-      var alpha = _view.alpha(frame.size.width);
-      var container = _view.container();
+       var alpha =1.; // _view.alpha(frame.size.width);
+      var container = _view.displayObject();
       
       //check for correct background image
       selectBackgroundImage(_view.detailLevel());

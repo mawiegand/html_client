@@ -490,6 +490,30 @@ AWE.Controller = (function(module) {
       }
       startTime = now;        
       _frameCounter++;
+  
+      var addDisplayObjectsToStage = function(stage, v) {
+        var dis = v.displayObject();
+        if (dis && dis.length !== undefined) {
+          for (var o in dis) {
+            stage.addChild(o);
+          }
+        }
+        else if (dis) {
+          stage.addChild(dis);
+        }
+      }
+      
+      var removeDisplayObjectsFromStage = function(stage, v) {
+        var dis = v.displayObject();
+        if (dis && dis.length !== undefined) {
+          for (var o in dis) {
+            stage.removeChild(o);
+          }
+        }
+        else if (dis) {
+          stage.removeChild(dis);
+        }
+      }
         
       // layer0: regions
       // create new viewHash
@@ -507,8 +531,7 @@ AWE.Controller = (function(module) {
         else {
           newRegionViews[nodes[i].id()] = view = AWE.UI.createRegionView(nodes[i], _stages[0], that);
                 //add to layer
-          _stages[0].addChild(view.container());
-          _stages[0].addChild(view.nonScalingContainer());
+          addDisplayObjectsToStage(_stages[0], view);
         }
       }
       //console.log( 'num children before remove: ' + _stages[0].getNumChildren() );
@@ -516,7 +539,7 @@ AWE.Controller = (function(module) {
         // use hasOwnProperty to filter out keys from the Object.prototype
         if (regionViews.hasOwnProperty(k) && !newRegionViews[k]) {
           var v = regionViews[k];
-          _stages[0].removeChild(v.container(), v.nonScalingContainer());
+          removeDisplayObjectsFromStage(_stages[0], v);
         }
       }
       //console.log( 'num children after remove: ' + _stages[0].getNumChildren() );
