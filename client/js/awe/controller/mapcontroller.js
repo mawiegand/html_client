@@ -265,7 +265,7 @@ AWE.Controller = (function(module) {
     /** reset the size of the "window" (canvas) in case its dimension has 
      * changed. */
     that.layoutIfNeeded = function() {
-      if (_needsLayout) {
+      if (_needsLayout) { console.log('layout');
         if (_canvas[0].width != _windowSize.width || _canvas[0].height != _windowSize.height) {
           _canvas[0].width  = _windowSize.width;
           _canvas[0].height = _windowSize.height;
@@ -471,6 +471,64 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
+    that.rebuildMapHierarchy = function(nodes) {
+
+      var newRegionViews = {};          
+
+      for (var i = 0; i < nodes.length; i++) {
+        // if view is already created and did not change
+        view = regionViews[nodes[i].id()];
+        if (view) {              
+          newRegionViews[nodes[i].id()] = view;
+          if (view.lastChange !== undefined && view.lastChange() < nodes[i].lastChange()) {
+            view.setNeedsUpdate();
+          }
+        }
+        else {
+          view = AWE.UI.createRegionView();
+          view.initWithControllerAndNode(that, nodes[i]);
+          newRegionViews[nodes[i].id()] = view;
+                //add to layer
+          AWE.Ext.applyFunction(view.displayObject(), function(obj) {
+            _stages[0].addChild(obj);
+          });
+        }
+      }
+      for (var k in regionViews) {
+        // use hasOwnProperty to filter out keys from the Object.prototype
+        if (regionViews.hasOwnProperty(k) && !newRegionViews[k]) {
+          var v = regionViews[k];
+          AWE.Ext.applyFunction(v.displayObject(), function(obj) {
+            _stages[0].removeChild(obj);
+          });        
+        }
+      }
+      
+      // new hash is old hash
+      regionViews = newRegionViews;        
+
+      for (var id in regionViews) {
+        var regionView = regionViews[id];
+        var frame = that.mc2vc(regionView.node().frame());
+        regionView.setFrame(frame);
+        regionView.layoutIfNeeded();
+      }
+    }
+    
+    that.updateViewHierarchy = (function() {
+      var oldVisibleArea = null;
+      
+      return function(nodes, visibleArea) {
+        if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
+          console.log('rebuild map');
+          that.rebuildMapHierarchy(nodes);
+        }
+        oldVisibleArea = visibleArea;
+      //that.updateGamingPieces();
+      //that.updateHUD();
+      };
+    }());
+    
     var startTime = 0;
     var numFrames = 0;
     var fps = 60;
@@ -480,6 +538,7 @@ AWE.Controller = (function(module) {
     
     var fortressViews = {};
     var regionViews = {};
+    
     
     that.render = function(nodes) {
       
@@ -492,59 +551,10 @@ AWE.Controller = (function(module) {
       }
       startTime = now;        
       _frameCounter++;
-  
-      var addDisplayObjectsToStage = function(stage, v) {
-        AWE.Ext.applyFunction(v.displayObject(), function(obj) {stage.addChild(obj); });
-      }
-      
-      var removeDisplayObjectsFromStage = function(stage, v) {
-        AWE.Ext.applyFunction(v.displayObject(), function(obj) {stage.removeChild(obj); });
-      }
+
         
-      // layer0: regions
-      // create new viewHash
-      var newRegionViews = {};          
-      // fill new viewHash with all visible, old an new views
-      for (var i = 0; i < nodes.length; i++) {
-        // if view is already created and did not change
-        view = regionViews[nodes[i].id()];
-        if (view) {              
-          newRegionViews[nodes[i].id()] = view;
-          /*if (view.lastChange() < nodes[i].lastChange()) {
-            view.updateView();
-          }*/
-        }
-        else {
-          view = AWE.UI.createRegionView();
-          view.initWithControllerAndNode(that, nodes[i]);
-          newRegionViews[nodes[i].id()] = view;
-                //add to layer
-          addDisplayObjectsToStage(_stages[0], view);
-        }
-      }
-      //console.log( 'num children before remove: ' + _stages[0].getNumChildren() );
-      for (var k in regionViews) {
-        // use hasOwnProperty to filter out keys from the Object.prototype
-        if (regionViews.hasOwnProperty(k) && !newRegionViews[k]) {
-          var v = regionViews[k];
-          removeDisplayObjectsFromStage(_stages[0], v);
-        }
-      }
-      //console.log( 'num children after remove: ' + _stages[0].getNumChildren() );
       
-      // new hash is old hash
-      regionViews = newRegionViews;        
-      // clear _stages[0]
-      //_stages[0].removeAllChildren();
-      // redraw all views in viewHash        
-      for (var id in regionViews) {
-        var regionView = regionViews[id];
-        var frame = that.mc2vc(regionView.node().frame());
-        regionView.setFrame(frame);
-        regionView.layoutIfNeeded();
-        regionView.redraw();
-      }
-      _stages[0].update();
+      //_stages[0].update();
       
       // layer 1: locations
       var newFortressViews = {}
@@ -569,12 +579,12 @@ AWE.Controller = (function(module) {
         newLocationViews[nodes[i].id()].redraw();
       }
 
-      _stages[1].update();
+      //_stages[1].update();
 
       _stages[2].removeAllChildren();          
       AWE.UI.createMaincontrolsView(_windowSize, _stages[2], that).redraw();
       AWE.UI.createDetailView(_windowSize, _stages[2], that).redraw();
-      _stages[2].update();
+      //_stages[2].update();
                 
     };    
     
@@ -596,7 +606,14 @@ AWE.Controller = (function(module) {
         
         if (needRedraw || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged()) {
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());
+          
+          that.updateViewHierarchy(visibleNodes, visibleArea);
+          
           that.render(visibleNodes);
+
+          _stages[0].update();
+          _stages[1].update();
+          _stages[2].update();
         }
 
         _modelChanged = false;
