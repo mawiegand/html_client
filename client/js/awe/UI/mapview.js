@@ -49,8 +49,16 @@ AWE.UI = (function(module) {
     
     that.addChild = function(view) { 
       _subviews.push(view);
-      _container.addChild(view.displayObject()); // TODO: handle multiple returned display objects
+      _container.addChild(view.displayObject());
     };
+    
+    that.removeChild = function(view) {
+      var index = _subviews.indexOf(view);     
+      if (index >= 0) {
+        _container.removeChild(view.displayObject());
+        _subviews.splice(index,1);
+      }
+    }
     
     return that;
   };

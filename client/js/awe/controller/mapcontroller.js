@@ -529,7 +529,9 @@ AWE.Controller = (function(module) {
           }*/
         }
         else {
-          newRegionViews[nodes[i].id()] = view = AWE.UI.createRegionView(nodes[i], _stages[0], that);
+          view = AWE.UI.createRegionView();
+          view.initWithControllerAndNode(that, nodes[i]);
+          newRegionViews[nodes[i].id()] = view;
                 //add to layer
           addDisplayObjectsToStage(_stages[0], view);
         }

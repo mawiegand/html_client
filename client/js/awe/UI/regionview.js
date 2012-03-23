@@ -255,22 +255,36 @@ AWE.UI = (function(module) {
 
   module.createRegionView = function(_node, _layer, _controller) {
     
-    var spec = {
-      id: _node.id(),
-      frame: _node.frame(),
-      scaled: true,
-      layer: _layer,
-      controller: _controller,
-    };
+
     
-    var _view = module.createContainer();
+    var _node = null;
     
-    _view.initWithController(_controller, _node.frame());
+    var _scaledContainer = null;
+    var _nonScaledContainer = null;
     
-    _view.displayObject().name = _node.id();
-    _view.displayObject().onClick = function (evt) {
-      log('klick in container layer0');
-    };
+    var that = module.createView2();
+    
+    var _super = {
+      initWithController: that.initWithController,
+    }
+    
+    that.initWithControllerAndNode = function(controller, node) {
+      _super.initWithController(controller, node.frame());
+      _node = node;
+
+      _scaledContainer = module.createContainer();
+      _scaledContainer.initWithController(controller, node.frame());
+
+      _nonScaledContainer = module.createContainer();      
+      _nonScaledContainer.initWithController(controller, node.frame());
+        
+      _scaledContainer.name = _node.id();
+      _scaledContainer.onClick = function (evt) {
+        log('klick in container layer0');
+      };
+      
+      selectBackgroundImage(0);
+    }
 
     var image = null;
     var _bgBitmap =null;
@@ -312,16 +326,13 @@ AWE.UI = (function(module) {
       if (newImage != image) {
         image = newImage;
         if (_bgBitmap) {
-          _view.displayObject().removeChildAt(0);
+          _scaledContainer.displayObject().removeChild(_bgBitmap); //removeChild(_bgBitmap);
         }
         _bgBitmap = new Bitmap(image);
-        _view.displayObject().addChildAt(_bgBitmap, 0);
+        _scaledContainer.displayObject().addChild(_bgBitmap); //addChild(_bgBitmap);
       }    
     };
     
-    selectBackgroundImage(0);
-
-    var _nonScalingContainer = new Container();
 
 
     var _debugText = null;
@@ -331,6 +342,7 @@ AWE.UI = (function(module) {
     var _armyStrengthText = null;
     var _regionNameText = null;
 
+/*
     var updateInformation = function(detail) {
       
       var frame = _view.controller().mc2vc(_view.frame());      
@@ -418,13 +430,13 @@ AWE.UI = (function(module) {
     //village spots
     var villageSpotsManager = module.createVillageSpotsManager(_node, _view);
     _nonScalingContainer.addChild(villageSpotsManager.container());
-
-    _view.position = function() {
-      return _view.frame().origin;
+*/
+    that.position = function() {
+      return that.frame().origin;
     };
     
-    _view.detailLevel = function() {
-      var frame = _view.controller().mc2vc(_view.frame());      
+    that.detailLevel = function() {
+      var frame = that.controller().mc2vc(that.frame());      
       if (frame.size.width < 128) {
         return 0;
       }
@@ -439,53 +451,56 @@ AWE.UI = (function(module) {
       }
     }
     
-    _view.nonScalingContainer = function() { return _nonScalingContainer; }
+    that.nonScalingContainer = function() { return _nonScaledContainer; }
 
-    _view.redraw = function() {
+    that.redraw = function() {
 
-      var frame = _view.controller().mc2vc(_view.frame());
-       var alpha =1.; // _view.alpha(frame.size.width);
-      var container = _view.displayObject();
+      var frame = that.controller().mc2vc(that.frame());
+      var alpha =1.; // _view.alpha(frame.size.width);
       
       //check for correct background image
-      selectBackgroundImage(_view.detailLevel());
-      updateInformation(_view.detailLevel());
+      selectBackgroundImage(that.detailLevel());
+      //updateInformation(_view.detailLevel());
 
       
       //scaling container
-      container.scaleX = frame.size.width / _bgBitmap.image.width;
-      container.scaleY = frame.size.height / _bgBitmap.image.height;
-      container.x = frame.origin.x;
-      container.y = frame.origin.y;
+      _scaledContainer.displayObject().scaleX = frame.size.width / _bgBitmap.image.width;
+      _scaledContainer.displayObject().scaleY = frame.size.height / _bgBitmap.image.height;
+      _scaledContainer.displayObject().x = frame.origin.x;
+      _scaledContainer.displayObject().y = frame.origin.y;
       
-      container.alpha = alpha;
+      _scaledContainer.alpha = alpha;
 
-      //non scaling container
+/*    //non scaling container
       _nonScalingContainer.x = frame.origin.x;
       _nonScalingContainer.y = frame.origin.y;
 
-      _nonScalingContainer.alpha = alpha;
+      _nonScalingContainer.alpha = alpha; */
 
       //villiagespots
-      villageSpotsManager.update();
+      //villageSpotsManager.update();
 
       //streets
-      streetsManager.update();
+      //streetsManager.update();
 
       //add to layer
      // _view.layer().addChild(container);
       //_view.layer().addChild(_nonScalingContainer);
     };
 
-    _view.unselect = function() {
+    that.unselect = function() {
       log('unselect');
       _selected = false;
       module.Map.selectedView = null;
-      _view.container().removeChildAt(1);
+      //_view.container().removeChildAt(1);
       module.Map.updateView();
     }
+    
+    that.displayObject = function() {
+      return  _scaledContainer.displayObject() ;
+    }
             
-    return _view;
+    return that;
   };
 
     
