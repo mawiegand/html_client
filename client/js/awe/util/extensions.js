@@ -21,7 +21,7 @@ AWE.Ext = (function(module) {
   };
   
   
-  module.applyFunction = function(_function, _obj, _params) {
+  module.applyFunction = function(_obj, _function, _params) {
     if (module.isArray(_obj)) {
       for (var o in _obj) {
         if (typeof _obj[o] === 'object') {

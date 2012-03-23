@@ -12,6 +12,8 @@ AWE.UI = (function(module) {
     
     var _controller;
     var _frame;
+    var _needsLayout;
+    var _needsDisplay;
     
     var that = {};
     
@@ -25,7 +27,7 @@ AWE.UI = (function(module) {
     that.frame = function() { return _frame; }
     that.setFrame = function(frame) {
       if (!_frame.size.equals( frame.size )) {
-        that.needsLayout = that.needsDisplay = true;
+        _needsLayout = _needsDisplay = true;
       }
       if (this.displayObject() && !_frame.origin.equals(frame.origin)) {
         this.displayObject().x = frame.origin.x;
