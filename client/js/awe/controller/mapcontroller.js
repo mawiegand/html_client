@@ -327,20 +327,22 @@ AWE.Controller = (function(module) {
     
     that.handleMouseDown = function(evt) {
              
-      _scrollingStartedAtVC = AWE.Geometry.createPoint(evt.pageX, evt.pageY);
-      _scrollingOriginalTranslation = mc2vcTrans.copy();
-      
-      $('#layers').mousemove(function(ev) {
-        that.handleMouseMove(ev);
-      });
-      
-      $('body').mouseup(function() {
-        $('#layers').unbind('mousemove');
-      });      
-
-      $('body').mouseleave(function() {
-        $('#layers').unbind('mousemove');
-      });      
+      if (!_stages[2].hitTest(evt.pageX, evt.pageY)) {
+        _scrollingStartedAtVC = AWE.Geometry.createPoint(evt.pageX, evt.pageY);
+        _scrollingOriginalTranslation = mc2vcTrans.copy();
+        
+        $('#layers').mousemove(function(ev) {
+          that.handleMouseMove(ev);
+        });
+        
+        $('body').mouseup(function() {
+          $('#layers').unbind('mousemove');
+        });      
+  
+        $('body').mouseleave(function() {
+          $('#layers').unbind('mousemove');
+        });
+      }      
     };
     
     that.handleMouseMove = function(event) {
