@@ -552,7 +552,10 @@ AWE.Controller = (function(module) {
       //_stages[0].removeAllChildren();
       // redraw all views in viewHash        
       for (var id in regionViews) {
-         regionViews[id].redraw();
+        var regionView = regionViews[id];
+        var frame = that.mc2vc(regionView.node().frame());
+        regionView.setFrame(frame);
+        regionView.redraw();
       }
       _stages[0].update();
       

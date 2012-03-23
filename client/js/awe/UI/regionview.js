@@ -289,6 +289,8 @@ AWE.UI = (function(module) {
     var image = null;
     var _bgBitmap =null;
     
+    that.node = function() { return _node; }
+    
     //console.log('creating new view for node ' + _node.path());
 
     var selectBackgroundImage = function(detail) {
@@ -455,7 +457,6 @@ AWE.UI = (function(module) {
 
     that.redraw = function() {
 
-      var frame = that.controller().mc2vc(that.frame());
       var alpha =1.; // _view.alpha(frame.size.width);
       
       //check for correct background image
@@ -464,10 +465,10 @@ AWE.UI = (function(module) {
 
       
       //scaling container
-      _scaledContainer.displayObject().scaleX = frame.size.width / _bgBitmap.image.width;
-      _scaledContainer.displayObject().scaleY = frame.size.height / _bgBitmap.image.height;
-      _scaledContainer.displayObject().x = frame.origin.x;
-      _scaledContainer.displayObject().y = frame.origin.y;
+      _scaledContainer.displayObject().scaleX = that.frame().size.width / _bgBitmap.image.width;
+      _scaledContainer.displayObject().scaleY = that.frame().size.height / _bgBitmap.image.height;
+      _scaledContainer.displayObject().x = that.frame().origin.x;
+      _scaledContainer.displayObject().y = that.frame().origin.y;
       
       _scaledContainer.alpha = alpha;
 
