@@ -435,6 +435,8 @@ AWE.UI = (function(module) {
         return 3;
       }
     }
+    
+    _view.nonScalingContainer = function() { return _nonScalingContainer; }
 
     _view.redraw = function() {
 
@@ -468,8 +470,8 @@ AWE.UI = (function(module) {
       streetsManager.update();
 
       //add to layer
-      _view.layer().addChild(container);
-      _view.layer().addChild(_nonScalingContainer);
+     // _view.layer().addChild(container);
+      //_view.layer().addChild(_nonScalingContainer);
     };
 
     _view.unselect = function() {
