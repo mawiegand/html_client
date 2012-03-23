@@ -265,7 +265,7 @@ AWE.Controller = (function(module) {
     /** reset the size of the "window" (canvas) in case its dimension has 
      * changed. */
     that.layoutIfNeeded = function() {
-      if (_needsLayout) { console.log('layout');
+      if (_needsLayout) {   ///// WRONG: no _needsLayout after zooming!!!
         if (_canvas[0].width != _windowSize.width || _canvas[0].height != _windowSize.height) {
           _canvas[0].width  = _windowSize.width;
           _canvas[0].height = _windowSize.height;
@@ -467,7 +467,7 @@ AWE.Controller = (function(module) {
 
     // ///////////////////////////////////////////////////////////////////////
     //
-    //   Rendering
+    //   Map Views
     //
     // /////////////////////////////////////////////////////////////////////// 
     
@@ -476,25 +476,24 @@ AWE.Controller = (function(module) {
       var newRegionViews = {};          
 
       for (var i = 0; i < nodes.length; i++) {
-        // if view is already created and did not change
-        view = regionViews[nodes[i].id()];
-        if (view) {              
+        var view = regionViews[nodes[i].id()];
+        if (view) {                            // view already exists         
           newRegionViews[nodes[i].id()] = view;
           if (view.lastChange !== undefined && view.lastChange() < nodes[i].lastChange()) {
             view.setNeedsUpdate();
           }
+          view.setFrame(that.mc2vc(nodes[i].frame()));
         }
-        else {
+        else {                                 // view needs to be created
           view = AWE.UI.createRegionView();
-          view.initWithControllerAndNode(that, nodes[i]);
+          view.initWithControllerAndNode(that, nodes[i], that.mc2vc(nodes[i].frame()));
           newRegionViews[nodes[i].id()] = view;
-                //add to layer
           AWE.Ext.applyFunction(view.displayObject(), function(obj) {
             _stages[0].addChild(obj);
           });
         }
       }
-      for (var k in regionViews) {
+      for (var k in regionViews) {             // remove view from layer
         // use hasOwnProperty to filter out keys from the Object.prototype
         if (regionViews.hasOwnProperty(k) && !newRegionViews[k]) {
           var v = regionViews[k];
@@ -503,29 +502,63 @@ AWE.Controller = (function(module) {
           });        
         }
       }
-      
-      // new hash is old hash
       regionViews = newRegionViews;        
-
-      for (var id in regionViews) {
-        var regionView = regionViews[id];
-        var frame = that.mc2vc(regionView.node().frame());
-        regionView.setFrame(frame);
-        regionView.layoutIfNeeded();
-      }
     }
+    
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Gaming pieces
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Interactive Buttons, Mouse-Over, Notifications
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   HUD
+    //
+    // /////////////////////////////////////////////////////////////////////// 
     
     that.updateViewHierarchy = (function() {
       var oldVisibleArea = null;
       
-      return function(nodes, visibleArea) {
-        if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
-          console.log('rebuild map');
-          that.rebuildMapHierarchy(nodes);
+      var propUpdates = function(viewHash) {
+        var needsDisplay = false;
+        
+        for (var id in viewHash) {
+          var view = viewHash[id];
+          //view.updateIfNeeded();
+          view.layoutIfNeeded();
+          needsDisplay = needsDisplay || view.needsDisplay();
         }
+        
+        return needsDisplay;
+      }
+      
+      return function(nodes, visibleArea) {
+        
+        var stagesNeedUpdate = [false, false, false];
+        
+        // rebuild individual hieararchies
+        if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
+          this.rebuildMapHierarchy(nodes);
+        }
+        //that.updateGamingPieces();
+        //that.updateHUD();
+
+        // update hierarchies and check which stages need to be redrawn
+        stagesNeedUpdate[0] = propUpdates(regionViews);
+        //stagesNeedUpdate[1] = propUpdates(fortressViews);
+        //stagesNeedUpdate[2] = propUpdates(HUDViews);
+        
         oldVisibleArea = visibleArea;
-      //that.updateGamingPieces();
-      //that.updateHUD();
+      
+        return 
       };
     }());
     
@@ -604,7 +637,7 @@ AWE.Controller = (function(module) {
         that.updateModel(visibleArea);
         that.layoutIfNeeded();   
         
-        if (needRedraw || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged()) {
+        if (needRedraw || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || 1) {
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());
           
           that.updateViewHierarchy(visibleNodes, visibleArea);

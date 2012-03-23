@@ -253,7 +253,7 @@ AWE.UI = (function(module) {
     return that;
   };
 
-  module.createRegionView = function(_node, _layer, _controller) {
+  module.createRegionView = function() {
     
 
     
@@ -265,19 +265,19 @@ AWE.UI = (function(module) {
     var that = module.createView2();
     
     var _super = {
-      initWithController: that.initWithController,
+      initWithController: function(controller, frame) { that.initWithController(controller, frame); },
     }
     
-    that.initWithControllerAndNode = function(controller, node) {
-      _super.initWithController(controller, node.frame());
+    that.initWithControllerAndNode = function(controller, node, frame) {
+      _super.initWithController(controller, frame);
       _node = node;
 
       _scaledContainer = module.createContainer();
-      _scaledContainer.initWithController(controller, node.frame());
+      _scaledContainer.initWithController(controller, frame);
       _scaledContainer.setAutoscales(true);
 
       _nonScaledContainer = module.createContainer();      
-      _nonScaledContainer.initWithController(controller, node.frame());
+      _nonScaledContainer.initWithController(controller, frame);
         
       _scaledContainer.name = _node.id();
       _scaledContainer.onClick = function (evt) {

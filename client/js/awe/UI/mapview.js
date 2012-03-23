@@ -24,21 +24,23 @@ AWE.UI = (function(module) {
     that.initWithController = function(controller, frame)
     {
       _frame = frame || AWE.Geometry.createRect(0,0, 100, 100);
-      _originalSize = _frame.size.copy(); // just to be sure...
+      _originalSize = frame.size.copy(); // just to be sure...
       _controller = controller || _controller;
+      _needsLayout = _needsUpdate = _needsDisplay = true;
     }
     
     that.controller = function() { return _controller; }
     that.frame = function() { return _frame; }
     that.setFrame = function(frame) {
-      if (!_frame.size.equals( frame.size )) {
+      if (!_frame || !_frame.size.equals( frame.size )) {
         _needsLayout = _needsDisplay = true;
       }
-      if (!_frame.origin.equals(frame.origin)) {
+      if (!_frame || !_frame.origin.equals(frame.origin)) {
         AWE.Ext.applyFunction(this.displayObject(), function(obj) { // may return null, a DisplayObject or an Array
           obj.x = frame.origin.x;
           obj.y = frame.origin.y;   
         });
+        _needsDisplay = true;
       }
       _frame = frame;
     }
@@ -98,6 +100,8 @@ AWE.UI = (function(module) {
     that.initWithController = function(controller, frame) {
       _super.initWithController(controller, frame);
       _container = new Container();
+      _container.x = frame.origin.x;
+      _container.y = frame.origin.y;
     };
     
     that.displayObject = function() { return _container; }
@@ -155,7 +159,7 @@ AWE.UI = (function(module) {
       _controller = controller;
     }
     
-    _view.alpha = function(width) {
+    _view.alpha = function(width) {  
       
       if (_alphaMax === _alphaMin) {
         return 1;
