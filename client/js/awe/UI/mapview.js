@@ -12,14 +12,19 @@ AWE.UI = (function(module) {
     
     var _controller;
     var _frame;
-    var _needsLayout;
-    var _needsDisplay;
+    var _originalSize;
+    var _needsLayout = false;
+    var _needsDisplay = false;
+    var _needsUpdate = false;
+    
+    var _autoscales = false;
     
     var that = {};
     
     that.initWithController = function(controller, frame)
     {
-      _frame = frame || _frame;
+      _frame = frame || AWE.Geometry.createRect(0,0, 100, 100);
+      _originalSize = _frame.size.copy(); // just to be sure...
       _controller = controller || _controller;
     }
     
@@ -34,9 +39,12 @@ AWE.UI = (function(module) {
           obj.x = frame.origin.x;
           obj.y = frame.origin.y;   
         });
-      } 
+      }
       _frame = frame;
     }
+    
+    that.autoscales = function() { return _autoscales; }
+    that.setAutoscales = function(flag) { _autoscales = flag; }
     
     // NOCH UNKLAR: wohin mit diesem zeugs? Teilweise (layout) nur subviews?
   
@@ -49,12 +57,24 @@ AWE.UI = (function(module) {
     
     that.layoutIfNeeded = function() {
       if (_needsLayout) {
-        that.layoutSubviews();
+        this.layoutSubviews();
       };
     };
     
+    that.autoscaleIfNeeded = function() {
+      if (_autoscales) {
+        AWE.Ext.applyFunction(this.displayObject(), function(obj) { // may return null, a DisplayObject or an Array
+          obj.scaleX = _frame.size.width / _originalSize.width;
+          obj.scaleY = _frame.size.height / _originalSize.height;
+        });   
+      }
+    }
+    
     that.layoutSubviews = function() {
-      that.needsLayout = false;
+      this.autoscaleIfNeeded();
+      
+      _needsLayout = false;
+      _needsDisplay = true;
     }
     
     /** implement only, if you really have to do custom drawing! */

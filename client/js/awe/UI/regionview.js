@@ -274,6 +274,7 @@ AWE.UI = (function(module) {
 
       _scaledContainer = module.createContainer();
       _scaledContainer.initWithController(controller, node.frame());
+      _scaledContainer.setAutoscales(true);
 
       _nonScaledContainer = module.createContainer();      
       _nonScaledContainer.initWithController(controller, node.frame());
@@ -455,6 +456,17 @@ AWE.UI = (function(module) {
     
     that.nonScalingContainer = function() { return _nonScaledContainer; }
 
+
+    that.autoscaleIfNeeded = function() {
+      if (1 || this.autoscales()) { //console.log ('scale!');
+        AWE.Ext.applyFunction(_scaledContainer.displayObject(), function(obj) { // may return null, a DisplayObject or an Array
+          obj.scaleX = that.frame().size.width / _bgBitmap.image.width;
+          obj.scaleY = that.frame().size.height / _bgBitmap.image.height;
+        });    
+      }
+    }
+
+
     that.redraw = function() {
 
       var alpha =1.; // _view.alpha(frame.size.width);
@@ -465,8 +477,8 @@ AWE.UI = (function(module) {
 
       
       //scaling container
-      _scaledContainer.displayObject().scaleX = that.frame().size.width / _bgBitmap.image.width;
-      _scaledContainer.displayObject().scaleY = that.frame().size.height / _bgBitmap.image.height;
+   //   _scaledContainer.displayObject().scaleX = that.frame().size.width / _bgBitmap.image.width;
+    //  _scaledContainer.displayObject().scaleY = that.frame().size.height / _bgBitmap.image.height;
    //   _scaledContainer.displayObject().x = that.frame().origin.x;
   //    _scaledContainer.displayObject().y = that.frame().origin.y;
       

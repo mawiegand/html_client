@@ -557,6 +557,7 @@ AWE.Controller = (function(module) {
         var regionView = regionViews[id];
         var frame = that.mc2vc(regionView.node().frame());
         regionView.setFrame(frame);
+        regionView.layoutIfNeeded();
         regionView.redraw();
       }
       _stages[0].update();
