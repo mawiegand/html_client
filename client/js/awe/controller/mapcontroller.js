@@ -427,7 +427,7 @@ AWE.Controller = (function(module) {
 
         // viewport change -> time to check for the need for additional map nodes.
         if (viewportHasChanged(visibleAreaMC) && !requestingMapNodesFromServer &&
-          AWE.Map.numMissingNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level()) > 0) {
+            AWE.Map.numMissingNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level()) > 0) {
                         
           requestingMapNodesFromServer = true;
           AWE.Map.Manager.fetchNodesForArea(visibleAreaMC, level(), function() {
@@ -443,7 +443,7 @@ AWE.Controller = (function(module) {
           
           //requestingMapNodesFromServer = true;
           AWE.Map.Manager.fetchMissingRegionsForArea(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), function() {
-           // requestingMapNodesFromServer = false;
+            // requestingMapNodesFromServer = false;
             that.setModelChanged();
           });
         }
@@ -474,96 +474,120 @@ AWE.Controller = (function(module) {
     var startTime = 0;
     var numFrames = 0;
     var fps = 60;
-    var needRedraw;
+    var needRedraw; // TODO: remove this flag.
     
-    that.updateView = function() { needRedraw = true; }
+    that.updateView = function() { needRedraw = true; } // TODO: completely remove this method, replaced by setNeedsDisplay
     
     var fortressViews = {};
     var regionViews = {};
     
     that.render = function(nodes) {
       
-      // fps
+      // calculate fps
       var now = +new Date();
-      var alpha = 0.1; // smoothing factor
+      var alpha = 0.2; // smoothing factor
       if (startTime > 0) {
         fps = fps * (1.0-alpha) + (1000.0 / (now-startTime)) * alpha;
         $('#debug').text(Math.round(fps));
       }
-      startTime = now;
-      
-      // Re-layout views, if needed       
-            
-        
-        _frameCounter++;
-        
-        var view;
-        
-        if (1) {
-          //log('level', level());
-       
-          _needsLayout = _needsDisplay = false;
-          // layer0: regions
-          // create new viewHash
-          var newRegionViews = {};          
-          // fill new viewHash with all visible, old an new views
-          for (var i = 0; i < nodes.length; i++) {
-            // if view is already created and did not change
-            view = regionViews[nodes[i].id()];
-            if (view && view.lastChange() >= nodes[i].lastChange()) {              
-              newRegionViews[nodes[i].id()] = view;
-            }
-            else {
-              newRegionViews[nodes[i].id()] = AWE.UI.createRegionView(nodes[i], _stages[0], that);
-            }
+      startTime = now;        
+      _frameCounter++;
+  
+      var addDisplayObjectsToStage = function(stage, v) {
+        var dis = v.displayObject();
+        if (dis && dis.length !== undefined) {
+          for (var o in dis) {
+            stage.addChild(o);
           }
-          // new hash is old hash
-          regionViews = newRegionViews;        
-          // clear _stages[0]
-          _stages[0].removeAllChildren();
-          // redraw all views in viewHash        
-          for (var id in regionViews) {
-             regionViews[id].redraw();
-          }
-          _stages[0].update();
-          
-          // layer 1: locations
-          var newFortressViews = {}
-          for (var i = 0; i < nodes.length; i++) {
-            if (view = fortressViews[nodes[i].id()]) { // und nicht geändert
-              newFortressViews[nodes[i].id()] = view;
-            }
-            else if (nodes[i].isLeaf() && nodes[i].region()) {
-              newFortressViews[nodes[i].id()] = AWE.UI.createFortressView(nodes[i], _stages[1], that);     
-            }
-          }
-          fortressViews = newFortressViews;
-          _stages[1].removeAllChildren();
-          for (var id in fortressViews) {
-             fortressViews[id].redraw();
-          }
-          //locations
-          ///TODO don't recreate
-          var newLocationViews = {};
-          for (var i = 0; i < nodes.length; i++) {
-            newLocationViews[nodes[i].id()] = AWE.UI.createLocationsView(nodes[i], _stages[1], that);
-            newLocationViews[nodes[i].id()].redraw();
-          }
-
-          _stages[1].update();
-
-          _stages[2].removeAllChildren();          
-          AWE.UI.createMaincontrolsView(_windowSize, _stages[2], that).redraw();
-          AWE.UI.createDetailView(_windowSize, _stages[2], that).redraw();
-          _stages[2].update();
-                    
-          // old flag, TODO remove?
-          needRedraw = false;
         }
+        else if (dis) {
+          stage.addChild(dis);
+        }
+      }
+      
+      var removeDisplayObjectsFromStage = function(stage, v) {
+        var dis = v.displayObject();
+        if (dis && dis.length !== undefined) {
+          for (var o in dis) {
+            stage.removeChild(o);
+          }
+        }
+        else if (dis) {
+          stage.removeChild(dis);
+        }
+      }
+        
+      // layer0: regions
+      // create new viewHash
+      var newRegionViews = {};          
+      // fill new viewHash with all visible, old an new views
+      for (var i = 0; i < nodes.length; i++) {
+        // if view is already created and did not change
+        view = regionViews[nodes[i].id()];
+        if (view) {              
+          newRegionViews[nodes[i].id()] = view;
+          /*if (view.lastChange() < nodes[i].lastChange()) {
+            view.updateView();
+          }*/
+        }
+        else {
+          view = AWE.UI.createRegionView();
+          view.initWithControllerAndNode(that, nodes[i]);
+          newRegionViews[nodes[i].id()] = view;
+                //add to layer
+          addDisplayObjectsToStage(_stages[0], view);
+        }
+      }
+      //console.log( 'num children before remove: ' + _stages[0].getNumChildren() );
+      for (var k in regionViews) {
+        // use hasOwnProperty to filter out keys from the Object.prototype
+        if (regionViews.hasOwnProperty(k) && !newRegionViews[k]) {
+          var v = regionViews[k];
+          removeDisplayObjectsFromStage(_stages[0], v);
+        }
+      }
+      //console.log( 'num children after remove: ' + _stages[0].getNumChildren() );
+      
+      // new hash is old hash
+      regionViews = newRegionViews;        
+      // clear _stages[0]
+      //_stages[0].removeAllChildren();
+      // redraw all views in viewHash        
+      for (var id in regionViews) {
+         regionViews[id].redraw();
+      }
+      _stages[0].update();
+      
+      // layer 1: locations
+      var newFortressViews = {}
+      for (var i = 0; i < nodes.length; i++) {
+        if (view = fortressViews[nodes[i].id()]) { // und nicht geändert
+          newFortressViews[nodes[i].id()] = view;
+        }
+        else if (nodes[i].isLeaf() && nodes[i].region()) {
+          newFortressViews[nodes[i].id()] = AWE.UI.createFortressView(nodes[i], _stages[1], that);     
+        }
+      }
+      fortressViews = newFortressViews;
+      _stages[1].removeAllChildren();
+      for (var id in fortressViews) {
+         fortressViews[id].redraw();
+      }
+      //locations
+      ///TODO don't recreate
+      var newLocationViews = {};
+      for (var i = 0; i < nodes.length; i++) {
+        newLocationViews[nodes[i].id()] = AWE.UI.createLocationsView(nodes[i], _stages[1], that);
+        newLocationViews[nodes[i].id()].redraw();
+      }
 
+      _stages[1].update();
 
-      // and repeat from beginning
-      // if(!AWE.Map.Manager.isInitialized()) 
+      _stages[2].removeAllChildren();          
+      AWE.UI.createMaincontrolsView(_windowSize, _stages[2], that).redraw();
+      AWE.UI.createDetailView(_windowSize, _stages[2], that).redraw();
+      _stages[2].update();
+                
     };    
     
     
@@ -586,8 +610,12 @@ AWE.Controller = (function(module) {
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());
           that.render(visibleNodes);
         }
+
+        _modelChanged = false;
+        needRedraw = false;   // TODO: completely remove this flag and method (replaced by setNeedsDisplay, and setNeedsLayout)
+        _needsDisplay = false;
+        _needsLayout = false;
       }
-      _modelChanged = false;
       _loopCounter++;
     };
     

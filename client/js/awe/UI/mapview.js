@@ -8,6 +8,66 @@ var AWE = AWE || {};
 AWE.UI = (function(module) {
           
   
+  module.createView2 = function () {
+    
+    var _controller;
+    var _frame;
+    
+    var that = {};
+    
+    that.initWithController = function(controller, frame)
+    {
+      _frame = frame || _frame;
+      _controller = controller || _controller;
+    }
+    
+    that.controller = function() { return _controller; }
+    that.frame = function() { return _frame; }
+    that.setFrame = function(frame) { _frame = frame; }
+    
+    that.displayObject = function() { return null; }
+    
+    return that;
+  };       
+  
+  module.createContainer = function () {
+
+    var _container = null;
+    var _subviews = Array();
+    
+    var that = module.createView2();
+    var _super = {
+      initWithController: that.initWithController,
+    };
+    
+    that.initWithController = function(controller, frame) {
+      _super.initWithController(controller, frame);
+      _container = new Container();
+    };
+    
+    that.displayObject = function() { return _container; }
+    
+    that.addChild = function(view) { 
+      _subviews.push(view);
+      _container.addChild(view.displayObject());
+    };
+    
+    that.removeChild = function(view) {
+      var index = _subviews.indexOf(view);     
+      if (index >= 0) {
+        _container.removeChild(view.displayObject());
+        _subviews.splice(index,1);
+      }
+    }
+    
+    return that;
+  };
+  
+  module.createImageView = function() {
+    
+  };
+          
+  
   /*** AWE.UI.View ***/
   module.createView = function(spec) {
     var _view = {};
