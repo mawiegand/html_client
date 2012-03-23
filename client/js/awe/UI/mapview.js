@@ -23,9 +23,41 @@ AWE.UI = (function(module) {
     
     that.controller = function() { return _controller; }
     that.frame = function() { return _frame; }
-    that.setFrame = function(frame) { _frame = frame; }
+    that.setFrame = function(frame) {
+      if (!_frame.size.equals( frame.size )) {
+        that.needsLayout = that.needsDisplay = true;
+      }
+      if (this.displayObject() && !_frame.origin.equals(frame.origin)) {
+        this.displayObject().x = frame.origin.x;
+        this.displayObject().y = frame.origin.y;    
+        console.log('move display object');    
+      };
+      _frame = frame;
+    }
     
+    // NOCH UNKLAR: wohin mit diesem zeugs? Teilweise (layout) nur subviews?
+  
     that.displayObject = function() { return null; }
+    
+    that.setNeedsDisplay = function() { _needsDisplay = true; }
+    that.needsDisplay = function() { return _needsDisplay; }
+    that.setNeedsLayout = function() { _needsLayout = true; }
+    that.needsLayout = function() { return _needsLayout; }
+    
+    that.layoutIfNeeded = function() {
+      if (_needsLayout) {
+        that.layoutSubviews();
+      };
+    };
+    
+    that.layoutSubviews = function() {
+      that.needsLayout = false;
+    }
+    
+    /** implement only, if you really have to do custom drawing! */
+    that.draw = function () {
+      _needsDisplay = false;    
+    };
     
     return that;
   };       

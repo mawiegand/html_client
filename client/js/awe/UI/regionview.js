@@ -467,8 +467,8 @@ AWE.UI = (function(module) {
       //scaling container
       _scaledContainer.displayObject().scaleX = that.frame().size.width / _bgBitmap.image.width;
       _scaledContainer.displayObject().scaleY = that.frame().size.height / _bgBitmap.image.height;
-      _scaledContainer.displayObject().x = that.frame().origin.x;
-      _scaledContainer.displayObject().y = that.frame().origin.y;
+   //   _scaledContainer.displayObject().x = that.frame().origin.x;
+  //    _scaledContainer.displayObject().y = that.frame().origin.y;
       
       _scaledContainer.alpha = alpha;
 
