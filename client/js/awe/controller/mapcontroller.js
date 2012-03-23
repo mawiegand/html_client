@@ -542,7 +542,7 @@ AWE.Controller = (function(module) {
       
       return function(nodes, visibleArea) {
         
-        var stagesNeedUpdate = [false, false, false];
+        var stagesNeedUpdate = [false, true, true]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
         
         // rebuild individual hieararchies
         if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
@@ -558,7 +558,7 @@ AWE.Controller = (function(module) {
         
         oldVisibleArea = visibleArea;
       
-        return 
+        return stagesNeedUpdate;
       };
     }());
     
@@ -640,13 +640,15 @@ AWE.Controller = (function(module) {
         if (needRedraw || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || 1) {
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());
           
-          that.updateViewHierarchy(visibleNodes, visibleArea);
+          var stageUpdateNeeded = that.updateViewHierarchy(visibleNodes, visibleArea);
           
           that.render(visibleNodes);
-
-          _stages[0].update();
-          _stages[1].update();
-          _stages[2].update();
+          
+          for (var i=0; i < 3; i++) {
+            if (stageUpdateNeeded[i]) {
+              _stages[i].update();
+            }
+          }
         }
 
         _modelChanged = false;
