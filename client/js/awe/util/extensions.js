@@ -21,18 +21,18 @@ AWE.Ext = (function(module) {
   };
   
   
-  module.applyFunction = function(_obj, _function, _params) {
+  module.applyFunction = function(_obj, _function) {
     if (module.isArray(_obj)) {
       for (var o in _obj) {
-        if (typeof _obj[o] === 'object') {
-          _function.apply(_obj[o], _params);
-        }
+       // if (typeof _obj[o] === 'object') {
+          _function(_obj[o]);
+      //  }
       }
     }
     else if (_obj) {
-      if (typeof _obj === 'object') {
-          _function.apply(_obj, _params);
-      }
+     // if (typeof _obj === 'object') {
+          _function(_obj);
+    //  }
     }
   }      
 

@@ -29,11 +29,12 @@ AWE.UI = (function(module) {
       if (!_frame.size.equals( frame.size )) {
         _needsLayout = _needsDisplay = true;
       }
-      if (this.displayObject() && !_frame.origin.equals(frame.origin)) {
-        this.displayObject().x = frame.origin.x;
-        this.displayObject().y = frame.origin.y;    
-        console.log('move display object');    
-      };
+      if (!_frame.origin.equals(frame.origin)) {
+        AWE.Ext.applyFunction(this.displayObject(), function(obj) { // may return null, a DisplayObject or an Array
+          obj.x = frame.origin.x;
+          obj.y = frame.origin.y;   
+        });
+      } 
       _frame = frame;
     }
     
