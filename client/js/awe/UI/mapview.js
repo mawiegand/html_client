@@ -1,4 +1,5 @@
-/* Author: Patrick Fox <patrick@5dlab.com>
+/* Authors: Patrick Fox <patrick@5dlab.com>,
+ *          Sascha Lange <sascha@5dlab.com>, Julian Schmid
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
@@ -18,6 +19,7 @@ AWE.UI = (function(module) {
     var _needsUpdate = false;
     
     var _autoscales = false;
+    var _alpha = 1.;
     
     var that = {};
     
@@ -89,6 +91,14 @@ AWE.UI = (function(module) {
       }
     }
     
+    that.alpha = function() {
+      return _alpha;
+    }
+    
+    that.setAlpha = function(alpha) {
+      _alpha = alpha;
+    }
+
     that.layoutSubviews = function() {
       this.autoscaleIfNeeded();
       
@@ -140,7 +150,60 @@ AWE.UI = (function(module) {
     return that;
   };
   
+  module.ViewContentModeNone = 0;
+  module.ViewContentModeFit = 1;
+  
   module.createImageView = function() {
+    
+    var _image = null;
+    var _bitmap = null;
+    var _contentMode = module.ViewContentModeNone;
+    
+    var that = module.createView2();
+
+    var recalcScale = function() {
+      if (_contentMode = module.ViewContentModeFit) {
+        _bitmap.scaleX = that.frame().size.width / _bitmap.image.width;
+        _bitmap.scaleY = that.frame().size.height / _bitmap.image.height;
+      }
+      else if (_contentMode = module.ViewContentModeNone) {
+        _bitmap.scaleX = _bitmap.scaleY = 1;
+      }
+    }
+    
+    that.superSetFrame = that.setFrame;
+    
+    that.initWithControllerAndImage = function(controller, image, frame) {
+      frame = frame || AWE.Geometry.createFrame(0,0,image.width, image.height);
+      that.initWithController(controller, frame);
+      that.setImage(image);
+    }
+    
+    that.setImage = function(image) {
+      _image = image;
+      _bitmap.image = image;
+      recalcScale();
+      this.setNeedsDisplay();
+    }
+    
+    that.image = function() {
+      return _image;
+    }
+    
+    that.setContentMode = function(mode) {
+      _contentMode = mode;
+      recalcScale();
+      this.setNeedsDisplay();
+    }
+    
+    that.contentMode = function() { return contentMode; }
+    
+    that.setFrame = function(frame) {
+      superSetFrame(frame);
+      recalcScale();
+    }
+        
+    that.displayObject() = function() { return _bitmap; }
     
   };
           
