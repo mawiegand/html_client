@@ -647,21 +647,21 @@ AWE.Controller = (function(module) {
         // STEP 1: determine visible area (may have changed through user interaction)
         var visibleArea = vc2mc(AWE.Geometry.createRect(0, 0, _windowSize.width,_windowSize.height));
         
-        // STEP 2: update model as needed, fetch new data from server
+        // STEP 2: trigger update of model as needed, fetch new data from server
         that.updateModel(visibleArea);
         
         // STEP 3: layout canvas & stages according to possibly changed window size (TODO: clean this!)
         that.layoutIfNeeded();   
         
         // STEP 4: update views and repaint view hierarchies as needed
-        if (needRedraw || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || 1) {
-          // STEP 4a: get all visible nodes from the model
+        if (needRedraw || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged()) {
+          // STEP 4a: get all visible nodes from the model (TODO: armies etc.)
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());    
           
           // STEP 4b: create, remove and update all views according to visible parts of model      
           var stageUpdateNeeded = that.updateViewHierarchy(visibleNodes, visibleArea);
           
-          // STEP 4c: update (repaint) those stage, that have changed (one view that needsDisplay triggers repaint of whole stage)
+          // STEP 4c: update (repaint) those stages, that have changed (one view that needsDisplay triggers repaint of whole stage)
           for (var i=0; i < 3; i++) {
             if (stageUpdateNeeded[i]) {
               _stages[i].update();

@@ -219,7 +219,7 @@ AWE.UI = (function(module) {
     _ownerNameText.x = AWE.Config.MAPPING_FORTRESS_SIZE / 2
     _ownerNameText.y = AWE.Config.MAPPING_FORTRESS_SIZE;
     
-    log('_ownerNameText', _ownerNameText.getMeasuredWidth());
+    //log('_ownerNameText', _ownerNameText.getMeasuredWidth());
     
     var _ownerNameGraphics = new Graphics();
     _ownerNameGraphics.setStrokeStyle(0);

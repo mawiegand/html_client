@@ -48,14 +48,31 @@ AWE.UI = (function(module) {
     that.autoscales = function() { return _autoscales; }
     that.setAutoscales = function(flag) { _autoscales = flag; }
     
-    // NOCH UNKLAR: wohin mit diesem zeugs? Teilweise (layout) nur subviews?
   
     that.displayObject = function() { return null; }
     
-    that.setNeedsDisplay = function() { _needsDisplay = true; }
-    that.needsDisplay = function() { return _needsDisplay; }
-    that.setNeedsLayout = function() { _needsLayout = true; }
+    /** sets that the view needs to re-layout itself and possible subviews. The
+     * actual layout will be triggered during the next cycle of the controller's
+     * runloop. */
+    that.setNeedsLayout = function() { _needsLayout = true; }    
+    /** true, in case the view needs to re-layout itself and possible subviews. */
     that.needsLayout = function() { return _needsLayout; }
+    /** sets that the view needs to update itself (and possible subviews) due to
+     * a change in the associated model. The udpate is then triggered by the 
+     * view controller during the next cycle of the runloop. */
+    that.setNeedsUpdate = function() { _needsUpdate = true;}
+    /** true, in case this view needs to be updated because of a change of the 
+     * associated model. */
+    that.needsUpdate = function() { return _needsUpdate; }
+
+    /** sets the view to need re-display. You should never set this directly, 
+     * use setNeedsLayout or setNeedsUpdate instead. */
+    that.setNeedsDisplay = function() { _needsDisplay = true; }
+    /** true, in case the view needs to be displayed because it has changed.
+     * Is read-out by view controller and used to trigger a canvas-repaint 
+     * when needed. */
+    that.needsDisplay = function() { return _needsDisplay; } // TOOD: someone needs to set needsDisplay back to false after painting!
+
     
     that.layoutIfNeeded = function() {
       if (_needsLayout) {
@@ -79,11 +96,6 @@ AWE.UI = (function(module) {
       _needsDisplay = true;
     }
     
-    /** implement only, if you really have to do custom drawing! */
-    that.draw = function () {
-      _needsDisplay = false;    
-    };
-    
     return that;
   };       
   
@@ -104,7 +116,6 @@ AWE.UI = (function(module) {
       _container.y = frame.origin.y;
     };
     
-    that.displayObject = function() { return _container; }
     
     that.addChild = function(view) { 
       _subviews.push(view);
@@ -122,6 +133,9 @@ AWE.UI = (function(module) {
         _subviews.splice(index,1);
       }
     }
+    
+    that.displayObject = function() { return _container; }
+
     
     return that;
   };

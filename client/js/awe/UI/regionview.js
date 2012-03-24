@@ -267,6 +267,7 @@ AWE.UI = (function(module) {
     var _super = {
       initWithController: function(controller, frame) { that.initWithController(controller, frame); },
     }
+    that.superLayoutSubviews = that.layoutSubviews;
     
     that.initWithControllerAndNode = function(controller, node, frame) {
       _super.initWithController(controller, frame);
@@ -292,7 +293,6 @@ AWE.UI = (function(module) {
     
     that.node = function() { return _node; }
     
-    //console.log('creating new view for node ' + _node.path());
 
     var selectBackgroundImage = function(detail) {
       var newImage = null;
@@ -347,9 +347,7 @@ AWE.UI = (function(module) {
 
 /*
     var updateInformation = function(detail) {
-      
-      var frame = _view.controller().mc2vc(_view.frame());      
-      
+            
       if (!_debugText && detail > -1 && AWE.Config.MAP_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
         _debugText = new Text();
         _debugText.font = "10px Arial";
@@ -424,7 +422,7 @@ AWE.UI = (function(module) {
         _regionNameText.x = 4;
         _regionNameText.y = 4;
       } 
-    }
+    } 
     
     //streets
     var streetsManager = module.createStreetsManager(_node, _view);
@@ -434,71 +432,48 @@ AWE.UI = (function(module) {
     var villageSpotsManager = module.createVillageSpotsManager(_node, _view);
     _nonScalingContainer.addChild(villageSpotsManager.container());
 */
-    that.position = function() {
-      return that.frame().origin;
-    };
     
     that.detailLevel = function() {
-      var frame = that.controller().mc2vc(that.frame());      
-      if (frame.size.width < 128) {
+      if (this.frame().size.width < 128) {
         return 0;
       }
-      else if (frame.size.width < 256) {
+      else if (this.frame().size.width < 256) {
         return 1;
       }
-      else if (frame.size.width < 512) {
+      else if (this.frame().size.width < 512) {
         return 2;
       }
       else {
         return 3;
       }
     }
-    
-    that.nonScalingContainer = function() { return _nonScaledContainer; }
-
 
     that.autoscaleIfNeeded = function() {
-      if (1 || this.autoscales()) { //console.log ('scale!');
+      if (1 || this.autoscales()) { console.log ('scale!');
         AWE.Ext.applyFunction(_scaledContainer.displayObject(), function(obj) { // may return null, a DisplayObject or an Array
           obj.scaleX = that.frame().size.width / _bgBitmap.image.width;
           obj.scaleY = that.frame().size.height / _bgBitmap.image.height;
         });    
       }
     }
+    
+    that.layoutSubviews = function() {
+      selectBackgroundImage(that.detailLevel());
+      that.superLayoutSubviews();
+    }
 
 
     that.redraw = function() {
 
-      var alpha =1.; // _view.alpha(frame.size.width);
-      
       //check for correct background image
-      selectBackgroundImage(that.detailLevel());
       //updateInformation(_view.detailLevel());
 
-      
-      //scaling container
-   //   _scaledContainer.displayObject().scaleX = that.frame().size.width / _bgBitmap.image.width;
-    //  _scaledContainer.displayObject().scaleY = that.frame().size.height / _bgBitmap.image.height;
-   //   _scaledContainer.displayObject().x = that.frame().origin.x;
-  //    _scaledContainer.displayObject().y = that.frame().origin.y;
-      
-      _scaledContainer.alpha = alpha;
-
-/*    //non scaling container
-      _nonScalingContainer.x = frame.origin.x;
-      _nonScalingContainer.y = frame.origin.y;
-
-      _nonScalingContainer.alpha = alpha; */
-
+          
       //villiagespots
       //villageSpotsManager.update();
 
       //streets
       //streetsManager.update();
-
-      //add to layer
-     // _view.layer().addChild(container);
-      //_view.layer().addChild(_nonScalingContainer);
     };
 
     that.unselect = function() {
@@ -510,7 +485,7 @@ AWE.UI = (function(module) {
     }
     
     that.displayObject = function() {
-      return  _scaledContainer.displayObject() ;
+      return  [ _scaledContainer.displayObject(), _nonScaledContainer.displayObject() ] ;
     }
             
     return that;

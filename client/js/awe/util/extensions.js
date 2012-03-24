@@ -28,8 +28,8 @@ AWE.Ext = (function(module) {
    */
   module.applyFunction = function(_obj, _function) {
     if (module.isArray(_obj)) {
-      for (var o in _obj) {
-        _function(_obj[o]);
+      for (var i=0; i < _obj.length; i++) {
+        _function(_obj[i]);
       }
     }
     else if (_obj) {
