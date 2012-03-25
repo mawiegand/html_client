@@ -255,8 +255,6 @@ AWE.UI = (function(module) {
 
   module.createRegionView = function(_node, _layer, _controller) {
     
-
-    
     var _node = null;
     
     var _scaledContainer = null;

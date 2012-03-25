@@ -49,6 +49,10 @@ AWE.UI = (function(module) {
       );
     };
 
+	that.setSelected = function(selected) {
+	  _selected = selected;
+	}
+
     that.redraw = function() {
       var frame = _view.controller().mc2vc(_view.frame());
       var container = _view.container();
@@ -144,7 +148,7 @@ AWE.UI = (function(module) {
     var _node = node;
 
     var _selected = false;
-    var _mouseover = false;
+    var _highlighted = false;
     
     var _fieldBitmap = null;
     
@@ -171,12 +175,17 @@ AWE.UI = (function(module) {
       else {
         _view.select();
       }
+
+      _controller.viewClicked(_view);
     };
+
     _fieldBitmap.onMouseOver = function(evt) {
+      _controller.viewMouseOver(_view);
       _mouseover = true;
       _view.controller().updateView();
     };
     _fieldBitmap.onMouseOut = function(evt) {
+      _controller.viewMouseOut(_view);
       _mouseover = false;
       _view.container().removeChild(_easementBitmap);
       _view.controller().updateView();
@@ -187,32 +196,6 @@ AWE.UI = (function(module) {
     var _easementBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/easement"));
     _easementBitmap.y = -AWE.Config.MAPPING_FORTRESS_SIZE;
         
-    var _enterButtonBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/button1"));
-    _enterButtonBitmap.x = -AWE.Config.MAPPING_FORTRESS_SIZE;
-    _enterButtonBitmap.y = +AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-    _enterButtonBitmap.onClick = function() {
-      log('_enterButtonBitmap onClick');
-    };
-    
-    var _enterButtonText = new Text('Enter', "12px Arial", "#000");
-    _enterButtonText.textAlign = "center";
-    _enterButtonText.textBaseline = "middle";
-    _enterButtonText.x = -AWE.Config.MAPPING_FORTRESS_SIZE / 2
-    _enterButtonText.y = AWE.Config.MAPPING_FORTRESS_SIZE;
-
-    var _attackButtonBitmap = new Bitmap(AWE.UI.ImageCache.getImage("map/button2"));
-    _attackButtonBitmap.x = AWE.Config.MAPPING_FORTRESS_SIZE;
-    _attackButtonBitmap.y = AWE.Config.MAPPING_FORTRESS_SIZE / 2;
-    _attackButtonBitmap.onClick = function() {
-      log('_attackButtonBitmap onClick');
-    };
-   
-    var _attackButtonText = new Text('Attack', "12px Arial", "#000");
-    _attackButtonText.textAlign = "center";
-    _attackButtonText.textBaseline = "middle";
-    _attackButtonText.x = AWE.Config.MAPPING_FORTRESS_SIZE * 3 / 2
-    _attackButtonText.y = AWE.Config.MAPPING_FORTRESS_SIZE;
-
     var _ownerNameText = new Text(_node.region().ownerName(), "12px Arial", "#FFF");
     _ownerNameText.textAlign = "center";
     _ownerNameText.textBaseline = "top";
@@ -249,9 +232,6 @@ AWE.UI = (function(module) {
       container.addChild(_fieldBitmap);
       if (_selected) {
         container.addChild(_enterButtonBitmap);
-        container.addChild(_enterButtonText);
-        container.addChild(_attackButtonBitmap);
-        container.addChild(_attackButtonText);
         container.addChildAt(_selectShape, 0);
       }
       if (_mouseover) {

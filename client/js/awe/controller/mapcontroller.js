@@ -9,8 +9,8 @@ AWE.Controller = (function(module) {
           
   module.createMapController = function(anchor) {
     
-    var _stages = new Array(3);  ///< three easelJS stages for displaying background, objects and HUD
-    var _canvas = new Array(3);  ///< canvas elements for the three stages
+    var _stages = new Array(4);  ///< four easelJS stages for displaying background, objects and HUD
+    var _canvas = new Array(4);  ///< canvas elements for the four stages
 
     var _selectedView = null;    ///< there can be only one selected view!
     
@@ -67,19 +67,24 @@ AWE.Controller = (function(module) {
       _stages[1] = new Stage(_canvas[1]);
       _stages[1].enableMouseOver();
       
-      // HUD layer ("static", not zoomable, not moveable)
+      // layer for mouseover and selection objects
       that.anchor().append('<canvas id="layer2"></canvas>');
       _canvas[2] = $('#layer2')[0];
       _stages[2] = new Stage(_canvas[2]);
-      _stages[2].enableMouseOver();
+      
+      // HUD layer ("static", not zoomable, not moveable)
+      that.anchor().append('<canvas id="layer3"></canvas>');
+      _canvas[3] = $('#layer3')[0];
+      _stages[3] = new Stage(_canvas[3]);
+      _stages[3].enableMouseOver();
 
       // disable onMouseOver for stage1 when onMouseOver on stage2 is active          
-      _stages[2].onMouseOver = function() {
+      _stages[3].onMouseOver = function() {
         log('onmouseover');
         _stages[1].enableMouseOver(0);     
       };
   
-      _stages[2].onMouseOut = function() {
+      _stages[3].onMouseOut = function() {
         log('onmouseout');
         _stages[1].enableMouseOver();
       };
@@ -108,8 +113,7 @@ AWE.Controller = (function(module) {
       $(window).bind('mousewheel', function() {
         that.handleMouseWheel();
       });
-    };
-        
+    };        
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -148,7 +152,7 @@ AWE.Controller = (function(module) {
     }
 
     /** transform view coordinates to model coordinates */
-    var vc2mc = function(obj) {
+    that.vc2mc = function(obj) {
       
       // if obj os rect
       if (obj.origin !== undefined && obj.size !== undefined) {
@@ -241,7 +245,7 @@ AWE.Controller = (function(module) {
           _level = 0;
           _memRootNodeWidth = AWE.Map.Manager.rootNode().frame().size.width;
           _memMc2vcScale = mc2vcScale;
-          var rootWidthVC = that.mc2vc(_memRootNodeWidth);
+          var rootWidthVC = that.mc2vc(_memRootNodeWidth);                                                                          
       
           while (rootWidthVC > AWE.Config.MAP_MIN_VISIBLE_TILES * 2) {
             _level++;
@@ -275,6 +279,9 @@ AWE.Controller = (function(module) {
     
           _canvas[2].width  = _windowSize.width;
           _canvas[2].height = _windowSize.height;             
+
+          _canvas[3].width  = _windowSize.width;
+          _canvas[3].height = _windowSize.height;             
         };
         that.setNeedsDisplay();
       };
@@ -293,14 +300,10 @@ AWE.Controller = (function(module) {
     
     /** returns the single map view that is presently selected by the user. 
      * this can be any of the gaming pieces (armies), markers or settlements.*/
-    that.selectedView = function() {
-      return _selectedView;
-    };
+    that.selectedView = function() { return _selectedView; };
     
     /** sets the selected view */
-    that.setSelectedView = function(view) {
-      _selectedView = view;
-    };
+    that.setSelectedView = function(view) { _selectedView = view; };
         
     that.handleClick = function(evt) {
       if (!_scrollingStarted) {
@@ -391,6 +394,24 @@ AWE.Controller = (function(module) {
 
     // ///////////////////////////////////////////////////////////////////////
     //
+    //   Action Handling
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+
+    that.viewClicked = function(view) {
+      log('controller:viewClicked', view);
+	}
+
+    that.viewMouseOver = function(view) {
+      log('controller:viewMouseOver', view);
+	}
+
+    that.viewMouseOut = function(view) {
+      log('controller:viewMouseOut', view);
+	}
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
     //   Serialization, inspection & debugging
     //
     // /////////////////////////////////////////////////////////////////////// 
@@ -405,13 +426,9 @@ AWE.Controller = (function(module) {
     // /////////////////////////////////////////////////////////////////////// 
     
     
-    that.modelChanged = function() {
-      return _modelChanged;
-    }
+    that.modelChanged = function() { return _modelChanged; }
     
-    that.setModelChanged = function() {
-      _modelChanged = true;
-    }
+    that.setModelChanged = function() { _modelChanged = true; }
     
     that.updateModel = (function() {
       
@@ -479,6 +496,7 @@ AWE.Controller = (function(module) {
     that.updateView = function() { needRedraw = true; } // TODO: completely remove this method, replaced by setNeedsDisplay
     
     var fortressViews = {};
+	var fortressControlsViews = {}
     var regionViews = {};
     
     that.render = function(nodes) {
@@ -547,20 +565,28 @@ AWE.Controller = (function(module) {
       _stages[0].update();
       
       // layer 1: locations
-      var newFortressViews = {}
+      var newFortressViews = {};
+	  var newFortressControlsViews = {}
+
       for (var i = 0; i < nodes.length; i++) {
         if (view = fortressViews[nodes[i].id()]) { // und nicht geändert
           newFortressViews[nodes[i].id()] = view;
+          newFortressControlsViews[nodes[i].id()] = fortressControlsViews[nodes[i].id()];
         }
         else if (nodes[i].isLeaf() && nodes[i].region()) {
           newFortressViews[nodes[i].id()] = AWE.UI.createFortressView(nodes[i], _stages[1], that);     
+          newFortressControlsViews[nodes[i].id()] = AWE.UI.createFortressControlsView(nodes[i], _stages[2], that);     
         }
       }
       fortressViews = newFortressViews;
+      fortressControlsViews = newFortressControlsViews;
       _stages[1].removeAllChildren();
+      _stages[2].removeAllChildren();
       for (var id in fortressViews) {
          fortressViews[id].redraw();
+         fortressControlsViews[id].redraw();
       }
+
       //locations
       ///TODO don't recreate
       var newLocationViews = {};
@@ -570,11 +596,12 @@ AWE.Controller = (function(module) {
       }
 
       _stages[1].update();
-
-      _stages[2].removeAllChildren();          
-      AWE.UI.createMaincontrolsView(_windowSize, _stages[2], that).redraw();
-      AWE.UI.createDetailView(_windowSize, _stages[2], that).redraw();
       _stages[2].update();
+
+      _stages[3].removeAllChildren();          
+      AWE.UI.createMaincontrolsView(_windowSize, _stages[3], that).redraw();
+      AWE.UI.createDetailView(_windowSize, _stages[3], that).redraw();
+      _stages[3].update();
                 
     };    
     
@@ -589,7 +616,7 @@ AWE.Controller = (function(module) {
     that.runloop = function() {
       if(AWE.Map.Manager.isInitialized()) {
         
-        var visibleArea = vc2mc(AWE.Geometry.createRect(0, 0, _windowSize.width,_windowSize.height));
+        var visibleArea = that.vc2mc(AWE.Geometry.createRect(0, 0, _windowSize.width,_windowSize.height));
         
         that.updateModel(visibleArea);
         that.layoutIfNeeded();   
