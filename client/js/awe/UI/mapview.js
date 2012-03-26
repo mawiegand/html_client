@@ -84,7 +84,7 @@ AWE.UI = (function(module) {
     
     that.autoscaleIfNeeded = function() {
       if (_autoscales) {
-        AWE.Ext.applyFunction(this.displayObject(), function(obj) { // may return null, a DisplayObject or an Array
+        AWE.Ext.applyFunction(this.displayObject(), function(obj) { console.log(' SCALE CONTAINER ')  // may return null, a DisplayObject or an Array
           obj.scaleX = _frame.size.width / _originalSize.width;
           obj.scaleY = _frame.size.height / _originalSize.height;
         });   
@@ -118,6 +118,7 @@ AWE.UI = (function(module) {
     var _super = {
       initWithController: that.initWithController,
     };
+    that.superLayoutSubviews = that.layoutSubviews;
     
     that.initWithController = function(controller, frame) {
       _super.initWithController(controller, frame);
@@ -144,6 +145,13 @@ AWE.UI = (function(module) {
       }
     }
     
+    that.layoutSubviews = function() {
+      that.superLayoutSubviews();
+      AWE.Ext.applyFunction(_subviews, function(obj) {
+        obj.layoutIfNeeded();
+      });
+    }
+    
     that.displayObject = function() { return _container; }
 
     
@@ -162,7 +170,7 @@ AWE.UI = (function(module) {
     var that = module.createView2();
 
     var recalcScale = function() {
-      if (_contentMode = module.ViewContentModeFit) {
+      if (_contentMode = module.ViewContentModeFit) { console.log('calculate bitmap scale. ' + that.frame().size.width + " to " + _bitmap.image.width);
         _bitmap.scaleX = that.frame().size.width / _bitmap.image.width;
         _bitmap.scaleY = that.frame().size.height / _bitmap.image.height;
       }
@@ -174,8 +182,9 @@ AWE.UI = (function(module) {
     that.superSetFrame = that.setFrame;
     
     that.initWithControllerAndImage = function(controller, image, frame) {
-      frame = frame || AWE.Geometry.createFrame(0,0,image.width, image.height);
+      frame = frame || AWE.Geometry.createRect(0,0,image.width, image.height);
       that.initWithController(controller, frame);
+      _bitmap = new Bitmap();
       that.setImage(image);
     }
     
@@ -199,11 +208,13 @@ AWE.UI = (function(module) {
     that.contentMode = function() { return contentMode; }
     
     that.setFrame = function(frame) {
-      superSetFrame(frame);
+      that.superSetFrame(frame);
       recalcScale();
     }
         
-    that.displayObject() = function() { return _bitmap; }
+    that.displayObject = function() { return _bitmap; }
+    
+    return that;
     
   };
           
