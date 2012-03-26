@@ -190,20 +190,27 @@ AWE.UI = (function(module) {
               x: dir.y/2,
               y: dir.x/2
             };
-            _regionStreets[streetI].from = start;
-            _regionStreets[streetI].to = AWE.Geometry.createPoint(start.x + dir.x + extraDir.x, start.y + dir.y + extraDir.y);
-            _regionStreets[streetI].update();
+            if (_regionStreets[streetI]) {
+
+              _regionStreets[streetI].from = start;
+              _regionStreets[streetI].to = AWE.Geometry.createPoint(start.x + dir.x + extraDir.x, start.y + dir.y + extraDir.y);
+              _regionStreets[streetI].update();
+            }
             streetI++;
 
-            _regionStreets[streetI].from = start;
-            _regionStreets[streetI].to = AWE.Geometry.createPoint(start.x + dir.x - extraDir.x, start.y + dir.y - extraDir.y);
-            _regionStreets[streetI].update();
+            if (_regionStreets[streetI]) {
+              _regionStreets[streetI].from = start;
+              _regionStreets[streetI].to = AWE.Geometry.createPoint(start.x + dir.x - extraDir.x, start.y + dir.y - extraDir.y);
+              _regionStreets[streetI].update();
+            }
             streetI++;
 
           } else {
-            _regionStreets[streetI].from = start;
-            _regionStreets[streetI].to = AWE.Geometry.createPoint(start.x + dir.x, start.y + dir.y);
-            _regionStreets[streetI].update();
+            if (_regionStreets[streetI]) {
+              _regionStreets[streetI].from = start;
+              _regionStreets[streetI].to = AWE.Geometry.createPoint(start.x + dir.x, start.y + dir.y);
+              _regionStreets[streetI].update();
+            }
             streetI++;
           }
         }
