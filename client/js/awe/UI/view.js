@@ -82,6 +82,10 @@ AWE.UI = (function(module) {
       my.frame = frame;
     }
     
+    that.setOrigin = function(origin) {
+      this.setFrame(AWE.Geometry.createRect(origin.x, origin.y, my.frame.size.width, my.frame.size.height));
+    }
+    
     /** returns the present width of the view. Please note, the view may draw
      * outside its frame. */
     that.width = function() { return my.frame.size.width; }
