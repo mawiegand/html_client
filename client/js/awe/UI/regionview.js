@@ -277,7 +277,6 @@ AWE.UI = (function(module) {
 
       _scaledContainer = module.createContainer();
       _scaledContainer.initWithController(controller, frame);
-      _scaledContainer.setAutoscales(true);
 
       _nonScaledContainer = module.createContainer();      
       _nonScaledContainer.initWithController(controller, frame);
@@ -458,8 +457,8 @@ AWE.UI = (function(module) {
     that.autoscaleIfNeeded = function() {
       if (1 || this.autoscales() && _backgroundImage) { console.log ('scale!');
        // AWE.Ext.applyFunction(_scaledContainer.displayObject(), function(obj) { // may return null, a DisplayObject or an Array
-          _scaledContainer.displayObject().scaleX = that.frame().size.width / _backgroundImage.image().width;
-          _scaledContainer.displayObject().scaleY = that.frame().size.height / _backgroundImage.image().height;
+          _scaledContainer.setScaleX(that.frame().size.width / _backgroundImage.width());
+          _scaledContainer.setScaleY(that.frame().size.width / _backgroundImage.width());
           console.log(' scale x ' + _scaledContainer.scaleX + ' scale_y ' + _scaledContainer.scaleY);
       //  });    
       }
