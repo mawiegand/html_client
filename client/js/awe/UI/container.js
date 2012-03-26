@@ -37,8 +37,8 @@ AWE.UI = (function(module) {
     that.initWithController = function(controller, frame) {
       _super.initWithController(controller, frame);
       my.container = new Container();
-      my.container.x = frame.origin.x;
-      my.container.y = frame.origin.y;
+      my.container.x = my.frame.origin.x;
+      my.container.y = my.frame.origin.y;
     };
     
     
