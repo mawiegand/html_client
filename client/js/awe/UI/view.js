@@ -47,6 +47,9 @@ AWE.UI = (function(module) {
       _frame = frame;
     }
     
+    that.width = function() { return _frame.size.width; }
+    that.height = function() { return _frame.size.height; }
+    
     that.autoscales = function() { return _autoscales; }
     that.setAutoscales = function(flag) { _autoscales = flag; }
     

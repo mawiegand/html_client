@@ -460,8 +460,8 @@ AWE.UI = (function(module) {
     that.autoscaleIfNeeded = function() {
       if (1 || this.autoscales() && _backgroundImage) { console.log ('scale!');
        // AWE.Ext.applyFunction(_scaledContainer.displayObject(), function(obj) { // may return null, a DisplayObject or an Array
-          _scaledContainer.displayObject().scaleX = that.frame().size.width / _backgroundImage.image().width;
-          _scaledContainer.displayObject().scaleY = that.frame().size.height / _backgroundImage.image().height;
+          _scaledContainer.displayObject().scaleX = that.frame().size.width / _backgroundImage.width();
+          _scaledContainer.displayObject().scaleY = that.frame().size.height / _backgroundImage.height();
           console.log(' scale x ' + _scaledContainer.scaleX + ' scale_y ' + _scaledContainer.scaleY);
       //  });    
       }
