@@ -13,6 +13,8 @@ AWE.UI = (function(module) {
 
     // private attributes and methods ////////////////////////////////////////
 
+    var that;
+
     var _subviews = Array();
     
     
@@ -24,7 +26,7 @@ AWE.UI = (function(module) {
 
     // public attributes and methods /////////////////////////////////////////
     
-    var that = module.createView2(spec, my);
+    that = module.createView2(spec, my);
     
     var _super = {
       initWithController: that.superior("initWithController"),

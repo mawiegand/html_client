@@ -13,6 +13,7 @@ AWE.UI = (function(module) {
   /*** AWE.UI.View ***/
 
   module.createVillageSpotsManager = function(_node, _view) {
+    
     var that = {};
 
     var _node = _node;
@@ -254,24 +255,31 @@ AWE.UI = (function(module) {
     return that;
   };
 
-  module.createRegionView = function() {
+  module.createRegionView = function(spec, my) {
     
+    // private attributes and methods ////////////////////////////////////////
 
-    
+    var that;
+
     var _node = null;
-    
     var _scaledContainer = null;
-    var _nonScaledContainer = null;
+    var _nonScaledContainer = null;    
+    var _backgroundImage = null;    
     
-    var _backgroundImage = null;
+    // protected attributes and methods //////////////////////////////////////
+
+    my = my || {};
+
+
+    // public attributes and methods /////////////////////////////////////////
     
-    var that = module.createView2();
+    that = module.createView2(spec, my);
     
     var _super = {
-      initWithController: function(controller, frame) { that.initWithController(controller, frame); },
+      initWithController: that.superior("initWithController"),
+      layoutSubviews: that.superior("layoutSubviews"),
+      setFrame: that.superior("setFrame"),
     }
-    that.superLayoutSubviews = that.layoutSubviews;
-    that.superSetFrame = that.setFrame;
     
     that.initWithControllerAndNode = function(controller, node, frame) {
       _super.initWithController(controller, frame);
@@ -296,7 +304,7 @@ AWE.UI = (function(module) {
     that.node = function() { return _node; }
 
     that.setFrame = function(frame) { console.log('set frame');
-      that.superSetFrame(frame);
+      _super.setFrame(frame);
       _scaledContainer.setFrame(frame);
       _nonScaledContainer.setFrame(frame);
     }
@@ -443,13 +451,13 @@ AWE.UI = (function(module) {
 */
     
     that.detailLevel = function() {
-      if (this.frame().size.width < 128) {
+      if (my.frame.size.width < 128) {
         return 0;
       }
-      else if (this.frame().size.width < 256) {
+      else if (my.frame.size.width < 256) {
         return 1;
       }
-      else if (this.frame().size.width < 512) {
+      else if (my.frame.size.width < 512) {
         return 2;
       }
       else {
@@ -459,14 +467,14 @@ AWE.UI = (function(module) {
 
     that.autoscaleIfNeeded = function() {
       if (this.autoscales() && _backgroundImage) {
-        _scaledContainer.setScaleX(that.frame().size.width / _backgroundImage.width());
-        _scaledContainer.setScaleY(that.frame().size.width / _backgroundImage.width());
+        _scaledContainer.setScaleX(my.frame.size.width / _backgroundImage.width());
+        _scaledContainer.setScaleY(my.frame.size.width / _backgroundImage.width());
       }
     }
     
     that.layoutSubviews = function() {
       selectBackgroundImage(that.detailLevel());
-      that.superLayoutSubviews();
+      _super.layoutSubviews();
     }
 
 
