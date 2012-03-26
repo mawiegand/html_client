@@ -11,16 +11,33 @@ AWE.UI = (function(module) {
   module.ViewContentModeNone = 0;
   module.ViewContentModeFit = 1;
   
-  module.createImageView = function() {
+  module.createImageView = function(spec, my) {
+
+
+    // private attributes and methods ////////////////////////////////////////
+    
+    var that;
     
     var _image = null;
     var _bitmap = null;
     var _contentMode = module.ViewContentModeNone;
     
-    var that = module.createView2();
+    
+    // protected attributes and methods //////////////////////////////////////
 
+    my = my || {}
+
+
+    // public attributes and methods /////////////////////////////////////////
+    
+    that = module.createView2(spec, my);
+    
+    var _super = {       // store references to needed super methods
+      setFrame: that.superior('setFrame'),
+    };
+    
     var recalcScale = function() {
-      if (_contentMode = module.ViewContentModeFit) { console.log('calculate bitmap scale. ' + that.frame().size.width + " to " + _bitmap.image.width);
+      if (_contentMode = module.ViewContentModeFit) {
         _bitmap.scaleX = that.frame().size.width / _bitmap.image.width;
         _bitmap.scaleY = that.frame().size.height / _bitmap.image.height;
       }
@@ -28,9 +45,7 @@ AWE.UI = (function(module) {
         _bitmap.scaleX = _bitmap.scaleY = 1;
       }
     }
-    
-    that.superSetFrame = that.setFrame;
-    
+        
     that.initWithControllerAndImage = function(controller, image, frame) {
       frame = frame || AWE.Geometry.createRect(0,0,image.width, image.height);
       that.initWithController(controller, frame);
@@ -58,7 +73,7 @@ AWE.UI = (function(module) {
     that.contentMode = function() { return contentMode; }
     
     that.setFrame = function(frame) {
-      that.superSetFrame(frame);
+      _super.setFrame(frame);
       recalcScale();
     }
         

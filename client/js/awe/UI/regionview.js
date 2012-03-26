@@ -286,6 +286,7 @@ AWE.UI = (function(module) {
         log('klick in container layer0');
       };
       
+      this.setAutoscales(true);
       selectBackgroundImage(0);
     }
 
@@ -455,12 +456,9 @@ AWE.UI = (function(module) {
     }
 
     that.autoscaleIfNeeded = function() {
-      if (1 || this.autoscales() && _backgroundImage) { console.log ('scale!');
-       // AWE.Ext.applyFunction(_scaledContainer.displayObject(), function(obj) { // may return null, a DisplayObject or an Array
-          _scaledContainer.setScaleX(that.frame().size.width / _backgroundImage.width());
-          _scaledContainer.setScaleY(that.frame().size.width / _backgroundImage.width());
-          console.log(' scale x ' + _scaledContainer.scaleX + ' scale_y ' + _scaledContainer.scaleY);
-      //  });    
+      if (this.autoscales() && _backgroundImage) {
+        _scaledContainer.setScaleX(that.frame().size.width / _backgroundImage.width());
+        _scaledContainer.setScaleY(that.frame().size.width / _backgroundImage.width());
       }
     }
     

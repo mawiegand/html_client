@@ -180,12 +180,12 @@ AWE.UI = (function(module) {
     };
 
     _fieldBitmap.onMouseOver = function(evt) {
-      _controller.viewMouseOver(_view);
+      _controller.viewMouseOver(_view, evt);
       // _highlighted = true;
       // _view.controller().updateView();
     };
     _fieldBitmap.onMouseOut = function(evt) {
-      _controller.viewMouseOut(_view);
+      _controller.viewMouseOut(_view, evt);
       // _highlighted = false;
       // _view.container().removeChild(_easementBitmap);
       // _view.controller().updateView();

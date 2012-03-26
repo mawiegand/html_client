@@ -8,47 +8,87 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
           
+  /** crease the base class of the view hierarchy. The spec object is an 
+   * optional argument that can be used to initialize the intrinsics of the
+   * view. Nevertheless, each view offers a spereat initializer (initWith...)
+   * that MUST be called before drawing the view or accessing its properties.
+   *
+   * The my object is another optional argument that is mainly intended for
+   * internal use of the view hierarchy. Ancestors SHOULD pass this object 
+   * when creating the parent "class", in order to get access to attributes
+   * and methods that are protected within the view hierarchy.
+   *
+   * Subclassing notes:
+   * - How to write your own initializer?
+   * - How to overwrite existing methods?
+   * - How to access a super method within a overwritten method?
+   * - How to call another method from within a method of the view?
+   */
+  module.createView2 = function (spec, my) {
+    
+    // private attributes and methods ////////////////////////////////////////
+    
+    var that;
+    
+    var _originalSize;         ///< stores the original size of the view during initialization. may be user for scaling.
+    var _needsLayout = false;  ///< true, in case this view has changed its size and therefore needs to be layouted again.
+    var _needsDisplay = false; ///< true, in case this view has changed somehow and thus needs to be redrawn during the next cycle.
+    var _needsUpdate = false;  ///< true, in case the underlying model has changed and thus the view needs to update itself.
+    
+    var _autoscales = false;   ///< whether the view automatically adapts its internal scale when being resized.
+    var _alpha = 1.;           ///< alpha value (transparency) of the view. Continuous value from 0 to 1. 0: transparent, 1: opaque.
   
-  module.createView2 = function () {
+  
+    // protected attributes and methods //////////////////////////////////////
+  
+    my = my || {};
     
-    var _controller;
-    var _frame;
-    var _originalSize;
-    var _needsLayout = false;
-    var _needsDisplay = false;
-    var _needsUpdate = false;
+    my.frame = null;           ///< frame of the view.
+    my.controller = null;      ///< view controller that has controll of this view.
+  
     
-    var _autoscales = false;
-    var _alpha = 1.;
+    // public attributes and methods /////////////////////////////////////////
     
-    var that = {};
+    that = {};
     
+    /** intializes the view and sets its frame and controller. The fram is an
+     * optional argument. */
     that.initWithController = function(controller, frame)
     {
-      _frame = frame || AWE.Geometry.createRect(0,0, 100, 100);
+      my.controller = controller;
+      my.frame = frame || AWE.Geometry.createRect(0,0, 100, 100);
       _originalSize = frame.size.copy(); // just to be sure...
-      _controller = controller || _controller;
       _needsLayout = _needsUpdate = _needsDisplay = true;
     }
     
-    that.controller = function() { return _controller; }
-    that.frame = function() { return _frame; }
+    /** returns the view controller controlling the view */
+    that.controller = function() { return my.controller; }
+    
+    /** returns the view's frame. */
+    that.frame = function() { return my.frame; }
+    
+    /** sets the view's frame. */
     that.setFrame = function(frame) {
-      if (!_frame || !_frame.size.equals( frame.size )) {
+      if (!my.frame || !my.frame.size.equals( frame.size )) {
         _needsLayout = _needsDisplay = true;
       }
-      if (!_frame || !_frame.origin.equals(frame.origin)) {
+      if (!my.frame || !my.frame.origin.equals(frame.origin)) {
         AWE.Ext.applyFunction(this.displayObject(), function(obj) { // may return null, a DisplayObject or an Array
           obj.x = frame.origin.x;
           obj.y = frame.origin.y;   
         });
         _needsDisplay = true;
       }
-      _frame = frame;
+      my.frame = frame;
     }
     
-    that.width = function() { return _frame.size.width; }
-    that.height = function() { return _frame.size.height; }
+    /** returns the present width of the view. Please note, the view may draw
+     * outside its frame. */
+    that.width = function() { return my.frame.size.width; }
+    
+    /** returns the present height of the view. Plese note, the view may draw
+     * outside its frame. */
+    that.height = function() { return my.frame.size.height; }
     
     that.autoscales = function() { return _autoscales; }
     that.setAutoscales = function(flag) { _autoscales = flag; }

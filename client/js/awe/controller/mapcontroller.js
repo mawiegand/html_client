@@ -404,15 +404,15 @@ AWE.Controller = (function(module) {
       log('controller:viewClicked start', view);
     }
 
-    that.viewMouseOver = function(view) {
-      log('controller:viewMouseOver start', view);
+    that.viewMouseOver = function(view, evt) {
+      log('controller:viewMouseOver start', view, evt);
       mouseOverImage = AWE.UI.createMouseoverView();
-      mouseOverImage.initWithControllerAndFrame(that, AWE.Geometry.createRect(0, 0, 64, 64));
-      _stages[2].addChild(mouseOverImage);
+      mouseOverImage.initWithControllerAndFrame(that, AWE.Geometry.createRect(evt.stageX, evt.stageY, 64, 64));
+      _stages[1].addChild(mouseOverImage);
       log('controller:viewMouseOver end', mouseOverImage);      
     }
 
-    that.viewMouseOut = function(view) {
+    that.viewMouseOut = function(view, evt) {
       log('controller:viewMouseOut', view);
     }
 
@@ -553,8 +553,9 @@ AWE.Controller = (function(module) {
       _stages[1].removeAllChildren();
       _stages[2].removeAllChildren();
       for (var id in fortressViews) {
-         fortressViews[id].redraw();
-         // fortressControlsViews[id].redraw();
+        if (fortressViews.hasOwnProperty(id)) {
+          fortressViews[id].redraw();
+        }
       }
 
       var newLocationViews = {};
@@ -608,10 +609,12 @@ AWE.Controller = (function(module) {
         var needsDisplay = false;
         
         for (var id in viewHash) {
-          var view = viewHash[id];
-          //view.updateIfNeeded();
-          view.layoutIfNeeded();
-          needsDisplay = needsDisplay || view.needsDisplay();
+          if (viewHash.hasOwnProperty(id)) {
+            var view = viewHash[id];
+            //view.updateIfNeeded();
+            view.layoutIfNeeded();
+            needsDisplay = needsDisplay || view.needsDisplay();
+          }
         }
         
         return needsDisplay;

@@ -33,7 +33,7 @@ AWE.UI = (function(module) {
       _container.initWithController(controller, frame);        
 
       var mouseOverImage = AWE.UI.createImageView();
-      mouseOverImage.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/button3"), frame);
+      mouseOverImage.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement"), frame);
       mouseOverImage.setContentMode(0);  // TODO HACK
       _container.addChild(mouseOverImage);
     }
