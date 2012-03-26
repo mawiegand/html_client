@@ -77,7 +77,12 @@ AWE.UI = (function(module) {
      * Is read-out by view controller and used to trigger a canvas-repaint 
      * when needed. */
     that.needsDisplay = function() { return _needsDisplay; } // TOOD: someone needs to set needsDisplay back to false after painting!
+    
+    that.scaleX = function() { return that.displayObject().length !== undefined ? that.displayObject()[0].scaleY : that.displayObject().scaleY; }
+    that.scaleY = function() { return that.displayObject().length !== undefined ? that.displayObject()[0].scaleY : that.displayObject().scaleY; }
 
+    that.setScaleX = function(scale) { return AWE.Ext.applyFunction(this.displayObject(), function(obj) { obj.scaleX = scale; }) }
+    that.setScaleY = function(scale) { return AWE.Ext.applyFunction(this.displayObject(), function(obj) { obj.scaleY = scale; }) }
     
     that.layoutIfNeeded = function() {
       if (_needsLayout) {
@@ -87,7 +92,7 @@ AWE.UI = (function(module) {
     
     that.autoscaleIfNeeded = function() {
       if (_autoscales) {
-        AWE.Ext.applyFunction(this.displayObject(), function(obj) { console.log(' SCALE CONTAINER ')  // may return null, a DisplayObject or an Array
+        AWE.Ext.applyFunction(this.displayObject(), function(obj) {  // may return null, a DisplayObject or an Array
           obj.scaleX = _frame.size.width / _originalSize.width;
           obj.scaleY = _frame.size.height / _originalSize.height;
         });   
