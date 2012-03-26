@@ -35,7 +35,7 @@ AWE.UI = (function(module) {
     var _super = {       // store references to needed super methods
       setFrame: that.superior('setFrame'),
     };
-
+    
     var recalcScale = function() {
       if (_contentMode = module.ViewContentModeFit) {
         _bitmap.scaleX = my.frame.size.width / _bitmap.image.width;
