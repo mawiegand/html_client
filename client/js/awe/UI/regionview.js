@@ -362,17 +362,16 @@ AWE.UI = (function(module) {
     var _armyStrengthText = null;
     var _regionNameText = null;
 
-/*
-    var updateInformation = function(detail) {
+    var updateInformation = function(detail) { 
             
       if (!_debugText && detail > -1 && AWE.Config.MAP_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
         _debugText = new Text();
         _debugText.font = "10px Arial";
         _debugText.text = "id " + _node.id().toString() + "\nqt" + _node.path();
-        _nonScalingContainer.addChild(_debugText);
+        _nonScaledContainer.displayObject().addChild(_debugText);
       }
       if (_debugText && detail < 0) {
-        _nonScalingContainer.removeChild(_debugText);
+        _nonScaledContainer.displayObject().removeChild(_debugText);
         _debugText = null;
       } 
       if (_debugText) {
@@ -381,8 +380,9 @@ AWE.UI = (function(module) {
       }
       
       if (!_settlementsIcon) {
-        _settlementsIcon = new Bitmap(AWE.UI.ImageCache.getImage("map/region/icon"));
-        _nonScalingContainer.addChild(_settlementsIcon);
+        _settlementsIcon = module.createImageView();
+        _settlementsIcon.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("map/region/icon"));
+        _nonScaledContainer.addChild(_settlementsIcon);
         
         _settlementsText = new Text();
         _settlementsText.font = "12px Arial";
@@ -390,10 +390,11 @@ AWE.UI = (function(module) {
 
         //_settlementsText.maxWidth = _bgBitmap.image.width-_settlementsIcon.image.width;
         _settlementsText.text = _node.region() ? _node.region().countSettlements().toString() : _node.countSettlements().toString();
-        _nonScalingContainer.addChild(_settlementsText);
+        _nonScaledContainer.displayObject().addChild(_settlementsText);
         
-        _armyStrengthIcon = new Bitmap(AWE.UI.ImageCache.getImage("map/region/icon"));
-        _nonScalingContainer.addChild(_armyStrengthIcon);
+        _armyStrengthIcon =  module.createImageView();
+        _armyStrengthIcon.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("map/region/icon"));
+        _nonScaledContainer.addChild(_armyStrengthIcon);
         
         _armyStrengthText = new Text();
         _armyStrengthText.font = "12px Arial";
@@ -401,27 +402,23 @@ AWE.UI = (function(module) {
 
         //_settlementsText.maxWidth = _bgBitmap.image.width-_settlementsIcon.image.width;
         _armyStrengthText.text = _node.totalArmyStrength().toString();
-        _nonScalingContainer.addChild(_armyStrengthText);
+        _nonScaledContainer.displayObject().addChild(_armyStrengthText);
         
       }
       if (_settlementsIcon) {
         if (detail < 1) {
-          _settlementsIcon.x = 0;
-          _settlementsIcon.y = 0;       
-          _armyStrengthIcon.x = 0;
-          _armyStrengthIcon.y = 28; 
+          _settlementsIcon.setOrigin(AWE.Geometry.createPoint(0,0));
+          _armyStrengthIcon.setOrigin(AWE.Geometry.createPoint(0,28));
         }
         else {
-          _settlementsIcon.x = 0;
-          _settlementsIcon.y = frame.size.height - 30;                  
-          _armyStrengthIcon.x = frame.size.width / 2.0;
-          _armyStrengthIcon.y = frame.size.height - 30;                  
+          _settlementsIcon.setOrigin(AWE.Geometry.createPoint(0,my.frame.size.height - 30));
+          _armyStrengthIcon.setOrigin(AWE.Geometry.createPoint(my.frame.size.width / 2.0, my.frame.size.height - 30));                
         }
         
-        _settlementsText.x = _settlementsIcon.x + _settlementsIcon.image.width;
-        _settlementsText.y = _settlementsIcon.y + _settlementsIcon.image.height/2 - _settlementsText.getMeasuredLineHeight()/2;        
-        _armyStrengthText.x = _armyStrengthIcon.x + _armyStrengthIcon.image.width;
-        _armyStrengthText.y = _armyStrengthIcon.y + _armyStrengthIcon.image.height/2 - _armyStrengthText.getMeasuredLineHeight()/2;        
+        _settlementsText.x = _settlementsIcon.frame().origin.x + _settlementsIcon.image().width;
+        _settlementsText.y = _settlementsIcon.frame().origin.y + _settlementsIcon.image().height/2 - _settlementsText.getMeasuredLineHeight()/2;        
+        _armyStrengthText.x = _armyStrengthIcon.frame().origin.x + _armyStrengthIcon.image().width;
+        _armyStrengthText.y = _armyStrengthIcon.frame().origin.y + _armyStrengthIcon.image().height/2 - _armyStrengthText.getMeasuredLineHeight()/2;        
       }     
       
       if (!_regionNameText && detail >= 1 && _node.region()) {
@@ -429,10 +426,10 @@ AWE.UI = (function(module) {
         _regionNameText.font = "12px Arial";
         _regionNameText.text = _node.region().name();
         _regionNameText.textBaseline = "top";
-        _nonScalingContainer.addChild(_regionNameText);
+        _nonScaledContainer.displayObject().addChild(_regionNameText);
       }
       if (_regionNameText && detail < 1) {
-        _nonScalingContainer.removeChild(_regionNameText);
+        _nonScaledContainer.displayObject().removeChild(_regionNameText);
         _regionNameText = null;
       } 
       if (_regionNameText) {
@@ -440,6 +437,7 @@ AWE.UI = (function(module) {
         _regionNameText.y = 4;
       } 
     } 
+    /*
     
     //streets
     var streetsManager = module.createStreetsManager(_node, _view);
@@ -447,8 +445,8 @@ AWE.UI = (function(module) {
 
     //village spots
     var villageSpotsManager = module.createVillageSpotsManager(_node, _view);
-    _nonScalingContainer.addChild(villageSpotsManager.container());
-*/
+    _nonScalingContainer.addChild(villageSpotsManager.container()); */
+
     
     that.detailLevel = function() {
       if (my.frame.size.width < 128) {
@@ -473,17 +471,14 @@ AWE.UI = (function(module) {
     }
     
     that.layoutSubviews = function() {
-      selectBackgroundImage(that.detailLevel());
+      selectBackgroundImage(this.detailLevel());
+      updateInformation(this.detailLevel())
       _super.layoutSubviews();
     }
 
 
     that.redraw = function() {
 
-      //check for correct background image
-      //updateInformation(_view.detailLevel());
-
-          
       //villiagespots
       //villageSpotsManager.update();
 
