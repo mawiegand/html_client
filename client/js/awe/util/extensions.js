@@ -17,6 +17,14 @@ AWE.Ext = (function(module) {
     return Math[(this > 0 ? 'ceil' : 'floor')](this);
   };
   
+
+  Object.prototype.superior = function(name) {
+    var that = this, method = that[name];   // store the 'this' for later, when really calling the function "name".
+    return function() {
+      return method.apply(that, arguments); // make sure to set the 'this' correctly for the super method.
+    }
+  };
+  
   /** check if _obj is an Array
    */
   module.isArray = function(_obj) {

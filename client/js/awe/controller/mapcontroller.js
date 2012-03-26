@@ -526,7 +526,9 @@ AWE.Controller = (function(module) {
       fortressViews = newFortressViews;
       _stages[1].removeAllChildren();
       for (var id in fortressViews) {
-         fortressViews[id].redraw();
+        if (fortressViews.hasOwnProperty(id)) {
+          fortressViews[id].redraw();
+        }
       }
 
       var newLocationViews = {};
@@ -572,10 +574,12 @@ AWE.Controller = (function(module) {
         var needsDisplay = false;
         
         for (var id in viewHash) {
-          var view = viewHash[id];
-          //view.updateIfNeeded();
-          view.layoutIfNeeded();
-          needsDisplay = needsDisplay || view.needsDisplay();
+          if (viewHash.hasOwnProperty(id)) {
+            var view = viewHash[id];
+            //view.updateIfNeeded();
+            view.layoutIfNeeded();
+            needsDisplay = needsDisplay || view.needsDisplay();
+          }
         }
         
         return needsDisplay;
