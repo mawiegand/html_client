@@ -9,29 +9,43 @@ var AWE = AWE || {};
 AWE.UI = (function(module) {
           
     
-  module.createContainer = function () {
+  module.createContainer = function (spec, my) {
 
-    var _container = null;
+    // private attributes and methods ////////////////////////////////////////
+
+    var that;
+
     var _subviews = Array();
     
-    var that = module.createView2();
+    
+    // protected attributes and methods //////////////////////////////////////
+
+    my = my || {};
+    my.container = null;
+
+
+    // public attributes and methods /////////////////////////////////////////
+    
+    that = module.createView2(spec, my);
+    
     var _super = {
-      initWithController: that.initWithController,
+      initWithController: that.superior("initWithController"),
+      layoutSubviews: that.superior("layoutSubviews"),
     };
-    that.superLayoutSubviews = that.layoutSubviews;
+    
     
     that.initWithController = function(controller, frame) {
       _super.initWithController(controller, frame);
-      _container = new Container();
-      _container.x = frame.origin.x;
-      _container.y = frame.origin.y;
+      my.container = new Container();
+      my.container.x = frame.origin.x;
+      my.container.y = frame.origin.y;
     };
     
     
     that.addChild = function(view) { 
       _subviews.push(view);
       AWE.Ext.applyFunction(view.displayObject(), function(obj){
-        _container.addChild(obj);
+        my.container.addChild(obj);
       });
     };
     
@@ -39,23 +53,21 @@ AWE.UI = (function(module) {
       var index = _subviews.indexOf(view);     
       if (index >= 0) {
         AWE.Ext.applyFunction(view.displayObject(), function(obj){
-          _container.removeChild(obj);
+          my.container.removeChild(obj);
         });
         _subviews.splice(index,1);
       }
     }
     
     that.layoutSubviews = function() {
-      that.superLayoutSubviews();
+      _super.layoutSubviews();
       AWE.Ext.applyFunction(_subviews, function(obj) {
         obj.layoutIfNeeded();
       });
     }
     
-    that.displayObject = function() {
-      return _container;
-    }
-    
+    that.displayObject = function() { return my.container; }
+
     return that;
   };
   
