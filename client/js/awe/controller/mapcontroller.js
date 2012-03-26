@@ -269,7 +269,7 @@ AWE.Controller = (function(module) {
     /** reset the size of the "window" (canvas) in case its dimension has 
      * changed. */
     that.layoutIfNeeded = function() {
-      if (_needsLayout) {
+      if (_needsLayout) {   ///// WRONG: no _needsLayout after zooming!!!
         if (_canvas[0].width != _windowSize.width || _canvas[0].height != _windowSize.height) {
           _canvas[0].width  = _windowSize.width;
           _canvas[0].height = _windowSize.height;
@@ -484,9 +484,158 @@ AWE.Controller = (function(module) {
 
     // ///////////////////////////////////////////////////////////////////////
     //
-    //   Rendering
+    //   Map Views
     //
     // /////////////////////////////////////////////////////////////////////// 
+    
+    that.rebuildMapHierarchy = function(nodes) {
+
+      var newRegionViews = {};          
+
+      for (var i = 0; i < nodes.length; i++) {
+        var view = regionViews[nodes[i].id()];
+        if (view) {                            // view already exists         
+          newRegionViews[nodes[i].id()] = view;
+          if (view.lastChange !== undefined && view.lastChange() < nodes[i].lastChange()) {
+            view.setNeedsUpdate();
+          }
+          view.setFrame(that.mc2vc(nodes[i].frame()));
+        }
+        else {                                 // view needs to be created
+          view = AWE.UI.createRegionView();
+          view.initWithControllerAndNode(that, nodes[i], that.mc2vc(nodes[i].frame()));
+          newRegionViews[nodes[i].id()] = view;
+          AWE.Ext.applyFunction(view.displayObject(), function(obj) {
+            _stages[0].addChild(obj);
+          });
+        }
+      }
+      for (var k in regionViews) {             // remove view from layer
+        // use hasOwnProperty to filter out keys from the Object.prototype
+        if (regionViews.hasOwnProperty(k) && !newRegionViews[k]) {
+          var v = regionViews[k];
+          AWE.Ext.applyFunction(v.displayObject(), function(obj) {
+            _stages[0].removeChild(obj);
+          });        
+        }
+      }
+      regionViews = newRegionViews;        
+    }
+    
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Gaming pieces
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
+    that.updateGamingPieces = function(nodes) {
+      var newFortressViews = {}
+      
+      for (var i = 0; i < nodes.length; i++) {
+        if (view = fortressViews[nodes[i].id()]) { // und nicht geändert
+          newFortressViews[nodes[i].id()] = view;
+          // newFortressControlsViews[nodes[i].id()] = fortressControlsViews[nodes[i].id()];
+        }
+        else if (nodes[i].isLeaf() && nodes[i].region()) {
+          newFortressViews[nodes[i].id()] = AWE.UI.createFortressView(nodes[i], _stages[1], that);     
+          // newFortressControlsViews[nodes[i].id()] = AWE.UI.createFortressControlsView(nodes[i], _stages[2], that);     
+        }
+      }
+      fortressViews = newFortressViews;
+      // fortressControlsViews = newFortressControlsViews;
+      _stages[1].removeAllChildren();
+      _stages[2].removeAllChildren();
+      for (var id in fortressViews) {
+         fortressViews[id].redraw();
+         // fortressControlsViews[id].redraw();
+      }
+
+      var newLocationViews = {};
+      for (var i = 0; i < nodes.length; i++) {
+        newLocationViews[nodes[i].id()] = AWE.UI.createLocationsView(nodes[i], _stages[1], that);
+        newLocationViews[nodes[i].id()].redraw();
+      }
+
+      // _stages[1].update();
+      // _stages[2].update();
+// 
+      // _stages[3].removeAllChildren();          
+      // AWE.UI.createMaincontrolsView(_windowSize, _stages[3], that).redraw();
+      // AWE.UI.createDetailView(_windowSize, _stages[3], that).redraw();
+      // _stages[3].update();
+    };
+    
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Interactive Buttons, Mouse-Over, Notifications
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   HUD
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
+    that.updateHUD = function() {
+      
+      _stages[2].removeAllChildren();          
+      AWE.UI.createMaincontrolsView(_windowSize, _stages[2], that).redraw();
+      AWE.UI.createDetailView(_windowSize, _stages[2], that).redraw();
+      
+    };
+    
+    
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Update Map View
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
+    that.updateViewHierarchy = (function() {
+      var oldVisibleArea = null;
+      
+      var propUpdates = function(viewHash) {
+        var needsDisplay = false;
+        
+        for (var id in viewHash) {
+          var view = viewHash[id];
+          //view.updateIfNeeded();
+          view.layoutIfNeeded();
+          needsDisplay = needsDisplay || view.needsDisplay();
+        }
+        
+        return needsDisplay;
+      }
+      
+      return function(nodes, visibleArea) {
+        
+        var stagesNeedUpdate = [false, true, true]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
+        
+        // rebuild individual hieararchies
+        if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
+          this.rebuildMapHierarchy(nodes);
+        }
+        if (1 || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) { // TODO: mouse-over / clicked
+          that.updateGamingPieces(nodes);
+        };
+        if (1) { // TODO: only update at start and when something might have changed (object selected, etc.)
+          that.updateHUD();
+        }
+
+        // update hierarchies and check which stages need to be redrawn
+        stagesNeedUpdate[0] = propUpdates(regionViews);
+        //stagesNeedUpdate[1] = propUpdates(fortressViews);
+        //stagesNeedUpdate[2] = propUpdates(HUDViews);
+        
+        oldVisibleArea = visibleArea;
+      
+        return stagesNeedUpdate;
+      };
+    }());
     
     var startTime = 0;
     var numFrames = 0;
@@ -496,10 +645,10 @@ AWE.Controller = (function(module) {
     that.updateView = function() { needRedraw = true; } // TODO: completely remove this method, replaced by setNeedsDisplay
     
     var fortressViews = {};
-	var fortressControlsViews = {}
     var regionViews = {};
     
-    that.render = function(nodes) {
+    
+    that.updateFPS = function() {
       
       // calculate fps
       var now = +new Date();
@@ -510,99 +659,6 @@ AWE.Controller = (function(module) {
       }
       startTime = now;        
       _frameCounter++;
-  
-      var addDisplayObjectsToStage = function(stage, v) {
-        AWE.Ext.applyFunction(v.displayObject(), function(obj) {stage.addChild(obj); });
-      }
-      
-      var removeDisplayObjectsFromStage = function(stage, v) {
-        AWE.Ext.applyFunction(v.displayObject(), function(obj) {stage.removeChild(obj); });
-      }
-        
-      // layer0: regions
-      // create new viewHash
-      var newRegionViews = {};          
-      // fill new viewHash with all visible, old an new views
-      for (var i = 0; i < nodes.length; i++) {
-        // if view is already created and did not change
-        view = regionViews[nodes[i].id()];
-        if (view) {              
-          newRegionViews[nodes[i].id()] = view;
-          /*if (view.lastChange() < nodes[i].lastChange()) {
-            view.updateView();
-          }*/
-        }
-        else {
-          view = AWE.UI.createRegionView();
-          view.initWithControllerAndNode(that, nodes[i]);
-          newRegionViews[nodes[i].id()] = view;
-                //add to layer
-          addDisplayObjectsToStage(_stages[0], view);
-        }
-      }
-      //console.log( 'num children before remove: ' + _stages[0].getNumChildren() );
-      for (var k in regionViews) {
-        // use hasOwnProperty to filter out keys from the Object.prototype
-        if (regionViews.hasOwnProperty(k) && !newRegionViews[k]) {
-          var v = regionViews[k];
-          removeDisplayObjectsFromStage(_stages[0], v);
-        }
-      }
-      //console.log( 'num children after remove: ' + _stages[0].getNumChildren() );
-      
-      // new hash is old hash
-      regionViews = newRegionViews;        
-      // clear _stages[0]
-      //_stages[0].removeAllChildren();
-      // redraw all views in viewHash        
-      for (var id in regionViews) {
-        var regionView = regionViews[id];
-        var frame = that.mc2vc(regionView.node().frame());
-        regionView.setFrame(frame);
-        regionView.layoutIfNeeded();
-        regionView.redraw();
-      }
-      _stages[0].update();
-      
-      // layer 1: locations
-      var newFortressViews = {};
-	  var newFortressControlsViews = {}
-
-      for (var i = 0; i < nodes.length; i++) {
-        if (view = fortressViews[nodes[i].id()]) { // und nicht geändert
-          newFortressViews[nodes[i].id()] = view;
-          newFortressControlsViews[nodes[i].id()] = fortressControlsViews[nodes[i].id()];
-        }
-        else if (nodes[i].isLeaf() && nodes[i].region()) {
-          newFortressViews[nodes[i].id()] = AWE.UI.createFortressView(nodes[i], _stages[1], that);     
-          newFortressControlsViews[nodes[i].id()] = AWE.UI.createFortressControlsView(nodes[i], _stages[2], that);     
-        }
-      }
-      fortressViews = newFortressViews;
-      fortressControlsViews = newFortressControlsViews;
-      _stages[1].removeAllChildren();
-      _stages[2].removeAllChildren();
-      for (var id in fortressViews) {
-         fortressViews[id].redraw();
-         fortressControlsViews[id].redraw();
-      }
-
-      //locations
-      ///TODO don't recreate
-      var newLocationViews = {};
-      for (var i = 0; i < nodes.length; i++) {
-        newLocationViews[nodes[i].id()] = AWE.UI.createLocationsView(nodes[i], _stages[1], that);
-        newLocationViews[nodes[i].id()].redraw();
-      }
-
-      _stages[1].update();
-      _stages[2].update();
-
-      _stages[3].removeAllChildren();          
-      AWE.UI.createMaincontrolsView(_windowSize, _stages[3], that).redraw();
-      AWE.UI.createDetailView(_windowSize, _stages[3], that).redraw();
-      _stages[3].update();
-                
     };    
     
     
@@ -614,18 +670,37 @@ AWE.Controller = (function(module) {
     
 
     that.runloop = function() {
-      if(AWE.Map.Manager.isInitialized()) {
+      // only do something after the Map.Manager has been initialized (connected to server and received initial data)
+      if(AWE.Map.Manager.isInitialized()) { 
         
+        // STEP 1: determine visible area (may have changed through user interaction)
         var visibleArea = that.vc2mc(AWE.Geometry.createRect(0, 0, _windowSize.width,_windowSize.height));
         
+        // STEP 2: trigger update of model as needed, fetch new data from server
         that.updateModel(visibleArea);
+        
+        // STEP 3: layout canvas & stages according to possibly changed window size (TODO: clean this!)
         that.layoutIfNeeded();   
         
+        // STEP 4: update views and repaint view hierarchies as needed
         if (needRedraw || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged()) {
-          var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());
-          that.render(visibleNodes);
+          // STEP 4a: get all visible nodes from the model (TODO: armies etc.)
+          var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());    
+          
+          // STEP 4b: create, remove and update all views according to visible parts of model      
+          var stageUpdateNeeded = that.updateViewHierarchy(visibleNodes, visibleArea);
+          
+          // STEP 4c: update (repaint) those stages, that have changed (one view that needsDisplay triggers repaint of whole stage)
+          for (var i=0; i < 3; i++) {
+            if (stageUpdateNeeded[i]) {
+              _stages[i].update();
+            }
+          }
+          // STEP 4d: register this frame, recalc and display present framerate (rendered frames per second)
+          this.updateFPS();
         }
 
+        // STEP 5: cleanup & prepare for next loop: everything has been processed and changed...
         _modelChanged = false;
         needRedraw = false;   // TODO: completely remove this flag and method (replaced by setNeedsDisplay, and setNeedsLayout)
         _needsDisplay = false;

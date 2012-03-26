@@ -49,9 +49,9 @@ AWE.UI = (function(module) {
       );
     };
 
-	that.setSelected = function(selected) {
-	  _selected = selected;
-	}
+  	that.setSelected = function(selected) {
+  	  _selected = selected;
+  	}
 
     that.redraw = function() {
       var frame = _view.controller().mc2vc(_view.frame());
@@ -181,12 +181,12 @@ AWE.UI = (function(module) {
 
     _fieldBitmap.onMouseOver = function(evt) {
       _controller.viewMouseOver(_view);
-      _mouseover = true;
+      _highlighted = true;
       _view.controller().updateView();
     };
     _fieldBitmap.onMouseOut = function(evt) {
       _controller.viewMouseOut(_view);
-      _mouseover = false;
+      _highlighted = false;
       _view.container().removeChild(_easementBitmap);
       _view.controller().updateView();
     };
@@ -202,7 +202,7 @@ AWE.UI = (function(module) {
     _ownerNameText.x = AWE.Config.MAPPING_FORTRESS_SIZE / 2
     _ownerNameText.y = AWE.Config.MAPPING_FORTRESS_SIZE;
     
-    log('_ownerNameText', _ownerNameText.getMeasuredWidth());
+    //log('_ownerNameText', _ownerNameText.getMeasuredWidth());
     
     var _ownerNameGraphics = new Graphics();
     _ownerNameGraphics.setStrokeStyle(0);
@@ -230,11 +230,11 @@ AWE.UI = (function(module) {
       var container = _view.container();
       
       container.addChild(_fieldBitmap);
-      if (_selected) {
-        container.addChild(_enterButtonBitmap);
-        container.addChildAt(_selectShape, 0);
-      }
-      if (_mouseover) {
+      // if (_selected) {
+        // container.addChild(_enterButtonBitmap);
+        // container.addChildAt(_selectShape, 0);
+      // }
+      if (_highlighted) {
         container.addChild(_easementBitmap);
       }
       container.addChildAt(_ownerNameText);
