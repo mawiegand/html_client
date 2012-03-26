@@ -303,7 +303,7 @@ AWE.UI = (function(module) {
     
     that.node = function() { return _node; }
 
-    that.setFrame = function(frame) { console.log('set frame');
+    that.setFrame = function(frame) { //console.log('set frame');
       _super.setFrame(frame);
       _scaledContainer.setFrame(frame);
       _nonScaledContainer.setFrame(frame);
@@ -474,24 +474,6 @@ AWE.UI = (function(module) {
       selectBackgroundImage(this.detailLevel());
       updateInformation(this.detailLevel())
       _super.layoutSubviews();
-    }
-
-
-    that.redraw = function() {
-
-      //villiagespots
-      //villageSpotsManager.update();
-
-      //streets
-      //streetsManager.update();
-    };
-
-    that.unselect = function() {
-      log('unselect');
-      _selected = false;
-      module.Map.selectedView = null;
-      //_view.container().removeChildAt(1);
-      module.Map.updateView();
     }
     
     that.displayObject = function() {
