@@ -8,7 +8,7 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
           
-  /** crease the base class of the view hierarchy. The spec object is an 
+  /** creates the base class of the view hierarchy. The spec object is an 
    * optional argument that can be used to initialize the intrinsics of the
    * view. Nevertheless, each view offers a spereat initializer (initWith...)
    * that MUST be called before drawing the view or accessing its properties.
