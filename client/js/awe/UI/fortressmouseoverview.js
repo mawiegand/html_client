@@ -32,10 +32,10 @@ AWE.UI = (function(module) {
       _container = module.createContainer();      
       _container.initWithController(controller, frame);        
 
-      var mouseOverImage = AWE.UI.createImageView();
-      mouseOverImage.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement"), frame);
-      mouseOverImage.setContentMode(0);  // TODO HACK
-      _container.addChild(mouseOverImage);
+      var mouseOverImageView = AWE.UI.createImageView();
+      mouseOverImageView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement"), frame);
+      mouseOverImageView.setContentMode(0);  // TODO HACK
+      _container.addChild(mouseOverImageView);
     }
 
     that.setFrame = function(frame) {
@@ -44,7 +44,8 @@ AWE.UI = (function(module) {
     }
     
     that.layoutSubviews = function() {
-      // that.superLayoutSubviews();
+      _needsLayout = true;
+      _needsDisplay = true;
     }
     
     that.displayObject = function() {

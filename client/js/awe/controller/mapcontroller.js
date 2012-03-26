@@ -408,7 +408,7 @@ AWE.Controller = (function(module) {
       log('controller:viewMouseOver start', view, evt);
       mouseOverImage = AWE.UI.createMouseoverView();
       mouseOverImage.initWithControllerAndFrame(that, AWE.Geometry.createRect(evt.stageX, evt.stageY, 64, 64));
-      _stages[1].addChild(mouseOverImage);
+      _stages[1].addChild(mouseOverImage.displayObject());
       log('controller:viewMouseOver end', mouseOverImage);      
     }
 
@@ -638,7 +638,8 @@ AWE.Controller = (function(module) {
         // update hierarchies and check which stages need to be redrawn
         stagesNeedUpdate[0] = propUpdates(regionViews);
         //stagesNeedUpdate[1] = propUpdates(fortressViews);
-        //stagesNeedUpdate[2] = propUpdates(HUDViews);
+        //stagesNeedUpdate[2] = propUpdates(actionViews);
+        //stagesNeedUpdate[3] = propUpdates(HUDViews);
         
         oldVisibleArea = visibleArea;
       

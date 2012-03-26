@@ -52,8 +52,9 @@ AWE.UI = (function(module) {
       });
     }
     
-    that.displayObject = function() { return _container; }
-
+    that.displayObject = function() {
+      return _container;
+    }
     
     return that;
   };
