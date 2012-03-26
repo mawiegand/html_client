@@ -398,17 +398,23 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
 
+    var mouseOverImage = null;
+
     that.viewClicked = function(view) {
-      log('controller:viewClicked', view);
-	}
+      log('controller:viewClicked start', view);
+    }
 
     that.viewMouseOver = function(view) {
-      log('controller:viewMouseOver', view);
-	}
+      log('controller:viewMouseOver start', view);
+      mouseOverImage = AWE.UI.createMouseoverView();
+      mouseOverImage.initWithControllerAndFrame(that, AWE.Geometry.createRect(0, 0, 64, 64));
+      _stages[2].addChild(mouseOverImage);
+      log('controller:viewMouseOver end', mouseOverImage);      
+    }
 
     that.viewMouseOut = function(view) {
       log('controller:viewMouseOut', view);
-	}
+    }
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -530,7 +536,7 @@ AWE.Controller = (function(module) {
     // /////////////////////////////////////////////////////////////////////// 
     
     that.updateGamingPieces = function(nodes) {
-      var newFortressViews = {}
+      var newFortressViews = {};
       
       for (var i = 0; i < nodes.length; i++) {
         if (view = fortressViews[nodes[i].id()]) { // und nicht geändert
