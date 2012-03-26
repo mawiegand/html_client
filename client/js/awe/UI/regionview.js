@@ -1,4 +1,5 @@
-/* Author: Patrick Fox <patrick@5dlab.com>
+/* Authors: Patrick Fox <patrick@5dlab.com>, 
+ *          Sascha Lange <sascha@5dlab.com>, Julian Schmid
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
@@ -260,12 +261,15 @@ AWE.UI = (function(module) {
     var _scaledContainer = null;
     var _nonScaledContainer = null;
     
+    var _backgroundImage = null;
+    
     var that = module.createView2();
     
     var _super = {
       initWithController: function(controller, frame) { that.initWithController(controller, frame); },
     }
     that.superLayoutSubviews = that.layoutSubviews;
+    that.superSetFrame = that.setFrame;
     
     that.initWithControllerAndNode = function(controller, node, frame) {
       _super.initWithController(controller, frame);
@@ -286,11 +290,14 @@ AWE.UI = (function(module) {
       selectBackgroundImage(0);
     }
 
-    var image = null;
-    var _bgBitmap =null;
     
     that.node = function() { return _node; }
-    
+
+    that.setFrame = function(frame) { console.log('set frame');
+      that.superSetFrame(frame);
+      _scaledContainer.setFrame(frame);
+      _nonScaledContainer.setFrame(frame);
+    }
 
     var selectBackgroundImage = function(detail) {
       var newImage = null;
@@ -324,14 +331,16 @@ AWE.UI = (function(module) {
         newImage = AWE.UI.ImageCache.getImage("map/tiles/base"+size);
       }
       
-      if (newImage != image) {
-        image = newImage;
-        if (_bgBitmap) {
-          _scaledContainer.displayObject().removeChild(_bgBitmap); //removeChild(_bgBitmap);
-        }
-        _bgBitmap = new Bitmap(image);
-        _scaledContainer.displayObject().addChild(_bgBitmap); //addChild(_bgBitmap);
-      }    
+      if (!_backgroundImage) {
+        _backgroundImage = module.createImageView();
+        _backgroundImage.initWithControllerAndImage(that.controller(), newImage);
+        _backgroundImage.setContentMode(module.ViewContentModeNone);
+        _scaledContainer.addChild(_backgroundImage);
+      }
+      else if (_backgroundImage.image() !== newImage) {
+        _backgroundImage.setImage(newImage); console.log('set image');
+        _backgroundImage.setFrame(AWE.Geometry.createRect(0,0,newImage.width, newImage.height));
+      }
     };
     
 
@@ -447,11 +456,12 @@ AWE.UI = (function(module) {
     }
 
     that.autoscaleIfNeeded = function() {
-      if (1 || this.autoscales()) { console.log ('scale!');
-        AWE.Ext.applyFunction(_scaledContainer.displayObject(), function(obj) { // may return null, a DisplayObject or an Array
-          obj.scaleX = that.frame().size.width / _bgBitmap.image.width;
-          obj.scaleY = that.frame().size.height / _bgBitmap.image.height;
-        });    
+      if (1 || this.autoscales() && _backgroundImage) { console.log ('scale!');
+       // AWE.Ext.applyFunction(_scaledContainer.displayObject(), function(obj) { // may return null, a DisplayObject or an Array
+          _scaledContainer.displayObject().scaleX = that.frame().size.width / _backgroundImage.image().width;
+          _scaledContainer.displayObject().scaleY = that.frame().size.height / _backgroundImage.image().height;
+          console.log(' scale x ' + _scaledContainer.scaleX + ' scale_y ' + _scaledContainer.scaleY);
+      //  });    
       }
     }
     
