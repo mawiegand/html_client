@@ -10,6 +10,8 @@ AWE.UI = (function(module) {
   module.createLabelView = function(spec, my) {
         
     var _container = null;
+    
+    my = my || {};
         
     var that = module.createView2(spec, my);
     
@@ -19,7 +21,7 @@ AWE.UI = (function(module) {
       setFrame: that.superior("setFrame"),
     }
     
-    that.initWithControllerAndLabel = function(controller, frame, label, background) {
+    that.initWithControllerAndLabel = function(controller, label, background, frame) {
       _super.initWithController(controller, frame);
       
       _container = new Container();      
@@ -40,8 +42,8 @@ AWE.UI = (function(module) {
         _container.addChild(_ownerNameShape);
       }
       
-      _container.x = frame.origin.x;
-      _container.y = frame.origin.y;
+      _container.x = my.frame.origin.x;
+      _container.y = my.frame.origin.y;
       
       _container.addChild(_ownerNameText);
     }

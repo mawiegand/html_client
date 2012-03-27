@@ -595,53 +595,90 @@ AWE.Controller = (function(module) {
     that.updateGamingPieces = function(nodes) {
       
       var newFortressViews = {};
-      
-      for (var i = 0; i < nodes.length; i++) {       
-        var frame = that.mc2vc(nodes[i].frame()); 
+
+      for (var i = 0; i < nodes.length; i++) { 
+        // frame for node      
+        var frame = that.mc2vc(nodes[i].frame());
+        // get view for node 
         var view = fortressViews[nodes[i].id()];
-        if (view) {                                      
-          view.setFrame(frame);
+        // if view exists already
+        if (view) {       
+          // if model of view updated
+          if (view.lastChange !== undefined && view.lastChange() < nodes[i].lastChange()) {
+            view.setNeedsUpdate();
+          }                     
+          // set new center
+          view.setCenter(AWE.Geometry.createPoint(
+            frame.origin.x + frame.size.width / 2,
+            frame.origin.y + frame.size.height / 2
+          ));
+          // save view in newViews Array
           newFortressViews[nodes[i].id()] = view;
         }
+        // if view for node doesn't exists and node is leaf
         else if (nodes[i].isLeaf() && nodes[i].region()) {
+          // create and initialize new view, set center
           var newView = AWE.UI.createFortressView();
-          newView.initWithControllerAndNode(that, frame, nodes[i]);
+          newView.initWithControllerAndNode(that, nodes[i]);
+          newView.setCenter(AWE.Geometry.createPoint(
+            frame.origin.x + frame.size.width / 2,
+            frame.origin.y + frame.size.height / 2            
+          ));
+          // add views displayObject to stage
           _stages[1].addChild(newView.displayObject());
+          // add view to newViews Array
           newFortressViews[nodes[i].id()] = newView;
         }
       }
-      for (var k in fortressViews) {             // remove view from layer
+      
+      // purge stage
+      for (var k in fortressViews) {
         // use hasOwnProperty to filter out keys from the Object.prototype
+        // if old view is not in newViews array
         if (fortressViews.hasOwnProperty(k) && !newFortressViews[k]) {
-          var v = fortressViews[k];
-          AWE.Ext.applyFunction(v.displayObject(), function(obj) {
+          // get view
+          var view = fortressViews[k];
+          // log('entfernen');
+          // remove views displayObject from stage
+          AWE.Ext.applyFunction(view.displayObject(), function(obj) {
             _stages[1].removeChild(obj);
           });        
         }
       }
+      
+      // remember newViews array
       fortressViews = newFortressViews;
 
       var newLocationViews = {};
       
       for (var i = 0; i < nodes.length; i++) {       
         var frame = that.mc2vc(nodes[i].frame()); 
-        var view = locationViews[nodes[i].id()];
-        if (view) {                                      
-          view.setFrame(frame);
-          newLocationViews[nodes[i].id()] = view;
-        }
-        else if (nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().locations()) {
-          var newView = AWE.UI.createLocationsView2();
-          newView.initWithControllerAndNode(that, frame, nodes[i]);
-          _stages[1].addChild(newView.displayObject());
-          newLocationViews[nodes[i].id()] = newView;
+        // var locations = locationViews[nodes[i].id()];
+        if (nodes[i].region() && nodes[i].region().locations()) {
+          var locations = nodes[i].region().locations();
+          for (var l = 1; l < 9; l++) {
+            var location = locations[l]
+            var view = locationViews[location.id()];
+            if (view) {                                      
+              view.setCenter(that.mc2vc(location.position()));
+              newLocationViews[location.id()] = view;
+            }
+            else if (nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().locations()) {
+              var newView = AWE.UI.createLocationsView();
+              newView.initWithControllerAndLocation(that, location);
+              newView.setCenter(that.mc2vc(location.position()));
+              _stages[1].addChild(newView.displayObject());
+              newLocationViews[location.id()] = newView;
+            }
+          }
         }
       }
+      
       for (var k in locationViews) {             // remove view from layer
         // use hasOwnProperty to filter out keys from the Object.prototype
         if (locationViews.hasOwnProperty(k) && !newLocationViews[k]) {
-          var v = locationViews[k];
-          AWE.Ext.applyFunction(v.displayObject(), function(obj) {
+          var view = locationViews[k];
+          AWE.Ext.applyFunction(view.displayObject(), function(obj) {
             _stages[1].removeChild(obj);
           });        
         }

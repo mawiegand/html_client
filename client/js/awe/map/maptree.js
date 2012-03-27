@@ -194,8 +194,6 @@ AWE.Map = (function(module) {
         offDir.y = offDir.y * (streetEndPosition.y - basePositon.y)/2;
 
         return AWE.Geometry.createPoint(
-          // basePositon.x + offDir.x,
-          // basePositon.y + offDir.y
           basePositon.x + offDir.x,
           basePositon.y + offDir.y
         );
