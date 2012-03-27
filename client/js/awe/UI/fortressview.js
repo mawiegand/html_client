@@ -7,7 +7,7 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
 
-  module.createLocationsView = function(spec, my) {
+  module.createLocationView = function(spec, my) {
     
     var that;
         
