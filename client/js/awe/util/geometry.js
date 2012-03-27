@@ -12,7 +12,8 @@ AWE.Geometry = (function(module) {
   };
   
   /** creates a 2d point with x,y-coordinates */
-  module.createPoint = function createPoint(_x, _y) {
+  module.createPoint = function createPoint(_x, _y, my) {
+    
     return {
       x: _x,
       y: _y,
