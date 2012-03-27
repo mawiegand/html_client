@@ -107,9 +107,9 @@ AWE.Map = (function(module) {
       
       that.setChangedNow();  
     };
-  /** Returns the position of the village on the map */
-  that.position = AWE.memoizer(null,
-    function () {
+    
+    /** Returns the position of the village on the map */
+    that.position = AWE.memoizer(null, function () {
       var frame = that.region().node().frame();
       //for the fortress return the center
       if (_slot == 0) {
@@ -194,8 +194,11 @@ AWE.Map = (function(module) {
         offDir.y = offDir.y * (streetEndPosition.y - basePositon.y)/2;
 
         return AWE.Geometry.createPoint(
+          // basePositon.x + offDir.x,
+          // basePositon.y + offDir.y
           basePositon.x + offDir.x,
-          basePositon.y + offDir.y);
+          basePositon.y + offDir.y
+        );
       } 
     });
     

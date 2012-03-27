@@ -50,9 +50,12 @@ AWE.UI = (function(module) {
       frame = frame || AWE.Geometry.createRect(0,0,image.width, image.height);
       that.initWithController(controller, frame);
       _bitmap = new Bitmap();
+      _bitmap.view = that;
+      _bitmap.onMouseOver = function(evt){ _bitmap.view.onMouseOver(evt); };
+      _bitmap.onMouseOut = function(evt){ _bitmap.view.onMouseOut(evt); };
       that.setImage(image);
     }
-    
+       
     that.setImage = function(image) {
       _image = image;
       _bitmap.image = image;

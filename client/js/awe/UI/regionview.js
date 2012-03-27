@@ -18,13 +18,14 @@ AWE.UI = (function(module) {
 
     var _node = _node;
     var _view = _view;
-    var _container = new Container();
-
+    var _container = module.createContainer();
+    _container.initWithController(_view.controller());
+    
     var _villiageSpotsShapes = [];
     for (var i = 0; i < 8; i++) {
       var s = new Shape();
       _villiageSpotsShapes.push(s);
-      _container.addChild(s);
+      _container.displayObject().addChild(s);
     }
 
     that.container = function() { return _container; };
@@ -63,7 +64,7 @@ AWE.UI = (function(module) {
     /** Updates all village spot locations and generates new DisplayObjects in the container **/
     that.update = function() {
       if (_node.isLeaf() && _view.detailLevel() >= AWE.Config.MAP_LOCATION_MIN_DETAIL_LEVEL && _node.region() != null && _node.region().locations() != null) {
-        _container.visible = true;
+        _container.displayObject().visible = true;
         var locations = _node.region().locations();
         for (var i = 1; i < locations.length; i++) {
           if (i > 8) {
@@ -72,7 +73,7 @@ AWE.UI = (function(module) {
           _villiageSpotsShapes[i-1].graphics = _generateGraphics(locations[i], AWE.Config.MAP_LOCATION_SPOT_COLOR);
         }
       } else{
-        _container.visible = false;
+        _container.displayObject().visible = false;
       } 
     };
 
@@ -108,14 +109,13 @@ AWE.UI = (function(module) {
       return that;
     };
     
-    var _node = _node;
-    var _container = new Container();
-    var _view = _view;
-
+    var _container = module.createContainer();
+    _container.initWithController(_view.controller());
+    
     var _regionStreetsContainer = new Container();
-    _container.addChild(_regionStreetsContainer);
+    _container.displayObject().addChild(_regionStreetsContainer);
     var _villageStreetsContainer = new Container();
-    _container.addChild(_villageStreetsContainer);
+    _container.displayObject().addChild(_villageStreetsContainer);
 
     var _regionStreets = [];
     var _villageStreets = [];
@@ -126,9 +126,10 @@ AWE.UI = (function(module) {
     var _globalToLocalCooridnates = function(position) {
       var frame = _node.frame();
       var transformedFrame = _view.controller().mc2vc(frame);
+      var trans = _view.controller().mc2vc(position);
       return AWE.Geometry.createPoint(
-        (position.x - frame.origin.x)*transformedFrame.size.width/frame.size.width,
-        (position.y - frame.origin.y)*transformedFrame.size.height/frame.size.height
+        trans.x - _view.frame().origin.x,
+        trans.y - _view.frame().origin.y
       );
     };
 
@@ -143,10 +144,11 @@ AWE.UI = (function(module) {
         var neighbours = _node.getNeighbourNodes();
 
         var start = AWE.Geometry.createPoint(
-          transformedFrame.size.width / 2,
-          transformedFrame.size.height / 2
+          _view.frame().size.width / 2,
+          _view.frame().size.height / 2
         );
-
+        
+        
         //generate the region streets if the don't exist yet
         if (_regionStreets.length == 0) {
           var numStreets = 0;
@@ -188,20 +190,27 @@ AWE.UI = (function(module) {
               x: dir.y/2,
               y: dir.x/2
             };
-            _regionStreets[streetI].from = start;
-            _regionStreets[streetI].to = AWE.Geometry.createPoint(start.x + dir.x + extraDir.x, start.y + dir.y + extraDir.y);
-            _regionStreets[streetI].update();
+            if (_regionStreets[streetI]) {
+
+              _regionStreets[streetI].from = start;
+              _regionStreets[streetI].to = AWE.Geometry.createPoint(start.x + dir.x + extraDir.x, start.y + dir.y + extraDir.y);
+              _regionStreets[streetI].update();
+            }
             streetI++;
 
-            _regionStreets[streetI].from = start;
-            _regionStreets[streetI].to = AWE.Geometry.createPoint(start.x + dir.x - extraDir.x, start.y + dir.y - extraDir.y);
-            _regionStreets[streetI].update();
+            if (_regionStreets[streetI]) {
+              _regionStreets[streetI].from = start;
+              _regionStreets[streetI].to = AWE.Geometry.createPoint(start.x + dir.x - extraDir.x, start.y + dir.y - extraDir.y);
+              _regionStreets[streetI].update();
+            }
             streetI++;
 
           } else {
-            _regionStreets[streetI].from = start;
-            _regionStreets[streetI].to = AWE.Geometry.createPoint(start.x + dir.x, start.y + dir.y);
-            _regionStreets[streetI].update();
+            if (_regionStreets[streetI]) {
+              _regionStreets[streetI].from = start;
+              _regionStreets[streetI].to = AWE.Geometry.createPoint(start.x + dir.x, start.y + dir.y);
+              _regionStreets[streetI].update();
+            }
             streetI++;
           }
         }
@@ -222,6 +231,9 @@ AWE.UI = (function(module) {
           transformedFrame.size.width / 2,
           transformedFrame.size.height / 2
         );
+        
+      
+        
         //generate new streets if none exist
         if (_villageStreets.length == 0) {
           for (var i = 1; i < locations.length; i++) {
@@ -264,7 +276,9 @@ AWE.UI = (function(module) {
     var _node = null;
     var _scaledContainer = null;
     var _nonScaledContainer = null;    
-    var _backgroundImage = null;    
+    var _backgroundImage = null;  
+    var streetsManager = null;
+    var villageSpotsManager = null;  
     
     // protected attributes and methods //////////////////////////////////////
 
@@ -298,6 +312,12 @@ AWE.UI = (function(module) {
       
       this.setAutoscales(true);
       selectBackgroundImage(0);
+      
+      streetsManager = module.createStreetsManager(_node, this);
+      villageSpotsManager = module.createVillageSpotsManager(_node, this);  
+      
+      _nonScaledContainer.addChild(streetsManager.container());
+      _nonScaledContainer.addChild(villageSpotsManager.container()); 
     }
 
     
@@ -437,15 +457,8 @@ AWE.UI = (function(module) {
         _regionNameText.y = 4;
       } 
     } 
-    /*
     
-    //streets
-    var streetsManager = module.createStreetsManager(_node, _view);
-    _nonScalingContainer.addChild(streetsManager.container());
 
-    //village spots
-    var villageSpotsManager = module.createVillageSpotsManager(_node, _view);
-    _nonScalingContainer.addChild(villageSpotsManager.container()); */
 
     
     that.detailLevel = function() {
@@ -472,7 +485,10 @@ AWE.UI = (function(module) {
     
     that.layoutSubviews = function() {
       selectBackgroundImage(this.detailLevel());
-      updateInformation(this.detailLevel())
+      updateInformation(this.detailLevel());
+      streetsManager.update();
+      villageSpotsManager.update();
+
       _super.layoutSubviews();
     }
     

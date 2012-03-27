@@ -57,7 +57,7 @@ AWE.UI = (function(module) {
     {
       my.controller = controller;
       my.frame = frame || AWE.Geometry.createRect(0,0, 100, 100);
-      _originalSize = frame.size.copy(); // just to be sure...
+      _originalSize = my.frame.size.copy(); // just to be sure...
       _needsLayout = _needsUpdate = _needsDisplay = true;
     }
     

@@ -12,39 +12,41 @@ AWE.UI = (function(module) {
   
   /*** AWE.UI.View ***/
 
-  module.createMouseoverView = function() {
+  module.createMouseoverView = function(spec, my) {
     
     var _node = null;
     
     var _container = null;
         
-    var that = module.createView2();
+    var that = module.createView2(spec, my);
     
     var _super = {
-      initWithController: function(controller, frame) { that.initWithController(controller, frame); },
+      initWithController: that.superior("initWithController"),
+      layoutSubviews: that.superior("layoutSubviews"),
+      setFrame: that.superior("setFrame"),
     }
-    that.superLayoutSubviews = that.layoutSubviews;
-    that.superSetFrame = that.setFrame;
+
     
-    that.initWithControllerAndFrame = function(controller, frame) {
+    that.initWithControllerAndNode = function(controller, frame, node) {
       _super.initWithController(controller, frame);
+      _node = node;
       
       _container = module.createContainer();      
       _container.initWithController(controller, frame);        
 
       var mouseOverImageView = AWE.UI.createImageView();
       mouseOverImageView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement"), frame);
-      mouseOverImageView.setContentMode(0);  // TODO HACK
+      mouseOverImageView.setContentMode(module.setContentModeNone);
       _container.addChild(mouseOverImageView);
     }
 
     that.setFrame = function(frame) {
-      that.superSetFrame(frame);
+      _super.setFrame(frame);
       _container.setFrame(frame);
     }
     
     that.layoutSubviews = function() {
-      _needsLayout = true;
+      _needsLayout = false;
       _needsDisplay = true;
     }
     
