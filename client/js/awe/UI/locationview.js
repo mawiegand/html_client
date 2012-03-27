@@ -7,11 +7,11 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
 
-  module.createFortressView = function(spec, my) {
+  module.createLocationView = function(spec, my) {
     
     var that;
         
-    var _node = null;
+    var _location = null;
     var _selected = false;
     var _container = null;
     
@@ -31,20 +31,12 @@ AWE.UI = (function(module) {
     
     /** overwritten view methods */
     
-    that.initWithControllerAndNode = function(controller, node, frame) {
+    that.initWithControllerAndLocation = function(controller, location, frame) {
       _super.initWithController(controller, frame);
-      _node = node;
+      _location = location;
                   
       _container = new Container();      
 
-      var fortressImageName = 'map/fortress/small';
-      if (_node.region() && _node.region().fortressLevel() > 3) {
-        fortressImageName = 'map/fortress/middle';
-      }
-      if (_node.region() && _node.region().fortressLevel() > 7) {
-        fortressImageName = 'map/fortress/large';
-      }
-            
       var selectGraphics = new Graphics();
       selectGraphics.setStrokeStyle(1);
       selectGraphics.beginStroke(Graphics.getRGB(0,0,0));
@@ -54,20 +46,53 @@ AWE.UI = (function(module) {
       selectShape.alpha = 0;  
       _container.addChild(selectShape);
       
-      imageView = AWE.UI.createImageView();
-      imageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(fortressImageName));
-      imageView.setContentMode(module.ViewContentModeNone);
-      imageView.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
-      imageView.onClick = that.onClick;
-      imageView.onMouseOver = that.onMouseOver;
-      imageView.onMouseOut = that.onMouseOut;
-      _container.addChild(imageView.displayObject());
-
-      labelView = AWE.UI.createLabelView();
-      labelView.initWithControllerAndLabel(controller, _node.region().ownerName(), true);
-      labelView.setFrame(AWE.Geometry.createRect(AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, 24));      
-      _container.addChild(labelView.displayObject());
+      var name = AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()];
+      var level = location.level();
+      var modifier;
       
+      if (level < 4) {
+        modifier = "small";
+      }
+      else if (level < 8) {
+        modifier = "middle";
+      }
+      else if (level < 11) {
+        modifier = "big";
+      }
+      else {
+        console.error("unknown level",level);
+      }
+      
+      if (location.typeId() != 0) {
+        
+        if (name == "fortress") {
+          imageName = "map/fortress/";
+        }
+        else if (name == "settlement") {
+          imageName = "map/colony/" + modifier;
+        }
+        else if (name == "outpost") {
+          imageName = "map/outpost";
+        }
+        else {
+          console.error("unknown location type");
+        }
+              
+        imageView = AWE.UI.createImageView();
+        imageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(imageName));
+        imageView.setContentMode(module.ViewContentModeNone);
+        imageView.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
+        imageView.onClick = that.onClick;
+        imageView.onMouseOver = that.onMouseOver;
+        imageView.onMouseOut = that.onMouseOut;
+        _container.addChild(imageView.displayObject());
+
+        labelView = AWE.UI.createLabelView();
+        labelView.initWithControllerAndLabel(controller, _location.name(), true);
+        labelView.setFrame(AWE.Geometry.createRect(AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, 24));      
+        _container.addChild(labelView.displayObject());
+      }
+                  
       if (!frame) {
         that.resizeToFit();        
       }
@@ -77,10 +102,6 @@ AWE.UI = (function(module) {
       _super.setFrame(frame);
       _container.x = my.frame.origin.x;
       _container.y = my.frame.origin.y;
-    }
-    
-    that.center = function() {
-      return AWE.Geometry.createPoint(my.frame.origin.x + my.frame.size.width / 2, my.frame.origin.y + my.frame.size.height / 2);
     }
     
     that.setCenter = function(center) {
@@ -123,7 +144,7 @@ AWE.UI = (function(module) {
 
     return that;
   };
-    
+      
   return module;
     
 }(AWE.UI || {}));

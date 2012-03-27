@@ -7,68 +7,75 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
           
-  module.createDetailView = function(_windowSize, _layer, _controller) {
+  module.createDetailView = function(spec, my) {
 
-    var spec = {
-      frame: AWE.Geometry.createRect(0, 0, _windowSize.width, _windowSize.height),
-      scaled: false,
-      layer: _layer,
-      controller: _controller
+    var that;
+
+    my = my || {};
+    
+    var ownerLabelView = null;
+    var allianceLabelView = null;
+    
+    that = module.createView2(spec, my);
+
+    var _super = {
+      initWithController: that.superior("initWithController"),
+      layoutSubviews: that.superior("layoutSubviews"),
+      setFrame: that.superior("setFrame"),
     };
     
-    var _view = module.createView(spec);
+    /** overwritten view methods */
+    
+    that.initWithControllerAndNode = function(controller, node, frame) {
+      _super.initWithController(controller, frame);
+      
+            log('frame', frame);
+
+      _container = new Container()
+      
+      var node = controller.selectedView().node();
+      var region = node.region();
+
+      var backgroundShapeGraphics = new Graphics();
+      backgroundShapeGraphics.setStrokeStyle(0);
+      backgroundShapeGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
+      backgroundShapeGraphics.drawRoundRect(0, 0, my.frame.size.width, my.frame.size.height, 5);
+      var backgroundShape = new Shape(backgroundShapeGraphics);    
+      _container.addChild(backgroundShape);
+
+      ownerLabelView = AWE.UI.createLabelView();
+      ownerLabelView.initWithControllerAndLabel(controller, region.ownerName(), false);
+      ownerLabelView.setFrame(AWE.Geometry.createRect(50, 15, 50, 24));      
+      _container.addChild(ownerLabelView.displayObject());
+
+      allianceLabelView = AWE.UI.createLabelView();
+      allianceLabelView.initWithControllerAndLabel(controller, region.allianceTag(), false);
+      allianceLabelView.setFrame(AWE.Geometry.createRect(50, 65, 50, 24));      
+      _container.addChild(allianceLabelView.displayObject());
+
+      _container.x = my.frame.origin.x;
+      _container.y = my.frame.origin.y;
+    };
+    
+    that.setFrame = function(frame) {
+      _super.setFrame(frame);
+      _container.x = my.frame.origin.x;
+      _container.y = my.frame.origin.y;
+    }
+    
+    that.displayObject = function() {
+      return _container;
+    };
+    
+    /** actions */
    
-    var _ownerNameText = new Text('', "12px Arial", "#FFF");
-    _ownerNameText.textBaseline = "middle";
-    _ownerNameText.x = 20;
-    _ownerNameText.y = 25;
-    
-    var _allianceNameText = new Text('', "12px Arial", "#FFF");
-    _allianceNameText.textBaseline = "middle";
-    _allianceNameText.x = 20;
-    _allianceNameText.y = 75;
-    
-    var _selectShape;
-    var _g = new Graphics();
-    _g.setStrokeStyle(0);
-    _g.beginFill('rgba(0, 0, 0 ,0.5)');
-    _g.drawRoundRect(0, 0, 350, 100, 5);
-    _selectShape = new Shape(_g);    
-    
-    // _view.position = function() {
-      // return AWE.Geometry.createPoint(_view.frame().origin.x + _view.frame().size.width / 2, _view.frame().origin.y + _view.frame().size.height / 2);
-    // };
-
-    _view.redraw = function() {
-
-      if (_view.controller().selectedView()) {
-        var alpha = 1;
-        var container = _view.container();
-        
-        var node = _controller.selectedView().node();
-        var region = node.region();
-        
-        _ownerNameText.text = region.ownerName();
-        _allianceNameText.text = region.allianceTag();
-                
-        container.x = _controller.windowSize().width - 400;
-        container.y = _controller.windowSize().height - 150;
-        container.alpha = alpha;
-  
-        container.addChildAt(_ownerNameText);
-        container.addChildAt(_allianceNameText);
-        container.addChildAt(_selectShape);
-  
-        _view.layer().addChild(container);
-      }
-    };
-        
-    return _view;
+    return that;
   };
-    
+  
   return module;
     
 }(AWE.UI || {}));
+
 
 
 
