@@ -113,6 +113,11 @@ AWE.Controller = (function(module) {
       $(window).bind('mousewheel', function() {
         that.handleMouseWheel();
       });
+      // register controller to receive mouse-wheel events in screen (mozilla)
+      $(window).bind('DOMMouseScroll', function(evt) {
+        that.handleMouseWheel(evt);
+      });
+
     };        
     
     // ///////////////////////////////////////////////////////////////////////
@@ -361,19 +366,22 @@ AWE.Controller = (function(module) {
     };
     
     that.handleMouseWheel = function(ev) {
-      var event = ev || window.event;
+      
+      var evt = window.event;
+      if (ev && ev.originalEvent) {
+        evt = ev.originalEvent
+      }
       
       var delta = 0;
       
-      if (event.wheelDelta) { /* IE/Opera. */
-        delta = event.wheelDelta/120;
+      if (evt.wheelDelta) { /* IE/Opera. */
+        delta = evt.wheelDelta/120;
       }
-      else if (event.detail) { /** Mozilla case. */
-
+      else if (evt.detail) { /** Mozilla case. */
         /** In Mozilla, sign of delta is different than in IE.
          * Also, delta is multiple of 3.
          */
-        delta = -event.detail/3;
+        delta = -evt.detail/3;
       }
 
       /** If delta is nonzero, handle it.
@@ -388,10 +396,10 @@ AWE.Controller = (function(module) {
        * That might be ugly, but we handle scrolls somehow
        * anyway, so don't bother here..
        */
-      if (event.preventDefault) {
-        event.preventDefault();
+      if (evt.preventDefault) {
+        evt.preventDefault();
       }
-      event.returnValue = false;
+      evt.returnValue = false;
     };
     
 
@@ -414,8 +422,7 @@ AWE.Controller = (function(module) {
       _selectedNode = view.node();
       view.setSelected(true);
       _actionViews.fortressControls = AWE.UI.createLabelView();
-      log('_actionViews',_actionViews);
-      _actionViews.fortressControls.initWithControllerAndLabel(that, AWE.Geometry.createRect(pos.x, pos.y, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE), 'Label', true);
+      _actionViews.fortressControls.initWithControllerAndLabel(that, 'Label', true, AWE.Geometry.createRect(pos.x, pos.y, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
       _stages[2].addChild(_actionViews.fortressControls.displayObject());
       _action = true;
     };
@@ -594,6 +601,7 @@ AWE.Controller = (function(module) {
     
     that.updateGamingPieces = function(nodes) {
       
+      // update fortresses
       var newFortressViews = {};
 
       for (var i = 0; i < nodes.length; i++) { 
@@ -649,6 +657,8 @@ AWE.Controller = (function(module) {
       // remember newViews array
       fortressViews = newFortressViews;
 
+
+      // update other locations
       var newLocationViews = {};
       
       for (var i = 0; i < nodes.length; i++) {       
@@ -664,7 +674,7 @@ AWE.Controller = (function(module) {
               newLocationViews[location.id()] = view;
             }
             else if (nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().locations()) {
-              var newView = AWE.UI.createLocationsView();
+              var newView = AWE.UI.createLocationView();
               newView.initWithControllerAndLocation(that, location);
               newView.setCenter(that.mc2vc(location.position()));
               _stages[1].addChild(newView.displayObject());
