@@ -56,7 +56,7 @@ AWE.UI = (function(module) {
     that.initWithController = function(controller, frame)
     {
       my.controller = controller;
-      my.frame = frame || AWE.Geometry.createRect(0,0, 100, 100);
+      my.frame = frame || AWE.Geometry.createRect(0, 0, 100, 100);
       _originalSize = my.frame.size.copy(); // just to be sure...
       _needsLayout = _needsUpdate = _needsDisplay = true;
     }
@@ -83,6 +83,10 @@ AWE.UI = (function(module) {
     }
     
     that.setOrigin = function(origin) {
+      this.setFrame(AWE.Geometry.createRect(origin.x, origin.y, my.frame.size.width, my.frame.size.height));
+    }
+    
+    that.setCenter = function(center) {
       this.setFrame(AWE.Geometry.createRect(origin.x, origin.y, my.frame.size.width, my.frame.size.height));
     }
     
