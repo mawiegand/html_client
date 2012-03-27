@@ -37,9 +37,35 @@ AWE.GS = (function(module) {
     
     that = {};
     
-    that.lastUpdateInClient()
+    that.lastAggregateUpdateInClient = function() {
+      
+    }
     
-    that.updateWith = function(updateType)
+    that.lastShortUpdateInClient = function() {
+      
+    }
+    
+    that.lastFullUpdateInClient = function() {
+      
+    }
+    
+    that.lastUpdateInClientOfAtLeast = function(tpyeOfUpdate) {
+      var lastUpdate = my.lastFullUpdateAt;    // full update also includes short and aggregate update
+      if (typeOfUpdate == module.ENTITY_UPDATE_TYPE_SHORT || typeOfUpdate == module.ENTITY_UPDATE_TYPE_AGGREGATE &&
+          (!lastUpdate || lastUpdate < my.lastShortUpdate)) {
+        lastUpdate = my.lastShortUpdate;       // if short update was later and ok for the typeOfUpdate asked, use that one.
+      }
+      if (typeOfUpdate == module.ENTITY_UPDATE_TYPE_AGGREGATE && 
+          (!lastUpdate || lastUpdate < my.lastAggregateUpdateAt)) {
+        lastUpdate = my.lastShortUpdate;       // if aggregate update was later and typeOfUpdate is just aggregate, use that one.
+      }
+    }
+    
+    
+    
+    that.updateWith = function(updateType) {
+      
+    }
     
     return that;
   };
