@@ -559,7 +559,8 @@ AWE.Controller = (function(module) {
     
     that.rebuildMapHierarchy = function(nodes) {
 
-      var newRegionViews = {};          
+      var newRegionViews = {};  
+      var removedSomething = false;        
 
       for (var i = 0; i < nodes.length; i++) {
         var view = regionViews[nodes[i].id()];
@@ -586,10 +587,13 @@ AWE.Controller = (function(module) {
           var v = regionViews[k];
           AWE.Ext.applyFunction(v.displayObject(), function(obj) {
             _stages[0].removeChild(obj);
+            removedSomething = true;
           });        
         }
       }
-      regionViews = newRegionViews;        
+      regionViews = newRegionViews;  
+       
+      return removedSomething;     
     }
     
     
@@ -603,6 +607,7 @@ AWE.Controller = (function(module) {
       
       // update fortresses
       var newFortressViews = {};
+      var removedSomething = false;
 
       for (var i = 0; i < nodes.length; i++) { 
         // frame for node      
@@ -650,6 +655,7 @@ AWE.Controller = (function(module) {
           // remove views displayObject from stage
           AWE.Ext.applyFunction(view.displayObject(), function(obj) {
             _stages[1].removeChild(obj);
+            removedSomething = true;
           });        
         }
       }
@@ -690,10 +696,13 @@ AWE.Controller = (function(module) {
           var view = locationViews[k];
           AWE.Ext.applyFunction(view.displayObject(), function(obj) {
             _stages[1].removeChild(obj);
+            removedSomething = true;
           });        
         }
       }
       locationViews = newLocationViews;
+      
+      return removedSomething;
     };
     
     
@@ -773,14 +782,14 @@ AWE.Controller = (function(module) {
       
       return function(nodes, visibleArea) {
         
-        var stagesNeedUpdate = [false, true, true, true]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
+        var stagesNeedUpdate = [true, false, true, true]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
         
         // rebuild individual hieararchies
         if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
-          this.rebuildMapHierarchy(nodes);
+          stagesNeedUpdate[0] = this.rebuildMapHierarchy(nodes) || stagesNeedUpdate[0];
         }
         if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _action) {
-          that.updateGamingPieces(nodes);
+          stagesNeedUpdate[1] = stagesNeedUpdate[1] || that.updateGamingPieces(nodes);
         };
         
         if (1) {
@@ -791,8 +800,9 @@ AWE.Controller = (function(module) {
         }
 
         // update hierarchies and check which stages need to be redrawn
-        stagesNeedUpdate[0] = propUpdates(regionViews);
-        stagesNeedUpdate[1] = propUpdates(fortressViews) || propUpdates(locationViews);
+        stagesNeedUpdate[0] = propUpdates(regionViews) || stagesNeedUpdate[0];
+        stagesNeedUpdate[1] = propUpdates(fortressViews) || stagesNeedUpdate[1];
+        stagesNeedUpdate[1] = propUpdates(locationViews) || stagesNeedUpdate[1];
         // stagesNeedUpdate[2] = propUpdates(actionViews);
         //stagesNeedUpdate[3] = propUpdates(HUDViews);
         
