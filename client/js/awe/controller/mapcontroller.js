@@ -412,8 +412,8 @@ AWE.Controller = (function(module) {
     var _selectedView = null;
     var _highlightedView = null;
     
-    var _actionViews = {};
-    
+    // for actionView see below 
+        
     var _action = false;
     
     var _selectFortress = function(view) {
@@ -424,11 +424,12 @@ AWE.Controller = (function(module) {
       _actionViews.fortressControls = AWE.UI.createLabelView();
       _actionViews.fortressControls.initWithControllerAndLabel(that, 'Label', true, AWE.Geometry.createRect(pos.x, pos.y, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
       _stages[2].addChild(_actionViews.fortressControls.displayObject());
+      _showDetailView(view);
       _action = true;
     };
     
     var _unselectFortress = function(view) {
-      log('view', _selectedView);
+      _hideDetailView(view);
       _stages[2].removeChild(_actionViews.fortressControls.displayObject());
       _selectedView.setSelected(false);
       _selectedView = null;
@@ -477,6 +478,23 @@ AWE.Controller = (function(module) {
 
     that.HUDMouseOver = function() {
       _unhighlightFortress();
+    };
+    
+    var _showDetailView = function(view) {
+      if (HUDViews.detailView) {
+        hideDetailView(HUDViews.detailView);
+      }
+      
+      HUDViews.detailView = AWE.UI.createDetailView();
+      HUDViews.detailView.initWithControllerAndNode(that, view.node(), AWE.Geometry.createRect(100, 100, 350, 100));
+      _stages[3].addChild(HUDViews.detailView.displayObject());
+    };
+
+    var _hideDetailView = function(view) {
+      if (HUDViews.detailView) {
+        _stages[3].removeChild(HUDViews.detailView.displayObject());
+        HUDViews.detailView = null;
+      }
     };
 
     // ///////////////////////////////////////////////////////////////////////
@@ -731,15 +749,9 @@ AWE.Controller = (function(module) {
           AWE.Config.MAPPING_FORTRESS_SIZE
         ));
       }
-   };
+    };
     
-    
-    // ///////////////////////////////////////////////////////////////////////
-    //
-    //   Interactive Buttons, Mouse-Over, Notifications
-    //
-    // /////////////////////////////////////////////////////////////////////// 
-    
+        
     // ///////////////////////////////////////////////////////////////////////
     //
     //   HUD
@@ -748,10 +760,20 @@ AWE.Controller = (function(module) {
     
     that.updateHUD = function() {
       
-      _stages[3].removeAllChildren();          
+      //_stages[3].removeAllChildren();          
       AWE.UI.createMaincontrolsView(_windowSize, _stages[3], that).redraw();
-      AWE.UI.createDetailView(_windowSize, _stages[3], that).redraw();
+      // AWE.UI.createDetailView(_windowSize, _stages[3], that).redraw();
       
+      if (HUDViews.detailView) {
+        HUDViews.detailView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 370, _windowSize.height - 120));
+      }
+
+      if (!HUDViews.mainControlsView) {
+        // erzeugen 
+      }
+      else {
+        HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 370, _windowSize.height - 120));
+      }
     };
     
     
@@ -795,7 +817,7 @@ AWE.Controller = (function(module) {
         if (1) {
           that.updateActionViews();
         }
-        if (1) { // TODO: only update at start and when something might have changed (object selected, etc.)
+        if (_action) { // TODO: only update at start and when something might have changed (object selected, etc.)
           that.updateHUD();
         }
 
@@ -819,9 +841,11 @@ AWE.Controller = (function(module) {
     
     that.updateView = function() { needRedraw = true; } // TODO: completely remove this method, replaced by setNeedsDisplay
     
+    var regionViews = {};
     var fortressViews = {};
     var locationViews = {};
-    var regionViews = {};
+    var _actionViews = {};
+    var HUDViews = {};
     
     that.updateFPS = function() {
       
