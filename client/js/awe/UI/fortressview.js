@@ -17,16 +17,17 @@ AWE.UI = (function(module) {
     
     var imageView = null;
     var labelView = null;
-    var selectShape;
+    var selectShape = null;
     
     my = my || {};
     
-    that = module.createView2(spec, my);
+    that = module.createView(spec, my);
 
     var _super = {
       initWithController: that.superior("initWithController"),
       layoutSubviews: that.superior("layoutSubviews"),
       setFrame: that.superior("setFrame"),
+      setAlpha: that.superior("setAlpha"),
     };
     
     /** overwritten view methods */
@@ -77,6 +78,12 @@ AWE.UI = (function(module) {
       _super.setFrame(frame);
       _container.x = my.frame.origin.x;
       _container.y = my.frame.origin.y;
+    }
+    
+    that.setAlpha = function(alpha) {
+      _super.setAlpha(alpha);
+      _container.visible = alpha !== 0;
+      _container.alpha = alpha;
     }
     
     that.center = function() {

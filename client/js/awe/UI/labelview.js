@@ -13,7 +13,7 @@ AWE.UI = (function(module) {
     
     my = my || {};
         
-    var that = module.createView2(spec, my);
+    var that = module.createView(spec, my);
     
     var _super = {
       initWithController: that.superior("initWithController"),

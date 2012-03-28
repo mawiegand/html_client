@@ -261,6 +261,20 @@ AWE.Controller = (function(module) {
       }      
     }());
     
+    /** calculates the alpha value of location objects as a linear function
+     *  between min and max depending on its width
+     */
+    that.alpha = function(width, min, max) {
+      
+      if (min >= max || max < width) return 1;
+      if (width < min) return 0;
+
+      var alpha = (width - min ) / (max - min);
+      
+      return alpha;
+    }
+    
+    
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Laying out the Map
@@ -630,6 +644,7 @@ AWE.Controller = (function(module) {
       for (var i = 0; i < nodes.length; i++) { 
         // frame for node      
         var frame = that.mc2vc(nodes[i].frame());
+        var alpha = that.alpha(frame.size.width, AWE.Config.MAPPING_FORTRESS_SIZE + 20, AWE.Config.MAPPING_FORTRESS_SIZE * 2);
         // get view for node 
         var view = fortressViews[nodes[i].id()];
         // if view exists already
@@ -643,6 +658,8 @@ AWE.Controller = (function(module) {
             frame.origin.x + frame.size.width / 2,
             frame.origin.y + frame.size.height / 2
           ));
+          // set alpha
+          view.setAlpha(alpha);
           // save view in newViews Array
           newFortressViews[nodes[i].id()] = view;
         }
@@ -655,6 +672,8 @@ AWE.Controller = (function(module) {
             frame.origin.x + frame.size.width / 2,
             frame.origin.y + frame.size.height / 2            
           ));
+          // set alpha
+          newView.setAlpha(alpha);
           // add views displayObject to stage
           _stages[1].addChild(newView.displayObject());
           // add view to newViews Array
@@ -687,6 +706,7 @@ AWE.Controller = (function(module) {
       
       for (var i = 0; i < nodes.length; i++) {       
         var frame = that.mc2vc(nodes[i].frame()); 
+        var alpha = that.alpha(frame.size.width, (AWE.Config.MAPPING_FORTRESS_SIZE + 20) * 4, (AWE.Config.MAPPING_FORTRESS_SIZE + 20) * 4 + AWE.Config.MAPPING_FORTRESS_SIZE * 2);
         // var locations = locationViews[nodes[i].id()];
         if (nodes[i].region() && nodes[i].region().locations()) {
           var locations = nodes[i].region().locations();
@@ -695,12 +715,14 @@ AWE.Controller = (function(module) {
             var view = locationViews[location.id()];
             if (view) {                                      
               view.setCenter(that.mc2vc(location.position()));
+              view.setAlpha(alpha);
               newLocationViews[location.id()] = view;
             }
             else if (nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().locations()) {
               var newView = AWE.UI.createLocationView();
               newView.initWithControllerAndLocation(that, location);
               newView.setCenter(that.mc2vc(location.position()));
+              newView.setAlpha(alpha);
               _stages[1].addChild(newView.displayObject());
               newLocationViews[location.id()] = newView;
             }
@@ -760,19 +782,18 @@ AWE.Controller = (function(module) {
     
     that.updateHUD = function() {
       
-      //_stages[3].removeAllChildren();          
-      AWE.UI.createMaincontrolsView(_windowSize, _stages[3], that).redraw();
-      // AWE.UI.createDetailView(_windowSize, _stages[3], that).redraw();
-      
       if (HUDViews.detailView) {
         HUDViews.detailView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 370, _windowSize.height - 120));
       }
 
       if (!HUDViews.mainControlsView) {
-        // erzeugen 
+        HUDViews.mainControlsView = AWE.UI.createMainControlsView();
+        HUDViews.mainControlsView.initWithController(that);
+        HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 470, 20));
+        _stages[3].addChild(HUDViews.mainControlsView.displayObject());
       }
       else {
-        HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 370, _windowSize.height - 120));
+        HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 470, 20));
       }
     };
     
@@ -817,7 +838,7 @@ AWE.Controller = (function(module) {
         if (1) {
           that.updateActionViews();
         }
-        if (_action) { // TODO: only update at start and when something might have changed (object selected, etc.)
+        if ((oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _action) { // TODO: only update at start and when something might have changed (object selected, etc.)
           that.updateHUD();
         }
 
@@ -826,7 +847,7 @@ AWE.Controller = (function(module) {
         stagesNeedUpdate[1] = propUpdates(fortressViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(locationViews) || stagesNeedUpdate[1];
         // stagesNeedUpdate[2] = propUpdates(actionViews);
-        //stagesNeedUpdate[3] = propUpdates(HUDViews);
+        // stagesNeedUpdate[3] = propUpdates(HUDViews);
         
         oldVisibleArea = visibleArea;
       
@@ -882,7 +903,7 @@ AWE.Controller = (function(module) {
         that.layoutIfNeeded();   
         
         // STEP 4: update views and repaint view hierarchies as needed
-        if (needRedraw || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || _action) {
+        if (_needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || _action) {
           // STEP 4a: get all visible nodes from the model (TODO: armies etc.)
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());    
           
@@ -902,7 +923,6 @@ AWE.Controller = (function(module) {
 
         // STEP 5: cleanup & prepare for next loop: everything has been processed and changed...
         _modelChanged = false;
-        needRedraw = false;   // TODO: completely remove this flag and method (replaced by setNeedsDisplay, and setNeedsLayout)
         _needsDisplay = false;
         _needsLayout = false;
         _action = false;

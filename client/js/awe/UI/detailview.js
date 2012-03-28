@@ -16,7 +16,7 @@ AWE.UI = (function(module) {
     var ownerLabelView = null;
     var allianceLabelView = null;
     
-    that = module.createView2(spec, my);
+    that = module.createView(spec, my);
 
     var _super = {
       initWithController: that.superior("initWithController"),
@@ -28,9 +28,6 @@ AWE.UI = (function(module) {
     
     that.initWithControllerAndNode = function(controller, node, frame) {
       _super.initWithController(controller, frame);
-      
-            log('frame', frame);
-
       _container = new Container()
       
       var node = controller.selectedView().node();

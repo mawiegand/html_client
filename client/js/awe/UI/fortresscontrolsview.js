@@ -103,7 +103,7 @@ AWE.UI = (function(module) {
         
     var _container = null;
         
-    var that = module.createView2();
+    var that = module.createView();
     
     var _super = {
       initWithController: function(controller, frame) { that.initWithController(controller, frame); },

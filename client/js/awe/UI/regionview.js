@@ -287,7 +287,7 @@ AWE.UI = (function(module) {
 
     // public attributes and methods /////////////////////////////////////////
     
-    that = module.createView2(spec, my);
+    that = module.createView(spec, my);
     
     var _super = {
       initWithController: that.superior("initWithController"),

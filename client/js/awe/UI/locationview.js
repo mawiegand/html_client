@@ -21,12 +21,13 @@ AWE.UI = (function(module) {
     
     my = my || {};
     
-    that = module.createView2(spec, my);
+    that = module.createView(spec, my);
 
     var _super = {
       initWithController: that.superior("initWithController"),
       layoutSubviews: that.superior("layoutSubviews"),
       setFrame: that.superior("setFrame"),
+      setAlpha: that.superior("setAlpha"),
     };
     
     /** overwritten view methods */
@@ -104,6 +105,12 @@ AWE.UI = (function(module) {
       _container.y = my.frame.origin.y;
     }
     
+    that.setAlpha = function(alpha) {
+      _super.setAlpha(alpha);
+      _container.visible = (alpha !== 0);
+      _container.alpha = alpha;
+    }
+   
     that.setCenter = function(center) {
       my.frame.origin.x = center.x - my.frame.size.width / 2;
       my.frame.origin.y = center.y - my.frame.size.height / 2;
@@ -131,15 +138,15 @@ AWE.UI = (function(module) {
     /** actions */
    
     that.onClick = function() {
-      my.controller.viewClicked(that);
+      // my.controller.viewClicked(that);
     };
     
     that.onMouseOver = function(evt){
-      my.controller.fortressMouseOver(that);
+      // my.controller.fortressMouseOver(that);
     };
 
     that.onMouseOut = function(evt){
-      my.controller.fortressMouseOut(that);
+      // my.controller.fortressMouseOut(that);
     };
 
     return that;
