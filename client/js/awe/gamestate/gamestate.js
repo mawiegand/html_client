@@ -148,6 +148,8 @@ AWE.GS = (function(module) {
       if (updateType === undefined) { 
         updateType = module.ENTITY_UPDATE_TYPE_FULL;
       }
+            console.log('fetch from url: ' + url);
+
       
       if (my.tryRegisterRequest(queue, id, updateType)) {
         var start = new Date();
@@ -201,6 +203,7 @@ AWE.GS = (function(module) {
       if (entity && entity.lastUpdateAt(updateType)) {
         lastUpdateAt = entity.lastUpdateAt(updateType);
       }
+      console.log('in update entity');
       return my.fetchEntitiesFromURL(url, my.runningUpdatesPerId, id, updateType, lastUpdateAt, callback); 
     };
     

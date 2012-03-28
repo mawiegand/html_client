@@ -38,6 +38,33 @@ AWE.GS = (function(module) {
     that.property('alliance_id',  null, module.PROPERTY_READ_ONLY);
     that.property('alliance_tag', null, module.PROPERTY_READ_ONLY);
 
+    that.property('ap_last', null, module.PROPERTY_READ_ONLY);
+    that.property('ap_max', null, module.PROPERTY_READ_ONLY);
+    that.property('ap_present', null, module.PROPERTY_READ_ONLY);
+    that.property('ap_seconds_per_point', null, module.PROPERTY_READ_ONLY);
+    
+    
+    that.property('exp', null, module.PROPERTY_READ_ONLY);
+    that.property('rank', null, module.PROPERTY_READ_ONLY);
+
+    that.property('stance', null, module.PROPERTY_READ_ONLY);
+    that.property('strength', null, module.PROPERTY_READ_ONLY);
+    
+    that.property('home_settlement_id', null, module.PROPERTY_READ_ONLY);
+    that.property('home_settlement_name', null, module.PROPERTY_READ_ONLY);
+    
+    that.property('size_max', null, module.PROPERTY_READ_ONLY);
+    that.property('size_present', null, module.PROPERTY_READ_ONLY);
+
+    that.property('mode', null, module.PROPERTY_READ_ONLY);        
+
+    that.property('battle_id', 0, module.PROPERTY_READ_ONLY);
+    that.property('battle_retreat', false, module.PROPERTY_READ_ONLY);
+
+    that.property('target_location_id', null, module.PROPERTY_READ_ONLY);    
+    that.property('target_reached_at', null, module.PROPERTY_READ_ONLY);    
+    that.property('target_region_id', null, module.PROPERTY_READ_ONLY);    
+
     that.toString = function() {
       return "army " + this.id() + ", " + this.name() + " at " + this.region_id() + "/" + this.location_id();
     }
