@@ -635,6 +635,14 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
+    that.isSettlementVisible = function(frame) {
+      return frame.size.width > 256;
+    };
+    
+    that.isFortressVisible = function(frame) {
+      return frame.size.width > 128;
+    };
+    
     that.updateGamingPieces = function(nodes) {
       
       // update fortresses
@@ -644,40 +652,43 @@ AWE.Controller = (function(module) {
       for (var i = 0; i < nodes.length; i++) { 
         // frame for node      
         var frame = that.mc2vc(nodes[i].frame());
-        var alpha = that.alpha(frame.size.width, 128, 192);
-        // get view for node 
-        var view = fortressViews[nodes[i].id()];
-        // if view exists already
-        if (view) {       
-          // if model of view updated
-          if (view.lastChange !== undefined && view.lastChange() < nodes[i].lastChange()) {
-            view.setNeedsUpdate();
-          }                     
-          // set new center
-          view.setCenter(AWE.Geometry.createPoint(
-            frame.origin.x + frame.size.width / 2,
-            frame.origin.y + frame.size.height / 2
-          ));
-          // set alpha
-          view.setAlpha(alpha);
-          // save view in newViews Array
-          newFortressViews[nodes[i].id()] = view;
-        }
-        // if view for node doesn't exists and node is leaf
-        else if (nodes[i].isLeaf() && nodes[i].region()) {
-          // create and initialize new view, set center
-          var newView = AWE.UI.createFortressView();
-          newView.initWithControllerAndNode(that, nodes[i]);
-          newView.setCenter(AWE.Geometry.createPoint(
-            frame.origin.x + frame.size.width / 2,
-            frame.origin.y + frame.size.height / 2            
-          ));
-          // set alpha
-          newView.setAlpha(alpha);
-          // add views displayObject to stage
-          _stages[1].addChild(newView.displayObject());
-          // add view to newViews Array
-          newFortressViews[nodes[i].id()] = newView;
+        // var alpha = that.alpha(frame.size.width, 128, 192);
+        // if node is big enough for displaying a the fortress
+        if (that.isFortressVisible(frame)) {
+          // get view for node 
+          var view = fortressViews[nodes[i].id()];
+          // if view exists already
+          if (view) {       
+            // if model of view updated
+            if (view.lastChange !== undefined && view.lastChange() < nodes[i].lastChange()) {
+              view.setNeedsUpdate();
+            }                     
+            // set new center
+            view.setCenter(AWE.Geometry.createPoint(
+              frame.origin.x + frame.size.width / 2,
+              frame.origin.y + frame.size.height / 2
+            ));
+            // set alpha
+            // view.setAlpha(alpha);
+            // save view in newViews Array
+            newFortressViews[nodes[i].id()] = view;
+          }
+          // if view for node doesn't exists and node is leaf
+          else if (nodes[i].isLeaf() && nodes[i].region()) {
+            // create and initialize new view, set center
+            var newView = AWE.UI.createFortressView();
+            newView.initWithControllerAndNode(that, nodes[i]);
+            newView.setCenter(AWE.Geometry.createPoint(
+              frame.origin.x + frame.size.width / 2,
+              frame.origin.y + frame.size.height / 2            
+            ));
+            // set alpha
+            // newView.setAlpha(alpha);
+            // add views displayObject to stage
+            _stages[1].addChild(newView.displayObject());
+            // add view to newViews Array
+            newFortressViews[nodes[i].id()] = newView;
+          }
         }
       }
       
@@ -706,20 +717,19 @@ AWE.Controller = (function(module) {
       
       for (var i = 0; i < nodes.length; i++) {       
         var frame = that.mc2vc(nodes[i].frame()); 
-        var alpha = that.alpha(frame.size.width, 256, 384);
+        // var alpha = that.alpha(frame.size.width, 256, 384);
         // var locations = locationViews[nodes[i].id()];
-        if (nodes[i].region() && nodes[i].region().locations()) {
+        if (that.isSettlementVisible(frame) && nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().locations()) {
           var locations = nodes[i].region().locations();
           for (var l = 1; l < 9; l++) {
             var location = locations[l];
             var view = locationViews[location.id()];
             if (view) {                                      
               view.setCenter(that.mc2vc(location.position()));
-              view.setAlpha(alpha);
+              // view.setAlpha(alpha);
               newLocationViews[location.id()] = view;
             }
-            else if (nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().locations()) {
-                                        
+            else {                                        
               if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()] === "base") {
                 view = AWE.UI.createBaseView();
               }             
@@ -730,7 +740,7 @@ AWE.Controller = (function(module) {
               if (view) {
                 view.initWithControllerAndLocation(that, location);
                 view.setCenter(that.mc2vc(location.position()));
-                view.setAlpha(alpha);
+                // view.setAlpha(alpha);
                 _stages[1].addChild(view.displayObject());
                 newLocationViews[location.id()] = view;
               }

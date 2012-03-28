@@ -368,7 +368,7 @@ AWE.UI = (function(module) {
         _scaledContainer.addChild(_backgroundImage);
       }
       else if (_backgroundImage.image() !== newImage) {
-        _backgroundImage.setImage(newImage); console.log('set image');
+        _backgroundImage.setImage(newImage);
         _backgroundImage.setFrame(AWE.Geometry.createRect(0,0,newImage.width, newImage.height));
       }
     };
