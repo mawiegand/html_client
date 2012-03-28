@@ -644,7 +644,7 @@ AWE.Controller = (function(module) {
       for (var i = 0; i < nodes.length; i++) { 
         // frame for node      
         var frame = that.mc2vc(nodes[i].frame());
-        var alpha = that.alpha(frame.size.width, AWE.Config.MAPPING_FORTRESS_SIZE + 20, AWE.Config.MAPPING_FORTRESS_SIZE * 2);
+        var alpha = that.alpha(frame.size.width, 128, 192);
         // get view for node 
         var view = fortressViews[nodes[i].id()];
         // if view exists already
@@ -706,12 +706,12 @@ AWE.Controller = (function(module) {
       
       for (var i = 0; i < nodes.length; i++) {       
         var frame = that.mc2vc(nodes[i].frame()); 
-        var alpha = that.alpha(frame.size.width, (AWE.Config.MAPPING_FORTRESS_SIZE + 20) * 4, (AWE.Config.MAPPING_FORTRESS_SIZE + 20) * 4 + AWE.Config.MAPPING_FORTRESS_SIZE * 2);
+        var alpha = that.alpha(frame.size.width, 256, 384);
         // var locations = locationViews[nodes[i].id()];
         if (nodes[i].region() && nodes[i].region().locations()) {
           var locations = nodes[i].region().locations();
           for (var l = 1; l < 9; l++) {
-            var location = locations[l]
+            var location = locations[l];
             var view = locationViews[location.id()];
             if (view) {                                      
               view.setCenter(that.mc2vc(location.position()));
@@ -719,12 +719,21 @@ AWE.Controller = (function(module) {
               newLocationViews[location.id()] = view;
             }
             else if (nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().locations()) {
-              var newView = AWE.UI.createLocationView();
-              newView.initWithControllerAndLocation(that, location);
-              newView.setCenter(that.mc2vc(location.position()));
-              newView.setAlpha(alpha);
-              _stages[1].addChild(newView.displayObject());
-              newLocationViews[location.id()] = newView;
+                                        
+              if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()] === "base") {
+                view = AWE.UI.createBaseView();
+              }             
+              if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()] === "outpost") {
+                view = AWE.UI.createOutpostView();
+              }
+              
+              if (view) {
+                view.initWithControllerAndLocation(that, location);
+                view.setCenter(that.mc2vc(location.position()));
+                view.setAlpha(alpha);
+                _stages[1].addChild(view.displayObject());
+                newLocationViews[location.id()] = view;
+              }
             }
           }
         }

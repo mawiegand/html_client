@@ -38,7 +38,7 @@ AWE.Config = (function(module) {
   module.MAP_LOCATION_SPOT_COLOR = "#b1ad6e";//"#EEE894";
 
   module.MAP_LOCATION_MIN_DETAIL_LEVEL = 2;
-  module.MAP_LOCATION_TYPE_CODES = ["empty","fortress","settlement","outpost"];
+  module.MAP_LOCATION_TYPE_CODES = ["empty","fortress","base","outpost"];
 
   //image cache
   module.IMAGE_CACHE_LOAD_LIST = {
