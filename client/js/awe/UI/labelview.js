@@ -10,6 +10,8 @@ AWE.UI = (function(module) {
   module.createLabelView = function(spec, my) {
         
     var _container = null;
+    var _labelText = null;
+    var _backgroundShape = null;
     
     my = my || {};
         
@@ -24,34 +26,46 @@ AWE.UI = (function(module) {
     that.initWithControllerAndLabel = function(controller, label, background, frame) {
       _super.initWithController(controller, frame);
       
-      _container = new Container();      
+      _container = new Container();
+      _background = background;      
 
-      var _ownerNameText = new Text(label, "12px Arial", "#FFF");
-      _ownerNameText.textAlign = "center";
-      _ownerNameText.textBaseline = "middle";
-      _ownerNameText.x = 0;
-      _ownerNameText.y = (_ownerNameText.getMeasuredLineHeight() + 10) / 2;
-      _container.addChild(_ownerNameText);
+      _labelText = new Text(label, "12px Arial", "#FFF");
+      _labelText.textAlign = "center";
+      _labelText.textBaseline = "middle";
+      _labelText.x = my.frame.size.width / 2;
+      _labelText.y = my.frame.size.height / 2;
+      _container.addChild(_labelText);
     
       if (background) {
-        var _ownerNameGraphics = new Graphics();
-        _ownerNameGraphics.setStrokeStyle(0);
-        _ownerNameGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-        _ownerNameGraphics.drawRoundRect(-(_ownerNameText.getMeasuredWidth() + 10) / 2, 0, _ownerNameText.getMeasuredWidth() + 10, _ownerNameText.getMeasuredLineHeight() + 10, 3);
-        var _ownerNameShape = new Shape(_ownerNameGraphics);
-        _container.addChild(_ownerNameShape);
+        var _backgroundGraphics = new Graphics();
+        _backgroundGraphics.setStrokeStyle(0);
+        _backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
+        _backgroundGraphics.drawRoundRect((my.frame.size.width - _labelText.getMeasuredWidth() - 10) / 2, (my.frame.size.height - _labelText.getMeasuredLineHeight() - 8) / 2, _labelText.getMeasuredWidth() + 10, _labelText.getMeasuredLineHeight() + 8, 4);
+        _backgroundShape = new Shape(_backgroundGraphics);
+        _container.addChild(_backgroundShape);
       }
       
       _container.x = my.frame.origin.x;
       _container.y = my.frame.origin.y;
-      
-      _container.addChild(_ownerNameText);
     }
 
     that.setFrame = function(frame) {
       _super.setFrame(frame);
       _container.x = frame.origin.x;
       _container.y = frame.origin.y;
+
+      _labelText.x = my.frame.size.width / 2;
+      _labelText.y = my.frame.size.height / 2;
+
+      if (_backgroundShape) {
+        _container.removeChild(_backgroundShape);
+        var _backgroundGraphics = new Graphics();
+        _backgroundGraphics.setStrokeStyle(0);
+        _backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
+        _backgroundGraphics.drawRoundRect((frame.size.width - _labelText.getMeasuredWidth() - 10) / 2, (frame.size.height - _labelText.getMeasuredLineHeight() - 8) / 2, _labelText.getMeasuredWidth() + 10, _labelText.getMeasuredLineHeight() + 8, 4);
+        _backgroundShape = new Shape(_backgroundGraphics);
+        _container.addChildAt(_backgroundShape, 0);
+      }
     }
     
     that.layoutSubviews = function() {      

@@ -49,7 +49,7 @@ AWE.UI = (function(module) {
       selectGraphics.setStrokeStyle(1);
       selectGraphics.beginStroke(Graphics.getRGB(0,0,0));
       selectGraphics.beginFill(Graphics.getRGB(255,0,0));
-      selectGraphics.drawEllipse(0,  AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
+      selectGraphics.drawEllipse(0, AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
       selectShape = new Shape(selectGraphics);  
       selectShape.visible = false;  
       my.container.addChild(selectShape);
@@ -65,7 +65,7 @@ AWE.UI = (function(module) {
 
       labelView = AWE.UI.createLabelView();
       labelView.initWithControllerAndLabel(controller, _node.region().ownerName(), true);
-      labelView.setFrame(AWE.Geometry.createRect(AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, 24));      
+      labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, 20));      
       my.container.addChild(labelView.displayObject());
       
       if (!frame) {

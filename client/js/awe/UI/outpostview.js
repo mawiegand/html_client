@@ -59,7 +59,7 @@ AWE.UI = (function(module) {
 
       labelView = AWE.UI.createLabelView();
       labelView.initWithControllerAndLabel(controller, _location.name(), true);
-      labelView.setFrame(AWE.Geometry.createRect(AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, 24));      
+      labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, 16));      
       my.container.addChild(labelView.displayObject());
                   
       if (!frame) {
