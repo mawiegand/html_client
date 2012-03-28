@@ -51,6 +51,66 @@ AWE.GS = (function(module) {
     
     var that;
     
+    var processArmyData = function(data, updateType, start) {
+      var army = my.armies[data.id];
+
+      if (army) {
+        army.updateWith(data, updateType, start);
+      }
+      else {
+        army = module.createArmy();
+        army.init(data);
+        my.armies[army.id()] = army;
+        // if (army.owner_id() == player.id()) my.ownArmies[amry.id()] = army;
+      }
+      return army;
+    };
+    
+    var fetchArmiesFromURL = function(url, queue, id, updateType, modifiedSince, callback) {
+      if (updateType === undefined) { 
+        updateType = module.ENTITY_UPDATE_TYPE_FULL;
+      }
+      
+      if (my.tryRegisterRequest(queue, id, updateType)) {
+        var start = new Date();
+        
+        var options = {
+          url: (url+'?'+my.updateTypeQueryToken(updateType)),
+          dataType: 'json',
+        };
+        if (modifiedSince) {
+          options.headers = { 'If-Modified-Since': modifiedSince };
+          console.log ('OPTIONS: ' + options);
+        }
+        var jqXHR = $.ajax(options)
+        .error(function(jqHXR, textStatus) {          // On failure: 
+          my.unregisterRequest(queue, id, updateType);//   unregister request 
+          console.log ('ERROR FETCHING ARMIES FOR URL ' + url + ': ' + textStatus); 
+        })
+        .success(function(data) {                     // On success: 
+          var result = null;
+          if (data && data.length !== undefined) {    //   A) process an array of armies
+            result = [];
+            for (var i=0; i < data.length; i++) { 
+              var armyData = data[i];
+              result.push(processArmyData(armyData, updateType, start));
+            }          
+          }
+          else {                                      //   B) process a single army
+            result = processArmyData(data, updateType, start);
+          }
+          my.unregisterRequest(queue, id, updateType);//   unregister request 
+          if (callback) {
+            callback(result);
+          }        
+        }); 
+      }
+      else {          // update on this army is already running -> return false
+        return false;
+      }
+      return true;    // update is underway           
+    }
+    
   
     // protected attributes and methods //////////////////////////////////////
   
@@ -98,53 +158,33 @@ AWE.GS = (function(module) {
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
     that.updateArmy = function(id, updateType, callback) {
+      var lastUpdateAt = null;
       if (updateType === undefined) { 
         updateType = module.ENTITY_UPDATE_TYPE_FULL;
       }
-      
-      if (my.tryRegisterRequest(my.runningUpdatesPerId, id, updateType)) {
-        var start = new Date();
-        var url = AWE.Config.MILITARY_SERVER_BASE+'armies/'+id+'.json?'+my.updateTypeQueryToken(updateType);
-        
-        console.log ('update type: ' + updateType + ' token: '+ my.updateTypeQueryToken(updateType) + ' url: ' + url);
-        
-        
-        var jqXHR = $.getJSON(url)
-        .error(function(jqHXR, textStatus) { 
-          my.unregisterRequest(my.runningUpdatesPerId, id, updateType); 
-          console.log ('ERROR: ' + textStatus); 
-        })
-        .success(function(data) { 
-          var army = my.armies[id];
-
-          if (army) {
-            army.updateWith(data, updateType, start);
-          }
-          else {
-            army = module.createArmy();
-            army.init(data);
-            my.armies[army.id()] = army;
-            // if (army.owner_id() == player.id()) my.ownArmies[amry.id()] = army;
-          }
-          my.unregisterRequest(my.runningUpdatesPerId, id, updateType); 
-          if (callback) {
-            callback(army);
-          }        
-        }); 
+      var army = my.armies[id];
+      if (army && army.lastUpdateAt(updateType)) {
+        lastUpdateAt = army.lastUpdateAt(updateType);
       }
-      else {          // update on this army is already running -> return false
-        return false;
-      }
-      return true;    // update is underway
+      var url = AWE.Config.MILITARY_SERVER_BASE+'armies/'+id+'.json';
+      return fetchArmiesFromURL(url, my.runningUpdatesPerId, id, updateType, lastUpdateAt, callback); 
     };
-   
-
     
+    /** updates all armies in a given region. Calls the callback with a
+     * list of all the updated armies. */
+    that.updateArmiesInRegion = function(regionId, updateType, callback) {
+      var url = AWE.Config.MAP_SERVER_BASE+'regions/'+regionId+'/armies.json';
+      return fetchArmiesFromURL(url, my.runningUpdatesPerRegion, regionId, updateType, null, callback); 
+    }
+    
+    that.updateArmiesAtLocation = function(locationId, updateType, callback) {
+      var url = AWE.Config.MAP_SERVER_BASE+'locations/'+locationId+'/armies.json';
+      return fetchArmiesFromURL(url, my.runningUpdatesPerLocation, locationId, updateType, null, callback);       
+    }
+      
     return that;
         
   }());
-  
-
 
   return module;
   
@@ -154,12 +194,28 @@ AWE.GS = (function(module) {
     console.log("RECEIVED AGGREGATE: " + army.toString());
     AWE.GS.armyManager.updateArmy(10, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function(army) {
       console.log("RECEIVED SHORT: " + army.toString());
+      AWE.GS.armyManager.updateArmy(10, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function(army) { // second time should not fetch data because a not-modified header
+        console.log("RECEIVED SHORT: " + army.toString());
+        AWE.GS.armyManager.updateArmiesInRegion(army.region_id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(armies) {
+          console.log("RECEIVED FULL FOR REGION: " + armies.toString());
+        });
+      });         
     });
     AWE.GS.armyManager.updateArmy(10, AWE.GS.ENTITY_UPDATE_TYPE_AGGREGATE, function(army) {
       console.log("RECEIVED AGGREGATE 2: " + army.toString());
     });
   });
   
+  AWE.GS.armyManager.updateArmiesAtLocation(1, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(armies) {
+     console.log("RECEIVED FULL FOR LOCATION: " + armies.toString());
+  }); 
+
+
+  var region = AWE.Map.createRegion({ id: 10}); 
+
+  AWE.GS.armyManager.updateArmiesInRegion(1, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(armies) {
+     console.log("RECEIVED FULL FOR REGION: " + armies.toString());
+  });
 
 $(document).ready(function() {
 
