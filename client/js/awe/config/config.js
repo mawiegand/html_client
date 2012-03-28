@@ -17,6 +17,7 @@ AWE.Config = (function(module) {
   
   module.MAP_RUN_TESTS = false;
   module.MAP_SERVER_BASE = 'http://localhost:3000/game_server/map/';
+  module.MILITARY_SERVER_BASE = 'http://localhost:3000/game_server/military/';
   
   module.MAPPING_FORTRESS_SIZE = 64;
   
