@@ -51,8 +51,16 @@ AWE.UI = (function(module) {
       that.initWithController(controller, frame);
       _bitmap = new Bitmap();
       _bitmap.view = that;
-      _bitmap.onMouseOver = function(evt){ _bitmap.view.onMouseOver(evt); };
-      _bitmap.onMouseOut = function(evt){ _bitmap.view.onMouseOut(evt); };
+      _bitmap.onMouseOver = function(evt){
+        if (_bitmap.view.onMouseOver) {
+          _bitmap.view.onMouseOver(evt);
+        }
+      };
+      _bitmap.onMouseOut = function(evt){
+        if (_bitmap.view.onMouseOut) {
+          _bitmap.view.onMouseOut(evt);
+        }
+      };
       that.setImage(image);
     }
        
