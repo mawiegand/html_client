@@ -112,6 +112,134 @@ AWE.GS = (function(module) {
 
     return that;
   };
+  
+  
+  module.createEntityManager = function(my) {
+    
+    // private attributes and methods ////////////////////////////////////////
+    
+    var that;
+
+  
+    // protected attributes and methods //////////////////////////////////////
+  
+    my = my || {};
+        
+    my.entities = {};                 ///< holds all available information about armies
+    my.runningUpdatesPerId = {};      ///< hash that contains all running update requests, using the entity.id as key.
+
+    my.createEntity = my.createEntity || function() { return module.createEntity(); };
+    
+    my.processUpdateResponse = function(data, updateType, start) {
+      var entity = my.entities[data.id];
+
+      if (entity) {
+        entity.updateWith(data, updateType, start);
+      }
+      else {
+        entity = my.createEntity();
+        entity.init(data);
+        my.entities[entity.id()] = entity;
+      }
+      return entity;
+    };
+    
+    my.fetchEntitiesFromURL = function(url, queue, id, updateType, modifiedSince, callback) {
+      if (updateType === undefined) { 
+        updateType = module.ENTITY_UPDATE_TYPE_FULL;
+      }
+      
+      if (my.tryRegisterRequest(queue, id, updateType)) {
+        var start = new Date();
+        
+        var options = {
+          url: (url+'?'+my.updateTypeQueryToken(updateType)),
+          dataType: 'json',
+        };
+        if (modifiedSince) {
+          options.headers = { 'If-Modified-Since': modifiedSince };
+          console.log ('OPTIONS: ' + options);
+        }
+        var jqXHR = $.ajax(options)
+        .error(function(jqHXR, textStatus) {          // On failure: 
+          my.unregisterRequest(queue, id, updateType);//   unregister request 
+          console.log ('ERROR FETCHING ENTITIES FROM URL ' + url + ': ' + textStatus); 
+        })
+        .success(function(data) {                     // On success: 
+          var result = null;
+          if (data && data.length !== undefined) {    //   A) process an array of armies
+            result = [];
+            for (var i=0; i < data.length; i++) { 
+              var entityData = data[i];
+              result.push(my.processUpdateResponse(entityData, updateType, start));
+            }          
+          }
+          else {                                      //   B) process a single army
+            result = my.processUpdateResponse(data, updateType, start);
+          }
+          my.unregisterRequest(queue, id, updateType);//   unregister request 
+          if (callback) {
+            callback(result);
+          }        
+        }); 
+      }
+      else {          // update on this army is already running -> return false
+        return false;
+      }
+      return true;    // update is underway           
+    }
+    
+    /** returns true, if update is executed, returns false, if request did 
+     * fail (e.g. connection error) or is unnecessary (e.g. already underway).
+     */
+    my.updateEntity = function(url, id, updateType, callback) {
+      var lastUpdateAt = null;
+      if (updateType === undefined) { 
+        updateType = module.ENTITY_UPDATE_TYPE_FULL;
+      }
+      var entity = my.entities[id];
+      if (entity && entity.lastUpdateAt(updateType)) {
+        lastUpdateAt = entity.lastUpdateAt(updateType);
+      }
+      return my.fetchEntitiesFromURL(url, my.runningUpdatesPerId, id, updateType, lastUpdateAt, callback); 
+    };
+    
+    
+    my.updateTypeQueryToken = function(updateType) {
+      if (updateType === module.ENTITY_UPDATE_TYPE_SHORT) {
+        return "short=1";
+      }
+      else if (updateType === module.ENTITY_UPDATE_TYPE_AGGREGATE) {
+        return "aggregate=1";
+      }
+      else {
+        return "";
+      }
+    }
+    
+    my.tryRegisterRequest = function(queue, id, updateType) {
+      if (queue[id] && queue[id].updateType >= updateType) { // same (or higher) type of update is already running
+        return false;                                        // could not register this update; thus, should not be executed
+      }
+      
+      queue[id] = { started: new Date(), updateType: updateType };
+      return true;
+    }
+    
+    my.unregisterRequest = function(queue, id, updateType) {
+      if (queue[id] && queue[id].updateType === updateType) { // check that same type of update (a higher-level update may have overwritten a lower-level update)
+        delete queue[id];
+      }
+    }
+    
+    
+    // public attributes and methods /////////////////////////////////////////
+    
+    that = {};
+    
+    return that;
+        
+  };
 
   return module;
   
