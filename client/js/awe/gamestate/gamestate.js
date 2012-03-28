@@ -72,6 +72,21 @@ AWE.GS = (function(module) {
     that.property('lastShortUpdateAt', new Date(1970), module.PROPERTY_READ_ONLY);      ///< time of last short update received by the client
     that.property('lastFullUpdateAt', new Date(1970), module.PROPERTY_READ_ONLY);       ///< time of last full update received by the client
 
+    that.lastUpdateAt = function(updateType) {
+      if (updateType === undefined) { 
+        updateType = module.ENTITY_UPDATE_TYPE_FULL;
+      }
+      if (updateType === module.ENTITY_UPDATE_TYPE_SHORT) {
+        return my.lastShortUpdateAt;
+      }
+      else if (updateType === module.ENTITY_UPDATE_TYPE_AGGREGATE) {
+        return my.lastAggregateUpdateAt;
+      } 
+      else {
+        return my.lastFullUpdateAt;
+      }
+    }
+
     that.init = function(spec) {
       my.setPropertiesWithHash(spec);      
     }

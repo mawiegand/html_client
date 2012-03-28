@@ -92,7 +92,7 @@ AWE.Map = (function(module) {
     that.locations = function() { return _locations; }
     
     /** returns the location for the given slot */
-    that.location = function(slot) { return _locations ? null : _locations[slot]; }
+    that.location = function(slot) { return _locations === null ? null : _locations[slot]; }
     
     /** sets the locations to the given array of locations */
     that.setLocations = function(locations) {
