@@ -36,8 +36,6 @@ AWE.UI = (function(module) {
       _super.initWithController(controller, frame);
       _location = location;
                   
-      _container = new Container();      
-
       var selectGraphics = new Graphics();
       selectGraphics.setStrokeStyle(1);
       selectGraphics.beginStroke(Graphics.getRGB(0,0,0));
@@ -45,11 +43,9 @@ AWE.UI = (function(module) {
       selectGraphics.drawEllipse(0,  AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
       selectShape = new Shape(selectGraphics);  
       selectShape.alpha = 0;  
-      _container.addChild(selectShape);
+      my.container.addChild(selectShape);
       
-      var name = AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()];
       var level = location.level();
-      var modifier;
       
       if (level < 4) {
         modifier = "small";
@@ -64,35 +60,21 @@ AWE.UI = (function(module) {
         console.error("unknown level",level);
       }
       
-      if (location.typeId() != 0) {
-        
-        if (name == "fortress") {
-          imageName = "map/fortress/";
-        }
-        else if (name == "base") {
-          imageName = "map/colony/" + modifier;
-        }
-        else if (name == "outpost") {
-          imageName = "map/outpost";
-        }
-        else {
-          console.error("unknown location type");
-        }
+      var imageName = "map/colony/" + modifier;
               
-        imageView = AWE.UI.createImageView();
-        imageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(imageName));
-        imageView.setContentMode(module.ViewContentModeNone);
-        imageView.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
-        imageView.onClick = that.onClick;
-        imageView.onMouseOver = that.onMouseOver;
-        imageView.onMouseOut = that.onMouseOut;
-        _container.addChild(imageView.displayObject());
+      imageView = AWE.UI.createImageView();
+      imageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(imageName));
+      imageView.setContentMode(module.ViewContentModeNone);
+      imageView.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
+      imageView.onClick = that.onClick;
+      imageView.onMouseOver = that.onMouseOver;
+      imageView.onMouseOut = that.onMouseOut;
+      my.container.addChild(imageView.displayObject());
 
-        labelView = AWE.UI.createLabelView();
-        labelView.initWithControllerAndLabel(controller, _location.name(), true);
-        labelView.setFrame(AWE.Geometry.createRect(AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, 24));      
-        _container.addChild(labelView.displayObject());
-      }
+      labelView = AWE.UI.createLabelView();
+      labelView.initWithControllerAndLabel(controller, _location.name(), true);
+      labelView.setFrame(AWE.Geometry.createRect(AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, 24));      
+      my.container.addChild(labelView.displayObject());
                   
       if (!frame) {
         that.resizeToFit();        
