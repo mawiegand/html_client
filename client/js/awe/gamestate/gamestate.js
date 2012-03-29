@@ -82,6 +82,9 @@ AWE.GS = (function(module) {
             if (this.allEntries[val]) {
               this.allEntries[val].lastUpdateAt = timestamp;
             }
+            else {
+              this.allEntries[val] = { entries: {}, lastUpdateAt: timestamp };
+            }
           }
           hash.lastUpdateForValue = function(val, timestamp) {
             if (this.allEntries[val]) {

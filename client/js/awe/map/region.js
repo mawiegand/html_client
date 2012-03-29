@@ -120,8 +120,8 @@ AWE.Map = (function(module) {
       return AWE.GS.Army.lastUpdateForRegion_id(_id);
     }
     
-    that.udpateArmies = function(updateType) {
-      AWE.GS.Army.updateArmiesInRegion(_id, updateType, callback)
+    that.udpateArmies = function(updateType, callback) {
+      AWE.GS.Army.Manager.updateArmiesInRegion(_id, updateType, callback)
     }
     
     /** this method updates the data stored at the local region from the given 
