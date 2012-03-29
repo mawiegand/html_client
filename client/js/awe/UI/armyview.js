@@ -25,6 +25,12 @@ AWE.UI = (function(module) {
     var _flagShape = null;
     var _selectShape = null;    
     
+    var _stanceImages = [
+      "map/army/stanceNeutral",
+      "map/army/stanceAggressive",
+      "map/army/stanceDefensive"
+    ];
+    
     that = module.createView(spec, my);
 
     var _super = {
@@ -74,7 +80,8 @@ AWE.UI = (function(module) {
       _container.addChild(_flagShape);
 
       _stanceView = AWE.UI.createImageView();
-      _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/army/stanceAggressive"));
+      log('army', army);
+      _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(_stanceImages[_army.stance()]));
       _stanceView.setFrame(AWE.Geometry.createRect(0, 8, 64, 96));
       _stanceView.onClick = that.onClick;
       _stanceView.onMouseOver = that.onMouseOver;
@@ -106,6 +113,11 @@ AWE.UI = (function(module) {
     };
     
     that.army = function() { return _army; };
+    
+    // that.updateStance = function() {
+      // _stanceView.image = AWE.UI.ImageCache.getImage(_stanseImages[_army.getStance()]);
+      // that.setNeedsDisplay();
+    // };
     
     /** actions */
    

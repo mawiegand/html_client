@@ -755,15 +755,25 @@ AWE.Controller = (function(module) {
             ));
 
             // Hack
-            if (nodes[i].region().getArmies())
-            var armyView = AWE.UI.createArmyView();
-            armyView.initWithControllerAndArmy(that, nodes[i].region().getArmies()[0]);
-            armyView.setCenter(AWE.Geometry.createPoint(
-              frame.origin.x + frame.size.width / 2,
-              frame.origin.y + frame.size.height / 2 - 96       
-            ));
-            _stages[1].addChild(armyView.displayObject());
-            newArmyViews[nodes[i].id()] = armyView;
+            var armies = nodes[i].region().getArmies();
+            if (armies) {
+              var anArmy = null;
+              for (var a in armies) {
+                if (armies.hasOwnProperty(a)) {
+                  anArmy = armies[a];
+                }
+              }
+              if (anArmy) {
+                var armyView = AWE.UI.createArmyView();
+                armyView.initWithControllerAndArmy(that, nodes[i].region().getArmies());
+                armyView.setCenter(AWE.Geometry.createPoint(
+                  frame.origin.x + frame.size.width / 2,
+                  frame.origin.y + frame.size.height / 2 - 96       
+                ));
+                _stages[1].addChild(armyView.displayObject());
+                newArmyViews[nodes[i].id()] = armyView;
+              }
+            }
 
 
             // set alpha
