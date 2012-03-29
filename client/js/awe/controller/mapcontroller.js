@@ -535,6 +535,8 @@ AWE.Controller = (function(module) {
       
       var previousVisibleAreaMC = null;
       
+      var lastArmyCheck = new Date(1970);
+      
       var viewportHasChanged = function(rect) {
         return (!previousVisibleAreaMC && rect) || !previousVisibleAreaMC.equals(rect);
       };
@@ -564,6 +566,8 @@ AWE.Controller = (function(module) {
             // requestingMapNodesFromServer = false;
             that.setModelChanged();
           });
+          
+          lastRegionCheck = new Date();
         }
         
         // in case the viewport has changed or the model has changed (more nodes or regions?!) we need to check for missing locations.
@@ -579,6 +583,13 @@ AWE.Controller = (function(module) {
             }
           }
         }
+        if (lastArmyCheck.getTime() + 1000 < new Date().getTime()) { // check for needed armies once per second
+          
+          
+
+          lastArmyCheck = new Date();
+        }
+        
       };
     }());
     

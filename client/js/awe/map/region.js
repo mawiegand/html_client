@@ -112,12 +112,16 @@ AWE.Map = (function(module) {
       return _countOutposts;
     }
     
-    that.getArmies = function() { return _armies };
-    that.addArmy = function(army) { _armis[army.id()] = army; }
-    that.removeArmy = function(army) { 
-      if (_armies[army.id()]) {
-        delete _armies[army.id()] 
-      }
+    that.getArmies = function() { 
+      return AWE.GS.Army.getAllForRegion_id(_id) 
+    };
+    
+    that.lastArmyUpdateAt = function() {
+      return AWE.GS.Army.lastUpdateForRegion_id(_id);
+    }
+    
+    that.udpateArmies = function(updateType) {
+      AWE.GS.Army.updateArmiesInRegion(_id, updateType, callback)
     }
     
     /** this method updates the data stored at the local region from the given 
