@@ -94,7 +94,9 @@ AWE.GS = (function(module) {
     that.updateWith = function(hash, updateType, timestamp) {
       updateType = updateType || module.ENTITY_UPDATE_TYPE_FULL;     // assume full update, if nothing else specified
       timestamp = timestamp || new Date();                           // given timestamp or now
-      my.setPropertiesWithHash(hash);
+      if (hash) {
+        my.setPropertiesWithHash(hash);
+      }
       
       if (updateType === module.ENTITY_UPDATE_TYPE_FULL) {
         my.lastFullUpdateAt = my.lastShortUpdate = my.lastAggregateUpdate = timestamp; // full update includes the other two update types
@@ -108,6 +110,10 @@ AWE.GS = (function(module) {
       else {
         console.log('ERROR in AWE.GS.Entity.updateWith: unknown update type: ' + updateType + '.');
       }
+    }
+    
+    that.setNotModifiedAfter = function(updateType, timestamp) {
+      that.updateWith(null, updateType, timestamp);
     }
 
     return that;
@@ -148,40 +154,44 @@ AWE.GS = (function(module) {
       if (updateType === undefined) { 
         updateType = module.ENTITY_UPDATE_TYPE_FULL;
       }
-            console.log('fetch from url: ' + url);
-
       
       if (my.tryRegisterRequest(queue, id, updateType)) {
-        var start = new Date();
+
+        var start = new Date();  // the start of the request is only a bad (but save) approximation; we should use the server time (time of database select) instead!
         
         var options = {
           url: (url+'?'+my.updateTypeQueryToken(updateType)),
           dataType: 'json',
         };
         if (modifiedSince) {
-          options.headers = { 'If-Modified-Since': modifiedSince };
-          console.log ('OPTIONS: ' + options);
+          options.headers = { 'If-Modified-Since': modifiedSince.toUTCString() };
         }
         var jqXHR = $.ajax(options)
         .error(function(jqHXR, textStatus) {          // On failure: 
           my.unregisterRequest(queue, id, updateType);//   unregister request 
+          callback(null, jqXHR.status, jqXHR);
           console.log ('ERROR FETCHING ENTITIES FROM URL ' + url + ': ' + textStatus); 
         })
-        .success(function(data) {                     // On success: 
-          var result = null;
-          if (data && data.length !== undefined) {    //   A) process an array of armies
-            result = [];
-            for (var i=0; i < data.length; i++) { 
-              var entityData = data[i];
-              result.push(my.processUpdateResponse(entityData, updateType, start));
-            }          
+        .success(function(data, statusText, xhr) {   
+          if (xhr.status === 304)  {                   // Not modified
+            // not modified, let the caller process this event
           }
-          else {                                      //   B) process a single army
-            result = my.processUpdateResponse(data, updateType, start);
+          else {                                      // On success:
+            var result = null;
+            if (data && data.length !== undefined) {  //   A) process an array of armies
+              result = [];
+              for (var i=0; i < data.length; i++) { 
+                var entityData = data[i];
+                result.push(my.processUpdateResponse(entityData, updateType, start));
+              }          
+            }
+            else {                                    //   B) process a single army
+              result = my.processUpdateResponse(data, updateType, start);
+            };
           }
           my.unregisterRequest(queue, id, updateType);//   unregister request 
           if (callback) {
-            callback(result);
+            callback(result, xhr.status, xhr, start);
           }        
         }); 
       }
@@ -203,8 +213,20 @@ AWE.GS = (function(module) {
       if (entity && entity.lastUpdateAt(updateType)) {
         lastUpdateAt = entity.lastUpdateAt(updateType);
       }
-      console.log('in update entity');
-      return my.fetchEntitiesFromURL(url, my.runningUpdatesPerId, id, updateType, lastUpdateAt, callback); 
+      return my.fetchEntitiesFromURL(url, my.runningUpdatesPerId, id, updateType, lastUpdateAt, function(entity, statusCode, xhr, serverTime) {
+        if (statusCode === 304) { // not modified
+          entity = my.entities[id];
+          if (entity) {
+            entity.setNotModifiedAfter(updateType, serverTime);
+          }
+          else {
+            console.log('ERROR: received a not-modified answer for an entity that is not already downloaded.');
+          }
+        }
+        if (callback) {
+          callback(entity, statusCode, xhr, serverTime);
+        }
+      }); 
     };
     
     
@@ -224,7 +246,6 @@ AWE.GS = (function(module) {
       if (queue[id] && queue[id].updateType >= updateType) { // same (or higher) type of update is already running
         return false;                                        // could not register this update; thus, should not be executed
       }
-      
       queue[id] = { started: new Date(), updateType: updateType };
       return true;
     }
