@@ -585,7 +585,19 @@ AWE.Controller = (function(module) {
         }
         if (lastArmyCheck.getTime() + 1000 < new Date().getTime()) { // check for needed armies once per second
           
+          var nodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, false); // this is memoized, no problem to call it twice in one cycle!
           
+          for (var i=0; i < nodes.length; i++) {
+            if (nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().lastArmyUpdateAt().getTime() + 60000*60 < new Date().getTime()) {
+              // update every 60 seconds
+              console.log('fetch armies');
+              
+              nodes[i].region().udpateArmies(AWE.GS.ENTITY_UPDATE_TYPE, function() {
+                that.setModelChanged();
+              });
+              
+            }
+          }
 
           lastArmyCheck = new Date();
         }
