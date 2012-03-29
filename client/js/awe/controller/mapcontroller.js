@@ -638,7 +638,6 @@ AWE.Controller = (function(module) {
               nodes[i].region().udpateArmies(AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
                 that.setModelChanged();
               });
-              
             }
           }
 
@@ -859,11 +858,9 @@ AWE.Controller = (function(module) {
           }
 
           // if view for node doesn't exists and node is leaf
-          else if (nodes[i].region() && nodes[i].region().location(0) ){//}&& nodes[i].region().location(0).getArmies()) {
+          else if (nodes[i].region() && nodes[i].region().getArmies()) {
             
-            log('region?', nodes[i].region().location(0).getArmies());
-            // Hack
-            var armies = nodes[i].region().location(0).getArmies();
+            var armies = nodes[i].region().getArmies();
             if (armies) {
               var anArmy = null;
               for (var a in armies) {
