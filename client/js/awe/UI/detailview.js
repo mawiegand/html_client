@@ -36,7 +36,7 @@ AWE.UI = (function(module) {
       var backgroundShapeGraphics = new Graphics();
       backgroundShapeGraphics.setStrokeStyle(0);
       backgroundShapeGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-      backgroundShapeGraphics.drawRoundRect(0, 0, my.frame.size.width, my.frame.size.height, 5);
+      backgroundShapeGraphics.drawRoundRect(0, 0, my.frame.size.width, my.frame.size.height, 6);
       var backgroundShape = new Shape(backgroundShapeGraphics);    
       _container.addChild(backgroundShape);
 

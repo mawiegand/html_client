@@ -61,6 +61,9 @@ AWE.UI = (function(module) {
       _needsLayout = _needsUpdate = _needsDisplay = true;
     }
     
+    /** returns the class name of the view */
+    that.typeName = function() { return my.typeName; }
+    
     /** returns the view controller controlling the view */
     that.controller = function() { return my.controller; }
     
@@ -87,7 +90,11 @@ AWE.UI = (function(module) {
     }
     
     that.setCenter = function(center) {
-      this.setFrame(AWE.Geometry.createRect(origin.x, origin.y, my.frame.size.width, my.frame.size.height));
+      this.setOrigin(AWE.Geometry.createPoint(center.x - my.frame.size.width / 2, center.y - my.frame.size.height / 2));
+    }
+    
+    that.center = function() {
+      return AWE.Geometry.createPoint(my.frame.origin.x + my.frame.size.width / 2, my.frame.origin.y + my.frame.size.height / 2);
     }
     
     /** returns the present width of the view. Please note, the view may draw

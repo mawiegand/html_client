@@ -13,6 +13,7 @@ AWE.Controller = (function(module) {
     var _canvas = new Array(4);  ///< canvas elements for the four stages
 
     var _selectedView = null;    ///< there can be only one selected view!
+    var _highlightedView = null; ///< there can be only one highlighted view!
     
     var _windowSize = null;      ///< size of window in view coordinates
     var mc2vcScale;             ///< scaling
@@ -58,7 +59,7 @@ AWE.Controller = (function(module) {
       
       _stages[0].onClick = function() {   // click into background unselects selected object
         if (_selectedView) {
-          _unselectFortress();
+          _unselectView();
         }
       };
    
@@ -82,7 +83,7 @@ AWE.Controller = (function(module) {
       // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) is active          
       _stages[3].onMouseOver = function() {
         _stages[1].enableMouseOver(0);
-        _unhighlightFortress();
+        _unhighlightView();
       };
   
       _stages[3].onMouseOut = function() {
@@ -316,22 +317,21 @@ AWE.Controller = (function(module) {
     //   Mouse-Over and Object Selection
     //
     // /////////////////////////////////////////////////////////////////////// 
-    
-    /** returns the single map view that is presently selected by the user. 
-     * this can be any of the gaming pieces (armies), markers or settlements.*/
-    that.selectedView = function() { return _selectedView; };
-    
-    /** sets the selected view */
-    that.setSelectedView = function(view) { _selectedView = view; };
-        
+            
     that.handleClick = function(evt) {
       if (!_scrollingStarted) {
         var cObj;
         if (_stages[3].hitTest(evt.pageX, evt.pageY)) {
-        //
+          cObj = _stages[2].getObjectUnderPoint(evt.pageX, evt.pageY);
+          if (cObj && cObj.view && cObj.view.onClick) {
+            // cObj.view.onClick(evt);
+          }
         }
         else if (_stages[2].hitTest(evt.pageX, evt.pageY)) {
-        //
+          cObj = _stages[2].getObjectUnderPoint(evt.pageX, evt.pageY);
+          if (cObj && cObj.view && cObj.view.onClick) {
+            cObj.view.onClick(evt);
+          }
         }
         else if (_stages[1].hitTest(evt.pageX, evt.pageY)) {
           cObj = _stages[1].getObjectUnderPoint(evt.pageX, evt.pageY);
@@ -422,86 +422,132 @@ AWE.Controller = (function(module) {
     //   Action Handling
     //
     // /////////////////////////////////////////////////////////////////////// 
-
-    var _selectedView = null;
-    var _highlightedView = null;
     
-    // for actionView see below 
+    /** returns the single map view that is presently selected by the user. 
+     * this can be any of the gaming pieces (armies), markers or settlements.*/
+    that.selectedView = function() { return _selectedView; };
+    
+    /** sets the selected view */
+    that.setSelectedView = function(view) {
+      // when selected view is set from outside, the view type has to determined
+      // and the viewport has to be transformed to show the view.  
+      _selectedView = view;
+    };
         
     var _action = false;
     
-    var _selectFortress = function(view) {
-      var pos = view.center();
+    that.viewClicked = function(view) {    
+      if (_selectedView === view) {
+        _unselectView(_selectedView);
+      }
+      else if (_selectedView) {
+        _unselectView(_selectedView);
+        _selectView(view);        
+      }
+      else {
+        _selectView(view);
+      }
+    };
+
+    that.viewMouseOver = function(view) {
+      if (view.typeName() === 'fortressView') {
+        _highlightView(view);
+      }
+      else if (view.typeName() === 'armyView') {
+        _highlightView(view);
+      }
+      else if (view.typeName() === 'hudView') { // typeof view == 'hud'  (evtl. eigene methode)
+        _unhighlightView();
+      }
+    };
+
+    that.viewMouseOut = function(view) {
+      if (view.typeName() === 'fortressView') {
+        _unhighlightView();
+      }
+      else if (view.typeName() === 'armyView') {
+        _unhighlightView();
+      }
+    };
+    
+    /* view selection */
+    
+    var _selectView = function(view) {
+      var center = view.center();
       _selectedView = view;
-      _selectedNode = view.node();
       view.setSelected(true);
-      _actionViews.fortressControls = AWE.UI.createLabelView();
-      _actionViews.fortressControls.initWithControllerAndLabel(that, 'Label', true, AWE.Geometry.createRect(pos.x, pos.y, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
-      _stages[2].addChild(_actionViews.fortressControls.displayObject());
-      _showDetailView(view);
+      
+      // distinguish between different views
+      if (view.typeName() === 'fortressView') {
+        _actionViews.selectionControls = AWE.UI.createLabelView(); // createFortressSelectionView
+        _actionViews.selectionControls.initWithControllerAndLabel(that, 'Fortress', true);
+        _actionViews.selectionControls.setCenter(center);
+        view.setSelected(true);
+      }
+      else if (view.typeName() === 'armyView') {
+        _actionViews.selectionControls = AWE.UI.createArmySelectionView();
+        _actionViews.selectionControls.initWithControllerAndArmy(that, view.army(), AWE.Geometry.createRect(-64, 0, 192, 128));
+        _actionViews.selectionControls.setCenter(center);
+      }
+      
+      _stages[2].addChild(_actionViews.selectionControls.displayObject());
+      // _showDetailView(view);
       _action = true;
     };
     
-    var _unselectFortress = function(view) {
+    var _unselectView = function(view) {
       _hideDetailView(view);
-      _stages[2].removeChild(_actionViews.fortressControls.displayObject());
+      _stages[2].removeChild(_actionViews.selectionControls.displayObject());
       _selectedView.setSelected(false);
       _selectedView = null;
-      _actionViews.fortressControls = null;
+      _actionViews.selectionControls = null;
       _action = true;
     };
 
-    that.viewClicked = function(view) {
-      if (_selectedView === view) {
-        _unselectFortress(_selectedView);
-      }
-      else if (_selectedView) {
-        _unselectFortress(_selectedView);
-        _selectFortress(view);        
-      }
-      else {
-        _selectFortress(view);
-      }
-    };
+    /* view highlighting */
 
-    var _highlightFortress = function(view) {
-      var pos = view.center();
+    var _highlightView = function(view) {
+      var center = view.center();
       _highlightedView = view;
-      _actionViews.fortressHighlightImage = AWE.UI.createMouseoverView();
-      _actionViews.fortressHighlightImage.initWithControllerAndNode(that, AWE.Geometry.createRect(pos.x, pos.y - AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
-      _stages[2].addChild(_actionViews.fortressHighlightImage.displayObject());
+      
+      if (view.typeName() === 'fortressView') {
+        _actionViews.highlightImage = AWE.UI.createFortressHighlightView();
+        _actionViews.highlightImage.initWithControllerAndNode(that, view.node());
+        _actionViews.highlightImage.setCenter(center.x, center.y - AWE.Config.MAPPING_FORTRESS_SIZE);
+      }
+      else if (view.typeName() === 'armyView') {
+        _actionViews.highlightImage = AWE.UI.createArmyHighlightView();
+        _actionViews.highlightImage.initWithControllerAndArmy(that, view.army());
+        _actionViews.highlightImage.setCenter(center.x, center.y);
+      }
+      
+      _stages[2].addChild(_actionViews.highlightImage.displayObject());
       _action = true;
     };
 
-    var _unhighlightFortress = function() {
-      if (_actionViews.fortressHighlightImage) {
-        _stages[2].removeChild(_actionViews.fortressHighlightImage.displayObject());
-        _actionViews.fortressHighlightImage = null;
+    var _unhighlightView = function() {
+      if (_actionViews.highlightImage) {
+        _stages[2].removeChild(_actionViews.highlightImage.displayObject());
+        _actionViews.highlightImage = null;
         _highlightedView = null;
         _action = true;
       }
     };
 
-    that.fortressMouseOver = function(view) {
-      _highlightFortress(view);
-    };
+    /* Detail View */
 
-    that.fortressMouseOut = function(view) {
-      _unhighlightFortress();
-    };
-
-    that.HUDMouseOver = function() {
-      _unhighlightFortress();
-    };
-    
     var _showDetailView = function(view) {
+      if (view.typeName() === 'fortressView') {      
       if (HUDViews.detailView) {
         hideDetailView(HUDViews.detailView);
       }
       
-      HUDViews.detailView = AWE.UI.createDetailView();
-      HUDViews.detailView.initWithControllerAndNode(that, view.node(), AWE.Geometry.createRect(100, 100, 350, 100));
+        HUDViews.detailView = AWE.UI.createDetailView();
+        HUDViews.detailView.initWithControllerAndNode(that, view.node(), AWE.Geometry.createRect(100, 100, 350, 100));
+      // }
+      // else if (view.typeName() === 'armyView') {
       _stages[3].addChild(HUDViews.detailView.displayObject());
+      }
     };
 
     var _hideDetailView = function(view) {
@@ -670,6 +716,7 @@ AWE.Controller = (function(module) {
       
       // update fortresses
       var newFortressViews = {};
+      var newArmyViews = {};
       var removedSomething = false;
 
       for (var i = 0; i < nodes.length; i++) { 
@@ -691,11 +738,24 @@ AWE.Controller = (function(module) {
               frame.origin.x + frame.size.width / 2,
               frame.origin.y + frame.size.height / 2
             ));
+            
             // set alpha
             // view.setAlpha(alpha);
             // save view in newViews Array
             newFortressViews[nodes[i].id()] = view;
           }
+
+          view = armyViews[nodes[i].id()];
+          // if view exists already
+          if (view) {       
+            view.setCenter(AWE.Geometry.createPoint(
+              frame.origin.x + frame.size.width / 2,
+              frame.origin.y + frame.size.height / 2 - 96
+            ));
+            newArmyViews[nodes[i].id()] = view;
+          }            
+
+
           // if view for node doesn't exists and node is leaf
           else if (nodes[i].isLeaf() && nodes[i].region()) {
             // create and initialize new view, set center
@@ -705,6 +765,19 @@ AWE.Controller = (function(module) {
               frame.origin.x + frame.size.width / 2,
               frame.origin.y + frame.size.height / 2            
             ));
+
+            // Hack
+            if (nodes[i].region().getArmies())
+            var armyView = AWE.UI.createArmyView();
+            armyView.initWithControllerAndArmy(that, nodes[i].region().getArmies()[0]);
+            armyView.setCenter(AWE.Geometry.createPoint(
+              frame.origin.x + frame.size.width / 2,
+              frame.origin.y + frame.size.height / 2 - 96       
+            ));
+            _stages[1].addChild(armyView.displayObject());
+            newArmyViews[nodes[i].id()] = armyView;
+
+
             // set alpha
             // newView.setAlpha(alpha);
             // add views displayObject to stage
@@ -731,9 +804,25 @@ AWE.Controller = (function(module) {
         }
       }
       
+      // purge stage
+      for (var k in armyViews) {
+        // use hasOwnProperty to filter out keys from the Object.prototype
+        // if old view is not in newViews array
+        if (armyViews.hasOwnProperty(k) && !newArmyViews[k]) {
+          // get view
+          var view = armyViews[k];
+          // log('entfernen');
+          // remove views displayObject from stage
+          AWE.Ext.applyFunction(view.displayObject(), function(obj) {
+            _stages[1].removeChild(obj);
+            removedSomething = true;
+          });        
+        }
+      }
+      
       // remember newViews array
       fortressViews = newFortressViews;
-
+      armyViews = newArmyViews;
 
       // update other locations
       var newLocationViews = {};
@@ -796,21 +885,27 @@ AWE.Controller = (function(module) {
     
     that.updateActionViews = function(nodes) {
 
-      if (_actionViews.fortressHighlightImage) { 
-        _actionViews.fortressHighlightImage.setFrame(AWE.Geometry.createRect(
-          _highlightedView.center().x,
-          _highlightedView.center().y,
-          AWE.Config.MAPPING_FORTRESS_SIZE,
-          AWE.Config.MAPPING_FORTRESS_SIZE
-        )); 
+      // TODO Sichtbarkeit testen
+
+      if (_actionViews.highlightImage) { 
+        if (_actionViews.highlightImage.typeName() === 'fortressHighlightView') {
+          _actionViews.highlightImage.setCenter(AWE.Geometry.createPoint(
+            _highlightedView.center().x,
+            _highlightedView.center().y - AWE.Config.MAPPING_FORTRESS_SIZE
+          ));
+        }
+        else if (_actionViews.highlightImage.typeName() === 'armyHighlightView') {
+          _actionViews.highlightImage.setCenter(AWE.Geometry.createPoint(
+            _highlightedView.center().x,
+            _highlightedView.center().y
+          ));
+        }
       }
 
-      if (_actionViews.fortressControls) { 
-        _actionViews.fortressControls.setFrame(AWE.Geometry.createRect(
+      if (_actionViews.selectionControls) { 
+        _actionViews.selectionControls.setCenter(AWE.Geometry.createPoint(
           _selectedView.center().x,
-          _selectedView.center().y,
-          AWE.Config.MAPPING_FORTRESS_SIZE,
-          AWE.Config.MAPPING_FORTRESS_SIZE
+          _selectedView.center().y
         ));
       }
     };
@@ -824,10 +919,6 @@ AWE.Controller = (function(module) {
     
     that.updateHUD = function() {
       
-      if (HUDViews.detailView) {
-        HUDViews.detailView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 370, _windowSize.height - 120));
-      }
-
       if (!HUDViews.mainControlsView) {
         HUDViews.mainControlsView = AWE.UI.createMainControlsView();
         HUDViews.mainControlsView.initWithController(that);
@@ -836,6 +927,10 @@ AWE.Controller = (function(module) {
       }
       else {
         HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 470, 20));
+      }
+
+      if (HUDViews.detailView) {
+        HUDViews.detailView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 370, _windowSize.height - 120));
       }
     };
     
@@ -906,6 +1001,7 @@ AWE.Controller = (function(module) {
     
     var regionViews = {};
     var fortressViews = {};
+    var armyViews = {};
     var locationViews = {};
     var _actionViews = {};
     var HUDViews = {};
@@ -958,6 +1054,8 @@ AWE.Controller = (function(module) {
               _stages[i].update();
             }
           }
+          
+          _stages[3].update();
           // STEP 4d: register this frame, recalc and display present framerate (rendered frames per second)
           this.updateFPS();
         }

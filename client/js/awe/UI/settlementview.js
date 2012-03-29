@@ -43,17 +43,7 @@ AWE.UI = (function(module) {
       my.container.visible = alpha !== 0;
       my.container.alpha = alpha;
     }
-    
-    that.center = function() {
-      return AWE.Geometry.createPoint(my.frame.origin.x + my.frame.size.width / 2, my.frame.origin.y + my.frame.size.height / 2);
-    }
-    
-    that.setCenter = function(center) {
-      my.frame.origin.x = center.x - my.frame.size.width / 2;
-      my.frame.origin.y = center.y - my.frame.size.height / 2;
-      that.setFrame(my.frame);
-    }
-    
+        
     that.setSelected = function(selected) {
       my.selected = selected;
     };

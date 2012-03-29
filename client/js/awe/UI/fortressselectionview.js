@@ -7,7 +7,7 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
 
-  module.createFortressControlsView = function(node, _layer, _controller) {
+  module.createFortressSelectionView = function(node, _layer, _controller) {
 
     var spec = {
       id: node.id(),

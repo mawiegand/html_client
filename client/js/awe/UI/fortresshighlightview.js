@@ -12,10 +12,13 @@ AWE.UI = (function(module) {
   
   /*** AWE.UI.View ***/
 
-  module.createMouseoverView = function(spec, my) {
+  module.createFortressHighlightView = function(spec, my) {
     
-    var _node = null;
+    my = my || {};
     
+    my.typeName = "fortressHighlightView";
+    
+    var _node = null;    
     var _container = null;
         
     var that = module.createView(spec, my);
@@ -27,7 +30,7 @@ AWE.UI = (function(module) {
     }
 
     
-    that.initWithControllerAndNode = function(controller, frame, node) {
+    that.initWithControllerAndNode = function(controller, node, frame) {
       _super.initWithController(controller, frame);
       _node = node;
       
@@ -38,6 +41,11 @@ AWE.UI = (function(module) {
       mouseOverImageView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement"), frame);
       mouseOverImageView.setContentMode(module.setContentModeNone);
       _container.addChild(mouseOverImageView);
+      
+      if (!frame) {
+        my.frame.size.width = 64;
+        my.frame.size.height = 64;
+      }      
     }
 
     that.setFrame = function(frame) {

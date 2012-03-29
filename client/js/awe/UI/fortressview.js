@@ -19,6 +19,8 @@ AWE.UI = (function(module) {
     
     my = my || {};
     
+    my.typeName = 'fortressView';
+    
     that = module.createSettlementView(spec, my);
 
     var _super = {
@@ -94,11 +96,11 @@ AWE.UI = (function(module) {
     };
     
     that.onMouseOver = function(evt){
-      my.controller.fortressMouseOver(that);
+      my.controller.viewMouseOver(that);
     };
 
     that.onMouseOut = function(evt){
-      my.controller.fortressMouseOut(that);
+      my.controller.viewMouseOut(that);
     };
 
     return that;
