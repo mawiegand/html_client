@@ -629,19 +629,22 @@ AWE.Controller = (function(module) {
             }
           }
         }
-        if (lastArmyCheck.getTime() + 1000 < new Date().getTime()) { // check for needed armies once per second
+        if (lastArmyCheck.getTime() + 500 < new Date().getTime()) { // check for needed armies once per second
           
           var nodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, false); // this is memoized, no problem to call it twice in one cycle!
           
           for (var i=0; i < nodes.length; i++) {
             if (nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {
-              nodes[i].region().udpateArmies(AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
-                that.setModelChanged();
-              });
               
+              var frame = that.mc2vc(nodes[i].frame());
+              if (frame.size.height > 128) {
+                nodes[i].region().udpateArmies(AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+                  that.setModelChanged();
+                });
+                break;  // request limit!
+              }
             }
           }
-
           lastArmyCheck = new Date();
         }
         

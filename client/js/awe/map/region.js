@@ -38,9 +38,7 @@ AWE.Map = (function(module) {
     var _node = null;
     
     var _locations = null;
-    
-    var _armies = {};
-    
+        
     var that = {};
     AWE.Partials.addUpdateTracking(that);  // adds methods for update tracking.
     AWE.Partials.addChangeTracking(that);
