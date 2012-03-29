@@ -10,7 +10,7 @@ window.WACKADOO = (function(module) {
     
     /** initializes needed modules and creates a root view controller. */
     that.init = function() {
-      AWE.Network.init();                               // initialize the network stack
+      AWE.Net.init();                                   // initialize the network stack
       AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
         AWE.UI.rootNode = AWE.Map.Manager.rootNode();
       });

@@ -27,6 +27,8 @@ AWE.GS = (function(module) {
       accessHashes: {},   // stores access-hashes allowing for quick access to all instances of this entity type
     };
     
+    var entity = module[name].create(); // just create one instance in order to initialize hashes.
+    
   };
 
   /** Base class of all classes that represent states & entities of the game. */
@@ -47,6 +49,11 @@ AWE.GS = (function(module) {
       
           hash.allEntries = {};
       
+          /** use with caution (overwrites for example armies that have moved
+           * to another region). When fetching all entities for a value of an 
+           * attribute from the server, all received entities are added 
+           * automatically to the corresponding hash; so there's no need to
+           * set its values manually, using this method. */
           hash.setEntriesForValue = function(val, newEntries, timestamp) {
             timestamp = timestamp || new Date();
             this.allEntries[val] = { entries: newEntries, lastUpdateAt: timestamp };
@@ -72,12 +79,20 @@ AWE.GS = (function(module) {
           }
           hash.setLastUpdateAtForValue = function(val, timestamp) {
             timestamp = timestamp || new Date();
-            if (this.allEntries[val].entries) {
+            if (this.allEntries[val]) {
               this.allEntries[val].lastUpdateAt = timestamp;
             }
           }
-          hash.lastUpdateForValueAfter = function(val, timestamp) {
-            return this.allEntries[val] && this.allEntries[val].timestamp >= timestamp;
+          hash.lastUpdateForValue = function(val, timestamp) {
+            if (this.allEntries[val]) {
+              return this.allEntries[val].lastUpdateAt; 
+            }
+            else {
+              return new Date(1970);
+            }
+          }
+          hash.wasLastUpdateForValueAfter = function(val, timestamp) {
+            return this.allEntries[val] && this.allEntries[val].lastUpdateAt >= timestamp;
           }
       
           return hash;
@@ -87,8 +102,12 @@ AWE.GS = (function(module) {
           return module[my.typeName].accessHashes[attribute].getEntriesForValue(value);
         }
         
-        module[my.typeName]['lastUpdateFor'+upperCaseAttr+'After'] = function(value, timestamp) {
-          return module[my.typeName].accessHashes[attribute].lastUpdateForValueAfter(value, timestamp);
+        module[my.typeName]['lastUpdateFor'+upperCaseAttr] = function(value) {
+          return module[my.typeName].accessHashes[attribute].lastUpdateForValue(value);
+        }
+        
+        module[my.typeName]['wasLastUpdateFor'+upperCaseAttr+'After'] = function(value, timestamp) {
+          return module[my.typeName].accessHashes[attribute].wasLastUpdateForValueAfter(value, timestamp);
         }
         
         module[my.typeName]['accessHashFor'+upperCaseAttr] = function() {
@@ -275,16 +294,17 @@ AWE.GS = (function(module) {
           console.log ('ERROR FETCHING ENTITIES FROM URL ' + url + ': ' + textStatus); 
         })
         .success(function(data, statusText, xhr) {   
+          var result = null;
           if (xhr.status === 304)  {                   // Not modified
             // not modified, let the caller process this event
           }
           else {                                      // On success:
-            var result = null;
             if (data && data.length !== undefined) {  //   A) process an array of armies
-              result = [];
+              result = {};
               for (var i=0; i < data.length; i++) { 
                 var entityData = data[i];
-                result.push(my.processUpdateResponse(entityData, updateType, start));
+                var entity = (my.processUpdateResponse(entityData, updateType, start));
+                result[entity.id()] = entity;
               }          
             }
             else {                                    //   B) process a single army
@@ -366,7 +386,7 @@ AWE.GS = (function(module) {
     that.getEntity = function(id) {
       return my.entities[id];
     }
-    
+        
     return that;
         
   };

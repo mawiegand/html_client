@@ -140,22 +140,60 @@ AWE.GS = (function(module) {
        * list of all the updated armies. */
       that.updateArmiesInRegion = function(regionId, updateType, callback) {
         var url = AWE.Config.MAP_SERVER_BASE+'regions/'+regionId+'/armies.json';
-        return my.fetchEntitiesFromURL(url, my.runningUpdatesPerRegion, regionId, updateType, null, callback); 
+        return my.fetchEntitiesFromURL(
+          url,                                  // url to fetch from
+          my.runningUpdatesPerRegion,           // queue to register this request during execution
+          regionId,                             // regionId to fetch -> is used to register the request
+          updateType,                           // type of update (aggregate, short, full)
+          module.Army.lastUpdateForRegion_id(regionId), // modified after
+          function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
+            if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
+              module.Army.accessHashForRegion_id().setLastUpdateAtForValue(regionId, timestamp);
+            }
+            if (callback) {
+              if (status === AWE.Net.NOT_MODIFIED) {
+                result = module.Army.getAllForRegion_id(regionId);
+              }
+              callback(result, status, xhr, timestamp);
+            }
+          }
+        ); 
       }
     
       that.updateArmiesAtLocation = function(locationId, updateType, callback) {
         var url = AWE.Config.MAP_SERVER_BASE+'locations/'+locationId+'/armies.json';
-        return my.fetchEntitiesFromURL(url, my.runningUpdatesPerLocation, locationId, updateType, null, callback);       
+        return my.fetchEntitiesFromURL(
+          url, 
+          my.runningUpdatesPerLocation, 
+          locationId, 
+          updateType, 
+          module.Army.lastUpdateForLocation_id(locationId),
+          function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
+            if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
+              module.Army.accessHashForLocation_id().setLastUpdateAtForValue(locationId, timestamp);
+            }
+            if (callback) {
+              if (status === AWE.Net.NOT_MODIFIED) {
+                result = module.Army.getAllForLocation_id(locationId);
+              }
+              callback(result, status, xhr, timestamp);
+            }
+          }
+        );
       }
       
       return that;
         
     }())
   );
-
+  
   return module;
   
 }(AWE.GS || {}));
+
+  var army = AWE.GS.Army.create();
+  console.dir(AWE.GS);
+
 
   AWE.GS.Army.Manager.updateArmy(10, AWE.GS.ENTITY_UPDATE_TYPE_AGGREGATE, function(army) {
     console.log("RECEIVED AGGREGATE: " + army.toString());
@@ -165,8 +203,6 @@ AWE.GS = (function(module) {
         console.log("RECEIVED SHORT: " + army.toString());
         AWE.GS.Army.Manager.updateArmiesInRegion(army.region_id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(armies) {
           console.log("RECEIVED FULL FOR REGION: " + armies.toString());
-          console.log("ARMIES IN REGION HASH: ");
-          console.dir(AWE.GS.Army.getAllForRegion_id(army.region_id()));
         });
       });         
     });
@@ -182,10 +218,12 @@ AWE.GS = (function(module) {
   var region = AWE.Map.createRegion({ id: 10}); 
 
   AWE.GS.Army.Manager.updateArmiesInRegion(1, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(armies) {
-     console.log("RECEIVED FULL FOR REGION: " + armies.toString());
+    console.log("RECEIVED FULL FOR REGION: " + armies.toString());
+    AWE.GS.Army.Manager.updateArmiesInRegion(1, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(armies) {
+      console.log("RECEIVED FULL FOR REGION SECOND CALL: " + armies.toString());
+    });
   });
 
-  console.dir(AWE.GS);
 
 $(document).ready(function() {
 

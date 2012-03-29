@@ -6,20 +6,20 @@
  
 var AWE = window.AWE || {};
 
-AWE.Network = AWE.Network || function() {
+AWE.Net = AWE.Net || function(module) {
   
-
+  module.OK           = 200;
   
-  return {
-    
-    /** initialize the network layer */
-    init: function() {
-      $(document).bind('ajaxSend', function(event, xhr) { // bind a handler that always sets the correct accept type
-        xhr.setRequestHeader('Accept', 'application/json');
-      });   
-    },
-    
+  module.NOT_MODIFIED = 304;
+  
+  /** initialize the network layer */
+  module.init = function() {
+    $(document).bind('ajaxSend', function(event, xhr) { // bind a handler that always sets the correct accept type
+      xhr.setRequestHeader('Accept', 'application/json');
+    });   
   };
   
-}();
+  return module;
+  
+}(AWE.Net || {});
 
