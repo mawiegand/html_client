@@ -37,6 +37,8 @@ AWE.Map = (function(module) {
     
     var _region = null;
     
+    var _armies = {};
+    
     var that = {};
     AWE.Partials.addUpdateTracking(that);  // adds methods for update tracking.
     AWE.Partials.addChangeTracking(that);
@@ -83,6 +85,15 @@ AWE.Map = (function(module) {
     /** returns the level of the settlement / fortress / outpost (0 to 10). */
     that.level = function() { return _level; }
         
+    that.getArmies = function() { return _armies };
+    that.addArmy = function(army) { _armis[army.id()] = army; }
+    that.removeArmy = function(army) {
+      if (_armies[army.id()]) {
+        delete _armies[army.id()] 
+      }
+    }
+        
+        
     /** this method updates the data stored at the local region from the given 
      * region. Does not change the association to a node. */ 
     that.updateLocationFrom = function(location) {
@@ -103,7 +114,9 @@ AWE.Map = (function(module) {
       _allianceId = location.allianceId() || 0;
       _allianceTag = location.allianceTag() || null;
       _typeId = location.typeId() || 0;
-      _level = location.level() || 0;    
+      _level = location.level() || 0; 
+      
+      module.Manager.addLocation(this); // just to be sure it's under control of the manager   
       
       that.setChangedNow();  
     };
@@ -201,6 +214,11 @@ AWE.Map = (function(module) {
         );
       } 
     });
+    
+    // further initialization
+    
+    module.Manager.addLocation(that); // just to be sure it's under control of the manager
+
     
     return that;  
     

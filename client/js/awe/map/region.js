@@ -39,6 +39,8 @@ AWE.Map = (function(module) {
     
     var _locations = null;
     
+    var _armies = {};
+    
     var that = {};
     AWE.Partials.addUpdateTracking(that);  // adds methods for update tracking.
     AWE.Partials.addChangeTracking(that);
@@ -110,12 +112,20 @@ AWE.Map = (function(module) {
       return _countOutposts;
     }
     
+    that.getArmies = function() { return _armies };
+    that.addArmy = function(army) { _armis[army.id()] = army; }
+    that.removeArmy = function(army) { 
+      if (_armies[army.id()]) {
+        delete _armies[army.id()] 
+      }
+    }
+    
     /** this method updates the data stored at the local region from the given 
      * region. Does not change the association to a node. */ 
     that.updateRegionFrom = function(region) {
 
       if (region.id() != _id) {
-        console.log('WARNING: updating data of region ' + _id + ' from a different region with id '+ region.id() + '.');
+        console.log('ERROR: updating data of region ' + _id + ' from a different region with id '+ region.id() + '.');
       }
         
       _id = region.id();
@@ -133,6 +143,8 @@ AWE.Map = (function(module) {
       _terrain_id = region.terrainId() || 0;
       _fortress_level = region.fortressLevel() || 0;    
       
+      module.Manager.addRegion(this); // just to be sure it's under control of the manager
+      
       that.setChangedNow();  
     };
     
@@ -140,6 +152,11 @@ AWE.Map = (function(module) {
       var string = " Region with id: " + _id + " name: " + name + " for node: qt" + _node.path() + ".";
       return string;
     }
+    
+    // Further initialization
+    
+    module.Manager.addRegion(that); 
+
     
     return that;      
   };

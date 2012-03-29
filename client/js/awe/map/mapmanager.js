@@ -4,12 +4,20 @@ var AWE = window.AWE || {};
 AWE.Map = (function(module) {
 
   // creates a singleton object for handling one single map.
-  module.Manager = function() {
+  module.Manager = function(my) {
     
-    var that = {};    
-    var _root = null;
     
+    
+    var that;    
+    var _root = null;    
     var _initialized = false;
+    
+    my = my || {};
+    
+    my.regions = {};
+    my.locations = {};
+    
+    that = {}
     
     // public interface
     that.init = function(levels, callback) {
@@ -29,6 +37,32 @@ AWE.Map = (function(module) {
     
     that.rootNode = function() {
       return _root;
+    };
+    
+    that.getRegion = function(regionId) {
+      return my.regions[regionId];
+    };
+    
+    that.getLocation = function(locationId) {
+      return my.locations[locationId];
+    };
+    
+    that.addRegion = function(region) {
+      if (region.id() !== undefined && region.id() > 0) {
+        my.regions[region.id()] = region;
+      }
+     else {
+        console.log('WARNING: tried to add a region without an id to the map manager.')
+      }
+    };
+    
+    that.addLocation = function(location) {
+      if (location.id() !== undefined && location.id() > 0) {
+        return my.locations[location.id()] = location;
+      }
+      else {
+        console.log('WARNING: tried to add a location without an id to the map manager.')
+      }
     };
     
     

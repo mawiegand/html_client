@@ -16,38 +16,138 @@ AWE.GS = (function(module) {
   module.PROPERTY_READ_WRITE = 0;
   module.PROPERTY_READ_ONLY = 1;
 
+  module.PROPERTY_HASHABLE = true;
+
+  
+  module.initializeNewEntityType = function(name, creator, manager) {
+    
+    module[name] = {
+      create: creator,    // creates objects of this entity type
+      Manager: manager,   // Manager singleton for this entity type
+      accessHashes: {},   // stores access-hashes allowing for quick access to all instances of this entity type
+    };
+    
+  };
+
   /** Base class of all classes that represent states & entities of the game. */
   module.createEntity = function(my) {
-    
+  
     // private attributes and methods ////////////////////////////////////////
-    
+  
     var that;
     
+    /** creates an auto-updated hash for a property of the entity type. */
+    var createAccessHashForAttribute = function(attribute) {
+      var upperCaseAttr = attribute.charAt(0).toUpperCase() + attribute.slice(1);
+
+      if (!module[my.typeName].accessHashes[attribute]) {
+
+        module[my.typeName].accessHashes[attribute] = (function() {
+          var hash = {};
+      
+          hash.allEntries = {};
+      
+          hash.setEntriesForValue = function(val, newEntries, timestamp) {
+            timestamp = timestamp || new Date();
+            this.allEntries[val] = { entries: newEntries, lastUpdateAt: timestamp };
+          };
+          hash.addEntry = function(entry) {
+            if (!this.allEntries[entry[attribute]()]) {
+              this.allEntries[entry[attribute]()] = { entries: {}, lastUpdateAt: null };
+            }
+            this.allEntries[entry[attribute]()].entries[entry.id()] = entry;
+          };
+          hash.removeEntry = function(entry) {
+            if (this.allEntries[entry[attribute]()] && this.allEntries[entry[attribute]()].entries[entry.id()]) {
+              delete this.allEntries[entry[attribute]()].entries[entry.id()];
+            }
+          }
+          hash.getEntriesForValue = function(val) {
+            if (this.allEntries[val]) {
+              return this.allEntries[val].entries;
+            }
+            else {
+              return {};
+            }
+          }
+          hash.setLastUpdateAtForValue = function(val, timestamp) {
+            timestamp = timestamp || new Date();
+            if (this.allEntries[val].entries) {
+              this.allEntries[val].lastUpdateAt = timestamp;
+            }
+          }
+          hash.lastUpdateForValueAfter = function(val, timestamp) {
+            return this.allEntries[val] && this.allEntries[val].timestamp >= timestamp;
+          }
+      
+          return hash;
+        }());
+        
+        module[my.typeName]['getAllFor'+upperCaseAttr] = function(value) {
+          return module[my.typeName].accessHashes[attribute].getEntriesForValue(value);
+        }
+        
+        module[my.typeName]['lastUpdateFor'+upperCaseAttr+'After'] = function(value, timestamp) {
+          return module[my.typeName].accessHashes[attribute].lastUpdateForValueAfter(value, timestamp);
+        }
+        
+        module[my.typeName]['accessHashFor'+upperCaseAttr] = function() {
+          return module[my.typeName].accessHashes[attribute];
+        }
+      }
+    }      
+    
+  
     /** creates a property that gives to a newly created attribute of the my 
      * object. Can be used to create attribute, setter and getter with just
      * one line of code in any derived object. */
-    var property = function(attribute, defaultValue, access) {
+    var property = function(attribute, defaultValue, access, hashable) {
       if (defaultValue === undefined) {
         defaultValue = null;
       }
       access = access || module.PROPERTY_READ_WRITE;
-     
-      my[attribute] = defaultValue;
-      this[attribute] = function() { return my[attribute]; }
-      if (access === module.PROPERTY_READ_WRITE) {
-        this['set'+attribute.charAt(0).toUpperCase() + attribute.slice(1)] = function(val) { my[attribute] = val; }
+      hashable = hashable || false;
+   
+      var setterString = 'set'+attribute.charAt(0).toUpperCase() + attribute.slice(1);
+  
+      my[attribute] = defaultValue;                          // attribute
+      if (!hashable) {                                       // simple protected setter
+        my[setterString] = function(val) { my[attribute] = val; }
+      }
+      else {                                                 // setter, that also updates the hash
+        if (!module[my.typeName].accessHashes[attribute]) {  //   create hash, if not already there
+          createAccessHashForAttribute(attribute); 
+        }
+        
+        my[setterString] = function(val) {     
+          if (my[attribute] != val) {
+            if (my[attribute]) {
+              module[my.typeName].accessHashes[attribute].removeEntry(that);
+            }
+            my[attribute] = val; 
+            if (val) {
+              module[my.typeName].accessHashes[attribute].addEntry(that);
+            }
+          }
+        }        
+      } 
+      this[attribute] = function() { return my[attribute]; } // getter
+      if (access === module.PROPERTY_READ_WRITE) {           // public setter
+        this[setterString] = function(val) { my[setterString](val); }
       }
     };
-  
+
     // protected attributes and methods //////////////////////////////////////
-  
+
     my = my || {};
-    
+    my.typeName = my.typeName || 'Entity';
+  
     my.setPropertiesWithHash = function(hash) {
       for (var key in hash) {
         if (hash.hasOwnProperty(key)) {
           if (my[key] !== undefined) {
-            my[key] = hash[key];
+            var setterString = 'set'+key.charAt(0).toUpperCase() + key.slice(1);
+            my[setterString](hash[key]);
           }
           else {
             console.log ('ERROR in AWE.GS.Entity.setPropertiesWithHash: unknown property ' + key + '.');
@@ -55,14 +155,14 @@ AWE.GS = (function(module) {
         }
       }
     };
-    
-    
+  
+  
     // public attributes and methods /////////////////////////////////////////
-    
+  
     that = {};
     that.property = property;
+
   
-    
     // synthesized properties ////////////////////////////////////////////////
 
     that.property('id', null, module.PROPERTY_READ_ONLY);
@@ -71,6 +171,8 @@ AWE.GS = (function(module) {
     that.property('lastAggregateUpdateAt', new Date(1970), module.PROPERTY_READ_ONLY);  ///< time of last aggregate update received by the client
     that.property('lastShortUpdateAt', new Date(1970), module.PROPERTY_READ_ONLY);      ///< time of last short update received by the client
     that.property('lastFullUpdateAt', new Date(1970), module.PROPERTY_READ_ONLY);       ///< time of last full update received by the client
+
+    that.typeName = function() { return my.typeName; }
 
     that.lastUpdateAt = function(updateType) {
       if (updateType === undefined) { 
@@ -90,14 +192,14 @@ AWE.GS = (function(module) {
     that.init = function(spec) {
       my.setPropertiesWithHash(spec);      
     }
-    
+  
     that.updateWith = function(hash, updateType, timestamp) {
       updateType = updateType || module.ENTITY_UPDATE_TYPE_FULL;     // assume full update, if nothing else specified
       timestamp = timestamp || new Date();                           // given timestamp or now
       if (hash) {
         my.setPropertiesWithHash(hash);
       }
-      
+    
       if (updateType === module.ENTITY_UPDATE_TYPE_FULL) {
         my.lastFullUpdateAt = my.lastShortUpdate = my.lastAggregateUpdate = timestamp; // full update includes the other two update types
       }
@@ -111,13 +213,13 @@ AWE.GS = (function(module) {
         console.log('ERROR in AWE.GS.Entity.updateWith: unknown update type: ' + updateType + '.');
       }
     }
-    
+  
     that.setNotModifiedAfter = function(updateType, timestamp) {
       that.updateWith(null, updateType, timestamp);
     }
 
     return that;
-  };
+  }; 
   
   
   module.createEntityManager = function(my) {
@@ -134,9 +236,9 @@ AWE.GS = (function(module) {
     my.entities = {};                 ///< holds all available information about armies
     my.runningUpdatesPerId = {};      ///< hash that contains all running update requests, using the entity.id as key.
 
-    my.createEntity = my.createEntity || function() { return module.createEntity(); };
+    my.createEntity = my.createEntity || function() { return module.Entity.create(); };
     
-    my.processUpdateResponse = function(data, updateType, start) {
+    my.processUpdateResponse = my.processUpdateResponse || function(data, updateType, start) {
       var entity = my.entities[data.id];
 
       if (entity) {
@@ -260,6 +362,10 @@ AWE.GS = (function(module) {
     // public attributes and methods /////////////////////////////////////////
     
     that = {};
+    
+    that.getEntity = function(id) {
+      return my.entities[id];
+    }
     
     return that;
         
