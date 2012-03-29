@@ -636,7 +636,7 @@ AWE.Controller = (function(module) {
           for (var i=0; i < nodes.length; i++) {
             if (nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().lastArmyUpdateAt().getTime() + 60000*60 < new Date().getTime()) {
               // update every 60 seconds
-              console.log('fetch armies');
+              // console.log('fetch armies');
               
               nodes[i].region().udpateArmies(AWE.GS.ENTITY_UPDATE_TYPE, function() {
                 that.setModelChanged();
@@ -742,19 +742,8 @@ AWE.Controller = (function(module) {
             // set alpha
             // view.setAlpha(alpha);
             // save view in newViews Array
-            newFortressViews[nodes[i].id()] = view;
+            newFortressViews[nodes[i].id()] = view;                      
           }
-
-          view = armyViews[nodes[i].id()];
-          // if view exists already
-          if (view) {       
-            view.setCenter(AWE.Geometry.createPoint(
-              frame.origin.x + frame.size.width / 2,
-              frame.origin.y + frame.size.height / 2 - 96
-            ));
-            newArmyViews[nodes[i].id()] = view;
-          }            
-
 
           // if view for node doesn't exists and node is leaf
           else if (nodes[i].isLeaf() && nodes[i].region()) {
@@ -765,28 +754,6 @@ AWE.Controller = (function(module) {
               frame.origin.x + frame.size.width / 2,
               frame.origin.y + frame.size.height / 2            
             ));
-
-            // Hack
-            var armies = nodes[i].region().getArmies();
-            if (armies) {
-              var anArmy = null;
-              for (var a in armies) {
-                if (armies.hasOwnProperty(a)) {
-                  anArmy = armies[a];
-                }
-              }
-              if (anArmy) {
-                var armyView = AWE.UI.createArmyView();
-                armyView.initWithControllerAndArmy(that, nodes[i].region().getArmies());
-                armyView.setCenter(AWE.Geometry.createPoint(
-                  frame.origin.x + frame.size.width / 2,
-                  frame.origin.y + frame.size.height / 2 - 96       
-                ));
-                _stages[1].addChild(armyView.displayObject());
-                newArmyViews[nodes[i].id()] = armyView;
-              }
-            }
-
 
             // set alpha
             // newView.setAlpha(alpha);
@@ -814,25 +781,8 @@ AWE.Controller = (function(module) {
         }
       }
       
-      // purge stage
-      for (var k in armyViews) {
-        // use hasOwnProperty to filter out keys from the Object.prototype
-        // if old view is not in newViews array
-        if (armyViews.hasOwnProperty(k) && !newArmyViews[k]) {
-          // get view
-          var view = armyViews[k];
-          // log('entfernen');
-          // remove views displayObject from stage
-          AWE.Ext.applyFunction(view.displayObject(), function(obj) {
-            _stages[1].removeChild(obj);
-            removedSomething = true;
-          });        
-        }
-      }
-      
       // remember newViews array
       fortressViews = newFortressViews;
-      armyViews = newArmyViews;
 
       // update other locations
       var newLocationViews = {};
@@ -882,6 +832,74 @@ AWE.Controller = (function(module) {
         }
       }
       locationViews = newLocationViews;
+      
+      
+      // update armies in fortresses
+      var newArmyViews = {};
+
+      for (var i = 0; i < nodes.length; i++) { 
+        // frame for node      
+        var frame = that.mc2vc(nodes[i].frame());
+        // var alpha = that.alpha(frame.size.width, 128, 192);
+        // if node is big enough for displaying a the fortress
+        if (that.isFortressVisible(frame)) {
+          // get view for node 
+          var view = armyViews[nodes[i].id()];
+          // if view exists already
+          if (view) {       
+            // if model of view updated
+            // if (view.lastChange !== undefined && view.lastChange() < nodes[i].lastChange()) {
+              // view.setNeedsUpdate();
+            // }                     
+            // set new center
+            view.setCenter(AWE.Geometry.createPoint(
+              frame.origin.x + frame.size.width / 2,
+              frame.origin.y + frame.size.height / 2 - 96
+            ));
+            
+            // save view in newViews Array
+            newArmyViews[nodes[i].id()] = view;                      
+          }
+
+          // if view for node doesn't exists and node is leaf
+          else if (nodes[i].region() && nodes[i].region().location(0) ){//}&& nodes[i].region().location(0).getArmies()) {
+            
+            log('region?', nodes[i].region().location(0).getArmies());
+            // Hack
+            var armies = nodes[i].region().location(0).getArmies();
+            if (armies) {
+              var anArmy = null;
+              for (var a in armies) {
+                if (armies.hasOwnProperty(a)) {
+                  anArmy = armies[a];
+                }
+              }
+              if (anArmy) {
+                var armyView = AWE.UI.createArmyView();
+                armyView.initWithControllerAndArmy(that, anArmy);
+                armyView.setCenter(AWE.Geometry.createPoint(
+                  frame.origin.x + frame.size.width / 2,
+                  frame.origin.y + frame.size.height / 2 - 96       
+                ));
+                _stages[1].addChild(armyView.displayObject());
+                newArmyViews[nodes[i].id()] = armyView;
+              }
+            }
+          }
+        }
+      }
+
+      for (var k in armyViews) {             // remove view from layer
+        // use hasOwnProperty to filter out keys from the Object.prototype
+        if (armyViews.hasOwnProperty(k) && !newArmyViews[k]) {
+          var view = armyViews[k];
+          AWE.Ext.applyFunction(view.displayObject(), function(obj) {
+            _stages[1].removeChild(obj);
+            removedSomething = true;
+          });        
+        }
+      }
+      armyViews = newArmyViews;
       
       return removedSomething;
     };
