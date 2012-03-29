@@ -36,9 +36,7 @@ AWE.Map = (function(module) {
     var _level = spec.level || 0;
     
     var _region = null;
-    
-    var _armies = {};
-    
+        
     var that = {};
     AWE.Partials.addUpdateTracking(that);  // adds methods for update tracking.
     AWE.Partials.addChangeTracking(that);
@@ -85,12 +83,16 @@ AWE.Map = (function(module) {
     /** returns the level of the settlement / fortress / outpost (0 to 10). */
     that.level = function() { return _level; }
         
-    that.getArmies = function() { return _armies };
-    that.addArmy = function(army) { _armis[army.id()] = army; }
-    that.removeArmy = function(army) {
-      if (_armies[army.id()]) {
-        delete _armies[army.id()] 
-      }
+    that.getArmies = function() { 
+      return AWE.GS.Army.getAllForLocaton_id(_id) 
+    };
+    
+    that.lastArmyUpdateAt = function() {
+      return AWE.GS.Army.lastUpdateForLocation_id(_id);
+    }
+    
+    that.udpateArmies = function(updateType, callback) {
+      AWE.GS.Army.Manager.updateArmiesInLocation(_id, updateType, callback)
     }
         
         
