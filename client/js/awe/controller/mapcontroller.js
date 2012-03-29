@@ -699,8 +699,6 @@ AWE.Controller = (function(module) {
     that.isFortressVisible = function(frame) {
       return frame.size.width > 128;
     };
-
-    var army = AWE.GS.Army.create('{"typeName":"Army",""alliance_id":2,"alliance_tag":"Yetis","ap_last":null,"ap_max":4,"ap_present":4,"ap_seconds_per_point":21600,"battle_id":null,"battle_retreat":null,"created_at":"2012-03-29T11:40:44Z","exp":149645,"home_settlement_id":null,"home_settlement_name":null,"id":10,"location_id":23845,"mode":0,"name":"Rotte","owner_id":6,"owner_name":"Bonzo","rank":14,"region_id":2650,"size_max":1200,"size_present":1142,"stance":2,"strength":20556,"target_location_id":null,"target_reached_at":null,"target_region_id":null,"updated_at":"2012-03-29T11:40:44Z"}');
     
     that.updateGamingPieces = function(nodes) {
       
@@ -757,9 +755,9 @@ AWE.Controller = (function(module) {
             ));
 
             // Hack
-
+            if (nodes[i].region().getArmies())
             var armyView = AWE.UI.createArmyView();
-            armyView.initWithControllerAndArmy(that, army);
+            armyView.initWithControllerAndArmy(that, nodes[i].region().getArmies()[0]);
             armyView.setCenter(AWE.Geometry.createPoint(
               frame.origin.x + frame.size.width / 2,
               frame.origin.y + frame.size.height / 2 - 96       
