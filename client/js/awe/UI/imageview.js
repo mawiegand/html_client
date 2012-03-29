@@ -47,7 +47,7 @@ AWE.UI = (function(module) {
     }
         
     that.initWithControllerAndImage = function(controller, image, frame) {
-      frame = frame || AWE.Geometry.createRect(0,0,image.width, image.height);
+      frame = frame || AWE.Geometry.createRect(0, 0, image.width, image.height);
       that.initWithController(controller, frame);
       _bitmap = new Bitmap();
       _bitmap.view = that;

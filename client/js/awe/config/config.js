@@ -21,6 +21,9 @@ AWE.Config = (function(module) {
   
   module.MAPPING_FORTRESS_SIZE = 64;
   
+  module.MAP_ARMY_WIDTH = 64;
+  module.MAP_ARMY_HEIGHT = 128;
+  
   // how many tiles showing minimum when not at leaf level
   module.MAP_MIN_VISIBLE_TILES = 64;
 
@@ -60,17 +63,25 @@ AWE.Config = (function(module) {
     "map/fortress/middle": 'images/settlements/fortressmiddle.png',
     "map/fortress/large": 'images/settlements/fortresslarge.png',
 
-    "map/button1": 'images/green_button.png',
-    "map/button2": 'images/red_button.png',
-    "map/button3": 'images/blue_button.png',
     "map/colony/small": "images/settlements/colonysmall.png",
     "map/colony/middle": "images/settlements/colonymiddle.png",
     "map/colony/big": "images/settlements/colonybig.png",
 
+    "map/army/stanceAggressive": "images/army/stance_agg.png",
+    "map/army/stanceDefensive": "images/army/stance_def.png",
+    "map/army/stanceNeutral": "images/army/stance_neu.png",
+
     "map/outpost" : "images/settlements/outpost.png",
 
     "map/easement": "images/verbot.png",
-    "map/region/icon": "images/dot.png"
+
+    "map/region/icon": "images/dot.png",
+    
+    "map/button1": 'images/green_button.png',
+    "map/button2": 'images/red_button.png',
+    "map/button3": 'images/blue_button.png',
+
+    "map/army": 'images/army.png',
   };
   
   return module;
