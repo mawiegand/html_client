@@ -34,6 +34,7 @@ AWE.Map = (function(module) {
     var _terrain_id = spec.terrain_id || 0;
     
     var _fortress_level = spec.fortress_level || 0;
+    var _fortress_id = spec.fortress_id || 0;
     
     var _node = null;
     
@@ -83,6 +84,9 @@ AWE.Map = (function(module) {
     /** returns the level of the fortress (0 to 10). */
     that.fortressLevel = function() { return _fortress_level; }
     
+    /** returns the location id of the fortress. */
+    that.fortressLocationId = function() { return _fortress_id; }
+    
     /** returns the type of the terrain of that region. Later terrain types should
      * be defined in the game rules. */
     that.terrainId = function() { return _terrain_id; }
@@ -114,11 +118,30 @@ AWE.Map = (function(module) {
       return AWE.GS.Army.getAllForRegion_id(_id) 
     };
     
+    that.getArmiesAtFortress = function() {
+      if (this.location(0)) {
+        return this.location(0).getArmies();
+      }
+      else {
+        var allArmies = this.getArmies();
+        var armiesAtFortress = {};
+        for (var key in allArmies) {
+          if (allArmies.hasOwnProperty(key)) {
+            var army = allArmies[key];
+            if (army.location_id() === this.fortressLocationId()) {
+              armiesAtFortress[army.id()] = army;
+            }
+          }
+        }
+        return armiesAtFortress;
+      }
+    }
+    
     that.lastArmyUpdateAt = function() {
       return AWE.GS.Army.lastUpdateForRegion_id(_id);
     }
     
-    that.udpateArmies = function(updateType, callback) {
+    that.updateArmies = function(updateType, callback) {
       AWE.GS.Army.Manager.updateArmiesInRegion(_id, updateType, callback)
     }
     
@@ -144,6 +167,7 @@ AWE.Map = (function(module) {
       _countSettlements = region.countSettlements() || 0;
       _terrain_id = region.terrainId() || 0;
       _fortress_level = region.fortressLevel() || 0;    
+      _fortress_id = region.fortressLocationId() || 0;    
       
       module.Manager.addRegion(this); // just to be sure it's under control of the manager
       

@@ -634,15 +634,29 @@ AWE.Controller = (function(module) {
           var nodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, false); // this is memoized, no problem to call it twice in one cycle!
           
           for (var i=0; i < nodes.length; i++) {
-            if (nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {
-              
-              var frame = that.mc2vc(nodes[i].frame());
-              if (frame.size.height > 128) {
-                nodes[i].region().udpateArmies(AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+            
+            if (!nodes[i].isLeaf() || !nodes[i].region()) continue; // no need to fetch army information for this node
+            
+            var frame = that.mc2vc(nodes[i].frame());
+            
+            if (frame.size.height < 128) continue ;                 // no update necessary, region is to small
+            
+            if (frame.size.height < 256) {
+              if(AWE.GS.Army.Manager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
+                nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
+                AWE.GS.Army.Manager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
                   that.setModelChanged();
                 });
                 break;  // request limit!
               }
+            }
+            else {
+              if (nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {
+                nodes[i].region().updateArmies(AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+                  that.setModelChanged();
+                });
+                break;  // request limit!        
+              }      
             }
           }
           lastArmyCheck = new Date();
