@@ -10,6 +10,7 @@ AWE.Controller = (function(module) {
   module.createMapController = function(anchor) {
     
     var _stages = new Array(4);  ///< four easelJS stages for displaying background, objects and HUD
+    var _sortStages = [];
     var _canvas = new Array(4);  ///< canvas elements for the four stages
 
     var _selectedView = null;    ///< there can be only one selected view!
@@ -59,6 +60,8 @@ AWE.Controller = (function(module) {
      * the HUD. */
     that.init = function(initialFrameModelCoordinates) {
       _super.init();
+      
+      _sortStages = [false, true, false, false];  // which stages to y-sort? -> presently, only the gaming pieces need to be sorted.
       
       // background layer, displays region tiles
       that.anchor().append('<canvas id="layer0"></canvas>');
@@ -940,8 +943,8 @@ AWE.Controller = (function(module) {
                 }                     
                 // set new center
                 view.setCenter(AWE.Geometry.createPoint(
-                  frame.origin.x + frame.size.width / 2,
-                  frame.origin.y + frame.size.height / 2 - 96               
+                  frame.origin.x + frame.size.width / 2 + frame.size.width / 12 ,
+                  frame.origin.y + frame.size.height / 2 - view.frame().size.height/2 - frame.size.height / 20         
                 ));
             
                 newArmyViews[army.id()] = view;                      
@@ -953,13 +956,61 @@ AWE.Controller = (function(module) {
                 view = AWE.UI.createArmyView();
                 view.initWithControllerAndArmy(that, army);
                 view.setCenter(AWE.Geometry.createPoint(
-                  frame.origin.x + frame.size.width / 2,
-                  frame.origin.y + frame.size.height / 2 - 96               
+                  frame.origin.x + frame.size.width / 2 + frame.size.width / 12,
+                  frame.origin.y + frame.size.height / 2 - view.frame().size.height/2 - frame.size.height / 20               
                 ));
                 _stages[1].addChild(view.displayObject());
                 newArmyViews[army.id()] = view;
               }
             }
+          }
+        }
+        
+        if (that.areArmiesAtSettlementsVisible(frame) && nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().locations()) {
+          for (var loc=1; loc <= 8; loc++) {
+
+            var location = nodes[i].region().location(loc);      
+            if (!location || !location.position()) continue ; 
+            var locationOrigin = that.mc2vc(location.position());           
+            var armies = location.getArmies();       // armies at location
+          
+            for (var key in armies) {
+              if (armies.hasOwnProperty(key)) {
+                var army = armies[key];
+
+                // get view for node 
+                var view = armyViews[army.id()];
+            
+                // if view exists already
+                if (view) {       
+                  // if model of view updated
+                  if (1 || view.lastChange !== undefined && view.lastChange() < army.lastChange()) { // TODO -> really track changes!!!
+                    view.setNeedsUpdate();
+                  }                     
+                  // set new center
+                  view.setCenter(AWE.Geometry.createPoint(
+                    locationOrigin.x + frame.size.width / 12 ,
+                    locationOrigin.y - view.frame().size.height/2 - frame.size.height / 40         
+                  ));
+            
+                  newArmyViews[army.id()] = view;                      
+                }
+
+                // if view for army doesn't exists
+                else {
+                  // create and initialize new view, set center
+                  view = AWE.UI.createArmyView();
+                  view.initWithControllerAndArmy(that, army);
+                  view.setCenter(AWE.Geometry.createPoint(
+                    locationOrigin.x + frame.size.width / 12,
+                    locationOrigin.y - view.frame().size.height/2 - frame.size.height / 40               
+                  ));
+                  _stages[1].addChild(view.displayObject());
+                  newArmyViews[army.id()] = view;
+                }
+              }
+            }            
+            
           }
         }
       }
@@ -979,86 +1030,7 @@ AWE.Controller = (function(module) {
       }
       armyViews = newArmyViews;
       
-      return removedSomething;     
-      
-      
-/*
-      for (var i = 0; i < nodes.length; i++) {
-        var node = nodes[i];
-        var frame = that.mc2vc(nodes[i].frame());
-        
-        if (node.region() && node.region().locations()) {
-
-          var locations = node.region().locations();
-          
-          for (var j = 0; j < locations.length; j++) {
-            
-            var location = locations[j];
-            var armyViewsPerLocation = armyViews[location.id()] || {};
-            var newArmyViewsPerLocation = {};
-            
-            if (location.position()) {
-            
-              var locationOrigin = that.mc2vc(location.position());
-              
-              // vorhandene verschieben
-              
-              for (var a in armyViewsPerLocation) {
-                if (armyViewsPerLocation.hasOwnProperty(a)) {
-                  
-                  var armyView = armyViewsPerLocation[a];
-                
-                  armyView.setCenter(AWE.Geometry.createPoint(
-                    locationOrigin.x,
-                    locationOrigin.y - 96
-                  ));            
-    
-                  newArmyViewsPerLocation[a] = armyView;                      
-                }
-              }
-              // neue hinzufügen
-              
-              if (location.getArmies() && that.isSettlementVisible(frame)) {
-    
-                var newArmies = location.getArmies();
-                
-                for (var n in newArmies) {
-                  if (newArmies.hasOwnProperty(n)) {
-    
-                    var newArmy = newArmies[n];
-  
-                    if (!armyViewsPerLocation[newArmy.id()]) {
-                      var armyView = AWE.UI.createArmyView();
-                      armyView.initWithControllerAndArmy(that, newArmy);
-                      armyView.setCenter(AWE.Geometry.createPoint(
-                        locationOrigin.x,
-                        locationOrigin.y - 96
-                      ));
-                      _stages[1].addChild(armyView.displayObject());
-                      newArmyViewsPerLocation[newArmy.id()] = armyView;
-                    }
-                  }
-                }
-              }
-            }  
-            
-            // alte löschen
-            
-            for (var k in armyViewsPerLocation) {             // remove view from layer
-              // use hasOwnProperty to filter out keys from the Object.prototype
-              if (armyViewsPerLocation.hasOwnProperty(k) && (!newArmyViewsPerLocation[k] || !that.isSettlementVisible(frame))) {
-                var armyView = armyViewsPerLocation[k];
-                AWE.Ext.applyFunction(armyView.displayObject(), function(obj) {
-                  _stages[1].removeChild(obj);
-                  removedSomething = true;
-                });        
-              }
-            }
-            
-            armyViews[location.id()] = newArmyViewsPerLocation;
-          }          
-        }
-      }  */        
+      return removedSomething;          
     }
     
     
@@ -1248,6 +1220,13 @@ AWE.Controller = (function(module) {
           // STEP 4c: update (repaint) those stages, that have changed (one view that needsDisplay triggers repaint of whole stage)
           for (var i=0; i < 4; i++) {
             if (stageUpdateNeeded[i]) {
+              if (_sortStages[i]) {  // TODO: add configuration: stage needs sorting
+                _stages[i].sortChildren(function(a, b) {
+                  var az = a.y + a.height;
+                  var bz = b.y + b.height;
+                  return az - bz;
+                });
+              }
               _stages[i].update();
             }
           }

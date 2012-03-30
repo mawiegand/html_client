@@ -73,6 +73,9 @@ AWE.UI = (function(module) {
       if (!frame) {
         that.resizeToFit();        
       }
+      
+      my.container.width = my.frame.size.width;
+      my.container.height = my.frame.size.height;
     };
     
     that.resizeToFit = function() {

@@ -91,6 +91,9 @@ AWE.UI = (function(module) {
       if (!frame) {
         that.resizeToFit();        
       }
+
+      _container.width = my.frame.size.width;
+      _container.height = my.frame.size.height;
     };
     
     that.resizeToFit = function() {
@@ -100,8 +103,8 @@ AWE.UI = (function(module) {
     
     that.setFrame = function(frame) {
       _super.setFrame(frame);
-      _container.x = my.frame.origin.x;
-      _container.y = my.frame.origin.y;
+      //_container.x = my.frame.origin.x;
+      //_container.y = my.frame.origin.y;
     }
     
     that.setSelected = function(selected) {

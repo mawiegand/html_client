@@ -73,6 +73,10 @@ AWE.UI = (function(module) {
     /** sets the view's frame. */
     that.setFrame = function(frame) {
       if (!my.frame || !my.frame.size.equals( frame.size )) {
+        AWE.Ext.applyFunction(this.displayObject(), function(obj) { // may return null, a DisplayObject or an Array
+          obj.width = frame.size.width;
+          obj.height = frame.size.height;   
+        });
         _needsLayout = _needsDisplay = true;
       }
       if (!my.frame || !my.frame.origin.equals(frame.origin)) {
