@@ -35,9 +35,17 @@ AWE.Controller = (function(module) {
     var _loopCounter = 0;        ///< counts every cycle through the loop
     var _frameCounter = 0;       ///< counts every rendered frame
     
-    var _modelChanged = false;
+    var _modelChanged = false;   ///< true, if anything in the model changed
+    var _maptreeChanged = false; ///< true, if anything in the maptree (just nodes!) changed. _maptreeChanged = true implies modelChanged = true
     
     var requestingMapNodesFromServer = false;
+    
+    var regionViews = {};
+    var fortressViews = {};
+    var armyViews = {};
+    var locationViews = {};
+    var _actionViews = {};
+    var HUDViews = {};
     
     
     // ///////////////////////////////////////////////////////////////////////
@@ -577,59 +585,89 @@ AWE.Controller = (function(module) {
     
     that.setModelChanged = function() { _modelChanged = true; }
     
+    that.maptreeChanged = function() { return _maptreeChanged; }
+    
+    that.setMaptreeChanged = function() { _maptreeChanged = true; _modelChanged = true; }
+    
     that.updateModel = (function() {
-      
-      var previousVisibleAreaMC = null;
-      
+            
       var lastArmyCheck = new Date(1970);
       
-      var viewportHasChanged = function(rect) {
-        return (!previousVisibleAreaMC && rect) || !previousVisibleAreaMC.equals(rect);
+      var viewports = {};  ///< stores the viewport at the time of an update for each of the different update types 
+      
+      var runningUpdate = {};
+      
+      var isUpdateRunning = function(type) {
+        return runningUpdate[type];
+      }
+      
+      var startUpdate = function(type) {
+        runningUpdate[type] = new Date();
+        console.log('MapController: starting update for ' + type + '.' );
+      }
+      
+      var stopUpdate = function(type) {
+        if (runningUpdate[type]) {
+          delete runningUpdate[type];
+        }
+      }
+      
+      var viewportHasChanged = function(type, rect) {
+        return (!viewports[type] && rect) || (viewports[type] && !viewports[type].equals(rect));
       };
+      
+      var setViewport = function(type, rect) {
+        viewports[type] = rect;
+      };
+      
       
       return function(visibleAreaMC) {
         
         //console.log('update model ' + visibleAreaMC + ' changed: ' + viewportHasChanged(visibleAreaMC) + ' ongoing: ' + requestingMapNodesFromServer);
 
         // viewport change -> time to check for the need for additional map nodes.
-        if (viewportHasChanged(visibleAreaMC) && !requestingMapNodesFromServer &&
-            AWE.Map.numMissingNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level()) > 0) {
-                        
-          requestingMapNodesFromServer = true;
-          AWE.Map.Manager.fetchNodesForArea(visibleAreaMC, level(), function() {
-            requestingMapNodesFromServer = false;
-            that.setModelChanged();
-          });
-          
-          previousVisisbleAreaMC = visibleAreaMC; 
+        if (viewportHasChanged('nodes', visibleAreaMC) && !isUpdateRunning('nodes')) {
+          if (AWE.Map.numMissingNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level()) > 0) {         
+            startUpdate('nodes');
+            AWE.Map.Manager.fetchNodesForArea(visibleAreaMC, level(), function() {
+              stopUpdate('nodes');
+              that.setMaptreeChanged();
+            }); 
+          }
+          setViewport('nodes', visibleAreaMC); ///< remember viewport, because data for this port has been fetched (or isn't needed) 
         }
         
         // in case the viewport has changed or the model has changed (more nodes?!) we need to check for missing regions.
-        if ((viewportHasChanged(visibleAreaMC) || that.modelChanged()) && ! requestingMapNodesFromServer) {
+        if ((viewportHasChanged('regions', visibleAreaMC) || that.maptreeChanged()) && !isUpdateRunning('nodes')) {
           
-          //requestingMapNodesFromServer = true;
+          startUpdate('regions');
           AWE.Map.Manager.fetchMissingRegionsForArea(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), function() {
-            // requestingMapNodesFromServer = false;
+            stopUpdate('regions'); // TODO: is not stopped properly in case there's no response!!!
             that.setModelChanged();
           });
           
-          lastRegionCheck = new Date();
+          setViewport('regions', visibleAreaMC); ///< remember viewport, because data for this port has been fetched (or isn't needed) 
         }
         
         // in case the viewport has changed or the model has changed (more nodes or regions?!) we need to check for missing locations.
-        if ((viewportHasChanged(visibleAreaMC) || that.modelChanged()) && ! requestingMapNodesFromServer) {
+        if ((viewportHasChanged('locations', visibleAreaMC) || that.modelChanged()) && ! isUpdateRunning('nodes')) {
 
-          var nodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, that.modelChanged()); // this is memoized, no problem to call it twice in one cycle!
+          var nodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, that.maptreeChanged()); // this is memoized, no problem to call it twice in one cycle!
 
           for (var i=0; i < nodes.length; i++) {
+            //startUpdate('locations');
             if (nodes[i].isLeaf() && nodes[i].region() && !nodes[i].region().locations() && nodes[i].level() <= level()-2) {
               AWE.Map.Manager.fetchLocationsForRegion(nodes[i].region(), function() {
                 that.setModelChanged();
               });
             }
+            //stopUpdate('locations'); // TODO: start / stop this properly! (many parallel requests)
           }
+          setViewport('locations', visibleAreaMC);
         }
-        if (lastArmyCheck.getTime() + 500 < new Date().getTime()) { // check for needed armies once per second
+
+        
+        if (lastArmyCheck.getTime() + 400 < new Date().getTime() && !isUpdateRunning('armies')) { // check for needed armies once per second
           
           var nodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, false); // this is memoized, no problem to call it twice in one cycle!
           
@@ -644,7 +682,10 @@ AWE.Controller = (function(module) {
             if (frame.size.height < 256) {
               if(AWE.GS.Army.Manager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
                 nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
+                
+                startUpdate('armies');
                 AWE.GS.Army.Manager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+                  stopUpdate('armies');
                   that.setModelChanged();
                 });
                 break;  // request limit!
@@ -652,7 +693,10 @@ AWE.Controller = (function(module) {
             }
             else {
               if (nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {
+                
+                startUpdate('armies');
                 nodes[i].region().updateArmies(AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+                  stopUpdate('armies');
                   that.setModelChanged();
                 });
                 break;  // request limit!        
@@ -726,9 +770,10 @@ AWE.Controller = (function(module) {
       return frame.size.width > 128;
     };
     
-    that.updateGamingPieces = function(nodes) {
-      
-      // update fortresses
+    
+    
+    that.updateFortresses = function(nodes) {
+     // update fortresses
       var newFortressViews = {};
       // var newArmyViews = {};
       var removedSomething = false;
@@ -797,9 +842,16 @@ AWE.Controller = (function(module) {
       
       // remember newViews array
       fortressViews = newFortressViews;
-
-      // update other locations
+      
+      return removedSomething;
+    }
+    
+    that.updateSettlements = function(nodes) {
+      
+       // update other locations
       var newLocationViews = {};
+      var removedSomething = false;
+
       
       for (var i = 0; i < nodes.length; i++) {       
         var frame = that.mc2vc(nodes[i].frame()); 
@@ -847,8 +899,13 @@ AWE.Controller = (function(module) {
       }
       locationViews = newLocationViews;
       
-      
-      // update armies in fortresses
+      return removedSomething;
+    }
+    
+    that.updateArmies = function(nodes) {
+  
+       // update armies in fortresses
+      var removedSomething = false;
 
       for (var i = 0; i < nodes.length; i++) {
         var node = nodes[i];
@@ -925,8 +982,19 @@ AWE.Controller = (function(module) {
             armyViews[location.id()] = newArmyViewsPerLocation;
           }          
         }
-      }      
+      }          
+    }
+    
+    
+    
+    
+    that.updateGamingPieces = function(nodes) {
+      var removedSomething = false;
       
+      removedSomething = that.updateFortresses(nodes) || removedSomething;
+      removedSomething = that.updateSettlements(nodes) || removedSomething;
+      removedSomething = that.updateArmies(nodes) || removedSomething;
+
       return removedSomething;
     };
     
@@ -998,6 +1066,7 @@ AWE.Controller = (function(module) {
     
     that.updateViewHierarchy = (function() {
       var oldVisibleArea = null;
+      var oldWindowSize = null;
       
       var propUpdates = function(viewHash) {
         var needsDisplay = false;
@@ -1016,21 +1085,23 @@ AWE.Controller = (function(module) {
       
       return function(nodes, visibleArea) {
         
-        var stagesNeedUpdate = [true, false, true, true]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
+        var stagesNeedUpdate = [true, false, true, false]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
         
         // rebuild individual hieararchies
         if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           stagesNeedUpdate[0] = this.rebuildMapHierarchy(nodes) || stagesNeedUpdate[0];
         }
-        if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _action) {
+        if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _action ) {
           stagesNeedUpdate[1] = stagesNeedUpdate[1] || that.updateGamingPieces(nodes);
         };
         
-        if (1) {
+        if (1) { // TODO: only update, if necessary
           that.updateActionViews();
         }
-        if ((oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _action) { // TODO: only update at start and when something might have changed (object selected, etc.)
-          that.updateHUD();
+        if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || _action || !HUDViews.mainControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
+          console.log('MapController: update hud.');
+          that.updateHUD(); 
+          stagesNeedUpdate[3] = true; // only repaint, if necessary
         }
 
         // update hierarchies and check which stages need to be redrawn
@@ -1041,6 +1112,7 @@ AWE.Controller = (function(module) {
         // stagesNeedUpdate[3] = propUpdates(HUDViews);
         
         oldVisibleArea = visibleArea;
+        oldWindowSize = _windowSize.copy();
       
         return stagesNeedUpdate;
       };
@@ -1053,12 +1125,7 @@ AWE.Controller = (function(module) {
     
     that.updateView = function() { needRedraw = true; } // TODO: completely remove this method, replaced by setNeedsDisplay
     
-    var regionViews = {};
-    var fortressViews = {};
-    var armyViews = {};
-    var locationViews = {};
-    var _actionViews = {};
-    var HUDViews = {};
+
     
     that.updateFPS = function() {
       
@@ -1109,7 +1176,7 @@ AWE.Controller = (function(module) {
             }
           }
           
-          _stages[3].update();
+          //_stages[3].update();
           // STEP 4d: register this frame, recalc and display present framerate (rendered frames per second)
           this.updateFPS();
         }
@@ -1117,6 +1184,7 @@ AWE.Controller = (function(module) {
 
         // STEP 5: cleanup & prepare for next loop: everything has been processed and changed...
         _modelChanged = false;
+        _maptreeChanged = false;
         _needsDisplay = false;
         _needsLayout = false;
         _action = false;

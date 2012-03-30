@@ -119,22 +119,7 @@ AWE.Map = (function(module) {
     };
     
     that.getArmiesAtFortress = function() {
-      if (this.location(0)) {
-        return this.location(0).getArmies();
-      }
-      else {
-        var allArmies = this.getArmies();
-        var armiesAtFortress = {};
-        for (var key in allArmies) {
-          if (allArmies.hasOwnProperty(key)) {
-            var army = allArmies[key];
-            if (army.location_id() === this.fortressLocationId()) {
-              armiesAtFortress[army.id()] = army;
-            }
-          }
-        }
-        return armiesAtFortress;
-      }
+      return AWE.GS.Army.getAllForLocation_id(this.fortressLocationId);
     }
     
     that.lastArmyUpdateAt = function() {
