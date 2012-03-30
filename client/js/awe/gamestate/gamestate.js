@@ -284,7 +284,7 @@ AWE.GS = (function(module) {
 }(AWE.GS || {}));
 
 
-
+/*
 $(document).ready(function() {
   var entity = AWE.GS.createEntity();
   entity.property('age');
@@ -303,5 +303,5 @@ $(document).ready(function() {
   entity2.init({ thisInitializerShouldCreateAnError: true }); // should throw an 'unknown property' error
   
 });
-
+*/
 
