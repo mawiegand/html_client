@@ -119,7 +119,7 @@ AWE.Map = (function(module) {
     };
     
     that.getArmiesAtFortress = function() {
-      return AWE.GS.Army.getAllForLocation_id(this.fortressLocationId);
+      return AWE.GS.Army.getAllForLocation_id(_fortress_id);
     }
     
     that.lastArmyUpdateAt = function() {
