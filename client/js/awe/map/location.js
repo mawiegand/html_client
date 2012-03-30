@@ -84,7 +84,7 @@ AWE.Map = (function(module) {
     that.level = function() { return _level; }
         
     that.getArmies = function() { 
-      return AWE.GS.Army.getAllForLocaton_id(_id);
+      return AWE.GS.Army.getAllForLocation_id(_id);
     };
     
     that.lastArmyUpdateAt = function() {
@@ -209,11 +209,6 @@ AWE.Map = (function(module) {
         streetEndPosition.y += v.y*alpha;
         offDir.x = offDir.x * (streetEndPosition.x - basePositon.x)/2;
         offDir.y = offDir.y * (streetEndPosition.y - basePositon.y)/2;
-
-        log('p', AWE.Geometry.createPoint(
-          basePositon.x + offDir.x,
-          basePositon.y + offDir.y
-        ));
 
         return AWE.Geometry.createPoint(
           basePositon.x + offDir.x,
