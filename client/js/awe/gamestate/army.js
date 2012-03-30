@@ -12,25 +12,34 @@ AWE.GS = (function(module) {
   /** Base class of all classes that represent states & entities of the game. */
   module.initializeNewEntityType(
     'Army', 
+    
+    
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   ARMY
+    //
+    // ///////////////////////////////////////////////////////////////////////    
+    
     function(my) {     // Army.create    -> creates army objects
     
-      // private attributes and methods ////////////////////////////////////////
+      // private attributes and methods //////////////////////////////////////
     
       var that;
     
   
-      // protected attributes and methods //////////////////////////////////////
+      // protected attributes and methods ////////////////////////////////////
   
       my = my || {};
       my.typeName = 'Army';
 
     
-      // public attributes and methods /////////////////////////////////////////
+      // public attributes and methods ///////////////////////////////////////
     
       that = module.createEntity(my);
   
     
-      // synthesized properties ////////////////////////////////////////////////
+      // synthesized properties //////////////////////////////////////////////
 
       that.property('name',                 null, module.PROPERTY_READ_ONLY);
 
@@ -75,16 +84,24 @@ AWE.GS = (function(module) {
 
       return that;
     },
+    
+    
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   ARMY MANAGER
+    //
+    // ///////////////////////////////////////////////////////////////////////  
   
     (function(my) {    // Army.Manager    -> manager singleton
     
-      // private attributes and methods ////////////////////////////////////////
+      // private attributes and methods //////////////////////////////////////
     
       var that;
       var lastFortressUpdates = {};
       
   
-      // protected attributes and methods //////////////////////////////////////
+      // protected attributes and methods ////////////////////////////////////
   
       my = my || {};
     
@@ -94,7 +111,7 @@ AWE.GS = (function(module) {
       my.createEntity = function() { return module.Army.create(); }
 
     
-      // public attributes and methods /////////////////////////////////////////
+      // public attributes and methods ///////////////////////////////////////
     
       that = module.createEntityManager(my);
     

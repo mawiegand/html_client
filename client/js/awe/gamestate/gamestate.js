@@ -29,6 +29,14 @@ AWE.GS = (function(module) {
     var entity = module[name].create(); // just create one instance in order to initialize hashes.
     
   };
+  
+  
+  
+  // /////////////////////////////////////////////////////////////////////////
+  //
+  //   ENTITY
+  //
+  // /////////////////////////////////////////////////////////////////////////
 
   /** Base class of all classes that represent states & entities of the game. */
   module.createEntity = function(my) {
@@ -121,6 +129,14 @@ AWE.GS = (function(module) {
     return that;
   }; 
   
+  
+  
+  
+  // /////////////////////////////////////////////////////////////////////////
+  //
+  //   ENTITY MANAGER
+  //
+  // /////////////////////////////////////////////////////////////////////////
   
   module.createEntityManager = function(my) {
     
