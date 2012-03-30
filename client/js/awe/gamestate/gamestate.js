@@ -60,7 +60,7 @@ AWE.GS = (function(module) {
           };
           hash.addEntry = function(entry) {
             if (!this.allEntries[entry[attribute]()]) {
-              this.allEntries[entry[attribute]()] = { entries: {}, lastUpdateAt: null };
+              this.allEntries[entry[attribute]()] = { entries: {}, lastUpdateAt: new Date(1970) };
             }
             this.allEntries[entry[attribute]()].entries[entry.id()] = entry;
           };
@@ -283,8 +283,15 @@ AWE.GS = (function(module) {
 
         var start = new Date();  // the start of the request is only a bad (but save) approximation; we should use the server time (time of database select) instead!
         
+        if (url.indexOf("?") < 0) { // no ? 
+          url = url + "?";
+        }
+        else if (url.charAt(url.length-1) != "&") { // it has a query part, make sure there's an & at the end to be able to attach more
+          url = url + "&"; 
+        }
+        
         var options = {
-          url: (url+'?'+my.updateTypeQueryToken(updateType)),
+          url: (url+my.updateTypeQueryToken(updateType)),
           dataType: 'json',
         };
         if (modifiedSince) {

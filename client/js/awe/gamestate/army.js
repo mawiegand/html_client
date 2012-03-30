@@ -81,12 +81,7 @@ AWE.GS = (function(module) {
       // private attributes and methods ////////////////////////////////////////
     
       var that;
-    
-      var armiesPerLocation = {};
-      var armiesPerRegion = {};     
-      var armiesPerFortress = {};     
-      var armiesPerOwner = {};
-      var armiesPerAlliance = {}; 
+      var lastFortressUpdates = {};
   
       // protected attributes and methods //////////////////////////////////////
   
@@ -104,42 +99,34 @@ AWE.GS = (function(module) {
     
       that.getArmy = function(id) { return that.getEntity(id); }
       that.getArmiesInRegion = function(id) { 
-        if (armiesPerRegion[id]) {
-          return armiesPerRegion[id].armies;
-        } 
-        else {
-          return [];
-        }
+        return AWE.GS.Army.getAllForRegion_id(id)
       }
       that.getArmiesAtLocation = function(id) { 
-        if (armiesPerLocation[id]) {
-          return armiesPerLocation[id].armies;
-        } 
+        return AWE.GS.Army.getAllForLocation_id(id)
+      }
+      
+      that.lastUpdateForFortress = function(regionId) {
+        if (lastFortressUpdates[regionId]) {
+          return lastFortressUpdates[regionId];
+        }
         else {
-          return [];
+          return new Date(1970);
         }
       }
-      that.getArmiesInRegion = function(id) { 
-        if (armiesPerRegion[id]) {
-          return armiesPerRegion[id].armies;
-        } 
-        else {
-          return [];
-        }
-      }
+
     
       /** returns true, if update is executed, returns false, if request did 
        * fail (e.g. connection error) or is unnecessary (e.g. already underway).
        */
       that.updateArmy = function(id, updateType, callback) {
-        var url = AWE.Config.MILITARY_SERVER_BASE+'armies/'+id+'.json';
+        var url = AWE.Config.MILITARY_SERVER_BASE+'armies/'+id;
         return my.updateEntity(url, id, updateType, callback); 
       };
     
       /** updates all armies in a given region. Calls the callback with a
        * list of all the updated armies. */
       that.updateArmiesInRegion = function(regionId, updateType, callback) {
-        var url = AWE.Config.MAP_SERVER_BASE+'regions/'+regionId+'/armies.json';
+        var url = AWE.Config.MAP_SERVER_BASE+'regions/'+regionId+'/armies';
         return my.fetchEntitiesFromURL(
           url,                                  // url to fetch from
           my.runningUpdatesPerRegion,           // queue to register this request during execution
@@ -161,7 +148,7 @@ AWE.GS = (function(module) {
       }
     
       that.updateArmiesAtLocation = function(locationId, updateType, callback) {
-        var url = AWE.Config.MAP_SERVER_BASE+'locations/'+locationId+'/armies.json';
+        var url = AWE.Config.MAP_SERVER_BASE+'locations/'+locationId+'/armies';
         return my.fetchEntitiesFromURL(
           url, 
           my.runningUpdatesPerLocation, 
@@ -182,6 +169,28 @@ AWE.GS = (function(module) {
         );
       }
       
+      that.updateArmiesAtFortress = function(regionId, updateType, callback) {
+        var url = AWE.Config.MAP_SERVER_BASE+'regions/'+regionId+'/armies?fortress_only=1';
+        return my.fetchEntitiesFromURL(
+          url, 
+          my.runningUpdatesPerRegion, 
+          regionId, 
+          updateType, 
+          this.lastUpdateForFortress(regionId),
+          function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
+            if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
+              lastFortressUpdates[regionId] = timestamp;
+            }
+            if (callback) {
+              if (status === AWE.Net.NOT_MODIFIED) {
+                result = module.Army.getAllForRegion_id(regionId);
+              }
+              callback(result, status, xhr, timestamp);
+            }
+          }
+        );        
+      }
+      
       return that;
         
     }())
@@ -191,9 +200,14 @@ AWE.GS = (function(module) {
   
 }(AWE.GS || {}));
 
+
+/*
+$(document).ready(function() {
+  
   var army = AWE.GS.Army.create();
   console.dir(AWE.GS);
-
+  
+  AWE.Net.init();
 
   AWE.GS.Army.Manager.updateArmy(10, AWE.GS.ENTITY_UPDATE_TYPE_AGGREGATE, function(army) {
     console.log("RECEIVED AGGREGATE: " + army.toString());
@@ -225,8 +239,6 @@ AWE.GS = (function(module) {
   });
 
 
-$(document).ready(function() {
-
-
-  
 });
+
+*/
