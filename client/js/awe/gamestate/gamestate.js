@@ -41,7 +41,7 @@ AWE.GS = (function(module) {
 
     my = my || {};
     my.typeName = my.typeName || 'Entity';
-  
+
     my.setPropertiesWithHash = function(hash) {
       for (var key in hash) {
         if (hash.hasOwnProperty(key)) {
@@ -60,10 +60,9 @@ AWE.GS = (function(module) {
     // public attributes and methods /////////////////////////////////////////
   
     that = {};
-    that.typeName = function() { return my.typeName; }
-
     AWE.Partials.addProperties(that, module[my.typeName], my);
-  
+    
+    
     // synthesized properties ////////////////////////////////////////////////
 
     that.property('id', null, module.PROPERTY_READ_ONLY);
@@ -73,7 +72,7 @@ AWE.GS = (function(module) {
     that.property('lastShortUpdateAt', new Date(1970), module.PROPERTY_READ_ONLY);      ///< time of last short update received by the client
     that.property('lastFullUpdateAt', new Date(1970), module.PROPERTY_READ_ONLY);       ///< time of last full update received by the client
 
-
+    that.typeName = function() { return my.typeName; }
 
     that.lastUpdateAt = function(updateType) {
       if (updateType === undefined) { 

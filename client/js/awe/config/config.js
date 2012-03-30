@@ -8,6 +8,12 @@ var AWE = window.AWE || {};
 
 AWE.Config = (function(module) { 
   
+  // automatically determine the server to use -> same origin policy
+  module.SERVER_ROOT = document.location.protocol + '//' + document.location.host;
+  if (!document.location.host) { // for the case where it's loaded from file 
+    module.SERVER_ROOT = 'http://localhost:3000/'
+  }
+  
   module.DEBUG_LEVEL_ERROR   = 0;
   module.DEBUG_LEVEL_WARNING = 1;
   module.DEBUG_LEVEL_INFO    = 2;
@@ -16,8 +22,8 @@ AWE.Config = (function(module) {
   module.MAP_DEBUG_LEVEL = module.DEBUG_LEVEL_ERROR;
   
   module.MAP_RUN_TESTS = false;
-  module.MAP_SERVER_BASE = 'http://localhost:3000/game_server/map/';
-  module.MILITARY_SERVER_BASE = 'http://localhost:3000/game_server/military/';
+  module.MAP_SERVER_BASE = module.SERVER_ROOT + '/game_server/map/';
+  module.MILITARY_SERVER_BASE = module.SERVER_ROOT + '/game_server/military/';
   
   module.MAPPING_FORTRESS_SIZE = 64;
   
@@ -83,6 +89,9 @@ AWE.Config = (function(module) {
 
     "map/army": 'images/army.png',
   };
+  
+  console.log('CONFIGURATION: ');
+  console.dir(module);
   
   return module;
   
