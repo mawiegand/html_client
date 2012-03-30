@@ -80,7 +80,7 @@ AWE.UI = (function(module) {
       _container.addChild(_flagShape);
 
       _stanceView = AWE.UI.createImageView();
-      log('army', army);
+     // log('army', army);
       _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(_stanceImages[_army.stance()]));
       _stanceView.setFrame(AWE.Geometry.createRect(0, 8, 64, 96));
       _stanceView.onClick = that.onClick;

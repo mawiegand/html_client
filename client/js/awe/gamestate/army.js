@@ -191,6 +191,7 @@ AWE.GS = (function(module) {
         );        
       }
       
+      
       return that;
         
     }())
@@ -201,7 +202,7 @@ AWE.GS = (function(module) {
 }(AWE.GS || {}));
 
 
-/*
+
 $(document).ready(function() {
   
   var army = AWE.GS.Army.create();
@@ -241,4 +242,4 @@ $(document).ready(function() {
 
 });
 
-*/
+
