@@ -716,7 +716,7 @@ AWE.Controller = (function(module) {
       
       // update fortresses
       var newFortressViews = {};
-      var newArmyViews = {};
+      // var newArmyViews = {};
       var removedSomething = false;
 
       for (var i = 0; i < nodes.length; i++) { 
@@ -835,69 +835,83 @@ AWE.Controller = (function(module) {
       
       
       // update armies in fortresses
-      var newArmyViews = {};
 
-      for (var i = 0; i < nodes.length; i++) { 
-        // frame for node      
+      for (var i = 0; i < nodes.length; i++) {
+        var node = nodes[i];
         var frame = that.mc2vc(nodes[i].frame());
-        // var alpha = that.alpha(frame.size.width, 128, 192);
-        // if node is big enough for displaying a the fortress
-        if (that.isFortressVisible(frame)) {
-          // get view for node 
-          var view = armyViews[nodes[i].id()];
-          // if view exists already
-          if (view) {       
-            // if model of view updated
-            // if (view.lastChange !== undefined && view.lastChange() < nodes[i].lastChange()) {
-              // view.setNeedsUpdate();
-            // }                     
-            // set new center
-            view.setCenter(AWE.Geometry.createPoint(
-              frame.origin.x + frame.size.width / 2,
-              frame.origin.y + frame.size.height / 2 - 96
-            ));
-            
-            // save view in newViews Array
-            newArmyViews[nodes[i].id()] = view;                      
-          }
+        
+        if (node.region() && node.region().locations()) {
 
-          // if view for node doesn't exists and node is leaf
-          else if (nodes[i].region() && nodes[i].region().getArmies()) {
+          var locations = node.region().locations();
+          
+          for (var j = 0; j < locations.length; j++) {
             
-            var armies = nodes[i].region().getArmies();
-            if (armies) {
-              var anArmy = null;
-              for (var a in armies) {
-                if (armies.hasOwnProperty(a)) {
-                  anArmy = armies[a];
+            var location = locations[j];
+            var armyViewsPerLocation = armyViews[location.id()] || {};
+            var newArmyViewsPerLocation = {};
+            
+            if (location.position()) {
+            
+              var locationOrigin = that.mc2vc(location.position());
+              
+              // vorhandene verschieben
+              
+              for (var a in armyViewsPerLocation) {
+                if (armyViewsPerLocation.hasOwnProperty(a)) {
+                  
+                  var armyView = armyViewsPerLocation[a];
+                
+                  armyView.setCenter(AWE.Geometry.createPoint(
+                    locationOrigin.x,
+                    locationOrigin.y - 96
+                  ));            
+    
+                  newArmyViewsPerLocation[a] = armyView;                      
                 }
               }
-              if (anArmy) {
-                var armyView = AWE.UI.createArmyView();
-                armyView.initWithControllerAndArmy(that, anArmy);
-                armyView.setCenter(AWE.Geometry.createPoint(
-                  frame.origin.x + frame.size.width / 2,
-                  frame.origin.y + frame.size.height / 2 - 96       
-                ));
-                _stages[1].addChild(armyView.displayObject());
-                newArmyViews[nodes[i].id()] = armyView;
+              // neue hinzufügen
+              
+              if (location.getArmies() && that.isSettlementVisible(frame)) {
+    
+                var newArmies = location.getArmies();
+                
+                for (var n in newArmies) {
+                  if (newArmies.hasOwnProperty(n)) {
+    
+                    var newArmy = newArmies[n];
+  
+                    if (!armyViewsPerLocation[newArmy.id()]) {
+                      var armyView = AWE.UI.createArmyView();
+                      armyView.initWithControllerAndArmy(that, newArmy);
+                      armyView.setCenter(AWE.Geometry.createPoint(
+                        locationOrigin.x,
+                        locationOrigin.y - 96
+                      ));
+                      _stages[1].addChild(armyView.displayObject());
+                      newArmyViewsPerLocation[newArmy.id()] = armyView;
+                    }
+                  }
+                }
+              }
+            }  
+            
+            // alte löschen
+            
+            for (var k in armyViewsPerLocation) {             // remove view from layer
+              // use hasOwnProperty to filter out keys from the Object.prototype
+              if (armyViewsPerLocation.hasOwnProperty(k) && (!newArmyViewsPerLocation[k] || !that.isSettlementVisible(frame))) {
+                var armyView = armyViewsPerLocation[k];
+                AWE.Ext.applyFunction(armyView.displayObject(), function(obj) {
+                  _stages[1].removeChild(obj);
+                  removedSomething = true;
+                });        
               }
             }
-          }
+            
+            armyViews[location.id()] = newArmyViewsPerLocation;
+          }          
         }
-      }
-
-      for (var k in armyViews) {             // remove view from layer
-        // use hasOwnProperty to filter out keys from the Object.prototype
-        if (armyViews.hasOwnProperty(k) && !newArmyViews[k]) {
-          var view = armyViews[k];
-          AWE.Ext.applyFunction(view.displayObject(), function(obj) {
-            _stages[1].removeChild(obj);
-            removedSomething = true;
-          });        
-        }
-      }
-      armyViews = newArmyViews;
+      }      
       
       return removedSomething;
     };

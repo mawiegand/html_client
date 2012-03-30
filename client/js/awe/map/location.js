@@ -83,8 +83,8 @@ AWE.Map = (function(module) {
     /** returns the level of the settlement / fortress / outpost (0 to 10). */
     that.level = function() { return _level; }
         
-    that.getArmies = function() { 
-      return AWE.GS.Army.getAllForLocaton_id(_id) 
+    that.getArmies = function() {
+      return AWE.GS.Army.getAllForLocation_id(_id);
     };
     
     that.lastArmyUpdateAt = function() {
@@ -125,7 +125,9 @@ AWE.Map = (function(module) {
     
     /** Returns the position of the village on the map */
     that.position = AWE.memoizer(null, function () {
+      
       var frame = that.region().node().frame();
+
       //for the fortress return the center
       if (_slot == 0) {
         AWE.Geometry.createPoint(
@@ -208,9 +210,12 @@ AWE.Map = (function(module) {
         offDir.x = offDir.x * (streetEndPosition.x - basePositon.x)/2;
         offDir.y = offDir.y * (streetEndPosition.y - basePositon.y)/2;
 
+        log('p', AWE.Geometry.createPoint(
+          basePositon.x + offDir.x,
+          basePositon.y + offDir.y
+        ));
+
         return AWE.Geometry.createPoint(
-          // basePositon.x + offDir.x,
-          // basePositon.y + offDir.y
           basePositon.x + offDir.x,
           basePositon.y + offDir.y
         );
