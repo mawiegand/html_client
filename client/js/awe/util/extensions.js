@@ -1,4 +1,5 @@
 /* Author: Sascha Lange <sascha@5dlab.com>
+ *         Patrick Fox <patrick@5dlab.com>
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
@@ -42,6 +43,15 @@ AWE.Ext = (function(module) {
     }
     else if (_obj) {
       _function(_obj);
+    }
+  }
+  
+  /** calls the function for each of the elements of the hash. */
+  module.applyFunctionToElements = function(_hash, _function) {
+    for (var key in _hash) {
+      if (_hash.hasOwnProperty(key)) {
+        _function(_hash[key]);
+      }
     }
   }
     

@@ -719,6 +719,20 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
+    /** helper function that purges views from a stage when they are no 
+     * needed (e.g. scrolled out of the viewport). */
+    var purgeDispensableViewsFromStage = function(presentViews, neededViews, stage) {
+      var removedSomething = false;
+      var toRemove = AWE.Util.hashSubtraction(presentViews, neededViews);
+      AWE.Ext.applyFunctionToElements(toRemove, function(view) {
+        AWE.Ext.applyFunction(view.displayObject(), function(obj) {
+          stage.removeChild(obj);
+          removedSomething = true;          
+        });
+      }); 
+      return removedSomething;     
+    }
+    
     that.rebuildMapHierarchy = function(nodes) {
 
       var newRegionViews = {};  
@@ -743,18 +757,9 @@ AWE.Controller = (function(module) {
           });
         }
       }
-      for (var k in regionViews) {             // remove view from layer
-        // use hasOwnProperty to filter out keys from the Object.prototype
-        if (regionViews.hasOwnProperty(k) && !newRegionViews[k]) {
-          var v = regionViews[k];
-          AWE.Ext.applyFunction(v.displayObject(), function(obj) {
-            _stages[0].removeChild(obj);
-            removedSomething = true;
-          });        
-        }
-      }
+      
+      var removedSomething = purgeDispensableViewsFromStage(regionViews, newRegionViews, _stages[0]);
       regionViews = newRegionViews;  
-       
       return removedSomething;     
     }
     
