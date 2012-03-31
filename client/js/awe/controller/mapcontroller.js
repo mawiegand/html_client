@@ -48,6 +48,8 @@ AWE.Controller = (function(module) {
     var _actionViews = {};
     var HUDViews = {};
     
+
+    
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -606,7 +608,7 @@ AWE.Controller = (function(module) {
       
       var startUpdate = function(type) {
         runningUpdate[type] = new Date();
-        console.log('MapController: starting update for ' + type + '.' );
+       // console.log('MapController: starting update for ' + type + '.' );
       }
       
       var stopUpdate = function(type) {
@@ -736,14 +738,15 @@ AWE.Controller = (function(module) {
     that.rebuildMapHierarchy = function(nodes) {
 
       var newRegionViews = {};  
-      var removedSomething = false;        
 
       for (var i = 0; i < nodes.length; i++) {
         var view = regionViews[nodes[i].id()];
         var frame = that.mc2vc(nodes[i].frame());
         if (view) {                            // view already exists         
           newRegionViews[nodes[i].id()] = view;
-          if (view.lastChange !== undefined && view.lastChange() < nodes[i].lastChange()) {
+          if (view.lastChange !== undefined && 
+              (view.lastChange() < nodes[i].lastChange() || 
+               (nodes[i].region() && view.lastChange() < nodes[i].region().lastChange()))) { // somehow determine when to update roads (change of locations?)
             view.setNeedsUpdate();
           }
           view.setFrame(frame);
@@ -877,7 +880,6 @@ AWE.Controller = (function(module) {
     that.updateArmies = function(nodes) {
   
        // update armies in fortresses
-      var removedSomething = false;
       var newArmyViews = {};
       
       
@@ -898,7 +900,7 @@ AWE.Controller = (function(module) {
               // if view exists already
               if (view) {       
                 // if model of view updated
-                if (1 || view.lastChange !== undefined && view.lastChange() < army.lastChange()) { // TODO -> really track changes!!!
+                if (view.lastChange !== undefined && view.lastChange() < army.lastChange()) {
                   view.setNeedsUpdate();
                 }                     
                 // set new center
@@ -944,7 +946,7 @@ AWE.Controller = (function(module) {
                 // if view exists already
                 if (view) {       
                   // if model of view updated
-                  if (1 || view.lastChange !== undefined && view.lastChange() < army.lastChange()) { // TODO -> really track changes!!!
+                  if (view.lastChange !== undefined && view.lastChange() < army.lastChange()) { 
                     view.setNeedsUpdate();
                   }                     
                   // set new center
@@ -986,9 +988,9 @@ AWE.Controller = (function(module) {
     that.updateGamingPieces = function(nodes) {
       var removedSomething = false;
       
-      removedSomething = that.updateFortresses(nodes) || removedSomething;
+      removedSomething = that.updateFortresses(nodes)  || removedSomething;
       removedSomething = that.updateSettlements(nodes) || removedSomething;
-      removedSomething = that.updateArmies(nodes) || removedSomething;
+      removedSomething = that.updateArmies(nodes)      || removedSomething;
 
       return removedSomething;
     };
@@ -1069,7 +1071,7 @@ AWE.Controller = (function(module) {
         for (var id in viewHash) {
           if (viewHash.hasOwnProperty(id)) {
             var view = viewHash[id];
-            //view.updateIfNeeded();
+            view.updateIfNeeded();
             view.layoutIfNeeded();
             needsDisplay = needsDisplay || view.needsDisplay();
           }
@@ -1080,14 +1082,14 @@ AWE.Controller = (function(module) {
       
       return function(nodes, visibleArea) {
         
-        var stagesNeedUpdate = [true, false, true, false]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
+        var stagesNeedUpdate = [false, false, true, false]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
         
         // rebuild individual hieararchies
         if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           stagesNeedUpdate[0] = this.rebuildMapHierarchy(nodes) || stagesNeedUpdate[0];
         }
         if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _action ) {
-          stagesNeedUpdate[1] = stagesNeedUpdate[1] || that.updateGamingPieces(nodes);
+          stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         };
         
         if (1) { // TODO: only update, if necessary
@@ -1098,13 +1100,19 @@ AWE.Controller = (function(module) {
           that.updateHUD(); 
           stagesNeedUpdate[3] = true; // only repaint, if necessary
         }
+        
+        //log('Update:                   ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
         // update hierarchies and check which stages need to be redrawn
         stagesNeedUpdate[0] = propUpdates(regionViews) || stagesNeedUpdate[0];
         stagesNeedUpdate[1] = propUpdates(fortressViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(locationViews) || stagesNeedUpdate[1];
+        stagesNeedUpdate[1] = propUpdates(armyViews) || stagesNeedUpdate[1];
         // stagesNeedUpdate[2] = propUpdates(actionViews);
         // stagesNeedUpdate[3] = propUpdates(HUDViews);
+
+        //log('Update after propagation: ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
+
         
         oldVisibleArea = visibleArea;
         oldWindowSize = _windowSize.copy();
@@ -1158,13 +1166,20 @@ AWE.Controller = (function(module) {
         
         // STEP 4: update views and repaint view hierarchies as needed
         if (_needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || _action) {
-          // STEP 4a: get all visible nodes from the model (TODO: armies etc.)
+          // STEP 4a: get all visible nodes from the model
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());    
           
           // STEP 4b: create, remove and update all views according to visible parts of model      
           var stageUpdateNeeded = that.updateViewHierarchy(visibleNodes, visibleArea);
           
           // STEP 4c: update (repaint) those stages, that have changed (one view that needsDisplay triggers repaint of whole stage)
+          var viewsInStages = [
+            regionViews,
+            [fortressViews, armyViews, locationViews],
+            [],     // action views: no views?!
+            HUDViews
+          ];          
+          
           for (var i=0; i < 4; i++) {
             if (stageUpdateNeeded[i]) {
               if (_sortStages[i]) {  // TODO: add configuration: stage needs sorting
@@ -1175,6 +1190,18 @@ AWE.Controller = (function(module) {
                 });
               }
               _stages[i].update();
+              //log(viewsInStages, regionViews);
+              AWE.Ext.applyFunction(viewsInStages[i], function(viewHash) {
+                //log (viewHash);
+                AWE.Ext.applyFunctionToElements(viewHash, function(view) {
+                  if (view === null) {
+                    log('ERROR: view in hash is null!', i, viewHash);
+                  }
+                  else {
+                    view.notifyRedraw();
+                  }
+                });
+              });
             }
           }
           

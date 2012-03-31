@@ -137,6 +137,10 @@ AWE.UI = (function(module) {
      * when needed. */
     that.needsDisplay = function() { return _needsDisplay; } // TOOD: someone needs to set needsDisplay back to false after painting!
     
+    /** informs the view that it has been redrawn. Must be called by a view
+     * controller after updating the stage this view is attached to. */
+    that.notifyRedraw = function() { _needsDisplay = false; }
+    
     that.scaleX = function() { return that.displayObject().length !== undefined ? that.displayObject()[0].scaleY : that.displayObject().scaleY; }
     that.scaleY = function() { return that.displayObject().length !== undefined ? that.displayObject()[0].scaleY : that.displayObject().scaleY; }
 
@@ -146,6 +150,12 @@ AWE.UI = (function(module) {
     that.layoutIfNeeded = function() {
       if (_needsLayout) {
         this.layoutSubviews();
+      };
+    };
+    
+    that.updateIfNeeded = function() {
+      if (_needsUpdate) {
+        this.updateView();
       };
     };
     
@@ -170,6 +180,11 @@ AWE.UI = (function(module) {
       this.autoscaleIfNeeded();
       
       _needsLayout = false;
+      _needsDisplay = true;
+    }
+    
+    that.updateView = function() {
+      _needsUpdate = false;
       _needsDisplay = true;
     }
     
