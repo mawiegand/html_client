@@ -742,8 +742,8 @@ AWE.Controller = (function(module) {
       for (var i = 0; i < nodes.length; i++) {
         var view = regionViews[nodes[i].id()];
         var frame = that.mc2vc(nodes[i].frame());
+        
         if (view) {                            // view already exists         
-          newRegionViews[nodes[i].id()] = view;
           if (view.lastChange !== undefined && 
               (view.lastChange() < nodes[i].lastChange() || 
                (nodes[i].region() && view.lastChange() < nodes[i].region().lastChange()))) { // somehow determine when to update roads (change of locations?)
@@ -754,11 +754,11 @@ AWE.Controller = (function(module) {
         else {                                 // view needs to be created
           view = AWE.UI.createRegionView();
           view.initWithControllerAndNode(that, nodes[i], frame);
-          newRegionViews[nodes[i].id()] = view;
           AWE.Ext.applyFunction(view.displayObject(), function(obj) {
             _stages[0].addChild(obj);
           });
         }
+        newRegionViews[nodes[i].id()] = view;
       }
       
       var removedSomething = purgeDispensableViewsFromStage(regionViews, newRegionViews, _stages[0]);
@@ -789,45 +789,40 @@ AWE.Controller = (function(module) {
       return frame.size.width > 256;
     }
     
-    that.updateFortresses = function(nodes) {
-     // update fortresses
+    var setFortressPosition = function(view, frame) {
+      view.setCenter(AWE.Geometry.createPoint(
+        frame.origin.x + frame.size.width / 2,
+        frame.origin.y + frame.size.height / 2 - frame.size.height / 40         
+      ));
+    }
+    
+    that.updateFortresses = function(nodes) {     // view for slot 0
+
       var newFortressViews = {};
 
       for (var i = 0; i < nodes.length; i++) { 
-        // frame for node      
-        var frame = that.mc2vc(nodes[i].frame());
-        // if node is big enough for displaying a the fortress
-        if (that.isFortressVisible(frame)) {
-          // get view for node 
-          var view = fortressViews[nodes[i].id()];
-          // if view exists already
-          if (view) {       
-            // if model of view updated
-            if (view.lastChange !== undefined && view.lastChange() < nodes[i].lastChange()) {
+        var frame = that.mc2vc(nodes[i].frame()); // frame for node        
+
+        if (that.isFortressVisible(frame) &&      // if node is big enough for displaying the fortress
+            nodes[i].isLeaf() && nodes[i].region()) {      
+          var view = fortressViews[nodes[i].id()];// get existing view for node 
+
+          if (view) {                             // if view exists already   
+            if (view.lastChange !== undefined &&  // if model of view updated
+                (view.lastChange() < nodes[i].lastChange() ||
+                 ((nodes[i].region() && view.lastChange() < nodes[i].region().lastChange())))) {
               view.setNeedsUpdate();
             }                     
-            // set new center
-            view.setCenter(AWE.Geometry.createPoint(
-              frame.origin.x + frame.size.width / 2,
-              frame.origin.y + frame.size.height / 2
-            ));
-            newFortressViews[nodes[i].id()] = view;                      
           }
-
-          // if view for node doesn't exists and node is leaf
-          else if (nodes[i].isLeaf() && nodes[i].region()) {
-            // create and initialize new view, set center
-            var newView = AWE.UI.createFortressView();
-            newView.initWithControllerAndNode(that, nodes[i]);
-            newView.setCenter(AWE.Geometry.createPoint(
-              frame.origin.x + frame.size.width / 2,
-              frame.origin.y + frame.size.height / 2            
-            ));
-            // add views displayObject to stage
-            _stages[1].addChild(newView.displayObject());
-            // add view to newViews Array
-            newFortressViews[nodes[i].id()] = newView;
+          else if (nodes[i].isLeaf() && nodes[i].region()) { // if view for node doesn't exists and node is a leaf node
+            view = AWE.UI.createFortressView();
+            view.initWithControllerAndNode(that, nodes[i]);
+            _stages[1].addChild(view.displayObject()); // add view's displayObject to stage
           }
+          if (view) {
+            setFortressPosition(view, frame);
+            newFortressViews[nodes[i].id()] = view;  
+          }                    
         }
       }
       
@@ -836,9 +831,8 @@ AWE.Controller = (function(module) {
       return removedSomething;
     }
     
-    that.updateSettlements = function(nodes) {
+    that.updateSettlements = function(nodes) {     // views for slot 1-8
       
-       // update other locations
       var newLocationViews = {};
       
       for (var i = 0; i < nodes.length; i++) {       
