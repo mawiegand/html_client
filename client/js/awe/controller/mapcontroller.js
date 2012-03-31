@@ -786,18 +786,13 @@ AWE.Controller = (function(module) {
       return frame.size.width > 256;
     }
     
-    
-    
     that.updateFortresses = function(nodes) {
      // update fortresses
       var newFortressViews = {};
-      // var newArmyViews = {};
-      var removedSomething = false;
 
       for (var i = 0; i < nodes.length; i++) { 
         // frame for node      
         var frame = that.mc2vc(nodes[i].frame());
-        // var alpha = that.alpha(frame.size.width, 128, 192);
         // if node is big enough for displaying a the fortress
         if (that.isFortressVisible(frame)) {
           // get view for node 
@@ -813,10 +808,6 @@ AWE.Controller = (function(module) {
               frame.origin.x + frame.size.width / 2,
               frame.origin.y + frame.size.height / 2
             ));
-            
-            // set alpha
-            // view.setAlpha(alpha);
-            // save view in newViews Array
             newFortressViews[nodes[i].id()] = view;                      
           }
 
@@ -829,9 +820,6 @@ AWE.Controller = (function(module) {
               frame.origin.x + frame.size.width / 2,
               frame.origin.y + frame.size.height / 2            
             ));
-
-            // set alpha
-            // newView.setAlpha(alpha);
             // add views displayObject to stage
             _stages[1].addChild(newView.displayObject());
             // add view to newViews Array
@@ -840,25 +828,8 @@ AWE.Controller = (function(module) {
         }
       }
       
-      // purge stage
-      for (var k in fortressViews) {
-        // use hasOwnProperty to filter out keys from the Object.prototype
-        // if old view is not in newViews array
-        if (fortressViews.hasOwnProperty(k) && !newFortressViews[k]) {
-          // get view
-          var view = fortressViews[k];
-          // log('entfernen');
-          // remove views displayObject from stage
-          AWE.Ext.applyFunction(view.displayObject(), function(obj) {
-            _stages[1].removeChild(obj);
-            removedSomething = true;
-          });        
-        }
-      }
-      
-      // remember newViews array
-      fortressViews = newFortressViews;
-      
+      var removedSomething = purgeDispensableViewsFromStage(fortressViews, newFortressViews, _stages[1]);
+      fortressViews = newFortressViews;      
       return removedSomething;
     }
     
@@ -866,13 +837,9 @@ AWE.Controller = (function(module) {
       
        // update other locations
       var newLocationViews = {};
-      var removedSomething = false;
-
       
       for (var i = 0; i < nodes.length; i++) {       
         var frame = that.mc2vc(nodes[i].frame()); 
-        // var alpha = that.alpha(frame.size.width, 256, 384);
-        // var locations = locationViews[nodes[i].id()];
         if (that.isSettlementVisible(frame) && nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().locations()) {
 
           var locations = nodes[i].region().locations();
@@ -881,7 +848,6 @@ AWE.Controller = (function(module) {
             var view = locationViews[location.id()];
             if (view) {                                      
               view.setCenter(that.mc2vc(location.position()));
-              // view.setAlpha(alpha);
               newLocationViews[location.id()] = view;
             }
             else {                                        
@@ -895,7 +861,6 @@ AWE.Controller = (function(module) {
               if (view) {
                 view.initWithControllerAndLocation(that, location);
                 view.setCenter(that.mc2vc(location.position()));
-                // view.setAlpha(alpha);
                 _stages[1].addChild(view.displayObject());
                 newLocationViews[location.id()] = view;
               }
@@ -904,18 +869,8 @@ AWE.Controller = (function(module) {
         }
       }
       
-      for (var k in locationViews) {             // remove view from layer
-        // use hasOwnProperty to filter out keys from the Object.prototype
-        if (locationViews.hasOwnProperty(k) && !newLocationViews[k]) {
-          var view = locationViews[k];
-          AWE.Ext.applyFunction(view.displayObject(), function(obj) {
-            _stages[1].removeChild(obj);
-            removedSomething = true;
-          });        
-        }
-      }
-      locationViews = newLocationViews;
-      
+      var removedSomething = purgeDispensableViewsFromStage(locationViews, newLocationViews, _stages[1]);
+      locationViews = newLocationViews;      
       return removedSomething;
     }
     
@@ -1020,21 +975,8 @@ AWE.Controller = (function(module) {
         }
       }
           
-          
-
-      
-      for (var k in armyViews) {             // remove view from layer, if it's not displayed any more
-        // use hasOwnProperty to filter out keys from the Object.prototype
-        if (armyViews.hasOwnProperty(k) && !newArmyViews[k]) {
-          var view = armyViews[k];
-          AWE.Ext.applyFunction(view.displayObject(), function(obj) {
-            _stages[1].removeChild(obj);
-            removedSomething = true;
-          });        
-        }
-      }
-      armyViews = newArmyViews;
-      
+      var removedSomething = purgeDispensableViewsFromStage(armyViews, newArmyViews, _stages[1]);
+      armyViews = newArmyViews;      
       return removedSomething;          
     }
     
