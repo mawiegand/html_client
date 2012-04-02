@@ -65,23 +65,21 @@ AWE.UI = (function(module) {
       _baseShape = new Shape(_baseGraphics);  
       _container.addChild(_baseShape);
 
-      if (army.size_max()) {
-        var _poleGraphics = new Graphics();
-        _poleGraphics.setStrokeStyle(1);
-        _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
-        _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
-        _poleGraphics.drawRoundRect(56, 12, 2, 84, 0);
-        _poleShape = new Shape(_poleGraphics);  
-        _container.addChild(_poleShape);
-  
-        var _flagGraphics = new Graphics();
-        _flagGraphics.setStrokeStyle(1);
-        _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
-        _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
-        _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * (army.size_present() / army.size_max()), 22).lineTo(56, 12);
-        _flagShape = new Shape(_flagGraphics);  
-        _container.addChild(_flagShape);
-      }
+      var _poleGraphics = new Graphics();
+      _poleGraphics.setStrokeStyle(1);
+      _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
+      _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
+      _poleGraphics.drawRoundRect(56, 12, 2, 84, 0);
+      _poleShape = new Shape(_poleGraphics);  
+      _container.addChild(_poleShape);
+
+      var _flagGraphics = new Graphics();
+      _flagGraphics.setStrokeStyle(1);
+      _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
+      _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
+      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * army.size_present() / 1200, 22).lineTo(56, 12);
+      _flagShape = new Shape(_flagGraphics);  
+      _container.addChild(_flagShape);
 
       _stanceView = AWE.UI.createImageView();
       _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(_stanceImages[_army.stance()]));
@@ -129,28 +127,21 @@ AWE.UI = (function(module) {
     
     that.updateView = function() {
       
-      if (_army.size_max()) {
-        
-        if (!_poleShape) {
-          var _poleGraphics = new Graphics();
-          _poleGraphics.setStrokeStyle(1);
-          _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
-          _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
-          _poleGraphics.drawRoundRect(56, 12, 2, 84, 0);
-          _poleShape = new Shape(_poleGraphics);  
-          _container.addChild(_poleShape);
-        }
-  
-        if (!_flagShape) {
-          var _flagGraphics = new Graphics();
-          _flagGraphics.setStrokeStyle(1);
-          _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
-          _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
-          _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * (_army.size_present() / _army.size_max()), 22).lineTo(56, 12);
-          _flagShape = new Shape(_flagGraphics);  
-          _container.addChild(_flagShape);
-        }
-      }
+      var _poleGraphics = new Graphics();
+      _poleGraphics.setStrokeStyle(1);
+      _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
+      _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
+      _poleGraphics.drawRoundRect(56, 12, 2, 84, 0);
+      _poleShape = new Shape(_poleGraphics);  
+      _container.addChild(_poleShape);
+
+      var _flagGraphics = new Graphics();
+      _flagGraphics.setStrokeStyle(1);
+      _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
+      _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
+      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * (_army.size_present() / _army.size_max()), 22).lineTo(56, 12);
+      _flagShape = new Shape(_flagGraphics);  
+      _container.addChild(_flagShape);
 
       _container.removeChild(_flagShape);
       var _flagGraphics = new Graphics();

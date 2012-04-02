@@ -77,6 +77,11 @@ AWE.Config = (function(module) {
     "map/army/stanceDefensive": "images/army/stance_def.png",
     "map/army/stanceNeutral": "images/army/stance_neu.png",
 
+    "map/army/rank1": 'images/army/rank1.png',
+    "map/army/rank2": 'images/army/rank2.png',
+    "map/army/rank3": 'images/army/rank3.png',
+    "map/army/rank4": 'images/army/rank4.png',
+
     "map/outpost" : "images/settlements/outpost.png",
 
     "map/easement": "images/verbot.png",
