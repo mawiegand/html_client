@@ -17,8 +17,8 @@ AWE.Controller = (function(module) {
     var _highlightedView = null; ///< there can be only one highlighted view!
     
     var _windowSize = null;      ///< size of window in view coordinates
-    var mc2vcScale;             ///< scaling
-    var mc2vcTrans;             ///< translation
+    var mc2vcScale;              ///< scaling
+    var mc2vcTrans;              ///< translation
 
     var _needsLayout;            ///< true, in case e.g. the window has changed, causing a new layuot of the map
     var _needsDisplay;           ///< true, in case something (data, subwview) has changed causing a need for a redraw

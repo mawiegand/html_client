@@ -5,6 +5,9 @@ window.WACKADOO = (function(module) {
   module.createApplication = function() {
     
     var _rootScreenController = null;
+    var _initialized = false;
+    var _numLoadedAssets = 0;
+    var _numAssets = 0;
     
     var that = {};
     
@@ -14,11 +17,16 @@ window.WACKADOO = (function(module) {
       AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
         AWE.UI.rootNode = AWE.Map.Manager.rootNode();
       });
+  
+      _numLoadedAssets = _numAssets = 0;
 
       AWE.UI.ImageCache.init();                         // initializes the central image cache
       for (k in AWE.Config.IMAGE_CACHE_LOAD_LIST) {     // and preload assets
         if (AWE.Config.IMAGE_CACHE_LOAD_LIST.hasOwnProperty(k)) {
-          AWE.UI.ImageCache.loadImage(k, AWE.Config.IMAGE_CACHE_LOAD_LIST[k]);
+          _numAssets += 1;                              // count assets
+          AWE.UI.ImageCache.loadImage(k, AWE.Config.IMAGE_CACHE_LOAD_LIST[k], function(name) {
+            that.imageLoaded(name);
+          });
         }
       }
     
@@ -26,6 +34,13 @@ window.WACKADOO = (function(module) {
       _rootScreenController = AWE.Controller.createMapController('#layers');
       _rootScreenController.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
     };
+    
+    that.imageLoaded = function(name) {
+      _numLoadedAssets += 1;
+      if (_numLoadedAssets === _numAssets) {           // have loaded all assets?
+        _initialized = true;
+      }
+    }
     
     that.rootScreenController = function() { return _rootScreenController; }
     
@@ -42,7 +57,12 @@ window.WACKADOO = (function(module) {
      * it can choose the best technique for the particular task (e.g. canvas for the map, basic HTML
      * for sending and receiving messages.) */
     that.runloop = function() {
-      _rootScreenController.runloop();        // hand over control to present screen controller
+      if (_initialized) {
+        _rootScreenController.runloop();      // hand over control to present screen controller
+      }
+      else {
+        $('debug2').html('Loading Assets. Progress: ' + _numLoadedAssets + ' / ' + _numAssets);
+      }
       window.requestAnimFrame(that.runloop);  // request next animation frame that will initiate the next cycle of the runloop
     };
     
