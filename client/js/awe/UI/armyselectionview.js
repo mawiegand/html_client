@@ -13,6 +13,8 @@ AWE.UI = (function(module) {
         
     my = my || {};
     
+    my.typeName = 'ArmySelectionView';
+    
     var _army = null;
     
     var _container = null;
@@ -39,18 +41,18 @@ AWE.UI = (function(module) {
       _container = new Container();
       _army = army;
       
-      _stanceButtonView = AWE.UI.createImageView();
-      _stanceButtonView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/button1"));
+      _stanceButtonView = AWE.UI.createButtonView();
+      _stanceButtonView.initWithControllerTextAndImage(controller, 'stance', AWE.UI.ImageCache.getImage("map/button1"), frame);
       _stanceButtonView.setFrame(AWE.Geometry.createRect(12, 6, 52, 52));
       _container.addChild(_stanceButtonView.displayObject());
 
-      _moveButtonView = AWE.UI.createImageView();
-      _moveButtonView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/button1"));
+      _moveButtonView = AWE.UI.createButtonView();
+      _moveButtonView.initWithControllerTextAndImage(controller, 'move', AWE.UI.ImageCache.getImage("map/button1"));
       _moveButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
       _container.addChild(_moveButtonView.displayObject());
 
-      _attackButtonView = AWE.UI.createImageView();
-      _attackButtonView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/button1"));
+      _attackButtonView = AWE.UI.createButtonView();
+      _attackButtonView.initWithControllerTextAndImage(controller, 'attack', AWE.UI.ImageCache.getImage("map/button1"));
       _attackButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
       _container.addChild(_attackButtonView.displayObject());
 
@@ -71,8 +73,6 @@ AWE.UI = (function(module) {
     that.displayObject = function() {
       return _container;
     };
-    
-    
         
     return that;
   };

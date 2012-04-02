@@ -27,6 +27,7 @@ AWE.UI = (function(module) {
 
     my = my || {};
 
+    my.typeName = 'ImageView';
 
     // public attributes and methods /////////////////////////////////////////
     

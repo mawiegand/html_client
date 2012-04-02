@@ -458,9 +458,6 @@ AWE.UI = (function(module) {
       } 
     } 
     
-
-
-    
     that.detailLevel = function() {
       if (my.frame.size.width < 128) {
         return 0;

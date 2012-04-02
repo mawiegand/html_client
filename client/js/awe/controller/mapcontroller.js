@@ -87,6 +87,7 @@ AWE.Controller = (function(module) {
       that.anchor().append('<canvas id="layer2"></canvas>');
       _canvas[2] = $('#layer2')[0];
       _stages[2] = new Stage(_canvas[2]);
+      _stages[2].enableMouseOver();
       
       // HUD layer ("static", not zoomable, not moveable)
       that.anchor().append('<canvas id="layer3"></canvas>');
@@ -94,13 +95,22 @@ AWE.Controller = (function(module) {
       _stages[3] = new Stage(_canvas[3]);
       _stages[3].enableMouseOver();
 
-      // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) is active          
+      // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) or stage2 is active          
       _stages[3].onMouseOver = function() {
         _stages[1].enableMouseOver(0);
         _unhighlightView();
       };
   
       _stages[3].onMouseOut = function() {
+        _stages[1].enableMouseOver();
+      };
+      
+      _stages[2].onMouseOver = function() {
+        _stages[1].enableMouseOver(0);
+        _unhighlightView();
+      };
+  
+      _stages[2].onMouseOut = function() {
         _stages[1].enableMouseOver();
       };
       
@@ -449,6 +459,10 @@ AWE.Controller = (function(module) {
     };
         
     var _action = false;
+
+    that.buttonClicked = function(button) {
+      log('button', button.text());
+    };
     
     that.viewClicked = function(view) {    
       if (_selectedView === view) {
@@ -464,10 +478,10 @@ AWE.Controller = (function(module) {
     };
 
     that.viewMouseOver = function(view) {
-      if (view.typeName() === 'fortressView') {
+      if (view.typeName() === 'FortressView') {
         _highlightView(view);
       }
-      else if (view.typeName() === 'armyView') {
+      else if (view.typeName() === 'ArmyView') {
         _highlightView(view);
       }
       else if (view.typeName() === 'hudView') { // typeof view == 'hud'  (evtl. eigene methode)
@@ -476,10 +490,10 @@ AWE.Controller = (function(module) {
     };
 
     that.viewMouseOut = function(view) {
-      if (view.typeName() === 'fortressView') {
+      if (view.typeName() === 'FortressView') {
         _unhighlightView();
       }
-      else if (view.typeName() === 'armyView') {
+      else if (view.typeName() === 'ArmyView') {
         _unhighlightView();
       }
     };
@@ -492,13 +506,13 @@ AWE.Controller = (function(module) {
       view.setSelected(true);
       
       // distinguish between different views
-      if (view.typeName() === 'fortressView') {
+      if (view.typeName() === 'FortressView') {
         _actionViews.selectionControls = AWE.UI.createLabelView(); // createFortressSelectionView
         _actionViews.selectionControls.initWithControllerAndLabel(that, 'Fortress', true);
         _actionViews.selectionControls.setCenter(center);
         view.setSelected(true);
       }
-      else if (view.typeName() === 'armyView') {
+      else if (view.typeName() === 'ArmyView') {
         _actionViews.selectionControls = AWE.UI.createArmySelectionView();
         _actionViews.selectionControls.initWithControllerAndArmy(that, view.army(), AWE.Geometry.createRect(-64, 0, 192, 128));
         _actionViews.selectionControls.setCenter(center);
@@ -544,12 +558,12 @@ AWE.Controller = (function(module) {
         var center = view.center();
         _highlightedView = view;
         
-        if (view.typeName() === 'fortressView') {
+        if (view.typeName() === 'FortressView') {
           _actionViews.highlightImage = AWE.UI.createFortressHighlightView();
           _actionViews.highlightImage.initWithControllerAndNode(that, view.node());
           _actionViews.highlightImage.setCenter(center.x, center.y - AWE.Config.MAPPING_FORTRESS_SIZE);
         }
-        else if (view.typeName() === 'armyView') {
+        else if (view.typeName() === 'ArmyView') {
           _actionViews.highlightImage = AWE.UI.createArmyHighlightView();
           _actionViews.highlightImage.initWithControllerAndArmy(that, view.army());
           _actionViews.highlightImage.setCenter(center.x, center.y);
@@ -572,7 +586,7 @@ AWE.Controller = (function(module) {
     /* Detail View */
 
     var _showDetailView = function(view) {
-      if (view.typeName() === 'fortressView') {      
+      if (view.typeName() === 'FortressView') {      
       if (HUDViews.detailView) {
         hideDetailView(HUDViews.detailView);
       }
@@ -580,7 +594,7 @@ AWE.Controller = (function(module) {
         HUDViews.detailView = AWE.UI.createDetailView();
         HUDViews.detailView.initWithControllerAndNode(that, view.node(), AWE.Geometry.createRect(100, 100, 350, 100));
       // }
-      // else if (view.typeName() === 'armyView') {
+      // else if (view.typeName() === 'ArmyView') {
       _stages[3].addChild(HUDViews.detailView.displayObject());
       }
     };
@@ -607,6 +621,7 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
+    var armyUpdates = {};
     
     that.modelChanged = function() { return _modelChanged; }
     
@@ -945,6 +960,7 @@ AWE.Controller = (function(module) {
               view = AWE.UI.createArmyView();
               view.initWithControllerAndArmy(that, army);
               _stages[1].addChild(view.displayObject());
+              armyUpdates[army.id()] = army;
             }                                  
             setArmyPosition(view, pos, army.id(), frame);
             newArmyViews[army.id()] = view;
