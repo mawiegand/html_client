@@ -567,6 +567,7 @@ AWE.Controller = (function(module) {
           _actionViews.highlightImage = AWE.UI.createArmyHighlightView();
           _actionViews.highlightImage.initWithControllerAndArmy(that, view.army());
           _actionViews.highlightImage.setCenter(center.x, center.y);
+          armyUpdates[view.army().id()] = view.army();
         }
         
         _stages[2].addChild(_actionViews.highlightImage.displayObject());
@@ -586,16 +587,20 @@ AWE.Controller = (function(module) {
     /* Detail View */
 
     var _showDetailView = function(view) {
-      if (view.typeName() === 'FortressView') {      
-      if (HUDViews.detailView) {
-        hideDetailView(HUDViews.detailView);
-      }
-      
-        HUDViews.detailView = AWE.UI.createDetailView();
-        HUDViews.detailView.initWithControllerAndNode(that, view.node(), AWE.Geometry.createRect(100, 100, 350, 100));
-      // }
-      // else if (view.typeName() === 'ArmyView') {
-      _stages[3].addChild(HUDViews.detailView.displayObject());
+      if (view.typeName() === 'FortressView') {  ///< temporaer      
+        if (HUDViews.detailView) {
+          hideDetailView(HUDViews.detailView);
+        }
+        
+        if (view.typeName() === 'FortressView') {      
+          HUDViews.detailView = AWE.UI.createFortressDetailView();
+          HUDViews.detailView.initWithControllerAndNode(that, view.node(), AWE.Geometry.createRect(100, 100, 350, 100));
+        }
+        else if (view.typeName() === 'ArmyView') {
+          // HUDViews.detailView = AWE.UI.createArmyDetailView();
+          // HUDViews.detailView.initWithControllerAndNode(that, _highlightedView.node(), AWE.Geometry.createRect(100, 100, 350, 100));
+        }
+        _stages[3].addChild(HUDViews.detailView.displayObject());
       }
     };
 
@@ -972,7 +977,6 @@ AWE.Controller = (function(module) {
               view = AWE.UI.createArmyView();
               view.initWithControllerAndArmy(that, army);
               _stages[1].addChild(view.displayObject());
-              armyUpdates[army.id()] = army;
             }                                  
             setArmyPosition(view, pos, army.id(), frame);
             newArmyViews[army.id()] = view;
