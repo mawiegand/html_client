@@ -518,8 +518,8 @@ AWE.Controller = (function(module) {
         _actionViews.selectionControls = AWE.UI.createArmySelectionView();
         _actionViews.selectionControls.initWithControllerAndArmy(that, view.army(), AWE.Geometry.createRect(-64, 0, 192, 128));
         _actionViews.selectionControls.setCenter(center);
-        var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), 'Maximo Leader');
-        action.send();
+/*        var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), 'Maximo Leader');
+        AWE.Action.Manager.queueAction(action);*/
       }
       
       _stages[2].addChild(_actionViews.selectionControls.displayObject());
