@@ -17,7 +17,7 @@ AWE.UI = (function(module) {
 
     that.init = function() {}
 
-    that.loadImage = function (name, src) {
+    that.loadImage = function (name, src, callback) {
       if (name in _images) {
         console.warn("tried to load image '"+name+"' from '"+url+"' but there was already an image by that name");
         return;
@@ -30,6 +30,9 @@ AWE.UI = (function(module) {
       image.onload = function(event) {
         delete _outstandingImages[name];
         log("loaded image", name, src);
+        if (callback) {       
+          callback(name);                // notify image has been loaded
+        }
       };
     };
 
