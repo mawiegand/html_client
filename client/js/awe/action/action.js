@@ -20,7 +20,7 @@ AWE.Action = (function(module) {
     my = my || {};
     
     my.getSanitizedAndEscapedRequestBody = function() {
-      return that.getRegquestBody();  // TODO SECURITY : sanitize and escape it
+      return that.getRequestBody();  // TODO SECURITY : sanitize and escape it
     }
     
     // public attributes and methods ///////////////////////////////////////
@@ -38,6 +38,7 @@ AWE.Action = (function(module) {
       var options = {
         url: this.getURL(),
         type: this.getHTTPMethod(),
+        data: my.getSanitizedAndEscapedRequestBody(),
         dataType: 'json',
       };      
       
