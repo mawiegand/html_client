@@ -49,6 +49,7 @@ AWE.Controller = (function(module) {
     var _actionViews = {};
     var HUDViews = {};
     
+    var armyUpdates = {};
 
     
     
@@ -621,7 +622,6 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
-    var armyUpdates = {};
     
     that.modelChanged = function() { return _modelChanged; }
     
@@ -710,6 +710,61 @@ AWE.Controller = (function(module) {
 
         
         if (lastArmyCheck.getTime() + 400 < new Date().getTime() && !isUpdateRunning('armies')) { // check for needed armies once per second
+          
+          var nodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, false); // this is memoized, no problem to call it twice in one cycle!
+          
+          for (var i=0; i < nodes.length; i++) {
+            
+            if (!nodes[i].isLeaf() || !nodes[i].region()) continue; // no need to fetch army information for this node
+            
+            var frame = that.mc2vc(nodes[i].frame());
+            
+            if (!that.areArmiesAtFortressVisible(frame)) continue ; // no update necessary, region is to small (perhaps fetch aggregate info)
+                        
+            if (!that.areArmiesAtSettlementsVisible(frame)) {
+              if(AWE.GS.Army.Manager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
+                nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
+                
+                startUpdate('armies');
+                AWE.GS.Army.Manager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+                  stopUpdate('armies');
+                  that.setModelChanged();
+                });
+                break;  // request limit!
+              }
+            }
+            else {
+              if (nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {
+                
+                startUpdate('armies');
+                nodes[i].region().updateArmies(AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+                  stopUpdate('armies');
+                  that.setModelChanged();
+                });
+                break;  // request limit!        
+              }      
+            }
+          }
+          lastArmyCheck = new Date();
+        }
+        
+        if (!isUpdateRunning('armyDetails'), AWE.Util.hashCount(armyUpdates)) { // check for needed armies once per second
+          
+          for (var armyId in armyUpdates) {
+            if (armyUpdates.hasOwnProperty(armyId)) {
+              var army = armyUpdates[armyId];
+              delete armyUpdates[armyId];                           // process this event, remove it from queue
+              
+              if (army.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime()) {
+                startUpdate('armyDetails');
+                AWE.GS.Army.Manager.updateArmy(armyId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+                  stopUpdate('armyDetails');
+                  that.setModelChanged();
+                });
+                break ;                                             // end, just one request at a time
+              }
+            }
+          }
           
           var nodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, false); // this is memoized, no problem to call it twice in one cycle!
           
