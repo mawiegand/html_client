@@ -15,6 +15,7 @@ AWE.Controller = (function(module) {
 
     var _selectedView = null;    ///< there can be only one selected view!
     var _highlightedView = null; ///< there can be only one highlighted view!
+    var _selectedHighlightView = null; ///< highlighted view if selected
     
     var _windowSize = null;      ///< size of window in view coordinates
     var mc2vcScale;             ///< scaling
@@ -504,7 +505,14 @@ AWE.Controller = (function(module) {
       }
       
       _stages[2].addChild(_actionViews.selectionControls.displayObject());
-      // _showDetailView(view);
+      
+      _selectedHighlightView = _highlightedView;
+      _highlightedView = null;
+      
+      _actionViews.selectedHighlightImage = _actionViews.highlightImage;
+      _actionViews.highlightImage = null;
+      
+      _showDetailView(view);
       _action = true;
     };
     
@@ -514,28 +522,42 @@ AWE.Controller = (function(module) {
       _selectedView.setSelected(false);
       _selectedView = null;
       _actionViews.selectionControls = null;
+      
+      
+      if (view === _selectedHighlightView) {
+        _highlightedView = _selectedHighlightView;
+        _actionViews.highlightImage = _actionViews.selectedHighlightImage;
+      } 
+      else {
+        _stages[2].removeChild(_actionViews.selectedHighlightImage.displayObject());
+      }
+      
+      _actionViews.selectedHighlightImage = null;
+      _selectedHighlightView = null;
       _action = true;
     };
 
     /* view highlighting */
 
     var _highlightView = function(view) {
-      var center = view.center();
-      _highlightedView = view;
-      
-      if (view.typeName() === 'fortressView') {
-        _actionViews.highlightImage = AWE.UI.createFortressHighlightView();
-        _actionViews.highlightImage.initWithControllerAndNode(that, view.node());
-        _actionViews.highlightImage.setCenter(center.x, center.y - AWE.Config.MAPPING_FORTRESS_SIZE);
+      if (view !== _selectedHighlightView) {
+        var center = view.center();
+        _highlightedView = view;
+        
+        if (view.typeName() === 'fortressView') {
+          _actionViews.highlightImage = AWE.UI.createFortressHighlightView();
+          _actionViews.highlightImage.initWithControllerAndNode(that, view.node());
+          _actionViews.highlightImage.setCenter(center.x, center.y - AWE.Config.MAPPING_FORTRESS_SIZE);
+        }
+        else if (view.typeName() === 'armyView') {
+          _actionViews.highlightImage = AWE.UI.createArmyHighlightView();
+          _actionViews.highlightImage.initWithControllerAndArmy(that, view.army());
+          _actionViews.highlightImage.setCenter(center.x, center.y);
+        }
+        
+        _stages[2].addChild(_actionViews.highlightImage.displayObject());
+        _action = true;
       }
-      else if (view.typeName() === 'armyView') {
-        _actionViews.highlightImage = AWE.UI.createArmyHighlightView();
-        _actionViews.highlightImage.initWithControllerAndArmy(that, view.army());
-        _actionViews.highlightImage.setCenter(center.x, center.y);
-      }
-      
-      _stages[2].addChild(_actionViews.highlightImage.displayObject());
-      _action = true;
     };
 
     var _unhighlightView = function() {
@@ -994,6 +1016,21 @@ AWE.Controller = (function(module) {
           _actionViews.highlightImage.setCenter(AWE.Geometry.createPoint(
             _highlightedView.center().x,
             _highlightedView.center().y
+          ));
+        }
+      }
+
+      if (_actionViews.selectedHighlightImage) { 
+        if (_actionViews.selectedHighlightImage.typeName() === 'fortressHighlightView') {
+          _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
+            _selectedHighlightView.center().x,
+            _selectedHighlightView.center().y - AWE.Config.MAPPING_FORTRESS_SIZE
+          ));
+        }
+        else if (_actionViews.selectedHighlightImage.typeName() === 'armyHighlightView') {
+          _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
+            _selectedHighlightView.center().x,
+            _selectedHighlightView.center().y
           ));
         }
       }
