@@ -39,6 +39,7 @@ window.WACKADOO = (function(module) {
       _numLoadedAssets += 1;
       if (_numLoadedAssets === _numAssets) {           // have loaded all assets?
         _initialized = true;
+        $('#debug2').html("Initialization done.");
       }
     }
     
@@ -61,7 +62,7 @@ window.WACKADOO = (function(module) {
         _rootScreenController.runloop();      // hand over control to present screen controller
       }
       else {
-        $('debug2').html('Loading Assets. Progress: ' + _numLoadedAssets + ' / ' + _numAssets);
+        $('#debug2').html('Loading Assets. Progress: ' + _numLoadedAssets + ' / ' + _numAssets);
       }
       window.requestAnimFrame(that.runloop);  // request next animation frame that will initiate the next cycle of the runloop
     };
