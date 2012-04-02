@@ -49,44 +49,30 @@ AWE.UI = (function(module) {
       var backgroundShape = new Shape(backgroundGraphics);
       _container.addChild(backgroundShape);
       
-      var _infoText1 = new Text("Text 1", "12px Arial", "#FFF");
+      var _infoText1 = new Text(army.strength(), "12px Arial", "#FFF");
       _infoText1.textBaseline = "bottom";
       _infoText1.textAlign = "left";
       _infoText1.x = 156;
       _infoText1.y = 24;
       _container.addChild(_infoText1);
+      
+      log('bewegung', army.target_location_id());
     
-      var _infoText2 = new Text("Text 2", "12px Arial", "#FFF");
+      var _infoText2 = new Text('', "12px Arial", "#FFF");
       _infoText2.textBaseline = "bottom";
       _infoText2.textAlign = "left";
       _infoText2.x = 156;
       _infoText2.y = 40;
       _container.addChild(_infoText2);
     
-      var _infoText3 = new Text("Text 3", "12px Arial", "#FFF");
+      var _infoText3 = new Text('', "12px Arial", "#FFF");
       _infoText3.textBaseline = "bottom";
       _infoText3.textAlign = "left";
       _infoText3.x = 156;
       _infoText3.y = 56;
       _container.addChild(_infoText3);
     
-      var healthBGGraphics = new Graphics();
-      healthBGGraphics.setStrokeStyle(1);
-      healthBGGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
-      healthBGGraphics.beginFill('rgb(127, 127, 127)');
-      healthBGGraphics.drawRoundRect(64, 108, 64, 12, 4);
-      var healthBGShape = new Shape(healthBGGraphics);
-      _container.addChild(healthBGShape);
-
-      var healthGraphics = new Graphics();
-      healthGraphics.setStrokeStyle(1);
-      healthGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
-      healthGraphics.beginFill('rgb(255, 64, 64)');
-      healthGraphics.drawRoundRect(64, 108, 48, 12, 4);
-      _healthShape = new Shape(healthGraphics);
-      _container.addChild(_healthShape);
-
-      var _actionPointsText = new Text("8 / 10", "10px Arial", "#000");
+      var _actionPointsText = new Text(army.ap_present() + " / " + army.ap_max(), "10px Arial", "#000");
       _actionPointsText.textBaseline = "bottom";
       _actionPointsText.textAlign = "center";
       _actionPointsText.x = 96;

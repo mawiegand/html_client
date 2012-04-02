@@ -467,7 +467,6 @@ AWE.UI = (function(module) {
       } 
     } 
     
-
     that.hideStreets = function() {
       if (!my.streetsHidden) {
         my.streetsHidden = true; 
@@ -495,8 +494,7 @@ AWE.UI = (function(module) {
         this.setNeedsLayout();
       }
     }
-    
-    
+
     that.detailLevel = function() {
       if (my.frame.size.width < 128) {
         return 0;

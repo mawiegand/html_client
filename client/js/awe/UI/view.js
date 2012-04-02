@@ -37,6 +37,7 @@ AWE.UI = (function(module) {
     
     var _autoscales = false;   ///< whether the view automatically adapts its internal scale when being resized.
     var _alpha = 1.;           ///< alpha value (transparency) of the view. Continuous value from 0 to 1. 0: transparent, 1: opaque.
+    var _selected = false;     ///< selection state of view
   
   
     // protected attributes and methods //////////////////////////////////////
@@ -177,6 +178,15 @@ AWE.UI = (function(module) {
     
     that.setAlpha = function(alpha) {
       _alpha = alpha;
+    }
+    
+    that.setSelected = function(selected) {
+      _selected = selected;
+      this.needsDisplay();
+    }
+
+    that.selected = function() {
+      return _selected;
     }
 
     that.layoutSubviews = function() {

@@ -19,7 +19,7 @@ AWE.UI = (function(module) {
     
     my = my || {};
     
-    my.typeName = 'fortressView';
+    my.typeName = 'FortressView';
     
     that = module.createSettlementView(spec, my);
 
