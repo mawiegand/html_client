@@ -1132,6 +1132,16 @@ AWE.Controller = (function(module) {
       _frameCounter++;
     };    
     
+    that.updateDebug = function() {
+      var numRegionViews = AWE.Util.hashCount(regionViews);
+      var numFortressViews = AWE.Util.hashCount(fortressViews);
+      var numArmyViews = AWE.Util.hashCount(armyViews);
+      var numLocationViews = AWE.Util.hashCount(locationViews);
+      
+      $("#debug2").html('&nbsp; Number of visible views: ' + numRegionViews + '/' + numFortressViews + 
+                        '/' + numLocationViews + '/' + numArmyViews + '/' + ' (regions, fortresses, locations, armies)');
+    };
+    
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -1197,6 +1207,7 @@ AWE.Controller = (function(module) {
           //_stages[3].update();
           // STEP 4d: register this frame, recalc and display present framerate (rendered frames per second)
           this.updateFPS();
+          this.updateDebug();
         }
 
 
