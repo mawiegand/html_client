@@ -62,8 +62,8 @@ AWE.UI = (function(module) {
     }
 
     /** Updates all village spot locations and generates new DisplayObjects in the container **/
-    that.update = function() {
-      if (_node.isLeaf() && _view.detailLevel() >= AWE.Config.MAP_LOCATION_MIN_DETAIL_LEVEL && _node.region() != null && _node.region().locations() != null) {
+    that.update = function(hidden) {
+      if (_node.isLeaf() && !hidden && _node.region() != null && _node.region().locations() != null) {
         _container.displayObject().visible = true;
         var locations = _node.region().locations();
         for (var i = 1; i < locations.length; i++) {
@@ -133,12 +133,12 @@ AWE.UI = (function(module) {
       );
     };
 
-    var _updateRegionStreets = function() {
+    var _updateRegionStreets = function(hidden) {
 
       var frame = _node.frame();
       var transformedFrame = _view.controller().mc2vc(_node.frame());
 
-      if (_node.isLeaf() && _view.detailLevel() >= AWE.Config.MAP_REGION_STREETS_MIN_DETAIL_LEVEL) {
+      if (_node.isLeaf() && !hidden) {
         _regionStreetsContainer.visible = true;
 
         var neighbours = _node.getNeighbourNodes();
@@ -219,11 +219,11 @@ AWE.UI = (function(module) {
       }
     };
 
-    var _updateVillageStreets = function() {
+    var _updateVillageStreets = function(hidden) {
       var frame = _node.frame();
       var transformedFrame = _view.controller().mc2vc(_node.frame());
 
-      if (_view.detailLevel() >= AWE.Config.MAP_LOCATION_MIN_DETAIL_LEVEL && _node.region() != null && _node.region().locations() != null) {
+      if (!hidden && _node.region() != null && _node.region().locations() != null) {
         _villageStreetsContainer.visible = true;
 
         var locations = _node.region().locations();
@@ -254,11 +254,11 @@ AWE.UI = (function(module) {
       }
     };
 
-    that.update = function() {
+    that.update = function(streetsHidden, villagesHidden) {
       if (_node.isLeaf()) { 
         _container.visible = true;
-        _updateRegionStreets();
-        _updateVillageStreets();
+        _updateRegionStreets(streetsHidden);
+        _updateVillageStreets(villagesHidden);
       } else {
         _container.visible = false;
       }
@@ -284,6 +284,8 @@ AWE.UI = (function(module) {
 
     my = my || {};
 
+    my.streetsHidden = true;
+    my.VillagesHidden = true;
 
     // public attributes and methods /////////////////////////////////////////
     
@@ -293,6 +295,7 @@ AWE.UI = (function(module) {
       initWithController: that.superior("initWithController"),
       layoutSubviews: that.superior("layoutSubviews"),
       setFrame: that.superior("setFrame"),
+      updateView: that.superior('updateView'),
     }
     
     that.initWithControllerAndNode = function(controller, node, frame) {
@@ -328,6 +331,12 @@ AWE.UI = (function(module) {
       _scaledContainer.setFrame(frame);
       _nonScaledContainer.setFrame(frame);
     }
+    
+    /** model has changed, need to upate state of view */
+    that.updateView = function() {
+      _super.updateView();
+      this.layoutSubviews();
+    };
 
     var selectBackgroundImage = function(detail) {
       var newImage = null;
@@ -459,7 +468,34 @@ AWE.UI = (function(module) {
     } 
     
 
+    that.hideStreets = function() {
+      if (!my.streetsHidden) {
+        my.streetsHidden = true; 
+        this.setNeedsLayout();
+      }
+    }
+    
+    that.showStreets = function() { 
+      if (my.streetsHidden) {
+        my.streetsHidden = false; 
+        this.setNeedsLayout();
+      }
+    }
 
+    that.hideVillages = function() {
+      if (!my.villagesHidden) {
+        my.villagesHidden = true; 
+        this.setNeedsLayout();
+      }
+    }
+    
+    that.showVillages = function() { 
+      if (my.villagesHidden) {
+        my.villagesHidden = false; 
+        this.setNeedsLayout();
+      }
+    }
+    
     
     that.detailLevel = function() {
       if (my.frame.size.width < 128) {
@@ -486,8 +522,8 @@ AWE.UI = (function(module) {
     that.layoutSubviews = function() {
       selectBackgroundImage(this.detailLevel());
       updateInformation(this.detailLevel());
-      streetsManager.update();
-      villageSpotsManager.update();
+      streetsManager.update(my.streetsHidden, my.villagesHidden);
+      villageSpotsManager.update(my.villagesHidden);
 
       _super.layoutSubviews();
     }
