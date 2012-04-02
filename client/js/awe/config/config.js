@@ -25,6 +25,9 @@ AWE.Config = (function(module) {
   module.MAP_SERVER_BASE = module.SERVER_ROOT + '/game_server/map/';
   module.MILITARY_SERVER_BASE = module.SERVER_ROOT + '/game_server/military/';
   
+  module.DEV_CHARACTER_ID = 1;
+  module.DEV_ALLIANCE_ID = 1;
+  
   module.MAPPING_FORTRESS_SIZE = 64;
   
   module.MAP_ARMY_WIDTH = 64;
