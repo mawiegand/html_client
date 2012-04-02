@@ -468,6 +468,7 @@ AWE.Controller = (function(module) {
     that.viewClicked = function(view) {    
       if (_selectedView === view) {
         _unselectView(_selectedView);
+        _highlightView(view);
       }
       else if (_selectedView) {
         _unselectView(_selectedView);
@@ -522,6 +523,7 @@ AWE.Controller = (function(module) {
       }
       
       _stages[2].addChild(_actionViews.selectionControls.displayObject());
+      // _stages[2].removeChild(_actionViews.selectedHighlightImage.displayObject());
       
       _selectedHighlightView = _highlightedView;
       _highlightedView = null;
@@ -540,23 +542,17 @@ AWE.Controller = (function(module) {
       _selectedView = null;
       _actionViews.selectionControls = null;
       
-      
-      if (view === _selectedHighlightView) {
-        _highlightedView = _selectedHighlightView;
-        _actionViews.highlightImage = _actionViews.selectedHighlightImage;
-      } 
-      else {
-        _stages[2].removeChild(_actionViews.selectedHighlightImage.displayObject());
-      }
-      
+      _stages[2].removeChild(_actionViews.selectedHighlightImage.displayObject());
       _actionViews.selectedHighlightImage = null;
       _selectedHighlightView = null;
+
       _action = true;
     };
 
     /* view highlighting */
 
     var _highlightView = function(view) {
+          log('feuer', view);
       if (view !== _selectedHighlightView) {
         var center = view.center();
         _highlightedView = view;
@@ -590,27 +586,25 @@ AWE.Controller = (function(module) {
     /* Detail View */
 
     var _showDetailView = function(view) {
-      if (view.typeName() === 'FortressView') {  ///< temporaer      
-        if (HUDViews.detailView) {
-          hideDetailView(HUDViews.detailView);
-        }
-        
-        if (view.typeName() === 'FortressView') {      
-          HUDViews.detailView = AWE.UI.createFortressDetailView();
-          HUDViews.detailView.initWithControllerAndNode(that, view.node(), AWE.Geometry.createRect(100, 100, 350, 100));
-        }
-        else if (view.typeName() === 'ArmyView') {
-          // HUDViews.detailView = AWE.UI.createArmyDetailView();
-          // HUDViews.detailView.initWithControllerAndNode(that, _highlightedView.node(), AWE.Geometry.createRect(100, 100, 350, 100));
-        }
-        _stages[3].addChild(HUDViews.detailView.displayObject());
+      if (HUDViews.detailView) {
+        hideDetailView(HUDViews.detailView);
       }
+      
+      if (view.typeName() === 'FortressView') {      
+        HUDViews.detailView = AWE.UI.createFortressDetailView();
+        HUDViews.detailView.initWithControllerAndNode(that, view.node(), AWE.Geometry.createRect(100, 100, 350, 100));
+      }
+      else if (view.typeName() === 'ArmyView') {
+        HUDViews.detailView = AWE.UI.createArmyDetailView();
+        HUDViews.detailView.initWithControllerAndArmy(that, view.army(), AWE.Geometry.createRect(100, 100, 350, 100));
+      }
+      _stages[3].addChild(HUDViews.detailView.displayObject());
     };
 
     var _hideDetailView = function(view) {
       if (HUDViews.detailView) {
         _stages[3].removeChild(HUDViews.detailView.displayObject());
-        HUDViews.detailView = null;
+        delete HUDViews.detailView;
       }
     };
 
@@ -1307,12 +1301,7 @@ AWE.Controller = (function(module) {
               AWE.Ext.applyFunction(viewsInStages[i], function(viewHash) {
                 //log (viewHash);
                 AWE.Ext.applyFunctionToElements(viewHash, function(view) {
-                  if (view === null) {
-                    log('ERROR: view in hash is null!', i, viewHash);
-                  }
-                  else {
-                    view.notifyRedraw();
-                  }
+                  view.notifyRedraw();
                 });
               });
             }

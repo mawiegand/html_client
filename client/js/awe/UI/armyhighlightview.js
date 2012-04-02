@@ -56,8 +56,6 @@ AWE.UI = (function(module) {
       _infoText1.y = 24;
       _container.addChild(_infoText1);
       
-      log('bewegung', army.target_location_id());
-    
       var _infoText2 = new Text('', "12px Arial", "#FFF");
       _infoText2.textBaseline = "bottom";
       _infoText2.textAlign = "left";
