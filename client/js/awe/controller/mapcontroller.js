@@ -719,9 +719,9 @@ AWE.Controller = (function(module) {
             
             var frame = that.mc2vc(nodes[i].frame());
             
-            if (frame.size.height < 128) continue ;                 // no update necessary, region is to small
-            
-            if (frame.size.height < 256) {
+            if (!that.areArmiesAtFortressVisible(frame)) continue ; // no update necessary, region is to small (perhaps fetch aggregate info)
+                        
+            if (!that.areArmiesAtSettlementsVisible(frame)) {
               if(AWE.GS.Army.Manager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
                 nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
                 
@@ -794,6 +794,18 @@ AWE.Controller = (function(module) {
           AWE.Ext.applyFunction(view.displayObject(), function(obj) {
             _stages[0].addChild(obj);
           });
+        }
+        if (this.isSettlementVisible(frame)) {
+          view.showVillages();
+        }
+        else {
+          view.hideVillages();
+        }
+        if (this.isFortressVisible(frame)) {
+          view.showStreets();
+        }
+        else {
+          view.hideStreets();
         }
         newRegionViews[nodes[i].id()] = view;
       }
@@ -1173,6 +1185,16 @@ AWE.Controller = (function(module) {
       _frameCounter++;
     };    
     
+    that.updateDebug = function() {
+      var numRegionViews = AWE.Util.hashCount(regionViews);
+      var numFortressViews = AWE.Util.hashCount(fortressViews);
+      var numArmyViews = AWE.Util.hashCount(armyViews);
+      var numLocationViews = AWE.Util.hashCount(locationViews);
+      
+      $("#debug2").html('&nbsp; Number of visible views: ' + numRegionViews + '/' + numFortressViews + 
+                        '/' + numLocationViews + '/' + numArmyViews + '/' + ' (regions, fortresses, locations, armies)');
+    };
+    
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -1238,6 +1260,7 @@ AWE.Controller = (function(module) {
           //_stages[3].update();
           // STEP 4d: register this frame, recalc and display present framerate (rendered frames per second)
           this.updateFPS();
+          this.updateDebug();
         }
 
 

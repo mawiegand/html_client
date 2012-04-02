@@ -51,6 +51,7 @@ AWE.UI = (function(module) {
     // public attributes and methods /////////////////////////////////////////
     
     that = {};
+    AWE.Partials.addChangeTracking(that);
     
     /** intializes the view and sets its frame and controller. The fram is an
      * optional argument. */
@@ -157,6 +158,8 @@ AWE.UI = (function(module) {
     that.updateIfNeeded = function() {
       if (_needsUpdate) {
         this.updateView();
+        _needsUpdate = false;
+        _needsDisplay = true;
       };
     };
     
@@ -188,14 +191,13 @@ AWE.UI = (function(module) {
 
     that.layoutSubviews = function() {
       this.autoscaleIfNeeded();
+      this.setChangedNow();
       
       _needsLayout = false;
       _needsDisplay = true;
     }
     
     that.updateView = function() {
-      _needsUpdate = false;
-      _needsDisplay = true;
     }
     
     return that;

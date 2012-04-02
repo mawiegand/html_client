@@ -28,6 +28,15 @@ AWE.Util = (function(module) {
     return difference;
   }  
   
+  module.hashCount = function(hash) {
+    var count = 0;
+    
+    for (var k in hash) {             
+      if (hash.hasOwnProperty(k)) { count++; }
+    }
+    return count;  
+  }
+  
   return module;
       
 }(AWE.Util || {}));
