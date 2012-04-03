@@ -68,6 +68,10 @@ AWE.Ext = (function(module) {
     if (x < 0) return -1;
     return 0;
   };
+  
+/*  Handlebars.registerHelper('I18n',   // this is a small helper to combine I10n.js with handlebars.
+    function(str){ return I18n.t(str); }
+  );*/
 
   return module;
   

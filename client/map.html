@@ -28,6 +28,16 @@
        Modernizr enables HTML5 elements & feature detects for optimal performance.
        Create your own custom Modernizr build: www.modernizr.com/download/ -->
   <script src="js/libs/modernizr-2.5.3.min.js"></script>
+  
+  <script type="text/x-handlebars" data-template-name="load-dialog">
+      <div class="modal-dialog-background"></div>
+      <div class="center-helper">
+        <div class="modal-dialog-pane">
+          <div class="loaddialog-heading">{{ unbound AWE.I18n.strings.general.startup.loading }}</div>
+          <div class="loaddialog-progressbar"><div class="loaddialog-progress"></div></div>
+        </div>
+      </div>
+  </script>
 </head>
 <body>
   <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
@@ -118,10 +128,10 @@
   <script src="js/awe/action/action.js"></script>
   <script src="js/awe/action/actionmanager.js"></script>
   <script src="js/awe/action/military/changearmyname.js"></script>
+  <script src="js/awe/i18n/en.js"></script>
   <script src="js/plugins.js"></script>
   <script src="js/script.js"></script>
   <!-- end scripts -->
-
   <div id="templates">
   </div>
 </body>

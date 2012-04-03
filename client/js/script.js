@@ -13,25 +13,36 @@ window.WACKADOO = (function(module) {
     
     my = my || {};
     
-    my.checkEverythingLoaded = function() {
-       if (_numLoadedAssets === _numAssets) {           // have loaded all assets?
-        loadDialog.hide();
-        loadDialog = null;                             // done, can be garbage collected.
-        _initialized = true;
-        $('#debug2').html("Initialization done.");
-      }     
+    my.assetLoaded = function() {
+      _numLoadedAssets += 1;
+      $('div.loaddialog-progress').css('width', '' + Math.floor(_numLoadedAssets / _numAssets * 100) + '%');
+      if (_numLoadedAssets === _numAssets) {           // have loaded all assets?
+        my.postInit(); 
+      }
+    }
+    
+    /** does final initialization after loading and finishing everything that
+     * has been triggered in init(), */
+    my.postInit = function() {
+      loadDialog.remove();
+      loadDialog = null;                             // done, can be garbage collected.
+      $('#debug2').html("Initialization done.");
+        
+      Ember.Handlebars.bootstrap();                  // Bootstrap Ember a second time to parse the newly loaded templates.
+
+      _initialized = true;                           // ready to run
     }
     
     var that = {};
     
-    /** initializes needed modules and creates a root view controller. */
+    /** initializes needed modules and creates a root view controller. Caution: 
+     * initialization is done asynchronously! check _initialized = true before
+     * doing anything wit the app controller. */
     that.init = function() {
-      loadDialog = AWE.UI.createDOMDialog({
-        anchor: $('body'),
-        frame: AWE.Geometry.createRect($(window).width() /2 -200 , $(window).height()/2-50, 450, 100),
+      loadDialog = Ember.View.create({
+        templateName: 'load-dialog'
       });
-      loadDialog.show();
-      
+      loadDialog.append();   
       
       AWE.Net.init();                                   // initialize the network stack
       AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
@@ -43,7 +54,7 @@ window.WACKADOO = (function(module) {
       for (var i=0; i < AWE.UI.templates.length; i++) {
         _numAssets += 1;
         AWE.Util.TemplateLoader.registerTemplate(AWE.UI.templates[i], function() { console.log('loaded TEMPLATE');
-          that.templateLoaded();
+          my.assetLoaded();
         });
       }
       AWE.Util.TemplateLoader.loadAllTemplates();
@@ -53,27 +64,14 @@ window.WACKADOO = (function(module) {
         if (AWE.Config.IMAGE_CACHE_LOAD_LIST.hasOwnProperty(k)) {
           _numAssets += 1;                              // count assets
           AWE.UI.ImageCache.loadImage(k, AWE.Config.IMAGE_CACHE_LOAD_LIST[k], function(name) {
-            that.imageLoaded(name);
+            my.assetLoaded();
           });
         }
       }
     
-      
       _rootScreenController = AWE.Controller.createMapController('#layers');
       _rootScreenController.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
     };
-    
-    that.imageLoaded = function(name) {
-      _numLoadedAssets += 1;
-      my.checkEverythingLoaded();
-    }
-    
-    that.templateLoaded = function() {
-      _numLoadedAssets += 1;
-      my.checkEverythingLoaded();
-    }
-    
-    that.rootScreenController = function() { return _rootScreenController; }
     
     /** starts the application, enters an infinite loop triggered by window.requestAnimFrame. */
     that.run = function() {
@@ -97,6 +95,9 @@ window.WACKADOO = (function(module) {
       window.requestAnimFrame(that.runloop);  // request next animation frame that will initiate the next cycle of the runloop
     };
     
+    that.rootScreenController = function() { return _rootScreenController; }
+
+    
     return that;
   };
   
@@ -107,8 +108,7 @@ window.WACKADOO = (function(module) {
 
 
 $(document).ready(function() {
-  
-  
+
   var application = WACKADOO.createApplication();
   application.init();
   

@@ -4,6 +4,8 @@
  * Do not copy, do not distribute. All rights reserved.
  */
 
+///// DEPRECATED; Already deprecated, we'll be using Ember.JS for all DOM-inserted views.
+
 var AWE = AWE || {};
 
 AWE.UI = (function(module) {
