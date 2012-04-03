@@ -309,9 +309,6 @@ AWE.UI = (function(module) {
       _nonScaledContainer.initWithController(controller, frame);
         
       _scaledContainer.name = _node.id();
-      _scaledContainer.onClick = function (evt) {
-        log('klick in container layer0');
-      };
       
       this.setAutoscales(true);
       selectBackgroundImage(0);
@@ -374,6 +371,8 @@ AWE.UI = (function(module) {
         _backgroundImage = module.createImageView();
         _backgroundImage.initWithControllerAndImage(that.controller(), newImage);
         _backgroundImage.setContentMode(module.ViewContentModeNone);
+        // link to encircling view for click events
+        _backgroundImage.displayObject().view = that;
         _scaledContainer.addChild(_backgroundImage);
       }
       else if (_backgroundImage.image() !== newImage) {
@@ -528,6 +527,10 @@ AWE.UI = (function(module) {
     
     that.displayObject = function() {
       return  [ _scaledContainer.displayObject(), _nonScaledContainer.displayObject() ] ;
+    }
+    
+    that.onClick = function() {
+      log('onClick in Region');
     }
             
     return that;

@@ -89,6 +89,8 @@ AWE.Config = (function(module) {
 
     "map/easement": "images/verbot.png",
 
+    "map/display/icon": "images/platzhaltericon.png",
+
     "map/region/icon": "images/dot.png",
     
     "map/button1": 'images/green_button.png',
@@ -97,6 +99,13 @@ AWE.Config = (function(module) {
 
     "map/army": 'images/army.png',
   };
+  
+  module.MAP_STANCE_IMAGES = [
+      "map/army/stanceNeutral",
+      "map/army/stanceAggressive",
+      "map/army/stanceDefensive"
+  ];
+
   
   console.log('CONFIGURATION: ');
   console.dir(module);

@@ -26,12 +26,6 @@ AWE.UI = (function(module) {
     var _selectShape = null;    
     var _healthShape = null;    
     
-    var _stanceImages = [
-      "map/army/stanceNeutral",
-      "map/army/stanceAggressive",
-      "map/army/stanceDefensive"
-    ];
-    
     that = module.createView(spec, my);
 
     var _super = {
@@ -82,7 +76,7 @@ AWE.UI = (function(module) {
       _container.addChild(_flagShape);
 
       _stanceView = AWE.UI.createImageView();
-      _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(_stanceImages[_army.stance()]));
+      _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[1]));
       _stanceView.setFrame(AWE.Geometry.createRect(0, 8, 64, 96));
       _stanceView.onClick = that.onClick;
       _stanceView.onMouseOver = that.onMouseOver;
@@ -152,7 +146,7 @@ AWE.UI = (function(module) {
       _flagShape = new Shape(_flagGraphics);  
       _container.addChild(_flagShape);
       
-      _stanceView.setImage(AWE.UI.ImageCache.getImage(_stanceImages[_army.stance()]));
+      _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.stance()]));
       
       if (_army.ap_present() / _army.ap_max() > 0) {
         _container.removeChild(_healthShape);

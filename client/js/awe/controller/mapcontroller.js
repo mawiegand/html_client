@@ -40,6 +40,8 @@ AWE.Controller = (function(module) {
     var _modelChanged = false;   ///< true, if anything in the model changed
     var _maptreeChanged = false; ///< true, if anything in the maptree (just nodes!) changed. _maptreeChanged = true implies modelChanged = true
     
+    var _detailViewChanged = false; ///< true, if a detailView has been added, removed or changed
+    
     var requestingMapNodesFromServer = false;
     
     var regionViews = {};
@@ -366,6 +368,7 @@ AWE.Controller = (function(module) {
           }
         }
         else if (_stages[0].hitTest(evt.pageX, evt.pageY)) {
+          // call onClick of stage for unselecting items
           if (_stages[0].onClick) {
             _stages[0].onClick(evt);
           }         
@@ -380,7 +383,7 @@ AWE.Controller = (function(module) {
              
       if (!_stages[2].hitTest(evt.pageX, evt.pageY)) {
         _scrollingStartedAtVC = AWE.Geometry.createPoint(evt.pageX, evt.pageY);
-        _scrollingOriginalTranslation = mc2vcTrans.copy();
+        _scrollingOriginalTranslationVC = mc2vcTrans.copy();
         
         $('#layers').mousemove(function(ev) {
           that.handleMouseMove(ev);
@@ -399,8 +402,8 @@ AWE.Controller = (function(module) {
     that.handleMouseMove = function(event) {
       // here we can assume, that the mouse is pressed right now!
       _scrollingStarted = true;
-      var pos = AWE.Geometry.createPoint(_scrollingOriginalTranslation.x + event.pageX - _scrollingStartedAtVC.x, 
-                                         _scrollingOriginalTranslation.y + event.pageY - _scrollingStartedAtVC.y);        
+      var pos = AWE.Geometry.createPoint(_scrollingOriginalTranslationVC.x + event.pageX - _scrollingStartedAtVC.x, 
+                                         _scrollingOriginalTranslationVC.y + event.pageY - _scrollingStartedAtVC.y);        
       mc2vcTrans.moveTo(pos);
       that.setNeedsLayout();
     };
@@ -530,7 +533,7 @@ AWE.Controller = (function(module) {
       _highlightedView = null;
       
       _actionViews.selectedHighlightImage = _actionViews.highlightImage;
-      _actionViews.highlightImage = null;
+      delete _actionViews.highlightImage;
       
       _showDetailView(view);
       _action = true;
@@ -541,10 +544,10 @@ AWE.Controller = (function(module) {
       _stages[2].removeChild(_actionViews.selectionControls.displayObject());
       _selectedView.setSelected(false);
       _selectedView = null;
-      _actionViews.selectionControls = null;
+      delete _actionViews.selectionControls;
       
       _stages[2].removeChild(_actionViews.selectedHighlightImage.displayObject());
-      _actionViews.selectedHighlightImage = null;
+      delete _actionViews.selectedHighlightImage;
       _selectedHighlightView = null;
 
       _action = true;
@@ -553,7 +556,6 @@ AWE.Controller = (function(module) {
     /* view highlighting */
 
     var _highlightView = function(view) {
-          log('feuer', view);
       if (view !== _selectedHighlightView) {
         var center = view.center();
         _highlightedView = view;
@@ -578,7 +580,7 @@ AWE.Controller = (function(module) {
     var _unhighlightView = function() {
       if (_actionViews.highlightImage) {
         _stages[2].removeChild(_actionViews.highlightImage.displayObject());
-        _actionViews.highlightImage = null;
+        delete _actionViews.highlightImage;
         _highlightedView = null;
         _action = true;
       }
@@ -593,13 +595,14 @@ AWE.Controller = (function(module) {
       
       if (view.typeName() === 'FortressView') {      
         HUDViews.detailView = AWE.UI.createFortressDetailView();
-        HUDViews.detailView.initWithControllerAndNode(that, view.node(), AWE.Geometry.createRect(100, 100, 350, 100));
+        HUDViews.detailView.initWithControllerAndNode(that, view.node());
       }
       else if (view.typeName() === 'ArmyView') {
         HUDViews.detailView = AWE.UI.createArmyDetailView();
-        HUDViews.detailView.initWithControllerAndArmy(that, view.army(), AWE.Geometry.createRect(100, 100, 350, 100));
+        HUDViews.detailView.initWithControllerAndArmy(that, view.army());
       }
       _stages[3].addChild(HUDViews.detailView.displayObject());
+      _detailViewChanged = true;
     };
 
     var _hideDetailView = function(view) {
@@ -607,6 +610,7 @@ AWE.Controller = (function(module) {
         _stages[3].removeChild(HUDViews.detailView.displayObject());
         delete HUDViews.detailView;
       }
+      _detailViewChanged = true;
     };
 
     // ///////////////////////////////////////////////////////////////////////
@@ -815,7 +819,7 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
-    /** helper function that purges views from a stage when they are no 
+    /** helper function that purges views from a stage when they are not 
      * needed (e.g. scrolled out of the viewport). */
     var purgeDispensableViewsFromStage = function(presentViews, neededViews, stage) {
       var removedSomething = false;
@@ -1085,12 +1089,17 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
-    that.updateActionViews = function(nodes) {
+    // that.isSettlementVisible = function(frame) {
+    // that.isFortressVisible = function(frame) {
+    // that.areArmiesAtFortressVisible = function(frame) {
+    // that.areArmiesAtSettlementsVisible = function(frame) {
+    
+    that.updateActionViews = function() {
 
       // TODO Sichtbarkeit testen
 
       if (_actionViews.highlightImage) { 
-        if (_actionViews.highlightImage.typeName() === 'fortressHighlightView') {
+        if (_actionViews.highlightImage.typeName() === 'fortressHighlightView') {          
           _actionViews.highlightImage.setCenter(AWE.Geometry.createPoint(
             _highlightedView.center().x,
             _highlightedView.center().y - AWE.Config.MAPPING_FORTRESS_SIZE
@@ -1106,16 +1115,26 @@ AWE.Controller = (function(module) {
 
       if (_actionViews.selectedHighlightImage) { 
         if (_actionViews.selectedHighlightImage.typeName() === 'fortressHighlightView') {
-          _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
-            _selectedHighlightView.center().x,
-            _selectedHighlightView.center().y - AWE.Config.MAPPING_FORTRESS_SIZE
-          ));
+          if (that.isFortressVisible(that.mc2vc(_actionViews.selectedHighlightImage.node().frame()))) {
+            _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
+              _selectedHighlightView.center().x,
+              _selectedHighlightView.center().y - AWE.Config.MAPPING_FORTRESS_SIZE
+            ));
+          }
+          else {
+            _unselectView(_selectedView);             
+          }
         }
         else if (_actionViews.selectedHighlightImage.typeName() === 'armyHighlightView') {
-          _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
-            _selectedHighlightView.center().x,
-            _selectedHighlightView.center().y
-          ));
+          if (1 || that.isFortressVisible(that.mc2vc(_actionViews.selectedHighlightImage.node().frame()))) {
+            _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
+              _selectedHighlightView.center().x,
+              _selectedHighlightView.center().y
+            ));
+          }
+          else {
+            _unselectView(_selectedView);             
+          }
         }
       }
 
@@ -1146,9 +1165,20 @@ AWE.Controller = (function(module) {
         HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 470, 20));
       }
 
-      if (HUDViews.detailView) {
-        HUDViews.detailView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 370, _windowSize.height - 120));
+      var detailView = HUDViews.detailView;
+      if (detailView) {        
+        detailView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 332, _windowSize.height - 148));
+        
+        if (detailView.typeName() === 'ArmyDetailView' && detailView.lastChange() < detailView.army().lastChange()) {
+          detailView.setNeedsUpdate();
+        }
+        
+        if (detailView.typeName() === 'FortressDetailView' && detailView.lastChange() < detailView.node().lastChange()) {
+          detailView.setNeedsUpdate();
+        }
       }
+      
+      return _detailViewChanged;
     };
     
     
@@ -1186,6 +1216,7 @@ AWE.Controller = (function(module) {
         if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           stagesNeedUpdate[0] = this.rebuildMapHierarchy(nodes) || stagesNeedUpdate[0];
         }
+        
         if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _action ) {
           stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         };
@@ -1193,10 +1224,10 @@ AWE.Controller = (function(module) {
         if (1) { // TODO: only update, if necessary
           that.updateActionViews();
         }
+        
         if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || _action || !HUDViews.mainControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
-          console.log('MapController: update hud.');
-          that.updateHUD(); 
-          stagesNeedUpdate[3] = true; // only repaint, if necessary
+          log('MapController: update hud.', _action);
+          stagesNeedUpdate[3] = that.updateHUD() || stagesNeedUpdate[3]; 
         }
         
         //log('Update:                   ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
@@ -1207,7 +1238,7 @@ AWE.Controller = (function(module) {
         stagesNeedUpdate[1] = propUpdates(locationViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(armyViews) || stagesNeedUpdate[1];
         // stagesNeedUpdate[2] = propUpdates(actionViews);
-        // stagesNeedUpdate[3] = propUpdates(HUDViews);
+        stagesNeedUpdate[3] = propUpdates(HUDViews) || stagesNeedUpdate[3];
 
         //log('Update after propagation: ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
@@ -1224,9 +1255,7 @@ AWE.Controller = (function(module) {
     var fps = 60;
     var needRedraw; // TODO: remove this flag.
     
-    that.updateView = function() { needRedraw = true; } // TODO: completely remove this method, replaced by setNeedsDisplay
-    
-
+    // that.updateView = function() { needRedraw = true; } // TODO: completely remove this method, replaced by setNeedsDisplay
     
     that.updateFPS = function() {
       
@@ -1284,7 +1313,7 @@ AWE.Controller = (function(module) {
           var viewsInStages = [
             regionViews,
             [fortressViews, armyViews, locationViews],
-            [],     // action views: no views?!
+            _actionViews,     // action views: no views?!
             HUDViews
           ];          
           
@@ -1300,7 +1329,7 @@ AWE.Controller = (function(module) {
               _stages[i].update();
               //log(viewsInStages, regionViews);
               AWE.Ext.applyFunction(viewsInStages[i], function(viewHash) {
-                //log (viewHash);
+                log (viewHash);
                 AWE.Ext.applyFunctionToElements(viewHash, function(view) {
                   view.notifyRedraw();
                 });
@@ -1321,6 +1350,7 @@ AWE.Controller = (function(module) {
         _needsDisplay = false;
         _needsLayout = false;
         _action = false;
+        _detailViewChanged = false;
       }
       _loopCounter++;
     };
