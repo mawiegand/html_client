@@ -61,6 +61,10 @@ AWE.UI = (function(module) {
     that.displayObject = function() {
       return _container.displayObject();
     }
+    
+    that.node = function() {
+      return _node;
+    }
             
     return that;
   };

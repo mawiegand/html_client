@@ -38,9 +38,9 @@ AWE.Mapping = (function(module) {
    * used by mapping services. */
   module.GlobalMercator = (function(tileSize) {
     
-    _tileSize = tileSize;
-    _initialResolution = 2.0 * Math.PI * 6378137.0 / _tileSize;
-    _originShift = 2.0 * Math.PI * 6378137.0 / 2.0;
+    var _tileSize = tileSize;
+    var _initialResolution = 2.0 * Math.PI * 6378137.0 / _tileSize;
+    var _originShift = 2.0 * Math.PI * 6378137.0 / 2.0;
         
     return {
       /** transforms a xyz coordinate in TMS format (origin in lower left 

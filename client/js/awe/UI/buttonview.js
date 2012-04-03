@@ -33,10 +33,7 @@ AWE.UI = (function(module) {
       _imageView = AWE.UI.createImageView();
       _imageView.initWithControllerAndImage(controller, image);
       _imageView.setContentMode(module.ViewContentModeNone);
-      _imageView.setFrame(AWE.Geometry.createRect(0,0,52,52));
       _imageView.onClick = that.onClick;
-      // _imageView.onMouseOver = that.onMouseOver;
-      // _imageView.onMouseOut = that.onMouseOut;
       _container.addChild(_imageView.displayObject());
       
       _labelText = new Text(text, "10px Arial", "#FFF");
@@ -48,17 +45,18 @@ AWE.UI = (function(module) {
     
       _container.x = my.frame.origin.x;
       _container.y = my.frame.origin.y;
-
-      this.setNeedsDisplay();
     }
 
     that.setFrame = function(frame) {
       _super.setFrame(frame);
+      
       _container.x = frame.origin.x;
       _container.y = frame.origin.y;
 
       _labelText.x = frame.size.width / 2;
       _labelText.y = frame.size.height / 2;
+      
+      _imageView.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
     }
     
     that.displayObject = function() {
