@@ -90,6 +90,16 @@ AWE.Controller = (function(module) {
       _stages[2] = new Stage(_canvas[2]);
       _stages[2].enableMouseOver();
       
+      // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) or stage2 is active          
+      _stages[2].onMouseOver = function() {
+        _stages[1].enableMouseOver(0);
+        _unhighlightView();
+      };
+  
+      _stages[2].onMouseOut = function() {
+        _stages[1].enableMouseOver();
+      };
+      
       // HUD layer ("static", not zoomable, not moveable)
       that.anchor().append('<canvas id="layer3"></canvas>');
       _canvas[3] = $('#layer3')[0];
@@ -103,15 +113,6 @@ AWE.Controller = (function(module) {
       };
   
       _stages[3].onMouseOut = function() {
-        _stages[1].enableMouseOver();
-      };
-      
-      _stages[2].onMouseOver = function() {
-        _stages[1].enableMouseOver(0);
-        _unhighlightView();
-      };
-  
-      _stages[2].onMouseOut = function() {
         _stages[1].enableMouseOver();
       };
       
