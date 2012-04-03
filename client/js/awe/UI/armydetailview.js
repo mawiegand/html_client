@@ -144,6 +144,7 @@ AWE.UI = (function(module) {
       _invButtonView = AWE.UI.createButtonView();
       _invButtonView.initWithControllerTextAndImage(controller, 'inv.', AWE.UI.ImageCache.getImage("map/button1"));
       _invButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
+      _invButtonView.onClick = function() { that.onInventoryButtonClick() };
       _container.addChild(_invButtonView.displayObject());
 
       _moveButtonView = AWE.UI.createButtonView();
@@ -165,6 +166,8 @@ AWE.UI = (function(module) {
       _container.x = my.frame.origin.x;
       _container.y = my.frame.origin.y;
     };
+    
+    that.onInventoryButtonClick = function() { console.log('inventory button clicked'); }
         
     that.layoutSubviews = function() {
       _super.layoutSubviews();

@@ -31,6 +31,7 @@ window.WACKADOO = (function(module) {
       Ember.Handlebars.bootstrap();                  // Bootstrap Ember a second time to parse the newly loaded templates.
 
       _initialized = true;                           // ready to run
+      
     }
     
     var that = {};
@@ -40,9 +41,11 @@ window.WACKADOO = (function(module) {
      * doing anything wit the app controller. */
     that.init = function() {
       loadDialog = Ember.View.create({
-        templateName: 'load-dialog'
+        templateName: 'load-dialog',
       });
       loadDialog.append();   
+      
+      AWE.UI.templates.push('js/awe/UI/dom/templates/armydetails.html');
       
       AWE.Net.init();                                   // initialize the network stack
       AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)

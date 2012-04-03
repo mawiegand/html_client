@@ -33,7 +33,7 @@ AWE.UI = (function(module) {
       _imageView = AWE.UI.createImageView();
       _imageView.initWithControllerAndImage(controller, image);
       _imageView.setContentMode(module.ViewContentModeNone);
-      _imageView.onClick = that.onClick;
+      _imageView.onClick = function() { that.onClick() }; // CAUTION: need to wrap the call in a function, because otherwise it's not possible to attach a different function to that as onClick handler
       _container.addChild(_imageView.displayObject());
       
       _labelText = new Text(text, "10px Arial", "#FFF");

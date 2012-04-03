@@ -20,6 +20,12 @@ AWE.I18n = AWE.I18n || function(module) {
       
     },
     
+    army: {
+      details: {
+        heading: 'Army',
+      }
+    },
+    
     error: {
       
     },

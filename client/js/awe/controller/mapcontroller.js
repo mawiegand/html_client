@@ -522,8 +522,22 @@ AWE.Controller = (function(module) {
         _actionViews.selectionControls = AWE.UI.createArmySelectionView();
         _actionViews.selectionControls.initWithControllerAndArmy(that, view.army(), AWE.Geometry.createRect(-64, 0, 192, 128));
         _actionViews.selectionControls.setCenter(center);
-/*        var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), 'Maximo Leader');
-        AWE.Action.Manager.queueAction(action);*/
+        _actionViews.selectionControls.onAttackButtonClick = function () {
+          
+          var dialog = Ember.View.create({
+            templateName: 'army-details',
+            
+            name: _selectedView.army().name(),
+            changeNameButton: Ember.View.extend({
+              click: function(evt) { console.log('clicked'); alert('Clicked!'); }
+            })
+          });
+          dialog.append(); 
+        }
+        
+        /* var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), 'Maximo Leader');
+           AWE.Action.Manager.queueAction(action); */
+
       }
       
       _stages[2].addChild(_actionViews.selectionControls.displayObject());
@@ -754,7 +768,7 @@ AWE.Controller = (function(module) {
           lastArmyCheck = new Date();
         }
         
-        if (!isUpdateRunning('armyDetails'), AWE.Util.hashCount(armyUpdates)) { // check for needed armies once per second
+        if (!isUpdateRunning('armyDetails') && AWE.Util.hashCount(armyUpdates)) { // check for needed armies once per second
           
           for (var armyId in armyUpdates) {
             if (armyUpdates.hasOwnProperty(armyId)) {
@@ -763,6 +777,7 @@ AWE.Controller = (function(module) {
               
               if (army.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime()) {
                 startUpdate('armyDetails');
+                console.log('request army details');
                 AWE.GS.Army.Manager.updateArmy(armyId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
                   stopUpdate('armyDetails');
                   that.setModelChanged();

@@ -54,6 +54,7 @@ AWE.UI = (function(module) {
       _attackButtonView = AWE.UI.createButtonView();
       _attackButtonView.initWithControllerTextAndImage(controller, 'attack', AWE.UI.ImageCache.getImage("map/button1"));
       _attackButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
+      _attackButtonView.onClick = function() { that.onAttackButtonClick(); }
       _container.addChild(_attackButtonView.displayObject());
       
       _rankImageView = AWE.UI.createImageView();
@@ -64,6 +65,8 @@ AWE.UI = (function(module) {
       my.frame.size.width = 192;
       my.frame.size.height = 128;
     };
+    
+    that.onAttackButtonClick = function() {};
     
     that.updateView = function() {
       _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + _army.rank()));
