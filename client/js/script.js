@@ -2,17 +2,37 @@
 window.WACKADOO = (function(module) {
   
   /** creates an application singleton */
-  module.createApplication = function() {
+  module.createApplication = function(my) {
     
     var _rootScreenController = null;
     var _initialized = false;
     var _numLoadedAssets = 0;
     var _numAssets = 0;
     
+    var loadDialog;
+    
+    my = my || {};
+    
+    my.checkEverythingLoaded = function() {
+       if (_numLoadedAssets === _numAssets) {           // have loaded all assets?
+        loadDialog.hide();
+        loadDialog = null;                             // done, can be garbage collected.
+        _initialized = true;
+        $('#debug2').html("Initialization done.");
+      }     
+    }
+    
     var that = {};
     
     /** initializes needed modules and creates a root view controller. */
     that.init = function() {
+      loadDialog = AWE.UI.createDOMDialog({
+        anchor: $('body'),
+        frame: AWE.Geometry.createRect($(window).width() /2 -200 , $(window).height()/2-50, 450, 100),
+      });
+      loadDialog.show();
+      
+      
       AWE.Net.init();                                   // initialize the network stack
       AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
         AWE.UI.rootNode = AWE.Map.Manager.rootNode();
@@ -20,8 +40,16 @@ window.WACKADOO = (function(module) {
   
       _numLoadedAssets = _numAssets = 0;
 
+      for (var i=0; i < AWE.UI.templates.length; i++) {
+        _numAssets += 1;
+        AWE.Util.TemplateLoader.registerTemplate(AWE.UI.templates[i], function() { console.log('loaded TEMPLATE');
+          that.templateLoaded();
+        });
+      }
+      AWE.Util.TemplateLoader.loadAllTemplates();
+
       AWE.UI.ImageCache.init();                         // initializes the central image cache
-      for (k in AWE.Config.IMAGE_CACHE_LOAD_LIST) {     // and preload assets
+      for (var k in AWE.Config.IMAGE_CACHE_LOAD_LIST) {     // and preload assets
         if (AWE.Config.IMAGE_CACHE_LOAD_LIST.hasOwnProperty(k)) {
           _numAssets += 1;                              // count assets
           AWE.UI.ImageCache.loadImage(k, AWE.Config.IMAGE_CACHE_LOAD_LIST[k], function(name) {
@@ -37,10 +65,12 @@ window.WACKADOO = (function(module) {
     
     that.imageLoaded = function(name) {
       _numLoadedAssets += 1;
-      if (_numLoadedAssets === _numAssets) {           // have loaded all assets?
-        _initialized = true;
-        $('#debug2').html("Initialization done.");
-      }
+      my.checkEverythingLoaded();
+    }
+    
+    that.templateLoaded = function() {
+      _numLoadedAssets += 1;
+      my.checkEverythingLoaded();
     }
     
     that.rootScreenController = function() { return _rootScreenController; }
@@ -78,12 +108,13 @@ window.WACKADOO = (function(module) {
 
 $(document).ready(function() {
   
+  
   var application = WACKADOO.createApplication();
   application.init();
   
   $('#zoomin').click(function(){application.rootScreenController().zoom(.1, true)});
   $('#zoomout').click(function(){application.rootScreenController().zoom(.1, false)});
-  
+
   application.run();
 });
 
