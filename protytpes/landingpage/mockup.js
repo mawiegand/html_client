@@ -8,11 +8,13 @@ $(document).ready(function() {
   $('#footerbar').click(function() {
     if (!details) {
       $('#detailsbar').show();
-      $('#message').fadeOut('fast');
+      $('#message').fadeOut('slow');
       $('#mainbar').slideUp('slow');
+      $('#menubar').slideUp('fast');
       details = true;
     }
     else {
+      $('#menubar').slideDown('slow');
       $('#mainbar').slideDown('slow', function() {
         $('#detailsbar').hide(); 
         $('#message').fadeIn();
@@ -33,7 +35,7 @@ $(document).ready(function() {
     });
   }
   
-  setInterval(animate, 5000);
+  //setInterval(animate, 5000);
   
   
 });

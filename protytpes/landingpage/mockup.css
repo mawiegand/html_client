@@ -54,6 +54,7 @@ html, body {
   font-weight: normal;
   text-shadow: white 0px 1px 1px;
   min-width: 960px;
+  width: 100%;
 }
 
 #menubar {
@@ -181,7 +182,6 @@ html, body {
   top:0px;
   width: 800px;
   left:-400px;
-  overflow: visible;
 }
 
 #img-bg {
@@ -189,13 +189,13 @@ html, body {
   width:2000px;
   left:-1050px;
   top:-150px;
-  overflow: visible;
   z-index: -1;
 }
 
 
 #figures {
   position: relative;
+  width: 100%;
 }
 
 #figures-placer {
@@ -203,6 +203,7 @@ html, body {
   left: 0px;
   top:0px;
   left:50%;
+  width: 0px;
 }
 
 #inbetween {
