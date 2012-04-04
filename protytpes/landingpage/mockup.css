@@ -289,15 +289,12 @@ input[type=submit]#hover {
 }
 
 #panel {
-  margin-left: -480px;
-  width: 960px;
-  background-color: #FFFFEE;
-  border-radius: 12px;
-  box-shadow: 0px 4px 4px 4px rgba(0,0,0,.5);
-  height: 1600px;
+  margin-left: -400px;
+  width: 800px;
+  background-color: #ddd;
   font-size: 12px;
   text-align: left;
-  padding: 20px;
+  padding: 20px 0px;
 }
 
 #panel h3 {
@@ -310,9 +307,29 @@ input[type=submit]#hover {
   font-size: 14px;
 }
 
+.row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.block {
+  vertical-align: top;  
+  display: inline-block;
+  margin-right: 15px;
+  margin-left: 15px;
+}
+
+.w280 {
+  width: 280px;
+}
+
+.w180 {
+  width: 180px;
+}
+
 #sitemap {
-  margin-left: -480px;
-  width: 960px;
+  margin-left: -400px;
+  width: 800px;
   height: 200px;
   text-align: center;
 }
