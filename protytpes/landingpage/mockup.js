@@ -8,14 +8,14 @@ $(document).ready(function() {
   $('#footerbar').click(function() {
     if (!details) {
       $('#detailsbar').show();
-      $('#message').fadeOut('slow');
-      $('#mainbar').slideUp('slow');
+      $('#message').slideUp('fast');
+      $('#mainbar').slideUp('fast');
       $('#menubar').slideUp('fast');
       details = true;
     }
     else {
-      $('#menubar').slideDown('slow');
-      $('#mainbar').slideDown('slow', function() {
+      $('#menubar').slideDown('fast');
+      $('#mainbar').slideDown('fast', function() {
         $('#detailsbar').hide(); 
         $('#message').fadeIn();
       });
