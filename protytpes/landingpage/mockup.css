@@ -64,6 +64,7 @@ p {
 }
 
 h1 {
+  font-family: 'MgOpenModataRegular', 'Arial Rounded MT', Arial, sans-serif;
   font-size: 27px;
   color: #F80;
 }
