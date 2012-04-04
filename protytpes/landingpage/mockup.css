@@ -180,6 +180,23 @@ h3 {
   width: 800px;
 }
 
+#column-r7c1 {
+  width: 300px;
+  margin-top: 50px;
+}
+
+#column-r7c1 img {
+  width:300px;
+}
+
+
+#column-r7c2 {
+  margin-left:40px;
+  width: 370px;
+  margin-top: 100px;
+}
+
+
 #menubar {
   font-size: 16px;
   padding-bottom: 10px;
