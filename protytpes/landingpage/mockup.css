@@ -59,14 +59,14 @@ html, body {
 
 p {
   font-size: 13px;
-  color: #555;
+  color: #444;
   line-height: 18px;
 }
 
 h1 {
-  font-family: 'MgOpenModataRegular', 'Arial Rounded MT', Arial, sans-serif;
+  font-family: Arial, sans-serif;
   font-size: 27px;
-  color: #F80;
+  color: #444;
 }
 
 
@@ -74,6 +74,13 @@ h1 {
   text-align: left;
   display: inline-block;
   vertical-align: text-top;
+}
+
+.panel-top-ruler {
+  background-image: url('shadow.png');
+  background-origin: padding-box;
+  background-repeat: no-repeat;
+  padding-top: 20px;
 }
 
 #column-r1c1 {
