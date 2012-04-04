@@ -125,17 +125,19 @@ h3 {
 }
 
 #column-r3c1 {
-  width: 380px;
+  width: 400px;
   margin-right: 40px;
 }
 
 #column-r3c1 img {
-  margin: 10px 30px;
+  margin-right: 25px;
+  margin-bottom: 20px;
   border-radius: 10px;
+  width: 100px;
 }
 
 #column-r3c2 {
-  width: 380px;
+  width: 360px;
 }
 
 #column-r4c1 {
