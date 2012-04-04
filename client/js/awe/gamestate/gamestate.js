@@ -96,6 +96,11 @@ AWE.GS = (function(module) {
         return my.lastFullUpdateAt;
       }
     }
+    
+    /** returns the timestamp of the last change to this object. */
+    that.lastChange = function() {
+      return that.lastUpdateAt(module.ENTITY_UPDATE_TYPE_AGGREGATE); // last update of whatever type
+    }
 
     that.init = function(spec) {
       my.setPropertiesWithHash(spec);      
@@ -163,6 +168,7 @@ AWE.GS = (function(module) {
       else {
         entity = my.createEntity();
         entity.init(data);
+        entity.setNotModifiedAfter(updateType, start); // set the last-update timestamp appropriately
         my.entities[entity.id()] = entity;
       }
       return entity;

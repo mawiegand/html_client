@@ -372,7 +372,7 @@ AWE.Map = (function(module) {
       
     }(startNode));
     
-    return count ;
+    return count;
   };
   
   /** returns all nodes that are in the given area. The area is specified as a frame

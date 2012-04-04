@@ -13,6 +13,8 @@ AWE.UI = (function(module) {
 
     my = my || {};
     
+    my.typeName = "MainControlView";
+    
     that = module.createView(spec, my);
 
     var _super = {

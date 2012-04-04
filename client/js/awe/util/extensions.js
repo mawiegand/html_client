@@ -1,4 +1,5 @@
 /* Author: Sascha Lange <sascha@5dlab.com>
+ *         Patrick Fox <patrick@5dlab.com>
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
@@ -44,6 +45,15 @@ AWE.Ext = (function(module) {
       _function(_obj);
     }
   }
+  
+  /** calls the function for each of the elements of the hash. */
+  module.applyFunctionToElements = function(_hash, _function) {
+    for (var key in _hash) {
+      if (_hash.hasOwnProperty(key)) {
+        _function(_hash[key]);
+      }
+    }
+  }
     
   /** returns a random integer in [0;max[
    */ 
@@ -58,6 +68,10 @@ AWE.Ext = (function(module) {
     if (x < 0) return -1;
     return 0;
   };
+  
+/*  Handlebars.registerHelper('I18n',   // this is a small helper to combine I10n.js with handlebars.
+    function(str){ return I18n.t(str); }
+  );*/
 
   return module;
   

@@ -11,7 +11,13 @@ AWE.UI = (function(module) {
         
     var _container = null;
     var _labelText = null;
+    var _labelIcon = null;
     var _backgroundShape = null;
+    
+    var placeholderShape = null;
+
+    var _background = false;
+    var _padding = 0;
     
     my = my || {};
         
@@ -24,59 +30,131 @@ AWE.UI = (function(module) {
     }
     
     that.initWithControllerAndLabel = function(controller, label, background, frame) {
+      
       _super.initWithController(controller, frame);
       
       _container = new Container();
-      _background = background;      
-
+      _background = background;
+      
+      _padding = _background ? 5 : 0;
+      
       _labelText = new Text(label, "12px Arial", "#FFF");
       _labelText.textAlign = "center";
       _labelText.textBaseline = "middle";
-      _labelText.x = my.frame.size.width / 2;
-      _labelText.y = my.frame.size.height / 2;
       _container.addChild(_labelText);
-    
-      if (background) {
-        var _backgroundGraphics = new Graphics();
-        _backgroundGraphics.setStrokeStyle(0);
-        _backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-        _backgroundGraphics.drawRoundRect((my.frame.size.width - _labelText.getMeasuredWidth() - 10) / 2, (my.frame.size.height - _labelText.getMeasuredLineHeight() - 8) / 2, _labelText.getMeasuredWidth() + 10, _labelText.getMeasuredLineHeight() + 8, 4);
-        _backgroundShape = new Shape(_backgroundGraphics);
-        _container.addChild(_backgroundShape);
-      }
-      
-      _container.x = my.frame.origin.x;
-      _container.y = my.frame.origin.y;
     }
 
     that.setFrame = function(frame) {
+
       _super.setFrame(frame);
+      
       _container.x = frame.origin.x;
       _container.y = frame.origin.y;
 
-      _labelText.x = my.frame.size.width / 2;
-      _labelText.y = my.frame.size.height / 2;
+      that.layoutSubviews();      
+    }
+    
+    that.layoutSubviews = function() {
+      _super.layoutSubviews();
+      
+      var iconWidth = _labelIcon ? 24 : 0;
 
-      if (_backgroundShape) {
-        _container.removeChild(_backgroundShape);
+      var rectX;
+      if (_labelText.textAlign === 'center') {
+        rectX = (my.frame.size.width - _labelText.getMeasuredWidth() - iconWidth - 2 * _padding) / 2;
+        _labelText.x = (my.frame.size.width + iconWidth) / 2;
+        _labelText.y = my.frame.size.height / 2;
+        if (_labelIcon) _labelIcon.setOrigin(AWE.Geometry.createPoint((my.frame.size.width - _labelText.getMeasuredWidth() - iconWidth) / 2, my.frame.size.height / 2 - 10));
+      }
+      else if (_labelText.textAlign === 'right') {
+        rectX = my.frame.size.width - _labelText.getMeasuredWidth() - iconWidth - 2 * _padding;
+        _labelText.x = my.frame.size.width - _padding;
+        _labelText.y = my.frame.size.height / 2;
+        if (_labelIcon) _labelIcon.setOrigin(AWE.Geometry.createPoint(my.frame.size.width - _labelText.getMeasuredWidth() - iconWidth - _padding, my.frame.size.height / 2- 10));
+      }
+      else {
+        rectX = 0;
+        _labelText.x = _padding + iconWidth;
+        _labelText.y = my.frame.size.height / 2;
+        if (_labelIcon) _labelIcon.setOrigin(AWE.Geometry.createPoint(_padding, my.frame.size.height / 2 - 10));
+      }
+            
+      if (_background) {
+        if (_backgroundShape) {
+          _container.removeChild(_backgroundShape);
+        }
+        
         var _backgroundGraphics = new Graphics();
         _backgroundGraphics.setStrokeStyle(0);
         _backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-        _backgroundGraphics.drawRoundRect((frame.size.width - _labelText.getMeasuredWidth() - 10) / 2, (frame.size.height - _labelText.getMeasuredLineHeight() - 8) / 2, _labelText.getMeasuredWidth() + 10, _labelText.getMeasuredLineHeight() + 8, 4);
+        _backgroundGraphics.drawRoundRect(rectX, (my.frame.size.height - _labelText.getMeasuredLineHeight() - 2 * _padding) / 2, _labelText.getMeasuredWidth() + 2 * _padding + iconWidth, _labelText.getMeasuredLineHeight() + 2 * _padding, 4);
         _backgroundShape = new Shape(_backgroundGraphics);
         _container.addChildAt(_backgroundShape, 0);
       }
-    }
-    
-    that.layoutSubviews = function() {      
-      _needsLayout = true;
-      _needsDisplay = true;
+      
+      // für placeholder kreis
+      if (_labelIcon) placeholderShape.x = _labelIcon.center().x;
+      if (_labelIcon) placeholderShape.y = _labelIcon.center().y;
     }
     
     that.displayObject = function() {
       return _container;
     }
+    
+    that.setText = function(text) {
+      _labelText.text = text;
+      that.setNeedsLayout();     
+    }
             
+    that.text = function() {
+      return _labelText.text;
+    }
+    
+    that.setTextAlign = function(alignment) {
+      _labelText.textAlign = alignment;
+      that.setNeedsLayout();     
+    }
+            
+    that.textAlign = function() {
+      return _labelText.textAlign;
+    }
+            
+    that.setPadding = function(padding) {
+      _padding = padding;
+      that.setNeedsLayout();     
+    }
+            
+    that.padding = function() {
+      return _padding;
+    }
+    
+    that.setIconImage = function(image) {
+    
+      if (!_labelIcon) {
+        _labelIcon = AWE.UI.createImageView();
+        _labelIcon.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(image));
+        _labelIcon.setContentMode(module.ViewContentModeNone);
+        _labelIcon.setFrame(AWE.Geometry.createRect(0, 0, 20, 20));
+        // _container.addChild(_labelIcon.displayObject());
+        
+        var placeholderGraphics = new Graphics();
+        placeholderGraphics.setStrokeStyle(1);
+        placeholderGraphics.beginStroke('rgb(255, 255, 255)');
+        placeholderGraphics.drawCircle(0, 0, 10);
+        placeholderShape = new Shape(placeholderGraphics);    
+        _container.addChild(placeholderShape);
+      }
+      else {
+        _labelIcon.setImage(AWE.UI.ImageCache.getImage(image));
+      }
+            
+      that.setNeedsDisplay();
+    }
+            
+    that.iconImage = function() {
+      return _padding;
+    }
+
     return that;
   };
     

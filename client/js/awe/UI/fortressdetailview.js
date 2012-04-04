@@ -7,7 +7,7 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
           
-  module.createDetailView = function(spec, my) {
+  module.createFortressDetailView = function(spec, my) {
 
     var that;
 

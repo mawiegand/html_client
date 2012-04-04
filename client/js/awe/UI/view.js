@@ -37,6 +37,7 @@ AWE.UI = (function(module) {
     
     var _autoscales = false;   ///< whether the view automatically adapts its internal scale when being resized.
     var _alpha = 1.;           ///< alpha value (transparency) of the view. Continuous value from 0 to 1. 0: transparent, 1: opaque.
+    var _selected = false;     ///< selection state of view
   
   
     // protected attributes and methods //////////////////////////////////////
@@ -50,6 +51,7 @@ AWE.UI = (function(module) {
     // public attributes and methods /////////////////////////////////////////
     
     that = {};
+    AWE.Partials.addChangeTracking(that);
     
     /** intializes the view and sets its frame and controller. The fram is an
      * optional argument. */
@@ -137,6 +139,10 @@ AWE.UI = (function(module) {
      * when needed. */
     that.needsDisplay = function() { return _needsDisplay; } // TOOD: someone needs to set needsDisplay back to false after painting!
     
+    /** informs the view that it has been redrawn. Must be called by a view
+     * controller after updating the stage this view is attached to. */
+    that.notifyRedraw = function() { _needsDisplay = false; }
+    
     that.scaleX = function() { return that.displayObject().length !== undefined ? that.displayObject()[0].scaleY : that.displayObject().scaleY; }
     that.scaleY = function() { return that.displayObject().length !== undefined ? that.displayObject()[0].scaleY : that.displayObject().scaleY; }
 
@@ -146,6 +152,14 @@ AWE.UI = (function(module) {
     that.layoutIfNeeded = function() {
       if (_needsLayout) {
         this.layoutSubviews();
+      };
+    };
+    
+    that.updateIfNeeded = function() {
+      if (_needsUpdate) {
+        this.updateView();
+        _needsUpdate = false;
+        _needsDisplay = true;
       };
     };
     
@@ -165,12 +179,25 @@ AWE.UI = (function(module) {
     that.setAlpha = function(alpha) {
       _alpha = alpha;
     }
+    
+    that.setSelected = function(selected) {
+      _selected = selected;
+      this.needsDisplay();
+    }
+
+    that.selected = function() {
+      return _selected;
+    }
 
     that.layoutSubviews = function() {
       this.autoscaleIfNeeded();
+      this.setChangedNow();
       
       _needsLayout = false;
       _needsDisplay = true;
+    }
+    
+    that.updateView = function() {
     }
     
     return that;

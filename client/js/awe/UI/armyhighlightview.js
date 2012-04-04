@@ -21,9 +21,9 @@ AWE.UI = (function(module) {
     var _army = null;    
     var _container = null;
     
-    var _infoText1 = null;    
-    var _infoText2 = null;    
-    var _infoText3 = null;    
+    var _infoText1View = null;    
+    var _infoText2View = null;    
+    var _infoText3View = null;    
     var _healthShape = null;    
     var _actionPointsText = null;    
         
@@ -34,59 +34,54 @@ AWE.UI = (function(module) {
       layoutSubviews: that.superior("layoutSubviews"),
       setFrame: that.superior("setFrame"),
     }
-
     
     that.initWithControllerAndArmy = function(controller, army, frame) {
       _super.initWithController(controller, frame);
       _army = army;
       
-      _container = new Container();        
+      _container = new Container();
+      
+      if (_army.battle_id() || _army.target_location_id()) {
+        var lines = 3;
+      }
+      else {
+        var lines = 1;
+      }        
 
       var backgroundGraphics = new Graphics();
       backgroundGraphics.setStrokeStyle(0);
       backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-      backgroundGraphics.drawRoundRect(128, 4, 64, 56, 8);
+      backgroundGraphics.drawRoundRect(128, 34 - lines * 11, 64, lines * 22, 8);
       var backgroundShape = new Shape(backgroundGraphics);
       _container.addChild(backgroundShape);
       
-      var _infoText1 = new Text("Text 1", "12px Arial", "#FFF");
-      _infoText1.textBaseline = "bottom";
-      _infoText1.textAlign = "left";
-      _infoText1.x = 156;
-      _infoText1.y = 24;
-      _container.addChild(_infoText1);
-    
-      var _infoText2 = new Text("Text 2", "12px Arial", "#FFF");
-      _infoText2.textBaseline = "bottom";
-      _infoText2.textAlign = "left";
-      _infoText2.x = 156;
-      _infoText2.y = 40;
-      _container.addChild(_infoText2);
-    
-      var _infoText3 = new Text("Text 3", "12px Arial", "#FFF");
-      _infoText3.textBaseline = "bottom";
-      _infoText3.textAlign = "left";
-      _infoText3.x = 156;
-      _infoText3.y = 56;
-      _container.addChild(_infoText3);
-    
-      var healthBGGraphics = new Graphics();
-      healthBGGraphics.setStrokeStyle(1);
-      healthBGGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
-      healthBGGraphics.beginFill('rgb(127, 127, 127)');
-      healthBGGraphics.drawRoundRect(64, 108, 64, 12, 4);
-      var healthBGShape = new Shape(healthBGGraphics);
-      _container.addChild(healthBGShape);
+      _infoText1View = AWE.UI.createLabelView();
+      _infoText1View.initWithControllerAndLabel(controller);
+      _infoText1View.setFrame(AWE.Geometry.createRect(130, 33 - lines * 11, 1000, 24));      
+      _infoText1View.setTextAlign("left");
+      _infoText1View.setIconImage("map/display/icon");
+      _infoText1View.setText(army.strength());
+      _container.addChild(_infoText1View.displayObject());
 
-      var healthGraphics = new Graphics();
-      healthGraphics.setStrokeStyle(1);
-      healthGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
-      healthGraphics.beginFill('rgb(255, 64, 64)');
-      healthGraphics.drawRoundRect(64, 108, 48, 12, 4);
-      _healthShape = new Shape(healthGraphics);
-      _container.addChild(_healthShape);
-
-      var _actionPointsText = new Text("8 / 10", "10px Arial", "#000");
+      if (lines > 1) {
+        _infoText2View = AWE.UI.createLabelView();
+        _infoText2View.initWithControllerAndLabel(controller);
+        _infoText2View.setFrame(AWE.Geometry.createRect(130, 22, 1000, 24));      
+        _infoText2View.setTextAlign("left");
+        _infoText2View.setIconImage("map/display/icon");
+        _infoText2View.setText(army.strength());
+        _container.addChild(_infoText2View.displayObject());
+  
+        _infoText3View = AWE.UI.createLabelView();
+        _infoText3View.initWithControllerAndLabel(controller);
+        _infoText3View.setFrame(AWE.Geometry.createRect(130, 44, 1000, 24));      
+        _infoText3View.setTextAlign("left");
+        _infoText3View.setIconImage("map/display/icon");
+        _infoText3View.setText(army.strength());
+        _container.addChild(_infoText3View.displayObject());
+      }
+      
+      var _actionPointsText = new Text(army.ap_present() + " / " + army.ap_max(), "10px Arial", "#000");
       _actionPointsText.textBaseline = "bottom";
       _actionPointsText.textAlign = "center";
       _actionPointsText.x = 96;
@@ -97,6 +92,12 @@ AWE.UI = (function(module) {
         my.frame.size.width = 192;
         my.frame.size.height = 128;
       }
+      
+      that.layoutSubviews();  
+    }
+    
+    that.updateView = function() {
+      that.setNeedsLayout();
     }
 
     that.setFrame = function(frame) {
@@ -106,8 +107,10 @@ AWE.UI = (function(module) {
     }
     
     that.layoutSubviews = function() {
-      _needsLayout = false;
-      _needsDisplay = true;
+      _super.layoutSubviews();
+      _infoText1View.layoutIfNeeded();
+      if (_infoText2View) _infoText2View.layoutIfNeeded();
+      if (_infoText3View) _infoText3View.layoutIfNeeded();
     }
     
     that.displayObject = function() {

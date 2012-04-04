@@ -25,6 +25,9 @@ AWE.Config = (function(module) {
   module.MAP_SERVER_BASE = module.SERVER_ROOT + '/game_server/map/';
   module.MILITARY_SERVER_BASE = module.SERVER_ROOT + '/game_server/military/';
   
+  module.DEV_CHARACTER_ID = 1;
+  module.DEV_ALLIANCE_ID = 1;
+  
   module.MAPPING_FORTRESS_SIZE = 64;
   
   module.MAP_ARMY_WIDTH = 64;
@@ -77,9 +80,16 @@ AWE.Config = (function(module) {
     "map/army/stanceDefensive": "images/army/stance_def.png",
     "map/army/stanceNeutral": "images/army/stance_neu.png",
 
+    "map/army/rank1": 'images/army/rank1.png',
+    "map/army/rank2": 'images/army/rank2.png',
+    "map/army/rank3": 'images/army/rank3.png',
+    "map/army/rank4": 'images/army/rank4.png',
+
     "map/outpost" : "images/settlements/outpost.png",
 
     "map/easement": "images/verbot.png",
+
+    "map/display/icon": "images/platzhaltericon.png",
 
     "map/region/icon": "images/dot.png",
     
@@ -89,6 +99,13 @@ AWE.Config = (function(module) {
 
     "map/army": 'images/army.png',
   };
+  
+  module.MAP_STANCE_IMAGES = [
+      "map/army/stanceNeutral",
+      "map/army/stanceAggressive",
+      "map/army/stanceDefensive"
+  ];
+
   
   console.log('CONFIGURATION: ');
   console.dir(module);

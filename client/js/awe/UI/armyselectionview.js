@@ -13,6 +13,8 @@ AWE.UI = (function(module) {
         
     my = my || {};
     
+    my.typeName = 'ArmySelectionView';
+    
     var _army = null;
     
     var _container = null;
@@ -21,7 +23,7 @@ AWE.UI = (function(module) {
     var _stanceButtonView = null;    
     var _moveButtonView = null;    
     var _attackButtonView = null;    
-    var _rankView = null;    
+    var _rankImageView = null;    
 
 
     that = module.createView(spec, my);
@@ -39,24 +41,38 @@ AWE.UI = (function(module) {
       _container = new Container();
       _army = army;
       
-      _stanceButtonView = AWE.UI.createImageView();
-      _stanceButtonView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/button1"));
+      _stanceButtonView = AWE.UI.createButtonView();
+      _stanceButtonView.initWithControllerTextAndImage(controller, 'stance', AWE.UI.ImageCache.getImage("map/button1"), frame);
       _stanceButtonView.setFrame(AWE.Geometry.createRect(12, 6, 52, 52));
       _container.addChild(_stanceButtonView.displayObject());
 
-      _moveButtonView = AWE.UI.createImageView();
-      _moveButtonView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/button1"));
+      _moveButtonView = AWE.UI.createButtonView();
+      _moveButtonView.initWithControllerTextAndImage(controller, 'move', AWE.UI.ImageCache.getImage("map/button1"));
       _moveButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
       _container.addChild(_moveButtonView.displayObject());
 
-      _attackButtonView = AWE.UI.createImageView();
-      _attackButtonView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/button1"));
+      _attackButtonView = AWE.UI.createButtonView();
+      _attackButtonView.initWithControllerTextAndImage(controller, 'attack', AWE.UI.ImageCache.getImage("map/button1"));
       _attackButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
+      _attackButtonView.onClick = function() { that.onAttackButtonClick(); }
       _container.addChild(_attackButtonView.displayObject());
+      
+      _rankImageView = AWE.UI.createImageView();
+      _rankImageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/army/rank1"));
+      _rankImageView.setFrame(AWE.Geometry.createRect(86, 0, 20, 20));
+      _container.addChild(_rankImageView.displayObject());      
 
       my.frame.size.width = 192;
       my.frame.size.height = 128;
     };
+    
+    that.onAttackButtonClick = function() {};
+    
+    that.updateView = function() {
+      _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + _army.rank()));
+      log('_army.rank()',  _army.rank());
+      that.setNeedsDisplay();
+    }
 
     that.setFrame = function(frame) {
       _super.setFrame(frame);
@@ -71,8 +87,6 @@ AWE.UI = (function(module) {
     that.displayObject = function() {
       return _container;
     };
-    
-    
         
     return that;
   };

@@ -28,6 +28,16 @@
        Modernizr enables HTML5 elements & feature detects for optimal performance.
        Create your own custom Modernizr build: www.modernizr.com/download/ -->
   <script src="js/libs/modernizr-2.5.3.min.js"></script>
+  
+  <script type="text/x-handlebars" data-template-name="load-dialog">
+      <div class="modal-dialog-background"></div>
+      <div class="center-helper">
+        <div class="modal-dialog-pane">
+          <div class="loaddialog-heading">{{ unbound AWE.I18n.strings.general.startup.loading }}</div>
+          <div class="loaddialog-progressbar"><div class="loaddialog-progress"></div></div>
+        </div>
+      </div>
+  </script>
 </head>
 <body>
   <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
@@ -78,10 +88,13 @@
   <!-- scripts concatenated and minified via build script -->
   <script src="js/awe/config/config.js"></script>
   <script src="js/awe/util/extensions.js"></script>
+  <script src="js/awe/util/common.js"></script>
+  <script src="js/awe/util/extensions.js"></script>
   <script src="js/awe/network/network.js"></script>
   <script src="js/awe/util/geometry.js"></script>
   <script src="js/awe/util/partials.js"></script>
   <script src="js/awe/util/memoization.js"></script>
+  <script src="js/awe/util/templateloader.js"></script>
   <script src="js/awe/util/mapping.js"></script>
   <script src="js/awe/map/maptree.js"></script>
   <script src="js/awe/map/location.js"></script>
@@ -90,28 +103,36 @@
   <script src="js/awe/UI/util.js"></script>
   <script src="js/awe/UI/imagecache.js"></script>
   <script src="js/awe/UI/view.js"></script>
+  <script src="js/awe/UI/buttonview.js"></script>  
   <script src="js/awe/UI/imageview.js"></script>  
   <script src="js/awe/UI/labelview.js"></script>
   <script src="js/awe/UI/container.js"></script>
   <script src="js/awe/UI/settlementview.js"></script>
   <script src="js/awe/UI/baseview.js"></script>
   <script src="js/awe/UI/outpostview.js"></script>
+  <script src="js/awe/UI/fortressdetailview.js"></script>
   <script src="js/awe/UI/fortressview.js"></script>
   <script src="js/awe/UI/fortresshighlightview.js"></script>
   <script src="js/awe/UI/fortressselectionview.js"></script>
+  <script src="js/awe/UI/armydetailview.js"></script>
   <script src="js/awe/UI/armyview.js"></script>  
   <script src="js/awe/UI/armyhighlightview.js"></script>  
   <script src="js/awe/UI/armyselectionview.js"></script>  
   <script src="js/awe/UI/regionview.js"></script>
   <script src="js/awe/UI/maincontrolsview.js"></script>
-  <script src="js/awe/UI/detailview.js"></script>
+  <script src="js/awe/UI/dom/domview.js"></script>
   <script src="js/awe/controller/screencontroller.js"></script>
   <script src="js/awe/controller/mapcontroller.js"></script>
   <script src="js/awe/gamestate/gamestate.js"></script>
   <script src="js/awe/gamestate/army.js"></script>
+  <script src="js/awe/action/action.js"></script>
+  <script src="js/awe/action/actionmanager.js"></script>
+  <script src="js/awe/action/military/changearmyname.js"></script>
+  <script src="js/awe/i18n/en.js"></script>
   <script src="js/plugins.js"></script>
   <script src="js/script.js"></script>
   <!-- end scripts -->
-
+  <div id="templates">
+  </div>
 </body>
 </html>

@@ -15,10 +15,11 @@ AWE.Controller = (function(module) {
 
     var _selectedView = null;    ///< there can be only one selected view!
     var _highlightedView = null; ///< there can be only one highlighted view!
+    var _selectedHighlightView = null; ///< highlighted view if selected
     
     var _windowSize = null;      ///< size of window in view coordinates
-    var mc2vcScale;             ///< scaling
-    var mc2vcTrans;             ///< translation
+    var mc2vcScale;              ///< scaling
+    var mc2vcTrans;              ///< translation
 
     var _needsLayout;            ///< true, in case e.g. the window has changed, causing a new layuot of the map
     var _needsDisplay;           ///< true, in case something (data, subwview) has changed causing a need for a redraw
@@ -39,6 +40,8 @@ AWE.Controller = (function(module) {
     var _modelChanged = false;   ///< true, if anything in the model changed
     var _maptreeChanged = false; ///< true, if anything in the maptree (just nodes!) changed. _maptreeChanged = true implies modelChanged = true
     
+    var _detailViewChanged = false; ///< true, if a detailView has been added, removed or changed
+    
     var requestingMapNodesFromServer = false;
     
     var regionViews = {};
@@ -47,6 +50,9 @@ AWE.Controller = (function(module) {
     var locationViews = {};
     var _actionViews = {};
     var HUDViews = {};
+    
+    var armyUpdates = {};
+
     
     
     // ///////////////////////////////////////////////////////////////////////
@@ -84,6 +90,17 @@ AWE.Controller = (function(module) {
       that.anchor().append('<canvas id="layer2"></canvas>');
       _canvas[2] = $('#layer2')[0];
       _stages[2] = new Stage(_canvas[2]);
+      _stages[2].enableMouseOver();
+      
+      // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) or stage2 is active          
+      _stages[2].onMouseOver = function() {
+        _stages[1].enableMouseOver(0);
+        _unhighlightView();
+      };
+  
+      _stages[2].onMouseOut = function() {
+        _stages[1].enableMouseOver();
+      };
       
       // HUD layer ("static", not zoomable, not moveable)
       that.anchor().append('<canvas id="layer3"></canvas>');
@@ -91,7 +108,7 @@ AWE.Controller = (function(module) {
       _stages[3] = new Stage(_canvas[3]);
       _stages[3].enableMouseOver();
 
-      // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) is active          
+      // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) or stage2 is active          
       _stages[3].onMouseOver = function() {
         _stages[1].enableMouseOver(0);
         _unhighlightView();
@@ -351,6 +368,7 @@ AWE.Controller = (function(module) {
           }
         }
         else if (_stages[0].hitTest(evt.pageX, evt.pageY)) {
+          // call onClick of stage for unselecting items
           if (_stages[0].onClick) {
             _stages[0].onClick(evt);
           }         
@@ -365,7 +383,7 @@ AWE.Controller = (function(module) {
              
       if (!_stages[2].hitTest(evt.pageX, evt.pageY)) {
         _scrollingStartedAtVC = AWE.Geometry.createPoint(evt.pageX, evt.pageY);
-        _scrollingOriginalTranslation = mc2vcTrans.copy();
+        _scrollingOriginalTranslationVC = mc2vcTrans.copy();
         
         $('#layers').mousemove(function(ev) {
           that.handleMouseMove(ev);
@@ -384,8 +402,8 @@ AWE.Controller = (function(module) {
     that.handleMouseMove = function(event) {
       // here we can assume, that the mouse is pressed right now!
       _scrollingStarted = true;
-      var pos = AWE.Geometry.createPoint(_scrollingOriginalTranslation.x + event.pageX - _scrollingStartedAtVC.x, 
-                                         _scrollingOriginalTranslation.y + event.pageY - _scrollingStartedAtVC.y);        
+      var pos = AWE.Geometry.createPoint(_scrollingOriginalTranslationVC.x + event.pageX - _scrollingStartedAtVC.x, 
+                                         _scrollingOriginalTranslationVC.y + event.pageY - _scrollingStartedAtVC.y);        
       mc2vcTrans.moveTo(pos);
       that.setNeedsLayout();
     };
@@ -446,10 +464,15 @@ AWE.Controller = (function(module) {
     };
         
     var _action = false;
+
+    that.buttonClicked = function(button) {
+      log('button', button.text());
+    };
     
     that.viewClicked = function(view) {    
       if (_selectedView === view) {
         _unselectView(_selectedView);
+        _highlightView(view);
       }
       else if (_selectedView) {
         _unselectView(_selectedView);
@@ -461,10 +484,10 @@ AWE.Controller = (function(module) {
     };
 
     that.viewMouseOver = function(view) {
-      if (view.typeName() === 'fortressView') {
+      if (view.typeName() === 'FortressView') {
         _highlightView(view);
       }
-      else if (view.typeName() === 'armyView') {
+      else if (view.typeName() === 'ArmyView') {
         _highlightView(view);
       }
       else if (view.typeName() === 'hudView') { // typeof view == 'hud'  (evtl. eigene methode)
@@ -473,10 +496,10 @@ AWE.Controller = (function(module) {
     };
 
     that.viewMouseOut = function(view) {
-      if (view.typeName() === 'fortressView') {
+      if (view.typeName() === 'FortressView') {
         _unhighlightView();
       }
-      else if (view.typeName() === 'armyView') {
+      else if (view.typeName() === 'ArmyView') {
         _unhighlightView();
       }
     };
@@ -489,20 +512,44 @@ AWE.Controller = (function(module) {
       view.setSelected(true);
       
       // distinguish between different views
-      if (view.typeName() === 'fortressView') {
+      if (view.typeName() === 'FortressView') {
         _actionViews.selectionControls = AWE.UI.createLabelView(); // createFortressSelectionView
         _actionViews.selectionControls.initWithControllerAndLabel(that, 'Fortress', true);
         _actionViews.selectionControls.setCenter(center);
         view.setSelected(true);
       }
-      else if (view.typeName() === 'armyView') {
+      else if (view.typeName() === 'ArmyView') {
         _actionViews.selectionControls = AWE.UI.createArmySelectionView();
         _actionViews.selectionControls.initWithControllerAndArmy(that, view.army(), AWE.Geometry.createRect(-64, 0, 192, 128));
         _actionViews.selectionControls.setCenter(center);
+        _actionViews.selectionControls.onAttackButtonClick = function () {
+          
+          var dialog = Ember.View.create({
+            templateName: 'army-details',
+            
+            name: _selectedView.army().name(),
+            changeNameButton: Ember.View.extend({
+              click: function(evt) { console.log('clicked'); alert('Clicked!'); }
+            })
+          });
+          dialog.append(); 
+        }
+        
+        /* var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), 'Maximo Leader');
+           AWE.Action.Manager.queueAction(action); */
+
       }
       
       _stages[2].addChild(_actionViews.selectionControls.displayObject());
-      // _showDetailView(view);
+      // _stages[2].removeChild(_actionViews.selectedHighlightImage.displayObject());
+      
+      _selectedHighlightView = _highlightedView;
+      _highlightedView = null;
+      
+      _actionViews.selectedHighlightImage = _actionViews.highlightImage;
+      delete _actionViews.highlightImage;
+      
+      _showDetailView(view);
       _action = true;
     };
     
@@ -511,35 +558,43 @@ AWE.Controller = (function(module) {
       _stages[2].removeChild(_actionViews.selectionControls.displayObject());
       _selectedView.setSelected(false);
       _selectedView = null;
-      _actionViews.selectionControls = null;
+      delete _actionViews.selectionControls;
+      
+      _stages[2].removeChild(_actionViews.selectedHighlightImage.displayObject());
+      delete _actionViews.selectedHighlightImage;
+      _selectedHighlightView = null;
+
       _action = true;
     };
 
     /* view highlighting */
 
     var _highlightView = function(view) {
-      var center = view.center();
-      _highlightedView = view;
-      
-      if (view.typeName() === 'fortressView') {
-        _actionViews.highlightImage = AWE.UI.createFortressHighlightView();
-        _actionViews.highlightImage.initWithControllerAndNode(that, view.node());
-        _actionViews.highlightImage.setCenter(center.x, center.y - AWE.Config.MAPPING_FORTRESS_SIZE);
+      if (view !== _selectedHighlightView) {
+        var center = view.center();
+        _highlightedView = view;
+        
+        if (view.typeName() === 'FortressView') {
+          _actionViews.highlightImage = AWE.UI.createFortressHighlightView();
+          _actionViews.highlightImage.initWithControllerAndNode(that, view.node());
+          _actionViews.highlightImage.setCenter(center.x, center.y - AWE.Config.MAPPING_FORTRESS_SIZE);
+        }
+        else if (view.typeName() === 'ArmyView') {
+          _actionViews.highlightImage = AWE.UI.createArmyHighlightView();
+          _actionViews.highlightImage.initWithControllerAndArmy(that, view.army());
+          _actionViews.highlightImage.setCenter(center.x, center.y);
+          armyUpdates[view.army().id()] = view.army();
+        }
+        
+        _stages[2].addChild(_actionViews.highlightImage.displayObject());
+        _action = true;
       }
-      else if (view.typeName() === 'armyView') {
-        _actionViews.highlightImage = AWE.UI.createArmyHighlightView();
-        _actionViews.highlightImage.initWithControllerAndArmy(that, view.army());
-        _actionViews.highlightImage.setCenter(center.x, center.y);
-      }
-      
-      _stages[2].addChild(_actionViews.highlightImage.displayObject());
-      _action = true;
     };
 
     var _unhighlightView = function() {
       if (_actionViews.highlightImage) {
         _stages[2].removeChild(_actionViews.highlightImage.displayObject());
-        _actionViews.highlightImage = null;
+        delete _actionViews.highlightImage;
         _highlightedView = null;
         _action = true;
       }
@@ -548,24 +603,28 @@ AWE.Controller = (function(module) {
     /* Detail View */
 
     var _showDetailView = function(view) {
-      if (view.typeName() === 'fortressView') {      
       if (HUDViews.detailView) {
         hideDetailView(HUDViews.detailView);
       }
       
-        HUDViews.detailView = AWE.UI.createDetailView();
-        HUDViews.detailView.initWithControllerAndNode(that, view.node(), AWE.Geometry.createRect(100, 100, 350, 100));
-      // }
-      // else if (view.typeName() === 'armyView') {
-      _stages[3].addChild(HUDViews.detailView.displayObject());
+      if (view.typeName() === 'FortressView') {      
+        HUDViews.detailView = AWE.UI.createFortressDetailView();
+        HUDViews.detailView.initWithControllerAndNode(that, view.node());
       }
+      else if (view.typeName() === 'ArmyView') {
+        HUDViews.detailView = AWE.UI.createArmyDetailView();
+        HUDViews.detailView.initWithControllerAndArmy(that, view.army());
+      }
+      _stages[3].addChild(HUDViews.detailView.displayObject());
+      _detailViewChanged = true;
     };
 
     var _hideDetailView = function(view) {
       if (HUDViews.detailView) {
         _stages[3].removeChild(HUDViews.detailView.displayObject());
-        HUDViews.detailView = null;
+        delete HUDViews.detailView;
       }
+      _detailViewChanged = true;
     };
 
     // ///////////////////////////////////////////////////////////////////////
@@ -606,7 +665,7 @@ AWE.Controller = (function(module) {
       
       var startUpdate = function(type) {
         runningUpdate[type] = new Date();
-        console.log('MapController: starting update for ' + type + '.' );
+       // console.log('MapController: starting update for ' + type + '.' );
       }
       
       var stopUpdate = function(type) {
@@ -680,9 +739,65 @@ AWE.Controller = (function(module) {
             
             var frame = that.mc2vc(nodes[i].frame());
             
-            if (frame.size.height < 128) continue ;                 // no update necessary, region is to small
+            if (!that.areArmiesAtFortressVisible(frame)) continue ; // no update necessary, region is to small (perhaps fetch aggregate info)
+                        
+            if (!that.areArmiesAtSettlementsVisible(frame)) {
+              if(AWE.GS.Army.Manager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
+                nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
+                
+                startUpdate('armies');
+                AWE.GS.Army.Manager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+                  stopUpdate('armies');
+                  that.setModelChanged();
+                });
+                break;  // request limit!
+              }
+            }
+            else {
+              if (nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {
+                
+                startUpdate('armies');
+                nodes[i].region().updateArmies(AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+                  stopUpdate('armies');
+                  that.setModelChanged();
+                });
+                break;  // request limit!        
+              }      
+            }
+          }
+          lastArmyCheck = new Date();
+        }
+        
+        if (!isUpdateRunning('armyDetails') && AWE.Util.hashCount(armyUpdates)) { // check for needed armies once per second
+          
+          for (var armyId in armyUpdates) {
+            if (armyUpdates.hasOwnProperty(armyId)) {
+              var army = armyUpdates[armyId];
+              delete armyUpdates[armyId];                           // process this event, remove it from queue
+              
+              if (army.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime()) {
+                startUpdate('armyDetails');
+                console.log('request army details');
+                AWE.GS.Army.Manager.updateArmy(armyId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+                  stopUpdate('armyDetails');
+                  that.setModelChanged();
+                });
+                break ;                                             // end, just one request at a time
+              }
+            }
+          }
+          
+          var nodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, false); // this is memoized, no problem to call it twice in one cycle!
+          
+          for (var i=0; i < nodes.length; i++) {
             
-            if (frame.size.height < 256) {
+            if (!nodes[i].isLeaf() || !nodes[i].region()) continue; // no need to fetch army information for this node
+            
+            var frame = that.mc2vc(nodes[i].frame());
+            
+            if (!that.areArmiesAtFortressVisible(frame)) continue ; // no update necessary, region is to small (perhaps fetch aggregate info)
+                        
+            if (!that.areArmiesAtSettlementsVisible(frame)) {
               if(AWE.GS.Army.Manager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
                 nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
                 
@@ -719,17 +834,32 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
+    /** helper function that purges views from a stage when they are not 
+     * needed (e.g. scrolled out of the viewport). */
+    var purgeDispensableViewsFromStage = function(presentViews, neededViews, stage) {
+      var removedSomething = false;
+      var toRemove = AWE.Util.hashSubtraction(presentViews, neededViews);
+      AWE.Ext.applyFunctionToElements(toRemove, function(view) {
+        AWE.Ext.applyFunction(view.displayObject(), function(obj) {
+          stage.removeChild(obj);
+          removedSomething = true;          
+        });
+      }); 
+      return removedSomething;     
+    }
+    
     that.rebuildMapHierarchy = function(nodes) {
 
       var newRegionViews = {};  
-      var removedSomething = false;        
 
       for (var i = 0; i < nodes.length; i++) {
         var view = regionViews[nodes[i].id()];
         var frame = that.mc2vc(nodes[i].frame());
+        
         if (view) {                            // view already exists         
-          newRegionViews[nodes[i].id()] = view;
-          if (view.lastChange !== undefined && view.lastChange() < nodes[i].lastChange()) {
+          if (view.lastChange !== undefined && 
+              (view.lastChange() < nodes[i].lastChange() || 
+               (nodes[i].region() && view.lastChange() < nodes[i].region().lastChange()))) { // somehow determine when to update roads (change of locations?)
             view.setNeedsUpdate();
           }
           view.setFrame(frame);
@@ -737,24 +867,27 @@ AWE.Controller = (function(module) {
         else {                                 // view needs to be created
           view = AWE.UI.createRegionView();
           view.initWithControllerAndNode(that, nodes[i], frame);
-          newRegionViews[nodes[i].id()] = view;
           AWE.Ext.applyFunction(view.displayObject(), function(obj) {
             _stages[0].addChild(obj);
           });
         }
-      }
-      for (var k in regionViews) {             // remove view from layer
-        // use hasOwnProperty to filter out keys from the Object.prototype
-        if (regionViews.hasOwnProperty(k) && !newRegionViews[k]) {
-          var v = regionViews[k];
-          AWE.Ext.applyFunction(v.displayObject(), function(obj) {
-            _stages[0].removeChild(obj);
-            removedSomething = true;
-          });        
+        if (this.isSettlementVisible(frame)) {
+          view.showVillages();
         }
+        else {
+          view.hideVillages();
+        }
+        if (this.isFortressVisible(frame)) {
+          view.showStreets();
+        }
+        else {
+          view.hideStreets();
+        }
+        newRegionViews[nodes[i].id()] = view;
       }
+      
+      var removedSomething = purgeDispensableViewsFromStage(regionViews, newRegionViews, _stages[0]);
       regionViews = newRegionViews;  
-       
       return removedSomething;     
     }
     
@@ -766,7 +899,7 @@ AWE.Controller = (function(module) {
     // /////////////////////////////////////////////////////////////////////// 
     
     that.isSettlementVisible = function(frame) {
-      return frame.size.width > 256;
+      return frame.size.width > 450;
     };
     
     that.isFortressVisible = function(frame) {
@@ -774,124 +907,114 @@ AWE.Controller = (function(module) {
     };
     
     that.areArmiesAtFortressVisible = function(frame) {
-      return frame.size.width > 156;
+      return frame.size.width > 140;
     }
     
     that.areArmiesAtSettlementsVisible = function(frame) {
-      return frame.size.width > 256;
+      return frame.size.width > 450;
     }
     
+    var setFortressPosition = function(view, frame) {
+      view.setCenter(AWE.Geometry.createPoint(
+        frame.origin.x + frame.size.width / 2,
+        frame.origin.y + frame.size.height / 2 - 5         
+      ));
+    }
     
+    var setBasePosition = function(view, pos, frame) {
+      view.setCenter(AWE.Geometry.createPoint(
+        pos.x,
+        pos.y - 10        
+      ));
+    }
     
-    that.updateFortresses = function(nodes) {
-     // update fortresses
+    var setArmyPosition = function(view, pos, armyId, frame) {
+      var frac = ((armyId % 8) / 8.0) * 2*Math.PI;
+      var dir = AWE.Geometry.createPoint(Math.sin(frac), Math.cos(frac));
+      dir.scale(40+frame.size.width/20.0); 
+      
+      view.setCenter(AWE.Geometry.createPoint(
+        (pos.x) + dir.x,
+        (pos.y - view.frame().size.height/2 + 30) + dir.y        
+      ));
+    }
+        
+    
+    /** update the fortress views. */
+    that.updateFortresses = function(nodes) {     // view for slot 0
+
       var newFortressViews = {};
-      // var newArmyViews = {};
-      var removedSomething = false;
 
       for (var i = 0; i < nodes.length; i++) { 
-        // frame for node      
-        var frame = that.mc2vc(nodes[i].frame());
-        // var alpha = that.alpha(frame.size.width, 128, 192);
-        // if node is big enough for displaying a the fortress
-        if (that.isFortressVisible(frame)) {
-          // get view for node 
-          var view = fortressViews[nodes[i].id()];
-          // if view exists already
-          if (view) {       
-            // if model of view updated
-            if (view.lastChange !== undefined && view.lastChange() < nodes[i].lastChange()) {
+        var frame = that.mc2vc(nodes[i].frame()); // frame for node        
+
+        if (that.isFortressVisible(frame) &&      // if node is big enough for displaying the fortress
+            nodes[i].isLeaf() && nodes[i].region()) {      
+          var view = fortressViews[nodes[i].id()];// get existing view for node 
+
+          if (view) {                             // if view exists already   
+            if (view.lastChange !== undefined &&  // if model of view updated
+                nodes[i].region() && view.lastChange() < nodes[i].region().lastChange()) {
               view.setNeedsUpdate();
             }                     
-            // set new center
-            view.setCenter(AWE.Geometry.createPoint(
-              frame.origin.x + frame.size.width / 2,
-              frame.origin.y + frame.size.height / 2
-            ));
-            
-            // set alpha
-            // view.setAlpha(alpha);
-            // save view in newViews Array
-            newFortressViews[nodes[i].id()] = view;                      
           }
-
-          // if view for node doesn't exists and node is leaf
-          else if (nodes[i].isLeaf() && nodes[i].region()) {
-            // create and initialize new view, set center
-            var newView = AWE.UI.createFortressView();
-            newView.initWithControllerAndNode(that, nodes[i]);
-            newView.setCenter(AWE.Geometry.createPoint(
-              frame.origin.x + frame.size.width / 2,
-              frame.origin.y + frame.size.height / 2            
-            ));
-
-            // set alpha
-            // newView.setAlpha(alpha);
-            // add views displayObject to stage
-            _stages[1].addChild(newView.displayObject());
-            // add view to newViews Array
-            newFortressViews[nodes[i].id()] = newView;
+          else if (nodes[i].isLeaf() && nodes[i].region()) { // if view for node doesn't exists and node is a leaf node
+            view = AWE.UI.createFortressView();
+            view.initWithControllerAndNode(that, nodes[i]);
+            _stages[1].addChild(view.displayObject()); // add view's displayObject to stage
           }
+          if (view) {
+            setFortressPosition(view, frame);
+            newFortressViews[nodes[i].id()] = view;  
+          }                    
         }
       }
       
-      // purge stage
-      for (var k in fortressViews) {
-        // use hasOwnProperty to filter out keys from the Object.prototype
-        // if old view is not in newViews array
-        if (fortressViews.hasOwnProperty(k) && !newFortressViews[k]) {
-          // get view
-          var view = fortressViews[k];
-          // log('entfernen');
-          // remove views displayObject from stage
-          AWE.Ext.applyFunction(view.displayObject(), function(obj) {
-            _stages[1].removeChild(obj);
-            removedSomething = true;
-          });        
-        }
-      }
-      
-      // remember newViews array
-      fortressViews = newFortressViews;
-      
+      var removedSomething = purgeDispensableViewsFromStage(fortressViews, newFortressViews, _stages[1]);
+      fortressViews = newFortressViews;      
       return removedSomething;
     }
     
-    that.updateSettlements = function(nodes) {
+    
+    /** update settlements at location 1 to 8. */
+    that.updateSettlements = function(nodes) {     // views for slot 1-8
       
-       // update other locations
       var newLocationViews = {};
-      var removedSomething = false;
-
       
       for (var i = 0; i < nodes.length; i++) {       
         var frame = that.mc2vc(nodes[i].frame()); 
-        // var alpha = that.alpha(frame.size.width, 256, 384);
-        // var locations = locationViews[nodes[i].id()];
-        if (that.isSettlementVisible(frame) && nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().locations()) {
-
+        
+        if (that.isSettlementVisible(frame) && nodes[i].isLeaf() && 
+            nodes[i].region() && nodes[i].region().locations()) {
+              
           var locations = nodes[i].region().locations();
-          for (var l = 1; l < 9; l++) {
+
+          for (var l = 1; l <= 8; l++) {
             var location = locations[l];
-            var view = locationViews[location.id()];
-            if (view) {                                      
-              view.setCenter(that.mc2vc(location.position()));
-              // view.setAlpha(alpha);
-              newLocationViews[location.id()] = view;
-            }
-            else {                                        
-              if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()] === "base") {
-                view = AWE.UI.createBaseView();
-              }             
-              if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()] === "outpost") {
-                view = AWE.UI.createOutpostView();
+            if (location) {
+              var view = locationViews[location.id()];
+              
+              if (view) {      
+                if (view.lastChange !== undefined &&  // if model of view updated
+                    view.lastChange() < location.lastChange()) {
+                  view.setNeedsUpdate();
+                }                                     
+              }
+              else {                                        
+                if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()] === "base") {
+                  view = AWE.UI.createBaseView();
+                }             
+                else if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()] === "outpost") {
+                  view = AWE.UI.createOutpostView();
+                }
+                if (view) {   // if base or outpost on location init the view
+                  view.initWithControllerAndLocation(that, location);
+                 _stages[1].addChild(view.displayObject());                  
+                }
               }
               
               if (view) {
-                view.initWithControllerAndLocation(that, location);
-                view.setCenter(that.mc2vc(location.position()));
-                // view.setAlpha(alpha);
-                _stages[1].addChild(view.displayObject());
+                setBasePosition(view, that.mc2vc(location.position()), frame);
                 newLocationViews[location.id()] = view;
               }
             }
@@ -899,137 +1022,65 @@ AWE.Controller = (function(module) {
         }
       }
       
-      for (var k in locationViews) {             // remove view from layer
-        // use hasOwnProperty to filter out keys from the Object.prototype
-        if (locationViews.hasOwnProperty(k) && !newLocationViews[k]) {
-          var view = locationViews[k];
-          AWE.Ext.applyFunction(view.displayObject(), function(obj) {
-            _stages[1].removeChild(obj);
-            removedSomething = true;
-          });        
-        }
-      }
-      locationViews = newLocationViews;
-      
+      var removedSomething = purgeDispensableViewsFromStage(locationViews, newLocationViews, _stages[1]);
+      locationViews = newLocationViews;      
       return removedSomething;
     }
     
+    
+    /** update the army views. */
     that.updateArmies = function(nodes) {
   
-       // update armies in fortresses
-      var removedSomething = false;
       var newArmyViews = {};
       
+      var processArmiesAtPos = function(armies, pos) {
+        for (var key in armies) {
+          if (armies.hasOwnProperty(key)) {
+            var army = armies[key];
+            var view = armyViews[army.id()];
+          
+            if (view) {       
+              if (view.lastChange !== undefined && view.lastChange() < army.lastChange()) {
+                view.setNeedsUpdate();
+              }             
+            }
+            else {  // if view for army doesn't exists
+              view = AWE.UI.createArmyView();
+              view.initWithControllerAndArmy(that, army);
+              _stages[1].addChild(view.displayObject());
+            }                                  
+            setArmyPosition(view, pos, army.id(), frame);
+            newArmyViews[army.id()] = view;
+          }
+        }
+      };
       
       for (var i = 0; i < nodes.length; i++) {       
         var frame = that.mc2vc(nodes[i].frame()); 
 
         if (that.areArmiesAtFortressVisible(frame) && nodes[i].isLeaf() && nodes[i].region()) {
-          
           var armies = nodes[i].region().getArmiesAtFortress();       // armies at fortress
-          
-          for (var key in armies) {
-            if (armies.hasOwnProperty(key)) {
-              var army = armies[key];
-
-              // get view for node 
-              var view = armyViews[army.id()];
-            
-              // if view exists already
-              if (view) {       
-                // if model of view updated
-                if (1 || view.lastChange !== undefined && view.lastChange() < army.lastChange()) { // TODO -> really track changes!!!
-                  view.setNeedsUpdate();
-                }                     
-                // set new center
-                view.setCenter(AWE.Geometry.createPoint(
-                  frame.origin.x + frame.size.width / 2 + frame.size.width / 12 ,
-                  frame.origin.y + frame.size.height / 2 - view.frame().size.height/2 - frame.size.height / 20         
-                ));
-            
-                newArmyViews[army.id()] = view;                      
-              }
-
-              // if view for army doesn't exists
-              else {
-                // create and initialize new view, set center
-                view = AWE.UI.createArmyView();
-                view.initWithControllerAndArmy(that, army);
-                view.setCenter(AWE.Geometry.createPoint(
-                  frame.origin.x + frame.size.width / 2 + frame.size.width / 12,
-                  frame.origin.y + frame.size.height / 2 - view.frame().size.height/2 - frame.size.height / 20               
-                ));
-                _stages[1].addChild(view.displayObject());
-                newArmyViews[army.id()] = view;
-              }
-            }
-          }
-        }
+          var center = AWE.Geometry.createPoint(
+            frame.origin.x + frame.size.width / 2 ,
+            frame.origin.y + frame.size.height / 2         
+          );  
+          processArmiesAtPos(armies, center);    
+        }      
         
-        if (that.areArmiesAtSettlementsVisible(frame) && nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().locations()) {
+        if (that.areArmiesAtSettlementsVisible(frame) && 
+            nodes[i].isLeaf() && nodes[i].region() && nodes[i].region().locations()) {
           for (var loc=1; loc <= 8; loc++) {
-
             var location = nodes[i].region().location(loc);      
             if (!location || !location.position()) continue ; 
-            var locationOrigin = that.mc2vc(location.position());           
             var armies = location.getArmies();       // armies at location
-          
-            for (var key in armies) {
-              if (armies.hasOwnProperty(key)) {
-                var army = armies[key];
-
-                // get view for node 
-                var view = armyViews[army.id()];
-            
-                // if view exists already
-                if (view) {       
-                  // if model of view updated
-                  if (1 || view.lastChange !== undefined && view.lastChange() < army.lastChange()) { // TODO -> really track changes!!!
-                    view.setNeedsUpdate();
-                  }                     
-                  // set new center
-                  view.setCenter(AWE.Geometry.createPoint(
-                    locationOrigin.x + frame.size.width / 12 ,
-                    locationOrigin.y - view.frame().size.height/2 - frame.size.height / 40         
-                  ));
-            
-                  newArmyViews[army.id()] = view;                      
-                }
-
-                // if view for army doesn't exists
-                else {
-                  // create and initialize new view, set center
-                  view = AWE.UI.createArmyView();
-                  view.initWithControllerAndArmy(that, army);
-                  view.setCenter(AWE.Geometry.createPoint(
-                    locationOrigin.x + frame.size.width / 12,
-                    locationOrigin.y - view.frame().size.height/2 - frame.size.height / 40               
-                  ));
-                  _stages[1].addChild(view.displayObject());
-                  newArmyViews[army.id()] = view;
-                }
-              }
-            }            
-            
+            var position = that.mc2vc(location.position());           
+            processArmiesAtPos(armies, position);
           }
         }
       }
           
-          
-
-      
-      for (var k in armyViews) {             // remove view from layer, if it's not displayed any more
-        // use hasOwnProperty to filter out keys from the Object.prototype
-        if (armyViews.hasOwnProperty(k) && !newArmyViews[k]) {
-          var view = armyViews[k];
-          AWE.Ext.applyFunction(view.displayObject(), function(obj) {
-            _stages[1].removeChild(obj);
-            removedSomething = true;
-          });        
-        }
-      }
-      armyViews = newArmyViews;
-      
+      var removedSomething = purgeDispensableViewsFromStage(armyViews, newArmyViews, _stages[1]);
+      armyViews = newArmyViews;      
       return removedSomething;          
     }
     
@@ -1039,9 +1090,9 @@ AWE.Controller = (function(module) {
     that.updateGamingPieces = function(nodes) {
       var removedSomething = false;
       
-      removedSomething = that.updateFortresses(nodes) || removedSomething;
+      removedSomething = that.updateFortresses(nodes)  || removedSomething;
       removedSomething = that.updateSettlements(nodes) || removedSomething;
-      removedSomething = that.updateArmies(nodes) || removedSomething;
+      removedSomething = that.updateArmies(nodes)      || removedSomething;
 
       return removedSomething;
     };
@@ -1053,12 +1104,17 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
-    that.updateActionViews = function(nodes) {
+    // that.isSettlementVisible = function(frame) {
+    // that.isFortressVisible = function(frame) {
+    // that.areArmiesAtFortressVisible = function(frame) {
+    // that.areArmiesAtSettlementsVisible = function(frame) {
+    
+    that.updateActionViews = function() {
 
       // TODO Sichtbarkeit testen
 
       if (_actionViews.highlightImage) { 
-        if (_actionViews.highlightImage.typeName() === 'fortressHighlightView') {
+        if (_actionViews.highlightImage.typeName() === 'fortressHighlightView') {          
           _actionViews.highlightImage.setCenter(AWE.Geometry.createPoint(
             _highlightedView.center().x,
             _highlightedView.center().y - AWE.Config.MAPPING_FORTRESS_SIZE
@@ -1069,6 +1125,31 @@ AWE.Controller = (function(module) {
             _highlightedView.center().x,
             _highlightedView.center().y
           ));
+        }
+      }
+
+      if (_actionViews.selectedHighlightImage) { 
+        if (_actionViews.selectedHighlightImage.typeName() === 'fortressHighlightView') {
+          if (that.isFortressVisible(that.mc2vc(_actionViews.selectedHighlightImage.node().frame()))) {
+            _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
+              _selectedHighlightView.center().x,
+              _selectedHighlightView.center().y - AWE.Config.MAPPING_FORTRESS_SIZE
+            ));
+          }
+          else {
+            _unselectView(_selectedView);             
+          }
+        }
+        else if (_actionViews.selectedHighlightImage.typeName() === 'armyHighlightView') {
+          if (1 || that.isFortressVisible(that.mc2vc(_actionViews.selectedHighlightImage.node().frame()))) {
+            _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
+              _selectedHighlightView.center().x,
+              _selectedHighlightView.center().y
+            ));
+          }
+          else {
+            _unselectView(_selectedView);             
+          }
         }
       }
 
@@ -1099,9 +1180,20 @@ AWE.Controller = (function(module) {
         HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 470, 20));
       }
 
-      if (HUDViews.detailView) {
-        HUDViews.detailView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 370, _windowSize.height - 120));
+      var detailView = HUDViews.detailView;
+      if (detailView) {        
+        detailView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 332, _windowSize.height - 148));
+        
+        if (detailView.typeName() === 'ArmyDetailView' && detailView.lastChange() < detailView.army().lastChange()) {
+          detailView.setNeedsUpdate();
+        }
+        
+        if (detailView.typeName() === 'FortressDetailView' && detailView.lastChange() < detailView.node().lastChange()) {
+          detailView.setNeedsUpdate();
+        }
       }
+      
+      return _detailViewChanged;
     };
     
     
@@ -1122,7 +1214,7 @@ AWE.Controller = (function(module) {
         for (var id in viewHash) {
           if (viewHash.hasOwnProperty(id)) {
             var view = viewHash[id];
-            //view.updateIfNeeded();
+            view.updateIfNeeded();
             view.layoutIfNeeded();
             needsDisplay = needsDisplay || view.needsDisplay();
           }
@@ -1133,31 +1225,38 @@ AWE.Controller = (function(module) {
       
       return function(nodes, visibleArea) {
         
-        var stagesNeedUpdate = [true, false, true, false]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
+        var stagesNeedUpdate = [false, false, true, false]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
         
         // rebuild individual hieararchies
         if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           stagesNeedUpdate[0] = this.rebuildMapHierarchy(nodes) || stagesNeedUpdate[0];
         }
+        
         if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _action ) {
-          stagesNeedUpdate[1] = stagesNeedUpdate[1] || that.updateGamingPieces(nodes);
+          stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         };
         
         if (1) { // TODO: only update, if necessary
           that.updateActionViews();
         }
+        
         if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || _action || !HUDViews.mainControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
-          console.log('MapController: update hud.');
-          that.updateHUD(); 
-          stagesNeedUpdate[3] = true; // only repaint, if necessary
+          log('MapController: update hud.', _action);
+          stagesNeedUpdate[3] = that.updateHUD() || stagesNeedUpdate[3]; 
         }
+        
+        //log('Update:                   ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
         // update hierarchies and check which stages need to be redrawn
         stagesNeedUpdate[0] = propUpdates(regionViews) || stagesNeedUpdate[0];
         stagesNeedUpdate[1] = propUpdates(fortressViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(locationViews) || stagesNeedUpdate[1];
+        stagesNeedUpdate[1] = propUpdates(armyViews) || stagesNeedUpdate[1];
         // stagesNeedUpdate[2] = propUpdates(actionViews);
-        // stagesNeedUpdate[3] = propUpdates(HUDViews);
+        stagesNeedUpdate[3] = propUpdates(HUDViews) || stagesNeedUpdate[3];
+
+        //log('Update after propagation: ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
+
         
         oldVisibleArea = visibleArea;
         oldWindowSize = _windowSize.copy();
@@ -1171,9 +1270,7 @@ AWE.Controller = (function(module) {
     var fps = 60;
     var needRedraw; // TODO: remove this flag.
     
-    that.updateView = function() { needRedraw = true; } // TODO: completely remove this method, replaced by setNeedsDisplay
-    
-
+    // that.updateView = function() { needRedraw = true; } // TODO: completely remove this method, replaced by setNeedsDisplay
     
     that.updateFPS = function() {
       
@@ -1187,6 +1284,16 @@ AWE.Controller = (function(module) {
       startTime = now;        
       _frameCounter++;
     };    
+    
+    that.updateDebug = function() {
+      var numRegionViews = AWE.Util.hashCount(regionViews);
+      var numFortressViews = AWE.Util.hashCount(fortressViews);
+      var numArmyViews = AWE.Util.hashCount(armyViews);
+      var numLocationViews = AWE.Util.hashCount(locationViews);
+      
+      $("#debug2").html('&nbsp; Number of visible views: ' + numRegionViews + '/' + numFortressViews + 
+                        '/' + numLocationViews + '/' + numArmyViews + '/' + ' (regions, fortresses, locations, armies)');
+    };
     
     
     // ///////////////////////////////////////////////////////////////////////
@@ -1211,13 +1318,20 @@ AWE.Controller = (function(module) {
         
         // STEP 4: update views and repaint view hierarchies as needed
         if (_needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || _action) {
-          // STEP 4a: get all visible nodes from the model (TODO: armies etc.)
+          // STEP 4a: get all visible nodes from the model
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());    
           
           // STEP 4b: create, remove and update all views according to visible parts of model      
           var stageUpdateNeeded = that.updateViewHierarchy(visibleNodes, visibleArea);
           
           // STEP 4c: update (repaint) those stages, that have changed (one view that needsDisplay triggers repaint of whole stage)
+          var viewsInStages = [
+            regionViews,
+            [fortressViews, armyViews, locationViews],
+            _actionViews,     // action views: no views?!
+            HUDViews
+          ];          
+          
           for (var i=0; i < 4; i++) {
             if (stageUpdateNeeded[i]) {
               if (_sortStages[i]) {  // TODO: add configuration: stage needs sorting
@@ -1228,12 +1342,20 @@ AWE.Controller = (function(module) {
                 });
               }
               _stages[i].update();
+              //log(viewsInStages, regionViews);
+              AWE.Ext.applyFunction(viewsInStages[i], function(viewHash) {
+                log (viewHash);
+                AWE.Ext.applyFunctionToElements(viewHash, function(view) {
+                  view.notifyRedraw();
+                });
+              });
             }
           }
           
           //_stages[3].update();
           // STEP 4d: register this frame, recalc and display present framerate (rendered frames per second)
           this.updateFPS();
+          this.updateDebug();
         }
 
 
@@ -1243,6 +1365,7 @@ AWE.Controller = (function(module) {
         _needsDisplay = false;
         _needsLayout = false;
         _action = false;
+        _detailViewChanged = false;
       }
       _loopCounter++;
     };

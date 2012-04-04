@@ -13,7 +13,7 @@ AWE.UI = (function(module) {
         
     my = my || {};
     
-    my.typeName = 'armyView';
+    my.typeName = 'ArmyView';
     
     var _army = null;
     
@@ -24,12 +24,7 @@ AWE.UI = (function(module) {
     var _poleShape = null;    
     var _flagShape = null;
     var _selectShape = null;    
-    
-    var _stanceImages = [
-      "map/army/stanceNeutral",
-      "map/army/stanceAggressive",
-      "map/army/stanceDefensive"
-    ];
+    var _healthShape = null;    
     
     that = module.createView(spec, my);
 
@@ -37,6 +32,7 @@ AWE.UI = (function(module) {
       initWithController: that.superior("initWithController"),
       layoutSubviews: that.superior("layoutSubviews"),
       setFrame: that.superior("setFrame"),
+      setSelected: that.superior("setSelected"),
     };
     
     /** overwritten view methods */
@@ -68,25 +64,52 @@ AWE.UI = (function(module) {
       _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
       _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
       _poleGraphics.drawRoundRect(56, 12, 2, 84, 0);
-      var _poleShape = new Shape(_poleGraphics);  
+      _poleShape = new Shape(_poleGraphics);  
       _container.addChild(_poleShape);
 
       var _flagGraphics = new Graphics();
       _flagGraphics.setStrokeStyle(1);
       _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
       _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
-      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8, 22).lineTo(56, 12);
-      var _flagShape = new Shape(_flagGraphics);  
+      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * army.size_present() / 1200, 22).lineTo(56, 12);
+      _flagShape = new Shape(_flagGraphics);  
       _container.addChild(_flagShape);
 
       _stanceView = AWE.UI.createImageView();
-     // log('army', army);
-      _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(_stanceImages[_army.stance()]));
+      _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[1]));
       _stanceView.setFrame(AWE.Geometry.createRect(0, 8, 64, 96));
       _stanceView.onClick = that.onClick;
       _stanceView.onMouseOver = that.onMouseOver;
       _stanceView.onMouseOut = that.onMouseOut;
       _container.addChild(_stanceView.displayObject());
+      
+      var healthBGGraphics = new Graphics();
+      healthBGGraphics.setStrokeStyle(1);
+      healthBGGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
+      healthBGGraphics.beginFill('rgb(127, 127, 127)');
+      healthBGGraphics.drawRoundRect(0, 108, 64, 12, 4);
+      var healthBGShape = new Shape(healthBGGraphics);
+      _container.addChild(healthBGShape);
+
+      if (army.ap_present() / army.ap_max() > 0) {
+        if(army.ap_present() / army.ap_max() > .75) {
+          var fillColor = 'rgb(64, 255, 64)';
+        }
+        else if(army.ap_present() / army.ap_max() > .5) {
+          var fillColor = 'rgb(255, 255, 64)';
+        }
+        else {
+          var fillColor = 'rgb(255, 64, 64)';
+        }
+  
+        var healthGraphics = new Graphics();
+        healthGraphics.setStrokeStyle(1);
+        healthGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
+        healthGraphics.beginFill(fillColor);
+        healthGraphics.drawRoundRect(0, 108, 64 * (army.ap_present() / army.ap_max()), 12, 4);
+        _healthShape = new Shape(healthGraphics);
+        _container.addChild(_healthShape);
+      }
 
       if (!frame) {
         that.resizeToFit();        
@@ -95,6 +118,57 @@ AWE.UI = (function(module) {
       _container.width = my.frame.size.width;
       _container.height = my.frame.size.height;
     };
+    
+    that.updateView = function() {
+      
+      var _poleGraphics = new Graphics();
+      _poleGraphics.setStrokeStyle(1);
+      _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
+      _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
+      _poleGraphics.drawRoundRect(56, 12, 2, 84, 0);
+      _poleShape = new Shape(_poleGraphics);  
+      _container.addChild(_poleShape);
+
+      var _flagGraphics = new Graphics();
+      _flagGraphics.setStrokeStyle(1);
+      _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
+      _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
+      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * (_army.size_present() / _army.size_max()), 22).lineTo(56, 12);
+      _flagShape = new Shape(_flagGraphics);  
+      _container.addChild(_flagShape);
+
+      _container.removeChild(_flagShape);
+      var _flagGraphics = new Graphics();
+      _flagGraphics.setStrokeStyle(1);
+      _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
+      _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
+      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * (_army.size_present() / _army.size_max()), 22).lineTo(56, 12);
+      _flagShape = new Shape(_flagGraphics);  
+      _container.addChild(_flagShape);
+      
+      _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.stance()]));
+      
+      if (_army.ap_present() / _army.ap_max() > 0) {
+        _container.removeChild(_healthShape);
+        if(_army.ap_present() / _army.ap_max() > .75) {
+          var fillColor = 'rgb(64, 255, 64)';
+        }
+        else if(_army.ap_present() / _army.ap_max() > .5) {
+          var fillColor = 'rgb(255, 255, 64)';
+        }
+        else {
+          var fillColor = 'rgb(255, 64, 64)';
+        }
+  
+        var healthGraphics = new Graphics();
+        healthGraphics.setStrokeStyle(1);
+        healthGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
+        healthGraphics.beginFill(fillColor);
+        healthGraphics.drawRoundRect(0, 108, 64 * (_army.ap_present() / _army.ap_max()), 12, 4);
+        _healthShape = new Shape(healthGraphics);
+        _container.addChild(_healthShape);
+      }
+    }
     
     that.resizeToFit = function() {
       my.frame.size.width = AWE.Config.MAP_ARMY_WIDTH;
@@ -108,7 +182,9 @@ AWE.UI = (function(module) {
     }
     
     that.setSelected = function(selected) {
-      _selectShape.visible = selected;
+      _super.setSelected(selected);
+      _selectShape.visible = that.selected();
+      this.setNeedsDisplay();
     };
     
     that.displayObject = function() {
