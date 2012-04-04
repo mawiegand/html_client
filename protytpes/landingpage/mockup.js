@@ -2,7 +2,7 @@ $(document).ready(function() {
   
   var details = false;
   
-  var msgs = [ '#msg0', '#msg5', '#msg6', '#msg7', '#msg0', '#msg1', '#msg2', '#msg3'  ];
+  var msgs = [ '#msg0', '#msg1', '#msg0', '#msg5']; // '#msg6', '#msg7', '#msg0', '#msg1', '#msg2', '#msg3'  ];
   var dm = 0;
   
   $('#footerbar').click(function() {
@@ -33,7 +33,7 @@ $(document).ready(function() {
     });
   }
   
-  //setInterval(animate, 5000);
+  setInterval(animate, 10000);
   
   
 });

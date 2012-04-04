@@ -188,7 +188,7 @@ h3 {
 }
 
 #message {
-  font-weight: bold;
+  font-weight: normal;
   font-size: 24pt;
   width:100%;
   height: 320px;
@@ -199,13 +199,21 @@ h3 {
   width: 800px;
 }
 
+#msg1 {
+  text-align: left;
+  padding-top: 80px;
+}
 
 #m1_l1 {
   font-size: 53pt;
+  text-align: left;
+  margin-left: -20px;
   
 }
 #m1_l2 {
   font-size: 72pt;  
+  text-align: left;
+  margin-left: 140px;
 }
 
 
@@ -237,11 +245,20 @@ h3 {
   font-size: 70pt;  
 }
 
+#msg5 {
+  padding-top: 80px;
+}
+
 #m5_l1 {
-  font-size: 72pt;  
+  font-size: 48pt;  
+  margin-left: -60px;
+  margin-right: -100px;
+  margin-bottom: 10px;
 }
 #m5_l2 {
-  font-size: 72pt;  
+  font-size: 32pt;  
+  margin-left: 80px;  
+  margin-right: -100px;
 }
 
 #m6_l1 {
