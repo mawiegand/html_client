@@ -349,15 +349,9 @@ input[type=submit]#hover {
   font-size: 14px;
 }
 
-<<<<<<< HEAD
-#sidemap {
+#sitemap {
   margin-left: -400px;
   width: 800px;
-=======
-#sitemap {
-  margin-left: -480px;
-  width: 960px;
->>>>>>> 6f3bd39eaee6eb9c127a55c0122390150ec8ea7b
   height: 200px;
   text-align: center;
 }
