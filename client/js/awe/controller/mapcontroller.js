@@ -223,7 +223,7 @@ AWE.Controller = (function(module) {
         -1. * visibleRectMC.origin.x * _windowSize.width  / visibleRectMC.size.width,
         -1. * visibleRectMC.origin.y * _windowSize.height / visibleRectMC.size.height
       );
-    }
+    };
     
     /** zoom in and out. */
     that.zoom = function(dScale, zoomin) {
