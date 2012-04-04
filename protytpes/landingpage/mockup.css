@@ -69,6 +69,12 @@ h1 {
   color: #444;
 }
 
+h3 {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  color: #444;
+}
+
 
 .panel-column {
   text-align: left;
@@ -98,6 +104,24 @@ h1 {
 
 #column-r1c3 img {
   margin-top: -20px;
+}
+
+#column-r3c1 {
+  width: 380px;
+  margin-right: 40px;
+}
+
+#column-r3c2 {
+  width: 380px;
+}
+
+#column-r5c1 {
+  width: 580px;
+  margin-right: 40px;
+}
+
+#column-r5c2 {
+  width: 180px;
 }
 
 #menubar {
@@ -340,7 +364,6 @@ input[type=submit]#hover {
 #panel {
   margin-left: -400px;
   width: 800px;
-  background-color: #ddd;
   font-size: 12px;
   text-align: left;
   padding: 20px 0px;
