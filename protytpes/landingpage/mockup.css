@@ -1,13 +1,79 @@
+@font-face {
+    font-family: 'MgOpenModataBold';
+    src: url('fonts/mgopenmodatabold-webfont.eot');
+    src: url('fonts/mgopenmodatabold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/mgopenmodatabold-webfont.woff') format('woff'),
+         url('fonts/mgopenmodatabold-webfont.ttf') format('truetype'),
+         url('fonts/mgopenmodatabold-webfont.svg#MgOpenModataBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MgOpenModataRegular';
+    src: url('fonts/mgopenmodataregular-webfont.eot');
+    src: url('fonts/mgopenmodataregular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/mgopenmodataregular-webfont.woff') format('woff'),
+         url('fonts/mgopenmodataregular-webfont.ttf') format('truetype'),
+         url('fonts/mgopenmodataregular-webfont.svg#MgOpenModataRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MgOpenModataOblique';
+    src: url('fonts/mgopenmodataoblique-webfont.eot');
+    src: url('fonts/mgopenmodataoblique-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/mgopenmodataoblique-webfont.woff') format('woff'),
+         url('fonts/mgopenmodataoblique-webfont.ttf') format('truetype'),
+         url('fonts/mgopenmodataoblique-webfont.svg#MgOpenModataOblique') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'VAGRundschriftDRegular';
+    src: url('fonts/vagrundschriftd-webfont.eot');
+    src: url('fonts/vagrundschriftd-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/vagrundschriftd-webfont.woff') format('woff'),
+         url('fonts/vagrundschriftd-webfont.ttf') format('truetype'),
+         url('fonts/vagrundschriftd-webfont.svg#VAGRundschriftDRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 html, body {
   margin: 0px;
   padding: 0px;
   height: 100%;
-  color: #333;
+  color: #555;
   font-size: 32pt;
   text-align: center;
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-weight: normal;
+  text-shadow: white 0px 1px 1px;
   min-width: 960px;
+}
+
+#menubar {
+  font-size: 16px;
+}
+
+#menubar ul {
+  height:30px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 0px;
+}
+
+#menubar li {
+  display: inline;
+  font-size: 14px;
+  line-height: 14px;
+  padding-left: 8px;
+  padding-right: 8px;
+  color: #777;
 }
 
 
@@ -17,7 +83,7 @@ html, body {
   width: 100%;
   height: 100%;
   background-color: #FFF;
-  margin-bottom:-170px;
+  margin-bottom:-190px;
 }
 
 #message {
@@ -85,7 +151,7 @@ html, body {
 
 #logo-large {
   width: 800px;
-  margin-top: -50px;
+  margin-top: 0px;
 }
 
 
@@ -93,7 +159,7 @@ html, body {
   position: absolute;
   width: 100%;
   height: 60%;
-  bottom: 160px;
+  bottom: 190px;
   z-index: 20;
   overflow: visible;
   text-align: center;
@@ -113,7 +179,7 @@ html, body {
   position:relative;
   z-index:20;
   width:100%;
-  height:170px;
+  height:190px;
 }
 
 #content {
@@ -124,9 +190,11 @@ html, body {
 #loginbar {
   z-index: 10;
   width: 100%;
-  height: 80px;
+  height: 70px;
   background-color: #FFF;
 }
+
+
 
 input {
   border: #333 solid 1px;
