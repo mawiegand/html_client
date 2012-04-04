@@ -128,6 +128,11 @@ h3 {
   margin-right: 40px;
 }
 
+#column-r3c1 img {
+  margin: 10px 30px;
+  border-radius: 10px;
+}
+
 #column-r3c2 {
   width: 380px;
 }
