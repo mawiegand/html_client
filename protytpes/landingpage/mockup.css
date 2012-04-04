@@ -82,8 +82,10 @@ h3 {
   background-image: url('signin.png');
   height: 20px;
   width: 43px;
-}
 
+#panel h3 {
+  margin-top: 50px;
+}
 
 .panel-column {
   text-align: left;
@@ -94,8 +96,9 @@ h3 {
 .panel-top-ruler {
   background-image: url('shadow.png');
   background-origin: padding-box;
+  background-position: 0px 50px;
   background-repeat: no-repeat;
-  padding-top: 20px;
+  padding-top: 80px;
 }
 
 #column-r1c1 {
@@ -115,6 +118,10 @@ h3 {
   margin-top: -20px;
 }
 
+#column-r2c1 {
+  margin-top: -40px;
+}
+
 #column-r3c1 {
   width: 380px;
   margin-right: 40px;
@@ -124,13 +131,30 @@ h3 {
   width: 380px;
 }
 
+#column-r4c1 {
+  width: 430px;
+  margin-right: 50px;
+}
+
+#column-r4c2 {
+  width: 320px;
+}
+
+#column-r4c2 img {
+  margin-top: 50px;
+}
+
 #column-r5c1 {
-  width: 580px;
-  margin-right: 40px;
+  width: 390px;
 }
 
 #column-r5c2 {
-  width: 180px;
+  margin-right: 50px;
+  width: 360px;
+}
+
+#column-r5c2 img {
+  margin-top: 20px;
 }
 
 #menubar {
@@ -407,7 +431,6 @@ input[type=submit]#hover {
 }
 
 #sitemap {
-  margin-left: -400px;
   width: 800px;
   height: 200px;
   text-align: center;
