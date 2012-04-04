@@ -113,7 +113,7 @@ h1 {
   color: #777;
 }
 
-.sidemap {
+.sitemap {
   display: inline-block;
   margin-top: 50px;
   width: 160px;
@@ -121,7 +121,7 @@ h1 {
   padding: 10px;
 }
 
-.sidemap ul {
+.sitemap ul {
   list-style-type: none;
   display: inline;
   height: 200px;
@@ -130,7 +130,7 @@ h1 {
   border: 1px 1px 1px 1px;
 }
 
-.sidemap li {
+.sitemap li {
   font-size: 20px;
   padding: 4px 20px;
   color: #777;
@@ -246,7 +246,6 @@ h1 {
   position:relative;
   z-index:20;
   width:100%;
-  height:190px;
 }
 
 #content {
@@ -315,7 +314,6 @@ input[type=submit]#hover {
 
 #detailsbar {
   width: 100%;
-  height: 1840px;  
   position: relative;
   background-color: #FFF;
 }
@@ -336,11 +334,30 @@ input[type=submit]#hover {
   margin-left: -400px;
   width: 800px;
   height: 1600px;
+  font-size: 12px;
+  text-align: left;
+  padding: 20px;
 }
 
+#panel h3 {
+  font-family: 'MgOpenModataRegular';
+  font-weight: normal;
+  font-size: 24px;
+}
+
+#panel p {
+  font-size: 14px;
+}
+
+<<<<<<< HEAD
 #sidemap {
   margin-left: -400px;
   width: 800px;
+=======
+#sitemap {
+  margin-left: -480px;
+  width: 960px;
+>>>>>>> 6f3bd39eaee6eb9c127a55c0122390150ec8ea7b
   height: 200px;
   text-align: center;
 }
