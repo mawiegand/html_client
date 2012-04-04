@@ -186,9 +186,9 @@ html, body {
 
 #img-bg {
   position:absolute;
-  width:2000px;
-  left:-1050px;
-  top:-150px;
+  width:1900px;
+  left:-1010px;
+  top:-110px;
   z-index: -1;
 }
 
@@ -265,7 +265,7 @@ input[type=submit]#hover {
   box-shadow: inset  0px 8px 0px rgba(0,0,0,.1), inset  0px 4px 0px rgba(0,0,0,.2), inset  0px 1px 0px rgba(0,0,0,.2);  
   padding-top: 30px;
   color: #888;
-  background-color: #DEF;
+  background-color: #FFF7DA;
 }
 
 .arrow {
