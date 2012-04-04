@@ -53,8 +53,43 @@ html, body {
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
   font-weight: normal;
   text-shadow: white 0px 1px 1px;
-  min-width: 960px;
+  min-width: 800px;
   width: 100%;
+}
+
+p {
+  font-size: 13px;
+  color: #555;
+  line-height: 18px;
+}
+
+h1 {
+  font-size: 27px;
+  color: #F80;
+}
+
+
+.panel-column {
+  text-align: left;
+  display: inline-block;
+  vertical-align: text-top;
+}
+
+#column-r1c1 {
+  width: 260px;
+  margin-right: 40px;
+}
+
+#column-r1c2 {
+  width: 300px;
+}
+
+#column-r1c3 {
+  width: 200px;
+}
+
+#column-r1c3 img {
+  margin-top: -20px;
 }
 
 #menubar {
@@ -265,7 +300,7 @@ input[type=submit]#hover {
   box-shadow: inset  0px 8px 0px rgba(0,0,0,.1), inset  0px 4px 0px rgba(0,0,0,.2), inset  0px 1px 0px rgba(0,0,0,.2);  
   padding-top: 30px;
   color: #888;
-  background-color: #FFF7DA;
+  background-color: #F5F3BB;
 }
 
 .arrow {
@@ -281,7 +316,13 @@ input[type=submit]#hover {
   width: 100%;
   height: 1840px;  
   position: relative;
-  background-color: #DEF;
+  background-color: #FFF;
+}
+
+.sprenkel {
+  width: 100%;
+  height: 36px;
+  background-image: url('sprenkel.png');
 }
 
 
@@ -291,17 +332,14 @@ input[type=submit]#hover {
 }
 
 #panel {
-  margin-left: -480px;
-  width: 960px;
-  background-color: #FFFFEE;
-  border-radius: 12px;
-  box-shadow: 0px 4px 4px 4px rgba(0,0,0,.5);
+  margin-left: -400px;
+  width: 800px;
   height: 1600px;
 }
 
 #sidemap {
-  margin-left: -480px;
-  width: 960px;
+  margin-left: -400px;
+  width: 800px;
   height: 200px;
   text-align: center;
 }
