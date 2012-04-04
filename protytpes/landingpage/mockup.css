@@ -116,12 +116,16 @@ h3 {
 }
 
 #column-r5c1 {
-  width: 580px;
+  width: 400px;
   margin-right: 40px;
 }
 
 #column-r5c2 {
-  width: 180px;
+  width: 360px;
+}
+
+#column-r5c2 img {
+  margin-top: -20px;
 }
 
 #menubar {
