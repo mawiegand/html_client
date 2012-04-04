@@ -8,16 +8,14 @@ $(document).ready(function() {
   $('#footerbar').click(function() {
     if (!details) {
       $('#detailsbar').show();
-      $('#message').slideUp('fast');
-      $('#mainbar').slideUp('fast');
-      $('#menubar').slideUp('fast');
+      $('#mainbar').slideUp();
+      $('#menubar').slideUp();
       details = true;
     }
     else {
-      $('#menubar').slideDown('fast');
-      $('#mainbar').slideDown('fast', function() {
+      $('#menubar').slideDown();
+      $('#mainbar').slideDown(function() {
         $('#detailsbar').hide(); 
-        $('#message').fadeIn();
       });
       details = false;
     }
