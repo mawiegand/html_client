@@ -180,8 +180,15 @@ h3 {
 #message {
   font-weight: bold;
   font-size: 24pt;
-  padding-top: 20pt;
+  width:100%;
+  height: 320px;
 }
+
+.msg-obj {
+  margin-left: -400px;
+  width: 800px;
+}
+
 
 #m1_l1 {
   font-size: 53pt;
@@ -244,14 +251,14 @@ h3 {
 }
 
 
-#img-figures {
+#figures-foreground {
   position:absolute;
   top:0px;
   width: 800px;
   left:-400px;
 }
 
-#img-bg {
+#figures-background {
   position:absolute;
   width:1900px;
   left:-1010px;
@@ -261,17 +268,14 @@ h3 {
 
 
 #figures {
-  position: relative;
-  width: 100%;
+  margin-top: -80px;
+  height: 400px;
 }
 
-#figures-placer {
-  position: absolute;
-  left: 0px;
-  top:0px;
-  left:50%;
-  width: 0px;
+.variable-spacer {
+  height: auto;
 }
+
 
 #inbetween {
   position:relative;
