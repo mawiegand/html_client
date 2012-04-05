@@ -9,6 +9,13 @@ var AWE = window.AWE || {};
 /** extensions of JavaScript base types. */
 AWE.Ext = (function(module) {
   
+  module.superior = function(that, name) {
+    var method = that[name];              
+    return function() {
+      return method.apply(that, arguments); // make sure to set the 'this' correctly for the super method.
+    }
+  };  
+  
   /** returns the next absolutely larger integer; that is returns
    * the floor for negative numbers and the ceil for positive numbers. This method
    * is used to enlarge an area with positive or negative coordinates to full integers
@@ -17,15 +24,7 @@ AWE.Ext = (function(module) {
   Number.prototype.extendInteger = function() {
     return Math[(this > 0 ? 'ceil' : 'floor')](this);
   };
-  
 
-  Object.prototype.superior = function(name) {
-    var that = this, method = that[name];   // store the 'this' for later, when really calling the function "name".
-    return function() {
-      return method.apply(that, arguments); // make sure to set the 'this' correctly for the super method.
-    }
-  };
-  
   /** check if _obj is an Array
    */
   module.isArray = function(_obj) {

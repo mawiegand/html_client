@@ -29,10 +29,10 @@ AWE.UI = (function(module) {
     that = module.createView(spec, my);
 
     var _super = {
-      initWithController: that.superior("initWithController"),
-      layoutSubviews: that.superior("layoutSubviews"),
-      setFrame: that.superior("setFrame"),
-      setSelected: that.superior("setSelected"),
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      setFrame: AWE.Ext.superior(that, "setFrame"),
+      setSelected: AWE.Ext.superior(that, "setSelected"),
     };
     
     /** overwritten view methods */

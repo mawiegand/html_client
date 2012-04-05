@@ -526,6 +526,14 @@ AWE.Controller = (function(module) {
           
           var dialog = AWE.UI.Ember.ArmyInfoView.create({
             name: _selectedView.army().name(),
+            changeNamePressed: function(event) {
+              console.log('change name pressed.');
+              var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), 'Maximo Leader');
+              AWE.Action.Manager.queueAction(action);              
+            },
+            closePressed: function(event) {
+              this.destroy();
+            }
           });
           dialog.append(); 
         }
@@ -540,7 +548,9 @@ AWE.Controller = (function(module) {
       
       _selectedHighlightView = _highlightedView;
       _highlightedView = null;
-      
+      console.log (_actionViews.highlightImage)
+      console.log (_actionViews.highlightImage.typeName())
+
       _actionViews.selectedHighlightImage = _actionViews.highlightImage;
       delete _actionViews.highlightImage;
       

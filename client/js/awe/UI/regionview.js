@@ -292,10 +292,10 @@ AWE.UI = (function(module) {
     that = module.createView(spec, my);
     
     var _super = {
-      initWithController: that.superior("initWithController"),
-      layoutSubviews: that.superior("layoutSubviews"),
-      setFrame: that.superior("setFrame"),
-      updateView: that.superior('updateView'),
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      setFrame: AWE.Ext.superior(that, "setFrame"),
+      updateView: AWE.Ext.superior(that, 'updateView'),
     }
     
     that.initWithControllerAndNode = function(controller, node, frame) {

@@ -1,5 +1,9 @@
 
+
 window.WACKADOO = (function(module) {
+
+  module.Ember = Ember.Application.create();
+
   
   /** creates an application singleton */
   module.createApplication = function(my) {
@@ -33,7 +37,7 @@ window.WACKADOO = (function(module) {
       _initialized = true;                           // ready to run
       
     }
-    
+        
     var that = {};
     
     /** initializes needed modules and creates a root view controller. Caution: 
@@ -51,7 +55,6 @@ window.WACKADOO = (function(module) {
       });
   
       _numLoadedAssets = _numAssets = 0;
-      
 
       for (var i=0; i < AWE.UI.Ember.templates.length; i++) {
         _numAssets += 1;
@@ -102,15 +105,14 @@ window.WACKADOO = (function(module) {
     
     return that;
   };
-  
+
   return module;
   
 }(window.WACKADOO || {}));
 
 
-
 $(document).ready(function() {
-
+  
   var application = WACKADOO.createApplication();
   application.init();
   

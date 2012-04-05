@@ -94,6 +94,10 @@ AWE.Map = (function(module) {
     that.udpateArmies = function(updateType, callback) {
       AWE.GS.Army.Manager.updateArmiesInLocation(_id, updateType, callback);
     }
+    
+    that.region = function() {
+      return _region;
+    }
         
         
     /** this method updates the data stored at the local region from the given 

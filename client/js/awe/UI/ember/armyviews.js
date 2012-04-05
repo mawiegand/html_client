@@ -9,6 +9,8 @@
 var AWE = AWE || {};
 AWE.UI = AWE.UI || {};
 
+APP = {};
+APP.alert = function() {alert('hello!')};
 
 AWE.UI.Ember = (function(module) {
   
@@ -18,9 +20,10 @@ AWE.UI.Ember = (function(module) {
   
   module.ArmyInfoView = Ember.View.extend({
     templateName: 'army-details',
-    changeNamePressed: function() { alert ('Action not connected: changeNameWasPressed.'); }
+    changeNamePressed: function() { alert ('Action not connected: changeNameWasPressed.'); },
+    closePressed: function() { alert ('Action not connected: closePressed.'); },
   });
-    
+      
   return module;  
     
 }(AWE.UI.Ember || {}));
