@@ -7,11 +7,12 @@
 ///// DEPRECATED; Already deprecated, we'll be using Ember.JS for all DOM-inserted views.
 
 var AWE = AWE || {};
+AWE.UI = AWE.UI || {};
 
-AWE.UI = (function(module) {
+AWE.UI.Ember = (function(module) {
   
   module.templates = module.templates || [];
-  module.templates.push('js/awe/UI/dom/templates/domview.html');
+  module.templates.push('js/awe/UI/ember/templates/domview.html');
   
   var _html = 
     '<div class="domdialog-background"></div>\
@@ -140,7 +141,7 @@ AWE.UI = (function(module) {
 
   return module;
     
-}(AWE.UI || {}));
+}(AWE.UI.Ember || {}));
 
 
 

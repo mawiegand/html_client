@@ -44,19 +44,18 @@ window.WACKADOO = (function(module) {
         templateName: 'load-dialog',
       });
       loadDialog.append();   
-      
-      AWE.UI.templates.push('js/awe/UI/dom/templates/armydetails.html');
-      
+            
       AWE.Net.init();                                   // initialize the network stack
       AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
         AWE.UI.rootNode = AWE.Map.Manager.rootNode();
       });
   
       _numLoadedAssets = _numAssets = 0;
+      
 
-      for (var i=0; i < AWE.UI.templates.length; i++) {
+      for (var i=0; i < AWE.UI.Ember.templates.length; i++) {
         _numAssets += 1;
-        AWE.Util.TemplateLoader.registerTemplate(AWE.UI.templates[i], function() { console.log('loaded TEMPLATE');
+        AWE.Util.TemplateLoader.registerTemplate(AWE.UI.Ember.templates[i], function() { console.log('loaded TEMPLATE');
           my.assetLoaded();
         });
       }
