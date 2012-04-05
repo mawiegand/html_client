@@ -164,20 +164,21 @@ h3 {
 
 
 #column-r5c1 {
-  width: 800px;
+  width: 700px;
   margin-top: 30px;
   padding-left: 50px;
   padding-right: 50px;
 }
 
 #column-r5c2 {
-  margin-right: 50px;
-  width: 700px;
+  margin-left: -40px;
+  margin-right: -20px;
+  width: 840px;
   margin-top: 70px;
 }
 
 #column-r5c2 img {
-  width: 800px;
+  width: 840px;
 }
 
 #column-r7c1 {
