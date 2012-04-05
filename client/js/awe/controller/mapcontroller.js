@@ -823,7 +823,6 @@ AWE.Controller = (function(module) {
           }
           lastArmyCheck = new Date();
         }
-        
       };
     }());
     
@@ -1104,11 +1103,6 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
-    // that.isSettlementVisible = function(frame) {
-    // that.isFortressVisible = function(frame) {
-    // that.areArmiesAtFortressVisible = function(frame) {
-    // that.areArmiesAtSettlementsVisible = function(frame) {
-    
     that.updateActionViews = function() {
 
       // TODO Sichtbarkeit testen
@@ -1141,7 +1135,11 @@ AWE.Controller = (function(module) {
           }
         }
         else if (_actionViews.selectedHighlightImage.typeName() === 'armyHighlightView') {
-          if (1 || that.isFortressVisible(that.mc2vc(_actionViews.selectedHighlightImage.node().frame()))) {
+          var location = AWE.Map.Manager.getLocation(_actionViews.selectedHighlightImage.army().location_id());
+          var frameVC = that.mc2vc(location.region().node().frame());
+          if ((location.slot() === 0 && that.areArmiesAtFortressVisible(frameVC)) ||   
+              that.areArmiesAtSettlementsVisible(frameVC)
+          ) {
             _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
               _selectedHighlightView.center().x,
               _selectedHighlightView.center().y
@@ -1344,7 +1342,7 @@ AWE.Controller = (function(module) {
               _stages[i].update();
               //log(viewsInStages, regionViews);
               AWE.Ext.applyFunction(viewsInStages[i], function(viewHash) {
-                log (viewHash);
+                // log (viewHash);
                 AWE.Ext.applyFunctionToElements(viewHash, function(view) {
                   view.notifyRedraw();
                 });
