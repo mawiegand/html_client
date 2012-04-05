@@ -524,13 +524,8 @@ AWE.Controller = (function(module) {
         _actionViews.selectionControls.setCenter(center);
         _actionViews.selectionControls.onAttackButtonClick = function () {
           
-          var dialog = Ember.View.create({
-            templateName: 'army-details',
-            
+          var dialog = AWE.UI.Ember.ArmyInfoView.create({
             name: _selectedView.army().name(),
-            changeNameButton: Ember.View.extend({
-              click: function(evt) { console.log('clicked'); alert('Clicked!'); }
-            })
           });
           dialog.append(); 
         }
