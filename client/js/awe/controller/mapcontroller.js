@@ -513,8 +513,8 @@ AWE.Controller = (function(module) {
       
       // distinguish between different views
       if (view.typeName() === 'FortressView') {
-        _actionViews.selectionControls = AWE.UI.createLabelView(); // createFortressSelectionView
-        _actionViews.selectionControls.initWithControllerAndLabel(that, 'Fortress', true);
+        _actionViews.selectionControls = AWE.UI.createFortressSelectionView(); // createFortressSelectionView
+        _actionViews.selectionControls.initWithControllerAndNode(that, view.node());
         _actionViews.selectionControls.setCenter(center);
         view.setSelected(true);
       }
