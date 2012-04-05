@@ -16,7 +16,7 @@ AWE.UI = (function(module) {
     
     my = my || {};
     
-    my.typeName = "armyHighlightView";
+    my.typeName = "ArmyHighlightView";
         
     var _army = null;    
     var _container = null;
@@ -24,7 +24,6 @@ AWE.UI = (function(module) {
     var _infoText1View = null;    
     var _infoText2View = null;    
     var _infoText3View = null;    
-    var _healthShape = null;    
     var _actionPointsText = null;    
         
     var that = module.createView(spec, my);
@@ -57,7 +56,7 @@ AWE.UI = (function(module) {
       
       _infoText1View = AWE.UI.createLabelView();
       _infoText1View.initWithControllerAndLabel(controller);
-      _infoText1View.setFrame(AWE.Geometry.createRect(130, 33 - lines * 11, 1000, 24));      
+      _infoText1View.setFrame(AWE.Geometry.createRect(130, 33 - lines * 11, 66, 24));      
       _infoText1View.setTextAlign("left");
       _infoText1View.setIconImage("map/display/icon");
       _infoText1View.setText(army.strength());
@@ -66,7 +65,7 @@ AWE.UI = (function(module) {
       if (lines > 1) {
         _infoText2View = AWE.UI.createLabelView();
         _infoText2View.initWithControllerAndLabel(controller);
-        _infoText2View.setFrame(AWE.Geometry.createRect(130, 22, 1000, 24));      
+        _infoText2View.setFrame(AWE.Geometry.createRect(130, 22, 66, 24));      
         _infoText2View.setTextAlign("left");
         _infoText2View.setIconImage("map/display/icon");
         _infoText2View.setText(army.strength());

@@ -125,17 +125,19 @@ h3 {
 }
 
 #column-r3c1 {
-  width: 380px;
+  width: 400px;
   margin-right: 40px;
 }
 
 #column-r3c1 img {
-  margin: 10px 30px;
+  margin-right: 25px;
+  margin-bottom: 20px;
   border-radius: 10px;
+  width: 100px;
 }
 
 #column-r3c2 {
-  width: 380px;
+  width: 360px;
 }
 
 #column-r4c1 {
@@ -162,20 +164,21 @@ h3 {
 
 
 #column-r5c1 {
-  width: 800px;
+  width: 700px;
   margin-top: 30px;
   padding-left: 50px;
   padding-right: 50px;
 }
 
 #column-r5c2 {
-  margin-right: 50px;
-  width: 700px;
+  margin-left: -40px;
+  margin-right: -20px;
+  width: 840px;
   margin-top: 70px;
 }
 
 #column-r5c2 img {
-  width: 800px;
+  width: 840px;
 }
 
 #column-r7c1 {

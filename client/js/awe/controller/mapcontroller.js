@@ -572,15 +572,14 @@ AWE.Controller = (function(module) {
         if (view.typeName() === 'FortressView') {
           _actionViews.highlightImage = AWE.UI.createFortressHighlightView();
           _actionViews.highlightImage.initWithControllerAndNode(that, view.node());
-          _actionViews.highlightImage.setCenter(center.x, center.y - AWE.Config.MAPPING_FORTRESS_SIZE);
         }
         else if (view.typeName() === 'ArmyView') {
           _actionViews.highlightImage = AWE.UI.createArmyHighlightView();
           _actionViews.highlightImage.initWithControllerAndArmy(that, view.army());
-          _actionViews.highlightImage.setCenter(center.x, center.y);
           armyUpdates[view.army().id()] = view.army();
         }
         
+          _actionViews.highlightImage.setCenter(center.x, center.y);
         _stages[2].addChild(_actionViews.highlightImage.displayObject());
         _action = true;
       }
@@ -818,7 +817,6 @@ AWE.Controller = (function(module) {
           }
           lastArmyCheck = new Date();
         }
-        
       };
     }());
     
@@ -1099,23 +1097,18 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
-    // that.isSettlementVisible = function(frame) {
-    // that.isFortressVisible = function(frame) {
-    // that.areArmiesAtFortressVisible = function(frame) {
-    // that.areArmiesAtSettlementsVisible = function(frame) {
-    
     that.updateActionViews = function() {
 
       // TODO Sichtbarkeit testen
 
       if (_actionViews.highlightImage) { 
-        if (_actionViews.highlightImage.typeName() === 'fortressHighlightView') {          
+        if (_actionViews.highlightImage.typeName() === 'FortressHighlightView') {          
           _actionViews.highlightImage.setCenter(AWE.Geometry.createPoint(
             _highlightedView.center().x,
-            _highlightedView.center().y - AWE.Config.MAPPING_FORTRESS_SIZE
+            _highlightedView.center().y
           ));
         }
-        else if (_actionViews.highlightImage.typeName() === 'armyHighlightView') {
+        else if (_actionViews.highlightImage.typeName() === 'ArmyHighlightView') {
           _actionViews.highlightImage.setCenter(AWE.Geometry.createPoint(
             _highlightedView.center().x,
             _highlightedView.center().y
@@ -1124,19 +1117,23 @@ AWE.Controller = (function(module) {
       }
 
       if (_actionViews.selectedHighlightImage) { 
-        if (_actionViews.selectedHighlightImage.typeName() === 'fortressHighlightView') {
+        if (_actionViews.selectedHighlightImage.typeName() === 'FortressHighlightView') {
           if (that.isFortressVisible(that.mc2vc(_actionViews.selectedHighlightImage.node().frame()))) {
             _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
               _selectedHighlightView.center().x,
-              _selectedHighlightView.center().y - AWE.Config.MAPPING_FORTRESS_SIZE
+              _selectedHighlightView.center().y
             ));
           }
           else {
             _unselectView(_selectedView);             
           }
         }
-        else if (_actionViews.selectedHighlightImage.typeName() === 'armyHighlightView') {
-          if (1 || that.isFortressVisible(that.mc2vc(_actionViews.selectedHighlightImage.node().frame()))) {
+        else if (_actionViews.selectedHighlightImage.typeName() === 'ArmyHighlightView') {
+          var location = AWE.Map.Manager.getLocation(_actionViews.selectedHighlightImage.army().location_id());
+          var frameVC = that.mc2vc(location.region().node().frame());
+          if ((location.slot() === 0 && that.areArmiesAtFortressVisible(frameVC)) ||   
+              that.areArmiesAtSettlementsVisible(frameVC)
+          ) {
             _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
               _selectedHighlightView.center().x,
               _selectedHighlightView.center().y
@@ -1339,7 +1336,7 @@ AWE.Controller = (function(module) {
               _stages[i].update();
               //log(viewsInStages, regionViews);
               AWE.Ext.applyFunction(viewsInStages[i], function(viewHash) {
-                log (viewHash);
+                // log (viewHash);
                 AWE.Ext.applyFunctionToElements(viewHash, function(view) {
                   view.notifyRedraw();
                 });
