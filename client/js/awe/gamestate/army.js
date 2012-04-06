@@ -8,84 +8,59 @@ var AWE = window.AWE || {};
 
 /** GameState base class, manager and helpers. */
 AWE.GS = (function(module) {
+    
+  module.ArmyAccess = {};
 
-  /** Base class of all classes that represent states & entities of the game. */
-  module.initializeNewEntityType(
-    'Army', 
+  // ///////////////////////////////////////////////////////////////////////
+  //
+  //   ARMY
+  //
+  // ///////////////////////////////////////////////////////////////////////    
     
+  module.Army = module.Entity.extend({     // Army.create    -> creates army objects
+    typeName: 'Army',
     
-    
-    // ///////////////////////////////////////////////////////////////////////
-    //
-    //   ARMY
-    //
-    // ///////////////////////////////////////////////////////////////////////    
-    
-    function(my) {     // Army.create    -> creates army objects
-    
-      // private attributes and methods //////////////////////////////////////
-    
-      var that;
-    
-  
-      // protected attributes and methods ////////////////////////////////////
-  
-      my = my || {};
-      my.typeName = 'Army';
+    toString: function() {
+      return "army " + this.getId() + ", " + this.getName() + " at " + this.getRegion_id() + "/" + this.getLocation_id();
+    }
+  });  
+  AWE.Partials.mixinProperties(module.Army, module.ArmyAccess);
+  module.Army.addProperty('name',                 null);
 
+  module.Army.addProperty('location_id',          null, module.PROPERTY_HASHABLE);
+  module.Army.addProperty('region_id',            null, module.PROPERTY_HASHABLE);
+
+  module.Army.addProperty('owner_id',             null);
+  module.Army.addProperty('owner_name',           null);
+  module.Army.addProperty('alliance_id',          null);
+  module.Army.addProperty('alliance_tag',         null);
+
+  module.Army.addProperty('ap_last',              null);
+  module.Army.addProperty('ap_max',               null);
+  module.Army.addProperty('ap_present',           null);
+  module.Army.addProperty('ap_seconds_per_point', null);
+        
+  module.Army.addProperty('exp',                  null);
+  module.Army.addProperty('rank',                 null);
+
+  module.Army.addProperty('stance',               null);
+  module.Army.addProperty('strength',             null);
     
-      // public attributes and methods ///////////////////////////////////////
+  module.Army.addProperty('home_settlement_id',   null);
+  module.Army.addProperty('home_settlement_name', null);
     
-      that = module.createEntity(my);
-      that.test = 'test';
-    
-      // synthesized properties //////////////////////////////////////////////
+  module.Army.addProperty('size_max',             null);
+  module.Army.addProperty('size_present',         null);
 
-      that.property('name',                 null, module.PROPERTY_READ_ONLY);
+  module.Army.addProperty('mode',                 null);        
 
-      that.property('location_id',          null, module.PROPERTY_READ_ONLY, module.PROPERTY_HASHABLE);
-      that.property('region_id',            null, module.PROPERTY_READ_ONLY, module.PROPERTY_HASHABLE);
+  module.Army.addProperty('battle_id',            0);
+  module.Army.addProperty('battle_retreat',       false);
 
-      that.property('owner_id',             null, module.PROPERTY_READ_ONLY);
-      that.property('owner_name',           null, module.PROPERTY_READ_ONLY);
-      that.property('alliance_id',          null, module.PROPERTY_READ_ONLY);
-      that.property('alliance_tag',         null, module.PROPERTY_READ_ONLY);
+  module.Army.addProperty('target_location_id',   null);    
+  module.Army.addProperty('target_reached_at',    null);    
+  module.Army.addProperty('target_region_id',     null);    
 
-      that.property('ap_last',              null, module.PROPERTY_READ_ONLY);
-      that.property('ap_max',               null, module.PROPERTY_READ_ONLY);
-      that.property('ap_present',           null, module.PROPERTY_READ_ONLY);
-      that.property('ap_seconds_per_point', null, module.PROPERTY_READ_ONLY);
-    
-    
-      that.property('exp',                  null, module.PROPERTY_READ_ONLY);
-      that.property('rank',                 null, module.PROPERTY_READ_ONLY);
-
-      that.property('stance',               null, module.PROPERTY_READ_ONLY);
-      that.property('strength',             null, module.PROPERTY_READ_ONLY);
-    
-      that.property('home_settlement_id',   null, module.PROPERTY_READ_ONLY);
-      that.property('home_settlement_name', null, module.PROPERTY_READ_ONLY);
-    
-      that.property('size_max',             null, module.PROPERTY_READ_ONLY);
-      that.property('size_present',         null, module.PROPERTY_READ_ONLY);
-
-      that.property('mode',                 null, module.PROPERTY_READ_ONLY);        
-
-      that.property('battle_id',            0, module.PROPERTY_READ_ONLY);
-      that.property('battle_retreat',       false, module.PROPERTY_READ_ONLY);
-
-      that.property('target_location_id',   null, module.PROPERTY_READ_ONLY);    
-      that.property('target_reached_at',    null, module.PROPERTY_READ_ONLY);    
-      that.property('target_region_id',     null, module.PROPERTY_READ_ONLY);    
-
-      that.toString = function() {
-        return "army " + this.id() + ", " + this.name() + " at " + this.region_id() + "/" + this.location_id();
-      }
-
-      return that;
-    },
-    
-    
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -93,7 +68,7 @@ AWE.GS = (function(module) {
     //
     // ///////////////////////////////////////////////////////////////////////  
   
-    (function(my) {    // Army.Manager    -> manager singleton
+    module.ArmyManager = (function(my) {    // Army.Manager    -> manager singleton
     
       // private attributes and methods //////////////////////////////////////
     
@@ -117,10 +92,10 @@ AWE.GS = (function(module) {
     
       that.getArmy = function(id) { return that.getEntity(id); }
       that.getArmiesInRegion = function(id) { 
-        return AWE.GS.Army.getAllForRegion_id(id)
+        return AWE.GS.ArmyAccess.getAllForRegion_id(id)
       }
       that.getArmiesAtLocation = function(id) { 
-        return AWE.GS.Army.getAllForLocation_id(id)
+        return AWE.GS.ArmyAccess.getAllForLocation_id(id)
       }
       
       that.lastUpdateForFortress = function(regionId) {
@@ -150,14 +125,14 @@ AWE.GS = (function(module) {
           my.runningUpdatesPerRegion,           // queue to register this request during execution
           regionId,                             // regionId to fetch -> is used to register the request
           updateType,                           // type of update (aggregate, short, full)
-          module.Army.lastUpdateForRegion_id(regionId), // modified after
+          module.ArmyAccess.lastUpdateForRegion_id(regionId), // modified after
           function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
             if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-              module.Army.accessHashForRegion_id().setLastUpdateAtForValue(regionId, timestamp);
+              module.ArmyAccess.accessHashForRegion_id().setLastUpdateAtForValue(regionId, timestamp);
             }
             if (callback) {
               if (status === AWE.Net.NOT_MODIFIED) {
-                result = module.Army.getAllForRegion_id(regionId);
+                result = module.ArmyAccess.getAllForRegion_id(regionId);
               }
               callback(result, status, xhr, timestamp);
             }
@@ -172,14 +147,14 @@ AWE.GS = (function(module) {
           my.runningUpdatesPerLocation, 
           locationId, 
           updateType, 
-          module.Army.lastUpdateForLocation_id(locationId),
+          module.ArmyAccess.lastUpdateForLocation_id(locationId),
           function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
             if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-              module.Army.accessHashForLocation_id().setLastUpdateAtForValue(locationId, timestamp);
+              module.ArmyAccess.accessHashForLocation_id().setLastUpdateAtForValue(locationId, timestamp);
             }
             if (callback) {
               if (status === AWE.Net.NOT_MODIFIED) {
-                result = module.Army.getAllForLocation_id(locationId);
+                result = module.ArmyAccess.getAllForLocation_id(locationId);
               }
               callback(result, status, xhr, timestamp);
             }
@@ -201,7 +176,7 @@ AWE.GS = (function(module) {
             }
             if (callback) {
               if (status === AWE.Net.NOT_MODIFIED) {
-                result = module.Army.getAllForRegion_id(regionId);
+                result = module.ArmyAccess.getAllForRegion_id(regionId);
               }
               callback(result, status, xhr, timestamp);
             }
@@ -212,8 +187,11 @@ AWE.GS = (function(module) {
       
       return that;
         
-    }())
-  );
+    }());
+    
+  var army = module.Army.create().init({id:0}); // create one instance to create hashes
+  console.log(army);
+  console.log(AWE.GS);
   
   return module;
   

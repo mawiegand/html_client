@@ -43,7 +43,7 @@ AWE.Partials = (function(module) {
   };
   
   
-  module.addProperties = function(obj, hook, my) {
+  module.mixinProperties = function(emClass, hook) {
         
     /** creates an auto-updated hash for a property of the entity type. */
     var createAccessHashForAttribute = function(attribute) {
@@ -70,14 +70,14 @@ AWE.Partials = (function(module) {
             this.allEntries[val] = { entries: newEntries, lastUpdateAt: timestamp };
           };
           hash.addEntry = function(entry) {
-            if (!this.allEntries[entry[attribute]()]) {
-              this.allEntries[entry[attribute]()] = { entries: {}, lastUpdateAt: new Date(1970) };
+            if (!this.allEntries[entry[attribute]]) {
+              this.allEntries[entry[attribute]] = { entries: {}, lastUpdateAt: new Date(1970) };
             }
-            this.allEntries[entry[attribute]()].entries[entry.id()] = entry;
+            this.allEntries[entry[attribute]].entries[entry.get('id')] = entry;
           };
           hash.removeEntry = function(entry) {
-            if (this.allEntries[entry[attribute]()] && this.allEntries[entry[attribute]()].entries[entry.id()]) {
-              delete this.allEntries[entry[attribute]()].entries[entry.id()];
+            if (this.allEntries[entry[attribute]] && this.allEntries[entry[attribute]].entries[entry.get('id')]) {
+              delete this.allEntries[entry[attribute]].entries[entry.get('id')];
             }
           }
           hash.getEntriesForValue = function(val) {
@@ -128,48 +128,60 @@ AWE.Partials = (function(module) {
           return hook.accessHashes[attribute];
         }
       }
-    }      
+    }    
     
   
     /** creates a property that gives to a newly created attribute of the my 
      * object. Can be used to create attribute, setter and getter with just
      * one line of code in any derived object. */
-    obj.property = function(attribute, defaultValue, access, hashable) {
-      if (defaultValue === undefined) {
-        defaultValue = null;
-      }
-      access = access || module.PROPERTY_READ_WRITE;
-      hashable = hashable || false;
-   
-      var setterString = 'set'+attribute.charAt(0).toUpperCase() + attribute.slice(1);
-  
-      my[attribute] = defaultValue;                          // attribute
-      if (!hashable) {                                       // simple protected setter
-        my[setterString] = function(val) { my[attribute] = val; }
-      }
-      else {                                                 // setter, that also updates the hash
-        if (!hook.accessHashes || !hook.accessHashes[attribute]) {//   create hash, if not already there
-          createAccessHashForAttribute(attribute); 
+    emClass.reopenClass({
+      addProperty: function(attribute, defaultValue, hashable) {
+    
+        // set a few default values first.
+        if (defaultValue === undefined) {
+          defaultValue = null;
         }
-        
-        my[setterString] = function(val) {     
-          if (my[attribute] != val) {
-            if (my[attribute]) {
-              hook.accessHashes[attribute].removeEntry(obj);
-            }
-            my[attribute] = val; 
-            if (val) {
-              hook.accessHashes[attribute].addEntry(obj);
-            }
+        hashable = hashable || false;
+    
+        // now customize a mixin with one single attribute, setter and getter
+        var mixin = {};
+        mixin[attribute] = defaultValue;
+
+        var setterString = 'set'+attribute.charAt(0).toUpperCase() + attribute.slice(1);
+        var getterString = 'get'+attribute.charAt(0).toUpperCase() + attribute.slice(1);
+  
+        if (!hashable) {                                       // simple setter
+          mixin[setterString] = function(val) { this.set(attribute, val); }
+        }
+        else {                                               // setter, that also updates the hash
+          if (!hook.accessHashes || !hook.accessHashes[attribute]) {//   create hash, if not already there
+            createAccessHashForAttribute(attribute); 
           }
-        }        
-      } 
-      this[attribute] = function() { return my[attribute]; } // getter
-      if (access === module.PROPERTY_READ_WRITE) {           // public setter
-        this[setterString] = function(val) { my[setterString](val); }
+        
+          mixin[setterString] = function(val) {     
+            if (this.get(attribute) != val) {
+              if (this.get(attribute)) {
+                hook.accessHashes[attribute].removeEntry(this);
+              }
+              this.set(attribute, val); 
+              if (val) {
+                hook.accessHashes[attribute].addEntry(this);
+              }
+            }
+          }        
+        }
+        mixin[getterString] = function() {                     // getter
+          return this.get(attribute); 
+        } 
+    
+        // finally apply the mixin
+        emClass.reopen(mixin);
       }
-    };
+    });
+    
   }
+  
+
   
   return module;
 }(AWE.Partials || {}));

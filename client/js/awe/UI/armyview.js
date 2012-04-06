@@ -71,7 +71,7 @@ AWE.UI = (function(module) {
       _flagGraphics.setStrokeStyle(1);
       _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
       _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
-      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * army.size_present() / 1200, 22).lineTo(56, 12);
+      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * army.getSize_present() / 1200, 22).lineTo(56, 12);
       _flagShape = new Shape(_flagGraphics);  
       _container.addChild(_flagShape);
 
@@ -91,11 +91,11 @@ AWE.UI = (function(module) {
       var healthBGShape = new Shape(healthBGGraphics);
       _container.addChild(healthBGShape);
 
-      if (army.ap_present() / army.ap_max() > 0) {
-        if(army.ap_present() / army.ap_max() > .75) {
+      if (army.getAp_present() / army.getAp_max() > 0) {
+        if(army.getAp_present() / army.getAp_max() > .75) {
           var fillColor = 'rgb(64, 255, 64)';
         }
-        else if(army.ap_present() / army.ap_max() > .5) {
+        else if(army.getAp_present() / army.getAp_max() > .5) {
           var fillColor = 'rgb(255, 255, 64)';
         }
         else {
@@ -106,7 +106,7 @@ AWE.UI = (function(module) {
         healthGraphics.setStrokeStyle(1);
         healthGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
         healthGraphics.beginFill(fillColor);
-        healthGraphics.drawRoundRect(0, 108, 64 * (army.ap_present() / army.ap_max()), 12, 4);
+        healthGraphics.drawRoundRect(0, 108, 64 * (army.getAp_present() / army.getAp_max()), 12, 4);
         _healthShape = new Shape(healthGraphics);
         _container.addChild(_healthShape);
       }
@@ -133,7 +133,7 @@ AWE.UI = (function(module) {
       _flagGraphics.setStrokeStyle(1);
       _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
       _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
-      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * (_army.size_present() / _army.size_max()), 22).lineTo(56, 12);
+      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * (_army.getSize_present() / _army.getSize_max()), 22).lineTo(56, 12);
       _flagShape = new Shape(_flagGraphics);  
       _container.addChild(_flagShape);
 
@@ -142,18 +142,18 @@ AWE.UI = (function(module) {
       _flagGraphics.setStrokeStyle(1);
       _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
       _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
-      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * (_army.size_present() / _army.size_max()), 22).lineTo(56, 12);
+      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * (_army.getSize_present() / _army.getSize_max()), 22).lineTo(56, 12);
       _flagShape = new Shape(_flagGraphics);  
       _container.addChild(_flagShape);
       
-      _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.stance()]));
+      _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.getStance()]));
       
-      if (_army.ap_present() / _army.ap_max() > 0) {
+      if (_army.getAp_present() / _army.getAp_max() > 0) {
         _container.removeChild(_healthShape);
-        if(_army.ap_present() / _army.ap_max() > .75) {
+        if(_army.getAp_present() / _army.getAp_max() > .75) {
           var fillColor = 'rgb(64, 255, 64)';
         }
-        else if(_army.ap_present() / _army.ap_max() > .5) {
+        else if(_army.getAp_present() / _army.getAp_max() > .5) {
           var fillColor = 'rgb(255, 255, 64)';
         }
         else {
@@ -164,7 +164,7 @@ AWE.UI = (function(module) {
         healthGraphics.setStrokeStyle(1);
         healthGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
         healthGraphics.beginFill(fillColor);
-        healthGraphics.drawRoundRect(0, 108, 64 * (_army.ap_present() / _army.ap_max()), 12, 4);
+        healthGraphics.drawRoundRect(0, 108, 64 * (_army.getAp_present() / _army.getAp_max()), 12, 4);
         _healthShape = new Shape(healthGraphics);
         _container.addChild(_healthShape);
       }

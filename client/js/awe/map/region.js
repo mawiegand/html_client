@@ -115,19 +115,19 @@ AWE.Map = (function(module) {
     }
     
     that.getArmies = function() { 
-      return AWE.GS.Army.getAllForRegion_id(_id) 
+      return AWE.GS.ArmyAccess.getAllForRegion_id(_id) 
     };
     
     that.getArmiesAtFortress = function() {
-      return AWE.GS.Army.getAllForLocation_id(_fortress_id);
+      return AWE.GS.ArmyAccess.getAllForLocation_id(_fortress_id);
     }
     
     that.lastArmyUpdateAt = function() {
-      return AWE.GS.Army.lastUpdateForRegion_id(_id);
+      return AWE.GS.ArmyAccess.lastUpdateForRegion_id(_id);
     }
     
     that.updateArmies = function(updateType, callback) {
-      AWE.GS.Army.Manager.updateArmiesInRegion(_id, updateType, callback)
+      AWE.GS.ArmyManager.updateArmiesInRegion(_id, updateType, callback)
     }
     
     /** this method updates the data stored at the local region from the given 

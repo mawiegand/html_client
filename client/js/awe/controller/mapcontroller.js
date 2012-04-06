@@ -524,6 +524,10 @@ AWE.Controller = (function(module) {
         _actionViews.selectionControls.setCenter(center);
         _actionViews.selectionControls.onAttackButtonClick = function () {
           
+          console.log('Pressed attack');
+          console.log(_selectedView.army());
+          console.log(_selectedView);
+          
           var dialog = AWE.UI.Ember.ArmyInfoView.create({
             army: _selectedView.army(),
             changeNamePressed: function(event) {
@@ -586,7 +590,7 @@ AWE.Controller = (function(module) {
         else if (view.typeName() === 'ArmyView') {
           _actionViews.highlightImage = AWE.UI.createArmyHighlightView();
           _actionViews.highlightImage.initWithControllerAndArmy(that, view.army());
-          armyUpdates[view.army().id()] = view.army();
+          armyUpdates[view.army().getId()] = view.army();
         }
         
           _actionViews.highlightImage.setCenter(center.x, center.y);
@@ -746,11 +750,11 @@ AWE.Controller = (function(module) {
             if (!that.areArmiesAtFortressVisible(frame)) continue ; // no update necessary, region is to small (perhaps fetch aggregate info)
                         
             if (!that.areArmiesAtSettlementsVisible(frame)) {
-              if(AWE.GS.Army.Manager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
+              if(AWE.GS.ArmyManager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
                 nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
                 
                 startUpdate('armies');
-                AWE.GS.Army.Manager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+                AWE.GS.ArmyManager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
                   stopUpdate('armies');
                   that.setModelChanged();
                 });
@@ -782,7 +786,7 @@ AWE.Controller = (function(module) {
               if (army.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime()) {
                 startUpdate('armyDetails');
                 console.log('request army details');
-                AWE.GS.Army.Manager.updateArmy(armyId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+                AWE.GS.ArmyManager.updateArmy(armyId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
                   stopUpdate('armyDetails');
                   that.setModelChanged();
                 });
@@ -802,11 +806,11 @@ AWE.Controller = (function(module) {
             if (!that.areArmiesAtFortressVisible(frame)) continue ; // no update necessary, region is to small (perhaps fetch aggregate info)
                         
             if (!that.areArmiesAtSettlementsVisible(frame)) {
-              if(AWE.GS.Army.Manager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
+              if(AWE.GS.ArmyManager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
                 nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
                 
                 startUpdate('armies');
-                AWE.GS.Army.Manager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+                AWE.GS.ArmyManager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
                   stopUpdate('armies');
                   that.setModelChanged();
                 });
@@ -1040,7 +1044,7 @@ AWE.Controller = (function(module) {
         for (var key in armies) {
           if (armies.hasOwnProperty(key)) {
             var army = armies[key];
-            var view = armyViews[army.id()];
+            var view = armyViews[army.getId()];
           
             if (view) {       
               if (view.lastChange !== undefined && view.lastChange() < army.lastChange()) {
@@ -1052,8 +1056,8 @@ AWE.Controller = (function(module) {
               view.initWithControllerAndArmy(that, army);
               _stages[1].addChild(view.displayObject());
             }                                  
-            setArmyPosition(view, pos, army.id(), frame);
-            newArmyViews[army.id()] = view;
+            setArmyPosition(view, pos, army.getId(), frame);
+            newArmyViews[army.getId()] = view;
           }
         }
       };
@@ -1139,7 +1143,7 @@ AWE.Controller = (function(module) {
           }
         }
         else if (_actionViews.selectedHighlightImage.typeName() === 'ArmyHighlightView') {
-          var location = AWE.Map.Manager.getLocation(_actionViews.selectedHighlightImage.army().location_id());
+          var location = AWE.Map.Manager.getLocation(_actionViews.selectedHighlightImage.army().getLocation_id());
           var frameVC = that.mc2vc(location.region().node().frame());
           if ((location.slot() === 0 && that.areArmiesAtFortressVisible(frameVC)) ||   
               that.areArmiesAtSettlementsVisible(frameVC)

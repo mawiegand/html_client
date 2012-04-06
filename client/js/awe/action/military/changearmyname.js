@@ -30,13 +30,13 @@ AWE.Action.Military = (function(module) {
       return 'military_army[name]=' + newName; 
     }
     
-    that.getURL = function() { return AWE.Config.MILITARY_SERVER_BASE+'/armies/'+army.id(); }
+    that.getURL = function() { return AWE.Config.MILITARY_SERVER_BASE+'/armies/'+army.getId(); }
   
     that.getHTTPMethod = function() { return 'PUT'; }
     
     that.postProcess = function(statusCode, xhr) {
       if (statusCode == 200) {
-        AWE.GS.Army.Manager.updateArmy(army.id());
+        AWE.GS.ArmyManager.updateArmy(army.getId());
       }
     }
   
