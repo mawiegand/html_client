@@ -525,7 +525,7 @@ AWE.Controller = (function(module) {
         _actionViews.selectionControls.onAttackButtonClick = function () {
           
           var dialog = AWE.UI.Ember.ArmyInfoView.create({
-            name: _selectedView.army().name(),
+            army: _selectedView.army(),
             changeNamePressed: function(event) {
               console.log('change name pressed.');
               var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), 'Maximo Leader');

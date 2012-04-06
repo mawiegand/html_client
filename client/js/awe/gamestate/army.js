@@ -37,7 +37,7 @@ AWE.GS = (function(module) {
       // public attributes and methods ///////////////////////////////////////
     
       that = module.createEntity(my);
-  
+      that.test = 'test';
     
       // synthesized properties //////////////////////////////////////////////
 
