@@ -133,7 +133,7 @@ AWE.UI = (function(module) {
 
       // Image view für held
       _stanceView = AWE.UI.createImageView();
-      _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.getStance()]));
+      _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]));
       _stanceView.setFrame(AWE.Geometry.createRect(216, 16, 64, 96));
       _stanceView.onClick = that.onClick;
       _stanceView.onMouseOver = that.onMouseOver;
@@ -192,14 +192,14 @@ AWE.UI = (function(module) {
     };
 
     that.updateView = function() {
-      _nameLabelView.setText(_army.getName());
-      _apLabelView.setText('AP: ' + AWE.UI.Util.secondsToString(_army.getAp_seconds_per_point()));
+      _nameLabelView.setText(_army.get('name'));
+      _apLabelView.setText('AP: ' + AWE.UI.Util.secondsToString(_army.get('ap_seconds_per_point')));
       _locationLabelView.setText('Home');
-      _rankLabelView.setText(_army.getRank());
-      _sizeAllLabelView.setText(_army.getSize_present());
-      _sizeType1LabelView.setText(_army.getSize_present());
-      _sizeType2LabelView.setText(_army.getSize_present());
-      _sizeType3LabelView.setText(_army.getSize_present());
+      _rankLabelView.setText(_army.get('rank'));
+      _sizeAllLabelView.setText(_army.get('size_present'));
+      _sizeType1LabelView.setText(_army.get('size_present'));
+      _sizeType2LabelView.setText(_army.get('size_present'));
+      _sizeType3LabelView.setText(_army.get('size_present'));
     };   
     
     that.army = function() {

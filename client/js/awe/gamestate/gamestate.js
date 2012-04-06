@@ -27,12 +27,20 @@ AWE.GS = (function(module) {
 
   /** Base class of all classes that represent states & entities of the game. */
   module.Entity = Ember.Object.extend({
+    
+    id: 0,
+    typeName: 'Entity',
+    updated_at: null,
+    created_at: null,
+    lastAggregateUpdateAt: new Date(1970), ///< time of last aggregate update received by the client
+    lastShortUpdateAt: new Date(1970),     ///< time of last short update received by the client
+    lastFullUpdateAt: new Date(1970),      ///< time of last full update received by the client
+    
     setPropertiesWithHash: function(hash) {
       for (var key in hash) {
         if (hash.hasOwnProperty(key)) {
           if (this[key] !== undefined) {
-            var setterString = 'set'+key.charAt(0).toUpperCase() + key.slice(1);
-            this[setterString](hash[key]);
+            this.set(key, hash[key]);
           }
           else {
             console.log ('ERROR in AWE.GS.Entity.setPropertiesWithHash: unknown property ' + key + '.');
@@ -94,32 +102,6 @@ AWE.GS = (function(module) {
       this.updateWith(null, updateType, timestamp);
     }
   });
-  AWE.Partials.mixinProperties(module.Entity, module.EntityAccess);
-  
-  module.Entity.addProperty('id', 0);
-  module.Entity.addProperty('typeName', 'Entity');
-  module.Entity.addProperty('updated_at', null);
-  module.Entity.addProperty('created_at', null);
-  module.Entity.addProperty('lastAggregateUpdateAt', new Date(1970));  ///< time of last aggregate update received by the client
-  module.Entity.addProperty('lastShortUpdateAt', new Date(1970));      ///< time of last short update received by the client
-  module.Entity.addProperty('lastFullUpdateAt', new Date(1970));       ///< time of last full update received by the client
-
-/*console.log(Ember.inspect(module.Entity));
-  console.log(module.Entity.create({}));
-  console.log(Ember.inspect(Ember.Object));
-  
-  var obj1 = module.Entity.create();
-  var obj2 = module.Entity.create();
-  var obj3 = module.Entity.create();
-  obj1.setId(4);
-  obj2.setId(3);
-  obj3.setId(4);
-  obj3.setId(3);
-  console.log(obj1);
-  console.log(obj2);
-  console.log(module.Entity.create());
-  console.log(module);*/
-  
   
   
   // /////////////////////////////////////////////////////////////////////////
@@ -153,7 +135,7 @@ AWE.GS = (function(module) {
       else {
         entity = my.createEntity().init(data);
         entity.setNotModifiedAfter(updateType, start); // set the last-update timestamp appropriately
-        my.entities[entity.getId()] = entity;
+        my.entities[entity.get('id')] = entity;
       }
       return entity;
     };

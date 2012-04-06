@@ -522,16 +522,11 @@ AWE.Controller = (function(module) {
         _actionViews.selectionControls = AWE.UI.createArmySelectionView();
         _actionViews.selectionControls.initWithControllerAndArmy(that, view.army(), AWE.Geometry.createRect(-64, 0, 192, 128));
         _actionViews.selectionControls.setCenter(center);
-        _actionViews.selectionControls.onAttackButtonClick = function () {
-          
-          console.log('Pressed attack');
-          console.log(_selectedView.army());
-          console.log(_selectedView);
-          
+      
+        _actionViews.selectionControls.onAttackButtonClick = function () {              
           var dialog = AWE.UI.Ember.ArmyInfoView.create({
             army: _selectedView.army(),
             changeNamePressed: function(event) {
-              console.log('change name pressed.');
               var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), 'Maximo Leader');
               AWE.Action.Manager.queueAction(action);              
             },
@@ -590,7 +585,7 @@ AWE.Controller = (function(module) {
         else if (view.typeName() === 'ArmyView') {
           _actionViews.highlightImage = AWE.UI.createArmyHighlightView();
           _actionViews.highlightImage.initWithControllerAndArmy(that, view.army());
-          armyUpdates[view.army().getId()] = view.army();
+          armyUpdates[view.army().get('id')] = view.army();
         }
         
           _actionViews.highlightImage.setCenter(center.x, center.y);
@@ -1044,7 +1039,7 @@ AWE.Controller = (function(module) {
         for (var key in armies) {
           if (armies.hasOwnProperty(key)) {
             var army = armies[key];
-            var view = armyViews[army.getId()];
+            var view = armyViews[army.get('id')];
           
             if (view) {       
               if (view.lastChange !== undefined && view.lastChange() < army.lastChange()) {
@@ -1056,8 +1051,8 @@ AWE.Controller = (function(module) {
               view.initWithControllerAndArmy(that, army);
               _stages[1].addChild(view.displayObject());
             }                                  
-            setArmyPosition(view, pos, army.getId(), frame);
-            newArmyViews[army.getId()] = view;
+            setArmyPosition(view, pos, army.get('id'), frame);
+            newArmyViews[army.get('id')] = view;
           }
         }
       };
@@ -1143,9 +1138,17 @@ AWE.Controller = (function(module) {
           }
         }
         else if (_actionViews.selectedHighlightImage.typeName() === 'ArmyHighlightView') {
-          var location = AWE.Map.Manager.getLocation(_actionViews.selectedHighlightImage.army().getLocation_id());
-          var frameVC = that.mc2vc(location.region().node().frame());
-          if ((location.slot() === 0 && that.areArmiesAtFortressVisible(frameVC)) ||   
+          var location = AWE.Map.Manager.getLocation(_actionViews.selectedHighlightImage.army().get('location_id'));
+          var region = AWE.Map.Manager.getRegion(_actionViews.selectedHighlightImage.army().get('region_id'));    
+           // TODO the following code makes two dangerous assumptions:
+           // 1st: if there's an army, there's a region object!   (location may be missing) 
+           // 2nd: if there's no location object, the army must be at the fortress level.
+           // this is dangerous because: 
+           //    - region may have been pruned (memory) 
+           //    - army may have been fetched with e.g. the player's armies -> there might never have been the correpsonding region object
+           // how could this be resolved? a-> integrate slot in army model, b-> give army links to locations and regions. c-> only place the view, in case both, location (presently not ok for those at fortress level) and region (would be ok) are present.
+          var frameVC = that.mc2vc(region.node().frame()); 
+          if (((!location || location.slot() === 0) && that.areArmiesAtFortressVisible(frameVC)) ||   
               that.areArmiesAtSettlementsVisible(frameVC)
           ) {
             _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
