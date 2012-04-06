@@ -525,10 +525,21 @@ AWE.Controller = (function(module) {
       
         _actionViews.selectionControls.onAttackButtonClick = function () {              
           var dialog = AWE.UI.Ember.ArmyInfoView.create({
-            army: _selectedView.army(),
+            army: view.army(),
             changeNamePressed: function(event) {
-              var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), 'Maximo Leader');
-              AWE.Action.Manager.queueAction(action);              
+              
+              AWE.UI.Ember.TextInputDialog.create({
+                heading: 'Enter the new name of this army.',
+                input: this.get('army').get('name'),
+                okPressed: function() {
+                  var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), this.get('input'));
+                  AWE.Action.Manager.queueAction(action);  
+                  this.destroy();            
+                },
+                cancelPressed: function() {
+                  this.destroy();
+                }
+              }).append();
             },
             closePressed: function(event) {
               this.destroy();
