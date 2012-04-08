@@ -122,19 +122,23 @@ AWE.UI = (function(module) {
       circleGraphics.drawCircle(248, 64, 64);
       var _circleShape = new Shape(circleGraphics);    
       _container.addChild(_circleShape);
+
+      // Image view für held
+      var stance = _army.get('stance')
+      var offX = stance == 0 ? 12:0;
+      var offY = stance == 0 ? 2:0;
       
       var _baseGraphics = new Graphics();
       _baseGraphics.setStrokeStyle(1);
       _baseGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
       _baseGraphics.beginFill(Graphics.getRGB(0, 0, 0));
-      _baseGraphics.drawEllipse(222, 92, 52, 24);
+      _baseGraphics.drawEllipse(219, 92, 59, 26);
       _baseShape = new Shape(_baseGraphics);  
       _container.addChild(_baseShape);
 
-      // Image view für held
       _stanceView = AWE.UI.createImageView();
-      _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]));
-      _stanceView.setFrame(AWE.Geometry.createRect(216, 16, 64, 96));
+      _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[stance]));
+      _stanceView.setFrame(AWE.Geometry.createRect(208 +offX, -12 + offY, 80, 120));
       _stanceView.onClick = that.onClick;
       _stanceView.onMouseOver = that.onMouseOver;
       _stanceView.onMouseOut = that.onMouseOut;
