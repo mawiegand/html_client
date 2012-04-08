@@ -1,87 +1,26 @@
+window.WACKADOO = Ember.Application.create(function() {
+  var _numLoadedAssets = 0, _numAssets = 0; // this uses a closure for private, not-bindable vars
 
-
-window.WACKADOO = (function(module) {
-
-  module.Ember = Ember.Application.create();
-
+  return {
+    
+    rootScreenController: null,
+    appCompletelyLoaded: false,
   
-  /** creates an application singleton */
-  module.createApplication = function(my) {
-    
-    var _rootScreenController = null;
-    var _initialized = false;
-    var _numLoadedAssets = 0;
-    var _numAssets = 0;
-    
-    var loadDialog;
-    
-    my = my || {};
-    
-    my.assetLoaded = function() {
-      _numLoadedAssets += 1;
-      $('div.loaddialog-progress').css('width', '' + Math.floor(_numLoadedAssets / _numAssets * 100) + '%');
-      if (_numLoadedAssets === _numAssets) {           // have loaded all assets?
-        my.postInit(); 
-      }
-    }
-    
-    /** does final initialization after loading and finishing everything that
-     * has been triggered in init(), */
-    my.postInit = function() {
-      loadDialog.remove();
-      loadDialog = null;                             // done, can be garbage collected.
-      $('#debug2').html("Initialization done.");
-        
-      Ember.Handlebars.bootstrap();                  // Bootstrap Ember a second time to parse the newly loaded templates.
-
-      _initialized = true;                           // ready to run
-      
-    }
-        
-    var that = {};
-    
-    /** initializes needed modules and creates a root view controller. Caution: 
-     * initialization is done asynchronously! check _initialized = true before
-     * doing anything wit the app controller. */
-    that.init = function() {
-      loadDialog = Ember.View.create({
-        templateName: 'load-dialog',
-      });
-      loadDialog.append();   
-            
-      AWE.Net.init();                                   // initialize the network stack
-      AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
-        AWE.UI.rootNode = AWE.Map.Manager.rootNode();
-      });
   
-      _numLoadedAssets = _numAssets = 0;
-
-      for (var i=0; i < AWE.UI.Ember.templates.length; i++) {
-        _numAssets += 1;
-        AWE.Util.TemplateLoader.registerTemplate(AWE.UI.Ember.templates[i], function() { console.log('loaded TEMPLATE');
-          my.assetLoaded();
-        });
-      }
-      AWE.Util.TemplateLoader.loadAllTemplates();
-
-      AWE.UI.ImageCache.init();                         // initializes the central image cache
-      for (var k in AWE.Config.IMAGE_CACHE_LOAD_LIST) {     // and preload assets
-        if (AWE.Config.IMAGE_CACHE_LOAD_LIST.hasOwnProperty(k)) {
-          _numAssets += 1;                              // count assets
-          AWE.UI.ImageCache.loadImage(k, AWE.Config.IMAGE_CACHE_LOAD_LIST[k], function(name) {
-            my.assetLoaded();
-          });
-        }
-      }
+    /** custom object initialization goes here. */
+    init: function() {
+      this._super();
+    },
+  
     
-      _rootScreenController = AWE.Controller.createMapController('#layers');
-      _rootScreenController.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
-    };
     
-    /** starts the application, enters an infinite loop triggered by window.requestAnimFrame. */
-    that.run = function() {
-      window.requestAnimFrame(that.runloop);
-    };
+    /** registers the runloop to be started with next animation frame. Triggered
+     * by window.requestAnimationFrame. */
+    startRunloop: function() { 
+      window.requestAnimFrame(function(self) { return function() {self.runloop(); }; }(this)); // wrap it to keep context (this) correct
+    },
+    
+    
     
     /** the application's runloop. Does basic stuff needed by the application and then hands over
      * control to the view controller that has to do all the real work. The idea behind implementing
@@ -90,37 +29,100 @@ window.WACKADOO = (function(module) {
      * classes. That is, each screen should be able to implement it's own application logic, so that
      * it can choose the best technique for the particular task (e.g. canvas for the map, basic HTML
      * for sending and receiving messages.) */
-    that.runloop = function() {
-      if (_initialized) {
-        _rootScreenController.runloop();      // hand over control to present screen controller
+    runloop: function() { 
+      if (this.get('appCompletelyLoaded')) {
+        this.get('rootScreenController').runloop();      // hand over control to present screen controller
       }
-      else {
+      else { // TODO: bind this to the attributes using an ember template.
         $('#debug2').html('Loading Assets. Progress: ' + _numLoadedAssets + ' / ' + _numAssets);
       }
-      window.requestAnimFrame(that.runloop);  // request next animation frame that will initiate the next cycle of the runloop
-    };
+      window.requestAnimFrame(function(self) { return function() {self.runloop(); }; }(this));  // request next animation frame that will initiate the next cycle of the runloop
+    },
     
-    that.rootScreenController = function() { return _rootScreenController; }
-
     
-    return that;
-  };
-
-  return module;
   
-}(window.WACKADOO || {}));
+    /** loads and initializes needed modules. 
+     * Caution: 
+     * initialization is done asynchronously! check _initialized = true before
+     * doing anything wit the app controller. */
+    loadAssets: function() {
+      var self = this;
+      var loadDialog;
 
+      /** does final initialization after loading has finished */
+      var postLoading = function() {
+        loadDialog.remove();
+        loadDialog = null;                             // done, can be garbage collected.
+        $('#debug2').html("Initialization done.");
+        
+        Ember.Handlebars.bootstrap();                  // Bootstrap Ember a second time to parse the newly loaded templates.
 
-$(document).ready(function() {
+        self.appCompletelyLoaded = true;                       // ready to run
+      }
+      
   
-  var application = WACKADOO.createApplication();
-  application.init();
-  
-  $('#zoomin').click(function(){application.rootScreenController().zoom(.1, true)});
-  $('#zoomout').click(function(){application.rootScreenController().zoom(.1, false)});
+      /** callback executed for each asset that completely loaded. */
+      var assetLoaded = function() {
+        _numLoadedAssets += 1;
+        $('div.loaddialog-progress').css('width', '' + Math.floor(_numLoadedAssets / _numAssets * 100) + '%');
+        if (_numLoadedAssets === _numAssets) {           // have loaded all assets?
+          postLoading(); 
+        }
+      };
+    
+      loadDialog = Ember.View.create({
+        templateName: 'load-dialog',
+      });
+      loadDialog.append();   
+          
+      _numLoadedAssets = _numAssets = 0;
 
-  application.run();
-});
+      for (var i=0; i < AWE.UI.Ember.templates.length; i++) {
+        _numAssets += 1;
+        AWE.Util.TemplateLoader.registerTemplate(AWE.UI.Ember.templates[i], function() {
+          assetLoaded();
+        });
+      }
+
+      AWE.UI.ImageCache.init();                         // initializes the central image cache
+      for (var k in AWE.Config.IMAGE_CACHE_LOAD_LIST) {     // and preload assets
+        if (AWE.Config.IMAGE_CACHE_LOAD_LIST.hasOwnProperty(k)) {
+          _numAssets += 1;                              // count assets
+          AWE.UI.ImageCache.loadImage(k, AWE.Config.IMAGE_CACHE_LOAD_LIST[k], function(name) {
+            assetLoaded();
+          });
+        }
+      }
+
+      AWE.Util.TemplateLoader.loadAllTemplates();       // doing this last makes sure _numLoadedAssets may not accidently equal _numAssets before all requests have been started
+    },
+    
+    
+  
+    /** starts the app when the document is ready. */
+    ready: function() {
+      this._super();
+    
+      AWE.Net.init();                                   // initialize the network stack
+      AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
+        AWE.UI.rootNode = AWE.Map.Manager.rootNode();
+      });
+        
+      this.loadAssets();
+    
+      var rootScreenController = AWE.Controller.createMapController('#layers');
+      rootScreenController.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
+  
+      $('#zoomin').click(function(){rootScreenController.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
+      $('#zoomout').click(function(){rootScreenController.zoom(.1, false)});
+
+      this.set('rootScreenController', rootScreenController);
+
+      this.startRunloop();
+    }
+  }
+}());
+
 
 
 

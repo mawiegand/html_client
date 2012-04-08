@@ -24,6 +24,7 @@ AWE.Config = (function(module) {
   module.MAP_RUN_TESTS = false;
   module.MAP_SERVER_BASE = module.SERVER_ROOT + '/game_server/map/';
   module.MILITARY_SERVER_BASE = module.SERVER_ROOT + '/game_server/military/';
+  module.ACTION_SERVER_BASE = module.SERVER_ROOT + '/game_server/action/';
   
   module.DEV_CHARACTER_ID = 1;
   module.DEV_ALLIANCE_ID = 1;

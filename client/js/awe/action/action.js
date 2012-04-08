@@ -18,6 +18,8 @@ AWE.Action = (function(module) {
     // protected attributes and methods ////////////////////////////////////
   
     my = my || {};
+    my.completed = false;
+    my.status = 0
     
     my.getSanitizedAndEscapedRequestBody = function() {
       return that.getRequestBody();  // TODO SECURITY : sanitize and escape it
@@ -50,6 +52,8 @@ AWE.Action = (function(module) {
         console.log ('Successfully sent action to url: ' + that.getURL() + ': ' + statusText); 
       })
       .complete(function(jqXHR, statusText) {
+        my.completed = true;
+        my.status = jqXHR.status;
         that.postProcess(jqXHR.status, jqXHR);
         if (callback) {
           callback(jqXHR.status, jqXHR);
