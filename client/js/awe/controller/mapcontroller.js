@@ -588,6 +588,7 @@ AWE.Controller = (function(module) {
       if (view !== _selectedHighlightView) {
         var center = view.center();
         _highlightedView = view;
+        _highlightedView.setHovered(true);
         
         if (view.typeName() === 'FortressView') {
           _actionViews.highlightImage = AWE.UI.createFortressHighlightView();
@@ -609,6 +610,7 @@ AWE.Controller = (function(module) {
       if (_actionViews.highlightImage) {
         _stages[2].removeChild(_actionViews.highlightImage.displayObject());
         delete _actionViews.highlightImage;
+        _highlightedView.setHovered(false);
         _highlightedView = null;
         _action = true;
       }

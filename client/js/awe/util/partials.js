@@ -112,7 +112,7 @@ AWE.Partials = (function(module) {
    * if it's not already there. You just have to provide a hook (class, hash),
    * where to put the hash and generated accessor functions. The hash will be 
    * placed in hook.accessHashes[attribute]. */
-  module.attributeHashObserver = function(hook, attribute) {
+  module.attributeHashObserver = function(hook, attribute, oldAttribute) {
         
     /** creates an auto-updated hash for a property. */
     var createAccessHashForAttribute = function() {
@@ -150,18 +150,18 @@ AWE.Partials = (function(module) {
       createAccessHashForAttribute(); 
     }
     
-    var oldValue = null;
-    
     
     return function() {                       // actually construct and return the observer
-      if (this.get(attribute) != oldValue) {
+      var newValue = this.get(attribute);
+      var oldValue = this.get(oldAttribute);
+      if (oldValue != newValue) {
         if (oldValue) {
           hook.accessHashes[attribute].removeEntry(this, oldValue);
         }
-        if (this.get(attribute)) {
+        if (newValue) {
           hook.accessHashes[attribute].addEntry(this);
         }
-        oldValue = this.get(attribute);
+        this.set(oldAttribute, newValue);
       };
     }
     

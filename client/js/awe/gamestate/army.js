@@ -21,10 +21,10 @@ AWE.GS = (function(module) {
     typeName: 'Army',
     name: null, 
     
-    location_id: null,
-    locationIdObserver: AWE.Partials.attributeHashObserver(module.ArmyAccess, 'location_id').observes('location_id'),
-    region_id: null,
-    regionIdObserver: AWE.Partials.attributeHashObserver(module.ArmyAccess, 'region_id').observes('region_id'),
+    location_id: null, old_location_id: null,
+    locationIdObserver: AWE.Partials.attributeHashObserver(module.ArmyAccess, 'location_id', 'old_location_id').observes('location_id'),
+    region_id: null, old_region_id: null,
+    regionIdObserver: AWE.Partials.attributeHashObserver(module.ArmyAccess, 'region_id', 'old_region_id').observes('region_id'),
 
     owner_id: null,
     owner_name: null,

@@ -39,8 +39,8 @@ AWE.GS = (function(module) {
     locked_by: null,
     locked_at: null,
         
-    alliance_id: null,              ///< id of the alliance the character is a member of
-    allianceIdObserver: AWE.Partials.attributeHashObserver(module.CharacterAccess, 'alliance_id').observes('alliance_id'),
+    alliance_id: null, old_alliance_id: null, ///< id of the alliance the character is a member of
+    allianceIdObserver: AWE.Partials.attributeHashObserver(module.CharacterAccess, 'alliance_id', 'old_alliance_id').observes('alliance_id'),
     alliance_tag: null,
     
     base_location_id: null,         ///< the location id, where this character has its home base
@@ -125,7 +125,7 @@ AWE.GS = (function(module) {
         this.updateCharacter(this.currentCharacter.get('id'), updateType, callback);
       }
       else { // no current character, need to fetch self
-        
+        var self = this;
         var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/self';
         return my.fetchEntitiesFromURL(
           url, 
@@ -133,7 +133,14 @@ AWE.GS = (function(module) {
           'self', 
           updateType, 
           null,
-          callback
+          function(character, statusCode, xhr, timestamp) {
+            if (statusCode === AWE.Net.OK) {
+              self.currentCharacter = character;
+            }
+            if (callback) {
+              callback(character, statusCode, xhr, timestamp);
+            }
+          }
         );
       }        
     }
