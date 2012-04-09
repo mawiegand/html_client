@@ -24,7 +24,7 @@ AWE.Config = (function(module) {
   module.MAP_RUN_TESTS = false;
   module.MAP_SERVER_BASE = module.SERVER_ROOT + '/game_server/map/';
   module.MILITARY_SERVER_BASE = module.SERVER_ROOT + '/game_server/military/';
-  module.MILITARY_SERVER_BASE = module.SERVER_ROOT + '/game_server/fundamental/';
+  module.FUNDAMENTAL_SERVER_BASE = module.SERVER_ROOT + '/game_server/fundamental/';
   module.ACTION_SERVER_BASE = module.SERVER_ROOT + '/game_server/action/';
   
   module.DEV_CHARACTER_ID = 1;
@@ -49,7 +49,7 @@ AWE.Config = (function(module) {
   module.MAP_LOCATION_SPOT_HEIGHT = 30;
   //frame.width * MAP_REGION_STREETS_WIDTH = offset from the broder away
   module.MAP_LOCATION_SPOT_BORDER_MARGIN = 0.14;
-  module.MAP_LOCATION_SPOT_COLOR = "#b1ad6e";//"#EEE894";
+  module.MAP_LOCATION_SPOT_COLOR = "rgba(177, 173, 110, .5)";//"#b1ad6e";//"#EEE894";
 
   module.MAP_LOCATION_MIN_DETAIL_LEVEL = 2;
   module.MAP_LOCATION_TYPE_CODES = ["empty","fortress","base","outpost"];
@@ -69,6 +69,14 @@ AWE.Config = (function(module) {
     "map/tiles/plain256": 'images/tiles/plain256.png',
     "map/tiles/mountains256": 'images/tiles/mountains256.png',
     "map/tiles/mud256": 'images/tiles/mud256.png',
+
+    "map/tiles/split512": 'images/tiles/split256.png',
+    "map/tiles/base512": 'images/tiles/base256.png',
+    "map/tiles/forest512": 'images/tiles/forest512.png',
+    "map/tiles/plain512": 'images/tiles/plain256.png',
+    "map/tiles/mountains512": 'images/tiles/mountains256.png',
+    "map/tiles/mud512": 'images/tiles/mud256.png',
+
     
     "map/fortress/small": 'images/settlements/fortresssmall.png',
     "map/fortress/middle": 'images/settlements/fortressmiddle.png',

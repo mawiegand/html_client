@@ -76,15 +76,15 @@ AWE.GS = (function(module) {
   
     that = module.createEntityManager(my);
   
-    that.getCharacter = function(id) { return that.getEntity(id); }
-    that.getCurrentCharacter = function() { return currentCharacter; }
+    that.getCharacter = function(id) { return that.getEntity(id); };
+    that.getCurrentCharacter = function() { return currentCharacter; };
     that.getMembersOfAlliance = function(id) { 
       return AWE.GS.CharacterAccess.getAllForAlliance_id(id)
-    }
+    };
     
     that.lastUpdateForCurrentCharacter = function() {
       return lastCurrentCharacterUpdate ? lastCurrentCharacterUpdate : new Date(1970);
-    }
+    };
 
   
     /** returns true, if update is executed, returns false, if request did 
@@ -120,28 +120,19 @@ AWE.GS = (function(module) {
     }
     
     that.updateCurrentCharacter = function(updateType, callback) {
-      if (currentCharacter) {
-        this.updateCharacter(currentCharacter, updateType, callback);
+      if (this.getCurrentCharacter() != null) {
+        this.updateCharacter(currentCharacter.get('id'), updateType, callback);
       }
-      else { // need to fetch self
+      else { // no current character, need to fetch self
+        
         var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/self';
         return my.fetchEntitiesFromURL(
           url, 
-          my.runningUpdatesPerRegion, 
-          regionId, 
+          my.runningUpdatesPerId, 
+          'self', 
           updateType, 
-          this.lastUpdateForFortress(regionId),
-          function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
-            if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-              lastFortressUpdates[regionId] = timestamp;
-            }
-            if (callback) {
-              if (status === AWE.Net.NOT_MODIFIED) {
-                result = module.ArmyAccess.getAllForRegion_id(regionId);
-              }
-              callback(result, status, xhr, timestamp);
-            }
-          }
+          null,
+          callback
         );
       }        
     }

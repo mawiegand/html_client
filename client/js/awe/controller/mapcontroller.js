@@ -912,7 +912,7 @@ AWE.Controller = (function(module) {
     // /////////////////////////////////////////////////////////////////////// 
     
     that.isSettlementVisible = function(frame) {
-      return frame.size.width > 450;
+      return frame.size.width > 420;
     };
     
     that.isFortressVisible = function(frame) {
@@ -924,7 +924,7 @@ AWE.Controller = (function(module) {
     }
     
     that.areArmiesAtSettlementsVisible = function(frame) {
-      return frame.size.width > 450;
+      return frame.size.width > 420;
     }
     
     var setFortressPosition = function(view, frame) {

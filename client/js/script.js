@@ -76,6 +76,18 @@ window.WACKADOO = Ember.Application.create(function() {
       loadDialog.append();   
           
       _numLoadedAssets = _numAssets = 0;
+      
+      _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
+      AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
+        if (statusCode === AWE.Net.OK) {
+          console.log('INFO: playing as character ' + entity + '.');
+          assetLoaded();
+        }
+        else {
+          console.log('CRITICAL ERROR: could not load current character from server. Error code: ' + statusCode + '. Terminate App.');
+          throw "ABORT Due to Failure to Load Player's Current Character.";
+        }
+      });
 
       for (var i=0; i < AWE.UI.Ember.templates.length; i++) {
         _numAssets += 1;
