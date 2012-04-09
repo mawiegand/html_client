@@ -5,6 +5,9 @@ window.WACKADOO = Ember.Application.create(function() {
     
     rootScreenController: null,
     appCompletelyLoaded: false,
+    
+    mapScreenController: null,
+    allianceScreenController: null,
   
   
     /** custom object initialization goes here. */
@@ -30,7 +33,7 @@ window.WACKADOO = Ember.Application.create(function() {
      * it can choose the best technique for the particular task (e.g. canvas for the map, basic HTML
      * for sending and receiving messages.) */
     runloop: function() { 
-      if (this.get('appCompletelyLoaded')) {
+      if (this.get('appCompletelyLoaded') && this.get('rootScreenController')) {
         this.get('rootScreenController').runloop();      // hand over control to present screen controller
       }
       else { // TODO: bind this to the attributes using an ember template.
@@ -109,7 +112,30 @@ window.WACKADOO = Ember.Application.create(function() {
       AWE.Util.TemplateLoader.loadAllTemplates();       // doing this last makes sure _numLoadedAssets may not accidently equal _numAssets before all requests have been started
     },
     
+    activateMapController: function() {
+      this.setScreenController(this.get('mapScreenController'));
+    },
     
+    activateAllianceController: function() {
+      var allianceController = this.get('allianceScreenController');
+      if (!allianceController) {
+        allianceController = AWE.Controller.createAllianceController('#layers');
+        this.set('allianceScreenController', allianceController);
+      }
+      this.setScreenController(allianceController);
+    },
+    
+    setScreenController: function(controller) {
+      if (controller != this.get('rootScreenController')) {
+        if (this.get('rootScreenController')) {
+          this.get('rootScreenController').remove();   // TODO: call handlers: will appear, did appear, will disappear, etc.
+        }
+        this.set('rootScreenController', controller);
+        if (controller) {
+          controller.append();
+        }
+      }
+    },
   
     /** starts the app when the document is ready. */
     ready: function() {
@@ -122,13 +148,15 @@ window.WACKADOO = Ember.Application.create(function() {
         
       this.loadAssets();
     
-      var rootScreenController = AWE.Controller.createMapController('#layers');
-      rootScreenController.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
+      var controller = AWE.Controller.createMapController('#layers');
+      controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
   
-      $('#zoomin').click(function(){rootScreenController.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
-      $('#zoomout').click(function(){rootScreenController.zoom(.1, false)});
+      var self = this;
+      $('#zoomin').click(function(){ self.activateAllianceController(); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
+      $('#zoomout').click(function(){ self.activateMapController(); }); //controller.zoom(.1, false)});
 
-      this.set('rootScreenController', rootScreenController);
+      this.set('mapScreenController', controller);
+      this.setScreenController(controller);
 
       this.startRunloop();
     }

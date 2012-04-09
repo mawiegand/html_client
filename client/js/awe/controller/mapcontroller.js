@@ -27,12 +27,14 @@ AWE.Controller = (function(module) {
     var _scrollingStarted = false;///< user is presently scrolling
     var _scrollingStartedAtVC;
     var _scrollingOriginalTranslationVC;
-    
+  
     var that = module.createScreenController(anchor); ///< create base object
     
     var _super = {};             ///< store locally overwritten methods of super object
     _super.init = that.init; 
     _super.runloop = that.runloop;
+    _super.append = function(f) { return function() { f.apply(that); }; }(that.append);
+    _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
     
     var _loopCounter = 0;        ///< counts every cycle through the loop
     var _frameCounter = 0;       ///< counts every rendered frame
@@ -69,9 +71,11 @@ AWE.Controller = (function(module) {
       
       _sortStages = [false, true, false, false];  // which stages to y-sort? -> presently, only the gaming pieces need to be sorted.
       
+      var root = that.rootElement();
+      
       // background layer, displays region tiles
-      that.anchor().append('<canvas id="layer0"></canvas>');
-      _canvas[0] = $('#layer0')[0];
+      root.append('<canvas id="layer0"></canvas>');
+      _canvas[0] = root.find('#layer0')[0];
       _stages[0] = new Stage(_canvas[0]);
       
       _stages[0].onClick = function() {   // click into background unselects selected object
@@ -81,14 +85,14 @@ AWE.Controller = (function(module) {
       };
    
       // selectable gaming pieces layer (fortresses, armies, etc.)
-      that.anchor().append('<canvas id="layer1"></canvas>');
-      _canvas[1] = $('#layer1')[0];
+      root.append('<canvas id="layer1"></canvas>');
+      _canvas[1] = root.find('#layer1')[0];
       _stages[1] = new Stage(_canvas[1]);
       _stages[1].enableMouseOver();
       
       // layer for mouseover and selection objects
-      that.anchor().append('<canvas id="layer2"></canvas>');
-      _canvas[2] = $('#layer2')[0];
+      root.append('<canvas id="layer2"></canvas>');
+      _canvas[2] = root.find('#layer2')[0];
       _stages[2] = new Stage(_canvas[2]);
       _stages[2].enableMouseOver();
       
@@ -103,8 +107,8 @@ AWE.Controller = (function(module) {
       };
       
       // HUD layer ("static", not zoomable, not moveable)
-      that.anchor().append('<canvas id="layer3"></canvas>');
-      _canvas[3] = $('#layer3')[0];
+      root.append('<canvas id="layer3"></canvas>');
+      _canvas[3] = root.find('#layer3')[0];
       _stages[3] = new Stage(_canvas[3]);
       _stages[3].enableMouseOver();
 
@@ -129,14 +133,19 @@ AWE.Controller = (function(module) {
       });
       
       // register controller to receive click events in screen
-      $('#layers').click(function(evt) {
+      root.click(function(evt) {
         that.handleClick(evt);
       });
       
       // register controller to receive mouse-down events in screen
-      $('#layers').mousedown(function(evt) {
+      root.mousedown(function(evt) {
         that.handleMouseDown(evt);
       });
+
+    };   
+    
+    that.append = function() {
+      _super.append();
       
       // register controller to receive mouse-wheel events in screen
       $(window).bind('mousewheel', function() {
@@ -146,8 +155,13 @@ AWE.Controller = (function(module) {
       $(window).bind('DOMMouseScroll', function(evt) {
         that.handleMouseWheel(evt);
       });
-
-    };        
+    }     
+    
+    that.remove = function() {
+      $(window).unbind('mousewheel');
+      $(window).unbind('DOMMouseScroll');      
+      _super.remove();
+    }
     
     // ///////////////////////////////////////////////////////////////////////
     //
