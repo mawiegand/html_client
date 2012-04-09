@@ -125,15 +125,17 @@ AWE.Controller = (function(module) {
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
       that.setNeedsLayout();
+
+    };   
+    
+    that.append = function() {
+      _super.append();
       
-      // register controller to receive window-resize events (from browser window) 
-      // in order to adapt it's own window / display area
-      $(window).resize(function(){
-        that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
-      });
+      var root = that.rootElement();
       
       // register controller to receive click events in screen
       root.click(function(evt) {
+        console.log('Click event in map controller.');
         that.handleClick(evt);
       });
       
@@ -141,11 +143,13 @@ AWE.Controller = (function(module) {
       root.mousedown(function(evt) {
         that.handleMouseDown(evt);
       });
-
-    };   
-    
-    that.append = function() {
-      _super.append();
+      
+      // register controller to receive window-resize events (from browser window) 
+      // in order to adapt it's own window / display area
+      $(window).resize(function(){
+        console.log('Resize event in map controller.');
+        that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
+      });
       
       // register controller to receive mouse-wheel events in screen
       $(window).bind('mousewheel', function() {
@@ -157,9 +161,10 @@ AWE.Controller = (function(module) {
       });
     }     
     
-    that.remove = function() {
-      $(window).unbind('mousewheel');
-      $(window).unbind('DOMMouseScroll');      
+    that.remove = function() { 
+      $(window).unbind('mousewheel');     // remove all event handlers that were bound to the window.
+      $(window).unbind('DOMMouseScroll');   
+      $(window).unbind('resize'); 
       _super.remove();
     }
     
@@ -364,6 +369,13 @@ AWE.Controller = (function(module) {
       if (!_scrollingStarted) {
         var cObj;
         if (_stages[3].hitTest(evt.pageX, evt.pageY)) {
+          cObj = _stages[3].getObjectUnderPoint(evt.pageX, evt.pageY);
+          if (cObj && cObj.view && cObj.view.onClick) {
+             cObj.view.onClick(evt);
+          }
+          else if (cObj && cObj.onClick) { // allow click handler directly on Easel JS objects?
+            cObj.onClick(evt);
+          }
           cObj = _stages[2].getObjectUnderPoint(evt.pageX, evt.pageY);
           if (cObj && cObj.view && cObj.view.onClick) {
             // cObj.view.onClick(evt);
