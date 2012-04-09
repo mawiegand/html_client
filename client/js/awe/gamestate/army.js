@@ -6,7 +6,7 @@
  
 var AWE = window.AWE || {};
 
-/** GameState base class, manager and helpers. */
+/** GameState Army class, manager and helpers. */
 AWE.GS = (function(module) {
     
   module.ArmyAccess = {};
@@ -192,45 +192,5 @@ AWE.GS = (function(module) {
 }(AWE.GS || {}));
 
 
-/*
-$(document).ready(function() {
-  
-  var army = AWE.GS.Army.create();
-  console.dir(AWE.GS);
-  
-  AWE.Net.init();
-
-  AWE.GS.Army.Manager.updateArmy(10, AWE.GS.ENTITY_UPDATE_TYPE_AGGREGATE, function(army) {
-    console.log("RECEIVED AGGREGATE: " + army.toString());
-    AWE.GS.Army.Manager.updateArmy(10, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function(army) {
-      console.log("RECEIVED SHORT: " + army.toString());
-      AWE.GS.Army.Manager.updateArmy(10, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function(army) { // second time should not fetch data because a not-modified header
-        console.log("RECEIVED SHORT: " + army.toString());
-        AWE.GS.Army.Manager.updateArmiesInRegion(army.region_id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(armies) {
-          console.log("RECEIVED FULL FOR REGION: " + armies.toString());
-        });
-      });         
-    });
-    AWE.GS.Army.Manager.updateArmy(10, AWE.GS.ENTITY_UPDATE_TYPE_AGGREGATE, function(army) {
-      console.log("RECEIVED AGGREGATE 2: " + army.toString());
-    });
-  });
-  
-  AWE.GS.Army.Manager.updateArmiesAtLocation(1, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(armies) {
-     console.log("RECEIVED FULL FOR LOCATION: " + armies.toString());
-  }); 
-
-  var region = AWE.Map.createRegion({ id: 10}); 
-
-  AWE.GS.Army.Manager.updateArmiesInRegion(1, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(armies) {
-    console.log("RECEIVED FULL FOR REGION: " + armies.toString());
-    AWE.GS.Army.Manager.updateArmiesInRegion(1, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(armies) {
-      console.log("RECEIVED FULL FOR REGION SECOND CALL: " + armies.toString());
-    });
-  });
-
-
-});
-*/
 
 

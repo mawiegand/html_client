@@ -24,6 +24,7 @@ AWE.Config = (function(module) {
   module.MAP_RUN_TESTS = false;
   module.MAP_SERVER_BASE = module.SERVER_ROOT + '/game_server/map/';
   module.MILITARY_SERVER_BASE = module.SERVER_ROOT + '/game_server/military/';
+  module.MILITARY_SERVER_BASE = module.SERVER_ROOT + '/game_server/fundamental/';
   module.ACTION_SERVER_BASE = module.SERVER_ROOT + '/game_server/action/';
   
   module.DEV_CHARACTER_ID = 1;
@@ -47,7 +48,7 @@ AWE.Config = (function(module) {
   module.MAP_LOCATION_SPOT_WIDTH = 49;
   module.MAP_LOCATION_SPOT_HEIGHT = 30;
   //frame.width * MAP_REGION_STREETS_WIDTH = offset from the broder away
-  module.MAP_LOCATION_SPOT_BORDER_MARGIN = 0.1;
+  module.MAP_LOCATION_SPOT_BORDER_MARGIN = 0.14;
   module.MAP_LOCATION_SPOT_COLOR = "#b1ad6e";//"#EEE894";
 
   module.MAP_LOCATION_MIN_DETAIL_LEVEL = 2;

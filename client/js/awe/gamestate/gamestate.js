@@ -272,24 +272,3 @@ AWE.GS = (function(module) {
 }(AWE.GS || {}));
 
 
-/*
-$(document).ready(function() {
-  var entity = AWE.GS.createEntity();
-  entity.property('age');
-  entity.init({ age: 12 });
-
-  var entity2 = AWE.GS.createEntity(); 
-  entity2.property('age');
-  entity2.init({ age: 15 });
-  
-  console.dir(entity);
-  entity.setAge(10);
-
-  console.log ('ENTITY DEBUG: value of entity.age() = ' + entity.age());
-  console.log ('ENTITY DEBUG: value of entity.lastFullUpdateAt() = ' + entity.lastFullUpdateAt());
-  
-  entity2.init({ thisInitializerShouldCreateAnError: true }); // should throw an 'unknown property' error
-  
-});
-*/
-

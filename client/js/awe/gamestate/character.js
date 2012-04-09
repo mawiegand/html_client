@@ -1,0 +1,158 @@
+/* Author: Sascha Lange <sascha@5dlab.com>,
+ * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
+ * Do not copy, do not distribute. All rights reserved.
+ */
+ 
+var AWE = window.AWE || {};
+
+/** GameState Character class, manager and helpers. */
+AWE.GS = (function(module) {
+    
+  module.CharacterAccess = {};
+
+  // ///////////////////////////////////////////////////////////////////////
+  //
+  //   CHARACTER
+  //
+  // ///////////////////////////////////////////////////////////////////////    
+    
+  module.Character = module.Entity.extend({     // extends Entity to Army
+    typeName: 'Character',          ///< identifies instances of this type
+    identifier: null,               ///< unique identifier assigned by identity_provider
+    premium_account: false,         ///< whether this account presently is a premium account
+    name: null,                     ///< name of the character
+
+    level: null,                    ///< level of the character. can be increased by gaining further experience
+    exp: null,                      ///< experience of the character
+    att: null,                      ///< attack ability of character
+    def: null,                      ///< defense ability of character
+    skill_points: null,             ///< number of unassigned skill points
+    
+    wins: null,                     ///< number of fights / duels won
+    losses: null,                   ///< numebr of fights / duels lost
+    
+    health_max: null,               ///< maximum health of character
+    health_present: null,           ///< present health 
+    health_updaeted_at: null,       ///< last health update; interpolate present heahlt from here
+    
+    locked: false,                  ///< TODO: don't communicate this!
+    locked_by: null,
+    locked_at: null,
+        
+    alliance_id: null,              ///< id of the alliance the character is a member of
+    allianceIdObserver: AWE.Partials.attributeHashObserver(module.CharacterAccess, 'alliance_id').observes('alliance_id'),
+    alliance_tag: null,
+    
+    base_location_id: null,         ///< the location id, where this character has its home base
+    base_region_id: null,           ///< the region id, where this charachter has its home base
+  });     
+
+    
+  // ///////////////////////////////////////////////////////////////////////
+  //
+  //   CHARACTER MANAGER
+  //
+  // ///////////////////////////////////////////////////////////////////////  
+
+  module.CharacterManager = (function(my) {    // CharacterManager    -> manager singleton
+  
+    // private attributes and methods //////////////////////////////////////
+  
+    var that;
+    var lastCurrentCharacterUpdate = null;
+    var currentCharacter = null;
+    
+
+    // protected attributes and methods ////////////////////////////////////
+
+    my = my || {};
+  
+    my.runningUpdatesPerAllicance = {};///< hash that contains all running requests for alliances, using the alliance.id as key.
+    
+    my.createEntity = function() { return module.Character.create(); }
+
+  
+    // public attributes and methods ///////////////////////////////////////
+  
+    that = module.createEntityManager(my);
+  
+    that.getCharacter = function(id) { return that.getEntity(id); }
+    that.getCurrentCharacter = function() { return currentCharacter; }
+    that.getMembersOfAlliance = function(id) { 
+      return AWE.GS.CharacterAccess.getAllForAlliance_id(id)
+    }
+    
+    that.lastUpdateForCurrentCharacter = function() {
+      return lastCurrentCharacterUpdate ? lastCurrentCharacterUpdate : new Date(1970);
+    }
+
+  
+    /** returns true, if update is executed, returns false, if request did 
+     * fail (e.g. connection error) or is unnecessary (e.g. already underway).
+     */
+    that.updateCharachter = function(id, updateType, callback) {
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/'+id;
+      return my.updateEntity(url, id, updateType, callback); 
+    };
+  
+    /** updates all armies in a given alliance. Calls the callback with a
+     * list of all the updated characters. */
+    that.updateMembersOfAlliance = function(allianceId, updateType, callback) {
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'alliances/'+allianceId+'/members';
+      return my.fetchEntitiesFromURL(
+        url,                                  // url to fetch from
+        my.runningUpdatesPerAllicance,        // queue to register this request during execution
+        allianceId,                           // regionId to fetch -> is used to register the request
+        updateType,                           // type of update (aggregate, short, full)
+        module.CharacterAccess.lastUpdateForAlliance_id(allianceId), // modified after
+        function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
+          if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
+            module.CharacterAccess.accessHashForAlliance_id().setLastUpdateAtForValue(allianceId, timestamp);
+          }
+          if (callback) {
+            if (status === AWE.Net.NOT_MODIFIED) {
+              result = module.AllianceAccess.getAllForAlliance_id(allianceId);
+            }
+            callback(result, status, xhr, timestamp);
+          }
+        }
+      ); 
+    }
+    
+    that.updateCurrentCharacter = function(updateType, callback) {
+      if (currentCharacter) {
+        this.updateCharacter(currentCharacter, updateType, callback);
+      }
+      else { // need to fetch self
+        var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/self';
+        return my.fetchEntitiesFromURL(
+          url, 
+          my.runningUpdatesPerRegion, 
+          regionId, 
+          updateType, 
+          this.lastUpdateForFortress(regionId),
+          function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
+            if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
+              lastFortressUpdates[regionId] = timestamp;
+            }
+            if (callback) {
+              if (status === AWE.Net.NOT_MODIFIED) {
+                result = module.ArmyAccess.getAllForRegion_id(regionId);
+              }
+              callback(result, status, xhr, timestamp);
+            }
+          }
+        );
+      }        
+    }
+    
+    return that;
+      
+  }());
+    
+  
+  return module;
+  
+}(AWE.GS || {}));
+
+
