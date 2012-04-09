@@ -55,7 +55,21 @@ AWE.GS = (function(module) {
     
     target_location_id: null,
     target_reached_at: null,
-    target_region_id: null
+    target_region_id: null,
+    
+    isOwn: function() {
+      return this.get('owner_id') && this.get('owner_id') === module.CharacterManager.currentCharacter.getId();
+    },
+    
+    relation: function() {
+      return module.Relation.relationTo(this.get('owner_id'), this.get('alliance_id'));
+    },
+    
+    /** set the optional acceptUnkown flag to true, if your want to get a 
+     * positive answer for unknown relation state. Just ignore it otherwise.*/
+    isRelationAtLeast: function(relation, acceptUnknown) {
+      return module.Relation.isRelationToAtLeast(this.get('owner_id'), this.get('alliance_id'), relation, acceptUnknown);
+    },
   });     
 
     

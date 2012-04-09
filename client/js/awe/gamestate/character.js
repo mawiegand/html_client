@@ -60,7 +60,6 @@ AWE.GS = (function(module) {
   
     var that;
     var lastCurrentCharacterUpdate = null;
-    var currentCharacter = null;
     
 
     // protected attributes and methods ////////////////////////////////////
@@ -75,9 +74,11 @@ AWE.GS = (function(module) {
     // public attributes and methods ///////////////////////////////////////
   
     that = module.createEntityManager(my);
+    
+    that.currentCharacter = null;
   
     that.getCharacter = function(id) { return that.getEntity(id); };
-    that.getCurrentCharacter = function() { return currentCharacter; };
+    that.getCurrentCharacter = function() { return this.currentCharacter; };
     that.getMembersOfAlliance = function(id) { 
       return AWE.GS.CharacterAccess.getAllForAlliance_id(id)
     };
@@ -120,8 +121,8 @@ AWE.GS = (function(module) {
     }
     
     that.updateCurrentCharacter = function(updateType, callback) {
-      if (this.getCurrentCharacter() != null) {
-        this.updateCharacter(currentCharacter.get('id'), updateType, callback);
+      if (this.currentCharacter != null) {
+        this.updateCharacter(this.currentCharacter.get('id'), updateType, callback);
       }
       else { // no current character, need to fetch self
         

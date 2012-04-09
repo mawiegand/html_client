@@ -36,6 +36,9 @@ AWE.GS = (function(module) {
     lastShortUpdateAt: new Date(1970),     ///< time of last short update received by the client
     lastFullUpdateAt: new Date(1970),      ///< time of last full update received by the client
     
+    /** a more convenient way to get the id. */
+    getId: function() { return this.get('id'); },
+    
     setPropertiesWithHash: function(hash) {
       for (var key in hash) {
         if (hash.hasOwnProperty(key)) {
