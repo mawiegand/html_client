@@ -1376,7 +1376,7 @@ AWE.Controller = (function(module) {
           var viewsInStages = [
             regionViews,
             [fortressViews, armyViews, locationViews],
-            _actionViews,     // action views: no views?!
+            _actionViews,
             HUDViews
           ];          
           
