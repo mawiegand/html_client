@@ -27,9 +27,9 @@ AWE.UI = (function(module) {
     var that = module.createView(spec, my);
 
     var _super = {
-      initWithController: that.superior("initWithController"),
-      layoutSubviews: that.superior("layoutSubviews"),
-      setFrame: that.superior("setFrame"),
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      setFrame: AWE.Ext.superior(that, "setFrame"),
     };
     
     /** overwritten view methods */
@@ -65,6 +65,8 @@ AWE.UI = (function(module) {
     };
     
     that.onAttackButtonClick = function() {};
+    
+    that.army = function() { return _army; }
     
     that.updateView = function() {
       _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + _army.rank()));

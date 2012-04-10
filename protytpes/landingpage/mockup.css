@@ -64,14 +64,12 @@ p {
 }
 
 h1 {
-  font-family: Arial, sans-serif;
-  font-size: 27px;
+font-family: 'Overlock', cursive;  font-size: 27px;
   color: #444;
 }
 
 h3 {
-  font-family: Arial, sans-serif;
-  font-size: 18px;
+font-family: 'Overlock', cursive;  font-size: 18px;
   color: #444;
 }
 
@@ -230,6 +228,7 @@ h3 {
 }
 
 #message {
+font-family: 'Bad Script', cursive;
   font-weight: normal;
   font-size: 24pt;
   width:100%;
@@ -243,17 +242,19 @@ h3 {
 
 #msg1 {
   text-align: left;
-  padding-top: 80px;
+  padding-top:60px;
 }
 
 #m1_l1 {
-  font-size: 53pt;
+  font-size: 82px;
+  line-height: 88px;
   text-align: left;
   margin-left: -20px;
   
 }
 #m1_l2 {
-  font-size: 72pt;  
+  font-size: 98px;
+  line-height: 106px;  
   text-align: left;
   margin-left: 140px;
 }
@@ -292,14 +293,16 @@ h3 {
 }
 
 #m5_l1 {
-  font-size: 48pt;  
-  margin-left: -60px;
+  font-size: 72px;
+  line-height: 76px;  
+  margin-left: -128px;
   margin-right: -100px;
   margin-bottom: 10px;
 }
 #m5_l2 {
-  font-size: 32pt;  
-  margin-left: 80px;  
+  font-size: 48px;  
+  line-height: 56px;
+  margin-left: 82px;  
   margin-right: -100px;
 }
 
@@ -399,9 +402,10 @@ input[type=submit]#hover {
 }
 
 #footerbar {
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  font-family: 'Overlock', cursive;
   font-weight: bold;
   font-size: 37px;
+  line-height: 42px;
   text-shadow: rgba(255,255, 255, .3) 0px 2px 4px;
   z-index:3;
   width: 100%;

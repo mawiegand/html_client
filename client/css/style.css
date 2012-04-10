@@ -374,6 +374,30 @@ html, body {
   box-shadow:         3px 3px 2px 2px #333;
 }
 
+.background-clear {
+  background-color: rgba(255,255,255,0.);
+}
+
+.z-layer-3 {
+  z-index: 512;
+}
+
+.z-layer-4 {
+  z-index: 768;
+}
+
+#text-input-dialog { 
+  position: absolute; 
+  margin-left: -100px;
+  margin-top: -20px;
+  width: 400px; height: 200px;
+  background-color: #FCC;  
+}
+
+#text-input-dialog h1 {
+  font-size: 24px;
+}
+
 #army-details { 
   margin-left: -250px;
   margin-top: -150px;

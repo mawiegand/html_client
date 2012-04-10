@@ -19,19 +19,6 @@ AWE.GS = (function(module) {
   module.PROPERTY_HASHABLE = true;
 
   
-  module.initializeNewEntityType = function(name, creator, manager) {
-    
-    module[name] = {
-      create: creator,    // creates objects of this entity type
-      Manager: manager,   // Manager singleton for this entity type
-    };
-    
-    var entity = module[name].create(); // just create one instance in order to initialize hashes.
-    
-  };
-  
-  
-  
   // /////////////////////////////////////////////////////////////////////////
   //
   //   ENTITY
@@ -39,102 +26,85 @@ AWE.GS = (function(module) {
   // /////////////////////////////////////////////////////////////////////////
 
   /** Base class of all classes that represent states & entities of the game. */
-  module.createEntity = function(my) {
-  
-    // private attributes and methods ////////////////////////////////////////
-  
-    var that;
-
-    // protected attributes and methods //////////////////////////////////////
-
-    my = my || {};
-    my.typeName = my.typeName || 'Entity';
-
-    my.setPropertiesWithHash = function(hash) {
+  module.Entity = Ember.Object.extend({
+    
+    id: 0,
+    typeName: 'Entity',
+    updated_at: null,
+    created_at: null,
+    lastAggregateUpdateAt: new Date(1970), ///< time of last aggregate update received by the client
+    lastShortUpdateAt: new Date(1970),     ///< time of last short update received by the client
+    lastFullUpdateAt: new Date(1970),      ///< time of last full update received by the client
+    
+    /** a more convenient way to get the id. */
+    getId: function() { return this.get('id'); },
+    
+    setPropertiesWithHash: function(hash) {
       for (var key in hash) {
         if (hash.hasOwnProperty(key)) {
-          if (my[key] !== undefined) {
-            var setterString = 'set'+key.charAt(0).toUpperCase() + key.slice(1);
-            my[setterString](hash[key]);
+          if (this[key] !== undefined) {
+            this.set(key, hash[key]);
           }
           else {
             console.log ('ERROR in AWE.GS.Entity.setPropertiesWithHash: unknown property ' + key + '.');
           }
         }
       }
-    };
-  
-  
-    // public attributes and methods /////////////////////////////////////////
-  
-    that = {};
-    AWE.Partials.addProperties(that, module[my.typeName], my);
+    },
     
-    
-    // synthesized properties ////////////////////////////////////////////////
-
-    that.property('id', null, module.PROPERTY_READ_ONLY);
-    that.property('updated_at', null, module.PROPERTY_READ_ONLY);
-    that.property('created_at', null, module.PROPERTY_READ_ONLY);
-    that.property('lastAggregateUpdateAt', new Date(1970), module.PROPERTY_READ_ONLY);  ///< time of last aggregate update received by the client
-    that.property('lastShortUpdateAt', new Date(1970), module.PROPERTY_READ_ONLY);      ///< time of last short update received by the client
-    that.property('lastFullUpdateAt', new Date(1970), module.PROPERTY_READ_ONLY);       ///< time of last full update received by the client
-
-    that.typeName = function() { return my.typeName; }
-
-    that.lastUpdateAt = function(updateType) {
+    lastUpdateAt: function(updateType) {
       if (updateType === undefined) { 
         updateType = module.ENTITY_UPDATE_TYPE_FULL;
       }
       if (updateType === module.ENTITY_UPDATE_TYPE_SHORT) {
-        return my.lastShortUpdateAt;
+        return this.get('lastShortUpdateAt');
       }
       else if (updateType === module.ENTITY_UPDATE_TYPE_AGGREGATE) {
-        return my.lastAggregateUpdateAt;
+        return this.get('lastAggregateUpdateAt');
       } 
       else {
-        return my.lastFullUpdateAt;
+        return this.get('lastFullUpdateAt');
       }
-    }
+    },
     
     /** returns the timestamp of the last change to this object. */
-    that.lastChange = function() {
-      return that.lastUpdateAt(module.ENTITY_UPDATE_TYPE_AGGREGATE); // last update of whatever type
-    }
+    lastChange: function() {
+      return this.lastUpdateAt(module.ENTITY_UPDATE_TYPE_AGGREGATE); // last update of whatever type
+    },
 
-    that.init = function(spec) {
-      my.setPropertiesWithHash(spec);      
-    }
+    init: function(spec) {
+      this.setPropertiesWithHash(spec);     
+      return this; 
+    },
   
-    that.updateWith = function(hash, updateType, timestamp) {
+    updateWith: function(hash, updateType, timestamp) {
       updateType = updateType || module.ENTITY_UPDATE_TYPE_FULL;     // assume full update, if nothing else specified
       timestamp = timestamp || new Date();                           // given timestamp or now
       if (hash) {
-        my.setPropertiesWithHash(hash);
+        this.setPropertiesWithHash(hash);
       }
     
       if (updateType === module.ENTITY_UPDATE_TYPE_FULL) {
-        my.lastFullUpdateAt = my.lastShortUpdate = my.lastAggregateUpdate = timestamp; // full update includes the other two update types
+        this.set('lastFullUpdateAt', timestamp);
+        this.set('lastShortUpdate', timestamp);
+        this.set('lastAggregateUpdate', timestamp);                  // full update includes the other two update types
       }
       else if (updateType === module.ENTITY_UPDATE_TYPE_SHORT) {
-        my.lastShortUpdateAt = my.lastAggregateUpdateAt = timestamp; // short update includes the aggregate update information
+        this.set('lastShortUpdateAt', timestamp);
+        this.set('lastAggregateUpdateAt', timestamp);                // short update includes the aggregate update information
       }
       else if (updateType === module.ENTITY_UPDATE_TYPE_AGGREGATE) {
-        my.lastAggregateUpdateAt = timestamp;
+        this.set('lastAggregateUpdateAt', timestamp);
       }
       else {
         console.log('ERROR in AWE.GS.Entity.updateWith: unknown update type: ' + updateType + '.');
       }
+    },
+  
+    setNotModifiedAfter: function(updateType, timestamp) {
+      this.updateWith(null, updateType, timestamp);
     }
-  
-    that.setNotModifiedAfter = function(updateType, timestamp) {
-      that.updateWith(null, updateType, timestamp);
-    }
-
-    return that;
-  }; 
-  
-  
+  });
   
   
   // /////////////////////////////////////////////////////////////////////////
@@ -166,10 +136,9 @@ AWE.GS = (function(module) {
         entity.updateWith(data, updateType, start);
       }
       else {
-        entity = my.createEntity();
-        entity.init(data);
+        entity = my.createEntity().init(data);
         entity.setNotModifiedAfter(updateType, start); // set the last-update timestamp appropriately
-        my.entities[entity.id()] = entity;
+        my.entities[entity.get('id')] = entity;
       }
       return entity;
     };
@@ -214,7 +183,7 @@ AWE.GS = (function(module) {
               for (var i=0; i < data.length; i++) { 
                 var entityData = data[i];
                 var entity = (my.processUpdateResponse(entityData, updateType, start));
-                result[entity.id()] = entity;
+                result[entity.get('id')] = entity;
               }          
             }
             else {                                    //   B) process a single army
@@ -305,25 +274,4 @@ AWE.GS = (function(module) {
   
 }(AWE.GS || {}));
 
-
-/*
-$(document).ready(function() {
-  var entity = AWE.GS.createEntity();
-  entity.property('age');
-  entity.init({ age: 12 });
-
-  var entity2 = AWE.GS.createEntity(); 
-  entity2.property('age');
-  entity2.init({ age: 15 });
-  
-  console.dir(entity);
-  entity.setAge(10);
-
-  console.log ('ENTITY DEBUG: value of entity.age() = ' + entity.age());
-  console.log ('ENTITY DEBUG: value of entity.lastFullUpdateAt() = ' + entity.lastFullUpdateAt());
-  
-  entity2.init({ thisInitializerShouldCreateAnError: true }); // should throw an 'unknown property' error
-  
-});
-*/
 

@@ -18,9 +18,9 @@ AWE.UI = (function(module) {
     that = module.createView(spec, my);
 
     var _super = {
-      initWithController: that.superior("initWithController"),
-      layoutSubviews: that.superior("layoutSubviews"),
-      setFrame: that.superior("setFrame"),
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      setFrame: AWE.Ext.superior(that, "setFrame"),
     };
     
     /** overwritten view methods */
@@ -38,6 +38,9 @@ AWE.UI = (function(module) {
       _flagShapeGraphics.moveTo(240, 0);
       _flagShapeGraphics.lineTo(320, 0).lineTo(280, 100).lineTo(240, 0);
       var _flagShape = new Shape(_flagShapeGraphics);
+      
+      _flagShape.onClick = function() { WACKADOO.activateAllianceController(); console.log('flag clicked');  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+
       
       var _flagButtonText = new Text('Flag', "12px Arial", "#000");
       _flagButtonText.textBaseline = "middle";

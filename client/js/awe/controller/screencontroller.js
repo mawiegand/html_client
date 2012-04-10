@@ -9,15 +9,32 @@ AWE.Controller = (function(module) {
           
   module.createScreenController = function(anchor) {
     
-    var _domElement = $(anchor);
+    var _domAnchor = $(anchor);
+    var _domRootElement = $('<div class="screen-controller"></div>');
     
     var that = {};
     
     that.anchor = function() {
-      return _domElement;
+      return _domAnchor;
+    };
+    
+    that.rootElement = function() {
+      return _domRootElement;
     };
     
     that.init = function() {
+    };
+    
+    that.append = function() {
+      if (_domRootElement) {
+        _domAnchor.append(_domRootElement);
+      }
+    };
+    
+    that.remove = function() {
+      if (_domRootElement) {
+        _domRootElement.remove();
+      }
     };
         
     that.runloop = function() {

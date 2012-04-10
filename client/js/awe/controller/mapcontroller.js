@@ -27,12 +27,14 @@ AWE.Controller = (function(module) {
     var _scrollingStarted = false;///< user is presently scrolling
     var _scrollingStartedAtVC;
     var _scrollingOriginalTranslationVC;
-    
+  
     var that = module.createScreenController(anchor); ///< create base object
     
     var _super = {};             ///< store locally overwritten methods of super object
     _super.init = that.init; 
     _super.runloop = that.runloop;
+    _super.append = function(f) { return function() { f.apply(that); }; }(that.append);
+    _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
     
     var _loopCounter = 0;        ///< counts every cycle through the loop
     var _frameCounter = 0;       ///< counts every rendered frame
@@ -69,9 +71,11 @@ AWE.Controller = (function(module) {
       
       _sortStages = [false, true, false, false];  // which stages to y-sort? -> presently, only the gaming pieces need to be sorted.
       
+      var root = that.rootElement();
+      
       // background layer, displays region tiles
-      that.anchor().append('<canvas id="layer0"></canvas>');
-      _canvas[0] = $('#layer0')[0];
+      root.append('<canvas id="layer0"></canvas>');
+      _canvas[0] = root.find('#layer0')[0];
       _stages[0] = new Stage(_canvas[0]);
       
       _stages[0].onClick = function() {   // click into background unselects selected object
@@ -81,14 +85,14 @@ AWE.Controller = (function(module) {
       };
    
       // selectable gaming pieces layer (fortresses, armies, etc.)
-      that.anchor().append('<canvas id="layer1"></canvas>');
-      _canvas[1] = $('#layer1')[0];
+      root.append('<canvas id="layer1"></canvas>');
+      _canvas[1] = root.find('#layer1')[0];
       _stages[1] = new Stage(_canvas[1]);
       _stages[1].enableMouseOver();
       
       // layer for mouseover and selection objects
-      that.anchor().append('<canvas id="layer2"></canvas>');
-      _canvas[2] = $('#layer2')[0];
+      root.append('<canvas id="layer2"></canvas>');
+      _canvas[2] = root.find('#layer2')[0];
       _stages[2] = new Stage(_canvas[2]);
       _stages[2].enableMouseOver();
       
@@ -103,8 +107,8 @@ AWE.Controller = (function(module) {
       };
       
       // HUD layer ("static", not zoomable, not moveable)
-      that.anchor().append('<canvas id="layer3"></canvas>');
-      _canvas[3] = $('#layer3')[0];
+      root.append('<canvas id="layer3"></canvas>');
+      _canvas[3] = root.find('#layer3')[0];
       _stages[3] = new Stage(_canvas[3]);
       _stages[3].enableMouseOver();
 
@@ -121,21 +125,30 @@ AWE.Controller = (function(module) {
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
       that.setNeedsLayout();
+
+    };   
+    
+    that.append = function() {
+      _super.append();
       
-      // register controller to receive window-resize events (from browser window) 
-      // in order to adapt it's own window / display area
-      $(window).resize(function(){
-        that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
-      });
+      var root = that.rootElement();
       
       // register controller to receive click events in screen
-      $('#layers').click(function(evt) {
+      root.click(function(evt) {
+        console.log('Click event in map controller.');
         that.handleClick(evt);
       });
       
       // register controller to receive mouse-down events in screen
-      $('#layers').mousedown(function(evt) {
+      root.mousedown(function(evt) {
         that.handleMouseDown(evt);
+      });
+      
+      // register controller to receive window-resize events (from browser window) 
+      // in order to adapt it's own window / display area
+      $(window).resize(function(){
+        console.log('Resize event in map controller.');
+        that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       });
       
       // register controller to receive mouse-wheel events in screen
@@ -146,8 +159,14 @@ AWE.Controller = (function(module) {
       $(window).bind('DOMMouseScroll', function(evt) {
         that.handleMouseWheel(evt);
       });
-
-    };        
+    }     
+    
+    that.remove = function() { 
+      $(window).unbind('mousewheel');     // remove all event handlers that were bound to the window.
+      $(window).unbind('DOMMouseScroll');   
+      $(window).unbind('resize'); 
+      _super.remove();
+    }
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -350,6 +369,13 @@ AWE.Controller = (function(module) {
       if (!_scrollingStarted) {
         var cObj;
         if (_stages[3].hitTest(evt.pageX, evt.pageY)) {
+          cObj = _stages[3].getObjectUnderPoint(evt.pageX, evt.pageY);
+          if (cObj && cObj.view && cObj.view.onClick) {
+             cObj.view.onClick(evt);
+          }
+          else if (cObj && cObj.onClick) { // allow click handler directly on Easel JS objects?
+            cObj.onClick(evt);
+          }
           cObj = _stages[2].getObjectUnderPoint(evt.pageX, evt.pageY);
           if (cObj && cObj.view && cObj.view.onClick) {
             // cObj.view.onClick(evt);
@@ -522,10 +548,28 @@ AWE.Controller = (function(module) {
         _actionViews.selectionControls = AWE.UI.createArmySelectionView();
         _actionViews.selectionControls.initWithControllerAndArmy(that, view.army(), AWE.Geometry.createRect(-64, 0, 192, 128));
         _actionViews.selectionControls.setCenter(center);
-        _actionViews.selectionControls.onAttackButtonClick = function () {
-          
+      
+        _actionViews.selectionControls.onAttackButtonClick = function () {              
           var dialog = AWE.UI.Ember.ArmyInfoView.create({
-            name: _selectedView.army().name(),
+            army: view.army(),
+            changeNamePressed: function(event) {
+              
+              AWE.UI.Ember.TextInputDialog.create({
+                heading: 'Enter the new name of this army.',
+                input: this.get('army').get('name'),
+                okPressed: function() {
+                  var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), this.get('input'));
+                  AWE.Action.Manager.queueAction(action);  
+                  this.destroy();            
+                },
+                cancelPressed: function() {
+                  this.destroy();
+                }
+              }).append();
+            },
+            closePressed: function(event) {
+              this.destroy();
+            }
           });
           dialog.append(); 
         }
@@ -540,7 +584,9 @@ AWE.Controller = (function(module) {
       
       _selectedHighlightView = _highlightedView;
       _highlightedView = null;
-      
+      console.log (_actionViews.highlightImage)
+      console.log (_actionViews.highlightImage.typeName())
+
       _actionViews.selectedHighlightImage = _actionViews.highlightImage;
       delete _actionViews.highlightImage;
       
@@ -568,6 +614,7 @@ AWE.Controller = (function(module) {
       if (view !== _selectedHighlightView) {
         var center = view.center();
         _highlightedView = view;
+        _highlightedView.setHovered(true);
         
         if (view.typeName() === 'FortressView') {
           _actionViews.highlightImage = AWE.UI.createFortressHighlightView();
@@ -576,7 +623,7 @@ AWE.Controller = (function(module) {
         else if (view.typeName() === 'ArmyView') {
           _actionViews.highlightImage = AWE.UI.createArmyHighlightView();
           _actionViews.highlightImage.initWithControllerAndArmy(that, view.army());
-          armyUpdates[view.army().id()] = view.army();
+          armyUpdates[view.army().get('id')] = view.army();
         }
         
           _actionViews.highlightImage.setCenter(center.x, center.y);
@@ -589,6 +636,7 @@ AWE.Controller = (function(module) {
       if (_actionViews.highlightImage) {
         _stages[2].removeChild(_actionViews.highlightImage.displayObject());
         delete _actionViews.highlightImage;
+        _highlightedView.setHovered(false);
         _highlightedView = null;
         _action = true;
       }
@@ -736,11 +784,11 @@ AWE.Controller = (function(module) {
             if (!that.areArmiesAtFortressVisible(frame)) continue ; // no update necessary, region is to small (perhaps fetch aggregate info)
                         
             if (!that.areArmiesAtSettlementsVisible(frame)) {
-              if(AWE.GS.Army.Manager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
+              if(AWE.GS.ArmyManager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
                 nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
                 
                 startUpdate('armies');
-                AWE.GS.Army.Manager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+                AWE.GS.ArmyManager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
                   stopUpdate('armies');
                   that.setModelChanged();
                 });
@@ -772,7 +820,7 @@ AWE.Controller = (function(module) {
               if (army.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime()) {
                 startUpdate('armyDetails');
                 console.log('request army details');
-                AWE.GS.Army.Manager.updateArmy(armyId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+                AWE.GS.ArmyManager.updateArmy(armyId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
                   stopUpdate('armyDetails');
                   that.setModelChanged();
                 });
@@ -792,11 +840,11 @@ AWE.Controller = (function(module) {
             if (!that.areArmiesAtFortressVisible(frame)) continue ; // no update necessary, region is to small (perhaps fetch aggregate info)
                         
             if (!that.areArmiesAtSettlementsVisible(frame)) {
-              if(AWE.GS.Army.Manager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
+              if(AWE.GS.ArmyManager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
                 nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
                 
                 startUpdate('armies');
-                AWE.GS.Army.Manager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+                AWE.GS.ArmyManager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
                   stopUpdate('armies');
                   that.setModelChanged();
                 });
@@ -892,7 +940,7 @@ AWE.Controller = (function(module) {
     // /////////////////////////////////////////////////////////////////////// 
     
     that.isSettlementVisible = function(frame) {
-      return frame.size.width > 450;
+      return frame.size.width > 420;
     };
     
     that.isFortressVisible = function(frame) {
@@ -904,7 +952,7 @@ AWE.Controller = (function(module) {
     }
     
     that.areArmiesAtSettlementsVisible = function(frame) {
-      return frame.size.width > 450;
+      return frame.size.width > 420;
     }
     
     var setFortressPosition = function(view, frame) {
@@ -1030,7 +1078,7 @@ AWE.Controller = (function(module) {
         for (var key in armies) {
           if (armies.hasOwnProperty(key)) {
             var army = armies[key];
-            var view = armyViews[army.id()];
+            var view = armyViews[army.get('id')];
           
             if (view) {       
               if (view.lastChange !== undefined && view.lastChange() < army.lastChange()) {
@@ -1042,8 +1090,8 @@ AWE.Controller = (function(module) {
               view.initWithControllerAndArmy(that, army);
               _stages[1].addChild(view.displayObject());
             }                                  
-            setArmyPosition(view, pos, army.id(), frame);
-            newArmyViews[army.id()] = view;
+            setArmyPosition(view, pos, army.get('id'), frame);
+            newArmyViews[army.get('id')] = view;
           }
         }
       };
@@ -1129,9 +1177,17 @@ AWE.Controller = (function(module) {
           }
         }
         else if (_actionViews.selectedHighlightImage.typeName() === 'ArmyHighlightView') {
-          var location = AWE.Map.Manager.getLocation(_actionViews.selectedHighlightImage.army().location_id());
-          var frameVC = that.mc2vc(location.region().node().frame());
-          if ((location.slot() === 0 && that.areArmiesAtFortressVisible(frameVC)) ||   
+          var location = AWE.Map.Manager.getLocation(_actionViews.selectedHighlightImage.army().get('location_id'));
+          var region = AWE.Map.Manager.getRegion(_actionViews.selectedHighlightImage.army().get('region_id'));    
+           // TODO the following code makes two dangerous assumptions:
+           // 1st: if there's an army, there's a region object!   (location may be missing) 
+           // 2nd: if there's no location object, the army must be at the fortress level.
+           // this is dangerous because: 
+           //    - region may have been pruned (memory) 
+           //    - army may have been fetched with e.g. the player's armies -> there might never have been the correpsonding region object
+           // how could this be resolved? a-> integrate slot in army model, b-> give army links to locations and regions. c-> only place the view, in case both, location (presently not ok for those at fortress level) and region (would be ok) are present.
+          var frameVC = that.mc2vc(region.node().frame()); 
+          if (((!location || location.slot() === 0) && that.areArmiesAtFortressVisible(frameVC)) ||   
               that.areArmiesAtSettlementsVisible(frameVC)
           ) {
             _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(

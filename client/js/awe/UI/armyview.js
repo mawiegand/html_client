@@ -1,4 +1,5 @@
-/* Author: Patrick Fox <patrick@5dlab.com>
+/* Author: Patrick Fox <patrick@5dlab.com>,
+ *         Sascha Lange <sascha@5dlab.com>
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
@@ -25,14 +26,16 @@ AWE.UI = (function(module) {
     var _flagShape = null;
     var _selectShape = null;    
     var _healthShape = null;    
+    var _healthBGShape = null;    
     
     that = module.createView(spec, my);
 
     var _super = {
-      initWithController: that.superior("initWithController"),
-      layoutSubviews: that.superior("layoutSubviews"),
-      setFrame: that.superior("setFrame"),
-      setSelected: that.superior("setSelected"),
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      setFrame: AWE.Ext.superior(that, "setFrame"),
+      setSelected: AWE.Ext.superior(that, "setSelected"),
+      setHovered: AWE.Ext.superior(that, "setHovered"),
     };
     
     /** overwritten view methods */
@@ -71,7 +74,7 @@ AWE.UI = (function(module) {
       _flagGraphics.setStrokeStyle(1);
       _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
       _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
-      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * army.size_present() / 1200, 22).lineTo(56, 12);
+      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * army.get('size_present') / 1200, 22).lineTo(56, 12);
       _flagShape = new Shape(_flagGraphics);  
       _container.addChild(_flagShape);
 
@@ -88,14 +91,15 @@ AWE.UI = (function(module) {
       healthBGGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
       healthBGGraphics.beginFill('rgb(127, 127, 127)');
       healthBGGraphics.drawRoundRect(0, 108, 64, 12, 4);
-      var healthBGShape = new Shape(healthBGGraphics);
-      _container.addChild(healthBGShape);
+      
+      _healthBGShape = new Shape(healthBGGraphics);
+      _container.addChild(_healthBGShape);
 
-      if (army.ap_present() / army.ap_max() > 0) {
-        if(army.ap_present() / army.ap_max() > .75) {
+      if (army.get('ap_present') / army.get('ap_max') > 0) {
+        if(army.get('ap_present') / army.get('ap_max') > .75) {
           var fillColor = 'rgb(64, 255, 64)';
         }
-        else if(army.ap_present() / army.ap_max() > .5) {
+        else if(army.get('ap_present') / army.get('ap_max') > .5) {
           var fillColor = 'rgb(255, 255, 64)';
         }
         else {
@@ -106,10 +110,14 @@ AWE.UI = (function(module) {
         healthGraphics.setStrokeStyle(1);
         healthGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
         healthGraphics.beginFill(fillColor);
-        healthGraphics.drawRoundRect(0, 108, 64 * (army.ap_present() / army.ap_max()), 12, 4);
+        healthGraphics.drawRoundRect(0, 108, 64 * (army.get('ap_present') / army.get('ap_max')), 12, 4);
         _healthShape = new Shape(healthGraphics);
         _container.addChild(_healthShape);
       }
+      if (_healthShape) {
+        _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
+      }
+      _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
 
       if (!frame) {
         that.resizeToFit();        
@@ -120,6 +128,13 @@ AWE.UI = (function(module) {
     };
     
     that.updateView = function() {
+      
+      // TODO, IMPORTANT: DON'T recreate objects everytime this view is updated. This may be expensive... 
+      //                  should better check, which values have really been changed. In most cases, only
+      //                  the location, target or arrival time will have changed.
+      
+      // BUG: since the stance-view is not recreated and there is no "addChildBelow" used, after one update
+      //      of the army the pole will be in front of the figure, although it should be behind.
       
       var _poleGraphics = new Graphics();
       _poleGraphics.setStrokeStyle(1);
@@ -133,7 +148,7 @@ AWE.UI = (function(module) {
       _flagGraphics.setStrokeStyle(1);
       _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
       _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
-      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * (_army.size_present() / _army.size_max()), 22).lineTo(56, 12);
+      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * (_army.get('size_present') / _army.get('size_max')), 22).lineTo(56, 12);
       _flagShape = new Shape(_flagGraphics);  
       _container.addChild(_flagShape);
 
@@ -142,18 +157,18 @@ AWE.UI = (function(module) {
       _flagGraphics.setStrokeStyle(1);
       _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
       _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
-      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * (_army.size_present() / _army.size_max()), 22).lineTo(56, 12);
+      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * (_army.get('size_present') / _army.get('size_max')), 22).lineTo(56, 12);
       _flagShape = new Shape(_flagGraphics);  
       _container.addChild(_flagShape);
       
-      _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.stance()]));
+      _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]));
       
-      if (_army.ap_present() / _army.ap_max() > 0) {
+      if (_army.get('ap_present') / _army.get('ap_max') > 0) {
         _container.removeChild(_healthShape);
-        if(_army.ap_present() / _army.ap_max() > .75) {
+        if(_army.get('ap_present') / _army.get('ap_max') > .75) {
           var fillColor = 'rgb(64, 255, 64)';
         }
-        else if(_army.ap_present() / _army.ap_max() > .5) {
+        else if(_army.get('ap_present') / _army.get('ap_max') > .5) {
           var fillColor = 'rgb(255, 255, 64)';
         }
         else {
@@ -164,10 +179,15 @@ AWE.UI = (function(module) {
         healthGraphics.setStrokeStyle(1);
         healthGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
         healthGraphics.beginFill(fillColor);
-        healthGraphics.drawRoundRect(0, 108, 64 * (_army.ap_present() / _army.ap_max()), 12, 4);
+        healthGraphics.drawRoundRect(0, 108, 64 * (_army.get('ap_present') / _army.get('ap_max')), 12, 4);
         _healthShape = new Shape(healthGraphics);
         _container.addChild(_healthShape);
+        
       }
+      if (_healthShape) {
+        _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
+      }
+      _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
     }
     
     that.resizeToFit = function() {
@@ -184,8 +204,21 @@ AWE.UI = (function(module) {
     that.setSelected = function(selected) {
       _super.setSelected(selected);
       _selectShape.visible = that.selected();
+      if (_healthShape) {
+        _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
+      }
+      _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
       this.setNeedsDisplay();
     };
+    
+    that.setHovered = function(hovered) {
+      _super.setHovered(hovered);
+      if (_healthShape) {
+        _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
+      }
+      _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
+      this.setNeedsDisplay();      
+    }
     
     that.displayObject = function() {
       return _container;
@@ -194,7 +227,7 @@ AWE.UI = (function(module) {
     that.army = function() { return _army; };
     
     // that.updateStance = function() {
-      // _stanceView.image = AWE.UI.ImageCache.getImage(_stanseImages[_army.getStance()]);
+      // _stanceView.image = AWE.UI.ImageCache.getImage(_stanseImages[_army.get('stance')]);
       // that.setNeedsDisplay();
     // };
     

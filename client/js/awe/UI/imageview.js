@@ -34,7 +34,7 @@ AWE.UI = (function(module) {
     that = module.createView(spec, my);
     
     var _super = {       // store references to needed super methods
-      setFrame: that.superior('setFrame'),
+      setFrame: AWE.Ext.superior(that, 'setFrame'),
     };
     
     var recalcScale = function() {

@@ -29,9 +29,9 @@ AWE.UI = (function(module) {
     var that = module.createView(spec, my);
     
     var _super = {
-      initWithController: that.superior("initWithController"),
-      layoutSubviews: that.superior("layoutSubviews"),
-      setFrame: that.superior("setFrame"),
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      setFrame: AWE.Ext.superior(that, "setFrame"),
     }
     
     that.initWithControllerAndArmy = function(controller, army, frame) {
@@ -40,7 +40,7 @@ AWE.UI = (function(module) {
       
       _container = new Container();
       
-      if (_army.battle_id() || _army.target_location_id()) {
+      if (_army.get('battle_id') || _army.get('target_location_id')) {
         var lines = 3;
       }
       else {
@@ -59,7 +59,7 @@ AWE.UI = (function(module) {
       _infoText1View.setFrame(AWE.Geometry.createRect(130, 33 - lines * 11, 66, 24));      
       _infoText1View.setTextAlign("left");
       _infoText1View.setIconImage("map/display/icon");
-      _infoText1View.setText(army.strength());
+      _infoText1View.setText(army.get('strength'));
       _container.addChild(_infoText1View.displayObject());
 
       if (lines > 1) {
@@ -68,7 +68,7 @@ AWE.UI = (function(module) {
         _infoText2View.setFrame(AWE.Geometry.createRect(130, 22, 66, 24));      
         _infoText2View.setTextAlign("left");
         _infoText2View.setIconImage("map/display/icon");
-        _infoText2View.setText(army.strength());
+        _infoText2View.setText(army.get('strength'));
         _container.addChild(_infoText2View.displayObject());
   
         _infoText3View = AWE.UI.createLabelView();
@@ -76,11 +76,11 @@ AWE.UI = (function(module) {
         _infoText3View.setFrame(AWE.Geometry.createRect(130, 44, 1000, 24));      
         _infoText3View.setTextAlign("left");
         _infoText3View.setIconImage("map/display/icon");
-        _infoText3View.setText(army.strength());
+        _infoText3View.setText(army.get('strength'));
         _container.addChild(_infoText3View.displayObject());
       }
       
-      var _actionPointsText = new Text(army.ap_present() + " / " + army.ap_max(), "10px Arial", "#000");
+      var _actionPointsText = new Text(army.get('ap_present') + " / " + army.get('ap_max'), "10px Arial", "#000");
       _actionPointsText.textBaseline = "bottom";
       _actionPointsText.textAlign = "center";
       _actionPointsText.x = 96;
@@ -98,6 +98,8 @@ AWE.UI = (function(module) {
     that.updateView = function() {
       that.setNeedsLayout();
     }
+
+    that.army = function() { return _army; }
 
     that.setFrame = function(frame) {
       _super.setFrame(frame);
