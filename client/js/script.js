@@ -8,6 +8,11 @@ window.WACKADOO = Ember.Application.create(function() {
     
     mapScreenController: null,
     allianceScreenController: null,
+    
+    screenContentAnchor: $('#screen-content'),
+    notificationLayerAnchor: $('#notification-layer'),
+    hudLayerAnchor: $('#hud-layer'),
+    dialogLayerAnchor: $('#dialog-layer'),
   
   
     /** custom object initialization goes here. */
@@ -125,14 +130,31 @@ window.WACKADOO = Ember.Application.create(function() {
       this.setScreenController(allianceController);
     },
     
+    append: function(controller) {
+      if (this.get('screenContentAnchor')) {
+        this.get('screenContentAnchor').append(controller.rootElement());
+      }
+    },
+    
+    remove: function() {
+      if (this.get('screenContentAnchor')) {
+        this.get('screenContentAnchor').remove(controller.rootElement());
+      }
+    },
+    
     setScreenController: function(controller) {
-      if (controller != this.get('rootScreenController')) {
-        if (this.get('rootScreenController')) {
-          this.get('rootScreenController').remove();   // TODO: call handlers: will appear, did appear, will disappear, etc.
+      var rootController = this.get('rootScreenController');
+      if (controller != rootController) {
+        if (rootController) {
+          rootController.viewWillDisappear();
+          this.remove(rootController);
+          rootController.viewDidDisappear();
         }
         this.set('rootScreenController', controller);
         if (controller) {
-          controller.append();
+          controller.viewWillAppear();
+          this.append(controller);
+          controller.viewDidAppear();
         }
       }
     },

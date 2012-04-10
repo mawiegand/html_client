@@ -25,18 +25,15 @@ AWE.Controller = (function(module) {
     that.init = function() {
     };
     
-    that.append = function() {
-      if (_domRootElement) {
-        _domAnchor.append(_domRootElement);
-      }
-    };
+    that.viewWillAppear = function() {};
+
+    that.viewDidAppear = function() {};
+
+    that.viewWillDisappear = function() {};
+
+    that.viewDidDisappear = function() {};
+
     
-    that.remove = function() {
-      if (_domRootElement) {
-        _domRootElement.remove();
-      }
-    };
-        
     that.runloop = function() {
     };
     
