@@ -9,8 +9,6 @@ AWE.UI = (function(module) {
 
   module.createArmySelectionView = function(spec, my) {
     
-    var that;
-        
     my = my || {};
     
     my.typeName = 'ArmySelectionView';
@@ -26,7 +24,7 @@ AWE.UI = (function(module) {
     var _rankImageView = null;    
 
 
-    that = module.createView(spec, my);
+    var that = module.createView(spec, my);
 
     var _super = {
       initWithController: that.superior("initWithController"),
@@ -70,7 +68,6 @@ AWE.UI = (function(module) {
     
     that.updateView = function() {
       _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + _army.rank()));
-      log('_army.rank()',  _army.rank());
       that.setNeedsDisplay();
     }
 
