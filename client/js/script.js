@@ -1,7 +1,7 @@
 window.WACKADOO = Ember.Application.create(function() {
   var _numLoadedAssets = 0, _numAssets = 0; // this uses a closure for private, not-bindable vars
   
-  var oldMouseX = 0, mouseOverX = 0, oldMouseY = 0, mouseOverY = 0;
+  var oldMouseX = 0, mouseX = 0, mouseY = 0, oldMouseY = 0;
   var hoveredView=null;
 
 
@@ -28,24 +28,41 @@ window.WACKADOO = Ember.Application.create(function() {
     init: function() {
       this._super();
       this.set('ownStages', []); // TODO: setup HUD, notifications, etc.
+      $('body').mousemove(function(event) {
+       // log(event.pageX, event.pageY, event);
+        if (mouseX != event.pageX) { 
+          mouseX = event.pageX; 
+        }
+        if (mouseY != event.pageY) {
+          mouseY = event.pageY;
+        }
+      });
     },
   
   
   
 	  testMouseOver: function() {
 	    var allStages = this.get('allStages');
+   
+	    if (!allStages || allStages.length === 0) {
+	      return ;
+	    }
 	    
-	    // TODO: check whether mouse moved, quit if not moved, set oldMouseX
-	    
+	    if (mouseX === oldMouseX && mouseY === oldMouseY) { 
+	      return ;
+	    }	    
+	    oldMouseX = mouseX; 
+	    oldMouseY = mouseY; 
+	    	    
 	    var target = null;
 	    var relX, relY;
-	    for (var layer=0; layer < allStages.length; layer++) {
-	      if (allStages[layer].stage.mouseInBounds && ! allStages[layer].transparent) {
+	    for (var layer=0; layer < allStages.length && !target; layer++) {
+	      if (allStages[layer].stage.mouseInBounds && !allStages[layer].transparent) {
 	        var stage = allStages[layer].stage;
 	        target = stage.getObjectUnderPoint(stage.mouseX, stage.mouseY);
+
 	        relX= stage.mouseX;  // store coordinates in stage's local coordinate system
 	        relY= stage.mouseY;
-	        break;
 	      }
 	    }
 	    
@@ -179,100 +196,13 @@ window.WACKADOO = Ember.Application.create(function() {
       this.set('isModal', state);
     },
     
-    handleMouseOver: function(mouseEvent, index) {
-      log("mouse over", mouseEvent.target, index);
-      var allStages = this.get('allStages');
-      if (allStages[index].stage.mouseInBounds) {
-        var obj = allStages[index].stage.getObjectUnderPoint(mouseEvent.stageX, mouseEvent.stageY);
-        var oldObj = this.get('hoveredView');
-        
-        if (oldObj) {
-          if (oldObj.onMouseOut) {
-            oldObj.onMouseOut(mouseEvent);
-          }
-          this.set('hoveredView', null);
-        }
-        
-        if (obj.onMouseOver) {
-          obj.onMouseOver(mouseEvent);
-          this.set('hoveredView', obj);
-        }
-        
-        /*
-        while(obj.view === undefined && obj.parent && obj.parent != allStages[index].stage) {
-          obj = obj.parent; // find the view-container that contains this displayobject
-        }
-        if (obj && obj.view) {
-          this.get('rootScreenController').viewMouseOver(obj.view);
-          this.set('hoveredView', obj.view);
-          console.log(obj.view);
-        }
-        else {
-          this.get('rootScreenController').viewMouseOut(obj.view);
-          console.log('WARNING: mouse entered an easelJS displayobject that has no associated view.')
-        }*/
-      }
-      else {
-        console.log('ERROR: mouse over event on stage ' + index + ' not in bounds.');
-      }
-      
-      for (var i=index+1; i < allStages.length; i++) { // disable mouse events for lower level layers
-        if (allStages[i].mouseOverEvents) {
-          allStages[i].stage.enableMouseOver(0);
-        }
-      }
-    },
-
-    handleMouseOut: function(mouseEvent, index) {
-      log("mouse out", mouseEvent.target, index);
-      var allStages = this.get('allStages');
-      
-      if (this.get('hoveredView') && this.get('hoveredView').onMouseOut) {
-        this.get('hoveredView').onMouseOut(mouseEvent);
-      }
-      this.set('hoveredView', null);
-      
-      for (var i=index+1; i < allStages.length; i++) { // disable mouse events for lower level layers
-        if (allStages[i].mouseOverEvents) {
-          allStages[i].stage.enableMouseOver();
-        }
-      }
-    },
     
     bindEventHandlers: function(allStages, controller) {
-       // bind event handlers
-       return ;
-      var self = this;
-      for (var i=0; i < allStages.length; i++) {
-        // mouse over
-        if (allStages[i].mouseOverEvents) {
-          allStages[i].stage.enableMouseOver();
-
-          allStages[i].stage.onMouseOver=function(j) {
-            return function(mouseEvent) { 
-              self.handleMouseOver(mouseEvent, j);
-            };            
-          }(i);
-        
-          // mouse out
-          allStages[i].stage.onMouseOut=function(j) {
-            return function(mouseEvent) {
-              self.handleMouseOut(mouseEvent, j);
-            };            
-          }(i);
-        }
-      }     
+      //allStages[allStages.length-2].onMouseOver = function() {}
     },
     
     unbindEventHandlers: function(stages) {
-      // unbind event handlers
-      return ;
-      for (var i=0; i < allStages.length-1; i++) {
-        if (allStages[i].mouseOverEvents) {
-          allStages[i].stage.unbind('onMouseOver');
-          allStages[i].stage.unbind('onMouseOut');
-        }
-      }      
+    
     },
     
     append: function(controller) {
