@@ -77,57 +77,26 @@ AWE.Controller = (function(module) {
       root.append('<canvas id="layer0"></canvas>');
       _canvas[0] = root.find('#layer0')[0];
       _stages[0] = new Stage(_canvas[0]);
-  //    _stages[0].enableMouseOver();      
       
-      _stages[0].onClick = function() {   // click into background unselects selected object
-        if (_selectedView) {
-          _unselectView();
-        }
-      };
    
       // selectable gaming pieces layer (fortresses, armies, etc.)
       root.append('<canvas id="layer1"></canvas>');
       _canvas[1] = root.find('#layer1')[0];
       _stages[1] = new Stage(_canvas[1]);
-      //_stages[1].enableMouseOver();
       
       // layer for mouseover and selection objects
       root.append('<canvas id="layer2"></canvas>');
       _canvas[2] = root.find('#layer2')[0];
       _stages[2] = new Stage(_canvas[2]);
-      //_stages[2].enableMouseOver();
       
-/*      // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) or stage2 is active          
-      _stages[2].onMouseOver = function() {
-        _stages[1].enableMouseOver(0);
-        _unhighlightView();
-      };
-  */
-/*      _stages[2].onMouseOut = function() {
-        _stages[1].enableMouseOver();
-      };
-  */    
       // HUD layer ("static", not zoomable, not moveable)
       root.append('<canvas id="layer3"></canvas>');
       _canvas[3] = root.find('#layer3')[0];
       _stages[3] = new Stage(_canvas[3]);
       //_stages[3].enableMouseOver();
 
-      // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) or stage2 is active          
-   /*   _stages[3].onMouseOver = function() {
-        _stages[1].enableMouseOver(0);
-        _unhighlightView();
-      };*/
-  
-  /*    _stages[3].onMouseOut = function() {
-        _stages[1].enableMouseOver();
-      };*/
       
-      // register controller to receive click events in screen
-      root.click(function(evt) {
-        console.log('Click event in map controller.');
-        that.handleClick(evt);
-      });
+
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
@@ -135,9 +104,6 @@ AWE.Controller = (function(module) {
 
     };   
     
-    that.handleArtificialMouseOut = function() { console.log('artificial mouse out');
-      _unhighlightView();
-    };
 
     
     that.getStages = function() {
@@ -150,7 +116,7 @@ AWE.Controller = (function(module) {
     };
     
     that.viewDidAppear = function() {
-      var root = that.rootElement();
+  /*    var root = that.rootElement();
       
       
       // register controller to receive mouse-down events in screen
@@ -172,13 +138,13 @@ AWE.Controller = (function(module) {
       // register controller to receive mouse-wheel events in screen (mozilla)
       $(window).bind('DOMMouseScroll', function(evt) {
         that.handleMouseWheel(evt);
-      });
+      });*/
     }     
     
     that.viewWillDisappear = function() { 
-      $(window).unbind('mousewheel');     // remove all event handlers that were bound to the window.
-      $(window).unbind('DOMMouseScroll');   
-      $(window).unbind('resize'); 
+    //  $(window).unbind('mousewheel');     // remove all event handlers that were bound to the window.
+    //  $(window).unbind('DOMMouseScroll');   
+    //  $(window).unbind('resize'); 
     }
     
     // ///////////////////////////////////////////////////////////////////////
@@ -377,77 +343,62 @@ AWE.Controller = (function(module) {
     //   Mouse-Over and Object Selection
     //
     // /////////////////////////////////////////////////////////////////////// 
-            
-    that.handleClick = function(evt) {
-      if (!_scrollingStarted) {
-        var cObj;
-        if (_stages[3].hitTest(evt.pageX, evt.pageY)) {
-          cObj = _stages[3].getObjectUnderPoint(evt.pageX, evt.pageY);
-          if (cObj && cObj.view && cObj.view.onClick) {
-             cObj.view.onClick(evt);
-          }
-          else if (cObj && cObj.onClick) { // allow click handler directly on Easel JS objects?
-            cObj.onClick(evt);
-          }
-          cObj = _stages[2].getObjectUnderPoint(evt.pageX, evt.pageY);
-          if (cObj && cObj.view && cObj.view.onClick) {
-            // cObj.view.onClick(evt);
-          }
-        }
-        else if (_stages[2].hitTest(evt.pageX, evt.pageY)) {
-          cObj = _stages[2].getObjectUnderPoint(evt.pageX, evt.pageY);
-          if (cObj && cObj.view && cObj.view.onClick) {
-            cObj.view.onClick(evt);
-          }
-        }
-        else if (_stages[1].hitTest(evt.pageX, evt.pageY)) {
-          cObj = _stages[1].getObjectUnderPoint(evt.pageX, evt.pageY);
-          if (cObj && cObj.view && cObj.view.onClick) {
-            cObj.view.onClick(evt);
-          }
-        }
-        else if (_stages[0].hitTest(evt.pageX, evt.pageY)) {
-          // call onClick of stage for unselecting items
-          if (_stages[0].onClick) {
-            _stages[0].onClick(evt);
-          }         
-        }
-      }
-      else {
-        _scrollingStarted = false;
-      }
+    
+    
+    that.prepareScrolling = function(posX, posY) {
+      console.log('prepare scrolling');
+      _scrollingStartedAtVC = AWE.Geometry.createPoint(posX, posY);
+      _scrollingOriginalTranslationVC = mc2vcTrans.copy();
+        
+      $('#layers').mousemove(function(ev) {
+        that.onMouseMove(ev);
+      });
+    } 
+    
+    that.startScrolling = function() {
+      console.log('start scrolling');
+      _scrollingStarted = true;
+    } 
+    
+    that.endScrolling = function() {
+      console.log('end scrolling');
+      $('#layers').unbind('mousemove');
+      _scrollingStarted = false;
+    }       
+    
+    that.isScrolling = function() {
+      return _scrollingStarted;
+    }
+
+    that.onMouseUp = function(evt) {
+      that.endScrolling();
+      console.log('up');
     }
     
-    that.handleMouseDown = function(evt) {
-             
-      if (!_stages[2].hitTest(evt.pageX, evt.pageY)) {
-        _scrollingStartedAtVC = AWE.Geometry.createPoint(evt.pageX, evt.pageY);
-        _scrollingOriginalTranslationVC = mc2vcTrans.copy();
-        
-        $('#layers').mousemove(function(ev) {
-          that.handleMouseMove(ev);
-        });
-        
-        $('body').mouseup(function() {
-          $('#layers').unbind('mousemove');
-        });      
-  
-        $('body').mouseleave(function() {
-          $('#layers').unbind('mousemove');
-        });
-      }      
+    that.onMouseLeave = function(evt) {
+      that.endScrolling();
+      console.log('leave');
+    }
+    
+    that.onMouseDown = function(evt) {
+//    if (!_stages[2].hitTest(evt.pageX, evt.pageY)) {  // removed, for the moment, it's ok to scroll everywhere
+      that.prepareScrolling(evt.pageX, evt.pageY);
     };
     
-    that.handleMouseMove = function(event) {
+    that.onMouseMove = function(event) {
       // here we can assume, that the mouse is pressed right now!
-      _scrollingStarted = true;
-      var pos = AWE.Geometry.createPoint(_scrollingOriginalTranslationVC.x + event.pageX - _scrollingStartedAtVC.x, 
-                                         _scrollingOriginalTranslationVC.y + event.pageY - _scrollingStartedAtVC.y);        
-      mc2vcTrans.moveTo(pos);
-      that.setNeedsLayout();
+      if (! that.isScrolling() && (Math.abs(event.pageX - _scrollingStartedAtVC.x) > 5 || Math.abs(event.pageY - _scrollingStartedAtVC.y > 5)))  {
+        that.startScrolling();
+      }
+      if (that.isScrolling()) {
+        var pos = AWE.Geometry.createPoint(_scrollingOriginalTranslationVC.x + event.pageX - _scrollingStartedAtVC.x, 
+                                           _scrollingOriginalTranslationVC.y + event.pageY - _scrollingStartedAtVC.y);        
+        mc2vcTrans.moveTo(pos);
+        that.setNeedsLayout();
+      }
     };
     
-    that.handleMouseWheel = function(ev) {
+    that.onMouseWheel = function(ev) {
       
       var evt = window.event;
       if (ev && ev.originalEvent) {
@@ -484,6 +435,18 @@ AWE.Controller = (function(module) {
       evt.returnValue = false;
     };
     
+    
+    that.onResize = function() {
+      that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
+    }
+    
+    /** received in case no view is hit by a click. used to unselect object on
+     * click into background. */
+    that.onClick = function() {   
+      if (_selectedView) {
+        _unselectView();
+      }
+    };
 
     // ///////////////////////////////////////////////////////////////////////
     //
