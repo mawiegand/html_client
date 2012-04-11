@@ -26,6 +26,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (!this.get('readyForRunloop')) {
         $('#debug2').html('Loading Assets. Progress: ' + _numLoadedAssets + ' / ' + _numAssets);
       }
+      else {
+        this.get('hudController').setNeedsLayout();
+        this.get('hudController').setNeedsDisplay();
+      }
       this._super();
     },
     
@@ -120,39 +124,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     
-    // ///////////////////////////////////////////////////////////////////////
-    //
-    //   HUD
-    //
-    // /////////////////////////////////////////////////////////////////////// 
-    
-    updateHUD: function() {
-      
-      if (!HUDViews.mainControlsView) {
-        HUDViews.mainControlsView = AWE.UI.createMainControlsView();
-        HUDViews.mainControlsView.initWithController(that);
-        HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 470, 20));
-        _stages[3].addChild(HUDViews.mainControlsView.displayObject());
-      }
-      else {
-        HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 470, 20));
-      }
-
-      var detailView = HUDViews.detailView;
-      if (detailView) {        
-        detailView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 332, _windowSize.height - 148));
-        
-        if (detailView.typeName() === 'ArmyDetailView' && detailView.lastChange() < detailView.army().lastChange()) {
-          detailView.setNeedsUpdate();
-        }
-        
-        if (detailView.typeName() === 'FortressDetailView' && detailView.lastChange() < detailView.node().lastChange()) {
-          detailView.setNeedsUpdate();
-        }
-      }
-      
-      return _detailViewChanged;
-    },    
+  
       
     /** starts the app when the document is ready. */
     ready: function() {
@@ -164,9 +136,18 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       });
         
       this.loadAssets();
+
+      var hud = AWE.Controller.createHUDController();
+      hud.init();
+      this.setHudController
+      this.get('hudLayerAnchor').append(hud.rootElement()); // add to dom
+      this.set('hudController', hud);
+
+
     
       var controller = AWE.Controller.createMapController('#layers');
       controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
+      
   
       var self = this;
       $('#zoomin').click(function(){ self.activateAllianceController(); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
@@ -174,6 +155,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
       this.set('mapScreenController', controller);
       this.setScreenController(controller);
+      
 
       this.startRunloop();
     }

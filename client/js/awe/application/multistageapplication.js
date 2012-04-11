@@ -43,6 +43,9 @@ AWE.Application = (function(module) {
     var mouseOverTestTimeout = 200; // test every x ms
 
     return {
+      
+      hudController: null,
+      notificationController: null,
     
       presentScreenController: null,    
       readyForRunloop: false,
@@ -53,7 +56,8 @@ AWE.Application = (function(module) {
       hudLayerAnchor: $('#hud-layer'),
       dialogLayerAnchor: $('#dialog-layer'),
         
-      ownStages: null,
+      hudStages: null,
+      notificationStages: null,
       allStages: null,
     
       isModal: false,
@@ -63,7 +67,10 @@ AWE.Application = (function(module) {
       init: function() {
         var self = this;
         this._super();
-        this.set('ownStages', []); // TODO: setup HUD, notifications, etc.
+        this.set('ownStages', []); // 
+        this.set('notificationStages', []); //
+        this.set('hudStages', []); // 
+
         $('body').mousemove(function(event) {
           mouseX = event.pageX; 
           mouseY = event.pageY;
@@ -72,6 +79,11 @@ AWE.Application = (function(module) {
         $('body').mouseup(function(evt) {
           console.log('Mouse up event in multi stage application controller.');
           self.handleMouseUp(evt);
+        });
+        // register controller to receive window-resize events (from browser window) 
+        // in order to adapt it's own window / display area
+        $(window).resize(function(evt){
+          self.onResize(evt);
         });
       },
   
@@ -201,7 +213,9 @@ AWE.Application = (function(module) {
       runloop: function() { 
         if (this.get('readyForRunloop') && this.get('presentScreenController')) {
           this.testMouseOver();
-          this.get('presentScreenController').runloop();      // hand over control to present screen controller
+          if (this.get('hudController')) this.get('hudController').runloop();
+          if (this.get('notificationController')) this.get('notificationController').runloop();
+          this.get('presentScreenController').runloop(); // hand over control to present screen controller
         }
         window.requestAnimFrame(function(self) { return function() {self.runloop(); }; }(this));  // request next animation frame that will initiate the next cycle of the runloop
       },
@@ -240,12 +254,21 @@ AWE.Application = (function(module) {
     
       onResize: function(evt) {
         var controller = this.get('presentScreenController');
+        var hudcontroller = this.get('hudController');
+        var notificationcontroller = this.get('notificationController');
+
         if (controller && controller.onResize) {
           controller.onResize(evt);
         }
+        if (hudcontroller && hudcontroller.onResize) {
+          hudcontroller.onResize(evt);
+        }
+        if (notificationcontroller && notificationcontroller.onResize) {
+          notificationcontroller.onResize(evt);
+        }
       },
     
-      bindEventHandlers: function(allStages, controller) {
+      bindEventHandlers: function(controller) {
         var self = this;
       
         if (controller.onMouseDown) {
@@ -262,15 +285,7 @@ AWE.Application = (function(module) {
             self.onMouseLeave(evt);
           });
         }      
-      
-        // register controller to receive window-resize events (from browser window) 
-        // in order to adapt it's own window / display area
-        if (controller.onResize) {
-          $(window).resize(function(evt){
-            self.onResize(evt);
-          });
-        }
-      
+            
         // register controller to receive mouse-wheel events in screen
         if (controller.onMouseWheel) {
           $(window).bind('mousewheel', function() {
@@ -284,32 +299,32 @@ AWE.Application = (function(module) {
         }
       },
     
-      unbindEventHandlers: function(stages) {
+      unbindEventHandlers: function() {
         $(window).unbind('mousedown');
         $(window).unbind('mousewheel');     // remove all event handlers that were bound to the window.
         $(window).unbind('DOMMouseScroll');   
-        $(window).unbind('resize');        
         $(window).unbind('mouseleave');        
+      },
+      
+      resetAllStages: function() {
+        var allStages = this.get('controllerStages').concat(this.get('notificationStages')).concat(this.get('hudStages')).reverse();
+        this.set('allStages', allStages);
       },
     
       append: function(controller) {
         if (this.get('screenContentAnchor')) {
-          var controllerStages = controller.getStages();
-          var allStages = controllerStages.concat(this.get('ownStages')).reverse(); // ATTENTION: uses a side-effect: own stages will always be at start of array, so their mouse-over hooks need not be updated, when controller-stages change.
           this.get('screenContentAnchor').append(controller.rootElement()); // add to dom
-          this.set('controllerStages', controllerStages);
-          this.set('allStages', allStages); 
-          this.bindEventHandlers(allStages, controller);
+          this.set('controllerStages', controller.getStages());
+          this.resetAllStages();
+          this.bindEventHandlers(controller);
         }
       },
     
       remove: function(controller) {
         if (this.get('screenContentAnchor')) {
-          var controllerStages = this.get('controllerStages');
-          var allStages = this.get('allStages');
-          this.unbindEventHandlers(allStages);
+          this.unbindEventHandlers();
           this.set('controllerStages', []);
-          this.set('allStages', this.get('ownStages').reverse()); // ATTENTION: uses a side-effect: own stages will always be at start of array, so their mouse-over hooks need not be updated, when controller-stages change.
+          this.resetAllStages();
           controller.rootElement().remove(); // remove from dom
         }
       },
@@ -326,6 +341,27 @@ AWE.Application = (function(module) {
           if (controller) {
             controller.viewWillAppear();
             this.append(controller);
+            controller.viewDidAppear();
+          }
+        }
+      },
+      
+      setHudController: function(controller) {
+        var presentHudController = this.get('hudController');
+        if (controller != presentHudController) {
+          if (presentHudController) {
+            presentHudController.viewWillDisappear();
+            this.set('hudStages', []);
+            this.resetAllStages();
+            presentHudController.rootElement().remove();
+            presentHudController.viewDidDisappear();
+          }
+          this.set('hudController', controller);
+          if (conttroller) {
+            controller.viewWillAppear();
+            this.get('hudLayerAnchor').append(controller.rootElement()); // add to dom
+            this.set('hudStages', controller.getStages());
+            this.resetAllStages();
             controller.viewDidAppear();
           }
         }

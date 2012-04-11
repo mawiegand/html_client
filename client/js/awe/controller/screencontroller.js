@@ -10,10 +10,10 @@ AWE.Controller = (function(module) {
   module.createScreenController = function(anchor) {
     
     var _domAnchor = $(anchor);
-    var _domRootElement = $('<div class="screen-controller"></div>');
     
     var that = {};
-    
+
+    that.domRootElement = $('<div class="screen-controller"></div>');
     that.onMouseWheel = null;
     that.onMouseDown = null;
     that.onResize = null;
@@ -30,7 +30,7 @@ AWE.Controller = (function(module) {
     };
     
     that.rootElement = function() {
-      return _domRootElement;
+      return that.domRootElement;
     };
     
     that.init = function() {

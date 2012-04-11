@@ -83,6 +83,8 @@ AWE.Controller = (function(module) {
       _canvas[1] = root.find('#layer1')[0];
       _stages[1] = new Stage(_canvas[1]);
       
+      log(_stages[1]);
+      
       // layer for mouseover and selection objects
       root.append('<canvas id="layer2"></canvas>');
       _canvas[2] = root.find('#layer2')[0];
