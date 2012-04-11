@@ -543,12 +543,12 @@ AWE.Controller = (function(module) {
           
           var center = view.center();
           if (view.typeName() === 'FortressView') {
-            actionViews.hovered = AWE.UI.createSelectionFortressHighlightView();
-            actionViews.hovered.initWithControllerAndNode(that, view.node());
+            actionViews.hovered = AWE.UI.createFortressActionView();
+            actionViews.hovered.initWithControllerAndView(that, view);
           }
           else if (view.typeName() === 'ArmyView') {
             actionViews.hovered = AWE.UI.createArmyActionView();
-            actionViews.hovered.initWithControllerAndArmy(that, view);
+            actionViews.hovered.initWithControllerAndView(that, view);
             armyUpdates[view.army().get('id')] = view.army();
           }
 
@@ -1090,34 +1090,22 @@ AWE.Controller = (function(module) {
     
     that.updateActionViews = function() {
       
-      if (actionViews.hovered) { 
-        if (actionViews.hovered.typeName() === 'FortressHighlightView') {          
-          actionViews.hovered.setCenter(AWE.Geometry.createPoint(
+      if (actionViews.hovered
+          && (actionViews.hovered.typeName() === 'FortressActionView'
+          || actionViews.hovered.typeName() === 'ArmyActionView')) {
+        actionViews.hovered.setCenter(AWE.Geometry.createPoint(
             _hoveredView.center().x,
             _hoveredView.center().y
-          ));
-        }
-        else if (actionViews.hovered.typeName() === 'ArmyActionView') {
-          actionViews.hovered.setCenter(AWE.Geometry.createPoint(
-            _hoveredView.center().x,
-            _hoveredView.center().y
-          ));
-        }
+        ));
       }
 
-      if (actionViews.selected) { 
-        if (actionViews.selected.typeName() === 'FortressHighlightView') {
-          actionViews.selected.setCenter(AWE.Geometry.createPoint(
+      if (actionViews.selected
+          && (actionViews.selected.typeName() === 'FortressActionView'
+          || actionViews.selected.typeName() === 'ArmyActionView')) {
+        actionViews.selected.setCenter(AWE.Geometry.createPoint(
             _selectedView.center().x,
             _selectedView.center().y
-          ));
-        }
-        else if (actionViews.selected.typeName() === 'ArmyActionView') {
-          actionViews.selected.setCenter(AWE.Geometry.createPoint(
-            _selectedView.center().x,
-            _selectedView.center().y
-          ));
-        }
+        ));
       }
     };
     

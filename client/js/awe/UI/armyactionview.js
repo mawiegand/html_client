@@ -40,7 +40,7 @@ AWE.UI = (function(module) {
     
     /** overwritten view methods */
     
-    that.initWithControllerAndArmy = function(controller, view, frame) {
+    that.initWithControllerAndView = function(controller, view, frame) {
       _super.initWithController(controller, frame);
       _container = new Container();
       _armyView = view;
@@ -126,8 +126,6 @@ AWE.UI = (function(module) {
     
     that.updateView = function() {
       
-      log('updateView h s', _armyView.hovered(), _armyView.selected());
-      
       _stanceButtonView.setVisible(true);
       _moveButtonView.setVisible(_armyView.hovered());
       _attackButtonView.setVisible(_armyView.selected());
@@ -144,12 +142,6 @@ AWE.UI = (function(module) {
       _container.y = my.frame.origin.y;
     }
                 
-    that.setHovered = function(hovered) {
-      _super.setHovered(frame);
-      log('hover');
-      this.setNeedsDisplay();
-    }
-    
     that.displayObject = function() {
       return _container;
     };
