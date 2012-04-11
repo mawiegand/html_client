@@ -14,6 +14,17 @@ AWE.Controller = (function(module) {
     
     var that = {};
     
+    that.onMouseWheel = null;
+    that.onMouseDown = null;
+    that.onResize = null;
+    that.onClick = null;
+    that.onMouseUp = null;
+    that.onMouseLeave = null;
+    
+    /** this needs to be implemented, in case the controller implements its own
+     * scrolling (e.g. map screen controller). */
+    that.isScrolling = function() { return false; } 
+    
     that.anchor = function() {
       return _domAnchor;
     };
