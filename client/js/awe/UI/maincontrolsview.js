@@ -85,6 +85,8 @@ AWE.UI = (function(module) {
       _village.scaleX = 1;
       _village.scaleY = 1;     
       
+      _fortressButton.onClick = function() { WACKADOO.activateMapController();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+      _village.onClick = function() { WACKADOO.activateMapController();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
       
   
       // Messages
