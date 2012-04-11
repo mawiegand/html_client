@@ -15,6 +15,7 @@ AWE.Controller = (function(module) {
 
     var _selectedView = null;    ///< there can be only one selected view!
     var _highlightedView = null; ///< there can be only one highlighted view!
+    var _hoveredView = null;
     var _selectedHighlightView = null; ///< highlighted view if selected
     
     var _windowSize = null;      ///< size of window in view coordinates
@@ -530,7 +531,7 @@ AWE.Controller = (function(module) {
         _highlightView(view);
       }
       else if (view.typeName() === 'hudView') { // typeof view == 'hud'  (evtl. eigene methode)
-        _unhighlightView();
+        // _unhighlightView();
       }
     };
 
@@ -546,111 +547,113 @@ AWE.Controller = (function(module) {
     /* view selection */
     
     var _selectView = function(view) {
-      var center = view.center();
-      _selectedView = view;
-      view.setSelected(true);
-      
-      // distinguish between different views
-      if (view.typeName() === 'FortressView') {
-        _actionViews.selectionControls = AWE.UI.createFortressSelectionView(); // createFortressSelectionView
-        _actionViews.selectionControls.initWithControllerAndNode(that, view.node());
-        _actionViews.selectionControls.setCenter(center);
-        view.setSelected(true);
-      }
-      else if (view.typeName() === 'ArmyView') {
-        _actionViews.selectionControls = AWE.UI.createArmySelectionView();
-        _actionViews.selectionControls.initWithControllerAndArmy(that, view.army(), AWE.Geometry.createRect(-64, 0, 192, 128));
-        _actionViews.selectionControls.setCenter(center);
-      
-        _actionViews.selectionControls.onAttackButtonClick = function () {              
-          var dialog = AWE.UI.Ember.ArmyInfoView.create({
-            army: view.army(),
-            changeNamePressed: function(event) {
-              
-              AWE.UI.Ember.TextInputDialog.create({
-                heading: 'Enter the new name of this army.',
-                input: this.get('army').get('name'),
-                okPressed: function() {
-                  var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), this.get('input'));
-                  AWE.Action.Manager.queueAction(action);  
-                  this.destroy();            
-                },
-                cancelPressed: function() {
-                  this.destroy();
-                }
-              }).append();
-            },
-            closePressed: function(event) {
-              this.destroy();
-            }
-          });
-          dialog.append(); 
-        }
-        
-        /* var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), 'Maximo Leader');
-           AWE.Action.Manager.queueAction(action); */
-
-      }
-      
-      _stages[2].addChild(_actionViews.selectionControls.displayObject());
-      // _stages[2].removeChild(_actionViews.selectedHighlightImage.displayObject());
-      
-      _selectedHighlightView = _highlightedView;
-      _highlightedView = null;
-      console.log (_actionViews.highlightImage)
-      console.log (_actionViews.highlightImage.typeName())
-
-      _actionViews.selectedHighlightImage = _actionViews.highlightImage;
-      delete _actionViews.highlightImage;
-      
-      _showDetailView(view);
-      _action = true;
+      // var center = view.center();
+      // _selectedView = view;
+      // view.setSelected(true);
+//       
+      // // distinguish between different views
+      // if (view.typeName() === 'FortressView') {
+        // _actionViews.selectionControls = AWE.UI.createFortressSelectionView(); // createFortressSelectionView
+        // _actionViews.selectionControls.initWithControllerAndNode(that, view.node());
+        // _actionViews.selectionControls.setCenter(center);
+        // view.setSelected(true);
+      // }
+      // else if (view.typeName() === 'ArmyView') {
+        // _actionViews.selectionControls = AWE.UI.createArmySelectionView();
+        // _actionViews.selectionControls.initWithControllerAndArmy(that, view.army(), AWE.Geometry.createRect(-64, 0, 192, 128));
+        // _actionViews.selectionControls.setCenter(center);
+//       
+        // _actionViews.selectionControls.onAttackButtonClick = function () {              
+          // var dialog = AWE.UI.Ember.ArmyInfoView.create({
+            // army: view.army(),
+            // changeNamePressed: function(event) {
+//               
+              // AWE.UI.Ember.TextInputDialog.create({
+                // heading: 'Enter the new name of this army.',
+                // input: this.get('army').get('name'),
+                // okPressed: function() {
+                  // var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), this.get('input'));
+                  // AWE.Action.Manager.queueAction(action);  
+                  // this.destroy();            
+                // },
+                // cancelPressed: function() {
+                  // this.destroy();
+                // }
+              // }).append();
+            // },
+            // closePressed: function(event) {
+              // this.destroy();
+            // }
+          // });
+          // dialog.append(); 
+        // }
+//         
+        // /* var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), 'Maximo Leader');
+           // AWE.Action.Manager.queueAction(action); */
+// 
+      // }
+//       
+      // _stages[2].addChild(_actionViews.selectionControls.displayObject());
+      // // _stages[2].removeChild(_actionViews.selectedHighlightImage.displayObject());
+//       
+      // _selectedHighlightView = _highlightedView;
+      // _highlightedView = null;
+      // console.log (_actionViews.highlightImage)
+      // console.log (_actionViews.highlightImage.typeName())
+// 
+      // _actionViews.selectedHighlightImage = _actionViews.highlightImage;
+      // delete _actionViews.highlightImage;
+//       
+      // _showDetailView(view);
+      // _action = true;
     };
     
     var _unselectView = function(view) {
-      _hideDetailView(view);
-      _stages[2].removeChild(_actionViews.selectionControls.displayObject());
-      _selectedView.setSelected(false);
-      _selectedView = null;
-      delete _actionViews.selectionControls;
-      
-      _stages[2].removeChild(_actionViews.selectedHighlightImage.displayObject());
-      delete _actionViews.selectedHighlightImage;
-      _selectedHighlightView = null;
-
-      _action = true;
+      // _hideDetailView(view);
+      // _stages[2].removeChild(_actionViews.selectionControls.displayObject());
+      // _selectedView.setSelected(false);
+      // _selectedView = null;
+      // delete _actionViews.selectionControls;
+//       
+      // _stages[2].removeChild(_actionViews.selectedHighlightImage.displayObject());
+      // delete _actionViews.selectedHighlightImage;
+      // _selectedHighlightView = null;
+// 
+      // _action = true;
     };
 
     /* view highlighting */
 
     var _highlightView = function(view) {
-      if (view !== _selectedHighlightView) {
+      if (view !== _hoveredView) {
         var center = view.center();
-        _highlightedView = view;
-        _highlightedView.setHovered(true);
+        _hoveredView = view;
+        _hoveredView.setHovered(true);
         
         if (view.typeName() === 'FortressView') {
-          _actionViews.highlightImage = AWE.UI.createFortressHighlightView();
-          _actionViews.highlightImage.initWithControllerAndNode(that, view.node());
+          _actionViews.hoveredView = AWE.UI.createSelectionFortressHighlightView();
+          _actionViews.hoveredView.initWithControllerAndNode(that, view.node());
         }
         else if (view.typeName() === 'ArmyView') {
-          _actionViews.highlightImage = AWE.UI.createArmyHighlightView();
-          _actionViews.highlightImage.initWithControllerAndArmy(that, view.army());
-          armyUpdates[view.army().get('id')] = view.army();
+          _actionViews.hoveredView = AWE.UI.createArmySelectionView();
+          _actionViews.hoveredView.initWithControllerAndArmy(that, view.army());
+          // armyUpdates[view.army().get('id')] = view.army();
         }
-        
-          _actionViews.highlightImage.setCenter(center.x, center.y);
-        _stages[2].addChild(_actionViews.highlightImage.displayObject());
+        log(center.x, center.y, _actionViews.hoveredView);
+        _actionViews.hoveredView.setCenter(center.x, center.y);
+        _stages[2].addChild(_actionViews.hoveredView.displayObject());
         _action = true;
       }
     };
 
     var _unhighlightView = function() {
-      if (_actionViews.highlightImage) {
-        _stages[2].removeChild(_actionViews.highlightImage.displayObject());
-        delete _actionViews.highlightImage;
-        _highlightedView.setHovered(false);
-        _highlightedView = null;
+      log('ping');
+      if (_actionViews.hoveredView) {
+        log('pong');
+        _stages[2].removeChild(_actionViews.hoveredView.displayObject());
+        delete _actionViews.hoveredView;
+        _hoveredView.setHovered(false);
+        _hoveredView = null;
         _action = true;
       }
     };
@@ -1162,18 +1165,23 @@ AWE.Controller = (function(module) {
 
       // TODO Sichtbarkeit testen
 
-      if (_actionViews.highlightImage) { 
-        if (_actionViews.highlightImage.typeName() === 'FortressHighlightView') {          
-          _actionViews.highlightImage.setCenter(AWE.Geometry.createPoint(
-            _highlightedView.center().x,
-            _highlightedView.center().y
+      if (_actionViews.hoveredView) { 
+        if (_actionViews.hoveredView.typeName() === 'FortressHighlightView') {          
+          _actionViews.hoveredView.setCenter(AWE.Geometry.createPoint(
+            _hoveredView.center().x,
+            _hoveredView.center().y
           ));
         }
-        else if (_actionViews.highlightImage.typeName() === 'ArmyHighlightView') {
-          _actionViews.highlightImage.setCenter(AWE.Geometry.createPoint(
-            _highlightedView.center().x,
-            _highlightedView.center().y
+        else if (_actionViews.hoveredView.typeName() === 'ArmySelectionView') {
+          _actionViews.hoveredView.setCenter(AWE.Geometry.createPoint(
+            _hoveredView.center().x,
+            _hoveredView.center().y
           ));
+          
+          log('pib',
+            _hoveredView.center().x,
+            _hoveredView.center().y
+          );
         }
       }
 
@@ -1313,7 +1321,7 @@ AWE.Controller = (function(module) {
         stagesNeedUpdate[1] = propUpdates(fortressViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(locationViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(armyViews) || stagesNeedUpdate[1];
-        // stagesNeedUpdate[2] = propUpdates(actionViews);
+        stagesNeedUpdate[2] = propUpdates(_actionViews);
         stagesNeedUpdate[3] = propUpdates(HUDViews) || stagesNeedUpdate[3];
 
         //log('Update after propagation: ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
