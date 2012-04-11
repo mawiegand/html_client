@@ -12,11 +12,11 @@ AWE.UI = (function(module) {
   
   /*** AWE.UI.View ***/
 
-  module.createFortressSelectionView = function(spec, my) {
+  module.createFortressActionView = function(spec, my) {
     
     my = my || {};
     
-    my.typeName = 'FortressSelectionView';
+    my.typeName = 'FortressActionView';
     
     var _node = null;
     
@@ -25,6 +25,11 @@ AWE.UI = (function(module) {
     // selected
     var _moveButtonView = null;    
     var _attackButtonView = null;    
+
+    //  hovered
+    var _infoText1View = null;    
+    var _infoText2View = null;    
+    var mouseOverImageView = null;
 
 
     var that = module.createView(spec, my);
@@ -36,10 +41,10 @@ AWE.UI = (function(module) {
     };
 
     
-    that.initWithControllerAndNode = function(controller, node, frame) {
+    that.initWithControllerAndView = function(controller, view, frame) {
       _super.initWithController(controller, frame);
       _container = new Container();
-      _node = node;
+      _node = view.node();
       
       _moveButtonView = AWE.UI.createButtonView();
       _moveButtonView.initWithControllerTextAndImage(controller, 'move', AWE.UI.ImageCache.getImage("map/button1"));
@@ -52,6 +57,37 @@ AWE.UI = (function(module) {
       _attackButtonView.onClick = function() { that.onAttackButtonClick(); }
       _container.addChild(_attackButtonView.displayObject());
       
+      var backgroundGraphics = new Graphics();
+      backgroundGraphics.setStrokeStyle(0);
+      backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
+      backgroundGraphics.drawRoundRect(128, 12, 64, 44, 8);
+      var backgroundShape = new Shape(backgroundGraphics);
+      _container.addChild(backgroundShape);
+      
+      _infoText1View = AWE.UI.createLabelView();
+      _infoText1View.initWithControllerAndLabel(controller);
+      _infoText1View.setFrame(AWE.Geometry.createRect(130, 11, 60, 24));      
+      _infoText1View.setTextAlign("left");
+      _infoText1View.setIconImage("map/display/icon");
+      _infoText1View.setText('120%');
+      _container.addChild(_infoText1View.displayObject());
+
+      _infoText2View = AWE.UI.createLabelView();
+      _infoText2View.initWithControllerAndLabel(controller);
+      _infoText2View.setFrame(AWE.Geometry.createRect(130, 33, 60, 24));      
+      _infoText2View.setTextAlign("left");
+      _infoText2View.setIconImage("map/display/icon");
+      _infoText2View.setText(AWE.Config.DEV_ALLIANCE_ID ===  _node.region().allianceId() ? 'Neutral' :  'Hostile');
+      _container.addChild(_infoText2View.displayObject());
+      
+      if (AWE.Config.DEV_ALLIANCE_ID !==  _node.region().allianceId()) {
+        mouseOverImageView = AWE.UI.createImageView();
+        mouseOverImageView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement"));
+        mouseOverImageView.setFrame(AWE.Geometry.createRect(80, 0, 32, 32));
+        mouseOverImageView.setContentMode(module.setContentModeNone);
+        _container.addChild(mouseOverImageView.displayObject());
+      }
+      
       my.frame.size.width = 192;
       my.frame.size.height = 128;
     }
@@ -59,7 +95,6 @@ AWE.UI = (function(module) {
     that.onAttackButtonClick = function() {};
     
     that.updateView = function() {
-      _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank2"));
       that.setNeedsDisplay();
     }
 
@@ -77,10 +112,12 @@ AWE.UI = (function(module) {
       return _container;
     };
     
-    that.node = function() {
-      return _node;
-    };
-            
+    that.layoutSubviews = function() {
+      _super.layoutSubviews();
+      _infoText1View.layoutIfNeeded();
+      _infoText2View.layoutIfNeeded();
+    }
+        
     return that;
   };
 
