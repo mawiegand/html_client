@@ -53,9 +53,7 @@ window.WACKADOO = Ember.Application.create(function() {
 	    }	    
 	    oldMouseX = mouseX; 
 	    oldMouseY = mouseY; 
-	    
-	    console.log('check!')
-	    
+	    	    
 	    var target = null;
 	    var relX, relY;
 	    for (var layer=0; layer < allStages.length && !target; layer++) {
