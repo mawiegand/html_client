@@ -57,12 +57,13 @@ AWE.UI = (function(module) {
       _heroButtonGraphics.drawCircle(254, 146, 64);
       var _heroButton = new Shape(_heroButtonGraphics);    
   
-      var _heroButtonText = new Text('Hero', "12px Arial", "#000");
-      _heroButtonText.textBaseline = "middle";
-      _heroButtonText.textAlign = "center"
-      _heroButtonText.x = 254;
-      _heroButtonText.y = 146;
-  
+      var _heroHead = new Bitmap();
+      _heroHead.image = AWE.UI.ImageCache.getImage('hud/head');
+      _heroHead.x = 198;
+      _heroHead.y = 85;
+      _heroHead.scaleX = 0.15;
+      _heroHead.scaleY = 0.15;
+    
       // Festung
       var _fortressButtonGraphics = new Graphics();
       _fortressButtonGraphics.setStrokeStyle(1);
@@ -71,11 +72,20 @@ AWE.UI = (function(module) {
       _fortressButtonGraphics.drawCircle(344, 84, 64);
       var _fortressButton = new Shape(_fortressButtonGraphics);    
   
-      var _fortressButtonText = new Text('Fortress', "12px Arial", "#000");
+  /*    var _fortressButtonText = new Text('Fortress', "12px Arial", "#000");
       _fortressButtonText.textBaseline = "middle";
       _fortressButtonText.textAlign = "center"
       _fortressButtonText.x = 344;
-      _fortressButtonText.y = 84;
+      _fortressButtonText.y = 84;*/
+      
+       var _village = new Bitmap();
+      _village.image = AWE.UI.ImageCache.getImage("map/colony/big");
+      _village.x = 293;
+      _village.y = 20;
+      _village.scaleX = 1;
+      _village.scaleY = 1;     
+      
+      
   
       // Messages
       var _messagesButtonGraphics = new Graphics();
@@ -198,12 +208,12 @@ AWE.UI = (function(module) {
       _container.addChildAt(_locationsButtonText);
       _container.addChildAt(_locationsButton);
       _container.addChildAt(_armiesButtonText);
-      _container.addChildAt(_armiesButton);
-      _container.addChildAt(_heroButtonText);
+      _container.addChildAt(_armiesButton);    
+      _container.addChildAt(_heroHead);
       _container.addChildAt(_heroButton);
       _container.addChildAt(_flagButtonText);
       _container.addChildAt(_flagShape);
-      _container.addChildAt(_fortressButtonText);
+      _container.addChildAt(_village);
       _container.addChildAt(_fortressButton); 
       _container.addChildAt(_resource1Text);
       _container.addChildAt(_resource2Text);
