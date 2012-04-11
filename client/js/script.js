@@ -3,6 +3,9 @@ window.WACKADOO = Ember.Application.create(function() {
   
   var oldMouseX = 0, mouseX = 0, mouseY = 0, oldMouseY = 0;
   var hoveredView=null;
+  var stageHovered=-1;
+  var nextMouseOverTest = new Date(1970).getTime();
+  var mouseOverTestTimeout = 200; // test every x ms
 
 
   return {
@@ -29,49 +32,65 @@ window.WACKADOO = Ember.Application.create(function() {
       this._super();
       this.set('ownStages', []); // TODO: setup HUD, notifications, etc.
       $('body').mousemove(function(event) {
-       // log(event.pageX, event.pageY, event);
-        if (mouseX != event.pageX) { 
-          mouseX = event.pageX; 
-        }
-        if (mouseY != event.pageY) {
-          mouseY = event.pageY;
-        }
+        mouseX = event.pageX; 
+        mouseY = event.pageY;
       });
     },
   
   
-  
+    /** finds the easelJS DisplayObject that the mouse is over and generates
+     * onMouseOver and onMouseOut events as needed on state changes. Differing
+     * from easel's implementation, our version DOES know about the layering
+     * of mulitple stages. It will deliver events only to one object at a time 
+     * (DisplayObject on the top-most stage) and it will also correctly 
+     * generate a MouseOut event when the mouse pointer enters a view on another,
+     * overlapping stage. */
 	  testMouseOver: function() {
-	    var allStages = this.get('allStages');
-   
-	    if (!allStages || allStages.length === 0) {
+	    
+	    if (nextMouseOverTest > new Date().getTime()) {
 	      return ;
 	    }
-	    
+
 	    if (mouseX === oldMouseX && mouseY === oldMouseY) { 
 	      return ;
 	    }	    
 	    oldMouseX = mouseX; 
 	    oldMouseY = mouseY; 
+	    
+	    nextMouseOverTest = new Date().getTime() + mouseOverTestTimeout;
+
+	    var allStages = this.get('allStages');
+   
+	    if (!allStages || allStages.length === 0) {
+	      return ;
+	    }
 	    	    
+	    // start with top-most stage, find the view that is hit by the mouse pointer.
+	    // Only continue with next stage in stack, in case no view is hit at present
+	    // stage.
 	    var target = null;
 	    var relX, relY;
+	    var targetLayer = -1;
 	    for (var layer=0; layer < allStages.length && !target; layer++) {
+	      targetLayer = layer;
 	      if (allStages[layer].stage.mouseInBounds && !allStages[layer].transparent) {
 	        var stage = allStages[layer].stage;
 	        target = stage.getObjectUnderPoint(stage.mouseX, stage.mouseY);
-
 	        relX= stage.mouseX;  // store coordinates in stage's local coordinate system
 	        relY= stage.mouseY;
 	      }
 	    }
 	    
+	    // in case the state changed (another view (or nothing) is hit), generate and
+	    // send the correct mouseout / mouseover events.
 	    if (hoveredView != target) {
-	      if (hoveredView && hoveredView.onMouseOut) {
+	      if (hoveredView && hoveredView.onMouseOut && stageHovered >= 0 && allStages[stageHovered].mouseOverEvents) {
 	        hoveredView.onMouseOut(new MouseEvent("onMouseOut", relX, relY, hoveredView));
 	      }
 	      hoveredView = target;
-	      if (target && target.onMouseOver) {
+	      stageHovered = targetLayer;
+	  
+	      if (target && target.onMouseOver && allStages[targetLayer].mouseOverEvents) {
 	        target.onMouseOver(new MouseEvent("onMouseOver", relX, relY, target));
 	      }
 	    }

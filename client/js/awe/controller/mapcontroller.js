@@ -143,7 +143,7 @@ AWE.Controller = (function(module) {
     
     that.getStages = function() {
       return [
-        { stage: _stages[0], mouseOverEvents: false },
+        { stage: _stages[0], mouseOverEvents: false, transparent: true},
         { stage: _stages[1], mouseOverEvents: true },
         { stage: _stages[2], mouseOverEvents: true },
         { stage: _stages[3], mouseOverEvents: true },

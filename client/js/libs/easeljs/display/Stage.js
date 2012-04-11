@@ -445,6 +445,7 @@ var p = Stage.prototype = new Container();
 	 * @protected
 	 **/
 	p._testMouseOver = function() {
+	  console.log('WARNING: in easel\'s test mouse over. Should not be called, as we handle this ourselves!');
 		if (this.mouseX == this._mouseOverX && this.mouseY == this._mouseOverY && this.mouseInBounds) { return; }
 		var target = null;
 		if (this.mouseInBounds) {
