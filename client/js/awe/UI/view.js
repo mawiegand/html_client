@@ -199,6 +199,15 @@ AWE.UI = (function(module) {
       return _hovered;
     }
 
+    that.setVisible = function(visible) {
+      _visible = visible;
+      this.needsDisplay();
+    }
+    
+    that.visible = function() {
+      return _visible;
+    }
+
     that.layoutSubviews = function() {
       this.autoscaleIfNeeded();
       this.setChangedNow();

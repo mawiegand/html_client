@@ -14,9 +14,7 @@ AWE.Controller = (function(module) {
     var _canvas = new Array(4);  ///< canvas elements for the four stages
 
     var _selectedView = null;    ///< there can be only one selected view!
-    var _highlightedView = null; ///< there can be only one highlighted view!
     var _hoveredView = null;
-    var _selectedHighlightView = null; ///< highlighted view if selected
     
     var _windowSize = null;      ///< size of window in view coordinates
     var mc2vcScale;              ///< scaling
@@ -51,7 +49,7 @@ AWE.Controller = (function(module) {
     var fortressViews = {};
     var armyViews = {};
     var locationViews = {};
-    var _actionViews = {};
+    var actionViews = {};
     var HUDViews = {};
     
     var armyUpdates = {};
@@ -101,7 +99,7 @@ AWE.Controller = (function(module) {
 /*      // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) or stage2 is active          
       _stages[2].onMouseOver = function() {
         _stages[1].enableMouseOver(0);
-        _unhighlightView();
+        _unhoverView();
       };
   */
 /*      _stages[2].onMouseOut = function() {
@@ -117,7 +115,7 @@ AWE.Controller = (function(module) {
       // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) or stage2 is active          
    /*   _stages[3].onMouseOver = function() {
         _stages[1].enableMouseOver(0);
-        _unhighlightView();
+        _unhoverView();
       };*/
   
   /*    _stages[3].onMouseOut = function() {
@@ -137,7 +135,7 @@ AWE.Controller = (function(module) {
     };   
     
     that.handleArtificialMouseOut = function() { console.log('artificial mouse out');
-      _unhighlightView();
+      _unhoverView();
     };
 
     
@@ -512,7 +510,6 @@ AWE.Controller = (function(module) {
     that.viewClicked = function(view) {    
       if (_selectedView === view) {
         _unselectView(_selectedView);
-        _highlightView(view);
       }
       else if (_selectedView) {
         _unselectView(_selectedView);
@@ -523,135 +520,101 @@ AWE.Controller = (function(module) {
       }
     };
 
-    that.viewMouseOver = function(view) { console.log('view mouse over: ' + view.typeName())
+    that.viewMouseOver = function(view) { // console.log('view mouse over: ' + view.typeName())
       if (view.typeName() === 'FortressView') {
-        _highlightView(view);
+        _hoverView(view);
       }
       else if (view.typeName() === 'ArmyView') {
-        _highlightView(view);
+        _hoverView(view);
       }
       else if (view.typeName() === 'hudView') { // typeof view == 'hud'  (evtl. eigene methode)
-        // _unhighlightView();
+        // _unhoverView();
       }
     };
 
     that.viewMouseOut = function(view) {
       if (view.typeName() === 'FortressView') {
-        _unhighlightView();
+        _unhoverView();
       }
       else if (view.typeName() === 'ArmyView') {
-        _unhighlightView();
+        _unhoverView();
       }
     };
     
     /* view selection */
     
     var _selectView = function(view) {
-      // var center = view.center();
-      // _selectedView = view;
-      // view.setSelected(true);
-//       
-      // // distinguish between different views
-      // if (view.typeName() === 'FortressView') {
-        // _actionViews.selectionControls = AWE.UI.createFortressSelectionView(); // createFortressSelectionView
-        // _actionViews.selectionControls.initWithControllerAndNode(that, view.node());
-        // _actionViews.selectionControls.setCenter(center);
-        // view.setSelected(true);
-      // }
-      // else if (view.typeName() === 'ArmyView') {
-        // _actionViews.selectionControls = AWE.UI.createArmySelectionView();
-        // _actionViews.selectionControls.initWithControllerAndArmy(that, view.army(), AWE.Geometry.createRect(-64, 0, 192, 128));
-        // _actionViews.selectionControls.setCenter(center);
-//       
-        // _actionViews.selectionControls.onAttackButtonClick = function () {              
-          // var dialog = AWE.UI.Ember.ArmyInfoView.create({
-            // army: view.army(),
-            // changeNamePressed: function(event) {
-//               
-              // AWE.UI.Ember.TextInputDialog.create({
-                // heading: 'Enter the new name of this army.',
-                // input: this.get('army').get('name'),
-                // okPressed: function() {
-                  // var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), this.get('input'));
-                  // AWE.Action.Manager.queueAction(action);  
-                  // this.destroy();            
-                // },
-                // cancelPressed: function() {
-                  // this.destroy();
-                // }
-              // }).append();
-            // },
-            // closePressed: function(event) {
-              // this.destroy();
-            // }
-          // });
-          // dialog.append(); 
-        // }
-//         
-        // /* var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), 'Maximo Leader');
-           // AWE.Action.Manager.queueAction(action); */
-// 
-      // }
-//       
-      // _stages[2].addChild(_actionViews.selectionControls.displayObject());
-      // // _stages[2].removeChild(_actionViews.selectedHighlightImage.displayObject());
-//       
-      // _selectedHighlightView = _highlightedView;
-      // _highlightedView = null;
-      // console.log (_actionViews.highlightImage)
-      // console.log (_actionViews.highlightImage.typeName())
-// 
-      // _actionViews.selectedHighlightImage = _actionViews.highlightImage;
-      // delete _actionViews.highlightImage;
-//       
-      // _showDetailView(view);
-      // _action = true;
+      
+      _selectedView = view;
+      _selectedView.setSelected(true);
+      actionViews.selected = actionViews.hovered;
+      actionViews.selected.setNeedsUpdate();
+      _showDetailView(_selectedView);
+      _action = true;
     };
     
     var _unselectView = function(view) {
-      // _hideDetailView(view);
-      // _stages[2].removeChild(_actionViews.selectionControls.displayObject());
-      // _selectedView.setSelected(false);
-      // _selectedView = null;
-      // delete _actionViews.selectionControls;
-//       
-      // _stages[2].removeChild(_actionViews.selectedHighlightImage.displayObject());
-      // delete _actionViews.selectedHighlightImage;
-      // _selectedHighlightView = null;
-// 
-      // _action = true;
+      
+      if (!_selectedView.hovered()) {
+        _stages[2].removeChild(actionViews.selected.displayObject());
+      }
+      else {
+        actionViews.selected.setNeedsUpdate();        
+      }
+
+      delete actionViews.selected;
+      _selectedView.setSelected(false);
+      _selectedView = null;
+      
+      _hideDetailView();
+
+      _action = true;
     };
 
     /* view highlighting */
 
-    var _highlightView = function(view) {
+    var _hoverView = function(view) {
+      
       if (view !== _hoveredView) {
-        var center = view.center();
         _hoveredView = view;
         _hoveredView.setHovered(true);
+          
+        if (view !== _selectedView) {
+          
+          var center = view.center();
+          if (view.typeName() === 'FortressView') {
+            actionViews.hovered = AWE.UI.createSelectionFortressHighlightView();
+            actionViews.hovered.initWithControllerAndNode(that, view.node());
+          }
+          else if (view.typeName() === 'ArmyView') {
+            actionViews.hovered = AWE.UI.createArmyActionView();
+            actionViews.hovered.initWithControllerAndArmy(that, view);
+            armyUpdates[view.army().get('id')] = view.army();
+          }
+
+          actionViews.hovered.setCenter(center.x, center.y);
+          _stages[2].addChild(actionViews.hovered.displayObject());
+          
+        }
+        else {
+          actionViews.hovered = actionViews.selected;
+          actionViews.hovered.setNeedsUpdate();
+        }
         
-        if (view.typeName() === 'FortressView') {
-          _actionViews.hoveredView = AWE.UI.createSelectionFortressHighlightView();
-          _actionViews.hoveredView.initWithControllerAndNode(that, view.node());
-        }
-        else if (view.typeName() === 'ArmyView') {
-          _actionViews.hoveredView = AWE.UI.createArmySelectionView();
-          _actionViews.hoveredView.initWithControllerAndArmy(that, view.army());
-          // armyUpdates[view.army().get('id')] = view.army();
-        }
-        log(center.x, center.y, _actionViews.hoveredView);
-        _actionViews.hoveredView.setCenter(center.x, center.y);
-        _stages[2].addChild(_actionViews.hoveredView.displayObject());
         _action = true;
       }
     };
 
-    var _unhighlightView = function() {
-      log('ping');
-      if (_actionViews.hoveredView) {
-        log('pong');
-        _stages[2].removeChild(_actionViews.hoveredView.displayObject());
-        delete _actionViews.hoveredView;
+    var _unhoverView = function() {
+      
+      if (actionViews.hovered) {
+        if (_hoveredView !== _selectedView) {
+          _stages[2].removeChild(actionViews.hovered.displayObject());
+        }
+        else {
+          actionViews.hovered.setNeedsUpdate();
+        }
+        delete actionViews.hovered;
         _hoveredView.setHovered(false);
         _hoveredView = null;
         _action = true;
@@ -677,7 +640,7 @@ AWE.Controller = (function(module) {
       _detailViewChanged = true;
     };
 
-    var _hideDetailView = function(view) {
+    var _hideDetailView = function() {
       if (HUDViews.detailView) {
         _stages[3].removeChild(HUDViews.detailView.displayObject());
         delete HUDViews.detailView;
@@ -835,7 +798,6 @@ AWE.Controller = (function(module) {
               
               if (army.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime()) {
                 startUpdate('armyDetails');
-                console.log('request army details');
                 AWE.GS.ArmyManager.updateArmy(armyId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
                   stopUpdate('armyDetails');
                   that.setModelChanged();
@@ -901,6 +863,12 @@ AWE.Controller = (function(module) {
           stage.removeChild(obj);
           removedSomething = true;          
         });
+        if (view === _selectedView) {
+          _unselectView(view);
+        }
+        if (view === _hoveredView) {
+          _unhoverView(view);
+        }
       }); 
       return removedSomething;     
     }
@@ -1141,9 +1109,6 @@ AWE.Controller = (function(module) {
       return removedSomething;          
     }
     
-    
-    
-    
     that.updateGamingPieces = function(nodes) {
       var removedSomething = false;
       
@@ -1154,7 +1119,6 @@ AWE.Controller = (function(module) {
       return removedSomething;
     };
     
-    
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Action Stage
@@ -1162,71 +1126,35 @@ AWE.Controller = (function(module) {
     // /////////////////////////////////////////////////////////////////////// 
     
     that.updateActionViews = function() {
-
-      // TODO Sichtbarkeit testen
-
-      if (_actionViews.hoveredView) { 
-        if (_actionViews.hoveredView.typeName() === 'FortressHighlightView') {          
-          _actionViews.hoveredView.setCenter(AWE.Geometry.createPoint(
+      
+      if (actionViews.hovered) { 
+        if (actionViews.hovered.typeName() === 'FortressHighlightView') {          
+          actionViews.hovered.setCenter(AWE.Geometry.createPoint(
             _hoveredView.center().x,
             _hoveredView.center().y
           ));
         }
-        else if (_actionViews.hoveredView.typeName() === 'ArmySelectionView') {
-          _actionViews.hoveredView.setCenter(AWE.Geometry.createPoint(
+        else if (actionViews.hovered.typeName() === 'ArmyActionView') {
+          actionViews.hovered.setCenter(AWE.Geometry.createPoint(
             _hoveredView.center().x,
             _hoveredView.center().y
           ));
-          
-          log('pib',
-            _hoveredView.center().x,
-            _hoveredView.center().y
-          );
         }
       }
 
-      if (_actionViews.selectedHighlightImage) { 
-        if (_actionViews.selectedHighlightImage.typeName() === 'FortressHighlightView') {
-          if (that.isFortressVisible(that.mc2vc(_actionViews.selectedHighlightImage.node().frame()))) {
-            _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
-              _selectedHighlightView.center().x,
-              _selectedHighlightView.center().y
-            ));
-          }
-          else {
-            _unselectView(_selectedView);             
-          }
+      if (actionViews.selected) { 
+        if (actionViews.selected.typeName() === 'FortressHighlightView') {
+          actionViews.selected.setCenter(AWE.Geometry.createPoint(
+            _selectedView.center().x,
+            _selectedView.center().y
+          ));
         }
-        else if (_actionViews.selectedHighlightImage.typeName() === 'ArmyHighlightView') {
-          var location = AWE.Map.Manager.getLocation(_actionViews.selectedHighlightImage.army().get('location_id'));
-          var region = AWE.Map.Manager.getRegion(_actionViews.selectedHighlightImage.army().get('region_id'));    
-           // TODO the following code makes two dangerous assumptions:
-           // 1st: if there's an army, there's a region object!   (location may be missing) 
-           // 2nd: if there's no location object, the army must be at the fortress level.
-           // this is dangerous because: 
-           //    - region may have been pruned (memory) 
-           //    - army may have been fetched with e.g. the player's armies -> there might never have been the correpsonding region object
-           // how could this be resolved? a-> integrate slot in army model, b-> give army links to locations and regions. c-> only place the view, in case both, location (presently not ok for those at fortress level) and region (would be ok) are present.
-          var frameVC = that.mc2vc(region.node().frame()); 
-          if (((!location || location.slot() === 0) && that.areArmiesAtFortressVisible(frameVC)) ||   
-              that.areArmiesAtSettlementsVisible(frameVC)
-          ) {
-            _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
-              _selectedHighlightView.center().x,
-              _selectedHighlightView.center().y
-            ));
-          }
-          else {
-            _unselectView(_selectedView);             
-          }
+        else if (actionViews.selected.typeName() === 'ArmyActionView') {
+          actionViews.selected.setCenter(AWE.Geometry.createPoint(
+            _selectedView.center().x,
+            _selectedView.center().y
+          ));
         }
-      }
-
-      if (_actionViews.selectionControls) { 
-        _actionViews.selectionControls.setCenter(AWE.Geometry.createPoint(
-          _selectedView.center().x,
-          _selectedView.center().y
-        ));
       }
     };
     
@@ -1305,12 +1233,12 @@ AWE.Controller = (function(module) {
           stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         };
         
-        if (1) { // TODO: only update, if necessary
+        if (this.modelChanged() || _action || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           that.updateActionViews();
         }
         
         if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || _action || !HUDViews.mainControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
-          log('MapController: update hud.', _action);
+          // log('MapController: update hud.', _action);
           stagesNeedUpdate[3] = that.updateHUD() || stagesNeedUpdate[3]; 
         }
         
@@ -1321,7 +1249,7 @@ AWE.Controller = (function(module) {
         stagesNeedUpdate[1] = propUpdates(fortressViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(locationViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(armyViews) || stagesNeedUpdate[1];
-        stagesNeedUpdate[2] = propUpdates(_actionViews);
+        stagesNeedUpdate[2] = propUpdates(actionViews) || stagesNeedUpdate[2];
         stagesNeedUpdate[3] = propUpdates(HUDViews) || stagesNeedUpdate[3];
 
         //log('Update after propagation: ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
@@ -1338,8 +1266,6 @@ AWE.Controller = (function(module) {
     var numFrames = 0;
     var fps = 60;
     var needRedraw; // TODO: remove this flag.
-    
-    // that.updateView = function() { needRedraw = true; } // TODO: completely remove this method, replaced by setNeedsDisplay
     
     that.updateFPS = function() {
       
@@ -1397,7 +1323,7 @@ AWE.Controller = (function(module) {
           var viewsInStages = [
             regionViews,
             [fortressViews, armyViews, locationViews],
-            _actionViews,
+            actionViews,
             HUDViews
           ];          
           

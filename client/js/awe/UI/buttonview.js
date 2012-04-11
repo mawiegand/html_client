@@ -23,6 +23,7 @@ AWE.UI = (function(module) {
       initWithController: AWE.Ext.superior(that, "initWithController"),
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
       setFrame: AWE.Ext.superior(that, "setFrame"),
+      setVisible: AWE.Ext.superior(that, "setVisible"),
     }
     
     that.initWithControllerTextAndImage = function(controller, text, image, frame) {
@@ -87,14 +88,11 @@ AWE.UI = (function(module) {
       my.controller.buttonClicked(that);
     };
     
-    // that.onMouseOver = function(){
-      // my.controller.buttonMouseOver(that);
-    // };
-// 
-    // that.onMouseOut = function(){
-      // my.controller.buttonMouseOut(that);
-    // };
-            
+    that.setVisible = function(visible) {
+      _super.setVisible(visible);
+      _container.visible = visible;
+    }
+    
     return that;
   };
     
