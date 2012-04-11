@@ -7,27 +7,16 @@ var AWE = AWE || {};
 
 AWE.Controller = (function(module) {
           
-  module.createMapController = function(anchor) {
+  module.createHUDController = function(anchor) {
     
-    var _stages = new Array(4);  ///< four easelJS stages for displaying background, objects and HUD
-    var _sortStages = [];
-    var _canvas = new Array(4);  ///< canvas elements for the four stages
-
-    var _selectedView = null;    ///< there can be only one selected view!
-    var _highlightedView = null; ///< there can be only one highlighted view!
-    var _selectedHighlightView = null; ///< highlighted view if selected
+    var _stage  = null;          ///< easelJS stage for displaying the HUD
+    var _canvas = null;          ///< canvas elements for the four stages
     
     var _windowSize = null;      ///< size of window in view coordinates
-    var mc2vcScale;              ///< scaling
-    var mc2vcTrans;              ///< translation
 
     var _needsLayout;            ///< true, in case e.g. the window has changed, causing a new layuot of the map
     var _needsDisplay;           ///< true, in case something (data, subwview) has changed causing a need for a redraw
-    
-    var _scrollingStarted = false;///< user is presently scrolling
-    var _scrollingStartedAtVC;
-    var _scrollingOriginalTranslationVC;
-  
+      
     var that = module.createScreenController(anchor); ///< create base object
     
     var _super = {};             ///< store locally overwritten methods of super object
@@ -39,22 +28,8 @@ AWE.Controller = (function(module) {
     var _loopCounter = 0;        ///< counts every cycle through the loop
     var _frameCounter = 0;       ///< counts every rendered frame
     
-    var _modelChanged = false;   ///< true, if anything in the model changed
-    var _maptreeChanged = false; ///< true, if anything in the maptree (just nodes!) changed. _maptreeChanged = true implies modelChanged = true
-    
-    var _detailViewChanged = false; ///< true, if a detailView has been added, removed or changed
-    
-    var requestingMapNodesFromServer = false;
-    
-    var regionViews = {};
-    var fortressViews = {};
-    var armyViews = {};
-    var locationViews = {};
-    var _actionViews = {};
+    var _modelChanged = false;   ///< true, if anything in the model changed    
     var HUDViews = {};
-    
-    var armyUpdates = {};
-
     
     
     // ///////////////////////////////////////////////////////////////////////
@@ -1237,7 +1212,7 @@ AWE.Controller = (function(module) {
         
         if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || _action || !HUDViews.mainControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
           log('MapController: update hud.', _action);
-        //  stagesNeedUpdate[3] = that.updateHUD() || stagesNeedUpdate[3]; 
+          stagesNeedUpdate[3] = that.updateHUD() || stagesNeedUpdate[3]; 
         }
         
         //log('Update:                   ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])

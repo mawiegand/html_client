@@ -98,6 +98,14 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Util.TemplateLoader.loadAllTemplates(); // doing this last makes sure _numLoadedAssets may not accidently equal _numAssets before all requests have been started
     },
     
+    
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //  SWITCH SCREEN CONTROLLER
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
     activateMapController: function() {
       this.setScreenController(this.get('mapScreenController'));
     },
@@ -110,6 +118,41 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }
       this.setScreenController(allianceController);
     },
+    
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   HUD
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
+    updateHUD: function() {
+      
+      if (!HUDViews.mainControlsView) {
+        HUDViews.mainControlsView = AWE.UI.createMainControlsView();
+        HUDViews.mainControlsView.initWithController(that);
+        HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 470, 20));
+        _stages[3].addChild(HUDViews.mainControlsView.displayObject());
+      }
+      else {
+        HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 470, 20));
+      }
+
+      var detailView = HUDViews.detailView;
+      if (detailView) {        
+        detailView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 332, _windowSize.height - 148));
+        
+        if (detailView.typeName() === 'ArmyDetailView' && detailView.lastChange() < detailView.army().lastChange()) {
+          detailView.setNeedsUpdate();
+        }
+        
+        if (detailView.typeName() === 'FortressDetailView' && detailView.lastChange() < detailView.node().lastChange()) {
+          detailView.setNeedsUpdate();
+        }
+      }
+      
+      return _detailViewChanged;
+    },    
       
     /** starts the app when the document is ready. */
     ready: function() {
