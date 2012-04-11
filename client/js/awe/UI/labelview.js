@@ -127,6 +127,11 @@ AWE.UI = (function(module) {
     that.padding = function() {
       return _padding;
     }
+        
+    that.setVisible = function(visible) {
+      _super.setVisible(visible);
+      _container.visibility = visible;
+    };
     
     that.setIconImage = function(image) {
     
@@ -153,7 +158,7 @@ AWE.UI = (function(module) {
             
     that.iconImage = function() {
       return _padding;
-    }
+    };
 
     return that;
   };

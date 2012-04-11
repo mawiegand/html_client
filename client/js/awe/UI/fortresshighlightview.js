@@ -62,7 +62,7 @@ AWE.UI = (function(module) {
       _infoText2View.setText(AWE.Config.DEV_ALLIANCE_ID ===  _node.region().allianceId() ? 'Friendly' :  'Hostile');
       _container.addChild(_infoText2View.displayObject());
       
-      if (AWE.Config.DEV_ALLIANCE_ID ===  _node.region().allianceId()) {
+      if (AWE.Config.DEV_ALLIANCE_ID !==  _node.region().allianceId()) {
         mouseOverImageView = AWE.UI.createImageView();
         mouseOverImageView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement"));
         mouseOverImageView.setFrame(AWE.Geometry.createRect(80, 0, 32, 32));
@@ -97,7 +97,11 @@ AWE.UI = (function(module) {
     that.displayObject = function() {
       return _container;
     }
-            
+    
+    that.node = function() {
+      return _node;
+    };
+                        
     return that;
   };
 
