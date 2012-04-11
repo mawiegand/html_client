@@ -729,6 +729,9 @@ AWE.Controller = (function(module) {
           setViewport('regions', visibleAreaMC); ///< remember viewport, because data for this port has been fetched (or isn't needed) 
         }
         
+        // STOP HERE, in case the user is presently scrolling (depends on config).
+        if (AWE.Config.MAPVIEW_DONT_UPDATE_MODEL_WHILE_SCROLLING && that.isScrolling()) return ;
+        
         // in case the viewport has changed or the model has changed (more nodes or regions?!) we need to check for missing locations.
         if ((viewportHasChanged('locations', visibleAreaMC) || that.modelChanged()) && ! isUpdateRunning('nodes')) {
 

@@ -53,6 +53,8 @@ AWE.Config = (function(module) {
 
   module.MAP_LOCATION_MIN_DETAIL_LEVEL = 2;
   module.MAP_LOCATION_TYPE_CODES = ["empty","fortress","base","outpost"];
+  
+  module.MAPVIEW_DONT_UPDATE_MODEL_WHILE_SCROLLING = true;
 
   //image cache
   module.IMAGE_CACHE_LOAD_LIST = {
