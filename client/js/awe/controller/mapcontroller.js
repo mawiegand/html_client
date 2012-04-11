@@ -77,6 +77,7 @@ AWE.Controller = (function(module) {
       root.append('<canvas id="layer0"></canvas>');
       _canvas[0] = root.find('#layer0')[0];
       _stages[0] = new Stage(_canvas[0]);
+  //    _stages[0].enableMouseOver();      
       
       _stages[0].onClick = function() {   // click into background unselects selected object
         if (_selectedView) {
@@ -88,39 +89,45 @@ AWE.Controller = (function(module) {
       root.append('<canvas id="layer1"></canvas>');
       _canvas[1] = root.find('#layer1')[0];
       _stages[1] = new Stage(_canvas[1]);
-      _stages[1].enableMouseOver();
+      //_stages[1].enableMouseOver();
       
       // layer for mouseover and selection objects
       root.append('<canvas id="layer2"></canvas>');
       _canvas[2] = root.find('#layer2')[0];
       _stages[2] = new Stage(_canvas[2]);
-      _stages[2].enableMouseOver();
+      //_stages[2].enableMouseOver();
       
-      // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) or stage2 is active          
+/*      // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) or stage2 is active          
       _stages[2].onMouseOver = function() {
         _stages[1].enableMouseOver(0);
         _unhighlightView();
       };
-  
-      _stages[2].onMouseOut = function() {
+  */
+/*      _stages[2].onMouseOut = function() {
         _stages[1].enableMouseOver();
       };
-      
+  */    
       // HUD layer ("static", not zoomable, not moveable)
       root.append('<canvas id="layer3"></canvas>');
       _canvas[3] = root.find('#layer3')[0];
       _stages[3] = new Stage(_canvas[3]);
-      _stages[3].enableMouseOver();
+      //_stages[3].enableMouseOver();
 
       // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) or stage2 is active          
-      _stages[3].onMouseOver = function() {
+   /*   _stages[3].onMouseOver = function() {
         _stages[1].enableMouseOver(0);
         _unhighlightView();
-      };
+      };*/
   
-      _stages[3].onMouseOut = function() {
+  /*    _stages[3].onMouseOut = function() {
         _stages[1].enableMouseOver();
-      };
+      };*/
+      
+      // register controller to receive click events in screen
+      root.click(function(evt) {
+        console.log('Click event in map controller.');
+        that.handleClick(evt);
+      });
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
@@ -128,16 +135,23 @@ AWE.Controller = (function(module) {
 
     };   
     
-    that.append = function() {
-      _super.append();
-      
+    that.handleArtificialMouseOut = function() { console.log('artificial mouse out');
+      _unhighlightView();
+    };
+
+    
+    that.getStages = function() {
+      return [
+        { stage: _stages[0], mouseOverEvents: false },
+        { stage: _stages[1], mouseOverEvents: true },
+        { stage: _stages[2], mouseOverEvents: true },
+        { stage: _stages[3], mouseOverEvents: true },
+      ];
+    };
+    
+    that.viewDidAppear = function() {
       var root = that.rootElement();
       
-      // register controller to receive click events in screen
-      root.click(function(evt) {
-        console.log('Click event in map controller.');
-        that.handleClick(evt);
-      });
       
       // register controller to receive mouse-down events in screen
       root.mousedown(function(evt) {
@@ -161,11 +175,10 @@ AWE.Controller = (function(module) {
       });
     }     
     
-    that.remove = function() { 
+    that.viewWillDisappear = function() { 
       $(window).unbind('mousewheel');     // remove all event handlers that were bound to the window.
       $(window).unbind('DOMMouseScroll');   
       $(window).unbind('resize'); 
-      _super.remove();
     }
     
     // ///////////////////////////////////////////////////////////////////////
@@ -509,7 +522,7 @@ AWE.Controller = (function(module) {
       }
     };
 
-    that.viewMouseOver = function(view) {
+    that.viewMouseOver = function(view) { console.log('view mouse over: ' + view.typeName())
       if (view.typeName() === 'FortressView') {
         _highlightView(view);
       }

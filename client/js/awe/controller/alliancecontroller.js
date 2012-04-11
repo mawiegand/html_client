@@ -44,7 +44,7 @@ AWE.Controller = (function(module) {
       _super.remove();
     }
 
-    
+    that.getStages = function() { return []; }
     
     // ///////////////////////////////////////////////////////////////////////
     //

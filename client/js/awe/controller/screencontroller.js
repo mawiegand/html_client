@@ -25,18 +25,25 @@ AWE.Controller = (function(module) {
     that.init = function() {
     };
     
-    that.append = function() {
-      if (_domRootElement) {
-        _domAnchor.append(_domRootElement);
-      }
-    };
+    that.getStages = function() {
+      return [];
+    }
     
-    that.remove = function() {
-      if (_domRootElement) {
-        _domRootElement.remove();
-      }
-    };
-        
+    that.viewWillAppear = function() {};
+
+    that.viewDidAppear = function() {};
+
+    that.viewWillDisappear = function() {};
+
+    that.viewDidDisappear = function() {};
+    
+    /** handle a mouse-out event that is sent by the application controller in
+     * case the mouse enters a view on a higher-level stage. This is important,
+     * because a lower-level-view will not receive a mouse-out event in case
+     * the mouse is moved to an overlapping view on a higher-level stage. */
+    that.handleArtificialMouseOut = function() {};
+
+    
     that.runloop = function() {
     };
     
