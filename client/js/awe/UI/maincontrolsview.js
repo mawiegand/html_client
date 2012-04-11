@@ -151,6 +151,13 @@ AWE.UI = (function(module) {
       _shopShapeGraphics.drawRoundRect(20, 95, 100, 30, 8);
       var _shopShape = new Shape(_shopShapeGraphics);    
   
+      var _frog = new Bitmap();
+      _frog.image = AWE.UI.ImageCache.getImage("hud/frog/face");
+      _frog.x = 65;
+      _frog.y = 56;
+      _frog.scaleX = 1;
+      _frog.scaleY = 1;  
+        
       var _shopButtonText = new Text('Shop', "12px Arial", "#000");
       _shopButtonText.textBaseline = "middle";
       _shopButtonText.textAlign = "center"
@@ -215,6 +222,7 @@ AWE.UI = (function(module) {
       _container.addChildAt(_flagShape);
       _container.addChildAt(_village);
       _container.addChildAt(_fortressButton); 
+      _container.addChildAt(_frog);
       _container.addChildAt(_resource1Text);
       _container.addChildAt(_resource2Text);
       _container.addChildAt(_resource3Text);

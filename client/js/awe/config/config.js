@@ -112,7 +112,7 @@ AWE.Config = (function(module) {
     "map/army": 'images/army.png',
     
     "hud/head": 'images/head.png',
-    "hud/frog/face": 'images/kopfkroete60.png',
+    "hud/frog/face": 'images/kopfkroete40.png',
   };
   
   module.MAP_STANCE_IMAGES = [
