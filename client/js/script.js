@@ -1,5 +1,9 @@
 window.WACKADOO = Ember.Application.create(function() {
   var _numLoadedAssets = 0, _numAssets = 0; // this uses a closure for private, not-bindable vars
+  
+  var oldMouseX = 0, mouseOverX = 0, oldMouseY = 0, mouseOverY = 0;
+  var hoveredView=null;
+
 
   return {
     
@@ -13,13 +17,48 @@ window.WACKADOO = Ember.Application.create(function() {
     notificationLayerAnchor: $('#notification-layer'),
     hudLayerAnchor: $('#hud-layer'),
     dialogLayerAnchor: $('#dialog-layer'),
+    
+    ownStages: null,
+    allStages: null,
+    
+    isModal: false,
   
   
     /** custom object initialization goes here. */
     init: function() {
       this._super();
+      this.set('ownStages', []); // TODO: setup HUD, notifications, etc.
     },
   
+  
+  
+	  testMouseOver: function() {
+	    var allStages = this.get('allStages');
+	    
+	    // TODO: check whether mouse moved, quit if not moved, set oldMouseX
+	    
+	    var target = null;
+	    var relX, relY;
+	    for (var layer=0; layer < allStages.length; layer++) {
+	      if (allStages[layer].stage.mouseInBounds && ! allStages[layer].transparent) {
+	        var stage = allStages[layer].stage;
+	        target = stage.getObjectUnderPoint(stage.mouseX, stage.mouseY);
+	        relX= stage.mouseX;  // store coordinates in stage's local coordinate system
+	        relY= stage.mouseY;
+	        break;
+	      }
+	    }
+	    
+	    if (hoveredView != target) {
+	      if (hoveredView && hoveredView.onMouseOut) {
+	        hoveredView.onMouseOut(new MouseEvent("onMouseOut", relX, relY, hoveredView));
+	      }
+	      hoveredView = target;
+	      if (target && target.onMouseOver) {
+	        target.onMouseOver(new MouseEvent("onMouseOver", relX, relY, target));
+	      }
+	    }
+	  },
     
     
     /** registers the runloop to be started with next animation frame. Triggered
@@ -39,6 +78,7 @@ window.WACKADOO = Ember.Application.create(function() {
      * for sending and receiving messages.) */
     runloop: function() { 
       if (this.get('appCompletelyLoaded') && this.get('rootScreenController')) {
+        this.testMouseOver();
         this.get('rootScreenController').runloop();      // hand over control to present screen controller
       }
       else { // TODO: bind this to the attributes using an ember template.
@@ -104,17 +144,17 @@ window.WACKADOO = Ember.Application.create(function() {
         });
       }
 
-      AWE.UI.ImageCache.init();                         // initializes the central image cache
+      AWE.UI.ImageCache.init();                   // initializes the central image cache
       for (var k in AWE.Config.IMAGE_CACHE_LOAD_LIST) {     // and preload assets
         if (AWE.Config.IMAGE_CACHE_LOAD_LIST.hasOwnProperty(k)) {
-          _numAssets += 1;                              // count assets
+          _numAssets += 1;                        // count assets
           AWE.UI.ImageCache.loadImage(k, AWE.Config.IMAGE_CACHE_LOAD_LIST[k], function(name) {
             assetLoaded();
           });
         }
       }
 
-      AWE.Util.TemplateLoader.loadAllTemplates();       // doing this last makes sure _numLoadedAssets may not accidently equal _numAssets before all requests have been started
+      AWE.Util.TemplateLoader.loadAllTemplates(); // doing this last makes sure _numLoadedAssets may not accidently equal _numAssets before all requests have been started
     },
     
     activateMapController: function() {
@@ -130,15 +170,130 @@ window.WACKADOO = Ember.Application.create(function() {
       this.setScreenController(allianceController);
     },
     
-    append: function(controller) {
-      if (this.get('screenContentAnchor')) {
-        this.get('screenContentAnchor').append(controller.rootElement());
+    setModal: function(state) {
+      if (this.get('isModal') != state) {
+        // respond to state chage and do the necessary stuff
+        //   add / remove darkened-out layer
+        //   disable / enable mouse-over-events
+      }
+      this.set('isModal', state);
+    },
+    
+    handleMouseOver: function(mouseEvent, index) {
+      log("mouse over", mouseEvent.target, index);
+      var allStages = this.get('allStages');
+      if (allStages[index].stage.mouseInBounds) {
+        var obj = allStages[index].stage.getObjectUnderPoint(mouseEvent.stageX, mouseEvent.stageY);
+        var oldObj = this.get('hoveredView');
+        
+        if (oldObj) {
+          if (oldObj.onMouseOut) {
+            oldObj.onMouseOut(mouseEvent);
+          }
+          this.set('hoveredView', null);
+        }
+        
+        if (obj.onMouseOver) {
+          obj.onMouseOver(mouseEvent);
+          this.set('hoveredView', obj);
+        }
+        
+        /*
+        while(obj.view === undefined && obj.parent && obj.parent != allStages[index].stage) {
+          obj = obj.parent; // find the view-container that contains this displayobject
+        }
+        if (obj && obj.view) {
+          this.get('rootScreenController').viewMouseOver(obj.view);
+          this.set('hoveredView', obj.view);
+          console.log(obj.view);
+        }
+        else {
+          this.get('rootScreenController').viewMouseOut(obj.view);
+          console.log('WARNING: mouse entered an easelJS displayobject that has no associated view.')
+        }*/
+      }
+      else {
+        console.log('ERROR: mouse over event on stage ' + index + ' not in bounds.');
+      }
+      
+      for (var i=index+1; i < allStages.length; i++) { // disable mouse events for lower level layers
+        if (allStages[i].mouseOverEvents) {
+          allStages[i].stage.enableMouseOver(0);
+        }
+      }
+    },
+
+    handleMouseOut: function(mouseEvent, index) {
+      log("mouse out", mouseEvent.target, index);
+      var allStages = this.get('allStages');
+      
+      if (this.get('hoveredView') && this.get('hoveredView').onMouseOut) {
+        this.get('hoveredView').onMouseOut(mouseEvent);
+      }
+      this.set('hoveredView', null);
+      
+      for (var i=index+1; i < allStages.length; i++) { // disable mouse events for lower level layers
+        if (allStages[i].mouseOverEvents) {
+          allStages[i].stage.enableMouseOver();
+        }
       }
     },
     
-    remove: function() {
+    bindEventHandlers: function(allStages, controller) {
+       // bind event handlers
+       return ;
+      var self = this;
+      for (var i=0; i < allStages.length; i++) {
+        // mouse over
+        if (allStages[i].mouseOverEvents) {
+          allStages[i].stage.enableMouseOver();
+
+          allStages[i].stage.onMouseOver=function(j) {
+            return function(mouseEvent) { 
+              self.handleMouseOver(mouseEvent, j);
+            };            
+          }(i);
+        
+          // mouse out
+          allStages[i].stage.onMouseOut=function(j) {
+            return function(mouseEvent) {
+              self.handleMouseOut(mouseEvent, j);
+            };            
+          }(i);
+        }
+      }     
+    },
+    
+    unbindEventHandlers: function(stages) {
+      // unbind event handlers
+      return ;
+      for (var i=0; i < allStages.length-1; i++) {
+        if (allStages[i].mouseOverEvents) {
+          allStages[i].stage.unbind('onMouseOver');
+          allStages[i].stage.unbind('onMouseOut');
+        }
+      }      
+    },
+    
+    append: function(controller) {
       if (this.get('screenContentAnchor')) {
-        this.get('screenContentAnchor').remove(controller.rootElement());
+        var controllerStages = controller.getStages();
+        var allStages = controllerStages.concat(this.get('ownStages')).reverse(); // ATTENTION: uses a side-effect: own stages will always be at start of array, so their mouse-over hooks need not be updated, when controller-stages change.
+        this.get('screenContentAnchor').append(controller.rootElement()); // add to dom
+        this.set('controllerStages', controllerStages);
+        this.set('allStages', allStages); 
+        this.bindEventHandlers(allStages, controller);
+      }
+    },
+    
+    remove: function(controller) {
+      if (this.get('screenContentAnchor')) {
+        var controllerStages = this.get('controllerStages');
+        var allStages = this.get('allStages');
+        this.unbindEventHandlers(allStages);
+        this.set('controllerStages', []);
+        this.set('allStages', this.get('ownStages').reverse()); // ATTENTION: uses a side-effect: own stages will always be at start of array, so their mouse-over hooks need not be updated, when controller-stages change.
+        controller.rootElement().remove(); // remove from dom
       }
     },
     

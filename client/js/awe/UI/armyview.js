@@ -237,7 +237,7 @@ AWE.UI = (function(module) {
       my.controller.viewClicked(that);
     };
     
-    that.onMouseOver = function(evt){
+    that.onMouseOver = function(evt){ 
       my.controller.viewMouseOver(that);
     };
 

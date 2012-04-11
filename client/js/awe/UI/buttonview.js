@@ -41,6 +41,8 @@ AWE.UI = (function(module) {
       _labelText.textBaseline = "middle";
       _labelText.x = my.frame.size.width / 2;
       _labelText.y = my.frame.size.height / 2;
+      _labelText.view = that;
+      _labelText.onClick = function() { that.onClick() }; // CAUTION: need to wrap the call in a function, because otherwise it's not possible to attach a different function to that as onClick handler
       _container.addChild(_labelText);
     
       _container.x = my.frame.origin.x;
