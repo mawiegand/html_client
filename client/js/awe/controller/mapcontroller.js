@@ -383,7 +383,7 @@ AWE.Controller = (function(module) {
     
     that.onMouseWheel = function(ev) {
       
-      var evt = window.event;
+      // var evt = window.event;
       if (ev && ev.originalEvent) {
         evt = ev.originalEvent
       }
@@ -391,7 +391,7 @@ AWE.Controller = (function(module) {
       var delta = 0;
       
       if (evt.wheelDelta) { /* IE/Opera. */
-        delta = evt.wheelDelta/120;
+        delta = evt.wheelDelta/240;
       }
       else if (evt.detail) { /** Mozilla case. */
         /** In Mozilla, sign of delta is different than in IE.
@@ -415,6 +415,7 @@ AWE.Controller = (function(module) {
       if (evt.preventDefault) {
         evt.preventDefault();
       }
+      
       evt.returnValue = false;
     };
     

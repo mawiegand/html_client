@@ -288,8 +288,8 @@ AWE.Application = (function(module) {
             
         // register controller to receive mouse-wheel events in screen
         if (controller.onMouseWheel) {
-          $(window).bind('mousewheel', function() {
-            self.onMouseWheel();
+          $(window).bind('mousewheel', function(evt) {
+            self.onMouseWheel(evt);
           });
       
           // register controller to receive mouse-wheel events in screen (mozilla)

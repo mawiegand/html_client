@@ -101,7 +101,7 @@ AWE.Config = (function(module) {
 
     "map/easement": "images/verbot.png",
 
-    "map/display/icon": "images/platzhaltericon.png",
+    "map/display/icon": "images/white_icon.png",
 
     "map/region/icon": "images/dot.png",
     

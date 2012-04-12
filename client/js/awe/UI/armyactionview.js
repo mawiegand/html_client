@@ -67,7 +67,7 @@ AWE.UI = (function(module) {
       _rankImageView.setFrame(AWE.Geometry.createRect(86, 0, 20, 20));
       _container.addChild(_rankImageView.displayObject());
 
-      if (_army.get('battle_id') || _army.get('target_location_id')) {
+      if (_army.isBattling() || _army.isMoving()) {
         var lines = 3;
       }
       else {
@@ -121,14 +121,20 @@ AWE.UI = (function(module) {
     };
     
     that.onAttackButtonClick = function() {};
+    that.onBattleButtonClick = function() {};
+    
+    that.onMoveButtonClick = function() {};
+    that.onCancelMoveButtonClick = function() {};
+    
+    that.onWaylayButtonClick = function() {};
     
     that.army = function() { return _army; }
     
     that.updateView = function() {
       
-      _stanceButtonView.setVisible(true);
-      _moveButtonView.setVisible(_armyView.hovered());
-      _attackButtonView.setVisible(_armyView.selected());
+      // _stanceButtonView.setVisible(true);
+      // _moveButtonView.setVisible(_armyView.hovered());
+      // _attackButtonView.setVisible(_armyView.selected());
       // _rankImageView.setVisible(that.selected());
       
       _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank1")); // + _army.get('rank')));
