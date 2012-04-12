@@ -27,6 +27,7 @@ AWE.UI = (function(module) {
       initWithController: AWE.Ext.superior(that, "initWithController"),
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
       setFrame: AWE.Ext.superior(that, "setFrame"),
+      setVisible: AWE.Ext.superior(that, "setVisible"),
     }
     
     that.initWithControllerAndLabel = function(controller, label, background, frame) {
