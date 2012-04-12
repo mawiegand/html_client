@@ -20,7 +20,8 @@ AWE.GS = (function(module) {
     typeName: 'Alliance',           ///< identifies instances of this type
     identifier: null,               ///< unique identifier assigned by identity_provider
     name: null,                     ///< name of the alliance
-    alliance_tag: null,
+    tag: null,
+    description: null,
     
     locked: false,                  ///< TODO: don't communicate this!
     locked_by: null,
@@ -66,9 +67,9 @@ AWE.GS = (function(module) {
     };
     
     that.colorForNumber = function(number) {
-      return { r: ((number*5 % 3) * 80 + number*5) % 256  , 
-               g: (((number % 5) * 50) + number*5) % 256, 
-               b: ((3-(number % 3)) * 80 + number*5) % 256 };
+      return { r: ((number*5 % 3) * 80 + number*9) % 256  , 
+               g: (((number % 5) * 50) + number*7) % 256, 
+               b: ((3-(number % 3)) * 80 + number*3) % 256 };
     };
     
     return that;

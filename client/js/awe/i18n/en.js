@@ -34,6 +34,17 @@ AWE.I18n = AWE.I18n || function(module) {
       
     },
     
+    alliance: {
+      founded: 'Founded',
+      leader: 'Leader',
+      description: 'Descritpion',
+      message: 'Message of the Day',
+      messageExplanation: 'This is only visible to members.',
+      members: 'Members',
+      shoutBox: 'Shout Box',
+      shoutBoxExplanation: 'Everything entered here is instantly visible to all other members.'
+    },
+    
     shop: {
       
     },

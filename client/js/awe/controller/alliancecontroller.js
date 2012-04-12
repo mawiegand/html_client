@@ -9,13 +9,21 @@ AWE.Controller = (function(module) {
           
   module.createAllianceController = function(anchor) {
       
+    var _needsRecreate = false;  
+      
     var that = module.createScreenController(anchor); ///< create base object
+    
+    that.view = null;
+    that.allianceId = null;
+    that.visible = false;
     
     var _super = {};             ///< store locally overwritten methods of super object
     _super.init = that.init; 
     _super.runloop = that.runloop;
     _super.append = function(f) { return function() { f.apply(that); }; }(that.append);
     _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
+    
+    
     
     
     // ///////////////////////////////////////////////////////////////////////
@@ -28,23 +36,55 @@ AWE.Controller = (function(module) {
      * the playing pieces (armies, fortresses, settlements), and 
      * the HUD. */
     that.init = function(initialFrameModelCoordinates) {
-      _super.init();
-            
-      var root = that.rootElement();
-      
-      // background layer, displays region tiles
-      root.append('Alliance Controller');
+      _super.init();            
     };   
     
-    that.append = function() {
-      _super.append();
-    }     
-    
-    that.remove = function() {
-      _super.remove();
-    }
-
     that.getStages = function() { return []; }
+    
+    that.getAndUpdateAlliance = function(allianceId) {
+      var alliance = AWE.GS.AllianceManager.getAlliance(allianceId);
+      if ((!alliance && allianceId) ||
+          (alliance && alliance.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
+        AWE.GS.AllianceManager.updateAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(alliance) {
+          if (alliance && that.view && that.view.alliance != alliance) {
+            _needsRecreate = true;
+          }
+        });
+      }
+      return alliance;
+    }
+    
+    that.removeView = function() {
+      if (this.view) {
+        this.view.destroy();
+        this.view = null;
+      }
+    }
+    
+    that.appendView = function() {
+      if (this.view) {
+        this.removeView();
+      }
+      var alliance = that.getAndUpdateAlliance(this.allianceId);
+      this.view = AWE.UI.Ember.AllianceScreen.create({
+        alliance: alliance,
+      });
+      this.view.appendTo('#main-screen-controller');      
+    }
+    
+    that.setAllianceId = function(allianceId) {
+      this.allianceId = allianceId;
+    }
+    
+    that.viewDidAppear = function() {
+      this.visible = true;
+      this.appendView();
+    };
+    
+    that.viewWillDisappear = function() {
+      this.removeView();
+      this.visible = false;
+    };
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -58,6 +98,12 @@ AWE.Controller = (function(module) {
 
     that.runloop = function() {
       this.updateDebug();
+      if (this.visible && (_needsRecreate || (this.view.get('alliance') &&
+          this.view.get('alliance').get('id') != this.allianceId))) {
+        this.removeView();
+        this.appendView();
+        _needsRecreate = false;
+      }
     }
     
     return that;
