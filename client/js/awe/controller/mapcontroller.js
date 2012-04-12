@@ -634,6 +634,10 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector.onInventoryButtonClick = function(self) { 
           return function(army) { self.armyInfoButtonClicked(army); }
         }(that);
+        
+        inspectorViews.inspector.onFlagClicked = function(allianceId) {
+          WACKADOO.activateAllianceController(allianceId);
+        }
       }
       _stages[3].addChild(inspectorViews.inspector.displayObject());
       _inspectorChanged = true;

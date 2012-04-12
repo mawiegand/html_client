@@ -45,6 +45,8 @@ AWE.UI = (function(module) {
       setFrame: AWE.Ext.superior(that, "setFrame"),
     };
     
+    that.onFlagClicked = null;
+    
     /** overwritten view methods */
     
     that.initWithControllerAndArmy = function(controller, army, frame) {
@@ -160,6 +162,11 @@ AWE.UI = (function(module) {
         _flagShapeGraphics.lineTo(offX +60, offY +0).lineTo(offX +30, offY +75).lineTo(offX +0, offY +0);
         _flagShape = new Shape(_flagShapeGraphics);
         _container.addChild(_flagShape);
+        _flagShape.onClick = function() { 
+          if (that.onFlagClicked) {
+            that.onFlagClicked(_army.get('alliance_id'));
+          };
+        };
         
         _allianceTagLabel = AWE.UI.createLabelView();
         _allianceTagLabel.initWithControllerAndLabel(controller);
