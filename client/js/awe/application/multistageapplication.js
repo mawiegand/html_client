@@ -61,6 +61,8 @@ AWE.Application = (function(module) {
       allStages: null,
     
       isModal: false,
+      
+      modalDialogs: null,
   
   
       /** custom object initialization goes here. */
@@ -70,6 +72,8 @@ AWE.Application = (function(module) {
         this.set('controllerStages', []); //
         this.set('notificationStages', []); //
         this.set('hudStages', []); // 
+        
+        this.set('modalDialogs', []);
 
         $('body').mousemove(function(event) {
           mouseX = event.pageX; 
@@ -94,6 +98,10 @@ AWE.Application = (function(module) {
 
         if (presentScreenController && presentScreenController.isScrolling()) {
           return ; // just ignore it here!
+        }
+        
+        if (this.get('isModal')) {
+          return ;
         }
       
         var allStages = this.get('allStages');
@@ -225,8 +233,8 @@ AWE.Application = (function(module) {
           // respond to state chage and do the necessary stuff
           //   add / remove darkened-out layer
           //   disable / enable mouse-over-events
+          this.set('isModal', state);
         }
-        this.set('isModal', state);
       },
     
       onMouseDown: function(evt) {
@@ -341,6 +349,7 @@ AWE.Application = (function(module) {
           if (controller) {
             controller.viewWillAppear();
             this.append(controller);
+            controller.applicationController = this;
             controller.viewDidAppear();
           }
         }
@@ -364,10 +373,23 @@ AWE.Application = (function(module) {
             this.get('hudLayerAnchor').append(controller.rootElement()); // add to dom
             this.set('hudStages', controller.getStages());
             this.resetAllStages();
-            log (controller.getStages(), this.get('allStages'));
+            controller.applicationController = this;
             controller.viewDidAppear();
           }
         }
+      },
+      
+      modalDialogClosed: function(dialog) {
+        console.log('closed dialog');
+        this.setModal(false);
+      },
+      
+      presentModalDialog: function(dialog) {
+        this.setModal(true);
+        dialog.onClose = function(self) { 
+          return function(dialog) { self.modalDialogClosed(dialog) };
+        }(this);
+        dialog.append();
       },
   
     }

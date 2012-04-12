@@ -450,7 +450,7 @@ AWE.Controller = (function(module) {
         army: army,
         changeNamePressed: function(event) {
               
-          AWE.UI.Ember.TextInputDialog.create({
+          var changeDialog = AWE.UI.Ember.TextInputDialog.create({
             heading: 'Enter the new name of this army.',
             input: this.get('army').get('name'),
             okPressed: function() {
@@ -458,43 +458,17 @@ AWE.Controller = (function(module) {
               AWE.Action.Manager.queueAction(action);  
               this.destroy();            
             },
-            cancelPressed: function() {
-              this.destroy();
-            }
-          }).append();
+          });
+          that.applicationController.presentModalDialog(changeDialog);
         },
         closePressed: function(event) {
           this.destroy();
         }
       });
-      dialog.append();
-    }; 
       
-      /*
-          _actionViews.selectionControls.onAttackButtonClick = function () {              
-          var dialog = AWE.UI.Ember.ArmyInfoView.create({
-            army: view.army(),
-            changeNamePressed: function(event) {
-              
-              AWE.UI.Ember.TextInputDialog.create({
-                heading: 'Enter the new name of this army.',
-                input: this.get('army').get('name'),
-                okPressed: function() {
-                  var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), this.get('input'));
-                  AWE.Action.Manager.queueAction(action);  
-                  this.destroy();            
-                },
-                cancelPressed: function() {
-                  this.destroy();
-                }
-              }).append();
-            },
-            closePressed: function(event) {
-              this.destroy();
-            }
-          });
-          dialog.append(); 
-        }*/
+      that.applicationController.presentModalDialog(dialog);
+    }; 
+
 
     // ///////////////////////////////////////////////////////////////////////
     //

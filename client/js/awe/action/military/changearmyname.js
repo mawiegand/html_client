@@ -14,9 +14,7 @@ AWE.Action.Military = (function(module) {
     // private attributes and methods //////////////////////////////////////
     
     var that;
-    
-    var _url = AWE.Config.ACTIONS_BASE+'military/change_army_name'
-  
+      
     // protected attributes and methods ////////////////////////////////////
   
     my = my || {};
