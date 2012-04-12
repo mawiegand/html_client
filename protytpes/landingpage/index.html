@@ -1,23 +1,32 @@
 <!doctype html>
 <head>
+  <title>Wack-a-doo</title>
+  <link href='http://fonts.googleapis.com/css?family=Henny+Penny|Averia+Serif+Libre:400,400italic,300italic,700,700italic,300|Overlock:400,700italic,900italic,400italic,700,900|Average|Bad+Script|Short+Stack|Fredoka+One|Imprima|Averia+Gruesa+Libre|Shadows+Into+Light+Two|Trocchi|Oxygen|Karla:400,400italic,700|Lusitana:400,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="mockup.css">
 </head>
   
 <body>
   <div id="mainbar">
+    <div class="center">
+      <div id="signin"></div>
+    </div>
     <div id="content">
+      <div class="variable-spacer"></div>
+    
       <div id="message">
+        <div class="center">
+
         <div class="msg-obj" id="msg0">
           <img src="wackadoo.png" id="logo-large"/>
         </div>
         <div class="msg-obj" id="msg1" style="display: none;">
-          <span id="m1_l1">THE LOCATION-BASED</span><br/>
-          <span id="m1_l2">STRATEGY MMO</span>
+          <span id="m1_l1">The massively multiplayer</span><br/>
+          <span id="m1_l2">strategy game</span>
         </div>
         <div class="msg-obj" id="msg2" style="display: none;">
-          <span id="m2_l1">COMMAND</span><br/>
-          <span id="m2_l2">A STONE-AGE TRIBE AS</span><br/>
-          <span id="m2_l3">DEMIGOD</span>
+          <span id="m2_l1">Be a demigod</span><br/>
+          <span id="m2_l2">leading a</span><br/>
+          <span id="m2_l3">stonage-tribe</span>
         </div>
         <div class="msg-obj" id="msg3" style="display: none;">
           <span id="m3_l1">Fight THOUSANDS of PLAYERS</span><br/>
@@ -25,8 +34,8 @@
         </div>
         
         <div class="msg-obj" id="msg5" style="display: none;">
-          <span id="m4_l1">STRATEGY</span><br/>
-          <span id="m4_l2">DONE RIGHT</span>
+          <span id="m5_l1">play and ally with your friends</span><br/>
+          <span id="m5_l2">interact with thousand of players around the world</span>
         </div>
         <div class="msg-obj" id="msg6" style="display: none;">
           <span id="m5_l1">MOVE UNITS</span><br/>
@@ -36,17 +45,18 @@
           <span id="m6_l1">ESTABLISH AND PROTECT</span><br/>
           <span id="m6_l2">YOUR NATION'S BORDERS</span>
         </div>
+        
+        </div>
       </div>
-            
-      <div id="figures">
-        <div id="figures-placer">
-          <img id="img-bg" src="ayersrock.png">
-          <img id="img-figures" src="figures.png">
+          
+      <div id="figures">      
+        <div class="center">
+          <img id="figures-background" src="ayersrock.png">
+          <img id="figures-foreground" src="figures.png">
         </div>
       </div>
       
       <div class="variable-spacer"></div>
-
     </div>
   </div>
 
@@ -61,18 +71,18 @@
     
     <div id="menubar">
       <ul>
-        <li>About</li>
-        <li>Blog</li>
-        <li>Forum</li>
-        <li>Support</li>
-        <li>Terms of Use</li>
-        <li>Legal</li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Forum</a></li>
+        <li><a href="#">Support</a></li>
+        <li><a href="#">Terms of Use</a></li>
+        <li><a href="#">Legal</a></li>
       </ul>
     </div>
         
 
     <div id="footerbar">
-      <img src="wackadoo.png" id="logo-small"/>
+      <img src="wackadoo.png" id="logo-small"  alt="" />
       Wanna know more about the game? <span class="arrow">&nbsp;</span>
     </div>
   </div>
@@ -80,55 +90,142 @@
   
   <div id="detailsbar" style="display:none;">
     <div class="sprenkel"></div>
-    <div class="center">
+    <div class="center-panel">
       <div id="panel">
         <div class="panel-row">
           <div class="panel-column" id="column-r1c1">
-            <h1>Whack-a-what?!</h2>
-            <p>Whack-a-doo is a MMO strategy game in which you take care of a tribe of wacky cavemen. Help them prosper and grow and lead them into battle or make friends with other tribes. You will be able to enter their persistent world anytime and anywhere, using a browser, an iPhone or iPad. </p>
+            <h1>Wack-a-what?!</h1>
+            <p>Wack-a-doo is a MMO strategy game in which you take care of a
+              tribe of wacky cavemen. Help them prosper and grow and lead them
+              into battle or make friends with other tribes. You will be able
+              to enter their persistent world anytime and anywhere, using a
+              browser, an iPhone or iPad. </p>
           </div><div class="panel-column" id="column-r1c2">
-            <h1>So, what's different?</h2>
-            <p>Unlike other MMO strategy games, our units are actually visible on the world map, and don't just teleport around invisibly. More like a board game, really. Whack-a-doo is being developed as a true cross-platform game from the start. There will be no lousy platform-inappropriate interfaces! We have dinosaurs. Can't beat dinosaurs.</p>
+            <h1>So, what's different?</h1>
+            <p>Unlike other MMO strategy games, our units are actually visible
+              on the world map, and don't just teleport around invisibly. More
+              like a board game, really. Whack-a-doo is being developed as a
+              true cross-platform game from the start. There will be no lousy
+              platform-inappropriate interfaces! And: We have dinosaurs! Can't beat
+              dinosaurs.</p>
           </div><div class="panel-column" id="column-r1c3">
-            <img src="dooer.png">
+            <img src="dooer.png"  alt="" />
+          </div>
+        </div>
+        <div class="panel-row">
+          <div class="panel-column" id="column-r2c1">
+            <h1>What do I do, then?</h1>
+            <img alt="" src="github.png" />
+          </div>
+        </div>
+        <div class="panel-row panel-top-ruler">
+          <div class="panel-column" id="column-r3c1">
+            <h1>Great! Let me see the game!</h2>
+            <img alt="" src="screenshot1.png" />
+            <img alt="" src="screenshot2.png" />
+            <img alt="" src="screenshot4.png" />
+            <img alt="" src="screenshot3.png" />
+            <img alt="" src="screenshot1.png" />
+            <img alt="" src="screenshot2.png" />
+          </div><div class="panel-column" id="column-r3c2">
+            <h1>How much does it cost?</h1>
+            <p>You can play for the great price of <b>free</b>. To make this clear: playing wack-a-doo was free of charge, is free of charge and will be free of charge; it costs nothing, nada, zero.</p>
+            <p> However, we, too, have
+              to feed our dinosaurs somehow. That's the why there's an optional premium account 
+              offering comfort features and why you'll also have the
+              opportunity to give us small amounts of money and benefit from
+              convenience features, time-savers and small boosts. We are
+              however firm believers that multiplayer games should always be
+              balanced and should never turn into auctions.</p>
+          </div>
+        </div>
+        <div class="panel-row panel-top-ruler">
+          <p style="margin-top:-20px;">Yeah, alright, I still wanna know more details...</p>
+
+          <div class="panel-column" id="column-r4c1">
+            <h1>Armies on the world map</h1>
+            <p>Armies are always visible on the world map. No more giving orders
+              through interfaces that look like spreadsheets! They actually
+              exist on the world map, too, so they can't just teleport through
+              enemy territory like they do in other games in this genre. This
+              adds a new strategic gameplay dimension, because for the first
+              time, location affects more than just travel time. So it's more
+              like board games and RTS games.</p>
+          </div><div class="panel-column" id="column-r4c2">
+            <img src="items.png" alt="" />
+          </div>
+        </div>
+        <div class="panel-row panel-top-ruler larger-font"><div class="panel-column" id="column-r5c2">
+            <img src="devices.png" alt="" />
+          </div><div class="panel-column" id="column-r5c1">
+            <h1>True cross-platform</h1>
+            <p>Whack-a-doo is being developed as a true cross-platform game
+              from the very beginning. Command your
+              tribe from any device anywhere using the HTML5 client. No plugins necessary! 
+            </p>
+            <p>Furthermore, we will offer native clients for a number of platforms.
+              We take extra 
+              care that each platform's
+              interface is specifically tailored to its individual properties, 
+              so that it'll always feel just right.</p>
+          </div>
+        </div>
+        <!--
+        <div class="panel-row panel-top-ruler">
+          <div class="panel-column" id="column-r6c1">
+            <h1>What do I need to play?</h1>
+            <p>The current release of Whack-a-doo it as a html5 browser game
+              (Internet Explorer, Firefox, Chrome, Safari). A native iOS
+              Client is next.</p>
+          </div>
+        </div>
+        -->
+        <div class="panel-row panel-top-ruler">
+          <div class="panel-column" id="column-r7c1">
+            <img src="profil.png" alt="" />
+          </div>
+          <div class="panel-column" id="column-r7c2">
+            <h1>Who are you guys, anyway?</h1>
+            <p>We're avid fans of the genre and some of us were heavily
+              involved in one of its first games, Uga-Agga, which even today,
+              after many, many years, still has a loyal, active fanbase. Now
+              we want to take it one step further and already have a bunch of
+              revolutionary innovations planned that we will announce soon.
+              Stay put!</p>
           </div>
         </div>
       </div>
-      <div id="sitemap">
-        <div class="sitemap">
-          <ul>
-            <li>About</li>
-            <li>Blog</li>
-            <li>Forum</li>
-            <li>Support</li>
-          </ul>
-        </div>
-        <div class="sitemap">
-          <ul>
-            <li>About</li>
-            <li>Blog</li>
-            <li>Forum</li>
-            <li>Support</li>
-          </ul>
-        </div>
-        <div class="sitemap">
-          <ul>
-            <li>About</li>
-            <li>Blog</li>
-            <li>Forum</li>
-            <li>Support</li>
-          </ul>
-        </div>  
-        <div class="sitemap">
-          <ul>
-            <li>About</li>
-            <li>Blog</li>
-            <li>Forum</li>
-            <li>Support</li>
-          </ul>
-        </div>  
+    </div>  
+    <div id="sitemap"><div class="sitemap">
+        <ul>
+          <li class="first">Wack-a-doo</li>
+          <li>Terms of Service</li>
+          <li>Privacy</li>
+          <li>Contact</li>
+          <li>Imprint</li>
+        </ul>
+      </div><div class="sitemap">
+        <ul>
+          <li class="first">Game</li>
+          <li>Rules</li>
+          <li>FAQ</li>
+        </ul>
+      </div><div class="sitemap">
+        <ul>
+          <li class="first">News</li>
+          <li>Blog</li>
+          <li>Twitter</li>
+          <li>Facebook</li>
+        </ul>
+      </div><div class="sitemap">
+        <ul>
+          <li class="first">Community</li>
+          <li>Forum</li>
+          <li>Wiki</li>
+          <li>Chat</li>
+        </ul>
       </div>  
-    </div>
+    </div>  
   </div>
     
   <script src="jquery-1.6.2.js"></script>

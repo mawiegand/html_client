@@ -20,6 +20,7 @@ AWE.UI = (function(module) {
     var _army = null;
     
     var _nameLabelView = null;
+    var _allianceTagLabel = null;
     var _apLabelView = null;
     var _locationLabelView = null;
     var _rankLabelView = null;
@@ -34,13 +35,14 @@ AWE.UI = (function(module) {
     var _moveButtonView = null;
     var _prevButtonView = null;
     var _nextButtonView = null;
+    var _flagShape = null;
     
     that = module.createView(spec, my);
 
     var _super = {
-      initWithController: that.superior("initWithController"),
-      layoutSubviews: that.superior("layoutSubviews"),
-      setFrame: that.superior("setFrame"),
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      setFrame: AWE.Ext.superior(that, "setFrame"),
     };
     
     /** overwritten view methods */
@@ -114,6 +116,8 @@ AWE.UI = (function(module) {
       _sizeType3LabelView.setFrame(AWE.Geometry.createRect(105, 90, 100, 24));      
       _container.addChild(_sizeType3LabelView.displayObject());
       
+
+      
       // kreis drum
       var circleGraphics = new Graphics();
       circleGraphics.setStrokeStyle(1);
@@ -122,46 +126,77 @@ AWE.UI = (function(module) {
       circleGraphics.drawCircle(248, 64, 64);
       var _circleShape = new Shape(circleGraphics);    
       _container.addChild(_circleShape);
+
+      // Image view für held
+      var stance = _army.get('stance')
+      var offX = stance == 0 ? 12:0;
+      var offY = stance == 0 ? 2:0;
       
       var _baseGraphics = new Graphics();
       _baseGraphics.setStrokeStyle(1);
       _baseGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
       _baseGraphics.beginFill(Graphics.getRGB(0, 0, 0));
-      _baseGraphics.drawEllipse(222, 92, 52, 24);
+      _baseGraphics.drawEllipse(219, 92, 59, 26);
       _baseShape = new Shape(_baseGraphics);  
       _container.addChild(_baseShape);
 
-      // Image view für held
       _stanceView = AWE.UI.createImageView();
-      _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.stance()]));
-      _stanceView.setFrame(AWE.Geometry.createRect(216, 16, 64, 96));
+      _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[stance]));
+      _stanceView.setFrame(AWE.Geometry.createRect(208 +offX, -12 + offY, 80, 120));
       _stanceView.onClick = that.onClick;
       _stanceView.onMouseOver = that.onMouseOver;
       _stanceView.onMouseOut = that.onMouseOut;
       _container.addChild(_stanceView.displayObject());
 
+      // Allicance Flag
+      if (_army.get('alliance_id') != null) {
+        offX = 150; offY = 0;
+        _flagShapeGraphics = new Graphics();
+        _flagShapeGraphics.setStrokeStyle(1);
+        _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
+        var color = AWE.GS.AllianceManager.colorForNumber(_army.get('alliance_id'));
+        _flagShapeGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
+        _flagShapeGraphics.moveTo(offX +0, offY +0);
+        _flagShapeGraphics.lineTo(offX +60, offY +0).lineTo(offX +30, offY +75).lineTo(offX +0, offY +0);
+        _flagShape = new Shape(_flagShapeGraphics);
+        _container.addChild(_flagShape);
+        
+        _allianceTagLabel = AWE.UI.createLabelView();
+        _allianceTagLabel.initWithControllerAndLabel(controller);
+        _allianceTagLabel.setFrame(AWE.Geometry.createRect(offX+10, offY+5, 40, 16));      
+        _allianceTagLabel.setTextAlign("center");
+        _container.addChild(_allianceTagLabel.displayObject());        
+      }
+
       // buttons oben
-      _invButtonView = AWE.UI.createButtonView();
-      _invButtonView.initWithControllerTextAndImage(controller, 'inv.', AWE.UI.ImageCache.getImage("map/button1"));
-      _invButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
-      _invButtonView.onClick = function() { that.onInventoryButtonClick() };
-      _container.addChild(_invButtonView.displayObject());
+      if (_army.isOwn()) {
+        _invButtonView = AWE.UI.createButtonView();
+        _invButtonView.initWithControllerTextAndImage(controller, 'Inventory', AWE.UI.ImageCache.getImage("map/button1"));
+        _invButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
+        _invButtonView.onClick = function() { that.onInventoryButtonClick(_army) };
+        _container.addChild(_invButtonView.displayObject());
+  
+        _stanceButtonView = AWE.UI.createButtonView();
+        _stanceButtonView.initWithControllerTextAndImage(controller, 'Stance', AWE.UI.ImageCache.getImage("map/button1"));
+        _stanceButtonView.setFrame(AWE.Geometry.createRect(224, -20, 48, 48));
+        _container.addChild(_stanceButtonView.displayObject());
 
-      _moveButtonView = AWE.UI.createButtonView();
-      _moveButtonView.initWithControllerTextAndImage(controller, 'move', AWE.UI.ImageCache.getImage("map/button1"));
-      _moveButtonView.setFrame(AWE.Geometry.createRect(268, 0, 48, 48));
-      _container.addChild(_moveButtonView.displayObject());
+        _reinforceButtonView = AWE.UI.createButtonView();
+        _reinforceButtonView.initWithControllerTextAndImage(controller, 'Reinforce', AWE.UI.ImageCache.getImage("map/button1"));
+        _reinforceButtonView.setFrame(AWE.Geometry.createRect(268, 0, 48, 48));
+        _container.addChild(_reinforceButtonView.displayObject());
 
-      // button unten
-      _prevButtonView = AWE.UI.createButtonView();
-      _prevButtonView.initWithControllerTextAndImage(controller, '<<', AWE.UI.ImageCache.getImage("map/button1"));
-      _prevButtonView.setFrame(AWE.Geometry.createRect(180, 92, 36, 36));
-      _container.addChild(_prevButtonView.displayObject());
-
-      _nextButtonView = AWE.UI.createButtonView();
-      _nextButtonView.initWithControllerTextAndImage(controller, '>>', AWE.UI.ImageCache.getImage("map/button1"));
-      _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
-      _container.addChild(_nextButtonView.displayObject());
+        // button unten
+        _prevButtonView = AWE.UI.createButtonView();
+        _prevButtonView.initWithControllerTextAndImage(controller, '<<', AWE.UI.ImageCache.getImage("map/button1"));
+        _prevButtonView.setFrame(AWE.Geometry.createRect(180, 92, 36, 36));
+        _container.addChild(_prevButtonView.displayObject());
+  
+        _nextButtonView = AWE.UI.createButtonView();
+        _nextButtonView.initWithControllerTextAndImage(controller, '>>', AWE.UI.ImageCache.getImage("map/button1"));
+        _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
+        _container.addChild(_nextButtonView.displayObject());
+      }
 
       _container.x = my.frame.origin.x;
       _container.y = my.frame.origin.y;
@@ -192,14 +227,29 @@ AWE.UI = (function(module) {
     };
 
     that.updateView = function() {
-      _nameLabelView.setText(_army.name());
-      _apLabelView.setText('AP: ' + AWE.UI.Util.secondsToString(_army.ap_seconds_per_point()));
+      _nameLabelView.setText(_army.get('name'));
+      if (_army.isOwn()) {
+        _apLabelView.setText('AP: ' + AWE.UI.Util.secondsToString(_army.get('ap_seconds_per_point')));
+      }
+      else {
+        _apLabelView.setText(_army.get('owner_name'));        
+      }
+      if (_allianceTagLabel) {
+        if (_army.get('alliance_tag')) {
+          _allianceTagLabel.setVisible(true);
+          _allianceTagLabel.setText(_army.get('alliance_tag'));
+        }
+        else {
+          _allianceTagLabel.setVisible(false);
+        }
+      }
+      
       _locationLabelView.setText('Home');
-      _rankLabelView.setText(_army.rank());
-      _sizeAllLabelView.setText(_army.size_present());
-      _sizeType1LabelView.setText(_army.size_present());
-      _sizeType2LabelView.setText(_army.size_present());
-      _sizeType3LabelView.setText(_army.size_present());
+      _rankLabelView.setText(_army.get('rank'));
+      _sizeAllLabelView.setText(_army.get('size_present'));
+      _sizeType1LabelView.setText(_army.get('size_present'));
+      _sizeType2LabelView.setText(_army.get('size_present'));
+      _sizeType3LabelView.setText(_army.get('size_present'));
     };   
     
     that.army = function() {

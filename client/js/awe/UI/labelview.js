@@ -24,9 +24,10 @@ AWE.UI = (function(module) {
     var that = module.createView(spec, my);
     
     var _super = {
-      initWithController: that.superior("initWithController"),
-      layoutSubviews: that.superior("layoutSubviews"),
-      setFrame: that.superior("setFrame"),
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      setFrame: AWE.Ext.superior(that, "setFrame"),
+      setVisible: AWE.Ext.superior(that, "setVisible"),
     }
     
     that.initWithControllerAndLabel = function(controller, label, background, frame) {
@@ -91,10 +92,6 @@ AWE.UI = (function(module) {
         _backgroundShape = new Shape(_backgroundGraphics);
         _container.addChildAt(_backgroundShape, 0);
       }
-      
-      // für placeholder kreis
-      if (_labelIcon) placeholderShape.x = _labelIcon.center().x;
-      if (_labelIcon) placeholderShape.y = _labelIcon.center().y;
     }
     
     that.displayObject = function() {
@@ -127,6 +124,11 @@ AWE.UI = (function(module) {
     that.padding = function() {
       return _padding;
     }
+        
+    that.setVisible = function(visible) {
+      _super.setVisible(visible);
+      _container.visible = visible;
+    };
     
     that.setIconImage = function(image) {
     
@@ -135,14 +137,7 @@ AWE.UI = (function(module) {
         _labelIcon.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(image));
         _labelIcon.setContentMode(module.ViewContentModeNone);
         _labelIcon.setFrame(AWE.Geometry.createRect(0, 0, 20, 20));
-        // _container.addChild(_labelIcon.displayObject());
-        
-        var placeholderGraphics = new Graphics();
-        placeholderGraphics.setStrokeStyle(1);
-        placeholderGraphics.beginStroke('rgb(255, 255, 255)');
-        placeholderGraphics.drawCircle(0, 0, 10);
-        placeholderShape = new Shape(placeholderGraphics);    
-        _container.addChild(placeholderShape);
+        _container.addChild(_labelIcon.displayObject());
       }
       else {
         _labelIcon.setImage(AWE.UI.ImageCache.getImage(image));
@@ -153,7 +148,7 @@ AWE.UI = (function(module) {
             
     that.iconImage = function() {
       return _padding;
-    }
+    };
 
     return that;
   };

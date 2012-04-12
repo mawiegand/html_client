@@ -48,6 +48,11 @@
   
   <div role="main">
     <div id="layers">
+      <div id="screen-content">
+      </div>
+      <div id="notification-layer" class="layer canvas-layer"></div>
+      <div id="hud-layer" class="layer canvas-layer"></div>
+      <div id="dialog-layer" class="layer dom-layer"></div>
     </div>
     <div id="debug"></div>
     <div id="debug2"></div>
@@ -64,6 +69,8 @@
   <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+  
+
   
   <!-- Load ember JS. For debugging-purposes: not minified. -->
   <script src="js/libs/ember-0.9.5.js"></script>
@@ -87,9 +94,9 @@
 
   <!-- scripts concatenated and minified via build script -->
   <script src="js/awe/config/config.js"></script>
-  <script src="js/awe/util/extensions.js"></script>
   <script src="js/awe/util/common.js"></script>
   <script src="js/awe/util/extensions.js"></script>
+  
   <script src="js/awe/network/network.js"></script>
   <script src="js/awe/util/geometry.js"></script>
   <script src="js/awe/util/partials.js"></script>
@@ -112,25 +119,31 @@
   <script src="js/awe/UI/outpostview.js"></script>
   <script src="js/awe/UI/fortressdetailview.js"></script>
   <script src="js/awe/UI/fortressview.js"></script>
-  <script src="js/awe/UI/fortresshighlightview.js"></script>
-  <script src="js/awe/UI/fortressselectionview.js"></script>
+  <script src="js/awe/UI/fortressactionview.js"></script>
   <script src="js/awe/UI/armydetailview.js"></script>
   <script src="js/awe/UI/armyview.js"></script>  
-  <script src="js/awe/UI/armyhighlightview.js"></script>  
-  <script src="js/awe/UI/armyselectionview.js"></script>  
+  <script src="js/awe/UI/armyactionview.js"></script>  
   <script src="js/awe/UI/regionview.js"></script>
   <script src="js/awe/UI/maincontrolsview.js"></script>
-  <script src="js/awe/UI/dom/domview.js"></script>
+  <script src="js/awe/UI/ember/domview.js"></script>
+  <script src="js/awe/UI/ember/standardviews.js"></script>
+  <script src="js/awe/UI/ember/armyviews.js"></script>
   <script src="js/awe/controller/screencontroller.js"></script>
   <script src="js/awe/controller/mapcontroller.js"></script>
+  <script src="js/awe/controller/alliancecontroller.js"></script>
+  <script src="js/awe/controller/hudcontroller.js"></script>
   <script src="js/awe/gamestate/gamestate.js"></script>
+  <script src="js/awe/gamestate/relation.js"></script>
   <script src="js/awe/gamestate/army.js"></script>
+  <script src="js/awe/gamestate/character.js"></script>
+  <script src="js/awe/gamestate/alliance.js"></script>
   <script src="js/awe/action/action.js"></script>
   <script src="js/awe/action/actionmanager.js"></script>
   <script src="js/awe/action/military/changearmyname.js"></script>
+  <script src="js/awe/application/multistageapplication.js"></script>
   <script src="js/awe/i18n/en.js"></script>
   <script src="js/plugins.js"></script>
-  <script src="js/script.js"></script>
+  <script src="js/script.js"></script> 
   <!-- end scripts -->
   <div id="templates">
   </div>

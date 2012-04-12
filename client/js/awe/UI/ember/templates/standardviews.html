@@ -1,0 +1,11 @@
+<script type="text/x-handlebars" data-template-name="text-input-dialog">
+      <div class="modal-dialog-background z-layer-3"></div>
+      <div class="center-helper">
+        <div class="modal-dialog-pane z-layer-4" id="text-input-dialog">
+          <h1>{{ heading }}</h1>
+          {{view Ember.TextField class="text-field" placeholder="Name" type="text" valueBinding="input"}} 
+          {{#view Ember.Button action="cancelPressed" target="parentView"}}cancel{{/view}}
+          {{#view Ember.Button action="okPressed" target="parentView"}}ok{{/view}}
+        </div>
+      </div>
+</script>

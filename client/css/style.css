@@ -270,9 +270,20 @@ html, body {
 
 
 #layers {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
 }
 
-#layer0 {
+#screen-content {
+  width: 100%;
+  height: 100%;
+}
+
+
+#map-tile-canvas {
   background-color: #333;
   position: absolute;
   top: 0px;
@@ -282,7 +293,7 @@ html, body {
   z-index: 0;   /*   <-------------------   */
 }
 
-#layer1 {
+#gaming-pieces-canvas {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -291,7 +302,7 @@ html, body {
   z-index: 1;
 }
 
-#layer2 {
+#annotation-canvas {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -300,13 +311,31 @@ html, body {
   z-index: 2;
 }
 
-#layer3 {
+#inspector-canvas {
   position: absolute;
   top: 0px;
   left: 0px;
   width: 100%;
   height: 100%;
   z-index: 3;
+}
+
+
+#hud-canvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+.z-layer-3 {
+  z-index: 512;
+}
+
+.z-layer-4 {
+  z-index: 768;
 }
 
 #debug {
@@ -354,8 +383,7 @@ html, body {
   display: none;
 }
 
-.center-helper { position: absolute; left: 50%; top: 50%; height: 100%; width: 100%;
-}
+.center-helper { position: absolute; left: 50%; top: 50%; }
 
 .modal-dialog-background { position: absolute; background-color: #333; opacity: 0.6; width: 100%; height: 100%; z-index:255; }
 .modal-dialog-pane { 
@@ -372,6 +400,24 @@ html, body {
   -moz-box-shadow:    3px 3px 2px 2px #333;
   -webkit-box-shadow: 3px 3px 2px 2px #333;
   box-shadow:         3px 3px 2px 2px #333;
+}
+
+.background-clear {
+  background-color: rgba(255,255,255,0.);
+}
+
+
+
+#text-input-dialog { 
+  position: absolute; 
+  margin-left: -100px;
+  margin-top: -20px;
+  width: 400px; height: 200px;
+  background-color: #FCC;  
+}
+
+#text-input-dialog h1 {
+  font-size: 24px;
 }
 
 #army-details { 

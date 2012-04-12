@@ -22,10 +22,10 @@ AWE.UI = (function(module) {
     that = module.createSettlementView(spec, my);
 
     var _super = {
-      initWithController: that.superior("initWithController"),
-      layoutSubviews: that.superior("layoutSubviews"),
-      setFrame: that.superior("setFrame"),
-      setAlpha: that.superior("setAlpha"),
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      setFrame: AWE.Ext.superior(that, "setFrame"),
+      setAlpha: AWE.Ext.superior(that, "setAlpha"),
     };
     
     /** overwritten view methods */

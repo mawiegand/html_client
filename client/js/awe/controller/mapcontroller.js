@@ -14,8 +14,7 @@ AWE.Controller = (function(module) {
     var _canvas = new Array(4);  ///< canvas elements for the four stages
 
     var _selectedView = null;    ///< there can be only one selected view!
-    var _highlightedView = null; ///< there can be only one highlighted view!
-    var _selectedHighlightView = null; ///< highlighted view if selected
+    var _hoveredView = null;
     
     var _windowSize = null;      ///< size of window in view coordinates
     var mc2vcScale;              ///< scaling
@@ -23,11 +22,12 @@ AWE.Controller = (function(module) {
 
     var _needsLayout;            ///< true, in case e.g. the window has changed, causing a new layuot of the map
     var _needsDisplay;           ///< true, in case something (data, subwview) has changed causing a need for a redraw
+    var _windowChanged=false;    ///< true, in case the size of the map screen has changed.
     
     var _scrollingStarted = false;///< user is presently scrolling
     var _scrollingStartedAtVC;
     var _scrollingOriginalTranslationVC;
-
+    
     var _camera; ///< camera for handeling camera panning
     
     var that = module.createScreenController(anchor); ///< create base object
@@ -35,6 +35,8 @@ AWE.Controller = (function(module) {
     var _super = {};             ///< store locally overwritten methods of super object
     _super.init = that.init; 
     _super.runloop = that.runloop;
+    _super.append = function(f) { return function() { f.apply(that); }; }(that.append);
+    _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
     
     var _loopCounter = 0;        ///< counts every cycle through the loop
     var _frameCounter = 0;       ///< counts every rendered frame
@@ -42,7 +44,7 @@ AWE.Controller = (function(module) {
     var _modelChanged = false;   ///< true, if anything in the model changed
     var _maptreeChanged = false; ///< true, if anything in the maptree (just nodes!) changed. _maptreeChanged = true implies modelChanged = true
     
-    var _detailViewChanged = false; ///< true, if a detailView has been added, removed or changed
+    var _inspectorChanged = false; ///< true, if a detailView has been added, removed or changed
     
     var requestingMapNodesFromServer = false;
     
@@ -50,8 +52,8 @@ AWE.Controller = (function(module) {
     var fortressViews = {};
     var armyViews = {};
     var locationViews = {};
-    var _actionViews = {};
-    var HUDViews = {};
+    var actionViews = {};
+    var inspectorViews = {};
     
     var armyUpdates = {};
 
@@ -71,85 +73,49 @@ AWE.Controller = (function(module) {
       
       _sortStages = [false, true, false, false];  // which stages to y-sort? -> presently, only the gaming pieces need to be sorted.
       
-      // background layer, displays region tiles
-      that.anchor().append('<canvas id="layer0"></canvas>');
-      _canvas[0] = $('#layer0')[0];
-      _stages[0] = new Stage(_canvas[0]);
+      var root = that.rootElement();
       
-      _stages[0].onClick = function() {   // click into background unselects selected object
-        if (_selectedView) {
-          _unselectView();
-        }
-      };
-   
+      // background layer, displays region tiles
+      root.append('<canvas id="map-tile-canvas"></canvas>');
+      _canvas[0] = root.find('#map-tile-canvas')[0];
+      _stages[0] = new Stage(_canvas[0]);
+            
       // selectable gaming pieces layer (fortresses, armies, etc.)
-      that.anchor().append('<canvas id="layer1"></canvas>');
-      _canvas[1] = $('#layer1')[0];
+      root.append('<canvas id="gaming-pieces-canvas"></canvas>');
+      _canvas[1] = root.find('#gaming-pieces-canvas')[0];
       _stages[1] = new Stage(_canvas[1]);
-      _stages[1].enableMouseOver();
       
       // layer for mouseover and selection objects
-      that.anchor().append('<canvas id="layer2"></canvas>');
-      _canvas[2] = $('#layer2')[0];
+      root.append('<canvas id="annotation-canvas"></canvas>');
+      _canvas[2] = root.find('#annotation-canvas')[0];
       _stages[2] = new Stage(_canvas[2]);
-      _stages[2].enableMouseOver();
-      
-      // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) or stage2 is active          
-      _stages[2].onMouseOver = function() {
-        _stages[1].enableMouseOver(0);
-        _unhighlightView();
-      };
-  
-      _stages[2].onMouseOut = function() {
-        _stages[1].enableMouseOver();
-      };
-      
-      // HUD layer ("static", not zoomable, not moveable)
-      that.anchor().append('<canvas id="layer3"></canvas>');
-      _canvas[3] = $('#layer3')[0];
-      _stages[3] = new Stage(_canvas[3]);
-      _stages[3].enableMouseOver();
 
-      // disable onMouseOver for stage1 when onMouseOver on stage3 (HUD) or stage2 is active          
-      _stages[3].onMouseOver = function() {
-        _stages[1].enableMouseOver(0);
-        _unhighlightView();
-      };
-  
-      _stages[3].onMouseOut = function() {
-        _stages[1].enableMouseOver();
-      };
+      // layer for the object inspector
+      root.append('<canvas id="inspector-canvas"></canvas>');
+      _canvas[3] = root.find('#inspector-canvas')[0];
+      _stages[3] = new Stage(_canvas[3]);
+
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
       that.setNeedsLayout();
-      
-      // register controller to receive window-resize events (from browser window) 
-      // in order to adapt it's own window / display area
-      $(window).resize(function(){
-        that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
-      });
-      
-      // register controller to receive click events in screen
-      $('#layers').click(function(evt) {
-        that.handleClick(evt);
-      });
-      
-      // register controller to receive mouse-down events in screen
-      $('#layers').mousedown(function(evt) {
-        that.handleMouseDown(evt);
-      });
-      
-      // register controller to receive mouse-wheel events in screen
-      $(window).bind('mousewheel', function() {
-        that.handleMouseWheel();
-      });
-      // register controller to receive mouse-wheel events in screen (mozilla)
-      $(window).bind('DOMMouseScroll', function(evt) {
-        that.handleMouseWheel(evt);
-      });
 
-    };        
+    };   
+        
+    that.getStages = function() {
+      return [
+        { stage: _stages[0], mouseOverEvents: false, transparent: true},
+        { stage: _stages[1], mouseOverEvents: true },
+        { stage: _stages[2], mouseOverEvents: true },
+        { stage: _stages[3], mouseOverEvents: true },
+      ];
+    };
+    
+    that.viewDidAppear = function() {
+    }     
+    
+    that.viewWillDisappear = function() { 
+    }
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -227,6 +193,7 @@ AWE.Controller = (function(module) {
     that.setWindowSize = function(size) {
       if (! _windowSize || _windowSize.width != size.width || _windowSize.height != size.height) {
         _windowSize = size;
+        _windowChanged = true;
         that.setNeedsLayout(); 
       }
     };
@@ -343,7 +310,7 @@ AWE.Controller = (function(module) {
           _canvas[2].height = _windowSize.height;             
 
           _canvas[3].width  = _windowSize.width;
-          _canvas[3].height = _windowSize.height;             
+          _canvas[3].height = _windowSize.height;          
         };
         that.setNeedsDisplay();
       };
@@ -353,78 +320,84 @@ AWE.Controller = (function(module) {
     /** set to true in case the whole window needs to be repainted. */
     that.setNeedsDisplay = function() { _needsDisplay = true; }
     
+    /** receives an event in case the size of the screen changes. On change
+     * of dimensions will cause a needs-layout-event. */
+    that.onResize = function() {
+      that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
+    }
     
     // ///////////////////////////////////////////////////////////////////////
     //
-    //   Mouse-Over and Object Selection
+    //   Mouse-Scrolling
     //
     // /////////////////////////////////////////////////////////////////////// 
-            
-    that.handleClick = function(evt) {
-      if (!_scrollingStarted) {
-        var cObj;
-        if (_stages[3].hitTest(evt.pageX, evt.pageY)) {
-          cObj = _stages[2].getObjectUnderPoint(evt.pageX, evt.pageY);
-          if (cObj && cObj.view && cObj.view.onClick) {
-            // cObj.view.onClick(evt);
-          }
-        }
-        else if (_stages[2].hitTest(evt.pageX, evt.pageY)) {
-          cObj = _stages[2].getObjectUnderPoint(evt.pageX, evt.pageY);
-          if (cObj && cObj.view && cObj.view.onClick) {
-            cObj.view.onClick(evt);
-          }
-        }
-        else if (_stages[1].hitTest(evt.pageX, evt.pageY)) {
-          cObj = _stages[1].getObjectUnderPoint(evt.pageX, evt.pageY);
-          if (cObj && cObj.view && cObj.view.onClick) {
-            cObj.view.onClick(evt);
-          }
-        }
-        else if (_stages[0].hitTest(evt.pageX, evt.pageY)) {
-          // call onClick of stage for unselecting items
-          if (_stages[0].onClick) {
-            _stages[0].onClick(evt);
-          }         
-        }
+    
+    // starting
+    
+    that.prepareScrolling = function(posX, posY) {
+      _scrollingStartedAtVC = AWE.Geometry.createPoint(posX, posY);
+      _scrollingOriginalTranslationVC = mc2vcTrans.copy();
+        
+      this.anchor().mousemove(function(ev) {
+        that.onMouseMove(ev);
+      });
+    } 
+    
+    that.startScrolling = function() {
+      _scrollingStarted = true;
+    } 
+    
+    that.onMouseDown = function(evt) {
+    //if (!_stages[2].hitTest(evt.pageX, evt.pageY)) {  // removed, for the moment, it's ok to scroll everywhere
+      that.prepareScrolling(evt.pageX, evt.pageY);
+    };    
+
+    
+    // scrolling
+    
+    that.onMouseMove = function(event) {
+      // here we can assume, that the mouse is pressed right now!
+      if (! that.isScrolling() && (Math.abs(event.pageX - _scrollingStartedAtVC.x) > 5 || Math.abs(event.pageY - _scrollingStartedAtVC.y > 5)))  {
+        that.startScrolling();
       }
-      else {
-        _scrollingStarted = false;
+      if (that.isScrolling()) {
+        var pos = AWE.Geometry.createPoint(_scrollingOriginalTranslationVC.x + event.pageX - _scrollingStartedAtVC.x, 
+                                           _scrollingOriginalTranslationVC.y + event.pageY - _scrollingStartedAtVC.y);        
+        mc2vcTrans.moveTo(pos);
+        that.setNeedsLayout();
       }
+    };
+    
+       
+    // ending
+    
+    that.endScrolling = function() {
+      this.anchor().unbind('mousemove');
+      _scrollingStarted = false;
+    }       
+    
+    that.isScrolling = function() {
+      return _scrollingStarted;
+    }
+
+    that.onMouseUp = function(evt) {
+      that.endScrolling();
     }
     
-    that.handleMouseDown = function(evt) {
-             
-      if (!_stages[2].hitTest(evt.pageX, evt.pageY)) {
-        _scrollingStartedAtVC = AWE.Geometry.createPoint(evt.pageX, evt.pageY);
-        _scrollingOriginalTranslationVC = mc2vcTrans.copy();
-        
-        $('#layers').mousemove(function(ev) {
-          that.handleMouseMove(ev);
-        });
-        
-        $('body').mouseup(function() {
-          $('#layers').unbind('mousemove');
-        });      
+    that.onMouseLeave = function(evt) {
+      that.endScrolling();
+    }
   
-        $('body').mouseleave(function() {
-          $('#layers').unbind('mousemove');
-        });
-      }      
-    };
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Mouse-Zooming
+    //
+    // ///////////////////////////////////////////////////////////////////////     
     
-    that.handleMouseMove = function(event) {
-      // here we can assume, that the mouse is pressed right now!
-      _scrollingStarted = true;
-      var pos = AWE.Geometry.createPoint(_scrollingOriginalTranslationVC.x + event.pageX - _scrollingStartedAtVC.x, 
-                                         _scrollingOriginalTranslationVC.y + event.pageY - _scrollingStartedAtVC.y);        
-      mc2vcTrans.moveTo(pos);
-      that.setNeedsLayout();
-    };
-    
-    that.handleMouseWheel = function(ev) {
+    that.onMouseWheel = function(ev) {
       
-      var evt = window.event;
+      // var evt = window.event;
       if (ev && ev.originalEvent) {
         evt = ev.originalEvent
       }
@@ -432,7 +405,7 @@ AWE.Controller = (function(module) {
       var delta = 0;
       
       if (evt.wheelDelta) { /* IE/Opera. */
-        delta = evt.wheelDelta/120;
+        delta = evt.wheelDelta/240;
       }
       else if (evt.detail) { /** Mozilla case. */
         /** In Mozilla, sign of delta is different than in IE.
@@ -456,15 +429,71 @@ AWE.Controller = (function(module) {
       if (evt.preventDefault) {
         evt.preventDefault();
       }
+      
       evt.returnValue = false;
     };
     
+      
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Mouse-Click
+    //
+    // ///////////////////////////////////////////////////////////////////////     
+    
+    /** received in case no view is hit by a click. used to unselect object on
+     * click into background. */
+    that.onClick = function() {   
+      if (_selectedView) {
+        _unselectView();
+      }
+    };
 
     // ///////////////////////////////////////////////////////////////////////
     //
-    //   Action Handling
+    //   Actions
     //
     // /////////////////////////////////////////////////////////////////////// 
+
+
+    that.armyInfoButtonClicked = function(army) {
+      if (!army) {
+        return ;
+      }
+  
+      var dialog = AWE.UI.Ember.ArmyInfoView.create({
+        army: army,
+        changeNamePressed: function(event) {
+              
+          var changeDialog = AWE.UI.Ember.TextInputDialog.create({
+            heading: 'Enter the new name of this army.',
+            input: this.get('army').get('name'),
+            okPressed: function() {
+              var action = AWE.Action.Military.createChangeArmyNameAction(army, this.get('input'));
+              AWE.Action.Manager.queueAction(action);  
+              this.destroy();            
+            },
+            cancelPressed: function() { this.destroy(); }
+          });
+          that.applicationController.presentModalDialog(changeDialog);
+        },
+        closePressed: function(event) {
+          this.destroy();
+        }
+      });
+      
+      that.applicationController.presentModalDialog(dialog);
+    }; 
+
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   User Input Handling
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
+
+    
     
     /** returns the single map view that is presently selected by the user. 
      * this can be any of the gaming pieces (armies), markers or settlements.*/
@@ -473,20 +502,9 @@ AWE.Controller = (function(module) {
     /** sets the selected view */
     that.setSelectedView = function(view) {
       // when selected view is set from outside, the view type has to determined
-      // and the viewport has to be transformed to show the view.  
-      _selectedView = view;
-    };
-        
-    var _action = false;
-
-    that.buttonClicked = function(button) {
-      log('button', button.text());
-    };
-    
-    that.viewClicked = function(view) {    
+      // and the viewport has to be transformed to show the view. 
       if (_selectedView === view) {
         _unselectView(_selectedView);
-        _highlightView(view);
       }
       else if (_selectedView) {
         _unselectView(_selectedView);
@@ -496,149 +514,151 @@ AWE.Controller = (function(module) {
         _selectView(view);
       }
     };
+        
+    var _actionViewChanged = false;
 
-    that.viewMouseOver = function(view) {
+    that.buttonClicked = function(button) {
+      log('button', button.text());
+    };
+    
+    that.viewClicked = function(view) {    
+      that.setSelectedView(view);
+    };
+
+    that.viewMouseOver = function(view) { // console.log('view mouse over: ' + view.typeName())
       if (view.typeName() === 'FortressView') {
-        _highlightView(view);
+        _hoverView(view);
       }
       else if (view.typeName() === 'ArmyView') {
-        _highlightView(view);
+        _hoverView(view);
       }
       else if (view.typeName() === 'hudView') { // typeof view == 'hud'  (evtl. eigene methode)
-        _unhighlightView();
+        // _unhoverView();
       }
     };
 
     that.viewMouseOut = function(view) {
       if (view.typeName() === 'FortressView') {
-        _unhighlightView();
+        _unhoverView();
       }
       else if (view.typeName() === 'ArmyView') {
-        _unhighlightView();
+        _unhoverView();
       }
     };
     
     /* view selection */
     
-    var _selectView = function(view) {
-      var center = view.center();
+    var _selectView = function(view) {      
       _selectedView = view;
-      view.setSelected(true);
-      
-      // distinguish between different views
-      if (view.typeName() === 'FortressView') {
-        _actionViews.selectionControls = AWE.UI.createLabelView(); // createFortressSelectionView
-        _actionViews.selectionControls.initWithControllerAndLabel(that, 'Fortress', true);
-        _actionViews.selectionControls.setCenter(center);
-        view.setSelected(true);
-      }
-      else if (view.typeName() === 'ArmyView') {
-        _actionViews.selectionControls = AWE.UI.createArmySelectionView();
-        _actionViews.selectionControls.initWithControllerAndArmy(that, view.army(), AWE.Geometry.createRect(-64, 0, 192, 128));
-        _actionViews.selectionControls.setCenter(center);
-        _actionViews.selectionControls.onAttackButtonClick = function () {
-          
-          var dialog = Ember.View.create({
-            templateName: 'army-details',
-            
-            name: _selectedView.army().name(),
-            changeNameButton: Ember.View.extend({
-              click: function(evt) { console.log('clicked'); alert('Clicked!'); }
-            })
-          });
-          dialog.append(); 
-        }
-        
-        /* var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), 'Maximo Leader');
-           AWE.Action.Manager.queueAction(action); */
-
-      }
-      
-      _stages[2].addChild(_actionViews.selectionControls.displayObject());
-      // _stages[2].removeChild(_actionViews.selectedHighlightImage.displayObject());
-      
-      _selectedHighlightView = _highlightedView;
-      _highlightedView = null;
-      
-      _actionViews.selectedHighlightImage = _actionViews.highlightImage;
-      delete _actionViews.highlightImage;
-      
-      _showDetailView(view);
-      _action = true;
+      _selectedView.setSelected(true);
+      actionViews.selected = actionViews.hovered;
+      actionViews.selected.setNeedsUpdate();
+      _showInspectorWith(_selectedView);
+      _actionViewChanged = true;
     };
     
     var _unselectView = function(view) {
-      _hideDetailView(view);
-      _stages[2].removeChild(_actionViews.selectionControls.displayObject());
+      
+      if (!_selectedView.hovered()) {
+        _stages[2].removeChild(actionViews.selected.displayObject());
+      }
+      else {
+        actionViews.selected.setNeedsUpdate();        
+      }
+
+      delete actionViews.selected;
       _selectedView.setSelected(false);
       _selectedView = null;
-      delete _actionViews.selectionControls;
       
-      _stages[2].removeChild(_actionViews.selectedHighlightImage.displayObject());
-      delete _actionViews.selectedHighlightImage;
-      _selectedHighlightView = null;
+      _hideInspector();
 
-      _action = true;
+      _actionViewChanged = true;
     };
 
     /* view highlighting */
 
-    var _highlightView = function(view) {
-      if (view !== _selectedHighlightView) {
-        var center = view.center();
-        _highlightedView = view;
-        
-        if (view.typeName() === 'FortressView') {
-          _actionViews.highlightImage = AWE.UI.createFortressHighlightView();
-          _actionViews.highlightImage.initWithControllerAndNode(that, view.node());
-          _actionViews.highlightImage.setCenter(center.x, center.y - AWE.Config.MAPPING_FORTRESS_SIZE);
+    var _hoverView = function(view) {
+      
+      if (view !== _hoveredView) {
+        _hoveredView = view;
+        _hoveredView.setHovered(true);
+          
+        if (view !== _selectedView) {
+          
+          var center = view.center();
+          if (view.typeName() === 'FortressView') {
+            actionViews.hovered = AWE.UI.createFortressActionView();
+            actionViews.hovered.initWithControllerAndView(that, view);
+          }
+          else if (view.typeName() === 'ArmyView') {
+            actionViews.hovered = AWE.UI.createArmyActionView();
+            actionViews.hovered.initWithControllerAndView(that, view);
+            armyUpdates[view.army().get('id')] = view.army();
+          }
+
+          actionViews.hovered.setCenter(center.x, center.y);
+          _stages[2].addChild(actionViews.hovered.displayObject());
+          
         }
-        else if (view.typeName() === 'ArmyView') {
-          _actionViews.highlightImage = AWE.UI.createArmyHighlightView();
-          _actionViews.highlightImage.initWithControllerAndArmy(that, view.army());
-          _actionViews.highlightImage.setCenter(center.x, center.y);
-          armyUpdates[view.army().id()] = view.army();
+        else {
+          actionViews.hovered = actionViews.selected;
+          actionViews.hovered.setNeedsUpdate();
         }
         
-        _stages[2].addChild(_actionViews.highlightImage.displayObject());
-        _action = true;
+        _actionViewChanged = true;
       }
     };
 
-    var _unhighlightView = function() {
-      if (_actionViews.highlightImage) {
-        _stages[2].removeChild(_actionViews.highlightImage.displayObject());
-        delete _actionViews.highlightImage;
-        _highlightedView = null;
-        _action = true;
+    var _unhoverView = function() {
+      
+      if (actionViews.hovered) {
+        if (_hoveredView !== _selectedView) {
+          _stages[2].removeChild(actionViews.hovered.displayObject());
+        }
+        else {
+          actionViews.hovered.setNeedsUpdate();
+        }
+        delete actionViews.hovered;
+        _hoveredView.setHovered(false);
+        _hoveredView = null;
+        _actionViewChanged = true;
       }
     };
 
-    /* Detail View */
 
-    var _showDetailView = function(view) {
-      if (HUDViews.detailView) {
-        hideDetailView(HUDViews.detailView);
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Inspector (show / hide)
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+
+    var _showInspectorWith = function(view) { 
+      if (inspectorViews.inspector) {
+        _hideInspector();
       }
       
       if (view.typeName() === 'FortressView') {      
-        HUDViews.detailView = AWE.UI.createFortressDetailView();
-        HUDViews.detailView.initWithControllerAndNode(that, view.node());
+        inspectorViews.inspector = AWE.UI.createFortressDetailView();
+        inspectorViews.inspector.initWithControllerAndNode(that, view.node());
       }
       else if (view.typeName() === 'ArmyView') {
-        HUDViews.detailView = AWE.UI.createArmyDetailView();
-        HUDViews.detailView.initWithControllerAndArmy(that, view.army());
+        inspectorViews.inspector = AWE.UI.createArmyDetailView();
+        inspectorViews.inspector.initWithControllerAndArmy(that, view.army());
+        
+        inspectorViews.inspector.onInventoryButtonClick = function(self) { 
+          return function(army) { self.armyInfoButtonClicked(army); }
+        }(that);
       }
-      _stages[3].addChild(HUDViews.detailView.displayObject());
-      _detailViewChanged = true;
+      _stages[3].addChild(inspectorViews.inspector.displayObject());
+      _inspectorChanged = true;
     };
 
-    var _hideDetailView = function(view) {
-      if (HUDViews.detailView) {
-        _stages[3].removeChild(HUDViews.detailView.displayObject());
-        delete HUDViews.detailView;
+    var _hideInspector = function() {
+      if (inspectorViews.inspector) {
+        _stages[3].removeChild(inspectorViews.inspector.displayObject());
+        delete inspectorViews.inspector;
       }
-      _detailViewChanged = true;
+      _inspectorChanged = true;
     };
 
     // ///////////////////////////////////////////////////////////////////////
@@ -725,6 +745,9 @@ AWE.Controller = (function(module) {
           setViewport('regions', visibleAreaMC); ///< remember viewport, because data for this port has been fetched (or isn't needed) 
         }
         
+        // STOP HERE, in case the user is presently scrolling (depends on config).
+        if (AWE.Config.MAPVIEW_DONT_UPDATE_MODEL_WHILE_SCROLLING && that.isScrolling()) return ;
+        
         // in case the viewport has changed or the model has changed (more nodes or regions?!) we need to check for missing locations.
         if ((viewportHasChanged('locations', visibleAreaMC) || that.modelChanged()) && ! isUpdateRunning('nodes')) {
 
@@ -756,11 +779,11 @@ AWE.Controller = (function(module) {
             if (!that.areArmiesAtFortressVisible(frame)) continue ; // no update necessary, region is to small (perhaps fetch aggregate info)
                         
             if (!that.areArmiesAtSettlementsVisible(frame)) {
-              if(AWE.GS.Army.Manager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
+              if(AWE.GS.ArmyManager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
                 nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
                 
                 startUpdate('armies');
-                AWE.GS.Army.Manager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+                AWE.GS.ArmyManager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
                   stopUpdate('armies');
                   that.setModelChanged();
                 });
@@ -791,8 +814,7 @@ AWE.Controller = (function(module) {
               
               if (army.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime()) {
                 startUpdate('armyDetails');
-                console.log('request army details');
-                AWE.GS.Army.Manager.updateArmy(armyId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+                AWE.GS.ArmyManager.updateArmy(armyId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
                   stopUpdate('armyDetails');
                   that.setModelChanged();
                 });
@@ -812,11 +834,11 @@ AWE.Controller = (function(module) {
             if (!that.areArmiesAtFortressVisible(frame)) continue ; // no update necessary, region is to small (perhaps fetch aggregate info)
                         
             if (!that.areArmiesAtSettlementsVisible(frame)) {
-              if(AWE.GS.Army.Manager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
+              if(AWE.GS.ArmyManager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
                 nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
                 
                 startUpdate('armies');
-                AWE.GS.Army.Manager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+                AWE.GS.ArmyManager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
                   stopUpdate('armies');
                   that.setModelChanged();
                 });
@@ -837,7 +859,6 @@ AWE.Controller = (function(module) {
           }
           lastArmyCheck = new Date();
         }
-        
       };
     }());
     
@@ -858,6 +879,12 @@ AWE.Controller = (function(module) {
           stage.removeChild(obj);
           removedSomething = true;          
         });
+        if (view === _selectedView) {
+          _unselectView(view);
+        }
+        if (view === _hoveredView) {
+          _unhoverView(view);
+        }
       }); 
       return removedSomething;     
     }
@@ -913,7 +940,7 @@ AWE.Controller = (function(module) {
     // /////////////////////////////////////////////////////////////////////// 
     
     that.isSettlementVisible = function(frame) {
-      return frame.size.width > 450;
+      return frame.size.width > 420;
     };
     
     that.isFortressVisible = function(frame) {
@@ -925,7 +952,7 @@ AWE.Controller = (function(module) {
     }
     
     that.areArmiesAtSettlementsVisible = function(frame) {
-      return frame.size.width > 450;
+      return frame.size.width > 420;
     }
     
     var setFortressPosition = function(view, frame) {
@@ -1051,7 +1078,7 @@ AWE.Controller = (function(module) {
         for (var key in armies) {
           if (armies.hasOwnProperty(key)) {
             var army = armies[key];
-            var view = armyViews[army.id()];
+            var view = armyViews[army.get('id')];
           
             if (view) {       
               if (view.lastChange !== undefined && view.lastChange() < army.lastChange()) {
@@ -1063,8 +1090,8 @@ AWE.Controller = (function(module) {
               view.initWithControllerAndArmy(that, army);
               _stages[1].addChild(view.displayObject());
             }                                  
-            setArmyPosition(view, pos, army.id(), frame);
-            newArmyViews[army.id()] = view;
+            setArmyPosition(view, pos, army.get('id'), frame);
+            newArmyViews[army.get('id')] = view;
           }
         }
       };
@@ -1098,9 +1125,6 @@ AWE.Controller = (function(module) {
       return removedSomething;          
     }
     
-    
-    
-    
     that.updateGamingPieces = function(nodes) {
       var removedSomething = false;
       
@@ -1111,105 +1135,54 @@ AWE.Controller = (function(module) {
       return removedSomething;
     };
     
-    
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Action Stage
     //
     // /////////////////////////////////////////////////////////////////////// 
     
-    // that.isSettlementVisible = function(frame) {
-    // that.isFortressVisible = function(frame) {
-    // that.areArmiesAtFortressVisible = function(frame) {
-    // that.areArmiesAtSettlementsVisible = function(frame) {
-    
     that.updateActionViews = function() {
-
-      // TODO Sichtbarkeit testen
-
-      if (_actionViews.highlightImage) { 
-        if (_actionViews.highlightImage.typeName() === 'fortressHighlightView') {          
-          _actionViews.highlightImage.setCenter(AWE.Geometry.createPoint(
-            _highlightedView.center().x,
-            _highlightedView.center().y - AWE.Config.MAPPING_FORTRESS_SIZE
-          ));
-        }
-        else if (_actionViews.highlightImage.typeName() === 'armyHighlightView') {
-          _actionViews.highlightImage.setCenter(AWE.Geometry.createPoint(
-            _highlightedView.center().x,
-            _highlightedView.center().y
-          ));
-        }
-      }
-
-      if (_actionViews.selectedHighlightImage) { 
-        if (_actionViews.selectedHighlightImage.typeName() === 'fortressHighlightView') {
-          if (that.isFortressVisible(that.mc2vc(_actionViews.selectedHighlightImage.node().frame()))) {
-            _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
-              _selectedHighlightView.center().x,
-              _selectedHighlightView.center().y - AWE.Config.MAPPING_FORTRESS_SIZE
-            ));
-          }
-          else {
-            _unselectView(_selectedView);             
-          }
-        }
-        else if (_actionViews.selectedHighlightImage.typeName() === 'armyHighlightView') {
-          if (1 || that.isFortressVisible(that.mc2vc(_actionViews.selectedHighlightImage.node().frame()))) {
-            _actionViews.selectedHighlightImage.setCenter(AWE.Geometry.createPoint(
-              _selectedHighlightView.center().x,
-              _selectedHighlightView.center().y
-            ));
-          }
-          else {
-            _unselectView(_selectedView);             
-          }
-        }
-      }
-
-      if (_actionViews.selectionControls) { 
-        _actionViews.selectionControls.setCenter(AWE.Geometry.createPoint(
-          _selectedView.center().x,
-          _selectedView.center().y
+      
+      if (actionViews.hovered
+          && (actionViews.hovered.typeName() === 'FortressActionView'
+          || actionViews.hovered.typeName() === 'ArmyActionView')) {
+        actionViews.hovered.setCenter(AWE.Geometry.createPoint(
+            _hoveredView.center().x,
+            _hoveredView.center().y
         ));
+        actionViews.hovered.setNeedsUpdate();
       }
+
+      if (actionViews.selected
+          && (actionViews.selected.typeName() === 'FortressActionView'
+          || actionViews.selected.typeName() === 'ArmyActionView')) {
+        actionViews.selected.setCenter(AWE.Geometry.createPoint(
+            _selectedView.center().x,
+            _selectedView.center().y
+        ));
+        actionViews.selected.setNeedsUpdate();
+      }
+      
+      return _actionViewChanged;
     };
     
-        
+
+
     // ///////////////////////////////////////////////////////////////////////
     //
-    //   HUD
+    //   Inspector Stage
     //
     // /////////////////////////////////////////////////////////////////////// 
     
-    that.updateHUD = function() {
-      
-      if (!HUDViews.mainControlsView) {
-        HUDViews.mainControlsView = AWE.UI.createMainControlsView();
-        HUDViews.mainControlsView.initWithController(that);
-        HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 470, 20));
-        _stages[3].addChild(HUDViews.mainControlsView.displayObject());
+    that.updateInspectorViews = function() {
+      if (inspectorViews.inspector) {
+        console.log('set origin of inspector');
+        inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width-345, _windowSize.height-155));
       }
-      else {
-        HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 470, 20));
-      }
-
-      var detailView = HUDViews.detailView;
-      if (detailView) {        
-        detailView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 332, _windowSize.height - 148));
-        
-        if (detailView.typeName() === 'ArmyDetailView' && detailView.lastChange() < detailView.army().lastChange()) {
-          detailView.setNeedsUpdate();
-        }
-        
-        if (detailView.typeName() === 'FortressDetailView' && detailView.lastChange() < detailView.node().lastChange()) {
-          detailView.setNeedsUpdate();
-        }
-      }
-      
-      return _detailViewChanged;
+      return _inspectorChanged || _windowChanged;
     };
     
+        
     
     
     // ///////////////////////////////////////////////////////////////////////
@@ -1239,37 +1212,36 @@ AWE.Controller = (function(module) {
       
       return function(nodes, visibleArea) {
         
-        var stagesNeedUpdate = [false, false, true, false]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
+        var stagesNeedUpdate = [false, false, false, false]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
         
         // rebuild individual hieararchies
-        if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
+        if (_windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           stagesNeedUpdate[0] = this.rebuildMapHierarchy(nodes) || stagesNeedUpdate[0];
         }
         
-        if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _action ) {
+        if (_windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _actionViewChanged ) {
           stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         };
         
-        if (1) { // TODO: only update, if necessary
-          that.updateActionViews();
+        if (_windowChanged || this.modelChanged() || _actionViewChanged || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
+          stagesNeedUpdate[2] = that.updateActionViews();
         }
         
-        if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || _action || !HUDViews.mainControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
-          log('MapController: update hud.', _action);
-          stagesNeedUpdate[3] = that.updateHUD() || stagesNeedUpdate[3]; 
+        if (_windowChanged || _actionViewChanged || !inspectorViews.inspector || _inspectorChanged) { // TODO: only update at start and when something might have changed (object selected, etc.)
+          stagesNeedUpdate[3] = that.updateInspectorViews() || stagesNeedUpdate[3]; 
         }
         
-        //log('Update:                   ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
+        // log('Update:                   ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
         // update hierarchies and check which stages need to be redrawn
         stagesNeedUpdate[0] = propUpdates(regionViews) || stagesNeedUpdate[0];
         stagesNeedUpdate[1] = propUpdates(fortressViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(locationViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(armyViews) || stagesNeedUpdate[1];
-        // stagesNeedUpdate[2] = propUpdates(actionViews);
-        stagesNeedUpdate[3] = propUpdates(HUDViews) || stagesNeedUpdate[3];
+        stagesNeedUpdate[2] = propUpdates(actionViews) || stagesNeedUpdate[2];
+        stagesNeedUpdate[3] = propUpdates(inspectorViews) || stagesNeedUpdate[3];
 
-        //log('Update after propagation: ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
+        // log('Update after propagation: ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
         
         oldVisibleArea = visibleArea;
@@ -1283,8 +1255,6 @@ AWE.Controller = (function(module) {
     var numFrames = 0;
     var fps = 60;
     var needRedraw; // TODO: remove this flag.
-    
-    // that.updateView = function() { needRedraw = true; } // TODO: completely remove this method, replaced by setNeedsDisplay
     
     that.updateFPS = function() {
       
@@ -1331,7 +1301,7 @@ AWE.Controller = (function(module) {
         that.layoutIfNeeded();   
         
         // STEP 4: update views and repaint view hierarchies as needed
-        if (_needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || _action) {
+        if (_windowChanged || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || _actionViewChanged) {
           // STEP 4a: get all visible nodes from the model
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());    
           
@@ -1342,12 +1312,12 @@ AWE.Controller = (function(module) {
           var viewsInStages = [
             regionViews,
             [fortressViews, armyViews, locationViews],
-            _actionViews,     // action views: no views?!
-            HUDViews
+            actionViews,
+            inspectorViews,
           ];          
           
-          for (var i=0; i < 4; i++) {
-            if (stageUpdateNeeded[i]) {
+          for (var i=0; i < _stages.length; i++) {
+            if (stageUpdateNeeded[i] || _windowChanged) {
               if (_sortStages[i]) {  // TODO: add configuration: stage needs sorting
                 _stages[i].sortChildren(function(a, b) {
                   var az = a.y + a.height;
@@ -1358,7 +1328,7 @@ AWE.Controller = (function(module) {
               _stages[i].update();
               //log(viewsInStages, regionViews);
               AWE.Ext.applyFunction(viewsInStages[i], function(viewHash) {
-                log (viewHash);
+                // log (viewHash);
                 AWE.Ext.applyFunctionToElements(viewHash, function(view) {
                   view.notifyRedraw();
                 });
@@ -1378,8 +1348,9 @@ AWE.Controller = (function(module) {
         _maptreeChanged = false;
         _needsDisplay = false;
         _needsLayout = false;
-        _action = false;
-        _detailViewChanged = false;
+        _actionViewChanged = false;
+        _inspectorChanged = false;
+        _windowChanged = false;
       }
       _loopCounter++;
     };

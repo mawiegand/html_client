@@ -14,9 +14,7 @@ AWE.Action.Military = (function(module) {
     // private attributes and methods //////////////////////////////////////
     
     var that;
-    
-    var _url = AWE.Config.ACTIONS_BASE+'military/change_army_name'
-  
+      
     // protected attributes and methods ////////////////////////////////////
   
     my = my || {};
@@ -30,13 +28,13 @@ AWE.Action.Military = (function(module) {
       return 'military_army[name]=' + newName; 
     }
     
-    that.getURL = function() { return AWE.Config.MILITARY_SERVER_BASE+'/armies/'+army.id(); }
+    that.getURL = function() { return AWE.Config.MILITARY_SERVER_BASE+'/armies/'+army.get('id'); }
   
     that.getHTTPMethod = function() { return 'PUT'; }
     
     that.postProcess = function(statusCode, xhr) {
       if (statusCode == 200) {
-        AWE.GS.Army.Manager.updateArmy(army.id());
+        AWE.GS.ArmyManager.updateArmy(army.get('id'));
       }
     }
   

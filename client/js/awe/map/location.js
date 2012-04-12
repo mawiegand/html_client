@@ -84,15 +84,19 @@ AWE.Map = (function(module) {
     that.level = function() { return _level; }
         
     that.getArmies = function() { 
-      return AWE.GS.Army.getAllForLocation_id(_id);
+      return AWE.GS.ArmyAccess.getAllForLocation_id(_id);
     };
     
     that.lastArmyUpdateAt = function() {
-      return AWE.GS.Army.lastUpdateForLocation_id(_id);
+      return AWE.GS.ArmyAccess.lastUpdateForLocation_id(_id);
     }
     
     that.udpateArmies = function(updateType, callback) {
-      AWE.GS.Army.Manager.updateArmiesInLocation(_id, updateType, callback);
+      AWE.GS.ArmyManager.updateArmiesInLocation(_id, updateType, callback);
+    }
+    
+    that.region = function() {
+      return _region;
     }
         
         

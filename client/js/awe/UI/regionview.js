@@ -70,7 +70,9 @@ AWE.UI = (function(module) {
           if (i > 8) {
             console.error("there were more locations than expected");
           }
-          _villiageSpotsShapes[i-1].graphics = _generateGraphics(locations[i], AWE.Config.MAP_LOCATION_SPOT_COLOR);
+          if (AWE.Config.MAP_LOCATION_TYPE_CODES[locations[i].typeId()] === "empty") {  // create view for empty spots, so that there's something to register a handler to
+            _villiageSpotsShapes[i-1].graphics = _generateGraphics(locations[i], AWE.Config.MAP_LOCATION_SPOT_COLOR);
+          }
         }
       } else{
         _container.displayObject().visible = false;
@@ -258,7 +260,7 @@ AWE.UI = (function(module) {
       if (_node.isLeaf()) { 
         _container.visible = true;
         _updateRegionStreets(streetsHidden);
-        _updateVillageStreets(villagesHidden);
+        //_updateVillageStreets(villagesHidden);
       } else {
         _container.visible = false;
       }
@@ -292,10 +294,10 @@ AWE.UI = (function(module) {
     that = module.createView(spec, my);
     
     var _super = {
-      initWithController: that.superior("initWithController"),
-      layoutSubviews: that.superior("layoutSubviews"),
-      setFrame: that.superior("setFrame"),
-      updateView: that.superior('updateView'),
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      setFrame: AWE.Ext.superior(that, "setFrame"),
+      updateView: AWE.Ext.superior(that, 'updateView'),
     }
     
     that.initWithControllerAndNode = function(controller, node, frame) {
@@ -340,11 +342,11 @@ AWE.UI = (function(module) {
       
       var size = '128';
       if (detail > 0) {
-          size = '256';
+        size = '256';
       }
-        /*else if (detail > 1) {
-          size = '512';
-        }*/
+      if (detail > 1) {
+        size = '512';
+      }
       
       if (!_node.isLeaf()) {       // not a leaf node, splits further
         newImage = AWE.UI.ImageCache.getImage("map/tiles/split"+size);
@@ -498,7 +500,7 @@ AWE.UI = (function(module) {
       if (my.frame.size.width < 128) {
         return 0;
       }
-      else if (my.frame.size.width < 256) {
+      else if (my.frame.size.width < 420) {
         return 1;
       }
       else if (my.frame.size.width < 512) {

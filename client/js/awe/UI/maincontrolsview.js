@@ -18,9 +18,9 @@ AWE.UI = (function(module) {
     that = module.createView(spec, my);
 
     var _super = {
-      initWithController: that.superior("initWithController"),
-      layoutSubviews: that.superior("layoutSubviews"),
-      setFrame: that.superior("setFrame"),
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      setFrame: AWE.Ext.superior(that, "setFrame"),
     };
     
     /** overwritten view methods */
@@ -31,20 +31,30 @@ AWE.UI = (function(module) {
           
       // Ressourcen Leiste
       // Flagge
-      var _flagShapeGraphics = new Graphics();
-      _flagShapeGraphics.setStrokeStyle(1);
-      _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
-      _flagShapeGraphics.beginFill('rgb(255, 255, 255)');
-      _flagShapeGraphics.moveTo(240, 0);
-      _flagShapeGraphics.lineTo(320, 0).lineTo(280, 100).lineTo(240, 0);
-      var _flagShape = new Shape(_flagShapeGraphics);
       
-      var _flagButtonText = new Text('Flag', "12px Arial", "#000");
-      _flagButtonText.textBaseline = "middle";
-      _flagButtonText.textAlign = "center"
-      _flagButtonText.x = 280;
-      _flagButtonText.y = 40;
-  
+      
+      var character = AWE.GS.CharacterManager.currentCharacter;
+      var _flagShape = null;
+      var _flagButtonText = null;
+      if (character && character.get('alliance_id')) {
+        var color = AWE.GS.AllianceManager.colorForNumber(character.get('alliance_id'));
+
+        var _flagShapeGraphics = new Graphics();
+        _flagShapeGraphics.setStrokeStyle(1);
+        _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
+        _flagShapeGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
+        _flagShapeGraphics.moveTo(240, 0);
+        _flagShapeGraphics.lineTo(320, 0).lineTo(280, 100).lineTo(240, 0);
+        _flagShape = new Shape(_flagShapeGraphics);
+      
+        _flagShape.onClick = function() { WACKADOO.activateAllianceController(); console.log('flag clicked');  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+      
+        _flagButtonText = new Text(character.get('alliance_tag'), "12px Arial", "#000");
+        _flagButtonText.textBaseline = "middle";
+        _flagButtonText.textAlign = "center"
+        _flagButtonText.x = 280;
+        _flagButtonText.y = 40;
+      }
   
       // Kopf
       var _heroButtonGraphics = new Graphics();
@@ -54,12 +64,13 @@ AWE.UI = (function(module) {
       _heroButtonGraphics.drawCircle(254, 146, 64);
       var _heroButton = new Shape(_heroButtonGraphics);    
   
-      var _heroButtonText = new Text('Hero', "12px Arial", "#000");
-      _heroButtonText.textBaseline = "middle";
-      _heroButtonText.textAlign = "center"
-      _heroButtonText.x = 254;
-      _heroButtonText.y = 146;
-  
+      var _heroHead = new Bitmap();
+      _heroHead.image = AWE.UI.ImageCache.getImage('hud/head');
+      _heroHead.x = 198;
+      _heroHead.y = 85;
+      _heroHead.scaleX = 0.15;
+      _heroHead.scaleY = 0.15;
+    
       // Festung
       var _fortressButtonGraphics = new Graphics();
       _fortressButtonGraphics.setStrokeStyle(1);
@@ -68,11 +79,22 @@ AWE.UI = (function(module) {
       _fortressButtonGraphics.drawCircle(344, 84, 64);
       var _fortressButton = new Shape(_fortressButtonGraphics);    
   
-      var _fortressButtonText = new Text('Fortress', "12px Arial", "#000");
+  /*    var _fortressButtonText = new Text('Fortress', "12px Arial", "#000");
       _fortressButtonText.textBaseline = "middle";
       _fortressButtonText.textAlign = "center"
       _fortressButtonText.x = 344;
-      _fortressButtonText.y = 84;
+      _fortressButtonText.y = 84;*/
+      
+       var _village = new Bitmap();
+      _village.image = AWE.UI.ImageCache.getImage("map/colony/big");
+      _village.x = 293;
+      _village.y = 20;
+      _village.scaleX = 1;
+      _village.scaleY = 1;     
+      
+      _fortressButton.onClick = function() { WACKADOO.activateMapController();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+      _village.onClick = function() { WACKADOO.activateMapController();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+      
   
       // Messages
       var _messagesButtonGraphics = new Graphics();
@@ -138,6 +160,13 @@ AWE.UI = (function(module) {
       _shopShapeGraphics.drawRoundRect(20, 95, 100, 30, 8);
       var _shopShape = new Shape(_shopShapeGraphics);    
   
+      var _frog = new Bitmap();
+      _frog.image = AWE.UI.ImageCache.getImage("hud/frog/face");
+      _frog.x = 65;
+      _frog.y = 56;
+      _frog.scaleX = 1;
+      _frog.scaleY = 1;  
+        
       var _shopButtonText = new Text('Shop', "12px Arial", "#000");
       _shopButtonText.textBaseline = "middle";
       _shopButtonText.textAlign = "center"
@@ -195,13 +224,16 @@ AWE.UI = (function(module) {
       _container.addChildAt(_locationsButtonText);
       _container.addChildAt(_locationsButton);
       _container.addChildAt(_armiesButtonText);
-      _container.addChildAt(_armiesButton);
-      _container.addChildAt(_heroButtonText);
+      _container.addChildAt(_armiesButton);    
+      _container.addChildAt(_heroHead);
       _container.addChildAt(_heroButton);
-      _container.addChildAt(_flagButtonText);
-      _container.addChildAt(_flagShape);
-      _container.addChildAt(_fortressButtonText);
+      if (_flagShape) {
+        _container.addChildAt(_flagButtonText);
+        _container.addChildAt(_flagShape);
+      }
+      _container.addChildAt(_village);
       _container.addChildAt(_fortressButton); 
+      _container.addChildAt(_frog);
       _container.addChildAt(_resource1Text);
       _container.addChildAt(_resource2Text);
       _container.addChildAt(_resource3Text);

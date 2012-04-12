@@ -43,10 +43,79 @@ AWE.Partials = (function(module) {
   };
   
   
-  module.addProperties = function(obj, hook, my) {
+  /** this creates a hash that allows to access instances of GS.Entity and
+   * derived sub-types by the value of an attribute. You shouldn't create
+   * the hash manually but use the attribute-hash-observer below. */ 
+  module.createAttributeValueHash = function(attribute) {
+
+    var hash = {};
+    hash.allEntries = {};
+
+    /** use with caution (overwrites for example armies that have moved
+     * to another region). When fetching all entities for a value of an 
+     * attribute from the server, all received entities are added 
+     * automatically to the corresponding hash; so there's no need to
+     * set its values manually, using this method. */
+    hash.setEntriesForValue = function(val, newEntries, timestamp) {
+      timestamp = timestamp || new Date();
+      this.allEntries[val] = { entries: newEntries, lastUpdateAt: timestamp };
+    };
+    hash.addEntry = function(entry) {
+      if (!this.allEntries[entry[attribute]]) {
+        this.allEntries[entry[attribute]] = { entries: {}, lastUpdateAt: new Date(1970) };
+      }
+      this.allEntries[entry[attribute]].entries[entry.get('id')] = entry;
+    };
+    hash.removeEntry = function(entry, oldValue) {
+      if (oldValue === undefined) {
+        oldValue = entry[attribute]; // use oldValue, if defined, otherwise assume the object still is unchanged
+      }
+      if (this.allEntries[oldValue] && this.allEntries[oldValue].entries[entry.get('id')]) {
+        delete this.allEntries[oldValue].entries[entry.get('id')];
+      }
+    }
+    hash.getEntriesForValue = function(val) {
+      if (this.allEntries[val]) {
+        return this.allEntries[val].entries;
+      }
+      else {
+        return {};
+      }
+    }
+    hash.setLastUpdateAtForValue = function(val, timestamp) {
+      timestamp = timestamp || new Date();
+      if (this.allEntries[val]) {
+        this.allEntries[val].lastUpdateAt = timestamp;
+      }
+      else {
+        this.allEntries[val] = { entries: {}, lastUpdateAt: timestamp };
+      }
+    }
+    hash.lastUpdateForValue = function(val, timestamp) {
+      if (this.allEntries[val]) {
+        return this.allEntries[val].lastUpdateAt; 
+      }
+      else {
+        return new Date(1970);
+      }
+    }
+    hash.wasLastUpdateForValueAfter = function(val, timestamp) {
+      return this.allEntries[val] && this.allEntries[val].lastUpdateAt >= timestamp;
+    }
+
+    return hash;
+  };
+   
+  /** this creates an observer function that can be attached to an ember
+   * attribute in order to create and update a hash for accessing instances
+   * of the class by the value of the attribute. The hash is created on the fly
+   * if it's not already there. You just have to provide a hook (class, hash),
+   * where to put the hash and generated accessor functions. The hash will be 
+   * placed in hook.accessHashes[attribute]. */
+  module.attributeHashObserver = function(hook, attribute, oldAttribute) {
         
-    /** creates an auto-updated hash for a property of the entity type. */
-    var createAccessHashForAttribute = function(attribute) {
+    /** creates an auto-updated hash for a property. */
+    var createAccessHashForAttribute = function() {
       var upperCaseAttr = attribute.charAt(0).toUpperCase() + attribute.slice(1);
 
       if (hook.accessHashes === undefined) {
@@ -55,63 +124,10 @@ AWE.Partials = (function(module) {
 
       if (!hook.accessHashes[attribute]) {
 
-        hook.accessHashes[attribute] = (function() {
-          var hash = {};
-      
-          hash.allEntries = {};
-      
-          /** use with caution (overwrites for example armies that have moved
-           * to another region). When fetching all entities for a value of an 
-           * attribute from the server, all received entities are added 
-           * automatically to the corresponding hash; so there's no need to
-           * set its values manually, using this method. */
-          hash.setEntriesForValue = function(val, newEntries, timestamp) {
-            timestamp = timestamp || new Date();
-            this.allEntries[val] = { entries: newEntries, lastUpdateAt: timestamp };
-          };
-          hash.addEntry = function(entry) {
-            if (!this.allEntries[entry[attribute]()]) {
-              this.allEntries[entry[attribute]()] = { entries: {}, lastUpdateAt: new Date(1970) };
-            }
-            this.allEntries[entry[attribute]()].entries[entry.id()] = entry;
-          };
-          hash.removeEntry = function(entry) {
-            if (this.allEntries[entry[attribute]()] && this.allEntries[entry[attribute]()].entries[entry.id()]) {
-              delete this.allEntries[entry[attribute]()].entries[entry.id()];
-            }
-          }
-          hash.getEntriesForValue = function(val) {
-            if (this.allEntries[val]) {
-              return this.allEntries[val].entries;
-            }
-            else {
-              return {};
-            }
-          }
-          hash.setLastUpdateAtForValue = function(val, timestamp) {
-            timestamp = timestamp || new Date();
-            if (this.allEntries[val]) {
-              this.allEntries[val].lastUpdateAt = timestamp;
-            }
-            else {
-              this.allEntries[val] = { entries: {}, lastUpdateAt: timestamp };
-            }
-          }
-          hash.lastUpdateForValue = function(val, timestamp) {
-            if (this.allEntries[val]) {
-              return this.allEntries[val].lastUpdateAt; 
-            }
-            else {
-              return new Date(1970);
-            }
-          }
-          hash.wasLastUpdateForValueAfter = function(val, timestamp) {
-            return this.allEntries[val] && this.allEntries[val].lastUpdateAt >= timestamp;
-          }
-      
-          return hash;
-        }());
+        hook.accessHashes[attribute] = module.createAttributeValueHash(attribute);
         
+        
+        // creates some "global" convenience functions at the hook
         hook['getAllFor'+upperCaseAttr] = function(value) {
           return hook.accessHashes[attribute].getEntriesForValue(value);
         }
@@ -128,48 +144,29 @@ AWE.Partials = (function(module) {
           return hook.accessHashes[attribute];
         }
       }
-    }      
+    }    
+
+    if (!hook.accessHashes || !hook.accessHashes[attribute]) {//   create hash, if not already there
+      createAccessHashForAttribute(); 
+    }
     
-  
-    /** creates a property that gives to a newly created attribute of the my 
-     * object. Can be used to create attribute, setter and getter with just
-     * one line of code in any derived object. */
-    obj.property = function(attribute, defaultValue, access, hashable) {
-      if (defaultValue === undefined) {
-        defaultValue = null;
-      }
-      access = access || module.PROPERTY_READ_WRITE;
-      hashable = hashable || false;
-   
-      var setterString = 'set'+attribute.charAt(0).toUpperCase() + attribute.slice(1);
-  
-      my[attribute] = defaultValue;                          // attribute
-      if (!hashable) {                                       // simple protected setter
-        my[setterString] = function(val) { my[attribute] = val; }
-      }
-      else {                                                 // setter, that also updates the hash
-        if (!hook.accessHashes || !hook.accessHashes[attribute]) {//   create hash, if not already there
-          createAccessHashForAttribute(attribute); 
+    
+    return function() {                       // actually construct and return the observer
+      var newValue = this.get(attribute);
+      var oldValue = this.get(oldAttribute);
+      if (oldValue != newValue) {
+        if (oldValue) {
+          hook.accessHashes[attribute].removeEntry(this, oldValue);
         }
-        
-        my[setterString] = function(val) {     
-          if (my[attribute] != val) {
-            if (my[attribute]) {
-              hook.accessHashes[attribute].removeEntry(obj);
-            }
-            my[attribute] = val; 
-            if (val) {
-              hook.accessHashes[attribute].addEntry(obj);
-            }
-          }
-        }        
-      } 
-      this[attribute] = function() { return my[attribute]; } // getter
-      if (access === module.PROPERTY_READ_WRITE) {           // public setter
-        this[setterString] = function(val) { my[setterString](val); }
-      }
-    };
-  }
+        if (newValue) {
+          hook.accessHashes[attribute].addEntry(this);
+        }
+        this.set(oldAttribute, newValue);
+      };
+    }
+    
+  };
+
   
   return module;
 }(AWE.Partials || {}));

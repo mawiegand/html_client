@@ -35,6 +35,7 @@ AWE.Util = (function(module) {
         console.log(_templates[i].url);
         $('#templates').load(_templates[i].url, (function(entry) {
           return function(responseText, textStatus, jqXHR) {
+            $('body').append($('#templates').html()); // TODO: last script will be twice in DOM. Prune templates, when finished, or make individual tmp-nodes for all scripts.
             if (entry.callback) {
               entry.callback(responseText, textStatus, jqXHR);
             };

@@ -20,9 +20,10 @@ AWE.UI = (function(module) {
     var that = module.createView(spec, my);
     
     var _super = {
-      initWithController: that.superior("initWithController"),
-      layoutSubviews: that.superior("layoutSubviews"),
-      setFrame: that.superior("setFrame"),
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      setFrame: AWE.Ext.superior(that, "setFrame"),
+      setVisible: AWE.Ext.superior(that, "setVisible"),
     }
     
     that.initWithControllerTextAndImage = function(controller, text, image, frame) {
@@ -41,6 +42,8 @@ AWE.UI = (function(module) {
       _labelText.textBaseline = "middle";
       _labelText.x = my.frame.size.width / 2;
       _labelText.y = my.frame.size.height / 2;
+      _labelText.view = that;
+      _labelText.onClick = function() { that.onClick() }; // CAUTION: need to wrap the call in a function, because otherwise it's not possible to attach a different function to that as onClick handler
       _container.addChild(_labelText);
     
       _container.x = my.frame.origin.x;
@@ -85,14 +88,11 @@ AWE.UI = (function(module) {
       my.controller.buttonClicked(that);
     };
     
-    // that.onMouseOver = function(){
-      // my.controller.buttonMouseOver(that);
-    // };
-// 
-    // that.onMouseOut = function(){
-      // my.controller.buttonMouseOut(that);
-    // };
-            
+    that.setVisible = function(visible) {
+      _super.setVisible(visible);
+      _container.visible = visible;
+    }
+    
     return that;
   };
     
