@@ -628,7 +628,7 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector.initWithControllerAndNode(that, view.node());
       }
       else if (view.typeName() === 'ArmyView') {
-        inspectorViews.inspector = AWE.UI.createArmyDetailView();
+        inspectorViews.inspector = AWE.UI.createArmyInspectorView();
         inspectorViews.inspector.initWithControllerAndArmy(that, view.army());
         
         inspectorViews.inspector.onInventoryButtonClick = function(self) { 
