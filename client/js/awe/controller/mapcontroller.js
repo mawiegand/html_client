@@ -577,7 +577,7 @@ AWE.Controller = (function(module) {
             actionViews.hovered.initWithControllerAndView(that, view);
           }
           else if (view.typeName() === 'ArmyView') {
-            actionViews.hovered = AWE.UI.createArmyActionView();
+            actionViews.hovered = AWE.UI.createArmyAnnotationView();
             actionViews.hovered.initWithControllerAndView(that, view);
             armyUpdates[view.army().get('id')] = view.army();
           }
@@ -1131,7 +1131,7 @@ AWE.Controller = (function(module) {
       
       if (actionViews.hovered
           && (actionViews.hovered.typeName() === 'FortressActionView'
-          || actionViews.hovered.typeName() === 'ArmyActionView')) {
+          || actionViews.hovered.typeName() === 'ArmyAnnotationView')) {
         actionViews.hovered.setCenter(AWE.Geometry.createPoint(
             _hoveredView.center().x,
             _hoveredView.center().y
@@ -1141,7 +1141,7 @@ AWE.Controller = (function(module) {
 
       if (actionViews.selected
           && (actionViews.selected.typeName() === 'FortressActionView'
-          || actionViews.selected.typeName() === 'ArmyActionView')) {
+          || actionViews.selected.typeName() === 'ArmyAnnotationView')) {
         actionViews.selected.setCenter(AWE.Geometry.createPoint(
             _selectedView.center().x,
             _selectedView.center().y
