@@ -139,9 +139,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
       var hud = AWE.Controller.createHUDController();
       hud.init();
-      this.setHudController
-      this.get('hudLayerAnchor').append(hud.rootElement()); // add to dom
-      this.set('hudController', hud);
+      this.setHudController(hud);
 
 
     

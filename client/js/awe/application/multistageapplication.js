@@ -67,7 +67,7 @@ AWE.Application = (function(module) {
       init: function() {
         var self = this;
         this._super();
-        this.set('ownStages', []); // 
+        this.set('controllerStages', []); //
         this.set('notificationStages', []); //
         this.set('hudStages', []); // 
 
@@ -307,7 +307,7 @@ AWE.Application = (function(module) {
       },
       
       resetAllStages: function() {
-        var allStages = this.get('controllerStages').concat(this.get('notificationStages')).concat(this.get('hudStages')).reverse();
+        var allStages = (this.get('controllerStages').concat(this.get('notificationStages')).concat(this.get('hudStages'))).reverse();
         this.set('allStages', allStages);
       },
     
@@ -348,6 +348,7 @@ AWE.Application = (function(module) {
       
       setHudController: function(controller) {
         var presentHudController = this.get('hudController');
+        log('in set hud controller', controller);
         if (controller != presentHudController) {
           if (presentHudController) {
             presentHudController.viewWillDisappear();
@@ -357,11 +358,13 @@ AWE.Application = (function(module) {
             presentHudController.viewDidDisappear();
           }
           this.set('hudController', controller);
-          if (conttroller) {
+          log('setHUD CONTROLLER', controller);
+          if (controller) {
             controller.viewWillAppear();
             this.get('hudLayerAnchor').append(controller.rootElement()); // add to dom
             this.set('hudStages', controller.getStages());
             this.resetAllStages();
+            log (controller.getStages(), this.get('allStages'));
             controller.viewDidAppear();
           }
         }
