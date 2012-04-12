@@ -270,7 +270,18 @@ html, body {
 
 
 #layers {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
 }
+
+#screen-content {
+  width: 100%;
+  height: 100%;
+}
+
 
 #map-tile-canvas {
   background-color: #333;
