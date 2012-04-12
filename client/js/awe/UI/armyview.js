@@ -70,10 +70,14 @@ AWE.UI = (function(module) {
       _poleShape = new Shape(_poleGraphics);  
       _container.addChild(_poleShape);
 
+      var color = { r: 200, g: 200, b: 200 }; // gray for neutral armies
+      if (_army.get('alliance_id')) {
+        color = AWE.GS.AllianceManager.colorForNumber(_army.get('alliance_id'));
+      }
       var _flagGraphics = new Graphics();
       _flagGraphics.setStrokeStyle(1);
       _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
-      _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
+      _flagGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
       _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * army.get('size_present') / 1200, 22).lineTo(56, 12);
       _flagShape = new Shape(_flagGraphics);  
       _container.addChild(_flagShape);
