@@ -321,17 +321,15 @@ AWE.Controller = (function(module) {
     // starting
     
     that.prepareScrolling = function(posX, posY) {
-      console.log('prepare scrolling');
       _scrollingStartedAtVC = AWE.Geometry.createPoint(posX, posY);
       _scrollingOriginalTranslationVC = mc2vcTrans.copy();
         
-      $('#layers').mousemove(function(ev) {
+      this.anchor().mousemove(function(ev) {
         that.onMouseMove(ev);
       });
     } 
     
     that.startScrolling = function() {
-      console.log('start scrolling');
       _scrollingStarted = true;
     } 
     
@@ -360,8 +358,7 @@ AWE.Controller = (function(module) {
     // ending
     
     that.endScrolling = function() {
-      console.log('end scrolling');
-      $('#layers').unbind('mousemove');
+      this.anchor().unbind('mousemove');
       _scrollingStarted = false;
     }       
     
@@ -371,12 +368,10 @@ AWE.Controller = (function(module) {
 
     that.onMouseUp = function(evt) {
       that.endScrolling();
-      console.log('up');
     }
     
     that.onMouseLeave = function(evt) {
       that.endScrolling();
-      console.log('leave');
     }
   
 
@@ -439,12 +434,76 @@ AWE.Controller = (function(module) {
       }
     };
 
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Actions
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+
+
+    that.armyInfoButtonClicked = function(army) {
+      if (!army) {
+        return ;
+      }
+  
+      var dialog = AWE.UI.Ember.ArmyInfoView.create({
+        army: army,
+        changeNamePressed: function(event) {
+              
+          AWE.UI.Ember.TextInputDialog.create({
+            heading: 'Enter the new name of this army.',
+            input: this.get('army').get('name'),
+            okPressed: function() {
+              var action = AWE.Action.Military.createChangeArmyNameAction(army, this.get('input'));
+              AWE.Action.Manager.queueAction(action);  
+              this.destroy();            
+            },
+            cancelPressed: function() {
+              this.destroy();
+            }
+          }).append();
+        },
+        closePressed: function(event) {
+          this.destroy();
+        }
+      });
+      dialog.append();
+    }; 
+      
+      /*
+          _actionViews.selectionControls.onAttackButtonClick = function () {              
+          var dialog = AWE.UI.Ember.ArmyInfoView.create({
+            army: view.army(),
+            changeNamePressed: function(event) {
+              
+              AWE.UI.Ember.TextInputDialog.create({
+                heading: 'Enter the new name of this army.',
+                input: this.get('army').get('name'),
+                okPressed: function() {
+                  var action = AWE.Action.Military.createChangeArmyNameAction(view.army(), this.get('input'));
+                  AWE.Action.Manager.queueAction(action);  
+                  this.destroy();            
+                },
+                cancelPressed: function() {
+                  this.destroy();
+                }
+              }).append();
+            },
+            closePressed: function(event) {
+              this.destroy();
+            }
+          });
+          dialog.append(); 
+        }*/
 
     // ///////////////////////////////////////////////////////////////////////
     //
-    //   Action Handling
+    //   User Input Handling
     //
     // /////////////////////////////////////////////////////////////////////// 
+    
+
+    
     
     /** returns the single map view that is presently selected by the user. 
      * this can be any of the gaming pieces (armies), markers or settlements.*/
@@ -576,7 +635,12 @@ AWE.Controller = (function(module) {
       }
     };
 
-    /* Detail View */
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Inspector (show / hide)
+    //
+    // /////////////////////////////////////////////////////////////////////// 
 
     var _showInspectorWith = function(view) { 
       if (inspectorViews.inspector) {
@@ -590,6 +654,10 @@ AWE.Controller = (function(module) {
       else if (view.typeName() === 'ArmyView') {
         inspectorViews.inspector = AWE.UI.createArmyDetailView();
         inspectorViews.inspector.initWithControllerAndArmy(that, view.army());
+        
+        inspectorViews.inspector.onInventoryButtonClick = function(self) { 
+          return function(army) { self.armyInfoButtonClicked(army); }
+        }(that);
       }
       _stages[3].addChild(inspectorViews.inspector.displayObject());
       _inspectorChanged = true;
@@ -1103,6 +1171,7 @@ AWE.Controller = (function(module) {
         ));
       }
     };
+    
 
 
     // ///////////////////////////////////////////////////////////////////////
@@ -1119,8 +1188,6 @@ AWE.Controller = (function(module) {
     };
     
         
-
-    
     
     
     // ///////////////////////////////////////////////////////////////////////
