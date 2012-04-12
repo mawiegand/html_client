@@ -22,7 +22,7 @@ AWE.Controller = (function(module) {
 
     var _needsLayout;            ///< true, in case e.g. the window has changed, causing a new layuot of the map
     var _needsDisplay;           ///< true, in case something (data, subwview) has changed causing a need for a redraw
-    var _windowChanged;          ///< true, in case the size of the map screen has changed.
+    var _windowChanged=false;    ///< true, in case the size of the map screen has changed.
     
     var _scrollingStarted = false;///< user is presently scrolling
     var _scrollingStartedAtVC;
@@ -77,21 +77,18 @@ AWE.Controller = (function(module) {
       root.append('<canvas id="map-tile-canvas"></canvas>');
       _canvas[0] = root.find('#map-tile-canvas')[0];
       _stages[0] = new Stage(_canvas[0]);
-      
-      
+            
       // selectable gaming pieces layer (fortresses, armies, etc.)
       root.append('<canvas id="gaming-pieces-canvas"></canvas>');
       _canvas[1] = root.find('#gaming-pieces-canvas')[0];
       _stages[1] = new Stage(_canvas[1]);
-      
-      log(_stages[1]);
       
       // layer for mouseover and selection objects
       root.append('<canvas id="annotation-canvas"></canvas>');
       _canvas[2] = root.find('#annotation-canvas')[0];
       _stages[2] = new Stage(_canvas[2]);
 
-      // layer for mouseover and selection objects
+      // layer for the object inspector
       root.append('<canvas id="inspector-canvas"></canvas>');
       _canvas[3] = root.find('#inspector-canvas')[0];
       _stages[3] = new Stage(_canvas[3]);
@@ -108,6 +105,7 @@ AWE.Controller = (function(module) {
         { stage: _stages[0], mouseOverEvents: false, transparent: true},
         { stage: _stages[1], mouseOverEvents: true },
         { stage: _stages[2], mouseOverEvents: true },
+        { stage: _stages[3], mouseOverEvents: true },
       ];
     };
     
@@ -308,13 +306,19 @@ AWE.Controller = (function(module) {
     /** set to true in case the whole window needs to be repainted. */
     that.setNeedsDisplay = function() { _needsDisplay = true; }
     
+    /** receives an event in case the size of the screen changes. On change
+     * of dimensions will cause a needs-layout-event. */
+    that.onResize = function() {
+      that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
+    }
     
     // ///////////////////////////////////////////////////////////////////////
     //
-    //   Mouse-Over and Object Selection
+    //   Mouse-Scrolling
     //
     // /////////////////////////////////////////////////////////////////////// 
     
+    // starting
     
     that.prepareScrolling = function(posX, posY) {
       console.log('prepare scrolling');
@@ -330,6 +334,30 @@ AWE.Controller = (function(module) {
       console.log('start scrolling');
       _scrollingStarted = true;
     } 
+    
+    that.onMouseDown = function(evt) {
+    //if (!_stages[2].hitTest(evt.pageX, evt.pageY)) {  // removed, for the moment, it's ok to scroll everywhere
+      that.prepareScrolling(evt.pageX, evt.pageY);
+    };    
+
+    
+    // scrolling
+    
+    that.onMouseMove = function(event) {
+      // here we can assume, that the mouse is pressed right now!
+      if (! that.isScrolling() && (Math.abs(event.pageX - _scrollingStartedAtVC.x) > 5 || Math.abs(event.pageY - _scrollingStartedAtVC.y > 5)))  {
+        that.startScrolling();
+      }
+      if (that.isScrolling()) {
+        var pos = AWE.Geometry.createPoint(_scrollingOriginalTranslationVC.x + event.pageX - _scrollingStartedAtVC.x, 
+                                           _scrollingOriginalTranslationVC.y + event.pageY - _scrollingStartedAtVC.y);        
+        mc2vcTrans.moveTo(pos);
+        that.setNeedsLayout();
+      }
+    };
+    
+       
+    // ending
     
     that.endScrolling = function() {
       console.log('end scrolling');
@@ -350,24 +378,13 @@ AWE.Controller = (function(module) {
       that.endScrolling();
       console.log('leave');
     }
-    
-    that.onMouseDown = function(evt) {
-//    if (!_stages[2].hitTest(evt.pageX, evt.pageY)) {  // removed, for the moment, it's ok to scroll everywhere
-      that.prepareScrolling(evt.pageX, evt.pageY);
-    };
-    
-    that.onMouseMove = function(event) {
-      // here we can assume, that the mouse is pressed right now!
-      if (! that.isScrolling() && (Math.abs(event.pageX - _scrollingStartedAtVC.x) > 5 || Math.abs(event.pageY - _scrollingStartedAtVC.y > 5)))  {
-        that.startScrolling();
-      }
-      if (that.isScrolling()) {
-        var pos = AWE.Geometry.createPoint(_scrollingOriginalTranslationVC.x + event.pageX - _scrollingStartedAtVC.x, 
-                                           _scrollingOriginalTranslationVC.y + event.pageY - _scrollingStartedAtVC.y);        
-        mc2vcTrans.moveTo(pos);
-        that.setNeedsLayout();
-      }
-    };
+  
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Mouse-Zooming
+    //
+    // ///////////////////////////////////////////////////////////////////////     
     
     that.onMouseWheel = function(ev) {
       
@@ -406,10 +423,14 @@ AWE.Controller = (function(module) {
       evt.returnValue = false;
     };
     
+  
     
-    that.onResize = function() {
-      that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
-    }
+    
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Mouse-Click
+    //
+    // ///////////////////////////////////////////////////////////////////////     
     
     /** received in case no view is hit by a click. used to unselect object on
      * click into background. */
