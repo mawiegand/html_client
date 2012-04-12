@@ -27,6 +27,8 @@ AWE.Controller = (function(module) {
     var _scrollingStarted = false;///< user is presently scrolling
     var _scrollingStartedAtVC;
     var _scrollingOriginalTranslationVC;
+
+    var _camera; ///< camera for handeling camera panning
     
     var that = module.createScreenController(anchor); ///< create base object
     
@@ -239,6 +241,18 @@ AWE.Controller = (function(module) {
       mc2vcTrans = AWE.Geometry.createPoint(
         -1. * visibleRectMC.origin.x * _windowSize.width  / visibleRectMC.size.width,
         -1. * visibleRectMC.origin.y * _windowSize.height / visibleRectMC.size.height
+      );
+    };
+
+    /** returns the currently visible viewport in model coordinates **/
+    that.viewport = function() {
+      var w = _windowSize.width/mc2vcScale;
+      var h = _windowSize.height/mc2vcScale;
+      return AWE.Geometry.createRect(
+        -1. * mc2vcTrans.x * w / _windowSize.width,
+        -1. * mc2vcTrans.y * h / _windowSize.height,
+        w,
+        h
       );
     };
     
