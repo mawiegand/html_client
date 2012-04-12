@@ -42,7 +42,7 @@ AWE.Controller = (function(module) {
     var _modelChanged = false;   ///< true, if anything in the model changed
     var _maptreeChanged = false; ///< true, if anything in the maptree (just nodes!) changed. _maptreeChanged = true implies modelChanged = true
     
-    var _detailViewChanged = false; ///< true, if a detailView has been added, removed or changed
+    var _inspectorChanged = false; ///< true, if a detailView has been added, removed or changed
     
     var requestingMapNodesFromServer = false;
     
@@ -423,8 +423,7 @@ AWE.Controller = (function(module) {
       evt.returnValue = false;
     };
     
-  
-    
+      
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -440,6 +439,7 @@ AWE.Controller = (function(module) {
       }
     };
 
+
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Action Handling
@@ -453,17 +453,7 @@ AWE.Controller = (function(module) {
     /** sets the selected view */
     that.setSelectedView = function(view) {
       // when selected view is set from outside, the view type has to determined
-      // and the viewport has to be transformed to show the view.  
-      _selectedView = view;
-    };
-        
-    var _action = false;
-
-    that.buttonClicked = function(button) {
-      log('button', button.text());
-    };
-    
-    that.viewClicked = function(view) {    
+      // and the viewport has to be transformed to show the view. 
       if (_selectedView === view) {
         _unselectView(_selectedView);
       }
@@ -474,6 +464,16 @@ AWE.Controller = (function(module) {
       else {
         _selectView(view);
       }
+    };
+        
+    var _action = false;
+
+    that.buttonClicked = function(button) {
+      log('button', button.text());
+    };
+    
+    that.viewClicked = function(view) {    
+      that.setSelectedView(view);
     };
 
     that.viewMouseOver = function(view) { // console.log('view mouse over: ' + view.typeName())
@@ -499,13 +499,12 @@ AWE.Controller = (function(module) {
     
     /* view selection */
     
-    var _selectView = function(view) {
-      
+    var _selectView = function(view) {      
       _selectedView = view;
       _selectedView.setSelected(true);
       actionViews.selected = actionViews.hovered;
       actionViews.selected.setNeedsUpdate();
-      _showDetailView(_selectedView);
+      _showInspectorWith(_selectedView);
       _action = true;
     };
     
@@ -522,7 +521,7 @@ AWE.Controller = (function(module) {
       _selectedView.setSelected(false);
       _selectedView = null;
       
-      _hideDetailView();
+      _hideInspector();
 
       _action = true;
     };
@@ -579,29 +578,29 @@ AWE.Controller = (function(module) {
 
     /* Detail View */
 
-    var _showDetailView = function(view) { /*
-      if (HUDViews.detailView) {
-        hideDetailView(HUDViews.detailView);
+    var _showInspectorWith = function(view) { 
+      if (inspectorViews.inspector) {
+        _hideInspector();
       }
       
       if (view.typeName() === 'FortressView') {      
-        HUDViews.detailView = AWE.UI.createFortressDetailView();
-        HUDViews.detailView.initWithControllerAndNode(that, view.node());
+        inspectorViews.inspector = AWE.UI.createFortressDetailView();
+        inspectorViews.inspector.initWithControllerAndNode(that, view.node());
       }
       else if (view.typeName() === 'ArmyView') {
-        HUDViews.detailView = AWE.UI.createArmyDetailView();
-        HUDViews.detailView.initWithControllerAndArmy(that, view.army());
+        inspectorViews.inspector = AWE.UI.createArmyDetailView();
+        inspectorViews.inspector.initWithControllerAndArmy(that, view.army());
       }
-      _stages[3].addChild(HUDViews.detailView.displayObject());
-      _detailViewChanged = true;*/
+      _stages[3].addChild(inspectorViews.inspector.displayObject());
+      _inspectorChanged = true;
     };
 
-    var _hideDetailView = function() {
-  /*   if (HUDViews.detailView) {
-        _stages[3].removeChild(HUDViews.detailView.displayObject());
-        delete HUDViews.detailView;
+    var _hideInspector = function() {
+      if (inspectorViews.inspector) {
+        _stages[3].removeChild(inspectorViews.inspector.displayObject());
+        delete inspectorViews.inspector;
       }
-      _detailViewChanged = true;*/
+      _inspectorChanged = true;
     };
 
     // ///////////////////////////////////////////////////////////////////////
@@ -1104,6 +1103,20 @@ AWE.Controller = (function(module) {
         ));
       }
     };
+
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Inspector Stage
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
+    that.updateInspectorViews = function() {
+      if (inspectorViews.inspector) {
+        inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 340, _windowSize.height - 150));
+      }
+      return _inspectorChanged || _windowChanged;
+    };
     
         
 
@@ -1137,7 +1150,7 @@ AWE.Controller = (function(module) {
       
       return function(nodes, visibleArea) {
         
-        var stagesNeedUpdate = [false, false, true, false]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
+        var stagesNeedUpdate = [false, false, false, false]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
         
         // rebuild individual hieararchies
         if (_windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
@@ -1152,10 +1165,11 @@ AWE.Controller = (function(module) {
           that.updateActionViews();
         }
         
-    //    if (_windowChanged || _action || !HUDViews.mainControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
-//          log('MapController: update hud.', _action);
-        //  stagesNeedUpdate[3] = that.updateHUD() || stagesNeedUpdate[3]; 
-    //    }
+
+        
+        if (_windowChanged || _action || !inspectorViews.inspector || _inspectorChanged) { // TODO: only update at start and when something might have changed (object selected, etc.)
+          stagesNeedUpdate[3] = that.updateInspectorViews() || stagesNeedUpdate[3]; 
+        }
         
         //log('Update:                   ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
@@ -1275,7 +1289,7 @@ AWE.Controller = (function(module) {
         _needsDisplay = false;
         _needsLayout = false;
         _action = false;
-        _detailViewChanged = false;
+        _inspectorChanged = false;
         _windowChanged = false;
       }
       _loopCounter++;
