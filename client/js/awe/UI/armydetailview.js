@@ -20,6 +20,7 @@ AWE.UI = (function(module) {
     var _army = null;
     
     var _nameLabelView = null;
+    var _allianceTagLabel = null;
     var _apLabelView = null;
     var _locationLabelView = null;
     var _rankLabelView = null;
@@ -159,6 +160,12 @@ AWE.UI = (function(module) {
         _flagShapeGraphics.lineTo(offX +60, offY +0).lineTo(offX +30, offY +75).lineTo(offX +0, offY +0);
         _flagShape = new Shape(_flagShapeGraphics);
         _container.addChild(_flagShape);
+        
+        _allianceTagLabel = AWE.UI.createLabelView();
+        _allianceTagLabel.initWithControllerAndLabel(controller);
+        _allianceTagLabel.setFrame(AWE.Geometry.createRect(offX+10, offY+5, 40, 16));      
+        _allianceTagLabel.setTextAlign("center");
+        _container.addChild(_allianceTagLabel.displayObject());        
       }
 
       // buttons oben
@@ -225,8 +232,18 @@ AWE.UI = (function(module) {
         _apLabelView.setText('AP: ' + AWE.UI.Util.secondsToString(_army.get('ap_seconds_per_point')));
       }
       else {
-        _apLabelView.setText(_army.get('owner_name') + ' | ' + _army.get('alliance_tag'));        
+        _apLabelView.setText(_army.get('owner_name'));        
       }
+      if (_allianceTagLabel) {
+        if (_army.get('alliance_tag')) {
+          _allianceTagLabel.setVisible(true);
+          _allianceTagLabel.setText(_army.get('alliance_tag'));
+        }
+        else {
+          _allianceTagLabel.setVisible(false);
+        }
+      }
+      
       _locationLabelView.setText('Home');
       _rankLabelView.setText(_army.get('rank'));
       _sizeAllLabelView.setText(_army.get('size_present'));
