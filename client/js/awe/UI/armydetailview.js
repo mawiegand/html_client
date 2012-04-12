@@ -161,18 +161,18 @@ AWE.UI = (function(module) {
         _reinforceButtonView.initWithControllerTextAndImage(controller, 'Reinforce', AWE.UI.ImageCache.getImage("map/button1"));
         _reinforceButtonView.setFrame(AWE.Geometry.createRect(268, 0, 48, 48));
         _container.addChild(_reinforceButtonView.displayObject());
+
+        // button unten
+        _prevButtonView = AWE.UI.createButtonView();
+        _prevButtonView.initWithControllerTextAndImage(controller, '<<', AWE.UI.ImageCache.getImage("map/button1"));
+        _prevButtonView.setFrame(AWE.Geometry.createRect(180, 92, 36, 36));
+        _container.addChild(_prevButtonView.displayObject());
+  
+        _nextButtonView = AWE.UI.createButtonView();
+        _nextButtonView.initWithControllerTextAndImage(controller, '>>', AWE.UI.ImageCache.getImage("map/button1"));
+        _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
+        _container.addChild(_nextButtonView.displayObject());
       }
-
-      // button unten
-      _prevButtonView = AWE.UI.createButtonView();
-      _prevButtonView.initWithControllerTextAndImage(controller, '<<', AWE.UI.ImageCache.getImage("map/button1"));
-      _prevButtonView.setFrame(AWE.Geometry.createRect(180, 92, 36, 36));
-      _container.addChild(_prevButtonView.displayObject());
-
-      _nextButtonView = AWE.UI.createButtonView();
-      _nextButtonView.initWithControllerTextAndImage(controller, '>>', AWE.UI.ImageCache.getImage("map/button1"));
-      _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
-      _container.addChild(_nextButtonView.displayObject());
 
       _container.x = my.frame.origin.x;
       _container.y = my.frame.origin.y;
