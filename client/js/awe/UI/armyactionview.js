@@ -24,6 +24,7 @@ AWE.UI = (function(module) {
     var _attackButtonView = null;    
     var _rankImageView = null;   
     
+    var _backgroundShape = null;
     var _infoText1View = null;    
     var _infoText2View = null;    
     var _infoText3View = null;    
@@ -67,44 +68,32 @@ AWE.UI = (function(module) {
       _rankImageView.setFrame(AWE.Geometry.createRect(86, 0, 20, 20));
       _container.addChild(_rankImageView.displayObject());
 
-      if (_army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0) {
-        var lines = 3;
-      }
-      else {
-        var lines = 1;
-      }        
-
       var backgroundGraphics = new Graphics();
       backgroundGraphics.setStrokeStyle(0);
       backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-      backgroundGraphics.drawRoundRect(128, 34 - lines * 11, 64, lines * 22, 8);
-      var backgroundShape = new Shape(backgroundGraphics);
+      backgroundShape = new Shape(backgroundGraphics);
       _container.addChild(backgroundShape);
       
       _infoText1View = AWE.UI.createLabelView();
       _infoText1View.initWithControllerAndLabel(controller);
-      _infoText1View.setFrame(AWE.Geometry.createRect(130, 33 - lines * 11, 66, 24));      
+      _infoText1View.setFrame(AWE.Geometry.createRect(130, 0, 66, 24));      
       _infoText1View.setTextAlign("left");
       _infoText1View.setIconImage("map/display/icon");
       _container.addChild(_infoText1View.displayObject());
 
-      if (lines > 1) {
-        _infoText2View = AWE.UI.createLabelView();
-        _infoText2View.initWithControllerAndLabel(controller);
-        _infoText2View.setFrame(AWE.Geometry.createRect(130, 22, 66, 24));      
-        _infoText2View.setTextAlign("left");
-        _infoText2View.setIconImage("map/display/icon");
-        _infoText2View.setText(_army.get('strength'));
-        _container.addChild(_infoText2View.displayObject());
-  
-        _infoText3View = AWE.UI.createLabelView();
-        _infoText3View.initWithControllerAndLabel(controller);
-        _infoText3View.setFrame(AWE.Geometry.createRect(130, 44, 1000, 24));      
-        _infoText3View.setTextAlign("left");
-        _infoText3View.setIconImage("map/display/icon");
-        _infoText3View.setText(_army.get('strength'));
-        _container.addChild(_infoText3View.displayObject());
-      }
+      _infoText2View = AWE.UI.createLabelView();
+      _infoText2View.initWithControllerAndLabel(controller);
+      _infoText2View.setFrame(AWE.Geometry.createRect(130, 22, 66, 24));      
+      _infoText2View.setTextAlign("left");
+      _infoText2View.setIconImage("map/display/icon");
+      _container.addChild(_infoText2View.displayObject());
+
+      _infoText3View = AWE.UI.createLabelView();
+      _infoText3View.initWithControllerAndLabel(controller);
+      _infoText3View.setFrame(AWE.Geometry.createRect(130, 44, 666, 24));      
+      _infoText3View.setTextAlign("left");
+      _infoText3View.setIconImage("map/display/icon");
+      _container.addChild(_infoText3View.displayObject());
       
       var _actionPointsText = new Text(_army.get('ap_present') + " / " + _army.get('ap_max'), "10px Arial", "#000");
       _actionPointsText.textBaseline = "bottom";
@@ -140,14 +129,33 @@ AWE.UI = (function(module) {
       _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + Math.round((_army.get('rank') + 25) / 25)));
 
       // info view
-      _infoText1View.setText(_army.get('strength'));
+      _container.removeChild(backgroundShape);
+      var lines = _army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0 ? 3 : 1; 
       
+      var backgroundGraphics = new Graphics();
+      backgroundGraphics.setStrokeStyle(0);
+      backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
+      backgroundGraphics.drawRoundRect(128, 34 - lines * 11, 64, lines * 22, 8);
+      backgroundShape = new Shape(backgroundGraphics);
+      _container.addChildAt(backgroundShape, 0);
+
+      if (_army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0) {
+        _infoText1View.setOrigin(AWE.Geometry.createPoint(130, 0));
+        _infoText2View.setVisible(true);
+        _infoText3View.setVisible(true);
+      }
+      else {
+        _infoText1View.setOrigin(AWE.Geometry.createPoint(130, 22));
+        _infoText2View.setVisible(false);
+        _infoText3View.setVisible(false);
+      }
+
+      _infoText1View.setText(_army.get('strength'));
       if (_army.get('battle_id') != 0) {
         _infoText2View.setText('Kampf!');
         _infoText3View.setText('Dauer');
       }
-      
-      if (_army.get('target_location_id') && _army.get('target_location_id') != 0) {
+      else if (_army.get('target_location_id') && _army.get('target_location_id') != 0) {
         _infoText3View.setText(_army.get('target_location_id'));
         _infoText2View.setText(_army.get('target_reached_at'));
       }

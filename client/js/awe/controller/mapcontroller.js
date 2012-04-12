@@ -1136,6 +1136,7 @@ AWE.Controller = (function(module) {
             _hoveredView.center().x,
             _hoveredView.center().y
         ));
+        actionViews.hovered.setNeedsUpdate();
       }
 
       if (actionViews.selected
@@ -1145,6 +1146,7 @@ AWE.Controller = (function(module) {
             _selectedView.center().x,
             _selectedView.center().y
         ));
+        actionViews.selected.setNeedsUpdate();
       }
       
       return _actionViewChanged;

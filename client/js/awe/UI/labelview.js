@@ -127,7 +127,7 @@ AWE.UI = (function(module) {
         
     that.setVisible = function(visible) {
       _super.setVisible(visible);
-      _container.visibility = visible;
+      _container.visible = visible;
     };
     
     that.setIconImage = function(image) {
