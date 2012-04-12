@@ -296,7 +296,7 @@ AWE.Controller = (function(module) {
           _canvas[2].height = _windowSize.height;             
 
           _canvas[3].width  = _windowSize.width;
-          _canvas[3].height = _windowSize.height;             
+          _canvas[3].height = _windowSize.height;          
         };
         that.setNeedsDisplay();
       };
@@ -1184,7 +1184,8 @@ AWE.Controller = (function(module) {
     
     that.updateInspectorViews = function() {
       if (inspectorViews.inspector) {
-        inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 340, _windowSize.height - 150));
+        console.log('set origin of inspector');
+        inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width-345, _windowSize.height-155));
       }
       return _inspectorChanged || _windowChanged;
     };
