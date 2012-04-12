@@ -272,7 +272,7 @@ html, body {
 #layers {
 }
 
-#layer0 {
+#map-tile-canvas {
   background-color: #333;
   position: absolute;
   top: 0px;
@@ -282,7 +282,7 @@ html, body {
   z-index: 0;   /*   <-------------------   */
 }
 
-#layer1 {
+#gaming-pieces-canvas {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -291,13 +291,22 @@ html, body {
   z-index: 1;
 }
 
-#layer2 {
+#annotation-canvas {
   position: absolute;
   top: 0px;
   left: 0px;
   width: 100%;
   height: 100%;
   z-index: 2;
+}
+
+#inspector-canvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
 }
 
 
@@ -308,6 +317,14 @@ html, body {
   width: 100%;
   height: 100%;
   z-index: 10;
+}
+
+.z-layer-3 {
+  z-index: 512;
+}
+
+.z-layer-4 {
+  z-index: 768;
 }
 
 #debug {
@@ -379,13 +396,7 @@ html, body {
   background-color: rgba(255,255,255,0.);
 }
 
-.z-layer-3 {
-  z-index: 512;
-}
 
-.z-layer-4 {
-  z-index: 768;
-}
 
 #text-input-dialog { 
   position: absolute; 

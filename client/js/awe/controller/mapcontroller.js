@@ -22,6 +22,7 @@ AWE.Controller = (function(module) {
 
     var _needsLayout;            ///< true, in case e.g. the window has changed, causing a new layuot of the map
     var _needsDisplay;           ///< true, in case something (data, subwview) has changed causing a need for a redraw
+    var _windowChanged;          ///< true, in case the size of the map screen has changed.
     
     var _scrollingStarted = false;///< user is presently scrolling
     var _scrollingStartedAtVC;
@@ -50,7 +51,7 @@ AWE.Controller = (function(module) {
     var armyViews = {};
     var locationViews = {};
     var actionViews = {};
-    var HUDViews = {};
+    var inspectorViews = {};
     
     var armyUpdates = {};
 
@@ -73,29 +74,29 @@ AWE.Controller = (function(module) {
       var root = that.rootElement();
       
       // background layer, displays region tiles
-      root.append('<canvas id="layer0"></canvas>');
-      _canvas[0] = root.find('#layer0')[0];
+      root.append('<canvas id="map-tile-canvas"></canvas>');
+      _canvas[0] = root.find('#map-tile-canvas')[0];
       _stages[0] = new Stage(_canvas[0]);
       
-   
+      
       // selectable gaming pieces layer (fortresses, armies, etc.)
-      root.append('<canvas id="layer1"></canvas>');
-      _canvas[1] = root.find('#layer1')[0];
+      root.append('<canvas id="gaming-pieces-canvas"></canvas>');
+      _canvas[1] = root.find('#gaming-pieces-canvas')[0];
       _stages[1] = new Stage(_canvas[1]);
       
       log(_stages[1]);
       
       // layer for mouseover and selection objects
-      root.append('<canvas id="layer2"></canvas>');
-      _canvas[2] = root.find('#layer2')[0];
+      root.append('<canvas id="annotation-canvas"></canvas>');
+      _canvas[2] = root.find('#annotation-canvas')[0];
       _stages[2] = new Stage(_canvas[2]);
-      
-      // HUD layer ("static", not zoomable, not moveable)
-      root.append('<canvas id="layer3"></canvas>');
-      _canvas[3] = root.find('#layer3')[0];
-      _stages[3] = new Stage(_canvas[3]);
-      //_stages[3].enableMouseOver();
 
+      // layer for mouseover and selection objects
+      root.append('<canvas id="inspector-canvas"></canvas>');
+      _canvas[3] = root.find('#inspector-canvas')[0];
+      _stages[3] = new Stage(_canvas[3]);
+
+      
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
       that.setNeedsLayout();
@@ -107,40 +108,13 @@ AWE.Controller = (function(module) {
         { stage: _stages[0], mouseOverEvents: false, transparent: true},
         { stage: _stages[1], mouseOverEvents: true },
         { stage: _stages[2], mouseOverEvents: true },
-        { stage: _stages[3], mouseOverEvents: true },
       ];
     };
     
     that.viewDidAppear = function() {
-  /*    var root = that.rootElement();
-      
-      
-      // register controller to receive mouse-down events in screen
-      root.mousedown(function(evt) {
-        that.handleMouseDown(evt);
-      });
-      
-      // register controller to receive window-resize events (from browser window) 
-      // in order to adapt it's own window / display area
-      $(window).resize(function(){
-        console.log('Resize event in map controller.');
-        that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
-      });
-      
-      // register controller to receive mouse-wheel events in screen
-      $(window).bind('mousewheel', function() {
-        that.handleMouseWheel();
-      });
-      // register controller to receive mouse-wheel events in screen (mozilla)
-      $(window).bind('DOMMouseScroll', function(evt) {
-        that.handleMouseWheel(evt);
-      });*/
     }     
     
     that.viewWillDisappear = function() { 
-    //  $(window).unbind('mousewheel');     // remove all event handlers that were bound to the window.
-    //  $(window).unbind('DOMMouseScroll');   
-    //  $(window).unbind('resize'); 
     }
     
     // ///////////////////////////////////////////////////////////////////////
@@ -219,6 +193,7 @@ AWE.Controller = (function(module) {
     that.setWindowSize = function(size) {
       if (! _windowSize || _windowSize.width != size.width || _windowSize.height != size.height) {
         _windowSize = size;
+        _windowChanged = true;
         that.setNeedsLayout(); 
       }
     };
@@ -583,7 +558,7 @@ AWE.Controller = (function(module) {
 
     /* Detail View */
 
-    var _showDetailView = function(view) {
+    var _showDetailView = function(view) { /*
       if (HUDViews.detailView) {
         hideDetailView(HUDViews.detailView);
       }
@@ -597,15 +572,15 @@ AWE.Controller = (function(module) {
         HUDViews.detailView.initWithControllerAndArmy(that, view.army());
       }
       _stages[3].addChild(HUDViews.detailView.displayObject());
-      _detailViewChanged = true;
+      _detailViewChanged = true;*/
     };
 
     var _hideDetailView = function() {
-      if (HUDViews.detailView) {
+  /*   if (HUDViews.detailView) {
         _stages[3].removeChild(HUDViews.detailView.displayObject());
         delete HUDViews.detailView;
       }
-      _detailViewChanged = true;
+      _detailViewChanged = true;*/
     };
 
     // ///////////////////////////////////////////////////////////////////////
@@ -1144,22 +1119,22 @@ AWE.Controller = (function(module) {
         var stagesNeedUpdate = [false, false, true, false]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
         
         // rebuild individual hieararchies
-        if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
+        if (_windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           stagesNeedUpdate[0] = this.rebuildMapHierarchy(nodes) || stagesNeedUpdate[0];
         }
         
-        if (this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _action ) {
+        if (_windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _action ) {
           stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         };
         
-        if (this.modelChanged() || _action || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
+        if (_windowChanged || this.modelChanged() || _action || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           that.updateActionViews();
         }
         
-        if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || _action || !HUDViews.mainControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
+    //    if (_windowChanged || _action || !HUDViews.mainControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
 //          log('MapController: update hud.', _action);
         //  stagesNeedUpdate[3] = that.updateHUD() || stagesNeedUpdate[3]; 
-        }
+    //    }
         
         //log('Update:                   ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
@@ -1169,7 +1144,7 @@ AWE.Controller = (function(module) {
         stagesNeedUpdate[1] = propUpdates(locationViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(armyViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[2] = propUpdates(actionViews) || stagesNeedUpdate[2];
-        stagesNeedUpdate[3] = propUpdates(HUDViews) || stagesNeedUpdate[3];
+        stagesNeedUpdate[3] = propUpdates(inspectorViews) || stagesNeedUpdate[3];
 
         //log('Update after propagation: ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
@@ -1231,7 +1206,7 @@ AWE.Controller = (function(module) {
         that.layoutIfNeeded();   
         
         // STEP 4: update views and repaint view hierarchies as needed
-        if (_needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || _action) {
+        if (_windowChanged || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || _action) {
           // STEP 4a: get all visible nodes from the model
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());    
           
@@ -1243,11 +1218,11 @@ AWE.Controller = (function(module) {
             regionViews,
             [fortressViews, armyViews, locationViews],
             actionViews,
-            HUDViews
+            inspectorViews,
           ];          
           
-          for (var i=0; i < 4; i++) {
-            if (stageUpdateNeeded[i]) {
+          for (var i=0; i < _stages.length; i++) {
+            if (stageUpdateNeeded[i] || _windowChanged) {
               if (_sortStages[i]) {  // TODO: add configuration: stage needs sorting
                 _stages[i].sortChildren(function(a, b) {
                   var az = a.y + a.height;
@@ -1280,6 +1255,7 @@ AWE.Controller = (function(module) {
         _needsLayout = false;
         _action = false;
         _detailViewChanged = false;
+        _windowChanged = false;
       }
       _loopCounter++;
     };
