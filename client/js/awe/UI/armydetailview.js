@@ -34,6 +34,7 @@ AWE.UI = (function(module) {
     var _moveButtonView = null;
     var _prevButtonView = null;
     var _nextButtonView = null;
+    var _flagShape = null;
     
     that = module.createView(spec, my);
 
@@ -114,6 +115,8 @@ AWE.UI = (function(module) {
       _sizeType3LabelView.setFrame(AWE.Geometry.createRect(105, 90, 100, 24));      
       _container.addChild(_sizeType3LabelView.displayObject());
       
+
+      
       // kreis drum
       var circleGraphics = new Graphics();
       circleGraphics.setStrokeStyle(1);
@@ -143,6 +146,17 @@ AWE.UI = (function(module) {
       _stanceView.onMouseOver = that.onMouseOver;
       _stanceView.onMouseOut = that.onMouseOut;
       _container.addChild(_stanceView.displayObject());
+
+      // Allicance Flag
+      offX = 150; offY = 0;
+      _flagShapeGraphics = new Graphics();
+      _flagShapeGraphics.setStrokeStyle(1);
+      _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
+      _flagShapeGraphics.beginFill('rgb(255, 255, 255)');
+      _flagShapeGraphics.moveTo(offX +0, offY +0);
+      _flagShapeGraphics.lineTo(offX +60, offY +0).lineTo(offX +30, offY +75).lineTo(offX +0, offY +0);
+      _flagShape = new Shape(_flagShapeGraphics);
+      _container.addChild(_flagShape);
 
       // buttons oben
       if (_army.isOwn()) {
