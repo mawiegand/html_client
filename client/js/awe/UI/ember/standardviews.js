@@ -27,7 +27,7 @@ AWE.UI.Ember = (function(module) {
     heading: 'set a heading',
     input: '',
     okPressed: function() { alert ('Action not connected: okPressed.'); },
-    cancelPressed: function() { this.destroy(); },
+    cancelPressed: function() { alert ('Action not connected: okPressed.'); },
   });
       
   return module;  

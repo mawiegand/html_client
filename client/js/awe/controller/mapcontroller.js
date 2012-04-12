@@ -458,6 +458,7 @@ AWE.Controller = (function(module) {
               AWE.Action.Manager.queueAction(action);  
               this.destroy();            
             },
+            cancelPressed: function() { this.destroy(); }
           });
           that.applicationController.presentModalDialog(changeDialog);
         },

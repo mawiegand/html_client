@@ -239,7 +239,7 @@ AWE.Application = (function(module) {
     
       onMouseDown: function(evt) {
         var controller = this.get('presentScreenController');
-        if (controller && controller.onMouseDown) {
+        if (!this.get('isModal') && controller && controller.onMouseDown) {
           controller.onMouseDown(evt);
         }
       },
@@ -247,7 +247,7 @@ AWE.Application = (function(module) {
     
       onMouseWheel: function(evt) {
         var controller = this.get('presentScreenController');
-        if (controller && controller.onMouseWheel) {   
+        if (!this.get('isModal') && controller && controller.onMouseWheel) {   
           controller.onMouseWheel(evt);
         }
       },
@@ -255,7 +255,7 @@ AWE.Application = (function(module) {
 
       onMouseLeave: function(evt) {
         var controller = this.get('presentScreenController');
-        if (controller && controller.onMouseLeave) {   
+        if (!this.get('isModal') && controller && controller.onMouseLeave) {   
           controller.onMouseLeave(evt);
         }
       },
@@ -380,8 +380,10 @@ AWE.Application = (function(module) {
       },
       
       modalDialogClosed: function(dialog) {
-        console.log('closed dialog');
-        this.setModal(false);
+        do {
+          console.log('poped the top-most modal dialog.');
+        } while (this.modalDialogs.length > 0 && this.modalDialogs.pop() != dialog);
+        this.setModal(this.modalDialogs.length > 0);
       },
       
       presentModalDialog: function(dialog) {
@@ -389,6 +391,7 @@ AWE.Application = (function(module) {
         dialog.onClose = function(self) { 
           return function(dialog) { self.modalDialogClosed(dialog) };
         }(this);
+        this.modalDialogs.push(dialog);
         dialog.append();
       },
   
