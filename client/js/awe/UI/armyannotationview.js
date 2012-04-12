@@ -121,9 +121,9 @@ AWE.UI = (function(module) {
     that.updateView = function() {
       
       // buttons
-      _stanceButtonView.setVisible(_armyView.selected());
-      _moveButtonView.setVisible(_armyView.selected());
-      _attackButtonView.setVisible(_armyView.selected());
+      _stanceButtonView.setVisible(_army.isOwn() && _armyView.selected());
+      _moveButtonView.setVisible(_army.isOwn() && _armyView.selected());
+      _attackButtonView.setVisible(_army.isOwn() && _armyView.selected());
       
       // rank image
       _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + Math.round((_army.get('rank') + 25) / 25)));
