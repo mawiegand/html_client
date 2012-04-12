@@ -96,6 +96,7 @@ AWE.Config = (function(module) {
     "map/army/rank2": 'images/army/rank2.png',
     "map/army/rank3": 'images/army/rank3.png',
     "map/army/rank4": 'images/army/rank4.png',
+    "map/army/rank5": 'images/army/rank4.png',
 
     "map/outpost" : "images/settlements/outpost.png",
 

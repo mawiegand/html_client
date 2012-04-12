@@ -53,20 +53,16 @@ AWE.GS = (function(module) {
     battle_id: 0,
     battle_retreat: false,
     
-    target_location_id: 0,
+    target_location_id: null,
     target_reached_at: null,
     target_region_id: null,
     
     isOwn: function() {
-      return this.get('owner_id') && this.get('owner_id') === module.CharacterManager.currentCharacter.getId();
+      return this.get('owner_id') === module.CharacterManager.currentCharacter.getId();
     },
     
-    isBattling: function() {
-      return this.get('battle_id') && this.get('battle_id') !== 0;
-    },
-    
-    isMoving: function() {
-      return this.get('target_location_id') && this.get('target_location_id') !== 0;
+    isMovable: function() {
+      return ;
     },
     
     relation: function() {

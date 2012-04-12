@@ -67,7 +67,7 @@ AWE.UI = (function(module) {
       _rankImageView.setFrame(AWE.Geometry.createRect(86, 0, 20, 20));
       _container.addChild(_rankImageView.displayObject());
 
-      if (_army.isBattling() || _army.isMoving()) {
+      if (_army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0) {
         var lines = 3;
       }
       else {
@@ -86,7 +86,6 @@ AWE.UI = (function(module) {
       _infoText1View.setFrame(AWE.Geometry.createRect(130, 33 - lines * 11, 66, 24));      
       _infoText1View.setTextAlign("left");
       _infoText1View.setIconImage("map/display/icon");
-      _infoText1View.setText(_army.get('strength'));
       _container.addChild(_infoText1View.displayObject());
 
       if (lines > 1) {
@@ -95,7 +94,7 @@ AWE.UI = (function(module) {
         _infoText2View.setFrame(AWE.Geometry.createRect(130, 22, 66, 24));      
         _infoText2View.setTextAlign("left");
         _infoText2View.setIconImage("map/display/icon");
-        _infoText2View.setText(army.get('strength'));
+        _infoText2View.setText(_army.get('strength'));
         _container.addChild(_infoText2View.displayObject());
   
         _infoText3View = AWE.UI.createLabelView();
@@ -103,7 +102,7 @@ AWE.UI = (function(module) {
         _infoText3View.setFrame(AWE.Geometry.createRect(130, 44, 1000, 24));      
         _infoText3View.setTextAlign("left");
         _infoText3View.setIconImage("map/display/icon");
-        _infoText3View.setText(army.get('strength'));
+        _infoText3View.setText(_army.get('strength'));
         _container.addChild(_infoText3View.displayObject());
       }
       
@@ -132,12 +131,27 @@ AWE.UI = (function(module) {
     
     that.updateView = function() {
       
-      // _stanceButtonView.setVisible(true);
-      // _moveButtonView.setVisible(_armyView.hovered());
-      // _attackButtonView.setVisible(_armyView.selected());
-      // _rankImageView.setVisible(that.selected());
+      // buttons
+      _stanceButtonView.setVisible(_armyView.selected());
+      _moveButtonView.setVisible(_armyView.selected());
+      _attackButtonView.setVisible(_armyView.selected());
       
-      _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank1")); // + _army.get('rank')));
+      // rank image
+      _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + Math.round((_army.get('rank') + 25) / 25)));
+
+      // info view
+      _infoText1View.setText(_army.get('strength'));
+      
+      if (_army.get('battle_id') != 0) {
+        _infoText2View.setText('Kampf!');
+        _infoText3View.setText('Dauer');
+      }
+      
+      if (_army.get('target_location_id') && _army.get('target_location_id') != 0) {
+        _infoText3View.setText(_army.get('target_location_id'));
+        _infoText2View.setText(_army.get('target_reached_at'));
+      }
+      
       that.setNeedsDisplay();
       that.setNeedsLayout();
     }
