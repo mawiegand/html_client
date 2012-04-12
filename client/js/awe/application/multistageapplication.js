@@ -294,7 +294,7 @@ AWE.Application = (function(module) {
       
           // register controller to receive mouse-wheel events in screen (mozilla)
           $(window).bind('DOMMouseScroll', function(evt) {
-            that.onMouseWheel(evt);
+            self.onMouseWheel(evt);
           });
         }
       },
