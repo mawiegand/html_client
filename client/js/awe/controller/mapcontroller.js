@@ -466,7 +466,7 @@ AWE.Controller = (function(module) {
       }
     };
         
-    var _action = false;
+    var _actionViewChanged = false;
 
     that.buttonClicked = function(button) {
       log('button', button.text());
@@ -505,7 +505,7 @@ AWE.Controller = (function(module) {
       actionViews.selected = actionViews.hovered;
       actionViews.selected.setNeedsUpdate();
       _showInspectorWith(_selectedView);
-      _action = true;
+      _actionViewChanged = true;
     };
     
     var _unselectView = function(view) {
@@ -523,7 +523,7 @@ AWE.Controller = (function(module) {
       
       _hideInspector();
 
-      _action = true;
+      _actionViewChanged = true;
     };
 
     /* view highlighting */
@@ -556,7 +556,7 @@ AWE.Controller = (function(module) {
           actionViews.hovered.setNeedsUpdate();
         }
         
-        _action = true;
+        _actionViewChanged = true;
       }
     };
 
@@ -572,7 +572,7 @@ AWE.Controller = (function(module) {
         delete actionViews.hovered;
         _hoveredView.setHovered(false);
         _hoveredView = null;
-        _action = true;
+        _actionViewChanged = true;
       }
     };
 
@@ -1102,6 +1102,8 @@ AWE.Controller = (function(module) {
             _selectedView.center().y
         ));
       }
+      
+      return _actionViewChanged;
     };
 
 
@@ -1157,21 +1159,19 @@ AWE.Controller = (function(module) {
           stagesNeedUpdate[0] = this.rebuildMapHierarchy(nodes) || stagesNeedUpdate[0];
         }
         
-        if (_windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _action ) {
+        if (_windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _actionViewChanged ) {
           stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         };
         
-        if (_windowChanged || this.modelChanged() || _action || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
-          that.updateActionViews();
+        if (_windowChanged || this.modelChanged() || _actionViewChanged || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
+          stagesNeedUpdate[2] = that.updateActionViews();
         }
         
-
-        
-        if (_windowChanged || _action || !inspectorViews.inspector || _inspectorChanged) { // TODO: only update at start and when something might have changed (object selected, etc.)
+        if (_windowChanged || _actionViewChanged || !inspectorViews.inspector || _inspectorChanged) { // TODO: only update at start and when something might have changed (object selected, etc.)
           stagesNeedUpdate[3] = that.updateInspectorViews() || stagesNeedUpdate[3]; 
         }
         
-        //log('Update:                   ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
+        log('Update:                   ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
         // update hierarchies and check which stages need to be redrawn
         stagesNeedUpdate[0] = propUpdates(regionViews) || stagesNeedUpdate[0];
@@ -1181,7 +1181,7 @@ AWE.Controller = (function(module) {
         stagesNeedUpdate[2] = propUpdates(actionViews) || stagesNeedUpdate[2];
         stagesNeedUpdate[3] = propUpdates(inspectorViews) || stagesNeedUpdate[3];
 
-        //log('Update after propagation: ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
+        log('Update after propagation: ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
         
         oldVisibleArea = visibleArea;
@@ -1241,7 +1241,7 @@ AWE.Controller = (function(module) {
         that.layoutIfNeeded();   
         
         // STEP 4: update views and repaint view hierarchies as needed
-        if (_windowChanged || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || _action) {
+        if (_windowChanged || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || _actionViewChanged) {
           // STEP 4a: get all visible nodes from the model
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());    
           
@@ -1288,7 +1288,7 @@ AWE.Controller = (function(module) {
         _maptreeChanged = false;
         _needsDisplay = false;
         _needsLayout = false;
-        _action = false;
+        _actionViewChanged = false;
         _inspectorChanged = false;
         _windowChanged = false;
       }
