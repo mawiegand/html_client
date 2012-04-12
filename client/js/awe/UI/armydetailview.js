@@ -148,15 +148,18 @@ AWE.UI = (function(module) {
       _container.addChild(_stanceView.displayObject());
 
       // Allicance Flag
-      offX = 150; offY = 0;
-      _flagShapeGraphics = new Graphics();
-      _flagShapeGraphics.setStrokeStyle(1);
-      _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
-      _flagShapeGraphics.beginFill('rgb(255, 255, 255)');
-      _flagShapeGraphics.moveTo(offX +0, offY +0);
-      _flagShapeGraphics.lineTo(offX +60, offY +0).lineTo(offX +30, offY +75).lineTo(offX +0, offY +0);
-      _flagShape = new Shape(_flagShapeGraphics);
-      _container.addChild(_flagShape);
+      if (_army.get('alliance_id') != null) {
+        offX = 150; offY = 0;
+        _flagShapeGraphics = new Graphics();
+        _flagShapeGraphics.setStrokeStyle(1);
+        _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
+        var color = AWE.GS.AllianceManager.colorForNumber(_army.get('alliance_id'));
+        _flagShapeGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
+        _flagShapeGraphics.moveTo(offX +0, offY +0);
+        _flagShapeGraphics.lineTo(offX +60, offY +0).lineTo(offX +30, offY +75).lineTo(offX +0, offY +0);
+        _flagShape = new Shape(_flagShapeGraphics);
+        _container.addChild(_flagShape);
+      }
 
       // buttons oben
       if (_army.isOwn()) {

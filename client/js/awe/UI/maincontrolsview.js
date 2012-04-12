@@ -31,23 +31,30 @@ AWE.UI = (function(module) {
           
       // Ressourcen Leiste
       // Flagge
-      var _flagShapeGraphics = new Graphics();
-      _flagShapeGraphics.setStrokeStyle(1);
-      _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
-      _flagShapeGraphics.beginFill('rgb(255, 255, 255)');
-      _flagShapeGraphics.moveTo(240, 0);
-      _flagShapeGraphics.lineTo(320, 0).lineTo(280, 100).lineTo(240, 0);
-      var _flagShape = new Shape(_flagShapeGraphics);
       
-      _flagShape.onClick = function() { WACKADOO.activateAllianceController(); console.log('flag clicked');  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+      
+      var character = AWE.GS.CharacterManager.currentCharacter;
+      var _flagShape = null;
+      var _flagButtonText = null;
+      if (character && character.get('alliance_id')) {
+        var color = AWE.GS.AllianceManager.colorForNumber(character.get('alliance_id'));
 
+        var _flagShapeGraphics = new Graphics();
+        _flagShapeGraphics.setStrokeStyle(1);
+        _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
+        _flagShapeGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
+        _flagShapeGraphics.moveTo(240, 0);
+        _flagShapeGraphics.lineTo(320, 0).lineTo(280, 100).lineTo(240, 0);
+        _flagShape = new Shape(_flagShapeGraphics);
       
-      var _flagButtonText = new Text('Flag', "12px Arial", "#000");
-      _flagButtonText.textBaseline = "middle";
-      _flagButtonText.textAlign = "center"
-      _flagButtonText.x = 280;
-      _flagButtonText.y = 40;
-  
+        _flagShape.onClick = function() { WACKADOO.activateAllianceController(); console.log('flag clicked');  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+      
+        _flagButtonText = new Text(character.get('alliance_tag'), "12px Arial", "#000");
+        _flagButtonText.textBaseline = "middle";
+        _flagButtonText.textAlign = "center"
+        _flagButtonText.x = 280;
+        _flagButtonText.y = 40;
+      }
   
       // Kopf
       var _heroButtonGraphics = new Graphics();
@@ -220,8 +227,10 @@ AWE.UI = (function(module) {
       _container.addChildAt(_armiesButton);    
       _container.addChildAt(_heroHead);
       _container.addChildAt(_heroButton);
-      _container.addChildAt(_flagButtonText);
-      _container.addChildAt(_flagShape);
+      if (_flagShape) {
+        _container.addChildAt(_flagButtonText);
+        _container.addChildAt(_flagShape);
+      }
       _container.addChildAt(_village);
       _container.addChildAt(_fortressButton); 
       _container.addChildAt(_frog);
