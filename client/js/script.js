@@ -74,6 +74,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
         if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.currentCharacter) {
           console.log('INFO: playing as character ' + entity + '.');
+          _numAssets +=1;
+          if (AWE.GS.CharacterManager.currentCharacter.get('alliance_id')) {
+            AWE.GS.AllianceManager.updateAlliance(AWE.GS.CharacterManager.currentCharacter.get('alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
+              assetLoaded();
+            });
+          }
           assetLoaded();
         }
         else {
@@ -124,8 +130,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     
-  
-      
     /** starts the app when the document is ready. */
     ready: function() {
       this._super();
@@ -140,8 +144,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var hud = AWE.Controller.createHUDController();
       hud.init();
       this.setHudController(hud);
-
-
     
       var controller = AWE.Controller.createMapController('#layers');
       controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location

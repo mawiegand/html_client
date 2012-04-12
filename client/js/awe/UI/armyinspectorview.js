@@ -7,13 +7,13 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
           
-  module.createArmyDetailView = function(spec, my) {
+  module.createArmyInspectorView = function(spec, my) {
 
     var that;
 
     my = my || {};
     
-    my.typeName = 'ArmyDetailView';
+    my.typeName = 'ArmyInspectorView';
     
     var _container = null;
     
