@@ -12,10 +12,15 @@ AWE.UI.Ember = (function(module) {
   module.templates = module.templates || [];
   module.templates.push('js/awe/UI/ember/templates/armyviews.html');
   
-  module.ArmyInfoView = Ember.View.extend({
+  module.ArmyInfoView = module.Dialog.extend({
     templateName: 'army-details',
     changeNamePressed: function() { alert ('Action not connected: changeNameWasPressed.'); },
-    closePressed: function() { alert ('Action not connected: closePressed.'); },
+/*    close: function() { log('in close');
+      if (this.onClose) { log('call onClose');
+        this.onClose(this);
+      }
+      this.destroy();
+    }, */
   });
   
   return module;
