@@ -131,6 +131,7 @@ AWE.UI = (function(module) {
       _container.height = my.frame.size.height;
     };
     
+        
     that.updateView = function() {
       
       // TODO, IMPORTANT: DON'T recreate objects everytime this view is updated. This may be expensive... 
@@ -148,23 +149,19 @@ AWE.UI = (function(module) {
       _poleShape = new Shape(_poleGraphics);  
       _container.addChild(_poleShape);
 
-      var _flagGraphics = new Graphics();
-      _flagGraphics.setStrokeStyle(1);
-      _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
-      _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
-      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * (_army.get('size_present') / _army.get('size_max')), 22).lineTo(56, 12);
-      _flagShape = new Shape(_flagGraphics);  
-      _container.addChild(_flagShape);
-
       _container.removeChild(_flagShape);
+      var color = { r: 200, g: 200, b: 200 }; // gray for neutral armies
+      if (_army.get('alliance_id')) {
+        color = AWE.GS.AllianceManager.colorForNumber(_army.get('alliance_id'));
+      }
       var _flagGraphics = new Graphics();
       _flagGraphics.setStrokeStyle(1);
       _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
-      _flagGraphics.beginFill(Graphics.getRGB(0,255,0));
-      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * (_army.get('size_present') / _army.get('size_max')), 22).lineTo(56, 12);
+      _flagGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
+      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * _army.get('size_present') / 1200, 22).lineTo(56, 12);
       _flagShape = new Shape(_flagGraphics);  
       _container.addChild(_flagShape);
-      
+            
       _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]));
       
       if (_army.get('ap_present') / _army.get('ap_max') > 0) {

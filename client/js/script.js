@@ -120,12 +120,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this.setScreenController(this.get('mapScreenController'));
     },
     
-    activateAllianceController: function() {
+    activateAllianceController: function(alliance_id) {
       var allianceController = this.get('allianceScreenController');
       if (!allianceController) {
         allianceController = AWE.Controller.createAllianceController('#layers');
         this.set('allianceScreenController', allianceController);
       }
+      allianceController.setAllianceId(alliance_id);
       this.setScreenController(allianceController);
     },
     

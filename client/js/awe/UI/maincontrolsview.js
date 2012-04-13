@@ -47,7 +47,9 @@ AWE.UI = (function(module) {
         _flagShapeGraphics.lineTo(320, 0).lineTo(280, 100).lineTo(240, 0);
         _flagShape = new Shape(_flagShapeGraphics);
       
-        _flagShape.onClick = function() { WACKADOO.activateAllianceController(); console.log('flag clicked');  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+        _flagShape.onClick = function() { 
+          WACKADOO.activateAllianceController(character.get('alliance_id'));   
+        }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
       
         _flagButtonText = new Text(character.get('alliance_tag'), "12px Arial", "#000");
         _flagButtonText.textBaseline = "middle";

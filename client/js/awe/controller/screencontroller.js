@@ -15,7 +15,7 @@ AWE.Controller = (function(module) {
 
     that.applicationController = null;
 
-    that.domRootElement = $('<div class="screen-controller"></div>');
+    that.domRootElement = $('<div id="main-screen-controller" class="screen-controller"></div>');
     that.onMouseWheel = null;
     that.onMouseDown = null;
     that.onResize = null;
