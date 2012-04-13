@@ -124,10 +124,10 @@ AWE.GS = (function(module) {
   
     my = my || {};
         
-    my.entities = {};                 ///< holds all available information about armies
-    my.runningUpdatesPerId = {};      ///< hash that contains all running update requests, using the entity.id as key.
+    my.entities = [];                 ///< holds all available information about armies
+    my.runningUpdatesPerId = [];      ///< hash that contains all running update requests, using the entity.id as key.
 
-    my.createEntity = my.createEntity || function() { return module.Entity.create(); };
+    my.createEntity = my.createEntity || function(spec) { return module.Entity.create(spec); };
     
     my.processUpdateResponse = my.processUpdateResponse || function(data, updateType, start) {
       var entity = my.entities[data.id];
@@ -136,7 +136,9 @@ AWE.GS = (function(module) {
         entity.updateWith(data, updateType, start);
       }
       else {
-        entity = my.createEntity().init(data);
+        entity = my.createEntity({ id: data['id'] });
+        log(entity, entity.id, entity.get('id'), data);
+        entity.init(data);
         entity.setNotModifiedAfter(updateType, start); // set the last-update timestamp appropriately
         my.entities[entity.get('id')] = entity;
       }

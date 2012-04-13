@@ -68,7 +68,7 @@ AWE.GS = (function(module) {
   
     my.runningUpdatesPerAllicance = {};///< hash that contains all running requests for alliances, using the alliance.id as key.
     
-    my.createEntity = function() { return module.Character.create(); }
+    my.createEntity = function(spec) { return module.Character.create(spec); }
 
   
     // public attributes and methods ///////////////////////////////////////
@@ -82,10 +82,14 @@ AWE.GS = (function(module) {
     that.getMembersOfAlliance = function(id) { 
       return AWE.GS.CharacterAccess.getAllForAlliance_id(id)
     };
+    that.lastUpdateAtForAllianceId = function(allianceId, updateType) {
+      return module.CharacterAccess.lastUpdateForAlliance_id(allianceId, updateType);// modified after
+    };
     
     that.lastUpdateForCurrentCharacter = function() {
       return lastCurrentCharacterUpdate ? lastCurrentCharacterUpdate : new Date(1970);
     };
+  
 
   
     /** returns true, if update is executed, returns false, if request did 
@@ -99,7 +103,7 @@ AWE.GS = (function(module) {
     /** updates all armies in a given alliance. Calls the callback with a
      * list of all the updated characters. */
     that.updateMembersOfAlliance = function(allianceId, updateType, callback) {
-      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'alliances/'+allianceId+'/members';
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'alliances/'+allianceId+'/characters';
       return my.fetchEntitiesFromURL(
         url,                                  // url to fetch from
         my.runningUpdatesPerAllicance,        // queue to register this request during execution

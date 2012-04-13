@@ -54,6 +54,24 @@ AWE.Controller = (function(module) {
       return alliance;
     }
     
+    that.getAndUpdateMembers = function(allianceId) {
+      if (!allianceId) { return ; }
+      var members = AWE.GS.CharacterManager.getMembersOfAlliance(allianceId);
+//      log (AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL), AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime());
+      if ((!members || members.length == 0) ||
+          (members && AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
+        AWE.GS.CharacterManager.updateMembersOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(members) {
+          console.log('received update on members');
+          if (members && that.view) {
+            that.view.set('members', AWE.Ext.hashValues(AWE.GS.CharacterManager.getMembersOfAlliance(allianceId)));
+//            _needsRecreate = true;
+          }
+        });
+      }
+ //     log('members', allianceId, AWE.GS.CharacterAccess.getAllForAlliance_id(allianceId), AWE.GS.CharacterAccess, AWE.GS.CharacterManager);
+      return  AWE.Ext.hashValues(members);      
+    }
+    
     that.removeView = function() {
       if (this.view) {
         this.view.destroy();
@@ -66,9 +84,12 @@ AWE.Controller = (function(module) {
         this.removeView();
       }
       var alliance = that.getAndUpdateAlliance(this.allianceId);
+      var members = that.getAndUpdateMembers(this.allianceId);
       this.view = AWE.UI.Ember.AllianceScreen.create({
         alliance: alliance,
+        members: members ? members : [],
       });
+      log (members)
       this.view.appendTo('#main-screen-controller');      
     }
     

@@ -15,6 +15,12 @@
     <p>{{ alliance.message }}</p>
   </div>
   <div class="alliance-member-list">
+    <h1>{{ unbound AWE.I18n.strings.alliance.members }}</h1>
+    <ul>
+      {{#each members}}
+        <li>{{ name }}</li>
+      {{/each}}
+    </ul>
   </div>
   <div class="alliance-shout-box">
   </div>

@@ -16,6 +16,7 @@ AWE.UI.Ember = (function(module) {
     templateName: 'alliance-screen',
     
     alliance: null,
+    members: null,
   });
   
   return module;
