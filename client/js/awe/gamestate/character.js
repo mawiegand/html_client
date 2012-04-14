@@ -116,7 +116,7 @@ AWE.GS = (function(module) {
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
-              result = module.AllianceAccess.getAllForAlliance_id(allianceId);
+              result = module.CharacterAccess.getAllForAlliance_id(allianceId);
             }
             callback(result, status, xhr, timestamp);
           }

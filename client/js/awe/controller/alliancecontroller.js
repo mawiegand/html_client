@@ -70,6 +70,28 @@ AWE.Controller = (function(module) {
  //     log('members', allianceId, AWE.GS.CharacterAccess.getAllForAlliance_id(allianceId), AWE.GS.CharacterAccess, AWE.GS.CharacterManager);
       return  AWE.Ext.hashValues(members);      
     }
+
+    that.getAndUpdateShouts = function(allianceId) {
+      if (!allianceId) { return ; }
+      var messages = AWE.GS.AllianceShoutManager.getMessagesOfAlliance(allianceId);
+    //      log (AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL), AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime());
+      if ((!messages || messages.length == 0) ||
+          (messages && AWE.GS.AllianceShoutManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
+          AWE.GS.AllianceShoutManager.updateMessagesOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(messages) {
+              console.log('received update on messages');
+              if (messages && that.view) {
+                  _needsRecreate = true;
+              }
+          });
+      }
+      //     log('members', allianceId, AWE.GS.CharacterAccess.getAllForAlliance_id(allianceId), AWE.GS.CharacterAccess, AWE.GS.CharacterManager);
+      var messageArray =  AWE.Ext.hashValues(messages);
+      messageArray.forEach(function(value, key) {
+        var character = AWE.GS.CharacterManager.getCharacter(this[key].get('character_id'));
+        this[key].set('character', character);
+      }, messageArray);
+      return messageArray;
+    }
     
     that.removeView = function() {
       if (this.view) {
@@ -84,8 +106,9 @@ AWE.Controller = (function(module) {
     that.updateView = function() {
       var alliance = that.getAndUpdateAlliance(this.allianceId);   // side-effect: starts another update, if older than 60s
       var members = that.getAndUpdateMembers(this.allianceId);     // side-effect: starts another update, if older than 60s
-      
-      this.view.set('alliance', alliance).set('members', members ? members : []);
+      var messages = that.getAndUpdateShouts(this.allianceId);     // side-effect: starts another update, if older than 60s
+
+      this.view.set('alliance', alliance).set('members', members ? members : []).set('shouts', messages ? messages : []);
     }
     
     that.appendView = function() {
@@ -94,9 +117,11 @@ AWE.Controller = (function(module) {
       }
       var alliance = that.getAndUpdateAlliance(this.allianceId);
       var members = that.getAndUpdateMembers(this.allianceId);
+      var messages = that.getAndUpdateShouts(this.allianceId);     // side-effect: starts another update, if older than 60s
       this.view = AWE.UI.Ember.AllianceScreen.create({
         alliance: alliance,
         members: members ? members : [],
+        shouts: messages ? messages : []
       });
       log (members)
       this.view.appendTo('#main-screen-controller');      
