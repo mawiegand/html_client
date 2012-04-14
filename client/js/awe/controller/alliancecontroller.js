@@ -9,7 +9,7 @@ AWE.Controller = (function(module) {
           
   module.createAllianceController = function(anchor) {
       
-    var _needsRecreate = false;  
+    var _viewNeedsUpdate = false;  
       
     var that = module.createScreenController(anchor); ///< create base object
     
@@ -47,7 +47,7 @@ AWE.Controller = (function(module) {
           (alliance && alliance.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
         AWE.GS.AllianceManager.updateAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(alliance) {
           if (alliance && that.view && that.view.alliance != alliance) {
-            _needsRecreate = true;
+            _viewNeedsUpdate = true;
           }
         });
       }
@@ -63,7 +63,7 @@ AWE.Controller = (function(module) {
         AWE.GS.CharacterManager.updateMembersOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(members) {
           console.log('received update on members');
           if (members && that.view) {
-            _needsRecreate = true;
+            _viewNeedsUpdate = true;
           }
         });
       }
@@ -71,16 +71,19 @@ AWE.Controller = (function(module) {
       return  AWE.Ext.hashValues(members);      
     }
 
-    that.getAndUpdateShouts = function(allianceId) {
+    that.getAndUpdateShouts = function(allianceId, forceUpdate) {
+      if (forceUpdate === undefined) { 
+        forceUpdate = false;
+      }
       if (!allianceId) { return ; }
       var messages = AWE.GS.AllianceShoutManager.getMessagesOfAlliance(allianceId);
     //      log (AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL), AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime());
-      if ((!messages) ||
-          (messages && AWE.GS.AllianceShoutManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
+      if ((!messages) || forceUpdate ||
+          (messages && AWE.GS.AllianceShoutManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 10000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
           AWE.GS.AllianceShoutManager.updateMessagesOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(messages) {
               console.log('received update on messages');
               if (messages && that.view) {
-                  _needsRecreate = true;
+                  _viewNeedsUpdate = true;
               }
           });
       }
@@ -113,6 +116,12 @@ AWE.Controller = (function(module) {
     
     that.shout = function(message) {
       console.log('shout: ', message);
+      var action = AWE.Action.Fundamental.createShoutToAllianceAction(message);
+      action.send(function(self) {
+        return function() {
+          self.getAndUpdateShouts(self.allianceId, true);
+        }
+      }(this));
     }
     
     that.appendView = function() {
@@ -163,10 +172,10 @@ AWE.Controller = (function(module) {
 
     that.runloop = function() {
       this.updateDebug();
-      if (this.visible && (_needsRecreate || (this.view.get('alliance') &&
+      if (this.visible && (_viewNeedsUpdate || (this.view.get('alliance') &&
           this.view.get('alliance').get('id') != this.allianceId))) {
         this.updateView();
-        _needsRecreate = false;
+        _viewNeedsUpdate = false;
       }
     }
     
