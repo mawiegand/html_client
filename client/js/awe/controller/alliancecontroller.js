@@ -78,6 +78,9 @@ AWE.Controller = (function(module) {
       }
     }
     
+    /** update the view in case the OBJECTS (alliance, members) did change. A change
+     * of object properties (e.g. alliance.description) is propagated automatically
+     * with the help of ember bindings. */
     that.updateView = function() {
       var alliance = that.getAndUpdateAlliance(this.allianceId);   // side-effect: starts another update, if older than 60s
       var members = that.getAndUpdateMembers(this.allianceId);     // side-effect: starts another update, if older than 60s
