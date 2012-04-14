@@ -23,6 +23,12 @@
     </ul>
   </div>
   <div class="alliance-shout-box">
+      <h1>{{ unbound AWE.I18n.strings.alliance.shoutBox }}</h1>
+      <ul>
+        {{#each shouts}}
+          <li>{{ character.name }}: {{ message }} -- {{ created_at }}</li>
+        {{/each}}
+      </ul>
   </div>
 </script>
 
