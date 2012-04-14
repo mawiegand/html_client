@@ -24,6 +24,8 @@ AWE.GS = (function(module) {
     alliance_id: null,  old_alliance_id: null,            ///< alliance for which this message was posted
     allianceIdObserver: AWE.Partials.attributeHashObserver(module.AllianceShoutAccess, 'alliance_id', 'old_alliance_id').observes('alliance_id'),
 
+    posted_ago_in_words: null,
+    
     message: null                   ///< the message
   });
 

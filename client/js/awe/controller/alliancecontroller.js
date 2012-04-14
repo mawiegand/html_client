@@ -68,7 +68,8 @@ AWE.Controller = (function(module) {
         });
       }
  //     log('members', allianceId, AWE.GS.CharacterAccess.getAllForAlliance_id(allianceId), AWE.GS.CharacterAccess, AWE.GS.CharacterManager);
-      return  AWE.Ext.hashValues(members);      
+ 
+      return  AWE.Ext.hashValues(members);       // assumes ids are in ascending order!
     }
 
     that.getAndUpdateShouts = function(allianceId, forceUpdate) {
@@ -88,7 +89,7 @@ AWE.Controller = (function(module) {
           });
       }
       //     log('members', allianceId, AWE.GS.CharacterAccess.getAllForAlliance_id(allianceId), AWE.GS.CharacterAccess, AWE.GS.CharacterManager);
-      var messageArray =  AWE.Ext.hashValues(messages);
+      var messageArray =  AWE.Ext.hashValues(messages).slice(-10).reverse(); // this assumes the ids to be in ascending order (slice the last n, revese order, so the last is on top)
       messageArray.forEach(function(value, key) {
         var character = AWE.GS.CharacterManager.getCharacter(this[key].get('character_id'));
         this[key].set('character', character);
@@ -137,13 +138,11 @@ AWE.Controller = (function(module) {
         shouts: messages ? messages : [],
         shoutBoxSendPressed: function(self) {
           console.log(self)
-          return function() { self.shout(this.get('shoutBoxInput')); };
+          return function() { self.shout(this.get('shoutBoxInput')); this.set('shoutBoxInput', ''); };
         }(this),
       });
       log (members)
       this.view.appendTo('#main-screen-controller');      
-      
-      $('body').click(function() { console.log('click event in body.')});
     }
     
     that.setAllianceId = function(allianceId) {
@@ -177,6 +176,8 @@ AWE.Controller = (function(module) {
         this.updateView();
         _viewNeedsUpdate = false;
       }
+      that.getAndUpdateShouts(this.allianceId);
+
     }
     
     return that;
