@@ -17,6 +17,10 @@ AWE.UI.Ember = (function(module) {
     
     alliance: null,
     members: null,
+    shouts: null,
+    
+    shoutBoxInput: null,
+    shoutBoxSendPressed: null,
   });
   
   return module;

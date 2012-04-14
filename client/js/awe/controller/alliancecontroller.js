@@ -75,7 +75,7 @@ AWE.Controller = (function(module) {
       if (!allianceId) { return ; }
       var messages = AWE.GS.AllianceShoutManager.getMessagesOfAlliance(allianceId);
     //      log (AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL), AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime());
-      if ((!messages || messages.length == 0) ||
+      if ((!messages) ||
           (messages && AWE.GS.AllianceShoutManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
           AWE.GS.AllianceShoutManager.updateMessagesOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(messages) {
               console.log('received update on messages');
@@ -111,6 +111,10 @@ AWE.Controller = (function(module) {
       this.view.set('alliance', alliance).set('members', members ? members : []).set('shouts', messages ? messages : []);
     }
     
+    that.shout = function(message) {
+      console.log('shout: ', message);
+    }
+    
     that.appendView = function() {
       if (this.view) {
         this.removeView();
@@ -121,10 +125,16 @@ AWE.Controller = (function(module) {
       this.view = AWE.UI.Ember.AllianceScreen.create({
         alliance: alliance,
         members: members ? members : [],
-        shouts: messages ? messages : []
+        shouts: messages ? messages : [],
+        shoutBoxSendPressed: function(self) {
+          console.log(self)
+          return function() { self.shout(this.get('shoutBoxInput')); };
+        }(this),
       });
       log (members)
       this.view.appendTo('#main-screen-controller');      
+      
+      $('body').click(function() { console.log('click event in body.')});
     }
     
     that.setAllianceId = function(allianceId) {

@@ -1,4 +1,5 @@
 <script type="text/x-handlebars" data-template-name="alliance-screen">
+<div class="ember-screen alliance-screen">
   <div class="alliance-banner">
   </div>
   <div class="alliance-infobox">
@@ -29,7 +30,10 @@
           <li>{{ character.name }}: {{ message }} -- {{ created_at }}</li>
         {{/each}}
       </ul>
+      {{view Ember.TextField class="text-field" placeholder="your message" type="text" valueBinding="shoutBoxInput"}} 
+      {{#view Ember.Button action="shoutBoxSendPressed" target="parentView"}}shout{{/view}}
   </div>
+</div>
 </script>
 
 
