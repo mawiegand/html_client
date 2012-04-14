@@ -63,8 +63,7 @@ AWE.Controller = (function(module) {
         AWE.GS.CharacterManager.updateMembersOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(members) {
           console.log('received update on members');
           if (members && that.view) {
-            that.view.set('members', AWE.Ext.hashValues(AWE.GS.CharacterManager.getMembersOfAlliance(allianceId)));
-//            _needsRecreate = true;
+            _needsRecreate = true;
           }
         });
       }
@@ -77,6 +76,13 @@ AWE.Controller = (function(module) {
         this.view.destroy();
         this.view = null;
       }
+    }
+    
+    that.updateView = function() {
+      var alliance = that.getAndUpdateAlliance(this.allianceId);   // side-effect: starts another update, if older than 60s
+      var members = that.getAndUpdateMembers(this.allianceId);     // side-effect: starts another update, if older than 60s
+      
+      this.view.set('alliance', alliance).set('members', members ? members : []);
     }
     
     that.appendView = function() {
@@ -121,8 +127,7 @@ AWE.Controller = (function(module) {
       this.updateDebug();
       if (this.visible && (_needsRecreate || (this.view.get('alliance') &&
           this.view.get('alliance').get('id') != this.allianceId))) {
-        this.removeView();
-        this.appendView();
+        this.updateView();
         _needsRecreate = false;
       }
     }
