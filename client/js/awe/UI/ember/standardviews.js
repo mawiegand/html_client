@@ -57,14 +57,21 @@ AWE.UI.Ember = (function(module) {
   module.Pane = Ember.View.extend({
     templateName: 'pane',
     
-    init: function() {
+    didInsertElement: function() {
       this._super();
+      console.log('DID INSERT ELEMENT');
       this.set('canvas', this.$('canvas'));
-      log ('canvas', this.get('canvas'), this.$('.pane-canvas'), this.$().find('canvas'), this.$('adas'));
-      
+      log (this.$('canvas'));
+      this.get('canvas')
+      .css('background', 'red')
+      .css('width', '200px')
+      .css('height', '200px')
+      .attr('width', 200)
+      .attr('height', 200)
     },
+
     
-    canvas: function() { return this.$('canvas'); },
+    canvas: null,
     setWidth: function() {
     },
   });     
