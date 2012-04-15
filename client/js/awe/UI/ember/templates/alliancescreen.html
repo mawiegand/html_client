@@ -1,7 +1,6 @@
 <script type="text/x-handlebars" data-template-name="alliance-screen">
 <div class="ember-screen alliance-screen">
-  <div class="alliance-banner">
-  </div>
+  {{view allianceBanner}}
   <div class="alliance-infobox">
     <h1>{{ alliance.name }} [{{ alliance.tag }}]</h1>
     <p> {{ unbound AWE.I18n.strings.alliance.founded }}: {{ alliance.created_at }}</p>
@@ -23,16 +22,7 @@
       {{/each}}
     </ul>
   </div>
-  <div class="alliance-shout-box">
-      <h1>{{ unbound AWE.I18n.strings.alliance.shoutBox }}</h1>
-      <ul>
-        {{#each shouts}}
-          <li>{{ character.name }}: {{ message }} -- {{ posted_ago_in_words }} ago</li>
-        {{/each}}
-      </ul>
-      {{view Ember.TextField class="text-field" placeholder="your message" type="text" valueBinding="shoutBoxInput"}} 
-      {{#view Ember.Button action="shoutBoxSendPressed" target="parentView"}}shout{{/view}}
-  </div>
+  {{view shoutBox}}
 </div>
 </script>
 

@@ -136,8 +136,8 @@ AWE.GS = (function(module) {
         entity.updateWith(data, updateType, start);
       }
       else {
-        entity = my.createEntity({ id: data['id'] });
-        log(entity, entity.id, entity.get('id'), data);
+        entity = my.createEntity({ id: data['id'] });  // need to always set id before a hash-observer is triggered
+        // log(entity, entity.id, entity.get('id'), data);
         entity.init(data);
         entity.setNotModifiedAfter(updateType, start); // set the last-update timestamp appropriately
         my.entities[entity.get('id')] = entity;
@@ -206,6 +206,8 @@ AWE.GS = (function(module) {
     
     /** returns true, if update is executed, returns false, if request did 
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
+     *
+     * TODO: INSERT HERE: automatically update, if data to old or missing!!!!
      */
     my.updateEntity = function(url, id, updateType, callback) {
       var lastUpdateAt = null;

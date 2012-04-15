@@ -75,7 +75,7 @@ AWE.Application = (function(module) {
         
         this.set('modalDialogs', []);
 
-        $('#layers').mousemove(function(event) {
+        $('body').mousemove(function(event) {
           mouseX = event.pageX; 
           mouseY = event.pageY;
         });
