@@ -66,18 +66,21 @@ AWE.UI = (function(module) {
 	module.createCamera = function (spec) {
 		var that = {};
 
+		//state
 		var _lastUpdate = undefined;
 		var _lastClick = undefined;
 		var _activePan = undefined;
 		var _isUndoingPan = false;
 		var _lastPanEndViewport = undefined;
 		var _lastNodes = [];
-		/** Milliseconds **/
+		var _isMoving = false;
+
+		//settings
 		var _maxTimeForDoubleClick = AWE.Config.MAP_DBLCLK_MAX_TIME_FOR_DBLCLK;
 		var _panTime = AWE.Config.MAP_DBLCLK_CAMERA_PANTIME;
 		var _borderFactor = AWE.Config.MAP_DBLCLK_CAMERA_BORDER_FACTOR;
-		var _crossClickSize = 35;
-		var _isMoving = false;
+		var _crossClickSize = AWE.Config.MAP_DBLCLK_CAMERA_CROSS_CLICK_SIZE;
+		
 
 		var _rootController = spec.rootController;
 

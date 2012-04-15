@@ -57,9 +57,10 @@ AWE.Config = (function(module) {
   module.MAPVIEW_DONT_UPDATE_MODEL_WHILE_SCROLLING = true;
 
   //Settings for the camera that handles the panning after a double click
-  module.MAP_DBLCLK_MAX_TIME_FOR_DBLCLK = 400; ///< 
-  module.MAP_DBLCLK_CAMERA_PANTIME = 400;
-  module.MAP_DBLCLK_CAMERA_BORDER_FACTOR = 0.1;
+  module.MAP_DBLCLK_MAX_TIME_FOR_DBLCLK = 400; ///< maximum amount of milliseconds between clicks for a double click
+  module.MAP_DBLCLK_CAMERA_PANTIME = 400; ///< time for the panning animation
+  module.MAP_DBLCLK_CAMERA_BORDER_FACTOR = 0.15; ///< border around a node after zoom in
+  module.MAP_DBLCLK_CAMERA_CROSS_CLICK_SIZE = 35;
 
   //image cache
   module.IMAGE_CACHE_LOAD_LIST = {
