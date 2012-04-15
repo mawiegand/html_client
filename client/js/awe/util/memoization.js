@@ -9,7 +9,7 @@ var AWE = window.AWE || {};
 AWE.memoizer = function(memo, formula) {
   var recur = function () {
     var result = memo;
-    if (memo == null) {
+    if (memo === undefined) {
       result = formula(recur);
       memo = result;
     }

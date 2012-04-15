@@ -128,7 +128,7 @@ AWE.Map = (function(module) {
     };
     
     /** Returns the position of the village on the map */
-    that.position = AWE.memoizer(null, function () {
+    that.position = AWE.memoizer(undefined, function () {
       
       var frame = that.region().node().frame();
 
