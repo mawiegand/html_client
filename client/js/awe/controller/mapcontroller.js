@@ -27,7 +27,7 @@ AWE.Controller = (function(module) {
     var _scrollingStarted = false;///< user is presently scrolling
     var _scrollingStartedAtVC;
     var _scrollingOriginalTranslationVC;
-    
+
     var _camera; ///< camera for handeling camera panning
     
     var that = module.createScreenController(anchor); ///< create base object
@@ -56,8 +56,6 @@ AWE.Controller = (function(module) {
     var inspectorViews = {};
     
     var armyUpdates = {};
-
-    
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -99,6 +97,10 @@ AWE.Controller = (function(module) {
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
       that.setNeedsLayout();
+
+      _camera = AWE.UI.createCamera({
+        rootController: that
+      });
 
     };   
         
@@ -167,7 +169,8 @@ AWE.Controller = (function(module) {
       // if obj is point
       else if (obj.x !== undefined && obj.y !== undefined) {
         var point = obj.copy();
-        point.moveBy(n(mc2vcTrans));
+        point.moveBy(AWE.Geometry.createPoint(-mc2vcTrans.x, -mc2vcTrans.y));
+        //point.moveBy(n(mc2vcTrans));
         point.scale(1/mc2vcScale);
         return point;
       }
@@ -270,6 +273,8 @@ AWE.Controller = (function(module) {
         }
       }      
     }());
+    /** TAG Not sure why level is private **/
+    that.level = function() { return level; };
     
     /** calculates the alpha value of location objects as a linear function
      *  between min and max depending on its width
@@ -382,6 +387,7 @@ AWE.Controller = (function(module) {
 
     that.onMouseUp = function(evt) {
       that.endScrolling();
+      _camera.onMouseUp(evt);
     }
     
     that.onMouseLeave = function(evt) {
@@ -1289,7 +1295,9 @@ AWE.Controller = (function(module) {
 
     that.runloop = function() {
       // only do something after the Map.Manager has been initialized (connected to server and received initial data)
-      if(AWE.Map.Manager.isInitialized()) { 
+      if(AWE.Map.Manager.isInitialized()) {
+        // STEP 0: update the camera, in case that it is currently moving
+        _camera.update();
         
         // STEP 1: determine visible area (may have changed through user interaction)
         var visibleArea = that.vc2mc(AWE.Geometry.createRect(0, 0, _windowSize.width,_windowSize.height));
