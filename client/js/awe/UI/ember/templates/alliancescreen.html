@@ -1,6 +1,4 @@
-<script type="text/x-handlebars" data-template-name="alliance-screen">
-<div class="ember-screen alliance-screen">
-  {{view allianceBanner}}
+<script type="text/x-handlebars" data-template-name="alliance-infobox">
   <div class="alliance-infobox">
     <h1>{{ alliance.name }} [{{ alliance.tag }}]</h1>
     <p> {{ unbound AWE.I18n.strings.alliance.founded }}: {{ alliance.created_at }}</p>
@@ -14,6 +12,10 @@
     <h1>{{ unbound AWE.I18n.strings.alliance.message }}</h1>
     <p>{{ alliance.message }}</p>
   </div>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="alliance-member-list">
   <div class="alliance-member-list">
     <h1>{{ unbound AWE.I18n.strings.alliance.members }}</h1>
     <ul>
@@ -22,11 +24,7 @@
       {{/each}}
     </ul>
   </div>
-  {{view shoutBox}}
-</div>
 </script>
-
-
 
 
 

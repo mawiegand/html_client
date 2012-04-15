@@ -134,30 +134,36 @@ AWE.Controller = (function(module) {
     
     that.createView = function() {
       
-      return Ember.View.extend({
-        templateName: 'alliance-screen',
-        
-        init: function() {
-          this._super();
-          log (this.get('childViews'), this.get('childViews').get('length'), this.get('childViews').toString());
-        },
-        
+      var info = Ember.View.create({
+        templateName: 'alliance-infobox',
         controller: that,
         allianceBinding: 'controller.content.alliance',
-        membersBinding: 'controller.content.members',
-
-        shoutBox: AWE.UI.Ember.ShoutBox.extend({
-          width: 200,
-          height: 200,
-          controller: that,
-          shoutsBinding: 'controller.content.messages',
-          shout: function(self) {
-            return function(message) { self.shout(message); };
-          }(that),
-        }),
-
-        allianceBanner: AWE.UI.Ember.Pane.extend({}),
       });
+
+      var membersList =  Ember.View.create({
+        templateName: 'alliance-member-list',
+        controller: that,
+        membersBinding: 'controller.content.members',
+      });
+            
+      var shoutBox =  AWE.UI.Ember.ShoutBox.create({
+        controller: that,
+        shoutsBinding: 'controller.content.messages',
+        shout: function(self) {
+          return function(message) { self.shout(message); };
+        }(that),
+      });
+      
+      var container = Ember.ContainerView.create({        
+        controller: that,
+      });
+      
+      var childViews = container.get('childViews');
+      childViews.pushObject(info);
+      childViews.pushObject(membersList);
+      childViews.pushObject(shoutBox);
+      
+      return container;
     }
     
     
@@ -166,10 +172,9 @@ AWE.Controller = (function(module) {
         this.removeView();
       }
       this.updateView();
-      this.view = this.createView().create();
+      this.view = this.createView();
       this.view.appendTo('#main-screen-controller');      
       log (this.view, this.view.childViews, this.view.get('childViews'), this.view.get('elementId'), this.view.clearBuffer);
-      this.view.clearBuffer();
     }
     
     that.setAllianceId = function(allianceId) {
