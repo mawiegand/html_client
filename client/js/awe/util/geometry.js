@@ -75,6 +75,10 @@ AWE.Geometry = (function(module) {
             Math.abs(this.height - other.height) <= precision);
         }
       },
+
+      area: function() {
+        return Math.sqrt(this.width*this.width + this.height*this.height);
+      }
     };
   };
 

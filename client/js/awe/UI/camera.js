@@ -71,11 +71,12 @@ AWE.UI = (function(module) {
 		var _activePan = undefined;
 		var _isUndoingPan = false;
 		var _lastPanEndViewport = undefined;
-		var _lastNode = undefined;
+		var _lastNodes = [];
 		/** Milliseconds **/
 		var _maxTimeForDoubleClick = AWE.Config.MAP_DBLCLK_MAX_TIME_FOR_DBLCLK;
 		var _panTime = AWE.Config.MAP_DBLCLK_CAMERA_PANTIME;
 		var _borderFactor = AWE.Config.MAP_DBLCLK_CAMERA_BORDER_FACTOR;
+		var _crossClickSize = 35;
 		var _isMoving = false;
 
 		var _rootController = spec.rootController;
@@ -103,33 +104,112 @@ AWE.UI = (function(module) {
 			return _borderFactor;
 		};
 
+		var _nodesEqual = function(a,b) {
+			if (a.length != b.length) return false;
+			for (var ai = 0; ai < a.length; ai++) {
+				var found = false;
+				for (var bi = 0; bi < b.length; bi++) {
+					if (a[ai].id() === b[bi].id()) {
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					return false;
+				}
+			}
+			return true;
+		};
+
 		that.onMouseUp = function(event) {
 			var now = (new Date()).getTime();
-			if (_lastClick !== undefined) {
-				console.log(now-_lastClick);
-			}
 			if (_lastClick !== undefined &&
 				now - _lastClick <= _maxTimeForDoubleClick
 			) {
 				//generate model point
 				var p = _rootController.vc2mc(AWE.Geometry.createPoint(event.pageX, event.pageY));
-				//get node
+				//get node[s]
 				var node = AWE.Map.getNodeThatContainsPoint(
 					AWE.Map.Manager.rootNode(),
 					p,
 					_rootController.level()()
 				);
+				var nodeFrame = node.frame().copy();
 				//if there is no node there just return
 				if (node == null) return;
+
+				var nodes = AWE.Map.getNodesInAreaAtLevel(
+					AWE.Map.Manager.rootNode(), 
+					_rootController.vc2mc(
+						AWE.Geometry.createRect(
+							event.pageX-_crossClickSize/2.0,
+							event.pageY-_crossClickSize/2.0,
+							_crossClickSize,
+							_crossClickSize
+						)
+					),
+					_rootController.level()(), 
+					false, //only completly inside
+					true //force recalc
+				);
+
+				//detected a click on a cross section
+				if (nodes.length >= 3) {
+					var f0 = nodes[0].frame();
+					var origin = f0.origin.copy();
+					for (var i = 1; i < nodes.length; i++) {
+						var f = nodes[i].frame();
+						if (f.origin.x < origin.x) {
+							origin.x = f.origin.x;
+						}
+						if (f.origin.y < origin.y) {
+							origin.y = f.origin.y;
+						}
+					}
+					var max = AWE.Geometry.createPoint(
+						f0.origin.x + f0.size.width,
+						f0.origin.y + f0.size.height
+					);
+					for (var i = 1; i < nodes.length; i++) {
+						var f = nodes[i].frame();
+						if (f.origin.x + f.size.width > max.x) {
+							max.x = f.origin.x + f.size.width;
+						}
+						if (f.origin.y + f.size.height > max.y) {
+							max.y = f.origin.y + f.size.height;
+						}
+					}
+					nodeFrame = AWE.Geometry.createRect(
+						origin.x,
+						origin.y,
+						max.x - origin.x,
+						max.y - origin.y
+					);
+				} else {
+					nodes = [node];
+				}
+
 				//
+				/*var s = "[";
+				for (var i = 0; i < nodes.length; i++) {
+					s += nodes[i].id()+", ";
+				}
+				s += "]";
+				console.log(s);
+
+				var s = "[";
+				for (var i = 0; i < _lastNodes.length; i++) {
+					s += _lastNodes[i].id()+", ";
+				}
+				s += "]";
+				console.log(s);*/
 
 				//zoom back out if the double click results in the same viewport
 				if (_lastPanEndViewport !== undefined && 
-					/*_lastPanEndViewport.equals(_rootController.viewport()) &&*/
+					_lastPanEndViewport.equals(_rootController.viewport()) &&
 					_activePan !== undefined &&
 					!_isUndoingPan &&
-					_lastNode !== undefined &&
-					_lastNode.id() === node.id()) {
+					_nodesEqual(_lastNodes,nodes)) {
 
 					_isUndoingPan = true;
 					_activePan = module.createCameraPan(
@@ -141,7 +221,7 @@ AWE.UI = (function(module) {
 				} else {
 					//zoom in
 					//create a rectangle
-					var target = node.frame();
+					var target = nodeFrame;
 					var widthOffset = target.size.width*_borderFactor;
 					var heightOffset = target.size.height*_borderFactor;
 					target = AWE.Geometry.createRect(
@@ -150,6 +230,7 @@ AWE.UI = (function(module) {
 						target.size.width + widthOffset,
 						target.size.height + heightOffset
 					);
+
 					//create a pan
 					_activePan = module.createCameraPan(
 						_rootController.viewport(),
@@ -158,7 +239,7 @@ AWE.UI = (function(module) {
 					);
 					_isUndoingPan = false;
 					_isMoving = true;
-					_lastNode = node;
+					_lastNodes = nodes;
 				}
 
 			}
