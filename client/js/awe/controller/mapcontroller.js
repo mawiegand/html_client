@@ -1302,6 +1302,9 @@ AWE.Controller = (function(module) {
       if(AWE.Map.Manager.isInitialized()) {
         // STEP 0: update the camera, in case that it is currently moving
         _camera.update();
+        if (_camera.isMoving()) {
+          that.setNeedsLayout();
+        }
         
         // STEP 1: determine visible area (may have changed through user interaction)
         var visibleArea = that.vc2mc(AWE.Geometry.createRect(0, 0, _windowSize.width,_windowSize.height));

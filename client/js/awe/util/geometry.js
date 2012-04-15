@@ -37,8 +37,13 @@ AWE.Geometry = (function(module) {
         return createPoint(this.x, this.y);
       },
       
-      equals: function(other) {
-        return this.x === other.x && this.y === other.y;
+      equals: function(other, precision) {
+        if (precision === undefined) {
+          return this.x === other.x && this.y === other.y;
+        } else {
+          return (Math.abs(this.x - other.x) <= precision && 
+            Math.abs(this.y - other.y) <= precision);
+        }
       },
       
       toString: function() {
@@ -62,8 +67,13 @@ AWE.Geometry = (function(module) {
         return createSize(this.width, this.height);
       },
       
-      equals: function(other) {
-        return this.width === other.width && this.height === other.height;
+      equals: function(other, precision) {
+        if (precision === undefined) {
+          return this.width === other.width && this.height === other.height;
+        } else {
+          return (Math.abs(this.width - other.width) <= precision && 
+            Math.abs(this.height - other.height) <= precision);
+        }
       },
     };
   };
@@ -98,6 +108,11 @@ AWE.Geometry = (function(module) {
             this.origin.x + this.size.width >= geom.origin.x &&
             this.origin.y + this.size.height >= geom.origin.y;  
         }
+        else if (geom.x !== undefined && geom.y !== undefined) { //point
+          return this.origin.x <= geom.x && this.origin.y <= geom.y &&
+            this.origin.x + this.size.width >= geom.x &&
+            this.origin.y + this.size.height >= geom.y;
+        }
         else { // unkown
           return false;
         }
@@ -122,8 +137,8 @@ AWE.Geometry = (function(module) {
         return module.createRect(min_x, min_y, max_x-min_x, max_y-min_y);
       },
       
-      equals: function(other) {
-        return this.origin.equals(other.origin) && this.size.equals(other.size);
+      equals: function(other, precision) {
+        return this.origin.equals(other.origin, precision) && this.size.equals(other.size, precision);
       },
       
       toString: function() {

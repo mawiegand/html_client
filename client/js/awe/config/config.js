@@ -56,6 +56,11 @@ AWE.Config = (function(module) {
   
   module.MAPVIEW_DONT_UPDATE_MODEL_WHILE_SCROLLING = true;
 
+  //Settings for the camera that handles the panning after a double click
+  module.MAP_DBLCLK_MAX_TIME_FOR_DBLCLK = 400; ///< 
+  module.MAP_DBLCLK_CAMERA_PANTIME = 400;
+  module.MAP_DBLCLK_CAMERA_BORDER_FACTOR = 0.1;
+
   //image cache
   module.IMAGE_CACHE_LOAD_LIST = {
     "map/tiles/split128": 'images/tiles/split128.png',
