@@ -11,6 +11,8 @@ AWE.UI.Ember = (function(module) {
   
   module.templates = module.templates || [];
   module.templates.push('js/awe/UI/ember/templates/standardviews.html');  
+  module.templates.push('js/awe/UI/ember/templates/alliancescreen.html');  
+
   
   module.Dialog = Ember.View.extend({
     onClose: null,
@@ -51,6 +53,22 @@ AWE.UI.Ember = (function(module) {
     shout: null,
   });
     
+     
+  module.Pane = Ember.View.extend({
+    templateName: 'pane',
+    
+    init: function() {
+      this._super();
+      this.set('canvas', this.$('canvas'));
+      log ('canvas', this.get('canvas'), this.$('.pane-canvas'), this.$().find('canvas'), this.$('adas'));
+      
+    },
+    
+    canvas: function() { return this.$('canvas'); },
+    setWidth: function() {
+    },
+  });     
+     
       
   return module;  
     

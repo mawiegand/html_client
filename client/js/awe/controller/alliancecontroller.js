@@ -10,7 +10,7 @@ AWE.Controller = (function(module) {
   module.createAllianceController = function(anchor) {
       
     var _viewNeedsUpdate = false;  
-      
+          
     var that = module.createScreenController(anchor); ///< create base object
     
     that.view = null;
@@ -25,6 +25,32 @@ AWE.Controller = (function(module) {
     
     
     
+    that.content = Ember.Object.create({
+      alliance: null,
+      messages: null,
+      members: null,
+    });
+    
+
+
+    that.AllianceScreen = Ember.View.extend({
+      templateName: 'alliance-screen',
+  
+      controller: that,
+      allianceBinding: 'controller.content.alliance',
+      membersBinding: 'controller.content.members',
+
+      shoutBox: AWE.UI.Ember.ShoutBox.extend({
+        controller: that,
+        shoutsBinding: 'controller.content.messages',
+        shout: function(self) {
+          return function(message) { self.shout(message); };
+        }(that),
+      }),
+
+      allianceBanner: AWE.UI.Ember.Pane.extend({}),
+    });    
+
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -108,11 +134,9 @@ AWE.Controller = (function(module) {
      * of object properties (e.g. alliance.description) is propagated automatically
      * with the help of ember bindings. */
     that.updateView = function() {
-      var alliance = that.getAndUpdateAlliance(this.allianceId);   // side-effect: starts another update, if older than 60s
-      var members = that.getAndUpdateMembers(this.allianceId);     // side-effect: starts another update, if older than 60s
-      var messages = that.getAndUpdateShouts(this.allianceId);     // side-effect: starts another update, if older than 60s
-
-      this.view.set('alliance', alliance).set('members', members ? members : []).set('shouts', messages ? messages : []);
+      that.content.set('alliance', that.getAndUpdateAlliance(this.allianceId));
+      that.content.set('members', that.getAndUpdateMembers(this.allianceId));
+      that.content.set('messages', that.getAndUpdateShouts(this.allianceId));     // side-effect: starts another update, if older than 60s */
     }
     
     that.shout = function(message) {
@@ -125,22 +149,13 @@ AWE.Controller = (function(module) {
       }(this));
     }
     
+    
     that.appendView = function() {
       if (this.view) {
         this.removeView();
       }
-      var alliance = that.getAndUpdateAlliance(this.allianceId);
-      var members = that.getAndUpdateMembers(this.allianceId);
-      var messages = that.getAndUpdateShouts(this.allianceId);     // side-effect: starts another update, if older than 60s
-      this.view = AWE.UI.Ember.AllianceScreen.create({
-        alliance: alliance,
-        members: members ? members : [],
-        shouts: messages ? messages : [],
-        shout: function(self) {
-          return function(message) { self.shout(message); };
-        }(this),
-      });
-      log (members)
+      this.updateView();
+      this.view = this.AllianceScreen.create();
       this.view.appendTo('#main-screen-controller');      
     }
     

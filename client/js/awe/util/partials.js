@@ -65,7 +65,6 @@ AWE.Partials = (function(module) {
       if (!this.allEntries[entry.get(attribute)]) {
         this.allEntries[entry.get(attribute)] = { entries: [], lastUpdateAt: new Date(1970) };
       }
-      log (entry.get('id'), entry.id, entry);
       this.allEntries[entry.get(attribute)].entries[entry.get('id')] = entry;
     };
     hash.removeEntry = function(entry, oldValue) {
