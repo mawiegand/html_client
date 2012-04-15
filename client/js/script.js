@@ -74,6 +74,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
         if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.currentCharacter) {
           console.log('INFO: playing as character ' + entity + '.');
+          _numAssets +=1;
+          if (AWE.GS.CharacterManager.currentCharacter.get('alliance_id')) {
+            AWE.GS.AllianceManager.updateAlliance(AWE.GS.CharacterManager.currentCharacter.get('alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
+              assetLoaded();
+            });
+          }
           assetLoaded();
         }
         else {
@@ -114,18 +120,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this.setScreenController(this.get('mapScreenController'));
     },
     
-    activateAllianceController: function() {
+    activateAllianceController: function(alliance_id) {
       var allianceController = this.get('allianceScreenController');
       if (!allianceController) {
         allianceController = AWE.Controller.createAllianceController('#layers');
         this.set('allianceScreenController', allianceController);
       }
+      allianceController.setAllianceId(alliance_id);
       this.setScreenController(allianceController);
     },
     
     
-  
-      
     /** starts the app when the document is ready. */
     ready: function() {
       this._super();
@@ -140,16 +145,14 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var hud = AWE.Controller.createHUDController();
       hud.init();
       this.setHudController(hud);
-
-
     
       var controller = AWE.Controller.createMapController('#layers');
       controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
       
   
       var self = this;
-      $('#zoomin').click(function(){ self.activateAllianceController(); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
-      $('#zoomout').click(function(){ self.activateMapController(); }); //controller.zoom(.1, false)});
+      $('#zoomin').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, true); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
+      $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
 
       this.set('mapScreenController', controller);
       this.setScreenController(controller);

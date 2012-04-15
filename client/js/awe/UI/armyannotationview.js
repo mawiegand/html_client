@@ -7,11 +7,11 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
 
-  module.createArmyActionView = function(spec, my) {
+  module.createArmyAnnotationView = function(spec, my) {
     
     my = my || {};
     
-    my.typeName = 'ArmyActionView';
+    my.typeName = 'ArmyAnnotationView';
     
     var _army = null;
     var _armyView = null;
@@ -72,7 +72,7 @@ AWE.UI = (function(module) {
       backgroundGraphics.setStrokeStyle(0);
       backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
       backgroundShape = new Shape(backgroundGraphics);
-      _container.addChild(backgroundShape);
+      _container.addChild(_backgroundShape);
       
       _infoText1View = AWE.UI.createLabelView();
       _infoText1View.initWithControllerAndLabel(controller);
@@ -121,25 +121,25 @@ AWE.UI = (function(module) {
     that.updateView = function() {
       
       // buttons
-      _stanceButtonView.setVisible(_armyView.selected());
-      _moveButtonView.setVisible(_armyView.selected());
-      _attackButtonView.setVisible(_armyView.selected());
+      _stanceButtonView.setVisible(_army.isOwn() && _armyView.selected());
+      _moveButtonView.setVisible(_army.isOwn() && _armyView.selected());
+      _attackButtonView.setVisible(_army.isOwn() && _armyView.selected());
       
       // rank image
       _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + Math.round((_army.get('rank') + 25) / 25)));
 
       // info view
-      _container.removeChild(backgroundShape);
-      var lines = _army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0 ? 3 : 1; 
+      _container.removeChild(_backgroundShape);
+      var lines = _army.get('battle_id') && _army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0 ? 3 : 1; 
       
       var backgroundGraphics = new Graphics();
       backgroundGraphics.setStrokeStyle(0);
       backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
       backgroundGraphics.drawRoundRect(128, 34 - lines * 11, 64, lines * 22, 8);
-      backgroundShape = new Shape(backgroundGraphics);
-      _container.addChildAt(backgroundShape, 0);
-
-      if (_army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0) {
+      _backgroundShape = new Shape(backgroundGraphics);
+      _container.addChildAt(_backgroundShape, 0);
+      
+      if (_army.get('battle_id') && _army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0) {
         _infoText1View.setOrigin(AWE.Geometry.createPoint(130, 0));
         _infoText2View.setVisible(true);
         _infoText3View.setVisible(true);
@@ -151,7 +151,7 @@ AWE.UI = (function(module) {
       }
 
       _infoText1View.setText(_army.get('strength'));
-      if (_army.get('battle_id') != 0) {
+      if (_army.get('battle_id') && _army.get('battle_id') != 0) {
         _infoText2View.setText('Kampf!');
         _infoText3View.setText('Dauer');
       }

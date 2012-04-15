@@ -7,13 +7,13 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
           
-  module.createArmyDetailView = function(spec, my) {
+  module.createArmyInspectorView = function(spec, my) {
 
     var that;
 
     my = my || {};
     
-    my.typeName = 'ArmyDetailView';
+    my.typeName = 'ArmyInspectorView';
     
     var _container = null;
     
@@ -44,6 +44,8 @@ AWE.UI = (function(module) {
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
       setFrame: AWE.Ext.superior(that, "setFrame"),
     };
+    
+    that.onFlagClicked = null;
     
     /** overwritten view methods */
     
@@ -160,6 +162,11 @@ AWE.UI = (function(module) {
         _flagShapeGraphics.lineTo(offX +60, offY +0).lineTo(offX +30, offY +75).lineTo(offX +0, offY +0);
         _flagShape = new Shape(_flagShapeGraphics);
         _container.addChild(_flagShape);
+        _flagShape.onClick = function() { 
+          if (that.onFlagClicked) {
+            that.onFlagClicked(_army.get('alliance_id'));
+          };
+        };
         
         _allianceTagLabel = AWE.UI.createLabelView();
         _allianceTagLabel.initWithControllerAndLabel(controller);
@@ -168,13 +175,15 @@ AWE.UI = (function(module) {
         _container.addChild(_allianceTagLabel.displayObject());        
       }
 
+      _invButtonView = AWE.UI.createButtonView();
+      _invButtonView.initWithControllerTextAndImage(controller, 'Info', AWE.UI.ImageCache.getImage("map/button1"));
+      _invButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
+      _invButtonView.onClick = function() { that.onInventoryButtonClick(_army) };
+      _container.addChild(_invButtonView.displayObject());
+
+
       // buttons oben
       if (_army.isOwn()) {
-        _invButtonView = AWE.UI.createButtonView();
-        _invButtonView.initWithControllerTextAndImage(controller, 'Inventory', AWE.UI.ImageCache.getImage("map/button1"));
-        _invButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
-        _invButtonView.onClick = function() { that.onInventoryButtonClick(_army) };
-        _container.addChild(_invButtonView.displayObject());
   
         _stanceButtonView = AWE.UI.createButtonView();
         _stanceButtonView.initWithControllerTextAndImage(controller, 'Stance', AWE.UI.ImageCache.getImage("map/button1"));

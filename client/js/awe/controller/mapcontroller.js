@@ -597,7 +597,7 @@ AWE.Controller = (function(module) {
             actionViews.hovered.initWithControllerAndView(that, view);
           }
           else if (view.typeName() === 'ArmyView') {
-            actionViews.hovered = AWE.UI.createArmyActionView();
+            actionViews.hovered = AWE.UI.createArmyAnnotationView();
             actionViews.hovered.initWithControllerAndView(that, view);
             armyUpdates[view.army().get('id')] = view.army();
           }
@@ -648,12 +648,16 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector.initWithControllerAndNode(that, view.node());
       }
       else if (view.typeName() === 'ArmyView') {
-        inspectorViews.inspector = AWE.UI.createArmyDetailView();
+        inspectorViews.inspector = AWE.UI.createArmyInspectorView();
         inspectorViews.inspector.initWithControllerAndArmy(that, view.army());
         
         inspectorViews.inspector.onInventoryButtonClick = function(self) { 
           return function(army) { self.armyInfoButtonClicked(army); }
         }(that);
+        
+        inspectorViews.inspector.onFlagClicked = function(allianceId) {
+          WACKADOO.activateAllianceController(allianceId);
+        }
       }
       _stages[3].addChild(inspectorViews.inspector.displayObject());
       _inspectorChanged = true;
@@ -1151,7 +1155,7 @@ AWE.Controller = (function(module) {
       
       if (actionViews.hovered
           && (actionViews.hovered.typeName() === 'FortressActionView'
-          || actionViews.hovered.typeName() === 'ArmyActionView')) {
+          || actionViews.hovered.typeName() === 'ArmyAnnotationView')) {
         actionViews.hovered.setCenter(AWE.Geometry.createPoint(
             _hoveredView.center().x,
             _hoveredView.center().y
@@ -1161,7 +1165,7 @@ AWE.Controller = (function(module) {
 
       if (actionViews.selected
           && (actionViews.selected.typeName() === 'FortressActionView'
-          || actionViews.selected.typeName() === 'ArmyActionView')) {
+          || actionViews.selected.typeName() === 'ArmyAnnotationView')) {
         actionViews.selected.setCenter(AWE.Geometry.createPoint(
             _selectedView.center().x,
             _selectedView.center().y

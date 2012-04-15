@@ -50,6 +50,9 @@ AWE.Controller = (function(module) {
       _canvas = root.find('#hud-canvas')[0];
       _stage = new Stage(_canvas);
       
+      _canvas.width = 500;
+      _canvas.height = 250;
+      
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setNeedsLayout();
     };   
@@ -78,11 +81,11 @@ AWE.Controller = (function(module) {
      * changed. */
     that.layoutIfNeeded = function() {
       if (_needsLayout) {   ///// WRONG: no _needsLayout after zooming!!!
-        if (_canvas.width != _windowSize.width || _canvas.height != _windowSize.height) {
+  /*      if (_canvas.width != _windowSize.width || _canvas.height != _windowSize.height) {
           _canvas.width  = _windowSize.width;
           _canvas.height = _windowSize.height;
         };
-        that.setNeedsDisplay();
+        that.setNeedsDisplay();*/
       };
       _needsLayout = false;
     }
@@ -131,12 +134,12 @@ AWE.Controller = (function(module) {
       if (!HUDViews.mainControlsView) {
         HUDViews.mainControlsView = AWE.UI.createMainControlsView();
         HUDViews.mainControlsView.initWithController(that);
-        HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 470, 20));
+        HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(20, 20));
         _stage.addChild(HUDViews.mainControlsView.displayObject());
         return true;
       }
       else {
-        HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 470, 20));
+        HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(20, 20));
       }
       
       return true; 

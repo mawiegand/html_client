@@ -1,0 +1,42 @@
+<script type="text/x-handlebars" data-template-name="alliance-screen">
+<div class="ember-screen alliance-screen">
+  <div class="alliance-banner">
+  </div>
+  <div class="alliance-infobox">
+    <h1>{{ alliance.name }} [{{ alliance.tag }}]</h1>
+    <p> {{ unbound AWE.I18n.strings.alliance.founded }}: {{ alliance.created_at }}</p>
+    <p> {{ unbound AWE.I18n.strings.alliance.leader }}: {{ alliance.leaderName }}</p>
+  </div>
+  <div class="alliance-description">
+    <h1>{{ unbound AWE.I18n.strings.alliance.description }}</h1>
+    <p>{{ alliance.description }}</p>
+  </div>
+  <div class="alliance-message-of-the-day">
+    <h1>{{ unbound AWE.I18n.strings.alliance.message }}</h1>
+    <p>{{ alliance.message }}</p>
+  </div>
+  <div class="alliance-member-list">
+    <h1>{{ unbound AWE.I18n.strings.alliance.members }}</h1>
+    <ul>
+      {{#each members}}
+        <li>{{ name }}</li>
+      {{/each}}
+    </ul>
+  </div>
+  <div class="alliance-shout-box">
+      <h1>{{ unbound AWE.I18n.strings.alliance.shoutBox }}</h1>
+      <ul>
+        {{#each shouts}}
+          <li>{{ character.name }}: {{ message }} -- {{ posted_ago_in_words }} ago</li>
+        {{/each}}
+      </ul>
+      {{view Ember.TextField class="text-field" placeholder="your message" type="text" valueBinding="shoutBoxInput"}} 
+      {{#view Ember.Button action="shoutBoxSendPressed" target="parentView"}}shout{{/view}}
+  </div>
+</div>
+</script>
+
+
+
+
+
