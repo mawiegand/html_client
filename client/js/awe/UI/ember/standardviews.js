@@ -57,21 +57,63 @@ AWE.UI.Ember = (function(module) {
   module.Pane = Ember.View.extend({
     templateName: 'pane',
     
+    init: function() {
+      this._super();
+      this.set('subviews', []);
+    },
+    
     didInsertElement: function() {
       this._super();
-      console.log('DID INSERT ELEMENT');
-      this.set('canvas', this.$('canvas'));
-      log (this.$('canvas'));
-      this.get('canvas')
-      .css('background', 'red')
+      var canvas = this.$('canvas');
+      this.set('canvas', canvas);
+      canvas
       .css('width', '200px')
       .css('height', '200px')
       .attr('width', 200)
-      .attr('height', 200)
+      .attr('height', 200);
+
+      var stage = new Stage(canvas[0]);
+
+      this.set('stage', stage);
+      this.set('inDOM', true);
+
+      AWE.Ext.applyFunction(this.get('subviews'), function(view) {
+        AWE.Ext.applyFunction(view.displayObject(), function(obj) {
+          stage.addChild(obj);
+        });
+      });
     },
 
+    addChild: function(view) {
+      if (this.get('inDOM')) {
+        var stage = this.get('stage');
+        AWE.Ext.applyFunction(view.displayObject(), function(obj) {
+          stage.addChild(obj);
+        });
+      }
+      this.get('subviews').pushObject(view);
+    },
     
+    removeChild: function(view) {
+      if (this.get('inDOM')) {
+        var stage = this.get('stage');
+        AWE.Ext.applyFunction(view.displayObject(), function(obj) {
+          stage.removeChild(obj);
+        });        
+      };
+      delete this.get('subviews')[this.get('subviews').indexOf(view)];
+    },
+    
+    update: function() {
+      if (this.get('inDOM') && this.get('stage')) {
+        this.get('stage').update();
+      }
+    },
+    
+    inDOM: false,
+    stage: null,
     canvas: null,
+    subviews: null,
     setWidth: function() {
     },
   });     

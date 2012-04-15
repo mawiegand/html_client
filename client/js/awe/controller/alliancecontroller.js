@@ -29,6 +29,10 @@ AWE.Controller = (function(module) {
       alliance: null,
       messages: null,
       members: null,
+      
+      allianceChanged: (function(self) {
+        return function() { self.createAllianceBanner(); }
+      }(that)).observes('alliance')
     });
     
 
@@ -113,6 +117,31 @@ AWE.Controller = (function(module) {
       }
     }
     
+    that.bannerShape = null;
+    
+    /** content observer: alliance */
+    that.createAllianceBanner = function() {
+      if (!that.bannerPane) {
+        return ;
+      }
+      if (that.bannerShape) {
+        that.bannerPane.removeChild(that.bannerShape);
+      }
+
+      var _flagShapeGraphics = new Graphics();
+      _flagShapeGraphics.setStrokeStyle(1);
+      _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
+      var color = AWE.GS.AllianceManager.colorForNumber(that.allianceId);
+      _flagShapeGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
+      _flagShapeGraphics.moveTo( 0,  0);
+      _flagShapeGraphics.lineTo( 60,  0).lineTo( 30,  75).lineTo( 0,  0);
+      that.bannerShape = AWE.UI.createShapeView();
+      that.bannerShape.initWithControllerAndGraphics(this, _flagShapeGraphics);
+      that.bannerShape.setOrigin(100,100);
+      that.bannerShape.displayObject().x = 350;
+      that.bannerPane.addChild(that.bannerShape);      
+    }
+    
     /** update the view in case the OBJECTS (alliance, members) did change. A change
      * of object properties (e.g. alliance.description) is propagated automatically
      * with the help of ember bindings. */
@@ -131,6 +160,8 @@ AWE.Controller = (function(module) {
         }
       }(this));
     }
+    
+    that.bannerPane = null;
     
     that.createView = function() {
       
@@ -154,15 +185,22 @@ AWE.Controller = (function(module) {
         }(that),
       });
       
+      that.bannerPane = AWE.UI.Ember.Pane.create({
+        width: 200,
+        height: 200,
+      });
+      
+      that.createAllianceBanner(); // init banner view
+  
       var container = Ember.ContainerView.create({        
         controller: that,
       });
       
       var childViews = container.get('childViews');
+      childViews.pushObject(that.bannerPane);
       childViews.pushObject(info);
       childViews.pushObject(membersList);
       childViews.pushObject(shoutBox);
-      
       return container;
     }
     
@@ -206,10 +244,11 @@ AWE.Controller = (function(module) {
       if (this.visible && (_viewNeedsUpdate || (this.view.get('alliance') &&
           this.view.get('alliance').get('id') != this.allianceId))) {
         this.updateView();
+        that.bannerPane.update();
         _viewNeedsUpdate = false;
       }
       that.getAndUpdateShouts(this.allianceId);
-
+      
     }
     
     return that;
