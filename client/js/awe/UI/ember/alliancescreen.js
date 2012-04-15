@@ -17,10 +17,15 @@ AWE.UI.Ember = (function(module) {
     
     alliance: null,
     members: null,
-    shouts: null,
+
+    shoutBox: module.ShoutBox.extend({
+      shout: function(message) { 
+        this.get('parentView').shout(message); 
+      },
+      shoutsBinding: 'parentView.shouts',
+    }),
+    shout: null,
     
-    shoutBoxInput: null,
-    shoutBoxSendPressed: null,
   });
   
   return module;

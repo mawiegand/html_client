@@ -136,9 +136,8 @@ AWE.Controller = (function(module) {
         alliance: alliance,
         members: members ? members : [],
         shouts: messages ? messages : [],
-        shoutBoxSendPressed: function(self) {
-          console.log(self)
-          return function() { self.shout(this.get('shoutBoxInput')); this.set('shoutBoxInput', ''); };
+        shout: function(self) {
+          return function(message) { self.shout(message); };
         }(this),
       });
       log (members)

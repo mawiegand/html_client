@@ -29,6 +29,28 @@ AWE.UI.Ember = (function(module) {
     okPressed: function() { alert ('Action not connected: okPressed.'); },
     cancelPressed: function() { alert ('Action not connected: okPressed.'); },
   });
+  
+    
+  module.ShoutBox = Ember.View.extend({
+    templateName: 'shout-box',
+
+    shouts: null,    
+    shoutBoxInput: null,
+    shoutBoxSendPressed: function() {
+      var input = this.get('shoutBoxInput');
+      if (input.length > 0) {
+        if (this.shout) {
+          this.shout(input);
+        }
+        else {
+          console.log('ERROR in ShoutBox: shout not connected.');
+        }
+        this.set('shoutBoxInput', '');
+      }
+    },
+    shout: null,
+  });
+    
       
   return module;  
     

@@ -23,16 +23,7 @@
       {{/each}}
     </ul>
   </div>
-  <div class="alliance-shout-box">
-      <h1>{{ unbound AWE.I18n.strings.alliance.shoutBox }}</h1>
-      <ul>
-        {{#each shouts}}
-          <li>{{ character.name }}: {{ message }} -- {{ posted_ago_in_words }} ago</li>
-        {{/each}}
-      </ul>
-      {{view Ember.TextField class="text-field" placeholder="your message" type="text" valueBinding="shoutBoxInput"}} 
-      {{#view Ember.Button action="shoutBoxSendPressed" target="parentView"}}shout{{/view}}
-  </div>
+  {{view shoutBox}}
 </div>
 </script>
 
