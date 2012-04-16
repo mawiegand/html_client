@@ -503,6 +503,7 @@ AWE.Controller = (function(module) {
       var armyRegion = armyLocation.region();
 
       var targetLocations = [];
+      var locationView = null;
       
       // get all possible target locations      
       if (armyLocation.typeId() === 1) {           // if armyLocation is fortress
@@ -518,10 +519,13 @@ AWE.Controller = (function(module) {
         for (var i = 0; i < neighbourNodes.length; i++) {
           targetLocations.push(neighbourNodes[i].region().location(0));        
         }
+        
       }
       else {
         targetLocations.push(armyLocation.region().location(0));
       }
+
+
 
       // actionObjekt erstellen      
       currentAction = {
@@ -530,6 +534,21 @@ AWE.Controller = (function(module) {
         targetLocations: targetLocations,
       }
     };
+    
+    /** helper method to call onClick of settlement if arrow above is clicked */
+    that.targetViewClicked = function(targetView) {
+      var location = targetView.location();
+      var locationView = null;
+      
+      if (location.typeId() === 1) {
+        locationView = fortressViews[location.node().id()];
+      }
+      else {
+        locationView = locationViews[location.id()];
+      }
+      
+      that.viewClicked(locationView);
+    }
     
     var armyTargetClicked = function(army, targetLocation) {
       log('armyTargetClicked', army, targetLocation, AWE.Map.locationTypes[targetLocation.typeId()]);
@@ -570,14 +589,28 @@ AWE.Controller = (function(module) {
     that.viewClicked = function(view) {
      
       var actionCompleted = false;
+      var target = null;
      
       if (currentAction) {
         for (var key in currentAction.targetLocations) {
           if (currentAction.targetLocations.hasOwnProperty(key)) {
-            var target = currentAction.targetLocations[key];
+            target = currentAction.targetLocations[key];
             if (view.location && view.location() === target) {
               actionCompleted = true;
               break;
+            }
+          }
+        }
+        
+        if (!actionCompleted) {
+          for (var key in targetViews) {
+            if (targetViews.hasOwnProperty(key)) {
+              var targetView = targetViews[key];
+              target = targetView.location();
+              if (view.location && view.location() === target) {
+                actionCompleted = true;
+                break;
+              }
             }
           }
         }

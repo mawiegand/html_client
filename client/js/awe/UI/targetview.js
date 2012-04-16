@@ -36,6 +36,9 @@ AWE.UI = (function(module) {
       _arrowImageView = AWE.UI.createImageView();
       _arrowImageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/army/target"));
       _arrowImageView.setFrame(AWE.Geometry.createRect(0, 0, 64, 64));
+      _arrowImageView.onClick = that.onClick;
+      _arrowImageView.onMouseOver = that.onMouseOver;
+      _arrowImageView.onMouseOut = that.onMouseOut;
       _container.addChild(_arrowImageView.displayObject());
 
       if (!frame) {
@@ -55,8 +58,12 @@ AWE.UI = (function(module) {
     };
     
     that.location = function() {
-      return that._location;
+      return _location;
     }
+    
+    that.onClick = function() {
+      my.controller.targetViewClicked(that);
+    };
             
     return that;
   };
