@@ -80,21 +80,27 @@ AWE.Controller = (function(module) {
       root.append('<canvas id="map-tile-canvas"></canvas>');
       _canvas[0] = root.find('#map-tile-canvas')[0];
       _stages[0] = new Stage(_canvas[0]);
+      _stages[0].onClick = function() {};   // we generate our own clicks
+
             
       // selectable gaming pieces layer (fortresses, armies, etc.)
       root.append('<canvas id="gaming-pieces-canvas"></canvas>');
       _canvas[1] = root.find('#gaming-pieces-canvas')[0];
       _stages[1] = new Stage(_canvas[1]);
+      _stages[1].onClick = function() {};   // we generate our own clicks
       
       // layer for mouseover and selection objects
       root.append('<canvas id="annotation-canvas"></canvas>');
       _canvas[2] = root.find('#annotation-canvas')[0];
       _stages[2] = new Stage(_canvas[2]);
+      _stages[2].onClick = function() {};   // we generate our own clicks
+
 
       // layer for the object inspector
       root.append('<canvas id="inspector-canvas"></canvas>');
       _canvas[3] = root.find('#inspector-canvas')[0];
       _stages[3] = new Stage(_canvas[3]);
+      _stages[3].onClick = function() {};   // we generate our own clicks
 
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
