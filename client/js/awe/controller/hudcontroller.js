@@ -32,6 +32,7 @@ AWE.Controller = (function(module) {
     var HUDViews = {};
     
     
+    
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Initialization
@@ -49,6 +50,7 @@ AWE.Controller = (function(module) {
       // HUD layer ("static", not zoomable, not moveable)
       _canvas = root.find('#hud-canvas')[0];
       _stage = new Stage(_canvas);
+      _stage.onClick = function() {};
       
       _canvas.width = 500;
       _canvas.height = 250;
