@@ -9,6 +9,7 @@ var AWE = window.AWE || {};
 AWE.Net = AWE.Net || function(module) {
   
   module.OK           = 200;
+  module.CREATED      = 201;
   
   module.NOT_MODIFIED = 304;
   

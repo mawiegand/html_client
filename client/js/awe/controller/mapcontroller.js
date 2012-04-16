@@ -537,8 +537,33 @@ AWE.Controller = (function(module) {
       }
     };
     
+    
+    
+    that.handleError = function(errorCode, errorDesc) { 
+      console.log('ERROR ' + errorCode + ': ' + errorDesc);     
+      var dialog = AWE.UI.Ember.Dialog.create({
+        army: army,
+        heading: errorDesc,
+        okPressed: function() {
+          this.destroy();
+        }
+      });      
+      that.applicationController.presentModalDialog(dialog);
+    }
+    
     var armyTargetClicked = function(army, targetLocation) {
-      log('armyTargetClicked', army, targetLocation, AWE.Map.locationTypes[targetLocation.typeId()]);
+      log('armyTargetClicked', army, targetLocation, AWE.Map.locationTypes[targetLocation.id()]);
+      var moveAction = AWE.Action.Military.createMoveArmyAction(army, targetLocation.id());
+      moveAction.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
+          AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+            that.setModelChanged();
+          });
+        }
+        else {
+          that.handleError(status, "The server did not accept the comannd.");
+        }
+      });
     }
 
     // ///////////////////////////////////////////////////////////////////////
