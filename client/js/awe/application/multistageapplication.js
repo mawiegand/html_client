@@ -80,7 +80,7 @@ AWE.Application = (function(module) {
           mouseY = event.pageY;
         });
         // register controller to receive click events in screen
-        $('body').mouseup(function(evt) {
+        $('#layers').mouseup(function(evt) {
           console.log('Mouse up event in multi stage application controller.');
           self.handleMouseUp(evt);
         });

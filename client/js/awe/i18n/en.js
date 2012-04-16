@@ -17,6 +17,10 @@ AWE.I18n = AWE.I18n || function(module) {
         loading: 'Loading....'
       },
       
+      shoutBox: {
+        heading: 'Shout Box',
+      },
+      
       
     },
     

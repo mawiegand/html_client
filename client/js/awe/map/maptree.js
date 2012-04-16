@@ -482,6 +482,35 @@ AWE.Map = (function(module) {
       return result;  
     }  
   }());
+
+  module.getNodeThatContainsPoint = function(rootNode, point, maxLevel) {
+    var node = rootNode;
+    //outside of world
+    if (!node.frame().contains(point)) {
+      return null;
+    }
+    while (
+      !node.isLeaf() && 
+      node.children() !== null && 
+      node.children().length > 0 &&
+      node.level() < maxLevel
+    ) {
+      var children = node.children();
+      var found = false;
+      for (var i = 0; i < children.length && !found; i++) {
+        var frame = children[i].frame();
+        if (frame.contains(point)) {
+          node = children[i];
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        return node;
+      }
+    }
+    return node;   
+  };
   
   return module;
     

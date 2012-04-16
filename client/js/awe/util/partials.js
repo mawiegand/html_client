@@ -43,13 +43,14 @@ AWE.Partials = (function(module) {
   };
   
   
+  
   /** this creates a hash that allows to access instances of GS.Entity and
    * derived sub-types by the value of an attribute. You shouldn't create
    * the hash manually but use the attribute-hash-observer below. */ 
   module.createAttributeValueHash = function(attribute) {
 
     var hash = {};
-    hash.allEntries = {};
+    hash.allEntries = [];
 
     /** use with caution (overwrites for example armies that have moved
      * to another region). When fetching all entities for a value of an 
@@ -61,14 +62,14 @@ AWE.Partials = (function(module) {
       this.allEntries[val] = { entries: newEntries, lastUpdateAt: timestamp };
     };
     hash.addEntry = function(entry) {
-      if (!this.allEntries[entry[attribute]]) {
-        this.allEntries[entry[attribute]] = { entries: {}, lastUpdateAt: new Date(1970) };
+      if (!this.allEntries[entry.get(attribute)]) {
+        this.allEntries[entry.get(attribute)] = { entries: [], lastUpdateAt: new Date(1970) };
       }
-      this.allEntries[entry[attribute]].entries[entry.get('id')] = entry;
+      this.allEntries[entry.get(attribute)].entries[entry.get('id')] = entry;
     };
     hash.removeEntry = function(entry, oldValue) {
       if (oldValue === undefined) {
-        oldValue = entry[attribute]; // use oldValue, if defined, otherwise assume the object still is unchanged
+        oldValue = entry.get(attribute); // use oldValue, if defined, otherwise assume the object still is unchanged
       }
       if (this.allEntries[oldValue] && this.allEntries[oldValue].entries[entry.get('id')]) {
         delete this.allEntries[oldValue].entries[entry.get('id')];
@@ -88,7 +89,7 @@ AWE.Partials = (function(module) {
         this.allEntries[val].lastUpdateAt = timestamp;
       }
       else {
-        this.allEntries[val] = { entries: {}, lastUpdateAt: timestamp };
+        this.allEntries[val] = { entries: [], lastUpdateAt: timestamp };
       }
     }
     hash.lastUpdateForValue = function(val, timestamp) {
