@@ -55,6 +55,8 @@ AWE.UI = (function(module) {
       _moveButtonView = AWE.UI.createButtonView();
       _moveButtonView.initWithControllerTextAndImage(controller, 'move', AWE.UI.ImageCache.getImage("map/button1"));
       _moveButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
+      _moveButtonView.onClick = function() { that.onMoveButtonClick(that); }
+      
       _container.addChild(_moveButtonView.displayObject());
 
       _attackButtonView = AWE.UI.createButtonView();
@@ -111,7 +113,9 @@ AWE.UI = (function(module) {
     that.onAttackButtonClick = function() {};
     that.onBattleButtonClick = function() {};
     
-    that.onMoveButtonClick = function() {};
+    that.onMoveButtonClick = function() {
+      log('onMoveButtonClick');
+    };
     that.onCancelMoveButtonClick = function() {};
     
     that.onWaylayButtonClick = function() {};
@@ -180,6 +184,10 @@ AWE.UI = (function(module) {
       if (_infoText2View) _infoText2View.layoutIfNeeded();
       if (_infoText3View) _infoText3View.layoutIfNeeded();
     }
+    
+    that.army = function() {
+      return _army;
+    };
         
     return that;
   };

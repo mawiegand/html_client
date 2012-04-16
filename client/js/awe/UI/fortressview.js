@@ -37,8 +37,6 @@ AWE.UI = (function(module) {
       _super.initWithController(controller, frame);
       _node = node;
                   
-      my.container = new Container();      
-
       var fortressImageName = 'map/fortress/small';
       if (_node.region() && _node.region().fortressLevel() > 3) {
         fortressImageName = 'map/fortress/middle';
@@ -91,21 +89,11 @@ AWE.UI = (function(module) {
       _super.setSelected(selected);
       selectShape.visible = selected;
     };
-        
-    /** actions */
-   
-    that.onClick = function() {
-      my.controller.viewClicked(that);
-    };
     
-    that.onMouseOver = function(evt){
-      my.controller.viewMouseOver(that);
-    };
-
-    that.onMouseOut = function(evt){
-      my.controller.viewMouseOut(that);
-    };
-
+    that.location = function() {
+      return _node.region().location(0);
+    }
+        
     return that;
   };
     

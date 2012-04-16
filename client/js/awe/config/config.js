@@ -78,7 +78,6 @@ AWE.Config = (function(module) {
     "map/tiles/plain512": 'images/tiles/plain256.png',
     "map/tiles/mountains512": 'images/tiles/mountains256.png',
     "map/tiles/mud512": 'images/tiles/mud256.png',
-
     
     "map/fortress/small": 'images/settlements/fortresssmall.png',
     "map/fortress/middle": 'images/settlements/fortressmiddle.png',
@@ -88,6 +87,8 @@ AWE.Config = (function(module) {
     "map/colony/middle": "images/settlements/colonymiddle.png",
     "map/colony/big": "images/settlements/colonybig.png",
 
+    "map/army": 'images/army.png',
+    
     "map/army/stanceAggressive": "images/army/stance_agg.png",
     "map/army/stanceDefensive": "images/army/stance_def.png",
     "map/army/stanceNeutral": "images/army/stance_neu.png",
@@ -97,6 +98,8 @@ AWE.Config = (function(module) {
     "map/army/rank3": 'images/army/rank3.png',
     "map/army/rank4": 'images/army/rank4.png',
     "map/army/rank5": 'images/army/rank4.png',
+
+    "map/army/target": 'images/army/target.png',
 
     "map/outpost" : "images/settlements/outpost.png",
 
@@ -109,8 +112,6 @@ AWE.Config = (function(module) {
     "map/button1": 'images/green_button.png',
     "map/button2": 'images/red_button.png',
     "map/button3": 'images/blue_button.png',
-
-    "map/army": 'images/army.png',
     
     "hud/head": 'images/head.png',
     "hud/frog/face": 'images/kopfkroete40.png',

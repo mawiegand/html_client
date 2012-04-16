@@ -51,11 +51,12 @@ AWE.Controller = (function(module) {
     var armyViews = {};
     var locationViews = {};
     var actionViews = {};
+    var targetViews = {};
     var inspectorViews = {};
     
     var armyUpdates = {};
 
-    
+    var currentAction = null;
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -338,7 +339,6 @@ AWE.Controller = (function(module) {
       that.prepareScrolling(evt.pageX, evt.pageY);
     };    
 
-    
     // scrolling
     
     that.onMouseMove = function(event) {
@@ -353,8 +353,7 @@ AWE.Controller = (function(module) {
         that.setNeedsLayout();
       }
     };
-    
-       
+      
     // ending
     
     that.endScrolling = function() {
@@ -391,7 +390,7 @@ AWE.Controller = (function(module) {
       var delta = 0;
       
       if (evt.wheelDelta) { /* IE/Opera. */
-        delta = evt.wheelDelta/240;
+        delta = evt.wheelDelta/120;
       }
       else if (evt.detail) { /** Mozilla case. */
         /** In Mozilla, sign of delta is different than in IE.
@@ -446,7 +445,7 @@ AWE.Controller = (function(module) {
       if (!army) {
         return ;
       }
-  
+      
       var dialog = AWE.UI.Ember.ArmyInfoView.create({
         army: army,
         changeNamePressed: function(event) {
@@ -471,15 +470,54 @@ AWE.Controller = (function(module) {
       that.applicationController.presentModalDialog(dialog);
     }; 
 
+    that.armyMoveButtonClicked = function(armyAnnotationView) {
+      if (!armyAnnotationView) {
+        log('in armyMoveButtonClicked: hab keine armyAnnotationView!');
+        return;
+      }
+     
+      // location and region of current army
+      var armyLocation = AWE.Map.Manager.getLocation(armyAnnotationView.army().get('location_id'));
+      var armyRegion = armyLocation.region();
+
+      var targetLocations = [];
+      
+      // get all possible target locations      
+      if (armyLocation.typeId() === 1) {           // if armyLocation is fortress
+        var regionLocations = armyRegion.locations();
+        
+        // add all location in same region
+        for (var i = 1; i < regionLocations.length; i++) {
+          targetLocations.push(regionLocations[i]);        
+        }
+        
+        // add fortresses in bordering regions
+        var neighbourNodes = armyRegion.node().getNeighbourLeaves();
+        for (var i = 0; i < neighbourNodes.length; i++) {
+          targetLocations.push(neighbourNodes[i].region().location(0));        
+        }
+      }
+      else {
+        targetLocations.push(armyLocation.region().location(0));
+      }
+
+      // actionObjekt erstellen      
+      currentAction = {
+        typeName: 'moveAction',
+        army: armyAnnotationView.army(),
+        targetLocations: targetLocations,
+      }
+    };
+    
+    var armyTargetClicked = function(army, targetLocation) {
+      log('armyTargetClicked', army, targetLocation, AWE.Map.locationTypes[targetLocation.typeId()]);
+    }
 
     // ///////////////////////////////////////////////////////////////////////
     //
     //   User Input Handling
     //
     // /////////////////////////////////////////////////////////////////////// 
-    
-
-    
     
     /** returns the single map view that is presently selected by the user. 
      * this can be any of the gaming pieces (armies), markers or settlements.*/
@@ -507,8 +545,31 @@ AWE.Controller = (function(module) {
       log('button', button.text());
     };
     
-    that.viewClicked = function(view) {    
-      that.setSelectedView(view);
+    that.viewClicked = function(view) {
+     
+      var actionCompleted = false;
+     
+      if (currentAction) {
+        for (var key in currentAction.targetLocations) {
+          if (currentAction.targetLocations.hasOwnProperty(key)) {
+            var target = currentAction.targetLocations[key];
+            if (view.location && view.location() === target) {
+              actionCompleted = true;
+              break;
+            }
+          }
+        }
+      }
+      
+      if (actionCompleted) {
+        armyTargetClicked(currentAction.army, target);
+        _actionViewChanged = true;
+      }
+      else {
+        that.setSelectedView(view);
+      }
+      
+      currentAction = null;
     };
 
     that.viewMouseOver = function(view) { // console.log('view mouse over: ' + view.typeName())
@@ -516,6 +577,12 @@ AWE.Controller = (function(module) {
         _hoverView(view);
       }
       else if (view.typeName() === 'ArmyView') {
+        _hoverView(view);
+      }
+      else if (view.typeName() === 'BaseView') {
+        _hoverView(view);
+      }
+      else if (view.typeName() === 'OutpostView') {
         _hoverView(view);
       }
       else if (view.typeName() === 'hudView') { // typeof view == 'hud'  (evtl. eigene methode)
@@ -528,6 +595,12 @@ AWE.Controller = (function(module) {
         _unhoverView();
       }
       else if (view.typeName() === 'ArmyView') {
+        _unhoverView();
+      }
+      else if (view.typeName() === 'BaseView') {
+        _unhoverView();
+      }
+      else if (view.typeName() === 'OutpostView') {
         _unhoverView();
       }
     };
@@ -557,6 +630,8 @@ AWE.Controller = (function(module) {
       _selectedView = null;
       
       _hideInspector();
+      
+      currentAction = null;
 
       _actionViewChanged = true;
     };
@@ -579,7 +654,19 @@ AWE.Controller = (function(module) {
           else if (view.typeName() === 'ArmyView') {
             actionViews.hovered = AWE.UI.createArmyAnnotationView();
             actionViews.hovered.initWithControllerAndView(that, view);
+            actionViews.hovered.onMoveButtonClick = (function(self) {
+              return function(view) { self.armyMoveButtonClicked(view); }
+            })(that);
+            
             armyUpdates[view.army().get('id')] = view.army();
+          }
+          else if (view.typeName() === 'BaseView') {
+            actionViews.hovered = AWE.UI.createBaseAnnotationView();
+            actionViews.hovered.initWithControllerAndView(that, view);
+          }
+          else if (view.typeName() === 'OutpostView') {
+            actionViews.hovered = AWE.UI.createOutpostAnnotationView();
+            actionViews.hovered.initWithControllerAndView(that, view);
           }
 
           actionViews.hovered.setCenter(center.x, center.y);
@@ -631,13 +718,21 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector = AWE.UI.createArmyInspectorView();
         inspectorViews.inspector.initWithControllerAndArmy(that, view.army());
         
-        inspectorViews.inspector.onInventoryButtonClick = function(self) { 
+        inspectorViews.inspector.onInventoryButtonClick = (function(self) {
           return function(army) { self.armyInfoButtonClicked(army); }
-        }(that);
+        })(that);
         
         inspectorViews.inspector.onFlagClicked = function(allianceId) {
           WACKADOO.activateAllianceController(allianceId);
         }
+      }
+      else if (view.typeName() === 'BaseView') {
+        inspectorViews.inspector = AWE.UI.createBaseInspectorView();
+        inspectorViews.inspector.initWithControllerAndFrame(that);
+      }
+      else if (view.typeName() === 'OutpostView') {
+        inspectorViews.inspector = AWE.UI.createOutpostInspectorView();
+        inspectorViews.inspector.initWithControllerAndFrame(that);
       }
       _stages[3].addChild(inspectorViews.inspector.displayObject());
       _inspectorChanged = true;
@@ -890,7 +985,7 @@ AWE.Controller = (function(module) {
         if (view) {                            // view already exists         
           if (view.lastChange !== undefined && 
               (view.lastChange() < nodes[i].lastChange() || 
-               (nodes[i].region() && view.lastChange() < nodes[i].region().lastChange()))) { // somehow determine when to update roads (change of locations?)
+              (nodes[i].region() && view.lastChange() < nodes[i].region().lastChange()))) { // somehow determine when to update roads (change of locations?)
             view.setNeedsUpdate();
           }
           view.setFrame(frame);
@@ -1130,6 +1225,13 @@ AWE.Controller = (function(module) {
     //   Action Stage
     //
     // /////////////////////////////////////////////////////////////////////// 
+
+    var setTargetPosition = function(view, pos) {
+      view.setCenter(AWE.Geometry.createPoint(
+        pos.x,
+        pos.y - 40
+      ));
+    }
     
     that.updateActionViews = function() {
       
@@ -1152,8 +1254,39 @@ AWE.Controller = (function(module) {
         ));
         actionViews.selected.setNeedsUpdate();
       }
+
+      var newTargetViews = {};
+
+      if (currentAction) {
+        for (var key in currentAction.targetLocations) {
+          if (currentAction.targetLocations.hasOwnProperty(key)) {
+            var location = currentAction.targetLocations[key];
+            var view = targetViews[location.id()];
+            
+            if (location.typeId() === 1) {
+              var visible = that.isFortressVisible(that.mc2vc(location.node().frame()));
+            }
+            else {   
+              var visible = that.isSettlementVisible(that.mc2vc(location.node().frame()));
+            }
+            
+            if (visible) {
+              if (!view) {       
+                view = AWE.UI.createTargetView();
+                view.initWithControllerAndLocation(that, location);
+                _stages[2].addChild(view.displayObject());
+              }                                  
+              setTargetPosition(view, that.mc2vc(location.position()));
+              newTargetViews[location.id()] = view;
+            }
+          }
+        }
+      }
       
-      return _actionViewChanged;
+      var removedSomething = purgeDispensableViewsFromStage(targetViews, newTargetViews, _stages[2]);
+      targetViews = newTargetViews; 
+           
+      return removedSomething || _actionViewChanged;
     };
     
 
@@ -1166,7 +1299,6 @@ AWE.Controller = (function(module) {
     
     that.updateInspectorViews = function() {
       if (inspectorViews.inspector) {
-        console.log('set origin of inspector');
         inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width-345, _windowSize.height-155));
       }
       return _inspectorChanged || _windowChanged;
@@ -1213,7 +1345,7 @@ AWE.Controller = (function(module) {
           stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         };
         
-        if (_windowChanged || this.modelChanged() || _actionViewChanged || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
+        if (_windowChanged || this.modelChanged() || _actionViewChanged || currentAction || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           stagesNeedUpdate[2] = that.updateActionViews();
         }
         
@@ -1302,7 +1434,7 @@ AWE.Controller = (function(module) {
           var viewsInStages = [
             regionViews,
             [fortressViews, armyViews, locationViews],
-            actionViews,
+            [actionViews, targetViews],
             inspectorViews,
           ];          
           

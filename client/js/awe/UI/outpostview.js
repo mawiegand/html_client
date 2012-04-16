@@ -15,9 +15,11 @@ AWE.UI = (function(module) {
     
     var imageView = null;
     var labelView = null;
-    var selectShape;
+    var selectShape = null;
     
     my = my || {};
+    
+    my.typeName = "OutpostView";
 
     that = module.createSettlementView(spec, my);
 
@@ -25,7 +27,7 @@ AWE.UI = (function(module) {
       initWithController: AWE.Ext.superior(that, "initWithController"),
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
       setFrame: AWE.Ext.superior(that, "setFrame"),
-      setAlpha: AWE.Ext.superior(that, "setAlpha"),
+      setSelected: AWE.Ext.superior(that, "setSelected"),
     };
     
     /** overwritten view methods */
@@ -34,15 +36,13 @@ AWE.UI = (function(module) {
       _super.initWithController(controller, frame);
       _location = location;
                   
-      my.container = new Container();      
-
       var selectGraphics = new Graphics();
       selectGraphics.setStrokeStyle(1);
       selectGraphics.beginStroke(Graphics.getRGB(0,0,0));
       selectGraphics.beginFill(Graphics.getRGB(255,0,0));
-      selectGraphics.drawEllipse(0,  AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
+      selectGraphics.drawEllipse(0, AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
       selectShape = new Shape(selectGraphics);  
-      selectShape.alpha = 0;  
+      selectShape.visible = false;  
       my.container.addChild(selectShape);
       
       var name = AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()];
@@ -75,26 +75,16 @@ AWE.UI = (function(module) {
       my.frame.size.width = AWE.Config.MAPPING_FORTRESS_SIZE;
       my.frame.size.height = AWE.Config.MAPPING_FORTRESS_SIZE + 24;
     };
+
+    that.setSelected = function(selected) {
+      _super.setSelected(selected);
+      selectShape.visible = selected;
+    };
     
     /** newly intotruced methods */
     
     that.location = function() { return _location; };
     
-        
-    /** actions */
-   
-    that.onClick = function() {
-      // my.controller.viewClicked(that);
-    };
-    
-    that.onMouseOver = function(evt){
-      // my.controller.fortressMouseOver(that);
-    };
-
-    that.onMouseOut = function(evt){
-      // my.controller.fortressMouseOut(that);
-    };
-
     return that;
   };
       

@@ -56,6 +56,9 @@ AWE.Map = (function(module) {
     /** returns the region the location is associated with. */
     that.region = function() { return _region; }
     
+    /** returns the node the location is associated with over the region. */
+    that.node = function() { return _region.node(); }
+    
     /** returns the slot of the location. Each regions has 9 or more slots. Slot 0 is
      * reserved for the fortress in the center of each region. */
     that.slot = function() { return _slot; }
@@ -134,7 +137,7 @@ AWE.Map = (function(module) {
 
       //for the fortress return the center
       if (_slot == 0) {
-        AWE.Geometry.createPoint(
+        return AWE.Geometry.createPoint(
           frame.origin.x + frame.size.width/2,
           frame.origin.y + frame.size.height/2
         );

@@ -13,7 +13,6 @@ AWE.UI = (function(module) {
         
     my = my || {};
     
-    my.selected = false;
     my.container = null;    
 
     that = module.createView(spec, my);
@@ -43,15 +42,23 @@ AWE.UI = (function(module) {
       my.container.visible = alpha !== 0;
       my.container.alpha = alpha;
     }
-        
-    that.setSelected = function(selected) {
-      my.selected = selected;
-    };
-    
+            
     that.displayObject = function() {
       return my.container;
     };
-        
+    
+    that.onClick = function() {
+      my.controller.viewClicked(that);
+    };
+    
+    that.onMouseOver = function(evt){
+      my.controller.viewMouseOver(that);
+    };
+
+    that.onMouseOut = function(evt){
+      my.controller.viewMouseOut(that);
+    };
+    
     return that;
   };
       
