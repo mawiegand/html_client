@@ -519,13 +519,10 @@ AWE.Controller = (function(module) {
         for (var i = 0; i < neighbourNodes.length; i++) {
           targetLocations.push(neighbourNodes[i].region().location(0));        
         }
-        
       }
       else {
         targetLocations.push(armyLocation.region().location(0));
       }
-
-
 
       // actionObjekt erstellen      
       currentAction = {
@@ -1292,7 +1289,9 @@ AWE.Controller = (function(module) {
       
       if (actionViews.hovered
           && (actionViews.hovered.typeName() === 'FortressActionView'
-          || actionViews.hovered.typeName() === 'ArmyAnnotationView')) {
+          || actionViews.hovered.typeName() === 'ArmyAnnotationView'
+          || actionViews.hovered.typeName() === 'OutpostAnnotationView'
+          || actionViews.hovered.typeName() === 'BaseAnnotationView')) {
         actionViews.hovered.setCenter(AWE.Geometry.createPoint(
             _hoveredView.center().x,
             _hoveredView.center().y
@@ -1302,7 +1301,9 @@ AWE.Controller = (function(module) {
 
       if (actionViews.selected
           && (actionViews.selected.typeName() === 'FortressActionView'
-          || actionViews.selected.typeName() === 'ArmyAnnotationView')) {
+          || actionViews.selected.typeName() === 'ArmyAnnotationView'
+          || actionViews.selected.typeName() === 'OutpostAnnotationView'
+          || actionViews.selected.typeName() === 'BaseAnnotationView')) {
         actionViews.selected.setCenter(AWE.Geometry.createPoint(
             _selectedView.center().x,
             _selectedView.center().y
