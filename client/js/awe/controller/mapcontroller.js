@@ -276,8 +276,7 @@ AWE.Controller = (function(module) {
         }
       }      
     }());
-    /** TAG Not sure why level is private **/
-    that.level = function() { return level; };
+    that.level = level;
     
     /** calculates the alpha value of location objects as a linear function
      *  between min and max depending on its width
