@@ -19,6 +19,8 @@ AWE.UI = (function(module) {
     var _army = null;
     
     var _container = null;
+    
+    var _annotationView = null;
 
     var _stanceView = null;    
     var _baseShape = null;    
@@ -224,6 +226,14 @@ AWE.UI = (function(module) {
     that.displayObject = function() {
       return _container;
     };
+    
+    that.setAnnotationView = function(annotationView) {
+      _annotationView = annotationView;
+    }
+    
+    that.annotationView = function() {
+      return _annotationView;
+    }
     
     that.army = function() { return _army; };
     

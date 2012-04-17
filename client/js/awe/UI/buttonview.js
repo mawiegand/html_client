@@ -13,6 +13,13 @@ AWE.UI = (function(module) {
     var _labelText = null;
     var _imageView = null;
     
+    var _defaultImage = null;
+    var _highlightedImage = null;
+    var _disabledImage = null;
+    
+    var _highlighted = false;
+    var _disabled = false;
+    
     my = my || {};
     
     my.typeName = "ButtonView";
@@ -30,6 +37,8 @@ AWE.UI = (function(module) {
       _super.initWithController(controller, frame);
       
       _container = new Container();
+      
+      _defaultImage = image;
 
       _imageView = AWE.UI.createImageView();
       _imageView.initWithControllerAndImage(controller, image);
@@ -49,7 +58,20 @@ AWE.UI = (function(module) {
       _container.x = my.frame.origin.x;
       _container.y = my.frame.origin.y;
     }
+    
+    that.updateView = function() {
 
+      if (_highlighted) {
+        _imageView.setImage(_highlightedImage);
+      }
+      else if (_disabled) {
+        _imageView.setImage(_disabledImage);
+      }
+      else {
+        _imageView.setImage(_defaultImage);
+      }
+    }
+    
     that.setFrame = function(frame) {
       _super.setFrame(frame);
       
@@ -67,7 +89,16 @@ AWE.UI = (function(module) {
     }
     
     that.setImage = function(image) {
-      _imageView.setImage(image);
+      _defaultImage = image;
+      this.setNeedsUpdate();
+    }
+    
+    that.setHighlightedImage = function(image) {
+      _highlightedImage = image;
+    }
+    
+    that.setDisabledImage = function(image) {
+      _disabledImage = image;
     }
     
     that.image = function() {
@@ -75,7 +106,7 @@ AWE.UI = (function(module) {
     }
 
     that.setText = function(text) {
-      this.setNeedsDisplay();
+      this.setNeedsUpdate();
     }
     
     that.text = function() {
@@ -83,6 +114,16 @@ AWE.UI = (function(module) {
     }
     
     /* actions */
+   
+    that.setHighlighted = function(highlighted) {
+      _highlighted = highlighted;
+      _disabled = false;
+    }
+    
+    that.setDisabled = function(disabled) {
+      _highlighted = false;
+      _disabled = disabled;
+    }
     
     that.onClick = function() {
       my.controller.buttonClicked(that);

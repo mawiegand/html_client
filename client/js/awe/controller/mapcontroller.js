@@ -459,6 +459,7 @@ AWE.Controller = (function(module) {
       
       if (currentAction) {
         currentAction = null;
+        _selectedView.annotationView().setMovingMode(false);
         _actionViewChanged = true;
       }
       else if (_selectedView) {
@@ -508,6 +509,9 @@ AWE.Controller = (function(module) {
         typeName: 'moveAction',
         army: armyAnnotationView.army(),
       }
+      
+      armyAnnotationView.setMovingMode(true);
+      _actionViewChanged = true;
     };
     
     /** helper method to call onClick of settlement if arrow above is clicked */
@@ -606,6 +610,7 @@ AWE.Controller = (function(module) {
         }
         _actionViewChanged = true;
         currentAction = null;
+        _selectedView.annotationView().setMovingMode(false);
       }
       else {
         that.setSelectedView(view);
@@ -1124,7 +1129,7 @@ AWE.Controller = (function(module) {
                 else if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()] === "empty") {
                   view = AWE.UI.createEmptySlotView();
                 }
-                if (view) {   // if base or outpost on location init the view
+                if (view) {   // if base, outpost or empty slot on location, init the view
                   view.initWithControllerAndLocation(that, location);
                  _stages[1].addChild(view.displayObject());                  
                 }
@@ -1249,12 +1254,18 @@ AWE.Controller = (function(module) {
           // add fortresses in bordering regions
           var neighbourNodes = armyRegion.node().getNeighbourLeaves();
           for (var i = 0; i < neighbourNodes.length; i++) {
-            var location = neighbourNodes[i].region().location(0);
-            if (location) {
-              targetLocations.push(location);
+            var region = neighbourNodes[i].region();
+            if (region) {
+              var location = region.location(0);             
+              if (location) {
+                targetLocations.push(location);
+              }
+              else {
+                AWE.Map.Manager.fetchLocationsForRegion(region);
+              }
             }
             else {
-              AWE.Map.Manager.fetchLocationsForRegion(neighbourNodes[i].region());
+              AWE.Map.Manager.updateRegionForNode(neighbourNodes[i]);
             }
           }
         }
@@ -1294,6 +1305,7 @@ AWE.Controller = (function(module) {
           annotationView = AWE.UI.createOutpostAnnotationView();
           annotationView.initWithControllerAndView(that, baseView);
         }
+        baseView.setAnnotationView(annotationView);
         
         return annotationView;
       }
@@ -1303,7 +1315,6 @@ AWE.Controller = (function(module) {
           || _hoveredView && actionViews.hovered && actionViews.hovered.locationView() !== _hoveredView)
           && actionViews.hovered !== actionViews.selected) {
         _stages[2].removeChild(actionViews.hovered.displayObject());
-        log('remove hover view');
       }            
 
       // create new hovered view if necessary               
@@ -1312,12 +1323,10 @@ AWE.Controller = (function(module) {
             && actionViews.hovered.locationView() !== _hoveredView)) {
         if (actionViews.selected && _hoveredView === actionViews.selected.locationView()) {
           actionViews.hovered = actionViews.selected;
-          log('copy hovered view');
         }
         else {
           actionViews.hovered = createAnnotationView(_hoveredView);
           _stages[2].addChild(actionViews.hovered.displayObject());
-          log('create hover view');
         }
       }         
                
@@ -1332,22 +1341,18 @@ AWE.Controller = (function(module) {
             _hoveredView.center().y
         ));
         actionViews.hovered.setNeedsUpdate();
-        log('move hover view');
       }
       else {
         if (actionViews.hovered) {
           delete actionViews.hovered;        
-          log('delete hover view');
         }
       }
-      
       
       // delete selected view if necessary
       if ((!_selectedView && actionViews.selected
           || _selectedView && actionViews.selected && actionViews.selected.locationView() !== _selectedView)
           && actionViews.selected !== actionViews.hovered) {
         _stages[2].removeChild(actionViews.selected.displayObject());
-        log('remove select view');
       }            
 
       // create new selected view if necessary               
@@ -1356,12 +1361,10 @@ AWE.Controller = (function(module) {
             && actionViews.selected.locationView() !== _selectedView)) {
         if (actionViews.hovered && _selectedView === actionViews.hovered.locationView()) {
           actionViews.selected = actionViews.hovered;
-          log('copy select view');
         }
         else {
           actionViews.selected = createAnnotationView(_selectedView);
           _stages[2].addChild(actionViews.selected.displayObject());
-          log('create select view');
         }
       }         
                
@@ -1376,12 +1379,10 @@ AWE.Controller = (function(module) {
             _selectedView.center().y
         ));
         actionViews.selected.setNeedsUpdate();
-        log('move select view');
       }
       else {
         if (actionViews.selected) {
           delete actionViews.selected;        
-          log('delete select view');
         }
       }
       

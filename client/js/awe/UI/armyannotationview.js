@@ -49,11 +49,13 @@ AWE.UI = (function(module) {
       
       _stanceButtonView = AWE.UI.createButtonView();
       _stanceButtonView.initWithControllerTextAndImage(controller, 'stance', AWE.UI.ImageCache.getImage("map/button1"), frame);
+      _stanceButtonView.setDisabledImage(AWE.UI.ImageCache.getImage("map/button1disabled"));
       _stanceButtonView.setFrame(AWE.Geometry.createRect(12, 6, 52, 52));
       _container.addChild(_stanceButtonView.displayObject());
 
       _moveButtonView = AWE.UI.createButtonView();
       _moveButtonView.initWithControllerTextAndImage(controller, 'move', AWE.UI.ImageCache.getImage("map/button1"));
+      _moveButtonView.setHighlightedImage(AWE.UI.ImageCache.getImage("map/button1highlighted"));
       _moveButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
       _moveButtonView.onClick = function() { that.onMoveButtonClick(that); }
       
@@ -61,6 +63,7 @@ AWE.UI = (function(module) {
 
       _attackButtonView = AWE.UI.createButtonView();
       _attackButtonView.initWithControllerTextAndImage(controller, 'attack', AWE.UI.ImageCache.getImage("map/button1"));
+      _attackButtonView.setDisabledImage(AWE.UI.ImageCache.getImage("map/button1disabled"));
       _attackButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
       _attackButtonView.onClick = function() { that.onAttackButtonClick(); }
       _container.addChild(_attackButtonView.displayObject());
@@ -126,8 +129,11 @@ AWE.UI = (function(module) {
       
       // buttons
       _stanceButtonView.setVisible(_army.isOwn() && _armyView.selected());
+      _stanceButtonView.updateView();
       _moveButtonView.setVisible(_army.isOwn() && _armyView.selected());
+      _moveButtonView.updateView();
       _attackButtonView.setVisible(_army.isOwn() && _armyView.selected());
+      _attackButtonView.updateView();
       
       // rank image
       _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + Math.round((_army.get('rank') + 25) / 25)));
@@ -191,6 +197,13 @@ AWE.UI = (function(module) {
     
     that.locationView = function() {
       return _armyView;
+    }
+    
+    that.setMovingMode = function(moving) {
+      _moveButtonView.setHighlighted(moving);
+      _stanceButtonView.setDisabled(moving);
+      _attackButtonView.setDisabled(moving);
+      that.setNeedsUpdate();
     }
         
     return that;

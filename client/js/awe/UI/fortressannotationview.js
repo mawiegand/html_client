@@ -123,7 +123,7 @@ AWE.UI = (function(module) {
     that.locationView = function() {
       return _fortressView;
     }
-        
+    
     return that;
   };
 
