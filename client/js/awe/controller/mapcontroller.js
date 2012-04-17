@@ -1347,7 +1347,7 @@ AWE.Controller = (function(module) {
       if ((_selectedView && !actionViews.selected)
           || (_selectedView && actionViews.selected
             && actionViews.selected.locationView() !== _selectedView)) {
-        if (_selectedView === actionViews.hovered.locationView()) {
+        if (actionViews.hovered && _selectedView === actionViews.hovered.locationView()) {
           actionViews.selected = actionViews.hovered;
           log('copy select view');
         }
@@ -1363,17 +1363,17 @@ AWE.Controller = (function(module) {
               return function(view) { self.armyMoveButtonClicked(view); }
             })(that);
             
-            armyUpdates[_hoveredView.army().get('id')] = _hoveredView.army();
+            armyUpdates[_selectedView.army().get('id')] = _selectedView.army();
           }
-          else if (_hoveredView.typeName() === 'BaseView') {
+          else if (_selectedView.typeName() === 'BaseView') {
             actionViews.selected = AWE.UI.createBaseAnnotationView();
-            actionViews.selected.initWithControllerAndView(that, _hoveredView);
+            actionViews.selected.initWithControllerAndView(that, _selectedView);
           }
-          else if (_hoveredView.typeName() === 'OutpostView') {
+          else if (_selectedView.typeName() === 'OutpostView') {
             actionViews.selected = AWE.UI.createOutpostAnnotationView();
-            actionViews.selected.initWithControllerAndView(that, _hoveredView);
+            actionViews.selected.initWithControllerAndView(that, _selectedView);
           }
-          _stages[2].addChild(actionViews.hovered.displayObject());
+          _stages[2].addChild(actionViews.selected.displayObject());
           log('create select view');
         }
       }         
