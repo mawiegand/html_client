@@ -117,6 +117,8 @@ AWE.Config = (function(module) {
     "map/region/icon": "images/dot.png",
     
     "map/button1": 'images/green_button.png',
+    "map/button1highlighted": 'images/red_button.png',
+    "map/button1disabled": 'images/green_button_disabled.png',
     "map/button2": 'images/red_button.png',
     "map/button3": 'images/blue_button.png',
     

@@ -14,6 +14,7 @@ AWE.UI = (function(module) {
     my = my || {};
     
     my.container = null;    
+    my.annotationView = null;
 
     that = module.createView(spec, my);
 
@@ -46,6 +47,14 @@ AWE.UI = (function(module) {
     that.displayObject = function() {
       return my.container;
     };
+    
+    that.setAnnotationView = function(annotationView) {
+      my.annotationView = annotationView;
+    }
+    
+    that.annotationView = function() {
+      return my.annotationView;
+    }
     
     that.onClick = function() {
       my.controller.viewClicked(that);

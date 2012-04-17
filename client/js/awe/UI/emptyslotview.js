@@ -10,7 +10,7 @@ AWE.UI = (function(module) {
   module.createEmptySlotView = function(spec, my) {
     
     var slotShapeView = null;
-    
+    var _location = null;
     my = my || {};
     
     my.typeName = "EmptySlotView";
