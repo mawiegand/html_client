@@ -108,6 +108,7 @@ AWE.Config = (function(module) {
     "map/army/target": 'images/army/target.png',
 
     "map/outpost" : "images/settlements/outpost.png",
+    "map/emptyslot" : "images/white_icon.png",
 
     "map/easement": "images/verbot.png",
 
