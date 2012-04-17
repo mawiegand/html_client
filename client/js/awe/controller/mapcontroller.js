@@ -1151,6 +1151,9 @@ AWE.Controller = (function(module) {
               
               if (view) {
                 setBasePosition(view, that.mc2vc(location.position()), frame);
+                if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()] === "empty") {
+                  log (view.displayObject().width, view.displayObject().height);
+                }
                 newLocationViews[location.id()] = view;
               }
             }

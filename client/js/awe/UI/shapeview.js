@@ -45,6 +45,8 @@ AWE.UI = (function(module) {
           _shape.view.onMouseOut(evt);
         }
       };
+      
+
       this.setNeedsDisplay();
     }
             

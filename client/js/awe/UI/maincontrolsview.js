@@ -26,8 +26,8 @@ AWE.UI = (function(module) {
     /** overwritten view methods */
     
     that.initWithController = function(controller, frame) {
+      _container = new Container();
       _super.initWithController(controller, frame);
-      _container = new Container()
           
       // Ressourcen Leiste
       // Flagge

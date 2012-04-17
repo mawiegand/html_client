@@ -34,8 +34,8 @@ AWE.UI = (function(module) {
     
     that.setFrame = function(frame) {
       _super.setFrame(frame);
-      my.container.x = my.frame.origin.x;
-      my.container.y = my.frame.origin.y;
+  /*    my.container.x = my.frame.origin.x;
+      my.container.y = my.frame.origin.y;*/
     }
     
     that.setAlpha = function(alpha) {
