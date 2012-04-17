@@ -13,7 +13,7 @@ AWE.UI = (function(module) {
     
     my.typeName = 'BaseAnnotationView';
     
-    var _outpostView = null;
+    var _baseView = null;
     
     var _container = null;
 
@@ -33,25 +33,24 @@ AWE.UI = (function(module) {
     that.initWithControllerAndView = function(controller, view, frame) {
       _super.initWithController(controller, frame);
       _container = new Container();
-      _outpostView = view;
+      _baseView = view;
       
       _infoText1View = AWE.UI.createLabelView();
-      _infoText1View.initWithControllerAndLabel(controller);
-      _infoText1View.setFrame(AWE.Geometry.createRect(130, 0, 66, 24));      
+      _infoText1View.initWithControllerAndLabel(controller, 'Base', true);
+      _infoText1View.setFrame(AWE.Geometry.createRect(0, 0, 64, 24));      
       _infoText1View.setTextAlign("left");
       _infoText1View.setIconImage("map/display/icon");
-      _infoText1View.setText('Selected');
       _container.addChild(_infoText1View.displayObject());
-
+      
       if (!frame) {
-        my.frame.size.width = 192;
+        my.frame.size.width = 64;
         my.frame.size.height = 128;
       }
     };
     
     that.updateView = function() {
       
-      _infoText1View.setOrigin(AWE.Geometry.createPoint(130, 0));
+      _infoText1View.setOrigin(AWE.Geometry.createPoint(0, 0));
       
       that.setNeedsDisplay();
       that.setNeedsLayout();
