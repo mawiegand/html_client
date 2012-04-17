@@ -650,90 +650,30 @@ AWE.Controller = (function(module) {
     var _selectView = function(view) {      
       _selectedView = view;
       _selectedView.setSelected(true);
-      actionViews.selected = actionViews.hovered;
-      actionViews.selected.setNeedsUpdate();
       _showInspectorWith(_selectedView);
       _actionViewChanged = true;
     };
     
     var _unselectView = function(view) {
-      
-      log('unselect');
-      
-      if (!_selectedView.hovered()) {
-        _stages[2].removeChild(actionViews.selected.displayObject());
-      }
-      else {
-        actionViews.selected.setNeedsUpdate();        
-      }
-
-      delete actionViews.selected;
       _selectedView.setSelected(false);
       _selectedView = null;
-      
       _hideInspector();
-      
       currentAction = null;
-
       _actionViewChanged = true;
     };
 
     /* view highlighting */
 
     var _hoverView = function(view) {
-      
       if (view !== _hoveredView) {
         _hoveredView = view;
         _hoveredView.setHovered(true);
-          
-        if (view !== _selectedView) {
-          
-          var center = view.center();
-          if (view.typeName() === 'FortressView') {
-            actionViews.hovered = AWE.UI.createFortressActionView();
-            actionViews.hovered.initWithControllerAndView(that, view);
-          }
-          else if (view.typeName() === 'ArmyView') {
-            actionViews.hovered = AWE.UI.createArmyAnnotationView();
-            actionViews.hovered.initWithControllerAndView(that, view);
-            actionViews.hovered.onMoveButtonClick = (function(self) {
-              return function(view) { self.armyMoveButtonClicked(view); }
-            })(that);
-            
-            armyUpdates[view.army().get('id')] = view.army();
-          }
-          else if (view.typeName() === 'BaseView') {
-            actionViews.hovered = AWE.UI.createBaseAnnotationView();
-            actionViews.hovered.initWithControllerAndView(that, view);
-          }
-          else if (view.typeName() === 'OutpostView') {
-            actionViews.hovered = AWE.UI.createOutpostAnnotationView();
-            actionViews.hovered.initWithControllerAndView(that, view);
-          }
-
-          actionViews.hovered.setCenter(center.x, center.y);
-          _stages[2].addChild(actionViews.hovered.displayObject());
-          
-        }
-        else {
-          actionViews.hovered = actionViews.selected;
-          actionViews.hovered.setNeedsUpdate();
-        }
-        
         _actionViewChanged = true;
       }
     };
 
     var _unhoverView = function() {
-      
       if (actionViews.hovered) {
-        if (_hoveredView !== _selectedView) {
-          _stages[2].removeChild(actionViews.hovered.displayObject());
-        }
-        else {
-          actionViews.hovered.setNeedsUpdate();
-        }
-        delete actionViews.hovered;
         _hoveredView.setHovered(false);
         _hoveredView = null;
         _actionViewChanged = true;
@@ -1286,7 +1226,7 @@ AWE.Controller = (function(module) {
     var setTargetPosition = function(view, pos) {
       view.setCenter(AWE.Geometry.createPoint(
         pos.x,
-        pos.y - 40
+        pos.y - 48
       ));
     }
     
@@ -1331,7 +1271,51 @@ AWE.Controller = (function(module) {
 
     that.updateActionViews = function() {
       
-      if (actionViews.hovered
+      // delete hovered view if necessary
+      if ((!_hoveredView && actionViews.hovered
+          || _hoveredView && actionViews.hovered && actionViews.hovered.locationView() !== _hoveredView)
+          && actionViews.hovered !== actionViews.selected) {
+        _stages[2].removeChild(actionViews.hovered.displayObject());
+        log('remove hover view');
+      }            
+
+      // create new hovered view if necessary               
+      if ((_hoveredView && !actionViews.hovered)
+          || (_hoveredView && actionViews.hovered
+            && actionViews.hovered.locationView() !== _hoveredView)) {
+        if (actionViews.selected && _hoveredView === actionViews.selected.locationView()) {
+          actionViews.hovered = actionViews.selected;
+          log('copy hovered view');
+        }
+        else {
+          if (_hoveredView.typeName() === 'FortressView') {
+            actionViews.hovered = AWE.UI.createFortressActionView();
+            actionViews.hovered.initWithControllerAndView(that, _hoveredView);
+          }
+          else if (_hoveredView.typeName() === 'ArmyView') {
+            actionViews.hovered = AWE.UI.createArmyAnnotationView();
+            actionViews.hovered.initWithControllerAndView(that, _hoveredView);
+            actionViews.hovered.onMoveButtonClick = (function(self) {
+              return function(view) { self.armyMoveButtonClicked(view); }
+            })(that);
+            
+            armyUpdates[_hoveredView.army().get('id')] = _hoveredView.army();
+          }
+          else if (_hoveredView.typeName() === 'BaseView') {
+            actionViews.hovered = AWE.UI.createBaseAnnotationView();
+            actionViews.hovered.initWithControllerAndView(that, _hoveredView);
+          }
+          else if (_hoveredView.typeName() === 'OutpostView') {
+            actionViews.hovered = AWE.UI.createOutpostAnnotationView();
+            actionViews.hovered.initWithControllerAndView(that, _hoveredView);
+          }
+          _stages[2].addChild(actionViews.hovered.displayObject());
+          log('create hover view');
+        }
+      }         
+               
+      // move hovered view if existing
+      if (_hoveredView
           && (actionViews.hovered.typeName() === 'FortressActionView'
           || actionViews.hovered.typeName() === 'ArmyAnnotationView'
           || actionViews.hovered.typeName() === 'OutpostAnnotationView'
@@ -1341,9 +1325,61 @@ AWE.Controller = (function(module) {
             _hoveredView.center().y
         ));
         actionViews.hovered.setNeedsUpdate();
+        log('move hover view');
       }
+      else {
+        if (actionViews.hovered) {
+          delete actionViews.hovered;        
+          log('delete hover view');
+        }
+      }
+      
+      
+      // delete selected view if necessary
+      if ((!_selectedView && actionViews.selected
+          || _selectedView && actionViews.selected && actionViews.selected.locationView() !== _selectedView)
+          && actionViews.selected !== actionViews.hovered) {
+        _stages[2].removeChild(actionViews.selected.displayObject());
+        log('remove select view');
+      }            
 
-      if (actionViews.selected
+      // create new selected view if necessary               
+      if ((_selectedView && !actionViews.selected)
+          || (_selectedView && actionViews.selected
+            && actionViews.selected.locationView() !== _selectedView)) {
+        if (_selectedView === actionViews.hovered.locationView()) {
+          actionViews.selected = actionViews.hovered;
+          log('copy select view');
+        }
+        else {
+          if (_selectedView.typeName() === 'FortressView') {
+            actionViews.selected = AWE.UI.createFortressActionView();
+            actionViews.selected.initWithControllerAndView(that, _selectedView);
+          }
+          else if (_selectedView.typeName() === 'ArmyView') {
+            actionViews.selected = AWE.UI.createArmyAnnotationView();
+            actionViews.selected.initWithControllerAndView(that, _selectedView);
+            actionViews.selected.onMoveButtonClick = (function(self) {
+              return function(view) { self.armyMoveButtonClicked(view); }
+            })(that);
+            
+            armyUpdates[_hoveredView.army().get('id')] = _hoveredView.army();
+          }
+          else if (_hoveredView.typeName() === 'BaseView') {
+            actionViews.selected = AWE.UI.createBaseAnnotationView();
+            actionViews.selected.initWithControllerAndView(that, _hoveredView);
+          }
+          else if (_hoveredView.typeName() === 'OutpostView') {
+            actionViews.selected = AWE.UI.createOutpostAnnotationView();
+            actionViews.selected.initWithControllerAndView(that, _hoveredView);
+          }
+          _stages[2].addChild(actionViews.hovered.displayObject());
+          log('create select view');
+        }
+      }         
+               
+      // move selected view if existing
+      if (_selectedView
           && (actionViews.selected.typeName() === 'FortressActionView'
           || actionViews.selected.typeName() === 'ArmyAnnotationView'
           || actionViews.selected.typeName() === 'OutpostAnnotationView'
@@ -1353,7 +1389,15 @@ AWE.Controller = (function(module) {
             _selectedView.center().y
         ));
         actionViews.selected.setNeedsUpdate();
+        log('move select view');
       }
+      else {
+        if (actionViews.selected) {
+          delete actionViews.selected;        
+          log('delete select view');
+        }
+      }
+      
 
       var newTargetViews = {};
 

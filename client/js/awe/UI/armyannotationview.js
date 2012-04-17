@@ -188,6 +188,10 @@ AWE.UI = (function(module) {
     that.army = function() {
       return _army;
     };
+    
+    that.locationView = function() {
+      return _armyView;
+    }
         
     return that;
   };

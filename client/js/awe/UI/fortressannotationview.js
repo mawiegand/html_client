@@ -21,6 +21,7 @@ AWE.UI = (function(module) {
     var _node = null;
     
     var _container = null;
+    var _fortressView = null;
 
     // selected
     var _moveButtonView = null;    
@@ -45,6 +46,7 @@ AWE.UI = (function(module) {
       _super.initWithController(controller, frame);
       _container = new Container();
       _node = view.node();
+      _fortressView = view;
       
       _moveButtonView = AWE.UI.createButtonView();
       _moveButtonView.initWithControllerTextAndImage(controller, 'move', AWE.UI.ImageCache.getImage("map/button1"));
@@ -116,6 +118,10 @@ AWE.UI = (function(module) {
       _super.layoutSubviews();
       _infoText1View.layoutIfNeeded();
       _infoText2View.layoutIfNeeded();
+    }
+        
+    that.locationView = function() {
+      return _fortressView;
     }
         
     return that;
