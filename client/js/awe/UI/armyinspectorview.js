@@ -178,7 +178,9 @@ AWE.UI = (function(module) {
       _invButtonView = AWE.UI.createButtonView();
       _invButtonView.initWithControllerTextAndImage(controller, 'Info', AWE.UI.ImageCache.getImage("map/button1"));
       _invButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
-      _invButtonView.onClick = function() { that.onInventoryButtonClick(_army) };
+      _invButtonView.onClick = function() {
+         that.onInventoryButtonClick(_army) 
+      };
       _container.addChild(_invButtonView.displayObject());
 
 

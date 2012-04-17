@@ -140,6 +140,10 @@ AWE.Geometry = (function(module) {
                 
         return module.createRect(min_x, min_y, max_x-min_x, max_y-min_y);
       },
+
+      middle: function() {
+        return module.createPoint(origin.x + size.width/2, origin.y + size.height/2);
+      },
       
       equals: function(other, precision) {
         return this.origin.equals(other.origin, precision) && this.size.equals(other.size, precision);

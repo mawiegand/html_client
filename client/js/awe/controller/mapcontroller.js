@@ -80,21 +80,27 @@ AWE.Controller = (function(module) {
       root.append('<canvas id="map-tile-canvas"></canvas>');
       _canvas[0] = root.find('#map-tile-canvas')[0];
       _stages[0] = new Stage(_canvas[0]);
+      _stages[0].onClick = function() {};   // we generate our own clicks
+
             
       // selectable gaming pieces layer (fortresses, armies, etc.)
       root.append('<canvas id="gaming-pieces-canvas"></canvas>');
       _canvas[1] = root.find('#gaming-pieces-canvas')[0];
       _stages[1] = new Stage(_canvas[1]);
+      _stages[1].onClick = function() {};   // we generate our own clicks
       
       // layer for mouseover and selection objects
       root.append('<canvas id="annotation-canvas"></canvas>');
       _canvas[2] = root.find('#annotation-canvas')[0];
       _stages[2] = new Stage(_canvas[2]);
+      _stages[2].onClick = function() {};   // we generate our own clicks
+
 
       // layer for the object inspector
       root.append('<canvas id="inspector-canvas"></canvas>');
       _canvas[3] = root.find('#inspector-canvas')[0];
       _stages[3] = new Stage(_canvas[3]);
+      _stages[3].onClick = function() {};   // we generate our own clicks
 
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
@@ -276,8 +282,7 @@ AWE.Controller = (function(module) {
         }
       }      
     }());
-    /** TAG Not sure why level is private **/
-    that.level = function() { return level; };
+    that.level = level;
     
     /** calculates the alpha value of location objects as a linear function
      *  between min and max depending on its width
@@ -518,10 +523,33 @@ AWE.Controller = (function(module) {
       }
       
       that.viewClicked(locationView);
+    }    
+    
+    that.handleError = function(errorCode, errorDesc) { 
+      console.log('ERROR ' + errorCode + ': ' + errorDesc);     
+      var dialog = AWE.UI.Ember.Dialog.create({
+        army: army,
+        heading: errorDesc,
+        okPressed: function() {
+          this.destroy();
+        }
+      });      
+      that.applicationController.presentModalDialog(dialog);
     }
     
     var armyTargetClicked = function(army, targetLocation) {
-      log('armyTargetClicked', army, targetLocation, AWE.Map.locationTypes[targetLocation.typeId()]);
+      log('armyTargetClicked', army, targetLocation, AWE.Map.locationTypes[targetLocation.id()]);
+      var moveAction = AWE.Action.Military.createMoveArmyAction(army, targetLocation.id());
+      moveAction.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
+          AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+            that.setModelChanged();
+          });
+        }
+        else {
+          that.handleError(status, "The server did not accept the comannd.");
+        }
+      });
     }
 
     // ///////////////////////////////////////////////////////////////////////

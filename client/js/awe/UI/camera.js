@@ -52,13 +52,6 @@ AWE.UI = (function(module) {
 			_phase /= panTime;
 			_phase = that.speedFunction(Math.min(_phase, 1.0));
 		};
-		that.inverse = function() {
-			return module.createCameraPan(
-				_targetViewport,
-				_startViewport,
-				_panTime
-				);
-		};
 
 	    return that;
 	};
@@ -67,10 +60,12 @@ AWE.UI = (function(module) {
 		var that = {};
 
 		//state
-		var _lastUpdate = undefined;
 		var _lastClick = undefined;
 		var _activePan = undefined;
+
 		var _isUndoingPan = false;
+		var _lastScale = undefined;
+		var _cacheLastViewport = false;
 		var _lastPanEndViewport = undefined;
 		var _lastNodes = [];
 		var _isMoving = false;
@@ -81,30 +76,10 @@ AWE.UI = (function(module) {
 		var _borderFactor = AWE.Config.MAP_DBLCLK_CAMERA_BORDER_FACTOR;
 		var _crossClickSize = AWE.Config.MAP_DBLCLK_CAMERA_CROSS_CLICK_SIZE;
 		
-
 		var _rootController = spec.rootController;
 
 		that.isMoving = function() {
 			return _isMoving;
-		};
-
-		that.maxTimeForDoubleClick = function(value) {
-			if (value !== undefined) { 
-				_maxTimeForDoubleClick = value; 
-			}
-			return _maxTimeForDoubleClick;
-		};
-		that.panTime = function(value) {
-			if (value !== undefined) {
-				_panTime = value;
-			}
-			return _panTime;
-		};
-		that.borderFactor = function(value) {
-			if (value !== undefined) {
-				_borderFactor = value;
-			} 
-			return _borderFactor;
 		};
 
 		var _nodesEqual = function(a,b) {
@@ -124,10 +99,35 @@ AWE.UI = (function(module) {
 			return true;
 		};
 
+		var _scaleToScreen = function(frame) {
+			var win = _rootController.windowSize();
+			//expand the target viewport so that the w/h is conserved
+			if (win.width/win.height > frame.size.width/frame.size.height) {
+				//modify width
+				var width = (win.width/win.height) * frame.size.height;
+				return AWE.Geometry.createRect(
+					frame.origin.x - (width-frame.size.width)/2.0,
+					frame.origin.y,
+					width,
+					frame.size.height
+				);
+			} else {
+				//modify height
+				var height = (win.height/win.width) * frame.size.width;
+				return AWE.Geometry.createRect(
+					frame.origin.x,
+					frame.origin.y - (height-frame.size.height)/2.0,
+					frame.size.width,
+					height
+				);
+			}
+		};
+
 		that.onMouseUp = function(event) {
 			var now = (new Date()).getTime();
 			if (_lastClick !== undefined &&
-				now - _lastClick <= _maxTimeForDoubleClick
+				now - _lastClick <= _maxTimeForDoubleClick &&
+				!that.isMoving()
 			) {
 				//generate model point
 				var p = _rootController.vc2mc(AWE.Geometry.createPoint(event.pageX, event.pageY));
@@ -135,9 +135,9 @@ AWE.UI = (function(module) {
 				var node = AWE.Map.getNodeThatContainsPoint(
 					AWE.Map.Manager.rootNode(),
 					p,
-					_rootController.level()()
+					_rootController.level()
 				);
-				var nodeFrame = node.frame().copy();
+
 				//if there is no node there just return
 				if (node == null) return;
 
@@ -151,99 +151,75 @@ AWE.UI = (function(module) {
 							_crossClickSize
 						)
 					),
-					_rootController.level()(), 
+					_rootController.level(), 
 					false, //only completly inside
 					true //force recalc
 				);
 
 				//detected a click on a cross section
-				if (nodes.length >= 3) {
-					var f0 = nodes[0].frame();
-					var origin = f0.origin.copy();
-					for (var i = 1; i < nodes.length; i++) {
-						var f = nodes[i].frame();
-						if (f.origin.x < origin.x) {
-							origin.x = f.origin.x;
-						}
-						if (f.origin.y < origin.y) {
-							origin.y = f.origin.y;
-						}
-					}
-					var max = AWE.Geometry.createPoint(
-						f0.origin.x + f0.size.width,
-						f0.origin.y + f0.size.height
-					);
-					for (var i = 1; i < nodes.length; i++) {
-						var f = nodes[i].frame();
-						if (f.origin.x + f.size.width > max.x) {
-							max.x = f.origin.x + f.size.width;
-						}
-						if (f.origin.y + f.size.height > max.y) {
-							max.y = f.origin.y + f.size.height;
-						}
-					}
-					nodeFrame = AWE.Geometry.createRect(
-						origin.x,
-						origin.y,
-						max.x - origin.x,
-						max.y - origin.y
-					);
-				} else {
+				if (nodes.length < 3) {
 					nodes = [node];
 				}
 
-				//
-				/*var s = "[";
-				for (var i = 0; i < nodes.length; i++) {
-					s += nodes[i].id()+", ";
+				//get the frame
+				var nodeFrame = that.getResultingFrame(nodes,true);
+
+				if (nodeFrame === null || nodeFrame === undefined) {
+					return;
 				}
-				s += "]";
-				console.log(s);
 
-				var s = "[";
-				for (var i = 0; i < _lastNodes.length; i++) {
-					s += _lastNodes[i].id()+", ";
+				if (_lastPanEndViewport !== undefined) {
+					console.log("root="+_rootController.viewport());
+					console.log("_lastPanEndViewport="+_lastPanEndViewport);
+					console.log(_lastPanEndViewport !== undefined);
+					console.log(_lastPanEndViewport.equals(_rootController.viewport()));
+					console.log(_lastScale !== undefined);
+					console.log(_lastScale);
 				}
-				s += "]";
-				console.log(s);*/
 
-				//zoom back out if the double click results in the same viewport
-				if (_lastPanEndViewport !== undefined && 
-					_lastPanEndViewport.equals(_rootController.viewport()) &&
-					_activePan !== undefined &&
-					!_isUndoingPan &&
-					_nodesEqual(_lastNodes,nodes)) {
-
-					_isUndoingPan = true;
+				if (_lastPanEndViewport !== undefined &&
+					_lastPanEndViewport.equals(_rootController.viewport()) && 
+					_nodesEqual(_lastNodes, nodes) &&
+					//_scaleToScreen(nodeFrame).equals(_rootController.viewport()) &&
+					_lastScale !== undefined ) {
+					console.log("undo pan");
+					//calculate current center
+					var curr = _rootController.viewport();
+					var center = AWE.Geometry.createPoint(
+						curr.origin.x + curr.size.width/2,
+						curr.origin.y + curr.size.height/2
+					);
+					//create new frame according to center and old scale
 					_activePan = module.createCameraPan(
-						_rootController.viewport(),
-						_activePan.startViewport(),
+						_rootController.viewport(), 
+						AWE.Geometry.createRect(
+							center.x - _lastScale.width/2,
+							center.y - _lastScale.height/2,
+							_lastScale.width,
+							_lastScale.height
+						), 
 						_panTime
 					);
 					_isMoving = true;
 				} else {
-					//zoom in
-					//create a rectangle
-					var target = nodeFrame;
-					var widthOffset = target.size.width*_borderFactor;
-					var heightOffset = target.size.height*_borderFactor;
-					target = AWE.Geometry.createRect(
-						target.origin.x - widthOffset/2.0,
-						target.origin.y - heightOffset/2.0,
-						target.size.width + widthOffset,
-						target.size.height + heightOffset
-					);
-
-					//create a pan
+					if (_lastScale === undefined ||
+						//_lastScale.area() > nodeFrame.area() 
+						_rootController.viewport().size.area() > _scaleToScreen(nodeFrame).size.area()
+					) {
+						console.log("_lastScale set");
+						_lastScale = _rootController.viewport().size.copy();	
+					}
+					console.log("normal pan");
 					_activePan = module.createCameraPan(
-						_rootController.viewport(),
-						target,
+						_rootController.viewport(), 
+						nodeFrame, 
 						_panTime
 					);
-					_isUndoingPan = false;
 					_isMoving = true;
 					_lastNodes = nodes;
+					_cacheLastViewport = true;
 				}
+
 
 			}
 			_lastClick = now;
@@ -252,48 +228,133 @@ AWE.UI = (function(module) {
 		that.update = function() {
 			if (_activePan !== undefined && _isMoving) {
 				_activePan.update();
-				var v = _activePan.getCurrentViewport();
-				var win = _rootController.windowSize();
-				var target = undefined;
-				//expand the target viewport so that the w/h is conserved
-				if (win.width/win.height > v.size.width/v.size.height) {
-					//modify width
-					var width = (win.width/win.height) * v.size.height;
-					target = AWE.Geometry.createRect(
-						v.origin.x - (width-v.size.width)/2.0,
-						v.origin.y,
-						width,
-						v.size.height
-					);
-				} else {
-					//modify height
-					var height = (win.height/win.width) * v.size.width;
-					target = AWE.Geometry.createRect(
-						v.origin.x,
-						v.origin.y - (height-v.size.height)/2.0,
-						v.size.width,
-						height
-					);
-				}
 
-				_rootController.setViewport(target);
+				_rootController.setViewport(_scaleToScreen(_activePan.getCurrentViewport()));
 				_isMoving = !_activePan.done();
-				if (!_isMoving) {
+				if (!_isMoving && _cacheLastViewport) {
 					_lastPanEndViewport = _rootController.viewport().copy();
+					_cacheLastViewport = false;
 				}
 			} else {
 				_isMoving = false;
 			}
-			//update the time
-			_lastUpdate = new Date();
+		};
+		/**
+		  * Moves the camera to the given value.
+		  * @param value the value can be a array of nodes, a node and a frame.
+		  * @param animated default:true. if false 
+		  * @param addBorder default:true. if true there will be 
+		 **/
+		that.moveTo = function(value, addBorder, animated) {
+			//default is animated
+			if (animated === undefined) {
+				animated = true;
+			}
+
+			if (that.isMoving()) {
+				console.warn("The camera was moving and got a request for another move command");
+			}
+
+			var frame = that.getResultingFrame(value, addBorder);
+
+			_activePan = module.createCameraPan(
+				_rootController.viewport(), 
+				targetViewport, 
+				_panTime
+			);
+			if (!animated) {
+				_activePan.speedFunction = function (time) { return 1.0; };
+			}
 		};
 
-		that.panTo = function(node) {
-			module.createCameraPan();
+		/**
+		  * Returns the resulting frame for a node, an array of nodes or a frame.
+		  * @param value node, array of node or frame
+		  * @param addBorder default:true. if true a border will be added according to the borderFactor.
+		  * @return the resulting target frame
+		 **/
+		that.getResultingFrame = function(value, addBorder) {
+			var target;
+			//array of nodes
+			if ($.isArray(value) && value.length > 0) {
+				var f0 = value[0].frame();
+				var origin = f0.origin.copy();
+				for (var i = 1; i < value.length; i++) {
+					var f = value[i].frame();
+					if (f.origin.x < origin.x) {
+						origin.x = f.origin.x;
+					}
+					if (f.origin.y < origin.y) {
+						origin.y = f.origin.y;
+					}
+				}
+				var max = AWE.Geometry.createPoint(
+					f0.origin.x + f0.size.width,
+					f0.origin.y + f0.size.height
+				);
+				for (var i = 1; i < value.length; i++) {
+					var f = value[i].frame();
+					if (f.origin.x + f.size.width > max.x) {
+						max.x = f.origin.x + f.size.width;
+					}
+					if (f.origin.y + f.size.height > max.y) {
+						max.y = f.origin.y + f.size.height;
+					}
+				}
+				target = AWE.Geometry.createRect(
+					origin.x,
+					origin.y,
+					max.x - origin.x,
+					max.y - origin.y
+				);
+			//single node
+			} else if ($.isFunction(value.frame)) {
+				target = value.frame().copy();
+			//frame
+			} else if (value.origin !== undefined &&
+				value.size !== undefined) {
+				target = value.copy();
+			} else {
+				return null;
+			}
+			//add border
+			if (addBorder === undefined || addBorder === true) {
+				var widthOffset = (!addBorder)?0:target.size.width*_borderFactor;
+				var heightOffset = (!addBorder)?0:target.size.height*_borderFactor;
+				return AWE.Geometry.createRect(
+					target.origin.x - widthOffset/2.0,
+					target.origin.y - heightOffset/2.0,
+					target.size.width + widthOffset,
+					target.size.height + heightOffset
+				);
+			}
+			return target;
+		}
+
+		//getter/setter for settings
+		that.maxTimeForDoubleClick = function(value) {
+			if (value !== undefined) { 
+				_maxTimeForDoubleClick = value; 
+			}
+			return _maxTimeForDoubleClick;
 		};
-
-		that.undoLastPan = function() {
-
+		that.panTime = function(value) {
+			if (value !== undefined) {
+				_panTime = value;
+			}
+			return _panTime;
+		};
+		that.borderFactor = function(value) {
+			if (value !== undefined) {
+				_borderFactor = value;
+			} 
+			return _borderFactor;
+		};
+		that.crossClickSize = function(value) {
+			if (value !== undefined) {
+				_crossClickSize = value;
+			}
+			return _crossClickSize;
 		};
 
 		return that;

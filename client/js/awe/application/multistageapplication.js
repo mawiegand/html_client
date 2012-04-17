@@ -93,7 +93,7 @@ AWE.Application = (function(module) {
   
       readyToRun: function() { this.readyForRunloop = true; },
   
-      generateClickIfNeeded: function(evt) {
+      generateClickIfNeeded: function(evt) { console.log('entered click handler');
         var presentScreenController = this.get('presentScreenController');
 
         if (presentScreenController && presentScreenController.isScrolling()) {
@@ -120,6 +120,7 @@ AWE.Application = (function(module) {
 
         if (target) {
           if (target && target.view && target.view.onClick) {
+            log('click on target', target.view, target.view.typeName())
             target.view.onClick(evt); // TODO: I think this is wrong; we somehow need to get the relative coordinates in.
           }
           else if (target && target.onClick) {
@@ -128,7 +129,7 @@ AWE.Application = (function(module) {
         }
         else if (this.get('presentScreenController').onClick) {    // no view hit, let the event bubble to controller (TODO: make this a pattern through views and controllers, aka repsonder-chain)
           this.get('presentScreenController').onClick(evt);
-        }      
+        }     
       },
   
       /** passes a click in the browser window either to the view that was hit
@@ -152,6 +153,10 @@ AWE.Application = (function(module) {
        * generate a MouseOut event when the mouse pointer enters a view on another,
        * overlapping stage. */
   	  testMouseOver: function() {
+	    
+        if (this.get('isModal')) {
+          return ;
+        }
 	    
   	    if (nextMouseOverTest > new Date().getTime()) {
   	      return ;
