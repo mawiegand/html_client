@@ -37,7 +37,7 @@ AWE.GS = (function(module) {
     lastFullUpdateAt: new Date(1970),      ///< time of last full update received by the client
     
     /** a more convenient way to get the id. */
-    getId: function() { return this.get('id'); },
+    getId: function() { return this.get('id'); },
     
     setPropertiesWithHash: function(hash) {
       for (var key in hash) {
@@ -169,7 +169,7 @@ AWE.GS = (function(module) {
           options.headers = { 'If-Modified-Since': modifiedSince.toUTCString() };
         }
         var jqXHR = $.ajax(options)
-        .error(function(jqHXR, textStatus) {          // On failure: 
+        .error(function(jqHXR, textStatus) {          // On failure: 
           my.unregisterRequest(queue, id, updateType);//   unregister request 
           callback(null, jqXHR.status, jqXHR);
           console.log ('ERROR FETCHING ENTITIES FROM URL ' + url + ': ' + textStatus); 
@@ -219,7 +219,7 @@ AWE.GS = (function(module) {
         lastUpdateAt = entity.lastUpdateAt(updateType);
       }
       return my.fetchEntitiesFromURL(url, my.runningUpdatesPerId, id, updateType, lastUpdateAt, function(entity, statusCode, xhr, serverTime) {
-        if (statusCode === 304) { // not modified
+        if (statusCode === 304) { // not modified
           entity = my.entities[id];
           if (entity) {
             entity.setNotModifiedAfter(updateType, serverTime);

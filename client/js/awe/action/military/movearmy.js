@@ -32,7 +32,7 @@ AWE.Action.Military = (function(module) {
       return 'action_military_move_army_action[army_id]='+my.army.get('id')+'&action_military_move_army_action[target_location_id]=' + my.target_location_id; 
     }
     
-    that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'/military/move_army_actions'; }
+    that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'/military/move_army_actions'; }
   
     that.getHTTPMethod = function() { return 'POST'; }
     

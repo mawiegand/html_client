@@ -117,7 +117,7 @@ AWE.Geometry = (function(module) {
             this.origin.x + this.size.width >= geom.x &&
             this.origin.y + this.size.height >= geom.y;
         }
-        else { // unkown
+        else { // unkown
           return false;
         }
       },

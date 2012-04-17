@@ -106,14 +106,14 @@ AWE.UI = (function(module) {
     
     /** returns the present width of the view. Please note, the view may draw
      * outside its frame. */
-    that.width = function() { return my.frame.size.width; }
+    that.width = function() { return my.frame.size.width; }
     
     /** returns the present height of the view. Plese note, the view may draw
      * outside its frame. */
-    that.height = function() { return my.frame.size.height; }
+    that.height = function() { return my.frame.size.height; }
     
     that.autoscales = function() { return _autoscales; }
-    that.setAutoscales = function(flag) { _autoscales = flag; }
+    that.setAutoscales = function(flag) { _autoscales = flag; }
     
   
     that.displayObject = function() { return null; }
@@ -123,7 +123,7 @@ AWE.UI = (function(module) {
      * runloop. */
     that.setNeedsLayout = function() { _needsLayout = true; }    
     /** true, in case the view needs to re-layout itself and possible subviews. */
-    that.needsLayout = function() { return _needsLayout; }
+    that.needsLayout = function() { return _needsLayout; }
     /** sets that the view needs to update itself (and possible subviews) due to
      * a change in the associated model. The udpate is then triggered by the 
      * view controller during the next cycle of the runloop. */
@@ -138,7 +138,7 @@ AWE.UI = (function(module) {
     /** true, in case the view needs to be displayed because it has changed.
      * Is read-out by view controller and used to trigger a canvas-repaint 
      * when needed. */
-    that.needsDisplay = function() { return _needsDisplay; } // TOOD: someone needs to set needsDisplay back to false after painting!
+    that.needsDisplay = function() { return _needsDisplay; } // TOOD: someone needs to set needsDisplay back to false after painting!
     
     /** informs the view that it has been redrawn. Must be called by a view
      * controller after updating the stage this view is attached to. */

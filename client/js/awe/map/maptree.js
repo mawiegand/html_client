@@ -21,14 +21,14 @@ AWE.Map = (function(module) {
       var _id = spec.id || 0;
       var _path = spec.path || '';
       
-      var _updated_at = spec.updated_at || null;
+      var _updated_at = spec.updated_at || null;
       var _created_at = spec.created_at || null;
       
       var _leaf = true;
       if (spec.leaf === false) {
         _leaf = false;
       }
-      var _level = spec.level || 0;
+      var _level = spec.level || 0;
       var _parent = null;
       
       var _children = null;
@@ -65,8 +65,8 @@ AWE.Map = (function(module) {
         return _id;
       }
       
-      that.updatedAt = function() { return _updated_at; }
-      that.createdAt = function() { return _created_at; }
+      that.updatedAt = function() { return _updated_at; }
+      that.createdAt = function() { return _created_at; }
       
       that.origin = function() {
         return _frame.origin;
@@ -514,7 +514,7 @@ AWE.Map = (function(module) {
   
   return module;
     
-}(AWE.Map || {}));
+}(AWE.Map || {}));
 
 
 

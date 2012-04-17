@@ -48,7 +48,7 @@ AWE.GS = (function(module) {
 
     my = my || {};
       
-    my.createEntity = function() { return module.Alliance.create(); }
+    my.createEntity = function() { return module.Alliance.create(); }
 
   
     // public attributes and methods ///////////////////////////////////////

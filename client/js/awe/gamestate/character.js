@@ -68,7 +68,7 @@ AWE.GS = (function(module) {
   
     my.runningUpdatesPerAllicance = {};///< hash that contains all running requests for alliances, using the alliance.id as key.
     
-    my.createEntity = function(spec) { return module.Character.create(spec); }
+    my.createEntity = function(spec) { return module.Character.create(spec); }
 
   
     // public attributes and methods ///////////////////////////////////////
@@ -78,7 +78,7 @@ AWE.GS = (function(module) {
     that.currentCharacter = null;
   
     that.getCharacter = function(id) { return that.getEntity(id); };
-    that.getCurrentCharacter = function() { return this.currentCharacter; };
+    that.getCurrentCharacter = function() { return this.currentCharacter; };
     that.getMembersOfAlliance = function(id) { 
       return AWE.GS.CharacterAccess.getAllForAlliance_id(id)
     };
@@ -128,7 +128,7 @@ AWE.GS = (function(module) {
       if (this.currentCharacter != null) {
         this.updateCharacter(this.currentCharacter.get('id'), updateType, callback);
       }
-      else { // no current character, need to fetch self
+      else { // no current character, need to fetch self
         var self = this;
         var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/self';
         return my.fetchEntitiesFromURL(

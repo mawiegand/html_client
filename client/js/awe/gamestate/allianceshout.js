@@ -49,7 +49,7 @@ AWE.GS = (function(module) {
   
     my.runningUpdatesPerAllicance = {};///< hash that contains all running requests for alliances, using the alliance.id as key.
     
-    my.createEntity = function(spec) { return module.AllianceShout.create(spec); }
+    my.createEntity = function(spec) { return module.AllianceShout.create(spec); }
 
   
     // public attributes and methods ///////////////////////////////////////

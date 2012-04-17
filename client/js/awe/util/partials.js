@@ -16,13 +16,13 @@ AWE.Partials = (function(module) {
     var isUpdating = false;
     
     if (!obj.isUpdating) {
-      obj.isUpdating = function() { return isUpdating; }
+      obj.isUpdating = function() { return isUpdating; }
     }
     if (!obj.startUpdate) {
-      obj.startUpdate = function() { isUpdating = true; }
+      obj.startUpdate = function() { isUpdating = true; }
     }
     if (!obj.endUpdate) {
-      obj.endUpdate = function() { isUpdating = false; }
+      obj.endUpdate = function() { isUpdating = false; }
     }
   };
   
@@ -147,7 +147,7 @@ AWE.Partials = (function(module) {
       }
     }    
 
-    if (!hook.accessHashes || !hook.accessHashes[attribute]) {//   create hash, if not already there
+    if (!hook.accessHashes || !hook.accessHashes[attribute]) {//   create hash, if not already there
       createAccessHashForAttribute(); 
     }
     

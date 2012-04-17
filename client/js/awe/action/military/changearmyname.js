@@ -28,7 +28,7 @@ AWE.Action.Military = (function(module) {
       return 'military_army[name]=' + newName; 
     }
     
-    that.getURL = function() { return AWE.Config.MILITARY_SERVER_BASE+'/armies/'+army.get('id'); }
+    that.getURL = function() { return AWE.Config.MILITARY_SERVER_BASE+'/armies/'+army.get('id'); }
   
     that.getHTTPMethod = function() { return 'PUT'; }
     

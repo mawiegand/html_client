@@ -21,7 +21,7 @@ AWE.Map = (function(module) {
     
     var _id = spec.id || 0;
       
-    var _updated_at = spec.updated_at || null;
+    var _updated_at = spec.updated_at || null;
     var _created_at = spec.created_at || null;
     
     var _regionId = spec.region_id || 0;
@@ -29,7 +29,7 @@ AWE.Map = (function(module) {
     var _typeId = spec.type_id || 0;
     var _name = spec.name || 'Lagerplatz';
     var _ownerId = spec.owner_id || 0;
-    var _ownerName = spec.owner_name || null;
+    var _ownerName = spec.owner_name || null;
     var _allianceId = spec.alliance_id || 0;
     var _allianceTag = spec.alliance_tag;
     
@@ -54,10 +54,10 @@ AWE.Map = (function(module) {
     that.name = function() { return _name; }
     
     /** returns the region the location is associated with. */
-    that.region = function() { return _region; }
+    that.region = function() { return _region; }
     
     /** returns the node the location is associated with over the region. */
-    that.node = function() { return _region.node(); }
+    that.node = function() { return _region.node(); }
     
     /** returns the slot of the location. Each regions has 9 or more slots. Slot 0 is
      * reserved for the fortress in the center of each region. */
@@ -70,23 +70,23 @@ AWE.Map = (function(module) {
     that.typeId = function() { return _typeId; }
 
     /** returns the name of the character owning the region (fortress). */
-    that.ownerName = function() { return _ownerName; }
+    that.ownerName = function() { return _ownerName; }
     
     /** returns the id of the character owning the region (fortress). 0 for
      * neutral fortress (not owned by any character, NPC-owned). */
-    that.ownerId = function() { return _ownerId; }
+    that.ownerId = function() { return _ownerId; }
 
     /** returns the tag of the alliance owning the region (owner of fortress). */
-    that.allianceTag = function() { return _allianceTag; }
+    that.allianceTag = function() { return _allianceTag; }
     
     /** returns the id of the alliance owning the region (owner of fortress). 0 for 
      * no alliance. */
-    that.allianceId = function() { return _allianceId; }
+    that.allianceId = function() { return _allianceId; }
 
     /** returns the level of the settlement / fortress / outpost (0 to 10). */
     that.level = function() { return _level; }
         
-    that.getArmies = function() { 
+    that.getArmies = function() { 
       return AWE.GS.ArmyAccess.getAllForLocation_id(_id);
     };
     
@@ -117,11 +117,11 @@ AWE.Map = (function(module) {
       _created_at = location.createdAt();
       
       _name = location.name() || _name;
-      _slot = location.slot() || 0;
+      _slot = location.slot() || 0;
       _ownerId = location.ownerId() || 0;
-      _ownerName = location.ownerName() || null;
+      _ownerName = location.ownerName() || null;
       _allianceId = location.allianceId() || 0;
-      _allianceTag = location.allianceTag() || null;
+      _allianceTag = location.allianceTag() || null;
       _typeId = location.typeId() || 0;
       _level = location.level() || 0; 
       
@@ -235,7 +235,7 @@ AWE.Map = (function(module) {
   
   return module;
     
-}(AWE.Map || {}));
+}(AWE.Map || {}));
 
 
 

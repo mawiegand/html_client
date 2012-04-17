@@ -22,8 +22,8 @@ AWE.Controller = (function(module) {
     var _super = {};             ///< store locally overwritten methods of super object
     _super.init = that.init; 
     _super.runloop = that.runloop;
-    _super.append = function(f) { return function() { f.apply(that); }; }(that.append);
-    _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
+    _super.append = function(f) { return function() { f.apply(that); }; }(that.append);
+    _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
     
     var _loopCounter = 0;        ///< counts every cycle through the loop
     var _frameCounter = 0;       ///< counts every rendered frame
@@ -178,7 +178,7 @@ AWE.Controller = (function(module) {
         
         var stageNeedsUpdate = false;     // replace true with false as soon as stage 1 and 2 are implemented correctly.
                         
-        if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || !HUDViews.mainControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
+        if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || !HUDViews.mainControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
           stageNeedsUpdate = that.updateHUD() || stageNeedsUpdate; 
         }
         // update hierarchies and check which stages need to be redrawn
@@ -193,7 +193,7 @@ AWE.Controller = (function(module) {
     /** sets the canvas' width and height, sets-up the internal coordinate
      * systems */
     that.setWindowSize = function(size) {
-      if (! _windowSize || _windowSize.width != size.width || _windowSize.height != size.height) {
+      if (! _windowSize || _windowSize.width != size.width || _windowSize.height != size.height) {
         _windowSize = size;
         that.setNeedsLayout(); 
       }
