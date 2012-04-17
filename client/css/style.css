@@ -416,6 +416,14 @@ html, body {
   background-color: #FCC;  
 }
 
+.info-dialog { 
+  position: absolute; 
+  margin-left: -200px;
+  margin-top: -100px;
+  width: 400px; height: 200px;
+  background-color: #FFF;  
+}
+
 #text-input-dialog h1 {
   font-size: 24px;
 }

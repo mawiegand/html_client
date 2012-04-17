@@ -531,12 +531,9 @@ AWE.Controller = (function(module) {
     
     that.handleError = function(errorCode, errorDesc) { 
       console.log('ERROR ' + errorCode + ': ' + errorDesc);     
-      var dialog = AWE.UI.Ember.Dialog.create({
-        army: army,
-        heading: errorDesc,
-        okPressed: function() {
-          this.destroy();
-        }
+      var dialog = AWE.UI.Ember.InfoDialog.create({
+        heading: 'Failure',
+        message: errorDesc,
       });      
       that.applicationController.presentModalDialog(dialog);
     }
@@ -850,18 +847,14 @@ AWE.Controller = (function(module) {
             
             
             AWE.Ext.applyFunctionToElements(armiesInRegion, function(army) {
-              if (!isUpdateRunning('armies')) {
-                if (army.get('mode') === 1) {
-                 log(army.get('target_reached_at'), army);
-                if (army.get('target_reached_at') && Date.parseISODate(army.get('target_reached_at')).getTime() + 2000 < new Date().getTime()) { // wait two seconds before posting update request
+              if (!isUpdateRunning('movingArmy')) {
+                if (army.get('mode') === 1 && army.get('target_reached_at') && Date.parseISODate(army.get('target_reached_at')).getTime() + 2000 < new Date().getTime()) { // wait two seconds before posting update request
                   console.log('start update of moving army');
-                  startUpdate('armies');
+                  startUpdate('movingArmy');
                   AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-                    stopUpdate('armies');
-                    console.log('updated army');
+                    stopUpdate('movingArmy');
                     that.setModelChanged();
                   });
-                }
                 }
               }
             }); 

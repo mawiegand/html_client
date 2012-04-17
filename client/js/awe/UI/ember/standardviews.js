@@ -32,6 +32,16 @@ AWE.UI.Ember = (function(module) {
     cancelPressed: function() { alert ('Action not connected: okPressed.'); },
   });
   
+  
+  module.InfoDialog = module.Dialog.extend({
+    templateName: 'info-dialog',
+    heading: 'Info',
+    message: '',
+    okPressed: function() { this.destroy(); },
+    cancelPressed: null,
+  });
+  
+  
     
   module.ShoutBox = Ember.View.extend({
     templateName: 'shout-box',
