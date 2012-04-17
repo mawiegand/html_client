@@ -1271,6 +1271,33 @@ AWE.Controller = (function(module) {
 
     that.updateActionViews = function() {
       
+      // helper method for creating the appropriate annotation view
+      var createAnnotationView = function(baseView) {
+        if (baseView.typeName() === 'FortressView') {
+          annotationView = AWE.UI.createFortressActionView();
+          annotationView.initWithControllerAndView(that, baseView);
+        }
+        else if (baseView.typeName() === 'ArmyView') {
+          annotationView = AWE.UI.createArmyAnnotationView();
+          annotationView.initWithControllerAndView(that, baseView);
+          annotationView.onMoveButtonClick = (function(self) {
+            return function(view) { self.armyMoveButtonClicked(view); }
+          })(that);
+          
+          armyUpdates[baseView.army().get('id')] = baseView.army();
+        }
+        else if (baseView.typeName() === 'BaseView') {
+          annotationView = AWE.UI.createBaseAnnotationView();
+          annotationView.initWithControllerAndView(that, baseView);
+        }
+        else if (baseView.typeName() === 'OutpostView') {
+          annotationView = AWE.UI.createOutpostAnnotationView();
+          annotationView.initWithControllerAndView(that, baseView);
+        }
+        
+        return annotationView;
+      }
+      
       // delete hovered view if necessary
       if ((!_hoveredView && actionViews.hovered
           || _hoveredView && actionViews.hovered && actionViews.hovered.locationView() !== _hoveredView)
@@ -1288,27 +1315,7 @@ AWE.Controller = (function(module) {
           log('copy hovered view');
         }
         else {
-          if (_hoveredView.typeName() === 'FortressView') {
-            actionViews.hovered = AWE.UI.createFortressActionView();
-            actionViews.hovered.initWithControllerAndView(that, _hoveredView);
-          }
-          else if (_hoveredView.typeName() === 'ArmyView') {
-            actionViews.hovered = AWE.UI.createArmyAnnotationView();
-            actionViews.hovered.initWithControllerAndView(that, _hoveredView);
-            actionViews.hovered.onMoveButtonClick = (function(self) {
-              return function(view) { self.armyMoveButtonClicked(view); }
-            })(that);
-            
-            armyUpdates[_hoveredView.army().get('id')] = _hoveredView.army();
-          }
-          else if (_hoveredView.typeName() === 'BaseView') {
-            actionViews.hovered = AWE.UI.createBaseAnnotationView();
-            actionViews.hovered.initWithControllerAndView(that, _hoveredView);
-          }
-          else if (_hoveredView.typeName() === 'OutpostView') {
-            actionViews.hovered = AWE.UI.createOutpostAnnotationView();
-            actionViews.hovered.initWithControllerAndView(that, _hoveredView);
-          }
+          actionViews.hovered = createAnnotationView(_hoveredView);
           _stages[2].addChild(actionViews.hovered.displayObject());
           log('create hover view');
         }
@@ -1352,27 +1359,7 @@ AWE.Controller = (function(module) {
           log('copy select view');
         }
         else {
-          if (_selectedView.typeName() === 'FortressView') {
-            actionViews.selected = AWE.UI.createFortressActionView();
-            actionViews.selected.initWithControllerAndView(that, _selectedView);
-          }
-          else if (_selectedView.typeName() === 'ArmyView') {
-            actionViews.selected = AWE.UI.createArmyAnnotationView();
-            actionViews.selected.initWithControllerAndView(that, _selectedView);
-            actionViews.selected.onMoveButtonClick = (function(self) {
-              return function(view) { self.armyMoveButtonClicked(view); }
-            })(that);
-            
-            armyUpdates[_selectedView.army().get('id')] = _selectedView.army();
-          }
-          else if (_selectedView.typeName() === 'BaseView') {
-            actionViews.selected = AWE.UI.createBaseAnnotationView();
-            actionViews.selected.initWithControllerAndView(that, _selectedView);
-          }
-          else if (_selectedView.typeName() === 'OutpostView') {
-            actionViews.selected = AWE.UI.createOutpostAnnotationView();
-            actionViews.selected.initWithControllerAndView(that, _selectedView);
-          }
+          actionViews.selected = createAnnotationView(_selectedView);
           _stages[2].addChild(actionViews.selected.displayObject());
           log('create select view');
         }
