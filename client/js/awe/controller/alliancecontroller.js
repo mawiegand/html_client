@@ -20,8 +20,8 @@ AWE.Controller = (function(module) {
     var _super = {};             ///< store locally overwritten methods of super object
     _super.init = that.init; 
     _super.runloop = that.runloop;
-    _super.append = function(f) { return function() { f.apply(that); }; }(that.append);
-    _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
+    _super.append = function(f) { return function() { f.apply(that); }; }(that.append);
+    _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
     
     
     

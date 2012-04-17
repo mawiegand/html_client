@@ -28,7 +28,7 @@ AWE.Action.Fundamental = (function(module) {
       return 'fundamental_alliance_shout[message]=' + message; 
     }
     
-    that.getURL = function() { return AWE.Config.FUNDAMENTAL_SERVER_BASE+'/alliance_shouts/'; }
+    that.getURL = function() { return AWE.Config.FUNDAMENTAL_SERVER_BASE+'/alliance_shouts/'; }
   
     that.getHTTPMethod = function() { return 'POST'; }
     

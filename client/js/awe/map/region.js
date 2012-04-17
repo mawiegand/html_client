@@ -20,16 +20,16 @@ AWE.Map = (function(module) {
  
     var _id = spec.id || 0;
           
-    var _updated_at = spec.updated_at || null;
+    var _updated_at = spec.updated_at || null;
     var _created_at = spec.created_at || null;
     
     var _nodeId = spec.node_id || 0;
     var _name = spec.name || 'Ödland';
     var _ownerId = spec.owner_id || 0;
-    var _ownerName = spec.owner_name || null;
+    var _ownerName = spec.owner_name || null;
     var _allianceId = spec.alliance_id || 0;
     var _allianceTag = spec.alliance_tag;
-    var _countOutposts = spec.count_outposts || 0;
+    var _countOutposts = spec.count_outposts || 0;
     var _countSettlements = spec.count_settlements || 0;
     var _terrain_id = spec.terrain_id || 0;
     
@@ -62,24 +62,24 @@ AWE.Map = (function(module) {
     that.name = function() { return _name; }
     
     /** returns the node the region is associated with. */
-    that.node = function() { return _node; }
+    that.node = function() { return _node; }
     
     /** sets the node the region is associated with. */
     that.setNode = function(node) { _node = node; _nodeId = node.id(); }
     
     /** returns the name of the character owning the region (fortress). */
-    that.ownerName = function() { return _ownerName; }
+    that.ownerName = function() { return _ownerName; }
     
     /** returns the id of the character owning the region (fortress). 0 for
      * neutral fortress (not owned by any character, NPC-owned). */
-    that.ownerId = function() { return _ownerId; }
+    that.ownerId = function() { return _ownerId; }
 
     /** returns the tag of the alliance owning the region (owner of fortress). */
-    that.allianceTag = function() { return _allianceTag; }
+    that.allianceTag = function() { return _allianceTag; }
     
     /** returns the id of the alliance owning the region (owner of fortress). 0 for 
      * no alliance. */
-    that.allianceId = function() { return _allianceId; }
+    that.allianceId = function() { return _allianceId; }
 
     /** returns the level of the fortress (0 to 10). */
     that.fortressLevel = function() { return _fortress_level; }
@@ -96,7 +96,7 @@ AWE.Map = (function(module) {
     that.locations = function() { return _locations; }
     
     /** returns the location for the given slot */
-    that.location = function(slot) { return _locations === null ? null : _locations[slot]; }
+    that.location = function(slot) { return _locations === null ? null : _locations[slot]; }
     
     /** sets the locations to the given array of locations */
     that.setLocations = function(locations) {
@@ -114,7 +114,7 @@ AWE.Map = (function(module) {
       return _countOutposts;
     }
     
-    that.getArmies = function() { 
+    that.getArmies = function() { 
       return AWE.GS.ArmyAccess.getAllForRegion_id(_id) 
     };
     
@@ -145,10 +145,10 @@ AWE.Map = (function(module) {
       
       _name = region.name() || _name;
       _ownerId = region.ownerId() || 0;
-      _ownerName = region.ownerName() || null;
+      _ownerName = region.ownerName() || null;
       _allianceId = region.allianceId() || 0;
-      _allianceTag = region.allianceTag() || null;
-      _countOutposts = region.countOutposts() || 0;
+      _allianceTag = region.allianceTag() || null;
+      _countOutposts = region.countOutposts() || 0;
       _countSettlements = region.countSettlements() || 0;
       _terrain_id = region.terrainId() || 0;
       _fortress_level = region.fortressLevel() || 0;    
@@ -174,7 +174,7 @@ AWE.Map = (function(module) {
   
   return module;
     
-}(AWE.Map || {}));
+}(AWE.Map || {}));
 
 
 

@@ -98,7 +98,7 @@ AWE.GS = (function(module) {
     my.runningUpdatesPerRegion = {};  ///< hash that contains all running requests for regions, using the region.id as key.
     my.runningUpdatesPerLocation = {};///< hash that contains all running requests for locations, using the location.id as key.
     
-    my.createEntity = function() { return module.Army.create(); }
+    my.createEntity = function() { return module.Army.create(); }
 
   
     // public attributes and methods ///////////////////////////////////////

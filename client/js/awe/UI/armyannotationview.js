@@ -120,7 +120,7 @@ AWE.UI = (function(module) {
     
     that.onWaylayButtonClick = function() {};
     
-    that.army = function() { return _army; }
+    that.army = function() { return _army; }
     
     that.updateView = function() {
       

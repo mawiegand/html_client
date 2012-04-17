@@ -35,8 +35,8 @@ AWE.Controller = (function(module) {
     var _super = {};             ///< store locally overwritten methods of super object
     _super.init = that.init; 
     _super.runloop = that.runloop;
-    _super.append = function(f) { return function() { f.apply(that); }; }(that.append);
-    _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
+    _super.append = function(f) { return function() { f.apply(that); }; }(that.append); 
+    _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
     
     var _loopCounter = 0;        ///< counts every cycle through the loop
     var _frameCounter = 0;       ///< counts every rendered frame
@@ -203,7 +203,7 @@ AWE.Controller = (function(module) {
     /** sets the canvas' width and height, sets-up the internal coordinate
      * systems */
     that.setWindowSize = function(size) {
-      if (! _windowSize || _windowSize.width != size.width || _windowSize.height != size.height) {
+      if (! _windowSize || _windowSize.width != size.width || _windowSize.height != size.height) {
         _windowSize = size;
         _windowChanged = true;
         that.setNeedsLayout(); 
@@ -369,7 +369,7 @@ AWE.Controller = (function(module) {
     
     that.onMouseMove = function(event) {
       // here we can assume, that the mouse is pressed right now!
-      if (! that.isScrolling() && (Math.abs(event.pageX - _scrollingStartedAtVC.x) > 5 || Math.abs(event.pageY - _scrollingStartedAtVC.y > 5)))  {
+      if (! that.isScrolling() && (Math.abs(event.pageX - _scrollingStartedAtVC.x) > 5 || Math.abs(event.pageY - _scrollingStartedAtVC.y > 5)))  {
         that.startScrolling();
       }
       if (that.isScrolling()) {
@@ -590,9 +590,10 @@ AWE.Controller = (function(module) {
       var target = null;
      
       if (currentAction) {
-        for (var key in currentAction.targetLocations) {
-          if (currentAction.targetLocations.hasOwnProperty(key)) {
-            target = currentAction.targetLocations[key];
+        var targetLocations = getVisibleTargets(currentAction.army);
+        for (var key in targetLocations) {
+          if (targetLocations.hasOwnProperty(key)) {
+            target = targetLocations[key];
             if (view.location && view.location() === target) {
               actionCompleted = true;
               break;
@@ -1269,9 +1270,9 @@ AWE.Controller = (function(module) {
     that.updateGamingPieces = function(nodes) {
       var removedSomething = false;
       
-      removedSomething = that.updateFortresses(nodes)  || removedSomething;
+      removedSomething = that.updateFortresses(nodes)  || removedSomething;
       removedSomething = that.updateSettlements(nodes) || removedSomething;
-      removedSomething = that.updateArmies(nodes)      || removedSomething;
+      removedSomething = that.updateArmies(nodes)      || removedSomething;
 
       return removedSomething;
     };
@@ -1322,7 +1323,7 @@ AWE.Controller = (function(module) {
         }
       }
       else {
-        AWE.Map.Manager.fetchLocationsForRegion(armyRegion, function(param){ alert(param); });
+        AWE.Map.Manager.fetchLocationsForRegion(armyRegion);
       }
       
       return targetLocations;
@@ -1401,7 +1402,7 @@ AWE.Controller = (function(module) {
       if (inspectorViews.inspector) {
         inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width-345, _windowSize.height-155));
       }
-      return _inspectorChanged || _windowChanged;
+      return _inspectorChanged || _windowChanged;
     };
     
         
@@ -1437,7 +1438,7 @@ AWE.Controller = (function(module) {
         var stagesNeedUpdate = [false, false, false, false]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
         
         // rebuild individual hieararchies
-        if (_windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
+        if (_windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           stagesNeedUpdate[0] = this.rebuildMapHierarchy(nodes) || stagesNeedUpdate[0];
         }
         
@@ -1449,7 +1450,7 @@ AWE.Controller = (function(module) {
           stagesNeedUpdate[2] = that.updateActionViews();
         }
         
-        if (_windowChanged || _actionViewChanged || !inspectorViews.inspector || _inspectorChanged) { // TODO: only update at start and when something might have changed (object selected, etc.)
+        if (_windowChanged || _actionViewChanged || !inspectorViews.inspector || _inspectorChanged) { // TODO: only update at start and when something might have changed (object selected, etc.)
           stagesNeedUpdate[3] = that.updateInspectorViews() || stagesNeedUpdate[3]; 
         }
         
@@ -1534,7 +1535,7 @@ AWE.Controller = (function(module) {
         that.layoutIfNeeded();   
         
         // STEP 4: update views and repaint view hierarchies as needed
-        if (_windowChanged || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || _actionViewChanged) {
+        if (_windowChanged || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || _actionViewChanged) {
           // STEP 4a: get all visible nodes from the model
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());    
           

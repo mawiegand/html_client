@@ -105,11 +105,11 @@ AWE.UI.Ember = (function(module) {
     
     /** returns the present width of the view. Please note, the view may draw
      * outside its frame. */
-    that.width = function() { return my.frame.size.width; }
+    that.width = function() { return my.frame.size.width; }
     
     /** returns the present height of the view. Plese note, the view may draw
      * outside its frame. */
-    that.height = function() { return my.frame.size.height; }      
+    that.height = function() { return my.frame.size.height; }      
     
     that.alpha = function() {
       return my.alpha;

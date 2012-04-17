@@ -45,7 +45,7 @@ AWE.Action = (function(module) {
       };      
       
       var jqXHR = $.ajax(options)
-      .error(function(jqXHR, statusText) {           // On failure: 
+      .error(function(jqXHR, statusText) {           // On failure: 
         console.log ('ERROR SENDING ACTION TO URL ' + that.getURL() + ': ' + statusText); 
       })
       .success(function(data, statusText, jqXHR) {   // On success:

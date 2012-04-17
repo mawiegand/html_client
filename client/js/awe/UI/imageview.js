@@ -82,7 +82,7 @@ AWE.UI = (function(module) {
       this.setNeedsDisplay();
     }
     
-    that.contentMode = function() { return contentMode; }
+    that.contentMode = function() { return contentMode; }
     
     that.setFrame = function(frame) {
       _super.setFrame(frame);

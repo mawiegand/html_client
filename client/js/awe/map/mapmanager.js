@@ -201,7 +201,7 @@ AWE.Map = (function(module) {
           });           
         }       
       }
-      else { // fetch for the first time
+      else { // fetch for the first time
         if (node.isUpdating()) {
           return false ; // presently updating
         }
