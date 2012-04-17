@@ -1323,7 +1323,7 @@ AWE.Controller = (function(module) {
         }
       }
       else {
-        AWE.Map.Manager.fetchLocationsForRegion(armyRegion, function(param){ alert(param); });
+        AWE.Map.Manager.fetchLocationsForRegion(armyRegion);
       }
       
       return targetLocations;
