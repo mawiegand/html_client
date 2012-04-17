@@ -69,13 +69,16 @@ AWE.UI = (function(module) {
 		var _lastPanEndViewport = undefined;
 		var _lastNodes = [];
 		var _isMoving = false;
+		var _currentViewport;
 
 		//settings
 		var _maxTimeForDoubleClick = AWE.Config.MAP_DBLCLK_MAX_TIME_FOR_DBLCLK;
 		var _panTime = AWE.Config.MAP_DBLCLK_CAMERA_PANTIME;
 		var _borderFactor = AWE.Config.MAP_DBLCLK_CAMERA_BORDER_FACTOR;
 		var _crossClickSize = AWE.Config.MAP_DBLCLK_CAMERA_CROSS_CLICK_SIZE;
+		var _framePrecision = 0.001;
 		
+		//root controller
 		var _rootController = spec.rootController;
 
 		that.isMoving = function() {
@@ -123,6 +126,17 @@ AWE.UI = (function(module) {
 			}
 		};
 
+		//internal just in case someone else externaly changes the viewport (window size change etc.)
+		var _getCurrentViewport = function() {
+			return _rootController.viewport();
+		};
+		/**
+		  *	Returns the current viewport (from the viewpoint of the camera)
+		  **/
+		that.viewport = function() {
+			return _currentViewport;
+		};
+
 		that.onMouseUp = function(event) {
 			var now = (new Date()).getTime();
 			if (_lastClick !== undefined &&
@@ -168,56 +182,37 @@ AWE.UI = (function(module) {
 					return;
 				}
 
-				if (_lastPanEndViewport !== undefined) {
-					console.log("root="+_rootController.viewport());
-					console.log("_lastPanEndViewport="+_lastPanEndViewport);
-					console.log(_lastPanEndViewport !== undefined);
-					console.log(_lastPanEndViewport.equals(_rootController.viewport()));
-					console.log(_lastScale !== undefined);
-					console.log(_lastScale);
-				}
-
 				if (_lastPanEndViewport !== undefined &&
-					_lastPanEndViewport.equals(_rootController.viewport()) && 
+					_lastPanEndViewport.equals(_rootController.viewport(), _framePrecision) && 
 					_nodesEqual(_lastNodes, nodes) &&
 					//_scaleToScreen(nodeFrame).equals(_rootController.viewport()) &&
 					_lastScale !== undefined ) {
-					console.log("undo pan");
+
 					//calculate current center
-					var curr = _rootController.viewport();
+					var curr = _getCurrentViewport();
 					var center = AWE.Geometry.createPoint(
 						curr.origin.x + curr.size.width/2,
 						curr.origin.y + curr.size.height/2
 					);
-					//create new frame according to center and old scale
-					_activePan = module.createCameraPan(
-						_rootController.viewport(), 
+					//create new frame according to center and old scale and move there
+					that.moveTo(
 						AWE.Geometry.createRect(
 							center.x - _lastScale.width/2,
 							center.y - _lastScale.height/2,
 							_lastScale.width,
 							_lastScale.height
 						), 
-						_panTime
-					);
-					_isMoving = true;
+						false);
 				} else {
 					if (_lastScale === undefined ||
 						//_lastScale.area() > nodeFrame.area() 
-						_rootController.viewport().size.area() - _scaleToScreen(nodeFrame).size.area() > 0.001
+						_getCurrentViewport().size.area() - _scaleToScreen(nodeFrame).size.area() > _framePrecision
 					) {
-						console.log("_lastScale set");
 						_lastScale = _rootController.viewport().size.copy();	
 					}
-					console.log("normal pan");
-					_activePan = module.createCameraPan(
-						_rootController.viewport(), 
-						nodeFrame, 
-						_panTime
-					);
-					_isMoving = true;
 					_lastNodes = nodes;
 					_cacheLastViewport = true;
+					that.moveTo(nodeFrame, false);
 				}
 
 
@@ -225,14 +220,16 @@ AWE.UI = (function(module) {
 			_lastClick = now;
 		};
 
+		/**
+		  * Updates the currentViewport.
+		  **/
 		that.update = function() {
 			if (_activePan !== undefined && _isMoving) {
 				_activePan.update();
-
-				_rootController.setViewport(_scaleToScreen(_activePan.getCurrentViewport()));
+				_currentViewport = _scaleToScreen(_activePan.getCurrentViewport());
 				_isMoving = !_activePan.done();
 				if (!_isMoving && _cacheLastViewport) {
-					_lastPanEndViewport = _rootController.viewport().copy();
+					_lastPanEndViewport = _currentViewport.copy();
 					_cacheLastViewport = false;
 				}
 			} else {
@@ -241,9 +238,9 @@ AWE.UI = (function(module) {
 		};
 		/**
 		  * Moves the camera to the given value.
-		  * @param value the value can be a array of nodes, a node and a frame.
+		  * @param value the value can be a array of nodes, a node, a frame or a point. In case it is a point the viewport center will be moved there.
 		  * @param animated default:true. if false 
-		  * @param addBorder default:true. if true there will be 
+		  * @param addBorder default:true. if true there will be. If a point is given, addBroder should probably be set to false.
 		 **/
 		that.moveTo = function(value, addBorder, animated) {
 			//default is animated
@@ -259,9 +256,10 @@ AWE.UI = (function(module) {
 
 			_activePan = module.createCameraPan(
 				_rootController.viewport(), 
-				targetViewport, 
+				frame, 
 				_panTime
 			);
+			_isMoving = true;
 			if (!animated) {
 				_activePan.speedFunction = function (time) { return 1.0; };
 			}
@@ -269,8 +267,8 @@ AWE.UI = (function(module) {
 
 		/**
 		  * Returns the resulting frame for a node, an array of nodes or a frame.
-		  * @param value node, array of node or frame
-		  * @param addBorder default:true. if true a border will be added according to the borderFactor.
+		  * @param value node, array of node, frame or point
+		  * @param addBorder default:true (unless value is a point then the default is false). if true a border will be added according to the borderFactor.
 		  * @return the resulting target frame
 		 **/
 		that.getResultingFrame = function(value, addBorder) {
@@ -314,11 +312,20 @@ AWE.UI = (function(module) {
 			} else if (value.origin !== undefined &&
 				value.size !== undefined) {
 				target = value.copy();
+			//point
+			} else if (value.x !== undefined && value.y !== undefined) {
+				var f = _rootController.viewport();
+				target = AWE.Geometry.createRect(
+					value.x-f.size.width/2,
+					value.y-f.size.height/2,
+					f.size.width,
+					f.size.height
+				);
 			} else {
 				return null;
 			}
 			//add border
-			if (addBorder === undefined || addBorder === true) {
+			if ((addBorder === undefined && value.x === undefined) || addBorder === true) {
 				var widthOffset = (!addBorder)?0:target.size.width*_borderFactor;
 				var heightOffset = (!addBorder)?0:target.size.height*_borderFactor;
 				return AWE.Geometry.createRect(

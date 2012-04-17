@@ -1513,9 +1513,15 @@ AWE.Controller = (function(module) {
       // only do something after the Map.Manager has been initialized (connected to server and received initial data)
       if(AWE.Map.Manager.isInitialized()) {
         // STEP 0: update the camera, in case that it is currently moving
-        _camera.update();
         if (_camera.isMoving()) {
-          that.setNeedsLayout();
+          _camera.update();
+          var newViewport = _camera.viewport();
+          if (newViewport !== null && newViewport !== undefined) {
+            that.setViewport(newViewport);
+            that.setNeedsLayout();
+          } else {
+            console.error("the camera needed an update, but did not return a new viewport");
+          }
         }
         
         // STEP 1: determine visible area (may have changed through user interaction)
