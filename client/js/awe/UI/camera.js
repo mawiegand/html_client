@@ -204,7 +204,7 @@ AWE.UI = (function(module) {
 				} else {
 					if (_lastScale === undefined ||
 						//_lastScale.area() > nodeFrame.area() 
-						_rootController.viewport().size.area() > _scaleToScreen(nodeFrame).size.area()
+						_rootController.viewport().size.area() - _scaleToScreen(nodeFrame).size.area() > 0.001
 					) {
 						console.log("_lastScale set");
 						_lastScale = _rootController.viewport().size.copy();	
