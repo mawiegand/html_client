@@ -58,10 +58,16 @@ AWE.UI = (function(module) {
             
       var _baseGraphics = new Graphics();
       _baseGraphics.setStrokeStyle(1);
-      _baseGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
-      _baseGraphics.beginFill(Graphics.getRGB(0, 0, 0));
+      if (_army.isOwn()) {
+        _baseGraphics.beginStroke(Graphics.getRGB(222, 222, 232)).setStrokeStyle(3).beginFill(Graphics.getRGB(242, 242, 255));
+      } else {
+        _baseGraphics.beginStroke(Graphics.getRGB(48, 48, 48)).setStrokeStyle(3).beginFill(Graphics.getRGB(72, 72, 72));
+      }
       _baseGraphics.drawEllipse(6, 84, 52, 24);
       _baseShape = new Shape(_baseGraphics);  
+      _baseShape.onClick = that.onClick;
+      _baseShape.onMouseOver = that.onMouseOver;
+      _baseShape.onMouseOut = that.onMouseOut;
       _container.addChild(_baseShape);
 
       var _poleGraphics = new Graphics();

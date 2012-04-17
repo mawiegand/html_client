@@ -57,8 +57,10 @@ AWE.UI = (function(module) {
       imageView.onMouseOut = that.onMouseOut;
       my.container.addChild(imageView.displayObject());
 
+      var ownerName = _location.ownerName() + (_location.allianceTag() ? " | " +  _location.allianceTag() : "");
+      
       labelView = AWE.UI.createLabelView();
-      labelView.initWithControllerAndLabel(controller, _location.name(), true);
+      labelView.initWithControllerAndLabel(controller, ownerName, true);
       labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, 16));      
       my.container.addChild(labelView.displayObject());
                   
