@@ -590,9 +590,10 @@ AWE.Controller = (function(module) {
       var target = null;
      
       if (currentAction) {
-        for (var key in currentAction.targetLocations) {
-          if (currentAction.targetLocations.hasOwnProperty(key)) {
-            target = currentAction.targetLocations[key];
+        var targetLocations = getVisibleTargets(currentAction.army);
+        for (var key in targetLocations) {
+          if (targetLocations.hasOwnProperty(key)) {
+            target = targetLocations[key];
             if (view.location && view.location() === target) {
               actionCompleted = true;
               break;
