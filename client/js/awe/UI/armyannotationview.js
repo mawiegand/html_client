@@ -15,7 +15,7 @@ AWE.UI = (function(module) {
     
     var _army = null;
     var _armyView = null;
-    
+        
     var _container = null;
 
     // selected
@@ -206,6 +206,10 @@ AWE.UI = (function(module) {
       _stanceButtonView.setEnabled(!moving);
       _attackButtonView.setEnabled(!moving);
       that.setNeedsUpdate();
+    }
+    
+    that.baseView = function() {
+      return _armyView;
     }
         
     return that;

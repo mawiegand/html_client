@@ -237,6 +237,7 @@ AWE.UI = (function(module) {
      * CONTROL_STATE_NORMAL. */
     that.setState = function(controlState) {
       my.state = controlState;
+      console.log('changed control state in view to ' + my.state);
       this.setNeedsUpdate();    // trigger repainting of view
     }
     

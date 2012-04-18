@@ -219,11 +219,31 @@ AWE.UI = (function(module) {
       //_container.y = my.frame.origin.y;
     }*/
     
+    that.setSelected = function(selected) {
+      _super.setSelected(selected);
+      _selectShape.visible = that.selected();
+      if (_healthShape) {
+        _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
+      }
+      _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
+      this.setNeedsDisplay();
+    };
+    
+    that.setHovered = function(hovered) {
+      _super.setHovered(hovered);
+      if (_healthShape) {
+        _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
+      }
+      _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
+      this.setNeedsDisplay();
+    }
+    
     that.displayObject = function() {
       return _container;
     };
     
     that.setAnnotationView = function(annotationView) {
+      log('setAnnotationView', annotationView);
       _annotationView = annotationView;
     }
     

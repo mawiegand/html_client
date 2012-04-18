@@ -61,6 +61,8 @@ AWE.UI = (function(module) {
       return _location;
     }
     
+    
+    
     that.onClick = function() {
       my.controller.targetViewClicked(that);
     };
