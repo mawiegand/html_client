@@ -30,7 +30,7 @@ AWE.UI = (function(module) {
     //  hovered
     var _infoText1View = null;    
     var _infoText2View = null;    
-    var mouseOverImageView = null;
+    var _easementImageView = null;
 
 
     var that = module.createView(spec, my);
@@ -82,13 +82,12 @@ AWE.UI = (function(module) {
       _infoText2View.setText(AWE.Config.DEV_ALLIANCE_ID ===  _node.region().allianceId() ? 'Neutral' :  'Hostile');
       _container.addChild(_infoText2View.displayObject());
       
-      if (AWE.Config.DEV_ALLIANCE_ID !==  _node.region().allianceId()) {
-        mouseOverImageView = AWE.UI.createImageView();
-        mouseOverImageView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement"));
-        mouseOverImageView.setFrame(AWE.Geometry.createRect(80, 0, 32, 32));
-        mouseOverImageView.setContentMode(module.setContentModeNone);
-        _container.addChild(mouseOverImageView.displayObject());
-      }
+      _easementImageView = AWE.UI.createImageView();
+      log(AWE.Config.DEV_ALLIANCE_ID, _node.region().allianceId());
+      _easementImageView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage(AWE.Config.DEV_ALLIANCE_ID ==  _node.region().allianceId() ? "map/easement/yes" : "map/easement/no"));
+      _easementImageView.setFrame(AWE.Geometry.createRect(80, 0, 32, 32));
+      _easementImageView.setContentMode(module.setContentModeNone);
+      _container.addChild(_easementImageView.displayObject());
       
       my.frame.size.width = 192;
       my.frame.size.height = 128;
@@ -97,7 +96,53 @@ AWE.UI = (function(module) {
     that.onAttackButtonClick = function() {};
     
     that.updateView = function() {
+      
+      // buttons
+      _moveButtonView.setVisible(_fortressView.selected());
+      _moveButtonView.updateView();
+      _attackButtonView.setVisible(_fortressView.selected());
+      _attackButtonView.updateView();
+      
+      // waylay image aktualisieren
+      
+      
+      // rank image
+      // _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + Math.round((_army.get('rank') + 25) / 25)));
+// 
+      // // info view
+      // _container.removeChild(_backgroundShape);
+      // var lines = _army.get('battle_id') && _army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0 ? 3 : 1; 
+//       
+      // var backgroundGraphics = new Graphics();
+      // backgroundGraphics.setStrokeStyle(0);
+      // backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
+      // backgroundGraphics.drawRoundRect(128, 34 - lines * 11, 64, lines * 22, 8);
+      // _backgroundShape = new Shape(backgroundGraphics);
+      // _container.addChildAt(_backgroundShape, 0);
+//       
+      // if (_army.get('battle_id') && _army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0) {
+        // _infoText1View.setOrigin(AWE.Geometry.createPoint(130, 0));
+        // _infoText2View.setVisible(true);
+        // _infoText3View.setVisible(true);
+      // }
+      // else {
+        // _infoText1View.setOrigin(AWE.Geometry.createPoint(130, 22));
+        // _infoText2View.setVisible(false);
+        // _infoText3View.setVisible(false);
+      // }
+// 
+      // _infoText1View.setText(_army.get('strength'));
+      // if (_army.get('battle_id') && _army.get('battle_id') != 0) {
+        // _infoText2View.setText('Kampf!');
+        // _infoText3View.setText('Dauer');
+      // }
+      // else if (_army.get('target_location_id') && _army.get('target_location_id') != 0) {
+        // _infoText3View.setText(_army.get('target_location_id'));
+        // _infoText2View.setText(_army.get('target_reached_at'));
+      // }
+      
       that.setNeedsDisplay();
+      that.setNeedsLayout();
     }
 
     that.setFrame = function(frame) {
