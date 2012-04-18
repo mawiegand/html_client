@@ -205,7 +205,7 @@ AWE.UI = (function(module) {
 
     that.setVisible = function(visible) {
       _visible = visible;
-      this.needsDisplay();
+      this.setNeedsDisplay();
     }
     
     that.visible = function() {

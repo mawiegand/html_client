@@ -13,13 +13,8 @@ AWE.UI = (function(module) {
     var _labelText = null;
     var _imageView = null;
     
-    var _defaultImage = null;
-    var _highlightedImage = null;
-    var _disabledImage = null;
-    
-    var _highlighted = false;
-    var _disabled = false;
-    
+    var imagesForStates = {}; 
+        
     my = my || {};
     
     my.typeName = "ButtonView";
@@ -38,7 +33,7 @@ AWE.UI = (function(module) {
       
       _container = new Container();
       
-      _defaultImage = image;
+      imagesForStates[module.CONTROL_STATE_NORMAL] = image;
 
       _imageView = AWE.UI.createImageView();
       _imageView.initWithControllerAndImage(controller, image);
@@ -61,14 +56,22 @@ AWE.UI = (function(module) {
     
     that.updateView = function() {
 
-      if (_highlighted) {
-        _imageView.setImage(_highlightedImage);
+      _imageView.setAlpha(this.alpha()); // usual case
+
+      if (!this.enabled()) {
+        _imageView.setImage(this.imageForState(module.CONTROL_STATE_DISABLED));
+        if (!this.hasSpecificImageForState(module.CONTROL_STATE_DISABLED)) {
+          _imageView.setAlpha(0.3 * this.alpha());
+        }
       }
-      else if (_disabled) {
-        _imageView.setImage(_disabledImage);
+      else if (this.hovered()) {
+        _imageView.setImage(this.imageForState(module.CONTROL_STATE_HOVERED));
+      }
+      else if (this.selected()) {
+        _imageView.setImage(this.imageForState(module.CONTROL_STATE_SELECTED));
       }
       else {
-        _imageView.setImage(_defaultImage);
+        _imageView.setImage(this.imageForState(module.CONTROL_STATE_NORMAL));
       }
     }
     
@@ -88,22 +91,28 @@ AWE.UI = (function(module) {
       return _container;
     }
     
-    that.setImage = function(image) {
-      _defaultImage = image;
+    that.setImageForState = function(image, controlState) {
+      imagesForStates[controlState] = image;
       this.setNeedsUpdate();
     }
     
-    that.setHighlightedImage = function(image) {
-      _highlightedImage = image;
+    that.imageForState = function(controlState) {
+      if (imagesForStates[controlState] === undefined || imagesForStates[controlState] === null) {
+        return imagesForStates[module.CONTROL_STATE_NORMAL];
+      }
+      else {
+        return imagesForStates[controlState];
+      }
     }
     
-    that.setDisabledImage = function(image) {
-      _disabledImage = image;
+    that.hasSpecificImageForState = function(controlState) {
+      return !(imagesForStates[controlState] === undefined || imagesForStates[controlState] === null)
     }
     
+    /*    
     that.image = function() {
       return _imageView.image();
-    }
+    }*/
 
     that.setText = function(text) {
       this.setNeedsUpdate();
@@ -115,22 +124,6 @@ AWE.UI = (function(module) {
     
     /* actions */
     
-
-   
-    that.setHovered = function(highlighted) {
-      _highlighted = highlighted;
-      _disabled = false;
-    }
-
-    that.setHovered = function(disabled) {
-      _highlighted = false;
-      _disabled = disabled;
-    }
-    
-    that.setSelected = function(disabled) {
-      _highlighted = false;
-      _disabled = disabled;
-    }
     
     that.onClick = function() {
       my.controller.buttonClicked(that);
