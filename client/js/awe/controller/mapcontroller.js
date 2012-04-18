@@ -542,13 +542,14 @@ AWE.Controller = (function(module) {
       that.applicationController.presentModalDialog(dialog);
     }
     
-    var armyTargetClicked = function(army, targetLocation) {
+    var armyTargetClicked = function(army, targetLocation, targetView) {
       log('armyTargetClicked', army, targetLocation, AWE.Map.locationTypes[targetLocation.id()]);
       var moveAction = AWE.Action.Military.createMoveArmyAction(army, targetLocation.id());
       moveAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
           AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
             that.setModelChanged();
+            that.addDisappearingAnnotationLabel(targetView, 'ETA ' + army.get('target_reached_at'), 1500);
           });
         }
         else {
@@ -607,7 +608,7 @@ AWE.Controller = (function(module) {
         }
       
         if (actionCompleted) {
-          armyTargetClicked(currentAction.army, target);
+          armyTargetClicked(currentAction.army, target, view);
         }
         _actionViewChanged = true;
         currentAction = null;
@@ -784,6 +785,40 @@ AWE.Controller = (function(module) {
       var label = AWE.UI.createLabelView();
       label.initWithControllerAndLabel(this, message, true, frame);
       this.addTransientAnnotationView(annotatedView, label, duration, offset);
+    }
+    
+    
+    that.addDisappearingAnnotationLabel = function(annotatedView, message, duration, offset, frame) {
+      duration = duration || 1000;
+      offset = offset || AWE.Geometry.createPoint(100,50);
+      
+      var label = AWE.UI.createLabelView();
+      label.initWithControllerAndLabel(this, message, true, frame);      
+      
+      _stages[2].addChild(label.displayObject());
+      console.log('added disappearing view.');
+      
+      var animation = AWE.UI.createTimedAnimation({
+        view: label,
+        duration: duration,
+        
+        updateView: function() {
+          return function(view, elapsed) {
+            view.setOrigin(AWE.Geometry.createPoint(annotatedView.frame().origin.x, 
+                                                    annotatedView.frame().origin.y - (150.0*elapsed)));  
+            view.setAlpha(1.0-Math.max(elapsed-0.5, 0.0)*2);
+          };
+        }(),
+        
+        onAnimationEnd: function(viewToRemove) {
+          return function() {
+            _stages[2].removeChild(viewToRemove.displayObject());
+            console.log('removed animated label on animation end');
+          };
+        }(label),
+      });
+      
+      that.addAnimation(animation);
     }
     
 
