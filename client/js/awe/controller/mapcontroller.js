@@ -459,7 +459,9 @@ AWE.Controller = (function(module) {
       
       if (currentAction) {
         currentAction = null;
-        _selectedView.annotationView().setMovingMode(false);
+        if (_selectedView) {
+          _selectedView.annotationView().setMovingMode(false);
+        }
         _actionViewChanged = true;
       }
       else if (_selectedView) {
@@ -607,7 +609,7 @@ AWE.Controller = (function(module) {
         }
         _actionViewChanged = true;
         currentAction = null;
-     //   _selectedView.annotationView().setMovingMode(false);
+        _selectedView.annotationView().setMovingMode(false);
       }
       else {
         that.setSelectedView(view);
@@ -1298,6 +1300,7 @@ AWE.Controller = (function(module) {
       
       // helper method for creating the appropriate annotation view
       var createAnnotationView = function(baseView) {
+        var annotationView = null;
         if (baseView.typeName() === 'FortressView') {
           annotationView = AWE.UI.createFortressActionView();
           annotationView.initWithControllerAndView(that, baseView);
@@ -1319,6 +1322,7 @@ AWE.Controller = (function(module) {
           annotationView = AWE.UI.createOutpostAnnotationView();
           annotationView.initWithControllerAndView(that, baseView);
         }
+    
         baseView.setAnnotationView(annotationView);
         
         return annotationView;
@@ -1339,27 +1343,7 @@ AWE.Controller = (function(module) {
           actionViews.hovered = actionViews.selected;
         }
         else {
-          if (_hoveredView.typeName() === 'FortressView') {
-            actionViews.hovered = AWE.UI.createFortressActionView();
-            actionViews.hovered.initWithControllerAndView(that, _hoveredView);
-          }
-          else if (_hoveredView.typeName() === 'ArmyView') {
-            actionViews.hovered = AWE.UI.createArmyAnnotationView();
-            actionViews.hovered.initWithControllerAndView(that, _hoveredView);
-            actionViews.hovered.onMoveButtonClick = (function(self) {
-              return function(view) { self.armyMoveButtonClicked(view); }
-            })(that);
-            
-            armyUpdates[_hoveredView.army().get('id')] = _hoveredView.army();
-          }
-          else if (_hoveredView.typeName() === 'BaseView') {
-            actionViews.hovered = AWE.UI.createBaseAnnotationView();
-            actionViews.hovered.initWithControllerAndView(that, _hoveredView);
-          }
-          else if (_hoveredView.typeName() === 'OutpostView') {
-            actionViews.hovered = AWE.UI.createOutpostAnnotationView();
-            actionViews.hovered.initWithControllerAndView(that, _hoveredView);
-          }
+          actionViews.hovered = createAnnotationView(_hoveredView);
           _stages[2].addChild(actionViews.hovered.displayObject());
         }
       }         
@@ -1378,6 +1362,7 @@ AWE.Controller = (function(module) {
       }
       else {
         if (actionViews.hovered) {
+          // actionViews.hovered.baseView().setAnnotationView(null);
           delete actionViews.hovered;        
         }
       }
@@ -1397,27 +1382,7 @@ AWE.Controller = (function(module) {
           actionViews.selected = actionViews.hovered;
         }
         else {
-          if (_selectedView.typeName() === 'FortressView') {
-            actionViews.selected = AWE.UI.createFortressActionView();
-            actionViews.selected.initWithControllerAndView(that, _selectedView);
-          }
-          else if (_selectedView.typeName() === 'ArmyView') {
-            actionViews.selected = AWE.UI.createArmyAnnotationView();
-            actionViews.selected.initWithControllerAndView(that, _selectedView);
-            actionViews.selected.onMoveButtonClick = (function(self) {
-              return function(view) { self.armyMoveButtonClicked(view); }
-            })(that);
-            
-            armyUpdates[_selectedView.army().get('id')] = _selectedView.army();
-          }
-          else if (_selectedView.typeName() === 'BaseView') {
-            actionViews.selected = AWE.UI.createBaseAnnotationView();
-            actionViews.selected.initWithControllerAndView(that, _selectedView);
-          }
-          else if (_selectedView.typeName() === 'OutpostView') {
-            actionViews.selected = AWE.UI.createOutpostAnnotationView();
-            actionViews.selected.initWithControllerAndView(that, _selectedView);
-          }
+          actionViews.selected = createAnnotationView(_selectedView);
           _stages[2].addChild(actionViews.selected.displayObject());
         }
       }         
@@ -1436,6 +1401,7 @@ AWE.Controller = (function(module) {
       }
       else {
         if (actionViews.selected) {
+          // actionViews.selected.baseView().setAnnotationView(null);
           delete actionViews.selected;        
         }
       }

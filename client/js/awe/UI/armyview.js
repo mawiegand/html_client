@@ -220,7 +220,7 @@ AWE.UI = (function(module) {
         _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
       }
       _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
-      this.setNeedsDisplay();      
+      this.setNeedsDisplay();
     }
     
     that.displayObject = function() {
@@ -228,6 +228,7 @@ AWE.UI = (function(module) {
     };
     
     that.setAnnotationView = function(annotationView) {
+      log('setAnnotationView', annotationView);
       _annotationView = annotationView;
     }
     
