@@ -149,7 +149,7 @@ AWE.UI = (function(module) {
       // BUG: since the stance-view is not recreated and there is no "addChildBelow" used, after one update
       //      of the army the pole will be in front of the figure, although it should be behind.
       
-      console.log('UPDATE ARMY VIEW');
+
       
       var _poleGraphics = new Graphics();
       _poleGraphics.setStrokeStyle(1);
@@ -198,7 +198,12 @@ AWE.UI = (function(module) {
       if (_healthShape) {
         _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
       }
-      _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
+      if (_healthBGShape) {
+        _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
+      }
+      if (_selectShape) {
+        _selectShape.visible = that.selected();
+      }
     }
     
     that.resizeToFit = function() {
@@ -216,7 +221,6 @@ AWE.UI = (function(module) {
     
 /*  that.setSelected = function(selected) {
       _super.setSelected(selected);
-      _selectShape.visible = that.selected();
       if (_healthShape) {
         _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
       }
