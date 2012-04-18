@@ -202,7 +202,8 @@ AWE.UI = (function(module) {
         _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
       }
       if (_selectShape) {
-        _selectShape.visible = that.selected();
+        _selectShape.visible = this.selected() || this.hovered();
+        _selectShape.alpha = (this.selected() ? 1. : 0.2);
       }
     }
     
@@ -216,26 +217,6 @@ AWE.UI = (function(module) {
       _super.setFrame(frame);
       //_container.x = my.frame.origin.x;
       //_container.y = my.frame.origin.y;
-    }*/
-    
-    
-/*  that.setSelected = function(selected) {
-      _super.setSelected(selected);
-      if (_healthShape) {
-        _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
-      }
-      _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
-      this.setNeedsDisplay();
-    };*/
-    
-    /*
-    that.setHovered = function(hovered) {
-      _super.setHovered(hovered);
-      if (_healthShape) {
-        _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
-      }
-      _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
-      this.setNeedsDisplay();      
     }*/
     
     that.displayObject = function() {
