@@ -100,6 +100,12 @@ AWE.UI = (function(module) {
     /** sets the superview */
     that.setSuperview = function(superview) { my.superview = superview; }
     
+    that.removeFromSuperview = function() {
+      if (my.superview) {
+        my.superview.removeChild(this);
+      }
+    }
+    
     /** returns the view's frame. */
     that.frame = function() { return my.frame; }
     
