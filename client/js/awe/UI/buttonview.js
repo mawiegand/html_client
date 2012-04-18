@@ -6,7 +6,7 @@
 var AWE = AWE || {};
 
 AWE.UI = (function(module) {
-          
+            
   module.createButtonView = function(spec, my) {
         
     var _container = null;
@@ -114,13 +114,20 @@ AWE.UI = (function(module) {
     }
     
     /* actions */
+    
+
    
-    that.setHighlighted = function(highlighted) {
+    that.setHovered = function(highlighted) {
       _highlighted = highlighted;
       _disabled = false;
     }
+
+    that.setHovered = function(disabled) {
+      _highlighted = false;
+      _disabled = disabled;
+    }
     
-    that.setDisabled = function(disabled) {
+    that.setSelected = function(disabled) {
       _highlighted = false;
       _disabled = disabled;
     }

@@ -149,6 +149,8 @@ AWE.UI = (function(module) {
       // BUG: since the stance-view is not recreated and there is no "addChildBelow" used, after one update
       //      of the army the pole will be in front of the figure, although it should be behind.
       
+      console.log('UPDATE ARMY VIEW');
+      
       var _poleGraphics = new Graphics();
       _poleGraphics.setStrokeStyle(1);
       _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
@@ -204,13 +206,15 @@ AWE.UI = (function(module) {
       my.frame.size.height = AWE.Config.MAP_ARMY_HEIGHT;
     };
     
+    /*
     that.setFrame = function(frame) {
       _super.setFrame(frame);
       //_container.x = my.frame.origin.x;
       //_container.y = my.frame.origin.y;
-    }
+    }*/
     
-    that.setSelected = function(selected) {
+    
+/*  that.setSelected = function(selected) {
       _super.setSelected(selected);
       _selectShape.visible = that.selected();
       if (_healthShape) {
@@ -218,8 +222,9 @@ AWE.UI = (function(module) {
       }
       _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
       this.setNeedsDisplay();
-    };
+    };*/
     
+    /*
     that.setHovered = function(hovered) {
       _super.setHovered(hovered);
       if (_healthShape) {
@@ -227,7 +232,7 @@ AWE.UI = (function(module) {
       }
       _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
       this.setNeedsDisplay();      
-    }
+    }*/
     
     that.displayObject = function() {
       return _container;

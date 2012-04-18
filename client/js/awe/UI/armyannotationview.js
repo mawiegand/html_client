@@ -128,7 +128,7 @@ AWE.UI = (function(module) {
     that.updateView = function() {
       
       // buttons
-      _stanceButtonView.setVisible(_army.isOwn() && _armyView.selected());
+      _stanceButtonView.setVisible(_army.isOwn() && _armyView.selected() && 0); // NO third button at present
       _stanceButtonView.updateView();
       _moveButtonView.setVisible(_army.isOwn() && _armyView.selected());
       _moveButtonView.updateView();
