@@ -33,6 +33,7 @@ AWE.UI = (function(module) {
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      updateView: AWE.Ext.superior(that, "updateView"),
       setFrame: AWE.Ext.superior(that, "setFrame"),
       setHovered: AWE.Ext.superior(that, "setHovered"),
     };
@@ -58,7 +59,10 @@ AWE.UI = (function(module) {
       _moveButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
       _moveButtonView.onClick = function() { that.onMoveButtonClick(that); }
       
+      console.log('before add child');
       this.addChild(_moveButtonView);
+      console.log('superview:' + _moveButtonView.superview());
+      
 
       _attackButtonView = AWE.UI.createButtonView();
       _attackButtonView.initWithControllerTextAndImage(controller, 'attack', AWE.UI.ImageCache.getImage("map/button1"));
@@ -125,7 +129,14 @@ AWE.UI = (function(module) {
     
     that.army = function() { return _army; }
     
-    that.updateView = function() {
+    that.updateView = function () {
+      this.recalcView();
+      _super.updateView();
+    }
+    
+    that.recalcView = function() {
+      
+      console.log('update annotation view');
       
       // buttons
       _stanceButtonView.setVisible(_army.isOwn() && _armyView.selected() && 0); // NO third button at present

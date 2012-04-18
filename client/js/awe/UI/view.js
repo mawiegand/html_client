@@ -94,6 +94,12 @@ AWE.UI = (function(module) {
     /** returns the view controller controlling the view */
     that.controller = function() { return my.controller; }
     
+    /** return the superview */
+    that.superview = function() { return my.superview; }
+    
+    /** sets the superview */
+    that.setSuperview = function(superview) { my.superview = superview; }
+    
     /** returns the view's frame. */
     that.frame = function() { return my.frame; }
     
@@ -104,14 +110,15 @@ AWE.UI = (function(module) {
           obj.width = frame.size.width;
           obj.height = frame.size.height;   
         });
-        _needsLayout = _needsDisplay = true;
+        this.setNeedsDisplay();
+        this.setNeedsLayout();
       }
       if (!my.frame || !my.frame.origin.equals(frame.origin)) {
         AWE.Ext.applyFunction(this.displayObject(), function(obj) { // may return null, a DisplayObject or an Array
           obj.x = frame.origin.x;
           obj.y = frame.origin.y;   
         });
-        _needsDisplay = true;
+        this.setNeedsDisplay();
       }
       my.frame = frame;
     }
@@ -148,7 +155,7 @@ AWE.UI = (function(module) {
     that.setNeedsLayout = function() { 
       if (!_needsLayout) {
         _needsLayout = true; 
-        if (my.superview) {  // propagate upwards
+        if (my.superview) {  // TODO: propagate this upwards?
           my.superview.setNeedsLayout();
         }
       }
@@ -197,7 +204,12 @@ AWE.UI = (function(module) {
     
     that.layoutIfNeeded = function() {
       if (_needsLayout) {
+        this.setChangedNow();
+        
         this.layoutSubviews();
+      
+        _needsLayout = false;
+        this.setNeedsDisplay();
       };
     };
     
@@ -205,7 +217,12 @@ AWE.UI = (function(module) {
       if (_needsUpdate) {
         this.updateView();
         _needsUpdate = false;
-        _needsDisplay = true;
+        this.setNeedsDisplay();
+        
+        if (my.typeName == "ButtonView") {
+          console.log('update in button view. _needsUpdate = ' + _needsUpdate);
+        }
+
       };
     };
     
@@ -237,10 +254,6 @@ AWE.UI = (function(module) {
 
     that.layoutSubviews = function() {
       this.autoscaleIfNeeded();
-      this.setChangedNow();
-      
-      _needsLayout = false;
-      _needsDisplay = true;
     }
     
     that.updateView = function() {

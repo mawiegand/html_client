@@ -44,6 +44,7 @@ AWE.UI = (function(module) {
     
     that.addChild = function(view) { 
       _subviews.push(view);
+      view.setSuperview(this);
       AWE.Ext.applyFunction(view.displayObject(), function(obj){
         my.container.addChild(obj);
       });
@@ -59,13 +60,21 @@ AWE.UI = (function(module) {
           my.container.removeChild(obj);
         });
         _subviews.splice(index,1);
+        view.setSuperview(null);
       }
     }
     
     that.layoutSubviews = function() {
-      _super.layoutSubviews();
+   //   _super.layoutSubviews();
       AWE.Ext.applyFunction(_subviews, function(obj) {
         obj.layoutIfNeeded();
+      });
+    }
+    
+    that.updateView = function() {
+   //   _super.layoutSubviews();
+      AWE.Ext.applyFunction(_subviews, function(obj) {
+        obj.updateIfNeeded();
       });
     }
     
