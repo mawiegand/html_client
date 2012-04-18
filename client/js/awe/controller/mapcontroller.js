@@ -1302,7 +1302,7 @@ AWE.Controller = (function(module) {
       var createAnnotationView = function(baseView) {
         var annotationView = null;
         if (baseView.typeName() === 'FortressView') {
-          annotationView = AWE.UI.createFortressActionView();
+          annotationView = AWE.UI.createFortressAnnotationView();
           annotationView.initWithControllerAndView(that, baseView);
         }
         else if (baseView.typeName() === 'ArmyView') {
@@ -1350,7 +1350,7 @@ AWE.Controller = (function(module) {
                
       // move hovered view if existing
       if (_hoveredView
-          && (actionViews.hovered.typeName() === 'FortressActionView'
+          && (actionViews.hovered.typeName() === 'FortressAnnotationView'
           || actionViews.hovered.typeName() === 'ArmyAnnotationView'
           || actionViews.hovered.typeName() === 'OutpostAnnotationView'
           || actionViews.hovered.typeName() === 'BaseAnnotationView')) {
@@ -1389,7 +1389,7 @@ AWE.Controller = (function(module) {
                
       // move selected view if existing
       if (_selectedView
-          && (actionViews.selected.typeName() === 'FortressActionView'
+          && (actionViews.selected.typeName() === 'FortressAnnotationView'
           || actionViews.selected.typeName() === 'ArmyAnnotationView'
           || actionViews.selected.typeName() === 'OutpostAnnotationView'
           || actionViews.selected.typeName() === 'BaseAnnotationView')) {

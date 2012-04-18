@@ -12,11 +12,11 @@ AWE.UI = (function(module) {
   
   /*** AWE.UI.View ***/
 
-  module.createFortressActionView = function(spec, my) {
+  module.createFortressAnnotationView = function(spec, my) {
     
     my = my || {};
     
-    my.typeName = 'FortressActionView';
+    my.typeName = 'FortressAnnotationView';
     
     var _node = null;
     
