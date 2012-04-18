@@ -124,6 +124,11 @@ AWE.UI = (function(module) {
     that.padding = function() {
       return _padding;
     }
+    
+    that.setColor = function(color) {
+      _labelText.color = color;
+      that.setNeedsLayout();      
+    }
         
     that.setVisible = function(visible) {
       _super.setVisible(visible);
