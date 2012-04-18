@@ -720,8 +720,11 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector = AWE.UI.createOutpostInspectorView();
         inspectorViews.inspector.initWithControllerAndFrame(that);
       }
-      _stages[3].addChild(inspectorViews.inspector.displayObject());
-      _inspectorChanged = true;
+      
+      if (inspectorViews.inspector) {
+        _stages[3].addChild(inspectorViews.inspector.displayObject());
+        _inspectorChanged = true;
+      }
     };
 
     var _hideInspector = function() {
@@ -1343,17 +1346,16 @@ AWE.Controller = (function(module) {
           actionViews.hovered = actionViews.selected;
         }
         else {
-          actionViews.hovered = createAnnotationView(_hoveredView);
-          _stages[2].addChild(actionViews.hovered.displayObject());
+          var annotationView = createAnnotationView(_hoveredView);
+          if (annotationView) {
+            actionViews.hovered = annotationView;
+            _stages[2].addChild(actionViews.hovered.displayObject());
+          }
         }
       }         
                
       // move hovered view if existing
-      if (_hoveredView
-          && (actionViews.hovered.typeName() === 'FortressAnnotationView'
-          || actionViews.hovered.typeName() === 'ArmyAnnotationView'
-          || actionViews.hovered.typeName() === 'OutpostAnnotationView'
-          || actionViews.hovered.typeName() === 'BaseAnnotationView')) {
+      if (_hoveredView && actionViews.hovered) {
         actionViews.hovered.setCenter(AWE.Geometry.createPoint(
             _hoveredView.center().x,
             _hoveredView.center().y
@@ -1382,17 +1384,16 @@ AWE.Controller = (function(module) {
           actionViews.selected = actionViews.hovered;
         }
         else {
-          actionViews.selected = createAnnotationView(_selectedView);
-          _stages[2].addChild(actionViews.selected.displayObject());
+          var annotationView = createAnnotationView(_selectedView);
+          if (annotationView) {
+            actionViews.selected = annotationView;
+            _stages[2].addChild(actionViews.selected.displayObject());
+          }
         }
       }         
                
       // move selected view if existing
-      if (_selectedView
-          && (actionViews.selected.typeName() === 'FortressAnnotationView'
-          || actionViews.selected.typeName() === 'ArmyAnnotationView'
-          || actionViews.selected.typeName() === 'OutpostAnnotationView'
-          || actionViews.selected.typeName() === 'BaseAnnotationView')) {
+      if (_selectedView && actionViews.selected) {
         actionViews.selected.setCenter(AWE.Geometry.createPoint(
             _selectedView.center().x,
             _selectedView.center().y
