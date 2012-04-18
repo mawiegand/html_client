@@ -47,6 +47,9 @@ AWE.UI = (function(module) {
       AWE.Ext.applyFunction(view.displayObject(), function(obj){
         my.container.addChild(obj);
       });
+      if (view.needsDisplay()) this.setNeedsDisplay();
+      if (view.needsLayout())  this.setNeedsLayout();
+      if (view.needsUpdate())  this.setNeedsUpdate();  
     };
     
     that.removeChild = function(view) {

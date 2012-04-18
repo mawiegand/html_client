@@ -48,10 +48,12 @@ AWE.UI = (function(module) {
     // protected attributes and methods //////////////////////////////////////
   
     my = my || {};
+
+    my.superview = null;
+    my.controller = null;      ///< view controller that has controll of this view.
     
     my.frame = null;           ///< frame of the view.
     my.state = module.CONTROL_STATE_NORMAL;
-    my.controller = null;      ///< view controller that has controll of this view.
   
     /** setting bits in bitfields (flags) */
     my.setBit = function(flags, mask) {
@@ -143,20 +145,41 @@ AWE.UI = (function(module) {
     /** sets that the view needs to re-layout itself and possible subviews. The
      * actual layout will be triggered during the next cycle of the controller's
      * runloop. */
-    that.setNeedsLayout = function() { _needsLayout = true; }    
+    that.setNeedsLayout = function() { 
+      if (!_needsLayout) {
+        _needsLayout = true; 
+        if (my.superview) {  // propagate upwards
+          my.superview.setNeedsLayout();
+        }
+      }
+    }    
     /** true, in case the view needs to re-layout itself and possible subviews. */
     that.needsLayout = function() { return _needsLayout; }
     /** sets that the view needs to update itself (and possible subviews) due to
      * a change in the associated model. The udpate is then triggered by the 
      * view controller during the next cycle of the runloop. */
-    that.setNeedsUpdate = function() { _needsUpdate = true;}
+    that.setNeedsUpdate = function() {
+      if (!_needsUpdate) {
+        _needsUpdate = true; 
+        if (my.superview) {  // TODO: really needs to propagate upwards?
+          my.superview.setNeedsUpdate();
+        }
+      }
+    }
     /** true, in case this view needs to be updated because of a change of the 
      * associated model. */
     that.needsUpdate = function() { return _needsUpdate; }
 
     /** sets the view to need re-display. You should never set this directly, 
      * use setNeedsLayout or setNeedsUpdate instead. */
-    that.setNeedsDisplay = function() { _needsDisplay = true; }
+    that.setNeedsDisplay = function() { 
+      if (!_needsDisplay) {
+        _needsDisplay = true; 
+        if (my.superview) {  // propagate upwards
+          my.superview.setNeedsDisplay();
+        }
+      }
+    }
     /** true, in case the view needs to be displayed because it has changed.
      * Is read-out by view controller and used to trigger a canvas-repaint 
      * when needed. */

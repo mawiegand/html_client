@@ -16,8 +16,6 @@ AWE.UI = (function(module) {
     var _army = null;
     var _armyView = null;
         
-    var _container = null;
-
     // selected
     var _stanceButtonView = null;    
     var _moveButtonView = null;    
@@ -30,7 +28,7 @@ AWE.UI = (function(module) {
     var _infoText3View = null;    
     var _actionPointsText = null;     
 
-    var that = module.createView(spec, my);
+    var that = module.createContainer(spec, my);
 
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
@@ -43,7 +41,6 @@ AWE.UI = (function(module) {
     
     that.initWithControllerAndView = function(controller, view, frame) {
       _super.initWithController(controller, frame);
-      _container = new Container();
       _armyView = view;
       _army = view.army();
       
@@ -51,7 +48,7 @@ AWE.UI = (function(module) {
       _stanceButtonView.initWithControllerTextAndImage(controller, 'stance', AWE.UI.ImageCache.getImage("map/button1"), frame);
 //      _stanceButtonView.setDisabledImage(AWE.UI.ImageCache.getImage("map/button1disabled"));
       _stanceButtonView.setFrame(AWE.Geometry.createRect(12, 6, 52, 52));
-      _container.addChild(_stanceButtonView.displayObject());
+      this.addChild(_stanceButtonView);
 
       _moveButtonView = AWE.UI.createButtonView();
       _moveButtonView.initWithControllerTextAndImage(controller, 'move', AWE.UI.ImageCache.getImage("map/button1"));
@@ -61,53 +58,54 @@ AWE.UI = (function(module) {
       _moveButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
       _moveButtonView.onClick = function() { that.onMoveButtonClick(that); }
       
-      _container.addChild(_moveButtonView.displayObject());
+      this.addChild(_moveButtonView);
 
       _attackButtonView = AWE.UI.createButtonView();
       _attackButtonView.initWithControllerTextAndImage(controller, 'attack', AWE.UI.ImageCache.getImage("map/button1"));
 //      _attackButtonView.setDisabledImage(AWE.UI.ImageCache.getImage("map/button1disabled"));
       _attackButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
       _attackButtonView.onClick = function() { that.onAttackButtonClick(); }
-      _container.addChild(_attackButtonView.displayObject());
+      this.addChild(_attackButtonView);
       
       _rankImageView = AWE.UI.createImageView();
       _rankImageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/army/rank1"));
       _rankImageView.setFrame(AWE.Geometry.createRect(86, 0, 20, 20));
-      _container.addChild(_rankImageView.displayObject());
+      this.addChild(_rankImageView);
 
-      var backgroundGraphics = new Graphics();
+  /*    var backgroundGraphics = new Graphics();
       backgroundGraphics.setStrokeStyle(0);
       backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
       backgroundShape = new Shape(backgroundGraphics);
-      _container.addChild(_backgroundShape);
+      _container.addChild(_backgroundShape);*/
       
       _infoText1View = AWE.UI.createLabelView();
       _infoText1View.initWithControllerAndLabel(controller);
       _infoText1View.setFrame(AWE.Geometry.createRect(130, 0, 66, 24));      
       _infoText1View.setTextAlign("left");
       _infoText1View.setIconImage("map/display/icon");
-      _container.addChild(_infoText1View.displayObject());
+      this.addChild(_infoText1View);
 
       _infoText2View = AWE.UI.createLabelView();
       _infoText2View.initWithControllerAndLabel(controller);
       _infoText2View.setFrame(AWE.Geometry.createRect(130, 22, 66, 24));      
       _infoText2View.setTextAlign("left");
       _infoText2View.setIconImage("map/display/icon");
-      _container.addChild(_infoText2View.displayObject());
+      this.addChild(_infoText2View);
 
       _infoText3View = AWE.UI.createLabelView();
       _infoText3View.initWithControllerAndLabel(controller);
       _infoText3View.setFrame(AWE.Geometry.createRect(130, 44, 666, 24));      
       _infoText3View.setTextAlign("left");
       _infoText3View.setIconImage("map/display/icon");
-      _container.addChild(_infoText3View.displayObject());
+      this.addChild(_infoText3View);
       
+      /*
       var _actionPointsText = new Text(_army.get('ap_present') + " / " + _army.get('ap_max'), "10px Arial", "#000");
       _actionPointsText.textBaseline = "bottom";
       _actionPointsText.textAlign = "center";
       _actionPointsText.x = 96;
       _actionPointsText.y = 119;
-      _container.addChild(_actionPointsText);
+      _container.addChild(_actionPointsText); */
     
       if (!frame) {
         my.frame.size.width = 192;
@@ -175,17 +173,7 @@ AWE.UI = (function(module) {
       that.setNeedsDisplay();
       that.setNeedsLayout();
     }
-
-    that.setFrame = function(frame) {
-      _super.setFrame(frame);
-      _container.x = my.frame.origin.x;
-      _container.y = my.frame.origin.y;
-    }
                 
-    that.displayObject = function() {
-      return _container;
-    };
-    
     that.layoutSubviews = function() {
       _super.layoutSubviews();
       _infoText1View.layoutIfNeeded();
