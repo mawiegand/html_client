@@ -81,8 +81,8 @@ AWE.Config = (function(module) {
     "map/tiles/split512": 'images/tiles/split256.png',
     "map/tiles/base512": 'images/tiles/base256.png',
     "map/tiles/forest512": 'images/tiles/forest512.png',
-    "map/tiles/plain512": 'images/tiles/plain256.png',
-    "map/tiles/mountains512": 'images/tiles/mountains256.png',
+    "map/tiles/plain512": 'images/tiles/plain512.png',
+    "map/tiles/mountains512": 'images/tiles/mountains512.png',
     "map/tiles/mud512": 'images/tiles/mud256.png',
     
     "map/fortress/small": 'images/settlements/fortresssmall.png',

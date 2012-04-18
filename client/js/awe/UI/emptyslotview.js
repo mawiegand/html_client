@@ -29,14 +29,23 @@ AWE.UI = (function(module) {
       _location = location;
                   
       var slotGraphics = new Graphics();
-      slotGraphics.beginStroke(Graphics.getRGB(0,0,0));
-      slotGraphics.beginFill(Graphics.getRGB(255,255,222));
+      slotGraphics.setStrokeStyle(1);
+      slotGraphics.beginFill(AWE.Config.MAP_LOCATION_SPOT_COLOR);
       slotGraphics.drawEllipse(10, AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE - 20, AWE.Config.MAPPING_FORTRESS_SIZE / 2 - 10);
+
+/*    slotGraphics.endFill();   
+      slotGraphics.beginStroke('rgb(0, 0, 0)');
+      slotGraphics.drawRect(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);*/
+      
       slotShapeView = AWE.UI.createShapeView();
       slotShapeView.initWithControllerAndGraphics(that, slotGraphics, frame);
       slotShapeView.onClick = that.onClick;
       slotShapeView.onMouseOver = that.onMouseOver;
       slotShapeView.onMouseOut = that.onMouseOut;
+      
+      my.container.width = my.frame.size.width;
+      my.container.height = my.frame.size.height;
+      
       my.container.addChild(slotShapeView.displayObject());
     };
     

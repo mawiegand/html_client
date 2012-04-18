@@ -7,6 +7,12 @@
 var AWE = AWE || {};
 
 AWE.UI = (function(module) {
+  
+  module.CONTROL_STATE_NORMAL   = 0;
+  module.CONTROL_STATE_HOVERED  = 1 << 0;
+  module.CONTROL_STATE_DISABLED = 1 << 1;
+  module.CONTROL_STATE_SELECTED = 1 << 2;
+
           
   /** creates the base class of the view hierarchy. The spec object is an 
    * optional argument that can be used to initialize the intrinsics of the
@@ -37,8 +43,6 @@ AWE.UI = (function(module) {
     
     var _autoscales = false;   ///< whether the view automatically adapts its internal scale when being resized.
     var _alpha = 1.;           ///< alpha value (transparency) of the view. Continuous value from 0 to 1. 0: transparent, 1: opaque.
-    var _selected = false;     ///< selection state of view
-    var _hovered = false;
   
   
     // protected attributes and methods //////////////////////////////////////
@@ -46,8 +50,26 @@ AWE.UI = (function(module) {
     my = my || {};
     
     my.frame = null;           ///< frame of the view.
+    my.state = module.CONTROL_STATE_NORMAL;
     my.controller = null;      ///< view controller that has controll of this view.
   
+    /** setting bits in bitfields (flags) */
+    my.setBit = function(flags, mask) {
+      return flags | mask;
+    }
+    /** unsetting bits in bitfields (flags) */
+    my.unsetBit = function(flags, mask) {
+      return flags & ~mask; 
+    }
+    /** testing bits in bitfields (flags) */
+    my.testBit = function(flags, mask) {
+      return (flags & mask) == mask;
+    }
+    /** convenience funciton for either setting or unsetting bits in bitfields
+     * (flags) */
+    my.setUnsetBit = function(flags, mask, set) {
+      return my[set ? 'setBit' : 'unsetBit'](flags, mask);
+    }    
     
     // public attributes and methods /////////////////////////////////////////
     
@@ -180,28 +202,10 @@ AWE.UI = (function(module) {
     that.setAlpha = function(alpha) {
       _alpha = alpha;
     }
-    
-    that.setSelected = function(selected) {
-      _selected = selected;
-      this.needsDisplay();
-    }
-
-    that.selected = function() {
-      return _selected;
-    }
-    
-    that.setHovered = function(hovered) {
-      _hovered = hovered;
-      this.needsDisplay();
-    }
-    
-    that.hovered = function() {
-      return _hovered;
-    }
 
     that.setVisible = function(visible) {
       _visible = visible;
-      this.needsDisplay();
+      this.setNeedsDisplay();
     }
     
     that.visible = function() {
@@ -218,6 +222,47 @@ AWE.UI = (function(module) {
     
     that.updateView = function() {
     }
+    
+    
+    // ////////////// STATE TRACKING /////////////////
+    
+    /** returns the present control states of the UI element. */
+    that.state = function() {
+      return my.state;
+    }
+    
+    /** sets the UI's control state to the given flags. You OR the following 
+     * control states together: CONTROL_STATE_HOVERED, CONTROL_STATE_SELECTED,
+     * CONTROL_STATE_DISABLED. If not a bit is set, the control state is
+     * CONTROL_STATE_NORMAL. */
+    that.setState = function(controlState) {
+      my.state = controlState;
+      console.log('changed control state in view to ' + my.state);
+      this.setNeedsUpdate();    // trigger repainting of view
+    }
+    
+    /** sets the present selection state to either true or false. Internally
+     * sets / unsets the appropriate bit on the state-flags. */
+    that.setSelected = function(selected) {
+      this.setState(my.setUnsetBit(my.state, module.CONTROL_STATE_SELECTED, selected));
+    }
+    that.selected = function() {
+      return my.testBit(my.state, module.CONTROL_STATE_SELECTED);
+    }
+    
+    that.setHovered = function(hovered) {
+      this.setState(my.setUnsetBit(my.state, module.CONTROL_STATE_HOVERED, hovered));
+    }
+    that.hovered = function() {
+      return my.testBit(my.state, module.CONTROL_STATE_HOVERED);
+    }
+    
+    that.setEnabled = function(enabled) {
+      this.setState(my.setUnsetBit(my.state, module.CONTROL_STATE_DISABLED, !enabled)); // "!" -> copied inconsistent naming scheme from iOS UI in order to be consistent ;-) 
+    }
+    that.enabled = function() {
+      return !my.testBit(my.state, module.CONTROL_STATE_DISABLED);                      // "!" -> copied inconsistent naming scheme from iOS UI in order to be consistent ;-) 
+    } 
     
     return that;
   };       

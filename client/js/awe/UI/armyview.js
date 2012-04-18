@@ -58,10 +58,16 @@ AWE.UI = (function(module) {
             
       var _baseGraphics = new Graphics();
       _baseGraphics.setStrokeStyle(1);
-      _baseGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
-      _baseGraphics.beginFill(Graphics.getRGB(0, 0, 0));
+      if (_army.isOwn()) {
+        _baseGraphics.beginStroke(Graphics.getRGB(222, 222, 232)).setStrokeStyle(3).beginFill(Graphics.getRGB(242, 242, 255));
+      } else {
+        _baseGraphics.beginStroke(Graphics.getRGB(48, 48, 48)).setStrokeStyle(3).beginFill(Graphics.getRGB(72, 72, 72));
+      }
       _baseGraphics.drawEllipse(6, 84, 52, 24);
       _baseShape = new Shape(_baseGraphics);  
+      _baseShape.onClick = that.onClick;
+      _baseShape.onMouseOver = that.onMouseOver;
+      _baseShape.onMouseOut = that.onMouseOut;
       _container.addChild(_baseShape);
 
       var _poleGraphics = new Graphics();
@@ -143,6 +149,8 @@ AWE.UI = (function(module) {
       // BUG: since the stance-view is not recreated and there is no "addChildBelow" used, after one update
       //      of the army the pole will be in front of the figure, although it should be behind.
       
+
+      
       var _poleGraphics = new Graphics();
       _poleGraphics.setStrokeStyle(1);
       _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
@@ -190,7 +198,13 @@ AWE.UI = (function(module) {
       if (_healthShape) {
         _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
       }
-      _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
+      if (_healthBGShape) {
+        _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
+      }
+      if (_selectShape) {
+        _selectShape.visible = this.selected() || this.hovered();
+        _selectShape.alpha = (this.selected() ? 1. : 0.2);
+      }
     }
     
     that.resizeToFit = function() {
@@ -198,11 +212,12 @@ AWE.UI = (function(module) {
       my.frame.size.height = AWE.Config.MAP_ARMY_HEIGHT;
     };
     
+    /*
     that.setFrame = function(frame) {
       _super.setFrame(frame);
       //_container.x = my.frame.origin.x;
       //_container.y = my.frame.origin.y;
-    }
+    }*/
     
     that.setSelected = function(selected) {
       _super.setSelected(selected);

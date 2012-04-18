@@ -63,6 +63,7 @@ AWE.UI = (function(module) {
 
     /** Updates all village spot locations and generates new DisplayObjects in the container **/
     that.update = function(hidden) {
+      return ;
       if (_node.isLeaf() && !hidden && _node.region() != null && _node.region().locations() != null) {
         _container.displayObject().visible = true;
         var locations = _node.region().locations();
@@ -301,7 +302,6 @@ AWE.UI = (function(module) {
     }
     
     that.initWithControllerAndNode = function(controller, node, frame) {
-      _super.initWithController(controller, frame);
       _node = node;
 
       _scaledContainer = module.createContainer();
@@ -320,6 +320,8 @@ AWE.UI = (function(module) {
       
       _nonScaledContainer.addChild(streetsManager.container());
       _nonScaledContainer.addChild(villageSpotsManager.container()); 
+      
+      _super.initWithController(controller, frame);
     }
 
     
