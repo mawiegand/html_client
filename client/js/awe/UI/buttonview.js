@@ -39,6 +39,10 @@ AWE.UI = (function(module) {
       _imageView.initWithControllerAndImage(controller, image);
       _imageView.setContentMode(module.ViewContentModeNone);
       _imageView.onClick = function() { that.onClick() }; // CAUTION: need to wrap the call in a function, because otherwise it's not possible to attach a different function to that as onClick handler
+      //_imageView.onMouseOver = function(self) { return function() { self.setHovered(true); }}(this);
+      //_imageView.onMouseOut = function(self) { return function() { self.setHovered(false); }}(this);
+      
+      
       _container.addChild(_imageView.displayObject());
       
       _labelText = new Text(text, "10px Arial", "#FFF");
@@ -55,6 +59,7 @@ AWE.UI = (function(module) {
     }
     
     that.updateView = function() {
+      console.log('UPDATE BUTTON VIEW');
 
       _imageView.setAlpha(this.alpha()); // usual case
 
@@ -64,11 +69,11 @@ AWE.UI = (function(module) {
           _imageView.setAlpha(0.3 * this.alpha());
         }
       }
-      else if (this.hovered()) {
-        _imageView.setImage(this.imageForState(module.CONTROL_STATE_HOVERED));
-      }
       else if (this.selected()) {
         _imageView.setImage(this.imageForState(module.CONTROL_STATE_SELECTED));
+      }
+      else if (this.hovered()) {
+        _imageView.setImage(this.imageForState(module.CONTROL_STATE_HOVERED));
       }
       else {
         _imageView.setImage(this.imageForState(module.CONTROL_STATE_NORMAL));
