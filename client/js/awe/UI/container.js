@@ -31,6 +31,7 @@ AWE.UI = (function(module) {
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      notifyRedraw: AWE.Ext.superior(that, 'notifyRedraw'),
     };
     
     
@@ -63,6 +64,14 @@ AWE.UI = (function(module) {
         view.setSuperview(null);
       }
     }
+    
+    that.notifyRedraw = function() { 
+      _super.notifyRedraw(); 
+      AWE.Ext.applyFunction(_subviews, function(obj) {
+        obj.notifyRedraw();
+      });
+    }
+
     
     that.layoutSubviews = function() {
    //   _super.layoutSubviews();
