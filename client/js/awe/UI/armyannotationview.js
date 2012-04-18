@@ -22,11 +22,11 @@ AWE.UI = (function(module) {
     var _attackButtonView = null;    
     var _rankImageView = null;   
     
-    var _backgroundShape = null;
+    var _backgroundShapeView = null;
     var _infoText1View = null;    
     var _infoText2View = null;    
     var _infoText3View = null;    
-    var _actionPointsText = null;     
+    var _actionPointsLabelView = null;     
 
     var that = module.createContainer(spec, my);
 
@@ -71,12 +71,6 @@ AWE.UI = (function(module) {
       _rankImageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/army/rank1"));
       _rankImageView.setFrame(AWE.Geometry.createRect(86, 0, 20, 20));
       this.addChild(_rankImageView);
-
-  /*    var backgroundGraphics = new Graphics();
-      backgroundGraphics.setStrokeStyle(0);
-      backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-      backgroundShape = new Shape(backgroundGraphics);
-      _container.addChild(_backgroundShape);*/
       
       _infoText1View = AWE.UI.createLabelView();
       _infoText1View.initWithControllerAndLabel(controller);
@@ -94,19 +88,17 @@ AWE.UI = (function(module) {
 
       _infoText3View = AWE.UI.createLabelView();
       _infoText3View.initWithControllerAndLabel(controller);
-      _infoText3View.setFrame(AWE.Geometry.createRect(130, 44, 666, 24));      
+      _infoText3View.setFrame(AWE.Geometry.createRect(130, 44, 66, 24));      
       _infoText3View.setTextAlign("left");
       _infoText3View.setIconImage("map/display/icon");
       this.addChild(_infoText3View);
       
-      /*
-      var _actionPointsText = new Text(_army.get('ap_present') + " / " + _army.get('ap_max'), "10px Arial", "#000");
-      _actionPointsText.textBaseline = "bottom";
-      _actionPointsText.textAlign = "center";
-      _actionPointsText.x = 96;
-      _actionPointsText.y = 119;
-      _container.addChild(_actionPointsText); */
-    
+      _actionPointsLabelView = AWE.UI.createLabelView();
+      _actionPointsLabelView.initWithControllerAndLabel(controller);
+      _actionPointsLabelView.setColor('#000');
+      _actionPointsLabelView.setFrame(AWE.Geometry.createRect(64, 102, 64, 24));      
+      this.addChild(_actionPointsLabelView);
+      
       if (!frame) {
         my.frame.size.width = 192;
         my.frame.size.height = 128;
@@ -139,16 +131,18 @@ AWE.UI = (function(module) {
       _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + Math.round((_army.get('rank') + 25) / 25)));
 
       // info view
-      _container.removeChild(_backgroundShape);
+      _container.removeChild(_backgroundShapeView);
       var lines = _army.get('battle_id') && _army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0 ? 3 : 1; 
       
       var backgroundGraphics = new Graphics();
       backgroundGraphics.setStrokeStyle(0);
       backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
       backgroundGraphics.drawRoundRect(128, 34 - lines * 11, 64, lines * 22, 8);
-      _backgroundShape = new Shape(backgroundGraphics);
-      _container.addChildAt(_backgroundShape, 0);
-      
+      _backgroundShapeView = AWE.UI.createShapeView();
+      _backgroundShapeView.initWithControllerAndGraphics(my.controller, backgroundGraphics);
+      _backgroundShapeView.setFrame(AWE.Geometry.createRect(0, 0, 64, lines * 22));
+      _container.addChild(_backgroundShapeView);
+
       if (_army.get('battle_id') && _army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0) {
         _infoText1View.setOrigin(AWE.Geometry.createPoint(130, 0));
         _infoText2View.setVisible(true);
@@ -169,6 +163,8 @@ AWE.UI = (function(module) {
         _infoText3View.setText(_army.get('target_location_id'));
         _infoText2View.setText(_army.get('target_reached_at'));
       }
+      
+      _actionPointsLabelView.setText(_army.get('ap_present') + " / " + _army.get('ap_max'));
       
       that.setNeedsDisplay();
       that.setNeedsLayout();

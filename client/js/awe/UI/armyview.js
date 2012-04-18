@@ -202,7 +202,7 @@ AWE.UI = (function(module) {
         _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
       }
       if (_selectShape) {
-        _selectShape.visible = this.selected() || this.hovered();
+        _selectShape.visible = this.selected() || this.hovered();
         _selectShape.alpha = (this.selected() ? 1. : 0.2);
       }
     }
@@ -243,7 +243,6 @@ AWE.UI = (function(module) {
     };
     
     that.setAnnotationView = function(annotationView) {
-      log('setAnnotationView', annotationView);
       _annotationView = annotationView;
     }
     
