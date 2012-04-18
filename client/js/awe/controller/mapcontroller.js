@@ -1509,6 +1509,9 @@ AWE.Controller = (function(module) {
         
         // log('Update:                   ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
+        console.log('propagate update');
+
+
         // update hierarchies and check which stages need to be redrawn
         stagesNeedUpdate[0] = propUpdates(regionViews) || stagesNeedUpdate[0];
         stagesNeedUpdate[1] = propUpdates(fortressViews) || stagesNeedUpdate[1];
