@@ -44,7 +44,7 @@ AWE.UI = (function(module) {
     
     that.repositionSubviews = function() {
       var posY = 0;
-      AWE.Ext.applyFunction(my.subviews, function(view) {
+      AWE.Ext.applyFunction(my.subviews, function(view) {
         if (view.visible()) {
           view.setOrigin(AWE.Geometry.createPoint(view.frame().origin.x, posY));
           posY += view.frame().size.height + my.padding;

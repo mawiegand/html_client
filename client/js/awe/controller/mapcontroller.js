@@ -1558,20 +1558,20 @@ AWE.Controller = (function(module) {
             
             if (location.typeId() === 1) {
               var visible = that.isFortressVisible(that.mc2vc(location.node().frame()));
+              var locationView = fortressViews[location.node().id()];
             }
             else {   
               var visible = that.isSettlementVisible(that.mc2vc(location.node().frame()));
+              var locationView = locationViews[location.id()];
             }
             
-            if (visible) {
+            if (visible && locationView) {
               if (!view) {       
                 view = AWE.UI.createTargetView();
                 view.initWithControllerAndLocation(that, location);
                 if (location.typeId() === 1) {
-                  var locationView = fortressViews[location.node().id()];
                 }
                 else {   
-                  var locationView = locationViews[location.id()];
                 }
                 view.setLocationView(locationView);
                 _stages[2].addChild(view.displayObject());
@@ -1656,7 +1656,7 @@ AWE.Controller = (function(module) {
         
         // log('Update:                   ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
-        console.log('propagate update');
+        // console.log('propagate update');
 
 
         // update hierarchies and check which stages need to be redrawn
