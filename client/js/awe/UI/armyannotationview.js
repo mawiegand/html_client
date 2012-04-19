@@ -142,7 +142,7 @@ AWE.UI = (function(module) {
         _attackButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);        
       }
-      else if (_army.get('mode') === null || _army.get('mode') === AWE.Config.ARMY_MODE_IDLE) { // 0 -> idle or null -> unkown
+      else if (_army.get('mode') === null || _army.get('mode') === AWE.Config.ARMY_MODE_IDLE) { // 0 -> idle or null -> unkown
         _moveButtonView.setVisible(true);
         _attackButtonView.setVisible(true);
         _cancelButtonView.setVisible(false);
@@ -180,26 +180,10 @@ AWE.UI = (function(module) {
       if (_backgroundShapeView) {
         this.removeChild(_backgroundShapeView);
       }
-      var lines = _army.get('battle_id') && _army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0 ? 3 : 1; 
 
-      if (_army.get('battle_id') && _army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0) {
-        _infoText2View.setVisible(true);
-        _infoText3View.setVisible(true);
-      }
-      else {
-        _infoText2View.setVisible(false);
-        _infoText3View.setVisible(false);
-      }
-
-      _infoText1View.setText(_army.get('strength'));
-      if (_army.get('battle_id') && _army.get('battle_id') != 0) {
-        _infoText2View.setText('Kampf!');
-        _infoText3View.setText('Dauer');
-      }
-      else if (_army.get('target_location_id') && _army.get('target_location_id') != 0) {
-        _infoText3View.setText(_army.get('target_location_id'));
-        _infoText2View.setText(_army.get('target_reached_at'));
-      }
+      _infoText1View.setText(_army.get('owner_name') + (_army.get('alliance_tag') ? (' | ' + _army.get('alliance_tag')) : ''));
+      _infoText3View.setText(_army.get('size_present'));
+      _infoText2View.setText(_army.get('strength'));
       
       infoContainer.layoutSubviews(); // call this by hand, as only changed visibility
       
