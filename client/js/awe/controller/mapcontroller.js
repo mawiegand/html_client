@@ -1319,17 +1319,48 @@ AWE.Controller = (function(module) {
             
             if (army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
               
-              var movementArrow = movementArrowViews[army.get('id')];
+              var targetRegionId = army.get('target_region_id');
+              var targetLocationId = army.get('target_location_id');
+              var regionId = army.get('region_id');
+              var targetPos = null;
               
-              if (!movementArrow) {
-                movementArrow = AWE.UI.createMovementArrowView();
-                movementArrow.initWithControllerAndArmy(that, army);
-                _stages[1].addChild(movementArrow.displayObject());
+              if (targetRegionId != regionId) {
+                var targetRegion = AWE.Map.Manager.getRegion(targetRegionId);
+                if (targetRegion) {
+                  var tframe = that.mc2vc(targetRegion.node().frame()); 
+                  targetPos = AWE.Geometry.createPoint(
+                    tframe.origin.x + tframe.size.width / 2 ,
+                    tframe.origin.y + tframe.size.height / 2 - 60         
+                  );  
+                }
+              }    
+              else if (targetLocationId && targetRegionId) { // target location in same region as starting region -> this region must be available locally
+                var targetLocation = AWE.Map.Manager.getLocation(targetLocationId);
+                if (!targetLocation) {
+                  AWE.Map.Manager.fetchLocationsForRegion(AWE.Map.Manager.getRegion(targetRegionId), function() {
+                    view.setNeedsUpdate();
+                  });
+                }
+                else {
+                  targetPos = that.mc2vc(targetLocation.position());
+                  targetPos.y -= 60;
+                }
+              }          
+              
+              if (targetPos) {
+              
+                var movementArrow = movementArrowViews[army.get('id')];
+              
+                if (!movementArrow) {
+                  movementArrow = AWE.UI.createMovementArrowView();
+                  movementArrow.initWithControllerAndArmy(that, army);
+                  _stages[1].addChild(movementArrow.displayObject());
+                }
+              
+                movementArrow.setStart(AWE.Geometry.createPoint(view.frame().origin.x+24, view.frame().origin.y-10));
+                movementArrow.setEnd(AWE.Geometry.createPoint(targetPos.x, targetPos.y));
+                newMovementArrowViews[army.get('id')] = movementArrow;
               }
-              
-              movementArrow.setStart(AWE.Geometry.createPoint(view.frame().origin.x+30, view.frame().origin.y));
-              movementArrow.setEnd(AWE.Geometry.createPoint(view.frame().origin.x+230, view.frame().origin.y));
-              newMovementArrowViews[army.get('id')] = movementArrow;
             }
           }
         }

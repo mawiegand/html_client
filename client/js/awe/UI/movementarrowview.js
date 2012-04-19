@@ -24,8 +24,8 @@ AWE.UI = (function(module) {
       if (! my.startPos || ! my.endPos) {
         return ;
       }
-      var frame = AWE.Geometry.createRect(Math.min(my.startPos.x, my.endPos.x), Math.min(my.startPos.y, my.endPos.y),
-                                          Math.abs(my.startPos.x-my.endPos.x), Math.abs(my.startPos.y-my.endPos.y));
+      var frame = AWE.Geometry.createRect(Math.min(my.startPos.x, my.endPos.x), Math.min(my.startPos.y, my.endPos.y+20), // +20 -> arrow head!
+                                          Math.abs(my.startPos.x-my.endPos.x), Math.abs(my.startPos.y-(my.endPos.y+20)));
       that.setFrame(frame);
     }
 
@@ -68,8 +68,22 @@ AWE.UI = (function(module) {
       _super.layoutSubviews();
     }    
     
+    that.arrowColor = function() {
+      if (my.army.isOwn) {
+        return 'rgba(255,250,250, 0.9)';
+      }
+      else if (my.army.isRelationAtLeast(AWE.GS.RELATION_TYPE_ALLIED)) {
+        return 'rgba(190, 255, 190, 0.9)';
+      }
+      else if (my.army.isRelationAtLeast(AWE.GS.RELATION_TYPE_NEUTRAL, true)) {
+        return 'rgba(190, 190, 190, 0.9)';
+      }
+      else {
+        return 'rgba(255, 190, 190, 0.9)';
+      }
+    }
+    
     that.updateArrow = function() {
-      
       log('update!');    
           
       if (my.arrowShape) {
@@ -84,11 +98,16 @@ AWE.UI = (function(module) {
       log (spX, spY, epX, epY);
       
       var arrow = new Graphics();
-      arrow.setStrokeStyle(5);
-      arrow.beginStroke(Graphics.getRGB(255,240,240));
-  //  arrow.beginFill(Graphics.getRGB(255, 250, 250));
+      arrow.setStrokeStyle(8);
+      arrow.beginStroke(this.arrowColor());
+//    arrow.beginFill(this.arrowColor());
+
       arrow.moveTo(spX, spY);
-      arrow.bezierCurveTo(spX, spY-250, epX+100, epY-250, epX+100, epY);
+      arrow.bezierCurveTo(spX, spY-250, epX, epY-250, epX, epY);
+      arrow.lineTo(epX+8, epY);
+      arrow.lineTo(epX+0, epY+16);
+      arrow.lineTo(epX-8, epY);
+      arrow.lineTo(epX, epY);
       my.arrowShape = new Shape(arrow);
       my.container.addChild(my.arrowShape);
     }   
