@@ -13,9 +13,9 @@ AWE.UI = (function(module) {
         
     var _node = null;
     
-    var imageView = null;
-    var labelView = null;
-    var selectShape = null;
+    var _imageView = null;
+    var _labelView = null;
+    var _selectShape = null;
     var _flagView = null;
     var _poleShape = null;
     
@@ -30,7 +30,7 @@ AWE.UI = (function(module) {
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
       setFrame: AWE.Ext.superior(that, "setFrame"),
       setAlpha: AWE.Ext.superior(that, "setAlpha"),
-      setSelected: AWE.Ext.superior(that, "setSelected"),
+      updateView: AWE.Ext.superior(that, "updateView"),
     };
     
     /** overwritten view methods */
@@ -61,18 +61,18 @@ AWE.UI = (function(module) {
       selectGraphics.beginStroke(Graphics.getRGB(0,0,0));
       selectGraphics.beginFill(Graphics.getRGB(255,0,0));
       selectGraphics.drawEllipse(0, AWE.Config.MAPPING_FORTRESS_SIZE / 2 + 20, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
-      selectShape = new Shape(selectGraphics);  
-      selectShape.visible = false;  
-      my.container.addChild(selectShape);
+      _selectShape = new Shape(selectGraphics);  
+      _selectShape.visible = false;  
+      my.container.addChild(_selectShape);
       
-      imageView = AWE.UI.createImageView();
-      imageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(fortressImageName));
-      imageView.setContentMode(module.ViewContentModeNone);
-      imageView.setFrame(AWE.Geometry.createRect(0, 20, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
-      imageView.onClick = that.onClick;
-      imageView.onMouseOver = that.onMouseOver;
-      imageView.onMouseOut = that.onMouseOut;
-      my.container.addChild(imageView.displayObject());
+      _imageView = AWE.UI.createImageView();
+      _imageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(fortressImageName));
+      _imageView.setContentMode(module.ViewContentModeNone);
+      _imageView.setFrame(AWE.Geometry.createRect(0, 20, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
+      _imageView.onClick = that.onClick;
+      _imageView.onMouseOver = that.onMouseOver;
+      _imageView.onMouseOut = that.onMouseOut;
+      my.container.addChild(_imageView.displayObject());
       
       _flagView = AWE.UI.createAllianceFlagView();
       _flagView.initWithController(controller);
@@ -85,28 +85,31 @@ AWE.UI = (function(module) {
       my.container.addChild(_flagView.displayObject());
       _flagView.updateView();
 
-      labelView = AWE.UI.createLabelView();
+      _labelView = AWE.UI.createLabelView();
       var ownerName = _node.region().ownerName() + (_node.region().allianceTag() ? " | " +  _node.region().allianceTag() : "");
 
-      labelView.initWithControllerAndLabel(controller, ownerName, true);
-      labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE + 20, AWE.Config.MAPPING_FORTRESS_SIZE, 20));      
-      labelView.onClick = that.onClick;
-      labelView.onMouseOver = that.onMouseOver;
-      labelView.onMouseOut = that.onMouseOut;
-      my.container.addChild(labelView.displayObject());
+      _labelView.initWithControllerAndLabel(controller, ownerName, true);
+      _labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE + 20, AWE.Config.MAPPING_FORTRESS_SIZE, 20));      
+      _labelView.onClick = that.onClick;
+      _labelView.onMouseOver = that.onMouseOver;
+      _labelView.onMouseOut = that.onMouseOut;
+      my.container.addChild(_labelView.displayObject());
       
       my.container.width = my.frame.size.width = AWE.Config.MAPPING_FORTRESS_SIZE;
       my.container.height = my.frame.size.height = AWE.Config.MAPPING_FORTRESS_SIZE + 44;
     };
     
+    that.updateView = function() {
+      _super.updateView();
+      if (_selectShape) {
+        _selectShape.visible = this.selected() || this.hovered();
+        _selectShape.alpha = (this.selected() ? 1. : 0.2);
+      }
+    }
+    
     /** newly intotruced methods */
     
     that.node = function() { return _node; };
-    
-    that.setSelected = function(selected) {
-      _super.setSelected(selected);
-      selectShape.visible = selected;
-    };
     
     that.location = function() {
       return _node.region().location(0);

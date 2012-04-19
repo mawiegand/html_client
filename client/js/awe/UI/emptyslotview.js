@@ -11,6 +11,8 @@ AWE.UI = (function(module) {
     
     var slotShapeView = null;
     var _location = null;
+    var _selectShape = null;
+    
     my = my || {};
     
     my.typeName = "EmptySlotView";
@@ -19,19 +21,29 @@ AWE.UI = (function(module) {
 
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
+      updateView: AWE.Ext.superior(that, "updateView"),
     };
     
     /** overwritten view methods */
     
     that.initWithControllerAndLocation = function(controller, location, frame) {
-      frame = frame || AWE.Geometry.createRect(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE);      
+      frame = frame || AWE.Geometry.createRect(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);      
       _super.initWithController(controller, frame);
       _location = location;
+      
+      var selectGraphics = new Graphics();
+      selectGraphics.setStrokeStyle(1);
+      selectGraphics.beginStroke(Graphics.getRGB(0,0,0));
+      selectGraphics.beginFill(Graphics.getRGB(255,0,0));
+      selectGraphics.drawEllipse(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
+      _selectShape = new Shape(selectGraphics);  
+      _selectShape.visible = false;  
+      my.container.addChild(_selectShape);
                   
       var slotGraphics = new Graphics();
       slotGraphics.setStrokeStyle(1);
       slotGraphics.beginFill(AWE.Config.MAP_LOCATION_SPOT_COLOR);
-      slotGraphics.drawEllipse(10, AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE - 20, AWE.Config.MAPPING_FORTRESS_SIZE / 2 - 10);
+      slotGraphics.drawEllipse(10, 5, AWE.Config.MAPPING_FORTRESS_SIZE - 20, AWE.Config.MAPPING_FORTRESS_SIZE / 2 - 10);
 
 /*    slotGraphics.endFill();   
       slotGraphics.beginStroke('rgb(0, 0, 0)');
@@ -52,6 +64,15 @@ AWE.UI = (function(module) {
     that.location = function() {
       return _location;
     };
+    
+    that.updateView = function() {
+      _super.updateView();
+
+      if (_selectShape) {
+        _selectShape.visible = this.selected() || this.hovered();
+        _selectShape.alpha = (this.selected() ? 1. : 0.2);
+      }
+    }
 
     return that;
   };

@@ -623,17 +623,15 @@ AWE.Controller = (function(module) {
     };
 
     that.viewMouseOver = function(view) { // console.log('view mouse over: ' + view.typeName())
-      if (view.typeName() === 'FortressView') {
+      if (view.typeName() === 'FortressView'
+          || view.typeName() === 'ArmyView'
+          || view.typeName() === 'BaseView'
+          || view.typeName() === 'OutpostView'
+          || view.typeName() === 'EmptySlotView') {
         _hoverView(view);
       }
-      else if (view.typeName() === 'ArmyView') {
-        _hoverView(view);
-      }
-      else if (view.typeName() === 'BaseView') {
-        _hoverView(view);
-      }
-      else if (view.typeName() === 'OutpostView') {
-        _hoverView(view);
+      else if (view.typeName() === 'TargetView') {
+        _hoverView(view.locationView());
       }
       else if (view.typeName() === 'hudView') { // typeof view == 'hud'  (evtl. eigene methode)
         // _unhoverView();
@@ -641,17 +639,15 @@ AWE.Controller = (function(module) {
     };
 
     that.viewMouseOut = function(view) {
-      if (view.typeName() === 'FortressView') {
-        _unhoverView();
+      if (view.typeName() === 'FortressView'
+          || view.typeName() === 'ArmyView'
+          || view.typeName() === 'BaseView'
+          || view.typeName() === 'OutpostView'
+          || view.typeName() === 'EmptySlotView') {
+        _unhoverView(view);
       }
-      else if (view.typeName() === 'ArmyView') {
-        _unhoverView();
-      }
-      else if (view.typeName() === 'BaseView') {
-        _unhoverView();
-      }
-      else if (view.typeName() === 'OutpostView') {
-        _unhoverView();
+      else if (view.typeName() === 'TargetView') {
+        _unhoverView(view.locationView());
       }
     };
     
@@ -682,8 +678,8 @@ AWE.Controller = (function(module) {
       }
     };
 
-    var _unhoverView = function() {
-      if (actionViews.hovered) {
+    var _unhoverView = function(view) {
+      if (view.hovered()) {
         _hoveredView.setHovered(false);
         _hoveredView = null;
         _actionViewChanged = true;
@@ -1402,31 +1398,31 @@ AWE.Controller = (function(module) {
     that.updateActionViews = function() {
       
       // helper method for creating the appropriate annotation view
-      var createAnnotationView = function(baseView) {
+      var createAnnotationView = function(annotatedView) {
         var annotationView = null;
-        if (baseView.typeName() === 'FortressView') {
+        if (annotatedView.typeName() === 'FortressView') {
           annotationView = AWE.UI.createFortressAnnotationView();
-          annotationView.initWithControllerAndView(that, baseView);
+          annotationView.initWithControllerAndView(that, annotatedView);
         }
-        else if (baseView.typeName() === 'ArmyView') {
+        else if (annotatedView.typeName() === 'ArmyView') {
           annotationView = AWE.UI.createArmyAnnotationView();
-          annotationView.initWithControllerAndView(that, baseView);
+          annotationView.initWithControllerAndView(that, annotatedView);
           annotationView.onMoveButtonClick = (function(self) {
             return function(view) { self.armyMoveButtonClicked(view); }
           })(that);
           
-          armyUpdates[baseView.army().get('id')] = baseView.army();
+          armyUpdates[annotatedView.army().get('id')] = annotatedView.army();
         }
-        else if (baseView.typeName() === 'BaseView') {
+        else if (annotatedView.typeName() === 'BaseView') {
           annotationView = AWE.UI.createBaseAnnotationView();
-          annotationView.initWithControllerAndView(that, baseView);
+          annotationView.initWithControllerAndView(that, annotatedView);
         }
-        else if (baseView.typeName() === 'OutpostView') {
+        else if (annotatedView.typeName() === 'OutpostView') {
           annotationView = AWE.UI.createOutpostAnnotationView();
-          annotationView.initWithControllerAndView(that, baseView);
+          annotationView.initWithControllerAndView(that, annotatedView);
         }
     
-        baseView.setAnnotationView(annotationView);
+        annotatedView.setAnnotationView(annotationView);
         
         return annotationView;
       }
@@ -1528,7 +1524,15 @@ AWE.Controller = (function(module) {
               if (!view) {       
                 view = AWE.UI.createTargetView();
                 view.initWithControllerAndLocation(that, location);
+                if (location.typeId() === 1) {
+                  var locationView = fortressViews[location.node().id()];
+                }
+                else {   
+                  var locationView = locationViews[location.id()];
+                }
+                view.setLocationView(locationView);
                 _stages[2].addChild(view.displayObject());
+                locationView.setTargetView(view);
               }                                  
               setTargetPosition(view, that.mc2vc(location.position()));
               newTargetViews[location.id()] = view;
