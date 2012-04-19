@@ -42,6 +42,16 @@ AWE.UI = (function(module) {
       _labelText = new Text(label, "12px Arial", "#FFF");
       _labelText.textAlign = "center";
       _labelText.textBaseline = "middle";
+      
+      _labelText.onClick = function() { 
+        if (that.onClick) that.onClick();   
+      };
+      _labelText.onMouseOver = function() {
+        if (that.onMouseOver) that.onMouseOver();
+      };
+      _labelText.onMouseOut = function() {
+        if (that.onMouseOut) that.onMouseOut();
+      };      
       _container.addChild(_labelText);
     }
 
@@ -90,6 +100,17 @@ AWE.UI = (function(module) {
         _backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
         _backgroundGraphics.drawRoundRect(rectX, (my.frame.size.height - _labelText.getMeasuredLineHeight() - 2 * _padding) / 2, _labelText.getMeasuredWidth() + 2 * _padding + iconWidth, _labelText.getMeasuredLineHeight() + 2 * _padding, 4);
         _backgroundShape = new Shape(_backgroundGraphics);
+
+        _backgroundShape.onClick = function() { 
+          if (that.onClick) that.onClick();   
+        };
+        _backgroundShape.onMouseOver = function() {
+          if (that.onMouseOver) that.onMouseOver();
+        };
+        _backgroundShape.onMouseOut = function() {
+          if (that.onMouseOut) that.onMouseOut();
+        };         
+
         _container.addChildAt(_backgroundShape, 0);
       }
       _container.alpha = this.alpha();
