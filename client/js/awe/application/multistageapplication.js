@@ -119,9 +119,14 @@ AWE.Application = (function(module) {
   	    }
 
         if (target) {
-          if (target && target.view && target.view.onClick) {
+          if (target && target.view && target.view.onClick) { // TODO: in our view layer: propagate clicks upwards along responder chain.
             log('click on target', target.view, target.view.typeName())
-            target.view.onClick(evt); // TODO: I think this is wrong; we somehow need to get the relative coordinates in.
+            if (target.view.enabled()) {  
+              target.view.onClick(evt); // TODO: I think this is wrong; we somehow need to get the relative coordinates in.
+            }
+            else {
+              log('click on disabled view.');
+            }
           }
           else if (target && target.onClick) {
             target.onClick(evt);
