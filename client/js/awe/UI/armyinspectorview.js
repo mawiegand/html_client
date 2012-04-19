@@ -151,14 +151,16 @@ AWE.UI = (function(module) {
       _container.addChild(_stanceView.displayObject());
 
       // Allicance Flag
-      if (_army.get('alliance_id')) {
+      var allianceId = _army.get('alliance_id')
+      if (allianceId) {
         var _flagView = AWE.UI.createAllianceFlagView();
         _flagView.initWithController(controller);
         _flagView.setFrame(AWE.Geometry.createRect(150, 0, 60, 75));
-        _flagView.setAllianceId(_army.get('alliance_id'));
+        _flagView.setAllianceId(allianceId);
+        _flagView.setTagVisible(true);
         _flagView.onClick = function() { 
           if (that.onFlagClicked) {
-            that.onFlagClicked(_army.get('alliance_id'));
+            that.onFlagClicked(allianceId);
           };
         };
         _container.addChild(_flagView.displayObject());

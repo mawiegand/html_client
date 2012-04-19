@@ -16,6 +16,8 @@ AWE.UI = (function(module) {
     var imageView = null;
     var labelView = null;
     var selectShape = null;
+    var _flagView = null;
+    var _poleShape = null;
     
     my = my || {};
     
@@ -44,6 +46,15 @@ AWE.UI = (function(module) {
       if (_node.region() && _node.region().fortressLevel() > 7) {
         fortressImageName = 'map/fortress/large';
       }
+
+      var allianceId = _node.region().allianceId();
+      var _poleGraphics = new Graphics();
+      _poleGraphics.setStrokeStyle(1);
+      _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
+      _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
+      _poleGraphics.drawRoundRect(46, 0, 2, 48, 0);
+      _poleShape = new Shape(_poleGraphics);  
+      my.container.addChild(_poleShape);
             
       var selectGraphics = new Graphics();
       selectGraphics.setStrokeStyle(1);
@@ -57,30 +68,34 @@ AWE.UI = (function(module) {
       imageView = AWE.UI.createImageView();
       imageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(fortressImageName));
       imageView.setContentMode(module.ViewContentModeNone);
-      imageView.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
+      imageView.setFrame(AWE.Geometry.createRect(0, 20, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
       imageView.onClick = that.onClick;
       imageView.onMouseOver = that.onMouseOver;
       imageView.onMouseOut = that.onMouseOut;
       my.container.addChild(imageView.displayObject());
+      
+      _flagView = AWE.UI.createAllianceFlagView();
+      _flagView.initWithController(controller);
+      _flagView.setFrame(AWE.Geometry.createRect(14, 0, 32, 20));
+      _flagView.setAllianceId(allianceId);
+      _flagView.setDirection('left');
+      _flagView.onClick = function() { 
+        if (that.onFlagClicked) {
+          that.onFlagClicked(allianceId);
+        };
+      };
+      my.container.addChild(_flagView.displayObject());
+      _flagView.updateView();
 
       labelView = AWE.UI.createLabelView();
       var ownerName = _node.region().ownerName() + (_node.region().allianceTag() ? " | " +  _node.region().allianceTag() : "");
 
       labelView.initWithControllerAndLabel(controller, ownerName, true);
-      labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, 20));      
+      labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE + 20, AWE.Config.MAPPING_FORTRESS_SIZE, 20));      
       my.container.addChild(labelView.displayObject());
       
-      if (!frame) {
-        that.resizeToFit();        
-      }
-      
-      my.container.width = my.frame.size.width;
-      my.container.height = my.frame.size.height;
-    };
-    
-    that.resizeToFit = function() {
       my.frame.size.width = AWE.Config.MAPPING_FORTRESS_SIZE;
-      my.frame.size.height = AWE.Config.MAPPING_FORTRESS_SIZE + 24;
+      my.frame.size.height = AWE.Config.MAPPING_FORTRESS_SIZE + 44;
     };
     
     /** newly intotruced methods */

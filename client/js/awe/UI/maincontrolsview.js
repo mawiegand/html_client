@@ -40,6 +40,7 @@ AWE.UI = (function(module) {
         _flagView.initWithController(controller);
         _flagView.setFrame(AWE.Geometry.createRect(240, 0, 80, 100));
         _flagView.setAllianceId(allianceId);
+        _flagView.setTagVisible(true);
         _flagView.onClick = function() { 
           WACKADOO.activateAllianceController(allianceId);   
         }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
