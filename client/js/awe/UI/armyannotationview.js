@@ -62,7 +62,7 @@ AWE.UI = (function(module) {
       _moveButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
       _moveButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
       _moveButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
-      _moveButtonView.onClick = function() { that.onMoveButtonClick(that); }
+      _moveButtonView.onClick = function() { if (_moveButtonView.enabled()) { that.onMoveButtonClick(that); } }
       this.addChild(_moveButtonView);
       
       _cancelButtonView = AWE.UI.createButtonView();
@@ -70,7 +70,7 @@ AWE.UI = (function(module) {
       _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
       _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
       _cancelButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
-      _cancelButtonView.onClick = function() { that.onCancelButtonClick(that); }
+      _cancelButtonView.onClick = function() { if (_cancelButtonView.enabled()) { that.onCancelButtonClick(that); } }
       this.addChild(_cancelButtonView);      
       
       _attackButtonView = AWE.UI.createButtonView();
@@ -78,7 +78,7 @@ AWE.UI = (function(module) {
       _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
       _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
       _attackButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
-      _attackButtonView.onClick = function() { that.onAttackButtonClick(); }
+      _attackButtonView.onClick = function() { if (_attackButtonView.enabled()) { that.onAttackButtonClick(); } }
       this.addChild(_attackButtonView);
       
       _rankImageView = AWE.UI.createImageView();

@@ -39,7 +39,11 @@ AWE.UI = (function(module) {
       _imageView = AWE.UI.createImageView();
       _imageView.initWithControllerAndImage(controller, image);
       _imageView.setContentMode(module.ViewContentModeNone);
-      _imageView.onClick = function() { that.onClick() }; // CAUTION: need to wrap the call in a function, because otherwise it's not possible to attach a different function to that as onClick handler
+      _imageView.onClick = function() { 
+        if (that.enabled()) {
+          that.onClick() 
+        }
+      }; // CAUTION: need to wrap the call in a function, because otherwise it's not possible to attach a different function to that as onClick handler
       _imageView.onMouseOver = function(self) { return function() { self.setHovered(true); if (controller) controller.setNeedsDisplay(); }}(this);
       _imageView.onMouseOut = function(self) { return function() { self.setHovered(false); if (controller) controller.setNeedsDisplay(); }}(this);
       
@@ -56,11 +60,7 @@ AWE.UI = (function(module) {
       _labelText.onMouseOver = function(self) { return function() { self.setHovered(true); if (controller) controller.setNeedsDisplay(); }}(this);
       _labelText.onMouseOut = function(self) { return function() { self.setHovered(false); if (controller) controller.setNeedsDisplay(); }}(this);
 
-
-      _labelText.onClick = function() { that.onClick() }; // CAUTION: need to wrap the call in a function, because otherwise it's not possible to attach a different function to that as onClick handler
       _container.addChild(_labelText);
-
-
     
       _container.x = my.frame.origin.x;
       _container.y = my.frame.origin.y;
@@ -139,7 +139,10 @@ AWE.UI = (function(module) {
     
     
     that.onClick = function() {
-      my.controller.buttonClicked(that);
+      log('button on click');
+      if (that.enabled()) {
+        my.controller.buttonClicked(that);
+      }
     };
     
         
