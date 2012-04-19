@@ -203,6 +203,10 @@ AWE.UI = (function(module) {
       that.setNeedsUpdate();
     }
     
+    that.annotatedView = function() {
+      return _armyView;
+    }
+    
     that.baseView = function() {
       return _armyView;
     }

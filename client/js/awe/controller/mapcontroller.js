@@ -512,6 +512,8 @@ AWE.Controller = (function(module) {
       currentAction = {
         typeName: 'moveAction',
         army: armyAnnotationView.army(),
+        armyView: armyAnnotationView.annotatedView(),
+        armyAnnotationView: armyAnnotationView,
       }
       
       armyAnnotationView.setMovingMode(true);
@@ -542,7 +544,7 @@ AWE.Controller = (function(module) {
       that.applicationController.presentModalDialog(dialog);
     }
     
-    var armyTargetClicked = function(army, targetLocation, targetView) {
+    var armyTargetClicked = function(army, targetLocation, armyView, targetView) {
       log('armyTargetClicked', army, targetLocation, AWE.Map.locationTypes[targetLocation.id()]);
       var moveAction = AWE.Action.Military.createMoveArmyAction(army, targetLocation.id());
       moveAction.send(function(status) {
@@ -550,6 +552,7 @@ AWE.Controller = (function(module) {
           AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
             that.setModelChanged();
             that.addDisappearingAnnotationLabel(targetView, 'ETA ' + army.get('target_reached_at'), 1500);
+            that.addDisappearingAnnotationLabel(armyView, '-1 AP', 1500);
           });
         }
         else {
@@ -608,7 +611,7 @@ AWE.Controller = (function(module) {
         }
       
         if (actionCompleted) {
-          armyTargetClicked(currentAction.army, target, view);
+          armyTargetClicked(currentAction.army, target, currentAction.armyView, view);
         }
         _actionViewChanged = true;
         currentAction = null;
@@ -942,8 +945,8 @@ AWE.Controller = (function(module) {
             
             
             AWE.Ext.applyFunctionToElements(armiesInRegion, function(army) {
-              if (!isUpdateRunning('movingArmy')) {
-                if (army.get('mode') === 1 && army.get('target_reached_at') && Date.parseISODate(army.get('target_reached_at')).getTime() + 2000 < new Date().getTime()) { // wait two seconds before posting update request
+              if (!isUpdateRunning('movingArmy') && army.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 20000 < new Date().getTime()) {
+                if (army.get('mode') === 1 && army.get('target_reached_at') && Date.parseISODate(army.get('target_reached_at')).getTime() + 4000 < new Date().getTime()) { // wait four seconds before posting update request
                   console.log('start update of moving army');
                   startUpdate('movingArmy');
                   AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
