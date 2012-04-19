@@ -60,7 +60,7 @@ AWE.UI = (function(module) {
       selectGraphics.setStrokeStyle(1);
       selectGraphics.beginStroke(Graphics.getRGB(0,0,0));
       selectGraphics.beginFill(Graphics.getRGB(255,0,0));
-      selectGraphics.drawEllipse(0, AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
+      selectGraphics.drawEllipse(0, AWE.Config.MAPPING_FORTRESS_SIZE / 2 + 20, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
       selectShape = new Shape(selectGraphics);  
       selectShape.visible = false;  
       my.container.addChild(selectShape);
