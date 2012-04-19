@@ -46,7 +46,6 @@ AWE.UI = (function(module) {
         }
       };
       
-
       this.setNeedsDisplay();
     }
             

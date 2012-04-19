@@ -128,18 +128,14 @@ AWE.Controller = (function(module) {
         that.bannerPane.removeChild(that.bannerShape);
       }
 
-      var _flagShapeGraphics = new Graphics();
-      _flagShapeGraphics.setStrokeStyle(1);
-      _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
-      var color = AWE.GS.AllianceManager.colorForNumber(that.allianceId);
-      _flagShapeGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
-      _flagShapeGraphics.moveTo( 0,  0);
-      _flagShapeGraphics.lineTo( 60,  0).lineTo( 30,  75).lineTo( 0,  0);
-      that.bannerShape = AWE.UI.createShapeView();
-      that.bannerShape.initWithControllerAndGraphics(this, _flagShapeGraphics);
-      that.bannerShape.setOrigin(100,100);
-      that.bannerShape.displayObject().x = 350;
-      that.bannerPane.addChild(that.bannerShape);      
+      that.bannerShape = AWE.UI.createAllianceFlagView();
+      that.bannerShape.initWithController(this);
+      that.bannerShape.setFrame(AWE.Geometry.createRect(100, 100, 60, 75));
+      that.bannerShape.setAllianceId(that.allianceId);
+      that.bannerShape.setTagVisible(true);
+      that.bannerShape.setDirection('down');
+      that.bannerPane.addChild(that.bannerShape);
+      that.bannerShape.updateView();
     }
     
     /** update the view in case the OBJECTS (alliance, members) did change. A change
