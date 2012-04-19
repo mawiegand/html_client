@@ -19,6 +19,7 @@ AWE.UI = (function(module) {
     my.army = null;
     
     my.arrowShape = null;
+    my.etaView = null;
     
     my.updateFrame = function() {
       if (! my.startPos || ! my.endPos) {
@@ -68,26 +69,38 @@ AWE.UI = (function(module) {
       _super.layoutSubviews();
     }    
     
-    that.arrowColor = function() {
+    that.arrowColor = function(focus) {
+      if (focus === undefined) {
+        focus = false;
+      }
+      
+      var a = focus ? '1.0' : '0.85';
+      
       if (my.army.isOwn) {
-        return 'rgba(255,250,250, 0.9)';
+        return 'rgba(255,250,250, '+a+')';
       }
       else if (my.army.isRelationAtLeast(AWE.GS.RELATION_TYPE_ALLIED)) {
-        return 'rgba(190, 255, 190, 0.9)';
+        return 'rgba(190, 255, 190, '+a+')';
       }
       else if (my.army.isRelationAtLeast(AWE.GS.RELATION_TYPE_NEUTRAL, true)) {
-        return 'rgba(190, 190, 190, 0.9)';
+        return 'rgba(190, 190, 190, '+a+')';
       }
       else {
-        return 'rgba(255, 190, 190, 0.9)';
+        return 'rgba(255, 190, 190, '+a+')';
       }
     }
     
     that.updateArrow = function() {
-      log('update!');    
-          
+      var focus = this.hovered() || this.selected();
+      
       if (my.arrowShape) {
         my.container.removeChild(my.arrowShape);
+        my.arrowShape = null;
+      }
+      
+      if (my.etaView && !this.hovered() && !this.selected()) {
+        my.container.removeChild(my.etaView.displayObject());
+        my.etaView = null;
       }
       
       var spX = my.startPos.x - my.frame.origin.x;  /// move to frame
@@ -98,18 +111,27 @@ AWE.UI = (function(module) {
       log (spX, spY, epX, epY);
       
       var arrow = new Graphics();
-      arrow.setStrokeStyle(8);
-      arrow.beginStroke(this.arrowColor());
+      arrow.setStrokeStyle(focus ? 13 : 9);
+      arrow.beginStroke(this.arrowColor(focus));
 //    arrow.beginFill(this.arrowColor());
 
       arrow.moveTo(spX, spY);
       arrow.bezierCurveTo(spX, spY-250, epX, epY-250, epX, epY);
-      arrow.lineTo(epX+8, epY);
+      arrow.lineTo(epX+7, epY);
       arrow.lineTo(epX+0, epY+16);
-      arrow.lineTo(epX-8, epY);
+      arrow.lineTo(epX-7, epY);
       arrow.lineTo(epX, epY);
       my.arrowShape = new Shape(arrow);
       my.container.addChild(my.arrowShape);
+      
+      if (!my.etaView && focus) {
+        my.etaView = AWE.UI.createLabelView();
+        my.etaView.initWithControllerAndLabel(this.controller(), 'ETA ' + my.army.get('target_reached_at'), true);
+        my.etaView.setFrame(AWE.Geometry.createRect(epX+50, epY, 130, 20));
+        my.etaView.setTextAlign('center');
+        my.container.addChild(my.etaView.displayObject());
+      }
+
     }   
        
     return that;

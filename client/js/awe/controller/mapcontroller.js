@@ -1348,7 +1348,7 @@ AWE.Controller = (function(module) {
               }          
               
               if (targetPos) {
-              
+                
                 var movementArrow = movementArrowViews[army.get('id')];
               
                 if (!movementArrow) {
@@ -1356,8 +1356,11 @@ AWE.Controller = (function(module) {
                   movementArrow.initWithControllerAndArmy(that, army);
                   _stages[1].addChild(movementArrow.displayObject());
                 }
+
+                movementArrow.setHovered(_hoveredView === view);
+                movementArrow.setSelected(_selectedView === view);
               
-                movementArrow.setStart(AWE.Geometry.createPoint(view.frame().origin.x+24, view.frame().origin.y-10));
+                movementArrow.setStart(AWE.Geometry.createPoint(view.frame().origin.x+24, view.frame().origin.y+10));
                 movementArrow.setEnd(AWE.Geometry.createPoint(targetPos.x, targetPos.y));
                 newMovementArrowViews[army.get('id')] = movementArrow;
               }
