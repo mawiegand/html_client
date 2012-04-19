@@ -17,6 +17,9 @@ AWE.UI = (function(module) {
     var labelView = null;
     var selectShape = null;
     
+    var _poleShape = null;
+    var _flagView = null;
+    
     my = my || {};
     
     my.typeName = "OutpostView";
@@ -45,6 +48,15 @@ AWE.UI = (function(module) {
       selectShape.visible = false;  
       my.container.addChild(selectShape);
       
+      var allianceId = _location.allianceId();
+      var _poleGraphics = new Graphics();
+      _poleGraphics.setStrokeStyle(1);
+      _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
+      _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
+      _poleGraphics.drawRoundRect(44, 0, 2, 48, 0);
+      _poleShape = new Shape(_poleGraphics);  
+      my.container.addChild(_poleShape);
+
       var name = AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()];
       var level = location.level();
       
@@ -64,6 +76,19 @@ AWE.UI = (function(module) {
       labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, 16));      
       my.container.addChild(labelView.displayObject());
                   
+      _flagView = AWE.UI.createAllianceFlagView();
+      _flagView.initWithController(controller);
+      _flagView.setFrame(AWE.Geometry.createRect(16, 0, 28, 16));
+      _flagView.setAllianceId(allianceId);
+      _flagView.setDirection('left');
+      _flagView.onClick = function() { 
+        if (that.onFlagClicked) {
+          that.onFlagClicked(allianceId);
+        };
+      };
+      my.container.addChild(_flagView.displayObject());
+      _flagView.updateView();
+
       if (!frame) {
         that.resizeToFit();        
       }
