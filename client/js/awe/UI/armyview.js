@@ -25,7 +25,7 @@ AWE.UI = (function(module) {
     var _stanceView = null;    
     var _baseShape = null;    
     var _poleShape = null;    
-    var _flagShape = null;
+    var _flagView = null;
     var _selectShape = null;    
     var _healthShape = null;    
     var _healthBGShape = null;    
@@ -146,8 +146,8 @@ AWE.UI = (function(module) {
       _poleShape = new Shape(_poleGraphics);  
       _container.addChild(_poleShape);
 
-      if (_flagShape) {
-        _container.removeChild(_flagShape);
+      if (_flagView) {
+        _container.removeChild(_flagView.displayObject());
       }
       var flagLength = 48 - _army.get('size_present') / 38;
       _flagView = AWE.UI.createAllianceFlagView();
