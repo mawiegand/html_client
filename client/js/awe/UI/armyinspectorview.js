@@ -216,6 +216,8 @@ AWE.UI = (function(module) {
       _sizeType1LabelView.setText(_army.get('size_present'));
       _sizeType2LabelView.setText(_army.get('size_present'));
       _sizeType3LabelView.setText(_army.get('size_present'));
+      
+      _reinforceButtonView.setEnabled(_army.get('home_settlement_id') === _army.get('location_id'));
 
       if (_flagView) {      
         this.removeChild(_flagView);
