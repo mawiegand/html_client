@@ -43,7 +43,18 @@ AWE.UI = (function(module) {
     };
     
     
-    that.addChild = function(view) { 
+    that.addChildAt = function(view, pos) { 
+      _subviews.push(view);
+      view.setSuperview(this);
+      AWE.Ext.applyFunction(view.displayObject(), function(obj){
+        my.container.addChildAt(obj, pos);
+      });
+      if (view.needsDisplay()) this.setNeedsDisplay();
+      if (view.needsLayout())  this.setNeedsLayout();
+      if (view.needsUpdate())  this.setNeedsUpdate();  
+    };
+    
+    that.addChild = function(view) {
       _subviews.push(view);
       view.setSuperview(this);
       AWE.Ext.applyFunction(view.displayObject(), function(obj){

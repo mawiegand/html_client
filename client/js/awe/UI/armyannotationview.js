@@ -128,8 +128,6 @@ AWE.UI = (function(module) {
     
     that.recalcView = function() {
       
-      console.log('update annotation view');
-      
       // buttons
       _stanceButtonView.setVisible(_army.isOwn() && _armyView.selected() && 0); // NO third button at present
       _stanceButtonView.updateView();
@@ -142,7 +140,9 @@ AWE.UI = (function(module) {
       _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + Math.round((_army.get('rank') + 25) / 25)));
 
       // info view
-      _container.removeChild(_backgroundShapeView);
+      if (_backgroundShapeView) {
+        this.removeChild(_backgroundShapeView);
+      }
       var lines = _army.get('battle_id') && _army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0 ? 3 : 1; 
       
       var backgroundGraphics = new Graphics();
@@ -152,7 +152,7 @@ AWE.UI = (function(module) {
       _backgroundShapeView = AWE.UI.createShapeView();
       _backgroundShapeView.initWithControllerAndGraphics(my.controller, backgroundGraphics);
       _backgroundShapeView.setFrame(AWE.Geometry.createRect(0, 0, 64, lines * 22));
-      _container.addChild(_backgroundShapeView);
+      this.addChildAt(_backgroundShapeView, 0);
 
       if (_army.get('battle_id') && _army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0) {
         _infoText1View.setOrigin(AWE.Geometry.createPoint(130, 0));

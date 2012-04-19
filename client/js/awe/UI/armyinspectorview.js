@@ -151,28 +151,18 @@ AWE.UI = (function(module) {
       _container.addChild(_stanceView.displayObject());
 
       // Allicance Flag
-      if (_army.get('alliance_id') != null) {
-        offX = 150; offY = 0;
-        _flagShapeGraphics = new Graphics();
-        _flagShapeGraphics.setStrokeStyle(1);
-        _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
-        var color = AWE.GS.AllianceManager.colorForNumber(_army.get('alliance_id'));
-        _flagShapeGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
-        _flagShapeGraphics.moveTo(offX +0, offY +0);
-        _flagShapeGraphics.lineTo(offX +60, offY +0).lineTo(offX +30, offY +75).lineTo(offX +0, offY +0);
-        _flagShape = new Shape(_flagShapeGraphics);
-        _container.addChild(_flagShape);
-        _flagShape.onClick = function() { 
+      if (_army.get('alliance_id')) {
+        var _flagView = AWE.UI.createAllianceFlagView();
+        _flagView.initWithController(controller);
+        _flagView.setFrame(AWE.Geometry.createRect(150, 0, 60, 75));
+        _flagView.setAllianceId(_army.get('alliance_id'));
+        _flagView.onClick = function() { 
           if (that.onFlagClicked) {
             that.onFlagClicked(_army.get('alliance_id'));
           };
         };
-        
-        _allianceTagLabel = AWE.UI.createLabelView();
-        _allianceTagLabel.initWithControllerAndLabel(controller);
-        _allianceTagLabel.setFrame(AWE.Geometry.createRect(offX+10, offY+5, 40, 16));      
-        _allianceTagLabel.setTextAlign("center");
-        _container.addChild(_allianceTagLabel.displayObject());        
+        _container.addChild(_flagView.displayObject());
+        _flagView.updateView();
       }
 
       _invButtonView = AWE.UI.createButtonView();

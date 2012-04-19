@@ -78,18 +78,6 @@ AWE.UI = (function(module) {
       _poleShape = new Shape(_poleGraphics);  
       _container.addChild(_poleShape);
 
-      var color = { r: 200, g: 200, b: 200 }; // gray for neutral armies
-      if (_army.get('alliance_id')) {
-        color = AWE.GS.AllianceManager.colorForNumber(_army.get('alliance_id'));
-      }
-      var _flagGraphics = new Graphics();
-      _flagGraphics.setStrokeStyle(1);
-      _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
-      _flagGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
-      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * army.get('size_present') / 1200, 22).lineTo(56, 12);
-      _flagShape = new Shape(_flagGraphics);  
-      _container.addChild(_flagShape);
-
       _stanceView = AWE.UI.createImageView();
       _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[1]));
       _stanceView.setFrame(AWE.Geometry.createRect(0, 8, 64, 96));
@@ -149,7 +137,6 @@ AWE.UI = (function(module) {
       // BUG: since the stance-view is not recreated and there is no "addChildBelow" used, after one update
       //      of the army the pole will be in front of the figure, although it should be behind.
       
-
       
       var _poleGraphics = new Graphics();
       _poleGraphics.setStrokeStyle(1);
@@ -159,18 +146,17 @@ AWE.UI = (function(module) {
       _poleShape = new Shape(_poleGraphics);  
       _container.addChild(_poleShape);
 
-      _container.removeChild(_flagShape);
-      var color = { r: 200, g: 200, b: 200 }; // gray for neutral armies
-      if (_army.get('alliance_id')) {
-        color = AWE.GS.AllianceManager.colorForNumber(_army.get('alliance_id'));
+      if (_flagShape) {
+        _container.removeChild(_flagShape);
       }
-      var _flagGraphics = new Graphics();
-      _flagGraphics.setStrokeStyle(1);
-      _flagGraphics.beginStroke(Graphics.getRGB(0,0,0));
-      _flagGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
-      _flagGraphics.moveTo(56, 12).lineTo(56, 32).lineTo(8 + 32 * _army.get('size_present') / 1200, 22).lineTo(56, 12);
-      _flagShape = new Shape(_flagGraphics);  
-      _container.addChild(_flagShape);
+      var flagLength = 48 - _army.get('size_present') / 38;
+      _flagView = AWE.UI.createAllianceFlagView();
+      _flagView.initWithController(my.controller);
+      _flagView.setFrame(AWE.Geometry.createRect(56 - flagLength, 12, flagLength, 20));
+      _flagView.setAllianceId(_army.get('alliance_id'));
+      _flagView.setDirection('left');
+      _container.addChild(_flagView.displayObject());
+      _flagView.updateView();
             
       _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]));
       
@@ -205,38 +191,14 @@ AWE.UI = (function(module) {
         _selectShape.visible = this.selected() || this.hovered();
         _selectShape.alpha = (this.selected() ? 1. : 0.2);
       }
+      
+      _flagView.updateView();
     }
     
     that.resizeToFit = function() {
       my.frame.size.width = AWE.Config.MAP_ARMY_WIDTH;
       my.frame.size.height = AWE.Config.MAP_ARMY_HEIGHT;
     };
-    
-    /*
-    that.setFrame = function(frame) {
-      _super.setFrame(frame);
-      //_container.x = my.frame.origin.x;
-      //_container.y = my.frame.origin.y;
-    }*/
-    
-    that.setSelected = function(selected) {
-      _super.setSelected(selected);
-      _selectShape.visible = that.selected();
-      if (_healthShape) {
-        _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
-      }
-      _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
-      this.setNeedsDisplay();
-    };
-    
-    that.setHovered = function(hovered) {
-      _super.setHovered(hovered);
-      if (_healthShape) {
-        _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
-      }
-      _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
-      this.setNeedsDisplay();
-    }
     
     that.displayObject = function() {
       return _container;

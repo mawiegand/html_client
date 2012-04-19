@@ -13,7 +13,7 @@ AWE.UI = (function(module) {
 
     my = my || {};
     
-    my.typeName = "MainControlView";
+    my.typeName = "MainControlsView";
     
     that = module.createView(spec, my);
 
@@ -34,28 +34,15 @@ AWE.UI = (function(module) {
       
       
       var character = AWE.GS.CharacterManager.currentCharacter;
-      var _flagShape = null;
-      var _flagButtonText = null;
-      if (character && character.get('alliance_id')) {
-        var color = AWE.GS.AllianceManager.colorForNumber(character.get('alliance_id'));
-
-        var _flagShapeGraphics = new Graphics();
-        _flagShapeGraphics.setStrokeStyle(1);
-        _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
-        _flagShapeGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
-        _flagShapeGraphics.moveTo(240, 0);
-        _flagShapeGraphics.lineTo(320, 0).lineTo(280, 100).lineTo(240, 0);
-        _flagShape = new Shape(_flagShapeGraphics);
-      
-        _flagShape.onClick = function() { 
-          WACKADOO.activateAllianceController(character.get('alliance_id'));   
+      var allianceId = character.get('alliance_id');
+      if (character && allianceId) {
+        var _flagView = AWE.UI.createAllianceFlagView();
+        _flagView.initWithController(controller);
+        _flagView.setFrame(AWE.Geometry.createRect(240, 0, 80, 100));
+        _flagView.setAllianceId(allianceId);
+        _flagView.onClick = function() { 
+          WACKADOO.activateAllianceController(allianceId);   
         }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
-      
-        _flagButtonText = new Text(character.get('alliance_tag'), "12px Arial", "#000");
-        _flagButtonText.textBaseline = "middle";
-        _flagButtonText.textAlign = "center"
-        _flagButtonText.x = 280;
-        _flagButtonText.y = 40;
       }
   
       // Kopf
@@ -229,9 +216,9 @@ AWE.UI = (function(module) {
       _container.addChildAt(_armiesButton);    
       _container.addChildAt(_heroHead);
       _container.addChildAt(_heroButton);
-      if (_flagShape) {
-        _container.addChildAt(_flagButtonText);
-        _container.addChildAt(_flagShape);
+      if (_flagView) {
+        _container.addChild(_flagView.displayObject());
+        _flagView.updateView();
       }
       _container.addChildAt(_village);
       _container.addChildAt(_fortressButton); 

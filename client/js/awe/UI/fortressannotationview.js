@@ -83,7 +83,6 @@ AWE.UI = (function(module) {
       _container.addChild(_infoText2View.displayObject());
       
       _easementImageView = AWE.UI.createImageView();
-      log(AWE.Config.DEV_ALLIANCE_ID, _node.region().allianceId());
       _easementImageView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage(AWE.Config.DEV_ALLIANCE_ID ==  _node.region().allianceId() ? "map/easement/yes" : "map/easement/no"));
       _easementImageView.setFrame(AWE.Geometry.createRect(80, 0, 32, 32));
       _easementImageView.setContentMode(module.setContentModeNone);
