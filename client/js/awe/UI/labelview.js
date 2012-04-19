@@ -117,6 +117,15 @@ AWE.UI = (function(module) {
       return _labelText.textAlign;
     }
             
+    that.setFont = function(font) {
+      _labelText.font = font;
+      that.setNeedsLayout();
+    }
+    
+    that.font = function() {
+      return _labelText.font;
+    }
+            
     that.setPadding = function(padding) {
       _padding = padding;
       that.setNeedsLayout();     
