@@ -25,7 +25,6 @@ AWE.UI = (function(module) {
     var _infoText1View = null;    
     var _infoText2View = null;    
     var _infoText3View = null;    
-    var _actionPointsLabelView = null;  
     
     var infoContainer = null;  
     
@@ -110,13 +109,7 @@ AWE.UI = (function(module) {
       _infoText3View.setTextAlign("left");
       _infoText3View.setIconImage("map/display/icon");
        infoContainer.addChild(_infoText3View);
-      
-      _actionPointsLabelView = AWE.UI.createLabelView();
-      _actionPointsLabelView.initWithControllerAndLabel(controller);
-      _actionPointsLabelView.setColor('#000');
-      _actionPointsLabelView.setFrame(AWE.Geometry.createRect(64, 102, 64, 24));      
-      this.addChild(_actionPointsLabelView);
-      
+            
       if (!frame) {
         my.frame.size.width = 192;
         my.frame.size.height = 128;
@@ -222,8 +215,6 @@ AWE.UI = (function(module) {
                                                             infoContainer.frame().size.width + 4, 
                                                             infoContainer.frame().size.height+ 4));
       this.addChildAt(_backgroundShapeView, 0);      
-      
-      _actionPointsLabelView.setText(_army.get('ap_present') + " / " + _army.get('ap_max'));
       
       that.setNeedsDisplay();
     }

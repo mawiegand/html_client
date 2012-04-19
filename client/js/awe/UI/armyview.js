@@ -28,7 +28,9 @@ AWE.UI = (function(module) {
     var _flagView = null;
     var _selectShape = null;    
     var _healthShape = null;    
-    var _healthBGShape = null;    
+    var _healthBGShape = null;
+    
+    var _actionPointsLabelView = null;
     
     that = module.createView(spec, my);
 
@@ -118,6 +120,12 @@ AWE.UI = (function(module) {
         _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
       }
       _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
+      
+      _actionPointsLabelView = AWE.UI.createLabelView();
+      _actionPointsLabelView.initWithControllerAndLabel(controller);
+      _actionPointsLabelView.setColor('#000');
+      _actionPointsLabelView.setFrame(AWE.Geometry.createRect(0, 102, 64, 24));      
+      _container.addChild(_actionPointsLabelView.displayObject());      
 
       if (!frame) {
         that.resizeToFit();        
@@ -183,8 +191,7 @@ AWE.UI = (function(module) {
         healthGraphics.beginFill(fillColor);
         healthGraphics.drawRoundRect(0, 108, 64 * (_army.get('ap_present') / _army.get('ap_max')), 12, 4);
         _healthShape = new Shape(healthGraphics);
-        _container.addChild(_healthShape);
-        
+        _container.addChildAt(_healthShape, 6);
       }
       if (_healthShape) {
         _healthShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
@@ -197,6 +204,11 @@ AWE.UI = (function(module) {
         _selectShape.alpha = (this.selected() ? 1. : 0.2);
       }
       
+      if (_actionPointsLabelView) {
+        _actionPointsLabelView.setVisible(this.selected() || this.hovered() || (_army && _army.isOwn()));
+        _actionPointsLabelView.setText(_army.get('ap_present') + " / " + _army.get('ap_max'));
+      }
+
       _flagView.updateView();
     }
     
