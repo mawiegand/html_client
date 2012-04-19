@@ -92,6 +92,7 @@ AWE.UI = (function(module) {
         _backgroundShape = new Shape(_backgroundGraphics);
         _container.addChildAt(_backgroundShape, 0);
       }
+      _container.alpha = this.alpha();
     }
     
     that.displayObject = function() {

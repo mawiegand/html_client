@@ -27,6 +27,8 @@ AWE.Controller = (function(module) {
     var _scrollingStarted = false;///< user is presently scrolling
     var _scrollingStartedAtVC;
     var _scrollingOriginalTranslationVC;
+    
+    var _animations = [];
 
     var _camera; ///< camera for handeling camera panning
     
@@ -540,13 +542,14 @@ AWE.Controller = (function(module) {
       that.applicationController.presentModalDialog(dialog);
     }
     
-    var armyTargetClicked = function(army, targetLocation) {
+    var armyTargetClicked = function(army, targetLocation, targetView) {
       log('armyTargetClicked', army, targetLocation, AWE.Map.locationTypes[targetLocation.id()]);
       var moveAction = AWE.Action.Military.createMoveArmyAction(army, targetLocation.id());
       moveAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
           AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
             that.setModelChanged();
+            that.addDisappearingAnnotationLabel(targetView, 'ETA ' + army.get('target_reached_at'), 1500);
           });
         }
         else {
@@ -605,7 +608,7 @@ AWE.Controller = (function(module) {
         }
       
         if (actionCompleted) {
-          armyTargetClicked(currentAction.army, target);
+          armyTargetClicked(currentAction.army, target, view);
         }
         _actionViewChanged = true;
         currentAction = null;
@@ -734,6 +737,93 @@ AWE.Controller = (function(module) {
       }
       _inspectorChanged = true;
     };
+
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Animations
+    //
+    // ///////////////////////////////////////////////////////////////////////  
+    
+    that.addAnimation = function(animation) {
+      _animations.push(animation);
+    }
+    
+    /*
+    that.removeAnimation = function(animation) {
+      animation.cancel();
+    }*/
+
+
+    that.addTransientAnnotationView = function(annotatedView, annotation, duration, offset) {
+      duration = duration || 1000;
+      offset = offset || AWE.Geometry.createPoint(100,50);
+      
+      _stages[2].addChild(annotation.displayObject());
+      console.log('added transient view.')
+
+      
+      var animation = AWE.UI.createTimedAnimation({
+        view: annotation,
+        duration: duration,
+        
+        updateView: function() {
+          return function(view) {
+            view.setOrigin(annotatedView.frame().origin.copy());  
+          };
+        }(),
+        
+        onAnimationEnd: function(viewToRemove) {
+          return function() {
+            _stages[2].removeChild(viewToRemove.displayObject());
+            console.log('removed animated label on animation end');
+          };
+        }(annotation),
+      });
+      
+      that.addAnimation(animation);
+    }
+    
+    that.addTransientAnnotationLabel = function(annotatedView, message, duration, offset, frame) {
+      var label = AWE.UI.createLabelView();
+      label.initWithControllerAndLabel(this, message, true, frame);
+      this.addTransientAnnotationView(annotatedView, label, duration, offset);
+    }
+    
+    
+    that.addDisappearingAnnotationLabel = function(annotatedView, message, duration, offset, frame) {
+      duration = duration || 1000;
+      offset = offset || AWE.Geometry.createPoint(100,50);
+      
+      var label = AWE.UI.createLabelView();
+      label.initWithControllerAndLabel(this, message, true, frame);      
+      
+      _stages[2].addChild(label.displayObject());
+      console.log('added disappearing view.');
+      
+      var animation = AWE.UI.createTimedAnimation({
+        view: label,
+        duration: duration,
+        
+        updateView: function() {
+          return function(view, elapsed) {
+            view.setOrigin(AWE.Geometry.createPoint(annotatedView.frame().origin.x, 
+                                                    annotatedView.frame().origin.y - (150.0*elapsed)));  
+            view.setAlpha(1.0-Math.max(elapsed-0.5, 0.0)*2);
+          };
+        }(),
+        
+        onAnimationEnd: function(viewToRemove) {
+          return function() {
+            _stages[2].removeChild(viewToRemove.displayObject());
+            console.log('removed animated label on animation end');
+          };
+        }(label),
+      });
+      
+      that.addAnimation(animation);
+    }
+    
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -1584,13 +1674,35 @@ AWE.Controller = (function(module) {
         // STEP 3: layout canvas & stages according to possibly changed window size (TODO: clean this!)
         that.layoutIfNeeded();   
         
+        // STEP 3b: animations
+        var animating = false;
+        AWE.Ext.applyFunction(_animations, function(animation) {
+          if (animation.animating()) {
+            animating = true;
+          }
+        });
+  
+        
         // STEP 4: update views and repaint view hierarchies as needed
-        if (_windowChanged || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || _actionViewChanged) {
+        if (_windowChanged || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || _actionViewChanged || animating) {
           // STEP 4a: get all visible nodes from the model
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());    
           
           // STEP 4b: create, remove and update all views according to visible parts of model      
           var stageUpdateNeeded = that.updateViewHierarchy(visibleNodes, visibleArea);
+    
+          if (animating) {
+            var runningAnimations = [];
+            AWE.Ext.applyFunction(_animations, function(animation) {
+              animation.update();
+              if (!animation.ended()) {
+                runningAnimations.push(animation);
+              }
+            });
+            _animations = runningAnimations;
+          }
+          
+          stageUpdateNeeded[2] = stageUpdateNeeded[2] || animating; ///< ANIMATION HACK (all animations on layer 2)
           
           // STEP 4c: update (repaint) those stages, that have changed (one view that needsDisplay triggers repaint of whole stage)
           var viewsInStages = [
