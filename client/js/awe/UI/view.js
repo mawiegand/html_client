@@ -247,10 +247,20 @@ AWE.UI = (function(module) {
     }
     
     that.setAlpha = function(alpha) {
+      if (_alpha === alpha) {
+        return ;
+      }
       _alpha = alpha;
+      AWE.Ext.applyFunction(this.displayObject(), function(obj) {
+        obj.alpha = _alpha;
+      });      
+      this.setNeedsDisplay();
     }
 
     that.setVisible = function(visible) {
+      if (my.visible === visible) {
+        return ;
+      }
       my.visible = visible;
       AWE.Ext.applyFunction(this.displayObject(), function(obj) {
         obj.visible = visible;
@@ -282,9 +292,10 @@ AWE.UI = (function(module) {
      * CONTROL_STATE_DISABLED. If not a bit is set, the control state is
      * CONTROL_STATE_NORMAL. */
     that.setState = function(controlState) {
+      if (my.state != controlState) {
+        this.setNeedsUpdate();    // trigger repainting of view
+      }
       my.state = controlState;
-      console.log('changed control state in view to ' + my.state);
-      this.setNeedsUpdate();    // trigger repainting of view
     }
     
     /** sets the present selection state to either true or false. Internally

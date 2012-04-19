@@ -123,6 +123,7 @@ AWE.UI = (function(module) {
       }
       
       this.updateButtonVisibility();
+      this.updateButtonState();
     };
     
     that.onAttackButtonClick = function() {};
@@ -143,7 +144,12 @@ AWE.UI = (function(module) {
     }
     
     that.updateButtonVisibility = function() {
-      if (_army.get('mode') === null || _army.get('mode') === AWE.Config.ARMY_MODE_IDLE) { // 0 -> idle or null -> unkown
+      if (!_army.isOwn() || !_armyView.selected()) {
+        _moveButtonView.setVisible(false);
+        _attackButtonView.setVisible(false);
+        _cancelButtonView.setVisible(false);        
+      }
+      else if (_army.get('mode') === null || _army.get('mode') === AWE.Config.ARMY_MODE_IDLE) { // 0 -> idle or null -> unkown
         _moveButtonView.setVisible(true);
         _attackButtonView.setVisible(true);
         _cancelButtonView.setVisible(false);
@@ -160,11 +166,19 @@ AWE.UI = (function(module) {
       }
     }
     
+    that.updateButtonState = function() {
+      _attackButtonView.setEnabled(_army.get('ap_present') >= 1.0);
+      _moveButtonView.setEnabled(_army.get('ap_present') >= 1.0);
+    }
+    
     that.recalcView = function() {
       
       // buttons
       _stanceButtonView.setVisible(false); // NO third button at present
       this.updateButtonVisibility();
+      if (_army.isOwn() && _armyView.selected()) {
+        this.updateButtonState();
+      }
       
       // rank image
       _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + Math.round((_army.get('rank') + 25) / 25)));

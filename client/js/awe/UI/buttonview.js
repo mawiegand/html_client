@@ -70,6 +70,10 @@ AWE.UI = (function(module) {
 
       _imageView.setAlpha(this.alpha()); // usual case
 
+      if (this.enabled()) {  // make sure, the button has the correct alpha value, if enabled
+        _imageView.setAlpha(this.alpha());
+      }
+      
       if (!this.enabled()) {
         _imageView.setImage(this.imageForState(module.CONTROL_STATE_DISABLED));
         if (!this.hasSpecificImageForState(module.CONTROL_STATE_DISABLED)) {
@@ -121,10 +125,6 @@ AWE.UI = (function(module) {
       return !(imagesForStates[controlState] === undefined || imagesForStates[controlState] === null)
     }
     
-    /*    
-    that.image = function() {
-      return _imageView.image();
-    }*/
 
     that.setText = function(text) {
       _labelText.text = text;
@@ -142,16 +142,7 @@ AWE.UI = (function(module) {
       my.controller.buttonClicked(that);
     };
     
-    that.setVisible = function(visible) {
-      _super.setVisible(visible);
-      _container.visible = visible;
-    }
-    
-    that.setEnabled = function(enabled) {
-      _super.setEnabled(enabled);
-      _container.alpha = enabled ? 0 : 0.6;
-    }
-    
+        
     return that;
   };
     
