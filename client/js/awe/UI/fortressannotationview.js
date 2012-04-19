@@ -20,12 +20,11 @@ AWE.UI = (function(module) {
     
     var _node = null;
     
-    var _container = null;
     var _fortressView = null;
 
     // selected
-    var _moveButtonView = null;    
-    var _attackButtonView = null;    
+    var _button1View = null;    
+    var _button2View = null;    
 
     //  hovered
     var _infoText1View = null;    
@@ -33,7 +32,7 @@ AWE.UI = (function(module) {
     var _easementImageView = null;
 
 
-    var that = module.createView(spec, my);
+    var that = module.createContainer(spec, my);
 
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
@@ -44,27 +43,33 @@ AWE.UI = (function(module) {
     
     that.initWithControllerAndView = function(controller, view, frame) {
       _super.initWithController(controller, frame);
-      _container = new Container();
+
       _node = view.node();
       _fortressView = view;
       
-      _moveButtonView = AWE.UI.createButtonView();
-      _moveButtonView.initWithControllerTextAndImage(controller, 'move', AWE.UI.ImageCache.getImage("map/button1"));
-      _moveButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
-      _container.addChild(_moveButtonView.displayObject());
+      _button1View = AWE.UI.createButtonView();
+      _button1View.initWithControllerTextAndImage(controller, '', AWE.UI.ImageCache.getImage("map/button1"));
+      _button1View.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+      _button1View.setFrame(AWE.Geometry.createRect(12, 0, 52, 52));
+      _button1View.setVisible(false);
+      this.addChild(_button1View);
 
-      _attackButtonView = AWE.UI.createButtonView();
-      _attackButtonView.initWithControllerTextAndImage(controller, 'attack', AWE.UI.ImageCache.getImage("map/button1"));
-      _attackButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
-      _attackButtonView.onClick = function() { that.onAttackButtonClick(); }
-      _container.addChild(_attackButtonView.displayObject());
+      _button2View = AWE.UI.createButtonView();
+      _button2View.initWithControllerTextAndImage(controller, '', AWE.UI.ImageCache.getImage("map/button1"));
+      _button2View.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+      _button2View.setFrame(AWE.Geometry.createRect(12, 56, 52, 52));
+      _button2View.setEnabled(false);
+      _button2View.onClick = function() { that.onAttackButtonClick(); }
+      this.addChild(_button2View);
       
       var backgroundGraphics = new Graphics();
       backgroundGraphics.setStrokeStyle(0);
       backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-      backgroundGraphics.drawRoundRect(128, 12, 64, 44, 8);
-      var backgroundShape = new Shape(backgroundGraphics);
-      _container.addChild(backgroundShape);
+      backgroundGraphics.drawRoundRect(0, 0, 64, 44, 8);
+      var backgroundShape = AWE.UI.createShapeView();
+      backgroundShape.initWithControllerAndGraphics(my.controller, backgroundGraphics);
+      backgroundShape.setFrame(AWE.Geometry.createRect(128, 12, 64, 44));
+      this.addChildAt(backgroundShape, 0);
       
       _infoText1View = AWE.UI.createLabelView();
       _infoText1View.initWithControllerAndLabel(controller);
@@ -72,7 +77,7 @@ AWE.UI = (function(module) {
       _infoText1View.setTextAlign("left");
       _infoText1View.setIconImage("map/display/icon");
       _infoText1View.setText('120%');
-      _container.addChild(_infoText1View.displayObject());
+      this.addChild(_infoText1View);
 
       _infoText2View = AWE.UI.createLabelView();
       _infoText2View.initWithControllerAndLabel(controller);
@@ -80,13 +85,13 @@ AWE.UI = (function(module) {
       _infoText2View.setTextAlign("left");
       _infoText2View.setIconImage("map/display/icon");
       _infoText2View.setText(AWE.Config.DEV_ALLIANCE_ID ===  _node.region().allianceId() ? 'Neutral' :  'Hostile');
-      _container.addChild(_infoText2View.displayObject());
+      this.addChild(_infoText2View);
       
       _easementImageView = AWE.UI.createImageView();
-      _easementImageView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage(AWE.Config.DEV_ALLIANCE_ID ==  _node.region().allianceId() ? "map/easement/yes" : "map/easement/no"));
+      _easementImageView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement/no"));
       _easementImageView.setFrame(AWE.Geometry.createRect(80, 0, 32, 32));
       _easementImageView.setContentMode(module.setContentModeNone);
-      _container.addChild(_easementImageView.displayObject());
+      this.addChild(_easementImageView);
       
       my.frame.size.width = 192;
       my.frame.size.height = 128;
@@ -97,14 +102,29 @@ AWE.UI = (function(module) {
     that.updateView = function() {
       
       // buttons
-      _moveButtonView.setVisible(_fortressView.selected());
-      _moveButtonView.updateView();
-      _attackButtonView.setVisible(_fortressView.selected());
-      _attackButtonView.updateView();
+      if (_node.region().location(0)) {
+        _button1View.setVisible(_fortressView.selected());
+        if (_node.region().location(0).isOwn()) {
+          _button1View.setText('Enter');
+          // action verdrahten
+        }
+        else {
+          _button1View.setText('Spy');
+          // action verdrahten
+        }
+        _button1View.updateView();
+      }
+      else {
+        AWE.Map.Manager.fetchLocationsForRegion(_node.region());
+      }
+
+      _button2View.setVisible(_fortressView.selected());
+      _button2View.setText('Battle');
+      _button2View.updateView();
       
       // waylay image aktualisieren
-      
-      
+      _easementImageView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.DEV_ALLIANCE_ID ==  _node.region().allianceId() ? "map/easement/yes" : "map/easement/no"));
+
       // rank image
       // _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + Math.round((_army.get('rank') + 25) / 25)));
 // 
@@ -141,27 +161,11 @@ AWE.UI = (function(module) {
       // }
       
       that.setNeedsDisplay();
-      that.setNeedsLayout();
+      // that.setNeedsLayout();
     }
 
-    that.setFrame = function(frame) {
-      _super.setFrame(frame);
-      _container.x = my.frame.origin.x;
-      _container.y = my.frame.origin.y;
-    }
-            
-    that.setSelected = function(selected) {
-      my.selected = selected;
-    };
-    
-    that.displayObject = function() {
-      return _container;
-    };
-    
     that.layoutSubviews = function() {
       _super.layoutSubviews();
-      _infoText1View.layoutIfNeeded();
-      _infoText2View.layoutIfNeeded();
     }
         
     that.locationView = function() {

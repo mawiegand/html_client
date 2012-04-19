@@ -102,6 +102,10 @@ AWE.Map = (function(module) {
       return _region;
     }
         
+    that.isOwn = function() {
+      log(_ownerId, AWE.GS.CharacterManager.currentCharacter.id);
+      return _ownerId === AWE.GS.CharacterManager.currentCharacter.id;
+    }    
         
     /** this method updates the data stored at the local region from the given 
      * region. Does not change the association to a node. */ 
