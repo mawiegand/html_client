@@ -35,6 +35,10 @@ AWE.Config = (function(module) {
   module.MAP_ARMY_WIDTH = 64;
   module.MAP_ARMY_HEIGHT = 128;
   
+  module.ARMY_MODE_IDLE = 0;
+  module.ARMY_MODE_MOVING = 1;
+  module.ARMY_MODE_FIGHTING = 2;
+  
   // how many tiles showing minimum when not at leaf level
   module.MAP_MIN_VISIBLE_TILES = 64;
 

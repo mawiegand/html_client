@@ -18,6 +18,7 @@ AWE.UI = (function(module) {
     var _stanceButtonView = null;    
     var _moveButtonView = null;    
     var _attackButtonView = null;    
+    var _cancelButtonView = null;    
     var _rankImageView = null;   
     
     var _backgroundShapeView = null;
@@ -60,16 +61,22 @@ AWE.UI = (function(module) {
       _moveButtonView.initWithControllerTextAndImage(controller, 'move', AWE.UI.ImageCache.getImage("map/button1"));
       _moveButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
       _moveButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
-//      _moveButtonView.setHighlightedImage(AWE.UI.ImageCache.getImage("map/button1highlighted"));
       _moveButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
       _moveButtonView.onClick = function() { that.onMoveButtonClick(that); }
-      
       this.addChild(_moveButtonView);
       
-
+      _cancelButtonView = AWE.UI.createButtonView();
+      _cancelButtonView.initWithControllerTextAndImage(controller, 'cancel', AWE.UI.ImageCache.getImage("map/button1"));
+      _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+      _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
+      _cancelButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
+      _cancelButtonView.onClick = function() { that.onCancelButtonClick(that); }
+      this.addChild(_cancelButtonView);      
+      
       _attackButtonView = AWE.UI.createButtonView();
       _attackButtonView.initWithControllerTextAndImage(controller, 'attack', AWE.UI.ImageCache.getImage("map/button1"));
-//      _attackButtonView.setDisabledImage(AWE.UI.ImageCache.getImage("map/button1disabled"));
+      _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+      _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
       _attackButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
       _attackButtonView.onClick = function() { that.onAttackButtonClick(); }
       this.addChild(_attackButtonView);
@@ -114,6 +121,8 @@ AWE.UI = (function(module) {
         my.frame.size.width = 192;
         my.frame.size.height = 128;
       }
+      
+      this.updateButtonVisibility();
     };
     
     that.onAttackButtonClick = function() {};
@@ -131,6 +140,24 @@ AWE.UI = (function(module) {
     that.updateView = function () {
       this.recalcView();
       _super.updateView();
+    }
+    
+    that.updateButtonVisibility = function() {
+      if (_army.modus === 0 || _army.modus === AWE.Config.ARMY_MODE_IDLE) { // 0 -> idle or null -> unkown
+        _moveButtonView.setVisible(true);
+        _attackButtonView.setVisible(true);
+        _cancelButtonView.setVisible(false);
+      }
+      else if (_army.modus === AWE.Config.ARMY_MODE_MOVING) {
+        _moveButtonView.setVisible(false);
+        _attackButtonView.setVisible(false);
+        _cancelButtonView.setVisible(true);        
+      }
+      else if (_army.modus === AWE.Config.ARMY_MODE_FIGHTING) {
+        _moveButtonView.setVisible(false);
+        _attackButtonView.setVisible(false);
+        _cancelButtonView.setVisible(false);        
+      }
     }
     
     that.recalcView = function() {
@@ -204,6 +231,7 @@ AWE.UI = (function(module) {
       return _armyView;
     }
     
+    /** TODO: WRONG NAME!  "move target selection" or something like that. MOVING -> would imply army IS moving. */
     that.setMovingMode = function(moving) {
       _moveButtonView.setSelected(moving);
       _stanceButtonView.setEnabled(!moving);
