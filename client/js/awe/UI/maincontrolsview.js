@@ -10,6 +10,8 @@ AWE.UI = (function(module) {
   module.createMainControlsView = function(spec, my) {
 
     var that;
+    
+    var _container = null;
 
     my = my || {};
     

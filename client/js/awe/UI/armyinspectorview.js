@@ -15,8 +15,6 @@ AWE.UI = (function(module) {
     
     my.typeName = 'ArmyInspectorView';
     
-    var _container = null;
-    
     var _army = null;
     
     var _nameLabelView = null;
@@ -30,6 +28,7 @@ AWE.UI = (function(module) {
     var _sizeType3LabelView = null;
     
     var _baseShape = null;
+    var _stanceView = null;
     var _infoButtonView = null;
     var _moveButtonView = null;
     var _prevButtonView = null;
@@ -51,9 +50,10 @@ AWE.UI = (function(module) {
     
     that.initWithControllerAndArmy = function(controller, army, frame) {
       _super.initWithController(controller, frame);
-      _container = new Container()
       
       _army = army;
+      
+      log('window', window);
 
       var backgroundShapeGraphics = new Graphics();
       backgroundShapeGraphics.setStrokeStyle(0);

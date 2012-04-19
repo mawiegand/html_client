@@ -13,6 +13,8 @@ AWE.UI = (function(module) {
 
     my = my || {};
     
+    var _container = null;
+    
     var ownerLabelView = null;
     var allianceLabelView = null;
     
