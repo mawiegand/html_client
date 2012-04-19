@@ -49,7 +49,7 @@ AWE.UI = (function(module) {
     that.updateView = function () {
       _super.updateView();
       
-      var color = _allianceId ? AWE.GS.AllianceManager.colorForNumber(_allianceId) : { r: 200, g: 200, b: 200 };
+      var color = _allianceId ? AWE.GS.AllianceManager.colorForNumber(_allianceId) : { r: 255, g: 255, b: 255 };
 
       if (_flagShapeView) {
         this.removeChild(_flagShapeView);
@@ -74,7 +74,7 @@ AWE.UI = (function(module) {
       };
       this.addChildAt(_flagShapeView, 0);
 
-      if (_direction === 'down' && _allianceId) {
+      if (_tagVisible && _allianceId) {
         var alliance = AWE.GS.AllianceManager.getAlliance(_allianceId);
         if (alliance) {
           _allianceTagLabelView.setText(AWE.GS.AllianceManager.getAlliance(_allianceId).tag);
@@ -95,6 +95,10 @@ AWE.UI = (function(module) {
     
     that.setDirection = function(direction) {
       _direction = direction;
+    }
+    
+    that.setTagVisible = function(tagVisible) {
+      _tagVisible = tagVisible;
     }
     
     that.onClick = function() {}
