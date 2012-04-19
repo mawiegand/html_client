@@ -53,6 +53,7 @@ AWE.Controller = (function(module) {
     var regionViews = {};
     var fortressViews = {};
     var armyViews = {};
+    var movementArrowViews = {};
     var locationViews = {};
     var actionViews = {};
     var targetViews = {};
@@ -643,17 +644,15 @@ AWE.Controller = (function(module) {
     };
 
     that.viewMouseOver = function(view) { // console.log('view mouse over: ' + view.typeName())
-      if (view.typeName() === 'FortressView') {
+      if (view.typeName() === 'FortressView'
+          || view.typeName() === 'ArmyView'
+          || view.typeName() === 'BaseView'
+          || view.typeName() === 'OutpostView'
+          || view.typeName() === 'EmptySlotView') {
         _hoverView(view);
       }
-      else if (view.typeName() === 'ArmyView') {
-        _hoverView(view);
-      }
-      else if (view.typeName() === 'BaseView') {
-        _hoverView(view);
-      }
-      else if (view.typeName() === 'OutpostView') {
-        _hoverView(view);
+      else if (view.typeName() === 'TargetView') {
+        _hoverView(view.locationView());
       }
       else if (view.typeName() === 'hudView') { // typeof view == 'hud'  (evtl. eigene methode)
         // _unhoverView();
@@ -661,17 +660,15 @@ AWE.Controller = (function(module) {
     };
 
     that.viewMouseOut = function(view) {
-      if (view.typeName() === 'FortressView') {
-        _unhoverView();
+      if (view.typeName() === 'FortressView'
+          || view.typeName() === 'ArmyView'
+          || view.typeName() === 'BaseView'
+          || view.typeName() === 'OutpostView'
+          || view.typeName() === 'EmptySlotView') {
+        _unhoverView(view);
       }
-      else if (view.typeName() === 'ArmyView') {
-        _unhoverView();
-      }
-      else if (view.typeName() === 'BaseView') {
-        _unhoverView();
-      }
-      else if (view.typeName() === 'OutpostView') {
-        _unhoverView();
+      else if (view.typeName() === 'TargetView') {
+        _unhoverView(view.locationView());
       }
     };
     
@@ -702,8 +699,8 @@ AWE.Controller = (function(module) {
       }
     };
 
-    var _unhoverView = function() {
-      if (actionViews.hovered) {
+    var _unhoverView = function(view) {
+      if (view.hovered()) {
         _hoveredView.setHovered(false);
         _hoveredView = null;
         _actionViewChanged = true;
@@ -1298,6 +1295,7 @@ AWE.Controller = (function(module) {
     that.updateArmies = function(nodes) {
   
       var newArmyViews = {};
+      var newMovementArrowViews = {};
       
       var processArmiesAtPos = function(armies, pos) {
         for (var key in armies) {
@@ -1318,6 +1316,21 @@ AWE.Controller = (function(module) {
             }                                  
             setArmyPosition(view, pos, army.get('id'), frame);
             newArmyViews[army.get('id')] = view;
+            
+            if (army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
+              
+              var movementArrow = movementArrowViews[army.get('id')];
+              
+              if (!movementArrow) {
+                movementArrow = AWE.UI.createMovementArrowView();
+                movementArrow.initWithControllerAndArmy(that, army);
+                _stages[1].addChild(movementArrow.displayObject());
+              }
+              
+              movementArrow.setStart(AWE.Geometry.createPoint(view.frame().origin.x+30, view.frame().origin.y));
+              movementArrow.setEnd(AWE.Geometry.createPoint(view.frame().origin.x+230, view.frame().origin.y));
+              newMovementArrowViews[army.get('id')] = movementArrow;
+            }
           }
         }
       };
@@ -1347,7 +1360,9 @@ AWE.Controller = (function(module) {
       }
           
       var removedSomething = purgeDispensableViewsFromStage(armyViews, newArmyViews, _stages[1]);
+      removedSomething = purgeDispensableViewsFromStage(movementArrowViews, newMovementArrowViews, _stages[1]) || removedSomething;
       armyViews = newArmyViews;      
+      movementArrowViews = newMovementArrowViews;      
       return removedSomething;          
     }
     
@@ -1422,15 +1437,15 @@ AWE.Controller = (function(module) {
     that.updateActionViews = function() {
       
       // helper method for creating the appropriate annotation view
-      var createAnnotationView = function(baseView) {
+      var createAnnotationView = function(annotatedView) {
         var annotationView = null;
-        if (baseView.typeName() === 'FortressView') {
+        if (annotatedView.typeName() === 'FortressView') {
           annotationView = AWE.UI.createFortressAnnotationView();
-          annotationView.initWithControllerAndView(that, baseView);
+          annotationView.initWithControllerAndView(that, annotatedView);
         }
-        else if (baseView.typeName() === 'ArmyView') {
+        else if (annotatedView.typeName() === 'ArmyView') {
           annotationView = AWE.UI.createArmyAnnotationView();
-          annotationView.initWithControllerAndView(that, baseView);
+          annotationView.initWithControllerAndView(that, annotatedView);
           annotationView.onMoveButtonClick = (function(self) {
             return function(view) { self.armyMoveButtonClicked(view); }
           })(that);
@@ -1439,18 +1454,18 @@ AWE.Controller = (function(module) {
             return function(view) { self.armyCancelMoveButtonClicked(view); }
           })(that);
                     
-          armyUpdates[baseView.army().get('id')] = baseView.army();
+          armyUpdates[annotatedView.army().get('id')] = annotatedView.army();
         }
-        else if (baseView.typeName() === 'BaseView') {
+        else if (annotatedView.typeName() === 'BaseView') {
           annotationView = AWE.UI.createBaseAnnotationView();
-          annotationView.initWithControllerAndView(that, baseView);
+          annotationView.initWithControllerAndView(that, annotatedView);
         }
-        else if (baseView.typeName() === 'OutpostView') {
+        else if (annotatedView.typeName() === 'OutpostView') {
           annotationView = AWE.UI.createOutpostAnnotationView();
-          annotationView.initWithControllerAndView(that, baseView);
+          annotationView.initWithControllerAndView(that, annotatedView);
         }
     
-        baseView.setAnnotationView(annotationView);
+        annotatedView.setAnnotationView(annotationView);
         
         return annotationView;
       }
@@ -1552,7 +1567,15 @@ AWE.Controller = (function(module) {
               if (!view) {       
                 view = AWE.UI.createTargetView();
                 view.initWithControllerAndLocation(that, location);
+                if (location.typeId() === 1) {
+                  var locationView = fortressViews[location.node().id()];
+                }
+                else {   
+                  var locationView = locationViews[location.id()];
+                }
+                view.setLocationView(locationView);
                 _stages[2].addChild(view.displayObject());
+                locationView.setTargetView(view);
               }                                  
               setTargetPosition(view, that.mc2vc(location.position()));
               newTargetViews[location.id()] = view;
@@ -1641,6 +1664,7 @@ AWE.Controller = (function(module) {
         stagesNeedUpdate[1] = propUpdates(fortressViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(locationViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(armyViews) || stagesNeedUpdate[1];
+        stagesNeedUpdate[1] = propUpdates(movementArrowViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[2] = propUpdates(actionViews) || stagesNeedUpdate[2];
         stagesNeedUpdate[3] = propUpdates(inspectorViews) || stagesNeedUpdate[3];
 
@@ -1741,7 +1765,7 @@ AWE.Controller = (function(module) {
           // STEP 4c: update (repaint) those stages, that have changed (one view that needsDisplay triggers repaint of whole stage)
           var viewsInStages = [
             regionViews,
-            [fortressViews, armyViews, locationViews],
+            [fortressViews, armyViews, locationViews, movementArrowViews],
             [actionViews, targetViews],
             inspectorViews,
           ];          

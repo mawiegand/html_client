@@ -46,8 +46,6 @@ AWE.UI = (function(module) {
       }; // CAUTION: need to wrap the call in a function, because otherwise it's not possible to attach a different function to that as onClick handler
       _imageView.onMouseOver = function(self) { return function() { self.setHovered(true); if (controller) controller.setNeedsDisplay(); }}(this);
       _imageView.onMouseOut = function(self) { return function() { self.setHovered(false); if (controller) controller.setNeedsDisplay(); }}(this);
-      
-      
       _container.addChild(_imageView.displayObject());
       
       _labelText = new Text(text, "10px Arial", "#FFF");
@@ -56,10 +54,8 @@ AWE.UI = (function(module) {
       _labelText.x = my.frame.size.width / 2;
       _labelText.y = my.frame.size.height / 2;
       _labelText.view = that;
-
       _labelText.onMouseOver = function(self) { return function() { self.setHovered(true); if (controller) controller.setNeedsDisplay(); }}(this);
       _labelText.onMouseOut = function(self) { return function() { self.setHovered(false); if (controller) controller.setNeedsDisplay(); }}(this);
-
       _container.addChild(_labelText);
     
       _container.x = my.frame.origin.x;

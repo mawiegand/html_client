@@ -24,6 +24,7 @@ AWE.UI = (function(module) {
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
       setFrame: AWE.Ext.superior(that, "setFrame"),
       setAlpha: AWE.Ext.superior(that, "setAlpha"),
+      updateView: AWE.Ext.superior(that, "updateView"),
     };
     
     /** overwritten view methods */
@@ -32,6 +33,15 @@ AWE.UI = (function(module) {
       _super.initWithController(controller, frame);
       my.container = new Container();
     };
+    
+    that.updateView = function() {
+      _super.updateView();
+
+      if (my.targetView) {
+        my.targetView.setHovered(this.hovered());
+        my.targetView.updateView();   // TODO: Hack
+      }
+    }    
     
     that.setFrame = function(frame) {
       _super.setFrame(frame);
@@ -57,8 +67,8 @@ AWE.UI = (function(module) {
       return my.annotationView;
     }
     
-    that.setTargetView = function(annotationView) {
-      my.targetView = annotationView;
+    that.setTargetView = function(targetView) {
+      my.targetView = targetView;
     }
     
     that.targetView = function() {
