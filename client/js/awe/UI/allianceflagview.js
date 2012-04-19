@@ -91,8 +91,6 @@ AWE.UI = (function(module) {
         }
       }
       
-      that.setNeedsDisplay();
-      that.setNeedsLayout();
     }
     
     that.setAllianceId = function(allianceId) {
