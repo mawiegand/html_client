@@ -8,11 +8,9 @@ var AWE = AWE || {};
 AWE.UI = (function(module) {
 
   module.createArmyAnnotationView = function(spec, my) {
-    
-    my = my || {};
-    
-    my.typeName = 'ArmyAnnotationView';
-    
+        
+    var that;
+        
     var _army = null;
     var _armyView = null;
         
@@ -26,9 +24,16 @@ AWE.UI = (function(module) {
     var _infoText1View = null;    
     var _infoText2View = null;    
     var _infoText3View = null;    
-    var _actionPointsLabelView = null;     
+    var _actionPointsLabelView = null;  
+    
+    var infoContainer = null;  
+    
+    my = my || {};
+    
+    my.typeName = 'ArmyAnnotationView';
+ 
 
-    var that = module.createContainer(spec, my);
+    that = module.createContainer(spec, my);
 
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
@@ -59,9 +64,7 @@ AWE.UI = (function(module) {
       _moveButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
       _moveButtonView.onClick = function() { that.onMoveButtonClick(that); }
       
-      console.log('before add child');
       this.addChild(_moveButtonView);
-      console.log('superview:' + _moveButtonView.superview());
       
 
       _attackButtonView = AWE.UI.createButtonView();
@@ -76,26 +79,30 @@ AWE.UI = (function(module) {
       _rankImageView.setFrame(AWE.Geometry.createRect(86, 0, 20, 20));
       this.addChild(_rankImageView);
       
+      infoContainer = AWE.UI.createMultiLineContainer();
+      infoContainer.initWithController(controller, AWE.Geometry.createRect(130,0,66,0));
+      this.addChild(infoContainer);
+      
       _infoText1View = AWE.UI.createLabelView();
       _infoText1View.initWithControllerAndLabel(controller);
-      _infoText1View.setFrame(AWE.Geometry.createRect(130, 0, 66, 24));      
+      _infoText1View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
       _infoText1View.setTextAlign("left");
       _infoText1View.setIconImage("map/display/icon");
-      this.addChild(_infoText1View);
+      infoContainer.addChild(_infoText1View);
 
       _infoText2View = AWE.UI.createLabelView();
       _infoText2View.initWithControllerAndLabel(controller);
-      _infoText2View.setFrame(AWE.Geometry.createRect(130, 22, 66, 24));      
+      _infoText2View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
       _infoText2View.setTextAlign("left");
       _infoText2View.setIconImage("map/display/icon");
-      this.addChild(_infoText2View);
+      infoContainer.addChild(_infoText2View);
 
       _infoText3View = AWE.UI.createLabelView();
       _infoText3View.initWithControllerAndLabel(controller);
-      _infoText3View.setFrame(AWE.Geometry.createRect(130, 44, 66, 24));      
+      _infoText3View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
       _infoText3View.setTextAlign("left");
       _infoText3View.setIconImage("map/display/icon");
-      this.addChild(_infoText3View);
+       infoContainer.addChild(_infoText3View);
       
       _actionPointsLabelView = AWE.UI.createLabelView();
       _actionPointsLabelView.initWithControllerAndLabel(controller);
@@ -144,23 +151,12 @@ AWE.UI = (function(module) {
         this.removeChild(_backgroundShapeView);
       }
       var lines = _army.get('battle_id') && _army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0 ? 3 : 1; 
-      
-      var backgroundGraphics = new Graphics();
-      backgroundGraphics.setStrokeStyle(0);
-      backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-      backgroundGraphics.drawRoundRect(128, 34 - lines * 11, 64, lines * 22, 8);
-      _backgroundShapeView = AWE.UI.createShapeView();
-      _backgroundShapeView.initWithControllerAndGraphics(my.controller, backgroundGraphics);
-      _backgroundShapeView.setFrame(AWE.Geometry.createRect(0, 0, 64, lines * 22));
-      this.addChildAt(_backgroundShapeView, 0);
 
       if (_army.get('battle_id') && _army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0) {
-        _infoText1View.setOrigin(AWE.Geometry.createPoint(130, 0));
         _infoText2View.setVisible(true);
         _infoText3View.setVisible(true);
       }
       else {
-        _infoText1View.setOrigin(AWE.Geometry.createPoint(130, 22));
         _infoText2View.setVisible(false);
         _infoText3View.setVisible(false);
       }
@@ -175,17 +171,29 @@ AWE.UI = (function(module) {
         _infoText2View.setText(_army.get('target_reached_at'));
       }
       
+      infoContainer.layoutSubviews(); // call this by hand, as only changed visibility
+      
+      var backgroundGraphics = new Graphics();
+      backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
+      backgroundGraphics.drawRoundRect(0, 0,
+                                       infoContainer.frame().size.width + 4,
+                                       infoContainer.frame().size.height+ 4, 4);
+      _backgroundShapeView = AWE.UI.createShapeView();
+      _backgroundShapeView.initWithControllerAndGraphics(my.controller, backgroundGraphics);
+      _backgroundShapeView.setFrame(AWE.Geometry.createRect(infoContainer.frame().origin.x - 2, 
+                                                            infoContainer.frame().origin.y - 2, 
+                                                            infoContainer.frame().size.width + 4, 
+                                                            infoContainer.frame().size.height+ 4));
+      this.addChildAt(_backgroundShapeView, 0);      
+      
       _actionPointsLabelView.setText(_army.get('ap_present') + " / " + _army.get('ap_max'));
       
       that.setNeedsDisplay();
-      that.setNeedsLayout();
     }
                 
     that.layoutSubviews = function() {
+      that.recalcView();
       _super.layoutSubviews();
-      _infoText1View.layoutIfNeeded();
-      if (_infoText2View) _infoText2View.layoutIfNeeded();
-      if (_infoText3View) _infoText3View.layoutIfNeeded();
     }
     
     that.army = function() {

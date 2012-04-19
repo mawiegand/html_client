@@ -1096,6 +1096,7 @@ AWE.Controller = (function(module) {
           view = AWE.UI.createRegionView();
           view.initWithControllerAndNode(that, nodes[i], frame);
           AWE.Ext.applyFunction(view.displayObject(), function(obj) {
+//            obj.alpha = 0.3;
             _stages[0].addChild(obj);
           });
         }
@@ -1189,6 +1190,7 @@ AWE.Controller = (function(module) {
           else if (nodes[i].isLeaf() && nodes[i].region()) { // if view for node doesn't exists and node is a leaf node
             view = AWE.UI.createFortressView();
             view.initWithControllerAndNode(that, nodes[i]);
+//            view.displayObject().alpha=0.3;
             _stages[1].addChild(view.displayObject()); // add view's displayObject to stage
           }
           if (view) {
@@ -1246,6 +1248,7 @@ AWE.Controller = (function(module) {
                 }
                 if (view) {   // if base, outpost or empty slot on location, init the view
                   view.initWithControllerAndLocation(that, location);
+//                  view.displayObject().alpha=0.3;
                  _stages[1].addChild(view.displayObject());                  
                 }
               }
@@ -1290,6 +1293,7 @@ AWE.Controller = (function(module) {
             else {  // if view for army doesn't exists
               view = AWE.UI.createArmyView();
               view.initWithControllerAndArmy(that, army);
+ //             view.displayObject().alpha=0.3;
               _stages[1].addChild(view.displayObject());
             }                                  
             setArmyPosition(view, pos, army.get('id'), frame);

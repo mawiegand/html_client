@@ -160,11 +160,6 @@ AWE.UI = (function(module) {
       _labelText.color = color;
       that.setNeedsLayout();      
     }
-        
-    that.setVisible = function(visible) {
-      _super.setVisible(visible);
-      _container.visible = visible;
-    };
     
     that.setIconImage = function(image) {
     

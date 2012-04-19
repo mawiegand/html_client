@@ -54,6 +54,7 @@ AWE.UI = (function(module) {
     
     my.frame = null;           ///< frame of the view.
     my.state = module.CONTROL_STATE_NORMAL;
+    my.visible = true;
   
     /** setting bits in bitfields (flags) */
     my.setBit = function(flags, mask) {
@@ -250,12 +251,15 @@ AWE.UI = (function(module) {
     }
 
     that.setVisible = function(visible) {
-      _visible = visible;
+      my.visible = visible;
+      AWE.Ext.applyFunction(this.displayObject(), function(obj) {
+        obj.visible = visible;
+      });      
       this.setNeedsDisplay();
     }
     
     that.visible = function() {
-      return _visible;
+      return my.visible;
     }
 
     that.layoutSubviews = function() {
