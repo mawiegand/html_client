@@ -70,7 +70,13 @@ AWE.UI = (function(module) {
       _flagShapeView.initWithControllerAndGraphics(my.controller, _flagShapeGraphics);
       _flagShapeView.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
       _flagShapeView.onClick = function() { 
-        that.onClick();   
+        if (that.onClick) that.onClick();   
+      };
+      _flagShapeView.onMouseOver = function() {
+        if (that.onMouseOver) that.onMouseOver();
+      };
+      _flagShapeView.onMouseOut = function() {
+        if (that.onMouseOut) that.onMouseOut();
       };
       this.addChildAt(_flagShapeView, 0);
 

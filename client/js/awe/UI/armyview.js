@@ -155,13 +155,18 @@ AWE.UI = (function(module) {
       _flagView.setFrame(AWE.Geometry.createRect(56 - flagLength, 12, flagLength, 20));
       _flagView.setAllianceId(_army.get('alliance_id'));
       _flagView.setDirection('left');
-      _container.addChild(_flagView.displayObject());
+      _container.addChildAt(_flagView.displayObject(),0);
       _flagView.updateView();
             
       _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]));
-      
-      if (_army.get('ap_present') / _army.get('ap_max') >= 0) {
+
+      if (_healthShape) {
         _container.removeChild(_healthShape);
+        _healthShape = null;
+      }
+      
+      if (_army.get('ap_present') / _army.get('ap_max') > 0.1) {
+
         if(_army.get('ap_present') / _army.get('ap_max') > .75) {
           var fillColor = 'rgb(64, 255, 64)';
         }

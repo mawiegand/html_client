@@ -79,11 +79,9 @@ AWE.UI = (function(module) {
       _flagView.setFrame(AWE.Geometry.createRect(27, 53, 8, 13));
       _flagView.setAllianceId(allianceId);
       _flagView.setDirection('down');
-      _flagView.onClick = function() { 
-        if (that.onFlagClicked) {
-          that.onFlagClicked(allianceId);
-        };
-      };
+      _flagView.onClick = that.onClick;
+      _flagView.onMouseOver = that.onMouseOver;
+      _flagView.onMouseOut = that.onMouseOut;
       my.container.addChild(_flagView.displayObject());
       _flagView.updateView();
 
@@ -92,6 +90,9 @@ AWE.UI = (function(module) {
 
       labelView.initWithControllerAndLabel(controller, ownerName, true);
       labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE + 20, AWE.Config.MAPPING_FORTRESS_SIZE, 20));      
+      labelView.onClick = that.onClick;
+      labelView.onMouseOver = that.onMouseOver;
+      labelView.onMouseOut = that.onMouseOut;
       my.container.addChild(labelView.displayObject());
       
       my.container.width = my.frame.size.width = AWE.Config.MAPPING_FORTRESS_SIZE;
