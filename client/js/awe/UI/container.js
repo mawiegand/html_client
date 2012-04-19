@@ -15,13 +15,11 @@ AWE.UI = (function(module) {
 
     var that;
 
-    var _subviews = Array();
-    
-    
     // protected attributes and methods //////////////////////////////////////
 
     my = my || {};
     my.container = null;
+    my.subviews = Array();
 
 
     // public attributes and methods /////////////////////////////////////////
@@ -44,7 +42,7 @@ AWE.UI = (function(module) {
     
     
     that.addChildAt = function(view, pos) { 
-      _subviews.push(view);
+      my.subviews.push(view);
       view.setSuperview(this);
       AWE.Ext.applyFunction(view.displayObject(), function(obj){
         my.container.addChildAt(obj, pos);
@@ -55,7 +53,7 @@ AWE.UI = (function(module) {
     };
     
     that.addChild = function(view) {
-      _subviews.push(view);
+      my.subviews.push(view);
       view.setSuperview(this);
       AWE.Ext.applyFunction(view.displayObject(), function(obj){
         my.container.addChild(obj);
@@ -66,19 +64,19 @@ AWE.UI = (function(module) {
     };
     
     that.removeChild = function(view) {
-      var index = _subviews.indexOf(view);     
+      var index = my.subviews.indexOf(view);     
       if (index >= 0) {
         AWE.Ext.applyFunction(view.displayObject(), function(obj){
           my.container.removeChild(obj);
         });
-        _subviews.splice(index,1);
+        my.subviews.splice(index,1);
         view.setSuperview(null);
       }
     }
     
     that.notifyRedraw = function() { 
       _super.notifyRedraw(); 
-      AWE.Ext.applyFunction(_subviews, function(obj) {
+      AWE.Ext.applyFunction(my.subviews, function(obj) {
         obj.notifyRedraw();
       });
     }
@@ -86,14 +84,14 @@ AWE.UI = (function(module) {
     
     that.layoutSubviews = function() {
    //   _super.layoutSubviews();
-      AWE.Ext.applyFunction(_subviews, function(obj) {
+      AWE.Ext.applyFunction(my.subviews, function(obj) {
         obj.layoutIfNeeded();
       });
     }
     
     that.updateView = function() {
    //   _super.layoutSubviews();
-      AWE.Ext.applyFunction(_subviews, function(obj) {
+      AWE.Ext.applyFunction(my.subviews, function(obj) {
         obj.updateIfNeeded();
       });
     }
