@@ -160,7 +160,7 @@ AWE.UI = (function(module) {
             
       _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]));
       
-      if (_army.get('ap_present') / _army.get('ap_max') > 0) {
+      if (_army.get('ap_present') / _army.get('ap_max') >= 0) {
         _container.removeChild(_healthShape);
         if(_army.get('ap_present') / _army.get('ap_max') > .75) {
           var fillColor = 'rgb(64, 255, 64)';
