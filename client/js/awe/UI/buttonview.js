@@ -25,6 +25,7 @@ AWE.UI = (function(module) {
       initWithController: AWE.Ext.superior(that, "initWithController"),
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
       setFrame: AWE.Ext.superior(that, "setFrame"),
+      setEnabled: AWE.Ext.superior(that, "setEnabled"),
       setVisible: AWE.Ext.superior(that, "setVisible"),
     }
     
@@ -126,6 +127,7 @@ AWE.UI = (function(module) {
     }*/
 
     that.setText = function(text) {
+      _labelText.text = text;
       this.setNeedsUpdate();
     }
     
@@ -143,6 +145,11 @@ AWE.UI = (function(module) {
     that.setVisible = function(visible) {
       _super.setVisible(visible);
       _container.visible = visible;
+    }
+    
+    that.setEnabled = function(enabled) {
+      _super.setEnabled(enabled);
+      _container.alpha = enabled ? 0 : 0.6;
     }
     
     return that;

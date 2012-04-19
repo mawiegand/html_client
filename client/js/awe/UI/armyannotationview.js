@@ -148,10 +148,10 @@ AWE.UI = (function(module) {
       var backgroundGraphics = new Graphics();
       backgroundGraphics.setStrokeStyle(0);
       backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-      backgroundGraphics.drawRoundRect(128, 34 - lines * 11, 64, lines * 22, 8);
+      backgroundGraphics.drawRoundRect(0, 0, 64, lines * 22, 8);
       _backgroundShapeView = AWE.UI.createShapeView();
       _backgroundShapeView.initWithControllerAndGraphics(my.controller, backgroundGraphics);
-      _backgroundShapeView.setFrame(AWE.Geometry.createRect(0, 0, 64, lines * 22));
+      _backgroundShapeView.setFrame(AWE.Geometry.createRect(128, 34 - lines * 11, 64, lines * 22));
       this.addChildAt(_backgroundShapeView, 0);
 
       if (_army.get('battle_id') && _army.get('battle_id') != 0 || _army.get('target_location_id') && _army.get('target_location_id') != 0) {
