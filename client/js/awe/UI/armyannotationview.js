@@ -70,7 +70,7 @@ AWE.UI = (function(module) {
       _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
       _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
       _cancelButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
-      _cancelButtonView.onClick = function() { if (_cancelButtonView.enabled()) { that.onCancelButtonClick(that); } }
+      _cancelButtonView.onClick = function() { if (_cancelButtonView.enabled()) { that.onCancelMoveButtonClick(that); } }
       this.addChild(_cancelButtonView);      
       
       _attackButtonView = AWE.UI.createButtonView();

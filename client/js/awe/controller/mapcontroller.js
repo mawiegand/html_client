@@ -520,6 +520,9 @@ AWE.Controller = (function(module) {
       _actionViewChanged = true;
     };
     
+    
+        
+    
     /** helper method to call onClick of settlement if arrow above is clicked */
     that.targetViewClicked = function(targetView) {
       var location = targetView.location();
@@ -556,10 +559,27 @@ AWE.Controller = (function(module) {
           });
         }
         else {
-          that.handleError(status, "The server did not accept the comannd.");
+          that.handleError(status, "The server did not accept the movement comannd.");
         }
       });
     }
+    
+    
+    that.armyCancelMoveButtonClicked = function(armyAnnotationView) {
+      log('cancel move');
+      var cancelAction = AWE.Action.Military.createCancelMoveArmyAction(armyAnnotationView.army());
+      cancelAction.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK #
+          AWE.GS.ArmyManager.updateArmy(armyAnnotationView.army().getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+            that.setModelChanged(); 
+            that.addDisappearingAnnotationLabel(armyAnnotationView.annotatedView(), 'Canceled.', 1000);
+          });
+        }
+        else {
+          that.handleError(status, "The server did not accept the cancel comannd.");
+        }
+      });     
+    };
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -1415,6 +1435,10 @@ AWE.Controller = (function(module) {
             return function(view) { self.armyMoveButtonClicked(view); }
           })(that);
           
+          annotationView.onCancelMoveButtonClick = (function(self) {
+            return function(view) { self.armyCancelMoveButtonClicked(view); }
+          })(that);
+                    
           armyUpdates[baseView.army().get('id')] = baseView.army();
         }
         else if (baseView.typeName() === 'BaseView') {
