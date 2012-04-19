@@ -552,7 +552,7 @@ AWE.Controller = (function(module) {
           AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
             that.setModelChanged();
             that.addDisappearingAnnotationLabel(targetView, 'ETA ' + army.get('target_reached_at'), 1500);
-            that.addDisappearingAnnotationLabel(armyView, '-1 AP', 1500);
+            that.addDisappearingAnnotationLabel(armyView, '-1 AP', 1000);
           });
         }
         else {
@@ -794,12 +794,15 @@ AWE.Controller = (function(module) {
     }
     
     
-    that.addDisappearingAnnotationLabel = function(annotatedView, message, duration, offset, frame) {
+    that.addDisappearingAnnotationLabel = function(annotatedView, message, duration, font, offset, frame) {
       duration = duration || 1000;
       offset = offset || AWE.Geometry.createPoint(100,50);
+      font = font || '20px "Helvetica Neue", Helvetica, Arial';
       
       var label = AWE.UI.createLabelView();
-      label.initWithControllerAndLabel(this, message, true, frame);      
+      label.initWithControllerAndLabel(this, message, true, frame);  
+      label.setFont(font);    
+      label.setPadding(10);
       
       _stages[2].addChild(label.displayObject());
       console.log('added disappearing view.');

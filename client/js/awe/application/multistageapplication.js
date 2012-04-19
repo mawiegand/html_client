@@ -346,6 +346,13 @@ AWE.Application = (function(module) {
         var rootController = this.get('presentScreenController');
         if (controller != rootController) {
           if (rootController) {
+  	        if (hoveredView) { 
+  	          if (hoveredView.onMouseOut && stageHovered >= 0 && this.get('allStages')[stageHovered].mouseOverEvents) {
+  	            hoveredView.onMouseOut(new MouseEvent("onMouseOut", mouseX, mouseY, hoveredView));
+  	          }
+  	          hoveredView = null;
+  	          stageHovered = -1;
+	          }
             rootController.viewWillDisappear();
             this.remove(rootController);
             rootController.viewDidDisappear();
