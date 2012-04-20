@@ -34,6 +34,8 @@ AWE.UI = (function(module) {
     var _movementETA = null; 
     var _actionPointsLabelView = null;
     
+    var _frameRectShape = null;
+    
     that = module.createContainer(spec, my);
 
     var _super = {
@@ -145,8 +147,7 @@ AWE.UI = (function(module) {
     };
     
     that.resizeToFit = function() {
-      my.frame.size.width = AWE.Config.MAP_ARMY_WIDTH;
-      my.frame.size.height = AWE.Config.MAP_ARMY_HEIGHT;
+      this.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAP_ARMY_WIDTH, AWE.Config.MAP_ARMY_HEIGHT));
     };
 
     that.updateView = function() {
@@ -173,6 +174,20 @@ AWE.UI = (function(module) {
       _flagView.setAllianceId(_army.get('alliance_id'));
       _flagView.setDirection('left');
       that.addChildAt(_flagView, 0);
+
+      if (_frameRectShape) {
+        that.removeChild(_frameRectShape);
+        _frameRectShape = null;
+      }
+      
+      var _frameRectGraphics = new Graphics();
+      _frameRectGraphics.setStrokeStyle(1);
+      _frameRectGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
+      _frameRectGraphics.drawRoundRect(0, 0, my.frame.size.width, my.frame.size.height, 0);
+      _frameRectShape = AWE.UI.createShapeView();
+      _frameRectShape.initWithControllerAndGraphics(my.controller, _frameRectGraphics);
+      _frameRectShape.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
+      that.addChild(_frameRectShape);      
             
       _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]));
 
