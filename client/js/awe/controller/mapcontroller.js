@@ -53,6 +53,7 @@ AWE.Controller = (function(module) {
     var regionViews = {};
     var fortressViews = {};
     var armyViews = {};
+    var movementArrowViews = {};
     var locationViews = {};
     var actionViews = {};
     var targetViews = {};
@@ -520,6 +521,9 @@ AWE.Controller = (function(module) {
       _actionViewChanged = true;
     };
     
+    
+        
+    
     /** helper method to call onClick of settlement if arrow above is clicked */
     that.targetViewClicked = function(targetView) {
       var location = targetView.location();
@@ -556,10 +560,27 @@ AWE.Controller = (function(module) {
           });
         }
         else {
-          that.handleError(status, "The server did not accept the comannd.");
+          that.handleError(status, "The server did not accept the movement comannd.");
         }
       });
     }
+    
+    
+    that.armyCancelMoveButtonClicked = function(armyAnnotationView) {
+      log('cancel move');
+      var cancelAction = AWE.Action.Military.createCancelMoveArmyAction(armyAnnotationView.army());
+      cancelAction.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK #
+          AWE.GS.ArmyManager.updateArmy(armyAnnotationView.army().getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+            that.setModelChanged(); 
+            that.addDisappearingAnnotationLabel(armyAnnotationView.annotatedView(), 'Canceled.', 1000);
+          });
+        }
+        else {
+          that.handleError(status, "The server did not accept the cancel comannd.");
+        }
+      });     
+    };
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -1274,6 +1295,7 @@ AWE.Controller = (function(module) {
     that.updateArmies = function(nodes) {
   
       var newArmyViews = {};
+      var newMovementArrowViews = {};
       
       var processArmiesAtPos = function(armies, pos) {
         for (var key in armies) {
@@ -1294,6 +1316,55 @@ AWE.Controller = (function(module) {
             }                                  
             setArmyPosition(view, pos, army.get('id'), frame);
             newArmyViews[army.get('id')] = view;
+            
+            if (army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
+              
+              var targetRegionId = army.get('target_region_id');
+              var targetLocationId = army.get('target_location_id');
+              var regionId = army.get('region_id');
+              var targetPos = null;
+              
+              if (targetRegionId != regionId) {
+                var targetRegion = AWE.Map.Manager.getRegion(targetRegionId);
+                if (targetRegion) {
+                  var tframe = that.mc2vc(targetRegion.node().frame()); 
+                  targetPos = AWE.Geometry.createPoint(
+                    tframe.origin.x + tframe.size.width / 2 ,
+                    tframe.origin.y + tframe.size.height / 2 - 60         
+                  );  
+                }
+              }    
+              else if (targetLocationId && targetRegionId) { // target location in same region as starting region -> this region must be available locally
+                var targetLocation = AWE.Map.Manager.getLocation(targetLocationId);
+                if (!targetLocation) {
+                  AWE.Map.Manager.fetchLocationsForRegion(AWE.Map.Manager.getRegion(targetRegionId), function() {
+                    view.setNeedsUpdate();
+                  });
+                }
+                else {
+                  targetPos = that.mc2vc(targetLocation.position());
+                  targetPos.y -= 60;
+                }
+              }          
+              
+              if (targetPos) {
+                
+                var movementArrow = movementArrowViews[army.get('id')];
+              
+                if (!movementArrow) {
+                  movementArrow = AWE.UI.createMovementArrowView();
+                  movementArrow.initWithControllerAndArmy(that, army);
+                  _stages[1].addChild(movementArrow.displayObject());
+                }
+
+                movementArrow.setHovered(_hoveredView === view);
+                movementArrow.setSelected(_selectedView === view);
+              
+                movementArrow.setStart(AWE.Geometry.createPoint(view.frame().origin.x+24, view.frame().origin.y+10));
+                movementArrow.setEnd(AWE.Geometry.createPoint(targetPos.x, targetPos.y));
+                newMovementArrowViews[army.get('id')] = movementArrow;
+              }
+            }
           }
         }
       };
@@ -1323,7 +1394,9 @@ AWE.Controller = (function(module) {
       }
           
       var removedSomething = purgeDispensableViewsFromStage(armyViews, newArmyViews, _stages[1]);
+      removedSomething = purgeDispensableViewsFromStage(movementArrowViews, newMovementArrowViews, _stages[1]) || removedSomething;
       armyViews = newArmyViews;      
+      movementArrowViews = newMovementArrowViews;      
       return removedSomething;          
     }
     
@@ -1411,6 +1484,10 @@ AWE.Controller = (function(module) {
             return function(view) { self.armyMoveButtonClicked(view); }
           })(that);
           
+          annotationView.onCancelMoveButtonClick = (function(self) {
+            return function(view) { self.armyCancelMoveButtonClicked(view); }
+          })(that);
+                    
           armyUpdates[annotatedView.army().get('id')] = annotatedView.army();
         }
         else if (annotatedView.typeName() === 'BaseView') {
@@ -1621,6 +1698,7 @@ AWE.Controller = (function(module) {
         stagesNeedUpdate[1] = propUpdates(fortressViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(locationViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(armyViews) || stagesNeedUpdate[1];
+        stagesNeedUpdate[1] = propUpdates(movementArrowViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[2] = propUpdates(actionViews) || stagesNeedUpdate[2];
         stagesNeedUpdate[3] = propUpdates(inspectorViews) || stagesNeedUpdate[3];
 
@@ -1721,7 +1799,7 @@ AWE.Controller = (function(module) {
           // STEP 4c: update (repaint) those stages, that have changed (one view that needsDisplay triggers repaint of whole stage)
           var viewsInStages = [
             regionViews,
-            [fortressViews, armyViews, locationViews],
+            [fortressViews, armyViews, locationViews, movementArrowViews],
             [actionViews, targetViews],
             inspectorViews,
           ];          

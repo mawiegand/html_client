@@ -28,8 +28,10 @@ AWE.UI = (function(module) {
     var _flagView = null;
     var _selectShape = null;    
     var _healthShape = null;    
-    var _healthBGShape = null;
-    
+    var _healthBGShape = null;   
+    var _movementView = null; 
+    var _movementArrow = null; 
+    var _movementETA = null; 
     var _actionPointsLabelView = null;
     
     that = module.createView(spec, my);
@@ -203,6 +205,50 @@ AWE.UI = (function(module) {
         _selectShape.visible = this.selected() || this.hovered();
         _selectShape.alpha = (this.selected() ? 1. : 0.2);
       }
+      /*
+      if (_army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
+      
+        var targetLocation = AWE.Map.Manager.getLocation(_army.get('target_location_id'));
+        
+        if (!AWE.Map.Manager.getLocation(_army.get('target_location_id'))) {
+          AWE.Map.Manager.fetchLocationsForRegion(AWE.Map.Manager.getRegion(_army.get('target_region_id')), function() {
+            that.setNeedsUpdate();
+          });
+        }
+        else {
+          var posTarget = that.controller().mc2vc(targetLocation.position());
+          var posStart  = this.frame().origin.copy();
+          
+          log (posStart.x, posStart.y, posTarget.x, posTarget.y);
+          
+          var opos = AWE.Geometry.createPoint(30,90);
+          var tpos = AWE.Geometry.createPoint(posTarget.x-posStart.x, posTarget.y-posStart.y);
+          
+          if (!_movementView) {
+            _movementView = new Container();
+           // _movementView.initWithController(this.controller(), this.frame().copy());
+            _container.addChild(_movementView);
+          }
+          
+          if (_movementArrow) {
+            _container.removeChild(_movementArrow);
+          }
+          
+          var arrow = new Graphics();
+          arrow.setStrokeStyle(5);
+          arrow.beginStroke(Graphics.getRGB(255,240,240));
+        //  arrow.beginFill(Graphics.getRGB(255, 250, 250));
+          arrow.moveTo(opos.x, opos.y);
+          arrow.bezierCurveTo(opos.x, opos.y-200, tpos.x, tpos.y-200, tpos.x, tpos.y)
+          _movementArrow = new Shape(arrow);
+          _container.addChild(_movementArrow);
+        }
+        
+      }
+      else if (_movementView) {
+        _container.removeChild(_movementView);
+        _movementView = null;
+      }*/
       
       if (_actionPointsLabelView) {
         _actionPointsLabelView.setVisible(this.selected() || this.hovered() || (_army && _army.isOwn()));
