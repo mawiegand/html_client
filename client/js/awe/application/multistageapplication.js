@@ -162,7 +162,7 @@ AWE.Application = (function(module) {
         if (this.get('isModal')) {
           return ;
         }
-	    
+        
   	    if (nextMouseOverTest > new Date().getTime()) {
   	      return ;
   	    }
@@ -172,6 +172,11 @@ AWE.Application = (function(module) {
   	    }	    
   	    oldMouseX = mouseX; 
   	    oldMouseY = mouseY; 
+
+        if (this.get('presentScreenController') && this.get('presentScreenController').isScrolling()) {
+          return ; // just ignore it here!
+        }
+
 	    
   	    nextMouseOverTest = new Date().getTime() + mouseOverTestTimeout;
 
