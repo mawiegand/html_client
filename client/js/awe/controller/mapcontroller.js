@@ -1311,7 +1311,7 @@ AWE.Controller = (function(module) {
             else {  // if view for army doesn't exists
               view = AWE.UI.createArmyView();
               view.initWithControllerAndArmy(that, army);
- //             view.displayObject().alpha=0.3;
+//              view.displayObject().alpha=0.3;
               _stages[1].addChild(view.displayObject());
             }                                  
             setArmyPosition(view, pos, army.get('id'), frame);

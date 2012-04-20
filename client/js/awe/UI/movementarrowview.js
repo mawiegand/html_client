@@ -107,9 +107,7 @@ AWE.UI = (function(module) {
       var spY = my.startPos.y - my.frame.origin.y;
       var epX = my.endPos.x - my.frame.origin.x;
       var epY = my.endPos.y - my.frame.origin.y;
-      
-      log (spX, spY, epX, epY);
-      
+            
       var arrow = new Graphics();
       arrow.setStrokeStyle(focus ? 13 : 9);
       arrow.beginStroke(this.arrowColor(focus));
