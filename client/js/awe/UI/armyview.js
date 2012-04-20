@@ -175,20 +175,17 @@ AWE.UI = (function(module) {
       _flagView.setDirection('left');
       that.addChildAt(_flagView, 0);
 
-      if (_frameRectShape) {
-        that.removeChild(_frameRectShape);
-        _frameRectShape = null;
-      }
-      
-      var _frameRectGraphics = new Graphics();
-      _frameRectGraphics.setStrokeStyle(1);
-      _frameRectGraphics.beginStroke('rgb(255,255,255)');
-      _frameRectGraphics.beginFill('rgba(255,255,255,0.2)');
-      _frameRectGraphics.drawRoundRect(0, 0, my.frame.size.width, my.frame.size.height, 0);
-      _frameRectShape = AWE.UI.createShapeView();
-      _frameRectShape.initWithControllerAndGraphics(my.controller, _frameRectGraphics);
-      _frameRectShape.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
-      that.addChild(_frameRectShape);      
+      if (!_frameRectShape && AWE.Config.MAP_DEBUG_FRAMES) {
+        var _frameRectGraphics = new Graphics();
+        _frameRectGraphics.setStrokeStyle(1);
+        _frameRectGraphics.beginStroke('rgb(255,255,255)');
+        _frameRectGraphics.beginFill('rgba(255,255,255,0.2)');
+        _frameRectGraphics.drawRoundRect(0, 0, my.frame.size.width, my.frame.size.height, 0);
+        _frameRectShape = AWE.UI.createShapeView();
+        _frameRectShape.initWithControllerAndGraphics(my.controller, _frameRectGraphics);
+        _frameRectShape.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
+        that.addChild(_frameRectShape);    
+      }  
             
       _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]));
 
