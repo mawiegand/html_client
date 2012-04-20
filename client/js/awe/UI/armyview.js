@@ -147,7 +147,7 @@ AWE.UI = (function(module) {
     };
     
     that.resizeToFit = function() {
-      this.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAP_ARMY_WIDTH, AWE.Config.MAP_ARMY_HEIGHT));
+      this.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAP_ARMY_WIDTH, AWE.Config.MAP_ARMY_HEIGHT - 16));
     };
 
     that.updateView = function() {
@@ -188,7 +188,7 @@ AWE.UI = (function(module) {
       _frameRectShape = AWE.UI.createShapeView();
       _frameRectShape.initWithControllerAndGraphics(my.controller, _frameRectGraphics);
       _frameRectShape.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
-      that.addChild(_frameRectShape);      
+      that.addChildAt(_frameRectShape, 0);      
             
       _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]));
 
