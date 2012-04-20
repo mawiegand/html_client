@@ -30,7 +30,7 @@ AWE.UI = (function(module) {
     var _baseShape = null;
     var _stanceView = null;
     var _infoButtonView = null;
-    var _moveButtonView = null;
+    var _reinforceButtonView = null;
     var _prevButtonView = null;
     var _nextButtonView = null;
     var _flagView = null;
@@ -68,27 +68,27 @@ AWE.UI = (function(module) {
       _nameLabelView.initWithControllerAndLabel(controller);
       _nameLabelView.setFrame(AWE.Geometry.createRect(5, 15, 100, 24));      
       _nameLabelView.setTextAlign("left");
-      _nameLabelView.setIconImage("map/display/icon");
+      // _nameLabelView.setIconImage("map/icon/heads");
       this.addChild(_nameLabelView);
 
       _apLabelView = AWE.UI.createLabelView();
       _apLabelView.initWithControllerAndLabel(controller);
       _apLabelView.setFrame(AWE.Geometry.createRect(5, 40, 100, 24));      
       _apLabelView.setTextAlign("left");
-      _apLabelView.setIconImage("map/display/icon");
+      _apLabelView.setIconImage("map/icon/actionpoints");
       this.addChild(_apLabelView);
 
       _locationLabelView = AWE.UI.createLabelView();
       _locationLabelView.initWithControllerAndLabel(controller);
       _locationLabelView.setFrame(AWE.Geometry.createRect(5, 65, 100, 24));      
       _locationLabelView.setTextAlign("left");
-      _locationLabelView.setIconImage("map/display/icon");
+      _locationLabelView.setIconImage("map/icon/home");
       this.addChild(_locationLabelView);
 
       _rankLabelView = AWE.UI.createLabelView();
       _rankLabelView.initWithControllerAndLabel(controller);
       _rankLabelView.setTextAlign("left");
-      _rankLabelView.setIconImage("map/display/icon");
+      _rankLabelView.setIconImage("map/icon/rank");
       _rankLabelView.setFrame(AWE.Geometry.createRect(5, 90, 100, 24));      
       this.addChild(_rankLabelView);
 
@@ -96,27 +96,27 @@ AWE.UI = (function(module) {
       _sizeAllLabelView.initWithControllerAndLabel(controller);
       _sizeAllLabelView.setFrame(AWE.Geometry.createRect(105, 15, 100, 24));      
       _sizeAllLabelView.setTextAlign("left");
-      _sizeAllLabelView.setIconImage("map/display/icon");
+      _sizeAllLabelView.setIconImage("map/icon/army/size");
       this.addChild(_sizeAllLabelView);
 
       _sizeType1LabelView = AWE.UI.createLabelView();
       _sizeType1LabelView.initWithControllerAndLabel(controller);
       _sizeType1LabelView.setFrame(AWE.Geometry.createRect(105, 40, 100, 24));      
       _sizeType1LabelView.setTextAlign("left");
-      _sizeType1LabelView.setIconImage("map/display/icon");
+      _sizeType1LabelView.setIconImage("map/icon/army/size1");
       this.addChild(_sizeType1LabelView);
 
       _sizeType2LabelView = AWE.UI.createLabelView();
       _sizeType2LabelView.initWithControllerAndLabel(controller);
       _sizeType2LabelView.setFrame(AWE.Geometry.createRect(105, 65, 100, 24));      
       _sizeType2LabelView.setTextAlign("left");
-      _sizeType2LabelView.setIconImage("map/display/icon");
+      _sizeType2LabelView.setIconImage("map/icon/army/size2");
       this.addChild(_sizeType2LabelView);
 
       _sizeType3LabelView = AWE.UI.createLabelView();
       _sizeType3LabelView.initWithControllerAndLabel(controller);
       _sizeType3LabelView.setTextAlign("left");
-      _sizeType3LabelView.setIconImage("map/display/icon");
+      _sizeType3LabelView.setIconImage("map/icon/army/size3");
       _sizeType3LabelView.setFrame(AWE.Geometry.createRect(105, 90, 100, 24));      
       this.addChild(_sizeType3LabelView);
       
@@ -205,9 +205,10 @@ AWE.UI = (function(module) {
       _nameLabelView.setText(_army.get('name'));
       if (_army.isOwn()) {
         _apLabelView.setText('AP: ' + AWE.UI.Util.secondsToString(_army.get('ap_seconds_per_point')));
+        _reinforceButtonView.setEnabled(_army.get('home_settlement_id') === _army.get('location_id'));
       }
       else {
-        _apLabelView.setText(_army.get('owner_name') + ' | ' + _army.get('alliance_tag'));        
+        _apLabelView.setText(_army.get('owner_name') + (_army.get('alliance_tag') ? ' | ' + _army.get('alliance_tag') : ''));        
       }
       
       _locationLabelView.setText('Home');
@@ -217,7 +218,6 @@ AWE.UI = (function(module) {
       _sizeType2LabelView.setText(_army.get('size_present'));
       _sizeType3LabelView.setText(_army.get('size_present'));
       
-      _reinforceButtonView.setEnabled(_army.get('home_settlement_id') === _army.get('location_id'));
 
       if (_flagView) {      
         this.removeChild(_flagView);

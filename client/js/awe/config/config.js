@@ -128,14 +128,26 @@ AWE.Config = (function(module) {
     "map/button2": 'images/red_button.png',
     "map/button3": 'images/blue_button.png',
     
+    "map/icon/owner": "images/icons/heads.png",
+    "map/icon/home": "images/icons/house.png",
+    "map/icon/actionpoints": "images/icons/magnifier.png",
+    "map/icon/rank": "images/icons/star.png",
+    "map/icon/army/strength": "images/icons/flash.png",
+    "map/icon/army/size": "images/icons/gearwheel.png",
+    "map/icon/army/size1": "images/icons/gearwheel.png",
+    "map/icon/army/size2": "images/icons/gearwheel.png",
+    "map/icon/army/size3": "images/icons/gearwheel.png",
+    
+    // heads.png, eye.png, flash.png, gearwheel.png, heads.png, house.png, magnifier.png, sandglass.png, star.png
+    
     "hud/head": 'images/head.png',
     "hud/frog/face": 'images/kopfkroete40.png',
   };
   
   module.MAP_STANCE_IMAGES = [
-      "map/army/stanceNeutral",
-      "map/army/stanceAggressive",
-      "map/army/stanceDefensive"
+    "map/army/stanceNeutral",
+    "map/army/stanceAggressive",
+    "map/army/stanceDefensive"
   ];
 
   
