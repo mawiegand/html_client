@@ -13,11 +13,10 @@ AWE.UI = (function(module) {
         
     my = my || {};
     
-    my.container = null;    
     my.annotationView = null;
     my.targetView = null;
 
-    that = module.createView(spec, my);
+    that = module.createContainer(spec, my);
 
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
@@ -31,7 +30,6 @@ AWE.UI = (function(module) {
     
     that.initWithController = function(controller, frame) {
       _super.initWithController(controller, frame);
-      my.container = new Container();
     };
     
     that.updateView = function() {
@@ -42,22 +40,6 @@ AWE.UI = (function(module) {
         my.targetView.updateView();   // TODO: Hack
       }
     }    
-    
-    that.setFrame = function(frame) {
-      _super.setFrame(frame);
-  /*    my.container.x = my.frame.origin.x;
-      my.container.y = my.frame.origin.y;*/
-    }
-    
-    that.setAlpha = function(alpha) {
-      _super.setAlpha(alpha);
-      my.container.visible = alpha !== 0;
-      my.container.alpha = alpha;
-    }
-            
-    that.displayObject = function() {
-      return my.container;
-    };
     
     that.setAnnotationView = function(annotationView) {
       my.annotationView = annotationView;

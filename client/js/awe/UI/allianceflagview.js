@@ -87,22 +87,30 @@ AWE.UI = (function(module) {
           _allianceTagLabelView.setFrame(AWE.Geometry.createRect(0, my.frame.size.height / 3 - 12, my.frame.size.width, 24));
         }
         else {
-          AWE.GS.AllianceManager.updateAlliance(_allianceId);
+          AWE.GS.AllianceManager.updateAlliance(_allianceId, function() {
+            that.setUpdateNeeded();
+          });
         }
-      }
-      
+      }      
     }
     
     that.setAllianceId = function(allianceId) {
       _allianceId = allianceId;
+      this.setNeedsUpdate();
     }
+    
+    that.allianceId = function() { return _allianceId; }
     
     that.setDirection = function(direction) {
       _direction = direction;
+      this.setNeedsUpdate();
     }
+    that.direction = function() { return _direction; }
+
     
     that.setTagVisible = function(tagVisible) {
       _tagVisible = tagVisible;
+      this.setNeedsUpdate();
     }
     
     that.onClick = function() {}
