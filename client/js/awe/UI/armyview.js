@@ -172,7 +172,7 @@ AWE.UI = (function(module) {
       _flagView.setFrame(AWE.Geometry.createRect(56 - flagLength, 12, flagLength, 20));
       _flagView.setAllianceId(_army.get('alliance_id'));
       _flagView.setDirection('left');
-      that.addChild(_flagView);
+      that.addChildAt(_flagView, 0);
             
       _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]));
 
