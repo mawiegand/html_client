@@ -148,7 +148,7 @@ AWE.UI = (function(module) {
     
     that.resizeToFit = function() {
       this.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAP_ARMY_WIDTH, AWE.Config.MAP_ARMY_HEIGHT - 16));
-    };
+    }; 
 
     that.updateView = function() {
       that.recalcView();
@@ -156,10 +156,6 @@ AWE.UI = (function(module) {
     }
         
     that.recalcView = function() {
-      
-      // TODO, IMPORTANT: DON'T recreate objects everytime this view is updated. This may be expensive... 
-      //                  should better check, which values have really been changed. In most cases, only
-      //                  the location, target or arrival time will have changed.
       
       // BUG: since the stance-view is not recreated and there is no "addChildBelow" used, after one update
       //      of the army the pole will be in front of the figure, although it should be behind.
@@ -178,7 +174,6 @@ AWE.UI = (function(module) {
       if (_frameRectShape) {
         that.removeChild(_frameRectShape);
         _frameRectShape = null;
-      }
       
       var _frameRectGraphics = new Graphics();
       _frameRectGraphics.setStrokeStyle(1);
@@ -189,6 +184,7 @@ AWE.UI = (function(module) {
       _frameRectShape.initWithControllerAndGraphics(my.controller, _frameRectGraphics);
       _frameRectShape.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
       that.addChildAt(_frameRectShape, 0);      
+      }
             
       _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]));
 
