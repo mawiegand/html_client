@@ -211,10 +211,9 @@ AWE.UI = (function(module) {
     
     that.layoutIfNeeded = function() {
       if (_needsLayout) {
-        this.setChangedNow();
-        
         this.layoutSubviews();
-      
+
+        this.setChangedNow();
         _needsLayout = false;
         this.setNeedsDisplay();
       };
@@ -223,13 +222,13 @@ AWE.UI = (function(module) {
     that.updateIfNeeded = function() {
       if (_needsUpdate) {
         this.updateView();
+
+        this.setChangedNow();
         _needsUpdate = false;
-        this.setNeedsDisplay();
-        
+        this.setNeedsDisplay();        
         if (my.typeName == "ButtonView") {
           console.log('update in button view. _needsUpdate = ' + _needsUpdate);
         }
-
       };
     };
     

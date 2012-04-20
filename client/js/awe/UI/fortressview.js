@@ -19,6 +19,8 @@ AWE.UI = (function(module) {
     var _flagView = null;
     var _poleShape = null;
     var _fortressImageName = null;
+    
+    var _frameRect = null;
 
     
     my = my || {};
@@ -42,14 +44,14 @@ AWE.UI = (function(module) {
       _node = node;
       
       this.setFrame(AWE.Geometry.createRect(0,0,
-                                            my.container.width = my.frame.size.width = AWE.Config.MAPPING_FORTRESS_SIZE,
-                                            my.container.height = my.frame.size.height = AWE.Config.MAPPING_FORTRESS_SIZE + 44));
+                                            AWE.Config.MAPPING_FORTRESS_SIZE,
+                                            AWE.Config.MAPPING_FORTRESS_SIZE + 44));
       that.recalcView();
     };
     
     that.recalcView = function() {
       
-      console.log('update fortress for region id ' + _node.region().id());
+    //console.log('update fortress for region id ' + _node.region().id());
 
       var allianceId = _node.region().allianceId();
 
@@ -134,6 +136,20 @@ AWE.UI = (function(module) {
       if (_labelView.text() != ownerName) {
         _labelView.setText(ownerName);
       }    
+      
+      
+      // FRAME RECT //////////////////////////////////////////////////////////     
+      if (!_frameRect && AWE.Config.MAP_DEBUG_FRAMES) {
+        log(my.frame.size.width, my.frame.size.height);
+        var frame = new Graphics();
+        frame.setStrokeStyle(1);
+        frame.beginStroke(Graphics.getRGB(0,0,0));
+        frame.beginFill('rgba(0,0,0,0.2)');
+        frame.drawRoundRect(0, 0, my.frame.size.width, my.frame.size.height,0);
+        _frameRect = new Shape(frame); 
+        my.container.addChild(_frameRect);        
+      }     
+      
     }
     
     that.updateView = function() {

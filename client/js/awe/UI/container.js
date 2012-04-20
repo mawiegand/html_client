@@ -38,6 +38,8 @@ AWE.UI = (function(module) {
       my.container = new Container();
       my.container.x = my.frame.origin.x;
       my.container.y = my.frame.origin.y;
+      my.container.width = my.frame.size.width;
+      my.container.height = my.frame.size.height;
     };
     
     
@@ -83,14 +85,16 @@ AWE.UI = (function(module) {
 
     
     that.layoutSubviews = function() {
-   //   _super.layoutSubviews();
+    //console.log('container needs layout');
+    //_super.layoutSubviews();
       AWE.Ext.applyFunction(my.subviews, function(obj) {
         obj.layoutIfNeeded();
       });
     }
     
     that.updateView = function() {
-   //   _super.layoutSubviews();
+    //console.log('container needs update');
+    //_super.layoutSubviews();
       AWE.Ext.applyFunction(my.subviews, function(obj) {
         obj.updateIfNeeded();
       });
