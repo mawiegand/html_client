@@ -48,6 +48,8 @@ AWE.UI = (function(module) {
     };
     
     that.recalcView = function() {
+      
+      console.log('update fortress for region id ' + _node.region().id());
 
       var allianceId = _node.region().allianceId();
 
@@ -75,7 +77,7 @@ AWE.UI = (function(module) {
         _imageView.onClick = that.onClick;
         _imageView.onMouseOver = that.onMouseOver;
         _imageView.onMouseOut = that.onMouseOut;
-        my.container.addChildAt(_imageView.displayObject(), 0);
+        this.addChildAt(_imageView, 0);
       }
 
 
@@ -125,12 +127,12 @@ AWE.UI = (function(module) {
         _labelView.onClick = that.onClick;
         _labelView.onMouseOver = that.onMouseOver;
         _labelView.onMouseOut = that.onMouseOut;
-        my.container.addChild(_labelView.displayObject());
+        this.addChild(_labelView);
       };
       
       var ownerName = _node.region().ownerName() + (_node.region().allianceTag() ? " | " +  _node.region().allianceTag() : "");
-      if (_labelView.text != ownerName) {
-        _labelView.text = ownerName;
+      if (_labelView.text() != ownerName) {
+        _labelView.setText(ownerName);
       }    
     }
     
