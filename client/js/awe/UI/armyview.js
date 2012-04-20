@@ -182,7 +182,8 @@ AWE.UI = (function(module) {
       
       var _frameRectGraphics = new Graphics();
       _frameRectGraphics.setStrokeStyle(1);
-      _frameRectGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
+      _frameRectGraphics.beginStroke('rgb(255,255,255)');
+      _frameRectGraphics.beginFill('rgba(255,255,255,0.2)');
       _frameRectGraphics.drawRoundRect(0, 0, my.frame.size.width, my.frame.size.height, 0);
       _frameRectShape = AWE.UI.createShapeView();
       _frameRectShape.initWithControllerAndGraphics(my.controller, _frameRectGraphics);
