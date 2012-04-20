@@ -93,21 +93,21 @@ AWE.UI = (function(module) {
       _infoText1View.initWithControllerAndLabel(controller);
       _infoText1View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
       _infoText1View.setTextAlign("left");
-      _infoText1View.setIconImage("map/display/icon");
+      _infoText1View.setIconImage("map/icon/owner");
       infoContainer.addChild(_infoText1View);
 
       _infoText2View = AWE.UI.createLabelView();
       _infoText2View.initWithControllerAndLabel(controller);
       _infoText2View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
       _infoText2View.setTextAlign("left");
-      _infoText2View.setIconImage("map/display/icon");
+      _infoText2View.setIconImage("map/icon/army/strength");
       infoContainer.addChild(_infoText2View);
 
       _infoText3View = AWE.UI.createLabelView();
       _infoText3View.initWithControllerAndLabel(controller);
       _infoText3View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
       _infoText3View.setTextAlign("left");
-      _infoText3View.setIconImage("map/display/icon");
+      _infoText3View.setIconImage("map/icon/army/size");
        infoContainer.addChild(_infoText3View);
             
       if (!frame) {
@@ -182,21 +182,21 @@ AWE.UI = (function(module) {
       }
 
       _infoText1View.setText(_army.get('owner_name') + (_army.get('alliance_tag') ? (' | ' + _army.get('alliance_tag')) : ''));
-      _infoText3View.setText(_army.get('size_present'));
       _infoText2View.setText(_army.get('strength'));
+      _infoText3View.setText(_army.get('size_present'));
       
       infoContainer.layoutSubviews(); // call this by hand, as only changed visibility
       
       var backgroundGraphics = new Graphics();
       backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
       backgroundGraphics.drawRoundRect(0, 0,
-                                       infoContainer.frame().size.width + 4,
+                                       infoContainer.frame().size.width + 12,
                                        infoContainer.frame().size.height+ 4, 4);
       _backgroundShapeView = AWE.UI.createShapeView();
       _backgroundShapeView.initWithControllerAndGraphics(my.controller, backgroundGraphics);
-      _backgroundShapeView.setFrame(AWE.Geometry.createRect(infoContainer.frame().origin.x - 2, 
+      _backgroundShapeView.setFrame(AWE.Geometry.createRect(infoContainer.frame().origin.x - 6, 
                                                             infoContainer.frame().origin.y - 2, 
-                                                            infoContainer.frame().size.width + 4, 
+                                                            infoContainer.frame().size.width + 12, 
                                                             infoContainer.frame().size.height+ 4));
       this.addChildAt(_backgroundShapeView, 0);      
       

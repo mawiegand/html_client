@@ -109,7 +109,7 @@ AWE.Application = (function(module) {
       
         var target = null, relX, relY;
   	    for (var layer=0; layer < allStages.length && !target; layer++) {
-  	      targetLayer = layer;
+  	      // targetLayer = layer;
   	      if (allStages[layer].stage.mouseInBounds && !allStages[layer].transparent) {
   	        var stage = allStages[layer].stage;
   	        target = stage.getObjectUnderPoint(stage.mouseX, stage.mouseY); // TODO: don't use absolute evt.pageX here, right?!

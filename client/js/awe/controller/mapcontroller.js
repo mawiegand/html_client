@@ -1498,6 +1498,10 @@ AWE.Controller = (function(module) {
           annotationView = AWE.UI.createOutpostAnnotationView();
           annotationView.initWithControllerAndView(that, annotatedView);
         }
+        else if (annotatedView.typeName() === 'EmptySlotView') {
+          annotationView = AWE.UI.createEmptySlotAnnotationView();
+          annotationView.initWithControllerAndView(that, annotatedView);
+        }
     
         annotatedView.setAnnotationView(annotationView);
         
