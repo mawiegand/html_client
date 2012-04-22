@@ -15,13 +15,11 @@ AWE.UI = (function(module) {
 
     var that;
 
-    var _subviews = Array();
-    
-    
     // protected attributes and methods //////////////////////////////////////
 
     my = my || {};
     my.container = null;
+    my.subviews = Array();
 
 
     // public attributes and methods /////////////////////////////////////////
@@ -31,6 +29,7 @@ AWE.UI = (function(module) {
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
+      notifyRedraw: AWE.Ext.superior(that, 'notifyRedraw'),
     };
     
     
@@ -39,30 +38,65 @@ AWE.UI = (function(module) {
       my.container = new Container();
       my.container.x = my.frame.origin.x;
       my.container.y = my.frame.origin.y;
+      my.container.width = my.frame.size.width;
+      my.container.height = my.frame.size.height;
     };
     
     
-    that.addChild = function(view) { 
-      _subviews.push(view);
+    that.addChildAt = function(view, pos) { 
+      my.subviews.push(view);
+      view.setSuperview(this);
+      AWE.Ext.applyFunction(view.displayObject(), function(obj){
+        my.container.addChildAt(obj, pos);
+      });
+      if (view.needsDisplay()) this.setNeedsDisplay();
+      if (view.needsLayout())  this.setNeedsLayout();
+      if (view.needsUpdate())  this.setNeedsUpdate();  
+    };
+    
+    that.addChild = function(view) {
+      my.subviews.push(view);
+      view.setSuperview(this);
       AWE.Ext.applyFunction(view.displayObject(), function(obj){
         my.container.addChild(obj);
       });
+      if (view.needsDisplay()) this.setNeedsDisplay();
+      if (view.needsLayout())  this.setNeedsLayout();
+      if (view.needsUpdate())  this.setNeedsUpdate();  
     };
     
     that.removeChild = function(view) {
-      var index = _subviews.indexOf(view);     
+      var index = my.subviews.indexOf(view);     
       if (index >= 0) {
         AWE.Ext.applyFunction(view.displayObject(), function(obj){
           my.container.removeChild(obj);
         });
-        _subviews.splice(index,1);
+        my.subviews.splice(index,1);
+        view.setSuperview(null);
       }
     }
     
+    that.notifyRedraw = function() { 
+      _super.notifyRedraw(); 
+      AWE.Ext.applyFunction(my.subviews, function(obj) {
+        obj.notifyRedraw();
+      });
+    }
+
+    
     that.layoutSubviews = function() {
-      _super.layoutSubviews();
-      AWE.Ext.applyFunction(_subviews, function(obj) {
+    //console.log('container needs layout');
+    //_super.layoutSubviews();
+      AWE.Ext.applyFunction(my.subviews, function(obj) {
         obj.layoutIfNeeded();
+      });
+    }
+    
+    that.updateView = function() {
+    //console.log('container needs update');
+    //_super.layoutSubviews();
+      AWE.Ext.applyFunction(my.subviews, function(obj) {
+        obj.updateIfNeeded();
       });
     }
     

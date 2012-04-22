@@ -21,6 +21,8 @@ AWE.Config = (function(module) {
   
   module.MAP_DEBUG_LEVEL = module.DEBUG_LEVEL_ERROR;
   
+  module.MAP_DEBUG_FRAMES = false;
+  
   module.MAP_RUN_TESTS = false;
   module.MAP_SERVER_BASE = module.SERVER_ROOT + '/game_server/map/';
   module.MILITARY_SERVER_BASE = module.SERVER_ROOT + '/game_server/military/';
@@ -34,6 +36,10 @@ AWE.Config = (function(module) {
   
   module.MAP_ARMY_WIDTH = 64;
   module.MAP_ARMY_HEIGHT = 128;
+  
+  module.ARMY_MODE_IDLE = 0;
+  module.ARMY_MODE_MOVING = 1;
+  module.ARMY_MODE_FIGHTING = 2;
   
   // how many tiles showing minimum when not at leaf level
   module.MAP_MIN_VISIBLE_TILES = 64;
@@ -81,8 +87,8 @@ AWE.Config = (function(module) {
     "map/tiles/split512": 'images/tiles/split256.png',
     "map/tiles/base512": 'images/tiles/base256.png',
     "map/tiles/forest512": 'images/tiles/forest512.png',
-    "map/tiles/plain512": 'images/tiles/plain256.png',
-    "map/tiles/mountains512": 'images/tiles/mountains256.png',
+    "map/tiles/plain512": 'images/tiles/plain512.png',
+    "map/tiles/mountains512": 'images/tiles/mountains512.png',
     "map/tiles/mud512": 'images/tiles/mud256.png',
     
     "map/fortress/small": 'images/settlements/fortresssmall.png',
@@ -106,28 +112,44 @@ AWE.Config = (function(module) {
     "map/army/rank5": 'images/army/rank4.png',
 
     "map/army/target": 'images/army/target.png',
+    "map/army/target_background": 'images/white_background.png',
 
-    "map/outpost" : "images/settlements/outpost.png",
+    "map/outpost": "images/settlements/outpost.png",
     "map/emptyslot" : "images/white_icon.png",
 
-    "map/easement": "images/verbot.png",
+    "map/easement/yes": "images/ok.png",
+    "map/easement/no": "images/verbot.png",
 
     "map/display/icon": "images/white_icon.png",
 
     "map/region/icon": "images/dot.png",
     
     "map/button1": 'images/green_button.png',
+    "map/button1highlighted": 'images/red_button.png',
+    "map/button1disabled": 'images/green_button_disabled.png',
     "map/button2": 'images/red_button.png',
     "map/button3": 'images/blue_button.png',
+    
+    "map/icon/owner": "images/icons/heads.png",
+    "map/icon/home": "images/icons/house.png",
+    "map/icon/actionpoints": "images/icons/magnifier.png",
+    "map/icon/rank": "images/icons/star.png",
+    "map/icon/army/strength": "images/icons/flash.png",
+    "map/icon/army/size": "images/icons/gearwheel.png",
+    "map/icon/army/size1": "images/icons/gearwheel.png",
+    "map/icon/army/size2": "images/icons/gearwheel.png",
+    "map/icon/army/size3": "images/icons/gearwheel.png",
+    
+    // heads.png, eye.png, flash.png, gearwheel.png, heads.png, house.png, magnifier.png, sandglass.png, star.png
     
     "hud/head": 'images/head.png',
     "hud/frog/face": 'images/kopfkroete40.png',
   };
   
   module.MAP_STANCE_IMAGES = [
-      "map/army/stanceNeutral",
-      "map/army/stanceAggressive",
-      "map/army/stanceDefensive"
+    "map/army/stanceNeutral",
+    "map/army/stanceAggressive",
+    "map/army/stanceDefensive"
   ];
 
   

@@ -220,6 +220,7 @@ AWE.Map = (function(module) {
       return true;
     };
     
+    
     that.fetchMissingRegionsForArea = (function() { 
       var numRunningUpdates = 0;
       var recLevel = 0;

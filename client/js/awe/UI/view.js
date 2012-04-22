@@ -7,6 +7,12 @@
 var AWE = AWE || {};
 
 AWE.UI = (function(module) {
+  
+  module.CONTROL_STATE_NORMAL   = 0;
+  module.CONTROL_STATE_HOVERED  = 1 << 0;
+  module.CONTROL_STATE_DISABLED = 1 << 1;
+  module.CONTROL_STATE_SELECTED = 1 << 2;
+
           
   /** creates the base class of the view hierarchy. The spec object is an 
    * optional argument that can be used to initialize the intrinsics of the
@@ -37,17 +43,36 @@ AWE.UI = (function(module) {
     
     var _autoscales = false;   ///< whether the view automatically adapts its internal scale when being resized.
     var _alpha = 1.;           ///< alpha value (transparency) of the view. Continuous value from 0 to 1. 0: transparent, 1: opaque.
-    var _selected = false;     ///< selection state of view
-    var _hovered = false;
   
   
     // protected attributes and methods //////////////////////////////////////
   
     my = my || {};
+
+    my.superview = null;
+    my.controller = null;      ///< view controller that has controll of this view.
     
     my.frame = null;           ///< frame of the view.
-    my.controller = null;      ///< view controller that has controll of this view.
+    my.state = module.CONTROL_STATE_NORMAL;
+    my.visible = true;
   
+    /** setting bits in bitfields (flags) */
+    my.setBit = function(flags, mask) {
+      return flags | mask;
+    }
+    /** unsetting bits in bitfields (flags) */
+    my.unsetBit = function(flags, mask) {
+      return flags & ~mask; 
+    }
+    /** testing bits in bitfields (flags) */
+    my.testBit = function(flags, mask) {
+      return (flags & mask) == mask;
+    }
+    /** convenience funciton for either setting or unsetting bits in bitfields
+     * (flags) */
+    my.setUnsetBit = function(flags, mask, set) {
+      return my[set ? 'setBit' : 'unsetBit'](flags, mask);
+    }    
     
     // public attributes and methods /////////////////////////////////////////
     
@@ -70,6 +95,18 @@ AWE.UI = (function(module) {
     /** returns the view controller controlling the view */
     that.controller = function() { return my.controller; }
     
+    /** return the superview */
+    that.superview = function() { return my.superview; }
+    
+    /** sets the superview */
+    that.setSuperview = function(superview) { my.superview = superview; }
+    
+    that.removeFromSuperview = function() {
+      if (my.superview) {
+        my.superview.removeChild(this);
+      }
+    }
+    
     /** returns the view's frame. */
     that.frame = function() { return my.frame; }
     
@@ -80,14 +117,15 @@ AWE.UI = (function(module) {
           obj.width = frame.size.width;
           obj.height = frame.size.height;   
         });
-        _needsLayout = _needsDisplay = true;
+        this.setNeedsDisplay();
+        this.setNeedsLayout();
       }
       if (!my.frame || !my.frame.origin.equals(frame.origin)) {
         AWE.Ext.applyFunction(this.displayObject(), function(obj) { // may return null, a DisplayObject or an Array
           obj.x = frame.origin.x;
           obj.y = frame.origin.y;   
         });
-        _needsDisplay = true;
+        this.setNeedsDisplay();
       }
       my.frame = frame;
     }
@@ -121,20 +159,41 @@ AWE.UI = (function(module) {
     /** sets that the view needs to re-layout itself and possible subviews. The
      * actual layout will be triggered during the next cycle of the controller's
      * runloop. */
-    that.setNeedsLayout = function() { _needsLayout = true; }    
+    that.setNeedsLayout = function() { 
+      if (!_needsLayout) {
+        _needsLayout = true; 
+        if (my.superview) {  // TODO: propagate this upwards?
+          my.superview.setNeedsLayout();
+        }
+      }
+    }    
     /** true, in case the view needs to re-layout itself and possible subviews. */
     that.needsLayout = function() { return _needsLayout; }
     /** sets that the view needs to update itself (and possible subviews) due to
      * a change in the associated model. The udpate is then triggered by the 
      * view controller during the next cycle of the runloop. */
-    that.setNeedsUpdate = function() { _needsUpdate = true;}
+    that.setNeedsUpdate = function() {
+      if (!_needsUpdate) {
+        _needsUpdate = true; 
+        if (my.superview) {  // TODO: really needs to propagate upwards?
+          my.superview.setNeedsUpdate();
+        }
+      }
+    }
     /** true, in case this view needs to be updated because of a change of the 
      * associated model. */
     that.needsUpdate = function() { return _needsUpdate; }
 
     /** sets the view to need re-display. You should never set this directly, 
      * use setNeedsLayout or setNeedsUpdate instead. */
-    that.setNeedsDisplay = function() { _needsDisplay = true; }
+    that.setNeedsDisplay = function() { 
+      if (!_needsDisplay) {
+        _needsDisplay = true; 
+        if (my.superview) {  // propagate upwards
+          my.superview.setNeedsDisplay();
+        }
+      }
+    }
     /** true, in case the view needs to be displayed because it has changed.
      * Is read-out by view controller and used to trigger a canvas-repaint 
      * when needed. */
@@ -153,14 +212,23 @@ AWE.UI = (function(module) {
     that.layoutIfNeeded = function() {
       if (_needsLayout) {
         this.layoutSubviews();
+
+        this.setChangedNow();
+        _needsLayout = false;
+        this.setNeedsDisplay();
       };
     };
     
     that.updateIfNeeded = function() {
       if (_needsUpdate) {
         this.updateView();
+
+        this.setChangedNow();
         _needsUpdate = false;
-        _needsDisplay = true;
+        this.setNeedsDisplay();        
+        if (my.typeName == "ButtonView") {
+          console.log('update in button view. _needsUpdate = ' + _needsUpdate);
+        }
       };
     };
     
@@ -178,46 +246,79 @@ AWE.UI = (function(module) {
     }
     
     that.setAlpha = function(alpha) {
+      if (_alpha === alpha) {
+        return ;
+      }
       _alpha = alpha;
-    }
-    
-    that.setSelected = function(selected) {
-      _selected = selected;
-      this.needsDisplay();
-    }
-
-    that.selected = function() {
-      return _selected;
-    }
-    
-    that.setHovered = function(hovered) {
-      _hovered = hovered;
-      this.needsDisplay();
-    }
-    
-    that.hovered = function() {
-      return _hovered;
+      AWE.Ext.applyFunction(this.displayObject(), function(obj) {
+        obj.alpha = _alpha;
+      });      
+      this.setNeedsDisplay();
     }
 
     that.setVisible = function(visible) {
-      _visible = visible;
-      this.needsDisplay();
+      if (my.visible === visible) {
+        return ;
+      }
+      my.visible = visible;
+      AWE.Ext.applyFunction(this.displayObject(), function(obj) {
+        obj.visible = visible;
+      });      
+      this.setNeedsDisplay();
     }
     
     that.visible = function() {
-      return _visible;
+      return my.visible;
     }
 
     that.layoutSubviews = function() {
       this.autoscaleIfNeeded();
-      this.setChangedNow();
-      
-      _needsLayout = false;
-      _needsDisplay = true;
     }
     
     that.updateView = function() {
     }
+    
+    
+    // ////////////// STATE TRACKING /////////////////
+    
+    /** returns the present control states of the UI element. */
+    that.state = function() {
+      return my.state;
+    }
+    
+    /** sets the UI's control state to the given flags. You OR the following 
+     * control states together: CONTROL_STATE_HOVERED, CONTROL_STATE_SELECTED,
+     * CONTROL_STATE_DISABLED. If not a bit is set, the control state is
+     * CONTROL_STATE_NORMAL. */
+    that.setState = function(controlState) {
+      if (my.state != controlState) {
+        this.setNeedsUpdate();    // trigger repainting of view
+      }
+      my.state = controlState;
+    }
+    
+    /** sets the present selection state to either true or false. Internally
+     * sets / unsets the appropriate bit on the state-flags. */
+    that.setSelected = function(selected) {
+      this.setState(my.setUnsetBit(my.state, module.CONTROL_STATE_SELECTED, selected));
+    }
+    that.selected = function() {
+      return my.testBit(my.state, module.CONTROL_STATE_SELECTED);
+    }
+    
+    that.setHovered = function(hovered) {
+      this.setState(my.setUnsetBit(my.state, module.CONTROL_STATE_HOVERED, hovered));
+    }
+    that.hovered = function() {
+      return my.testBit(my.state, module.CONTROL_STATE_HOVERED);
+    }
+    
+    that.setEnabled = function(enabled) {
+      this.setState(my.setUnsetBit(my.state, module.CONTROL_STATE_DISABLED, !enabled)); // "!" -> copied inconsistent naming scheme from iOS UI in order to be consistent ;-) 
+    }
+    that.enabled = function() {
+      return !my.testBit(my.state, module.CONTROL_STATE_DISABLED);                      // "!" -> copied inconsistent naming scheme from iOS UI in order to be consistent ;-) 
+    } 
     
     return that;
   };       

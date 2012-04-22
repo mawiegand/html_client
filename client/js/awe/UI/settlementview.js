@@ -13,39 +13,49 @@ AWE.UI = (function(module) {
         
     my = my || {};
     
-    my.container = null;    
+    my.annotationView = null;
+    my.targetView = null;
 
-    that = module.createView(spec, my);
+    that = module.createContainer(spec, my);
 
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
       setFrame: AWE.Ext.superior(that, "setFrame"),
       setAlpha: AWE.Ext.superior(that, "setAlpha"),
+      updateView: AWE.Ext.superior(that, "updateView"),
     };
     
     /** overwritten view methods */
     
     that.initWithController = function(controller, frame) {
       _super.initWithController(controller, frame);
-      my.container = new Container();
     };
     
-    that.setFrame = function(frame) {
-      _super.setFrame(frame);
-      my.container.x = my.frame.origin.x;
-      my.container.y = my.frame.origin.y;
+    that.updateView = function() {
+      _super.updateView();
+
+      if (my.targetView) {
+        my.targetView.setHovered(this.hovered());
+        my.targetView.updateView();   // TODO: Hack
+      }
+    }    
+    
+    that.setAnnotationView = function(annotationView) {
+      my.annotationView = annotationView;
     }
     
-    that.setAlpha = function(alpha) {
-      _super.setAlpha(alpha);
-      my.container.visible = alpha !== 0;
-      my.container.alpha = alpha;
+    that.annotationView = function() {
+      return my.annotationView;
     }
-            
-    that.displayObject = function() {
-      return my.container;
-    };
+    
+    that.setTargetView = function(targetView) {
+      my.targetView = targetView;
+    }
+    
+    that.targetView = function() {
+      return my.targetView;
+    }
     
     that.onClick = function() {
       my.controller.viewClicked(that);

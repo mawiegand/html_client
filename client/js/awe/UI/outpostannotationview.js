@@ -71,6 +71,10 @@ AWE.UI = (function(module) {
       _infoText1View.layoutIfNeeded();
     }
     
+    that.locationView = function() {
+      return _outpostView;
+    }
+        
     return that;
   };
       

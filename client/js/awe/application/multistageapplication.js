@@ -109,7 +109,7 @@ AWE.Application = (function(module) {
       
         var target = null, relX, relY;
   	    for (var layer=0; layer < allStages.length && !target; layer++) {
-  	      targetLayer = layer;
+  	      // targetLayer = layer;
   	      if (allStages[layer].stage.mouseInBounds && !allStages[layer].transparent) {
   	        var stage = allStages[layer].stage;
   	        target = stage.getObjectUnderPoint(stage.mouseX, stage.mouseY); // TODO: don't use absolute evt.pageX here, right?!
@@ -119,9 +119,14 @@ AWE.Application = (function(module) {
   	    }
 
         if (target) {
-          if (target && target.view && target.view.onClick) {
+          if (target && target.view && target.view.onClick) { // TODO: in our view layer: propagate clicks upwards along responder chain.
             log('click on target', target.view, target.view.typeName())
-            target.view.onClick(evt); // TODO: I think this is wrong; we somehow need to get the relative coordinates in.
+            if (target.view.enabled()) {  
+              target.view.onClick(evt); // TODO: I think this is wrong; we somehow need to get the relative coordinates in.
+            }
+            else {
+              log('click on disabled view.');
+            }
           }
           else if (target && target.onClick) {
             target.onClick(evt);
@@ -157,7 +162,7 @@ AWE.Application = (function(module) {
         if (this.get('isModal')) {
           return ;
         }
-	    
+        
   	    if (nextMouseOverTest > new Date().getTime()) {
   	      return ;
   	    }
@@ -167,6 +172,11 @@ AWE.Application = (function(module) {
   	    }	    
   	    oldMouseX = mouseX; 
   	    oldMouseY = mouseY; 
+
+        if (this.get('presentScreenController') && this.get('presentScreenController').isScrolling()) {
+          return ; // just ignore it here!
+        }
+
 	    
   	    nextMouseOverTest = new Date().getTime() + mouseOverTestTimeout;
 
@@ -346,6 +356,13 @@ AWE.Application = (function(module) {
         var rootController = this.get('presentScreenController');
         if (controller != rootController) {
           if (rootController) {
+  	        if (hoveredView) { 
+  	          if (hoveredView.onMouseOut && stageHovered >= 0 && this.get('allStages')[stageHovered].mouseOverEvents) {
+  	            hoveredView.onMouseOut(new MouseEvent("onMouseOut", mouseX, mouseY, hoveredView));
+  	          }
+  	          hoveredView = null;
+  	          stageHovered = -1;
+	          }
             rootController.viewWillDisappear();
             this.remove(rootController);
             rootController.viewDidDisappear();
