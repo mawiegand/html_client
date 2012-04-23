@@ -45,7 +45,7 @@ AWE.UI = (function(module) {
       
       this.setFrame(AWE.Geometry.createRect(0,0,
                                             AWE.Config.MAPPING_FORTRESS_SIZE,
-                                            AWE.Config.MAPPING_FORTRESS_SIZE + 44));
+                                            AWE.Config.MAPPING_FORTRESS_SIZE + 19));
       that.recalcView();
     };
     

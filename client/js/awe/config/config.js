@@ -21,7 +21,7 @@ AWE.Config = (function(module) {
   
   module.MAP_DEBUG_LEVEL = module.DEBUG_LEVEL_ERROR;
   
-  module.MAP_DEBUG_FRAMES = true;
+  module.MAP_DEBUG_FRAMES = false;
   
   module.MAP_RUN_TESTS = false;
   module.MAP_SERVER_BASE = module.SERVER_ROOT + '/game_server/map/';
