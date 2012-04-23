@@ -73,6 +73,9 @@ AWE.UI = (function(module) {
         this.removeChild(enterButton);
         enterButton = null;
       }
+      if (enterButton) {
+        enterButton.setVisible(my.fortressView.selected());
+      }
       
       if (!attackButton && my.region.ownerId() === currentCharacter.get('id') && !0) { // check ongoing battle
         attackButton = AWE.UI.createButtonView();
@@ -86,6 +89,9 @@ AWE.UI = (function(module) {
       else if (attackButton && my.region.ownerId() !== currentCharacter.get('id') && !0) {
         this.removeChild(attackButton);
         attackButton = null;
+      }
+      if (attackButton) {
+        attackButton.setVisible(my.fortressView.selected());
       }
       
       if (!spyButton && my.region.ownerId() !== currentCharacter.get('id')) {
@@ -101,6 +107,9 @@ AWE.UI = (function(module) {
         this.removeChild(spyButton);
         spyButton = null;
       }
+      if (spyButton) {
+        spyButton.setVisible(my.fortressView.selected());
+      }
       
       if (!battleButton && 0) {  // ongoing battle -> attribute is missing in database ("mode")
         battleButton = AWE.UI.createButtonView();
@@ -114,7 +123,10 @@ AWE.UI = (function(module) {
       else if (battleButton && !0) {
         this.removeChild(battleButton);
         battleButton = null;
-      }      
+      }  
+      if (battleButton) {
+        battleButton.setVisible(my.fortressView.selected());
+      }    
 
       if (!my.infoContainer) {
         my.infoContainer = AWE.UI.createMultiLineContainer();
@@ -180,10 +192,11 @@ AWE.UI = (function(module) {
       _super.updateView();
     }
 
+/*
     that.layoutSubviews = function() {
       _super.layoutSubviews();
     }
-
+*/
         
     that.locationView = function() {
       return my.fortressView;
