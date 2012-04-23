@@ -47,8 +47,7 @@ AWE.UI = (function(module) {
     };
         
     that.updateView = function () {
-      _super.updateView();
-      
+            
       var color = _allianceId ? AWE.GS.AllianceManager.colorForNumber(_allianceId) : { r: 255, g: 255, b: 255 };
 
       if (_flagShapeView) {
@@ -91,7 +90,9 @@ AWE.UI = (function(module) {
             that.setUpdateNeeded();
           });
         }
-      }      
+      }
+            
+      _super.updateView();
     }
     
     that.setAllianceId = function(allianceId) {
