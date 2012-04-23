@@ -29,6 +29,8 @@ AWE.UI = (function(module) {
 
     var _backgroundShapeView = null;
 
+    var rightOfWayIcon = null;
+
     my = my || {};
     
     my.typeName = 'FortressAnnotationView';
@@ -128,6 +130,19 @@ AWE.UI = (function(module) {
         battleButton.setVisible(my.fortressView.selected());
       }    
 
+
+      if (AWE.Config.DEV_ALLIANCE_ID !==  my.region.allianceId() && !rightOfWayIcon) {
+        rightOfWayIcon = AWE.UI.createImageView();
+        rightOfWayIcon.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement/no"));
+        rightOfWayIcon.setFrame(AWE.Geometry.createRect(56, 82, 32, 32));
+        rightOfWayIcon.setContentMode(module.setContentModeNone);
+        this.addChild(rightOfWayIcon); 
+      }
+      else if (AWE.Config.DEV_ALLIANCE_ID ===  my.region.allianceId() && rightOfWayIcon) {
+        this.removeChild(rightOfWayIcon);
+        rightOfWayIcon = null;
+      }        
+
       if (!my.infoContainer) {
         my.infoContainer = AWE.UI.createMultiLineContainer();
         my.infoContainer.initWithController(my.controller, AWE.Geometry.createRect(124,0,100,0));
@@ -163,6 +178,7 @@ AWE.UI = (function(module) {
         my.infoContainer.addChild(_infoText3View);
       }
       _infoText3View.setText('' + my.region.fortressLevel());
+
 
       my.infoContainer.layoutSubviews(); 
        
