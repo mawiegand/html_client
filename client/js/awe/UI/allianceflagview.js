@@ -12,6 +12,7 @@ AWE.UI = (function(module) {
     my = my || {};
     
     my.typeName = 'AllianceFlagView';
+    my.allianceTag = null;
     
     var that = module.createContainer(spec, my);
     
@@ -33,18 +34,24 @@ AWE.UI = (function(module) {
     
     that.initWithController = function(controller, frame) {
       _super.initWithController(controller, frame);
-      
-      _allianceTagLabelView = AWE.UI.createLabelView();
-      _allianceTagLabelView.initWithControllerAndLabel(my.controller);
-      _allianceTagLabelView.setColor('#000');
-      _allianceTagLabelView.setFrame(AWE.Geometry.createRect(0, 0, 20, 20));      
-      this.addChild(_allianceTagLabelView);
 
       if (!frame) {
         my.frame.size.width = 80;
         my.frame.size.height = 100;
       }
     };
+    
+    that.getAllianceTagFromModel = function() {
+      var alliance = AWE.GS.AllianceManager.getAlliance(_allianceId);
+      if (alliance) {
+        my.allianceTag = AWE.GS.AllianceManager.getAlliance(_allianceId).tag;
+      }
+      else {
+        AWE.GS.AllianceManager.updateAlliance(_allianceId, function() {
+          that.setUpdateNeeded();
+        });
+      }
+    }
         
     that.updateView = function () {
             
@@ -78,29 +85,61 @@ AWE.UI = (function(module) {
         if (that.onMouseOut) that.onMouseOut();
       };
       this.addChildAt(_flagShapeView, 0);
-
-      if (_tagVisible && _allianceId) {
-        var alliance = AWE.GS.AllianceManager.getAlliance(_allianceId);
-        if (alliance) {
-          _allianceTagLabelView.setText(AWE.GS.AllianceManager.getAlliance(_allianceId).tag);
-          _allianceTagLabelView.setFrame(AWE.Geometry.createRect(0, my.frame.size.height / 3 - 12, my.frame.size.width, 24));
-        }
-        else {
-          AWE.GS.AllianceManager.updateAlliance(_allianceId, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
-            that.setNeedsUpdate(); 
-          });
-        }
+      
+      if (_allianceId && !my.allianceTag && _tagVisible) {
+        that.getAllianceTagFromModel();
+      } 
+      
+      if (!_allianceTagLabelView && my.allianceTag && _tagVisible) {
+        _allianceTagLabelView = AWE.UI.createLabelView();
+        _allianceTagLabelView.initWithControllerAndLabel(my.controller);
+        _allianceTagLabelView.setColor('#000');
+        _allianceTagLabelView.setFrame(AWE.Geometry.createRect(0, 0, 20, 20));  
+        _allianceTagLabelView.onClick = function() { 
+          if (that.onClick) that.onClick();   
+        };
+        _allianceTagLabelView.onMouseOver = function() {
+          if (that.onMouseOver) that.onMouseOver();
+        };
+        _allianceTagLabelView.onMouseOut = function() {
+          if (that.onMouseOut) that.onMouseOut();
+        };
+        this.addChild(_allianceTagLabelView);
       }
+      else if (_allianceTagLabelView && (!my.allianceTag || !_tagVisible)) {
+        this.removeChild(_allianceTagLabelView);
+        _allianceTagLabelView = null;
+      }
+
+      if (_allianceTagLabelView) {
+        _allianceTagLabelView.setText(my.allianceTag);
+        _allianceTagLabelView.setFrame(AWE.Geometry.createRect(0, my.frame.size.height / 3 - 12, my.frame.size.width, 24));
+      }    
             
       _super.updateView();
     }
     
     that.setAllianceId = function(allianceId) {
-      _allianceId = allianceId;
-      this.setNeedsUpdate();
+      if (_allianceId !== allianceId) {
+        _allianceId = allianceId;
+        this.setNeedsUpdate();
+      }
     }
     
-    that.allianceId = function() { return _allianceId; }
+    that.allianceId = function() { 
+      return _allianceId; 
+    }
+    
+    that.setAllianceTag = function(allianceTag) {
+      if (my.allianceTag !== allianceTag) {
+        my.allianceTag = allianceTag;
+        this.setNeedsUpdate();
+      }
+    }
+    
+    that.allianceTag = function() {
+      return my.allianceTag;
+    }
     
     that.setDirection = function(direction) {
       _direction = direction;
@@ -110,8 +149,10 @@ AWE.UI = (function(module) {
 
     
     that.setTagVisible = function(tagVisible) {
-      _tagVisible = tagVisible;
-      this.setNeedsUpdate();
+      if (tagVisible !== _tagVisible) {
+        _tagVisible = tagVisible;
+        this.setNeedsUpdate();
+      }
     }
     
     that.onClick = function() {}

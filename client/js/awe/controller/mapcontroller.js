@@ -722,6 +722,10 @@ AWE.Controller = (function(module) {
       if (view.typeName() === 'FortressView') {      
         inspectorViews.inspector = AWE.UI.createFortressDetailView();
         inspectorViews.inspector.initWithControllerAndNode(that, view.node());
+        
+        inspectorViews.inspector.onFlagClicked = function(allianceId) {
+          WACKADOO.activateAllianceController(allianceId);
+        }
       }
       else if (view.typeName() === 'ArmyView') {
         inspectorViews.inspector = AWE.UI.createArmyInspectorView();

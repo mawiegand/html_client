@@ -225,8 +225,16 @@ AWE.UI = (function(module) {
         }
       }
 
+      _infoButtonView = AWE.UI.createButtonView();
+      _infoButtonView.initWithControllerTextAndImage(controller, 'Info', AWE.UI.ImageCache.getImage("map/button1"));
+      _infoButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
+      _infoButtonView.onClick = function() {
+         that.onInventoryButtonClick(_army) 
+      };
+      this.addChild(_infoButtonView);
+
       // buttons oben
-      if (!_infoButtonView && isOwnArmy) {
+      if (!_infoButtonView) {
         _infoButtonView = AWE.UI.createButtonView();
         _infoButtonView.initWithControllerTextAndImage(my.controller, 'Info', AWE.UI.ImageCache.getImage("map/button1"));
         _infoButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
