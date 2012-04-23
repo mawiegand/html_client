@@ -130,58 +130,29 @@ AWE.UI = (function(module) {
         _pathLabelView.setText('('+my.node.path()+')');
       }
 
+      if (!_apLabelView) {
+        _apLabelView = AWE.UI.createLabelView();
+        _apLabelView.initWithControllerAndLabel(my.controller);
+        _apLabelView.setFrame(AWE.Geometry.createRect(5, 64, 100, 24));      
+        _apLabelView.setTextAlign("left");
+        _apLabelView.setIconImage("map/display/icon");
+        this.addChild(_apLabelView);
+      }
+      _apLabelView.setText('AP: keine');
 
-/*    _apLabelView = AWE.UI.createLabelView();
-      _apLabelView.initWithControllerAndLabel(controller);
-      _apLabelView.setFrame(AWE.Geometry.createRect(5, 40, 100, 24));      
-      _apLabelView.setTextAlign("left");
-      _apLabelView.setIconImage("map/display/icon");
-      _container.addChild(_apLabelView.displayObject());
 
-      _locationLabelView = AWE.UI.createLabelView();
-      _locationLabelView.initWithControllerAndLabel(controller);
-      _locationLabelView.setFrame(AWE.Geometry.createRect(5, 65, 100, 24));      
-      _locationLabelView.setTextAlign("left");
-      _locationLabelView.setIconImage("map/display/icon");
-      _container.addChild(_locationLabelView.displayObject());
+      if (!_rankLabelView) {
+        _rankLabelView = AWE.UI.createLabelView();
+        _rankLabelView.initWithControllerAndLabel(my.controller);
+        _rankLabelView.setTextAlign("left");
+        _rankLabelView.setIconImage("map/display/icon");
+        _rankLabelView.setFrame(AWE.Geometry.createRect(5, 84, 100, 24));      
+        this.addChild(_rankLabelView);
+      }
+      _rankLabelView.setText(my.region.fortressLevel());
 
-      _rankLabelView = AWE.UI.createLabelView();
-      _rankLabelView.initWithControllerAndLabel(controller);
-      _rankLabelView.setTextAlign("left");
-      _rankLabelView.setIconImage("map/display/icon");
-      _rankLabelView.setFrame(AWE.Geometry.createRect(5, 90, 100, 24));      
-      _container.addChild(_rankLabelView.displayObject());
 
-      _sizeAllLabelView = AWE.UI.createLabelView();
-      _sizeAllLabelView.initWithControllerAndLabel(controller);
-      _sizeAllLabelView.setFrame(AWE.Geometry.createRect(105, 15, 100, 24));      
-      _sizeAllLabelView.setTextAlign("left");
-      _sizeAllLabelView.setIconImage("map/display/icon");
-      _container.addChild(_sizeAllLabelView.displayObject());
 
-      _sizeType1LabelView = AWE.UI.createLabelView();
-      _sizeType1LabelView.initWithControllerAndLabel(controller);
-      _sizeType1LabelView.setFrame(AWE.Geometry.createRect(105, 40, 100, 24));      
-      _sizeType1LabelView.setTextAlign("left");
-      _sizeType1LabelView.setIconImage("map/display/icon");
-      _container.addChild(_sizeType1LabelView.displayObject());
-
-      _sizeType2LabelView = AWE.UI.createLabelView();
-      _sizeType2LabelView.initWithControllerAndLabel(controller);
-      _sizeType2LabelView.setFrame(AWE.Geometry.createRect(105, 65, 100, 24));      
-      _sizeType2LabelView.setTextAlign("left");
-      _sizeType2LabelView.setIconImage("map/display/icon");
-      _container.addChild(_sizeType2LabelView.displayObject());
-
-      _sizeType3LabelView = AWE.UI.createLabelView();
-      _sizeType3LabelView.initWithControllerAndLabel(controller);
-      _sizeType3LabelView.setTextAlign("left");
-      _sizeType3LabelView.setIconImage("map/display/icon");
-      _sizeType3LabelView.setFrame(AWE.Geometry.createRect(105, 90, 100, 24));      
-      _container.addChild(_sizeType3LabelView.displayObject());
-      
-      // kreis drum
-      */
       
       // Allicance Flag
       if (!my.flagView && my.region.allianceId()) {
@@ -255,8 +226,9 @@ AWE.UI = (function(module) {
       if (!infoButtonView) {
         infoButtonView = AWE.UI.createButtonView();
         infoButtonView.initWithControllerTextAndImage(my.controller, 'Info', AWE.UI.ImageCache.getImage("map/button1"));
+        infoButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
         infoButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
-        infoButtonView.onClick = function() { that.onInventoryButtonClick() };
+        infoButtonView.onClick = function() { that.onInfoButtonClick() };
         this.addChild(infoButtonView);
       }
 
@@ -264,6 +236,7 @@ AWE.UI = (function(module) {
       if (!_prevButtonView && my.region.ownerId() === currentCharacter.getId()) {
         _prevButtonView = AWE.UI.createButtonView();
         _prevButtonView.initWithControllerTextAndImage(my.controller, '<<', AWE.UI.ImageCache.getImage("map/button1"));
+        _prevButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
         _prevButtonView.setFrame(AWE.Geometry.createRect(180, 92, 36, 36));
         this.addChild(_prevButtonView);
       }
@@ -271,6 +244,7 @@ AWE.UI = (function(module) {
       if (!_nextButtonView && my.region.ownerId() === currentCharacter.getId()) {
         _nextButtonView = AWE.UI.createButtonView();
         _nextButtonView.initWithControllerTextAndImage(my.controller, '>>', AWE.UI.ImageCache.getImage("map/button1"));
+        _nextButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
         _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
         this.addChild(_nextButtonView);
       }
