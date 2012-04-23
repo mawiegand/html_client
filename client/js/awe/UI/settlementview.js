@@ -13,6 +13,8 @@ AWE.UI = (function(module) {
         
     my = my || {};
     
+    my.typeName = "SettlementView";
+    
     my.annotationView = null;
     my.targetView = null;
 
@@ -33,12 +35,10 @@ AWE.UI = (function(module) {
     };
     
     that.updateView = function() {
-      _super.updateView();
-
       if (my.targetView) {
         my.targetView.setHovered(this.hovered());
-        my.targetView.updateView();   // TODO: Hack
       }
+      _super.updateView();
     }    
     
     that.setAnnotationView = function(annotationView) {

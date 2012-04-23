@@ -99,7 +99,9 @@ AWE.UI = (function(module) {
     that.superview = function() { return my.superview; }
     
     /** sets the superview */
-    that.setSuperview = function(superview) { my.superview = superview; }
+    that.setSuperview = function(superview) {
+      my.superview = superview;
+    }
     
     that.removeFromSuperview = function() {
       if (my.superview) {

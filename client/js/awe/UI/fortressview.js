@@ -25,10 +25,10 @@ AWE.UI = (function(module) {
     
     my = my || {};
     
-    my.typeName = 'FortressView';
-    
     that = module.createSettlementView(spec, my);
 
+    my.typeName = 'FortressView';
+    
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
@@ -66,7 +66,7 @@ AWE.UI = (function(module) {
       }
       
       if (newFortressImageName != _fortressImageName && _imageView) {
-        my.container.removeChild(_imageView);
+        this.removeChild(_imageView);
         _imageView = null;
       }
       _fortressImageName = newFortressImageName;
@@ -89,17 +89,19 @@ AWE.UI = (function(module) {
         selectGraphics.setStrokeStyle(1);
         selectGraphics.beginStroke(Graphics.getRGB(0,0,0));
         selectGraphics.beginFill(Graphics.getRGB(255,0,0));
-        selectGraphics.drawEllipse(0, AWE.Config.MAPPING_FORTRESS_SIZE / 2 + 20, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
-        _selectShape = new Shape(selectGraphics); 
-        _selectShape.cache(-AWE.Config.MAPPING_FORTRESS_SIZE/2, +20, 2*AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE);
-        my.container.addChildAt(_selectShape,0);        
+        selectGraphics.drawEllipse(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
+        // _selectShape.cache(-AWE.Config.MAPPING_FORTRESS_SIZE/2, +20, 2*AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE);
+        _selectShape = AWE.UI.createShapeView();
+        _selectShape.initWithControllerAndGraphics(my.controller, selectGraphics);
+        _selectShape.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE / 2 + 20, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2));
+        this.addChildAt(_selectShape, 0);
       }     
       else if (_selectShape && !this.selected() && !this.hovered()) {
-        my.container.removeChild(_selectShape);
+        this.removeChild(_selectShape);
         _selectShape = null;
       }
       if (_selectShape) {
-        _selectShape.alpha = (this.selected() ? 1. : 0.2);
+        _selectShape.setAlpha(this.selected() ? 1. : 0.2);
       }
       
       
@@ -146,10 +148,11 @@ AWE.UI = (function(module) {
         frame.beginStroke(Graphics.getRGB(0,0,0));
         frame.beginFill('rgba(0,0,0,0.2)');
         frame.drawRoundRect(0, 0, my.frame.size.width, my.frame.size.height,0);
-        _frameRect = new Shape(frame); 
-        my.container.addChild(_frameRect);        
+        _frameRect = AWE.UI.createShapeView();
+        _frameRect.initWithControllerAndGraphics(my.controller, frame);
+        _frameRect.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
+        this.addChild(_frameRect);
       }     
-      
     }
     
     that.updateView = function() {

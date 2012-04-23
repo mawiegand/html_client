@@ -54,8 +54,7 @@ AWE.UI = (function(module) {
     }
         
     that.updateView = function () {
-      _super.updateView();
-      
+            
       var color = _allianceId ? AWE.GS.AllianceManager.colorForNumber(_allianceId) : { r: 255, g: 255, b: 255 };
 
       if (_flagShapeView) {
@@ -107,12 +106,12 @@ AWE.UI = (function(module) {
         _allianceTagLabelView = null;
       }
 
- 
-      
       if (_allianceTagLabelView) {
         _allianceTagLabelView.setText(my.allianceTag);
         _allianceTagLabelView.setFrame(AWE.Geometry.createRect(0, my.frame.size.height / 3 - 12, my.frame.size.width, 24));
       }    
+            
+      _super.updateView();
     }
     
     that.setAllianceId = function(allianceId) {

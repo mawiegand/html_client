@@ -12,20 +12,20 @@ AWE.UI = (function(module) {
     var that;
         
     var _location = null;
+    var _container = null;
     
-    var imageView = null;
-    var labelView = null;
+    var _imageView = null;
+    var _labelView = null;
     var _selectShape = null;
-    
     var _poleShape = null;
     var _flagView = null;
     
     my = my || {};
-    
-    my.typeName = "OutpostView";
-
+   
     that = module.createSettlementView(spec, my);
 
+    my.typeName = "OutpostView";
+    
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
@@ -38,78 +38,91 @@ AWE.UI = (function(module) {
     that.initWithControllerAndLocation = function(controller, location, frame) {
       _super.initWithController(controller, frame);
       _location = location;
-                  
-      var selectGraphics = new Graphics();
-      selectGraphics.setStrokeStyle(1);
-      selectGraphics.beginStroke(Graphics.getRGB(0,0,0));
-      selectGraphics.beginFill(Graphics.getRGB(255,0,0));
-      selectGraphics.drawEllipse(0, AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
-      _selectShape = new Shape(selectGraphics);  
-      _selectShape.visible = false;  
-      my.container.addChild(_selectShape);
       
-      var allianceId = _location.allianceId();
-      var _poleGraphics = new Graphics();
-      _poleGraphics.setStrokeStyle(1);
-      _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
-      _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
-      _poleGraphics.drawRoundRect(44, 0, 2, 48, 0);
-      _poleShape = new Shape(_poleGraphics);  
-      my.container.addChild(_poleShape);
-
-      var name = AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()];
-      var level = location.level();
-      
-      imageView = AWE.UI.createImageView();
-      imageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/outpost"));
-      imageView.setContentMode(module.ViewContentModeNone);
-      imageView.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
-      imageView.onClick = that.onClick;
-      imageView.onMouseOver = that.onMouseOver;
-      imageView.onMouseOut = that.onMouseOut;
-      my.container.addChild(imageView.displayObject());
-
-      var ownerName = _location.ownerName() + (_location.allianceTag() ? " | " +  _location.allianceTag() : "");
-      
-      labelView = AWE.UI.createLabelView();
-      labelView.initWithControllerAndLabel(controller, ownerName, true);
-      labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, 16));      
-      my.container.addChild(labelView.displayObject());
-                  
-      _flagView = AWE.UI.createAllianceFlagView();
-      _flagView.initWithController(controller);
-      _flagView.setFrame(AWE.Geometry.createRect(16, 0, 28, 16));
-      _flagView.setAllianceId(allianceId);
-      _flagView.setDirection('left');
-      my.container.addChild(_flagView.displayObject());
-      _flagView.updateView();
-
-      if (!frame) {
-        that.resizeToFit();        
-      }
-      
-      my.container.width = my.frame.size.width;
-      my.container.height = my.frame.size.height;
-
+      this.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE + 24));
+      that.recalcView();            
     };
     
-    that.resizeToFit = function() {
-      my.frame.size.width = AWE.Config.MAPPING_FORTRESS_SIZE;
-      my.frame.size.height = AWE.Config.MAPPING_FORTRESS_SIZE + 24;
-    };
+    that.recalcView = function() {
 
-    that.updateView = function() {
-      _super.updateView();
+      var allianceId = _location.allianceId();
       
-      if (_selectShape) {
-        _selectShape.visible = this.selected() || this.hovered();
-        _selectShape.alpha = (this.selected() ? 1. : 0.2);
+      if (!_selectShape && (this.selected() || this.hovered())) {
+        var selectGraphics = new Graphics();
+        selectGraphics.setStrokeStyle(1);
+        selectGraphics.beginStroke(Graphics.getRGB(0,0,0));
+        selectGraphics.beginFill(Graphics.getRGB(255,0,0));
+        selectGraphics.drawEllipse(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
+        _selectShape = AWE.UI.createShapeView();
+        _selectShape.initWithControllerAndGraphics(my.controller, selectGraphics);
+        _selectShape.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE / 2, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2));
+        this.addChildAt(_selectShape, 0);
       }
+      else if (_selectShape && !this.selected() && !this.hovered()) {
+        that.removeChild(_selectShape);
+        _selectShape = null;
+      }
+      if (_selectShape) {
+        _selectShape.setAlpha(this.selected() ? 1. : 0.2);
+      }
+      
+
+      if (!_poleShape) {      
+        var _poleGraphics = new Graphics();
+        _poleGraphics.setStrokeStyle(1);
+        _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
+        _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
+        _poleGraphics.drawRoundRect(0, 0, 2, 48, 0);
+        _poleShape = AWE.UI.createShapeView();
+        _poleShape.initWithControllerAndGraphics(my.controller, _poleGraphics);
+        _poleShape.setFrame(AWE.Geometry.createRect(44, 0, 2, 48));
+        this.addChildAt(_poleShape, 0);
+      }
+
+      if (!_imageView) {
+        _imageView = AWE.UI.createImageView();
+        _imageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("map/outpost"));
+        _imageView.setContentMode(module.ViewContentModeNone);
+        _imageView.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
+        _imageView.onClick = that.onClick;
+        _imageView.onMouseOver = that.onMouseOver;
+        _imageView.onMouseOut = that.onMouseOut;
+        that.addChild(_imageView);
+      }
+
+      if (!_labelView) {
+        _labelView = AWE.UI.createLabelView();
+        var ownerName = _location.ownerName() + (_location.allianceTag() ? " | " +  _location.allianceTag() : "");
+        _labelView.initWithControllerAndLabel(my.controller, ownerName, true);
+        _labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, 16));      
+        that.addChild(_labelView);
+      }
+      
+      if (!_flagView) {
+        _flagView = AWE.UI.createAllianceFlagView();
+        _flagView.initWithController(my.controller);
+        _flagView.setFrame(AWE.Geometry.createRect(16, 0, 28, 16));
+        _flagView.setAllianceId(allianceId);
+        _flagView.setDirection('left');
+        that.addChild(_flagView);
+      }
+      
+      if (allianceId != _flagView.allianceId()) {
+        _flagView.setAllianceId(allianceId);
+      }
+    }
+    
+    that.updateView = function() {
+      
+      that.recalcView();    
+      _super.updateView();
     }
         
     /** newly intotruced methods */
     
-    that.location = function() { return _location; };
+    that.location = function() {
+      return _location;
+    };
     
     return that;
   };
@@ -117,6 +130,8 @@ AWE.UI = (function(module) {
   return module;
     
 }(AWE.UI || {}));
+
+
 
 
 
