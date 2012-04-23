@@ -1,5 +1,5 @@
 /* Authors: Patrick Fox <patrick@5dlab.com>, 
- *          Sascha Lange <sascha@5dlab.com>, Julian Schmid
+ *          Sascha Lange <sascha@5dlab.com>
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
