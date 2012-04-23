@@ -86,8 +86,8 @@ AWE.UI = (function(module) {
           _allianceTagLabelView.setFrame(AWE.Geometry.createRect(0, my.frame.size.height / 3 - 12, my.frame.size.width, 24));
         }
         else {
-          AWE.GS.AllianceManager.updateAlliance(_allianceId, function() {
-            that.setUpdateNeeded();
+          AWE.GS.AllianceManager.updateAlliance(_allianceId, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+            that.setNeedsUpdate(); 
           });
         }
       }

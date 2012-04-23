@@ -737,11 +737,11 @@ AWE.Controller = (function(module) {
       }
       else if (view.typeName() === 'BaseView') {
         inspectorViews.inspector = AWE.UI.createBaseInspectorView();
-        inspectorViews.inspector.initWithControllerAndFrame(that);
+        inspectorViews.inspector.initWithControllerAndLocation(that, view.location());
       }
       else if (view.typeName() === 'OutpostView') {
         inspectorViews.inspector = AWE.UI.createOutpostInspectorView();
-        inspectorViews.inspector.initWithControllerAndFrame(that);
+        inspectorViews.inspector.initWithControllerAndLocation(that, view.location());
       }
       
       if (inspectorViews.inspector) {

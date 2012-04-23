@@ -12,7 +12,7 @@ AWE.UI = (function(module) {
     var that;
         
     var _location = null;
-    var _container = null;
+    // var _container = null;
     
     var _imageView = null;
     var _labelView = null;
