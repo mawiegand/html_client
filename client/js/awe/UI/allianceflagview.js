@@ -98,7 +98,16 @@ AWE.UI = (function(module) {
         _allianceTagLabelView = AWE.UI.createLabelView();
         _allianceTagLabelView.initWithControllerAndLabel(my.controller);
         _allianceTagLabelView.setColor('#000');
-        _allianceTagLabelView.setFrame(AWE.Geometry.createRect(0, 0, 20, 20));      
+        _allianceTagLabelView.setFrame(AWE.Geometry.createRect(0, 0, 20, 20));  
+        _allianceTagLabelView.onClick = function() { 
+          if (that.onClick) that.onClick();   
+        };
+        _allianceTagLabelView.onMouseOver = function() {
+          if (that.onMouseOver) that.onMouseOver();
+        };
+        _allianceTagLabelView.onMouseOut = function() {
+          if (that.onMouseOut) that.onMouseOut();
+        };
         this.addChild(_allianceTagLabelView);
       }
       else if (_allianceTagLabelView && (!my.allianceTag || !_tagVisible)) {

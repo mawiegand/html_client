@@ -52,7 +52,7 @@ AWE.UI = (function(module) {
       
       _stanceButtonView = AWE.UI.createButtonView();
       _stanceButtonView.initWithControllerTextAndImage(controller, 'stance', AWE.UI.ImageCache.getImage("map/button1"), frame);
-//      _stanceButtonView.setDisabledImage(AWE.UI.ImageCache.getImage("map/button1disabled"));
+//    _stanceButtonView.setDisabledImage(AWE.UI.ImageCache.getImage("map/button1disabled"));
       _stanceButtonView.setFrame(AWE.Geometry.createRect(12, 6, 52, 52));
       this.addChild(_stanceButtonView);
 
@@ -86,7 +86,7 @@ AWE.UI = (function(module) {
       this.addChild(_rankImageView);
       
       infoContainer = AWE.UI.createMultiLineContainer();
-      infoContainer.initWithController(controller, AWE.Geometry.createRect(130,0,66,0));
+      infoContainer.initWithController(controller, AWE.Geometry.createRect(130,0,120,0));
       this.addChild(infoContainer);
       
       _infoText1View = AWE.UI.createLabelView();

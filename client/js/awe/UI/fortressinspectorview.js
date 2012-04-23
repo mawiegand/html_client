@@ -81,6 +81,8 @@ AWE.UI = (function(module) {
     
     that.recalcView = function() {
       
+      var currentCharacter = AWE.GS.CharacterManager.currentCharacter;
+      
       if (!my.backgroundShape) {
         var backgroundShapeGraphics = new Graphics();
         backgroundShapeGraphics.setStrokeStyle(0);
@@ -249,30 +251,29 @@ AWE.UI = (function(module) {
         my.fortressFlagView.setAllianceId(my.region.allianceId());
       }
 
-/*
       // buttons oben
-      _invButtonView = AWE.UI.createButtonView();
-      _invButtonView.initWithControllerTextAndImage(controller, 'inv.', AWE.UI.ImageCache.getImage("map/button1"));
-      _invButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
-      _invButtonView.onClick = function() { that.onInventoryButtonClick() };
-      _container.addChild(_invButtonView.displayObject());
-
-      _moveButtonView = AWE.UI.createButtonView();
-      _moveButtonView.initWithControllerTextAndImage(controller, 'move', AWE.UI.ImageCache.getImage("map/button1"));
-      _moveButtonView.setFrame(AWE.Geometry.createRect(268, 0, 48, 48));
-      _container.addChild(_moveButtonView.displayObject());
+      if (!infoButtonView) {
+        infoButtonView = AWE.UI.createButtonView();
+        infoButtonView.initWithControllerTextAndImage(my.controller, 'Info', AWE.UI.ImageCache.getImage("map/button1"));
+        infoButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
+        infoButtonView.onClick = function() { that.onInventoryButtonClick() };
+        this.addChild(infoButtonView);
+      }
 
       // button unten
-      _prevButtonView = AWE.UI.createButtonView();
-      _prevButtonView.initWithControllerTextAndImage(controller, '<<', AWE.UI.ImageCache.getImage("map/button1"));
-      _prevButtonView.setFrame(AWE.Geometry.createRect(180, 92, 36, 36));
-      _container.addChild(_prevButtonView.displayObject());
+      if (!_prevButtonView && my.region.ownerId() === currentCharacter.getId()) {
+        _prevButtonView = AWE.UI.createButtonView();
+        _prevButtonView.initWithControllerTextAndImage(my.controller, '<<', AWE.UI.ImageCache.getImage("map/button1"));
+        _prevButtonView.setFrame(AWE.Geometry.createRect(180, 92, 36, 36));
+        this.addChild(_prevButtonView);
+      }
 
-      _nextButtonView = AWE.UI.createButtonView();
-      _nextButtonView.initWithControllerTextAndImage(controller, '>>', AWE.UI.ImageCache.getImage("map/button1"));
-      _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
-      _container.addChild(_nextButtonView.displayObject());
-      */
+      if (!_nextButtonView && my.region.ownerId() === currentCharacter.getId()) {
+        _nextButtonView = AWE.UI.createButtonView();
+        _nextButtonView.initWithControllerTextAndImage(my.controller, '>>', AWE.UI.ImageCache.getImage("map/button1"));
+        _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
+        this.addChild(_nextButtonView);
+      }
     }
     
     that.onInfoButtonClick = function() { console.log('info button clicked'); }

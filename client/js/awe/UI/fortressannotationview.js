@@ -145,7 +145,7 @@ AWE.UI = (function(module) {
 
       if (!my.infoContainer) {
         my.infoContainer = AWE.UI.createMultiLineContainer();
-        my.infoContainer.initWithController(my.controller, AWE.Geometry.createRect(124,0,100,0));
+        my.infoContainer.initWithController(my.controller, AWE.Geometry.createRect(122,4,100,0));
         this.addChild(my.infoContainer);
       }
       
