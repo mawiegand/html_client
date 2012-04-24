@@ -104,14 +104,16 @@ AWE.Controller = (function(module) {
       _canvas[3] = root.find('#inspector-canvas')[0];
       _stages[3] = new Stage(_canvas[3]);
       _stages[3].onClick = function() {};   // we generate our own clicks
-
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
       that.setNeedsLayout();
 
+      //create the camera with the initial values
       _camera = AWE.UI.createCamera({
-        rootController: that
+        rootController: that,
+        windowSize: that.windowSize(),
+        viewport: that.viewport()
       });
 
     };   
@@ -209,7 +211,10 @@ AWE.Controller = (function(module) {
       if (! _windowSize || _windowSize.width != size.width || _windowSize.height != size.height) {
         _windowSize = size;
         _windowChanged = true;
-        that.setNeedsLayout(); 
+        that.setNeedsLayout();
+        if (_camera !== undefined) {
+          _camera.setWindowSize(size);
+        }
       }
     };
     
@@ -1756,7 +1761,7 @@ AWE.Controller = (function(module) {
       // only do something after the Map.Manager has been initialized (connected to server and received initial data)
       if(AWE.Map.Manager.isInitialized()) {
         // STEP 0: update the camera, in case that it is currently moving
-        if (_camera.isMoving()) {
+        if (_camera.hasChanged()) {
           _camera.update();
           var newViewport = _camera.viewport();
           if (newViewport !== null && newViewport !== undefined) {

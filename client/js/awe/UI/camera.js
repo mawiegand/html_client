@@ -59,6 +59,7 @@ AWE.UI = (function(module) {
 	module.createCamera = function (spec) {
 		var that = {};
 
+		//***private variables***
 		//state
 		var _lastClick = undefined;
 		var _activePan = undefined;
@@ -68,8 +69,13 @@ AWE.UI = (function(module) {
 		var _cacheLastViewport = false;
 		var _lastPanEndViewport = undefined;
 		var _lastNodes = [];
+
 		var _isMoving = false;
-		var _currentViewport;
+		var _windowSizeChanged = false;
+
+		//current data
+		var _currentViewport = spec.viewport.copy();
+		var _windowSize = spec.windowSize.copy();
 
 		//settings
 		var _maxTimeForDoubleClick = AWE.Config.MAP_DBLCLK_MAX_TIME_FOR_DBLCLK;
@@ -81,10 +87,7 @@ AWE.UI = (function(module) {
 		//root controller
 		var _rootController = spec.rootController;
 
-		that.isMoving = function() {
-			return _isMoving;
-		};
-
+		//***private methods***
 		var _nodesEqual = function(a,b) {
 			if (a.length != b.length) return false;
 			for (var ai = 0; ai < a.length; ai++) {
@@ -103,7 +106,7 @@ AWE.UI = (function(module) {
 		};
 
 		var _scaleToScreen = function(frame) {
-			var win = _rootController.windowSize();
+			var win = _currentViewport;//_rootController.windowSize();
 			//expand the target viewport so that the w/h is conserved
 			if (win.width/win.height > frame.size.width/frame.size.height) {
 				//modify width
@@ -130,6 +133,62 @@ AWE.UI = (function(module) {
 		var _getCurrentViewport = function() {
 			return _rootController.viewport();
 		};
+
+		//***public methods***
+
+		//--getter/setter for settings
+		that.maxTimeForDoubleClick = function(value) {
+			if (value !== undefined) { 
+				_maxTimeForDoubleClick = value; 
+			}
+			return _maxTimeForDoubleClick;
+		};
+		that.panTime = function(value) {
+			if (value !== undefined) {
+				_panTime = value;
+			}
+			return _panTime;
+		};
+		that.borderFactor = function(value) {
+			if (value !== undefined) {
+				_borderFactor = value;
+			} 
+			return _borderFactor;
+		};
+		that.crossClickSize = function(value) {
+			if (value !== undefined) {
+				_crossClickSize = value;
+			}
+			return _crossClickSize;
+		};
+
+		//--getter/setter + state informations
+
+		that.windowSize = function(size) {
+			if (size !== undefined) {
+				//modify viewport
+				var xOff = _currentViewport.size.width * (size.width / _windowSize.width) - _currentViewport.size.width ;
+				var yOff = _currentViewport.size.height * (size.height / _windowSize.height) - _currentViewport.size.height;
+				_currentViewport.size.width += xOff;
+				_currentViewport.size.height += yOff;
+				_currentViewport.origin.x -= xOff/2;
+				_currentViewport.origin.y -= yOff/2;
+				//set size
+				_windowSize = size.copy();
+				//mark that the windowSize has changed
+				_windowSizeChanged = true;
+			}
+			return _windowSize;
+		};
+		that.isMoving = function() {
+			return _isMoving;
+		};
+		that.hasChanged = function() {
+			return _isMoving || _windowSizeChanged;
+		};
+
+		
+
 		/**
 		  *	Returns the current viewport (from the viewpoint of the camera)
 		  **/
@@ -235,6 +294,7 @@ AWE.UI = (function(module) {
 			} else {
 				_isMoving = false;
 			}
+			_windowSizeChanged = false;
 		};
 		/**
 		  * Moves the camera to the given value.
@@ -337,32 +397,6 @@ AWE.UI = (function(module) {
 			}
 			return target;
 		}
-
-		//getter/setter for settings
-		that.maxTimeForDoubleClick = function(value) {
-			if (value !== undefined) { 
-				_maxTimeForDoubleClick = value; 
-			}
-			return _maxTimeForDoubleClick;
-		};
-		that.panTime = function(value) {
-			if (value !== undefined) {
-				_panTime = value;
-			}
-			return _panTime;
-		};
-		that.borderFactor = function(value) {
-			if (value !== undefined) {
-				_borderFactor = value;
-			} 
-			return _borderFactor;
-		};
-		that.crossClickSize = function(value) {
-			if (value !== undefined) {
-				_crossClickSize = value;
-			}
-			return _crossClickSize;
-		};
 
 		return that;
 	};
