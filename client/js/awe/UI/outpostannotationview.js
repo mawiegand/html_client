@@ -198,7 +198,15 @@ AWE.UI = (function(module) {
     that.locationView = function() {
       return my.outpostView;
     }
-        
+    
+    that.onEnterButtonClick = function() {};
+
+    that.onAttackButtonClick = function() {};
+
+    that.onSpyButtonClick = function() {};
+
+    that.onBattleButtonClick = function() {};
+
     return that;
   };
       
