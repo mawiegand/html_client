@@ -296,7 +296,7 @@ AWE.UI = (function(module) {
 		that.update = function() {
 			if (_activePan !== undefined && _isMoving) {
 				_activePan.update();
-				console.log("pan created viewport "+_activePan.getCurrentViewport().toString());
+				//console.log("pan created viewport "+_activePan.getCurrentViewport().toString());
 				_currentViewport = _scaleToScreen(_activePan.getCurrentViewport());
 				_isMoving = !_activePan.done();
 				if (!_isMoving && _cacheLastViewport) {
@@ -326,37 +326,64 @@ AWE.UI = (function(module) {
 			}
 
 			var frame = that.getResultingFrame(value, addBorder);
+			var panTime = _panTime;
+			if (!animated) {
+				panTime = 0.0;
+			}
 
-			_activePan = module.createCameraPan(
-				//_rootController.viewport(), 
+			_activePan = module.createCameraPan( 
 				_getCurrentViewport(),
 				frame, 
-				_panTime
+				panTime
 			);
 
-			console.log("CAMERA: Pan from "+_getCurrentViewport().toString()+" to "+frame.toString());
-
 			_isMoving = true;
-			if (!animated) {
-				_activePan.speedFunction = function (time) { return 1.0; };
-			}
 		};
 
 		that.zoom = function(dScale, zoomin) {
 			var scale = 1+dScale;
-			var center = viewport().middle();
-			var targetViewport = viewport().copy();
-			if (that.isMoving) {
-				_activePan
+			var targetViewport = _getCurrentViewport().copy();
+			var center = targetViewport.middle();
+			if (that.isMoving() && !_activePan.isAnimated()) {
+				targetViewport = _activePan.targetViewport();
 			}
 			if (zoomin) {
-				targetViewport.scale.scale(scale);
+				targetViewport.size.scale(1/scale);
 			} else {
-				targetViewport.scale.scale(1/scale);
+				targetViewport.size.scale(scale);
 			}
 			targetViewport.origin.x = center.x - targetViewport.size.width/2;
 			targetViewport.origin.y = center.y - targetViewport.size.height/2;
-			that.moveTo(targetViewport, false, false);
+
+			_activePan = module.createCameraPan(
+				_getCurrentViewport(),
+				targetViewport, 
+				0.0
+			);
+			_isMoving = true;
+		};
+
+		/**
+		  * Moves the viewport by point (in model coordinates)
+		  * @param point
+		  * @param overwrite if true old pans will be thrown away
+		  */
+		that.moveBy = function(point, overwrite) {
+			if (overwrite === undefined) {
+				overwrite = false;
+			}
+			var targetViewport = _getCurrentViewport().copy();
+			if (that.isMoving() && !_activePan.isAnimated() && !overwrite) {
+				targetViewport = _activePan.targetViewport();
+			}
+			targetViewport.origin.x += point.x;
+			targetViewport.origin.y += point.y;
+			_activePan = module.createCameraPan(
+				_getCurrentViewport(),
+				targetViewport, 
+				0.0
+			);
+			_isMoving = true;
 		};
 
 		//****transformation functions***
@@ -405,7 +432,7 @@ AWE.UI = (function(module) {
     	 **/
 		that.vc2mc = function(value) {
 			var scale = that.mc2vcScale();
-			var translation = that.msc2vsTranslation();
+			var translation = that.mc2vcTranslation();
 			if (value.x !== undefined && value.y !== undefined) {
 				var point = value.copy();
 				point.moveBy(AWE.Geometry.createPoint(-translation.x, -translation.y));

@@ -142,7 +142,7 @@ AWE.Geometry = (function(module) {
       },
 
       middle: function() {
-        return module.createPoint(origin.x + size.width/2, origin.y + size.height/2);
+        return module.createPoint(this.origin.x + this.size.width/2, this.origin.y + this.size.height/2);
       },
       
       equals: function(other, precision) {

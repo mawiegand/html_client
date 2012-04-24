@@ -27,6 +27,7 @@ AWE.Controller = (function(module) {
     var _scrollingStarted = false;///< user is presently scrolling
     var _scrollingStartedAtVC;
     var _scrollingOriginalTranslationVC;
+    var _scrollingLastVCPosition;
     
     var _animations = [];
 
@@ -246,7 +247,7 @@ AWE.Controller = (function(module) {
     /** zoom in and out. */
     that.zoom = function(dScale, zoomin) {
       // TODO: calc max and min zoom value
-      var scale = 1 + dScale;
+      /*var scale = 1 + dScale;
       var center = AWE.Geometry.createPoint(-_windowSize.width / 2, -_windowSize.height / 2);
       var centerInv = AWE.Geometry.createPoint(_windowSize.width / 2, _windowSize.height / 2);
   
@@ -261,7 +262,8 @@ AWE.Controller = (function(module) {
       }
       mc2vcTrans.moveBy(centerInv);
         
-      that.setNeedsLayout(); 
+      that.setNeedsLayout(); */
+      _camera.zoom(dScale, zoomin);
     };  
     
     /** calculate and returns the presently visible map level in dependence of the
@@ -357,6 +359,7 @@ AWE.Controller = (function(module) {
     
     that.prepareScrolling = function(posX, posY) {
       _scrollingStartedAtVC = AWE.Geometry.createPoint(posX, posY);
+      _scrollingLastVCPosition = _scrollingStartedAtVC.copy();
       _scrollingOriginalTranslationVC = mc2vcTrans.copy();
         
       this.anchor().mousemove(function(ev) {
@@ -381,10 +384,23 @@ AWE.Controller = (function(module) {
         that.startScrolling();
       }
       if (that.isScrolling()) {
-        var pos = AWE.Geometry.createPoint(_scrollingOriginalTranslationVC.x + event.pageX - _scrollingStartedAtVC.x, 
+        /*var pos = AWE.Geometry.createPoint(_scrollingOriginalTranslationVC.x + event.pageX - _scrollingStartedAtVC.x, 
                                            _scrollingOriginalTranslationVC.y + event.pageY - _scrollingStartedAtVC.y);        
-        mc2vcTrans.moveTo(pos);
-        that.setNeedsLayout();
+        //mc2vcTrans.moveTo(pos);*/
+        
+        var p1 = that.vc2mc(AWE.Geometry.createPoint(event.pageX, event.pageY));
+        var p2 = that.vc2mc(_scrollingLastVCPosition);
+
+        _camera.moveBy(
+          AWE.Geometry.createPoint(
+            p2.x - p1.x,
+            p2.y - p1.y
+          )
+        );
+
+        _scrollingLastVCPosition = AWE.Geometry.createPoint(event.pageX, event.pageY);
+        
+        //that.setNeedsLayout();
       }
     };
       
@@ -393,7 +409,7 @@ AWE.Controller = (function(module) {
     that.endScrolling = function() {
       this.anchor().unbind('mousemove');
       _scrollingStarted = false;
-    }       
+    }
     
     that.isScrolling = function() {
       return _scrollingStarted;
@@ -1768,7 +1784,7 @@ AWE.Controller = (function(module) {
         if (_camera.hasChanged()) {
           _camera.update();
           var newViewport = _camera.viewport();
-          console.log("newViewport="+newViewport.toString());
+          //console.log("newViewport="+newViewport.toString());
           if (newViewport !== null && newViewport !== undefined) {
             that.setViewport(newViewport);
             that.setNeedsLayout();
