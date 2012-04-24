@@ -1,5 +1,5 @@
 /* Authors: Patrick Fox <patrick@5dlab.com>, 
- *          Sascha Lange <sascha@5dlab.com>, Julian Schmid
+ *          Sascha Lange <sascha@5dlab.com>
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
@@ -28,6 +28,8 @@ AWE.UI = (function(module) {
     var _infoText3View = null;
 
     var _backgroundShapeView = null;
+
+    var rightOfWayIcon = null;
 
     my = my || {};
     
@@ -73,6 +75,9 @@ AWE.UI = (function(module) {
         this.removeChild(enterButton);
         enterButton = null;
       }
+      if (enterButton) {
+        enterButton.setVisible(my.fortressView.selected());
+      }
       
       if (!attackButton && my.region.ownerId() === currentCharacter.get('id') && !0) { // check ongoing battle
         attackButton = AWE.UI.createButtonView();
@@ -86,6 +91,9 @@ AWE.UI = (function(module) {
       else if (attackButton && my.region.ownerId() !== currentCharacter.get('id') && !0) {
         this.removeChild(attackButton);
         attackButton = null;
+      }
+      if (attackButton) {
+        attackButton.setVisible(my.fortressView.selected());
       }
       
       if (!spyButton && my.region.ownerId() !== currentCharacter.get('id')) {
@@ -101,6 +109,9 @@ AWE.UI = (function(module) {
         this.removeChild(spyButton);
         spyButton = null;
       }
+      if (spyButton) {
+        spyButton.setVisible(my.fortressView.selected());
+      }
       
       if (!battleButton && 0) {  // ongoing battle -> attribute is missing in database ("mode")
         battleButton = AWE.UI.createButtonView();
@@ -114,11 +125,27 @@ AWE.UI = (function(module) {
       else if (battleButton && !0) {
         this.removeChild(battleButton);
         battleButton = null;
-      }      
+      }  
+      if (battleButton) {
+        battleButton.setVisible(my.fortressView.selected());
+      }    
+
+
+      if (AWE.Config.DEV_ALLIANCE_ID !==  my.region.allianceId() && !rightOfWayIcon) {
+        rightOfWayIcon = AWE.UI.createImageView();
+        rightOfWayIcon.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement/no"));
+        rightOfWayIcon.setFrame(AWE.Geometry.createRect(56, 82, 32, 32));
+        rightOfWayIcon.setContentMode(module.setContentModeNone);
+        this.addChild(rightOfWayIcon); 
+      }
+      else if (AWE.Config.DEV_ALLIANCE_ID ===  my.region.allianceId() && rightOfWayIcon) {
+        this.removeChild(rightOfWayIcon);
+        rightOfWayIcon = null;
+      }        
 
       if (!my.infoContainer) {
         my.infoContainer = AWE.UI.createMultiLineContainer();
-        my.infoContainer.initWithController(my.controller, AWE.Geometry.createRect(124,0,100,0));
+        my.infoContainer.initWithController(my.controller, AWE.Geometry.createRect(122,4,100,0));
         this.addChild(my.infoContainer);
       }
       
@@ -152,6 +179,7 @@ AWE.UI = (function(module) {
       }
       _infoText3View.setText('' + my.region.fortressLevel());
 
+
       my.infoContainer.layoutSubviews(); 
        
        
@@ -180,10 +208,11 @@ AWE.UI = (function(module) {
       _super.updateView();
     }
 
+/*
     that.layoutSubviews = function() {
       _super.layoutSubviews();
     }
-
+*/
         
     that.locationView = function() {
       return my.fortressView;

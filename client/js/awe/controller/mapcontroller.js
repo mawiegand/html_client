@@ -727,6 +727,10 @@ AWE.Controller = (function(module) {
       if (view.typeName() === 'FortressView') {      
         inspectorViews.inspector = AWE.UI.createFortressDetailView();
         inspectorViews.inspector.initWithControllerAndNode(that, view.node());
+        
+        inspectorViews.inspector.onFlagClicked = function(allianceId) {
+          WACKADOO.activateAllianceController(allianceId);
+        }
       }
       else if (view.typeName() === 'ArmyView') {
         inspectorViews.inspector = AWE.UI.createArmyInspectorView();
@@ -742,11 +746,11 @@ AWE.Controller = (function(module) {
       }
       else if (view.typeName() === 'BaseView') {
         inspectorViews.inspector = AWE.UI.createBaseInspectorView();
-        inspectorViews.inspector.initWithControllerAndFrame(that);
+        inspectorViews.inspector.initWithControllerAndLocation(that, view.location());
       }
       else if (view.typeName() === 'OutpostView') {
         inspectorViews.inspector = AWE.UI.createOutpostInspectorView();
-        inspectorViews.inspector.initWithControllerAndFrame(that);
+        inspectorViews.inspector.initWithControllerAndLocation(that, view.location());
       }
       
       if (inspectorViews.inspector) {

@@ -103,7 +103,6 @@ AWE.Map = (function(module) {
     }
         
     that.isOwn = function() {
-      log(_ownerId, AWE.GS.CharacterManager.currentCharacter.id);
       return _ownerId === AWE.GS.CharacterManager.currentCharacter.id;
     }    
         

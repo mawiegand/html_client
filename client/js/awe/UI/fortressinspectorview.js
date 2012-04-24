@@ -1,4 +1,5 @@
 /* Author: Patrick Fox <patrick@5dlab.com>
+ *         Sascha Lange <sascha@5dlab.com>
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
@@ -11,7 +12,6 @@ AWE.UI = (function(module) {
 
     var that;
 
-    my = my || {};
 
     var _container = null;
     
@@ -20,6 +20,9 @@ AWE.UI = (function(module) {
     
     // neu
     var _nameLabelView = null;
+    var _ownerLabelView = null;
+    var _pathLabelView = null;
+
     var _apLabelView = null;
     var _locationLabelView = null;
     var _rankLabelView = null;
@@ -29,177 +32,231 @@ AWE.UI = (function(module) {
     var _sizeType3LabelView = null;
     
     var _baseShape = null;
-    var _stanceView = null;
-    var _invButtonView = null;
-    var _moveButtonView = null;
+    var infoButtonView = null;
     var _prevButtonView = null;
     var _nextButtonView = null;
+    var _circleShape = null;
+    
+    var _fortressImageName = null;
+
+//  var _stanceView = null;
+//  var _moveButtonView = null;
 
 
+    my = my || {};
 
-    that = module.createView(spec, my);
+    my.region = null;
+    my.node = null;
+    
+    my.backgroundShape = null;
+    my.flagView = null;
+    my.fortressView = null;
+    my.fortressFlagView = null;
+
+    that = module.createContainer(spec, my);
+
+    that.onFlagClicked = null;
 
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
-      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
-      setFrame: AWE.Ext.superior(that, "setFrame"),
+      updateView: AWE.Ext.superior(that, "updateView"),
     };
     
     /** overwritten view methods */
     
     that.initWithControllerAndNode = function(controller, node, frame) {
       _super.initWithController(controller, frame);
-      _container = new Container()
       
-      var node = controller.selectedView().node();
-      var region = node.region();
+      my.node = node;
+      my.region = node.region();
 
+      this.recalcView();
+
+      my.container.x = my.frame.origin.x;
+      my.container.y = my.frame.origin.y;
+      my.container.width  = my.frame.size.height;
+      my.container.height = my.frame.size.height;
+    };
     
-      var backgroundShapeGraphics = new Graphics();
-      backgroundShapeGraphics.setStrokeStyle(0);
-      backgroundShapeGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-      backgroundShapeGraphics.drawRoundRect(0, 14, 230, 100, 6);
-      var backgroundShape = new Shape(backgroundShapeGraphics);    
-      _container.addChild(backgroundShape);
-
-      _nameLabelView = AWE.UI.createLabelView();
-      _nameLabelView.initWithControllerAndLabel(controller);
-      _nameLabelView.setFrame(AWE.Geometry.createRect(5, 15, 100, 24));      
-      _nameLabelView.setTextAlign("left");
-      _nameLabelView.setIconImage("map/display/icon");
-      _container.addChild(_nameLabelView.displayObject());
-
-      _apLabelView = AWE.UI.createLabelView();
-      _apLabelView.initWithControllerAndLabel(controller);
-      _apLabelView.setFrame(AWE.Geometry.createRect(5, 40, 100, 24));      
-      _apLabelView.setTextAlign("left");
-      _apLabelView.setIconImage("map/display/icon");
-      _container.addChild(_apLabelView.displayObject());
-
-      _locationLabelView = AWE.UI.createLabelView();
-      _locationLabelView.initWithControllerAndLabel(controller);
-      _locationLabelView.setFrame(AWE.Geometry.createRect(5, 65, 100, 24));      
-      _locationLabelView.setTextAlign("left");
-      _locationLabelView.setIconImage("map/display/icon");
-      _container.addChild(_locationLabelView.displayObject());
-
-      _rankLabelView = AWE.UI.createLabelView();
-      _rankLabelView.initWithControllerAndLabel(controller);
-      _rankLabelView.setTextAlign("left");
-      _rankLabelView.setIconImage("map/display/icon");
-      _rankLabelView.setFrame(AWE.Geometry.createRect(5, 90, 100, 24));      
-      _container.addChild(_rankLabelView.displayObject());
-
-      _sizeAllLabelView = AWE.UI.createLabelView();
-      _sizeAllLabelView.initWithControllerAndLabel(controller);
-      _sizeAllLabelView.setFrame(AWE.Geometry.createRect(105, 15, 100, 24));      
-      _sizeAllLabelView.setTextAlign("left");
-      _sizeAllLabelView.setIconImage("map/display/icon");
-      _container.addChild(_sizeAllLabelView.displayObject());
-
-      _sizeType1LabelView = AWE.UI.createLabelView();
-      _sizeType1LabelView.initWithControllerAndLabel(controller);
-      _sizeType1LabelView.setFrame(AWE.Geometry.createRect(105, 40, 100, 24));      
-      _sizeType1LabelView.setTextAlign("left");
-      _sizeType1LabelView.setIconImage("map/display/icon");
-      _container.addChild(_sizeType1LabelView.displayObject());
-
-      _sizeType2LabelView = AWE.UI.createLabelView();
-      _sizeType2LabelView.initWithControllerAndLabel(controller);
-      _sizeType2LabelView.setFrame(AWE.Geometry.createRect(105, 65, 100, 24));      
-      _sizeType2LabelView.setTextAlign("left");
-      _sizeType2LabelView.setIconImage("map/display/icon");
-      _container.addChild(_sizeType2LabelView.displayObject());
-
-      _sizeType3LabelView = AWE.UI.createLabelView();
-      _sizeType3LabelView.initWithControllerAndLabel(controller);
-      _sizeType3LabelView.setTextAlign("left");
-      _sizeType3LabelView.setIconImage("map/display/icon");
-      _sizeType3LabelView.setFrame(AWE.Geometry.createRect(105, 90, 100, 24));      
-      _container.addChild(_sizeType3LabelView.displayObject());
+    
+    that.recalcView = function() {
       
-      // kreis drum
-      var circleGraphics = new Graphics();
-      circleGraphics.setStrokeStyle(1);
-      circleGraphics.beginStroke('rgb(0, 0, 0)');
-      circleGraphics.beginFill('rgb(255, 255, 255)');
-      circleGraphics.drawCircle(248, 64, 64);
-      var _circleShape = new Shape(circleGraphics);    
-      _container.addChild(_circleShape);
-
-      // Image view für held
-      var stance = 1;
-      var offX = stance == 0 ? 12:0;
-      var offY = stance == 0 ? 2:0;
+      var currentCharacter = AWE.GS.CharacterManager.currentCharacter;
       
-      var _baseGraphics = new Graphics();
-      _baseGraphics.setStrokeStyle(1);
-      _baseGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
-      _baseGraphics.beginFill(Graphics.getRGB(0, 0, 0));
-      _baseGraphics.drawEllipse(219, 92, 59, 26);
-      _baseShape = new Shape(_baseGraphics);  
-      _container.addChild(_baseShape);
+      if (!my.backgroundShape) {
+        var backgroundShapeGraphics = new Graphics();
+        backgroundShapeGraphics.setStrokeStyle(0);
+        backgroundShapeGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
+        backgroundShapeGraphics.drawRoundRect(0, 14, 230, 100, 6);
+        my.backgroundShape = AWE.UI.createShapeView();
+        my.backgroundShape.initWithControllerAndGraphics(my.controller, backgroundShapeGraphics);    
+        this.addChild(my.backgroundShape);
+      }
 
-      _stanceView = AWE.UI.createImageView();
-      _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[stance]));
-      _stanceView.setFrame(AWE.Geometry.createRect(208 +offX, -12 + offY, 80, 120));
-      _stanceView.onClick = that.onClick;
-      _stanceView.onMouseOver = that.onMouseOver;
-      _stanceView.onMouseOut = that.onMouseOut;
-      _container.addChild(_stanceView.displayObject());
+      if (!_nameLabelView) {
+        _nameLabelView = AWE.UI.createLabelView();
+        _nameLabelView.initWithControllerAndLabel(my.controller);
+        _nameLabelView.setFont('24px "Helvetica Neue", Helvetica, Arial');
+        _nameLabelView.setFrame(AWE.Geometry.createRect(5, 15, 200, 36));      
+        _nameLabelView.setTextAlign("left");
+        this.addChild(_nameLabelView);
+      }
+      var name = my.region.name();
+      if (_nameLabelView.text() != name) {
+        _nameLabelView.setText(name);
+      }
+      
+      if (!_ownerLabelView) {
+        _ownerLabelView = AWE.UI.createLabelView();
+        _ownerLabelView.initWithControllerAndLabel(my.controller);
+        _ownerLabelView.setFrame(AWE.Geometry.createRect(5, 45, 95, 24));      
+        _ownerLabelView.setTextAlign("left");
+        this.addChild(_ownerLabelView);
+      }
+      var owner = my.region.ownerName(); // + (my.region.allianceId() > 0 ? ' | ' + my.region.allianceTag() : '');
+      if (_ownerLabelView.text() != owner) {
+        _ownerLabelView.setText(owner);
+      }
+      
+      if (!_pathLabelView) {
+        _pathLabelView = AWE.UI.createLabelView();
+        _pathLabelView.initWithControllerAndLabel(my.controller);
+        _pathLabelView.setFrame(AWE.Geometry.createRect(105, 45, 60, 24));      
+        _pathLabelView.setTextAlign("right");
+        _pathLabelView.setColor('rgb(190,190,190)');
+        this.addChild(_pathLabelView);
+      }
+      if (_pathLabelView.text() != '('+my.node.path()+')') {
+        _pathLabelView.setText('('+my.node.path()+')');
+      }
+
+      if (!_apLabelView) {
+        _apLabelView = AWE.UI.createLabelView();
+        _apLabelView.initWithControllerAndLabel(my.controller);
+        _apLabelView.setFrame(AWE.Geometry.createRect(5, 64, 100, 24));      
+        _apLabelView.setTextAlign("left");
+        _apLabelView.setIconImage("map/display/icon");
+        this.addChild(_apLabelView);
+      }
+      _apLabelView.setText('AP: keine');
+
+
+      if (!_rankLabelView) {
+        _rankLabelView = AWE.UI.createLabelView();
+        _rankLabelView.initWithControllerAndLabel(my.controller);
+        _rankLabelView.setTextAlign("left");
+        _rankLabelView.setIconImage("map/display/icon");
+        _rankLabelView.setFrame(AWE.Geometry.createRect(5, 84, 100, 24));      
+        this.addChild(_rankLabelView);
+      }
+      _rankLabelView.setText(my.region.fortressLevel());
+
+
+
+      
+      // Allicance Flag
+      if (!my.flagView && my.region.allianceId()) {
+        my.flagView = AWE.UI.createAllianceFlagView();
+        my.flagView.initWithController(my.controller);
+        my.flagView.setFrame(AWE.Geometry.createRect(150, 0, 60, 75));
+        my.flagView.setTagVisible(true);
+        my.flagView.onClick = function() { 
+          if (that.onFlagClicked) {
+            that.onFlagClicked(my.region.allianceId());
+          };
+        };
+        this.addChild(my.flagView);
+      }
+      if (my.flagView && my.flagView.allianceId() !== my.region.allianceId()) {
+        my.flagView.setAllianceId(my.region.allianceId());
+      }
+      if (my.flagView && my.flagView.allianceTag() !== my.region.allianceTag()) {
+        my.flagView.setAllianceTag(my.region.allianceTag());
+      }      
+      
+      // circle
+      if (!_circleShape) {
+        var circleGraphics = new Graphics();
+        circleGraphics.setStrokeStyle(1);
+        circleGraphics.beginStroke('rgb(0, 0, 0)');
+        circleGraphics.beginFill('rgb(255, 255, 255)');
+        circleGraphics.drawCircle(248, 64, 64);
+        _circleShape = new AWE.UI.createShapeView();
+        _circleShape.initWithControllerAndGraphics(my.controller, circleGraphics);    
+        this.addChild(_circleShape);
+      }
+      
+      
+      // FORTRESS IMAGE //////////////////////////////////////////////////////     
+      var newFortressImageName = 'map/fortress/small';        
+      if (my.region.fortressLevel() > 3) {
+        newFortressImageName = 'map/fortress/middle';
+      }
+      if (my.region.fortressLevel() > 7) {
+        newFortressImageName = 'map/fortress/large';
+      }
+      
+      if (newFortressImageName != _fortressImageName && my.fortressView) {
+        my.container.removeChild(my.fortressView);
+        my.fortressView = null;
+      }
+      _fortressImageName = newFortressImageName;
+
+      if (!my.fortressView) {
+        my.fortressView = AWE.UI.createImageView();
+        my.fortressView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_fortressImageName));
+        my.fortressView.setFrame(AWE.Geometry.createRect(202, 20, AWE.Config.MAPPING_FORTRESS_SIZE*1.5, AWE.Config.MAPPING_FORTRESS_SIZE*1.5));
+        this.addChild(my.fortressView);
+      }
+      
+      // FORTRESS FLAG ///////////////////////////////////////////////////////////    
+      if (!my.fortressFlagView && my.region.allianceId()) {
+        my.fortressFlagView = AWE.UI.createAllianceFlagView();
+        my.fortressFlagView.initWithController(my.controller);
+        my.fortressFlagView.setFrame(AWE.Geometry.createRect(242, 70, 12, 20));
+        my.fortressFlagView.setDirection('down');
+        this.addChild(my.fortressFlagView);
+      }
+      
+      if (my.fortressFlagView && my.region.allianceId() != my.fortressFlagView.allianceId()) {
+        my.fortressFlagView.setAllianceId(my.region.allianceId());
+      }
 
       // buttons oben
-      _invButtonView = AWE.UI.createButtonView();
-      _invButtonView.initWithControllerTextAndImage(controller, 'inv.', AWE.UI.ImageCache.getImage("map/button1"));
-      _invButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
-      _invButtonView.onClick = function() { that.onInventoryButtonClick() };
-      _container.addChild(_invButtonView.displayObject());
-
-      _moveButtonView = AWE.UI.createButtonView();
-      _moveButtonView.initWithControllerTextAndImage(controller, 'move', AWE.UI.ImageCache.getImage("map/button1"));
-      _moveButtonView.setFrame(AWE.Geometry.createRect(268, 0, 48, 48));
-      _container.addChild(_moveButtonView.displayObject());
+      if (!infoButtonView) {
+        infoButtonView = AWE.UI.createButtonView();
+        infoButtonView.initWithControllerTextAndImage(my.controller, 'Info', AWE.UI.ImageCache.getImage("map/button1"));
+        infoButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        infoButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
+        infoButtonView.onClick = function() { that.onInfoButtonClick() };
+        this.addChild(infoButtonView);
+      }
 
       // button unten
-      _prevButtonView = AWE.UI.createButtonView();
-      _prevButtonView.initWithControllerTextAndImage(controller, '<<', AWE.UI.ImageCache.getImage("map/button1"));
-      _prevButtonView.setFrame(AWE.Geometry.createRect(180, 92, 36, 36));
-      _container.addChild(_prevButtonView.displayObject());
+      if (!_prevButtonView && my.region.ownerId() === currentCharacter.getId()) {
+        _prevButtonView = AWE.UI.createButtonView();
+        _prevButtonView.initWithControllerTextAndImage(my.controller, '<<', AWE.UI.ImageCache.getImage("map/button1"));
+        _prevButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        _prevButtonView.setFrame(AWE.Geometry.createRect(180, 92, 36, 36));
+        this.addChild(_prevButtonView);
+      }
 
-      _nextButtonView = AWE.UI.createButtonView();
-      _nextButtonView.initWithControllerTextAndImage(controller, '>>', AWE.UI.ImageCache.getImage("map/button1"));
-      _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
-      _container.addChild(_nextButtonView.displayObject());
-
-      _container.x = my.frame.origin.x;
-      _container.y = my.frame.origin.y;
-    };
-    
-    that.onInventoryButtonClick = function() { console.log('inventory button clicked'); }
-        
-    that.layoutSubviews = function() {
-      _super.layoutSubviews();
-      _nameLabelView.layoutIfNeeded();
-      _apLabelView.layoutIfNeeded();
-      _locationLabelView.layoutIfNeeded();
-      _rankLabelView.layoutIfNeeded();
-      _sizeAllLabelView.layoutIfNeeded();
-      _sizeType1LabelView.layoutIfNeeded();
-      _sizeType2LabelView.layoutIfNeeded();
-      _sizeType3LabelView.layoutIfNeeded();
-    };
-
-    that.setFrame = function(frame) {
-      _super.setFrame(frame);
-      _container.x = my.frame.origin.x;
-      _container.y = my.frame.origin.y;
+      if (!_nextButtonView && my.region.ownerId() === currentCharacter.getId()) {
+        _nextButtonView = AWE.UI.createButtonView();
+        _nextButtonView.initWithControllerTextAndImage(my.controller, '>>', AWE.UI.ImageCache.getImage("map/button1"));
+        _nextButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
+        this.addChild(_nextButtonView);
+      }
     }
     
-    that.displayObject = function() {
-      return _container;
-    };
-
+    that.onInfoButtonClick = function() { console.log('info button clicked'); }
+    
     that.updateView = function() {
+      this.recalcView() 
+      _super.updateView();
+      
+      /*
       _nameLabelView.setText('name');
       _apLabelView.setText('AP: keine');
       _locationLabelView.setText('Home');
@@ -212,7 +269,7 @@ AWE.UI = (function(module) {
       // _sizeAllLabelView.setText(_army.get('size_present'));
       // _sizeType1LabelView.setText(_army.get('size_present'));
       // _sizeType2LabelView.setText(_army.get('size_present'));
-      // _sizeType3LabelView.setText(_army.get('size_present'));
+      // _sizeType3LabelView.setText(_army.get('size_present')); */
     };   
     
     return that;
