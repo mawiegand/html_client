@@ -30,6 +30,9 @@ AWE.UI = (function(module) {
 		that.targetViewport = function() {
 			return _targetViewport;
 		};
+		that.isAnimated = function() {
+			return _panTime > 0;
+		};
 
 		/** Defines the speed that the zoom animation moves (can be overwritten).
 		  * @param time a float in the range of [0,1]. 0 defines the beginning and 1 end of the animation.
@@ -48,8 +51,12 @@ AWE.UI = (function(module) {
 			);
 		};
 		that.update = function() {
-			_phase = (new Date()).getTime()-_startTime.getTime();
-			_phase /= panTime;
+			if (panTime > 0) {
+				_phase = (new Date()).getTime()-_startTime.getTime();
+				_phase /= panTime;
+			} else {
+				_phase = 1.0;
+			}
 			_phase = that.speedFunction(Math.min(_phase, 1.0));
 		};
 
@@ -70,8 +77,8 @@ AWE.UI = (function(module) {
 		var _lastPanEndViewport = undefined;
 		var _lastNodes = [];
 
-		var _isMoving = false;
-		var _windowSizeChanged = false;
+		var _isMoving = false; ///< Marks that a camera pan is currently active
+		var _viewportChanged = false; ///< Marks that the viewport has changed without the influence of a camera pan
 
 		//current data
 		var _currentViewport = spec.viewport.copy();
@@ -106,7 +113,7 @@ AWE.UI = (function(module) {
 		};
 
 		var _scaleToScreen = function(frame) {
-			var win = _currentViewport;//_rootController.windowSize();
+			var win = _windowSize;//_rootController.windowSize();
 			//expand the target viewport so that the w/h is conserved
 			if (win.width/win.height > frame.size.width/frame.size.height) {
 				//modify width
@@ -175,19 +182,23 @@ AWE.UI = (function(module) {
 				_currentViewport.origin.y -= yOff/2;
 				//set size
 				_windowSize = size.copy();
-				//mark that the windowSize has changed
-				_windowSizeChanged = true;
+				//mark that the viewport has changed
+				_viewportChanged = true;
 			}
 			return _windowSize;
 		};
+		/**
+		  * Returns if there is currently a camera pan active
+		  */
 		that.isMoving = function() {
 			return _isMoving;
 		};
+		/**
+		  * Returns the viewport has changed since the last call of update
+		  */
 		that.hasChanged = function() {
-			return _isMoving || _windowSizeChanged;
+			return _isMoving || _viewportChanged;
 		};
-
-		
 
 		/**
 		  *	Returns the current viewport (from the viewpoint of the camera)
@@ -280,11 +291,12 @@ AWE.UI = (function(module) {
 		};
 
 		/**
-		  * Updates the currentViewport.
+		  * Updates the currentViewport and resets hasChanged() and/or hasMoved() if needed.
 		  **/
 		that.update = function() {
 			if (_activePan !== undefined && _isMoving) {
 				_activePan.update();
+				console.log("pan created viewport "+_activePan.getCurrentViewport().toString());
 				_currentViewport = _scaleToScreen(_activePan.getCurrentViewport());
 				_isMoving = !_activePan.done();
 				if (!_isMoving && _cacheLastViewport) {
@@ -294,8 +306,9 @@ AWE.UI = (function(module) {
 			} else {
 				_isMoving = false;
 			}
-			_windowSizeChanged = false;
+			_viewportChanged = false;
 		};
+		//****CAMERA MOVEMENT FUNTIONS*****
 		/**
 		  * Moves the camera to the given value.
 		  * @param value the value can be a array of nodes, a node, a frame or a point. In case it is a point the viewport center will be moved there.
@@ -315,14 +328,102 @@ AWE.UI = (function(module) {
 			var frame = that.getResultingFrame(value, addBorder);
 
 			_activePan = module.createCameraPan(
-				_rootController.viewport(), 
+				//_rootController.viewport(), 
+				_getCurrentViewport(),
 				frame, 
 				_panTime
 			);
+
+			console.log("CAMERA: Pan from "+_getCurrentViewport().toString()+" to "+frame.toString());
+
 			_isMoving = true;
 			if (!animated) {
 				_activePan.speedFunction = function (time) { return 1.0; };
 			}
+		};
+
+		that.zoom = function(dScale, zoomin) {
+			var scale = 1+dScale;
+			var center = viewport().middle();
+			var targetViewport = viewport().copy();
+			if (that.isMoving) {
+				_activePan
+			}
+			if (zoomin) {
+				targetViewport.scale.scale(scale);
+			} else {
+				targetViewport.scale.scale(1/scale);
+			}
+			targetViewport.origin.x = center.x - targetViewport.size.width/2;
+			targetViewport.origin.y = center.y - targetViewport.size.height/2;
+			that.moveTo(targetViewport, false, false);
+		};
+
+		//****transformation functions***
+		that.mc2vcScale = function() {
+			return _windowSize.width /_currentViewport.size.width;
+		};
+		that.mc2vcTranslation = function() {
+			return AWE.Geometry.createPoint(
+				-1 * _currentViewport.origin.x * _windowSize.width / _currentViewport.size.width,
+				-1 * _currentViewport.origin.y * _windowSize.height / _currentViewport.size.height
+			);
+		};
+		/** 
+		  * transform model coordinates to view coordinates. accepts points, 
+    	  * rectangles and size for transformation. 
+    	  * @param value takes AWE.Geometry.Point, Scale, Rectangle
+    	  * @return a copy of the transformed value
+    	 **/
+		that.mc2vc = function(value) {
+			var scale = that.mc2vcScale();
+			var translation = that.msc2vsTranslation();
+
+			if (value.x !== undefined && value.y !== undefined) {
+				var point = value.copy();
+				point.scale(scale);
+				point.moveBy(translation);
+        		return point;
+			} else if (value.width !== undefined && value.height !== undefined) {
+				var size = value.copy();
+				size.scale(scale);
+		        return size;
+			} else if (value.origin !== undefined && value.size !== undefined) {
+				var rect = value.copy();
+				rect.origin.scale(scale);
+				rect.origin.moveBy(translation);
+				rect.size.scale(scale);
+				return rect;
+			}
+			console.warn("AWE.Camera.mc2vc got a value that could not be interpreted");
+			return undefined;
+		};
+		/** 
+		  * Transform view coordinates to model coordinates
+    	  * @param value takes AWE.Geometry.Point, Scale, Rectangle
+    	  * @return a copy of the transformed value
+    	 **/
+		that.vc2mc = function(value) {
+			var scale = that.mc2vcScale();
+			var translation = that.msc2vsTranslation();
+			if (value.x !== undefined && value.y !== undefined) {
+				var point = value.copy();
+				point.moveBy(AWE.Geometry.createPoint(-translation.x, -translation.y));
+				point.scale(1/scale);
+				return point;
+			} else if (value.width !== undefined && value.height !== undefined) {
+				var size = value.copy();
+				size.scale(1/scale);
+				return size;
+			} else if (value.origin !== undefined && value.size !== undefined) {
+				var rect = value.copy();
+				rect.origin.moveBy(AWE.Geometry.createPoint(-translation.x, -translation.y));
+				rect.origin.scale(1/scale);
+				rect.size.scale(1/scale);
+				return rect;
+			}	
+			console.warn("AWE.Camera.vc2mc got a value that could not be transformed");
+			return undefined;
 		};
 
 		/**
@@ -374,7 +475,7 @@ AWE.UI = (function(module) {
 				target = value.copy();
 			//point
 			} else if (value.x !== undefined && value.y !== undefined) {
-				var f = _rootController.viewport();
+				var f = _getCurrentViewport();//_rootController.viewport();
 				target = AWE.Geometry.createRect(
 					value.x-f.size.width/2,
 					value.y-f.size.height/2,

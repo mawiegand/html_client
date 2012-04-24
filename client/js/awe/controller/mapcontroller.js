@@ -113,7 +113,7 @@ AWE.Controller = (function(module) {
       _camera = AWE.UI.createCamera({
         rootController: that,
         windowSize: that.windowSize(),
-        viewport: that.viewport()
+        viewport: initialFrameModelCoordinates
       });
 
     };   
@@ -213,7 +213,7 @@ AWE.Controller = (function(module) {
         _windowChanged = true;
         that.setNeedsLayout();
         if (_camera !== undefined) {
-          _camera.setWindowSize(size);
+          _camera.windowSize(size);
         }
       }
     };
@@ -1768,6 +1768,7 @@ AWE.Controller = (function(module) {
         if (_camera.hasChanged()) {
           _camera.update();
           var newViewport = _camera.viewport();
+          console.log("newViewport="+newViewport.toString());
           if (newViewport !== null && newViewport !== undefined) {
             that.setViewport(newViewport);
             that.setNeedsLayout();
