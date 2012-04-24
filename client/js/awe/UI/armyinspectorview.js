@@ -75,7 +75,8 @@ AWE.UI = (function(module) {
       if (!_nameLabelView) {
         _nameLabelView = AWE.UI.createLabelView();
         _nameLabelView.initWithControllerAndLabel(my.controller);
-        _nameLabelView.setFrame(AWE.Geometry.createRect(5, 15, 100, 24));      
+        _nameLabelView.setFrame(AWE.Geometry.createRect(5, 15, 100, 36));      
+        _nameLabelView.setFont('24px "Helvetica Neue", Helvetica, Arial');
         _nameLabelView.setTextAlign("left");
         // _nameLabelView.setIconImage("map/icon/heads");
         this.addChild(_nameLabelView);
@@ -89,7 +90,7 @@ AWE.UI = (function(module) {
       if (!_apLabelView) {
         _apLabelView = AWE.UI.createLabelView();
         _apLabelView.initWithControllerAndLabel(my.controller);
-        _apLabelView.setFrame(AWE.Geometry.createRect(5, 40, 100, 24));      
+        _apLabelView.setFrame(AWE.Geometry.createRect(5, 46, 100, 24));      
         _apLabelView.setTextAlign("left");
         _apLabelView.setIconImage("map/icon/actionpoints");
         this.addChild(_apLabelView);
@@ -106,12 +107,13 @@ AWE.UI = (function(module) {
       if (!_locationLabelView) {
         _locationLabelView = AWE.UI.createLabelView();
         _locationLabelView.initWithControllerAndLabel(my.controller);
-        _locationLabelView.setFrame(AWE.Geometry.createRect(5, 65, 100, 24));      
+        _locationLabelView.setFrame(AWE.Geometry.createRect(5, 68, 100, 24));      
         _locationLabelView.setTextAlign("left");
         _locationLabelView.setIconImage("map/icon/home");
         this.addChild(_locationLabelView);
       }
-      _locationLabelView.setText('Home');
+      
+      _locationLabelView.setText(_army.get('home_settlement_name') ? _army.get('home_settlement_name') : '[Home]');
       
       if (!_rankLabelView) {
         _rankLabelView = AWE.UI.createLabelView();
@@ -126,7 +128,7 @@ AWE.UI = (function(module) {
       if (!_sizeAllLabelView) {
         _sizeAllLabelView = AWE.UI.createLabelView();
         _sizeAllLabelView.initWithControllerAndLabel(my.controller);
-        _sizeAllLabelView.setFrame(AWE.Geometry.createRect(105, 15, 100, 24));      
+        _sizeAllLabelView.setFrame(AWE.Geometry.createRect(105, 24, 100, 24));      
         _sizeAllLabelView.setTextAlign("left");
         _sizeAllLabelView.setIconImage("map/icon/army/size");
         this.addChild(_sizeAllLabelView);
@@ -136,7 +138,7 @@ AWE.UI = (function(module) {
       if (!_sizeType1LabelView) {
         _sizeType1LabelView = AWE.UI.createLabelView();
         _sizeType1LabelView.initWithControllerAndLabel(my.controller);
-        _sizeType1LabelView.setFrame(AWE.Geometry.createRect(105, 40, 100, 24));      
+        _sizeType1LabelView.setFrame(AWE.Geometry.createRect(105, 46, 100, 24));      
         _sizeType1LabelView.setTextAlign("left");
         _sizeType1LabelView.setIconImage("map/icon/army/size1");
         this.addChild(_sizeType1LabelView);
@@ -146,7 +148,7 @@ AWE.UI = (function(module) {
       if (!_sizeType2LabelView) {
         _sizeType2LabelView = AWE.UI.createLabelView();
         _sizeType2LabelView.initWithControllerAndLabel(my.controller);
-        _sizeType2LabelView.setFrame(AWE.Geometry.createRect(105, 65, 100, 24));      
+        _sizeType2LabelView.setFrame(AWE.Geometry.createRect(105, 68, 100, 24));      
         _sizeType2LabelView.setTextAlign("left");
         _sizeType2LabelView.setIconImage("map/icon/army/size2");
         this.addChild(_sizeType2LabelView);
@@ -215,7 +217,7 @@ AWE.UI = (function(module) {
           _flagView.initWithController(my.controller);
           _flagView.setFrame(AWE.Geometry.createRect(150, 0, 60, 75));
           _flagView.setAllianceId(allianceId);
-          // _flagView.setTagVisible(true);
+          _flagView.setTagVisible(true);
           _flagView.onClick = function() { 
             if (that.onFlagClicked) {
               that.onFlagClicked(allianceId);
@@ -226,7 +228,7 @@ AWE.UI = (function(module) {
       }
 
       _infoButtonView = AWE.UI.createButtonView();
-      _infoButtonView.initWithControllerTextAndImage(controller, 'Info', AWE.UI.ImageCache.getImage("map/button1"));
+      _infoButtonView.initWithControllerTextAndImage(my.controller, 'Info', AWE.UI.ImageCache.getImage("map/button1"));
       _infoButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
       _infoButtonView.onClick = function() {
          that.onInventoryButtonClick(_army) 

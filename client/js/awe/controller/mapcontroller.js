@@ -744,7 +744,7 @@ AWE.Controller = (function(module) {
           WACKADOO.activateAllianceController(allianceId);
         }
       }
-      else if (view.typeName() === 'BaseView') {
+      else if (view.typeName() === 'BaseView') { 
         inspectorViews.inspector = AWE.UI.createBaseInspectorView();
         inspectorViews.inspector.initWithControllerAndLocation(that, view.location());
       }
