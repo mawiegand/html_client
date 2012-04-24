@@ -68,7 +68,8 @@ AWE.UI = (function(module) {
       if (!_nameLabelView) {
         _nameLabelView = AWE.UI.createLabelView();
         _nameLabelView.initWithControllerAndLabel(my.controller);
-        _nameLabelView.setFrame(AWE.Geometry.createRect(5, 27, 100, 24));      
+        _nameLabelView.setFrame(AWE.Geometry.createRect(5, 27, 100, 36));      
+        _nameLabelView.setFont('24px "Helvetica Neue", Helvetica, Arial');
         _nameLabelView.setTextAlign("left");
         // _nameLabelView.setIconImage("map/icon/heads");
         this.addChild(_nameLabelView);
@@ -82,7 +83,7 @@ AWE.UI = (function(module) {
       if (!_levelLabelView) {
         _levelLabelView = AWE.UI.createLabelView();
         _levelLabelView.initWithControllerAndLabel(my.controller);
-        _levelLabelView.setFrame(AWE.Geometry.createRect(5, 52, 100, 24));      
+        _levelLabelView.setFrame(AWE.Geometry.createRect(5, 68, 100, 24));      
         _levelLabelView.setTextAlign("left");
         _levelLabelView.setIconImage("map/icon/actionpoints");
         this.addChild(_levelLabelView);

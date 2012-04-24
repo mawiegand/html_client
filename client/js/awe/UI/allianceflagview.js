@@ -47,8 +47,8 @@ AWE.UI = (function(module) {
         my.allianceTag = AWE.GS.AllianceManager.getAlliance(_allianceId).tag;
       }
       else {
-        AWE.GS.AllianceManager.updateAlliance(_allianceId, function() {
-          that.setUpdateNeeded();
+        AWE.GS.AllianceManager.updateAlliance(_allianceId, AWE.GS.ENTITY_UPDATE_TYPE_AGGREGATE, function() {
+          that.setNeedsUpdate();
         });
       }
     }

@@ -39,9 +39,6 @@ AWE.UI = (function(module) {
     
     var _fortressImageName = null;
 
-//  var _stanceView = null;
-//  var _moveButtonView = null;
-
 
     my = my || {};
 
