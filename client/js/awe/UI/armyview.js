@@ -212,6 +212,10 @@ AWE.UI = (function(module) {
         _healthShape.initWithControllerAndGraphics(my.controller, healthGraphics);
         _healthShape.setFrame(AWE.Geometry.createRect(0, 108, 64 * (_army.get('ap_present') / _army.get('ap_max')), 12));
         that.addChild(_healthShape);      
+        if (_actionPointsLabelView) { // move label to top
+          that.removeChild(_actionPointsLabelView);
+          that.addChild(_actionPointsLabelView);
+        }
       }
       if (_healthShape) {
         _healthShape.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));

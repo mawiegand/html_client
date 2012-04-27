@@ -1618,6 +1618,9 @@ AWE.Controller = (function(module) {
                
       // move hovered view if existing
       if (_hoveredView && actionViews.hovered) {
+        if (actionViews.hovered.lastChange !== undefined && _hoveredView.model && actionViews.hovered.lastChange() < _hoveredView.lastChange()) {  // should better test the model
+          actionViews.hovered.setNeedsUpdate();
+        }             
         actionViews.hovered.setCenter(AWE.Geometry.createPoint(
             _hoveredView.center().x,
             _hoveredView.center().y
@@ -1655,6 +1658,9 @@ AWE.Controller = (function(module) {
                
       // move selected view if existing
       if (_selectedView && actionViews.selected) {
+        if (actionViews.selected.lastChange !== undefined && _selectedView.model && actionViews.selected.lastChange() < _selectedView.lastChange()) {  // should better test the model
+          actionViews.selected.setNeedsUpdate();
+        }   
         actionViews.selected.setCenter(AWE.Geometry.createPoint(
             _selectedView.center().x,
             _selectedView.center().y
