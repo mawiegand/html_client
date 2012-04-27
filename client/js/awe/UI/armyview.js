@@ -18,8 +18,6 @@ AWE.UI = (function(module) {
     
     var _army = null;
     
-    var _container = null;
-    
     var _annotationView = null;
 
     var _stanceView = null;    
@@ -152,6 +150,9 @@ AWE.UI = (function(module) {
 
     that.updateView = function() {
       that.recalcView();
+      if (my.targetView) {
+        my.targetView.setHovered(this.hovered());
+      }
       _super.updateView();
     }
         

@@ -13,6 +13,8 @@ AWE.UI = (function(module) {
         
     var _army = null;
     var _armyView = null;
+    
+    var _actionMode = null;
         
     // selected
     var _stanceButtonView = null;    
@@ -77,7 +79,7 @@ AWE.UI = (function(module) {
       _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
       _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
       _attackButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
-      _attackButtonView.onClick = function() { if (_attackButtonView.enabled()) { that.onAttackButtonClick(); } }
+      _attackButtonView.onClick = function() { if (_attackButtonView.enabled()) { that.onAttackButtonClick(that); } }
       this.addChild(_attackButtonView);
       
       _rankImageView = AWE.UI.createImageView();
@@ -160,8 +162,11 @@ AWE.UI = (function(module) {
     }
     
     that.updateButtonState = function() {
-      _attackButtonView.setEnabled(_army.get('ap_present') >= 1.0);
       _moveButtonView.setEnabled(_army.get('ap_present') >= 1.0);
+      _attackButtonView.setEnabled(_army.get('ap_present') >= 1.0);
+      
+      _moveButtonView.setSelected(_actionMode === 'moveTargetSelection');
+      _attackButtonView.setSelected(_actionMode === 'attackTargetSelection');
     }
     
     that.recalcView = function() {
@@ -216,12 +221,8 @@ AWE.UI = (function(module) {
       return _armyView;
     }
     
-    /** TODO: WRONG NAME!  "move target selection" or something like that. MOVING -> would imply army IS moving. */
-    that.setMovingMode = function(moving) {
-      _moveButtonView.setSelected(moving);
-      _stanceButtonView.setEnabled(!moving);
-      _attackButtonView.setEnabled(!moving);
-      that.setNeedsUpdate();
+    that.setActionMode = function(actionMode) {
+      _actionMode = actionMode;
     }
     
     that.annotatedView = function() {

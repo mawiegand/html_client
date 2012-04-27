@@ -45,20 +45,20 @@ AWE.Action = (function(module) {
       };      
       
       var jqXHR = $.ajax(options)
-      .error(function(jqXHR, statusText) {           // On failure: 
-        console.log ('ERROR SENDING ACTION TO URL ' + that.getURL() + ': ' + statusText); 
-      })
-      .success(function(data, statusText, jqXHR) {   // On success:
-        console.log ('Successfully sent action to url: ' + that.getURL() + ': ' + statusText); 
-      })
-      .complete(function(jqXHR, statusText) {
-        my.completed = true;
-        my.status = jqXHR.status;
-        that.postProcess(jqXHR.status, jqXHR);
-        if (callback) {
-          callback(jqXHR.status, jqXHR);
-        }
-      });
+        .error(function(jqXHR, statusText) {           // On failure: 
+          console.log ('ERROR SENDING ACTION TO URL ' + that.getURL() + ': ' + statusText); 
+        })
+        .success(function(data, statusText, jqXHR) {   // On success:
+          console.log ('Successfully sent action to url: ' + that.getURL() + ': ' + statusText); 
+        })
+        .complete(function(jqXHR, statusText) {
+          my.completed = true;
+          my.status = jqXHR.status;
+          that.postProcess(jqXHR.status, jqXHR);
+          if (callback) {
+            callback(jqXHR.status, jqXHR);
+          }
+        });
       
       return jqXHR; 
     }
