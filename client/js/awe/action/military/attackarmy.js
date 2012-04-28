@@ -29,7 +29,7 @@ AWE.Action.Military = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'action_military_attack_army_action[army_id]='+my.army.get('id')+'&action_military_attack_army_action[target_army_id]=' + my.target_army_id; 
+      return 'action_military_attack_army_action[attacker_id]='+my.army.get('id')+'&action_military_attack_army_action[defender_id]=' + my.target_army_id; 
     }
     
     that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'/military/attack_army_actions'; }
