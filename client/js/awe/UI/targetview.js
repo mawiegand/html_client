@@ -16,31 +16,33 @@ AWE.UI = (function(module) {
     var _container = null;
     var _location = null;
     var _locationView = null;
+    
+    var _targetedView = null;
 
     var _arrowImageView = null;  
     var _hoverImageView = null;   
 
-    var that = module.createView(spec, my);
+    var that = module.createContainer(spec, my);
 
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
       setFrame: AWE.Ext.superior(that, "setFrame"),
       setHovered: AWE.Ext.superior(that, "setHovered"),
+      updateView: AWE.Ext.superior(that, "updateView"),
     };
     
     /** overwritten view methods */
     
-    that.initWithControllerAndLocation = function(controller, location, frame) {
+    that.initWithControllerAndTargetedView = function(controller, targetedView, frame) {
       _super.initWithController(controller, frame);
-      _container = new Container();
-      _location = location;
+      _targetedView = targetedView;
       
       _hoverImageView = AWE.UI.createImageView();
       _hoverImageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/army/target_background"));
       _hoverImageView.setFrame(AWE.Geometry.createRect(0, 0, 64, 64));
       _hoverImageView.setVisible(false);
-      _container.addChild(_hoverImageView.displayObject());
+      this.addChild(_hoverImageView);
 
       _arrowImageView = AWE.UI.createImageView();
       _arrowImageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/army/target"));
@@ -48,7 +50,7 @@ AWE.UI = (function(module) {
       _arrowImageView.onClick = that.onClick;
       _arrowImageView.onMouseOver = that.onMouseOver;
       _arrowImageView.onMouseOut = that.onMouseOut;
-      _container.addChild(_arrowImageView.displayObject());
+      this.addChild(_arrowImageView);
 
       if (!frame) {
         my.frame.size.width = 64;
@@ -58,32 +60,15 @@ AWE.UI = (function(module) {
     
     that.updateView = function() {
       _hoverImageView.setVisible(this.hovered());
+      _super.updateView();
     }
     
-    that.setFrame = function(frame) {
-      _super.setFrame(frame);
-      _container.x = my.frame.origin.x;
-      _container.y = my.frame.origin.y;
-    }
-                
-    that.displayObject = function() {
-      return _container;
-    };
-    
-    that.location = function() {
-      return _location;
+    that.targetedView = function() {
+      return _targetedView;
     }
     
-    that.setLocationView = function(locationView) {
-      _locationView = locationView;
-    }
-
-    that.locationView = function() {
-      return _locationView;
-    }
-    
-    that.onClick = function() {
-      my.controller.targetViewClicked(that);
+      that.onClick = function() {
+      my.controller.viewClicked(_targetedView);
     };
             
     that.onMouseOver = function(evt){ 

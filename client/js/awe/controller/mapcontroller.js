@@ -484,7 +484,7 @@ AWE.Controller = (function(module) {
       if (currentAction) {
         currentAction = null;
         if (_selectedView) {
-          _selectedView.annotationView().setMovingMode(false);
+          _selectedView.annotationView().setActionMode(null);
         }
         _actionViewChanged = true;
       }
@@ -538,27 +538,23 @@ AWE.Controller = (function(module) {
         armyAnnotationView: armyAnnotationView,
       }
       
-      armyAnnotationView.setMovingMode(true);
+      armyAnnotationView.setActionMode('moveTargetSelection');
       _actionViewChanged = true;
     };
     
-    
-        
-    
-    /** helper method to call onClick of settlement if arrow above is clicked */
-    that.targetViewClicked = function(targetView) {
-      var location = targetView.location();
-      var locationView = null;
-      
-      if (location.typeId() === 1) {
-        locationView = fortressViews[location.node().id()];
-      }
-      else {
-        locationView = locationViews[location.id()];
+    that.armyAttackButtonClicked = function(armyAnnotationView) {
+      // actionObjekt erstellen      
+      log('armyAnnotationView', armyAnnotationView);
+      currentAction = {
+        typeName: 'attackAction',
+        army: armyAnnotationView.army(),
+        armyView: armyAnnotationView.annotatedView(),
+        armyAnnotationView: armyAnnotationView,
       }
       
-      that.viewClicked(locationView);
-    }    
+      armyAnnotationView.setActionMode('attackTargetSelection');
+      _actionViewChanged = true;
+    };
     
     that.handleError = function(errorCode, errorDesc) { 
       console.log('ERROR ' + errorCode + ': ' + errorDesc);     
@@ -569,8 +565,8 @@ AWE.Controller = (function(module) {
       that.applicationController.presentModalDialog(dialog);
     }
     
-    var armyTargetClicked = function(army, targetLocation, armyView, targetView) {
-      log('armyTargetClicked', army, targetLocation, AWE.Map.locationTypes[targetLocation.id()]);
+    var armyMoveTargetClicked = function(army, targetLocation, armyView, targetView) {
+      log('armyMoveTargetClicked', army, targetLocation, AWE.Map.locationTypes[targetLocation.id()]);
       var moveAction = AWE.Action.Military.createMoveArmyAction(army, targetLocation.id());
       moveAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
@@ -585,7 +581,6 @@ AWE.Controller = (function(module) {
         }
       });
     }
-    
     
     that.armyCancelMoveButtonClicked = function(armyAnnotationView) {
       log('cancel move');
@@ -603,6 +598,28 @@ AWE.Controller = (function(module) {
       });     
     };
 
+    var armyAttackTargetClicked = function(army, targetArmy, armyView, targetArmyView) {
+      log('armyAttackTargetClicked', army, targetArmy);
+      var attackAction = AWE.Action.Military.createAttackArmyAction(army, targetArmy.get('id'));
+      attackAction.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
+          AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+            that.setModelChanged();
+            that.addDisappearingAnnotationLabel(armyView, 'Attack started', 1000);
+          });
+        }
+        else {
+          that.handleError(status, "The server did not accept the attack comannd.");
+          AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+            that.setModelChanged();
+          });
+          AWE.GS.ArmyManager.updateArmy(targetArmy.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+            that.setModelChanged();
+          });
+        }
+      });
+    }
+    
     // ///////////////////////////////////////////////////////////////////////
     //
     //   User Input Handling
@@ -638,26 +655,49 @@ AWE.Controller = (function(module) {
     that.viewClicked = function(view) {
       
       var actionCompleted = false;
-      var target = null;
+      
+      // nach action unterscheiden
      
       if (currentAction) {
-        var targetLocations = getVisibleTargets(currentAction.army);
-        for (var key in targetLocations) {
-          if (targetLocations.hasOwnProperty(key)) {
-            target = targetLocations[key];
-            if (view.location && view.location() === target) {
-              actionCompleted = true;
-              break;
+        if (currentAction.typeName === 'moveAction') {
+          var targetLocations = getVisibleTargetLocations(currentAction.army);
+          for (var key in targetLocations) {
+            if (targetLocations.hasOwnProperty(key)) {
+              var targetLocation = targetLocations[key];
+              if (view.location && view.location() === targetLocation) {
+                actionCompleted = true;
+                break;
+              }
             }
           }
+        
+          if (actionCompleted) {
+            armyMoveTargetClicked(currentAction.army, targetLocation, currentAction.armyView, view);
+          }
+          _actionViewChanged = true;
+          currentAction = null;
+          _selectedView.annotationView().setActionMode(null);
         }
-      
-        if (actionCompleted) {
-          armyTargetClicked(currentAction.army, target, currentAction.armyView, view);
+        else if (currentAction.typeName === 'attackAction') {
+          var targetArmies = getTargetArmies(currentAction.army);
+
+          for (var key in targetArmies) {
+            if (targetArmies.hasOwnProperty(key)) {
+              var targetArmy = targetArmies[key];
+              if (view.army && view.army() === targetArmy) {
+                actionCompleted = true;
+                break;
+              }
+            }
+          }
+        
+          if (actionCompleted) {
+            armyAttackTargetClicked(currentAction.army, targetArmy, currentAction.armyView, view);
+          }
+          _actionViewChanged = true;
+          currentAction = null;
+          _selectedView.annotationView().setActionMode(null);
         }
-        _actionViewChanged = true;
-        currentAction = null;
-        _selectedView.annotationView().setMovingMode(false);
       }
       else {
         that.setSelectedView(view);
@@ -673,7 +713,7 @@ AWE.Controller = (function(module) {
         _hoverView(view);
       }
       else if (view.typeName() === 'TargetView') {
-        _hoverView(view.locationView());
+        _hoverView(view.targetedView());
       }
       else if (view.typeName() === 'hudView') { // typeof view == 'hud'  (evtl. eigene methode)
         // _unhoverView();
@@ -689,7 +729,7 @@ AWE.Controller = (function(module) {
         _unhoverView(view);
       }
       else if (view.typeName() === 'TargetView') {
-        _unhoverView(view.locationView());
+        _unhoverView(view.targetedView());
       }
     };
     
@@ -1188,7 +1228,7 @@ AWE.Controller = (function(module) {
     var setFortressPosition = function(view, frame) {
       view.setCenter(AWE.Geometry.createPoint(
         frame.origin.x + frame.size.width / 2,
-        frame.origin.y + frame.size.height / 2 - 5         
+        frame.origin.y + frame.size.height / 2 - 5
       ));
     }
     
@@ -1441,14 +1481,7 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
 
-    var setTargetPosition = function(view, pos) {
-      view.setCenter(AWE.Geometry.createPoint(
-        pos.x,
-        pos.y - 48
-      ));
-    }
-    
-    var getVisibleTargets = function(army) {
+    var getVisibleTargetLocations = function(army) {
       
       var targetLocations = [];
       var armyRegion = AWE.Map.Manager.getRegion(army.get('region_id'));
@@ -1456,7 +1489,7 @@ AWE.Controller = (function(module) {
       
       if (armyLocation) {
         // get all possible target locations      
-        if (armyLocation.typeId() === 1) {           // if armyLocation is fortress
+        if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.typeId()] === 'fortress') {           // if armyLocation is fortress
           var regionLocations = armyRegion.locations();
           
           // add all location in same region
@@ -1492,6 +1525,28 @@ AWE.Controller = (function(module) {
       
       return targetLocations;
     }
+    
+    var getTargetArmies = function(army) {
+
+      var targetArmies = [];
+      var armyRegion = AWE.Map.Manager.getRegion(army.get('region_id'));
+      var armyLocation = AWE.Map.Manager.getLocation(army.get('location_id'));
+
+      if (armyLocation) {
+        var armiesAtLocation = armyLocation.getArmies();
+        
+        AWE.Ext.applyFunctionToElements(armiesAtLocation, function(army) {
+          if (!army.isOwn()) {
+            targetArmies.push(army);
+          }        
+        });
+      }
+      else {
+        AWE.Map.Manager.fetchLocationsForRegion(armyRegion);
+      }
+      
+      return targetArmies;
+    }
 
     that.updateActionViews = function() {
       
@@ -1505,6 +1560,7 @@ AWE.Controller = (function(module) {
         else if (annotatedView.typeName() === 'ArmyView') {
           annotationView = AWE.UI.createArmyAnnotationView();
           annotationView.initWithControllerAndView(that, annotatedView);
+
           annotationView.onMoveButtonClick = (function(self) {
             return function(view) { self.armyMoveButtonClicked(view); }
           })(that);
@@ -1513,6 +1569,10 @@ AWE.Controller = (function(module) {
             return function(view) { self.armyCancelMoveButtonClicked(view); }
           })(that);
                     
+          annotationView.onAttackButtonClick = (function(self) {
+            return function(view) { self.armyAttackButtonClicked(view); }
+          })(that);
+          
           armyUpdates[annotatedView.army().get('id')] = annotatedView.army();
         }
         else if (annotatedView.typeName() === 'BaseView') {
@@ -1569,7 +1629,6 @@ AWE.Controller = (function(module) {
       }
       else {
         if (actionViews.hovered) {
-          // actionViews.hovered.baseView().setAnnotationView(null);
           delete actionViews.hovered;        
         }
       }
@@ -1610,22 +1669,27 @@ AWE.Controller = (function(module) {
       }
       else {
         if (actionViews.selected) {
-          // actionViews.selected.baseView().setAnnotationView(null);
           delete actionViews.selected;        
         }
       }
       
-
+      // helper method
+      var setTargetPosition = function(view, pos) {
+        view.setCenter(AWE.Geometry.createPoint(
+          pos.x,
+          pos.y - 48
+        ));
+      }
+      
       var newTargetViews = {};
 
       if (currentAction) {
-        var targetLocations = getVisibleTargets(currentAction.army);
-        for (var key in targetLocations) {
-          if (targetLocations.hasOwnProperty(key)) {
-            var location = targetLocations[key];
-            var view = targetViews[location.id()];
+        if (currentAction.typeName === 'moveAction') {
+          var targetLocations = getVisibleTargetLocations(currentAction.army);
+          AWE.Ext.applyFunctionToElements(targetLocations, function(location) {
+            var targetView = targetViews[location.id()];
             
-            if (location.typeId() === 1) {
+            if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()] === 'fortress') {
               var visible = that.isFortressVisible(that.mc2vc(location.node().frame()));
               var locationView = fortressViews[location.node().id()];
             }
@@ -1635,21 +1699,44 @@ AWE.Controller = (function(module) {
             }
             
             if (visible && locationView) {
-              if (!view) {       
-                view = AWE.UI.createTargetView();
-                view.initWithControllerAndLocation(that, location);
-                if (location.typeId() === 1) {
-                }
-                else {   
-                }
-                view.setLocationView(locationView);
-                _stages[2].addChild(view.displayObject());
-                locationView.setTargetView(view);
+              if (!targetView) {       
+                targetView = AWE.UI.createTargetView();
+                targetView.initWithControllerAndTargetedView(that, locationView);
+                _stages[2].addChild(targetView.displayObject());
+                locationView.setTargetView(targetView);
               }                                  
-              setTargetPosition(view, that.mc2vc(location.position()));
-              newTargetViews[location.id()] = view;
+              setTargetPosition(targetView, locationView.center());
+              newTargetViews[location.id()] = targetView;
             }
-          }
+          });
+        }
+        else if (currentAction.typeName === 'attackAction') {
+          // target views entsprechend der sichtbarkeit der armeen verschieben
+          var targetArmies = getTargetArmies(currentAction.army);
+          log('targetArmies', targetArmies);
+          AWE.Ext.applyFunctionToElements(targetArmies, function(army) {
+            var targetView = targetViews[army.get('id')];
+            var armyView = armyViews[army.get('id')];
+            var armyLocation = AWE.Map.Manager.getLocation(army.get('location_id'));
+            if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.typeId()] === 'fortress') {
+              var visible = that.areArmiesAtFortressVisible(that.mc2vc(armyLocation.node().frame()));
+            }
+            else {
+              var visible = that.areArmiesAtSettlementsVisible(that.mc2vc(armyLocation.node().frame())); 
+            }
+            
+            if (visible && armyView) {
+              if (!targetView) {       
+                targetView = AWE.UI.createTargetView();
+                targetView.initWithControllerAndTargetedView(that, armyView);
+                _stages[2].addChild(targetView.displayObject());
+                // locationView.setTargetView(targetView);
+              }                                  
+              setTargetPosition(targetView, armyView.center());
+              newTargetViews[army.get('id')] = targetView;
+            }
+            log('army', army);
+          });
         }
       }
       
