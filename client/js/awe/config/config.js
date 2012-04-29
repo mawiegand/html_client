@@ -28,6 +28,7 @@ AWE.Config = (function(module) {
   module.MILITARY_SERVER_BASE = module.SERVER_ROOT + '/game_server/military/';
   module.FUNDAMENTAL_SERVER_BASE = module.SERVER_ROOT + '/game_server/fundamental/';
   module.ACTION_SERVER_BASE = module.SERVER_ROOT + '/game_server/action/';
+  module.RULES_SERVER_BASE = module.SERVER_ROOT + '/game_server/game_rules/';
   
   module.DEV_CHARACTER_ID = 1;
   module.DEV_ALLIANCE_ID = 1;
