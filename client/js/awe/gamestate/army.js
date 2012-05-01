@@ -31,7 +31,7 @@ AWE.GS = (function(module) {
     alliance_id: null,
     alliance_tag: null,
     
-    ap_last: null,
+    ap_next: null,
     ap_max: null,
     ap_present: null,
     ap_seconds_per_point: null,
@@ -39,8 +39,15 @@ AWE.GS = (function(module) {
     exp: null,
     rank: null,
     
+    velocity: null,
+    garrison: null,
+    
     stance: null,
     strength: null,
+    
+    unitcategory_cavalry_strength: null,
+    unitcategory_infantry_strength: null,
+    unitcategory_artillery_strength: null,
     
     home_settlement_id: null,
     home_settlement_name: null,
@@ -58,6 +65,8 @@ AWE.GS = (function(module) {
     target_location_id: null,
     target_reached_at: null,
     target_region_id: null,
+    
+    details: null,
     
     isOwn: function() {
       return this.get('owner_id') === module.CharacterManager.currentCharacter.getId();
