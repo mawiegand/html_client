@@ -600,7 +600,7 @@ AWE.Controller = (function(module) {
 
     var armyAttackTargetClicked = function(army, targetArmy, armyView, targetArmyView) {
       log('armyAttackTargetClicked', army, targetArmy);
-      var attackAction = AWE.Action.Military.createAttackArmyAction(army, targetArmy.get('id'));
+      var attackAction = AWE.Action.Military.createAttackArmyAction(army, targetArmy.getId());
       attackAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
           AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
@@ -1364,13 +1364,13 @@ AWE.Controller = (function(module) {
       
       var processArmiesAtPos = function(armies, pos) {
         for (var key in armies) {
-          if (armies.hasOwnProperty(key)) {
+          if (armies.hasOwnProperty(key) && !armies[key].isGarrison()) {
             var army = armies[key];
-            var view = armyViews[army.get('id')];
-          
+            var view = armyViews[army.getId()];
+            
             if (view) {       
               if (view.lastChange !== undefined && view.lastChange() < army.lastChange()) {
-                view.setNeedsUpdate();
+                view.setNeedsUpdate(); 
               }             
             }
             else {  // if view for army doesn't exists
@@ -1379,8 +1379,8 @@ AWE.Controller = (function(module) {
 //              view.displayObject().alpha=0.3;
               _stages[1].addChild(view.displayObject());
             }                                  
-            setArmyPosition(view, pos, army.get('id'), frame);
-            newArmyViews[army.get('id')] = view;
+            setArmyPosition(view, pos, army.getId(), frame);
+            newArmyViews[army.getId()] = view;
             
             if (army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
               
@@ -1414,7 +1414,7 @@ AWE.Controller = (function(module) {
               
               if (targetPos) {
                 
-                var movementArrow = movementArrowViews[army.get('id')];
+                var movementArrow = movementArrowViews[army.getId()];
               
                 if (!movementArrow) {
                   movementArrow = AWE.UI.createMovementArrowView();
@@ -1427,7 +1427,7 @@ AWE.Controller = (function(module) {
               
                 movementArrow.setStart(AWE.Geometry.createPoint(view.frame().origin.x+24, view.frame().origin.y+10));
                 movementArrow.setEnd(AWE.Geometry.createPoint(targetPos.x, targetPos.y));
-                newMovementArrowViews[army.get('id')] = movementArrow;
+                newMovementArrowViews[army.getId()] = movementArrow;
               }
             }
           }
@@ -1573,7 +1573,7 @@ AWE.Controller = (function(module) {
             return function(view) { self.armyAttackButtonClicked(view); }
           })(that);
           
-          armyUpdates[annotatedView.army().get('id')] = annotatedView.army();
+          armyUpdates[annotatedView.army().getId()] = annotatedView.army();
         }
         else if (annotatedView.typeName() === 'BaseView') {
           annotationView = AWE.UI.createBaseAnnotationView();
@@ -1715,8 +1715,8 @@ AWE.Controller = (function(module) {
           var targetArmies = getTargetArmies(currentAction.army);
           log('targetArmies', targetArmies);
           AWE.Ext.applyFunctionToElements(targetArmies, function(army) {
-            var targetView = targetViews[army.get('id')];
-            var armyView = armyViews[army.get('id')];
+            var targetView = targetViews[army.getId()];
+            var armyView = armyViews[army.getId()];
             var armyLocation = AWE.Map.Manager.getLocation(army.get('location_id'));
             if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.typeId()] === 'fortress') {
               var visible = that.areArmiesAtFortressVisible(that.mc2vc(armyLocation.node().frame()));
@@ -1733,7 +1733,7 @@ AWE.Controller = (function(module) {
                 // locationView.setTargetView(targetView);
               }                                  
               setTargetPosition(targetView, armyView.center());
-              newTargetViews[army.get('id')] = targetView;
+              newTargetViews[army.getId()] = targetView;
             }
             log('army', army);
           });

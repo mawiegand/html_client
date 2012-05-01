@@ -29,7 +29,7 @@ AWE.Action.Military = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'action_military_attack_army_action[attacker_id]='+my.army.get('id')+'&action_military_attack_army_action[defender_id]=' + my.target_army_id; 
+      return 'action_military_attack_army_action[attacker_id]='+my.army.getId()+'&action_military_attack_army_action[defender_id]=' + my.target_army_id; 
     }
     
     that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'/military/attack_army_actions'; }
@@ -38,7 +38,7 @@ AWE.Action.Military = (function(module) {
     
     that.postProcess = function(statusCode, xhr) {
       if (statusCode == 200) {
-        AWE.GS.ArmyManager.updateArmy(my.army.get('id'));
+        AWE.GS.ArmyManager.updateArmy(my.army.getId());
       }
     }
     

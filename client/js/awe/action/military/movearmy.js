@@ -28,7 +28,7 @@ AWE.Action.Military = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'action_military_move_army_action[army_id]='+my.army.get('id')+'&action_military_move_army_action[target_location_id]=' + my.target_location_id; 
+      return 'action_military_move_army_action[army_id]='+my.army.getId()+'&action_military_move_army_action[target_location_id]=' + my.target_location_id; 
     }
     
     that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'/military/move_army_actions'; }
@@ -37,7 +37,7 @@ AWE.Action.Military = (function(module) {
     
     that.postProcess = function(statusCode, xhr) {
       if (statusCode == 200) {
-        AWE.GS.ArmyManager.updateArmy(my.army.get('id'));
+        AWE.GS.ArmyManager.updateArmy(my.army.getId());
       }
     }
     
@@ -73,7 +73,7 @@ AWE.Action.Military = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'action_military_cancel_move_army_action[army_id]='+my.army.get('id'); 
+      return 'action_military_cancel_move_army_action[army_id]='+my.army.getId(); 
     }
     
     that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'/military/cancel_move_army_actions'; }
@@ -82,7 +82,7 @@ AWE.Action.Military = (function(module) {
     
     that.postProcess = function(statusCode, xhr) {
       if (statusCode == 200) {
-        AWE.GS.ArmyManager.updateArmy(my.army.get('id'));
+        AWE.GS.ArmyManager.updateArmy(my.army.getId());
       }
     }
     

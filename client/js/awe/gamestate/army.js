@@ -49,6 +49,8 @@ AWE.GS = (function(module) {
     size_present: null,
     
     mode: null,
+    garrison: false,
+    velocity: 0,
     
     battle_id: 0,
     battle_retreat: false,
@@ -60,6 +62,10 @@ AWE.GS = (function(module) {
     isOwn: function() {
       return this.get('owner_id') === module.CharacterManager.currentCharacter.getId();
     },
+    
+    isGarrison: function() {
+      return this.get('garrison');
+    },  
     
     isMovable: function() {
       return ;
