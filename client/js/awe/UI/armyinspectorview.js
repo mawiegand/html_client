@@ -133,7 +133,7 @@ AWE.UI = (function(module) {
         _sizeAllLabelView.setIconImage("map/icon/army/size");
         this.addChild(_sizeAllLabelView);
       }
-      _sizeAllLabelView.setText(_army.get('size_present'));
+      _sizeAllLabelView.setText(_army.get('strength'));
       
       if (!_sizeType1LabelView) {
         _sizeType1LabelView = AWE.UI.createLabelView();
@@ -143,7 +143,7 @@ AWE.UI = (function(module) {
         _sizeType1LabelView.setIconImage("map/icon/army/size1");
         this.addChild(_sizeType1LabelView);
       }
-      _sizeType1LabelView.setText(_army.get('size_present'));
+      _sizeType1LabelView.setText(Math.floor(_army.get('unitcategory_infantry_strength')));
       
       if (!_sizeType2LabelView) {
         _sizeType2LabelView = AWE.UI.createLabelView();
@@ -153,7 +153,7 @@ AWE.UI = (function(module) {
         _sizeType2LabelView.setIconImage("map/icon/army/size2");
         this.addChild(_sizeType2LabelView);
       }
-      _sizeType2LabelView.setText(_army.get('size_present'));
+      _sizeType2LabelView.setText(Math.floor(_army.get('unitcategory_cavalry_strength')));
       
       if (!_sizeType3LabelView) {
         _sizeType3LabelView = AWE.UI.createLabelView();
@@ -163,7 +163,7 @@ AWE.UI = (function(module) {
         _sizeType3LabelView.setFrame(AWE.Geometry.createRect(105, 90, 100, 24));      
         this.addChild(_sizeType3LabelView);
       }
-      _sizeType3LabelView.setText(_army.get('size_present'));
+      _sizeType3LabelView.setText(Math.floor(_army.get('unitcategory_artillery_strength')));
       
       if (!_circleShape) {
       // kreis drum
