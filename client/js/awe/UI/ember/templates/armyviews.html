@@ -4,6 +4,29 @@
         <div class="modal-dialog-pane" id="army-details">
           <h1>{{ unbound AWE.I18n.strings.army.details.heading }}: {{ army.name }}</h1>
           {{#view Ember.Button action="changeNamePressed" target="parentView"}}change name{{/view}}
+          
+          <table>
+            <tr>
+              {{#each units}}
+                <th>{{name}}</th>
+              {{/each}}
+            </tr>
+            <tr>
+              {{#each units}}
+                <td>{{number}}</td>
+              {{/each}}
+            </tr>
+          </table>
+          
+          <ul>
+            <li>Stength Melee: {{ army.unitcategory_infantry_strength }}</li>
+            <li>Stength Riders: {{ army.unitcategory_cavalry_strength }}</li>
+            <li>Stength Distance: {{ army.unitcategory_artillery_strength }}</li>
+            <li>Overal Strength: {{ army.strength }}</li>
+            <li>Size: {{ army.size_present }} / army.size_max</li>
+            <li>Velocity: {{ army.velocity }}</li>
+          </ul>
+          
           {{#view Ember.Button action="closePressed" target="parentView"}}close{{/view}}
         </div>
       </div>

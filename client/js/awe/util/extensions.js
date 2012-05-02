@@ -99,6 +99,15 @@ AWE.Ext = (function(module) {
     }
   }
   
+  /** calls the function for each of the elements of the hash. */
+  module.applyFunctionToHash = function(_hash, _function) {
+    for (var key in _hash) {
+      if (_hash.hasOwnProperty(key)) {
+        _function(key, _hash[key]);
+      }
+    }
+  }  
+  
   module.hashValues = function(_hash) {
     var values = [];
     module.applyFunctionToElements(_hash, function(value) { values.push(value); } );
