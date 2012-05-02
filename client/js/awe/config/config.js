@@ -30,8 +30,12 @@ AWE.Config = (function(module) {
   module.ACTION_SERVER_BASE = module.SERVER_ROOT + '/game_server/action/';
   module.RULES_SERVER_BASE = module.SERVER_ROOT + '/game_server/game_rules/';
   
-  module.DEV_CHARACTER_ID = 1;
+  // access token of Egbert, expires in 100 days.
+  module.DEV_ACCESS_TOKEN = "eyJ0b2tlbiI6eyJpZGVudGlmaWVyIjoiZU9tS3ZOa1hTUkxtYlREUSIsInNjb3BlIjpbIjVkZW50aXR5Iiwid2Fja2Fkb28iXSwidGltZXN0YW1wIjoiMjAxMi0wNS0wMlQxNjozMDowMyswMjowMCJ9LCJzaWduYXR1cmUiOiJhZDQ0MzU4NzRmMGFmYTg2N2RlOTAwOTExYTJlMmNlODQzNmNlYTU0In0="
+  
   module.DEV_ALLIANCE_ID = 1;
+  
+  module.NET_AUTO_DETECT_REDIRECT_FLAWS = false ;
   
   module.MAPPING_FORTRESS_SIZE = 64;
   

@@ -91,7 +91,7 @@ AWE.Application = (function(module) {
         });
       },
   
-      readyToRun: function() { this.readyForRunloop = true; },
+      readyToRun: function() { this.set('readyForRunloop', true); log ('RREADY', this.readyForRunloop, this.get('readyForRunloop')); },
   
       generateClickIfNeeded: function(evt) { console.log('entered click handler');
         var presentScreenController = this.get('presentScreenController');
