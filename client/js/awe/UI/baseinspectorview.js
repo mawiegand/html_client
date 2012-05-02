@@ -102,6 +102,7 @@ AWE.UI = (function(module) {
         _circleShape = AWE.UI.createShapeView();
         _circleShape.initWithControllerAndGraphics(my.controller, circleGraphics);
         _circleShape.setFrame(AWE.Geometry.createRect(184, 0, 64, 64));
+        _circleShape.onClick = function() { my.controller.moveTo(_location); };
         this.addChild(_circleShape);
       }      
       
@@ -126,7 +127,8 @@ AWE.UI = (function(module) {
         _imageView = AWE.UI.createImageView();
         _imageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(imageName));
         _imageView.setFrame(AWE.Geometry.createRect(200, 16, 96, 96));
-        _imageView.onClick = that.onClick;
+        //_imageView.onClick = that.onClick;
+        _imageView.onClick = function() { my.controller.moveTo(_location); };
         _imageView.onMouseOver = that.onMouseOver;
         _imageView.onMouseOut = that.onMouseOut;
         this.addChild(_imageView);

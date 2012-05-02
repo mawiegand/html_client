@@ -175,6 +175,9 @@ AWE.UI = (function(module) {
         _circleShape = AWE.UI.createShapeView();
         _circleShape.initWithControllerAndGraphics(my.controller, circleGraphics);
         _circleShape.setFrame(AWE.Geometry.createRect(184, 0, 64, 64));
+        _circleShape.onClick = function() { 
+          my.controller.moveTo(AWE.Map.Manager.getLocation(_army.get('location_id')));
+        };  
         this.addChild(_circleShape);
       }      
 
@@ -199,7 +202,10 @@ AWE.UI = (function(module) {
         _stanceView = AWE.UI.createImageView();
         _stanceView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[stance]));
         _stanceView.setFrame(AWE.Geometry.createRect(208 + offX, -12 + offY, 80, 120));
-        _stanceView.onClick = that.onClick;
+        //_stanceView.onClick = that.onClick;
+        _stanceView.onClick = function() {
+          my.controller.moveTo(AWE.Map.Manager.getLocation(_army.get('location_id')));
+        };  
         _stanceView.onMouseOver = that.onMouseOver;
         _stanceView.onMouseOut = that.onMouseOut;
         this.addChild(_stanceView);
