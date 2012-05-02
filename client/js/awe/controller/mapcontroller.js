@@ -544,7 +544,6 @@ AWE.Controller = (function(module) {
     
     that.armyAttackButtonClicked = function(armyAnnotationView) {
       // actionObjekt erstellen      
-      log('armyAnnotationView', armyAnnotationView);
       currentAction = {
         typeName: 'attackAction',
         army: armyAnnotationView.army(),
@@ -598,8 +597,8 @@ AWE.Controller = (function(module) {
       });     
     };
 
-    var armyAttackTargetClicked = function(army, targetArmy, armyView, targetArmyView) {
-      log('armyAttackTargetClicked', army, targetArmy);
+    var armyAttackTargetClicked = function(army, targetArmy, armyView) {
+      log('armyAttackTargetClicked', army, targetArmy, armyView);
       var attackAction = AWE.Action.Military.createAttackArmyAction(army, targetArmy.getId());
       attackAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
@@ -684,7 +683,9 @@ AWE.Controller = (function(module) {
           for (var key in targetArmies) {
             if (targetArmies.hasOwnProperty(key)) {
               var targetArmy = targetArmies[key];
-              if (view.army && view.army() === targetArmy) {
+              
+              if (view.army && view.army() === targetArmy
+                  || view.location && view.location().garrisonArmy() === targetArmy) {
                 actionCompleted = true;
                 break;
               }
@@ -692,7 +693,7 @@ AWE.Controller = (function(module) {
           }
         
           if (actionCompleted) {
-            armyAttackTargetClicked(currentAction.army, targetArmy, currentAction.armyView, view);
+            armyAttackTargetClicked(currentAction.army, targetArmy, currentAction.armyView);
           }
           _actionViewChanged = true;
           currentAction = null;
@@ -1540,6 +1541,12 @@ AWE.Controller = (function(module) {
             targetArmies.push(army);
           }        
         });
+        
+        // var garrisonArmy = armyLocation.getGarrisonArmy();
+//         
+        // if (!garrisonArmy.isOwn()) {
+          // targetArmies.push(garrisonArmy);
+        // }        
       }
       else {
         AWE.Map.Manager.fetchLocationsForRegion(armyRegion);
@@ -1713,11 +1720,11 @@ AWE.Controller = (function(module) {
         else if (currentAction.typeName === 'attackAction') {
           // target views entsprechend der sichtbarkeit der armeen verschieben
           var targetArmies = getTargetArmies(currentAction.army);
-          log('targetArmies', targetArmies);
           AWE.Ext.applyFunctionToElements(targetArmies, function(army) {
             var targetView = targetViews[army.getId()];
-            var armyView = armyViews[army.getId()];
             var armyLocation = AWE.Map.Manager.getLocation(army.get('location_id'));
+            var targetedView = army.isGarrison() ? locationViews[armyLocation.id()] : armyViews[army.getId()];
+            
             if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.typeId()] === 'fortress') {
               var visible = that.areArmiesAtFortressVisible(that.mc2vc(armyLocation.node().frame()));
             }
@@ -1725,17 +1732,16 @@ AWE.Controller = (function(module) {
               var visible = that.areArmiesAtSettlementsVisible(that.mc2vc(armyLocation.node().frame())); 
             }
             
-            if (visible && armyView) {
+            if (visible && targetedView) {
               if (!targetView) {       
                 targetView = AWE.UI.createTargetView();
-                targetView.initWithControllerAndTargetedView(that, armyView);
+                targetView.initWithControllerAndTargetedView(that, targetedView);
                 _stages[2].addChild(targetView.displayObject());
                 // locationView.setTargetView(targetView);
               }                                  
-              setTargetPosition(targetView, armyView.center());
+              setTargetPosition(targetView, targetedView.center());
               newTargetViews[army.getId()] = targetView;
             }
-            log('army', army);
           });
         }
       }

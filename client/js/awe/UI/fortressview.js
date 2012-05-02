@@ -164,7 +164,9 @@ AWE.UI = (function(module) {
     
     that.node = function() { return _node; };
     
-    that.location = function() { return _node.region().location(0); }
+    that.location = function() {
+      return _node.region().location(0);
+    }
         
     return that;
   };

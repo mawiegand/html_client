@@ -90,6 +90,20 @@ AWE.Map = (function(module) {
       return AWE.GS.ArmyAccess.getAllForLocation_id(_id);
     };
     
+    that.garrisonArmy = function() { 
+      var armies = AWE.GS.ArmyAccess.getAllForLocation_id(_id);
+      
+      var garrisonArmy = null;
+      
+      AWE.Ext.applyFunctionToElements(armies, function(army) {
+        if (army.isGarrison()) {
+          garrisonArmy = army;
+        }        
+      });
+      
+      return garrisonArmy;
+    };
+    
     that.lastArmyUpdateAt = function() {
       return AWE.GS.ArmyAccess.lastUpdateForLocation_id(_id);
     }
