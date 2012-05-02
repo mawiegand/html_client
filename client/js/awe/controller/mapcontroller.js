@@ -1904,6 +1904,7 @@ AWE.Controller = (function(module) {
     
 
     that.runloop = function() {
+      
       // only do something after the Map.Manager has been initialized (connected to server and received initial data)
       if(AWE.Map.Manager.isInitialized()) {
         // STEP 0: update the camera, in case that it is currently moving

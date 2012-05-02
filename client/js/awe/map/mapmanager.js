@@ -23,7 +23,10 @@ AWE.Map = (function(module) {
     that.init = function(levels, callback) {
       levels = levels || 3;  // default: fetch 3 map levels when starting the client
       
+      log ('INIT MAP');
+      
        $.getJSON(AWE.Config.MAP_SERVER_BASE+'subtrees/root?levels='+levels, function(data) {
+         log('GOT MAP DATA')
          _root = AWE.Map.createNode(data);
          _initialized = true;
          if (callback) callback(_root);

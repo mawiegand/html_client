@@ -140,14 +140,14 @@ AWE.UI = (function(module) {
       this.updateButtonState();
 
 
-      if (AWE.Config.DEV_ALLIANCE_ID !==  my.region.allianceId() && !rightOfWayIcon) {
+      if (current_character.get('alliance_id') !==  my.region.allianceId() && !rightOfWayIcon) {
         rightOfWayIcon = AWE.UI.createImageView();
         rightOfWayIcon.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement/no"));
         rightOfWayIcon.setFrame(AWE.Geometry.createRect(56, 82, 32, 32));
         rightOfWayIcon.setContentMode(module.setContentModeNone);
         this.addChild(rightOfWayIcon); 
       }
-      else if (AWE.Config.DEV_ALLIANCE_ID ===  my.region.allianceId() && rightOfWayIcon) {
+      else if (current_character.get('alliance_id') ===  my.region.allianceId() && rightOfWayIcon) {
         this.removeChild(rightOfWayIcon);
         rightOfWayIcon = null;
       }        

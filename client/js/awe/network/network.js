@@ -13,11 +13,44 @@ AWE.Net = AWE.Net || function(module) {
   
   module.NOT_MODIFIED = 304;
   
+  module.clientLosesAuthHeaderOnRedirect = false;
+  
   /** initialize the network layer */
   module.init = function() {
-    $(document).bind('ajaxSend', function(event, xhr) { // bind a handler that always sets the correct accept type
+    
+    $(document).bind('ajaxSend', function(event, xhr) {
+      if (AWE.Config.DEV_ACCESS_TOKEN) {
+        if (!module.clientLosesAuthHeaderOnRedirect) {   // otherwise, the access token will be in the data section / query string
+          var token = AWE.Config.DEV_ACCESS_TOKEN ?  AWE.Config.DEV_ACCESS_TOKEN : "";
+          xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+        }
+      }
       xhr.setRequestHeader('Accept', 'application/json');
-    });   
+    });
+        
+    /** extension of $.ajax to allow setting and automatic inclusions of default arguments. */
+    (function ($) { 
+      var _ajax = $.ajax; 
+      $.extend({
+        ajax: function(options) {  //ATTENTION: DOES NOT WORK CORRECTLY FOR $.ajax(url, settings) !!!
+          if ($.ajax.data) {
+            if(options.data) { 
+              if(typeof options.data !== 'string') 
+                options.data = $.param(options.data); 
+
+              if(typeof $.ajax.data !== 'string') 
+                $.ajax.data = $.param(this.data); 
+
+              options.data += '&' + $.ajax.data; 
+            } 
+            else {
+              options.data = $.ajax.data; 
+            }
+          }
+          return _ajax.call(this,options); 
+        }
+      }); 
+    })(jQuery);
   };
   
   return module;

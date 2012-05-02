@@ -85,7 +85,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
       AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
         if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.currentCharacter) {
-          console.log('INFO: playing as character ' + entity + '.');
+          console.log('INFO: playing as character ', entity);
           _numAssets +=1;
           if (AWE.GS.CharacterManager.currentCharacter.get('alliance_id')) {
             AWE.GS.AllianceManager.updateAlliance(AWE.GS.CharacterManager.currentCharacter.get('alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
@@ -147,29 +147,29 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     ready: function() {
       this._super();
     
-      AWE.Net.init();                                   // initialize the network stack
-      AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
-        AWE.UI.rootNode = AWE.Map.Manager.rootNode();
-      });
+      AWE.Net.init();                                     // initialize the network stack
+        AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
+          AWE.UI.rootNode = AWE.Map.Manager.rootNode();
+        });
         
-      this.loadAssets();
+        this.loadAssets();
 
-      var hud = AWE.Controller.createHUDController();
-      hud.init();
-      this.setHudController(hud);
+        var hud = AWE.Controller.createHUDController();
+        hud.init();
+        this.setHudController(hud);
     
-      var controller = AWE.Controller.createMapController('#layers');
-      controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
+        var controller = AWE.Controller.createMapController('#layers');
+        controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
       
   
-      var self = this;
-      $('#zoomin').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, true); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
-      $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
+        var self = this;
+        $('#zoomin').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, true); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
+        $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
 
-      this.set('mapScreenController', controller);
-      this.setScreenController(controller);
+        this.set('mapScreenController', controller);
+        this.setScreenController(controller);
       
-
+    
       this.startRunloop();
     }
   }
