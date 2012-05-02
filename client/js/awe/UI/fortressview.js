@@ -167,6 +167,10 @@ AWE.UI = (function(module) {
     that.location = function() {
       return _node.region().location(0);
     }
+    
+    that.army = function() {
+      return _node.region().location(0).garrisonArmy();
+    }
         
     return that;
   };

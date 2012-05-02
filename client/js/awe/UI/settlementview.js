@@ -17,7 +17,7 @@ AWE.UI = (function(module) {
     
     my.annotationView = null;
     my.targetView = null;
-
+    
     that = module.createContainer(spec, my);
 
     var _super = {

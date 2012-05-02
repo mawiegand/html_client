@@ -28,6 +28,8 @@ AWE.UI = (function(module) {
 
     var rightOfWayIcon = null;
 
+    var _actionMode = null;
+
     my = my || {};
 
     that = module.createContainer(spec, my);
@@ -55,6 +57,12 @@ AWE.UI = (function(module) {
       my.frame.size.height = 128;      
     };
     
+    that.updateButtonState = function() {
+      if (attackButton) {
+        attackButton.setSelected(_actionMode === 'attackTargetSelection');
+      }
+    }
+
     that.recalcView = function() {
       
       var currentCharacter = AWE.GS.CharacterManager.getCurrentCharacter();
@@ -86,7 +94,7 @@ AWE.UI = (function(module) {
         attackButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
         attackButton.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
         attackButton.setFrame(AWE.Geometry.createRect(12, 56, 52, 52));
-        attackButton.onClick = function() { that.onAttackButtonClick(); }
+        attackButton.onClick = function() { if (attackButton.enabled()) { that.onAttackButtonClick(that); } }
         this.addChild(attackButton);
       }
       else if (attackButton && !isOwnLocation && !battleCheck) {
@@ -131,6 +139,7 @@ AWE.UI = (function(module) {
         battleButton.setVisible(my.baseView.selected());
       }    
 
+      this.updateButtonState();
 
       if (!isOwnLocation && !rightOfWayIcon) {
         rightOfWayIcon = AWE.UI.createImageView();
@@ -198,9 +207,13 @@ AWE.UI = (function(module) {
       _super.updateView();
     }
 
-    that.locationView = function() {
+    that.annotatedView = function() {
       return my.baseView;
     }
+    
+    that.setActionMode = function(actionMode) {
+      _actionMode = actionMode;
+    }        
     
     that.onEnterButtonClick = function() {};
 

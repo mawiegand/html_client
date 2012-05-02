@@ -217,10 +217,6 @@ AWE.UI = (function(module) {
       return _army;
     };
     
-    that.locationView = function() {
-      return _armyView;
-    }
-    
     that.setActionMode = function(actionMode) {
       _actionMode = actionMode;
     }

@@ -535,7 +535,7 @@ AWE.Controller = (function(module) {
         typeName: 'moveAction',
         army: armyAnnotationView.army(),
         armyView: armyAnnotationView.annotatedView(),
-        armyAnnotationView: armyAnnotationView,
+        // armyAnnotationView: armyAnnotationView,
       }
       
       armyAnnotationView.setActionMode('moveTargetSelection');
@@ -548,10 +548,25 @@ AWE.Controller = (function(module) {
         typeName: 'attackAction',
         army: armyAnnotationView.army(),
         armyView: armyAnnotationView.annotatedView(),
-        armyAnnotationView: armyAnnotationView,
+        // armyAnnotationView: armyAnnotationView,
       }
       
       armyAnnotationView.setActionMode('attackTargetSelection');
+      _actionViewChanged = true;
+    };
+    
+    that.settlementAttackButtonClicked = function(settlementAnnotationView) {
+      
+      log('settlementAnnotationView', settlementAnnotationView);
+      
+      // actionObjekt erstellen      
+      currentAction = {
+        typeName: 'attackAction',
+        army: settlementAnnotationView.annotatedView().army(),
+        armyView: settlementAnnotationView.annotatedView(),
+      }
+      
+      settlementAnnotationView.setActionMode('attackTargetSelection');
       _actionViewChanged = true;
     };
     
@@ -1563,6 +1578,10 @@ AWE.Controller = (function(module) {
         if (annotatedView.typeName() === 'FortressView') {
           annotationView = AWE.UI.createFortressAnnotationView();
           annotationView.initWithControllerAndView(that, annotatedView);
+
+          annotationView.onAttackButtonClick = (function(self) {
+            return function(view) { self.settlementAttackButtonClicked(view); }
+          })(that);
         }
         else if (annotatedView.typeName() === 'ArmyView') {
           annotationView = AWE.UI.createArmyAnnotationView();
@@ -1585,10 +1604,18 @@ AWE.Controller = (function(module) {
         else if (annotatedView.typeName() === 'BaseView') {
           annotationView = AWE.UI.createBaseAnnotationView();
           annotationView.initWithControllerAndView(that, annotatedView);
+
+          annotationView.onAttackButtonClick = (function(self) {
+            return function(view) { self.settlementAttackButtonClicked(view); }
+          })(that);
         }
         else if (annotatedView.typeName() === 'OutpostView') {
           annotationView = AWE.UI.createOutpostAnnotationView();
           annotationView.initWithControllerAndView(that, annotatedView);
+
+          annotationView.onAttackButtonClick = (function(self) {
+            return function(view) { self.settlementAttackButtonClicked(view); }
+          })(that);
         }
         else if (annotatedView.typeName() === 'EmptySlotView') {
           annotationView = AWE.UI.createEmptySlotAnnotationView();
@@ -1602,7 +1629,7 @@ AWE.Controller = (function(module) {
       
       // delete hovered view if necessary
       if ((!_hoveredView && actionViews.hovered
-          || _hoveredView && actionViews.hovered && actionViews.hovered.locationView() !== _hoveredView)
+          || _hoveredView && actionViews.hovered && actionViews.hovered.annotatedView() !== _hoveredView)
           && actionViews.hovered !== actionViews.selected) {
         _stages[2].removeChild(actionViews.hovered.displayObject());
       }            
@@ -1610,8 +1637,8 @@ AWE.Controller = (function(module) {
       // create new hovered view if necessary               
       if ((_hoveredView && !actionViews.hovered)
           || (_hoveredView && actionViews.hovered
-            && actionViews.hovered.locationView() !== _hoveredView)) {
-        if (actionViews.selected && _hoveredView === actionViews.selected.locationView()) {
+            && actionViews.hovered.annotatedView() !== _hoveredView)) {
+        if (actionViews.selected && _hoveredView === actionViews.selected.annotatedView()) {
           actionViews.hovered = actionViews.selected;
         }
         else {
@@ -1642,7 +1669,7 @@ AWE.Controller = (function(module) {
       
       // delete selected view if necessary
       if ((!_selectedView && actionViews.selected
-          || _selectedView && actionViews.selected && actionViews.selected.locationView() !== _selectedView)
+          || _selectedView && actionViews.selected && actionViews.selected.annotatedView() !== _selectedView)
           && actionViews.selected !== actionViews.hovered) {
         _stages[2].removeChild(actionViews.selected.displayObject());
       }            
@@ -1650,8 +1677,8 @@ AWE.Controller = (function(module) {
       // create new selected view if necessary               
       if ((_selectedView && !actionViews.selected)
           || (_selectedView && actionViews.selected
-            && actionViews.selected.locationView() !== _selectedView)) {
-        if (actionViews.hovered && _selectedView === actionViews.hovered.locationView()) {
+            && actionViews.selected.annotatedView() !== _selectedView)) {
+        if (actionViews.hovered && _selectedView === actionViews.hovered.annotatedView()) {
           actionViews.selected = actionViews.hovered;
         }
         else {

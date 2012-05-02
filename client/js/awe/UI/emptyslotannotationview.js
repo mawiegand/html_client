@@ -100,10 +100,6 @@ AWE.UI = (function(module) {
       _super.layoutSubviews();
     }
     
-    that.locationView = function() {
-      return _emptySlotView;
-    }
-    
     that.annotatedView = function() {
       return _emptySlotView;
     }
