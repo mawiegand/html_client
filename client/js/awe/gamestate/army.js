@@ -56,6 +56,8 @@ AWE.GS = (function(module) {
     size_present: null,
     
     mode: null,
+    kills: null,
+    victories: null,
     
     battle_id: 0,
     battle_retreat: false,
