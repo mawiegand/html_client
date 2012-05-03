@@ -534,7 +534,7 @@ AWE.Controller = (function(module) {
       currentAction = {
         typeName: 'moveAction',
         army: armyAnnotationView.army(),
-        armyView: armyAnnotationView.annotatedView(),
+        clickedView: armyAnnotationView.annotatedView(),
         // armyAnnotationView: armyAnnotationView,
       }
       
@@ -547,7 +547,7 @@ AWE.Controller = (function(module) {
       currentAction = {
         typeName: 'attackAction',
         army: armyAnnotationView.army(),
-        armyView: armyAnnotationView.annotatedView(),
+        clickedView: armyAnnotationView.annotatedView(),
         // armyAnnotationView: armyAnnotationView,
       }
       
@@ -563,7 +563,7 @@ AWE.Controller = (function(module) {
       currentAction = {
         typeName: 'attackAction',
         army: settlementAnnotationView.annotatedView().army(),
-        armyView: settlementAnnotationView.annotatedView(),
+        clickedView: settlementAnnotationView.annotatedView(),
       }
       
       settlementAnnotationView.setActionMode('attackTargetSelection');
@@ -686,7 +686,7 @@ AWE.Controller = (function(module) {
           }
         
           if (actionCompleted) {
-            armyMoveTargetClicked(currentAction.army, targetLocation, currentAction.armyView, view);
+            armyMoveTargetClicked(currentAction.army, targetLocation, currentAction.clickedView, view);
           }
           _actionViewChanged = true;
           currentAction = null;
@@ -708,7 +708,7 @@ AWE.Controller = (function(module) {
           }
         
           if (actionCompleted) {
-            armyAttackTargetClicked(currentAction.army, targetArmy, currentAction.armyView);
+            armyAttackTargetClicked(currentAction.army, targetArmy, currentAction.clickedView);
           }
           _actionViewChanged = true;
           currentAction = null;
