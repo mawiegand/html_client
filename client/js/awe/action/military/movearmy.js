@@ -36,9 +36,9 @@ AWE.Action.Military = (function(module) {
     that.getHTTPMethod = function() { return 'POST'; }
     
     that.postProcess = function(statusCode, xhr) {
-      if (statusCode == 200) {
-        AWE.GS.ArmyManager.updateArmy(my.army.getId());
-      }
+      // if (statusCode == 200) {
+        // AWE.GS.ArmyManager.updateArmy(my.army.getId());
+      // }
     }
     
     that.army = function() {
@@ -81,9 +81,9 @@ AWE.Action.Military = (function(module) {
     that.getHTTPMethod = function() { return 'POST'; }
     
     that.postProcess = function(statusCode, xhr) {
-      if (statusCode == 200) {
-        AWE.GS.ArmyManager.updateArmy(my.army.getId());
-      }
+      // if (statusCode == 200) {
+        // AWE.GS.ArmyManager.updateArmy(my.army.getId());
+      // }
     }
     
     that.army = function() {

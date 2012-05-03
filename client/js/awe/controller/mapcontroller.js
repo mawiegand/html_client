@@ -605,7 +605,7 @@ AWE.Controller = (function(module) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK #
           AWE.GS.ArmyManager.updateArmy(armyAnnotationView.army().getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
             that.setModelChanged(); 
-            that.addDisappearingAnnotationLabel(armyAnnotationView.annotatedView(), 'Canceled.', 1000);
+            that.addDisappearingAnnotationLabel(armyAnnotationView.annotatedView(), 'Cancelled.', 1000);
           });
         }
         else {
