@@ -179,7 +179,8 @@ AWE.UI = (function(module) {
         circleGraphics.beginFill('rgb(255, 255, 255)');
         circleGraphics.drawCircle(248, 64, 64);
         _circleShape = new AWE.UI.createShapeView();
-        _circleShape.initWithControllerAndGraphics(my.controller, circleGraphics);    
+        _circleShape.initWithControllerAndGraphics(my.controller, circleGraphics);  
+        _circleShape.onClick = function() { my.controller.moveTo(my.node);};  
         this.addChild(_circleShape);
       }
       
@@ -203,6 +204,7 @@ AWE.UI = (function(module) {
         my.fortressView = AWE.UI.createImageView();
         my.fortressView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_fortressImageName));
         my.fortressView.setFrame(AWE.Geometry.createRect(202, 20, AWE.Config.MAPPING_FORTRESS_SIZE*1.5, AWE.Config.MAPPING_FORTRESS_SIZE*1.5));
+        my.fortressView.onClick = function() { my.controller.moveTo(my.node); };
         this.addChild(my.fortressView);
       }
       

@@ -311,7 +311,7 @@ AWE.UI = (function(module) {
 		//****CAMERA MOVEMENT FUNTIONS*****
 		/**
 		  * Moves the camera to the given value.
-		  * @param value the value can be a array of nodes, a node, a frame or a point. In case it is a point the viewport center will be moved there.
+		  * @param value the value can be a array of nodes, a node, a frame, a location, a region or a point. In case it is a point the viewport center will be moved there.
 		  * @param animated default:true. if false 
 		  * @param addBorder default:true. if true there will be. If a point is given, addBroder should probably be set to false.
 		 **/
@@ -323,6 +323,11 @@ AWE.UI = (function(module) {
 
 			if (that.isMoving()) {
 				console.warn("The camera was moving and got a request for another move command");
+			}
+
+			if (value === null || value === undefined) {
+				console.error("The camera can't move to null or undefined");
+				return;
 			}
 
 			var frame = that.getResultingFrame(value, addBorder);
@@ -454,8 +459,8 @@ AWE.UI = (function(module) {
 		};
 
 		/**
-		  * Returns the resulting frame for a node, an array of nodes or a frame.
-		  * @param value node, array of node, frame or point
+		  * Returns the resulting frame for a node, an array of nodes, a location, a region or a frame.
+		  * @param value can be a node, array of node, region, location, frame or point
 		  * @param addBorder default:true (unless value is a point then the default is false). if true a border will be added according to the borderFactor.
 		  * @return the resulting target frame
 		 **/
@@ -496,6 +501,19 @@ AWE.UI = (function(module) {
 			//single node
 			} else if ($.isFunction(value.frame)) {
 				target = value.frame().copy();
+			//location
+			} else if ($.isFunction(value.position) && $.isFunction(value.node)) {
+				var f = value.node().frame();
+				var p = value.position();
+				target = AWE.Geometry.createRect(
+					p.x-f.size.width/4,
+					p.y-f.size.height/4,
+					f.size.width/2,
+					f.size.height/2
+				);
+			//region
+			} else if ($.isFunction(value.node)) {
+				target = value.node().frame().copy();
 			//frame
 			} else if (value.origin !== undefined &&
 				value.size !== undefined) {

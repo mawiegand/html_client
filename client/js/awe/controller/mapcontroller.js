@@ -117,6 +117,11 @@ AWE.Controller = (function(module) {
         viewport: initialFrameModelCoordinates
       });
 
+      //move the camera to the home base node
+      ///TODO replace the root node with the home base node
+      console.log(AWE.Map.Manager.rootNode());
+      _camera.moveTo(AWE.Map.Manager.rootNode(), true, false);
+
     };   
         
     that.getStages = function() {
@@ -247,24 +252,21 @@ AWE.Controller = (function(module) {
     /** zoom in and out. */
     that.zoom = function(dScale, zoomin) {
       // TODO: calc max and min zoom value
-      /*var scale = 1 + dScale;
-      var center = AWE.Geometry.createPoint(-_windowSize.width / 2, -_windowSize.height / 2);
-      var centerInv = AWE.Geometry.createPoint(_windowSize.width / 2, _windowSize.height / 2);
-  
-      mc2vcTrans.moveBy(center);      
-      if (zoomin) {
-        mc2vcScale *= scale;
-        mc2vcTrans.scale(scale);
-      }
-      else {
-        mc2vcScale /= scale;
-        mc2vcTrans.scale(1 / scale);
-      }
-      mc2vcTrans.moveBy(centerInv);
-        
-      that.setNeedsLayout(); */
       _camera.zoom(dScale, zoomin);
-    };  
+    };
+    /**
+      * Moves the camera to the given value.
+      * @param value the value can be a array of nodes, a node, a frame, a location, a region or a point. In case it is a point the viewport center will be moved there.
+      * @param animated default:true. if false 
+      * @param addBorder default:true. if true there will be. If a point is given, addBroder should probably be set to false.
+     **/
+    that.moveTo = function(value, addBorder, animated) {
+      if (_camera.isMoving()) {
+        console.log("The camera cannot be moved while it is already moving");
+        return;
+      }
+      _camera.moveTo(value, addBorder, animated);
+    };
     
     /** calculate and returns the presently visible map level in dependence of the
      * present scale. Uses memoization to cache result. */
