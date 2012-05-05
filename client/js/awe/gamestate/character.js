@@ -9,6 +9,7 @@ var AWE = window.AWE || {};
 AWE.GS = (function(module) {
     
   module.CharacterAccess = {};
+  module.rightOfWayTypes = [ 'all', 'noEnemies', 'noNeutrals', 'noResidents'];
 
   // ///////////////////////////////////////////////////////////////////////
   //
@@ -45,6 +46,64 @@ AWE.GS = (function(module) {
     
     base_location_id: null,         ///< the location id, where this character has its home base
     base_region_id: null,           ///< the region id, where this charachter has its home base
+    
+    isEnemyOf: function(opponent) {
+      return !this.isNeutral() && !opponent.isNeutral() && this.get('alliance_id') != opponent.get('alliance_id');
+    },
+    
+    isNeutral: function() {
+      return this.get('alliance_id') === null;
+    },
+    
+    livesInRegion: function(region) {
+      var locations = region.locations();
+      
+      if (locations) {
+        for (var key in locations) {
+          if (locations.hasOwnProperty(key) && locations[key].ownerId() === this.get('owner_id')) {
+            return true;
+          }
+        }
+      }
+      else {
+        AWE.Map.Manager.fetchLocationsForRegion(armyRegion);     // callback fuer model wechsel?     
+      }
+      
+      return false;
+    },
+
+    rightOfWayAt: function(location) {
+      
+      var locationOwner = AWE.GS.CharacterManager.getCharacter(location.ownerId());
+      
+      if (locationOwner) {
+        
+        var rightOfWay = location.rightOfWay();
+        log('type? ', module.rightOfWayTypes[rightOfWay]);
+        
+        if (module.rightOfWayTypes[rightOfWay] == 'all') {
+          return true;
+        }
+        else if (module.rightOfWayTypes[rightOfWay] == 'noEnemies') {
+          return !this.isEnemyOf(locationOwner);
+        } 
+        else if (module.rightOfWayTypes[rightOfWay] == 'noNeutrals') {
+          return !this.isEnemyOf(locationOwner)
+                 && !this.isNeutral();
+        }
+        else if (module.rightOfWayTypes[rightOfWay] == 'noResidents') {
+          return !this.isEnemyOf(locationOwner)
+                 && !this.isNeutral()
+                 && this.livesInRegion(location.region());
+        }
+        else {
+          return false;         
+        }
+      }
+      else {
+        return 'loading';
+      }
+    }
   });     
 
     
@@ -95,7 +154,7 @@ AWE.GS = (function(module) {
     /** returns true, if update is executed, returns false, if request did 
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
-    that.updateCharachter = function(id, updateType, callback) {
+    that.updateCharacter = function(id, updateType, callback) {
       var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/'+id;
       return my.updateEntity(url, id, updateType, callback); 
     };

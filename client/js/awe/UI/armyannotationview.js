@@ -162,8 +162,8 @@ AWE.UI = (function(module) {
     }
     
     that.updateButtonState = function() {
-      _moveButtonView.setEnabled(_army.get('ap_present') >= 1.0);
-      _attackButtonView.setEnabled(_army.get('ap_present') >= 1.0);
+      _moveButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('battle_id') > 0);
+      _attackButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('battle_id') > 0);
       
       _moveButtonView.setSelected(_actionMode === 'moveTargetSelection');
       _attackButtonView.setSelected(_actionMode === 'attackTargetSelection');

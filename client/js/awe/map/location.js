@@ -11,7 +11,6 @@ AWE.Map = (function(module) {
   module.terrainTypes = [ 'plain', 'forest', 'hill' ];
   module.locationTypes = [ 'empty', 'fortress', 'settlement', 'outpost'];
 
-
   /** represents one location within a map region. Locations can be entered by armies
    * and can be settled by players. Location slot 0 always represents the region's
    * fortress controlling all access from and to the region. The owner of location 0
@@ -32,6 +31,7 @@ AWE.Map = (function(module) {
     var _ownerName = spec.owner_name || null;
     var _allianceId = spec.alliance_id || 0;
     var _allianceTag = spec.alliance_tag;
+    var _rightOfWay = spec.right_of_way;
     
     var _level = spec.level || 0;
     
@@ -83,6 +83,9 @@ AWE.Map = (function(module) {
      * no alliance. */
     that.allianceId = function() { return _allianceId; }
 
+    /** returns the right of way of the location. */
+    that.rightOfWay = function() { return _rightOfWay; }
+
     /** returns the level of the settlement / fortress / outpost (0 to 10). */
     that.level = function() { return _level; }
         
@@ -118,8 +121,8 @@ AWE.Map = (function(module) {
         
     that.isOwn = function() {
       return _ownerId === AWE.GS.CharacterManager.currentCharacter.id;
-    }    
-        
+    }
+            
     /** this method updates the data stored at the local region from the given 
      * region. Does not change the association to a node. */ 
     that.updateLocationFrom = function(location) {

@@ -140,17 +140,35 @@ AWE.UI = (function(module) {
       this.updateButtonState();
 
 
-      if (currentCharacter.get('alliance_id') !==  my.region.allianceId() && !rightOfWayIcon) {
+      if (!rightOfWayIcon) {
         rightOfWayIcon = AWE.UI.createImageView();
-        rightOfWayIcon.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement/no"));
+        rightOfWayIcon.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/army/target_background"));
         rightOfWayIcon.setFrame(AWE.Geometry.createRect(56, 82, 32, 32));
         rightOfWayIcon.setContentMode(module.setContentModeNone);
         this.addChild(rightOfWayIcon); 
       }
-      else if (currentCharacter.get('alliance_id') ===  my.region.allianceId() && rightOfWayIcon) {
-        this.removeChild(rightOfWayIcon);
-        rightOfWayIcon = null;
-      }        
+      
+      if (my.region.location(0)) {
+        var rightOfWay = currentCharacter.rightOfWayAt(my.region.location(0));
+        if (rightOfWay !== 'loading') {
+          if (rightOfWay) {
+            rightOfWayIcon.setImage(AWE.UI.ImageCache.getImage("map/easement/yes"));
+          }
+          else {
+            rightOfWayIcon.setImage(AWE.UI.ImageCache.getImage("map/easement/no"));
+          }
+        }
+        else {
+          AWE.GS.CharacterManager.updateCharacter(my.region.location(0).ownerId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function(){
+            that.setNeedsUpdate();
+          });          
+        }
+      }
+      else {
+        AWE.Map.Manager.fetchLocationsForRegion(my.region, function(){
+          that.setNeedsUpdate();
+        });
+      }
 
       if (!my.infoContainer) {
         my.infoContainer = AWE.UI.createMultiLineContainer();

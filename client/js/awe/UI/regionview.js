@@ -396,10 +396,10 @@ AWE.UI = (function(module) {
 
     var updateInformation = function(detail) { 
             
-      if (!_debugText && detail > -1 && AWE.Config.MAP_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
+      if (!_debugText && detail > -1 && AWE.Config.MAP_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG && _node.region()) {
         _debugText = new Text();
         _debugText.font = "10px Arial";
-        _debugText.text = "id " + _node.id().toString() + "\nqt" + _node.path();
+        _debugText.text = "id " + _node.region().id().toString() + "\nqt" + _node.path();
         _nonScaledContainer.displayObject().addChild(_debugText);
       }
       if (_debugText && detail < 0) {
@@ -408,7 +408,7 @@ AWE.UI = (function(module) {
       } 
       if (_debugText) {
         _debugText.x = 4;
-        _debugText.y = frame.size.height / 2.0;
+        _debugText.y = my.frame.size.height / 2.0;
       }
       
       if (!_settlementsIcon) {
