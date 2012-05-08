@@ -1,0 +1,32 @@
+<script type="text/x-handlebars" data-template-name="shop">
+      <div class="modal-dialog-background"></div>
+      <div class="center-helper">
+        <div class="modal-dialog-pane" id="shop">
+          <h1>{{ unbound AWE.I18n.strings.shop.title }}</h1>
+                    
+          <table>
+            <tr>
+              <th>{{ unbound AWE.I18n.strings.shop.article }}</th>
+              <th>{{ unbound AWE.I18n.strings.shop.description }}</th>
+              <th>{{ unbound AWE.I18n.strings.shop.price }}</th>
+              <th>{{ unbound AWE.I18n.strings.shop.buy }}</th>
+            </tr>
+            {{#each offers}}
+            <tr>
+              <td>{{title}}</td>
+              <td>{{description}}</td>
+              <td>{{price}}</td>
+              <td>{{#view Ember.Button action="buyPressed" target="parentView"}}paypal{{/view}}</td>
+            </tr>
+            {{/each}}
+          </table>
+          
+          {{#view Ember.Button action="closePressed" target="parentView"}}close{{/view}}
+        </div>
+      </div>
+</script>
+
+
+
+
+

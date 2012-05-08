@@ -501,7 +501,6 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
 
-
     that.armyInfoButtonClicked = function(army) {
       if (!army) {
         return ;

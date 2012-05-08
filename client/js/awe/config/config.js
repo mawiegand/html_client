@@ -11,7 +11,7 @@ AWE.Config = (function(module) {
   // automatically determine the server to use -> same origin policy
   module.SERVER_ROOT = document.location.protocol + '//' + document.location.host;
   if (!document.location.host) { // for the case where it's loaded from file 
-    module.SERVER_ROOT = 'http://localhost:3000/'
+    module.SERVER_ROOT = 'http://localhost/'
   }
   
   module.DEBUG_LEVEL_ERROR   = 0;
@@ -19,7 +19,7 @@ AWE.Config = (function(module) {
   module.DEBUG_LEVEL_INFO    = 2;
   module.DEBUG_LEVEL_DEBUG   = 3;
   
-  module.MAP_DEBUG_LEVEL = module.DEBUG_LEVEL_ERROR;
+  module.MAP_DEBUG_LEVEL = module.DEBUG_LEVEL_DEBUG;
   
   module.MAP_DEBUG_FRAMES = false;
   
@@ -29,6 +29,8 @@ AWE.Config = (function(module) {
   module.FUNDAMENTAL_SERVER_BASE = module.SERVER_ROOT + '/game_server/fundamental/';
   module.ACTION_SERVER_BASE = module.SERVER_ROOT + '/game_server/action/';
   module.RULES_SERVER_BASE = module.SERVER_ROOT + '/game_server/game_rules/';
+  
+  module.PAYMENT_PROVIDER_BASE = module.SERVER_ROOT + '/payment_provider/';
   
   // access token of Egbert, expires in 100 days.
   module.DEV_ACCESS_TOKEN = "eyJ0b2tlbiI6eyJpZGVudGlmaWVyIjoiZU9tS3ZOa1hTUkxtYlREUSIsInNjb3BlIjpbIjVkZW50aXR5Iiwid2Fja2Fkb28iXSwidGltZXN0YW1wIjoiMjAxMi0wNS0wMlQxNjozMDowMyswMjowMCJ9LCJzaWduYXR1cmUiOiJhZDQ0MzU4NzRmMGFmYTg2N2RlOTAwOTExYTJlMmNlODQzNmNlYTU0In0="
@@ -156,7 +158,6 @@ AWE.Config = (function(module) {
     "map/army/stanceAggressive",
     "map/army/stanceDefensive"
   ];
-
   
   console.log('CONFIGURATION: ');
   console.dir(module);

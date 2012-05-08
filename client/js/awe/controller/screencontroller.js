@@ -59,13 +59,28 @@ AWE.Controller = (function(module) {
     
     that.runloop = function() {
     };
+
+    that.shopButtonClicked = function() {
+
+      var dialog = AWE.UI.Ember.ShopView.create({
+        closePressed: function(event) {
+          this.destroy();
+        },
+        buyPressed: function(event) {
+          this.destroy();
+        }
+      });
+      
+      AWE.PaymentProvider.fetchShopOffers(function(offers){
+        dialog.set('offers', offers);  
+      });
+      
+      that.applicationController.presentModalDialog(dialog);
+    }; 
     
     return that;
-    
   };
 
-    
-    
   return module;
     
 }(AWE.Controller || {}));

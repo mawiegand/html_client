@@ -50,7 +50,10 @@ AWE.I18n = AWE.I18n || function(module) {
     },
     
     shop: {
-      
+      article: 'Offer',
+      description: 'Description',
+      price: 'Price',
+      buy: 'Buy!'
     },
     
     profile: {
