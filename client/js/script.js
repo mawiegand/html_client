@@ -86,8 +86,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
         if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.currentCharacter) {
           console.log('INFO: playing as character ', entity);
-          _numAssets +=1;
-          if (AWE.GS.CharacterManager.currentCharacter.get('alliance_id')) {
+          if (AWE.GS.CharacterManager.currentCharacter.get('alliance_id') && AWE.GS.CharacterManager.currentCharacter.get('alliance_id') > 0) {
+            _numAssets +=1;
             AWE.GS.AllianceManager.updateAlliance(AWE.GS.CharacterManager.currentCharacter.get('alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
               assetLoaded();
             });
@@ -147,11 +147,19 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     ready: function() {
       this._super();
       
+      var accessToken = window.name ; // || AWE.Config.DEV_ACCESS_TOKEN || null;
+      window.name = "";                                 // unset variables
+      
+      if (!accessToken) {
+        alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
+        return ;
+      }
+            
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
-        access_token: AWE.Config.DEV_ACCESS_TOKEN,
+        access_token: accessToken,
       });
-    
-      AWE.Net.init();                                     // initialize the network stack
+          
+      AWE.Net.init();                                   // initialize the network stack
       AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
         AWE.UI.rootNode = AWE.Map.Manager.rootNode();
       });
