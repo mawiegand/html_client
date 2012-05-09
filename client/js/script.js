@@ -146,6 +146,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     /** starts the app when the document is ready. */
     ready: function() {
       this._super();
+      
+      AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
+        access_token: AWE.Config.DEV_ACCESS_TOKEN,
+      });
     
       AWE.Net.init();                                     // initialize the network stack
         AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)

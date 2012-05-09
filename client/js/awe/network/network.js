@@ -19,10 +19,13 @@ AWE.Net = AWE.Net || function(module) {
   module.init = function() {
     
     $(document).bind('ajaxSend', function(event, xhr) {
-      if (AWE.Config.DEV_ACCESS_TOKEN) {
-        if (!module.clientLosesAuthHeaderOnRedirect) {   // otherwise, the access token will be in the data section / query string
-          var token = AWE.Config.DEV_ACCESS_TOKEN ?  AWE.Config.DEV_ACCESS_TOKEN : "";
-          xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+      if (AWE.Net.currentUserCredentials) {
+        var accessToken = AWE.Net.currentUserCredentials.get('access_token');
+        
+        if (accessToken) {
+          if (!module.clientLosesAuthHeaderOnRedirect) {   // otherwise, the access token will be in the data section / query string
+            xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+          }
         }
       }
       xhr.setRequestHeader('Accept', 'application/json');
