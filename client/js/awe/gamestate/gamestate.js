@@ -269,6 +269,11 @@ AWE.GS = (function(module) {
     that.getEntity = function(id) {
       return my.entities[id];
     }
+    
+    that.getEntities = function() {
+      return my.entities;
+    }
+       
         
     return that;
         

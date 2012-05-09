@@ -152,28 +152,29 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       });
     
       AWE.Net.init();                                     // initialize the network stack
-        AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
-          AWE.UI.rootNode = AWE.Map.Manager.rootNode();
-        });
-        
-        this.loadAssets();
-
-        var hud = AWE.Controller.createHUDController();
-        hud.init();
-        this.setHudController(hud);
-    
-        var controller = AWE.Controller.createMapController('#layers');
-        controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
+      AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
+        AWE.UI.rootNode = AWE.Map.Manager.rootNode();
+      });
       
+      AWE.PaymentProvider.init('wackadoo');
+      
+      this.loadAssets();
+
+      var hud = AWE.Controller.createHUDController();
+      hud.init();
+      this.setHudController(hud);
   
-        var self = this;
-        $('#zoomin').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, true); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
-        $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
-
-        this.set('mapScreenController', controller);
-        this.setScreenController(controller);
-      
+      var controller = AWE.Controller.createMapController('#layers');
+      controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
     
+
+      var self = this;
+      $('#zoomin').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, true); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
+      $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
+
+      this.set('mapScreenController', controller);
+      this.setScreenController(controller);
+      
       this.startRunloop();
     }
   }

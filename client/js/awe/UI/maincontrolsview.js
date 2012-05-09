@@ -151,6 +151,10 @@ AWE.UI = (function(module) {
       _shopShapeGraphics.beginFill('rgb(255, 255, 255)');
       _shopShapeGraphics.drawRoundRect(20, 95, 100, 30, 8);
       var _shopShape = new Shape(_shopShapeGraphics);    
+      _shopShape.onClick = function() {
+        log('log',controller, controller.shopButtonClicked);
+        controller.shopButtonClicked();
+      };
   
       var _frog = new Bitmap();
       _frog.image = AWE.UI.ImageCache.getImage("hud/frog/face");
