@@ -61,21 +61,14 @@ AWE.Controller = (function(module) {
     };
 
     that.shopButtonClicked = function() {
-
-      var dialog = AWE.UI.Ember.ShopView.create({
-        closePressed: function(event) {
-          this.destroy();
-        },
-        buyPressed: function(event) {
-          this.destroy();
-        }
-      });
       
-      AWE.PaymentProvider.fetchShopOffers(function(offers){
-        dialog.set('offers', offers);  
-      });
-      
-      that.applicationController.presentModalDialog(dialog);
+      $('#paymenthelper').html(
+        '<form id="paymentstarter" action="' + AWE.Config.PAYMENT_PROVIDER_BASE + 'auth/sessions/" method="POST" target="_blank">' +
+        '  <input type="hidden" name="access_token" value="' + AWE.Net.currentUserCredentials.get('access_token') + '" />' +
+        '</form>'      
+      );
+      $('#paymentstarter').submit();
+      $('#paymenthelper').html('');
     }; 
     
     return that;
