@@ -19,7 +19,7 @@ AWE.Config = (function(module) {
   module.DEBUG_LEVEL_INFO    = 2;
   module.DEBUG_LEVEL_DEBUG   = 3;
   
-  module.MAP_DEBUG_LEVEL = module.DEBUG_LEVEL_DEBUG;
+  module.MAP_DEBUG_LEVEL = module.DEBUG_LEVEL_INFO
   
   module.MAP_DEBUG_FRAMES = false;
   

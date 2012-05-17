@@ -96,7 +96,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           if (currentCharacter.get('base_node_id')) {
             _numAssets +=1;
             AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
-              AWE.GS.CharacterManager.currentCharacter.set('node', node);
+              AWE.GS.CharacterManager.currentCharacter.set('base_node', node);
               console.log("Node", node)
               if (self.get('mapScreenController')) {
                 self.get('mapScreenController').moveTo(node);
@@ -132,6 +132,18 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Util.TemplateLoader.loadAllTemplates(); // doing this last makes sure _numLoadedAssets may not accidently equal _numAssets before all requests have been started
     },
     
+    
+    baseButtonClicked: function() {
+      if (this.get('presentScreenController') === this.get('mapScreenController')) {
+        var node = AWE.GS.CharacterManager.currentCharacter.get('base_node');
+        if (node) {
+          this.get('presentScreenController').moveTo(node);
+        }
+      }
+      else {
+        this.activateMapController();
+      }
+    },
     
     
     // ///////////////////////////////////////////////////////////////////////
