@@ -117,10 +117,6 @@ AWE.Controller = (function(module) {
         viewport: initialFrameModelCoordinates
       });
 
-      //move the camera to the home base node
-      ///TODO replace the root node with the home base node
-      console.log(AWE.Map.Manager.rootNode());
-      _camera.moveTo(AWE.Map.Manager.rootNode(), true, false);
 
     };   
         

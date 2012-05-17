@@ -86,9 +86,21 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
         if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.currentCharacter) {
           console.log('INFO: playing as character ', entity);
-          if (AWE.GS.CharacterManager.currentCharacter.get('alliance_id') && AWE.GS.CharacterManager.currentCharacter.get('alliance_id') > 0) {
+          var currentCharacter = AWE.GS.CharacterManager.currentCharacter;
+          if (currentCharacter.get('alliance_id') && currentCharacter.get('alliance_id') > 0) {
             _numAssets +=1;
-            AWE.GS.AllianceManager.updateAlliance(AWE.GS.CharacterManager.currentCharacter.get('alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
+            AWE.GS.AllianceManager.updateAlliance(currentCharacter.get('alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
+              assetLoaded();
+            });
+          }
+          if (currentCharacter.get('base_node_id')) {
+            _numAssets +=1;
+            AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
+              AWE.GS.CharacterManager.currentCharacter.set('node', node);
+              console.log("Node", node)
+              if (self.get('mapScreenController')) {
+                self.get('mapScreenController').moveTo(node);
+              }
               assetLoaded();
             });
           }

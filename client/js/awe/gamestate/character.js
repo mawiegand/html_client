@@ -46,6 +46,9 @@ AWE.GS = (function(module) {
     
     base_location_id: null,         ///< the location id, where this character has its home base
     base_region_id: null,           ///< the region id, where this charachter has its home base
+    base_node_id: null,
+    
+    base_node: null,                ///< holds the base node. TODO: should hold a reference to the node in the tree
     
     isEnemyOf: function(opponent) {
       return !this.isNeutral() && !opponent.isNeutral() && this.get('alliance_id') != opponent.get('alliance_id');
