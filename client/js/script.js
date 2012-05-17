@@ -9,6 +9,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     mapScreenController: null,
     allianceScreenController: null,  
+    baseScreenController: null,
   
     /** custom object initialization goes here. */
     init: function() {
@@ -151,6 +152,16 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     //  SWITCH SCREEN CONTROLLER
     //
     // /////////////////////////////////////////////////////////////////////// 
+    
+    activateBaseController: function(baseId) {
+      var baseController = this.get('baseScreenController');
+      if (!baseController) {
+        baseController = AWE.Controller.createBaseController('#layers');
+        this.set('baseScreenController', baseController);
+      }
+      baseController.setBaseId(baseId);
+      this.setScreenController(baseController);
+    },
     
     activateMapController: function() {
       this.setScreenController(this.get('mapScreenController'));
