@@ -10,6 +10,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     mapScreenController: null,
     allianceScreenController: null,  
     baseScreenController: null,
+    messageCenterController: null,
   
     /** custom object initialization goes here. */
     init: function() {
@@ -146,6 +147,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }
     },
     
+    messagesButtonClicked: function() {
+      this.activateMessagesController();
+    },
+    
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -162,11 +167,20 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       baseController.setBaseId(baseId);
       this.setScreenController(baseController);
     },
+   
+    activateMessagesController: function() {
+      var messageCenterController = this.get('messageCenterController');
+      if (!messageCenterController) {
+        messageCenterController = AWE.Controller.createMessageCenterController('#layers');
+        this.set('messageCenterController', messageCenterController);
+      }
+      this.setScreenController(messageCenterController);      
+    },
     
     activateMapController: function() {
       this.setScreenController(this.get('mapScreenController'));
     },
-    
+       
     activateAllianceController: function(alliance_id) {
       var allianceController = this.get('allianceScreenController');
       if (!allianceController) {

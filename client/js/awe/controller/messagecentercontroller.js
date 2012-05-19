@@ -7,7 +7,7 @@ var AWE = AWE || {};
 
 AWE.Controller = (function(module) {
           
-  module.createBaseController = function(anchor) {
+  module.createMessageCenterController = function(anchor) {
       
     var _viewNeedsUpdate = false;  
           
@@ -55,19 +55,18 @@ AWE.Controller = (function(module) {
       //that.content.set('alliance', that.getAndUpdateAlliance(this.allianceId));
     }
     
+    that.messageCenterView = Ember.View.extend({
+      templateName: 'message-center',
+    });
+    
     
     that.createView = function() {
       
-      var container = Ember.ContainerView.create({        
-        controller: that,
+      var center = that.messageCenterView.create({
+        controller: this,
       });
       
-      var childViews = container.get('childViews');
-//      childViews.pushObject(that.bannerPane);
-//      childViews.pushObject(info);
-//      childViews.pushObject(membersList);
-//      childViews.pushObject(shoutBox);
-      return container;
+      return center;
     }
     
     
@@ -75,10 +74,10 @@ AWE.Controller = (function(module) {
       if (this.view) {
         this.removeView();
       }
+      console.log('append MESSAGE CENTER')
       this.updateView();
       this.view = this.createView();
       this.view.appendTo('#main-screen-controller');      
-      log (this.view, this.view.childViews, this.view.get('childViews'), this.view.get('elementId'), this.view.clearBuffer);
     }
     
     
@@ -99,7 +98,7 @@ AWE.Controller = (function(module) {
     // /////////////////////////////////////////////////////////////////////// 
 
     that.updateDebug = function() {
-      $("#debug2").html('&nbsp;Base Screen Visible.');
+      $("#debug2").html('&nbsp;Message Center Visible.');
     };    
 
     that.runloop = function() {

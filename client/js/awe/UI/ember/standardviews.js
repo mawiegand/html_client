@@ -13,6 +13,9 @@ AWE.UI.Ember = (function(module) {
   module.templates.push('js/awe/UI/ember/templates/standardviews.html');  
   module.templates.push('js/awe/UI/ember/templates/alliancescreen.html');  
 
+  module.templates.push('js/awe/UI/ember/templates/messagecenter.html');  
+
+
   
   module.Dialog = Ember.View.extend({
     onClose: null,

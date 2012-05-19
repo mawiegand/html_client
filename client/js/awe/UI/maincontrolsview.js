@@ -95,12 +95,17 @@ AWE.UI = (function(module) {
       _messagesButtonGraphics.beginFill('rgb(255, 255, 255)');
       _messagesButtonGraphics.drawCircle(402, 26, 36);
       var _messagesButton = new Shape(_messagesButtonGraphics);    
+      
   
       var _messagesButtonText = new Text('Messages', "12px Arial", "#000");
       _messagesButtonText.textBaseline = "middle";
       _messagesButtonText.textAlign = "center"
       _messagesButtonText.x = 402;
       _messagesButtonText.y = 26;
+  
+      _messagesButton.onClick = function() { WACKADOO.messagesButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+      _messagesButtonText.onClick = function() { WACKADOO.messagesButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+
   
       // More...
       var _moreButtonGraphics = new Graphics();
