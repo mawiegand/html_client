@@ -50,6 +50,11 @@ AWE.I18n = AWE.I18n || function(module) {
     },
     
     shop: {
+      title: 'Shop',
+      currentCreditAmount: 'Your current credit amount',
+      credits: 'Credits',
+      updateCredits: 'Update',
+      buyCredits: 'Buy credits',
       article: 'Offer',
       description: 'Description',
       price: 'Price',

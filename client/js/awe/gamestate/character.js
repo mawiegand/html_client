@@ -23,7 +23,7 @@ AWE.GS = (function(module) {
     premium_account: false,         ///< whether this account presently is a premium account
     name: null,                     ///< name of the character
 
-    level: null,                    ///< level of the character. can be increased by gaining further experience
+    lvel: null,                    ///< level of the character. can be increased by gaining further experience
     exp: null,                      ///< experience of the character
     att: null,                      ///< attack ability of character
     def: null,                      ///< defense ability of character
@@ -34,7 +34,7 @@ AWE.GS = (function(module) {
     
     health_max: null,               ///< maximum health of character
     health_present: null,           ///< present health 
-    health_updaeted_at: null,       ///< last health update; interpolate present heahlt from here
+    health_updated_at: null,       ///< last health update; interpolate present heahlt from here
     
     locked: false,                  ///< TODO: don't communicate this!
     locked_by: null,
@@ -46,6 +46,11 @@ AWE.GS = (function(module) {
     
     base_location_id: null,         ///< the location id, where this character has its home base
     base_region_id: null,           ///< the region id, where this charachter has its home base
+    
+    creditAmount: 0,                ///< credit amount of character
+    
+    frog_amount: 0,
+    premium_expiration: null, 
     
     isEnemyOf: function(opponent) {
       return !this.isNeutral() && !opponent.isNeutral() && this.get('alliance_id') != opponent.get('alliance_id');

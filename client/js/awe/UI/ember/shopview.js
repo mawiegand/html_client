@@ -14,10 +14,14 @@ AWE.UI.Ember = (function(module) {
   
   module.ShopView = module.Dialog.extend({
     offers: [],
+    creditAmountBinding: 'AWE.Shop.Manager.content.creditAmount',
     templateName: 'shop',
     init: function() {
       this._super();      
     },
+    buyCreditsPressed: function() { alert ('Action not connected: buyCreditsWasPressed.'); },
+    buyOfferPressed: function() { alert ('Action not connected: buyOfferWasPressed.'); },
+    closePressed: function() { alert ('Action not connected: closedWasPressed.'); },
   });
   
   return module;

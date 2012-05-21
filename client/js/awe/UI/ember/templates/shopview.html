@@ -3,25 +3,28 @@
       <div class="center-helper">
         <div class="modal-dialog-pane" id="shop">
           <h1>{{ unbound AWE.I18n.strings.shop.title }}</h1>
+          
+          <p>{{ unbound AWE.I18n.strings.shop.currentCreditAmount }}: {{ creditAmount }}
+            {{#view Ember.Button action="updateCreditsPressed" target="parentView"}}{{ unbound AWE.I18n.strings.shop.updateCredits }}{{/view}}</p>
                     
           <table>
             <tr>
               <th>{{ unbound AWE.I18n.strings.shop.article }}</th>
               <th>{{ unbound AWE.I18n.strings.shop.description }}</th>
               <th>{{ unbound AWE.I18n.strings.shop.price }}</th>
-              <th>{{ unbound AWE.I18n.strings.shop.buy }}</th>
+              <th></th>
             </tr>
             {{#each offers}}
             <tr>
               <td>{{title}}</td>
               <td>{{description}}</td>
-              <td>{{price}}</td>
-              <td>{{#view Ember.Button action="buyPressed" target="parentView"}}paypal{{/view}}</td>
+              <td>{{price}} {{ unbound AWE.I18n.strings.shop.credits }}</td>
+              <td>{{#view Ember.Button action="buyOfferPressed" target="parentView"}}{{ unbound AWE.I18n.strings.shop.buy }}{{/view}}</td>
             </tr>
             {{/each}}
           </table>
           
-          {{#view Ember.Button action="closePressed" target="parentView"}}close{{/view}}
+          <p>{{#view Ember.Button action="buyCreditsPressed" target="parentView"}}{{ unbound AWE.I18n.strings.shop.buyCredits }}{{/view}} {{#view Ember.Button action="closePressed" target="parentView"}}close{{/view}}</p>
         </div>
       </div>
 </script>

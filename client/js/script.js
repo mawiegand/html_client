@@ -93,6 +93,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             });
           }
           assetLoaded();
+          AWE.Shop.Manager.init();
         }
         else {
           console.log('CRITICAL ERROR: could not load current character from server. Error code: ' + statusCode + '. Terminate App.');
@@ -148,7 +149,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this._super();
       
       var accessToken = window.name ; // || AWE.Config.DEV_ACCESS_TOKEN || null;
-      window.name = "";                                 // unset variables
+      // window.name = "";                                 // unset variables
       
       if (!accessToken) {
         alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
@@ -163,8 +164,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
         AWE.UI.rootNode = AWE.Map.Manager.rootNode();
       });
-      
-      AWE.PaymentProvider.init('wackadoo');
+   
+      // AWE.Shop.Manager.init();                          // initialize the shop manager
       
       this.loadAssets();
 

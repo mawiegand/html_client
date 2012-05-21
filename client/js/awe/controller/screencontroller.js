@@ -60,17 +60,6 @@ AWE.Controller = (function(module) {
     that.runloop = function() {
     };
 
-    that.shopButtonClicked = function() {
-      
-      $('#paymenthelper').html(
-        '<form id="paymentstarter" action="' + AWE.Config.PAYMENT_PROVIDER_BASE + 'auth/sessions/" method="POST" target="_blank">' +
-        '  <input type="hidden" name="access_token" value="' + AWE.Net.currentUserCredentials.get('access_token') + '" />' +
-        '</form>'      
-      );
-      $('#paymentstarter').submit();
-      $('#paymenthelper').html('');
-    }; 
-    
     return that;
   };
 

@@ -107,6 +107,56 @@ AWE.Controller = (function(module) {
     //
     // ///////////////////////////////////////////////////////////////////////   
 
+    that.ingameShopButtonClicked = function() {
+      var dialog = AWE.UI.Ember.ShopView.create({
+        offers: AWE.Shop.Manager.content.get('shopOffers'),
+        creditAmount: AWE.Shop.Manager.content.get('creditAmount'),
+        buyCreditsPressed: function(evt) {
+          AWE.Shop.Manager.openCreditShopWindow()
+        },
+        buyOfferPressed: function() {
+          AWE.Shop.Manager.buyOffer(function(transaction) {
+            if (transaction.state == 5) {
+              var heading = "Buying successful!";
+              var message = "The frogs are credited to your account."
+            }
+            else {
+              var heading = "Shit happens!";
+              var message = "You haven't enough credits to buy frogs."
+            }
+            
+            var info = AWE.UI.Ember.InfoDialog.create({
+              heading: heading,
+              message: message,
+            });      
+            that.applicationController.presentModalDialog(info);
+            that.setModelChanged();
+            AWE.Shop.Manager.fetchCreditAmount();
+          }, function() {
+            var info = AWE.UI.Ember.InfoDialog.create({
+              heading: 'Server Error',
+              message: "There's a problem with the shop. Try again later",
+            });      
+            that.applicationController.presentModalDialog(info);
+          })
+        },
+        closePressed: function(evt) {
+          this.destroy();
+        },
+        updateCreditsPressed: function() {
+          AWE.Shop.Manager.fetchCreditAmount();
+        },
+      });
+      
+      that.applicationController.presentModalDialog(dialog);
+    }; 
+
+    that.shopButtonClicked = function() {
+      
+      AWE.Shop.Manager.openCreditShopWindow();
+    };
+        
+
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Serialization, inspection & debugging
@@ -219,7 +269,7 @@ AWE.Controller = (function(module) {
         if (_needsDisplay || _loopCounter % 30 == 0 || that.modelChanged()) {
           // STEP 4b: create, remove and update all views according to visible parts of model      
           var updateNeeded = that.updateViewHierarchy();      
-            if (updateNeeded) {
+            if (updateNeeded || true) {
               _stage.update();
               AWE.Ext.applyFunctionToElements(HUDViews, function(view) {
                 view.notifyRedraw();

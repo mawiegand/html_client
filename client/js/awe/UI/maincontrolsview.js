@@ -12,6 +12,8 @@ AWE.UI = (function(module) {
     var that;
     
     var _container = null;
+    
+    var _resource4Text = null;
 
     my = my || {};
     
@@ -137,6 +139,10 @@ AWE.UI = (function(module) {
       _armiesButtonGraphics.beginFill('rgb(255, 255, 255)');
       _armiesButtonGraphics.drawCircle(344, 166, 36);
       var _armiesButton = new Shape(_armiesButtonGraphics);    
+      _armiesButton.onClick = function() {
+        log('log',controller, controller.shopButtonClicked);
+        controller.shopButtonClicked();
+      };
   
       var _armiesButtonText = new Text('Armies', "12px Arial", "#000");
       _armiesButtonText.textBaseline = "middle";
@@ -152,8 +158,8 @@ AWE.UI = (function(module) {
       _shopShapeGraphics.drawRoundRect(20, 95, 100, 30, 8);
       var _shopShape = new Shape(_shopShapeGraphics);    
       _shopShape.onClick = function() {
-        log('log',controller, controller.shopButtonClicked);
-        controller.shopButtonClicked();
+        log('log',controller, controller.ingameShopButtonClicked);
+        controller.ingameShopButtonClicked();
       };
   
       var _frog = new Bitmap();
@@ -195,7 +201,7 @@ AWE.UI = (function(module) {
       _resource3Text.x = 220;
       _resource3Text.y = 40;
   
-      var _resource4Text = new Text('123', "12px Arial", "#000");
+      _resource4Text = new Text('0', "12px Arial", "#000");
       _resource4Text.textBaseline = "middle";
       _resource4Text.textAlign = "right"
       _resource4Text.x = 60;
@@ -245,6 +251,13 @@ AWE.UI = (function(module) {
       _container.x = my.frame.origin.x;
       _container.y = my.frame.origin.y;
     };
+    
+    that.updateView = function() {
+      // _super.updateView();
+      // log(AWE, AWE.GS, AWE.GS.CharacterManagerAWE.GS.CharacterManager.getCurrentCharacter.get('frog_amount'), );
+      _resource4Text.text = AWE.GS.CharacterManager.getCurrentCharacter().get('frog_amount');
+    }
+    
     
     that.setFrame = function(frame) {
       _super.setFrame(frame);
