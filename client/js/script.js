@@ -9,6 +9,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     mapScreenController: null,
     allianceScreenController: null,  
+    fortressScreenController: null,
+    baseScreenController: null,
+    messageCenterController: null,
   
     /** custom object initialization goes here. */
     init: function() {
@@ -86,9 +89,21 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
         if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.currentCharacter) {
           console.log('INFO: playing as character ', entity);
-          if (AWE.GS.CharacterManager.currentCharacter.get('alliance_id') && AWE.GS.CharacterManager.currentCharacter.get('alliance_id') > 0) {
+          var currentCharacter = AWE.GS.CharacterManager.currentCharacter;
+          if (currentCharacter.get('alliance_id') && currentCharacter.get('alliance_id') > 0) {
             _numAssets +=1;
-            AWE.GS.AllianceManager.updateAlliance(AWE.GS.CharacterManager.currentCharacter.get('alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
+            AWE.GS.AllianceManager.updateAlliance(currentCharacter.get('alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
+              assetLoaded();
+            });
+          }
+          if (currentCharacter.get('base_node_id')) {
+            _numAssets +=1;
+            AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
+              AWE.GS.CharacterManager.currentCharacter.set('base_node', node);
+              console.log("Node", node)
+              if (self.get('mapScreenController')) {
+                self.get('mapScreenController').moveTo(node);
+              }
               assetLoaded();
             });
           }
@@ -122,6 +137,22 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     
+    baseButtonClicked: function() {
+      if (this.get('presentScreenController') === this.get('mapScreenController')) {
+        var node = AWE.GS.CharacterManager.currentCharacter.get('base_node');
+        if (node) {
+          this.get('presentScreenController').moveTo(node);
+        }
+      }
+      else {
+        this.activateMapController();
+      }
+    },
+    
+    messagesButtonClicked: function() {
+      this.activateMessagesController();
+    },
+    
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -129,10 +160,40 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
+    activateBaseController: function(baseId) {
+      var baseController = this.get('baseScreenController');
+      if (!baseController) {
+        baseController = AWE.Controller.createBaseController('#layers');
+        this.set('baseScreenController', baseController);
+      }
+      baseController.setBaseId(baseId);
+      this.setScreenController(baseController);
+    },
+   
+    activateFortressController: function(fortressId) {
+      var fortressController = this.get('fortressScreenController');
+      if (!fortressController) {
+        fortressController = AWE.Controller.createFortressController('#layers');
+        this.set('fortressScreenController', fortressController);
+      }
+      fortressController.setFortressId(fortressId);
+      this.setScreenController(fortressController);
+    },   
+   
+   
+    activateMessagesController: function() {
+      var messageCenterController = this.get('messageCenterController');
+      if (!messageCenterController) {
+        messageCenterController = AWE.Controller.createMessageCenterController('#layers');
+        this.set('messageCenterController', messageCenterController);
+      }
+      this.setScreenController(messageCenterController);      
+    },
+    
     activateMapController: function() {
       this.setScreenController(this.get('mapScreenController'));
     },
-    
+       
     activateAllianceController: function(alliance_id) {
       var allianceController = this.get('allianceScreenController');
       if (!allianceController) {

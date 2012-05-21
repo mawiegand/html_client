@@ -114,6 +114,15 @@ AWE.Map = (function(module) {
       }
     };
     
+    /** fetches a single node from the server and passes it to a callback. 
+     * Does _not_ automatically include the node in the local subtree. */
+    that.fetchSingleNodeById = function(nodeId, callback) {
+      $.getJSON(AWE.Config.MAP_SERVER_BASE+'nodes/'+nodeId, function(data) {
+        var node = AWE.Map.createNode(data);
+        if (callback) callback(node);
+      });
+    };
+    
     /** updates a given node and incorporates the received data into the tree. */
     that.updateNode = function(node, conditional, callback) {
       

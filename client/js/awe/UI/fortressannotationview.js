@@ -246,7 +246,9 @@ AWE.UI = (function(module) {
     
     // ACTIONS ///////////////////////////////////////////////////////////////
     
-    that.onEnterButtonClick = function() {};
+    that.onEnterButtonClick = function() {
+      WACKADOO.activateFortressController(1); // TODO: pass fortress id
+    };
 
     that.onAttackButtonClick = function() {};
 
