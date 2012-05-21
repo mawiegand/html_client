@@ -9,6 +9,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     mapScreenController: null,
     allianceScreenController: null,  
+    fortressScreenController: null,
     baseScreenController: null,
     messageCenterController: null,
   
@@ -167,6 +168,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       baseController.setBaseId(baseId);
       this.setScreenController(baseController);
     },
+   
+    activateFortressController: function(fortressId) {
+      var fortressController = this.get('fortressScreenController');
+      if (!fortressController) {
+        fortressController = AWE.Controller.createFortressController('#layers');
+        this.set('fortressScreenController', fortressController);
+      }
+      fortressController.setFortressId(fortressId);
+      this.setScreenController(fortressController);
+    },   
+   
    
     activateMessagesController: function() {
       var messageCenterController = this.get('messageCenterController');
