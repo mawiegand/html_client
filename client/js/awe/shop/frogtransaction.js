@@ -36,7 +36,6 @@ AWE.Shop.FrogTransaction = (function(module) {
     }
   
     return that;
-    
   };  
   
   return module;
