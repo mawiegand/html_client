@@ -484,7 +484,55 @@ html, body {
 }
 
 
+/* ===== non-semantic helper classes ========================================
+   Fortess Screen
+   ========================================================================== */
 
+.fortress-picture {
+  position: relative;
+  width: 800px;
+  height: 600px;
+} 
+
+.fortress-picture .background {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 0;
+}
+
+.fortress-picture .buildings {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+}
+
+.fortress-picture .tower {
+  position: absolute;
+  z-index: 2;
+}
+
+.fortress-picture .tower-left {
+  top: 24px;
+  left: 0px;
+}
+
+.fortress-picture .tower-right {
+  top: 100px;
+  right: 0px;
+}
+
+
+.fortress-picture .wall {
+  position: absolute;
+  background: url('/client/images/settlements/fortress/fortress_wall1.png') no-repeat bottom;
+  top: 400px;
+  left: 0px;
+  width: 800px;
+  height: 200px;
+  z-index: 3;
+}
 
 
 /* ==|== media queries ======================================================
