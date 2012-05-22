@@ -75,6 +75,14 @@
   z-index: 2;
 }
 
+.fortress-picture .tower.artillery {
+  background: url('fortress_tower_artillery.png');
+}
+.fortress-picture .tower.cavalry {
+  background: url('fortress_tower_cavalry.png');
+}
+
+
 .fortress-picture .level {
   font-size: 24px;
   border: 4px solid #444;
@@ -109,13 +117,13 @@
 
 
 .fortress-picture .tower.size1 {
-  background: url('fortress_tower1.png');
+  background-position: -238px 0px;
 }
 .fortress-picture .tower.size2 {
-  background: url('fortress_tower2.png');
+  background-position: -476px 0px;
 }
 .fortress-picture .tower.size3 {
-  background: url('fortress_tower3.png');
+  background-position: -714px 0px;
 }
 
 .fortress-picture .tower-left {
@@ -124,16 +132,16 @@
 }
 
 .fortress-picture .tower.hovered {
-  background: url('fortress_tower0_hovered.png');
+  background-position: 0px -454px;
 }
 .fortress-picture .tower.size1.hovered {
-  background: url('fortress_tower1_hovered.png');
+  background-position: -238px -454px;
 }
 .fortress-picture .tower.size2.hovered {
-  background: url('fortress_tower2_hovered.png');
+  background-position: -476px -454px;
 }
 .fortress-picture .tower.size3.hovered {
-  background: url('fortress_tower3_hovered.png');
+  background-position: -714px -454px;
 }
 
 .fortress-picture .tower-right {
@@ -181,7 +189,7 @@
 {{#if "tooltip"}}
   {{#view App.ToolTipView classNames="mouse-over" mouseXBinding="mouseX" mouseYBinding="mouseY"}}
     <img src="../../dialogs/advisor.png" / class="advisor">
-    <h1>Tower L{{parentView.level}}</h1>
+    <h1>{{parentView.model.name}} L{{parentView.model.level}}</h1>
     <p>Next level does cost XYZ resources. It will need about X:XX.YY to build.</p>
   {{/view}}
 {{/if}}
@@ -190,13 +198,14 @@
 
 <script type="text/x-handlebars" data-template-name="fortress-screen">
 
+
 <div class="fortress-screen">
   <div class="fortress-picture">
     <img src="fortress_background.png" class="background" />
     {{view App.BuildingView  modelBinding="App.Wall" levelBinding="App.Wall.level" classNames="buildings"}}
-    {{view App.InteractiveBuildingView modelBinding="App.LeftTower" levelBinding="App.LeftTower.level" classNames="tower tower-left"}}
-    {{view App.InteractiveBuildingView modelBinding="App.RightTower" levelBinding="App.RightTower.level" classNames="tower tower-right"}}
-    {{view App.InteractiveBuildingView modelBinding="App.Wall" levelBinding="App.Wall.level" classNames="wall"}}
+    {{view App.InteractiveBuildingView modelBinding="App.LeftTower"  levelBinding="App.LeftTower.level"  classNames="tower tower-left" classNameBindings="model.type"}}
+    {{view App.InteractiveBuildingView modelBinding="App.RightTower" levelBinding="App.RightTower.level" classNames="tower tower-right"  classNameBindings="model.type"}}
+    {{view App.InteractiveBuildingView modelBinding="App.Wall"       levelBinding="App.Wall.level"       classNames="wall" classNameBindings="model.type"}}
   </div>
 </div>
 
@@ -218,7 +227,10 @@ App = Ember.Application.create({
       level: 0,
     });
     App.RightTower = App.Building.create();
-    App.Wall = App.Building.create();
+    App.Wall = App.Building.create({
+      type: 'wall',
+      name: 'Fortification',
+    });
 
     var fortressScreen = Ember.View.create({
       templateName: "fortress-screen",
@@ -230,12 +242,30 @@ App = Ember.Application.create({
 
 App.Building = Ember.Object.extend({
   level: 1,
+  name: 'Artillery',
+  type: 'artillery',
   
   build: function() {
     var newLevel = parseInt(this.get('level'))+1;
-    this.set('level', newLevel);    
+    
+    if (newLevel <= 10) {
+     this.set('level', newLevel);    
+    }
+    else {
+      if (this.get('type') === 'artillery') {
+        this.set('type', 'cavalry');
+        this.set('name', 'Cavalry');
+      }
+      else if (this.get('type') === 'cavalry'){
+        this.set('type', 'artillery');
+        this.set('name', 'Artillery');
+      }
+      this.set('level', 0); // start over with the other type
+    }
   },
 });
+
+
 
 App.ToolTipView = Ember.View.extend({
   
@@ -246,6 +276,11 @@ App.ToolTipView = Ember.View.extend({
     var parent = this.get('parentView');
     var posX = this.get('mouseX') + 10; // - parent.$().offset().left + 10;
     var posY = this.get('mouseY') + 18; // - parent.$().offset().top + 18;
+    
+    if (posY > 460) {
+      posY = this.get('mouseY')- 200;
+      posX += 48;
+    }
         
     this.$().css({'left': posX, 'top': posY});    
   }.observes('mouseX', 'mouseY'),
@@ -284,6 +319,7 @@ App.InteractiveBuildingView = App.BuildingView.extend({
   tooltip: false,
   mouseX: 0,
   mouseY: 0,
+  timeout: 0,    // tooltip timeout in ms
   
   showTooltip: function() {
     this.set('tooltip', true);
@@ -296,7 +332,7 @@ App.InteractiveBuildingView = App.BuildingView.extend({
       if (self.get('hovered')) {
         self.showTooltip();
       }
-    }, 900);
+    }, this.get('timeout'));
   },
   mouseMove: function(event) {
     this.set('mouseX', event.pageX);
