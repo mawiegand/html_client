@@ -30,6 +30,28 @@
   height: 600px;
 } 
 
+.fortress-picture .mouse-over {
+  position: absolute;
+  width: 290px;
+  height: 140px;
+  z-index:10;
+  padding: 16px;
+  background-color: rgba(50,50,50,0.9);
+  border-radius: 11px;
+  padding-left: 46px;
+  color: #FFF;
+}
+
+.fortress-picture .mouse-over p {
+  padding-left: 30px;
+}
+
+.fortress-picture .mouse-over img.advisor{
+  position: absolute;
+  left: -44px;
+  width: 160px;
+}
+
 .fortress-picture .background {
   position: absolute;
   top: 0px;
@@ -51,6 +73,27 @@
   width: 238px;
   height: 454px;
   z-index: 2;
+}
+
+.fortress-picture .level {
+  font-size: 24px;
+  border: 4px solid #444;
+  background-color: #BBB;
+  border-radius: 9px;
+  color: #444;
+  width: 32px;
+  padding: 8px 0px;
+  text-align: center;
+}
+
+.fortress-picture .tower .level {
+  margin-top: 320px;
+  margin-left: 170px;
+}
+
+.fortress-picture .wall .level {
+  margin-top: 130px;
+  margin-left: 460px;
 }
 
 
@@ -134,6 +177,17 @@
 </style>
 
 
+<script type="text/x-handlebars" data-template-name="interactive-building">
+{{#if "tooltip"}}
+  {{#view App.ToolTipView classNames="mouse-over" mouseXBinding="mouseX" mouseYBinding="mouseY"}}
+    <img src="../../dialogs/advisor.png" / class="advisor">
+    <h1>Tower L{{parentView.level}}</h1>
+    <p>Next level does cost XYZ resources. It will need about X:XX.YY to build.</p>
+  {{/view}}
+{{/if}}
+<div class="level">{{level}}</div>
+</script>
+
 <script type="text/x-handlebars" data-template-name="fortress-screen">
 
 <div class="fortress-screen">
@@ -143,7 +197,6 @@
     {{view App.InteractiveBuildingView modelBinding="App.LeftTower" levelBinding="App.LeftTower.level" classNames="tower tower-left"}}
     {{view App.InteractiveBuildingView modelBinding="App.RightTower" levelBinding="App.RightTower.level" classNames="tower tower-right"}}
     {{view App.InteractiveBuildingView modelBinding="App.Wall" levelBinding="App.Wall.level" classNames="wall"}}
-
   </div>
 </div>
 
@@ -151,8 +204,6 @@
   
 </head>
 <body>
-
-
 
   <script>window.jQuery || document.write('<script src="../../../js/libs/jquery-1.7.1.min.js"><\/script>')</script>
   <script src="../../../js/libs/ember-0.9.5.js"></script>
@@ -186,6 +237,27 @@ App.Building = Ember.Object.extend({
   },
 });
 
+App.ToolTipView = Ember.View.extend({
+  
+  mouseX: 0,
+  mouseY: 0,
+  
+  updatePosition: function() {
+    var parent = this.get('parentView');
+    var posX = this.get('mouseX') + 10; // - parent.$().offset().left + 10;
+    var posY = this.get('mouseY') + 18; // - parent.$().offset().top + 18;
+        
+    this.$().css({'left': posX, 'top': posY});    
+  }.observes('mouseX', 'mouseY'),
+  
+  didInsertElement: function() {
+    this.$().remove();
+    this.$().appendTo('.fortress-picture');
+    this.updatePosition();
+  },
+  
+});
+
 
 App.BuildingView = Ember.View.extend({
   model: null, 
@@ -208,12 +280,32 @@ App.BuildingView = Ember.View.extend({
 });
 
 App.InteractiveBuildingView = App.BuildingView.extend({
+  templateName: 'interactive-building',
+  tooltip: false,
+  mouseX: 0,
+  mouseY: 0,
+  
+  showTooltip: function() {
+    this.set('tooltip', true);
+  },
   
   mouseEnter: function(event) {
+    var self = this;
     this.set('hovered', true);
+    setTimeout(function() {
+      if (self.get('hovered')) {
+        self.showTooltip();
+      }
+    }, 900);
+  },
+  mouseMove: function(event) {
+    this.set('mouseX', event.pageX);
+    this.set('mouseY', event.pageY);
   },
   mouseLeave: function(event) {
     this.set('hovered', false);
+    this.set('tooltip', false);
+    $().unbind('mousemove');
   },
   
   click: function(event) {
