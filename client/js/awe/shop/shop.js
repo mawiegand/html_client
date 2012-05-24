@@ -29,8 +29,8 @@ AWE.Shop = (function(module) {
     };
     
     that.fetchCreditAmount = function(callback) {
-      $.getJSON(AWE.Config.PAYMENT_PROVIDER_BASE + 'customers/' + AWE.GS.CharacterManager.getCurrentCharacter().get('identifier') + '/account', function(data, b, c){
-        that.content.set('creditAmount', data.amount);
+      $.getJSON(AWE.Config.SHOP_SERVER_BASE + 'account', function(data, b, c){
+        that.content.set('creditAmount', data.credit_amount);
         
         if (callback) {
           callback(data);

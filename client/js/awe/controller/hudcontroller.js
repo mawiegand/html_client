@@ -149,7 +149,16 @@ AWE.Controller = (function(module) {
       });
       
       that.applicationController.presentModalDialog(dialog);
-    }; 
+      fetchCreditAmountRepeatedly(dialog);
+    };
+    
+    var fetchCreditAmountRepeatedly = function(dialog) {
+      log('reload Credit Amount', dialog);
+      if (!dialog.isDestroyed) {
+        AWE.Shop.Manager.fetchCreditAmount();
+        window.setTimeout(function(){ fetchCreditAmountRepeatedly(dialog) }, 10000);
+      }
+    }
 
     that.shopButtonClicked = function() {
       
