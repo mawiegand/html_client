@@ -88,7 +88,6 @@ AWE.GS = (function(module) {
         module.SlotAccess.lastUpdateForSettlement_id(settlementId), // modified after
         function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            log('peng' , timestamp);
             module.SlotAccess.accessHashForSettlement_id().setLastUpdateAtForValue(settlementId, timestamp);
           }
           if (callback) {
