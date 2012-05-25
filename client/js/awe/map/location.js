@@ -25,7 +25,8 @@ AWE.Map = (function(module) {
     
     var _regionId = spec.region_id || 0;
     var _slot = spec.slot || 0;
-    var _typeId = spec.type_id || 0;
+    var _settlementTypeId = spec.settlement_type_id || 0;
+    var _settlementLevel = spec.settlement_level || 0;
     var _name = spec.name || 'Lagerplatz';
     var _ownerId = spec.owner_id || 0;
     var _ownerName = spec.owner_name || null;
@@ -33,7 +34,6 @@ AWE.Map = (function(module) {
     var _allianceTag = spec.alliance_tag;
     var _rightOfWay = spec.right_of_way;
     
-    var _level = spec.level || 0;
     
     var _region = null;
         
@@ -67,7 +67,7 @@ AWE.Map = (function(module) {
     that.setRegion = function(region) { _region = region; _regionId = region.id(); }
 
     /** returns the type of the settlement; */
-    that.typeId = function() { return _typeId; }
+    that.settlementTypeId = function() { return _settlementTypeId; }
 
     /** returns the name of the character owning the region (fortress). */
     that.ownerName = function() { return _ownerName; }
@@ -87,7 +87,7 @@ AWE.Map = (function(module) {
     that.rightOfWay = function() { return _rightOfWay; }
 
     /** returns the level of the settlement / fortress / outpost (0 to 10). */
-    that.level = function() { return _level; }
+    that.settlementLevel = function() { return _settlementLevel; }
         
     that.getArmies = function() { 
       return AWE.GS.ArmyAccess.getAllForLocation_id(_id);

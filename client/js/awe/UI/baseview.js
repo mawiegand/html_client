@@ -79,7 +79,7 @@ AWE.UI = (function(module) {
       }
 
       if (!_imageView) {
-        var level = _location.level();
+        var level = _location.settlementLevel();
         
         if (level < 4) {
           modifier = "small";
