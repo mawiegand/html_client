@@ -1332,13 +1332,13 @@ AWE.Controller = (function(module) {
                 }                                     
               }
               else {                                        
-                if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()] === "base") {
+                if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === "base") {
                   view = AWE.UI.createBaseView();
                 }             
-                else if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()] === "outpost") {
+                else if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === "outpost") {
                   view = AWE.UI.createOutpostView();
                 }
-                else if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()] === "empty") {
+                else if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === "empty") {
                   view = AWE.UI.createEmptySlotView();
                 }
                 if (view) {   // if base, outpost or empty slot on location, init the view
@@ -1720,7 +1720,7 @@ AWE.Controller = (function(module) {
           AWE.Ext.applyFunctionToElements(targetLocations, function(location) {
             var targetView = targetViews[location.id()];
             
-            if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.typeId()] === 'fortress') {
+            if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === 'fortress') {
               var visible = that.isFortressVisible(that.mc2vc(location.node().frame()));
               var locationView = fortressViews[location.node().id()];
             }

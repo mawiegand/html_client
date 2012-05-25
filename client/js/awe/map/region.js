@@ -33,9 +33,9 @@ AWE.Map = (function(module) {
     var _countSettlements = spec.count_settlements || 0;
     var _terrain_id = spec.terrain_id || 0;
     
-    var _fortress_level = spec.fortress_level || 0;
     var _fortress_id = spec.fortress_id || 0;
-    
+    var _settlementLevel = spec.settlement_level || 0;
+        
     var _node = null;
     
     var _locations = null;
@@ -82,7 +82,7 @@ AWE.Map = (function(module) {
     that.allianceId = function() { return _allianceId; }
 
     /** returns the level of the fortress (0 to 10). */
-    that.fortressLevel = function() { return _fortress_level; }
+    that.fortressLevel = function() { return _settlementLevel; }
     
     /** returns the location id of the fortress. */
     that.fortressLocationId = function() { return _fortress_id; }

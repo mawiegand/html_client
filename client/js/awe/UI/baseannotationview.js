@@ -167,7 +167,7 @@ AWE.UI = (function(module) {
         _infoText1View.setIconImage("map/icon/army/strength");
         my.infoContainer.addChild(_infoText1View);
       }
-      _infoText1View.setText('' + my.location.level());
+      _infoText1View.setText('' + my.location.settlementLevel());
       
       if (!_infoText2View) {
         _infoText2View = AWE.UI.createLabelView();

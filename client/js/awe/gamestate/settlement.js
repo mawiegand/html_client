@@ -60,7 +60,7 @@ AWE.GS = (function(module) {
 
     my = my || {};
     
-    my.runningUpdates = {};
+    my.runningUpdatesPerCharacter = {};
   
     // my.runningUpdatesPerRegion = {};  ///< hash that contains all running requests for regions, using the region.id as key.
     // my.runningUpdatesPerLocation = {};///< hash that contains all running requests for locations, using the location.id as key.
@@ -91,13 +91,14 @@ AWE.GS = (function(module) {
     /** updates all armies in a given region. Calls the callback with a
      * list of all the updated armies. */
     that.updateOwnSettlements = function(updateType, callback) {
-      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/' + AWE.GS.CharacterManager.getCurrentCharacter().getId() + '/settlements';
+      var charachterId = AWE.GS.CharacterManager.getCurrentCharacter().getId();
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/' + charachterId + '/settlements';
       return my.fetchEntitiesFromURL(
-        url,                                  // url to fetch from
-        my.runningUpdates,           // queue to register this request during execution
-        1,                             // regionId to fetch -> is used to register the request
-        updateType,                           // type of update (aggregate, short, full)
-        lastSettlementUpdate, // modified after
+        url,                                     // url to fetch from
+        my.runningUpdatesPerCharacter,           // queue to register this request during execution
+        1,                                       // regionId to fetch -> is used to register the request
+        updateType,                              // type of update (aggregate, short, full)
+        lastSettlementUpdate,               // modified after
         function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
             lastSettlementUpdate = timestamp;
