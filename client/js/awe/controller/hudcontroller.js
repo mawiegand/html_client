@@ -171,13 +171,15 @@ AWE.Controller = (function(module) {
         
         log('Settlements: ', settlements);
         
-        for (var i = 1; i < settlements.length; i++) {
+        for (var i = 0; i < settlements.length; i++) {
+          if (settlements[i]) {
             log('Settlements[i]: ', settlements[i]);
             var sid = settlements[i].getId();
             
             AWE.GS.SlotManager.updateSlotsAtSettlement(sid, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
               log('Slots: ', AWE.GS.SlotManager.getSlotsAtSettlement(sid));
             }); 
+          }
         }
       }); 
 

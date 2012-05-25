@@ -91,7 +91,7 @@ AWE.GS = (function(module) {
     /** updates all armies in a given region. Calls the callback with a
      * list of all the updated armies. */
     that.updateOwnSettlements = function(updateType, callback) {
-      var url = AWE.Config.SETTLEMENT_SERVER_BASE + 'settlements';
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/' + AWE.GS.CharacterManager.getCurrentCharacter().getId() + '/settlements';
       return my.fetchEntitiesFromURL(
         url,                                  // url to fetch from
         my.runningUpdates,           // queue to register this request during execution
