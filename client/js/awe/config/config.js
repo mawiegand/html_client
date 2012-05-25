@@ -76,6 +76,8 @@ AWE.Config = (function(module) {
   module.MAP_DBLCLK_CAMERA_PANTIME = 400; ///< time for the panning animation
   module.MAP_DBLCLK_CAMERA_BORDER_FACTOR = 0.15; ///< border around a node after zoom in
   module.MAP_DBLCLK_CAMERA_CROSS_CLICK_SIZE = 35;
+  
+  module.SETTLEMENT_REFRESH_INTERVAL = 60 * 1000;
 
   //image cache
   module.IMAGE_CACHE_LOAD_LIST = {

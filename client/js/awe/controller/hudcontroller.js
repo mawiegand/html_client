@@ -165,23 +165,6 @@ AWE.Controller = (function(module) {
       // AWE.Shop.Manager.openCreditShopWindow();
       log('START LOADING SETTLEMENTS');
       
-      AWE.GS.SettlementManager.updateOwnSettlements(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-        
-        var settlements = AWE.GS.SettlementManager.ownSettlements()
-        
-        log('Settlements: ', settlements);
-        
-        for (var i = 0; i < settlements.length; i++) {
-          if (settlements[i]) {
-            log('Settlements[i]: ', settlements[i]);
-            var sid = settlements[i].getId();
-            
-            AWE.GS.SlotManager.updateSlotsAtSettlement(sid, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-              log('Slots: ', AWE.GS.SlotManager.getSlotsAtSettlement(sid));
-            }); 
-          }
-        }
-      }); 
 
       log('END LOADING SETTLEMENTS');
     };
