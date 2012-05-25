@@ -60,12 +60,10 @@ AWE.Controller = (function(module) {
     
     
     that.createView = function() {
-      
-      var view = that.fortressScreenView.create({        
-        controller: that,
-      });
-      
-      return view;
+      var fortressScreen = Ember.View.create({
+        templateName: "fortress-screen",
+      });      
+      return fortressScreen;
     }
     
     
@@ -97,19 +95,6 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
 
-
-    WACKADOO.BuildingView = Ember.View.extend({
-      mouseEnter: function(event) {
-        alert ('mouse enter');
-      },
-      mouseLeave: function(event) {
-        alert ('mouse leave');
-      },
-    });
-    
-    that.fortressScreenView = Ember.View.extend({
-      templateName: 'fortress-screen',
-    });
     
     // ///////////////////////////////////////////////////////////////////////
     //
