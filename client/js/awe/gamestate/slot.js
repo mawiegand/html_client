@@ -6,7 +6,7 @@
  
 var AWE = window.AWE || {};
 
-/** GameState Slot class, manager and helpers. */
+/** GameState Settlement class, manager and helpers. */
 AWE.GS = (function(module) {
     
   module.SlotAccess = {};
@@ -19,15 +19,15 @@ AWE.GS = (function(module) {
     
   module.Slot = module.Entity.extend({     // extends Entity to Settlement
     typeName: 'Slot',
-    name: null, 
+    name: null,
     
-    location_id: null, old_location_id: null,
-    locationIdObserver: AWE.Partials.attributeHashObserver(module.ArmyAccess, 'location_id', 'old_location_id').observes('location_id'),
-    region_id: null, old_region_id: null,
-    regionIdObserver: AWE.Partials.attributeHashObserver(module.ArmyAccess, 'region_id', 'old_region_id').observes('region_id'),
+    settlement_id: null, old_settlement_id: null,
+    locationIdObserver: AWE.Partials.attributeHashObserver(module.SlotAccess, 'settlement_id', 'old_settlement_id').observes('settlement_id'),
     
-    // ---> felder hinzufügen
-
+    building_id: null,
+    construction_id: null,
+    max_level: null,
+    slot_num: null,
   });     
 
     
@@ -42,13 +42,15 @@ AWE.GS = (function(module) {
     // private attributes and methods //////////////////////////////////////
   
     var that;
-    var lastSlotUpdates = {};
+    var lastSlotUpdate = null;
     
     // protected attributes and methods ////////////////////////////////////
 
     my = my || {};
+    
+    my.runningUpdates = {};
   
-    // my.runningUpdatesPerRegion = {};  ///< hash that contains all running requests for regions, using the region.id as key.
+    my.runningUpdatesPerSettlement = {};  ///< hash that contains all running requests for regions, using the region.id as key.
     // my.runningUpdatesPerLocation = {};///< hash that contains all running requests for locations, using the location.id as key.
     
     my.createEntity = function() { return module.Slot.create(); }
@@ -61,14 +63,42 @@ AWE.GS = (function(module) {
     that.getSlot = function(id) {
       return that.getEntity(id);
     }
+    
+    that.getSlotsAtSettlement = function(id) { 
+      return AWE.GS.SlotAccess.getAllForSettlement_id(id);
+    }
         
     /** returns true, if update is executed, returns false, if request did 
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
     that.updateSlot = function(id, updateType, callback) {
-      var url = AWE.Config.SETTLEMENT_SERVER_BASE+'slots/'+id;
+      var url = AWE.Config.SETTLEMENT_SERVER_BASE +  'slots/'+id;
       return my.updateEntity(url, id, updateType, callback); 
     };
+    
+    /** updates all armies in a given region. Calls the callback with a
+     * list of all the updated armies. */
+    that.updateSlotsAtSettlement = function(settlementId, updateType, callback) {
+      var url = AWE.Config.SETTLEMENT_SERVER_BASE + 'settlements/' + settlementId + '/slots';
+      return my.fetchEntitiesFromURL(
+        url,                                  // url to fetch from
+        my.runningUpdatesPerSettlement,           // queue to register this request during execution
+        settlementId,                             // regionId to fetch -> is used to register the request
+        updateType,                           // type of update (aggregate, short, full)
+        lastSlotUpdate, // modified after
+        function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
+          if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
+            lastSlotUpdate = module.SlotAccess.accessHashForSettlement_id().setLastUpdateAtForValue(settlementId, timestamp);
+          }
+          if (callback) {
+            if (status === AWE.Net.NOT_MODIFIED) {
+              result = module.ArmyAccess.getAllForSettlement_id(settlementId);
+            }
+            callback(result, status, xhr, timestamp);
+          }
+        }
+      ); 
+    }
   
     return that;
       
@@ -78,7 +108,3 @@ AWE.GS = (function(module) {
   return module;
   
 }(AWE.GS || {}));
-
-
-
-

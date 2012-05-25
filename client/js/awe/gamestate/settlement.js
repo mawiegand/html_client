@@ -21,8 +21,25 @@ AWE.GS = (function(module) {
     typeName: 'Settlement',
     name: null, 
     
-    // ---> felder hinzufügen
-
+    alliance_id: null,
+    armies_count: null,
+    besieged: null,
+    command_points: null,
+    defense_bonus: null,
+    founded_at: null,
+    founder_id: null,
+    garrison_id: null,
+    level: null,
+    location_id: null,
+    morale: null,
+    node_id: null,
+    owner_id: null,
+    owns_region: null,
+    points: null,
+    region_id: null,
+    tax_rate: null,
+    taxable: null,
+    type_id: null,
   });     
 
     
@@ -59,6 +76,10 @@ AWE.GS = (function(module) {
       return that.getEntity(id);
     }
         
+    that.ownSettlements = function() {
+      return that.getEntities();
+    }
+        
     /** returns true, if update is executed, returns false, if request did 
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
@@ -90,7 +111,6 @@ AWE.GS = (function(module) {
         }
       ); 
     }
-    
   
     return that;
       
@@ -100,18 +120,3 @@ AWE.GS = (function(module) {
   return module;
   
 }(AWE.GS || {}));
-
-$(function(){
-  log('START LOADING SETTLEMENTS');
-  
-
-  AWE.GS.SettlementManager.updateOwnSettlements(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-    alert('settlement callback');
-  }); 
-  
-  log('END LOADING SETTLEMENTS');
-});
-
-
-
-
