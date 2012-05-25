@@ -111,6 +111,37 @@ AWE.Controller = (function(module) {
       templateName: 'fortress-screen',
     });
     
+    that.updateModel = (function() {
+            
+      var lastUpdateCheck = new Date(1970);
+      
+      var updateSettlements = function() {
+        
+        AWE.GS.SettlementManager.updateOwnSettlements(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+          
+          log('got settlements from server');
+          var settlements = AWE.GS.SettlementManager.ownSettlements()
+          
+          for (var i = 0; i < settlements.length; i++) {
+            if (settlements[i]) {
+              AWE.GS.SlotManager.updateSlotsAtSettlement(settlements[i].getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+                log('got settlement-slots from server');
+              });
+            }
+          }
+        }); 
+      }
+      
+      return function() {
+        
+        if (lastUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date()) {
+          log('update Settlement');
+          updateSettlements();
+          lastUpdateCheck = new Date();
+        }
+      };
+    }());
+    
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Runloop
@@ -127,6 +158,8 @@ AWE.Controller = (function(module) {
         this.updateView();
         _viewNeedsUpdate = false;
       }
+      
+      that.updateModel();
     }
     
     return that;

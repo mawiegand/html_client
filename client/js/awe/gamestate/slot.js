@@ -42,7 +42,7 @@ AWE.GS = (function(module) {
     // private attributes and methods //////////////////////////////////////
   
     var that;
-    var lastSlotUpdate = null;
+    var lastSlotUpdate = new Date(1970);
     
     // protected attributes and methods ////////////////////////////////////
 
@@ -72,7 +72,7 @@ AWE.GS = (function(module) {
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
     that.updateSlot = function(id, updateType, callback) {
-      var url = AWE.Config.SETTLEMENT_SERVER_BASE +  'slots/'+id;
+      var url = AWE.Config.SETTLEMENT_SERVER_BASE +  'slots/' + id;
       return my.updateEntity(url, id, updateType, callback); 
     };
     
@@ -85,10 +85,11 @@ AWE.GS = (function(module) {
         my.runningUpdatesPerSettlement,           // queue to register this request during execution
         settlementId,                             // regionId to fetch -> is used to register the request
         updateType,                           // type of update (aggregate, short, full)
-        lastSlotUpdate, // modified after
+        module.SlotAccess.lastUpdateForSettlement_id(settlementId), // modified after
         function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            lastSlotUpdate = module.SlotAccess.accessHashForSettlement_id().setLastUpdateAtForValue(settlementId, timestamp);
+            log('peng' , timestamp);
+            module.SlotAccess.accessHashForSettlement_id().setLastUpdateAtForValue(settlementId, timestamp);
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
