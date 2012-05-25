@@ -113,7 +113,7 @@ AWE.Controller = (function(module) {
     
     that.updateModel = (function() {
             
-      var lastUpdateCheck = new Date(1970);
+      var lastSettlementUpdateCheck = new Date(1970);
       
       var updateSettlements = function() {
         
@@ -134,10 +134,10 @@ AWE.Controller = (function(module) {
       
       return function() {
         
-        if (lastUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date()) {
+        if (lastSettlementUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date()) {
           log('update Settlement');
           updateSettlements();
-          lastUpdateCheck = new Date();
+          lastSettlementUpdateCheck = new Date();
         }
       };
     }());
