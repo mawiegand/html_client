@@ -29,6 +29,7 @@ AWE.Config = (function(module) {
   module.FUNDAMENTAL_SERVER_BASE = module.SERVER_ROOT + '/game_server/fundamental/';
   module.ACTION_SERVER_BASE = module.SERVER_ROOT + '/game_server/action/';
   module.RULES_SERVER_BASE = module.SERVER_ROOT + '/game_server/game_rules/';
+  module.SETTLEMENT_SERVER_BASE = module.SERVER_ROOT + '/game_server/settlement/';
   module.SHOP_SERVER_BASE = module.SERVER_ROOT + '/game_server/shop/';
   
   module.PAYMENT_PROVIDER_BASE = module.SERVER_ROOT + '/payment_provider/';
