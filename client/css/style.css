@@ -492,7 +492,30 @@ html, body {
   position: relative;
   width: 800px;
   height: 600px;
+  background: url('../images/settlements/fortress/fortress_background.png');
 } 
+
+.fortress-picture .mouse-over {
+  position: absolute;
+  width: 290px;
+  height: 140px;
+  z-index:10;
+  padding: 16px;
+  background-color: rgba(50,50,50,0.9);
+  border-radius: 11px;
+  padding-left: 46px;
+  color: #FFF;
+}
+
+.fortress-picture .mouse-over p {
+  padding-left: 30px;
+}
+
+.fortress-picture .mouse-over img.advisor{
+  position: absolute;
+  left: -44px;
+  width: 160px;
+}
 
 .fortress-picture .background {
   position: absolute;
@@ -505,17 +528,85 @@ html, body {
   position: absolute;
   top: 0px;
   left: 0px;
+  width: 800px;
+  height: 600px;
   z-index: 1;
 }
 
 .fortress-picture .tower {
   position: absolute;
+  width: 238px;
+  height: 454px;
   z-index: 2;
+}
+
+.fortress-picture .tower.artillery {
+  background: url('../images/settlements/fortress/fortress_tower_artillery.png');
+}
+.fortress-picture .tower.cavalry {
+  background: url('../images/settlements/fortress/fortress_tower_cavalry.png');
+}
+
+
+.fortress-picture .level {
+  font-size: 24px;
+  border: 4px solid #444;
+  background-color: #BBB;
+  border-radius: 9px;
+  color: #444;
+  width: 32px;
+  padding: 8px 0px;
+  text-align: center;
+}
+
+.fortress-picture .tower .level {
+  margin-top: 320px;
+  margin-left: 170px;
+}
+
+.fortress-picture .wall .level {
+  margin-top: 130px;
+  margin-left: 460px;
+}
+
+
+.fortress-picture .buildings.size1 {
+  background: url('../images/settlements/fortress/fortress_buildings1.png');
+}
+.fortress-picture .buildings.size2 {
+  background: url('../images/settlements/fortress/fortress_buildings2.png');
+}
+.fortress-picture .buildings.size3 {
+  background: url('../images/settlements/fortress/fortress_buildings3.png');
+}
+
+
+.fortress-picture .tower.size1 {
+  background-position: -238px 0px;
+}
+.fortress-picture .tower.size2 {
+  background-position: -476px 0px;
+}
+.fortress-picture .tower.size3 {
+  background-position: -714px 0px;
 }
 
 .fortress-picture .tower-left {
   top: 24px;
   left: 0px;
+}
+
+.fortress-picture .tower.hovered {
+  background-position: 0px -454px;
+}
+.fortress-picture .tower.size1.hovered {
+  background-position: -238px -454px;
+}
+.fortress-picture .tower.size2.hovered {
+  background-position: -476px -454px;
+}
+.fortress-picture .tower.size3.hovered {
+  background-position: -714px -454px;
 }
 
 .fortress-picture .tower-right {
@@ -526,12 +617,33 @@ html, body {
 
 .fortress-picture .wall {
   position: absolute;
-  background: url('/client/images/settlements/fortress/fortress_wall1.png') no-repeat bottom;
-  top: 400px;
+  background: url('../images/settlements/fortress/fortress_wall1.png') no-repeat bottom;
+  top: 360px;
   left: 0px;
   width: 800px;
-  height: 200px;
+  height: 240px;
   z-index: 3;
+}
+
+
+.fortress-picture .wall.size1 {
+  background: url('../images/settlements/fortress/fortress_wall1.png') no-repeat bottom;
+}
+.fortress-picture .wall.size2 {
+  background: url('../images/settlements/fortress/fortress_wall2.png') no-repeat bottom;
+}
+.fortress-picture .wall.size3 {
+  background: url('../images/settlements/fortress/fortress_wall3.png') no-repeat bottom;
+}
+
+.fortress-picture .wall.size1.hovered {
+  background: url('../images/settlements/fortress/fortress_wall1_hovered.png') no-repeat bottom;
+}
+.fortress-picture .wall.size2.hovered {
+  background: url('../images/settlements/fortress/fortress_wall2_hovered.png') no-repeat bottom;
+}
+.fortress-picture .wall.size3.hovered {
+  background: url('../images/settlements/fortress/fortress_wall3_hovered.png') no-repeat bottom;
 }
 
 

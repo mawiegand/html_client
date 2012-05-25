@@ -1,18 +1,23 @@
-<script type="text/x-handlebars" data-template-name="fortress-tower-left-view">
-  <img src="/client/images/settlements/fortress/fortress_tower1.png" class="tower tower-left" />
+<script type="text/x-handlebars" data-template-name="interactive-building">
+{{#if "tooltip"}}
+  {{#view AWE.UI.Ember.ToolTipView classNames="mouse-over" mouseXBinding="mouseX" mouseYBinding="mouseY"}}
+    <img src="/client/images/dialogs/advisor.png" / class="advisor">
+    <h1>{{parentView.model.name}} L{{parentView.model.level}}</h1>
+    <p>Next level does cost XYZ resources. It will need about X:XX.YY to build.</p>
+  {{/view}}
+{{/if}}
+<div class="level">{{level}}</div>
 </script>
 
 
-<script type="text/x-handlebars" data-template-name="fortress-screen">
 
+<script type="text/x-handlebars" data-template-name="fortress-screen">
 <div class="fortress-screen">
   <div class="fortress-picture">
-    <img src="/client/images/settlements/fortress/fortress_background.png" class="background" />
-    <img src="/client/images/settlements/fortress/fortress_buildings1.png" class="buildings" />
-    <img src="/client/images/settlements/fortress/fortress_tower1.png" class="tower tower-right" />
-    {{view WACKADOO.BuildingView className="tower tower-left"}}
-    <div class="wall" />
+    {{view AWE.UI.Ember.BuildingView classNames="buildings"}}
+    {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-left"   classNameBindings="model.type"}}
+    {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-right"  classNameBindings="model.type"}}
+    {{view AWE.UI.Ember.InteractiveBuildingView  classNames="wall"               classNameBindings="model.type"}}
   </div>
 </div>
-
 </script>
