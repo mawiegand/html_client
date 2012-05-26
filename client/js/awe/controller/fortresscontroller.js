@@ -91,7 +91,7 @@ AWE.Controller = (function(module) {
     
     // ///////////////////////////////////////////////////////////////////////
     //
-    //   Views (Ember)
+    //   Model
     //
     // /////////////////////////////////////////////////////////////////////// 
 
@@ -105,12 +105,12 @@ AWE.Controller = (function(module) {
         AWE.GS.SettlementManager.updateOwnSettlements(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
           
           log('got settlements from server');
-          var settlements = AWE.GS.SettlementManager.ownSettlements()
+          var settlements = AWE.GS.SettlementManager.getOwnSettlements();
           
           for (var i = 0; i < settlements.length; i++) {
             if (settlements[i]) {
+              var sid = settlements[i].getId();
               AWE.GS.SlotManager.updateSlotsAtSettlement(settlements[i].getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-                log('got settlement-slots from server');
               });
             }
           }

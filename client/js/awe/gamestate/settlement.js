@@ -102,8 +102,8 @@ AWE.GS = (function(module) {
       return that.getEntity(id);
     }
         
-    that.ownSettlements = function() {
-      return that.getEntities();
+    that.getOwnSettlements = function() {
+      return AWE.GS.SettlementAccess.getAllForOwner_id(AWE.GS.CharacterManager.getCurrentCharacter().getId());
     }
     
     that.lastUpdateForCharacter = function(characterId) {
