@@ -93,7 +93,7 @@ AWE.GS = (function(module) {
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
-              result = module.ArmyAccess.getAllForSettlement_id(settlementId);
+              result = module.SlotAccess.getAllForSettlement_id(settlementId);
             }
             callback(result, status, xhr, timestamp);
           }

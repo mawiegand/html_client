@@ -21,7 +21,9 @@ AWE.GS = (function(module) {
     typeName: 'Settlement',
     name: null, 
     
-    alliance_id: null,
+    alliance_id: null, old_alliance_id: null, ///< id of the alliance the setllment is a member of
+    allianceIdObserver: AWE.Partials.attributeHashObserver(module.SettlementAccess, 'alliance_id', 'old_alliance_id').observes('alliance_id'),
+    
     armies_count: null,
     besieged: null,
     command_points: null,
@@ -33,7 +35,7 @@ AWE.GS = (function(module) {
     location_id: null,
     morale: null,
     node_id: null,
-    
+
     owner_id: null, old_owner_id: null,
     ownerIdObserver: AWE.Partials.attributeHashObserver(module.SettlementAccess, 'owner_id', 'old_owner_id').observes('owner_id'),    
     
@@ -78,7 +80,7 @@ AWE.GS = (function(module) {
     // private attributes and methods //////////////////////////////////////
   
     var that;
-    var lastSettlementUpdate = null;
+    var lastSettlementUpdates = {};
     
     // protected attributes and methods ////////////////////////////////////
 
@@ -100,8 +102,17 @@ AWE.GS = (function(module) {
       return that.getEntity(id);
     }
         
-    that.ownSettlements = function() {
-      return that.getEntities();
+    that.getOwnSettlements = function() {
+      return AWE.GS.SettlementAccess.getAllForOwner_id(AWE.GS.CharacterManager.getCurrentCharacter().getId());
+    }
+    
+    that.lastUpdateForCharacter = function(characterId) {
+      if (lastSettlementUpdates[characterId]) {
+        return lastSettlementUpdates[characterId];
+      }
+      else {
+        return new Date(1970);
+      }
     }
         
     /** returns true, if update is executed, returns false, if request did 
@@ -112,20 +123,26 @@ AWE.GS = (function(module) {
       return my.updateEntity(url, id, updateType, callback); 
     };
     
-    /** updates all armies in a given region. Calls the callback with a
-     * list of all the updated armies. */
+    /** updates all settlements for the current character. Calls the callback with a
+     * list of all the updated settlements. */
     that.updateOwnSettlements = function(updateType, callback) {
-      var charachterId = AWE.GS.CharacterManager.getCurrentCharacter().getId();
-      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/' + charachterId + '/settlements';
+      var characterId = AWE.GS.CharacterManager.getCurrentCharacter().getId();
+      that.updateSettlementsOfCharacter(characterId, updateType, callback);
+    }
+
+    /** updates all settlements for a given character. Calls the callback with a
+     * list of all the updated settlements. */
+    that.updateSettlementsOfCharacter = function(characterId, updateType, callback) {
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/' + characterId + '/settlements';
       return my.fetchEntitiesFromURL(
-        url,                                     // url to fetch from
-        my.runningUpdatesPerCharacter,           // queue to register this request during execution
-        1,                                       // regionId to fetch -> is used to register the request
-        updateType,                              // type of update (aggregate, short, full)
-        lastSettlementUpdate,               // modified after
-        function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
+        url,                                               // url to fetch from
+        my.runningUpdatesPerCharacter,                     // queue to register this request during execution
+        characterId,                                       // regionId to fetch -> is used to register the request
+        updateType,                                        // type of update (aggregate, short, full)
+        this.lastUpdateForCharacter(characterId),                              // modified after
+        function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            lastSettlementUpdate = timestamp;
+            lastSettlementUpdates[characterId] = timestamp;
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {

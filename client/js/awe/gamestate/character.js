@@ -144,11 +144,18 @@ AWE.GS = (function(module) {
     
     that.currentCharacter = null;
   
-    that.getCharacter = function(id) { return that.getEntity(id); };
-    that.getCurrentCharacter = function() { return this.currentCharacter; };
+    that.getCharacter = function(id) {
+      return that.getEntity(id);
+    };
+    
+    that.getCurrentCharacter = function() {
+      return this.currentCharacter;
+    };
+    
     that.getMembersOfAlliance = function(id) { 
       return AWE.GS.CharacterAccess.getAllForAlliance_id(id)
     };
+    
     that.lastUpdateAtForAllianceId = function(allianceId, updateType) {
       return module.CharacterAccess.lastUpdateForAlliance_id(allianceId, updateType);// modified after
     };

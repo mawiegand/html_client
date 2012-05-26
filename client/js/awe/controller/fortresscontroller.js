@@ -91,26 +91,26 @@ AWE.Controller = (function(module) {
     
     // ///////////////////////////////////////////////////////////////////////
     //
-    //   Views (Ember)
+    //   Model
     //
     // /////////////////////////////////////////////////////////////////////// 
 
     
     that.updateModel = (function() {
             
-      var lastUpdateCheck = new Date(1970);
+      var lastSettlementUpdateCheck = new Date(1970);
       
       var updateSettlements = function() {
         
         AWE.GS.SettlementManager.updateOwnSettlements(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
           
           log('got settlements from server');
-          var settlements = AWE.GS.SettlementManager.ownSettlements()
+          var settlements = AWE.GS.SettlementManager.getOwnSettlements();
           
           for (var i = 0; i < settlements.length; i++) {
             if (settlements[i]) {
+              var sid = settlements[i].getId();
               AWE.GS.SlotManager.updateSlotsAtSettlement(settlements[i].getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-                log('got settlement-slots from server');
               });
             }
           }
@@ -119,10 +119,10 @@ AWE.Controller = (function(module) {
       
       return function() {
         
-        if (lastUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date()) {
+        if (lastSettlementUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date()) {
           log('update Settlement');
           updateSettlements();
-          lastUpdateCheck = new Date();
+          lastSettlementUpdateCheck = new Date();
         }
       };
     }());
