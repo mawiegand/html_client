@@ -24,6 +24,7 @@ AWE.GS = (function(module) {
     settlement_id: null, old_settlement_id: null,
     locationIdObserver: AWE.Partials.attributeHashObserver(module.SlotAccess, 'settlement_id', 'old_settlement_id').observes('settlement_id'),
     
+		level: null,
     building_id: null,
     construction_id: null,
     max_level: null,
