@@ -80,7 +80,7 @@ AWE.GS = (function(module) {
     // private attributes and methods //////////////////////////////////////
   
     var that;
-    var lastSettlementUpdate = null;
+    var lastSettlementUpdates = {};
     
     // protected attributes and methods ////////////////////////////////////
 
@@ -105,6 +105,15 @@ AWE.GS = (function(module) {
     that.ownSettlements = function() {
       return that.getEntities();
     }
+    
+    that.lastUpdateForCharacter = function(characterId) {
+      if (lastSettlementUpdates[characterId]) {
+        return lastSettlementUpdates[characterId];
+      }
+      else {
+        return new Date(1970);
+      }
+    }
         
     /** returns true, if update is executed, returns false, if request did 
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
@@ -114,20 +123,26 @@ AWE.GS = (function(module) {
       return my.updateEntity(url, id, updateType, callback); 
     };
     
-    /** updates all armies in a given region. Calls the callback with a
-     * list of all the updated armies. */
+    /** updates all settlements for the current character. Calls the callback with a
+     * list of all the updated settlements. */
     that.updateOwnSettlements = function(updateType, callback) {
-      var charachterId = AWE.GS.CharacterManager.getCurrentCharacter().getId();
-      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/' + charachterId + '/settlements';
+      var characterId = AWE.GS.CharacterManager.getCurrentCharacter().getId();
+      that.updateSettlementsOfCharacter(characterId, updateType, callback);
+    }
+
+    /** updates all settlements for a given character. Calls the callback with a
+     * list of all the updated settlements. */
+    that.updateSettlementsOfCharacter = function(characterId, updateType, callback) {
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/' + characterId + '/settlements';
       return my.fetchEntitiesFromURL(
-        url,                                     // url to fetch from
-        my.runningUpdatesPerCharacter,           // queue to register this request during execution
-        1,                                       // regionId to fetch -> is used to register the request
-        updateType,                              // type of update (aggregate, short, full)
-        lastSettlementUpdate,               // modified after
-        function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
+        url,                                               // url to fetch from
+        my.runningUpdatesPerCharacter,                     // queue to register this request during execution
+        characterId,                                       // regionId to fetch -> is used to register the request
+        updateType,                                        // type of update (aggregate, short, full)
+        this.lastUpdateForCharacter(characterId),                              // modified after
+        function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            lastSettlementUpdate = timestamp;
+            lastSettlementUpdates[characterId] = timestamp;
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
