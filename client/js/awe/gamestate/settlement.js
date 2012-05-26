@@ -21,7 +21,9 @@ AWE.GS = (function(module) {
     typeName: 'Settlement',
     name: null, 
     
-    alliance_id: null,
+    alliance_id: null, old_alliance_id: null, ///< id of the alliance the setllment is a member of
+    allianceIdObserver: AWE.Partials.attributeHashObserver(module.SettlementAccess, 'alliance_id', 'old_alliance_id').observes('alliance_id'),
+    
     armies_count: null,
     besieged: null,
     command_points: null,
@@ -33,7 +35,10 @@ AWE.GS = (function(module) {
     location_id: null,
     morale: null,
     node_id: null,
-    owner_id: null,
+
+    owner_id: null, old_owner_id: null, ///< id of the character owning this settlement
+    allianceIdObserver: AWE.Partials.attributeHashObserver(module.SettlementAccess, 'owner_id', 'old_owner_id').observes('owner_id'),
+
     owns_region: null,
     points: null,
     region_id: null,
