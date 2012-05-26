@@ -102,24 +102,18 @@ AWE.Controller = (function(module) {
       
       var updateSettlements = function() {
         
-        AWE.GS.SettlementManager.updateOwnSettlements(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+        AWE.GS.SettlementManager.updateSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity) {
+	
+					if (entity && entity.getId()) {
+            AWE.GS.SlotManager.updateSlotsAtSettlement(entity.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+					}
           
-          log('got settlements from server');
-          var settlements = AWE.GS.SettlementManager.getOwnSettlements();
-          
-          for (var i = 0; i < settlements.length; i++) {
-            if (settlements[i]) {
-              var sid = settlements[i].getId();
-              AWE.GS.SlotManager.updateSlotsAtSettlement(settlements[i].getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-              });
-            }
-          }
         }); 
       }
       
       return function() {
         
-        if (lastSettlementUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date()) {
+        if (that.fortressId > 0 && lastSettlementUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date()) {
           log('update Settlement');
           updateSettlements();
           lastSettlementUpdateCheck = new Date();
