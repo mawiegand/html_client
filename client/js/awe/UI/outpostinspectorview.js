@@ -87,8 +87,8 @@ AWE.UI = (function(module) {
         _levelLabelView.setIconImage("map/icon/actionpoints");
         this.addChild(_levelLabelView);
       }
-      if (_location.level() != _levelLabelView.text()) {
-        _levelLabelView.setText(_location.level());
+      if (_location.settlementLevel() != _levelLabelView.text()) {
+        _levelLabelView.setText(_location.settlementLevel());
       }
       
       if (!_circleShape) {
