@@ -143,6 +143,8 @@ AWE.Controller = (function(module) {
         this.updateView();
         _viewNeedsUpdate = false;
       }
+
+			console.log(that.fortressId, AWE.GS.SettlementManager.getSettlement(that.fortressId))
       
       that.updateModel();
     }
