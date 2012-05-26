@@ -33,13 +33,37 @@ AWE.GS = (function(module) {
     location_id: null,
     morale: null,
     node_id: null,
-    owner_id: null,
+    
+    owner_id: null, old_owner_id: null,
+    ownerIdObserver: AWE.Partials.attributeHashObserver(module.SettlementAccess, 'owner_id', 'old_owner_id').observes('owner_id'),    
+    
     owns_region: null,
     points: null,
     region_id: null,
     tax_rate: null,
     taxable: null,
     type_id: null,
+    
+    isOwn: function() {
+      return this.get('owner_id') === module.CharacterManager.currentCharacter.getId();
+    },
+    
+    garrison: function() {
+      return module.ArmyManager.getArmy(this.get('garrison_id'));
+    },  
+    
+    owner: function() {
+      return module.CharacterManager.getCharacter(this.get('owner_id'));
+    },  
+    
+    founder: function() {
+      return module.CharacterManager.getCharacter(this.get('founder_id'));
+    },  
+    
+    slots: function() {
+      return module.SlotManager.getSlotsAtSettlement(this.getId());
+    },
+        
   });     
 
     
