@@ -79,16 +79,6 @@ AWE.UI.Ember = (function(module) {
     large: function() {
       return this.get('level') >= 8;
     }.property('level'),
-
-/*
-		type: function() {
-			if (this.get('model') && this.get('model').get('building')) {
-				return this.get('model').get('building').get('type');
-			}
-			else {
-				return null;
-			}
-		}.property('model', 'model.building', 'model.building.type'), */
     
   });
 
@@ -127,19 +117,10 @@ AWE.UI.Ember = (function(module) {
 		  var model = this.get('model');
 	    var newLevel = parseInt(model.get('level'))+1;
 
-			var type = model.get('type');
-			console.log('TYPE', type);
-
 	    if (newLevel <= 10) {
 	     model.set('level', newLevel);    
 	    }
 	    else {
-	      if (model.get('symbol') === 'artillery') {
-	        model.set('symbol', 'cavalry');
-	      }
-	      else if (this.get('symbol') !== 'wall'){
-	        model.set('symbol', 'artillery');
-	      }
 	      model.set('level', 0); // start over with the other type
 	    }
     },
