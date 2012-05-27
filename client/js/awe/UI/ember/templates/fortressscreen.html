@@ -14,10 +14,12 @@
 <script type="text/x-handlebars" data-template-name="fortress-screen">
 <div class="fortress-screen">
   <div class="fortress-picture">
-    {{view AWE.UI.Ember.BuildingView classNames="buildings"}}
-    {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-left"   classNameBindings="model.type"}}
-    {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-right"  classNameBindings="model.type"}}
-    {{view AWE.UI.Ember.InteractiveBuildingView  classNames="wall"               classNameBindings="model.type"}}
+    {{#if "fortress"}}
+      {{view AWE.UI.Ember.BuildingView classNames="buildings"}}
+      {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-left"   classNameBindings="model.type"}}
+      {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-right"  classNameBindings="model.type"}}
+      {{view AWE.UI.Ember.InteractiveBuildingView  classNames="wall"               classNameBindings="model.type"}}
+    {{/if}}
   </div>
 </div>
 </script>

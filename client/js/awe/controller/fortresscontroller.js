@@ -60,8 +60,10 @@ AWE.Controller = (function(module) {
     
     
     that.createView = function() {
-      var fortressScreen = Ember.View.create({
+			var fortress = AWE.GS.SettlementManager.getSettlement(that.fortressId);
+      var fortressScreen = AWE.UI.Ember.FortressView.create({
         templateName: "fortress-screen",
+				fortress: fortress,
       });      
       return fortressScreen;
     }
@@ -133,12 +135,21 @@ AWE.Controller = (function(module) {
 
     that.runloop = function() {
       this.updateDebug();
-      if (this.visible && (_viewNeedsUpdate)) {
+      if (this.visible && (_viewNeedsUpdate) && AWE.GS.SettlementManager.getSettlement(that.fortressId)) {
         this.updateView();
         _viewNeedsUpdate = false;
+				console.log(that.fortressId, AWE.GS.SettlementManager.getSettlement(that.fortressId))
       }
-
-			console.log(that.fortressId, AWE.GS.SettlementManager.getSettlement(that.fortressId))
+			
+			if (this.view) {   // make sure the view displays the right fortress.
+				// this is executed, in case the settlement is received from the 
+				// server for the first time or the fortressId has been changed by 
+				// this.setFortressId(int).
+				var fortress = AWE.GS.SettlementManager.getSettlement(that.fortressId);
+				if (this.view.get('fortress') != fortress) {
+					this.view.set('fortress', fortress);
+				}
+			}
       
       that.updateModel();
     }

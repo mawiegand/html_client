@@ -13,6 +13,10 @@ AWE.UI.Ember = (function(module) {
   module.templates.push('js/awe/UI/ember/templates/fortressscreen.html');
   
 
+	module.FortressView = Ember.View.extend({
+		fortress: null,
+	});
+
   module.ToolTipView = Ember.View.extend({
   
     mouseX: 0,
