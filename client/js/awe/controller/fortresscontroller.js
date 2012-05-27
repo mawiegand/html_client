@@ -16,6 +16,7 @@ AWE.Controller = (function(module) {
     that.view = null;
     that.visible = false;
     that.fortressId = null;
+		that.slots = null;
     
     var _super = {};             ///< store locally overwritten methods of super object
     _super.init = that.init; 
@@ -60,9 +61,12 @@ AWE.Controller = (function(module) {
     
     
     that.createView = function() {
-      var fortressScreen = Ember.View.create({
+			var fortress = AWE.GS.SettlementManager.getSettlement(that.fortressId);
+      var fortressScreen = AWE.UI.Ember.FortressView.create({
         templateName: "fortress-screen",
+				fortress: fortress,
       });      
+			that.slots = null;
       return fortressScreen;
     }
     
@@ -133,12 +137,28 @@ AWE.Controller = (function(module) {
 
     that.runloop = function() {
       this.updateDebug();
-      if (this.visible && (_viewNeedsUpdate)) {
+      if (this.visible && (_viewNeedsUpdate) && AWE.GS.SettlementManager.getSettlement(that.fortressId)) {
         this.updateView();
         _viewNeedsUpdate = false;
+				console.log(that.fortressId, AWE.GS.SettlementManager.getSettlement(that.fortressId))
       }
-
-			console.log(that.fortressId, AWE.GS.SettlementManager.getSettlement(that.fortressId))
+			
+			if (this.view) {   // make sure the view displays the right fortress.
+				// this is executed, in case the settlement is received from the 
+				// server for the first time or the fortressId has been changed by 
+				// this.setFortressId(int).
+				var fortress = AWE.GS.SettlementManager.getSettlement(that.fortressId);
+				if (this.view.get('fortress') != fortress) {
+					this.view.set('fortress', fortress);
+					this.view.setSlots(null); // fortress has changed, so remove the slots!!!
+				}
+				
+				if (fortress && fortress.slots() && AWE.Util.hashCount(fortress.slots()) > 0 && that.slots != fortress.slots()) {
+					this.view.setSlots(fortress.slots());
+					that.slots = fortress.slots();
+					console.log('Set building slots.');
+				}
+			}
       
       that.updateModel();
     }

@@ -13,6 +13,25 @@ AWE.UI.Ember = (function(module) {
   module.templates.push('js/awe/UI/ember/templates/fortressscreen.html');
   
 
+	module.FortressView = Ember.View.extend({
+		fortress: null,  ///< pointer to the settlement model
+		haveSlots: false,
+		leftTower: null,
+		rightTower: null,
+		wall: null,
+		setSlots: function(slots) {
+			if (slots && AWE.Util.hashCount(slots) > 0) {
+				this.set('leftTower', slots[1]);
+				this.set('rightTower', slots[2]);
+				this.set('wall', slots[3]);
+				this.set('haveSlots', true);
+			}
+			else {
+				this.set('haveSlots', false);
+			}
+		},
+	});
+
   module.ToolTipView = Ember.View.extend({
   
     mouseX: 0,
@@ -44,7 +63,10 @@ AWE.UI.Ember = (function(module) {
     model: null, 
     hovered: false,
 
-    classNameBindings: ['small:size1', 'middle:size2', 'large:size3', 'hovered'],
+		levelBinding: 'model.building.level',
+		typeBinding: 'model.building.type',
+
+    classNameBindings: ['small:size1', 'middle:size2', 'large:size3', 'hovered', 'type'],
 
     small: function() {
       return this.get('level') > 0 && this.get('level') < 4;
@@ -66,6 +88,7 @@ AWE.UI.Ember = (function(module) {
     mouseX: 0,
     mouseY: 0,
     timeout: 0,    // tooltip timeout in ms
+		settlement: null,
   
     showTooltip: function() {
       this.set('tooltip', true);
@@ -91,7 +114,15 @@ AWE.UI.Ember = (function(module) {
     },
   
     click: function(event) {
-      this.get('model').build();
+		  var model = this.get('model');
+	    var newLevel = parseInt(model.get('level'))+1;
+
+	    if (newLevel <= 10) {
+	     model.set('level', newLevel);    
+	    }
+	    else {
+	      model.set('level', 0); // start over with the other type
+	    }
     },
   
   });
