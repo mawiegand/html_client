@@ -49,7 +49,7 @@ AWE.GS = (function(module) {
 		}.property('buildingId'),
 	
 		/** returns the localized description of the building. */
-		descritpion: function() {
+		description: function() {
 			var buildingId = this.get('buildingId');
 			return AWE.GS.RulesManager.getRules().getBuildingType(buildingId)['description']['en_US'];  // TODO: correct localization			
 		}.property('buildingId'),
