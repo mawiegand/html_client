@@ -497,7 +497,7 @@ html, body {
 
 .fortress-picture .mouse-over {
   position: absolute;
-  width: 290px;
+  width: 390px;
   height: 140px;
   z-index:10;
   padding: 16px;
@@ -538,13 +538,20 @@ html, body {
   width: 238px;
   height: 454px;
   z-index: 2;
+  background: url('../images/settlements/fortress/building_category_fortress_tower.png');  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
 
-.fortress-picture .tower.artillery {
-  background: url('../images/settlements/fortress/fortress_tower_artillery.png');
+.fortress-picture .tower.building_siege_tower {
+  background: url('../images/settlements/fortress/building_siege_tower.png');
 }
-.fortress-picture .tower.cavalry {
-  background: url('../images/settlements/fortress/fortress_tower_cavalry.png');
+.fortress-picture .tower.building_infantry_tower {
+  background: url('../images/settlements/fortress/building_infantry_tower.png');
+}
+.fortress-picture .tower.building_artillery_tower {
+  background: url('../images/settlements/fortress/building_artillery_tower.png');
+}
+.fortress-picture .tower.building_cavalry_tower {
+  background: url('../images/settlements/fortress/building_cavalry_tower.png');
 }
 
 

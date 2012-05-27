@@ -13,13 +13,60 @@ AWE.GS = (function(module) {
 
   // ///////////////////////////////////////////////////////////////////////
   //
-  //   SETTLEMENT
+  //   BUILDING
+  //
+  // ///////////////////////////////////////////////////////////////////////
+
+
+	/** Building stores all information associated with a specific building
+	 * standing at a specific building site. Actually, there's no Resource
+	 * 'Building' in the database. For giving easy access to everything 
+	 * related to buildings, this object connects information from the
+	 * Resource 'Slot' (a building site in a settlement) with information 
+	 * stored in the Game Rules. */
+  module.Building = Ember.Object.extend({
+		typename: 'Building',
+
+		slot: null,         ///< points to the slot this building is situated at. Needs to be set during creation.
+
+		buildingIdBinding: 'slot.building_id',  ///< bind the slot's building id to the corresponding property of the building
+		levelBinding: 'slot.level',     ///< property holding the present level of building 
+
+		/** returns a unique string identifying the building type. This 
+		 * is used to associate all images to the building. */
+		type: function() {
+			var buildingId = this.get('buildingId');
+			if (buildingId === undefined || buildingId === null) {
+				return null;
+			}
+			return AWE.GS.RulesManager.getRules().getBuildingType(buildingId)['symbolic_id'];
+		}.property('buildingId'),
+		
+		/** returns the localized name of the building. */
+		name: function() {
+			var buildingId = this.get('buildingId');
+			return AWE.GS.RulesManager.getRules().getBuildingType(buildingId)['name']['en_US'];  // TODO: correct localization			
+		}.property('buildingId'),
+	
+		/** returns the localized description of the building. */
+		descritpion: function() {
+			var buildingId = this.get('buildingId');
+			return AWE.GS.RulesManager.getRules().getBuildingType(buildingId)['description']['en_US'];  // TODO: correct localization			
+		}.property('buildingId'),
+	
+  });    
+
+
+  // ///////////////////////////////////////////////////////////////////////
+  //
+  //   (BUILDING) SLOT
   //
   // ///////////////////////////////////////////////////////////////////////    
-    
+
+
+
   module.Slot = module.Entity.extend({     // extends Entity to Settlement
     typeName: 'Slot',
-    name: null,
     
     settlement_id: null, old_settlement_id: null,
     locationIdObserver: AWE.Partials.attributeHashObserver(module.SlotAccess, 'settlement_id', 'old_settlement_id').observes('settlement_id'),
@@ -27,14 +74,39 @@ AWE.GS = (function(module) {
 		level: null,
     building_id: null,
     construction_id: null,
-    max_level: null,
     slot_num: null,
+		
+		_buildingInstance: null,      ///< private method holding the instance of the corresponding building, if needed.
+
+		/** return the building standing at this slot. Returns NULL, in case this
+		 * slot is empty. */
+		building: function() {
+			var buildingId = this.get('building_id');
+			if (buildingId === undefined || buildingId === null) {
+				return null;
+			}
+			else {
+				var building = this.get('_buildingInstance');
+				if (!building) {
+					console.log('CREATED NEW BUILDING OBJECT');
+					building = module.Building.create({
+						slot: this,
+					});
+					this.set('_buildingInstance', building);				
+				}
+				return building;
+			}
+		}.property('building_id'),
+
+		settlement: function() {
+			module.SettlementManager.getSettlement(this.get('settlementId'));
+		},
   });     
 
     
   // ///////////////////////////////////////////////////////////////////////
   //
-  //   SETTLEMENT MANAGER
+  //   BUILDING SLOT MANAGER
   //
   // ///////////////////////////////////////////////////////////////////////  
 

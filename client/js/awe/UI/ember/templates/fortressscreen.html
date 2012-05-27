@@ -1,12 +1,23 @@
 <script type="text/x-handlebars" data-template-name="interactive-building">
-{{#if "tooltip"}}
-  {{#view AWE.UI.Ember.ToolTipView classNames="mouse-over" mouseXBinding="mouseX" mouseYBinding="mouseY"}}
-    <img src="/client/images/dialogs/advisor.png" / class="advisor">
-    <h1>{{parentView.model.name}} L{{parentView.model.level}}</h1>
-    <p>Next level does cost XYZ resources. It will need about X:XX.YY to build.</p>
-  {{/view}}
+{{#if "model.building"}}
+  {{#if "tooltip"}}
+    {{#view AWE.UI.Ember.ToolTipView classNames="mouse-over" mouseXBinding="mouseX" mouseYBinding="mouseY"}}
+      <img src="/client/images/dialogs/advisor.png" / class="advisor">
+      <h1>{{parentView.model.building.name}} L{{parentView.model.building.level}}</h1>
+      <p>Next level does cost XYZ resources. It will need about X:XX.YY to build.</p>
+    {{/view}}
+ {{/if}}
+ <div class="level">{{model.building.level}}</div>
 {{/if}}
-<div class="level">{{level}}</div>
+{{#unless "model.building"}}
+  {{#if "tooltip"}}
+    {{#view AWE.UI.Ember.ToolTipView classNames="mouse-over" mouseXBinding="mouseX" mouseYBinding="mouseY"}}
+      <img src="/client/images/dialogs/advisor.png" / class="advisor">
+      <h1>Empty Building Site.</h1>
+      <p>Click to build a new building here.</p>
+    {{/view}}
+  {{/if}}
+{{/unless}}
 </script>
 
 
@@ -15,10 +26,12 @@
 <div class="fortress-screen">
   <div class="fortress-picture">
     {{#if "fortress"}}
-      {{view AWE.UI.Ember.BuildingView classNames="buildings"}}
-      {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-left"   classNameBindings="model.type"}}
-      {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-right"  classNameBindings="model.type"}}
-      {{view AWE.UI.Ember.InteractiveBuildingView  classNames="wall"               classNameBindings="model.type"}}
+      {{#if "haveSlots"}}
+        {{view AWE.UI.Ember.BuildingView classNames="buildings" levelBinding="wall.building.level"}}
+        {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-left" modelBinding="leftTower" settlementBinding="fortress"}}
+        {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-right" modelBinding="rightTower" settlementBinding="fortress"}}
+        {{view AWE.UI.Ember.InteractiveBuildingView  classNames="wall"  modelBinding="wall" settlementBinding="fortress"}}
+      {{/if}}
     {{/if}}
   </div>
 </div>

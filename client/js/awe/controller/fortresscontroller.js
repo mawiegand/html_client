@@ -16,6 +16,7 @@ AWE.Controller = (function(module) {
     that.view = null;
     that.visible = false;
     that.fortressId = null;
+		that.slots = null;
     
     var _super = {};             ///< store locally overwritten methods of super object
     _super.init = that.init; 
@@ -65,6 +66,7 @@ AWE.Controller = (function(module) {
         templateName: "fortress-screen",
 				fortress: fortress,
       });      
+			that.slots = null;
       return fortressScreen;
     }
     
@@ -148,6 +150,13 @@ AWE.Controller = (function(module) {
 				var fortress = AWE.GS.SettlementManager.getSettlement(that.fortressId);
 				if (this.view.get('fortress') != fortress) {
 					this.view.set('fortress', fortress);
+					this.view.setSlots(null); // fortress has changed, so remove the slots!!!
+				}
+				
+				if (fortress && fortress.slots() && AWE.Util.hashCount(fortress.slots()) > 0 && that.slots != fortress.slots()) {
+					this.view.setSlots(fortress.slots());
+					that.slots = fortress.slots();
+					console.log('Set building slots.');
 				}
 			}
       

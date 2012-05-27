@@ -14,7 +14,22 @@ AWE.UI.Ember = (function(module) {
   
 
 	module.FortressView = Ember.View.extend({
-		fortress: null,
+		fortress: null,  ///< pointer to the settlement model
+		haveSlots: false,
+		leftTower: null,
+		rightTower: null,
+		wall: null,
+		setSlots: function(slots) {
+			if (slots && AWE.Util.hashCount(slots) > 0) {
+				this.set('leftTower', slots[1]);
+				this.set('rightTower', slots[2]);
+				this.set('wall', slots[3]);
+				this.set('haveSlots', true);
+			}
+			else {
+				this.set('haveSlots', false);
+			}
+		},
 	});
 
   module.ToolTipView = Ember.View.extend({
@@ -48,7 +63,10 @@ AWE.UI.Ember = (function(module) {
     model: null, 
     hovered: false,
 
-    classNameBindings: ['small:size1', 'middle:size2', 'large:size3', 'hovered'],
+		levelBinding: 'model.building.level',
+		typeBinding: 'model.building.type',
+
+    classNameBindings: ['small:size1', 'middle:size2', 'large:size3', 'hovered', 'type'],
 
     small: function() {
       return this.get('level') > 0 && this.get('level') < 4;
@@ -61,6 +79,16 @@ AWE.UI.Ember = (function(module) {
     large: function() {
       return this.get('level') >= 8;
     }.property('level'),
+
+/*
+		type: function() {
+			if (this.get('model') && this.get('model').get('building')) {
+				return this.get('model').get('building').get('type');
+			}
+			else {
+				return null;
+			}
+		}.property('model', 'model.building', 'model.building.type'), */
     
   });
 
@@ -70,6 +98,7 @@ AWE.UI.Ember = (function(module) {
     mouseX: 0,
     mouseY: 0,
     timeout: 0,    // tooltip timeout in ms
+		settlement: null,
   
     showTooltip: function() {
       this.set('tooltip', true);
@@ -95,7 +124,24 @@ AWE.UI.Ember = (function(module) {
     },
   
     click: function(event) {
-      this.get('model').build();
+		  var model = this.get('model');
+	    var newLevel = parseInt(model.get('level'))+1;
+
+			var type = model.get('type');
+			console.log('TYPE', type);
+
+	    if (newLevel <= 10) {
+	     model.set('level', newLevel);    
+	    }
+	    else {
+	      if (model.get('symbol') === 'artillery') {
+	        model.set('symbol', 'cavalry');
+	      }
+	      else if (this.get('symbol') !== 'wall'){
+	        model.set('symbol', 'artillery');
+	      }
+	      model.set('level', 0); // start over with the other type
+	    }
     },
   
   });

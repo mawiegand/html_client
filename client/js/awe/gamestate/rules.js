@@ -21,7 +21,25 @@ AWE.GS = (function(module) {
       
     version: null,
     unit_types: null,
-  });     
+		building_categories: null,
+		building_types: null,
+		
+		getBuildingType: function(id) {
+			var buildingType = this.get('building_types')[id];
+			if (buildingType === undefined || !buildingType) {
+				console.log('ERROR: requested non-existing building type ' + buildingType);
+			}
+			return this.get('building_types')[id];
+
+		},
+		getBuildingCategory: function(id) {
+			var buildingCategory = this.get('building_categories')[id];
+			if (buildingCategory === undefined || !buildingCategory) {
+				console.log('ERROR: requested non-existing building category ' + buildingCategory);
+			}
+			return buildingCategroy;
+		},
+   });     
 
     
   // ///////////////////////////////////////////////////////////////////////
