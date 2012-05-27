@@ -541,7 +541,7 @@ html, body {
   width: 800px;
   height: 240px;
   z-index: 3;
-  background: url('../images/settlements/fortress/fortress_wall.png') no-repeat bottom;
+  background: url('../images/settlements/fortress/fortress_wall.png');
 }
 
 /** general settings for towers and default image (will be used as long as theres no specific image for a particular building type ) */
@@ -645,24 +645,24 @@ html, body {
 
 
 
-.fortress-picture .wall.size1 {
-	background-position: -800px 0px;
+.fortress-picture .wall {
+	background-position: 0px -360px;
 }
 .fortress-picture .wall.size2 {
-	background-position: -1600px 0px;
+	background-position: -800px -360px;
 }
 .fortress-picture .wall.size3 {
-	background-position: -2400px 0px;
+	background-position: -1600px -360px;
 }
 
-.fortress-picture .wall.size1.hovered {
-	background-position: -800px -600px;
+.fortress-picture .wall.hovered {
+	background-position: 0px -960px;
 }
 .fortress-picture .wall.size2.hovered {
-	background-position: -1600px -600px;
+	background-position: -800px -960px;
 }
 .fortress-picture .wall.size3.hovered {
-	background-position: -2400px -600px;
+	background-position: -1600px -960px;
 }
 
 
