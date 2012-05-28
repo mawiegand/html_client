@@ -9,6 +9,26 @@ var AWE = AWE || {};
 AWE.UI = (function(module) {
           
   module.rootNode = null;
+
+
+	if (AWE.Config.MAP_USE_GOOGLE) {
+		module.imageQueue = [];
+	
+		module.queueImage = function(image, src, callback) {
+			module.imageQueue.push({ image: image, src: src, callback: callback });
+		};
+	
+		module.nextImage = function() {
+			if (module.imageQueue.length > 0) {
+				var entry = module.imageQueue.shift();
+				entry.image.src = entry.src;
+				entry.callback();
+			}
+		};
+	
+		setInterval("AWE.UI.nextImage()", 500);
+	}
+	
   
   /*** AWE.UI.View ***/
 
@@ -282,6 +302,7 @@ AWE.UI = (function(module) {
     var _backgroundImage = null;  
     var streetsManager = null;
     var villageSpotsManager = null;  
+		var _scheduledImage = false;
     
     // protected attributes and methods //////////////////////////////////////
 
@@ -339,6 +360,9 @@ AWE.UI = (function(module) {
       this.layoutSubviews();
     };
 
+
+
+
     var selectBackgroundImage = function(detail) {
       var newImage = null;
       
@@ -350,39 +374,70 @@ AWE.UI = (function(module) {
         size = '512';
       }
       
-      if (!_node.isLeaf()) {       // not a leaf node, splits further
-        newImage = AWE.UI.ImageCache.getImage("map/tiles/split"+size);
-      }
-      else if (_node.region()) {   // terrain available, select appropriate tile
-        if (_node.region().terrainId() == 1) {
-          newImage = AWE.UI.ImageCache.getImage("map/tiles/forest"+size);      
-        }
-        else if (_node.region().terrainId() == 2) {
-          newImage = AWE.UI.ImageCache.getImage("map/tiles/mountains"+size);      
-        }
-      /*  else if (_node.region().terrainId() == 3) {
-          newImage = AWE.UI.ImageCache.getImage("map/tiles/mud"+size);      
-        }*/
-        else {
-          newImage = AWE.UI.ImageCache.getImage("map/tiles/plain"+size);              
-        }
-      }
-      else {                       // don't know terrain, yet. thus, select base tile
-        newImage = AWE.UI.ImageCache.getImage("map/tiles/base"+size);
-      }
-      
-      if (!_backgroundImage) {
-        _backgroundImage = module.createImageView();
-        _backgroundImage.initWithControllerAndImage(that.controller(), newImage);
-        _backgroundImage.setContentMode(module.ViewContentModeNone);
-        // link to encircling view for click events
-        _backgroundImage.displayObject().view = that;
-        _scaledContainer.addChild(_backgroundImage);
-      }
-      else if (_backgroundImage.image() !== newImage) {
-        _backgroundImage.setImage(newImage);
-        _backgroundImage.setFrame(AWE.Geometry.createRect(0,0,newImage.width, newImage.height));
-      }
+			if (!AWE.Config.MAP_USE_GOOGLE) {
+	      	if (!_node.isLeaf()) {       // not a leaf node, splits further
+	        newImage = AWE.UI.ImageCache.getImage("map/tiles/split"+size);
+	      }
+	      else if (_node.region()) {   // terrain available, select appropriate tile
+	        if (_node.region().terrainId() == 1) {
+	          newImage = AWE.UI.ImageCache.getImage("map/tiles/forest"+size);      
+	        }
+	        else if (_node.region().terrainId() == 2) {
+	          newImage = AWE.UI.ImageCache.getImage("map/tiles/mountains"+size);      
+	        }
+	      /*  else if (_node.region().terrainId() == 3) {
+	          newImage = AWE.UI.ImageCache.getImage("map/tiles/mud"+size);      
+	        }*/
+	        else {
+	          newImage = AWE.UI.ImageCache.getImage("map/tiles/plain"+size);              
+	        }
+	      }
+	      else {                       // don't know terrain, yet. thus, select base tile
+	        newImage = AWE.UI.ImageCache.getImage("map/tiles/base"+size);
+	      }
+	
+	      if (!_backgroundImage) {
+        	_backgroundImage = module.createImageView();
+	        _backgroundImage.initWithControllerAndImage(that.controller(), newImage);
+	        _backgroundImage.setContentMode(module.ViewContentModeNone);
+	        // link to encircling view for click events
+	        _backgroundImage.displayObject().view = that;
+	        _scaledContainer.addChild(_backgroundImage);			
+	      }
+	      else if (_backgroundImage.image() !== newImage) {
+	        _backgroundImage.setImage(newImage);
+	        _backgroundImage.setFrame(AWE.Geometry.createRect(0,0,newImage.width, newImage.height));
+	      }	
+			}	
+			else { //GOOGLE
+
+				var frame = _node.frame();
+				var cx = frame.origin.x + frame.size.width / 2.;
+				var cy = frame.origin.y + frame.size.height / 2.;
+				var lc = AWE.Mapping.GlobalMercator.MetersToLatLon(cx, cy);
+				var lat = lc.latitude;
+				var lon = lc.longitude;
+
+				var level = _node.level();
+		  	var src = "https://maps.googleapis.com/maps/api/staticmap?center="+lat+","+lon+"&zoom="+level+"&size=256x256&sensor=false";
+				newImage = new Image();
+			
+	      if (!_scheduledImage && !_backgroundImage) {
+					console.log('schedule');
+					_scheduledImage = true;
+					module.queueImage(newImage, src, function() {
+
+	        	_backgroundImage = module.createImageView();
+						console.log('set background image')
+		        _backgroundImage.initWithControllerAndImage(that.controller(), newImage);
+		        _backgroundImage.setContentMode(module.ViewContentModeNone);
+		        // link to encircling view for click events
+		        _backgroundImage.displayObject().view = that;
+		        _scaledContainer.addChild(_backgroundImage);			
+						console.log('done')		
+					});
+				}
+			}
     };
     
 
