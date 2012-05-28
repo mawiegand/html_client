@@ -41,7 +41,7 @@ AWE.I18n = AWE.I18n || function(module) {
     alliance: {
       founded: 'Founded',
       leader: 'Leader',
-      description: 'Descritpion',
+      description: 'Description',
       message: 'Message of the Day',
       messageExplanation: 'This is only visible to members.',
       members: 'Members',
