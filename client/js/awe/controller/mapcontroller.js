@@ -499,10 +499,6 @@ AWE.Controller = (function(module) {
     //
     // ///////////////////////////////////////////////////////////////////////
     
-    that.tempToggleMap = function(worldMap) {
-      log('worldMap', worldMap);
-    } 
-
 		that.switchMapMode = function(realMap) {
 			
 		}
