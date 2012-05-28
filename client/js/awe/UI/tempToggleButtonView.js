@@ -29,7 +29,7 @@ AWE.UI = (function(module) {
       
       if (!my.toggleButtonView) {
         my.toggleButtonView = AWE.UI.createButtonView();
-        my.toggleButtonView.initWithControllerTextAndImage(my.controller, 'World', AWE.UI.ImageCache.getImage("map/button1"));
+        my.toggleButtonView.initWithControllerTextAndImage(my.controller, 'Game', AWE.UI.ImageCache.getImage("map/button1"));
         my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
         my.toggleButtonView.setFrame(AWE.Geometry.createRect(0, 0, 48, 48));
         my.toggleButtonView.onClick = function() {
@@ -38,12 +38,12 @@ AWE.UI = (function(module) {
         this.addChild(my.toggleButtonView);
       }
       
-      my.toggleButtonView.setText(worldMap ? 'Game' : 'World');
+      my.toggleButtonView.setText(worldMap ? 'World' : 'Game');
     }
     
     that.onToggleButtonClick = function() {
-      my.controller.switchMapMode(worldMap);
       worldMap = !worldMap;
+      my.controller.switchMapMode(worldMap);
       this.recalcView() 
     }
     
