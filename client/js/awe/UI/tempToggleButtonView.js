@@ -42,7 +42,7 @@ AWE.UI = (function(module) {
     }
     
     that.onToggleButtonClick = function() {
-      my.controller.tempToggleMap(worldMap);
+      my.controller.switchMapMode(worldMap);
       worldMap = !worldMap;
       this.recalcView() 
     }
