@@ -117,7 +117,9 @@ AWE.Controller = (function(module) {
         viewport: initialFrameModelCoordinates
       });
 
-
+      inspectorViews.tempToggleButtonView = AWE.UI.createTempToggleButtonView();
+      inspectorViews.tempToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
+      _stages[3].addChild(inspectorViews.tempToggleButtonView.displayObject());
     };   
         
     that.getStages = function() {
@@ -495,7 +497,11 @@ AWE.Controller = (function(module) {
     //
     //   Actions
     //
-    // /////////////////////////////////////////////////////////////////////// 
+    // ///////////////////////////////////////////////////////////////////////
+    
+    that.tempToggleMap = function(worldMap) {
+      log('worldMap', worldMap);
+    } 
 
     that.armyInfoButtonClicked = function(army) {
       if (!army) {
@@ -1787,6 +1793,9 @@ AWE.Controller = (function(module) {
     that.updateInspectorViews = function() {
       if (inspectorViews.inspector) {
         inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width-345, _windowSize.height-155));
+      }
+      if (inspectorViews.tempToggleButtonView) {
+        inspectorViews.tempToggleButtonView.setOrigin(AWE.Geometry.createPoint(20, _windowSize.height - 68));
       }
       return _inspectorChanged || _windowChanged;
     };
