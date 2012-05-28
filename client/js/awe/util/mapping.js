@@ -86,8 +86,17 @@ AWE.Mapping = (function(module) {
         }
 		    ty = (1 << zoom) - 1 - ty;
 		    return { x: tx, y: ty, zoom: zoom };
-      }
+      },
+			MetersToLatLon: function(mx, my ) {
+
+			  var lon = (mx / _originShift) * 180.0
+			  var lat = (my / _originShift) * 180.0
+
+			  lat = 180 / Math.PI * (2 * Math.atan( Math.exp( lat * Math.PI / 180.0)) - Math.PI / 2.0)
+			  return { latitude: -lat, longitude: lon };
+			},
     };
+
     
   }(AWE.Config.MAPPING_TILE_SIZE));
   
