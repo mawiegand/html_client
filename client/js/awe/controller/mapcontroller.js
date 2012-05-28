@@ -1515,7 +1515,7 @@ AWE.Controller = (function(module) {
       
       if (armyLocation) {
         // get all possible target locations      
-        if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.typeId()] === 'fortress') {           // if armyLocation is fortress
+        if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.settlementTypeId()] === 'fortress') {           // if armyLocation is fortress
           var regionLocations = armyRegion.locations();
           
           // add all location in same region
@@ -1762,7 +1762,7 @@ AWE.Controller = (function(module) {
             var armyLocation = AWE.Map.Manager.getLocation(army.get('location_id'));
             var targetedView = army.isGarrison() ? locationViews[armyLocation.id()] : armyViews[army.getId()];
             
-            if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.typeId()] === 'fortress') {
+            if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.settlementTypeId()] === 'fortress') {
               var visible = that.areArmiesAtFortressVisible(that.mc2vc(armyLocation.node().frame()));
             }
             else {
