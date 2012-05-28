@@ -11,11 +11,24 @@ AWE.UI = (function(module) {
   module.rootNode = null;
 
 
-	if (AWE.Config.MAP_USE_GOOGLE) {
+	if (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM) {
 		module.imageQueue = [];
 	
 		module.queueImage = function(image, src, callback) {
 			module.imageQueue.push({ image: image, src: src, callback: callback });
+		};
+	
+		module.queueImageZoom = function(image, src, zoom, leaf, callback) {
+			var queue = [];
+			
+			AWE.Ext.applyFunction(module.imageQueue, function(element) {
+				if (element.zoom === zoom || element.leaf) { // filter other zoom levels
+					queue.push(element);
+				}
+			});
+			module.imageQueue = queue;
+			
+			module.imageQueue.push({ image: image, src: src, zoom: zoom, leaf: leaf, callback: callback });
 		};
 	
 		module.nextImage = function() {
@@ -26,7 +39,7 @@ AWE.UI = (function(module) {
 			}
 		};
 	
-		setInterval("AWE.UI.nextImage()", 500);
+		setInterval("AWE.UI.nextImage()", 10);
 	}
 	
   
@@ -310,10 +323,12 @@ AWE.UI = (function(module) {
 
     my.streetsHidden = true;
     my.VillagesHidden = true;
+		my.realMap = false;
 
     // public attributes and methods /////////////////////////////////////////
     
     that = module.createView(spec, my);
+
     
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
@@ -345,6 +360,14 @@ AWE.UI = (function(module) {
       _super.initWithController(controller, frame);
     }
 
+		that.setMapMode = function(realMap) {
+			var mode = realMap && (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM);
+			if (mode !== my.realMap) {
+				my.realMap = mode;
+				this.setNeedsUpdate();
+				this.setNeedsLayout();
+			}
+		};
     
     that.node = function() { return _node; }
 
@@ -374,7 +397,7 @@ AWE.UI = (function(module) {
         size = '512';
       }
       
-			if (!AWE.Config.MAP_USE_GOOGLE) {
+			if (!my.realMap || (!AWE.Config.MAP_USE_GOOGLE && !AWE.Config.MAP_USE_OSM)) {
 	      	if (!_node.isLeaf()) {       // not a leaf node, splits further
 	        newImage = AWE.UI.ImageCache.getImage("map/tiles/split"+size);
 	      }
@@ -409,14 +432,39 @@ AWE.UI = (function(module) {
 	        _backgroundImage.setFrame(AWE.Geometry.createRect(0,0,newImage.width, newImage.height));
 	      }	
 			}	
+			else if (AWE.Config.MAP_USE_OSM) {
+				var path = _node.path();
+				var tms = AWE.Mapping.GlobalMercator.QuadTreeToTMSTileCode(path);
+				tms = AWE.Mapping.GlobalMercator.TMSToGoogleTileCode(tms.x, tms.y, tms.zoom);
+
+		  	var src = "http://a.tile.openstreetmap.org/"+tms.zoom+"/"+tms.x+"/"+tms.y+".png";
+				console.log(tms, src);
+
+				newImage = new Image();
+			
+	      if (!_scheduledImage && !_backgroundImage) {
+					console.log('schedule');
+					_scheduledImage = true;
+					module.queueImageZoom(newImage, src, tms.zoom, _node.isLeaf(), function() {
+						_scheduledImage = false;
+	        	_backgroundImage = module.createImageView();
+						console.log('set background image')
+		        _backgroundImage.initWithControllerAndImage(that.controller(), newImage);
+		        _backgroundImage.setContentMode(module.ViewContentModeNone);
+		        // link to encircling view for click events
+		        _backgroundImage.displayObject().view = that;
+		        _scaledContainer.addChild(_backgroundImage);			
+						that.autoscaleIfNeeded();
+						that.setNeedsDisplay();
+
+						console.log('done')		
+					});
+				}				
+			}
 			else { //GOOGLE
 
 				var frame = _node.frame();
-				var cx = frame.origin.x + frame.size.width / 2.;
-				var cy = frame.origin.y + frame.size.height / 2.;
 				var lc = AWE.Mapping.GlobalMercator.MetersToLatLon(cx, cy);
-				var lat = lc.latitude;
-				var lon = lc.longitude;
 
 				var level = _node.level();
 		  	var src = "https://maps.googleapis.com/maps/api/staticmap?center="+lat+","+lon+"&zoom="+level+"&size=256x256&sensor=false";
@@ -570,8 +618,9 @@ AWE.UI = (function(module) {
 
     that.autoscaleIfNeeded = function() {
       if (this.autoscales() && _backgroundImage) {
-        _scaledContainer.setScaleX(my.frame.size.width / _backgroundImage.width());
-        _scaledContainer.setScaleY(my.frame.size.width / _backgroundImage.width());
+				var dimension = my.realMap ? 256. : _backgroundImage.width();
+        _scaledContainer.setScaleX(my.frame.size.width / dimension);
+        _scaledContainer.setScaleY(my.frame.size.width / dimension);
       }
     }
     
