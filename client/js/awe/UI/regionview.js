@@ -18,28 +18,37 @@ AWE.UI = (function(module) {
 			module.imageQueue.push({ image: image, src: src, callback: callback });
 		};
 	
-		module.queueImageZoom = function(image, src, zoom, leaf, callback) {
+		module.queueImageZoom = function(image, src, zoom, leaf, callback, failure) {
 			var queue = [];
 			
 			AWE.Ext.applyFunction(module.imageQueue, function(element) {
-				if (element.zoom === zoom || element.leaf) { // filter other zoom levels
+				if (element.zoom === zoom || (leaf && element.zoom >= zoom)|| element.leaf) { // filter other zoom levels
 					queue.push(element);
+				}
+				else {
+				  if (element.failure) {
+				    element.failure();
+				  }
 				}
 			});
 			module.imageQueue = queue;
 			
-			module.imageQueue.push({ image: image, src: src, zoom: zoom, leaf: leaf, callback: callback });
+			module.imageQueue.push({ image: image, src: src, zoom: zoom, leaf: leaf, callback: callback, failure: failure });
 		};
 	
 		module.nextImage = function() {
 			if (module.imageQueue.length > 0) {
 				var entry = module.imageQueue.shift();
+				$(entry.image).load(function(e) {
+				  return function() {
+				    e.callback();
+			    }
+				}(entry));
 				entry.image.src = entry.src;
-				entry.callback();
 			}
 		};
 	
-		setInterval("AWE.UI.nextImage()", 10);
+		setInterval("AWE.UI.nextImage()", 50);
 	}
 	
   
@@ -458,6 +467,8 @@ AWE.UI = (function(module) {
 						that.setNeedsDisplay();
 
 						console.log('done')		
+					}, function() {
+					  _scheduledImage = false;
 					});
 				}		
 				else if (!_scheduledImage && _backgroundImage.image().src !== src) {
@@ -470,7 +481,9 @@ AWE.UI = (function(module) {
 	          _backgroundImage.setFrame(AWE.Geometry.createRect(0,0,newImage.width, newImage.height));
 	        	that.autoscaleIfNeeded();
 						that.setNeedsDisplay();
-          });
+          }, function() {
+					  _scheduledImage = false;
+					});
 	      }			
 			}
 			else { //GOOGLE
