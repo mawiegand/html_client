@@ -38,7 +38,7 @@ AWE.UI = (function(module) {
         this.addChild(my.toggleButtonView);
       }
       
-      my.toggleButtonView.setText(worldMap ? 'World' : 'Game');
+      my.toggleButtonView.setText(worldMap ? 'Game' : 'World');
     }
     
     that.onToggleButtonClick = function() {
