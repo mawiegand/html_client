@@ -64,6 +64,8 @@ AWE.Controller = (function(module) {
 
     var currentAction = null;
     
+    var mapMode = false; //  display game graphics
+    
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Initialization
@@ -504,7 +506,11 @@ AWE.Controller = (function(module) {
     } 
 
 		that.switchMapMode = function(realMap) {
-			
+			console.log("SWITCH MAP MODE", realMap);
+			mapMode = realMap;
+			AWE.Ext.applyFunctionToElements(regionViews, function(view) {
+        view.setMapMode(realMap);
+      });			
 		}
 
     that.armyInfoButtonClicked = function(army) {
@@ -1200,6 +1206,7 @@ AWE.Controller = (function(module) {
         else {                                 // view needs to be created
           view = AWE.UI.createRegionView();
           view.initWithControllerAndNode(that, nodes[i], frame);
+					view.setMapMode(mapMode);
           AWE.Ext.applyFunction(view.displayObject(), function(obj) {
 //            obj.alpha = 0.3;
             _stages[0].addChild(obj);
