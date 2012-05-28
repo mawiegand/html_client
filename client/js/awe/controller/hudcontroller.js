@@ -105,10 +105,12 @@ AWE.Controller = (function(module) {
     //
     //   Action Handling
     //
-    // ///////////////////////////////////////////////////////////////////////   
+    // ///////////////////////////////////////////////////////////////////////
+    
+    var shopDialog = null;
 
     that.ingameShopButtonClicked = function() {
-      var dialog = AWE.UI.Ember.ShopView.create({
+      shopDialog = AWE.UI.Ember.ShopView.create({
         offers: AWE.Shop.Manager.content.get('shopOffers'),
         creditAmount: AWE.Shop.Manager.content.get('creditAmount'),
         buyCreditsPressed: function(evt) {
@@ -141,6 +143,7 @@ AWE.Controller = (function(module) {
           })
         },
         closePressed: function(evt) {
+          shopDialog = null;
           this.destroy();
         },
         updateCreditsPressed: function() {
@@ -148,25 +151,11 @@ AWE.Controller = (function(module) {
         },
       });
       
-      that.applicationController.presentModalDialog(dialog);
-      fetchCreditAmountRepeatedly(dialog);
+      that.applicationController.presentModalDialog(shopDialog);
     };
     
-    var fetchCreditAmountRepeatedly = function(dialog) {
-      log('reload Credit Amount', dialog);
-      if (!dialog.isDestroyed) {
-        AWE.Shop.Manager.fetchCreditAmount();
-        window.setTimeout(function(){ fetchCreditAmountRepeatedly(dialog) }, 10000);
-      }
-    }
-
     that.shopButtonClicked = function() {
       
-      // AWE.Shop.Manager.openCreditShopWindow();
-      log('START LOADING SETTLEMENTS');
-      
-
-      log('END LOADING SETTLEMENTS');
     };
         
 
@@ -186,7 +175,21 @@ AWE.Controller = (function(module) {
     
     that.modelChanged = function() { return _modelChanged; }
     
-    that.setModelChanged = function() { _modelChanged = true; }    
+    that.setModelChanged = function() { _modelChanged = true; }   
+    
+    that.updateModel = (function() {
+            
+      var lastCreditsUpdateCheck = new Date(1970);
+      
+      return function() {
+        
+        if (shopDialog && lastCreditsUpdateCheck.getTime() + AWE.Config.CREDITS_REFRESH_INTERVAL < +new Date()) {
+          log('update credit amount');
+          AWE.Shop.Manager.fetchCreditAmount();
+          lastCreditsUpdateCheck = new Date();
+        }
+      };
+    }());     
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -274,6 +277,8 @@ AWE.Controller = (function(module) {
       // only do something after the Map.Manager has been initialized (connected to server and received initial data)
       if(AWE.Map.Manager.isInitialized()) { 
         
+        // STEP 2: update Model
+        that.updateModel();
                 
         // STEP 3: layout canvas & stages according to possibly changed window size (TODO: clean this!)
         that.layoutIfNeeded();   

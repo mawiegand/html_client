@@ -79,6 +79,8 @@ AWE.Config = (function(module) {
   module.MAP_DBLCLK_CAMERA_CROSS_CLICK_SIZE = 35;
   
   module.SETTLEMENT_REFRESH_INTERVAL = 60 * 1000;
+  
+  module.CREDITS_REFRESH_INTERVAL = 10 * 1000;
 
   //image cache
   module.IMAGE_CACHE_LOAD_LIST = {
