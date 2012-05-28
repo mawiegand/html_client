@@ -459,7 +459,19 @@ AWE.UI = (function(module) {
 
 						console.log('done')		
 					});
-				}				
+				}		
+				else if (!_scheduledImage && _backgroundImage.image().src !== src) {
+					_scheduledImage = true;
+          _backgroundImage.setImage(new Image());
+
+					module.queueImageZoom(newImage, src, tms.zoom, _node.isLeaf(), function() {
+						_scheduledImage = false;
+	          _backgroundImage.setImage(newImage);
+	          _backgroundImage.setFrame(AWE.Geometry.createRect(0,0,newImage.width, newImage.height));
+	        	that.autoscaleIfNeeded();
+						that.setNeedsDisplay();
+          });
+	      }			
 			}
 			else { //GOOGLE
 
