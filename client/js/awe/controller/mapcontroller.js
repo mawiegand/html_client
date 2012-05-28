@@ -497,6 +497,10 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
 
+		that.switchMapMode = function(realMap) {
+			
+		}
+
     that.armyInfoButtonClicked = function(army) {
       if (!army) {
         return ;
