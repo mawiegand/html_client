@@ -91,7 +91,7 @@ AWE.GS = (function(module) {
     
     
     that.updateQueuesOfSettlement = function(settlementId, updateType, callback) {
-      var url = AWE.Config.CONSTRUCTION_SERVER_BASE + 'settlements/' + settlementId + '/queues';
+      var url = AWE.Config.SETTLEMENT_SERVER_BASE + 'settlements/' + settlementId + '/queues';
       return my.fetchEntitiesFromURL(
         url,                                               // url to fetch from
         my.runningUpdatesPerSettlement,                     // queue to register this request during execution

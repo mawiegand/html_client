@@ -156,6 +156,28 @@ AWE.Controller = (function(module) {
     
     that.shopButtonClicked = function() {
       
+      log('hole queues');
+      
+      AWE.GS.QueueManager.updateQueuesOfSettlement(2642, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queueData){
+        log('queueData', queueData);
+        
+        var queues = AWE.GS.QueueManager.getQueuesOfSettlement(2642)
+        log('queues', queues);
+        
+        for (var i = 0; i < queues.length; i++) {
+          var queue = queues[i];
+          if (queue !== undefined) {
+            log('queue', queue);
+            AWE.GS.JobManager.updateJobsOfQueue(queue.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobData, status){
+              log('jobData', jobData, status);
+              
+              var jobs = AWE.GS.JobManager.getJobsInQueue(queue.getId());
+              
+              log('jobs', jobs);
+            });
+          }
+        }
+      });
     };
         
 

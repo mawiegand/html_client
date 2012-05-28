@@ -92,7 +92,7 @@ AWE.GS = (function(module) {
     
     
     that.updateJobsOfQueue = function(queueId, updateType, callback) {
-      var url = AWE.Config.CONSTRUCTION_SERVER_BASE + 'queues/' + settlementId + '/jobs';
+      var url = AWE.Config.CONSTRUCTION_SERVER_BASE + 'queues/' + queueId + '/jobs';
       return my.fetchEntitiesFromURL(
         url,                                               // url to fetch from
         my.runningUpdatesPerQueue,                     // queue to register this request during execution
@@ -101,7 +101,7 @@ AWE.GS = (function(module) {
         this.lastUpdateForQueue(queueId),                              // modified after
         function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            lastQueueUpdates[queueId] = timestamp;
+            lastJobUpdates[queueId] = timestamp;
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
