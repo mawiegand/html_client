@@ -47,6 +47,7 @@ AWE.Controller = (function(module) {
     that.setLocationId = function(locationId) {
       var settlements = AWE.GS.SettlementAccess.getAllForLocation_id(locationId);
       if (AWE.Util.hashCount(settlements) <= 0) {
+        that.setFortressId(0);
         AWE.GS.SettlementManager.updateSettlementsAtLocation(locationId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result, status) {
           console.log("SETTLEMENTS", result);
           AWE.Ext.applyFunctionToHash(result, function(key, value) {
@@ -66,6 +67,7 @@ AWE.Controller = (function(module) {
     that.setNode = function(node) {
       var location = node.region().location(0);
       if (!location) {
+        that.setFortressId(0);
         while (! AWE.Map.Manager.fetchLocationsForRegion(node.region(), function(region) {
           that.setLocationId(region.location(0).id());
         })) ;
@@ -131,6 +133,7 @@ AWE.Controller = (function(module) {
     that.updateModel = (function() {
             
       var lastSettlementUpdateCheck = new Date(1970);
+      var lastSettlementId = 0;
       
       var updateSettlements = function() {
         
@@ -145,10 +148,11 @@ AWE.Controller = (function(module) {
       
       return function() {
         
-        if (that.fortressId > 0 && lastSettlementUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date()) {
+        if (that.fortressId > 0 && (lastSettlementId != that.fortressId ||  lastSettlementUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date())) {
           log('update Settlement');
           updateSettlements();
           lastSettlementUpdateCheck = new Date();
+          lastSettlementId = that.fortressId;
         }
       };
     }());
