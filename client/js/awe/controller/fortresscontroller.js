@@ -44,6 +44,34 @@ AWE.Controller = (function(module) {
       this.fortressId = fortressId; 
     }
     
+    that.setLocationId = function(locationId) {
+      var settlements = AWE.GS.SettlementAccess.getAllForLocation_id(locationId);
+      if (AWE.Util.hashCount(settlements) <= 0) {
+        AWE.GS.SettlementManager.updateSettlementsAtLocation(locationId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result, status) {
+          console.log("SETTLEMENTS", result);
+          AWE.Ext.applyFunctionToHash(result, function(key, value) {
+            console.log("SET FORTRESS KEY", key)
+            that.setFortressId(key);
+          });
+        });
+      }
+      else {
+        AWE.Ext.applyFunctionToHash(settlements, function(key, value) {
+          console.log("SET FORTRESS KEY", key)
+          that.setFortressId(key);
+        });
+      }
+    }
+    
+    that.setNode = function(node) {
+      var location = node.region().location(0);
+      if (!location) {
+        while (! AWE.Map.Manager.fetchLocationsForRegion(node.region(), function(region) {
+          that.setLocationId(region.location(0).id());
+        })) ;
+      }
+    }
+    
     that.removeView = function() {
       if (this.view) {
         this.view.destroy();

@@ -170,13 +170,24 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this.setScreenController(baseController);
     },
    
-    activateFortressController: function(fortressId) {
+    activateFortressController: function(reference) {
       var fortressController = this.get('fortressScreenController');
       if (!fortressController) {
         fortressController = AWE.Controller.createFortressController('#layers');
         this.set('fortressScreenController', fortressController);
       }
-      fortressController.setFortressId(fortressId);
+      if (reference.settlementId !== undefined) {
+        fortressController.setFortressId(reference.settlementId);
+      }
+      else if (reference.locationId !== undefined) {
+        fortressController.setLocationId(reference.locationId);
+      }
+      else if (reference.node !== undefined) {
+        fortressController.setNode(reference.node);
+      }
+      else {
+        console.log('ERROR: no fortress to enter specified.')
+      }
       this.setScreenController(fortressController);
     },   
    

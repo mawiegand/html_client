@@ -20,9 +20,15 @@ AWE.GS = (function(module) {
   module.Settlement = module.Entity.extend({     // extends Entity to Settlement
     typeName: 'Settlement',
     name: null, 
+
+    owner_id: null, old_owner_id: null,
+    ownerIdObserver: AWE.Partials.attributeHashObserver(module.SettlementAccess, 'owner_id', 'old_owner_id').observes('owner_id'),    
     
     alliance_id: null, old_alliance_id: null, ///< id of the alliance the setllment is a member of
     allianceIdObserver: AWE.Partials.attributeHashObserver(module.SettlementAccess, 'alliance_id', 'old_alliance_id').observes('alliance_id'),
+
+    location_id: null, old_location_id: null,
+    locationIdObserver: AWE.Partials.attributeHashObserver(module.SettlementAccess, 'location_id', 'old_location_id').observes('location_id'),    
     
     armies_count: null,
     besieged: null,
@@ -32,13 +38,11 @@ AWE.GS = (function(module) {
     founder_id: null,
     garrison_id: null,
     level: null,
-    location_id: null,
+    
+
     morale: null,
     node_id: null,
 
-    owner_id: null, old_owner_id: null,
-    ownerIdObserver: AWE.Partials.attributeHashObserver(module.SettlementAccess, 'owner_id', 'old_owner_id').observes('owner_id'),    
-    
     owns_region: null,
     points: null,
     region_id: null,
@@ -80,13 +84,15 @@ AWE.GS = (function(module) {
     // private attributes and methods //////////////////////////////////////
   
     var that;
-    var lastSettlementUpdates = {};
+    var lastCharacterUpdates = {};
+    var lastLocationUpdates = {};
     
     // protected attributes and methods ////////////////////////////////////
 
     my = my || {};
     
     my.runningUpdatesPerCharacter = {};
+    my.runningUpdatesPerLocation = {};
   
     // my.runningUpdatesPerRegion = {};  ///< hash that contains all running requests for regions, using the region.id as key.
     // my.runningUpdatesPerLocation = {};///< hash that contains all running requests for locations, using the location.id as key.
@@ -107,13 +113,22 @@ AWE.GS = (function(module) {
     }
     
     that.lastUpdateForCharacter = function(characterId) {
-      if (lastSettlementUpdates[characterId]) {
-        return lastSettlementUpdates[characterId];
+      if (lastCharacterUpdates[characterId]) {
+        return lastCharacterUpdates[characterId];
       }
       else {
         return new Date(1970);
       }
     }
+     
+    that.lastUpdateForLocation = function(locationId) {
+      if (lastLocationUpdates[locationId]) {
+        return lastLocationUpdates[locationId];
+      }
+      else {
+        return new Date(1970);
+      }
+    }     
         
     /** returns true, if update is executed, returns false, if request did 
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
@@ -142,7 +157,31 @@ AWE.GS = (function(module) {
         this.lastUpdateForCharacter(characterId),                              // modified after
         function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            lastSettlementUpdates[characterId] = timestamp;
+            lastCharacterUpdates[characterId] = timestamp;
+          }
+          if (callback) {
+            if (status === AWE.Net.NOT_MODIFIED) {
+              result = that.getEntities();
+            }
+            callback(result, status, xhr, timestamp);
+          }
+        }
+      ); 
+    }
+    
+    /** updates all settlements at a given location. Calls the callback with a
+     * list of all the updated settlements. */
+    that.updateSettlementsAtLocation = function(locationId, updateType, callback) {
+      var url = AWE.Config.MAP_SERVER_BASE + 'locations/' + locationId + '/settlements';
+      return my.fetchEntitiesFromURL(
+        url,                                               // url to fetch from
+        my.runningUpdatesPerLocation,                      // queue to register this request during execution
+        locationId,                                        // regionId to fetch -> is used to register the request
+        updateType,                                        // type of update (aggregate, short, full)
+        this.lastUpdateForLocation(locationId),            // modified after
+        function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
+          if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
+            lastLocationUpdates[locationId] = timestamp;
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {

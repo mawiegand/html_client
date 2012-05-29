@@ -247,7 +247,15 @@ AWE.UI = (function(module) {
     // ACTIONS ///////////////////////////////////////////////////////////////
     
     that.onEnterButtonClick = function() {
-      WACKADOO.activateFortressController(1); // TODO: pass fortress id
+      var reference = {};
+      if (my.fortressView.location()) {
+        reference.locationId = my.fortressView.location().id();
+      }
+      else {
+        reference.node = my.fortressView.node();
+      }
+      
+      WACKADOO.activateFortressController(reference); // TODO: pass fortress id
     };
 
     that.onAttackButtonClick = function() {};
