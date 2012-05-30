@@ -17,6 +17,10 @@ AWE.GS = (function(module) {
   module.PROPERTY_READ_ONLY = 1;
 
   module.PROPERTY_HASHABLE = true;
+  
+  module.ARRAY_PROPERTY_HASH = {
+    active_jobs: 'ActiveJob',
+  } 
 
   
   // /////////////////////////////////////////////////////////////////////////
@@ -42,11 +46,36 @@ AWE.GS = (function(module) {
     setPropertiesWithHash: function(hash) {
       for (var key in hash) {
         if (hash.hasOwnProperty(key)) {
-          if (this[key] !== undefined) {
-            this.set(key, hash[key]);
+          
+          if (this[key] === undefined) {
+            console.log ('ERROR in AWE.GS.Entity.setPropertiesWithHash: unknown property ' + key + '.');
           }
           else {
-            console.log ('ERROR in AWE.GS.Entity.setPropertiesWithHash: unknown property ' + key + '.');
+            var className = module.ARRAY_PROPERTY_HASH[key]
+            if (className !== undefined) {
+              log('setPropertiesWithHash of active_jobs with hash', hash[key]);
+  
+              var data = hash[key];
+              var result = [];
+              if (data && data.length !== undefined) {  //   A) process an array of armies
+                for (var i = 0; i < data.length; i++) { 
+                  var entityData = data[i];
+                  var entity = AWE.GS[className].create({id: entityData['id']});
+                  entity.init(entityData);
+                  entity.set(this.typeName.toLowerCase(), this)
+                  result[entity.get('id')] = entity;
+                }          
+              }
+              else {                                    //   B) process a single army
+                var entity = AWE.GS[className].create({id: entityData['id']});              
+                result[entity.get('id')] = entity;
+              }
+
+              this.get('active_jobs').set('content', result);  
+            }          
+            else {
+              this.set(key, hash[key]);
+            }
           }
         }
       }
@@ -273,10 +302,8 @@ AWE.GS = (function(module) {
     that.getEntities = function() {
       return my.entities;
     }
-       
         
     return that;
-        
   };
 
   return module;
