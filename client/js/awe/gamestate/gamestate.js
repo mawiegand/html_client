@@ -257,7 +257,8 @@ AWE.GS = (function(module) {
         .success(function(data, statusText, xhr) {   
           var result = null;
           if (xhr.status === 201)  {                   // Just created
-            log('SUCCESS CREATING AND FETCHING ENTITY FROM URL', statusText); 
+            log('SUCCESS CREATING AND FETCHING ENTITY FROM URL', statusText);
+            result = my.processUpdateResponse(data, updateType, start); 
           }
           else {
             log('SUCCESS-ERROR ??? CREATING AND FETCHING ENTITY FROM URL', xhr.status, statusText);           
