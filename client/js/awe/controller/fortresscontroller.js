@@ -134,10 +134,14 @@ AWE.Controller = (function(module) {
       
       var updateSettlements = function() {
         
+        // just trigger the updates, thanks to the bindings we do not need to
+        // process the answers and update the views manually.
         AWE.GS.SettlementManager.updateSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity) {
-	
+	        console.log('updated settlement', entity)
 					if (entity && entity.getId()) {
-            AWE.GS.SlotManager.updateSlotsAtSettlement(entity.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+            AWE.GS.SlotManager.updateSlotsAtSettlement(entity.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity) {
+              console.log('updated slots', entity)
+            });
 					}
           
         }); 
