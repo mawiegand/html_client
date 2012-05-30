@@ -75,7 +75,11 @@ AWE.Ext = (function(module) {
   module.isArray = function(_obj) {
     return _obj && typeof _obj === 'object' && _obj.constructor === Array;
   };
-  
+
+  module.isArrayProxy = function(_obj) {
+    return _obj && _obj.get && _obj.get('content') && AWE.Ext.isArray(_obj.get('content'))
+  };
+    
   /** if _obj is an array, applyFunction calls _function multiple times with every
    * array member as parameter, else _function will be called once with _obj as parameter
    */

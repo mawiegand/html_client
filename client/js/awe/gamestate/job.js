@@ -8,6 +8,11 @@ var AWE = window.AWE || {};
 
 /** GameState Job class, manager and helpers. */
 AWE.GS = (function(module) {
+  
+  module.JOB_TYPE_CREATE    = 'create'; 
+  module.JOB_TYPE_DESTROY   = 'destroy';
+  module.JOB_TYPE_UPGRADE   = 'upgrade';
+  module.JOB_TYPE_DOWNGRADE = 'downgrade';
     
   module.JobAccess = {};
 
@@ -81,24 +86,6 @@ AWE.GS = (function(module) {
       }
     }
     
-    that.createJobForQueue = function(queueId, job, callback) {
-      log('create job - start');
-      var url = AWE.Config.CONSTRUCTION_SERVER_BASE + 'queues/' + queueId + '/jobs';
-      return my.createAndFetchNewEntityFromURL(
-        url,                                               // url to fetch from
-        {construction_job: job},                           // job parameter object, to be sent as post data 
-        my.runningCreateRequestsPerQueue,                  // queue to register this create request during execution
-        queueId,                                           // queueId to fetch -> is used to register the request
-        0,                                                 // type of request (currently one type only)
-        function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
-          log('create job - callback');
-          if (callback) {
-            callback(result, status, xhr, timestamp);
-          }
-        }
-      ); 
-    }
-        
     /** returns true, if update is executed, returns false, if request did 
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */

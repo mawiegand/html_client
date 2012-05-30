@@ -53,23 +53,22 @@ AWE.GS = (function(module) {
             console.log ('ERROR in AWE.GS.Entity.setPropertiesWithHash: unknown property ' + key + '.');
           }
           else {
-            var className = module.ARRAY_PROPERTY_HASH[key]
-            if (className !== undefined) {
-              log('setPropertiesWithHash of active_jobs with hash', hash[key]);
-  
+            if (AWE.Ext.isArrayProxy(this[key])) {
+              log('setPropertiesWithHash with hash', hash[key]);
+              var baseTypeName = this[key].get('baseTypeName');
               var data = hash[key];
               var result = [];
               if (data && data.length !== undefined) {  //   A) process an array of armies
                 for (var i = 0; i < data.length; i++) { 
                   var entityData = data[i];
-                  var entity = AWE.GS[className].create({id: entityData['id']});
+                  var entity = AWE.GS[baseTypeName].create({id: entityData['id']});
                   entity.init(entityData);
                   entity.set(this.typeName.toLowerCase(), this)
                   result[entity.get('id')] = entity;
                 }          
               }
               else {                                    //   B) process a single army
-                var entity = AWE.GS[className].create({id: entityData['id']});              
+                var entity = AWE.GS[baseTypeName].create({id: entityData['id']});              
                 result[entity.get('id')] = entity;
               }
 
@@ -234,47 +233,7 @@ AWE.GS = (function(module) {
       }
       return true;    // update is underway           
     }
-    
-    /** create new entity by game server */
-    my.createAndFetchNewEntityFromURL = function(url, data, queue, id, updateType, callback) {
-      if (my.tryRegisterRequest(queue, id, updateType)) {
-
-        var start = new Date();  // the start of the request is only a bad (but save) approximation; we should use the server time (time of database select) instead!
         
-        var options = {
-          url: url,
-          type: 'POST',
-          data: data,
-          dataType: 'json',
-        };
-        
-        var jqXHR = $.ajax(options)
-        .error(function(jqHXR, textStatus) {          // On failure: 
-          my.unregisterRequest(queue, id, 0);//   unregister request 
-          callback(null, jqXHR.status, jqXHR);
-          log('ERROR CREATING AND FETCHING ENTITY FROM URL', url, textStatus); 
-        })
-        .success(function(data, statusText, xhr) {   
-          var result = null;
-          if (xhr.status === 201)  {                   // Just created
-            log('SUCCESS CREATING AND FETCHING ENTITY FROM URL', statusText);
-            result = my.processUpdateResponse(data, updateType, start); 
-          }
-          else {
-            log('SUCCESS-ERROR ??? CREATING AND FETCHING ENTITY FROM URL', xhr.status, statusText);           
-          }
-          my.unregisterRequest(queue, id, updateType);//   unregister request 
-          if (callback) {
-            callback(result, xhr.status, xhr, start);
-          }        
-        }); 
-      }
-      else {          // update on this army is already running -> return false
-        return false;
-      }
-      return true;    // update is underway           
-    }
-    
     /** returns true, if update is executed, returns false, if request did 
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      *
@@ -344,10 +303,10 @@ AWE.GS = (function(module) {
     that.getEntities = function() {
       return my.entities;
     }
-        
+            
     return that;
   };
-
+  
   return module;
   
 }(AWE.GS || {}));

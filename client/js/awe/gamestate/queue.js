@@ -31,15 +31,12 @@ AWE.GS = (function(module) {
     jobs_count: null,
     
     active_jobs: Ember.ArrayProxy.create({
+      baseTypeName: 'ActiveJob',
       content: Ember.A([]),
     }),
       
     activeJob: function(jobId) {
       return this.get('active_jobs').objectAt(jobId);
-    },
-    
-    createJob: function(job) {
-      AWE.GS.JobManager.createJobForQueue(this.getId(), job);
     },
   });     
     
@@ -64,11 +61,7 @@ AWE.GS = (function(module) {
     my.runningUpdatesPerSettlement = {};
   
     my.createEntity = function() {
-      return module.Queue.create({
-        active_jobs: Ember.ArrayProxy.create({
-          content: Ember.A([]),
-        }),    
-      });
+      return module.Queue.create();
     }
   
     // public attributes and methods ///////////////////////////////////////
