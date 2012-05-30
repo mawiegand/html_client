@@ -37,6 +37,18 @@ AWE.Util = (function(module) {
     return count;  
   }
   
+  module.hashFirst = function(_hash) {
+    var value = null;
+    for (var key in _hash) {
+      if (_hash.hasOwnProperty(key)) {
+        value = _hash[key];
+        break ;
+      }
+    }
+    return value ;
+  }
+
+  
   return module;
       
 }(AWE.Util || {}));

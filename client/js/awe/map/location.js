@@ -93,6 +93,10 @@ AWE.Map = (function(module) {
       return AWE.GS.ArmyAccess.getAllForLocation_id(_id);
     };
     
+    that.getSettlement = function(callback) {
+      return AWE.GS.SettlementManager.getSettlementAtLocation(_id, callback);
+    };
+    
     that.garrisonArmy = function() { 
       var armies = AWE.GS.ArmyAccess.getAllForLocation_id(_id);
       
@@ -149,6 +153,7 @@ AWE.Map = (function(module) {
       
       that.setChangedNow();  
     };
+    
     
     /** Returns the position of the village on the map */
     that.position = AWE.memoizer(undefined, function () {

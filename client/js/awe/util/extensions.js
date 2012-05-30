@@ -113,6 +113,7 @@ AWE.Ext = (function(module) {
     module.applyFunctionToElements(_hash, function(value) { values.push(value); } );
     return values;
   }
+  
     
   /** returns a random integer in [0;max[
    */ 

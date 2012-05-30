@@ -45,22 +45,19 @@ AWE.Controller = (function(module) {
     }
     
     that.setLocationId = function(locationId) {
-      var settlements = AWE.GS.SettlementAccess.getAllForLocation_id(locationId);
-      if (AWE.Util.hashCount(settlements) <= 0) {
-        that.setFortressId(0);
-        AWE.GS.SettlementManager.updateSettlementsAtLocation(locationId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result, status) {
-          console.log("SETTLEMENTS", result);
-          AWE.Ext.applyFunctionToHash(result, function(key, value) {
-            console.log("SET FORTRESS KEY", key)
-            that.setFortressId(key);
-          });
-        });
+      var settlement = AWE.GS.SettlementManager.getSettlementAtLocation(locationId);
+      if (settlement === null) {
+        if (AWE.GS.SettlementManager.lastUpdateForLocation(locationId).getTime() + 1000 < new Date().getTime()) { // information to old
+          AWE.GS.SettlementManager.updateSettlementsAtLocation(locationId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result, status) {
+            that.setLocationId(locationId); // try again to set it
+          });         
+        }
+        else {  // seems as there's no settlement at this location!
+          console.log('ERROR: could not obtain settlement at present location from server.')
+        }
       }
       else {
-        AWE.Ext.applyFunctionToHash(settlements, function(key, value) {
-          console.log("SET FORTRESS KEY", key)
-          that.setFortressId(key);
-        });
+        that.setFortressId(settlement.getId());
       }
     }
     

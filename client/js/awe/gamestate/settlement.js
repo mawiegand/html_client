@@ -112,6 +112,12 @@ AWE.GS = (function(module) {
       return AWE.GS.SettlementAccess.getAllForOwner_id(AWE.GS.CharacterManager.getCurrentCharacter().getId());
     }
     
+    /** returns the settlement at locationId or null, if there is no settlement or data. */
+    that.getSettlementAtLocation = function(locationId) {
+      var settlements = AWE.GS.SettlementAccess.getAllForLocation_id(locationId);
+      return AWE.Util.hashFirst(settlements);  // returns the hash's first entry or null for an empty hash
+    }
+    
     that.lastUpdateForCharacter = function(characterId) {
       if (lastCharacterUpdates[characterId]) {
         return lastCharacterUpdates[characterId];
@@ -144,6 +150,7 @@ AWE.GS = (function(module) {
       var characterId = AWE.GS.CharacterManager.getCurrentCharacter().getId();
       that.updateSettlementsOfCharacter(characterId, updateType, callback);
     }
+  
 
     /** updates all settlements for a given character. Calls the callback with a
      * list of all the updated settlements. */
