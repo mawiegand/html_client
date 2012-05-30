@@ -48,6 +48,7 @@ AWE.GS = (function(module) {
     unitcategory_cavalry_strength: null,
     unitcategory_infantry_strength: null,
     unitcategory_artillery_strength: null,
+    unitcategory_siege_strength: null,
     
     home_settlement_id: null,
     home_settlement_name: null,
