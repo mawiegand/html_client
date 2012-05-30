@@ -145,7 +145,8 @@ AWE.Controller = (function(module) {
       
       return function() {
         
-        if (that.fortressId > 0 && (lastSettlementId != that.fortressId ||  lastSettlementUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date())) {
+        // TODO: use the last update timestamp from the Settlement Manager and don't track a copy locally.
+        if (that.fortressId > 0 && (lastSettlementId != that.fortressId || lastSettlementUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date())) {
           log('update Settlement');
           updateSettlements();
           lastSettlementUpdateCheck = new Date();
@@ -186,6 +187,9 @@ AWE.Controller = (function(module) {
 					this.view.setSlots(fortress.slots());
 					that.slots = fortress.slots();
 					console.log('Set building slots.');
+					AWE.Ext.applyFunctionToHash(that.slots, function(key, value) {
+					  console.log("building id", value.get('building_id'));
+					});
 				}
 			}
       

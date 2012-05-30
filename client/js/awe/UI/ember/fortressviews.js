@@ -20,10 +20,18 @@ AWE.UI.Ember = (function(module) {
 		rightTower: null,
 		wall: null,
 		setSlots: function(slots) {
+		  var self = this;
 			if (slots && AWE.Util.hashCount(slots) > 0) {
-				this.set('leftTower', slots[1]);
-				this.set('rightTower', slots[2]);
-				this.set('wall', slots[3]);
+			  AWE.Ext.applyFunctionToHash(slots, function(slot_id, slot) {
+			    
+			    switch (slot.get('slot_num')) {
+			    case 0: self.set('wall', slot); break;
+			    case 1: self.set('leftTower', slot); break;
+			    case 2: self.set('rightTower', slot); break;
+			    default: console.log('ERROR: unkown slot in fortress with number: ' + slot.get('slot_num') );
+			    }
+			    console.log(slot, slot.get('slot_num'), slot_id, slot.get('building_id'));
+			  });
 				this.set('haveSlots', true);
 			}
 			else {
