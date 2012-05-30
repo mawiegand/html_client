@@ -22,10 +22,10 @@ AWE.GS = (function(module) {
     name: null, 
     
     queue_id: null, old_queue_id: null, ///< id of the queue the job is a member of
-    queueIdObserver: AWE.Partials.attributeHashObserver(module.QueueAccess, 'queue_id', 'old_queue_id').observes('queue_id'),
+    queueIdObserver: AWE.Partials.attributeHashObserver(module.JobAccess, 'queue_id', 'old_queue_id').observes('queue_id'),
     
     slot_id: null, old_slot_id: null, ///< id of the slot the job is a member of
-    slotIdObserver: AWE.Partials.attributeHashObserver(module.QueueAccess, 'slot_id', 'old_slot_id').observes('slot_id'),
+    slotIdObserver: AWE.Partials.attributeHashObserver(module.JobAccess, 'slot_id', 'old_slot_id').observes('slot_id'),
     
     building_type_id: null,
     position: null,
@@ -46,6 +46,7 @@ AWE.GS = (function(module) {
   
     var that;
     var lastJobUpdates = {};
+    var lastJobCreateRequests = {};
     
     
     // protected attributes and methods ////////////////////////////////////
@@ -53,6 +54,8 @@ AWE.GS = (function(module) {
     my = my || {};
     
     my.runningUpdatesPerQueue = {};
+    
+    my.runningCreateRequestsPerQueue = {};
   
     my.createEntity = function() { return module.Job.create(); }
 
@@ -76,6 +79,24 @@ AWE.GS = (function(module) {
       else {
         return new Date(1970);
       }
+    }
+    
+    that.createJobForQueue = function(queueId, job, callback) {
+      log('create job - start');
+      var url = AWE.Config.CONSTRUCTION_SERVER_BASE + 'queues/' + queueId + '/jobs';
+      return my.createAndFetchNewEntityFromURL(
+        url,                                               // url to fetch from
+        {construction_job: job},                           // job parameter object, to be sent as post data 
+        my.runningCreateRequestsPerQueue,                  // queue to register this create request during execution
+        queueId,                                           // queueId to fetch -> is used to register the request
+        0,                                                 // type of request (currently one type only)
+        function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
+          log('create job - callback');
+          if (callback) {
+            callback(result, status, xhr, timestamp);
+          }
+        }
+      ); 
     }
         
     /** returns true, if update is executed, returns false, if request did 

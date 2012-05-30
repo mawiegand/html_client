@@ -37,6 +37,10 @@ AWE.GS = (function(module) {
     activeJob: function(jobId) {
       return this.get('active_jobs').objectAt(jobId);
     },
+    
+    createJob: function(job) {
+      AWE.GS.JobManager.createJobForQueue(this.getId(), job);
+    },
   });     
     
   // ///////////////////////////////////////////////////////////////////////
@@ -86,7 +90,7 @@ AWE.GS = (function(module) {
       else {
         return new Date(1970);
       }
-    }
+    }    
         
     /** returns true, if update is executed, returns false, if request did 
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).

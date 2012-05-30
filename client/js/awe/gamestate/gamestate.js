@@ -13,6 +13,8 @@ AWE.GS = (function(module) {
   module.ENTITY_UPDATE_TYPE_SHORT = 1;      ///< short type of update, only including the most important fields (e.g. for displaying on map)
   module.ENTITY_UPDATE_TYPE_FULL = 2;       ///< longest type of update, including all fields of the entity
   
+  module.ENTITY_CREATE_TYPE = 0;            ///< one and only create type, for use with entity methods
+
   module.PROPERTY_READ_WRITE = 0;
   module.PROPERTY_READ_ONLY = 1;
 
@@ -71,7 +73,7 @@ AWE.GS = (function(module) {
                 result[entity.get('id')] = entity;
               }
 
-              this.get('active_jobs').set('content', result);  
+              this.get(key).set('content', result);  
             }          
             else {
               this.set(key, hash[key]);
@@ -220,6 +222,45 @@ AWE.GS = (function(module) {
             else {                                    //   B) process a single army
               result = my.processUpdateResponse(data, updateType, start);
             };
+          }
+          my.unregisterRequest(queue, id, updateType);//   unregister request 
+          if (callback) {
+            callback(result, xhr.status, xhr, start);
+          }        
+        }); 
+      }
+      else {          // update on this army is already running -> return false
+        return false;
+      }
+      return true;    // update is underway           
+    }
+    
+    /** create new entity by game server */
+    my.createAndFetchNewEntityFromURL = function(url, data, queue, id, updateType, callback) {
+      if (my.tryRegisterRequest(queue, id, updateType)) {
+
+        var start = new Date();  // the start of the request is only a bad (but save) approximation; we should use the server time (time of database select) instead!
+        
+        var options = {
+          url: url,
+          type: 'POST',
+          data: data,
+          dataType: 'json',
+        };
+        
+        var jqXHR = $.ajax(options)
+        .error(function(jqHXR, textStatus) {          // On failure: 
+          my.unregisterRequest(queue, id, 0);//   unregister request 
+          callback(null, jqXHR.status, jqXHR);
+          log('ERROR CREATING AND FETCHING ENTITY FROM URL', url, textStatus); 
+        })
+        .success(function(data, statusText, xhr) {   
+          var result = null;
+          if (xhr.status === 201)  {                   // Just created
+            log('SUCCESS CREATING AND FETCHING ENTITY FROM URL', statusText); 
+          }
+          else {
+            log('SUCCESS-ERROR ??? CREATING AND FETCHING ENTITY FROM URL', xhr.status, statusText);           
           }
           my.unregisterRequest(queue, id, updateType);//   unregister request 
           if (callback) {
