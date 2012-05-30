@@ -161,7 +161,7 @@ AWE.Controller = (function(module) {
       AWE.GS.QueueManager.updateQueuesOfSettlement(10180, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queueData){
         
         var queues = AWE.GS.QueueManager.getQueuesOfSettlement(10180);
-        log('queues', queues, queues[1].get('active_jobs').get('content'));
+        log('queues', queues, queues[1].get('active_jobs').get('content'), queues[1].get('active_jobs').get('baseTypeName'));
         
         for (var i = 0; i < queues.length; i++) {
           var queue = queues[i];
@@ -171,14 +171,14 @@ AWE.Controller = (function(module) {
               var jobs = AWE.GS.JobManager.getJobsInQueue(queue.getId());
               log('jobs', jobs);
               
-              // testweise job erzeugen
-              var job = {
-                slot_id: 1,
-                building_type_id: 2,
-                level_before: 3,
-                job_type: 'extend',                
-              }
-              queue.createJob(job);
+              var jobAction = AWE.Action.Construction.createJobAction(queue, 1, 2, AWE.GS.JOB_TYPE_UPGRADE, 3);
+              jobAction.send(function(status) {
+                if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
+                }
+                else {
+                  log(status, "The server did not accept the attack comannd.");
+                }
+              });
             });
           }
         }
