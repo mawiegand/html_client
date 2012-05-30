@@ -30,9 +30,14 @@ AWE.GS = (function(module) {
     threads: null,
     jobs_count: null,
     
-    active_jobs: [] // TODO: was bauen, um die Jobs als Ember-Objekte da rein zu packen
+    active_jobs: Ember.ArrayProxy.create({
+      content: Ember.A([]),
+    }),
+      
+    activeJob: function(jobId) {
+      return this.get('active_jobs').objectAt(jobId);
+    },
   });     
-
     
   // ///////////////////////////////////////////////////////////////////////
   //
@@ -54,8 +59,13 @@ AWE.GS = (function(module) {
     
     my.runningUpdatesPerSettlement = {};
   
-    my.createEntity = function() { return module.Queue.create(); }
-
+    my.createEntity = function() {
+      return module.Queue.create({
+        active_jobs: Ember.ArrayProxy.create({
+          content: Ember.A([]),
+        }),    
+      });
+    }
   
     // public attributes and methods ///////////////////////////////////////
   
