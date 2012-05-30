@@ -33,7 +33,6 @@ AWE.GS = (function(module) {
     level_after: null,
     job_type: null,
   });     
-
     
   // ///////////////////////////////////////////////////////////////////////
   //
@@ -117,7 +116,23 @@ AWE.GS = (function(module) {
       
   }());
     
-  
+  // ///////////////////////////////////////////////////////////////////////
+  //
+  //   ACTIVE JOB
+  //
+  // ///////////////////////////////////////////////////////////////////////    
+    
+  module.ActiveJob = module.Entity.extend({
+    typeName: 'ActiveJob',
+    
+    queue: null,
+    queue_id: null,
+    job_id: null,
+    started_at: null,
+    finished_at: null,
+    progress: null,
+  });    
+
   return module;
   
 }(AWE.GS || {}));
