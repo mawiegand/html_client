@@ -29,8 +29,8 @@ AWE.GS = (function(module) {
 
 		slot: null,         ///< points to the slot this building is situated at. Needs to be set during creation.
 
-		buildingIdBinding: 'slot.building_id',  ///< bind the slot's building id to the corresponding property of the building
-		levelBinding: 'slot.level',     ///< property holding the present level of building 
+	//	buildingIdBinding: 'slot.building_id',  ///< bind the slot's building id to the corresponding property of the building
+	//	levelBinding: 'slot.level',     ///< property holding the present level of building 
 
 		/** returns a unique string identifying the building type. This 
 		 * is used to associate all images to the building. */
@@ -45,6 +45,11 @@ AWE.GS = (function(module) {
 		/** returns the localized name of the building. */
 		name: function() {
 			var buildingId = this.get('buildingId');
+			console.log(buildingId);
+			if (buildingId === undefined || buildingId === null) {
+			  console.log('building id is missing.');
+			  return null;
+			}
 			return AWE.GS.RulesManager.getRules().getBuildingType(buildingId)['name']['en_US'];  // TODO: correct localization			
 		}.property('buildingId'),
 	
@@ -91,6 +96,8 @@ AWE.GS = (function(module) {
 					console.log('CREATED NEW BUILDING OBJECT');
 					building = module.Building.create({
 						slot: this,
+						buildingIdBinding: 'slot.building_id',
+						levelBinding: 'slot.level',
 					});
 					this.set('_buildingInstance', building);				
 				}
