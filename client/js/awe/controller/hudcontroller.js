@@ -159,7 +159,6 @@ AWE.Controller = (function(module) {
       log('hole queues');
       
       AWE.GS.QueueManager.updateQueuesOfSettlement(10180, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queueData){
-        log('queueData', queueData, queueData[1].get('active_jobs').get('content'));
         
         var queues = AWE.GS.QueueManager.getQueuesOfSettlement(10180);
         log('queues', queues, queues[1].get('active_jobs').get('content'));
@@ -167,13 +166,19 @@ AWE.Controller = (function(module) {
         for (var i = 0; i < queues.length; i++) {
           var queue = queues[i];
           if (queue !== undefined) {
-            log('queue', queue);
             AWE.GS.JobManager.updateJobsOfQueue(queue.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobData, status){
-              log('jobData', jobData, status);
               
               var jobs = AWE.GS.JobManager.getJobsInQueue(queue.getId());
-              
               log('jobs', jobs);
+              
+              // testweise job erzeugen
+              var job = {
+                slot_id: 1,
+                building_type_id: 2,
+                level_before: 3,
+                job_type: 'extend',                
+              }
+              queue.createJob(job);
             });
           }
         }
