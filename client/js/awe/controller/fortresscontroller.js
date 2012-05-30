@@ -136,29 +136,12 @@ AWE.Controller = (function(module) {
         var dialog = Ember.View.extend({
           templateName: "settlement-dialog-select-building",
           heading: 'Select Building',
-          buildingOptions: [],
           controller: this,
         
           cancelPressed: function() {
             this.destroy();
           },
-        
-          updateBuildingOptions: function() {
-            var options = [
-              AWE.GS.Building.create({ buildingId: 0, level: 1 }),
-              AWE.GS.Building.create({ buildingId: 1, level: 1 }),
-              AWE.GS.Building.create({ buildingId: 2, level: 1 }),
-              AWE.GS.Building.create({ buildingId: 3, level: 1 }),
-            ];
-            
-            this.set('buildingOptions', options);
-          }.observes('slot'),
-          
-          init: function() {
-            this._super();
-            this.updateBuildingOptions();
-          },
-          
+                            
           optionClicked: function(event) {
             var buildingId = event.content.get('buildingId');
             console.log('option clicked: ' + buildingId);
@@ -172,6 +155,8 @@ AWE.Controller = (function(module) {
         dialog.create({
           controller: this,
           slot: slot,
+          buildingOptionsBinding: 'slot.buildingOptions',
+
         }).appendTo($('.fortress-picture'));
       }
     }
