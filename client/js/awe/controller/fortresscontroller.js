@@ -92,6 +92,7 @@ AWE.Controller = (function(module) {
       var fortressScreen = AWE.UI.Ember.FortressView.create({
         templateName: "fortress-screen",
 				fortress: fortress,
+				controller: this,
       });      
 			that.slots = null;
       return fortressScreen;
@@ -118,6 +119,47 @@ AWE.Controller = (function(module) {
       this.removeView();
       this.visible = false;
     };
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Actions
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
+    that.slotClicked = function(slot) {
+      console.log('clicked slot');
+      
+      if (slot.get('building')) {
+        
+      }
+      else { // nothing build yet
+        var dialog = Ember.View.extend({
+          templateName: "settlement-dialog-select-building",
+          heading: 'Select Building',
+          controller: this,
+        
+          cancelPressed: function() {
+            this.destroy();
+          },
+                            
+          optionClicked: function(event) {
+            var buildingId = event.content.get('buildingId');
+            console.log('option clicked: ' + buildingId);
+            slot.set('building_id', buildingId);
+            slot.set('level', 1);
+            this.destroy();
+          },         
+          
+        });
+      
+        dialog.create({
+          controller: this,
+          slot: slot,
+          buildingOptionsBinding: 'slot.buildingOptions',
+
+        }).appendTo($('.fortress-picture'));
+      }
+    }
     
     
     // ///////////////////////////////////////////////////////////////////////
@@ -137,10 +179,10 @@ AWE.Controller = (function(module) {
         // just trigger the updates, thanks to the bindings we do not need to
         // process the answers and update the views manually.
         AWE.GS.SettlementManager.updateSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity) {
-	        console.log('updated settlement', entity)
+	        console.log('updated settlement')
 					if (entity && entity.getId()) {
             AWE.GS.SlotManager.updateSlotsAtSettlement(entity.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity) {
-              console.log('updated slots', entity)
+              console.log('updated slots')
             });
 					}
           

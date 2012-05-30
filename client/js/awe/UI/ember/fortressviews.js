@@ -120,19 +120,20 @@ AWE.UI.Ember = (function(module) {
       this.set('tooltip', false);
       $().unbind('mousemove');
     },
+    
   
     click: function(event) {
+      console.log('click on interactive building');
 		  var model = this.get('model');
-	    var newLevel = parseInt(model.get('level'))+1;
-
-	    if (newLevel <= 10) {
-	     model.set('level', newLevel);    
-	    }
-	    else {
-	      model.set('level', 0); // start over with the other type
-	    }
-    },
-  
+		  var controller = this.get('parentView') ? this.get('parentView').get('controller') : null;
+		  
+		  if (controller) {
+		    controller.slotClicked(model);
+		  }
+		  else {
+		    console.log('no controller found!');
+		  }
+		},  
   });
   
   return module;

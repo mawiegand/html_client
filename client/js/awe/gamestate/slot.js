@@ -29,8 +29,8 @@ AWE.GS = (function(module) {
 
 		slot: null,         ///< points to the slot this building is situated at. Needs to be set during creation.
 
-		buildingIdBinding: 'slot.building_id',  ///< bind the slot's building id to the corresponding property of the building
-		levelBinding: 'slot.level',     ///< property holding the present level of building 
+	//	buildingIdBinding: 'slot.building_id',  ///< bind the slot's building id to the corresponding property of the building
+	//	levelBinding: 'slot.level',     ///< property holding the present level of building 
 
 		/** returns a unique string identifying the building type. This 
 		 * is used to associate all images to the building. */
@@ -45,6 +45,11 @@ AWE.GS = (function(module) {
 		/** returns the localized name of the building. */
 		name: function() {
 			var buildingId = this.get('buildingId');
+			console.log(buildingId);
+			if (buildingId === undefined || buildingId === null) {
+			  console.log('building id is missing.');
+			  return null;
+			}
 			return AWE.GS.RulesManager.getRules().getBuildingType(buildingId)['name']['en_US'];  // TODO: correct localization			
 		}.property('buildingId'),
 	
@@ -53,6 +58,27 @@ AWE.GS = (function(module) {
 			var buildingId = this.get('buildingId');
 			return AWE.GS.RulesManager.getRules().getBuildingType(buildingId)['description']['en_US'];  // TODO: correct localization			
 		}.property('buildingId'),
+		
+		nextLevel: function() {
+		  var level = this.get('level');
+		  if (level) {
+		    return parseInt(level) + 1;  // todo: check against max-level!
+		  }
+		  return null;
+		}.property('level', 'buildingId'),
+		
+		
+		canBeUpgraded: function() {
+		  
+		}.property('level', 'buildingId'),
+		
+
+		canBeTornDown: function() {
+		  
+		}.property('level', 'buildingId'),
+		
+	
+		
 	
   });    
 
@@ -75,8 +101,15 @@ AWE.GS = (function(module) {
     building_id: null,
     construction_id: null,
     slot_num: null,
+    buildingOptions: null,
 		
 		_buildingInstance: null,      ///< private method holding the instance of the corresponding building, if needed.
+
+
+    init: function(spec) {
+      this._super(spec);
+      this.updateBuildingOptions();
+    },
 
 		/** return the building standing at this slot. Returns NULL, in case this
 		 * slot is empty. */
@@ -91,12 +124,36 @@ AWE.GS = (function(module) {
 					console.log('CREATED NEW BUILDING OBJECT');
 					building = module.Building.create({
 						slot: this,
+						buildingIdBinding: 'slot.building_id',
+						levelBinding: 'slot.level',
 					});
 					this.set('_buildingInstance', building);				
 				}
 				return building;
 			}
 		}.property('building_id'),
+		
+    updateBuildingOptions: function() {
+      var options = [];
+      console.log('updating options');
+      
+      if (this.get('building_id') === null || this.get('building_id') === undefined) {
+        options = [
+          AWE.GS.Building.create({ buildingId: 0, level: 1 }),
+          AWE.GS.Building.create({ buildingId: 1, level: 1 }),
+          AWE.GS.Building.create({ buildingId: 2, level: 1 }),
+          AWE.GS.Building.create({ buildingId: 3, level: 1 }),
+        ];
+      }
+      else {
+        options = [ this.get('building') ];
+      }
+      
+      this.set('buildingOptions', options);
+      console.log('new options', this.get('buildingOptions'));
+      
+    }.observes('building_id'),
+
 
 		settlement: function() {
 			module.SettlementManager.getSettlement(this.get('settlementId'));
