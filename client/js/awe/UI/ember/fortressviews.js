@@ -9,9 +9,30 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
   
+  module.presentToolTipOnView = null;
+  
   module.templates = module.templates || [];
   module.templates.push('js/awe/UI/ember/templates/fortressscreen.html');
   
+
+  module.SelectBuildingDialog = Ember.View.extend({
+    templateName: "settlement-dialog-select-building",
+    heading: 'Select Building',
+  
+    cancelPressed: function() {
+      this.destroy();
+    },
+                      
+    optionClicked: function(event) {
+      var slot = this.get('slot');
+      var buildingId = event.content.get('buildingId');
+      // TODO: here create the building action, or better: pass the action to the controller.
+      slot.set('building_id', buildingId);
+      slot.set('level', 1);
+      this.destroy();
+    },         
+    
+  });  
 
 	module.FortressView = Ember.View.extend({
 		fortress: null,  ///< pointer to the settlement model
@@ -30,7 +51,7 @@ AWE.UI.Ember = (function(module) {
 			    case 2: self.set('rightTower', slot); break;
 			    default: console.log('ERROR: unkown slot in fortress with number: ' + slot.get('slot_num') );
 			    }
-			    console.log(slot, slot.get('slot_num'), slot_id, slot.get('building_id'));
+			    console.log(slot, slot.get('slot_num'), slot.get('building_id'));
 			  });
 				this.set('haveSlots', true);
 			}
@@ -59,22 +80,27 @@ AWE.UI.Ember = (function(module) {
     }.observes('mouseX', 'mouseY'),
   
     didInsertElement: function() {
+      console.log('did insert tooltip', this);
       this.$().remove();
       this.$().appendTo('.fortress-picture');
       this.updatePosition();
     },
+    
+    willDestroyElement: function() {
+      console.log('destroy tooltip', this);
+      this.$().remove();
+    }
   
   });
 
 
   module.BuildingView = Ember.View.extend({
     model: null, 
-    hovered: false,
 
 		levelBinding: 'model.building.level',
 		typeBinding: 'model.building.type',
 
-    classNameBindings: ['small:size1', 'middle:size2', 'large:size3', 'hovered', 'type'],
+    classNameBindings: ['small:size1', 'middle:size2', 'large:size3', 'type'],
 
     small: function() {
       return this.get('level') > 0 && this.get('level') < 4;
@@ -104,21 +130,19 @@ AWE.UI.Ember = (function(module) {
   
     mouseEnter: function(event) {
       var self = this;
-      this.set('hovered', true);
       setTimeout(function() {
-        if (self.get('hovered')) {
-          self.showTooltip();
-        }
+        self.showTooltip();
       }, this.get('timeout'));
+      console.log('mouse entered', this);
     },
     mouseMove: function(event) {
       this.set('mouseX', event.pageX);
       this.set('mouseY', event.pageY);
     },
     mouseLeave: function(event) {
-      this.set('hovered', false);
       this.set('tooltip', false);
-      $().unbind('mousemove');
+      //$().unbind('mousemove');
+      console.log('mouse left', this);
     },
     
   
