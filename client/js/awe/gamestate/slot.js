@@ -101,14 +101,13 @@ AWE.GS = (function(module) {
     building_id: null,
     construction_id: null,
     slot_num: null,
-    buildingOptions: null,
+    constructionOptions: null,
 		
 		_buildingInstance: null,      ///< private method holding the instance of the corresponding building, if needed.
 
-
     init: function(spec) {
       this._super(spec);
-      this.updateBuildingOptions();
+      this.updateConstructionOptions();
     },
 
 		/** return the building standing at this slot. Returns NULL, in case this
@@ -133,11 +132,18 @@ AWE.GS = (function(module) {
 			}
 		}.property('building_id'),
 		
-    updateBuildingOptions: function() {
+    updateConstructionOptions: function() {
       var options = [];
       console.log('updating options');
       
       if (this.get('building_id') === null || this.get('building_id') === undefined) {
+        if (! this.settlement()) {
+          return [] ;
+        }
+
+        var settlementType = this.settlement().settlementType();
+        console.log('settlementType', settlementType, this.buildingOptions());
+        
         options = [
           AWE.GS.Building.create({ buildingId: 0, level: 1 }),
           AWE.GS.Building.create({ buildingId: 1, level: 1 }),
@@ -149,15 +155,47 @@ AWE.GS = (function(module) {
         options = [ this.get('building') ];
       }
       
-      this.set('buildingOptions', options);
-      console.log('new options', this.get('buildingOptions'));
+      this.set('constructionOptions', options);
+      console.log('new options', this.get('constructionOptions'));
       
     }.observes('building_id'),
 
 
 		settlement: function() {
-			module.SettlementManager.getSettlement(this.get('settlementId'));
+      var sid = this.get('settlement_id');
+      if (sid === undefined || sid === null) {
+        return sid;
+      }
+      else {
+			  return module.SettlementManager.getSettlement(this.get('settlement_id'));
+		  }
 		},
+		
+		/** fetches the slot type from the rules. returns the slot-hash, that holds all
+		 * informations from the rules about the type of this praticular slot. */
+		slotType: function() {
+		  var settlementId = this.get('settlement_id');
+		  if (settlementId === undefined || settlementId === null) {
+		    return null;
+		  }
+		  var settlementType = this.settlement().settlementType();
+		  if (settlementType === undefined || settlementType === null) {
+		    return null;
+		  }
+		  return settlementType.building_slots[this.get('slot_num')];
+		},
+		
+		/** returns the building options (catagory ids) of buildings that can be build
+		 * at this particular slot. Doesn't really compute something, just eases access 
+		 * to the rules. */
+		buildingOptions: function() {
+		  var slotType = this.slotType();
+		  if (!slotType || slotType.options === undefined || slotType.options === null) {
+		    return [];
+		  }
+		  return slotType.options;
+		},
+		
   });     
 
     

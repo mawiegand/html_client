@@ -44,8 +44,8 @@
     {{#view Ember.Button action="cancelPressed" target="parentView" classNames="cancel"}}close{{/view}}
     <h1>{{ heading }}</h1>    
     <p>{{ message }}</p>
-    {{#if buildingOptions }}
-      {{#each buildingOptions}}
+    {{#if constructionOptions }}
+      {{#each constructionOptions}}
         {{#view Ember.View contentBinding="this" classNames="building-option" }}
           <div {{action "optionClicked" target="parentView"}}>
             {{view AWE.UI.Ember.InteractiveBuildingView classNames="building-option-image" levelBinding="content.level" buildingIdBinding="content.buildingId" typeBinding="content.type"}}

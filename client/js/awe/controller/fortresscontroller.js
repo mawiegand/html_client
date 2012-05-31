@@ -136,7 +136,7 @@ AWE.Controller = (function(module) {
         AWE.UI.Ember.SelectBuildingDialog.create({
           controller: this,
           slot: slot,
-          buildingOptionsBinding: 'slot.buildingOptions',
+          constructionOptionsBinding: 'slot.constructionOptions',
         }).appendTo($('.fortress-picture'));
       }
     }

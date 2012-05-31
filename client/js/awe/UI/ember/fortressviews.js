@@ -123,13 +123,18 @@ AWE.UI.Ember = (function(module) {
     mouseY: 0,
     timeout: 0,    // tooltip timeout in ms
 		settlement: null,
+		
+		mouseInView: false,
   
     showTooltip: function() {
-      this.set('tooltip', true);
+      if (this.get('mouseInView') === true) {  // only show tooltip, if the mouse is still in view
+        this.set('tooltip', true);
+      }
     },
   
     mouseEnter: function(event) {
       var self = this;
+      this.set('mouseInView', true);  // need to set this because showTooltip is called delayed and there we need to check, whether the mouse left the view during the meantime
       setTimeout(function() {
         self.showTooltip();
       }, this.get('timeout'));
@@ -140,6 +145,7 @@ AWE.UI.Ember = (function(module) {
       this.set('mouseY', event.pageY);
     },
     mouseLeave: function(event) {
+      this.set('mouseInView', false);
       this.set('tooltip', false);
       //$().unbind('mousemove');
       console.log('mouse left', this);

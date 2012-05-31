@@ -69,6 +69,10 @@ AWE.GS = (function(module) {
     slots: function() {
       return module.SlotManager.getSlotsAtSettlement(this.getId());
     },
+    
+    settlementType: function() {
+      return AWE.GS.RulesManager.getRules().getSettlementType(this.get('type_id'));
+    },
         
   });     
 

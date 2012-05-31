@@ -20,17 +20,25 @@ AWE.GS = (function(module) {
     typeName: 'Rules',              ///< identifies instances of this type
       
     version: null,
+    settlement_types: null,
     unit_types: null,
 		building_categories: null,
 		building_types: null,
+		
+		getSettlementType: function(id) {
+			var settlementType = this.get('settlement_types')[id];
+			if (settlementType === undefined || !settlementType) {
+				console.log('ERROR: requested non-existing settlement type ' + settlementType);
+			}
+			return settlementType;		
+		},
 		
 		getBuildingType: function(id) {
 			var buildingType = this.get('building_types')[id];
 			if (buildingType === undefined || !buildingType) {
 				console.log('ERROR: requested non-existing building type ' + buildingType);
 			}
-			return this.get('building_types')[id];
-
+			return buildingType;
 		},
 		getBuildingCategory: function(id) {
 			var buildingCategory = this.get('building_categories')[id];
@@ -38,6 +46,15 @@ AWE.GS = (function(module) {
 				console.log('ERROR: requested non-existing building category ' + buildingCategory);
 			}
 			return buildingCategroy;
+		},
+		getAllBuildingsOfCategory: function(categoryId) {
+		  var buildingIds = [];
+		  AWE.Ext.applyFunctionToHash(this.get('building_types'), function(buildingId, building) {
+		    if (building.category === categoryId) {
+		      buildingIds.push(buildingId);
+		    }
+		  });
+		  return buildingIds;
 		},
    });     
 
