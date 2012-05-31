@@ -501,7 +501,7 @@ html, body {
   position: absolute; 
   margin-left: 90px;
   margin-top:  100px;
-  width: 585px; height: 480px;
+  width: 580px; height: 480px;
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
   z-index:6;
@@ -534,6 +534,7 @@ html, body {
 
 .building-option:hover {
   background-color: #FDD;
+  cursor: pointer;
 }
 
 .building-option {
@@ -743,6 +744,7 @@ html, body {
 
 .fortress-picture .tower:hover {
   background-position: 0px -454px;
+  cursor: pointer;
 }
 .fortress-picture .tower.size1:hover {
   background-position: -238px -454px;
@@ -771,6 +773,7 @@ html, body {
 }
 
 .fortress-picture .wall:hover {
+	cursor: pointer;
 	background-position: 0px -960px;
 }
 .fortress-picture .wall.size2:hover {

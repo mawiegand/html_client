@@ -15,6 +15,25 @@ AWE.UI.Ember = (function(module) {
   module.templates.push('js/awe/UI/ember/templates/fortressscreen.html');
   
 
+  module.SelectBuildingDialog = Ember.View.extend({
+    templateName: "settlement-dialog-select-building",
+    heading: 'Select Building',
+  
+    cancelPressed: function() {
+      this.destroy();
+    },
+                      
+    optionClicked: function(event) {
+      var slot = this.get('slot');
+      var buildingId = event.content.get('buildingId');
+      // TODO: here create the building action, or better: pass the action to the controller.
+      slot.set('building_id', buildingId);
+      slot.set('level', 1);
+      this.destroy();
+    },         
+    
+  });  
+
 	module.FortressView = Ember.View.extend({
 		fortress: null,  ///< pointer to the settlement model
 		haveSlots: false,

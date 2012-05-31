@@ -132,31 +132,11 @@ AWE.Controller = (function(module) {
       if (slot.get('building')) {
         
       }
-      else { // nothing build yet
-        var dialog = Ember.View.extend({
-          templateName: "settlement-dialog-select-building",
-          heading: 'Select Building',
-          controller: this,
-        
-          cancelPressed: function() {
-            this.destroy();
-          },
-                            
-          optionClicked: function(event) {
-            var buildingId = event.content.get('buildingId');
-            console.log('option clicked: ' + buildingId);
-            slot.set('building_id', buildingId);
-            slot.set('level', 1);
-            this.destroy();
-          },         
-          
-        });
-      
-        dialog.create({
+      else { // nothing build yet: show building options dialog.
+        AWE.UI.Ember.SelectBuildingDialog.create({
           controller: this,
           slot: slot,
           buildingOptionsBinding: 'slot.buildingOptions',
-
         }).appendTo($('.fortress-picture'));
       }
     }
