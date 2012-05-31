@@ -98,7 +98,6 @@ AWE.GS = (function(module) {
       
   }());
     
-  
   return module;
   
 }(AWE.GS || {}));
