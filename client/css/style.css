@@ -741,16 +741,16 @@ html, body {
 
 
 
-.fortress-picture .tower.hovered {
+.fortress-picture .tower:hover {
   background-position: 0px -454px;
 }
-.fortress-picture .tower.size1.hovered {
+.fortress-picture .tower.size1:hover {
   background-position: -238px -454px;
 }
-.fortress-picture .tower.size2.hovered {
+.fortress-picture .tower.size2:hover {
   background-position: -476px -454px;
 }
-.fortress-picture .tower.size3.hovered {
+.fortress-picture .tower.size3:hover {
   background-position: -714px -454px;
 }
 
@@ -770,13 +770,13 @@ html, body {
 	background-position: -1600px -360px;
 }
 
-.fortress-picture .wall.hovered {
+.fortress-picture .wall:hover {
 	background-position: 0px -960px;
 }
-.fortress-picture .wall.size2.hovered {
+.fortress-picture .wall.size2:hover {
 	background-position: -800px -960px;
 }
-.fortress-picture .wall.size3.hovered {
+.fortress-picture .wall.size3:hover {
 	background-position: -1600px -960px;
 }
 

@@ -1,23 +1,23 @@
 <script type="text/x-handlebars" data-template-name="interactive-building">
-{{#if "model.building"}}
-  {{#if "tooltip"}}
+{{#if "tooltip"}}
+  {{#if "model.building"}}
     {{#view AWE.UI.Ember.ToolTipView classNames="mouse-over" mouseXBinding="mouseX" mouseYBinding="mouseY"}}
       <img src="/client/images/dialogs/advisor.png" / class="advisor">
       <h1>{{parentView.model.building.name}} L{{parentView.model.building.level}}</h1>
       <p>Next level does cost XYZ resources. It will need about X:XX.YY to build.</p>
     {{/view}}
- {{/if}}
- <div class="level">{{model.building.level}}</div>
-{{/if}}
-{{#unless "model.building"}}
-  {{#if "tooltip"}}
+  {{/if}}
+  {{#unless "model.building"}}
     {{#view AWE.UI.Ember.ToolTipView classNames="mouse-over" mouseXBinding="mouseX" mouseYBinding="mouseY"}}
       <img src="/client/images/dialogs/advisor.png" / class="advisor">
       <h1>Empty Building Site.</h1>
       <p>Click to build a new building here.</p>
     {{/view}}
-  {{/if}}
-{{/unless}}
+  {{/unless}} 
+{{/if}}
+{{#if "model.building"}}
+  <div class="level">{{model.building.level}}</div>
+{{/if}}
 </script>
 
 
