@@ -539,7 +539,7 @@ AWE.UI = (function(module) {
         _debugText.y = my.frame.size.height / 2.0;
       }
       
-      if (!_settlementsIcon) {
+      if (!_settlementsIcon && !my.realMap) {  // add information on game map
         _settlementsIcon = module.createImageView();
         _settlementsIcon.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("map/region/icon"));
         _nonScaledContainer.addChild(_settlementsIcon);
@@ -565,6 +565,16 @@ AWE.UI = (function(module) {
         _nonScaledContainer.displayObject().addChild(_armyStrengthText);
         
       }
+      else if (_settlementsIcon && my.realMap) {  // remove information on real world map
+        _nonScaledContainer.displayObject().removeChild(_armyStrengthText);
+        _armyStrengthText = null;
+        _nonScaledContainer.removeChild(_armyStrengthIcon);
+        _armyStrengthIcon = null;
+        _nonScaledContainer.displayObject().removeChild(_settlementsText);
+        _settlementsText = null;
+        _nonScaledContainer.removeChild(_settlementsIcon);
+        _settlementsIcon = null;
+      }
       if (_settlementsIcon) {
         if (detail < 1) {
           _settlementsIcon.setOrigin(AWE.Geometry.createPoint(0,0));
@@ -581,14 +591,14 @@ AWE.UI = (function(module) {
         _armyStrengthText.y = _armyStrengthIcon.frame().origin.y + _armyStrengthIcon.image().height/2 - _armyStrengthText.getMeasuredLineHeight()/2;        
       }     
       
-      if (!_regionNameText && detail >= 1 && _node.region()) {
+      if (!_regionNameText && detail >= 1 && _node.region() && !my.realMap) {
         _regionNameText = new Text();
         _regionNameText.font = "12px Arial";
         _regionNameText.text = _node.region().name();
         _regionNameText.textBaseline = "top";
         _nonScaledContainer.displayObject().addChild(_regionNameText);
       }
-      if (_regionNameText && detail < 1) {
+      if (_regionNameText && (detail < 1 || my.realMap)) {
         _nonScaledContainer.displayObject().removeChild(_regionNameText);
         _regionNameText = null;
       } 
@@ -652,7 +662,7 @@ AWE.UI = (function(module) {
     that.layoutSubviews = function() {
       selectBackgroundImage(this.detailLevel());
       updateInformation(this.detailLevel());
-      streetsManager.update(my.streetsHidden, my.villagesHidden);
+      streetsManager.update(my.streetsHidden || my.realMap, my.villagesHidden);
       villageSpotsManager.update(my.villagesHidden);
 
       _super.layoutSubviews();
