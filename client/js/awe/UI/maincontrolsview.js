@@ -145,7 +145,6 @@ AWE.UI = (function(module) {
       _armiesButtonGraphics.drawCircle(344, 166, 36);
       var _armiesButton = new Shape(_armiesButtonGraphics);    
       _armiesButton.onClick = function() {
-        log('log',controller, controller.shopButtonClicked);
         controller.shopButtonClicked();
       };
   
@@ -163,7 +162,6 @@ AWE.UI = (function(module) {
       _shopShapeGraphics.drawRoundRect(20, 95, 100, 30, 8);
       var _shopShape = new Shape(_shopShapeGraphics);    
       _shopShape.onClick = function() {
-        log('log',controller, controller.ingameShopButtonClicked);
         controller.ingameShopButtonClicked();
       };
   
