@@ -33,6 +33,10 @@ AWE.GS = (function(module) {
     slotIdObserver: AWE.Partials.attributeHashObserver(module.JobAccess, 'slot_id', 'old_slot_id').observes('slot_id'),
     
     building_type_id: null,
+    buildingType: function() {
+      return module.RulesManager.getRules().getBuildingType(this.get('building_type_id'));
+    }.property('building_type_id'),
+    
     position: null,
     level_before: null,
     level_after: null,

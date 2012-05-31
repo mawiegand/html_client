@@ -29,8 +29,7 @@ AWE.GS = (function(module) {
 			if (buildingType === undefined || !buildingType) {
 				console.log('ERROR: requested non-existing building type ' + buildingType);
 			}
-			return this.get('building_types')[id];
-
+			return buildingType;
 		},
 		getBuildingCategory: function(id) {
 			var buildingCategory = this.get('building_categories')[id];
@@ -81,7 +80,6 @@ AWE.GS = (function(module) {
       
   }());
     
-  
   return module;
   
 }(AWE.GS || {}));
