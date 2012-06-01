@@ -48,24 +48,13 @@ AWE.GS = (function(module) {
 			return buildingCategroy;
 		},
 		getBuildingIdsWithCategories: function(categoryIds) {
-		  var buildings = this.filter(this.get('building_types'), 'category', categoryIds);
+		  var buildings = this.get('building_types').filter(function(item, index, self) {  // "filter" is ember-supplied
+		    return categoryIds.indexOf(item['category']) >= 0; // indexOf returns -1 in case the element is not in the array
+		  });
 		  return this.extractIds(buildings);
 		},
-		filter: function(hash, attribute, values) {
-		  var results = [];
-		  AWE.Ext.applyFunctionToHash(hash, function(key, entity) {
-		    if (values.indexOf(entity[attribute]) != -1) {
-		      results.push(entity);
-		    }
-		  });
-		  return results;
-		},
-		extractIds: function(hash) {
-		  var results = [];
-		  AWE.Ext.applyFunctionToHash(hash, function(key, entity) {
-		    results.push(entity.id);
-	    });
-	    return results;
+		extractIds: function(collection) {
+		  return collection.getEach('id'); // "getEach" is supplied by ember
 		},
 		
 		
