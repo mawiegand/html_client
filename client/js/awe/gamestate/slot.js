@@ -141,22 +141,21 @@ AWE.GS = (function(module) {
           return [] ;
         }
 
-        var settlementType = this.settlement().settlementType();
-        console.log('settlementType', settlementType, this.buildingOptions());
+        var buildingOptions = this.buildingOptions();
+        console.log('building options', buildingOptions);
         
-        options = [
-          AWE.GS.Building.create({ buildingId: 0, level: 1 }),
-          AWE.GS.Building.create({ buildingId: 1, level: 1 }),
-          AWE.GS.Building.create({ buildingId: 2, level: 1 }),
-          AWE.GS.Building.create({ buildingId: 3, level: 1 }),
-        ];
+        var buildings = AWE.GS.RulesManager.getRules().getBuildingIdsWithCategories(buildingOptions)
+        
+        AWE.Ext.applyFunctionToHash(buildings, function(key, buildingId) {
+          options.push(AWE.GS.Building.create({ buildingId: buildingId, level: 1 }));
+        });        
       }
       else {
         options = [ this.get('building') ];
       }
       
       this.set('constructionOptions', options);
-      console.log('new options', this.get('constructionOptions'));
+      console.log('new construction options', this.get('constructionOptions'));
       
     }.observes('building_id'),
 
@@ -185,9 +184,9 @@ AWE.GS = (function(module) {
 		  return settlementType.building_slots[this.get('slot_num')];
 		},
 		
-		/** returns the building options (catagory ids) of buildings that can be build
-		 * at this particular slot. Doesn't really compute something, just eases access 
-		 * to the rules. */
+		/** returns an array of the building options (catagory ids) of buildings that 
+		 * can be build at this particular slot. Doesn't really compute something, 
+		 * just eases access to the rules. */
 		buildingOptions: function() {
 		  var slotType = this.slotType();
 		  if (!slotType || slotType.options === undefined || slotType.options === null) {
@@ -195,6 +194,7 @@ AWE.GS = (function(module) {
 		  }
 		  return slotType.options;
 		},
+		
 		
   });     
 

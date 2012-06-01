@@ -47,15 +47,28 @@ AWE.GS = (function(module) {
 			}
 			return buildingCategroy;
 		},
-		getAllBuildingsOfCategory: function(categoryId) {
-		  var buildingIds = [];
-		  AWE.Ext.applyFunctionToHash(this.get('building_types'), function(buildingId, building) {
-		    if (building.category === categoryId) {
-		      buildingIds.push(buildingId);
+		getBuildingIdsWithCategories: function(categoryIds) {
+		  var buildings = this.filter(this.get('building_types'), 'category', categoryIds);
+		  return this.extractIds(buildings);
+		},
+		filter: function(hash, attribute, values) {
+		  var results = [];
+		  AWE.Ext.applyFunctionToHash(hash, function(key, entity) {
+		    if (values.indexOf(entity[attribute]) != -1) {
+		      results.push(entity);
 		    }
 		  });
-		  return buildingIds;
+		  return results;
 		},
+		extractIds: function(hash) {
+		  var results = [];
+		  AWE.Ext.applyFunctionToHash(hash, function(key, entity) {
+		    results.push(entity.id);
+	    });
+	    return results;
+		},
+		
+		
    });     
 
     
