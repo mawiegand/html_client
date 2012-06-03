@@ -25,9 +25,12 @@ AWE.UI.Ember = (function(module) {
                       
     optionClicked: function(event) {
       var slot = this.get('slot');
-      var buildingId = event.content.get('buildingId');
-      // TODO: here create the building action, or better: pass the action to the controller.
-      slot.set('building_id', buildingId);
+      var buildingTypeId = event.content.get('buildingTypeId');
+      var type = event.content.get('type');
+      this.get('controller').constructionOptionClicked(slot, buildingTypeId, type);
+      
+      // TODO nächste 2 zeilen entfernen, wenn slot automatisch aktualisiert wird      
+      slot.set('building_id', buildingTypeId);
       slot.set('level', 1);
       this.destroy();
     },         
@@ -58,6 +61,22 @@ AWE.UI.Ember = (function(module) {
 			else {
 				this.set('haveSlots', false);
 			}
+		},
+    queues: null,
+		setQueuesAndJobs: function() {
+		  // log('-----> setQueuesAndJobs');
+		  if (this.get('fortress')) {
+		    var queues = Ember.A(AWE.GS.QueueManager.getQueuesOfSettlement(this.get('fortress').get('id'))).filter(function(item){return item !== undefined});
+  		  // log('-----> setQueuesAndJobs', 'queues', queues);
+        this.set('queues', queues);
+        
+        AWE.Ext.applyFunction(queues, function(queue){
+    		  // log('-----> setQueuesAndJobs', 'queue', queue, queue.get('id'), AWE.GS.JobManager.getJobsInQueue(1));
+          var jobs = Ember.A(AWE.GS.JobManager.getJobsInQueue(queue.get('id'))).filter(function(item){return item !== undefined});
+    		  // log('-----> setQueuesAndJobs', 'jobs', jobs);
+          queue.set('jobs', jobs);
+        });
+      }
 		},
 	});
 
@@ -113,7 +132,6 @@ AWE.UI.Ember = (function(module) {
     large: function() {
       return this.get('level') >= 8;
     }.property('level'),
-    
   });
 
   module.InteractiveBuildingView = module.BuildingView.extend({
@@ -166,6 +184,22 @@ AWE.UI.Ember = (function(module) {
 		},  
   });
   
+  module.QueueListView = Ember.View.extend({
+    templateName: 'queue-list',
+    queues: null,
+  });
+
+  module.JobView = Ember.View.extend({
+    classNameBindings: ['active'],
+    
+    job: null,
+    
+    active: function() {
+      log('----> job', this.get('job'));
+      return this.get('job').active_job !== null;;
+    }.property('job'),
+  });
+
   return module;
     
 }(AWE.UI.Ember || {}));

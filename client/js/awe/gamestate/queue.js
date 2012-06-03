@@ -34,7 +34,7 @@ AWE.GS = (function(module) {
       baseTypeName: 'ActiveJob',
       content: Ember.A([]),
     }),
-      
+    
     activeJob: function(jobId) {
       return this.get('active_jobs').objectAt(jobId);
     },
@@ -83,7 +83,20 @@ AWE.GS = (function(module) {
       else {
         return new Date(1970);
       }
-    }    
+    }
+    
+    that.getQueueForBuildingCategorieInSettlement = function(buildingCategoryId, settlementId) {
+      var queues = that.getQueuesOfSettlement(settlementId);
+      // log('queues', queues, queues.length);
+      for (var i = 0; i < queues.length; i++) {
+        var queue = queues[i];
+        log('queue', queue);
+        if (queue !== undefined && queue.get('type_id') == buildingCategoryId) {
+          return queue;
+        }
+      }
+      return null;
+    }
         
     /** returns true, if update is executed, returns false, if request did 
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).

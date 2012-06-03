@@ -105,7 +105,8 @@ AWE.Controller = (function(module) {
       }
       this.updateView();
       this.view = this.createView();
-      this.view.appendTo('#main-screen-controller');      
+      this.view.appendTo('#main-screen-controller');   
+      
       log (this.view, this.view.childViews, this.view.get('childViews'), this.view.get('elementId'), this.view.clearBuffer);
     }
     
@@ -130,7 +131,7 @@ AWE.Controller = (function(module) {
       console.log('clicked slot');
       
       if (slot.get('building')) {
-        
+        // TODO job erzeugen
       }
       else { // nothing build yet: show building options dialog.
         AWE.UI.Ember.SelectBuildingDialog.create({
@@ -141,6 +142,39 @@ AWE.Controller = (function(module) {
       }
     }
     
+    that.constructionOptionClicked = function(slot, buildingTypeId, type) {
+      var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(buildingTypeId);
+      log('constructionOptionClicked', slot, buildingTypeId, buildingType, type);
+      // log('queues', AWE.GS.QueueManager.getQueuesOfSettlement(slot.settlement().getId()));
+      // var buildingCategory = AWE.GS.RulesManager.getRules().getBuildingCategory(buildingType.category);
+      // log('buildingCategory', buildingCategory);
+      
+      var queue = AWE.GS.QueueManager.getQueueForBuildingCategorieInSettlement(buildingType.category, slot.get('settlement_id'));
+      log('queue', queue);
+      
+      if (queue) {
+        that.createAndSendConstructionJob(queue, slot.getId(), buildingTypeId, AWE.GS.JOB_TYPE_UPGRADE, slot.get('level'));
+      }
+      else {
+        log("Could not find appropiate queue for building category");
+      }
+    }
+    
+    that.createAndSendConstructionJob = function(queue, slotId, buildingTypeId, jobType, levelBefore) {
+      // TODO: test if construction possible
+      // queue, slotId, buildingTypeId, jobType, levelBefore
+      var constructionAction = AWE.Action.Construction.createJobAction(queue, slotId, buildingTypeId, jobType, levelBefore);
+      constructionAction.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          log(status, "Construction job created.");
+          // TODO Queues und Jobs aktualisieren 
+        }
+        else {
+          log(status, "The server did not accept the construction command.");
+          // TODO Fehlermeldung 
+        }
+      });
+    }
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -154,19 +188,37 @@ AWE.Controller = (function(module) {
       var lastSettlementUpdateCheck = new Date(1970);
       var lastSettlementId = 0;
       
-      var updateSettlements = function() {
+      var updateSettlement = function() {
         
         // just trigger the updates, thanks to the bindings we do not need to
         // process the answers and update the views manually.
-        AWE.GS.SettlementManager.updateSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity) {
-	        console.log('updated settlement')
-					if (entity && entity.getId()) {
-            AWE.GS.SlotManager.updateSlotsAtSettlement(entity.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity) {
-              console.log('updated slots')
+        AWE.GS.SettlementManager.updateSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
+	        log('updated settlement', settlement)
+					if (settlement && settlement.getId()) {
+            AWE.GS.SlotManager.updateSlotsAtSettlement(settlement.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
+              log('updated slots', slots)
+            });
+
+            AWE.GS.QueueManager.updateQueuesOfSettlement(settlement.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
+              log('updated queues', queues)
+            
+              // log('queues', queues, queues[1].get('active_jobs').get('content'), queues[1].get('active_jobs').get('baseTypeName'));
+
+              AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
+                AWE.GS.JobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+                  log('updated jobs', jobs)
+                  if (that.view) {
+                    that.view.setQueuesAndJobs();
+                    log('-----> queues', that.view, that.view.get('queues')[0].get('jobs'));
+                  }
+                  else {
+                    log('no view');
+                  }
+                });
+              });      
             });
 					}
-          
-        }); 
+        });
       }
       
       return function() {
@@ -174,7 +226,7 @@ AWE.Controller = (function(module) {
         // TODO: use the last update timestamp from the Settlement Manager and don't track a copy locally.
         if (that.fortressId > 0 && (lastSettlementId != that.fortressId || lastSettlementUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date())) {
           log('update Settlement');
-          updateSettlements();
+          updateSettlement();
           lastSettlementUpdateCheck = new Date();
           lastSettlementId = that.fortressId;
         }
@@ -214,7 +266,7 @@ AWE.Controller = (function(module) {
 					that.slots = fortress.slots();
 					console.log('Set building slots.');
 					AWE.Ext.applyFunctionToHash(that.slots, function(key, value) {
-					  console.log("building id", value.get('building_id'));
+					  console.log("building type id", value.get('building_id'));
 					});
 				}
 			}

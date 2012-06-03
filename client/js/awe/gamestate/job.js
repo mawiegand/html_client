@@ -37,10 +37,20 @@ AWE.GS = (function(module) {
       return module.RulesManager.getRules().getBuildingType(this.get('building_type_id'));
     }.property('building_type_id'),
     
+    building: function() {
+      if (this.get('building_id') !== null && this.get('building_id') !== undefined ||
+          this.get('level_after') !== null && this.get('level_after') !== undefined) {
+        return AWE.GS.Building.create({ buildingTypeId: this.get('building_type_id'), level: this.get('level_after') });
+      }
+      return null;
+    }.property('building_type_id', 'level_after'),
+    
     position: null,
     level_before: null,
     level_after: null,
     job_type: null,
+    
+    active_job: null,
   });     
     
   // ///////////////////////////////////////////////////////////////////////

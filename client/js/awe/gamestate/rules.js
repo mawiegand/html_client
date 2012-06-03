@@ -40,25 +40,30 @@ AWE.GS = (function(module) {
 			}
 			return buildingType;
 		},
+		
 		getBuildingCategory: function(id) {
 			var buildingCategory = this.get('building_categories')[id];
 			if (buildingCategory === undefined || !buildingCategory) {
 				console.log('ERROR: requested non-existing building category ' + buildingCategory);
 			}
-			return buildingCategroy;
+			return buildingCategory;
 		},
-		getBuildingIdsWithCategories: function(categoryIds) {
-		  var buildings = this.get('building_types').filter(function(item, index, self) {  // "filter" is ember-supplied
+		
+		getBuildingTypeIdsWithCategories: function(categoryIds) {
+		  var buildingTypes = this.get('building_types').filter(function(item, index, self) {  // "filter" is ember-supplied
 		    return categoryIds.indexOf(item['category']) >= 0; // indexOf returns -1 in case the element is not in the array
 		  });
-		  return this.extractIds(buildings);
+		  return this.extractIds(buildingTypes);
 		},
+		
+		getQueueTypeIdWithProductionCategory: function(categoryId) {
+		  return
+		},
+		
 		extractIds: function(collection) {
 		  return collection.getEach('id'); // "getEach" is supplied by ember
 		},
-		
-		
-   });     
+  });     
 
     
   // ///////////////////////////////////////////////////////////////////////

@@ -32,6 +32,9 @@
         {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-right" modelBinding="rightTower" settlementBinding="fortress"}}
         {{view AWE.UI.Ember.InteractiveBuildingView  classNames="wall"  modelBinding="wall" settlementBinding="fortress"}}
       {{/if}}
+      {{#if queues}}
+        {{view AWE.UI.Ember.QueueListView classNames="queue-list" queuesBinding="queues"}}
+      {{/if}}
     {{/if}}
   </div>
 </div>
@@ -48,9 +51,45 @@
       {{#each constructionOptions}}
         {{#view Ember.View contentBinding="this" classNames="building-option" }}
           <div {{action "optionClicked" target="parentView"}}>
-            {{view AWE.UI.Ember.InteractiveBuildingView classNames="building-option-image" levelBinding="content.level" buildingIdBinding="content.buildingId" typeBinding="content.type"}}
+            {{view AWE.UI.Ember.BuildingView classNames="building-option-image" levelBinding="content.level" buildingTypeIdBinding="content.buildingTypeId" typeBinding="content.type"}}
             {{content.name}}<br>Level {{content.level}}
           </div>
+        {{/view}}
+      {{/each}}
+    {{/if}}
+  </div>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="queue-list">
+  <div class="queue-list-pane">
+    {{#if queues }}
+      {{#each queues}}
+        {{#view Ember.View queueBinding="this" classNames="queue"}}
+        <h1>Queue {{ queue.type_id }}</h1>
+          {{#if queue.jobs }}
+          <div class="queue-job-list">    
+            {{#each queue.jobs }}
+              {{#view AWE.UI.Ember.JobView jobBinding="this" classNames="queue-job"}}
+                {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" levelBinding="job.building.level" buildingTypeIdBinding="job.building.buildingTypeId" typeBinding="job.building.type"}}
+                <div class="queue-job-text">    
+                  <p>{{ job.job_type }}</p>
+                  <p>{{ job.building.name }}</p>
+                  <p>Level {{ job.level_after }}</p>
+                  <p>{{#if job.active_job }}Fin.: {{ job.active_job.finished_at }}{{/if}}</p>
+                </div>  
+                <div class="queue-job-button">    
+                  {{#view Ember.Button action="cancelJobPressed" target="parentView"}}cancel{{/view}}
+                </div>  
+              {{/view}}
+            {{/each}}
+          </div>  
+          {{/if}}
+          {{#unless queue.jobs }}
+          <div class="queue-job-list empty">    
+             <p>This construction queue is empty</p>
+          </div>  
+          {{/unless}}
         {{/view}}
       {{/each}}
     {{/if}}
