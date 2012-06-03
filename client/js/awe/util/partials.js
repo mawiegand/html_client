@@ -80,7 +80,7 @@ AWE.Partials = (function(module) {
         return this.allEntries[val].entries;
       }
       else {
-        return {};
+        return null;  // testweise geändert
       }
     }
     hash.setLastUpdateAtForValue = function(val, timestamp) {
