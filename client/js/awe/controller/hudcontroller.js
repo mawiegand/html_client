@@ -156,18 +156,20 @@ AWE.Controller = (function(module) {
     
     that.shopButtonClicked = function() {
       
-      AWE.GS.QueueManager.updateQueuesOfSettlement(10180, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queueData){
-        
-        var queues = AWE.GS.QueueManager.getQueuesOfSettlement(10180);
-        log('queues', queues, queues[1].get('active_jobs').get('content'), queues[1].get('active_jobs').get('baseTypeName'));
-        
-        for (var i = 0; i < queues.length; i++) {
-          var queue = queues[i];
-          if (queue !== undefined) {
-            AWE.GS.JobManager.updateJobsOfQueue(queue.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobData, status){
-              
-              var jobs = AWE.GS.JobManager.getJobsInQueue(queue.getId());
-              log('jobs', jobs);
+      log('rules', AWE.GS.RulesManager.getRules());
+      
+      // AWE.GS.QueueManager.updateQueuesOfSettlement(10180, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queueData){
+//         
+        // var queues = AWE.GS.QueueManager.getQueuesOfSettlement(10180);
+        // log('queues', queues, queues[1].get('active_jobs').get('content'), queues[1].get('active_jobs').get('baseTypeName'));
+//         
+        // for (var i = 0; i < queues.length; i++) {
+          // var queue = queues[i];
+          // if (queue !== undefined) {
+            // AWE.GS.JobManager.updateJobsOfQueue(queue.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobData, status){
+//               
+              // var jobs = AWE.GS.JobManager.getJobsInQueue(queue.getId());
+              // log('jobs', jobs);
               
               // for (var i in jobs) {
                 // var job = jobs[i];
@@ -185,10 +187,10 @@ AWE.Controller = (function(module) {
                   // log(status, "The server did not accept the attack comannd.");
                 // }
               // });
-            });
-          }
-        }
-      });
+            // });
+          // }
+        // }
+      // });
     };
         
 
