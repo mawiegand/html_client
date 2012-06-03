@@ -370,7 +370,7 @@ AWE.UI = (function(module) {
     }
 
 		that.setMapMode = function(realMap) {
-			var mode = realMap && (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM);
+			var mode = realMap && (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM);
 			if (mode !== my.realMap) {
 				my.realMap = mode;
 				this.setNeedsUpdate();
@@ -486,7 +486,7 @@ AWE.UI = (function(module) {
 					});
 	      }			
 			}
-			else { //GOOGLE
+			else { //GOOGLE
 
 				var frame = _node.frame();
 				var lc = AWE.Mapping.GlobalMercator.MetersToLatLon(cx, cy);
