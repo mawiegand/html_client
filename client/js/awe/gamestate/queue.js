@@ -30,6 +30,11 @@ AWE.GS = (function(module) {
     threads: null,
     jobs_count: null,
     
+    speedup_alliance: null,
+    speedup_buildings: null,
+    speedup_effects: null,
+    speedup_sciences: null,
+    
     active_jobs: Ember.ArrayProxy.create({
       baseTypeName: 'ActiveJob',
       content: Ember.A([]),
@@ -87,11 +92,11 @@ AWE.GS = (function(module) {
     
     that.getQueueForBuildingCategorieInSettlement = function(buildingCategoryId, settlementId) {
       var queues = that.getQueuesOfSettlement(settlementId);
+      var rules = AWE.GS.RulesManager.getRules();
       // log('queues', queues, queues.length);
       for (var i = 0; i < queues.length; i++) {
         var queue = queues[i];
-        log('queue', queue);
-        if (queue !== undefined && queue.get('type_id') == buildingCategoryId) {
+        if (queue !== undefined && queue.get('type_id') == rules.getQueueTypeIdWithProductionCategory(buildingCategoryId)) {
           return queue;
         }
       }
@@ -111,7 +116,7 @@ AWE.GS = (function(module) {
     
     
     that.updateQueuesOfSettlement = function(settlementId, updateType, callback) {
-      var url = AWE.Config.SETTLEMENT_SERVER_BASE + 'settlements/' + settlementId + '/queues';
+      var url = AWE.Config.SETTLEMENT_SERVER_BASE + 'settlements/' + settlementId + '/construction_queues';
       return my.fetchEntitiesFromURL(
         url,                                               // url to fetch from
         my.runningUpdatesPerSettlement,                     // queue to register this request during execution

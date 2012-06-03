@@ -24,6 +24,8 @@ AWE.GS = (function(module) {
     unit_types: null,
 		building_categories: null,
 		building_types: null,
+		queue_types: null,
+		queue_categories: null,
 		
 		getSettlementType: function(id) {
 			var settlementType = this.get('settlement_types')[id];
@@ -57,7 +59,14 @@ AWE.GS = (function(module) {
 		},
 		
 		getQueueTypeIdWithProductionCategory: function(categoryId) {
-		  return
+      var queueTypes = this.get('queue_types');
+      for (var id = 0; id < queueTypes.length; id++) {
+        var queueType = queueTypes[id];
+        if (queueType !== undefined && queueType.produces && queueType.produces.contains(categoryId)) {
+          return id;
+        }
+      }
+      return null;
 		},
 		
 		extractIds: function(collection) {
