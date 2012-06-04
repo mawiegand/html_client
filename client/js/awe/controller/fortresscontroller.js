@@ -132,7 +132,10 @@ AWE.Controller = (function(module) {
       console.log('clicked slot');
       
       if (slot.get('building')) {
-        that.createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.JOB_TYPE_UPGRADE, slot.get('level'));      
+        AWE.UI.Ember.BuildingDetailsDialog.create({
+          controller: this,
+          slot: slot,
+        }).appendTo($('.fortress-picture'));
       }
       else { // nothing build yet: show building options dialog.
         AWE.UI.Ember.SelectBuildingDialog.create({
@@ -152,9 +155,13 @@ AWE.Controller = (function(module) {
       that.createAndSendConstructionJob(slot, buildingTypeId, AWE.GS.JOB_TYPE_CREATE);      
     }
     
+    that.upgradeClicked = function(slot) {
+      that.createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.JOB_TYPE_UPGRADE, slot.get('level'));    
+    }  
+    
     that.createAndSendConstructionJob = function(slot, buildingTypeId, jobType, levelBefore) {
       
-      // TODO: test if construction possible
+      // TODO: test if construction possible  (or should we just rely on the server and show it's error message?)
       
       if (!levelBefore) {
         levelBefore = 0;
