@@ -81,7 +81,7 @@ AWE.Config = (function(module) {
   module.MAP_DBLCLK_CAMERA_BORDER_FACTOR = 0.15; ///< border around a node after zoom in
   module.MAP_DBLCLK_CAMERA_CROSS_CLICK_SIZE = 35;
   
-  module.SETTLEMENT_REFRESH_INTERVAL = 60 * 1000;
+  module.SETTLEMENT_REFRESH_INTERVAL = 10 * 1000;
   
   module.CREDITS_REFRESH_INTERVAL = 10 * 1000;
 
