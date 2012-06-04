@@ -36,13 +36,13 @@ AWE.UI.Ember = (function(module) {
   
   module.BuildingDetailsDialog = Ember.View.extend({
     templateName: "settlement-dialog-building-details",
-    heading: 'Building Name',
   
     cancelPressed: function() {
       this.destroy();
     },
                       
     upgradeClicked: function(event) {
+      this.get('controller').upgradeClicked(this.get('slot'));
     },         
     
   }); 

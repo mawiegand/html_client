@@ -135,6 +135,7 @@ AWE.Controller = (function(module) {
         AWE.UI.Ember.BuildingDetailsDialog.create({
           controller: this,
           slot: slot,
+          buildingBinding: 'slot.building',
         }).appendTo($('.fortress-picture'));
       }
       else { // nothing build yet: show building options dialog.

@@ -51,7 +51,7 @@
       {{#each constructionOptions}}
         {{#view Ember.View contentBinding="this" classNames="building-option" }}
           <div {{action "optionClicked" target="parentView"}}>
-            {{view AWE.UI.Ember.BuildingView classNames="building-option-image" levelBinding="content.level" buildingTypeIdBinding="content.buildingTypeId" typeBinding="content.type"}}
+            {{view AWE.UI.Ember.BuildingView modelBinding="building" }}
             {{content.name}}<br>Level {{content.level}}
           </div>
         {{/view}}
@@ -65,7 +65,11 @@
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-pane settlement-dialog-building-details">
     {{#view Ember.Button action="cancelPressed" target="parentView" classNames="cancel"}}close{{/view}}
-    <h1>{{ heading }}</h1>    
+    <h1>{{ building.name }} Level {{ building.level }}</h1>    
+    {{view AWE.UI.Ember.BuildingView classNames="building-option-image" levelBinding="building.level" buildingTypeIdBinding="building.buildingTypeId" typeBinding="building.type"}}
+    {{building.description}}
+    
+    <a href="#" {{action "upgradeClicked"}}>Upgrade</>
   </div>
 </script>
 

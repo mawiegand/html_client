@@ -559,7 +559,10 @@ html, body {
 .building-option-image.building_cavalry_tower {
   background: url('../images/settlements/fortress/building_cavalry_tower_small.png');
 }
-
+/** image for building_fortress_fortification*/
+.building-option-image.building_fortress_fortification {
+  background: url('../images/settlements/fortress/building_cavalry_tower_small.png');
+}
 
 .building-option-image .level {
   font-size: 24px;
