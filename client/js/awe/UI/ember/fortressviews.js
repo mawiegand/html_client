@@ -32,6 +32,20 @@ AWE.UI.Ember = (function(module) {
     },         
     
   });  
+  
+  
+  module.BuildingDetailsDialog = Ember.View.extend({
+    templateName: "settlement-dialog-building-details",
+    heading: 'Building Name',
+  
+    cancelPressed: function() {
+      this.destroy();
+    },
+                      
+    upgradeClicked: function(event) {
+    },         
+    
+  }); 
 
 	module.FortressView = Ember.View.extend({
 		fortress: null,  ///< pointer to the settlement model
