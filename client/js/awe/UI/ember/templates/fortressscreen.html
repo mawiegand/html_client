@@ -61,6 +61,15 @@
 </script>
 
 
+<script type="text/x-handlebars" data-template-name="settlement-dialog-building-details">
+  <div class="settlement-dialog-background"></div>
+  <div class="settlement-dialog-pane settlement-dialog-building-details">
+    {{#view Ember.Button action="cancelPressed" target="parentView" classNames="cancel"}}close{{/view}}
+    <h1>{{ heading }}</h1>    
+  </div>
+</script>
+
+
 <script type="text/x-handlebars" data-template-name="queue-list">
   <div class="queue-list-pane">
     {{#if queues }}
