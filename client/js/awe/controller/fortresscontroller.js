@@ -24,6 +24,7 @@ AWE.Controller = (function(module) {
     _super.append = function(f) { return function() { f.apply(that); }; }(that.append);
     _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
     
+    var _modelChanged = false;
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -91,8 +92,8 @@ AWE.Controller = (function(module) {
 			var fortress = AWE.GS.SettlementManager.getSettlement(that.fortressId);
       var fortressScreen = AWE.UI.Ember.FortressView.create({
         templateName: "fortress-screen",
-				fortress: fortress,
 				controller: this,
+				fortress: fortress,
       });      
 			that.slots = null;
       return fortressScreen;
@@ -131,7 +132,7 @@ AWE.Controller = (function(module) {
       console.log('clicked slot');
       
       if (slot.get('building')) {
-        // TODO job erzeugen
+        that.createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.JOB_TYPE_UPGRADE, slot.get('level'));      
       }
       else { // nothing build yet: show building options dialog.
         AWE.UI.Ember.SelectBuildingDialog.create({
@@ -142,38 +143,44 @@ AWE.Controller = (function(module) {
       }
     }
     
+    /** 
+     * method is called when the user clicks in a building selection dialog, which
+     * only shows up, if there's no bilding in the slot. thus, job type must be 'create'
+     */
     that.constructionOptionClicked = function(slot, buildingTypeId, type) {
-      var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(buildingTypeId);
-      log('constructionOptionClicked', slot, buildingTypeId, buildingType, type);
-      // log('queues', AWE.GS.QueueManager.getQueuesOfSettlement(slot.settlement().getId()));
-      // var buildingCategory = AWE.GS.RulesManager.getRules().getBuildingCategory(buildingType.category);
-      // log('buildingCategory', buildingCategory);
+      log('constructionOptionClicked', slot, buildingTypeId, type);  // TODO type is production category - > rename
+      that.createAndSendConstructionJob(slot, buildingTypeId, AWE.GS.JOB_TYPE_CREATE);      
+    }
+    
+    that.createAndSendConstructionJob = function(slot, buildingTypeId, jobType, levelBefore) {
       
+      // TODO: test if construction possible
+      
+      if (!levelBefore) {
+        levelBefore = 0;
+      }
+      
+      var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(buildingTypeId);
       var queue = AWE.GS.QueueManager.getQueueForBuildingCategorieInSettlement(buildingType.category, slot.get('settlement_id'));
       log('queue', queue);
       
       if (queue) {
-        that.createAndSendConstructionJob(queue, slot.getId(), buildingTypeId, AWE.GS.JOB_TYPE_UPGRADE, slot.get('level'));
+        var constructionAction = AWE.Action.Construction.createJobAction(queue, slot.getId(), buildingTypeId, jobType, levelBefore);
+        constructionAction.send(function(status) {
+          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+            log(status, "Construction job created.");
+            that.setModelChanged();
+          }
+          else {
+            log(status, "The server did not accept the construction command.");
+            // TODO Fehlermeldung 
+          }
+        });
       }
       else {
-        log("Could not find appropiate queue for building category");
+        log("Could not find appropiate queue for building category, no job created");
       }
-    }
-    
-    that.createAndSendConstructionJob = function(queue, slotId, buildingTypeId, jobType, levelBefore) {
-      // TODO: test if construction possible
-      // queue, slotId, buildingTypeId, jobType, levelBefore
-      var constructionAction = AWE.Action.Construction.createJobAction(queue, slotId, buildingTypeId, jobType, levelBefore);
-      constructionAction.send(function(status) {
-        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-          log(status, "Construction job created.");
-          // TODO Queues und Jobs aktualisieren 
-        }
-        else {
-          log(status, "The server did not accept the construction command.");
-          // TODO Fehlermeldung 
-        }
-      });
+      
     }
     
     // ///////////////////////////////////////////////////////////////////////
@@ -182,7 +189,14 @@ AWE.Controller = (function(module) {
     //
     // /////////////////////////////////////////////////////////////////////// 
 
+    that.modelChanged = function() {
+      return _modelChanged;
+    }
     
+    that.setModelChanged = function() {
+      _modelChanged = true;
+    }
+        
     that.updateModel = (function() {
             
       var lastSettlementUpdateCheck = new Date(1970);
@@ -209,7 +223,6 @@ AWE.Controller = (function(module) {
                   log('updated jobs', jobs)
                   if (that.view) {
                     that.view.setQueuesAndJobs();
-                    log('-----> queues', that.view, that.view.get('queues')[0].get('jobs'));
                   }
                   else {
                     log('no view');
@@ -224,11 +237,16 @@ AWE.Controller = (function(module) {
       return function() {
         
         // TODO: use the last update timestamp from the Settlement Manager and don't track a copy locally.
-        if (that.fortressId > 0 && (lastSettlementId != that.fortressId || lastSettlementUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date())) {
+        if (that.fortressId > 0 &&
+            (lastSettlementId != that.fortressId ||
+             lastSettlementUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date() ||
+             that.modelChanged())
+        ) {
           log('update Settlement');
           updateSettlement();
           lastSettlementUpdateCheck = new Date();
           lastSettlementId = that.fortressId;
+          _modelChanged = false;
         }
       };
     }());
@@ -245,7 +263,7 @@ AWE.Controller = (function(module) {
 
     that.runloop = function() {
       this.updateDebug();
-      if (this.visible && (_viewNeedsUpdate) && AWE.GS.SettlementManager.getSettlement(that.fortressId)) {
+      if (this.visible && _viewNeedsUpdate && AWE.GS.SettlementManager.getSettlement(that.fortressId)) {
         this.updateView();
         _viewNeedsUpdate = false;
 				console.log(that.fortressId, AWE.GS.SettlementManager.getSettlement(that.fortressId))
