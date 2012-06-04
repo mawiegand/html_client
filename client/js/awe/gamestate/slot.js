@@ -120,8 +120,8 @@ AWE.GS = (function(module) {
 					console.log('CREATED NEW BUILDING OBJECT');
 					building = module.Building.create({
 						slot: this,
-						// buildingIdBinding: 'slot.building_id',
-						// levelBinding: 'slot.level',
+						buildingIdBinding: 'slot.building_id',
+						levelBinding: 'slot.level',
 					});
 					this.set('_buildingInstance', building);				
 				}
