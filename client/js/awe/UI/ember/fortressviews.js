@@ -205,7 +205,6 @@ AWE.UI.Ember = (function(module) {
     job: null,
     
     active: function() {
-      log('----> job', this.get('job'));
       return this.get('job').active_job !== null;;
     }.property('job'),
   });
