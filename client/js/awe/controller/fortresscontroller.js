@@ -151,16 +151,16 @@ AWE.Controller = (function(module) {
      * method is called when the user clicks in a building selection dialog, which
      * only shows up, if there's no bilding in the slot. thus, job type must be 'create'
      */
-    that.constructionOptionClicked = function(slot, buildingTypeId, type) {
-      log('constructionOptionClicked', slot, buildingTypeId, type);  // TODO type is production category - > rename
-      that.createAndSendConstructionJob(slot, buildingTypeId, AWE.GS.JOB_TYPE_CREATE);      
+    that.constructionOptionClicked = function(slot, buildingId, type) {
+      log('constructionOptionClicked', slot, buildingId, type);  // TODO type is production category - > rename
+      that.createAndSendConstructionJob(slot, buildingId, AWE.GS.JOB_TYPE_CREATE);      
     }
     
     that.upgradeClicked = function(slot) {
       that.createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.JOB_TYPE_UPGRADE, slot.get('level'));    
     }  
     
-    that.createAndSendConstructionJob = function(slot, buildingTypeId, jobType, levelBefore) {
+    that.createAndSendConstructionJob = function(slot, buildingId, jobType, levelBefore) {
       
       // TODO: test if construction possible  (or should we just rely on the server and show it's error message?)
       
@@ -168,12 +168,12 @@ AWE.Controller = (function(module) {
         levelBefore = 0;
       }
       
-      var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(buildingTypeId);
+      var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(buildingId);
       var queue = AWE.GS.QueueManager.getQueueForBuildingCategorieInSettlement(buildingType.category, slot.get('settlement_id'));
       log('queue', queue);
       
       if (queue) {
-        var constructionAction = AWE.Action.Construction.createJobAction(queue, slot.getId(), buildingTypeId, jobType, levelBefore);
+        var constructionAction = AWE.Action.Construction.createJobAction(queue, slot.getId(), buildingId, jobType, levelBefore);
         constructionAction.send(function(status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
             log(status, "Construction job created.");

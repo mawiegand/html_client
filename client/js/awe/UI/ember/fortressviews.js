@@ -25,9 +25,9 @@ AWE.UI.Ember = (function(module) {
                       
     optionClicked: function(event) {
       var slot = this.get('slot');
-      var buildingTypeId = event.content.get('buildingTypeId');
+      var buildingId = event.content.get('buildingId');
       var type = event.content.get('type');
-      this.get('controller').constructionOptionClicked(slot, buildingTypeId, type);
+      this.get('controller').constructionOptionClicked(slot, buildingId, type);
       this.destroy();
     },         
     

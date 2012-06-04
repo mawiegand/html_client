@@ -10,9 +10,9 @@ var AWE = window.AWE || {};
 AWE.GS = (function(module) {
   
   module.JOB_TYPE_CREATE    = 'create'; 
-  module.JOB_TYPE_DESTROY   = 'destroy';
   module.JOB_TYPE_UPGRADE   = 'upgrade';
   module.JOB_TYPE_DOWNGRADE = 'downgrade';
+  module.JOB_TYPE_DESTROY   = 'destroy';
     
   module.JobAccess = {};
 
@@ -40,7 +40,7 @@ AWE.GS = (function(module) {
     building: function() {
       if (this.get('building_id') !== null && this.get('building_id') !== undefined ||
           this.get('level_after') !== null && this.get('level_after') !== undefined) {
-        return AWE.GS.Building.create({ buildingTypeId: this.get('building_type_id'), level: this.get('level_after') });
+        return AWE.GS.Building.create({ buildingId: this.get('building_type_id'), level: this.get('level_after') });
       }
       return null;
     }.property('building_type_id', 'level_after'),
@@ -108,10 +108,8 @@ AWE.GS = (function(module) {
       return my.updateEntity(url, id, updateType, callback); 
     };
     
-    /** updates all settlements for the current character. Calls the callback with a
-     * list of all the updated settlements. */
-    
-    
+    /** updates all jobs for the current queue. Calls the callback with a
+     * list of all the updated jobs. */
     that.updateJobsOfQueue = function(queueId, updateType, callback) {
       var url = AWE.Config.CONSTRUCTION_SERVER_BASE + 'queues/' + queueId + '/jobs';
       return my.fetchEntitiesFromURL(

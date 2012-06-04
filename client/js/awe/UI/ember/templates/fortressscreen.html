@@ -66,7 +66,7 @@
   <div class="settlement-dialog-pane settlement-dialog-building-details">
     {{#view Ember.Button action="cancelPressed" target="parentView" classNames="cancel"}}close{{/view}}
     <h1>{{ building.name }} Level {{ building.level }}</h1>    
-    {{view AWE.UI.Ember.BuildingView classNames="building-option-image" levelBinding="building.level" buildingTypeIdBinding="building.buildingTypeId" typeBinding="building.type"}}
+    {{view AWE.UI.Ember.BuildingView classNames="building-option-image" levelBinding="building.level" buildingIdBinding="building.buildingId" typeBinding="building.type"}}
     {{building.description}}
     
     <a href="#" {{action "upgradeClicked"}}>Upgrade</>
@@ -84,7 +84,7 @@
           <div class="queue-job-list">    
             {{#each queue.jobs }}
               {{#view AWE.UI.Ember.JobView jobBinding="this" classNames="queue-job"}}
-                {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" levelBinding="job.building.level" buildingTypeIdBinding="job.building.buildingTypeId" typeBinding="job.building.type"}}
+                {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" levelBinding="job.building.level" buildingIdBinding="job.building.buildingId" typeBinding="job.building.type"}}
                 <div class="queue-job-text">    
                   <p>{{ job.job_type }}</p>
                   <p>{{ job.building.name }}</p>
