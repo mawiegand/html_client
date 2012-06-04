@@ -28,10 +28,6 @@ AWE.UI.Ember = (function(module) {
       var buildingTypeId = event.content.get('buildingTypeId');
       var type = event.content.get('type');
       this.get('controller').constructionOptionClicked(slot, buildingTypeId, type);
-      
-      // TODO nächste 2 zeilen entfernen, wenn slot automatisch aktualisiert wird      
-      slot.set('building_id', buildingTypeId);
-      slot.set('level', 1);
       this.destroy();
     },         
     
