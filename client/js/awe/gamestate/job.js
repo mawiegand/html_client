@@ -122,9 +122,22 @@ AWE.GS = (function(module) {
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
             lastJobUpdates[queueId] = timestamp;
           }
+          // delete old jobs from queue
+          // TODO move a generalized version of this loop to entity manager
+          if (status === AWE.Net.OK) {
+            var jobs = module.JobAccess.getAllForQueue_id(queueId);
+            AWE.Ext.applyFunction(jobs, function(job){
+              if (job) {
+                var jobId = job.getId();
+                if (!result.hasOwnProperty(jobId)) {
+                  that.removeEntity(jobId);
+                }
+              }
+            });
+          }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
-              result = that.getEntities();
+              result = module.JobAccess.getAllForQueue_id(queueId);
             }
             callback(result, status, xhr, timestamp);
           }
