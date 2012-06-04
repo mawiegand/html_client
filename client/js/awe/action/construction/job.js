@@ -29,7 +29,7 @@ AWE.Action.Construction = (function(module) {
     that.getRequestBody = function() {
       return 'construction_job[queue_id]=' + my.queue.getId() +
         '&construction_job[slot_id]=' + my.slotId +
-        '&construction_job[building_type_id]=' + my.buildingId +
+        '&construction_job[building_id]=' + my.buildingId +
         '&construction_job[job_type]=' + my.jobType +
         '&construction_job[level_before]=' + my.levelBefore   
     }

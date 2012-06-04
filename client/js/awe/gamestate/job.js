@@ -32,18 +32,18 @@ AWE.GS = (function(module) {
     slot_id: null, old_slot_id: null, ///< id of the slot the job is a member of
     slotIdObserver: AWE.Partials.attributeHashObserver(module.JobAccess, 'slot_id', 'old_slot_id').observes('slot_id'),
     
-    building_type_id: null,
+    building_id: null,
     buildingType: function() {
-      return module.RulesManager.getRules().getBuildingType(this.get('building_type_id'));
-    }.property('building_type_id'),
+      return module.RulesManager.getRules().getBuildingType(this.get('building_id'));
+    }.property('building_id'),
     
     building: function() {
       if (this.get('building_id') !== null && this.get('building_id') !== undefined ||
           this.get('level_after') !== null && this.get('level_after') !== undefined) {
-        return AWE.GS.Building.create({ buildingId: this.get('building_type_id'), level: this.get('level_after') });
+        return AWE.GS.Building.create({ buildingId: this.get('building_id'), level: this.get('level_after') });
       }
       return null;
-    }.property('building_type_id', 'level_after'),
+    }.property('building_id', 'level_after'),
     
     position: null,
     level_before: null,
