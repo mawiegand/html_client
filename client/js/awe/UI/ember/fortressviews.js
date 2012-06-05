@@ -126,8 +126,8 @@ AWE.UI.Ember = (function(module) {
   module.BuildingView = Ember.View.extend({
     model: null, 
 
-		levelBinding: 'model.building.level',
-		typeBinding: 'model.building.type',
+		levelBinding: 'model.level',
+		typeBinding: 'model.type',
 
     classNameBindings: ['small:size1', 'middle:size2', 'large:size3', 'type'],
 
