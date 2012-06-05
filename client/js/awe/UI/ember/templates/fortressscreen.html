@@ -67,9 +67,33 @@
     {{#view Ember.Button action="cancelPressed" target="parentView" classNames="cancel"}}close{{/view}}
     <h1>{{ building.name }} Level {{ building.level }}</h1>    
     {{view AWE.UI.Ember.BuildingView classNames="building-option-image" levelBinding="building.level" buildingTypeIdBinding="building.buildingTypeId" typeBinding="building.type"}}
-    {{building.description}}
+    {{{building.description}}}
+
+    {{#if building.unlockedQueues}}
+      <p><b>Enables:</b> {{#each building.unlockedQueues}}{{ queue_type_id_sym }} {{/each}}</p>
+    {{/if}}
     
-    <a href="#" {{action "upgradeClicked"}}>Upgrade</>
+    {{#if building.speedupQueues}}
+      {{#each building.speedupQueues}}
+        <p><b>{{ name }} bonus:</b> {{ speedup }}%</p>
+      {{/each}}
+    {{/if}}
+    
+    <hr>
+
+    
+    {{#if building.nextLevelCopy.unlockedQueues}}
+      <p><b>Enables:</b> {{#each building.nextLevelCopy.unlockedQueues}}{{ queue_type_id_sym }} {{/each}}</p>
+    {{/if}}
+    
+    {{#if building.nextLevelCopy.speedupQueues}}
+      {{#each building.speedupQueues}}
+        <p><b>{{ name }} bonus:</b> {{ speedup }}%</p>
+      {{/each}}
+    {{/if}}
+    
+    
+    <a href="#" {{action "upgradeClicked"}}>Upgrade to Level {{ building.nextLevel }}</>
   </div>
 </script>
 

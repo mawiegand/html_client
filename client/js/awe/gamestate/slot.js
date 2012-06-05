@@ -32,31 +32,33 @@ AWE.GS = (function(module) {
 	//	buildingIdBinding: 'slot.building_id',  ///< bind the slot's building id to the corresponding property of the building
 	//	levelBinding: 'slot.level',     ///< property holding the present level of building 
 
-		/** returns a unique string identifying the building type. This 
-		 * is used to associate all images to the building. */
-		type: function() {
+    /** return the building type from the rules, that describes this
+     * building. */
+    rule: function() {
 			var buildingTypeId = this.get('buildingTypeId');
 			if (buildingTypeId === undefined || buildingTypeId === null) {
 				return null;
 			}
-			return AWE.GS.RulesManager.getRules().getBuildingType(buildingTypeId)['symbolic_id'];
-		}.property('buildingTypeId'),
+			return AWE.GS.RulesManager.getRules().getBuildingType(buildingTypeId);
+    }.property('buildingTypeId').cacheable(),
+
+		/** returns a unique string identifying the building type. This 
+		 * is used to associate all images to the building. */
+		type: function() {
+		  var rule = this.get('rule');
+			return rule ? rule['symbolic_id'] : null;
+		}.property('buildingTypeId').cacheable(),
 		
 		/** returns the localized name of the building. */
 		name: function() {
-			var buildingTypeId = this.get('buildingTypeId');
-			console.log(buildingTypeId);
-			if (buildingTypeId === undefined || buildingTypeId === null) {
-			  console.log('building id is missing.');
-			  return null;
-			}
-			return AWE.GS.RulesManager.getRules().getBuildingType(buildingTypeId)['name']['en_US'];  // TODO: correct localization			
-		}.property('buildingTypeId'),
+			var rule = this.get('rule');
+			return rule ? rule['name']['en_US'] : null;  // TODO: correct localization			
+		}.property('buildingTypeId').cacheable(),
 	
 		/** returns the localized description of the building. */
 		description: function() {
-			var buildingTypeId = this.get('buildingTypeId');
-			return AWE.GS.RulesManager.getRules().getBuildingType(buildingTypeId)['description']['en_US'];  // TODO: correct localization			
+			var rule = this.get('rule');
+			return rule ? rule['description']['en_US'] : null;  // TODO: correct localization			
 		}.property('buildingTypeId'),
 		
 		nextLevel: function() {
@@ -70,12 +72,52 @@ AWE.GS = (function(module) {
 		
 		canBeUpgraded: function() {
 		  
-		}.property('level', 'buildingTypeId'),
+		}.property('level', 'buildingTypeId').cacheable(),
 		
+		
+		unlockedQueues: function() {
+		  var rule = this.get('rule');
+		  console.log('rule');
+		  if (!rule || !rule.abilities || ! rule.abilities.unlock_queue) {
+		    console.log('empty returned')
+		    return [];
+		  }
+		  else {
+		    var that = this;
+		    return rule.abilities.unlock_queue.filter(function(item, index, self) {
+		      return item.level <= that.get('level'); 
+		    }); // TODO: Map, include localized description.		    console.log(filtered)
+		  }
+		  
+		}.property('buildingTypeId', 'level').cacheable(),
+		
+		
+		/** returns a description of all the present queue-speedups this building causes. */
+		speedupQueues: function() {
+		  var rule = this.get('rule');
+		  if (!rule || !rule.abilities || ! rule.abilities.speedup_queue) {
+		    return [];
+		  }
+		  else {
+		    var that = this;
+		    return rule.abilities.speedup_queue.map(function(item, index, self) {
+		      return {
+		        name: item.queue_type_id_sym,
+		        speedup: AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(item.speedup_formula), that.get('level')),
+		      }
+		    });
+		  }
+		}.property('buildingTypeId', 'level').cacheable(),		
 
 		canBeTornDown: function() {
 		  
 		}.property('level', 'buildingTypeId'),
+		
+		nextLevelCopy: function() {
+		  var copy = Ember.copy(this);
+		  copy.set('level', this.get('nextLevel'));
+		  return copy;
+		}.property('buildingTypeId', 'level'),
 		
   });    
 
