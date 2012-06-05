@@ -66,34 +66,35 @@
   <div class="settlement-dialog-pane settlement-dialog-building-details">
     {{#view Ember.Button action="cancelPressed" target="parentView" classNames="cancel"}}close{{/view}}
     <h1>{{ building.name }} Level {{ building.level }}</h1>    
-    {{view AWE.UI.Ember.BuildingView classNames="building-option-image" levelBinding="building.level" buildingTypeIdBinding="building.buildingTypeId" typeBinding="building.type"}}
+    {{view AWE.UI.Ember.BuildingView classNames="building-option-image" levelBinding="building.level" buildingIdBinding="building.buildingId" typeBinding="building.type"}}
     {{{building.description}}}
 
     {{#if building.unlockedQueues}}
-      <p><b>Enables:</b> {{#each building.unlockedQueues}}{{ queue_type_id_sym }} {{/each}}</p>
+      <p><b>Enables:</b> {{#each building.unlockedQueues}}{{ name }}, {{/each}}</p>
     {{/if}}
     
     {{#if building.speedupQueues}}
       {{#each building.speedupQueues}}
-        <p><b>{{ name }} bonus:</b> {{ speedup }}%</p>
+        <p><b>Speed bonus to {{ name }}:</b> {{ speedup }}%</p>
       {{/each}}
     {{/if}}
     
     <hr>
+    <h2>Next Level: {{ building.nextLevel }}</h2>
+    <a href="#" {{action "upgradeClicked"}}>Upgrade</a>
 
     
-    {{#if building.nextLevelCopy.unlockedQueues}}
-      <p><b>Enables:</b> {{#each building.nextLevelCopy.unlockedQueues}}{{ queue_type_id_sym }} {{/each}}</p>
+    {{#if building.unlockedQueuesNextLevel}}
+      <p><b>Enables:</b> {{#each building.unlockedQueuesNextLevel}}{{ name }}, {{/each}}</p>
     {{/if}}
     
-    {{#if building.nextLevelCopy.speedupQueues}}
-      {{#each building.speedupQueues}}
-        <p><b>{{ name }} bonus:</b> {{ speedup }}%</p>
+    {{#if building.speedupQueuesNextLevel}}
+      {{#each building.speedupQueuesNextLevel}}
+        <p><b>Speed bonus to {{ name }}:</b> {{ speedup }}%</p>
       {{/each}}
     {{/if}}
     
-    
-    <a href="#" {{action "upgradeClicked"}}>Upgrade to Level {{ building.nextLevel }}</>
+        
   </div>
 </script>
 
@@ -108,7 +109,7 @@
           <div class="queue-job-list">    
             {{#each queue.jobs }}
               {{#view AWE.UI.Ember.JobView jobBinding="this" classNames="queue-job"}}
-                {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" levelBinding="job.building.level" buildingTypeIdBinding="job.building.buildingTypeId" typeBinding="job.building.type"}}
+                {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" levelBinding="job.building.level" buildingIdBinding="job.building.buildingId" typeBinding="job.building.type"}}
                 <div class="queue-job-text">    
                   <p>{{ job.job_type }}</p>
                   <p>{{ job.building.name }}</p>

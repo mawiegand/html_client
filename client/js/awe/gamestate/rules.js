@@ -46,7 +46,8 @@ AWE.GS = (function(module) {
 		getBuildingCategory: function(id) {
 			var buildingCategory = this.get('building_categories')[id];
 			if (buildingCategory === undefined || !buildingCategory) {
-				console.log('ERROR: requested non-existing building category ' + buildingCategory);
+				console.log('ERROR: requested non-existing building category ' + id);
+				return null;
 			}
 			return buildingCategory;
 		},
@@ -56,6 +57,16 @@ AWE.GS = (function(module) {
 		    return categoryIds.indexOf(item['category']) >= 0; // indexOf returns -1 in case the element is not in the array
 		  });
 		  return this.extractIds(buildingTypes);
+		},
+		
+		/** looks-up the queue type for the given (numeric) id. */
+		getQueueType: function(queueTypeId) {
+		  var queueType = this.get('queue_types')[queueTypeId];
+		  if (queueType === undefined || queueType === null) {
+				console.log('ERROR: requested non-existing queue type ' + queueTypeId);
+		    return null;
+		  }
+		  return queueType;
 		},
 		
 		getQueueTypeIdWithProductionCategory: function(categoryId) {

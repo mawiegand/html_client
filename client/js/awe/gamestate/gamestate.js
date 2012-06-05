@@ -303,6 +303,22 @@ AWE.GS = (function(module) {
     that.getEntities = function() {
       return my.entities;
     }
+    
+    /**
+     * removes an entity from an entity manager. first look for all observed attributes with
+     * ending '_id' an set them to undefined in order to remove the entity from all 
+     * access hashes. then remove entity from entity manager. 
+     */
+    that.removeEntity = function(id) {
+      var entity = my.entities[id];
+      for (var property in entity) {
+        if (entity.hasOwnProperty(property) && property.match(/_id$/)) {
+          var newProperty = property.replace(/old_/, '');
+          entity.set(newProperty, undefined);
+        }
+      }
+      delete my.entities[id];
+    }
             
     return that;
   };

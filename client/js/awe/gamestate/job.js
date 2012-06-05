@@ -10,9 +10,9 @@ var AWE = window.AWE || {};
 AWE.GS = (function(module) {
   
   module.JOB_TYPE_CREATE    = 'create'; 
-  module.JOB_TYPE_DESTROY   = 'destroy';
   module.JOB_TYPE_UPGRADE   = 'upgrade';
   module.JOB_TYPE_DOWNGRADE = 'downgrade';
+  module.JOB_TYPE_DESTROY   = 'destroy';
     
   module.JobAccess = {};
 
@@ -32,18 +32,18 @@ AWE.GS = (function(module) {
     slot_id: null, old_slot_id: null, ///< id of the slot the job is a member of
     slotIdObserver: AWE.Partials.attributeHashObserver(module.JobAccess, 'slot_id', 'old_slot_id').observes('slot_id'),
     
-    building_type_id: null,
+    building_id: null,
     buildingType: function() {
-      return module.RulesManager.getRules().getBuildingType(this.get('building_type_id'));
-    }.property('building_type_id'),
+      return module.RulesManager.getRules().getBuildingType(this.get('building_id'));
+    }.property('building_id'),
     
     building: function() {
       if (this.get('building_id') !== null && this.get('building_id') !== undefined ||
           this.get('level_after') !== null && this.get('level_after') !== undefined) {
-        return AWE.GS.Building.create({ buildingTypeId: this.get('building_type_id'), level: this.get('level_after') });
+        return AWE.GS.Building.create({ buildingId: this.get('building_id'), level: this.get('level_after') });
       }
       return null;
-    }.property('building_type_id', 'level_after'),
+    }.property('building_id', 'level_after'),
     
     position: null,
     level_before: null,
@@ -108,10 +108,8 @@ AWE.GS = (function(module) {
       return my.updateEntity(url, id, updateType, callback); 
     };
     
-    /** updates all settlements for the current character. Calls the callback with a
-     * list of all the updated settlements. */
-    
-    
+    /** updates all jobs for the current queue. Calls the callback with a
+     * list of all the updated jobs. */
     that.updateJobsOfQueue = function(queueId, updateType, callback) {
       var url = AWE.Config.CONSTRUCTION_SERVER_BASE + 'queues/' + queueId + '/jobs';
       return my.fetchEntitiesFromURL(
@@ -124,9 +122,22 @@ AWE.GS = (function(module) {
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
             lastJobUpdates[queueId] = timestamp;
           }
+          // delete old jobs from queue
+          // TODO move a generalized version of this loop to entity manager
+          if (status === AWE.Net.OK) {
+            var jobs = module.JobAccess.getAllForQueue_id(queueId);
+            AWE.Ext.applyFunction(jobs, function(job){
+              if (job) {
+                var jobId = job.getId();
+                if (!result.hasOwnProperty(jobId)) {
+                  that.removeEntity(jobId);
+                }
+              }
+            });
+          }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
-              result = that.getEntities();
+              result = module.JobAccess.getAllForQueue_id(queueId);
             }
             callback(result, status, xhr, timestamp);
           }

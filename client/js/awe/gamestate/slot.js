@@ -35,31 +35,31 @@ AWE.GS = (function(module) {
     /** return the building type from the rules, that describes this
      * building. */
     rule: function() {
-			var buildingTypeId = this.get('buildingTypeId');
-			if (buildingTypeId === undefined || buildingTypeId === null) {
+			var buildingId = this.get('buildingId');
+			if (buildingId === undefined || buildingId === null) {
 				return null;
 			}
-			return AWE.GS.RulesManager.getRules().getBuildingType(buildingTypeId);
-    }.property('buildingTypeId').cacheable(),
+			return AWE.GS.RulesManager.getRules().getBuildingType(buildingId);
+    }.property('buildingId').cacheable(),
 
 		/** returns a unique string identifying the building type. This 
 		 * is used to associate all images to the building. */
 		type: function() {
 		  var rule = this.get('rule');
 			return rule ? rule['symbolic_id'] : null;
-		}.property('buildingTypeId').cacheable(),
+		}.property('buildingId').cacheable(),
 		
 		/** returns the localized name of the building. */
 		name: function() {
 			var rule = this.get('rule');
 			return rule ? rule['name']['en_US'] : null;  // TODO: correct localization			
-		}.property('buildingTypeId').cacheable(),
+		}.property('buildingId').cacheable(),
 	
 		/** returns the localized description of the building. */
 		description: function() {
 			var rule = this.get('rule');
 			return rule ? rule['description']['en_US'] : null;  // TODO: correct localization			
-		}.property('buildingTypeId'),
+		}.property('buildingId'),
 		
 		nextLevel: function() {
 		  var level = this.get('level');
@@ -67,57 +67,86 @@ AWE.GS = (function(module) {
 		    return parseInt(level) + 1;  // todo: check against max-level!
 		  }
 		  return null;
-		}.property('level', 'buildingTypeId'),
+		}.property('level', 'buildingId'),
 		
 		
 		canBeUpgraded: function() {
 		  
-		}.property('level', 'buildingTypeId').cacheable(),
+		}.property('level', 'buildingId').cacheable(),
 		
 		
-		unlockedQueues: function() {
+		
+		calculateUnlockedQueues: function(level) {
+		  level = level || this.get('level');
 		  var rule = this.get('rule');
-		  console.log('rule');
 		  if (!rule || !rule.abilities || ! rule.abilities.unlock_queue) {
-		    console.log('empty returned')
 		    return [];
 		  }
 		  else {
 		    var that = this;
-		    return rule.abilities.unlock_queue.filter(function(item, index, self) {
-		      return item.level <= that.get('level'); 
-		    }); // TODO: Map, include localized description.		    console.log(filtered)
+		    return rule.abilities.unlock_queue.filter(function(item, index, self) {             // filter the abilities for relevance (level)
+		      return item.level <= level; 
+		    }).map(function(item, index, self) {                                                // generate a description for the ability
+		      var queueType = AWE.GS.RulesManager.getRules().getQueueType(item.queue_type_id);
+		      if (!queueType) {
+		        return null;
+		      }
+		      return {
+		        name: queueType.name['en_US'],
+		      };
+		    });
 		  }
 		  
-		}.property('buildingTypeId', 'level').cacheable(),
+		},
 		
 		
-		/** returns a description of all the present queue-speedups this building causes. */
-		speedupQueues: function() {
+		unlockedQueues: function() {
+		  return this.calculateUnlockedQueues();
+		}.property('buildingId', 'level').cacheable(),
+		
+		unlockedQueuesNextLevel: function() {
+		  return this.calculateUnlockedQueues(this.get('nextLevel'));
+		}.property('buildingId', 'nextLevel').cacheable(),
+		
+	
+			/** returns a description of all the present queue-speedups this building causes. */
+		calculateSpeedupQueues: function(level) {
 		  var rule = this.get('rule');
+		  level = level || this.get('level');
 		  if (!rule || !rule.abilities || ! rule.abilities.speedup_queue) {
 		    return [];
 		  }
 		  else {
-		    var that = this;
 		    return rule.abilities.speedup_queue.map(function(item, index, self) {
-		      return {
-		        name: item.queue_type_id_sym,
-		        speedup: AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(item.speedup_formula), that.get('level')),
+		      var queueType = AWE.GS.RulesManager.getRules().getQueueType(item.queue_type_id);
+		      if (!queueType) {
+		        return null;
 		      }
+		      return {
+		        name: queueType.name['en_US'],
+		        speedup: AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(item.speedup_formula), level)*100,
+		      };
 		    });
 		  }
-		}.property('buildingTypeId', 'level').cacheable(),		
+		},		
+		
+		speedupQueues: function() {
+		  return this.calculateSpeedupQueues();
+		}.property('buildingId', 'level').cacheable(),		
+
+		speedupQueuesNextLevel: function() {
+		  return this.calculateSpeedupQueues(this.get('nextLevel'));
+		}.property('buildingId', 'nextLevel').cacheable(),		
 
 		canBeTornDown: function() {
 		  
-		}.property('level', 'buildingTypeId'),
+		}.property('level', 'buildingId'),
 		
-		nextLevelCopy: function() {
+/*		nextLevelCopy: function() {
 		  var copy = Ember.copy(this);
 		  copy.set('level', this.get('nextLevel'));
 		  return copy;
-		}.property('buildingTypeId', 'level'),
+		}.property('buildingId', 'level'), */
 		
   });    
 
@@ -152,8 +181,8 @@ AWE.GS = (function(module) {
 		/** return the building standing at this slot. Returns NULL, in case this
 		 * slot is empty. */
 		building: function() {
-			var buildingTypeId = this.get('building_id');
-			if (buildingTypeId === undefined || buildingTypeId === null) {
+			var buildingId = this.get('building_id');
+			if (buildingId === undefined || buildingId === null) {
 				return null;
 			}
 			else {
@@ -162,7 +191,7 @@ AWE.GS = (function(module) {
 					console.log('CREATED NEW BUILDING OBJECT');
 					building = module.Building.create({
 						slot: this,
-						buildingTypeIdBinding: 'slot.building_id',
+						buildingIdBinding: 'slot.building_id',
 						levelBinding: 'slot.level',
 					});
 					this.set('_buildingInstance', building);				
@@ -185,8 +214,8 @@ AWE.GS = (function(module) {
         
         var buildingTypes = AWE.GS.RulesManager.getRules().getBuildingTypeIdsWithCategories(buildingOptions)
         
-        AWE.Ext.applyFunctionToHash(buildingTypes, function(key, buildingTypeId) {
-          options.push(AWE.GS.Building.create({ buildingTypeId: buildingTypeId, level: 1 }));
+        AWE.Ext.applyFunctionToHash(buildingTypes, function(key, buildingId) {
+          options.push(AWE.GS.Building.create({ buildingId: buildingId, level: 1 }));
         });        
       }
       else {
