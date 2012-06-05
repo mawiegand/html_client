@@ -67,7 +67,7 @@ AWE.GS = (function(module) {
 		    return parseInt(level) + 1;  // todo: check against max-level!
 		  }
 		  return null;
-		}.property('level', 'buildingId'),
+		}.property('level', 'buildingId', 'slot').cacheable(),
 		
 		
 		canBeUpgraded: function() {
@@ -75,6 +75,8 @@ AWE.GS = (function(module) {
 		}.property('level', 'buildingId').cacheable(),
 		
 		
+		
+		// // Abilities //////////////////////////////////////////////////////////		
 		
 		calculateUnlockedQueues: function(level) {
 		  level = level || this.get('level');
@@ -96,9 +98,7 @@ AWE.GS = (function(module) {
 		      };
 		    });
 		  }
-		  
 		},
-		
 		
 		unlockedQueues: function() {
 		  return this.calculateUnlockedQueues();
@@ -107,9 +107,9 @@ AWE.GS = (function(module) {
 		unlockedQueuesNextLevel: function() {
 		  return this.calculateUnlockedQueues(this.get('nextLevel'));
 		}.property('buildingId', 'nextLevel').cacheable(),
-		
 	
-			/** returns a description of all the present queue-speedups this building causes. */
+	
+		/** returns a description of all the present queue-speedups this building causes. */
 		calculateSpeedupQueues: function(level) {
 		  var rule = this.get('rule');
 		  level = level || this.get('level');
@@ -137,6 +137,9 @@ AWE.GS = (function(module) {
 		speedupQueuesNextLevel: function() {
 		  return this.calculateSpeedupQueues(this.get('nextLevel'));
 		}.property('buildingId', 'nextLevel').cacheable(),		
+
+    // ///////////////////////////////////////////////////////////////////////
+    
 
 		canBeTornDown: function() {
 		  
@@ -170,6 +173,7 @@ AWE.GS = (function(module) {
     construction_id: null,
     slot_num: null,
     constructionOptions: null,
+    jobs: null,
 		
 		_buildingInstance: null,      ///< private method holding the instance of the corresponding building, if needed.
 
@@ -177,7 +181,12 @@ AWE.GS = (function(module) {
       this._super(spec);
       this.updateConstructionOptions();
     },
-
+    
+    updateJobs: function() {
+      var jobs = AWE.GS.JobAccess.getAllForSlot_id(this.getId()).filter(function(item){return item !== undefined});
+      this.set('jobs', jobs);     // TODO: set only, if array really changed!
+    }.observes('level'),          // TODO: observe the right thing...
+    
 		/** return the building standing at this slot. Returns NULL, in case this
 		 * slot is empty. */
 		building: function() {
