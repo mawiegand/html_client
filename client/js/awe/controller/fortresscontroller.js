@@ -129,24 +129,11 @@ AWE.Controller = (function(module) {
     // /////////////////////////////////////////////////////////////////////// 
     
     that.slotClicked = function(slot) {
-      console.log('clicked slot');
-      
-      console.log("JOBS", slot.get('jobs'));
-      
-      if (slot.get('building')) {
-        AWE.UI.Ember.BuildingDetailsDialog.create({
-          controller: this,
-          slot: slot,
-          buildingBinding: 'slot.building',
-        }).appendTo($('.fortress-picture'));
-      }
-      else { // nothing build yet: show building options dialog.
-        AWE.UI.Ember.SelectBuildingDialog.create({
-          controller: this,
-          slot: slot,
-          constructionOptionsBinding: 'slot.constructionOptions',
-        }).appendTo($('.fortress-picture'));
-      }
+      that.view.set('selectedSlot', slot);
+    }
+    
+    that.unselectSlot = function() {
+      that.view.set('selectedSlot', null);
     }
     
     /** 

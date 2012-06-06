@@ -20,7 +20,7 @@ AWE.UI.Ember = (function(module) {
     heading: 'Select Building',
   
     cancelPressed: function() {
-      this.destroy();
+      this.get('controller').unselectSlot();
     },
                       
     optionClicked: function(event) {
@@ -38,7 +38,7 @@ AWE.UI.Ember = (function(module) {
     templateName: "settlement-dialog-building-details",
   
     cancelPressed: function() {
-      this.destroy();
+      this.get('controller').unselectSlot();
     },
                       
     upgradeClicked: function(event) {
@@ -53,6 +53,9 @@ AWE.UI.Ember = (function(module) {
 		leftTower: null,
 		rightTower: null,
 		wall: null,
+		
+		selectedSlot: null,
+		
 		setSlots: function(slots) {
 		  var self = this;
 			if (slots && AWE.Util.hashCount(slots) > 0) {
