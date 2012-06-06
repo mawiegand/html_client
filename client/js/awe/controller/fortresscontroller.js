@@ -150,12 +150,12 @@ AWE.Controller = (function(module) {
       createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.JOB_TYPE_UPGRADE, nextLevel);    
     }  
     
-    var createAndSendConstructionJob = function(slot, buildingId, jobType, levelBefore) {
+    var createAndSendConstructionJob = function(slot, buildingId, jobType, levelAfter) {
       
       // TODO: test if construction possible  (or should we just rely on the server and show it's error message?)
       
-      if (!levelBefore) {
-        levelBefore = 0;
+      if (!levelAfter) {
+        levelAfter = 1;
       }
       
       var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(buildingId);
@@ -163,7 +163,7 @@ AWE.Controller = (function(module) {
       log('queue', queue);
       
       if (queue) {
-        var constructionAction = AWE.Action.Construction.createJobCreateAction(queue, slot.getId(), buildingId, jobType, levelBefore);
+        var constructionAction = AWE.Action.Construction.createJobCreateAction(queue, slot.getId(), buildingId, jobType, levelAfter);
         constructionAction.send(function(status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
             log(status, "Construction job created.");

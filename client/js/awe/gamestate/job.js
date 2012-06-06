@@ -46,7 +46,6 @@ AWE.GS = (function(module) {
     }.property('building_id', 'level_after'),
     
     position: null,
-    level_before: null,
     level_after: null,
     job_type: null,
     
@@ -59,6 +58,14 @@ AWE.GS = (function(module) {
       return null;
     }.property('active_job'),
     
+    cancelable: function() {
+      // var slotId = this.get('slot_id');
+      // if (slotId) {
+        // var slot = AWE.GS.SlotManager.getEntity(this.get('slot_id'));
+        // return this.getId() == slot.getLastJob(); 
+      // }
+      return true;
+    }.property(),  // TODO wovon abhängig?    
   });     
     
   // ///////////////////////////////////////////////////////////////////////
@@ -101,6 +108,14 @@ AWE.GS = (function(module) {
     
     that.getJobsInQueueAsHash = function(queueId) {
       return AWE.GS.JobAccess.getAllForQueue_id(queueId);
+    }
+    
+    that.getJobsInSlot = function(slotId) {
+      return AWE.GS.JobAccess.getEnumerableForSlot_id(slotId);
+    }
+    
+    that.getJobsInSlotAsHash = function(slotId) {
+      return AWE.GS.JobAccess.getAllForSlot_id(slotId);
     }
     
     that.lastUpdateForQueue = function(queueId) {
