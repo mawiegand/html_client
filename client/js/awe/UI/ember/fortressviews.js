@@ -24,11 +24,12 @@ AWE.UI.Ember = (function(module) {
     },
                       
     optionClicked: function(event) {
+      console.log('EVENT', event);
       var slot = this.get('slot');
-      var buildingId = event.content.get('buildingId');
-      var type = event.content.get('type');
+      var buildingId = event.view.get('content').get('buildingId');
+      var type = event.view.get('content').get('type');
       this.get('controller').constructionOptionClicked(slot, buildingId, type);
-      this.destroy();
+      this.get('controller').unselectSlot();
     },         
     
   });  
@@ -135,7 +136,15 @@ AWE.UI.Ember = (function(module) {
     classNameBindings: ['small:size1', 'middle:size2', 'large:size3', 'type'],
 
     small: function() {
-      return this.get('level') > 0 && this.get('level') < 4;
+      var level = this.get('level');
+      if (level == 0) {  // special case: return small also for level 0, iff there is a building (building id set, so it's under construction)
+        if (this.get('model') && this.get('model').get('building')) {
+          return true ; 
+        }
+      }
+      else {
+        return level > 0 && level < 4;
+      }
     }.property('level'),
   
     middle: function() {
