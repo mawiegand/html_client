@@ -15,7 +15,15 @@
   {{/if}} 
 {{/if}}
 {{#if "model.building"}}
-  <div class="level">{{model.building.level}}</div>
+  {{#if model.building.underConstruction}}
+    <div class="level constructing">{{model.building.level}}</div>
+  {{else}}
+    {{#if model.building.underDestruction}}
+      <div class="level destructing">{{model.building.level}}</div>
+    {{else}}
+      <div class="level">{{model.building.level}}</div>
+    {{/if}}
+  {{/if}}
 {{/if}}
 </script>
 
@@ -75,7 +83,9 @@
   <div class="settlement-dialog-pane settlement-dialog-building-details">
     <a href="#" {{action "cancelPressed" }} class="cancel">close</a>
     {{#if building.level }}
-      <h1>{{ building.name }} Level {{ building.level }}</h1>   
+      <h1>{{ building.name }} <span title="present level of building">Level {{ building.level }}</span>
+          {{#if building.underConstruction }}(<span class="constructing" title="level after finishing all upgrades already in the queue">{{building.levelAfterJobs}}</span>){{/if}}
+          {{#if building.underDestruction }}(<span class="destructing" title="level after finishing all downgrades already in the queue">{{building.levelAfterJobs}}</span>){{/if}}</h1>   
     {{else}}
       <h1>Under Construction: {{ building.name }}</h1>        
     {{/if}}

@@ -24,7 +24,6 @@ AWE.UI.Ember = (function(module) {
     },
                       
     optionClicked: function(event) {
-      console.log('EVENT', event);
       var slot = this.get('slot');
       var buildingId = event.view.get('content').get('buildingId');
       var type = event.view.get('content').get('type');
@@ -49,7 +48,7 @@ AWE.UI.Ember = (function(module) {
   }); 
 
 	module.FortressView = Ember.View.extend({
-		fortress: null,  ///< pointer to the settlement model
+		fortress:  null,  ///< pointer to the settlement model
 		haveSlots: false,
 		leftTower: null,
 		rightTower: null,

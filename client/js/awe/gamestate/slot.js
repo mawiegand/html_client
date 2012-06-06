@@ -60,19 +60,31 @@ AWE.GS = (function(module) {
 		description: function() {
 			var rule = this.get('buildingType');
 			return rule ? rule['description']['en_US'] : null;  // TODO: correct localization			
-		}.property('buildingId'),
+		}.property('buildingId').cacheable(),
 		
-		nextLevel: function() {
+		levelAfterJobs: function() {
 		  var level = this.get('level');
-		  var nextLevel = level ? parseInt(level) + 1 : 1;
 		  var jobs = this.get('hashableJobs') ? this.get('hashableJobs').get('collection') : null;
 		  if (jobs && jobs.length > 0) {
 		    var lastJob = jobs[jobs.length-1];
-		    nextLevel = lastJob.get('level_after')+1;
+		    return lastJob.get('level_after');
 		  }
-		  console.log('CALCULATED NEXT LEVEL: ', nextLevel);
+		  return level;
+		}.property('level', 'hashableJobs.changedAt').cacheable(),
+		
+		underConstruction: function() {
+		  return this.get('level') < this.get('levelAfterJobs');
+		}.property('level', 'levelAfterJobs').cacheable(),
+		
+		underDestruction: function() {
+		  return this.get('level') > this.get('levelAfterJobs');
+		}.property('level', 'levelAfterJobs').cacheable(),
+		
+		nextLevel: function() {
+		  var levelAfterJobs = this.get('levelAfterJobs');
+		  var nextLevel = levelAfterJobs ? parseInt(levelAfterJobs) + 1 : 1;
 		  return nextLevel;
-		}.property('level', 'buildingId', 'hashableJobs.changedAt').cacheable(),
+		}.property('levelAfterJobs').cacheable(),
 		
 		upgradable: function() {
 		  var nextLevel = this.get('nextLevel');
@@ -83,7 +95,6 @@ AWE.GS = (function(module) {
       }
       return false ; // not enough information available
 		}.property('nextLevel').cacheable(),
-		
 
 		logJobsChange: function() {
 		  console.log('CHANGE JOBS', this.get('hashableJobs') ? this.get('hashableJobs').get('changedAt') : 'NO HASHABLE JOBS', this);
