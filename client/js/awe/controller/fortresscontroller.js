@@ -228,13 +228,13 @@ AWE.Controller = (function(module) {
             AWE.GS.QueueManager.updateQueuesOfSettlement(settlement.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
               // log('updated queues', queues)
             
-              // log('queues', queues, queues[1].get('active_jobs').get('content'), queues[1].get('active_jobs').get('baseTypeName'));
+              // log('queues', queues[4327].get('jobs').get('content'), queues[4327].get('active_jobs').get('content'));
 
               AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
                 AWE.GS.JobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
                   // log('updated jobs', jobs)
                   if (that.view) {
-                    that.view.setQueuesAndJobs();
+                    // that.view.setQueuesAndJobs();
                   }
                   else {
                     log('no view');

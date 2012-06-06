@@ -39,8 +39,8 @@
         {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-right" modelBinding="rightTower" settlementBinding="fortress"}}
         {{view AWE.UI.Ember.InteractiveBuildingView  classNames="wall"  modelBinding="wall" settlementBinding="fortress"}}
       {{/if}}
-      {{#if queues}}
-        {{view AWE.UI.Ember.QueueListView controllerBinding="controller" classNames="queue-list" queuesBinding="queues"}}
+      {{#if fortress.queues}}
+        {{view AWE.UI.Ember.QueueListView controllerBinding="controller" classNames="queue-list" queuesBinding="fortress.queues"}}
       {{/if}}
     {{/if}}
 

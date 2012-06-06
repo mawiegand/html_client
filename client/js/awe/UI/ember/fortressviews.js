@@ -75,22 +75,22 @@ AWE.UI.Ember = (function(module) {
 				this.set('haveSlots', false);
 			}
 		},
-    queues: null,
-		setQueuesAndJobs: function() {
-		  // log('-----> setQueuesAndJobs');
-		  if (this.get('fortress')) {
-		    var queues = Ember.A(AWE.GS.QueueManager.getQueuesOfSettlement(this.get('fortress').get('id'))).filter(function(item){return item !== undefined});
-  		  // log('-----> setQueuesAndJobs', 'queues', queues);
-        this.set('queues', queues);
-        
-        AWE.Ext.applyFunction(queues, function(queue){
-    		  // log('-----> setQueuesAndJobs', 'queue', queue, queue.get('id'), AWE.GS.JobManager.getJobsInQueue(1));
-          var jobs = Ember.A(AWE.GS.JobManager.getJobsInQueue(queue.get('id'))).filter(function(item){return item !== undefined});
-    		  // log('-----> setQueuesAndJobs', 'jobs', jobs);
-          queue.set('jobs', jobs);
-        });
-      }
-		},
+		queuesBinding: 'fortress.hashableQueues',
+		// setQueuesAndJobs: function() {
+		  // // log('-----> setQueuesAndJobs');
+		  // if (this.get('fortress')) {
+		    // var queues = Ember.A(AWE.GS.QueueManager.getQueuesOfSettlement(this.get('fortress').get('id'))).filter(function(item){return item !== undefined});
+  		  // // log('-----> setQueuesAndJobs', 'queues', queues);
+        // this.set('queues', queues);
+//         
+        // AWE.Ext.applyFunction(queues, function(queue){
+    		  // // log('-----> setQueuesAndJobs', 'queue', queue, queue.get('id'), AWE.GS.JobManager.getJobsInQueue(1));
+          // var jobs = Ember.A(AWE.GS.JobManager.getJobsInQueue(queue.get('id'))).filter(function(item){return item !== undefined});
+    		  // // log('-----> setQueuesAndJobs', 'jobs', jobs);
+          // queue.set('jobs', jobs);
+        // });
+      // }
+		// },
 	});
 
   module.ToolTipView = Ember.View.extend({
