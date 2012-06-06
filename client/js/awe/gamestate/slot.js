@@ -35,7 +35,7 @@ AWE.GS = (function(module) {
 
     /** return the building type from the rules, that describes this
      * building. */
-    rule: function() {
+    buildingType: function() {
 			var buildingId = this.get('buildingId');
 			if (buildingId === undefined || buildingId === null) {
 				return null;
@@ -46,46 +46,63 @@ AWE.GS = (function(module) {
 		/** returns a unique string identifying the building type. This 
 		 * is used to associate all images to the building. */
 		type: function() {
-		  var rule = this.get('rule');
+		  var rule = this.get('buildingType');
 			return rule ? rule['symbolic_id'] : null;
 		}.property('buildingId').cacheable(),
 		
 		/** returns the localized name of the building. */
 		name: function() {
-			var rule = this.get('rule');
+			var rule = this.get('buildingType');
 			return rule ? rule['name']['en_US'] : null;  // TODO: correct localization			
 		}.property('buildingId').cacheable(),
 	
 		/** returns the localized description of the building. */
 		description: function() {
-			var rule = this.get('rule');
+			var rule = this.get('buildingType');
 			return rule ? rule['description']['en_US'] : null;  // TODO: correct localization			
-		}.property('buildingId'),
+		}.property('buildingId').cacheable(),
 		
-		nextLevel: function() {
+		levelAfterJobs: function() {
 		  var level = this.get('level');
-		  var nextLevel = level ? parseInt(level) + 1 : 1;
-		  
-		  var jobs = this.get('hashableJobs').get('collection');
+		  var jobs = this.get('hashableJobs') ? this.get('hashableJobs').get('collection') : null;
 		  if (jobs && jobs.length > 0) {
 		    var lastJob = jobs[jobs.length-1];
-		    nextLevel = lastJob.get('level_after') + 1;
+		    return lastJob.get('level_after');
 		  }
-		  
-		  console.log('CALCULATE NEXT LEVEL FOR JOBS: ', this.get('slot').get('jobs'), nextLevel);
+		  return level;
+		}.property('level', 'hashableJobs.changedAt').cacheable(),
+		
+		underConstruction: function() {
+		  return this.get('level') < this.get('levelAfterJobs');
+		}.property('level', 'levelAfterJobs').cacheable(),
+		
+		underDestruction: function() {
+		  return this.get('level') > this.get('levelAfterJobs');
+		}.property('level', 'levelAfterJobs').cacheable(),
+		
+		nextLevel: function() {
+		  var levelAfterJobs = this.get('levelAfterJobs');
+		  var nextLevel = levelAfterJobs ? parseInt(levelAfterJobs) + 1 : 1;
 		  return nextLevel;
-		}.property('level', 'buildingId', 'hashableJobs.changedAt').cacheable(),
+		}.property('levelAfterJobs').cacheable(),
 		
-		logChange: function() {
+		upgradable: function() {
+		  var nextLevel = this.get('nextLevel');
+      var slot = this.get('slot');
+      if (slot) {
+        var slotType = slot.slotType();
+        return nextLevel <= slotType.max_level;
+      }
+      return false ; // not enough information available
+		}.property('nextLevel').cacheable(),
+
+		logJobsChange: function() {
 		  console.log('CHANGE JOBS', this.get('hashableJobs') ? this.get('hashableJobs').get('changedAt') : 'NO HASHABLE JOBS', this);
-		  
-		}.observes('hashableJobs.changedAt'),
+		}.observes('hashableJobs.changedAt'),		
 		
-		canBeUpgraded: function() {
-		  
-		}.property('level', 'buildingId').cacheable(),
-		
-		
+		logNextLevelChange: function() {
+		  console.log('CHANGE NEXT LEVEL', this.get('nextLevel'), this.get('level'));
+		}.observes('nextLevel'),			
 		
 		// // Abilities //////////////////////////////////////////////////////////		
 		
@@ -156,11 +173,6 @@ AWE.GS = (function(module) {
 		  
 		}.property('level', 'buildingId'),
 		
-/*		nextLevelCopy: function() {
-		  var copy = Ember.copy(this);
-		  copy.set('level', this.get('nextLevel'));
-		  return copy;
-		}.property('buildingId', 'level'), */
 		
   });    
 
@@ -187,31 +199,37 @@ AWE.GS = (function(module) {
 		
 		_buildingInstance: null,      ///< private method holding the instance of the corresponding building, if needed.
 		hashableJobs: null,
-    jobs: null,
+    // jobs: null,
     
     bindings: null,
 
     init: function(spec) {
+      console.log('INIT Slot');
       this._super(spec);
       
       if (this.get('id')) {
         var hashableJobs = AWE.GS.JobAccess.getHashableCollectionForSlot_id(this.get('id'));
         this.set('hashableJobs', hashableJobs);
-        var binding = Ember.Binding.from('this.hashableJobs.collection').to('jobs');
+        /* var binding = Ember.Binding.from('this.hashableJobs.collection').to('jobs');
         binding.connect(this);
-        
         var bindings = [ binding ];
-        this.set('bindings', binding);
+        this.set('bindings', binding); */
       }
       
       this.updateConstructionOptions();
     },
     
-/*    updateJobs: function() {
-      var jobs = AWE.GS.JobAccess.getEnumerableForSlot_id(this.getId());
-      this.set('jobs', jobs);     // TODO: set only, if array really changed!
-    }.observes('level'),          // TODO: observe the right thing...
-  */
+    destroy: function(spec) {  // disonnect all manually concstructed bindings
+      console.log('DESTROY Slot');
+      var bindings = this.get('bindings');
+      if (bindings && bindings.length) {
+        bindings.forEach(function(item) {
+          item.disconnect();
+        });
+      }
+      return this._super();
+    },
+    
     
 		/** return the building standing at this slot. Returns NULL, in case this
 		 * slot is empty. */
@@ -235,18 +253,17 @@ AWE.GS = (function(module) {
 			}
 		}.property('building_id').cacheable(),
 		
+		/** determine the building types that can be constructed in this 
+		 * particular slot. */
     updateConstructionOptions: function() {
       var options = [];
-      console.log('updating options');
       
       if (this.get('building_id') === null || this.get('building_id') === undefined) {
         if (! this.settlement()) {
           return [] ;
         }
 
-        var buildingOptions = this.buildingOptions();
-        console.log('building options', buildingOptions);
-        
+        var buildingOptions = this.buildingOptions();        
         var buildingTypes = AWE.GS.RulesManager.getRules().getBuildingTypeIdsWithCategories(buildingOptions)
         
         AWE.Ext.applyFunctionToHash(buildingTypes, function(key, buildingId) {
@@ -256,14 +273,11 @@ AWE.GS = (function(module) {
       else {
         options = [ this.get('building') ];
       }
-      
-      this.set('constructionOptions', options);
-      console.log('new construction options', this.get('constructionOptions'));
-      
+      this.set('constructionOptions', options);      
     }.observes('building_id'),
 
 
-		settlement: function() {
+		settlement: function() {         // this should become an action, but therefore we need to make sure the corresponding settlement has already been loaded
       var sid = this.get('settlement_id');
       if (sid === undefined || sid === null) {
         return sid;

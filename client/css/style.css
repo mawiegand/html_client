@@ -778,6 +778,14 @@ html, body {
   right: 0px;
 }
 
+.constructing, .fortress-picture .level.constructing {
+  color: #3F3;
+}
+
+.destructing, .fortress-picture .level.destructing {
+  color: #F33;
+}
+
 /** image for building_siege_tower */
 .fortress-picture .tower.building_siege_tower {
   background: url('../images/settlements/fortress/building_siege_tower.png');
