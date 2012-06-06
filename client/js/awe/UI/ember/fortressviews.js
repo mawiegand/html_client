@@ -216,6 +216,10 @@ AWE.UI.Ember = (function(module) {
     
     job: null,
     
+    cancelJobPressed: function(event) {
+      this.get('controller').cancelClicked(this.get('job'));
+    },
+    
     active: function() {
       return this.get('job').active_job !== null;;
     }.property('job'),    
