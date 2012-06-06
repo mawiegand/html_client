@@ -3,7 +3,7 @@
       <div class="center-helper">
         <div class="modal-dialog-pane" id="army-details">
           <h1>{{ unbound AWE.I18n.strings.army.details.heading }}: {{ army.name }}</h1>
-          {{#view Ember.Button action="changeNamePressed" target="parentView"}}change name{{/view}}
+          <a href="#" {{action "changeNamePressed" target="parentView"}}>change name</a>
           
           <table>
             <tr>
@@ -27,7 +27,7 @@
             <li>Velocity: {{ army.velocity }}</li>
           </ul>
           
-          {{#view Ember.Button action="closePressed" target="parentView"}}close{{/view}}
+          <a href="#" {{action "closePressed" target="parentView"}}>close</a>
         </div>
       </div>
 </script>

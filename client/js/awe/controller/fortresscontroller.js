@@ -131,9 +131,9 @@ AWE.Controller = (function(module) {
     that.slotClicked = function(slot) {
       console.log('clicked slot');
       
-      console.log("JOBS", slot.get('jobs'));
-      
-      if (slot.get('building')) {
+      that.view.set('selectedSlot', slot);
+            
+    /*  if (slot.get('building')) {
         AWE.UI.Ember.BuildingDetailsDialog.create({
           controller: this,
           slot: slot,
@@ -146,7 +146,12 @@ AWE.Controller = (function(module) {
           slot: slot,
           constructionOptionsBinding: 'slot.constructionOptions',
         }).appendTo($('.fortress-picture'));
-      }
+      } */
+    }
+    
+    that.unselectSlot = function() {
+      console.log('unselect slot!');
+      that.view.set('selectedSlot', null);
     }
     
     /** 

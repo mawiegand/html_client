@@ -36,6 +36,11 @@
         {{view AWE.UI.Ember.QueueListView classNames="queue-list" queuesBinding="queues"}}
       {{/if}}
     {{/if}}
+
+    {{#if selectedSlot}}
+      {{view AWE.UI.Ember.BuildingDetailsDialog controllerBinding="controller" slotBinding="selectedSlot" buildingBinding="selectedSlot.building"}}
+    {{/if}}
+    
   </div>
 </div>
 </script>
@@ -44,7 +49,7 @@
 <script type="text/x-handlebars" data-template-name="settlement-dialog-select-building">
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-pane settlement-dialog-select-building">
-    <a href="#" {{action "cancelPressed" target="parentView"}} class="cancel">close</a>
+    <a href="#" {{action "cancelPressed"}} class="cancel">close</a>
     <h1>{{ heading }}</h1>    
     <p>{{ message }}</p>
     {{#if constructionOptions }}
@@ -65,7 +70,7 @@
 <script type="text/x-handlebars" data-template-name="settlement-dialog-building-details">
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-pane settlement-dialog-building-details">
-    <a href="#" {{action "cancelPressed" target="parentView"}} class="cancel">close</a>
+    <a href="#" {{action "cancelPressed" }} class="cancel">close</a>
     <h1>{{ building.name }} Level {{ building.level }}</h1>    
     {{view AWE.UI.Ember.BuildingView classNames="building-option-image" modelBinding="building"}}
     {{{building.description}}}
