@@ -88,7 +88,7 @@ AWE.GS = (function(module) {
     }
         
     that.getJobsInQueue = function(queueId) {
-      return AWE.GS.JobAccess.getAllForQueue_id(queueId);
+      return AWE.GS.JobAccess.getEnumerableForQueue_id(queueId);
     }
     
     that.lastUpdateForQueue = function(queueId) {
@@ -125,7 +125,7 @@ AWE.GS = (function(module) {
           // delete old jobs from queue
           // TODO move a generalized version of this loop to entity manager
           if (status === AWE.Net.OK) {
-            var jobs = module.JobAccess.getAllForQueue_id(queueId);
+            var jobs = module.JobAccess.getEnumerableForQueue_id(queueId);
             AWE.Ext.applyFunction(jobs, function(job){
               if (job) {
                 var jobId = job.getId();

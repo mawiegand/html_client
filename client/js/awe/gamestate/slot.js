@@ -183,7 +183,7 @@ AWE.GS = (function(module) {
     },
     
     updateJobs: function() {
-      var jobs = AWE.GS.JobAccess.getAllForSlot_id(this.getId()).filter(function(item){return item !== undefined});
+      var jobs = AWE.GS.JobAccess.getEnumerableForSlot_id(this.getId());
       this.set('jobs', jobs);     // TODO: set only, if array really changed!
     }.observes('level'),          // TODO: observe the right thing...
     

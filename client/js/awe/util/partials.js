@@ -147,12 +147,16 @@ AWE.Partials = (function(module) {
      * set its values manually, using this method. */
     setEntriesForValue: function(val, newEntries, timestamp) {
       var hc = this.getHashableCollectionForValue(val);
-      hc.replaceAllEntries(newEntries, timestamp);
+      hc.replaceAll(newEntries, timestamp);
     },
     
     addEntry: function(entry) {
-      var hc = this.getHashableCollectionForValue(entry.get('attribute'));
-      hc.addEntry(entry);
+      console.log('ADD ENTRY', entry.get('id'), entry);
+      var attribute = this.get('attribute');
+      var hc = this.getHashableCollectionForValue(entry.get(attribute));
+      hc.add(entry);
+      
+      console.log('HASH AFTER', hc);
     },
     removeEntry: function(entry, oldValue) {
       var attribute = this.get('attribute');      
@@ -182,9 +186,7 @@ AWE.Partials = (function(module) {
     wasLastUpdateForValueAfter: function(val, timestamp) {
       return this.lastUpdateForValue(val) >= timestamp;
     },
-    
-    // private
-    
+        
     /** returns the hashable collection for the given value. if there's
      * none, it'll be created (empty) on the fly. */
     getHashableCollectionForValue: function(val) {
@@ -277,13 +279,90 @@ AWE.Partials = (function(module) {
 
       if (!hook.accessHashes[attribute]) {
 
-        hook.accessHashes[attribute] = module.createAttributeValueHash(attribute);
+        hook.accessHashes[attribute] = module.AttributeValueHash.create({
+          attribute: attribute,
+        });
         
+        
+        /** returns the HashableCollection for the given value. The 
+         * HashableCollection is an Ember object and has the "collection" 
+         * property, that controllers and view objects may bind to. */
+        hook['getEnumerableFor'+upperCaseAttr] = function(value) {
+          return hook.accessHashes[attribute].getHashableCollectionForValue(value);
+        }
+        
+        hook['getEnumerableFor'+upperCaseAttr] = function(value) {
+          return hook.accessHashes[attribute].getEnumerableForValue(value);
+        }
         
         // creates some "global" convenience functions at the hook
         hook['getAllFor'+upperCaseAttr] = function(value) {
           return hook.accessHashes[attribute].getEntriesForValue(value);
         }
+        
+        hook['lastUpdateFor'+upperCaseAttr] = function(value) {
+          return hook.accessHashes[attribute].lastUpdateForValue(value);
+        }
+        
+        hook['wasLastUpdateFor'+upperCaseAttr+'After'] = function(value, timestamp) {
+          return hook.accessHashes[attribute].wasLastUpdateForValueAfter(value, timestamp);
+        }
+        
+        hook['accessHashFor'+upperCaseAttr] = function() {
+          return hook.accessHashes[attribute];
+        }
+      }
+    }    
+
+    if (!hook.accessHashes || !hook.accessHashes[attribute]) {//   create hash, if not already there
+      createAccessHashForAttribute(); 
+    }
+    
+    
+    return function() {                       // actually construct and return the observer
+      var newValue = this.get(attribute);
+      var oldValue = this.get(oldAttribute);
+      if (oldValue != newValue) {
+        if (oldValue) {
+          hook.accessHashes[attribute].removeEntry(this, oldValue);
+        }
+        if (newValue) {
+          hook.accessHashes[attribute].addEntry(this);
+        }
+        this.set(oldAttribute, newValue);
+      };
+    }
+    
+  };
+  
+  /** this creates an observer function that can be attached to an ember
+   * attribute in order to create and update a hash for accessing instances
+   * of the class by the value of the attribute. The hash is created on the fly
+   * if it's not already there. You just have to provide a hook (class, hash),
+   * where to put the hash and generated accessor functions. The hash will be 
+   * placed in hook.accessHashes[attribute]. */
+  module.attributeHashObserverOld = function(hook, attribute, oldAttribute) {
+        
+    /** creates an auto-updated hash for a property. */
+    var createAccessHashForAttribute = function() {
+      var upperCaseAttr = attribute.charAt(0).toUpperCase() + attribute.slice(1);
+
+      if (hook.accessHashes === undefined) {
+        hook.accessHashes = {};
+      }
+
+      if (!hook.accessHashes[attribute]) {
+
+        hook.accessHashes[attribute] = module.createAttributeValueHash(attribute);
+        
+
+        
+        // creates some "global" convenience functions at the hook
+        hook['getAllFor'+upperCaseAttr] = function(value) {
+          return hook.accessHashes[attribute].getEntriesForValue(value);
+        }
+        
+
         
         hook['lastUpdateFor'+upperCaseAttr] = function(value) {
           return hook.accessHashes[attribute].lastUpdateForValue(value);
