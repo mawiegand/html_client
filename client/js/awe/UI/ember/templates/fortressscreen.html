@@ -141,9 +141,11 @@
                   <p>Level {{ job.level_after }}</p>
                   <p>{{#if job.active_job }}Fin.: {{ job.active_job.finished_at }}{{/if}}</p>
                 </div>  
+                {{#if job.cancelable }}
                 <div class="queue-job-button">    
                   <a href="#" {{action "cancelJobPressed"}}>cancel</a>
                 </div>  
+                {{/if}}
               {{/view}}
             {{/each}}
           </div>  
