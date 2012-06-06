@@ -205,13 +205,9 @@ AWE.UI.Ember = (function(module) {
     job: null,
     
     active: function() {
+      log('---> job', this.get('job').active_job.finished_at);
       return this.get('job').active_job !== null;;
-    }.property('job'),
-    
-    parsedFinishedDate: function() {
-      log('---> date', this.get('job'));
-      return 'T: ' + this.get('job').get('finished_at');
-    }.property('job'),
+    }.property('job'),    
   });
 
   return module;
