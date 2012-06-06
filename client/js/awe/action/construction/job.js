@@ -10,7 +10,7 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Construction = (function(module) {
   
-  module.createJobAction = function(queue, slotId, buildingId, jobType, levelBefore, my) {
+  module.createJobCreateAction = function(queue, slotId, buildingId, jobType, levelBefore, my) {
       
     // private attributes and methods //////////////////////////////////////
     var that;
@@ -57,6 +57,36 @@ AWE.Action.Construction = (function(module) {
   
     return that;
     
+  };
+  
+  module.createJobCancelAction = function(jobId, my) {
+      
+    // private attributes and methods //////////////////////////////////////
+    var that;
+    
+    // protected attributes and methods ////////////////////////////////////
+    my = my || {};
+    my.jobId = jobId;
+
+    // public attributes and methods ///////////////////////////////////////
+    that = AWE.Action.createAction(my);    
+    
+    that.getRequestBody = function() {
+      return null;
+    }
+    
+    that.getURL = function() {
+      return AWE.Config.CONSTRUCTION_SERVER_BASE + 'jobs/' + jobId;
+    }
+  
+    that.getHTTPMethod = function() {
+      return 'DELETE';
+    }
+    
+    that.postProcess = function(statusCode, xhr) {
+    }
+    
+    return that;
   };
   
   return module;

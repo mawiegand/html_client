@@ -33,7 +33,7 @@
         {{view AWE.UI.Ember.InteractiveBuildingView  classNames="wall"  modelBinding="wall" settlementBinding="fortress"}}
       {{/if}}
       {{#if queues}}
-        {{view AWE.UI.Ember.QueueListView classNames="queue-list" queuesBinding="queues"}}
+        {{view AWE.UI.Ember.QueueListView controllerBinding="controller" classNames="queue-list" queuesBinding="queues"}}
       {{/if}}
     {{/if}}
 
@@ -108,12 +108,12 @@
   <div class="queue-list-pane">
     {{#if queues }}
       {{#each queues}}
-        {{#view Ember.View queueBinding="this" classNames="queue"}}
+        {{#view Ember.View controllerBinding="controller" queueBinding="this" classNames="queue"}}
         <h1>Queue {{ queue.type_id }}</h1>
           {{#if queue.jobs }}
           <div class="queue-job-list">    
             {{#each queue.jobs }}
-              {{#view AWE.UI.Ember.JobView jobBinding="this" classNames="queue-job"}}
+              {{#view AWE.UI.Ember.JobView controllerBinding="controller" jobBinding="this" classNames="queue-job"}}
                 {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" levelBinding="job.building.level" buildingIdBinding="job.building.buildingId" typeBinding="job.building.type"}}
                 <div class="queue-job-text">    
                   <p>{{ job.job_type }}</p>
@@ -122,7 +122,7 @@
                   <p>{{#if job.active_job }}Fin.: {{ job.parsedFinishingDate }}{{/if}}</p>
                 </div>  
                 <div class="queue-job-button">    
-                  <a href="#" {{action "cancelJobPressed" target="parentView"}}>cancel</a>
+                  <a href="#" {{action "cancelJobPressed"}}>cancel</a>
                 </div>  
               {{/view}}
             {{/each}}

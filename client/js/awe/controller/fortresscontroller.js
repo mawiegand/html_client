@@ -142,15 +142,15 @@ AWE.Controller = (function(module) {
      */
     that.constructionOptionClicked = function(slot, buildingId, type) {
       log('constructionOptionClicked', slot, buildingId, type);  // TODO type is production category - > rename
-      that.createAndSendConstructionJob(slot, buildingId, AWE.GS.JOB_TYPE_CREATE);      
+      createAndSendConstructionJob(slot, buildingId, AWE.GS.JOB_TYPE_CREATE);      
     }
     
     that.upgradeClicked = function(slot) {
       var nextLevel = slot.get('building').get('nextLevel');
-      that.createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.JOB_TYPE_UPGRADE, nextLevel);    
+      createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.JOB_TYPE_UPGRADE, nextLevel);    
     }  
     
-    that.createAndSendConstructionJob = function(slot, buildingId, jobType, levelBefore) {
+    var createAndSendConstructionJob = function(slot, buildingId, jobType, levelBefore) {
       
       // TODO: test if construction possible  (or should we just rely on the server and show it's error message?)
       
@@ -163,7 +163,7 @@ AWE.Controller = (function(module) {
       log('queue', queue);
       
       if (queue) {
-        var constructionAction = AWE.Action.Construction.createJobAction(queue, slot.getId(), buildingId, jobType, levelBefore);
+        var constructionAction = AWE.Action.Construction.createJobCreateAction(queue, slot.getId(), buildingId, jobType, levelBefore);
         constructionAction.send(function(status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
             log(status, "Construction job created.");
@@ -181,8 +181,17 @@ AWE.Controller = (function(module) {
     } 
     
     that.cancelClicked = function(job) {
-      var nextLevel = slot.get('building').get('nextLevel');
-      that.createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.JOB_TYPE_UPGRADE, nextLevel);    
+      var cancelJobAction = AWE.Action.Construction.createJobCancelAction(job.getId());
+      cancelJobAction.send(function(status) {
+        if (status === AWE.Net.OK) {    // 200 OK
+          log(status, "Construction job deleted.");
+          that.setModelChanged();
+        }
+        else {
+          log(status, "The server did not accept the job removal command.");
+          // TODO Fehlermeldung 
+        }
+      });
     }  
     
     
