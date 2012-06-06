@@ -76,6 +76,11 @@ AWE.GS = (function(module) {
 		  return nextLevel;
 		}.property('level', 'buildingId', 'hashableJobs.changedAt').cacheable(),
 		
+		logChange: function() {
+		  console.log('CHANGE JOBS', this.get('hashableJobs') ? this.get('hashableJobs').get('changedAt') : 'NO HASHABLE JOBS', this);
+		  
+		}.observes('hashableJobs.changedAt'),
+		
 		canBeUpgraded: function() {
 		  
 		}.property('level', 'buildingId').cacheable(),

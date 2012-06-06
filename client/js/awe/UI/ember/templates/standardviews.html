@@ -4,8 +4,8 @@
     <div class="modal-dialog-pane z-layer-4" id="text-input-dialog">
       <h1>{{ heading }}</h1>
       {{view Ember.TextField class="text-field" placeholder="Name" type="text" valueBinding="input"}} 
-      {{#view Ember.Button action="cancelPressed" target="parentView"}}cancel{{/view}}
-      {{#view Ember.Button action="okPressed" target="parentView"}}ok{{/view}}
+      <a href="#" {{action "cancelPressed" target="parentView"}}>cancel</a>
+      <a href="#" {{action "okPressed" target="parentView"}}>ok</a>
     </div>
   </div>
 </script>

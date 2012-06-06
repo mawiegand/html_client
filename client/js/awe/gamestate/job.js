@@ -38,10 +38,10 @@ AWE.GS = (function(module) {
     }.property('building_id'),
     
     building: function() {
-      if (this.get('building_id') !== null && this.get('building_id') !== undefined ||
+     /* if (this.get('building_id') !== null && this.get('building_id') !== undefined ||
           this.get('level_after') !== null && this.get('level_after') !== undefined) {
         return AWE.GS.Building.create({ buildingId: this.get('building_id'), level: this.get('level_after') });
-      }
+      }*/
       return null;
     }.property('building_id', 'level_after'),
     
@@ -89,6 +89,10 @@ AWE.GS = (function(module) {
         
     that.getJobsInQueue = function(queueId) {
       return AWE.GS.JobAccess.getEnumerableForQueue_id(queueId);
+    }
+    
+    that.getJobsInQueueAsHash = function(queueId) {
+      return AWE.GS.JobAccess.getAllForQueue_id(queueId);
     }
     
     that.lastUpdateForQueue = function(queueId) {
