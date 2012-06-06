@@ -69,7 +69,7 @@ AWE.GS = (function(module) {
 		  var jobs = this.get('hashableJobs').get('collection');
 		  if (jobs && jobs.length > 0) {
 		    var lastJob = jobs[jobs.length-1];
-		    nextLevel = lastJob.get('level_after')+1;
+		    nextLevel = lastJob.get('level_after') + 1;
 		  }
 		  
 		  console.log('CALCULATE NEXT LEVEL FOR JOBS: ', this.get('slot').get('jobs'), nextLevel);

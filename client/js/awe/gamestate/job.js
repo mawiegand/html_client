@@ -46,7 +46,6 @@ AWE.GS = (function(module) {
     }.property('building_id', 'level_after'),
     
     position: null,
-    level_before: null,
     level_after: null,
     job_type: null,
     
