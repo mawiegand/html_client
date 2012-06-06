@@ -131,6 +131,8 @@ AWE.Controller = (function(module) {
     that.slotClicked = function(slot) {
       console.log('clicked slot');
       
+      console.log("JOBS", slot.get('jobs'));
+      
       if (slot.get('building')) {
         AWE.UI.Ember.BuildingDetailsDialog.create({
           controller: this,
@@ -157,7 +159,8 @@ AWE.Controller = (function(module) {
     }
     
     that.upgradeClicked = function(slot) {
-      that.createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.JOB_TYPE_UPGRADE, slot.get('level'));    
+      var nextLevel = slot.get('building').get('nextLevel');
+      that.createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.JOB_TYPE_UPGRADE, nextLevel);    
     }  
     
     that.createAndSendConstructionJob = function(slot, buildingId, jobType, levelBefore) {
