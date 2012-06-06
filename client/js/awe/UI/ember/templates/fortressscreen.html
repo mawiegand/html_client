@@ -27,7 +27,11 @@
 {{/if}}
 </script>
 
-
+<script type="text/x-handlebars" data-template-name="fortress-info-box">
+  <a href="#" {{action "changeNamePressed"}}>change name</a>
+  <h1>{{name}}</h2>
+  <p>{{defenseBonus}} | {{buildingSpeed}}</p>
+</script>
 
 <script type="text/x-handlebars" data-template-name="fortress-screen">
 <div class="fortress-screen">
@@ -42,6 +46,8 @@
       {{#if queues}}
         {{view AWE.UI.Ember.QueueListView controllerBinding="controller" classNames="queue-list" queuesBinding="queues"}}
       {{/if}}
+
+      {{view AWE.UI.Ember.FortressInfoBoxView classNames="fortress-info-box" fortressBinding="fortress"}}
     {{/if}}
 
     {{#if selectedSlot}}

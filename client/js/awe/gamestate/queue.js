@@ -35,6 +35,17 @@ AWE.GS = (function(module) {
     speedup_effects: null,
     speedup_sciences: null,
     
+    /** returns the queue type from the rules, that describes this
+     * queue. */
+    queueType: function() {
+			var typeId = this.get('type_id');
+			if (typeId === undefined || typeId === null) { // must check, because typeId may be zero
+				return null;
+			}
+			console.log('TYPE_ID', this.get('type_id'), typeId, AWE.GS.RulesManager.getRules().getQueueType(typeId));
+			return AWE.GS.RulesManager.getRules().getQueueType(typeId);
+    }.property('type_id').cacheable(),
+    
     active_jobs: Ember.ArrayProxy.create({
       baseTypeName: 'ActiveJob',
       content: Ember.A([]),
