@@ -208,8 +208,9 @@ AWE.UI.Ember = (function(module) {
     job: null,
     
     active: function() {
+      log('---> job', this.get('job').active_job.finished_at);
       return this.get('job').active_job !== null;;
-    }.property('job'),
+    }.property('job'),    
   });
 
   return module;

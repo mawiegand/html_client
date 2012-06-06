@@ -51,6 +51,14 @@ AWE.GS = (function(module) {
     job_type: null,
     
     active_job: null,
+    parsedFinishingDate: function() {
+      var active_job = this.get('active_job');
+      if (active_job) {
+        return active_job.finished_at;
+      }
+      return null;
+    }.property('active_job'),
+    
   });     
     
   // ///////////////////////////////////////////////////////////////////////
