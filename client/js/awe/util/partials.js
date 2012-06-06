@@ -104,7 +104,7 @@ AWE.Partials = (function(module) {
       
       if (hash[id]) {
         delete hash[id];
-        var index = this.indexofEntryWithId(id)
+        var index = this.indexOfEntryWithId(id)
         if (index >= 0) {
           collection.removeAt(index);
         }
