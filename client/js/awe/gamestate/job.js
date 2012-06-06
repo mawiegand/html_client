@@ -54,7 +54,7 @@ AWE.GS = (function(module) {
     parsedFinishingDate: function() {
       var active_job = this.get('active_job');
       if (active_job) {
-        return active_job.finished_at;
+        return AWE.GS.Util.parseDate(active_job.finished_at);
       }
       return null;
     }.property('active_job'),

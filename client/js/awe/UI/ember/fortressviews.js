@@ -5,7 +5,7 @@
  */
 
 var AWE = AWE || {};
-AWE.UI = AWE.UI || {};
+AWE.UI = AWE.UI || {}; 
 
 AWE.UI.Ember = (function(module) {
   
@@ -205,7 +205,6 @@ AWE.UI.Ember = (function(module) {
     job: null,
     
     active: function() {
-      log('---> job', this.get('job').active_job.finished_at);
       return this.get('job').active_job !== null;;
     }.property('job'),    
   });

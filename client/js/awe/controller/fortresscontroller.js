@@ -191,8 +191,13 @@ AWE.Controller = (function(module) {
       else {
         log("Could not find appropiate queue for building category, no job created");
       }
-      
-    }
+    } 
+    
+    that.cancelClicked = function(job) {
+      var nextLevel = slot.get('building').get('nextLevel');
+      that.createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.JOB_TYPE_UPGRADE, nextLevel);    
+    }  
+    
     
     // ///////////////////////////////////////////////////////////////////////
     //
