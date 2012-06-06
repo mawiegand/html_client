@@ -322,7 +322,7 @@ AWE.Controller = (function(module) {
         if (_needsDisplay || _loopCounter % 30 == 0 || that.modelChanged()) {
           // STEP 4b: create, remove and update all views according to visible parts of model      
           var updateNeeded = that.updateViewHierarchy();      
-            if (updateNeeded || true) {
+            if (updateNeeded || true) { // TODO: remove true, update only, if necessary 
               _stage.update();
               AWE.Ext.applyFunctionToElements(HUDViews, function(view) {
                 view.notifyRedraw();

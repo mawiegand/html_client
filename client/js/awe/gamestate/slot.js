@@ -28,6 +28,7 @@ AWE.GS = (function(module) {
 		typename: 'Building',
 
 		slot: null,         ///< points to the slot this building is situated at. Needs to be set during creation.
+		hashableJobsBinding: "slot.hashableJobs",
 
 	//	buildingIdBinding: 'slot.building_id',  ///< bind the slot's building id to the corresponding property of the building
 	//	levelBinding: 'slot.level',     ///< property holding the present level of building 
@@ -63,12 +64,17 @@ AWE.GS = (function(module) {
 		
 		nextLevel: function() {
 		  var level = this.get('level');
-		  if (level) {
-		    return parseInt(level) + 1;  // todo: check against max-level!
+		  var nextLevel = level ? parseInt(level) + 1 : 1;
+		  
+		  var jobs = this.get('hashableJobs').get('collection');
+		  if (jobs && jobs.length > 0) {
+		    var lastJob = jobs[jobs.length-1];
+		    nextLevel = lastJob.get('level_after')+1;
 		  }
-		  return null;
-		}.property('level', 'buildingId', 'slot').cacheable(),
-		
+		  
+		  console.log('CALCULATE NEXT LEVEL FOR JOBS: ', this.get('slot').get('jobs'), nextLevel);
+		  return nextLevel;
+		}.property('level', 'buildingId', 'hashableJobs.changedAt').cacheable(),
 		
 		canBeUpgraded: function() {
 		  
@@ -124,7 +130,7 @@ AWE.GS = (function(module) {
 		      }
 		      return {
 		        name: queueType.name['en_US'],
-		        speedup: AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(item.speedup_formula), level)*100,
+		        speedup: Math.floor(AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(item.speedup_formula), level)*100*10)/10.,
 		      };
 		    });
 		  }
@@ -173,19 +179,34 @@ AWE.GS = (function(module) {
     construction_id: null,
     slot_num: null,
     constructionOptions: null,
-    jobs: null,
 		
 		_buildingInstance: null,      ///< private method holding the instance of the corresponding building, if needed.
+		hashableJobs: null,
+    jobs: null,
+    
+    bindings: null,
 
     init: function(spec) {
       this._super(spec);
+      
+      if (this.get('id')) {
+        var hashableJobs = AWE.GS.JobAccess.getHashableCollectionForSlot_id(this.get('id'));
+        this.set('hashableJobs', hashableJobs);
+        var binding = Ember.Binding.from('this.hashableJobs.collection').to('jobs');
+        binding.connect(this);
+        
+        var bindings = [ binding ];
+        this.set('bindings', binding);
+      }
+      
       this.updateConstructionOptions();
     },
     
-    updateJobs: function() {
+/*    updateJobs: function() {
       var jobs = AWE.GS.JobAccess.getEnumerableForSlot_id(this.getId());
       this.set('jobs', jobs);     // TODO: set only, if array really changed!
     }.observes('level'),          // TODO: observe the right thing...
+  */
     
 		/** return the building standing at this slot. Returns NULL, in case this
 		 * slot is empty. */
@@ -207,7 +228,7 @@ AWE.GS = (function(module) {
 				}
 				return building;
 			}
-		}.property('building_id'),
+		}.property('building_id').cacheable(),
 		
     updateConstructionOptions: function() {
       var options = [];

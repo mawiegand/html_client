@@ -151,12 +151,9 @@ AWE.Partials = (function(module) {
     },
     
     addEntry: function(entry) {
-      console.log('ADD ENTRY', entry.get('id'), entry);
       var attribute = this.get('attribute');
       var hc = this.getHashableCollectionForValue(entry.get(attribute));
       hc.add(entry);
-      
-      console.log('HASH AFTER', hc);
     },
     removeEntry: function(entry, oldValue) {
       var attribute = this.get('attribute');      
@@ -225,7 +222,7 @@ AWE.Partials = (function(module) {
         /** returns the HashableCollection for the given value. The 
          * HashableCollection is an Ember object and has the "collection" 
          * property, that controllers and view objects may bind to. */
-        hook['getEnumerableFor'+upperCaseAttr] = function(value) {
+        hook['getHashableCollectionFor'+upperCaseAttr] = function(value) {
           return hook.accessHashes[attribute].getHashableCollectionForValue(value);
         }
         
