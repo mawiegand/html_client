@@ -9,15 +9,15 @@ var AWE = window.AWE || {};
 /** GameState Settlement class, manager and helpers. */
 AWE.GS = (function(module) {
     
-  module.InboxAccess  = {};
-  module.OutboxAccess = {};
-  module.ArchivAccess = {};
+  module.InboxAccess  =      {};
+  module.OutboxAccess =      {};
+  module.ArchivAccess =      {};
 
   module.InboxEntryAccess  = {};
   module.OutboxEntryAccess = {};
   module.ArchivEntryAccess = {};
 
-  module.MessageAccess = {};
+  module.MessageAccess =     {};
 
 
   // ///////////////////////////////////////////////////////////////////////
@@ -140,6 +140,76 @@ AWE.GS = (function(module) {
       var url = AWE.Config.MESSAGING_SERVER_BASE + 'message/'+id;
       return my.updateEntity(url, id, updateType, callback); 
     };
+  
+    return that;
+      
+  }());
+  
+  
+  // ///////////////////////////////////////////////////////////////////////
+  //
+  //   MESSAGE BOX MANAGERS
+  //
+  // ///////////////////////////////////////////////////////////////////////  
+
+  /** basic manager for fetching individual messages. You should not call
+   * updateMessage manually, but request the message via a message box 
+   * entry. */
+  module.InboxManager = (function(my) {   
+  
+    // private attributes and methods //////////////////////////////////////
+  
+    var that;
+    
+    // protected attributes and methods ////////////////////////////////////
+
+    my = my || {};
+    
+    my.runningUpdatesPerCharacter = {};///< hash that contains all running requests for alliances, using the alliance.id as key.
+    
+    my.createEntity = function() { return module.Message.create(); }
+  
+    // public attributes and methods ///////////////////////////////////////
+  
+    that = module.createEntityManager(my);
+
+    that.lastUpdateForCharacter = function(characterId, updateType) {
+      return module.InboxAccess.lastUpdateForCharacter_id(characterId, updateType);// modified after
+    };
+  
+    that.getInbox = function(id) {
+      return that.getEntity(id);
+    }
+                
+    /** returns true, if update is executed, returns false, if request did 
+     * fail (e.g. connection error) or is unnecessary (e.g. already underway).
+     */
+    that.updateInbox = function(id, updateType, callback) {
+      var url = AWE.Config.MESSAGING_SERVER_BASE + 'inboxes/'+id;
+      return my.updateEntity(url, id, updateType, callback); 
+    };
+    
+    that.updateInboxOfCharacter = function(characterId, updateType, callback) {
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/' + characterId + '/inboxes';
+      return my.fetchEntitiesFromURL(
+        url,                                               // url to fetch from
+        my.runningUpdatesPerCharacter,                     // queue to register this request during execution
+        characterId,                                       // id to fetch -> is used to register the request
+        updateType,                                        // type of update (aggregate, short, full)
+        this.lastUpdateForCharacter(characterId, updateType),// modified after
+        function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
+          if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
+            module.InboxAccess.accessHashForCharacter_id().setLastUpdateAtForValue(characterId, timestamp);
+          }
+          if (callback) {
+            if (status === AWE.Net.NOT_MODIFIED) {
+              result = that.getEntities();
+            }
+            callback(result, status, xhr, timestamp);
+          }
+        }
+      ); 
+    }
   
     return that;
       
