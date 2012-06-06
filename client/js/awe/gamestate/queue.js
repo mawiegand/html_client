@@ -81,6 +81,10 @@ AWE.GS = (function(module) {
       return AWE.GS.QueueAccess.getEnumerableForSettlement_id(settlementId);
     }
     
+    that.getQueuesOfSettlementAsHash = function(settlementId) {
+      return AWE.GS.QueueAccess.getAllForSettlement_id(settlementId);
+    }
+    
     that.lastUpdateForSettlement = function(settlementId) {
       if (lastQueueUpdates[settlementId]) {
         return lastQueueUpdates[settlementId];

@@ -44,7 +44,7 @@
 <script type="text/x-handlebars" data-template-name="settlement-dialog-select-building">
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-pane settlement-dialog-select-building">
-    {{#view Ember.Button action="cancelPressed" target="parentView" classNames="cancel"}}close{{/view}}
+    <a href="#" {{action "cancelPressed" target="parentView"}} class="cancel">close</a>
     <h1>{{ heading }}</h1>    
     <p>{{ message }}</p>
     {{#if constructionOptions }}
@@ -65,7 +65,7 @@
 <script type="text/x-handlebars" data-template-name="settlement-dialog-building-details">
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-pane settlement-dialog-building-details">
-    {{#view Ember.Button action="cancelPressed" target="parentView" classNames="cancel"}}close{{/view}}
+    <a href="#" {{action "cancelPressed" target="parentView"}} class="cancel">close</a>
     <h1>{{ building.name }} Level {{ building.level }}</h1>    
     {{view AWE.UI.Ember.BuildingView classNames="building-option-image" modelBinding="building"}}
     {{{building.description}}}
@@ -117,7 +117,7 @@
                   <p>{{#if job.active_job }}Fin.: {{ job.parsedFinishingDate }}{{/if}}</p>
                 </div>  
                 <div class="queue-job-button">    
-                  {{#view Ember.Button action="cancelJobPressed" target="parentView"}}cancel{{/view}}
+                  <a href="#" {{action "cancelJobPressed" target="parentView"}}>cancel</a>
                 </div>  
               {{/view}}
             {{/each}}
