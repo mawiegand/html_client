@@ -33,6 +33,10 @@ AWE.GS = (function(module) {
       
       return eval(formula);
     }
+    
+    that.parseDate = function(date) {
+      return 'D: ' + date;
+    }
         
     return that;
       

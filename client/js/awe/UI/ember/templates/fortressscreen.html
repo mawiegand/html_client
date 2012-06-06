@@ -114,7 +114,7 @@
                   <p>{{ job.job_type }}</p>
                   <p>{{ job.building.name }}</p>
                   <p>Level {{ job.level_after }}</p>
-                  <p>{{#if job.active_job }}Fin.: {{ job.active_job.finished_at }}{{/if}}</p>
+                  <p>{{#if job.active_job }}Fin.: {{ job.parsedFinishedDate }}{{/if}}</p>
                 </div>  
                 <div class="queue-job-button">    
                   {{#view Ember.Button action="cancelJobPressed" target="parentView"}}cancel{{/view}}
