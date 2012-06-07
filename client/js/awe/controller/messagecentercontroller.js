@@ -120,7 +120,7 @@ AWE.Controller = (function(module) {
           }
         });
       }
-      else if (inbox && inbox.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 10000 < new Date().getTime()) { // timeout
+      else if (inbox && inbox.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 10000 < new Date().getTime()) { // timeout
 
         console.log("CHAR:", this.view, this.view.get('character'), this.view.get('character').get('inbox'));
 

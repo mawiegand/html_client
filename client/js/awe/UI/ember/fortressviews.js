@@ -253,7 +253,7 @@ AWE.UI.Ember = (function(module) {
     
     active: function() {
       return this.get('job').active_job !== null;;
-    }.property('job'),    
+    }.property(),    
   });
 
   return module;

@@ -63,6 +63,10 @@ AWE.GS = (function(module) {
         this.set('hashableJobs', hashableJobs);
       }
     },    
+    
+    empty: function() {
+      return this.get('jobs_count') == 0;
+    }.property('jobs_count'),
   });     
     
   // ///////////////////////////////////////////////////////////////////////

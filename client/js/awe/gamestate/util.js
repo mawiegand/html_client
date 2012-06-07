@@ -35,7 +35,7 @@ AWE.GS = (function(module) {
     }
     
     that.parseDate = function(date) {
-      return 'D: ' + date;
+      return Date.parse(date).setTimezone("MSZ").toString('HH:mm:ss');
     }
         
     return that;
