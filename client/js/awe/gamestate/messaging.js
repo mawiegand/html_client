@@ -9,15 +9,15 @@ var AWE = window.AWE || {};
 /** GameState Settlement class, manager and helpers. */
 AWE.GS = (function(module) {
     
-  module.InboxAccess  =      {};
-  module.OutboxAccess =      {};
-  module.ArchivAccess =      {};
+  module.InboxAccess  =       {};
+  module.OutboxAccess =       {};
+  module.ArchiveAccess =      {};
 
-  module.InboxEntryAccess  = {};
-  module.OutboxEntryAccess = {};
-  module.ArchivEntryAccess = {};
+  module.InboxEntryAccess  =  {};
+  module.OutboxEntryAccess =  {};
+  module.ArchiveEntryAccess = {};
 
-  module.MessageAccess =     {};
+  module.MessageAccess =      {};
 
 
   // ///////////////////////////////////////////////////////////////////////
@@ -49,7 +49,7 @@ AWE.GS = (function(module) {
 
   module.Inbox = module.MessageBox.extend({
     typeName: 'Inbox',
-    name: 'Inbox',
+    name:     'Inbox',
     ownerIdObserver: AWE.Partials.attributeHashObserver(module.InboxAccess, 'owner_id', 'old_owner_id').observes('owner_id'),   
   
     hashableEntries: function() {
@@ -66,7 +66,13 @@ AWE.GS = (function(module) {
 
   module.Outbox = module.MessageBox.extend({
     typeName: 'Outbox',
+    name:     'Outbox',
     ownerIdObserver: AWE.Partials.attributeHashObserver(module.OutboxAccess, 'owner_id', 'old_owner_id').observes('owner_id'),    
+
+    hashableEntries: function() {
+      var id = this.get('id');
+      return id ? AWE.GS.OutboxEntryAccess.getHashableCollectionForOutbox_id(id) : null;
+    }.property('id').cacheable(),        
 
     init: function(spec) {
       this._super(spec);
@@ -75,13 +81,19 @@ AWE.GS = (function(module) {
 
   });
 
-  module.Archiv = module.MessageBox.extend({
-    typeName: 'Archiv',
-    ownerIdObserver: AWE.Partials.attributeHashObserver(module.ArchivAccess, 'owner_id', 'old_owner_id').observes('owner_id'),    
+  module.Archive = module.MessageBox.extend({
+    typeName: 'Archive',
+    name:     'Archive',
+    ownerIdObserver: AWE.Partials.attributeHashObserver(module.ArchiveAccess, 'owner_id', 'old_owner_id').observes('owner_id'),    
+
+    hashableEntries: function() {
+      var id = this.get('id');
+      return id ? AWE.GS.ArchiveEntryAccess.getHashableCollectionForArchive_id(id) : null;
+    }.property('id').cacheable(),  
 
     init: function(spec) {
       this._super(spec);
-      this.set('entryManager', AWE.GS.ArchivEntryManager)
+      this.set('entryManager', AWE.GS.ArchiveEntryManager)
     },
 
   });
@@ -132,6 +144,30 @@ AWE.GS = (function(module) {
         });
       }
     }.observes('sender_id'),
+  });
+  
+
+  module.OutboxEntry = module.MessageBoxEntry.extend({ 
+    typeName: 'OutboxEntry',
+    recipient_id: null,
+    outbox_id: null, old_outbox_id: null,
+    outboxIdObserver: AWE.Partials.attributeHashObserver(module.OutboxEntryAccess, 'outbox_id', 'old_outbox_id').observes('outbox_id'), 
+ 
+    recipient: null,
+ 
+    updateRecipient: function() {
+      var self = this;
+      var recipientId = this.get('recipient_id');
+      var recipient = AWE.GS.CharacterManager.getCharacter(recipientId) || null;
+      this.set('recipient', recipient); 
+      if (!recipient) {
+        AWE.GS.CharacterManager.updateCharacter(recipientId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+          if (character) {
+            self.set('recipient', character);
+          }
+        });
+      }
+    }.observes('recipient_id'),
   });
   
   
@@ -237,7 +273,7 @@ AWE.GS = (function(module) {
   /** basic manager for fetching individual messages. You should not call
    * updateMessage manually, but request the message via a message box 
    * entry. */
-  module.InboxManager = (function(my) {   
+  module.createMessageBoxManager = (function(my) {   
   
     // private attributes and methods //////////////////////////////////////
   
@@ -246,33 +282,26 @@ AWE.GS = (function(module) {
     // protected attributes and methods ////////////////////////////////////
 
     my = my || {};
-    
-    my.runningUpdatesPerCharacter = {};///< hash that contains all running requests for alliances, using the alliance.id as key.
-    
-    my.createEntity = function() { return module.Inbox.create(); }
-  
+          
     // public attributes and methods ///////////////////////////////////////
   
     that = module.createEntityManager(my);
-
-    that.lastUpdateForCharacter = function(characterId, updateType) {
-      return module.InboxAccess.lastUpdateForOwner_id(characterId, updateType);// modified after
-    };
   
-    that.getInbox = function(id) {
+    that.getMessageBox = function(id) {
       return that.getEntity(id);
     }
                 
     /** returns true, if update is executed, returns false, if request did 
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
-    that.updateInbox = function(id, updateType, callback) {
-      var url = AWE.Config.MESSAGING_SERVER_BASE + 'inboxes/'+id;
+    that.updateMessageBox = function(id, updateType, callback) {
+      var url = my.boxURL + id;
       return my.updateEntity(url, id, updateType, callback); 
     };
     
-    that.updateInboxOfCharacter = function(characterId, updateType, callback) {
-      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/' + characterId + '/inboxes';
+    that.updateMessageBoxOfCharacter = function(characterId, updateType, callback) {
+      var url = my.characterBoxesURL + characterId + my.boxFragementURL;
+
       return my.fetchEntitiesFromURL(
         url,                                               // url to fetch from
         my.runningUpdatesPerCharacter,                     // queue to register this request during execution
@@ -281,7 +310,7 @@ AWE.GS = (function(module) {
         this.lastUpdateForCharacter(characterId, updateType),// modified after
         function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            module.InboxAccess.accessHashForOwner_id().setLastUpdateAtForValue(characterId, timestamp);
+            that.setLastUpdateForCharacter(characterId, timestamp);
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
@@ -295,7 +324,83 @@ AWE.GS = (function(module) {
   
     return that;
       
+  });
+
+
+  /** basic manager for fetching individual messages. You should not call
+   * updateMessage manually, but request the message via a message box 
+   * entry. */
+  module.InboxManager = (function(my) {   
+  
+    // private attributes and methods //////////////////////////////////////
+  
+    var that;
+    
+    // protected attributes and methods ////////////////////////////////////
+
+    my = my || {};
+    
+    my.runningUpdatesPerCharacter = {};///< hash that contains all running requests for alliances, using the alliance.id as key.
+    my.boxURL            = AWE.Config.MESSAGING_SERVER_BASE   + 'inboxes/';
+    my.characterBoxesURL = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/';
+    my.boxFragementURL   = '/inboxes';
+
+    my.createEntity = function() { return module.Inbox.create(); }
+  
+    // public attributes and methods ///////////////////////////////////////
+  
+    that = module.createMessageBoxManager(my);
+
+    that.lastUpdateForCharacter = function(characterId, updateType) {
+      return module.InboxAccess.lastUpdateForOwner_id(characterId, updateType);// modified after
+    };
+  
+    that.setLastUpdateForCharacter = function(characterId, timestamp) {
+      module.InboxAccess.accessHashForOwner_id().setLastUpdateAtForValue(characterId, timestamp);
+    };
+  
+    return that;
+      
   }());
+  
+  
+  /** basic manager for fetching individual messages. You should not call
+   * updateMessage manually, but request the message via a message box 
+   * entry. */
+  module.OutboxManager = (function(my) {   
+  
+    // private attributes and methods //////////////////////////////////////
+  
+    var that;
+    
+    // protected attributes and methods ////////////////////////////////////
+
+    my = my || {};
+    
+    my.runningUpdatesPerCharacter = {};///< hash that contains all running requests for alliances, using the alliance.id as key.
+    my.boxURL            = AWE.Config.MESSAGING_SERVER_BASE   + 'outboxes/';
+    my.characterBoxesURL = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/';
+    my.boxFragementURL   = '/outboxes';
+
+    my.createEntity = function() { return module.Inbox.create(); }
+  
+    // public attributes and methods ///////////////////////////////////////
+  
+    that = module.createMessageBoxManager(my);
+
+    that.lastUpdateForCharacter = function(characterId, updateType) {
+      return module.InboxAccess.lastUpdateForOwner_id(characterId, updateType);// modified after
+    };
+  
+    that.setLastUpdateForCharacter = function(characterId, timestamp) {
+      module.InboxAccess.accessHashForOwner_id().setLastUpdateAtForValue(characterId, timestamp);
+    };
+  
+    return that;
+      
+  }());
+  
+    
     
   // ///////////////////////////////////////////////////////////////////////
   //
@@ -360,12 +465,6 @@ AWE.GS = (function(module) {
     return that;
       
   });
-  
-  // ///////////////////////////////////////////////////////////////////////
-  //
-  //   MESSAGE BOX MANAGERS
-  //
-  // ///////////////////////////////////////////////////////////////////////  
 
   /** basic manager for fetching individual messages. You should not call
    * updateMessage manually, but request the message via a message box 
