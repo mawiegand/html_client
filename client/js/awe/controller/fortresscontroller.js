@@ -90,13 +90,10 @@ AWE.Controller = (function(module) {
     
     that.createView = function() {
 			var fortress = AWE.GS.SettlementManager.getSettlement(that.fortressId);
-			log('---> that.fortressId', that.fortressId);
-			var queues = AWE.GS.QueueAccess.getEnumerableForSettlement_id(that.fortressId);
       var fortressScreen = AWE.UI.Ember.FortressView.create({
         templateName: "fortress-screen",
 				controller: this,
 				fortress: fortress,
-				queues: queues,
       });      
 			that.slots = null;
       return fortressScreen;
@@ -170,8 +167,7 @@ AWE.Controller = (function(module) {
         constructionAction.send(function(status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
             log(status, "Construction job created.");
-            that.updateQueue(queue.getId());          
-            that.updateJobsInQueue(queue.getId());          
+            that.updateQueueAndJobs(queue.getId());          
           }
           else {
             log(status, "The server did not accept the construction command.");
@@ -190,8 +186,7 @@ AWE.Controller = (function(module) {
       cancelJobAction.send(function(status) {
         if (status === AWE.Net.OK) {    // 200 OK
           log(status, "Construction job deleted.");
-          that.updateQueue(queueId);          
-          that.updateJobsInQueue(queueId);          
+          that.updateQueueAndJobs(queueId);          
         }
         else {
           log(status, "The server did not accept the job removal command.");
@@ -215,13 +210,11 @@ AWE.Controller = (function(module) {
       _modelChanged = true;
     }
     
-    that.updateQueue = function(queueId) {
+    that.updateQueueAndJobs = function(queueId) {
       AWE.GS.QueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
         log('updated queue', queueId);
       });
-    }
-      
-    that.updateJobsInQueue = function(queueId) {
+
       AWE.GS.JobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
         log('updated jobs in queue', queueId);
       });

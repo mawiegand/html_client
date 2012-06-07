@@ -150,15 +150,12 @@ AWE.GS = (function(module) {
             lastJobUpdates[queueId] = timestamp;
           }
           // delete old jobs from queue
-          // TODO move a generalized version of this loop to entity manager
           if (status === AWE.Net.OK) {
-            var jobs = module.JobAccess.getEnumerableForQueue_id(queueId);
-            AWE.Ext.applyFunction(jobs, function(job){
-              if (job) {
-                var jobId = job.getId();
-                if (!result.hasOwnProperty(jobId)) {
-                  that.removeEntity(jobId);
-                }
+            var jobs = module.JobAccess.getHashableCollectionForQueue_id(queueId);
+            AWE.Ext.applyFunction(jobs.get('collection'), function(job){
+              var jobId = job.getId();
+              if (!result.hasOwnProperty(jobId)) {
+                jobs.remove(jobId);
               }
             });
           }

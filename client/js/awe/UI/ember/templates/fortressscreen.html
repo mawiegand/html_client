@@ -135,7 +135,7 @@
       {{#each queues}}
         {{#view Ember.View controllerBinding="controller" queueBinding="this" classNames="queue"}}
         <h1>Queue {{ queue.type_id }}</h1>
-          {{#if queue.hashableJobs }}
+          {{#unless queue.empty }}
           <div class="queue-job-list">    
             {{#each queue.hashableJobs.collection }}
               {{#view AWE.UI.Ember.JobView controllerBinding="controller" jobBinding="this" classNames="queue-job"}}
@@ -154,12 +154,12 @@
               {{/view}}
             {{/each}}
           </div>  
-          {{/if}}
-          {{#unless queue.hashableJobs }}
+          {{/unless}}
+          {{#if queue.empty }}
           <div class="queue-job-list empty">    
              <p>This construction queue is empty</p>
           </div>  
-          {{/unless}}
+          {{/if}}
         {{/view}}
       {{/each}}
   </div>
