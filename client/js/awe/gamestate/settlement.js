@@ -50,6 +50,18 @@ AWE.GS = (function(module) {
     taxable: null,
     type_id: null,
     
+    hashableQueues: null,
+    
+    init: function(spec) {
+      log('INIT settlement');
+      this._super(spec);
+      
+      if (this.get('id')) {
+        var hashableQueues = AWE.GS.QueueAccess.getHashableCollectionForSettlement_id(this.get('id'));
+        this.set('hashableQueues', hashableQueues);
+      }
+    },
+    
     isOwn: function() {
       return this.get('owner_id') === module.CharacterManager.currentCharacter.getId();
     },

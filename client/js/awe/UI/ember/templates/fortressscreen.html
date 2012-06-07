@@ -43,8 +43,8 @@
         {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-right" modelBinding="rightTower" settlementBinding="fortress"}}
         {{view AWE.UI.Ember.InteractiveBuildingView  classNames="wall"  modelBinding="wall" settlementBinding="fortress"}}
       {{/if}}
-      {{#if queues}}
-        {{view AWE.UI.Ember.QueueListView controllerBinding="controller" classNames="queue-list" queuesBinding="queues"}}
+      {{#if queues }}
+        {{view AWE.UI.Ember.QueueListView controllerBinding="controller" classNames="queue-list" queuesBinding="queues.collection"}}
       {{/if}}
 
       {{view AWE.UI.Ember.FortressInfoBoxView classNames="fortress-info-box" fortressBinding="fortress"}}
@@ -132,20 +132,20 @@
 
 <script type="text/x-handlebars" data-template-name="queue-list">
   <div class="queue-list-pane">
-    {{#if queues }}
       {{#each queues}}
         {{#view Ember.View controllerBinding="controller" queueBinding="this" classNames="queue"}}
         <h1>Queue {{ queue.type_id }}</h1>
-          {{#if queue.jobs }}
+          {{#unless queue.empty }}
           <div class="queue-job-list">    
-            {{#each queue.jobs }}
+            {{#each queue.hashableJobs.collection }}
               {{#view AWE.UI.Ember.JobView controllerBinding="controller" jobBinding="this" classNames="queue-job"}}
-                {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" levelBinding="job.building.level" buildingIdBinding="job.building.buildingId" typeBinding="job.building.type"}}
+                {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" levelBinding="job.level_after" buildingIdBinding="job.buildingId" typeBinding="job.slot.building.type"}}
                 <div class="queue-job-text">    
                   <p>{{ job.job_type }}</p>
-                  <p>{{ job.building.name }}</p>
+                  <p>{{ job.slot.building.name }}</p>
+                  <p>Slot #{{ job.slot.slot_num }}</p>
                   <p>Level {{ job.level_after }}</p>
-                  <p>{{#if job.active_job }}Fin.: {{ job.active_job.finished_at }}{{/if}}</p>
+                  <p>{{#if job.active_job }}Fin.: {{ job.parsedFinishingDate }}{{/if}}</p>
                 </div>  
                 {{#if job.cancelable }}
                 <div class="queue-job-button">    
@@ -155,14 +155,13 @@
               {{/view}}
             {{/each}}
           </div>  
-          {{/if}}
-          {{#unless queue.jobs }}
+          {{/unless}}
+          {{#if queue.empty }}
           <div class="queue-job-list empty">    
              <p>This construction queue is empty</p>
           </div>  
-          {{/unless}}
+          {{/if}}
         {{/view}}
       {{/each}}
-    {{/if}}
   </div>
 </script>

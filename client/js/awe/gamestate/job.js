@@ -37,19 +37,16 @@ AWE.GS = (function(module) {
       return module.RulesManager.getRules().getBuildingType(this.get('building_id'));
     }.property('building_id'),
     
-    building: function() {
-     /* if (this.get('building_id') !== null && this.get('building_id') !== undefined ||
-          this.get('level_after') !== null && this.get('level_after') !== undefined) {
-        return AWE.GS.Building.create({ buildingId: this.get('building_id'), level: this.get('level_after') });
-      }*/
-      return null;
-    }.property('building_id', 'level_after'),
+    slot: function() {
+      return AWE.GS.SlotManager.getSlot(this.get('slot_id'));
+    }.property('slot_id', 'level_after'),
     
     position: null,
     level_after: null,
     job_type: null,
     
     active_job: null,
+        
     parsedFinishingDate: function() {
       var active_job = this.get('active_job');
       if (active_job) {
@@ -59,13 +56,18 @@ AWE.GS = (function(module) {
     }.property('active_job'),
     
     cancelable: function() {
-      // var slotId = this.get('slot_id');
-      // if (slotId) {
-        // var slot = AWE.GS.SlotManager.getEntity(this.get('slot_id'));
-        // return this.getId() == slot.getLastJob(); 
-      // }
-      return true;
-    }.property(),  // TODO wovon abhängig?    
+      
+      // jobs des slots holen
+      var jobs = AWE.GS.SlotManager.getSlot(this.get('slot_id')).get('hashableJobs').get('collection');
+      log('---> jobs', jobs);
+      
+      // max suchen
+      jobs.sort(function(a, b) {return b.get('position') - a.get('position')});
+      log('---> jobs', jobs);
+
+      // mit this vergleichen      
+      return this.getId() == jobs[0].getId();
+    }.property(),
   });     
     
   // ///////////////////////////////////////////////////////////////////////
@@ -150,15 +152,12 @@ AWE.GS = (function(module) {
             lastJobUpdates[queueId] = timestamp;
           }
           // delete old jobs from queue
-          // TODO move a generalized version of this loop to entity manager
           if (status === AWE.Net.OK) {
-            var jobs = module.JobAccess.getEnumerableForQueue_id(queueId);
-            AWE.Ext.applyFunction(jobs, function(job){
-              if (job) {
-                var jobId = job.getId();
-                if (!result.hasOwnProperty(jobId)) {
-                  that.removeEntity(jobId);
-                }
+            var jobs = module.JobAccess.getHashableCollectionForQueue_id(queueId);
+            AWE.Ext.applyFunction(jobs.get('collection'), function(job){
+              var jobId = job.getId();
+              if (!result.hasOwnProperty(jobId)) {
+                jobs.remove(jobId);
               }
             });
           }

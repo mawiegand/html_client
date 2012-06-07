@@ -57,14 +57,23 @@ AWE.Controller = (function(module) {
     
     that.messageCenterView = Ember.View.extend({
       templateName: 'message-center',
+      
+      character: null,
+      messageBoxBinding: "character.inbox",
+
     });
     
     
     that.createView = function() {
       
+      var character = AWE.GS.CharacterManager.getCurrentCharacter();
+      
       var center = that.messageCenterView.create({
-        controller: this,
+        controller: this,    
+        character: character,
+        
       });
+      console.log(center, center.get('character'), center.get('character').get('inbox'));
       
       return center;
     }
@@ -91,6 +100,42 @@ AWE.Controller = (function(module) {
       this.visible = false;
     };
     
+    that.updateModel = function() {
+      
+      var inbox = AWE.GS.CharacterManager.getCurrentCharacter().get('inbox');
+      if (!inbox) {
+        AWE.GS.CharacterManager.getCurrentCharacter().fetchInbox(function(inboxes, status) {
+          console.log('FETCHED INBOX FOR FIRST TIME, STATUS', status, status === AWE.Net.NOT_MODIFIED);
+          if (status === AWE.Net.NOT_FOUND || !inboxes) {
+            console.log('ERROR: inbox of current character not found on server.');
+          } 
+          else { 
+            inbox = AWE.GS.CharacterManager.getCurrentCharacter().get('inbox');
+            if (inbox) {
+              inbox.fetchEntries();
+            }
+            else {
+              console.log('ERROR: inbox could not be fetched from server.');
+            }
+          }
+        });
+      }
+      else if (inbox && inbox.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 10000 < new Date().getTime()) { // timeout
+
+        console.log("CHAR:", this.view, this.view.get('character'), this.view.get('character').get('inbox'));
+
+
+        AWE.GS.InboxManager.updateInbox(inbox.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(inbox, status) {
+          
+          console.log('UPDATED INBOX, STATUS', status, 'NOT_MODIFIED:', status === AWE.Net.NOT_MODIFIED);
+          
+					if (inbox && inbox.getId() && status !== AWE.Net.NOT_MODIFIED) {
+            inbox.fetchEntries()
+					}
+        });
+      }
+    };
+    
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Runloop
@@ -107,6 +152,11 @@ AWE.Controller = (function(module) {
         this.updateView();
         _viewNeedsUpdate = false;
       }
+      
+      if (this.visible) {
+        this.updateModel();
+      }
+      
     }
     
     return that;
