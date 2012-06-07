@@ -71,6 +71,16 @@ AWE.Controller = (function(module) {
       return center;
     }
     
+    that.inboxClicked = function() {
+      this.view.switchTo('inbox');
+    };
+    that.outboxClicked = function() {
+      this.view.switchTo('outbox');
+    };
+    that.archiveClicked = function() {
+      this.view.switchTo('archive');
+    };
+    
     
     that.appendView = function() {
       if (this.view) {

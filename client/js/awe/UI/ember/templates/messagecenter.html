@@ -40,7 +40,11 @@
 
 <script type="text/x-handlebars" data-template-name="message-center">
 <div class="message-center">
-  <div class="header">header</div>
+  <div class="header">
+    <div {{action "inboxClicked" target="controller"}}>Inbox</div>
+    <div {{action "outboxClicked" target="controller"}}>Outbox</div>
+    <div {{action "archiveClicked" target="controller"}}>Archive</div>
+  </div>
 
   <div class="list">
     {{#if "messageBox"}}

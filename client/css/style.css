@@ -455,6 +455,17 @@ html, body {
   border-bottom: 1px solid gray;
 }
 
+.message-center .header div {
+  float: left;
+  margin-top: 106px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.message-center .header div:hover {
+  color: #FA0;;
+}
+
 .message-center .list {
   position: absolute;
   top: 140px;
