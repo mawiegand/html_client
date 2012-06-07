@@ -59,6 +59,8 @@ AWE.Controller = (function(module) {
     var actionViews = {};
     var targetViews = {};
     var inspectorViews = {};
+
+    var zoomSlider = undefined;
     
     var armyUpdates = {};
 
@@ -107,6 +109,16 @@ AWE.Controller = (function(module) {
       _canvas[3] = root.find('#inspector-canvas')[0];
       _stages[3] = new Stage(_canvas[3]);
       _stages[3].onClick = function() {};   // we generate our own clicks
+
+      //zoom slider
+      $("body").append('<div class="zoom_slider"><div class="slider_container"><img src="images/ui/slider.png" class="slider_slider"><div class="slider_bar"></div><div>');
+      $("body").find(".zoom_slider").each(function(i, value) {
+        if (zoomSlider !== undefined) {
+          console.error("found more than one zoom slider");
+        }
+        zoomSlider = AWE.UI.createSlider(value, true, true, that.handleZoomSliderValueUpdate);
+        $(zoomSlider.getContainer()).remove();
+      });
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
@@ -134,9 +146,13 @@ AWE.Controller = (function(module) {
     };
     
     that.viewDidAppear = function() {
+      $("body").append(zoomSlider.getContainer());
+      zoomSlider.subscribeToDOMEvents();
     }     
     
-    that.viewWillDisappear = function() { 
+    that.viewWillDisappear = function() {
+      $(zoomSlider.getContainer()).remove(); 
+      zoomSlider.unsubscribeDOMEvents();
     }
     
     // ///////////////////////////////////////////////////////////////////////
@@ -235,6 +251,10 @@ AWE.Controller = (function(module) {
         -1. * visibleRectMC.origin.x * _windowSize.width  / visibleRectMC.size.width,
         -1. * visibleRectMC.origin.y * _windowSize.height / visibleRectMC.size.height
       );
+      //
+      if (zoomSlider !== undefined) {
+        that.updateZoomSliderValue();
+      }
     };
 
     /** returns the currently visible viewport in model coordinates **/
@@ -308,7 +328,47 @@ AWE.Controller = (function(module) {
       
       return alpha;
     }
-    
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Slider
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+
+    that.handleZoomSliderValueUpdate = function(value) {
+      value = -1*value*(value-2);
+      value = 1 - value;
+      //create a target frame
+      var viewport = that.viewport();
+      var middle = viewport.middle();
+      var width = (AWE.Config.MAP_CAMERA_MAX_VIEWFRAME_SIZE.width - AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.width)*value + AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.width;
+      var height = (AWE.Config.MAP_CAMERA_MAX_VIEWFRAME_SIZE.height - AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.height)*value + AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.height;
+      _camera.moveTo(
+        AWE.Geometry.createRect(
+          middle.x - width/2,
+          middle.y - height/2,
+          width,
+          height
+        ),
+        false,
+        false
+      );
+    };
+
+    that.updateZoomSliderValue = function() {
+      var viewport = that.viewport();
+      var valueW = (viewport.size.width - AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.width)/(AWE.Config.MAP_CAMERA_MAX_VIEWFRAME_SIZE.width - AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.width);
+      valueW = Math.max(0,Math.min(valueW, 1));
+      valueW = 1 -  Math.sqrt(valueW);
+      var valueH = (viewport.size.height - AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.height)/(AWE.Config.MAP_CAMERA_MAX_VIEWFRAME_SIZE.height - AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.height);
+      valueH = Math.max(0,Math.min(valueH, 1));
+      valueH = 1 - Math.sqrt(valueH);
+      if (valueH > valueW) {
+        zoomSlider.setValue(valueH);
+      } else {
+        zoomSlider.setValue(valueW);
+      }
+    };
     
     // ///////////////////////////////////////////////////////////////////////
     //

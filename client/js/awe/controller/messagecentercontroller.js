@@ -55,21 +55,18 @@ AWE.Controller = (function(module) {
       //that.content.set('alliance', that.getAndUpdateAlliance(this.allianceId));
     }
     
-    that.messageCenterView = Ember.View.extend({
-      templateName: 'message-center',
-      
-      character: null,
-    });
     
     
     that.createView = function() {
       
       var character = AWE.GS.CharacterManager.getCurrentCharacter();
       
-      var center = that.messageCenterView.create({
+      var center = AWE.UI.Ember.MessageCenterView.create({
         controller: this,    
         character: character,
+        
       });
+      console.log(center, center.get('character'), center.get('character').get('inbox'));
       
       return center;
     }
@@ -97,6 +94,7 @@ AWE.Controller = (function(module) {
     };
     
     that.updateModel = function() {
+      
       var inbox = AWE.GS.CharacterManager.getCurrentCharacter().get('inbox');
       if (!inbox) {
         AWE.GS.CharacterManager.getCurrentCharacter().fetchInbox(function(inboxes, status) {
@@ -117,11 +115,12 @@ AWE.Controller = (function(module) {
       }
       else if (inbox && inbox.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 10000 < new Date().getTime()) { // timeout
 
-        console.log('START UPDATING INBOX');
+        console.log("CHAR:", this.view, this.view.get('character'), this.view.get('character').get('inbox'));
+
 
         AWE.GS.InboxManager.updateInbox(inbox.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(inbox, status) {
           
-          console.log('UPDATED INBOX, STATUS', status, status === AWE.Net.NOT_MODIFIED);
+          console.log('UPDATED INBOX, STATUS', status, 'NOT_MODIFIED:', status === AWE.Net.NOT_MODIFIED);
           
 					if (inbox && inbox.getId() && status !== AWE.Net.NOT_MODIFIED) {
             inbox.fetchEntries()

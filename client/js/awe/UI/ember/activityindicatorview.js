@@ -10,11 +10,7 @@ AWE.UI = AWE.UI || {};
 AWE.UI.Ember = (function(module) {
   
   module.ActivityIndicatorView = Ember.View.extend({
-    tagName: 'img',
-    attributeBindings: ['width', 'height', 'src'],
-    width: '240',
-    heightBinding: 'width',
-    src: "images/icons/activityindicator.svg",
+    tagName: 'span',
   });  
 
   return module;
