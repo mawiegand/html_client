@@ -495,8 +495,29 @@ html, body {
   left: 260px;
   right: 0;
   bottom: 0;
+  padding: 24px;
 }
 
+.message-center .message {
+}
+
+.message-center .message table {
+}
+
+
+.message-center .message table tr {
+  
+}
+
+.message-center .message table th {
+  text-align: right;
+  color: #999;
+  padding-right: 6px;
+}
+
+.message-center .message table td {
+  text-align: left;
+}
 
 #text-input-dialog { 
   position: absolute; 

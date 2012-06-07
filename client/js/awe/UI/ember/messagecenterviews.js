@@ -12,6 +12,11 @@ AWE.UI.Ember = (function(module) {
   module.templates = module.templates || [];
   module.templates.push('js/awe/UI/ember/templates/messagecenter.html');
 
+  module.WheelOrValueView = Ember.View.extend({
+    templateName: 'wheel-or-value',
+    tagName: 'span',
+  });
+
   module.MessageView = Ember.View.extend({
     templateName: 'message',
   });

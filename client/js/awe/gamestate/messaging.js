@@ -152,6 +152,39 @@ AWE.GS = (function(module) {
     reported:     null,
     reporter_id:  null,
     flag:         null,
+    
+    sender:       null,  // will be automatically connected to character
+    recipient:    null,  // will be automatically connected to character   
+ 
+    /** automatically fetch and set sender to sending character. */
+    updateSender: function() {
+      var self = this;
+      var senderId = this.get('sender_id');
+      var sender = AWE.GS.CharacterManager.getCharacter(senderId) || null;
+      this.set('sender', sender); 
+      if (!sender) {
+        AWE.GS.CharacterManager.updateCharacter(senderId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+          if (character) {
+            self.set('sender', character);
+          }
+        });
+      }
+    }.observes('sender_id'),
+    
+    /** automatically fetch and set recipient to receiving character. */
+    updateRecipient: function() {
+      var self = this;
+      var recipientId = this.get('recipient_id');
+      var recipient = AWE.GS.CharacterManager.getCharacter(recipientId) || null;
+      this.set('recipient', recipient); 
+      if (!recipient) {
+        AWE.GS.CharacterManager.updateCharacter(recipientId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+          if (character) {
+            self.set('recipient', character);
+          }
+        });
+      }
+    }.observes('recipient_id'),
   });  
     
   // ///////////////////////////////////////////////////////////////////////

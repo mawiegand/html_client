@@ -1,26 +1,44 @@
+<script type="text/x-handlebars" data-template-name="wheel-or-value">
+  {{#if value}}
+    {{value}}
+  {{else}}
+    {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }}
+  {{/if}} 
+</script>
+
+
 
 <script type="text/x-handlebars" data-template-name="message-teaser">
-  <span class="sender">{{message.sender.name}}</span> <span class="time">{{message.created_at}}</span><br />
+  <span class="sender">
+    {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
+  </span> <span class="time">{{message.created_at}}</span><br />
   <span class="subject">{{message.subject}}</span>
 </script>
 
+
 <script type="text/x-handlebars" data-template-name="message">
   <table>
-    <tr><th>From:<th><td><b>{{message.sender.name}}<b></td></tr>
+    <tr><th>From:<th><td>
+      <b>{{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
+         {{#if "message.sender.alliance_tag"}}
+           | {{message.sender.alliance_tag}}
+         {{/if}}
+      <b>
+    </td></tr>
     <tr><th>Subject:<th><td>{{message.subject}}</td></tr>
-    <tr><th>Subject:<th><td>{{message.subject}}</td></tr>
-    
-    
-  <span class="sender">{{message.sender.name}}</span> <span class="time">{{message.created_at}}</span><br />
-  <span class="subject">{{message.subject}}</span>
+    <tr><th>Date:<th><td>{{message.created_at}}</td></tr>
+    <tr><th>To:<th><td>{{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}} 
+      {{#if "message.recipient.alliance_tag"}}
+        | {{message.recipient.alliance_tag}}
+      {{/if}}</td>
+    </tr>
+  </table>
   <hr>
   {{message.body}}
 </script>
 
 
-
 <script type="text/x-handlebars" data-template-name="message-center">
-
 <div class="message-center">
   <div class="header">header</div>
 
@@ -41,12 +59,11 @@
       {{#if "selectedMessage" }}
         {{view AWE.UI.Ember.MessageView messageBinding="selectedMessage" classNames="message"}}
       {{else}}
-        Loading...
+        {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Loading...
       {{/if}}
     {{else}}
       No Message Selected.
     {{/if}}
   </div>
 </div>
-
 </script>

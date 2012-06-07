@@ -161,7 +161,7 @@ AWE.Config = (function(module) {
     "map/icon/army/size2": "images/icons/gearwheel.png",
     "map/icon/army/size3": "images/icons/gearwheel.png",
 
-    "activityindicator/small": "activityindicator_small.svg",
+    "activityindicator/small": "images/icons/activityindicator_small.svg",
     
     // heads.png, eye.png, flash.png, gearwheel.png, heads.png, house.png, magnifier.png, sandglass.png, star.png
     
