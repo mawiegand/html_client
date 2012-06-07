@@ -24,6 +24,12 @@ AWE.UI.Ember = (function(module) {
   module.MessageTeaserView = Ember.View.extend({
     templateName: 'message-teaser',
     
+    selected: function() {
+      console.log('SELECTED',this.get('parentView'), this.get('parentView').get('selectedMessageEntry'))
+      var parentView = this.get('parentView');
+      return parentView && parentView.get('selectedMessageEntry') === this.get('message');
+    }.property('parentView.selectedMessageEntry').cacheable(),
+    
     click: function(event) {
       console.log('ON CLICK')
       var messageEntry = this.get('message');

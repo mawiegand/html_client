@@ -466,27 +466,43 @@ html, body {
 
 .message-center .list h1 {
   font-size: 16px;
-  margin: 1px;
+  margin: 1px 0px 0px 0px;
   padding: 0px 4px;
   border-bottom: 1px solid #BBB;
   background: #DDF;
 }
 
 .message-center .list .message-header {
-  margin: 1px;
   border-bottom: 1px solid #BBB;
   padding: 4px;
+}
+
+.message-center .list .message-header.selected {
+  background-color: #FA0;
+  color: white;
 }
 
 .message-header .sender {
   font-weight: bold;
 }
 
+.message-header.selected .sender {
+}
+
+
 .message-header .time {
+  float: right;
   color: #AAF;
 }
 
+.message-header.selected .time {
+  color: white;
+}
+
+
 .message-header .subject {
+}
+.message-header.selected .subject {
 }
 
 .message-center .detail {
