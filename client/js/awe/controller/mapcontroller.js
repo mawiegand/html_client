@@ -117,8 +117,8 @@ AWE.Controller = (function(module) {
           console.error("found more than one zoom slider");
         }
         zoomSlider = AWE.UI.createSlider(value, true, true, that.handleZoomSliderValueUpdate);
+        $(zoomSlider.getContainer()).remove();
       });
-      
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
@@ -146,10 +146,12 @@ AWE.Controller = (function(module) {
     };
     
     that.viewDidAppear = function() {
+      $("body").append(zoomSlider.getContainer());
       zoomSlider.subscribeToDOMEvents();
     }     
     
-    that.viewWillDisappear = function() { 
+    that.viewWillDisappear = function() {
+      $(zoomSlider.getContainer()).remove(); 
       zoomSlider.unsubscribeDOMEvents();
     }
     

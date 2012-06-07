@@ -276,6 +276,10 @@ AWE.UI = (function(module) {
 			$(_sliderBarElement).unbind('touchstart', _onTouchStart);
 		};
 
+		that.getContainer = function() {
+			return _container;
+		};
+
 		_init();
 
 		return that;

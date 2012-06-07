@@ -297,6 +297,7 @@ AWE.Application = (function(module) {
         if (controller.onMouseDown) {
           // register controller to receive mouse-down events in screen
           $('body').mousedown(function(evt) {
+          //$('#layers').mousedown(function(evt) {
             self.onMouseDown(evt);
           });
         }
@@ -307,7 +308,7 @@ AWE.Application = (function(module) {
           $('body').mouseleave(function(evt) {
             self.onMouseLeave(evt);
           });
-        }      
+        }
             
         // register controller to receive mouse-wheel events in screen
         if (controller.onMouseWheel) {
