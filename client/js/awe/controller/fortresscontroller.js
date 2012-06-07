@@ -90,10 +90,13 @@ AWE.Controller = (function(module) {
     
     that.createView = function() {
 			var fortress = AWE.GS.SettlementManager.getSettlement(that.fortressId);
+			log('---> that.fortressId', that.fortressId);
+			var queues = AWE.GS.QueueAccess.getEnumerableForSettlement_id(that.fortressId);
       var fortressScreen = AWE.UI.Ember.FortressView.create({
         templateName: "fortress-screen",
 				controller: this,
 				fortress: fortress,
+				queues: queues,
       });      
 			that.slots = null;
       return fortressScreen;
@@ -167,7 +170,8 @@ AWE.Controller = (function(module) {
         constructionAction.send(function(status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
             log(status, "Construction job created.");
-            that.setModelChanged();
+            that.updateQueue(queue.getId());          
+            that.updateJobsInQueue(queue.getId());          
           }
           else {
             log(status, "The server did not accept the construction command.");
@@ -181,11 +185,13 @@ AWE.Controller = (function(module) {
     } 
     
     that.cancelClicked = function(job) {
+      var queueId = job.get('queue_id');
       var cancelJobAction = AWE.Action.Construction.createJobCancelAction(job.getId());
       cancelJobAction.send(function(status) {
         if (status === AWE.Net.OK) {    // 200 OK
           log(status, "Construction job deleted.");
-          that.setModelChanged();
+          that.updateQueue(queueId);          
+          that.updateJobsInQueue(queueId);          
         }
         else {
           log(status, "The server did not accept the job removal command.");
@@ -208,6 +214,18 @@ AWE.Controller = (function(module) {
     that.setModelChanged = function() {
       _modelChanged = true;
     }
+    
+    that.updateQueue = function(queueId) {
+      AWE.GS.QueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
+        log('updated queue', queueId);
+      });
+    }
+      
+    that.updateJobsInQueue = function(queueId) {
+      AWE.GS.JobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+        log('updated jobs in queue', queueId);
+      });
+    }
         
     that.updateModel = (function() {
             
@@ -222,23 +240,14 @@ AWE.Controller = (function(module) {
 	        log('updated settlement', settlement)
 					if (settlement && settlement.getId()) {
             AWE.GS.SlotManager.updateSlotsAtSettlement(settlement.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
-              // log('updated slots', slots)
+              log('updated slots', slots)
             });
 
             AWE.GS.QueueManager.updateQueuesOfSettlement(settlement.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
-              // log('updated queues', queues)
-            
-              // log('queues', queues, queues[1].get('active_jobs').get('content'), queues[1].get('active_jobs').get('baseTypeName'));
-
+              log('updated queues', queues)
               AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
                 AWE.GS.JobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
-                  // log('updated jobs', jobs)
-                  if (that.view) {
-                    that.view.setQueuesAndJobs();
-                  }
-                  else {
-                    log('no view');
-                  }
+                  log('updated jobs', jobs)
                 });
               });      
             });
@@ -287,7 +296,8 @@ AWE.Controller = (function(module) {
 				// this.setFortressId(int).
 				var fortress = AWE.GS.SettlementManager.getSettlement(that.fortressId);
 				if (this.view.get('fortress') != fortress) {
-					this.view.set('fortress', fortress);
+          this.view.set('fortress', fortress);
+          this.view.set('queues', fortress.get('hashableQueues'));
 					this.view.setSlots(null); // fortress has changed, so remove the slots!!!
 				}
 				

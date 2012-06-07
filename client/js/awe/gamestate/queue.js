@@ -35,6 +35,8 @@ AWE.GS = (function(module) {
     speedup_effects: null,
     speedup_sciences: null,
     
+    active_jobs: null,
+
     /** returns the queue type from the rules, that describes this
      * queue. */
     queueType: function() {
@@ -46,14 +48,21 @@ AWE.GS = (function(module) {
 			return AWE.GS.RulesManager.getRules().getQueueType(typeId);
     }.property('type_id').cacheable(),
     
-    active_jobs: Ember.ArrayProxy.create({
-      baseTypeName: 'ActiveJob',
-      content: Ember.A([]),
-    }),
-    
     activeJob: function(jobId) {
       return this.get('active_jobs').objectAt(jobId);
     },
+    
+    hashableJobs: null,
+    
+    init: function(spec) {
+      log('INIT queue');
+      this._super(spec);
+      
+      if (this.get('id')) {
+        var hashableJobs = AWE.GS.JobAccess.getHashableCollectionForQueue_id(this.get('id'));
+        this.set('hashableJobs', hashableJobs);
+      }
+    },    
   });     
     
   // ///////////////////////////////////////////////////////////////////////
@@ -77,7 +86,16 @@ AWE.GS = (function(module) {
     my.runningUpdatesPerSettlement = {};
   
     my.createEntity = function() {
-      return module.Queue.create();
+      return module.Queue.create({
+        active_jobs: Ember.ArrayProxy.create({
+          baseTypeName: 'ActiveJob',
+          content: Ember.A([]),
+        }),
+        jobs: Ember.ArrayProxy.create({
+          baseTypeName: 'Job',
+          content: Ember.A([]),
+        }),
+      });        
     }
   
     // public attributes and methods ///////////////////////////////////////
