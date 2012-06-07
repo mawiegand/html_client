@@ -962,6 +962,15 @@ html, body {
 }
 
 
+.activity-indicator-small {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-image: url('../images/icons/activityindicator_small.svg');
+}
+
+
+
 /* ==|== media queries ======================================================
    EXAMPLE Media Query for Responsive Design.
    This example overrides the primary ('mobile first') styles
