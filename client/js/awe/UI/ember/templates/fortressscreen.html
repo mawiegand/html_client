@@ -139,10 +139,11 @@
           <div class="queue-job-list">    
             {{#each queue.hashableJobs.collection }}
               {{#view AWE.UI.Ember.JobView controllerBinding="controller" jobBinding="this" classNames="queue-job"}}
-                {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" levelBinding="job.building.level" buildingIdBinding="job.building.buildingId" typeBinding="job.building.type"}}
+                {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" levelBinding="job.level_after" buildingIdBinding="job.buildingId" typeBinding="job.slot.building.type"}}
                 <div class="queue-job-text">    
                   <p>{{ job.job_type }}</p>
-                  <p>{{ job.building.name }}</p>
+                  <p>{{ job.slot.building.name }}</p>
+                  <p>Slot #{{ job.slot.slot_num }}</p>
                   <p>Level {{ job.level_after }}</p>
                   <p>{{#if job.active_job }}Fin.: {{ job.parsedFinishingDate }}{{/if}}</p>
                 </div>  

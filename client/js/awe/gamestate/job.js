@@ -37,13 +37,9 @@ AWE.GS = (function(module) {
       return module.RulesManager.getRules().getBuildingType(this.get('building_id'));
     }.property('building_id'),
     
-    building: function() {
-     /* if (this.get('building_id') !== null && this.get('building_id') !== undefined ||
-          this.get('level_after') !== null && this.get('level_after') !== undefined) {
-        return AWE.GS.Building.create({ buildingId: this.get('building_id'), level: this.get('level_after') });
-      }*/
-      return null;
-    }.property('building_id', 'level_after'),
+    slot: function() {
+      return AWE.GS.SlotManager.getSlot(this.get('slot_id'));
+    }.property('slot_id', 'level_after'),
     
     position: null,
     level_after: null,
