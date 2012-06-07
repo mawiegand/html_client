@@ -3,7 +3,21 @@
 <div class="message-center">
   <div class="header">header</div>
 
-  <div class="list">list</div>
+  <div class="list">
+    {{#if "messageBox"}}
+      <h1>{{messageBox.name}}</h1>
+      {{#each messageBox.entries}}
+        <div class="message-header">
+         <span class="sender">{{sender.name}}</span> <span class="time">{{created_at}}</span><br />
+         <span class="subject">{{subject}}</span>
+        </div>
+      {{/each}}
+    {{else}}
+      <h1>Loading...</h1>
+    {{/if}}
+    </hr>
+  </div>
+  
   <div class="detail">detail</div>
 </div>
 

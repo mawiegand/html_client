@@ -32,6 +32,8 @@ AWE.GS = (function(module) {
 
     owner_id: null, old_owner_id: null,
     
+    name: 'Message Box',
+    
     entryManager: null,    
     entriesBinding: 'hashableEntries.collection',
 
@@ -47,8 +49,9 @@ AWE.GS = (function(module) {
 
   module.Inbox = module.MessageBox.extend({
     typeName: 'Inbox',
+    name: 'Inbox',
     ownerIdObserver: AWE.Partials.attributeHashObserver(module.InboxAccess, 'owner_id', 'old_owner_id').observes('owner_id'),   
-    
+  
     hashableEntries: function() {
       var id = this.get('id');
       return id ? AWE.GS.InboxEntryAccess.getHashableCollectionForInbox_id(id) : null;
@@ -92,6 +95,7 @@ AWE.GS = (function(module) {
     
   module.MessageBoxEntry = module.Entity.extend({ 
     typeName:   'MessageBoxEntry',
+    owner_id:   null,
     message_id: null,
     subject:    null,
     
@@ -111,6 +115,22 @@ AWE.GS = (function(module) {
     sender_id: null,
     inbox_id: null, old_inbox_id: null,
     inboxIdObserver: AWE.Partials.attributeHashObserver(module.InboxEntryAccess, 'inbox_id', 'old_inbox_id').observes('inbox_id'), 
+ 
+    sender: null,
+ 
+    updateSender: function() {
+      var self = this;
+      var senderId = this.get('sender_id');
+      var sender = AWE.GS.CharacterManager.getCharacter(senderId) || null;
+      this.set('sender', sender); 
+      if (!sender) {
+        AWE.GS.CharacterManager.updateCharacter(senderId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+          if (character) {
+            self.set('sender', character);
+          }
+        });
+      }
+    }.observes('sender_id'),
   });
   
   
