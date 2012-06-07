@@ -331,6 +331,7 @@ AWE.UI = (function(module) {
 			}
 
 			var frame = that.getResultingFrame(value, addBorder);
+			console.log(frame);
 			var panTime = _panTime;
 			if (!animated) {
 				panTime = 0.0;

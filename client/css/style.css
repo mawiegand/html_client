@@ -379,6 +379,40 @@ html, body {
   z-index: 200;
 }
 
+/* slider definitions */
+.slider_container {
+  position: relative;
+}
+.slider_slider {
+  position: absolute;
+   z-index: 2;
+}
+.slider_bar {
+  position: absolute;
+  z-index: 1;
+}
+/* zoom slider definitions */
+.zoom_slider {
+  position: absolute;
+  top: 60px;
+  left: 32px;
+  width: 20px;
+  height: 400px;
+  z-index: 201;
+}
+.zoom_slider .slider_bar {
+  border: 1px solid #c7c4c4;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: white;
+  top: 0px;
+  left: 5px;
+  width: 10px;
+  height: 400px;
+}
+/*slider done*/
+
 #templates {
   display: none;
 }
