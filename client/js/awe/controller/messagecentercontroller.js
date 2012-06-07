@@ -99,13 +99,19 @@ AWE.Controller = (function(module) {
     that.updateModel = function() {
       var inbox = AWE.GS.CharacterManager.getCurrentCharacter().get('inbox');
       if (!inbox) {
-        AWE.GS.CharacterManager.getCurrentCharacter().fetchInbox(function(inbox, status) {
+        AWE.GS.CharacterManager.getCurrentCharacter().fetchInbox(function(inboxes, status) {
           console.log('FETCHED INBOX FOR FIRST TIME, STATUS', status, status === AWE.Net.NOT_MODIFIED);
-          if (status === AWE.NET.NOT_FOUND) {
+          if (status === AWE.Net.NOT_FOUND || !inboxes) {
             console.log('ERROR: inbox of current character not found on server.');
           } 
-          else {  
-            inbox.fetchEntries();
+          else { 
+            inbox = AWE.GS.CharacterManager.getCurrentCharacter().get('inbox');
+            if (inbox) {
+              inbox.fetchEntries();
+            }
+            else {
+              console.log('ERROR: inbox could not be fetched from server.');
+            }
           }
         });
       }

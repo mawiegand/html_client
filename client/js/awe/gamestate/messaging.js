@@ -47,7 +47,6 @@ AWE.GS = (function(module) {
 
   module.Inbox = module.MessageBox.extend({
     typeName: 'Inbox',
-    entryMananger: AWE.GS.InboxEntryManager,
     ownerIdObserver: AWE.Partials.attributeHashObserver(module.InboxAccess, 'owner_id', 'old_owner_id').observes('owner_id'),   
     
     hashableEntries: function() {
@@ -55,18 +54,33 @@ AWE.GS = (function(module) {
       return id ? AWE.GS.InboxEntryAccess.getHashableCollectionForInbox_id(id) : null;
     }.property('id').cacheable(),        
 
+    init: function(spec) {
+      this._super(spec);
+      this.set('entryManager', AWE.GS.InboxEntryManager)
+    },
+
   });
 
   module.Outbox = module.MessageBox.extend({
     typeName: 'Outbox',
-    entryMananger: AWE.GS.OutboxEntryManager,
     ownerIdObserver: AWE.Partials.attributeHashObserver(module.OutboxAccess, 'owner_id', 'old_owner_id').observes('owner_id'),    
+
+    init: function(spec) {
+      this._super(spec);
+      this.set('entryManager', AWE.GS.OutboxEntryManager)
+    },
+
   });
 
   module.Archiv = module.MessageBox.extend({
     typeName: 'Archiv',
-    entryMananger: AWE.GS.ArchivEntryManager,
     ownerIdObserver: AWE.Partials.attributeHashObserver(module.ArchivAccess, 'owner_id', 'old_owner_id').observes('owner_id'),    
+
+    init: function(spec) {
+      this._super(spec);
+      this.set('entryManager', AWE.GS.ArchivEntryManager)
+    },
+
   });
     
 
@@ -181,7 +195,7 @@ AWE.GS = (function(module) {
     
     my.runningUpdatesPerCharacter = {};///< hash that contains all running requests for alliances, using the alliance.id as key.
     
-    my.createEntity = function() { return module.Message.create(); }
+    my.createEntity = function() { return module.Inbox.create(); }
   
     // public attributes and methods ///////////////////////////////////////
   
@@ -277,7 +291,7 @@ AWE.GS = (function(module) {
         this.lastUpdateForMessageBox(messageBoxId, updateType),// modified after
         function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            my.setLastUpdateForMessageBox(messageBoxId, timestamp);
+            that.setLastUpdateForMessageBox(messageBoxId, timestamp);
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
@@ -313,7 +327,7 @@ AWE.GS = (function(module) {
     my = my || {};
     
     my.createEntity = function() { return module.InboxEntry.create(); }
-    my.boxEntriesURL = AWE.Config.MESSAGING_SERVER_BASE + 'inbox/';
+    my.boxEntriesURL = AWE.Config.MESSAGING_SERVER_BASE + 'inboxes/';
     my.entriesURL    = AWE.Config.MESSAGING_SERVER_BASE + 'inbox_entries/';
   
     // public attributes and methods ///////////////////////////////////////
@@ -325,7 +339,7 @@ AWE.GS = (function(module) {
     };
     
     that.setLastUpdateForMessageBox = function(inboxId, timestamp) {
-      module.InboxEntry.Access.accessHashForInbox_id().setLastUpdateAtForValue(inboxId, timestamp);
+      module.InboxEntryAccess.accessHashForInbox_id().setLastUpdateAtForValue(inboxId, timestamp);
     };
 
     return that;

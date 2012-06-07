@@ -24,16 +24,17 @@ AWE.Config = (function(module) {
   module.MAP_DEBUG_FRAMES = false;
   
   module.MAP_RUN_TESTS = false;
-  module.MAP_SERVER_BASE = module.SERVER_ROOT + '/game_server/map/';
-  module.MILITARY_SERVER_BASE = module.SERVER_ROOT + '/game_server/military/';
-  module.FUNDAMENTAL_SERVER_BASE = module.SERVER_ROOT + '/game_server/fundamental/';
-  module.ACTION_SERVER_BASE = module.SERVER_ROOT + '/game_server/action/';
-  module.RULES_SERVER_BASE = module.SERVER_ROOT + '/game_server/game_rules/';
-  module.SETTLEMENT_SERVER_BASE = module.SERVER_ROOT + '/game_server/settlement/';
+  module.MAP_SERVER_BASE          = module.SERVER_ROOT + '/game_server/map/';
+  module.MILITARY_SERVER_BASE     = module.SERVER_ROOT + '/game_server/military/';
+  module.FUNDAMENTAL_SERVER_BASE  = module.SERVER_ROOT + '/game_server/fundamental/';
+  module.ACTION_SERVER_BASE       = module.SERVER_ROOT + '/game_server/action/';
+  module.RULES_SERVER_BASE        = module.SERVER_ROOT + '/game_server/game_rules/';
+  module.SETTLEMENT_SERVER_BASE   = module.SERVER_ROOT + '/game_server/settlement/';
   module.CONSTRUCTION_SERVER_BASE = module.SERVER_ROOT + '/game_server/construction/';
-  module.SHOP_SERVER_BASE = module.SERVER_ROOT + '/game_server/shop/';
+  module.SHOP_SERVER_BASE         = module.SERVER_ROOT + '/game_server/shop/';
+  module.MESSAGING_SERVER_BASE    = module.SERVER_ROOT + '/game_server/messaging/';
   
-  module.PAYMENT_PROVIDER_BASE = module.SERVER_ROOT + '/payment_provider/';
+  module.PAYMENT_PROVIDER_BASE    = module.SERVER_ROOT + '/payment_provider/';
   
   // access token of Egbert, expires in 100 days.
   module.DEV_ACCESS_TOKEN = "eyJ0b2tlbiI6eyJpZGVudGlmaWVyIjoiZU9tS3ZOa1hTUkxtYlREUSIsInNjb3BlIjpbIjVkZW50aXR5Iiwid2Fja2Fkb28iXSwidGltZXN0YW1wIjoiMjAxMi0wNS0wMlQxNjozMDowMyswMjowMCJ9LCJzaWduYXR1cmUiOiJhZDQ0MzU4NzRmMGFmYTg2N2RlOTAwOTExYTJlMmNlODQzNmNlYTU0In0="

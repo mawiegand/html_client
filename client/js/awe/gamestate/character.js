@@ -69,7 +69,7 @@ AWE.GS = (function(module) {
       }
       console.log(hashableInboxes, hashableInboxes.get('collection'));
       return null;
-    }.property('hashableInboxes.collection.changedAt').cacheable(),
+    }.property('hashableInboxes.changedAt').cacheable(),
     
     fetchInbox: function(callback) {
       AWE.GS.InboxManager.updateInboxOfCharacter(this.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, callback);

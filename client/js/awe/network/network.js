@@ -12,6 +12,9 @@ AWE.Net = AWE.Net || function(module) {
   module.CREATED      = 201;
   
   module.NOT_MODIFIED = 304;
+
+  module.NOT_FOUND    = 404;
+
   
   module.clientLosesAuthHeaderOnRedirect = false;
   
