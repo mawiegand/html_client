@@ -60,13 +60,18 @@ AWE.GS = (function(module) {
     }.property('active_job'),
     
     cancelable: function() {
-      // var slotId = this.get('slot_id');
-      // if (slotId) {
-        // var slot = AWE.GS.SlotManager.getEntity(this.get('slot_id'));
-        // return this.getId() == slot.getLastJob(); 
-      // }
-      return true;
-    }.property(),  // TODO wovon abhängig?    
+      
+      // jobs des slots holen
+      var jobs = AWE.GS.SlotManager.getSlot(this.get('slot_id')).get('hashableJobs').get('collection');
+      log('---> jobs', jobs);
+      
+      // max suchen
+      jobs.sort(function(a, b) {return b.get('position') - a.get('position')});
+      log('---> jobs', jobs);
+
+      // mit this vergleichen      
+      return this.getId() == jobs[0].getId();
+    }.property(),
   });     
     
   // ///////////////////////////////////////////////////////////////////////
