@@ -4,6 +4,19 @@
   <span class="subject">{{message.subject}}</span>
 </script>
 
+<script type="text/x-handlebars" data-template-name="message">
+  <table>
+    <tr><th>From:<th><td><b>{{message.sender.name}}<b></td></tr>
+    <tr><th>Subject:<th><td>{{message.subject}}</td></tr>
+    <tr><th>Subject:<th><td>{{message.subject}}</td></tr>
+    
+    
+  <span class="sender">{{message.sender.name}}</span> <span class="time">{{message.created_at}}</span><br />
+  <span class="subject">{{message.subject}}</span>
+  <hr>
+  {{message.body}}
+</script>
+
 
 
 <script type="text/x-handlebars" data-template-name="message-center">
@@ -26,10 +39,7 @@
   <div class="detail">
     {{#if "selectedMessageEntry" }}
       {{#if "selectedMessage" }}
-      {{selectedMessage.subject}}
-
-      {{selectedMessage.body}}
-
+        {{view AWE.UI.Ember.MessageView messageBinding="selectedMessage" classNames="message"}}
       {{else}}
         Loading...
       {{/if}}

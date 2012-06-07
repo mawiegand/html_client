@@ -11,6 +11,10 @@ AWE.UI.Ember = (function(module) {
   
   module.templates = module.templates || [];
   module.templates.push('js/awe/UI/ember/templates/messagecenter.html');
+
+  module.MessageView = Ember.View.extend({
+    templateName: 'message',
+  });
   
   module.MessageTeaserView = Ember.View.extend({
     templateName: 'message-teaser',
