@@ -1,3 +1,11 @@
+
+<script type="text/x-handlebars" data-template-name="message-teaser">
+  <span class="sender">{{message.sender.name}}</span> <span class="time">{{message.created_at}}</span><br />
+  <span class="subject">{{message.subject}}</span>
+</script>
+
+
+
 <script type="text/x-handlebars" data-template-name="message-center">
 
 <div class="message-center">
@@ -7,10 +15,7 @@
     {{#if "messageBox"}}
       <h1>{{messageBox.name}}</h1>
       {{#each messageBox.entries}}
-        <div class="message-header">
-         <span class="sender">{{sender.name}}</span> <span class="time">{{created_at}}</span><br />
-         <span class="subject">{{subject}}</span>
-        </div>
+        {{view AWE.UI.Ember.MessageTeaserView messageBinding="this" classNames="message-header"}}
       {{/each}}
     {{else}}
       <h1>Loading...</h1>
@@ -18,7 +23,20 @@
     </hr>
   </div>
   
-  <div class="detail">detail</div>
+  <div class="detail">
+    {{#if "selectedMessageEntry" }}
+      {{#if "selectedMessage" }}
+      {{selectedMessage.subject}}
+
+      {{selectedMessage.body}}
+
+      {{else}}
+        Loading...
+      {{/if}}
+    {{else}}
+      No Message Selected.
+    {{/if}}
+  </div>
 </div>
 
 </script>

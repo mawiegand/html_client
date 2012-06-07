@@ -102,11 +102,12 @@ AWE.GS = (function(module) {
     message:    null,
     
     fetchMessage: function() {
-      AWE.GS.MessageManager.updateMessage(this.get('message_id', module.ENTITY_UPDATE_TYPE_FULL, function (result, status) {
+      var self = this;
+      AWE.GS.MessageManager.updateMessage(this.get('message_id'), module.ENTITY_UPDATE_TYPE_FULL, function (result, status) {
         if (status === AWE.Net.OK) {
-          this.set('message', result);
+          self.set('message', result);
         }
-      }));
+      });
     },
   });
   
@@ -185,7 +186,7 @@ AWE.GS = (function(module) {
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
     that.updateMessage = function(id, updateType, callback) {
-      var url = AWE.Config.MESSAGING_SERVER_BASE + 'message/'+id;
+      var url = AWE.Config.MESSAGING_SERVER_BASE + 'messages/'+id;
       return my.updateEntity(url, id, updateType, callback); 
     };
   
