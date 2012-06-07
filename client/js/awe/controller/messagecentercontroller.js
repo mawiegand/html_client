@@ -57,13 +57,18 @@ AWE.Controller = (function(module) {
     
     that.messageCenterView = Ember.View.extend({
       templateName: 'message-center',
+      
+      character: null,
     });
     
     
     that.createView = function() {
       
+      var character = AWE.GS.CharacterManager.getCurrentCharacter();
+      
       var center = that.messageCenterView.create({
-        controller: this,
+        controller: this,    
+        character: character,
       });
       
       return center;
@@ -91,6 +96,34 @@ AWE.Controller = (function(module) {
       this.visible = false;
     };
     
+    that.updateModel = function() {
+      var inbox = AWE.GS.CharacterManager.getCurrentCharacter().get('inbox');
+      if (!inbox) {
+        AWE.GS.CharacterManager.getCurrentCharacter().fetchInbox(function(inbox, status) {
+          console.log('FETCHED INBOX FOR FIRST TIME, STATUS', status, status === AWE.Net.NOT_MODIFIED);
+          if (status === AWE.NET.NOT_FOUND) {
+            console.log('ERROR: inbox of current character not found on server.');
+          } 
+          else {  
+            inbox.fetchEntries();
+          }
+        });
+      }
+      else if (inbox && inbox.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 10000 < new Date().getTime()) { // timeout
+
+        console.log('START UPDATING INBOX');
+
+        AWE.GS.InboxManager.updateInbox(inbox.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(inbox, status) {
+          
+          console.log('UPDATED INBOX, STATUS', status, status === AWE.Net.NOT_MODIFIED);
+          
+					if (inbox && inbox.getId() && status !== AWE.Net.NOT_MODIFIED) {
+            inbox.fetchEntries()
+					}
+        });
+      }
+    };
+    
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Runloop
@@ -107,6 +140,11 @@ AWE.Controller = (function(module) {
         this.updateView();
         _viewNeedsUpdate = false;
       }
+      
+      if (this.visible) {
+        this.updateModel();
+      }
+      
     }
     
     return that;

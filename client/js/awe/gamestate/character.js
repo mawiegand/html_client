@@ -34,7 +34,7 @@ AWE.GS = (function(module) {
     
     health_max: null,               ///< maximum health of character
     health_present: null,           ///< present health 
-    health_updated_at: null,       ///< last health update; interpolate present heahlt from here
+    health_updated_at: null,        ///< last health update; interpolate present heahlt from here
     
     locked: false,                  ///< TODO: don't communicate this!
     locked_by: null,
@@ -54,6 +54,26 @@ AWE.GS = (function(module) {
     
     frog_amount: 0,
     premium_expiration: null, 
+    
+    hashableInboxes: function() {
+      var id = this.get('id');
+      return id ? AWE.GS.InboxAccess.getHashableCollectionForOwner_id(id) : null;
+    }.property('id').cacheable(),  
+    
+    inbox: function() {
+      console.log("RECALC CHARACTER'S INBOX");
+      var hashableInboxes = this.get('hashableInboxes');
+      if (hashableInboxes && hashableInboxes.get('collection') && hashableInboxes.get('collection').length === 1) {
+        console.log(hashableInboxes.get('collection')[0])
+        return hashableInboxes.get('collection')[0];
+      }
+      console.log(hashableInboxes, hashableInboxes.get('collection'));
+      return null;
+    }.property('hashableInboxes.collection.changedAt').cacheable(),
+    
+    fetchInbox: function(callback) {
+      AWE.GS.InboxManager.updateInboxOfCharacter(this.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, callback);
+    },
     
     isEnemyOf: function(opponent) {
       return !this.isNeutral() && !opponent.isNeutral() && this.get('alliance_id') != opponent.get('alliance_id');
