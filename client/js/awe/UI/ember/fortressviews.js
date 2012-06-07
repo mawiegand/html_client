@@ -34,6 +34,52 @@ AWE.UI.Ember = (function(module) {
   });  
   
   
+  module.FortressInfoBoxView = Ember.View.extend({
+    templateName: "fortress-info-box",
+    
+    nameBinding: "fortress.name",
+    defenseBonusBinding: "fortress.defense_bonus",
+    
+    init: function(spec) {
+      this._super(spec);
+      console.log('FORTRESS', this.get('fortress'), this.get('parentView'), this.get('parentView').get('fortress'), this);
+    },
+    
+    hashableConstructionQueues: function() {
+      var id = this.get('fortress') ? this.get('fortress').get('id') : null;
+      if (id) {
+        return AWE.GS.QueueAccess.getHashableCollectionForSettlement_id(id);
+      }
+      else {
+        return null;
+      }
+    }.property('fortress.id').cacheable(),
+    
+    buildingQueue: function() {
+      var queues = this.get('hashableConstructionQueues');
+      if (!queues) {
+        return null;
+      }
+      var filtered = queues.get('collection').filter(function(item) {
+        return item.get('queueType') ? item.get('queueType').symbolic_id === "queue_buildings" : false; 
+      });
+      if (filtered.length === 1) {
+        return filtered[0];
+      }
+      else {
+        return null;
+      }
+    }.property('hashableConstructionQueues.changedAt').cacheable(),
+    
+    buildingSpeed: function() {
+      var speed = this.get('buildingQueue') ? this.get('buildingQueue').get('speed') : null;
+      console.log('SPEED', speed);
+      return speed;
+    }.property('buildingQueue.speed').cacheable(),
+    
+    
+  });
+  
   module.BuildingDetailsDialog = Ember.View.extend({
     templateName: "settlement-dialog-building-details",
   
@@ -75,22 +121,8 @@ AWE.UI.Ember = (function(module) {
 				this.set('haveSlots', false);
 			}
 		},
-		queuesBinding: 'fortress.hashableQueues',
-		// setQueuesAndJobs: function() {
-		  // // log('-----> setQueuesAndJobs');
-		  // if (this.get('fortress')) {
-		    // var queues = Ember.A(AWE.GS.QueueManager.getQueuesOfSettlement(this.get('fortress').get('id'))).filter(function(item){return item !== undefined});
-  		  // // log('-----> setQueuesAndJobs', 'queues', queues);
-        // this.set('queues', queues);
-//         
-        // AWE.Ext.applyFunction(queues, function(queue){
-    		  // // log('-----> setQueuesAndJobs', 'queue', queue, queue.get('id'), AWE.GS.JobManager.getJobsInQueue(1));
-          // var jobs = Ember.A(AWE.GS.JobManager.getJobsInQueue(queue.get('id'))).filter(function(item){return item !== undefined});
-    		  // // log('-----> setQueuesAndJobs', 'jobs', jobs);
-          // queue.set('jobs', jobs);
-        // });
-      // }
-		// },
+		
+		queues: null,
 	});
 
   module.ToolTipView = Ember.View.extend({

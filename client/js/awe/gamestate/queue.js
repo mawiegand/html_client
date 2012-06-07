@@ -36,14 +36,33 @@ AWE.GS = (function(module) {
     speedup_sciences: null,
     
     active_jobs: null,
+
+    /** returns the queue type from the rules, that describes this
+     * queue. */
+    queueType: function() {
+			var typeId = this.get('type_id');
+			if (typeId === undefined || typeId === null) { // must check, because typeId may be zero
+				return null;
+			}
+			console.log('TYPE_ID', this.get('type_id'), typeId, AWE.GS.RulesManager.getRules().getQueueType(typeId));
+			return AWE.GS.RulesManager.getRules().getQueueType(typeId);
+    }.property('type_id').cacheable(),
+    
     activeJob: function(jobId) {
       return this.get('active_jobs').objectAt(jobId);
     },
-
-    jobs: null,
-    job: function(jobId) {
-      return this.get('jobs').objectAt(jobId);
-    },
+    
+    hashableJobs: null,
+    
+    init: function(spec) {
+      log('INIT queue');
+      this._super(spec);
+      
+      if (this.get('id')) {
+        var hashableJobs = AWE.GS.JobAccess.getHashableCollectionForQueue_id(this.get('id'));
+        this.set('hashableJobs', hashableJobs);
+      }
+    },    
   });     
     
   // ///////////////////////////////////////////////////////////////////////

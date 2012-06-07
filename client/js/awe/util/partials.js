@@ -125,7 +125,6 @@ AWE.Partials = (function(module) {
       }
       return -1;
     },
-    
   });
   
   
@@ -211,7 +210,7 @@ AWE.Partials = (function(module) {
       if (hook.accessHashes === undefined) {
         hook.accessHashes = {};
       }
-
+  
       if (!hook.accessHashes[attribute]) {
 
         hook.accessHashes[attribute] = module.AttributeValueHash.create({

@@ -51,12 +51,13 @@ AWE.GS = (function(module) {
     type_id: null,
     
     hashableQueues: null,
+    
     init: function(spec) {
       log('INIT settlement');
       this._super(spec);
       
-      if (this.getId()) {
-        var hashableQueues = AWE.GS.QueueAccess.getHashableCollectionForSettlement_id(this.getId());
+      if (this.get('id')) {
+        var hashableQueues = AWE.GS.QueueAccess.getHashableCollectionForSettlement_id(this.get('id'));
         this.set('hashableQueues', hashableQueues);
       }
     },
