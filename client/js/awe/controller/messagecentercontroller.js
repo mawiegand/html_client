@@ -55,20 +55,13 @@ AWE.Controller = (function(module) {
       //that.content.set('alliance', that.getAndUpdateAlliance(this.allianceId));
     }
     
-    that.messageCenterView = Ember.View.extend({
-      templateName: 'message-center',
-      
-      character: null,
-      messageBoxBinding: "character.inbox",
-
-    });
     
     
     that.createView = function() {
       
       var character = AWE.GS.CharacterManager.getCurrentCharacter();
       
-      var center = that.messageCenterView.create({
+      var center = AWE.UI.Ember.MessageCenterView.create({
         controller: this,    
         character: character,
         
