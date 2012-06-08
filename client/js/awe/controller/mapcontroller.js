@@ -147,11 +147,13 @@ AWE.Controller = (function(module) {
     
     that.viewDidAppear = function() {
       $("body").append(zoomSlider.getContainer());
+      window.WACKADOO.addDomElement(zoomSlider.getContainer(), true);
       zoomSlider.subscribeToDOMEvents();
     }     
     
     that.viewWillDisappear = function() {
       $(zoomSlider.getContainer()).remove(); 
+      window.WACKADOO.removeDomElement(zoomSlider.getContainer());
       zoomSlider.unsubscribeDOMEvents();
     }
     

@@ -63,7 +63,8 @@ AWE.Application = (function(module) {
       isModal: false,
       
       modalDialogs: null,
-  
+
+      domElements: [], //< contains the list of dom elements that can also catch mouse events
   
       /** custom object initialization goes here. */
       init: function() {
@@ -136,11 +137,14 @@ AWE.Application = (function(module) {
           this.get('presentScreenController').onClick(evt);
         }     
       },
-  
+
       /** passes a click in the browser window either to the view that was hit
        * or to the present screen controller that gets the chance to handle the
        * otherwise unhandled click. */
-      handleMouseUp:  function(evt) {                
+      handleMouseUp:  function(evt) { 
+        if (this.isCatchedByDomElement(evt.pageX, evt.pageY, evt.type)) {
+          return;
+        }               
         var presentScreenController = this.get('presentScreenController');
         this.generateClickIfNeeded(evt);
       
@@ -253,6 +257,10 @@ AWE.Application = (function(module) {
       },
     
       onMouseDown: function(evt) {
+        //if this event is already handled by a dom element ignore it
+        if (this.isCatchedByDomElement(evt.pageX, evt.pageY, evt.type)) {
+          return;
+        }
         var controller = this.get('presentScreenController');
         if (!this.get('isModal') && controller && controller.onMouseDown) {
           controller.onMouseDown(evt);
@@ -417,7 +425,63 @@ AWE.Application = (function(module) {
         this.modalDialogs.push(dialog);
         dialog.append();
       },
-  
+
+      //****** dom elements handlers ******/
+      /** adds a dom element to the list of dom elements which can prevent a click 
+        * @note for the dom element 
+        */
+      addDomElement: function(element, checkForEvents) {
+        this.domElements.push({
+          element: element,
+          checkForEvents: checkForEvents
+        });
+      },
+
+      removeDomElement: function(element) {
+        var si = -1;
+        for(var i = 0; i < this.domElements.length; i++) {
+          if (this.domElements[i].element === element) {
+            si = i;
+          }
+        }
+        if(si != -1) {
+          this.domElements.splice(si, 1);
+        }
+      },
+      isCatchedByDomElement: function(x,y, eventName) {
+        var isIn = function(element) {
+          return (x >= $(element).offset().left &&
+              x < $(element).offset().left + $(element).outerWidth() &&
+              y >= $(element).offset().top &&
+              y < $(element).offset().top + $(element).outerHeight()
+            ); 
+        };
+        var result = false;
+        var checkForEvent = function(i, element) {
+          var eventsData = $(element).data("events");
+          if (eventsData !== undefined && eventsData.hasOwnProperty(eventName) && eventsData[eventName].length > 0) {
+            if (isIn(element)) {
+              result = true;
+              return;
+            }
+          }
+          $(element).children().each(checkForEvent);
+        };
+        for (var i = 0; i < this.domElements.length; i++) {
+          var element = this.domElements[i].element;
+          if (this.domElements[i].checkForEvents) {
+            checkForEvent(0, element);
+            if (result) {
+              return true;
+            }
+          } else {
+            if (isIn(element)) {
+              return true;
+            }
+          }
+        }
+        return false;
+      }
     }
   }());
   
