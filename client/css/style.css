@@ -455,6 +455,17 @@ html, body {
   border-bottom: 1px solid gray;
 }
 
+.message-center .header div {
+  float: left;
+  margin-top: 106px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.message-center .header div:hover {
+  color: #FA0;;
+}
+
 .message-center .list {
   position: absolute;
   top: 140px;
@@ -466,27 +477,43 @@ html, body {
 
 .message-center .list h1 {
   font-size: 16px;
-  margin: 1px;
+  margin: 1px 0px 0px 0px;
   padding: 0px 4px;
   border-bottom: 1px solid #BBB;
   background: #DDF;
 }
 
 .message-center .list .message-header {
-  margin: 1px;
   border-bottom: 1px solid #BBB;
   padding: 4px;
 }
 
-.message-header .sender {
+.message-center .list .message-header.selected {
+  background-color: #FA0;
+  color: white;
+}
+
+.message-header .sender, .message-header .recipient {
   font-weight: bold;
 }
 
+.message-header.selected .sender {
+}
+
+
 .message-header .time {
+  float: right;
   color: #AAF;
 }
 
+.message-header.selected .time {
+  color: white;
+}
+
+
 .message-header .subject {
+}
+.message-header.selected .subject {
 }
 
 .message-center .detail {
@@ -495,8 +522,29 @@ html, body {
   left: 260px;
   right: 0;
   bottom: 0;
+  padding: 24px;
 }
 
+.message-center .message {
+}
+
+.message-center .message table {
+}
+
+
+.message-center .message table tr {
+  
+}
+
+.message-center .message table th {
+  text-align: right;
+  color: #999;
+  padding-right: 6px;
+}
+
+.message-center .message table td {
+  text-align: left;
+}
 
 #text-input-dialog { 
   position: absolute; 
@@ -960,6 +1008,15 @@ html, body {
 .fortress-picture .wall.size3:hover {
 	background-position: -1600px -960px;
 }
+
+
+.activity-indicator-small {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-image: url('../images/icons/activityindicator_small.svg');
+}
+
 
 
 /* ==|== media queries ======================================================

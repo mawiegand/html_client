@@ -53,27 +53,65 @@ AWE.GS = (function(module) {
     creditAmount: 0,                ///< credit amount of character
     
     frog_amount: 0,
-    premium_expiration: null, 
+    premium_expiration: null,
+    
+    //
+    // //// MESSAGING //////////////////////////////////////////////////////// 
+    //
     
     hashableInboxes: function() {
       var id = this.get('id');
       return id ? AWE.GS.InboxAccess.getHashableCollectionForOwner_id(id) : null;
     }.property('id').cacheable(),  
     
+    hashableOutboxes: function() {
+      var id = this.get('id');
+      return id ? AWE.GS.OutboxAccess.getHashableCollectionForOwner_id(id) : null;
+    }.property('id').cacheable(),
+    
+    hashableArchives: function() {
+      var id = this.get('id');
+      return id ? AWE.GS.ArchiveAccess.getHashableCollectionForOwner_id(id) : null;
+    }.property('id').cacheable(),    
+    
     inbox: function() {
-      console.log("RECALC CHARACTER'S INBOX");
       var hashableInboxes = this.get('hashableInboxes');
       if (hashableInboxes && hashableInboxes.get('collection') && hashableInboxes.get('collection').length === 1) {
-        console.log(hashableInboxes.get('collection')[0])
         return hashableInboxes.get('collection')[0];
       }
-      console.log(hashableInboxes, hashableInboxes.get('collection'));
       return null;
     }.property('hashableInboxes.changedAt').cacheable(),
     
+    outbox: function() {
+      var hashableOutboxes = this.get('hashableOutboxes');
+      if (hashableOutboxes && hashableOutboxes.get('collection') && hashableOutboxes.get('collection').length === 1) {
+        return hashableOutboxes.get('collection')[0];
+      }
+      return null;
+    }.property('hashableOutboxes.changedAt').cacheable(),
+    
+    archive: function() {
+      var hashableArchives = this.get('hashableArchives');
+      if (hashableArchives && hashableArchives.get('collection') && hashableArchives.get('collection').length === 1) {
+        return hashableArchives.get('collection')[0];
+      }
+      return null;
+    }.property('hashableArchives.changedAt').cacheable(),
+    
     fetchInbox: function(callback) {
-      AWE.GS.InboxManager.updateInboxOfCharacter(this.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, callback);
+      AWE.GS.InboxManager.updateMessageBoxOfCharacter(this.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, callback);
     },
+    
+    fetchOutbox: function(callback) {
+      AWE.GS.OutboxManager.updateMessageBoxOfCharacter(this.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, callback);
+    },
+    
+    fetchArchive: function(callback) {
+      AWE.GS.ArchiveManager.updateMessageBoxOfCharacter(this.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, callback);
+    },
+
+    // ////////////////////////////////////////////////////////////////// ////
+    
     
     isEnemyOf: function(opponent) {
       return !this.isNeutral() && !opponent.isNeutral() && this.get('alliance_id') != opponent.get('alliance_id');

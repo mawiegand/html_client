@@ -1,24 +1,78 @@
-<script type="text/x-handlebars" data-template-name="message-center">
+<script type="text/x-handlebars" data-template-name="wheel-or-value">
+  {{#if value}}
+    {{value}}
+  {{else}}
+    {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }}
+  {{/if}} 
+</script>
 
+
+
+<script type="text/x-handlebars" data-template-name="message-teaser">
+  {{#if parentView.displayingOutbox}}
+    <span class="recipient">
+      {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}}
+    </span>   
+  {{else}}
+    <span class="sender">
+      {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
+    </span> 
+  {{/if}} <span class="time">{{timeString}}</span><br />
+  <span class="subject">{{message.subject}}</span>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="message">
+  <table>
+    <tr><th>From:<th><td>
+      <b>{{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
+         {{#if "message.sender.alliance_tag"}}
+           | {{message.sender.alliance_tag}}
+         {{/if}}
+      <b>
+    </td></tr>
+    <tr><th>Subject:<th><td>{{message.subject}}</td></tr>
+    <tr><th>Date:<th><td>{{timeString}}</td></tr>
+    <tr><th>To:<th><td>{{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}} 
+      {{#if "message.recipient.alliance_tag"}}
+        | {{message.recipient.alliance_tag}}
+      {{/if}}</td>
+    </tr>
+  </table>
+  <hr>
+  {{message.body}}
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="message-center">
 <div class="message-center">
-  <div class="header">header</div>
+  <div class="header">
+    <div {{action "inboxClicked" target="controller"}}>Inbox</div>
+    <div {{action "outboxClicked" target="controller"}}>Outbox</div>
+  </div>
 
   <div class="list">
     {{#if "messageBox"}}
       <h1>{{messageBox.name}}</h1>
       {{#each messageBox.entries}}
-        <div class="message-header">
-         <span class="sender">{{sender.name}}</span> <span class="time">{{created_at}}</span><br />
-         <span class="subject">{{subject}}</span>
-        </div>
+        {{view AWE.UI.Ember.MessageTeaserView messageBinding="this" classNames="message-header" classNameBindings="selected"}}
       {{/each}}
     {{else}}
-      <h1>Loading...</h1>
+      <h1>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Loading...</h1>
     {{/if}}
     </hr>
   </div>
   
-  <div class="detail">detail</div>
+  <div class="detail">
+    {{#if "selectedMessageEntry" }}
+      {{#if "selectedMessage" }}
+        {{view AWE.UI.Ember.MessageView messageBinding="selectedMessage" classNames="message"}}
+      {{else}}
+        {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Loading...
+      {{/if}}
+    {{else}}
+      No Message Selected.
+    {{/if}}
+  </div>
 </div>
-
 </script>
