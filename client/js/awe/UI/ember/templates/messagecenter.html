@@ -9,9 +9,15 @@
 
 
 <script type="text/x-handlebars" data-template-name="message-teaser">
-  <span class="sender">
-    {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
-  </span> <span class="time">{{message.created_at}}</span><br />
+  {{#if parentView.displayingOutbox}}
+    <span class="recipient">
+      {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}}
+    </span>   
+  {{else}}
+    <span class="sender">
+      {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
+    </span> 
+  {{/if}} <span class="time">{{timeString}}</span><br />
   <span class="subject">{{message.subject}}</span>
 </script>
 
@@ -26,7 +32,7 @@
       <b>
     </td></tr>
     <tr><th>Subject:<th><td>{{message.subject}}</td></tr>
-    <tr><th>Date:<th><td>{{message.created_at}}</td></tr>
+    <tr><th>Date:<th><td>{{timeString}}</td></tr>
     <tr><th>To:<th><td>{{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}} 
       {{#if "message.recipient.alliance_tag"}}
         | {{message.recipient.alliance_tag}}
@@ -43,7 +49,6 @@
   <div class="header">
     <div {{action "inboxClicked" target="controller"}}>Inbox</div>
     <div {{action "outboxClicked" target="controller"}}>Outbox</div>
-    <div {{action "archiveClicked" target="controller"}}>Archive</div>
   </div>
 
   <div class="list">

@@ -493,7 +493,7 @@ html, body {
   color: white;
 }
 
-.message-header .sender {
+.message-header .sender, .message-header .recipient {
   font-weight: bold;
 }
 

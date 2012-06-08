@@ -26,12 +26,53 @@ AWE.UI.Ember = (function(module) {
 
   module.MessageView = Ember.View.extend({
     templateName: 'message',
+    
+    timeString: function() {
+      if (!this.get('message')) return null;
+      var isoDate = this.get('message').get('created_at');
+      if (!isoDate) {
+        return null;
+      }
+      var date = Date.parseISODate(isoDate);
+     
+      return date.toLocaleString();
+
+    }.property('message.created_at').cacheable(),
   });
   
   /** brief overview about a message that is used in the message-list bar
    * in the left column of the message center. */
   module.MessageTeaserView = Ember.View.extend({
     templateName: 'message-teaser',
+    
+    timeString: function() {
+      if (!this.get('message')) return null;
+      var oneDay = 1000 * 3600 * 24;
+      
+      var isoDate = this.get('message').get('created_at');
+      if (!isoDate) {
+        return null;
+      }
+      var date = Date.parseISODate(isoDate);
+      var now = new Date();
+      if (date.getDate() === now.getDate() && 
+          date.getMonth() === now.getMonth() &&
+          date.getFullYear() === now.getFullYear()) {
+        return date.getHours()+":"+date.getMinutes();
+      }
+      else if (now.getTime() - date.getTime() < oneDay) {
+        return "yesterday";
+      }
+      else if (now.getTime() - date.getTime() < 2*oneDay) {
+        return "2 days ago";
+      }
+      else if (now.getTime() - date.getTime() < 3*oneDay) {
+        return "3 days ago";
+      }
+      else {
+        return date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
+      }
+    }.property('message.created_at').cacheable(),
     
     /** computed property used for marking the message that has been selected
      * by the user. */
@@ -75,6 +116,18 @@ AWE.UI.Ember = (function(module) {
     selectedMessageBinding: 'selectedMessageEntry.message',
     
     display: 'inbox',
+    
+    displayingInbox: function() {
+      return this.get('display') === 'inbox';
+    }.property('display').cacheable(),
+    
+    displayingOutbox: function() {
+      return this.get('display') === 'outbox';
+    }.property('display').cacheable(),
+
+    displayingArchive: function() {
+      return this.get('display') === 'archive';
+    }.property('display').cacheable(),
     
     switchTo: function(box) {
       var atPresent = this.get('display');

@@ -115,11 +115,19 @@ AWE.GS = (function(module) {
     
     fetchMessage: function() {
       var self = this;
-      AWE.GS.MessageManager.updateMessage(this.get('message_id'), module.ENTITY_UPDATE_TYPE_FULL, function (result, status) {
-        if (status === AWE.Net.OK) {
-          self.set('message', result);
-        }
-      });
+      var messageId = this.get('message_id');
+      var message = AWE.GS.MessageManager.getMessage(messageId);
+      
+      if (message) {
+        this.set('message', message);
+      }
+      else {
+        AWE.GS.MessageManager.updateMessage(messageId, module.ENTITY_UPDATE_TYPE_FULL, function (result, status) {
+          if (status === AWE.Net.OK) {
+            self.set('message', result);
+          }
+        });
+      }
     },
   });
   
@@ -189,8 +197,8 @@ AWE.GS = (function(module) {
     reporter_id:  null,
     flag:         null,
     
-    sender:       null,  // will be automatically connected to character
-    recipient:    null,  // will be automatically connected to character   
+    sender:       null,  ///< will be automatically connected to character
+    recipient:    null,  ///< will be automatically connected to character   
  
     /** automatically fetch and set sender to sending character. */
     updateSender: function() {
@@ -222,7 +230,7 @@ AWE.GS = (function(module) {
       }
     }.observes('recipient_id'),
   });  
-    
+      
   // ///////////////////////////////////////////////////////////////////////
   //
   //   MESSAGE MANAGER
@@ -341,6 +349,7 @@ AWE.GS = (function(module) {
     my = my || {};
     
     my.runningUpdatesPerCharacter = {};///< hash that contains all running requests for alliances, using the alliance.id as key.
+
     my.boxURL            = AWE.Config.MESSAGING_SERVER_BASE   + 'inboxes/';
     my.characterBoxesURL = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/';
     my.boxFragementURL   = '/inboxes';
@@ -382,7 +391,7 @@ AWE.GS = (function(module) {
     my.characterBoxesURL = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/';
     my.boxFragementURL   = '/outboxes';
 
-    my.createEntity = function() { return module.Inbox.create(); }
+    my.createEntity = function() { return module.Outbox.create(); }
   
     // public attributes and methods ///////////////////////////////////////
   
@@ -498,6 +507,41 @@ AWE.GS = (function(module) {
     return that;
   
   }());
+  
+  
+  /** basic manager for fetching individual messages. You should not call
+   * updateMessage manually, but request the message via a message box 
+   * entry. */
+  module.OutboxEntryManager = (function(my) {   
+  
+    // private attributes and methods //////////////////////////////////////
+  
+    var that;
+    
+    // protected attributes and methods ////////////////////////////////////
+
+    my = my || {};
+    
+    my.createEntity = function() { return module.OutboxEntry.create(); }
+    my.boxEntriesURL = AWE.Config.MESSAGING_SERVER_BASE + 'outboxes/';
+    my.entriesURL    = AWE.Config.MESSAGING_SERVER_BASE + 'outbox_entries/';
+  
+    // public attributes and methods ///////////////////////////////////////
+  
+    that = module.createMessageBoxEntryManager(my);
+
+    that.lastUpdateForMessageBox = function(outboxId, updateType) {
+      return module.OutboxEntryAccess.lastUpdateForOutbox_id(outboxId, updateType);// modified after
+    };
+    
+    that.setLastUpdateForMessageBox = function(outboxId, timestamp) {
+      module.OutboxEntryAccess.accessHashForOutbox_id().setLastUpdateAtForValue(outboxId, timestamp);
+    };
+
+    return that;
+  
+  }());
+  
     
   
   return module;
