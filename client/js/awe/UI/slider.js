@@ -229,13 +229,15 @@ AWE.UI = (function(module) {
 		///Sets the value
 		///@param value must be 0 <= value <= 1
 		that.setValue = function(value, callSubscribers) {
+			
+			_value = Math.min(Math.max(0,value), 1);
 			if (callSubscribers === undefined) {
 				callSubscribers = false;
 			}
 			if (callSubscribers) {
 				_callSubscribers();
 			}
-			_value = Math.min(Math.max(0,value), 1);
+			
 			_updateSliderElement();
 		};
 		/** Adds a subscriber, that is beeing called if the slider value changes*/
