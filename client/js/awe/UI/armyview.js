@@ -89,7 +89,7 @@ AWE.UI = (function(module) {
 
       _stanceView = AWE.UI.createImageView();
       _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[1]));
-      _stanceView.setFrame(AWE.Geometry.createRect(0, 8, 64, 96));
+      _stanceView.setFrame(AWE.Geometry.createRect(-38, -27, 128, 128));
       _stanceView.onClick = that.onClick;
       _stanceView.onMouseOver = that.onMouseOver;
       _stanceView.onMouseOut = that.onMouseOut;

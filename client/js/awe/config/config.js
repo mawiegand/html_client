@@ -122,9 +122,9 @@ AWE.Config = (function(module) {
 
     "map/army": 'images/army.png',
     
-    "map/army/stanceAggressive": "images/army/stance_agg.png",
-    "map/army/stanceDefensive": "images/army/stance_def.png",
-    "map/army/stanceNeutral": "images/army/stance_neu.png",
+    "map/army/stanceAggressive": "images/army/warrior_pose_2_128.png",
+    "map/army/stanceDefensive": "images/army/warrior_pose_1_128.png",
+    "map/army/stanceNeutral": "images/army/warrior_pose_1_128.png",
 
     "map/army/rank1": 'images/army/rank1.png',
     "map/army/rank2": 'images/army/rank2.png',
