@@ -353,7 +353,8 @@ AWE.Controller = (function(module) {
           height
         ),
         false,
-        false
+        false,
+        true
       );
     };
 

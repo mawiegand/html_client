@@ -314,14 +314,18 @@ AWE.UI = (function(module) {
 		  * @param value the value can be a array of nodes, a node, a frame, a location, a region or a point. In case it is a point the viewport center will be moved there.
 		  * @param animated default:true. if false 
 		  * @param addBorder default:true. if true there will be. If a point is given, addBroder should probably be set to false.
+		  * @param overwrite if true there is no check if there already is a camera pan active (default is false)
 		 **/
-		that.moveTo = function(value, addBorder, animated) {
+		that.moveTo = function(value, addBorder, animated, overwrite) {
 			//default is animated
+			if (overwrite === undefined) {
+				overwrite = false;
+			}
 			if (animated === undefined) {
 				animated = true;
 			}
 
-			if (that.isMoving()) {
+			if (that.isMoving() && !overwrite) {
 				console.warn("The camera was moving and got a request for another move command");
 			}
 
