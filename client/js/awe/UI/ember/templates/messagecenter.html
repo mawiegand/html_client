@@ -48,7 +48,8 @@
 <div class="message-center">
   <div class="header">
     <div {{action "inboxClicked" target="controller"}}>Inbox</div>
-    <div {{action "outboxClicked" target="controller"}}>Outbox</div>
+    <div {{action "outboxClicked" target="controller"}}>Outbox</div> * 
+    <div {{action "newClicked" target="controller"}}>New</div>
   </div>
 
   <div class="list">
@@ -64,14 +65,18 @@
   </div>
   
   <div class="detail">
-    {{#if "selectedMessageEntry" }}
-      {{#if "selectedMessage" }}
-        {{view AWE.UI.Ember.MessageView messageBinding="selectedMessage" classNames="message"}}
-      {{else}}
-        {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Loading...
-      {{/if}}
+    {{#if "isFormVisible"}}
+    
     {{else}}
-      No Message Selected.
+      {{#if "selectedMessageEntry" }}
+        {{#if "selectedMessage" }}
+          {{view AWE.UI.Ember.MessageView messageBinding="selectedMessage" classNames="message"}}
+        {{else}}
+          {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Loading...
+        {{/if}}
+      {{else}}
+        No Message Selected.
+      {{/if}}
     {{/if}}
   </div>
 </div>

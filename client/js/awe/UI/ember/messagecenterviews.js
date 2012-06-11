@@ -28,8 +28,7 @@ AWE.UI.Ember = (function(module) {
     templateName: 'message',
     
     timeString: function() {
-      if (!this.get('message')) return null;
-      var isoDate = this.get('message').get('created_at');
+      var isoDate = this.getPath('message.created_at');
       if (!isoDate) {
         return null;
       }
@@ -46,10 +45,8 @@ AWE.UI.Ember = (function(module) {
     templateName: 'message-teaser',
     
     timeString: function() {
-      if (!this.get('message')) return null;
       var oneDay = 1000 * 3600 * 24;
-      
-      var isoDate = this.get('message').get('created_at');
+      var isoDate = this.getPath('message.created_at');
       if (!isoDate) {
         return null;
       }
@@ -98,6 +95,16 @@ AWE.UI.Ember = (function(module) {
     inboxBinding: "character.inbox",
     outboxBinding: "character.outbox",
     archiveBinding: "character.archive",
+    
+    isFormVisible: false,
+    
+    showForm: function() {
+      this.set('isFormVisible', true);
+    },
+    
+    hideForm: function() {
+      this.set('isFormVisible', false);
+    },
     
     messageBox: function() {
       var display = this.get('display');
