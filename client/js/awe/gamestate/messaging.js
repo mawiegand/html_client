@@ -398,11 +398,11 @@ AWE.GS = (function(module) {
     that = module.createMessageBoxManager(my);
 
     that.lastUpdateForCharacter = function(characterId, updateType) {
-      return module.InboxAccess.lastUpdateForOwner_id(characterId, updateType);// modified after
+      return module.OutboxAccess.lastUpdateForOwner_id(characterId, updateType);// modified after
     };
   
     that.setLastUpdateForCharacter = function(characterId, timestamp) {
-      module.InboxAccess.accessHashForOwner_id().setLastUpdateAtForValue(characterId, timestamp);
+      module.OutboxAccess.accessHashForOwner_id().setLastUpdateAtForValue(characterId, timestamp);
     };
   
     return that;

@@ -22,6 +22,20 @@
 </script>
 
 
+<script type="text/x-handlebars" data-template-name="message-edit">
+{{#with message}}
+  <table>
+    <tr><th>To:<th>
+      <td><b>{{view Ember.TextField valueBinding="recipient_id" placeholder="recipient"}}</b></td>
+    </tr>
+    <tr><th>Subject:<th>
+      <td>{{view Ember.TextField valueBinding="subject" placeholdder="subject"}}</td>
+    </tr>
+  </table>
+  {{view Ember.TextArea valueBinding="body"}}
+{{/with}}
+</script>
+
 <script type="text/x-handlebars" data-template-name="message">
   <table>
     <tr><th>From:<th><td>
@@ -48,7 +62,8 @@
 <div class="message-center">
   <div class="header">
     <div {{action "inboxClicked" target="controller"}}>Inbox</div>
-    <div {{action "outboxClicked" target="controller"}}>Outbox</div>
+    <div {{action "outboxClicked" target="controller"}}>Outbox</div> * 
+    <div {{action "newClicked" target="controller"}}>New</div>
   </div>
 
   <div class="list">
@@ -64,14 +79,18 @@
   </div>
   
   <div class="detail">
-    {{#if "selectedMessageEntry" }}
-      {{#if "selectedMessage" }}
-        {{view AWE.UI.Ember.MessageView messageBinding="selectedMessage" classNames="message"}}
-      {{else}}
-        {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Loading...
-      {{/if}}
+    {{#if "isFormVisible"}}
+      {{view AWE.UI.Ember.NewMessageView messageBinding="newMessage" classNames="message"}}      
     {{else}}
-      No Message Selected.
+      {{#if "selectedMessageEntry" }}
+        {{#if "selectedMessage" }}
+          {{view AWE.UI.Ember.MessageView messageBinding="selectedMessage" classNames="message"}}
+        {{else}}
+          {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Loading...
+        {{/if}}
+      {{else}}
+        No Message Selected.
+      {{/if}}
     {{/if}}
   </div>
 </div>

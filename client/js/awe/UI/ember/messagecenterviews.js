@@ -28,8 +28,7 @@ AWE.UI.Ember = (function(module) {
     templateName: 'message',
     
     timeString: function() {
-      if (!this.get('message')) return null;
-      var isoDate = this.get('message').get('created_at');
+      var isoDate = this.getPath('message.created_at');
       if (!isoDate) {
         return null;
       }
@@ -40,16 +39,33 @@ AWE.UI.Ember = (function(module) {
     }.property('message.created_at').cacheable(),
   });
   
+  
+  module.NewMessageView = Ember.View.extend({
+    tagName:      'form',
+    templateName: 'message-edit',
+
+    didInserElement: function() {
+      this._super();
+      this.$('input:first').focus();
+    },
+    
+    cancelForm: function() {
+      this.getPath("parentView.controller").cancelForm();
+    },
+    
+    submit: function(event) {
+      this.getPath("parentView.controller").submitForm(event);
+    },
+  });
+  
   /** brief overview about a message that is used in the message-list bar
    * in the left column of the message center. */
   module.MessageTeaserView = Ember.View.extend({
     templateName: 'message-teaser',
     
     timeString: function() {
-      if (!this.get('message')) return null;
       var oneDay = 1000 * 3600 * 24;
-      
-      var isoDate = this.get('message').get('created_at');
+      var isoDate = this.getPath('message.created_at');
       if (!isoDate) {
         return null;
       }
@@ -99,6 +115,28 @@ AWE.UI.Ember = (function(module) {
     outboxBinding: "character.outbox",
     archiveBinding: "character.archive",
     
+    newMessage: null,
+    
+    selectedMessageEntry: null,
+    selectedMessageBinding: 'selectedMessageEntry.message',
+    
+    display: 'inbox',
+    
+    isFormVisible: false,
+    
+    showForm: function() {
+      if (!this.get('newMessage')) {
+        this.set('newMessage', AWE.GS.Message.create({
+          sender_id: AWE.GS.CharacterManager.getCurrentCharacter().get('id'),
+        }));
+      }
+      this.set('isFormVisible', true);
+    },
+    
+    hideForm: function() {
+      this.set('isFormVisible', false);
+    },
+    
     messageBox: function() {
       var display = this.get('display');
       if (display === 'archive') {
@@ -112,10 +150,6 @@ AWE.UI.Ember = (function(module) {
       }
     }.property('display', 'inbox', 'outbox', 'archive').cacheable(),
     
-    selectedMessageEntry: null,
-    selectedMessageBinding: 'selectedMessageEntry.message',
-    
-    display: 'inbox',
     
     displayingInbox: function() {
       return this.get('display') === 'inbox';

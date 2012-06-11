@@ -80,6 +80,9 @@ AWE.Controller = (function(module) {
     that.archiveClicked = function() {
       this.view.switchTo('archive');
     };
+    that.newClicked = function() {
+      this.view.showForm();
+    };
     
     
     that.appendView = function() {
