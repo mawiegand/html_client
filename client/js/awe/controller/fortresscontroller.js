@@ -167,7 +167,9 @@ AWE.Controller = (function(module) {
         constructionAction.send(function(status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
             log(status, "Construction job created.");
-            that.updateQueueAndJobs(queue.getId());          
+            that.updateQueueAndJobs(queue.getId());
+            
+            if (jobType == module.JOB_TYPE_CREATE) {}        
           }
           else {
             log(status, "The server did not accept the construction command.");
@@ -210,6 +212,18 @@ AWE.Controller = (function(module) {
       _modelChanged = true;
     }
     
+    that.updateSettlement = function() {
+      AWE.GS.SettlementManager.updateSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
+        log('updated settlement', settlement)
+      });
+    }
+      
+    that.updateSlots = function() {
+      AWE.GS.SlotManager.updateSlotsAtSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
+        log('updated slots', slots)
+      });
+    }
+      
     that.updateQueueAndJobs = function(queueId) {
       AWE.GS.QueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
         log('updated queue', queueId);
@@ -217,6 +231,17 @@ AWE.Controller = (function(module) {
 
       AWE.GS.JobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
         log('updated jobs in queue', queueId);
+      });
+    }
+        
+    that.updateAllQueuesAndJobs = function() {
+      AWE.GS.QueueManager.updateQueuesOfSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
+        log('updated queues', queues)
+        AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
+          AWE.GS.JobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+            log('updated jobs', jobs)
+          });
+        });      
       });
     }
         
@@ -265,12 +290,28 @@ AWE.Controller = (function(module) {
       };
     }());
     
+    that.updateOldJobsInQueues = function() {
+      
+      var queues = AWE.GS.QueueManager.getQueuesOfSettlement(that.fortressId);
+      
+      queues.forEach(function(queue) {
+        var jobs = AWE.GS.JobManager.getJobsInQueue(queue.getId());
+        if (jobs.length > 0) {
+          var job = jobs[0];
+          if (Date.parseISODate(job.get('active_job').finished_at) + AWE.Config.TIME_DIFF_RANGE < +new Date()) {
+            that.updateSlots();
+            that.updateQueueAndJobs(queue.getId());
+          }          
+        }
+      });
+    } 
+
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Runloop
     //
-    // /////////////////////////////////////////////////////////////////////// 
-
+    // ///////////////////////////////////////////////////////////////////////
+    
     that.updateDebug = function() {
       $("#debug2").html('&nbsp;Fortress Screen Visible.');
     };    
@@ -301,6 +342,10 @@ AWE.Controller = (function(module) {
 					AWE.Ext.applyFunctionToHash(that.slots, function(key, value) {
 					  console.log("building type id", value.get('building_id'));
 					});
+				}
+				
+				if (fortress && fortress.slots() && AWE.Util.hashCount(fortress.slots()) > 0) {
+				  that.updateOldJobsInQueues();
 				}
 			}
       
