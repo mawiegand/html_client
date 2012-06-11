@@ -35,11 +35,11 @@ AWE.GS = (function(module) {
     building_id: null,
     buildingType: function() {
       return module.RulesManager.getRules().getBuildingType(this.get('building_id'));
-    }.property('building_id'),
+    }.property('building_id').cacheable(),
     
     slot: function() {
       return AWE.GS.SlotManager.getSlot(this.get('slot_id'));
-    }.property('slot_id', 'level_after'),
+    }.property('slot_id', 'level_after').cacheable(),
     
     position: null,
     level_after: null,
@@ -53,13 +53,13 @@ AWE.GS = (function(module) {
         return AWE.GS.Util.parseDate(active_job.finished_at);
       }
       return null;
-    }.property('active_job'),
+    }.property('active_job').cacheable(),
     
     cancelable: function() {
       
       // jobs des slots holen
-      var jobs = AWE.GS.SlotManager.getSlot(this.get('slot_id')).get('hashableJobs').get('collection');
-      log('---> jobs', jobs);
+      var jobs = this.get('slot').get('hashableJobs').get('collection');
+      log('---> jobs', jobs, this.getId());
       
       // max suchen
       jobs.sort(function(a, b) {return b.get('position') - a.get('position')});
@@ -67,7 +67,7 @@ AWE.GS = (function(module) {
 
       // mit this vergleichen      
       return this.getId() == jobs[0].getId();
-    }.property(),
+    }.property('slot.hashableJobs.changedAt').cacheable(),
   });     
     
   // ///////////////////////////////////////////////////////////////////////
@@ -157,7 +157,7 @@ AWE.GS = (function(module) {
             AWE.Ext.applyFunction(jobs.get('collection'), function(job){
               var jobId = job.getId();
               if (!result.hasOwnProperty(jobId)) {
-                jobs.remove(jobId);
+                job.destroy();
               }
             });
           }

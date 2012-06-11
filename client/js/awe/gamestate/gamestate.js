@@ -106,6 +106,21 @@ AWE.GS = (function(module) {
       this.setPropertiesWithHash(spec);     
       return this; 
     },
+    
+    destroy: function() {
+      
+      var access = AWE.GS[this.get('typeName') + 'Access'];
+      var self = this;
+      
+      if (access) {
+        AWE.Ext.applyFunctionToHash(access.accessHashes, function(key, accessHash) {
+          accessHash.removeEntry(self);
+        });
+      }
+      else {
+        log('ERROR in AWE.GS.Entity.destroy: no access object given for entity' + this.get('typeName'));
+      }
+    },
   
     updateWith: function(hash, updateType, timestamp) {
       updateType = updateType || module.ENTITY_UPDATE_TYPE_FULL;     // assume full update, if nothing else specified

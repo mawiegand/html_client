@@ -14,6 +14,8 @@ AWE.Config = (function(module) {
     module.SERVER_ROOT = 'http://localhost/'
   }
   
+  module.TIME_DIFF_RANGE     = 10;
+  
   module.DEBUG_LEVEL_ERROR   = 0;
   module.DEBUG_LEVEL_WARNING = 1;
   module.DEBUG_LEVEL_INFO    = 2;
