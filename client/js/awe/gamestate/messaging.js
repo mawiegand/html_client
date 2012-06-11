@@ -142,7 +142,7 @@ AWE.GS = (function(module) {
     updateSender: function() {
       var self = this;
       var senderId = this.get('sender_id');
-      var sender = AWE.GS.CharacterManager.getCharacter(senderId) || null;
+      var sender = AWE.GS.CharacterManager.getCharacter(senderId) || null;
       this.set('sender', sender); 
       if (!sender) {
         AWE.GS.CharacterManager.updateCharacter(senderId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
@@ -166,7 +166,7 @@ AWE.GS = (function(module) {
     updateRecipient: function() {
       var self = this;
       var recipientId = this.get('recipient_id');
-      var recipient = AWE.GS.CharacterManager.getCharacter(recipientId) || null;
+      var recipient = AWE.GS.CharacterManager.getCharacter(recipientId) || null;
       this.set('recipient', recipient); 
       if (!recipient) {
         AWE.GS.CharacterManager.updateCharacter(recipientId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
@@ -204,7 +204,7 @@ AWE.GS = (function(module) {
     updateSender: function() {
       var self = this;
       var senderId = this.get('sender_id');
-      var sender = AWE.GS.CharacterManager.getCharacter(senderId) || null;
+      var sender = AWE.GS.CharacterManager.getCharacter(senderId) || null;
       this.set('sender', sender); 
       if (!sender) {
         AWE.GS.CharacterManager.updateCharacter(senderId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
@@ -219,7 +219,7 @@ AWE.GS = (function(module) {
     updateRecipient: function() {
       var self = this;
       var recipientId = this.get('recipient_id');
-      var recipient = AWE.GS.CharacterManager.getCharacter(recipientId) || null;
+      var recipient = AWE.GS.CharacterManager.getCharacter(recipientId) || null;
       this.set('recipient', recipient); 
       if (!recipient) {
         AWE.GS.CharacterManager.updateCharacter(recipientId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
