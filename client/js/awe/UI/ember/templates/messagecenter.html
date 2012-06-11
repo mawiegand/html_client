@@ -24,30 +24,44 @@
 
 <script type="text/x-handlebars" data-template-name="message-edit">
 {{#with message}}
-  <table>
-    <tr><th>To:<th>
-      <td><b>{{view Ember.TextField valueBinding="recipient_id" placeholder="recipient"}}</b></td>
-    </tr>
-    <tr><th>Subject:<th>
-      <td>{{view Ember.TextField valueBinding="subject" placeholdder="subject"}}</td>
-    </tr>
-  </table>
+  <div class="message-edit-menue">
+    <div class="message-edit-commands">
+      <a href="#" {{action "sendMessage" target="controller"}}>Send</a>
+      <a href="#" {{action "cancelMessage" target="controller"}}>Discard</a>
+    </div>
+    <div class="message-edit-title">
+      New Message {{#if reicipient_id}}
+       To {{recipient_id}}
+      {{/if}}
+    </div>
+    <div class="message-edit-fill"></div>
+  </div>
+  <div class="message-edit-header">
+    <table>
+      <tr><th>To:</th>
+        <td><b>{{view Ember.TextField valueBinding="recipient_id" placeholder="recipient"}}</b></td>
+      </tr>
+      <tr><th>Subject:</th>
+        <td>{{view Ember.TextField valueBinding="subject" placeholdder="subject"}}</td>
+      </tr>
+    </table>
+  </div>
   {{view Ember.TextArea valueBinding="body"}}
 {{/with}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="message">
   <table>
-    <tr><th>From:<th><td>
+    <tr><th>From:</th><td>
       <b>{{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
          {{#if "message.sender.alliance_tag"}}
            | {{message.sender.alliance_tag}}
          {{/if}}
       <b>
     </td></tr>
-    <tr><th>Subject:<th><td>{{message.subject}}</td></tr>
-    <tr><th>Date:<th><td>{{timeString}}</td></tr>
-    <tr><th>To:<th><td>{{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}} 
+    <tr><th>Subject:</th><td>{{message.subject}}</td></tr>
+    <tr><th>Date:</th><td>{{timeString}}</td></tr>
+    <tr><th>To:</th><td>{{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}} 
       {{#if "message.recipient.alliance_tag"}}
         | {{message.recipient.alliance_tag}}
       {{/if}}</td>
@@ -80,7 +94,7 @@
   
   <div class="detail">
     {{#if "isFormVisible"}}
-      {{view AWE.UI.Ember.NewMessageView messageBinding="newMessage" classNames="message"}}      
+      {{view AWE.UI.Ember.NewMessageView messageBinding="newMessage" classNames="message-edit"}}      
     {{else}}
       {{#if "selectedMessageEntry" }}
         {{#if "selectedMessage" }}

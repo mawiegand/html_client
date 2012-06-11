@@ -522,10 +522,10 @@ html, body {
   left: 260px;
   right: 0;
   bottom: 0;
-  padding: 24px;
 }
 
 .message-center .message {
+  padding: 24px;
 }
 
 .message-center .message table {
@@ -539,11 +539,77 @@ html, body {
 .message-center .message table th {
   text-align: right;
   color: #999;
-  padding-right: 6px;
+  padding-right: 16px;
 }
 
 .message-center .message table td {
   text-align: left;
+}
+
+/* ===== non-semantic helper classes ========================================
+   Edit Message
+   ========================================================================== */
+
+.message-edit {
+  padding: 0px;
+  margin-top: 1px;
+  margin-left: 1px;
+  height: 100%;
+}
+
+.message-edit-menue {
+  background: -webkit-gradient(linear, left top, left bottom, from(#DADADA), to(#AAA)); /* for webkit browsers */
+  background: -moz-linear-gradient(top,  #DADADA,  #AAA); /* for firefox 3.6+ */ 
+  width: 100%;
+  height: 60px;
+}
+
+.message-edit-commands, div.message-edit-title, div.message-edit-fill {
+  float: left;
+  width: 33%;
+  height: 60px;
+  padding-top: 20px;
+} 
+  
+.message-edit-title {
+  text-align: center;
+}
+
+.message-edit table {
+  width: 96%;
+}
+
+.message-edit table th { 
+  text-align: right;
+  padding-right: 10px;
+  width: 100px;
+}
+
+.message-edit table td {
+  text-align: left;
+}
+
+.message-edit table td input {
+  width: 100%;
+}
+
+.message-edit-header {
+  background-color: #EEE;
+  width: 100%;
+  margin:0px;  
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding-bottom: 20px;
+}
+
+.message-edit textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 #text-input-dialog { 
