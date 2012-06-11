@@ -2,13 +2,13 @@
 {{#if "tooltip"}}
   {{#if "model.building"}}
     {{#view AWE.UI.Ember.ToolTipView classNames="mouse-over" mouseXBinding="mouseX" mouseYBinding="mouseY"}}
-      <img src="/client/images/dialogs/advisor.png" class="advisor">
+      <img src="images/dialogs/advisor.png" class="advisor">
       <h1>{{parentView.model.building.name}} L{{parentView.model.building.level}}</h1>
       <p>Next level does cost XYZ resources. It will need about X:XX.YY to build.</p>
     {{/view}}
   {{else}}
     {{#view AWE.UI.Ember.ToolTipView classNames="mouse-over" mouseXBinding="mouseX" mouseYBinding="mouseY"}}
-      <img src="/client/images/dialogs/advisor.png" class="advisor">
+      <img src="images/dialogs/advisor.png" class="advisor">
       <h1>Empty Building Site.</h1>
       <p>Click to build a new building here.</p>
     {{/view}}
