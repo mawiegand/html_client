@@ -298,10 +298,10 @@ AWE.Controller = (function(module) {
         var jobs = AWE.GS.JobManager.getJobsInQueue(queue.getId());
         if (jobs.length > 0) {
           var job = jobs[0];
-          if (Date.parseISODate(job.get('active_job').finished_at) + AWE.Config.TIME_DIFF_RANGE < +new Date()) {
+          if (job.get('active_job') && Date.parseISODate(job.get('active_job').finished_at) + AWE.Config.TIME_DIFF_RANGE < +new Date()) {
             that.updateSlots();
             that.updateQueueAndJobs(queue.getId());
-          }          
+          }      
         }
       });
     } 
