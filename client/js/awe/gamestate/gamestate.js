@@ -20,11 +20,6 @@ AWE.GS = (function(module) {
 
   module.PROPERTY_HASHABLE = true;
   
-  module.ARRAY_PROPERTY_HASH = {
-    active_jobs: 'ActiveJob',
-  } 
-
-  
   // /////////////////////////////////////////////////////////////////////////
   //
   //   ENTITY
