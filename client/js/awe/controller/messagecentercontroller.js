@@ -72,16 +72,26 @@ AWE.Controller = (function(module) {
     }
     
     that.inboxClicked = function() {
+      this.view.hideForm(); // make sure, form is hidden
       this.view.switchTo('inbox');
     };
     that.outboxClicked = function() {
+      this.view.hideForm(); // make sure, form is hidden
       this.view.switchTo('outbox');
     };
     that.archiveClicked = function() {
+      this.view.hideForm(); // make sure, form is hidden
       this.view.switchTo('archive');
     };
     that.newClicked = function() {
       this.view.showForm();
+    };
+    that.sendMessage = function(message) {
+      console.log('send message')
+    };
+    that.discardDraft = function() {
+      this.view.set('newMessage', null);
+      this.view.hideForm();
     };
     
     

@@ -94,17 +94,38 @@ AWE.UI.Ember = (function(module) {
      * by the user. */
     selected: function() {
       var parentView = this.get('parentView');
-      return parentView && parentView.get('selectedMessageEntry') === this.get('message');
-    }.property('parentView.selectedMessageEntry').cacheable(),
+      return parentView && parentView.get('isFormVisible') === false && parentView.get('selectedMessageEntry') === this.get('message');
+    }.property('parentView.selectedMessageEntry', 'parentView.isFormVisible').cacheable(),
     
     /** reacts to clicks on a message by making it the selected message. */
     click: function(event) {
       var messageEntry = this.get('message');
+      this.get('parentView').hideForm(); // make sure, form is hidden
       this.get('parentView').set('selectedMessageEntry', messageEntry);
       if (messageEntry && !messageEntry.get('message')) {
         messageEntry.fetchMessage();
       }
     },     
+  });
+  
+  module.DraftTeaserView = Ember.View.extend({
+    templateName: 'message-draft-teaser',
+
+    /** computed property used for marking the message that has been selected
+     * by the user. */
+    selectedBinding: 'parentView.isFormVisible',
+    
+    /** reacts to clicks on a message by making it the selected message. */
+    click: function(event) {
+      this.getPath('parentView').showForm();
+    },
+  });  
+  
+  module.NewMessage = Ember.View.extend({
+    sender_id: null,
+    recipient: null,
+    subject: null,
+    body: null,
   });
   
   module.MessageCenterView = Ember.View.extend({
@@ -126,7 +147,7 @@ AWE.UI.Ember = (function(module) {
     
     showForm: function() {
       if (!this.get('newMessage')) {
-        this.set('newMessage', AWE.GS.Message.create({
+        this.set('newMessage', module.NewMessage.create({
           sender_id: AWE.GS.CharacterManager.getCurrentCharacter().get('id'),
         }));
       }

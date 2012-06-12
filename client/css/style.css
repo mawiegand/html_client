@@ -610,6 +610,7 @@ html, body {
   resize: none;
   overflow-x: hidden;
   overflow-y: scroll;
+  padding: 6px;
 }
 
 #text-input-dialog { 
