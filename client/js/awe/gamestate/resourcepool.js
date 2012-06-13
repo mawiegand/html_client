@@ -110,10 +110,11 @@ AWE.GS = (function(module) {
           my.runningUpdatesPerCharacterId, 
           characterId,
           updateType, 
-          null,
+          my.lastResourcePoolUpdate,
           function(pool, statusCode, xhr, timestamp) {
             if (statusCode === AWE.Net.OK) {
               self.resourcePool = pool;
+              my.lastResourcePoolUpdate = timestamp;
             }
             if (callback) {
               callback(pool, statusCode, xhr, timestamp);
