@@ -13,6 +13,9 @@ AWE.UI = (function(module) {
     
     var _container = null;
     
+    var _resource1Text = null;
+    var _resource2Text = null;
+    var _resource3Text = null;
     var _resource4Text = null;
 
     my = my || {};
@@ -186,19 +189,19 @@ AWE.UI = (function(module) {
       _resourcesShapeGraphics.drawRoundRect(0, 20, 300, 80, 5);
       var _resourcesShape = new Shape(_resourcesShapeGraphics);    
   
-      var _resource1Text = new Text('123', "12px Arial", "#000");
+      _resource1Text = new Text('123', "12px Arial", "#000");
       _resource1Text.textBaseline = "middle";
       _resource1Text.textAlign = "right"
       _resource1Text.x = 60;
       _resource1Text.y = 40;
   
-      var _resource2Text = new Text('123', "12px Arial", "#000");
+      _resource2Text = new Text('123', "12px Arial", "#000");
       _resource2Text.textBaseline = "middle";
       _resource2Text.textAlign = "right"
       _resource2Text.x = 140;
       _resource2Text.y = 40;
   
-      var _resource3Text = new Text('8756', "12px Arial", "#000");
+      _resource3Text = new Text('8756', "12px Arial", "#000");
       _resource3Text.textBaseline = "middle";
       _resource3Text.textAlign = "right"
       _resource3Text.x = 220;
@@ -258,7 +261,12 @@ AWE.UI = (function(module) {
     that.updateView = function() {
       // _super.updateView();
       // log(AWE, AWE.GS, AWE.GS.CharacterManagerAWE.GS.CharacterManager.getCurrentCharacter.get('frog_amount'), );
-      _resource4Text.text = AWE.GS.CharacterManager.getCurrentCharacter().get('frog_amount');
+      var pool = AWE.GS.ResourcePoolManager.getResourcePool();
+      
+      _resource1Text.text = pool.get('resource_wood_amount');
+      _resource2Text.text = pool.get('resource_stone_amount');
+      _resource3Text.text = pool.get('resource_fur_amount');
+      _resource4Text.text = pool.get('resource_cash_amount');
     }
     
     
