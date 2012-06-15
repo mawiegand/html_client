@@ -170,6 +170,7 @@ AWE.GS = (function(module) {
     my.createEntity = my.createEntity || function(spec) { return module.Entity.create(spec); };
     
     my.processUpdateResponse = my.processUpdateResponse || function(data, updateType, start) {
+      
       var entity = my.entities[data.id];
 
       if (entity) {
@@ -214,7 +215,7 @@ AWE.GS = (function(module) {
           callback(null, jqXHR.status, jqXHR);
           console.log ('ERROR FETCHING ENTITIES FROM URL ' + url + ': ' + textStatus); 
         })
-        .success(function(data, statusText, xhr) {   
+        .success(function(data, statusText, xhr) {
           var result = null;
           if (xhr.status === 304)  {                   // Not modified
             // not modified, let the caller process this event

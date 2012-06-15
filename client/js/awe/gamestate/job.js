@@ -59,11 +59,9 @@ AWE.GS = (function(module) {
       
       // jobs des slots holen
       var jobs = this.get('slot').get('hashableJobs').get('collection');
-      log('---> jobs', jobs, this.getId());
       
       // max suchen
       jobs.sort(function(a, b) {return b.get('position') - a.get('position')});
-      log('---> jobs', jobs);
 
       // mit this vergleichen      
       return this.getId() == jobs[0].getId();

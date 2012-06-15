@@ -202,7 +202,7 @@ AWE.Partials = (function(module) {
    * where to put the hash and generated accessor functions. The hash will be 
    * placed in hook.accessHashes[attribute]. */
   module.attributeHashObserver = function(hook, attribute, oldAttribute) {
-        
+    
     /** creates an auto-updated hash for a property. */
     var createAccessHashForAttribute = function() {
       var upperCaseAttr = attribute.charAt(0).toUpperCase() + attribute.slice(1);
