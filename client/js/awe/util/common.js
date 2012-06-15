@@ -47,6 +47,39 @@ AWE.Util = (function(module) {
     }
     return value ;
   }
+  
+  module.secondsToDuration = function(secs) {
+    var hours = Math.floor(secs / (60 * 60));
+   
+    var divisor_for_minutes = secs % (60 * 60);
+    var minutes = Math.floor(divisor_for_minutes / 60);
+ 
+    var divisor_for_seconds = divisor_for_minutes % 60;
+    var seconds = Math.ceil(divisor_for_seconds);
+   
+    var duration = {
+        h: hours,
+        m: minutes,
+        s: seconds
+    };
+    return duration;
+  }
+  
+  module.localizedDurationFromSeconds = function(seconds) {
+    var duration = module.secondsToDuration(seconds);
+    
+    var string = ""+ duration.s ;
+    if (duration.h > 0 || duration.m > 0) {
+      string = duration.m + ":" + string;
+      if (duration.h > 0) {
+        string = duration.h + ":" + string;
+      }
+    }
+    else {
+      string += "s";
+    }
+    return string;
+  }
 
   
   return module;

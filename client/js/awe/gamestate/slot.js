@@ -93,14 +93,24 @@ AWE.GS = (function(module) {
 		productionTimeOfNextLevel: function() {
 		  var buildingType = this.get('buildingType');
 		  if (buildingType && buildingType.production_time) {
-		    var timeString = AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(buildingType.production_time), this.get('nextLevel'));
-		    console.log('FORMULA', buildingType.production_time, timeString);
-		    return timeString;
+		    var seconds = AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(buildingType.production_time), this.get('nextLevel'));
+		    var speed = this.getPath('slot.queue.speed');
+		    seconds = speed ? seconds / speed : seconds; // apply queue speed, if known.
+		    console.log('FORMULA', buildingType.production_time, seconds, this.get('queue'));
+		    return seconds;
 		  }
 		  else {
 		    return null;
 	    }
 		}.property('nextLevel', 'buildingId', 'slot.queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.
+		
+		localizedProductionTimeOfNextLevel: function() {
+		  var productionTime = this.get('productionTimeOfNextLevel');
+		  if (productionTime) {
+		    return AWE.Util.localizedDurationFromSeconds(productionTime);
+		  }
+		  return null;
+		}.property('productionTimeOfNextLevel').cacheable(),
 		
 		upgradable: function() {
 		  var nextLevel = this.get('nextLevel');
