@@ -57,7 +57,7 @@ AWE.GS = (function(module) {
       this._super(spec);
       
       if (this.get('id')) {
-        var hashableQueues = AWE.GS.QueueAccess.getHashableCollectionForSettlement_id(this.get('id'));
+        var hashableQueues = AWE.GS.ConstructionQueueAccess.getHashableCollectionForSettlement_id(this.get('id'));
         this.set('hashableQueues', hashableQueues);
       }
     },

@@ -48,7 +48,7 @@ AWE.UI.Ember = (function(module) {
     hashableConstructionQueues: function() {
       var id = this.get('fortress') ? this.get('fortress').get('id') : null;
       if (id) {
-        return AWE.GS.QueueAccess.getHashableCollectionForSettlement_id(id);
+        return AWE.GS.ConstructionQueueAccess.getHashableCollectionForSettlement_id(id);
       }
       else {
         return null;

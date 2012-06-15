@@ -159,7 +159,6 @@ AWE.Controller = (function(module) {
       log('rules', AWE.GS.RulesManager.getRules());
       
       AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(poolData) {
-        log('---> poolData', poolData);
       });
     };
         

@@ -159,7 +159,7 @@ AWE.Controller = (function(module) {
       }
       
       var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(buildingId);
-      var queue = AWE.GS.QueueManager.getQueueForBuildingCategorieInSettlement(buildingType.category, slot.get('settlement_id'));
+      var queue = AWE.GS.ConstructionQueueManager.getQueueForBuildingCategorieInSettlement(buildingType.category, slot.get('settlement_id'));
       log('queue', queue);
       
       if (queue) {
@@ -225,7 +225,7 @@ AWE.Controller = (function(module) {
     }
       
     that.updateQueueAndJobs = function(queueId) {
-      AWE.GS.QueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
+      AWE.GS.ConstructionQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
         log('updated queue', queueId);
       });
 
@@ -235,7 +235,7 @@ AWE.Controller = (function(module) {
     }
         
     that.updateAllQueuesAndJobs = function() {
-      AWE.GS.QueueManager.updateQueuesOfSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
+      AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
         log('updated queues', queues)
         AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
           AWE.GS.JobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
@@ -261,7 +261,7 @@ AWE.Controller = (function(module) {
               log('updated slots', slots)
             });
 
-            AWE.GS.QueueManager.updateQueuesOfSettlement(settlement.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
+            AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(settlement.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
               log('updated queues', queues)
               AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
                 AWE.GS.JobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
@@ -292,7 +292,7 @@ AWE.Controller = (function(module) {
     
     that.updateOldJobsInQueues = function() {
       
-      var queues = AWE.GS.QueueManager.getQueuesOfSettlement(that.fortressId);
+      var queues = AWE.GS.ConstructionQueueManager.getQueuesOfSettlement(that.fortressId);
       
       queues.forEach(function(queue) {
         var jobs = AWE.GS.JobManager.getJobsInQueue(queue.getId());
