@@ -113,7 +113,7 @@ AWE.GS = (function(module) {
         });
       }
       else {
-        log('ERROR in AWE.GS.Entity.destroy: no access object given for entity' + this.get('typeName'));
+        log('ERROR in AWE.GS.Entity.destroy: no access object given for entity ' + this.get('typeName'));
       }
     },
   

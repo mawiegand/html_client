@@ -23,7 +23,7 @@ AWE.GS = (function(module) {
   // ///////////////////////////////////////////////////////////////////////    
     
   module.Job = module.Entity.extend({     // extends Entity to Job
-    typeName: 'Job',
+    typeName: 'ConstructionJob',
     name: null, 
     
     queue_id: null, old_queue_id: null, ///< id of the queue the job is a member of
