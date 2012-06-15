@@ -56,7 +56,7 @@ AWE.GS = (function(module) {
     my.createEntity = function() {
       return module.ConstructionQueue.create({
         active_jobs: Ember.ArrayProxy.create({
-          baseTypeName: 'ActiveJob',
+          baseTypeName: 'ActiveConstructionJob',
           content: Ember.A([]),
         }),
         jobs: Ember.ArrayProxy.create({

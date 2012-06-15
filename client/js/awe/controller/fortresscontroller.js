@@ -225,7 +225,7 @@ AWE.Controller = (function(module) {
     }
       
     that.updateQueueSlotAndJobs = function(queueId) {
-      AWE.GS.ConstructionQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
+      AWE.GS.ConstructionQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queue) {
         log('updated queue', queueId);
       });
 
@@ -234,7 +234,7 @@ AWE.Controller = (function(module) {
         log('updated slots', slots)
       });
 
-      AWE.GS.JobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+      AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
         log('updated jobs in queue', queueId);
       });
     }
@@ -243,7 +243,7 @@ AWE.Controller = (function(module) {
       AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
         log('updated queues', queues)
         AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
-          AWE.GS.JobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+          AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
             log('updated jobs', jobs)
           });
         });      
@@ -269,7 +269,7 @@ AWE.Controller = (function(module) {
             AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(settlement.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
               log('updated queues', queues)
               AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
-                AWE.GS.JobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+                AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
                   log('updated jobs', jobs)
                 });
               });      
@@ -301,7 +301,7 @@ AWE.Controller = (function(module) {
       var queueUpdated = false;
       
       queues.forEach(function(queue) {
-        var jobs = AWE.GS.JobManager.getJobsInQueue(queue.getId());
+        var jobs = AWE.GS.ConstructionJobManager.getJobsInQueue(queue.getId());
         if (jobs.length > 0) {
           var job = jobs[0];
           if (job.get('active_job') && Date.parseISODate(job.get('active_job').finished_at).add({seconds: AWE.Config.TIME_DIFF_RANGE}) < new Date()) {

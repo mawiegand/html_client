@@ -6,7 +6,7 @@
  
 var AWE = window.AWE || {};
 
-/** GameState Job class, manager and helpers. */
+/** GameState construction Job class, manager and helpers. */
 AWE.GS = (function(module) {
   
   module.CONSTRUCTION_JOB_TYPE_CREATE    = 'create'; 
@@ -22,7 +22,7 @@ AWE.GS = (function(module) {
   //
   // ///////////////////////////////////////////////////////////////////////    
     
-  module.Job = module.Entity.extend({     // extends Entity to Job
+  module.ConstructionJob = module.Entity.extend({     // extends Entity to Job
     typeName: 'ConstructionJob',
     name: null, 
     
@@ -74,7 +74,7 @@ AWE.GS = (function(module) {
   //
   // ///////////////////////////////////////////////////////////////////////  
 
-  module.JobManager = (function(my) {    // Army.Manager    -> manager singleton
+  module.ConstructionJobManager = (function(my) {    // Army.Manager    -> manager singleton
   
     // private attributes and methods //////////////////////////////////////
   
@@ -91,7 +91,7 @@ AWE.GS = (function(module) {
     
     my.runningCreateRequestsPerQueue = {};
   
-    my.createEntity = function() { return module.Job.create(); }
+    my.createEntity = function() { return module.ConstructionJob.create(); }
 
   
     // public attributes and methods ///////////////////////////////////////
@@ -150,7 +150,7 @@ AWE.GS = (function(module) {
             lastJobUpdates[queueId] = timestamp;
           }
           // delete old jobs from queue
-          if (status === AWE.Net.OK) {
+          if (status === AWE.Net.OK) {           
             var jobs = module.ConstructionJobAccess.getHashableCollectionForQueue_id(queueId);
             AWE.Ext.applyFunction(jobs.get('collection'), function(job){
               var jobId = job.getId();
@@ -179,8 +179,8 @@ AWE.GS = (function(module) {
   //
   // ///////////////////////////////////////////////////////////////////////    
     
-  module.ActiveJob = module.Entity.extend({
-    typeName: 'ActiveJob',
+  module.ActiveConstructionJob = module.Entity.extend({
+    typeName: 'ActiveConstructionJob',
     
     queue: null,
     queue_id: null,
