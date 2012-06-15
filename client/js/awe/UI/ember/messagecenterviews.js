@@ -50,11 +50,11 @@ AWE.UI.Ember = (function(module) {
     },
     
     cancelForm: function() {
-      this.getPath("parentView.controller").cancelForm();
+      this.getPath("parentView.controller").discardDraft();
     },
     
     submit: function(event) {
-      this.getPath("parentView.controller").submitForm(event);
+      this.getPath("parentView.controller").sendMessage(this.get('message'));
     },
   });
   
