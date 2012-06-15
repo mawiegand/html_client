@@ -298,7 +298,6 @@ AWE.Controller = (function(module) {
     that.updateOldJobsInQueues = function() {
       
       var queues = AWE.GS.ConstructionQueueManager.getQueuesOfSettlement(that.fortressId);
-      var queueUpdated = false;
       
       queues.forEach(function(queue) {
         var jobs = AWE.GS.ConstructionJobManager.getJobsInQueue(queue.getId());
@@ -310,10 +309,6 @@ AWE.Controller = (function(module) {
           }      
         }
       });
-      
-      if (queueUpdated) {
-        that.updateSlots();
-      }
     } 
 
     // ///////////////////////////////////////////////////////////////////////
