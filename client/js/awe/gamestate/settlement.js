@@ -51,6 +51,8 @@ AWE.GS = (function(module) {
     type_id: null,
     
     hashableQueues: null,
+    hashableTrainingQueues: null,
+    hashableResearchQueues: null,
     
     init: function(spec) {
       log('INIT settlement');
@@ -59,6 +61,8 @@ AWE.GS = (function(module) {
       if (this.get('id')) {
         var hashableQueues = AWE.GS.ConstructionQueueAccess.getHashableCollectionForSettlement_id(this.get('id'));
         this.set('hashableQueues', hashableQueues);
+        var hashableTrainingQueues = AWE.GS.TrainingQueueAccess.getHashableCollectionForSettlement_id(this.get('id'));
+        this.set('hashableTrainingQueues', hashableTrainingQueues);
       }
     },
     

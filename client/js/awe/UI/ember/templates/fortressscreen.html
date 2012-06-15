@@ -63,6 +63,11 @@
 </script>
 
 
+<script type="text/x-handlebars" data-template-name="training-queue-view">
+  <p>{{queueType.category}}</p>
+  {{queue.settlement_id}}
+</script>
+
 <script type="text/x-handlebars" data-template-name="settlement-dialog-select-building">
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-pane settlement-dialog-select-building">
@@ -137,6 +142,13 @@
     {{else}}
       <p><b>Cannot be upgraded further.</b></p>
     {{/if}}
+    
+    <hr>
+    
+    {{#each building.trainingQueues}}
+      {{view AWE.UI.Ember.TrainingQueueView queueTypeBinding="queueType" queuesBinding="parentView.parentView.trainingQueues"}}
+    {{/each}}
+    
   </div>
 </script>
 

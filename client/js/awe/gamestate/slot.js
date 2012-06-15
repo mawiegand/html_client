@@ -148,7 +148,7 @@ AWE.GS = (function(module) {
 		
 		calculateUnlockedQueues: function(level) {
 		  level = level || this.get('level');
-		  var rule = this.get('rule');
+		  var rule = this.get('buildingType');
 		  if (!rule || !rule.abilities || ! rule.abilities.unlock_queue) {
 		    return [];
 		  }
@@ -163,10 +163,21 @@ AWE.GS = (function(module) {
 		      }
 		      return {
 		        name: queueType.name['en_US'],
+		        queueType: queueType,
 		      };
 		    });
 		  }
 		},
+		
+		trainingQueues: function() {
+		  var queues= this.get('unlockedQueues');
+		  if (!queues) {
+		    return [];
+		  }
+		  return queues.filter(function(item) {
+		    return item.queueType.category === 'queue_category_training';
+		  });
+		}.property('unlockedQueues').cacheable(),
 		
 		unlockedQueues: function() {
 		  return this.calculateUnlockedQueues();
@@ -179,7 +190,7 @@ AWE.GS = (function(module) {
 	
 		/** returns a description of all the present queue-speedups this building causes. */
 		calculateSpeedupQueues: function(level) {
-		  var rule = this.get('rule');
+		  var rule = this.get('buildingType');
 		  level = level || this.get('level');
 		  if (!rule || !rule.abilities || ! rule.abilities.speedup_queue) {
 		    return [];
@@ -192,7 +203,7 @@ AWE.GS = (function(module) {
 		      }
 		      return {
 		        name: queueType.name['en_US'],
-		        speedup: Math.floor(AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(item.speedup_formula), level)*100*10)/10.,
+		        speedup: Math.floor(AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(item.speedup_formula), level)*100*10)/10.0,
 		      };
 		    });
 		  }
@@ -205,6 +216,9 @@ AWE.GS = (function(module) {
 		speedupQueuesNextLevel: function() {
 		  return this.calculateSpeedupQueues(this.get('nextLevel'));
 		}.property('buildingId', 'nextLevel').cacheable(),		
+		
+		
+		
 
     // ///////////////////////////////////////////////////////////////////////
     

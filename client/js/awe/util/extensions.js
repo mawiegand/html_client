@@ -4,10 +4,10 @@
  * Do not copy, do not distribute. All rights reserved.
  */
  
- 
+ /*
 Handlebars.registerHelper("join", function(context, block) {
   return context.join(block.hash.delimiter);
-}); 
+});*/ 
  
 var AWE = window.AWE || {};
 

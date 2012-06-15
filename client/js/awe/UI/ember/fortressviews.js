@@ -122,14 +122,13 @@ AWE.UI.Ember = (function(module) {
 		},
 		
 		queues: function() {
-		  var fortress = this.get('fortress');
-		  if (fortress) {
-		    return fortress.get('hashableQueues');  
-		  }
-		  else {
-		    return null;
-		  }
-		}.property('fortress').cacheable(),
+		  return this.getPath('fortress.hashableQueues');
+		}.property('fortress', 'fortress.hashableQueues.changedAt').cacheable(),
+		
+		trainingQueues: function() {
+		  return this.getPath('fortress.hashableTrainingQueues');
+		}.property('fortress', 'fortress.hashableTrainingQueues.changedAt').cacheable(),
+		
 	});
 
   module.ToolTipView = Ember.View.extend({
@@ -242,6 +241,33 @@ AWE.UI.Ember = (function(module) {
 		    console.log('no controller found!');
 		  }
 		},  
+  });
+  
+  module.TrainingQueueView = Ember.View.extend({
+    templateName: "training-queue-view",
+    queueType: null,
+    queues: null,
+    
+    trainableUnitTypes: function() {
+      
+    }.property('queueType').cacheable(),
+    
+    queue: function() {
+      var queues = this.getPath('queues.collection');
+      console.log('QUEUE property', queues, this.get('parentView'), this.getPath('parentView.parentView'));
+      var queue = null;
+      var queueType = this.get('queueType');
+      if (!queueType || !queues) {
+        return null;
+      }
+      queues.each(function(item) {
+        if (item.get('type_id') === queueType.id) {
+          queue = item;
+        }
+      });
+      return queue;
+    }.property('queues.changedAt')
+    
   });
   
   module.QueueListView = Ember.View.extend({
