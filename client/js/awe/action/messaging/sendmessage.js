@@ -25,9 +25,9 @@ AWE.Action.Messaging = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'message[subject]=' + message.subject +
-        '&message[recipient_name]=' + message.recipient + 
-        '&message[body]= ' + message.body ; 
+      return 'message[subject]=' + escape(message.subject) +
+        '&message[recipient_name]=' + escape(message.recipient) +
+        '&message[body]='+ escape(message.body); 
     }
     
     that.getURL = function() { return AWE.Config.MESSAGING_SERVER_BASE+'/messages/'; }
