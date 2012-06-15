@@ -24,21 +24,12 @@ AWE.GS = (function(module) {
     queue_id: null, old_queue_id: null, ///< id of the queue the job is a member of
     queueIdObserver: AWE.Partials.attributeHashObserver(module.TrainingJobAccess, 'queue_id', 'old_queue_id').observes('queue_id'),
     
-    slot_id: null, old_slot_id: null, ///< id of the slot the job is a member of
-    slotIdObserver: AWE.Partials.attributeHashObserver(module.TrainingJobAccess, 'slot_id', 'old_slot_id').observes('slot_id'),
-    
-    building_id: null,
-    buildingType: function() {
-      return module.RulesManager.getRules().getBuildingType(this.get('building_id'));
-    }.property('building_id').cacheable(),
-    
-    slot: function() {
-      return AWE.GS.SlotManager.getSlot(this.get('slot_id'));
-    }.property('slot_id', 'level_after').cacheable(),
+    unit_id: null,
+    unitType: function() {
+      return module.RulesManager.getRules().getUnitType(this.get('unit_id'));
+    }.property('unit_id').cacheable(),
     
     position: null,
-    level_after: null,
-    job_type: null,
     
     active_job: null,
         
@@ -49,18 +40,6 @@ AWE.GS = (function(module) {
       }
       return null;
     }.property('active_job').cacheable(),
-    
-    cancelable: function() {
-      
-      // jobs des slots holen
-      var jobs = this.get('slot').get('hashableJobs').get('collection');
-      
-      // max suchen
-      jobs.sort(function(a, b) {return b.get('position') - a.get('position')});
-
-      // mit this vergleichen      
-      return this.getId() == jobs[0].getId();
-    }.property('slot.hashableJobs.changedAt').cacheable(),
   });     
     
   // ///////////////////////////////////////////////////////////////////////
@@ -105,14 +84,6 @@ AWE.GS = (function(module) {
       return AWE.GS.TrainingJobAccess.getAllForQueue_id(queueId);
     }
     
-    that.getJobsInSlot = function(slotId) {
-      return AWE.GS.TrainingJobAccess.getEnumerableForSlot_id(slotId);
-    }
-    
-    that.getJobsInSlotAsHash = function(slotId) {
-      return AWE.GS.TrainingJobAccess.getAllForSlot_id(slotId);
-    }
-    
     that.lastUpdateForQueue = function(queueId) {
       if (lastJobUpdates[queueId]) {
         return lastJobUpdates[queueId];
@@ -126,7 +97,7 @@ AWE.GS = (function(module) {
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
     that.updateJob = function(id, updateType, callback) {
-      var url = AWE.Config.TRAINING_SERVER_BASE + 'job/'+id;
+      var url = AWE.Config.TRAINING_SERVER_BASE + 'job/' + id;
       return my.updateEntity(url, id, updateType, callback); 
     };
     
@@ -179,10 +150,21 @@ AWE.GS = (function(module) {
     
     queue: null,
     queue_id: null,
+
     job_id: null,
-    started_at: null,
-    finished_at: null,
-    progress: null,
+
+    quantity_finished: null,
+    quantity_active: null,
+    
+    started_total_at: null,
+    finished_total_at: null,
+    progress_total: null,
+    progress_total_updated_at: null,
+    
+    progress_active: null,
+    progress_active_updated_at: null,
+    started_active_total_at: null,
+    finished_active_at: null,
   });    
 
   return module;
