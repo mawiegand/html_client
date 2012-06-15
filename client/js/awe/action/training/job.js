@@ -1,0 +1,90 @@
+/* Author: Sascha Lange <sascha@5dlab.com>
+ *         Patrick Fox <patrick@5dlab.com>
+ * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
+ * Do not copy, do not distribute. All rights reserved.
+ */
+
+ 
+var AWE = window.AWE || {};
+AWE.Action = AWE.Action || {};
+
+AWE.Action.Construction = (function(module) {
+  
+  module.createJobCreateAction = function(queue, unitId, quantity, my) {
+      
+    // private attributes and methods //////////////////////////////////////
+    var that;
+    
+    // protected attributes and methods ////////////////////////////////////
+    my = my || {};
+    my.queue = queue;
+    my.unitId = unitId;
+    my.quantity = quantity;
+
+    // public attributes and methods ///////////////////////////////////////
+    that = AWE.Action.createAction(my);    
+    
+    that.getRequestBody = function() {
+      return 'training_job[queue_id]=' + my.queue.getId() +
+        '&training_job[unit_id]=' + my.unitId +
+        '&training_job[quantity]=' + my.quantity
+    }
+    
+    that.getURL = function() {
+      return AWE.Config.TRAINING_SERVER_BASE + 'jobs';
+    }
+  
+    that.getHTTPMethod = function() {
+      return 'POST';
+    }
+    
+    that.postProcess = function(statusCode, xhr) {
+      if (statusCode == 200) {
+        AWE.GS.TrainingQueueManager.updateQueue(my.queue.getId(), null, function() {
+          AWE.GS.TrainingJobManager.updateJobsInQueue(my.queue.getId());
+          log('fettich!');
+        });
+      }
+    }
+    
+    that.queue = function() {
+      return my.queue;
+    }
+  
+    return that;
+    
+  };
+  
+  module.createJobCancelAction = function(jobId, my) {
+      
+    // private attributes and methods //////////////////////////////////////
+    var that;
+    
+    // protected attributes and methods ////////////////////////////////////
+    my = my || {};
+    my.jobId = jobId;
+
+    // public attributes and methods ///////////////////////////////////////
+    that = AWE.Action.createAction(my);    
+    
+    that.getRequestBody = function() {
+      return null;
+    }
+    
+    that.getURL = function() {
+      return AWE.Config.TRAINING_SERVER_BASE + 'jobs/' + jobId;
+    }
+  
+    that.getHTTPMethod = function() {
+      return 'DELETE';
+    }
+    
+    that.postProcess = function(statusCode, xhr) {
+    }
+    
+    return that;
+  };
+  
+  return module;
+  
+}(AWE.Action.Construction || {}));
