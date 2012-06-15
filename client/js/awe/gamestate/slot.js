@@ -207,7 +207,7 @@ AWE.GS = (function(module) {
       this._super(spec);
       
       if (this.get('id')) {
-        var hashableJobs = AWE.GS.JobAccess.getHashableCollectionForSlot_id(this.get('id'));
+        var hashableJobs = AWE.GS.ConstructionJobAccess.getHashableCollectionForSlot_id(this.get('id'));
         this.set('hashableJobs', hashableJobs);
         /* var binding = Ember.Binding.from('this.hashableJobs.collection').to('jobs');
         binding.connect(this);

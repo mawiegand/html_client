@@ -9,7 +9,7 @@ var AWE = window.AWE || {};
 /** GameState Queue class, manager and helpers. */
 AWE.GS = (function(module) {
     
-  module.ConstructionQueueAccess = {};
+  module.TrainingQueueAccess = {};
 
   // ///////////////////////////////////////////////////////////////////////
   //
@@ -17,10 +17,10 @@ AWE.GS = (function(module) {
   //
   // ///////////////////////////////////////////////////////////////////////    
     
-  module.ConstructionQueue = module.Queue.extend({     // extends Queue to ConstructionQueue
-    typeName: 'ConstructionQueue',
+  module.TrainingQueue = module.Queue.extend({     // extends Queue to TrainingQueue
+    typeName: 'TrainingQueue',
 
-    settlementIdObserver: AWE.Partials.attributeHashObserver(module.ConstructionQueueAccess, 'settlement_id', 'old_settlement_id').observes('settlement_id'),
+    settlementIdObserver: AWE.Partials.attributeHashObserver(module.TrainingQueueAccess, 'settlement_id', 'old_settlement_id').observes('settlement_id'),
     
     init: function(spec) {
       log('INIT queue');
@@ -39,7 +39,7 @@ AWE.GS = (function(module) {
   //
   // ///////////////////////////////////////////////////////////////////////  
 
-  module.ConstructionQueueManager = (function(my) {    // Army.Manager    -> manager singleton
+  module.TrainingQueueManager = (function(my) {    // Army.Manager    -> manager singleton
   
     // private attributes and methods //////////////////////////////////////
   
@@ -54,7 +54,7 @@ AWE.GS = (function(module) {
     my.runningUpdatesPerSettlement = {};
   
     my.createEntity = function() {
-      return module.ConstructionQueue.create({
+      return module.TrainingQueue.create({
         active_jobs: Ember.ArrayProxy.create({
           baseTypeName: 'ActiveJob',
           content: Ember.A([]),
@@ -75,11 +75,11 @@ AWE.GS = (function(module) {
     }
         
     that.getQueuesOfSettlement = function(settlementId) {
-      return AWE.GS.ConstructionQueueAccess.getEnumerableForSettlement_id(settlementId);
+      return AWE.GS.TrainingQueueAccess.getEnumerableForSettlement_id(settlementId);
     }
     
     that.getQueuesOfSettlementAsHash = function(settlementId) {
-      return AWE.GS.ConstructionQueueAccess.getAllForSettlement_id(settlementId);
+      return AWE.GS.TrainingQueueAccess.getAllForSettlement_id(settlementId);
     }
     
     that.lastUpdateForSettlement = function(settlementId) {

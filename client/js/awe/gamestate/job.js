@@ -9,12 +9,12 @@ var AWE = window.AWE || {};
 /** GameState Job class, manager and helpers. */
 AWE.GS = (function(module) {
   
-  module.JOB_TYPE_CREATE    = 'create'; 
-  module.JOB_TYPE_UPGRADE   = 'upgrade';
-  module.JOB_TYPE_DOWNGRADE = 'downgrade';
-  module.JOB_TYPE_DESTROY   = 'destroy';
+  module.CONSTRUCTION_JOB_TYPE_CREATE    = 'create'; 
+  module.CONSTRUCTION_JOB_TYPE_UPGRADE   = 'upgrade';
+  module.CONSTRUCTION_JOB_TYPE_DOWNGRADE = 'downgrade';
+  module.CONSTRUCTION_JOB_TYPE_DESTROY   = 'destroy';
     
-  module.JobAccess = {};
+  module.ConstructionJobAccess = {};
 
   // ///////////////////////////////////////////////////////////////////////
   //
@@ -23,14 +23,14 @@ AWE.GS = (function(module) {
   // ///////////////////////////////////////////////////////////////////////    
     
   module.Job = module.Entity.extend({     // extends Entity to Job
-    typeName: 'Job',
+    typeName: 'ConstructionJob',
     name: null, 
     
     queue_id: null, old_queue_id: null, ///< id of the queue the job is a member of
-    queueIdObserver: AWE.Partials.attributeHashObserver(module.JobAccess, 'queue_id', 'old_queue_id').observes('queue_id'),
+    queueIdObserver: AWE.Partials.attributeHashObserver(module.ConstructionJobAccess, 'queue_id', 'old_queue_id').observes('queue_id'),
     
     slot_id: null, old_slot_id: null, ///< id of the slot the job is a member of
-    slotIdObserver: AWE.Partials.attributeHashObserver(module.JobAccess, 'slot_id', 'old_slot_id').observes('slot_id'),
+    slotIdObserver: AWE.Partials.attributeHashObserver(module.ConstructionJobAccess, 'slot_id', 'old_slot_id').observes('slot_id'),
     
     building_id: null,
     buildingType: function() {
@@ -103,19 +103,19 @@ AWE.GS = (function(module) {
     }
         
     that.getJobsInQueue = function(queueId) {
-      return AWE.GS.JobAccess.getEnumerableForQueue_id(queueId);
+      return AWE.GS.ConstructionJobAccess.getEnumerableForQueue_id(queueId);
     }
     
     that.getJobsInQueueAsHash = function(queueId) {
-      return AWE.GS.JobAccess.getAllForQueue_id(queueId);
+      return AWE.GS.ConstructionJobAccess.getAllForQueue_id(queueId);
     }
     
     that.getJobsInSlot = function(slotId) {
-      return AWE.GS.JobAccess.getEnumerableForSlot_id(slotId);
+      return AWE.GS.ConstructionJobAccess.getEnumerableForSlot_id(slotId);
     }
     
     that.getJobsInSlotAsHash = function(slotId) {
-      return AWE.GS.JobAccess.getAllForSlot_id(slotId);
+      return AWE.GS.ConstructionJobAccess.getAllForSlot_id(slotId);
     }
     
     that.lastUpdateForQueue = function(queueId) {
@@ -151,7 +151,7 @@ AWE.GS = (function(module) {
           }
           // delete old jobs from queue
           if (status === AWE.Net.OK) {
-            var jobs = module.JobAccess.getHashableCollectionForQueue_id(queueId);
+            var jobs = module.ConstructionJobAccess.getHashableCollectionForQueue_id(queueId);
             AWE.Ext.applyFunction(jobs.get('collection'), function(job){
               var jobId = job.getId();
               if (!result.hasOwnProperty(jobId)) {
@@ -161,7 +161,7 @@ AWE.GS = (function(module) {
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
-              result = module.JobAccess.getAllForQueue_id(queueId);
+              result = module.ConstructionJobAccess.getAllForQueue_id(queueId);
             }
             callback(result, status, xhr, timestamp);
           }
