@@ -27,7 +27,7 @@ AWE.GS = (function(module) {
       this._super(spec);
       
       if (this.get('id')) {
-        var hashableJobs = AWE.GS.JobAccess.getHashableCollectionForQueue_id(this.get('id'));
+        var hashableJobs = AWE.GS.ConstructionJobAccess.getHashableCollectionForQueue_id(this.get('id'));
         this.set('hashableJobs', hashableJobs);
       }
     },    

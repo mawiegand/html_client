@@ -142,12 +142,12 @@ AWE.Controller = (function(module) {
      */
     that.constructionOptionClicked = function(slot, buildingId, type) {
       log('constructionOptionClicked', slot, buildingId, type);  // TODO type is production category - > rename
-      createAndSendConstructionJob(slot, buildingId, AWE.GS.JOB_TYPE_CREATE);      
+      createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE);      
     }
     
     that.upgradeClicked = function(slot) {
       var nextLevel = slot.get('building').get('nextLevel');
-      createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.JOB_TYPE_UPGRADE, nextLevel);    
+      createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE, nextLevel);    
     }  
     
     var createAndSendConstructionJob = function(slot, buildingId, jobType, levelAfter) {
@@ -169,7 +169,7 @@ AWE.Controller = (function(module) {
             log(status, "Construction job created.");
             that.updateQueueAndJobs(queue.getId());
             
-            if (jobType == module.JOB_TYPE_CREATE) {}        
+            if (jobType == module.CONSTRUCTION_JOB_TYPE_CREATE) {}        
           }
           else {
             log(status, "The server did not accept the construction command.");
