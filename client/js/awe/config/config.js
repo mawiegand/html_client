@@ -6,9 +6,6 @@
 
 var AWE = window.AWE || {};
 
-var ENV = window.ENV || {};
-
-ENV.RAISE_ON_DEPRECATION = true;
 
 AWE.Config = (function(module) { 
   
