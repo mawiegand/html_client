@@ -262,11 +262,12 @@ AWE.UI = (function(module) {
       // _super.updateView();
       // log(AWE, AWE.GS, AWE.GS.CharacterManagerAWE.GS.CharacterManager.getCurrentCharacter.get('frog_amount'), );
       var pool = AWE.GS.ResourcePoolManager.getResourcePool();
-      
-      _resource1Text.text = pool.get('resource_wood_amount');
-      _resource2Text.text = pool.get('resource_stone_amount');
-      _resource3Text.text = pool.get('resource_fur_amount');
-      _resource4Text.text = pool.get('resource_cash_amount');
+      if (pool) {
+        _resource1Text.text = pool.get('resource_wood_amount');
+        _resource2Text.text = pool.get('resource_stone_amount');
+        _resource3Text.text = pool.get('resource_fur_amount');
+        _resource4Text.text = pool.get('resource_cash_amount');
+      }
     }
     
     
