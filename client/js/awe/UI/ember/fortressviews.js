@@ -30,7 +30,6 @@ AWE.UI.Ember = (function(module) {
       this.get('controller').constructionOptionClicked(slot, buildingId, type);
       this.get('controller').unselectSlot();
     },         
-    
   });  
   
   

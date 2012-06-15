@@ -116,8 +116,14 @@
     
      {{view AWE.UI.Ember.BuildingView classNames="building-option-image" modelBinding="building" levelBinding="building.nextLevel"}}
 
-      ProductionTime: {{building.localizedProductionTimeOfNextLevel}}
-     
+      ProductionTime: {{building.localizedProductionTimeOfNextLevel}}<br />
+      {{#if building.costsOfNextLevel}}
+        Costs:
+        {{#each building.costsOfNextLevel}}
+          {{amount}} {{name}} &nbsp;  
+        {{/each}}
+        <br/>
+      {{/if}}
     
       {{#if building.unlockedQueuesNextLevel}}
         <p><b>Enables:</b> {{#each building.unlockedQueuesNextLevel}}{{ name }}, {{/each}}</p>
