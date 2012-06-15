@@ -45,7 +45,7 @@ AWE.Action.Construction = (function(module) {
     that.postProcess = function(statusCode, xhr) {
       if (statusCode == 200) {
         AWE.GS.ConstructionQueueManager.updateQueue(my.queue.getId(), null, function() {
-          AWE.GS.JobManager.updateJobsInQueue(my.queue.getId());
+          AWE.GS.ConstructionJobManager.updateJobsInQueue(my.queue.getId());
           log('fettich!');
         });
       }
