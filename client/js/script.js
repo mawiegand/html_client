@@ -107,6 +107,16 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               assetLoaded();
             });
           }
+          AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
+            if (statusCode === AWE.Net.OK) {
+              console.log(resourcePool);
+            }
+            else {
+              console.log('CRITICAL ERROR: could not load resource pool from server. Error code: ' + statusCode + '. Terminate App.');
+              throw "ABORT Due to Failure to load player's resource pool.";
+            }
+          });
+
           assetLoaded();
           AWE.Shop.Manager.init();
         }

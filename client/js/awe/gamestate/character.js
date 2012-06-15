@@ -55,6 +55,8 @@ AWE.GS = (function(module) {
     frog_amount: 0,
     premium_expiration: null,
     
+    resourcePool: null,
+    
     //
     // //// MESSAGING //////////////////////////////////////////////////////// 
     //
@@ -191,7 +193,8 @@ AWE.GS = (function(module) {
 
     my = my || {};
   
-    my.runningUpdatesPerAllicance = {};///< hash that contains all running requests for alliances, using the alliance.id as key.
+    my.runningUpdatesPerAllicance = {};  ///< hash that contains all running requests for alliances, using the alliance.id as key.
+    my.runningUpdatesPerId = {};         ///< hash that contains all running requests for characters, using the id as key.
     
     my.createEntity = function(spec) { return module.Character.create(spec); }
 
@@ -258,7 +261,7 @@ AWE.GS = (function(module) {
     
     that.updateCurrentCharacter = function(updateType, callback) {
       if (this.currentCharacter != null) {
-        this.updateCharacter(this.currentCharacter.get('id'), updateType, callback);
+        return this.updateCharacter(this.currentCharacter.get('id'), updateType, callback);
       }
       else { // no current character, need to fetch self
         var self = this;

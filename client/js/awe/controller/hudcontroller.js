@@ -158,39 +158,9 @@ AWE.Controller = (function(module) {
       
       log('rules', AWE.GS.RulesManager.getRules());
       
-      // AWE.GS.QueueManager.updateQueuesOfSettlement(10180, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queueData){
-//         
-        // var queues = AWE.GS.QueueManager.getQueuesOfSettlement(10180);
-        // log('queues', queues, queues[1].get('active_jobs').get('content'), queues[1].get('active_jobs').get('baseTypeName'));
-//         
-        // for (var i = 0; i < queues.length; i++) {
-          // var queue = queues[i];
-          // if (queue !== undefined) {
-            // AWE.GS.JobManager.updateJobsOfQueue(queue.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobData, status){
-//               
-              // var jobs = AWE.GS.JobManager.getJobsInQueue(queue.getId());
-              // log('jobs', jobs);
-              
-              // for (var i in jobs) {
-                // var job = jobs[i];
-                // if (job) {
-                  // log('--->', AWE.GS.Util.parseFormula(job.get('buildingType')['production_time']));
-                  // log('--->', AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula('MAX(12,LEVEL)+POW(2,3)*SIGN(LEVEL)'), 13));
-                // }
-              // }
-              
-              // var jobAction = AWE.Action.Construction.createJobAction(queue, 1, 2, AWE.GS.JOB_TYPE_UPGRADE, 3);
-              // jobAction.send(function(status) {
-                // if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
-                // }
-                // else {
-                  // log(status, "The server did not accept the attack comannd.");
-                // }
-              // });
-            // });
-          // }
-        // }
-      // });
+      AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(poolData) {
+        log('---> poolData', poolData);
+      });
     };
         
 
