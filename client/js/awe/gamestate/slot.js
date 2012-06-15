@@ -86,6 +86,22 @@ AWE.GS = (function(module) {
 		  return nextLevel;
 		}.property('levelAfterJobs').cacheable(),
 		
+		costsOfNextLevel: function() {
+		  
+		}.property('nextLevel', 'buildingId').cacheable(),
+		
+		productionTimeOfNextLevel: function() {
+		  var buildingType = this.get('buildingType');
+		  if (buildingType && buildingType.production_time) {
+		    var timeString = AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(buildingType.production_time), this.get('nextLevel'));
+		    console.log('FORMULA', buildingType.production_time, timeString);
+		    return timeString;
+		  }
+		  else {
+		    return null;
+	    }
+		}.property('nextLevel', 'buildingId', 'slot.queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.
+		
 		upgradable: function() {
 		  var nextLevel = this.get('nextLevel');
       var slot = this.get('slot');
@@ -201,6 +217,8 @@ AWE.GS = (function(module) {
 		hashableJobs: null,
     
     bindings: null,
+    
+    
 
     init: function(spec) {
       console.log('INIT Slot');
@@ -285,6 +303,12 @@ AWE.GS = (function(module) {
 			  return module.SettlementManager.getSettlement(this.get('settlement_id'));
 		  }
 		},
+		
+		queue: function() {
+      var jobs = this.getPath('hashableJobs.collection');
+      if (!jobs || jobs.length <= 0) return null;
+      return AWE.GS.ConstructionQueueManager.getQueue(jobs[0].get('queue_id'));
+		}.property('hashableJobs.changedAt').cacheable(),
 		
 		/** fetches the slot type from the rules. returns the slot-hash, that holds all
 		 * informations from the rules about the type of this praticular slot. */
