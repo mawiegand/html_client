@@ -8,7 +8,7 @@
 var AWE = window.AWE || {};
 AWE.Action = AWE.Action || {};
 
-AWE.Action.Construction = (function(module) {
+AWE.Action.Training = (function(module) {
   
   module.createJobCreateAction = function(queue, unitId, quantity, my) {
       
@@ -87,4 +87,4 @@ AWE.Action.Construction = (function(module) {
   
   return module;
   
-}(AWE.Action.Construction || {}));
+}(AWE.Action.Training || {}));

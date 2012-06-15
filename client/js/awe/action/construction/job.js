@@ -91,4 +91,4 @@ AWE.Action.Construction = (function(module) {
   
   return module;
   
-}(AWE.Action.Military || {}));
+}(AWE.Action.Construction || {}));

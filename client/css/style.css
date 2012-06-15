@@ -544,6 +544,7 @@ html, body {
 
 .message-center .message table td {
   text-align: left;
+  padding: 5px 5px 5px 5px;
 }
 
 /* ===== non-semantic helper classes ========================================

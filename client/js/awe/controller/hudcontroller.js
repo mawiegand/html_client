@@ -57,6 +57,10 @@ AWE.Controller = (function(module) {
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setNeedsLayout();
+      
+      AWE.GS.TrainingQueueManager.updateQueue(1, null, function(queue) {
+        log('---> update queue', queue);
+      });
     };   
     
     that.getStages = function() {
@@ -156,10 +160,22 @@ AWE.Controller = (function(module) {
     
     that.shopButtonClicked = function() {
       
-      log('rules', AWE.GS.RulesManager.getRules());
+      var queue = AWE.GS.TrainingQueueManager.getQueue(1);
+      var unitId = 1;
+      var quantity = 10;
       
-      AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(poolData) {
+      var action = AWE.Action.Training.createJobCreateAction(queue, unitId, quantity);
+      
+      action.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          log(status, "Training job created.");
+        }
+        else {
+          log(status, "The server did not accept the training command.");
+          // TODO Fehlermeldung 
+        }
       });
+      
     };
         
 

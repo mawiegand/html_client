@@ -108,7 +108,7 @@ AWE.GS = (function(module) {
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
     that.updateQueue = function(id, updateType, callback) {
-      var url = AWE.Config.CONSTRUCTION_SERVER_BASE + 'queues/'+id;
+      var url = AWE.Config.CONSTRUCTION_SERVER_BASE + 'queues/' + id;
       return my.updateEntity(url, id, updateType, callback); 
     };
     
