@@ -24,6 +24,7 @@ AWE.GS = (function(module) {
     unit_types: null,
 		building_categories: null,
 		building_types: null,
+		resource_types: null,
 		queue_types: null,
 		queue_categories: null,
 		
@@ -41,6 +42,14 @@ AWE.GS = (function(module) {
 				console.log('ERROR: requested non-existing building type ' + buildingType);
 			}
 			return buildingType;
+		},
+		
+		getResourceType: function(id) {
+			var resourceType = this.get('resource_types')[id];
+			if (resourceType === undefined || !resourceType) {
+				console.log('ERROR: requested non-existing resource type ' + resourceType);
+			}
+			return resourceType;
 		},
 		
 		getBuildingCategory: function(id) {

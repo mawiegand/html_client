@@ -30,7 +30,6 @@ AWE.UI.Ember = (function(module) {
       this.get('controller').constructionOptionClicked(slot, buildingId, type);
       this.get('controller').unselectSlot();
     },         
-    
   });  
   
   
@@ -122,7 +121,15 @@ AWE.UI.Ember = (function(module) {
 			}
 		},
 		
-		queues: null,
+		queues: function() {
+		  var fortress = this.get('fortress');
+		  if (fortress) {
+		    return fortress.get('hashableQueues');  
+		  }
+		  else {
+		    return null;
+		  }
+		}.property('fortress').cacheable(),
 	});
 
   module.ToolTipView = Ember.View.extend({
@@ -169,14 +176,14 @@ AWE.UI.Ember = (function(module) {
     small: function() {
       var level = this.get('level');
       if (level == 0) {  // special case: return small also for level 0, iff there is a building (building id set, so it's under construction)
-        if (this.get('model') && this.get('model').get('building')) {
+        if (this.getPath('model.building')) {
           return true ; 
         }
       }
       else {
         return level > 0 && level < 4;
       }
-    }.property('level'),
+    }.property('level', 'model.building'),
   
     middle: function() {
       return this.get('level') >= 4 && this.get('level') < 8;

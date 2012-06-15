@@ -86,6 +86,46 @@ AWE.GS = (function(module) {
 		  return nextLevel;
 		}.property('levelAfterJobs').cacheable(),
 		
+		costsOfNextLevel: function() {
+		  var costs = [];
+		  var buildingType = this.get('buildingType');
+		  if (buildingType && buildingType.costs) {
+		    var nextLevel = this.get('nextLevel');
+		    AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
+		      var formula = buildingType.costs[item.id];
+		      if (formula) {
+		        var amount = AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(formula), nextLevel);
+		        costs.push({
+		          name:   item.name['en_US'],
+		          amount: Math.ceil(amount),
+	          });
+          }
+		    });
+		  }
+      return costs;
+		}.property('nextLevel', 'buildingId').cacheable(),
+		
+		productionTimeOfNextLevel: function() {
+		  var buildingType = this.get('buildingType');
+		  if (buildingType && buildingType.production_time) {
+		    var seconds = AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(buildingType.production_time), this.get('nextLevel'));
+		    var speed = this.getPath('slot.queue.speed');
+		    seconds = speed ? seconds / speed : seconds; // apply queue speed, if known.
+		    return seconds;
+		  }
+		  else {
+		    return null;
+	    }
+		}.property('nextLevel', 'buildingId', 'slot.queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.
+		
+		localizedProductionTimeOfNextLevel: function() {
+		  var productionTime = this.get('productionTimeOfNextLevel');
+		  if (productionTime) {
+		    return AWE.Util.localizedDurationFromSeconds(productionTime);
+		  }
+		  return null;
+		}.property('productionTimeOfNextLevel').cacheable(),
+		
 		upgradable: function() {
 		  var nextLevel = this.get('nextLevel');
       var slot = this.get('slot');
@@ -201,13 +241,15 @@ AWE.GS = (function(module) {
 		hashableJobs: null,
     
     bindings: null,
+    
+    
 
     init: function(spec) {
       console.log('INIT Slot');
       this._super(spec);
       
       if (this.get('id')) {
-        var hashableJobs = AWE.GS.JobAccess.getHashableCollectionForSlot_id(this.get('id'));
+        var hashableJobs = AWE.GS.ConstructionJobAccess.getHashableCollectionForSlot_id(this.get('id'));
         this.set('hashableJobs', hashableJobs);
         /* var binding = Ember.Binding.from('this.hashableJobs.collection').to('jobs');
         binding.connect(this);
@@ -285,6 +327,12 @@ AWE.GS = (function(module) {
 			  return module.SettlementManager.getSettlement(this.get('settlement_id'));
 		  }
 		},
+		
+		queue: function() {
+      var jobs = this.getPath('hashableJobs.collection');
+      if (!jobs || jobs.length <= 0) return null;
+      return AWE.GS.ConstructionQueueManager.getQueue(jobs[0].get('queue_id'));
+		}.property('hashableJobs.changedAt').cacheable(),
 		
 		/** fetches the slot type from the rules. returns the slot-hash, that holds all
 		 * informations from the rules about the type of this praticular slot. */

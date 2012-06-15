@@ -6,44 +6,30 @@
  
 var AWE = window.AWE || {};
 
-/** GameState Job class, manager and helpers. */
+/** GameState training Job class, manager and helpers. */
 AWE.GS = (function(module) {
   
-  module.JOB_TYPE_CREATE    = 'create'; 
-  module.JOB_TYPE_UPGRADE   = 'upgrade';
-  module.JOB_TYPE_DOWNGRADE = 'downgrade';
-  module.JOB_TYPE_DESTROY   = 'destroy';
-    
-  module.JobAccess = {};
+  module.TrainingJobAccess = {};
 
   // ///////////////////////////////////////////////////////////////////////
   //
-  //   JOB
+  //   TRAINING JOB
   //
   // ///////////////////////////////////////////////////////////////////////    
     
-  module.Job = module.Entity.extend({     // extends Entity to Job
-    typeName: 'Job',
+  module.TrainingJob = module.Entity.extend({     // extends Entity to Job
+    typeName: 'TrainingJob',
     name: null, 
     
     queue_id: null, old_queue_id: null, ///< id of the queue the job is a member of
-    queueIdObserver: AWE.Partials.attributeHashObserver(module.JobAccess, 'queue_id', 'old_queue_id').observes('queue_id'),
+    queueIdObserver: AWE.Partials.attributeHashObserver(module.TrainingJobAccess, 'queue_id', 'old_queue_id').observes('queue_id'),
     
-    slot_id: null, old_slot_id: null, ///< id of the slot the job is a member of
-    slotIdObserver: AWE.Partials.attributeHashObserver(module.JobAccess, 'slot_id', 'old_slot_id').observes('slot_id'),
-    
-    building_id: null,
-    buildingType: function() {
-      return module.RulesManager.getRules().getBuildingType(this.get('building_id'));
-    }.property('building_id').cacheable(),
-    
-    slot: function() {
-      return AWE.GS.SlotManager.getSlot(this.get('slot_id'));
-    }.property('slot_id', 'level_after').cacheable(),
+    unit_id: null,
+    unitType: function() {
+      return module.RulesManager.getRules().getUnitType(this.get('unit_id'));
+    }.property('unit_id').cacheable(),
     
     position: null,
-    level_after: null,
-    job_type: null,
     
     active_job: null,
         
@@ -54,27 +40,15 @@ AWE.GS = (function(module) {
       }
       return null;
     }.property('active_job').cacheable(),
-    
-    cancelable: function() {
-      
-      // jobs des slots holen
-      var jobs = this.get('slot').get('hashableJobs').get('collection');
-      
-      // max suchen
-      jobs.sort(function(a, b) {return b.get('position') - a.get('position')});
-
-      // mit this vergleichen      
-      return this.getId() == jobs[0].getId();
-    }.property('slot.hashableJobs.changedAt').cacheable(),
   });     
     
   // ///////////////////////////////////////////////////////////////////////
   //
-  //   SETTLEMENT MANAGER
+  //   TRAINING JOB MANAGER
   //
   // ///////////////////////////////////////////////////////////////////////  
 
-  module.JobManager = (function(my) {    // Army.Manager    -> manager singleton
+  module.TrainingJobManager = (function(my) {    // TrainingJob.Manager    -> manager singleton
   
     // private attributes and methods //////////////////////////////////////
   
@@ -91,7 +65,7 @@ AWE.GS = (function(module) {
     
     my.runningCreateRequestsPerQueue = {};
   
-    my.createEntity = function() { return module.Job.create(); }
+    my.createEntity = function() { return module.TrainingJob.create(); }
 
   
     // public attributes and methods ///////////////////////////////////////
@@ -103,19 +77,11 @@ AWE.GS = (function(module) {
     }
         
     that.getJobsInQueue = function(queueId) {
-      return AWE.GS.JobAccess.getEnumerableForQueue_id(queueId);
+      return AWE.GS.TrainingJobAccess.getEnumerableForQueue_id(queueId);
     }
     
     that.getJobsInQueueAsHash = function(queueId) {
-      return AWE.GS.JobAccess.getAllForQueue_id(queueId);
-    }
-    
-    that.getJobsInSlot = function(slotId) {
-      return AWE.GS.JobAccess.getEnumerableForSlot_id(slotId);
-    }
-    
-    that.getJobsInSlotAsHash = function(slotId) {
-      return AWE.GS.JobAccess.getAllForSlot_id(slotId);
+      return AWE.GS.TrainingJobAccess.getAllForQueue_id(queueId);
     }
     
     that.lastUpdateForQueue = function(queueId) {
@@ -131,14 +97,14 @@ AWE.GS = (function(module) {
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
     that.updateJob = function(id, updateType, callback) {
-      var url = AWE.Config.CONSTRUCTION_SERVER_BASE + 'job/'+id;
+      var url = AWE.Config.TRAINING_SERVER_BASE + 'job/' + id;
       return my.updateEntity(url, id, updateType, callback); 
     };
     
     /** updates all jobs for the current queue. Calls the callback with a
      * list of all the updated jobs. */
     that.updateJobsOfQueue = function(queueId, updateType, callback) {
-      var url = AWE.Config.CONSTRUCTION_SERVER_BASE + 'queues/' + queueId + '/jobs';
+      var url = AWE.Config.TRAINING_SERVER_BASE + 'queues/' + queueId + '/jobs';
       return my.fetchEntitiesFromURL(
         url,                                               // url to fetch from
         my.runningUpdatesPerQueue,                     // queue to register this request during execution
@@ -151,7 +117,7 @@ AWE.GS = (function(module) {
           }
           // delete old jobs from queue
           if (status === AWE.Net.OK) {
-            var jobs = module.JobAccess.getHashableCollectionForQueue_id(queueId);
+            var jobs = module.TrainingJobAccess.getHashableCollectionForQueue_id(queueId);
             AWE.Ext.applyFunction(jobs.get('collection'), function(job){
               var jobId = job.getId();
               if (!result.hasOwnProperty(jobId)) {
@@ -161,7 +127,7 @@ AWE.GS = (function(module) {
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
-              result = module.JobAccess.getAllForQueue_id(queueId);
+              result = module.TrainingJobAccess.getAllForQueue_id(queueId);
             }
             callback(result, status, xhr, timestamp);
           }
@@ -179,15 +145,26 @@ AWE.GS = (function(module) {
   //
   // ///////////////////////////////////////////////////////////////////////    
     
-  module.ActiveJob = module.Entity.extend({
-    typeName: 'ActiveJob',
+  module.ActiveTrainingJob = module.Entity.extend({
+    typeName: 'ActiveTrainingJob',
     
     queue: null,
     queue_id: null,
+
     job_id: null,
-    started_at: null,
-    finished_at: null,
-    progress: null,
+
+    quantity_finished: null,
+    quantity_active: null,
+    
+    started_total_at: null,
+    finished_total_at: null,
+    progress_total: null,
+    progress_total_updated_at: null,
+    
+    progress_active: null,
+    progress_active_updated_at: null,
+    started_active_total_at: null,
+    finished_active_at: null,
   });    
 
   return module;

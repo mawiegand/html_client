@@ -6,6 +6,7 @@
 
 var AWE = window.AWE || {};
 
+
 AWE.Config = (function(module) { 
   
   // automatically determine the server to use -> same origin policy
@@ -28,6 +29,7 @@ AWE.Config = (function(module) {
   module.MAP_RUN_TESTS = false;
   module.MAP_SERVER_BASE          = module.SERVER_ROOT + '/game_server/map/';
   module.MILITARY_SERVER_BASE     = module.SERVER_ROOT + '/game_server/military/';
+  module.TRAINING_SERVER_BASE     = module.SERVER_ROOT + '/game_server/training/';
   module.FUNDAMENTAL_SERVER_BASE  = module.SERVER_ROOT + '/game_server/fundamental/';
   module.ACTION_SERVER_BASE       = module.SERVER_ROOT + '/game_server/action/';
   module.RULES_SERVER_BASE        = module.SERVER_ROOT + '/game_server/game_rules/';

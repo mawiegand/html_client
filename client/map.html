@@ -70,6 +70,12 @@
   <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
   
 
+   <script type="text/javascript" >
+        ENV = {
+          //RAISE_ON_DEPRECATION = true,
+        };
+    </script>
+
   
   <!-- Load ember JS. For debugging-purposes: not minified. -->
   <script src="js/libs/ember-0.9.8.1.js"></script>
@@ -124,7 +130,9 @@
   <script src="js/awe/gamestate/settlement.js"></script>
   <script src="js/awe/gamestate/queue.js"></script>
   <script src="js/awe/gamestate/constructionqueue.js"></script>
-  <script src="js/awe/gamestate/job.js"></script>
+  <script src="js/awe/gamestate/trainingqueue.js"></script>
+  <script src="js/awe/gamestate/constructionjob.js"></script>
+  <script src="js/awe/gamestate/trainingjob.js"></script>
   <script src="js/awe/gamestate/util.js"></script>
   <script src="js/awe/gamestate/messaging.js"></script>
   <script src="js/awe/gamestate/resourcepool.js"></script>
@@ -181,6 +189,7 @@
   <script src="js/awe/action/military/movearmy.js"></script>
   <script src="js/awe/action/military/attackarmy.js"></script>
   <script src="js/awe/action/fundamental/shouttoalliance.js"></script>
+  <script src="js/awe/action/messaging/sendmessage.js"></script>
   <script src="js/awe/action/construction/job.js"></script>
   <script src="js/awe/application/multistageapplication.js"></script>
   <script src="js/awe/i18n/en.js"></script>

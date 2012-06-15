@@ -10,7 +10,7 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Construction = (function(module) {
   
-  module.createJobCreateAction = function(queue, slotId, buildingId, jobType, levelAfter, my) {
+  module.createJobCreateAction = function(queue, unitId, quantity, my) {
       
     // private attributes and methods //////////////////////////////////////
     var that;
@@ -18,24 +18,20 @@ AWE.Action.Construction = (function(module) {
     // protected attributes and methods ////////////////////////////////////
     my = my || {};
     my.queue = queue;
-    my.slotId = slotId;
-    my.buildingId = buildingId;
-    my.jobType = jobType;
-    my.levelAfter = levelAfter;
+    my.unitId = unitId;
+    my.quantity = quantity;
 
     // public attributes and methods ///////////////////////////////////////
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'construction_job[queue_id]=' + my.queue.getId() +
-        '&construction_job[slot_id]=' + my.slotId +
-        '&construction_job[building_id]=' + my.buildingId +
-        '&construction_job[job_type]=' + my.jobType +
-        '&construction_job[level_after]=' + my.levelAfter   
+      return 'training_job[queue_id]=' + my.queue.getId() +
+        '&training_job[unit_id]=' + my.unitId +
+        '&training_job[quantity]=' + my.quantity
     }
     
     that.getURL = function() {
-      return AWE.Config.CONSTRUCTION_SERVER_BASE + 'jobs';
+      return AWE.Config.TRAINING_SERVER_BASE + 'jobs';
     }
   
     that.getHTTPMethod = function() {
@@ -44,8 +40,8 @@ AWE.Action.Construction = (function(module) {
     
     that.postProcess = function(statusCode, xhr) {
       if (statusCode == 200) {
-        AWE.GS.ConstructionQueueManager.updateQueue(my.queue.getId(), null, function() {
-          AWE.GS.ConstructionJobManager.updateJobsInQueue(my.queue.getId());
+        AWE.GS.TrainingQueueManager.updateQueue(my.queue.getId(), null, function() {
+          AWE.GS.TrainingJobManager.updateJobsInQueue(my.queue.getId());
           log('fettich!');
         });
       }
@@ -76,7 +72,7 @@ AWE.Action.Construction = (function(module) {
     }
     
     that.getURL = function() {
-      return AWE.Config.CONSTRUCTION_SERVER_BASE + 'jobs/' + jobId;
+      return AWE.Config.TRAINING_SERVER_BASE + 'jobs/' + jobId;
     }
   
     that.getHTTPMethod = function() {
@@ -91,4 +87,4 @@ AWE.Action.Construction = (function(module) {
   
   return module;
   
-}(AWE.Action.Military || {}));
+}(AWE.Action.Construction || {}));
