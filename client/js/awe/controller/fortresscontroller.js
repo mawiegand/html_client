@@ -341,7 +341,6 @@ AWE.Controller = (function(module) {
 				var fortress = AWE.GS.SettlementManager.getSettlement(that.fortressId);
 				if (this.view.get('fortress') != fortress) {
           this.view.set('fortress', fortress);
-          this.view.set('queues', fortress.get('hashableQueues'));
 					this.view.setSlots(null); // fortress has changed, so remove the slots!!!
 				}
 				

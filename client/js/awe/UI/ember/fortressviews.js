@@ -122,7 +122,15 @@ AWE.UI.Ember = (function(module) {
 			}
 		},
 		
-		queues: null,
+		queues: function() {
+		  var fortress = this.get('fortress');
+		  if (fortress) {
+		    return fortress.get('hashableQueues');  
+		  }
+		  else {
+		    return null;
+		  }
+		}.property('fortress').cacheable(),
 	});
 
   module.ToolTipView = Ember.View.extend({
