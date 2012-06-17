@@ -15,7 +15,7 @@ AWE.Config = (function(module) {
     module.SERVER_ROOT = 'http://localhost/'
   }
   
-  module.TIME_DIFF_RANGE     = 10;
+  module.TIME_DIFF_RANGE     = 2; // TODO problem with slot refresh if less than 2
   
   module.DEBUG_LEVEL_ERROR   = 0;
   module.DEBUG_LEVEL_WARNING = 1;

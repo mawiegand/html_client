@@ -16,7 +16,7 @@ AWE.Controller = (function(module) {
     that.view = null;
     that.visible = false;
     that.fortressId = null;
-		that.slots = null;
+    that.slots = null;
     
     var _super = {};             ///< store locally overwritten methods of super object
     _super.init = that.init; 
@@ -90,13 +90,13 @@ AWE.Controller = (function(module) {
     
     
     that.createView = function() {
-			var fortress = AWE.GS.SettlementManager.getSettlement(that.fortressId);
+      var fortress = AWE.GS.SettlementManager.getSettlement(that.fortressId);
       var fortressScreen = AWE.UI.Ember.FortressView.create({
         templateName: "fortress-screen",
-				controller: this,
-				fortress: fortress,
+        controller: this,
+        fortress: fortress,
       });      
-			that.slots = null;
+      that.slots = null;
       return fortressScreen;
     }
     
@@ -235,7 +235,10 @@ AWE.Controller = (function(module) {
 
       // as we don't know the right slot (or slot id), we update all slots
       AWE.GS.SlotManager.updateSlotsAtSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
-        log('updated slots', slots)
+        log('updated slots', slots);
+        AWE.Ext.applyFunctionToHash(slots, function(slotId, slot) {
+          log('slot', slot, slot.get('level'))
+        });      
       });
 
       AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
@@ -270,10 +273,13 @@ AWE.Controller = (function(module) {
         // just trigger the updates, thanks to the bindings we do not need to
         // process the answers and update the views manually.
         AWE.GS.SettlementManager.updateSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
-	        log('updated settlement', settlement)
-					if (settlement && settlement.getId()) {
+          log('updated settlement', settlement);
+          if (settlement && settlement.getId()) {
             AWE.GS.SlotManager.updateSlotsAtSettlement(settlement.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
-              log('updated slots', slots)
+              log('updated slots', slots);
+              AWE.Ext.applyFunctionToHash(slots, function(slotId, slot) {
+                log('slot', slot, slot.get('level'))
+              });      
             });
 
             AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(settlement.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
@@ -284,7 +290,7 @@ AWE.Controller = (function(module) {
                 });
               });      
             });
-					}
+          }
         });
       }
       
@@ -307,21 +313,29 @@ AWE.Controller = (function(module) {
       };
     }());
     
-    that.updateOldJobsInQueues = function() {
+    var pendingJobUpdates = {};
+    
+    that.updateOldJobsInQueues = (function() {
       
-      var queues = AWE.GS.ConstructionQueueManager.getQueuesOfSettlement(that.fortressId);
-      
-      queues.forEach(function(queue) {
-        var jobs = AWE.GS.ConstructionJobManager.getJobsInQueue(queue.getId());
-        if (jobs.length > 0) {
-          var job = jobs[0];
-          if (job.get('active_job') && Date.parseISODate(job.get('active_job').finished_at).add({seconds: AWE.Config.TIME_DIFF_RANGE}) < new Date()) {
-            that.updateQueueSlotAndJobs(queue.getId());
-            queueUpdated = true;
-          }      
-        }
-      });
-    } 
+      return function() {
+        var queues = AWE.GS.ConstructionQueueManager.getQueuesOfSettlement(that.fortressId);
+        
+        queues.forEach(function(queue) {
+          var jobs = AWE.GS.ConstructionJobManager.getJobsInQueue(queue.getId());
+          if (jobs.length > 0) {
+            var job = jobs[0]; // TODO check every job not only the first
+            if (job.get('active_job')) {
+              var jobId = job.getId();
+              pendingJobUpdates[jobId] = pendingJobUpdates[jobId] > 0 ? pendingJobUpdates[jobId] : AWE.Config.TIME_DIFF_RANGE;
+              if (Date.parseISODate(job.get('active_job').finished_at).add({seconds: pendingJobUpdates[jobId]}) < new Date()) {
+                pendingJobUpdates[jobId] *= 2;
+                that.updateQueueSlotAndJobs(queue.getId());
+              }
+            }      
+          }
+        });
+      }
+    }());
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -338,32 +352,32 @@ AWE.Controller = (function(module) {
       if (this.visible && _viewNeedsUpdate && AWE.GS.SettlementManager.getSettlement(that.fortressId)) {
         this.updateView();
         _viewNeedsUpdate = false;
-				console.log(that.fortressId, AWE.GS.SettlementManager.getSettlement(that.fortressId))
+        console.log(that.fortressId, AWE.GS.SettlementManager.getSettlement(that.fortressId))
       }
-			
-			if (this.view) {   // make sure the view displays the right fortress.
-				// this is executed, in case the settlement is received from the 
-				// server for the first time or the fortressId has been changed by 
-				// this.setFortressId(int).
-				var fortress = AWE.GS.SettlementManager.getSettlement(that.fortressId);
-				if (this.view.get('fortress') != fortress) {
+      
+      if (this.view) {   // make sure the view displays the right fortress.
+        // this is executed, in case the settlement is received from the 
+        // server for the first time or the fortressId has been changed by 
+        // this.setFortressId(int).
+        var fortress = AWE.GS.SettlementManager.getSettlement(that.fortressId);
+        if (this.view.get('fortress') != fortress) {
           this.view.set('fortress', fortress);
-					this.view.setSlots(null); // fortress has changed, so remove the slots!!!
-				}
-				
-				if (fortress && fortress.slots() && AWE.Util.hashCount(fortress.slots()) > 0 && that.slots != fortress.slots()) {
-					this.view.setSlots(fortress.slots());
-					that.slots = fortress.slots();
-					console.log('Set building slots.');
-					AWE.Ext.applyFunctionToHash(that.slots, function(key, value) {
-					  console.log("building type id", value.get('building_id'));
-					});
-				}
-				
-				if (fortress && fortress.slots() && AWE.Util.hashCount(fortress.slots()) > 0) {
-				  that.updateOldJobsInQueues();
-				}
-			}
+          this.view.setSlots(null); // fortress has changed, so remove the slots!!!
+        }
+        
+        if (fortress && fortress.slots() && AWE.Util.hashCount(fortress.slots()) > 0 && that.slots != fortress.slots()) {
+          this.view.setSlots(fortress.slots());
+          that.slots = fortress.slots();
+          console.log('Set building slots.');
+          AWE.Ext.applyFunctionToHash(that.slots, function(key, value) {
+            console.log("building type id", value.get('building_id'));
+          });
+        }
+        
+        if (fortress && fortress.slots() && AWE.Util.hashCount(fortress.slots()) > 0) {
+          that.updateOldJobsInQueues();
+        }
+      }
       
       that.updateModel();
     }
