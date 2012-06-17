@@ -57,10 +57,6 @@ AWE.Controller = (function(module) {
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setNeedsLayout();
-      
-      AWE.GS.TrainingQueueManager.updateQueue(1, null, function(queue) {
-        log('---> update queue', queue);
-      });
     };   
     
     that.getStages = function() {

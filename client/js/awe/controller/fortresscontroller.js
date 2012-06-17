@@ -132,6 +132,7 @@ AWE.Controller = (function(module) {
     
     that.slotClicked = function(slot) {
       that.view.set('selectedSlot', slot);
+      that.updateAllTrainingQueuesAndJobs();
     }
     
     that.unselectSlot = function() {
@@ -169,7 +170,7 @@ AWE.Controller = (function(module) {
         constructionAction.send(function(status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
             log(status, "Construction job created.");
-            that.updateQueueSlotAndJobs(queue.getId());
+            that.updateConstructionQueueSlotAndJobs(queue.getId());
             that.updateResourcePool();
             
             if (jobType == module.CONSTRUCTION_JOB_TYPE_CREATE) {}        
@@ -191,7 +192,7 @@ AWE.Controller = (function(module) {
       cancelJobAction.send(function(status) {
         if (status === AWE.Net.OK) {    // 200 OK
           log(status, "Construction job deleted.");
-          that.updateQueueSlotAndJobs(queueId);          
+          that.updateConstructionQueueSlotAndJobs(queueId);          
           that.updateResourcePool();
         }
         else {
@@ -228,9 +229,9 @@ AWE.Controller = (function(module) {
       });
     }
       
-    that.updateQueueSlotAndJobs = function(queueId) {
+    that.updateConstructionQueueSlotAndJobs = function(queueId) {
       AWE.GS.ConstructionQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queue) {
-        log('updated queue', queueId);
+        log('updated construction queue', queueId);
       });
 
       // as we don't know the right slot (or slot id), we update all slots
@@ -242,20 +243,32 @@ AWE.Controller = (function(module) {
       });
 
       AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
-        log('updated jobs in queue', queueId);
+        log('updated jobs in construction queue', queueId);
       });
     }
         
-    that.updateAllQueuesAndJobs = function() {
-      AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
-        log('updated queues', queues)
+    that.updateAllTrainingQueuesAndJobs = function() {
+      AWE.GS.TrainingQueueManager.updateQueuesOfSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
+        log('updated training queues', queues);
         AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
-          AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
-            log('updated jobs', jobs)
+          AWE.GS.TrainingJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+            log('updated training jobs', jobs);
+            log('---> empty?', queue.get('empty'));
           });
         });      
       });
     }
+        
+    // that.updateAllConstructionQueuesAndJobs = function() {
+      // AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
+        // log('updated queues', queues)
+        // AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
+          // AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+            // log('updated jobs', jobs)
+          // });
+        // });      
+      // });
+    // }
         
     that.updateResourcePool = function() {
       AWE.GS.ResourcePoolManager.updateResourcePool(null, function(pool){
@@ -283,10 +296,10 @@ AWE.Controller = (function(module) {
             });
 
             AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(settlement.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
-              log('updated queues', queues)
+              log('updated construction queues', queues)
               AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
                 AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
-                  log('updated jobs', jobs)
+                  log('updated construction jobs', jobs)
                 });
               });      
             });
@@ -329,7 +342,7 @@ AWE.Controller = (function(module) {
               pendingJobUpdates[jobId] = pendingJobUpdates[jobId] > 0 ? pendingJobUpdates[jobId] : AWE.Config.TIME_DIFF_RANGE;
               if (Date.parseISODate(job.get('active_job').finished_at).add({seconds: pendingJobUpdates[jobId]}) < new Date()) {
                 pendingJobUpdates[jobId] *= 2;
-                that.updateQueueSlotAndJobs(queue.getId());
+                that.updateConstructionQueueSlotAndJobs(queue.getId());
               }
             }      
           }

@@ -42,7 +42,11 @@ AWE.UI.Util = (function(module) {
   
   module.round = function(val) {
     
-    return Math.floor(val * 10) / 10.;
+    var rounded = Math.floor(val * 10) / 10.;
+    if (rounded.toString().indexOf('.') < 0) {
+      rounded += '.0';
+    }
+    return rounded;
   }
   
   return module;

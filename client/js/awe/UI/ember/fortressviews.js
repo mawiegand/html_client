@@ -270,12 +270,26 @@ AWE.UI.Ember = (function(module) {
     
   });
   
-  module.QueueListView = Ember.View.extend({
-    templateName: 'queue-list',
+  module.TrainingJobView = Ember.View.extend({
+    classNameBindings: ['active'],
+    
+    job: null,
+    
+    cancelJobPressed: function(event) {
+      this.get('controller').cancelClicked(this.get('job'));
+    },
+    
+    active: function() {
+      return this.get('job').active_job !== null;
+    }.property('job.active_job'),    
+  });
+
+  module.ConstructionQueueView = Ember.View.extend({
+    templateName: 'construction-queue-view',
     queues: null,
   });
 
-  module.JobView = Ember.View.extend({
+  module.ConstructionJobView = Ember.View.extend({
     classNameBindings: ['active'],
     
     job: null,

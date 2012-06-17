@@ -23,11 +23,12 @@ AWE.GS = (function(module) {
     settlementIdObserver: AWE.Partials.attributeHashObserver(module.TrainingQueueAccess, 'settlement_id', 'old_settlement_id').observes('settlement_id'),
     
     init: function(spec) {
-      log('INIT queue');
+      log('INIT training queue');
       this._super(spec);
       
       if (this.get('id')) {
-        var hashableJobs = AWE.GS.ConstructionJobAccess.getHashableCollectionForQueue_id(this.get('id'));
+        var hashableJobs = AWE.GS.TrainingJobAccess.getHashableCollectionForQueue_id(this.get('id'));
+        log('---> hashableJobs', hashableJobs);
         this.set('hashableJobs', hashableJobs);
       }
     },    
@@ -82,6 +83,17 @@ AWE.GS = (function(module) {
       return AWE.GS.TrainingQueueAccess.getAllForSettlement_id(settlementId);
     }
     
+    that.getQueueOfSettlementWithType = function(settlementId, queueType) {
+      var queues = that.getQueuesOfSettlement(settlementId);
+      var found = null;
+      queues.forEach(function(queue) {
+        if (queue.get('type_id') == queueType) {
+          found = queue;
+        }
+      });
+      return found;
+    }
+    
     that.lastUpdateForSettlement = function(settlementId) {
       if (lastQueueUpdates[settlementId]) {
         return lastQueueUpdates[settlementId];
@@ -91,33 +103,16 @@ AWE.GS = (function(module) {
       }
     }
     
-    that.getQueueForBuildingCategorieInSettlement = function(buildingCategoryId, settlementId) {
-      var queues = that.getQueuesOfSettlement(settlementId);
-      var rules = AWE.GS.RulesManager.getRules();
-      // log('queues', queues, queues.length);
-      for (var i = 0; i < queues.length; i++) {
-        var queue = queues[i];
-        if (queue !== undefined && queue.get('type_id') == rules.getQueueTypeIdWithProductionCategory(buildingCategoryId)) {
-          return queue;
-        }
-      }
-      return null;
-    }
-        
     /** returns true, if update is executed, returns false, if request did 
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
     that.updateQueue = function(id, updateType, callback) {
-      var url = AWE.Config.CONSTRUCTION_SERVER_BASE + 'queues/' + id;
+      var url = AWE.Config.TRAINING_SERVER_BASE + 'queues/' + id;
       return my.updateEntity(url, id, updateType, callback); 
     };
     
-    /** updates all settlements for the current character. Calls the callback with a
-     * list of all the updated settlements. */
-    
-    
     that.updateQueuesOfSettlement = function(settlementId, updateType, callback) {
-      var url = AWE.Config.SETTLEMENT_SERVER_BASE + 'settlements/' + settlementId + '/construction_queues';
+      var url = AWE.Config.SETTLEMENT_SERVER_BASE + 'settlements/' + settlementId + '/training_queues';
       return my.fetchEntitiesFromURL(
         url,                                               // url to fetch from
         my.runningUpdatesPerSettlement,                     // queue to register this request during execution
