@@ -187,7 +187,7 @@ AWE.UI = (function(module) {
         _resource2LabelView.setTextAlign("left");
         _resource2LabelView.setIconImage("map/display/icon");
         _resource2LabelView.setFont("14px Arial");
-        _resource2LabelView.setFrame(AWE.Geometry.createRect(110, 30, 80, 24));      
+        _resource2LabelView.setFrame(AWE.Geometry.createRect(100, 30, 80, 24));      
         this.addChild(_resource2LabelView);
       }
       
@@ -197,7 +197,7 @@ AWE.UI = (function(module) {
         _resource3LabelView.setTextAlign("left");
         _resource3LabelView.setIconImage("map/display/icon");
         _resource3LabelView.setFont("14px Arial");
-        _resource3LabelView.setFrame(AWE.Geometry.createRect(200, 30, 80, 24));      
+        _resource3LabelView.setFrame(AWE.Geometry.createRect(180, 30, 80, 24));      
         this.addChild(_resource3LabelView);
       }
       
@@ -217,7 +217,7 @@ AWE.UI = (function(module) {
         _resource5LabelView.setTextAlign("left");
         _resource5LabelView.setIconImage("map/display/icon");
         _resource5LabelView.setFont("14px Arial");
-        _resource5LabelView.setFrame(AWE.Geometry.createRect(110, 70, 80, 24));      
+        _resource5LabelView.setFrame(AWE.Geometry.createRect(100, 70, 80, 24));      
         this.addChild(_resource5LabelView);
       }
       
@@ -227,7 +227,7 @@ AWE.UI = (function(module) {
         _resource6LabelView.setTextAlign("left");
         _resource6LabelView.setIconImage("map/display/icon");
         _resource6LabelView.setFont("14px Arial");
-        _resource6LabelView.setFrame(AWE.Geometry.createRect(200, 70, 80, 24));      
+        _resource6LabelView.setFrame(AWE.Geometry.createRect(180, 70, 80, 24));      
         this.addChild(_resource6LabelView);
       }
     };
