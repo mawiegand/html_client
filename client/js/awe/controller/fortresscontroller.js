@@ -25,6 +25,7 @@ AWE.Controller = (function(module) {
     _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
     
     var _modelChanged = false;
+    var _becameVisible = false;
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -114,6 +115,7 @@ AWE.Controller = (function(module) {
     
     that.viewDidAppear = function() {
       this.visible = true;
+      _becameVisible = true;
       this.appendView();
     };
     
@@ -168,6 +170,7 @@ AWE.Controller = (function(module) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
             log(status, "Construction job created.");
             that.updateQueueSlotAndJobs(queue.getId());
+            that.updateResourcePool();
             
             if (jobType == module.CONSTRUCTION_JOB_TYPE_CREATE) {}        
           }
@@ -189,6 +192,7 @@ AWE.Controller = (function(module) {
         if (status === AWE.Net.OK) {    // 200 OK
           log(status, "Construction job deleted.");
           that.updateQueueSlotAndJobs(queueId);          
+          that.updateResourcePool();
         }
         else {
           log(status, "The server did not accept the job removal command.");
@@ -250,6 +254,12 @@ AWE.Controller = (function(module) {
       });
     }
         
+    that.updateResourcePool = function() {
+      AWE.GS.ResourcePoolManager.updateResourcePool(null, function(pool){
+        log('updated resource pool', pool);
+      });
+    };
+
     that.updateModel = (function() {
             
       var lastSettlementUpdateCheck = new Date(1970);
@@ -284,13 +294,15 @@ AWE.Controller = (function(module) {
         if (that.fortressId > 0 &&
             (lastSettlementId != that.fortressId ||
              lastSettlementUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date() ||
-             that.modelChanged())
+             that.modelChanged() ||
+             _becameVisible)
         ) {
           log('update Settlement');
           updateSettlement();
           lastSettlementUpdateCheck = new Date();
           lastSettlementId = that.fortressId;
           _modelChanged = false;
+          _becameVisible = false;
         }
       };
     }());
