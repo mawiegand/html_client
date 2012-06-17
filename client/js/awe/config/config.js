@@ -91,7 +91,7 @@ AWE.Config = (function(module) {
   
   module.SETTLEMENT_REFRESH_INTERVAL = 60 * 1000;
   
-  module.CREDITS_REFRESH_INTERVAL = 10 * 1000;
+  module.RESOURCES_REFRESH_INTERVAL = 5 * 1000;
 
   //image cache
   module.IMAGE_CACHE_LOAD_LIST = {

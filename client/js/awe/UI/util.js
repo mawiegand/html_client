@@ -40,6 +40,11 @@ AWE.UI.Util = (function(module) {
     return hour + ':' + min + ':' + sec;
   }
   
+  module.round = function(val) {
+    
+    return Math.floor(val * 10) / 10.;
+  }
+  
   return module;
   
 }(AWE.UI.Util || {}));

@@ -87,7 +87,7 @@ AWE.GS = (function(module) {
       return this.resourcePool;
     };
     
-    that.lastUpdateForResourcePool = function() {
+    that.lastUpdate = function() {
       return lastResourcePoolUpdate ? lastResourcePoolUpdate : new Date(1970);
     };
   
