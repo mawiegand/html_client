@@ -32,6 +32,9 @@ AWE.Ext = (function(module) {
   
   
   Date.parseISODate = function(s){
+    
+    if (!s) return new Date(1970);  // TODO Hack
+    
     var re=new RegExp(/(\d\d\d\d)\D?(\d\d)\D?(\d\d)\D?(\d\d)\D?(\d\d\D?(\d\d\.?(\d*))?)(Z|[+-]\d\d?(:\d\d)?)?/);
     var a=s.match(re).slice(1).map(function(x,i){
       if (i==6 && x) x=parseInt(x,10)/Math.pow(10,x.length)*1000; // convert to milliseconds
