@@ -247,31 +247,100 @@ AWE.UI.Ember = (function(module) {
   module.TrainableUnitButtonView = Ember.View.extend({
     templateName: "trainable-unit-button",
       
-    clicked: function(event) {
+    classNameBindings: ['selected'],  
+    
+      
+    click: function(event) {
       this.get('parentView').set('selectedUnitType', this.get('unitType'));
     },     
     
     selected: function() {
       return this.get('unitType') === this.getPath('parentView.selectedUnitType');
-    },
+    }.property('parentView.selectedUnitType').cacheable(),
+    
     
     // TODO: check requirements and costs. should become a mixin somehow
   
     requirementsMet: function() {
       return true ;
-    }.property('queue.settlement').cacheable(),
+    }.property('queue.settlement', 'unitType').cacheable(),
     
     costsMet: function() {
       return true ;
-    }.property('queue.settlement').cacheable(),
+    }.property('queue.settlement', 'unitType').cacheable(),
+    
+    
   });
   
   module.TrainingQueueView = Ember.View.extend({
     templateName: "training-queue-view",
     
-    queue: null,
     selectedUnitType: null,
+    number: "1",
 
+    queue: null,
+
+		costs: function() {
+		  var costs = [];
+		  var unitType = this.get('selectedUnitType');
+		  if (unitType && unitType.costs) {
+		    AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
+		      if (unitType.costs[item.id] && parseInt(unitType.costs[item.id]) > 0) {
+		        costs.push({
+	            name:   item.name['en_US'],
+	            amount: unitType.costs[item.id],
+            });
+          }
+		    });
+		  }
+      return costs;
+		}.property('selectedUnitType', 'settlement').cacheable(),
+		
+		totalCosts: function() {
+		  var costs  = this.get('costs');
+		  var number = this.get('number')
+		  if (!costs || !number || number <= 0) {
+		    return null;
+		  }
+		  return costs.map(function(item) {
+		    return {
+	        name:   item.name,
+	        amount: item.amount * number,
+        };
+		  });
+		}.property('costs', 'number').cacheable(),
+		
+		productionTime: function() {
+		  var unitType = this.get('selectedUnitType');
+		  if (unitType && unitType.production_time) {
+		    var seconds = unitType.production_time;
+		    var speed = this.getPath('queue.speed');
+		    seconds = speed ? seconds / speed : seconds; // apply queue speed, if known.
+		    return seconds;
+		  }
+		  else {
+		    return null;
+	    }
+		}.property('queue', 'selectedUnitType').cacheable(),   ///< TODO : also update, when queue's speedup changes.
+
+		totalProductionTime: function() {
+		  var productionTime  = this.get('productionTime');
+		  var number = this.get('number')
+		  if (!productionTime ||number <= 0) {
+		    return null;
+		  }
+		  return productionTime * number;
+		}.property('productionTime', 'number').cacheable(), 
+		
+		localizedProductionTime: function() {
+		  var productionTime = this.get('productionTime');
+		  return productionTime ? AWE.Util.localizedDurationFromSeconds(productionTime) : null;
+		}.property('productionTime').cacheable(),   
+
+		localizedTotalProductionTime: function() {
+		  var productionTime = this.get('totalProductionTime');
+		  return productionTime ? AWE.Util.localizedDurationFromSeconds(productionTime) : null;
+		}.property('totalProductionTime').cacheable(),   
 
     trainableUnitTypes: function() {
       var queueType = this.getPath('queue.queueType');

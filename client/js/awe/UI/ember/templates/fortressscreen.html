@@ -148,17 +148,33 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="trainable-unit-button">
-  <div class="trainable-unit-button">{{unitType.name.en_US}}</div>
+  {{unitType.name.en_US}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="training-queue-view">
   <h2>{{ queue.queueType.name.en_US }}</h2>
-  <a href="#" {{action "createJobPressed"}}> Create Job (13 Thrower)</a>
+
+  <div class="clearfix">
+    {{#each trainableUnitTypes}}
+      {{view AWE.UI.Ember.TrainableUnitButtonView unitTypeBinding="this" queueBinding="view.queue" classNames="training-option"}}
+    {{/each}}
+  </div>
+
+  Per Unit:
+    {{#each costs}}
+      {{amount}} {{name}} &nbsp;  
+    {{/each}}    
+    Duration: {{localizedProductionTime}}
+  <br />
+  Total:
+    {{#each totalCosts}}
+      {{amount}} {{name}} &nbsp;  
+    {{/each}}    
+    Duration: {{localizedTotalProductionTime}}
+  <br />  
   
-  {{#each trainableUnitTypes}}
-    {{view AWE.UI.Ember.TrainableUnitButtonView unitTypeBinding="this" queueBinding="view.queue"}}
-  {{/each}}
-    
+  
+  {{view Ember.TextField valueBinding="number"}} <a href="#" class="button" action="trainUnits">Train {{selectedUnitType.name.en_US}}</a>    
 
   <div class="training-queue-list-pane">    
     {{#unless queue.empty }}

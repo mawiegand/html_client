@@ -709,6 +709,9 @@ html, body {
   cursor: pointer; 
 }
 
+
+
+
 .building-option:hover {
   background-color: #FDD;
   cursor: pointer;
@@ -762,6 +765,34 @@ html, body {
 .building-option-image.size3 {
   background-position: -159px 0px;
 }
+
+
+.training-option {
+  float: left;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+  padding: 10px;
+  border: 1px solid gray;
+  color: gray;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+.training-option.selected {
+  border: 1px solid black;
+  color: black;
+}
+
+.training-option:hover {
+  color: #FA0;
+  border: 1px solid #FA0;
+}
+
+
 
 .queue-list {
   position: absolute;
