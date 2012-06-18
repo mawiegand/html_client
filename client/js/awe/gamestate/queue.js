@@ -35,6 +35,9 @@ AWE.GS = (function(module) {
     active_jobs: null,
     hashableJobs: null,
 
+    settlement: function() {
+      return AWE.GS.SettlementManager.getSettlement(this.get('settlementId'));
+    }.property('settlement_id'),
 
     activeJob: function(jobId) {
       return this.get('active_jobs').objectAt(jobId);

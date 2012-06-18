@@ -244,14 +244,44 @@ AWE.UI.Ember = (function(module) {
 		},  
   });
   
+  module.TrainableUnitButtonView = Ember.View.extend({
+    templateName: "trainable-unit-button",
+      
+    clicked: function(event) {
+      this.get('parentView').set('selectedUnitType', this.get('unitType'));
+    },     
+    
+    selected: function() {
+      return this.get('unitType') === this.getPath('parentView.selectedUnitType');
+    },
+    
+    // TODO: check requirements and costs. should become a mixin somehow
+  
+    requirementsMet: function() {
+      return true ;
+    }.property('queue.settlement').cacheable(),
+    
+    costsMet: function() {
+      return true ;
+    }.property('queue.settlement').cacheable(),
+  });
+  
   module.TrainingQueueView = Ember.View.extend({
     templateName: "training-queue-view",
-    queueType: null,
     
+    queue: null,
+    selectedUnitType: null,
+
+
     trainableUnitTypes: function() {
-      
-    }.property('queueType').cacheable(),
-        
+      var queueType = this.getPath('queue.queueType');
+      var rules     = AWE.GS.RulesManager.getRules();
+      if (!queueType || !queueType.produces) {
+        return null;
+      }
+      return AWE.GS.RulesManager.getRules().getUnitTypesWithCategories(queueType.produces);
+    }.property('queue.queueType').cacheable(),
+
     
     createJobPressed: function(evt) {
       this.get('controller').createTrainingJobClicked();
