@@ -87,22 +87,9 @@ AWE.GS = (function(module) {
 		}.property('levelAfterJobs').cacheable(),
 		
 		costsOfNextLevel: function() {
-		  var costs = [];
 		  var buildingType = this.get('buildingType');
-		  if (buildingType && buildingType.costs) {
-		    var nextLevel = this.get('nextLevel');
-		    AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
-		      var formula = buildingType.costs[item.id];
-		      if (formula) {
-		        var amount = AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(formula), nextLevel);
-		        costs.push({
-		          name:   item.name['en_US'],
-		          amount: Math.ceil(amount),
-	          });
-          }
-		    });
-		  }
-      return costs;
+		  var nextLevel    = this.get('nextLevel');
+		  return buildingType && buildingType.costs ? AWE.Util.Rules.evaluateResourceCosts(buildingType.costs, nextLevel) : null;
 		}.property('nextLevel', 'buildingId').cacheable(),
 		
 		productionTimeOfNextLevel: function() {

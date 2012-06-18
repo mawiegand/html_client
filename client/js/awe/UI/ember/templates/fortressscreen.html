@@ -120,7 +120,7 @@
       {{#if building.costsOfNextLevel}}
         Costs:
         {{#each building.costsOfNextLevel}}
-          {{amount}} {{name}} &nbsp;  
+          {{amount}} {{local resourceType.name}} &nbsp;  
         {{/each}}
         <br/>
       {{/if}}
@@ -162,13 +162,13 @@
 
   Per Unit:
     {{#each costs}}
-      {{amount}} {{name}} &nbsp;  
+      {{amount}} {{local resourceType.name}} &nbsp;  
     {{/each}}    
     Duration: {{localizedProductionTime}}
   <br />
   Total:
     {{#each totalCosts}}
-      {{amount}} {{name}} &nbsp;  
+      {{amount}} {{local resourceType.name}} &nbsp;  
     {{/each}}    
     Duration: {{localizedTotalProductionTime}}
   <br />  
