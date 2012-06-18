@@ -99,12 +99,12 @@
     {{{building.description}}}
 
     {{#if building.unlockedQueues}}
-      <p><b>Enables:</b> {{#each building.unlockedQueues}}{{ name }}, {{/each}}</p>
+      <p><b>Enables:</b> {{#each building.unlockedQueues}}{{ name.en_US }}, {{/each}}</p>
     {{/if}}
     
     {{#if building.speedupQueues}}
       {{#each building.speedupQueues}}
-        <p><b>Speed bonus to {{ name }}:</b> {{ speedup }}%</p>
+        <p><b>Speed bonus to {{ queueType.name.en_US }}:</b> {{ speedup }}%</p>
       {{/each}}
     {{/if}}
     
@@ -126,12 +126,12 @@
       {{/if}}
     
       {{#if building.unlockedQueuesNextLevel}}
-        <p><b>Enables:</b> {{#each building.unlockedQueuesNextLevel}}{{ name }}, {{/each}}</p>
+        <p><b>Enables:</b> {{#each building.unlockedQueuesNextLevel}}{{ name.en_US }}, {{/each}}</p>
       {{/if}}
     
       {{#if building.speedupQueuesNextLevel}}
         {{#each building.speedupQueuesNextLevel}}
-          <p><b>Speed bonus to {{ name }}:</b> {{ speedup }}%</p>
+          <p><b>Speed bonus to {{ queueType.name.en_US }}:</b> {{ speedup }}%</p>
         {{/each}}
       {{/if}}
     {{else}}
@@ -140,44 +140,37 @@
     
     <hr>
 
-    {{#if building.slot.settlement.hashableTrainingQueues }}
-      {{view AWE.UI.Ember.TrainingQueueView controllerBinding="controller" classNames="training-queue-list" settlementBinding="building.slot.settlement" queuesBinding="building.slot.settlement.hashableTrainingQueues.collection"}}
-    {{/if}}
+    {{#each building.trainingQueues }}
+      {{view AWE.UI.Ember.TrainingQueueView controllerBinding="controller" classNames="training-queue-list" settlementBinding="building.slot.settlement" queueBinding="this"}}
+    {{/each}}
 
   </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="training-queue-view">
   <div class="training-queue-list-pane">
+    <h2>{{ queue.queueType.name.en_US }}</h2>
     <a href="#" {{action "createJobPressed"}}> Create Job (13 Thrower)</a>
-    {{#each queues}}
-      {{#view Ember.View controllerBinding="controller" queueBinding="this" classNames="queue"}}
-        <h2>Queue {{ queue.name.en_US }}</h2>
-        {{#unless queue.empty }}
-          {{#each queue.hashableJobs.collection }}
-            {{#view AWE.UI.Ember.TrainingJobView controllerBinding="controller" jobBinding="this" classNames="training-queue-job"}}
-              <div class="training-queue-job-text">    
-                <p>{{ job.quantity }} {{ job.unitType.name.en_US }}</p>
-                {{#if job.active_job }}
-                <p>Fin: {{ job.parsedFinishingTotalDate }}</p>
-                <p>Finished: {{ job.active_job.quantity_finished }}</p>
-                <p>Current: {{ job.active_job.quantity_active }}</p>
-                <p>{{ job.parsedFinishingActiveDate }}</p>
-                {{/if}}
-              </div>  
-              <div class="training-queue-job-button">    
-                <a href="#" {{action "cancelJobPressed"}}>cancel</a>
-              </div>  
-            {{/view}}
-          {{/each}}
-        {{/unless}}
-        {{#if queue.empty }}
-        <div class="queue-job-list empty">    
-           <p>This training queue is empty</p>
-        </div>  
-        {{/if}}
-      {{/view}}
-    {{/each}}
+    
+    
+    {{#unless queue.empty }}
+      {{#each queue.hashableJobs.collection }}
+        {{#view AWE.UI.Ember.TrainingJobView controllerBinding="controller" jobBinding="this" classNames="training-queue-job"}}
+          <div class="training-queue-job-text">    
+            <p>{{ job.quantity }} {{ job.unitType.name.en_US }}</p>
+            {{#if job.active_job }}
+            <p>Fin: {{ job.parsedFinishingTotalDate }}</p>
+            <p>Finished: {{ job.active_job.quantity_finished }}</p>
+            <p>Current: {{ job.active_job.quantity_active }}</p>
+            <p>{{ job.parsedFinishingActiveDate }}</p>
+            {{/if}}
+          </div>  
+          <div class="training-queue-job-button">    
+            <a href="#" {{action "cancelJobPressed"}}>cancel</a>
+          </div>  
+        {{/view}}
+      {{/each}}
+    {{/unless}}
   </div>
 </script>
 
@@ -186,7 +179,7 @@
   <div class="queue-list-pane">
     {{#each queues}}
       {{#view Ember.View controllerBinding="controller" queueBinding="this" classNames="queue"}}
-      <h1>{{queue.name}}</h1>
+      <h1>{{queue.queueType.name.en_US}}</h1>
         {{#unless queue.empty }}
         <div class="queue-job-list">    
           {{#each queue.hashableJobs.collection }}

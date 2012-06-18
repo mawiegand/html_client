@@ -247,29 +247,11 @@ AWE.UI.Ember = (function(module) {
   module.TrainingQueueView = Ember.View.extend({
     templateName: "training-queue-view",
     queueType: null,
-    guck: 'herbert',
-    hans: null,
     
     trainableUnitTypes: function() {
       
     }.property('queueType').cacheable(),
-    
-    queue: function() {
-      var queues = this.get('hans');
-      return null;
-      console.log('QUEUE property', queues, this.get('parentView'), this.get('hans'), this.get('guck'), this.get('queueType'), this.get('templateName'), this.get('parentView'), this.getPath('parentView.parentView'));
-      var queue = null;
-      var queueType = this.get('queueType');
-      if (!queueType || !queues) {
-        return null;
-      }
-      queues.each(function(item) {
-        if (item.get('type_id') === queueType.id) {
-          queue = item;
-        }
-      });
-      return queue;
-    }.property('templateName'),
+        
     
     settlement: null,
     
