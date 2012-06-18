@@ -352,7 +352,7 @@ AWE.UI.Ember = (function(module) {
     }.property('queue.queueType').cacheable(),
 
     createJobPressed: function(evt) {
-      this.get('controller').trainingCreateClicked(this.get('queue'), 1, 13);
+      this.get('controller').trainingCreateClicked(this.get('queue'), this.getPath('selectedUnitType.id'), this.get('number'));
     },
     
   });
