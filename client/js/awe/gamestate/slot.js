@@ -171,7 +171,9 @@ AWE.GS = (function(module) {
 		
 		trainingQueues: function() {
 		  var queues = this.get('unlockedQueues');
-		  var trainingQueuesSettlement = this.get('slot').settlement().getPath('hashableTrainingQueues.collection');
+		  var trainingQueuesSettlement = this.getPath('slot.settlement.hashableTrainingQueues.collection');
+		  
+      console.log("trainingQueues", queues, trainingQueuesSettlement);
 		  
 		  if (!queues || !trainingQueuesSettlement) {
 		    return [];

@@ -141,7 +141,7 @@
     <hr>
 
     {{#if building.slot.settlementProp.hashableTrainingQueues }}
-      {{view AWE.UI.Ember.TrainingQueueView controllerBinding="controller" classNames="training-queue-list" queuesBinding="building.slot.settlementProp.hashableTrainingQueues.collection"}}
+      {{view AWE.UI.Ember.TrainingQueueView controllerBinding="controller" classNames="training-queue-list" queuesBinding="building.trainingQueues"}}
     {{/if}}
 
   </div>
