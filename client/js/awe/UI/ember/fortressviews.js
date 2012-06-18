@@ -282,11 +282,8 @@ AWE.UI.Ember = (function(module) {
       return AWE.GS.RulesManager.getRules().getUnitTypesWithCategories(queueType.produces);
     }.property('queue.queueType').cacheable(),
 
-    
-    settlement: null,
-    
     createJobPressed: function(evt) {
-      this.get('controller').trainingCreateClicked(this.get('settlement'), 1, 13);
+      this.get('controller').trainingCreateClicked(this.get('queue'), 1, 13);
     },
     
   });

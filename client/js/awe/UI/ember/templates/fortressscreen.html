@@ -141,7 +141,7 @@
     <hr>
 
     {{#each building.trainingQueues }}
-      {{view AWE.UI.Ember.TrainingQueueView controllerBinding="controller" classNames="training-queue-list" settlementBinding="building.slot.settlement" queueBinding="this"}}
+      {{view AWE.UI.Ember.TrainingQueueView controllerBinding="controller" classNames="training-queue-list" queueBinding="this"}}
     {{/each}}
 
   </div>
@@ -153,7 +153,7 @@
 
 <script type="text/x-handlebars" data-template-name="training-queue-view">
   <h2>{{ queue.queueType.name.en_US }}</h2>
-  <a href="#" {{action "createJobPressed"}}> Create Job (13 Thrower)</a>
+  <a href="#" {{action "createJobPressed"}}> Create Job (13 Skewer)</a>
   
   {{#each trainableUnitTypes}}
     {{view AWE.UI.Ember.TrainableUnitButtonView unitTypeBinding="this" queueBinding="view.queue"}}

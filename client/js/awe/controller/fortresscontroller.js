@@ -207,28 +207,19 @@ AWE.Controller = (function(module) {
     
     // training actions //////////////////////////////////////////////////////  
     
-    that.trainingCreateClicked = function(settlement, unitId, quantity) {
-      var unitType = AWE.GS.RulesManager.getRules().getUnitType(unitId);
-      var queue = AWE.GS.TrainingQueueManager.getQueueForUnitCategoryInSettlement(unitType.category, settlement.getId());
-      log('queue', queue);
-      
-      if (queue) {
-        var trainingAction = AWE.Action.Training.createJobCreateAction(queue, unitId, quantity);
-        trainingAction.send(function(status) {
-          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-            log(status, "Training job created.");
-            that.updateTrainingQueueAndJobs(queue.getId());
-            that.updateResourcePool();
-          }
-          else {
-            log(status, "The server did not accept the training command.");
-            // TODO Fehlermeldung 
-          }
-        });
-      }
-      else {
-        log("Could not find appropiate queue for unit category, no job created");
-      }
+    that.trainingCreateClicked = function(queue, unitId, quantity) {
+      var trainingAction = AWE.Action.Training.createJobCreateAction(queue, unitId, quantity);
+      trainingAction.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          log(status, "Training job created.");
+          that.updateTrainingQueueAndJobs(queue.getId());
+          that.updateResourcePool();
+        }
+        else {
+          log(status, "The server did not accept the training command.");
+          // TODO Fehlermeldung 
+        }
+      });
     }  
     
     that.trainingCancelClicked = function(job) {
