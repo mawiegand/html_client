@@ -87,7 +87,7 @@ AWE.UI.Ember = (function(module) {
     },
                       
     upgradeClicked: function(event) {
-      this.get('controller').upgradeClicked(this.get('slot'));
+      this.get('controller').constructionUpgradeClicked(this.get('slot'));
     },         
     
   }); 
@@ -266,7 +266,11 @@ AWE.UI.Ember = (function(module) {
         }
       });
       return queue;
-    }.property('queues.changedAt')
+    }.property('queues.changedAt'),
+    
+    createJobPressed: function(evt) {
+      this.get('controller').createTrainingJobClicked();
+    },
     
   });
   
@@ -275,7 +279,7 @@ AWE.UI.Ember = (function(module) {
     
     job: null,
     
-    cancelJobPressed: function(event) {
+    cancelJobPressed: function(evt) {
       this.get('controller').cancelClicked(this.get('job'));
     },
     
