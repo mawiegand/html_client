@@ -103,7 +103,6 @@ AWE.GS = (function(module) {
     
     getQueueTypeIdWithUnitCategory: function(categoryId) {
       var queueTypes = this.get('queue_types');
-      log('---> test', categoryId, queueTypes);
       for (var id = 0; id < queueTypes.length; id++) {
         var queueType = queueTypes[id];
         if (queueType !== undefined &&
