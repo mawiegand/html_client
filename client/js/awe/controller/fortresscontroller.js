@@ -208,8 +208,7 @@ AWE.Controller = (function(module) {
     // training actions //////////////////////////////////////////////////////  
     
     that.trainingCreateClicked = function(queue, unitId, quantity) {
-      var trainingAction = AWE.Action.Training.createJobCreateAction(queue, unitId, quantity);
-      trainingAction.send(function(status) {
+      queue.sendCreateJobAction(unitId, quantity, function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
           log(status, "Training job created.");
           that.updateTrainingQueueAndJobs(queue.getId());
@@ -219,16 +218,15 @@ AWE.Controller = (function(module) {
           log(status, "The server did not accept the training command.");
           // TODO Fehlermeldung 
         }
-      });
+      })
     }  
     
     that.trainingCancelClicked = function(job) {
-      var queueId = job.get('queue_id');
-      var cancelJobAction = AWE.Action.Training.createJobCancelAction(job.getId());
-      cancelJobAction.send(function(status) {
+      var queue = job.get('queue');
+      queue.sendCancelJobAction(job.getId(), function(status) {
         if (status === AWE.Net.OK) {    // 200 OK
           log(status, "Training job deleted.");
-          that.updateTrainingQueueAndJobs(queueId);
+          that.updateTrainingQueueAndJobs(queue.getId());
           that.updateResourcePool();
         }
         else {
@@ -289,7 +287,6 @@ AWE.Controller = (function(module) {
         AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
           AWE.GS.TrainingJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
             log('updated training jobs', jobs);
-            log('---> empty?', queue.get('empty'));
           });
         });      
       });
