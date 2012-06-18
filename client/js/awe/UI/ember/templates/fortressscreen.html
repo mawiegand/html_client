@@ -149,8 +149,8 @@
 
 <script type="text/x-handlebars" data-template-name="training-queue-view">
   <div class="training-queue-list-pane">
-    <a href="#" {{action "createJobPressed"}}> Create Job (13 Thrower)</a>
     <h2>{{ queue.queueType.name.en_US }}</h2>
+    <a href="#" {{action "createJobPressed"}}> Create Job (13 Thrower)</a>
     
     
     {{#unless queue.empty }}
