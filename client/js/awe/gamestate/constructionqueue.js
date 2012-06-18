@@ -97,7 +97,7 @@ AWE.GS = (function(module) {
       // log('queues', queues, queues.length);
       for (var i = 0; i < queues.length; i++) {
         var queue = queues[i];
-        if (queue !== undefined && queue.get('type_id') == rules.getQueueTypeIdWithProductionCategory(buildingCategoryId)) {
+        if (queue !== undefined && queue.get('type_id') == rules.getQueueTypeIdWithBuildingCategory(buildingCategoryId)) {
           return queue;
         }
       }

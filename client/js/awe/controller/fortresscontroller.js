@@ -139,19 +139,8 @@ AWE.Controller = (function(module) {
       that.view.set('selectedSlot', null);
     }
     
-    /** 
-     * method is called when the user clicks in a building selection dialog, which
-     * only shows up, if there's no bilding in the slot. thus, job type must be 'create'
-     */
-    that.constructionOptionClicked = function(slot, buildingId, type) {
-      log('constructionOptionClicked', slot, buildingId, type);  // TODO type is production category - > rename
-      createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE);      
-    }
+    // construction actions //////////////////////////////////////////////////
     
-    that.constructionUgradeClicked = function(slot) {
-      var nextLevel = slot.get('building').get('nextLevel');
-      createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE, nextLevel);    
-    }  
     
     var createAndSendConstructionJob = function(slot, buildingId, jobType, levelAfter) {
       
@@ -186,13 +175,69 @@ AWE.Controller = (function(module) {
       }
     } 
     
-    that.cancelClicked = function(job) {
+    /** 
+     * method is called when the user clicks in a building selection dialog, which
+     * only shows up, if there's no bilding in the slot. thus, job type must be 'create'
+     */
+    that.constructionOptionClicked = function(slot, buildingId, type) {
+      log('constructionOptionClicked', slot, buildingId, type);  // TODO type is production category - > rename
+      createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE);      
+    }
+    
+    that.constructionUgradeClicked = function(slot) {
+      var nextLevel = slot.get('building').get('nextLevel');
+      createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE, nextLevel);    
+    }  
+    
+    that.constructionCancelClicked = function(job) {
       var queueId = job.get('queue_id');
       var cancelJobAction = AWE.Action.Construction.createJobCancelAction(job.getId());
       cancelJobAction.send(function(status) {
         if (status === AWE.Net.OK) {    // 200 OK
           log(status, "Construction job deleted.");
           that.updateConstructionQueueSlotAndJobs(queueId);          
+          that.updateResourcePool();
+        }
+        else {
+          log(status, "The server did not accept the job removal command.");
+          // TODO Fehlermeldung 
+        }
+      });
+    }
+    
+    // training actions //////////////////////////////////////////////////////  
+    
+    that.trainingCreateClicked = function(settlement, unitId, quantity) {
+      var unitType = AWE.GS.RulesManager.getRules().getUnitType(unitId);
+      var queue = AWE.GS.TrainingQueueManager.getQueueForUnitCategoryInSettlement(unitType.category, settlement.getId());
+      log('queue', queue);
+      
+      if (queue) {
+        var trainingAction = AWE.Action.Training.createJobCreateAction(queue, unitId, quantity);
+        trainingAction.send(function(status) {
+          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+            log(status, "Training job created.");
+            that.updateTrainingQueueAndJobs(queue.getId());
+            that.updateResourcePool();
+          }
+          else {
+            log(status, "The server did not accept the training command.");
+            // TODO Fehlermeldung 
+          }
+        });
+      }
+      else {
+        log("Could not find appropiate queue for unit category, no job created");
+      }
+    }  
+    
+    that.trainingCancelClicked = function(job) {
+      var queueId = job.get('queue_id');
+      var cancelJobAction = AWE.Action.Training.createJobCancelAction(job.getId());
+      cancelJobAction.send(function(status) {
+        if (status === AWE.Net.OK) {    // 200 OK
+          log(status, "Training job deleted.");
+          that.updateTrainingQueueAndJobs(queueId);
           that.updateResourcePool();
         }
         else {
@@ -256,6 +301,16 @@ AWE.Controller = (function(module) {
             log('---> empty?', queue.get('empty'));
           });
         });      
+      });
+    }
+        
+    that.updateTrainingQueueAndJobs = function(queueId) {
+      AWE.GS.TrainingQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queue) {
+        log('updated training queues', queue);
+      });
+      
+      AWE.GS.TrainingJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+        log('updated training jobs', jobs);
       });
     }
         
