@@ -311,7 +311,7 @@ AWE.GS = (function(module) {
       var options = [];
       
       if (this.get('building_id') === null || this.get('building_id') === undefined) {
-        if (! this.settlement()) {
+        if (! this.get('settlement')) {
           return [] ;
         }
 
@@ -328,18 +328,7 @@ AWE.GS = (function(module) {
       this.set('constructionOptions', options);      
     }.observes('building_id'),
 
-
     settlement: function() {         // this should become an action, but therefore we need to make sure the corresponding settlement has already been loaded
-      var sid = this.get('settlement_id');
-      if (sid === undefined || sid === null) {
-        return sid;
-      }
-      else {
-        return module.SettlementManager.getSettlement(this.get('settlement_id'));
-      }
-    },
-    
-    settlementProp: function() {         // this should become an action, but therefore we need to make sure the corresponding settlement has already been loaded
       return module.SettlementManager.getSettlement(this.get('settlement_id'));
     }.property('settlement_id').cacheable(),
     
@@ -356,7 +345,7 @@ AWE.GS = (function(module) {
 		  if (settlementId === undefined || settlementId === null) {
 		    return null;
 		  }
-		  var settlementType = this.settlement().settlementType();
+		  var settlementType = this.get('settlement').settlementType();
 		  if (settlementType === undefined || settlementType === null) {
 		    return null;
 		  }

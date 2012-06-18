@@ -145,8 +145,8 @@
     
     <hr>
 
-    {{#if building.slot.settlementProp.hashableTrainingQueues }}
-      {{view AWE.UI.Ember.TrainingQueueView controllerBinding="controller" classNames="training-queue-list" queuesBinding="building.slot.settlementProp.hashableTrainingQueues.collection"}}
+    {{#if building.slot.settlement.hashableTrainingQueues }}
+      {{view AWE.UI.Ember.TrainingQueueView controllerBinding="controller" classNames="training-queue-list" queuesBinding="building.slot.settlement.hashableTrainingQueues.collection"}}
     {{/if}}
 
   </div>
@@ -154,9 +154,10 @@
 
 <script type="text/x-handlebars" data-template-name="training-queue-view">
   <div class="training-queue-list-pane">
+    <a href="#" {{action "createJobPressed"}}> Create Job (13 Thrower)</a>
     {{#each queues}}
       {{#view Ember.View controllerBinding="controller" queueBinding="this" classNames="queue"}}
-        <h2>Training Queue {{ queue.type_id }}</h2>
+        <h2>Queue {{ queue.name.en_US }}</h2>
         {{#unless queue.empty }}
           {{#each queue.hashableJobs.collection }}
             {{#view AWE.UI.Ember.TrainingJobView controllerBinding="controller" jobBinding="this" classNames="training-queue-job"}}
@@ -177,7 +178,7 @@
         {{/unless}}
         {{#if queue.empty }}
         <div class="queue-job-list empty">    
-           <p>This construction queue is empty</p>
+           <p>This training queue is empty</p>
         </div>  
         {{/if}}
       {{/view}}
