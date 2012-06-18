@@ -24,6 +24,10 @@ AWE.GS = (function(module) {
     queue_id: null, old_queue_id: null, ///< id of the queue the job is a member of
     queueIdObserver: AWE.Partials.attributeHashObserver(module.TrainingJobAccess, 'queue_id', 'old_queue_id').observes('queue_id'),
     
+    queue: function(){
+      return module.TrainingQueueManager.getQueue(this.get('queue_id'));      
+    }.property('queue_id').cacheable(),
+    
     unit_id: null,
     unitType: function() {
       return module.RulesManager.getRules().getUnitType(this.get('unit_id'));

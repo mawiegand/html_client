@@ -351,9 +351,8 @@ AWE.UI.Ember = (function(module) {
       return AWE.GS.RulesManager.getRules().getUnitTypesWithCategories(queueType.produces);
     }.property('queue.queueType').cacheable(),
 
-    
     createJobPressed: function(evt) {
-      this.get('controller').createTrainingJobClicked();
+      this.get('controller').trainingCreateClicked(this.get('queue'), 1, 13);
     },
     
   });
@@ -364,7 +363,7 @@ AWE.UI.Ember = (function(module) {
     job: null,
     
     cancelJobPressed: function(evt) {
-      this.get('controller').cancelClicked(this.get('job'));
+      this.get('controller').trainingCancelClicked(this.get('job'));
     },
     
     active: function() {
@@ -383,7 +382,7 @@ AWE.UI.Ember = (function(module) {
     job: null,
     
     cancelJobPressed: function(event) {
-      this.get('controller').cancelClicked(this.get('job'));
+      this.get('controller').constructionCancelClicked(this.get('job'));
     },
     
     active: function() {

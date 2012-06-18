@@ -22,8 +22,9 @@ AWE.GS = (function(module) {
     version: null,
     settlement_types: null,
     unit_types: null,
-		building_categories: null,
+    unit_categories: null,
 		building_types: null,
+		building_categories: null,
 		resource_types: null,
 		queue_types: null,
 		queue_categories: null,
@@ -93,18 +94,34 @@ AWE.GS = (function(module) {
 		  return queueType;
 		},
 		
-		/** bogus: does not work like this! */
-		getQueueTypeIdWithProductionCategory: function(categoryId) {
+    getQueueTypeIdWithBuildingCategory: function(categoryId) {
       var queueTypes = this.get('queue_types');
       for (var id = 0; id < queueTypes.length; id++) {
         var queueType = queueTypes[id];
-        if (queueType !== undefined && queueType.produces && queueType.produces.contains(categoryId)) {
+        if (queueType !== undefined &&
+            queueType.produces &&
+            queueType.category == 'queue_category_construction' &&
+            queueType.produces.contains(categoryId)) {
+          return id;                                  
+        }
+      }
+      return null;
+    },
+    
+    getQueueTypeIdWithUnitCategory: function(categoryId) {
+      var queueTypes = this.get('queue_types');
+      for (var id = 0; id < queueTypes.length; id++) {
+        var queueType = queueTypes[id];
+        if (queueType !== undefined &&
+            queueType.produces &&
+            queueType.category == 'queue_category_training' &&
+            queueType.produces.contains(categoryId)) {
           return id;
         }
       }
       return null;
-		},
-		
+    },
+    
 		extractIds: function(collection) {
 		  return collection.getEach('id'); // "getEach" is supplied by ember
 		},

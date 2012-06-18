@@ -30,6 +30,16 @@ AWE.GS = (function(module) {
         var hashableJobs = AWE.GS.ConstructionJobAccess.getHashableCollectionForQueue_id(this.get('id'));
         this.set('hashableJobs', hashableJobs);
       }
+    },
+    
+    sendCreateJobAction: function(slotId, buildingId, jobType, levelAfter, callback) {
+      var trainingAction = AWE.Action.Construction.createJobCreateAction(this, slotId, buildingId, jobType, levelAfter);
+      trainingAction.send(callback);      
+    },
+
+    sendCancelJobAction: function(jobId, callback) {
+      var cancelJobAction = AWE.Action.Construction.createJobCancelAction(jobId);
+      cancelJobAction.send(callback);
     },    
   });     
     
@@ -97,7 +107,7 @@ AWE.GS = (function(module) {
       // log('queues', queues, queues.length);
       for (var i = 0; i < queues.length; i++) {
         var queue = queues[i];
-        if (queue !== undefined && queue.get('type_id') == rules.getQueueTypeIdWithProductionCategory(buildingCategoryId)) {
+        if (queue !== undefined && queue.get('type_id') == rules.getQueueTypeIdWithBuildingCategory(buildingCategoryId)) {
           return queue;
         }
       }

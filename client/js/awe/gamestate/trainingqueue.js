@@ -28,9 +28,18 @@ AWE.GS = (function(module) {
       
       if (this.get('id')) {
         var hashableJobs = AWE.GS.TrainingJobAccess.getHashableCollectionForQueue_id(this.get('id'));
-        log('---> hashableJobs', hashableJobs);
         this.set('hashableJobs', hashableJobs);
       }
+    },
+
+    sendCreateJobAction: function(unitId, quantity, callback) {
+      var trainingAction = AWE.Action.Training.createJobCreateAction(this, unitId, quantity);
+      trainingAction.send(callback);      
+    },
+
+    sendCancelJobAction: function(jobId, callback) {
+      var cancelJobAction = AWE.Action.Training.createJobCancelAction(jobId);
+      cancelJobAction.send(callback);
     },    
   });     
     
@@ -82,6 +91,20 @@ AWE.GS = (function(module) {
     that.getQueuesOfSettlementAsHash = function(settlementId) {
       return AWE.GS.TrainingQueueAccess.getAllForSettlement_id(settlementId);
     }
+    
+    that.getQueueForUnitCategoryInSettlement = function(unitCategoryId, settlementId) {
+      var queues = that.getQueuesOfSettlement(settlementId);
+      var rules = AWE.GS.RulesManager.getRules();
+      var queueTypeId = rules.getQueueTypeIdWithUnitCategory(unitCategoryId);
+      
+      var found = null;
+      queues.forEach(function(queue) {
+        if (queue.get('type_id') == queueTypeId) {
+          found = queue;
+        }
+      });
+      return found;
+    }   
     
     that.getQueueOfSettlementWithType = function(settlementId, queueType) {
       var queues = that.getQueuesOfSettlement(settlementId);
