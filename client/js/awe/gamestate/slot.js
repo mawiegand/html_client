@@ -146,6 +146,9 @@ AWE.GS = (function(module) {
 		
 		// // Abilities //////////////////////////////////////////////////////////		
 		
+		/** calculate the queues that are unlocked by this particular building.
+		 * Includes all types of queues; construction, training as well as
+		 * (later on) research queues. */
 		calculateUnlockedQueues: function(level) {
 		  level = level || this.get('level');
 		  var rule = this.get('buildingType');
@@ -161,37 +164,35 @@ AWE.GS = (function(module) {
 		      if (!queueType) {
 		        return null;
 		      }
-		      return {
-		        name: queueType.name['en_US'],
-		        queueType: queueType,
-		      };
+		      return queueType;
 		    });
 		  }
 		},
 		
+		/** filters the training queues at the settlements to return only those,
+		 * that, according to the rules, are unlocked by this particular building
+		 * (or, actually, by another building of the same type). */
 		trainingQueues: function() {
-		  var queues = this.get('unlockedQueues');
-		  var trainingQueuesSettlement = this.getPath('slot.settlement.hashableTrainingQueues.collection');
+		  var queueTypes = this.get('unlockedQueues');   // unlocked by this building according to the rules
+		  var trainingQueuesSettlement = this.getPath('slot.settlement.hashableTrainingQueues.collection'); // all "living" queues in the settlement
+		  var settlementId = this.getPath('slot.settlement.id');
 		  
-      console.log("trainingQueues", queues, trainingQueuesSettlement);
-		  
-		  if (!queues || !trainingQueuesSettlement) {
+		  if (!queueTypes || queueTypes.length === 0 || !trainingQueuesSettlement || trainingQueuesSettlement.length === 0 || !settlementId) {
 		    return [];
 		  }
-		  queues = queues.filter(function(item) {
-		    console.log(item)
-		    return item.queueType.category === 'queue_category_training';
+		  var queues = queueTypes.filter(function(item) {
+		    return item.category === 'queue_category_training';
 		  });
-		  
-		  return queues.forEach(function(item) {
-		    item.queue = trainingQueuesSettlement.findProperty('type_id', item.queueType.id);
-		    console.log(item, item.queue, trainingQueuesSettlement);
-		  });
-		}.property('unlockedQueues').cacheable(),
+		  return queues.map(function(item) {
+        return AWE.GS.TrainingQueueManager.getQueueOfSettlementWithType(settlementId, item.id);
+		  }); ///< returns the "living" queues that have been unlocked by this building(type)
+		}.property('unlockedQueues', 'slot.settlement', 'slot.settlement.hashableTrainingQueues.changedAt').cacheable(),
+		
 		
 		unlockedQueues: function() {
 		  return this.calculateUnlockedQueues();
 		}.property('buildingId', 'level').cacheable(),
+		
 		
 		unlockedQueuesNextLevel: function() {
 		  return this.calculateUnlockedQueues(this.get('nextLevel'));
@@ -211,10 +212,10 @@ AWE.GS = (function(module) {
 		      if (!queueType) {
 		        return null;
 		      }
-		      return {
-		        name: queueType.name['en_US'],
+		      return Ember.Object.create({
+		        queueType: queueType,
 		        speedup: AWE.UI.Util.round(AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(item.speedup_formula), level)*100),
-		      };
+	        });
 		    });
 		  }
 		},		
@@ -321,7 +322,7 @@ AWE.GS = (function(module) {
       var options = [];
       
       if (this.get('building_id') === null || this.get('building_id') === undefined) {
-        if (! this.settlement()) {
+        if (! this.get('settlement')) {
           return [] ;
         }
 
@@ -338,18 +339,7 @@ AWE.GS = (function(module) {
       this.set('constructionOptions', options);      
     }.observes('building_id'),
 
-
     settlement: function() {         // this should become an action, but therefore we need to make sure the corresponding settlement has already been loaded
-      var sid = this.get('settlement_id');
-      if (sid === undefined || sid === null) {
-        return sid;
-      }
-      else {
-        return module.SettlementManager.getSettlement(this.get('settlement_id'));
-      }
-    },
-    
-    settlementProp: function() {         // this should become an action, but therefore we need to make sure the corresponding settlement has already been loaded
       return module.SettlementManager.getSettlement(this.get('settlement_id'));
     }.property('settlement_id').cacheable(),
     
@@ -366,7 +356,7 @@ AWE.GS = (function(module) {
 		  if (settlementId === undefined || settlementId === null) {
 		    return null;
 		  }
-		  var settlementType = this.settlement().settlementType();
+		  var settlementType = this.get('settlement').settlementType();
 		  if (settlementType === undefined || settlementType === null) {
 		    return null;
 		  }

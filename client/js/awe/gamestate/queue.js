@@ -54,11 +54,7 @@ AWE.GS = (function(module) {
     empty: function() {
       return this.get('jobs_count') == 0;
     }.property('jobs_count').cacheable(),
-    
-    name: function() {
-      var names = this.getPath('queueType.name');
-      return names ? names.en_US : null;
-    }.property('queueType').cacheable(),
+            
   });     
       
   return module;

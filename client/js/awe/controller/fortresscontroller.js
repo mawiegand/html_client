@@ -148,7 +148,7 @@ AWE.Controller = (function(module) {
       createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE);      
     }
     
-    that.upgradeClicked = function(slot) {
+    that.constructionUgradeClicked = function(slot) {
       var nextLevel = slot.get('building').get('nextLevel');
       createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE, nextLevel);    
     }  
