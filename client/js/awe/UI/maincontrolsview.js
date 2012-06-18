@@ -11,278 +11,244 @@ AWE.UI = (function(module) {
 
     var that;
     
-    var _container = null;
+    var _flagView;
+    var _heroButton;
+    var _heroHeadImageView;
+    var _fortressButton;
+    var _villageImageView;
+    var _messagesButton;
+    var _moreButton;
+    var _locationsButton;
+    var _armiesButton;
+    var _shopButton;
+    var _resourcesShape;
     
-    var _resource1Text = null;
-    var _resource2Text = null;
-    var _resource3Text = null;
-    var _resource4Text = null;
-
+    var _resource1LabelView;
+    var _resource2LabelView;
+    var _resource3LabelView;
+    var _resource4LabelView;
+    var _resource5LabelView;
+    var _resource6LabelView;
+        
     my = my || {};
     
     my.typeName = "MainControlsView";
     
-    that = module.createView(spec, my);
+    that = module.createContainer(spec, my);
 
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
-      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
-      setFrame: AWE.Ext.superior(that, "setFrame"),
+      updateView: AWE.Ext.superior(that, "updateView"),
     };
     
     /** overwritten view methods */
     
     that.initWithController = function(controller, frame) {
-      _container = new Container();
       _super.initWithController(controller, frame);
-          
-      // Ressourcen Leiste
-      // Flagge
       
-      
+      this.recalcView();
+
+      my.container.x = my.frame.origin.x;
+      my.container.y = my.frame.origin.y;
+      my.container.width  = my.frame.size.height;
+      my.container.height = my.frame.size.height;
+    }
+    
+    that.recalcView = function() {
+
       var character = AWE.GS.CharacterManager.currentCharacter;
       var allianceId = character.get('alliance_id');
-      if (character && allianceId) {
-        var _flagView = AWE.UI.createAllianceFlagView();
-        _flagView.initWithController(controller);
+      
+      // Ressourcen Leiste
+      // Flagge
+      if (!_resourcesShape) {   
+        var _resourcesShapeGraphics = new Graphics();
+        _resourcesShapeGraphics.setStrokeStyle(0);
+        _resourcesShapeGraphics.beginFill('rgba(0, 0, 0, 0.5)');
+        _resourcesShapeGraphics.drawRoundRect(0, 20, 300, 80, 5);
+        _resourcesShape = AWE.UI.createShapeView();
+        _resourcesShape.initWithControllerAndGraphics(my.controller, _resourcesShapeGraphics);    
+        this.addChild(_resourcesShape);
+      }
+  
+      if (!_flagView && character && allianceId) {
+        _flagView = AWE.UI.createAllianceFlagView();
+        _flagView.initWithController(my.controller);
         _flagView.setFrame(AWE.Geometry.createRect(240, 0, 80, 100));
         _flagView.setAllianceId(allianceId);
         _flagView.setTagVisible(true);
         _flagView.onClick = function() { 
           WACKADOO.activateAllianceController(allianceId);   
         }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+        this.addChild(_flagView);
       }
   
-      // Kopf
-      var _heroButtonGraphics = new Graphics();
-      _heroButtonGraphics.setStrokeStyle(1);
-      _heroButtonGraphics.beginStroke('rgb(0, 0, 0)');
-      _heroButtonGraphics.beginFill('rgb(255, 255, 255)');
-      _heroButtonGraphics.drawCircle(254, 146, 64);
-      var _heroButton = new Shape(_heroButtonGraphics);    
-  
-      var _heroHead = new Bitmap();
-      _heroHead.image = AWE.UI.ImageCache.getImage('hud/head');
-      _heroHead.x = 198;
-      _heroHead.y = 85;
-      _heroHead.scaleX = 0.15;
-      _heroHead.scaleY = 0.15;
-    
-      // Festung
-      var _fortressButtonGraphics = new Graphics();
-      _fortressButtonGraphics.setStrokeStyle(1);
-      _fortressButtonGraphics.beginStroke('rgb(0, 0, 0)');
-      _fortressButtonGraphics.beginFill('rgb(255, 255, 255)');
-      _fortressButtonGraphics.drawCircle(344, 84, 64);
-      var _fortressButton = new Shape(_fortressButtonGraphics);    
-  
-  /*    var _fortressButtonText = new Text('Fortress', "12px Arial", "#000");
-      _fortressButtonText.textBaseline = "middle";
-      _fortressButtonText.textAlign = "center"
-      _fortressButtonText.x = 344;
-      _fortressButtonText.y = 84;*/
+      if (!_heroButton) {
+        var _heroButtonGraphics = new Graphics();
+        _heroButtonGraphics.setStrokeStyle(1);
+        _heroButtonGraphics.beginStroke('rgb(0, 0, 0)');
+        _heroButtonGraphics.beginFill('rgb(255, 255, 255)');
+        _heroButtonGraphics.drawCircle(254, 146, 64);
+        _heroButton = AWE.UI.createShapeView();
+        _heroButton.initWithControllerAndGraphics(my.controller, _heroButtonGraphics);    
+        this.addChild(_heroButton);
+      }
       
-       var _village = new Bitmap();
-      _village.image = AWE.UI.ImageCache.getImage("map/colony/big");
-      _village.x = 293;
-      _village.y = 20;
-      _village.scaleX = 1;
-      _village.scaleY = 1;     
-      
-      _fortressButton.onClick = function() { WACKADOO.baseButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
-      _village.onClick = function() { WACKADOO.baseButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
-      
+      if (!_heroHeadImageView) {
+        _heroHeadImageView = AWE.UI.createImageView();
+        _heroHeadImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/head"));
+        _heroHeadImageView.setFrame(AWE.Geometry.createRect(198, 85, 100, 100));
+        this.addChild(_heroHeadImageView);
+      }
   
+      if (!_fortressButton) {
+        var _fortressButtonGraphics = new Graphics();
+        _fortressButtonGraphics.setStrokeStyle(1);
+        _fortressButtonGraphics.beginStroke('rgb(0, 0, 0)');
+        _fortressButtonGraphics.beginFill('rgb(255, 255, 255)');
+        _fortressButtonGraphics.drawCircle(344, 84, 64);
+        _fortressButton = AWE.UI.createShapeView();
+        _fortressButton.initWithControllerAndGraphics(my.controller, _fortressButtonGraphics);    
+        _fortressButton.onClick = function() { WACKADOO.baseButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+        this.addChild(_fortressButton);
+      }    
+  
+      if (!_villageImageView) {
+        _villageImageView = AWE.UI.createImageView();
+        _villageImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("map/colony/big"));
+        _villageImageView.setFrame(AWE.Geometry.createRect(293, 20, 100, 100));
+        _villageImageView.onClick = function() { WACKADOO.baseButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+        this.addChild(_villageImageView);
+      }
+
       // Messages
-      var _messagesButtonGraphics = new Graphics();
-      _messagesButtonGraphics.setStrokeStyle(1);
-      _messagesButtonGraphics.beginStroke('rgb(0, 0, 0)');
-      _messagesButtonGraphics.beginFill('rgb(255, 255, 255)');
-      _messagesButtonGraphics.drawCircle(402, 26, 36);
-      var _messagesButton = new Shape(_messagesButtonGraphics);    
-      
-  
-      var _messagesButtonText = new Text('Messages', "12px Arial", "#000");
-      _messagesButtonText.textBaseline = "middle";
-      _messagesButtonText.textAlign = "center"
-      _messagesButtonText.x = 402;
-      _messagesButtonText.y = 26;
-  
-      _messagesButton.onClick = function() { WACKADOO.messagesButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
-      _messagesButtonText.onClick = function() { WACKADOO.messagesButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
-
-  
-      // More...
-      var _moreButtonGraphics = new Graphics();
-      _moreButtonGraphics.setStrokeStyle(1);
-      _moreButtonGraphics.beginStroke('rgb(0, 0, 0)');
-      _moreButtonGraphics.beginFill('rgb(255, 255, 255)');
-      _moreButtonGraphics.drawCircle(426, 84, 36);
-      var _moreButton = new Shape(_moreButtonGraphics);    
-  
-      var _moreButtonText = new Text('More...', "12px Arial", "#000");
-      _moreButtonText.textBaseline = "middle";
-      _moreButtonText.textAlign = "center"
-      _moreButtonText.x = 426;
-      _moreButtonText.y = 84;
-      
-      // Locations
-      var _locationsButtonGraphics = new Graphics();
-      _locationsButtonGraphics.setStrokeStyle(1);
-      _locationsButtonGraphics.beginStroke('rgb(0, 0, 0)');
-      _locationsButtonGraphics.beginFill('rgb(255, 255, 255)');
-      _locationsButtonGraphics.drawCircle(402, 142, 36);
-      var _locationsButton = new Shape(_locationsButtonGraphics);    
-  
-      var _locationsButtonText = new Text('Locations', "12px Arial", "#000");
-      _locationsButtonText.textBaseline = "middle";
-      _locationsButtonText.textAlign = "center"
-      _locationsButtonText.x = 402;
-      _locationsButtonText.y = 142;
-  
-      // Armies 
-      var _armiesButtonGraphics = new Graphics();
-      _armiesButtonGraphics.setStrokeStyle(1);
-      _armiesButtonGraphics.beginStroke('rgb(0, 0, 0)');
-      _armiesButtonGraphics.beginFill('rgb(255, 255, 255)');
-      _armiesButtonGraphics.drawCircle(344, 166, 36);
-      var _armiesButton = new Shape(_armiesButtonGraphics);    
-      _armiesButton.onClick = function() {
-        controller.shopButtonClicked();
-      };
-  
-      var _armiesButtonText = new Text('Armies', "12px Arial", "#000");
-      _armiesButtonText.textBaseline = "middle";
-      _armiesButtonText.textAlign = "center"
-      _armiesButtonText.x = 344;
-      _armiesButtonText.y = 166;
-  
-      // Shop
-      var _shopShapeGraphics = new Graphics();
-      _shopShapeGraphics.setStrokeStyle(1);
-      _shopShapeGraphics.beginStroke('rgb(0, 0, 0)');
-      _shopShapeGraphics.beginFill('rgb(255, 255, 255)');
-      _shopShapeGraphics.drawRoundRect(20, 95, 100, 30, 8);
-      var _shopShape = new Shape(_shopShapeGraphics);    
-      _shopShape.onClick = function() {
-        controller.ingameShopButtonClicked();
-      };
-  
-      var _frog = new Bitmap();
-      _frog.image = AWE.UI.ImageCache.getImage("hud/frog/face");
-      _frog.x = 65;
-      _frog.y = 56;
-      _frog.scaleX = 1;
-      _frog.scaleY = 1;  
-        
-      var _shopButtonText = new Text('Shop', "12px Arial", "#000");
-      _shopButtonText.textBaseline = "middle";
-      _shopButtonText.textAlign = "center"
-      _shopButtonText.x = 70;
-      _shopButtonText.y = 110;
-  
-      // Resources    
-      var _resourcesShapeGraphics = new Graphics();
-      _resourcesShapeGraphics.setStrokeStyle(1);
-      _resourcesShapeGraphics.beginStroke('rgb(0, 0, 0)');
-      _resourcesShapeGraphics.beginFill('rgb(255, 255, 255)');
-      _resourcesShapeGraphics.drawRoundRect(0, 20, 300, 80, 5);
-      var _resourcesShape = new Shape(_resourcesShapeGraphics);    
-  
-      _resource1Text = new Text('123', "12px Arial", "#000");
-      _resource1Text.textBaseline = "middle";
-      _resource1Text.textAlign = "right"
-      _resource1Text.x = 60;
-      _resource1Text.y = 40;
-  
-      _resource2Text = new Text('123', "12px Arial", "#000");
-      _resource2Text.textBaseline = "middle";
-      _resource2Text.textAlign = "right"
-      _resource2Text.x = 140;
-      _resource2Text.y = 40;
-  
-      _resource3Text = new Text('8756', "12px Arial", "#000");
-      _resource3Text.textBaseline = "middle";
-      _resource3Text.textAlign = "right"
-      _resource3Text.x = 220;
-      _resource3Text.y = 40;
-  
-      _resource4Text = new Text('0', "12px Arial", "#000");
-      _resource4Text.textBaseline = "middle";
-      _resource4Text.textAlign = "right"
-      _resource4Text.x = 60;
-      _resource4Text.y = 80;
-  
-      var _resource5Text = new Text('234', "12px Arial", "#000");
-      _resource5Text.textBaseline = "middle";
-      _resource5Text.textAlign = "right"
-      _resource5Text.x = 140;
-      _resource5Text.y = 80;
-  
-      var _resource6Text = new Text('2435', "12px Arial", "#000");
-      _resource6Text.textBaseline = "middle";
-      _resource6Text.textAlign = "right"
-      _resource6Text.x = 220;
-      _resource6Text.y = 80;
-
-      _container.addChildAt(_messagesButtonText);
-      _container.addChildAt(_messagesButton);
-      _container.addChildAt(_moreButtonText);
-      _container.addChildAt(_moreButton);
-      _container.addChildAt(_locationsButtonText);
-      _container.addChildAt(_locationsButton);
-      _container.addChildAt(_armiesButtonText);
-      _container.addChildAt(_armiesButton);    
-      _container.addChildAt(_heroHead);
-      _container.addChildAt(_heroButton);
-      if (_flagView) {
-        _container.addChild(_flagView.displayObject());
-        _flagView.updateView();
+      if (!_messagesButton) {
+        _messagesButton = AWE.UI.createButtonView();
+        _messagesButton.initWithControllerTextAndImage(my.controller, 'Messages', AWE.UI.ImageCache.getImage("map/button1"));
+        _messagesButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        _messagesButton.setFrame(AWE.Geometry.createRect(364, -10, 72, 72));
+        _messagesButton.onClick = function() { WACKADOO.messagesButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+        this.addChild(_messagesButton);
       }
-      _container.addChildAt(_village);
-      _container.addChildAt(_fortressButton); 
-      _container.addChildAt(_frog);
-      _container.addChildAt(_resource1Text);
-      _container.addChildAt(_resource2Text);
-      _container.addChildAt(_resource3Text);
-      _container.addChildAt(_resource4Text);
-      _container.addChildAt(_resource5Text);
-      _container.addChildAt(_resource6Text);
-      _container.addChildAt(_resourcesShape);
-      _container.addChildAt(_shopButtonText);      
-      _container.addChildAt(_shopShape);
+  
+      if (!_moreButton) {
+        _moreButton = AWE.UI.createButtonView();
+        _moreButton.initWithControllerTextAndImage(my.controller, 'More...', AWE.UI.ImageCache.getImage("map/button1"));
+        _moreButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        _moreButton.setFrame(AWE.Geometry.createRect(390, 48, 72, 72));
+        // _moreButton.onClick = function() { WACKADOO.messagesButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+        this.addChild(_moreButton);
+      }
+  
+      if (!_locationsButton) {
+        _locationsButton = AWE.UI.createButtonView();
+        _locationsButton.initWithControllerTextAndImage(my.controller, 'Locations', AWE.UI.ImageCache.getImage("map/button1"));
+        _locationsButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        _locationsButton.setFrame(AWE.Geometry.createRect(364, 106, 72, 72));
+        // _moreButton.onClick = function() { WACKADOO.messagesButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+        this.addChild(_locationsButton);
+      }
       
-      // container.x = _controller.windowSize().width - 468;
-      // container.y = 20;
-      _container.x = my.frame.origin.x;
-      _container.y = my.frame.origin.y;
+      if (!_armiesButton) {
+        _armiesButton = AWE.UI.createButtonView();
+        _armiesButton.initWithControllerTextAndImage(my.controller, 'Armies', AWE.UI.ImageCache.getImage("map/button1"));
+        _armiesButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        _armiesButton.setFrame(AWE.Geometry.createRect(308, 130, 72, 72));
+        _armiesButton.onClick = function() {
+          my.controller.shopButtonClicked();
+        };
+        this.addChild(_armiesButton);
+      }
+      
+      if (!_shopButton) {
+        _shopButton = AWE.UI.createButtonView();
+        _shopButton.initWithControllerTextAndImage(my.controller, 'Shop', AWE.UI.ImageCache.getImage("map/button1"));
+        _shopButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        _shopButton.setFrame(AWE.Geometry.createRect(20, 95, 100, 30));
+        _shopButton.onClick = function() {
+          my.controller.ingameShopButtonClicked();
+        };
+        this.addChild(_shopButton);
+      }
+      
+      if (!_resource1LabelView) {
+        _resource1LabelView = AWE.UI.createLabelView();
+        _resource1LabelView.initWithControllerAndLabel(my.controller);
+        _resource1LabelView.setTextAlign("left");
+        _resource1LabelView.setIconImage("map/display/icon");
+        _resource1LabelView.setFont("14px Arial");
+        _resource1LabelView.setFrame(AWE.Geometry.createRect(20, 30, 80, 24));      
+        this.addChild(_resource1LabelView);
+      }
+      
+      if (!_resource2LabelView) {
+        _resource2LabelView = AWE.UI.createLabelView();
+        _resource2LabelView.initWithControllerAndLabel(my.controller);
+        _resource2LabelView.setTextAlign("left");
+        _resource2LabelView.setIconImage("map/display/icon");
+        _resource2LabelView.setFont("14px Arial");
+        _resource2LabelView.setFrame(AWE.Geometry.createRect(100, 30, 80, 24));      
+        this.addChild(_resource2LabelView);
+      }
+      
+      if (!_resource3LabelView) {
+        _resource3LabelView = AWE.UI.createLabelView();
+        _resource3LabelView.initWithControllerAndLabel(my.controller);
+        _resource3LabelView.setTextAlign("left");
+        _resource3LabelView.setIconImage("map/display/icon");
+        _resource3LabelView.setFont("14px Arial");
+        _resource3LabelView.setFrame(AWE.Geometry.createRect(180, 30, 80, 24));      
+        this.addChild(_resource3LabelView);
+      }
+      
+      if (!_resource4LabelView) {
+        _resource4LabelView = AWE.UI.createLabelView();
+        _resource4LabelView.initWithControllerAndLabel(my.controller);
+        _resource4LabelView.setTextAlign("left");
+        _resource4LabelView.setIconImage("hud/frog/face");
+        _resource4LabelView.setFont("14px Arial");
+        _resource4LabelView.setFrame(AWE.Geometry.createRect(20, 70, 80, 24));      
+        this.addChild(_resource4LabelView);
+      }
+      
+      if (!_resource5LabelView) {
+        _resource5LabelView = AWE.UI.createLabelView();
+        _resource5LabelView.initWithControllerAndLabel(my.controller);
+        _resource5LabelView.setTextAlign("left");
+        _resource5LabelView.setIconImage("map/display/icon");
+        _resource5LabelView.setFont("14px Arial");
+        _resource5LabelView.setFrame(AWE.Geometry.createRect(100, 70, 80, 24));      
+        this.addChild(_resource5LabelView);
+      }
+      
+      if (!_resource6LabelView) {
+        _resource6LabelView = AWE.UI.createLabelView();
+        _resource6LabelView.initWithControllerAndLabel(my.controller);
+        _resource6LabelView.setTextAlign("left");
+        _resource6LabelView.setIconImage("map/display/icon");
+        _resource6LabelView.setFont("14px Arial");
+        _resource6LabelView.setFrame(AWE.Geometry.createRect(180, 70, 80, 24));      
+        this.addChild(_resource6LabelView);
+      }
     };
     
     that.updateView = function() {
-      // _super.updateView();
-      // log(AWE, AWE.GS, AWE.GS.CharacterManagerAWE.GS.CharacterManager.getCurrentCharacter.get('frog_amount'), );
+      this.recalcView();
+      
       var pool = AWE.GS.ResourcePoolManager.getResourcePool();
       if (pool) {
-        _resource1Text.text = pool.get('resource_wood_amount');
-        _resource2Text.text = pool.get('resource_stone_amount');
-        _resource3Text.text = pool.get('resource_fur_amount');
-        _resource4Text.text = pool.get('resource_cash_amount');
+        var diff = new Date() - Date.parseISODate(pool.get('productionUpdatedAt'));
+        diff = (diff < 0) ? 0 : (diff / 3600000); // diff is in milliseconds, production_rates count per day
+        
+        _resource1LabelView.setText(AWE.UI.Util.round(parseInt(pool.get('resource_wood_amount')) + diff * pool.get('resource_wood_production_rate')));
+        _resource2LabelView.setText(AWE.UI.Util.round(parseInt(pool.get('resource_stone_amount')) + diff * pool.get('resource_stone_production_rate')));
+        _resource3LabelView.setText(AWE.UI.Util.round(parseInt(pool.get('resource_fur_amount')) + diff * pool.get('resource_fur_production_rate')));
+        _resource4LabelView.setText(AWE.UI.Util.round(parseInt(pool.get('resource_cash_amount')) + diff * pool.get('resource_cash_production_rate')));
       }
+      
+      _super.updateView();
     }
     
-    
-    that.setFrame = function(frame) {
-      _super.setFrame(frame);
-      _container.x = my.frame.origin.x;
-      _container.y = my.frame.origin.y;
-    }
-    
-    that.displayObject = function() {
-      return _container;
-    };
-    
-    /** actions */
-   
     return that;
   };
   

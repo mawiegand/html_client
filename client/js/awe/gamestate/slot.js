@@ -155,7 +155,7 @@ AWE.GS = (function(module) {
 		  else {
 		    var that = this;
 		    return rule.abilities.unlock_queue.filter(function(item, index, self) {             // filter the abilities for relevance (level)
-		      return item.level <= level; 
+		      return item.level <= level;
 		    }).map(function(item, index, self) {                                                // generate a description for the ability
 		      var queueType = AWE.GS.RulesManager.getRules().getQueueType(item.queue_type_id);
 		      if (!queueType) {
@@ -211,7 +211,7 @@ AWE.GS = (function(module) {
 		      }
 		      return {
 		        name: queueType.name['en_US'],
-		        speedup: Math.floor(AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(item.speedup_formula), level)*100*10)/10.0,
+		        speedup: AWE.UI.Util.round(AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(item.speedup_formula), level)*100),
 		      };
 		    });
 		  }
@@ -224,9 +224,6 @@ AWE.GS = (function(module) {
 		speedupQueuesNextLevel: function() {
 		  return this.calculateSpeedupQueues(this.get('nextLevel'));
 		}.property('buildingId', 'nextLevel').cacheable(),		
-		
-		
-		
 
     // ///////////////////////////////////////////////////////////////////////
     
@@ -340,16 +337,20 @@ AWE.GS = (function(module) {
     }.observes('building_id'),
 
 
-		settlement: function() {         // this should become an action, but therefore we need to make sure the corresponding settlement has already been loaded
+    settlement: function() {         // this should become an action, but therefore we need to make sure the corresponding settlement has already been loaded
       var sid = this.get('settlement_id');
       if (sid === undefined || sid === null) {
         return sid;
       }
       else {
-			  return module.SettlementManager.getSettlement(this.get('settlement_id'));
-		  }
-		},
-		
+        return module.SettlementManager.getSettlement(this.get('settlement_id'));
+      }
+    },
+    
+    settlementProp: function() {         // this should become an action, but therefore we need to make sure the corresponding settlement has already been loaded
+      return module.SettlementManager.getSettlement(this.get('settlement_id'));
+    }.property('settlement_id').cacheable(),
+    
 		queue: function() {
       var jobs = this.getPath('hashableJobs.collection');
       if (!jobs || jobs.length <= 0) return null;

@@ -28,14 +28,22 @@ AWE.GS = (function(module) {
 		queue_types: null,
 		queue_categories: null,
 		
-		getSettlementType: function(id) {
-			var settlementType = this.get('settlement_types')[id];
-			if (settlementType === undefined || !settlementType) {
-				console.log('ERROR: requested non-existing settlement type ' + settlementType);
-			}
-			return settlementType;		
-		},
-		
+    getSettlementType: function(id) {
+      var settlementType = this.get('settlement_types')[id];
+      if (settlementType === undefined || !settlementType) {
+        console.log('ERROR: requested non-existing settlement type ' + settlementType);
+      }
+      return settlementType;    
+    },
+    
+    getUnitType: function(id) {
+      var unitType = this.get('unit_types')[id];
+      if (unitType === undefined || !unitType) {
+        console.log('ERROR: requested non-existing unit type ' + unitType);
+      }
+      return unitType;    
+    },
+    
 		getBuildingType: function(id) {
 			var buildingType = this.get('building_types')[id];
 			if (buildingType === undefined || !buildingType) {

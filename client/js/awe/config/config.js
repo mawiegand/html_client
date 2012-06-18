@@ -15,7 +15,7 @@ AWE.Config = (function(module) {
     module.SERVER_ROOT = 'http://localhost/'
   }
   
-  module.TIME_DIFF_RANGE     = 10;
+  module.TIME_DIFF_RANGE     = 2; // TODO problem with slot refresh if less than 2
   
   module.DEBUG_LEVEL_ERROR   = 0;
   module.DEBUG_LEVEL_WARNING = 1;
@@ -91,7 +91,7 @@ AWE.Config = (function(module) {
   
   module.SETTLEMENT_REFRESH_INTERVAL = 60 * 1000;
   
-  module.CREDITS_REFRESH_INTERVAL = 10 * 1000;
+  module.RESOURCES_REFRESH_INTERVAL = 5 * 1000;
 
   //image cache
   module.IMAGE_CACHE_LOAD_LIST = {

@@ -57,10 +57,6 @@ AWE.Controller = (function(module) {
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setNeedsLayout();
-      
-      AWE.GS.TrainingQueueManager.updateQueue(1, null, function(queue) {
-        log('---> update queue', queue);
-      });
     };   
     
     that.getStages = function() {
@@ -199,14 +195,15 @@ AWE.Controller = (function(module) {
     
     that.updateModel = (function() {
             
-      var lastCreditsUpdateCheck = new Date(1970);
+      var lastResourcesUpdate = new Date(1970);
       
       return function() {
         
-        if (shopDialog && lastCreditsUpdateCheck.getTime() + AWE.Config.CREDITS_REFRESH_INTERVAL < +new Date()) {
-          log('update credit amount');
-          AWE.Shop.Manager.fetchCreditAmount();
-          lastCreditsUpdateCheck = new Date();
+        if (lastResourcesUpdate.getTime() + AWE.Config.RESOURCES_REFRESH_INTERVAL < +new Date()) {
+          lastResourcesUpdate = new Date();
+          if (HUDViews.mainControlsView) {
+            HUDViews.mainControlsView.setNeedsUpdate();
+          }
         }
       };
     }());     
@@ -217,7 +214,7 @@ AWE.Controller = (function(module) {
     //
     // ///////////////////////////////////////////////////////////////////////    
     
-    that.updateHUD= function() { 
+    that.updateHUD = function() { 
       
       if (!HUDViews.mainControlsView) {
         HUDViews.mainControlsView = AWE.UI.createMainControlsView();
@@ -262,7 +259,7 @@ AWE.Controller = (function(module) {
       
       return function() {
         
-        var stageNeedsUpdate = false;     // replace true with false as soon as stage 1 and 2 are implemented correctly.
+        var stageNeedsUpdate = true;     // replace true with false as soon as stage 1 and 2 are implemented correctly.
                         
         if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || !HUDViews.mainControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
           stageNeedsUpdate = that.updateHUD() || stageNeedsUpdate; 
@@ -307,12 +304,12 @@ AWE.Controller = (function(module) {
         if (_needsDisplay || _loopCounter % 30 == 0 || that.modelChanged()) {
           // STEP 4b: create, remove and update all views according to visible parts of model      
           var updateNeeded = that.updateViewHierarchy();      
-            if (updateNeeded || true) { // TODO: remove true, update only, if necessary 
-              _stage.update();
-              AWE.Ext.applyFunctionToElements(HUDViews, function(view) {
-                view.notifyRedraw();
-              });
-            }
+          if (updateNeeded || true) { // TODO: remove true, update only, if necessary 
+            _stage.update();
+            AWE.Ext.applyFunctionToElements(HUDViews, function(view) {
+              view.notifyRedraw();
+            });
+          }
         }
 
 

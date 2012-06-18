@@ -30,16 +30,26 @@ AWE.GS = (function(module) {
     }.property('unit_id').cacheable(),
     
     position: null,
+    quantity: null,
     
     active_job: null,
         
-    parsedFinishingDate: function() {
+    parsedFinishingTotalDate: function() {
       var active_job = this.get('active_job');
       if (active_job) {
-        return AWE.GS.Util.parseDate(active_job.finished_at);
+        return AWE.GS.Util.parseDate(active_job.finished_total_at);
       }
       return null;
     }.property('active_job').cacheable(),
+    
+    parsedFinishingActiveDate: function() {
+      var active_job = this.get('active_job');
+      if (active_job) {
+        return AWE.GS.Util.parseDate(active_job.finished_active_at);
+      }
+      return null;
+    }.property('active_job').cacheable(),
+    
   });     
     
   // ///////////////////////////////////////////////////////////////////////
@@ -163,7 +173,7 @@ AWE.GS = (function(module) {
     
     progress_active: null,
     progress_active_updated_at: null,
-    started_active_total_at: null,
+    started_active_at: null,
     finished_active_at: null,
   });    
 

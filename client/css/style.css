@@ -827,6 +827,39 @@ html, body {
   text-align: right;
 }
 
+.training-queue-job {
+  float: left;
+  width: 120px;
+  height: 124px;
+  background-color: #FFB;
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  padding: 10px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.training-queue-job p {
+  margin: 0px;
+}
+
+.training-queue-job.active {
+  background-color: #FBB;
+}
+
+.training-queue-job-text {
+  float: left;
+  width: 120px;
+  height: 101px;
+}
+
+.training-queue-job-button {
+  clear: both;
+  width: 120px;
+  height: 23px;
+  text-align: right;
+}
+
 
 /** image for building_siege_tower */
 .queue-job-image.building_siege_tower {

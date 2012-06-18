@@ -44,7 +44,7 @@
         {{view AWE.UI.Ember.InteractiveBuildingView  classNames="wall"  modelBinding="wall" settlementBinding="fortress"}}
       {{/if}}
       {{#if queues }}
-        {{view AWE.UI.Ember.QueueListView controllerBinding="controller" classNames="queue-list" queuesBinding="queues.collection"}}
+        {{view AWE.UI.Ember.ConstructionQueueView controllerBinding="controller" classNames="queue-list" queuesBinding="queues.collection"}}
       {{/if}}
 
       {{view AWE.UI.Ember.FortressInfoBoxView classNames="fortress-info-box" fortressBinding="fortress"}}
@@ -62,11 +62,6 @@
 </div>
 </script>
 
-
-<script type="text/x-handlebars" data-template-name="training-queue-view">
-  <p>{{queueType.category}}</p>
-  {{queue.settlement_id}}
-</script>
 
 <script type="text/x-handlebars" data-template-name="settlement-dialog-select-building">
   <div class="settlement-dialog-background"></div>
@@ -144,47 +139,81 @@
     {{/if}}
     
     <hr>
-    
-    {{#each building.trainingQueues}}
-      {{view AWE.UI.Ember.TrainingQueueView queueTypeBinding="queueType" hansBinding="queueType"}}
-    {{/each}}
-    
+
+    {{#if building.slot.settlementProp.hashableTrainingQueues }}
+      {{view AWE.UI.Ember.TrainingQueueView controllerBinding="controller" classNames="training-queue-list" queuesBinding="building.slot.settlementProp.hashableTrainingQueues.collection"}}
+    {{/if}}
+
   </div>
 </script>
 
-
-<script type="text/x-handlebars" data-template-name="queue-list">
-  <div class="queue-list-pane">
-      {{#each queues}}
-        {{#view Ember.View controllerBinding="controller" queueBinding="this" classNames="queue"}}
-        <h1>Queue {{ queue.type_id }}</h1>
-          {{#unless queue.empty }}
-          <div class="queue-job-list">    
-            {{#each queue.hashableJobs.collection }}
-              {{#view AWE.UI.Ember.JobView controllerBinding="controller" jobBinding="this" classNames="queue-job"}}
-                {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" levelBinding="job.level_after" buildingIdBinding="job.buildingId" typeBinding="job.slot.building.type"}}
-                <div class="queue-job-text">    
-                  <p>{{ job.job_type }}</p>
-                  <p>{{ job.slot.building.name }}</p>
-                  <p>Slot #{{ job.slot.slot_num }}</p>
-                  <p>Level {{ job.level_after }}</p>
-                  <p>{{#if job.active_job }}Fin.: {{ job.parsedFinishingDate }}{{/if}}</p>
-                </div>  
-                {{#if job.cancelable }}
-                <div class="queue-job-button">    
-                  <a href="#" {{action "cancelJobPressed"}}>cancel</a>
-                </div>  
+<script type="text/x-handlebars" data-template-name="training-queue-view">
+  <div class="training-queue-list-pane">
+    {{#each queues}}
+      {{#view Ember.View controllerBinding="controller" queueBinding="this" classNames="queue"}}
+        <h2>Training Queue {{ queue.type_id }}</h2>
+        {{#unless queue.empty }}
+          {{#each queue.hashableJobs.collection }}
+            {{#view AWE.UI.Ember.TrainingJobView controllerBinding="controller" jobBinding="this" classNames="training-queue-job"}}
+              <div class="training-queue-job-text">    
+                <p>{{ job.quantity }} {{ job.unitType.name.en_US }}</p>
+                {{#if job.active_job }}
+                <p>Fin: {{ job.parsedFinishingTotalDate }}</p>
+                <p>Finished: {{ job.active_job.quantity_finished }}</p>
+                <p>Current: {{ job.active_job.quantity_active }}</p>
+                <p>{{ job.parsedFinishingActiveDate }}</p>
                 {{/if}}
-              {{/view}}
-            {{/each}}
-          </div>  
-          {{/unless}}
-          {{#if queue.empty }}
-          <div class="queue-job-list empty">    
-             <p>This construction queue is empty</p>
-          </div>  
-          {{/if}}
-        {{/view}}
-      {{/each}}
+              </div>  
+              <div class="training-queue-job-button">    
+                <a href="#" {{action "cancelJobPressed"}}>cancel</a>
+              </div>  
+            {{/view}}
+          {{/each}}
+        {{/unless}}
+        {{#if queue.empty }}
+        <div class="queue-job-list empty">    
+           <p>This training queue is empty</p>
+        </div>  
+        {{/if}}
+      {{/view}}
+    {{/each}}
   </div>
 </script>
+
+
+<script type="text/x-handlebars" data-template-name="construction-queue-view">
+  <div class="queue-list-pane">
+    {{#each queues}}
+      {{#view Ember.View controllerBinding="controller" queueBinding="this" classNames="queue"}}
+      <h1>{{queue.name}}</h1>
+        {{#unless queue.empty }}
+        <div class="queue-job-list">    
+          {{#each queue.hashableJobs.collection }}
+            {{#view AWE.UI.Ember.ConstructionJobView controllerBinding="controller" jobBinding="this" classNames="queue-job"}}
+              {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" levelBinding="job.level_after" buildingIdBinding="job.buildingId" typeBinding="job.slot.building.type"}}
+              <div class="queue-job-text">    
+                <p>{{ job.job_type }}</p>
+                <p>{{ job.slot.building.name }}</p>
+                <p>Slot #{{ job.slot.slot_num }}</p>
+                <p>Level {{ job.level_after }}</p>
+                <p>{{#if job.active_job }}Fin.: {{ job.parsedFinishingDate }}{{/if}}</p>
+              </div>  
+              {{#if job.cancelable }}
+              <div class="queue-job-button">    
+                <a href="#" {{action "cancelJobPressed"}}>cancel</a>
+              </div>  
+              {{/if}}
+            {{/view}}
+          {{/each}}
+        </div>  
+        {{/unless}}
+        {{#if queue.empty }}
+        <div class="queue-job-list empty">    
+           <p>This construction queue is empty</p>
+        </div>  
+        {{/if}}
+      {{/view}}
+    {{/each}}
+  </div>
+</script>
+
