@@ -45,6 +45,13 @@ AWE.GS = (function(module) {
       return unitType;    
     },
     
+		getUnitTypesWithCategories: function(categoryIds) {
+		  var unitTypes = this.get('unit_types').filter(function(item, index, self) {  // "filter" is ember-supplied
+		    return categoryIds.indexOf(item['category']) >= 0; // indexOf returns -1 in case the element is not in the array
+		  });
+		  return unitTypes;
+		},
+    
 		getBuildingType: function(id) {
 			var buildingType = this.get('building_types')[id];
 			if (buildingType === undefined || !buildingType) {
