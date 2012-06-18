@@ -144,25 +144,19 @@ AWE.Controller = (function(module) {
     
     var createAndSendConstructionJob = function(slot, buildingId, jobType, levelAfter) {
       
-      // TODO: test if construction possible  (or should we just rely on the server and show it's error message?)
-      
       if (!levelAfter) {
         levelAfter = 1;
       }
       
       var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(buildingId);
       var queue = AWE.GS.ConstructionQueueManager.getQueueForBuildingCategorieInSettlement(buildingType.category, slot.get('settlement_id'));
-      log('queue', queue);
       
       if (queue) {
-        var constructionAction = AWE.Action.Construction.createJobCreateAction(queue, slot.getId(), buildingId, jobType, levelAfter);
-        constructionAction.send(function(status) {
+        queue.sendCreateJobAction(slot.getId(), buildingId, jobType, levelAfter, function(status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
             log(status, "Construction job created.");
             that.updateConstructionQueueSlotAndJobs(queue.getId());
             that.updateResourcePool();
-            
-            if (jobType == module.CONSTRUCTION_JOB_TYPE_CREATE) {}        
           }
           else {
             log(status, "The server did not accept the construction command.");
@@ -184,24 +178,23 @@ AWE.Controller = (function(module) {
       createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE);      
     }
     
-    that.constructionUgradeClicked = function(slot) {
+    that.constructionUpgradeClicked = function(slot) {
       var nextLevel = slot.get('building').get('nextLevel');
       createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE, nextLevel);    
     }  
     
     that.constructionCancelClicked = function(job) {
-      var queueId = job.get('queue_id');
-      var cancelJobAction = AWE.Action.Construction.createJobCancelAction(job.getId());
-      cancelJobAction.send(function(status) {
+      var queue = job.get('queue');
+      queue.sendCancelJobAction(job.getId(), function(status) {
         if (status === AWE.Net.OK) {    // 200 OK
           log(status, "Construction job deleted.");
-          that.updateConstructionQueueSlotAndJobs(queueId);          
+          that.updateConstructionQueueSlotAndJobs(queue.getId());          
           that.updateResourcePool();
         }
         else {
           log(status, "The server did not accept the job removal command.");
           // TODO Fehlermeldung 
-        }
+        } 
       });
     }
     

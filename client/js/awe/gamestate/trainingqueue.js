@@ -30,6 +30,16 @@ AWE.GS = (function(module) {
         var hashableJobs = AWE.GS.TrainingJobAccess.getHashableCollectionForQueue_id(this.get('id'));
         this.set('hashableJobs', hashableJobs);
       }
+    },
+
+    sendCreateJobAction: function(unitId, quantity, callback) {
+      var trainingAction = AWE.Action.Training.createJobCreateAction(this, unitId, quantity);
+      trainingAction.send(callback);      
+    },
+
+    sendCancelJobAction: function(jobId, callback) {
+      var cancelJobAction = AWE.Action.Training.createJobCancelAction(jobId);
+      cancelJobAction.send(callback);
     },    
   });     
     

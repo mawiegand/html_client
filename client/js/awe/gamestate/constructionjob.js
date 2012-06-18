@@ -28,6 +28,10 @@ AWE.GS = (function(module) {
     
     queue_id: null, old_queue_id: null, ///< id of the queue the job is a member of
     queueIdObserver: AWE.Partials.attributeHashObserver(module.ConstructionJobAccess, 'queue_id', 'old_queue_id').observes('queue_id'),
+
+    queue: function(){
+      return module.ConstructionQueueManager.getQueue(this.get('queue_id'));      
+    }.property('queue_id').cacheable(),
     
     slot_id: null, old_slot_id: null, ///< id of the slot the job is a member of
     slotIdObserver: AWE.Partials.attributeHashObserver(module.ConstructionJobAccess, 'slot_id', 'old_slot_id').observes('slot_id'),
