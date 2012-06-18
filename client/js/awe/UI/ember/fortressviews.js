@@ -281,33 +281,12 @@ AWE.UI.Ember = (function(module) {
     queue: null,
 
 		costs: function() {
-		  var costs = [];
 		  var unitType = this.get('selectedUnitType');
-		  if (unitType && unitType.costs) {
-		    AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
-		      if (unitType.costs[item.id] && parseInt(unitType.costs[item.id]) > 0) {
-		        costs.push({
-	            name:   item.name['en_US'],
-	            amount: unitType.costs[item.id],
-            });
-          }
-		    });
-		  }
-      return costs;
+		  return unitType && unitType.costs ? AWE.Util.Rules.lookupResourceCosts(unitType.costs) : null;
 		}.property('selectedUnitType', 'settlement').cacheable(),
 		
 		totalCosts: function() {
-		  var costs  = this.get('costs');
-		  var number = this.get('number')
-		  if (!costs || !number || number <= 0) {
-		    return null;
-		  }
-		  return costs.map(function(item) {
-		    return {
-	        name:   item.name,
-	        amount: item.amount * number,
-        };
-		  });
+		  return AWE.Util.Rules.multipliedResourceCosts(this.get('costs'), this.get('number') || 0.0);
 		}.property('costs', 'number').cacheable(),
 		
 		productionTime: function() {

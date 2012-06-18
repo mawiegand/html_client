@@ -30,8 +30,11 @@ AWE.GS = (function(module) {
     }
         
     that.evalFormula = function(formula, level) {
-      
-      return eval(formula);
+      return formula ? eval(formula) : 0; // TODO: return null or 0 on missing formula?
+    }
+    
+    that.parseAndEval = function(formula, level) {
+      return that.evalFormula(that.parseFormula(formula || ""), level);
     }
     
     that.parseDate = function(date) {

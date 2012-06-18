@@ -15,15 +15,12 @@ AWE.Config = (function(module) {
     module.SERVER_ROOT = 'http://localhost/'
   }
   
-  module.TIME_DIFF_RANGE     = 2; // TODO problem with slot refresh if less than 2
-  
   module.DEBUG_LEVEL_ERROR   = 0;
   module.DEBUG_LEVEL_WARNING = 1;
   module.DEBUG_LEVEL_INFO    = 2;
   module.DEBUG_LEVEL_DEBUG   = 3;
   
   module.MAP_DEBUG_LEVEL = module.DEBUG_LEVEL_INFO
-  
   module.MAP_DEBUG_FRAMES = false;
   
   module.MAP_RUN_TESTS = false;
@@ -37,13 +34,17 @@ AWE.Config = (function(module) {
   module.CONSTRUCTION_SERVER_BASE = module.SERVER_ROOT + '/game_server/construction/';
   module.SHOP_SERVER_BASE         = module.SERVER_ROOT + '/game_server/shop/';
   module.MESSAGING_SERVER_BASE    = module.SERVER_ROOT + '/game_server/messaging/';
-  
   module.PAYMENT_PROVIDER_BASE    = module.SERVER_ROOT + '/payment_provider/';
+  
+  module.LOCALE = 'de_DE';
+  module.DEFAULT_LOCALE = 'en_US';
   
   // access token of Egbert, expires in 100 days.
   module.DEV_ACCESS_TOKEN = "eyJ0b2tlbiI6eyJpZGVudGlmaWVyIjoiZU9tS3ZOa1hTUkxtYlREUSIsInNjb3BlIjpbIjVkZW50aXR5Iiwid2Fja2Fkb28iXSwidGltZXN0YW1wIjoiMjAxMi0wNS0wMlQxNjozMDowMyswMjowMCJ9LCJzaWduYXR1cmUiOiJhZDQ0MzU4NzRmMGFmYTg2N2RlOTAwOTExYTJlMmNlODQzNmNlYTU0In0="
   
   module.DEV_ALLIANCE_ID = 1;
+  
+  module.TIME_DIFF_RANGE = 2; // TODO problem with slot refresh if less than 2
   
   module.NET_AUTO_DETECT_REDIRECT_FLAWS = false ;
   
