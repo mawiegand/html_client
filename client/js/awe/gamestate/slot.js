@@ -170,12 +170,20 @@ AWE.GS = (function(module) {
 		},
 		
 		trainingQueues: function() {
-		  var queues= this.get('unlockedQueues');
-		  if (!queues) {
+		  var queues = this.get('unlockedQueues');
+		  var trainingQueuesSettlement = this.get('slot').settlement().getPath('hashableTrainingQueues.collection');
+		  
+		  if (!queues || !trainingQueuesSettlement) {
 		    return [];
 		  }
-		  return queues.filter(function(item) {
+		  queues = queues.filter(function(item) {
+		    console.log(item)
 		    return item.queueType.category === 'queue_category_training';
+		  });
+		  
+		  return queues.forEach(function(item) {
+		    item.queue = trainingQueuesSettlement.findProperty('type_id', item.queueType.id);
+		    console.log(item, item.queue, trainingQueuesSettlement);
 		  });
 		}.property('unlockedQueues').cacheable(),
 		

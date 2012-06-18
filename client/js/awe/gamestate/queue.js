@@ -33,6 +33,12 @@ AWE.GS = (function(module) {
     speedup_sciences: null,
     
     active_jobs: null,
+    hashableJobs: null,
+
+
+    activeJob: function(jobId) {
+      return this.get('active_jobs').objectAt(jobId);
+    },
 
     /** returns the queue type from the rules, that describes this
      * queue. */
@@ -44,16 +50,15 @@ AWE.GS = (function(module) {
 			console.log('TYPE_ID', this.get('type_id'), typeId, AWE.GS.RulesManager.getRules().getQueueType(typeId));
 			return AWE.GS.RulesManager.getRules().getQueueType(typeId);
     }.property('type_id').cacheable(),
-    
-    activeJob: function(jobId) {
-      return this.get('active_jobs').objectAt(jobId);
-    },
-    
-    hashableJobs: null,
-    
+        
     empty: function() {
       return this.get('jobs_count') == 0;
-    }.property('jobs_count'),
+    }.property('jobs_count').cacheable(),
+    
+    name: function() {
+      var names = this.getPath('queueType.name');
+      return names ? names.en_US : null;
+    }.property('queueType').cacheable(),
   });     
       
   return module;

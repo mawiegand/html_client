@@ -63,11 +63,6 @@
 </script>
 
 
-<script type="text/x-handlebars" data-template-name="training-queue-view">
-  <p>{{queueType.category}}</p>
-  {{queue.settlement_id}}
-</script>
-
 <script type="text/x-handlebars" data-template-name="settlement-dialog-select-building">
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-pane settlement-dialog-select-building">
@@ -191,7 +186,7 @@
   <div class="queue-list-pane">
     {{#each queues}}
       {{#view Ember.View controllerBinding="controller" queueBinding="this" classNames="queue"}}
-      <h1>Construction Queue {{ queue.type_id }}</h1>
+      <h1>{{queue.name}}</h1>
         {{#unless queue.empty }}
         <div class="queue-job-list">    
           {{#each queue.hashableJobs.collection }}
