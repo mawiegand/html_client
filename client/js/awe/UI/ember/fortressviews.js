@@ -126,8 +126,9 @@ AWE.UI.Ember = (function(module) {
 		}.property('fortress', 'fortress.hashableQueues.changedAt').cacheable(),
 		
 		trainingQueues: function() {
+		  console.log('TRAINING QUEUES', this.getPath('fortress.hashableTrainingQueues'));
 		  return this.getPath('fortress.hashableTrainingQueues');
-		}.property('fortress', 'fortress.hashableTrainingQueues.changedAt').cacheable(),
+		}.property('fortress', 'fortress.hashableTrainingQueues', 'fortress.hashableTrainingQueues.changedAt').cacheable(),
 		
 	});
 
@@ -246,15 +247,17 @@ AWE.UI.Ember = (function(module) {
   module.TrainingQueueView = Ember.View.extend({
     templateName: "training-queue-view",
     queueType: null,
-    queues: null,
+    guck: 'herbert',
+    hans: null,
     
     trainableUnitTypes: function() {
       
     }.property('queueType').cacheable(),
     
     queue: function() {
-      var queues = this.getPath('queues.collection');
-      console.log('QUEUE property', queues, this.get('parentView'), this.getPath('parentView.parentView'));
+      var queues = this.get('hans');
+      return null;
+      console.log('QUEUE property', queues, this.get('parentView'), this.get('hans'), this.get('guck'), this.get('queueType'), this.get('templateName'), this.get('parentView'), this.getPath('parentView.parentView'));
       var queue = null;
       var queueType = this.get('queueType');
       if (!queueType || !queues) {
@@ -266,7 +269,7 @@ AWE.UI.Ember = (function(module) {
         }
       });
       return queue;
-    }.property('queues.changedAt')
+    }.property('templateName')
     
   });
   

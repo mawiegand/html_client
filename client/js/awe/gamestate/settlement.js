@@ -62,6 +62,7 @@ AWE.GS = (function(module) {
         var hashableQueues = AWE.GS.ConstructionQueueAccess.getHashableCollectionForSettlement_id(this.get('id'));
         this.set('hashableQueues', hashableQueues);
         var hashableTrainingQueues = AWE.GS.TrainingQueueAccess.getHashableCollectionForSettlement_id(this.get('id'));
+        console.log('IN INIT', hashableTrainingQueues);
         this.set('hashableTrainingQueues', hashableTrainingQueues);
       }
     },
