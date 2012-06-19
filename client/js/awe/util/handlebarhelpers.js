@@ -10,19 +10,20 @@
  ** **************************************************************************
 
 
-
 //////////////////////////////////////////////////////////////////////////////
 // 
 //  GENERAL TRANSLATION AND LOCALIZATION
 //
 //////////////////////////////////////////////////////////////////////////////
 
+
 /** this helper selects a string according to the present locale from a 
  * multi-language hash holding translations for different locales. This helper
  * is mainly used to select the correct name and description from the rules.
  *
  * Presently, the LOCALE as well as the DEFAULT_LOCALE to fall-back in case
- * of a missing translation are both set in AWE.Config. */
+ * of a missing translation are both set in AWE.Config.  
+ * @name Ember.registerBoundHelper */
 Ember.registerBoundHelper("local", function(hash) {
   if (hash === undefined || hash === null) {
     return "" ;
