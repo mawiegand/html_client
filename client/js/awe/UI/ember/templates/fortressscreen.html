@@ -174,7 +174,7 @@
   <br />  
 
   
-  {{view Ember.TextField valueBinding="number"}} <a href="#" class="button" action="trainUnits">Train {{local selectedUnitType.name}}</a>    
+  {{view Ember.TextField valueBinding="number"}} <a href="#" class="button" {{action "createJobPressed"}}>Train {{local selectedUnitType.name}}</a>    
 
   <div class="training-queue-list-pane">    
     {{#unless queue.empty }}
