@@ -46,7 +46,6 @@ AWE.GS = (function(module) {
     garrisonArmy: function() {
       var showGarrisonArmy = this.get('buildingType') && this.get('buildingType')['abilities'] && this.get('buildingType')['abilities']['show_garrison_army'];
       if (showGarrisonArmy) {
-        log('---> garrison', this.getPath('slot.settlement.garrison'));
         return this.getPath('slot.settlement.garrison');
       }
     }.property('buildingType', 'slot.settlement.garrison').cacheable(),

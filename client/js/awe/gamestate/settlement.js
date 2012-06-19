@@ -77,7 +77,6 @@ AWE.GS = (function(module) {
     },
     
     garrison: function() {
-      log('---> in settlement  garrison')
       return module.ArmyManager.getArmy(this.get('garrison_id'));
     }.property('garrison_id').cacheable(),  
     
