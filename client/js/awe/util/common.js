@@ -65,18 +65,25 @@ AWE.Util = (function(module) {
     return duration;
   }
   
+  var zeroPadTime = function(timeComponent) {
+    if (timeComponent == 0) {
+      return "00"
+    }
+    return (timeComponent <= 10 ? "0" : "") + timeComponent;
+  }
+  
   module.localizedDurationFromSeconds = function(seconds) {
     var duration = module.secondsToDuration(seconds);
     
-    var string = ""+ duration.s ;
+    var string = "";
     if (duration.h > 0 || duration.m > 0) {
-      string = duration.m + ":" + string;
+      string = zeroPadTime(duration.m) + ":" + zeroPadTime(duration.s);
       if (duration.h > 0) {
         string = duration.h + ":" + string;
       }
     }
     else {
-      string += "s";
+      string += duration.s + "s";
     }
     return string;
   }
