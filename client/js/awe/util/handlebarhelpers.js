@@ -57,7 +57,7 @@ Handlebars.registerHelper("t", function(path) {
 //////////////////////////////////////////////////////////////////////////////
 
 /** formats the specified number to the given number of significant places. */
-Ember.registerBoundHelper("number", function(number, options) {
+Ember.registerBoundHelper("formatNumber", function(number, options) {
   var maxPlaces = options.maxPlaces || 0;
   if (number === undefined || number === null) {
     return "" ;
@@ -76,7 +76,7 @@ Ember.registerBoundHelper("number", function(number, options) {
 
 /** formats the specified duration (expects seconds) according to the local 
  * conventions */
-Ember.registerBoundHelper("duration", function(seconds) {
+Ember.registerBoundHelper("formatDuration", function(seconds) {
   if (seconds === undefined || seconds === null) {
     return "" ;
   }
@@ -85,7 +85,7 @@ Ember.registerBoundHelper("duration", function(seconds) {
 
 /** TODO: extracts and formats the time component of the given date and time. 
  */
-Ember.registerBoundHelper("time", function(datetime) {
+Ember.registerBoundHelper("formatTime", function(datetime) {
   return datetime;
 });
 
@@ -96,7 +96,7 @@ Ember.registerBoundHelper("date", function(datetime) {
 });
 
 /** TODO: extracts and formats the given date and time. */
-Ember.registerBoundHelper("datetime", function(datetime) {
+Ember.registerBoundHelper("formatDatetime", function(datetime) {
   return datetime;
 });
 

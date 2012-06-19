@@ -29,7 +29,7 @@
 
 <script type="text/x-handlebars" data-template-name="shout-box">
   <div class="shout-box">
-    <h1>{{ unbound AWE.I18n.strings.general.shoutBox.heading }}</h1>
+    <h1>{{t general.shoutBox.heading}}</h1>
     <ul>
       {{#each shouts}}
         <li>{{ message }} -- {{ character.name }}, {{ posted_ago_in_words }} ago</li>
