@@ -48,12 +48,12 @@ Ember.registerBoundHelper("local", function(hash) {
 
 /** Look-up the text for a given path in the translation file of the current
  * LOCALE. Falls-back to the DEFAULT_LOCALE in case the key cannot be found.
- * 
- * @example 
- * 1. {{t settlement.buildings.details.speedup}}  // "Speedup to:" for LOCALE=en_US
  *
  * ATTENTION: This is a simple Handlebars helper that does not bind to the 
  *            argument. Thus, only provide constant keys to the I18n - files.
+ * 
+ * @example 
+ * 1. {{t settlement.buildings.details.speedup}}  // "Speedup to:" for LOCALE=en_US
  *
  * @name Handlebars.Helper.t
  */
@@ -74,7 +74,9 @@ Handlebars.registerHelper("t", function(path) {
 //
 //////////////////////////////////////////////////////////////////////////////
 
-/** formats the specified number to the given number of significant places. */
+/** formats the specified number to the given number of significant places. 
+ * @name Handlebars.Helper.formatNumber
+ */
 Ember.registerBoundHelper("formatNumber", function(number, options) {
   var maxPlaces = options.maxPlaces || 0;
   if (number === undefined || number === null) {
@@ -92,7 +94,9 @@ Ember.registerBoundHelper("formatNumber", function(number, options) {
 //////////////////////////////////////////////////////////////////////////////
 
 /** formats the specified duration (expects seconds) according to the local 
- * conventions */
+ * conventions 
+ * @name Handlebars.Helper.formatDuration
+ */
 Ember.registerBoundHelper("formatDuration", function(seconds) {
   if (seconds === undefined || seconds === null) {
     return "" ;
@@ -101,18 +105,22 @@ Ember.registerBoundHelper("formatDuration", function(seconds) {
 });
 
 /** TODO: extracts and formats the time component of the given date and time. 
+ * @name Handlebars.Helper.formatTime
  */
 Ember.registerBoundHelper("formatTime", function(datetime) {
   return datetime;
 });
 
 /** TODO: extracts and formats the date component of the given date and time. 
- *
+ * @name Handlebars.Helper.formatDate
+ */
 Ember.registerBoundHelper("date", function(datetime) {
   return datetime;
 });
 
-/** TODO: extracts and formats the given date and time. */
+/** TODO: extracts and formats the given date and time. 
+ * @name Handlebars.Helper.formatDatetime
+ */
 Ember.registerBoundHelper("formatDatetime", function(datetime) {
   return datetime;
 });
