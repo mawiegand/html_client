@@ -283,7 +283,7 @@ AWE.UI.Ember = (function(module) {
 		costs: function() {
 		  var unitType = this.get('selectedUnitType');
 		  return unitType && unitType.costs ? AWE.Util.Rules.lookupResourceCosts(unitType.costs) : null;
-		}.property('selectedUnitType', 'settlement').cacheable(),
+		}.property('selectedUnitType').cacheable(),
 		
 		totalCosts: function() {
 		  return AWE.Util.Rules.multipliedResourceCosts(this.get('costs'), this.get('number') || 0.0);
@@ -291,35 +291,16 @@ AWE.UI.Ember = (function(module) {
 		
 		productionTime: function() {
 		  var unitType = this.get('selectedUnitType');
-		  if (unitType && unitType.production_time) {
-		    var seconds = unitType.production_time;
-		    var speed = this.getPath('queue.speed');
-		    seconds = speed ? seconds / speed : seconds; // apply queue speed, if known.
-		    return seconds;
-		  }
-		  else {
-		    return null;
-	    }
-		}.property('queue', 'selectedUnitType').cacheable(),   ///< TODO : also update, when queue's speedup changes.
+		  var speed    = this.getPath('queue.speed') || 1.0;
+		  console.log('SPEED', this.getPath('queue.speed'));
+		  return unitType ? AWE.Util.Rules.calculateProductionTime(unitType.production_time, speed) : null;
+		}.property('queue.speed', 'selectedUnitType').cacheable(),   ///< TODO : also update, when queue's speedup changes.
 
 		totalProductionTime: function() {
 		  var productionTime  = this.get('productionTime');
-		  var number = this.get('number')
-		  if (!productionTime ||number <= 0) {
-		    return null;
-		  }
-		  return productionTime * number;
-		}.property('productionTime', 'number').cacheable(), 
-		
-		localizedProductionTime: function() {
-		  var productionTime = this.get('productionTime');
-		  return productionTime ? AWE.Util.localizedDurationFromSeconds(productionTime) : null;
-		}.property('productionTime').cacheable(),   
-
-		localizedTotalProductionTime: function() {
-		  var productionTime = this.get('totalProductionTime');
-		  return productionTime ? AWE.Util.localizedDurationFromSeconds(productionTime) : null;
-		}.property('totalProductionTime').cacheable(),   
+		  var number          = this.get('number')
+		  return productionTime && number > 0 ? productionTime * number : null;
+		}.property('productionTime', 'number').cacheable(),  
 
     trainableUnitTypes: function() {
       var queueType = this.getPath('queue.queueType');

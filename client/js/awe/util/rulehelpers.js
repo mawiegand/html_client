@@ -57,6 +57,26 @@ AWE.Util.Rules = (function(module) {
 	  });
 	};
 	
+  
+  ////////////////////////////////////////////////////////////////////////////
+  // 
+  //  PRODUCTION TIMES
+  //
+  ////////////////////////////////////////////////////////////////////////////
+  
+  /** determines production time in seconds by evaluating the given formula
+   * with the given level and dividing it by the speed (of the queue). */
+  module.calculateAndEvaluateProductionTime = function(baseTimeFormula, level, speed) {
+    return _calculateAndEvaluateProductionTime(baseTimeFormula, level, speed, true);
+  };
+  
+  /** does the same as the method before but does NOT evaluate the formula.*/
+  module.calculateProductionTime = function(baseTime, speed) {
+    return _calculateAndEvaluateProductionTime(baseTime, 0, speed, false);    
+  };
+  
+
+	
   ////////////////////////////////////////////////////////////////////////////
   // 
   //  REQUIREMENTS
@@ -95,7 +115,16 @@ AWE.Util.Rules = (function(module) {
 	  });
     return costs;
   };
-
+  
+  var _calculateAndEvaluateProductionTime = function(baseTime, level, speed, evaluate) {
+    baseTime = baseTime || null;
+    level    = level || 0;
+    speed    = speed || 1.0;
+    if (evaluate) {
+      baseTime = AWE.GS.Util.parseAndEval(baseTime, level);
+    }
+    return baseTime / speed;
+  }
   
 
   return module;      
