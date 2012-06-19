@@ -1,24 +1,38 @@
-/* Author: Sascha Lange <sascha@5dlab.com>,
- *         Patrick Fox <patrick@5dlab.com>
- * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
+/**
+ * @fileOverview 
+ * Base class of all objects representing the game state.
+ *
+ * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany.
  * Do not copy, do not distribute. All rights reserved.
- */
+ *
+ * @author <a href="mailto:sascha@5dlab.com">Sascha Lange</a>
+ * @author <a href="mailto:patrick@5dlab.com">Patrick Fox</a>
+ */ 
  
+/** Augmented Worlds Library (AWE)
+ * @namespace */
 var AWE = window.AWE || {};
 
-/** GameState base class, manager and helpers. */
-AWE.GS = (function(module) {
+/** State, manager and helpers for representing the game state in the client. 
+ * @namespace */
+AWE.GS = (
+  function(module) /** @lends AWE.GS */ {
   
-  module.ENTITY_UPDATE_TYPE_AGGREGATE = 0;  ///< shortest type of update, just the ID and very basic data
-  module.ENTITY_UPDATE_TYPE_SHORT = 1;      ///< short type of update, only including the most important fields (e.g. for displaying on map)
-  module.ENTITY_UPDATE_TYPE_FULL = 2;       ///< longest type of update, including all fields of the entity
-  
-  module.ENTITY_CREATE_TYPE = 0;            ///< one and only create type, for use with entity methods
+  /** shortest type of update, just the ID and very basic data
+   * @name AWE.GS.ENTITY_UPDATE_TYPE_AGGREGATE */ 
+  module.ENTITY_UPDATE_TYPE_AGGREGATE = 0;  
+  /** short type of update, only including the most important fields (e.g. 
+   * for displaying on map)
+   * @name AWE.GS.ENTITY_UPDATE_TYPE_SHORT */ 
+  module.ENTITY_UPDATE_TYPE_SHORT = 1;     
+  /** longest type of update, including all fields of the entity
+   * @name AWE.GS.ENTITY_UPDATE_TYPE_FULL */ 
+  module.ENTITY_UPDATE_TYPE_FULL = 2;     
 
-  module.PROPERTY_READ_WRITE = 0;
-  module.PROPERTY_READ_ONLY = 1;
+  /** one and only create type, for use with entity methods
+   * @name AWE.GS.ENTITY_CREATE_TYPE */ 
+  module.ENTITY_CREATE_TYPE = 0;            
 
-  module.PROPERTY_HASHABLE = true;
   
   // /////////////////////////////////////////////////////////////////////////
   //
@@ -26,20 +40,41 @@ AWE.GS = (function(module) {
   //
   // /////////////////////////////////////////////////////////////////////////
 
-  /** Base class of all classes that represent states & entities of the game. */
-  module.Entity = Ember.Object.extend({
+  /** 
+   * Base class of all objects representing the present game state on the 
+   * client's side. Provides general methods for fetching and updating 
+   * entities from the game server as well as change and update tracking.
+   *
+   * As default, all entities of the same type can be looked-up by their
+   * unique id. 
+   *
+   * @class
+   * @name AWE.GS.Entity */
+  module.Entity = Ember.Object.extend(/** @lends AWE.GS.Entity# */{
     
-    id: 0,
+    /** unique id of the entity. @property */
+    id: 0,       
+    /** name of the type for runtime evaluation */                          
     typeName: 'Entity',
+    /** timestamp of last update (on server)  */
     updated_at: null,
+    /** timestamp of the creation (on server) */
     created_at: null,
-    lastAggregateUpdateAt: new Date(1970), ///< time of last aggregate update received by the client
-    lastShortUpdateAt: new Date(1970),     ///< time of last short update received by the client
-    lastFullUpdateAt: new Date(1970),      ///< time of last full update received by the client
+    /** time of last aggregate update received by the client */
+    lastAggregateUpdateAt: new Date(1970), 
+    /** time of last short update received by the client */
+    lastShortUpdateAt: new Date(1970),     
+    /** time of last full update received by the client */
+    lastFullUpdateAt: new Date(1970),     
     
-    /** a more convenient way to get the id. */
+    /** slightly more convenient way to get the id other than using 
+     * this.get('id').  */
     getId: function() { return this.get('id'); },
     
+    /** sets all properties of this entity to the values of the given
+     * hash.
+     * @param {Object} hash holding key - value pairs to apply to this 
+     *                 entity. */
     setPropertiesWithHash: function(hash) {
       for (var key in hash) {
         if (hash.hasOwnProperty(key)) {
@@ -77,6 +112,10 @@ AWE.GS = (function(module) {
       }
     },
     
+    /** return the timestamp of the last update in the client that at least
+     * contained as many data as the specified update type. 
+     * @param kind of update to query for. If nothing is specified, a full 
+     *        update is assumed. */
     lastUpdateAt: function(updateType) {
       if (updateType === undefined) { 
         updateType = module.ENTITY_UPDATE_TYPE_FULL;
@@ -97,11 +136,20 @@ AWE.GS = (function(module) {
       return this.lastUpdateAt(module.ENTITY_UPDATE_TYPE_AGGREGATE); // last update of whatever type
     },
 
+    /** 
+     * initializes the entity with the values of the given hash.
+     * @param {Object} spec optional specification of the initial values
+     *                      of all or some properties. */
     init: function(spec) {
       this.setPropertiesWithHash(spec);     
       return this; 
     },
     
+    /** 
+     * destroys the entity and removes it from all access hashes in the
+     * client side. If the entity is presently referenced somehwere, it 
+     * can still be used, but it's not longer possible to access / look-up
+     * this entity using the AccessManager or GameStateManager. */
     destroy: function() {
       
       var access = AWE.GS[this.get('typeName') + 'Access'];
@@ -117,6 +165,14 @@ AWE.GS = (function(module) {
       }
     },
   
+    /** 
+     * updates the properties of the entity with the values in the given hash
+     * and also sets the last-update timestamps appropriately.
+     *
+     * @param {Object} hash key-value pairs to updat the properties with
+     * @param updateType type of update, ENTITY_UPDATE_TYPE_FULL for default
+     * @param {Date} timestamp to use for setting the lastUpdate property.
+     *               new Date() is used as default. */
     updateWith: function(hash, updateType, timestamp) {
       updateType = updateType || module.ENTITY_UPDATE_TYPE_FULL;     // assume full update, if nothing else specified
       timestamp = timestamp || new Date();                           // given timestamp or now
@@ -141,6 +197,12 @@ AWE.GS = (function(module) {
       }
     },
   
+    /** convenience method for directly setting the last update timestamp for
+     * the specified update type to the given timestamp. Does not change any 
+     * properties. 
+     * @param updateType type of update, ENTITY_UPDATE_TYPE_FULL for default
+     * @param {Date} timestamp to use for setting the lastUpdate property.
+     *               new Date() is used as default. */
     setNotModifiedAfter: function(updateType, timestamp) {
       this.updateWith(null, updateType, timestamp);
     }

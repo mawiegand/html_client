@@ -1,3 +1,8 @@
+# Generate Documentation: (jsdoc-toolkit)
+
+From jsdoc-toolkit subdirectory call:
+java -jar jsrun.jar app/run.js /opt/local/var/www/slange/html_client/client/js/awe/ -r=4 -a -t=templates/jsdoc
+
 # [HTML5 Boilerplate](http://html5boilerplate.com)
 
 HTML5 Boilerplate is a professional front-end template that helps you build fast, robust, adaptable, and future-proof websites. Spend more time developing and less time reinventing the wheel.
