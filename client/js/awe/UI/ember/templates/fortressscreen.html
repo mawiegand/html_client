@@ -104,7 +104,7 @@
     
     {{#if building.speedupQueues}}
       {{#each building.speedupQueues}}
-        <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{number speedup maxPlaces=1}}%</p>
+        <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
       {{/each}}
     {{/if}}
     
@@ -131,7 +131,7 @@
     
       {{#if building.speedupQueuesNextLevel}}
         {{#each building.speedupQueuesNextLevel}}
-          <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{number speedup maxPlaces=1}}%</p>
+          <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
         {{/each}}
       {{/if}}
     {{else}}
@@ -164,13 +164,13 @@
     {{#each costs}}
       {{amount}} {{local resourceType.name}} &nbsp;  
     {{/each}}    
-    Duration: {{duration productionTime}}
+    Duration: {{formatDuration productionTime}}
   <br />
   Total:
     {{#each totalCosts}}
       {{amount}} {{local resourceType.name}} &nbsp;  
     {{/each}}    
-    Duration: {{duration totalProductionTime}}
+    Duration: {{formatDuration totalProductionTime}}
   <br />  
 
   
