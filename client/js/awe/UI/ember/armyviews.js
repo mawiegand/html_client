@@ -12,8 +12,31 @@ AWE.UI.Ember = (function(module) {
   module.templates = module.templates || [];
   module.templates.push('js/awe/UI/ember/templates/armyviews.html');
   
-  module.ArmyInfoView = module.Dialog.extend({
+  module.ArmyInfoDialog = module.Dialog.extend({
+    templateName: 'army-info-dialog',
+    
     army: null,
+        
+    init: function() {
+      this._super();      
+    },
+    
+    changeNamePressed: function() {
+      log('ERROR Action not connected: changeNameWasPressed.');
+    },
+  });
+  
+  module.ArmyInfoView = Ember.View.extend({
+    templateName: "army-info-view",
+    
+    army: null,
+    
+    armyObserver: function() {
+      if (this.get('army')) {
+        AWE.GS.ArmyManager.updateArmy(this.get('army').getId(), module.ENTITY_UPDATE_TYPE_FULL);
+      }
+    }.observes('army'),
+
     units: function() {
       var list = [];
       var army = this.get('army');
@@ -28,17 +51,6 @@ AWE.UI.Ember = (function(module) {
       log("LIST", list, army, army.details);
       return list;
     }.property('army.details.@each').cacheable(),
-    templateName: 'army-details',
-    init: function() {
-      this._super();      
-    },
-    changeNamePressed: function() { alert ('Action not connected: changeNameWasPressed.'); },
-/*    close: function() { log('in close');
-      if (this.onClose) { log('call onClose');
-        this.onClose(this);
-      }
-      this.destroy();
-    }, */
   });
   
   return module;

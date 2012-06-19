@@ -84,6 +84,7 @@ Ember.registerBoundHelper("formatNumber", function(number, options) {
   }
   var fac = Math.pow(10, maxPlaces);
   return Math.floor(number * fac + 0.5) / fac; // TODO: use locale!
+  // TODO add option to append '0's to fill maxPlaces
 });
 
 
