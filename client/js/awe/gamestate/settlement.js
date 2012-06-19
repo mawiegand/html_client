@@ -28,7 +28,12 @@ AWE.GS = (function(module) {
     allianceIdObserver: AWE.Partials.attributeHashObserver(module.SettlementAccess, 'alliance_id', 'old_alliance_id').observes('alliance_id'),
 
     location_id: null, old_location_id: null,
-    locationIdObserver: AWE.Partials.attributeHashObserver(module.SettlementAccess, 'location_id', 'old_location_id').observes('location_id'),    
+    locationIdObserver: AWE.Partials.attributeHashObserver(module.SettlementAccess, 'location_id', 'old_location_id').observes('location_id'),
+    
+    location: function(){
+      return AWE.Map.Manager.getLocation(this.get('location_id'));    
+    }.property('location_id').cacheable(),
+
     
     armies_count: null,
     besieged: null,
@@ -72,8 +77,9 @@ AWE.GS = (function(module) {
     },
     
     garrison: function() {
+      log('---> in settlement  garrison')
       return module.ArmyManager.getArmy(this.get('garrison_id'));
-    },  
+    }.property('garrison_id').cacheable(),  
     
     owner: function() {
       return module.CharacterManager.getCharacter(this.get('owner_id'));

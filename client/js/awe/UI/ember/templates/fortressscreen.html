@@ -138,11 +138,17 @@
       <p><b>Cannot be upgraded further.</b></p>
     {{/if}}
     
+    {{#if building.trainingQueues}}
     <hr>
+      {{#each building.trainingQueues }}
+        {{view AWE.UI.Ember.TrainingQueueView controllerBinding="controller" classNames="training-queue-list" queueBinding="this"}}
+      {{/each}}
+    {{/if}}
 
-    {{#each building.trainingQueues }}
-      {{view AWE.UI.Ember.TrainingQueueView controllerBinding="controller" classNames="training-queue-list" queueBinding="this"}}
-    {{/each}}
+    {{#if building.garrisonArmy }}
+    <hr>
+      {{view AWE.UI.Ember.ArmyInfoView armyBinding="building.garrisonArmy"}}
+    {{/if}}
 
   </div>
 </script>

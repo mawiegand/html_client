@@ -1,37 +1,62 @@
-<script type="text/x-handlebars" data-template-name="army-details">
+<script type="text/x-handlebars" data-template-name="army-info-dialog">
       <div class="modal-dialog-background"></div>
       <div class="center-helper">
         <div class="modal-dialog-pane" id="army-details">
-          <h1>{{t army.details.heading }}: {{ army.name }}</h1>
-          <a href="#" {{action "changeNamePressed" target="parentView"}}>change name</a>
-          
-          <table>
-            <tr>
-              {{#each units}}
-                <th>{{name}}</th>
-              {{/each}}
-            </tr>
-            <tr>
-              {{#each units}}
-                <td>{{number}}</td>
-              {{/each}}
-            </tr>
-          </table>
-          
-          <ul>
-            <li>Stength Melee: {{ army.unitcategory_infantry_strength }}</li>
-            <li>Stength Riders: {{ army.unitcategory_cavalry_strength }}</li>
-            <li>Stength Distance: {{ army.unitcategory_artillery_strength }}</li>
-            <li>Overal Strength: {{ army.strength }}</li>
-            <li>Size: {{ army.size_present }} / army.size_max</li>
-            <li>Velocity: {{ army.velocity }}</li>
-          </ul>
-          
+          {{view AWE.UI.Ember.ArmyInfoView armyBinding="army"}}
           <a href="#" {{action "closePressed" target="parentView"}}>close</a>
         </div>
       </div>
 </script>
 
+<script type="text/x-handlebars" data-template-name="army-info-view">
+    <h2>{{t army.details.heading }}: {{ army.name }}</h2>
+    
+    {{#unless army.garrison}}
+    <a href="#" {{action "changeNamePressed" target="parentView"}}>change name</a>
+    {{/unless}}
+    
+    <div class="army-view-unit-list">
+      <h4>Units</h4>
+      <table class="table-list">
+          {{#each units}}
+        <tr>
+          <th>{{name}}:</th>
+          <td>{{number}}</td>
+        </tr>
+          {{/each}}
+      </table>
+    </div>
+    
+    <div class="army-view-property-list">
+      <h4>Properties</h4>
+      <table class="table-list">
+        <tr>
+          <th>Stength Melee:</th>
+          <td>{{ army.unitcategory_infantry_strength }}</td>
+        <tr>
+        </tr>
+          <th>Stength Riders:</th>
+          <td>{{ army.unitcategory_cavalry_strength }}</td>
+        <tr>
+        </tr>
+          <th>Stength Distance:</th>
+          <td>{{ army.unitcategory_artillery_strength }}</td>
+        <tr>
+        </tr>
+          <th>Overal Strength:</th>
+          <td>{{ army.strength }}</td>
+        <tr>
+        </tr>
+          <th>Size:</th>
+          <td>{{ army.size_present }} / {{army.size_max}}</td>
+        <tr>
+        </tr>
+          <th>Velocity:</th>
+          <td>{{ army.velocity }}</td>
+        </tr>
+      </table>
+    </div>  
+</script>
 
 
 

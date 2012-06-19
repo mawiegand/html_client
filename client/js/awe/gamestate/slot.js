@@ -42,6 +42,14 @@ AWE.GS = (function(module) {
 			}
 			return AWE.GS.RulesManager.getRules().getBuildingType(buildingId);
     }.property('buildingId').cacheable(),
+    
+    garrisonArmy: function() {
+      var showGarrisonArmy = this.get('buildingType') && this.get('buildingType')['abilities'] && this.get('buildingType')['abilities']['show_garrison_army'];
+      if (showGarrisonArmy) {
+        log('---> garrison', this.getPath('slot.settlement.garrison'));
+        return this.getPath('slot.settlement.garrison');
+      }
+    }.property('buildingType', 'slot.settlement.garrison').cacheable(),
 
 		/** returns a unique string identifying the building type. This 
 		 * is used to associate all images to the building. */
@@ -240,6 +248,19 @@ AWE.GS = (function(module) {
     settlement_id: null, old_settlement_id: null,
     locationIdObserver: AWE.Partials.attributeHashObserver(module.SlotAccess, 'settlement_id', 'old_settlement_id').observes('settlement_id'),
     
+    // ^^^^^^ 
+    
+    
+    // Problem?
+    
+    
+    
+    
+    
+    
+    
+    
+    
 		level: null,
     building_id: null,
     construction_id: null,
@@ -251,8 +272,6 @@ AWE.GS = (function(module) {
     
     bindings: null,
     
-    
-
     init: function(spec) {
       console.log('INIT Slot');
       this._super(spec);
@@ -326,7 +345,7 @@ AWE.GS = (function(module) {
       this.set('constructionOptions', options);      
     }.observes('building_id'),
 
-    settlement: function() {         // this should become an action, but therefore we need to make sure the corresponding settlement has already been loaded
+    settlement: function() {
       return module.SettlementManager.getSettlement(this.get('settlement_id'));
     }.property('settlement_id').cacheable(),
     

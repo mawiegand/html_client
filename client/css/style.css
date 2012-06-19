@@ -463,7 +463,7 @@ html, body {
 }
 
 .message-center .header div:hover {
-  color: #FA0;;
+  color: #FA0;
 }
 
 .message-center .list {
@@ -1142,6 +1142,33 @@ html, body {
 .fortress-picture .wall.size3:hover {
 	background-position: -1600px -960px;
 }
+
+
+
+.army-view-unit-list {
+  float: left;
+  margin-right: 20px;
+}
+
+.army-view-property-list {
+  float: left;
+}
+
+.table-list th {
+  text-align: left;
+  padding: 0px 10px 0px 0px;
+}
+
+.table-list td {
+  text-align: right;
+}
+
+
+
+
+
+
+
 
 
 .activity-indicator-small {

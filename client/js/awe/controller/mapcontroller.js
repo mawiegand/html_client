@@ -577,7 +577,7 @@ AWE.Controller = (function(module) {
         return ;
       }
       
-      var dialog = AWE.UI.Ember.ArmyInfoView.create({
+      var dialog = AWE.UI.Ember.ArmyInfoDialog.create({
         army: army,
         changeNamePressed: function(event) {
               
