@@ -99,12 +99,12 @@
     {{{building.description}}}
 
     {{#if building.unlockedQueues}}
-      <p><b>Enables:</b> {{#each building.unlockedQueues}}{{local name}}, {{/each}}</p>
+      <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.unlockedQueues}}{{local name}}, {{/each}}</p>
     {{/if}}
     
     {{#if building.speedupQueues}}
       {{#each building.speedupQueues}}
-        <p><b>Speed bonus to {{local queueType.name}}:</b> {{number speedup maxPlaces=1}}%</p>
+        <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{number speedup maxPlaces=1}}%</p>
       {{/each}}
     {{/if}}
     
@@ -126,12 +126,12 @@
       {{/if}}
     
       {{#if building.unlockedQueuesNextLevel}}
-        <p><b>Enables:</b> {{#each building.unlockedQueuesNextLevel}}{{local name}}, {{/each}}</p>
+        <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.unlockedQueuesNextLevel}}{{local name}}, {{/each}}</p>
       {{/if}}
     
       {{#if building.speedupQueuesNextLevel}}
         {{#each building.speedupQueuesNextLevel}}
-          <p><b>Speed bonus to {{local queueType.name}}:</b> {{number speedup maxPlaces=1}}%</p>
+          <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{number speedup maxPlaces=1}}%</p>
         {{/each}}
       {{/if}}
     {{else}}

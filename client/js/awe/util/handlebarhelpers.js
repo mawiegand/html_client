@@ -31,6 +31,17 @@ Ember.registerBoundHelper("local", function(hash) {
 });
 
 
+Handlebars.registerHelper("t", function(path) {
+  if (path === undefined || path === null) return "" ;
+  if (!AWE.I18n[AWE.Config.LOCALE]) return "(NO TRANSLATION FOR "+AWE.Config.LOCALE+" LOADED.)";
+  path = "localizedStrings." + path;   
+  var string = Ember.getPath(AWE.I18n[AWE.Config.LOCALE], path);
+  string     = string ? string : Ember.getPath(AWE.I18n[AWE.Config.DEFAULT_LOCALE], path);
+  string     = string ? string : Ember.getPath(AWE.I18n[AWE.Config.LOCALE], 'localizedStrings.error.stringMissing');
+  string     = string ? string :"FATAL ERROR IN I18N FOR LOCALE " + AWE.Config.LOCALE;
+  return string ;
+});
+
 //////////////////////////////////////////////////////////////////////////////
 // 
 //  FORMATTING NUMBERS

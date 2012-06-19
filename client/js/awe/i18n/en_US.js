@@ -5,11 +5,11 @@
 
  
 var AWE = window.AWE || {};
+AWE.I18n = AWE.I18n || {};
 
-
-AWE.I18n = AWE.I18n || function(module) {
-  
-  module.strings = {
+AWE.I18n.en_US = AWE.I18n.en_US || function(module) {
+    
+  module.localizedStrings = {
  
     general: {
       
@@ -31,7 +31,7 @@ AWE.I18n = AWE.I18n || function(module) {
     },
     
     error: {
-      
+      stringMissing: '(error: text missing!)',
     },
     
     map: {
@@ -61,6 +61,15 @@ AWE.I18n = AWE.I18n || function(module) {
       buy: 'Buy!'
     },
     
+    settlement: {
+      buildings: {
+        details: {
+          enables: 'Enables',
+          speedup: 'Speed bonus to',
+        },
+      },
+    },
+    
     profile: {
       
     },
@@ -69,5 +78,5 @@ AWE.I18n = AWE.I18n || function(module) {
   
   return module;
   
-}(AWE.I18n || {});
+}(AWE.I18n.en_US || {});
 
