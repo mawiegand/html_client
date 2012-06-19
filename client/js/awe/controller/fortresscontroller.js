@@ -362,36 +362,54 @@ AWE.Controller = (function(module) {
       };
     }());
     
-    var pendingJobUpdates = {};
     
-    that.updateOldJobsInQueues = (function() {
-      
-      return function() {
-        var queues = AWE.GS.ConstructionQueueManager.getQueuesOfSettlement(that.fortressId);
-        
-        queues.forEach(function(queue) {
-          var jobs = AWE.GS.ConstructionJobManager.getJobsInQueue(queue.getId());
-          if (jobs.length > 0) {
-            var job = jobs[0]; // TODO check every job not only the first
-            if (job.get('active_job')) {
-              var jobId = job.getId();
-              pendingJobUpdates[jobId] = pendingJobUpdates[jobId] > 0 ? pendingJobUpdates[jobId] : AWE.Config.TIME_DIFF_RANGE;
-              if (Date.parseISODate(job.get('active_job').finished_at).add({seconds: pendingJobUpdates[jobId]}) < new Date()) {
-                pendingJobUpdates[jobId] *= 2;
-                that.updateConstructionQueueSlotAndJobs(queue.getId());
-              }
-            }      
-          }
-        });
-      }
-    }());
-
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Runloop
     //
     // ///////////////////////////////////////////////////////////////////////
     
+    var pendingConstructionJobUpdates = {};
+    
+    that.updateOldJobsInConstructionQueues = function(queues) {
+      if (queues) {
+        queues.forEach(function(queue) {
+          var jobs = AWE.GS.ConstructionJobManager.getJobsInQueue(queue.getId());
+          jobs.forEach(function(job) {
+            if (job.get('active_job')) {
+              var jobId = job.getId();
+              pendingConstructionJobUpdates[jobId] = pendingConstructionJobUpdates[jobId] > 0 ? pendingConstructionJobUpdates[jobId] : AWE.Config.TIME_DIFF_RANGE;
+              if (Date.parseISODate(job.get('active_job').finished_at).add({seconds: pendingConstructionJobUpdates[jobId]}) < new Date()) {
+                pendingConstructionJobUpdates[jobId] *= 2;
+                that.updateConstructionQueueSlotAndJobs(queue.getId());
+              }
+            }      
+          });
+        });
+      }
+    }
+
+ 
+    var pendingTrainingJobUpdates = {};
+    
+    that.updateOldJobsInTrainingQueues = function(queues) {
+      if (queues) {
+        queues.forEach(function(queue) {
+          var jobs = AWE.GS.TrainingJobManager.getJobsInQueue(queue.getId());
+          jobs.forEach(function(job) {
+            if (job.get('active_job')) {
+              var jobId = job.getId();
+              pendingTrainingJobUpdates[jobId] = pendingTrainingJobUpdates[jobId] > 0 ? pendingTrainingJobUpdates[jobId] : AWE.Config.TIME_DIFF_RANGE;
+              if (Date.parseISODate(job.get('active_job').finished_at).add({seconds: pendingTrainingJobUpdates[jobId]}) < new Date()) {
+                pendingTrainingJobUpdates[jobId] *= 2;
+                that.updateTrainingQueueAndJobs(queue.getId());
+              }
+            }      
+          });
+        });
+      }
+    }
+ 
     that.updateDebug = function() {
       $("#debug2").html('&nbsp;Fortress Screen Visible.');
     };    
@@ -424,7 +442,11 @@ AWE.Controller = (function(module) {
         }
         
         if (fortress && fortress.slots() && AWE.Util.hashCount(fortress.slots()) > 0) {
-          that.updateOldJobsInQueues();
+          that.updateOldJobsInConstructionQueues(fortress.getPath('hashableQueues.collection'));
+        }
+
+        if (fortress && this.view.get('selectedSlot')) {
+          that.updateOldJobsInTrainingQueues(this.view.getPath('selectedSlot.building.trainingQueues'));
         }
       }
       
