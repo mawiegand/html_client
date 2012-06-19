@@ -35,6 +35,7 @@ AWE.GS = (function(module) {
     
     position: null,
     quantity: null,
+    quantity_finished: null,
     
     active_job: null,
         
@@ -167,7 +168,6 @@ AWE.GS = (function(module) {
 
     job_id: null,
 
-    quantity_finished: null,
     quantity_active: null,
     
     started_total_at: null,
