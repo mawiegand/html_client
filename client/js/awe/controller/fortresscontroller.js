@@ -244,18 +244,24 @@ AWE.Controller = (function(module) {
       _modelChanged = true;
     }
     
+    // settlement update method
+
     that.updateSettlement = function() {
       AWE.GS.SettlementManager.updateSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
         log('updated settlement', settlement)
       });
     }
-      
+
+    // slot update method
+
     that.updateSlots = function() {
       AWE.GS.SlotManager.updateSlotsAtSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
         log('updated slots', slots)
       });
     }
       
+    // construction queue and job update methods
+    
     that.updateConstructionQueueSlotAndJobs = function(queueId) {
       AWE.GS.ConstructionQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queue) {
         log('updated construction queue', queueId);
@@ -274,6 +280,29 @@ AWE.Controller = (function(module) {
       });
     }
         
+    that.updateAllConstructionQueuesAndJobs = function() {
+      AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
+        log('updated queues', queues)
+        AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
+          AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+            log('updated jobs in construction queue', jobs)
+          });
+        });      
+      });
+    }
+        
+    // training queue and job update methods
+    
+    that.updateTrainingQueueAndJobs = function(queueId) {
+      AWE.GS.TrainingQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queue) {
+        log('updated training queues', queue);
+      });
+      
+      AWE.GS.TrainingJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+        log('updated training jobs', jobs);
+      });
+    }
+        
     that.updateAllTrainingQueuesAndJobs = function() {
       AWE.GS.TrainingQueueManager.updateQueuesOfSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
         log('updated training queues', queues);
@@ -285,27 +314,8 @@ AWE.Controller = (function(module) {
       });
     }
         
-    that.updateTrainingQueueAndJobs = function(queueId) {
-      AWE.GS.TrainingQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queue) {
-        log('updated training queues', queue);
-      });
-      
-      AWE.GS.TrainingJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
-        log('updated training jobs', jobs);
-      });
-    }
-        
-    // that.updateAllConstructionQueuesAndJobs = function() {
-      // AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
-        // log('updated queues', queues)
-        // AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
-          // AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
-            // log('updated jobs', jobs)
-          // });
-        // });      
-      // });
-    // }
-        
+    // resource pool update methods
+    
     that.updateResourcePool = function() {
       AWE.GS.ResourcePoolManager.updateResourcePool(null, function(pool){
         log('updated resource pool', pool);
@@ -318,27 +328,16 @@ AWE.Controller = (function(module) {
       var lastSettlementId = 0;
       
       var updateSettlement = function() {
-        
         // just trigger the updates, thanks to the bindings we do not need to
         // process the answers and update the views manually.
         AWE.GS.SettlementManager.updateSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
           log('updated settlement', settlement);
           if (settlement && settlement.getId()) {
-            AWE.GS.SlotManager.updateSlotsAtSettlement(settlement.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
-              log('updated slots', slots);
-              AWE.Ext.applyFunctionToHash(slots, function(slotId, slot) {
-                log('slot', slot, slot.get('level'))
-              });      
-            });
-
-            AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(settlement.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
-              log('updated construction queues', queues)
-              AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
-                AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
-                  log('updated construction jobs', jobs)
-                });
-              });      
-            });
+            that.updateSlots();
+            that.updateAllConstructionQueuesAndJobs();
+            if (that.view.get('selectedSlot')) {
+              that.updateAllTrainingQueuesAndJobs();
+            }
           }
         });
       }
@@ -346,14 +345,23 @@ AWE.Controller = (function(module) {
       return function() {
         
         // TODO: use the last update timestamp from the Settlement Manager and don't track a copy locally.
-        if (that.fortressId > 0 &&
-            (lastSettlementId != that.fortressId ||
-             lastSettlementUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date() ||
-             that.modelChanged() ||
-             _becameVisible)
-        ) {
-          log('update Settlement');
-          updateSettlement();
+        if (that.fortressId > 0 && (
+              lastSettlementId != that.fortressId ||
+              lastSettlementUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date() ||
+              that.modelChanged() ||
+              _becameVisible)) {
+                
+          AWE.GS.SettlementManager.updateSettlement(that.fortressId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
+            log('updated settlement', settlement);
+            if (settlement && settlement.getId()) {
+              that.updateSlots();
+              that.updateAllConstructionQueuesAndJobs();
+              if (that.view.get('selectedSlot')) {
+                that.updateAllTrainingQueuesAndJobs();
+              }
+            }
+          });
+
           lastSettlementUpdateCheck = new Date();
           lastSettlementId = that.fortressId;
           _modelChanged = false;
@@ -400,7 +408,7 @@ AWE.Controller = (function(module) {
             if (job.get('active_job')) {
               var jobId = job.getId();
               pendingTrainingJobUpdates[jobId] = pendingTrainingJobUpdates[jobId] > 0 ? pendingTrainingJobUpdates[jobId] : AWE.Config.TIME_DIFF_RANGE;
-              if (Date.parseISODate(job.get('active_job').finished_at).add({seconds: pendingTrainingJobUpdates[jobId]}) < new Date()) {
+              if (Date.parseISODate(job.get('active_job').finished_active_at).add({seconds: pendingTrainingJobUpdates[jobId]}) < new Date()) {
                 pendingTrainingJobUpdates[jobId] *= 2;
                 that.updateTrainingQueueAndJobs(queue.getId());
               }
