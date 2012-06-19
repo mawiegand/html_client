@@ -283,7 +283,7 @@ AWE.UI.Ember = (function(module) {
 		costs: function() {
 		  var unitType = this.get('selectedUnitType');
 		  return unitType && unitType.costs ? AWE.Util.Rules.lookupResourceCosts(unitType.costs) : null;
-		}.property('selectedUnitType', 'settlement').cacheable(),
+		}.property('selectedUnitType').cacheable(),
 		
 		totalCosts: function() {
 		  return AWE.Util.Rules.multipliedResourceCosts(this.get('costs'), this.get('number') || 0.0);
