@@ -956,11 +956,18 @@ html, body {
 }
 
 
-.fortress-picture {
+.fortress-picture, .base-picture {
   position: relative;
   width: 800px;
   height: 600px;
+} 
+
+.fortress-picture {
   background: url('../images/settlements/fortress/fortress_background.png');
+} 
+
+.base-picture {
+  background: url('../images/settlements/base/base_background.png');
 } 
 
 .fortress-picture .mouse-over {
