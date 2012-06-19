@@ -1150,6 +1150,10 @@ html, body {
   margin-right: 20px;
 }
 
+.army-info-view {
+  display: inline-block;
+}
+
 .army-view-property-list {
   float: left;
 }
@@ -1162,11 +1166,6 @@ html, body {
 .table-list td {
   text-align: right;
 }
-
-
-
-
-
 
 
 
