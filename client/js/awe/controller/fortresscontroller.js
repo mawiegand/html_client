@@ -1,16 +1,29 @@
-/* Author: Sascha Lange <sascha@5dlab.com>
- * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
+/**
+ * @fileOverview 
+ * Screen controller for the home-base screen.
+ *
+ * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany.
  * Do not copy, do not distribute. All rights reserved.
- */
+ *
+ * @author <a href="mailto:sascha@5dlab.com">Sascha Lange</a>
+ * @author <a href="mailto:patrick@5dlab.com">Patrick Fox</a>
+ */ 
 
 var AWE = AWE || {};
 
 AWE.Controller = (function(module) {
-          
+       
+  /**
+   * Screen controller for displaying a fortress.  
+   * @class
+   * @extends AWE.Controller.ScreenController
+   * @name AWE.Controller.FortressController */   
   module.createFortressController = function(anchor) {
       
     var _viewNeedsUpdate = false;  
-          
+    var _modelChanged = false;
+    var _becameVisible = false;
+    
     var that = module.createScreenController(anchor); ///< create base object
     
     that.view = null;
@@ -23,19 +36,14 @@ AWE.Controller = (function(module) {
     _super.runloop = that.runloop;
     _super.append = function(f) { return function() { f.apply(that); }; }(that.append);
     _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
-    
-    var _modelChanged = false;
-    var _becameVisible = false;
-    
+        
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Initialization
     //
     // ///////////////////////////////////////////////////////////////////////
     
-    /** intializes three stages for displaying the map-background,
-     * the playing pieces (armies, fortresses, settlements), and 
-     * the HUD. */
+    /** initializes the fortress screen */
     that.init = function(initialFrameModelCoordinates) {
       _super.init();            
     };   
@@ -63,6 +71,11 @@ AWE.Controller = (function(module) {
       }
     }
     
+    /** set the id of the fortress to display by setting the region id.
+     * looks-up the settlement id that is at that particular node's slot 0
+     * and even fetches it from the server, if it's missing.
+     * @function
+     * @name AWE.Controller.FortressController#setNode */
     that.setNode = function(node) {
       var location = node.region().location(0);
       if (!location) {
@@ -108,8 +121,6 @@ AWE.Controller = (function(module) {
       this.updateView();
       this.view = this.createView();
       this.view.appendTo('#main-screen-controller');   
-      
-      log (this.view, this.view.childViews, this.view.get('childViews'), this.view.get('elementId'), this.view.clearBuffer);
     }
     
     
