@@ -1,6 +1,6 @@
 /**
  * @fileOverview 
- * Screen controller for the home-base screen.
+ * Ember.JS views for the home-base screen.
  *
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany.
  * Do not copy, do not distribute. All rights reserved.
@@ -14,6 +14,10 @@ AWE.UI = AWE.UI || {};
 
 /** @namespace */
 AWE.UI.Ember = (function(module) /** @lend AWE.UI.Ember */ {
+  
+
+  module.templates = module.templates || [];
+  module.templates.push('js/awe/UI/ember/templates/basescreen.html');
   
   /** 
    * @class

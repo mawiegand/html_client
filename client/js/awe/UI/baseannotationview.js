@@ -215,7 +215,12 @@ AWE.UI = (function(module) {
       _actionMode = actionMode;
     }        
     
-    that.onEnterButtonClick = function() { WACKADOO.activateBaseController(1)  }; // pass base id
+    that.onEnterButtonClick = function() {
+      WACKADOO.activateFortressController({
+        locationId: my.location.id()
+      });
+    };
+    
 
     that.onAttackButtonClick = function() {};
 

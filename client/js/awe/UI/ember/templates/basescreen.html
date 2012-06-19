@@ -1,0 +1,28 @@
+<script type="text/x-handlebars" data-template-name="base-screen">
+<div class="fortress-screen">
+  <div class="fortress-picture">
+    {{#if "fortress"}}
+      {{#if "haveSlots"}}
+        {{view AWE.UI.Ember.BuildingView classNames="buildings" levelBinding="wall.building.level"}}
+        {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-left" modelBinding="leftTower" settlementBinding="fortress"}}
+        {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-right" modelBinding="rightTower" settlementBinding="fortress"}}
+        {{view AWE.UI.Ember.InteractiveBuildingView  classNames="wall"  modelBinding="wall" settlementBinding="fortress"}}
+      {{/if}}
+      {{#if queues }}
+        {{view AWE.UI.Ember.ConstructionQueueView controllerBinding="controller" classNames="queue-list" queuesBinding="queues.collection"}}
+      {{/if}}
+
+      {{view AWE.UI.Ember.FortressInfoBoxView classNames="fortress-info-box" fortressBinding="fortress"}}
+    {{/if}}
+
+    {{#if selectedSlot}}
+      {{#if selectedSlot.building }}
+        {{view AWE.UI.Ember.BuildingDetailsDialog controllerBinding="controller" slotBinding="selectedSlot" buildingBinding="selectedSlot.building"}}
+      {{else}}
+        {{view AWE.UI.Ember.SelectBuildingDialog controllerBinding="controller" slotBinding="selectedSlot" constructionOptionsBinding="selectedSlot.constructionOptions"}}
+      {{/if}}
+    {{/if}}
+    
+  </div>
+</div>
+</script>
