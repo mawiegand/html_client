@@ -1,13 +1,19 @@
-/* Author: Sascha Lange <sascha@5dlab.com>
- * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
+/**
+ * @fileOverview 
+ * Standard application controller of AWE.
+ *
+ * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany.
  * Do not copy, do not distribute. All rights reserved.
+ *
+ * @author <a href="mailto:sascha@5dlab.com">Sascha Lange</a>
+ * @author <a href="mailto:patrick@5dlab.com">Patrick Fox</a>
+ * @author Julian Schmid
  */
-
 var AWE = AWE || {};
 
 AWE.Application = (function(module) {
 
-  /*
+  /**
    * Application object for controlling several layered Canvas Objects with
    * associated EaselJS stages.
    * 
@@ -33,6 +39,9 @@ AWE.Application = (function(module) {
    *   and determine, whether or not to generate clicks on views.
    * - from the controller standpoint, a single click looks like (produces 
    *   these) events: mouseDown, --- click, mouseUp. 
+   *
+   * @class
+   * @name AWE.Application.MultiStageApplication
    */
   module.MultiStageApplication = Ember.Application.extend(function() {
   
@@ -42,7 +51,7 @@ AWE.Application = (function(module) {
     var nextMouseOverTest = new Date(1970).getTime();
     var mouseOverTestTimeout = 200; // test every x ms
 
-    return {
+    return /** @lends AWE.Application.MultiStageApplication# */ {
       
       hudController: null,
       notificationController: null,
@@ -227,8 +236,7 @@ AWE.Application = (function(module) {
       startRunloop: function() { 
         window.requestAnimFrame(function(self) { return function() {self.runloop(); }; }(this)); // wrap it to keep context (this) correct
       },
-    
-    
+        
     
       /** the application's runloop. Does basic stuff needed by the application and then hands over
        * control to the view controller that has to do all the real work. The idea behind implementing

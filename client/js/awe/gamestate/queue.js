@@ -6,7 +6,6 @@
  
 var AWE = window.AWE || {};
 
-/** Abstract GameState Queue class. */
 AWE.GS = (function(module) {
     
   // ///////////////////////////////////////////////////////////////////////

@@ -1,11 +1,25 @@
-/*
- * Customize Application object for WACKADOO client
+/**
+ * @fileOverview 
+ * Customized application controller for the WACK-A-DOO client.
  *
+ * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany.
+ * Do not copy, do not distribute. All rights reserved.
+ *
+ * @author <a href="mailto:sascha@5dlab.com">Sascha Lange</a>
+ */
+
+
+/**
+ * Customized Application controller for WACKADOO client
+ *
+ * @class 
+ * @extends AWE.Application.MultiStageApplication
+ * @name WACKADOO
  */
 window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
   var _numLoadedAssets = 0, _numAssets = 0; // this uses a closure for private, not-bindable vars
   
-  return {
+  return /** @lends WACKADOO# */ {
     
     mapScreenController: null,
     allianceScreenController: null,  
@@ -170,13 +184,21 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
-    activateBaseController: function(baseId) {
+    activateBaseController: function(reference) {
       var baseController = this.get('baseScreenController');
       if (!baseController) {
         baseController = AWE.Controller.createBaseController('#layers');
         this.set('baseScreenController', baseController);
       }
-      baseController.setBaseId(baseId);
+      if (reference.settlementId !== undefined) {
+        baseController.setBaseId(reference.baseId);
+      }
+      else if (reference.locationId !== undefined) {
+        baseController.setLocationId(reference.locationId);
+      }
+      else {
+        console.log('ERROR: no base to enter specified.')
+      }
       this.setScreenController(baseController);
     },
    

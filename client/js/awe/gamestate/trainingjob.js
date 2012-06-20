@@ -6,7 +6,6 @@
  
 var AWE = window.AWE || {};
 
-/** GameState training Job class, manager and helpers. */
 AWE.GS = (function(module) {
   
   module.TrainingJobAccess = {};

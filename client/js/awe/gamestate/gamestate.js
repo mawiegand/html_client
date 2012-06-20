@@ -9,12 +9,11 @@
  * @author <a href="mailto:patrick@5dlab.com">Patrick Fox</a>
  */ 
  
-/** Augmented Worlds Library (AWE)
- * @namespace */
 var AWE = window.AWE || {};
 
 /** State, manager and helpers for representing the game state in the client. 
- * @namespace */
+ * @namespace
+ * @name AWE.GS */
 AWE.GS = (
   function(module) /** @lends AWE.GS */ {
   

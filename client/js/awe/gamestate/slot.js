@@ -23,8 +23,11 @@ AWE.GS = (function(module) {
 	 * 'Building' in the database. For giving easy access to everything 
 	 * related to buildings, this object connects information from the
 	 * Resource 'Slot' (a building site in a settlement) with information 
-	 * stored in the Game Rules. */
-  module.Building = Ember.Object.extend({
+	 * stored in the Game Rules. 
+   *
+   * @class
+   * @name AWE.GS.Building */ 
+  module.Building = Ember.Object.extend( /** @lends AWE.GS.Building# */ {
 		typename: 'Building',
 
 		slot: null,         ///< points to the slot this building is situated at. Needs to be set during creation.
@@ -240,25 +243,17 @@ AWE.GS = (function(module) {
   // ///////////////////////////////////////////////////////////////////////    
 
 
-
-  module.Slot = module.Entity.extend({     // extends Entity to Settlement
+  /** 
+   * Class for holding the state of a building slot. 
+   *
+   * @class
+   * @extends AWE.GS.Entity
+   * @name AWE.GS.Slot */ 
+  module.Slot = module.Entity.extend( /** @lends AWE.GS.Slot# */ {     
     typeName: 'Slot',
     
     settlement_id: null, old_settlement_id: null,
-    locationIdObserver: AWE.Partials.attributeHashObserver(module.SlotAccess, 'settlement_id', 'old_settlement_id').observes('settlement_id'),
-    
-    // ^^^^^^ 
-    
-    
-    // Problem?
-    
-    
-    
-    
-    
-    
-    
-    
+    settlementIdObserver: AWE.Partials.attributeHashObserver(module.SlotAccess, 'settlement_id', 'old_settlement_id').observes('settlement_id'),
     
 		level: null,
     building_id: null,

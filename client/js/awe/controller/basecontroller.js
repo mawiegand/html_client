@@ -18,7 +18,7 @@ AWE.Controller = (function(module) {
    * @class
    * @extends AWE.Controller.ScreenController
    * @name AWE.Controller.BaseController */
-  module.createBaseController = function(anchor) {
+  module.createBaseController = function(anchor) /** @lends AWE.Controller.BaseController# */ {
       
     var _viewNeedsUpdate = false;  
     var _modelChanged = false;
@@ -28,10 +28,8 @@ AWE.Controller = (function(module) {
     var that = module.createScreenController(anchor); // create base object
     
     that.view    = null;
-    that.baseId  = null;
     that.visible = false;
     that.baseId  = null;
-    that.slots   = null;
     
     var _super = {};             // store locally overwritten methods of super object
     _super.init = that.init; 
@@ -117,11 +115,10 @@ AWE.Controller = (function(module) {
     that.createView = function() {
       var base = AWE.GS.SettlementManager.getSettlement(that.baseId);
       var baseScreen = AWE.UI.Ember.BaseView.create({
-        templateName: "base-screen",
-        controller : this,
-        base: base,
+        templateName : "base-screen",
+        controller :   this,
+        base:          base,
       });      
-      that.slots = null;
       return baseScreen;
     }
     
@@ -178,7 +175,6 @@ AWE.Controller = (function(module) {
 
     that.updateSlots = function() {
       AWE.GS.SlotManager.updateSlotsAtSettlement(that.baseId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
-        log('updated slots', slots)
       });
     }
       
@@ -190,15 +186,10 @@ AWE.Controller = (function(module) {
       });
 
       // as we don't know the right slot (or slot id), we update all slots
-      AWE.GS.SlotManager.updateSlotsAtSettlement(that.baseId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
-        log('updated slots', slots);
-        AWE.Ext.applyFunctionToHash(slots, function(slotId, slot) {
-          log('slot', slot, slot.get('level'))
-        });      
+      AWE.GS.SlotManager.updateSlotsAtSettlement(that.baseId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {      
       });
 
       AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
-        log('updated jobs in construction queue', queueId);
       });
     }
         
@@ -342,13 +333,16 @@ AWE.Controller = (function(module) {
     that.updateDebug = function() {
       $("#debug2").html('&nbsp;Base Screen Visible.');
     };    
-
+    
+    var counter = 0;
     that.runloop = function() {
+      if (counter++ % 2 !== 0) return ; // skip every other "frame"
+      
       this.updateDebug();
+      
       if (this.visible && _viewNeedsUpdate && AWE.GS.SettlementManager.getSettlement(that.baseId)) {
         this.updateView();
         _viewNeedsUpdate = false;
-        console.log(that.baseId, AWE.GS.SettlementManager.getSettlement(that.baseId))
       }
       
       if (this.view) {   // make sure the view displays the right base.
@@ -356,21 +350,13 @@ AWE.Controller = (function(module) {
         // server for the first time or the baseId has been changed by 
         // this.setBaseId(int).
         var base = AWE.GS.SettlementManager.getSettlement(that.baseId);
+        
         if (this.view.get('base') != base) {
           this.view.set('base', base);
-          this.view.setSlots(null); // base has changed, so remove the slots!!!
+          console.log('SWITCHED BASE IN RUNLOOP TO', base);
         }
-        
-        if (base && base.slots() && AWE.Util.hashCount(base.slots()) > 0 && base.slots != base.slots()) {
-          this.view.setSlots(base.slots());
-          that.slots = base.slots();
-          console.log('Set building slots.');
-          AWE.Ext.applyFunctionToHash(that.slots, function(key, value) {
-            console.log("building type id", value.get('building_id'));
-          });
-        }
-        
-        if (base && base.slots() && AWE.Util.hashCount(base.slots()) > 0) {
+                
+        if (base && base.getPath('hashableQueues.collection')) {
           that.updateOldJobsInConstructionQueues(base.getPath('hashableQueues.collection'));
         }
 

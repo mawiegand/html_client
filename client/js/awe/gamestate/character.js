@@ -5,7 +5,6 @@
  
 var AWE = window.AWE || {};
 
-/** GameState Character class, manager and helpers. */
 AWE.GS = (function(module) {
     
   module.CharacterAccess = {};

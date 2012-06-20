@@ -6,7 +6,6 @@
  
 var AWE = window.AWE || {};
 
-/** GameState Settlement class, manager and helpers. */
 AWE.GS = (function(module) {
     
   module.SettlementAccess = {};
@@ -16,8 +15,14 @@ AWE.GS = (function(module) {
   //   SETTLEMENT
   //
   // ///////////////////////////////////////////////////////////////////////    
-    
-  module.Settlement = module.Entity.extend({     // extends Entity to Settlement
+   
+  /** 
+   * Class for holding the state of a settlement. 
+   *
+   * @class
+   * @extends AWE.GS.Entity
+   * @name AWE.GS.Settlement */ 
+  module.Settlement = module.Entity.extend( /** @lends AWE.GS.Settlement# */ {    
     typeName: 'Settlement',
     name: null, 
 
@@ -58,7 +63,7 @@ AWE.GS = (function(module) {
     hashableQueues: null,
     hashableTrainingQueues: null,
     hashableResearchQueues: null,
-    
+        
     init: function(spec) {
       log('INIT settlement');
       this._super(spec);

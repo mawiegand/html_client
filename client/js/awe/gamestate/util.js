@@ -6,7 +6,6 @@
  
 var AWE = window.AWE || {};
 
-/** GameState Util class */
 AWE.GS = (function(module) {
         
   module.Util = (function(that) {    
