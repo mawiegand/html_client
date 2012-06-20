@@ -94,6 +94,18 @@ AWE.GS = (function(module) {
 		  var nextLevel = levelAfterJobs ? parseInt(levelAfterJobs) + 1 : 1;
 		  return nextLevel;
 		}.property('levelAfterJobs').cacheable(),
+
+		productions: function() {
+		  var production = this.getPath('buildingType.production');
+		  var level  = this.get('level');
+		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, level) : null;
+		}.property('level', 'buildingId').cacheable(),
+
+		productionsNextLevel: function() {
+		  var production = this.getPath('buildingType.production');
+		  var nextLevel  = this.get('nextLevel');
+		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, nextLevel) : null;
+		}.property('nextLevel', 'buildingId').cacheable(),
 		
 		costsOfNextLevel: function() {
 		  var buildingType = this.get('buildingType');

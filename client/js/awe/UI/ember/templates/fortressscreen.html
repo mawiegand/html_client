@@ -120,6 +120,14 @@
       {{/each}}
     {{/if}}
     
+    {{#if building.productions}}
+      Produces:<br/>
+      {{#each building.productions}}
+        {{amount}} {{local resourceType.name}} per hour <br/>  
+      {{/each}}
+      <br/>
+    {{/if}}
+    
     <hr>
     
     {{#if building.upgradable}}
@@ -146,9 +154,19 @@
           <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
         {{/each}}
       {{/if}}
+      
+      {{#if building.productionsNextLevel}}
+        Produces:<br/>
+        {{#each building.productionsNextLevel}}
+          {{amount}} {{local resourceType.name}} per hour <br/>  
+        {{/each}}
+        <br/>
+      {{/if}}
+          
     {{else}}
       <p><b>Cannot be upgraded further.</b></p>
     {{/if}}
+    
     
     {{#if building.trainingQueues}}
     <hr>

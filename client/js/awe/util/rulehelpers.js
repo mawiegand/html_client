@@ -27,9 +27,27 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
   
   ////////////////////////////////////////////////////////////////////////////
   // 
-  //  COSTS
+  //  RESOURCES
   //
   ////////////////////////////////////////////////////////////////////////////
+  
+  /** 
+   * processes a given array of resource productions. 
+   *
+   * @param definitions an array of resource productions extracted from the 
+   *        game rules
+   * @param level the level of the building or science to use in the evaluation
+   *        of the cost formula
+   *
+   * @return {Array} returns an array of productions where each entry has an 
+   *         attribute "amount" and an attribute "resourceType" linking
+   *         to the corresponding entry in the rules.
+   *
+   * @function
+   * @name AWE.Util.Rules._evaluateResourceProduction */ 
+  module.evaluateResourceProduction = function(definitions, level, evaluate) {
+    return _evaluateResourceProduction(definitions, level);
+  };    
   
   /** 
    * processes a given hash of costs from the rules (e.g. from a building,
@@ -122,6 +140,24 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
   //  PRIVATE HELPERS
   //
   ////////////////////////////////////////////////////////////////////////////
+
+  var _evaluateResourceProduction = function(definitions, level) {
+    definitions     = definitions || {}
+    level           = level || 0;
+		var productions = [];
+
+	  definitions.forEach(function(item) {
+	    var resourceType = AWE.GS.RulesManager.getRules().resource_types[item.id]
+      var amount = Math.floor(AWE.GS.Util.parseAndEval(item.formula, level));
+      if (amount > 0) {
+        productions.push(Ember.Object.create({  // need to return an ember project so bindings on resourceType.name do work inside local helper
+          amount:       amount,
+          resourceType: resourceType,
+        }));
+      }
+	  });
+    return productions;
+  };
   
   var _evaluateResourceCosts = function(costHash, level, all, evaluate) {
     costHash  = costHash || {}
