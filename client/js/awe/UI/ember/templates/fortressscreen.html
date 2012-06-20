@@ -70,14 +70,26 @@
     <h1>{{ heading }}</h1>    
     <p>{{ message }}</p>
     {{#if constructionOptions }}
-      {{#each constructionOptions}}
-        {{#view Ember.View contentBinding="this" classNames="building-option" }}
-          <div {{action "optionClicked" target="parentView"}}>
-            {{view AWE.UI.Ember.BuildingView modelBinding="content" classNames="building-option-image"}}
-            {{content.name}}<br>Level {{content.level}}
-          </div>
-        {{/view}}
-      {{/each}}
+      <div class="clearfix">
+        {{#each constructionOptions}}
+          {{#view AWE.UI.Ember.HoverableView contentBinding="this" classNames="building-option" }}
+            <div {{action "optionClicked" target="parentView"}}>
+              {{view AWE.UI.Ember.BuildingView modelBinding="content" classNames="building-option-image"}}
+              {{content.name}}<br>Level {{content.level}}
+            </div>
+          {{/view}}
+        {{/each}}
+      </div>
+      {{#with hoveredView.content}}
+        {{name}} Level {{level}}<br>
+        {{#if costsOfNextLevel}}
+          Costs:<br/>
+          {{#each costsOfNextLevel}}
+            {{amount}} {{local resourceType.name}} <br/>  
+          {{/each}}
+        {{/if}}
+        Duration: {{formatDuration productionTimeOfNextLevel}}<br />      
+      {{/with}}
     {{/if}}
     
   </div>
