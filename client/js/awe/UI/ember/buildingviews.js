@@ -63,7 +63,7 @@ AWE.UI.Ember = (function(module) {
     model: null, 
 
 		levelBinding: 'model.level',
-		typeBinding: 'model.type',
+		typeBinding: 'model.building.type',
 
     classNameBindings: ['small:size1', 'middle:size2', 'large:size3', 'type', 'slotLayoutId'],
 
