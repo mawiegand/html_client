@@ -1,18 +1,25 @@
 <script type="text/x-handlebars" data-template-name="base-screen">
 <div class="base-screen">
   <div class="base-picture">
-    {{#if "fortress"}}
+    {{#if "base"}}
       {{#if "haveSlots"}}
-        {{view AWE.UI.Ember.BuildingView classNames="buildings" levelBinding="wall.building.level"}}
-        {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-left" modelBinding="leftTower" settlementBinding="fortress"}}
-        {{view AWE.UI.Ember.InteractiveBuildingView  classNames="tower tower-right" modelBinding="rightTower" settlementBinding="fortress"}}
-        {{view AWE.UI.Ember.InteractiveBuildingView  classNames="wall"  modelBinding="wall" settlementBinding="fortress"}}
+        {{view AWE.UI.Ember.BuildingView classNames="wallTop" levelBinding="wallSlot.building.level"}}
+        {{view AWE.UI.Ember.BuildingView classNames="wallLeft" levelBinding="wallSlot.building.level"}}
+        {{view AWE.UI.Ember.BuildingView classNames="wallRight" levelBinding="wallSlot.building.level"}}
+        {{view AWE.UI.Ember.InteractiveBuildingView  classNames="wall" modelBinding="wallSlot" settlementBinding="base"}}
+        
+        {{#each smallSlots}}
+          {{view AWE.UI.Ember.InteractiveBuildingView  classNames="small-building" modelBinding="this" settlementBinding="view.base"}}
+        {{/each}}
+        
+        {{#each largeSlots}}
+          {{view AWE.UI.Ember.InteractiveBuildingView  classNames="large-building" modelBinding="this" settlementBinding="view.base"}}
+        {{/each}}
       {{/if}}
+      
       {{#if queues }}
         {{view AWE.UI.Ember.ConstructionQueueView controllerBinding="controller" classNames="queue-list" queuesBinding="queues.collection"}}
       {{/if}}
-
-      {{view AWE.UI.Ember.FortressInfoBoxView classNames="fortress-info-box" fortressBinding="fortress"}}
     {{/if}}
 
     {{#if selectedSlot}}
@@ -22,7 +29,6 @@
         {{view AWE.UI.Ember.SelectBuildingDialog controllerBinding="controller" slotBinding="selectedSlot" constructionOptionsBinding="selectedSlot.constructionOptions"}}
       {{/if}}
     {{/if}}
-    
   </div>
 </div>
 </script>

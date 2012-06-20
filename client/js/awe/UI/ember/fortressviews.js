@@ -14,23 +14,6 @@ AWE.UI.Ember = (function(module) {
   module.templates = module.templates || [];
   module.templates.push('js/awe/UI/ember/templates/fortressscreen.html');
   
-
-  module.SelectBuildingDialog = Ember.View.extend({
-    templateName: "settlement-dialog-select-building",
-    heading: 'Select Building',
-  
-    cancelPressed: function() {
-      this.get('controller').unselectSlot();
-    },
-                      
-    optionClicked: function(event) {
-      var slot = this.get('slot');
-      var buildingId = event.view.get('content').get('buildingId');
-      var type = event.view.get('content').get('type');
-      this.get('controller').constructionOptionClicked(slot, buildingId, type);
-      this.get('controller').unselectSlot();
-    },         
-  });  
   
   
   module.FortressInfoBoxView = Ember.View.extend({
@@ -78,19 +61,7 @@ AWE.UI.Ember = (function(module) {
     
     
   });
-  
-  module.BuildingDetailsDialog = Ember.View.extend({
-    templateName: "settlement-dialog-building-details",
-  
-    cancelPressed: function() {
-      this.get('controller').unselectSlot();
-    },
-                      
-    upgradeClicked: function(event) {
-      this.get('controller').constructionUpgradeClicked(this.get('slot'));
-    },         
-    
-  }); 
+   
 
 	module.FortressView = Ember.View.extend({
 		fortress:  null,  ///< pointer to the settlement model
@@ -164,113 +135,7 @@ AWE.UI.Ember = (function(module) {
   
   });
 
-
-  module.BuildingView = Ember.View.extend({
-    model: null, 
-
-		levelBinding: 'model.level',
-		typeBinding: 'model.type',
-
-    classNameBindings: ['small:size1', 'middle:size2', 'large:size3', 'type'],
-
-    small: function() {
-      var level = this.get('level');
-      if (level == 0) {  // special case: return small also for level 0, iff there is a building (building id set, so it's under construction)
-        if (this.getPath('model.building')) {
-          return true ; 
-        }
-      }
-      else {
-        return level > 0 && level < 4;
-      }
-    }.property('level', 'model.building'),
   
-    middle: function() {
-      return this.get('level') >= 4 && this.get('level') < 8;
-    }.property('level'),
-  
-    large: function() {
-      return this.get('level') >= 8;
-    }.property('level'),
-  });
-
-  module.InteractiveBuildingView = module.BuildingView.extend({
-    templateName: 'interactive-building',
-    tooltip: false,
-    mouseX: 0,
-    mouseY: 0,
-    timeout: 0,    // tooltip timeout in ms
-		settlement: null,
-		
-		mouseInView: false,
-  
-    showTooltip: function() {
-      if (this.get('mouseInView') === true) {  // only show tooltip, if the mouse is still in view
-        this.set('tooltip', true);
-      }
-    },
-  
-    mouseEnter: function(event) {
-      var self = this;
-      this.set('mouseInView', true);  // need to set this because showTooltip is called delayed and there we need to check, whether the mouse left the view during the meantime
-      setTimeout(function() {
-        self.showTooltip();
-      }, this.get('timeout'));
-      console.log('mouse entered', this);
-    },
-    mouseMove: function(event) {
-      this.set('mouseX', event.pageX);
-      this.set('mouseY', event.pageY);
-    },
-    mouseLeave: function(event) {
-      this.set('mouseInView', false);
-      this.set('tooltip', false);
-      //$().unbind('mousemove');
-      console.log('mouse left', this);
-    },
-    
-  
-    click: function(event) {
-      console.log('click on interactive building');
-		  var model = this.get('model');
-		  var controller = this.get('parentView') ? this.get('parentView').get('controller') : null;
-		  
-		  if (controller) {
-		    controller.slotClicked(model);
-		  }
-		  else {
-		    console.log('no controller found!');
-		  }
-		},  
-  });
-  
-  module.TrainableUnitButtonView = Ember.View.extend({
-    templateName: "trainable-unit-button",
-      
-    classNameBindings: ['selected'],  
-    
-      
-    click: function(event) {
-      this.get('parentView').set('selectedUnitType', this.get('unitType'));
-    },     
-    
-    selected: function() {
-      return this.get('unitType') === this.getPath('parentView.selectedUnitType');
-    }.property('parentView.selectedUnitType').cacheable(),
-    
-    
-    // TODO: check requirements and costs. should become a mixin somehow
-  
-    requirementsMet: function() {
-      return true ;
-    }.property('queue.settlement', 'unitType').cacheable(),
-    
-    costsMet: function() {
-      return true ;
-    }.property('queue.settlement', 'unitType').cacheable(),
-    
-    
-  });
   
   module.TrainingQueueView = Ember.View.extend({
     templateName: "training-queue-view",

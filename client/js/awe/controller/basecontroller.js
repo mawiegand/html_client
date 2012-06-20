@@ -147,6 +147,107 @@ AWE.Controller = (function(module) {
       this.visible = false;
     };
     
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Actions
+    //
+    // /////////////////////////////////////////////////////////////////////// 
+    
+    that.slotClicked = function(slot) {
+      that.view.set('selectedSlot', slot);
+      that.updateAllTrainingQueuesAndJobs();
+    }
+    
+    that.unselectSlot = function() {
+      that.view.set('selectedSlot', null);
+    }
+    
+    // construction actions //////////////////////////////////////////////////
+    
+    var createAndSendConstructionJob = function(slot, buildingId, jobType, levelAfter) {
+      
+      if (!levelAfter) {
+        levelAfter = 1;
+      }
+      
+      var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(buildingId);
+      var queue = AWE.GS.ConstructionQueueManager.getQueueForBuildingCategorieInSettlement(buildingType.category, slot.get('settlement_id'));
+      
+      if (queue) {
+        queue.sendCreateJobAction(slot.getId(), buildingId, jobType, levelAfter, function(status) {
+          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+            log(status, "Construction job created.");
+            that.updateConstructionQueueSlotAndJobs(queue.getId());
+            that.updateResourcePool();
+          }
+          else {
+            log(status, "The server did not accept the construction command.");
+            // TODO Fehlermeldung 
+          }
+        });
+      }
+      else {
+        log("Could not find appropiate queue for building category, no job created");
+      }
+    } 
+
+    that.constructionOptionClicked = function(slot, buildingId, type) {
+      log('constructionOptionClicked', slot, buildingId, type);  // TODO type is production category - > rename
+      createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE);      
+    }
+    
+    that.constructionUpgradeClicked = function(slot) {
+      var nextLevel = slot.get('building').get('nextLevel');
+      createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE, nextLevel);    
+    }  
+    
+    that.constructionCancelClicked = function(job) {
+      var queue = job.get('queue');
+      queue.sendCancelJobAction(job.getId(), function(status) {
+        if (status === AWE.Net.OK) {    // 200 OK
+          log(status, "Construction job deleted.");
+          that.updateConstructionQueueSlotAndJobs(queue.getId());          
+          that.updateResourcePool();
+        }
+        else {
+          log(status, "The server did not accept the job removal command.");
+          // TODO Fehlermeldung 
+        } 
+      });
+    }
+    
+    // training actions //////////////////////////////////////////////////////  
+    
+    that.trainingCreateClicked = function(queue, unitId, quantity) {
+      queue.sendCreateJobAction(unitId, quantity, function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          log(status, "Training job created.");
+          that.updateTrainingQueueAndJobs(queue.getId());
+          that.updateResourcePool();
+        }
+        else {
+          log(status, "The server did not accept the training command.");
+          // TODO Fehlermeldung 
+        }
+      })
+    }  
+    
+    that.trainingCancelClicked = function(job) {
+      var queue = job.get('queue');
+      queue.sendCancelJobAction(job.getId(), function(status) {
+        if (status === AWE.Net.OK) {    // 200 OK
+          log(status, "Training job deleted.");
+          that.updateTrainingQueueAndJobs(queue.getId());
+          that.updateResourcePool();
+        }
+        else {
+          log(status, "The server did not accept the job removal command.");
+          // TODO Fehlermeldung 
+        }
+      });
+    }  
+    
+    
     
     
     // ///////////////////////////////////////////////////////////////////////
