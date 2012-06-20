@@ -6,7 +6,6 @@
  
 var AWE = window.AWE || {};
 
-/** GameState Queue class, manager and helpers. */
 AWE.GS = (function(module) {
     
   module.ConstructionQueueAccess = {};

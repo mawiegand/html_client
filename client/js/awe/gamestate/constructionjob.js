@@ -6,7 +6,6 @@
  
 var AWE = window.AWE || {};
 
-/** GameState construction Job class, manager and helpers. */
 AWE.GS = (function(module) {
   
   module.CONSTRUCTION_JOB_TYPE_CREATE    = 'create'; 

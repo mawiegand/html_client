@@ -1,32 +1,40 @@
-/* Author: Sascha Lange <sascha@5dlab.com>
- * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
+/**
+ * @fileOverview 
+ * Utilities and helpers for handling real maps from different web services
+ * and in different projections.
+ *
+ * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany.
  * Do not copy, do not distribute. All rights reserved.
- */
+ *
+ * @author <a href="mailto:sascha@5dlab.com">Sascha Lange</a>
+ */ 
 
 // Some parts are based on code from the GDAL2Tile - project:
 
-/*****************************************************************************
-*
-* Project:  GDAL2Tiles, Google Summer of Code 2007 & 2008
-*           Global Map Tiles Classes
-* Purpose:  Convert a raster into TMS tiles, create KML SuperOverlay EPSG:4326,
-*           generate a simple HTML viewers based on Google Maps and OpenLayers
-* Author:   Klokan Petr Pridal, klokan at klokan dot cz
-* Web:      http://www.klokan.cz/projects/gdal2tiles/
-*
-******************************************************************************
-* Copyright (c) 2008 Klokan Petr Pridal. All rights reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*****************************************************************************/
+//////////////////////////////////////////////////////////////////////////////
+// 
+// Project:  GDAL2Tiles, Google Summer of Code 2007 & 2008
+//           Global Map Tiles Classes
+// Purpose:  Convert a raster into TMS tiles, create KML SuperOverlay EPSG:4326,
+//           generate a simple HTML viewers based on Google Maps and OpenLayers
+// Author:   Klokan Petr Pridal, klokan at klokan dot cz
+// Web:      http://www.klokan.cz/projects/gdal2tiles/
+// 
+//////////////////////////////////////////////////////////////////////////////
+// 
+// Copyright (c) 2008 Klokan Petr Pridal. All rights reserved.
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the "Software"),
+// to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense,
+// and/or sell copies of the Software, and to permit persons to whom the
+// Software is furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//////////////////////////////////////////////////////////////////////////////
+
 
 
  
@@ -105,7 +113,7 @@ AWE.Mapping = (function(module) {
 }(AWE.Mapping || {}));
 
 // inlined test code
-
+/*
 $(document).ready(function() {
   
   if (!AWE.Config.MAP_RUN_TESTS) return ;
@@ -125,5 +133,5 @@ $(document).ready(function() {
   console.log("tms x: " + tms2.x + " y: " + tms2.y + " zoom: " + tms2.zoom); 
   console.log("should be x: 7 y: 8 zoom: 4"); 
   
-});
+}); */
 

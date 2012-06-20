@@ -7,8 +7,12 @@
 var AWE = window.AWE || {};
 
 AWE.GS = (function(module) {
-        
-  module.Util = (function(that) {    
+  
+  /**
+   * @namespace
+   * @name AWE.GS.Util
+   */
+  module.Util = (function(that) /** @lends AWE.GS.Util */ {    
 
     functions = {
       'MIN':   'Math.min',
@@ -20,6 +24,9 @@ AWE.GS = (function(module) {
       'SIGN':  'AWE.Ext.sign',
     }
 
+    /**
+     * @function
+     * @name AWE.GS.Util.parseFormula */
     that.parseFormula = function(formula) {
       AWE.Ext.applyFunctionToHash(functions, function(key, val) {
         formula = formula.replace(new RegExp(key, "g"), val);
@@ -28,14 +35,23 @@ AWE.GS = (function(module) {
       return formula;
     }
         
+    /**
+     * @function
+     * @name AWE.GS.Util.evalFormula */
     that.evalFormula = function(formula, level) {
       return formula ? eval(formula) : 0; // TODO: return null or 0 on missing formula?
     }
     
+    /**
+     * @function
+     * @name AWE.GS.Util.parseAndEval */
     that.parseAndEval = function(formula, level) {
       return that.evalFormula(that.parseFormula(formula || ""), level);
     }
     
+    /**
+     * @function
+     * @name AWE.GS.Util.parseDate */
     that.parseDate = function(date) {
       return Date.parse(date).setTimezone("MSZ").toString('HH:mm:ss');
     }
