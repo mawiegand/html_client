@@ -88,11 +88,15 @@ AWE.UI = (function(module) {
       
       if (!attackButton && my.region.ownerId() === currentCharacter.get('id') && !0) { // check ongoing battle
         attackButton = AWE.UI.createButtonView();
-        attackButton.initWithControllerTextAndImage(my.controller, 'attack', AWE.UI.ImageCache.getImage("map/button1"));
+        attackButton.initWithControllerTextAndImage(my.controller, 'New Army', AWE.UI.ImageCache.getImage("map/button1"));
         attackButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
         attackButton.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
         attackButton.setFrame(AWE.Geometry.createRect(12, 56, 52, 52));
-        attackButton.onClick = function() { if (attackButton.enabled()) { that.onAttackButtonClick(that); } }
+        attackButton.onClick = function() {
+          if (attackButton.enabled()) {
+            that.onAttackButtonClick(my.region.location(0));
+          }
+        }
         this.addChild(attackButton);
       }
       else if (attackButton && my.region.ownerId() !== currentCharacter.get('id') && !0) {
@@ -242,7 +246,6 @@ AWE.UI = (function(module) {
     that.setActionMode = function(actionMode) {
       _actionMode = actionMode;
     }    
-    
     
     // ACTIONS ///////////////////////////////////////////////////////////////
     

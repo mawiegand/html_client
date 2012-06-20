@@ -1435,6 +1435,45 @@ html, body {
   text-align: right;
 }
 
+#army-create-form {
+  margin-left: -300px;
+  margin-top: -250px;
+  width: 600px; height: 500px;
+}
+
+#army-create-form table td {
+  text-align: center;
+  padding: 3px 20px 3px 20px;
+}
+
+#army-create-form table th.garrison {
+  text-align: left;
+  padding-right: 20px;
+}
+
+#army-create-form table th.new {
+  text-align: right;
+  padding-left: 20px;
+}
+
+#army-create-form table td.unit {
+  text-align: left;
+  padding-left: 0px;
+  padding-right: 40px;
+}
+
+#army-create-form table td .units-field {
+  width: 30px;
+  text-align: right;
+}
+
+#army-create-form table td.center {
+  text-align: center;
+}
+
+#army-create-form table tr.line {
+  border-top: 1px solid #ccc;
+}
 
 
 

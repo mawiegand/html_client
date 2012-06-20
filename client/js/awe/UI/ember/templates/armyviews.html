@@ -60,6 +60,45 @@
     </div>  
 </script>
 
+<script type="text/x-handlebars" data-template-name="army-create-dialog">
+      <div class="modal-dialog-background"></div>
+      <div class="center-helper">
+        <div class="modal-dialog-pane" id="army-create-form">
+          <h2>Create new army</h2>
+          <table>
+            <tr>
+              <th></th>
+              <th colspan="3" class="garrison">Available Units</th>
+              <th colspan="3" class="new">New Army</th>
+            </tr>
+            {{#each unitTypes }}
+              {{#view AWE.UI.Ember.UnitRowView unitTypeBinding="this" }}
+            <tr>
+              <td class="unit">{{ unitType.name }}</td>
+              <td>{{view AWE.UI.Ember.GarrisonArmyUnitTextfield allUnitsBinding="unitType.allUnits" garrisonUnitsBinding="unitType.garrisonUnits" newUnitsBinding="unitType.newUnits" classNames="units-field" }}</td>
+              <td><a href="#" {{action "allToGarrison"}}><<</a></td>
+              <td><a href="#" {{action "oneToGarrison"}}><</a></td>
+              <td><a href="#" {{action "oneToNew"}}>></a></td>
+              <td><a href="#" {{action "allToNew"}}>>></a></td>
+              <td>{{view AWE.UI.Ember.NewArmyUnitTextfield allUnitsBinding="unitType.allUnits" garrisonUnitsBinding="unitType.garrisonUnits" newUnitsBinding="unitType.newUnits" classNames="units-field"}}</td>
+            </tr>
+              {{/view }}
+            {{/each}}
+            <tr class="line">
+              <td class="unit">Size</td>
+              <td>12</td>
+              <td><<</td>
+              <td colspan="2" class="center">all</td>
+              <td>>></td>
+              <td>0</td>
+            </tr>
+          </table>
+          <a href="#" {{action "createPressed" target="parentView"}}>create</a> | <a href="#" {{action "closePressed" target="parentView"}}>close</a>
+        </div>
+      </div>
+</script>
+
+
 
 
 

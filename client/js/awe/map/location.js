@@ -93,7 +93,8 @@ AWE.Map = (function(module) {
       return AWE.GS.ArmyAccess.getAllForLocation_id(_id);
     };
     
-    that.getSettlement = function(callback) {
+    that.settlement = function(callback) {
+      log('---> id', _id, AWE.GS.SettlementManager.getSettlementAtLocation(_id, callback));
       return AWE.GS.SettlementManager.getSettlementAtLocation(_id, callback);
     };
     

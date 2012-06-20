@@ -706,6 +706,29 @@ AWE.Controller = (function(module) {
       });
     }
     
+    that.newArmyButtonClicked = function(location) {
+      log('---> klickediklick', location);
+      
+      if (!location) {
+        return ;
+      }
+      
+      var dialog = AWE.UI.Ember.ArmyCreateDialog.create({
+        locationId: location.id(),
+        createPressed: function(evt) {
+          log('---> create pressed');              
+        },
+        closePressed: function(evt) {
+          log('---> close pressed');              
+          this.destroy();
+        }
+      });
+      // garrisonArmy is set after create to trigger observer in view
+      dialog.set('garrisonArmy', location.garrisonArmy()),
+      
+      that.applicationController.presentModalDialog(dialog);
+    }
+    
     // ///////////////////////////////////////////////////////////////////////
     //
     //   User Input Handling
@@ -1653,7 +1676,9 @@ AWE.Controller = (function(module) {
           annotationView.initWithControllerAndView(that, annotatedView);
 
           annotationView.onAttackButtonClick = (function(self) {
-            return function(view) { self.settlementAttackButtonClicked(view); }
+            // return function(view) { self.settlementAttackButtonClicked(view); }
+            // temporär umgeleitet
+            return function(location) { self.newArmyButtonClicked(location); }
           })(that);
         }
         else if (annotatedView.typeName() === 'ArmyView') {
