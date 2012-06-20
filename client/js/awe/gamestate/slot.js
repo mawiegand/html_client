@@ -256,7 +256,6 @@ AWE.GS = (function(module) {
     
 		level: null,
     building_id: null,
-    construction_id: null,
     slot_num: null,
     constructionOptions: null,
 		
@@ -266,16 +265,11 @@ AWE.GS = (function(module) {
     bindings: null,
     
     init: function(spec) {
-      console.log('INIT Slot');
       this._super(spec);
       
       if (this.get('id')) {
         var hashableJobs = AWE.GS.ConstructionJobAccess.getHashableCollectionForSlot_id(this.get('id'));
-        this.set('hashableJobs', hashableJobs);
-        /* var binding = Ember.Binding.from('this.hashableJobs.collection').to('jobs');
-        binding.connect(this);
-        var bindings = [ binding ];
-        this.set('bindings', binding); */
+        this.set('hashableJobs', hashableJobs); // TODO: establish connection via a computed property instead?
       }
       
       this.updateConstructionOptions();

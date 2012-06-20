@@ -50,12 +50,12 @@ AWE.UI.Ember = (function(module) /** @lend AWE.UI.Ember */ {
 		
     largeSlots: function() {
       var slots = this.get('slots');
-      return slots && slots.length > 0 ? slots.slice(1,4) : null; // TODO: let the controller set this from the AWE.Config settings
+      return slots && slots.length > 0 ? slots.slice(1,5) : null; // TODO: let the controller set this from the AWE.Config settings
     }.property('hashableSlots.changedAt').cacheable(),		
 		
     smallSlots: function() {
       var slots = this.get('slots');
-      return slots && slots.length > 0 ? slots.slice(5,slots.length-1) : null;
+      return slots && slots.length > 0 ? slots.slice(5,slots.length) : null;
     }.property('hashableSlots.changedAt').cacheable(),		
 				
 		queues: function() {
