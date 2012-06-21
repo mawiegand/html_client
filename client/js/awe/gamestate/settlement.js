@@ -99,6 +99,26 @@ AWE.GS = (function(module) {
     settlementType: function() {
       return AWE.GS.RulesManager.getRules().getSettlementType(this.get('type_id'));
     },
+    
+    resourceProductions: function() {
+      var self = this;
+  		var productions = [];
+  		var settlement = this.get('settlement');
+  	  AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
+  	    productions.push(Ember.Object.create({  // need to return an ember project so bindings on resourceType.name do work inside local helper
+          rate:  self.get(item.symbolic_id+'_production_rate'),
+          base:  self.get(item.symbolic_id+'_base_production'),
+          bonus: self.get(item.symbolic_id+'_production_bonus'),
+          resourceType: item,
+          localizedDetails: function() {
+            return 'base: '+Math.floor(this.get('base'))+'\nscience: '+ 
+              Math.floor(self.get(item.symbolic_id+'_production_bonus_sciences')*1000)/10.0+'%\nbuildings: '+ 
+              Math.floor(self.get(item.symbolic_id+'_production_bonus_buildings')*1000)/10.0+'%';
+          }.property('base','bonus').cacheable(),
+        }));
+      });
+      return productions;
+    }.property('updated_at'),
         
   });     
 

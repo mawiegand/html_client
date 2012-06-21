@@ -689,12 +689,43 @@ html, body {
   border-radius:      12px;
 }
 
-.settlement-dialog-pane button.cancel {
+.settlement-dialog-pane a.close {
   float: right;
+  display: block;
+  background: url('../images/icons/cross_small.png');
+  width: 36px;
+  height: 36px;
+  margin-right: -8px;
+  margin-top: -6px;
+}
+
+.settlement-dialog-pane a.close:hover {
+  opacity: 0.6;
+}
+
+.settlement-dialog-pane a.upgrade {
+  margin-top: 6px;
+  color: #AE9;
+  float: right;
+  display: block;
+  text-decoration: none;
+}
+
+.settlement-dialog-pane a.upgrade:hover {
+  opacity: 0.6;
+}
+
+.settlement-dialog-pane a img {
+  width: 22px;
+  height: 22px;
 }
 
 
 .settlement-dialog-select-building { 
+}
+
+span.bonus {
+  color: #9D9;
 }
 
 .building-option {
@@ -945,7 +976,6 @@ html, body {
    ========================================================================== */
 
 .settlement-info-box {
-  font-size: 12px;
   z-index: 5;
   -moz-border-radius: 6px;
   border-radius:      6px;
@@ -965,6 +995,7 @@ html, body {
 }
 
 .fortress-picture .settlement-info-box {
+  font-size: 14px;
   width: 400px;
   height: 120px;
   padding: 6px 10px 6px 10px;
@@ -975,6 +1006,7 @@ html, body {
 }
 
 .base-screen .settlement-info-box {
+  font-size: 12px;
   width: 300px;
   height: 70px;
   padding: 2px 10px 0px 10px;

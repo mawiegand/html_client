@@ -1,0 +1,13 @@
+<script type="text/x-handlebars" data-template-name="settlement-info-box">
+  <h1>{{settlement.name}} <a href="#" class="change-name" {{action "changeNamePressed"}}>change name</a></h1>
+  <p><span title="defensive bonus to all armies fighting on the side of this settlement">Def +{{defenseBonus}}%</span> | 
+     <span title="rate at which new buildings and upgrades are constructed"> B {{view AWE.UI.Ember.WheelOrValueView valueBinding="buildingSpeed"}}%</span> | 
+     <span title="rate at which foot soldiers are trained"     >F {{infantryTrainingSpeed}}%</span> |
+     <span title="rate at which mounted troops are trained"    >C {{cavalryTrainingSpeed}}%</span> | 
+     <span title="rate at which ranged troops are trained"     >R {{artilleryTrainingSpeed}}%</span> | 
+     <span title="rate at which siege machines are constructed">S {{siegeTrainingSpeed}}%</span><br>
+  
+     {{#each settlement.resourceProductions}}
+       <span {{bindAttr title="localizedDetails"}}="">{{local resourceType.name}} {{formatNumber rate places="0"}}/h</span> |
+     {{/each}}
+</script>

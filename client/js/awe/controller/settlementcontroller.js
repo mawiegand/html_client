@@ -407,7 +407,7 @@ AWE.Controller = (function(module) {
             if (settlement && settlement.getId()) {
               that.updateSlots();
               that.updateAllConstructionQueuesAndJobs();
-              if (that.view.get('selectedSlot')) {
+              if (that.view && that.view.get('selectedSlot')) {  // check view again, may have become invisible during meantime
                 that.updateAllTrainingQueuesAndJobs();
               }
             }

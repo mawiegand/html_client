@@ -27,19 +27,7 @@
 {{/if}}
 </script>
 
-<script type="text/x-handlebars" data-template-name="settlement-info-box">
-  <h1>{{settlement.name}} <a href="#" class="change-name" {{action "changeNamePressed"}}>change name</a></h1>
-  <p><span title="defensive bonus to all armies fighting on the side of this settlement">Def +{{defenseBonus}}%</span> | 
-     <span title="rate at which new buildings and upgrades are constructed"> B {{view AWE.UI.Ember.WheelOrValueView valueBinding="buildingSpeed"}}%</span> | 
-     <span title="rate at which foot soldiers are trained"     >F {{infantryTrainingSpeed}}%</span> |
-     <span title="rate at which mounted troops are trained"    >C {{cavalryTrainingSpeed}}%</span> | 
-     <span title="rate at which ranged troops are trained"     >R {{artilleryTrainingSpeed}}%</span> | 
-     <span title="rate at which siege machines are constructed">S {{siegeTrainingSpeed}}%</span><br>
-  
-     {{#each resourceProductions}}
-       <span title="details">{{local resourceType.name}} {{formatNumber rate places="0"}}/h</span> |
-     {{/each}}
-</script>
+
 
 <script type="text/x-handlebars" data-template-name="fortress-screen">
 <div class="fortress-screen">
@@ -107,7 +95,7 @@
 <script type="text/x-handlebars" data-template-name="settlement-dialog-building-details">
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-pane settlement-dialog-building-details">
-    <a href="#" {{action "cancelPressed" }} class="cancel">close</a>
+    <a href="#" {{action "cancelPressed" }} class="close"></a>
     {{#if building.level }}
       <h1>{{ building.name }} <span title="present level of building">Level {{ building.level }}</span>
           {{#if building.underConstruction }}(<span class="constructing" title="level after finishing all upgrades already in the queue">{{building.levelAfterJobs}}</span>){{/if}}
@@ -131,7 +119,7 @@
     {{#if building.productions}}
       Produces:<br/>
       {{#each building.productions}}
-        {{amount}} {{local resourceType.name}} per hour <br/>  
+        {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{local resourceType.name}} per hour <br/>  
       {{/each}}
       <br/>
     {{/if}}
@@ -139,8 +127,8 @@
     <hr>
     
     {{#if building.upgradable}}
+      <a href="#" {{action "upgradeClicked"}} class="upgrade"><img src="images/icons/cross_green.png"></img> Upgrade</a>
       <h2>Next Upgrade: Level {{ building.nextLevel }}</h2>
-      <a href="#" {{action "upgradeClicked"}}>Upgrade</a>
     
      {{view AWE.UI.Ember.BuildingView classNames="building-option-image" modelBinding="building" levelBinding="building.nextLevel"}}
 
@@ -166,7 +154,7 @@
       {{#if building.productionsNextLevel}}
         Produces:<br/>
         {{#each building.productionsNextLevel}}
-          {{amount}} {{local resourceType.name}} per hour <br/>  
+          {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{local resourceType.name}} per hour <br/>  
         {{/each}}
         <br/>
       {{/if}}

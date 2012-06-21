@@ -96,15 +96,17 @@ AWE.GS = (function(module) {
 		}.property('levelAfterJobs').cacheable(),
 
 		productions: function() {
-		  var production = this.getPath('buildingType.production');
-		  var level  = this.get('level');
-		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, level) : null;
+		  var production            = this.getPath('buildingType.production');
+		  var settlementProductions = this.getPath('slot.settlement.resourceProductions');
+		  var level                 = this.get('level');
+		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, level, settlementProductions) : null;
 		}.property('level', 'buildingId').cacheable(),
 
 		productionsNextLevel: function() {
-		  var production = this.getPath('buildingType.production');
-		  var nextLevel  = this.get('nextLevel');
-		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, nextLevel) : null;
+		  var production            = this.getPath('buildingType.production');
+		  var settlementProductions = this.getPath('slot.settlement.resourceProductions')
+		  var nextLevel             = this.get('nextLevel');
+		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, nextLevel, settlementProductions) : null;
 		}.property('nextLevel', 'buildingId').cacheable(),
 		
 		costsOfNextLevel: function() {

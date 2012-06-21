@@ -45,8 +45,8 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
    *
    * @function
    * @name AWE.Util.Rules._evaluateResourceProduction */ 
-  module.evaluateResourceProduction = function(definitions, level, evaluate) {
-    return _evaluateResourceProduction(definitions, level);
+  module.evaluateResourceProduction = function(definitions, level, boni, evaluate) {
+    return _evaluateResourceProduction(definitions, level, boni);
   };    
   
   /** 
@@ -67,7 +67,7 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
    *
    * @function
    * @name AWE.Util.Rules.evaluateResourceCosts */ 
-  module.evaluateResourceCosts = function(costHash, level, all) {
+  module.evaluateResourceCosts = function(costHash, level, boni, all) {
     return _evaluateResourceCosts(costHash, level, all, true);    
   };
   
@@ -141,18 +141,26 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
   //
   ////////////////////////////////////////////////////////////////////////////
 
-  var _evaluateResourceProduction = function(definitions, level) {
+  var _evaluateResourceProduction = function(definitions, level, boni) {
     definitions     = definitions || {}
     level           = level || 0;
+    boni            = boni || {};
 		var productions = [];
 
 	  definitions.forEach(function(item) {
 	    var resourceType = AWE.GS.RulesManager.getRules().resource_types[item.id]
-      var amount = Math.floor(AWE.GS.Util.parseAndEval(item.formula, level));
-      if (amount > 0) {
+      var base  = AWE.GS.Util.parseAndEval(item.formula, level);
+      var bonus = boni[resourceType.id] ? boni[resourceType.id].bonus : 0.0;
+      if (base > 0) {
         productions.push(Ember.Object.create({  // need to return an ember project so bindings on resourceType.name do work inside local helper
-          amount:       amount,
-          resourceType: resourceType,
+          baseProduction: Math.floor(base),
+          bonusRelative:  Math.floor(bonus*1000)/10.0,
+          bonusAbsolute:  Math.floor(bonus*base),
+          rate:           Math.floor(base*(1.0+bonus)),
+          resourceType:   resourceType,
+          localizedDesc:  function() {
+            return "bonus: +" + this.get('bonusRelative') + "%";
+          }.property('bonusRelative'),
         }));
       }
 	  });

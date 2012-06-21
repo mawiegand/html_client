@@ -4,8 +4,8 @@
  * Do not copy, do not distribute. All rights reserved.
  */
 
-var AWE = AWE    || {};
-AWE.UI  = AWE.UI || {}; 
+var AWE = window.AWE || {};
+AWE.UI  = AWE.UI     || {}; 
 
 AWE.UI.Ember = (function(module) {
   
@@ -14,97 +14,6 @@ AWE.UI.Ember = (function(module) {
   module.templates = module.templates || [];
   module.templates.push('js/awe/UI/ember/templates/fortressscreen.html');
   
-  
-  module.SettlementInfoBoxView = Ember.View.extend({
-    templateName: "settlement-info-box",
-    
-    hashableConstructionQueuesBinding: "settlement.hashableQueues",
-    hashableTrainingQueuesBinding: "settlement.hashableTrainingQueues",
-    
-    defenseBonusBinding: Ember.Binding.notNull("settlement.defense_bonus", "0"),
-            
-    buildingQueue: function() {
-      var queues = this.getPath('hashableConstructionQueues.collection');
-      return this.findQueueOfType(queues, 'queue_buildings');
-    }.property('hashableConstructionQueues.changedAt').cacheable(),
-    
-    buildingSpeed: function() {
-      var speed = this.getPath('buildingQueue.speed');
-      return speed ? speed * 100 : null;
-    }.property('buildingQueue.speed').cacheable(),
-    
-    infantryTrainingQueue: function() {
-      var queues = this.getPath('hashableConstructionQueues.collection');
-      return this.findQueueOfType(queues, 'queue_training');
-    }.property('hashableConstructionQueues.changedAt').cacheable(),
-    
-    infantryTrainingSpeed: function() {
-      var speed = this.getPath('infantryTrainingQueue.speed');
-      return speed ? speed * 100 : 0;
-    }.property('infantryTrainingQueue.speed').cacheable(),   
-
-
-    cavalryTrainingQueue: function() {
-      var queues = this.getPath('hashableConstructionQueues.collection');
-      return this.findQueueOfType(queues, 'queue_cavalry_training');
-    }.property('hashableConstructionQueues.changedAt').cacheable(),
-    
-    cavalryTrainingSpeed: function() {
-      var speed = this.getPath('cavalryTrainingQueue.speed');
-      return speed ? speed * 100 : 0;
-    }.property('cavalryTrainingQueue.speed').cacheable(),   
-    
-    
-    artilleryTrainingQueue: function() {
-      var queues = this.getPath('hashableConstructionQueues.collection');
-      return this.findQueueOfType(queues, 'queue_artillery_training');
-    }.property('hashableConstructionQueues.changedAt').cacheable(),
-    
-    cavalryTrainingSpeed: function() {
-      var speed = this.getPath('artilleryTrainingQueue.speed');
-      return speed ? speed * 100 : 0;
-    }.property('artilleryTrainingQueue.speed').cacheable(),  
-    
-    
-    siegeTrainingQueue: function() {
-      var queues = this.getPath('hashableConstructionQueues.collection');
-      return this.findQueueOfType(queues, 'queue_siege_training');
-    }.property('hashableConstructionQueues.changedAt').cacheable(),
-    
-    siegeTrainingSpeed: function() {
-      var speed = this.getPath('siegeTrainingQueue.speed');
-      return speed ? speed * 100 : 0;
-    }.property('siegeTrainingQueue.speed').cacheable(),  
-    
-        
-    
-    findQueueOfType: function(queues, symtype) {
-      queues = queues ? queues.filter(function(item) {
-        return item.getPath('queueType.symbolic_id') === symtype; 
-      }) : null;
-      return queues && queues.length === 1 ? queues[0] : null ;
-    },
-    
-    resourceProductions: function() {
-  		var productions = [];
-  		var settlement = this.get('settlement');
-  	  AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
-  	    console.log(settlement);
-  	    productions.push(Ember.Object.create({  // need to return an ember project so bindings on resourceType.name do work inside local helper
-          rate:  settlement.get(item.symbolic_id+'_production_rate') || settlement.get('resource_wood_production_rate') || settlement.resource_fur_production_rate,
-          base:  settlement.get(item.symbolic_id+'_base_production'),
-          bonus: settlement.get(item.symbolic_id+'_production_bonus'),
-          resourceType: item,
-        }));
-      });
-      return productions;
-    }.property('settlement.updated_at'),
-    
-    
-  });
-  
-
-   
   /**
    * View for displaying a Settlement of type "fortress". This is only partially
    * dynamic. It is closely connected to the actuall definitions in the 
