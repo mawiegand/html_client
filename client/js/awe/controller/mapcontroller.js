@@ -711,6 +711,7 @@ AWE.Controller = (function(module) {
       
       // TODO auf leere units testen
       
+      
       var armyCreateAction = AWE.Action.Military.createCreateArmyAction(location, units);
       armyCreateAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
@@ -738,7 +739,6 @@ AWE.Controller = (function(module) {
         createPressed: function(evt) {
           createArmyCreateAction(location, this.unitQuantities(), (function(self){
             return function() {
-              log('---> thissss', self);
               self.destroy();
             }
           })(this));           
@@ -924,6 +924,10 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector.onFlagClicked = function(allianceId) {
           WACKADOO.activateAllianceController(allianceId);
         }
+        
+        inspectorViews.inspector.onNewArmyButtonClick = function(location) {
+          that.newArmyButtonClicked(location);
+        };
       }
       else if (view.typeName() === 'ArmyView') {
         inspectorViews.inspector = AWE.UI.createArmyInspectorView();
@@ -940,10 +944,18 @@ AWE.Controller = (function(module) {
       else if (view.typeName() === 'BaseView') { 
         inspectorViews.inspector = AWE.UI.createBaseInspectorView();
         inspectorViews.inspector.initWithControllerAndLocation(that, view.location());
+
+        inspectorViews.inspector.onNewArmyButtonClick = function(location) {
+          that.newArmyButtonClicked(location);
+        };
       }
       else if (view.typeName() === 'OutpostView') {
         inspectorViews.inspector = AWE.UI.createOutpostInspectorView();
         inspectorViews.inspector.initWithControllerAndLocation(that, view.location());
+
+        inspectorViews.inspector.onNewArmyButtonClick = function(location) {
+          that.newArmyButtonClicked(location);
+        };
       }
       
       if (inspectorViews.inspector) {
@@ -1702,9 +1714,7 @@ AWE.Controller = (function(module) {
           annotationView.initWithControllerAndView(that, annotatedView);
 
           annotationView.onAttackButtonClick = (function(self) {
-            // return function(view) { self.settlementAttackButtonClicked(view); }
-            // temporär umgeleitet
-            return function(location) { self.newArmyButtonClicked(location); }
+            return function(view) { self.settlementAttackButtonClicked(view); }
           })(that);
         }
         else if (annotatedView.typeName() === 'ArmyView') {

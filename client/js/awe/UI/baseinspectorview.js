@@ -28,6 +28,7 @@ AWE.UI = (function(module) {
     var _flagView = null;
 
     var _infoButtonView = null;
+    var _newArmyButtonView = null;
     var _prevButtonView = null;
     var _nextButtonView = null;
     
@@ -164,6 +165,16 @@ AWE.UI = (function(module) {
         this.addChild(_infoButtonView);
       }
   
+      if (!_newArmyButtonView && isOwnLocation) {
+        _newArmyButtonView = AWE.UI.createButtonView();
+        _newArmyButtonView.initWithControllerTextAndImage(my.controller, 'New Army', AWE.UI.ImageCache.getImage("map/button1"));
+        _newArmyButtonView.setFrame(AWE.Geometry.createRect(280, 0, 48, 48));
+        _newArmyButtonView.onClick = function() {
+           that.onNewArmyButtonClick(_location) 
+        };
+        this.addChild(_newArmyButtonView);
+      }
+  
       if (!_prevButtonView && isOwnLocation) {
         // button unten
         _prevButtonView = AWE.UI.createButtonView();
@@ -181,7 +192,8 @@ AWE.UI = (function(module) {
     }
     
     that.onInfoButtonClick = function() { console.log('info button clicked'); }
-        
+    that.onNewArmyButtonClick = function() { console.log('new army button clicked'); }
+
     that.updateView = function() {
       that.recalcView();      
       _super.updateView();

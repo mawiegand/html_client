@@ -22,6 +22,11 @@ AWE.GS = (function(module) {
     
     location_id: null, old_location_id: null,
     locationIdObserver: AWE.Partials.attributeHashObserver(module.ArmyAccess, 'location_id', 'old_location_id').observes('location_id'),
+    
+    location: function(){
+      return AWE.Map.Manager.getLocation(this.get('location_id'));    
+    }.property('location_id').cacheable(),    
+    
     region_id: null, old_region_id: null,
     regionIdObserver: AWE.Partials.attributeHashObserver(module.ArmyAccess, 'region_id', 'old_region_id').observes('region_id'),
 

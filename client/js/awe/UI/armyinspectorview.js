@@ -262,6 +262,7 @@ AWE.UI = (function(module) {
         _reinforceButtonView.setEnabled(_army.get('home_settlement_id') === _army.get('location_id'));
       }
 
+      log('-------> ', _army.get('home_settlement'), AWE.Map.Manager.getLocation(_army.get('location_id')))
 
       if (!_prevButtonView && isOwnArmy) {
         // button unten

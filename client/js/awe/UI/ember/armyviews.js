@@ -69,7 +69,6 @@ AWE.UI.Ember = (function(module) {
     unitTypes: function() {
       var list = [];
       var details = this.getPath('garrisonArmy.details');
-      log('---> details', details);
       var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
       if (details) { log('build list')
         AWE.Ext.applyFunction(unitTypes, function(unitType) {
