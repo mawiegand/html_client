@@ -252,7 +252,7 @@ AWE.UI = (function(module) {
         this.addChild(_infoButtonView);
       }
   
-      if (!_reinforceButtonView && isOwnArmy) {
+      if (!_reinforceButtonView && isOwnArmy) { 
         _reinforceButtonView = AWE.UI.createButtonView();
         _reinforceButtonView.initWithControllerTextAndImage(my.controller, 'Reinforce', AWE.UI.ImageCache.getImage("map/button1"));
         _reinforceButtonView.setFrame(AWE.Geometry.createRect(268, 0, 48, 48));
@@ -262,7 +262,7 @@ AWE.UI = (function(module) {
         _reinforceButtonView.setEnabled(_army.get('home_settlement_id') === _army.get('location_id'));
       }
 
-      log('-------> ', _army.get('home_settlement'), AWE.Map.Manager.getLocation(_army.get('location_id')))
+      log('-------> ', _army.get('home_settlement_id'), AWE.Map.Manager.getLocation(_army.get('location_id')).)
 
       if (!_prevButtonView && isOwnArmy) {
         // button unten
