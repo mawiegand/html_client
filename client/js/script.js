@@ -23,8 +23,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     mapScreenController: null,
     allianceScreenController: null,  
-    fortressScreenController: null,
-    baseScreenController: null,
+    settlementScreenController: null,
     messageCenterController: null,
   
     /** custom object initialization goes here. */
@@ -185,13 +184,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     // /////////////////////////////////////////////////////////////////////// 
     
     activateBaseController: function(reference) {
-      var baseController = this.get('baseScreenController');
+      var baseController = this.get('settlementScreenController');
       if (!baseController) {
-        baseController = AWE.Controller.createBaseController('#layers');
-        this.set('baseScreenController', baseController);
+        baseController = AWE.Controller.createSettlementController('#layers');
+        this.set('settlementScreenController', baseController);
       }
       if (reference.settlementId !== undefined) {
-        baseController.setBaseId(reference.baseId);
+        baseController.setSettlementId(reference.baseId);
       }
       else if (reference.locationId !== undefined) {
         baseController.setLocationId(reference.locationId);
@@ -199,17 +198,18 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       else {
         console.log('ERROR: no base to enter specified.')
       }
+      console.log(reference)
       this.setScreenController(baseController);
     },
    
     activateFortressController: function(reference) {
-      var fortressController = this.get('fortressScreenController');
+      var fortressController = this.get('settlementScreenController');
       if (!fortressController) {
-        fortressController = AWE.Controller.createFortressController('#layers');
-        this.set('fortressScreenController', fortressController);
+        fortressController = AWE.Controller.createSettlementController('#layers');
+        this.set('settlementScreenController', fortressController);
       }
       if (reference.settlementId !== undefined) {
-        fortressController.setFortressId(reference.settlementId);
+        fortressController.setSettlementId(reference.settlementId);
       }
       else if (reference.locationId !== undefined) {
         fortressController.setLocationId(reference.locationId);
