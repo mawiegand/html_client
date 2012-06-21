@@ -71,7 +71,7 @@ AWE.UI = (function(module) {
       
       if (!enterButton && my.region.ownerId() === currentCharacter.get('id')) {
         enterButton = AWE.UI.createButtonView();
-        enterButton.initWithControllerTextAndImage(my.controller, 'enter', AWE.UI.ImageCache.getImage("map/button1"));
+        enterButton.initWithControllerTextAndImage(my.controller, 'Enter', AWE.UI.ImageCache.getImage("map/button1"));
         enterButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
         enterButton.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
         enterButton.setFrame(AWE.Geometry.createRect(12, 0, 52, 52));
@@ -88,7 +88,7 @@ AWE.UI = (function(module) {
       
       if (!attackButton && my.region.ownerId() === currentCharacter.get('id') && !0) { // check ongoing battle
         attackButton = AWE.UI.createButtonView();
-        attackButton.initWithControllerTextAndImage(my.controller, 'New Army', AWE.UI.ImageCache.getImage("map/button1"));
+        attackButton.initWithControllerTextAndImage(my.controller, 'Attack', AWE.UI.ImageCache.getImage("map/button1"));
         attackButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
         attackButton.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
         attackButton.setFrame(AWE.Geometry.createRect(12, 56, 52, 52));
@@ -109,7 +109,7 @@ AWE.UI = (function(module) {
       
       if (!spyButton && my.region.ownerId() !== currentCharacter.get('id')) {
         spyButton = AWE.UI.createButtonView();
-        spyButton.initWithControllerTextAndImage(my.controller, 'spy', AWE.UI.ImageCache.getImage("map/button1"));
+        spyButton.initWithControllerTextAndImage(my.controller, 'Spy', AWE.UI.ImageCache.getImage("map/button1"));
         spyButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
         spyButton.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
         spyButton.setFrame(AWE.Geometry.createRect(12, 0, 52, 52));
@@ -126,7 +126,7 @@ AWE.UI = (function(module) {
       
       if (!battleButton && 0) {  // ongoing battle -> attribute is missing in database ("mode")
         battleButton = AWE.UI.createButtonView();
-        battleButton.initWithControllerTextAndImage(my.controller, 'battle', AWE.UI.ImageCache.getImage("map/button1"));
+        battleButton.initWithControllerTextAndImage(my.controller, 'Battle', AWE.UI.ImageCache.getImage("map/button1"));
         battleButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
         battleButton.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
         battleButton.setFrame(AWE.Geometry.createRect(12, 56, 52, 52));
