@@ -27,10 +27,18 @@
 {{/if}}
 </script>
 
-<script type="text/x-handlebars" data-template-name="fortress-info-box">
-  <a href="#" {{action "changeNamePressed"}}>change name</a>
-  <h1>{{name}}</h2>
-  <p>{{defenseBonus}} | {{buildingSpeed}}</p>
+<script type="text/x-handlebars" data-template-name="settlement-info-box">
+  <h1>{{settlement.name}} <a href="#" class="change-name" {{action "changeNamePressed"}}>change name</a></h1>
+  <p><span title="defensive bonus to all armies fighting on the side of this settlement">Def +{{settlement.defense_bonus}}%</span> | 
+     <span title="rate at which new buildings and upgrades are constructed"> B {{view AWE.UI.Ember.WheelOrValueView valueBinding="buildingSpeed"}}%</span> | 
+     <span title="rate at which foot soldiers are trained"     >F {{infantryTrainingSpeed}}%</span> |
+     <span title="rate at which mounted troops are trained"    >C {{cavalryTrainingSpeed}}%</span> | 
+     <span title="rate at which ranged troops are trained"     >R {{artilleryTrainingSpeed}}%</span> | 
+     <span title="rate at which siege machines are constructed">S {{siegeTrainingSpeed}}%</span><br>
+  
+     {{#each productions}}
+       <span title="rate at which foot soldiers are trained"     >Wood 0/h</span> |
+     {{/each}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="fortress-screen">
@@ -47,7 +55,7 @@
         {{view AWE.UI.Ember.ConstructionQueueView controllerBinding="controller" classNames="queue-list" queuesBinding="queues.collection"}}
       {{/if}}
 
-      {{view AWE.UI.Ember.FortressInfoBoxView classNames="fortress-info-box" fortressBinding="fortress"}}
+      {{view AWE.UI.Ember.SettlementInfoBoxView classNames="settlement-info-box" settlementBinding="fortress"}}
     {{/if}}
 
     {{#if selectedSlot}}

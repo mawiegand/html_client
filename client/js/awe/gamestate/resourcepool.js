@@ -24,6 +24,7 @@ AWE.GS = (function(module) {
     
     productionUpdatedAt: null,
 
+/*  these fields are added dynamically to the database, thus, cannot be declared here statically. 
     resource_cash_amount: null,
     resource_cash_capacity: null,
     resource_cash_production_rate: null,
@@ -42,7 +43,7 @@ AWE.GS = (function(module) {
   
     locked_at: null,
     locked_by: null,
-    locked_reason: null,
+    locked_reason: null,*/
     
     // link to character
     

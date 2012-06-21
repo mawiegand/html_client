@@ -30,5 +30,10 @@
       {{/if}}
     {{/if}}
   </div>
+  
+  {{#if base}}
+    {{view AWE.UI.Ember.SettlementInfoBoxView classNames="settlement-info-box" settlementBinding="base" }}
+  {{/if}}
+  
 </div>
 </script>
