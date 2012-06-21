@@ -706,9 +706,32 @@ AWE.Controller = (function(module) {
       });
     }
     
-    that.newArmyButtonClicked = function(location) {
-      log('---> klickediklick', location);
+    var createArmyCreateAction = function(location, units) {
+      log('createArmyCreateAction', location, units);
       
+      // TODO auf leere units testen
+      
+      var armyCreateAction = AWE.Action.Military.createCreateArmyAction(location, units);
+      armyCreateAction.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          // garrisonArmy aktualisieren
+          
+          // army an der location aktualisieren
+           
+          // alt 
+          // AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+            // that.setModelChanged();
+            // that.addDisappearingAnnotationLabel(targetView, 'ETA ' + army.get('target_reached_at'), 1500);
+            // that.addDisappearingAnnotationLabel(armyView, '-1 AP', 1000);
+          // });
+        }
+        else {
+          that.handleError(status, "The server did not accept the movement comannd.");
+        }
+      });
+    }
+    
+    that.newArmyButtonClicked = function(location) {
       if (!location) {
         return ;
       }
@@ -716,10 +739,9 @@ AWE.Controller = (function(module) {
       var dialog = AWE.UI.Ember.ArmyCreateDialog.create({
         locationId: location.id(),
         createPressed: function(evt) {
-          log('---> create pressed');              
+          createArmyCreateAction(location, this.unitQuantities());           
         },
-        closePressed: function(evt) {
-          log('---> close pressed');              
+        cancelPressed: function(evt) {
           this.destroy();
         }
       });

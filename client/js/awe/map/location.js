@@ -94,7 +94,6 @@ AWE.Map = (function(module) {
     };
     
     that.settlement = function(callback) {
-      log('---> id', _id, AWE.GS.SettlementManager.getSettlementAtLocation(_id, callback));
       return AWE.GS.SettlementManager.getSettlementAtLocation(_id, callback);
     };
     
