@@ -43,7 +43,7 @@ Ember.registerBoundHelper("local", function(hash) {
   if (hash === undefined || hash === null) {
     return "" ;
   }
-  return hash[AWE.Config.LOCALE] ? hash[AWE.Config.LOCALE] : hash[AWE.Config.DEFAULT_LOCALE];
+  return hash[AWE.Settings.locale] ? hash[AWE.Settings.locale] : hash[AWE.Config.DEFAULT_LOCALE];
 });
 
 /** Look-up the text for a given path in the translation file of the current
@@ -59,12 +59,13 @@ Ember.registerBoundHelper("local", function(hash) {
  */
 Handlebars.registerHelper("t", function(path) {
   if (path === undefined || path === null) return "" ;
-  if (!AWE.I18n[AWE.Config.LOCALE]) return "(NO TRANSLATION FOR "+AWE.Config.LOCALE+" LOADED.)";
+  var locale = AWE.Settings.locale || AWE.Config.DEFAULT_LOCALE
+  if (!AWE.I18n[locale]) return "(NO TRANSLATION FOR "+locale+" LOADED.)";
   path = "localizedStrings." + path;   
-  var string = Ember.getPath(AWE.I18n[AWE.Config.LOCALE], path);
+  var string = Ember.getPath(AWE.I18n[locale], path);
   string     = string ? string : Ember.getPath(AWE.I18n[AWE.Config.DEFAULT_LOCALE], path);
-  string     = string ? string : Ember.getPath(AWE.I18n[AWE.Config.LOCALE], 'localizedStrings.error.stringMissing');
-  string     = string ? string :"FATAL ERROR IN I18N FOR LOCALE " + AWE.Config.LOCALE;
+  string     = string ? string : Ember.getPath(AWE.I18n[locale], 'localizedStrings.error.stringMissing');
+  string     = string ? string :"FATAL ERROR IN I18N FOR LOCALE " + locale;
   return string ;
 });
 

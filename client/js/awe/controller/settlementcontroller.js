@@ -1,6 +1,6 @@
 /**
  * @fileOverview 
- * Screen controller for the home-base screen.
+ * Screen controller for the settlement screen.
  *
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany.
  * Do not copy, do not distribute. All rights reserved.
@@ -14,11 +14,11 @@ var AWE = AWE || {};
 AWE.Controller = (function(module) {
           
   /**
-   * Screen controller for displaying a player's (home) base.  
+   * Screen controller for displaying a player's settlement  
    * @class
    * @extends AWE.Controller.ScreenController
-   * @name AWE.Controller.BaseController */
-  module.createBaseController = function(anchor) /** @lends AWE.Controller.BaseController# */ {
+   * @name AWE.Controller.SettlementController */
+  module.createSettlementController = function(anchor) /** @lends AWE.Controller.SettlementController# */ {
       
     var _viewNeedsUpdate = false;  
     var _modelChanged = false;
@@ -29,7 +29,7 @@ AWE.Controller = (function(module) {
     
     that.view    = null;
     that.visible = false;
-    that.baseId  = null;
+    that.settlementId  = null;
     
     var _super = {};             // store locally overwritten methods of super object
     _super.init = that.init; 
@@ -46,32 +46,34 @@ AWE.Controller = (function(module) {
     
     /** initializes the base screen. 
      * @function
-     * @name AWE.Controller.BaseController#init */
+     * @name AWE.Controller.SettlementController#init */
     that.init = function(initialFrameModelCoordinates) {
       _super.init();            
     };   
     
     /** get all stages controlled by this controller. 
      * @function
-     * @name AWE.Controller.BaseController#getStages */
+     * @name AWE.Controller.SettlementController#getStages */
     that.getStages = function() { return []; }
     
     
     /** set the id of the base to display (it's the settlement id). 
      * @function
-     * @name AWE.Controller.BaseController#setBaseId */
-    that.setBaseId = function(baseId) { 
-      this.baseId = baseId; 
+     * @name AWE.Controller.SettlementController#setSettlementId */
+    that.setSettlementId = function(settlementId) { 
+      this.settlementId = settlementId; 
     }
     
-    /** set the id of the base to display by setting the location id.
+    /** set the id of the settlement to display by setting the location id.
      * looks-up the settlement id that is at that particular location
      * and even fetches it from the server, if it's missing.
      * @function
-     * @name AWE.Controller.BaseController#setLocationId */
+     * @name AWE.Controller.SettlementController#setLocationId */
     that.setLocationId = function(locationId) {
       var settlement = AWE.GS.SettlementManager.getSettlementAtLocation(locationId);
       if (settlement === null) {
+        that.setSettlementId(null);
+
         if (AWE.GS.SettlementManager.lastUpdateForLocation(locationId).getTime() + 1000 < new Date().getTime()) { // information to old
           AWE.GS.SettlementManager.updateSettlementsAtLocation(locationId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result, status) {
             that.setLocationId(locationId); // try again to set it
@@ -82,13 +84,13 @@ AWE.Controller = (function(module) {
         }
       }
       else {
-        that.setBaseId(settlement.getId());
+        that.setSettlementId(settlement.getId());
       }
     }
     
     /** removes the whole screen from the DOM.
      * @function
-     * @name AWE.Controller.BaseController#removeView */
+     * @name AWE.Controller.SettlementController#removeView */
     that.removeView = function() {
       if (this.view) {
         this.view.destroy();
@@ -101,38 +103,57 @@ AWE.Controller = (function(module) {
      * of object properties (e.g. alliance.description) is propagated automatically
      * with the help of ember bindings. 
      * @function
-     * @name AWE.Controller.BaseController#updateView
+     * @name AWE.Controller.SettlementController#updateView
      */
     that.updateView = function() {
       //that.content.set('alliance', that.getAndUpdateAlliance(this.allianceId));
     }
     
+    
     /** creates the screen by instantiating the corresponding views. Does not 
      * display the screen by itself! 
-     * See {@link AWE.Controller.BaseController#appendView}. 
+     * See {@link AWE.Controller.SettlementController#appendView}. 
      * @function
-     * @name AWE.Controller.BaseController#createView */
+     * @name AWE.Controller.SettlementController#createView */
     that.createView = function() {
-      var base = AWE.GS.SettlementManager.getSettlement(that.baseId);
-      var baseScreen = AWE.UI.Ember.BaseView.create({
-        templateName : "base-screen",
-        controller :   this,
-        base:          base,
-      });      
-      return baseScreen;
+      var settlementScreen = null;
+      var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
+
+      if (!settlement) {
+        return null;
+      }
+      
+      var type = settlement.get('type_id');
+      
+      if (AWE.Config.MAP_LOCATION_TYPE_CODES[type]      === "base") {
+        settlementScreen = AWE.UI.Ember.BaseView.create({
+          templateName : "base-screen",
+          controller :   this,
+          base:          settlement,
+        });
+      }
+      else if (AWE.Config.MAP_LOCATION_TYPE_CODES[type] === "fortress") {
+        settlementScreen = AWE.UI.Ember.FortressView.create({
+          templateName : "fortress-screen",
+          controller :   this,
+          fortress:      settlement,
+        });        
+      }    
+      return settlementScreen;
     }
-    
     
     /** appends the whole screen to the DOM, thus making it visible.
      * @function
-     * @name AWE.Controller.BaseController#appendView */
+     * @name AWE.Controller.SettlementController#appendView */
     that.appendView = function() {
       if (this.view) {
         this.removeView();
       }
       this.updateView();
       this.view = this.createView();
-      this.view.appendTo('#main-screen-controller');   
+      if (this.view) {
+        this.view.appendTo('#main-screen-controller');   
+      }
     }
     
     
@@ -267,7 +288,7 @@ AWE.Controller = (function(module) {
     // settlement update method
 
     that.updateSettlement = function() {
-      AWE.GS.SettlementManager.updateSettlement(that.baseId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
+      AWE.GS.SettlementManager.updateSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
         log('updated settlement', settlement)
       });
     }
@@ -275,7 +296,7 @@ AWE.Controller = (function(module) {
     // slot update method
 
     that.updateSlots = function() {
-      AWE.GS.SlotManager.updateSlotsAtSettlement(that.baseId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
+      AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
       });
     }
       
@@ -287,7 +308,7 @@ AWE.Controller = (function(module) {
       });
 
       // as we don't know the right slot (or slot id), we update all slots
-      AWE.GS.SlotManager.updateSlotsAtSettlement(that.baseId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {      
+      AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {      
       });
 
       AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
@@ -295,7 +316,7 @@ AWE.Controller = (function(module) {
     }
         
     that.updateAllConstructionQueuesAndJobs = function() {
-      AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(that.baseId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
+      AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
         log('updated queues', queues)
         AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
           AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
@@ -318,7 +339,7 @@ AWE.Controller = (function(module) {
     }
         
     that.updateAllTrainingQueuesAndJobs = function() {
-      AWE.GS.TrainingQueueManager.updateQueuesOfSettlement(that.baseId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
+      AWE.GS.TrainingQueueManager.updateQueuesOfSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
         log('updated training queues', queues);
         AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
           AWE.GS.TrainingJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
@@ -344,7 +365,7 @@ AWE.Controller = (function(module) {
       var updateSettlement = function() {
         // just trigger the updates, thanks to the bindings we do not need to
         // process the answers and update the views manually.
-        AWE.GS.SettlementManager.updateSettlement(that.baseId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
+        AWE.GS.SettlementManager.updateSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
           log('updated settlement', settlement);
           if (settlement && settlement.getId()) {
             that.updateSlots();
@@ -359,13 +380,13 @@ AWE.Controller = (function(module) {
       return function() {
         
         // TODO: use the last update timestamp from the Settlement Manager and don't track a copy locally.
-        if (that.baseId > 0 && (
-              lastSettlementId != that.baseId ||
+        if (that.settlementId > 0 && that.view && (
+              lastSettlementId != that.settlementId ||
               lastSettlementUpdateCheck.getTime() + AWE.Config.SETTLEMENT_REFRESH_INTERVAL < +new Date() ||
               that.modelChanged() ||
               _becameVisible)) {
                 
-          AWE.GS.SettlementManager.updateSettlement(that.baseId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
+          AWE.GS.SettlementManager.updateSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
             log('updated settlement', settlement);
             if (settlement && settlement.getId()) {
               that.updateSlots();
@@ -377,7 +398,7 @@ AWE.Controller = (function(module) {
           });
 
           lastSettlementUpdateCheck = new Date();
-          lastSettlementId = that.baseId;
+          lastSettlementId = that.settlementId;
           _modelChanged = false;
           _becameVisible = false;
         }
@@ -432,7 +453,7 @@ AWE.Controller = (function(module) {
     }
 
     that.updateDebug = function() {
-      $("#debug2").html('&nbsp;Base Screen Visible.');
+      $("#debug2").html('&nbsp;Settlement Screen Visible.');
     };    
     
     var counter = 0;
@@ -441,27 +462,32 @@ AWE.Controller = (function(module) {
       
       this.updateDebug();
       
-      if (this.visible && _viewNeedsUpdate && AWE.GS.SettlementManager.getSettlement(that.baseId)) {
+      if (this.visible && !this.view && this.settlementId) {
+        console.log('APPEND', this.settlementId, this.settlement);
+        this.appendView();           
+      }
+      
+      if (this.visible && _viewNeedsUpdate && AWE.GS.SettlementManager.getSettlement(that.settlementId)) {
         this.updateView();
         _viewNeedsUpdate = false;
       }
       
-      if (this.view) {   // make sure the view displays the right base.
+      if (this.view) {   // make sure the view displays the right settlement.
         // this is executed, in case the settlement is received from the 
-        // server for the first time or the baseId has been changed by 
-        // this.setBaseId(int).
-        var base = AWE.GS.SettlementManager.getSettlement(that.baseId);
+        // server for the first time or the settlementId has been changed by 
+        // this.setSettlementId(int).
+        var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
         
-        if (this.view.get('base') != base) {
-          this.view.set('base', base);
-          console.log('SWITCHED BASE IN RUNLOOP TO', base);
+        if (this.view.get('settlement') != settlement) {
+          this.view.set('settlement', settlement);
+          console.log('SWITCHED BASE IN RUNLOOP TO', settlement);
         }
                 
-        if (base && base.getPath('hashableQueues.collection')) {
-          that.updateOldJobsInConstructionQueues(base.getPath('hashableQueues.collection'));
+        if (settlement && settlement.getPath('hashableQueues.collection')) {
+          that.updateOldJobsInConstructionQueues(settlement.getPath('hashableQueues.collection'));
         }
 
-        if (base && this.view.get('selectedSlot')) {
+        if (settlement && this.view.get('selectedSlot')) {
           that.updateOldJobsInTrainingQueues(this.view.getPath('selectedSlot.building.trainingQueues'));
         }
       }

@@ -36,7 +36,6 @@ AWE.Config = (function(module) {
   module.MESSAGING_SERVER_BASE    = module.SERVER_ROOT + '/game_server/messaging/';
   module.PAYMENT_PROVIDER_BASE    = module.SERVER_ROOT + '/payment_provider/';
   
-  module.LOCALE = 'de_DE';
   module.DEFAULT_LOCALE = 'en_US';
   
   // access token of Egbert, expires in 100 days.

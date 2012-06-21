@@ -1026,7 +1026,7 @@ html, body {
   width: 80px;
   height: 120px;
   z-index: 2;
-  background: url('../images/settlements/base/constructionspot_1.png');  /** the default images for this category. important: contains the image displayed for empty slots! */
+  background: url('../images/settlements/base/building_category_small_building.png');  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
 
 .base-picture .large-building {
@@ -1035,7 +1035,7 @@ html, body {
   width: 120px;
   height: 150px;
   z-index: 2;
-  background: url('../images/settlements/base/constructionspot_big_1.png');  /** the default images for this category. important: contains the image displayed for empty slots! */
+  background: url('../images/settlements/base/building_category_large_building.png');  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
 
 
@@ -1047,6 +1047,7 @@ html, body {
   z-index: 2;
   background: url('../images/settlements/fortress/building_category_fortress_tower.png');  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
+
 
 
 /** position of left tower */
@@ -1061,11 +1062,11 @@ html, body {
   right: 0px;
 }
 
-.constructing, .fortress-picture .level.constructing {
+.constructing, .fortress-picture .level.constructing, .base-picture .level.constructing {
   color: #3F3;
 }
 
-.destructing, .fortress-picture .level.destructing {
+.destructing, .fortress-picture .level.destructing, .base-picture .level.destructing {
   color: #F33;
 }
 
@@ -1086,17 +1087,34 @@ html, body {
   background: url('../images/settlements/fortress/building_cavalry_tower.png');
 }
 
+.base-picture .large-building.building_palace {
+  background: url('../images/settlements/base/building_palace_large.png');
+}
+
 
 .fortress-picture .level, .base-picture .level {
-  font-size: 24px;
-  border: 4px solid #444;
   background-color: #BBB;
-  border-radius: 9px;
   color: #444;
-  width: 32px;
-  padding: 8px 0px;
   text-align: center;
 }
+
+.fortress-picture .level {
+  font-size: 24px;
+  border: 4px solid #444;
+  border-radius: 9px;
+  width: 32px;
+  padding: 8px 0px;
+}
+
+.base-picture .level {
+  font-size: 12px;
+  border: 2px solid #444;
+  border-radius: 4px;
+  width: 16px;
+  padding: 4px 0px;
+}
+
+
 
 .fortress-picture .tower .level {
   margin-top: 320px;
@@ -1143,9 +1161,52 @@ html, body {
   background-position: -714px -454px;
 }
 
+.base-picture .small-building .level {
+  position: absolute;
+  left:   0px;
+  bottom: 0px;
+}
+
+.base-picture .large-building .level {
+  position: absolute;
+  right: 10px;
+  top:   10px;
+}
+
+.base-picture .small-building.size1 {
+  background-position: -80px 0px;
+}
+.base-picture .small-building.size2 {
+  background-position: -160px 0px;
+}
+.base-picture .small-building.size3 {
+  background-position: -240px 0px;
+}
+
+.base-picture .large-building.size1 {
+  background-position: -120px 0px;
+}
+.base-picture .large-building.size2 {
+  background-position: -240px 0px;
+}
+.base-picture .large-building.size3 {
+  background-position: -360px 0px;
+}
+.base-picture .large-building.size4 {
+  background-position: -480px 0px;
+}
+.base-picture .large-building.size5 {
+  background-position: -600px 0px;
+}
+.base-picture .large-building.size6 {
+  background-position: -720px 0px;
+}
+
+
 .base-picture .small-building:hover {
+  margin-left: -4px; 
+  margin-top: -4px;
   border: 4px solid orange;
-  opacity: 0.5;
   cursor: pointer;
 }
 .base-picture .small-building.size1:hover {
@@ -1156,8 +1217,9 @@ html, body {
 }
 
 .base-picture .large-building:hover {
+  margin-left: -4px; 
+  margin-top: -4px;
   border: 4px solid orange;
-  opacity: 0.5;
   cursor: pointer;
 }
 .base-picture .large-building.size1:hover {

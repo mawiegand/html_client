@@ -63,7 +63,7 @@ AWE.UI.Ember = (function(module) {
     model: null, 
 
 		levelBinding: 'model.level',
-		typeBinding: 'model.type',
+		typeBinding: 'model.building.type',
 
     classNameBindings: ['small:size1', 'middle:size2', 'large:size3', 'type', 'slotLayoutId'],
 
@@ -147,6 +147,22 @@ AWE.UI.Ember = (function(module) {
 		},  
   });
   
+
+  /** @class
+   * @name AWE.UI.Ember.HoverableView */  
+  module.HoverableView = Ember.View.extend( /** @lends AWE.UI.Ember.HoverableView# */ {
+    hovered:     false,
+    		  
+    mouseEnter: function(event) {
+      var self = this;
+      this.set('hovered', true);
+      this.setPath('parentView.hoveredView', this);
+    },
+    mouseLeave: function(event) {
+      this.set('hovered', false);
+      this.setPath('parentView.hoveredView', null);
+    },
+  });
   
   
   /** @class
