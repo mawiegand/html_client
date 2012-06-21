@@ -339,6 +339,7 @@ html, body {
 }
 
 #debug {
+  display: none;
   position: absolute;
   top: 10px;
   left: 10px;
@@ -351,6 +352,7 @@ html, body {
 }
 
 #debug2 {
+  display: none;
   position: absolute;
   top: 10px;
   left: 40px;
@@ -942,17 +944,51 @@ html, body {
    Fortess Screen
    ========================================================================== */
 
-.fortress-info-box {
+.settlement-info-box {
+  font-size: 12px;
+  z-index: 5;
+  -moz-border-radius: 6px;
+  border-radius:      6px;
+}
+
+.settlement-info-box .change-name {
+  opacity: 1.0;
+  font-size: 12px;
+  text-decoration:none;
+  margin: 0;
+  color: #CCF;
+}
+
+.settlement-info-box .change-name:hover {
+  text-decoration:underline;
+  color: #DDF;
+}
+
+.fortress-picture .settlement-info-box {
+  width: 400px;
+  height: 120px;
+  padding: 6px 10px 6px 10px;
   position: absolute;
   left: 220px;
-  top: 80px;
-  width: 400px;
-  height: 160px;
+  top: 80px;  
   background-color: rgba(255,255,255,0.4);
-  z-index: 5;
-  padding: 16px 20px 16px 20px;
-  -moz-border-radius: 12px;
-  border-radius:      12px;
+}
+
+.base-screen .settlement-info-box {
+  width: 300px;
+  height: 70px;
+  padding: 2px 10px 0px 10px;
+  color: white;
+  text-shadow: none;
+  position: absolute;
+  left: 40px;
+  top: 8px;  
+  background-color: rgba(0,0,0,0.4);
+}
+
+.base-screen .settlement-info-box h1 {
+  font-size: 16px;
+  margin: 0px;
 }
 
 

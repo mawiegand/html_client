@@ -49,7 +49,6 @@ AWE.GS = (function(module) {
 			if (typeId === undefined || typeId === null) { // must check, because typeId may be zero
 				return null;
 			}
-			console.log('TYPE_ID', this.get('type_id'), typeId, AWE.GS.RulesManager.getRules().getQueueType(typeId));
 			return AWE.GS.RulesManager.getRules().getQueueType(typeId);
     }.property('type_id').cacheable(),
         

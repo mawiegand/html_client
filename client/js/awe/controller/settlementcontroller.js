@@ -88,6 +88,22 @@ AWE.Controller = (function(module) {
       }
     }
     
+    /** set the id of the fortress to display by setting the region id.
+     * looks-up the settlement id that is at that particular node's slot 0
+     * and even fetches it from the server, if it's missing.
+     * @function
+     * @name AWE.Controller.FortressController#setNode */
+    that.setNode = function(node) {
+      var location = node.region().location(0);
+      if (!location) {
+        that.setSettlementId(null);
+        while (! AWE.Map.Manager.fetchLocationsForRegion(node.region(), function(region) {
+          that.setLocationId(region.location(0).id());
+        })) ;
+      }
+    }    
+
+    
     /** removes the whole screen from the DOM.
      * @function
      * @name AWE.Controller.SettlementController#removeView */

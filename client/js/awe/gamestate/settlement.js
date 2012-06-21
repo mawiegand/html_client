@@ -24,7 +24,7 @@ AWE.GS = (function(module) {
    * @name AWE.GS.Settlement */ 
   module.Settlement = module.Entity.extend( /** @lends AWE.GS.Settlement# */ {    
     typeName: 'Settlement',
-    name: null, 
+    name: 'Settlement', 
 
     owner_id: null, old_owner_id: null,
     ownerIdObserver: AWE.Partials.attributeHashObserver(module.SettlementAccess, 'owner_id', 'old_owner_id').observes('owner_id'),    
@@ -39,7 +39,6 @@ AWE.GS = (function(module) {
       return AWE.Map.Manager.getLocation(this.get('location_id'));    
     }.property('location_id').cacheable(),
 
-    
     armies_count: null,
     besieged: null,
     command_points: null,

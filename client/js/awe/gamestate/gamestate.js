@@ -78,10 +78,10 @@ AWE.GS = (
       for (var key in hash) {
         if (hash.hasOwnProperty(key)) {
           
-          if (this[key] === undefined) {
+   /*       if (this[key] === undefined) {
             console.log ('ERROR in AWE.GS.Entity.setPropertiesWithHash: unknown property ' + key + '.');
           }
-          else {
+          else {*/
             if (AWE.Ext.isArrayProxy(this[key])) {
               log('setPropertiesWithHash with hash', hash[key]);
               var baseTypeName = this[key].get('baseTypeName');
@@ -106,7 +106,7 @@ AWE.GS = (
             else {
               this.set(key, hash[key]);
             }
-          }
+    //      }
         }
       }
     },

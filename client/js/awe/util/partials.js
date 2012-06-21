@@ -48,18 +48,44 @@ AWE.Partials = (function(module) {
    * the collection are stored twice; once in a hash for easy access and
    * once in an array for working with the whole collection of entries. 
    *
-   * Assumes all added objects to have a field "id". */
+   * Assumes all added objects to have a field "id". 
+   *
+   * Please note: the hash uses an internal attribute that holds the timestamp
+   * of the last change and then binds it's own public "changedAt" attribute to 
+   * this internal attribute. Why this? For two reasons: 
+   * A) when several objects are added to the collection during one event (e.g.
+   *    all results of an index-call), the internal attribute will change several
+   *    times. Would observers bind to this internal attribute, they would be 
+   *    notified several times, for each object added. But because bindings are
+   *    updated in the runloop, the public changedAt attribute will be update
+   *    only once for all the changes, AFTER the user-code ended. Thus, observers
+   *    Binding to that attribute will be notified only once, after all changes
+   *    took place. (This also holds for computed properties watching the changedAt).
+   * B) There is a problem when calling observers immediately after each individual
+   *    change. An object is added to the hash immediately, when the hashed-object
+   *    is set. Would we call an observer now immediately, it might happpen, that 
+   *    not all the other attributes of the objects have been set. Imagine
+   *    setting entity.set('settlement_id' 1), which would add the object to a hash and
+   *    call an observer, and then setting entity.set('valid', false). The value of
+   *    the second attribute could not be known to an observer called inbetween those
+   *    two set-commands. Binding the public attribute to the internal attribute 
+   *    prevents this, as the update of the binding is delayed and performed
+   *    "asynchronly" in Ember's runloop AFTER all user code has finished.
+   */
   module.HashableCollection = Ember.Object.extend({
     hash: null,               ///< for easy access
     collection: null,         ///< to be used as a whole, e.g. to bind to.
     lastUpdateAt: null,       ///< last update with server (used from the update routines in the GameState-Managers to track update requests)
-    changedAt: null,          ///< last modification to hash (does not track changes "inside" elements)
+    changedAtBinding: 'internalChangedAt',  ///< last modification to hash (does not track changes "inside" elements)
+
+    internalChangedAt: null, // explanation see above
+
     
     init: function(spec) {
       this.set('hash', {});         ///< TODO: should this become an Ember.Object? e.g. simply "Ember.Object.create({});" ?
       this.set('collection', []);
       this.set('lastUpdateAt', new Date(1970));
-      this.set('changedAt', new Date());   // created now 
+      this.set('internalChangedAt', new Date());   // created now 
       this._super(spec);
     },
     
@@ -82,7 +108,7 @@ AWE.Partials = (function(module) {
         collection.pushObject(entry);                    // add the object
       }
       hash[id] = entry;                                  // add (or overwrite) to hash
-      this.set('changedAt', new Date());
+      this.set('internalChangedAt', new Date());
     },
     
     replaceAll: function(newEntries, timestamp) {
@@ -93,7 +119,7 @@ AWE.Partials = (function(module) {
       this.set('hash', newEntries);
       this.set('collection', AWE.Ext.hashValues(newEntries));
       this.set('lastUpdatedAt', timestamp);
-      this.set('changedAt', now);
+      this.set('internalChangedAt', now);
     },
       
     /** remove the given object or id from the collection. */
@@ -108,7 +134,7 @@ AWE.Partials = (function(module) {
         if (index >= 0) {
           collection.removeAt(index);
         }
-        this.set('changedAt', new Date());
+        this.set('internalChangedAt', new Date());
       }
       else {
         console.log('WARNING: object to be removed was not found in HashableCollection.')
