@@ -66,7 +66,6 @@ AWE.UI.Ember = (function(module) {
       }
     }.observes('garrisonArmy'),
 
-
     unitTypes: function() {
       var list = [];
       var details = this.getPath('garrisonArmy.details');
@@ -77,6 +76,7 @@ AWE.UI.Ember = (function(module) {
           if (details[unitType.db_field] !== undefined && details[unitType.db_field] > 0) {
             list.push(Ember.Object.create({
               name: unitType.name.en_US,
+              symbolic_id: unitType.db_field, 
               allUnits: details[unitType.db_field],
               garrisonUnits: details[unitType.db_field],
               newUnits: 0,
@@ -87,9 +87,26 @@ AWE.UI.Ember = (function(module) {
       log("LIST", list, details);
       return list;
     }.property('garrisonArmy.details.@each').cacheable(),
+    
+    unitQuantities: function() {
+      var unitQuantities = {};
+      var unitTypes = this.get('unitTypes');
+      unitTypes.forEach(function(unitType) {
+        var quantity = unitType.get('newUnits');
+        if (quantity > 0) {
+          unitQuantities[unitType.get('symbolic_id')] = quantity; 
+        }
+      });
+      
+      return unitQuantities;
+    },
         
     createPressed: function() {
       log('ERROR Action not connected: createWasPressed.');
+    },
+    
+    cancelPressed: function() {
+      log('ERROR Action not connected: cancelWasPressed.');
     },
     
     allToGarrison: function(){
@@ -97,6 +114,8 @@ AWE.UI.Ember = (function(module) {
     
     allToNew: function(){
     },
+    
+    loading: null,
     
     init: function() {
       this._super();      
