@@ -115,6 +115,8 @@ AWE.UI.Ember = (function(module) {
     allToNew: function(){
     },
     
+    loading: null,
+    
     init: function() {
       this._super();      
     },

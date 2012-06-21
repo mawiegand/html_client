@@ -706,7 +706,7 @@ AWE.Controller = (function(module) {
       });
     }
     
-    var createArmyCreateAction = function(location, units) {
+    var createArmyCreateAction = function(location, units, callback) {
       log('createArmyCreateAction', location, units);
       
       // TODO auf leere units testen
@@ -714,16 +714,13 @@ AWE.Controller = (function(module) {
       var armyCreateAction = AWE.Action.Military.createCreateArmyAction(location, units);
       armyCreateAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-          // garrisonArmy aktualisieren
-          
-          // army an der location aktualisieren
-           
-          // alt 
-          // AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
-            // that.setModelChanged();
-            // that.addDisappearingAnnotationLabel(targetView, 'ETA ' + army.get('target_reached_at'), 1500);
-            // that.addDisappearingAnnotationLabel(armyView, '-1 AP', 1000);
-          // });
+          AWE.GS.ArmyManager.updateArmiesAtLocation(location.id(), null, function(armies) {
+            log('armies updated at location', armies, location);
+            that.setModelChanged();
+            if (callback) {
+              callback();
+            }
+          }); 
         }
         else {
           that.handleError(status, "The server did not accept the movement comannd.");
@@ -733,17 +730,24 @@ AWE.Controller = (function(module) {
     
     that.newArmyButtonClicked = function(location) {
       if (!location) {
-        return ;
+        return;
       }
       
       var dialog = AWE.UI.Ember.ArmyCreateDialog.create({
         locationId: location.id(),
         createPressed: function(evt) {
-          createArmyCreateAction(location, this.unitQuantities());           
+          createArmyCreateAction(location, this.unitQuantities(), (function(self){
+            return function() {
+              log('---> thissss', self);
+              self.destroy();
+            }
+          })(this));           
+          this.set('loading', true);
         },
         cancelPressed: function(evt) {
           this.destroy();
-        }
+        },
+        loading: false,
       });
       // garrisonArmy is set after create to trigger observer in view
       dialog.set('garrisonArmy', location.garrisonArmy()),
