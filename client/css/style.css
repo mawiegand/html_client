@@ -743,18 +743,31 @@ span.bonus {
 }
 
 
-
-
 .building-option:hover {
   background-color: #FDD;
   cursor: pointer;
 }
 
-.building-option-image {
+.fortress-screen .building-option-image {
   width: 53px;
   height: 101px;
   margin-left: 23px;
 }
+
+.base-screen .building-option-image {
+  width: 120px;
+  height:150px;
+  margin-left: 0px;
+}
+
+/** image for building_siege_tower */
+.building-option-image.building_quarry {
+  background: url('../images/settlements/base/building_quarry_large.png');
+}
+.building-option-image.building_palace {
+  background: url('../images/settlements/base/building_palace_large.png');
+}
+
 
 /** image for building_siege_tower */
 .building-option-image.building_siege_tower {
@@ -789,13 +802,25 @@ span.bonus {
 }
 
 
-.building-option-image.size1 {
+.base-screen .building-option-image.size1 {
+  background-position: -120px 0px;
+}
+.base-screen .building-option-image.size2 {
+  background-position: -240px 0px;
+}
+.base-screen .building-option-image.size3 {
+  background-position: -360px 0px;
+}
+
+
+
+.fortress-screen .building-option-image.size1 {
   background-position: -53px 0px;
 }
-.building-option-image.size2 {
+.fortress-screen .building-option-image.size2 {
   background-position: -106px 0px;
 }
-.building-option-image.size3 {
+.fortress-screen .building-option-image.size3 {
   background-position: -159px 0px;
 }
 

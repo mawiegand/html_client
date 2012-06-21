@@ -35,6 +35,11 @@ AWE.GS = (function(module) {
 	//	buildingIdBinding: 'slot.building_id',  ///< bind the slot's building id to the corresponding property of the building
 	//	levelBinding: 'slot.level',     ///< property holding the present level of building 
 
+		/** the name of the building from the game rules. */
+		nameBinding: 'buildingType.name',
+		/** the description of the building from the game rules. */
+		descriptionBinding: 'buildingType.description',
+
     /** return the building type from the rules, that describes this
      * building. */
     buildingType: function() {
@@ -57,19 +62,7 @@ AWE.GS = (function(module) {
 		type: function() {
 		  var rule = this.get('buildingType');
 			return rule ? rule['symbolic_id'] : null;
-		}.property('buildingId').cacheable(),
-		
-		/** returns the localized name of the building. */
-		name: function() {
-			var rule = this.get('buildingType');
-			return rule ? rule['name']['en_US'] : null;  // TODO: correct localization			
-		}.property('buildingId').cacheable(),
-	
-		/** returns the localized description of the building. */
-		description: function() {
-			var rule = this.get('buildingType');
-			return rule ? rule['description']['en_US'] : null;  // TODO: correct localization			
-		}.property('buildingId').cacheable(),
+		}.property('buildingType').cacheable(),
 		
 		levelAfterJobs: function() {
 		  var level = this.get('level');

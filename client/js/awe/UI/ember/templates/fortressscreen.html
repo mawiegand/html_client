@@ -3,7 +3,7 @@
   {{#if "model.building"}}
     {{#view AWE.UI.Ember.ToolTipView classNames="mouse-over" mouseXBinding="mouseX" mouseYBinding="mouseY"}}
       <img src="images/dialogs/advisor.png" class="advisor">
-      <h1>{{parentView.model.building.name}} L{{parentView.model.building.level}}</h1>
+      <h1>{{local parentView.model.building.name}} L{{parentView.model.building.level}}</h1>
       <p>Next level does cost XYZ resources. It will need about X:XX.YY to build.</p>
     {{/view}}
   {{else}}
@@ -95,16 +95,16 @@
 <script type="text/x-handlebars" data-template-name="settlement-dialog-building-details">
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-pane settlement-dialog-building-details">
-    <a href="#" {{action "cancelPressed" }} class="close"></a>
+    <a href="#" {{action "cancelPressed" }} class="close" title="click to close"></a>
     {{#if building.level }}
-      <h1>{{ building.name }} <span title="present level of building">Level {{ building.level }}</span>
+      <h1>{{local building.name }} <span title="present level of building">Level {{ building.level }}</span>
           {{#if building.underConstruction }}(<span class="constructing" title="level after finishing all upgrades already in the queue">{{building.levelAfterJobs}}</span>){{/if}}
           {{#if building.underDestruction }}(<span class="destructing" title="level after finishing all downgrades already in the queue">{{building.levelAfterJobs}}</span>){{/if}}</h1>   
     {{else}}
-      <h1>Under Construction: {{ building.name }}</h1>        
+      <h1>Under Construction: {{local building.name }}</h1>        
     {{/if}}
-    {{view AWE.UI.Ember.BuildingView classNames="building-option-image" modelBinding="building"}}
-    {{{building.description}}}
+    {{view AWE.UI.Ember.BuildingView classNames="building-option-image" modelBinding="building.slot"}}
+    {{{local building.description}}}
 
     {{#if building.unlockedQueues}}
       <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.unlockedQueues}}{{local name}}, {{/each}}</p>
@@ -127,10 +127,10 @@
     <hr>
     
     {{#if building.upgradable}}
-      <a href="#" {{action "upgradeClicked"}} class="upgrade"><img src="images/icons/cross_green.png"></img> Upgrade</a>
+      <a href="#" {{action "upgradeClicked"}} class="upgrade" title="click to upgrade"><img src="images/icons/cross_green.png"></img> Upgrade</a>
       <h2>Next Upgrade: Level {{ building.nextLevel }}</h2>
     
-     {{view AWE.UI.Ember.BuildingView classNames="building-option-image" modelBinding="building" levelBinding="building.nextLevel"}}
+     {{view AWE.UI.Ember.BuildingView classNames="building-option-image" modelBinding="building.slot" levelBinding="building.nextLevel"}}
 
       ProductionTime: {{building.localizedProductionTimeOfNextLevel}}<br />
       {{#if building.costsOfNextLevel}}
@@ -243,7 +243,7 @@
               {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" levelBinding="job.level_after" buildingIdBinding="job.buildingId" typeBinding="job.slot.building.type"}}
               <div class="queue-job-text">    
                 <p>{{ job.job_type }}</p>
-                <p>{{ job.slot.building.name }}</p>
+                <p>{{local job.slot.building.name }}</p>
                 <p>Slot #{{ job.slot.slot_num }}</p>
                 <p>Level {{ job.level_after }}</p>
                 <p>{{#if job.active_job }}Fin.: {{ job.parsedFinishingDate }}{{/if}}</p>
