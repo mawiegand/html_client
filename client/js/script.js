@@ -252,14 +252,19 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     ready: function() {
       this._super();
       
-      var accessToken = window.name ; // || AWE.Config.DEV_ACCESS_TOKEN || null;
+      
+      var args = JSON.parse(window.name)
+      log(window.name, args)
+
       // window.name = "";                                 // unset variables
       
-      if (!accessToken) {
+      if (!args || !args.accessToken) {
         alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
         document.location.href = AWE.Config.SERVER_ROOT;
         return ;
       }
+      var accessToken = args.accessToken ; // || AWE.Config.DEV_ACCESS_TOKEN || null;
+      AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;  // TODO: This is a hack, should go to settings.
             
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
