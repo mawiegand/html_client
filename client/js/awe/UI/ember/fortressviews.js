@@ -20,6 +20,8 @@ AWE.UI.Ember = (function(module) {
     
     hashableConstructionQueuesBinding: "settlement.hashableQueues",
     hashableTrainingQueuesBinding: "settlement.hashableTrainingQueues",
+    
+    defenseBonusBinding: Ember.Binding.notNull("settlement.defense_bonus", "0"),
             
     buildingQueue: function() {
       var queues = this.getPath('hashableConstructionQueues.collection');
@@ -87,9 +89,12 @@ AWE.UI.Ember = (function(module) {
   		var productions = [];
   		var settlement = this.get('settlement');
   	  AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
+  	    console.log(settlement);
   	    productions.push(Ember.Object.create({  // need to return an ember project so bindings on resourceType.name do work inside local helper
-          amount:       0,
-          resourceType: resourceType,
+          rate:  settlement.get(item.symbolic_id+'_production_rate') || settlement.get('resource_wood_production_rate') || settlement.resource_fur_production_rate,
+          base:  settlement.get(item.symbolic_id+'_base_production'),
+          bonus: settlement.get(item.symbolic_id+'_production_bonus'),
+          resourceType: item,
         }));
       });
       return productions;
