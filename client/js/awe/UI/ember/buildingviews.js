@@ -9,7 +9,7 @@
  * @author <a href="mailto:patrick@5dlab.com">Patrick Fox</a>
  */ 
 
-var AWE = AWE || {};
+var AWE = window.AWE || {};
 AWE.UI = AWE.UI || {}; 
 
 AWE.UI.Ember = (function(module) {
@@ -17,95 +17,68 @@ AWE.UI.Ember = (function(module) {
   module.presentToolTipOnView = null;
   
   module.templates = module.templates || [];
-//  module.templates.push('js/awe/UI/ember/templates/buildingviews.html');
+  module.templates.push('js/awe/UI/ember/templates/buildingviews.html');
   
-
-  /** @class
-   * @name AWE.UI.Ember.SelectBuildingDialog */
-  module.SelectBuildingDialog = Ember.View.extend( /** @lends AWE.UI.Ember.SelectBuildingDialog# */ {
-    templateName: "settlement-dialog-select-building",
-    heading: 'Select Building',
-  
-    cancelPressed: function() {
-      this.get('controller').unselectSlot();
-    },
-                      
-    optionClicked: function(event) {
-      var slot = this.get('slot');
-      var buildingId = event.view.get('content').get('buildingId');
-      var type = event.view.get('content').get('type');
-      this.get('controller').constructionOptionClicked(slot, buildingId, type);
-      this.get('controller').unselectSlot();
-    },         
-  });  
-  
- 
-  /** @class
-   * @name AWE.UI.Ember.BuildingDetailsDialog */  
-  module.BuildingDetailsDialog = Ember.View.extend( /** @lends AWE.UI.Ember.BuildingDetailsDialog# */ {
-    templateName: "settlement-dialog-building-details",
-  
-    cancelPressed: function() {
-      this.get('controller').unselectSlot();
-    },
-                      
-    upgradeClicked: function(event) {
-      this.get('controller').constructionUpgradeClicked(this.get('slot'));
-    },         
-    
-  }); 
-
-
 
   /** @class
    * @name AWE.UI.Ember.BuildingView */  
   module.BuildingView = Ember.View.extend( /** @lends AWE.UI.Ember.BuildingView# */ {
-    model: null, 
+    building:     null,
+    
+		levelBinding: 'building.level',
+		typeBinding:  'building.type',
 
-		levelBinding: 'model.level',
-		typeBinding: 'model.building.type',
+    classNameBindings: ['size1:size1', 'size2:size2', 'size3:size3',  'size4:size4',  'size5:size5',  'size6:size6', 'type', 'slotLayoutId'],
 
-    classNameBindings: ['small:size1', 'middle:size2', 'large:size3', 'type', 'slotLayoutId'],
-
-    small: function() {
+    size1: function() {
       var level = this.get('level');
       if (level == 0) {  // special case: return small also for level 0, iff there is a building (building id set, so it's under construction)
-        if (this.getPath('model.building')) {
+        if (this.getPath('type')) {
           return true ; 
         }
       }
       else {
         return level > 0 && level < 4;
       }
-    }.property('level', 'model.building').cacheable(),
+    }.property('level', 'type').cacheable(),
   
-    middle: function() {
+    size2: function() {
       return this.get('level') >= 4 && this.get('level') < 8;
     }.property('level').cacheable(),
-  
-    large: function() {
-      return this.get('level') >= 8;
+      
+    size3: function() {
+      return this.get('level') >= 8 && this.get('level') < 11;
     }.property('level').cacheable(),
     
-    slotLayoutId: function() {
-      var slotNum = this.getPath('model.slot_num');
-      return slotNum ? "slot"+slotNum : null;
-    }.property('model.slot_num').cacheable(),
+    size4: function() {
+      return this.get('level') >= 11 && this.get('level') < 14;
+    }.property('level').cacheable(),
+
+    size5: function() {
+      return this.get('level') >= 14 && this.get('level') < 18;
+    }.property('level').cacheable(),  
+  
+    size6: function() {
+      return this.get('level') >= 18;
+    }.property('level').cacheable(),
+
+
   });
 
   /** @class
-   * @extends  AWE.UI.Ember.BuildingView
-   * @name AWE.UI.Ember.InteractiveBuildingView */  
-  module.InteractiveBuildingView = module.BuildingView.extend( /** @lends AWE.UI.Ember.InteractiveBuildingView# */ {
-    templateName: 'interactive-building',
+   * @name AWE.UI.Ember.BuildingSlotView */  
+  module.BuildingSlotView = module.BuildingView.extend( /** @lends AWE.UI.Ember.BuildingSlotView# */ {
+    templateName: 'interactive-building-slot',
     tooltip: false,
     mouseX: 0,
     mouseY: 0,
     timeout: 0,    // tooltip timeout in ms
 		settlement: null,
+		slot:       null,
 		
+		buildingBinding: 'slot.building',
+				
 		mouseInView: false,
-		
   
     showTooltip: function() {
       if (this.get('mouseInView') === true) {  // only show tooltip, if the mouse is still in view
@@ -119,7 +92,6 @@ AWE.UI.Ember = (function(module) {
       setTimeout(function() {
         self.showTooltip();
       }, this.get('timeout'));
-      console.log('mouse entered', this);
     },
     mouseMove: function(event) {
       this.set('mouseX', event.pageX);
@@ -128,23 +100,27 @@ AWE.UI.Ember = (function(module) {
     mouseLeave: function(event) {
       this.set('mouseInView', false);
       this.set('tooltip', false);
-      //$().unbind('mousemove');
-      console.log('mouse left', this);
     },
     
   
     click: function(event) {
-      console.log('click on interactive building');
-		  var model = this.get('model');
-		  var controller = this.get('parentView') ? this.get('parentView').get('controller') : null;
+		  var slot = this.get('slot');
+		  var controller = this.getPath('parentView.controller');
 		  
 		  if (controller) {
-		    controller.slotClicked(model);
+		    controller.slotClicked(slot);
 		  }
 		  else {
-		    console.log('no controller found!');
+		    console.log('In Interactive Building View: no controller found!');
 		  }
 		},  
+		
+    slotLayoutId: function() {
+      var slotNum = this.getPath('slot.slot_num');
+      return slotNum ? "slot"+slotNum : null;
+    }.property('slot.slot_num').cacheable(),
+		
+		
   });
   
 
@@ -162,37 +138,6 @@ AWE.UI.Ember = (function(module) {
       this.set('hovered', false);
       this.setPath('parentView.hoveredView', null);
     },
-  });
-  
-  
-  /** @class
-   * @name AWE.UI.Ember.TrainableUnitButtonView */  
-  module.TrainableUnitButtonView = Ember.View.extend( /** @lends AWE.UI.Ember.TrainableUnitButtonView# */ {
-    templateName: "trainable-unit-button",
-      
-    classNameBindings: ['selected'],  
-    
-      
-    click: function(event) {
-      this.get('parentView').set('selectedUnitType', this.get('unitType'));
-    },     
-    
-    selected: function() {
-      return this.get('unitType') === this.getPath('parentView.selectedUnitType');
-    }.property('parentView.selectedUnitType').cacheable(),
-    
-    
-    // TODO: check requirements and costs. should become a mixin somehow
-  
-    requirementsMet: function() {
-      return true ;
-    }.property('queue.settlement', 'unitType').cacheable(),
-    
-    costsMet: function() {
-      return true ;
-    }.property('queue.settlement', 'unitType').cacheable(),
-    
-    
   });
 
   return module;

@@ -13,6 +13,14 @@ AWE.I18n.de_DE = AWE.I18n.de_DE || function(module) {
   module.localizedStrings = {
  
     general: {
+      open:     'öffnen',
+      close:    'schließen',
+      cancel:   'abbrechen',
+      ok:       'Ok!',
+      finished: 'fertig',
+      info:     'Info',
+      error:    'Fehler',
+      warning:  'Warnung',
       
       startup: {
         loading: 'Loading....'
@@ -29,6 +37,12 @@ AWE.I18n.de_DE = AWE.I18n.de_DE || function(module) {
       details: {
         heading: 'Army',
       }
+    },
+    
+    building: {
+      level:    'Stufe',
+      cost:     'Kosten',
+      duration: 'Dauer'
     },
     
     error: {
@@ -64,9 +78,14 @@ AWE.I18n.de_DE = AWE.I18n.de_DE || function(module) {
 
     settlement: {
       buildings: {
+        
         details: {
           enables: 'Ermöglicht',
           speedup: 'Beschleunigt',
+        },
+        
+        select: {
+          heading: 'Gebäude auswählen'
         },
       },
     },

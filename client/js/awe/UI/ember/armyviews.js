@@ -4,7 +4,7 @@
  * Do not copy, do not distribute. All rights reserved.
  */
 
-var AWE = AWE || {};
+var AWE = window.AWE || {};
 AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {

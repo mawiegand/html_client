@@ -1,0 +1,125 @@
+
+
+<script type="text/x-handlebars" data-template-name="settlement-dialog-select-building">
+  <div class="settlement-dialog-background"></div>
+  <div class="settlement-dialog-pane settlement-dialog-select-building">
+    <a href="#" {{action "cancelPressed"}} class="cancel">{{t general.close}}</a>
+    <h1>{{t settlement.buildings.select.heading }}</h1>    
+    {{#if constructionOptions }}
+      <div class="clearfix">
+        {{#each constructionOptions}}
+          {{#view AWE.UI.Ember.HoverableView buildingBinding="this" classNames="building-option" }}
+            <div {{action "optionClicked" target="parentView"}}>
+              {{view AWE.UI.Ember.BuildingView buildingBinding="building" classNames="building-option-image"}}
+              {{local building.name}}
+            </div>
+          {{/view}}
+        {{/each}}
+      </div>
+      {{#with hoveredView.building}}
+        <h1>{{local name}} {{t building.level }} {{level}}</h1>
+        {{local description}}
+        {{#if costsOfNextLevel}}
+          {{t building.cost }}:
+          {{#each costsOfNextLevel}}
+            {{amount}} {{local resourceType.name}} &nbsp;  
+          {{/each}}<br/>
+        {{/if}}
+        {{t building.duration}}: {{formatDuration productionTimeOfNextLevel}}<br />      
+      {{/with}}
+    {{/if}}
+    
+  </div>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="settlement-dialog-building-details">
+  <div class="settlement-dialog-background"></div>
+  <div class="settlement-dialog-pane settlement-dialog-building-details">
+    <a href="#" {{action "cancelPressed" }} class="close" title="click to close"></a>
+    {{#if building.level }}
+      <h1>{{local building.name }} <span title="present level of building">Level {{ building.level }}</span>
+          {{#if building.underConstruction }}(<span class="constructing" title="level after finishing all upgrades already in the queue">{{building.levelAfterJobs}}</span>){{/if}}
+          {{#if building.underDestruction }}(<span class="destructing" title="level after finishing all downgrades already in the queue">{{building.levelAfterJobs}}</span>){{/if}}</h1>   
+    {{else}}
+      <h1>Under Construction: {{local building.name }}</h1>        
+    {{/if}}
+    {{view AWE.UI.Ember.BuildingView classNames="building-option-image" buildingBinding="building"}}
+    {{{local building.description}}}
+
+    {{#if building.unlockedQueues}}
+      <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.unlockedQueues}}{{local name}}, {{/each}}</p>
+    {{/if}}
+    
+    {{#if building.speedupQueues}}
+      {{#each building.speedupQueues}}
+        <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
+      {{/each}}
+    {{/if}}
+    
+    {{#if building.productions}}
+      Produces:<br/>
+      {{#each building.productions}}
+        {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{local resourceType.name}} per hour <br/>  
+      {{/each}}
+      <br/>
+    {{/if}}
+    
+    <hr>
+    
+    {{#if building.upgradable}}
+      <a href="#" {{action "upgradeClicked"}} class="upgrade" title="click to upgrade"><img src="images/icons/cross_green.png"></img> Upgrade</a>
+      <h2>Next Upgrade: Level {{ building.nextLevel }}</h2>
+    
+     {{view AWE.UI.Ember.BuildingView classNames="building-option-image" buildingBinding="building" levelBinding="building.nextLevel"}}
+
+      ProductionTime: {{building.localizedProductionTimeOfNextLevel}}<br />
+      {{#if building.costsOfNextLevel}}
+        Costs:
+        {{#each building.costsOfNextLevel}}
+          {{amount}} {{local resourceType.name}} &nbsp;  
+        {{/each}}
+        <br/>
+      {{/if}}
+    
+      {{#if building.unlockedQueuesNextLevel}}
+        <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.unlockedQueuesNextLevel}}{{local name}}, {{/each}}</p>
+      {{/if}}
+    
+      {{#if building.speedupQueuesNextLevel}}
+        {{#each building.speedupQueuesNextLevel}}
+          <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
+        {{/each}}
+      {{/if}}
+      
+      {{#if building.productionsNextLevel}}
+        Produces:<br/>
+        {{#each building.productionsNextLevel}}
+          {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{local resourceType.name}} per hour <br/>  
+        {{/each}}
+        <br/>
+      {{/if}}
+          
+    {{else}}
+      <p><b>Cannot be upgraded further.</b></p>
+    {{/if}}
+    
+    
+    {{#if building.trainingQueues}}
+    <hr>
+      {{#each building.trainingQueues }}
+        {{view AWE.UI.Ember.TrainingQueueView controllerBinding="controller" classNames="training-queue-list" queueBinding="this"}}
+      {{/each}}
+    {{/if}}
+
+    {{#if building.garrisonArmy }}
+    <hr>
+      {{view AWE.UI.Ember.ArmyInfoView armyBinding="building.garrisonArmy"}}
+    {{/if}}
+
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="trainable-unit-button">
+  {{local unitType.name}}
+</script>

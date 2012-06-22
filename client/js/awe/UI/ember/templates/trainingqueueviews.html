@@ -1,0 +1,47 @@
+
+<script type="text/x-handlebars" data-template-name="training-queue-view">
+  <h2>{{local queue.queueType.name }}</h2>
+
+  <div class="clearfix">
+    {{#each trainableUnitTypes}}
+      {{view AWE.UI.Ember.TrainableUnitButtonView unitTypeBinding="this" queueBinding="view.queue" classNames="training-option"}}
+    {{/each}}
+  </div>
+
+  Per Unit:
+    {{#each costs}}
+      {{amount}} {{local resourceType.name}} &nbsp;  
+    {{/each}}    
+    Duration: {{formatDuration productionTime}}
+  <br />
+  Total:
+    {{#each totalCosts}}
+      {{amount}} {{local resourceType.name}} &nbsp;  
+    {{/each}}    
+    Duration: {{formatDuration totalProductionTime}}
+  <br />  
+
+  
+  {{view Ember.TextField valueBinding="number"}} <a href="#" class="button" {{action "createJobPressed"}}>Train {{local selectedUnitType.name}}</a>    
+
+  <div class="training-queue-list-pane">    
+    {{#unless queue.empty }}
+      {{#each queue.hashableJobs.collection }}
+        {{#view AWE.UI.Ember.TrainingJobView controllerBinding="controller" jobBinding="this" classNames="training-queue-job"}}
+          <div class="training-queue-job-text">    
+            <p>{{ job.quantity }} {{local job.unitType.name }}</p>
+            {{#if job.active_job }}
+            <p>Fin: {{ job.parsedFinishingTotalDate }}</p>
+            <p>Finished: {{ job.quantity_finished }}</p>
+            <p>Current: {{ job.active_job.quantity_active }}</p>
+            <p>{{ job.parsedFinishingActiveDate }}</p>
+            {{/if}}
+          </div>  
+          <div class="training-queue-job-button">    
+            <a href="#" {{action "cancelJobPressed"}}>cancel</a>
+          </div>  
+        {{/view}}
+      {{/each}}
+    {{/unless}}
+  </div>
+</script>

@@ -9,7 +9,7 @@
  * @author <a href="mailto:patrick@5dlab.com">Patrick Fox</a>
  */ 
 
-var AWE = window.AWE || {};
+var AWE = AWE || {};
 AWE.UI  = AWE.UI     || {}; 
 
 AWE.UI.Ember = (function(module) {

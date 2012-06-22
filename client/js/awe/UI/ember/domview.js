@@ -6,7 +6,7 @@
 
 ///// DEPRECATED; Already deprecated, we'll be using Ember.JS for all DOM-inserted views.
 
-var AWE = AWE || {};
+var AWE = window.AWE || {};
 AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {

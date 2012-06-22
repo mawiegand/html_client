@@ -69,7 +69,7 @@ AWE.Util = (function(module) {
     if (timeComponent == 0) {
       return "00"
     }
-    return (timeComponent <= 10 ? "0" : "") + timeComponent;
+    return (timeComponent < 10 ? "0" : "") + timeComponent;
   }
   
   module.localizedDurationFromSeconds = function(seconds) {

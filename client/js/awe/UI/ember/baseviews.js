@@ -9,13 +9,14 @@
  * @author <a href="mailto:patrick@5dlab.com">Patrick Fox</a>
  */ 
 
-var AWE = AWE || {};
+var AWE = window.AWE || {};
 AWE.UI = AWE.UI || {}; 
 
 /** @namespace */
 AWE.UI.Ember = (function(module) /** @lend AWE.UI.Ember */ {
   
   module.templates = module.templates || [];
+  module.templates.push('js/awe/UI/ember/templates/settlementviews.html');
   module.templates.push('js/awe/UI/ember/templates/basescreen.html');
   
   /**
@@ -67,8 +68,8 @@ AWE.UI.Ember = (function(module) /** @lend AWE.UI.Ember */ {
 		}.property('base', 'base.hashableTrainingQueues.changedAt').cacheable(),
 		
 	});
-  
-  
+    
   return module;
     
 }(AWE.UI.Ember || {}));
+

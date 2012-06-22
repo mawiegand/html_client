@@ -12,6 +12,14 @@ AWE.I18n.en_US = AWE.I18n.en_US || function(module) {
   module.localizedStrings = {
  
     general: {
+      open:     'open',
+      close:    'close',
+      cancel:   'cancel',
+      ok:       'ok',
+      finished: 'finished',
+      info:     'information',
+      error:    'error',
+      warning:  'warning',
       
       startup: {
         loading: 'Loading....'

@@ -811,7 +811,15 @@ span.bonus {
 .base-screen .building-option-image.size3 {
   background-position: -360px 0px;
 }
-
+.base-screen .building-option-image.size4 {
+  background-position: -480px 0px;
+}
+.base-screen .building-option-image.size5 {
+  background-position: -600px 0px;
+}
+.base-screen .building-option-image.size6 {
+  background-position: -720px 0px;
+}
 
 
 .fortress-screen .building-option-image.size1 {
@@ -1321,7 +1329,12 @@ span.bonus {
 }
 .base-picture .large-building.size3:hover {
 }
-
+.base-picture .large-building.size4:hover {
+}
+.base-picture .large-building.size5:hover {
+}
+.base-picture .large-building.size6:hover {
+}
 
 
 
