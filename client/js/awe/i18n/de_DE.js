@@ -22,6 +22,9 @@ AWE.I18n.de_DE = AWE.I18n.de_DE || function(module) {
       error:    'Fehler',
       warning:  'Warnung',
       
+      perHour:  'pro Stunde',
+      perHourSym: '/h',
+      
       startup: {
         loading: 'Loading....'
       },
@@ -42,7 +45,8 @@ AWE.I18n.de_DE = AWE.I18n.de_DE || function(module) {
     building: {
       level:    'Stufe',
       cost:     'Kosten',
-      duration: 'Dauer'
+      duration: 'Dauer',
+      produces: 'Produziert',
     },
     
     error: {

@@ -690,13 +690,12 @@ html, body {
 }
 
 .settlement-dialog-pane a.close {
-  float: right;
-  display: block;
+  position: absolute;
   background: url('../images/icons/cross_small.png');
   width: 36px;
   height: 36px;
-  margin-right: -8px;
-  margin-top: -6px;
+  right: 12px;
+  top: 10px;
 }
 
 .settlement-dialog-pane a.close:hover {
@@ -740,6 +739,22 @@ span.bonus {
   margin-bottom: 5px;
   
   cursor: pointer; 
+}
+
+.settlement-dialog-building-details .building-option-image {
+  float: left;
+}
+
+.settlement-dialog-building-details .building-option-image.next-level {
+  float: right;
+}
+
+.settlement-dialog-building-details .building-description-box {
+  float: left;
+  min-height: 150px;
+  width: 440px;
+  margin-left: 20px;
+  display: inline-block;
 }
 
 
