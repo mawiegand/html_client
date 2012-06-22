@@ -258,11 +258,11 @@ AWE.UI = (function(module) {
         _reinforceButtonView.setFrame(AWE.Geometry.createRect(268, 0, 48, 48));
         this.addChild(_reinforceButtonView);
       }
+      
       if (isOwnArmy) {
-        _reinforceButtonView.setEnabled(_army.get('home_settlement_id') === _army.get('location_id'));
+        var settlement = AWE.Map.Manager.getLocation(_army.get('location_id')).settlement();
+        _reinforceButtonView.setEnabled(settlement && _army.get('home_settlement_id') === settlement.getId());
       }
-
-      log('-------> ', _army.get('home_settlement_id'), AWE.Map.Manager.getLocation(_army.get('location_id')))
 
       if (!_prevButtonView && isOwnArmy) {
         // button unten
