@@ -26,7 +26,7 @@ AWE.UI.Ember = (function(module) /** @lend AWE.UI.Ember */ {
    * changes there.
    *
    * @class
-   * @exends AWE.UI.Ember.SettlementView
+   * @extends AWE.UI.Ember.SettlementView
    * @name AWE.UI.Ember.BaseView 
    */
 	module.BaseView = AWE.UI.Ember.SettlementView.extend( /** @lends AWE.UI.Ember.BaseView# */ {

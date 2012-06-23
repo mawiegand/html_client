@@ -14,17 +14,20 @@ AWE.UI.Ember = (function(module) {
   module.templates.push('js/awe/UI/ember/templates/alliancescreen.html');  
 
   /**
+   * @class
+   *
    * View that follows the mouse-position and can be used to display a 
    * tooltip. Instantiate this view with your specific template in order
    * to display tool-specific content.
+   *
    * @example
-   *  {{#if "myView.hovered" }}
-   *    {{view AWE.UI.Ember.ToolTipView templateName="myView-tooltip" mouseXBinding="myView.mouseX" mouseYBinding="myView.mouseY" contentBinding="myView"}}
-   *  {{/if}} 
-   *  <script type="text/x-handlebars" data-template-name="myView-tooltip">
-   *    Tooltip for {{content.name}}
-   *  </script>
-   * @class
+   *    {{#if "myView.hovered" }}
+   *      {{view AWE.UI.Ember.ToolTipView templateName="myView-tooltip" mouseXBinding="myView.mouseX" mouseYBinding="myView.mouseY" contentBinding="myView"}}
+   *    {{/if}} 
+   *    <script type="text/x-handlebars" data-template-name="myView-tooltip">
+   *      Tooltip for {{content.name}}
+   *    </script>
+   *   
    * @name AWE.UI.Ember.ToolTipView 
    */
   module.ToolTipView = Ember.View.extend( /** @lends AWE.UI.Ember.ToolTipView# */ {

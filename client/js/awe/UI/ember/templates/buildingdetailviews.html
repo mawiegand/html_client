@@ -1,3 +1,8 @@
+<script type="text/x-handlebars" data-template-name="requirement-view">
+  {{#if haveMinLevel }}{{requirement.min_level}} <={{/if}}
+  {{local type.name}}
+  {{#if haveMaxLevel }} <= {{requirement.max_level}}{{/if}}
+</script>
 
 
 <script type="text/x-handlebars" data-template-name="settlement-dialog-select-building">
@@ -8,7 +13,7 @@
     {{#if constructionOptions }}
       <div class="clearfix">
         {{#each constructionOptions}}
-          {{#view AWE.UI.Ember.HoverableView buildingBinding="this" classNames="building-option" }}
+          {{#view AWE.UI.Ember.BuildingOptionView buildingBinding="this" classNames="building-option" }}
             <div {{action "optionClicked" target="parentView"}}>
               {{view AWE.UI.Ember.BuildingView buildingBinding="building" classNames="building-option-image"}}
               {{local building.name}}
@@ -25,10 +30,17 @@
             {{amount}} {{local resourceType.name}} &nbsp;  
           {{/each}}<br/>
         {{/if}}
-        {{t building.duration}}: {{formatDuration productionTimeOfNextLevel}}<br />      
+        {{t building.duration}}: {{formatDuration productionTimeOfNextLevel}}<br />     
+        {{#unless requirementsMet}}
+          <p>
+            {{{t settlement.buildings.select.missingRequirements}}}:<br/>
+            {{#each unmetRequirements}}
+              {{view AWE.UI.Ember.RequirementView requirementBinding="this"}}<br />
+            {{/each}}
+          </p>
+        {{/unless}} 
       {{/with}}
     {{/if}}
-    
   </div>
 </script>
 

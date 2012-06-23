@@ -90,7 +90,8 @@ AWE.I18n.de_DE = AWE.I18n.de_DE || function(module) {
         },
         
         select: {
-          heading: 'Gebäude auswählen'
+          heading: 'Gebäude auswählen',
+          missingRequirements: 'Kann wegen folgender <span class="red-color">fehlender Voraussetzungen</span> derzeit nicht gebaut werden',
         },
         
         tooltip: {

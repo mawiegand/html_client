@@ -62,17 +62,21 @@ AWE.GS = (function(module) {
     hashableQueues: null,
     hashableTrainingQueues: null,
     hashableResearchQueues: null,
+    
+    hashableSlots: null,
         
     init: function(spec) {
       log('INIT settlement');
       this._super(spec);
       
       if (this.get('id')) {
-        var hashableQueues = AWE.GS.ConstructionQueueAccess.getHashableCollectionForSettlement_id(this.get('id'));
-        this.set('hashableQueues', hashableQueues);
         var hashableTrainingQueues = AWE.GS.TrainingQueueAccess.getHashableCollectionForSettlement_id(this.get('id'));
-        console.log('IN INIT', hashableTrainingQueues);
+        var hashableQueues         = AWE.GS.ConstructionQueueAccess.getHashableCollectionForSettlement_id(this.get('id'));
+        var hashableSlots          = AWE.GS.SlotAccess.getHashableCollectionForSettlement_id(this.get('id'));
+
         this.set('hashableTrainingQueues', hashableTrainingQueues);
+        this.set('hashableQueues',         hashableQueues);
+        this.set('hashableSlots',          hashableSlots);
       }
     },
     
@@ -95,6 +99,11 @@ AWE.GS = (function(module) {
     slots: function() {
       return module.SlotManager.getSlotsAtSettlement(this.getId());
     },
+
+    enumerableSlots: function() {
+      return this.getPath('hashableSlots.collection');
+    }.property('id', 'hashableSlots.changed_at').cacheable(),
+
     
     settlementType: function() {
       return AWE.GS.RulesManager.getRules().getSettlementType(this.get('type_id'));

@@ -129,9 +129,79 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
   //  REQUIREMENTS
   //
   ////////////////////////////////////////////////////////////////////////////
+
+  /** checks the given array of requirements for those requirements that are
+   * not met in the given settlement and for the given character. 
+   * @returns an array of all non-met requiremnts or null, if all
+   *          checks passed positive.
+   * @function
+   * @name AWE.Util.Rules.failedRequirements */
+  module.failedRequirements = function(requirements, settlement, character, considerJobs) {
+    considerJobs = considerJobs || false;
+    settlement   = settlement || {};
+    requirements = requirements || [];
+    
+    var failedRequirements = requirements.filter(function(item) {
+      return !module.meetsRequirement(item, settlement, character, considerJobs);
+    });
+    
+    return failedRequirements.length > 0 ? failedRequirements : null;
+  }; 
+
+  /** checks one requirement for the given settlement and character. Presently,
+   * this method handles requirements regarding buildings as well as sciences.
+   *
+   * @returns true, iff the requirement is met.
+   * @function
+   * @name AWE.Util.Rules.meetsRequirement */
+  module.meetsRequirement = function(requirement, settlement, character, considerJobs) {
+    if (requirement.type === 'building') {
+      return module.meetsBuildingRequirement(requirement, settlement, considerJobs);
+    }
+    else if (requirement.type === 'science') {
+      return module.meetsScienceRequirement(requirement, character, considerJobs);
+    }
+    else {
+      console.log('ERROR: Requirement of unknown type ', requirement.type);
+    }
+    return true ;
+  };
   
   
-  
+  /** checks one requirement of the building type for the given settlement
+   * and character. A building requirement can come in two flavours:
+   * A max-level-requirement is met, when there's not a single building
+   * of the particular type in the settlement that has a larger level.
+   * A min-level-requirement is met, when there's at least one building
+   * of the particular type in the settlement that has at least the
+   * specified level.
+   *
+   * Min-level-requirements are used to specify prerequisits (e.g.
+   * first have a construction yard before building a house). Max-level-
+   * requirements are used to specify exculsions (e.g. build either 
+   * a nuclear power plant or a nature preservation area).
+   *
+   * @returns true, iff the requirement is met.
+   * @function
+   * @name AWE.Util.Rules.meetsBuildingRequirement */
+  module.meetsBuildingRequirement = function(requirement, settlement, considerJobs) {
+    if (!settlement || !requirement) {
+      return false;
+    }
+    var slots = settlement.get('enumerableSlots') || [];
+    var maxMet = true, minMet = false;
+    
+    slots.forEach(function(item) {
+      var buildingId = item.get('building_id');
+      if (buildingId && requirement.id === buildingId && requirement.max_level) {
+        maxMet = maxMet && requirement.max_level >= (considerJobs ? item.get('levelAfterJobs') : item.get('level'));    // all buildings must not be larger than the max level. may consider ongoing jobs in order to prevent queueing two mutually exclusive buildings
+      }
+      if (buildingId && requirement.id === buildingId && requirement.min_level) {
+        minMet = minMet || requirement.min_level <= item.get('level');    // one building must be larger than or equal to the min level; no not consider ongoing jobs; building must be finished to allow queueing of a dependent building
+      }
+    });
+    return maxMet && minMet;
+  };
   
   
   

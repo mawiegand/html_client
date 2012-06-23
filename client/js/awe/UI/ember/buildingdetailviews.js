@@ -35,6 +35,12 @@ AWE.UI.Ember = (function(module) {
       this.get('controller').unselectSlot();
     },         
   });  
+
+  /** @class
+   * @name AWE.UI.Ember.BuildingOptionView */
+  module.BuildingOptionView = module.HoverableView.extend( /** @lends AWE.UI.Ember.BuildingOptionView# */ {
+    classNameBindings: ['building.requirementUnmet'],
+  });
   
  
   /** @class
@@ -82,7 +88,41 @@ AWE.UI.Ember = (function(module) {
     
     
   });
+  
+  /** @class
+   * @name AWE.UI.Ember.RequirementView */  
+  module.RequirementView = Ember.View.extend( /** @lends AWE.UI.Ember.RequirementView# */ {
+    templateName: "requirement-view",
 
+    requirement: null,
+
+    building: function() {
+      return this.getPath('requirement.type') === 'building';
+    }.property('requirement.type').cacheable(),
+
+    science: function() {
+      return this.getPath('requirement.type') === 'science';
+    }.property('requirement.type').cacheable(),    
+    
+    type: function() {
+      if (this.get('building')) {
+        return AWE.GS.RulesManager.getRules().getBuildingType(this.getPath('requirement.id'));
+      }
+      else if (this.get('science')) {
+        return AWE.GS.RulesManager.getRules().getScienceType(this.getPath('requirement.id'));
+      }
+      return null;
+    }.property('requiement.type').cacheable(),
+    
+    haveMinLevel: function() {
+      return this.getPath('requirement.min_level') && this.getPath('requirement.min_level') > 0;
+    }.property('requirement.min_level').cacheable(),
+    
+    haveMaxLevel: function() {
+      return this.getPath('requirement.max_level') || this.getPath('requirement.max_level') === 0;
+    }.property('requirement.max_level').cacheable(),
+
+  });
   return module;
     
 }(AWE.UI.Ember || {}));

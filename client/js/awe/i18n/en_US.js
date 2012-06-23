@@ -78,6 +78,8 @@ AWE.I18n.en_US = AWE.I18n.en_US || function(module) {
         },
         select: {
           heading: 'Select Building',
+          missingRequirements: 'Cannot be build due to the following <span class="red-color">unmet prerequisits</span>',
+
         },
         tooltip: {
           costOfNextLevel: 'Costs of',

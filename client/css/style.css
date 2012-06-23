@@ -269,6 +269,23 @@ html, body {
 }
 
 
+.red-color {
+  color: #FDD;
+}
+
+.green-color {
+  color: #DFD;
+}
+
+.yellow-color {
+  color: #FFD;
+}
+
+.blue-color {
+  color: #DDF;
+}
+
+
 #layers {
   position: absolute;
   left: 0px;
@@ -731,7 +748,7 @@ span.bonus {
   float: left;
   width: 120px;
   height: 160px;
-  background-color: #DDF;
+  background-color: #DFD;
   -moz-border-radius: 7px;
   border-radius:      7px;
   padding: 10px;
@@ -739,6 +756,9 @@ span.bonus {
   margin-bottom: 5px;
   
   cursor: pointer; 
+}
+.building-option.requirement-unmet {
+  background-color: #FDD;
 }
 
 .settlement-dialog-building-details .building-option-image {
@@ -759,7 +779,7 @@ span.bonus {
 
 
 .building-option:hover {
-  background-color: #FDD;
+  background-color: #DDF;
   cursor: pointer;
 }
 
