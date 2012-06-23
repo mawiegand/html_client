@@ -20,30 +20,12 @@ AWE.UI.Ember = (function(module) {
    * changes there.
    *
    * @class
+   * @extends AWE.UI.Ember.SettlementView
    * @name AWE.UI.Ember.FortressView 
    */
-	module.FortressView = Ember.View.extend( /** @lends AWE.UI.FortressView# */ {
-		leftTower: null,
-		rightTower: null,
-		wall: null,
-		
-    hoveredBuildingSlotView: null,
-		
-	  /** reference to the home-base (instance of {@link AWE.GS.Settlement} to
-	   * display. May be null. */
-		fortress: null,
-		/** references the slot that is presently selected in the view. */
-		selectedSlot: null,
-    /** reference to all building-slots of the base. May be null or empty. */
-    slotsBinding: 'hashableSlots.collection',
-    /** true in case there are representations of the slots available. */
-    haveSlotsBinding: Ember.Binding.bool('slots'),
-	
-    hashableSlots: function () {
-      var settlementId = this.getPath('fortress.id');
-      return settlementId ? AWE.GS.SlotAccess.getHashableCollectionForSettlement_id(settlementId) : null;
-    }.property('fortress.id').cacheable(),
-    
+	module.FortressView = AWE.UI.Ember.SettlementView.extend( /** @lends AWE.UI.FortressView# */ {
+    templateName : "fortress-screen",
+			    
     wall: function() {
       var slots = this.get('slots');
       return slots && slots.length > 0 ? slots[0] : null;
@@ -56,28 +38,10 @@ AWE.UI.Ember = (function(module) {
 		
     rightTower: function() {
       var slots = this.get('slots');
+      console.log('RIGHT TOWER', slots)
       return slots && slots.length > 0 ? slots[2] : null;
     }.property('hashableSlots.changedAt').cacheable(),		
-		
-    largeSlots: function() {
-      var slots = this.get('slots');
-      return slots && slots.length > 0 ? slots.slice(1,5) : null; // TODO: let the controller set this from the AWE.Config settings
-    }.property('hashableSlots.changedAt').cacheable(),		
-		
-    smallSlots: function() {
-      var slots = this.get('slots');
-      return slots && slots.length > 0 ? slots.slice(5,slots.length) : null;
-    }.property('hashableSlots.changedAt').cacheable(),					
 				
-		queues: function() {
-		  return this.getPath('fortress.hashableQueues');
-		}.property('fortress', 'fortress.hashableQueues.changedAt').cacheable(),
-		
-		trainingQueues: function() {
-		  console.log('TRAINING QUEUES', this.getPath('fortress.hashableTrainingQueues'));
-		  return this.getPath('fortress.hashableTrainingQueues');
-		}.property('fortress', 'fortress.hashableTrainingQueues', 'fortress.hashableTrainingQueues.changedAt').cacheable(),
-		
 	});
 
   

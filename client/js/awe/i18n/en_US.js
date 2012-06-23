@@ -74,13 +74,14 @@ AWE.I18n.en_US = AWE.I18n.en_US || function(module) {
         details: {
           enables: 'Enables',
           speedup: 'Speed bonus to',
+          noUpgrade: 'Cannot be upgraded further.',
         },
         select: {
           heading: 'Select Building',
         },
         tooltip: {
           costOfNextLevel: 'Costs of',
-          noUpgrade: 'No furter upgrade possible.',
+          noUpgrade: 'Cannot be upgraded further.',
           empty: {
             heading: 'Empty Construction Site',
             advise:  'Click to construct a new building.'

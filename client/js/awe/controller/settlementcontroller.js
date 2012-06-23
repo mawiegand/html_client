@@ -140,20 +140,20 @@ AWE.Controller = (function(module) {
       }
       
       var type = settlement.get('type_id');
+      var viewClasses = {
+        base:     AWE.UI.Ember.BaseView,
+        fortress: AWE.UI.Ember.FortressView,
+      };
+      var viewClass = viewClasses[AWE.Config.MAP_LOCATION_TYPE_CODES[type]];
       
-      if (AWE.Config.MAP_LOCATION_TYPE_CODES[type]      === "base") {
-        settlementScreen = AWE.UI.Ember.BaseView.create({
-          templateName : "base-screen",
+      if (viewClass) {
+        settlementScreen = viewClass.create({
           controller :   this,
-          base:          settlement,
+          settlement:    settlement,
         });
       }
-      else if (AWE.Config.MAP_LOCATION_TYPE_CODES[type] === "fortress") {
-        settlementScreen = AWE.UI.Ember.FortressView.create({
-          templateName : "fortress-screen",
-          controller :   this,
-          fortress:      settlement,
-        });        
+      else {
+        console.log('ERROR: screen for settlement of type ' + type + ' not yet implemented.');
       }    
       return settlementScreen;
     }

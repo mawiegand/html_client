@@ -16,6 +16,44 @@ AWE.UI.Ember = (function(module) {
 
   module.templates = module.templates || [];
   module.templates.push('js/awe/UI/ember/templates/settlementviews.html');
+  
+  /**
+   * Abstract view  class for displaying a Settlement of any type. Provides
+   * the infrastructure that is in common among all settlement types. Specific
+   * settlement tpyes (e.g. fortress, base, outpost) then need to derive
+   * their own view class from this abstract class by augmenting it with a
+   * type-specific slot-assignment and other methods.
+   *
+   * @class
+   * @name AWE.UI.Ember.SettlementView 
+   */
+	module.SettlementView = Ember.View.extend( /** @lends AWE.UI.Ember.SettlementView# */ {
+	  /** reference to the home-base (instance of {@link AWE.GS.Settlement} to
+	   * display. May be null. */
+		settlement: null,
+		/** references the slot that is presently selected in the view. */
+		selectedSlot: null,
+    /** reference to all building-slots of the base. May be null or empty. */
+    slotsBinding:     'hashableSlots.collection',
+    /** true in case there are representations of the slots available. */
+    haveSlotsBinding: Ember.Binding.bool('slots'),
+    
+    hoveredBuildingSlotView: null,
+
+    hashableSlots: function () {
+      var settlementId = this.getPath('settlement.id');
+      return settlementId ? AWE.GS.SlotAccess.getHashableCollectionForSettlement_id(settlementId) : null;
+    }.property('settlement.id').cacheable(),
+    				
+		queues: function() {
+		  return this.getPath('settlement.hashableQueues');
+		}.property('settlement', 'settlement.hashableQueues.changedAt').cacheable(),
+		
+		trainingQueues: function() {
+		  return this.getPath('settlement.hashableTrainingQueues');
+		}.property('settlement', 'settlement.hashableTrainingQueues.changedAt').cacheable(),
+		
+	});
 
   /** 
    * View that displays some general information about the settlement. 

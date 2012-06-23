@@ -86,6 +86,7 @@ AWE.I18n.de_DE = AWE.I18n.de_DE || function(module) {
         details: {
           enables: 'Ermöglicht',
           speedup: 'Beschleunigt',
+          noUpgrade: 'Kein weiterer Ausbau möglich.',
         },
         
         select: {
