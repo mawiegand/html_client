@@ -22,10 +22,12 @@ AWE.UI.Ember = (function(module) {
    * @class
    * @name AWE.UI.Ember.FortressView 
    */
-	module.FortressView = Ember.View.extend( /** @lend AWE.UI.FortressView */ {
+	module.FortressView = Ember.View.extend( /** @lends AWE.UI.FortressView# */ {
 		leftTower: null,
 		rightTower: null,
 		wall: null,
+		
+    hoveredBuildingSlotView: null,
 		
 	  /** reference to the home-base (instance of {@link AWE.GS.Settlement} to
 	   * display. May be null. */
@@ -78,37 +80,6 @@ AWE.UI.Ember = (function(module) {
 		
 	});
 
-  module.ToolTipView = Ember.View.extend({
-  
-    mouseX: 0,
-    mouseY: 0,
-  
-    updatePosition: function() {
-      var parent = this.get('parentView');
-      var posX = this.get('mouseX') + 10; // - parent.$().offset().left + 10;
-      var posY = this.get('mouseY') + 18; // - parent.$().offset().top + 18;
-    
-      if (posY > 460) {
-        posY = this.get('mouseY')- 200;
-        posX += 48;
-      }
-        
-      this.$().css({'left': posX, 'top': posY});    
-    }.observes('mouseX', 'mouseY'),
-  
-    didInsertElement: function() {
-      console.log('did insert tooltip', this);
-      this.$().remove();
-      this.$().appendTo('.fortress-picture');
-      this.updatePosition();
-    },
-    
-    willDestroyElement: function() {
-      console.log('destroy tooltip', this);
-      this.$().remove();
-    }
-  
-  });
   
   return module;
     

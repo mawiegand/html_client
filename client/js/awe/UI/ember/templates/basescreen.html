@@ -31,6 +31,10 @@
         {{view AWE.UI.Ember.SelectBuildingDialog controllerBinding="controller" slotBinding="selectedSlot" constructionOptionsBinding="selectedSlot.constructionOptions"}}
       {{/if}}
     {{/if}}
+    
+    {{#if "hoveredBuildingSlotView" }}
+      {{view AWE.UI.Ember.ToolTipView templateName="building-slot-tooltip" classNames="mouse-over" mouseXBinding="hoveredBuildingSlotView.mouseX" mouseYBinding="hoveredBuildingSlotView.mouseY" buildingBinding="hoveredBuildingSlotView.slot.building"}}
+    {{/if}}      
   </div>
   
   {{#if base}}

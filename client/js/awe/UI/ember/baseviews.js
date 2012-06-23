@@ -38,6 +38,8 @@ AWE.UI.Ember = (function(module) /** @lend AWE.UI.Ember */ {
     slotsBinding:     'hashableSlots.collection',
     /** true in case there are representations of the slots available. */
     haveSlotsBinding: Ember.Binding.bool('slots'),
+    
+    hoveredBuildingSlotView: null,
 
     hashableSlots: function () {
       var settlementId = this.getPath('base.id');

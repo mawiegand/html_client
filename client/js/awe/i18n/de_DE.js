@@ -91,6 +91,15 @@ AWE.I18n.de_DE = AWE.I18n.de_DE || function(module) {
         select: {
           heading: 'Gebäude auswählen'
         },
+        
+        tooltip: {
+          costOfNextLevel: 'Kosten für',
+          noUpgrade: 'Kein weiterer Ausbau möglich.',
+          empty: {
+            heading: 'Freier Bauplatz',
+            advise:  'Klicken, um ein neues Gebäude zu bauen.'
+          }
+        },
       },
     },
     

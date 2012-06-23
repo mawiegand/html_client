@@ -69,10 +69,9 @@ AWE.UI.Ember = (function(module) {
    * @name AWE.UI.Ember.BuildingSlotView */  
   module.BuildingSlotView = module.BuildingView.extend( /** @lends AWE.UI.Ember.BuildingSlotView# */ {
     templateName: 'interactive-building-slot',
-    tooltip: false,
     mouseX: 0,
     mouseY: 0,
-    timeout: 0,    // tooltip timeout in ms
+    timeout: 100,    // tooltip timeout in ms
 		settlement: null,
 		slot:       null,
 		
@@ -82,7 +81,7 @@ AWE.UI.Ember = (function(module) {
   
     showTooltip: function() {
       if (this.get('mouseInView') === true) {  // only show tooltip, if the mouse is still in view
-        this.set('tooltip', true);
+        this.setPath('parentView.hoveredBuildingSlotView', this);
       }
     },
   
@@ -99,7 +98,7 @@ AWE.UI.Ember = (function(module) {
     },
     mouseLeave: function(event) {
       this.set('mouseInView', false);
-      this.set('tooltip', false);
+      this.setPath('parentView.hoveredBuildingSlotView', null);
     },
     
   

@@ -1066,7 +1066,7 @@ span.bonus {
   padding: 6px 10px 6px 10px;
   position: absolute;
   left: 220px;
-  top: 80px;  
+  top: 70px;  
   background-color: rgba(255,255,255,0.4);
 }
 
@@ -1103,23 +1103,37 @@ span.bonus {
   background: url('../images/settlements/base/base_background.png');
 } 
 
-.fortress-picture .mouse-over {
+.fortress-picture .mouse-over, .base-picture .mouse-over {
   position: absolute;
   width: 390px;
   height: 140px;
   z-index:10;
   padding: 16px;
-  background-color: rgba(50,50,50,0.9);
   border-radius: 11px;
   padding-left: 46px;
-  color: #FFF;
 }
 
-.fortress-picture .mouse-over p {
-  padding-left: 30px;
+.fortress-picture .mouse-over {
+  background-color: rgba(255,255,255,0.4);
+} 
+
+.base-picture .mouse-over {
+  background-color: rgba(0,0,0,0.4);
+  color: white;
+  text-shadow: none;
 }
 
-.fortress-picture .mouse-over img.advisor{
+
+.fortress-picture .mouse-over p, .base-picture .mouse-over h1 {
+  margin-top: 0px;
+}
+
+
+.fortress-picture .mouse-over p, .base-picture .mouse-over p {
+  padding-left: 36px;
+}
+
+.fortress-picture .mouse-over img.advisor, .base-picture .mouse-over img.advisor {
   position: absolute;
   left: -44px;
   width: 160px;

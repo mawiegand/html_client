@@ -189,7 +189,7 @@ AWE.GS = (function(module) {
 		  return queues.map(function(item) {
         return AWE.GS.TrainingQueueManager.getQueueOfSettlementWithType(settlementId, item.id);
 		  }); ///< returns the "living" queues that have been unlocked by this building(type)
-		}.property('unlockedQueues', 'slot.settlement', 'slot.settlement.hashableTrainingQueues.changedAt').cacheable(),
+		}.property('unlockedQueues', 'slot.settlement.hashableTrainingQueues.changedAt').cacheable(),
 		
 		
 		unlockedQueues: function() {
