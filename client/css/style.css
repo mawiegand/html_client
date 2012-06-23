@@ -769,6 +769,13 @@ span.bonus {
   margin-left: 23px;
 }
 
+.fortress-screen .building-option-image.building_fortress_fortification {
+  width: 120px;
+  height: 90px;
+  margin-left: 0px;
+  margin-top: 30px;
+} 
+
 .base-screen .building-option-image {
   width: 120px;
   height:150px;
@@ -802,7 +809,7 @@ span.bonus {
 }
 /** image for building_fortress_fortification*/
 .building-option-image.building_fortress_fortification {
-  background: url('../images/settlements/fortress/building_cavalry_tower_small.png');
+  background: url('../images/settlements/fortress/fortress_main_building_small.png');
 }
 
 .building-option-image .level {
@@ -845,6 +852,16 @@ span.bonus {
 }
 .fortress-screen .building-option-image.size3 {
   background-position: -159px 0px;
+}
+
+.fortress-screen .building-option-image.building_fortress_fortification.size1 {
+  background-position: -0px 0px;
+}
+.fortress-screen .building-option-image.building_fortress_fortification.size2 {
+  background-position: -120px 0px;
+}
+.fortress-screen .building-option-image.building_fortress_fortification.size3 {
+  background-position: -240 0px;
 }
 
 
