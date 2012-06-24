@@ -1,0 +1,149 @@
+<script type="text/x-handlebars" data-template-name="requirement-view">
+  {{#if haveMinLevel }}{{requirement.min_level}} <={{/if}}
+  {{local type.name}}
+  {{#if haveMaxLevel }} <= {{requirement.max_level}}{{/if}}
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="settlement-dialog-select-building">
+  <div class="settlement-dialog-background"></div>
+  <div class="settlement-dialog-pane settlement-dialog-select-building">
+    <a href="#" {{action "cancelPressed"}} class="close"></a>
+    <h1>{{t settlement.buildings.select.heading }}</h1>    
+    {{#if constructionOptions }}
+      <div class="clearfix">
+        {{#each constructionOptions}}
+          {{#view AWE.UI.Ember.BuildingOptionView buildingBinding="this" classNames="building-option" }}
+            <div {{action "optionClicked" target="parentView"}}>
+              {{view AWE.UI.Ember.BuildingView buildingBinding="building" classNames="building-option-image"}}
+              {{local building.name}}
+            </div>
+          {{/view}}
+        {{/each}}
+      </div>
+      {{#with hoveredView.building}}
+        <h1>{{local name}} {{t building.level }} {{level}}</h1>
+        {{local description}}
+        {{#if costsOfNextLevel}}
+          {{t building.cost }}:
+          {{#each costsOfNextLevel}}
+            {{amount}} {{local resourceType.name}} &nbsp;  
+          {{/each}}<br/>
+        {{/if}}
+        {{t building.duration}}: {{formatDuration productionTimeOfNextLevel}}<br />     
+        {{#unless requirementsMet}}
+          <p>
+            {{{t settlement.buildings.select.missingRequirements}}}:<br/>
+            {{#each unmetRequirements}}
+              {{view AWE.UI.Ember.RequirementView requirementBinding="this"}}<br />
+            {{/each}}
+          </p>
+        {{/unless}} 
+      {{/with}}
+    {{/if}}
+  </div>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="settlement-dialog-building-details">
+  <div class="settlement-dialog-background"></div>
+  <div class="settlement-dialog-pane settlement-dialog-building-details">
+    <a href="#" {{action "cancelPressed" }} class="close" title="click to close"></a>
+    {{view AWE.UI.Ember.BuildingView classNames="building-option-image" buildingBinding="building"}}
+    <div class="building-description-box">
+      {{#if building.level }}
+        <h1>{{local building.name }} <span title="present level of building">Level {{ building.level }}</span>
+            {{#if building.underConstruction }}(<span class="constructing" title="level after finishing all upgrades already in the queue">{{building.levelAfterJobs}}</span>){{/if}}
+            {{#if building.underDestruction }}(<span class="destructing" title="level after finishing all downgrades already in the queue">{{building.levelAfterJobs}}</span>){{/if}}</h1>   
+      {{else}}
+        <h1>Under Construction: {{local building.name }}</h1>        
+      {{/if}}
+      {{#if building.productions}}
+        <b>{{t building.produces}}:</b><br/>
+        {{#each building.productions}}
+          {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{local resourceType.name}} {{t general.perHour}} <br/>  
+        {{/each}}
+      {{/if}}
+    </div>
+
+    {{#if building.unlockedQueues}}
+        <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.unlockedQueues}}{{local name}},    {{/each}}</p>
+    {{/if}}
+    
+    {{#if building.speedupQueues}}
+      {{#each building.speedupQueues}}
+        <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
+      {{/each}}
+    {{/if}}
+    
+    &nbsp;
+    <hr>
+    
+    {{#if building.upgradable}}
+      <a href="#" {{action "upgradeClicked"}} class="upgrade" title="click to upgrade"><img src="images/icons/cross_green.png"></img> Upgrade</a>
+      <h2>Next Upgrade: Level {{ building.nextLevel }}</h2>
+    
+     {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building" levelBinding="building.nextLevel"}}
+
+      {{#if building.costsOfNextLevel}}
+        <b>{{t building.cost}}:</b>
+        {{#each building.costsOfNextLevel}}
+          {{amount}} {{local resourceType.name}} &nbsp;  
+        {{/each}}
+        <br/>
+      {{/if}}
+      <b>{{t building.duration}}:</b> {{formatDuration building.productionTimeOfNextLevel}}<br />
+      <br/>
+      
+      {{#if building.productionsNextLevel}}
+        <b>{{t building.produces}}:</b><br/>
+        {{#each building.productionsNextLevel}}
+          {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{local resourceType.name}} {{t general.perHour}} <br/>  
+        {{/each}}
+      {{/if}}
+    
+      {{#if building.unlockedQueuesNextLevel}}
+        <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.unlockedQueuesNextLevel}}{{local name}}, {{/each}}</p>
+      {{/if}}
+    
+      {{#if building.speedupQueuesNextLevel}}
+        {{#each building.speedupQueuesNextLevel}}
+          <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
+        {{/each}}
+      {{/if}}
+          
+    {{else}}
+      <p><b>Cannot be upgraded further.</b></p>
+    {{/if}}
+    
+    
+    {{#if building.trainingQueues}}
+    <hr>
+      {{#each building.trainingQueues }}
+        {{view AWE.UI.Ember.TrainingQueueView controllerBinding="controller" classNames="training-queue-list" queueBinding="this"}}
+      {{/each}}
+    {{/if}}
+
+    {{#if building.garrisonArmy }}
+    <hr>
+      {{view AWE.UI.Ember.ArmyInfoView armyBinding="building.garrisonArmy"}}
+    {{/if}}
+
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="requirements-missing-info">
+{{#with arguments}}
+  <div class="advisor girl"></div>
+  <p>{{t settlement.buildings.missingReqWarning.start}} {{local name}} {{t settlement.buildings.missingReqWarning.end}}:<p/>
+  <p>
+    {{#each unmetRequirements}}
+      {{view AWE.UI.Ember.RequirementView requirementBinding="this"}}<br />
+    {{/each}}
+  </p>
+{{/with}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="trainable-unit-button">
+  {{local unitType.name}}
+</script>

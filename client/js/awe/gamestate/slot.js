@@ -32,8 +32,10 @@ AWE.GS = (function(module) {
 		slot: null,         ///< points to the slot this building is situated at. Needs to be set during creation.
 		hashableJobsBinding: "slot.hashableJobs",
 
-	//	buildingIdBinding: 'slot.building_id',  ///< bind the slot's building id to the corresponding property of the building
-	//	levelBinding: 'slot.level',     ///< property holding the present level of building 
+		/** the name of the building from the game rules. */
+		nameBinding: 'buildingType.name',
+		/** the description of the building from the game rules. */
+		descriptionBinding: 'buildingType.description',
 
     /** return the building type from the rules, that describes this
      * building. */
@@ -57,19 +59,7 @@ AWE.GS = (function(module) {
 		type: function() {
 		  var rule = this.get('buildingType');
 			return rule ? rule['symbolic_id'] : null;
-		}.property('buildingId').cacheable(),
-		
-		/** returns the localized name of the building. */
-		name: function() {
-			var rule = this.get('buildingType');
-			return rule ? rule['name']['en_US'] : null;  // TODO: correct localization			
-		}.property('buildingId').cacheable(),
-	
-		/** returns the localized description of the building. */
-		description: function() {
-			var rule = this.get('buildingType');
-			return rule ? rule['description']['en_US'] : null;  // TODO: correct localization			
-		}.property('buildingId').cacheable(),
+		}.property('buildingType').cacheable(),
 		
 		levelAfterJobs: function() {
 		  var level = this.get('level');
@@ -96,15 +86,17 @@ AWE.GS = (function(module) {
 		}.property('levelAfterJobs').cacheable(),
 
 		productions: function() {
-		  var production = this.getPath('buildingType.production');
-		  var level  = this.get('level');
-		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, level) : null;
+		  var production            = this.getPath('buildingType.production');
+		  var settlementProductions = this.getPath('slot.settlement.resourceProductions');
+		  var level                 = this.get('level');
+		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, level, settlementProductions) : null;
 		}.property('level', 'buildingId').cacheable(),
 
 		productionsNextLevel: function() {
-		  var production = this.getPath('buildingType.production');
-		  var nextLevel  = this.get('nextLevel');
-		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, nextLevel) : null;
+		  var production            = this.getPath('buildingType.production');
+		  var settlementProductions = this.getPath('slot.settlement.resourceProductions')
+		  var nextLevel             = this.get('nextLevel');
+		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, nextLevel, settlementProductions) : null;
 		}.property('nextLevel', 'buildingId').cacheable(),
 		
 		costsOfNextLevel: function() {
@@ -144,20 +136,32 @@ AWE.GS = (function(module) {
       return false ; // not enough information available
 		}.property('nextLevel').cacheable(),
 
-		logJobsChange: function() {
-		  console.log('CHANGE JOBS', this.get('hashableJobs') ? this.get('hashableJobs').get('changedAt') : 'NO HASHABLE JOBS', this);
-		}.observes('hashableJobs.changedAt'),		
-		
-		logNextLevelChange: function() {
-		  console.log('CHANGE NEXT LEVEL', this.get('nextLevel'), this.get('level'));
-		}.observes('nextLevel'),			
+
+    unmetRequirements: function() {
+      var settlement = this.getPath('slot.settlement');
+      var character = settlement ? settlement.owner() : null;
+      var slot = this.get('slot');
+      return AWE.Util.Rules.failedRequirements(this.getPath('buildingType.requirements'), settlement, slot, character, true);
+    }.property('buildingType', 'slot.settlement.hashableSlots.changedAt'),
+
+		/** bool for indicating whether or not all requirements for constructin
+		 * this building are met. */
+    requirementsMet: function() {
+      var unmetRequirements = this.get('unmetRequirements');
+      return !unmetRequirements || unmetRequirements.length === 0;
+    }.property('unmetRequirements.length').cacheable(),
+    
+    requirementUnmet: function() {
+      return !this.get('requirementsMet');
+    }.property('requirementsMet').cacheable(),
+
 		
 		// // Abilities //////////////////////////////////////////////////////////		
 		
 		/** calculate the queues that are unlocked by this particular building.
 		 * Includes all types of queues; construction, training as well as
 		 * (later on) research queues. */
-		calculateUnlockedQueues: function(level) {
+		calculateUnlockedQueues: function(level) {  
 		  level = level || this.get('level');
 		  var rule = this.get('buildingType');
 		  if (!rule || !rule.abilities || ! rule.abilities.unlock_queue) {
@@ -194,7 +198,7 @@ AWE.GS = (function(module) {
 		  return queues.map(function(item) {
         return AWE.GS.TrainingQueueManager.getQueueOfSettlementWithType(settlementId, item.id);
 		  }); ///< returns the "living" queues that have been unlocked by this building(type)
-		}.property('unlockedQueues', 'slot.settlement', 'slot.settlement.hashableTrainingQueues.changedAt').cacheable(),
+		}.property('unlockedQueues', 'slot.settlement.hashableTrainingQueues.changedAt').cacheable(),
 		
 		
 		unlockedQueues: function() {
@@ -323,8 +327,9 @@ AWE.GS = (function(module) {
 		
 		/** determine the building types that can be constructed in this 
 		 * particular slot. */
-    updateConstructionOptions: function() {
+    updateConstructionOptions: function() {   // this is implemented as observer to work-around a bug in ember <0.9.5 (failing identity test). should become a property
       var options = [];
+      var self = this;
       
       if (this.get('building_id') === null || this.get('building_id') === undefined) {
         if (! this.get('settlement')) {
@@ -335,7 +340,7 @@ AWE.GS = (function(module) {
         var buildingTypes = AWE.GS.RulesManager.getRules().getBuildingTypeIdsWithCategories(buildingOptions)
         
         AWE.Ext.applyFunctionToHash(buildingTypes, function(key, buildingId) {
-          options.push(AWE.GS.Building.create({ buildingId: buildingId, level: 1 }));
+          options.push(AWE.GS.Building.create({ buildingId: buildingId, level: 1, slot: self }));
         });        
       }
       else {
@@ -419,6 +424,10 @@ AWE.GS = (function(module) {
     that.getSlotsAtSettlement = function(id) { 
       return AWE.GS.SlotAccess.getAllForSettlement_id(id);
     }
+     
+    that.getEnumerableSlotsAtSettlement = function(id) { 
+      return AWE.GS.SlotAccess.getEnumerableForSettlement_id(id);
+    }     
         
     /** returns true, if update is executed, returns false, if request did 
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).

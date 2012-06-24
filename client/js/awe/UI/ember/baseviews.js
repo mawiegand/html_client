@@ -9,13 +9,14 @@
  * @author <a href="mailto:patrick@5dlab.com">Patrick Fox</a>
  */ 
 
-var AWE = AWE || {};
+var AWE = window.AWE || {};
 AWE.UI = AWE.UI || {}; 
 
 /** @namespace */
 AWE.UI.Ember = (function(module) /** @lend AWE.UI.Ember */ {
   
   module.templates = module.templates || [];
+  module.templates.push('js/awe/UI/ember/templates/settlementviews.html');
   module.templates.push('js/awe/UI/ember/templates/basescreen.html');
   
   /**
@@ -25,23 +26,11 @@ AWE.UI.Ember = (function(module) /** @lend AWE.UI.Ember */ {
    * changes there.
    *
    * @class
+   * @extends AWE.UI.Ember.SettlementView
    * @name AWE.UI.Ember.BaseView 
    */
-	module.BaseView = Ember.View.extend( /** @lends AWE.UI.Ember.BaseView# */ {
-	  /** reference to the home-base (instance of {@link AWE.GS.Settlement} to
-	   * display. May be null. */
-		base:         null,
-		/** references the slot that is presently selected in the view. */
-		selectedSlot: null,
-    /** reference to all building-slots of the base. May be null or empty. */
-    slotsBinding:     'hashableSlots.collection',
-    /** true in case there are representations of the slots available. */
-    haveSlotsBinding: Ember.Binding.bool('slots'),
-
-    hashableSlots: function () {
-      var settlementId = this.getPath('base.id');
-      return settlementId ? AWE.GS.SlotAccess.getHashableCollectionForSettlement_id(settlementId) : null;
-    }.property('base.id').cacheable(),
+	module.BaseView = AWE.UI.Ember.SettlementView.extend( /** @lends AWE.UI.Ember.BaseView# */ {
+    templateName : "base-screen",
     
     wallSlot: function() {
       var slots = this.get('slots');
@@ -57,18 +46,10 @@ AWE.UI.Ember = (function(module) /** @lend AWE.UI.Ember */ {
       var slots = this.get('slots');
       return slots && slots.length > 0 ? slots.slice(5,slots.length) : null;
     }.property('hashableSlots.changedAt').cacheable(),		
-				
-		queues: function() {
-		  return this.getPath('base.hashableQueues');
-		}.property('base', 'base.hashableQueues.changedAt').cacheable(),
-		
-		trainingQueues: function() {
-		  return this.getPath('base.hashableTrainingQueues');
-		}.property('base', 'base.hashableTrainingQueues.changedAt').cacheable(),
-		
+						
 	});
-  
-  
+    
   return module;
     
 }(AWE.UI.Ember || {}));
+

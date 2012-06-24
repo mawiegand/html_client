@@ -1,0 +1,37 @@
+<script type="text/x-handlebars" data-template-name="interactive-building-slot">
+{{#if "slot.building"}}
+  {{#if slot.building.underConstruction}}
+    <div class="level constructing">{{slot.building.level}}</div>
+  {{else}}
+    {{#if slot.building.underDestruction}}
+      <div class="level destructing">{{slot.building.level}}</div>
+    {{else}}
+      <div class="level">{{slot.building.level}}</div>
+    {{/if}}
+  {{/if}}
+{{/if}}
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="building-slot-tooltip">
+  <div class="advisor girl"></div>
+  {{#if building}}
+    <h1>{{local building.name}} L{{building.level}}</h1>
+    <p>
+      {{#if building.upgradable}}
+        {{#if building.costsOfNextLevel}}
+          <b>{{t settlement.buildings.tooltip.costOfNextLevel}} L{{building.nextLevel}}:</b>
+          {{#each building.costsOfNextLevel}}
+            {{amount}} {{local resourceType.name}} &nbsp;  
+          {{/each}}<br/>
+        {{/if}}
+        <b>{{t building.duration}}:</b> {{formatDuration building.productionTimeOfNextLevel}}    
+      {{else}}
+        {{t settlement.buildings.tooltip.noUpgrade}}
+      {{/if}}
+    </p>
+  {{else}}
+    <h1>{{t settlement.buildings.tooltip.empty.heading}}</h1>
+    <p>{{t settlement.buildings.tooltip.empty.advise}}</p>
+  {{/if}}
+</script>

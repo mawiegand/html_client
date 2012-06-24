@@ -45,8 +45,8 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
    *
    * @function
    * @name AWE.Util.Rules._evaluateResourceProduction */ 
-  module.evaluateResourceProduction = function(definitions, level, evaluate) {
-    return _evaluateResourceProduction(definitions, level);
+  module.evaluateResourceProduction = function(definitions, level, boni, evaluate) {
+    return _evaluateResourceProduction(definitions, level, boni);
   };    
   
   /** 
@@ -67,7 +67,7 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
    *
    * @function
    * @name AWE.Util.Rules.evaluateResourceCosts */ 
-  module.evaluateResourceCosts = function(costHash, level, all) {
+  module.evaluateResourceCosts = function(costHash, level, boni, all) {
     return _evaluateResourceCosts(costHash, level, all, true);    
   };
   
@@ -129,9 +129,83 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
   //  REQUIREMENTS
   //
   ////////////////////////////////////////////////////////////////////////////
+
+  /** checks the given array of requirements for those requirements that are
+   * not met in the given settlement and for the given character. 
+   * @returns an array of all non-met requiremnts or null, if all
+   *          checks passed positive.
+   * @function
+   * @name AWE.Util.Rules.failedRequirements */
+  module.failedRequirements = function(requirements, settlement, character, slotToExclude, considerJobs) {
+    considerJobs = considerJobs || false;
+    settlement   = settlement || {};
+    requirements = requirements || [];
+    slotToExclude= slotToExclude || null;
+    
+    var failedRequirements = requirements.filter(function(item) {
+      return !module.meetsRequirement(item, settlement, character, slotToExclude, considerJobs);
+    });
+    
+    return failedRequirements.length > 0 ? failedRequirements : null;
+  }; 
+
+  /** checks one requirement for the given settlement and character. Presently,
+   * this method handles requirements regarding buildings as well as sciences.
+   *
+   * @returns true, iff the requirement is met.
+   * @function
+   * @name AWE.Util.Rules.meetsRequirement */
+  module.meetsRequirement = function(requirement, settlement, character, slotToExclude, considerJobs) {
+    if (requirement.type === 'building') {
+      return module.meetsBuildingRequirement(requirement, settlement, slotToExclude, considerJobs);
+    }
+    else if (requirement.type === 'science') {
+      return module.meetsScienceRequirement(requirement, character, considerJobs);
+    }
+    else {
+      console.log('ERROR: Requirement of unknown type ', requirement.type);
+    }
+    return true ;
+  };
   
   
-  
+  /** checks one requirement of the building type for the given settlement
+   * and character. A building requirement can come in two flavours:
+   * A max-level-requirement is met, when there's not a single building
+   * of the particular type in the settlement that has a larger level.
+   * A min-level-requirement is met, when there's at least one building
+   * of the particular type in the settlement that has at least the
+   * specified level.
+   *
+   * Min-level-requirements are used to specify prerequisits (e.g.
+   * first have a construction yard before building a house). Max-level-
+   * requirements are used to specify exculsions (e.g. build either 
+   * a nuclear power plant or a nature preservation area).
+   *
+   * @returns true, iff the requirement is met.
+   * @function
+   * @name AWE.Util.Rules.meetsBuildingRequirement */
+  module.meetsBuildingRequirement = function(requirement, settlement, slotToExclude, considerJobs) {
+    if (!settlement || !requirement) {
+      return false;
+    }
+    var slots = settlement.get('enumerableSlots') || [];
+    var maxMet = !(requirement.max_level !== undefined && requirement.max_level !== null && requirement.max_level < 0) ; // cannot bet true, when smaller than zero.
+    var minMet = requirement.min_level === undefined || requirement.min_level === null || requirement.min_level <= 0; // it's always true, if it's not specified or less equal 0
+    
+    slots.forEach(function(item) {
+      if (! slotToExclude || slotToExclude.get('slot_num') !== item.get('slot_num')) {
+        var buildingId = item.get('building_id');
+        if (buildingId && requirement.id === buildingId && requirement.max_level !== undefined && requirement.max_level !== null) {
+          maxMet = maxMet && requirement.max_level >= (considerJobs ? item.get('levelAfterJobs') : item.get('level'));    // all buildings must not be larger than the max level. may consider ongoing jobs in order to prevent queueing two mutually exclusive buildings
+        }
+        if (buildingId && requirement.id === buildingId && requirement.min_level) {
+          minMet = minMet || requirement.min_level <= item.get('level');    // one building must be larger than or equal to the min level; no not consider ongoing jobs; building must be finished to allow queueing of a dependent building
+        }
+      }
+    });
+    return maxMet && minMet;
+  };
   
   
   
@@ -141,18 +215,26 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
   //
   ////////////////////////////////////////////////////////////////////////////
 
-  var _evaluateResourceProduction = function(definitions, level) {
+  var _evaluateResourceProduction = function(definitions, level, boni) {
     definitions     = definitions || {}
     level           = level || 0;
+    boni            = boni || {};
 		var productions = [];
 
 	  definitions.forEach(function(item) {
 	    var resourceType = AWE.GS.RulesManager.getRules().resource_types[item.id]
-      var amount = Math.floor(AWE.GS.Util.parseAndEval(item.formula, level));
-      if (amount > 0) {
+      var base  = AWE.GS.Util.parseAndEval(item.formula, level);
+      var bonus = boni[resourceType.id] ? boni[resourceType.id].bonus : 0.0;
+      if (base > 0) {
         productions.push(Ember.Object.create({  // need to return an ember project so bindings on resourceType.name do work inside local helper
-          amount:       amount,
-          resourceType: resourceType,
+          baseProduction: Math.floor(base),
+          bonusRelative:  Math.floor(bonus*1000)/10.0,
+          bonusAbsolute:  Math.floor(bonus*base),
+          rate:           Math.floor(base*(1.0+bonus)),
+          resourceType:   resourceType,
+          localizedDesc:  function() {
+            return "bonus: +" + this.get('bonusRelative') + "%";
+          }.property('bonusRelative'),
         }));
       }
 	  });

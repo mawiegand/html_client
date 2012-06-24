@@ -58,15 +58,7 @@ Ember.registerBoundHelper("local", function(hash) {
  * @name Handlebars.Helper.t
  */
 Handlebars.registerHelper("t", function(path) {
-  if (path === undefined || path === null) return "" ;
-  var locale = AWE.Settings.locale || AWE.Config.DEFAULT_LOCALE
-  if (!AWE.I18n[locale]) return "(NO TRANSLATION FOR "+locale+" LOADED.)";
-  path = "localizedStrings." + path;   
-  var string = Ember.getPath(AWE.I18n[locale], path);
-  string     = string ? string : Ember.getPath(AWE.I18n[AWE.Config.DEFAULT_LOCALE], path);
-  string     = string ? string : Ember.getPath(AWE.I18n[locale], 'localizedStrings.error.stringMissing');
-  string     = string ? string :"FATAL ERROR IN I18N FOR LOCALE " + locale;
-  return string ;
+  return AWE.I18n.lookupTranslation(path);
 });
 
 //////////////////////////////////////////////////////////////////////////////
@@ -87,6 +79,13 @@ Ember.registerBoundHelper("formatNumber", function(number, options) {
   return Math.floor(number * fac + 0.5) / fac; // TODO: use locale!
   // TODO add option to append '0's to fill maxPlaces
 });
+
+
+//////////////////////////////////////////////////////////////////////////////
+// 
+//  ENUMERABLE HELPERS
+//
+//////////////////////////////////////////////////////////////////////////////
 
 
 //////////////////////////////////////////////////////////////////////////////

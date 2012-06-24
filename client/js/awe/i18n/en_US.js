@@ -7,11 +7,19 @@
 var AWE = window.AWE || {};
 AWE.I18n = AWE.I18n || {};
 
-AWE.I18n.en_US = AWE.I18n.en_US || function(module) {
+AWE.I18n.en_US =  function(module) {
     
   module.localizedStrings = {
  
     general: {
+      open:     'open',
+      close:    'close',
+      cancel:   'cancel',
+      ok:       'ok',
+      finished: 'finished',
+      info:     'information',
+      error:    'error',
+      warning:  'warning',
       
       startup: {
         loading: 'Loading....'
@@ -27,7 +35,28 @@ AWE.I18n.en_US = AWE.I18n.en_US || function(module) {
     army: {
       details: {
         heading: 'Army',
-      }
+      },
+      messages: {
+        own: [
+          "I hear you.",
+          "Sir, yes, Sir!",
+          "Please, don't hurt me!",
+          "Sorry, no service today.",
+          "Can't you ask somebody else?",
+          "You again?",
+          "Hmpf.",
+        ],
+        other: [
+          "Nobody stops me.",
+          "Please, come closer. I've got cookies! Sweeeeet cookies!",
+          "A good day to die.",
+          "Ready to fight?",
+          "I'm the greatest!",
+          "You talkin' to me?",
+          "Veni, vedi, vici!",
+          "Get lost!",
+        ],
+      },
     },
     
     error: {
@@ -66,7 +95,25 @@ AWE.I18n.en_US = AWE.I18n.en_US || function(module) {
         details: {
           enables: 'Enables',
           speedup: 'Speed bonus to',
+          noUpgrade: 'Cannot be upgraded further.',
         },
+        select: {
+          heading: 'Select Building',
+          missingRequirements: 'Cannot be build due to the following <span class="red-color">unmet prerequisits</span>',
+
+        },
+        tooltip: {
+          costOfNextLevel: 'Costs of',
+          noUpgrade: 'Cannot be upgraded further.',
+          empty: {
+            heading: 'Empty Construction Site',
+            advise:  'Click to construct a new building.'
+          }
+        },
+        missingReqWarning: {
+          start: "Hey! You cannot construct a",
+          end: "now. The following prerequisit is missing",
+        }
       },
     },
     

@@ -1,19 +1,21 @@
+<!-- base-specific templates -->
+
 <script type="text/x-handlebars" data-template-name="base-screen">
 <div class="base-screen">
   <div class="base-picture">
-    {{#if "base"}}
+    {{#if "settlement"}}
       {{#if "haveSlots"}}
         {{view AWE.UI.Ember.BuildingView classNames="wallTop" levelBinding="wallSlot.building.level"}}
         {{view AWE.UI.Ember.BuildingView classNames="wallLeft" levelBinding="wallSlot.building.level"}}
         {{view AWE.UI.Ember.BuildingView classNames="wallRight" levelBinding="wallSlot.building.level"}}
-        {{view AWE.UI.Ember.InteractiveBuildingView  classNames="wall" modelBinding="wallSlot" settlementBinding="base"}}
+        {{view AWE.UI.Ember.BuildingSlotView  classNames="wall" slotBinding="wallSlot" settlementBinding="settlement"}}
         
         {{#each smallSlots}}
-          {{view AWE.UI.Ember.InteractiveBuildingView  classNames="small-building" modelBinding="this" settlementBinding="view.base"}}
+          {{view AWE.UI.Ember.BuildingSlotView  classNames="small-building" slotBinding="this" settlementBinding="view.settlement"}}
         {{/each}}
         
         {{#each largeSlots}}
-          {{view AWE.UI.Ember.InteractiveBuildingView  classNames="large-building" modelBinding="this" settlementBinding="view.base"}}
+          {{view AWE.UI.Ember.BuildingSlotView  classNames="large-building" slotBinding="this" settlementBinding="view.settlement"}}
         {{/each}}
       {{/if}}
       
@@ -29,11 +31,14 @@
         {{view AWE.UI.Ember.SelectBuildingDialog controllerBinding="controller" slotBinding="selectedSlot" constructionOptionsBinding="selectedSlot.constructionOptions"}}
       {{/if}}
     {{/if}}
+    
+    {{#if "hoveredBuildingSlotView" }}
+      {{view AWE.UI.Ember.ToolTipView templateName="building-slot-tooltip" classNames="mouse-over" mouseXBinding="hoveredBuildingSlotView.mouseX" mouseYBinding="hoveredBuildingSlotView.mouseY" buildingBinding="hoveredBuildingSlotView.slot.building"}}
+    {{/if}}      
   </div>
   
-  {{#if base}}
-    {{view AWE.UI.Ember.SettlementInfoBoxView classNames="settlement-info-box" settlementBinding="base" }}
+  {{#if settlement}}
+    {{view AWE.UI.Ember.SettlementInfoBoxView classNames="settlement-info-box" settlementBinding="settlement" }}
   {{/if}}
-  
 </div>
 </script>

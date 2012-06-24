@@ -269,6 +269,23 @@ html, body {
 }
 
 
+.red-color {
+  color: #FDD;
+}
+
+.green-color {
+  color: #DFD;
+}
+
+.yellow-color {
+  color: #FFD;
+}
+
+.blue-color {
+  color: #DDF;
+}
+
+
 #layers {
   position: absolute;
   left: 0px;
@@ -336,6 +353,15 @@ html, body {
 
 .z-layer-4 {
   z-index: 768;
+}
+
+
+.change-army-name-dialog .z-layer-3 {
+  z-index: 800;
+}
+
+.change-army-name-dialog .z-layer-4 {
+  z-index: 900;
 }
 
 #debug {
@@ -421,12 +447,12 @@ html, body {
 
 .center-helper { position: absolute; left: 50%; top: 50%; }
 
-.modal-dialog-background { position: absolute; background-color: #333; opacity: 0.6; width: 100%; height: 100%; z-index:255; }
+.modal-dialog-background { position: fixed; background-color: #333; opacity: 0.6; top: 0px; bottom:0px; width: 100%; z-index:255; }
 .modal-dialog-pane { 
   position: absolute; 
   margin-left: -300px;
   margin-top: -50px;
-  width: 600px; height: 100px;
+  width: 600px; min-height: 100px;
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
   z-index:256;
@@ -436,6 +462,18 @@ html, body {
   -moz-box-shadow:    3px 3px 2px 2px #333;
   -webkit-box-shadow: 3px 3px 2px 2px #333;
   box-shadow:         3px 3px 2px 2px #333;
+}
+
+.modal-dialog-pane .icon-button, .modal-dialog-pane .button {
+  float: right;
+}
+
+.modal-dialog-pane input[type="text"] {
+  font-size: 20px;
+  height: 28px;
+  border-radius: 5px;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .background-clear {
@@ -618,19 +656,104 @@ html, body {
 
 #text-input-dialog { 
   position: absolute; 
-  margin-left: -100px;
-  margin-top: -20px;
+  margin-left: -80px;
+  margin-top: -80px;
   width: 400px; height: 200px;
-  background-color: #FCC;  
+  background-color: #FCC; 
 }
 
+/** standard dialog buttons */
+.button, .icon-button {
+  display: inline-block;
+  min-height: 36px;
+  padding: 4px 8px 4px 4px;
+  font-size: 28px;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.icon-button {
+  padding: 4px 8px 4px 48px;
+}
+
+.icon-button:hover, .button:hover {
+  border: 2px solid #777;
+  margin: -2px;
+}
+
+.ok-button:hover {
+  border-color: #9D9;
+}
+
+.ok-button {
+  background: url('../images/icons/cross_green_small.png') no-repeat left center;
+  color: #9D9;
+}
+
+.close-button {
+  background: url('../images/icons/cross_small.png') no-repeat left center;
+}
+
+.cancel-button {
+  background: url('../images/icons/cross_red_small.png') no-repeat left center;
+  color: #F77;
+}
+
+.cancel-button:hover {
+  border-color: #F77;
+}
+
+/** standard info dialog */
 .info-dialog { 
+  font-size: 18px;
   position: absolute; 
-  margin-left: -200px;
+  margin-left: -300px;
   margin-top: -100px;
-  width: 400px; height: 200px;
+  width: 600px; 
+  min-height: 200px;
   background-color: #FFF;  
 }
+
+.advisor { 
+  width: 196px;
+  height: 196px;
+  margin-top:-10px;
+  margin-bottom:-30px;
+}
+
+.info-dialog .advisor { 
+  float:left;
+  margin-right: 10px;
+}
+
+.army-info-view .advisor {
+  float:right;
+  margin-left: 10px;
+}
+
+.citation {
+  color: #AAA;
+  font-style: italic;
+  text-align: right;
+}
+
+.advisor.girl { 
+  background: url('../images/advisors/head_girl_colored_small.png');
+}
+.advisor.warrior { 
+  background: url('../images/advisors/head_warrior_colored_small.png');
+}
+.advisor.chef { 
+  background: url('../images/advisors/head_chef_colored_small.png');
+}
+
+.controls-bar {
+  width: 100%;
+  margin: 8px 0px 0px 0px;
+  padding: 0px;
+}
+
+
 
 #text-input-dialog h1 {
   font-size: 24px;
@@ -689,19 +812,49 @@ html, body {
   border-radius:      12px;
 }
 
-.settlement-dialog-pane button.cancel {
+.settlement-dialog-pane a.close {
+  position: absolute;
+  background: url('../images/icons/cross_small.png');
+  width: 36px;
+  height: 36px;
+  right: 12px;
+  top: 10px;
+}
+
+.settlement-dialog-pane a.close:hover {
+  opacity: 0.6;
+}
+
+.settlement-dialog-pane a.upgrade {
+  margin-top: 6px;
+  color: #AE9;
   float: right;
+  display: block;
+  text-decoration: none;
+}
+
+.settlement-dialog-pane a.upgrade:hover {
+  opacity: 0.6;
+}
+
+.settlement-dialog-pane a img {
+  width: 22px;
+  height: 22px;
 }
 
 
 .settlement-dialog-select-building { 
 }
 
+span.bonus {
+  color: #9D9;
+}
+
 .building-option {
   float: left;
   width: 120px;
   height: 160px;
-  background-color: #DDF;
+  background-color: #DFD;
   -moz-border-radius: 7px;
   border-radius:      7px;
   padding: 10px;
@@ -710,20 +863,59 @@ html, body {
   
   cursor: pointer; 
 }
+.building-option.requirement-unmet {
+  background-color: #FDD;
+}
 
+.settlement-dialog-building-details .building-option-image {
+  float: left;
+}
 
+.settlement-dialog-building-details .building-option-image.next-level {
+  float: right;
+}
+
+.settlement-dialog-building-details .building-description-box {
+  float: left;
+  min-height: 150px;
+  width: 440px;
+  margin-left: 20px;
+  display: inline-block;
+}
 
 
 .building-option:hover {
-  background-color: #FDD;
+  background-color: #DDF;
   cursor: pointer;
 }
 
-.building-option-image {
+.fortress-screen .building-option-image {
   width: 53px;
   height: 101px;
   margin-left: 23px;
 }
+
+.fortress-screen .building-option-image.building_fortress_fortification {
+  width: 120px;
+  height: 90px;
+  margin-left: 0px;
+  margin-top: 30px;
+} 
+
+.base-screen .building-option-image {
+  width: 120px;
+  height:150px;
+  margin-left: 0px;
+}
+
+/** image for building_siege_tower */
+.building-option-image.building_quarry {
+  background: url('../images/settlements/base/building_quarry_large.png');
+}
+.building-option-image.building_palace {
+  background: url('../images/settlements/base/building_palace_large.png');
+}
+
 
 /** image for building_siege_tower */
 .building-option-image.building_siege_tower {
@@ -743,7 +935,7 @@ html, body {
 }
 /** image for building_fortress_fortification*/
 .building-option-image.building_fortress_fortification {
-  background: url('../images/settlements/fortress/building_cavalry_tower_small.png');
+  background: url('../images/settlements/fortress/fortress_main_building_small.png');
 }
 
 .building-option-image .level {
@@ -758,14 +950,44 @@ html, body {
 }
 
 
-.building-option-image.size1 {
+.base-screen .building-option-image.size1 {
+  background-position: -120px 0px;
+}
+.base-screen .building-option-image.size2 {
+  background-position: -240px 0px;
+}
+.base-screen .building-option-image.size3 {
+  background-position: -360px 0px;
+}
+.base-screen .building-option-image.size4 {
+  background-position: -480px 0px;
+}
+.base-screen .building-option-image.size5 {
+  background-position: -600px 0px;
+}
+.base-screen .building-option-image.size6 {
+  background-position: -720px 0px;
+}
+
+
+.fortress-screen .building-option-image.size1 {
   background-position: -53px 0px;
 }
-.building-option-image.size2 {
+.fortress-screen .building-option-image.size2 {
   background-position: -106px 0px;
 }
-.building-option-image.size3 {
+.fortress-screen .building-option-image.size3 {
   background-position: -159px 0px;
+}
+
+.fortress-screen .building-option-image.building_fortress_fortification.size1 {
+  background-position: -0px 0px;
+}
+.fortress-screen .building-option-image.building_fortress_fortification.size2 {
+  background-position: -120px 0px;
+}
+.fortress-screen .building-option-image.building_fortress_fortification.size3 {
+  background-position: -240 0px;
 }
 
 
@@ -945,13 +1167,13 @@ html, body {
    ========================================================================== */
 
 .settlement-info-box {
-  font-size: 12px;
   z-index: 5;
   -moz-border-radius: 6px;
   border-radius:      6px;
 }
 
-.settlement-info-box .change-name {
+.settlement-info-box .change-name,
+.army-info-view .change-name {
   opacity: 1.0;
   font-size: 12px;
   text-decoration:none;
@@ -959,22 +1181,27 @@ html, body {
   color: #CCF;
 }
 
-.settlement-info-box .change-name:hover {
+
+
+.settlment-info-box .change-name:hover,
+.army-info-view .change-name:hover {
   text-decoration:underline;
   color: #DDF;
 }
 
 .fortress-picture .settlement-info-box {
+  font-size: 14px;
   width: 400px;
   height: 120px;
   padding: 6px 10px 6px 10px;
   position: absolute;
   left: 220px;
-  top: 80px;  
+  top: 70px;  
   background-color: rgba(255,255,255,0.4);
 }
 
 .base-screen .settlement-info-box {
+  font-size: 12px;
   width: 300px;
   height: 70px;
   padding: 2px 10px 0px 10px;
@@ -1006,26 +1233,39 @@ html, body {
   background: url('../images/settlements/base/base_background.png');
 } 
 
-.fortress-picture .mouse-over {
+.fortress-picture .mouse-over, .base-picture .mouse-over {
   position: absolute;
-  width: 390px;
+  width: 360px;
   height: 140px;
   z-index:10;
   padding: 16px;
-  background-color: rgba(50,50,50,0.9);
   border-radius: 11px;
-  padding-left: 46px;
-  color: #FFF;
+  padding-left: 170px;
 }
 
-.fortress-picture .mouse-over p {
-  padding-left: 30px;
+.fortress-picture .mouse-over {
+  background-color: rgba(255,255,255,0.4);
+} 
+
+.base-picture .mouse-over {
+  background-color: rgba(0,0,0,0.4);
+  color: white;
+  text-shadow: none;
 }
 
-.fortress-picture .mouse-over img.advisor{
+
+.fortress-picture .mouse-over h1, .base-picture .mouse-over h1 {
+  margin-top: 0px;
+}
+
+
+.fortress-picture .mouse-over p, .base-picture .mouse-over p {
+  padding-left: 10px;
+}
+
+.fortress-picture .mouse-over .advisor, .base-picture .mouse-over .advisor {
   position: absolute;
-  left: -44px;
-  width: 160px;
+  left: -30px;
 }
 
 .fortress-picture .background {
@@ -1062,6 +1302,7 @@ html, body {
   width: 80px;
   height: 120px;
   z-index: 2;
+  border-radius: 5px;
   background: url('../images/settlements/base/building_category_small_building.png');  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
 
@@ -1071,6 +1312,7 @@ html, body {
   width: 120px;
   height: 150px;
   z-index: 2;
+  border-radius: 5px;
   background: url('../images/settlements/base/building_category_large_building.png');  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
 
@@ -1264,7 +1506,12 @@ html, body {
 }
 .base-picture .large-building.size3:hover {
 }
-
+.base-picture .large-building.size4:hover {
+}
+.base-picture .large-building.size5:hover {
+}
+.base-picture .large-building.size6:hover {
+}
 
 
 
@@ -1483,8 +1730,19 @@ html, body {
   margin-right: 20px;
 }
 
+.army-info-dialog .modal-dialog-pane { 
+  margin-top:-280px;
+  width: 700px;
+  margin-left: -350px;
+};
+
+
 .army-info-view {
   display: inline-block;
+}
+
+.army-info-view .change-name {
+  font-size: 16px;
 }
 
 .army-view-property-list {

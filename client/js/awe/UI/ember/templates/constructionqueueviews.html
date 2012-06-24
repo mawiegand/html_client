@@ -1,0 +1,35 @@
+<script type="text/x-handlebars" data-template-name="construction-queue-view">
+  <div class="queue-list-pane">
+    {{#each queues}}
+      {{#view Ember.View controllerBinding="controller" queueBinding="this" classNames="queue"}}
+      <h1>{{local queue.queueType.name}}</h1>
+        {{#unless queue.empty }}
+        <div class="queue-job-list">    
+          {{#each queue.hashableJobs.collection }}
+            {{#view AWE.UI.Ember.ConstructionJobView controllerBinding="controller" jobBinding="this" classNames="queue-job"}}
+              {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" levelBinding="job.level_after" buildingIdBinding="job.buildingId" typeBinding="job.slot.building.type"}}
+              <div class="queue-job-text">    
+                <p>{{ job.job_type }}</p>
+                <p>{{local job.slot.building.name }}</p>
+                <p>Slot #{{ job.slot.slot_num }}</p>
+                <p>Level {{ job.level_after }}</p>
+                <p>{{#if job.active_job }}Fin.: {{ job.parsedFinishingDate }}{{/if}}</p>
+              </div>  
+              {{#if job.cancelable }}
+              <div class="queue-job-button">    
+                <a href="#" {{action "cancelJobPressed"}}>cancel</a>
+              </div>  
+              {{/if}}
+            {{/view}}
+          {{/each}}
+        </div>  
+        {{/unless}}
+        {{#if queue.empty }}
+        <div class="queue-job-list empty">    
+           <p>This construction queue is empty</p>
+        </div>  
+        {{/if}}
+      {{/view}}
+    {{/each}}
+  </div>
+</script>
