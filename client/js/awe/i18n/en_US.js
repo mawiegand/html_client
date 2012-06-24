@@ -43,7 +43,7 @@ AWE.I18n.en_US =  function(module) {
           "Please, don't hurt me!",
           "Sorry, no service today.",
           "Can't you ask somebody else?",
-          "You again?"
+          "You again?",
           "Hmpf.",
         ],
         other: [

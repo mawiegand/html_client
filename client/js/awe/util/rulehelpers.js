@@ -136,13 +136,14 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
    *          checks passed positive.
    * @function
    * @name AWE.Util.Rules.failedRequirements */
-  module.failedRequirements = function(requirements, settlement, character, considerJobs) {
+  module.failedRequirements = function(requirements, settlement, character, slotToExclude, considerJobs) {
     considerJobs = considerJobs || false;
     settlement   = settlement || {};
     requirements = requirements || [];
+    slotToExclude= slotToExclude || null;
     
     var failedRequirements = requirements.filter(function(item) {
-      return !module.meetsRequirement(item, settlement, character, considerJobs);
+      return !module.meetsRequirement(item, settlement, character, slotToExclude, considerJobs);
     });
     
     return failedRequirements.length > 0 ? failedRequirements : null;
@@ -154,9 +155,9 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
    * @returns true, iff the requirement is met.
    * @function
    * @name AWE.Util.Rules.meetsRequirement */
-  module.meetsRequirement = function(requirement, settlement, character, considerJobs) {
+  module.meetsRequirement = function(requirement, settlement, character, slotToExclude, considerJobs) {
     if (requirement.type === 'building') {
-      return module.meetsBuildingRequirement(requirement, settlement, considerJobs);
+      return module.meetsBuildingRequirement(requirement, settlement, slotToExclude, considerJobs);
     }
     else if (requirement.type === 'science') {
       return module.meetsScienceRequirement(requirement, character, considerJobs);
@@ -184,20 +185,23 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
    * @returns true, iff the requirement is met.
    * @function
    * @name AWE.Util.Rules.meetsBuildingRequirement */
-  module.meetsBuildingRequirement = function(requirement, settlement, considerJobs) {
+  module.meetsBuildingRequirement = function(requirement, settlement, slotToExclude, considerJobs) {
     if (!settlement || !requirement) {
       return false;
     }
     var slots = settlement.get('enumerableSlots') || [];
-    var maxMet = true, minMet = false;
+    var maxMet = !(requirement.max_level !== undefined && requirement.max_level !== null && requirement.max_level < 0) ; // cannot bet true, when smaller than zero.
+    var minMet = requirement.min_level === undefined || requirement.min_level === null || requirement.min_level <= 0; // it's always true, if it's not specified or less equal 0
     
     slots.forEach(function(item) {
-      var buildingId = item.get('building_id');
-      if (buildingId && requirement.id === buildingId && requirement.max_level) {
-        maxMet = maxMet && requirement.max_level >= (considerJobs ? item.get('levelAfterJobs') : item.get('level'));    // all buildings must not be larger than the max level. may consider ongoing jobs in order to prevent queueing two mutually exclusive buildings
-      }
-      if (buildingId && requirement.id === buildingId && requirement.min_level) {
-        minMet = minMet || requirement.min_level <= item.get('level');    // one building must be larger than or equal to the min level; no not consider ongoing jobs; building must be finished to allow queueing of a dependent building
+      if (! slotToExclude || slotToExclude.get('slot_num') !== item.get('slot_num')) {
+        var buildingId = item.get('building_id');
+        if (buildingId && requirement.id === buildingId && requirement.max_level !== undefined && requirement.max_level !== null) {
+          maxMet = maxMet && requirement.max_level >= (considerJobs ? item.get('levelAfterJobs') : item.get('level'));    // all buildings must not be larger than the max level. may consider ongoing jobs in order to prevent queueing two mutually exclusive buildings
+        }
+        if (buildingId && requirement.id === buildingId && requirement.min_level) {
+          minMet = minMet || requirement.min_level <= item.get('level');    // one building must be larger than or equal to the min level; no not consider ongoing jobs; building must be finished to allow queueing of a dependent building
+        }
       }
     });
     return maxMet && minMet;

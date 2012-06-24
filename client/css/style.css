@@ -734,6 +734,7 @@ html, body {
 .citation {
   color: #AAA;
   font-style: italic;
+  text-align: right;
 }
 
 .advisor.girl { 
@@ -1171,7 +1172,8 @@ span.bonus {
   border-radius:      6px;
 }
 
-.change-name {
+.settlement-info-box .change-name,
+.army-info-view .change-name {
   opacity: 1.0;
   font-size: 12px;
   text-decoration:none;
@@ -1181,7 +1183,8 @@ span.bonus {
 
 
 
-.change-name:hover {
+.settlment-info-box .change-name:hover,
+.army-info-view .change-name:hover {
   text-decoration:underline;
   color: #DDF;
 }

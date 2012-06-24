@@ -140,7 +140,8 @@ AWE.GS = (function(module) {
     unmetRequirements: function() {
       var settlement = this.getPath('slot.settlement');
       var character = settlement ? settlement.owner() : null;
-      return AWE.Util.Rules.failedRequirements(this.getPath('buildingType.requirements'), settlement, character, true);
+      var slot = this.get('slot');
+      return AWE.Util.Rules.failedRequirements(this.getPath('buildingType.requirements'), settlement, slot, character, true);
     }.property('buildingType', 'slot.settlement.hashableSlots.changedAt'),
 
 		/** bool for indicating whether or not all requirements for constructin
