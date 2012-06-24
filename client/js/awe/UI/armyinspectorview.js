@@ -233,14 +233,6 @@ AWE.UI = (function(module) {
         }
       }
 
-      _infoButtonView = AWE.UI.createButtonView();
-      _infoButtonView.initWithControllerTextAndImage(my.controller, 'Info', AWE.UI.ImageCache.getImage("map/button1"));
-      _infoButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
-      _infoButtonView.onClick = function() {
-         that.onInventoryButtonClick(_army) 
-      };
-      this.addChild(_infoButtonView);
-
       // buttons oben
       if (!_infoButtonView) {
         _infoButtonView = AWE.UI.createButtonView();
@@ -256,10 +248,13 @@ AWE.UI = (function(module) {
         _reinforceButtonView = AWE.UI.createButtonView();
         _reinforceButtonView.initWithControllerTextAndImage(my.controller, 'Reinforce', AWE.UI.ImageCache.getImage("map/button1"));
         _reinforceButtonView.setFrame(AWE.Geometry.createRect(268, 0, 48, 48));
+        _reinforceButtonView.onClick = function() {
+           that.onChangeArmyButtonClick(_army) 
+        };
         this.addChild(_reinforceButtonView);
       }
       
-      if (isOwnArmy) {
+      if (_reinforceButtonView && isOwnArmy) {
         var settlement = AWE.Map.Manager.getLocation(_army.get('location_id')).settlement();
         _reinforceButtonView.setEnabled(settlement && _army.get('home_settlement_id') === settlement.getId());
       }
@@ -281,6 +276,7 @@ AWE.UI = (function(module) {
     }
     
     that.onInventoryButtonClick = function() { console.log('inventory button clicked'); }
+    that.onChangeArmyButtonClick = function(army) { console.log('inventory button clicked'); }
         
     that.updateView = function() {
       that.recalcView();      

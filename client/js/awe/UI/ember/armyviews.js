@@ -59,9 +59,7 @@ AWE.UI.Ember = (function(module) {
     locationId: null,
     garrisonArmy: null,
     garrisonArmyObserver: function() {
-      log('ping');
       if (this.get('garrisonArmy')) {
-        log('pong');
         AWE.GS.ArmyManager.updateArmy(this.get('garrisonArmy').getId(), module.ENTITY_UPDATE_TYPE_FULL);
       }
     }.observes('garrisonArmy'),
@@ -78,7 +76,7 @@ AWE.UI.Ember = (function(module) {
               symbolic_id: unitType.db_field, 
               allUnits: details[unitType.db_field],
               garrisonUnits: details[unitType.db_field],
-              newUnits: 0,
+              otherUnits: 0,
             }));
           }
         });
@@ -91,7 +89,7 @@ AWE.UI.Ember = (function(module) {
       var unitQuantities = {};
       var unitTypes = this.get('unitTypes');
       unitTypes.forEach(function(unitType) {
-        var quantity = unitType.get('newUnits');
+        var quantity = unitType.get('otherUnits');
         if (quantity > 0) {
           unitQuantities[unitType.get('symbolic_id')] = quantity; 
         }
@@ -111,7 +109,7 @@ AWE.UI.Ember = (function(module) {
     allToGarrison: function(){
     },
     
-    allToNew: function(){
+    allToOther: function(){
     },
     
     loading: null,
@@ -122,34 +120,117 @@ AWE.UI.Ember = (function(module) {
     
   });
   
+  module.ArmyChangeDialog = module.Dialog.extend({
+    templateName: 'army-change-dialog',
+    
+    locationId: null,
+    
+    garrisonArmy: null,
+    garrisonArmyObserver: function() {
+      if (this.get('garrisonArmy')) {
+        AWE.GS.ArmyManager.updateArmy(this.get('garrisonArmy').getId(), module.ENTITY_UPDATE_TYPE_FULL);
+      }
+    }.observes('garrisonArmy'),
+
+    otherArmy: null,
+    otherArmyObserver: function() {
+      if (this.get('otherArmy')) {
+        AWE.GS.ArmyManager.updateArmy(this.get('otherArmy').getId(), module.ENTITY_UPDATE_TYPE_FULL);
+      }
+    }.observes('otherArmy'),
+
+    unitTypes: function() {
+      var list = [];
+      var garrisonDetails = this.getPath('garrisonArmy.details');
+      var otherDetails = this.getPath('otherArmy.details');
+      var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
+      if (garrisonDetails && otherDetails) { log('build list')
+        AWE.Ext.applyFunction(unitTypes, function(unitType) {
+          if ((garrisonDetails[unitType.db_field] !== undefined && garrisonDetails[unitType.db_field] > 0) ||
+              (unitTypes[unitType.db_field] !== undefined && unitTypes[unitType.db_field] > 0)) {
+            list.push(Ember.Object.create({
+              name: unitType.name.en_US,
+              symbolic_id: unitType.db_field, 
+              allUnits: garrisonDetails[unitType.db_field],
+              garrisonUnits: garrisonDetails[unitType.db_field],
+              otherUnits: otherDetails[unitType.db_field],
+            }));
+          }
+        });
+      }
+      // log("LIST", list, details);
+      return list;
+    }.property('garrisonArmy.details.@each', 'otherArmy.details.@each').cacheable(),
+    
+    unitDifferences: function() {
+      var unitDifferences = {};
+      var unitTypes = this.get('unitTypes');
+      var otherDetails = this.getPath('otherArmy.details');
+      unitTypes.forEach(function(unitType) {
+        var difference = unitType.get('otherUnits') - otherDetails[unitType.get('symbolic_id')];
+        if (difference != 0) {
+          unitDifferences[unitType.get('symbolic_id')] = difference; 
+        }
+      });
+      
+      return unitDifferences;
+    },
+        
+    changePressed: function() {
+      log('ERROR Action not connected: changeWasPressed.');
+    },
+    
+    cancelPressed: function() {
+      log('ERROR Action not connected: cancelWasPressed.');
+    },
+    
+    allToGarrison: function(){
+    },
+    
+    allToOther: function(){
+    },
+    
+    loading: null,
+    
+    init: function() {
+      this._super();      
+    },
+    
+  });
+  
+  module.ArmyForm = Ember.View.extend({
+    templateName: 'army-form',
+    unitTypes: null,
+  });
+  
   module.UnitRowView = Ember.View.extend({
     unitType: null,
     
     allToGarrison: function(){
       this.setPath('unitType.garrisonUnits', this.getPath('unitType.allUnits'));
-      this.setPath('unitType.newUnits', 0);
+      this.setPath('unitType.otherUnits', 0);
     },
     
     oneToGarrison: function(){
       var garrisonUnits = parseInt(this.getPath('unitType.garrisonUnits'));
-      var newUnits = parseInt(this.getPath('unitType.newUnits'));
-      if (newUnits > 0) {
+      var otherUnits = parseInt(this.getPath('unitType.otherUnits'));
+      if (otherUnits > 0) {
         this.setPath('unitType.garrisonUnits', garrisonUnits + 1);
-        this.setPath('unitType.newUnits', newUnits - 1);
+        this.setPath('unitType.otherUnits', otherUnits - 1);
       }
     },
     
-    oneToNew: function(){
+    oneToOther: function(){
       var garrisonUnits = parseInt(this.getPath('unitType.garrisonUnits'));
-      var newUnits = parseInt(this.getPath('unitType.newUnits'));
+      var otherUnits = parseInt(this.getPath('unitType.otherUnits'));
       if (garrisonUnits > 0) {
-        this.setPath('unitType.newUnits', newUnits + 1);
+        this.setPath('unitType.otherUnits', otherUnits + 1);
         this.setPath('unitType.garrisonUnits', garrisonUnits - 1);
       }
     },
     
-    allToNew: function(){
-      this.setPath('unitType.newUnits', this.getPath('unitType.allUnits'));
+    allToOther: function(){
+      this.setPath('unitType.otherUnits', this.getPath('unitType.allUnits'));
       this.setPath('unitType.garrisonUnits', 0);
     },
   });
@@ -158,7 +239,7 @@ AWE.UI.Ember = (function(module) {
     
     allUnits: null,
     garrisonUnits: null,
-    newUnits: null,
+    otherUnits: null,
     
     locked: false,
     
@@ -169,31 +250,31 @@ AWE.UI.Ember = (function(module) {
       // setter
       } else {
         this.set('garrisonUnits', parseInt(value));
-        this.set('newUnits', this.get('allUnits') - parseInt(value));
+        this.set('otherUnits', this.get('allUnits') - parseInt(value));
         return value;
       }
     }).property('garrisonUnits')
   });
   
-  module.NewArmyUnitTextfield = Ember.TextField.extend({
+  module.OtherArmyUnitTextfield = Ember.TextField.extend({
     
     allUnits: null,
     garrisonUnits: null,
-    newUnits: null,
+    otherUnits: null,
     
     locked: false,
     
     value: Ember.computed(function(key, value) {
       // getter
       if (arguments.length === 1) {
-        return this.get('newUnits');
+        return this.get('otherUnits');
       // setter
       } else {
-        this.set('newUnits', parseInt(value));
+        this.set('otherUnits', parseInt(value));
         this.set('garrisonUnits', this.get('allUnits') - parseInt(value));
         return value;
       }
-    }).property('newUnits')
+    }).property('otherUnits')
   });
   
   return module;

@@ -711,7 +711,6 @@ AWE.Controller = (function(module) {
       
       // TODO auf leere units testen
       
-      
       var armyCreateAction = AWE.Action.Military.createCreateArmyAction(location, units);
       armyCreateAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
@@ -724,15 +723,13 @@ AWE.Controller = (function(module) {
           }); 
         }
         else {
-          that.handleError(status, "The server did not accept the movement comannd.");
+          that.handleError(status, "The server did not accept the create army comannd.");
         }
       });
     }
     
     that.newArmyButtonClicked = function(location) {
-      if (!location) {
-        return;
-      }
+      if (!location) return;
       
       var dialog = AWE.UI.Ember.ArmyCreateDialog.create({
         locationId: location.id(),
@@ -751,6 +748,56 @@ AWE.Controller = (function(module) {
       });
       // garrisonArmy is set after create to trigger observer in view
       dialog.set('garrisonArmy', location.garrisonArmy()),
+      
+      that.applicationController.presentModalDialog(dialog);
+    }
+    
+    var createArmyChangeAction = function(location, visibleArmy, units, callback) {
+      log('changeArmyCreateAction', location, visibleArmy, units);
+      
+      // TODO auf leere units testen
+      
+      var armyChangeAction = AWE.Action.Military.createChangeArmyAction(location, visibleArmy, units);
+      armyChangeAction.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          AWE.GS.ArmyManager.updateArmiesAtLocation(location.id(), null, function(armies) {
+            log('armies updated at location', armies, location);
+            that.setModelChanged();
+            if (callback) {
+              callback();
+            }
+          }); 
+        }
+        else {
+          that.handleError(status, "The server did not accept the change army comannd.");
+        }
+      });
+    }
+    
+    that.changeArmyButtonClicked = function(army) {
+      if (!army) return;
+
+      var location = army.get('location');
+      if (!location) return;
+
+      var dialog = AWE.UI.Ember.ArmyChangeDialog.create({
+        locationId: location.id(),
+        changePressed: function(evt) {
+          createArmyChangeAction(location, army, this.unitDifferences(), (function(self){
+            return function() {
+              self.destroy();
+            }
+          })(this));           
+          this.set('loading', true);
+        },
+        cancelPressed: function(evt) {
+          this.destroy();
+        },
+        loading: false,
+      });
+      // armies are set after create to trigger observer in view
+      dialog.set('garrisonArmy', location.garrisonArmy()),
+      dialog.set('otherArmy', army),
       
       that.applicationController.presentModalDialog(dialog);
     }
@@ -940,6 +987,10 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector.onFlagClicked = function(allianceId) {
           WACKADOO.activateAllianceController(allianceId);
         }
+
+        inspectorViews.inspector.onChangeArmyButtonClick = function(army) {
+          that.changeArmyButtonClicked(view.army());
+        };
       }
       else if (view.typeName() === 'BaseView') { 
         inspectorViews.inspector = AWE.UI.createBaseInspectorView();

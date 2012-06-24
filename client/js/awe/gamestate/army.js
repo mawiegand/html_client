@@ -187,6 +187,16 @@ AWE.GS = (function(module) {
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
             module.ArmyAccess.accessHashForLocation_id().setLastUpdateAtForValue(locationId, timestamp);
           }
+          // remove deleted army from location
+          if (status === AWE.Net.OK) {           
+            var armies = module.ArmyAccess.getHashableCollectionForLocation_id(locationId);
+            AWE.Ext.applyFunction(armies.get('collection'), function(army){
+              var armyId = army.getId();
+              if (!result.hasOwnProperty(armyId)) {
+                army.destroy();
+              }
+            });
+          }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
               result = module.ArmyAccess.getAllForLocation_id(locationId);
