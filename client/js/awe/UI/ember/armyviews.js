@@ -17,14 +17,14 @@ AWE.UI.Ember = (function(module) {
     templateName: "army-info-view",
     
     army: null,
+
     displayUnits: function() {
       return this.getPath('units.length') > 0;
     }.property('units.length').cacheable(),
-
     
     isChangeNamePossible: function() {
       return !this.getPath('army.isGarrisonProp') && this.get('isOwnArmy');
-    }.property('army.isGarrisonProp', 'isOwnArmy'),
+    }.property('army.isGarrisonProp', 'isOwnArmy').cacheable(),
     
     isOwnArmy: function() {
       var army = this.get('army'); 
@@ -36,7 +36,7 @@ AWE.UI.Ember = (function(module) {
       return army ? army.isRelationAtLeast(RELATION_TYPE_ALLIED) : false;
     }.property('army.owner_id', 'army.alliance_id').cacheable(),    
     
-    armyObserver: function() {
+    armyObserver: function() {   /// TODO: hm, what was the intention behind doing this with an observer????
       if (this.get('army')) {
         AWE.GS.ArmyManager.updateArmy(this.getPath('army.id'), module.ENTITY_UPDATE_TYPE_FULL);
       }
@@ -55,6 +55,14 @@ AWE.UI.Ember = (function(module) {
       }
       return list;
     }.property('army.details', 'army.details.@each').cacheable(),
+    
+    message: function() {
+      var own = this.get('isOwnArmy');
+      if (own === undefined || own === null) {
+        return null; // return nothing, if value hasn't been computed so far.
+      }
+      return this.get('isOwnArmy') ? AWE.I18n.lookupTranslation('army.messages.own') : AWE.I18n.lookupTranslation('army.messages.other');
+    }.property('isOwnArmy').cacheable(),
     
   });
   

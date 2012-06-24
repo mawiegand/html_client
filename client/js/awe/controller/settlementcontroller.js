@@ -241,7 +241,7 @@ AWE.Controller = (function(module) {
         var dialog = AWE.UI.Ember.InfoDialog.create({
           contentTemplateName: 'requirements-missing-info',
           arguments:           building,
-          cancelText:          'Argh!',
+          cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
           okPressed:           null,
           cancelPressed:       function() { this.destroy(); },
         });          

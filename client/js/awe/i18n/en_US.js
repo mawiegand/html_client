@@ -7,7 +7,7 @@
 var AWE = window.AWE || {};
 AWE.I18n = AWE.I18n || {};
 
-AWE.I18n.en_US = AWE.I18n.en_US || function(module) {
+AWE.I18n.en_US =  function(module) {
     
   module.localizedStrings = {
  
@@ -35,7 +35,28 @@ AWE.I18n.en_US = AWE.I18n.en_US || function(module) {
     army: {
       details: {
         heading: 'Army',
-      }
+      },
+      messages: {
+        own: [
+          "I hear you.",
+          "Sir, yes, Sir!",
+          "Please, don't hurt me!",
+          "Sorry, no service today.",
+          "Can't you ask somebody else?",
+          "You again?"
+          "Hmpf.",
+        ],
+        other: [
+          "Nobody stops me.",
+          "Please, come closer. I've got cookies! Sweeeeet cookies!",
+          "A good day to die.",
+          "Ready to fight?",
+          "I'm the greatest!",
+          "You talkin' to me?",
+          "Veni, vedi, vici!",
+          "Get lost!",
+        ],
+      },
     },
     
     error: {

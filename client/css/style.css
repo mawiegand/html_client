@@ -718,7 +718,7 @@ html, body {
   width: 196px;
   height: 196px;
   margin-top:-10px;
-  margin-bottom:-20px;
+  margin-bottom:-30px;
 }
 
 .info-dialog .advisor { 
@@ -729,6 +729,11 @@ html, body {
 .army-info-view .advisor {
   float:right;
   margin-left: 10px;
+}
+
+.citation {
+  color: #AAA;
+  font-style: italic;
 }
 
 .advisor.girl { 
@@ -1166,7 +1171,7 @@ span.bonus {
   border-radius:      6px;
 }
 
-.settlement-info-box .change-name {
+.change-name {
   opacity: 1.0;
   font-size: 12px;
   text-decoration:none;
@@ -1174,7 +1179,9 @@ span.bonus {
   color: #CCF;
 }
 
-.settlement-info-box .change-name:hover {
+
+
+.change-name:hover {
   text-decoration:underline;
   color: #DDF;
 }
@@ -1729,6 +1736,10 @@ span.bonus {
 
 .army-info-view {
   display: inline-block;
+}
+
+.army-info-view .change-name {
+  font-size: 16px;
 }
 
 .army-view-property-list {

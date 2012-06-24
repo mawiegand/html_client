@@ -8,11 +8,12 @@
       <div class="clearfix header">
         <div class="advisor warrior"></div>
 
-        <h2>{{ army.name }}</h2>
-      
-        {{#if isChangeNamePossible}}
-        <a style="display:block;" href="#" {{action "changeNamePressed" target="parentView.parentView"}}>change name</a>
-        {{/if}}
+        <h2>{{ army.name }} 
+          {{#if isChangeNamePossible}}
+            <a href="#" class="change-name" {{action "changeNamePressed" target="parentView.parentView"}}>change name</a>
+          {{/if}}
+        </h2>
+        <p class="citation">{{message}}</p>
       </div>
       
         <div class="army-view-unit-list">
