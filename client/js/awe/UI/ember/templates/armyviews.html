@@ -3,12 +3,17 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="army-info-view">
+
     <div class="army-info-view clearfix">
-      <h2>{{t army.details.heading }}: {{ army.name }}</h2>
+      <div class="clearfix header">
+        <div class="advisor warrior"></div>
+
+        <h2>{{ army.name }}</h2>
       
-      {{#unless army.garrison}}
-      <a style="display:block;" href="#" {{action "changeNamePressed" target="parentView.parentView"}}>change name</a>
-      {{/unless}}
+        {{#unless army.garrison}}
+        <a style="display:block;" href="#" {{action "changeNamePressed" target="parentView.parentView"}}>change name</a>
+        {{/unless}}
+      </div>
     
       <div class="army-view-unit-list">
         <h4>Units</h4>

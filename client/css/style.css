@@ -714,21 +714,29 @@ html, body {
   background-color: #FFF;  
 }
 
-.info-dialog .advisor { 
-  float:left;
+.advisor { 
   width: 196px;
   height: 196px;
   margin-top:-10px;
+}
+
+.info-dialog .advisor { 
+  float:left;
   margin-right: 10px;
 }
 
-.info-dialog .advisor.girl { 
+.army-info-view .advisor {
+  float:right;
+  margin-left: 10px;
+}
+
+.advisor.girl { 
   background: url('../images/advisors/head_girl_colored_small.png');
 }
-.info-dialog .advisor.warrior { 
+.advisor.warrior { 
   background: url('../images/advisors/head_warrior_colored_small.png');
 }
-.info-dialog .advisor.chef { 
+.advisor.chef { 
   background: url('../images/advisors/head_chef_colored_small.png');
 }
 
@@ -1711,7 +1719,9 @@ span.bonus {
 }
 
 .army-info-dialog .modal-dialog-pane { 
-  margin-top:-200px;
+  margin-top:-280px;
+  width: 700px;
+  margin-left: -350px;
 };
 
 
