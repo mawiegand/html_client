@@ -577,15 +577,22 @@ AWE.Controller = (function(module) {
         return ;
       }
       
-      var dialog = AWE.UI.Ember.ArmyInfoDialog.create({
-        army: army,
+      var dialog = AWE.UI.Ember.InfoDialog.create({
+        classNames: ['army-info-dialog'],
+        contentTemplateName: 'army-info-dialog',
+        arguments: {
+          army: army,
+        },
+        
         changeNamePressed: function(event) {
               
           var changeDialog = AWE.UI.Ember.TextInputDialog.create({
+            classNames: ['change-army-name-dialog'],
             heading: 'Enter the new name of this army.',
-            input: this.get('army').get('name'),
+            input: this.getPath('arguments.army.name'),
+            army: this.getPath('arguments.army'),
             okPressed: function() {
-              var action = AWE.Action.Military.createChangeArmyNameAction(army, this.get('input'));
+              var action = AWE.Action.Military.createChangeArmyNameAction(this.get('army'), this.get('input'));
               AWE.Action.Manager.queueAction(action);  
               this.destroy();            
             },
@@ -593,9 +600,6 @@ AWE.Controller = (function(module) {
           });
           that.applicationController.presentModalDialog(changeDialog);
         },
-        closePressed: function(event) {
-          this.destroy();
-        }
       });
       
       that.applicationController.presentModalDialog(dialog);

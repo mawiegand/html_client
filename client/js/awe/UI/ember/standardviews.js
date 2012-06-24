@@ -82,13 +82,40 @@ AWE.UI.Ember = (function(module) {
   
   /**
    * @class
+   * @extends AWE.UI.Ember.Dialog
+   *
+   * Displays a simple modal dialog.
+   * Either provide or bind a content object and corresponding content 
+   * or, alternatively, a message and heading. As default, the dialog bears
+   * an ok button that closes the dialog when clicked. Attach your own
+   * handlers to the [ok,cancel,close]Pressed methods to provide customized
+   * behaviour, call a controller's method and / or show more buttons.
+   *
+   * The dialog should be displayed using the corresponding method of the 
+   * multistagecontroller.
+   * @example
+        var dialog = AWE.UI.Ember.InfoDialog.create({
+          templateName: 'requirements-missing-info-dialog',
+          building: building,
+        });          
+        WACKADOO.presentModalDialog(dialog);
+   *
    * @name AWE.UI.Ember.InfoDialog 
    */  
   module.InfoDialog = module.Dialog.extend({
     templateName: 'info-dialog',
-    heading: 'Info',
-    message: '',
-    okPressed: function() { this.destroy(); },
+    
+    arguments:    null,
+    contentTemplateName: null,
+    
+    heading:      'Info',
+    message:      '',
+    
+    okText:       'ok',
+    cancelText:   'cancel',
+    closeText:    'close',
+    
+    okPressed:     function() { this.destroy(); },
     cancelPressed: null,
   });
   

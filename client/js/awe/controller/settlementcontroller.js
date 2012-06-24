@@ -228,9 +228,25 @@ AWE.Controller = (function(module) {
       }
     } 
 
-    that.constructionOptionClicked = function(slot, buildingId, type) {
-      log('constructionOptionClicked', slot, buildingId, type);  // TODO type is production category - > rename
-      createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE);      
+    that.constructionOptionClicked = function(slot, building, type) {
+      
+      log('constructionOptionClicked', slot, building, type);  // TODO type is production category - > rename
+      
+      var buildingId = building.get('buildingId');
+      if (building.get('requirementsMet')) {
+        createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE);      
+        this.unselectSlot();
+      }
+      else {
+        var dialog = AWE.UI.Ember.InfoDialog.create({
+          contentTemplateName: 'requirements-missing-info',
+          arguments:           building,
+          cancelText:          'Argh!',
+          okPressed:           null,
+          cancelPressed:       function() { this.destroy(); },
+        });          
+        WACKADOO.presentModalDialog(dialog);
+      }
     }
     
     that.constructionUpgradeClicked = function(slot) {

@@ -1,19 +1,13 @@
 <script type="text/x-handlebars" data-template-name="army-info-dialog">
-      <div class="modal-dialog-background"></div>
-      <div class="center-helper">
-        <div class="modal-dialog-pane" id="army-details">
-          {{view AWE.UI.Ember.ArmyInfoView armyBinding="army"}}
-          <a href="#" {{action "closePressed" target="parentView"}}>close</a>
-        </div>
-      </div>
+  {{view AWE.UI.Ember.ArmyInfoView armyBinding="arguments.army" }}
 </script>
 
 <script type="text/x-handlebars" data-template-name="army-info-view">
-    <div class="army-info-view"">
+    <div class="army-info-view clearfix">
       <h2>{{t army.details.heading }}: {{ army.name }}</h2>
       
       {{#unless army.garrison}}
-      <a style="display:block;" href="#" {{action "changeNamePressed" target="parentView"}}>change name</a>
+      <a style="display:block;" href="#" {{action "changeNamePressed" target="parentView.parentView"}}>change name</a>
       {{/unless}}
     
       <div class="army-view-unit-list">

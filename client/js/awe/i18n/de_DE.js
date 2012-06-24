@@ -102,6 +102,11 @@ AWE.I18n.de_DE = AWE.I18n.de_DE || function(module) {
             advise:  'Klicken, um ein neues Gebäude zu bauen.'
           }
         },
+        
+        missingReqWarning: {
+          start: "Hey! Du kannst hier jetzt kein Gebäude vom Typ",
+          end: "bauen. Die folgenden Vorrausetzungen sind nicht erfüllt",
+        }
       },
     },
     

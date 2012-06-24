@@ -4,8 +4,10 @@
     <div class="modal-dialog-pane z-layer-4" id="text-input-dialog">
       <h1>{{ heading }}</h1>
       {{view Ember.TextField class="text-field" placeholder="Name" type="text" valueBinding="input"}} 
-      <a href="#" {{action "cancelPressed" target="parentView"}}>cancel</a>
-      <a href="#" {{action "okPressed" target="parentView"}}>ok</a>
+      <div class="controls-bar">
+        <div class="icon-button ok-button" {{action "okPressed"}}>change</div>
+        <div class="icon-button cancel-button" {{action "cancelPressed"}}>cancel</div>
+      </div>
     </div>
   </div>
 </script>
@@ -14,14 +16,20 @@
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="center-helper">
     <div class="modal-dialog-pane z-layer-4 info-dialog">
-      <h1>{{ heading }}</h1>
-      <p>{{ message }}</p>
-      {{#if cancelPressed }}
-        {{#view Ember.Button action="cancelPressed" target="parentView"}}cancel{{/view}}
+      {{#if contentTemplateName}}
+        {{view Ember.View templateNameBinding="contentTemplateName" argumentsBinding="arguments"}}
+      {{else}}
+        <h1>{{ heading }}</h1>
+        <p>{{ message }}</p>
       {{/if}}
-      {{#if okPressed }}
-        {{#view Ember.Button action="okPressed" target="parentView"}}ok{{/view}}
-      {{/if}}
+      <div class="controls-bar">
+        {{#if okPressed }}
+          <div class="icon-button ok-button" {{action "okPressed"}}>{{okText}}</div>
+        {{/if}}
+        {{#if cancelPressed }}
+          </div><div class="icon-button cancel-button" {{action "cancelPressed"}}>{{cancelText}}</div>
+        {{/if}}
+      </div>
     </div>
   </div>
 </script>

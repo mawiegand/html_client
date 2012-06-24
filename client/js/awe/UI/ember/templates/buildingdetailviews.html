@@ -132,6 +132,18 @@
   </div>
 </script>
 
+<script type="text/x-handlebars" data-template-name="requirements-missing-info">
+{{#with arguments}}
+  <div class="advisor girl"></div>
+  <p>{{t settlement.buildings.missingReqWarning.start}} {{local name}} {{t settlement.buildings.missingReqWarning.end}}:<p/>
+  <p>
+    {{#each unmetRequirements}}
+      {{view AWE.UI.Ember.RequirementView requirementBinding="this"}}<br />
+    {{/each}}
+  </p>
+{{/with}}
+</script>
+
 <script type="text/x-handlebars" data-template-name="trainable-unit-button">
   {{local unitType.name}}
 </script>

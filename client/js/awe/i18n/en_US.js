@@ -89,6 +89,10 @@ AWE.I18n.en_US = AWE.I18n.en_US || function(module) {
             advise:  'Click to construct a new building.'
           }
         },
+        missingReqWarning: {
+          start: "Hey! You cannot construct a",
+          end: "now. The following prerequisit is missing",
+        }
       },
     },
     
