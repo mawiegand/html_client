@@ -69,8 +69,8 @@
       <div class="center-helper">
         <div class="modal-dialog-pane" id="army-create-form">
           <h2>Create new army</h2>
-          {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" }}
-          <a href="#" {{action "createPressed" target="parentView"}}>create</a> | <a href="#" {{action "cancelPressed" target="parentView"}}>cancel</a>
+          {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" }}
+          <a href="#" {{action "reset" target="parentView"}}>reset</a> | <a href="#" {{action "createPressed" target="parentView"}}>create</a> | <a href="#" {{action "cancelPressed" target="parentView"}}>cancel</a>
           {{#if "loading" }}
             <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Creating Army...</p>
           {{/if}}
@@ -83,8 +83,8 @@
       <div class="center-helper">
         <div class="modal-dialog-pane" id="army-change-form">
           <h2>Change units in army</h2>
-          {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" }}
-          <a href="#" {{action "changePressed" target="parentView"}}>change</a> | <a href="#" {{action "cancelPressed" target="parentView"}}>cancel</a>
+          {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" armyNameBinding="otherArmy.name" }}
+          <a href="#" {{action "reset" target="parentView"}}>reset</a> | <a href="#" {{action "changePressed" target="parentView"}}>change</a> | <a href="#" {{action "cancelPressed" target="parentView"}}>cancel</a>
           {{#if "loading" }}
             <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Creating Army...</p>
           {{/if}}
@@ -113,12 +113,13 @@
           {{/view }}
         {{/each}}
         <tr class="line">
-          <td class="unit">Size</td>
-          <td>12</td>
-          <td><<</td>
-          <td colspan="2" class="center">all</td>
-          <td>>></td>
-          <td>0</td>
+          <td class="unit">All</td>
+          <td>{{ garrisonSum }}</td>
+          <td><a href="#" {{action "allToGarrison" target="parentView"}}><<</a></td>
+          <td></td>
+          <td></td>
+          <td><a href="#" {{action "allToOther" target="parentView"}}>>></a></td>
+          <td>{{ otherSum }}</td>
         </tr>
       </table>
 </script>

@@ -713,8 +713,6 @@ AWE.Controller = (function(module) {
     var createArmyCreateAction = function(location, units, callback) {
       log('createArmyCreateAction', location, units);
       
-      // TODO auf leere units testen
-      
       var armyCreateAction = AWE.Action.Military.createCreateArmyAction(location, units);
       armyCreateAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
@@ -738,12 +736,18 @@ AWE.Controller = (function(module) {
       var dialog = AWE.UI.Ember.ArmyCreateDialog.create({
         locationId: location.id(),
         createPressed: function(evt) {
-          createArmyCreateAction(location, this.unitQuantities(), (function(self){
-            return function() {
-              self.destroy();
-            }
-          })(this));           
-          this.set('loading', true);
+          var unitQuantities = this.unitQuantities();
+          if (!AWE.Util.hashEmpty(unitQuantities)) {            
+            createArmyCreateAction(location, unitQuantities, (function(self){
+              return function() {
+                self.destroy();
+              }
+            })(this));           
+            this.set('loading', true);
+          }
+          else {
+            this.destroy();
+          }
         },
         cancelPressed: function(evt) {
           this.destroy();
@@ -758,9 +762,7 @@ AWE.Controller = (function(module) {
     
     var createArmyChangeAction = function(location, visibleArmy, units, callback) {
       log('changeArmyCreateAction', location, visibleArmy, units);
-      
-      // TODO auf leere units testen
-      
+
       var armyChangeAction = AWE.Action.Military.createChangeArmyAction(location, visibleArmy, units);
       armyChangeAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
@@ -787,12 +789,18 @@ AWE.Controller = (function(module) {
       var dialog = AWE.UI.Ember.ArmyChangeDialog.create({
         locationId: location.id(),
         changePressed: function(evt) {
-          createArmyChangeAction(location, army, this.unitDifferences(), (function(self){
-            return function() {
-              self.destroy();
-            }
-          })(this));           
-          this.set('loading', true);
+          var unitDifferences = this.unitDifferences();
+          if (!AWE.Util.hashEmpty(unitDifferences)) {            
+            createArmyChangeAction(location, army, unitDifferences, (function(self){
+              return function() {
+                self.destroy();
+              }
+            })(this));           
+            this.set('loading', true);
+          }
+          else {
+            this.destroy();
+          }
         },
         cancelPressed: function(evt) {
           this.destroy();

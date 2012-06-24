@@ -66,9 +66,8 @@ AWE.UI.Ember = (function(module) {
     
   });
   
-  module.ArmyCreateDialog = module.Dialog.extend({
-    templateName: 'army-create-dialog',
-    
+  module.ArmyDialog = module.Dialog.extend({
+
     locationId: null,
     garrisonArmy: null,
     garrisonArmyObserver: function() {
@@ -77,6 +76,57 @@ AWE.UI.Ember = (function(module) {
       }
     }.observes('garrisonArmy'),
 
+    unitTypesChange: null,
+
+    garrisonSum: function(){
+      var sum = 0;
+      this.get('unitTypes').forEach(function(unitType){
+        sum += unitType.get('garrisonUnits');
+      });
+      return sum;
+    }.property('unitTypes.@each.garrisonUnits').cacheable(),
+    
+    otherSum: function(){
+      var sum = 0;
+      this.get('unitTypes').forEach(function(unitType){
+        sum += unitType.get('otherUnits');
+      });
+      return sum;
+    }.property('unitTypes.@each.garrisonUnits').cacheable(),
+    
+    cancelPressed: function() {
+      log('ERROR Action not connected: cancelWasPressed.');
+    },
+    
+    allToGarrison: function() {
+      this.get('unitTypes').forEach(function(unitType){
+        unitType.set('garrisonUnits', unitType.get('allUnits'));
+        unitType.set('otherUnits', 0);
+      });
+    },
+    
+    allToOther: function() {
+      this.get('unitTypes').forEach(function(unitType){
+        unitType.set('garrisonUnits', 0);
+        unitType.set('otherUnits', unitType.get('allUnits'));
+      });
+    },
+    
+    reset: function() {
+      this.set('unitTypesChange', new Date);
+    },
+    
+    loading: null,
+    
+    init: function() {
+      this._super();      
+    },
+    
+  });
+  
+  module.ArmyCreateDialog = module.ArmyDialog.extend({
+    templateName: 'army-create-dialog',
+    
     unitTypes: function() {
       var list = [];
       var details = this.getPath('garrisonArmy.details');
@@ -96,8 +146,8 @@ AWE.UI.Ember = (function(module) {
       }
       log("LIST", list, details);
       return list;
-    }.property('garrisonArmy.details.@each').cacheable(),
-    
+    }.property('garrisonArmy.details.@each', 'unitTypesChange').cacheable(),
+
     unitQuantities: function() {
       var unitQuantities = {};
       var unitTypes = this.get('unitTypes');
@@ -107,44 +157,17 @@ AWE.UI.Ember = (function(module) {
           unitQuantities[unitType.get('symbolic_id')] = quantity; 
         }
       });
-      
       return unitQuantities;
     },
         
     createPressed: function() {
       log('ERROR Action not connected: createWasPressed.');
     },
-    
-    cancelPressed: function() {
-      log('ERROR Action not connected: cancelWasPressed.');
-    },
-    
-    allToGarrison: function(){
-    },
-    
-    allToOther: function(){
-    },
-    
-    loading: null,
-    
-    init: function() {
-      this._super();      
-    },
-    
   });
   
-  module.ArmyChangeDialog = module.Dialog.extend({
+  module.ArmyChangeDialog = module.ArmyDialog.extend({
     templateName: 'army-change-dialog',
     
-    locationId: null,
-    
-    garrisonArmy: null,
-    garrisonArmyObserver: function() {
-      if (this.get('garrisonArmy')) {
-        AWE.GS.ArmyManager.updateArmy(this.get('garrisonArmy').getId(), module.ENTITY_UPDATE_TYPE_FULL);
-      }
-    }.observes('garrisonArmy'),
-
     otherArmy: null,
     otherArmyObserver: function() {
       if (this.get('otherArmy')) {
@@ -160,11 +183,11 @@ AWE.UI.Ember = (function(module) {
       if (garrisonDetails && otherDetails) { log('build list')
         AWE.Ext.applyFunction(unitTypes, function(unitType) {
           if ((garrisonDetails[unitType.db_field] !== undefined && garrisonDetails[unitType.db_field] > 0) ||
-              (unitTypes[unitType.db_field] !== undefined && unitTypes[unitType.db_field] > 0)) {
+              (otherDetails[unitType.db_field] !== undefined && otherDetails[unitType.db_field] > 0)) {
             list.push(Ember.Object.create({
               name: unitType.name.en_US,
               symbolic_id: unitType.db_field, 
-              allUnits: garrisonDetails[unitType.db_field],
+              allUnits: garrisonDetails[unitType.db_field] + otherDetails[unitType.db_field],
               garrisonUnits: garrisonDetails[unitType.db_field],
               otherUnits: otherDetails[unitType.db_field],
             }));
@@ -173,7 +196,7 @@ AWE.UI.Ember = (function(module) {
       }
       // log("LIST", list, details);
       return list;
-    }.property('garrisonArmy.details.@each', 'otherArmy.details.@each').cacheable(),
+    }.property('garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange').cacheable(),
     
     unitDifferences: function() {
       var unitDifferences = {};
@@ -185,30 +208,12 @@ AWE.UI.Ember = (function(module) {
           unitDifferences[unitType.get('symbolic_id')] = difference; 
         }
       });
-      
       return unitDifferences;
     },
         
     changePressed: function() {
       log('ERROR Action not connected: changeWasPressed.');
     },
-    
-    cancelPressed: function() {
-      log('ERROR Action not connected: cancelWasPressed.');
-    },
-    
-    allToGarrison: function(){
-    },
-    
-    allToOther: function(){
-    },
-    
-    loading: null,
-    
-    init: function() {
-      this._super();      
-    },
-    
   });
   
   module.ArmyForm = Ember.View.extend({

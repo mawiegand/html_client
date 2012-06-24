@@ -37,6 +37,10 @@ AWE.Util = (function(module) {
     return count;  
   }
   
+  module.hashEmpty = function(hash) {
+    return module.hashCount(hash) === 0;  
+  }
+  
   module.hashFirst = function(_hash) {
     var value = null;
     for (var key in _hash) {
