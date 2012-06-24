@@ -10,52 +10,56 @@
 
         <h2>{{ army.name }}</h2>
       
-        {{#unless army.garrison}}
+        {{#if isChangeNamePossible}}
         <a style="display:block;" href="#" {{action "changeNamePressed" target="parentView.parentView"}}>change name</a>
-        {{/unless}}
-      </div>
-    
-      <div class="army-view-unit-list">
-        <h4>Units</h4>
-        <table class="table-list">
-            {{#each units}}
-          <tr>
-            <th>{{name}}:</th>
-            <td>{{number}}</td>
-          </tr>
-            {{/each}}
-        </table>
+        {{/if}}
       </div>
       
-      <div class="army-view-property-list">
-        <h4>Properties</h4>
-        <table class="table-list">
-          <tr>
-            <th>Stength Melee:</th>
-            <td>{{ army.unitcategory_infantry_strength }}</td>
-          <tr>
-          </tr>
-            <th>Stength Riders:</th>
-            <td>{{ army.unitcategory_cavalry_strength }}</td>
-          <tr>
-          </tr>
-            <th>Stength Distance:</th>
-            <td>{{ army.unitcategory_artillery_strength }}</td>
-          <tr>
-          </tr>
-            <th>Overal Strength:</th>
-            <td>{{ army.strength }}</td>
-          <tr>
-          </tr>
-            <th>Size:</th>
-            <td>{{ army.size_present }} / {{army.size_max}}</td>
-          <tr>
-          </tr>
-            <th>Velocity:</th>
-            <td>{{ army.velocity }}</td>
-          </tr>
-        </table>
-      </div>
+        <div class="army-view-unit-list">
+          <h4>Units</h4>
+          {{#if displayUnits}}
+            <table class="table-list">
+                {{#each units}}
+              <tr>
+                <th>{{local name}}:</th>
+                <td>{{number}}</td>
+              </tr>
+                {{/each}}
+            </table>
+          {{else}}
+            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+          {{/if}}
+        </div>
+      
+        <div class="army-view-property-list">   <!-- TODO: display categories dynamically! (wherever possible) -->
+          <h4>Properties</h4>
+          <table class="table-list">
+            <tr>
+              <th>Strength Melee:</th>
+              <td>{{formatNumber army.unitcategory_infantry_strength places="0"}}</td>
+            <tr>
+            </tr>
+              <th>Strength Riders:</th>
+              <td>{{formatNumber army.unitcategory_cavalry_strength places="0"}}</td>
+            <tr>
+            </tr>
+              <th>Strength Distance:</th>
+              <td>{{formatNumber army.unitcategory_artillery_strength places="0"}}</td>
+            <tr>
+            </tr>
+              <th>Overal Strength:</th>
+              <td>{{formatNumber army.strength places="0"}}</td>
+            <tr>
+            </tr>
+              <th>Size:</th>
+              <td>{{ army.size_present }} / {{army.size_max}}</td>
+            <tr>
+            </tr>
+              <th>Velocity:</th>
+              <td>{{ army.velocity }}</td>
+            </tr>
+          </table>
+        </div>
     </div>  
 </script>
 

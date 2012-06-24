@@ -17,6 +17,24 @@ AWE.UI.Ember = (function(module) {
     templateName: "army-info-view",
     
     army: null,
+    displayUnits: function() {
+      return this.getPath('units.length') > 0;
+    }.property('units.length').cacheable(),
+
+    
+    isChangeNamePossible: function() {
+      return !this.getPath('army.isGarrisonProp') && this.get('isOwnArmy');
+    }.property('army.isGarrisonProp', 'isOwnArmy'),
+    
+    isOwnArmy: function() {
+      var army = this.get('army'); 
+      return army ? army.isOwn() : false;
+    }.property('army.owner_id').cacheable(),
+    
+    isAlliedArmy: function() {
+      var army = this.get('army'); 
+      return army ? army.isRelationAtLeast(RELATION_TYPE_ALLIED) : false;
+    }.property('army.owner_id', 'army.alliance_id').cacheable(),    
     
     armyObserver: function() {
       if (this.get('army')) {
@@ -31,13 +49,13 @@ AWE.UI.Ember = (function(module) {
       if (army && army.details) { log('build list')
         AWE.Ext.applyFunction(unitTypes, function(unitType) {
           if (army.details[unitType.db_field] !== undefined && army.details[unitType.db_field] > 0) {
-            list.push({ name: unitType.name.en_US, number: army.details[unitType.db_field] }) ;
+            list.push({ name: unitType.name, number: army.details[unitType.db_field] }) ;
           }
         });
-        log("LIST", list, army, army.details);
       }
       return list;
-    }.property('army.details.@each').cacheable(),
+    }.property('army.details', 'army.details.@each').cacheable(),
+    
   });
   
   module.ArmyCreateDialog = module.Dialog.extend({

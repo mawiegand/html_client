@@ -45,6 +45,7 @@ AWE.GS = (function(module) {
     
     velocity: null,
     garrison: null,
+    isGarrisonPropBinding: Ember.Binding.bool('garrison'),
     
     stance: null,
     strength: null,
@@ -76,6 +77,7 @@ AWE.GS = (function(module) {
     isOwn: function() {
       return this.get('owner_id') === module.CharacterManager.currentCharacter.getId();
     },
+    
     
     isGarrison: function() {
       return this.get('garrison');
