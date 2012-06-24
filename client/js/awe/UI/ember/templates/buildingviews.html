@@ -14,13 +14,13 @@
 
 
 <script type="text/x-handlebars" data-template-name="building-slot-tooltip">
-  <img src="images/dialogs/advisor.png" class="advisor">
+  <div class="advisor girl"></div>
   {{#if building}}
     <h1>{{local building.name}} L{{building.level}}</h1>
     <p>
       {{#if building.upgradable}}
         {{#if building.costsOfNextLevel}}
-          <b>{{t settlement.buildings.tooltip.costOfNextLevel}} L{{building.level}}:</b>
+          <b>{{t settlement.buildings.tooltip.costOfNextLevel}} L{{building.nextLevel}}:</b>
           {{#each building.costsOfNextLevel}}
             {{amount}} {{local resourceType.name}} &nbsp;  
           {{/each}}<br/>

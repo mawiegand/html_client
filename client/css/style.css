@@ -718,6 +718,7 @@ html, body {
   width: 196px;
   height: 196px;
   margin-top:-10px;
+  margin-bottom:-20px;
 }
 
 .info-dialog .advisor { 
@@ -1224,12 +1225,12 @@ span.bonus {
 
 .fortress-picture .mouse-over, .base-picture .mouse-over {
   position: absolute;
-  width: 390px;
+  width: 360px;
   height: 140px;
   z-index:10;
   padding: 16px;
   border-radius: 11px;
-  padding-left: 46px;
+  padding-left: 170px;
 }
 
 .fortress-picture .mouse-over {
@@ -1243,19 +1244,18 @@ span.bonus {
 }
 
 
-.fortress-picture .mouse-over p, .base-picture .mouse-over h1 {
+.fortress-picture .mouse-over h1, .base-picture .mouse-over h1 {
   margin-top: 0px;
 }
 
 
 .fortress-picture .mouse-over p, .base-picture .mouse-over p {
-  padding-left: 36px;
+  padding-left: 10px;
 }
 
-.fortress-picture .mouse-over img.advisor, .base-picture .mouse-over img.advisor {
+.fortress-picture .mouse-over .advisor, .base-picture .mouse-over .advisor {
   position: absolute;
-  left: -44px;
-  width: 160px;
+  left: -30px;
 }
 
 .fortress-picture .background {
@@ -1292,6 +1292,7 @@ span.bonus {
   width: 80px;
   height: 120px;
   z-index: 2;
+  border-radius: 5px;
   background: url('../images/settlements/base/building_category_small_building.png');  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
 
@@ -1301,6 +1302,7 @@ span.bonus {
   width: 120px;
   height: 150px;
   z-index: 2;
+  border-radius: 5px;
   background: url('../images/settlements/base/building_category_large_building.png');  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
 
