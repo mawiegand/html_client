@@ -863,6 +863,8 @@ span.bonus {
   
   cursor: pointer; 
 }
+
+
 .building-option.requirement-unmet {
   background-color: #FDD;
 }
@@ -906,14 +908,24 @@ span.bonus {
   width: 120px;
   height:150px;
   margin-left: 0px;
+  background: url('../images/settlements/base/building_category_large_building.png');
 }
 
-/** image for building_siege_tower */
+.base-screen .settlement-dialog-building-details .building-option-image {
+  margin-top: -10px;
+  margin-bottom: -10px;
+}
+
+
+/** image for base buildings */
 .building-option-image.building_quarry {
   background: url('../images/settlements/base/building_quarry_large.png');
 }
 .building-option-image.building_palace {
   background: url('../images/settlements/base/building_palace_large.png');
+}
+.building-option-image.building_logger {
+  background: url('../images/settlements/base/building_logger_large.png');
 }
 
 
@@ -1365,8 +1377,23 @@ span.bonus {
   background: url('../images/settlements/fortress/building_cavalry_tower.png');
 }
 
+/** base: large slots */
 .base-picture .large-building.building_palace {
   background: url('../images/settlements/base/building_palace_large.png');
+}
+.base-picture .large-building.building_logger {
+  background: url('../images/settlements/base/building_logger_large.png');
+}
+.base-picture .large-building.building_quarry {
+  background: url('../images/settlements/base/building_quarry_large.png');
+}
+
+/** base: small slots */
+.base-picture .small-building.building_logger {
+  background: url('../images/settlements/base/building_logger_small.png');
+}
+.base-picture .small-building.building_quarry {
+  background: url('../images/settlements/base/building_quarry_small.png');
 }
 
 

@@ -15,20 +15,19 @@
       {{/if}}
 
       {{view AWE.UI.Ember.SettlementInfoBoxView classNames="settlement-info-box" settlementBinding="settlement"}}
-    {{/if}}
 
-    {{#if selectedSlot}}
-      {{#if selectedSlot.building }}
-        {{view AWE.UI.Ember.BuildingDetailsDialog controllerBinding="controller" slotBinding="selectedSlot" buildingBinding="selectedSlot.building"}}
-      {{else}}
-        {{view AWE.UI.Ember.SelectBuildingDialog controllerBinding="controller" slotBinding="selectedSlot" constructionOptionsBinding="selectedSlot.constructionOptions"}}
+      {{#if selectedSlot}}
+        {{#if selectedSlot.building }}
+          {{view AWE.UI.Ember.BuildingDetailsDialog controllerBinding="controller" slotBinding="selectedSlot" buildingBinding="selectedSlot.building"}}
+        {{else}}
+          {{view AWE.UI.Ember.SelectBuildingDialog controllerBinding="controller" slotBinding="selectedSlot" constructionOptionsBinding="selectedSlot.constructionOptions"}}
+        {{/if}}
       {{/if}}
+    
+      {{#if "hoveredBuildingSlotView" }}
+        {{view AWE.UI.Ember.ToolTipView templateName="building-slot-tooltip" classNames="mouse-over" mouseXBinding="hoveredBuildingSlotView.mouseX" mouseYBinding="hoveredBuildingSlotView.mouseY" buildingBinding="hoveredBuildingSlotView.slot.building"}}
+      {{/if}}    
     {{/if}}
-    
-    {{#if "hoveredBuildingSlotView" }}
-      {{view AWE.UI.Ember.ToolTipView templateName="building-slot-tooltip" classNames="mouse-over" mouseXBinding="hoveredBuildingSlotView.mouseX" mouseYBinding="hoveredBuildingSlotView.mouseY" buildingBinding="hoveredBuildingSlotView.slot.building"}}
-    {{/if}}    
-    
   </div>
 </div>
 </script>

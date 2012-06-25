@@ -163,7 +163,7 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
       return module.meetsScienceRequirement(requirement, character, considerJobs);
     }
     else {
-      console.log('ERROR: Requirement of unknown type ', requirement.type);
+      //console.log('ERROR: Requirement of unknown type ', requirement.type);
     }
     return true ;
   };
@@ -192,18 +192,22 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
     var slots = settlement.get('enumerableSlots') || [];
     var maxMet = !(requirement.max_level !== undefined && requirement.max_level !== null && requirement.max_level < 0) ; // cannot bet true, when smaller than zero.
     var minMet = requirement.min_level === undefined || requirement.min_level === null || requirement.min_level <= 0; // it's always true, if it's not specified or less equal 0
+    var excludeSlotNum = slotToExclude ? slotToExclude.get('slot_num') : -1;
     
     slots.forEach(function(item) {
-      if (! slotToExclude || slotToExclude.get('slot_num') !== item.get('slot_num')) {
-        var buildingId = item.get('building_id');
-        if (buildingId && requirement.id === buildingId && requirement.max_level !== undefined && requirement.max_level !== null) {
+      if (excludeSlotNum !== item.get('slot_num')) {
+
+        var buildingId = item.get('building_id'); 
+        buildingId = buildingId === undefined || buildingId === null ? -1 : buildingId; //protect against undefined and null, wheras id 0 is ok!
+        if (requirement.id === buildingId && requirement.max_level !== undefined && requirement.max_level !== null) {
           maxMet = maxMet && requirement.max_level >= (considerJobs ? item.get('levelAfterJobs') : item.get('level'));    // all buildings must not be larger than the max level. may consider ongoing jobs in order to prevent queueing two mutually exclusive buildings
         }
-        if (buildingId && requirement.id === buildingId && requirement.min_level) {
+        if (requirement.id === buildingId && requirement.min_level) {
           minMet = minMet || requirement.min_level <= item.get('level');    // one building must be larger than or equal to the min level; no not consider ongoing jobs; building must be finished to allow queueing of a dependent building
         }
       }
     });
+    
     return maxMet && minMet;
   };
   

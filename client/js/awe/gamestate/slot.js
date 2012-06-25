@@ -142,8 +142,8 @@ AWE.GS = (function(module) {
       var settlement = this.getPath('slot.settlement');
       var character = settlement ? settlement.owner() : null;
       var slot = this.get('slot');
-      return AWE.Util.Rules.failedRequirements(this.getPath('buildingType.requirements'), settlement, slot, character, true);
-    }.property('buildingType', 'slot.settlement.hashableSlots.changedAt'),
+      return AWE.Util.Rules.failedRequirements(this.getPath('buildingType.requirements'), settlement, character, slot, true);
+    }.property('buildingType', 'slot.settlement.hashableSlots.changedAt').cacheable(),
 
 		/** bool for indicating whether or not all requirements for constructin
 		 * this building are met. */
@@ -246,7 +246,7 @@ AWE.GS = (function(module) {
 
 		canBeTornDown: function() {
 		  
-		}.property('level', 'buildingId'),
+		}.property('level', 'buildingId').cacheable(),
 		
 		
   });    
