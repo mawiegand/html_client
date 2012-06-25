@@ -48,8 +48,9 @@ AWE.GS = (function(module) {
     }.property('buildingId').cacheable(),
     
     garrisonArmy: function() {
-      var showGarrisonArmy = this.get('buildingType') && this.get('buildingType')['abilities'] && this.get('buildingType')['abilities']['show_garrison_army'];
-      if (showGarrisonArmy) {
+      var showGarrisonArmy = this.get('buildingType') && this.get('buildingType')['abilities'] && this.get('buildingType')['abilities']['unlock_garrison'];
+      var level = this.get('level');
+      if (showGarrisonArmy && showGarrisonArmy.level <= level) {
         return this.getPath('slot.settlement.garrison');
       }
     }.property('buildingType', 'slot.settlement.garrison').cacheable(),
@@ -340,7 +341,7 @@ AWE.GS = (function(module) {
         var buildingTypes = AWE.GS.RulesManager.getRules().getBuildingTypeIdsWithCategories(buildingOptions)
         
         AWE.Ext.applyFunctionToHash(buildingTypes, function(key, buildingId) {
-          options.push(AWE.GS.Building.create({ buildingId: buildingId, level: 1, slot: self }));
+          options.push(AWE.GS.Building.create({ buildingId: buildingId, level: 0, slot: self }));
         });        
       }
       else {

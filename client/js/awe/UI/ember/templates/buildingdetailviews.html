@@ -22,7 +22,7 @@
         {{/each}}
       </div>
       {{#with hoveredView.building}}
-        <h1>{{local name}} {{t building.level }} {{level}}</h1>
+        <h1>{{local name}} {{t building.level }} {{nextLevel}}</h1>
         {{local description}}
         {{#if costsOfNextLevel}}
           {{t building.cost }}:
@@ -39,6 +39,12 @@
             {{/each}}
           </p>
         {{/unless}} 
+        {{#if productionsNextLevel}}
+          <b>{{t building.produces}}:</b><br/>
+          {{#each productionsNextLevel}}
+            {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{local resourceType.name}} {{t general.perHour}} <br/>  
+          {{/each}}
+        {{/if}}
       {{/with}}
     {{/if}}
   </div>
