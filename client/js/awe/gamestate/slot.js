@@ -240,6 +240,35 @@ AWE.GS = (function(module) {
 		speedupQueuesNextLevel: function() {
 		  return this.calculateSpeedupQueues(this.get('nextLevel'));
 		}.property('buildingId', 'nextLevel').cacheable(),		
+		
+		
+		calculateUnlockedDiplomacy: function(level) {
+      var unlockLevel = this.getPath('buildingType.abilities.unlock_diplomacy');
+      level = level || this.get('level'); 
+      return unlockLevel && unlockLevel <= level;
+		},
+
+		calculateUnlockedAllianceCreation: function(level) {
+      var unlockLevel = this.getPath('buildingType.abilities.unlock_alliance_creation');
+      level = level || this.get('level'); 
+      return unlockLevel && unlockLevel <= level;
+		},		
+		
+		unlockedDiplomacy: function() {
+      return this.calculateUnlockedDiplomacy();
+		}.property('buildingId', 'level').cacheable(),
+		
+		unlockedAllianceCreation: function() {
+      return this.calculateUnlockedAllianceCreation();
+		}.property('buildingId', 'level').cacheable(),
+
+		unlockedDiplomacyNextLevel: function() {
+      return this.calculateUnlockedDiplomacy(this.get('nextLevel'));
+		}.property('buildingId', 'nextLevel').cacheable(),
+		
+		unlockedAllianceCreationNextLevel: function() {
+      return this.calculateUnlockedAllianceCreation(this.get('nextLevel'));
+		}.property('buildingId', 'nextLevel').cacheable(),
 
     // ///////////////////////////////////////////////////////////////////////
     
