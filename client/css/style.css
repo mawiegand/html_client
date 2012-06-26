@@ -692,16 +692,21 @@ html, body {
 }
 
 .ok-button {
-  background: url('../images/icons/cross_green_small.png') no-repeat left center;
   color: #9D9;
 }
+.icon-button.ok-button {
+  background: url('../images/icons/cross_green_small.png') no-repeat left center;  
+}
 
-.close-button {
+.icon-button.close-button {
   background: url('../images/icons/cross_small.png') no-repeat left center;
 }
 
-.cancel-button {
+.icon-button.cancel-button {
   background: url('../images/icons/cross_red_small.png') no-repeat left center;
+}
+
+.cancel-button {
   color: #F77;
 }
 
@@ -1217,8 +1222,15 @@ span.bonus {
   height: 36px;
   border-radius: 5px;
   margin-bottom: 6px;
-  width: 220px;
   margin-right: 30px;
+}
+
+.alliance-management input[type="text"] {
+  width: 220px;
+}
+
+.shout-box input[type="text"] {
+  width: 500px;
 }
 
 

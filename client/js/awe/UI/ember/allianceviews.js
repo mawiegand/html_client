@@ -23,6 +23,13 @@ AWE.UI.Ember = (function(module) {
     controller: null,
     alliance:   null,
     
+    isAllianceLeader: function() {
+      var leaderId = this.getPath('alliance.leader_id');
+      var characterId = AWE.GS.player.getPath('currentCharacter.id');
+      return leaderId && leaderId === characterId;
+    }.property('alliance.leader_id', 'AWE.GS.player.currentCharacter.id').cacheable(),
+
+    
     ownAlliance: function() {
       var allianceId = this.getPath('alliance.id');
       var ownAllyId = AWE.GS.player.getPath('currentCharacter.alliance_id');
@@ -48,7 +55,6 @@ AWE.UI.Ember = (function(module) {
     
     controller: null,
     alliance:   null,
-    members:    null,
   });
   
   module.AllianceManagementView = Ember.View.extend({
@@ -89,6 +95,10 @@ AWE.UI.Ember = (function(module) {
         return ;
       }
       
+      if (password === this.getPath('alliance.password')) { // do nothing, password hasn't changed
+        return ;
+      }
+      
       var action = AWE.Action.Fundamental.createChangeAlliancePasswordAction(alliance, password);
       this.startAction();
       AWE.Action.Manager.queueAction(action, function(statusCode) {
@@ -97,7 +107,12 @@ AWE.UI.Ember = (function(module) {
         }
         self.endAction();
       });       
-    },    
+    }, 
+    
+    modifiedPassword: function() {
+      return this.get('password') !== this.getPath('alliance.password');
+    }.property('alliance.password', 'password').cacheable(),
+       
   });
   
   

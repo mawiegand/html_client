@@ -130,12 +130,17 @@ AWE.UI.Ember = (function(module) {
     shoutBoxInput: null,
     shoutBoxSendPressed: function() {
       var input = this.get('shoutBoxInput');
+      var controller = this.get('controller');
+
       if (input.length > 0) {
         if (this.shout) {
           this.shout(input);
         }
+        else if (controller) {
+          controller.shout(input);
+        } 
         else {
-          console.log('ERROR in ShoutBox: shout not connected.');
+          console.log('ERROR in ShoutBox: shout not connected and no controller set.');
         }
         this.set('shoutBoxInput', '');
       }

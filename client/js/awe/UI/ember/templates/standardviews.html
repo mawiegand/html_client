@@ -44,7 +44,7 @@
       {{/each}}
     </ul>
     {{view Ember.TextField class="text-field" placeholder="your message" type="text" valueBinding="shoutBoxInput"}} 
-    {{#view Ember.Button action="shoutBoxSendPressed" target="parentView"}}shout{{/view}}
+    <div class="button ok-button" {{action "shoutBoxSendPressed"}}>shout</div>
   </div>
 </script>
 

@@ -1,16 +1,18 @@
 <script type="text/x-handlebars" data-template-name="alliance-screen">
 <div {{bindAttr class="ownAlliance:own-alliance :alliance-screen"}}>
   <div class="alliance-pane">
-  
-  {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner"}}
-  {{view AWE.UI.Ember.AllianceInfoBoxView controllerBinding="controller" allianceBinding="alliance"}}
-  {{#if ownAlliance}}
+    {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner"}}
+    {{view AWE.UI.Ember.AllianceInfoBoxView controllerBinding="controller" allianceBinding="alliance"}}
+    {{#if ownAlliance}}
+      {{#if isAllianceLeader}}
+        <hr>
+        {{view AWE.UI.Ember.AllianceManagementView controllerBinding="controller" allianceBinding="alliance"}}
+      {{/if}}
+      <hr>
+      {{view AWE.UI.Ember.ShoutBox controllerBinding="controller" shoutsBinding="controller.content.messages" }}
+    {{/if}}
     <hr>
-    {{view AWE.UI.Ember.AllianceManagementView controllerBinding="controller" allianceBinding="alliance"}}
-  {{/if}}
-  <hr>
-  {{view AWE.UI.Ember.AllianceMemberListView controllerBinding="controller" allianceBinding="alliance"}}
-
+    {{view AWE.UI.Ember.AllianceMemberListView controllerBinding="controller" allianceBinding="alliance"}}
   </div>
 </div>
 </script>
@@ -20,7 +22,7 @@
   <div class="alliance-infobox clearfix">
     <h1>{{ alliance.name }} [{{ alliance.tag }}]</h1>
     <p> {{t alliance.founded }}: {{ creation }}</p>
-    <p> {{t alliance.leader }}: {{ alliance.leaderName }}</p>
+    <p> {{t alliance.leader }}: {{ alliance.leader.name }}</p>
   </div>
   {{#if alliance.description}}
     <div class="alliance-description">
@@ -41,7 +43,7 @@
   <div class="alliance-member-list">
     <h1>{{t alliance.members }}</h1>
     <ul>
-      {{#each members}}
+      {{#each alliance.members}}
         <li>{{ name }}</li>
       {{/each}}
     </ul>
@@ -59,7 +61,9 @@
     {{#if ongoingAction}}
       {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} processing...
     {{else}}
-      <div class="icon-button ok-button" {{action "changePassword"}}>change password</div>
+      {{#if modifiedPassword}}
+        <div class="icon-button ok-button" {{action "changePassword"}}>save new password</div>
+      {{/if}}
     {{/if}}
   </div>
 </script>
