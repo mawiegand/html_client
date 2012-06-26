@@ -62,32 +62,9 @@ AWE.UI.Ember = (function(module) {
    * in the left column of the message center. */
   module.MessageTeaserView = Ember.View.extend({
     templateName: 'message-teaser',
-    
+
     timeString: function() {
-      var oneDay = 1000 * 3600 * 24;
-      var isoDate = this.getPath('message.created_at');
-      if (!isoDate) {
-        return null;
-      }
-      var date = Date.parseISODate(isoDate);
-      var now = new Date();
-      if (date.getDate() === now.getDate() && 
-          date.getMonth() === now.getMonth() &&
-          date.getFullYear() === now.getFullYear()) {
-        return date.getHours()+":"+date.getMinutes();
-      }
-      else if (now.getTime() - date.getTime() < oneDay) {
-        return "yesterday";
-      }
-      else if (now.getTime() - date.getTime() < 2*oneDay) {
-        return "2 days ago";
-      }
-      else if (now.getTime() - date.getTime() < 3*oneDay) {
-        return "3 days ago";
-      }
-      else {
-        return date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
-      }
+      return AWE.Util.createTimeString(this.getPath('message.created_at'));
     }.property('message.created_at').cacheable(),
     
     /** computed property used for marking the message that has been selected

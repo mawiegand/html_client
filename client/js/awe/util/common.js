@@ -91,6 +91,32 @@ AWE.Util = (function(module) {
     }
     return string;
   }
+  
+  module.createTimeString = function(isoDate) {
+    var oneDay = 1000 * 3600 * 24;
+    if (!isoDate) {
+      return null;
+    }
+    var date = Date.parseISODate(isoDate);
+    var now = new Date();
+    if (date.getDate() === now.getDate() && 
+        date.getMonth() === now.getMonth() &&
+        date.getFullYear() === now.getFullYear()) {
+      return date.getHours()+":"+date.getMinutes();
+    }
+    else if (now.getTime() - date.getTime() < oneDay) {
+      return "yesterday";
+    }
+    else if (now.getTime() - date.getTime() < 2*oneDay) {
+      return "2 days ago";
+    }
+    else if (now.getTime() - date.getTime() < 3*oneDay) {
+      return "3 days ago";
+    }
+    else {
+      return date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
+    }
+  };
 
   
   return module;

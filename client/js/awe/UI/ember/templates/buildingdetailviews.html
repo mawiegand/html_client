@@ -184,7 +184,7 @@
     <div class="red-color">{{errorMessage}}</div>
   {{/if}}
   {{#if ongoingAction}}
-    {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}} processing...
+    {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} processing...
   {{else}}
     {{#if character.alliance_id}}
       <p>
