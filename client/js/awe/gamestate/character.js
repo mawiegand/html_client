@@ -6,6 +6,10 @@
 var AWE = window.AWE || {};
 
 AWE.GS = (function(module) {
+  
+  module.player = Ember.Object.create({
+    currentCharacter: null,
+  });
     
   module.CharacterAccess = {};
   module.rightOfWayTypes = [ 'all', 'noEnemies', 'noNeutrals', 'noResidents'];
@@ -55,6 +59,7 @@ AWE.GS = (function(module) {
     premium_expiration: null,
     
     resourcePool: null,
+
     
     //
     // //// MESSAGING //////////////////////////////////////////////////////// 
@@ -186,6 +191,7 @@ AWE.GS = (function(module) {
   
     var that;
     var lastCurrentCharacterUpdate = null;
+    var currentCharacter = null;  // THIS IS TO GO AWAY, WE NEED A PROPERTY WE CAN BIND TO!
     
 
     // protected attributes and methods ////////////////////////////////////
@@ -201,15 +207,13 @@ AWE.GS = (function(module) {
     // public attributes and methods ///////////////////////////////////////
   
     that = module.createEntityManager(my);
-    
-    that.currentCharacter = null;
-  
+      
     that.getCharacter = function(id) {
       return that.getEntity(id);
     };
     
     that.getCurrentCharacter = function() {
-      return this.currentCharacter;
+      return module.player.get('currentCharacter');
     };
     
     that.getMembersOfAlliance = function(id) { 
@@ -259,11 +263,12 @@ AWE.GS = (function(module) {
     }
     
     that.updateCurrentCharacter = function(updateType, callback) {
-      if (this.currentCharacter != null) {
-        return this.updateCharacter(this.currentCharacter.get('id'), updateType, callback);
+      var self = this;
+      var currentCharacter = module.player.get('currentCharacter');
+      if (currentCharacter !== undefined && currentCharacter !== null) {
+        return this.updateCharacter(currentCharacter.get('id'), updateType, callback);
       }
       else { // no current character, need to fetch self
-        var self = this;
         var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/self';
         return my.fetchEntitiesFromURL(
           url, 
@@ -273,7 +278,8 @@ AWE.GS = (function(module) {
           null,
           function(character, statusCode, xhr, timestamp) {
             if (statusCode === AWE.Net.OK) {
-              self.currentCharacter = character;
+              module.player.set('currentCharacter', character);
+              self.currentCharacter = character; 
             }
             if (callback) {
               callback(character, statusCode, xhr, timestamp);

@@ -122,6 +122,43 @@ AWE.UI.Ember = (function(module) {
     }.property('requirement.max_level').cacheable(),
 
   });
+  
+  /** @class
+   * @name AWE.UI.Ember.DiplomacyView */  
+  module.DiplomacyView = Ember.View.extend( /** @lends AWE.UI.Ember.DiplomacyView# */ {
+    templateName: "diplomacy-view",
+    
+    characterBinding: 'AWE.GS.player.currentCharacter',
+    
+    leaveAlliance: function() {
+      var self = this;
+      var dialog = AWE.UI.Ember.InfoDialog.create({
+        heading:    'Leave Alliance',
+        message:    'Are you sure about leaving your alliance?',
+        allianceId: this.getPath('character.alliance_id'),
+        
+        cancelPressed: function() {
+          this.destroy();
+        },
+        okText: 'Yes',
+        okPressed: function(event) {
+          console.log('Player wants to leave alliance!')  
+          var action = AWE.Action.Fundamental.createLeaveAllianceAction(this.get('allianceId'));
+          if (!action) {
+            console.log('ERROR: Could not create leave alliance action');
+          }
+          else {
+            AWE.Action.Manager.queueAction(action);       
+          }     
+          this.destroy();  
+        },
+      });      
+      WACKADOO.presentModalDialog(dialog);
+    },
+    
+  });  
+  
+  
   return module;
     
 }(AWE.UI.Ember || {}));

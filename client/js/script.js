@@ -100,9 +100,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       
       _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
       AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
-        if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.currentCharacter) {
+        if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.getCurrentCharacter()) {
           console.log('INFO: playing as character ', entity);
-          var currentCharacter = AWE.GS.CharacterManager.currentCharacter;
+          var currentCharacter = AWE.GS.CharacterManager.getCurrentCharacter();
           if (currentCharacter.get('alliance_id') && currentCharacter.get('alliance_id') > 0) {
             _numAssets +=1;
             AWE.GS.AllianceManager.updateAlliance(currentCharacter.get('alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
@@ -112,7 +112,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           if (currentCharacter.get('base_node_id')) {
             _numAssets +=1;
             AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
-              AWE.GS.CharacterManager.currentCharacter.set('base_node', node);
+              AWE.GS.CharacterManager.getCurrentCharacter().set('base_node', node);
               console.log("Node", node)
               if (self.get('mapScreenController')) {
                 self.get('mapScreenController').moveTo(node);
@@ -162,7 +162,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     baseButtonClicked: function() {
       if (this.get('presentScreenController') === this.get('mapScreenController')) {
-        var node = AWE.GS.CharacterManager.currentCharacter.get('base_node');
+        var node = AWE.GS.player.getPath('currentCharacter.base_node');
         if (node) {
           this.get('presentScreenController').moveTo(node);
         }

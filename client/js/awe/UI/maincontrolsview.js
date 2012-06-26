@@ -56,7 +56,7 @@ AWE.UI = (function(module) {
     
     that.recalcView = function() {
 
-      var character = AWE.GS.CharacterManager.currentCharacter;
+      var character = AWE.GS.CharacterManager.getCurrentCharacter();
       var allianceId = character.get('alliance_id');
       
       // Ressourcen Leiste

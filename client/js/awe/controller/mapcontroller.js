@@ -1223,7 +1223,7 @@ AWE.Controller = (function(module) {
               AWE.Map.Manager.fetchLocationsForRegion(nodes[i].region(), function(region) {
                 that.setModelChanged();
                 region.locations().forEach(function(location) {
-                  if (location.ownerId() === AWE.GS.CharacterManager.currentCharacter.getId()) {
+                  if (location.ownerId() === AWE.GS.CharacterManager.getCurrentCharacter().getId()) {
                     AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id(), null, function(){
                     });
                   }

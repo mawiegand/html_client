@@ -75,7 +75,7 @@ AWE.GS = (function(module) {
     details: null,
     
     isOwn: function() {
-      return this.get('owner_id') === module.CharacterManager.currentCharacter.getId();
+      return this.get('owner_id') === module.CharacterManager.getCurrentCharacter().getId();
     },
     
     

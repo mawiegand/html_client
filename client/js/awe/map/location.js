@@ -124,7 +124,7 @@ AWE.Map = (function(module) {
     }
         
     that.isOwn = function() {
-      return _ownerId === AWE.GS.CharacterManager.currentCharacter.id;
+      return _ownerId === AWE.GS.CharacterManager.getCurrentCharacter().id;
     }
             
     /** this method updates the data stored at the local region from the given 
