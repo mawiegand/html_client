@@ -25,6 +25,11 @@ AWE.Util = AWE.Util || {};
  * @namespace */
 AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
   
+  module.lookupTranslation = function(hash) {
+    return hash[AWE.Settings.locale] ? hash[AWE.Settings.locale] : hash[AWE.Config.DEFAULT_LOCALE];
+  };
+  
+  
   ////////////////////////////////////////////////////////////////////////////
   // 
   //  RESOURCES

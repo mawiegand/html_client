@@ -288,7 +288,7 @@ AWE.GS = (
                 var entityData = data[i];
                 var entity = (my.processUpdateResponse(entityData, updateType, start));
                 result[entity.get('id')] = entity;
-              }          
+              }         
             }
             else {                                    //   B) process a single army
               result = my.processUpdateResponse(data, updateType, start);
@@ -296,6 +296,9 @@ AWE.GS = (
           }
           my.unregisterRequest(queue, id, updateType);//   unregister request 
           if (callback) {
+            var start = new Date();
+            Ember.run.sync(); // sync the bindings now, before continuing with the execution (e.g. calling callbacks)
+            console.log('Manual Sync in GameStateManager Elapsed (ms): ',  (new Date().getTime() - start.getTime()));
             callback(result, xhr.status, xhr, start);
           }        
         }); 

@@ -270,11 +270,17 @@ html, body {
 
 
 .red-color {
-  color: #FDD;
+  color: #F77;
+}
+.red-background {
+  background-color: #FDD;
 }
 
 .green-color {
-  color: #DFD;
+  color: #9D9;
+}
+.green-background {
+  background-color: #DFD;
 }
 
 .yellow-color {

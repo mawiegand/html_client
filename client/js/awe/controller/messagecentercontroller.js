@@ -127,9 +127,8 @@ AWE.Controller = (function(module) {
           var outbox = AWE.GS.CharacterManager.getCurrentCharacter().get('outbox');
           if (!outbox) {
             AWE.GS.CharacterManager.getCurrentCharacter().fetchOutbox(function(outboxes, status) {
-              console.log('FETCHED OUTBOX FOR FIRST TIME, STATUS', status, status === AWE.Net.NOT_MODIFIED);
               if (status === AWE.Net.NOT_FOUND || !outboxes) {
-                console.log('ERROR: outbox of current character not found on server.');
+                console.log('ERROR: outboxes of current character not found on server.');
               } 
               else { 
                 outbox = AWE.GS.CharacterManager.getCurrentCharacter().get('outbox');
@@ -137,19 +136,13 @@ AWE.Controller = (function(module) {
                   outbox.fetchEntries();
                 }
                 else {
-                  console.log('ERROR: outbox could not be fetched from server.');
+                  console.log('ERROR: no outbox found.');
                 }
               }
             });
           }
           else if (outbox && outbox.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime()) { // timeout
-
-            console.log("CHAR:", this.view, this.view.get('character'), this.view.get('character').get('outbox'));
-
-
             AWE.GS.OutboxManager.updateMessageBox(outbox.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(outbox, status) {
-          
-              console.log('UPDATED OUTBOX, STATUS', status, 'NOT_MODIFIED:', status === AWE.Net.NOT_MODIFIED);
           
     					if (outbox && outbox.getId() && status !== AWE.Net.NOT_MODIFIED) {
                 outbox.fetchEntries()
@@ -166,7 +159,6 @@ AWE.Controller = (function(module) {
           var inbox = AWE.GS.CharacterManager.getCurrentCharacter().get('inbox');
           if (!inbox) {
             AWE.GS.CharacterManager.getCurrentCharacter().fetchInbox(function(inboxes, status) {
-              console.log('FETCHED INBOX FOR FIRST TIME, STATUS', status, status === AWE.Net.NOT_MODIFIED);
               if (status === AWE.Net.NOT_FOUND || !inboxes) {
                 console.log('ERROR: inbox of current character not found on server.');
               } 
@@ -182,14 +174,7 @@ AWE.Controller = (function(module) {
             });
           }
           else if (inbox && inbox.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 10000 < new Date().getTime()) { // timeout
-
-            console.log("CHAR:", this.view, this.view.get('character'), this.view.get('character').get('inbox'));
-
-
             AWE.GS.InboxManager.updateMessageBox(inbox.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(inbox, status) {
-          
-              console.log('UPDATED INBOX, STATUS', status, 'NOT_MODIFIED:', status === AWE.Net.NOT_MODIFIED);
-          
     					if (inbox && inbox.getId() && status !== AWE.Net.NOT_MODIFIED) {
                 inbox.fetchEntries()
     					}

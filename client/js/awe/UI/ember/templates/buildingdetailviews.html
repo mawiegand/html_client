@@ -180,25 +180,33 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="diplomacy-view">
-  {{#if character.alliance_id}}
-    <p>
-      Presently, you are member of the alliance [{{character.alliance_tag}}].
-      <div class="icon-button cancel-button" {{action "leaveAlliance"}}>leave {{character.alliance_tag}}</div>
-    </p> 
-  {{else}}
-    <p>
-      Join an existing alliance by entering its tag and the secret password.<br/>
-      {{view Ember.TextField class="text-field" placeholder="alliance tag" type="text" valueBinding="allianceTag"}} 
-      {{view Ember.TextField class="text-field" placeholder="password" type="text" valueBinding="alliancePassword"}} 
-      <div class="icon-button ok-button" {{action "joinAlliance"}}>join alliance</div>
-    </p>
-  
-    <p>
-      Found a new alliance and install yourself as leader.<br/>
-      {{view Ember.TextField class="text-field" placeholder="alliance tag" type="text" valueBinding="allianceTag"}} 
-      {{view Ember.TextField class="text-field" placeholder="alliance name" type="text" valueBinding="allianceName"}} 
-      <div class="icon-button ok-button" {{action "foundAlliance"}}>found alliance</div>
-    </p>
+  {{#if errorMessage}}
+    <div class="red-color">{{errorMessage}}</div>
   {{/if}}
+  {{#if ongoingAction}}
+    {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}} processing...
+  {{else}}
+    {{#if character.alliance_id}}
+      <p>
+        Presently, you are member of the alliance [{{character.alliance_tag}}].
+        <div class="icon-button cancel-button" {{action "leaveAlliance"}}>leave {{character.alliance_tag}}</div>
+      </p> 
+    {{else}}
+      <p>
+        Join an existing alliance by entering its tag and the secret password.<br/>
+        {{view Ember.TextField class="text-field" placeholder="alliance tag" type="text" valueBinding="allianceTag"}} 
+        {{view Ember.TextField class="text-field" placeholder="password" type="text" valueBinding="alliancePassword"}} 
+        <div class="icon-button ok-button" {{action "joinAlliance"}}>join alliance</div>
+      </p>
+  
+      <p>
+        Found a new alliance and install yourself as leader.<br/>
+        {{view Ember.TextField class="text-field" placeholder="alliance tag" type="text" valueBinding="newAllianceTag"}} 
+        {{view Ember.TextField class="text-field" placeholder="alliance name" type="text" valueBinding="newAllianceName"}} 
+        <div class="icon-button ok-button" {{action "foundAlliance"}}>found alliance</div>
+      </p>
+    {{/if}}
+  {{/if}}
+  
 </script>
 

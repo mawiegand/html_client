@@ -130,6 +130,26 @@ AWE.UI.Ember = (function(module) {
     
     characterBinding: 'AWE.GS.player.currentCharacter',
     
+    allianceTag:      null,   // input bindings
+    alliancePassword: null,
+    
+    newAllianceName:  null,
+    newAllianceTag:   null,
+    
+    errorMessage:     null,
+    ongoingAction:    false,
+    
+    resetError: function() {
+      this.set('errorMessage', null);
+    },
+    
+    startAction: function() {
+      this.set('ongoingAction', true);
+    },
+    endAction: function() {
+      this.set('ongoingAction', false);
+    },
+    
     leaveAlliance: function() {
       var self = this;
       var dialog = AWE.UI.Ember.InfoDialog.create({
@@ -142,19 +162,89 @@ AWE.UI.Ember = (function(module) {
         },
         okText: 'Yes',
         okPressed: function(event) {
-          console.log('Player wants to leave alliance!')  
           var action = AWE.Action.Fundamental.createLeaveAllianceAction(this.get('allianceId'));
           if (!action) {
-            console.log('ERROR: Could not create leave alliance action');
+            this.set('errorMessage', 'Client Error: Could not leave alliance.');
           }
           else {
-            AWE.Action.Manager.queueAction(action);       
+            self.startAction();
+            AWE.Action.Manager.queueAction(action, function(statusCode) {
+              if (statusCode !== 200) {
+                this.set('errorMessage', 'Could not leave alliance.');
+              }
+              self.endAction();
+            });       
           }     
           this.destroy();  
         },
       });      
+      this.resetError();
       WACKADOO.presentModalDialog(dialog);
     },
+  
+    joinAlliance: function() {
+      var self     = this;
+      var tag      = this.get('allianceTag');
+      var password = this.get('alliancePassword')
+      
+      this.resetError();
+      
+      if (!tag || tag.length < 2) {
+        this.set('errorMessage', 'Enter a valid alliance tag.');
+        return ;
+      }
+      if (!password) {
+        this.set('errorMessage', 'Enter the secret password of the alliance.');
+        return ;
+      }
+      
+      var action = AWE.Action.Fundamental.createJoinAllianceAction(tag, password);
+      this.startAction();
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        if (statusCode === 404) {
+          self.set('errorMessage', 'There is no alliance with the tag you entered.');
+        }
+        else if (statusCode === 403) {
+          self.set('errorMessage', 'Alliance tag and password do not match.');
+        }
+        else if (statusCode !== 200) {
+          self.set('errorMessage', 'For some reason, joining the alliance did fail.')
+        }
+        self.endAction();
+      });       
+    },
+    
+    createAlliance: function () {
+      var self     = this;
+      var tag      = this.get('allianceTag');
+      var password = this.get('alliancePassword')
+      
+      this.resetError();
+      
+      if (!tag || tag.length < 2) {
+        this.set('errorMessage', 'Enter a valid alliance tag.');
+        return ;
+      }
+      if (!password) {
+        this.set('errorMessage', 'Enter the secret password of the alliance.');
+        return ;
+      }
+      
+      var action = AWE.Action.Fundamental.createJoinAllianceAction(tag, password);
+      this.startAction();
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        if (statusCode === 404) {
+          self.set('errorMessage', 'There is no alliance with the tag you entered.');
+        }
+        else if (statusCode === 403) {
+          self.set('errorMessage', 'Alliance tag and password do not match.');
+        }
+        else if (statusCode !== 200) {
+          self.set('errorMessage', 'For some reason, joining the alliance did fail.')
+        }
+        self.endAction();
+      });          
+    }
     
   });  
   

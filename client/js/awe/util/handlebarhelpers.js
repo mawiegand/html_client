@@ -43,7 +43,7 @@ Ember.registerBoundHelper("local", function(hash) {
   if (hash === undefined || hash === null) {
     return "" ;
   }
-  return hash[AWE.Settings.locale] ? hash[AWE.Settings.locale] : hash[AWE.Config.DEFAULT_LOCALE];
+  return AWE.Util.Rules.lookupTranslation(hash); 
 });
 
 /** Look-up the text for a given path in the translation file of the current
