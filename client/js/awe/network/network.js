@@ -13,7 +13,12 @@ AWE.Net = AWE.Net || function(module) {
   
   module.NOT_MODIFIED = 304;
 
+  module.BAD_REQUEST  = 400;
+  module.FORBIDDEN    = 403;
   module.NOT_FOUND    = 404;
+  module.CONFLICT     = 409;
+  
+  module.INTERNAL_SERVER_ERORR = 500;
 
   
   module.clientLosesAuthHeaderOnRedirect = false;

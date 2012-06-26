@@ -216,31 +216,31 @@ AWE.UI.Ember = (function(module) {
     
     createAlliance: function () {
       var self     = this;
-      var tag      = this.get('allianceTag');
-      var password = this.get('alliancePassword')
+      var tag      = this.get('newAllianceTag');
+      var name     = this.get('newAllianceName');
       
       this.resetError();
       
-      if (!tag || tag.length < 2) {
-        this.set('errorMessage', 'Enter a valid alliance tag.');
+      if (!tag || tag.length < 2 || tag.length > 5) {
+        this.set('errorMessage', 'Enter a valid alliance tag with 2 to 5 characters.');
         return ;
       }
-      if (!password) {
-        this.set('errorMessage', 'Enter the secret password of the alliance.');
+      if (!name || name.length < 2) {
+        this.set('errorMessage', 'Enther a valid alliance name of at least 2 characters.');
         return ;
       }
       
-      var action = AWE.Action.Fundamental.createJoinAllianceAction(tag, password);
+      var action = AWE.Action.Fundamental.createCreateAllianceAction(tag, name);
       this.startAction();
       AWE.Action.Manager.queueAction(action, function(statusCode) {
-        if (statusCode === 404) {
-          self.set('errorMessage', 'There is no alliance with the tag you entered.');
+        if (statusCode === AWE.Net.CONFLICT) {
+          self.set('errorMessage', "The tag you've chosen is already taken by another alliance.");
         }
-        else if (statusCode === 403) {
-          self.set('errorMessage', 'Alliance tag and password do not match.');
+        else if (statusCode === AWE.Net.FORBIDDEN) {
+          self.set('errorMessage', "You're not allowed to create an alliance.");
         }
-        else if (statusCode !== 200) {
-          self.set('errorMessage', 'For some reason, joining the alliance did fail.')
+        else if (statusCode !== AWE.Net.CREATED) {
+          self.set('errorMessage', 'For some reason, creating the alliance did fail.')
         }
         self.endAction();
       });          

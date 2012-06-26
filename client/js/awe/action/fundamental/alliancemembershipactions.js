@@ -9,6 +9,12 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Fundamental = (function(module) {
   
+  module.runUpdatesAfterAllianceChange = function() {
+    AWE.GS.CharacterManager.updateCurrentCharacter();
+        // update everything that is related to alliance-boni (e.g. resource pool)
+        // update all settlements and even the regions!
+  };
+  
   
   ////////////////////////////////////////////////////////////////////////////
   //
@@ -33,18 +39,16 @@ AWE.Action.Fundamental = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'leave_alliance_action[alliance_id]=' + my.allianceId; 
+      return 'alliance[tag]=' + escape(my.allianceTag) + '&alliance[name]=' + escape(my.allianceName); 
     }
     
-    that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'fundamental/leave_alliance_actions'; }
+    that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'fundamental/create_alliance_actions'; }
   
     that.getHTTPMethod = function() { return 'POST'; }
     
     that.postProcess = function(statusCode, xhr) {
-      if (statusCode == 200) {
-        AWE.GS.CharacterManager.updateCurrentCharacter();
-        // update everything that is related to alliance-boni (e.g. resource pool)
-        // update all settlements and even the regions!
+      if (statusCode === AWE.Net.CREATED) {
+        module.runUpdatesAfterAllianceChange();
       }
     }  
     return that;
@@ -81,10 +85,8 @@ AWE.Action.Fundamental = (function(module) {
     that.getHTTPMethod = function() { return 'POST'; }
     
     that.postProcess = function(statusCode, xhr) {
-      if (statusCode == 200) {
-        AWE.GS.CharacterManager.updateCurrentCharacter();
-        // update everything that is related to alliance-boni (e.g. resource pool)
-        // update all settlements and even the regions!
+      if (statusCode === AWE.Net.OK) {
+        module.runUpdatesAfterAllianceChange();
       }
     }  
     return that;
@@ -123,10 +125,8 @@ AWE.Action.Fundamental = (function(module) {
     that.getHTTPMethod = function() { return 'POST'; }
     
     that.postProcess = function(statusCode, xhr) {
-      if (statusCode == 200) {
-        AWE.GS.CharacterManager.updateCurrentCharacter();
-        // update everything that is related to alliance-boni (e.g. resource pool)
-        // update all settlements and even the regions!
+      if (statusCode === AWE.Net.OK) {
+        module.runUpdatesAfterAllianceChange();
       }
     }
   
