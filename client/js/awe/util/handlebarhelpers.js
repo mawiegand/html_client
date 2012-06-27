@@ -80,6 +80,16 @@ Ember.registerBoundHelper("formatNumber", function(number, options) {
   // TODO add option to append '0's to fill maxPlaces
 });
 
+Ember.registerBoundHelper("formatAsPercent", function(number, options) {
+  var maxPlaces = options.maxPlaces || 0;
+  if (number === undefined || number === null) {
+    return "" ;
+  }
+  var fac = Math.pow(10, maxPlaces);
+  return Math.floor(number * 100 * fac + 0.5) / fac + '%'; // TODO: use locale!
+  // TODO add option to append '0's to fill maxPlaces
+});
+
 
 //////////////////////////////////////////////////////////////////////////////
 // 
