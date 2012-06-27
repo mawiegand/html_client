@@ -40,6 +40,11 @@ AWE.GS = (function(module) {
       var cancelJobAction = AWE.Action.Construction.createJobCancelAction(jobId);
       cancelJobAction.send(callback);
     },    
+
+    sendFinishJobAction: function(jobId, callback) {
+      var finishJobAction = AWE.Action.Construction.createJobFinishAction(jobId);
+      finishJobAction.send(callback);
+    },    
   });     
     
   // ///////////////////////////////////////////////////////////////////////

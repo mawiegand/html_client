@@ -14,6 +14,7 @@
                 <p>Slot #{{ job.slot.slot_num }}</p>
                 <p>Level {{ job.level_after }}</p>
                 <p>{{#if job.active_job }}Fin.: {{ job.parsedFinishingDate }}{{/if}}</p>
+                <p>{{#if job.active_job }}<a href="#" {{action "finishJobPressed"}}>instant finish</a>{{/if}}</p>
               </div>  
               {{#if job.cancelable }}
               <div class="queue-job-button">    

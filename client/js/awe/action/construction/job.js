@@ -89,6 +89,36 @@ AWE.Action.Construction = (function(module) {
     return that;
   };
   
+  module.createJobFinishAction = function(jobId, my) {
+      
+    // private attributes and methods //////////////////////////////////////
+    var that;
+    
+    // protected attributes and methods ////////////////////////////////////
+    my = my || {};
+    my.jobId = jobId;
+
+    // public attributes and methods ///////////////////////////////////////
+    that = AWE.Action.createAction(my);    
+    
+    that.getRequestBody = function() {
+      return null;
+    }
+    
+    that.getURL = function() {
+      return AWE.Config.CONSTRUCTION_SERVER_BASE + 'jobs/' + jobId;
+    }
+  
+    that.getHTTPMethod = function() {
+      return 'PUT';
+    }
+    
+    that.postProcess = function(statusCode, xhr) {
+    }
+    
+    return that;
+  };
+  
   return module;
   
 }(AWE.Action.Construction || {}));

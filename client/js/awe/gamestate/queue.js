@@ -55,16 +55,6 @@ AWE.GS = (function(module) {
     empty: function() {
       return this.get('jobs_count') == 0;
     }.property('jobs_count').cacheable(),
-            
-    sendCreateJobAction: function(unitId, quantity, callback) {
-      var trainingAction = AWE.Action.Training.createJobCreateAction(this, unitId, quantity);
-      trainingAction.send(callback);      
-    },
-
-    sendCancelJobAction: function(jobId, callback) {
-      var cancelJobAction = AWE.Action.Training.createJobCancelAction(jobId);
-      cancelJobAction.send(callback);
-    },
   });     
       
   return module;

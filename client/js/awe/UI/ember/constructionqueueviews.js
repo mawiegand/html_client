@@ -26,6 +26,10 @@ AWE.UI.Ember = (function(module) {
       this.get('controller').constructionCancelClicked(this.get('job'));
     },
     
+    finishJobPressed: function(event) {
+      this.get('controller').constructionFinishClicked(this.get('job'));
+    },
+    
     active: function() {
       return this.get('job').active_job !== null;
     }.property('job.active_job'),    

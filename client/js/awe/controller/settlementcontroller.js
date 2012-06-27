@@ -269,6 +269,20 @@ AWE.Controller = (function(module) {
       });
     }
     
+    that.constructionFinishClicked = function(job) {
+      var queue = job.get('queue');
+      queue.sendFinishJobAction(job.getId(), function(status) {
+        if (status === AWE.Net.OK) {    // 200 OK
+          log(status, "Construction job finished.");
+          that.updateConstructionQueueSlotAndJobs(queue.getId());          
+        }
+        else {
+          log(status, "The server did not accept the job finish command.");
+          // TODO Fehlermeldung 
+        } 
+      });
+    }
+    
     // training actions //////////////////////////////////////////////////////  
     
     that.trainingCreateClicked = function(queue, unitId, quantity) {
