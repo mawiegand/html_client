@@ -47,6 +47,11 @@ AWE.Config = (function(module) {
   
   module.NET_AUTO_DETECT_REDIRECT_FLAWS = false ;
   
+  module.BASE_LEVEL_DIVISOR     = 40;
+  module.FORTRESS_LEVEL_DIVISOR =  3;
+  module.OUTPOST_LEVEL_DIVISOR  = 10;
+
+  
   module.MAPPING_FORTRESS_SIZE = 64;
   
   module.MAP_ARMY_WIDTH = 64;
