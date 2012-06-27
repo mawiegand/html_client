@@ -24,19 +24,6 @@ AWE.Controller = (function(module) {
     _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
     
     
-    
-    that.content = Ember.Object.create({
-      alliance: null,
-      messages: null,
-      members: null,
-      
-      allianceChanged: (function(self) {
-        return function() { self.createAllianceBanner(); }
-      }(that)).observes('alliance')
-    });
-    
-
-    
 
     
     // ///////////////////////////////////////////////////////////////////////
@@ -54,60 +41,39 @@ AWE.Controller = (function(module) {
     
     that.getStages = function() { return []; }
     
-    that.getAndUpdateAlliance = function(allianceId) {
+    that.updateAlliance = function(allianceId) {
       var alliance = AWE.GS.AllianceManager.getAlliance(allianceId);
       if ((!alliance && allianceId) ||
           (alliance && alliance.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
-        AWE.GS.AllianceManager.updateAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(alliance) {
-          if (alliance && that.view && that.view.alliance != alliance) {
-            _viewNeedsUpdate = true;
-          }
-        });
+        AWE.GS.AllianceManager.updateAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
       }
-      return alliance;
     }
     
-    that.getAndUpdateMembers = function(allianceId) {
+    that.updateMembers = function(allianceId) {
       if (!allianceId) { return ; }
       var members = AWE.GS.CharacterManager.getMembersOfAlliance(allianceId);
-//      log (AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL), AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime());
       if ((!members || members.length == 0) ||
           (members && AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
-        AWE.GS.CharacterManager.updateMembersOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(members) {
-          console.log('received update on members');
-          if (members && that.view) {
-            _viewNeedsUpdate = true;
-          }
-        });
+        AWE.GS.CharacterManager.updateMembersOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
       }
- //     log('members', allianceId, AWE.GS.CharacterAccess.getAllForAlliance_id(allianceId), AWE.GS.CharacterAccess, AWE.GS.CharacterManager);
- 
-      return  AWE.Ext.hashValues(members);       // assumes ids are in ascending order!
     }
 
-    that.getAndUpdateShouts = function(allianceId, forceUpdate) {
+    that.updateShouts = function(allianceId, forceUpdate) {
       if (forceUpdate === undefined) { 
         forceUpdate = false;
       }
       if (!allianceId) { return ; }
       var messages = AWE.GS.AllianceShoutManager.getMessagesOfAlliance(allianceId);
-    //      log (AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL), AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime());
       if ((!messages) || forceUpdate ||
           (messages && AWE.GS.AllianceShoutManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 10000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
-          AWE.GS.AllianceShoutManager.updateMessagesOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(messages) {
-              console.log('received update on messages');
-              if (messages && that.view) {
-                  _viewNeedsUpdate = true;
-              }
-          });
+        AWE.GS.AllianceShoutManager.updateMessagesOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
       }
-      //     log('members', allianceId, AWE.GS.CharacterAccess.getAllForAlliance_id(allianceId), AWE.GS.CharacterAccess, AWE.GS.CharacterManager);
-      var messageArray =  AWE.Ext.hashValues(messages).slice(-10).reverse(); // this assumes the ids to be in ascending order (slice the last n, revese order, so the last is on top)
+/*      var messageArray =  AWE.Ext.hashValues(messages).slice(-10).reverse(); // this assumes the ids to be in ascending order (slice the last n, revese order, so the last is on top)
       messageArray.forEach(function(value, key) {
         var character = AWE.GS.CharacterManager.getCharacter(this[key].get('character_id'));
         this[key].set('character', character);
       }, messageArray);
-      return messageArray;
+      return messageArray; */
     }
     
     that.removeView = function() {
@@ -117,34 +83,11 @@ AWE.Controller = (function(module) {
       }
     }
     
-    that.bannerShape = null;
     
-    /** content observer: alliance */
-    that.createAllianceBanner = function() {
-      if (!that.bannerPane) {
-        return ;
-      }
-      if (that.bannerShape) {
-        that.bannerPane.removeChild(that.bannerShape);
-      }
-
-      that.bannerShape = AWE.UI.createAllianceFlagView();
-      that.bannerShape.initWithController(this);
-      that.bannerShape.setFrame(AWE.Geometry.createRect(100, 100, 60, 75));
-      that.bannerShape.setAllianceId(that.allianceId);
-      that.bannerShape.setTagVisible(true);
-      that.bannerShape.setDirection('down');
-      that.bannerPane.addChild(that.bannerShape);
-      that.bannerShape.updateView();
-    }
-    
-    /** update the view in case the OBJECTS (alliance, members) did change. A change
-     * of object properties (e.g. alliance.description) is propagated automatically
-     * with the help of ember bindings. */
-    that.updateView = function() {
-      that.content.set('alliance', that.getAndUpdateAlliance(this.allianceId));
-      that.content.set('members', that.getAndUpdateMembers(this.allianceId));
-      that.content.set('messages', that.getAndUpdateShouts(this.allianceId));     // side-effect: starts another update, if older than 60s */
+    that.updateModel = function() {
+      that.updateAlliance(this.allianceId);
+      that.updateMembers(this.allianceId);
+      that.updateShouts(this.allianceId);     // side-effect: starts another update, if older than 60s 
     }
     
     that.shout = function(message) {
@@ -161,43 +104,19 @@ AWE.Controller = (function(module) {
     
     that.createView = function() {
       
-      var info = Ember.View.create({
-        templateName: 'alliance-infobox',
-        controller: that,
-        allianceBinding: 'controller.content.alliance',
-      });
+      var allianceScreen = null;
+      var alliance = AWE.GS.AllianceManager.getAlliance(that.allianceId);
 
-      var membersList =  Ember.View.create({
-        templateName: 'alliance-member-list',
-        controller: that,
-        membersBinding: 'controller.content.members',
-      });
-            
-      var shoutBox =  AWE.UI.Ember.ShoutBox.create({
-        controller: that,
-        shoutsBinding: 'controller.content.messages',
-        shout: function(self) {
-          return function(message) { self.shout(message); };
-        }(that),
+      if (!alliance) {
+        return null;
+      }
+
+      allianceScreen = AWE.UI.Ember.AllianceScreenView.create({
+        controller: this,
+        alliance:   alliance,
       });
       
-      that.bannerPane = AWE.UI.Ember.Pane.create({
-        width: 200,
-        height: 200,
-      });
-      
-      that.createAllianceBanner(); // init banner view
-  
-      var container = Ember.ContainerView.create({        
-        controller: that,
-      });
-      
-      var childViews = container.get('childViews');
-      childViews.pushObject(that.bannerPane);
-      childViews.pushObject(info);
-      childViews.pushObject(membersList);
-      childViews.pushObject(shoutBox);
-      return container;
+      return allianceScreen;
     }
     
     
@@ -205,10 +124,10 @@ AWE.Controller = (function(module) {
       if (this.view) {
         this.removeView();
       }
-      this.updateView();
       this.view = this.createView();
-      this.view.appendTo('#main-screen-controller');      
-      log (this.view, this.view.childViews, this.view.get('childViews'), this.view.get('elementId'), this.view.clearBuffer);
+      if (this.view) {
+        this.view.appendTo('#main-screen-controller');  
+      }    
     }
     
     that.setAllianceId = function(allianceId) {
@@ -237,14 +156,23 @@ AWE.Controller = (function(module) {
 
     that.runloop = function() {
       this.updateDebug();
-      if (this.visible && (_viewNeedsUpdate || (this.view.get('alliance') &&
-          this.view.get('alliance').get('id') != this.allianceId))) {
-        this.updateView();
-        that.bannerPane.update();
-        _viewNeedsUpdate = false;
+
+      if (this.visible && !this.view && this.allianceId) {
+        this.appendView();           
       }
-      that.getAndUpdateShouts(this.allianceId);
       
+      if (this.view) {   // make sure the view displays the right settlement.
+        // this is executed, in case the settlement is received from the 
+        // server for the first time or the settlementId has been changed by 
+        // this.setSettlementId(int).
+        var alliance = AWE.GS.AllianceManager.getAlliance(that.allianceId);
+        
+        if (this.view.get('alliance') != alliance) {
+          this.view.set('alliance', alliance);
+          console.log('SWITCHED ALLIANCE IN RUNLOOP TO', alliance);
+        }
+        that.updateModel();
+      }
     }
     
     return that;

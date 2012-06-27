@@ -1,30 +1,71 @@
+<script type="text/x-handlebars" data-template-name="alliance-screen">
+<div {{bindAttr class="ownAlliance:own-alliance :alliance-screen"}}>
+  <div class="alliance-pane">
+    {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner"}}
+    {{view AWE.UI.Ember.AllianceInfoBoxView controllerBinding="controller" allianceBinding="alliance"}}
+    {{#if ownAlliance}}
+      {{#if isAllianceLeader}}
+        <hr>
+        {{view AWE.UI.Ember.AllianceManagementView controllerBinding="controller" allianceBinding="alliance"}}
+      {{/if}}
+      <hr>
+      {{view AWE.UI.Ember.ShoutBox controllerBinding="controller" shoutsBinding="controller.content.messages" }}
+    {{/if}}
+    <hr>
+    {{view AWE.UI.Ember.AllianceMemberListView controllerBinding="controller" allianceBinding="alliance"}}
+  </div>
+</div>
+</script>
+
+
 <script type="text/x-handlebars" data-template-name="alliance-infobox">
-  <div class="alliance-infobox">
+  <div class="alliance-infobox clearfix">
     <h1>{{ alliance.name }} [{{ alliance.tag }}]</h1>
-    <p> {{ unbound AWE.I18n.strings.alliance.founded }}: {{ alliance.created_at }}</p>
-    <p> {{ unbound AWE.I18n.strings.alliance.leader }}: {{ alliance.leaderName }}</p>
+    <p> {{t alliance.founded }}: {{ creation }}</p>
+    <p> {{t alliance.leader }}: {{ alliance.leader.name }}</p>
   </div>
-  <div class="alliance-description">
-    <h1>{{ unbound AWE.I18n.strings.alliance.description }}</h1>
-    <p>{{ alliance.description }}</p>
-  </div>
-  <div class="alliance-message-of-the-day">
-    <h1>{{ unbound AWE.I18n.strings.alliance.message }}</h1>
-    <p>{{ alliance.message }}</p>
-  </div>
+  {{#if alliance.description}}
+    <div class="alliance-description">
+      <h1>{{t alliance.description }}</h1>
+      <p>{{ alliance.description }}</p>
+    </div>
+  {{/if}}
+  {{#if alliance.message}}
+    <div class="alliance-message-of-the-day">
+      <h1>{{t alliance.message }}</h1>
+      <p>{{ alliance.message }}</p>
+      </div>
+  {{/if}}
 </script>
 
 
 <script type="text/x-handlebars" data-template-name="alliance-member-list">
   <div class="alliance-member-list">
-    <h1>{{ unbound AWE.I18n.strings.alliance.members }}</h1>
+    <h1>{{t alliance.members }}</h1>
     <ul>
-      {{#each members}}
+      {{#each alliance.members}}
         <li>{{ name }}</li>
       {{/each}}
     </ul>
   </div>
 </script>
 
+
+<script type="text/x-handlebars" data-template-name="alliance-management">
+  <div class="alliance-management">
+    <h1>{{t alliance.management }}</h1>
+    {{#if errorMessage}}
+      <div class="red-color">{{errorMessage}}</div>
+    {{/if}}
+    {{view Ember.TextField class="text-field" placeholder="alliance password" type="text" valueBinding="password"}} 
+    {{#if ongoingAction}}
+      {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} processing...
+    {{else}}
+      {{#if modifiedPassword}}
+        <div class="icon-button ok-button" {{action "changePassword"}}>save new password</div>
+      {{/if}}
+    {{/if}}
+  </div>
+</script>
 
 

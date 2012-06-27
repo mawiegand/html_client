@@ -9,7 +9,13 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Fundamental = (function(module) {
   
-  module.createShoutToAllianceAction = function(message, my) {
+  ////////////////////////////////////////////////////////////////////////////
+  //
+  //  CHANGE ALLIANCE PASSWORD
+  //
+  ////////////////////////////////////////////////////////////////////////////
+
+  module.createChangeAlliancePasswordAction = function(alliance, password, my) {
       
     // private attributes and methods //////////////////////////////////////
     
@@ -18,29 +24,29 @@ AWE.Action.Fundamental = (function(module) {
     // protected attributes and methods ////////////////////////////////////
   
     my = my || {};
-
+    my.alliancePasword = password || "";
+    my.alliance = alliance || 0;
     
     // public attributes and methods ///////////////////////////////////////
     
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'fundamental_alliance_shout[message]=' + escape(message); 
+      return 'fundamental_alliance[password]='+escape(password); 
     }
     
-    that.getURL = function() { return AWE.Config.FUNDAMENTAL_SERVER_BASE+'/alliance_shouts/'; }
+    that.getURL = function() { return AWE.Config.FUNDAMENTAL_SERVER_BASE+'/alliances/'+alliance.getId();; }
   
-    that.getHTTPMethod = function() { return 'POST'; }
+    that.getHTTPMethod = function() { return 'PUT'; }
     
     that.postProcess = function(statusCode, xhr) {
-      if (statusCode == 200) {
-//        AWE.GS.ArmyManager.updateArmy(army.get('id'));  -> no update, presently cannot be bound :-(   (wait for ObjectProxy in EmberJS)
+      if (statusCode === AWE.Net.OK) {
+        AWE.GS.AllianceManager.updateAlliance(alliance.getId());
       }
-    }
-  
+    }  
     return that;
-    
   };
+  
 
   return module;
   

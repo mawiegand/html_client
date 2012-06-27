@@ -25,6 +25,17 @@ AWE.Util = AWE.Util || {};
  * @namespace */
 AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
   
+  ////////////////////////////////////////////////////////////////////////////
+  // 
+  //  TRANSLATION AND LOCALIZATION
+  //
+  ////////////////////////////////////////////////////////////////////////////  
+  
+  /** 
+   * looks up a localized description / name / flavour from the rules.
+   *
+   * @function
+   * @name AWE.Util.Rules.lookupTranslation */ 
   module.lookupTranslation = function(hash) {
     return hash[AWE.Settings.locale] ? hash[AWE.Settings.locale] : hash[AWE.Config.DEFAULT_LOCALE];
   };
@@ -49,7 +60,7 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
    *         to the corresponding entry in the rules.
    *
    * @function
-   * @name AWE.Util.Rules._evaluateResourceProduction */ 
+   * @name AWE.Util.Rules.evaluateResourceProduction */ 
   module.evaluateResourceProduction = function(definitions, level, boni, evaluate) {
     return _evaluateResourceProduction(definitions, level, boni);
   };    

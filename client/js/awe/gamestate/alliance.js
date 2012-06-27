@@ -21,10 +21,30 @@ AWE.GS = (function(module) {
     name: null,                     ///< name of the alliance
     tag: null,
     description: null,
+    leader_id: null,
+    password: null,
     
     locked: false,                  ///< TODO: don't communicate this!
     locked_by: null,
     locked_at: null,
+    
+    hashableMembers: null,
+    
+    init: function(spec) {
+      this._super(spec);
+      this.set('hashableMembers', 
+               AWE.GS.CharacterAccess.getHashableCollectionForAlliance_id(this.get('id')));
+    },
+    
+    members: function() {
+      return this.getPath('hashableMembers.collection');
+    }.property('hashableMembers.changedAt').cacheable(),
+    
+    leader: function() {
+      var hash = this.getPath('hashableMembers.hash');
+      var leaderId = this.get('leader_id');
+      return hash && leaderId ? hash[leaderId] : null;
+    }.property('hashableMembers.changedAt', 'leader_id').cacheable(),
         
   });     
 

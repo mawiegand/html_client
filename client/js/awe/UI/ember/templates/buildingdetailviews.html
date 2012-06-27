@@ -184,7 +184,7 @@
     <div class="red-color">{{errorMessage}}</div>
   {{/if}}
   {{#if ongoingAction}}
-    {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}} processing...
+    {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} processing...
   {{else}}
     {{#if character.alliance_id}}
       <p>
@@ -203,7 +203,7 @@
         Found a new alliance and install yourself as leader.<br/>
         {{view Ember.TextField class="text-field" placeholder="alliance tag" type="text" valueBinding="newAllianceTag"}} 
         {{view Ember.TextField class="text-field" placeholder="alliance name" type="text" valueBinding="newAllianceName"}} 
-        <div class="icon-button ok-button" {{action "foundAlliance"}}>found alliance</div>
+        <div class="icon-button ok-button" {{action "createAlliance"}}>found alliance</div>
       </p>
     {{/if}}
   {{/if}}
