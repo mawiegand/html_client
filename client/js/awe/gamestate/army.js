@@ -30,7 +30,9 @@ AWE.GS = (function(module) {
     region_id: null, old_region_id: null,
     regionIdObserver: AWE.Partials.attributeHashObserver(module.ArmyAccess, 'region_id', 'old_region_id').observes('region_id'),
 
-    owner_id: null,
+    owner_id: null, old_owner_id: null,
+    ownerIdObserver: AWE.Partials.attributeHashObserver(module.ArmyAccess, 'owner_id', 'old_owner_id').observes('owner_id'),
+
     owner_name: null,
     alliance_id: null,
     alliance_tag: null,
@@ -119,6 +121,7 @@ AWE.GS = (function(module) {
   
     my.runningUpdatesPerRegion = {};  ///< hash that contains all running requests for regions, using the region.id as key.
     my.runningUpdatesPerLocation = {};///< hash that contains all running requests for locations, using the location.id as key.
+    my.runningUpdatesPerCharacter = {};///< hash that contains all running requests for locations, using the location.id as key.
     
     my.createEntity = function() { return module.Army.create(); }
 
@@ -134,6 +137,9 @@ AWE.GS = (function(module) {
     that.getArmiesAtLocation = function(id) { 
       return AWE.GS.ArmyAccess.getAllForLocation_id(id)
     }
+    that.getArmiesOfCharacter = function(id) { 
+      return AWE.GS.ArmyAccess.getAllForCharacter_id(id)
+    }    
     
     that.lastUpdateForFortress = function(regionId) {
       if (lastFortressUpdates[regionId]) {
@@ -202,6 +208,38 @@ AWE.GS = (function(module) {
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
               result = module.ArmyAccess.getAllForLocation_id(locationId);
+            }
+            callback(result, status, xhr, timestamp);
+          }
+        }
+      );
+    }
+    
+    that.updateArmiesForCharacter = function(characterId, updateType, callback) {
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/'+characterId+'/armies';
+      return my.fetchEntitiesFromURL(
+        url, 
+        my.runningUpdatesPerLocation, 
+        characterId, 
+        updateType, 
+        module.ArmyAccess.lastUpdateForOwner_id(characterId),
+        function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
+          if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
+            module.ArmyAccess.accessHashForOwner_id().setLastUpdateAtForValue(characterId, timestamp);
+          }
+          // remove deleted army from location
+          if (status === AWE.Net.OK) {           
+            var armies = module.ArmyAccess.getHashableCollectionForOwner_id(characterId);
+            AWE.Ext.applyFunction(armies.get('collection'), function(army){
+              var armyId = army.getId();
+              if (!result.hasOwnProperty(armyId)) {
+                army.destroy();
+              }
+            });
+          }
+          if (callback) {
+            if (status === AWE.Net.NOT_MODIFIED) {
+              result = module.ArmyAccess.getAllForOwner_id(characterId);
             }
             callback(result, status, xhr, timestamp);
           }

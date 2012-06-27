@@ -10,7 +10,10 @@ AWE.Action = AWE.Action || {};
 AWE.Action.Fundamental = (function(module) {
   
   module.runUpdatesAfterAllianceChange = function() {
+    var characterId = AWE.GS.player.getPath('currentCharacter.id')
     AWE.GS.CharacterManager.updateCurrentCharacter();
+    AWE.GS.ResourcePoolManager.updateResourcePool();
+    AWE.GS.ArmyManager.updateArmiesForCharacter(characterId);
         // update everything that is related to alliance-boni (e.g. resource pool)
         // update all settlements and even the regions!
   };
