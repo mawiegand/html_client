@@ -133,10 +133,14 @@ AWE.UI = (function(module) {
   
       if (!_moreButton) {
         _moreButton = AWE.UI.createButtonView();
-        _moreButton.initWithControllerTextAndImage(my.controller, 'More...', AWE.UI.ImageCache.getImage("map/button1"));
+        _moreButton.initWithControllerTextAndImage(my.controller, 'Ranking', AWE.UI.ImageCache.getImage("map/button1"));
         _moreButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
         _moreButton.setFrame(AWE.Geometry.createRect(390, 48, 72, 72));
         // _moreButton.onClick = function() { WACKADOO.messagesButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+        _moreButton.onClick = function() {
+          my.controller.rankingButtonClicked();
+        };
+
         this.addChild(_moreButton);
       }
   

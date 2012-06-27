@@ -220,6 +220,16 @@ AWE.Controller = (function(module) {
       });
       
     };
+    
+    that.rankingButtonClicked = function() {
+      
+      console.log('Ranking button clicked.');
+      
+      $('<form action="' + AWE.Config.RANKING_SERVER_BASE + '" method="GET" target="_blank">' +
+        '  <input type="hidden" name="sort" value="overall" />' +
+        '</form>').submit();      
+      
+    };
         
 
     // ///////////////////////////////////////////////////////////////////////

@@ -35,6 +35,9 @@ AWE.Config = (function(module) {
   module.SHOP_SERVER_BASE         = module.SERVER_ROOT + '/game_server/shop/';
   module.MESSAGING_SERVER_BASE    = module.SERVER_ROOT + '/game_server/messaging/';
   module.PAYMENT_PROVIDER_BASE    = module.SERVER_ROOT + '/payment_provider/';
+
+  module.RANKING_SERVER_BASE      = module.SERVER_ROOT + '/game_server/ranking/character_rankings';
+
   
   module.DEFAULT_LOCALE = 'en_US';
   
