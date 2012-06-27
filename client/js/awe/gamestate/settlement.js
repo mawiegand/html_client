@@ -122,7 +122,8 @@ AWE.GS = (function(module) {
           localizedDetails: function() {
             return 'base: '+Math.floor(this.get('base'))+'\nscience: '+ 
               Math.floor(self.get(item.symbolic_id+'_production_bonus_sciences')*1000)/10.0+'%\nbuildings: '+ 
-              Math.floor(self.get(item.symbolic_id+'_production_bonus_buildings')*1000)/10.0+'%';
+              Math.floor(self.get(item.symbolic_id+'_production_bonus_buildings')*1000)/10.0+'%\nbonus: ' +
+              Math.floor(self.get(item.symbolic_id+'_production_bonus_effects')*1000)/10.0+'%';
           }.property('base','bonus').cacheable(),
         }));
       });
