@@ -5,9 +5,9 @@
 
  
 var AWE = window.AWE || {};
-AWE.Shop = AWE.Shop || {};
+AWE.Action = AWE.Action || {};
 
-AWE.Shop.Transaction = (function(module) {
+AWE.Action.Shop = (function(module) {
   
   module.STATE_CREATED = 1;
   module.STATE_REJECTED = 2;
@@ -91,7 +91,41 @@ AWE.Shop.Transaction = (function(module) {
   
     return that;
   };
+  
+  module.createOfferTransaction = function(offer_id, offer_type, my) {
+      
+    // private attributes and methods //////////////////////////////////////
+    var that;
+  
+    // protected attributes and methods ////////////////////////////////////
+    my = my || {};
+    my.offer_id = offer_id;
+    my.offer_type = offer_type;
+    
+    // public attributes and methods ///////////////////////////////////////
+    that = AWE.Action.Shop.createTransaction(my);    
+    
+    that.getRequestBody = function() {
+      return 'shop_transaction[offer_id]=' + my.offer_id + '&' +
+             'shop_transaction[customer_identifier]=' + AWE.GS.CharacterManager.getCurrentCharacter().get('identifier') + '&' +
+             'shop_transaction[offer_type]=' + my.offer_type; 
+    }
+    
+    that.getURL = function() {
+      return AWE.Config.SHOP_SERVER_BASE + 'transactions';
+    }
+  
+    that.offer_id = function() {
+      return my.offer_id;
+    }
+  
+    that.offer_type = function() {
+      return my.offer_type;
+    }
+  
+    return that;
+  };  
 
   return module;
   
-}(AWE.Shop.Transaction || {}));
+}(AWE.Action.Shop || {}));

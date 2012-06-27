@@ -131,7 +131,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           });
 
           assetLoaded();
-          AWE.Shop.Manager.init();
+          AWE.GS.ShopManager.init();
         }
         else {
           console.log('CRITICAL ERROR: could not load current character from server. Error code: ' + statusCode + '. Terminate App.');
@@ -275,7 +275,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         AWE.UI.rootNode = AWE.Map.Manager.rootNode();
       });
    
-      // AWE.Shop.Manager.init();                          // initialize the shop manager
+      // AWE.GS.ShopManager.init();                          // initialize the shop manager
       
       this.loadAssets();
 
