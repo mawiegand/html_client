@@ -1,32 +1,65 @@
 <script type="text/x-handlebars" data-template-name="shop">
-      <div class="modal-dialog-background"></div>
-      <div class="center-helper">
-        <div class="modal-dialog-pane" id="shop">
-          <h1>{{ unbound AWE.I18n.strings.shop.title }}</h1>
-          
-          <p>{{ unbound AWE.I18n.strings.shop.currentCreditAmount }}: {{ creditAmount }} {{ unbound AWE.I18n.strings.shop.credits }}</p>
-                    
-          <table>
-            <tr>
-              <th>{{ unbound AWE.I18n.strings.shop.article }}</th>
-              <th>{{ unbound AWE.I18n.strings.shop.description }}</th>
-              <th>{{ unbound AWE.I18n.strings.shop.price }}</th>
-              <th></th>
-            </tr>
-            {{#each offers}}
-            <tr>
-              <td>{{title}}</td>
-              <td>{{description}}</td>
-              <td>{{price}} {{ unbound AWE.I18n.strings.shop.credits }}</td>
-              <td>{{#view Ember.Button action="buyOfferPressed" target="parentView"}}{{ unbound AWE.I18n.strings.shop.buy }}{{/view}}</td>
-            </tr>
-            {{/each}}
-          </table>
-          
-          <p>{{#view Ember.Button action="buyCreditsPressed" target="parentView"}}{{ unbound AWE.I18n.strings.shop.buyCredits }}{{/view}} {{#view Ember.Button action="closePressed" target="parentView"}}close{{/view}}</p>
-        </div>
+    <div class="modal-dialog-background"></div>
+    <div class="center-helper">
+      <div class="modal-dialog-pane" id="shop">
+        <h1>{{ t shop.title }}</h1>
+        
+        <p>{{ t shop.currentCreditAmount }}: {{ creditAmount }} {{ t shop.credits }}</p>
+        
+        {{#if resourceOffers}}
+        <h4>{{ t shop.resourceOffers }}</h4>
+                  
+        <table>
+          <tr>
+            <th>{{ t shop.article }}</th>
+            <th>{{ t shop.price }}</th>
+            <th></th>
+          </tr>
+          {{#each resourceOffers}}
+            {{view AWE.UI.Ember.ShopResourceOffer offerBinding="this" shopBinding="shop"}}
+          {{/each}}
+        </table>
+        {{/if}}
+        
+        {{#if bonusOffers}}
+        <h4>{{ t shop.bonusOffers }}</h4>
+                  
+        <table>
+          <tr>
+            <th>Bonus</th>
+            <th>Ressource</th>
+            <th>Dauer</th>
+            <th>Preis</th>
+          </tr>
+          {{#each bonusOffers}}
+            {{view AWE.UI.Ember.ShopBonusOffer offerBinding="this" shopBinding="shop"}}
+          {{/each}}
+        </table>
+        {{/if}}
+        
+        <p><a href="#" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</a> | <a href="#" {{action "closePressed" target="parentView"}}>{{t general.close}}</a>
       </div>
+    </div>
 </script>
+
+<script type="text/x-handlebars" data-template-name="shop-resource-offer">
+    <tr>
+      <td>{{ offer.amount }} {{resourceName}}</td>
+      <td>{{ offer.price}} {{ t shop.credits }}</td>
+      <td><a href="#" {{action "buyResourceOfferPressed"}}>{{ t shop.buy }}</a>
+    </tr>
+</script>
+
+<script type="text/x-handlebars" data-template-name="shop-bonus-offer">
+    <tr>
+      <td>{{ offer.speedup }}%</td>
+      <td>{{ resourceName }}</td>
+      <td>{{ offer.duration }}h</td>
+      <td>{{ offer.price}} {{ t shop.credits }}</td>
+      <td><a href="#" {{action "buyBonusOfferPressed"}}>{{ t shop.buy }}</a>
+    </tr>
+</script>
+
 
 
 

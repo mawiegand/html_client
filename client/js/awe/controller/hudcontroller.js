@@ -110,31 +110,44 @@ AWE.Controller = (function(module) {
     var shopDialog = null;
 
     that.ingameShopButtonClicked = function() {
-      shopDialog = AWE.UI.Ember.ShopView.create({
-        offers: AWE.Shop.Manager.content.get('shopOffers'),
-        creditAmount: AWE.Shop.Manager.content.get('creditAmount'),
+      
+      shopDialog = AWE.UI.Ember.ShopDialog.create({
+        
+        // resourceOffers: AWE.GS.ShopManager.content.get('resourceOffers'),
+        // bonusOffers: AWE.GS.ShopManager.content.get('bonusOffers'),
+// 
+        // creditAmount: AWE.GS.ShopManager.content.get('creditAmount'),
+        
+        shop: AWE.GS.ShopManager.getShop(),
+        
         buyCreditsPressed: function(evt) {
-          AWE.Shop.Manager.openCreditShopWindow()
+          AWE.GS.ShopManager.openCreditShopWindow()
         },
-        buyOfferPressed: function() {
-          AWE.Shop.Manager.buyOffer(function(transaction) {
+        
+        buyResourceOfferPressed: function(offerId) {
+          AWE.GS.ShopManager.buyResourceOffer(offerId, function(transaction) { // success handler
             if (transaction.state == 5) {
               var heading = "Buying successful!";
-              var message = "The frogs are credited to your account."
+              var message = "The resources are credited to your account."
             }
             else {
               var heading = "Shit happens!";
-              var message = "You haven't enough credits to buy frogs."
+              var message = "You haven't enough credits for buying."
             }
             
             var info = AWE.UI.Ember.InfoDialog.create({
               heading: heading,
               message: message,
             });      
+            
             that.applicationController.presentModalDialog(info);
-            that.setModelChanged();
-            AWE.Shop.Manager.fetchCreditAmount();
-          }, function() {
+            AWE.GS.ShopManager.fetchCreditAmount(function(){
+              that.setModelChanged();
+            });
+            AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
+              that.setModelChanged();
+            });
+          }, function() {                                   // error handler
             var info = AWE.UI.Ember.InfoDialog.create({
               heading: 'Server Error',
               message: "There's a problem with the shop. Try again later",
@@ -142,12 +155,46 @@ AWE.Controller = (function(module) {
             that.applicationController.presentModalDialog(info);
           })
         },
+
+        buyBonusOfferPressed: function(offerId) {
+          AWE.GS.ShopManager.buyBonusOffer(offerId, function(transaction) { // success handler
+            if (transaction.state == 5) {
+              var heading = "Buying successful!";
+              var message = "The bonus is credited to your account."
+            }
+            else {
+              var heading = "Shit happens!";
+              var message = "You haven't enough credits for buying."
+            }
+            
+            var info = AWE.UI.Ember.InfoDialog.create({
+              heading: heading,
+              message: message,
+            });      
+            
+            that.applicationController.presentModalDialog(info);
+            AWE.GS.ShopManager.fetchCreditAmount(function(){
+              that.setModelChanged();
+            });
+            AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
+              that.setModelChanged();
+            });
+          }, function() {                                   // error handler
+            var info = AWE.UI.Ember.InfoDialog.create({
+              heading: 'Server Error',
+              message: "There's a problem with the shop. Try again later",
+            });      
+            that.applicationController.presentModalDialog(info);
+          })
+        },
+
         closePressed: function(evt) {
           shopDialog = null;
           this.destroy();
         },
+
         updateCreditsPressed: function() {
-          AWE.Shop.Manager.fetchCreditAmount();
+          AWE.GS.ShopManager.fetchCreditAmount();
         },
       });
       

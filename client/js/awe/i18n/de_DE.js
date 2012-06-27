@@ -112,16 +112,18 @@ AWE.I18n.de_DE = function(module) {
     
     shop: {
       title: 'Shop',
-      currentCreditAmount: 'Your current credit amount',
+      currentCreditAmount: 'Dein aktueller Credit-Stand',
       credits: 'Credits',
-      updateCredits: 'Update',
-      buyCredits: 'Buy credits',
-      article: 'Offer',
-      description: 'Description',
-      price: 'Price',
-      buy: 'Buy!'
+      updateCredits: 'Aktualisieren',
+      buyCredits: 'Credits kaufen',
+      article: 'Artikel',
+      description: 'Beschreibung',
+      price: 'Preis',
+      buy: 'Kaufen!',
+      resourceOffers: "Ressourcenpakete",
+      bonusOffers: "Bonuspakete",
     },
-
+    
     settlement: {
       buildings: {
         
