@@ -52,7 +52,7 @@
 
 <script type="text/x-handlebars" data-template-name="shop-bonus-offer">
     <tr>
-      <td>{{ offer.speedup }}%</td>
+      <td>{{ formatAsPercent offer.bonus }}</td>
       <td>{{ resourceName }}</td>
       <td>{{ offer.duration }}h</td>
       <td>{{ offer.price}} {{ t shop.credits }}</td>
