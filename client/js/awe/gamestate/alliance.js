@@ -27,18 +27,25 @@ AWE.GS = (function(module) {
     locked: false,                  ///< TODO: don't communicate this!
     locked_by: null,
     locked_at: null,
+        
+    hashableShouts: function() {
+      var id = this.get('id');
+      return id ? AWE.GS.AllianceShoutAccess.getHashableCollectionForAlliance_id(id) : null;
+    }.property('id').cacheable(),  
     
-    hashableMembers: null,
-    
-    init: function(spec) {
-      this._super(spec);
-      this.set('hashableMembers', 
-               AWE.GS.CharacterAccess.getHashableCollectionForAlliance_id(this.get('id')));
-    },
+    hashableMembers: function() {
+      var id = this.get('id');
+      return id ? AWE.GS.CharacterAccess.getHashableCollectionForAlliance_id(id) : null;
+    }.property('id').cacheable(),      
     
     members: function() {
       return this.getPath('hashableMembers.collection');
     }.property('hashableMembers.changedAt').cacheable(),
+    
+    shouts: function() {
+      console.log('SHOUTS')
+      return this.getPath('hashableShouts.collection');
+    }.property('hashableShouts.changedAt').cacheable(),    
     
     leader: function() {
       var hash = this.getPath('hashableMembers.hash');

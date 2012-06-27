@@ -9,10 +9,10 @@
         {{view AWE.UI.Ember.AllianceManagementView controllerBinding="controller" allianceBinding="alliance"}}
       {{/if}}
       <hr>
-      {{view AWE.UI.Ember.ShoutBox controllerBinding="controller" shoutsBinding="controller.content.messages" }}
+      {{view AWE.UI.Ember.ShoutBox controllerBinding="controller" shoutsBinding="controller.content.shouts" }}
     {{/if}}
     <hr>
-    {{view AWE.UI.Ember.AllianceMemberListView controllerBinding="controller" allianceBinding="alliance"}}
+    {{view AWE.UI.Ember.AllianceMemberListView controllerBinding="controller" charactersBinding="alliance.members"}}
   </div>
 </div>
 </script>
@@ -43,7 +43,7 @@
   <div class="alliance-member-list">
     <h1>{{t alliance.members }}</h1>
     <ul>
-      {{#each alliance.members}}
+      {{#each characters}}
         <li>{{ name }}</li>
       {{/each}}
     </ul>

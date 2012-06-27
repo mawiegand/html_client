@@ -24,7 +24,9 @@ AWE.Controller = (function(module) {
     _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
     
     
-
+    that.content = Ember.Object.create({
+      shouts: null,
+    });
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -59,6 +61,7 @@ AWE.Controller = (function(module) {
     }
 
     that.updateShouts = function(allianceId, forceUpdate) {
+      var self = this;
       if (forceUpdate === undefined) { 
         forceUpdate = false;
       }
@@ -66,14 +69,22 @@ AWE.Controller = (function(module) {
       var messages = AWE.GS.AllianceShoutManager.getMessagesOfAlliance(allianceId);
       if ((!messages) || forceUpdate ||
           (messages && AWE.GS.AllianceShoutManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 10000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
-        AWE.GS.AllianceShoutManager.updateMessagesOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+        AWE.GS.AllianceShoutManager.updateMessagesOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+          var characterId = AWE.GS.player.getPath('currentCharacter.id');
+          var leaderId = AWE.GS.AllianceManager.getAlliance(self.allianceId).get('leader_id');
+          var messages = AWE.GS.AllianceShoutAccess.getEnumerableForAlliance_id(allianceId);
+          var messageArray =  messages.sort(function(a,b) {
+            return Date.parseISODate(a.get('created_at')).getTime() - Date.parseISODate(b.get('created_at')).getTime();
+          }).slice(-6).reverse(); // this assumes the ids to be in ascending order (slice the last n, revese order, so the last is on top)
+          messageArray.forEach(function(value, key) {
+            var character = AWE.GS.CharacterManager.getCharacter(this[key].get('character_id'));
+            this[key].set('character', character);
+            this[key].set('own', this[key].get('character_id') === characterId)
+            this[key].set('leader', this[key].get('character_id') === leaderId);
+          }, messageArray);
+          self.content.set('shouts', messageArray); 
+        });
       }
-/*      var messageArray =  AWE.Ext.hashValues(messages).slice(-10).reverse(); // this assumes the ids to be in ascending order (slice the last n, revese order, so the last is on top)
-      messageArray.forEach(function(value, key) {
-        var character = AWE.GS.CharacterManager.getCharacter(this[key].get('character_id'));
-        this[key].set('character', character);
-      }, messageArray);
-      return messageArray; */
     }
     
     that.removeView = function() {
@@ -95,7 +106,7 @@ AWE.Controller = (function(module) {
       var action = AWE.Action.Fundamental.createShoutToAllianceAction(message);
       action.send(function(self) {
         return function() {
-          self.getAndUpdateShouts(self.allianceId, true);
+          self.updateShouts(self.allianceId, true);
         }
       }(this));
     }

@@ -16,11 +16,11 @@ AWE.GS = (function(module) {
   // ///////////////////////////////////////////////////////////////////////    
     
   module.AllianceShout = module.Entity.extend({     // extends Entity to Army
-    typeName: 'Alliance',           ///< identifies instances of this type
+    typeName: 'Alliance',                                   ///< identifies instances of this type
     character_id: null, old_character_id: null,             ///< character that posted this message
     characterIdObserver: AWE.Partials.attributeHashObserver(module.AllianceShoutAccess, 'character_id', 'old_character_id').observes('character_id'),
 
-    alliance_id: null,  old_alliance_id: null,            ///< alliance for which this message was posted
+    alliance_id: null,  old_alliance_id: null,              ///< alliance for which this message was posted
     allianceIdObserver: AWE.Partials.attributeHashObserver(module.AllianceShoutAccess, 'alliance_id', 'old_alliance_id').observes('alliance_id'),
 
     posted_ago_in_words: null,

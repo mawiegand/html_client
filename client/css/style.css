@@ -1233,6 +1233,46 @@ span.bonus {
   width: 500px;
 }
 
+.shout-box ul {
+  padding: 0px;
+}
+
+li.shout {
+  list-style-type:none;
+  background-color: #DFD;
+  border-radius: 8px;
+  padding: 8px 16px;
+  margin-bottom: 4px;
+  width: 70%;
+  font-style: italic;
+  font-size: 14px;
+  color: #999;
+}
+
+li.shout.leader {
+  background-color: #FDD;
+}
+
+li.shout.own {
+  margin-left: 26%;
+  background-color: #DDD;
+}
+
+li.shout.own.leader {
+  margin-left: 0px;
+  background-color: #FDD;
+}
+
+li.shout .text {
+  font-style: normal;
+  font-size: 18px;
+  color: #333;
+}
+
+li.shout .sender {
+  font-weight: bold;
+}
+
 
 
 /* ===== non-semantic helper classes ========================================
