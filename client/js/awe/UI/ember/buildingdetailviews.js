@@ -221,7 +221,7 @@ AWE.UI.Ember = (function(module) {
       
       this.resetError();
       
-      if (!tag || tag.length < 2 || tag.length > 5) {
+      if (!tag || tag.length < 2 || tag.length > 5) {
         this.set('errorMessage', 'Enter a valid alliance tag with 2 to 5 characters.');
         return ;
       }
