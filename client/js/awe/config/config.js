@@ -53,15 +53,14 @@ AWE.Config = (function(module) {
   module.BASE_LEVEL_DIVISOR     = 40;
   module.FORTRESS_LEVEL_DIVISOR =  3;
   module.OUTPOST_LEVEL_DIVISOR  = 10;
-
   
-  module.MAPPING_FORTRESS_SIZE = 64;
+  module.MAPPING_FORTRESS_SIZE  = 64;
   
-  module.MAP_ARMY_WIDTH = 64;
+  module.MAP_ARMY_WIDTH  =  64;
   module.MAP_ARMY_HEIGHT = 128;
   
-  module.ARMY_MODE_IDLE = 0;
-  module.ARMY_MODE_MOVING = 1;
+  module.ARMY_MODE_IDLE     = 0;
+  module.ARMY_MODE_MOVING   = 1;
   module.ARMY_MODE_FIGHTING = 2;
 
 	module.MAP_USE_GOOGLE = false;
