@@ -161,12 +161,7 @@ AWE.GS = (function(module) {
           // delete old jobs from queue
           if (status === AWE.Net.OK) {           
             var jobs = module.ConstructionJobAccess.getHashableCollectionForQueue_id(queueId);
-            AWE.Ext.applyFunction(jobs.get('collection'), function(job){
-              var jobId = job.getId();
-              if (!result.hasOwnProperty(jobId)) {
-                job.destroy();
-              }
-            });
+            that.fetchMissingEntities(result, jobs.get('collection'), that.updateJob); // careful: this breaks "this" inside updateJob
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {

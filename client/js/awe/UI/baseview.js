@@ -83,7 +83,7 @@ AWE.UI = (function(module) {
       }
 
       if (!_imageView) {
-        var level = _location.settlementLevel() / AWE.Config.BASE_LEVEL_DIVISOR;
+        var level = AWE.Util.Rules.normalizedLevel(_location.settlementLevel(), _location.settlementTypeId());
         
         if (level < 4) {
           modifier = "small";

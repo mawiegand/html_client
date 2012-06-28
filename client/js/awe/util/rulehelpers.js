@@ -228,6 +228,26 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
   };
   
   
+  ////////////////////////////////////////////////////////////////////////////
+  // 
+  //  SETTLEMENT LEVELS
+  //
+  ////////////////////////////////////////////////////////////////////////////  
+  
+  module.normalizedLevel = function(level, settlementTypeId) {
+    level = level || 0;
+    settlementTypeId = settlementTypeId || 0;
+    if (AWE.Config.MAP_LOCATION_TYPE_CODES[settlementTypeId]  === 'base') {
+      return Math.floor(level / AWE.Config.BASE_LEVEL_DIVISOR);
+    }
+    else if (AWE.Config.MAP_LOCATION_TYPE_CODES[settlementTypeId] === 'fortress') {
+      return Math.floor(level / AWE.Config.FORTRESS_LEVEL_DIVISOR);
+    }
+    if (AWE.Config.MAP_LOCATION_TYPE_CODES[settlementTypeId] === 'outpost') {
+      return Math.floor(level / AWE.Config.OUTPOST_LEVEL_DIVISOR);
+    }
+    return level;
+  }
   
   ////////////////////////////////////////////////////////////////////////////
   // 

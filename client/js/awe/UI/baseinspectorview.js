@@ -108,7 +108,7 @@ AWE.UI = (function(module) {
       }      
       
       if (!_imageView) {
-        var level = _location.settlementLevel();
+        var level = AWE.Util.Rules.normalizedLevel(_location.settlementLevel(), _location.settlementTypeId());
         
         if (level < 4) {
           modifier = "small";
@@ -116,11 +116,8 @@ AWE.UI = (function(module) {
         else if (level < 8) {
           modifier = "middle";
         }
-        else if (level < 11) {
-          modifier = "big";
-        }
         else {
-          console.error("unknown level",level);
+          modifier = "big";
         }
         
         var imageName = "map/colony/" + modifier;
