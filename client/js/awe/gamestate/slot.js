@@ -36,6 +36,20 @@ AWE.GS = (function(module) {
 		nameBinding: 'buildingType.name',
 		/** the description of the building from the game rules. */
 		descriptionBinding: 'buildingType.description',
+    /** level of building after finishing all ongoing jobs */
+		levelAfterJobs: function() {
+		  return this.getPath('sortedJobs.lastObject.level_after') || this.get('level')
+		}.property('sortedJobs.lastObject.level_after', 'level'),
+
+    sortedJobs: function() {
+      var collection = this.getPath('hashableJobs.collection');
+      if (!collection) return ;
+      var sorted = collection.slice();
+      sorted.sort(function(a,b) {
+        return (a.get('position') || 0) - (b.get('position') || 0);
+      });
+      return sorted;
+    }.property('hashableJobs.changedAt'),   // need to resort, if element added or removed
 
     /** return the building type from the rules, that describes this
      * building. */
@@ -62,15 +76,6 @@ AWE.GS = (function(module) {
 			return rule ? rule['symbolic_id'] : null;
 		}.property('buildingType').cacheable(),
 		
-		levelAfterJobs: function() {
-		  var level = this.get('level');
-		  var jobs = this.get('hashableJobs') ? this.get('hashableJobs').get('collection') : null;
-		  if (jobs && jobs.length > 0) {
-		    var lastJob = jobs[jobs.length-1];
-		    return lastJob.get('level_after');
-		  }
-		  return level;
-		}.property('level', 'hashableJobs.changedAt').cacheable(),
 		
 		underConstruction: function() {
 		  return this.get('level') < this.get('levelAfterJobs');
@@ -81,17 +86,15 @@ AWE.GS = (function(module) {
 		}.property('level', 'levelAfterJobs').cacheable(),
 		
 		nextLevel: function() {
-		  var levelAfterJobs = this.get('levelAfterJobs');
-		  var nextLevel = levelAfterJobs ? parseInt(levelAfterJobs) + 1 : 1;
-		  return nextLevel;
-		}.property('levelAfterJobs').cacheable(),
+		  return (this.get('levelAfterJobs') || 0) +1;
+		}.property('levelAfterJobs', 'level').cacheable(),
 
 		productions: function() {
 		  var production            = this.getPath('buildingType.production');
 		  var settlementProductions = this.getPath('slot.settlement.resourceProductions');
 		  var level                 = this.get('level');
 		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, level, settlementProductions) : null;
-		}.property('level', 'buildingId').cacheable(),
+		}.property('level', 'buildingType').cacheable(),
 
 
 		productionsNextLevel: function() {
@@ -99,7 +102,7 @@ AWE.GS = (function(module) {
 		  var settlementProductions = this.getPath('slot.settlement.resourceProductions')
 		  var nextLevel             = this.get('nextLevel');
 		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, nextLevel, settlementProductions) : null;
-		}.property('nextLevel', 'buildingId').cacheable(),
+		}.property('nextLevel', 'buildingType').cacheable(),
 
 
     calcProductionTime: function(level) {
