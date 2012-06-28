@@ -210,7 +210,7 @@ AWE.Controller = (function(module) {
       var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(buildingId);
       var queue = AWE.GS.ConstructionQueueManager.getQueueForBuildingCategorieInSettlement(buildingType.category, slot.get('settlement_id'));
       
-      if (queue) {
+      if (queue && queue.get('max_length') > queue.get('jobs_count')) {
         queue.sendCreateJobAction(slot.getId(), buildingId, jobType, levelAfter, function(status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
             log(status, "Construction job created.");
@@ -218,13 +218,27 @@ AWE.Controller = (function(module) {
             that.updateResourcePool();
           }
           else {
-            log(status, "The server did not accept the construction command.");
-            // TODO Fehlermeldung 
+            console.log(status, "ERROR: The server did not accept the construction command.");
+            var dialog = AWE.UI.Ember.InfoDialog.create({
+              contentTemplateName: 'server-command-failed-info',
+              cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+              okPressed:           null,
+              cancelPressed:       function() { this.destroy(); },
+            });          
+            WACKADOO.presentModalDialog(dialog);
           }
         });
       }
       else {
-        log("Could not find appropiate queue for building category, no job created");
+        var dialog = AWE.UI.Ember.InfoDialog.create({
+          contentTemplateName: 'construction-queue-full-info',
+          arguments:           queue,
+          cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+          okPressed:           null,
+          cancelPressed:       function() { this.destroy(); },
+        });          
+        WACKADOO.presentModalDialog(dialog);
+        console.log("WARNING: Could not find appropiate queue for building category, or no empty slot left.");
       }
     } 
 
