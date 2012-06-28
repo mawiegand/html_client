@@ -131,7 +131,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           });
 
           assetLoaded();
-          AWE.GS.ShopManager.init();
         }
         else {
           console.log('CRITICAL ERROR: could not load current character from server. Error code: ' + statusCode + '. Terminate App.');

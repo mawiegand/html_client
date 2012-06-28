@@ -56,7 +56,8 @@
       <td>{{ resourceName }}</td>
       <td>{{ offer.duration }}h</td>
       <td>{{ offer.price}} {{ t shop.credits }}</td>
-      <td><a href="#" {{action "buyBonusOfferPressed"}}>{{ t shop.buy }}</a>
+      <td>{{#if offer.resource_effect }}{{ formatTime offer.resource_effect.finished_at }}{{/if}}</td>
+      <td><a href="#" {{action "buyBonusOfferPressed"}}>{{#if offer.resource_effect}}{{t shop.extend }}{{else}}{{t shop.buy }}{{/if}}</a>
     </tr>
 </script>
 
