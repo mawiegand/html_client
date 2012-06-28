@@ -166,7 +166,7 @@
 <script type="text/x-handlebars" data-template-name="requirements-missing-info">
 {{#with arguments}}
   <div class="advisor girl"></div>
-  <p>{{t settlement.buildings.missingReqWarning.start}} {{local name}} {{t settlement.buildings.missingReqWarning.end}}:<p/>
+  <p>{{t settlement.buildings.missingReqWarning.start}} {{local name}} {{t settlement.buildings.missingReqWarning.end}}:</p>
   <p>
     {{#each unmetRequirements}}
       {{view AWE.UI.Ember.RequirementView requirementBinding="this"}}<br />
@@ -174,6 +174,22 @@
   </p>
 {{/with}}
 </script>
+
+
+<script type="text/x-handlebars" data-template-name="construction-queue-full-info">
+{{#with arguments}}
+  <div class="advisor girl"></div>
+  <p>{{t settlement.buildings.constructionQueueFull.start}} {{max_length}} {{t settlement.buildings.constructionQueueFull.end}}</p>
+{{/with}}
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="server-command-failed-info">
+  <div class="advisor chef"></div>
+  <h1>{{t server.error.failedAction.heading }}</h1>
+  <p >{{t server.error.failedAction.unknown  }}</p>
+</script>
+
 
 <script type="text/x-handlebars" data-template-name="trainable-unit-button">
   {{local unitType.name}}

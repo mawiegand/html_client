@@ -28,9 +28,17 @@ AWE.I18n.en_US =  function(module) {
       shoutBox: {
         heading: 'Shout Box',
       },
-      
-      
     },
+    
+    server: {
+      error: {
+        failedAction: {
+          heading: "Server-Error",
+          unknown: "Ugh, seems like something went wrong, so your last command wasn't accepted. Or the server doesn't like you. Whatever, please try again later or contact the support.",
+        },
+      },
+    },
+        
     
     army: {
       details: {
@@ -57,6 +65,13 @@ AWE.I18n.en_US =  function(module) {
           "Get lost!",
         ],
       },
+    },
+
+    building: {
+      level:    'Level',
+      cost:     'Costs',
+      duration: 'Duration',
+      produces: 'Produces',
     },
     
     error: {
@@ -113,7 +128,12 @@ AWE.I18n.en_US =  function(module) {
         missingReqWarning: {
           start: "Hey! You cannot construct a",
           end: "now. The following prerequisit is missing",
-        }
+          cancelText: ['Argh!', 'Grmpf!', 'Hgnnhgn.', 'I see.'],
+        },
+        constructionQueueFull: {
+          start: "Sorry, but the construction queue is already filled to it's capacity of ",
+          end: " jobs. Please wait, till something else is completed.",
+        },
       },
     },
     

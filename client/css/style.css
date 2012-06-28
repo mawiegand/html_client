@@ -1003,13 +1003,13 @@ span.bonus {
   background-position: -159px 0px;
 }
 
-.fortress-screen .building-option-image.building_fortress_fortification.size1 {
+.fortress-screen .building-option-image.building_fortress_fortification.size1, .fortress-screen .queue-image.building_fortress_fortification.size1 {
   background-position: -0px 0px;
 }
-.fortress-screen .building-option-image.building_fortress_fortification.size2 {
+.fortress-screen .building-option-image.building_fortress_fortification.size2, .fortress-screen .queue-image.building_fortress_fortification.size1 {
   background-position: -120px 0px;
 }
-.fortress-screen .building-option-image.building_fortress_fortification.size3 {
+.fortress-screen .building-option-image.building_fortress_fortification.size3, .fortress-screen .queue-image.building_fortress_fortification.size1 {
   background-position: -240 0px;
 }
 
@@ -1107,7 +1107,7 @@ span.bonus {
 .fortress-screen .queue-job-image {
   width: 53px;
   height: 101px;
-  margin-right: 10px;
+  margin: -32px 6px 0px -8px;
 }
 
 .base-screen .queue-job-image {
@@ -1224,6 +1224,10 @@ span.bonus {
 /** image for building_cavalry_tower */
 .queue-job-image.building_cavalry_tower {
   background: url('../images/settlements/fortress/building_cavalry_tower_small.png');
+}
+/** image for building_fortress_fortification*/
+.queue-job-image.building_fortress_fortification {
+  background: url('../images/settlements/fortress/fortress_main_building_small.png');
 }
 
 .fortress-screen .queue-job-image.size1 {

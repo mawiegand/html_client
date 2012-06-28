@@ -28,6 +28,16 @@ AWE.I18n.de_DE = function(module) {
       
     },
     
+    server: {
+      error: {
+        failedAction: {
+          heading: "Server-Fehler",
+          unknown: "Ups, da ist wohl etwas schief gegangen. Der Befehl wurde nicht akzeptiert.",
+        },
+      },
+    },
+        
+    
     army: {
       details: {
         heading: 'Army',
@@ -152,6 +162,10 @@ AWE.I18n.de_DE = function(module) {
           start: "Hey! Du kannst hier jetzt kein Gebäude vom Typ",
           end: "bauen. Die folgenden Vorrausetzungen sind nicht erfüllt",
           cancelText: ['Argh!', 'Grmpf!', 'Hmpf', 'Na gut.'],
+        },
+        constructionQueueFull: {
+          start: "Sorry, aber die Bauschleife ist schon voll. Du kannst maximal ",
+          end: " Bauaufträge aufreihen. Bitte warte, bis etwas anderes fertig wird.",
         },
       },
     },
