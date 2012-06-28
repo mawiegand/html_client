@@ -100,11 +100,43 @@ AWE.GS = (function(module) {
 		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, nextLevel, settlementProductions) : null;
 		}.property('nextLevel', 'buildingId').cacheable(),
 		
+		productionTimeOfNextLevel: function() {
+		  var buildingType = this.get('buildingType');
+		  if (buildingType && buildingType.production_time) {
+		    var seconds = AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(buildingType.production_time), this.get('nextLevel'));
+		    var speed = this.getPath('slot.queue.speed');
+		    seconds = speed ? seconds / speed : seconds; // apply queue speed, if known.
+		    return seconds;
+		  }
+		  else {
+		    return null;
+	    }
+		}.property('nextLevel', 'buildingId', 'slot.queue.speed').cacheable(),		
+
+		costs: function() {
+		  var buildingType = this.get('buildingType');
+		  var level    = this.get('level');
+		  return buildingType && buildingType.costs ? AWE.Util.Rules.evaluateResourceCosts(buildingType.costs, level) : null;
+		}.property('level', 'buildingId').cacheable(),
+		
 		costsOfNextLevel: function() {
 		  var buildingType = this.get('buildingType');
 		  var nextLevel    = this.get('nextLevel');
 		  return buildingType && buildingType.costs ? AWE.Util.Rules.evaluateResourceCosts(buildingType.costs, nextLevel) : null;
 		}.property('nextLevel', 'buildingId').cacheable(),
+
+		productionTime: function() {
+		  var buildingType = this.get('buildingType');
+		  if (buildingType && buildingType.production_time) {
+		    var seconds = AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(buildingType.production_time), this.get('level'));
+		    var speed = this.getPath('slot.queue.speed');
+		    seconds = speed ? seconds / speed : seconds; // apply queue speed, if known.
+		    return seconds;
+		  }
+		  else {
+		    return null;
+	    }
+		}.property('level', 'buildingId', 'slot.queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.
 		
 		productionTimeOfNextLevel: function() {
 		  var buildingType = this.get('buildingType');
@@ -118,6 +150,14 @@ AWE.GS = (function(module) {
 		    return null;
 	    }
 		}.property('nextLevel', 'buildingId', 'slot.queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.
+		
+		localizedProductionTimeOfNextLevel: function() {
+		  var productionTime = this.get('productionTime');
+		  if (productionTime) {
+		    return AWE.Util.localizedDurationFromSeconds(productionTime);
+		  }
+		  return null;
+		}.property('productionTime').cacheable(),		
 		
 		localizedProductionTimeOfNextLevel: function() {
 		  var productionTime = this.get('productionTimeOfNextLevel');
