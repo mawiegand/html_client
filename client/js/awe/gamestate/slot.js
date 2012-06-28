@@ -107,8 +107,8 @@ AWE.GS = (function(module) {
 
     calcProductionTime: function(level) {
 		  var productionTime = this.getPath('buildingType.production_time');
-		  var speed = this.getPath('slot.queue.speed') || 1;
-		  level = level || this.get('level') || 1;
+		  var speed = this.getPath('slot.queue.speed') || 1;
+		  level = level || this.get('level') || 1;
 		  
 		  return productionTime ? (AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(productionTime), level) / speed) : null;
     },
@@ -124,7 +124,7 @@ AWE.GS = (function(module) {
 
     calcCosts: function(level) {
 		  var costs = this.getPath('buildingType.costs');
-		  level = level || this.get('level') || 1;
+		  level = level || this.get('level') || 1;
 		  return costs ? AWE.Util.Rules.evaluateResourceCosts(costs, level) : null;
     },
 

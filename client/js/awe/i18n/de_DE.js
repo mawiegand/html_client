@@ -129,9 +129,14 @@ AWE.I18n.de_DE = function(module) {
       article: 'Artikel',
       description: 'Beschreibung',
       price: 'Preis',
-      buy: 'Kaufen!',
+      buy: 'Kaufen',
+      extend: 'Verlängern',
       resourceOffers: "Ressourcenpakete",
       bonusOffers: "Bonuspakete",
+      resource: 'Ressource',
+      bonus: 'Bonus',
+      duration: 'Dauer',
+      expiry: 'Ablaufdatum',
     },
     
     settlement: {

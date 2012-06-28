@@ -111,6 +111,8 @@ AWE.Controller = (function(module) {
 
     that.ingameShopButtonClicked = function() {
       
+      AWE.GS.ShopManager.init();
+      
       shopDialog = AWE.UI.Ember.ShopDialog.create({
         
         // resourceOffers: AWE.GS.ShopManager.content.get('resourceOffers'),
@@ -173,6 +175,7 @@ AWE.Controller = (function(module) {
             });      
             
             that.applicationController.presentModalDialog(info);
+            AWE.GS.BonusOfferManager.updateBonusOffers();
             AWE.GS.ShopManager.fetchCreditAmount(function(){
               that.setModelChanged();
             });

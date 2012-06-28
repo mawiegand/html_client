@@ -30,8 +30,10 @@ AWE.GS = (function(module) {
       });
       
       that.fetchResourceOffers();
-      that.fetchBonusOffers();
       that.fetchCreditAmount();
+      AWE.GS.BonusOfferManager.updateBonusOffers(null, function(result){
+        my.shop.set('bonusOffers', AWE.GS.BonusOfferManager.getBonusOffers());
+      });
     };
     
     that.getShop = function(){
@@ -41,16 +43,6 @@ AWE.GS = (function(module) {
     that.fetchResourceOffers = function(callback) {
       $.getJSON(AWE.Config.SHOP_SERVER_BASE + 'resource_offers', function(data) {
         my.shop.set('resourceOffers', data);
-        
-        if (callback) {
-          callback(data);
-        }
-      });
-    };
-    
-    that.fetchBonusOffers = function(callback) {
-      $.getJSON(AWE.Config.SHOP_SERVER_BASE + 'bonus_offers', function(data) {
-        my.shop.set('bonusOffers', data);
         
         if (callback) {
           callback(data);
@@ -93,6 +85,7 @@ AWE.GS = (function(module) {
       var transaction = AWE.Action.Shop.createOfferTransaction(offerId, 'bonus');
       transaction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
+          AWE.GS.BonusOfferManager.updateBonusOffers();
           if (successCallback) {
             successCallback(transaction.data());
           }
