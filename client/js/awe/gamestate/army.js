@@ -198,12 +198,7 @@ AWE.GS = (function(module) {
           // remove deleted army from location
           if (status === AWE.Net.OK) {           
             var armies = module.ArmyAccess.getHashableCollectionForLocation_id(locationId);
-            AWE.Ext.applyFunction(armies.get('collection'), function(army){
-              var armyId = army.getId();
-              if (!result.hasOwnProperty(armyId)) {
-                army.destroy();
-              }
-            });
+            that.fetchMissingEntities(result, armies.get('collection'), that.updateArmy); // careful: this breaks "this" inside updateArmy  
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
@@ -230,12 +225,7 @@ AWE.GS = (function(module) {
           // remove deleted army from location
           if (status === AWE.Net.OK) {           
             var armies = module.ArmyAccess.getHashableCollectionForOwner_id(characterId);
-            AWE.Ext.applyFunction(armies.get('collection'), function(army){
-              var armyId = army.getId();
-              if (!result.hasOwnProperty(armyId)) {
-                army.destroy();
-              }
-            });
+            that.fetchMissingEntities(result, armies.get('collection'), that.updateArmy); // careful: this breaks "this" inside updateArmy  
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {

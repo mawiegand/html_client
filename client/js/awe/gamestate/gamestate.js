@@ -54,7 +54,12 @@ AWE.GS = (
     /** unique id of the entity. @property */
     id: 0,       
     /** name of the type for runtime evaluation */                          
-    typeName: 'Entity',
+    typeName:  'Entity',
+    /** flags entities that have been destroyed and should be ignored. This
+     * can be triggered either by the server sending an entity with 
+     * an attribute destroyed==true or by the client, when receiving a 
+     * 404 on an update from the server. */
+    destroyed:  null,
     /** timestamp of last update (on server)  */
     updated_at: null,
     /** timestamp of the creation (on server) */
@@ -153,6 +158,8 @@ AWE.GS = (
       
       var access = AWE.GS[this.get('typeName') + 'Access'];
       var self = this;
+      
+      this.set('destroyed', true);
       
       if (access) {
         AWE.Ext.applyFunctionToHash(access.accessHashes, function(key, accessHash) {
@@ -282,7 +289,7 @@ AWE.GS = (
             // not modified, let the caller process this event
           }
           else {                                      // On success:
-            if (data && data.length !== undefined) {  //   A) process an array of armies
+            if (data && data.length !== undefined) {  //   A) process an array of entities
               result = {};
               for (var i=0; i < data.length; i++) { 
                 var entityData = data[i];
@@ -290,7 +297,7 @@ AWE.GS = (
                 result[entity.get('id')] = entity;
               }         
             }
-            else {                                    //   B) process a single army
+            else {                                    //   B) process a single entity
               result = my.processUpdateResponse(data, updateType, start);
             };
           }
@@ -324,13 +331,20 @@ AWE.GS = (
         lastUpdateAt = entity.lastUpdateAt(updateType);
       }
       return my.fetchEntitiesFromURL(url, my.runningUpdatesPerId, id, updateType, lastUpdateAt, function(entity, statusCode, xhr, serverTime) {
-        if (statusCode === 304) { // not modified
+        if (statusCode === AWE.Net.NOT_MODIFIED) { // not modified
           entity = my.entities[id];
           if (entity) {
             entity.setNotModifiedAfter(updateType, serverTime);
           }
           else {
             console.log('ERROR: received a not-modified answer for an entity that is not already downloaded.');
+          }
+        }
+        else if (statusCode === AWE.Net.NOT_FOUND) {
+          console.log('ENTITY NOT FOUND ON SERVER.');
+          if (my.entities[id]) {
+            console.log('CORRESPONDING ENTITY IS GONE ON SERVER. Destroy local entity.', entity);
+            my.entities[id].destroy();
           }
         }
         if (callback) {
@@ -366,6 +380,8 @@ AWE.GS = (
       }
     }
     
+  
+    
     
     // public attributes and methods /////////////////////////////////////////
     
@@ -379,11 +395,32 @@ AWE.GS = (
       return my.entities;
     }
     
+    /** takes an enumerable and a resultHash from a query for entities, then
+     * checks for entities that are in the enumberable but NOT in the result
+     * Hash. Then riggers an individual update for each missing entity.
+     * This will finally lead to the deletion of entities that are gone on 
+     * the server (response of 404 leads to deleton from collection). 
+     * if a callback is given, it is called for all missing entities with
+     * the result of the individual update. */
+    that.fetchMissingEntities = function(resultHash, collection, updateFunction, callback) {
+      AWE.Ext.applyFunction(collection, function(entity) {
+        var id = entity.getId();
+        if (!resultHash.hasOwnProperty(id)) {
+          updateFunction(id, module.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode, xhr, serverTime) {
+            if (callback) {
+              callback(entity, statusCode, xhr, serverTime);
+            }
+          });
+        }
+      });
+    }
+    
     /**
      * removes an entity from an entity manager. first look for all observed attributes with
      * ending '_id' an set them to undefined in order to remove the entity from all 
      * access hashes. then remove entity from entity manager. 
      */
+     /* DEPRECATED
     that.removeEntity = function(id) {
       var entity = my.entities[id];
       for (var property in entity) {
@@ -393,7 +430,7 @@ AWE.GS = (
         }
       }
       delete my.entities[id];
-    }
+    } */
             
     return that;
   };
