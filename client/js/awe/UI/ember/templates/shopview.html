@@ -1,64 +1,55 @@
 <script type="text/x-handlebars" data-template-name="shop">
     <div class="modal-dialog-background"></div>
     <div class="center-helper">
-      <div class="modal-dialog-pane" id="shop">
+      <div class="shop-dialog-pane">
         <h1>{{ t shop.title }}</h1>
         
-        <p>{{ t shop.currentCreditAmount }}: {{ creditAmount }} {{ t shop.credits }}</p>
+        <p>{{ t shop.currentCreditAmount }}: {{ creditAmount }} {{ t shop.credits }}  | <a href="#" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</a></p>
         
         {{#if resourceOffers}}
         <h4>{{ t shop.resourceOffers }}</h4>
                   
-        <table>
-          <tr>
-            <th>{{ t shop.article }}</th>
-            <th>{{ t shop.price }}</th>
-            <th></th>
-          </tr>
           {{#each resourceOffers}}
             {{view AWE.UI.Ember.ShopResourceOffer offerBinding="this" shopBinding="shop"}}
           {{/each}}
-        </table>
         {{/if}}
         
         {{#if bonusOffers}}
+        
+        <div class="clearfix"></div>
         <h4>{{ t shop.bonusOffers }}</h4>
                   
-        <table>
-          <tr>
-            <th>Bonus</th>
-            <th>Ressource</th>
-            <th>Dauer</th>
-            <th>Preis</th>
-          </tr>
+        <div class="bonus-offer-header">
+          <div class="bonus-offer-bonus">{{ t shop.bonus }}</div>
+          <div class="bonus-offer-resource">{{ t shop.resource }}</div>
+          <div class="bonus-offer-duration">{{ t shop.duration }}</div>
+          <div class="bonus-offer-price">{{ t shop.price }}</div>
+          <div class="bonus-offer-end">{{ t shop.expiry }}</div>
+        </div>
           {{#each bonusOffers}}
-            {{view AWE.UI.Ember.ShopBonusOffer offerBinding="this" shopBinding="shop"}}
+            {{view AWE.UI.Ember.ShopBonusOffer offerBinding="this" shopBinding="shop" classNames="bonus-offer"}}
           {{/each}}
-        </table>
         {{/if}}
         
-        <p><a href="#" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</a> | <a href="#" {{action "closePressed" target="parentView"}}>{{t general.close}}</a>
+        <a class="close" href="#" {{action "closePressed" target="parentView"}}></a>  
       </div>
     </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="shop-resource-offer">
-    <tr>
-      <td>{{ offer.amount }} {{resourceName}}</td>
-      <td>{{ offer.price}} {{ t shop.credits }}</td>
-      <td><a href="#" {{action "buyResourceOfferPressed"}}>{{ t shop.buy }}</a>
-    </tr>
+    <a class="resource-offer" href="#" {{action "buyResourceOfferPressed"}}>
+      <p>{{ offer.amount }} {{resourceName}}</p>
+      <p>{{ offer.price}} {{ t shop.credits }}</p>
+    </a>
 </script>
 
 <script type="text/x-handlebars" data-template-name="shop-bonus-offer">
-    <tr>
-      <td>{{ formatAsPercent offer.bonus }}</td>
-      <td>{{ resourceName }}</td>
-      <td>{{ offer.duration }}h</td>
-      <td>{{ offer.price}} {{ t shop.credits }}</td>
-      <td>{{#if offer.resource_effect }}{{ formatTime offer.resource_effect.finished_at }}{{/if}}</td>
-      <td><a href="#" {{action "buyBonusOfferPressed"}}>{{#if offer.resource_effect}}{{t shop.extend }}{{else}}{{t shop.buy }}{{/if}}</a>
-    </tr>
+      <div class="bonus-offer-bonus">{{ formatAsPercent offer.bonus }}</div>
+      <div class="bonus-offer-resource">{{ resourceName }}</div>
+      <div class="bonus-offer-duration">{{ offer.duration }}h</div>
+      <div class="bonus-offer-price">{{ offer.price}} {{ t shop.credits }}</div>
+      <div class="bonus-offer-end">{{#if offer.resource_effect }}{{ formatTime offer.resource_effect.finished_at }}{{/if}}</div>
+      <div class="bonus-offer-buy"><a href="#" {{action "buyBonusOfferPressed"}}>{{#if offer.resource_effect}}{{t shop.extend }}{{else}}{{t shop.buy }}{{/if}}</a></div>
 </script>
 
 

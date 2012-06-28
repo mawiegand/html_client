@@ -69,7 +69,6 @@ AWE.GS = (function(module) {
           AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
             log('AWE.GS.ResourcePoolManager.updateResourcePool completed')
           });
-          that.fetchBonusOffers();
           if (successCallback) {
             successCallback(transaction.data());
           }
@@ -86,6 +85,7 @@ AWE.GS = (function(module) {
       var transaction = AWE.Action.Shop.createOfferTransaction(offerId, 'bonus');
       transaction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
+          AWE.GS.BonusOfferManager.updateBonusOffers();
           if (successCallback) {
             successCallback(transaction.data());
           }

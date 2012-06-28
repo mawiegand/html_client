@@ -1954,7 +1954,7 @@ li.shout .sender {
   margin-top:-280px;
   width: 700px;
   margin-left: -350px;
-};
+}
 
 
 .army-info-view {
@@ -2019,6 +2019,104 @@ li.shout .sender {
 }
 
 
+.resource-offer {
+  float: left;
+  width: 120px;
+  height: 60px;
+  background-color: #ffb;
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  padding: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+a.resource-offer {
+  text-decoration: none;
+}
+
+a.resource-offer:hover {
+  background-color: #bfb;
+}
+
+.resource-offer p {
+  margin: 3px;
+  color: #555;
+}
+
+.bonus-offer {
+  background-color: #ffb;
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.bonus-offer.active {
+  background-color: #fbb;
+}
+
+.bonus-offer-header {
+  padding: 10px;
+  font-weight: bold;
+}
+
+.bonus-offer-bonus {
+  width: 60px;
+  display: inline-block;
+}
+
+.bonus-offer-resource {
+  width: 80px;
+  display: inline-block;
+}
+
+.bonus-offer-duration {
+  width: 60px;
+  display: inline-block;
+}
+
+.bonus-offer-price {
+  width: 80px;
+  display: inline-block;
+}
+
+.bonus-offer-end {
+  width: 200px;
+  display: inline-block;
+}
+
+.bonus-offer-buy {
+  width: 80px;
+  display: inline-block;
+}
+
+.shop-dialog-pane { 
+  position: absolute; 
+  margin-left: -300px;
+  margin-top: -300px;
+  width: 600px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 16px 20px 16px 20px;
+  z-index:256;
+
+  -moz-border-radius: 12px;
+  border-radius:      12px;
+  -moz-box-shadow:    3px 3px 2px 2px #333;
+  -webkit-box-shadow: 3px 3px 2px 2px #333;
+  box-shadow:         3px 3px 2px 2px #333;
+}
+
+
+.shop-dialog-pane a.close {
+  position: absolute;
+  background: url('../images/icons/cross_small.png');
+  width: 36px;
+  height: 36px;
+  right: 12px;
+  top: 10px;
+}
 
 .activity-indicator-small {
   width: 16px;

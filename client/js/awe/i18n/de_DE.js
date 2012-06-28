@@ -133,6 +133,10 @@ AWE.I18n.de_DE = function(module) {
       extend: 'Verlängern',
       resourceOffers: "Ressourcenpakete",
       bonusOffers: "Bonuspakete",
+      resource: 'Ressource',
+      bonus: 'Bonus',
+      duration: 'Dauer',
+      expiry: 'Ablaufdatum',
     },
     
     settlement: {

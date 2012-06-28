@@ -68,6 +68,12 @@ AWE.UI.Ember = (function(module) {
     buyBonusOfferPressed: function() {
       this.get('parentView').buyBonusOfferPressed(this.getPath('offer.id'));
     },
+    
+    classNameBindings: ['active'],
+    
+    active: function() {
+      return this.get('offer').resource_effect !== null;
+    }.property('offer.resource_effect'),    
   });
   
   return module;
