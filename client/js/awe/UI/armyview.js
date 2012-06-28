@@ -20,6 +20,7 @@ AWE.UI = (function(module) {
     
     var _annotationView = null;
 
+    var _battleView = null;
     var _stanceView = null;    
     var _baseShape = null;    
     var _poleShape = null;    
@@ -81,15 +82,15 @@ AWE.UI = (function(module) {
       _poleGraphics.setStrokeStyle(1);
       _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
       _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
-      _poleGraphics.drawRoundRect(0, 0, 2, 84, 0);
+      _poleGraphics.drawRoundRect(0, 0, 2, 64, 0);
       _poleShape = AWE.UI.createShapeView();
       _poleShape.initWithControllerAndGraphics(my.controller, _poleGraphics);
-      _poleShape.setFrame(AWE.Geometry.createRect(56, 12, 2, 84));
+      _poleShape.setFrame(AWE.Geometry.createRect(46, 12, 2, 84));
       this.addChild(_poleShape);      
 
       _stanceView = AWE.UI.createImageView();
       _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[1]));
-      _stanceView.setFrame(AWE.Geometry.createRect(-38, -27, 128, 128));
+      _stanceView.setFrame(AWE.Geometry.createRect(-22, 5, 96, 96));
       _stanceView.onClick = that.onClick;
       _stanceView.onMouseOver = that.onMouseOver;
       _stanceView.onMouseOut = that.onMouseOut;
@@ -168,7 +169,7 @@ AWE.UI = (function(module) {
       var flagLength = 8 + Math.round(_army.get('size_present') / _army.get('size_max') * 48);
       _flagView = AWE.UI.createAllianceFlagView();
       _flagView.initWithController(my.controller);
-      _flagView.setFrame(AWE.Geometry.createRect(56 - flagLength, 12, flagLength, 20));
+      _flagView.setFrame(AWE.Geometry.createRect(46 - flagLength, 12, flagLength, 20));
       _flagView.setAllianceId(_army.get('alliance_id'));
       _flagView.setDirection('left');
       that.addChildAt(_flagView, 0);
@@ -234,6 +235,16 @@ AWE.UI = (function(module) {
         _actionPointsLabelView.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));
         _actionPointsLabelView.setText(_army.get('ap_present') + " / " + _army.get('ap_max'));
       }
+      
+      if (_army.isFighting() && !_battleView) {
+        _battleView = AWE.UI.createImageView();
+        _battleView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage('map/army/battle'));
+        _battleView.setFrame(AWE.Geometry.createRect(0, -50, 65, 65));
+        _battleView.onClick = that.onClick;
+        _battleView.onMouseOver = that.onMouseOver;
+        _battleView.onMouseOut = that.onMouseOut;
+        this.addChild(_battleView);
+      }      
     }
     
     that.setAnnotationView = function(annotationView) {
@@ -244,7 +255,9 @@ AWE.UI = (function(module) {
       return _annotationView;
     }
     
-    that.army = function() { return _army; };
+    that.army = function() {
+      return _army;
+    };
     
     /** actions */
    

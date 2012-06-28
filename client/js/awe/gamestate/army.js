@@ -80,6 +80,9 @@ AWE.GS = (function(module) {
       return this.get('owner_id') === module.CharacterManager.getCurrentCharacter().getId();
     },
     
+    isFighting: function() {
+      return this.battle_id > 0;
+    },
     
     isGarrison: function() {
       return this.get('garrison');
