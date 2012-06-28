@@ -1077,7 +1077,7 @@ span.bonus {
 }
 
 .queue-job-list.empty {
-  height: 50px;
+  height: 30px;
 }
 
 .queue-job {
@@ -1111,9 +1111,9 @@ span.bonus {
 }
 
 .base-screen .queue-job-image {
-  width: 80px;
-  height: 100px;
-  margin: -10px -5px -10px -10px ;
+  width: 72px;
+  height: 90px;
+  margin: -14px 0px 0px -10px ;
 }
 
 
@@ -1239,24 +1239,34 @@ span.bonus {
 .base-screen .queue-job-image {
   background: url('../images/settlements/base/building_category_large_building_small.png');  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
+.base-screen .queue-job-image.building_quarry {
+  background: url('../images/settlements/base/building_quarry_large_small.png');
+}
+.base-screen .queue-job-image.building_palace {
+  background: url('../images/settlements/base/building_palace_large_small.png');
+}
+.base-screen .queue-job-image.building_logger{
+  background: url('../images/settlements/base/building_logger_large_small.png');
+}
+
 
 .base-screen .queue-job-image.size1 {
-  background-position: -80px 0px;
+  background-position: -72px 0px;
 }
 .base-screen .queue-job-image.size2 {
-  background-position: -160px 0px;
+  background-position: -144px 0px;
 }
 .base-screen .queue-job-image.size3 {
-  background-position: -240px 0px;
+  background-position: -216px 0px;
 }
 .base-screen .queue-job-image.size4 {
-  background-position: -320px 0px;
+  background-position: -288px 0px;
 }
 .base-screen .queue-job-image.size5 {
-  background-position: -400px 0px;
+  background-position: -360px 0px;
 }
 .base-screen .queue-job-image.size6 {
-  background-position: -480px 0px;
+  background-position: -432px 0px;
 }
 
 /* ===== non-semantic helper classes ========================================
@@ -1647,8 +1657,8 @@ li.shout .sender {
 
 .base-picture .small-building .level {
   position: absolute;
-  left:   0px;
-  bottom: 0px;
+  left:   2px;
+  bottom: 6px;
 }
 
 .base-picture .large-building .level {

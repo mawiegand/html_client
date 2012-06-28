@@ -49,6 +49,12 @@ AWE.GS = (function(module) {
     job_type: null,
     
     active_job: null,
+    
+		productionTime: function() { // todo: need more complex functions for tearing down!
+		  var building = this.getPath('slot.building');
+		  var level = this.get('level_after');
+		  return building && level ? building.calcProductionTime(level) : null;
+		}.property('level_after', 'slot.building.type.production_time', 'slot.queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.
         
     parsedFinishingDate: function() {
       var active_job = this.get('active_job');

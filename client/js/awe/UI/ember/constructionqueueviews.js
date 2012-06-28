@@ -15,6 +15,16 @@ AWE.UI.Ember = (function(module) {
   module.ConstructionQueueView = Ember.View.extend({
     templateName: 'construction-queue-view',
     queues: null,
+    
+
+  });
+  
+  module.SingleConstructionQueueView = Ember.View.extend({
+    queue:      null,
+    controller: null,
+    
+    capacityBinding: "queue.max_length",
+    lengthBinding: "queue.jobs_count",  
   });
 
   module.ConstructionJobView = Ember.View.extend({
