@@ -20,6 +20,7 @@ AWE.UI = (function(module) {
     var _stanceButtonView = null;    
     var _moveButtonView = null;    
     var _attackButtonView = null;    
+    var _retreatButtonView = null;    
     var _cancelButtonView = null;    
     var _rankImageView = null;   
     
@@ -82,6 +83,18 @@ AWE.UI = (function(module) {
       _attackButtonView.onClick = function() { if (_attackButtonView.enabled()) { that.onAttackButtonClick(that); } }
       this.addChild(_attackButtonView);
       
+      _retreatButtonView = AWE.UI.createButtonView();
+      _retreatButtonView.initWithControllerTextAndImage(controller, 'retreat', AWE.UI.ImageCache.getImage("map/button1"));
+      _retreatButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+      _retreatButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
+      _retreatButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
+      _retreatButtonView.onClick = function() {
+        if (_retreatButtonView.enabled()) {
+          that.onRetreatButtonClick(_army);
+        }
+      }
+      this.addChild(_retreatButtonView);
+      
       _rankImageView = AWE.UI.createImageView();
       _rankImageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/army/rank1"));
       _rankImageView.setFrame(AWE.Geometry.createRect(86, 0, 20, 20));
@@ -122,6 +135,11 @@ AWE.UI = (function(module) {
     };
     
     that.onAttackButtonClick = function() {};
+    
+    that.onRetreatButtonClick = function() {
+      log('onRetreatButtonClick');
+    };
+    
     that.onBattleButtonClick = function() {};
     
     that.onMoveButtonClick = function() {
@@ -143,30 +161,36 @@ AWE.UI = (function(module) {
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);        
+        _retreatButtonView.setVisible(false);        
       }
       else if (_army.get('mode') === null || _army.get('mode') === AWE.Config.ARMY_MODE_IDLE) { // 0 -> idle or null -> unkown
         _moveButtonView.setVisible(true);
         _attackButtonView.setVisible(true);
         _cancelButtonView.setVisible(false);
+        _retreatButtonView.setVisible(false);        
       }
       else if (_army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(false);
         _cancelButtonView.setVisible(true);  
+        _retreatButtonView.setVisible(false);        
       }
-      else if (_army.get('mode') === AWE.Config.ARMY_MODE_FIGHTING) {
+      else if (_army.get('isFighting')) {
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);        
+        _retreatButtonView.setVisible(true);        
       }
     }
     
     that.updateButtonState = function() {
-      _moveButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('battle_id') > 0);
-      _attackButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('battle_id') > 0);
+      _moveButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('isFighting'));
+      _attackButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('isFighting'));
+      _retreatButtonView.setEnabled(_army.get('isFighting'));    
       
       _moveButtonView.setSelected(_actionMode === 'moveTargetSelection');
       _attackButtonView.setSelected(_actionMode === 'attackTargetSelection');
+      _retreatButtonView.setSelected(_army.get('battle_retreat'));        
     }
     
     that.recalcView = function() {

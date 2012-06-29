@@ -285,7 +285,6 @@ AWE.Controller = (function(module) {
     
     that.constructionFinishClicked = function(job) {
       var queue = job.get('queue');
-      AWE.GS.ResourcePoolManager.getResourcePool().removeResources({resource_cash: 1});
       queue.sendFinishJobAction(job.getId(), function(status) {
         if (status === AWE.Net.OK) {    // 200 OK
           log(status, "Construction job finished.");

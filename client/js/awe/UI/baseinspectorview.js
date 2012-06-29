@@ -171,6 +171,8 @@ AWE.UI = (function(module) {
         };
         this.addChild(_newArmyButtonView);
       }
+
+      // TODO disablen wenn garrison army leer
   
       if (!_prevButtonView && isOwnLocation) {
         // button unten

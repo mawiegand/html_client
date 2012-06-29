@@ -236,7 +236,7 @@ AWE.UI = (function(module) {
         _actionPointsLabelView.setText(_army.get('ap_present') + " / " + _army.get('ap_max'));
       }
       
-      if (_army.isFighting() && !_battleView) {
+      if (_army.get('isFighting') && !_battleView) {
         _battleView = AWE.UI.createImageView();
         _battleView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage('map/army/battle'));
         _battleView.setFrame(AWE.Geometry.createRect(0, -50, 65, 65));

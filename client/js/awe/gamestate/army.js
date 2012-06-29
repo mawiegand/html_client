@@ -81,8 +81,8 @@ AWE.GS = (function(module) {
     },
     
     isFighting: function() {
-      return this.battle_id > 0;
-    },
+      return this.get('battle_id') > 0;
+    }.property('battle_id').cacheable(),
     
     isGarrison: function() {
       return this.get('garrison');
@@ -90,6 +90,10 @@ AWE.GS = (function(module) {
     
     isMovable: function() {
       return ;
+    },
+    
+    empty: function() {
+      return false;
     },
     
     relation: function() {

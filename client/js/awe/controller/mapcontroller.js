@@ -813,6 +813,26 @@ AWE.Controller = (function(module) {
       
       that.applicationController.presentModalDialog(dialog);
     }
+
+    var runningRetreatAction = false;
+
+    that.armyRetreatButtonClicked = function(army) {
+      if (!runningRetreatAction) {
+        runningRetreatAction = true
+        var retreatAction = AWE.Action.Military.createRetreatArmyAction(army);
+        retreatAction.send(function(status) {
+          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK #
+            AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(army) {
+              that.setModelChanged(); 
+            });
+          }
+          else {
+            that.handleError(status, "The server did not accept the retreat comannd.");
+          }
+          runningRetreatAction = false;
+        });
+      }
+    };
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -1802,6 +1822,10 @@ AWE.Controller = (function(module) {
           annotationView.onAttackButtonClick = (function(self) {
             return function(view) { self.armyAttackButtonClicked(view); }
           })(that);
+          
+          annotationView.onRetreatButtonClick = (function(self) {
+            return function(army) { self.armyRetreatButtonClicked(army); }
+          })(that); 
           
           armyUpdates[annotatedView.army().getId()] = annotatedView.army();
         }

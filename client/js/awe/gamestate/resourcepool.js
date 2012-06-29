@@ -60,7 +60,6 @@ AWE.GS = (function(module) {
           self.set(resourceType + '_amount', resource - quantity);
         }
       });
-      log('--->', this.get('resource_cash_amount'));
     },
     
   });     

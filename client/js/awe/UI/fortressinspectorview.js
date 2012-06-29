@@ -231,7 +231,7 @@ AWE.UI = (function(module) {
         this.addChild(_infoButtonView);
       }
 
-      if (!_newArmyButtonView) {
+      if (!_newArmyButtonView && my.region.location(0).isOwn()) {
         _newArmyButtonView = AWE.UI.createButtonView();
         _newArmyButtonView.initWithControllerTextAndImage(my.controller, 'New Army', AWE.UI.ImageCache.getImage("map/button1"));
         _newArmyButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
@@ -241,6 +241,8 @@ AWE.UI = (function(module) {
         };
         this.addChild(_newArmyButtonView);
       }
+      
+      // TODO disablen wenn garrison army leer
 
       // button unten
       if (!_prevButtonView && my.region.ownerId() === currentCharacter.getId()) {

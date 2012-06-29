@@ -1981,7 +1981,7 @@ li.shout .sender {
 #army-create-form, #army-change-form {
   margin-left: -300px;
   margin-top: -250px;
-  width: 600px; height: 500px;
+  width: 600px; min-height: 200px;
 }
 
 #army-create-form table td, #army-change-form table td {

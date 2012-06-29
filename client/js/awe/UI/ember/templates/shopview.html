@@ -48,8 +48,8 @@
       <div class="bonus-offer-resource">{{ resourceName }}</div>
       <div class="bonus-offer-duration">{{ offer.duration }}h</div>
       <div class="bonus-offer-price">{{ offer.price}} {{ t shop.credits }}</div>
-      <div class="bonus-offer-end">{{#if offer.resource_effect }}{{ formatTime offer.resource_effect.finished_at }}{{/if}}</div>
-      <div class="bonus-offer-buy"><a href="#" {{action "buyBonusOfferPressed"}}>{{#if offer.resource_effect}}{{t shop.extend }}{{else}}{{t shop.buy }}{{/if}}</a></div>
+      <div class="bonus-offer-end">{{#if offer.resource_effect }}{{ formatTime offer.resource_effect.finished_at }}{{else}}<a href="#" {{action "buyBonusOfferPressed"}}>{{t shop.buy }}</a>{{/if}}</div>
+      <div class="bonus-offer-buy">{{#if offer.resource_effect}}<a href="#" {{action "buyBonusOfferPressed"}}>{{t shop.extend }}</a>{{/if}}</div>
 </script>
 
 
