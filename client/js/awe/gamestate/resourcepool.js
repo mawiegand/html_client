@@ -50,6 +50,19 @@ AWE.GS = (function(module) {
     
     // methods if needed...
     
+    // removes the resources in the given resources object
+    // does not check if enough resources are available
+    removeResources: function(resources) {
+      var self = this;
+      AWE.Ext.applyFunctionToHash(resources, function(resourceType, quantity) {
+        resource = self.get(resourceType + '_amount');
+        if (resource !== undefined) {
+          self.set(resourceType + '_amount', resource - quantity);
+        }
+      });
+      log('--->', this.get('resource_cash_amount'));
+    },
+    
   });     
 
     

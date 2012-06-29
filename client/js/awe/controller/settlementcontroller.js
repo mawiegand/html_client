@@ -285,10 +285,12 @@ AWE.Controller = (function(module) {
     
     that.constructionFinishClicked = function(job) {
       var queue = job.get('queue');
+      AWE.GS.ResourcePoolManager.getResourcePool().removeResources({resource_cash: 1});
       queue.sendFinishJobAction(job.getId(), function(status) {
         if (status === AWE.Net.OK) {    // 200 OK
           log(status, "Construction job finished.");
-          that.updateConstructionQueueSlotAndJobs(queue.getId());          
+          that.updateConstructionQueueSlotAndJobs(queue.getId());    
+          that.updateResourcePool();      
         }
         else {
           log(status, "The server did not accept the job finish command.");
