@@ -697,6 +697,9 @@ AWE.Controller = (function(module) {
             that.setModelChanged();
             that.addDisappearingAnnotationLabel(armyView, 'Attack started', 1000);
           });
+          AWE.GS.ArmyManager.updateArmy(targetArmy.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+            that.setModelChanged();
+          });
         }
         else {
           that.handleError(status, "The server did not accept the attack comannd.");
