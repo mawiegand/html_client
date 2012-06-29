@@ -166,7 +166,7 @@ AWE.UI = (function(module) {
         that.removeChild(_flagView);
       }
       
-      var flagLength = 8 + Math.round(_army.get('size_present') / _army.get('size_max') * 48);
+      var flagLength = 8 + Math.round(Math.min(_army.get('size_present') / _army.get('size_max'), 1) * 48);
       _flagView = AWE.UI.createAllianceFlagView();
       _flagView.initWithController(my.controller);
       _flagView.setFrame(AWE.Geometry.createRect(46 - flagLength, 12, flagLength, 20));
