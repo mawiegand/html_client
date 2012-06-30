@@ -37,7 +37,26 @@ AWE.I18n.de_DE = function(module) {
       },
     },
         
-    
+    battle: {
+      details: {
+        heading: "Kampf Info",
+      },        
+      messages: {
+        own: {
+          winning: [
+            "Yeah, platt machen wir sie!",
+          ],
+          losing: [
+            "Tu was, unsere Armee geht grad den Bach runter!",
+          ],
+          neutral: [
+            "Hau mal auf den Putz, da passiert ja gar nix!",
+          ]
+        },
+        other: "Du willst da doch nicht etwa mitmischen, oder?"
+      }
+    },    
+   
     army: {
       details: {
         heading: 'Army',

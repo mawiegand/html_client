@@ -31,7 +31,7 @@ AWE.GS = (function(module) {
       
       that.fetchResourceOffers();
       that.fetchCreditAmount();
-      AWE.GS.BonusOfferManager.updateBonusOffers(null, function(result){
+      AWE.GS.BonusOfferManager.updateBonusOffers(null, function(result) {
         my.shop.set('bonusOffers', AWE.GS.BonusOfferManager.getBonusOffers());
       });
     };

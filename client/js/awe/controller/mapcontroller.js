@@ -837,6 +837,27 @@ AWE.Controller = (function(module) {
       }
     };
     
+    that.battleInfoButtonClicked = function(army) {
+      // battle update anstoßen
+      var dialog = AWE.UI.Ember.BattleDialog.create({
+        closePressed: function(evt) {
+          this.destroy();
+        },
+        retreatPressed: function(evt) {
+          that.armyRetreatButtonClicked(evt.view.army);
+        },
+        cancelRetreatPressed: function(evt) {
+          that.armyRetreatButtonClicked(evt.view.army);
+        },
+      });
+      
+      AWE.GS.BattleManager.updateBattle(army.get('battle_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(battle) {
+        dialog.set('battle', battle);
+      });
+      
+      that.applicationController.presentModalDialog(dialog);
+    };
+    
     // ///////////////////////////////////////////////////////////////////////
     //
     //   User Input Handling
@@ -1828,6 +1849,10 @@ AWE.Controller = (function(module) {
           
           annotationView.onRetreatButtonClick = (function(self) {
             return function(army) { self.armyRetreatButtonClicked(army); }
+          })(that); 
+          
+          annotationView.onBattleInfoButtonClick = (function(self) {
+            return function(army) { self.battleInfoButtonClicked(army); }
           })(that); 
           
           armyUpdates[annotatedView.army().getId()] = annotatedView.army();

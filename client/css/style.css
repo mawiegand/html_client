@@ -732,14 +732,9 @@ html, body {
   margin-bottom:-30px;
 }
 
-.info-dialog .advisor { 
+.advisor { 
   float:left;
   margin-right: 10px;
-}
-
-.army-info-view .advisor {
-  float:right;
-  margin-left: 10px;
 }
 
 .citation {
@@ -2110,6 +2105,122 @@ a.resource-offer:hover {
 
 
 .shop-dialog-pane a.close {
+  position: absolute;
+  background: url('../images/icons/cross_small.png');
+  width: 36px;
+  height: 36px;
+  right: 12px;
+  top: 10px;
+}
+
+.participant div {
+  display: inline-block;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.participant.header div {
+  font-weight: bold;
+}
+
+.participant-name {
+  width: 80px;
+}
+
+.participant-owner {
+  width: 100px;
+}
+
+.participant-size {
+  width: 30px;
+  text-align: center;
+}
+
+.participant-strength {
+  width: 60px;
+  text-align: center;
+}
+
+.participant-exp {
+  width: 30px;
+  text-align: center;
+}
+
+.participant-retreat {
+  width: 70px;
+}
+
+.participants-left {
+  display: inline-block;
+  border-right: 1px solid #ccc;
+}
+
+.participants-right {
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.battle-ratio {
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.battle-ratio-left {
+  background-color: #cfc;
+  display: inline-block;
+  height: 32px;
+}
+
+.battle-ratio-right {
+  background-color: #fcc;
+  display: inline-block;
+  height: 32px;
+}
+
+.battle-ratio-left-text {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 5px;
+  width: 770px;
+}
+
+.battle-ratio-right-text {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: right;
+  padding: 5px;
+  width: 770px;
+}
+
+.battle-time {
+  margin-top: 20px;
+}
+
+.battle-dialog-pane {
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: -400px;
+  width: 800px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 16px 20px 16px 20px;
+  z-index:256;
+
+  -moz-border-radius: 12px;
+  border-radius:      12px;
+  -moz-box-shadow:    3px 3px 2px 2px #333;
+  -webkit-box-shadow: 3px 3px 2px 2px #333;
+  box-shadow:         3px 3px 2px 2px #333;
+}
+
+.battle-dialog-pane a.close {
   position: absolute;
   background: url('../images/icons/cross_small.png');
   width: 36px;

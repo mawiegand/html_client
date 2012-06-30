@@ -21,6 +21,7 @@ AWE.UI = (function(module) {
     var _moveButtonView = null;    
     var _attackButtonView = null;    
     var _retreatButtonView = null;    
+    var _battleInfoButtonView = null;    
     var _cancelButtonView = null;    
     var _rankImageView = null;   
     
@@ -54,13 +55,13 @@ AWE.UI = (function(module) {
       _army = view.army();
       
       _stanceButtonView = AWE.UI.createButtonView();
-      _stanceButtonView.initWithControllerTextAndImage(controller, 'stance', AWE.UI.ImageCache.getImage("map/button1"), frame);
+      _stanceButtonView.initWithControllerTextAndImage(controller, 'Stance', AWE.UI.ImageCache.getImage("map/button1"), frame);
 //    _stanceButtonView.setDisabledImage(AWE.UI.ImageCache.getImage("map/button1disabled"));
       _stanceButtonView.setFrame(AWE.Geometry.createRect(12, 6, 52, 52));
       this.addChild(_stanceButtonView);
 
       _moveButtonView = AWE.UI.createButtonView();
-      _moveButtonView.initWithControllerTextAndImage(controller, 'move', AWE.UI.ImageCache.getImage("map/button1"));
+      _moveButtonView.initWithControllerTextAndImage(controller, 'Move', AWE.UI.ImageCache.getImage("map/button1"));
       _moveButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
       _moveButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
       _moveButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
@@ -68,7 +69,7 @@ AWE.UI = (function(module) {
       this.addChild(_moveButtonView);
       
       _cancelButtonView = AWE.UI.createButtonView();
-      _cancelButtonView.initWithControllerTextAndImage(controller, 'cancel', AWE.UI.ImageCache.getImage("map/button1"));
+      _cancelButtonView.initWithControllerTextAndImage(controller, 'Cancel', AWE.UI.ImageCache.getImage("map/button1"));
       _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
       _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
       _cancelButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
@@ -76,7 +77,7 @@ AWE.UI = (function(module) {
       this.addChild(_cancelButtonView);      
       
       _attackButtonView = AWE.UI.createButtonView();
-      _attackButtonView.initWithControllerTextAndImage(controller, 'attack', AWE.UI.ImageCache.getImage("map/button1"));
+      _attackButtonView.initWithControllerTextAndImage(controller, 'Attack', AWE.UI.ImageCache.getImage("map/button1"));
       _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
       _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
       _attackButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
@@ -84,7 +85,7 @@ AWE.UI = (function(module) {
       this.addChild(_attackButtonView);
       
       _retreatButtonView = AWE.UI.createButtonView();
-      _retreatButtonView.initWithControllerTextAndImage(controller, 'retreat', AWE.UI.ImageCache.getImage("map/button1"));
+      _retreatButtonView.initWithControllerTextAndImage(controller, 'Retreat', AWE.UI.ImageCache.getImage("map/button1"));
       _retreatButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
       _retreatButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
       _retreatButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
@@ -94,6 +95,17 @@ AWE.UI = (function(module) {
         }
       }
       this.addChild(_retreatButtonView);
+      
+      _battleInfoButtonView = AWE.UI.createButtonView();
+      _battleInfoButtonView.initWithControllerTextAndImage(controller, 'Battle Info', AWE.UI.ImageCache.getImage("map/button1"));
+      _battleInfoButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+      _battleInfoButtonView.setFrame(AWE.Geometry.createRect(128, -70, 52, 52));
+      _battleInfoButtonView.onClick = function() {
+        if (_battleInfoButtonView.enabled()) {
+          that.onBattleInfoButtonClick(_army);
+        }
+      }
+      this.addChild(_battleInfoButtonView);
       
       _rankImageView = AWE.UI.createImageView();
       _rankImageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/army/rank1"));
@@ -145,6 +157,7 @@ AWE.UI = (function(module) {
     that.onMoveButtonClick = function() {
       log('onMoveButtonClick');
     };
+    that.onBattleInfoButtonClick = function() {};
     that.onCancelMoveButtonClick = function() {};
     
     that.onWaylayButtonClick = function() {};
@@ -157,29 +170,40 @@ AWE.UI = (function(module) {
     }
     
     that.updateButtonVisibility = function() {
-      if (!_army.isOwn() || !_armyView.selected()) {
+      if (!_armyView.selected()) {
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);        
         _retreatButtonView.setVisible(false);        
+        _battleInfoButtonView.setVisible(false);        
       }
-      else if (_army.get('mode') === null || _army.get('mode') === AWE.Config.ARMY_MODE_IDLE) { // 0 -> idle or null -> unkown
+      else if (_army.isOwn() && (_army.get('mode') === null || _army.get('mode') === AWE.Config.ARMY_MODE_IDLE)) { // 0 -> idle or null -> unkown
         _moveButtonView.setVisible(true);
         _attackButtonView.setVisible(true);
         _cancelButtonView.setVisible(false);
         _retreatButtonView.setVisible(false);        
+        _battleInfoButtonView.setVisible(false);        
       }
-      else if (_army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
+      else if (_army.isOwn() && _army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(false);
         _cancelButtonView.setVisible(true);  
         _retreatButtonView.setVisible(false);        
+        _battleInfoButtonView.setVisible(false);        
+      }
+      else if (_army.isOwn() && _army.get('isFighting')) {
+        _moveButtonView.setVisible(false);
+        _attackButtonView.setVisible(false);
+        _cancelButtonView.setVisible(false);        
+        _retreatButtonView.setVisible(true);        
+        _battleInfoButtonView.setVisible(true);        
       }
       else if (_army.get('isFighting')) {
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);        
-        _retreatButtonView.setVisible(true);        
+        _retreatButtonView.setVisible(false);        
+        _battleInfoButtonView.setVisible(true);        
       }
     }
     

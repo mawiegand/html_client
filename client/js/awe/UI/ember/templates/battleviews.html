@@ -1,0 +1,86 @@
+<script type="text/x-handlebars" data-template-name="battle-dialog">
+    <div class="modal-dialog-background"></div>
+    <div class="center-helper">
+      <div class="battle-dialog-pane">
+        
+        <div class="advisor chef"></div>
+        
+        <h2>Battle Info</h2>
+
+        {{#if battle.lastRound}}
+        <div>After Round {{formatTime battle.lastRound.round_num}}</div>
+        {{else}}
+        <div>Preparing for Round 1</div>
+        {{/if}}
+        <p class="citation">{{message}}</p>
+        
+        <div class="clearfix"></div>
+        
+        <div class="battle-ratio">
+          <div {{bindAttr style="ratioLengthOwn"}} class="battle-ratio-left"></div><div {{bindAttr style="ratioLengthOther"}} class="battle-ratio-right"></div>
+          <div class="battle-ratio-left-text">{{#if battle.ownBattle}}My Faction{{else}}One Faction{{/if}}</div>
+          <div class="battle-ratio-right-text">Other Faction</div>
+        </div>
+
+        <div class="participants-left">
+          <div class="participant header">
+            <div class="participant-name">Name</div>
+            <div class="participant-owner">Owner</div>
+            <div class="participant-size">Size</div>
+            <div class="participant-strength">Strength</div>
+            <div class="participant-exp">Exp.</div>
+            <div class="participant-retreat">Retreat</div>
+          </div>
+          {{#each battle.participantsOwnFaction}}
+            {{view AWE.UI.Ember.BattleParticipantView participantBinding="this" armyBinding="army" classNames="participant"}}
+          {{/each}}
+        </div>
+      
+        <div class="participants-right">
+          <div class="participant header">
+            <div class="participant-name">Name</div>
+            <div class="participant-owner">Owner</div>
+            <div class="participant-size">Size</div>
+            <div class="participant-strength">Strength</div>
+            <div class="participant-exp">Exp.</div>
+            <div class="participant-retreat">Retreat</div>
+          </div>
+          {{#each battle.participantsOtherFaction}}
+            {{view AWE.UI.Ember.BattleParticipantView participantBinding="this" armyBinding="army" classNames="participant"}}
+          {{/each}}
+        </div>
+        
+        {{#if battle.lastRound}}
+        <div class="battle-time">Last Round: {{formatTime battle.lastRound.executed_at}} | Next Round: {{formatTime battle.next_round_at}}</div>
+        {{else}}
+        <div class="battle-time">First Round: {{formatTime battle.next_round_at}}</div>
+        {{/if}}
+      
+        <a class="close" href="#" {{action "closePressed" target="parentView"}}></a>  
+      </div>
+    </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="battle-participant-view">
+      <div class="participant-name">{{army.name}}</div>
+      <div class="participant-owner">{{army.owner_name}}{{#if army.alliance_tag}} | {{army.alliance_tag}}{{/if}}</div>
+      <div class="participant-size">{{army.size_present}}</div>
+      <div class="participant-strength">{{army.strength}}</div>
+      <div class="participant-exp">{{army.exp}}</div>
+      <div class="participant-retreat">
+        {{#if participant.isOwn }}
+          {{#if army.battle_retreat }}
+            <a href="#" {{action "cancelRetreatPressed" target="parentView"}}>cancel</a>  
+          {{else}}
+            <a href="#" {{action "retreatPressed" target="parentView"}}>retreat</a>  
+          {{/if}}
+        {{else}}
+          {{#if army.battle_retreat}}
+            yes
+          {{else}}
+            no
+          {{/if}}
+        {{/if}}
+      </div>
+</script>
+
