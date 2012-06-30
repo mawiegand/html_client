@@ -38,7 +38,9 @@ AWE.UI.Ember = (function(module) {
   /** @class
    * @name AWE.UI.Ember.BuildingOptionView */
   module.BuildingOptionView = module.HoverableView.extend( /** @lends AWE.UI.Ember.BuildingOptionView# */ {
-    classNameBindings: ['building.requirementUnmet'],
+    classNameBindings: ['requirementUnmet'],
+    
+    requirementUnmetBinding: 'building.requirementUnmet',
   });
   
  
@@ -46,6 +48,8 @@ AWE.UI.Ember = (function(module) {
    * @name AWE.UI.Ember.BuildingDetailsDialog */  
   module.BuildingDetailsDialog = Ember.View.extend( /** @lends AWE.UI.Ember.BuildingDetailsDialog# */ {
     templateName: "settlement-dialog-building-details",
+  
+    sendingUpgradeBinding: 'controller.status.sendingUpgrade',
   
     cancelPressed: function() {
       this.get('controller').unselectSlot();

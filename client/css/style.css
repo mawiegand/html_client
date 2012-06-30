@@ -848,6 +848,14 @@ html, body {
   text-decoration: none;
 }
 
+.settlement-dialog-pane .upgrade {
+  margin-top: 6px;
+  color: #333;
+  float: right;
+  display: block;
+  text-decoration: none;
+}
+
 .settlement-dialog-pane a.upgrade:hover {
   opacity: 0.6;
 }

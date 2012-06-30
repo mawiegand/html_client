@@ -99,7 +99,11 @@
     <hr>
     
     {{#if building.upgradable}}
+      {{#if sendingUpgrade}}
+        <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Updating...</div>
+      {{else}}
       <a href="#" {{action "upgradeClicked"}} class="upgrade" title="click to upgrade"><img src="images/icons/cross_green.png"></img> Upgrade</a>
+      {{/if}}
       <h2>Next Upgrade: Level {{ building.nextLevel }}</h2>
     
      {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building" levelBinding="building.nextLevel"}}

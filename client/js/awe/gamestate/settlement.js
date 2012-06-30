@@ -102,7 +102,7 @@ AWE.GS = (function(module) {
 
     enumerableSlots: function() {
       return this.getPath('hashableSlots.collection');
-    }.property('id', 'hashableSlots.changed_at').cacheable(),
+    }.property('id, hashableSlots.changedAt').cacheable(),
 
     
     settlementType: function() {
