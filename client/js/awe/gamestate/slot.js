@@ -136,24 +136,6 @@ AWE.GS = (function(module) {
 		  return this.calcCosts(this.get('nextLevel'));
 		}.property('nextLevel', 'buildingId').cacheable(),
 		
-
-		/** "deprecated, use formatDuration"
-		localizedProductionTimeOfNextLevel: function() {
-		  var productionTime = this.get('productionTime');
-		  if (productionTime) {
-		    return AWE.Util.localizedDurationFromSeconds(productionTime);
-		  }
-		  return null;
-		}.property('productionTime').cacheable(),		
-		
-		localizedProductionTimeOfNextLevel: function() {
-		  var productionTime = this.get('productionTimeOfNextLevel');
-		  if (productionTime) {
-		    return AWE.Util.localizedDurationFromSeconds(productionTime);
-		  }
-		  return null;
-		}.property('productionTimeOfNextLevel').cacheable(),
-		*/
 		
 		upgradable: function() {
 		  var nextLevel = this.get('nextLevel');

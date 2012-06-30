@@ -2041,8 +2041,8 @@ li.shout .sender {
 .resource-offer {
   float: left;
   width: 120px;
-  height: 60px;
-  background-color: #ffb;
+  height: 80px;
+  background-color: #BBF;
   -moz-border-radius: 7px;
   border-radius:      7px;
   padding: 10px;
@@ -2056,7 +2056,7 @@ a.resource-offer {
 }
 
 a.resource-offer:hover {
-  background-color: #bfb;
+  background-color: #BFB;
 }
 
 .resource-offer p {
@@ -2065,7 +2065,7 @@ a.resource-offer:hover {
 }
 
 .bonus-offer {
-  background-color: #ffb;
+  background-color: #FBB;
   -moz-border-radius: 7px;
   border-radius:      7px;
   padding: 10px;
@@ -2073,7 +2073,7 @@ a.resource-offer:hover {
 }
 
 .bonus-offer.active {
-  background-color: #fbb;
+  background-color: #BFB;
 }
 
 .bonus-offer-header {
@@ -2081,13 +2081,8 @@ a.resource-offer:hover {
   font-weight: bold;
 }
 
-.bonus-offer-bonus {
-  width: 60px;
-  display: inline-block;
-}
-
-.bonus-offer-resource {
-  width: 80px;
+.bonus-offer-description {
+  width: 190px;
   display: inline-block;
 }
 
@@ -2097,17 +2092,13 @@ a.resource-offer:hover {
 }
 
 .bonus-offer-price {
-  width: 80px;
+  text-align: center;
+  width: 70px;
   display: inline-block;
 }
 
 .bonus-offer-end {
-  width: 200px;
-  display: inline-block;
-}
-
-.bonus-offer-buy {
-  width: 80px;
+  width: 230px;
   display: inline-block;
 }
 

@@ -4,7 +4,7 @@
       <div class="shop-dialog-pane">
         <h1>{{ t shop.title }}</h1>
         
-        <p>{{ t shop.currentCreditAmount }}: {{ creditAmount }} {{ t shop.credits }}  | <a href="#" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</a></p>
+        <p>{{ t shop.currentCreditAmount }}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="creditAmount" }} {{ t shop.credits }}  | <a href="#" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</a></p>
         
         {{#if resourceOffers}}
         <h4>{{ t shop.resourceOffers }}</h4>
@@ -17,11 +17,9 @@
         {{#if bonusOffers}}
         
         <div class="clearfix"></div>
-        <h4>{{ t shop.bonusOffers }}</h4>
-                  
+                          
         <div class="bonus-offer-header">
-          <div class="bonus-offer-bonus">{{ t shop.bonus }}</div>
-          <div class="bonus-offer-resource">{{ t shop.resource }}</div>
+          <div class="bonus-offer-description">{{ t shop.description }}</div>
           <div class="bonus-offer-duration">{{ t shop.duration }}</div>
           <div class="bonus-offer-price">{{ t shop.price }}</div>
           <div class="bonus-offer-end">{{ t shop.expiry }}</div>
@@ -39,17 +37,37 @@
 <script type="text/x-handlebars" data-template-name="shop-resource-offer">
     <a class="resource-offer" href="#" {{action "buyResourceOfferPressed"}}>
       <p>{{ offer.amount }} {{resourceName}}</p>
+      <p>{{t shop.for }}</p>
       <p>{{ offer.price}} {{ t shop.credits }}</p>
     </a>
 </script>
 
 <script type="text/x-handlebars" data-template-name="shop-bonus-offer">
-      <div class="bonus-offer-bonus">{{ formatAsPercent offer.bonus }}</div>
-      <div class="bonus-offer-resource">{{ resourceName }}</div>
+      <div class="bonus-offer-description">+{{ formatAsPercent offer.bonus }} {{t shop.production }} {{ resourceName }}</div>
       <div class="bonus-offer-duration">{{ offer.duration }}h</div>
-      <div class="bonus-offer-price">{{ offer.price}} {{ t shop.credits }}</div>
-      <div class="bonus-offer-end">{{#if offer.resource_effect }}{{ formatTime offer.resource_effect.finished_at }}{{else}}<a href="#" {{action "buyBonusOfferPressed"}}>{{t shop.buy }}</a>{{/if}}</div>
-      <div class="bonus-offer-buy">{{#if offer.resource_effect}}<a href="#" {{action "buyBonusOfferPressed"}}>{{t shop.extend }}</a>{{/if}}</div>
+      <div class="bonus-offer-price">{{ offer.price}} </div>
+      <div class="bonus-offer-end">
+        {{#if offer.resource_effect }}
+          {{ formatTime offer.resource_effect.finished_at }}
+        {{/if}}
+        
+        {{#if offer.isBuying}}
+          {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Sending...
+        {{else}}
+          {{#if offer.resource_effect}}
+            <a href="#" {{action "buyBonusOfferPressed"}}>{{t shop.extend }}</a>
+          {{else}}
+            <a href="#" {{action "buyBonusOfferPressed"}}>{{t shop.buy }}</a>
+          {{/if}}
+        {{/if}}
+      </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="not-enough-credits-info">
+  <div class="advisor girl"></div>
+  <h1>Not enough credits</h1>
+  <p >Unfortunately, you ran out of funds. Please visit the 
+      credit shop to buy more 5D-Credits.</p>
 </script>
 
 

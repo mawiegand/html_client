@@ -113,7 +113,7 @@ AWE.GS = (function(module) {
       var self = this;
   		var productions = [];
   		var settlement = this.get('settlement');
-  	  AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
+  	  AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {  	    
   	    productions.push(Ember.Object.create({  // need to return an ember project so bindings on resourceType.name do work inside local helper
           rate:  self.get(item.symbolic_id+'_production_rate'),
           base:  self.get(item.symbolic_id+'_base_production'),
@@ -123,7 +123,8 @@ AWE.GS = (function(module) {
             return 'base: '+Math.floor(this.get('base'))+'\nscience: '+ 
               Math.floor(self.get(item.symbolic_id+'_production_bonus_sciences')*1000)/10.0+'%\nbuildings: '+ 
               Math.floor(self.get(item.symbolic_id+'_production_bonus_buildings')*1000)/10.0+'%\nbonus: ' +
-              Math.floor(self.get(item.symbolic_id+'_production_bonus_effects')*1000)/10.0+'%';
+              Math.floor((parseFloat(self.get(item.symbolic_id+'_production_bonus_effects')) + 
+                          parseFloat(self.get(item.symbolic_id+'_production_bonus_global_effects')))*1000)/10.0+'%';
           }.property('base','bonus').cacheable(),
         }));
       });
