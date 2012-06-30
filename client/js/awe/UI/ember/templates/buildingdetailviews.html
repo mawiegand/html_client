@@ -16,14 +16,14 @@
           {{#view AWE.UI.Ember.BuildingOptionView buildingBinding="this" classNames="building-option" }}
             <div {{action "optionClicked" target="parentView"}}>
               {{view AWE.UI.Ember.BuildingView buildingBinding="building" classNames="building-option-image"}}
-              {{local building.name}}
+              <p>{{local building.name}}</p>
             </div>
           {{/view}}
         {{/each}}
       </div>
       {{#with hoveredView.building}}
         <h1>{{local name}} {{t building.level }} {{nextLevel}}</h1>
-        {{local description}}
+        {{local building.flavour}}
         {{#if costsOfNextLevel}}
           {{t building.cost }}:
           {{#each costsOfNextLevel}}

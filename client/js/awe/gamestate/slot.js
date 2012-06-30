@@ -171,7 +171,7 @@ AWE.GS = (function(module) {
       var character = settlement ? settlement.owner() : null;
       var slot = this.get('slot');
       return AWE.Util.Rules.failedRequirements(this.getPath('buildingType.requirements'), settlement, character, slot, true);
-    }.property('buildingType', 'slot.settlement.hashableSlots.changedAt').cacheable(),
+    }.property('buildingType', 'slot.settlement.hashableSlots.collection:*').cacheable(),
 
 		/** bool for indicating whether or not all requirements for constructin
 		 * this building are met. */
