@@ -883,7 +883,7 @@ span.bonus {
 }
 
 .building-option p {
-  margin: -12px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
   padding: 0px;
   text-align: center;
   font-size: 12px;
@@ -936,9 +936,9 @@ span.bonus {
   background: url('../images/settlements/base/building_category_large_building.png');
 }
 
-.base-screen .settlement-dialog-building-details .building-option-image {
-  margin-top: -10px;
-  margin-bottom: -10px;
+.base-screen .settlement-dialog-select-building .building-option-image {
+  margin-top: -8px;
+  margin-bottom: 2px;
 }
 
 
