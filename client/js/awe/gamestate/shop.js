@@ -82,8 +82,15 @@ AWE.GS = (function(module) {
     }
     
     that.buyBonusOffer = function(offerId, successCallback, errorCallback) {
+      var offer = module.BonusOfferManager.getBonusOffer(offerId);
+      if (offer) {
+        offer.set('isBuying', true);
+      }
       var transaction = AWE.Action.Shop.createOfferTransaction(offerId, 'bonus');
       transaction.send(function(status) {
+        if (offer) {
+          offer.set('isBuying', false);
+        }
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
           AWE.GS.BonusOfferManager.updateBonusOffers();
           if (successCallback) {

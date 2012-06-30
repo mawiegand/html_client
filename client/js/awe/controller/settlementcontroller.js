@@ -57,6 +57,10 @@ AWE.Controller = (function(module) {
     that.getStages = function() { return []; }
     
     
+    that.status = Ember.Object.create({
+      sendingUpgrade: null,
+    })
+    
     /** set the id of the base to display (it's the settlement id). 
      * @function
      * @name AWE.Controller.SettlementController#setSettlementId */
@@ -211,14 +215,18 @@ AWE.Controller = (function(module) {
       var queue = AWE.GS.ConstructionQueueManager.getQueueForBuildingCategorieInSettlement(buildingType.category, slot.get('settlement_id'));
       
       if (queue && queue.get('max_length') > queue.get('jobs_count')) {
+        that.status.set('sendingUpgrade', true);
         queue.sendCreateJobAction(slot.getId(), buildingId, jobType, levelAfter, function(status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
             log(status, "Construction job created.");
-            that.updateConstructionQueueSlotAndJobs(queue.getId());
+            that.updateConstructionQueueSlotAndJobs(queue.getId(), function() { 
+              that.status.set('sendingUpgrade', false); // wait, until jobs have been updated
+            });
             that.updateResourcePool();
           }
           else {
             console.log(status, "ERROR: The server did not accept the construction command.");
+            that.status.set('sendingUpgrade', false);              
             var dialog = AWE.UI.Ember.InfoDialog.create({
               contentTemplateName: 'server-command-failed-info',
               cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
@@ -363,7 +371,7 @@ AWE.Controller = (function(module) {
       
     // construction queue and job update methods
     
-    that.updateConstructionQueueSlotAndJobs = function(queueId) {
+    that.updateConstructionQueueSlotAndJobs = function(queueId, callback) {
       AWE.GS.ConstructionQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queue) {
         log('updated construction queue', queueId);
       });
@@ -373,6 +381,9 @@ AWE.Controller = (function(module) {
       });
 
       AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+        if (callback) {
+          callback();
+        }
       });
     }
         

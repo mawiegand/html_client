@@ -136,24 +136,6 @@ AWE.GS = (function(module) {
 		  return this.calcCosts(this.get('nextLevel'));
 		}.property('nextLevel', 'buildingId').cacheable(),
 		
-
-		/** "deprecated, use formatDuration"
-		localizedProductionTimeOfNextLevel: function() {
-		  var productionTime = this.get('productionTime');
-		  if (productionTime) {
-		    return AWE.Util.localizedDurationFromSeconds(productionTime);
-		  }
-		  return null;
-		}.property('productionTime').cacheable(),		
-		
-		localizedProductionTimeOfNextLevel: function() {
-		  var productionTime = this.get('productionTimeOfNextLevel');
-		  if (productionTime) {
-		    return AWE.Util.localizedDurationFromSeconds(productionTime);
-		  }
-		  return null;
-		}.property('productionTimeOfNextLevel').cacheable(),
-		*/
 		
 		upgradable: function() {
 		  var nextLevel = this.get('nextLevel');
@@ -170,19 +152,28 @@ AWE.GS = (function(module) {
       var settlement = this.getPath('slot.settlement');
       var character = settlement ? settlement.owner() : null;
       var slot = this.get('slot');
-      return AWE.Util.Rules.failedRequirements(this.getPath('buildingType.requirements'), settlement, character, slot, true);
-    }.property('buildingType', 'slot.settlement.hashableSlots.changedAt').cacheable(),
+      console.log('RECALC UNMET REQUIREMENTS');
+     //console.log(this.getPath('slot'), this.getPath('slot.settlement'), this.getPath('slot.settlement.enumerableSlots.firstObject.level'))
+      var failed =  AWE.Util.Rules.failedRequirements(this.getPath('buildingType.requirements'), settlement, character, slot, true);
+      if (this.get('buildingId') === 9) {
+        console.log('FAILED', failed, failed ? failed.length : 'null')
+      }
+     // console.log('FAILED', failed)
+      return failed || []
+    }.property('buildingType', 'slot.settlement.hashableSlots.collection@each.level', 'slot.settlement.hashableSlots.changedAt'),
+    // Fehleranalyse: unmetRequirements wird nicht getriggert, nachdem  slot gebaut wurde...
+    // Update: tatsächlich wird einer der beiden dependent-Dinger nicht geupdated, wenn sie auf cacheable stehen. bool-binding?
 
 		/** bool for indicating whether or not all requirements for constructin
 		 * this building are met. */
     requirementsMet: function() {
       var unmetRequirements = this.get('unmetRequirements');
       return !unmetRequirements || unmetRequirements.length === 0;
-    }.property('unmetRequirements.length').cacheable(),
+    }.property('unmetRequirements, unmetRequirements.length'),
     
     requirementUnmet: function() {
       return !this.get('requirementsMet');
-    }.property('requirementsMet').cacheable(),
+    }.property('requirementsMet'),
 
 		
 		// // Abilities //////////////////////////////////////////////////////////		

@@ -129,20 +129,26 @@ AWE.Controller = (function(module) {
         buyResourceOfferPressed: function(offerId) {
           AWE.GS.ShopManager.buyResourceOffer(offerId, function(transaction) { // success handler
             if (transaction.state == 5) {
-              var heading = "Buying successful!";
-              var message = "The resources are credited to your account."
+              var info = AWE.UI.Ember.InfoDialog.create({
+                heading: "Perfect!",
+                message: "You got a bunch of fresh toads. Spend them wisely so your clan may live long and prosper.",
+              });      
+              that.applicationController.presentModalDialog(info);
             }
             else {
-              var heading = "Shit happens!";
-              var message = "You haven't enough credits for buying."
+              var info = AWE.UI.Ember.InfoDialog.create({
+                contentTemplateName: 'not-enough-credits-info',
+                cancelText:          'Cancel',
+                okText:              "Get mo' credits",
+                okPressed:           function() {
+                  AWE.GS.ShopManager.openCreditShopWindow();
+                  this.destroy();
+                },
+                cancelPressed:       function() { this.destroy(); },
+              });          
+              that.applicationController.presentModalDialog(info);
             }
             
-            var info = AWE.UI.Ember.InfoDialog.create({
-              heading: heading,
-              message: message,
-            });      
-            
-            that.applicationController.presentModalDialog(info);
             AWE.GS.ShopManager.fetchCreditAmount(function(){
               that.setModelChanged();
             });
@@ -161,20 +167,26 @@ AWE.Controller = (function(module) {
         buyBonusOfferPressed: function(offerId) {
           AWE.GS.ShopManager.buyBonusOffer(offerId, function(transaction) { // success handler
             if (transaction.state == 5) {
-              var heading = "Buying successful!";
-              var message = "The bonus is credited to your account."
+              var info = AWE.UI.Ember.InfoDialog.create({
+                heading: "Yeaha!",
+                message: "The bonus effect has been unlocked and will help your clan to prosper.",
+              });      
+              that.applicationController.presentModalDialog(info);
             }
             else {
-              var heading = "Shit happens!";
-              var message = "You haven't enough credits for buying."
+              var info = AWE.UI.Ember.InfoDialog.create({
+                contentTemplateName: 'not-enough-credits-info',
+                cancelText:          'Cancel',
+                okText:              "Get mo' credits",
+                okPressed:           function() {
+                  AWE.GS.ShopManager.openCreditShopWindow();
+                  this.destroy();
+                },
+                cancelPressed:       function() { this.destroy(); },
+              });          
+              that.applicationController.presentModalDialog(info);
             }
             
-            var info = AWE.UI.Ember.InfoDialog.create({
-              heading: heading,
-              message: message,
-            });      
-            
-            that.applicationController.presentModalDialog(info);
             AWE.GS.BonusOfferManager.updateBonusOffers();
             AWE.GS.ShopManager.fetchCreditAmount(function(){
               that.setModelChanged();

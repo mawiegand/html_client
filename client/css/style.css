@@ -794,6 +794,10 @@ html, body {
 /* ===== non-semantic helper classes ========================================
    Settlement Dialogs
    ========================================================================== */
+.settlement-screen {
+  min-height: 1200px;
+}   
+   
    
 .settlement-dialog-background { 
   position: absolute; 
@@ -839,6 +843,14 @@ html, body {
   text-decoration: none;
 }
 
+.settlement-dialog-pane .upgrade {
+  margin-top: 6px;
+  color: #333;
+  float: right;
+  display: block;
+  text-decoration: none;
+}
+
 .settlement-dialog-pane a.upgrade:hover {
   opacity: 0.6;
 }
@@ -859,7 +871,7 @@ span.bonus {
 .building-option {
   float: left;
   width: 120px;
-  height: 160px;
+  height: 170px;
   background-color: #DFD;
   -moz-border-radius: 7px;
   border-radius:      7px;
@@ -868,6 +880,13 @@ span.bonus {
   margin-bottom: 5px;
   
   cursor: pointer; 
+}
+
+.building-option p {
+  margin: -12px 0px 0px 0px;
+  padding: 0px;
+  text-align: center;
+  font-size: 12px;
 }
 
 
@@ -927,11 +946,35 @@ span.bonus {
 .building-option-image.building_quarry {
   background: url('../images/settlements/base/building_quarry_large.png');
 }
-.building-option-image.building_palace {
-  background: url('../images/settlements/base/building_palace_large.png');
+.building-option-image.building_chief_cottage {
+  background: url('../images/settlements/base/building_chief_cottage_large.png');
 }
-.building-option-image.building_logger {
+.building-option-image.building_logger   {
   background: url('../images/settlements/base/building_logger_large.png');
+}
+.building-option-image.building_barracks {
+  background: url('../images/settlements/base/building_barracks_large.png');
+}
+.building-option-image.building_campfire {
+  background: url('../images/settlements/base/building_campfire_large.png');
+}
+.building-option-image.building_cottage  {
+  background: url('../images/settlements/base/building_cottage_large.png');
+}
+.building-option-image.building_firing_range {
+  background: url('../images/settlements/base/building_firing_range_large.png');
+}
+.building-option-image.building_furrier  {
+  background: url('../images/settlements/base/building_furrier_large.png');
+}
+.building-option-image.building_gatherer {
+  background: url('../images/settlements/base/building_gatherer_large.png');
+}
+.building-option-image.building_stud     {
+  background: url('../images/settlements/base/building_stud_large.png');
+}
+.building-option-image.building_workshop {
+  background: url('../images/settlements/base/building_workshop_large.png');
 }
 
 
@@ -1241,12 +1284,40 @@ span.bonus {
 .base-screen .queue-job-image.building_quarry {
   background: url('../images/settlements/base/building_quarry_large_small.png');
 }
-.base-screen .queue-job-image.building_palace {
-  background: url('../images/settlements/base/building_palace_large_small.png');
+.base-screen .queue-job-image.building_chief_cottage {
+  background: url('../images/settlements/base/building_chief_cottage_large_small.png');
 }
 .base-screen .queue-job-image.building_logger{
   background: url('../images/settlements/base/building_logger_large_small.png');
 }
+.base-picture .queue-job-image.building_barracks {
+  background: url('../images/settlements/base/building_barracks_large_small.png');
+}
+.base-picture .queue-job-image.building_campfire {
+  background: url('../images/settlements/base/building_campfire_large_small.png');
+}
+.base-picture .queue-job-image.building_cottage  {
+  background: url('../images/settlements/base/building_cottage_large_small.png');
+}
+.base-picture .queue-job-image.building_firing_range {
+  background: url('../images/settlements/base/building_firing_range_large_small.png');
+}
+.base-picture .queue-job-image.building_furrier  {
+  background: url('../images/settlements/base/building_furrier_large_small.png');
+}
+.base-picture .queue-job-image.building_gatherer {
+  background: url('../images/settlements/base/building_gatherer_large_small.png');
+}
+.base-picture .queue-job-image.building_stud     {
+  background: url('../images/settlements/base/building_stud_large_small.png');
+}
+.base-picture .queue-job-image.building_workshop {
+  background: url('../images/settlements/base/building_workshop_large_small.png');
+}
+
+
+
+
 
 
 .base-screen .queue-job-image.size1 {
@@ -1566,22 +1637,70 @@ li.shout .sender {
 }
 
 /** base: large slots */
-.base-picture .large-building.building_palace {
-  background: url('../images/settlements/base/building_palace_large.png');
-}
-.base-picture .large-building.building_logger {
-  background: url('../images/settlements/base/building_logger_large.png');
-}
 .base-picture .large-building.building_quarry {
   background: url('../images/settlements/base/building_quarry_large.png');
 }
+.base-picture .large-building.building_chief_cottage {
+  background: url('../images/settlements/base/building_chief_cottage_large.png');
+}
+.base-picture .large-building.building_logger   {
+  background: url('../images/settlements/base/building_logger_large.png');
+}
+.base-picture .large-building.building_barracks {
+  background: url('../images/settlements/base/building_barracks_large.png');
+}
+.base-picture .large-building.building_campfire {
+  background: url('../images/settlements/base/building_campfire_large.png');
+}
+.base-picture .large-building.building_cottage  {
+  background: url('../images/settlements/base/building_cottage_large.png');
+}
+.base-picture .large-building.building_firing_range {
+  background: url('../images/settlements/base/building_firing_range_large.png');
+}
+.base-picture .large-building.building_furrier  {
+  background: url('../images/settlements/base/building_furrier_large.png');
+}
+.base-picture .large-building.building_gatherer {
+  background: url('../images/settlements/base/building_gatherer_large.png');
+}
+.base-picture .large-building.building_stud     {
+  background: url('../images/settlements/base/building_stud_large.png');
+}
+.base-picture .large-building.building_workshop {
+  background: url('../images/settlements/base/building_workshop_large.png');
+}
 
 /** base: small slots */
-.base-picture .small-building.building_logger {
-  background: url('../images/settlements/base/building_logger_small.png');
-}
 .base-picture .small-building.building_quarry {
   background: url('../images/settlements/base/building_quarry_small.png');
+}
+.base-picture .small-building.building_logger   {
+  background: url('../images/settlements/base/building_logger_small.png');
+}
+.base-picture .small-building.building_barracks {
+  background: url('../images/settlements/base/building_barracks_small.png');
+}
+.base-picture .small-building.building_campfire {
+  background: url('../images/settlements/base/building_campfire_small.png');
+}
+.base-picture .small-building.building_cottage  {
+  background: url('../images/settlements/base/building_cottage_small.png');
+}
+.base-picture .small-building.building_firing_range {
+  background: url('../images/settlements/base/building_firing_range_small.png');
+}
+.base-picture .small-building.building_furrier  {
+  background: url('../images/settlements/base/building_furrier_small.png');
+}
+.base-picture .small-building.building_gatherer {
+  background: url('../images/settlements/base/building_gatherer_small.png');
+}
+.base-picture .small-building.building_stud     {
+  background: url('../images/settlements/base/building_stud_small.png');
+}
+.base-picture .small-building.building_workshop {
+  background: url('../images/settlements/base/building_workshop_small.png');
 }
 
 
@@ -2017,8 +2136,8 @@ li.shout .sender {
 .resource-offer {
   float: left;
   width: 120px;
-  height: 60px;
-  background-color: #ffb;
+  height: 80px;
+  background-color: #BBF;
   -moz-border-radius: 7px;
   border-radius:      7px;
   padding: 10px;
@@ -2032,7 +2151,7 @@ a.resource-offer {
 }
 
 a.resource-offer:hover {
-  background-color: #bfb;
+  background-color: #BFB;
 }
 
 .resource-offer p {
@@ -2041,7 +2160,7 @@ a.resource-offer:hover {
 }
 
 .bonus-offer {
-  background-color: #ffb;
+  background-color: #FBB;
   -moz-border-radius: 7px;
   border-radius:      7px;
   padding: 10px;
@@ -2049,7 +2168,7 @@ a.resource-offer:hover {
 }
 
 .bonus-offer.active {
-  background-color: #fbb;
+  background-color: #BFB;
 }
 
 .bonus-offer-header {
@@ -2057,13 +2176,8 @@ a.resource-offer:hover {
   font-weight: bold;
 }
 
-.bonus-offer-bonus {
-  width: 60px;
-  display: inline-block;
-}
-
-.bonus-offer-resource {
-  width: 80px;
+.bonus-offer-description {
+  width: 190px;
   display: inline-block;
 }
 
@@ -2073,17 +2187,13 @@ a.resource-offer:hover {
 }
 
 .bonus-offer-price {
-  width: 80px;
+  text-align: center;
+  width: 70px;
   display: inline-block;
 }
 
 .bonus-offer-end {
-  width: 200px;
-  display: inline-block;
-}
-
-.bonus-offer-buy {
-  width: 80px;
+  width: 230px;
   display: inline-block;
 }
 

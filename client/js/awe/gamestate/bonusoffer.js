@@ -28,6 +28,8 @@ AWE.GS = (function(module) {
     duration: null,
     bonus: null,
     
+    isBuying: false,  // set to true while communicating with the shop on purchase
+    
     resource_effect: null,
   });     
     
