@@ -27,7 +27,7 @@ AWE.GS = (function(module) {
     ownBattle: function() {
       var own = false;
       this.get('participants').forEach(function(participant) {
-        if (participant && participant.getPath('army.owner_id') === 4){//AWE.GS.CharacterManager.getCurrentCharacter().getId()) {
+        if (participant && participant.getPath('army.owner_id') === AWE.GS.CharacterManager.getCurrentCharacter().getId()) {
           own = true;
         };        
       })
