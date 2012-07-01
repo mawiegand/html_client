@@ -1384,6 +1384,7 @@ span.bonus {
   float: left;
   width: 200px;
   height: 200px;
+  margin-top: -35px;
 }
 
 .alliance-pane input[type="text"] {
@@ -1428,7 +1429,6 @@ li.shout.own {
 }
 
 li.shout.own.leader {
-  margin-left: 0px;
   background-color: #FDD;
 }
 
