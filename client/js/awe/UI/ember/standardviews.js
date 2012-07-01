@@ -183,6 +183,8 @@ AWE.UI.Ember = (function(module) {
           stage.addChild(obj);
         });
       });
+      
+      this.update();
     },
 
     addChild: function(view) {
