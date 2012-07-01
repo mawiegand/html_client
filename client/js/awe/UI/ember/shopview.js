@@ -27,18 +27,18 @@ AWE.UI.Ember = (function(module) {
     creditAmountBinding: 'shop.creditAmount',
 
     buyCreditsPressed: function() {
-      alert('Action not connected: buyCreditsWasPressed.');
+      log('Action not connected: buyCreditsWasPressed.');
     },
     
     buyResourceOfferPressed: function() {
-      alert('Action not connected: buyOfferWasPressed.');
+      log('Action not connected: buyOfferWasPressed.');
     },
     
     buyBonusOfferPressed: function() {
-      alert('Action not connected: buyOfferWasPressed.');
+      log('Action not connected: buyOfferWasPressed.');
     },
     closePressed: function() {
-      alert('Action not connected: closedWasPressed.');
+      log('Action not connected: closedWasPressed.');
     },
   });
   

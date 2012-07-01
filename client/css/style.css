@@ -489,15 +489,20 @@ html, body {
 
 .message-center {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  overflow: hidden;
   min-width: 500px;
   min-height: 300px;
 }
 
 .message-center .header {
-  width:100%;
-  height: 140px;
+  position: relative;
+  left: 0px;
+  right: 0px;
+  height: 139px;
   border-bottom: 1px solid gray;
 }
 
@@ -514,10 +519,13 @@ html, body {
 
 .message-center .list {
   position: absolute;
+  display: inline-block;
+  overflow-x: hidden;
+  overflow-y: scroll;
   top: 140px;
-  bottom: 0;
-  left: 0;
-  width: 260px;
+  bottom: 0px;
+  left: 0px;
+  width: 265px;
   border-right: 1px solid gray;
 }
 
@@ -564,10 +572,13 @@ html, body {
 
 .message-center .detail {
   position: absolute;
+  display: inline-block;
+  overflow-x: hidden;
+  overflow-y: scroll;
   top: 140px;
-  left: 260px;
-  right: 0;
-  bottom: 0;
+  bottom: 0px;
+  left: 266px;
+  right: 0px;
 }
 
 .message-center .message {
@@ -2132,6 +2143,21 @@ li.shout .sender {
   border-top: 1px solid #ccc;
 }
 
+#army-create-form a.close, #army-change-form a.close {
+  position: absolute;
+  background: url('../images/icons/cross_small.png');
+  width: 36px;
+  height: 36px;
+  right: 12px;
+  top: 10px;
+}
+
+#army-create-form a.close:hover, #army-change-form a.close:hover {
+  opacity: 0.6;
+}
+
+
+
 
 .resource-offer {
   float: left;
@@ -2221,6 +2247,10 @@ a.resource-offer:hover {
   height: 36px;
   right: 12px;
   top: 10px;
+}
+
+.shop-dialog-pane a.close:hover {
+  opacity: 0.6;
 }
 
 .participant div {

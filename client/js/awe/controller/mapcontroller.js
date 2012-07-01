@@ -714,10 +714,10 @@ AWE.Controller = (function(module) {
       });
     }
     
-    var createArmyCreateAction = function(location, units, callback) {
-      log('createArmyCreateAction', location, units);
+    var createArmyCreateAction = function(location, units, armyName, callback) {
+      log('createArmyCreateAction', location, units, armyName);
       
-      var armyCreateAction = AWE.Action.Military.createCreateArmyAction(location, units);
+      var armyCreateAction = AWE.Action.Military.createCreateArmyAction(location, units, armyName);
       armyCreateAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
           AWE.GS.ArmyManager.updateArmiesAtLocation(location.id(), null, function(armies) {
@@ -741,8 +741,9 @@ AWE.Controller = (function(module) {
         locationId: location.id(),
         createPressed: function(evt) {
           var unitQuantities = this.unitQuantities();
+          var armyName = this.get('armyName');
           if (!AWE.Util.hashEmpty(unitQuantities)) {            
-            createArmyCreateAction(location, unitQuantities, (function(self){
+            createArmyCreateAction(location, unitQuantities, armyName, (function(self){
               return function() {
                 self.destroy();
               }
