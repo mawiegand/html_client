@@ -2317,7 +2317,7 @@ a.resource-offer:hover {
 .battle-dialog-pane {
   position: absolute; 
   margin-left: -400px;
-  margin-top: -400px;
+  margin-top: -200px;
   width: 800px; min-height: 100px;
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
