@@ -34,6 +34,8 @@ AWE.GS = (function(module) {
 
 		/** the name of the building from the game rules. */
 		nameBinding: 'buildingType.name',
+		/** the flavour text of the building from the game rules. */
+		flavourBinding: 'buildingType.flavour',
 		/** the description of the building from the game rules. */
 		descriptionBinding: 'buildingType.description',
     /** level of building after finishing all ongoing jobs */

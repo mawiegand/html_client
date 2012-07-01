@@ -373,7 +373,7 @@ AWE.Controller = (function(module) {
         that.layoutIfNeeded();   
         
         // STEP 4: update views and repaint view hierarchies as needed
-        if (_needsDisplay || _loopCounter % 30 == 0 || that.modelChanged()) {
+        if (_needsDisplay || _loopCounter % 10 == 0 || that.modelChanged()) {
           // STEP 4b: create, remove and update all views according to visible parts of model      
           var updateNeeded = that.updateViewHierarchy();      
           if (updateNeeded || true) { // TODO: remove true, update only, if necessary 

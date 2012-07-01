@@ -33,12 +33,14 @@ AWE.UI = (function(module) {
     my = my || {};
     
     my.typeName = "MainControlsView";
+    my.amounts = [0.0, 0.0, 0.0, 0.0];
     
     that = module.createContainer(spec, my);
 
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
       updateView: AWE.Ext.superior(that, "updateView"),
+      updateIfNeeded: AWE.Ext.superior(that, "updateIfNeeded"),
     };
     
     /** overwritten view methods */
@@ -144,16 +146,16 @@ AWE.UI = (function(module) {
         this.addChild(_moreButton);
       }
   
-      if (!_locationsButton) {
+/*    if (!_locationsButton) {
         _locationsButton = AWE.UI.createButtonView();
         _locationsButton.initWithControllerTextAndImage(my.controller, 'Locations', AWE.UI.ImageCache.getImage("map/button1"));
         _locationsButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
         _locationsButton.setFrame(AWE.Geometry.createRect(364, 106, 72, 72));
         // _moreButton.onClick = function() { WACKADOO.messagesButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
         this.addChild(_locationsButton);
-      }
+      }*/
       
-      if (!_armiesButton) {
+/*    if (!_armiesButton) {
         _armiesButton = AWE.UI.createButtonView();
         _armiesButton.initWithControllerTextAndImage(my.controller, 'Armies', AWE.UI.ImageCache.getImage("map/button1"));
         _armiesButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
@@ -162,11 +164,11 @@ AWE.UI = (function(module) {
           my.controller.shopButtonClicked();
         };
         this.addChild(_armiesButton);
-      }
+      }*/
       
       if (!_shopButton) {
         _shopButton = AWE.UI.createButtonView();
-        _shopButton.initWithControllerTextAndImage(my.controller, 'Shop', AWE.UI.ImageCache.getImage("map/button1"));
+        _shopButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('shop.button'), AWE.UI.ImageCache.getImage("map/button1"));
         _shopButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
         _shopButton.setFrame(AWE.Geometry.createRect(20, 95, 100, 30));
         _shopButton.onClick = function() {
@@ -179,7 +181,7 @@ AWE.UI = (function(module) {
         _resource1LabelView = AWE.UI.createLabelView();
         _resource1LabelView.initWithControllerAndLabel(my.controller);
         _resource1LabelView.setTextAlign("left");
-        _resource1LabelView.setIconImage("map/display/icon");
+        _resource1LabelView.setIconImage("resource/icon/wood");
         _resource1LabelView.setFont("14px Arial");
         _resource1LabelView.setFrame(AWE.Geometry.createRect(20, 30, 80, 24));      
         this.addChild(_resource1LabelView);
@@ -189,7 +191,7 @@ AWE.UI = (function(module) {
         _resource2LabelView = AWE.UI.createLabelView();
         _resource2LabelView.initWithControllerAndLabel(my.controller);
         _resource2LabelView.setTextAlign("left");
-        _resource2LabelView.setIconImage("map/display/icon");
+        _resource2LabelView.setIconImage("resource/icon/stone");
         _resource2LabelView.setFont("14px Arial");
         _resource2LabelView.setFrame(AWE.Geometry.createRect(100, 30, 80, 24));      
         this.addChild(_resource2LabelView);
@@ -199,7 +201,7 @@ AWE.UI = (function(module) {
         _resource3LabelView = AWE.UI.createLabelView();
         _resource3LabelView.initWithControllerAndLabel(my.controller);
         _resource3LabelView.setTextAlign("left");
-        _resource3LabelView.setIconImage("map/display/icon");
+        _resource3LabelView.setIconImage("resource/icon/fur");
         _resource3LabelView.setFont("14px Arial");
         _resource3LabelView.setFrame(AWE.Geometry.createRect(180, 30, 80, 24));      
         this.addChild(_resource3LabelView);
@@ -214,7 +216,7 @@ AWE.UI = (function(module) {
         _resource4LabelView.setFrame(AWE.Geometry.createRect(20, 70, 80, 24));      
         this.addChild(_resource4LabelView);
       }
-      
+      /*
       if (!_resource5LabelView) {
         _resource5LabelView = AWE.UI.createLabelView();
         _resource5LabelView.initWithControllerAndLabel(my.controller);
@@ -233,7 +235,7 @@ AWE.UI = (function(module) {
         _resource6LabelView.setFont("14px Arial");
         _resource6LabelView.setFrame(AWE.Geometry.createRect(180, 70, 80, 24));      
         this.addChild(_resource6LabelView);
-      }
+      }*/
     };
     
     that.updateView = function() {
@@ -241,17 +243,36 @@ AWE.UI = (function(module) {
       
       var pool = AWE.GS.ResourcePoolManager.getResourcePool();
       if (pool) {
-        var diff = new Date() - Date.parseISODate(pool.get('productionUpdatedAt'));
-        diff = (diff < 0) ? 0 : (diff / 3600000); // diff is in milliseconds, production_rates count per day
-        
-        _resource1LabelView.setText(AWE.UI.Util.round(parseInt(pool.get('resource_wood_amount')) + diff * pool.get('resource_wood_production_rate')));
-        _resource2LabelView.setText(AWE.UI.Util.round(parseInt(pool.get('resource_stone_amount')) + diff * pool.get('resource_stone_production_rate')));
-        _resource3LabelView.setText(AWE.UI.Util.round(parseInt(pool.get('resource_fur_amount')) + diff * pool.get('resource_fur_production_rate')));
-        _resource4LabelView.setText(AWE.UI.Util.round(parseInt(pool.get('resource_cash_amount')) + diff * pool.get('resource_cash_production_rate')));
+        my.amounts[0] = pool.presentAmount('resource_wood');
+        my.amounts[1] = pool.presentAmount('resource_stone');
+        my.amounts[2] = pool.presentAmount('resource_fur');
+        my.amounts[3] = pool.presentAmount('resource_cash');
+
+        _resource1LabelView.setText(my.amounts[0]);
+        _resource2LabelView.setText(my.amounts[1]);
+        _resource3LabelView.setText(my.amounts[2]);
+        _resource4LabelView.setText(my.amounts[3]);
       }
       
       _super.updateView();
     }
+    
+    /** checks for itself whether the view needs an update (changed reosources) or not. */
+    that.updateIfNeeded = function() {
+      var changed;
+      var pool = AWE.GS.ResourcePoolManager.getResourcePool();
+      if (pool) {
+        changed = changed || pool.presentAmount('resource_wood')  !== my.amounts[0];
+        changed = changed || pool.presentAmount('resource_stone') !== my.amounts[1];
+        changed = changed || pool.presentAmount('resource_fur')   !== my.amounts[2];
+        changed = changed || pool.presentAmount('resource_cash')  !== my.amounts[3];
+      }
+      if (changed) {
+        this.setNeedsDisplay();
+      }
+      _super.updateIfNeeded();
+    }
+    
     
     return that;
   };
