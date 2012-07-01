@@ -271,10 +271,13 @@ AWE.Controller = (function(module) {
       
       return function() {
         
-        if (lastResourcesUpdate.getTime() + AWE.Config.RESOURCES_REFRESH_INTERVAL < +new Date()) {
+        if (lastResourcesUpdate.getTime() + AWE.Config.RESOURCES_REFRESH_INTERVAL < new Date().getTime()) {
+          console.log('SENDING RESOURCE UPDATE');
           lastResourcesUpdate = new Date();
           if (HUDViews.mainControlsView) {
-            HUDViews.mainControlsView.setNeedsUpdate();
+            AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+              HUDViews.mainControlsView.setNeedsUpdate();
+            });
           }
         }
       };
