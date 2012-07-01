@@ -102,15 +102,15 @@ AWE.Action.Construction = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return null;
+      return 'action_construction_finish_job_actions[job_id]=' + my.jobId;
     }
     
     that.getURL = function() {
-      return AWE.Config.CONSTRUCTION_SERVER_BASE + 'jobs/' + jobId;
+      return AWE.Config.ACTION_SERVER_BASE + 'construction/finish_job_actions';
     }
   
     that.getHTTPMethod = function() {
-      return 'PUT';
+      return 'POST';
     }
     
     that.postProcess = function(statusCode, xhr) {
