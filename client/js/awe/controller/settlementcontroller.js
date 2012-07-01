@@ -296,6 +296,7 @@ AWE.Controller = (function(module) {
       queue.sendFinishJobAction(job.getId(), function(status) {
         if (status === AWE.Net.OK) {    // 200 OK
           log(status, "Construction job finished.");
+          AWE.GS.ResourcePoolManager.getResourcePool().removeResources({'resource_cash': 1});  // I believe, here it's ok as well as beneficial to remove the resources (server did accept the command, but no pool-update yet)
           that.updateConstructionQueueSlotAndJobs(queue.getId());    
           that.updateResourcePool();      
         }

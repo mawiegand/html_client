@@ -96,7 +96,7 @@ AWE.Config = (function(module) {
   module.MAP_CAMERA_MAX_VIEWFRAME_SIZE = { width: 50000000, height: 50000000 };
   module.MAP_CAMERA_MIN_VIEWFRAME_SIZE = { width: 500000, height: 500000 };
   
-  module.SETTLEMENT_REFRESH_INTERVAL = 60 * 1000;
+  module.SETTLEMENT_REFRESH_INTERVAL = 30 * 1000;
   
   module.RESOURCES_REFRESH_INTERVAL = 5 * 1000;
 

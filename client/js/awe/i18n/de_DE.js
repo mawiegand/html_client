@@ -140,6 +140,7 @@ AWE.I18n.de_DE = function(module) {
     },
     
     shop: {
+      button: 'Fundgrube',
       title: 'Fundgrube',
       currentCreditAmount: 'Du besitzt im Moment ein Guthaben von',
       credits: 'Credits',

@@ -50,8 +50,8 @@ AWE.GS = (function(module) {
     
     // methods if needed...
     
-    // removes the resources in the given resources object
-    // does not check if enough resources are available
+    /** locally removes the resources in the given resources object
+        does not check if enough resources are available */
     removeResources: function(resources) {
       var self = this;
       AWE.Ext.applyFunctionToHash(resources, function(resourceType, quantity) {
@@ -62,6 +62,11 @@ AWE.GS = (function(module) {
       });
     },
     
+    presentAmount: function(symbolic_resource_id) {
+      var diff = new Date() - Date.parseISODate(this.get('productionUpdatedAt'));
+      diff = (diff < 0) ? 0 : (diff / 3600000); // diff is in milliseconds, production_rates count per hour
+      return Math.floor(parseInt(this.get(symbolic_resource_id + '_amount')) + diff * (this.get(symbolic_resource_id+'_production_rate') || 0));   
+    },
   });     
 
     

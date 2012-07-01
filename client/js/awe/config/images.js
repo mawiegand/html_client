@@ -72,6 +72,8 @@ AWE.Config = (function(module) {
     "map/button1disabled": 'images/green_button_disabled.png',
     "map/button2": 'images/red_button.png',
     "map/button3": 'images/blue_button.png',
+
+
     
     "map/icon/owner": "images/icons/heads.png",
     "map/icon/home": "images/icons/house.png",
@@ -89,6 +91,10 @@ AWE.Config = (function(module) {
     
     "hud/head": 'images/head.png',
     "hud/frog/face": 'images/kopfkroete40.png',
+    
+    "resource/icon/wood" : "images/icons/wood.png",
+    "resource/icon/stone": "images/icons/stone.png",
+    "resource/icon/fur"  : "images/icons/fur.png",
   };
   
   module.MAP_STANCE_IMAGES = [

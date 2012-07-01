@@ -94,6 +94,26 @@ AWE.I18n.en_US =  function(module) {
     },
     
     shop: {
+    shop: {
+      button: 'Bonanza',
+      title: 'Bonanza',
+      currentCreditAmount: 'Presently, you have a balance of',
+      credits: 'Credits',
+      for: 'for',
+      updateCredits: 'Refresh',
+      buyCredits: 'Refill',
+      article: 'Item',
+      description: 'Description',
+      price: 'Credits',
+      buy: 'Acitvate',
+      extend: 'Extend',
+      resourceOffers: "Toads Packages",
+      bonusOffers: "Bonus Packages",
+      production: 'Production',
+      duration: 'Duration',
+      expiry: 'Expiration',
+    },      
+      
       title: 'Shop',
       currentCreditAmount: 'Your current credit amount',
       credits: 'Credits',
