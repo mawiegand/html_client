@@ -69,7 +69,7 @@ AWE.GS = (function(module) {
       if (showGarrisonArmy && showGarrisonArmy.level <= level) {
         return this.getPath('slot.settlement.garrison');
       }
-    }.property('buildingType', 'slot.settlement.garrison').cacheable(),
+    }.property('buildingType', 'slot.settlement.garrison', 'level').cacheable(),
 
 		/** returns a unique string identifying the building type. This 
 		 * is used to associate all images to the building. */

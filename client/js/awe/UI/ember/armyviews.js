@@ -19,7 +19,7 @@ AWE.UI.Ember = (function(module) {
     army: null,
 
     displayUnits: function() {
-      return this.getPath('units.length') > 0;
+      return this.getPath('units') !== undefined && this.getPath('units') !== null;
     }.property('units.length').cacheable(),
     
     isChangeNamePossible: function() {
