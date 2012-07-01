@@ -148,6 +148,7 @@ AWE.Controller = (function(module) {
     that.viewDidAppear = function() {
       $("body").append(zoomSlider.getContainer());
       window.WACKADOO.addDomElement(zoomSlider.getContainer(), true);
+      that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height())); // prevents distortion in case window has resized while displaying another screen
       zoomSlider.subscribeToDOMEvents();
     }     
     
