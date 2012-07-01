@@ -39,6 +39,24 @@ AWE.I18n.en_US =  function(module) {
       },
     },
         
+    battle: {
+      details: {
+        heading: "Battle Info",
+      },        
+      messages: {
+        own: {
+          winning: [
+            "Yeah, we 'll blow 'em away!",
+          ],
+          losing: [
+            "Help, we 're going down the drain!",
+          ],
+          neutral: [
+            "Boring!",
+          ]
+        }
+      }
+    },    
     
     army: {
       details: {
@@ -94,7 +112,6 @@ AWE.I18n.en_US =  function(module) {
     },
     
     shop: {
-    shop: {
       button: 'Bonanza',
       title: 'Bonanza',
       currentCreditAmount: 'Presently, you have a balance of',
@@ -113,17 +130,6 @@ AWE.I18n.en_US =  function(module) {
       duration: 'Duration',
       expiry: 'Expiration',
     },      
-      
-      title: 'Shop',
-      currentCreditAmount: 'Your current credit amount',
-      credits: 'Credits',
-      updateCredits: 'Update',
-      buyCredits: 'Buy credits',
-      article: 'Offer',
-      description: 'Description',
-      price: 'Price',
-      buy: 'Buy!'
-    },
     
     settlement: {
       buildings: {
