@@ -129,14 +129,15 @@ AWE.I18n.de_DE = function(module) {
     },
     
     alliance: {
-      founded: 'Founded',
-      leader: 'Leader',
+      founded: 'Gründung',
+      leader: 'Anführer',
       description: 'Description',
+      management: 'Geheime Allianzlosung',
       message: 'Message of the Day',
       messageExplanation: 'This is only visible to members.',
-      members: 'Members',
+      members: 'Mitglieder',
       shoutBox: 'Shout Box',
-      shoutBoxExplanation: 'Everything entered here is instantly visible to all other members.'
+      shoutBoxExplanation: 'Alles was hier eingegeben wird, ist umgehend für alle anderen Mitglieder sichtbar.'
     },
     
     shop: {

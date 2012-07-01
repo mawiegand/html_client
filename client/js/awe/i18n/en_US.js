@@ -104,6 +104,7 @@ AWE.I18n.en_US =  function(module) {
       founded: 'Founded',
       leader: 'Leader',
       description: 'Description',
+      management: 'Secret Alliance Password',
       message: 'Message of the Day',
       messageExplanation: 'This is only visible to members.',
       members: 'Members',
