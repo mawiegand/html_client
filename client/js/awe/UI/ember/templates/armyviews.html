@@ -70,10 +70,11 @@
         <div class="modal-dialog-pane" id="army-create-form">
           <h2>Create new army</h2>
           {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" }}
-          <a href="#" {{action "reset" target="parentView"}}>reset</a> | <a href="#" {{action "createPressed" target="parentView"}}>create</a> | <a href="#" {{action "cancelPressed" target="parentView"}}>cancel</a>
+          <a href="#" {{action "reset" target="parentView"}}>reset</a> | <a href="#" {{action "createPressed" target="parentView"}}>create</a>
           {{#if "loading" }}
             <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Creating Army...</p>
           {{/if}}
+          <a class="close" href="#" {{action "cancelPressed" target="parentView"}}></a>
         </div>
       </div>
 </script>
@@ -84,10 +85,11 @@
         <div class="modal-dialog-pane" id="army-change-form">
           <h2>Change units in army</h2>
           {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" armyNameBinding="otherArmy.name" }}
-          <a href="#" {{action "reset" target="parentView"}}>reset</a> | <a href="#" {{action "changePressed" target="parentView"}}>change</a> | <a href="#" {{action "cancelPressed" target="parentView"}}>cancel</a>
+          <a href="#" {{action "reset" target="parentView"}}>reset</a> | <a href="#" {{action "changePressed" target="parentView"}}>change</a>
           {{#if "loading" }}
             <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Creating Army...</p>
           {{/if}}
+          <a class="close" href="#" {{action "cancelPressed" target="parentView"}}></a>
         </div>
       </div>
 </script>

@@ -2132,6 +2132,21 @@ li.shout .sender {
   border-top: 1px solid #ccc;
 }
 
+#army-create-form a.close, #army-change-form a.close {
+  position: absolute;
+  background: url('../images/icons/cross_small.png');
+  width: 36px;
+  height: 36px;
+  right: 12px;
+  top: 10px;
+}
+
+#army-create-form a.close:hover, #army-change-form a.close:hover {
+  opacity: 0.6;
+}
+
+
+
 
 .resource-offer {
   float: left;
@@ -2221,6 +2236,10 @@ a.resource-offer:hover {
   height: 36px;
   right: 12px;
   top: 10px;
+}
+
+.shop-dialog-pane a.close:hover {
+  opacity: 0.6;
 }
 
 .participant div {
