@@ -9,7 +9,7 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Military = (function(module) {
   
-  module.createCreateArmyAction = function(location, units, my) {
+  module.createCreateArmyAction = function(location, units, armyName, my) {
       
     // private attributes and methods //////////////////////////////////////
     
@@ -21,13 +21,15 @@ AWE.Action.Military = (function(module) {
     my = my || {};
     my.location = location;
     my.units = units;
+    my.armyName = armyName;
     
     // public attributes and methods ///////////////////////////////////////
     
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      var requestBody = 'action_military_create_army_action[location_id]=' + my.location.id();
+      var requestBody = 'action_military_create_army_action[location_id]=' + my.location.id() + 
+                        '&action_military_create_army_action[army_name]=' + my.armyName;
       
       AWE.Ext.applyFunctionToHash(my.units, function(symbolicId, quantity) {
         if (quantity > 0) {

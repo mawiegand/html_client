@@ -70,6 +70,7 @@
         <div class="modal-dialog-pane" id="army-create-form">
           <h2>Create new army</h2>
           {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" }}
+          <p>Army Name: {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" placeholder="New Army" classNames="army-name-field" }}</p>
           <a href="#" {{action "reset" target="parentView"}}>reset</a> | <a href="#" {{action "createPressed" target="parentView"}}>create</a>
           {{#if "loading" }}
             <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Creating Army...</p>
@@ -99,7 +100,7 @@
         <tr>
           <th></th>
           <th colspan="3" class="garrison">Available Units</th>
-          <th colspan="3" class="other">{{ armyName }}</th>
+          <th colspan="3" class="other">{{#if armyName}}{{ armyName }}{{else}}New Army{{/if}}</th>
         </tr>
         {{#each unitTypes }}
           {{#view AWE.UI.Ember.UnitRowView unitTypeBinding="this" }}

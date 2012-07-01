@@ -159,7 +159,9 @@ AWE.UI.Ember = (function(module) {
       });
       return unitQuantities;
     },
-        
+    
+    armyName: '',
+    
     createPressed: function() {
       log('ERROR Action not connected: createWasPressed.');
     },
@@ -219,6 +221,9 @@ AWE.UI.Ember = (function(module) {
   module.ArmyForm = Ember.View.extend({
     templateName: 'army-form',
     unitTypes: null,
+  });
+  
+  module.ArmyNameTextfield = Ember.TextField.extend({
   });
   
   module.UnitRowView = Ember.View.extend({
