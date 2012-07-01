@@ -66,7 +66,7 @@ AWE.GS = (function(module) {
     garrisonArmy: function() {
       var showGarrisonArmy = this.get('buildingType') && this.get('buildingType')['abilities'] && this.get('buildingType')['abilities']['unlock_garrison'];
       var level = this.get('level');
-      if (showGarrisonArmy && showGarrisonArmy.level <= level) {
+      if (showGarrisonArmy && showGarrisonArmy <= level) {
         return this.getPath('slot.settlement.garrison');
       }
     }.property('buildingType', 'slot.settlement.garrison', 'level').cacheable(),
