@@ -267,9 +267,17 @@ AWE.UI.Ember = (function(module) {
         return this.get('garrisonUnits');
       // setter
       } else {
-        this.set('garrisonUnits', parseInt(value));
-        this.set('otherUnits', this.get('allUnits') - parseInt(value));
-        return value;
+        var units = parseInt(value);
+        var allUnits = this.get('allUnits');
+        if (units > allUnits) {
+          units = allUnits;
+        }
+        else if (isNaN(units) || units < 0) {
+          units = 0;
+        }
+        this.set('garrisonUnits', units);
+        this.set('otherUnits', allUnits - units);
+        return units;
       }
     }).property('garrisonUnits')
   });
@@ -288,9 +296,17 @@ AWE.UI.Ember = (function(module) {
         return this.get('otherUnits');
       // setter
       } else {
-        this.set('otherUnits', parseInt(value));
-        this.set('garrisonUnits', this.get('allUnits') - parseInt(value));
-        return value;
+        var units = parseInt(value);
+        var allUnits = this.get('allUnits');
+        if (units > allUnits) {
+          units = allUnits;
+        }
+        else if (isNaN(units) || units < 0) {
+          units = 0;
+        }
+        this.set('otherUnits', units);
+        this.set('garrisonUnits', allUnits - units);
+        return units;
       }
     }).property('otherUnits')
   });
