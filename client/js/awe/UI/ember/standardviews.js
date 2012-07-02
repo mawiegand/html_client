@@ -118,6 +118,16 @@ AWE.UI.Ember = (function(module) {
     cancelPressed: null,
   });
   
+  module.WelcomeDialog = module.InfoDialog.extend({
+    templateName: 'welcome-dialog',
+    
+    imageSrc: function() {
+      console.log('IMAGE SOURCE')
+      return AWE.I18n.lookupTranslation('welcome.image');
+      
+    }.property('templateName'),
+  });
+  
   
   /**
    * @class

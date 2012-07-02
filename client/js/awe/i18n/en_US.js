@@ -112,6 +112,14 @@ AWE.I18n.en_US =  function(module) {
       shoutBoxExplanation: 'Everything entered here is instantly visible to all other members.'
     },
     
+    welcome: {
+      heading: 'Welcome to Wack-a-Doo!',
+      headingPlan: 'The Plan',
+      image: 'images/whatdoido_en_US.jpeg',
+      headingSituation: 'The Situation',
+      formattedText: '<p>Being a <b>demigod</b> to a tiny tribe of stoneage caveman you\'ve just convinced your followers to leave their cave behind and to live in something modern called "a village". Unfortunately, the only thing their glorious chieftain let them build was a pompous hut for himself. Now, you should <b>build housing for some gather-hunters</b> ASAP.</p><p>P.S.: Our newby-advisor right now is on vacation and cannot guide you through the starting process. We hope, as demigod, you\'re able to find yourself around for the meantime. ;-)</p><p><b>Have fun!</p>',
+    },
+    
     shop: {
       button: 'Bonanza',
       title: 'Bonanza',

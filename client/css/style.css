@@ -736,6 +736,23 @@ html, body {
   background-color: #FFF;  
 }
 
+.welcome-dialog {
+  font-size: 16px;
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: -300px;  
+  width: 800px; 
+  min-height: 300px;
+  background-color: #FFF;    
+}
+.welcome-dialog h2 {
+  margin-bottom: 0px;
+}
+
+.welcome-dialog img {
+  margin-top: -6px;
+}
+
 .advisor { 
   width: 196px;
   height: 196px;

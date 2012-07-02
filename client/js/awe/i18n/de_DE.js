@@ -140,6 +140,14 @@ AWE.I18n.de_DE = function(module) {
       shoutBoxExplanation: 'Alles was hier eingegeben wird, ist umgehend für alle anderen Mitglieder sichtbar.'
     },
     
+    welcome: {
+      heading: 'Willkomen bei Wack-a-Doo!',
+      headingPlan: 'Der Plan',
+      image: 'images/whatdoido_de_DE.jpeg',
+      headingSituation: 'Die Situation',
+      formattedText: '<p>Du bist ein <b>Halbgott</b> und hast gerade einen kleinen, Dir folgenden Stamm von Steinzeithöhlenmenschen davon übrzeugt, ihre Höhle zu verlassen und ab jetzt in einer hochmodernen Siedlung zu leben. Leider hat der glorreiche Stammesführer bis jetzt aber nur eine pompöse Hütte für sich selbst bauen lassen. Deshalb solltest Du so schnell wie möglich <b>einige Behausungen für Jäger und Sammler aufbauen</b>.</p><p>P.S.: Unser Newby-Ausbilder befindet sich gerade im Erholungsurlaub. Aber wir vermuten, dass Du Dich als Halbgott in der Zwischenzeit auch ohne Probleme selbst zurechtfinden wirst. ;-)</p><p><b>Viel Spaß!</p>',
+    },
+    
     shop: {
       button: 'Fundgrube',
       title: 'Fundgrube',

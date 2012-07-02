@@ -49,6 +49,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this._super();
     },
     
+    
+    showWelcomeDialog: function() {
+      var dialog = AWE.UI.Ember.WelcomeDialog.create();
+      this.presentModalDialog(dialog);      
+    },
+    
+    showStartupDialogs: function() {
+//    if (AWE.GS.getCurrentCharacter() && !AWE.GS.getCurrentCharacter().get('startups_count') <= 1) {
+        this.showWelcomeDialog();
+//    }
+    },
   
     /** loads and initializes needed modules. 
      * Caution: 
@@ -116,6 +127,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               console.log("Node", node)
               if (self.get('mapScreenController')) {
                 self.get('mapScreenController').moveTo(node);
+                self.showStartupDialogs();
               }
               assetLoaded();
             });
