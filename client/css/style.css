@@ -775,6 +775,11 @@ html, body {
   margin-right: 10px;
 }
 
+.army-info-view .advisor { 
+  float:right;
+  margin-left: 10px;
+}
+
 .citation {
   color: #AAA;
   font-style: italic;
@@ -2111,6 +2116,11 @@ li.shout .sender {
 
 .army-info-view {
   display: inline-block;
+  width: 100%;
+}
+
+.army-info-view .header {
+  width: 100%;
 }
 
 .army-info-view .change-name {
