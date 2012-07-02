@@ -2,7 +2,7 @@
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="center-helper">
     <div class="modal-dialog-pane z-layer-4 character-profile-view">
-      <h1>Your Character</h1>
+      <h1>Your Character: {{character.name}}</h1>
       <hr>
       {{#if firstNameChange}}
         <h2>Choose Your Name</h2>
@@ -10,7 +10,7 @@
         <h2>Change Your Name</h2>
       {{/if}}
       <p class="red-color">{{message}}</p>
-      <p><b>Name:</b> {{character.name}}
+      <p><b>Present Name:</b> {{character.name}}
          {{#if changingName }}
            &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Processing...
          {{else}} 

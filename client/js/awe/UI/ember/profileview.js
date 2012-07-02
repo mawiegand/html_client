@@ -62,9 +62,27 @@ AWE.UI.Ember = (function(module) {
         this.set('message', 'Same name as before. Did nothing.');
       }      
       else {  // now, really send the name
+        var self = this;
+        var changeCounter = this.getPath('character.name_change_count');
         this.set('changingName', true);
-      //var action = AWE.Action.Military.createChangeArmyNameAction(this.get('army'), this.get('input'));
-      //AWE.Action.Manager.queueAction(action);        
+        var action = AWE.Action.Fundamental.createChangeCharacterNameAction(newName);
+        AWE.Action.Manager.queueAction(action, function(status) {
+          self.set('changingName', false);
+          if (status === AWE.Net.OK) {
+            if (changeCounter > 0) {
+              AWE.GS.ResourcePoolManager.updateResourcePool();
+            }
+          }
+          else if (status === AWE.Net.CONFLICT) {
+            self.set('message', 'This name is already taken or on the black list. Please choose another name.')
+          }
+          else if (status === AWE.Net.FORBIDDEN) {
+            self.set('message', "You don't have enough toads to pay for this name change.")
+          }
+          else {
+            self.set('message', 'The name could not be changed for unknown reasons. Please try a different one.');
+          }
+        });        
       }
     },
     
