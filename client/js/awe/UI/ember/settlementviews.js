@@ -34,7 +34,12 @@ AWE.UI.Ember = (function(module) {
 		/** references the slot that is presently selected in the view. */
 		selectedSlot: null,
     /** reference to all building-slots of the base. May be null or empty. */
-    slotsBinding:     'hashableSlots.collection',
+    slotsBinding: function() {
+      var collection = this.getPath('hashableSlots.collection');
+      return collection ? collection.sort(function(a,b) {
+        return a.get('slot_num') - b.get('slot_num');
+      }) : null;
+    }.property('hashableSlots.changedAt').cacheable(),
     /** true in case there are representations of the slots available. */
     haveSlotsBinding: Ember.Binding.bool('slots'),
     
