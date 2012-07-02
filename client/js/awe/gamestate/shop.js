@@ -25,9 +25,7 @@ AWE.GS = (function(module) {
     
     that.init = function() {
       
-      my.shop = module.Shop.create({
-        creditAmount: 0,
-      });
+      my.shop = module.Shop.create();
       
       that.fetchResourceOffers();
       that.fetchCreditAmount();
