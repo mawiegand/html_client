@@ -1,8 +1,8 @@
 <script type="text/x-handlebars" data-template-name="wheel-or-value">
-  {{#if value}}
-    {{value}}
-  {{else}}
+  {{#if nullValue}}
     {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }}
+  {{else}}
+    {{value}}
   {{/if}} 
 </script>
 
