@@ -105,6 +105,7 @@ AWE.UI = (function(module) {
         attackButton.setVisible(my.baseView.selected());
       }
       
+      /*
       if (!spyButton && !isOwnLocation) {
         spyButton = AWE.UI.createButtonView();
         spyButton.initWithControllerTextAndImage(my.controller, 'spy', AWE.UI.ImageCache.getImage("map/button1"));
@@ -120,7 +121,7 @@ AWE.UI = (function(module) {
       }
       if (spyButton) {
         spyButton.setVisible(my.baseView.selected());
-      }
+      } */
       
       if (!battleButton && battleCheck) {  // ongoing battle -> attribute is missing in database ("mode")
         battleButton = AWE.UI.createButtonView();

@@ -24,8 +24,8 @@ AWE.Action.Fundamental = (function(module) {
     // protected attributes and methods ////////////////////////////////////
   
     my = my || {};
-    my.alliancePasword = password || "";
-    my.alliance = alliance || 0;
+    my.alliancePasword = escape(password) || "";
+    my.alliance = escape(alliance) || 0;
     
     // public attributes and methods ///////////////////////////////////////
     

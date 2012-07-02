@@ -106,7 +106,7 @@ AWE.UI = (function(module) {
       if (attackButton) {
         attackButton.setVisible(my.fortressView.selected());
       }
-      
+    /*  
       if (!spyButton && my.region.ownerId() !== currentCharacter.get('id')) {
         spyButton = AWE.UI.createButtonView();
         spyButton.initWithControllerTextAndImage(my.controller, 'Spy', AWE.UI.ImageCache.getImage("map/button1"));
@@ -122,7 +122,7 @@ AWE.UI = (function(module) {
       }
       if (spyButton) {
         spyButton.setVisible(my.fortressView.selected());
-      }
+      }*/
       
       if (!battleButton && 0) {  // ongoing battle -> attribute is missing in database ("mode")
         battleButton = AWE.UI.createButtonView();

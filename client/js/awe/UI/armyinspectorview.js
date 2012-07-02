@@ -115,7 +115,7 @@ AWE.UI = (function(module) {
       
       _locationLabelView.setText(_army.get('home_settlement_name') ? _army.get('home_settlement_name') : '[Home]');
       
-      if (!_rankLabelView) {
+  /*    if (!_rankLabelView) {
         _rankLabelView = AWE.UI.createLabelView();
         _rankLabelView.initWithControllerAndLabel(my.controller);
         _rankLabelView.setTextAlign("left");
@@ -123,12 +123,12 @@ AWE.UI = (function(module) {
         _rankLabelView.setFrame(AWE.Geometry.createRect(5, 90, 100, 24));      
         this.addChild(_rankLabelView);
       }
-      _rankLabelView.setText(_army.get('rank'));
+      _rankLabelView.setText(_army.get('rank')); */
 
       if (!_sizeAllLabelView) {
         _sizeAllLabelView = AWE.UI.createLabelView();
         _sizeAllLabelView.initWithControllerAndLabel(my.controller);
-        _sizeAllLabelView.setFrame(AWE.Geometry.createRect(105, 24, 100, 24));      
+        _sizeAllLabelView.setFrame(AWE.Geometry.createRect(5, 90, 100, 24)); //105, 24, 100, 24));      
         _sizeAllLabelView.setTextAlign("left");
         _sizeAllLabelView.setIconImage("map/icon/army/size");
         this.addChild(_sizeAllLabelView);
@@ -259,6 +259,7 @@ AWE.UI = (function(module) {
         _reinforceButtonView.setEnabled(settlement && _army.get('home_settlement_id') === settlement.getId());
       }
 
+/*
       if (!_prevButtonView && isOwnArmy) {
         // button unten
         _prevButtonView = AWE.UI.createButtonView();
@@ -272,10 +273,10 @@ AWE.UI = (function(module) {
         _nextButtonView.initWithControllerTextAndImage(my.controller, '>>', AWE.UI.ImageCache.getImage("map/button1"));
         _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
         this.addChild(_nextButtonView);
-      }
+      }*/
     }
     
-    that.onInventoryButtonClick = function() { console.log('inventory button clicked'); }
+  //  that.onInventoryButtonClick = function() { console.log('inventory button clicked'); }
     that.onChangeArmyButtonClick = function(army) { console.log('inventory button clicked'); }
         
     that.updateView = function() {
