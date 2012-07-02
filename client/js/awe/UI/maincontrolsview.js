@@ -100,6 +100,7 @@ AWE.UI = (function(module) {
         _heroHeadImageView = AWE.UI.createImageView();
         _heroHeadImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/head"));
         _heroHeadImageView.setFrame(AWE.Geometry.createRect(198, 85, 100, 100));
+        _heroHeadImageView.onClick = function() { WACKADOO.characterButtonClicked(); };
         this.addChild(_heroHeadImageView);
       }
   

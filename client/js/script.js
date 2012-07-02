@@ -183,6 +183,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }
     },
     
+    characterButtonClicked: function() {
+      var dialog = AWE.UI.Ember.ProfileView.create({
+        characterBinding: 'AWE.GS.player.currentCharacter',
+      });
+      this.presentModalDialog(dialog);      
+    },
+    
     messagesButtonClicked: function() {
       this.activateMessagesController();
     },
