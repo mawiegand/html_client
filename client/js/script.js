@@ -78,6 +78,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         Ember.Handlebars.bootstrap();                  // Bootstrap Ember a second time to parse the newly loaded templates.
 
         self.readyToRun();                            // ready to run
+        
+        self.showStartupDialogs();
       }
       
   
@@ -127,7 +129,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               console.log("Node", node)
               if (self.get('mapScreenController')) {
                 self.get('mapScreenController').moveTo(node);
-                self.showStartupDialogs();
               }
               assetLoaded();
             });
