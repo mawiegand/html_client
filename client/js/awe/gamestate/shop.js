@@ -53,9 +53,6 @@ AWE.GS = (function(module) {
     that.fetchCreditAmount = function(callback) {
       $.getJSON(AWE.Config.SHOP_SERVER_BASE + 'account', function(data) {
         my.shop.set('creditAmount', data.credit_amount);
-        
-        log('---> shop', my.shop, data, my.shop.get('creditAmount'));
-        
         if (callback) {
           callback(data);
         }
