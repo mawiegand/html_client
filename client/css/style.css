@@ -1165,7 +1165,7 @@ span.bonus {
   float: left;
   width: 240px;
   height: 60px;
-  background-color: #FFB;
+  background-color: #BFB;
   -moz-border-radius: 7px;
   border-radius:      7px;
   padding: 10px;
@@ -1242,7 +1242,7 @@ span.bonus {
   padding: 2px 8px;
   color: #333;
   border-radius: 3px;
-  background-color: #FFB;
+  background-color: #BFB;
   text-decoration: none;
   border: 1px solid #333;
   margin: -2px;
@@ -1258,9 +1258,9 @@ span.bonus {
 
 .training-queue-job {
   float: left;
-  width: 120px;
-  height: 124px;
-  background-color: #FFB;
+  width: 240px;
+  height: 80px;
+  background-color: #BFB;
   -moz-border-radius: 7px;
   border-radius:      7px;
   padding: 10px;
@@ -1278,15 +1278,36 @@ span.bonus {
 
 .training-queue-job-text {
   float: left;
-  width: 120px;
-  height: 101px;
+  width: 240px;
+  height: 60px;
 }
 
 .training-queue-job-button {
   clear: both;
-  width: 120px;
-  height: 23px;
+  font-size: 14px;
+  float: right;
+  width: 80px;
+  height: 24px;
+  padding-top: 6px;
   text-align: right;
+}
+
+.training-queue-job-button a {
+  padding: 2px 8px;
+  color: #333;
+  border-radius: 3px;
+  background-color: #BFB;
+  text-decoration: none;
+  border: 1px solid #333;
+  margin: -2px;
+}
+
+.active .training-queue-job-button a {
+  background-color: #FBB;
+}
+
+.training-queue-job-button a:hover {
+  background-color: white;
 }
 
 

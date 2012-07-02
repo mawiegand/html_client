@@ -36,6 +36,12 @@ AWE.GS = (function(module) {
     quantity: null,
     quantity_finished: null,
     
+    remaining: function() {
+      var quantity = this.get('quantity') || 0;
+      var finished = this.get('quantity_finished') || 0;
+      return quantity-finished;
+    }.property('quantity', 'quantity_finished').cacheable(),
+    
     active_job: null,
         
     parsedFinishingTotalDate: function() {
