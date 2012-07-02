@@ -184,7 +184,7 @@ AWE.UI = (function(module) {
         _resource1LabelView.setTextAlign("left");
         _resource1LabelView.setIconImage("resource/icon/wood");
         _resource1LabelView.setFont("14px Arial");
-        _resource1LabelView.setFrame(AWE.Geometry.createRect(20, 30, 80, 24));      
+        _resource1LabelView.setFrame(AWE.Geometry.createRect(100, 30, 80, 24));      
         this.addChild(_resource1LabelView);
       }
       
@@ -194,7 +194,7 @@ AWE.UI = (function(module) {
         _resource2LabelView.setTextAlign("left");
         _resource2LabelView.setIconImage("resource/icon/stone");
         _resource2LabelView.setFont("14px Arial");
-        _resource2LabelView.setFrame(AWE.Geometry.createRect(100, 30, 80, 24));      
+        _resource2LabelView.setFrame(AWE.Geometry.createRect(20, 30, 80, 24));      
         this.addChild(_resource2LabelView);
       }
       

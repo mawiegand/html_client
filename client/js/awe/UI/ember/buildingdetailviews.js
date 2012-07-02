@@ -43,6 +43,20 @@ AWE.UI.Ember = (function(module) {
     requirementUnmetBinding: 'building.requirementUnmet',
   });
   
+  
+  module.BuildingOptionDetailView = Ember.View.extend({
+   templateName:      "building-option-details",
+   classNames: ['building-option-details'],
+   classNameBindings:  "same",
+   
+   building: null,
+   hovered: null,
+   
+   same: function() {
+     return this.getPath('building.buildingId') === this.getPath('hovered.buildingId');
+   }.property('building', 'hovered').cacheable(),
+ });
+   
  
   /** @class
    * @name AWE.UI.Ember.BuildingDetailsDialog */  
