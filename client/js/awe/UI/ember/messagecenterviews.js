@@ -22,6 +22,10 @@ AWE.UI.Ember = (function(module) {
   module.WheelOrValueView = Ember.View.extend({
     templateName: 'wheel-or-value',
     tagName: 'span',
+    value: null,
+    nullValue: function() {
+      return this.get('value') === null || this.get('value') === undefined; 
+    }.property('value').cacheable(),
   });
 
   module.MessageView = Ember.View.extend({
