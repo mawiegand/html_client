@@ -151,6 +151,7 @@ AWE.UI = (function(module) {
         this.addChildAt(_flagView, 10);
       }
 
+/*
       // buttons oben
       if (!_infoButtonView && isOwnLocation) {
         _infoButtonView = AWE.UI.createButtonView();
@@ -161,7 +162,7 @@ AWE.UI = (function(module) {
         };
         this.addChild(_infoButtonView);
       }
-  
+   */
       if (!_newArmyButtonView && isOwnLocation) {
         _newArmyButtonView = AWE.UI.createButtonView();
         _newArmyButtonView.initWithControllerTextAndImage(my.controller, 'New Army', AWE.UI.ImageCache.getImage("map/button1"));
@@ -173,7 +174,7 @@ AWE.UI = (function(module) {
       }
 
       // TODO disablen wenn garrison army leer
-  
+  /*
       if (!_prevButtonView && isOwnLocation) {
         // button unten
         _prevButtonView = AWE.UI.createButtonView();
@@ -187,10 +188,10 @@ AWE.UI = (function(module) {
         _nextButtonView.initWithControllerTextAndImage(my.controller, '>>', AWE.UI.ImageCache.getImage("map/button1"));
         _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
         this.addChild(_nextButtonView);
-      }
+      }*/
     }
     
-    that.onInfoButtonClick = function() { console.log('info button clicked'); }
+  /**  that.onInfoButtonClick = function() { console.log('info button clicked'); } */
     that.onNewArmyButtonClick = function() { console.log('new army button clicked'); }
 
     that.updateView = function() {

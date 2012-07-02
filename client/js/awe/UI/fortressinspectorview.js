@@ -219,7 +219,7 @@ AWE.UI = (function(module) {
         my.fortressFlagView.setAllianceId(my.region.allianceId());
       }
 
-      // buttons oben
+/*    // buttons oben
       if (!_infoButtonView) {
         _infoButtonView = AWE.UI.createButtonView();
         _infoButtonView.initWithControllerTextAndImage(my.controller, 'Info', AWE.UI.ImageCache.getImage("map/button1"));
@@ -229,7 +229,7 @@ AWE.UI = (function(module) {
           that.onInfoButtonClick()
         };
         this.addChild(_infoButtonView);
-      }
+      }*/
 
       if (!_newArmyButtonView && my.region.location(0) && my.region.location(0).isOwn()) {
         _newArmyButtonView = AWE.UI.createButtonView();
