@@ -108,15 +108,15 @@ AWE.UI = (function(module) {
 
       if (army.get('ap_present') / army.get('ap_max') > 0) {
         if(army.get('ap_present') / army.get('ap_max') > .75) {
-          var fillColor = 'rgb(64, 255, 64)';
+          var fillColor = '#bfb';
         }
         else if(army.get('ap_present') / army.get('ap_max') > .5) {
-          var fillColor = 'rgb(255, 255, 64)';
+          var fillColor = '#ffb';
         }
         else {
-          var fillColor = 'rgb(255, 64, 64)';
+          var fillColor = '#fbb';
         }
-  
+        
         var healthGraphics = new Graphics();
         healthGraphics.setStrokeStyle(1);
         healthGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
@@ -194,17 +194,16 @@ AWE.UI = (function(module) {
       }
       
       if (_army.get('ap_present') / _army.get('ap_max') > 0.1) {
-
         if(_army.get('ap_present') / _army.get('ap_max') > .75) {
-          var fillColor = 'rgb(64, 255, 64)';
+          var fillColor = '#6d6';
         }
         else if(_army.get('ap_present') / _army.get('ap_max') > .5) {
-          var fillColor = 'rgb(255, 255, 64)';
+          var fillColor = '#dd6';
         }
         else {
-          var fillColor = 'rgb(255, 64, 64)';
+          var fillColor = '#d66';
         }
-  
+        
         var healthGraphics = new Graphics();
         healthGraphics.setStrokeStyle(1);
         healthGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
