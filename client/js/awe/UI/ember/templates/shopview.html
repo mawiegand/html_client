@@ -2,9 +2,9 @@
     <div class="modal-dialog-background"></div>
     <div class="center-helper">
       <div class="shop-dialog-pane">
-        <h1>{{ t shop.title }}  {{ shop.creditAmount}}</h1>
+        <h1>{{ t shop.title }}</h1>
         
-        <p>{{ t shop.currentCreditAmount }}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="creditAmount" }} {{ t shop.credits }}  | <a href="#" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</a></p>
+        <p>{{ t shop.currentCreditAmount }}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }} {{ t shop.credits }}  | <a href="#" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</a></p>
         
         {{#if resourceOffers}}
         <h4>{{ t shop.resourceOffers }}</h4>
