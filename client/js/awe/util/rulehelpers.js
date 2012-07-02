@@ -269,7 +269,7 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
         productions.push(Ember.Object.create({  // need to return an ember project so bindings on resourceType.name do work inside local helper
           baseProduction: Math.floor(base),
           bonusRelative:  Math.floor(bonus*1000)/10.0,
-          bonusAbsolute:  Math.floor(bonus*base),
+          bonusAbsolute:  Math.floor(bonus*base*10)/10.0,
           rate:           Math.floor(base*(1.0+bonus)),
           resourceType:   resourceType,
           localizedDesc:  function() {
