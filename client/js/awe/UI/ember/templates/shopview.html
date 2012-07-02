@@ -48,7 +48,7 @@
       <div class="bonus-offer-price">{{ offer.price}} </div>
       <div class="bonus-offer-end">
         {{#if offer.resource_effect }}
-          {{ formatTime offer.resource_effect.finished_at }}
+          {{ formatDatetime offer.resource_effect.finished_at }}
         {{/if}}
         
         {{#if offer.isBuying}}
