@@ -34,8 +34,9 @@ AWE.UI.Ember = (function(module) {
 		/** references the slot that is presently selected in the view. */
 		selectedSlot: null,
     /** reference to all building-slots of the base. May be null or empty. */
-    slotsBinding: function() {
+    slots: function() {
       var collection = this.getPath('hashableSlots.collection');
+      console.log ('SORTING SLOTS')
       return collection ? collection.sort(function(a,b) {
         return a.get('slot_num') - b.get('slot_num');
       }) : null;
