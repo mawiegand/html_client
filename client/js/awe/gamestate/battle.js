@@ -23,6 +23,7 @@ AWE.GS = (function(module) {
     rounds: null,
     participants: null,
     factions: null,
+    armies: null,
     
     ownBattle: function() {
       var own = false;
@@ -64,14 +65,14 @@ AWE.GS = (function(module) {
       var self = this;
       return this.get('participants').filter(function(participant) {
         return participant && participant.getPath('army.owner_id') === AWE.GS.CharacterManager.getCurrentCharacter().getId(); 
-      })
+      });
     }.property('participants').cacheable(),
     
     participantsOwnFaction: function() {
       var self = this;
       return this.get('participants').filter(function(participant) {
         return participant && participant.get('faction_id') === self.get('ownFactionId');        
-      })
+      });
     }.property('participants').cacheable(),
     
     participantsOtherFaction: function(){
@@ -157,6 +158,10 @@ AWE.GS = (function(module) {
         }),
         participants: Ember.ArrayProxy.create({
           baseTypeName: 'BattleParticipants',
+          content: [],
+        }),
+        armies: Ember.ArrayProxy.create({
+          baseTypeName: 'Army',
           content: [],
         }),
       });        

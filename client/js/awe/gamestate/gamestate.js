@@ -92,17 +92,28 @@ AWE.GS = (
               var baseTypeName = this[key].get('baseTypeName');
               var data = hash[key];
               var result = [];
-              if (data && data.length !== undefined) {  //   A) process an array of armies
+              if (data && data.length !== undefined) {  //   A) process an array of entities
                 for (var i = 0; i < data.length; i++) { 
                   var entityData = data[i];
-                  var entity = AWE.GS[baseTypeName].create({id: entityData['id']});
-                  entity.init(entityData);
-                  entity.set(this.typeName.toLowerCase(), this)
+                  var entity = null;
+                  if (AWE.GS[baseTypeName + 'Manager']) {
+                    entity = AWE.GS[baseTypeName + 'Manager'].getEntity(entityData['id']);
+                  }
+                  if (entity) {
+                    entity.updateWith(entityData);
+                  }
+                  else {
+                    entity = AWE.GS[baseTypeName].create({id: entityData['id']});
+                    entity.init(entityData);
+                    entity.set(this.typeName.toLowerCase(), this)
+                  }
                   result[entity.get('id')] = entity;
                 }          
               }
-              else {                                    //   B) process a single army
+              else {                                    //   B) process a single entity
                 var entity = AWE.GS[baseTypeName].create({id: entityData['id']});              
+                entity.init(entityData);
+                entity.set(this.typeName.toLowerCase(), this)
                 result[entity.get('id')] = entity;
               }
 
