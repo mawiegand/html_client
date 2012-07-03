@@ -96,7 +96,7 @@ AWE.GS = (function(module) {
 		  var settlementProductions = this.getPath('slot.settlement.resourceProductions');
 		  var level                 = this.get('level');
 		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, level, settlementProductions) : null;
-		}.property('level', 'buildingType').cacheable(),
+		}.property('level', 'buildingType', 'slot.settlement.updated_at').cacheable(),
 
 
 		productionsNextLevel: function() {

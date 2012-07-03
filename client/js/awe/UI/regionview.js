@@ -538,7 +538,7 @@ AWE.UI = (function(module) {
         _debugText.x = 4;
         _debugText.y = my.frame.size.height / 2.0;
       }
-      
+      /*
       if (!_settlementsIcon && !my.realMap) {  // add information on game map
         _settlementsIcon = module.createImageView();
         _settlementsIcon.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("map/region/icon"));
@@ -589,7 +589,7 @@ AWE.UI = (function(module) {
         _settlementsText.y = _settlementsIcon.frame().origin.y + _settlementsIcon.image().height/2 - _settlementsText.getMeasuredLineHeight()/2;        
         _armyStrengthText.x = _armyStrengthIcon.frame().origin.x + _armyStrengthIcon.image().width;
         _armyStrengthText.y = _armyStrengthIcon.frame().origin.y + _armyStrengthIcon.image().height/2 - _armyStrengthText.getMeasuredLineHeight()/2;        
-      }     
+      }     */
       
       if (!_regionNameText && detail >= 1 && _node.region() && !my.realMap) {
         _regionNameText = new Text();
