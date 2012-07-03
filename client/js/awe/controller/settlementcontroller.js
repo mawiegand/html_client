@@ -217,16 +217,12 @@ AWE.Controller = (function(module) {
       if (queue && queue.get('max_length') > queue.get('jobs_count')) {
         that.status.set('sendingUpgrade', true);
         queue.sendCreateJobAction(slot.getId(), buildingId, jobType, levelAfter, function(status) {
-          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          that.status.set('sendingUpgrade', false);              
+          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK, 201 CREATED
             log(status, "Construction job created.");
-            that.updateConstructionQueueSlotAndJobs(queue.getId(), function() { 
-              that.status.set('sendingUpgrade', false); // wait, until jobs have been updated
-            });
-            that.updateResourcePool();
           }
           else {
             console.log(status, "ERROR: The server did not accept the construction command.");
-            that.status.set('sendingUpgrade', false);              
             var dialog = AWE.UI.Ember.InfoDialog.create({
               contentTemplateName: 'server-command-failed-info',
               cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
