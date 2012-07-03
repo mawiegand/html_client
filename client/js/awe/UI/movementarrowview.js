@@ -144,7 +144,7 @@ AWE.UI = (function(module) {
       // ETA LABEL ///////////////////////////////////////////////////////////  
       if (!my.etaView && focus) {
         my.etaView = AWE.UI.createLabelView();
-        my.etaView.initWithControllerAndLabel(this.controller(), 'ETA ' + my.army.get('target_reached_at'), true);
+        my.etaView.initWithControllerAndLabel(this.controller(), 'ETA ' + Date.parseISODate(my.army.get('target_reached_at')).toString('HH:mm:ss'), true);
         my.etaView.setTextAlign('center');
         my.etaView.setPadding(10);
         my.container.addChild(my.etaView.displayObject());
