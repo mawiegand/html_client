@@ -123,11 +123,7 @@ AWE.Action.Construction = (function(module) {
     }
     
     that.postProcess = function(statusCode, xhr) {
-      if (statusCode === AWE.Net.OK || statusCode === AWE.Net.CREATED) {
-        AWE.GS.ResourcePoolManager.updateResourcePool();
-      }
-      else {        
-      }
+      AWE.GS.ResourcePoolManager.updateResourcePool();
       AWE.GS.ConstructionJobManager.updateJob(my.jobId);
     }
     

@@ -93,7 +93,9 @@ AWE.Controller = (function(module) {
     }
     
     /** set to true in case the whole window needs to be repainted. */
-    that.setNeedsDisplay = function() { _needsDisplay = true; }
+    that.setNeedsDisplay = function() { 
+      _needsDisplay = true; 
+    }
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -268,18 +270,42 @@ AWE.Controller = (function(module) {
     that.updateModel = (function() {
             
       var lastResourcesUpdate = new Date(1970);
+      var amounts = [100];
       
       return function() {
         
         if (lastResourcesUpdate.getTime() + AWE.Config.RESOURCES_REFRESH_INTERVAL < new Date().getTime()) {
-          console.log('SENDING RESOURCE UPDATE');
           lastResourcesUpdate = new Date();
           if (HUDViews.mainControlsView) {
             AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-              HUDViews.mainControlsView.setNeedsUpdate();
+              that.setModelChanged(); // always re-paint, if new data available
+              console.log('U: updated resource');
             });
           }
         }
+        
+        var pool = AWE.GS.ResourcePoolManager.getResourcePool();
+        if (pool) { // TODO: need to make the following code dynamic
+          var changed = false;
+          changed = changed || pool.presentAmount('resource_wood')    !== amounts[0];
+          changed = changed || pool.presentAmount('resource_stone')   !== amounts[1];
+          changed = changed || pool.presentAmount('resource_fur')     !== amounts[2];
+          changed = changed || pool.presentAmount('resource_cash')    !== amounts[3];
+          
+          if (changed) {
+            console.log(">> NEED TO UPDATE HUD DUE TO CHANGED RESOURCE AMOUNT");
+            console.log(amounts[0], ":", pool.presentAmount('resource_wood') ,
+                        amounts[1], ":", pool.presentAmount('resource_stone') ,
+                        amounts[2], ":", pool.presentAmount('resource_fur') ,
+                        amounts[3], ":", pool.presentAmount('resource_cash') );
+            that.setModelChanged();
+            amounts[0] = pool.presentAmount('resource_wood') ;
+            amounts[1] = pool.presentAmount('resource_stone');
+            amounts[2] = pool.presentAmount('resource_fur')  ;
+            amounts[3] = pool.presentAmount('resource_cash') ;
+          }
+        }
+        
       };
     }());     
     
@@ -376,10 +402,11 @@ AWE.Controller = (function(module) {
         that.layoutIfNeeded();   
         
         // STEP 4: update views and repaint view hierarchies as needed
-        if (_needsDisplay || _loopCounter % 10 == 0 || that.modelChanged()) {
+        if (_needsDisplay || _loopCounter % 60 == 0 || that.modelChanged()) {
           // STEP 4b: create, remove and update all views according to visible parts of model      
           var updateNeeded = that.updateViewHierarchy();      
-          if (updateNeeded || true) { // TODO: remove true, update only, if necessary 
+          if (updateNeeded ) { // TODO: remove true, update only, if necessary 
+            console.log('>>>>>>> HUD STAGE UPDATE', _needsDisplay, _loopCounter % 60 == 0, that.modelChanged());
             _stage.update();
             AWE.Ext.applyFunctionToElements(HUDViews, function(view) {
               view.notifyRedraw();

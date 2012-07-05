@@ -260,7 +260,7 @@ AWE.UI = (function(module) {
     
     /** checks for itself whether the view needs an update (changed reosources) or not. */
     that.updateIfNeeded = function() {
-      var changed;
+      var changed = false;
       var pool = AWE.GS.ResourcePoolManager.getResourcePool();
       if (pool) {
         changed = changed || pool.presentAmount('resource_wood')  !== my.amounts[0];
@@ -269,7 +269,8 @@ AWE.UI = (function(module) {
         changed = changed || pool.presentAmount('resource_cash')  !== my.amounts[3];
       }
       if (changed) {
-        this.setNeedsDisplay();
+        console.log(">> NEED TO UPDATE HUD DUE TO CHANGED RESOURCE AMOUNT");
+        this.setNeedsUpdate();
       }
       _super.updateIfNeeded();
     }

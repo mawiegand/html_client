@@ -311,12 +311,14 @@ AWE.GS = (
             else {                                    //   B) process a single entity
               result = my.processUpdateResponse(data, updateType, start);
             };
+            if (callback) {      
+              var start = new Date();
+              Ember.run.sync(); // sync the bindings now, before continuing with the execution (e.g. calling callbacks)
+              console.log('Manual Sync in GameStateManager Elapsed (ms): ',  (new Date().getTime() - start.getTime()));
+            }
           }
           my.unregisterRequest(queue, id, updateType);//   unregister request 
           if (callback) {
-            var start = new Date();
-            Ember.run.sync(); // sync the bindings now, before continuing with the execution (e.g. calling callbacks)
-            console.log('Manual Sync in GameStateManager Elapsed (ms): ',  (new Date().getTime() - start.getTime()));
             callback(result, xhr.status, xhr, start);
           }        
         }); 

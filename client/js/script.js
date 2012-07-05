@@ -43,8 +43,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         $('#debug2').html('Loading Assets. Progress: ' + _numLoadedAssets + ' / ' + _numAssets);
       }
       else {
-        this.get('hudController').setNeedsLayout();
-        this.get('hudController').setNeedsDisplay();
+        //this.get('hudController').setNeedsLayout();
+        //this.get('hudController').setNeedsDisplay();
       }
       this._super();
     },

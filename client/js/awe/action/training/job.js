@@ -82,6 +82,8 @@ AWE.Action.Training = (function(module) {
     }
     
     that.postProcess = function(statusCode, xhr) {
+      AWE.GS.ResourcePoolManager.updateResourcePool();
+      AWE.GS.TrainingJobManager.updateJob(my.jobId);
     }
     
     return that;

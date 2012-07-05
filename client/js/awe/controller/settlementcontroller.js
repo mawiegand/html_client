@@ -278,7 +278,7 @@ AWE.Controller = (function(module) {
         if (status === AWE.Net.OK) {    // 200 OK
           log(status, "Construction job deleted.");
           that.updateConstructionQueueSlotAndJobs(queue.getId());          
-          that.updateResourcePool();
+       //   that.updateResourcePool();
         }
         else {
           log(status, "The server did not accept the job removal command.");
@@ -294,7 +294,7 @@ AWE.Controller = (function(module) {
           log(status, "Construction job finished.");
           AWE.GS.ResourcePoolManager.getResourcePool().removeResources({'resource_cash': 1});  // I believe, here it's ok as well as beneficial to remove the resources (server did accept the command, but no pool-update yet)
           that.updateConstructionQueueSlotAndJobs(queue.getId());    
-          that.updateResourcePool();      
+       //   that.updateResourcePool();      
         }
         else {
           log(status, "The server did not accept the job finish command.");
@@ -310,7 +310,7 @@ AWE.Controller = (function(module) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
           log(status, "Training job created.");
           that.updateTrainingQueueAndJobs(queue.getId());
-          that.updateResourcePool();
+      //    that.updateResourcePool();
         }
         else {
           log(status, "The server did not accept the training command.");
