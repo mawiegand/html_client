@@ -372,6 +372,8 @@ AWE.Controller = (function(module) {
       AWE.GS.ConstructionQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queue) {
         log('updated construction queue', queueId);
       });
+      
+      this.updateResourcePool(); // update the pool for the case this update was triggered because a job was finished (and a new one might have started)
 
       // as we don't know the right slot (or slot id), we update all slots
       AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {      
