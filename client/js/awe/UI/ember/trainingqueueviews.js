@@ -15,26 +15,26 @@ AWE.UI.Ember = (function(module) {
   module.TrainingQueueView = Ember.View.extend({
     templateName: "training-queue-view",
     
-    selectedUnitType: null,
+    selectedUnitButton: null,
     number: "1",
 
     queue: null,
 
 		costs: function() {
-		  var unitType = this.get('selectedUnitType');
+		  var unitType = this.getPath('selectedUnitButton.unitType');
 		  return unitType && unitType.costs ? AWE.Util.Rules.lookupResourceCosts(unitType.costs) : null;
-		}.property('selectedUnitType').cacheable(),
+		}.property('selectedUnitButton.unitType').cacheable(),
 		
 		totalCosts: function() {
 		  return AWE.Util.Rules.multipliedResourceCosts(this.get('costs'), this.get('number') || 0.0);
 		}.property('costs', 'number').cacheable(),
 		
 		productionTime: function() {
-		  var unitType = this.get('selectedUnitType');
+		  var unitType = this.getPath('selectedUnitButton.unitType');
 		  var speed    = this.getPath('queue.speed') || 1.0;
 		  console.log('SPEED', this.getPath('queue.speed'));
 		  return unitType ? AWE.Util.Rules.calculateProductionTime(unitType.production_time, speed) : null;
-		}.property('queue.speed', 'selectedUnitType').cacheable(),   ///< TODO : also update, when queue's speedup changes.
+		}.property('queue.speed', 'selectedUnitButton.unitType').cacheable(),   ///< TODO : also update, when queue's speedup changes.
 
 		totalProductionTime: function() {
 		  var productionTime  = this.get('productionTime');
@@ -52,7 +52,7 @@ AWE.UI.Ember = (function(module) {
     }.property('queue.queueType').cacheable(),
 
     createJobPressed: function(evt) {
-      this.get('controller').trainingCreateClicked(this.get('queue'), this.getPath('selectedUnitType.id'), this.get('number'));
+      this.get('controller').trainingCreateClicked(this.get('queue'), this.getPath('selectedUnitButton.unitType.id'), this.get('number'));
     },
     
   });

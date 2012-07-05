@@ -154,7 +154,7 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
    * @name AWE.Util.Rules.failedRequirements */
   module.failedRequirements = function(requirements, settlement, character, slotToExclude, considerJobs) {
     considerJobs = considerJobs || false;
-    settlement   = settlement || {};
+    settlement   = settlement || null;
     requirements = requirements || [];
     slotToExclude= slotToExclude || null;
     
@@ -202,8 +202,11 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
    * @function
    * @name AWE.Util.Rules.meetsBuildingRequirement */
   module.meetsBuildingRequirement = function(requirement, settlement, slotToExclude, considerJobs) {
-    if (!settlement || !requirement) {
+    if (!settlement) {
       return false;
+    }
+    if (!requirement) {
+      return true;
     }
     var slots = settlement.get('enumerableSlots') || [];
     var maxMet = !(requirement.max_level !== undefined && requirement.max_level !== null && requirement.max_level < 0) ; // cannot bet true, when smaller than zero.

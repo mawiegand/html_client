@@ -173,11 +173,11 @@ AWE.GS = (function(module) {
     requirementsMet: function() {
       var unmetRequirements = this.get('unmetRequirements');
       return !unmetRequirements || unmetRequirements.length === 0;
-    }.property('unmetRequirements, unmetRequirements.length'),
+    }.property('unmetRequirements', 'unmetRequirements.length'), 
     
     requirementUnmet: function() {
       return !this.get('requirementsMet');
-    }.property('requirementsMet'),
+    }.property('requirementsMet'), 
 
 		
 		// // Abilities //////////////////////////////////////////////////////////		
