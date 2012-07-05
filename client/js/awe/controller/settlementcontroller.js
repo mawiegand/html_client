@@ -470,17 +470,22 @@ AWE.Controller = (function(module) {
     that.updateOldJobsInConstructionQueues = function(queues) {
       if (queues) {
         queues.forEach(function(queue) {
-          var jobs = AWE.GS.ConstructionJobManager.getJobsInQueue(queue.getId());
-          jobs.forEach(function(job) {
-            if (job.get('active_job')) {
-              var jobId = job.getId();
-              pendingConstructionJobUpdates[jobId] = pendingConstructionJobUpdates[jobId] > 0 ? pendingConstructionJobUpdates[jobId] : AWE.Config.TIME_DIFF_RANGE;
-              if (Date.parseISODate(job.get('active_job').finished_at).add({seconds: pendingConstructionJobUpdates[jobId]}) < new Date()) {
-                pendingConstructionJobUpdates[jobId] *= 2;
-                that.updateConstructionQueueSlotAndJobs(queue.getId());
-              }
-            }      
-          });
+          if (!queue) {
+            console.log('queue was undefined');
+          }
+          else {
+            var jobs = AWE.GS.ConstructionJobManager.getJobsInQueue(queue.getId());
+            jobs.forEach(function(job) {
+              if (job.get('active_job')) {
+                var jobId = job.getId();
+                pendingConstructionJobUpdates[jobId] = pendingConstructionJobUpdates[jobId] > 0 ? pendingConstructionJobUpdates[jobId] : AWE.Config.TIME_DIFF_RANGE;
+                if (Date.parseISODate(job.get('active_job').finished_at).add({seconds: pendingConstructionJobUpdates[jobId]}) < new Date()) {
+                  pendingConstructionJobUpdates[jobId] *= 2;
+                  that.updateConstructionQueueSlotAndJobs(queue.getId());
+                }
+              }  
+            });
+          }
         });
       }
     }
@@ -491,17 +496,21 @@ AWE.Controller = (function(module) {
     that.updateOldJobsInTrainingQueues = function(queues) {
       if (queues) {
         queues.forEach(function(queue) {
-          var jobs = AWE.GS.TrainingJobManager.getJobsInQueue(queue.getId());
-          jobs.forEach(function(job) {
-            if (job.get('active_job')) {
-              var jobId = job.getId();
-              pendingTrainingJobUpdates[jobId] = pendingTrainingJobUpdates[jobId] > 0 ? pendingTrainingJobUpdates[jobId] : AWE.Config.TIME_DIFF_RANGE;
-              if (Date.parseISODate(job.get('active_job').finished_active_at).add({seconds: pendingTrainingJobUpdates[jobId]}) < new Date()) {
-                pendingTrainingJobUpdates[jobId] *= 2;
-                that.updateTrainingQueueAndJobs(queue.getId());
-              }
-            }      
-          });
+          if (!queue) {
+            console.log('training queue was undefined');
+          }
+          else {          var jobs = AWE.GS.TrainingJobManager.getJobsInQueue(queue.getId());
+            jobs.forEach(function(job) {
+              if (job.get('active_job')) {
+                var jobId = job.getId();
+                pendingTrainingJobUpdates[jobId] = pendingTrainingJobUpdates[jobId] > 0 ? pendingTrainingJobUpdates[jobId] : AWE.Config.TIME_DIFF_RANGE;
+                if (Date.parseISODate(job.get('active_job').finished_active_at).add({seconds: pendingTrainingJobUpdates[jobId]}) < new Date()) {
+                  pendingTrainingJobUpdates[jobId] *= 2;
+                  that.updateTrainingQueueAndJobs(queue.getId());
+                }
+              }      
+            });
+          }
         });
       }
     }
