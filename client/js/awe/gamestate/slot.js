@@ -495,13 +495,13 @@ AWE.GS = (function(module) {
     that.updateSlotsAtSettlement = function(settlementId, updateType, callback) {
       var url = AWE.Config.SETTLEMENT_SERVER_BASE + 'settlements/' + settlementId + '/slots';
       return my.fetchEntitiesFromURL(
-        url,                                  // url to fetch from
-        my.runningUpdatesPerSettlement,           // queue to register this request during execution
-        settlementId,                             // regionId to fetch -> is used to register the request
-        updateType,                           // type of update (aggregate, short, full)
+        url,                                          // url to fetch from
+        my.runningUpdatesPerSettlement,               // queue to register this request during execution
+        settlementId,                                 // regionId to fetch -> is used to register the request
+        updateType,                                   // type of update (aggregate, short, full)
         module.SlotAccess.lastUpdateForSettlement_id(settlementId), // modified after
         function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
-          if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
+          if (status === AWE.Net.OK) {
             module.SlotAccess.accessHashForSettlement_id().setLastUpdateAtForValue(settlementId, timestamp);
           }
           if (callback) {

@@ -431,21 +431,6 @@ AWE.Controller = (function(module) {
       var lastSettlementUpdateCheck = new Date(1970);
       var lastSettlementId = 0;
       
-      var updateSettlement = function() {
-        // just trigger the updates, thanks to the bindings we do not need to
-        // process the answers and update the views manually.
-        AWE.GS.SettlementManager.updateSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
-          log('updated settlement', settlement);
-          if (settlement && settlement.getId()) {
-            that.updateSlots();
-            that.updateAllConstructionQueuesAndJobs();
-            if (that.view.get('selectedSlot')) {
-              that.updateAllTrainingQueuesAndJobs();
-            }
-          }
-        });
-      }
-      
       return function() {
         
         // TODO: use the last update timestamp from the Settlement Manager and don't track a copy locally.
