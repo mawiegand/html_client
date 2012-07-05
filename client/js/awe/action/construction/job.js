@@ -46,11 +46,14 @@ AWE.Action.Construction = (function(module) {
       if (statusCode === AWE.Net.OK || statusCode === AWE.Net.CREATED) {
         AWE.GS.ResourcePoolManager.updateResourcePool();
         AWE.GS.SlotManager.updateSlot(my.slotId);
-        AWE.GS.ConstructionQueueManager.updateQueue(my.queue.getId(), null, function() {
-          AWE.GS.ConstructionJobManager.updateJobsOfQueue(my.queue.getId());
-//        console.log('U: construction queue, success');
-        });
       }
+      else {        
+      }
+      // update queue in any case: success: jobs gone. failure: old data on client side
+      AWE.GS.ConstructionQueueManager.updateQueue(my.queue.getId(), null, function() { //
+        AWE.GS.ConstructionJobManager.updateJobsOfQueue(my.queue.getId());
+        console.log('U: construction queue, success');
+      });
     }
     
     that.queue = function() {
@@ -86,6 +89,10 @@ AWE.Action.Construction = (function(module) {
     }
     
     that.postProcess = function(statusCode, xhr) {
+      if (statusCode === AWE.Net.OK || statusCode === AWE.Net.CREATED) {
+        AWE.GS.ResourcePoolManager.updateResourcePool();
+      }
+      AWE.GS.ConstructionJobManager.updateJob(my.jobId);
     }
     
     return that;
@@ -116,6 +123,12 @@ AWE.Action.Construction = (function(module) {
     }
     
     that.postProcess = function(statusCode, xhr) {
+      if (statusCode === AWE.Net.OK || statusCode === AWE.Net.CREATED) {
+        AWE.GS.ResourcePoolManager.updateResourcePool();
+      }
+      else {        
+      }
+      AWE.GS.ConstructionJobManager.updateJob(my.jobId);
     }
     
     return that;

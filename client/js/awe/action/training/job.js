@@ -41,11 +41,12 @@ AWE.Action.Training = (function(module) {
     that.postProcess = function(statusCode, xhr) {
       if (statusCode == AWE.Net.OK || statusCode === AWE.Net.CREATED) {
         AWE.GS.ResourcePoolManager.updateResourcePool();
-        AWE.GS.TrainingQueueManager.updateQueue(my.queue.getId(), null, function() {
-          AWE.GS.TrainingJobManager.updateJobsOfQueue(my.queue.getId());
-          console.log('U: training queue, success');
-        });
       }
+      // update queue in any case: success: jobs gone. failure: old data on client side
+      AWE.GS.TrainingQueueManager.updateQueue(my.queue.getId(), null, function() {
+        AWE.GS.TrainingJobManager.updateJobsOfQueue(my.queue.getId());
+        console.log('U: training queue, success');
+      })
     }
     
     that.queue = function() {

@@ -248,7 +248,7 @@ AWE.GS = (function(module) {
         updateType,                                        // type of update (aggregate, short, full)
         this.lastUpdateForLocation(locationId),            // modified after
         function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
-          if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
+          if (status === AWE.Net.OK) {
             lastLocationUpdates[locationId] = timestamp;
           }
           if (callback) {
