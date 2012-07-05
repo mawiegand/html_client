@@ -28,19 +28,21 @@ AWE.UI.Ember = (function(module) {
 			    
     wall: function() {
       var slots = this.get('slots');
-      return slots && slots.length > 0 ? slots[0] : null;
-    }.property('hashableSlots.changedAt').cacheable(),
+      var slot = slots && slots.length > 0 ? slots[0] : null;
+      console.log('SLOT', slot ? slot.get('slot_num') : null, slot ? slot.get('building_id') : null, slot ? slot.get('level') : null, slot)
+      return slot;
+    }.property('slots').cacheable(),
 		
     leftTower: function() {
       var slots = this.get('slots');
       return slots && slots.length > 0 ? slots[1] : null;
-    }.property('hashableSlots.changedAt').cacheable(),		
+    }.property('slots').cacheable(),		
 		
     rightTower: function() {
       var slots = this.get('slots');
       console.log('RIGHT TOWER', slots)
       return slots && slots.length > 0 ? slots[2] : null;
-    }.property('hashableSlots.changedAt').cacheable(),		
+    }.property('slots').cacheable(),		
 				
 	});
 
