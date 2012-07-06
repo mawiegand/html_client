@@ -178,7 +178,7 @@ AWE.GS = (function(module) {
         module.ArmyAccess.lastUpdateForRegion_id(regionId), // modified after
         function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            module.ArmyAccess.accessHashForRegion_id().setLastUpdateAtForValue(regionId, timestamp);
+            module.ArmyAccess.accessHashForRegion_id().setLastUpdateAtForValue(regionId, timestamp.add(-1).second());
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
@@ -200,7 +200,7 @@ AWE.GS = (function(module) {
         module.ArmyAccess.lastUpdateForLocation_id(locationId),
         function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            module.ArmyAccess.accessHashForLocation_id().setLastUpdateAtForValue(locationId, timestamp);
+            module.ArmyAccess.accessHashForLocation_id().setLastUpdateAtForValue(locationId, timestamp.add(-1).second());
           }
           // remove deleted army from location
           if (status === AWE.Net.OK) {           
@@ -227,7 +227,7 @@ AWE.GS = (function(module) {
         module.ArmyAccess.lastUpdateForOwner_id(characterId),
         function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            module.ArmyAccess.accessHashForOwner_id().setLastUpdateAtForValue(characterId, timestamp);
+            module.ArmyAccess.accessHashForOwner_id().setLastUpdateAtForValue(characterId, timestamp.add(-1).second());
           }
           // remove deleted army from location
           if (status === AWE.Net.OK) {           
@@ -254,7 +254,7 @@ AWE.GS = (function(module) {
         this.lastUpdateForFortress(regionId),
         function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            lastFortressUpdates[regionId] = timestamp;
+            lastFortressUpdates[regionId] = timestamp.add(-1).second();
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {

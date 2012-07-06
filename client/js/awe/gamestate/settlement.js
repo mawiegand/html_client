@@ -225,7 +225,7 @@ AWE.GS = (function(module) {
         this.lastUpdateForCharacter(characterId),                              // modified after
         function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            lastCharacterUpdates[characterId] = timestamp;
+            lastCharacterUpdates[characterId] = timestamp.add(-1).second();
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
@@ -248,8 +248,8 @@ AWE.GS = (function(module) {
         updateType,                                        // type of update (aggregate, short, full)
         this.lastUpdateForLocation(locationId),            // modified after
         function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
-          if (status === AWE.Net.OK) {
-            lastLocationUpdates[locationId] = timestamp;
+          if (status === AWE.Net.OK  || status === AWE.Net.NOT_MODIFIED) {
+            lastLocationUpdates[locationId] = timestamp.add(-1).second();
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {

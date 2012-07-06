@@ -102,7 +102,7 @@ AWE.GS = (function(module) {
         this.lastUpdate(),                              // modified after
         function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            lastUpdate = timestamp;
+            lastUpdate = timestamp.add(-1).second();
           }
           // delete old jobs from queue
           // if (status === AWE.Net.OK) {

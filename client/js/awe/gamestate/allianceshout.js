@@ -84,7 +84,7 @@ AWE.GS = (function(module) {
         module.AllianceShoutAccess.lastUpdateForAlliance_id(allianceId), // modified after
         function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            module.AllianceShoutAccess.accessHashForAlliance_id().setLastUpdateAtForValue(allianceId, timestamp);
+            module.AllianceShoutAccess.accessHashForAlliance_id().setLastUpdateAtForValue(allianceId, timestamp.add(-1).second());
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {

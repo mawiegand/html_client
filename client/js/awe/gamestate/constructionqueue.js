@@ -139,8 +139,8 @@ AWE.GS = (function(module) {
         updateType,                                        // type of update (aggregate, short, full)
         this.lastUpdateForSettlement(settlementId),                              // modified after
         function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
-          if (status === AWE.Net.OK) {
-            lastQueueUpdates[settlementId] = timestamp;
+          if (status === AWE.Net.OK  || status === AWE.Net.NOT_MODIFIED) {
+            lastQueueUpdates[settlementId] = timestamp.add(-1).second();
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {

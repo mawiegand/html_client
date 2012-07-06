@@ -663,7 +663,7 @@ AWE.Controller = (function(module) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
           AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
             that.setModelChanged();
-            that.addDisappearingAnnotationLabel(targetView, 'ETA ' + army.get('target_reached_at'), 1500);
+            that.addDisappearingAnnotationLabel(targetView, 'ETA ' + Date.parseISODate(army.get('target_reached_at')).toString('HH:mm:ss'), 1500);
             that.addDisappearingAnnotationLabel(armyView, '-1 AP', 1000);
           });
         }
@@ -1758,9 +1758,11 @@ AWE.Controller = (function(module) {
         if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.settlementTypeId()] === 'fortress') {           // if armyLocation is fortress
           var regionLocations = armyRegion.locations();
           
-          // add all location in same region
-          for (var i = 1; i < regionLocations.length; i++) {
-            targetLocations.push(regionLocations[i]);        
+          if (regionLocations) {
+            // add all location in same region
+            for (var i = 1; i < regionLocations.length; i++) {
+              targetLocations.push(regionLocations[i]);        
+            }
           }
           
           // add fortresses in bordering regions

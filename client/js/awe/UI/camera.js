@@ -362,9 +362,10 @@ AWE.UI = (function(module) {
 			} else {
 				targetViewport.size.scale(scale);
 			}
+			
 			targetViewport.origin.x = center.x - targetViewport.size.width/2;
 			targetViewport.origin.y = center.y - targetViewport.size.height/2;
-
+      
 			_activePan = module.createCameraPan(
 				_getCurrentViewport(),
 				targetViewport, 

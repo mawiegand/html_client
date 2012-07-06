@@ -317,7 +317,7 @@ AWE.GS = (function(module) {
         this.lastUpdateForCharacter(characterId, updateType),// modified after
         function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            that.setLastUpdateForCharacter(characterId, timestamp);
+            that.setLastUpdateForCharacter(characterId, timestamp.add(-1).second());
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
@@ -458,7 +458,7 @@ AWE.GS = (function(module) {
         this.lastUpdateForMessageBox(messageBoxId, updateType),// modified after
         function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            that.setLastUpdateForMessageBox(messageBoxId, timestamp);
+            that.setLastUpdateForMessageBox(messageBoxId, timestamp.add(-1).second());
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {

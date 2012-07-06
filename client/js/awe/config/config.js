@@ -93,7 +93,7 @@ AWE.Config = (function(module) {
   module.MAP_DBLCLK_CAMERA_BORDER_FACTOR = 0.15; ///< border around a node after zoom in
   module.MAP_DBLCLK_CAMERA_CROSS_CLICK_SIZE = 35;
 
-  module.MAP_CAMERA_MAX_VIEWFRAME_SIZE = { width: 50000000, height: 50000000 };
+  module.MAP_CAMERA_MAX_VIEWFRAME_SIZE = { width: 30000000, height: 30000000 };
   module.MAP_CAMERA_MIN_VIEWFRAME_SIZE = { width: 500000, height: 500000 };
   
   module.SETTLEMENT_REFRESH_INTERVAL = 30 * 1000;
