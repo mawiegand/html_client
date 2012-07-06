@@ -1,3 +1,7 @@
+<script type="text/x-handlebars" data-template-name="trainable-unit-button">
+  {{local unitType.name}}
+</script>
+
 
 <script type="text/x-handlebars" data-template-name="training-queue-view">
   <h2>{{local queue.queueType.name }}</h2>
@@ -8,24 +12,48 @@
     {{/each}}
   </div>
 
-  Per Unit:
+  {{local selectedUnitButton.unitType.flavour}}
+
+
+
+
+  <b>Per Unit:</b>
     {{#each costs}}
       {{amount}} {{local resourceType.name}} &nbsp;  
     {{/each}}    
-    Duration: {{formatDuration productionTime}}
+    <b>Duration:</b> {{formatDuration productionTime}}
   <br />
-  Total:
+  <b>Total:</b>
     {{#each totalCosts}}
       {{amount}} {{local resourceType.name}} &nbsp;  
     {{/each}}    
-    Duration: {{formatDuration totalProductionTime}}
+    <b>Duration:</b> {{formatDuration totalProductionTime}}
   <br />  
 
-  
-  {{view Ember.TextField valueBinding="number"}} <a href="#" class="button" {{action "createJobPressed"}}>Train {{local selectedUnitType.name}}</a>    
+  {{#if selectedUnitButton.requirementsMet }}
+    {{view Ember.TextField class="text-field" valueBinding="number"}} 
+    {{#if ongoingAction}}
+      {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} processing...
+    {{else}}
+      {{#if number}}
+        <div class="button ok-button" {{action "createJobPressed"}}>Train {{local selectedUnitButton.unitType.name}}</div>
+      {{/if}}
+    {{/if}}    
+  {{else}}
+    {{#with selectedUnitButton}}
+      <p>
+        {{{t settlement.buildings.select.missingRequirements}}}:
+        {{#each unmetRequirements}}
+          {{view AWE.UI.Ember.RequirementView requirementBinding="this"}}
+        {{/each}}
+      </p>
+    {{/with}}
+  {{/if}}
+
 
   <div class="training-queue-list-pane">    
     {{#unless queue.empty }}
+      <hr>
       {{#each queue.hashableJobs.collection }}
         {{#view AWE.UI.Ember.TrainingJobView controllerBinding="controller" jobBinding="this" classNames="training-queue-job"}}
           <div class="training-queue-job-text">    

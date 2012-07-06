@@ -35,7 +35,7 @@ AWE.GS = (function(module) {
     hashableJobs: null,
 
     settlement: function() {
-      return AWE.GS.SettlementManager.getSettlement(this.get('settlementId'));
+      return AWE.GS.SettlementManager.getSettlement(this.get('settlement_id'));
     }.property('settlement_id'),
 
     activeJob: function(jobId) {
@@ -49,7 +49,7 @@ AWE.GS = (function(module) {
 			if (typeId === undefined || typeId === null) { // must check, because typeId may be zero
 				return null;
 			}
-			return AWE.GS.RulesManager.getRules().getQueueType(typeId);
+			return typeId === undefined || typeId === null ? null : AWE.GS.RulesManager.getRules().getQueueType(typeId);
     }.property('type_id').cacheable(),
         
     empty: function() {

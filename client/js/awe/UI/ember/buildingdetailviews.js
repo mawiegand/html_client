@@ -89,27 +89,36 @@ AWE.UI.Ember = (function(module) {
   module.TrainableUnitButtonView = Ember.View.extend( /** @lends AWE.UI.Ember.TrainableUnitButtonView# */ {
     templateName: "trainable-unit-button",
       
-    classNameBindings: ['selected'],  
+    classNameBindings: ['selected', 'requirementUnmet'],  
     
       
     click: function(event) {
-      this.get('parentView').set('selectedUnitType', this.get('unitType'));
+      this.get('parentView').set('selectedUnitButton', this);
     },     
     
     selected: function() {
-      return this.get('unitType') === this.getPath('parentView.selectedUnitType');
-    }.property('parentView.selectedUnitType').cacheable(),
+      return this === this.getPath('parentView.selectedUnitButton');
+    }.property('parentView.selectedUnitButton').cacheable(),
     
-    
-    // TODO: check requirements and costs. should become a mixin somehow
-  
+
+    unmetRequirements: function() {
+      var settlement = this.getPath('queue.settlement');
+      var character = settlement ? settlement.owner() : null;
+      var failed =  AWE.Util.Rules.failedRequirements(this.getPath('unitType.requirements'), settlement, character, null, true);
+      return failed || []
+    }.property('unitType', 'queue.settlement.hashableSlots.collection@each.level', 'queue.settlement.hashableSlots.changedAt'),
+
+
+		/** bool for indicating whether or not all requirements for constructin
+		 * this building are met. */
     requirementsMet: function() {
-      return true ;
-    }.property('queue.settlement', 'unitType').cacheable(),
+      var unmetRequirements = this.get('unmetRequirements');
+      return !unmetRequirements || unmetRequirements.length === 0;
+    }.property('unmetRequirements', 'unmetRequirements.length'), 
     
-    costsMet: function() {
-      return true ;
-    }.property('queue.settlement', 'unitType').cacheable(),
+    requirementUnmet: function() {
+      return !this.get('requirementsMet');
+    }.property('requirementsMet'), 
     
     
   });

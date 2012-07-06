@@ -75,6 +75,15 @@ AWE.GS = (
      * this.get('id').  */
     getId: function() { return this.get('id'); },
     
+    updatedOnServerAt: function() {
+      var updatedAt = this.get('updated_at');
+      return updatedAt ? Date.parseISODate(updatedAt) : null;
+    },
+    createdOnServerAt: function() {
+      var createdAt = this.get('created_at');
+      return createdAt ? Date.parseISODate(createdAt) : null;
+    },
+    
     /** sets all properties of this entity to the values of the given
      * hash.
      * @param {Object} hash holding key - value pairs to apply to this 
@@ -335,19 +344,36 @@ AWE.GS = (
      * TODO: INSERT HERE: automatically update, if data to old or missing!!!!
      */
     my.updateEntity = function(url, id, updateType, callback) {
-      var lastUpdateAt = null;
+      var modifiedSince = null;
       if (updateType === undefined) { 
         updateType = module.ENTITY_UPDATE_TYPE_FULL;
       }
       var entity = my.entities[id];
       if (entity && entity.lastUpdateAt(updateType)) {
-        lastUpdateAt = entity.lastUpdateAt(updateType);
+        // the logic here:
+        // always use the timestamp updated_at from the server for the modified-since query
+        // BUT only for one case: when the lastUpdateAt-timestamp for the given update-type is
+        // earlier, THAN use that lastUpdateAt timestamp as modified-since. Why?
+        // because if we would use updated_at in this instance, than we would not refetch
+        // the data for that particular update type, also some data might be missing for that
+        // update type.
+        
+        var serverUpdate = entity.updatedOnServerAt();     // last change on server (the client knows of)
+        var lastUpdate = entity.lastUpdateAt(updateType);  // last update (requested from server) for this particular type
+        if (serverUpdate.getTime() > lastUpdate.getTime()) {
+          modifiedSince = lastUpdate;
+          console.log('>> GAMESTATE UPDATE: Using LOCAL UPDATE timestamp (loc/sever):', lastUpdate, serverUpdate);
+        }
+        else {
+          modifiedSince = serverUpdate;
+          console.log('>> GAMESTATE UPDATE: Using SERVER UPDATED AT timestamp (loc/server):', lastUpdate, serverUpdate);          
+        }
       }
-      return my.fetchEntitiesFromURL(url, my.runningUpdatesPerId, id, updateType, lastUpdateAt, function(entity, statusCode, xhr, serverTime) {
+      return my.fetchEntitiesFromURL(url, my.runningUpdatesPerId, id, updateType, modifiedSince, function(entity, statusCode, xhr, serverTime) {
         if (statusCode === AWE.Net.NOT_MODIFIED) { // not modified
           entity = my.entities[id];
           if (entity) {
-            entity.setNotModifiedAfter(updateType, serverTime);
+            entity.setNotModifiedAfter(updateType, serverTime); // this sets the LOCAL update time-stamp to the server time, so the client knows it has tried to fetch this data recently.
           }
           else {
             console.log('ERROR: received a not-modified answer for an entity that is not already downloaded.');

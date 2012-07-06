@@ -968,6 +968,7 @@ span.bonus {
 }
 
 
+.training-option.requirement-unmet,
 .building-option.requirement-unmet {
   background-color: #FDD;
 }
@@ -1131,15 +1132,14 @@ span.bonus {
 
 
 .training-option {
+  background-color: #BFB;
   float: left;
   display: inline-block;
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   margin-right: 6px;
   margin-bottom: 6px;
-  padding: 10px;
-  border: 1px solid gray;
-  color: gray;
+  padding: 15px;
   border-radius: 4px;
   cursor: pointer;
   word-wrap: break-word;
@@ -1147,13 +1147,11 @@ span.bonus {
 
 
 .training-option.selected {
-  border: 1px solid black;
-  color: black;
+  background-color: #BBF;
 }
 
 .training-option:hover {
-  color: #FA0;
-  border: 1px solid #FA0;
+  background-color: #BBF;
 }
 
 
@@ -1289,6 +1287,11 @@ span.bonus {
 
 .queue-job-button a:hover {
   background-color: white;
+}
+
+.training-queue-list input[type="text"] {
+  width: 80px;
+  margin: 20px 10px 6px 0px;
 }
 
 .training-queue-job {
@@ -1475,6 +1478,8 @@ span.bonus {
   margin-top: -35px;
 }
 
+
+input[type="text"],
 .alliance-pane input[type="text"] {
   font-size: 24px;
   height: 36px;
@@ -1482,6 +1487,7 @@ span.bonus {
   margin-bottom: 6px;
   margin-right: 30px;
 }
+
 
 .alliance-management input[type="text"] {
   width: 220px;
