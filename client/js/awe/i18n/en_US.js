@@ -169,6 +169,9 @@ AWE.I18n.en_US =  function(module) {
           start: "Sorry, but the construction queue is already filled to it's capacity of ",
           end: " jobs. Please wait, till something else is completed.",
         },
+        constructionQueueNotEmpty: {
+          msg: "Dude! The building cannot be demolished when there are jobs to upgrade it.",
+        },
       },
     },
     

@@ -152,7 +152,17 @@
       <p><b>Cannot be upgraded further.</b></p>
     {{/if}}
     
-    
+
+    {{#if building.destroyable}}
+      <h3>Destroy Building</h3>
+      {{#if sendingDestroy}}
+        <div class="destroy">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Destroying...</div>
+      {{else}}
+      <a href="#" {{action "destroyClicked"}} {{bindAttr class="destroyClasses"}} title="click to destroy"><img src="images/icons/cross_red.png"></img> Destroy Building</a>
+      {{/if}}
+      <b>{{t building.duration}}:</b> {{formatDuration building.destructionTime}}<br />
+    {{/if}}
+
     {{#if building.trainingQueues}}
     <hr>
       {{#each building.trainingQueues }}
@@ -191,6 +201,12 @@
   <div class="advisor girl"></div>
   <p>{{t settlement.buildings.constructionQueueFull.start}} {{max_length}} {{t settlement.buildings.constructionQueueFull.end}}</p>
 {{/with}}
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="construction-queue-not-empty-info">
+  <div class="advisor girl"></div>
+  <p>{{t settlement.buildings.constructionQueueNotEmpty.msg}}</p>
 </script>
 
 

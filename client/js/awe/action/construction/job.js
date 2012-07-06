@@ -10,7 +10,7 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Construction = (function(module) {
   
-  module.createJobCreateAction = function(queue, slotId, buildingId, jobType, levelAfter, my) {
+  module.createJobCreateAction = function(queue, slotId, buildingId, jobType, levelBefore, levelAfter, my) {
       
     // private attributes and methods //////////////////////////////////////
     var that;
@@ -21,6 +21,7 @@ AWE.Action.Construction = (function(module) {
     my.slotId = slotId;
     my.buildingId = buildingId;
     my.jobType = jobType;
+    my.levelBefore = levelBefore;
     my.levelAfter = levelAfter;
 
     // public attributes and methods ///////////////////////////////////////
@@ -31,6 +32,7 @@ AWE.Action.Construction = (function(module) {
         '&construction_job[slot_id]='      + my.slotId +
         '&construction_job[building_id]='  + my.buildingId +
         '&construction_job[job_type]='     + my.jobType +
+        '&construction_job[level_before]=' + my.levelBefore +
         '&construction_job[level_after]='  + my.levelAfter   
     }
     
@@ -63,7 +65,7 @@ AWE.Action.Construction = (function(module) {
     return that;
     
   };
-  
+
   module.createJobCancelAction = function(jobId, my) {
       
     // private attributes and methods //////////////////////////////////////

@@ -48,13 +48,30 @@ AWE.GS = (function(module) {
     level_after: null,
     job_type: null,
     
+    destroyJob: function(){
+      return this.get('job_type') == module.CONSTRUCTION_JOB_TYPE_DESTROY;
+    }.property('job_type').cacheable(),
+    
     active_job: null,
     
-		productionTime: function() { // todo: need more complex functions for tearing down!
-		  var building = this.getPath('slot.building');
-		  var level = this.get('level_after');
-		  return building && level ? building.calcProductionTime(level) : null;
-		}.property('level_after', 'slot.building.type.production_time', 'slot.queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.
+    productionTime: function() { // todo: need more complex functions for tearing down!
+      var building = this.getPath('slot.building');
+      var level = this.get('level_after');
+      return building && level ? building.calcProductionTime(level) : null;
+    }.property('level_after', 'slot.building.type.production_time', 'slot.queue.speed').cacheable(),
+        
+    destructionTime: function() { // todo: need more complex functions for tearing down!
+      var building = this.getPath('slot.building');
+      var level = this.get('level_before');
+      if (!building || !level) {
+        return null;
+      }
+      var time = 0;
+      for (var l = 1; l <= this.get('level_before'); l++) {
+        time += building.calcProductionTime(l);
+      }
+      return time;
+    }.property('level_before', 'slot.building.type.production_time', 'slot.queue.speed').cacheable(),
         
     parsedFinishingDate: function() {
       var active_job = this.get('active_job');

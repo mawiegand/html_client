@@ -64,6 +64,7 @@ AWE.UI.Ember = (function(module) {
     templateName: "settlement-dialog-building-details",
   
     sendingUpgradeBinding: 'controller.status.sendingUpgrade',
+    sendingDestroyBinding: 'controller.status.sendingDestroy',
   
     cancelPressed: function() {
       this.get('controller').unselectSlot();
@@ -73,6 +74,13 @@ AWE.UI.Ember = (function(module) {
       this.get('controller').constructionUpgradeClicked(this.get('slot'));
     },         
     
+    destroyClicked: function(event) {
+      this.get('controller').constructionDestroyClicked(this.get('slot'));
+    },         
+    
+    destroyClasses: function() {
+      return this.getPath('slot.building_id') && (this.getPath('slot.hashableJobs.collection').length == 0 ? 'destroy' : 'destroy disabled');
+    }.property('slot.hashableJobs.changedAt').cacheable(),
   }); 
   
   

@@ -59,6 +59,7 @@ AWE.Controller = (function(module) {
     
     that.status = Ember.Object.create({
       sendingUpgrade: null,
+      sendingDestroy: null,
     })
     
     /** set the id of the base to display (it's the settlement id). 
@@ -205,9 +206,13 @@ AWE.Controller = (function(module) {
     
     // construction actions //////////////////////////////////////////////////
     
-    var createAndSendConstructionJob = function(slot, buildingId, jobType, levelAfter) {
+    var createAndSendConstructionJob = function(slot, buildingId, jobType, levelBefore, levelAfter) {
       
-      if (!levelAfter) {
+      if (levelBefore == null || levelBefore == undefined) {
+        levelBefore = 0;
+      }
+      
+      if (levelAfter == null || levelAfter == undefined) {
         levelAfter = 1;
       }
       
@@ -215,9 +220,19 @@ AWE.Controller = (function(module) {
       var queue = AWE.GS.ConstructionQueueManager.getQueueForBuildingCategorieInSettlement(buildingType.category, slot.get('settlement_id'));
       
       if (queue && queue.get('max_length') > queue.get('jobs_count')) {
-        that.status.set('sendingUpgrade', true);
-        queue.sendCreateJobAction(slot.getId(), buildingId, jobType, levelAfter, function(status) {
-          that.status.set('sendingUpgrade', false);              
+        if (jobType != AWE.GS.CONSTRUCTION_JOB_TYPE_DESTROY) {
+          that.status.set('sendingUpgrade', true);
+        }
+        else {
+          that.status.set('sendingDestroy', true);
+        }
+        queue.sendCreateJobAction(slot.getId(), buildingId, jobType, levelBefore, levelAfter, function(status) {
+          if (jobType != AWE.GS.CONSTRUCTION_JOB_TYPE_DESTROY) {
+            that.status.set('sendingUpgrade', false);
+          }
+          else {
+            that.status.set('sendingDestroy', false);
+          }
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK, 201 CREATED
             log(status, "Construction job created.");
           }
@@ -268,8 +283,9 @@ AWE.Controller = (function(module) {
     }
     
     that.constructionUpgradeClicked = function(slot) {
+      var currentLevel = slot.get('building').get('levelAfterJobs');
       var nextLevel = slot.get('building').get('nextLevel');
-      createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE, nextLevel);    
+      createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE, currentLevel, nextLevel);    
     }  
     
     that.constructionCancelClicked = function(job) {
@@ -301,6 +317,32 @@ AWE.Controller = (function(module) {
           // TODO Fehlermeldung 
         } 
       });
+    }
+    
+    that.constructionDestroyClicked = function(slot) {
+      
+      var buildingId = slot.get('building_id');
+      log('constructionDestroyClicked', slot, buildingId, slot.get('jobsInQueue') );
+      
+      // testen ob queue keine jobs enthält
+      
+      if (buildingId && slot.get('jobsInQueue')) {
+        if(slot.get('jobsInQueue').length == 0) {
+          createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_DESTROY, slot.get('level'), 0);      
+        }
+        else {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'construction-queue-not-empty-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });          
+          WACKADOO.presentModalDialog(dialog);
+        }
+      }
+      else {
+        log(status, "No buildingId or slot given.");
+      }
     }
     
     // training actions //////////////////////////////////////////////////////  
