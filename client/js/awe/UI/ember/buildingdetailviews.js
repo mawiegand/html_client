@@ -44,8 +44,20 @@ AWE.UI.Ember = (function(module) {
    * @name AWE.UI.Ember.BuildingOptionView */
   module.BuildingOptionView = module.HoverableView.extend( /** @lends AWE.UI.Ember.BuildingOptionView# */ {
     classNameBindings: ['requirementUnmet'],
+
+    unmetRequirements: function() {
+      var building = this.get('building');
+      return building ? building.unmetRequirements() : null;
+    }.property('building.buildingType', 'building.slot.settlement.hashableSlots.collection@each.level', 'building.slot.settlement.hashableSlots.changedAt'),    
+
+    requirementsMet: function() {
+      var unmetRequirements = this.get('unmetRequirements');
+      return !unmetRequirements || unmetRequirements.length === 0;
+    }.property('unmetRequirements', 'unmetRequirements.length'), 
     
-    requirementUnmetBinding: 'building.requirementUnmet',  // here make a computed property for the requirement
+    requirementUnmet: function() {
+      return !this.get('requirementsMet');
+    }.property('requirementsMet'),   
   });
   
   

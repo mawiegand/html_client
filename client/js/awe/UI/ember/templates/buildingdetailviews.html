@@ -6,16 +6,15 @@
 
 <script type="text/x-handlebars" data-template-name="building-option-details">
 {{#if same}}
-  {{#with building}}
-    <h1>{{local name}} {{t building.level }} {{nextLevel}}</h1>
-    {{local flavour}}
-    {{#if costsOfNextLevel}}
+    <h1>{{local building.name}} {{t building.level }} {{building.nextLevel}}</h1>
+    {{local building.flavour}}
+    {{#if building.costsOfNextLevel}}
       {{t building.cost }}:
-      {{#each costsOfNextLevel}}
+      {{#each building.costsOfNextLevel}}
         {{amount}} {{local resourceType.name}} &nbsp;  
       {{/each}}<br/>
     {{/if}}
-    {{t building.duration}}: {{formatDuration productionTimeOfNextLevel}}<br />     
+    {{t building.duration}}: {{formatDuration building.productionTimeOfNextLevel}}<br />     
     {{#unless requirementsMet}}
       <p>
         {{{t settlement.buildings.select.missingRequirements}}}:<br/>
@@ -24,19 +23,18 @@
         {{/each}}
       </p>
     {{/unless}} 
-    {{#if productionsNextLevel}}
+    {{#if building.productionsNextLevel}}
       <b>{{t building.produces}}:</b><br/>
-      {{#each productionsNextLevel}}
+      {{#each building.productionsNextLevel}}
         {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{local resourceType.name}} {{t general.perHour}} <br/>  
       {{/each}}
     {{/if}}
-    {{#if unlockDiplomacyNextLevel}}
+    {{#if building.unlockDiplomacyNextLevel}}
       <p><b>Ermöglicht Diplomatie und Allianzbeitritt.</b></p>
     {{/if}}
-    {{#if unlockedAllianceCreationNextLevel}}
+    {{#if building.unlockedAllianceCreationNextLevel}}
       <p><b>Ermöglicht die Gründung einer Allianz.</b></p>
     {{/if}}
-  {{/with}} 
 {{/if}}
 </script>
 

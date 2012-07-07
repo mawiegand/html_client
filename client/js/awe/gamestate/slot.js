@@ -175,7 +175,7 @@ AWE.GS = (function(module) {
       }
      // console.log('FAILED', failed)
       return failed || []
-    }.property('buildingType', 'slot.settlement.hashableSlots.collection@each.level', 'slot.settlement.hashableSlots.changedAt'),
+    },
     // Fehleranalyse: unmetRequirements wird nicht getriggert, nachdem  slot gebaut wurde...
     // Update: tatsächlich wird einer der beiden dependent-Dinger nicht geupdated, wenn sie auf cacheable stehen. bool-binding?
 
@@ -184,11 +184,11 @@ AWE.GS = (function(module) {
     requirementsMet: function() {
       var unmetRequirements = this.get('unmetRequirements');
       return !unmetRequirements || unmetRequirements.length === 0;
-    }.property('unmetRequirements', 'unmetRequirements.length'), 
+    }, 
     
     requirementUnmet: function() {
       return !this.get('requirementsMet');
-    }.property('requirementsMet'), 
+    }, 
 
 		
 		// // Abilities //////////////////////////////////////////////////////////		
