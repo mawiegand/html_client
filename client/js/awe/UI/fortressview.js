@@ -75,7 +75,7 @@ AWE.UI = (function(module) {
         _imageView = AWE.UI.createImageView();
         _imageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_fortressImageName));
         _imageView.setContentMode(module.ViewContentModeNone);
-        _imageView.setFrame(AWE.Geometry.createRect(0, 20, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
+        _imageView.setFrame(AWE.Geometry.createRect(0, 6, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
         _imageView.onClick = that.onClick;
         _imageView.onMouseOver = that.onMouseOver;
         _imageView.onMouseOut = that.onMouseOut;
@@ -93,7 +93,7 @@ AWE.UI = (function(module) {
         // _selectShape.cache(-AWE.Config.MAPPING_FORTRESS_SIZE/2, +20, 2*AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE);
         _selectShape = AWE.UI.createShapeView();
         _selectShape.initWithControllerAndGraphics(my.controller, selectGraphics);
-        _selectShape.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE / 2 + 20, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2));
+        _selectShape.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE / 2 + 6, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2));
         this.addChildAt(_selectShape, 0);
       }     
       else if (_selectShape && !this.selected() && !this.hovered()) {
@@ -109,7 +109,7 @@ AWE.UI = (function(module) {
       if (!_flagView) {
         _flagView = AWE.UI.createAllianceFlagView();
         _flagView.initWithController(my.controller);
-        _flagView.setFrame(AWE.Geometry.createRect(27, 53, 8, 13));
+        _flagView.setFrame(AWE.Geometry.createRect(27, 37, 8, 13));
         _flagView.setAllianceId(allianceId);
         _flagView.setDirection('down');
         _flagView.onClick = that.onClick;
@@ -127,7 +127,7 @@ AWE.UI = (function(module) {
       if (!_labelView) {
         _labelView = AWE.UI.createLabelView();
         _labelView.initWithControllerAndLabel(my.controller, "owner", true);
-        _labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE + 20, AWE.Config.MAPPING_FORTRESS_SIZE, 20));      
+        _labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE + 6, AWE.Config.MAPPING_FORTRESS_SIZE, 20));      
         _labelView.onClick = that.onClick;
         _labelView.onMouseOver = that.onMouseOver;
         _labelView.onMouseOut = that.onMouseOut;

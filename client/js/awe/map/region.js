@@ -147,6 +147,10 @@ AWE.Map = (function(module) {
       return AWE.GS.ArmyAccess.lastUpdateForRegion_id(_id);
     }
     
+    that.lastLocationUpdateAt = function() {
+      return this.locations() ? this.location(1).lastChange() : new Date(1970); // assumes all locations are fetched together (slot 0, fortress may have been fetched individually)
+    }
+    
     that.updateArmies = function(updateType, callback) {
       AWE.GS.ArmyManager.updateArmiesInRegion(_id, updateType, callback)
     }

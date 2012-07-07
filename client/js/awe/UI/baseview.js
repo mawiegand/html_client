@@ -22,6 +22,7 @@ AWE.UI = (function(module) {
     var _selectShape = null;
     var _poleShape = null;
     var _flagView = null;
+    var _settlementImageName = null;
     
     my = my || {};
    
@@ -81,39 +82,46 @@ AWE.UI = (function(module) {
         _poleShape.setFrame(AWE.Geometry.createRect(44, 0, 2, 48));
         this.addChildAt(_poleShape, 0);
       }
+      
+      // BASE IMAGE //////////////////////////////////////////////////////     
+      var newSettlementImageName = 'map/fortress/small';      
+      var level = AWE.Util.Rules.normalizedLevel(_location.settlementLevel(), _location.settlementTypeId());
+  
+      if (level > 3) {
+        newSettlementImageName = 'map/fortress/middle';
+      }
+      if (level > 7) {
+        newSettlementImageName = 'map/fortress/large';
+      }
+      
+      if (newSettlementImageName != _settlementImageName && _imageView) {
+        this.removeChild(_imageView);
+        _imageView = null;
+      }
+      _settlementImageName = newSettlementImageName;
 
       if (!_imageView) {
-        var level = AWE.Util.Rules.normalizedLevel(_location.settlementLevel(), _location.settlementTypeId());
-        
-        if (level < 4) {
-          modifier = "small";
-        }
-        else if (level < 8) {
-          modifier = "middle";
-        }
-        else {
-          modifier = "big";
-        }
-        
-        var imageName = "map/colony/" + modifier;
-                
         _imageView = AWE.UI.createImageView();
-        _imageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(imageName));
+        _imageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_settlementImageName));
         _imageView.setContentMode(module.ViewContentModeNone);
         _imageView.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
         _imageView.onClick = that.onClick;
         _imageView.onMouseOver = that.onMouseOver;
         _imageView.onMouseOut = that.onMouseOut;
-        that.addChild(_imageView);
+        this.addChildAt(_imageView, 0);
       }
 
+      // LABEL VIEW ///////////////////////////////////////////////////////////    
       if (!_labelView) {
         _labelView = AWE.UI.createLabelView();
-        var ownerName = _location.ownerName() + (_location.allianceTag() ? " | " +  _location.allianceTag() : "");
-        _labelView.initWithControllerAndLabel(my.controller, ownerName, true);
+        _labelView.initWithControllerAndLabel(my.controller, "owner", true);
         _labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, 16));      
         that.addChild(_labelView);
       }
+      var ownerName = _location.ownerName() + (_location.allianceTag() ? " | " +  _location.allianceTag() : "");
+      if (_labelView.text() != ownerName) {
+        _labelView.setText(ownerName);
+      }  
       
       if (!_flagView) {
         _flagView = AWE.UI.createAllianceFlagView();

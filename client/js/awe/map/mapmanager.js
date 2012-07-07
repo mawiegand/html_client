@@ -130,9 +130,9 @@ AWE.Map = (function(module) {
 
       if (node) {
         $.getJSON(AWE.Config.MAP_SERVER_BASE+'nodes/qt'+node.path(), function(data) {
-          var node = AWE.Map.createNode(data);
-          if (_root) _root.importSubtree(node);
-          if (callback) callback(_root);
+          var newNode = AWE.Map.createNode(data);
+          if (_root) _root.importSubtree(newNode);
+          if (callback) callback(_root.traverse(node.path())); 
         }); 
       }
     };
@@ -207,7 +207,7 @@ AWE.Map = (function(module) {
           $.getJSON(AWE.Config.MAP_SERVER_BASE+'regions/'+node.region().id(), function(data) {
             var region = AWE.Map.createRegion(data);
             region.setNode(node);
-            node.region().updateFromRegion(region);
+            node.region().updateRegionFrom(region);
             node.region().endUpdate();
             if (callback) callback(node.region());
           });           

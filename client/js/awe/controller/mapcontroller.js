@@ -1198,6 +1198,9 @@ AWE.Controller = (function(module) {
     that.updateModel = (function() {
             
       var lastArmyCheck = new Date(1970);
+      var lastLocationUpdateCheck = new Date(1970);
+      var lastRegionUpdateCheck = new Date(1970);
+      var lastNodeUpdateCheck = new Date(1970);
       
       var viewports = {};  ///< stores the viewport at the time of an update for each of the different update types 
       
@@ -1258,14 +1261,21 @@ AWE.Controller = (function(module) {
         // STOP HERE, in case the user is presently scrolling (depends on config).
         if (AWE.Config.MAPVIEW_DONT_UPDATE_MODEL_WHILE_SCROLLING && that.isScrolling()) return ;
         
+        var nodes = null;
+        
         // in case the viewport has changed or the model has changed (more nodes or regions?!) we need to check for missing locations.
-        if ((viewportHasChanged('locations', visibleAreaMC) || that.modelChanged()) && ! isUpdateRunning('nodes')) {
+        if ((viewportHasChanged('locations', visibleAreaMC) || that.modelChanged() ||
+            lastLocationUpdateCheck.getTime() + 10000 < new Date().getTime()) && ! isUpdateRunning('nodes')) {
 
-          var nodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, that.maptreeChanged()); // this is memoized, no problem to call it twice in one cycle!
+          nodes = nodes || AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, that.maptreeChanged()); // this is memoized, no problem to call it twice in one cycle!
+          lastLocationUpdateCheck = new Date();
 
           for (var i=0; i < nodes.length; i++) {
             //startUpdate('locations');
-            if (nodes[i].isLeaf() && nodes[i].region() && !nodes[i].region().locations() && nodes[i].level() <= level()-2) {
+            if (nodes[i].isLeaf() && nodes[i].region() && 
+                (!nodes[i].region().locations() ||                                                     // have no locations
+                 nodes[i].region().lastLocationUpdateAt().getTime() + 60000 < new Date().getTime()) &&  // or update long ago
+                nodes[i].level() <= level()-2) {
               AWE.Map.Manager.fetchLocationsForRegion(nodes[i].region(), function(region) {
                 that.setModelChanged();
                 region.locations().forEach(function(location) {
@@ -1281,11 +1291,32 @@ AWE.Controller = (function(module) {
           }
           setViewport('locations', visibleAreaMC);
         }
+        
+        // updating nodes
+        if (lastNodeUpdateCheck.getTime() + 1000 < new Date().getTime() && ! isUpdateRunning('nodes')) {
 
+          nodes = nodes || AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, that.maptreeChanged()); // this is memoized, no problem to call it twice in one cycle!
+          lastNodeUpdateCheck = new Date();
+          
+          for (var i=0; i < nodes.length; i++) {
+            if (nodes[i].isLeaf() && nodes[i].lastChange().getTime() + 60000 < new Date().getTime()) {
+              startUpdate('nodes');
+              AWE.Map.Manager.updateNode(nodes[i], true, function(node) {
+                console.log('UPDATED NODE', node.id());
+                that.setMaptreeChanged();
+                stopUpdate('nodes'); // TODO: start / stop this properly! (many parallel requests)
+                AWE.Map.Manager.updateRegionForNode(node, function(region) {
+                  console.log('UPDATED REGION', region.id());
+                });
+              });
+              break ;
+            }
+          }
+        }       
         
         if (lastArmyCheck.getTime() + 400 < new Date().getTime() && !isUpdateRunning('armies')) { // check for needed armies once per second
           
-          var nodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, false); // this is memoized, no problem to call it twice in one cycle!
+          nodes = nodes || AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, false); // this is memoized, no problem to call it twice in one cycle!
           
           for (var i=0; i < nodes.length; i++) {
             
@@ -1295,7 +1326,7 @@ AWE.Controller = (function(module) {
             
             
             AWE.Ext.applyFunctionToElements(armiesInRegion, function(army) {
-              if (!isUpdateRunning('movingArmy') && army.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 20000 < new Date().getTime()) {
+              if (!isUpdateRunning('movingArmy') && army.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 5000 < new Date().getTime()) {
                 if (army.get('mode') === 1 && army.get('target_reached_at') && Date.parseISODate(army.get('target_reached_at')).getTime() + 4000 < new Date().getTime()) { // wait four seconds before posting update request
                   console.log('start update of moving army');
                   startUpdate('movingArmy');
@@ -1312,8 +1343,8 @@ AWE.Controller = (function(module) {
             if (!that.areArmiesAtFortressVisible(frame)) continue ; // no update necessary, region is to small (perhaps fetch aggregate info)
                         
             if (!that.areArmiesAtSettlementsVisible(frame)) {
-              if(AWE.GS.ArmyManager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
-                nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
+              if(AWE.GS.ArmyManager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 30000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
+                nodes[i].region().lastArmyUpdateAt().getTime() + 30000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
                 
                 startUpdate('armies');
                 AWE.GS.ArmyManager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
@@ -1324,7 +1355,7 @@ AWE.Controller = (function(module) {
               }
             }
             else {
-              if (nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {
+              if (nodes[i].region().lastArmyUpdateAt().getTime() + 30000 < new Date().getTime()) {
                 
                 startUpdate('armies');
                 nodes[i].region().updateArmies(AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
@@ -1356,7 +1387,7 @@ AWE.Controller = (function(module) {
             }
           }
           
-          var nodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, false); // this is memoized, no problem to call it twice in one cycle!
+          nodes = nodes || AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleAreaMC, level(), false, false); // this is memoized, no problem to call it twice in one cycle!
           
           for (var i=0; i < nodes.length; i++) {
             
@@ -1530,6 +1561,7 @@ AWE.Controller = (function(module) {
           var view = fortressViews[nodes[i].id()];// get existing view for node 
 
           if (view) {                             // if view exists already   
+//            console.log('MODEL CHANGE CHECK', view.lastChange ? view.lastChange() : null, nodes[i].region().lastChange(), view.lastChange !== undefined && nodes[i].region() && view.lastChange() < nodes[i].region().lastChange())
             if (view.lastChange !== undefined &&  // if model of view updated
                 nodes[i].region() && view.lastChange() < nodes[i].region().lastChange()) {
               view.setNeedsUpdate();
@@ -1578,9 +1610,9 @@ AWE.Controller = (function(module) {
             if (location) {
               var view = locationViews[location.id()];
               
-              if (view) {      
+              if (view) {                      
                 if (view.lastChange !== undefined &&  // if model of view updated
-                    view.lastChange() < location.lastChange()) {
+                    view.lastChange().getTime() < location.lastChange().getTime()) {
                   view.setNeedsUpdate();
                 }                                     
               }

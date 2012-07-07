@@ -228,9 +228,6 @@ AWE.UI = (function(module) {
         this.setChangedNow();
         _needsUpdate = false;
         this.setNeedsDisplay();        
-        if (my.typeName == "ButtonView") {
-          console.log('update in button view. _needsUpdate = ' + _needsUpdate);
-        }
       };
     };
     

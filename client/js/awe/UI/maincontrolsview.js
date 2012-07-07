@@ -84,6 +84,10 @@ AWE.UI = (function(module) {
         }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
         this.addChild(_flagView);
       }
+      if (_flagView && character && (allianceId === undefined || allianceId === null || allianceId === 0)) {
+        this.removeChild(_flagView);
+        _flagView = null;
+      }
   
       if (!_heroButton) {
         var _heroButtonGraphics = new Graphics();
