@@ -274,6 +274,15 @@ AWE.GS = (
       return entity;
     };
     
+    my.extractDateFromXHR = function(xhr) {
+      if (!xhr) {
+        return null;
+      }
+      var date = xhr.getResponseHeader('Date');
+      console.log('DATE', date, new Date(date));
+      return date ? new Date(date) : null;
+    };
+    
     my.fetchEntitiesFromURL = function(url, queue, id, updateType, modifiedSince, callback) {
       if (updateType === undefined) { 
         updateType = module.ENTITY_UPDATE_TYPE_FULL;
@@ -281,7 +290,7 @@ AWE.GS = (
       
       if (my.tryRegisterRequest(queue, id, updateType)) {
 
-        var start = new Date();  // the start of the request is only a bad (but save) approximation; we should use the server time (time of database select) instead!
+        var start = new Date();  // the start of the request is only a bad (only save if local clock is ok or behind) approximation; we should use the server time (time of database select) instead!
         
         if (url.indexOf("?") < 0) { // no ? 
           url = url + "?";
@@ -300,7 +309,7 @@ AWE.GS = (
         var jqXHR = $.ajax(options)
         .error(function(jqHXR, textStatus) {          // On failure: 
           my.unregisterRequest(queue, id, updateType);//   unregister request 
-          callback(null, jqXHR.status, jqXHR);
+          callback(null, jqXHR.status, jqXHR, my.extractDateFromXHR(jqXHR) || start);
           console.log ('ERROR FETCHING ENTITIES FROM URL ' + url + ': ' + textStatus); 
         })
         .success(function(data, statusText, xhr) {
@@ -313,7 +322,7 @@ AWE.GS = (
               result = {};
               for (var i=0; i < data.length; i++) { 
                 var entityData = data[i];
-                var entity = (my.processUpdateResponse(entityData, updateType, start));
+                var entity = (my.processUpdateResponse(entityData, updateType, my.extractDateFromXHR(xhr) || start));
                 result[entity.get('id')] = entity;
               }         
             }
@@ -321,14 +330,14 @@ AWE.GS = (
               result = my.processUpdateResponse(data, updateType, start);
             };
             if (callback) {      
-              var start = new Date();
+              var s = new Date();
               Ember.run.sync(); // sync the bindings now, before continuing with the execution (e.g. calling callbacks)
-              console.log('Manual Sync in GameStateManager Elapsed (ms): ',  (new Date().getTime() - start.getTime()));
+              console.log('Manual Sync in GameStateManager Elapsed (ms): ',  (new Date().getTime() - s.getTime()));
             }
           }
           my.unregisterRequest(queue, id, updateType);//   unregister request 
           if (callback) {
-            callback(result, xhr.status, xhr, start);
+            callback(result, xhr.status, xhr, my.extractDateFromXHR(jqXHR) || start);
           }        
         }); 
       }

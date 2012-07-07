@@ -92,6 +92,21 @@ AWE.GS = (function(module) {
       return module.CharacterManager.getCharacter(this.get('owner_id'));
     },  
     
+    ownerName: function() {
+      var owner = this.owner();
+      return owner ? owner.get('name') : this.get('owner_name');
+    },
+    
+    alliance: function() {
+      return module.AllianceManager.getCharacter(this.get('alliance_id'));
+    },
+    
+    allianceTag: function() {
+      var owner = this.owner();
+      var alliance = this.alliance();
+      return owner ? owner.get('alliance_tag') : (alliance ? alliance.get('tag') : this.get('alliance_tag'));
+    },
+    
     founder: function() {
       return module.CharacterManager.getCharacter(this.get('founder_id'));
     },  

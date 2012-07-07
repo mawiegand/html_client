@@ -50,6 +50,10 @@ AWE.Map = (function(module) {
      * instead! */
     that.updatedAt = function() { return _updated_at; }
     
+    that.updatedOnServerAt = function() {
+      return _updated_at ? Date.parseISODate(_updated_at) : null;
+    };
+    
     /** returns the regions name; */
     that.name = function() { return _name; }
     
@@ -70,14 +74,30 @@ AWE.Map = (function(module) {
     that.settlementTypeId = function() { return _settlementTypeId; }
 
     /** returns the name of the character owning the region (fortress). */
-    that.ownerName = function() { return _ownerName; }
+    that.ownerName = function() { 
+      var character = _ownerId  ? AWE.GS.CharacterManager.getCharacter(_ownerId) : null;
+      if (character && character.updatedOnServerAt() > this.updatedOnServerAt()) {   
+        return character.get('name');
+      }
+      else {   // only use mirrored information if character not available
+        return _ownerName;
+      }      
+    }
     
     /** returns the id of the character owning the region (fortress). 0 for
      * neutral fortress (not owned by any character, NPC-owned). */
     that.ownerId = function() { return _ownerId; }
 
     /** returns the tag of the alliance owning the region (owner of fortress). */
-    that.allianceTag = function() { return _allianceTag; }
+    that.allianceTag = function() { 
+      var character = _ownerId    ? AWE.GS.CharacterManager.getCharacter(_ownerId) : null;
+      if (character && character.updatedOnServerAt() > this.updatedOnServerAt()) {   
+        return character.get('alliance_tag');
+      }
+      else {   // only use mirrored information if character not available
+        return _allianceTag;
+      }
+    }
     
     /** returns the id of the alliance owning the region (owner of fortress). 0 for 
      * no alliance. */
