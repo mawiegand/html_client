@@ -122,6 +122,12 @@ AWE.GS = (function(module) {
 		
 		productionTimeOfNextLevel: function() {
 		  console.log('PROD OF NEXT LEVEL +++++++++++++++++++++++++++++', this.get('nextLevel'));
+		  console.log('PRODUCTION TIME', 
+		              this.getPath('buildingType.name.en_US'), 
+		              this.getPath('buildingType.production_time'),
+		              this.getPath('slot.queue.speed'),
+		              this.calcProductionTime(this.get('nextLevel')))
+		  
 		  return this.calcProductionTime(this.get('nextLevel'));
 		}.property('nextLevel', 'buildingType.production_time', 'slot.queue.speed').cacheable(),		
 
