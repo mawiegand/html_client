@@ -32,7 +32,12 @@ AWE.UI.Ember = (function(module) {
       var building = event.view.getPath('building');
       var type = event.view.getPath('building.type');
       this.get('controller').constructionOptionClicked(slot, building, type);
-    },         
+    }, 
+    
+    constructionOptions: function() {
+      var slot = this.get('slot');
+      return slot ? slot.constructionOptions() : null;
+    }.property('slot.building_id', 'slot.settlement'),  
   });  
 
   /** @class
@@ -40,7 +45,7 @@ AWE.UI.Ember = (function(module) {
   module.BuildingOptionView = module.HoverableView.extend( /** @lends AWE.UI.Ember.BuildingOptionView# */ {
     classNameBindings: ['requirementUnmet'],
     
-    requirementUnmetBinding: 'building.requirementUnmet',
+    requirementUnmetBinding: 'building.requirementUnmet',  // here make a computed property for the requirement
   });
   
   

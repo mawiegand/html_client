@@ -293,11 +293,6 @@ AWE.Controller = (function(module) {
           changed = changed || pool.presentAmount('resource_cash')    !== amounts[3];
           
           if (changed) {
-            console.log(">> NEED TO UPDATE HUD DUE TO CHANGED RESOURCE AMOUNT");
-            console.log(amounts[0], ":", pool.presentAmount('resource_wood') ,
-                        amounts[1], ":", pool.presentAmount('resource_stone') ,
-                        amounts[2], ":", pool.presentAmount('resource_fur') ,
-                        amounts[3], ":", pool.presentAmount('resource_cash') );
             that.setModelChanged();
             amounts[0] = pool.presentAmount('resource_wood') ;
             amounts[1] = pool.presentAmount('resource_stone');
@@ -406,7 +401,6 @@ AWE.Controller = (function(module) {
           // STEP 4b: create, remove and update all views according to visible parts of model      
           var updateNeeded = that.updateViewHierarchy();      
           if (updateNeeded ) { // TODO: remove true, update only, if necessary 
-            console.log('>>>>>>> HUD STAGE UPDATE', _needsDisplay, _loopCounter % 60 == 0, that.modelChanged());
             _stage.update();
             AWE.Ext.applyFunctionToElements(HUDViews, function(view) {
               view.notifyRedraw();

@@ -27,7 +27,7 @@
         {{#if selectedSlot.building }}
           {{view AWE.UI.Ember.BuildingDetailsDialog controllerBinding="controller" slotBinding="selectedSlot" buildingBinding="selectedSlot.building"}}
         {{else}}
-          {{view AWE.UI.Ember.SelectBuildingDialog controllerBinding="controller" slotBinding="selectedSlot" constructionOptionsBinding="selectedSlot.constructionOptions"}}
+          {{view AWE.UI.Ember.SelectBuildingDialog controllerBinding="controller" slotBinding="selectedSlot"}}
         {{/if}}
       {{/if}}
     

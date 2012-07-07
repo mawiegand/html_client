@@ -253,10 +253,10 @@ AWE.UI = (function(module) {
         my.amounts[2] = pool.presentAmount('resource_fur');
         my.amounts[3] = pool.presentAmount('resource_cash');
 
-        _resource1LabelView.setText(my.amounts[0]);
-        _resource2LabelView.setText(my.amounts[1]);
-        _resource3LabelView.setText(my.amounts[2]);
-        _resource4LabelView.setText(my.amounts[3]);
+        _resource1LabelView.setText(""+my.amounts[0]);
+        _resource2LabelView.setText(""+my.amounts[1]);
+        _resource3LabelView.setText(""+my.amounts[2]);
+        _resource4LabelView.setText(""+my.amounts[3]);
       }
       
       _super.updateView();

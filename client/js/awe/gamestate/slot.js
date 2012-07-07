@@ -337,7 +337,7 @@ AWE.GS = (function(module) {
 		level: null,
     building_id: null,
     slot_num: null,
-    constructionOptions: null,
+    //constructionOptions: null,
 		
 		_buildingInstance: null,      ///< private method holding the instance of the corresponding building, if needed.
 		hashableJobs: null,
@@ -352,7 +352,7 @@ AWE.GS = (function(module) {
         this.set('hashableJobs', hashableJobs); // TODO: establish connection via a computed property instead?
       }
       
-      this.updateConstructionOptions();
+      //this.updateConstructionOptions();
     },
     
     destroy: function(spec) {  // disonnect all manually concstructed bindings
@@ -391,7 +391,7 @@ AWE.GS = (function(module) {
 		
 		/** determine the building types that can be constructed in this 
 		 * particular slot. */
-    updateConstructionOptions: function() {   // this is implemented as observer to work-around a bug in ember <0.9.5 (failing identity test). should become a property
+    constructionOptions: function() {   // this is implemented as observer to work-around a bug in ember <0.9.5 (failing identity test). should become a property
       var options = [];
       var self = this;
       
@@ -410,8 +410,8 @@ AWE.GS = (function(module) {
       else {
         options = [ this.get('building') ];
       }
-      this.set('constructionOptions', options);      
-    }.observes('building_id'),
+      return options;      
+    },
 
     settlement: function() {
       return module.SettlementManager.getSettlement(this.get('settlement_id'));

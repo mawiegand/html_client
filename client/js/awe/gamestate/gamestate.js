@@ -279,7 +279,7 @@ AWE.GS = (
         return null;
       }
       var date = xhr.getResponseHeader('Date');
-      console.log('RESPONSE HEADER DATE (string, parsed)', date, new Date(date));
+//      console.log('RESPONSE HEADER DATE (string, parsed)', date, new Date(date));
       return date ? new Date(date) : null;
     };
     
@@ -371,11 +371,11 @@ AWE.GS = (
         var lastUpdate = entity.lastUpdateAt(updateType);  // last update (requested from server) for this particular type
         if (serverUpdate.getTime() > lastUpdate.getTime()) {
           modifiedSince = lastUpdate;
-          console.log('>> GAMESTATE UPDATE: Using LOCAL UPDATE timestamp (loc/sever):', lastUpdate, serverUpdate);
+//          console.log('>> GAMESTATE UPDATE: Using LOCAL UPDATE timestamp (loc/sever):', lastUpdate, serverUpdate);
         }
         else {
           modifiedSince = serverUpdate;
-          console.log('>> GAMESTATE UPDATE: Using SERVER UPDATED AT timestamp (loc/server):', lastUpdate, serverUpdate);          
+//          console.log('>> GAMESTATE UPDATE: Using SERVER UPDATED AT timestamp (loc/server):', lastUpdate, serverUpdate);          
         }
       }
       return my.fetchEntitiesFromURL(url, my.runningUpdatesPerId, id, updateType, modifiedSince, function(entity, statusCode, xhr, serverTime) {
@@ -389,9 +389,9 @@ AWE.GS = (
           }
         }
         else if (statusCode === AWE.Net.NOT_FOUND) {
-          console.log('ENTITY NOT FOUND ON SERVER.');
+//          console.log('ENTITY NOT FOUND ON SERVER.');
           if (my.entities[id]) {
-            console.log('CORRESPONDING ENTITY IS GONE ON SERVER. Destroy local entity.', entity);
+//            console.log('CORRESPONDING ENTITY IS GONE ON SERVER. Destroy local entity.', entity);
             my.entities[id].destroy();
           }
         }
