@@ -279,7 +279,7 @@ AWE.GS = (
         return null;
       }
       var date = xhr.getResponseHeader('Date');
-      console.log('DATE', date, new Date(date));
+      console.log('RESPONSE HEADER DATE (string, parsed)', date, new Date(date));
       return date ? new Date(date) : null;
     };
     
