@@ -125,6 +125,14 @@ AWE.GS = (function(module) {
 		  return this.calcProductionTime(this.get('nextLevel'));
 		}.property('nextLevel', 'buildingType.production_time', 'slot.queue.speed').cacheable(),		
 
+    destructionTime: function() {
+      var time = 0;
+      for (var l = 1; l <= this.get('level'); l++) {
+        time += this.calcProductionTime(l);
+      }
+      return time;
+    }.property('level', 'buildingType.production_time', 'slot.queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes. 
+    
 
     calcCosts: function(level) {
 		  var costs = this.getPath('buildingType.costs');
@@ -140,7 +148,6 @@ AWE.GS = (function(module) {
 		  return this.calcCosts(this.get('nextLevel'));
 		}.property('nextLevel', 'buildingId').cacheable(),
 		
-		
 		upgradable: function() {
 		  var nextLevel = this.get('nextLevel');
       var slot = this.get('slot');
@@ -151,6 +158,10 @@ AWE.GS = (function(module) {
       return false ; // not enough information available
 		}.property('nextLevel').cacheable(),
 
+    destroyable: function() {
+      var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(this.get('buildingId'));
+      return buildingType && buildingType.demolishable;
+    }.property('id').cacheable(),
 
     unmetRequirements: function() {
       var settlement = this.getPath('slot.settlement');
@@ -406,12 +417,17 @@ AWE.GS = (function(module) {
       return module.SettlementManager.getSettlement(this.get('settlement_id'));
     }.property('settlement_id').cacheable(),
     
-		queue: function() {
+    queue: function() {
       var jobs = this.getPath('hashableJobs.collection');
       if (!jobs || jobs.length <= 0) return null;
       return AWE.GS.ConstructionQueueManager.getQueue(jobs[0].get('queue_id'));
-		}.property('hashableJobs.changedAt').cacheable(),
-		
+    }.property('hashableJobs.changedAt').cacheable(),
+    
+    jobsInQueue: function() {
+      var jobs = this.getPath('hashableJobs.collection');
+      return jobs || jobs.length > 0;
+    }.property('hashableJobs.changedAt').cacheable(),
+    
 		/** fetches the slot type from the rules. returns the slot-hash, that holds all
 		 * informations from the rules about the type of this praticular slot. */
 		slotType: function() {

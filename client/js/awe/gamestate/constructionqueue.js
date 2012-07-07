@@ -31,8 +31,8 @@ AWE.GS = (function(module) {
       }
     },
     
-    sendCreateJobAction: function(slotId, buildingId, jobType, levelAfter, callback) {
-      var trainingAction = AWE.Action.Construction.createJobCreateAction(this, slotId, buildingId, jobType, levelAfter);
+    sendCreateJobAction: function(slotId, buildingId, jobType, levelBefore, levelAfter, callback) {
+      var trainingAction = AWE.Action.Construction.createJobCreateAction(this, slotId, buildingId, jobType, levelBefore, levelAfter);
       trainingAction.send(callback);      
     },
 

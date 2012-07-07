@@ -894,7 +894,27 @@ html, body {
   text-decoration: none;
 }
 
-.settlement-dialog-pane a.upgrade:hover {
+.settlement-dialog-pane .destroy.disabled {
+  opacity: 0.6;
+}
+
+.settlement-dialog-pane a.destroy {
+  margin-top: 6px;
+  color: #e99;
+  float: right;
+  display: block;
+  text-decoration: none;
+}
+
+.settlement-dialog-pane .destroy {
+  margin-top: 6px;
+  color: #333;
+  float: right;
+  display: block;
+  text-decoration: none;
+}
+
+.settlement-dialog-pane a.upgrade:hover, .settlement-dialog-pane a.destroy:hover {
   opacity: 0.6;
 }
 
