@@ -62,16 +62,30 @@ AWE.UI.Ember = (function(module) {
   
   
   module.BuildingOptionDetailView = Ember.View.extend({
-   templateName:      "building-option-details",
-   classNames: ['building-option-details'],
-   classNameBindings:  "same",
+    templateName:      "building-option-details",
+    classNames: ['building-option-details'],
+    classNameBindings:  "same",
+    
+    building: null,
+    hovered: null,
    
-   building: null,
-   hovered: null,
+    unmetRequirements: function() {
+      var building = this.get('building');
+      return building ? building.unmetRequirements() : null;
+    }.property('building.buildingType', 'building.slot.settlement.hashableSlots.collection@each.level', 'building.slot.settlement.hashableSlots.changedAt'),    
+
+    requirementsMet: function() {
+      var unmetRequirements = this.get('unmetRequirements');
+      return !unmetRequirements || unmetRequirements.length === 0;
+    }.property('unmetRequirements', 'unmetRequirements.length'), 
+    
+    requirementUnmet: function() {
+      return !this.get('requirementsMet');
+    }.property('requirementsMet'),   
    
-   same: function() {
-     return this.getPath('building.buildingId') === this.getPath('hovered.buildingId');
-   }.property('building', 'hovered').cacheable(),
+    same: function() {
+      return this.getPath('building.buildingId') === this.getPath('hovered.buildingId');
+    }.property('building', 'hovered').cacheable(),
  });
    
  

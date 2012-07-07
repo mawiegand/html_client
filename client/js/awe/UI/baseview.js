@@ -76,7 +76,7 @@ AWE.UI = (function(module) {
         _poleGraphics.setStrokeStyle(1);
         _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
         _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
-        _poleGraphics.drawRoundRect(0, 0, 2, 48, 0);
+        _poleGraphics.drawRoundRect(0, 0, 2, 36, 0);
         _poleShape = AWE.UI.createShapeView();
         _poleShape.initWithControllerAndGraphics(my.controller, _poleGraphics);
         _poleShape.setFrame(AWE.Geometry.createRect(44, 0, 2, 48));
@@ -84,14 +84,14 @@ AWE.UI = (function(module) {
       }
       
       // BASE IMAGE //////////////////////////////////////////////////////     
-      var newSettlementImageName = 'map/fortress/small';      
+      var newSettlementImageName = 'map/colony/small';      
       var level = AWE.Util.Rules.normalizedLevel(_location.settlementLevel(), _location.settlementTypeId());
   
       if (level > 3) {
-        newSettlementImageName = 'map/fortress/middle';
+        newSettlementImageName = 'map/colony/middle';
       }
       if (level > 7) {
-        newSettlementImageName = 'map/fortress/large';
+        newSettlementImageName = 'map/colony/large';
       }
       
       if (newSettlementImageName != _settlementImageName && _imageView) {

@@ -121,7 +121,7 @@ AWE.GS = (function(module) {
 		}.property('level', 'buildingType.production_time', 'slot.queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.	
 		
 		productionTimeOfNextLevel: function() {
-		  console.log('PROD OF NEXT LEVEL +++++++++++++++++++++++++++++');
+		  console.log('PROD OF NEXT LEVEL +++++++++++++++++++++++++++++', this.get('nextLevel'));
 		  return this.calcProductionTime(this.get('nextLevel'));
 		}.property('nextLevel', 'buildingType.production_time', 'slot.queue.speed').cacheable(),		
 
