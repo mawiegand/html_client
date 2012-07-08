@@ -91,7 +91,7 @@ AWE.UI = (function(module) {
         newSettlementImageName = 'map/colony/middle';
       }
       if (level > 7) {
-        newSettlementImageName = 'map/colony/large';
+        newSettlementImageName = 'map/colony/big';
       }
       
       if (newSettlementImageName != _settlementImageName && _imageView) {
