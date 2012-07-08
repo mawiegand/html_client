@@ -101,6 +101,14 @@ AWE.UI.Ember = (function(module) {
       this.stopTimer();
     },
     
+    progressBarWidth: function(){
+      var remaining = this.get('timeRemaining') || 999999999;
+      var total = this.getPath('job.productionTime') || 1;
+      var ratio = 1.0 - (remaining / (1.0*total));
+      ratio = ratio < 0 ? 0 : (ratio > 1 ? 1 : ratio);
+      return 'width: ' + Math.ceil(100 * ratio) + 'px;';
+    }.property('timeRemaining', 'job.productionTime'),    
+    
   });
 
   return module;

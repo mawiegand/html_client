@@ -1237,6 +1237,23 @@ span.bonus {
   font-size: 12px;
 }
 
+.queue-job-text .progress-bar-border {
+  float: left;
+  overflow: visible;
+  width: 100px;
+  display: inline-block;
+  white-space: nowrap;
+  border: 1px solid white;
+  padding: 1px;
+}
+
+.queue-job-text .progress-bar {
+  overflow: visible;
+  background-color: #FFF;
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .queue-job-text p {
   display: block-inline;
 }
@@ -1248,13 +1265,18 @@ span.bonus {
 
 .queue-job-text .finished {
   float: left;
-  width: 70px;
+  width: 66px;
   text-align: right;
+  padding: 2px 0px;
+  height: 20px;
 }
 
-.queue-job-text .duration {
+.queue-job-text p.duration {
   float: left;
   width: 100px;
+  overflow: none;
+  padding: 2px;
+  height: 20px;
 }
 
 .queue-job-button {
