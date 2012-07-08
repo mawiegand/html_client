@@ -97,7 +97,7 @@ AWE.UI.Ember = (function(module) {
 
     cavalryTrainingQueue: function() {
       var queues = this.getPath('hashableTrainingQueues.collection');
-      return this.findQueueOfType(queues, 'queue_cavalry_training');
+      return this.findQueueOfType(queues, 'queue_cavalry');
     }.property('hashableTrainingQueues.changedAt').cacheable(),
     
     cavalryTrainingSpeed: function() {
@@ -108,7 +108,7 @@ AWE.UI.Ember = (function(module) {
     
     artilleryTrainingQueue: function() {
       var queues = this.getPath('hashableTrainingQueues.collection');
-      return this.findQueueOfType(queues, 'queue_artillery_training');
+      return this.findQueueOfType(queues, 'queue_artillery');
     }.property('hashableTrainingQueues.changedAt').cacheable(),
     
     artilleryTrainingSpeed: function() {
@@ -119,7 +119,7 @@ AWE.UI.Ember = (function(module) {
     
     siegeTrainingQueue: function() {
       var queues = this.getPath('hashableTrainingQueues.collection');
-      return this.findQueueOfType(queues, 'queue_siege_training');
+      return this.findQueueOfType(queues, 'queue_siege');
     }.property('hashableTrainingQueues.changedAt').cacheable(),
     
     siegeTrainingSpeed: function() {
