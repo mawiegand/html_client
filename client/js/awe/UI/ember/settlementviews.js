@@ -81,13 +81,13 @@ AWE.UI.Ember = (function(module) {
     
     buildingSpeed: function() {
       var speed = this.getPath('buildingQueue.speed');
-      return speed ? speed * 100 : null;
+      return speed ? speed * 100 : 0;
     }.property('buildingQueue.speed').cacheable(),
     
     infantryTrainingQueue: function() {
-      var queues = this.getPath('hashableConstructionQueues.collection');
-      return this.findQueueOfType(queues, 'queue_training');
-    }.property('hashableConstructionQueues.changedAt').cacheable(),
+      var queues = this.getPath('hashableTrainingQueues.collection');
+      return this.findQueueOfType(queues, 'queue_infantry');
+    }.property('hashableTrainingQueues.changedAt').cacheable(),
     
     infantryTrainingSpeed: function() {
       var speed = this.getPath('infantryTrainingQueue.speed');
@@ -96,9 +96,9 @@ AWE.UI.Ember = (function(module) {
 
 
     cavalryTrainingQueue: function() {
-      var queues = this.getPath('hashableConstructionQueues.collection');
+      var queues = this.getPath('hashableTrainingQueues.collection');
       return this.findQueueOfType(queues, 'queue_cavalry_training');
-    }.property('hashableConstructionQueues.changedAt').cacheable(),
+    }.property('hashableTrainingQueues.changedAt').cacheable(),
     
     cavalryTrainingSpeed: function() {
       var speed = this.getPath('cavalryTrainingQueue.speed');
@@ -107,9 +107,9 @@ AWE.UI.Ember = (function(module) {
     
     
     artilleryTrainingQueue: function() {
-      var queues = this.getPath('hashableConstructionQueues.collection');
+      var queues = this.getPath('hashableTrainingQueues.collection');
       return this.findQueueOfType(queues, 'queue_artillery_training');
-    }.property('hashableConstructionQueues.changedAt').cacheable(),
+    }.property('hashableTrainingQueues.changedAt').cacheable(),
     
     artilleryTrainingSpeed: function() {
       var speed = this.getPath('artilleryTrainingQueue.speed');
@@ -118,9 +118,9 @@ AWE.UI.Ember = (function(module) {
     
     
     siegeTrainingQueue: function() {
-      var queues = this.getPath('hashableConstructionQueues.collection');
+      var queues = this.getPath('hashableTrainingQueues.collection');
       return this.findQueueOfType(queues, 'queue_siege_training');
-    }.property('hashableConstructionQueues.changedAt').cacheable(),
+    }.property('hashableTrainingQueues.changedAt').cacheable(),
     
     siegeTrainingSpeed: function() {
       var speed = this.getPath('siegeTrainingQueue.speed');

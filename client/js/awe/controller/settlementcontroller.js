@@ -477,6 +477,10 @@ AWE.Controller = (function(module) {
         });      
       });
     }
+     
+    that.updateAllTrainingQueues = function() {
+      AWE.GS.TrainingQueueManager.updateQueuesOfSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+    }     
         
     // resource pool update methods
     
@@ -507,6 +511,9 @@ AWE.Controller = (function(module) {
               that.updateAllConstructionQueuesAndJobs();
               if (that.view && that.view.get('selectedSlot')) {  // check view again, may have become invisible during meantime
                 that.updateAllTrainingQueuesAndJobs();
+              }
+              else if (that.view) {  // only update queues, not jobs, if training queue is not visible
+                that.updateAllTrainingQueues();
               }
             }
           });
