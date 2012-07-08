@@ -58,6 +58,7 @@ AWE.GS = (function(module) {
       var category = this.getPath('buildingType.category');
       queue = queue || 
         (category ? AWE.GS.ConstructionQueueManager.getQueueForBuildingCategorieInSettlement(category, this.getPath('slot.settlement_id')) : null);
+      console.log('>>>>> RECALC QUEUE', queue, category, this.get('buildingType'));
       return queue;
     }.property('slot.queue', 'buildingType', 'slot.settlement_id').cacheable(),
 

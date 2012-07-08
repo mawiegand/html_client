@@ -11,7 +11,20 @@
               {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" buildingBinding="job.slot.building" levelBinding="job.level_after" }}
               <div class="queue-job-text">    
                 <p class="building">{{local job.slot.building.name }} (L{{ job.level_after }})</p>
-                <p class="duration">{{#unless job.destroyJob}}{{formatDuration job.productionTime}}{{else}}{{formatDuration job.destructionTime}}{{/unless}}</p>
+                <p class="duration">
+                  {{#if active}}
+                    {{#if finished}}
+                      finishing...
+                    {{else}}
+                      {{formatDuration timeRemaining}} &nbsp;
+                    {{/if}}
+                  {{else}}
+                    {{#unless job.destroyJob}}
+                      {{formatDuration job.productionTime}}
+                    {{else}}
+                      {{formatDuration job.destructionTime}}
+                    {{/unless}}
+                  {{/if}}</p>
                 <p class="finished">{{#if job.active_job }}{{ job.parsedFinishingDate }}{{else}}&nbsp;{{/if}}</p>
                 <p class="queue-job-button finish-button">{{#if job.active_job }}<a href="#" {{action "finishJobPressed"}} title="spend 1 toad for finishing it immediately">hurry</a>{{/if}}</p>
                 <p class="queue-job-button cancel">    
