@@ -53,6 +53,14 @@ AWE.GS = (function(module) {
       return sorted;
     }.property('hashableJobs.changedAt'),   // need to resort, if element added or removed
 
+    queue: function() {
+      var queue = this.getPath('slot.queue');
+      var category = this.getPath('buildingType.category');
+      queue = queue || 
+        (category ? AWE.GS.ConstructionQueueManager.getQueueForBuildingCategorieInSettlement(category, this.getPath('slot.settlement_id')) : null);
+      return queue;
+    }.property('slot.queue', 'buildingType', 'slot.settlement_id').cacheable(),
+
     /** return the building type from the rules, that describes this
      * building. */
     buildingType: function() {
@@ -109,7 +117,7 @@ AWE.GS = (function(module) {
 
     calcProductionTime: function(level) {
 		  var productionTime = this.getPath('buildingType.production_time');
-		  var speed = this.getPath('slot.queue.speed') || 1;
+		  var speed = this.getPath('queue.speed') || 1;
 		  level = level || this.get('level') || 1;
 		  
 		  return productionTime ? (AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(productionTime), level) / speed) : null;
@@ -118,7 +126,7 @@ AWE.GS = (function(module) {
 		productionTime: function() {
 		  console.log('PROD OF LEVEL ++++++++++++++++++++++++++++++++++');
 		  return this.calcProductionTime(this.get('level'));
-		}.property('level', 'buildingType.production_time', 'slot.queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.	
+		}.property('level', 'buildingType.production_time', 'queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.	
 		
 		productionTimeOfNextLevel: function() {
 		  console.log('PROD OF NEXT LEVEL +++++++++++++++++++++++++++++', this.get('nextLevel'));
@@ -129,7 +137,7 @@ AWE.GS = (function(module) {
 		              this.calcProductionTime(this.get('nextLevel')))
 		  
 		  return this.calcProductionTime(this.get('nextLevel'));
-		}.property('nextLevel', 'buildingType.production_time', 'slot.queue.speed').cacheable(),		
+		}.property('nextLevel', 'buildingType.production_time', 'queue.speed').cacheable(),		
 
     destructionTime: function() {
       var time = 0;
@@ -137,7 +145,7 @@ AWE.GS = (function(module) {
         time += this.calcProductionTime(l);
       }
       return time;
-    }.property('level', 'buildingType.production_time', 'slot.queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes. 
+    }.property('level', 'buildingType.production_time', 'queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes. 
     
 
     calcCosts: function(level) {
@@ -188,12 +196,12 @@ AWE.GS = (function(module) {
 		/** bool for indicating whether or not all requirements for constructin
 		 * this building are met. */
     requirementsMet: function() {
-      var unmetRequirements = this.get('unmetRequirements');
+      var unmetRequirements = this.unmetRequirements();
       return !unmetRequirements || unmetRequirements.length === 0;
     }, 
     
     requirementUnmet: function() {
-      return !this.get('requirementsMet');
+      return !this.requirementsMet();
     }, 
 
 		
@@ -423,7 +431,7 @@ AWE.GS = (function(module) {
       return module.SettlementManager.getSettlement(this.get('settlement_id'));
     }.property('settlement_id').cacheable(),
     
-    queue: function() {
+    queue: function() {    // TODO: must even return a queue when there's no job (for the speedup!!!)
       var jobs = this.getPath('hashableJobs.collection');
       if (!jobs || jobs.length <= 0) return null;
       return AWE.GS.ConstructionQueueManager.getQueue(jobs[0].get('queue_id'));

@@ -266,7 +266,7 @@ AWE.Controller = (function(module) {
       log('constructionOptionClicked', slot, building, type);  // TODO type is production category - > rename
       
       var buildingId = building.get('buildingId');
-      if (building.get('requirementsMet')) {
+      if (building.requirementsMet()) {
         createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE);      
         this.unselectSlot();
       }
@@ -306,13 +306,29 @@ AWE.Controller = (function(module) {
     that.constructionFinishClicked = function(job) {
       var queue = job.get('queue');
       queue.sendFinishJobAction(job.getId(), function(status) {
-        if (status === AWE.Net.OK) {    // 200 OK
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
           log(status, "Construction job finished.");
           AWE.GS.ResourcePoolManager.getResourcePool().removeResources({'resource_cash': 1});  // I believe, here it's ok as well as beneficial to remove the resources (server did accept the command, but no pool-update yet)
           that.updateConstructionQueueSlotAndJobs(queue.getId());    
        //   that.updateResourcePool();      
         }
+        else if (status === AWE.Net.FORBIDDEN) {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'not-enough-cash-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });          
+          WACKADOO.presentModalDialog(dialog);
+        }
         else {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });          
+          WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the job finish command.");
           // TODO Fehlermeldung 
         } 
