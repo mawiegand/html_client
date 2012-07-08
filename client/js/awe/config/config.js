@@ -64,7 +64,7 @@ AWE.Config = (function(module) {
   module.ARMY_MODE_FIGHTING = 2;
 
 	module.MAP_USE_GOOGLE = false;
-  module.MAP_USE_OSM = true;
+  module.MAP_USE_OSM = false;
   
   // how many tiles showing minimum when not at leaf level
   module.MAP_MIN_VISIBLE_TILES = 64;

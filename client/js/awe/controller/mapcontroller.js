@@ -66,7 +66,7 @@ AWE.Controller = (function(module) {
 
     var currentAction = null;
     
-    var mapMode = false; //  display game graphics
+    var mapMode = AWE.UI.MAP_MODE_TERRAIN; //  display game graphics
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -131,10 +131,17 @@ AWE.Controller = (function(module) {
         viewport: initialFrameModelCoordinates
       });
 
-      inspectorViews.tempToggleButtonView = AWE.UI.createTempToggleButtonView();
-      inspectorViews.tempToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
-      _stages[3].addChild(inspectorViews.tempToggleButtonView.displayObject());
+      if (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM) {
+        inspectorViews.tempToggleButtonView = AWE.UI.createTempToggleButtonView();
+        inspectorViews.tempToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
+        _stages[3].addChild(inspectorViews.tempToggleButtonView.displayObject());
+      }
+      
+      inspectorViews.mapTypeToggleButtonView = AWE.UI.createMapTypeToggleButtonView();
+      inspectorViews.mapTypeToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
+      _stages[3].addChild(inspectorViews.mapTypeToggleButtonView.displayObject());      
     };   
+    
         
     that.getStages = function() {
       return [
@@ -567,9 +574,17 @@ AWE.Controller = (function(module) {
     
 		that.switchMapMode = function(realMap) {
 			console.log("SWITCH MAP MODE", realMap);
-			mapMode = realMap;
+			mapMode = realMap ? AWE.UI.MAP_MODE_REAL : AWE.UI.MAP_MODE_TERRAIN;
 			AWE.Ext.applyFunctionToElements(regionViews, function(view) {
-        view.setMapMode(realMap);
+        view.setMapMode(mapMode);
+      });			
+		}
+
+		that.switchMapType = function(political) {
+			console.log("SWITCH MAP TYPE", political);
+			mapMode = political ? AWE.UI.MAP_MODE_STRATEGIC : AWE.UI.MAP_MODE_TERRAIN;
+			AWE.Ext.applyFunctionToElements(regionViews, function(view) {
+        view.setMapMode(mapMode);
       });			
 		}
 
@@ -2084,7 +2099,10 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width-345, _windowSize.height-155));
       }
       if (inspectorViews.tempToggleButtonView) {
-        inspectorViews.tempToggleButtonView.setOrigin(AWE.Geometry.createPoint(20, _windowSize.height - 68));
+        inspectorViews.tempToggleButtonView.setOrigin(AWE.Geometry.createPoint(60+20, _windowSize.height - 68));
+      }
+      if (inspectorViews.mapTypeToggleButtonView) {
+        inspectorViews.mapTypeToggleButtonView.setOrigin(AWE.Geometry.createPoint(20, _windowSize.height - 68));
       }
       return _inspectorChanged || _windowChanged;
     };

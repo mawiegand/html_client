@@ -9,6 +9,10 @@ var AWE = AWE || {};
 AWE.UI = (function(module) {
           
   module.rootNode = null;
+  
+  module.MAP_MODE_TERRAIN   = 1;
+  module.MAP_MODE_STRATEGIC = 2;
+  module.MAP_MODE_REAL      = 3;
 
 
 	if (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM) {
@@ -322,9 +326,12 @@ AWE.UI = (function(module) {
     var _scaledContainer = null;
     var _nonScaledContainer = null;    
     var _backgroundImage = null;  
+    var _backgroundShapeView = null;  
     var streetsManager = null;
     var villageSpotsManager = null;  
 		var _scheduledImage = false;
+		
+		var _neutralBackgroundColor = 'rgb(255,255,255)';
     
     // protected attributes and methods //////////////////////////////////////
 
@@ -332,7 +339,7 @@ AWE.UI = (function(module) {
 
     my.streetsHidden = true;
     my.VillagesHidden = true;
-		my.realMap = false;
+		my.mapMode = module.MAP_MODE_TERRAIN;
 
     // public attributes and methods /////////////////////////////////////////
     
@@ -369,10 +376,13 @@ AWE.UI = (function(module) {
       _super.initWithController(controller, frame);
     }
 
-		that.setMapMode = function(realMap) {
-			var mode = realMap && (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM);
-			if (mode !== my.realMap) {
-				my.realMap = mode;
+		that.setMapMode = function(mode) {
+		  if (mode === module.MAP_MODE_REAL && 
+		      !(AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM)) {
+		    mode = my.mapMode;  // don't accept map-real, iff turned off in config
+		  }
+			if (mode !== my.mapMode) {
+				my.mapMode = mode;
 				this.setNeedsUpdate();
 				this.setNeedsLayout();
 			}
@@ -406,8 +416,26 @@ AWE.UI = (function(module) {
         size = '512';
       }
       
-			if (!my.realMap || (!AWE.Config.MAP_USE_GOOGLE && !AWE.Config.MAP_USE_OSM)) {
-	      	if (!_node.isLeaf()) {       // not a leaf node, splits further
+      // remove the unecessary backround-view;
+      // strategic mode uses a shapeview
+      // all other modes use an imageview
+      if (my.mapMode === module.MAP_MODE_STRATEGIC) {
+	      if (_backgroundImage) {
+	        _scaledContainer.removeChild(_backgroundImage);
+	        _backgroundImage = null;
+	      }	
+      }
+      else {
+	      if (_backgroundShapeView) {
+	        _scaledContainer.removeChild(_backgroundShapeView);
+	        _backgroundShapeView = null;
+	      }		        
+      }
+      
+      // create the background that is needed for the present view
+			if (my.mapMode === module.MAP_MODE_TERRAIN) {			  
+			  
+	      if (!_node.isLeaf()) {       // not a leaf node, splits further
 	        newImage = AWE.UI.ImageCache.getImage("map/tiles/split"+size);
 	      }
 	      else if (_node.region()) {   // terrain available, select appropriate tile
@@ -441,6 +469,37 @@ AWE.UI = (function(module) {
 	        _backgroundImage.setFrame(AWE.Geometry.createRect(0,0,newImage.width, newImage.height));
 	      }	
 			}	
+		  else if (my.mapMode === module.MAP_MODE_STRATEGIC) {
+
+		    if (!_backgroundShapeView) {
+		      var shape = new Graphics();
+          //shape.setStrokeStyle(1);
+          //shape.beginStroke('rgb(255, 255, 255)');
+		      
+		      if (!_node.isLeaf()) {       // not a leaf node, splits further
+            shape.beginFill(_neutralBackgroundColor);
+	        }
+	        else if (_node.region()) {   // terrain available, select appropriate tile
+	          var allianceId = _node.region().allianceId();
+	          if (allianceId) {
+              var color = AWE.GS.AllianceManager.colorForNumber(allianceId);
+              shape.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
+	          }
+	          else {
+              shape.beginFill(_neutralBackgroundColor);
+            }
+	        }
+	        else {                       // don't know terrain, yet. thus, select base tile
+            shape.beginFill(_neutralBackgroundColor);
+	        }
+	        shape.drawRect(0,0,256,256);
+          _backgroundShapeView = AWE.UI.createShapeView();
+          _backgroundShapeView.initWithControllerAndGraphics(that.controller(), shape);
+          _backgroundShapeView.setAutoscales(true);
+          _backgroundShapeView.setFrame(AWE.Geometry.createRect(0, 0, 256, 256));
+        }
+	      _scaledContainer.addChildAt(_backgroundShapeView, 0);			
+		  }
 			else if (AWE.Config.MAP_USE_OSM) {
 				var path = _node.path();
 				var tms = AWE.Mapping.GlobalMercator.QuadTreeToTMSTileCode(path);
@@ -652,8 +711,8 @@ AWE.UI = (function(module) {
     }
 
     that.autoscaleIfNeeded = function() {
-      if (this.autoscales() && _backgroundImage) {
-				var dimension = my.realMap ? 256. : _backgroundImage.width();
+      if (this.autoscales() && (_backgroundImage || _backgroundShapeView)) {
+				var dimension = my.mapMode !== module.MAP_MODE_TERRAIN ? 256. : _backgroundImage.width();
         _scaledContainer.setScaleX(my.frame.size.width / dimension);
         _scaledContainer.setScaleY(my.frame.size.width / dimension);
       }

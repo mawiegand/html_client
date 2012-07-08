@@ -55,6 +55,54 @@ AWE.UI = (function(module) {
     return that;
   };
   
+  
+  module.createMapTypeToggleButtonView = function(spec, my) {
+
+    var that;
+    
+    var politicalMap = false;
+
+    my = my || {};
+
+    my.toggleButtonView = null;
+
+    that = module.createContainer(spec, my);
+
+    var _super = {
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      updateView: AWE.Ext.superior(that, "updateView"),
+    };
+    
+    that.recalcView = function() {
+      
+      if (!my.toggleButtonView) {
+        my.toggleButtonView = AWE.UI.createButtonView();
+        my.toggleButtonView.initWithControllerTextAndImage(my.controller, 'Strategic', AWE.UI.ImageCache.getImage("map/button1"));
+        my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        my.toggleButtonView.setFrame(AWE.Geometry.createRect(0, 0, 48, 48));
+        my.toggleButtonView.onClick = function() {
+          that.onToggleButtonClick()
+        };
+        this.addChild(my.toggleButtonView);
+      }
+      
+      my.toggleButtonView.setText(politicalMap ? 'Terrain' : 'Strategic');
+    }
+    
+    that.onToggleButtonClick = function() {
+      politicalMap = !politicalMap;
+      my.controller.switchMapType(politicalMap);
+      this.recalcView() 
+    }
+    
+    that.updateView = function() {
+      this.recalcView() 
+      _super.updateView();
+    };   
+    
+    return that;
+  };  
+  
   return module;
     
 }(AWE.UI || {}));
