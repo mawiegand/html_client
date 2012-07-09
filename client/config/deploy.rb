@@ -5,8 +5,8 @@ require "bundler/capistrano"
 default_run_options[:pty] = true                  # problem with ubuntu
 set :ssh_options, :forward_agent => true          # ssh forwarding
 
-set :application, "game server"
-set :repository,  "git@github.com:wackadoo/game_server.git"
+set :application, "html client"
+set :repository,  "git@github.com:wackadoo/html_client.git"
 
 set :scm, :git
 
