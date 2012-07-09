@@ -10,4 +10,6 @@
 //= require plugins
 //= require ember-0.9.8.1
 //= require easel
+//= require date
+
 
