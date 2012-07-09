@@ -1,0 +1,32 @@
+/* Authors: Sascha Lange <sascha@5dlab.com>, 
+ *          Patrick Fox <patrick@5dlab.com>
+ * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
+ * Do not copy, do not distribute. All rights reserved.
+ */
+
+var AWE = window.AWE || {};
+AWE.UI = AWE.UI || {}; 
+
+AWE.UI.Ember = (function(module) {
+
+  module.templates = module.templates || [];
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/alliancescreen.html') %>");  
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/trainingqueueviews.html') %>");
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/armyviews.html') %>");
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/settlementviews.html') %>");
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/basescreen.html') %>");
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/battleviews.html') %>");
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/buildingdetailviews.html') %>");
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/buildingviews.html') %>");
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/constructionqueueviews.html') %>");
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/domview.html') %>");
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/fortressscreen.html') %>");
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/profileview.html') %>");  
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/messagecenter.html') %>");
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/settlementviews.html') %>");
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/shopview.html') %>");
+  module.templates.push("<%= asset_path('awe/UI/ember/templates/standardviews.html') %>");  
+
+  return module;
+    
+}(AWE.UI.Ember || {}));

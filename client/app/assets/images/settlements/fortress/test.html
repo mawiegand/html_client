@@ -1,0 +1,357 @@
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!-- Consider adding a manifest.appcache: h5bp.com/d/Offline -->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+
+  <!-- Use the .htaccess and remove these lines to avoid edge case issues.
+       More info: h5bp.com/i/378 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  
+
+  <title></title>
+  <meta name="description" content="">
+
+  <!-- Mobile viewport optimized: h5bp.com/viewport -->
+  <meta name="viewport" content="width=device-width, user-scalable=no" />
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
+
+
+<style>
+
+.fortress-picture {
+  position: relative;
+  width: 800px;
+  height: 600px;
+} 
+
+.fortress-picture .mouse-over {
+  position: absolute;
+  width: 290px;
+  height: 140px;
+  z-index:10;
+  padding: 16px;
+  background-color: rgba(50,50,50,0.9);
+  border-radius: 11px;
+  padding-left: 46px;
+  color: #FFF;
+}
+
+.fortress-picture .mouse-over p {
+  padding-left: 30px;
+}
+
+.fortress-picture .mouse-over img.advisor{
+  position: absolute;
+  left: -44px;
+  width: 160px;
+}
+
+.fortress-picture .background {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 0;
+}
+
+.fortress-picture .buildings {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 800px;
+  height: 600px;
+  z-index: 1;
+}
+
+.fortress-picture .tower {
+  position: absolute;
+  width: 238px;
+  height: 454px;
+  z-index: 2;
+}
+
+.fortress-picture .tower.artillery {
+  background: url('fortress_tower_artillery.png');
+}
+.fortress-picture .tower.cavalry {
+  background: url('fortress_tower_cavalry.png');
+}
+
+
+.fortress-picture .level {
+  font-size: 24px;
+  border: 4px solid #444;
+  background-color: #BBB;
+  border-radius: 9px;
+  color: #444;
+  width: 32px;
+  padding: 8px 0px;
+  text-align: center;
+}
+
+.fortress-picture .tower .level {
+  margin-top: 320px;
+  margin-left: 170px;
+}
+
+.fortress-picture .wall .level {
+  margin-top: 130px;
+  margin-left: 460px;
+}
+
+
+.fortress-picture .buildings.size1 {
+  background: url('fortress_buildings1.png');
+}
+.fortress-picture .buildings.size2 {
+  background: url('fortress_buildings2.png');
+}
+.fortress-picture .buildings.size3 {
+  background: url('fortress_buildings3.png');
+}
+
+
+.fortress-picture .tower.size1 {
+  background-position: -238px 0px;
+}
+.fortress-picture .tower.size2 {
+  background-position: -476px 0px;
+}
+.fortress-picture .tower.size3 {
+  background-position: -714px 0px;
+}
+
+.fortress-picture .tower-left {
+  top: 24px;
+  left: 0px;
+}
+
+.fortress-picture .tower.hovered {
+  background-position: 0px -454px;
+}
+.fortress-picture .tower.size1.hovered {
+  background-position: -238px -454px;
+}
+.fortress-picture .tower.size2.hovered {
+  background-position: -476px -454px;
+}
+.fortress-picture .tower.size3.hovered {
+  background-position: -714px -454px;
+}
+
+.fortress-picture .tower-right {
+  top: 100px;
+  right: 0px;
+}
+
+
+.fortress-picture .wall {
+  position: absolute;
+  background: url('fortress_wall1.png') no-repeat bottom;
+  top: 360px;
+  left: 0px;
+  width: 800px;
+  height: 240px;
+  z-index: 3;
+}
+
+
+.fortress-picture .wall.size1 {
+  background: url('fortress_wall1.png') no-repeat bottom;
+}
+.fortress-picture .wall.size2 {
+  background: url('fortress_wall2.png') no-repeat bottom;
+}
+.fortress-picture .wall.size3 {
+  background: url('fortress_wall3.png') no-repeat bottom;
+}
+
+.fortress-picture .wall.size1.hovered {
+  background: url('fortress_wall1_hovered.png') no-repeat bottom;
+}
+.fortress-picture .wall.size2.hovered {
+  background: url('fortress_wall2_hovered.png') no-repeat bottom;
+}
+.fortress-picture .wall.size3.hovered {
+  background: url('fortress_wall3_hovered.png') no-repeat bottom;
+}
+
+
+</style>
+
+
+<script type="text/x-handlebars" data-template-name="interactive-building">
+{{#if "tooltip"}}
+  {{#view App.ToolTipView classNames="mouse-over" mouseXBinding="mouseX" mouseYBinding="mouseY"}}
+    <img src="../../dialogs/advisor.png" / class="advisor">
+    <h1>{{parentView.model.name}} L{{parentView.model.level}}</h1>
+    <p>Next level does cost XYZ resources. It will need about X:XX.YY to build.</p>
+  {{/view}}
+{{/if}}
+<div class="level">{{level}}</div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="fortress-screen">
+
+
+<div class="fortress-screen">
+  <div class="fortress-picture">
+    <img src="fortress_background.png" class="background" />
+    {{view App.BuildingView  modelBinding="App.Wall" levelBinding="App.Wall.level" classNames="buildings"}}
+    {{view App.InteractiveBuildingView modelBinding="App.LeftTower"  levelBinding="App.LeftTower.level"  classNames="tower tower-left" classNameBindings="model.type"}}
+    {{view App.InteractiveBuildingView modelBinding="App.RightTower" levelBinding="App.RightTower.level" classNames="tower tower-right"  classNameBindings="model.type"}}
+    {{view App.InteractiveBuildingView modelBinding="App.Wall"       levelBinding="App.Wall.level"       classNames="wall" classNameBindings="model.type"}}
+  </div>
+</div>
+
+</script>
+  
+</head>
+<body>
+
+  <script>window.jQuery || document.write('<script src="../../../js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+  <script src="../../../js/libs/ember-0.9.5.js"></script>
+
+<script>
+
+App = Ember.Application.create({
+
+  ready: function() {
+    
+    App.LeftTower = App.Building.create({
+      level: 0,
+    });
+    App.RightTower = App.Building.create();
+    App.Wall = App.Building.create({
+      type: 'wall',
+      name: 'Fortification',
+    });
+
+    var fortressScreen = Ember.View.create({
+      templateName: "fortress-screen",
+    }).append();
+
+  },
+  
+});    
+
+App.Building = Ember.Object.extend({
+  level: 1,
+  name: 'Artillery',
+  type: 'artillery',
+  
+  build: function() {
+    var newLevel = parseInt(this.get('level'))+1;
+    
+    if (newLevel <= 10) {
+     this.set('level', newLevel);    
+    }
+    else {
+      if (this.get('type') === 'artillery') {
+        this.set('type', 'cavalry');
+        this.set('name', 'Cavalry');
+      }
+      else if (this.get('type') === 'cavalry'){
+        this.set('type', 'artillery');
+        this.set('name', 'Artillery');
+      }
+      this.set('level', 0); // start over with the other type
+    }
+  },
+});
+
+
+
+App.ToolTipView = Ember.View.extend({
+  
+  mouseX: 0,
+  mouseY: 0,
+  
+  updatePosition: function() {
+    var parent = this.get('parentView');
+    var posX = this.get('mouseX') + 10; // - parent.$().offset().left + 10;
+    var posY = this.get('mouseY') + 18; // - parent.$().offset().top + 18;
+    
+    if (posY > 460) {
+      posY = this.get('mouseY')- 200;
+      posX += 48;
+    }
+        
+    this.$().css({'left': posX, 'top': posY});    
+  }.observes('mouseX', 'mouseY'),
+  
+  didInsertElement: function() {
+    this.$().remove();
+    this.$().appendTo('.fortress-picture');
+    this.updatePosition();
+  },
+  
+});
+
+
+App.BuildingView = Ember.View.extend({
+  model: null, 
+  hovered: false,
+
+  classNameBindings: ['small:size1', 'middle:size2', 'large:size3', 'hovered'],
+
+  small: function() {
+    return this.get('level') > 0 && this.get('level') < 4;
+  }.property('level'),
+  
+  middle: function() {
+    return this.get('level') >= 4 && this.get('level') < 8;
+  }.property('level'),
+  
+  large: function() {
+    return this.get('level') >= 8;
+  }.property('level'),
+    
+});
+
+App.InteractiveBuildingView = App.BuildingView.extend({
+  templateName: 'interactive-building',
+  tooltip: false,
+  mouseX: 0,
+  mouseY: 0,
+  timeout: 0,    // tooltip timeout in ms
+  
+  showTooltip: function() {
+    this.set('tooltip', true);
+  },
+  
+  mouseEnter: function(event) {
+    var self = this;
+    this.set('hovered', true);
+    setTimeout(function() {
+      if (self.get('hovered')) {
+        self.showTooltip();
+      }
+    }, this.get('timeout'));
+  },
+  mouseMove: function(event) {
+    this.set('mouseX', event.pageX);
+    this.set('mouseY', event.pageY);
+  },
+  mouseLeave: function(event) {
+    this.set('hovered', false);
+    this.set('tooltip', false);
+    $().unbind('mousemove');
+  },
+  
+  click: function(event) {
+    this.get('model').build();
+  },
+  
+});
+    
+
+</script>
+
+</body>
+</html>

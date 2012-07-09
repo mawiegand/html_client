@@ -1,0 +1,54 @@
+
+  <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
+       chromium.org/developers/how-tos/chrome-frame-getting-started -->
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  <header>
+  </header>
+  
+  <div role="main">
+    <div id="layers">
+      <div id="screen-content">
+      </div>
+      <div id="notification-layer" class="layer canvas-layer"></div>
+      <div id="hud-layer" class="layer canvas-layer"></div>
+      <div id="dialog-layer" class="layer dom-layer"></div>
+    </div>
+    <div id="debug"></div>
+    <div id="debug2"></div>
+  </div>
+  
+  <footer>
+  </footer>
+  
+   <script type="text/javascript" >
+        ENV = {
+          //RAISE_ON_DEPRECATION = true,
+        };
+    </script>
+
+  <!-- Load ember JS. For debugging-purposes: not minified. -->
+  <%= javascript_include_tag    "ember-0.9.5.min.js" %>
+
+  <!-- Load easelJS. -->
+  <%= javascript_include_tag    "easel.js" %>
+
+  <!-- Load date library -->
+  <%= javascript_include_tag    "date.js" %>
+
+  <!-- scripts concatenated and minified via build script -->
+  <%= javascript_include_tag    "awe-config" %>
+  <%= javascript_include_tag    "awe-i18n" %>
+  <%= javascript_include_tag    "awe-network" %>
+  <%= javascript_include_tag    "awe-util" %>
+  <%= javascript_include_tag    "awe-map" %>
+  <%= javascript_include_tag    "awe-gamestate" %>
+  <%= javascript_include_tag    "awe-ui" %>
+  <%= javascript_include_tag    "awe-controller" %>
+  <%= javascript_include_tag    "awe-action" %>
+  <%= javascript_include_tag    "awe-application" %>
+  
+  <%= javascript_include_tag    "wackadoo" %>
+
+  <!-- end scripts -->
+  <div id="templates">
+  </div>

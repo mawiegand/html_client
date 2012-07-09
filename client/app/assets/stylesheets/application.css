@@ -1,0 +1,2568 @@
+/*
+ * This is a manifest file that'll automatically include all the stylesheets available in this directory
+ * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
+ * the top of the compiled file, but it's generally better to create a new file per style scope.
+ *= require_self
+ *= require_tree . 
+*/
+
+
+/*
+ * HTML5 Boilerplate
+ *
+ * What follows is the result of much research on cross-browser styling.
+ * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
+ * Kroc Camen, and the H5BP dev community and team.
+ *
+ * Detailed information about this CSS: h5bp.com/css
+ *
+ * ==|== normalize ==========================================================
+ */
+
+
+/* =============================================================================
+   HTML5 display definitions
+   ========================================================================== */
+
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section { display: block; }
+audio, canvas, video { display: inline-block; *display: inline; *zoom: 1; }
+audio:not([controls]) { display: none; }
+[hidden] { display: none; }
+
+
+/* =============================================================================
+   Base
+   ========================================================================== */
+
+/*
+ * 1. Correct text resizing oddly in IE6/7 when body font-size is set using em units
+ * 2. Prevent iOS text size adjust on device orientation change, without disabling user zoom: h5bp.com/g
+ */
+
+html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+
+html, button, input, select, textarea { font-family: sans-serif; color: #222; }
+
+body { margin: 0; font-size: 1em; line-height: 1.4; }
+
+/*
+ * Remove text-shadow in selection highlight: h5bp.com/i
+ * These selection declarations have to be separate
+ * Also: hot pink! (or customize the background color to match your design)
+ */
+
+::-moz-selection { background: #fe57a1; color: #fff; text-shadow: none; }
+::selection { background: #fe57a1; color: #fff; text-shadow: none; }
+
+
+/* =============================================================================
+   Links
+   ========================================================================== */
+
+a { color: #00e; }
+a:visited { color: #551a8b; }
+a:hover { color: #06e; }
+a:focus { outline: thin dotted; }
+
+/* Improve readability when focused and hovered in all browsers: h5bp.com/h */
+a:hover, a:active { outline: 0; }
+
+
+/* =============================================================================
+   Typography
+   ========================================================================== */
+
+abbr[title] { border-bottom: 1px dotted; }
+
+b, strong { font-weight: bold; }
+
+blockquote { margin: 1em 40px; }
+
+dfn { font-style: italic; }
+
+hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; }
+
+ins { background: #ff9; color: #000; text-decoration: none; }
+
+mark { background: #ff0; color: #000; font-style: italic; font-weight: bold; }
+
+/* Redeclare monospace font family: h5bp.com/j */
+pre, code, kbd, samp { font-family: monospace, serif; _font-family: 'courier new', monospace; font-size: 1em; }
+
+/* Improve readability of pre-formatted text in all browsers */
+pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
+
+q { quotes: none; }
+q:before, q:after { content: ""; content: none; }
+
+small { font-size: 85%; }
+
+/* Position subscript and superscript content without affecting line-height: h5bp.com/k */
+sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+
+
+/* =============================================================================
+   Lists
+   ========================================================================== */
+
+ul, ol { margin: 1em 0; padding: 0 0 0 40px; }
+dd { margin: 0 0 0 40px; }
+nav ul, nav ol { list-style: none; list-style-image: none; margin: 0; padding: 0; }
+
+
+/* =============================================================================
+   Embedded content
+   ========================================================================== */
+
+/*
+ * 1. Improve image quality when scaled in IE7: h5bp.com/d
+ * 2. Remove the gap between images and borders on image containers: h5bp.com/i/440
+ */
+
+img { border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; }
+
+/*
+ * Correct overflow not hidden in IE9
+ */
+
+svg:not(:root) { overflow: hidden; }
+
+
+/* =============================================================================
+   Figures
+   ========================================================================== */
+
+figure { margin: 0; }
+
+
+/* =============================================================================
+   Forms
+   ========================================================================== */
+
+form { margin: 0; }
+fieldset { border: 0; margin: 0; padding: 0; }
+
+/* Indicate that 'label' will shift focus to the associated form element */
+label { cursor: pointer; }
+
+/*
+ * 1. Correct color not inheriting in IE6/7/8/9
+ * 2. Correct alignment displayed oddly in IE6/7
+ */
+
+legend { border: 0; *margin-left: -7px; padding: 0; white-space: normal; }
+
+/*
+ * 1. Correct font-size not inheriting in all browsers
+ * 2. Remove margins in FF3/4 S5 Chrome
+ * 3. Define consistent vertical alignment display in all browsers
+ */
+
+button, input, select, textarea { font-size: 100%; margin: 0; vertical-align: baseline; *vertical-align: middle; }
+
+/*
+ * 1. Define line-height as normal to match FF3/4 (set using !important in the UA stylesheet)
+ */
+
+button, input { line-height: normal; }
+
+/*
+ * 1. Display hand cursor for clickable form elements
+ * 2. Allow styling of clickable form elements in iOS
+ * 3. Correct inner spacing displayed oddly in IE7 (doesn't effect IE6)
+ */
+
+button, input[type="button"], input[type="reset"], input[type="submit"] { cursor: pointer; -webkit-appearance: button; *overflow: visible; }
+
+/*
+ * Re-set default cursor for disabled elements
+ */
+
+button[disabled], input[disabled] { cursor: default; }
+
+/*
+ * Consistent box sizing and appearance
+ */
+
+input[type="checkbox"], input[type="radio"] { box-sizing: border-box; padding: 0; *width: 13px; *height: 13px; }
+input[type="search"] { -webkit-appearance: textfield; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box; }
+input[type="search"]::-webkit-search-decoration, input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+/*
+ * Remove inner padding and border in FF3/4: h5bp.com/l
+ */
+
+button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; }
+
+/*
+ * 1. Remove default vertical scrollbar in IE6/7/8/9
+ * 2. Allow only vertical resizing
+ */
+
+textarea { overflow: auto; vertical-align: top; resize: vertical; }
+
+/* Colors for form validity */
+input:valid, textarea:valid {  }
+input:invalid, textarea:invalid { background-color: #f0dddd; }
+
+
+/* =============================================================================
+   Tables
+   ========================================================================== */
+
+table { border-collapse: collapse; border-spacing: 0; }
+td { vertical-align: top; }
+
+
+/* =============================================================================
+   Chrome Frame Prompt
+   ========================================================================== */
+
+.chromeframe { margin: 0.2em 0; background: #ccc; color: black; padding: 0.2em 0; }
+
+
+/* ==|== primary styles =====================================================
+   Author: Patrick Fox, Sascha Lange
+   ========================================================================== */
+
+@font-face {
+    font-family: 'MgOpenModataBold';
+    src: url('fonts/mgopenmodatabold-webfont.eot');
+    src: url('fonts/mgopenmodatabold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/mgopenmodatabold-webfont.woff') format('woff'),
+         url('fonts/mgopenmodatabold-webfont.ttf') format('truetype'),
+         url('fonts/mgopenmodatabold-webfont.svg#MgOpenModataBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MgOpenModataRegular';
+    src: url('fonts/mgopenmodataregular-webfont.eot');
+    src: url('fonts/mgopenmodataregular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/mgopenmodataregular-webfont.woff') format('woff'),
+         url('fonts/mgopenmodataregular-webfont.ttf') format('truetype'),
+         url('fonts/mgopenmodataregular-webfont.svg#MgOpenModataRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MgOpenModataOblique';
+    src: url('fonts/mgopenmodataoblique-webfont.eot');
+    src: url('fonts/mgopenmodataoblique-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/mgopenmodataoblique-webfont.woff') format('woff'),
+         url('fonts/mgopenmodataoblique-webfont.ttf') format('truetype'),
+         url('fonts/mgopenmodataoblique-webfont.svg#MgOpenModataOblique') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'VAGRundschriftDRegular';
+    src: url('fonts/vagrundschriftd-webfont.eot');
+    src: url('fonts/vagrundschriftd-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/vagrundschriftd-webfont.woff') format('woff'),
+         url('fonts/vagrundschriftd-webfont.ttf') format('truetype'),
+         url('fonts/vagrundschriftd-webfont.svg#VAGRundschriftDRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  text-shadow: white 0px 1px 1px;
+  color: #555;
+}
+
+
+.red-color {
+  color: #F77;
+}
+.red-background {
+  background-color: #FDD;
+}
+
+.green-color {
+  color: #9D9;
+}
+.green-background {
+  background-color: #DFD;
+}
+
+.yellow-color {
+  color: #FFD;
+}
+
+.blue-color {
+  color: #DDF;
+}
+
+
+#layers {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+#screen-content {
+  width: 100%;
+  height: 100%;
+}
+
+
+#map-tile-canvas {
+  background-color: #777;
+  position: absolute;
+  top: 0px;
+  left: 0px; 
+  width: 100%;
+  height: 100%;
+  z-index: 0;   /*   <-------------------   */
+}
+
+#gaming-pieces-canvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#annotation-canvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+#inspector-canvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+
+
+#hud-canvas {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 500px;
+  height: 250px;
+  z-index: 10;
+}
+
+.z-layer-3 {
+  z-index: 512;
+}
+
+.z-layer-4 {
+  z-index: 768;
+}
+
+
+.change-army-name-dialog .z-layer-3 {
+  z-index: 800;
+}
+
+.change-army-name-dialog .z-layer-4 {
+  z-index: 900;
+}
+
+#debug {
+  display: none;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 24px;
+  height: 20px;
+  z-index: 1000;
+  background-color: #333;
+  color: #FFF;
+  text-align: right;
+}
+
+#debug2 {
+  display: none;
+  position: absolute;
+  top: 10px;
+  left: 40px;
+  width: 1000px;
+  height: 20px;
+  z-index: 1000;
+  background-color: #333;
+  color: #FFF;
+}
+
+#zoomin {
+  position: absolute;
+  top: 40px;
+  left: 10px;
+  width: 80px;
+  height: 20px;
+  z-index: 200;
+}
+
+#zoomout {
+  position: absolute;
+  top: 40px;
+  left: 100px;
+  width: 100px;
+  height: 20px;
+  z-index: 200;
+}
+
+/* slider definitions */
+.slider_container {
+  position: relative;
+}
+.slider_slider {
+  position: absolute;
+   z-index: 2;
+}
+.slider_bar {
+  position: absolute;
+  z-index: 1;
+}
+/* zoom slider definitions */
+.zoom_slider {
+  position: absolute;
+  top: 60px;
+  left: 32px;
+  width: 20px;
+  height: 400px;
+  z-index: 201;
+}
+.zoom_slider .slider_bar {
+  border: 1px solid #c7c4c4;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: white;
+  top: 0px;
+  left: 5px;
+  width: 10px;
+  height: 400px;
+}
+/*slider done*/
+
+#templates {
+  display: none;
+}
+
+.center-helper { position: absolute; left: 50%; top: 50%; }
+
+.modal-dialog-background { position: fixed; background-color: #333; opacity: 0.6; top: 0px; bottom:0px; width: 100%; z-index:255; }
+.modal-dialog-pane { 
+  position: absolute; 
+  margin-left: -300px;
+  margin-top: -50px;
+  width: 600px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 16px 20px 16px 20px;
+  z-index:256;
+
+  -moz-border-radius: 12px;
+  border-radius:      12px;
+  -moz-box-shadow:    3px 3px 2px 2px #333;
+  -webkit-box-shadow: 3px 3px 2px 2px #333;
+  box-shadow:         3px 3px 2px 2px #333;
+}
+
+.modal-dialog-pane .icon-button, .modal-dialog-pane .button {
+  float: right;
+}
+
+.modal-dialog-pane input[type="text"] {
+  font-size: 20px;
+  height: 28px;
+  border-radius: 5px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.background-clear {
+  background-color: rgba(255,255,255,0);
+}
+
+
+.message-center {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  overflow: hidden;
+  min-width: 500px;
+  min-height: 300px;
+}
+
+.message-center .header {
+  position: relative;
+  left: 0px;
+  right: 0px;
+  height: 139px;
+  border-bottom: 1px solid gray;
+}
+
+.message-center .header div {
+  float: left;
+  margin-top: 106px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.message-center .header div:hover {
+  color: #FA0;
+}
+
+.message-center .list {
+  position: absolute;
+  display: inline-block;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  top: 140px;
+  bottom: 0px;
+  left: 0px;
+  width: 265px;
+  border-right: 1px solid gray;
+}
+
+.message-center .list h1 {
+  font-size: 16px;
+  margin: 1px 0px 0px 0px;
+  padding: 0px 4px;
+  border-bottom: 1px solid #BBB;
+  background: #DDF;
+}
+
+.message-center .list .message-header {
+  border-bottom: 1px solid #BBB;
+  padding: 4px;
+}
+
+.message-center .list .message-header.selected {
+  background-color: #FA0;
+  color: white;
+}
+
+.message-header .sender, .message-header .recipient {
+  font-weight: bold;
+}
+
+.message-header.selected .sender {
+}
+
+
+.message-header .time {
+  float: right;
+  color: #AAF;
+}
+
+.message-header.selected .time {
+  color: white;
+}
+
+
+.message-header .subject {
+}
+.message-header.selected .subject {
+}
+
+.message-center .detail {
+  position: absolute;
+  display: inline-block;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  top: 140px;
+  bottom: 0px;
+  left: 266px;
+  right: 0px;
+}
+
+.message-center .message {
+  padding: 24px;
+}
+
+.message-center .message table {
+}
+
+
+.message-center .message table tr {
+  
+}
+
+.message-center .message table th {
+  text-align: right;
+  color: #999;
+  padding-right: 16px;
+}
+
+.message-center .message table td {
+  text-align: left;
+  padding: 5px 5px 5px 5px;
+}
+
+/* ===== non-semantic helper classes ========================================
+   Edit Message
+   ========================================================================== */
+
+.message-edit {
+  padding: 0px;
+  margin-top: 1px;
+  margin-left: 1px;
+  height: 100%;
+}
+
+.message-edit-menue {
+  background: -webkit-gradient(linear, left top, left bottom, from(#DADADA), to(#AAA)); /* for webkit browsers */
+  background: -moz-linear-gradient(top,  #DADADA,  #AAA); /* for firefox 3.6+ */ 
+  width: 100%;
+  height: 60px;
+}
+
+.message-edit-commands, div.message-edit-title, div.message-edit-fill {
+  float: left;
+  width: 33%;
+  height: 60px;
+  padding-top: 20px;
+} 
+  
+.message-edit-title {
+  text-align: center;
+}
+
+.message-edit table {
+  width: 96%;
+}
+
+.message-edit table th { 
+  text-align: right;
+  padding-right: 10px;
+  width: 100px;
+}
+
+.message-edit table td {
+  text-align: left;
+}
+
+.message-edit table td input {
+  width: 100%;
+}
+
+.message-edit-header {
+  background-color: #EEE;
+  width: 100%;
+  margin:0px;  
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding-bottom: 20px;
+}
+
+.message-edit textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 6px;
+}
+
+#text-input-dialog { 
+  position: absolute; 
+  margin-left: -80px;
+  margin-top: -80px;
+  width: 400px; height: 200px;
+  background-color: #FCC; 
+}
+
+/** standard dialog buttons */
+.button, .icon-button {
+  display: inline-block;
+  min-height: 36px;
+  padding: 4px 8px 4px 4px;
+  font-size: 28px;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.icon-button {
+  padding: 4px 8px 4px 48px;
+}
+
+.icon-button:hover, .button:hover {
+  border: 2px solid #777;
+  margin: -2px;
+}
+
+.ok-button:hover {
+  border-color: #9D9;
+}
+
+.ok-button {
+  color: #9D9;
+}
+.icon-button.ok-button {
+  background: url('../images/icons/cross_green_small.png') no-repeat left center;  
+}
+
+.icon-button.close-button {
+  background: url('../images/icons/cross_small.png') no-repeat left center;
+}
+
+.icon-button.cancel-button {
+  background: url('../images/icons/cross_red_small.png') no-repeat left center;
+}
+
+.cancel-button {
+  color: #F77;
+}
+
+.cancel-button:hover {
+  border-color: #F77;
+}
+
+/** standard info dialog */
+.info-dialog { 
+  font-size: 18px;
+  position: absolute; 
+  margin-left: -300px;
+  margin-top: -100px;
+  width: 600px; 
+  min-height: 200px;
+  background-color: #FFF;  
+}
+
+.welcome-dialog {
+  font-size: 16px;
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: -300px;  
+  width: 800px; 
+  min-height: 300px;
+  background-color: #FFF;    
+}
+.welcome-dialog h2 {
+  margin-bottom: 0px;
+}
+
+.welcome-dialog img {
+  margin-top: -6px;
+}
+
+.character-profile-view {
+  font-size: 16px;
+  position: absolute; 
+  margin-left: -350px;
+  margin-top: -300px;  
+  width: 700px; 
+  min-height: 300px;
+  background-color: #FFF;    
+}
+
+.advisor { 
+  width: 196px;
+  height: 196px;
+  margin-top:-10px;
+  margin-bottom:-30px;
+}
+
+.advisor { 
+  float:left;
+  margin-right: 10px;
+}
+
+.army-info-view .advisor { 
+  float:right;
+  margin-left: 10px;
+}
+
+.citation {
+  color: #AAA;
+  font-style: italic;
+  text-align: right;
+}
+
+.advisor.girl { 
+  background: url('../images/advisors/head_girl_colored_small.png');
+}
+.advisor.warrior { 
+  background: url('../images/advisors/head_warrior_colored_small.png');
+}
+.advisor.chef { 
+  background: url('../images/advisors/head_chef_colored_small.png');
+}
+
+.controls-bar {
+  width: 100%;
+  margin: 8px 0px 0px 0px;
+  padding: 0px;
+}
+
+
+
+#text-input-dialog h1 {
+  font-size: 24px;
+}
+
+#army-details, #shop { 
+  margin-left: -250px;
+  margin-top: -150px;
+  width: 500px; height: 400px;
+}
+
+.loaddialog-heading {
+  font-size: 27px;
+  line-height: 27px;
+  font-weight: normal;
+}
+
+.loaddialog-progressbar {
+  margin-top: 20px;
+  margin-left: -2px;
+  width: 100%; height: 20px;
+  background-color: #999;
+  border: 2px solid #333;
+}
+
+.loaddialog-progress {
+  width: 0%; height: 100%;
+  background-color: #EE8310;
+}
+
+
+/* ===== non-semantic helper classes ========================================
+   Settlement Dialogs
+   ========================================================================== */
+.settlement-screen {
+  min-height: 1200px;
+}   
+   
+   
+.settlement-dialog-background { 
+  position: absolute; 
+  background-color: #333; 
+  opacity: 0.0; 
+  width: 100%; 
+  min-height: 100%; 
+  z-index:5; 
+}
+
+.settlement-dialog-pane { 
+  position: absolute; 
+  margin-left: 90px;
+  margin-top:  100px;
+  width: 580px; 
+  min-height: 480px;
+  background-color: #FFF;  
+  padding: 16px 20px 16px 20px;
+  z-index:6;
+
+  -moz-border-radius: 12px;
+  border-radius:      12px;
+}
+
+.settlement-dialog-pane a.close {
+  position: absolute;
+  background: url('../images/icons/cross_small.png');
+  width: 36px;
+  height: 36px;
+  right: 12px;
+  top: 10px;
+}
+
+.settlement-dialog-pane a.close:hover {
+  opacity: 0.6;
+}
+
+.settlement-dialog-pane a.upgrade {
+  margin-top: 6px;
+  color: #AE9;
+  float: right;
+  display: block;
+  text-decoration: none;
+}
+
+.settlement-dialog-pane .upgrade {
+  margin-top: 6px;
+  color: #333;
+  float: right;
+  display: block;
+  text-decoration: none;
+}
+
+.settlement-dialog-pane .destroy.disabled {
+  opacity: 0.6;
+}
+
+.settlement-dialog-pane a.destroy {
+  margin-top: 6px;
+  color: #e99;
+  float: right;
+  display: block;
+  text-decoration: none;
+}
+
+.settlement-dialog-pane .destroy {
+  margin-top: 6px;
+  color: #333;
+  float: right;
+  display: block;
+  text-decoration: none;
+}
+
+.settlement-dialog-pane a.upgrade:hover, .settlement-dialog-pane a.destroy:hover {
+  opacity: 0.6;
+}
+
+.settlement-dialog-pane a img {
+  width: 22px;
+  height: 22px;
+}
+
+
+.settlement-dialog-select-building { 
+}
+
+span.bonus {
+  color: #9D9;
+}
+
+.building-option-details {
+  display: inline-block;
+  width: 0px;
+  margin: 0px;
+  padding: 0px;
+  margin-left: -4px;
+}
+
+.building-option-details.same {
+  width: 100%;
+  float: left;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.building-option {
+  display: inline-block;
+  width: 117px;
+  height: 170px;
+  background-color: #DFD;
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  padding: 10px;
+  margin-right: 2px;
+  margin-bottom: 8px;
+  
+  cursor: pointer; 
+}
+
+.building-option p {
+  margin: 0px 0px 0px 0px;
+  padding: 0px;
+  text-align: center;
+  font-size: 12px;
+}
+
+
+.training-option.requirement-unmet,
+.building-option.requirement-unmet {
+  background-color: #FDD;
+}
+
+.settlement-dialog-building-details .building-option-image {
+  float: left;
+}
+
+.settlement-dialog-building-details .building-option-image.next-level {
+  float: right;
+}
+
+.settlement-dialog-building-details .building-description-box {
+  float: left;
+  min-height: 150px;
+  width: 440px;
+  margin-left: 20px;
+  display: inline-block;
+}
+
+
+.building-option:hover {
+  background-color: #DDF;
+  cursor: pointer;
+}
+
+.fortress-screen .building-option-image {
+  width: 53px;
+  height: 101px;
+  margin-left: 23px;
+}
+
+.fortress-screen .building-option-image.building_fortress_fortification {
+  width: 120px;
+  height: 90px;
+  margin-left: 0px;
+  margin-top: 30px;
+} 
+
+.base-screen .building-option-image {
+  width: 120px;
+  height:150px;
+  margin-left: 0px;
+  background: url('../images/settlements/base/building_category_large_building.png');
+}
+
+.base-screen .settlement-dialog-select-building .building-option-image {
+  margin-top: -8px;
+  margin-bottom: 2px;
+}
+
+
+/** image for base buildings */
+.building-option-image.building_quarry {
+  background: url('../images/settlements/base/building_quarry_large.png');
+}
+.building-option-image.building_chief_cottage {
+  background: url('../images/settlements/base/building_chief_cottage_large.png');
+}
+.building-option-image.building_logger   {
+  background: url('../images/settlements/base/building_logger_large.png');
+}
+.building-option-image.building_barracks {
+  background: url('../images/settlements/base/building_barracks_large.png');
+}
+.building-option-image.building_campfire {
+  background: url('../images/settlements/base/building_campfire_large.png');
+}
+.building-option-image.building_cottage  {
+  background: url('../images/settlements/base/building_cottage_large.png');
+}
+.building-option-image.building_firing_range {
+  background: url('../images/settlements/base/building_firing_range_large.png');
+}
+.building-option-image.building_furrier  {
+  background: url('../images/settlements/base/building_furrier_large.png');
+}
+.building-option-image.building_gatherer {
+  background: url('../images/settlements/base/building_gatherer_large.png');
+}
+.building-option-image.building_stud     {
+  background: url('../images/settlements/base/building_stud_large.png');
+}
+.building-option-image.building_workshop {
+  background: url('../images/settlements/base/building_workshop_large.png');
+}
+
+
+/** image for building_siege_tower */
+.building-option-image.building_siege_tower {
+  background: url('../images/settlements/fortress/building_siege_tower_small.png');
+}
+/** image for building_infantry_tower */
+.building-option-image.building_infantry_tower {
+  background: url('../images/settlements/fortress/building_infantry_tower_small.png');
+}
+/** image for building_artillery_tower */
+.building-option-image.building_artillery_tower {
+  background: url('../images/settlements/fortress/building_artillery_tower_small.png');
+} 
+/** image for building_cavalry_tower */
+.building-option-image.building_cavalry_tower {
+  background: url('../images/settlements/fortress/building_cavalry_tower_small.png');
+}
+/** image for building_fortress_fortification*/
+.building-option-image.building_fortress_fortification {
+  background: url('../images/settlements/fortress/fortress_main_building_small.png');
+}
+
+.building-option-image .level {
+  font-size: 24px;
+  border: 4px solid #444;
+  background-color: #BBB;
+  border-radius: 9px;
+  color: #444;
+  width: 32px;
+  padding: 8px 0px;
+  text-align: center;
+}
+
+
+.base-screen .building-option-image.size1 {
+  background-position: -120px 0px;
+}
+.base-screen .building-option-image.size2 {
+  background-position: -240px 0px;
+}
+.base-screen .building-option-image.size3 {
+  background-position: -360px 0px;
+}
+.base-screen .building-option-image.size4 {
+  background-position: -480px 0px;
+}
+.base-screen .building-option-image.size5 {
+  background-position: -600px 0px;
+}
+.base-screen .building-option-image.size6 {
+  background-position: -720px 0px;
+}
+
+
+.fortress-screen .building-option-image.size1 {
+  background-position: -53px 0px;
+}
+.fortress-screen .building-option-image.size2 {
+  background-position: -106px 0px;
+}
+.fortress-screen .building-option-image.size3 {
+  background-position: -159px 0px;
+}
+
+.fortress-screen .building-option-image.building_fortress_fortification.size1, .fortress-screen .queue-image.building_fortress_fortification.size1 {
+  background-position: -0px 0px;
+}
+.fortress-screen .building-option-image.building_fortress_fortification.size2, .fortress-screen .queue-image.building_fortress_fortification.size1 {
+  background-position: -120px 0px;
+}
+.fortress-screen .building-option-image.building_fortress_fortification.size3, .fortress-screen .queue-image.building_fortress_fortification.size1 {
+  background-position: -240 0px;
+}
+
+
+.training-option {
+  background-color: #BFB;
+  float: left;
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+  padding: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  word-wrap: break-word;
+}
+
+
+.training-option.selected {
+  background-color: #BBF;
+}
+
+.training-option:hover {
+  background-color: #BBF;
+}
+
+
+
+.queue-list {
+  position: absolute;
+  top: 230px;
+  left: 770px;
+  z-index: 0;
+  text-shadow: none;
+}
+
+.queue-list-pane {
+  padding: 6px 10px 10px 10px;
+  width: 260px;
+  margin: 20px;
+  background-color: rgba(0,0,0,0.6);
+  -moz-border-radius: 12px;
+  border-radius:      12px;
+}
+
+.queue-length {
+  float:right;
+  color: #fff;
+}
+.queue-list h1 {
+  color: #fff;
+  padding: 0px;
+  font-size: 16px;
+  margin: 0px;
+  margin-bottom: 6px;
+}
+
+
+.queue-job-list {
+  height: 338px;
+}
+
+.queue-job-list.empty {
+  height: 30px;
+}
+
+.queue-job {
+  float: left;
+  width: 240px;
+  height: 60px;
+  background-color: #BFB;
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  padding: 10px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.queue-job p {
+  margin: 0px;
+}
+
+.queue-job.active {
+  background-color: #FBB;
+}
+
+.queue-job-image {
+  float: left;
+}
+
+.fortress-screen .queue-job-image {
+  width: 53px;
+  height: 101px;
+  margin: -32px 6px 0px -8px;
+}
+
+.base-screen .queue-job-image {
+  width: 72px;
+  height: 90px;
+  margin: -14px 0px 0px -10px ;
+}
+
+
+.queue-job-text {
+  float: left;
+  width: 170px;
+  font-size: 12px;
+}
+
+.queue-job-text .progress-bar-border {
+  float: left;
+  overflow: visible;
+  width: 100px;
+  display: inline-block;
+  white-space: nowrap;
+  border: 1px solid white;
+  padding: 1px;
+}
+
+.queue-job-text .progress-bar {
+  overflow: visible;
+  background-color: #FFF;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.queue-job-text p {
+  display: block-inline;
+}
+
+.queue-job-text .building {
+  float: left;
+  width: 170px;
+}
+
+.queue-job-text .finished {
+  float: left;
+  width: 66px;
+  text-align: right;
+  padding: 2px 0px;
+  height: 20px;
+}
+
+.queue-job-text p.duration {
+  float: left;
+  width: 100px;
+  overflow: none;
+  padding: 2px;
+  height: 20px;
+}
+
+.queue-job-button {
+  font-size: 14px;
+  float: right;
+  width: 80px;
+  height: 24px;
+  padding-top: 6px;
+  text-align: right;
+}
+
+.queue-job-button .cancel {
+  float: left;
+  text-align: left;
+}
+
+.queue-job-button a {
+  padding: 2px 8px;
+  color: #333;
+  border-radius: 3px;
+  background-color: #BFB;
+  text-decoration: none;
+  border: 1px solid #333;
+  margin: -2px;
+}
+
+.active .queue-job-button a {
+  background-color: #FBB;
+}
+
+.queue-job-button a:hover {
+  background-color: white;
+}
+
+.training-queue-list input[type="text"] {
+  width: 80px;
+  margin: 20px 10px 6px 0px;
+}
+
+.training-queue-job {
+  float: left;
+  width: 240px;
+  height: 80px;
+  background-color: #BFB;
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  padding: 10px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.training-queue-job p {
+  margin: 0px;
+}
+
+.training-queue-job.active {
+  background-color: #FBB;
+}
+
+.training-queue-job-text {
+  float: left;
+  width: 240px;
+  height: 60px;
+}
+
+.training-queue-job-button {
+  clear: both;
+  font-size: 14px;
+  float: right;
+  width: 80px;
+  height: 24px;
+  padding-top: 6px;
+  text-align: right;
+}
+
+.training-queue-job-button a {
+  padding: 2px 8px;
+  color: #333;
+  border-radius: 3px;
+  background-color: #BFB;
+  text-decoration: none;
+  border: 1px solid #333;
+  margin: -2px;
+}
+
+.active .training-queue-job-button a {
+  background-color: #FBB;
+}
+
+.training-queue-job-button a:hover {
+  background-color: white;
+}
+
+
+/** image for building_siege_tower */
+.queue-job-image.building_siege_tower {
+  background: url('../images/settlements/fortress/building_siege_tower_small.png');
+}
+/** image for building_infantry_tower */
+.queue-job-image.building_infantry_tower {
+  background: url('../images/settlements/fortress/building_infantry_tower_small.png');
+}
+/** image for building_artillery_tower */
+.queue-job-image.building_artillery_tower {
+  background: url('../images/settlements/fortress/building_artillery_tower_small.png');
+}	
+/** image for building_cavalry_tower */
+.queue-job-image.building_cavalry_tower {
+  background: url('../images/settlements/fortress/building_cavalry_tower_small.png');
+}
+/** image for building_fortress_fortification*/
+.queue-job-image.building_fortress_fortification {
+  background: url('../images/settlements/fortress/fortress_main_building_small.png');
+}
+
+.fortress-screen .queue-job-image.size1 {
+  background-position: -53px 0px;
+}
+.fortress-screen .queue-job-image.size2 {
+  background-position: -106px 0px;
+}
+.fortress-screen .queue-job-image.size3 {
+  background-position: -159px 0px;
+}
+
+.base-screen .queue-job-image {
+  background: url('../images/settlements/base/building_category_large_building_small.png');  /** the default images for this category. important: contains the image displayed for empty slots! */
+}
+.base-screen .queue-job-image.building_quarry {
+  background: url('../images/settlements/base/building_quarry_large_small.png');
+}
+.base-screen .queue-job-image.building_chief_cottage {
+  background: url('../images/settlements/base/building_chief_cottage_large_small.png');
+}
+.base-screen .queue-job-image.building_logger{
+  background: url('../images/settlements/base/building_logger_large_small.png');
+}
+.base-picture .queue-job-image.building_barracks {
+  background: url('../images/settlements/base/building_barracks_large_small.png');
+}
+.base-picture .queue-job-image.building_campfire {
+  background: url('../images/settlements/base/building_campfire_large_small.png');
+}
+.base-picture .queue-job-image.building_cottage  {
+  background: url('../images/settlements/base/building_cottage_large_small.png');
+}
+.base-picture .queue-job-image.building_firing_range {
+  background: url('../images/settlements/base/building_firing_range_large_small.png');
+}
+.base-picture .queue-job-image.building_furrier  {
+  background: url('../images/settlements/base/building_furrier_large_small.png');
+}
+.base-picture .queue-job-image.building_gatherer {
+  background: url('../images/settlements/base/building_gatherer_large_small.png');
+}
+.base-picture .queue-job-image.building_stud     {
+  background: url('../images/settlements/base/building_stud_large_small.png');
+}
+.base-picture .queue-job-image.building_workshop {
+  background: url('../images/settlements/base/building_workshop_large_small.png');
+}
+
+
+
+
+
+
+.base-screen .queue-job-image.size1 {
+  background-position: -72px 0px;
+}
+.base-screen .queue-job-image.size2 {
+  background-position: -144px 0px;
+}
+.base-screen .queue-job-image.size3 {
+  background-position: -216px 0px;
+}
+.base-screen .queue-job-image.size4 {
+  background-position: -288px 0px;
+}
+.base-screen .queue-job-image.size5 {
+  background-position: -360px 0px;
+}
+.base-screen .queue-job-image.size6 {
+  background-position: -432px 0px;
+}
+
+/* ===== non-semantic helper classes ========================================
+   Alliance Screen
+   ========================================================================== */
+
+
+.alliance-screen {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  background-color: #DDF;
+  width: 100%;
+  min-height: 100%;
+}
+
+.alliance-screen.own-alliance {
+  background-color: #DFD;
+}
+
+.alliance-pane {   
+  margin-left: 50px;
+  margin-top: 150px;
+  margin-bottom: 300px;
+  width:800px;
+  min-height: 400px;
+  background-color: #FFF;  
+  padding: 16px 20px 16px 20px;
+  border-radius: 12px;
+}
+
+.alliance-pane .alliance-banner {
+  float: left;
+  width: 200px;
+  height: 200px;
+  margin-top: -35px;
+}
+
+
+input[type="text"],
+.alliance-pane input[type="text"] {
+  font-size: 24px;
+  height: 36px;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  margin-right: 30px;
+}
+
+
+.alliance-management input[type="text"] {
+  width: 220px;
+}
+
+.shout-box input[type="text"] {
+  width: 500px;
+}
+
+.shout-box ul {
+  padding: 0px;
+}
+
+li.shout {
+  list-style-type:none;
+  background-color: #DFD;
+  border-radius: 8px;
+  padding: 8px 16px;
+  margin-bottom: 4px;
+  width: 70%;
+  font-style: italic;
+  font-size: 14px;
+  color: #999;
+}
+
+li.shout.leader {
+  background-color: #FDD;
+}
+
+li.shout.own {
+  margin-left: 26%;
+  background-color: #DDD;
+}
+
+li.shout.own.leader {
+  background-color: #FDD;
+}
+
+li.shout .text {
+  font-style: normal;
+  font-size: 18px;
+  color: #333;
+}
+
+li.shout .sender {
+  font-weight: bold;
+}
+
+
+
+/* ===== non-semantic helper classes ========================================
+   Fortess Screen
+   ========================================================================== */
+
+.settlement-info-box {
+  z-index: 5;
+  -moz-border-radius: 6px;
+  border-radius:      6px;
+}
+
+.settlement-info-box .change-name,
+.army-info-view .change-name {
+  opacity: 1.0;
+  font-size: 12px;
+  text-decoration:none;
+  margin: 0;
+  color: #CCF;
+}
+
+
+
+.settlment-info-box .change-name:hover,
+.army-info-view .change-name:hover {
+  text-decoration:underline;
+  color: #DDF;
+}
+
+.fortress-picture .settlement-info-box {
+  font-size: 14px;
+  width: 400px;
+  height: 120px;
+  padding: 6px 10px 6px 10px;
+  position: absolute;
+  left: 220px;
+  top: 70px;  
+  background-color: rgba(255,255,255,0.4);
+}
+
+.base-screen .settlement-info-box {
+  font-size: 12px;
+  width: 400px;
+  height: 70px;
+  padding: 2px 10px 0px 10px;
+  color: white;
+  text-shadow: none;
+  position: absolute;
+  left: 40px;
+  top: 8px;  
+  background-color: rgba(0,0,0,0.4);
+}
+
+.base-screen .settlement-info-box h1 {
+  font-size: 16px;
+  margin: 0px;
+}
+
+
+.fortress-picture, .base-picture {
+  position: relative;
+  width: 800px;
+  height: 600px;
+} 
+
+.fortress-picture {
+  background: url('../images/settlements/fortress/fortress_background.png');
+} 
+
+.base-picture {
+  background: url('../images/settlements/base/base_background.png');
+} 
+
+.fortress-picture .mouse-over, .base-picture .mouse-over {
+  position: absolute;
+  width: 360px;
+  height: 140px;
+  z-index:10;
+  padding: 16px;
+  border-radius: 11px;
+  padding-left: 170px;
+}
+
+.fortress-picture .mouse-over {
+  background-color: rgba(255,255,255,0.4);
+} 
+
+.base-picture .mouse-over {
+  background-color: rgba(0,0,0,0.4);
+  color: white;
+  text-shadow: none;
+}
+
+
+.fortress-picture .mouse-over h1, .base-picture .mouse-over h1 {
+  margin-top: 0px;
+}
+
+
+.fortress-picture .mouse-over p, .base-picture .mouse-over p {
+  padding-left: 10px;
+}
+
+.fortress-picture .mouse-over .advisor, .base-picture .mouse-over .advisor {
+  position: absolute;
+  left: -30px;
+}
+
+.fortress-picture .background {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 0;
+}
+
+.fortress-picture .buildings {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 800px;
+  height: 600px;
+  z-index: 1;
+  background: url('../images/settlements/fortress/fortress_buildings.png');
+}
+
+
+.fortress-picture .wall {
+  position: absolute;
+  top: 360px;
+  left: 0px;
+  width: 800px;
+  height: 240px;
+  z-index: 3;
+  background: url('../images/settlements/fortress/fortress_wall.png');
+}
+
+.base-picture .small-building {
+/*  border: 1px solid black;*/
+  position: absolute;
+  width: 80px;
+  height: 120px;
+  z-index: 2;
+  border-radius: 5px;
+  background: url('../images/settlements/base/building_category_small_building.png');  /** the default images for this category. important: contains the image displayed for empty slots! */
+}
+
+.base-picture .large-building {
+/*  border: 1px solid black;*/
+  position: absolute;
+  width: 120px;
+  height: 150px;
+  z-index: 2;
+  border-radius: 5px;
+  background: url('../images/settlements/base/building_category_large_building.png');  /** the default images for this category. important: contains the image displayed for empty slots! */
+}
+
+
+/** general settings for towers and default image (will be used as long as theres no specific image for a particular building type ) */
+.fortress-picture .tower {
+  position: absolute;
+  width: 238px;
+  height: 454px;
+  z-index: 2;
+  background: url('../images/settlements/fortress/building_category_fortress_tower.png');  /** the default images for this category. important: contains the image displayed for empty slots! */
+}
+
+
+
+/** position of left tower */
+.fortress-picture .tower-left {
+  top: 24px;
+  left: 0px;
+}
+
+/** position of right tower */
+.fortress-picture .tower-right {
+  top: 100px;
+  right: 0px;
+}
+
+.constructing, .fortress-picture .level.constructing, .base-picture .level.constructing {
+  color: #3F3;
+}
+
+.destructing, .fortress-picture .level.destructing, .base-picture .level.destructing {
+  color: #F33;
+}
+
+/** image for building_siege_tower */
+.fortress-picture .tower.building_siege_tower {
+  background: url('../images/settlements/fortress/building_siege_tower.png');
+}
+/** image for building_infantry_tower */
+.fortress-picture .tower.building_infantry_tower {
+  background: url('../images/settlements/fortress/building_infantry_tower.png');
+}
+/** image for building_artillery_tower */
+.fortress-picture .tower.building_artillery_tower {
+  background: url('../images/settlements/fortress/building_artillery_tower.png');
+}	
+/** image for building_cavalry_tower */
+.fortress-picture .tower.building_cavalry_tower {
+  background: url('../images/settlements/fortress/building_cavalry_tower.png');
+}
+
+/** base: large slots */
+.base-picture .large-building.building_quarry {
+  background: url('../images/settlements/base/building_quarry_large.png');
+}
+.base-picture .large-building.building_chief_cottage {
+  background: url('../images/settlements/base/building_chief_cottage_large.png');
+}
+.base-picture .large-building.building_logger   {
+  background: url('../images/settlements/base/building_logger_large.png');
+}
+.base-picture .large-building.building_barracks {
+  background: url('../images/settlements/base/building_barracks_large.png');
+}
+.base-picture .large-building.building_campfire {
+  background: url('../images/settlements/base/building_campfire_large.png');
+}
+.base-picture .large-building.building_cottage  {
+  background: url('../images/settlements/base/building_cottage_large.png');
+}
+.base-picture .large-building.building_firing_range {
+  background: url('../images/settlements/base/building_firing_range_large.png');
+}
+.base-picture .large-building.building_furrier  {
+  background: url('../images/settlements/base/building_furrier_large.png');
+}
+.base-picture .large-building.building_gatherer {
+  background: url('../images/settlements/base/building_gatherer_large.png');
+}
+.base-picture .large-building.building_stud     {
+  background: url('../images/settlements/base/building_stud_large.png');
+}
+.base-picture .large-building.building_workshop {
+  background: url('../images/settlements/base/building_workshop_large.png');
+}
+
+/** base: small slots */
+.base-picture .small-building.building_quarry {
+  background: url('../images/settlements/base/building_quarry_small.png');
+}
+.base-picture .small-building.building_logger   {
+  background: url('../images/settlements/base/building_logger_small.png');
+}
+.base-picture .small-building.building_barracks {
+  background: url('../images/settlements/base/building_barracks_small.png');
+}
+.base-picture .small-building.building_campfire {
+  background: url('../images/settlements/base/building_campfire_small.png');
+}
+.base-picture .small-building.building_cottage  {
+  background: url('../images/settlements/base/building_cottage_small.png');
+}
+.base-picture .small-building.building_firing_range {
+  background: url('../images/settlements/base/building_firing_range_small.png');
+}
+.base-picture .small-building.building_furrier  {
+  background: url('../images/settlements/base/building_furrier_small.png');
+}
+.base-picture .small-building.building_gatherer {
+  background: url('../images/settlements/base/building_gatherer_small.png');
+}
+.base-picture .small-building.building_stud     {
+  background: url('../images/settlements/base/building_stud_small.png');
+}
+.base-picture .small-building.building_workshop {
+  background: url('../images/settlements/base/building_workshop_small.png');
+}
+
+
+.fortress-picture .level, .base-picture .level {
+  background-color: #BBB;
+  color: #444;
+  text-align: center;
+}
+
+.fortress-picture .level {
+  font-size: 24px;
+  border: 4px solid #444;
+  border-radius: 9px;
+  width: 32px;
+  padding: 8px 0px;
+}
+
+.base-picture .level {
+  font-size: 12px;
+  border: 2px solid #444;
+  border-radius: 4px;
+  width: 16px;
+  padding: 4px 0px;
+}
+
+
+
+.fortress-picture .tower .level {
+  margin-top: 320px;
+  margin-left: 170px;
+}
+
+.fortress-picture .wall .level {
+  margin-top: 130px;
+  margin-left: 460px;
+}
+
+
+.fortress-picture .buildings.size2 {
+  background-position: -800px  -0px;
+}
+.fortress-picture .buildings.size3 {
+  background-position: -1600px -0px;
+}
+
+
+.fortress-picture .tower.size1 {
+  background-position: -238px 0px;
+}
+.fortress-picture .tower.size2 {
+  background-position: -476px 0px;
+}
+.fortress-picture .tower.size3 {
+  background-position: -714px 0px;
+}
+
+
+
+.fortress-picture .tower:hover {
+  background-position: 0px -454px;
+  cursor: pointer;
+}
+.fortress-picture .tower.size1:hover {
+  background-position: -238px -454px;
+}
+.fortress-picture .tower.size2:hover {
+  background-position: -476px -454px;
+}
+.fortress-picture .tower.size3:hover {
+  background-position: -714px -454px;
+}
+
+.base-picture .small-building .level {
+  position: absolute;
+  left:   2px;
+  bottom: 6px;
+}
+
+.base-picture .large-building .level {
+  position: absolute;
+  right: 10px;
+  top:   10px;
+}
+
+.base-picture .small-building.size1 {
+  background-position: -80px 0px;
+}
+.base-picture .small-building.size2 {
+  background-position: -160px 0px;
+}
+.base-picture .small-building.size3 {
+  background-position: -240px 0px;
+}
+
+.base-picture .large-building.size1 {
+  background-position: -120px 0px;
+}
+.base-picture .large-building.size2 {
+  background-position: -240px 0px;
+}
+.base-picture .large-building.size3 {
+  background-position: -360px 0px;
+}
+.base-picture .large-building.size4 {
+  background-position: -480px 0px;
+}
+.base-picture .large-building.size5 {
+  background-position: -600px 0px;
+}
+.base-picture .large-building.size6 {
+  background-position: -720px 0px;
+}
+
+
+.base-picture .small-building:hover {
+  margin-left: -4px; 
+  margin-top: -4px;
+  border: 4px solid orange;
+  cursor: pointer;
+}
+.base-picture .small-building.size1:hover {
+}
+.base-picture .small-building.size2:hover {
+}
+.base-picture .small-building.size3:hover {
+}
+
+.base-picture .large-building:hover {
+  margin-left: -4px; 
+  margin-top: -4px;
+  border: 4px solid orange;
+  cursor: pointer;
+}
+.base-picture .large-building.size1:hover {
+}
+.base-picture .large-building.size2:hover {
+}
+.base-picture .large-building.size3:hover {
+}
+.base-picture .large-building.size4:hover {
+}
+.base-picture .large-building.size5:hover {
+}
+.base-picture .large-building.size6:hover {
+}
+
+
+
+
+
+
+.fortress-picture .wall {
+	background-position: 0px -360px;
+}
+.fortress-picture .wall.size2 {
+	background-position: -800px -360px;
+}
+.fortress-picture .wall.size3 {
+	background-position: -1600px -360px;
+}
+
+.fortress-picture .wall:hover {
+	cursor: pointer;
+	background-position: 0px -960px;
+}
+.fortress-picture .wall.size2:hover {
+	background-position: -800px -960px;
+}
+.fortress-picture .wall.size3:hover {
+	background-position: -1600px -960px;
+}
+
+
+/** position of slots in base view */
+.base-picture .small-building {
+  top:  200px;
+  right: 0;
+}
+.base-picture .large-building {
+  top:  200px;
+  right: 0px;
+}
+
+/** row 1 */
+.base-picture .small-building.slot5 {
+  top:   50px;
+  left:  40px;
+}
+.base-picture .small-building.slot6 {
+  top:   50px;
+  left: 120px;
+}
+.base-picture .small-building.slot7 {
+  top:   50px;
+  left: 200px;
+}
+.base-picture .small-building.slot8 {
+  top:   50px;
+  left: 280px;
+}
+.base-picture .small-building.slot9 {
+  top:   50px;
+  left: 360px;
+}
+.base-picture .small-building.slot10 {
+  top:   50px;
+  left: 440px;
+}
+.base-picture .small-building.slot11 {
+  top:   50px;
+  left: 520px;
+}
+.base-picture .small-building.slot12 {
+  top:   50px;
+  left: 600px;
+}
+.base-picture .small-building.slot13 {
+  top:   50px;
+  left: 680px;
+}
+
+/** row 2 */
+.base-picture .small-building.slot14 {
+  top:  145px;
+  left:  40px;
+}
+.base-picture .small-building.slot15 {
+  top:  145px;
+  left: 120px;
+}
+.base-picture .small-building.slot16 {
+  top:  145px;
+  left: 200px;
+}
+.base-picture .large-building.slot1 {
+  top:  155px;
+  left: 280px;
+}
+.base-picture .large-building.slot2 {
+  top:  155px;
+  left: 400px;
+}
+.base-picture .small-building.slot17 {
+  top:  145px;
+  left: 520px;
+}
+.base-picture .small-building.slot18 {
+  top:  145px;
+  left: 600px;
+}
+.base-picture .small-building.slot19 {
+  top:  145px;
+  left: 680px;
+}
+
+
+/** row 3 */
+.base-picture .small-building.slot20 {
+  top:  240px;
+  left:  40px;
+}
+.base-picture .small-building.slot21 {
+  top:  240px;
+  left: 120px;
+}
+.base-picture .small-building.slot22 {
+  top:  240px;
+  left: 200px;
+}
+/** large slot1 */
+/** large slot2 */
+.base-picture .small-building.slot23 {
+  top:  240px;
+  left: 520px;
+}
+.base-picture .small-building.slot24 {
+  top:  240px;
+  left: 600px;
+}
+.base-picture .small-building.slot25 {
+  top:  240px;
+  left: 680px;
+}
+
+
+/** row 4 */
+.base-picture .small-building.slot26 {
+  top:  335px;
+  left:  40px;
+}
+.base-picture .small-building.slot27 {
+  top:  335px;
+  left: 120px;
+}
+.base-picture .small-building.slot28 {
+  top:  335px;
+  left: 200px;
+}
+.base-picture .large-building.slot3 {
+  top:  290px;
+  left: 280px;
+}
+.base-picture .large-building.slot4 {
+  top:  290px;
+  left: 400px;
+}
+.base-picture .small-building.slot29 {
+  top:  335px;
+  left: 520px;
+}
+.base-picture .small-building.slot30 {
+  top:  335px;
+  left: 600px;
+}
+.base-picture .small-building.slot31 {
+  top:  335px;
+  left: 680px;
+}
+
+
+/** row 5 */
+.base-picture .small-building.slot32 {
+  top:  430px;
+  left:  40px;
+}
+.base-picture .small-building.slot33 {
+  top:  430px;
+  left: 120px;
+}
+.base-picture .small-building.slot34 {
+  top:  430px;
+  left: 200px;
+}
+.base-picture .small-building.slot35 {
+  top:  430px;
+  left: 280px;
+}
+.base-picture .small-building.slot36 {
+  top:  430px;
+  left: 360px;
+}
+.base-picture .small-building.slot37 {
+  top:  430px;
+  left: 440px;
+}
+.base-picture .small-building.slot38 {
+  top:  430px;
+  left: 520px;
+}
+.base-picture .small-building.slot39 {
+  top:  430px;
+  left: 600px;
+}
+.base-picture .small-building.slot40 {
+  top:  430px;
+  left: 680px;
+}
+
+.army-view-unit-list {
+  float: left;
+  margin-right: 20px;
+}
+
+.army-info-dialog .modal-dialog-pane { 
+  margin-top:-280px;
+  width: 700px;
+  margin-left: -350px;
+}
+
+
+.army-info-view {
+  display: inline-block;
+  width: 100%;
+}
+
+.army-info-view .header {
+  width: 100%;
+}
+
+.army-info-view .change-name {
+  font-size: 16px;
+}
+
+.army-view-property-list {
+  float: left;
+}
+
+.table-list th {
+  text-align: left;
+  padding: 0px 10px 0px 0px;
+}
+
+.table-list td {
+  text-align: right;
+}
+
+#army-create-form, #army-change-form {
+  margin-left: -300px;
+  margin-top: -250px;
+  width: 600px; min-height: 200px;
+}
+
+#army-create-form table td, #army-change-form table td {
+  text-align: center;
+  padding: 3px 20px 3px 20px;
+}
+
+#army-create-form table th.garrison, #army-change-form table th.garrison {
+  text-align: left;
+  padding-right: 20px;
+}
+
+#army-create-form table th.other, #army-change-form table th.other {
+  text-align: right;
+  padding-left: 20px;
+}
+
+#army-create-form table td.unit, #army-change-form table td.unit {
+  text-align: left;
+  padding-left: 0px;
+  padding-right: 40px;
+}
+
+#army-create-form table td .units-field, #army-change-form table td .units-field {
+  width: 30px;
+  text-align: right;
+}
+
+#army-create-form table td.center, #army-change-form table td.center{
+  text-align: center;
+}
+
+#army-create-form table tr.line, #army-change-form table tr.line {
+  border-top: 1px solid #ccc;
+}
+
+#army-create-form a.close, #army-change-form a.close {
+  position: absolute;
+  background: url('../images/icons/cross_small.png');
+  width: 36px;
+  height: 36px;
+  right: 12px;
+  top: 10px;
+}
+
+#army-create-form a.close:hover, #army-change-form a.close:hover {
+  opacity: 0.6;
+}
+
+
+
+
+.resource-offer {
+  float: left;
+  width: 120px;
+  height: 80px;
+  background-color: #BBF;
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  padding: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+a.resource-offer {
+  text-decoration: none;
+}
+
+a.resource-offer:hover {
+  background-color: #BFB;
+}
+
+.resource-offer p {
+  margin: 3px;
+  color: #555;
+}
+
+.bonus-offer {
+  background-color: #FBB;
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.bonus-offer.active {
+  background-color: #BFB;
+}
+
+.bonus-offer-header {
+  padding: 10px;
+  font-weight: bold;
+}
+
+.bonus-offer-description {
+  width: 190px;
+  display: inline-block;
+}
+
+.bonus-offer-duration {
+  width: 60px;
+  display: inline-block;
+}
+
+.bonus-offer-price {
+  text-align: center;
+  width: 70px;
+  display: inline-block;
+}
+
+.bonus-offer-end {
+  width: 230px;
+  display: inline-block;
+}
+
+.shop-dialog-pane { 
+  position: absolute; 
+  margin-left: -300px;
+  margin-top: -300px;
+  width: 600px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 16px 20px 16px 20px;
+  z-index:256;
+
+  -moz-border-radius: 12px;
+  border-radius:      12px;
+  -moz-box-shadow:    3px 3px 2px 2px #333;
+  -webkit-box-shadow: 3px 3px 2px 2px #333;
+  box-shadow:         3px 3px 2px 2px #333;
+}
+
+
+.shop-dialog-pane a.close {
+  position: absolute;
+  background: url('../images/icons/cross_small.png');
+  width: 36px;
+  height: 36px;
+  right: 12px;
+  top: 10px;
+}
+
+.shop-dialog-pane a.close:hover {
+  opacity: 0.6;
+}
+
+.participant div {
+  display: inline-block;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.participant.header div {
+  font-weight: bold;
+}
+
+.participant-name {
+  width: 80px;
+}
+
+.participant-owner {
+  width: 100px;
+}
+
+.participant-size {
+  width: 30px;
+  text-align: center;
+}
+
+.participant-strength {
+  width: 60px;
+  text-align: center;
+}
+
+.participant-exp {
+  width: 30px;
+  text-align: center;
+}
+
+.participant-retreat {
+  width: 70px;
+}
+
+.participants-left {
+  display: inline-block;
+  border-right: 1px solid #ccc;
+}
+
+.participants-right {
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.battle-ratio {
+  position: relative;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.battle-ratio-left {
+  background-color: #cfc;
+  display: inline-block;
+  height: 32px;
+}
+
+.battle-ratio-right {
+  background-color: #fcc;
+  display: inline-block;
+  height: 32px;
+}
+
+.battle-ratio-left-text {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 5px;
+  width: 770px;
+}
+
+.battle-ratio-right-text {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: right;
+  padding: 5px;
+  width: 770px;
+}
+
+.battle-time {
+  margin-top: 20px;
+}
+
+.battle-dialog-pane {
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: -200px;
+  width: 800px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 16px 20px 16px 20px;
+  z-index:256;
+
+  -moz-border-radius: 12px;
+  border-radius:      12px;
+  -moz-box-shadow:    3px 3px 2px 2px #333;
+  -webkit-box-shadow: 3px 3px 2px 2px #333;
+  box-shadow:         3px 3px 2px 2px #333;
+}
+
+.battle-dialog-pane a.close {
+  position: absolute;
+  background: url('../images/icons/cross_small.png');
+  width: 36px;
+  height: 36px;
+  right: 12px;
+  top: 10px;
+}
+
+.activity-indicator-small {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-image: url('../images/icons/activityindicator_small.svg');
+}
+
+
+
+/* ==|== media queries ======================================================
+   EXAMPLE Media Query for Responsive Design.
+   This example overrides the primary ('mobile first') styles
+   Modify as content requires.
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+  /* Style adjustments for viewports that meet the condition */
+}
+
+
+
+/* ==|== non-semantic helper classes ========================================
+   Please define your styles before this section.
+   ========================================================================== */
+
+/* For image replacement */
+.ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; *line-height: 0; }
+.ir br { display: none; }
+
+/* Hide from both screenreaders and browsers: h5bp.com/u */
+.hidden { display: none !important; visibility: hidden; }
+
+/* Hide only visually, but have it available for screenreaders: h5bp.com/v */
+.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+
+/* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: h5bp.com/p */
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
+
+/* Hide visually and from screenreaders, but maintain layout */
+.invisible { visibility: hidden; }
+
+/* Contain floats: h5bp.com/q */
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { *zoom: 1; }
+
+
+
+/* ==|== print styles =======================================================
+   Print styles.
+   Inlined to avoid required HTTP connection: h5bp.com/r
+   ========================================================================== */
+
+@media print {
+  * { background: transparent !important; color: black !important; box-shadow:none !important; text-shadow: none !important; filter:none !important; -ms-filter: none !important; } /* Black prints faster: h5bp.com/s */
+  a, a:visited { text-decoration: underline; }
+  a[href]:after { content: " (" attr(href) ")"; }
+  abbr[title]:after { content: " (" attr(title) ")"; }
+  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }  /* Don't show links for images, or javascript/internal links */
+  pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+  thead { display: table-header-group; } /* h5bp.com/t */
+  tr, img { page-break-inside: avoid; }
+  img { max-width: 100% !important; }
+  @page { margin: 0.5cm; }
+  p, h2, h3 { orphans: 3; widows: 3; }
+  h2, h3 { page-break-after: avoid; }
+}
