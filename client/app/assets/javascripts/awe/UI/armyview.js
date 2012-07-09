@@ -21,7 +21,8 @@ AWE.UI = (function(module) {
     var _annotationView = null;
 
     var _battleView = null;
-    var _stanceView = null;    
+    var _stanceView = null;  
+    var _baseImage = null;  
     var _baseShape = null;    
     var _poleShape = null;    
     var _flagView = null;
@@ -55,14 +56,14 @@ AWE.UI = (function(module) {
       _selectGraphics.setStrokeStyle(1);
       _selectGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
       _selectGraphics.beginFill(Graphics.getRGB(0, 255, 0));
-      _selectGraphics.drawEllipse(0, 0, 64, 32);
+      _selectGraphics.drawEllipse(0, 0, 72, 36);
       _selectShape = AWE.UI.createShapeView();
       _selectShape.initWithControllerAndGraphics(my.controller, _selectGraphics);
-      _selectShape.setFrame(AWE.Geometry.createRect(0, 80, 64, 32));
+      _selectShape.setFrame(AWE.Geometry.createRect(-6, 74, 72, 36));
       this.addChild(_selectShape);      
       
             
-      var _baseGraphics = new Graphics();
+/*      var _baseGraphics = new Graphics();
       _baseGraphics.setStrokeStyle(1);
       if (_army.isOwn()) {
         _baseGraphics.beginStroke(Graphics.getRGB(222, 222, 232)).setStrokeStyle(3).beginFill(Graphics.getRGB(242, 242, 255));
@@ -86,11 +87,19 @@ AWE.UI = (function(module) {
       _poleShape = AWE.UI.createShapeView();
       _poleShape.initWithControllerAndGraphics(my.controller, _poleGraphics);
       _poleShape.setFrame(AWE.Geometry.createRect(46, 12, 2, 84));
-      this.addChild(_poleShape);      
+      this.addChild(_poleShape);       */
+      
+      _baseImage = AWE.UI.createImageView();
+      _baseImage.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage('map/army/base'));
+      _baseImage.setFrame(AWE.Geometry.createRect(-16, 9, 96, 96));
+      _baseImage.onClick = that.onClick;
+      _baseImage.onMouseOver = that.onMouseOver;
+      _baseImage.onMouseOut = that.onMouseOut;
+      this.addChild(_baseImage);      
 
       _stanceView = AWE.UI.createImageView();
       _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[1]));
-      _stanceView.setFrame(AWE.Geometry.createRect(-22, 5, 96, 96));
+      _stanceView.setFrame(AWE.Geometry.createRect(-22, -7, 96, 96));
       _stanceView.onClick = that.onClick;
       _stanceView.onMouseOver = that.onMouseOver;
       _stanceView.onMouseOut = that.onMouseOut;
@@ -169,7 +178,7 @@ AWE.UI = (function(module) {
       var flagLength = 8 + Math.round(Math.min(_army.get('size_present') / _army.get('size_max'), 1) * 48);
       _flagView = AWE.UI.createAllianceFlagView();
       _flagView.initWithController(my.controller);
-      _flagView.setFrame(AWE.Geometry.createRect(46 - flagLength, 12, flagLength, 20));
+      _flagView.setFrame(AWE.Geometry.createRect(50 - flagLength, 11, flagLength, 20));
       _flagView.setAllianceId(_army.get('alliance_id'));
       _flagView.setDirection('left');
       that.addChildAt(_flagView, 0);
