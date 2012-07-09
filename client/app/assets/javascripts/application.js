@@ -8,4 +8,5 @@
 //= require jquery_ujs
 
 //= require plugins
+//= require ember-0.9.8.1
 
