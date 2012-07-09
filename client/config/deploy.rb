@@ -16,6 +16,8 @@ set :use_sudo, false
 set :deploy_to, "/var/www/html_client"
 set :deploy_via, :remote_cache
 
+set :deploy_subdir, "html_client/client"
+
 role :web, "wackadoo.de"                          # Your HTTP server, Apache/etc
 role :app, "wackadoo.de"                          # This may be the same as your `Web` server
 role :db,  "wackadoo.de", :primary => true        # This is where Rails migrations will run
