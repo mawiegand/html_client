@@ -42,4 +42,4 @@ publish
 build/buildinfo.properties
 build/config/buildinfo.properties
 
-/client/config/thin_local.yml
+client/config/thin_local.yml

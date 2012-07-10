@@ -26,6 +26,28 @@
         };
     </script>
 
+  <!-- Load ember JS. For debugging-purposes: not minified. -->
+  <%= javascript_include_tag    "ember-0.9.8.1" %>
+
+  <!-- Load easelJS. -->
+  <%= javascript_include_tag    "easel" %>
+
+  <!-- Load date library --> 
+  <%= javascript_include_tag    "date" %>
+
+  <!-- scripts concatenated and minified via build script -->
+  <%= javascript_include_tag    "awe-config" %>
+  <%= javascript_include_tag    "awe-i18n" %>
+  <%= javascript_include_tag    "awe-network" %>
+  <%= javascript_include_tag    "awe-util" %>
+  <%= javascript_include_tag    "awe-map" %>
+  <%= javascript_include_tag    "awe-gamestate" %>
+  <%= javascript_include_tag    "awe-ui" %>
+  <%= javascript_include_tag    "awe-controller" %>
+  <%= javascript_include_tag    "awe-action" %>
+  <%= javascript_include_tag    "awe-application" %>
+  
+  <%= javascript_include_tag    "wackadoo" %>
 
   <!-- end scripts -->
   <div id="templates">

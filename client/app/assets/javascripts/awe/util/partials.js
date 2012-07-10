@@ -295,7 +295,6 @@ AWE.Partials = (function(module) {
     
   };
   
-
-  
   return module;
+  
 }(AWE.Partials || {}));
