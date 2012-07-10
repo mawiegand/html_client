@@ -106,7 +106,7 @@
       {{#if sendingUpgrade}}
         <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Updating...</div>
       {{else}}
-      <a href="#" {{action "upgradeClicked"}} class="upgrade" title="click to upgrade"><img src="images/icons/cross_green.png"></img> Upgrade</a>
+      <a href="#" {{action "upgradeClicked"}} class="upgrade" title="click to upgrade"><img src="<%= asset_path('icons/cross_green.png') %>"></img> Upgrade</a>
       {{/if}}
       <h2>Next Upgrade: Level {{ building.nextLevel }}</h2>
     
@@ -156,7 +156,7 @@
       {{#if sendingDestroy}}
         <div class="destroy">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Destroying...</div>
       {{else}}
-      <a href="#" {{action "destroyClicked"}} {{bindAttr class="destroyClasses"}} title="click to destroy"><img src="images/icons/cross_red.png"></img> Destroy Building</a>
+      <a href="#" {{action "destroyClicked"}} {{bindAttr class="destroyClasses"}} title="click to destroy"><img src="<%= asset_path('icons/cross_red.png') %>"></img> Destroy Building</a>
       {{/if}}
       <b>{{t building.duration}}:</b> {{formatDuration building.destructionTime}}<br />
     {{/if}}
