@@ -12,4 +12,27 @@
 //= require easel
 //= require date
 
+//= require_tree ./awe/action
+//= require_tree ./awe/application
+//= require_tree ./awe/config
+//= require_tree ./awe/controller
+//= require awe/gamestate/gamestate
+//= require awe/gamestate/queue
+//= require_tree ./awe/gamestate
+
+//= require awe/i18n/i18n.js
+//= require awe/i18n/de_DE
+//= require awe/i18n/en_US
+//= require_tree ./awe/map
+//= require_tree ./awe/network
+//= require awe/UI/view
+//= require awe/UI/ember/domview
+//= require awe/UI/ember/standardviews
+//= require awe/UI/ember/settlementviews
+//= require awe/UI/ember/buildingviews
+
+//= require_tree ./awe/UI
+//= require_tree ./awe/util
+
+//= require wackadoo
 
