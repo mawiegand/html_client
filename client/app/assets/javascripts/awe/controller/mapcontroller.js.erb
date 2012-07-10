@@ -1855,12 +1855,6 @@ AWE.Controller = (function(module) {
             targetArmies.push(army);
           }        
         });
-        
-        // var garrisonArmy = armyLocation.getGarrisonArmy();
-//         
-        // if (!garrisonArmy.isOwn()) {
-          // targetArmies.push(garrisonArmy);
-        // }        
       }
       else {
         AWE.Map.Manager.fetchLocationsForRegion(armyRegion);
@@ -2057,7 +2051,7 @@ AWE.Controller = (function(module) {
           AWE.Ext.applyFunctionToElements(targetArmies, function(army) {
             var targetView = targetViews[army.getId()];
             var armyLocation = AWE.Map.Manager.getLocation(army.get('location_id'));
-            var targetedView = army.isGarrison() ? locationViews[armyLocation.id()] : armyViews[army.getId()];
+            var targetedView = army.isGarrison() ? fortressViews[armyLocation.node().id()] : armyViews[army.getId()];
             
             if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.settlementTypeId()] === 'fortress') {
               var visible = that.areArmiesAtFortressVisible(that.mc2vc(armyLocation.node().frame()));
