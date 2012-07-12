@@ -17,6 +17,7 @@ AWE.UI = (function(module) {
     var _labelView = null;
     var _selectShape = null;
     var _flagView = null;
+    var _battleView = null;
     var _poleShape = null;
     var _fortressImageName = null;
     
@@ -137,8 +138,17 @@ AWE.UI = (function(module) {
       var ownerName = _node.region().ownerName() + (_node.region().allianceTag() ? " | " +  _node.region().allianceTag() : "");
       if (_labelView.text() != ownerName) {
         _labelView.setText(ownerName);
-      }    
+      }
       
+      if (_node.region().location(0) && _node.region().location(0).garrisonArmy() && _node.region().location(0).garrisonArmy().get('isFighting') && !_battleView) {
+        _battleView = AWE.UI.createImageView();
+        _battleView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage('map/army/battle'));
+        _battleView.setFrame(AWE.Geometry.createRect(0, -50, 65, 65));
+        _battleView.onClick = that.onClick;
+        _battleView.onMouseOver = that.onMouseOver;
+        _battleView.onMouseOut = that.onMouseOut;
+        this.addChild(_battleView);
+      }      
       
       // FRAME RECT //////////////////////////////////////////////////////////     
       if (!_frameRect && AWE.Config.MAP_DEBUG_FRAMES) {

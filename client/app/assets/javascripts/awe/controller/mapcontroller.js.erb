@@ -1875,6 +1875,10 @@ AWE.Controller = (function(module) {
           annotationView.onAttackButtonClick = (function(self) {
             return function(view) { self.settlementAttackButtonClicked(view); }
           })(that);
+          
+          annotationView.onBattleInfoButtonClick = (function(self) {
+            return function(army) { self.battleInfoButtonClicked(army); }
+          })(that);
         }
         else if (annotatedView.typeName() === 'ArmyView') {
           annotationView = AWE.UI.createArmyAnnotationView();

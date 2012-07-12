@@ -20,6 +20,7 @@ AWE.UI = (function(module) {
     var spyButton = null;    
     var attackButton = null;    
     var battleButton = null;    
+    var _battleInfoButtonView = null;    
 
 
     //  hovered
@@ -62,6 +63,10 @@ AWE.UI = (function(module) {
     that.updateButtonState = function() {
       if (attackButton) {
         attackButton.setSelected(_actionMode === 'attackTargetSelection');
+      }
+      
+      if (_battleInfoButtonView) {
+        _battleInfoButtonView.setVisible(my.fortressView.selected() && my.region.location(0).garrisonArmy().get('isFighting'));
       }
     }
     
@@ -140,6 +145,20 @@ AWE.UI = (function(module) {
       if (battleButton) {
         battleButton.setVisible(my.fortressView.selected());
       }    
+      
+      if (!_battleInfoButtonView) {
+        _battleInfoButtonView = AWE.UI.createButtonView();
+        _battleInfoButtonView.initWithControllerTextAndImage(my.controller, 'Battle Info', AWE.UI.ImageCache.getImage("map/button1"));
+        _battleInfoButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        _battleInfoButtonView.setFrame(AWE.Geometry.createRect(128, -70, 52, 52));
+        _battleInfoButtonView.onClick = function() {
+          if (_battleInfoButtonView.enabled() && my.region.location(0) && my.region.location(0).garrisonArmy()) {
+            that.onBattleInfoButtonClick(my.region.location(0).garrisonArmy());
+          }
+        }
+        this.addChild(_battleInfoButtonView);
+      }
+      
       
       this.updateButtonState();
 
@@ -267,6 +286,7 @@ AWE.UI = (function(module) {
 
     that.onBattleButtonClick = function() {};
 
+    that.onBattleInfoButtonClick = function() {};
     
     return that;
   };
