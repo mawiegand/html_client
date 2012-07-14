@@ -28,10 +28,10 @@ AWE.UI = (function(module) {
     var _sizeType2LabelView = null;
     var _sizeType3LabelView = null;
     
-    var _circleShape = null;
-    var _baseShape = null;
+    var _inspectorFrame = null;
     var _stanceView = null;
     var _flagView = null;
+    var _flagFrameView = null;
 
     var _infoButtonView = null;
     var _reinforceButtonView = null;
@@ -165,32 +165,14 @@ AWE.UI = (function(module) {
       }
       _sizeType3LabelView.setText(Math.floor(_army.get('unitcategory_artillery_strength')));
       
-      if (!_circleShape) {
-      // kreis drum
-        var circleGraphics = new Graphics();
-        circleGraphics.setStrokeStyle(1);
-        circleGraphics.beginStroke('rgb(0, 0, 0)');
-        circleGraphics.beginFill('rgb(255, 255, 255)');
-        circleGraphics.drawCircle(64, 64, 64);
-        _circleShape = AWE.UI.createShapeView();
-        _circleShape.initWithControllerAndGraphics(my.controller, circleGraphics);
-        _circleShape.setFrame(AWE.Geometry.createRect(184, 0, 64, 64));
-        _circleShape.onClick = function() { 
+      if (!_inspectorFrame) {
+        _inspectorFrame = AWE.UI.createImageView();
+        _inspectorFrame.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/inspector/frame"));
+        _inspectorFrame.setFrame(AWE.Geometry.createRect(184, 0, 128, 128));
+        _inspectorFrame.onClick = function() { 
           my.controller.moveTo(AWE.Map.Manager.getLocation(_army.get('location_id')));
         };  
-        this.addChild(_circleShape);
-      }      
-
-      if (!_baseShape) {
-        var _baseGraphics = new Graphics();
-        _baseGraphics.setStrokeStyle(1);
-        _baseGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
-        _baseGraphics.beginFill(Graphics.getRGB(0, 0, 0));
-        _baseGraphics.drawEllipse(0, 0, 59, 26);
-        _baseShape = AWE.UI.createShapeView();
-        _baseShape.initWithControllerAndGraphics(my.controller, _baseGraphics);
-        _baseShape.setFrame(AWE.Geometry.createRect(219, 84, 59, 26));
-        this.addChild(_baseShape);
+        this.addChild(_inspectorFrame);
       }      
       
       if (!_stanceView) {
@@ -214,14 +196,16 @@ AWE.UI = (function(module) {
       var allianceId = _army.get('alliance_id')
       if (_flagView && _flagView.allianceId() !== allianceId) {      
         this.removeChild(_flagView);
+        this.removeChild(_flagFrameView);
         _flagView = null;
+        _flagFrameView = null;
       }
       if (!_flagView) {
         // Allicance Flag
         if (allianceId) {
           _flagView = AWE.UI.createAllianceFlagView();
           _flagView.initWithController(my.controller);
-          _flagView.setFrame(AWE.Geometry.createRect(150, 0, 60, 75));
+          _flagView.setFrame(AWE.Geometry.createRect(152, 3, 56, 74));
           _flagView.setAllianceId(allianceId);
           _flagView.setTagVisible(true);
           _flagView.onClick = function() { 
@@ -230,6 +214,15 @@ AWE.UI = (function(module) {
             };
           };
           this.addChildAt(_flagView, 10);
+          
+          _flagFrameView = AWE.UI.createImageView();
+          _flagFrameView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/banner/small"));
+          _flagFrameView.setFrame(AWE.Geometry.createRect(149, 0, 61, 78));
+          _flagView.onClick = function() { 
+            WACKADOO.activateAllianceController(allianceId);   
+          }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+          this.addChildAt(_flagFrameView, 11);
+          
         }
       }
 
