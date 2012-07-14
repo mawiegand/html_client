@@ -89,8 +89,9 @@ AWE.UI = (function(module) {
       _poleShape.setFrame(AWE.Geometry.createRect(46, 12, 2, 84));
       this.addChild(_poleShape);       */
       
+      var baseImage = army.isOwn() ? AWE.UI.ImageCache.getImage('map/army/base/own') : AWE.UI.ImageCache.getImage('map/army/base/other')
       _baseImage = AWE.UI.createImageView();
-      _baseImage.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage('map/army/base'));
+      _baseImage.initWithControllerAndImage(controller, baseImage);
       _baseImage.setFrame(AWE.Geometry.createRect(-16, 9, 96, 96));
       _baseImage.onClick = that.onClick;
       _baseImage.onMouseOver = that.onMouseOver;
