@@ -44,6 +44,7 @@ AWE.GS = (function(module) {
     
     exp: null,
     rank: null,
+    npc: null,
     
     velocity: null,
     garrison: null,
