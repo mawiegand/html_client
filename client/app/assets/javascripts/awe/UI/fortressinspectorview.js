@@ -33,7 +33,7 @@ AWE.UI = (function(module) {
     var _newArmyButtonView = null;
     var _prevButtonView = null;
     var _nextButtonView = null;
-    var _circleShape = null;
+    var _inspectorFrame = null;
     
     var _fortressImageName = null;
 
@@ -170,16 +170,14 @@ AWE.UI = (function(module) {
       }      
       
       // circle
-      if (!_circleShape) {
-        var circleGraphics = new Graphics();
-        circleGraphics.setStrokeStyle(1);
-        circleGraphics.beginStroke('rgb(0, 0, 0)');
-        circleGraphics.beginFill('rgb(255, 255, 255)');
-        circleGraphics.drawCircle(248, 64, 64);
-        _circleShape = new AWE.UI.createShapeView();
-        _circleShape.initWithControllerAndGraphics(my.controller, circleGraphics);  
-        _circleShape.onClick = function() { my.controller.moveTo(my.node);};  
-        this.addChild(_circleShape);
+      if (!_inspectorFrame) {
+        _inspectorFrame = AWE.UI.createImageView();
+        _inspectorFrame.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/inspector/frame"));
+        _inspectorFrame.setFrame(AWE.Geometry.createRect(184, 0, 128, 128));
+        _inspectorFrame.onClick = function() { 
+          my.controller.moveTo(my.node);
+        };  
+        this.addChild(_inspectorFrame);
       }
       
       

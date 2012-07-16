@@ -49,16 +49,33 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this._super();
     },
     
-    
     showWelcomeDialog: function() {
       var dialog = AWE.UI.Ember.WelcomeDialog.create();
       this.presentModalDialog(dialog);      
     },
     
+    showAnnouncement: function() {
+      var self = this;
+      AWE.GS.AnnouncementManager.updateAnnouncement(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(announcement, statusCode) {
+        if (statusCode === AWE.Net.OK) {
+          var dialog = AWE.UI.Ember.AnnouncementDialog.create({
+            announcement: announcement,
+          });
+          self.presentModalDialog(dialog);      
+        }
+        else {
+          console.log('ERROR: could not fetch latest announcement.')
+        }
+      });
+    },
+    
     showStartupDialogs: function() {
-//    if (AWE.GS.getCurrentCharacter() && !AWE.GS.getCurrentCharacter().get('startups_count') <= 1) {
+      if (AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') <= 1) {
         this.showWelcomeDialog();
-//    }
+      }
+      else {
+        this.showAnnouncement();
+      }
     },
   
     /** loads and initializes needed modules. 

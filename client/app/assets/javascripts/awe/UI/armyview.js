@@ -89,8 +89,9 @@ AWE.UI = (function(module) {
       _poleShape.setFrame(AWE.Geometry.createRect(46, 12, 2, 84));
       this.addChild(_poleShape);       */
       
+      var baseImage = army.isOwn() ? AWE.UI.ImageCache.getImage('map/army/base/own') : AWE.UI.ImageCache.getImage('map/army/base/other')
       _baseImage = AWE.UI.createImageView();
-      _baseImage.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage('map/army/base'));
+      _baseImage.initWithControllerAndImage(controller, baseImage);
       _baseImage.setFrame(AWE.Geometry.createRect(-16, 9, 96, 96));
       _baseImage.onClick = that.onClick;
       _baseImage.onMouseOver = that.onMouseOver;
@@ -98,7 +99,15 @@ AWE.UI = (function(module) {
       this.addChild(_baseImage);      
 
       _stanceView = AWE.UI.createImageView();
-      _stanceView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[1]));
+      var stanceImage;
+      if (army.get("npc")) {
+        stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/small');
+      }
+      else {
+        stanceImage = AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[1]);
+      }
+      _stanceView.initWithControllerAndImage(controller, stanceImage);
+
       _stanceView.setFrame(AWE.Geometry.createRect(-22, -7, 96, 96));
       _stanceView.onClick = that.onClick;
       _stanceView.onMouseOver = that.onMouseOver;
@@ -194,8 +203,15 @@ AWE.UI = (function(module) {
         _frameRectShape.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
         that.addChildAt(_frameRectShape, 0);    
       }  
-                  
-      _stanceView.setImage(AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]));
+               
+      var stanceImage;
+      if (_army.get("npc")) {
+        stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/small');
+      }
+      else {
+        stanceImage = AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]);
+      }               
+      _stanceView.setImage(stanceImage);
 
       if (_healthShape) {
         that.removeChild(_healthShape);

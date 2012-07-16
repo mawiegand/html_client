@@ -12,6 +12,7 @@ AWE.UI = (function(module) {
     var that;
     
     var _flagView;
+    var _flagFrameView;
     var _heroButton;
     var _heroHeadImageView;
     var _fortressButton;
@@ -60,7 +61,7 @@ AWE.UI = (function(module) {
 
       var character = AWE.GS.CharacterManager.getCurrentCharacter();
       var allianceId = character.get('alliance_id');
-      
+            
       // Ressourcen Leiste
       // Flagge
       if (!_resourcesShape) {   
@@ -76,18 +77,29 @@ AWE.UI = (function(module) {
       if (!_flagView && character && allianceId) {
         _flagView = AWE.UI.createAllianceFlagView();
         _flagView.initWithController(my.controller);
-        _flagView.setFrame(AWE.Geometry.createRect(240, 0, 80, 100));
+        _flagView.setFrame(AWE.Geometry.createRect(242, 4, 74, 98));
         _flagView.setAllianceId(allianceId);
         _flagView.setTagVisible(true);
         _flagView.onClick = function() { 
           WACKADOO.activateAllianceController(allianceId);   
         }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
         this.addChild(_flagView);
+
+        _flagFrameView = AWE.UI.createImageView();
+        _flagFrameView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/banner/large"));
+        _flagFrameView.setFrame(AWE.Geometry.createRect(239, 0, 82, 104));
+        _flagView.onClick = function() { 
+          WACKADOO.activateAllianceController(allianceId);   
+        }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+        this.addChild(_flagFrameView);
       }
       if (_flagView && character && (allianceId === undefined || allianceId === null || allianceId === 0)) {
         this.removeChild(_flagView);
+        this.removeChild(_flagFrameView);
+        _flagFrameView = null;
         _flagView = null;
       }
+
   
       if (!_heroButton) {
         var _heroButtonGraphics = new Graphics();
