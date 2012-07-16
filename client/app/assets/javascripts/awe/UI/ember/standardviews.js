@@ -124,7 +124,12 @@ AWE.UI.Ember = (function(module) {
       
     }.property('templateName'),
   });
-  
+
+
+  module.AnnouncementDialog = module.InfoDialog.extend({
+    templateName: 'announcement-dialog',
+    announcement: null,
+  });  
   
   /**
    * @class

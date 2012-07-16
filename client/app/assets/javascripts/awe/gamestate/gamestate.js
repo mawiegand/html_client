@@ -284,7 +284,7 @@ AWE.GS = (
     };
     
     my.fetchEntitiesFromURL = function(url, queue, id, updateType, modifiedSince, callback) {
-      if (updateType === undefined) { 
+      if (updateType === undefined || updateType === null) { 
         updateType = module.ENTITY_UPDATE_TYPE_FULL;
       }
       
