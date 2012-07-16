@@ -54,13 +54,14 @@ AWE.GS = (function(module) {
     }.property('hashableJobs.changedAt'),   // need to resort, if element added or removed
 
     queue: function() {
-      var queue = this.getPath('slot.queue');
-      var category = this.getPath('buildingType.category');
+      var queue        = this.getPath('slot.queue');
+      var category     = this.getPath('buildingType.category');
+      var settlementId = this.getPath('slot.settlement_id');
       queue = queue || 
-        (category ? AWE.GS.ConstructionQueueManager.getQueueForBuildingCategorieInSettlement(category, this.getPath('slot.settlement_id')) : null);
-      console.log('>>>>> RECALC QUEUE', queue, category, this.get('buildingType'));
+        (category !== undefined && category !== null && settlementId ? AWE.GS.ConstructionQueueManager.getQueueForBuildingCategorieInSettlement(category, settlementId) : null);
+      console.log('>>>>> RECALC QUEUE', queue, category);
       return queue;
-    }.property('slot.queue', 'buildingType', 'slot.settlement_id').cacheable(),
+    }.property('slot.queue', 'buildingType', 'slot.settlement_id', 'slot.settlement.hashableQueues.changedAt').cacheable(),
 
     /** return the building type from the rules, that describes this
      * building. */
@@ -120,7 +121,6 @@ AWE.GS = (function(module) {
 		  var productionTime = this.getPath('buildingType.production_time');
 		  var speed = this.getPath('queue.speed') || 1;
 		  level = level || this.get('level') || 1;
-		  
 		  return productionTime ? (AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(productionTime), level) / speed) : null;
     },
 		
@@ -131,12 +131,11 @@ AWE.GS = (function(module) {
 		
 		productionTimeOfNextLevel: function() {
 		  console.log('PROD OF NEXT LEVEL +++++++++++++++++++++++++++++', this.get('nextLevel'));
-		  console.log('PRODUCTION TIME', 
+/*	  console.log('PRODUCTION TIME', 
 		              this.getPath('buildingType.name.en_US'), 
 		              this.getPath('buildingType.production_time'),
 		              this.getPath('slot.queue.speed'),
-		              this.calcProductionTime(this.get('nextLevel')))
-		  
+		              this.calcProductionTime(this.get('nextLevel')))*/
 		  return this.calcProductionTime(this.get('nextLevel'));
 		}.property('nextLevel', 'buildingType.production_time', 'queue.speed').cacheable(),		
 
@@ -355,7 +354,7 @@ AWE.GS = (function(module) {
     //constructionOptions: null,
 		
 		_buildingInstance: null,      ///< private method holding the instance of the corresponding building, if needed.
-		hashableJobs: null,
+		hashableJobs:   null,
     
     bindings: null,
     
