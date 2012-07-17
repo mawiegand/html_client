@@ -117,10 +117,10 @@ AWE.GS = (function(module) {
 		}.property('nextLevel', 'buildingType').cacheable(),
 
 
-    calcProductionTime: function(level) {
+    calcProductionTime: function(level, speed) {
 		  var productionTime = this.getPath('buildingType.production_time');
-		  var speed = this.getPath('queue.speed') || 1;
-		  level = level || this.get('level') || 1;
+		  speed              = speed || this.getPath('queue.speed') || 1;
+		  level              = level || this.get('level') || 1;
 		  return productionTime ? (AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(productionTime), level) / speed) : null;
     },
 		
@@ -439,7 +439,7 @@ AWE.GS = (function(module) {
     
     jobsInQueue: function() {
       var jobs = this.getPath('hashableJobs.collection');
-      return jobs || jobs.length > 0;
+      return jobs && jobs.length > 0;
     }.property('hashableJobs.changedAt').cacheable(),
     
 		/** fetches the slot type from the rules. returns the slot-hash, that holds all

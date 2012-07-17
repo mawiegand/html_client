@@ -30,7 +30,7 @@ AWE.GS = (function(module) {
 
     queue: function(){
       return module.ConstructionQueueManager.getQueue(this.get('queue_id'));      
-    }.property('queue_id').cacheable(),
+    }.property('queue_id').cacheable(),  // assumption: queue is always there before jobs are fetched. Thus, we don't need a connection to the queue (presently, would be too complicated).
     
     slot_id: null, old_slot_id: null, ///< id of the slot the job is a member of
     slotIdObserver: AWE.Partials.attributeHashObserver(module.ConstructionJobAccess, 'slot_id', 'old_slot_id').observes('slot_id'),
@@ -56,9 +56,10 @@ AWE.GS = (function(module) {
     
     productionTime: function() { // todo: need more complex functions for tearing down!
       var building = this.getPath('slot.building');
-      var level = this.get('level_after');
-      return building && level ? building.calcProductionTime(level) : null;
-    }.property('level_after', 'slot.building.type.production_time', 'slot.queue.speed').cacheable(),
+      var level    = this.get('level_after');
+      var speed    = this.getPath('queue.speed');
+      return building && level ? building.calcProductionTime(level, speed) : null;
+    }.property('level_after', 'slot.building', 'queue.speed').cacheable(),
         
     destructionTime: function() { // todo: need more complex functions for tearing down!
       var building = this.getPath('slot.building');
@@ -71,7 +72,7 @@ AWE.GS = (function(module) {
         time += building.calcProductionTime(l);
       }
       return time;
-    }.property('level_before', 'slot.building.type.production_time', 'slot.queue.speed').cacheable(),
+    }.property('level_before', 'buildingType.production_time', 'queue.speed').cacheable(),
         
     parsedFinishingDate: function() {
       var active_job = this.get('active_job');
