@@ -148,7 +148,11 @@ AWE.UI = (function(module) {
         _battleView.onMouseOver = that.onMouseOver;
         _battleView.onMouseOut = that.onMouseOut;
         this.addChild(_battleView);
-      }      
+      }    
+      else if (_battleView && _node.region().location(0) && _node.region().location(0).garrisonArmy() && !_node.region().location(0).garrisonArmy().get('isFighting')) {
+        this.removeChild(_battleView);
+        _battleView = null;
+      }
       
       // FRAME RECT //////////////////////////////////////////////////////////     
       if (!_frameRect && AWE.Config.MAP_DEBUG_FRAMES) {
