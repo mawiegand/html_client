@@ -435,7 +435,7 @@ AWE.GS = (function(module) {
       var jobs = this.getPath('hashableJobs.collection');
       if (!jobs || jobs.length <= 0) return null;
       return AWE.GS.ConstructionQueueManager.getQueue(jobs[0].get('queue_id'));
-    }.property('hashableJobs.changedAt').cacheable(),
+    }.property('hashableJobs.changedAt', 'settlement.hashableQueues.changedAt').cacheable(),
     
     jobsInQueue: function() {
       var jobs = this.getPath('hashableJobs.collection');
