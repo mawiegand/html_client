@@ -289,9 +289,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     ready: function() {
       this._super();
       
-      var args = JSON.parse(window.name ) //|| "{}")
-      console.log(window.name, args)
-
+      try {
+        var args = JSON.parse(window.name ) //|| "{}")
+        console.log('window.name, parsed window.name', window.name, args)
+      }
+      catch (e) {
+      }
       // window.name = "";                                 // unset variables
       
       if (!args || !args.accessToken) {

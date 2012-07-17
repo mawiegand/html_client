@@ -268,7 +268,11 @@ AWE.UI = (function(module) {
         _battleView.onMouseOver = that.onMouseOver;
         _battleView.onMouseOut = that.onMouseOut;
         this.addChild(_battleView);
-      }      
+      }
+      else if (!_army.get('isFighting') && _battleView) {
+        this.removeChild(_battleView);
+        _battleView = null;
+      }
     }
     
     that.setAnnotationView = function(annotationView) {
