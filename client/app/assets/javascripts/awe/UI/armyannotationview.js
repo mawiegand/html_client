@@ -227,7 +227,7 @@ AWE.UI = (function(module) {
       }
       
       // rank image
-      _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + Math.min(1, (_army.get('rank') || 0) + 1)));
+      _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + Math.max(1, (_army.get('rank') || 0) + 1)));
 
       // info view
       if (_backgroundShapeView) {
