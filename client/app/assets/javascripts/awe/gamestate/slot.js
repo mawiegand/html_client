@@ -439,7 +439,7 @@ AWE.GS = (function(module) {
     
     jobsInQueue: function() {
       var jobs = this.getPath('hashableJobs.collection');
-      return jobs && jobs.length > 0;
+      return jobs;
     }.property('hashableJobs.changedAt').cacheable(),
     
 		/** fetches the slot type from the rules. returns the slot-hash, that holds all

@@ -357,7 +357,7 @@ AWE.Controller = (function(module) {
         }
       }
       else {
-        log(status, "No buildingId or slot given.");
+        log(status, "No buildingId, no valid slot or no list of jobs.");
       }
     }
     
