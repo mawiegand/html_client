@@ -15,7 +15,7 @@
     </span>   
   {{else}}
     <span class="sender">
-      {{#if sender_id}}
+      {{#if message.sender_id}}
         {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
       {{else}}
         System
@@ -102,9 +102,9 @@
 <script type="text/x-handlebars" data-template-name="message-center">
 <div class="message-center">
   <div class="header">
-    <div {{action "inboxClicked" target="controller"}}>Inbox</div>
+    <div {{action "inboxClicked"  target="controller"}}>Inbox</div>
     <div {{action "outboxClicked" target="controller"}}>Outbox</div> * 
-    <div {{action "newClicked" target="controller"}}>New</div>
+    <div {{action "newClicked"    target="controller"}}>New</div>
   </div>
 
   <div class="list">
