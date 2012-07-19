@@ -206,7 +206,16 @@ AWE.UI = (function(module) {
                
       var stanceImage;
       if (_army.get("npc")) {
-        stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/small');
+        var size = _army.get('present_size') || 0;
+        if (size >= 800) {
+          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/large');
+        }
+        else if (size >= 100) {
+          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/medium');
+        }
+        else {
+          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/small');
+        }
       }
       else {
         stanceImage = AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]);
