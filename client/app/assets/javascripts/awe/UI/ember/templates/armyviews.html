@@ -14,6 +14,14 @@
           {{/if}}
         </h2>
         <p class="citation">{{message}}</p>
+        {{#if army.npc}}
+          <p>This army of raving wildlings is without leadership and thus, makes a good target for
+             your armies to gain experience and improve their fighting skill.</p>
+        {{/if}}
+        <span title="A higher rank improves the efficiency of your troops. You need to gain experience in order to reach a higher the rank."><b>Rank:</b> {{army.rankToDisplay}} </span>
+        {{#if army.isOwnProp}} 
+          &nbsp;<span title="Experience is gained through losing own troops, not by killing opponents. Reason: you learn more from making errors."><b>Experience:</b> {{army.exp}}</span> 
+        {{/if}}
       </div>
       
         <div class="army-view-unit-list">

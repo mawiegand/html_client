@@ -15,7 +15,11 @@
     </span>   
   {{else}}
     <span class="sender">
-      {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
+      {{#if message.sender_id}}
+        {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
+      {{else}}
+        System
+      {{/if}}
     </span> 
   {{/if}} <span class="time">{{timeString}}</span><br />
   <span class="subject">{{message.subject}}</span>
@@ -72,9 +76,13 @@
 <script type="text/x-handlebars" data-template-name="message">
   <table>
     <tr><th>From:</th><td>
-      <b>{{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
-         {{#if "message.sender.alliance_tag"}}
-           | {{message.sender.alliance_tag}}
+      <b>{{#if message.sender_id}}
+           {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
+           {{#if "message.sender.alliance_tag"}}
+             | {{message.sender.alliance_tag}}
+           {{/if}}
+         {{else}}
+           System
          {{/if}}
       <b>
     </td></tr>
@@ -94,9 +102,9 @@
 <script type="text/x-handlebars" data-template-name="message-center">
 <div class="message-center">
   <div class="header">
-    <div {{action "inboxClicked" target="controller"}}>Inbox</div>
+    <div {{action "inboxClicked"  target="controller"}}>Inbox</div>
     <div {{action "outboxClicked" target="controller"}}>Outbox</div> * 
-    <div {{action "newClicked" target="controller"}}>New</div>
+    <div {{action "newClicked"    target="controller"}}>New</div>
   </div>
 
   <div class="list">

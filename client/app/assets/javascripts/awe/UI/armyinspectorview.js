@@ -177,12 +177,30 @@ AWE.UI = (function(module) {
       
       if (!_stanceView) {
         // Image view für held
-        var stance = _army.get('stance')
+        var stance = _army.get('stance') || 0;
         var offX = stance == 0 ? 12 : 0;
         var offY = stance == 0 ? 2 : 0;
       
         _stanceView = AWE.UI.createImageView();
-        _stanceView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[stance]));
+        
+        var stanceImage = null;
+        if (_army.get("npc")) {
+          var size = _army.get('size_present') || 0;
+          if (size >= 800) {
+            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/large');
+          }
+          else if (size >= 100) {
+            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/medium');
+          }
+          else {
+            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/small');
+          }
+        }
+        else {
+          stanceImage = AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[stance]);
+        }        
+        
+        _stanceView.initWithControllerAndImage(my.controller, stanceImage);
         _stanceView.setFrame(AWE.Geometry.createRect(186 + offX, 4 + offY, 96, 96));
         //_stanceView.onClick = that.onClick;
         _stanceView.onClick = function() {

@@ -100,8 +100,17 @@ AWE.UI = (function(module) {
 
       _stanceView = AWE.UI.createImageView();
       var stanceImage;
-      if (army.get("npc")) {
-        stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/small');
+      if (_army.get("npc")) {
+        var size = _army.get('size_present') || 0;
+        if (size >= 800) {
+          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/large');
+        }
+        else if (size >= 100) {
+          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/medium');
+        }
+        else {
+          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/small');
+        }
       }
       else {
         stanceImage = AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[1]);
@@ -206,7 +215,16 @@ AWE.UI = (function(module) {
                
       var stanceImage;
       if (_army.get("npc")) {
-        stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/small');
+        var size = _army.get('size_present') || 0;
+        if (size >= 800) {
+          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/large');
+        }
+        else if (size >= 100) {
+          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/medium');
+        }
+        else {
+          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/small');
+        }
       }
       else {
         stanceImage = AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[_army.get('stance')]);
