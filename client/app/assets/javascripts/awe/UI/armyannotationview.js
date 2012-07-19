@@ -195,7 +195,8 @@ AWE.UI = (function(module) {
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);        
-        _retreatButtonView.setVisible(true);        
+        // _retreatButtonView.setVisible(true);        
+        _retreatButtonView.setVisible(false);        
         _battleInfoButtonView.setVisible(true);        
       }
       else if (_army.get('isFighting')) {
