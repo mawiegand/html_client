@@ -15,7 +15,7 @@
     </span>   
   {{else}}
     <span class="sender">
-      {{#if sender}}
+      {{#if sender_id}}
         {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
       {{else}}
         System
@@ -76,7 +76,7 @@
 <script type="text/x-handlebars" data-template-name="message">
   <table>
     <tr><th>From:</th><td>
-      <b>{{#if message.sender}}
+      <b>{{#if message.sender_id}}
            {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
            {{#if "message.sender.alliance_tag"}}
              | {{message.sender.alliance_tag}}
