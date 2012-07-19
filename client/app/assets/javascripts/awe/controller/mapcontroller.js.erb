@@ -109,16 +109,6 @@ AWE.Controller = (function(module) {
       _canvas[3] = root.find('#inspector-canvas')[0];
       _stages[3] = new Stage(_canvas[3]);
       _stages[3].onClick = function() {};   // we generate our own clicks
-
-      //zoom slider
-      $("body").append('<div class="zoom_slider"><div class="slider_container"><img src="'+"<%= asset_path('ui/slider.png') %>"+'" class="slider_slider"><div class="slider_bar"></div><div>');
-      $("body").find(".zoom_slider").each(function(i, value) {
-        if (zoomSlider !== undefined) {
-          console.error("found more than one zoom slider");
-        }
-        zoomSlider = AWE.UI.createSlider(value, true, true, that.handleZoomSliderValueUpdate);
-        $(zoomSlider.getContainer()).remove();
-      });
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
@@ -129,6 +119,16 @@ AWE.Controller = (function(module) {
         rootController: that,
         windowSize: that.windowSize(),
         viewport: initialFrameModelCoordinates
+      });
+
+      //zoom slider
+      $("body").append('<div class="zoom_slider"><div class="slider_container"><img src="'+"<%= asset_path('ui/slider.png') %>"+'" class="slider_slider"><div class="slider_bar"></div><div>');
+      $("body").find(".zoom_slider").each(function(i, value) {
+        if (zoomSlider !== undefined) {
+          console.error("found more than one zoom slider");
+        }
+        zoomSlider = AWE.UI.createSlider(value, true, true, that.handleZoomSliderValueUpdate);
+        $(zoomSlider.getContainer()).remove();
       });
 
       if (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM) {
@@ -346,7 +346,7 @@ AWE.Controller = (function(module) {
     // /////////////////////////////////////////////////////////////////////// 
 
     that.handleZoomSliderValueUpdate = function(value) {
-      value = -1*value*(value-2);
+      /*value = -1*value*(value-2);
       value = 1 - value;
       //create a target frame
       var viewport = that.viewport();
@@ -363,11 +363,31 @@ AWE.Controller = (function(module) {
         false,
         false,
         true
-      );
+      );*/
+      value = value*(value-2)+1;
+      var minZoomFactor = AWE.Config.MAP_CAMERA_MIN_ZOOMFACTOR;
+      var maxZoomFactor = AWE.Config.MAP_CAMERA_MAX_ZOOMFACTOR;
+      _camera.moveTo(((maxZoomFactor-minZoomFactor)*value)+minZoomFactor,false,false,true);
     };
 
     that.updateZoomSliderValue = function() {
-      var viewport = that.viewport();
+      var minZoomFactor = AWE.Config.MAP_CAMERA_MIN_ZOOMFACTOR;
+      var maxZoomFactor = AWE.Config.MAP_CAMERA_MAX_ZOOMFACTOR;
+
+      var zoomFactor = _camera.getZoomFactor();
+      var v = zoomFactor-minZoomFactor;
+      if (v < 0) {
+        zoomSlider.setValue(1);
+        return;
+      }
+      v = v / (maxZoomFactor-minZoomFactor);
+      //v = 1 - v;
+      v = 1 - Math.sqrt(v);
+      //v = 1 - v;
+      v = Math.max(0,Math.min(v, 1));
+      console.log("setting value to ");
+      zoomSlider.setValue(v);
+      /*var viewport = that.viewport();
       var valueW = (viewport.size.width - AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.width)/(AWE.Config.MAP_CAMERA_MAX_VIEWFRAME_SIZE.width - AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.width);
       valueW = Math.max(0,Math.min(valueW, 1));
       valueW = 1 -  Math.sqrt(valueW);
@@ -378,7 +398,7 @@ AWE.Controller = (function(module) {
         zoomSlider.setValue(valueH);
       } else {
         zoomSlider.setValue(valueW);
-      }
+      }*/
     };
     
     // ///////////////////////////////////////////////////////////////////////
