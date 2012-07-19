@@ -6,6 +6,16 @@
  * Do not copy, do not distribute. All rights reserved.
  */
 
+/** @class AWE.UI.Camera
+  * The camera class controlls the visible area of the map. 
+  * The methods that can be used to modify this visible area are the following:
+  *
+  * - moveTo
+  * - moveBy
+  * - zoom
+  *
+**/
+
 var AWE = AWE || {};
 
 AWE.UI = (function(module) {
@@ -205,6 +215,14 @@ AWE.UI = (function(module) {
 		  **/
 		that.viewport = function() {
 			return _currentViewport;
+		};
+
+		/**
+		  * Returns a floating value that expresses the zoom
+		  * This number is defined by window.width/viewport.width
+		  **/
+		that.getZoomFactor = function() {
+			return that.windowSize().width / _getCurrentViewport().size.width;
 		};
 
 		that.onMouseUp = function(event) {
@@ -533,9 +551,24 @@ AWE.UI = (function(module) {
 					f.size.width,
 					f.size.height
 				);
+			//zoom factor
+			} else if ($.isNumeric(value)) {
+				var f = _getCurrentViewport();
+				var w = that.windowSize();
+				//callculate the width/height according to the zoom factor
+				var newWidth = w.width/value;
+				var newHeight = w.height/value;
+				target = AWE.Geometry.createRect(
+					f.origin.x+f.size.width/2 - newWidth/2,
+					f.origin.y+f.size.height/2 - newHeight/2,
+					newWidth,
+					newHeight
+				);
+				//console.log(target.toString());
 			} else {
 				return null;
 			}
+
 			//add border
 			if ((addBorder === undefined && value.x === undefined) || addBorder === true) {
 				var widthOffset = (!addBorder)?0:target.size.width*_borderFactor;
