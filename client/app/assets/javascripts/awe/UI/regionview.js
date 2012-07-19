@@ -408,6 +408,7 @@ AWE.UI = (function(module) {
     var selectBackgroundImage = function(detail) {
       var newImage = null;
       
+      var borderWidth = 12 / that.scaleX();
       var size = '128';
       if (detail > 0) {
         size = '256';
@@ -471,6 +472,11 @@ AWE.UI = (function(module) {
 			}	
 		  else if (my.mapMode === module.MAP_MODE_STRATEGIC) {
 
+        if (_backgroundShapeView) {
+          _scaledContainer.removeChild(_backgroundShapeView);
+          _backgroundShapeView = null;
+        }
+
 		    if (!_backgroundShapeView) {
 		      var shape = new Graphics();
           //shape.setStrokeStyle(1);
@@ -478,27 +484,84 @@ AWE.UI = (function(module) {
 		      
 		      if (!_node.isLeaf()) {       // not a leaf node, splits further
             shape.beginFill(_neutralBackgroundColor);
+          	shape.drawRect(0,0,256,256);
 	        }
 	        else if (_node.region()) {   // terrain available, select appropriate tile
 	          var allianceId = _node.region().allianceId();
 	          if (allianceId) {
               var color = AWE.GS.AllianceManager.colorForNumber(allianceId);
-              shape.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
+              shape.beginFill('rgb('+Math.floor((color.r+1024)/5)+','+Math.floor((color.g+1024)/5)+','+Math.floor((color.b+1024)/5)+')');
+	            shape.drawRect(0,0,256,256);
+              shape.beginFill('rgb('+Math.floor((color.r))+','+Math.floor((color.g))+','+Math.floor((color.b))+')');
+	            
+	            var neighbours = _node.getNeighbourLeafsOnSide(3); // left
+	            if (neighbours && neighbours.length == 0 || 
+	                (neighbours.length == 1 && neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId)) {
+	              shape.drawRect(0,0,borderWidth,256);
+              }
+              else if (neighbours && neighbours.length == 2) {
+                if (neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId) {
+	                shape.drawRect(0,0,borderWidth,128);
+                }
+                if (neighbours[1].isLeaf() && neighbours[1].region() &&  neighbours[1].region().allianceId() !== allianceId) {
+	                shape.drawRect(0,128,borderWidth,128);
+                }
+              }
+	            neighbours = _node.getNeighbourLeafsOnSide(1); // right
+	            if (neighbours && neighbours.length == 0 || 
+	                (neighbours.length == 1 && neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId)) {
+	              shape.drawRect(256-borderWidth,0,borderWidth,256);
+              }
+              else if (neighbours && neighbours.length == 2) {
+                if (neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId) {
+	                shape.drawRect(256-borderWidth,0,borderWidth,128);
+                }
+                if (neighbours[1].isLeaf() && neighbours[1].region() &&  neighbours[1].region().allianceId() !== allianceId) {
+	                shape.drawRect(256-borderWidth,128,borderWidth,128);
+                }
+              }              
+              neighbours = _node.getNeighbourLeafsOnSide(2); // top (inverted y axis)
+	            if (neighbours && neighbours.length == 0 || 
+	                (neighbours.length == 1 && neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId)) {
+	              shape.drawRect(0,0,256,borderWidth);
+              }
+              else if (neighbours && neighbours.length == 2) {
+                if (neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId) {
+	                shape.drawRect(0,0,128,borderWidth);
+                }
+                if (neighbours[1].isLeaf() && neighbours[1].region() &&  neighbours[1].region().allianceId() !== allianceId) {
+	                shape.drawRect(128,0,128,borderWidth);
+                }
+              }
+	            neighbours = _node.getNeighbourLeafsOnSide(0); // bottom (inveerted y axis)
+	            if (neighbours && neighbours.length == 0 || 
+	                (neighbours.length == 1 && neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId)) {
+	              shape.drawRect(0,256-borderWidth,256,borderWidth);
+              }
+              else if (neighbours && neighbours.length == 2) {
+                if (neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId) {
+	                shape.drawRect(0,256-borderWidth,128,borderWidth);
+                }
+                if (neighbours[1].isLeaf() && neighbours[1].region() &&  neighbours[1].region().allianceId() !== allianceId) {
+	                shape.drawRect(128,256-borderWidth,128,borderWidth);
+                } 
+              }              
 	          }
 	          else {
               shape.beginFill(_neutralBackgroundColor);
+          	  shape.drawRect(0,0,256,256);
             }
 	        }
 	        else {                       // don't know terrain, yet. thus, select base tile
             shape.beginFill(_neutralBackgroundColor);
 	        }
-	        shape.drawRect(0,0,256,256);
           _backgroundShapeView = AWE.UI.createShapeView();
           _backgroundShapeView.initWithControllerAndGraphics(that.controller(), shape);
           _backgroundShapeView.setAutoscales(true);
           _backgroundShapeView.setFrame(AWE.Geometry.createRect(0, 0, 256, 256));
+
+	        _scaledContainer.addChildAt(_backgroundShapeView, 0);			
         }
-	      _scaledContainer.addChildAt(_backgroundShapeView, 0);			
 		  }
 			else if (AWE.Config.MAP_USE_OSM) {
 				var path = _node.path();

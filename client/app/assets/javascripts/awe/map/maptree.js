@@ -350,6 +350,8 @@ AWE.Map = (function(module) {
             console.warn("no node found for path", path);
           }
         }
+        
+  
 
         var tms = AWE.Mapping.GlobalMercator.QuadTreeToTMSTileCode(that.path());
         if (tms.x > 0) {
@@ -362,6 +364,63 @@ AWE.Map = (function(module) {
           addNeighbours({ x: tms.x, y: tms.y+1, zoom:tms.zoom }, that.level(), 2); 
         }
         if (tms.x < Math.pow(4,that.level())-1) {
+          addNeighbours({ x: tms.x+1, y: tms.y, zoom:tms.zoom }, that.level(), 1);
+        }
+        return nodes;
+      }
+      
+      /** Returns the neighbour nodes */
+      that.getNeighbourLeafsOnSide = function (side) {
+
+        var nodes = [];
+        
+        var addNeighbours = function (tms, level, orientation) {
+          var path = AWE.Mapping.GlobalMercator.TMSToQuadTreeTileCode(tms.x, tms.y, level);
+          var rootNode = AWE.Map.Manager.rootNode();
+          var node = rootNode.traverse(path, true);
+          if (node) {
+            if (node.isLeaf()) {
+              nodes.push(node);
+            }
+            else {
+              switch (orientation) {
+                case 0:
+                  nodes.push(node.traverse('0', true));
+                  nodes.push(node.traverse('1', true));
+                  break;
+                case 1:
+                  nodes.push(node.traverse('0', true));
+                  nodes.push(node.traverse('2', true));
+                  break;
+                case 2:
+                  nodes.push(node.traverse('2', true));
+                  nodes.push(node.traverse('3', true));
+                  break;
+                case 3:
+                  nodes.push(node.traverse('1', true));
+                  nodes.push(node.traverse('3', true));
+                  break;
+                default:
+              }              
+            }
+          } else {
+            console.warn("no node found for path", path);
+          }
+        }
+        
+  
+
+        var tms = AWE.Mapping.GlobalMercator.QuadTreeToTMSTileCode(that.path());
+        if (tms.x > 0 && side == 3) {
+          addNeighbours({ x: tms.x-1, y: tms.y, zoom:tms.zoom }, that.level(), 3);
+        }
+        if (tms.y > 0 && side == 0) {
+          addNeighbours({ x: tms.x, y: tms.y-1, zoom:tms.zoom }, that.level(), 0); 
+        }
+        if (tms.y < Math.pow(4,that.level())-1 && side == 2) {
+          addNeighbours({ x: tms.x, y: tms.y+1, zoom:tms.zoom }, that.level(), 2); 
+        }
+        if (tms.x < Math.pow(4,that.level())-1 && side == 1) {
           addNeighbours({ x: tms.x+1, y: tms.y, zoom:tms.zoom }, that.level(), 1);
         }
         return nodes;
