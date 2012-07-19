@@ -81,6 +81,14 @@ AWE.GS = (function(module) {
       return this.get('owner_id') === module.CharacterManager.getCurrentCharacter().getId();
     },
     
+    isOwnProp: function() {
+      return this.isOwn();
+    }.property('owner_id', 'AWE.GS.player.currentCharacter').cacheable(),
+    
+    rankToDisplay: function() {
+      return (this.get('rank') || 0 ) + 1;
+    }.property('rank').cacheable(),
+    
     isFighting: function() {
       return this.get('battle_id') > 0;
     }.property('battle_id').cacheable(),

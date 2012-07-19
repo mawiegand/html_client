@@ -869,6 +869,7 @@ AWE.Controller = (function(module) {
       });
       
       AWE.GS.BattleManager.updateBattle(army.get('battle_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(battle) {
+        console.log('U: battle', battle);
         dialog.set('battle', battle);
       });
       
