@@ -28,7 +28,7 @@
             <div class="participant-owner">Owner</div>
             <div class="participant-size">Size</div>
             <div class="participant-strength">Strength</div>
-            <div class="participant-exp">Exp.</div>
+            <div class="participant-exp">Rank</div>
             <div class="participant-retreat">Retreat</div>
           </div>
           {{#each battle.participantsOwnFaction}}
@@ -42,7 +42,7 @@
             <div class="participant-owner">Owner</div>
             <div class="participant-size">Size</div>
             <div class="participant-strength">Strength</div>
-            <div class="participant-exp">Exp.</div>
+            <div class="participant-exp">Rank</div>
             <div class="participant-retreat">Retreat</div>
           </div>
           {{#each battle.participantsOtherFaction}}
@@ -66,7 +66,7 @@
       <div class="participant-owner">{{army.owner_name}}{{#if army.alliance_tag}} | {{army.alliance_tag}}{{/if}}</div>
       <div class="participant-size">{{army.size_present}}</div>
       <div class="participant-strength">{{army.strength}}</div>
-      <div class="participant-exp">{{army.exp}}</div>
+      <div class="participant-exp">{{army.rankToDisplay}}</div>
       <div class="participant-retreat">
         {{#if participant.isOwn }}
           {{#if army.battle_retreat }}
