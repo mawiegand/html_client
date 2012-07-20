@@ -409,6 +409,7 @@ AWE.UI = (function(module) {
       var newImage = null;
       
       var borderWidth = 12 / that.scaleX();
+      var borderLineWidth = 3 / that.scaleX();
       var size = '128';
       if (detail > 0) {
         size = '256';
@@ -492,65 +493,128 @@ AWE.UI = (function(module) {
               var color = AWE.GS.AllianceManager.colorForNumber(allianceId);
               shape.beginFill('rgb('+Math.floor((color.r+1024)/5)+','+Math.floor((color.g+1024)/5)+','+Math.floor((color.b+1024)/5)+')');
 	            shape.drawRect(0,0,256,256);
-              shape.beginFill('rgb('+Math.floor((color.r))+','+Math.floor((color.g))+','+Math.floor((color.b))+')');
 	            
-	            var neighbours = _node.getNeighbourLeafsOnSide(3); // left
-	            if (neighbours && neighbours.length == 0 || 
-	                (neighbours.length == 1 && neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId)) {
-	              shape.drawRect(0,0,borderWidth,256);
+	            var drawBorderBg = function(shape, x,y,width,height) {
+                shape.beginFill('rgb('+Math.floor((color.r))+','+Math.floor((color.g))+','+Math.floor((color.b))+')');  
+	              shape.drawRect(x,y,width,height);
+	            }
+	            
+	            var drawBorder = function(shape, x,y,width,height) {
+                shape.beginFill('rgb(96,96,96)');  
+	              shape.drawRect(x,y,width,height);	              
+	            }
+	            
+	            var neighboursLeft = _node.getNeighbourLeafsOnSide(3);   // left
+	            var neighboursRight = _node.getNeighbourLeafsOnSide(1);  // right
+              var neighboursTop = _node.getNeighbourLeafsOnSide(2);    // top (inverted y axis)
+	            var neighboursBottom = _node.getNeighbourLeafsOnSide(0); // bottom (inveerted y axis)
+	            
+	            if (neighboursLeft && neighboursLeft.length == 0 || 
+	                (neighboursLeft.length == 1 && neighboursLeft[0].isLeaf() && neighboursLeft[0].region() &&  neighboursLeft[0].region().allianceId() !== allianceId)) {
+	              drawBorderBg(shape, 0,0,borderWidth,256);
               }
-              else if (neighbours && neighbours.length == 2) {
-                if (neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId) {
-	                shape.drawRect(0,0,borderWidth,128);
+              else if (neighboursLeft && neighboursLeft.length == 2) {
+                if (neighboursLeft[0].isLeaf() && neighboursLeft[0].region() &&  neighboursLeft[0].region().allianceId() !== allianceId) {
+	                drawBorderBg(shape, 0,0,borderWidth,128);
                 }
-                if (neighbours[1].isLeaf() && neighbours[1].region() &&  neighbours[1].region().allianceId() !== allianceId) {
-	                shape.drawRect(0,128,borderWidth,128);
+                if (neighboursLeft[1].isLeaf() && neighboursLeft[1].region() &&  neighboursLeft[1].region().allianceId() !== allianceId) {
+	                drawBorderBg(shape, 0,128,borderWidth,128);
                 }
               }
-	            neighbours = _node.getNeighbourLeafsOnSide(1); // right
-	            if (neighbours && neighbours.length == 0 || 
-	                (neighbours.length == 1 && neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId)) {
-	              shape.drawRect(256-borderWidth,0,borderWidth,256);
+	            if (neighboursRight && neighboursRight.length == 0 || 
+	                (neighboursRight.length == 1 && neighboursRight[0].isLeaf() && neighboursRight[0].region() &&  neighboursRight[0].region().allianceId() !== allianceId)) {
+	              drawBorderBg(shape, 256-borderWidth,0,borderWidth,256);
               }
-              else if (neighbours && neighbours.length == 2) {
-                if (neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId) {
-	                shape.drawRect(256-borderWidth,0,borderWidth,128);
+              else if (neighboursRight && neighboursRight.length == 2) {
+                if (neighbours[0].isLeaf() && neighboursRight[0].region() &&  neighboursRight[0].region().allianceId() !== allianceId) {
+	                drawBorderBg(shape, 256-borderWidth,0,borderWidth,128);
                 }
-                if (neighbours[1].isLeaf() && neighbours[1].region() &&  neighbours[1].region().allianceId() !== allianceId) {
-	                shape.drawRect(256-borderWidth,128,borderWidth,128);
+                if (neighboursRight[1].isLeaf() && neighboursRight[1].region() &&  neighboursRight[1].region().allianceId() !== allianceId) {
+	                drawBorderBg(shape, 256-borderWidth,128,borderWidth,128);
                 }
               }              
-              neighbours = _node.getNeighbourLeafsOnSide(2); // top (inverted y axis)
-	            if (neighbours && neighbours.length == 0 || 
-	                (neighbours.length == 1 && neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId)) {
-	              shape.drawRect(0,0,256,borderWidth);
+	            if (neighboursTop && neighboursTop.length == 0 || 
+	                (neighboursTop.length == 1 && neighboursTop[0].isLeaf() && neighboursTop[0].region() &&  neighboursTop[0].region().allianceId() !== allianceId)) {
+	              drawBorderBg(shape, 0,0,256,borderWidth);
               }
-              else if (neighbours && neighbours.length == 2) {
-                if (neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId) {
-	                shape.drawRect(0,0,128,borderWidth);
+              else if (neighboursTop && neighboursTop.length == 2) {
+                if (neighboursTop[0].isLeaf() && neighboursTop[0].region() &&  neighboursTop[0].region().allianceId() !== allianceId) {
+	                drawBorderBg(shape, 0,0,128,borderWidth);
                 }
-                if (neighbours[1].isLeaf() && neighbours[1].region() &&  neighbours[1].region().allianceId() !== allianceId) {
-	                shape.drawRect(128,0,128,borderWidth);
+                if (neighboursTop[1].isLeaf() && neighboursTop[1].region() &&  neighboursTop[1].region().allianceId() !== allianceId) {
+	                drawBorderBg(shape, 128,0,128,borderWidth);
                 }
               }
-	            neighbours = _node.getNeighbourLeafsOnSide(0); // bottom (inveerted y axis)
-	            if (neighbours && neighbours.length == 0 || 
-	                (neighbours.length == 1 && neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId)) {
-	              shape.drawRect(0,256-borderWidth,256,borderWidth);
+	            if (neighboursBottom && neighboursBottom.length == 0 || 
+	                (neighboursBottom.length == 1 && neighboursBottom[0].isLeaf() && neighboursBottom[0].region() &&  neighboursBottom[0].region().allianceId() !== allianceId)) {
+	              drawBorderBg(shape, 0,256-borderWidth,256,borderWidth);
               }
-              else if (neighbours && neighbours.length == 2) {
-                if (neighbours[0].isLeaf() && neighbours[0].region() &&  neighbours[0].region().allianceId() !== allianceId) {
-	                shape.drawRect(0,256-borderWidth,128,borderWidth);
+              else if (neighboursBottom && neighboursBottom.length == 2) {
+                if (neighboursBottom[0].isLeaf() && neighboursBottom[0].region() &&  neighboursBottom[0].region().allianceId() !== allianceId) {
+	                drawBorderBg(shape, 0,256-borderWidth,128,borderWidth);
                 }
-                if (neighbours[1].isLeaf() && neighbours[1].region() &&  neighbours[1].region().allianceId() !== allianceId) {
-	                shape.drawRect(128,256-borderWidth,128,borderWidth);
+                if (neighboursBottom[1].isLeaf() && neighboursBottom[1].region() &&  neighboursBottom[1].region().allianceId() !== allianceId) {
+	                drawBorderBg(shape, 128,256-borderWidth,128,borderWidth);
                 } 
+              }     
+
+              if (neighboursLeft && neighboursLeft.length == 0 || 
+	                (neighboursLeft.length == 1 && neighboursLeft[0].isLeaf() && neighboursLeft[0].region() &&  neighboursLeft[0].region().allianceId() !== allianceId)) {
+	              drawBorderBg(shape, 0,0,borderWidth,256);
+	              drawBorder(shape, 0,0, borderLineWidth, 256);
+              }
+              else if (neighboursLeft && neighboursLeft.length == 2) {
+                if (neighboursLeft[0].isLeaf() && neighboursLeft[0].region() &&  neighboursLeft[0].region().allianceId() !== allianceId) {
+	                drawBorder(shape, 0,0, borderLineWidth, 128);
+                }
+                if (neighboursLeft[1].isLeaf() && neighboursLeft[1].region() &&  neighboursLeft[1].region().allianceId() !== allianceId) {
+	                drawBorder(shape, 0,128, borderLineWidth, 128);
+                }
+              }
+	            if (neighboursRight && neighboursRight.length == 0 || 
+	                (neighboursRight.length == 1 && neighboursRight[0].isLeaf() && neighboursRight[0].region() &&  neighboursRight[0].region().allianceId() !== allianceId)) {
+	        	    drawBorder(shape, 256-borderLineWidth,0, borderLineWidth, 256);
+              }
+              else if (neighboursRight && neighboursRight.length == 2) {
+                if (neighbours[0].isLeaf() && neighboursRight[0].region() &&  neighboursRight[0].region().allianceId() !== allianceId) {
+	        	      drawBorder(shape, 256-borderLineWidth,0, borderLineWidth, 128);
+                }
+                if (neighboursRight[1].isLeaf() && neighboursRight[1].region() &&  neighboursRight[1].region().allianceId() !== allianceId) {
+	            	  drawBorder(shape, 256-borderLineWidth,128, borderLineWidth, 128);
+                }
               }              
+	            if (neighboursTop && neighboursTop.length == 0 || 
+	                (neighboursTop.length == 1 && neighboursTop[0].isLeaf() && neighboursTop[0].region() &&  neighboursTop[0].region().allianceId() !== allianceId)) {
+	            	drawBorder(shape, 0,0, 256, borderLineWidth);
+              }
+              else if (neighboursTop && neighboursTop.length == 2) {
+                if (neighboursTop[0].isLeaf() && neighboursTop[0].region() &&  neighboursTop[0].region().allianceId() !== allianceId) {
+	            	  drawBorder(shape, 0,0, 128, borderLineWidth);
+                }
+                if (neighboursTop[1].isLeaf() && neighboursTop[1].region() &&  neighboursTop[1].region().allianceId() !== allianceId) {
+  	            	drawBorder(shape, 128,0, 128, borderLineWidth);
+                }
+              }
+	            if (neighboursBottom && neighboursBottom.length == 0 || 
+	                (neighboursBottom.length == 1 && neighboursBottom[0].isLeaf() && neighboursBottom[0].region() &&  neighboursBottom[0].region().allianceId() !== allianceId)) {
+	            	drawBorder(shape, 0,256-borderLineWidth, 256, borderLineWidth);	              
+              }
+              else if (neighboursBottom && neighboursBottom.length == 2) {
+                if (neighboursBottom[0].isLeaf() && neighboursBottom[0].region() &&  neighboursBottom[0].region().allianceId() !== allianceId) {
+	            	  drawBorder(shape, 0,256-borderLineWidth, 128, borderLineWidth);	              
+                }
+                if (neighboursBottom[1].isLeaf() && neighboursBottom[1].region() &&  neighboursBottom[1].region().allianceId() !== allianceId) {
+	            	  drawBorder(shape, 128,256-borderLineWidth, 128, borderLineWidth);	              
+                } 
+              }                
+                       
 	          }
 	          else {
               shape.beginFill(_neutralBackgroundColor);
           	  shape.drawRect(0,0,256,256);
             }
+            
+            
 	        }
 	        else {                       // don't know terrain, yet. thus, select base tile
             shape.beginFill(_neutralBackgroundColor);
