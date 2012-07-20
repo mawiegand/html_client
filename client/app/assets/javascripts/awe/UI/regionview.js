@@ -526,7 +526,7 @@ AWE.UI = (function(module) {
 	              drawBorderBg(shape, 256-borderWidth,0,borderWidth,256);
               }
               else if (neighboursRight && neighboursRight.length == 2) {
-                if (neighbours[0].isLeaf() && neighboursRight[0].region() &&  neighboursRight[0].region().allianceId() !== allianceId) {
+                if (neighboursRight[0].isLeaf() && neighboursRight[0].region() &&  neighboursRight[0].region().allianceId() !== allianceId) {
 	                drawBorderBg(shape, 256-borderWidth,0,borderWidth,128);
                 }
                 if (neighboursRight[1].isLeaf() && neighboursRight[1].region() &&  neighboursRight[1].region().allianceId() !== allianceId) {
@@ -576,7 +576,7 @@ AWE.UI = (function(module) {
 	        	    drawBorder(shape, 256-borderLineWidth,0, borderLineWidth, 256);
               }
               else if (neighboursRight && neighboursRight.length == 2) {
-                if (neighbours[0].isLeaf() && neighboursRight[0].region() &&  neighboursRight[0].region().allianceId() !== allianceId) {
+                if (neighboursRight[0].isLeaf() && neighboursRight[0].region() &&  neighboursRight[0].region().allianceId() !== allianceId) {
 	        	      drawBorder(shape, 256-borderLineWidth,0, borderLineWidth, 128);
                 }
                 if (neighboursRight[1].isLeaf() && neighboursRight[1].region() &&  neighboursRight[1].region().allianceId() !== allianceId) {
