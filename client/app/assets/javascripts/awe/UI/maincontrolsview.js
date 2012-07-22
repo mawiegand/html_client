@@ -13,7 +13,7 @@ AWE.UI = (function(module) {
     
     var _flagView;
     var _flagFrameView;
-    var _heroButton;
+    var _frameView;
     var _heroHeadImageView;
     var _fortressButton;
     var _villageImageView;
@@ -23,6 +23,8 @@ AWE.UI = (function(module) {
     var _armiesButton;
     var _shopButton;
     var _resourcesShape;
+    
+    var _presentGender = null;
     
     var _resource1LabelView;
     var _resource2LabelView;
@@ -100,37 +102,33 @@ AWE.UI = (function(module) {
         _flagView = null;
       }
 
-  
-      if (!_heroButton) {
-        var _heroButtonGraphics = new Graphics();
-        _heroButtonGraphics.setStrokeStyle(1);
-        _heroButtonGraphics.beginStroke('rgb(0, 0, 0)');
-        _heroButtonGraphics.beginFill('rgb(255, 255, 255)');
-        _heroButtonGraphics.drawCircle(254, 146, 64);
-        _heroButton = AWE.UI.createShapeView();
-        _heroButton.initWithControllerAndGraphics(my.controller, _heroButtonGraphics);    
-        this.addChild(_heroButton);
+      if (!_frameView) {
+        _frameView = AWE.UI.createImageView();
+        _frameView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/main/frame"));
+        _frameView.setFrame(AWE.Geometry.createRect(188, 24, 220, 190));
+        this.addChild(_frameView);
       }
       
       if (!_heroHeadImageView) {
-        _heroHeadImageView = AWE.UI.createImageView();
-        _heroHeadImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/head"));
-        _heroHeadImageView.setFrame(AWE.Geometry.createRect(198, 85, 100, 100));
+        _heroHeadImageView = AWE.UI.createButtonView();
+        _heroHeadImageView.initWithControllerTextAndImage(my.controller, "", AWE.UI.ImageCache.getImage("hud/head/male/normal"));
+        _heroHeadImageView.setImageForState(AWE.UI.ImageCache.getImage("hud/head/male/hovered"), module.CONTROL_STATE_HOVERED);
+        _presentGender = "male";
+        _heroHeadImageView.setFrame(AWE.Geometry.createRect(188, 85, 128, 128));
         _heroHeadImageView.onClick = function() { WACKADOO.characterButtonClicked(); };
         this.addChild(_heroHeadImageView);
+      }   
+      if (character.get('female') && _presentGender === "male") {
+        _heroHeadImageView.setImageForState(AWE.UI.ImageCache.getImage("hud/head/female/normal"), module.CONTROL_STATE_NORMAL);
+        _heroHeadImageView.setImageForState(AWE.UI.ImageCache.getImage("hud/head/female/hovered"), module.CONTROL_STATE_HOVERED);        
+        _presentGender = "female";
       }
-  
-      if (!_fortressButton) {
-        var _fortressButtonGraphics = new Graphics();
-        _fortressButtonGraphics.setStrokeStyle(1);
-        _fortressButtonGraphics.beginStroke('rgb(0, 0, 0)');
-        _fortressButtonGraphics.beginFill('rgb(255, 255, 255)');
-        _fortressButtonGraphics.drawCircle(344, 84, 64);
-        _fortressButton = AWE.UI.createShapeView();
-        _fortressButton.initWithControllerAndGraphics(my.controller, _fortressButtonGraphics);    
-        _fortressButton.onClick = function() { WACKADOO.baseButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
-        this.addChild(_fortressButton);
-      }    
+      else if (!character.get('female') && _presentGender === "female") {
+        _heroHeadImageView.setImageForState(AWE.UI.ImageCache.getImage("hud/head/male/normal"), module.CONTROL_STATE_NORMAL);
+        _heroHeadImageView.setImageForState(AWE.UI.ImageCache.getImage("hud/head/male/hovered"), module.CONTROL_STATE_HOVERED);
+        _presentGender = "male";
+      }
+      
   
       if (!_villageImageView) {
         _villageImageView = AWE.UI.createImageView();
@@ -185,8 +183,8 @@ AWE.UI = (function(module) {
       
       if (!_shopButton) {
         _shopButton = AWE.UI.createButtonView();
-        _shopButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('shop.button'), AWE.UI.ImageCache.getImage("map/button1"));
-        _shopButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        _shopButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('shop.button'), AWE.UI.ImageCache.getImage("hud/shop/normal"));
+        _shopButton.setImageForState(AWE.UI.ImageCache.getImage("hud/shop/hovered"), module.CONTROL_STATE_HOVERED);
         _shopButton.setFrame(AWE.Geometry.createRect(20, 95, 100, 30));
         _shopButton.onClick = function() {
           my.controller.ingameShopButtonClicked();
