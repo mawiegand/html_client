@@ -129,6 +129,14 @@ AWE.UI = (function(module) {
         _presentGender = "male";
       }
       
+      var heroNameView = _heroHeadImageView.textLabel();
+      heroNameView.font = "11px Arial";
+      heroNameView.color = 'rgb(0,0,0)';
+      heroNameView.y = 96;
+      var name = character.get('name') ? character.get('name').substring(0, Math.min(12, character.get('name').length)) : ""
+      if (_heroHeadImageView.text() != name) {
+        _heroHeadImageView.setText(name);
+      }
   
       if (!_villageImageView) {
         _villageImageView = AWE.UI.createImageView();

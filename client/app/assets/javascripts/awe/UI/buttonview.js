@@ -131,6 +131,10 @@ AWE.UI = (function(module) {
       return _labelText.text;
     }
     
+    that.textLabel = function() {
+      return _labelText;
+    }
+    
     /* actions */
     
     
