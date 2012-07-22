@@ -28,12 +28,16 @@ AWE.Action.Construction = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'construction_job[queue_id]=' + my.queue.getId() +
-        '&construction_job[slot_id]='      + my.slotId +
-        '&construction_job[building_id]='  + my.buildingId +
-        '&construction_job[job_type]='     + my.jobType +
-        '&construction_job[level_before]=' + my.levelBefore +
-        '&construction_job[level_after]='  + my.levelAfter   
+      return {
+        construction_job: {
+          queue_id:     my.queue.getId(),
+          slot_id:      my.slotId,
+          building_id:  my.buildingId,
+          job_type:     my.jobType,
+          level_before: my.levelBefore,
+          level_after:  my.levelAfter,
+        }
+      };
     }
     
     that.getURL = function() {

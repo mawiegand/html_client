@@ -32,7 +32,12 @@ AWE.Action.Fundamental = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'fundamental_alliance[password]='+escape(password); 
+      return {
+        fundamental_alliance: {
+          password: password,
+        }
+      };
+   //   return 'fundamental_alliance[password]='+escape(password); 
     }
     
     that.getURL = function() { return AWE.Config.FUNDAMENTAL_SERVER_BASE+'/alliances/'+alliance.getId();; }

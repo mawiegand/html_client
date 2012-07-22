@@ -25,7 +25,11 @@ AWE.Action.Military = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'military_army[name]=' + newName; 
+      return {
+        military_army: {
+          name: newName,
+        }
+      } 
     }
     
     that.getURL = function() { return AWE.Config.MILITARY_SERVER_BASE+'/armies/'+army.getId(); }

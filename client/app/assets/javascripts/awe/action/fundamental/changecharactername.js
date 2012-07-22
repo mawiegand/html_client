@@ -25,7 +25,12 @@ AWE.Action.Fundamental = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'character[name]=' + (escape(newName || "")); 
+      return {
+        character: {
+          name: newName || "",
+        }
+      };
+  //    return 'character[name]=' + (escape(newName || "")); 
     }
     
     that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'fundamental/change_character_name_actions'; }

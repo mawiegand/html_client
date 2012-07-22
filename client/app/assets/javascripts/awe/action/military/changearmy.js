@@ -28,11 +28,15 @@ AWE.Action.Military = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      var requestBody = 'action_military_change_army_action[location_id]=' + my.location.id() +
-                        '&action_military_change_army_action[visible_army_id]=' + my.visibleArmy.getId();
+      var requestBody = {
+        action_military_change_army_action: {
+          location_id:     my.location.id(),
+          visible_army_id: my.visibleArmy.getId(),
+        }
+      }
       
       AWE.Ext.applyFunctionToHash(my.units, function(symbolicId, quantity) {
-        requestBody += '&action_military_change_army_action[' + symbolicId + ']=' + quantity;
+        requestBody.action_military_change_army_action[symbolicId] = quantity;
       })
       
       return requestBody;

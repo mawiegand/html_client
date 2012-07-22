@@ -43,7 +43,12 @@ AWE.Action.Fundamental = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'alliance[tag]=' + escape(my.allianceTag) + '&alliance[name]=' + escape(my.allianceName); 
+      return {
+        alliance: {
+          tag:  my.allianceTag,
+          name: my.allianceName,
+        }
+      };
     }
     
     that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'fundamental/create_alliance_actions'; }

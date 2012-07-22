@@ -25,7 +25,11 @@ AWE.Action.Fundamental = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'fundamental_alliance_shout[message]=' + escape(message); 
+      return {
+        fundamental_alliance_shout: {
+          message: message
+        }
+      }; 
     }
     
     that.getURL = function() { return AWE.Config.FUNDAMENTAL_SERVER_BASE+'/alliance_shouts/'; }

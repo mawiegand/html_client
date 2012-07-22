@@ -28,14 +28,18 @@ AWE.Action.Military = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      var requestBody = 'action_military_create_army_action[location_id]=' + my.location.id() + 
-                        '&action_military_create_army_action[army_name]=' + my.armyName;
+      var requestBody = {
+        action_military_create_army_action: {
+          location_id: my.location.id(), 
+          army_name:   my.armyName,
+        }
+      };
       
       AWE.Ext.applyFunctionToHash(my.units, function(symbolicId, quantity) {
         if (quantity > 0) {
-          requestBody += '&action_military_create_army_action[' + symbolicId + ']=' + quantity;
+          requestBody.action_military_create_army_action[symbolicId] = quantity;
         }
-      })
+      });
       
       return requestBody;
     }

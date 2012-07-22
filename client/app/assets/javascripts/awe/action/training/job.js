@@ -25,9 +25,13 @@ AWE.Action.Training = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'training_job[queue_id]=' + my.queue.getId() +
-        '&training_job[unit_id]=' + my.unitId +
-        '&training_job[quantity]=' + my.quantity
+      return {
+        training_job: {
+          queue_id: my.queue.getId(),
+          unit_id:  my.unitId,
+          quantity: my.quantity,
+        }
+      };
     }
     
     that.getURL = function() {

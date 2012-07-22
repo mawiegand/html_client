@@ -26,8 +26,12 @@ AWE.Action.Military = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return 'action_military_retreat_army_action[army_id]=' + my.army.getId() +
-        '&action_military_retreat_army_action[retreat]=' + !my.army.get('battle_retreat');
+      return {
+        action_military_retreat_army_action: {
+          army_id:  my.army.getId(),
+          retreat: !my.army.get('battle_retreat'), // why this logic inversion?
+        }
+      }
     }
     
     that.getURL = function() {

@@ -29,7 +29,7 @@ AWE.Action.Shop = (function(module) {
     my.data = {};
     
     my.getSanitizedAndEscapedRequestBody = function() {
-      return that.getRequestBody();  // TODO SECURITY : sanitize and escape it
+      return that.getRequestBody();  // TODO CHECK SECURITY : sanitize and escape it? or rely completely on jQuery's ajax-method?
     }
     
     // public attributes and methods ///////////////////////////////////////
