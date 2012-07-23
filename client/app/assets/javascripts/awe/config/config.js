@@ -21,7 +21,7 @@ AWE.Config = (function(module) {
   module.DEBUG_LEVEL_DEBUG   = 3;
   
   module.MAP_DEBUG_LEVEL = module.DEBUG_LEVEL_INFO
-  module.MAP_DEBUG_FRAMES = false;
+  module.MAP_DEBUG_FRAMES = true;
   
   module.MAP_RUN_TESTS = false;
   module.MAP_SERVER_BASE          = module.SERVER_ROOT + '/game_server/map/';
@@ -56,8 +56,8 @@ AWE.Config = (function(module) {
   
   module.MAPPING_FORTRESS_SIZE  = 64;
   
-  module.MAP_ARMY_WIDTH  =  64;
-  module.MAP_ARMY_HEIGHT = 128;
+  module.MAP_ARMY_WIDTH  =  96;
+  module.MAP_ARMY_HEIGHT = 105;
   
   module.ARMY_MODE_IDLE     = 0;
   module.ARMY_MODE_MOVING   = 1;
