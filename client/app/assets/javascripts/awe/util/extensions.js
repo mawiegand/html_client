@@ -30,6 +30,16 @@ AWE.Ext = (function(module) {
     return Math[(this > 0 ? 'ceil' : 'floor')](this);
   };
   
+  Array.prototype.compact = function() {
+    var values = [];
+    this.forEach(function(item) {
+      if (item !== null && item !== undefined) {
+        values.push(item);
+      }
+    });
+    return values;
+  };
+  
   
   Date.parseISODate = function(s){
     

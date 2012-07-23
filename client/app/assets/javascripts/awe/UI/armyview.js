@@ -7,6 +7,28 @@
 var AWE = AWE || {};
 
 AWE.UI = (function(module) {
+  
+  module.createGamingPieceView = function(spec, my) {
+    
+    var that;
+    
+    my = my || {};
+    my.typeName = my.typeName || 'GamingPieceView';
+
+    
+    that = module.createContainer(spec, my);
+
+    var _super = {
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+    };
+      
+    that.initWithController = function(controller, army, frame) {
+      _super.initWithController(controller, frame);
+    };
+
+    return that;
+  };
+  
 
   module.createArmyView = function(spec, my) {
     
@@ -14,7 +36,7 @@ AWE.UI = (function(module) {
         
     my = my || {};
     
-    my.typeName = 'ArmyView';
+    my.typeName = my.typename || 'ArmyView';
     
     var _army = null;
     
@@ -36,10 +58,9 @@ AWE.UI = (function(module) {
     
     var _frameRectShape = null;
     
-    that = module.createContainer(spec, my);
+    that = module.createGamingPieceView(spec, my);
 
     var _super = {
-      initWithController: AWE.Ext.superior(that, "initWithController"),
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
       setFrame: AWE.Ext.superior(that, "setFrame"),
       setSelected: AWE.Ext.superior(that, "setSelected"),
@@ -49,7 +70,7 @@ AWE.UI = (function(module) {
     /** overwritten view methods */
     
     that.initWithControllerAndArmy = function(controller, army, frame) {
-      _super.initWithController(controller, frame);
+      that.initWithController(controller, frame);
       _army = army;
       
       var _selectGraphics = new Graphics();
@@ -317,7 +338,7 @@ AWE.UI = (function(module) {
 
     that.onMouseOut = function(evt){
       my.controller.viewMouseOut(that);
-    };    
+    };     
         
     return that;
   };
