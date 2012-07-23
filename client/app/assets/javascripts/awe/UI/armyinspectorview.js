@@ -125,12 +125,12 @@ AWE.UI = (function(module) {
       }
       _rankLabelView.setText(_army.get('rank')); */
 
-      if (!_sizeAllLabelView) {
+      if (!_sizeAllLabelView) {  // ATTENTION: TOTAL STRENGTH; NOT SIZE!!!
         _sizeAllLabelView = AWE.UI.createLabelView();
         _sizeAllLabelView.initWithControllerAndLabel(my.controller);
         _sizeAllLabelView.setFrame(AWE.Geometry.createRect(5, 90, 100, 24)); //105, 24, 100, 24));      
         _sizeAllLabelView.setTextAlign("left");
-        _sizeAllLabelView.setIconImage("map/icon/army/size");
+        _sizeAllLabelView.setIconImage("map/icon/fist");
         this.addChild(_sizeAllLabelView);
       }
       _sizeAllLabelView.setText(_army.get('strength'));
@@ -140,7 +140,7 @@ AWE.UI = (function(module) {
         _sizeType1LabelView.initWithControllerAndLabel(my.controller);
         _sizeType1LabelView.setFrame(AWE.Geometry.createRect(105, 46, 100, 24));      
         _sizeType1LabelView.setTextAlign("left");
-        _sizeType1LabelView.setIconImage("map/icon/army/size1");
+        _sizeType1LabelView.setIconImage("map/icon/army/infantry");
         this.addChild(_sizeType1LabelView);
       }
       _sizeType1LabelView.setText(Math.floor(_army.get('unitcategory_infantry_strength')));
@@ -150,7 +150,7 @@ AWE.UI = (function(module) {
         _sizeType2LabelView.initWithControllerAndLabel(my.controller);
         _sizeType2LabelView.setFrame(AWE.Geometry.createRect(105, 68, 100, 24));      
         _sizeType2LabelView.setTextAlign("left");
-        _sizeType2LabelView.setIconImage("map/icon/army/size2");
+        _sizeType2LabelView.setIconImage("map/icon/army/cavalry");
         this.addChild(_sizeType2LabelView);
       }
       _sizeType2LabelView.setText(Math.floor(_army.get('unitcategory_cavalry_strength')));
@@ -159,7 +159,7 @@ AWE.UI = (function(module) {
         _sizeType3LabelView = AWE.UI.createLabelView();
         _sizeType3LabelView.initWithControllerAndLabel(my.controller);
         _sizeType3LabelView.setTextAlign("left");
-        _sizeType3LabelView.setIconImage("map/icon/army/size3");
+        _sizeType3LabelView.setIconImage("map/icon/army/artillery");
         _sizeType3LabelView.setFrame(AWE.Geometry.createRect(105, 90, 100, 24));      
         this.addChild(_sizeType3LabelView);
       }

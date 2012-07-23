@@ -120,21 +120,21 @@ AWE.UI = (function(module) {
       _infoText1View.initWithControllerAndLabel(controller);
       _infoText1View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
       _infoText1View.setTextAlign("left");
-      _infoText1View.setIconImage("map/icon/owner");
+      //_infoText1View.setIconImage("map/icon/owner");
       infoContainer.addChild(_infoText1View);
 
       _infoText2View = AWE.UI.createLabelView();
       _infoText2View.initWithControllerAndLabel(controller);
       _infoText2View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
       _infoText2View.setTextAlign("left");
-      _infoText2View.setIconImage("map/icon/army/strength");
+      _infoText2View.setIconImage("map/icon/fist");
       infoContainer.addChild(_infoText2View);
 
       _infoText3View = AWE.UI.createLabelView();
       _infoText3View.initWithControllerAndLabel(controller);
       _infoText3View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
       _infoText3View.setTextAlign("left");
-      _infoText3View.setIconImage("map/icon/army/size");
+      _infoText3View.setIconImage("map/icon/owner");
        infoContainer.addChild(_infoText3View);
             
       if (!frame) {
