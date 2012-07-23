@@ -19,6 +19,8 @@ AWE.UI = (function(module) {
     var _poleShape = null;
     var _flagView = null;
     
+    var _frameRect = null;
+    
     my = my || {};
    
     that = module.createSettlementView(spec, my);
@@ -38,7 +40,7 @@ AWE.UI = (function(module) {
       _super.initWithController(controller, frame);
       _location = location;
       
-      this.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE + 24));
+      this.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE -5 ));
       that.recalcView();            
     };
     
@@ -109,6 +111,20 @@ AWE.UI = (function(module) {
       if (allianceId != _flagView.allianceId()) {
         _flagView.setAllianceId(allianceId);
       }
+
+      // FRAME RECT //////////////////////////////////////////////////////////     
+      if (!_frameRect && AWE.Config.MAP_DEBUG_FRAMES) {
+        log(my.frame.size.width, my.frame.size.height);
+        var frame = new Graphics();
+        frame.setStrokeStyle(1);
+        frame.beginStroke(Graphics.getRGB(0,0,0));
+        frame.beginFill('rgba(0,0,0,0.2)');
+        frame.drawRoundRect(0, 0, my.frame.size.width, my.frame.size.height,0);
+        _frameRect = AWE.UI.createShapeView();
+        _frameRect.initWithControllerAndGraphics(my.controller, frame);
+        _frameRect.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
+        this.addChild(_frameRect);
+      }     
     }
     
     that.updateView = function() {

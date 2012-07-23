@@ -77,16 +77,16 @@ AWE.UI = (function(module) {
       _selectGraphics.setStrokeStyle(1);
       _selectGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
       _selectGraphics.beginFill(Graphics.getRGB(0, 255, 0));
-      _selectGraphics.drawEllipse(10, 0, 72, 36);
+      _selectGraphics.drawEllipse(12, 0, 72, 36);
       _selectShape = AWE.UI.createShapeView();
       _selectShape.initWithControllerAndGraphics(my.controller, _selectGraphics);
-      _selectShape.setFrame(AWE.Geometry.createRect(4, 74, 72, 36));
+      _selectShape.setFrame(AWE.Geometry.createRect(0, 74, 72, 36));
       this.addChild(_selectShape);      
       
       var baseImage = army.isOwn() ? AWE.UI.ImageCache.getImage('map/army/base/own') : AWE.UI.ImageCache.getImage('map/army/base/other')
       _baseImage = AWE.UI.createImageView();
       _baseImage.initWithControllerAndImage(controller, baseImage);
-      _baseImage.setFrame(AWE.Geometry.createRect(-6, 9, 96, 96));
+      _baseImage.setFrame(AWE.Geometry.createRect(0, 9, 96, 96));
       _baseImage.onClick = that.onClick;
       _baseImage.onMouseOver = that.onMouseOver;
       _baseImage.onMouseOut = that.onMouseOut;
@@ -111,7 +111,7 @@ AWE.UI = (function(module) {
       }
       _stanceView.initWithControllerAndImage(controller, stanceImage);
 
-      _stanceView.setFrame(AWE.Geometry.createRect(-12, -7, 96, 96));
+      _stanceView.setFrame(AWE.Geometry.createRect(-6, -7, 96, 96));
       _stanceView.onClick = that.onClick;
       _stanceView.onMouseOver = that.onMouseOver;
       _stanceView.onMouseOut = that.onMouseOut;
@@ -124,7 +124,7 @@ AWE.UI = (function(module) {
       healthBGGraphics.drawRoundRect(0, 0, 64, 12, 4);
       _healthBGShape = AWE.UI.createShapeView();
       _healthBGShape.initWithControllerAndGraphics(my.controller, healthBGGraphics);
-      _healthBGShape.setFrame(AWE.Geometry.createRect(10, 108, 64, 12));
+      _healthBGShape.setFrame(AWE.Geometry.createRect(16, 108, 64, 12));
       this.addChild(_healthBGShape);      
 
       if (army.get('ap_present') / army.get('ap_max') > 0) {
@@ -156,7 +156,7 @@ AWE.UI = (function(module) {
       _actionPointsLabelView = AWE.UI.createLabelView();
       _actionPointsLabelView.initWithControllerAndLabel(controller);
       _actionPointsLabelView.setColor('#000');
-      _actionPointsLabelView.setFrame(AWE.Geometry.createRect(10, 102, 64, 24));      
+      _actionPointsLabelView.setFrame(AWE.Geometry.createRect(16, 102, 64, 24));      
       that.addChild(_actionPointsLabelView);      
 
       if (!frame) {
@@ -190,7 +190,7 @@ AWE.UI = (function(module) {
       var flagLength = 8 + Math.round(Math.min(_army.get('size_present') / _army.get('size_max'), 1) * 48);
       _flagView = AWE.UI.createAllianceFlagView();
       _flagView.initWithController(my.controller);
-      _flagView.setFrame(AWE.Geometry.createRect(60 - flagLength, 11, flagLength, 20));
+      _flagView.setFrame(AWE.Geometry.createRect(66 - flagLength, 11, flagLength, 20));
       _flagView.setAllianceId(_army.get('alliance_id'));
       _flagView.setDirection('left');
       that.addChildAt(_flagView, 0);
@@ -248,7 +248,7 @@ AWE.UI = (function(module) {
         healthGraphics.drawRoundRect(0, 0, 64 * (_army.get('ap_present') / _army.get('ap_max')), 12, 4);
         _healthShape = AWE.UI.createShapeView();
         _healthShape.initWithControllerAndGraphics(my.controller, healthGraphics);
-        _healthShape.setFrame(AWE.Geometry.createRect(10, 108, 64 * (_army.get('ap_present') / _army.get('ap_max')), 12));
+        _healthShape.setFrame(AWE.Geometry.createRect(16, 108, 64 * (_army.get('ap_present') / _army.get('ap_max')), 12));
         that.addChild(_healthShape);      
         if (_actionPointsLabelView) { // move label to top
           that.removeChild(_actionPointsLabelView);
@@ -275,7 +275,7 @@ AWE.UI = (function(module) {
       if (_army.get('isFighting') && !_battleView) {
         _battleView = AWE.UI.createImageView();
         _battleView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage('map/army/battle'));
-        _battleView.setFrame(AWE.Geometry.createRect(10, -50, 65, 65));
+        _battleView.setFrame(AWE.Geometry.createRect(16, -50, 65, 65));
         _battleView.onClick = that.onClick;
         _battleView.onMouseOver = that.onMouseOver;
         _battleView.onMouseOut = that.onMouseOut;
