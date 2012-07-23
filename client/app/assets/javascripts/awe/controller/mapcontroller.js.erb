@@ -1573,7 +1573,7 @@ AWE.Controller = (function(module) {
     }
         
     var setArmyPosition = function(view, pos, armyId) {
-      view.setCenter(AWE.Geometry.createPoint(pos.x, pos.y - view.frame().size.height/2));
+      view.setCenter(AWE.Geometry.createPoint(pos.x, pos.y-view.frame().size.height/2));
     }
     
     /** update the fortress views. */
@@ -1688,7 +1688,7 @@ AWE.Controller = (function(module) {
       var newArmyViews = {};
       var newMovementArrowViews = {};
       
-      var unclutter = function(armies, centerPos, frame) {
+      var unclutter = function(armies, settlement, centerPos, frame) {
         if (armies === null || armies === undefined) {
           return ;
         }
@@ -1697,15 +1697,26 @@ AWE.Controller = (function(module) {
           if (!element.isGarrison()) {
             var view = armyViews[element.getId()];
             if (view) {
-              views.push(view);
+              views.push({
+                view:     view,
+                moveable: true,
+                id:       view.army().getId(),
+              });
             }
           }
         });
         if (views.length === 0) {
           return ;
         }
+        if (settlement) {
+          views.push({
+            view:     settlement,
+            moveable: false,
+            id:       "fortress",
+          });
+        }
         var objectUnclutterer = AWE.Util.ObjectUnclutterer.create({
-          scaleFactor: Math.max(frame.size.width/256.0, 1.0),
+          scaleFactor: Math.max(frame.size.width/256.0, 0.2),
         });
         objectUnclutterer.setViews(views);
         objectUnclutterer.unclutter();
@@ -1734,10 +1745,10 @@ AWE.Controller = (function(module) {
         }
       }
       
-      var processArmiesAtPos = function(armies, pos, frame) {
+      var processArmiesAtPos = function(armies, settlement, pos, frame) {
 
         initViewsWithBasePosition(armies, pos);
-        unclutter(armies, pos, frame);
+        unclutter(armies, settlement, pos, frame);
         
         for (var key in armies) {
           if (armies.hasOwnProperty(key) && !armies[key].isGarrison()) {
@@ -1801,11 +1812,14 @@ AWE.Controller = (function(module) {
 
         if (that.areArmiesAtFortressVisible(frame) && nodes[i].isLeaf() && nodes[i].region()) {
           var armies = nodes[i].region().getArmiesAtFortress();       // armies at fortress
-          var center = AWE.Geometry.createPoint(
+          var fortressView = fortressViews[nodes[i].id()]
+          var position = fortressView ? AWE.Geometry.createPoint(
+            fortressView.center().x, fortressView.center().y
+          ) : AWE.Geometry.createPoint(
             frame.origin.x + frame.size.width / 2 ,
             frame.origin.y + frame.size.height / 2         
-          );  
-          processArmiesAtPos(armies, center, frame);    
+          );
+          processArmiesAtPos(armies, fortressView, position, frame);    
         }      
         
         if (that.areArmiesAtSettlementsVisible(frame) && 
@@ -1814,8 +1828,11 @@ AWE.Controller = (function(module) {
             var location = nodes[i].region().location(loc);      
             if (!location || !location.position()) continue ; 
             var armies = location.getArmies();       // armies at location
-            var position = that.mc2vc(location.position());           
-            processArmiesAtPos(armies, position, frame);
+            var settlementView = locationViews[location.id()];
+            var position = settlementView ? AWE.Geometry.createPoint(
+              settlementView.center().x, settlementView.center().y
+            ) : that.mc2vc(location.position());     
+            processArmiesAtPos(armies, settlementView, position, frame);
           }
         }
       }

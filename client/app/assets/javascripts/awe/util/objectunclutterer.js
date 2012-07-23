@@ -47,7 +47,7 @@ AWE.Util = (function(module) {
             if (cluster !== null) {                 // this cluster has been merged with another cluster.
               for (var j=0; j < cluster.length && !intersects; j++) {
                 var view2 = cluster[j];
-                if (self.intersects(view, view2)) {
+                if (self.intersects(view.view, view2.view)) {
                   intersects = true;
                 }
               }
@@ -72,15 +72,16 @@ AWE.Util = (function(module) {
     },
     
     jitterPosition: function(view) {
-      var scaleFactor = this.get('scaleFactor') || 1.0;
-      var armyId = view.army !== undefined ? view.army().getId() : 0; // TODO: generalize this for other views than army views
+      if (view.moveable) {
+        var scaleFactor = this.get('scaleFactor') || 1.0;
       
-      var frac = ((armyId % 8) / 8.0) * 2*Math.PI;
-      var dir  = AWE.Geometry.createPoint(Math.sin(frac), Math.cos(frac));
-      var pos  = view.center(); 
-      dir.scale(((armyId*2) % 3 === 0 ? 8.0 : 4.0) * scaleFactor); 
+        var frac = ((view.id % 8) / 8.0) * 2*Math.PI;
+        var dir  = AWE.Geometry.createPoint(Math.sin(frac), Math.cos(frac));
+        var pos  = view.view.center(); 
+        dir.scale(((view.id*2) % 3 === 0 ? 8.0 : 4.0) * scaleFactor); 
       
-      view.setCenter(AWE.Geometry.createPoint(pos.x + dir.x, pos.y + dir.y));
+        view.view.setCenter(AWE.Geometry.createPoint(pos.x + dir.x, pos.y + dir.y));
+      }
     },
     
     /** Idee: Die Objekte stossen sich gegenseitig ab, je näher sie einander sind.
@@ -102,88 +103,91 @@ AWE.Util = (function(module) {
         var view1 = group[0];
         var view2 = group[1];
     
-        if (view1.center().x == view2.center().x &&
-            view1.center().y == view2.center().y) { // objects at exact same position
+        if (view1.view.center().x === view2.view.center().x &&
+            view1.view.center().y === view2.view.center().y) { // objects at exact same position
          
-         // if (mop1.moveable) { // move object one
-            view1.setCenter(AWE.Geometry.createPoint(view1.center().x + 2*scaleFactor,
-                                                     view1.center().y));
-        /*  } else if (mop2.moveable) {
-            mop2.position = CGPointMake(mop2.position.x + 5*impscale,
-                                        mop2.position.y);
+          if (view1.moveable) { // move object one
+            view1.view.setCenter(AWE.Geometry.createPoint(view1.view.center().x + 2*scaleFactor,
+                                                          view1.view.center().y));
+          }
+          else if (view2.moveable) {
+            view2.view.setCenter(AWE.Geometry.createPoint(view2.view.center().x + 2*scaleFactor,
+                                                          view2.view.center().y));
           }
           else {
             return ; // no object is moveable!
-          }*/
+          }
         }
       }
       
-      console.log('UNCLUTTER GROUP ', group.length, 'SCALE', scaleFactor);
+    //  console.log('UNCLUTTER GROUP ', group.length, 'SCALE', scaleFactor);
   
-      var minBounceStart = Math.min(8.0    * scaleFactor,  20.0);
-      var maxBounceStart = Math.min(30.0  * scaleFactor,  100.0);
+      var minBounceStart = Math.min( 4.0 * scaleFactor,  20.0);
+      var maxBounceStart = Math.min(10.0 * scaleFactor,  80.0);
   
       for (var i=0; i < 4; i++) { // 
     
-        var minBounce = minBounceStart * Math.pow(0.9, i);
-        var maxBounce = maxBounceStart * Math.pow(0.9, i);
+        var minBounce = minBounceStart * Math.pow(0.8, i);
+        var maxBounce = maxBounceStart * Math.pow(0.8, i);
     
         group.forEach(function(view, index1) {
-          view.tmpMovement = AWE.Geometry.createPoint(0.0, 0.0);
+          if (view.moveable) {
+            view.tmpMovement = AWE.Geometry.createPoint(0.0, 0.0);
           
-          group.forEach(function(view2, index2) {
-            if (view !== view2) {
-              var doIntersect = self.intersects(view, view2);
-              // if (!doIntersect) continue;     // better (closer) distribution, but causes jitter
+            group.forEach(function(view2, index2) {
+              if (view !== view2) {
+                var doIntersect = self.intersects(view.view, view2.view);
+                // if (!doIntersect) continue;     // better (closer) distribution, but causes jitter
               
-              var dir = AWE.Geometry.createPoint(view.center().x - view2.center().x, 
-                                                 view.center().y - view2.center().y);
+                var dir = AWE.Geometry.createPoint(view.view.center().x - view2.view.center().x, 
+                                                   view.view.center().y - view2.view.center().y);
                               
-              var length = dir.length();
-              if (length === 0.0) {
-                if (index1 < index2) {  // there are really two armies on exactly the same spot! move the first one
-                  dir.x = 1.0;
-                  length = 1.0;
-                  console.log('WARNING: two armies share the exact same position.', view.army().getId(), view2.army().getId())
+                var length = dir.length();
+                if (length === 0.0) {
+                  if (index1 < index2) {  // there are really two armies on exactly the same spot! move the first one
+                    dir.x = 1.0;
+                    length = 1.0;
+                    //console.log('WARNING: two models share the exact same position.', view.id, view2.id)
+                  }
                 }
-              }
-              else {            
-                dir.scale(1.0/length); 
-              }
+                else {            
+                  dir.scale(1.0/length); 
+                }
                             
-              var push = (maxBounce / Math.max(1.0, length)) * scaleFactor;
-              push = doIntersect ? push : push * 0.9; 
+                var push = (maxBounce * (1.00001-Math.min(1.0, length/120.0))) ;
+                push = doIntersect ? push : push * 0.5; 
               
-              var pos = view.tmpMovement;
-              
-           //   console.log(dir.x, dir.y, scaleFactor, push, maxBounce, length)
-              
-              view.tmpMovement = AWE.Geometry.createPoint(
-                pos.x + dir.x * push, pos.y + dir.y * push
-              );  
-            }
-          });
+                var pos = view.tmpMovement;
+   
+                view.tmpMovement = AWE.Geometry.createPoint(
+                  pos.x + dir.x * push, pos.y + dir.y * push
+                );  
+              }
+            });
           
-          var pos     = view.tmpMovement;
-          var length  = pos.length();
+            var pos     = view.tmpMovement;
+            var length  = pos.length();
 
-          if (length > maxBounce) {
-            view.tmpMovement = pos.scale(1.0/(length*maxBounce));
-          }
-          else if (length > 0.000001 && length < minBounce) {
-            view.tmpMovement = pos.scale(1.0/(length*minBounce));
+           if (length > maxBounce) {
+              view.tmpMovement = pos.scale((1.0/length)*maxBounce);
+            }
+            else if (length > 0.000001 && length < minBounce) {
+              view.tmpMovement = pos.scale((1.0/length)*minBounce);
+            }
           }
         });
     
         group.forEach(function(view) {
-          var center = view.center();
-          var dir    = view.tmpMovement;
+          if (view.moveable) {
+            var center = view.view.center();
+            var dir    = view.tmpMovement;
           
-          // console.log("(", center.x, center.y, ") + ", dir.x, dir.y)
+            // console.log("(", center.x, center.y, ") + ", dir.x, dir.y)
           
-          view.setCenter(AWE.Geometry.createPoint(
-            center.x + dir.x, center.y + dir.y
-          )); 
+            view.view.setCenter(AWE.Geometry.createPoint(
+              center.x + dir.x, center.y + dir.y
+            )); 
+          }
         });
       } 
     },   
