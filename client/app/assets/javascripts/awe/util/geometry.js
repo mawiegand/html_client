@@ -21,20 +21,32 @@ AWE.Geometry = (function(module) {
       moveBy: function(point) {
         this.x += point.x;
         this.y += point.y;
+        return this;
       },
 
       moveTo: function(point) {
         this.x = point.x;
         this.y = point.y;
+        return this;
       },
 
       scale: function(f) {
         this.x *= f;
         this.y *= f;
+        return this;
       },
       
       copy: function() {
         return createPoint(this.x, this.y);
+      },
+      
+      length2: function() {
+        return this.x*this.x+this.y*this.y;
+      },
+      
+      length: function() {
+        var length2 = this.length2();
+        return length2 > 0.0 ? Math.sqrt(this.length2()) : length2;
       },
       
       equals: function(other, precision) {

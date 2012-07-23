@@ -10,9 +10,10 @@ AWE.Util = (function(module) {
 
   module.ObjectUnclutterer = Ember.Object.extend({
     
-    views:       null,
-    clusters:    null,
-    scaleFactor: 1.0,
+    views:         null,
+    clusters:      null,
+    scaleFactor:   1.0,
+    numIterations: 4,
 
     setViews: function(views) {
       if (views != this.get('views')) {
@@ -77,7 +78,7 @@ AWE.Util = (function(module) {
       var frac = ((armyId % 8) / 8.0) * 2*Math.PI;
       var dir  = AWE.Geometry.createPoint(Math.sin(frac), Math.cos(frac));
       var pos  = view.center(); 
-      dir.scale(((armyId*2) % 3 === 0 ? 2 : 1) * scaleFactor); 
+      dir.scale(((armyId*2) % 3 === 0 ? 4 : 2) * scaleFactor); 
       
       view.setCenter(AWE.Geometry.createPoint(pos.x + dir.x, pos.y + dir.y));
     },
@@ -88,99 +89,99 @@ AWE.Util = (function(module) {
     unclutterGroup: function(group) {
       // Idee: zuerst alle Objekte entsprechend Ihrer Id leicht in eine von 8 Richtungen bewegen (Zuffall geht nicht). Dies soll helfen, Objekte, die auf dem exakt gleichen Fleck sind, etwas auseinander zu bekommen.
   
-      var self = this;
+      var self          = this;
+      var scaleFactor   = this.get('scaleFactor')   || 1.0;
+      var numIterations = this.get('numIterations') || 4;
   
       if (group.length > 2) {  // move in "random" direction to initiate a spreading in all directions
         group.forEach(function(view) {
           self.jitterPosition(view);
         });
       }
-  
-/*    
-
-  else if ([cluster count] == 2) {  // just to be sure...
-    MapObject* mop1 = [cluster objectAtIndex:0];
-    MapObject* mop2 = [cluster objectAtIndex:1];
+      else if (group.length === 2) {  // just to be sure...
+        var view1 = group[0];
+        var view2 = group[1];
     
-    if (mop1.position.x == mop2.position.x &&
-        mop1.position.y == mop2.position.y) { // objects at exact same position
-      if (mop1.moveable) { // move object one
-        mop1.position = CGPointMake(mop1.position.x + 5*impscale,
-                                    mop1.position.y);
-      } else if (mop2.moveable) {
-        mop2.position = CGPointMake(mop2.position.x + 5*impscale,
-                                    mop2.position.y);
-      }
-      else {
-        return ; // no object is moveable!
-      }
-    }
-  }
-  
-  double minBounceStart = 10.  * impscale;
-  double maxBounceStart = 50.  * impscale;
-  
-  for (int i=0; i < 4; i++) { // 4
-    
-    double minBounce = minBounceStart * pow(0.7, i);
-    double maxBounce = maxBounceStart * pow(0.7, i);
-    
-    // now move the armies away
-    for (MapObject* mop in cluster) {
-      
-      if (! mop.moveable) continue; // don't move garrisson
-      
-      mop.tmpPosition = CGPointMake(0., 0.);
-      
-      for (MapObject* mop2 in cluster) {  // bounce away from every other army.
-        if (mop == mop2) continue; 
-        
-        
-        BOOL doIntersect = intersect_points_scaled(mop.position, mop.blockedArea, mop2.position, mop2.blockedArea, impscale);
+        if (view1.center().x == view2.center().x &&
+            view1.center().y == view2.center().y) { // objects at exact same position
          
-        
-        // if (!doIntersect) continue;     // better (closer) distribution, but causes jitter
-        
-        CGPoint dir = CGPointMake(mop.position.x-mop2.position.x, 
-                                  mop.position.y-mop2.position.y);
-        
-        double length = CGLength(dir);
-        dir.x /= length; dir.y /= length;  //normalize
-        
-        double push = maxBounce / (length * impscale);
-        if (!doIntersect) push *= .5;
-        
-        mop.tmpPosition = CGPointMake(mop.tmpPosition.x + dir.x * push,
-                                      mop.tmpPosition.y + dir.y * push);
-        
+         // if (mop1.moveable) { // move object one
+            view1.setCenter(AWE.Geometry.createPoint(view1.center().x + 2*scaleFactor,
+                                                     view1.center().y));
+        /*  } else if (mop2.moveable) {
+            mop2.position = CGPointMake(mop2.position.x + 5*impscale,
+                                        mop2.position.y);
+          }
+          else {
+            return ; // no object is moveable!
+          }*/
+        }
       }
-      
-      double length = CGLength(mop.tmpPosition); 
-      if (length > maxBounce) {
-        
-        // LogDebug(@"Push hit maxBounce: %lf, %lf", army.tmpPosition.x, army.tmpPosition.y);
-        
-        mop.tmpPosition = 
-        CGPointMake(mop.tmpPosition.x / length * maxBounce,
-                    mop.tmpPosition.y / length * maxBounce);
-        
-      }
-      else if (length > 0.001 && length < minBounce) {
-        
-        // LogDebug(@"Push hit minBounce: %lf, %lf : %f", mop.tmpPosition.x, mop.tmpPosition.y, length);
-        
-        mop.tmpPosition = 
-        CGPointMake(mop.tmpPosition.x / length * minBounce,
-                    mop.tmpPosition.y / length * minBounce);        
-      }
-    }
+  
+      var minBounceStart = Math.min(5.0  * scaleFactor,  20.0);
+      var maxBounceStart = Math.min(20.0 * scaleFactor,  60.0);
+  
+      for (var i=0; i < numIterations; i++) { // 
     
-    for (MapObject* mop in cluster) {
-      mop.position = 
-      CGPointMake(mop.position.x + mop.tmpPosition.x, 
-                  mop.position.y + mop.tmpPosition.y);
-    } 
-  }*/
+        var minBounce = minBounceStart * Math.pow(0.8, i);
+        var maxBounce = maxBounceStart * Math.pow(0.8, i);
+    
+        group.forEach(function(view, index1) {
+          view.tmpMovement = AWE.Geometry.createPoint(0.0, 0.0);
+          
+          group.forEach(function(view2, index2) {
+            if (view !== view2) {
+              var doIntersect = self.intersects(view, view2);
+              // if (!doIntersect) continue;     // better (closer) distribution, but causes jitter
+              
+              var dir = AWE.Geometry.createPoint(view.center().x - view2.center().x, 
+                                                 view.center().y - view2.center().y);
+                              
+              var length = dir.length();
+              if (length === 0.0) {
+                if (index1 < index2) {  // there are really two armies on exactly the same spot! move the first one
+                  dir.x = 1.0;
+                  length = 1.0;
+                  console.log('WARNING: two armies share the exact same position.', view.army().getId(), view2.army().getId())
+                }
+              }
+              else {            
+                dir.scale(1.0/length); 
+              }
+                            
+              var push = (maxBounce / Math.max(1.0, length)) * scaleFactor;
+              push = doIntersect ? push : push * 0.5; 
+              
+              var pos = view.tmpMovement;
+              
+           //   console.log(dir.x, dir.y, scaleFactor, push, maxBounce, length)
+              
+              view.tmpMovement = AWE.Geometry.createPoint(
+                pos.x + dir.x * push, pos.y + dir.y * push
+              );  
+            }
+          });
+          
+          var pos     = view.tmpMovement;
+          var length  = pos.length();
+
+          if (length > maxBounce) {
+            view.tmpMovement = pos.scale(1.0/(length*maxBounce));
+          }
+          else if (length > 0.000001 && length < minBounce) {
+            view.tmpMovement = pos.scale(1.0/(length*minBounce));
+          }
+        });
+    
+        group.forEach(function(view) {
+          var center = view.center();
+          var dir    = view.tmpMovement;
+          
+          view.setCenter(AWE.Geometry.createPoint(
+            center.x + dir.x, center.y + dir.y
+          )); 
+        });
+      } 
     },   
 
 

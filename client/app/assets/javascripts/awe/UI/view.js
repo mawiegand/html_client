@@ -277,6 +277,8 @@ AWE.UI = (function(module) {
     that.updateView = function() {
     }
     
+    that.tmpMovement = null;
+    
     
     // ////////////// STATE TRACKING /////////////////
     
