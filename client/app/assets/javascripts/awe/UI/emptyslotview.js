@@ -13,6 +13,8 @@ AWE.UI = (function(module) {
     var _location = null;
     var _selectShape = null;
     
+    var _frameRectShape = null;
+    
     my = my || {};
     
     my.typeName = "EmptySlotView";
@@ -67,6 +69,18 @@ AWE.UI = (function(module) {
     
     that.updateView = function() {
       _super.updateView();
+
+      if (!_frameRectShape && AWE.Config.MAP_DEBUG_FRAMES) {
+        var _frameRectGraphics = new Graphics();
+        _frameRectGraphics.setStrokeStyle(1);
+        _frameRectGraphics.beginStroke('rgb(255,255,255)');
+        _frameRectGraphics.beginFill('rgba(255,255,255,0.2)');
+        _frameRectGraphics.drawRoundRect(0, 0, my.frame.size.width, my.frame.size.height, 0);
+        _frameRectShape = AWE.UI.createShapeView();
+        _frameRectShape.initWithControllerAndGraphics(my.controller, _frameRectGraphics);
+        _frameRectShape.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
+        that.addChildAt(_frameRectShape, 0);    
+      }  
 
       if (_selectShape) {
         _selectShape.visible = this.selected() || this.hovered();

@@ -132,7 +132,7 @@ AWE.UI.Ember = (function(module) {
         AWE.Ext.applyFunction(unitTypes, function(unitType) {
           if (details[unitType.db_field] !== undefined && details[unitType.db_field] > 0) {
             list.push(Ember.Object.create({
-              name: unitType.name.en_US,
+              name: unitType.name,
               symbolic_id: unitType.db_field, 
               allUnits: details[unitType.db_field],
               garrisonUnits: details[unitType.db_field],
@@ -184,7 +184,7 @@ AWE.UI.Ember = (function(module) {
           if ((garrisonDetails[unitType.db_field] !== undefined && garrisonDetails[unitType.db_field] > 0) ||
               (otherDetails[unitType.db_field] !== undefined && otherDetails[unitType.db_field] > 0)) {
             list.push(Ember.Object.create({
-              name: unitType.name.en_US,
+              name: unitType.name,
               symbolic_id: unitType.db_field, 
               allUnits: garrisonDetails[unitType.db_field] + otherDetails[unitType.db_field],
               garrisonUnits: garrisonDetails[unitType.db_field],
