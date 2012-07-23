@@ -6,8 +6,11 @@
 
     <div class="army-info-view clearfix">
       <div class="clearfix header">
-        <div class="advisor warrior"></div>
-
+        {{#if army.npc}}
+          <div class="advisor neanderthal"></div>
+        {{else}}
+          <div class="advisor warrior"></div>
+        {{/if}}
         <h2>{{ army.name }} 
           {{#if isChangeNamePossible}}
             <a href="#" class="change-name" {{action "changeNamePressed" target="parentView.parentView"}}>change name</a>
