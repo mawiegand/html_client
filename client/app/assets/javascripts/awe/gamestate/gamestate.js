@@ -259,7 +259,15 @@ AWE.GS = (
     
     my.processUpdateResponse = my.processUpdateResponse || function(data, updateType, start) {
       
+      if (data === null) {
+        console.log("PROCESS UPDATE WITH NULL DATA:", data, updateType, start);
+        console.log("ENTITY: ", my.createEntity({id:"null"}))
+        return null;
+      }
+      
       var entity = my.entities[data.id];
+
+      //data = data || {}; // TODO: this is only a hack to prevent an error
 
       if (entity) {
         entity.updateWith(data, updateType, start);
