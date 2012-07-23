@@ -1572,8 +1572,40 @@ AWE.Controller = (function(module) {
       ));
     }
         
-    var setArmyPosition = function(view, pos, armyId) {
+    var setArmyPosition = function(view, pos, army) {
       view.setCenter(AWE.Geometry.createPoint(pos.x, pos.y-view.frame().size.height/2));
+      
+      if (army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
+        
+        var targetRegionId   = army.get('target_region_id');
+        var targetLocationId = army.get('target_location_id');
+        var regionId = army.get('region_id');
+        var targetPos = null;
+        
+        if (targetRegionId != regionId) {
+          var targetRegion = AWE.Map.Manager.getRegion(targetRegionId);
+          if (targetRegion) {
+            var tframe = that.mc2vc(targetRegion.node().frame()); 
+            targetPos = AWE.Geometry.createPoint(
+              tframe.origin.x + tframe.size.width  / 2 ,
+              tframe.origin.y + tframe.size.height / 2 - 60         
+            );  
+          }
+        }    
+        else if (targetLocationId && targetRegionId) { // target location in same region as starting region -> this region must be available locally
+          var targetLocation = AWE.Map.Manager.getLocation(targetLocationId);
+          if (targetLocation) {
+            targetPos = that.mc2vc(targetLocation.position());
+            targetPos.y -= 60;
+          }
+        }          
+        
+        if (targetPos) {
+          var dir = AWE.Geometry.createPoint(targetPos.x - view.center().x, targetPos.y - view.center().y);
+          view.setCenter(AWE.Geometry.createPoint(view.center().x + dir.x * 0.2,
+                                                  view.center().y + dir.y * 0.2));          
+        }
+      }      
     }
     
     /** update the fortress views. */
@@ -1739,7 +1771,7 @@ AWE.Controller = (function(module) {
               _stages[1].addChild(view.displayObject());
             }     
                                          
-            setArmyPosition(view, pos, army.getId());
+            setArmyPosition(view, pos, army);
             newArmyViews[army.getId()] = view;
           }
         }
@@ -1755,7 +1787,7 @@ AWE.Controller = (function(module) {
             var army = armies[key];
             var view = armyViews[army.getId()];
             
-            if (army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
+            if (army.get('mode') === AWE.Config.ARMY_MODE_MOVING && view) {
               
               var targetRegionId = army.get('target_region_id');
               var targetLocationId = army.get('target_location_id');
