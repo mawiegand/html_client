@@ -203,7 +203,7 @@ AWE.UI = (function(module) {
         _frameRectGraphics.drawRoundRect(0, 0, my.frame.size.width, my.frame.size.height, 0);
         _frameRectShape = AWE.UI.createShapeView();
         _frameRectShape.initWithControllerAndGraphics(my.controller, _frameRectGraphics);
-        _frameRectShape.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
+        _frameRectShape.setFrame(AWE.Geometry.createRect(my.frame.origin.x, my.frame.origin.y, my.frame.size.width, my.frame.size.height));
         that.addChildAt(_frameRectShape, 0);    
       }  
                

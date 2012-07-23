@@ -120,20 +120,20 @@ AWE.Util = (function(module) {
       
       console.log('UNCLUTTER GROUP ', group.length, 'SCALE', scaleFactor);
   
-      var minBounceStart = Math.min(5.0  * scaleFactor,  20.0);
-      var maxBounceStart = Math.min(20.0 * scaleFactor,  60.0);
+      var minBounceStart = Math.min(8.0    * scaleFactor,  20.0);
+      var maxBounceStart = Math.min(30.0  * scaleFactor,  100.0);
   
-      for (var i=0; i < 1; i++) { // 
+      for (var i=0; i < 4; i++) { // 
     
-        var minBounce = minBounceStart * Math.pow(0.8, i);
-        var maxBounce = maxBounceStart * Math.pow(0.8, i);
+        var minBounce = minBounceStart * Math.pow(0.9, i);
+        var maxBounce = maxBounceStart * Math.pow(0.9, i);
     
         group.forEach(function(view, index1) {
           view.tmpMovement = AWE.Geometry.createPoint(0.0, 0.0);
           
           group.forEach(function(view2, index2) {
             if (view !== view2) {
-              var doIntersect = false; // self.intersects(view, view2);
+              var doIntersect = self.intersects(view, view2);
               // if (!doIntersect) continue;     // better (closer) distribution, but causes jitter
               
               var dir = AWE.Geometry.createPoint(view.center().x - view2.center().x, 
@@ -152,7 +152,7 @@ AWE.Util = (function(module) {
               }
                             
               var push = (maxBounce / Math.max(1.0, length)) * scaleFactor;
-              push = doIntersect ? push : push * 0.5; 
+              push = doIntersect ? push : push * 0.9; 
               
               var pos = view.tmpMovement;
               
@@ -178,6 +178,8 @@ AWE.Util = (function(module) {
         group.forEach(function(view) {
           var center = view.center();
           var dir    = view.tmpMovement;
+          
+          // console.log("(", center.x, center.y, ") + ", dir.x, dir.y)
           
           view.setCenter(AWE.Geometry.createPoint(
             center.x + dir.x, center.y + dir.y
