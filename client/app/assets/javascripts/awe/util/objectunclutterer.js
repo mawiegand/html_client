@@ -78,7 +78,7 @@ AWE.Util = (function(module) {
       var frac = ((armyId % 8) / 8.0) * 2*Math.PI;
       var dir  = AWE.Geometry.createPoint(Math.sin(frac), Math.cos(frac));
       var pos  = view.center(); 
-      dir.scale(((armyId*2) % 3 === 0 ? 4 : 2) * scaleFactor); 
+      dir.scale(((armyId*2) % 3 === 0 ? 8.0 : 4.0) * scaleFactor); 
       
       view.setCenter(AWE.Geometry.createPoint(pos.x + dir.x, pos.y + dir.y));
     },
@@ -117,11 +117,13 @@ AWE.Util = (function(module) {
           }*/
         }
       }
+      
+      console.log('UNCLUTTER GROUP ', group.length, 'SCALE', scaleFactor);
   
       var minBounceStart = Math.min(5.0  * scaleFactor,  20.0);
       var maxBounceStart = Math.min(20.0 * scaleFactor,  60.0);
   
-      for (var i=0; i < numIterations; i++) { // 
+      for (var i=0; i < 1; i++) { // 
     
         var minBounce = minBounceStart * Math.pow(0.8, i);
         var maxBounce = maxBounceStart * Math.pow(0.8, i);
@@ -131,7 +133,7 @@ AWE.Util = (function(module) {
           
           group.forEach(function(view2, index2) {
             if (view !== view2) {
-              var doIntersect = self.intersects(view, view2);
+              var doIntersect = false; // self.intersects(view, view2);
               // if (!doIntersect) continue;     // better (closer) distribution, but causes jitter
               
               var dir = AWE.Geometry.createPoint(view.center().x - view2.center().x, 

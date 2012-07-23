@@ -1705,7 +1705,7 @@ AWE.Controller = (function(module) {
           return ;
         }
         var objectUnclutterer = AWE.Util.ObjectUnclutterer.create({
-          scaleFactor: frame.size.width/256.0,
+          scaleFactor: Math.max(frame.size.width/256.0, 1.0),
         });
         objectUnclutterer.setViews(views);
         objectUnclutterer.unclutter();
