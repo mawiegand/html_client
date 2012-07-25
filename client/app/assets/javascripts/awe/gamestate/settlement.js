@@ -118,6 +118,10 @@ AWE.GS = (function(module) {
     enumerableSlots: function() {
       return this.getPath('hashableSlots.collection');
     }.property('id', 'hashableSlots.changedAt').cacheable(),
+    
+    commandPointsUsed: function() {
+      return this.getPath('armies_count')-1;
+    }.property('armies_count').cacheable(),
 
     
     settlementType: function() {
