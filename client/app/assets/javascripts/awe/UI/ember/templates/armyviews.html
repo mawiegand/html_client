@@ -80,9 +80,19 @@
       <div class="center-helper">
         <div class="modal-dialog-pane" id="army-create-form">
           <h2>{{ t army.create.header }}</h2>
+          <p>{{ t army.create.remainingArmies }}: {{ remainingArmies }}</p>
           {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" }}
           <p>{{ t army.form.name }}: {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" placeholder="New Army" classNames="army-name-field" }}</p>
-          <a href="#" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</a> | <a href="#" {{action "createPressed" target="parentView"}}>{{ t army.form.create }}</a>
+          <a href="#" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</a> | 
+          {{#if loadingSettlement }}
+            {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }}
+          {{else}}
+            {{#if remainingArmies }}
+              <a href="#" {{action "createPressed" target="parentView"}}>{{ t army.form.create }}</a>
+            {{else}}
+              ---
+            {{/if}}
+          {{/if}}
           {{#if "loading" }}
             <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Creating Army...</p>
           {{/if}}

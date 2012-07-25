@@ -124,6 +124,36 @@ AWE.UI.Ember = (function(module) {
   module.ArmyCreateDialog = module.ArmyDialog.extend({
     templateName: 'army-create-dialog',
     
+    init: function() {
+      var self = this;
+      this._super();
+      this.set('loadingSettlement', true);
+      AWE.GS.SettlementManager.updateSettlementsAtLocation(this.get('locationId'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlements) {
+        self.set('loadingSettlement', false);
+        log('---> stop loading', settlements);
+      });
+    },
+    
+    loadingSettlement: false,
+      
+    settlement: function() {
+      log('---> settlements', AWE.GS.SettlementManager.getSettlementAtLocation(this.get('locationId')));
+      return AWE.GS.SettlementManager.getSettlementAtLocation(this.get('locationId'))
+    }.property('hashableSettlements.changedAt').cacheable(),
+    
+    remainingArmies: function() {
+      var commandPoints = this.getPath('settlement.command_points');
+      var armiesCount = this.getPath('settlement.armies_count');
+      log('---> commandPoints armiesCount', commandPoints, armiesCount);
+      return (commandPoints && armiesCount && commandPoints > armiesCount) ? commandPoints - armiesCount : null;
+    }.property('hashableSettlements.changedAt').cacheable(),
+    
+    hashableSettlements: function() {
+      var locationId = this.get('locationId');
+      log('---> hashableSettlements', AWE.GS.SettlementAccess.getHashableCollectionForLocation_id(locationId));
+      return AWE.GS.SettlementAccess.getHashableCollectionForLocation_id(locationId);
+    }.property('locationId').cacheable(),          
+
     unitTypes: function() {
       var list = [];
       var details = this.getPath('garrisonArmy.details');
