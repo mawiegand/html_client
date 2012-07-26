@@ -762,6 +762,10 @@ AWE.Controller = (function(module) {
               callback();
             }
           }); 
+          AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id(), null, function(settlements) {
+            log('settlements updated at location', settlements, location);
+            that.setModelChanged();
+          }); 
         }
         else {
           that.handleError(status, "The server did not accept the create army comannd.");
