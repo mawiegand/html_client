@@ -10,9 +10,9 @@ var AWE = window.AWE || {};
 AWE.Config = (function(module) { 
   
   // automatically determine the server to use -> same origin policy
-  module.SERVER_ROOT = document.location.protocol + '//' + document.location.host;
+  module.SERVER_ROOT = document.location.protocol + '//' + document.location.host ;
   if (!document.location.host) { // for the case where it's loaded from file 
-    module.SERVER_ROOT = 'http://localhost/'
+    module.SERVER_ROOT = 'http://localhost'
   }
   
   module.DEBUG_LEVEL_ERROR   = 0;
@@ -24,19 +24,19 @@ AWE.Config = (function(module) {
   module.MAP_DEBUG_FRAMES = false;
   
   module.MAP_RUN_TESTS = false;
-  module.MAP_SERVER_BASE          = module.SERVER_ROOT + '/game_server/map/';
-  module.MILITARY_SERVER_BASE     = module.SERVER_ROOT + '/game_server/military/';
-  module.TRAINING_SERVER_BASE     = module.SERVER_ROOT + '/game_server/training/';
-  module.FUNDAMENTAL_SERVER_BASE  = module.SERVER_ROOT + '/game_server/fundamental/';
-  module.ACTION_SERVER_BASE       = module.SERVER_ROOT + '/game_server/action/';
-  module.RULES_SERVER_BASE        = module.SERVER_ROOT + '/game_server/game_rules/';
-  module.SETTLEMENT_SERVER_BASE   = module.SERVER_ROOT + '/game_server/settlement/';
-  module.CONSTRUCTION_SERVER_BASE = module.SERVER_ROOT + '/game_server/construction/';
-  module.SHOP_SERVER_BASE         = module.SERVER_ROOT + '/game_server/shop/';
-  module.MESSAGING_SERVER_BASE    = module.SERVER_ROOT + '/game_server/messaging/';
+  module.MAP_SERVER_BASE          = module.SERVER_ROOT + '/game_server/de/map/';
+  module.MILITARY_SERVER_BASE     = module.SERVER_ROOT + '/game_server/de/military/';
+  module.TRAINING_SERVER_BASE     = module.SERVER_ROOT + '/game_server/de/training/';
+  module.FUNDAMENTAL_SERVER_BASE  = module.SERVER_ROOT + '/game_server/de/fundamental/';
+  module.ACTION_SERVER_BASE       = module.SERVER_ROOT + '/game_server/de/action/';
+  module.RULES_SERVER_BASE        = module.SERVER_ROOT + '/game_server/de/game_rules/';
+  module.SETTLEMENT_SERVER_BASE   = module.SERVER_ROOT + '/game_server/de/settlement/';
+  module.CONSTRUCTION_SERVER_BASE = module.SERVER_ROOT + '/game_server/de/construction/';
+  module.SHOP_SERVER_BASE         = module.SERVER_ROOT + '/game_server/de/shop/';
+  module.MESSAGING_SERVER_BASE    = module.SERVER_ROOT + '/game_server/de/messaging/';
   module.PAYMENT_PROVIDER_BASE    = module.SERVER_ROOT + '/payment_provider/';
 
-  module.RANKING_SERVER_BASE      = module.SERVER_ROOT + '/game_server/ranking/character_rankings';
+  module.RANKING_SERVER_BASE      = module.SERVER_ROOT + '/game_server/de/ranking/character_rankings';
 
   
   module.DEFAULT_LOCALE = 'en_US';
