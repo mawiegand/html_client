@@ -142,11 +142,11 @@ AWE.UI.Ember = (function(module) {
     }.property('hashableSettlements.changedAt').cacheable(),
     
     remainingArmies: function() {
-      var commandPoints = this.getPath('settlement.command_points');
-      var armiesCount = this.getPath('settlement.armies_count') - 1;    // without garrison army
+      var commandPoints = (this.getPath('settlement.command_points') || 0);
+      var armiesCount   = (this.getPath('settlement.armies_count') || 0) - 1;    // without garrison army
       log('---> commandPoints armiesCount', commandPoints, armiesCount);
-      return (commandPoints && armiesCount && commandPoints > armiesCount) ? commandPoints - armiesCount : null;
-    }.property('hashableSettlements.changedAt').cacheable(),
+      return commandPoints > armiesCount ? commandPoints - armiesCount : null;
+    }.property('settlement.command_points', 'settlement.armies_count').cacheable(),
     
     hashableSettlements: function() {
       var locationId = this.get('locationId');
