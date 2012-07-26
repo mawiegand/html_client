@@ -103,9 +103,9 @@ AWE.GS = (function(module) {
     }
     
     that.openCreditShopWindow = function() {
-      $('<form id="paymentstarter" action="' + AWE.Config.PAYMENT_PROVIDER_BASE + 'auth/sessions/" method="POST" target="_blank">' +
+      $('<form style="display:none;" id="paymentstarter" action="' + AWE.Config.PAYMENT_PROVIDER_BASE + 'auth/sessions/" method="POST" target="_blank">' +
         '  <input type="hidden" name="access_token" value="' + AWE.Net.currentUserCredentials.get('access_token') + '" />' +
-        '</form>').submit();
+        '</form>').appendTo('body').submit().remove();
     }; 
         
     return that;

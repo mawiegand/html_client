@@ -242,9 +242,9 @@ AWE.Controller = (function(module) {
       
       console.log('Ranking button clicked.');
       
-      $('<form action="' + AWE.Config.RANKING_SERVER_BASE + '" method="GET" target="_blank">' +
+      $('<form style="display:none;" action="' + AWE.Config.RANKING_SERVER_BASE + '" method="GET" target="_blank">' +
         '  <input type="hidden" name="sort" value="overall" />' +
-        '</form>').submit();      
+        '</form>').appendTo('body').submit().remove();      
       
     };
         
