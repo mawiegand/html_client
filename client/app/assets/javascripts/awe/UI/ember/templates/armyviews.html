@@ -83,18 +83,18 @@
           <p>{{ t army.create.remainingArmies }}: {{ remainingArmies }}</p>
           {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" }}
           <p>{{ t army.form.name }}: {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" placeholder="New Army" classNames="army-name-field" }}</p>
-          <a href="#" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</a> | 
           {{#if loadingSettlement }}
             {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }}
           {{else}}
             {{#if remainingArmies }}
+              <a href="#" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</a> | 
               <a href="#" {{action "createPressed" target="parentView"}}>{{ t army.form.create }}</a>
             {{else}}
-              ---
+              {{ t army.create.error }}
             {{/if}}
           {{/if}}
           {{#if "loading" }}
-            <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Creating Army...</p>
+            <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ army.create.loadingMessage }}</p>
           {{/if}}
           <a class="close" href="#" {{action "cancelPressed" target="parentView"}}></a>
         </div>
@@ -109,7 +109,7 @@
           {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" armyNameBinding="otherArmy.name" }}
           <a href="#" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</a> | <a href="#" {{action "changePressed" target="parentView"}}>{{ t army.form.change }}</a>
           {{#if "loading" }}
-            <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Creating Army...</p>
+            <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ army.change.loadingMessage }}</p>
           {{/if}}
           <a class="close" href="#" {{action "cancelPressed" target="parentView"}}></a>
         </div>
