@@ -13,22 +13,21 @@
         {{/if}}
         <h2>{{ army.name }} 
           {{#if isChangeNamePossible}}
-            <a href="#" class="change-name" {{action "changeNamePressed" target="parentView.parentView"}}>change name</a>
+            <a href="#" class="change-name" {{action "changeNamePressed" target="parentView.parentView"}}>{{ t army.details.changeName }}</a>
           {{/if}}
         </h2>
         <p class="citation">{{message}}</p>
         {{#if army.npc}}
-          <p>This army of raving wildlings is without leadership and thus, makes a good target for
-             your armies to gain experience and improve their fighting skill.</p>
+          <p>{{ army.details.npcMsg }}</p>
         {{/if}}
-        <span title="A higher rank improves the efficiency of your troops. You need to gain experience in order to reach a higher the rank."><b>Rank:</b> {{army.rankToDisplay}} </span>
+        <span title="A higher rank improves the efficiency of your troops. You need to gain experience in order to reach a higher the rank."><b>{{ t army.details.rank }}:</b> {{army.rankToDisplay}} </span>
         {{#if army.isOwnProp}} 
-          &nbsp;<span title="Experience is gained through losing own troops, not by killing opponents. Reason: you learn more from making errors."><b>Experience:</b> {{army.exp}}</span> 
+          &nbsp;<span title="Experience is gained through losing own troops, not by killing opponents. Reason: you learn more from making errors."><b>{{ t army.details.experience }}:</b> {{army.exp}}</span> 
         {{/if}}
       </div>
       
         <div class="army-view-unit-list">
-          <h4>Units</h4>
+          <h4>{{ t army.details.units }}</h4>
           {{#if displayUnits}}
             <table class="table-list">
                 {{#each units}}
@@ -44,30 +43,30 @@
         </div>
       
         <div class="army-view-property-list">   <!-- TODO: display categories dynamically! (wherever possible) -->
-          <h4>Properties</h4>
+          <h4>{{ t army.details.properties }} </h4>
           <table class="table-list">
             <tr>
-              <th>Strength Melee:</th>
+              <th>{{ t army.details.strength.melee }}:</th>
               <td>{{formatNumber army.unitcategory_infantry_strength places="0"}}</td>
             <tr>
             </tr>
-              <th>Strength Riders:</th>
+              <th>{{ t army.details.strength.riders }}:</th>
               <td>{{formatNumber army.unitcategory_cavalry_strength places="0"}}</td>
             <tr>
             </tr>
-              <th>Strength Distance:</th>
+              <th>{{ t army.details.strength.distance }}:</th>
               <td>{{formatNumber army.unitcategory_artillery_strength places="0"}}</td>
             <tr>
             </tr>
-              <th>Overal Strength:</th>
+              <th>{{ t army.details.strength.all }}:</th>
               <td>{{formatNumber army.strength places="0"}}</td>
             <tr>
             </tr>
-              <th>Size:</th>
+              <th>{{ t army.details.size }}:</th>
               <td>{{ army.size_present }} / {{army.size_max}}</td>
             <tr>
             </tr>
-              <th>Velocity:</th>
+              <th>{{ t army.details.velocity }}:</th>
               <td>{{ army.velocity }}</td>
             </tr>
           </table>
