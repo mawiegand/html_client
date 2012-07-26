@@ -143,7 +143,7 @@ AWE.UI.Ember = (function(module) {
     
     remainingArmies: function() {
       var commandPoints = this.getPath('settlement.command_points');
-      var armiesCount = this.getPath('settlement.armies_count');
+      var armiesCount = this.getPath('settlement.armies_count') - 1;    // without garrison army
       log('---> commandPoints armiesCount', commandPoints, armiesCount);
       return (commandPoints && armiesCount && commandPoints > armiesCount) ? commandPoints - armiesCount : null;
     }.property('hashableSettlements.changedAt').cacheable(),
