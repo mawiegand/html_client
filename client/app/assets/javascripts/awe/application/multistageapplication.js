@@ -70,6 +70,7 @@ AWE.Application = (function(module) {
       allStages: null,
     
       isModal: false,
+      isPassingEvent: false,
       
       modalDialogs: null,
 
@@ -94,23 +95,90 @@ AWE.Application = (function(module) {
           console.log('Mouse up event in multi stage application controller.');
           self.handleMouseUp(evt);
         });
+        ///DEBUG
+        /*$('body').mouseup(function(evt) { 
+          console.log("got body mouse up");
+        });
+        bla = this;
+        $('body').mousemove(function(evt) {
+          bla.sendEventToDom(evt);
+        });
+        $('body').mouseover(function(evt) {
+          bla.sendEventToDom(evt);
+        });
+        $('body').click(function(evt) {
+          console.error("click asdf");
+          bla.sendEventToDom(evt);
+        });
+        $('body').mouseenter(function(evt) {
+          bla.sendEventToDom(evt);
+        });
+        $('body').mouseleave(function(evt) {
+          bla.sendEventToDom(evt);
+        });*/
+
         // register controller to receive window-resize events (from browser window) 
         // in order to adapt it's own window / display area
         $(window).resize(function(evt){
           self.onResize(evt);
         });
       },
+
+      /**
+        * Experimental currently NOT IN USE, 
+        * should send the event automatically to an dom element that lies 
+        * behind an canvas
+        **/
+      sendEventToDom: function(evt) {
+        if (!this.get('isPassingEvent') && evt.srcElement && evt.srcElement.tagName === "CANVAS") {
+          this.set('isPassingEvent', true);
+          //remove element
+          srcElement = $(evt.srcElement);
+          parent = srcElement.parent();
+          prev = srcElement.prev();
+          srcElement.detach();
+            
+          //send out new event
+          el = document.elementFromPoint(evt.clientX,evt.clientY);
+          if (el && el.id && el.id != "") {
+
+            /*evt.srcElement = el;
+            evt.target = el;
+            evt.toElement = el;*/
+            console.log("triggering "+evt.type);
+            $("#"+el.id).triggerHandler(evt.type);
+            //$(el).triggerHandler(evt.type);//, evt);
+            //$(el).css("border", "2px");
+            //$("body").triggerHandler(evt.type, evt);
+          }
+
+          //reattach
+          if (prev.length > 0) {
+            console.log("inserting after prev");
+            prev.after(srcElement);
+          } else {
+            console.log("prepending in parent");
+            parent.prepend(srcElement);
+          }
+          this.set('isPassingEvent', false);
+        } else if (this.get('isPassingEvent')) {
+          console.log("passing event state");
+        }
+      },
   
       readyToRun: function() { this.set('readyForRunloop', true); log ('RREADY', this.readyForRunloop, this.get('readyForRunloop')); },
   
-      generateClickIfNeeded: function(evt) { console.log('entered click handler');
+      generateClickIfNeeded: function(evt) { 
+        console.log('entered click handler');
         var presentScreenController = this.get('presentScreenController');
 
         if (presentScreenController && presentScreenController.isScrolling()) {
+          console.log("ignored click --> presentScreenController.isScrolling() == true");
           return ; // just ignore it here!
         }
         
         if (this.get('isModal')) {
+          console.log("ignored click --> isModal == true");
           return ;
         }
       
@@ -131,7 +199,8 @@ AWE.Application = (function(module) {
         if (target) {
           if (target && target.view && target.view.onClick) { // TODO: in our view layer: propagate clicks upwards along responder chain.
             log('click on target', target.view, target.view.typeName())
-            if (target.view.enabled()) {  
+            if (target.view.enabled()) { 
+              log("click forwarded to target.view.onClick(..)");
               target.view.onClick(evt); // TODO: I think this is wrong; we somehow need to get the relative coordinates in.
             }
             else {
@@ -139,12 +208,17 @@ AWE.Application = (function(module) {
             }
           }
           else if (target && target.onClick) {
+            log("click forwarded to target.onClick(..)");
             target.onClick(evt);
           }
         }
         else if (this.get('presentScreenController').onClick) {    // no view hit, let the event bubble to controller (TODO: make this a pattern through views and controllers, aka repsonder-chain)
           this.get('presentScreenController').onClick(evt);
-        }     
+        }
+        else {
+          console.log("click passed through all layers");
+          //this.sendEventToDom(evt);
+        }  
       },
 
       /** passes a click in the browser window either to the view that was hit
@@ -152,8 +226,9 @@ AWE.Application = (function(module) {
        * otherwise unhandled click. */
       handleMouseUp:  function(evt) { 
         if (this.isCatchedByDomElement(evt.pageX, evt.pageY, evt.type)) {
+          console.log("click ignored -- isCatchedByDomElement(...) == true");
           return;
-        }               
+        }
         var presentScreenController = this.get('presentScreenController');
         this.generateClickIfNeeded(evt);
       
