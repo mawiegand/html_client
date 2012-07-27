@@ -364,17 +364,29 @@ AWE.Controller = (function(module) {
     // training actions //////////////////////////////////////////////////////  
     
     that.trainingCreateClicked = function(queue, unitId, quantity) {
-      queue.sendCreateJobAction(unitId, quantity, function(status) {
-        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-          log(status, "Training job created.");
-          that.updateTrainingQueueAndJobs(queue.getId());
-      //    that.updateResourcePool();
-        }
-        else {
-          log(status, "The server did not accept the training command.");
-          // TODO Fehlermeldung 
-        }
-      })
+      if (queue && queue.get('max_length') > queue.get('jobs_count')) {
+        queue.sendCreateJobAction(unitId, quantity, function(status) {
+          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+            log(status, "Training job created.");
+            that.updateTrainingQueueAndJobs(queue.getId());
+        //    that.updateResourcePool();
+          }
+          else {
+            log(status, "The server did not accept the training command.");
+            // TODO Fehlermeldung 
+          }
+        });
+      }
+      else {
+        var dialog = AWE.UI.Ember.InfoDialog.create({
+          contentTemplateName: 'training-queue-full-info',
+          arguments:           queue,
+          cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+          okPressed:           null,
+          cancelPressed:       function() { this.destroy(); },
+        });          
+        WACKADOO.presentModalDialog(dialog);
+      }
     }  
     
     that.trainingCancelClicked = function(job) {
