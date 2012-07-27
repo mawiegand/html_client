@@ -56,7 +56,7 @@ AWE.UI.Ember = (function(module) {
   });
   
   module.TrainingJobView = Ember.View.extend({
-    classNameBindings: ['active'],
+    classNameBindings: ['active', 'first'],
     
     job: null,
     
@@ -66,7 +66,12 @@ AWE.UI.Ember = (function(module) {
     
     active: function() {
       return this.get('job').active_job !== null;
-    }.property('job.active_job'),    
+    }.property('job.active_job'),   
+    
+    first: function() {
+      var jobCollection = this.getPath('parentView.queue.hashableJobs.collection');
+      return jobCollection && jobCollection[0] && jobCollection[0] === this.get('job')
+    }.property('parentView.queue.hashableJobs.changedAt'),    
   });
 
   return module;

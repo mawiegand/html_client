@@ -71,3 +71,11 @@
     {{/unless}}
   </div>
 </script>
+
+
+<script type="text/x-handlebars" data-template-name="training-queue-full-info">
+{{#with arguments}}
+  <div class="advisor warrior"></div>
+  <p>{{t settlement.training.queueFull.start}} {{max_length}} {{t settlement.training.queueFull.end}}</p>
+{{/with}}
+</script>

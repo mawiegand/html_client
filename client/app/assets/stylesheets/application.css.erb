@@ -1220,7 +1220,7 @@ span.bonus {
   float: left;
   width: 240px;
   height: 60px;
-  background-color: #BFB;
+  background-color: #BBF;
   -moz-border-radius: 7px;
   border-radius:      7px;
   padding: 10px;
@@ -1232,8 +1232,12 @@ span.bonus {
   margin: 0px;
 }
 
-.queue-job.active {
+.queue-job.first {
   background-color: #FBB;
+}
+
+.queue-job.active {
+  background-color: #BFB;
 }
 
 .queue-job-image {
@@ -1319,14 +1323,18 @@ span.bonus {
   padding: 2px 8px;
   color: #333;
   border-radius: 3px;
-  background-color: #BFB;
+  background-color: #BBF;
   text-decoration: none;
   border: 1px solid #333;
   margin: -2px;
 }
 
-.active .queue-job-button a {
+.first .queue-job-button a {
   background-color: #FBB;
+}
+
+.active .queue-job-button a {
+  background-color: #BFB;
 }
 
 .queue-job-button a:hover {
@@ -1342,7 +1350,7 @@ span.bonus {
   float: left;
   width: 240px;
   height: 80px;
-  background-color: #BFB;
+  background-color: #BBF;
   -moz-border-radius: 7px;
   border-radius:      7px;
   padding: 10px;
@@ -1354,8 +1362,12 @@ span.bonus {
   margin: 0px;
 }
 
-.training-queue-job.active {
+.training-queue-job.first {
   background-color: #FBB;
+}
+
+.training-queue-job.active {
+  background-color: #BFB;
 }
 
 .training-queue-job-text {
@@ -1378,14 +1390,18 @@ span.bonus {
   padding: 2px 8px;
   color: #333;
   border-radius: 3px;
-  background-color: #BFB;
+  background-color: #BBF;
   text-decoration: none;
   border: 1px solid #333;
   margin: -2px;
 }
 
-.active .training-queue-job-button a {
+.first .training-queue-job-button a {
   background-color: #FBB;
+}
+
+.active .training-queue-job-button a {
+  background-color: #BFB;
 }
 
 .training-queue-job-button a:hover {
@@ -1638,6 +1654,13 @@ li.shout .sender {
   background-color: rgba(0,0,0,0.4);
 }
 
+
+.fortress-picture-spacer, .base-picture-spacer {
+  width: 450px;
+  height: 180px;
+  float: right;
+}
+
 .base-screen .settlement-info-box h1 {
   font-size: 16px;
   margin: 0px;
@@ -1646,6 +1669,7 @@ li.shout .sender {
 
 .fortress-picture, .base-picture {
   position: relative;
+  float: left;
   width: 800px;
   height: 600px;
 } 
