@@ -114,7 +114,7 @@
     {{/if}}
     {{#if "messageBox"}}
       <h1>{{messageBox.name}}</h1>
-      {{#each messageBox.entries}}
+      {{#each messageBox.sortedEntries}}
         {{view AWE.UI.Ember.MessageTeaserView messageBinding="this" classNames="message-header" classNameBindings="selected"}}
       {{/each}}
     {{else}}

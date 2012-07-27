@@ -35,6 +35,13 @@ AWE.GS = (function(module) {
     
     entryManager: null,    
     entriesBinding: 'hashableEntries.collection',
+    
+    sortedEntries: function() {
+      var sortedArray = this.getPath('entries').sort(function(a,b) {
+        return Date.parseISODate(a.get('created_at')).getTime() - Date.parseISODate(b.get('created_at')).getTime();
+      });
+      return sortedArray;
+    }.property('entries.length').cacheable(),
 
     fetchEntries: function() {
       var entryManager = this.get('entryManager');
@@ -56,6 +63,7 @@ AWE.GS = (function(module) {
       return id ? AWE.GS.InboxEntryAccess.getHashableCollectionForInbox_id(id) : null;
     }.property('id').cacheable(),        
 
+    
     init: function(spec) {
       this._super(spec);
       this.set('entryManager', AWE.GS.InboxEntryManager)
