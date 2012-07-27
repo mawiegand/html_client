@@ -29,7 +29,9 @@
             <div class="participant-size">Size</div>
             <div class="participant-strength">Strength</div>
             <div class="participant-exp">Rank</div>
+{{#if retreat_ausblenden_hotfix }}  
             <div class="participant-retreat">Retreat</div>
+{{/if}}
           </div>
           {{#each battle.participantsOwnFaction}}
             {{view AWE.UI.Ember.BattleParticipantView participantBinding="this" armyBinding="army" classNames="participant"}}
@@ -43,7 +45,9 @@
             <div class="participant-size">Size</div>
             <div class="participant-strength">Strength</div>
             <div class="participant-exp">Rank</div>
+{{#if retreat_ausblenden_hotfix }}  
             <div class="participant-retreat">Retreat</div>
+{{/if}}
           </div>
           {{#each battle.participantsOtherFaction}}
             {{view AWE.UI.Ember.BattleParticipantView participantBinding="this" armyBinding="army" classNames="participant"}}
@@ -68,6 +72,7 @@
       <div class="participant-strength">{{army.strength}}</div>
       <div class="participant-exp">{{army.rankToDisplay}}</div>
       <div class="participant-retreat">
+{{#if retreat_ausblenden_hotfix }}  
         {{#if participant.isOwn }}
           {{#if army.battle_retreat }}
             <a href="#" {{action "cancelRetreatPressed" target="parentView"}}>cancel</a>  
@@ -81,6 +86,7 @@
             no
           {{/if}}
         {{/if}}
+{{/if}}
       </div>
 </script>
 
