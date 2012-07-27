@@ -12,8 +12,6 @@ AWE.UI.Ember = (function(module) {
   module.ConstructionQueueView = Ember.View.extend({
     templateName: 'construction-queue-view',
     queues: null,
-    
-
   });
   
   module.SingleConstructionQueueView = Ember.View.extend({
@@ -25,7 +23,7 @@ AWE.UI.Ember = (function(module) {
   });
 
   module.ConstructionJobView = Ember.View.extend({
-    classNameBindings: ['active'],
+    classNameBindings: ['active', 'first'],
     
     job: null,
     timer: null,
@@ -48,6 +46,11 @@ AWE.UI.Ember = (function(module) {
     active: function() {
       return this.getPath('job.active_job') !== null;
     }.property('job.active_job'),    
+    
+    first: function() {
+      var jobCollection = this.getPath('parentView.queue.hashableJobs.collection');
+      return jobCollection && jobCollection[0] && jobCollection[0] === this.get('job')
+    }.property('parentView.queue.hashableJobs.changedAt'),    
     
     calcTimeRemaining: function() {
       var finishedAt = this.getPath('job.active_job.finished_at');
