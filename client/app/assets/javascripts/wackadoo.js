@@ -25,6 +25,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     allianceScreenController: null,  
     settlementScreenController: null,
     messageCenterController: null,
+    
+    sessionEnded: false,
   
     /** custom object initialization goes here. */
     init: function() {
@@ -46,6 +48,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         //this.get('hudController').setNeedsLayout();
         //this.get('hudController').setNeedsDisplay();
       }
+      
+      if (!this.get('sessionEnded') && AWE.Net.currentUserCredentials.expiration.getTime() < new Date().getTime()) {
+        this.set('sessionEnded', true);
+        document.location.href = AWE.Config.SERVER_ROOT;
+      }
+      
       this._super();
     },
     
@@ -302,13 +310,15 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         document.location.href = AWE.Config.SERVER_ROOT;
         return ;
       }
-      var accessToken = args.accessToken ; // || AWE.Config.DEV_ACCESS_TOKEN || null;
+      var accessToken = args.accessToken ;                             // || AWE.Config.DEV_ACCESS_TOKEN || null;
+      var expiration  = parseInt(args.expiration || "3600");           // asume one hour validity as default
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;  // TODO: This is a hack, should go to settings.
             
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
+        expiration: (new Date()).add(expiration-120).seconds(),
       });
-          
+                
       AWE.Net.init();                                   // initialize the network stack
       AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
         AWE.UI.rootNode = AWE.Map.Manager.rootNode();
