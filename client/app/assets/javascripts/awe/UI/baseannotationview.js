@@ -72,9 +72,9 @@ AWE.UI = (function(module) {
       
       if (!enterButton && isOwnLocation) {
         enterButton = AWE.UI.createButtonView();
-        enterButton.initWithControllerTextAndImage(my.controller, 'enter', AWE.UI.ImageCache.getImage("map/button1"));
-        enterButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
-        enterButton.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
+        enterButton.initWithControllerTextAndImage(my.controller, 'enter', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        enterButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
+        enterButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
         enterButton.setFrame(AWE.Geometry.createRect(12, 0, 52, 52));
         enterButton.onClick = function() { that.onEnterButtonClick(); }
         this.addChild(enterButton);
@@ -90,9 +90,9 @@ AWE.UI = (function(module) {
       var battleCheck = false;
       if (!attackButton && isOwnLocation && !battleCheck) { // check ongoing battle
         attackButton = AWE.UI.createButtonView();
-        attackButton.initWithControllerTextAndImage(my.controller, 'attack', AWE.UI.ImageCache.getImage("map/button1"));
-        attackButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
-        attackButton.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
+        attackButton.initWithControllerTextAndImage(my.controller, 'attack', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        attackButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
+        attackButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
         attackButton.setFrame(AWE.Geometry.createRect(12, 56, 52, 52));
         attackButton.onClick = function() { if (attackButton.enabled()) { that.onAttackButtonClick(that); } }
         this.addChild(attackButton);
@@ -125,9 +125,9 @@ AWE.UI = (function(module) {
       
       if (!battleButton && battleCheck) {  // ongoing battle -> attribute is missing in database ("mode")
         battleButton = AWE.UI.createButtonView();
-        battleButton.initWithControllerTextAndImage(my.controller, 'battle', AWE.UI.ImageCache.getImage("map/button1"));
-        battleButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
-        battleButton.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
+        battleButton.initWithControllerTextAndImage(my.controller, 'battle', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        battleButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
+        battleButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
         battleButton.setFrame(AWE.Geometry.createRect(12, 56, 52, 52));
         battleButton.onClick = function() { that.onBattleButtonClick(); }
         this.addChild(battleButton);

@@ -231,8 +231,8 @@ AWE.UI = (function(module) {
 
       if (!_newArmyButtonView && my.region.location(0) && my.region.location(0).isOwn()) {
         _newArmyButtonView = AWE.UI.createButtonView();
-        _newArmyButtonView.initWithControllerTextAndImage(my.controller, 'New Army', AWE.UI.ImageCache.getImage("map/button1"));
-        _newArmyButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        _newArmyButtonView.initWithControllerTextAndImage(my.controller, 'New Army', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _newArmyButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         _newArmyButtonView.setFrame(AWE.Geometry.createRect(280, 0, 48, 48));
         _newArmyButtonView.onClick = function() {
           that.onNewArmyButtonClick(my.region.location(0))
@@ -245,16 +245,16 @@ AWE.UI = (function(module) {
       // button unten
       if (!_prevButtonView && my.region.ownerId() === currentCharacter.getId()) {
         _prevButtonView = AWE.UI.createButtonView();
-        _prevButtonView.initWithControllerTextAndImage(my.controller, '<<', AWE.UI.ImageCache.getImage("map/button1"));
-        _prevButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        _prevButtonView.initWithControllerTextAndImage(my.controller, '<<', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _prevButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         _prevButtonView.setFrame(AWE.Geometry.createRect(180, 92, 36, 36));
         this.addChild(_prevButtonView);
       }
 
       if (!_nextButtonView && my.region.ownerId() === currentCharacter.getId()) {
         _nextButtonView = AWE.UI.createButtonView();
-        _nextButtonView.initWithControllerTextAndImage(my.controller, '>>', AWE.UI.ImageCache.getImage("map/button1"));
-        _nextButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        _nextButtonView.initWithControllerTextAndImage(my.controller, '>>', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _nextButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
         this.addChild(_nextButtonView);
       }

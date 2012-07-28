@@ -55,39 +55,39 @@ AWE.UI = (function(module) {
       _army = view.army();
       
       _stanceButtonView = AWE.UI.createButtonView();
-      _stanceButtonView.initWithControllerTextAndImage(controller, 'Stance', AWE.UI.ImageCache.getImage("map/button1"), frame);
+      _stanceButtonView.initWithControllerTextAndImage(controller, 'Stance', AWE.UI.ImageCache.getImage("ui/button/standard/normal"), frame);
 //    _stanceButtonView.setDisabledImage(AWE.UI.ImageCache.getImage("map/button1disabled"));
       _stanceButtonView.setFrame(AWE.Geometry.createRect(12, 6, 52, 52));
       this.addChild(_stanceButtonView);
 
       _moveButtonView = AWE.UI.createButtonView();
-      _moveButtonView.initWithControllerTextAndImage(controller, 'Move', AWE.UI.ImageCache.getImage("map/button1"));
-      _moveButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
-      _moveButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
+      _moveButtonView.initWithControllerTextAndImage(controller, 'Move', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+      _moveButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
+      _moveButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
       _moveButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
       _moveButtonView.onClick = function() { if (_moveButtonView.enabled()) { that.onMoveButtonClick(that); } }
       this.addChild(_moveButtonView);
       
       _cancelButtonView = AWE.UI.createButtonView();
-      _cancelButtonView.initWithControllerTextAndImage(controller, 'Cancel', AWE.UI.ImageCache.getImage("map/button1"));
-      _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
-      _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
+      _cancelButtonView.initWithControllerTextAndImage(controller, 'Cancel', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+      _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
+      _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
       _cancelButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
       _cancelButtonView.onClick = function() { if (_cancelButtonView.enabled()) { that.onCancelMoveButtonClick(that); } }
       this.addChild(_cancelButtonView);      
       
       _attackButtonView = AWE.UI.createButtonView();
-      _attackButtonView.initWithControllerTextAndImage(controller, 'Attack', AWE.UI.ImageCache.getImage("map/button1"));
-      _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
-      _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
+      _attackButtonView.initWithControllerTextAndImage(controller, 'Attack', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+      _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
+      _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
       _attackButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
       _attackButtonView.onClick = function() { if (_attackButtonView.enabled()) { that.onAttackButtonClick(that); } }
       this.addChild(_attackButtonView);
       
       _retreatButtonView = AWE.UI.createButtonView();
-      _retreatButtonView.initWithControllerTextAndImage(controller, 'Retreat', AWE.UI.ImageCache.getImage("map/button1"));
-      _retreatButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
-      _retreatButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
+      _retreatButtonView.initWithControllerTextAndImage(controller, 'Retreat', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+      _retreatButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
+      _retreatButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
       _retreatButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
       _retreatButtonView.onClick = function() {
         if (_retreatButtonView.enabled()) {
@@ -97,8 +97,8 @@ AWE.UI = (function(module) {
       this.addChild(_retreatButtonView);
       
       _battleInfoButtonView = AWE.UI.createButtonView();
-      _battleInfoButtonView.initWithControllerTextAndImage(controller, 'Battle Info', AWE.UI.ImageCache.getImage("map/button1"));
-      _battleInfoButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+      _battleInfoButtonView.initWithControllerTextAndImage(controller, 'Battle Info', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+      _battleInfoButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
       _battleInfoButtonView.setFrame(AWE.Geometry.createRect(128, -70, 52, 52));
       _battleInfoButtonView.onClick = function() {
         if (_battleInfoButtonView.enabled()) {

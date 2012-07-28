@@ -161,7 +161,8 @@ AWE.UI = (function(module) {
    */
       if (!_newArmyButtonView && isOwnLocation) {
         _newArmyButtonView = AWE.UI.createButtonView();
-        _newArmyButtonView.initWithControllerTextAndImage(my.controller, 'New Army', AWE.UI.ImageCache.getImage("map/button1"));
+        _newArmyButtonView.initWithControllerTextAndImage(my.controller, 'New Army', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _newArmyButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         _newArmyButtonView.setFrame(AWE.Geometry.createRect(280, 0, 48, 48));
         _newArmyButtonView.onClick = function() {
            that.onNewArmyButtonClick(_location) 

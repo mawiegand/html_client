@@ -29,8 +29,8 @@ AWE.UI = (function(module) {
       
       if (!my.toggleButtonView) {
         my.toggleButtonView = AWE.UI.createButtonView();
-        my.toggleButtonView.initWithControllerTextAndImage(my.controller, 'Game', AWE.UI.ImageCache.getImage("map/button1"));
-        my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        my.toggleButtonView.initWithControllerTextAndImage(my.controller, 'Game', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         my.toggleButtonView.setFrame(AWE.Geometry.createRect(0, 0, 48, 48));
         my.toggleButtonView.onClick = function() {
           that.onToggleButtonClick()
@@ -77,8 +77,8 @@ AWE.UI = (function(module) {
       
       if (!my.toggleButtonView) {
         my.toggleButtonView = AWE.UI.createButtonView();
-        my.toggleButtonView.initWithControllerTextAndImage(my.controller, 'Strategic', AWE.UI.ImageCache.getImage("map/button1"));
-        my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
+        my.toggleButtonView.initWithControllerTextAndImage(my.controller, 'Strategic', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         my.toggleButtonView.setFrame(AWE.Geometry.createRect(0, 0, 48, 48));
         my.toggleButtonView.onClick = function() {
           that.onToggleButtonClick()
