@@ -23,7 +23,20 @@ AWE.I18n = function(module) {
       string = string[Math.floor(Math.random()*string.length)];    
     }
     return string ;
-  }
+  };
+  
+  module.localizedListString = function(list) {
+    if (!list || list.length == 0) {
+      return ""
+    }
+    var string = "";
+    list.forEach(function(item, index) {
+      string += item;
+      if (index < list.length-2) string += ", ";
+      if (index < list.length-1) string += " " + AWE.I18n.lookupTranslation('general.and') + " ";
+    })
+    return string;
+  };
 
   return module;
   

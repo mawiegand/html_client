@@ -73,6 +73,11 @@ AWE.GS = (function(module) {
 			return AWE.GS.RulesManager.getRules().getBuildingType(buildingId);
     }.property('buildingId').cacheable(),
     
+    buildingCategory: function() {
+      var category = this.getPath('buildingType.category');
+      return category === null || category === undefined ? null : AWE.GS.RulesManager.getRules().getBuildingCategory(category);
+    }.property('buildingType.category').cacheable(),
+    
     garrisonArmy: function() {
       var showGarrisonArmy = this.get('buildingType') && this.get('buildingType')['abilities'] && this.get('buildingType')['abilities']['unlock_garrison'];
       var level = this.get('level');
@@ -467,7 +472,18 @@ AWE.GS = (function(module) {
 		  return slotType.options;
 		},
 		
-		
+    buildingCategories: function() {
+      var categoryIds = this.buildingOptions();
+      if (categoryIds === undefined || categoryIds === null || categoryIds.length === 0) {
+        return null;
+      }
+      var categories = [];
+      categoryIds.forEach(function(item) {
+        categories.push(AWE.GS.RulesManager.getRules().getBuildingCategory(item));
+      });
+      return categories;
+    },
+    
   });     
 
     

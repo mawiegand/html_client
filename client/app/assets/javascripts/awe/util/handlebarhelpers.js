@@ -61,6 +61,10 @@ Handlebars.registerHelper("t", function(path) {
   return AWE.I18n.lookupTranslation(path);
 });
 
+Ember.registerBoundHelper("localizedList", function(list) {
+  return AWE.I18n.localizedListString(list);
+});
+
 //////////////////////////////////////////////////////////////////////////////
 // 
 //  FORMATTING NUMBERS

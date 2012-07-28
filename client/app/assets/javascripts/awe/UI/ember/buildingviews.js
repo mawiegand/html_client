@@ -115,7 +115,28 @@ AWE.UI.Ember = (function(module) {
       var slotNum = this.getPath('slot.slot_num');
       return slotNum ? "slot"+slotNum : null;
     }.property('slot.slot_num').cacheable(),
-		
+    
+    buildingCategories: function() {
+      var buildingId  = this.getPath('slot.buildingId');
+      var slot        = this.get('slot');
+      return (buildingId === null || buildingId === undefined) && slot ? slot.buildingCategories() : null;
+    }.property('slot.buildingId', 'slot.settlement_id', 'slot.slot_num'),	
+    
+    buildingCategoryNames: function() {
+      var categories = this.get('buildingCategories');
+      if (!categories || categories.length == 0) {
+        return ""
+      }
+      categories = categories.map(function(category) {
+        return '<span class="green-color">'+AWE.Util.Rules.lookupTranslation(category.name)+'</span>';
+      });
+      return categories;
+    }.property('buildingCategories'),
+    
+    maxLevel: function() {
+      var slot = this.get('slot');
+      return slot ? slot.slotType().max_level : null;
+    }.property('slot.slot_num', 'slot.settlement_id' ),
 		
   });
   
