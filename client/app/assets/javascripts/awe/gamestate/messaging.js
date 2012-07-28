@@ -37,10 +37,10 @@ AWE.GS = (function(module) {
     entriesBinding: 'hashableEntries.collection',
     
     sortedEntries: function() {
-      var sortedArray = this.getPath('entries').sort(function(a,b) {
-        return Date.parseISODate(a.get('created_at')).getTime() - Date.parseISODate(b.get('created_at')).getTime();
-      });
-      return sortedArray;
+      var messages = this.getPath('entries');
+      return messages ? messages.slice(0).sort(function(a,b) { // why copy (slice)? because the original message array at the collection will be changed outside this method
+        return Date.parseISODate(b.get('created_at')).getTime() - Date.parseISODate(a.get('created_at')).getTime();
+      }) : null; 
     }.property('entries.length').cacheable(),
 
     fetchEntries: function() {
