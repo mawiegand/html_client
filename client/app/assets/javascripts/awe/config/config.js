@@ -35,6 +35,10 @@ AWE.Config = (function(module) {
   module.SHOP_SERVER_BASE         = module.SERVER_ROOT + '/game_server/de/shop/';
   module.MESSAGING_SERVER_BASE    = module.SERVER_ROOT + '/game_server/de/messaging/';
   module.PAYMENT_PROVIDER_BASE    = module.SERVER_ROOT + '/payment_provider/';
+  
+  module.EXTERNAL_FORUM_URL       = 'http://forum.uga-agga.de/wack-a-doo-f235/';
+  module.EXTERNAL_MANUAL_URL      = 'http://wiki.wack-a-doo.de';
+  module.EXTERNAL_FACEBOOK_URL    = 'http://www.facebook.com/pages/Wackadoo/239722582763809';
 
   module.RANKING_SERVER_BASE      = module.SERVER_ROOT + '/game_server/de/ranking/character_rankings';
 

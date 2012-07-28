@@ -130,6 +130,8 @@ AWE.Controller = (function(module) {
         zoomSlider = AWE.UI.createSlider(value, true, true, that.handleZoomSliderValueUpdate);
         $(zoomSlider.getContainer()).remove();
       });
+      
+      
 
       if (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM) {
         inspectorViews.tempToggleButtonView = AWE.UI.createTempToggleButtonView();
@@ -154,6 +156,10 @@ AWE.Controller = (function(module) {
     
     that.viewDidAppear = function() {
       $("body").append(zoomSlider.getContainer());
+      $("body").append('<div class="link-pane"><a href="'+ AWE.Config.EXTERNAL_FACEBOOK_URL +'" target="_blank"><img class="fb-icon" src="<%= asset_path("icons/fb.png") %>" /></a> &nbsp; '+
+                       '                       <a href="'+ AWE.Config.EXTERNAL_FORUM_URL    +'" target="_blank">Forum</a> &nbsp; '+
+                       '                       <a href="'+ AWE.Config.EXTERNAL_MANUAL_URL   +'" target="_blank">Manual</a></div>');
+      window.WACKADOO.addDomElement($('.link-pane'), false);
       window.WACKADOO.addDomElement(zoomSlider.getContainer(), true);
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height())); // prevents distortion in case window has resized while displaying another screen
       zoomSlider.subscribeToDOMEvents();
@@ -161,6 +167,8 @@ AWE.Controller = (function(module) {
     
     that.viewWillDisappear = function() {
       $(zoomSlider.getContainer()).remove(); 
+      $('.link-pane').remove();
+      window.WACKADOO.removeDomElement($('.link-pane'));
       window.WACKADOO.removeDomElement(zoomSlider.getContainer());
       zoomSlider.unsubscribeDOMEvents();
     }

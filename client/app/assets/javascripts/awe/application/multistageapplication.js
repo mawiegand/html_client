@@ -225,6 +225,7 @@ AWE.Application = (function(module) {
        * or to the present screen controller that gets the chance to handle the
        * otherwise unhandled click. */
       handleMouseUp:  function(evt) { 
+        console.log('HANDLE MOUSE UP');
         if (this.isCatchedByDomElement(evt.pageX, evt.pageY, evt.type)) {
           console.log("click ignored -- isCatchedByDomElement(...) == true");
           return;
@@ -340,6 +341,7 @@ AWE.Application = (function(module) {
       },
     
       onMouseDown: function(evt) {
+        console.log('MSA.onMouseDown')
         //if this event is already handled by a dom element ignore it
         if (this.isCatchedByDomElement(evt.pageX, evt.pageY, evt.type)) {
           return;
@@ -357,7 +359,7 @@ AWE.Application = (function(module) {
           controller.onMouseWheel(evt);
         }
       },
-    
+      
 
       onMouseLeave: function(evt) {
         var controller = this.get('presentScreenController');
