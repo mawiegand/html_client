@@ -241,7 +241,7 @@ AWE.UI = (function(module) {
       }
       
       // TODO disablen wenn garrison army leer
-
+ /*
       // button unten
       if (!_prevButtonView && my.region.ownerId() === currentCharacter.getId()) {
         _prevButtonView = AWE.UI.createButtonView();
@@ -258,7 +258,7 @@ AWE.UI = (function(module) {
         _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
         this.addChild(_nextButtonView);
       }
-    }
+    }*/
     
     that.onInfoButtonClick = function() { console.log('info button clicked'); }
 
