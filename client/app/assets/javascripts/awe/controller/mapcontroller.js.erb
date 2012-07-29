@@ -1725,7 +1725,7 @@ AWE.Controller = (function(module) {
       return removedSomething;
     }
     
-    
+        
     /** update the army views. */
     that.updateArmies = function(nodes) {
   
@@ -1885,6 +1885,7 @@ AWE.Controller = (function(module) {
       removedSomething = purgeDispensableViewsFromStage(movementArrowViews, newMovementArrowViews, _stages[1]) || removedSomething;
       armyViews = newArmyViews;      
       movementArrowViews = newMovementArrowViews;      
+        
       return removedSomething;          
     }
     
@@ -2360,7 +2361,7 @@ AWE.Controller = (function(module) {
   
         
         // STEP 4: update views and repaint view hierarchies as needed
-        if (_windowChanged || _needsDisplay || _loopCounter % 30 == 0 || that.modelChanged() || _actionViewChanged || animating) {
+        if (_windowChanged || _needsDisplay || _loopCounter % 15 == 0 || that.modelChanged() || _actionViewChanged || animating) {
           // STEP 4a: get all visible nodes from the model
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());    
           
@@ -2389,7 +2390,7 @@ AWE.Controller = (function(module) {
           ];          
           
           for (var i=0; i < _stages.length; i++) {
-            if (stageUpdateNeeded[i] || _windowChanged) {
+            if (stageUpdateNeeded[i] || _windowChanged || i==1) {
               if (_sortStages[i]) {  // TODO: add configuration: stage needs sorting
                 _stages[i].sortChildren(function(a, b) {
                   var az = a.y + a.height;
