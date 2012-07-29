@@ -132,7 +132,12 @@ AWE.UI = (function(module) {
         var spriteSheet = new SpriteSheet(data);
         _animation = AWE.UI.createAnimatedSpriteView()
         _animation.initWithControllerAndSpriteSheet(that, spriteSheet);
-        _animation.animation().gotoAndPlay('stand');
+        if (_army.get('mode') == 1) { // 1: walking
+          _animation.animation().gotoAndPlay('walk');      
+        }
+        else {
+          _animation.animation().gotoAndPlay('stand');
+        }
         _animation.snapToPixel = true;
         
         _animation.setFrame(AWE.Geometry.createRect(-23, -35, 128, 128));
