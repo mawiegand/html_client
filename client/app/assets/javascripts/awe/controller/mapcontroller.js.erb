@@ -952,7 +952,7 @@ AWE.Controller = (function(module) {
           for (var key in targetLocations) {
             if (targetLocations.hasOwnProperty(key)) {
               var targetLocation = targetLocations[key];
-              if (view.location && view.location() === targetLocation) {
+              if (view.location && view.location().id() == targetLocation.id()) {
                 actionCompleted = true;
                 break;
               }
