@@ -130,21 +130,18 @@ AWE.UI.Ember = (function(module) {
       this.set('loadingSettlement', true);
       AWE.GS.SettlementManager.updateSettlementsAtLocation(this.get('locationId'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlements) {
         self.set('loadingSettlement', false);
-        log('---> stop loading', settlements);
       });
     },
     
     loadingSettlement: false,
       
     settlement: function() {
-      log('---> settlements', AWE.GS.SettlementManager.getSettlementAtLocation(this.get('locationId')));
       return AWE.GS.SettlementManager.getSettlementAtLocation(this.get('locationId'))
     }.property('hashableSettlements.changedAt').cacheable(),
     
     remainingArmies: function() {
       var commandPoints = (this.getPath('settlement.command_points') || 0);
       var armiesCount   = (this.getPath('settlement.armies_count') || 0) - 1;    // without garrison army
-      log('---> commandPoints armiesCount', commandPoints, armiesCount);
       return commandPoints > armiesCount ? commandPoints - armiesCount : null;
     }.property('settlement.command_points', 'settlement.armies_count').cacheable(),
     
