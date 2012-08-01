@@ -99,7 +99,7 @@ AWE.UI = (function(module) {
         attackButton.setFrame(AWE.Geometry.createRect(12, 56, 52, 52));
         attackButton.onClick = function() {
           if (attackButton.enabled()) {
-            that.onAttackButtonClick(my.region.location(0));
+            that.onAttackButtonClick(that);
           }
         }
         this.addChild(attackButton);
