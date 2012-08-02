@@ -1,5 +1,5 @@
 <script type="text/x-handlebars" data-template-name="army-info-dialog">
-  {{view AWE.UI.Ember.ArmyInfoView armyBinding="arguments.army" }}
+  {{view AWE.UI.Ember.ArmyInfoView armyBinding="arguments.army" isSavingBinding="arguments.isSaving"}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="army-info-view">
@@ -20,14 +20,24 @@
         {{#if army.npc}}
           <p>{{ army.details.npcMsg }}</p>
         {{/if}}
-        <span title="A higher rank improves the efficiency of your troops. You need to gain experience in order to reach a higher the rank."><b>{{ t army.details.rank }}:</b> {{army.rankToDisplay}} </span>
+        <div title="A higher rank improves the efficiency of your troops. You need to gain experience in order to reach a higher the rank.">{{ t army.details.rank }}: {{army.rankToDisplay}} </div>
         {{#if army.isOwnProp}} 
-          &nbsp;<span title="Experience is gained through losing own troops, not by killing opponents. Reason: you learn more from making errors."><b>{{ t army.details.experience }}:</b> {{army.exp}}</span> 
+          <div title="Experience is gained through losing own troops, not by killing opponents. Reason: you learn more from making errors.">{{ t army.details.experience }}: {{army.exp}}</div> 
         {{/if}}
+        <div title="Erklärbär">
+          {{ t army.details.stance }}: {{ army.stance }}
+          {{#if army.isOwnProp}}
+            {{#unless isSaving }}
+            <a href="#" class="change-name" {{action "changeStancePressed" target="parentView.parentView"}}>{{ t army.form.change }}</a>
+            {{else}}
+              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+            {{/unless}}
+          {{/if}}
+        </div> 
       </div>
       
         <div class="army-view-unit-list">
-          <h4>{{ t army.details.units }}</h4>
+          <h3>{{ t army.details.units }}</h3>
           {{#if displayUnits}}
             <table class="table-list">
                 {{#each units}}
@@ -43,7 +53,7 @@
         </div>
       
         <div class="army-view-property-list">   <!-- TODO: display categories dynamically! (wherever possible) -->
-          <h4>{{ t army.details.properties }} </h4>
+          <h3>{{ t army.details.properties }}</h3>
           <table class="table-list">
             <tr>
               <th>{{ t army.details.strength.melee }}:</th>

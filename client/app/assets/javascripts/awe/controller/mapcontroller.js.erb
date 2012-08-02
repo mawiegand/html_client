@@ -626,6 +626,7 @@ AWE.Controller = (function(module) {
         contentTemplateName: 'army-info-dialog',
         arguments: {
           army: army,
+          isSaving: false,
         },
         
         changeNamePressed: function(event) {
@@ -643,6 +644,23 @@ AWE.Controller = (function(module) {
             cancelPressed: function() { this.destroy(); }
           });
           that.applicationController.presentModalDialog(changeDialog);
+        },
+
+        changeStancePressed: function(event) {
+          var self = this;
+
+          // isSaving = true
+          this.setPath('arguments.isSaving', true);
+           
+          var newStance = this.getPath('arguments.army.stance') === 0 ? 1 : 0;
+          var action = AWE.Action.Military.createChangeArmyStanceAction(this.getPath('arguments.army'), newStance);
+          AWE.Action.Manager.queueAction(action, function() {
+            log('---> ping', army.getId());
+            AWE.GS.ArmyManager.updateArmy(army.getId(), null, function() {
+              log('---> pong', newStance);
+              self.setPath('arguments.isSaving', false);
+            });
+          });  
         },
       });
       
