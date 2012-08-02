@@ -101,6 +101,10 @@ AWE.GS = (function(module) {
       return ;
     },
     
+    stanceString: function() {
+      return (this.get('stance') == 1 ? AWE.I18n.lookupTranslation('general.yes') : AWE.I18n.lookupTranslation('general.no'));
+    }.property('stance').cacheable(),
+    
     empty: function() {
       return false;
     },

@@ -25,7 +25,7 @@
           <div title="Experience is gained through losing own troops, not by killing opponents. Reason: you learn more from making errors.">{{ t army.details.experience }}: {{army.exp}}</div> 
         {{/if}}
         <div title="Erklärbär">
-          {{ t army.details.stance }}: {{ army.stance }}
+          {{ t army.details.stance }}: {{ army.stanceString }}
           {{#if army.isOwnProp}}
             {{#unless isSaving }}
             <a href="#" class="change-name" {{action "changeStancePressed" target="parentView.parentView"}}>{{ t army.form.change }}</a>
