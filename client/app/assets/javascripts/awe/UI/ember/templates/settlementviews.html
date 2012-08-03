@@ -10,7 +10,8 @@
      <span title="rate at which siege machines are constructed">S {{formatNumber siegeTrainingSpeed places="0"}}%</span> |
      <span title="Command points used / available command points. Each army needs 1 command point.">Command Points: {{formatNumber settlement.commandPointsUsed places="0"}} / {{formatNumber settlement.command_points places="0"}}</span><br> 
   
+     {{t settlement.population}} {{settlement.score}}
      {{#each settlement.resourceProductions}}
-       <span {{bindAttr title="localizedDetails"}}="">{{local resourceType.name}} {{formatNumber rate places="0"}}/h</span> |
+       | <span {{bindAttr title="localizedDetails"}}="">{{local resourceType.name}} {{formatNumber rate places="0"}}/h</span> 
      {{/each}}
 </script>
