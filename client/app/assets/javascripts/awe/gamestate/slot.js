@@ -121,6 +121,25 @@ AWE.GS = (function(module) {
 		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, nextLevel, settlementProductions) : null;
 		}.property('nextLevel', 'buildingType').cacheable(),
 
+    calcPopulation: function(level) {
+      var formula = this.getPath('buildingType.population');
+      level       = this.get('level') || 0;
+      return formula ? AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(formula), level) : null;
+    },
+    
+    population: function() {
+      return this.calcPopulation(this.get('level'));
+    }.property('level', 'buildingType'),
+    
+    populationNextLevel: function() {
+      return this.calcPopulation(this.get('nextLevel'));
+    }.property('nextLevel', 'buildingType'),
+
+    population: function() {
+      var formula = this.getPath('buildingType.population');
+      var level   = this.get('level') || 0;
+      return formula ? AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(formula), level) : null;
+    }.property('level', 'buildingType'),
 
     calcProductionTime: function(level, speed) {
 		  var productionTime = this.getPath('buildingType.production_time');

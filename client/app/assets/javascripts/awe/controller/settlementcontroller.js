@@ -30,6 +30,7 @@ AWE.Controller = (function(module) {
     that.view    = null;
     that.visible = false;
     that.settlementId  = null;
+    that.locationId    = null;
     
     var _super = {};             // store locally overwritten methods of super object
     _super.init = that.init; 
@@ -75,6 +76,7 @@ AWE.Controller = (function(module) {
      * @function
      * @name AWE.Controller.SettlementController#setLocationId */
     that.setLocationId = function(locationId) {
+      this.locationId = locationId;
       var settlement = AWE.GS.SettlementManager.getSettlementAtLocation(locationId);
       if (settlement === null) {
         that.setSettlementId(null);
@@ -633,7 +635,9 @@ AWE.Controller = (function(module) {
           that.updateOldJobsInTrainingQueues(this.view.getPath('selectedSlot.building.trainingQueues'));
         }
       }
-      
+      else if (!this.settlementId && this.locationId) {
+        this.setLocationId(this.locationId); 
+      }
       that.updateModel();
     }
     

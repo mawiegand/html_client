@@ -76,6 +76,7 @@
         <h1>Under Construction: {{local building.name }}</h1>        
       {{/if}}
       {{#if building.buildingCategory}}<div class="building-category">{{t settlement.buildings.category}}: {{local building.buildingCategory.name}}</div>{{/if}}
+      <b>{{t settlement.population}}:</b> {{building.population}}<br/>
       {{#if building.productions}}
         <b>{{t building.produces}}:</b><br/>
         {{#each building.productions}}
@@ -113,6 +114,8 @@
       <h2>Next Upgrade: Level {{ building.nextLevel }}</h2>
     
      {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building" levelBinding="building.nextLevel"}}
+
+      <b>{{t settlement.population}}:</b> {{building.population}}<br/>
 
       {{#if building.costsOfNextLevel}}
         <b>{{t building.cost}}:</b>
