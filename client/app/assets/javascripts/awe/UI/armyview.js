@@ -117,7 +117,7 @@ AWE.UI = (function(module) {
       }
       else {
         var data = {
-	        images: ["client/assets/army/warrior_animation_pose_1_128.png"],
+	        images: [AWE.UI.ImageCache.getImage('map/army/animation/neutral').src],
 	        frames: {width:128, height:128},
 	        animations: { 
 	          toWalk: [0,1,  'walk'], 
