@@ -24,6 +24,7 @@
         {{#if army.isOwnProp}}
           <div title="Experience is gained through losing own troops, not by killing opponents. Reason: you learn more from making errors.">{{ t army.details.experience }}: {{army.exp}}</div> 
         {{/if}}
+        {{#unless army.garrison}}
         <div>
           {{ t army.details.stance }}: {{ army.stanceString }}
           {{#if army.isOwnProp}}
@@ -34,6 +35,7 @@
             {{/unless}}
           {{/if}}
         </div> 
+        {{/unless}}
       </div>
       
         <div class="army-view-unit-list">
