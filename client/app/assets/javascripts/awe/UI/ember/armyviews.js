@@ -184,6 +184,8 @@ AWE.UI.Ember = (function(module) {
       return unitQuantities;
     },
     
+    otherArmySizeMaxBinding: 'settlement.army_size_max',    
+    
     armyName: '',
     
     createPressed: function() {
@@ -194,12 +196,15 @@ AWE.UI.Ember = (function(module) {
   module.ArmyChangeDialog = module.ArmyDialog.extend({
     templateName: 'army-change-dialog',
     
+    garrisonArmy: null,
     otherArmy: null,
     otherArmyObserver: function() {
       if (this.get('otherArmy')) {
         AWE.GS.ArmyManager.updateArmy(this.get('otherArmy').getId(), module.ENTITY_UPDATE_TYPE_FULL);
       }
     }.observes('otherArmy'),
+    
+    otherArmySizeMaxBinding: 'otherArmy.size_max',
 
     unitTypes: function() {
       var list = [];
