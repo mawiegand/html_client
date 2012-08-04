@@ -66,7 +66,7 @@ AWE.UI = (function(module) {
       }
       
       if (_battleInfoButtonView) {
-        _battleInfoButtonView.setVisible(my.fortressView.selected() && my.region.location(0).garrisonArmy() && my.region.location(0).garrisonArmy().get('isFighting'));
+        _battleInfoButtonView.setVisible(my.fortressView.selected() && my.region.location(0) && my.region.location(0).garrisonArmy() && my.region.location(0).garrisonArmy().get('isFighting'));
       }
     }
     
