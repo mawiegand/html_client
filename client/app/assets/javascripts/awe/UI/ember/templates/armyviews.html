@@ -21,10 +21,11 @@
           <p>{{ army.details.npcMsg }}</p>
         {{/if}}
         <div title="A higher rank improves the efficiency of your troops. You need to gain experience in order to reach a higher the rank.">{{ t army.details.rank }}: {{army.rankToDisplay}} </div>
-        {{#if army.isOwnProp}} 
+        {{#if army.isOwnProp}}
           <div title="Experience is gained through losing own troops, not by killing opponents. Reason: you learn more from making errors.">{{ t army.details.experience }}: {{army.exp}}</div> 
         {{/if}}
-        <div title="Erklärbär">
+        {{#unless army.garrison}}
+        <div>
           {{ t army.details.stance }}: {{ army.stanceString }}
           {{#if army.isOwnProp}}
             {{#unless isSaving }}
@@ -34,6 +35,7 @@
             {{/unless}}
           {{/if}}
         </div> 
+        {{/unless}}
       </div>
       
         <div class="army-view-unit-list">
@@ -103,7 +105,7 @@
             {{/if}}
           {{/if}}
           {{#if "loading" }}
-            <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ army.create.loadingMessage }}</p>
+            <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ t army.create.loadingMessage }}</p>
           {{/if}}
           <a class="close" href="#" {{action "cancelPressed" target="parentView"}}></a>
         </div>
@@ -118,7 +120,7 @@
           {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" armyNameBinding="otherArmy.name" }}
           <a href="#" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</a> | <a href="#" {{action "changePressed" target="parentView"}}>{{ t army.form.change }}</a>
           {{#if "loading" }}
-            <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ army.change.loadingMessage }}</p>
+            <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ t    army.change.loadingMessage }}</p>
           {{/if}}
           <a class="close" href="#" {{action "cancelPressed" target="parentView"}}></a>
         </div>
@@ -146,13 +148,13 @@
           {{/view }}
         {{/each}}
         <tr class="line">
-          <td class="unit">{{ t army.form.all }}</td>
-          <td>{{ garrisonSum }}</td>
+          <td class="unit">{{ t army.details.size }} / {{ t army.details.sizeMax }}</td>
+          <td>{{ garrisonSum }} / {{ parentView.garrisonArmy.size_max }}</td>
           <td><a href="#" {{action "allToGarrison" target="parentView"}}><<</a></td>
           <td></td>
           <td></td>
           <td><a href="#" {{action "allToOther" target="parentView"}}>>></a></td>
-          <td>{{ otherSum }}</td>
+          <td>{{ otherSum }} / {{ parentView.otherArmySizeMax }}</td>
         </tr>
       </table>
 </script>
