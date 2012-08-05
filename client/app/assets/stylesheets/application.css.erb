@@ -1649,6 +1649,10 @@ li.shout .sender {
   border-radius:      6px;
 }
 
+
+
+
+
 .settlement-info-box .change-name,
 .army-info-view .change-name {
   opacity: 1.0;
@@ -1658,7 +1662,31 @@ li.shout .sender {
   color: #CCF;
 }
 
+.float-right {
+  float: right;
+}
 
+.down-icon {
+  display: inline-block;
+  width: 27px; height: 27px;
+  margin: 0; padding: 0;
+  background-image: url("<%= asset_path 'icons/down.png' %>");
+}
+
+
+.up-icon {
+  display: inline-block;
+  width: 27px; height: 27px;
+  margin: 0; padding: 0;
+  background-image: url("<%= asset_path 'icons/up.png' %>");
+}
+
+.help-icon {
+  display: inline-block;
+  width: 27px; height: 27px;
+  margin: -6px 0px -5px 0px; padding: 0;
+  background-image: url("<%= asset_path 'icons/help.png' %>");
+}
 
 .settlment-info-box .change-name:hover,
 .army-info-view .change-name:hover {
@@ -1688,6 +1716,29 @@ li.shout .sender {
   left: 40px;
   top: 8px;  
   background-color: rgba(0,0,0,0.4);
+}
+
+.fortress-screen .settlement-info-box.expanded, 
+.base-screen .settlement-info-box.expanded {
+ width: 600px;
+ height:600px; 
+ background-color: white;
+ color: #333;
+ text-shadow: none;
+ font-size: 14px;
+}
+
+.fortress-screen .settlement-info-box.expanded {
+  left:40px;
+}
+
+.base-screen .settlement-info-box.expanded h1,
+.fortress-screen .settlement-info-box.expanded h1 {
+  font-size: 20px; 
+}
+
+table .number {
+  text-align: right;
 }
 
 

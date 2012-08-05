@@ -69,9 +69,21 @@ AWE.UI.Ember = (function(module) {
     hashableConstructionQueuesBinding: "settlement.hashableQueues",
     hashableTrainingQueuesBinding: "settlement.hashableTrainingQueues",
     
+    classNameBindings: ['expanded'],
+    
     settlement: null,
+    expanded: false,
     
 //    defenseBonusBinding: Ember.Binding.notNull("settlement.defense_bonus", "0"),
+            
+    click: function() {
+      if (this.get('expanded') === false) {
+        this.set('expanded', true);
+      }
+      else {
+        this.set('expanded', false);
+      }
+    },        
             
     buildingQueue: function() {
       var queues = this.getPath('hashableConstructionQueues.collection');

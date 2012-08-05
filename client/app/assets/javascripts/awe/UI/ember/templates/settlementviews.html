@@ -1,17 +1,86 @@
 <!-- templates that are shared among the different settlement types -->
 
 <script type="text/x-handlebars" data-template-name="settlement-info-box">
-  <h1>{{settlement.name}} <!--<a href="#" class="change-name" {{action "changeNamePressed"}}>change name</a>--></h1>
-  <p><!--<span title="defensive bonus to all armies fighting on the side of this settlement">Def +{{formatNumber defenseBonus places="0"}}%</span> | -->  
-     <span title="rate at which new buildings and upgrades are constructed"> B {{formatNumber buildingSpeed places="0"}}%</span> | 
-     <span title="rate at which foot soldiers are trained"     >F {{formatNumber infantryTrainingSpeed places="0"}}%</span> |
-     <span title="rate at which mounted troops are trained"    >C {{formatNumber cavalryTrainingSpeed places="0"}}%</span> | 
-     <span title="rate at which ranged troops are trained"     >R {{formatNumber artilleryTrainingSpeed places="0"}}%</span> | 
-     <span title="rate at which siege machines are constructed">S {{formatNumber siegeTrainingSpeed places="0"}}%</span> |
-     <span title="Command points used / available command points. Each army needs 1 command point.">Command Points: {{formatNumber settlement.commandPointsUsed places="0"}} / {{formatNumber settlement.command_points places="0"}}</span><br> 
+  {{#unless expanded}}
   
-     {{t settlement.population}} {{settlement.score}}
-     {{#each settlement.resourceProductions}}
-       | <span {{bindAttr title="localizedDetails"}}="">{{local resourceType.name}} {{formatNumber rate places="1"}}/h</span> 
-     {{/each}}
+    <div class="float-right down-icon" title="click to expand">&nbsp;</div>
+
+    <h1>{{settlement.name}} <!--<a href="#" class="change-name" {{action "changeNamePressed"}}>change name</a>--></h1>
+    <p><!--<span title="defensive bonus to all armies fighting on the side of this settlement">Def +{{formatNumber defenseBonus places="0"}}%</span> | -->  
+      <span title="rate at which new buildings and upgrades are constructed"> B {{formatNumber buildingSpeed places="0"}}%</span> | 
+      <span title="rate at which foot soldiers are trained"     >F {{formatNumber infantryTrainingSpeed places="0"}}%</span> |
+      <span title="rate at which mounted troops are trained"    >C {{formatNumber cavalryTrainingSpeed places="0"}}%</span> | 
+      <span title="rate at which ranged troops are trained"     >R {{formatNumber artilleryTrainingSpeed places="0"}}%</span> | 
+      <span title="Command points used / available command points. Each army needs 1 command point.">Command Points: {{formatNumber settlement.commandPointsUsed places="0"}} / {{formatNumber settlement.command_points places="0"}}</span><br> 
+  
+      {{t settlement.population}} {{settlement.score}}
+      {{#each settlement.resourceProductions}}
+        | <span {{bindAttr title="localizedDetails"}}="">{{local resourceType.name}} {{formatNumber rate places="1"}}/h</span> 
+      {{/each}}
+    </p>  
+  {{else}}
+  
+    <div class="float-right up-icon" title="click to minimize">&nbsp;</div>
+  
+    <h1>{{settlement.name}} <a href="#" class="change-name" {{action "changeNamePressed"}}>change name</a></h1>  
+
+    <p><b>{{t settlement.population}}:</b> {{settlement.score}}</p>
+
+    <p>
+      <span title="rate at which new buildings and upgrades are constructed"> <b>Building construction speed:</b> {{formatNumber buildingSpeed places="0"}}% </span> <br/> 
+      <span title="rate at which foot soldiers are trained"     ><b>Foot Soldiers training speed:</b> {{formatNumber infantryTrainingSpeed places="0"}}%</span> <br/>
+      <span title="rate at which mounted troops are trained"    ><b>Mounted Troops training speed:</b> {{formatNumber cavalryTrainingSpeed places="0"}}%</span> <br/>
+      <span title="rate at which ranged troops are trained"     ><b>Ranged Troops training speed:</b> {{formatNumber artilleryTrainingSpeed places="0"}}%</span> 
+    </p>
+    <p>You can improve the rate at which things are produced by upgrading the corresponding buildings.</p>
+    
+    <p>
+      <span title="Command points used / available command points. Each army needs 1 command point."><b>Command Points:</b> {{formatNumber settlement.commandPointsUsed places="0"}} / {{formatNumber settlement.command_points places="0"}}</span>. 
+    
+    <span class="help-icon" title="You need one command point for each army that belongs to this settlement. The garrison army is free and does not need a command point.">&nbsp;</span></p>
+    
+    <p><b>Tax Rate:</b> {{formatNumber settlement.taxPercentage}}%
+      {{#if settlement.owns_region}}
+        change <span class="help-icon" title="The tax rate you set here applies to the whole region and all its inhabitants.">&nbsp;</span>
+      {{else}}
+        <span class="help-icon" title="The tax rate that is set by the region owner. The allowed minimum is 5%, the default value, as well as the maximum is 20%. You don't agree with the present tax rate? Ally with other inhabitants of this region and gang-up on the oppressor. Surely he deserves it. Own this region's fortress and collect taxes for yourself.">&nbsp;</span>
+      {{/if}}
+    </p>
+
+    <h2>Resource Balance</h2>
+    <table>
+      <tr>
+       <th></th>
+        {{#each settlement.resourceProductions}}
+          <th>{{local resourceType.name}}</th> 
+        {{/each}}
+      </tr>
+      <tr>
+       <td>Buildings</td>
+        {{#each settlement.resourceProductions}}
+          <td class="number">{{formatNumber base places="1"}}/h</td> 
+        {{/each}}
+      </tr>
+      <tr>
+       <td>+ Bonus</td>
+        {{#each settlement.resourceProductions}}
+          <td class="number">{{formatNumber bonusAbs places="1"}}/h</td> 
+        {{/each}}
+      </tr>
+      <tr>
+       <td>{{#if settlement.owns_region}}+{{else}}-{{/if}} Tax</td>
+        {{#each settlement.resourceProductions}}
+          <td class="number">{{formatNumber tax places="1"}}/h</td> 
+        {{/each}}
+      </tr>
+      <tr>
+       <td>= Result</td>
+        {{#each settlement.resourceProductions}}
+          <td class="number">{{formatNumber rate places="1"}}/h</td> 
+        {{/each}}
+      </tr>
+    </table>
+
+  {{/unless}}
 </script>
+

@@ -128,6 +128,10 @@ AWE.GS = (function(module) {
       return AWE.GS.RulesManager.getRules().getSettlementType(this.get('type_id'));
     },
     
+    taxPercentage: function() {
+      return parseFloat(this.get('tax_rate') || "0.0") * 100.0;
+    }.property('tax_rate'),
+    
     resourceProductions: function() {
       var self = this;
   		var productions = [];
@@ -137,6 +141,8 @@ AWE.GS = (function(module) {
           rate:  self.get(item.symbolic_id+'_production_rate'),
           base:  self.get(item.symbolic_id+'_base_production'),
           bonus: self.get(item.symbolic_id+'_production_bonus'),
+          bonusAbs: parseFloat(self.get(item.symbolic_id+'_production_bonus') || "0.0") * parseFloat(self.get(item.symbolic_id+'_base_production')),
+          tax: self.get(item.symbolic_id+'_production_tax_rate'),
           resourceType: item,
           localizedDetails: function() {
             var description = 'base: '+Math.floor(this.get('base'))+'\nscience: '+ 
