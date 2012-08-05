@@ -657,6 +657,9 @@ AWE.Controller = (function(module) {
           AWE.Action.Manager.queueAction(action, function() {
             AWE.GS.ArmyManager.updateArmy(army.getId(), null, function() {
               self.setPath('arguments.isSaving', false);
+              if (inspectorViews.inspector) {
+                inspectorViews.inspector.updateView();
+              } 
             });
           });  
         },

@@ -44,6 +44,7 @@ AWE.UI = (function(module) {
 
     var _battleView = null;
     var _animation  = null;
+    var _stance = null;
     var _stanceImage = null;
     var _baseImage = null;  
     var _baseShape = null;    
@@ -73,6 +74,7 @@ AWE.UI = (function(module) {
     that.initWithControllerAndArmy = function(controller, army, frame) {
       that.initWithController(controller, frame);
       _army = army;
+      _stance = _army.get('stance');
       
       var _selectGraphics = new Graphics();
       _selectGraphics.setStrokeStyle(1);
@@ -115,38 +117,7 @@ AWE.UI = (function(module) {
         _stanceView.onMouseOut = that.onMouseOut;
         this.addChild(_stanceView);        
       }
-      else {
-        var data = {
-	        images: ["client/assets/army/warrior_animation_pose_1_128.png"],
-	        frames: {width:128, height:128},
-	        animations: { 
-	          toWalk: [0,1,  'walk'], 
-	          walk:   [2,5,  'walk'], 
-	          toStand: {
-	            frames: [0,1],
-	            next:   'stand',
-	          },
-	          stand: [0],
-	        },
-        };
-        var spriteSheet = new SpriteSheet(data);
-        _animation = AWE.UI.createAnimatedSpriteView()
-        _animation.initWithControllerAndSpriteSheet(that, spriteSheet);
-        if (_army.get('mode') == 1) { // 1: walking
-          _animation.animation().gotoAndPlay('walk');      
-        }
-        else {
-          _animation.animation().gotoAndPlay('stand');
-        }
-        _animation.snapToPixel = true;
-        
-        _animation.setFrame(AWE.Geometry.createRect(-23, -35, 128, 128));
-        _animation.onClick = that.onClick;
-        _animation.onMouseOver = that.onMouseOver;
-        _animation.onMouseOut  = that.onMouseOut;
-        this.addChild(_animation);           
-      }
-      
+            
       var healthBGGraphics = new Graphics();
       healthBGGraphics.setStrokeStyle(1);
       healthBGGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
@@ -237,36 +208,6 @@ AWE.UI = (function(module) {
         that.addChildAt(_frameRectShape, 0);    
       }  
                
-      if (_army.get("npc")) {
-        var stanceImage;
-        var size = _army.get('size_present') || 0;
-        if (size >= 800) {
-          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/large');
-        }
-        else if (size >= 100) {
-          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/medium');
-        }
-        else {
-          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/small');
-        }
-        _stanceView.setImage(stanceImage);
-      }
-      else {
-        console.log('CHECK ANIMATION')
-        if (_army.get("mode") !== 1      && _animation.animation().currentAnimation === 'walk') {      // 0: standing!, 1: walking, 2: fighting
-          _animation.animation().gotoAndPlay('toStand');
-        }
-        else if (_army.get("mode") !== 1 && _animation.animation().currentAnimation === 'toWalk') {      // 0: standing!, 1: walking, 2: fighting
-          _animation.animation().gotoAndPlay('toStand');
-        }
-        if (_army.get("mode") === 1      && _animation.animation().currentAnimation === 'stand') {      // 0: standing!, 1: walking, 2: fighting
-          _animation.animation().gotoAndPlay('toWalk');
-        }
-        if (_army.get("mode") === 1      && _animation.animation().currentAnimation === 'toStand') {      // 0: standing!, 1: walking, 2: fighting
-          _animation.animation().gotoAndPlay('toWalk');
-        }
-      }               
-
       if (_healthShape) {
         that.removeChild(_healthShape);
         _healthShape = null;
@@ -327,6 +268,89 @@ AWE.UI = (function(module) {
         this.removeChild(_battleView);
         _battleView = null;
       }
+      
+      if (!_army.get("npc") && (_army.get("stance") != _stance || !_animation)) {
+        log('---> stance in recalc drin');
+        _stance = _army.get("stance");
+        var stanceUrl = null;
+        switch (_army.get('stance') || 0) {
+          case 0:
+            stanceUrl = "client/assets/army/warrior_animation_pose_1_128.png";
+            break;
+          case 1:
+            stanceUrl = "client/assets/army/warrior_animation_pose_2_128.png";
+            break;
+          case 2:
+            stanceUrl = "client/assets/army/warrior_animation_pose_1_128.png";
+            break;
+          default:
+            stanceUrl = "client/assets/army/warrior_animation_pose_1_128.png";
+        }
+        
+        var data = {
+          images: [stanceUrl],
+          frames: {width:128, height:128},
+          animations: { 
+            toWalk: [0,1,  'walk'], 
+            walk:   [2,5,  'walk'], 
+            toStand: {
+              frames: [0,1],
+              next:   'stand',
+            },
+            stand: [0],
+          },
+        };
+        
+        var spriteSheet = new SpriteSheet(data);
+        var newAnimation = AWE.UI.createAnimatedSpriteView()
+        newAnimation.initWithControllerAndSpriteSheet(that, spriteSheet);
+        if (_army.get('mode') == 1) { // 1: walking
+          newAnimation.animation().gotoAndPlay('walk');      
+        }
+        else {
+          newAnimation.animation().gotoAndPlay('stand');
+        }
+        newAnimation.snapToPixel = true;
+        newAnimation.setFrame(AWE.Geometry.createRect(-23, -35, 128, 128));
+        newAnimation.onClick = that.onClick;
+        newAnimation.onMouseOver = that.onMouseOver;
+        newAnimation.onMouseOut  = that.onMouseOut;
+        if (_animation) {
+          this.removeChild(_animation);
+        }           
+        this.addChild(newAnimation);           
+        _animation = newAnimation;
+      }
+
+      if (_army.get("npc")) {
+        var stanceImage;
+        var size = _army.get('size_present') || 0;
+        if (size >= 800) {
+          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/large');
+        }
+        else if (size >= 100) {
+          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/medium');
+        }
+        else {
+          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/small');
+        }
+        _stanceView.setImage(stanceImage);
+      }
+      else {
+        console.log('CHECK ANIMATION')
+        if (_army.get("mode") !== 1      && _animation.animation().currentAnimation === 'walk') {      // 0: standing!, 1: walking, 2: fighting
+          _animation.animation().gotoAndPlay('toStand');
+        }
+        else if (_army.get("mode") !== 1 && _animation.animation().currentAnimation === 'toWalk') {      // 0: standing!, 1: walking, 2: fighting
+          _animation.animation().gotoAndPlay('toStand');
+        }
+        if (_army.get("mode") === 1      && _animation.animation().currentAnimation === 'stand') {      // 0: standing!, 1: walking, 2: fighting
+          _animation.animation().gotoAndPlay('toWalk');
+        }
+        if (_army.get("mode") === 1      && _animation.animation().currentAnimation === 'toStand') {      // 0: standing!, 1: walking, 2: fighting
+          _animation.animation().gotoAndPlay('toWalk');
+        }
+      }               
     }
     
     that.setAnnotationView = function(annotationView) {

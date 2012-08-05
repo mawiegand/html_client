@@ -16,6 +16,7 @@ AWE.UI = (function(module) {
     my.typeName = 'ArmyInspectorView';
     
     var _army = null;
+    var _stance = null;
     
     var _backgroundShapeView = null;
     var _nameLabelView = null;
@@ -175,14 +176,13 @@ AWE.UI = (function(module) {
         this.addChild(_inspectorFrame);
       }      
       
-      if (!_stanceView) {
+      if (!_stanceView || _army.get('stance') != _stance) {
+        _stance = _army.get('stance');
         // Image view für held
         var stance = _army.get('stance') || 0;
-        var offX = stance == 0 ? 12 : 0;
-        var offY = stance == 0 ? 2 : 0;
-      
-        _stanceView = AWE.UI.createImageView();
-        
+        var offX = 12;
+        var offY = 2;
+              
         var stanceImage = null;
         if (_army.get("npc")) {
           var size = _army.get('size_present') || 0;
@@ -199,16 +199,22 @@ AWE.UI = (function(module) {
         else {
           stanceImage = AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[stance]);
         }        
-        
-        _stanceView.initWithControllerAndImage(my.controller, stanceImage);
-        _stanceView.setFrame(AWE.Geometry.createRect(186 + offX, 4 + offY, 96, 96));
-        //_stanceView.onClick = that.onClick;
-        _stanceView.onClick = function() {
-          my.controller.moveTo(AWE.Map.Manager.getLocation(_army.get('location_id')));
-        };  
-        _stanceView.onMouseOver = that.onMouseOver;
-        _stanceView.onMouseOut = that.onMouseOut;
-        this.addChild(_stanceView);
+      
+        if (!_stanceView) { 
+          _stanceView = AWE.UI.createImageView();
+          _stanceView.initWithControllerAndImage(my.controller, stanceImage);
+          _stanceView.setFrame(AWE.Geometry.createRect(186 + offX, 4 + offY, 96, 96));
+          //_stanceView.onClick = that.onClick;
+          _stanceView.onClick = function() {
+            my.controller.moveTo(AWE.Map.Manager.getLocation(_army.get('location_id')));
+          };  
+          _stanceView.onMouseOver = that.onMouseOver;
+          _stanceView.onMouseOut = that.onMouseOut;
+          this.addChild(_stanceView);
+        }
+        else {
+          _stanceView.setImage(stanceImage);
+        }
       }
 
       var allianceId = _army.get('alliance_id')
