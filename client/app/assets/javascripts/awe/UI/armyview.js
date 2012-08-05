@@ -117,7 +117,7 @@ AWE.UI = (function(module) {
         _stanceView.onMouseOut = that.onMouseOut;
         this.addChild(_stanceView);        
       }
-            
+
       var healthBGGraphics = new Graphics();
       healthBGGraphics.setStrokeStyle(1);
       healthBGGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
@@ -270,25 +270,24 @@ AWE.UI = (function(module) {
       }
       
       if (!_army.get("npc") && (_army.get("stance") != _stance || !_animation)) {
-        log('---> stance in recalc drin');
         _stance = _army.get("stance");
-        var stanceUrl = null;
+        var image = null;
         switch (_army.get('stance') || 0) {
           case 0:
-            stanceUrl = "client/assets/army/warrior_animation_pose_1_128.png";
+            image = "map/army/animation/neutral";
             break;
           case 1:
-            stanceUrl = "client/assets/army/warrior_animation_pose_2_128.png";
+            image = "map/army/animation/aggressive";
             break;
           case 2:
-            stanceUrl = "client/assets/army/warrior_animation_pose_1_128.png";
+            image = "map/army/animation/neutral";
             break;
           default:
-            stanceUrl = "client/assets/army/warrior_animation_pose_1_128.png";
+            image = "map/army/animation/neutral";
         }
         
         var data = {
-          images: [stanceUrl],
+          images: [AWE.UI.ImageCache.getImage(image).src],
           frames: {width:128, height:128},
           animations: { 
             toWalk: [0,1,  'walk'], 

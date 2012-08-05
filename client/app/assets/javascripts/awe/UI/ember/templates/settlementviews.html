@@ -12,6 +12,6 @@
   
      {{t settlement.population}} {{settlement.score}}
      {{#each settlement.resourceProductions}}
-       | <span {{bindAttr title="localizedDetails"}}="">{{local resourceType.name}} {{formatNumber rate places="0"}}/h</span> 
+       | <span {{bindAttr title="localizedDetails"}}="">{{local resourceType.name}} {{formatNumber rate places="1"}}/h</span> 
      {{/each}}
 </script>

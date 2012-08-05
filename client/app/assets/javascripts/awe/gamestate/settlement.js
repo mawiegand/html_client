@@ -139,11 +139,15 @@ AWE.GS = (function(module) {
           bonus: self.get(item.symbolic_id+'_production_bonus'),
           resourceType: item,
           localizedDetails: function() {
-            return 'base: '+Math.floor(this.get('base'))+'\nscience: '+ 
+            var description = 'base: '+Math.floor(this.get('base'))+'\nscience: '+ 
               Math.floor(self.get(item.symbolic_id+'_production_bonus_sciences')*1000)/10.0+'%\nbuildings: '+ 
               Math.floor(self.get(item.symbolic_id+'_production_bonus_buildings')*1000)/10.0+'%\nbonus: ' +
               Math.floor((parseFloat(self.get(item.symbolic_id+'_production_bonus_effects')) + 
                           parseFloat(self.get(item.symbolic_id+'_production_bonus_global_effects')))*1000)/10.0+'%';
+            if (item.taxable) {
+              description += "\ntax:" + Math.floor(parseFloat(self.get(item.symbolic_id+'_production_tax_rate'))*10)/10.0;   
+            }
+            return description;
           }.property('base','bonus').cacheable(),
         }));
       });
