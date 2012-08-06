@@ -97,11 +97,15 @@
           {{#if loadingSettlement }}
             {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }}
           {{else}}
-            {{#if remainingArmies }}
-              <a href="#" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</a> | 
-              <a href="#" {{action "createPressed" target="parentView"}}>{{ t army.form.create }}</a>
+            {{#if settlement.garrison.isFighting}}
+              Cannot create a new army while garrison is fighting.
             {{else}}
-              {{ t army.create.error }}
+              {{#if remainingArmies }}
+                <a href="#" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</a> | 
+                <a href="#" {{action "createPressed" target="parentView"}}>{{ t army.form.create }}</a>
+              {{else}}
+                {{ t army.create.error }}
+              {{/if}}
             {{/if}}
           {{/if}}
           {{#if "loading" }}

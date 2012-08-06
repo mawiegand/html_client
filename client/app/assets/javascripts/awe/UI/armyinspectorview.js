@@ -274,8 +274,13 @@ AWE.UI = (function(module) {
       }
       
       if (_reinforceButtonView && isOwnArmy) {
-        var settlement = AWE.Map.Manager.getLocation(_army.get('location_id')).settlement();
-        _reinforceButtonView.setEnabled(settlement && _army.get('home_settlement_id') === settlement.getId());
+        var location = AWE.Map.Manager.getLocation(_army.get('location_id'));
+        var settlement = location ? location.settlement() : null;
+        var garrison = settlement ? settlement.getPath('garrison') : null;
+        _reinforceButtonView.setEnabled(settlement && garrison !== undefined && 
+                                        garrison !== null && !garrison.get('isFighting') &&
+                                        _army.get('home_settlement_id') === settlement.getId() &&
+                                        _army.get('mode') === 0);
       }
 
 /*

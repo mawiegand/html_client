@@ -98,7 +98,7 @@ AWE.GS = (function(module) {
     },  
     
     isMovable: function() {
-      return ;
+      return !this.get('isFighting') && !this.isGarrison();
     },
     
     stanceString: function() {
