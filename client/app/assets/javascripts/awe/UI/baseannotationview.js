@@ -165,7 +165,7 @@ AWE.UI = (function(module) {
         _infoText1View.initWithControllerAndLabel(my.controller);
         _infoText1View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
         _infoText1View.setTextAlign("left");
-        _infoText1View.setIconImage("map/icon/army/strength");
+        _infoText1View.setIconImage("map/icon/army/size");
         my.infoContainer.addChild(_infoText1View);
       }
       _infoText1View.setText('' + my.location.settlementLevel());
@@ -175,10 +175,11 @@ AWE.UI = (function(module) {
         _infoText2View.initWithControllerAndLabel(my.controller);
         _infoText2View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
         _infoText2View.setTextAlign("left");
-        _infoText2View.setIconImage("map/display/icon");
+        _infoText2View.setIconImage("map/icon/army/strength");
         my.infoContainer.addChild(_infoText2View);
       }
-      _infoText2View.setText('120 %');
+      var settlement = my.location.settlement();
+      _infoText2View.setText('' + (settlement ? Math.floor((settlement.defense_bonus || 0)*100) : '-'));
 
       my.infoContainer.layoutSubviews(); 
        

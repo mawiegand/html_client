@@ -30,6 +30,13 @@ AWE.UI = (function(module) {
     var _resource2LabelView;
     var _resource3LabelView;
     var _resource4LabelView;
+
+    var _resource1ProductionView;
+    var _resource2ProductionView;
+    var _resource3ProductionView;
+    var _resource4ProductionView;
+
+
     var _resource5LabelView;
     var _resource6LabelView;
         
@@ -209,6 +216,14 @@ AWE.UI = (function(module) {
         _resource1LabelView.setFrame(AWE.Geometry.createRect(100, 30, 80, 24));      
         this.addChild(_resource1LabelView);
       }
+      if (!_resource1ProductionView) {
+        _resource1ProductionView = AWE.UI.createLabelView();
+        _resource1ProductionView.initWithControllerAndLabel(my.controller);
+        _resource1ProductionView.setTextAlign("left");
+        _resource1ProductionView.setFont("12px Arial");
+        _resource1ProductionView.setFrame(AWE.Geometry.createRect(120, 48, 60, 24));      
+        this.addChild(_resource1ProductionView);
+      }      
       
       if (!_resource2LabelView) {
         _resource2LabelView = AWE.UI.createLabelView();
@@ -219,6 +234,14 @@ AWE.UI = (function(module) {
         _resource2LabelView.setFrame(AWE.Geometry.createRect(20, 30, 80, 24));      
         this.addChild(_resource2LabelView);
       }
+      if (!_resource2ProductionView) {
+        _resource2ProductionView = AWE.UI.createLabelView();
+        _resource2ProductionView.initWithControllerAndLabel(my.controller);
+        _resource2ProductionView.setTextAlign("left");
+        _resource2ProductionView.setFont("12px Arial");
+        _resource2ProductionView.setFrame(AWE.Geometry.createRect(40, 48, 60, 24));      
+        this.addChild(_resource2ProductionView);
+      }   
       
       if (!_resource3LabelView) {
         _resource3LabelView = AWE.UI.createLabelView();
@@ -229,6 +252,14 @@ AWE.UI = (function(module) {
         _resource3LabelView.setFrame(AWE.Geometry.createRect(180, 30, 80, 24));      
         this.addChild(_resource3LabelView);
       }
+      if (!_resource3ProductionView) {
+        _resource3ProductionView = AWE.UI.createLabelView();
+        _resource3ProductionView.initWithControllerAndLabel(my.controller);
+        _resource3ProductionView.setTextAlign("left");
+        _resource3ProductionView.setFont("12px Arial");
+        _resource3ProductionView.setFrame(AWE.Geometry.createRect(200, 48, 60, 24));      
+        this.addChild(_resource3ProductionView);
+      }   
       
       if (!_resource4LabelView) {
         _resource4LabelView = AWE.UI.createLabelView();
@@ -239,6 +270,15 @@ AWE.UI = (function(module) {
         _resource4LabelView.setFrame(AWE.Geometry.createRect(20, 70, 80, 24));      
         this.addChild(_resource4LabelView);
       }
+      if (!_resource4ProductionView) {
+        _resource4ProductionView = AWE.UI.createLabelView();
+        _resource4ProductionView.initWithControllerAndLabel(my.controller);
+        _resource4ProductionView.setTextAlign("left");
+        _resource4ProductionView.setFont("12px Arial");
+        _resource4ProductionView.setFrame(AWE.Geometry.createRect(80, 72, 60, 24));      
+        this.addChild(_resource4ProductionView);
+      }         
+      
       /*
       if (!_resource5LabelView) {
         _resource5LabelView = AWE.UI.createLabelView();
@@ -272,9 +312,17 @@ AWE.UI = (function(module) {
         my.amounts[3] = pool.presentAmount('resource_cash');
 
         _resource1LabelView.setText(""+my.amounts[0]);
+        _resource1ProductionView.setText("+"+Math.floor(pool.get('resource_wood_production_rate'))+"/h");
+
         _resource2LabelView.setText(""+my.amounts[1]);
+        _resource2ProductionView.setText("+"+Math.floor(pool.get('resource_stone_production_rate'))+"/h");
+
         _resource3LabelView.setText(""+my.amounts[2]);
+        _resource3ProductionView.setText("+"+Math.floor(pool.get('resource_fur_production_rate'))+"/h");
+
         _resource4LabelView.setText(""+my.amounts[3]);
+        _resource4ProductionView.setText("+"+(Math.floor(pool.get('resource_cash_production_rate')*10.0)/10.0)+"/h");
+
       }
       
       _super.updateView();

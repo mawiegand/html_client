@@ -207,7 +207,10 @@ AWE.UI = (function(module) {
         _infoText1View.setIconImage("map/icon/army/strength");
         my.infoContainer.addChild(_infoText1View);
       }
-      _infoText1View.setText('120 %');
+      var location = my.region.location(0);
+      var settlement = location ? location.settlement() : null;
+      _infoText1View.setText('' + (settlement ? Math.floor((settlement.defense_bonus || 0)*100) : '-'));
+
       
       if (!_infoText2View) {
         _infoText2View = AWE.UI.createLabelView();
