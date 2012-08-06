@@ -785,14 +785,14 @@ AWE.Controller = (function(module) {
           AWE.GS.ArmyManager.updateArmiesAtLocation(location.id(), null, function(armies) {
             log('armies updated at location', armies, location);
             that.setModelChanged();
-            if (callback) {
-              callback();
-            }
           }); 
           AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id(), null, function(settlements) {
             log('settlements updated at location', settlements, location);
             that.setModelChanged();
           }); 
+          if (callback) {
+            callback();
+          }
         }
         else {
           that.handleError(status, "The server did not accept the create army comannd.");
