@@ -37,6 +37,7 @@ AWE.Action.Military = (function(module) {
     that.getHTTPMethod = function() { return 'PUT'; }
     
     that.postProcess = function(statusCode, xhr) {
+      AWE.GS.ArmyManager.updateArmy(army.getId());
     }
   
     return that;

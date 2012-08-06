@@ -53,6 +53,7 @@ AWE.Action.Military = (function(module) {
     }
     
     that.postProcess = function(statusCode, xhr) {
+    //  AWE.GS.ArmyManager.updateArmiesAtLocation(my.location.id());
     }
     
     that.location = function() {
