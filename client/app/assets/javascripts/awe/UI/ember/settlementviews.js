@@ -74,6 +74,8 @@ AWE.UI.Ember = (function(module) {
     settlement: null,
     expanded: false,
     
+    lastError: null, 
+    
 //    defenseBonusBinding: Ember.Binding.notNull("settlement.defense_bonus", "0"),
             
     click: function() {
@@ -83,7 +85,53 @@ AWE.UI.Ember = (function(module) {
       else {
         this.set('expanded', false);
       }
-    },        
+    },       
+    
+    /** true, in case the tax rate can be changed again. Problem: does not update 
+     * automatically when the 8 hours have passed! */
+    changeTaxPossible: function() {
+      var lastChange = this.getPath('settlement.tax_changed_at');
+      return lastChange === undefined || lastChange === null || Date.parseISODate(lastChange).add(1).hours().getTime() < new Date().getTime();
+    }.property('settlement.tax_changed_at'),
+    
+    changeTaxPressed: function(event) {
+      var self = this;
+      
+      this.set('lastError', null);
+      
+      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
+        classNames: ['change-army-name-dialog'],
+        
+        heading:    'Enter the new tax rate (5-20%).',
+        input:      this.getPath('settlement.taxPercentage'),
+        settlement: this.get('settlement'),
+        
+        okPressed:  function() {
+          var number = parseInt(this.get('input') || "0");
+          console.log('OK_PRESSED', self,this, this.get('input'), number)
+          if (number >= 5 && number <= 20) {
+            var action = AWE.Action.Settlement.createChangeTaxRateAction(self.get('settlement'), number/100.0);
+            AWE.Action.Manager.queueAction(action, function(statusCode) {
+              if (statusCode === 200 || statusCode === 203) {
+                console.log('changed tax rate');
+              }
+              else {
+                self.set('lastError', 'settlement.error.serverDidNotAcceptTaxRate');
+              }
+            });  
+          }
+          else {
+            self.set('lastError', 'settlement.error.couldNotChangeTaxRate');
+          }
+          this.destroy();            
+        },
+        cancelPressed: function() { this.destroy(); }
+      });
+      WACKADOO.presentModalDialog(changeDialog);
+      event.preventDefault();
+      
+      return false;
+    },
             
     buildingQueue: function() {
       var queues = this.getPath('hashableConstructionQueues.collection');

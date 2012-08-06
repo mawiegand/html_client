@@ -1668,15 +1668,20 @@ li.shout .sender {
 
 .down-icon {
   display: inline-block;
-  width: 27px; height: 27px;
+  width: 21px; height: 21px;
   margin: 0; padding: 0;
   background-image: url("<%= asset_path 'icons/down.png' %>");
 }
 
+.base-screen .down-icon {
+  background-image: url("<%= asset_path 'icons/down-white.png' %>");  
+}
+
+
 
 .up-icon {
   display: inline-block;
-  width: 27px; height: 27px;
+  width: 21px; height: 21px;
   margin: 0; padding: 0;
   background-image: url("<%= asset_path 'icons/up.png' %>");
 }
@@ -1721,7 +1726,7 @@ li.shout .sender {
 .fortress-screen .settlement-info-box.expanded, 
 .base-screen .settlement-info-box.expanded {
  width: 600px;
- height:600px; 
+ height:500px; 
  background-color: white;
  color: #333;
  text-shadow: none;

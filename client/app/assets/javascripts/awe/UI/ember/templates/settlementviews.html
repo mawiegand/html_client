@@ -3,9 +3,11 @@
 <script type="text/x-handlebars" data-template-name="settlement-info-box">
   {{#unless expanded}}
   
+    <h1>{{settlement.name}}</h1>
+    
     <div class="float-right down-icon" title="click to expand">&nbsp;</div>
 
-    <h1>{{settlement.name}} <!--<a href="#" class="change-name" {{action "changeNamePressed"}}>change name</a>--></h1>
+
     <p><!--<span title="defensive bonus to all armies fighting on the side of this settlement">Def +{{formatNumber defenseBonus places="0"}}%</span> | -->  
       <span title="rate at which new buildings and upgrades are constructed"> B {{formatNumber buildingSpeed places="0"}}%</span> | 
       <span title="rate at which foot soldiers are trained"     >F {{formatNumber infantryTrainingSpeed places="0"}}%</span> |
@@ -18,20 +20,28 @@
         | <span {{bindAttr title="localizedDetails"}}="">{{local resourceType.name}} {{formatNumber rate places="1"}}/h</span> 
       {{/each}}
     </p>  
+
   {{else}}
   
-    <div class="float-right up-icon" title="click to minimize">&nbsp;</div>
   
-    <h1>{{settlement.name}} <a href="#" class="change-name" {{action "changeNamePressed"}}>change name</a></h1>  
+    <h1>{{settlement.name}} <!-- <a href="#" class="change-name" {{action "changeNamePressed"}}>change name</a>--></h1>  
 
     <p><b>{{t settlement.population}}:</b> {{settlement.score}}</p>
 
-    <p>
-      <span title="rate at which new buildings and upgrades are constructed"> <b>Building construction speed:</b> {{formatNumber buildingSpeed places="0"}}% </span> <br/> 
-      <span title="rate at which foot soldiers are trained"     ><b>Foot Soldiers training speed:</b> {{formatNumber infantryTrainingSpeed places="0"}}%</span> <br/>
-      <span title="rate at which mounted troops are trained"    ><b>Mounted Troops training speed:</b> {{formatNumber cavalryTrainingSpeed places="0"}}%</span> <br/>
-      <span title="rate at which ranged troops are trained"     ><b>Ranged Troops training speed:</b> {{formatNumber artilleryTrainingSpeed places="0"}}%</span> 
-    </p>
+    <table>
+      <tr>
+        <td><b>Building construction speed:</b></td><td class="number"> {{formatNumber buildingSpeed places="0"}}% </td>
+      </tr>
+      <tr> 
+        <td><b>Foot Soldiers training speed:</b></td><td class="number"> {{formatNumber infantryTrainingSpeed places="0"}}%</td> 
+      </tr>
+      <tr>
+        <td><b>Mounted Troops training speed:</b></td><td class="number"> {{formatNumber cavalryTrainingSpeed places="0"}}%</td> 
+      </tr>
+      <tr>
+        <td><b>Ranged Troops training speed:</b></td><td class="number"> {{formatNumber artilleryTrainingSpeed places="0"}}%</td> 
+      </tr>
+    </table>
     <p>You can improve the rate at which things are produced by upgrading the corresponding buildings.</p>
     
     <p>
@@ -39,9 +49,14 @@
     
     <span class="help-icon" title="You need one command point for each army that belongs to this settlement. The garrison army is free and does not need a command point.">&nbsp;</span></p>
     
+    {{#if lastError}} <p class="red-color"><b>{{t lastError}}</b></p>{{/if}}
     <p><b>Tax Rate:</b> {{formatNumber settlement.taxPercentage}}%
-      {{#if settlement.owns_region}}
-        change <span class="help-icon" title="The tax rate you set here applies to the whole region and all its inhabitants.">&nbsp;</span>
+      {{#if settlement.owns_region }}
+        {{#if changeTaxPossible }}
+          <a href="#" {{action "changeTaxPressed"}}>change</a><span class="help-icon" title="The tax rate you set here applies to the whole region and all its inhabitants.">&nbsp;</span>
+        {{else}}
+          next change possible one hour after the last change
+        {{/if}}
       {{else}}
         <span class="help-icon" title="The tax rate that is set by the region owner. The allowed minimum is 5%, the default value, as well as the maximum is 20%. You don't agree with the present tax rate? Ally with other inhabitants of this region and gang-up on the oppressor. Surely he deserves it. Own this region's fortress and collect taxes for yourself.">&nbsp;</span>
       {{/if}}
@@ -80,6 +95,8 @@
         {{/each}}
       </tr>
     </table>
+
+    <div class="float-right up-icon" title="click to minimize">&nbsp;</div>
 
   {{/unless}}
 </script>

@@ -129,8 +129,8 @@ AWE.GS = (function(module) {
     },
     
     taxPercentage: function() {
-      return parseFloat(this.get('tax_rate') || "0.0") * 100.0;
-    }.property('tax_rate'),
+      return Math.floor(parseFloat(this.get('tax_rate') || "0.0") * 100.0 + 0.5);
+    }.property('tax_rate').cacheable(),
     
     resourceProductions: function() {
       var self = this;
