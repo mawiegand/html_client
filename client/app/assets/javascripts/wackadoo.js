@@ -62,6 +62,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this.presentModalDialog(dialog);      
     },
     
+    openEncyclopedia: function() {
+      var dialog = AWE.UI.Ember.EncyclopediaView.create();
+      this.presentModalDialog(dialog);      
+    },
+    
     showAnnouncement: function() {
       var self = this;
       AWE.GS.AnnouncementManager.updateAnnouncement(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(announcement, statusCode) {

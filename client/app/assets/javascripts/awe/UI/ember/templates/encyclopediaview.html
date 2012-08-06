@@ -1,0 +1,121 @@
+<script type="text/x-handlebars" data-template-name="encyclopedia-building">
+  <h1>{{local building.name}}</h1>
+  {{local building.flavour}}
+  {{local building.description}}
+  
+  <table>
+    <tr>
+      <th>Level</th>
+      <th>Pop</th>
+      {{#each parentView.resourceTypes}}
+        <th><span {{bindAttr class="symbolic_id :resource-icon"}}">&nbsp;</span></th>
+      {{/each}}
+    </tr>
+    {{#each stats}}
+      <tr>
+        <td class="number">{{level}}</td>
+        <td class="number">{{population}}</td>
+        {{#each costs}}
+          <td class="number">{{amount}}</td>
+        {{/each}}
+      </tr>
+    {{/each}}
+  </table>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="encyclopedia-unit">
+  <h1>{{local unit.name}}</h1>
+  {{local unit.flavour}}
+  {{local unit.description}}
+
+  {{#if unit.trainable}}
+    Poduktionszeit: {{formatDuration unit.production_time}}<br/>
+  {{else}}
+    Kann nicht von Spielern trainiert werden.<br/>
+  {{/if}}
+  Hitpoints: {{unit.hitpoints}}<br/>
+  Panzerung: {{unit.armor}}<br/>
+  Schaden: {{unit.attack}}<br/>
+  Kritischer Schaden: {{unit.critical_hit_damage}} (Chance: {{unit.critical_hit_chance}})
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="encyclopedia-resource">
+  <h1><span {{bindAttr class="resource.symbolic_id :resource-icon"}}">&nbsp;</span> {{local resource.name}}</h1>
+  {{local resource.flavour}}
+  {{local resource.description}}
+
+  <ul>
+    {{#if resource.taxable}}
+      <li>Auf diesen Rohstoff werden Steuern erhoben.</li>
+    {{else}}
+      <li>Auf diesen Rohstoff werden <b>keine</b> Steuern erhoben.</li>
+    {{/if}}
+
+    {{#if resource.stealable}}
+      <li>Dieser Rohstoff kann geklaut und gehandelt werden.</li>
+    {{else}}
+      <li>Dieser Rohstoff kann nicht geklaut oder gehandelt werden.</li>
+    {{/if}} 
+  </ul>
+</script>
+
+<script type="text/x-handlebars" data-template-name="encyclopedia-view">
+  <div class="modal-dialog-background z-layer-3"></div>
+  <div class="center-helper">
+    <div class="modal-dialog-pane z-layer-4 encyclopedia-view">
+      
+      <div class="overview">
+        <a href="#" {{action toggleResources}}><b>Resources</b></a><br/>
+        {{#if displayResources}}
+          {{#each resourceTypes }}
+            {{#view AWE.UI.Ember.ResourceButton resourceTypeBinding="this" }}
+              {{local resourceType.name}}
+            {{/view}}
+          {{/each}}
+        {{/if}}
+        
+        <a href="#" {{action toggleBuildings}}><b>Buildings</b></a><br/>
+        {{#if displayBuildings}}
+          {{#each buildingTypes }}
+            {{#view AWE.UI.Ember.BuildingButton buildingTypeBinding="this" }}
+              {{local buildingType.name}}
+            {{/view}}
+          {{/each}}
+        {{/if}}
+        
+        <a href="#" {{action toggleUnits}}><b>Units</b></a><br/>
+        {{#if displayUnits}}
+          {{#each unitTypes }}
+            {{#view AWE.UI.Ember.UnitButton unitTypeBinding="this" }}
+              {{local unitType.name}}
+            {{/view}}
+          {{/each}}
+        {{/if}}
+      </div>
+      
+      <div class="details">
+        {{#if selectedBuilding}}
+          {{view AWE.UI.Ember.EncyclopediaBuildingView templateName="encyclopedia-building" buildingBinding="selected"}}
+        {{else}}
+          {{#if selectedResource}}
+            {{view Ember.View templateName="encyclopedia-resource" resourceBinding="selected"}}
+          {{else}}
+            {{#if selectedUnit}}
+              {{view Ember.View templateName="encyclopedia-unit" unitBinding="selected"}}
+            {{/if}}
+          {{/if}}
+        {{/if}}
+      </div>
+      
+      <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
+      
+    </div>
+  </div>
+</script>
+
+
+
+
+

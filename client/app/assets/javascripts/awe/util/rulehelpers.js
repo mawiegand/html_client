@@ -302,6 +302,12 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
           }));
         }
       }
+      else if (all) {
+	      costs.push(Ember.Object.create({  // need to return an ember project so bindings on resourceType.name do work inside local helper
+          amount:       0,
+          resourceType: item,
+        }));        
+      }
 	  });
     return costs;
   };
