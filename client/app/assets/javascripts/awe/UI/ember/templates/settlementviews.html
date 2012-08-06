@@ -7,7 +7,6 @@
     
     <div class="float-right down-icon" title="click to expand">&nbsp;</div>
 
-
     <p><!--<span title="defensive bonus to all armies fighting on the side of this settlement">Def +{{formatNumber defenseBonus places="0"}}%</span> | -->  
       <span title="rate at which new buildings and upgrades are constructed"> B {{formatNumber buildingSpeed places="0"}}%</span> | 
       <span title="rate at which foot soldiers are trained"     >F {{formatNumber infantryTrainingSpeed places="0"}}%</span> |
@@ -17,7 +16,7 @@
   
       {{t settlement.population}} {{settlement.score}}
       {{#each settlement.resourceProductions}}
-        | <span {{bindAttr title="localizedDetails"}}="">{{local resourceType.name}} {{formatNumber rate places="1"}}/h</span> 
+        &nbsp; <span class="resource-icon {{unbound resourceType.symbolic_id}}">&nbsp;</span>   <span {{bindAttr title="localizedDetails"}}> {{formatNumber rate places="1"}}/h</span> 
       {{/each}}
     </p>  
 
@@ -67,7 +66,7 @@
       <tr>
        <th></th>
         {{#each settlement.resourceProductions}}
-          <th>{{local resourceType.name}}</th> 
+          <th><span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span></th> 
         {{/each}}
       </tr>
       <tr>
