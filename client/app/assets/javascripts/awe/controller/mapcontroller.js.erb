@@ -2013,6 +2013,11 @@ AWE.Controller = (function(module) {
           annotationView.onBattleInfoButtonClick = (function(self) {
             return function(army) { self.battleInfoButtonClicked(army); }
           })(that);
+          
+          // Todo: respect update time (if already updated, wait some time)
+          AWE.GS.SettlementManager.updateSettlementsAtLocation(annotatedView.location().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+            that.setModelChanged();
+          });
         }
         else if (annotatedView.typeName() === 'ArmyView') {
           annotationView = AWE.UI.createArmyAnnotationView();
@@ -2047,6 +2052,10 @@ AWE.Controller = (function(module) {
           annotationView.onAttackButtonClick = (function(self) {
             return function(view) { self.settlementAttackButtonClicked(view); }
           })(that);
+          
+          AWE.GS.SettlementManager.updateSettlementsAtLocation(annotatedView.location().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+            that.setModelChanged();
+          });
         }
         else if (annotatedView.typeName() === 'OutpostView') {
           annotationView = AWE.UI.createOutpostAnnotationView();
