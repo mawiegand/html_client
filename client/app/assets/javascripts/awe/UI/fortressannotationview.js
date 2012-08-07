@@ -209,7 +209,7 @@ AWE.UI = (function(module) {
       }
       var location = my.region.location(0);
       var settlement = location ? location.settlement() : null;
-      _infoText1View.setText('' + (settlement ? Math.floor((settlement.defense_bonus || 0)*100) : '-'));
+      _infoText1View.setText('' + (settlement ? Math.floor((settlement.defense_bonus || 0)*100)+"%" : '-'));
 
       
       if (!_infoText2View) {

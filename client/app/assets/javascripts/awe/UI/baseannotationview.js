@@ -179,7 +179,7 @@ AWE.UI = (function(module) {
         my.infoContainer.addChild(_infoText2View);
       }
       var settlement = my.location.settlement();
-      _infoText2View.setText('' + (settlement ? Math.floor((settlement.defense_bonus || 0)*100) : '-'));
+      _infoText2View.setText('' + (settlement ? Math.floor((settlement.defense_bonus || 0)*100)+"%" : '-'));
 
       my.infoContainer.layoutSubviews(); 
        

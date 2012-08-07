@@ -7,12 +7,12 @@
     
     <div class="float-right down-icon" title="click to expand">&nbsp;</div>
 
-    <p><!--<span title="defensive bonus to all armies fighting on the side of this settlement">Def +{{formatNumber defenseBonus places="0"}}%</span> | -->  
-      <span title="rate at which new buildings and upgrades are constructed"> B {{formatNumber buildingSpeed places="0"}}%</span> | 
-      <span title="rate at which foot soldiers are trained"     >F {{formatNumber infantryTrainingSpeed places="0"}}%</span> |
-      <span title="rate at which mounted troops are trained"    >C {{formatNumber cavalryTrainingSpeed places="0"}}%</span> | 
-      <span title="rate at which ranged troops are trained"     >R {{formatNumber artilleryTrainingSpeed places="0"}}%</span> | 
-      <span title="Command points used / available command points. Each army needs 1 command point.">Command Points: {{formatNumber settlement.commandPointsUsed places="0"}} / {{formatNumber settlement.command_points places="0"}}</span><br> 
+    <p><span title="defensive bonus to all armies fighting on the side of this settlement">Def +{{formatNumber defenseBonus places="0"}}%</span> | 
+       <span title="rate at which new buildings and upgrades are constructed"> B {{formatNumber buildingSpeed places="0"}}%</span> | 
+       <span title="rate at which foot soldiers are trained"     >F {{formatNumber infantryTrainingSpeed places="0"}}%</span> |
+       <span title="rate at which mounted troops are trained"    >C {{formatNumber cavalryTrainingSpeed places="0"}}%</span> | 
+       <span title="rate at which ranged troops are trained"     >R {{formatNumber artilleryTrainingSpeed places="0"}}%</span> | 
+       <span title="Command points used / available command points. Each army needs 1 command point.">Command Points: {{formatNumber settlement.commandPointsUsed places="0"}} / {{formatNumber settlement.command_points places="0"}}</span><br> 
   
       {{t settlement.population}} {{settlement.score}}
       {{#each settlement.resourceProductions}}
@@ -26,6 +26,8 @@
     <h1>{{settlement.name}} <!-- <a href="#" class="change-name" {{action "changeNamePressed"}}>change name</a>--></h1>  
 
     <p><b>{{t settlement.population}}:</b> {{settlement.score}}</p>
+    <p><b>{{t settlement.defenseBonus}}:</b> {{formatNumber defenseBonus places="0"}}<span class="help-icon" title="Wenn die Siedlung an einem Kampf beteiligt ist, wirkt der Verteidigungsbonus auf den Verteidigungswert aller diese Siedlung verteidigenden Truppen; egal, ob sie innerhalb oder außerhalb der Mauern stationiert sind.">&nbsp;</span></p>
+    </p>
 
     <table>
       <tr>

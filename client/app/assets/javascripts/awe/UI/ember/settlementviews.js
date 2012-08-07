@@ -87,6 +87,10 @@ AWE.UI.Ember = (function(module) {
       }
     },       
     
+    defenseBonus: function() {
+      return (this.getPath('settlement.defense_bonus') || 0) * 100;
+    }.property('settlement.defense_bonus'),
+    
     /** true, in case the tax rate can be changed again. Problem: does not update 
      * automatically when the 8 hours have passed! */
     changeTaxPossible: function() {
