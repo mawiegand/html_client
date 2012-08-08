@@ -113,6 +113,31 @@ AWE.GS = (function(module) {
       return module.Relation.relationTo(this.get('owner_id'), this.get('alliance_id'));
     },
     
+    calcMinExpOfRank: function(rank) {
+      rank = rank || 0;
+
+      if (rank == 0) {
+        return 0;
+      }
+      else if (rank == 1) {
+        return 30;
+      }
+      else if (rank == 2) { 
+        return 60;
+      }
+      else {
+        return this.calcMinExpOfRank(rank-1) + this.calcMinExpOfRank(rank-2);  // uses a recursive calculation pattern
+      }
+    },
+    
+    expForPresentRank: function() {
+      return this.calcMinExpOfRank(this.get('rank'));
+    }.property('rank').cacheable(),
+    
+    expForNextRank: function() {
+      return this.calcMinExpOfRank((this.get('rank') || 0 ) + 1);
+    }.property('rank').cacheable(),
+    
     /** set the optional acceptUnkown flag to true, if your want to get a 
      * positive answer for unknown relation state. Just ignore it otherwise.*/
     isRelationAtLeast: function(relation, acceptUnknown) {

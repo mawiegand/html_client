@@ -22,7 +22,7 @@
         {{/if}}
         <div title="A higher rank improves the efficiency of your troops. You need to gain experience in order to reach a higher the rank.">{{ t army.details.rank }}: {{army.rankToDisplay}} </div>
         {{#if army.isOwnProp}}
-          <div title="Experience is gained through losing own troops, not by killing opponents. Reason: you learn more from making errors.">{{ t army.details.experience }}: {{army.exp}}</div> 
+          <div title="Experience is gained through losing own troops, not by killing opponents. Reason: you learn more from making errors.">{{ t army.details.experience }}: {{army.exp}}. Rangaufstieg bei {{army.expForNextRank}}.</div> 
         {{/if}}
         {{#unless army.garrison}}
         <div>
