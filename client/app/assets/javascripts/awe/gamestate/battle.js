@@ -66,21 +66,21 @@ AWE.GS = (function(module) {
       return this.get('participants').filter(function(participant) {
         return participant && participant.getPath('army.owner_id') === AWE.GS.CharacterManager.getCurrentCharacter().getId(); 
       });
-    }.property('participants').cacheable(),
+    }.property('participants', 'participants.content').cacheable(),
     
     participantsOwnFaction: function() {
       var self = this;
       return this.get('participants').filter(function(participant) {
         return participant && participant.get('faction_id') === self.get('ownFactionId');        
       });
-    }.property('participants').cacheable(),
+    }.property('participants', 'participants.content').cacheable(),
     
     participantsOtherFaction: function(){
       var self = this;
       return this.get('participants').filter(function(participant) {
         return participant && participant.get('faction_id') !== self.get('ownFactionId');        
       })
-    }.property('participants').cacheable(),
+    }.property('participants', 'participants.content').cacheable(),
     
     lastRound: function(){
       var lastRound = null;
@@ -90,11 +90,23 @@ AWE.GS = (function(module) {
         }
       });
       return lastRound;
-    }.property('rounds').cacheable(),
+    }.property('rounds', 'rounds.length').cacheable(),
+    
+    nextRoundNumber: function() {
+      return (this.getPath('lastRound.number') || 0) +1;
+    }.property('lastRound.number').cacheable(),
+    
   });     
 
   module.BattleRounds = module.Entity.extend({
     typeName: 'BattleRounds',
+    
+    number: function() {
+      var num = this.get('round_num');
+      return num ? num + 1 : null;
+    }.property('round_num').cacheable(),
+    
+
   });    
 
   module.BattleParticipants = module.Entity.extend({
