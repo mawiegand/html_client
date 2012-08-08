@@ -211,7 +211,7 @@ AWE.UI = (function(module) {
       var settlement = location ? location.settlement() : null;
       _infoText1View.setText('' + (settlement ? Math.floor((settlement.defense_bonus || 0)*100)+"%" : '-'));
 
-      
+      /*
       if (!_infoText2View) {
         _infoText2View = AWE.UI.createLabelView();
         _infoText2View.initWithControllerAndLabel(my.controller);
@@ -220,7 +220,7 @@ AWE.UI = (function(module) {
         _infoText2View.setIconImage("map/display/icon");
         my.infoContainer.addChild(_infoText2View);
       }
-      _infoText2View.setText('Relation');
+      _infoText2View.setText('Relation');*/
 
       if (!_infoText3View) {
         _infoText3View = AWE.UI.createLabelView();
@@ -230,7 +230,7 @@ AWE.UI = (function(module) {
         _infoText3View.setIconImage("map/icon/army/size");
         my.infoContainer.addChild(_infoText3View);
       }
-      _infoText3View.setText('' + my.region.fortressLevel());
+      _infoText3View.setText('' + (settlement ? settlement.get('score') : my.region.fortressScore()));
 
 
       my.infoContainer.layoutSubviews(); 

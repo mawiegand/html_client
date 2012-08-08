@@ -27,6 +27,7 @@ AWE.Map = (function(module) {
     var _slot = spec.slot || 0;
     var _settlementTypeId = spec.settlement_type_id || 0;
     var _settlementLevel = spec.settlement_level || 0;
+    var _settlementScore = spec.settlement_score || 0;
     var _name = spec.name || 'Lagerplatz';
     var _ownerId = spec.owner_id || 0;
     var _ownerName = spec.owner_name || null;
@@ -108,6 +109,9 @@ AWE.Map = (function(module) {
 
     /** returns the level of the settlement / fortress / outpost (0 to 10). */
     that.settlementLevel = function() { return _settlementLevel; }
+
+    that.settlementScore = function() { return _settlementScore; }
+
         
     that.getArmies = function() { 
       return AWE.GS.ArmyAccess.getAllForLocation_id(_id);

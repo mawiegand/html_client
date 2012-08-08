@@ -168,7 +168,8 @@ AWE.UI = (function(module) {
         _infoText1View.setIconImage("map/icon/army/size");
         my.infoContainer.addChild(_infoText1View);
       }
-      _infoText1View.setText('' + my.location.settlementLevel());
+      var settlement = my.location.settlement();
+      _infoText1View.setText('' + (settlement ? settlement.get('score') : my.location.settlementScore()));
       
       if (!_infoText2View) {
         _infoText2View = AWE.UI.createLabelView();
@@ -178,7 +179,6 @@ AWE.UI = (function(module) {
         _infoText2View.setIconImage("map/icon/army/strength");
         my.infoContainer.addChild(_infoText2View);
       }
-      var settlement = my.location.settlement();
       _infoText2View.setText('' + (settlement ? Math.floor((settlement.defense_bonus || 0)*100)+"%" : '-'));
 
       my.infoContainer.layoutSubviews(); 

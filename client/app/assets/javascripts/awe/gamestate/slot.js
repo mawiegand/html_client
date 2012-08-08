@@ -123,7 +123,7 @@ AWE.GS = (function(module) {
 
     calcPopulation: function(level) {
       var formula = this.getPath('buildingType.population');
-      level       = this.get('level') || 0;
+      level       = level || this.get('level') || 1;
       return formula ? AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(formula), level) : null;
     },
     
