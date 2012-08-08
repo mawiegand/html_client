@@ -179,11 +179,13 @@ AWE.UI = (function(module) {
     that.node = function() { return _node; };
     
     that.location = function() {
-      return _node.region().location(0);
+      var region = _node.region();
+      return region ? region.location(0) : null;
     }
     
     that.army = function() {
-      return _node.region().location(0).garrisonArmy();
+      var location = this.location();
+      return location ? location.garrisonArmy() : null;
     }
         
     return that;

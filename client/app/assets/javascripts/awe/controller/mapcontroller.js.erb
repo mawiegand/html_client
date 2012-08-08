@@ -2015,9 +2015,25 @@ AWE.Controller = (function(module) {
           })(that);
           
           // Todo: respect update time (if already updated, wait some time)
-          AWE.GS.SettlementManager.updateSettlementsAtLocation(annotatedView.location().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-            that.setModelChanged();
-          });
+          var location = annotatedView.location();
+          if (!location) {
+            var region = annotatedView.node() ? annotatedView.node().region() : null;
+            if (region) {  // region should always be there, just to be sure.
+              AWE.Map.Manager.fetchLocationsForRegion(region, function() {
+                that.setModelChanged();
+                if (region.location(0)) {
+                  AWE.GS.SettlementManager.updateSettlementsAtLocation(region.location(0).id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+                    that.setModelChanged();
+                  });
+                }
+              });
+            }
+          }
+          else {
+            AWE.GS.SettlementManager.updateSettlementsAtLocation(annotatedView.location().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+              that.setModelChanged();
+            });
+          }
         }
         else if (annotatedView.typeName() === 'ArmyView') {
           annotationView = AWE.UI.createArmyAnnotationView();
@@ -2053,9 +2069,14 @@ AWE.Controller = (function(module) {
             return function(view) { self.settlementAttackButtonClicked(view); }
           })(that);
           
-          AWE.GS.SettlementManager.updateSettlementsAtLocation(annotatedView.location().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-            that.setModelChanged();
-          });
+          if (annotatedView.location()) {
+            AWE.GS.SettlementManager.updateSettlementsAtLocation(annotatedView.location().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+              that.setModelChanged();
+            });
+          }
+          else {
+            console.log("ERROR: expected location to be there, but its missing!");
+          }
         }
         else if (annotatedView.typeName() === 'OutpostView') {
           annotationView = AWE.UI.createOutpostAnnotationView();
