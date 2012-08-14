@@ -91,6 +91,14 @@ AWE.UI.Ember = (function(module) {
       return sum;
     }.property('unitTypes.@each.garrisonUnits').cacheable(),
     
+    garrisonOverfull: function() {
+      return this.get('garrisonSum') > this.getPath('garrisonArmy.size_max') ? "red-color bold" : "green-color bold";
+    }.property('unitTypes.@each.garrisonUnits').cacheable(),
+    
+    otherOverfull: function() {
+      return this.get('otherSum') > this.get('otherArmySizeMax') ? "red-color bold" : "green-color bold";
+    }.property('unitTypes.@each.garrisonUnits').cacheable(),      
+        
     cancelPressed: function() {
       log('ERROR Action not connected: cancelWasPressed.');
     },
@@ -241,7 +249,7 @@ AWE.UI.Ember = (function(module) {
       });
       return unitDifferences;
     },
-        
+
     changePressed: function() {
       log('ERROR Action not connected: changeWasPressed.');
     },
