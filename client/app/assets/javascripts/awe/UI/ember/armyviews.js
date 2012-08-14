@@ -92,12 +92,20 @@ AWE.UI.Ember = (function(module) {
     }.property('unitTypes.@each.garrisonUnits').cacheable(),
     
     garrisonOverfull: function() {
-      return this.get('garrisonSum') > this.getPath('garrisonArmy.size_max') ? "red-color bold" : "green-color bold";
+      return this.get('garrisonSum') > this.getPath('garrisonArmy.size_max');
     }.property('unitTypes.@each.garrisonUnits').cacheable(),
     
     otherOverfull: function() {
-      return this.get('otherSum') > this.get('otherArmySizeMax') ? "red-color bold" : "green-color bold";
+      return this.get('otherSum') > this.get('otherArmySizeMax');
     }.property('unitTypes.@each.garrisonUnits').cacheable(),      
+        
+    garrisonOverfullClass: function() {
+      return this.get('garrisonOverfull') ? "red-color bold" : "green-color bold";
+    }.property('garrisonOverfull').cacheable(),
+    
+    otherOverfullClass: function() {
+      return this.get('otherOverfull') ? "red-color bold" : "green-color bold";
+    }.property('otherOverfull').cacheable(),      
         
     cancelPressed: function() {
       log('ERROR Action not connected: cancelWasPressed.');

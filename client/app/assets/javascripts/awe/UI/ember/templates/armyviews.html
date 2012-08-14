@@ -92,7 +92,7 @@
         <div class="modal-dialog-pane" id="army-create-form">
           <h2>{{ t army.create.header }}</h2>
           <p>{{ t army.create.remainingArmies }}: {{ remainingArmies }}</p>
-          {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" garrisonOverfullBinding="garrisonOverfull" otherOverfullBinding="otherOverfull" }}
+          {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" garrisonOverfullClassBinding="garrisonOverfullClass" otherOverfullClassBinding="otherOverfullClass" }}
           <p>{{ t army.form.name }}: {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" placeholder="New Army" classNames="army-name-field" }}</p>
           {{#if loadingSettlement }}
             {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }}
@@ -121,7 +121,7 @@
       <div class="center-helper">
         <div class="modal-dialog-pane" id="army-change-form">
           <h2>{{ t army.change.header }}</h2>
-          {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" armyNameBinding="otherArmy.name" garrisonOverfullBinding="garrisonOverfull" otherOverfullBinding="otherOverfull" }}
+          {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" armyNameBinding="otherArmy.name" garrisonOverfullClassBinding="garrisonOverfullClass" otherOverfullClassBinding="otherOverfullClass" }}
           <a href="#" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</a> | <a href="#" {{action "changePressed" target="parentView"}}>{{ t army.form.change }}</a>
           {{#if "loading" }}
             <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ t    army.change.loadingMessage }}</p>
@@ -153,12 +153,12 @@
         {{/each}}
         <tr class="line">
           <td class="unit">{{ t army.details.size }} / {{ t army.details.sizeMax }}</td>
-          <td><span {{bindAttr class="garrisonOverfull" }}>{{ garrisonSum }}</span> / {{ parentView.garrisonArmy.size_max }}</td>
+          <td><span {{bindAttr class="garrisonOverfullClass" }}>{{ garrisonSum }}</span> / {{ parentView.garrisonArmy.size_max }}</td>
           <td><a href="#" {{action "allToGarrison" target="parentView"}}><<</a></td>
           <td></td>
           <td></td>
           <td><a href="#" {{action "allToOther" target="parentView"}}>>></a></td>
-          <td><span {{bindAttr class="otherOverfull" }}>{{ otherSum }}</span> / {{ parentView.otherArmySizeMax }}</td>
+          <td><span {{bindAttr class="otherOverfullClass" }}>{{ otherSum }}</span> / {{ parentView.otherArmySizeMax }}</td>
         </tr>
       </table>
 </script>
