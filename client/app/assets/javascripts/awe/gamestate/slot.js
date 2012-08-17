@@ -502,7 +502,6 @@ AWE.GS = (function(module) {
       });
       return categories;
     },
-    
   });     
 
     

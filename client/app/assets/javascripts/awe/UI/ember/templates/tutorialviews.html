@@ -1,0 +1,48 @@
+<script type="text/x-handlebars" data-template-name="quest-list-view">
+  <div class="modal-dialog-background"></div>
+  <div class="center-helper">
+    <div class="modal-dialog-pane quest-list-view">
+
+      <h1>Quest List</h1>
+      
+      {{#each quests}}
+        <p>Nr. {{quest_id}}</p>
+        <p>Status {{status}}</p>
+      {{/each}}
+            
+      <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
+      
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="quest-start-view">
+  <div class="modal-dialog-background"></div>
+  <div class="center-helper">
+    <div class="modal-dialog-pane quest-start-view">
+
+      <h1>Quest Start</h1>      
+      
+      <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
+      
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="quest-finished-view">
+  <div class="modal-dialog-background"></div>
+  <div class="center-helper">
+    <div class="modal-dialog-pane quest-finished-view">
+
+      <h1>Quest Finished</h1>      
+      
+      <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
+      
+    </div>
+  </div>
+</script>
+
+
+
+
+

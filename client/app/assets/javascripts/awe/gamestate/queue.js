@@ -55,6 +55,13 @@ AWE.GS = (function(module) {
     empty: function() {
       return this.get('jobs_count') == 0;
     }.property('jobs_count').cacheable(),
+    
+    /** hook for checking if any tutorial quest has been finished
+     */
+    jobsCountObserver: function() {
+      log('---> jobs_count changed, quest check called', this.get('jobs_count'));
+      AWE.GS.TutorialStateManager.checkForRewards();
+    }.observes('jobs_count'),
   });     
       
   return module;

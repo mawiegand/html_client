@@ -35,7 +35,7 @@ AWE.Action.Tutorial = (function(module) {
     }
     
     that.getURL = function() {
-      return AWE.Config.ACTION_SERVER_BASE + '/tutorial/check_quest_actions';
+      return AWE.Config.ACTION_SERVER_BASE + 'tutorial/check_quest_actions';
     }
   
     that.getHTTPMethod = function() {
@@ -43,7 +43,51 @@ AWE.Action.Tutorial = (function(module) {
     }
     
     that.postProcess = function(statusCode, xhr) {
-      AWE.GS.TutorialManager.updateTutorialState();
+    }
+  
+    that.questId = function() {
+      return my.questId;
+    }
+  
+    return that;
+    
+  };
+  
+
+  module.createQuestDisplayedAction = function(questId, my) {
+      
+    // private attributes and methods //////////////////////////////////////
+    
+    var that;
+    
+  
+    // protected attributes and methods ////////////////////////////////////
+  
+    my = my || {};
+    my.questId = questId;
+    
+    // public attributes and methods ///////////////////////////////////////
+    
+    that = AWE.Action.createAction(my);    
+    
+    that.getRequestBody = function() {
+      var requestBody = {
+        tutorial_quest: {
+          status: AWE.GS.TUTORIAL_STATUS_DISPLAYED,
+        }
+      };
+      return requestBody;
+    }
+    
+    that.getURL = function() {
+      return AWE.Config.TUTORIAL_SERVER_BASE + 'quests/' + my.questId;
+    }
+  
+    that.getHTTPMethod = function() {
+      return 'PUT';
+    }
+    
+    that.postProcess = function(statusCode, xhr) {
     }
   
     that.questId = function() {
