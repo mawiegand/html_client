@@ -122,7 +122,7 @@ AWE.Controller = (function(module) {
       });
 
       //zoom slider
-      $("body").append('<div class="zoom_slider"><div class="slider_container"><img src="'+"<%= asset_path('ui/slider.png') %>"+'" class="slider_slider"><div class="slider_bar"></div><div>');
+      $("body").append('<div class="zoom_slider"><div class="slider_container"><img src="' +  AWE.Config.RAILS_ASSET_PATH + 'ui/slider.png" class="slider_slider"><div class="slider_bar"></div><div>');
       $("body").find(".zoom_slider").each(function(i, value) {
         if (zoomSlider !== undefined) {
           console.error("found more than one zoom slider");
@@ -160,7 +160,7 @@ AWE.Controller = (function(module) {
     
     that.viewDidAppear = function() {
       $("body").append(zoomSlider.getContainer());
-      $("body").append('<div class="link-pane"><a href="'+ AWE.Config.EXTERNAL_FACEBOOK_URL +'" target="_blank"><img class="fb-icon" src="<%= asset_path("icons/fb.png") %>" /></a> &nbsp; '+
+      $("body").append('<div class="link-pane"><a href="'+ AWE.Config.EXTERNAL_FACEBOOK_URL +'" target="_blank"><img class="fb-icon" src="' + AWE.Config.RAILS_ASSET_PATH + 'icons/fb.png" /></a> &nbsp; '+
                        '                       <a href="'+ AWE.Config.EXTERNAL_FORUM_URL    +'" target="_blank">Forum</a> &nbsp; '+
                        '                       <a href="'+ AWE.Config.EXTERNAL_MANUAL_URL   +'" target="_blank">Manual</a></div>');
       window.WACKADOO.addDomElement($('.link-pane'), false);
@@ -810,18 +810,34 @@ AWE.Controller = (function(module) {
       var dialog = AWE.UI.Ember.ArmyCreateDialog.create({
         locationId: location.id(),
         createPressed: function(evt) {
-          var unitQuantities = this.unitQuantities();
-          var armyName = this.get('armyName');
-          if (!AWE.Util.hashEmpty(unitQuantities)) {            
-            createArmyCreateAction(location, unitQuantities, armyName, (function(self){
-              return function() {
-                self.destroy();
-              }
-            })(this));           
-            this.set('loading', true);
+          if (this.get('garrisonOverfull')) {
+            var errorDialog = AWE.UI.Ember.InfoDialog.create({
+              heading: AWE.I18n.lookupTranslation('army.form.errors.garrison'),
+              message: AWE.I18n.lookupTranslation('army.form.errors.message'),
+            });      
+            that.applicationController.presentModalDialog(errorDialog);
+          }
+          else if (this.get('otherOverfull')) {
+            var errorDialog = AWE.UI.Ember.InfoDialog.create({
+              heading: AWE.I18n.lookupTranslation('army.form.errors.new'),
+              message: AWE.I18n.lookupTranslation('army.form.errors.message'),
+            });      
+            that.applicationController.presentModalDialog(errorDialog);
           }
           else {
-            this.destroy();
+            var unitQuantities = this.unitQuantities();
+            var armyName = this.get('armyName');
+            if (!AWE.Util.hashEmpty(unitQuantities)) {            
+              createArmyCreateAction(location, unitQuantities, armyName, (function(self){
+                return function() {
+                  self.destroy();
+                }
+              })(this));           
+              this.set('loading', true);
+            }
+            else {
+              this.destroy();
+            }
           }
         },
         cancelPressed: function(evt) {
@@ -864,17 +880,33 @@ AWE.Controller = (function(module) {
       var dialog = AWE.UI.Ember.ArmyChangeDialog.create({
         locationId: location.id(),
         changePressed: function(evt) {
-          var unitDifferences = this.unitDifferences();
-          if (!AWE.Util.hashEmpty(unitDifferences)) {            
-            createArmyChangeAction(location, army, unitDifferences, (function(self){
-              return function() {
-                self.destroy();
-              }
-            })(this));           
-            this.set('loading', true);
+          if (this.get('garrisonOverfull')) {
+            var errorDialog = AWE.UI.Ember.InfoDialog.create({
+              heading: AWE.I18n.lookupTranslation('army.form.errors.garrison'),
+              message: AWE.I18n.lookupTranslation('army.form.errors.message'),
+            });      
+            that.applicationController.presentModalDialog(errorDialog);
+          }
+          else if (this.get('otherOverfull')) {
+            var errorDialog = AWE.UI.Ember.InfoDialog.create({
+              heading: AWE.I18n.lookupTranslation('army.form.errors.other'),
+              message: AWE.I18n.lookupTranslation('army.form.errors.message'),
+            });      
+            that.applicationController.presentModalDialog(errorDialog);
           }
           else {
-            this.destroy();
+            var unitDifferences = this.unitDifferences();
+            if (!AWE.Util.hashEmpty(unitDifferences)) {            
+              createArmyChangeAction(location, army, unitDifferences, (function(self){
+                return function() {
+                  self.destroy();
+                }
+              })(this));           
+              this.set('loading', true);
+            }
+            else {
+              this.destroy();
+            }
           }
         },
         cancelPressed: function(evt) {
