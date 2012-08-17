@@ -271,32 +271,32 @@ AWE.UI = (function(module) {
       
       if (!_army.get("npc") && (_army.get("stance") != _stance || !_animation)) {
         _stance = _army.get("stance");
-        var image = null;
+        var image = "map/army/animation";
+        var standFrame = 0;
+        
         switch (_army.get('stance') || 0) {
-          case 0:
-            image = "map/army/animation/neutral";
-            break;
-          case 1:
-            image = "map/army/animation/aggressive";
-            break;
-          case 2:
-            image = "map/army/animation/neutral";
-            break;
-          default:
-            image = "map/army/animation/neutral";
+          case 0:  standFrame = 0; break;
+          case 1:  standFrame = 1; break;
+          case 2:  standFrame = 0; break;
+          default: standFrame = 0; 
         }
         
         var data = {
           images: [AWE.UI.ImageCache.getImage(image).src],
           frames: {width:128, height:128},
           animations: { 
-            toWalk: [0,1,  'walk'], 
-            walk:   [2,5,  'walk'], 
+            toWalk: [standFrame, 2,  'walk', 2], 
+            walk:   [3,  6, 'walk', 2], 
+            fight:  {
+              frames: [7,8,9,10,11,12,12, 7,8,9,10,11,12,12, 12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12, 7,8,9,10,11,12,12,7,8,9,10,11,12,12,7,8,9,10,11,12,12, 12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12, ],
+              next:   'fight',
+            }, 
             toStand: {
-              frames: [0,1],
-              next:   'stand',
+              frames:    [2, standFrame],
+              next:      'stand',
+              frequency: 2,
             },
-            stand: [0],
+            stand: [standFrame],
           },
         };
         
@@ -337,17 +337,14 @@ AWE.UI = (function(module) {
       }
       else {
         console.log('CHECK ANIMATION')
-        if (_army.get("mode") !== 1      && _animation.animation().currentAnimation === 'walk') {      // 0: standing!, 1: walking, 2: fighting
+        if      (_army.get("mode") === 0 && _animation.animation().currentAnimation !== 'stand' && _animation.animation().currentAnimation !== 'toStand') {        // 0: standing!, 1: walking, 2: fighting
           _animation.animation().gotoAndPlay('toStand');
         }
-        else if (_army.get("mode") !== 1 && _animation.animation().currentAnimation === 'toWalk') {      // 0: standing!, 1: walking, 2: fighting
-          _animation.animation().gotoAndPlay('toStand');
-        }
-        if (_army.get("mode") === 1      && _animation.animation().currentAnimation === 'stand') {      // 0: standing!, 1: walking, 2: fighting
+        else if (_army.get("mode") === 1 && _animation.animation().currentAnimation !== 'walk' && _animation.animation().currentAnimation !== 'toWalk') {       // 0: standing!, 1: walking, 2: fighting
           _animation.animation().gotoAndPlay('toWalk');
         }
-        if (_army.get("mode") === 1      && _animation.animation().currentAnimation === 'toStand') {      // 0: standing!, 1: walking, 2: fighting
-          _animation.animation().gotoAndPlay('toWalk');
+        else if (_army.get("mode") === 2 && _animation.animation().currentAnimation !== 'fight') {     // 0: standing!, 1: walking, 2: fighting
+          _animation.animation().gotoAndPlay('fight');
         }
       }               
     }

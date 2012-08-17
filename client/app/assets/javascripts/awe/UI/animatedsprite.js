@@ -43,7 +43,7 @@ AWE.UI = (function(module) {
       
       _animation._tick = function(data) {
 		    var f = this._animation ? this._animation.frequency : 1;
-		    if (!this.paused && new Date().getTime() - lastFrame > 190) { // 4Hz (10ms tolerance if called to early)
+		    if (!this.paused && new Date().getTime() - lastFrame > 90) { // 10Hz (10ms tolerance if called to early)
 		      lastFrame = new Date().getTime();
 		      if (((++this._advanceCount)+this.offset)%f == 0) {
 			      this.advance();

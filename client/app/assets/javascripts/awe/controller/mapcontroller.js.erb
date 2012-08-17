@@ -1608,7 +1608,7 @@ AWE.Controller = (function(module) {
     }
         
     var setArmyPosition = function(view, pos, army) {
-      view.setCenter(AWE.Geometry.createPoint(pos.x, pos.y-view.frame().size.height/2));
+      view.setCenter(AWE.Geometry.createPoint(pos.x+view.frame().size.width/4, pos.y-view.frame().size.height/2));
       
       if (army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
         
@@ -2417,7 +2417,7 @@ AWE.Controller = (function(module) {
   
         
         // STEP 4: update views and repaint view hierarchies as needed
-        if (_windowChanged || _needsDisplay || _loopCounter % 12 == 0 || that.modelChanged() || _actionViewChanged || animating) {
+        if (_windowChanged || _needsDisplay || _loopCounter % 6 == 0 || that.modelChanged() || _actionViewChanged || animating) {
           // STEP 4a: get all visible nodes from the model
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());    
           
@@ -2446,7 +2446,7 @@ AWE.Controller = (function(module) {
           ];          
           
           for (var i=0; i < _stages.length; i++) {
-            if (stageUpdateNeeded[i] || _windowChanged || i==1) {
+            if (stageUpdateNeeded[i] || _windowChanged || i==1) { // i == 1   => hack to always update gaming pieces, which are animated
               if (_sortStages[i]) {  // TODO: add configuration: stage needs sorting
                 _stages[i].sortChildren(function(a, b) {
                   var az = a.y + a.height;
