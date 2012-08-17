@@ -58,7 +58,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     showWelcomeDialog: function() {
-      var dialog = AWE.UI.Ember.WelcomeDialog.create();
+      var dialog = AWE.UI.Ember.WelcomeDialog.create({
+        okPressed:    function() {
+          AWE.GS.TutorialStateManager.checkForNewQuests();
+          this.destroy();
+        },            
+      });
       this.presentModalDialog(dialog);      
     },
     
@@ -67,12 +72,26 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this.presentModalDialog(dialog);      
     },
     
+    showQuestListDialog: function() {
+      var dialog = AWE.UI.Ember.QuestListView.create({
+        tutorialState: AWE.GS.TutorialStateManager.getTutorialState(),
+      });
+      this.presentModalDialog(dialog);      
+      AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
+        log('---> tutorial state geladen', tutorialState, statusCode);
+      });
+    },
+    
     showAnnouncement: function() {
       var self = this;
       AWE.GS.AnnouncementManager.updateAnnouncement(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(announcement, statusCode) {
         if (statusCode === AWE.Net.OK) {
           var dialog = AWE.UI.Ember.AnnouncementDialog.create({
             announcement: announcement,
+            okPressed:    function() {
+              AWE.GS.TutorialStateManager.checkForNewQuests();
+              this.destroy();
+            },            
           });
           self.presentModalDialog(dialog);      
         }
@@ -347,6 +366,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
       this.set('mapScreenController', controller);
       this.setScreenController(controller);
+      
+      AWE.GS.TutorialManager.updateTutorial(function() {
+        log('---> tutorial loaded', AWE.GS.TutorialManager.getTutorial());
+      });
       
       this.startRunloop();
     }
