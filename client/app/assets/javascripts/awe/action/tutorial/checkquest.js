@@ -9,7 +9,7 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Tutorial = (function(module) {
   
-  module.createCheckQuestAction = function(questId, my) {
+  module.createCheckQuestAction = function(questStateId, my) {
       
     // private attributes and methods //////////////////////////////////////
     
@@ -19,7 +19,7 @@ AWE.Action.Tutorial = (function(module) {
     // protected attributes and methods ////////////////////////////////////
   
     my = my || {};
-    my.questId = questId;
+    my.questStateId = questStateId;
     
     // public attributes and methods ///////////////////////////////////////
     
@@ -28,7 +28,7 @@ AWE.Action.Tutorial = (function(module) {
     that.getRequestBody = function() {
       var requestBody = {
         action_tutorial_check_quest_action: {
-          quest_id: my.questId,
+          quest_id: my.questStateId,
         }
       };
       return requestBody;
@@ -46,7 +46,7 @@ AWE.Action.Tutorial = (function(module) {
     }
   
     that.questId = function() {
-      return my.questId;
+      return my.questStateId;
     }
   
     return that;
@@ -54,7 +54,7 @@ AWE.Action.Tutorial = (function(module) {
   };
   
 
-  module.createQuestDisplayedAction = function(questId, my) {
+  module.createQuestDisplayedAction = function(questStateId, my) {
       
     // private attributes and methods //////////////////////////////////////
     
@@ -64,7 +64,7 @@ AWE.Action.Tutorial = (function(module) {
     // protected attributes and methods ////////////////////////////////////
   
     my = my || {};
-    my.questId = questId;
+    my.questStateId = questStateId;
     
     // public attributes and methods ///////////////////////////////////////
     
@@ -80,7 +80,7 @@ AWE.Action.Tutorial = (function(module) {
     }
     
     that.getURL = function() {
-      return AWE.Config.TUTORIAL_SERVER_BASE + 'quests/' + my.questId;
+      return AWE.Config.TUTORIAL_SERVER_BASE + 'quests/' + my.questStateId;
     }
   
     that.getHTTPMethod = function() {
@@ -90,8 +90,8 @@ AWE.Action.Tutorial = (function(module) {
     that.postProcess = function(statusCode, xhr) {
     }
   
-    that.questId = function() {
-      return my.questId;
+    that.questStateId = function() {
+      return my.questStateId;
     }
   
     return that;

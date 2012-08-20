@@ -32,52 +32,52 @@ AWE.GS = (function(module) {
       log('---> init tutorialState and rules', this.get('tutorial'));
     },
     
-    newQuests: function() {
+    newQuestStates: function() {
       // new quests bestimmen
-      var quests = this.getPath('quests.content');
-      log('---> quests', quests);
+      var questStates = this.getPath('quests.content');   // hier
+      log('---> questStates', questStates);
       
-      var newQuests = [];
+      var newQuestStates = [];
       
-      AWE.Ext.applyFunction(quests, function(quest) {
-        if (quest && quest.get('status') == module.TUTORIAL_STATUS_NEW) {
-          newQuests.push(quest);
+      AWE.Ext.applyFunction(questStates, function(questState) {
+        if (questState && questState.get('status') == module.TUTORIAL_STATUS_NEW) {
+          newQuestStates.push(questState);
         }
       });
       
-      log('---> new quests changed', quests, newQuests);
+      log('---> new questStates changed', questStates, newQuestStates);
       
-      return newQuests;
+      return newQuestStates;
     }.property('quests.@each').cacheable(),    
 
-    openQuests: function() {
-      // offene quests bestimmen
-      var quests = this.getPath('quests.content');
-      log('---> quests', quests);
+    openQuestStates: function() {
+      // offene questStates bestimmen
+      var questStates = this.getPath('quests.content');
+      log('---> questStates', questStates);
       
-      var openQuests = [];
+      var openQuestStates = [];
       
-      AWE.Ext.applyFunction(quests, function(quest) {
-        if (quest && quest.get('status') < module.TUTORIAL_STATUS_CLOSED) {
-          openQuests.push(quest);
+      AWE.Ext.applyFunction(questStates, function(questState) {
+        if (questState && questState.get('status') < module.TUTORIAL_STATUS_CLOSED) {
+          openQuestStates.push(questState);
         }
       });
       
-      log('---> open quests changed', quests, openQuests);
+      log('---> open questStates changed', questStates, openQuestStates);
       
-      return openQuests;
+      return openQuestStates;
     }.property('quests.@each').cacheable(),    
   });     
 
     
   // ///////////////////////////////////////////////////////////////////////
   //
-  //   TUTORIAL QUEST
+  //   TUTORIAL QUEST STATE
   //
   // ///////////////////////////////////////////////////////////////////////    
     
-  module.Quest = module.Entity.extend({
-    typeName: 'Quest',
+  module.QuestState = module.Entity.extend({
+    typeName: 'QuestState',
     
     quest_id: null,
     status: null,
@@ -88,7 +88,7 @@ AWE.GS = (function(module) {
       
       var self = this;
       
-      log('---> check quest for rewards');
+      log('---> check questState for rewards');
       
       // quest ausm tutorial holen
       var questType = AWE.GS.TutorialManager.getTutorial().questType(this.get('quest_id'));
@@ -122,13 +122,13 @@ AWE.GS = (function(module) {
           // add all other test here
           }
           else {
-            log('ERROR in AWE.GS.Quest.checkForRewards: unknown reward test', test);
+            log('ERROR in AWE.GS.QuestState.checkForRewards: unknown reward test', test);
           }
         }
         return true;
       }
       else {
-        log('ERROR in AWE.GS.Quest.checkForRewards: no reward tests given for quest type ' + this.get('quest_id'));
+        log('ERROR in AWE.GS.QuestState.checkForRewards: no reward tests given for quest type ' + this.get('quest_id'));
       }
     },
     
@@ -137,7 +137,7 @@ AWE.GS = (function(module) {
       log('---> checkBuildings', buildingTest);
       
       if (buildingTest.min_level == null || buildingTest.min_count == null) {
-        log('ERROR in AWE.GS.Quest.checkBuildings: buildingTest.min_level or buildingTest.min_count missing in quest id ' + this.get('quest_id'));
+        log('ERROR in AWE.GS.QuestState.checkBuildings: buildingTest.min_level or buildingTest.min_count missing in quest id ' + this.get('quest_id'));
         return false;
       }
         
@@ -148,7 +148,6 @@ AWE.GS = (function(module) {
       AWE.Ext.applyFunctionToElements(ownSettlements, function(settlement) {
         var slots = settlement.slots();
         log('---> slots', slots);
-        
         
         AWE.Ext.applyFunctionToElements(slots, function(slot) {
           var level = slot.get('level');
@@ -200,7 +199,7 @@ AWE.GS = (function(module) {
     my.createEntity = function(spec) {
       return module.TutorialState.create({
         quests: Ember.ArrayProxy.create({          
-          baseTypeName: 'Quest',
+          baseTypeName: 'QuestState',
           content: Ember.A([]),
         }),
       });        
@@ -262,12 +261,12 @@ AWE.GS = (function(module) {
       log('---> checkForRewards');
       
       if (that.tutorialState) {
-        var openQuests = that.tutorialState.get('openQuests');
-        AWE.Ext.applyFunction(openQuests, function(quest) {
-          if (quest.checkForRewards()) {
+        var openQuestStates = that.tutorialState.get('openQuestStates');
+        AWE.Ext.applyFunction(openQuestStates, function(questState) {
+          if (questState.checkForRewards()) {
             log('---> checkForRewards', true);
             // action erzeugen und an server schicken
-            var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(quest.get('quest_id'));
+            var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(questState.get('quest_id'));
             questCheckAction.send(function(status) {
               if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
                 // callback: dialog anzeigen mit reward
@@ -306,17 +305,17 @@ AWE.GS = (function(module) {
       that.updateTutorialState(function() {
       
         if (that.tutorialState) {
-          var newQuests = that.tutorialState.get('newQuests');
-          log('---> checkForNewQuests newQuests', newQuests);
-          if (newQuests != null && newQuests.length > 0) {
+          var newQuestStates = that.tutorialState.get('newQuestStates');
+          log('---> checkForNewQuests newQuestStates', newQuestStates);
+          if (newQuestStates != null && newQuestStates.length > 0) {
             
-            // display newQuests[0];
+            // display newQuestStates[0];
             var dialog = AWE.UI.Ember.QuestStartView.create({
             });          
             WACKADOO.presentModalDialog(dialog);
             
             // send action that quest is displayed
-            var questDisplayedAction = AWE.Action.Tutorial.createQuestDisplayedAction(newQuests[0].getId());
+            var questDisplayedAction = AWE.Action.Tutorial.createQuestDisplayedAction(newQuestStates[0].getId());
             questDisplayedAction.send(function(status) {
               if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
                 log('---> quest state set to displayed')

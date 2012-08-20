@@ -14,7 +14,7 @@ AWE.UI.Ember = (function(module) {
     
     tutorialState: null,
     
-    questsBinding: 'tutorialState.openQuests',
+    questStatesBinding: 'tutorialState.openQuestStates',
   });  
   
   module.QuestStartView = module.InfoDialog.extend({
