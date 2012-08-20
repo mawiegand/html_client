@@ -102,7 +102,7 @@ AWE.Util = (function(module) {
     if (date.getDate() === now.getDate() && 
         date.getMonth() === now.getMonth() &&
         date.getFullYear() === now.getFullYear()) {
-      return date.getHours()+":"+date.getMinutes();
+      return date.getHours()+":"+zeroPadTime(date.getMinutes());
     }
     else if (now.getTime() - date.getTime() < oneDay) {
       return "yesterday";
