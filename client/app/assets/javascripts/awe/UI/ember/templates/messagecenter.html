@@ -61,7 +61,7 @@
   </div>
   <div class="message-edit-header">
     <table>
-      <tr><th>To:</th>
+      <tr><th {{bindAttr class="recipientUnknown:red-color"}}>{{#if recipientUnknown }}<em>unkown</em>{{/if}} To:</th>
         <td><b>{{view Ember.TextField valueBinding="recipient" placeholder="recipient"}}</b></td>
       </tr>
       <tr><th>Subject:</th>

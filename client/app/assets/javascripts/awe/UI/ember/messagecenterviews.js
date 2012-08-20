@@ -95,8 +95,19 @@ AWE.UI.Ember = (function(module) {
   module.NewMessage = Ember.View.extend({
     sender_id: null,
     recipient: null,
-    subject: null,
-    body: null,
+    subject:   null,
+    body:      null,
+
+    oldRecipient:     null,    
+    recipientUnknown: false,
+    
+    recipientObserver: function() {
+      if (this.get('oldRecipient') !== this.get('recipient')) {
+        this.set('recipientUnknown', false);
+        this.set('oldRecipient', this.get('recipient'));
+      }
+    }.observes('recipient'),
+    
   });
   
   module.MessageCenterView = Ember.View.extend({
@@ -195,6 +206,10 @@ AWE.UI.Ember = (function(module) {
       this.showForm();
     },
 
+
+    setRecipientIsUnknown: function(value) {
+      this.setPath('newMessage.recipientUnknown', value);
+    },
 
   });
 

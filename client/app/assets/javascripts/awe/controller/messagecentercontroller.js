@@ -91,9 +91,20 @@ AWE.Controller = (function(module) {
       this.view.hideForm();
     };
     that.sendMessage = function(message) {
+      var self = this;
       action = AWE.Action.Messaging.createSendMessageAction(message);
-      action.send();
-      this.discardDraft();
+      action.send(function(status, jqXHR) {
+        console.log('SENT MESSAGE, STATUS', status);
+        if (status === AWE.Net.CREATED || status === AWE.Net.OK) {
+          self.discardDraft();
+        }
+        else if (status === AWE.Net.NOT_FOUND) {
+          self.view.setRecipientIsUnknown(true);
+        }
+        else {
+          alert ('unknown error');
+        }
+      });
     };
     
     
