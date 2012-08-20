@@ -29,14 +29,7 @@ AWE.UI.Ember = (function(module) {
     templateName: 'message',
     
     timeString: function() {
-      var isoDate = this.getPath('message.created_at');
-      if (!isoDate) {
-        return null;
-      }
-      var date = Date.parseISODate(isoDate);
-     
-      return date.toLocaleString();
-
+      return AWE.Util.localizedTime(this.getPath('message.created_at'));
     }.property('message.created_at').cacheable(),
   });
   
@@ -148,7 +141,7 @@ AWE.UI.Ember = (function(module) {
         return this.get('inbox');
       }
     }.property('display', 'inbox', 'outbox', 'archive').cacheable(),
-    
+
     
     displayingInbox: function() {
       return this.get('display') === 'inbox';
@@ -169,6 +162,39 @@ AWE.UI.Ember = (function(module) {
         this.set('selectedMessageEntry', null);
       }
     },
+    
+    isForwardPossible: function() {
+      return ! this.get('newMessage') && this.getPath('selectedMessage');
+    }.property('selectedMessage', 'selectedMessage'),
+
+    isReplyPossible: function() {
+      return ! this.get('newMessage') && this.getPath('selectedMessage.sender.name');
+    }.property('selectedMessage', 'selectedMessage.sender.name', 'newMessage'),
+    
+    replyClicked: function() {
+      this.set('newMessage', module.NewMessage.create({
+        recipient: this.getPath('selectedMessage.sender.name'),  
+        subject:   'Re: ' + (this.getPath('selectedMessage.subject') || ''),
+        body:      ' \n\n\n---- On  ' + AWE.Util.localizedTime(this.getPath('selectedMessage.created_at')) + ' ' +
+                    (this.getPath('selectedMessage.sender.name') || 'someone') + ' wrote:\n\n' +
+                    AWE.Util.htmlToAscii(this.getPath('selectedMessage.body')),
+        sender_id: AWE.GS.CharacterManager.getCurrentCharacter().get('id'),
+      }));
+      this.showForm();
+    },
+
+    forwardClicked: function() {
+      this.set('newMessage', module.NewMessage.create({
+        subject:   'Fwd: ' + (this.getPath('selectedMessage.subject') || ''),
+        body:      ' \n\n\n---- On  ' + AWE.Util.localizedTime(this.getPath('selectedMessage.created_at')) + ' ' +
+                    (this.getPath('selectedMessage.sender.name') || 'Sytem') + ' wrote to ' +
+                    this.getPath('selectedMessage.recipient.name') + ':\n\n' +
+                    AWE.Util.htmlToAscii(this.getPath('selectedMessage.body')),
+        sender_id: AWE.GS.CharacterManager.getCurrentCharacter().get('id'),
+      }));
+      this.showForm();
+    },
+
 
   });
 

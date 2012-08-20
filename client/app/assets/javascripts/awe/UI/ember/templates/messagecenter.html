@@ -102,9 +102,23 @@
 <script type="text/x-handlebars" data-template-name="message-center">
 <div class="message-center">
   <div class="header">
-    <div {{action "inboxClicked"  target="controller"}}>Inbox</div>
-    <div {{action "outboxClicked" target="controller"}}>Outbox</div> * 
-    <div {{action "newClicked"    target="controller"}}>New</div>
+    <div id="inbox-control">
+      <div {{action "inboxClicked"  target="controller"}}>Inbox</div>
+      <div {{action "outboxClicked" target="controller"}}>Outbox</div>  
+      <div {{action "newClicked"    target="controller"}}>New</div>
+    </div>
+    <div id="actions">
+      {{#if isReplyPossible}}
+        <div {{action "replyClicked" }}>Reply</div>
+      {{else}}
+        <div class="inactive">Reply</div>
+      {{/if}}
+      {{#if isForwardPossible}}
+      <div {{action "forwardClicked" }}>Forward</div>
+      {{else}}
+        <div class="inactive">Forward</div>
+      {{/if}}
+    </div>
   </div>
 
   <div class="list">

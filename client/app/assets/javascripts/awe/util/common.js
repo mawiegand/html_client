@@ -117,6 +117,18 @@ AWE.Util = (function(module) {
       return date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
     }
   };
+  
+  module.localizedTime = function(isoDate) {
+    if (!isoDate) {
+      return null;
+    }
+    var date = Date.parseISODate(isoDate);
+    return date ? date.toLocaleString() : null;  
+  };
+  
+  module.htmlToAscii = function(html) {
+    return (html || "").replace(/<br\s*[\/]?>/gi, "\n")
+  };
 
   
   return module;
