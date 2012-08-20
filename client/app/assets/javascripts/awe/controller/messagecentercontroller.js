@@ -102,7 +102,14 @@ AWE.Controller = (function(module) {
           self.view.setRecipientIsUnknown(true);
         }
         else {
-          alert ('unknown error');
+          console.log(status, "ERROR: The server did not accept the message.");
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });          
+          WACKADOO.presentModalDialog(dialog);
         }
       });
     };
