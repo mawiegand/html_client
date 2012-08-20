@@ -144,6 +144,9 @@ AWE.GS = (function(module) {
     inbox_id: null, old_inbox_id: null,
     inboxIdObserver: AWE.Partials.attributeHashObserver(module.InboxEntryAccess, 'inbox_id', 'old_inbox_id').observes('inbox_id'), 
  
+    read: false,
+    unreadBinding: Ember.Binding.not('read'),
+ 
     sender: null,
  
     updateSender: function() {

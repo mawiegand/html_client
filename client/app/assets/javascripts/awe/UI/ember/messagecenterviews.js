@@ -181,6 +181,11 @@ AWE.UI.Ember = (function(module) {
     isReplyPossible: function() {
       return ! this.get('newMessage') && this.getPath('selectedMessage.sender.name');
     }.property('selectedMessage', 'selectedMessage.sender.name', 'newMessage'),
+
+    isDeletePossible: function() {
+      return ! this.get('newMessage') && this.get('selectedMessage') && this.get('displayingInbox');
+    }.property('selectedMessage', 'newMessage', 'displayingInbox'),
+
     
     replyClicked: function() {
       this.set('newMessage', module.NewMessage.create({
@@ -205,7 +210,32 @@ AWE.UI.Ember = (function(module) {
       }));
       this.showForm();
     },
+    
+    deleteClicked: function() {
+      var selectedMessageEntry = this.get('selectedMessageEntry');
+      if (!selectedMessageEntry || !this.get('displayingInbox')) {
+        console.log('ERROR: could not delete message.');
+        return ;
+      }
+      AWE.Action.Messaging.createDeleteMessageAction(selectedMessageEntry).send();
+      this.set('selectedMessageEntry', null);
+    },
 
+    markRead: function(inboxEntry) {
+      var selectedMessageEntry = this.get('selectedMessageEntry');
+      if (!inboxEntry || inboxEntry.get('read')) {  // already marked as read?
+        return ;
+      }
+      AWE.Action.Messaging.createMarkMessageReadAction(inboxEntry).send();
+    },
+    
+    messageReadMarker: function() {
+      var selectedMessageEntry = this.get('selectedMessageEntry');
+      if (this.get('displayingInbox') && selectedMessageEntry && !selectedMessageEntry.get('read')) {
+        console.log('mark message as read');
+        this.markRead(selectedMessageEntry);
+      }
+    }.observes('selectedMessageEntry'),
 
     setRecipientIsUnknown: function(value) {
       this.setPath('newMessage.recipientUnknown', value);

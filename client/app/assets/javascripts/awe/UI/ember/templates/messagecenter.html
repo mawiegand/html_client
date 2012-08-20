@@ -14,7 +14,7 @@
       {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}}
     </span>   
   {{else}}
-    <span class="sender">
+    <span {{bindAttr class=":sender message.unread"}}>
       {{#if message.sender_id}}
         {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
       {{else}}
@@ -22,7 +22,7 @@
       {{/if}}
     </span> 
   {{/if}} <span class="time">{{timeString}}</span><br />
-  <span class="subject">{{message.subject}}</span>
+  <span {{bindAttr class=":subject message.unread"}}>{{message.subject}}</span>
 </script>
 
 
@@ -114,10 +114,15 @@
         <div class="inactive">Reply</div>
       {{/if}}
       {{#if isForwardPossible}}
-      <div {{action "forwardClicked" }}>Forward</div>
+        <div {{action "forwardClicked" }}>Forward</div>
       {{else}}
         <div class="inactive">Forward</div>
-      {{/if}}
+      {{/if}} &nbsp;&nbsp;
+      {{#if isDeletePossible}}
+        <div {{action "deleteClicked" }}>Delete</div>
+      {{else}}
+        <div class="inactive">Delete</div>
+      {{/if}}      
     </div>
   </div>
 
