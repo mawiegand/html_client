@@ -176,7 +176,7 @@ AWE.UI.Ember = (function(module) {
     
     isForwardPossible: function() {
       return ! this.get('newMessage') && this.getPath('selectedMessage');
-    }.property('selectedMessage', 'selectedMessage'),
+    }.property('selectedMessage', 'newMessage'),
 
     isReplyPossible: function() {
       return ! this.get('newMessage') && this.getPath('selectedMessage.sender.name');
