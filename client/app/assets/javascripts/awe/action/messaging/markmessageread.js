@@ -38,7 +38,7 @@ AWE.Action.Messaging = (function(module) {
     
     that.postProcess = function(statusCode, xhr) {
       if (statusCode === AWE.Net.OK) {
-        AWE.GS.InboxEntryManager.updateEntry(inboxEntry.get('id'));
+        AWE.GS.InboxManager.triggerInboxAutoUpdate(true);
       }
     }
   
