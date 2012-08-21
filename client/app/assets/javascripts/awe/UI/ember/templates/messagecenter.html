@@ -132,7 +132,7 @@
       {{view AWE.UI.Ember.DraftTeaserView draftBinding="newMessage" classNames="message-header" classNameBindings="selected"}}
     {{/if}}
     {{#if "messageBox"}}
-      <h1>{{messageBox.name}}</h1>
+      <h1>{{messageBox.name}} {{#if messageBox.unread_messages_count}}({{messageBox.unread_messages_count}}){{/if}}</h1>
       {{#each messageBox.sortedEntries}}
         {{view AWE.UI.Ember.MessageTeaserView messageBinding="this" classNames="message-header" classNameBindings="selected"}}
       {{/each}}
