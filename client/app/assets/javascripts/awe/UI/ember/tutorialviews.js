@@ -14,15 +14,48 @@ AWE.UI.Ember = (function(module) {
     
     tutorialState: null,
     
-    questsBinding: 'tutorialState.openQuests',
+    questStatesBinding: 'tutorialState.notClosedQuestStates',
+    
+    redeemButtonPressed: function(questStateId) {
+      log('ERROR Action not connected: redeemButtonPressed.');
+    },
   });  
   
-  module.QuestStartView = module.InfoDialog.extend({
-    templateName: 'quest-start-view',
+  module.QuestListEntryView = Ember.View.extend({
+    templateName: 'quest-list-entry-view',
+    
+    questState: null,
+  
+    redeemButtonPressed: function() {
+      log('---> QuestListEntryView redeemButtonPressed', this.getPath('questState.id'));
+      this.get('parentView').redeemButtonPressed(this.getPath('questState.id'));
+    },
+  });  
+  
+  module.QuestStartedView = module.InfoDialog.extend({
+    templateName: 'quest-started-view',
+    quest: null,
   });  
   
   module.QuestFinishedView = module.InfoDialog.extend({
     templateName: 'quest-finished-view',
+    quest: null,
+    questObserver: function() {
+      log('--------> quest', this.get('quest'));
+    },
+  });  
+  
+  module.QuestResourceRewardView = Ember.View.extend({
+    templateName: 'quest-resource-reward-view',
+    resource: null,
+    resourceName: function() {
+      return AWE.Util.Rules.lookupTranslation(AWE.GS.RulesManager.getRules().getResourceTypeWithSymbolicId(this.getPath('resource.resource')).name);
+    }.property('resource').cacheable(),
+  });  
+  
+  module.QuestResourceRewardsView = Ember.View.extend({
+    templateName: 'quest-resource-rewards-view',
+    resources: null,
   });  
   
   return module;  
