@@ -93,6 +93,39 @@ AWE.Action.Training = (function(module) {
     return that;
   };
   
+  
+  module.createJobSpeedupAction = function(jobId, my) {
+      
+    // private attributes and methods //////////////////////////////////////
+    var that;
+    
+    // protected attributes and methods ////////////////////////////////////
+    my = my || {};
+    my.jobId = jobId;
+
+    // public attributes and methods ///////////////////////////////////////
+    that = AWE.Action.createAction(my);    
+    
+    that.getRequestBody = function() {
+      return 'action_training_speedup_job_actions[job_id]=' + my.jobId;
+    }
+    
+    that.getURL = function() {
+      return AWE.Config.ACTION_SERVER_BASE + 'training/speedup_job_actions';
+    }
+  
+    that.getHTTPMethod = function() {
+      return 'POST';
+    }
+    
+    that.postProcess = function(statusCode, xhr) {
+      AWE.GS.ResourcePoolManager.updateResourcePool();
+      AWE.GS.TrainingJobManager.updateJob(my.jobId);
+    }
+    
+    return that;
+  };
+  
   return module;
   
 }(AWE.Action.Training || {}));

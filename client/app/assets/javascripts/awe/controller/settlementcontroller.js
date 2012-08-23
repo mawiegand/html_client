@@ -405,7 +405,35 @@ AWE.Controller = (function(module) {
       });
     }  
     
-    
+    that.trainingSpeedupClicked = function(job) {
+      var queue = job.get('queue');
+      queue.sendSpeedupJobAction(job.getId(), function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          log(status, "Training time halved.");
+          that.updateTrainingQueueAndJobs(queue.getId());    
+        }
+        else if (status === AWE.Net.FORBIDDEN) {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'not-enough-cash-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });          
+          WACKADOO.presentModalDialog(dialog);
+        }
+        else {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });          
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the training job speedup command.");
+          // TODO Fehlermeldung 
+        } 
+      });
+    }    
     
     
     // ///////////////////////////////////////////////////////////////////////

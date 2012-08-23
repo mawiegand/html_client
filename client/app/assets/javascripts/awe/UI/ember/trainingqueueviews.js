@@ -58,11 +58,18 @@ AWE.UI.Ember = (function(module) {
   module.TrainingJobView = Ember.View.extend({
     classNameBindings: ['active', 'first'],
     
-    job: null,
+    job:           null,
+    timeRemaining: null,
+    timer:         null,
     
     cancelJobPressed: function(evt) {
       this.get('controller').trainingCancelClicked(this.get('job'));
     },
+    
+    speedupJobPressed: function(event) {
+      this.get('controller').trainingSpeedupClicked(this.get('job'));
+    },
+    
     
     active: function() {
       return this.get('job').active_job !== null;
@@ -72,6 +79,66 @@ AWE.UI.Ember = (function(module) {
       var jobCollection = this.getPath('parentView.queue.hashableJobs.collection');
       return jobCollection && jobCollection[0] && jobCollection[0] === this.get('job')
     }.property('parentView.queue.hashableJobs.changedAt'),    
+    
+    calcTimeRemaining: function() {
+      var finishedAt = this.getPath('job.active_job.finished_total_at');
+      if (!finishedAt) {
+        return ;
+      }
+      var finish = Date.parseISODate(finishedAt);
+      var now = new Date();
+      var remaining = (finish.getTime() - now.getTime()) / 1000.0;
+      remaining = remaining < 0 ? 0 : remaining;
+      this.set('timeRemaining', remaining);
+    },
+    
+    isTrainingSpeedupPossible: function() {
+      return this.getPath('active') && !this.getPath('job.hurried') && AWE.Util.Rules.isTrainingSpeedupPossible(this.getPath('timeRemaining'));
+    }.property('timeRemaining', 'active'),
+
+
+    finished: function() {
+      var t = this.get('timeRemaining');
+      return t !== undefined && t !== null && t <= 0;
+    }.property('timeRemaining'),    
+    
+    startTimer: function() {
+      var timer = this.get('timer');
+      if (!timer) {
+        timer = setInterval((function(self) {
+          return function() {
+            self.calcTimeRemaining();
+          };
+        }(this)), 1000);
+        this.set('timer', timer);
+      }
+    },
+    
+    stopTimer: function() {
+      var timer = this.get('timer');
+      if (timer) {
+        clearInterval(timer);
+        this.set('timer', null);
+      }
+    },
+    
+    startTimerOnBecommingActive: function() {
+      var active = this.get('active');
+      if (active && this.get('timer')) {
+        this.startTimer();
+      }
+      return ;
+    }.observes('active'),
+    
+    
+    didInsertElement: function() {
+      this.startTimer();
+    },
+    
+    willDestroyElement: function() {
+      this.stopTimer();
+    },
+    
   });
 
   return module;

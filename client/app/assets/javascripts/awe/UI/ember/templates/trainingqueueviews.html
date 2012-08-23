@@ -63,9 +63,17 @@
             <p>All: {{ job.parsedFinishingTotalDate }}</p>
             {{/if}}
           </div>  
-          <div class="training-queue-job-button">    
+          <p class="queue-job-button finish-button">
+            {{#if isTrainingSpeedupPossible }}
+              <a href="#" {{action "speedupJobPressed"}} title="spend toads for training units twice as fast">
+               halve {{trainingSpeedupCost timeRemaining}} 
+               <span class="resource-icon {{trainingSpeedupResource timeRemaining}}">&nbsp;</span>
+              </a>
+            {{/if}}
+          </p>
+          <p class="queue-job-button cancel">    
             <a href="#" {{action "cancelJobPressed"}}>cancel</a>
-          </div>  
+          </p> 
         {{/view}}
       {{/each}}
     {{/unless}}

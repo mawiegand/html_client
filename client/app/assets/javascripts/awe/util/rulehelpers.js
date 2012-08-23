@@ -156,6 +156,25 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
     return module.lookupConstructionSpeedupCost(duration) !== null ;
   };
 	
+	
+  module.lookupTrainingSpeedupCost = function(duration) {
+    if (duration === undefined || duration === null) {
+      return null;
+    }
+	  var costs = AWE.GS.RulesManager.getRules().training_speedup;
+	  var entry = null;
+	  costs.forEach(function(item) {
+	    if (!entry && duration < item.hours * 3600) { // hours to seconds
+	      entry = item;
+	    }
+	  });
+	  return entry;
+  };
+
+  module.isTrainingSpeedupPossible = function(duration) {
+    return module.lookupTrainingSpeedupCost(duration) !== null ;
+  };	
+	
   ////////////////////////////////////////////////////////////////////////////
   // 
   //  REQUIREMENTS

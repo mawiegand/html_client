@@ -61,17 +61,21 @@ Handlebars.registerHelper("t", function(path) {
   return AWE.I18n.lookupTranslation(path);
 });
 
-
-/** formats the specified duration (expects seconds) according to the local 
- * conventions 
- * @name Handlebars.Helper.formatDuration
- */
 Handlebars.registerHelper("constructionSpeedupResource", function(path) {
   var seconds = Ember.getPath(this, path);
   if (seconds === undefined || seconds === null) {
     return "" ;
   }
   var costs = AWE.Util.Rules.lookupConstructionSpeedupCost(seconds);
+  return costs ? AWE.GS.RulesManager.getRules().getResourceType(costs.resource_id).symbolic_id : null;
+});
+
+Handlebars.registerHelper("trainingSpeedupResource", function(path) {
+  var seconds = Ember.getPath(this, path);
+  if (seconds === undefined || seconds === null) {
+    return "" ;
+  }
+  var costs = AWE.Util.Rules.lookupTrainingSpeedupCost(seconds);
   return costs ? AWE.GS.RulesManager.getRules().getResourceType(costs.resource_id).symbolic_id : null;
 });
 
@@ -154,9 +158,9 @@ Ember.registerBoundHelper("formatDatetime", function(datetime) {
   return Date.parseISODate(datetime).toString('dd.MM. HH:mm:ss');
 });
 
-/** formats the specified duration (expects seconds) according to the local 
- * conventions 
- * @name Handlebars.Helper.formatDuration
+/** calculates and returns the cost for speeding up a construction job
+ * with the given remaining duration in seconds 
+ * @name Handlebars.Helper.constructionSpeedupCost
  */
 Ember.registerBoundHelper("constructionSpeedupCost", function(seconds) {
   if (seconds === undefined || seconds === null) {
@@ -166,5 +170,17 @@ Ember.registerBoundHelper("constructionSpeedupCost", function(seconds) {
   return costs ? costs.amount : null;
 });
 
+
+/** calculates and returns the cost for speeding up a training job
+ * with the given remaining duration in seconds 
+ * @name Handlebars.Helper.trainingSpeedupCost
+ */
+Ember.registerBoundHelper("trainingSpeedupCost", function(seconds) {
+  if (seconds === undefined || seconds === null) {
+    return "" ;
+  }
+  var costs = AWE.Util.Rules.lookupTrainingSpeedupCost(seconds);
+  return costs ? costs.amount : null;
+});
 
 

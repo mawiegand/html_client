@@ -117,7 +117,7 @@ AWE.GS = (function(module) {
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
     that.updateJob = function(id, updateType, callback) {
-      var url = AWE.Config.TRAINING_SERVER_BASE + 'job/' + id;
+      var url = AWE.Config.TRAINING_SERVER_BASE + 'jobs/' + id;
       return my.updateEntity(url, id, updateType, callback); 
     };
     
