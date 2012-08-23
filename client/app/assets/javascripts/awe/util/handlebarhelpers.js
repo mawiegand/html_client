@@ -80,7 +80,7 @@ Ember.registerBoundHelper("formatNumber", function(number, options) {
     return "" ;
   }
   var fac = Math.pow(10, maxPlaces);
-  return Math.floor(number * fac + 0.5) / fac; // TODO: use locale!
+  return maxPlaces == 0 && number < 1.0 && number > 0.01 ? Math.floor(number*100.0) / 100.0 :  Math.floor(number * fac + 0.5) / fac; // TODO: use locale!
   // TODO add option to append '0's to fill maxPlaces
 });
 

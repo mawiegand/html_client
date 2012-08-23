@@ -331,7 +331,7 @@ AWE.UI = (function(module) {
         _resource3ProductionView.setText("+"+Math.floor(pool.get('resource_fur_production_rate'))+"/h");
 
         _resource4LabelView.setText(""+my.amounts[3]);
-        _resource4ProductionView.setText("+"+(Math.floor(pool.get('resource_cash_production_rate')*10.0)/10.0)+"/h");
+        _resource4ProductionView.setText("+"+(Math.floor(pool.get('resource_cash_production_rate')*100.0)/100.0)+"/h");
 
       }
       
