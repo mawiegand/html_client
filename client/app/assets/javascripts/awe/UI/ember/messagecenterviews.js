@@ -29,14 +29,7 @@ AWE.UI.Ember = (function(module) {
     templateName: 'message',
     
     timeString: function() {
-      var isoDate = this.getPath('message.created_at');
-      if (!isoDate) {
-        return null;
-      }
-      var date = Date.parseISODate(isoDate);
-     
-      return date.toLocaleString();
-
+      return AWE.Util.localizedTime(this.getPath('message.created_at'));
     }.property('message.created_at').cacheable(),
   });
   
@@ -102,8 +95,19 @@ AWE.UI.Ember = (function(module) {
   module.NewMessage = Ember.View.extend({
     sender_id: null,
     recipient: null,
-    subject: null,
-    body: null,
+    subject:   null,
+    body:      null,
+
+    oldRecipient:     null,    
+    recipientUnknown: false,
+    
+    recipientObserver: function() {
+      if (this.get('oldRecipient') !== this.get('recipient')) {
+        this.set('recipientUnknown', false);
+        this.set('oldRecipient', this.get('recipient'));
+      }
+    }.observes('recipient'),
+    
   });
   
   module.MessageCenterView = Ember.View.extend({
@@ -148,7 +152,7 @@ AWE.UI.Ember = (function(module) {
         return this.get('inbox');
       }
     }.property('display', 'inbox', 'outbox', 'archive').cacheable(),
-    
+
     
     displayingInbox: function() {
       return this.get('display') === 'inbox';
@@ -168,6 +172,73 @@ AWE.UI.Ember = (function(module) {
         this.set('display', box);
         this.set('selectedMessageEntry', null);
       }
+    },
+    
+    isForwardPossible: function() {
+      return ! this.get('newMessage') && this.getPath('selectedMessage');
+    }.property('selectedMessage', 'newMessage'),
+
+    isReplyPossible: function() {
+      return ! this.get('newMessage') && this.getPath('selectedMessage.sender.name');
+    }.property('selectedMessage', 'selectedMessage.sender.name', 'newMessage'),
+
+    isDeletePossible: function() {
+      return ! this.get('newMessage') && this.get('selectedMessage') && this.get('displayingInbox');
+    }.property('selectedMessage', 'newMessage', 'displayingInbox'),
+
+    
+    replyClicked: function() {
+      this.set('newMessage', module.NewMessage.create({
+        recipient: this.getPath('selectedMessage.sender.name'),  
+        subject:   'Re: ' + (this.getPath('selectedMessage.subject') || ''),
+        body:      ' \n\n\n---- On  ' + AWE.Util.localizedTime(this.getPath('selectedMessage.created_at')) + ' ' +
+                    (this.getPath('selectedMessage.sender.name') || 'someone') + ' wrote:\n\n' +
+                    AWE.Util.htmlToAscii(this.getPath('selectedMessage.body')),
+        sender_id: AWE.GS.CharacterManager.getCurrentCharacter().get('id'),
+      }));
+      this.showForm();
+    },
+
+    forwardClicked: function() {
+      this.set('newMessage', module.NewMessage.create({
+        subject:   'Fwd: ' + (this.getPath('selectedMessage.subject') || ''),
+        body:      ' \n\n\n---- On  ' + AWE.Util.localizedTime(this.getPath('selectedMessage.created_at')) + ' ' +
+                    (this.getPath('selectedMessage.sender.name') || 'Sytem') + ' wrote to ' +
+                    this.getPath('selectedMessage.recipient.name') + ':\n\n' +
+                    AWE.Util.htmlToAscii(this.getPath('selectedMessage.body')),
+        sender_id: AWE.GS.CharacterManager.getCurrentCharacter().get('id'),
+      }));
+      this.showForm();
+    },
+    
+    deleteClicked: function() {
+      var selectedMessageEntry = this.get('selectedMessageEntry');
+      if (!selectedMessageEntry || !this.get('displayingInbox')) {
+        console.log('ERROR: could not delete message.');
+        return ;
+      }
+      AWE.Action.Messaging.createDeleteMessageAction(selectedMessageEntry).send();
+      this.set('selectedMessageEntry', null);
+    },
+
+    markRead: function(inboxEntry) {
+      var selectedMessageEntry = this.get('selectedMessageEntry');
+      if (!inboxEntry || inboxEntry.get('read')) {  // already marked as read?
+        return ;
+      }
+      AWE.Action.Messaging.createMarkMessageReadAction(inboxEntry).send();
+    },
+    
+    messageReadMarker: function() {
+      var selectedMessageEntry = this.get('selectedMessageEntry');
+      if (this.get('displayingInbox') && selectedMessageEntry && !selectedMessageEntry.get('read')) {
+        console.log('mark message as read');
+        this.markRead(selectedMessageEntry);
+      }
+    }.observes('selectedMessageEntry'),
+
+    setRecipientIsUnknown: function(value) {
+      this.setPath('newMessage.recipientUnknown', value);
     },
 
   });

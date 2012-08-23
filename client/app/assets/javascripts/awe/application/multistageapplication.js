@@ -327,6 +327,11 @@ AWE.Application = (function(module) {
           if (this.get('hudController')) this.get('hudController').runloop();
           if (this.get('notificationController')) this.get('notificationController').runloop();
           this.get('presentScreenController').runloop(); // hand over control to present screen controller
+          
+          // TODO: Game State Runloop!
+          
+          AWE.GS.InboxManager.triggerInboxAutoUpdate();          
+          
         }
         window.requestAnimFrame(function(self) { return function() {self.runloop(); }; }(this));  // request next animation frame that will initiate the next cycle of the runloop
       },

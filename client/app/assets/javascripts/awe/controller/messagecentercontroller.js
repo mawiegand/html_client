@@ -91,9 +91,27 @@ AWE.Controller = (function(module) {
       this.view.hideForm();
     };
     that.sendMessage = function(message) {
+      var self = this;
       action = AWE.Action.Messaging.createSendMessageAction(message);
-      action.send();
-      this.discardDraft();
+      action.send(function(status, jqXHR) {
+        console.log('SENT MESSAGE, STATUS', status);
+        if (status === AWE.Net.CREATED || status === AWE.Net.OK) {
+          self.discardDraft();
+        }
+        else if (status === AWE.Net.NOT_FOUND) {
+          self.view.setRecipientIsUnknown(true);
+        }
+        else {
+          console.log(status, "ERROR: The server did not accept the message.");
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });          
+          WACKADOO.presentModalDialog(dialog);
+        }
+      });
     };
     
     
@@ -155,32 +173,7 @@ AWE.Controller = (function(module) {
           
         }
         else {
-      
-          var inbox = AWE.GS.CharacterManager.getCurrentCharacter().get('inbox');
-          if (!inbox) {
-            AWE.GS.CharacterManager.getCurrentCharacter().fetchInbox(function(inboxes, status) {
-              if (status === AWE.Net.NOT_FOUND || !inboxes) {
-                console.log('ERROR: inbox of current character not found on server.');
-              } 
-              else { 
-                inbox = AWE.GS.CharacterManager.getCurrentCharacter().get('inbox');
-                if (inbox) {
-                  inbox.fetchEntries();
-                }
-                else {
-                  console.log('ERROR: inbox could not be fetched from server.');
-                }
-              }
-            });
-          }
-          else if (inbox && inbox.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 10000 < new Date().getTime()) { // timeout
-            AWE.GS.InboxManager.updateMessageBox(inbox.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(inbox, status) {
-    					if (inbox && inbox.getId() && status !== AWE.Net.NOT_MODIFIED) {
-                inbox.fetchEntries()
-    					}
-            });
-          }
-          
+          AWE.GS.InboxManager.triggerInboxAutoUpdate();
         }
       }
     };

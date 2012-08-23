@@ -14,7 +14,7 @@
       {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}}
     </span>   
   {{else}}
-    <span class="sender">
+    <span {{bindAttr class=":sender message.unread"}}>
       {{#if message.sender_id}}
         {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
       {{else}}
@@ -22,7 +22,7 @@
       {{/if}}
     </span> 
   {{/if}} <span class="time">{{timeString}}</span><br />
-  <span class="subject">{{message.subject}}</span>
+  <span {{bindAttr class=":subject message.unread"}}>{{message.subject}}</span>
 </script>
 
 
@@ -61,7 +61,7 @@
   </div>
   <div class="message-edit-header">
     <table>
-      <tr><th>To:</th>
+      <tr><th {{bindAttr class="recipientUnknown:red-color"}}>{{#if recipientUnknown }}<em>unkown</em>{{/if}} To:</th>
         <td><b>{{view Ember.TextField valueBinding="recipient" placeholder="recipient"}}</b></td>
       </tr>
       <tr><th>Subject:</th>
@@ -102,9 +102,28 @@
 <script type="text/x-handlebars" data-template-name="message-center">
 <div class="message-center">
   <div class="header">
-    <div {{action "inboxClicked"  target="controller"}}>Inbox</div>
-    <div {{action "outboxClicked" target="controller"}}>Outbox</div> * 
-    <div {{action "newClicked"    target="controller"}}>New</div>
+    <div id="inbox-control">
+      <div {{action "inboxClicked"  target="controller"}}>Inbox</div>
+      <div {{action "outboxClicked" target="controller"}}>Outbox</div>  
+      <div {{action "newClicked"    target="controller"}}>New</div>
+    </div>
+    <div id="actions">
+      {{#if isReplyPossible}}
+        <div {{action "replyClicked" }}>Reply</div>
+      {{else}}
+        <div class="inactive">Reply</div>
+      {{/if}}
+      {{#if isForwardPossible}}
+        <div {{action "forwardClicked" }}>Forward</div>
+      {{else}}
+        <div class="inactive">Forward</div>
+      {{/if}} &nbsp;&nbsp;
+      {{#if isDeletePossible}}
+        <div {{action "deleteClicked" }}>Delete</div>
+      {{else}}
+        <div class="inactive">Delete</div>
+      {{/if}}      
+    </div>
   </div>
 
   <div class="list">
@@ -113,7 +132,7 @@
       {{view AWE.UI.Ember.DraftTeaserView draftBinding="newMessage" classNames="message-header" classNameBindings="selected"}}
     {{/if}}
     {{#if "messageBox"}}
-      <h1>{{messageBox.name}}</h1>
+      <h1>{{messageBox.name}} {{#if messageBox.unread_messages_count}}({{messageBox.unread_messages_count}}){{/if}}</h1>
       {{#each messageBox.sortedEntries}}
         {{view AWE.UI.Ember.MessageTeaserView messageBinding="this" classNames="message-header" classNameBindings="selected"}}
       {{/each}}

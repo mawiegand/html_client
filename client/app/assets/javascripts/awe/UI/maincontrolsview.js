@@ -162,6 +162,16 @@ AWE.UI = (function(module) {
         _messagesButton.onClick = function() { WACKADOO.messagesButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
         this.addChild(_messagesButton);
       }
+      if (AWE.GS.CharacterManager.getCurrentCharacter()) {
+        var unread = AWE.GS.CharacterManager.getCurrentCharacter().getPath('inbox.unread_messages_count');
+        var string = "Messages";
+        if (unread !== undefined && unread > 0) {
+          string = "Messages\n(" + unread + ")";
+        }
+        if (string !== _messagesButton.text()) {
+          _messagesButton.setText(string);
+        }
+      }      
   
       if (!_moreButton) {
         _moreButton = AWE.UI.createButtonView();
@@ -338,6 +348,16 @@ AWE.UI = (function(module) {
         changed = changed || pool.presentAmount('resource_fur')   !== my.amounts[2];
         changed = changed || pool.presentAmount('resource_cash')  !== my.amounts[3];
       }
+      
+      if (!changed && AWE.GS.CharacterManager.getCurrentCharacter()) {
+        var unread = AWE.GS.CharacterManager.getCurrentCharacter().getPath('inbox.unread_messages_count');
+        var string = "Messages";
+        if (unread !== undefined && unread > 0) {
+          string = "Messages\n(" + unread + ")";
+        }
+        changed = changed || string !== _messagesButton.text();
+      }      
+      
       if (changed) {
         console.log(">> NEED TO UPDATE HUD DUE TO CHANGED RESOURCE AMOUNT");
         this.setNeedsUpdate();

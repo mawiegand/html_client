@@ -102,7 +102,7 @@ AWE.Util = (function(module) {
     if (date.getDate() === now.getDate() && 
         date.getMonth() === now.getMonth() &&
         date.getFullYear() === now.getFullYear()) {
-      return date.getHours()+":"+date.getMinutes();
+      return date.getHours()+":"+zeroPadTime(date.getMinutes());
     }
     else if (now.getTime() - date.getTime() < oneDay) {
       return "yesterday";
@@ -116,6 +116,18 @@ AWE.Util = (function(module) {
     else {
       return date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
     }
+  };
+  
+  module.localizedTime = function(isoDate) {
+    if (!isoDate) {
+      return null;
+    }
+    var date = Date.parseISODate(isoDate);
+    return date ? date.toLocaleString() : null;  
+  };
+  
+  module.htmlToAscii = function(html) {
+    return (html || "").replace(/<br\s*[\/]?>/gi, "\n")
   };
 
   

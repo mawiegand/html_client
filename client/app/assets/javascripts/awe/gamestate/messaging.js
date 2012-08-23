@@ -144,6 +144,9 @@ AWE.GS = (function(module) {
     inbox_id: null, old_inbox_id: null,
     inboxIdObserver: AWE.Partials.attributeHashObserver(module.InboxEntryAccess, 'inbox_id', 'old_inbox_id').observes('inbox_id'), 
  
+    read: false,
+    unreadBinding: Ember.Binding.not('read'),
+ 
     sender: null,
  
     updateSender: function() {
@@ -373,6 +376,38 @@ AWE.GS = (function(module) {
   
     that.setLastUpdateForCharacter = function(characterId, timestamp) {
       module.InboxAccess.accessHashForOwner_id().setLastUpdateAtForValue(characterId, timestamp);
+    };
+    
+    that.triggerInboxAutoUpdate = function(forceNow) {
+      forceNow = forceNow || false;
+      var character = AWE.GS.CharacterManager.getCurrentCharacter();
+      if (!character) return ;
+      
+      var inbox = character.get('inbox');
+      
+      if (!inbox) {
+        character.fetchInbox(function(inboxes, status) {
+          if (status === AWE.Net.NOT_FOUND || !inboxes) {
+            console.log('ERROR: inbox of current character not found on server.');
+          } 
+          else { 
+            inbox = AWE.GS.CharacterManager.getCurrentCharacter().get('inbox');
+            if (inbox) {
+              inbox.fetchEntries();
+            }
+            else {
+              console.log('ERROR: inbox could not be fetched from server.');
+            }
+          }
+        });
+      }
+      else if (inbox && (forceNow || inbox.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 10000 < new Date().getTime())) { // timeout
+        AWE.GS.InboxManager.updateMessageBox(inbox.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(inbox, status) {
+					if (inbox && inbox.getId() && status !== AWE.Net.NOT_MODIFIED) {
+            inbox.fetchEntries()
+					}
+        });
+      }
     };
   
     return that;

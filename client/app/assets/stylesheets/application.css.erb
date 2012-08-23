@@ -548,15 +548,35 @@ html, body {
   border-bottom: 1px solid gray;
 }
 
-.message-center .header div {
+.message-center #inbox-control,
+.message-center #actions {
   float: left;
   margin-top: 106px;
+}
+
+.message-center #inbox-control {
+  width: 266px;
+}
+
+.message-center #inbox-control div,
+.message-center #actions div {
+  display: inline-block;
   padding: 4px;
   cursor: pointer;
 }
 
-.message-center .header div:hover {
+.message-center #actions div.inactive {
+  cursor: normal;
+  color: #AAA;
+  font-style: italic;
+}
+
+.message-center #inbox-control div:hover,
+.message-center #actions div:hover {
   color: #FA0;
+}
+.message-center #actions div.inactive:hover {
+  color: #AAA;
 }
 
 .message-center .list {
@@ -589,7 +609,11 @@ html, body {
   color: white;
 }
 
-.message-header .sender, .message-header .recipient {
+.message-header .sender.unread  {
+  font-weight: bold;
+}
+
+.message-header .subject.unread  {
   font-weight: bold;
 }
 
