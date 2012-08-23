@@ -138,7 +138,23 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
     return _calculateAndEvaluateProductionTime(baseTime, 0, speed, false);    
   };
   
+  module.lookupConstructionSpeedupCost = function(duration) {
+    if (duration === undefined || duration === null) {
+      return null;
+    }
+	  var costs = AWE.GS.RulesManager.getRules().construction_speedup;
+	  var entry = null;
+	  costs.forEach(function(item) {
+	    if (!entry && duration < item.hours * 3600) { // hours to seconds
+	      entry = item;
+	    }
+	  });
+	  return entry;
+  };
 
+  module.isConstructionSpeedupPossible = function(duration) {
+    return module.lookupConstructionSpeedupCost(duration) !== null ;
+  };
 	
   ////////////////////////////////////////////////////////////////////////////
   // 

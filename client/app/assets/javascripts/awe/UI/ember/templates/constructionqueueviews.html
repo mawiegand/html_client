@@ -31,7 +31,14 @@
                     </p>
                   {{/if}}
                 <p class="finished">{{#if job.active_job }}{{ job.parsedFinishingDate }}{{else}}&nbsp;{{/if}}</p>
-                <p class="queue-job-button finish-button">{{#if job.active_job }}<a href="#" {{action "finishJobPressed"}} title="spend 1 toad for finishing it immediately">hurry</a>{{/if}}</p>
+                <p class="queue-job-button finish-button">
+                  {{#if isConstructionSpeedupPossible }}
+                    <a href="#" {{action "finishJobPressed"}} title="spend toads for finishing it immediately">
+                     hurry {{constructionSpeedupCost timeRemaining}} 
+                     <span class="resource-icon {{constructionSpeedupResource timeRemaining}}">&nbsp;</span>
+                    </a>
+                  {{/if}}
+                </p>
                 <p class="queue-job-button cancel">    
                   {{#if job.cancelable }}
                     <a href="#" {{action "cancelJobPressed"}}>cancel</a>
