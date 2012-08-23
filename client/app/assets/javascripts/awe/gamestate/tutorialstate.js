@@ -133,32 +133,32 @@ AWE.GS = (function(module) {
       
       // check all reward tests. if anyone fails, return false.
       if (quest.reward_tests) {
+        if (quest.reward_tests.building_tests) {
+          log('---> building_tests', quest.reward_tests.building_tests);
         
-        for (var i = 0; i < quest.reward_tests.length; i++) {
-          var reward_test = quest.reward_tests[i];
+          for (var i = 0; i < quest.reward_tests.building_tests.length; i++) {
+            var building_test = quest.reward_tests.building_tests[i];
 
-          log('---> reward_test', reward_test);
-          if (reward_test.building_test) {
-            log('---> building_test');
-            if (!self.checkBuildings(reward_test.building_test)) {
+            log('---> building_test', building_test);
+            if (!self.checkBuildings(building_test)) {
               log('---> building_test failed');
               return false;              
             }
             log('---> building_test ok');
           }
-          else if (reward_test.army_test) {
-            log('---> army_test');
-            if (!self.checkArmies(reward_test.army_test)) {
+        }
+        if (quest.reward_tests.army_tests) {
+          log('---> army_tests', quest.reward_tests.army_tests);
+        
+          for (var i = 0; i < quest.reward_tests.army_tests.length; i++) {
+            var army_test = quest.reward_tests.army_tests[i];
+
+            log('---> army_test', army_test);
+            if (!self.checkArmies(army_test)) {
               log('---> army_test failed');
               return false;              
             }
             log('---> army_test ok');
-
-          
-          // add all other test here
-          }
-          else {
-            log('ERROR in AWE.GS.QuestState.checkForRewards: unknown reward test', reward_test);
           }
         }
         return true;
@@ -207,7 +207,29 @@ AWE.GS = (function(module) {
     
     checkArmies: function(armyTest) {
       log('---> checkArmies', armyTest);
-      return false;
+      
+      if (armyTest.min_count == null || armyTest.type == null) {
+        log('ERROR in AWE.GS.QuestState.checkArmies: armyTest.min_count or armyTest.type missing in quest id ' + this.get('quest_id'));
+        return false;
+      }
+        
+      var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.player.getPath('currentCharacter.id'));
+      log('---> armies', armies);
+      
+      var unitCount = 0;
+      for (var id in armies) {
+        if (armies.hasOwnProperty(id)) {
+          var army = armies[id];
+          log('---> army', army, army.isGarrison(), armyTest.type);
+          if (army.isGarrison() && armyTest.type === 'garrison') {
+            unitCount += army.get('size_present');
+          }
+          else if (!army.isGarrison() && armyTest.type === 'visible') {
+            unitCount += army.get('size_present');
+          }
+        }
+      }
+      return unitCount >= armyTest.min_count;
     },
   });    
 
