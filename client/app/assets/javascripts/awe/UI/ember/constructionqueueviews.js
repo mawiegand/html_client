@@ -30,6 +30,10 @@ AWE.UI.Ember = (function(module) {
     
     timeReamining: null,
     
+    isConstructionSpeedupPossible: function() {
+      return this.getPath('job.active_job') && AWE.Util.Rules.isConstructionSpeedupPossible(this.get('timeRemaining'));
+    }.property('timeRemaining', 'job.active_job'),
+    
     finished: function() {
       var t = this.get('timeRemaining');
       return t !== undefined && t !== null && t <= 0;

@@ -81,7 +81,7 @@ AWE.GS = (function(module) {
       }
       return null;
     }.property('active_job').cacheable(),
-    
+        
     cancelable: function() {
       
       // jobs des slots holen

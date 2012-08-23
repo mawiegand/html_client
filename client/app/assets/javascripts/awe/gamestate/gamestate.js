@@ -316,8 +316,8 @@ AWE.GS = (
         }
         var jqXHR = $.ajax(options)
         .error(function(jqHXR, textStatus) {          // On failure: 
-          my.unregisterRequest(queue, id, updateType);//   unregister request 
           callback(null, jqXHR.status, jqXHR, my.extractDateFromXHR(jqXHR) || start);
+          my.unregisterRequest(queue, id, updateType);//   unregister request 
           console.log ('ERROR FETCHING ENTITIES FROM URL ' + url + ': ' + textStatus); 
         })
         .success(function(data, statusText, xhr) {
@@ -343,10 +343,10 @@ AWE.GS = (
               console.log('Manual Sync in GameStateManager Elapsed (ms): ',  (new Date().getTime() - s.getTime()));
             }
           }
-          my.unregisterRequest(queue, id, updateType);//   unregister request 
           if (callback) {
             callback(result, xhr.status, xhr, my.extractDateFromXHR(jqXHR) || start);
           }        
+          my.unregisterRequest(queue, id, updateType);//   unregister request 
         }); 
       }
       else {          // update on this army is already running -> return false
@@ -386,7 +386,7 @@ AWE.GS = (
 //          console.log('>> GAMESTATE UPDATE: Using SERVER UPDATED AT timestamp (loc/server):', lastUpdate, serverUpdate);          
         }
       }
-      return my.fetchEntitiesFromURL(url, my.runningUpdatesPerId, id, updateType, modifiedSince, function(entity, statusCode, xhr, serverTime) {
+      var newRequest = my.fetchEntitiesFromURL(url, my.runningUpdatesPerId, id, updateType, modifiedSince, function(entity, statusCode, xhr, serverTime) {
         if (statusCode === AWE.Net.NOT_MODIFIED) { // not modified
           entity = my.entities[id];
           if (entity) {
@@ -406,8 +406,30 @@ AWE.GS = (
         if (callback) {
           callback(entity, statusCode, xhr, serverTime);
         }
+        if (my.runningUpdatesPerId[id] && my.runningUpdatesPerId[id].callbacks) {
+          my.runningUpdatesPerId[id].callbacks.forEach(function(item) {
+            item(entity, statusCode, xhr, serverTime);
+          });
+        }
       }); 
+      
+      if (!newRequest) {  // theres already a request running
+        this.registerAdditionalCallback(my.runningUpdatesPerId, id, updateType, callback);
+      }
+      return newRequest ;
     };
+    
+    my.registerAdditionalCallback = function(queue, id, updateType, callback) {
+      if (!queue[id] || !callback) {
+        return ;
+      }
+      if (queue[id].callbacks) {
+        queue[id].callbacks.push(callback)
+      } 
+      else {
+        queue[id].callbacks = [callback] ;
+      }
+    }
     
     
     my.updateTypeQueryToken = function(updateType) {

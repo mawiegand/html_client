@@ -138,7 +138,23 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
     return _calculateAndEvaluateProductionTime(baseTime, 0, speed, false);    
   };
   
+  module.lookupConstructionSpeedupCost = function(duration) {
+    if (duration === undefined || duration === null) {
+      return null;
+    }
+	  var costs = AWE.GS.RulesManager.getRules().construction_speedup;
+	  var entry = null;
+	  costs.forEach(function(item) {
+	    if (!entry && duration < item.hours * 3600) { // hours to seconds
+	      entry = item;
+	    }
+	  });
+	  return entry;
+  };
 
+  module.isConstructionSpeedupPossible = function(duration) {
+    return module.lookupConstructionSpeedupCost(duration) !== null ;
+  };
 	
   ////////////////////////////////////////////////////////////////////////////
   // 
@@ -257,6 +273,10 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
   //  PRIVATE HELPERS
   //
   ////////////////////////////////////////////////////////////////////////////
+  
+  var _formatFractionsFloor = function(frac) {
+    return frac >= 1.0 || frac < 0.01 ? Math.floor(frac) : ( frac >= 0.1 ? Math.floor(frac*10.0) / 10.0 : Math.floor(frac*100.0) / 100.0);
+  }
 
   var _evaluateResourceProduction = function(definitions, level, boni) {
     definitions     = definitions || {}
@@ -270,10 +290,10 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
       var bonus = boni[resourceType.id] ? boni[resourceType.id].bonus : 0.0;
       if (base > 0) {
         productions.push(Ember.Object.create({  // need to return an ember project so bindings on resourceType.name do work inside local helper
-          baseProduction: Math.floor(base),
-          bonusRelative:  Math.floor(bonus*1000)/10.0,
-          bonusAbsolute:  Math.floor(bonus*base*10)/10.0,
-          rate:           Math.floor(base*(1.0+bonus)),
+          baseProduction: _formatFractionsFloor(base),
+          bonusRelative:  _formatFractionsFloor(bonus*1000.0)/10.0,
+          bonusAbsolute:  _formatFractionsFloor(bonus*base*10.0)/10.0,
+          rate:           _formatFractionsFloor(base*(1.0+bonus)*10.0)/10.0,
           resourceType:   resourceType,
           localizedDesc:  function() {
             return "bonus: +" + this.get('bonusRelative') + "%";
