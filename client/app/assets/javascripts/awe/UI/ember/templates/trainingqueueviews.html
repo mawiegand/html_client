@@ -65,10 +65,12 @@
           </div>  
           <p class="queue-job-button finish-button">
             {{#if isTrainingSpeedupPossible }}
-              <a href="#" {{action "speedupJobPressed"}} title="spend toads for training units twice as fast">
+              <a href="#" {{action "speedupJobPressed"}} title="spend toads for training units twice as fast. Costs depend on the remaining total training time.">
                halve {{trainingSpeedupCost timeRemaining}} 
                <span class="resource-icon {{trainingSpeedupResource timeRemaining}}">&nbsp;</span>
               </a>
+            {{else}}
+              {{#if job.hurried}} <em> x2 </em> {{/if}}
             {{/if}}
           </p>
           <p class="queue-job-button cancel">    
