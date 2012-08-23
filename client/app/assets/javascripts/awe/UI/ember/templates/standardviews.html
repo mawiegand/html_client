@@ -46,7 +46,7 @@
         <li {{bindAttr class="own leader :shout"}}>
           <span class="text">{{ message }}</span><br>
           <span class="sender">
-          {{view AWE.UI.Ember.WheelOrValueView valueBinding="character.name"}}</span>, <span class="date">{{ posted_ago_in_words }} ago</span>
+          {{view AWE.UI.Ember.WheelOrValueView valueBinding="character.name"}}</span>, <span class="date">{{ posted_ago_in_words }} {{t general.shoutBox.ago}}</span>
          </li>
       {{/each}}
     </ul>
