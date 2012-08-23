@@ -60,7 +60,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     showWelcomeDialog: function() {
       var dialog = AWE.UI.Ember.WelcomeDialog.create({
         okPressed:    function() {
-          AWE.GS.TutorialStateManager.checkForNewQuests();
+          if (AWE.Config.USE_TUTORIAL) {
+            AWE.GS.TutorialStateManager.checkForNewQuests();
+          }
           this.destroy();
         },            
       });
@@ -94,7 +96,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           var dialog = AWE.UI.Ember.AnnouncementDialog.create({
             announcement: announcement,
             okPressed:    function() {
-              AWE.GS.TutorialStateManager.checkForNewQuests();
+              if (AWE.Config.USE_TUTORIAL) {
+                AWE.GS.TutorialStateManager.checkForNewQuests();
+              }
               this.destroy();
             },            
           });
@@ -156,7 +160,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       _numAssets +=1;
       AWE.GS.RulesManager.updateRules(function(rules, statusCode) {
         if (statusCode === AWE.Net.OK) {
-          console.log(rules);
+          console.log('Rules', rules);
           assetLoaded();
         }
         else {
@@ -164,6 +168,20 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           throw "ABORT Due to Failure to load rules.";
         }
       });
+      
+      if (AWE.Config.USE_TUTORIAL) {
+        _numAssets +=1;
+        AWE.GS.TutorialManager.updateTutorial(function(tutorial, statusCode) {
+          if (statusCode === AWE.Net.OK) {
+            console.log('Tutorial', tutorial);
+            assetLoaded();
+          }
+          else {
+            console.log('CRITICAL ERROR: could not load tutorial from server. Error code: ' + statusCode + '. Terminate App.');
+            throw "ABORT Due to Failure to load tutorial.";
+          }
+        });
+      }
       
       _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
       AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
@@ -371,10 +389,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
       this.set('mapScreenController', controller);
       this.setScreenController(controller);
-      
-      AWE.GS.TutorialManager.updateTutorial(function() {
-        log('---> tutorial loaded', AWE.GS.TutorialManager.getTutorial());
-      });
       
       this.startRunloop();
     }
