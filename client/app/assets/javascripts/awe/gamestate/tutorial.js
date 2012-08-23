@@ -22,7 +22,7 @@ AWE.GS = (function(module) {
     version: null,
     quests: null,
 		
-    questType: function(questId) {
+    quest: function(questId) {
       var quest = this.get('quests')[questId];
       if (quest === undefined || !quest) {
         console.log('ERROR: requested non-existing quest ' + questId);

@@ -9,7 +9,52 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Tutorial = (function(module) {
   
-  module.createCheckQuestAction = function(questStateId, my) {
+  module.createCheckQuestAction = function(questId, my) {
+      
+    // private attributes and methods //////////////////////////////////////
+    
+    var that;
+    
+  
+    // protected attributes and methods ////////////////////////////////////
+  
+    my = my || {};
+    my.questId = questId;
+    
+    // public attributes and methods ///////////////////////////////////////
+    
+    that = AWE.Action.createAction(my);    
+    
+    that.getRequestBody = function() {
+      var requestBody = {
+        action_tutorial_check_quest_action: {
+          quest_id: my.questId,
+        }
+      };
+      return requestBody;
+    }
+    
+    that.getURL = function() {
+      return AWE.Config.ACTION_SERVER_BASE + 'tutorial/check_quest_actions';
+    }
+  
+    that.getHTTPMethod = function() {
+      return 'POST';
+    }
+    
+    that.postProcess = function(statusCode, xhr) {
+    }
+  
+    that.questId = function() {
+      return my.questId;
+    }
+  
+    return that;
+    
+  };
+  
+
+  module.createRedeemRewardsAction = function(questStateId, my) {
       
     // private attributes and methods //////////////////////////////////////
     
@@ -27,15 +72,15 @@ AWE.Action.Tutorial = (function(module) {
     
     that.getRequestBody = function() {
       var requestBody = {
-        action_tutorial_check_quest_action: {
-          quest_id: my.questStateId,
+        action_tutorial_redeem_rewards_action: {
+          quest_state_id: my.questStateId,
         }
       };
       return requestBody;
     }
     
     that.getURL = function() {
-      return AWE.Config.ACTION_SERVER_BASE + 'tutorial/check_quest_actions';
+      return AWE.Config.ACTION_SERVER_BASE + 'tutorial/redeem_rewards_actions';
     }
   
     that.getHTTPMethod = function() {

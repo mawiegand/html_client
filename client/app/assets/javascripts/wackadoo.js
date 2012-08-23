@@ -73,8 +73,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     showQuestListDialog: function() {
+      log('-----> showQuestListDialog')
       var dialog = AWE.UI.Ember.QuestListView.create({
         tutorialState: AWE.GS.TutorialStateManager.getTutorialState(),
+        redeemButtonPressed: function(questStateId) {
+          log('-----> redeem Button Pressed', questStateId)
+          AWE.GS.TutorialStateManager.redeemRewards(questStateId);
+        },
       });
       this.presentModalDialog(dialog);      
       AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {

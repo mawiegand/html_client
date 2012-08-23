@@ -3,12 +3,19 @@
   <div class="center-helper">
     <div class="modal-dialog-pane quest-list-view">
 
-      <h1>Quest List</h1>
+      <h1>{{t tutorial.questList}}</h1>
       
-      {{#each questStates}}
-        <p>Nr. {{quest_id}}</p>
-        <p>Status {{status}}</p>
-      {{/each}}
+      <table>
+        <tr>
+          <th>{{t general.nr}}</th>
+          <th>{{t tutorial.name}}</th>
+          <th>{{t tutorial.status}}</th>
+          <th>{{t tutorial.reward}}</th>
+        </tr>
+        {{#each questStates}}
+        {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this"}}</td>
+        {{/each}}
+      </table>
             
       <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
       
@@ -16,12 +23,24 @@
   </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="quest-start-view">
+<script type="text/x-handlebars" data-template-name="quest-list-entry-view">
+        <tr>
+          <td>#{{questState.questNr}}</td>
+          <td>{{local questState.questName}}</td>
+          <td>{{questState.statusString}}</td>
+          <td>{{#if questState.finished}}<a href="#" {{action "redeemButtonPressed" }}>{{t tutorial.rewardLink }}</a>{{/if}}</td>
+        </tr>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="quest-started-view">
   <div class="modal-dialog-background"></div>
   <div class="center-helper">
     <div class="modal-dialog-pane quest-start-view">
 
-      <h1>Quest Start</h1>      
+      <h1>{{t tutorial.questStart.header}}</h1>
+      <h3>{{local quest.name}}</h4>
+      {{local quest.description}}
       
       <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
       
@@ -34,11 +53,32 @@
   <div class="center-helper">
     <div class="modal-dialog-pane quest-finished-view">
 
-      <h1>Quest Finished</h1>      
+      <h1>{{t tutorial.questEnd.header}}</h1>
+      <h3>{{local quest.name}}</h4>
+        
+      <p>{{t tutorial.questEnd.bonus}}</p>
+      {{view AWE.UI.Ember.QuestResourceRewardsView resourcesBinding="quest.rewards.resource_rewards"}}
       
       <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
       
     </div>
+  </div>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="quest-resource-rewards-view">
+  <div>
+    <h4>{{t tutorial.questEnd.resources}}</h4>
+    {{#each resources }}
+    {{view AWE.UI.Ember.QuestResourceRewardView resourceBinding="this"}}
+    {{/each}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="quest-resource-reward-view">
+  <div>
+    <div style="display: inline-block; width: 100px;">{{resourceName}}</div>
+    <div style="display: inline-block; width: 100px; text-align:right;">{{resource.amount}}</div>
   </div>
 </script>
 

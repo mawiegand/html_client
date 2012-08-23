@@ -67,6 +67,18 @@ AWE.GS = (function(module) {
 			return resourceType;
 		},
 		
+		getResourceTypeWithSymbolicId: function(symbolicId) {
+			var resourceTypes = this.get('resource_types');
+			
+      for (var i = 0; i < resourceTypes.length; i++) {
+        var resourceType = resourceTypes[i];
+  			if (resourceType['symbolic_id'] === symbolicId) {
+    			return resourceType;
+			  }
+      }
+ 			console.log('ERROR: requested non-existing resource type ' + symbolicId);
+		},
+		
 		getBuildingCategory: function(id) {
 			var buildingCategory = this.get('building_categories')[id];
 			if (buildingCategory === undefined || !buildingCategory) {
