@@ -49,7 +49,11 @@ AWE.Map = (function(module) {
     that.getLocation = function(locationId) {
       return my.locations[locationId];
     };
-    
+
+    that.getLocations = function() {
+      return my.locations;
+    };
+
     that.addRegion = function(region) {
       if (region.id() !== undefined && region.id() > 0) {
         my.regions[region.id()] = region;
