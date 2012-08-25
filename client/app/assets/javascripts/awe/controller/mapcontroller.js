@@ -2005,6 +2005,21 @@ AWE.Controller = (function(module) {
         else {
           targetLocations.push(armyLocation.region().location(0));
         }
+        
+/* tesing code for movement command:
+ * make all fetched location available as target location 
+        
+        targetLocations = [];
+        var locations = AWE.Map.Manager.getLocations();
+        
+        for (var i in locations) {
+          if (locations[i]) {
+            targetLocations.push(locations[i]);
+          }
+        }
+        
+ */        
+        
       }
       else {
         AWE.Map.Manager.fetchLocationsForRegion(armyRegion);
