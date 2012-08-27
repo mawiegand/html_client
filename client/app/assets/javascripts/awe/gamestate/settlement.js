@@ -115,6 +115,14 @@ AWE.GS = (function(module) {
       return module.SlotManager.getSlotsAtSettlement(this.getId());
     },
 
+    queues: function() {
+      return module.ConstructionQueueManager.getQueuesOfSettlement(this.getId());
+    },
+
+    trainingQueues: function() {
+      return module.TrainingQueueManager.getQueuesOfSettlement(this.getId());
+    },
+
     enumerableSlots: function() {
       return this.getPath('hashableSlots.collection');
     }.property('id', 'hashableSlots.changedAt').cacheable(),

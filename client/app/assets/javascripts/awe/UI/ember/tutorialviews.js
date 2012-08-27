@@ -16,8 +16,17 @@ AWE.UI.Ember = (function(module) {
     
     questStatesBinding: 'tutorialState.notClosedQuestStates',
     
+    showQuestInfoPressed: function(questId) {
+      log('ERROR Action not connected: showQuestInfoPressed.');
+    },
+    
     redeemButtonPressed: function(questStateId) {
       log('ERROR Action not connected: redeemButtonPressed.');
+    },
+    
+    okPressed: function() {
+      this.destroy();
+      AWE.GS.TutorialStateManager.checkForRewards();
     },
   });  
   
@@ -30,19 +39,44 @@ AWE.UI.Ember = (function(module) {
       log('---> QuestListEntryView redeemButtonPressed', this.getPath('questState.id'));
       this.get('parentView').redeemButtonPressed(this.getPath('questState.id'));
     },
-  });  
   
-  module.QuestStartedView = module.InfoDialog.extend({
-    templateName: 'quest-started-view',
-    quest: null,
-  });  
-  
-  module.QuestFinishedView = module.InfoDialog.extend({
-    templateName: 'quest-finished-view',
-    quest: null,
-    questObserver: function() {
-      log('--------> quest', this.get('quest'));
+    showQuestInfoPressed: function() {
+      log('---> QuestListEntryView showQuestInfoPressed', this.getPath('questState.quest_id'));
+      this.get('parentView').showQuestInfoPressed(this.getPath('questState.quest_id'));
     },
+  });  
+  
+  module.QuestStartedDialog = module.InfoDialog.extend({
+    templateName: 'quest-started-dialog',
+    quest: null,
+    questState: null,
+  });  
+  
+  module.QuestFinishedDialog = module.InfoDialog.extend({
+    templateName: 'quest-finished-dialog',
+    quest: null,
+    questState: null,
+  });  
+  
+  module.QuestInfoDialog = module.InfoDialog.extend({
+    templateName: 'quest-info-dialog',
+    quest: null,
+    questState: null,
+  });  
+  
+  module.QuestView = Ember.View.extend({
+    templateName: 'quest-view',
+    quest: null,
+    questState: null,
+    answerText: null,
+    finished: function() {
+      return this.getPath('questState.status') >= AWE.GS.TUTORIAL_STATUS_FINISHED;
+    }.property('questState.status').cacheable(),
+    
+    checkQuestAnswerPressed: function() {
+      this.get('parentView').destroy();
+      AWE.GS.TutorialStateManager.checkForTextboxRewards(this.get('questState'), this.get('answerText'));
+    }, 
   });  
   
   module.QuestResourceRewardView = Ember.View.extend({
@@ -56,6 +90,19 @@ AWE.UI.Ember = (function(module) {
   module.QuestResourceRewardsView = Ember.View.extend({
     templateName: 'quest-resource-rewards-view',
     resources: null,
+  });  
+  
+  module.QuestUnitRewardView = Ember.View.extend({
+    templateName: 'quest-unit-reward-view',
+    unit: null,
+    unitName: function() {
+      return AWE.Util.Rules.lookupTranslation(AWE.GS.RulesManager.getRules().getUniTypeWithSymbolicId(this.getPath('unit.unit')).name);
+    }.property('unit').cacheable(),
+  });  
+  
+  module.QuestUnitRewardsView = Ember.View.extend({
+    templateName: 'quest-unit-rewards-view',
+    units: null,
   });  
   
   return module;  

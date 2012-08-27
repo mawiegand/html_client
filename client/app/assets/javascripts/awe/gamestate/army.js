@@ -183,7 +183,7 @@ AWE.GS = (function(module) {
       return AWE.GS.ArmyAccess.getAllForLocation_id(id)
     }
     that.getArmiesOfCharacter = function(id) { 
-      return AWE.GS.ArmyAccess.getAllForCharacter_id(id)
+      return AWE.GS.ArmyAccess.getAllForOwner_id(id)
     }    
     
     that.lastUpdateForFortress = function(regionId) {

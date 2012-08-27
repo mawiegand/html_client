@@ -50,6 +50,18 @@ AWE.GS = (function(module) {
 		  });
 		  return unitTypes;
 		},
+		
+		getUniTypeWithSymbolicId: function(symbolicId) {
+      var unitTypes = this.get('unit_types');
+      
+      for (var i = 0; i < unitTypes.length; i++) {
+        var unitType = unitTypes[i];
+        if (unitType['db_field'] === symbolicId) {
+          return unitType;
+        }
+      }
+      console.log('ERROR: requested non-existing unit type ' + symbolicId);
+    },
     
 		getBuildingType: function(id) {
 			var buildingType = this.get('building_types')[id];

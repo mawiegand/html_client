@@ -737,6 +737,8 @@ AWE.Controller = (function(module) {
             that.setModelChanged();
             that.addDisappearingAnnotationLabel(targetView, 'ETA ' + Date.parseISODate(army.get('target_reached_at')).toString('HH:mm:ss'), 1500);
             that.addDisappearingAnnotationLabel(armyView, '-1 AP', 1000);
+            // Tutorial Hook
+            AWE.GS.TutorialStateManager.checkForRewards();
           });
         }
         else {
@@ -2005,6 +2007,21 @@ AWE.Controller = (function(module) {
         else {
           targetLocations.push(armyLocation.region().location(0));
         }
+        
+/* tesing code for movement command:
+ * make all fetched location available as target location 
+        
+        targetLocations = [];
+        var locations = AWE.Map.Manager.getLocations();
+        
+        for (var i in locations) {
+          if (locations[i]) {
+            targetLocations.push(locations[i]);
+          }
+        }
+        
+ */        
+        
       }
       else {
         AWE.Map.Manager.fetchLocationsForRegion(armyRegion);
