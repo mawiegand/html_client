@@ -9,7 +9,7 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Tutorial = (function(module) {
   
-  module.createCheckQuestAction = function(questId, my) {
+  module.createCheckQuestAction = function(questId, answerText, my) {
       
     // private attributes and methods //////////////////////////////////////
     
@@ -20,6 +20,7 @@ AWE.Action.Tutorial = (function(module) {
   
     my = my || {};
     my.questId = questId;
+    my.answerText = answerText;
     
     // public attributes and methods ///////////////////////////////////////
     
@@ -31,6 +32,11 @@ AWE.Action.Tutorial = (function(module) {
           quest_id: my.questId,
         }
       };
+      
+      if (my.answerText != null && my.answerText != undefined) {
+        requestBody.action_tutorial_check_quest_action['answer_text'] = my.answerText;
+      }
+      
       return requestBody;
     }
     
@@ -47,6 +53,10 @@ AWE.Action.Tutorial = (function(module) {
   
     that.questId = function() {
       return my.questId;
+    }
+  
+    that.answerText = function() {
+      return my.answerText;
     }
   
     return that;
