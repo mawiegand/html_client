@@ -737,6 +737,8 @@ AWE.Controller = (function(module) {
             that.setModelChanged();
             that.addDisappearingAnnotationLabel(targetView, 'ETA ' + Date.parseISODate(army.get('target_reached_at')).toString('HH:mm:ss'), 1500);
             that.addDisappearingAnnotationLabel(armyView, '-1 AP', 1000);
+            // Tutorial Hook
+            AWE.GS.TutorialStateManager.checkForRewards();
           });
         }
         else {
