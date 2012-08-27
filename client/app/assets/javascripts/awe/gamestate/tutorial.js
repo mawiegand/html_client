@@ -29,10 +29,19 @@ AWE.GS = (function(module) {
       }
       return quest;    
     },
-       
-		extractIds: function(collection) {
-		  return collection.getEach('id'); // "getEach" is supplied by ember
-		},
+
+    questWithSymbolicId: function(symbolicId) {
+      quests = this.get('quests');
+      log('---> quests', quests);
+      for (var i = 0; i < quests.length; i++) {
+        var quest = quests[i];
+        log('---> quest', quest);
+        if (quest != null && quest['symbolic_id'] === symbolicId) {
+          return quest;
+        }
+      }
+      return null;
+    },
   });     
 
     
