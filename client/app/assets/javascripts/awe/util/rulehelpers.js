@@ -94,6 +94,14 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
     return _evaluateResourceCosts(costHash, 0, all, false);      
   };
   
+  module.evaluateResourceCapacity = function(capacities, level, all) {
+    return _evaluateResourceCapacity(capacities, level, all, true);    
+  };  
+  
+  module.evaluateResourceProductionBoni = function(boni, level, all) {
+    return _evaluateResourceProductionBoni(boni, level, all, true);    
+  };    
+  
   /** multiplies the costs inside a costs-array that has been created using
    * one of the functions for evaluating / looking-up costs. Returns a 
    * new array and does not change the original cost array. ResourceTypes
@@ -322,6 +330,42 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
 	  });
     return productions;
   };
+  
+  var _evaluateResourceCapacity = function(definitions, level, all, evaluate) {
+    definitions    = definitions || {}
+    level          = level || 0;
+		var capacities = [];
+
+	  definitions.forEach(function(item) {
+	    var resourceType = AWE.GS.RulesManager.getRules().resource_types[item.id]
+      var capacity  = AWE.GS.Util.parseAndEval(item.formula, level);
+      if (all || capacity > 0) {
+        capacities.push(Ember.Object.create({  // need to return an ember project so bindings on resourceType.name do work inside local helper
+          capacity:     capacity,
+          resourceType: resourceType,
+        }));
+      }
+	  });
+    return capacities;
+  };
+  
+  var _evaluateResourceProductionBoni = function(definitions, level, all, evaluate) {
+    definitions  = definitions || {}
+    level        = level || 0;
+		var boni     = [];
+
+	  definitions.forEach(function(item) {
+	    var resourceType = AWE.GS.RulesManager.getRules().resource_types[item.id]
+      var bonus        = AWE.GS.Util.parseAndEval(item.formula, level);
+      if (all || bonus > 0) {
+        boni.push(Ember.Object.create({  // need to return an ember project so bindings on resourceType.name do work inside local helper
+          bonus:        Math.floor(bonus*1000)/10.0,
+          resourceType: resourceType,
+        }));
+      }
+	  });
+    return boni;
+  };  
   
   var _evaluateResourceCosts = function(costHash, level, all, evaluate) {
     costHash  = costHash || {}
