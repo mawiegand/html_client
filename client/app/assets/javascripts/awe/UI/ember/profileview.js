@@ -67,6 +67,7 @@ AWE.UI.Ember = (function(module) {
           self.set('changingName', false);
           if (status === AWE.Net.OK) {
             if (changeCounter > 0) {
+              AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_profile');
               AWE.GS.ResourcePoolManager.updateResourcePool();
             }
           }

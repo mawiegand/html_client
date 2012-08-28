@@ -149,7 +149,13 @@ AWE.UI = (function(module) {
         _villageImageView = AWE.UI.createImageView();
         _villageImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("map/colony/big"));
         _villageImageView.setFrame(AWE.Geometry.createRect(293, 20, 100, 100));
-        _villageImageView.onClick = function() { WACKADOO.baseButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+        _villageImageView.onClick = function() {
+          var mapControllerActive = WACKADOO.mapControllerActive();
+          WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+          if (mapControllerActive) {
+            AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button');
+          }
+        }; 
         this.addChild(_villageImageView);
       }
 

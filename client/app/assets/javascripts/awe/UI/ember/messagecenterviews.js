@@ -227,6 +227,9 @@ AWE.UI.Ember = (function(module) {
         return ;
       }
       AWE.Action.Messaging.createMarkMessageReadAction(inboxEntry).send();
+
+      // Tutorial Hook
+      AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_message');
     },
     
     messageReadMarker: function() {
