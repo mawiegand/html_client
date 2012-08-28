@@ -83,14 +83,35 @@
           {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{local resourceType.name}} {{t general.perHour}} <br/>  
         {{/each}}
       {{/if}}
+      
+      {{#if building.capacity}}
+        <b>{{t building.capacity}}:</b>
+        {{#each building.capacity}}
+          {{capacity}} {{local resourceType.name}} &nbsp;  
+        {{/each}}<br/>
+      {{/if}}
+
+      {{#if building.productionBoni}}
+        <b>{{t building.productionBoni}}:</b>
+        {{#each building.productionBoni}}
+          +{{bonus}}% {{local resourceType.name}} &nbsp;  
+        {{/each}}<br/>
+      {{/if}}
+
     </div>
     
-    {{#if building.unlockDiplomacy}}
+    {{#if building.unlockedDiplomacy}}
       <p><b>Ermöglicht Diplomatie und Allianzbeitritt.</b></p>
     {{/if}}
     {{#if building.unlockedAllianceCreation}}
       <p><b>Ermöglicht die Gründung einer Allianz.</b></p>
     {{/if}}    
+    {{#if building.unlockedPlayerToPlayerTrade}}
+      <p><b>Ermöglicht den Handel mit anderen Spielern.</b></p>
+    {{/if}}    
+    {{#if building.tradingCarts}}
+      <p><b>Handleskarren:</b> {{building.tradingCarts}}</p>
+    {{/if}} 
 
     {{#if building.unlockedQueues}}
         <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.unlockedQueues}}{{local name}},    {{/each}}</p>
@@ -134,12 +155,34 @@
         {{/each}}
       {{/if}}
       
+      {{#if building.capacityNextLevel}}
+        <b>{{t building.capacity}}:</b>
+        {{#each building.capacityNextLevel}}
+          {{capacity}} {{local resourceType.name}} &nbsp;  
+        {{/each}}<br/>
+      {{/if}}
+      
+      {{#if building.productionBoniNextLevel}}
+        <b>{{t building.productionBoni}}:</b>
+        {{#each building.productionBoniNextLevel}}
+          +{{bonus}}% {{local resourceType.name}} &nbsp;  
+        {{/each}}<br/>
+      {{/if}}
+
+      
       {{#if building.unlockedDiplomacyNextLevel}}
         <p><b>Ermöglicht Diplomatie und Allianzbeitritt.</b></p>
       {{/if}}
       {{#if building.unlockedAllianceCreationNextLevel}}
         <p><b>Ermöglicht die Gründung einer Allianz.</b></p>
+      {{/if}}   
+      {{#if building.unlockedPlayerToPlayerTradeNextLevel}}
+        <p><b>Ermöglicht den Handel mit anderen Spielern.</b></p>
       {{/if}}    
+      {{#if building.tradingCartsNextLevel}}
+        <p><b>Handleskarren:</b> {{building.tradingCartsNextLevel}}</p>
+      {{/if}} 
+
     
       {{#if building.unlockedQueuesNextLevel}}
         <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.unlockedQueuesNextLevel}}{{local name}}, {{/each}}</p>
@@ -181,6 +224,11 @@
     {{#if building.unlockedDiplomacy}}
     <hr>
       {{view AWE.UI.Ember.DiplomacyView unlockedAllianceCreation="unlockedAllianceCreation"}}
+    {{/if}}
+
+    {{#if building.unlockedPlayerToPlayerTrade}}
+    <hr>
+      {{view AWE.UI.Ember.PlayerToPlayerTradeView settlementBinding="building.slot.settlement"}}
     {{/if}}
 
   </div>

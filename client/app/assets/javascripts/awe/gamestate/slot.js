@@ -113,13 +113,39 @@ AWE.GS = (function(module) {
 		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, level, settlementProductions) : null;
 		}.property('level', 'buildingType', 'slot.settlement.updated_at').cacheable(),
 
-
 		productionsNextLevel: function() {
 		  var production            = this.getPath('buildingType.production');
 		  var settlementProductions = this.getPath('slot.settlement.resourceProductions')
 		  var nextLevel             = this.get('nextLevel');
 		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, nextLevel, settlementProductions) : null;
 		}.property('nextLevel', 'buildingType').cacheable(),
+		
+
+		capacity: function() {
+		  var capacity = this.getPath('buildingType.capacity');
+		  var level    = this.get('level');
+		  return capacity ? AWE.Util.Rules.evaluateResourceCapacity(capacity, level, true) : null;
+		}.property('level', 'buildingType.capacity').cacheable(),
+
+		capacityNextLevel: function() {
+		  var capacity  = this.getPath('buildingType.capacity');
+		  var nextLevel = this.get('nextLevel');
+		  return capacity ? AWE.Util.Rules.evaluateResourceCapacity(capacity, nextLevel, true) : null;
+		}.property('nextLevel', 'buildingType.capacity').cacheable(),
+
+
+		productionBoni: function() {
+		  var boni  = this.getPath('buildingType.production_bonus');
+		  var level = this.get('level');
+		  return boni ? AWE.Util.Rules.evaluateResourceProductionBoni(boni, level, true) : null;
+		}.property('level', 'buildingType.production_bonus').cacheable(),
+
+		productionBoniNextLevel: function() {
+		  var boni      = this.getPath('buildingType.production_bonus');
+		  var nextLevel = this.get('nextLevel');
+		  return boni ? AWE.Util.Rules.evaluateResourceProductionBoni(boni, nextLevel, true) : null;
+		}.property('nextLevel', 'buildingType.production_bonus').cacheable(),
+
 
     calcPopulation: function(level) {
       var formula = this.getPath('buildingType.population');
@@ -326,6 +352,12 @@ AWE.GS = (function(module) {
       return unlockLevel && unlockLevel <= level;
 		},		
 		
+		calculatePlayerToPlayerTrade: function(level) {
+      var unlockLevel = this.getPath('buildingType.abilities.unlock_p2p_trade');
+      level = level || this.get('level'); 
+      return unlockLevel && unlockLevel <= level;
+		},		
+		
 		unlockedDiplomacy: function() {
       return this.calculateUnlockedDiplomacy();
 		}.property('buildingId', 'level').cacheable(),
@@ -341,6 +373,29 @@ AWE.GS = (function(module) {
 		unlockedAllianceCreationNextLevel: function() {
       return this.calculateUnlockedAllianceCreation(this.get('nextLevel'));
 		}.property('buildingId', 'nextLevel').cacheable(),
+		
+		unlockedPlayerToPlayerTrade: function() {
+		  return this.calculatePlayerToPlayerTrade(this.get('level'));
+		}.property('buildingId', 'level').cacheable(),
+
+		unlockedPlayerToPlayerTradeNextLevel: function() {
+		  return this.calculatePlayerToPlayerTrade(this.get('nextLevel'));
+		}.property('buildingId', 'nextLevel').cacheable(),
+		
+		
+    calcTradingCarts: function(level) {
+		  var formula = this.getPath('buildingType.abilities.trading_carts');
+		  level       = level || this.get('level') || 1;
+		  return formula ? (AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(formula), level)) : null;
+    },
+		
+		tradingCarts: function() {
+		  return this.calcTradingCarts(this.get('level'));
+		}.property('level', 'buildingType.trading_carts').cacheable(),   ///< TODO : also update, when queue's speedup changes.	
+		
+		tradingCartsNextLevel: function() {
+		  return this.calcTradingCarts(this.get('nextLevel'));
+		}.property('nextLevel', 'buildingType.trading_carts').cacheable(),		
 
     // ///////////////////////////////////////////////////////////////////////
     
