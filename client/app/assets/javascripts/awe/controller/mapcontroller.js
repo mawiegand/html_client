@@ -797,6 +797,9 @@ AWE.Controller = (function(module) {
           AWE.GS.ArmyManager.updateArmiesAtLocation(location.id(), null, function(armies) {
             log('armies updated at location', armies, location);
             that.setModelChanged();
+            
+            // Tutorial Hook
+            AWE.GS.TutorialStateManager.checkForRewards();
           }); 
           AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id(), null, function(settlements) {
             log('settlements updated at location', settlements, location);

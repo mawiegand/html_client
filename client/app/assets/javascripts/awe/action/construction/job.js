@@ -57,7 +57,9 @@ AWE.Action.Construction = (function(module) {
       }
       // update queue in any case: success: jobs gone. failure: old data on client side
       AWE.GS.ConstructionQueueManager.updateQueue(my.queue.getId(), null, function() { //
-        AWE.GS.ConstructionJobManager.updateJobsOfQueue(my.queue.getId());
+        AWE.GS.ConstructionJobManager.updateJobsOfQueue(my.queue.getId(), null, function() {
+          AWE.GS.TutorialStateManager.checkForRewards();
+        });
         console.log('U: construction queue, success');
       });
     }

@@ -557,6 +557,13 @@ AWE.GS = (function(module) {
       });
       return categories;
     },
+    
+    levelObserver: function() {
+      if (this.get('level') != null && this.get('level') > 0) {
+        // Tutorial Hook
+        AWE.GS.TutorialStateManager.checkForRewards();
+      }
+    }.observes('level'),
   });     
 
     

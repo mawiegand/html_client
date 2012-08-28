@@ -48,7 +48,9 @@ AWE.Action.Training = (function(module) {
       }
       // update queue in any case: success: jobs gone. failure: old data on client side
       AWE.GS.TrainingQueueManager.updateQueue(my.queue.getId(), null, function() {
-        AWE.GS.TrainingJobManager.updateJobsOfQueue(my.queue.getId());
+        AWE.GS.TrainingJobManager.updateJobsOfQueue(my.queue.getId(), null, function() {
+          AWE.GS.TutorialStateManager.checkForRewards();
+        });
         console.log('U: training queue, success');
       })
     }

@@ -66,8 +66,8 @@ AWE.UI.Ember = (function(module) {
         AWE.Action.Manager.queueAction(action, function(status) {
           self.set('changingName', false);
           if (status === AWE.Net.OK) {
+            AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_profile');
             if (changeCounter > 0) {
-              AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_profile');
               AWE.GS.ResourcePoolManager.updateResourcePool();
             }
           }
