@@ -210,6 +210,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               assetLoaded();
             });
           }
+          _numAssets +=1;
+          AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
+            console.log("TutorialState", tutorialState)
+            assetLoaded();
+          });
           AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
             if (statusCode === AWE.Net.OK) {
               console.log(resourcePool);
@@ -332,6 +337,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     activateMapController: function() {
       this.setScreenController(this.get('mapScreenController'));
+    },
+    
+    mapControllerActive: function() {
+      return this.get('presentScreenController') === this.get('mapScreenController');
     },
        
     activateAllianceController: function(alliance_id) {
