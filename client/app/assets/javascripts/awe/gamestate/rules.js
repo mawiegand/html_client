@@ -63,14 +63,14 @@ AWE.GS = (function(module) {
       console.log('ERROR: requested non-existing unit type ' + symbolicId);
     },
     
-		getBuildingType: function(id) {
-			var buildingType = this.get('building_types')[id];
-			if (buildingType === undefined || !buildingType) {
-				console.log('ERROR: requested non-existing building type ' + buildingType);
-			}
-			return buildingType;
-		},
-		
+    getBuildingType: function(id) {
+      var buildingType = this.get('building_types')[id];
+      if (buildingType === undefined || !buildingType) {
+        console.log('ERROR: requested non-existing building type ' + buildingType);
+      }
+      return buildingType;
+    },    
+    
 		getResourceType: function(id) {
 			var resourceType = this.get('resource_types')[id];
 			if (resourceType === undefined || !resourceType) {
@@ -105,6 +105,18 @@ AWE.GS = (function(module) {
 		    return categoryIds.indexOf(item['category']) >= 0; // indexOf returns -1 in case the element is not in the array
 		  });
 		  return this.extractIds(buildingTypes);
+		},
+		
+		getBuildingTypeWithSymbolicId: function(symbolicId) {
+      var buildingTypes = this.get('building_types');
+      
+      for (var i = 0; i < buildingTypes.length; i++) {
+        var buildingType = buildingTypes[i];
+        if (buildingType['symbolic_id'] === symbolicId) {
+          return buildingType;
+        }
+      }
+      console.log('ERROR: requested non-existing building type ' + symbolicId);
 		},
 		
 		/** looks-up the queue type for the given (numeric) id. */
