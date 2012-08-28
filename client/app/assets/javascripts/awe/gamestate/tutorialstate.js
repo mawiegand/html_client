@@ -132,7 +132,7 @@ AWE.GS = (function(module) {
       return this.get('status') === module.TUTORIAL_STATUS_FINISHED;
     }.property('status').cacheable(),
     
-    checkForRewards: function(answerText) {
+    checkForRewards: function() {
       
       var self = this;
       
@@ -234,14 +234,9 @@ AWE.GS = (function(module) {
           log('---> alliance_test ok');
         }
         if (quest.reward_tests.textbox_test) {
-          var textbox_test = quest.reward_tests.textbox_test;
-          log('---> textbox_test with answer', textbox_test, answerText);
-
-          if (!self.checkTextbox(textbox_test, answerText)) {
-            log('---> textbox_test failed');
-            return false;              
-          }
-          log('---> textbox_test ok');
+          log('---> textbox_test');
+          log('---> textbox_test failed');
+          return false;                   // textbox tests are always checked manually with another method
         }
         if (quest.reward_tests.custom_test) {
           log('---> custom_test');
@@ -457,12 +452,26 @@ AWE.GS = (function(module) {
         return false;
       }
         
-      if (testId === 'test_game_name') {
-        var correctAnswer = 'wackadoo'; // evtl. fkt ausrufen
-        return answerText === correctAnswer; // groß-, kleinschreibung
+      if (testId === 'test_army_rank') {
+        return true;
       }
       
-      // add other textbox test
+      if (testId === 'test_fortress_owner') {
+        return true;
+      }
+      
+      if (testId === 'test_costs') {
+        var buildingType = AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId('building_barracks');
+        var resourceType = AWE.GS.RulesManager.getRules().getResourceTypeWithSymbolicId('resource_wood');
+        var formula = buildingType['costs'][resourceType['id']];
+        var amount = Math.ceil(AWE.GS.Util.parseAndEval(formula, 2));
+        log('-----> 1234 ', buildingType, resourceType, formula, amount,  amount + "", answerText);
+        return amount + "" == answerText;
+      }
+      
+      if (testId === 'test_recruit_friends_reward') {
+        return true;
+      }
       
       return false;      
     },
@@ -591,14 +600,14 @@ AWE.GS = (function(module) {
 
       // quest finden
       var quest = AWE.GS.TutorialManager.getTutorial().questWithSymbolicId(questName);
-      log('-----> checkForCustomTestRewards', questName, quest);
+      log('-----> checkForCustomTestRewards1', questName, quest);
       
       if (quest) {
         // questState finden
         var questState = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(quest['id']);
-        log('---> checkForCustomTestRewards', quest, questState);
+        log('---> checkForCustomTestRewards2', quest, questState, questState.get('status'));
         
-        if (questState && questState.get('status') == AWE.GS.TUTORIAL_STATUS_DISPLAYED) {
+        if (questState && questState.get('status') <= AWE.GS.TUTORIAL_STATUS_DISPLAYED) {
           // action erzeugen und an server schicken
           log('---> checkForCustomTestRewards action sent');
           var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(questState.get('quest_id'));
@@ -640,7 +649,16 @@ AWE.GS = (function(module) {
               that.showQuestFinishedDialog(questState);
             }
             else {
-              // TS aktualisieren und neue quest anzeigen, falls vorhanden            
+              var dialog = AWE.UI.Ember.InfoDialog.create({
+                heading: 'Fehler',
+                message: 'Falsche Antwort, probier es gleich noch mal',
+                okPressed: function() {
+                  this.destroy();
+                  that.showQuestInfoDialog(questId);
+                },            
+              });          
+              WACKADOO.presentModalDialog(dialog);
+              log('---> checkForTextboxRewards', false);
               that.checkForNewQuests();
             }
           });
