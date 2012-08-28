@@ -1,3 +1,17 @@
 <script type="text/x-handlebars" data-template-name="player-to-player-trade-view">
-  Trade View
+  
+  <h1>Rohstoffe versenden</h1>
+  
+  {{#if errorMessage}}<p class="red-color"><b>{{errorMessage}}</b></p>{{/if}}
+  
+  <p>Empfänger: {{view Ember.TextField class="text-field" placeholder="Spielername" valueBinding="recipientName"}}</p>
+
+  <p>
+    {{#each resources}}
+      {{local type.name}}: {{view Ember.TextField class="text-field resource-amount" placeholder="Menge" valueBinding="amount"}}
+    {{/each}}
+  </p>  
+    
+  <a href="#" {{bindAttr class=":button inactive impossible"}} {{action "sendPressed"}}>Send {{numCarts}} Carts</a>
+  
 </script>
