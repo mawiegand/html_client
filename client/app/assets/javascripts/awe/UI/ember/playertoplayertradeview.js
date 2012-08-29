@@ -24,6 +24,7 @@ AWE.UI.Ember = (function(module) {
     recipientName: null,
     
     errorMessage:  null,
+    sending:       false,
     
     init: function(args) {
       var resourceTypes = AWE.GS.RulesManager.getRules().resource_types;
@@ -71,7 +72,28 @@ AWE.UI.Ember = (function(module) {
     }.property('settlement.trading_carts', 'numCarts').cacheable(),
     
     sendPressed: function() {
+      if (this.get('inactive') || this.get('impossible')) {
+        return false;   // minimal necessary conditions (entered a name, enough carts) not met 
+      }
+      var resources     = this.get('resources') || [];
+      var recipientName = this.get('recipientName') || "";
+      var settlementId  = this.getPath('settlement.id');
+      var self          = this;
       
+      this.set('sending', true);
+      this.set('errorMessage', null);
+      
+      var action = AWE.Action.Trading.createSendTradingCartsAction(settlementId, recipientName, resources);
+      action.send(function(status) {
+        self.set('sending', false);
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+        }
+        else {
+          self.set('errorMessage', 'The server did not accept the command.');
+        }
+      });
+      
+      return false;     // prevent default behavior
     },
   });  
   

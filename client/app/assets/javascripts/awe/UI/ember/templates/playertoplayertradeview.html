@@ -12,6 +12,10 @@
     {{/each}}
   </p>  
     
-  <a href="#" {{bindAttr class=":button inactive impossible"}} {{action "sendPressed"}}>Send {{numCarts}} Carts</a>
+  {{#if sending}}
+    <p>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Aktualisiere...</p>
+  {{else}}
+    <a href="#" {{bindAttr class=":button inactive impossible"}} {{action "sendPressed"}}>Sende {{numCarts}} Handelskarren</a>
+  {{/if}}
   
 </script>
