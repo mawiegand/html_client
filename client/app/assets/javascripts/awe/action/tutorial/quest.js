@@ -128,7 +128,7 @@ AWE.Action.Tutorial = (function(module) {
     that.getRequestBody = function() {
       var requestBody = {
         tutorial_quest: {
-          status: AWE.GS.TUTORIAL_STATUS_DISPLAYED,
+          status: AWE.GS.QUEST_STATUS_DISPLAYED,
         }
       };
       return requestBody;

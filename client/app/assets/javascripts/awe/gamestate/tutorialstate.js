@@ -7,10 +7,10 @@ var AWE = window.AWE || {};
 
 AWE.GS = (function(module) {
     
-  module.TUTORIAL_STATUS_NEW        = 0; 
-  module.TUTORIAL_STATUS_DISPLAYED  = 1;
-  module.TUTORIAL_STATUS_FINISHED   = 2;
-  module.TUTORIAL_STATUS_CLOSED     = 3;
+  module.QUEST_STATUS_NEW        = 0; 
+  module.QUEST_STATUS_DISPLAYED  = 1;
+  module.QUEST_STATUS_FINISHED   = 2;
+  module.QUEST_STATUS_CLOSED     = 3;
         
   module.TutorialStateAccess = {};
 
@@ -37,7 +37,7 @@ AWE.GS = (function(module) {
       var questStates = this.getPath('quests.content');   // hier
       var newQuestStates = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
-        if (questState && questState.get('status') === module.TUTORIAL_STATUS_NEW) {
+        if (questState && questState.get('status') === module.QUEST_STATUS_NEW) {
           newQuestStates.push(questState);
         }
       });
@@ -49,7 +49,7 @@ AWE.GS = (function(module) {
       var questStates = this.getPath('quests.content');
       var openQuestStates = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
-        if (questState && questState.get('status') <= module.TUTORIAL_STATUS_DISPLAYED) {
+        if (questState && questState.get('status') <= module.QUEST_STATUS_DISPLAYED) {
           openQuestStates.push(questState);
         }
       });
@@ -61,7 +61,7 @@ AWE.GS = (function(module) {
       var questStates = this.getPath('quests.content');
       var notClosedQuestStates = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
-        if (questState && questState.get('status') < module.TUTORIAL_STATUS_CLOSED) {
+        if (questState && questState.get('status') < module.QUEST_STATUS_CLOSED) {
           notClosedQuestStates.push(questState);
         }
       });
@@ -120,10 +120,11 @@ AWE.GS = (function(module) {
     
     statusString: function() {
       switch (this.get('status')) {
-        case module.TUTORIAL_STATUS_NEW:
-        case module.TUTORIAL_STATUS_DISPLAYED:
+        case module.QUEST_STATUS_NEW:
+          return AWE.I18n.lookupTranslation('tutorial.new');
+        case module.QUEST_STATUS_DISPLAYED:
           return AWE.I18n.lookupTranslation('tutorial.open');
-        case module.TUTORIAL_STATUS_FINISHED:
+        case module.QUEST_STATUS_FINISHED:
           return AWE.I18n.lookupTranslation('tutorial.finished');
         default:
           return null;
@@ -131,7 +132,7 @@ AWE.GS = (function(module) {
     }.property('status').cacheable(),
     
     finished: function() {
-      return this.get('status') === module.TUTORIAL_STATUS_FINISHED;
+      return this.get('status') === module.QUEST_STATUS_FINISHED;
     }.property('status').cacheable(),
     
     checkForRewards: function() {
@@ -609,7 +610,7 @@ AWE.GS = (function(module) {
         var questState = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(quest['id']);
         log('---> checkForCustomTestRewards2', quest, questState);
         
-        if (questState && questState.get('status') <= AWE.GS.TUTORIAL_STATUS_DISPLAYED) {
+        if (questState && questState.get('status') <= AWE.GS.QUEST_STATUS_DISPLAYED) {
           // action erzeugen und an server schicken
           log('---> checkForCustomTestRewards action sent');
           var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(questState.get('quest_id'));
@@ -710,7 +711,7 @@ AWE.GS = (function(module) {
               that.tutorialState.set('newQuestDialog', dialog);   
               WACKADOO.presentModalDialog(dialog);
               
-              newQuestState.set('status', module.TUTORIAL_STATUS_DISPLAYED);
+              newQuestState.set('status', module.QUEST_STATUS_DISPLAYED);
               
               // send action that quest was displayed
               var questDisplayedAction = AWE.Action.Tutorial.createQuestDisplayedAction(newQuestState.getId());

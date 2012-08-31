@@ -70,7 +70,7 @@ AWE.UI.Ember = (function(module) {
     questState: null,
     answerText: null,
     finished: function() {
-      return this.getPath('questState.status') >= AWE.GS.TUTORIAL_STATUS_FINISHED;
+      return this.getPath('questState.status') >= AWE.GS.QUEST_STATUS_FINISHED;
     }.property('questState.status').cacheable(),
     
     checkQuestAnswerPressed: function() {

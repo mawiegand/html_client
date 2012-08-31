@@ -154,7 +154,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
   
         var startQuest = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(0);  // get first tutorial quest
         
-        if (AWE.Config.USE_TUTORIAL && startQuest && startQuest.get('status') < AWE.GS.TUTORIAL_STATUS_FINISHED) {
+        if (AWE.Config.USE_TUTORIAL && startQuest && startQuest.get('status') < AWE.GS.QUEST_STATUS_FINISHED) {
           var locationId = AWE.GS.CharacterManager.getCurrentCharacter().get('base_location_id');
           self.activateBaseController({locationId: locationId});
         }
