@@ -143,7 +143,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         var hud = AWE.Controller.createHUDController();
         hud.init();
         self.setHudController(hud);
-    
+        
+        AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
+          AWE.UI.rootNode = AWE.Map.Manager.rootNode();
+        });
+        
         var controller = AWE.Controller.createMapController('#layers');
         controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
         self.set('mapScreenController', controller);
@@ -197,21 +201,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           throw "ABORT Due to Failure to load rules.";
         }
       });
-      
-      if (AWE.Config.USE_TUTORIAL) {
-        _numAssets +=1;
-        AWE.GS.TutorialManager.updateTutorial(function(tutorial, statusCode) {
-          if (statusCode === AWE.Net.OK) {
-            console.log('Tutorial', tutorial);
-            assetLoaded();
-          }
-          else {
-            console.log('CRITICAL ERROR: could not load tutorial from server. Error code: ' + statusCode + '. Terminate App.');
-            throw "ABORT Due to Failure to load tutorial.";
-          }
-        });
-      }
-      
+            
       _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
       AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
         if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.getCurrentCharacter()) {
@@ -223,6 +213,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               assetLoaded();
             });
           }
+          
           if (currentCharacter.get('base_node_id')) {
             _numAssets +=1;
             AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
@@ -231,6 +222,21 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               assetLoaded();
             });
           }
+
+          if (AWE.Config.USE_TUTORIAL) {
+            _numAssets +=1;
+            AWE.GS.TutorialManager.updateTutorial(function(tutorial, statusCode) {
+              if (statusCode === AWE.Net.OK) {
+                console.log('Tutorial', tutorial);
+                assetLoaded();
+              }
+              else {
+                console.log('CRITICAL ERROR: could not load tutorial from server. Error code: ' + statusCode + '. Terminate App.');
+                throw "ABORT Due to Failure to load tutorial.";
+              }
+            });
+          }
+          
           _numAssets +=1;
           AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
             console.log("TutorialState", tutorialState)
@@ -400,11 +406,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         access_token: accessToken,
         expiration: (new Date()).add(expiration-120).seconds(),
       });
-                
+      
       AWE.Net.init();                                   // initialize the network stack
-      AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
-        AWE.UI.rootNode = AWE.Map.Manager.rootNode();
-      });
    
       this.loadAssets();
     }
