@@ -562,9 +562,13 @@ AWE.GS = (function(module) {
       }     
     }
 
+    that.tutorialEnabled = function() {
+      return AWE.Config.USE_TUTORIAL && that.tutorialState != null;
+    }
+
     that.checkForRewards = function() {
       
-      if (!AWE.Config.USE_TUTORIAL) return;
+      if (!that.tutorialEnabled()) return;
 
       log('---> checkForRewards');
       
@@ -599,7 +603,7 @@ AWE.GS = (function(module) {
     
     that.checkForCustomTestRewards = function(questName) {
       
-      if (!AWE.Config.USE_TUTORIAL) return;
+      if (!that.tutorialEnabled()) return;
 
       // quest finden
       var quest = AWE.GS.TutorialManager.getTutorial().questWithSymbolicId(questName);
@@ -633,7 +637,7 @@ AWE.GS = (function(module) {
     
     that.checkForTextboxRewards = function(questState, answerText) {
       
-      if (!AWE.Config.USE_TUTORIAL) return;
+      if (!that.tutorialEnabled()) return;
 
       log('---> checkForTextboxRewards', questState);
       
@@ -688,7 +692,7 @@ AWE.GS = (function(module) {
     
     that.checkForNewQuests = function() {
       
-      if (!AWE.Config.USE_TUTORIAL) return;
+      if (!that.tutorialEnabled()) return;
       
       log('---> checkForNewQuests');
       
@@ -735,7 +739,7 @@ AWE.GS = (function(module) {
 
     that.redeemRewards = function(questStateId) {
       
-      if (!AWE.Config.USE_TUTORIAL) return;
+      if (!that.tutorialEnabled()) return;
 
       log('---> redeemRewards', questStateId);
       
@@ -757,7 +761,7 @@ AWE.GS = (function(module) {
     
     that.showQuestInfoDialog = function(questId) {
       
-      if (!AWE.Config.USE_TUTORIAL) return;      
+      if (!that.tutorialEnabled()) return;
       
       var infoDialog = AWE.UI.Ember.QuestInfoDialog.create({
         quest: AWE.GS.TutorialManager.getTutorial().quest(questId),
@@ -768,7 +772,7 @@ AWE.GS = (function(module) {
     
     that.showQuestFinishedDialog = function(questState) {
       
-      if (!AWE.Config.USE_TUTORIAL) return;
+      if (!that.tutorialEnabled()) return;
       
       var dialog = AWE.UI.Ember.QuestFinishedDialog.create({
         // beim schließen:

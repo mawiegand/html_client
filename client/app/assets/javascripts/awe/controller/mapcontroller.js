@@ -147,7 +147,7 @@ AWE.Controller = (function(module) {
       inspectorViews.encyclopediaButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
       _stages[3].addChild(inspectorViews.encyclopediaButtonView.displayObject());
       
-      if (AWE.Config.USE_TUTORIAL) {      
+      if (AWE.GS.TutorialStateManager.tutorialEnabled()) {
         inspectorViews.questListButtonView = AWE.UI.createQuestListButtonView();
         inspectorViews.questListButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
         _stages[3].addChild(inspectorViews.questListButtonView.displayObject());

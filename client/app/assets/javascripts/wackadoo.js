@@ -60,9 +60,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     showWelcomeDialog: function() {
       var dialog = AWE.UI.Ember.WelcomeDialog.create({
         okPressed:    function() {
-          if (AWE.Config.USE_TUTORIAL) {
-            AWE.GS.TutorialStateManager.checkForNewQuests();
-          }
+          AWE.GS.TutorialStateManager.checkForNewQuests();
           this.destroy();
         },            
       });
@@ -101,9 +99,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           var dialog = AWE.UI.Ember.AnnouncementDialog.create({
             announcement: announcement,
             okPressed:    function() {
-              if (AWE.Config.USE_TUTORIAL) {
-                AWE.GS.TutorialStateManager.checkForNewQuests();
-              }
+              AWE.GS.TutorialStateManager.checkForNewQuests();
               this.destroy();
             },            
           });
@@ -156,9 +152,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
   
   
-        var startQuest = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(0);  // get first tutorial quest
+        var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
         
-        if (AWE.Config.USE_TUTORIAL && startQuest && startQuest.get('status') < AWE.GS.QUEST_STATUS_FINISHED) {
+        if (AWE.Config.USE_TUTORIAL && tutorialState && tutorialState.questStateWithQuestId(0) && tutorialState.questStateWithQuestId(0).get('status') < AWE.GS.QUEST_STATUS_FINISHED) {
           var locationId = AWE.GS.CharacterManager.getCurrentCharacter().get('base_location_id');
           self.activateBaseController({locationId: locationId});
         }
@@ -235,13 +231,14 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
                 throw "ABORT Due to Failure to load tutorial.";
               }
             });
-          }
           
-          _numAssets +=1;
-          AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
-            console.log("TutorialState", tutorialState)
-            assetLoaded();
-          });
+            _numAssets +=1;
+            AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
+              console.log("TutorialState", tutorialState)
+              assetLoaded();
+            });
+          }
+
           AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
             if (statusCode === AWE.Net.OK) {
               console.log(resourcePool);
