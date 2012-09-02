@@ -559,14 +559,21 @@ AWE.Application = (function(module) {
         };
         for (var i = 0; i < this.domElements.length; i++) {
           var element = this.domElements[i].element;
-          if (this.domElements[i].checkForEvents) {
-            checkForEvent(0, element);
-            if (result) {
-              return true;
-            }
-          } else {
-            if (isIn(element)) {
-              return true;
+          if (typeof element === "string") {
+            console.log('STRING', element)
+            element = $(element);
+            console.log('ELEMENT', element)
+          }
+          if (element && (element.length === undefined || element.length > 0)) {
+            if (this.domElements[i].checkForEvents) {
+              checkForEvent(0, element);
+              if (result) {
+                return true;
+              }
+            } else {
+              if (isIn(element)) {
+                return true;
+              }
             }
           }
         }

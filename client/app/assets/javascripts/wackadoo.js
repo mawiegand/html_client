@@ -115,6 +115,53 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       });
     },
     
+    initChat: function() {
+      DEVELOPER = 'on'
+
+      // we're using a standalone js-script (MPL licensed)
+      // extracted from JAPPIX. details can be found in this pull request:
+      // https://github.com/jappix/jappix/pull/110
+
+      HOST_MAIN      = "jabber.wack-a-doo.de"
+      HOST_MUC       = "conference.jabber.wack-a-doo.de"
+      HOST_PUBSUB    = "pubsub.jabber.wack-a-doo.de"
+      HOST_VJUD      = "vjud.jabber.wack-a-doo.de"
+      HOST_ANONYMOUS = "anonymous.jabber.wack-a-doo.de"
+      HOST_BOSH      = "http://jabber.wack-a-doo.de/http-bind/"
+
+      // Define groupchats here
+//     MINI_GROUPCHATS = [ "global@conference.jabber.wack-a-doo.de" ];
+//     MINI_SUGGEST_GROUPCHATS = [ "stamm@conference.jabber.wack-a-doo.de", "region@conference.jabber.wack-a-doo.de" ];
+      
+      JAPPIX_STATIC = 'jappix/'
+      
+      // Define chats here
+      MINI_CHATS = [];
+      
+      // Add an animation
+      MINI_ANIMATE = false;
+      
+      // Define the user nickname
+      MINI_NICKNAME = "Sascha";
+      
+      // Random user nickname (if no nickname)
+      MINI_RANDNICK = true;
+      
+      // Override the default session resource
+      MINI_RESOURCE = "MyOwnResource";
+      
+      // Connect the user (autoconnect, show_pane, domain, username, password)
+      // Notice: put true/false to autoconnect and show_pane
+      // Notice: exclude "user" and "password" if using anonymous login
+      launchMini(false, true, "jabber.5dlab.com", "sascha", "");
+      
+      this.addDomElement(('.jm_starter'), false);
+      this.addDomElement(('.jm_pane'), false);
+      this.addDomElement(('.jm_chat-content'), false);
+      this.addDomElement(('.jm_conversation'), false);
+      this.addDomElement(('.jm_roster'), false)
+    },   
+    
     showStartupDialogs: function() {
       if (AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') <= 1) {
         this.showWelcomeDialog();
@@ -143,6 +190,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         self.readyToRun();                            // ready to run
         
         self.showStartupDialogs();
+        
+        if (AWE.Config.CHAT_SHOW) {
+          self.initChat();
+        }
       }
       
   
