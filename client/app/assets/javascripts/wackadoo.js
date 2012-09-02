@@ -187,8 +187,32 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         
         Ember.Handlebars.bootstrap();                  // Bootstrap Ember a second time to parse the newly loaded templates.
 
-        self.readyToRun();                            // ready to run
+        var hud = AWE.Controller.createHUDController();
+        hud.init();
+        self.setHudController(hud);
+    
+        var controller = AWE.Controller.createMapController('#layers');
+        controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
+        self.set('mapScreenController', controller);
+      
+        $('#zoomin').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, true); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
+        $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
+  
+  
+        var startQuest = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(0);  // get first tutorial quest
         
+        if (AWE.Config.USE_TUTORIAL && startQuest && startQuest.get('status') < AWE.GS.TUTORIAL_STATUS_FINISHED) {
+          var locationId = AWE.GS.CharacterManager.getCurrentCharacter().get('base_location_id');
+          self.activateBaseController({locationId: locationId});
+        }
+        else {
+          self.activateMapController();
+          var node = AWE.GS.CharacterManager.getCurrentCharacter().get('base_node');
+          controller.moveTo(node);
+        }
+        
+        self.startRunloop();
+        self.readyToRun();                            // ready to run
         self.showStartupDialogs();
         
         if (AWE.Config.CHAT_SHOW) {
@@ -255,9 +279,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
               AWE.GS.CharacterManager.getCurrentCharacter().set('base_node', node);
               console.log("Node", node)
-              if (self.get('mapScreenController')) {
-                self.get('mapScreenController').moveTo(node);
-              }
               assetLoaded();
             });
           }
@@ -436,26 +457,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         AWE.UI.rootNode = AWE.Map.Manager.rootNode();
       });
    
-      // AWE.GS.ShopManager.init();                          // initialize the shop manager
-      
       this.loadAssets();
-
-      var hud = AWE.Controller.createHUDController();
-      hud.init();
-      this.setHudController(hud);
-  
-      var controller = AWE.Controller.createMapController('#layers');
-      controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
-    
-
-      var self = this;
-      $('#zoomin').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, true); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
-      $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
-
-      this.set('mapScreenController', controller);
-      this.setScreenController(controller);
-      
-      this.startRunloop();
     }
   }
 }());
