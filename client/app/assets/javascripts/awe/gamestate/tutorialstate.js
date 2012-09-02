@@ -635,61 +635,6 @@ AWE.GS = (function(module) {
       }
     }
     
-    that.checkForTextboxRewards = function(questState, answerText) {
-      
-      if (!that.tutorialEnabled()) return;
-
-      log('---> checkForTextboxRewards', questState);
-      
-      var questId = questState.get('quest_id');
-      var quest = AWE.GS.TutorialManager.getTutorial().quest(questId);
-      var textboxTest = quest.reward_tests.textbox_test;
-      
-      if (textboxTest != null) {
-        if (questState.checkTextbox(textboxTest, answerText)) {
-          log('---> checkForTextboxRewards', true, 'with answerText', answerText);
-          // action erzeugen und an server schicken
-          var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(questId, answerText);
-          questCheckAction.send(function(status) {
-            if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-              // callback: dialog anzeigen mit reward
-              that.showQuestFinishedDialog(questState);
-            }
-            else {
-              var dialog = AWE.UI.Ember.InfoDialog.create({
-                heading: 'Fehler',
-                message: 'Falsche Antwort, probier es gleich noch mal',
-                okPressed: function() {
-                  this.destroy();
-                  that.showQuestInfoDialog(questId);
-                },            
-              });          
-              WACKADOO.presentModalDialog(dialog);
-              log('---> checkForTextboxRewards', false);
-              that.checkForNewQuests();
-            }
-          });
-        }
-        else {
-          log('---> Fehlermeldung für Textbox Test');
-          var dialog = AWE.UI.Ember.InfoDialog.create({
-            heading: 'Fehler',
-            message: 'Falsche Antwort, probier es gleich noch mal',
-            okPressed: function() {
-              this.destroy();
-              that.showQuestInfoDialog(questId);
-            },            
-          });          
-          WACKADOO.presentModalDialog(dialog);
-          log('---> checkForTextboxRewards', false);
-          that.checkForNewQuests();
-        }
-      }
-      else {
-        log('ERROR in AWE.GS.TutorialManager.checkForTextboxRewards: missing textboxTest');
-      }
-    }
-    
     that.checkForNewQuests = function() {
       
       if (!that.tutorialEnabled()) return;
