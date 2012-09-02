@@ -16,12 +16,14 @@ AWE.UI.Ember = (function(module) {
     
     questStatesBinding: 'tutorialState.notClosedQuestStates',
     
-    showQuestInfoPressed: function(questId) {
-      log('ERROR Action not connected: showQuestInfoPressed.');
+    redeemButtonPressed: function(questStateId) {
+      log('--> redeem Button Pressed', questStateId)
+      AWE.GS.TutorialStateManager.redeemRewards(questStateId);
     },
     
-    redeemButtonPressed: function(questStateId) {
-      log('ERROR Action not connected: redeemButtonPressed.');
+    showQuestInfoPressed: function(questId) {
+      log('--> show Quest Info Button Pressed', questId)
+      AWE.GS.TutorialStateManager.showQuestInfoDialog(questId);
     },
     
     okPressed: function() {
@@ -56,6 +58,18 @@ AWE.UI.Ember = (function(module) {
     templateName: 'quest-finished-dialog',
     quest: null,
     questState: null,
+    redeeming: false,
+
+    redeemButtonPressed: function() {
+      var that = this;
+      this.set('redeeming', true);
+      
+      AWE.GS.TutorialStateManager.redeemRewards(this.getPath('questState.id'), function() {
+        that.destroy();
+      }, function() {
+        that.set('redeeming', false);
+      });
+    },
   });  
   
   module.QuestInfoDialog = module.InfoDialog.extend({
@@ -89,65 +103,31 @@ AWE.UI.Ember = (function(module) {
       var questState = this.get('questState');
       var textboxTest = quest.reward_tests.textbox_test;
       var answerText = this.get('answerText');
-      log('---> checkForTextboxRewards', questState, quest);
       
       if (textboxTest != null) {
         if (questState.checkTextbox(textboxTest, answerText)) {
-          log('---> checkForTextboxRewards', true, 'with answerText', answerText);
-          
           this.set('checking', true);  // knopf ausblenden
           
           // action erzeugen und an server schicken
           var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(quest.id, answerText);
           questCheckAction.send(function(status) {
             if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-              // callback: dialog anzeigen mit reward
               
               // set already to finished to avoid showing of form in quest finished view
               questState.set('status', AWE.GS.QUEST_STATUS_FINISHED);
               
-              // quest dialog schließen 
               that.get('parentView').destroy();
               AWE.GS.TutorialStateManager.showQuestFinishedDialog(questState);
             }
             else {
-              // fehlermeldung
-              // knopf einblenden
               that.set('checking', false);
               that.set('error', true);
-              
-              // var dialog = AWE.UI.Ember.InfoDialog.create({
-                // heading: 'Fehler',
-                // message: 'Falsche Antwort, probier es gleich noch mal',
-                // okPressed: function() {
-                  // this.destroy();
-                  // that.showQuestInfoDialog(questId);
-                // },            
-              // });          
-              // WACKADOO.presentModalDialog(dialog);
-              log('---> checkForTextboxRewards', false);
-              // that.checkForNewQuests();
             }
           });
         }
         else {
-          // fehlermeldung
           that.set('checking', false);
           that.set('error', true);
-          // knopf einblenden
-
-          log('---> Fehlermeldung für Textbox Test');
-          // var dialog = AWE.UI.Ember.InfoDialog.create({
-            // heading: 'Fehler',
-            // message: 'Falsche Antwort, probier es gleich noch mal',
-            // okPressed: function() {
-              // this.destroy();
-              // that.showQuestInfoDialog(questId);
-            // },            
-          // });          
-          // WACKADOO.presentModalDialog(dialog);
-          log('---> checkForTextboxRewards', false);
-          // that.checkForNewQuests();
         }
       }
       else {

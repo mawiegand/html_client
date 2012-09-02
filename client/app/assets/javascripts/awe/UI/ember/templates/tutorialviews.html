@@ -98,6 +98,11 @@
       {{#if quest.rewards.unit_rewards}}
       {{view AWE.UI.Ember.QuestUnitRewardsView unitsBinding="quest.rewards.unit_rewards"}}
       {{/if}}
+      {{#if redeeming}}
+        {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+      {{else}}
+        <a href="#" {{action "redeemButtonPressed" }}>{{t tutorial.rewardLink }}</a>
+      {{/if}}
       <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
       
     </div>

@@ -657,8 +657,12 @@ AWE.GS = (function(module) {
                 quest: newQuestState.get('quest'),
                 questState: newQuestState,
               });
-              that.tutorialState.set('newQuestDialog', dialog);   
-              WACKADOO.presentModalDialog(dialog);
+              that.tutorialState.set('newQuestDialog', dialog);
+              
+              window.setTimeout(function() {
+                WACKADOO.presentModalDialog(dialog);
+              }, AWE.Config.TUTORIAL_STATE_DELAY_INTERVAL);   
+              
               
               newQuestState.set('status', module.QUEST_STATUS_DISPLAYED);
               
@@ -682,7 +686,7 @@ AWE.GS = (function(module) {
     }    
     
 
-    that.redeemRewards = function(questStateId) {
+    that.redeemRewards = function(questStateId, success, error) {
       
       if (!that.tutorialEnabled()) return;
 
@@ -694,9 +698,22 @@ AWE.GS = (function(module) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
           log('---> redeemRewards ok');
           that.updateTutorialState();
+          if (success) {
+            success();
+          }
         }
         else if (status === AWE.Net.CONFLICT) {
-          alert('conflict');
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('tutorial.quest.redeemError.header'),
+            message: AWE.I18n.lookupTranslation('tutorial.quest.redeemError.message'),
+            okPressed: function() {
+              this.destroy();
+              if (error) {
+                error();
+              }
+            },
+          });          
+          WACKADOO.presentModalDialog(dialog);
         }
         else {
           log('ERROR in AWE.GS.TutorialManager.redeemRewards');
