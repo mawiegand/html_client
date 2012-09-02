@@ -220,22 +220,21 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           }
 
           if (AWE.Config.USE_TUTORIAL) {
-            _numAssets +=1;
+            _numAssets += 2;
             AWE.GS.TutorialManager.updateTutorial(function(tutorial, statusCode) {
               if (statusCode === AWE.Net.OK) {
                 console.log('Tutorial', tutorial);
                 assetLoaded();
+                
+                AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
+                  console.log("TutorialState", tutorialState)
+                  assetLoaded();
+                });
               }
               else {
                 console.log('CRITICAL ERROR: could not load tutorial from server. Error code: ' + statusCode + '. Terminate App.');
                 throw "ABORT Due to Failure to load tutorial.";
               }
-            });
-          
-            _numAssets +=1;
-            AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
-              console.log("TutorialState", tutorialState)
-              assetLoaded();
             });
           }
 
