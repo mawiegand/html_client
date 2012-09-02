@@ -1,0 +1,92 @@
+<html>
+<head>
+	<script type="text/javascript" src="jquery-1.7.2.js"></script>
+	<script type="text/javascript" src="mouseeventforwarder.js"></script>
+	<style type="text/css">
+		#p {
+			position: fixed; 
+			top: 0px; 
+			left: 0px; 
+			width: 200px; 
+			height: 200px;  
+			background-color:rgb(0,0,150);	
+		}
+		#a {
+			position: fixed; 
+			top: 0px; 
+			left: 0px; 
+			width: 100px; 
+			height: 100px; 
+			z-index:3; 
+			background-color:yellow;	
+		}
+		#b {
+			position: fixed; 
+			top: 50px; 
+			left: 50px; 
+			width: 100px; 
+			height: 100px; 
+			z-index:2; 
+			background-color:green;
+		}
+	</style>
+</head>
+<body>
+	<div id="p">
+		<div style="" id="a">bla</div>
+		<div style="" id="b">bla</div>
+	</div>
+
+	<script type="text/javascript">
+		var mouseEventForwarder = AWE.UI.createMouseEventForwarder();
+
+		$("#p").bind("click mouseenter mouseleave",function(event) {
+			console.log("p -> "+event.type);
+		});
+		$("#p").bind("mouseenter",function(event) {
+			$("#p").css("background-color", "blue");
+		});
+		$("#p").bind("mouseleave",function(event) {
+			$("#p").css("background-color", "rgb(0,0,150)");
+		});
+
+		$("#a").bind("mouseenter mousemove mousedown mouseup mouseleave",function(event) {
+			//console.log("a -> "+event.type);
+			if (event.type == "mouseleave") {
+				$("#a").css("background-color", "yellow");
+			}
+			
+			if (event.pageX > 50 && event.pageY > 50) {
+				if (event.type != "mouseleave") {
+					$("#a").css("background-color", "yellow");
+				}
+				if (!mouseEventForwarder.isCurrentlyForwardingEvent()) {
+					mouseEventForwarder.forwardEvent(event);
+				}
+			} else {
+				if (event.type != "mouseleave") {
+					$("#a").css("background-color", "red");
+				}
+				if (event.type == "mousedown") {
+					$("#a").css("background-color", "orange");
+				}
+				if (!mouseEventForwarder.isCurrentlyForwardingEvent()) {
+					mouseEventForwarder.ignoreEvent(event);
+				}
+			}
+		});
+		$("#b").bind("mouseenter", function(event) {
+			$("#b").css("background-color", "red");
+		});
+		$("#b").bind("mouseleave", function(event) {
+			$("#b").css("background-color", "green");
+		});
+		$("#b").bind("mousedown", function(event) {
+			$("#b").css("background-color", "orange");
+		});
+		$("#b").bind("mouseup", function(event) {
+			$("#b").css("background-color", "red");
+		});
+	</script>
+</body>
+</html>
