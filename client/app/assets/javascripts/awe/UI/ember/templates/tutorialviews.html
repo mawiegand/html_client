@@ -42,7 +42,14 @@
           <p>{{t tutorial.correctAnswered }}</p>
         {{else}}
           {{view Ember.TextField class="text-field" placeholder="answer" type="text" valueBinding="answerText"}}
-          <a href="#" {{action "checkQuestAnswerPressed" }}>{{t tutorial.answerQuestLink }}</a> 
+          {{#if checking}}
+            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+          {{else}}
+            <a href="#" {{action "checkQuestAnswerPressed"}} class="upgrade" title="click to answer"><img src="<%= asset_path('icons/cross_green.png') %>"></img> {{t tutorial.answerQuestLink }}</a>
+          {{/if}}
+          {{#if error}}
+            <p>{{t tutorial.quest.error}}</p>
+          {{/if}} 
         {{/if}}
       {{/if}}
 </script>
@@ -53,7 +60,7 @@
   <div class="center-helper">
     <div class="modal-dialog-pane quest-info-dialog">
 
-      <h1>{{t tutorial.questInfo.header}}</h1>
+      <h1>{{t tutorial.quest.info.header}}</h1>
       {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
       <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
       
@@ -67,7 +74,7 @@
   <div class="center-helper">
     <div class="modal-dialog-pane quest-start-dialog">
 
-      <h1>{{t tutorial.questStart.header}}</h1>
+      <h1>{{t tutorial.quest.start.header}}</h1>
       {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
       <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
       
@@ -81,15 +88,20 @@
   <div class="center-helper">
     <div class="modal-dialog-pane quest-finished-dialog">
 
-      <h1>{{t tutorial.questEnd.header}}</h1>
+      <h1>{{t tutorial.quest.end.header}}</h1>
       {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
         
-      <p>{{t tutorial.questEnd.bonus}}</p>
+      <p>{{t tutorial.quest.end.bonus}}</p>
       {{#if quest.rewards.resource_rewards}}
       {{view AWE.UI.Ember.QuestResourceRewardsView resourcesBinding="quest.rewards.resource_rewards"}}
       {{/if}}
       {{#if quest.rewards.unit_rewards}}
       {{view AWE.UI.Ember.QuestUnitRewardsView unitsBinding="quest.rewards.unit_rewards"}}
+      {{/if}}
+      {{#if redeeming}}
+        {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+      {{else}}
+        <a href="#" {{action "redeemButtonPressed" }}>{{t tutorial.rewardLink }}</a>
       {{/if}}
       <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
       
@@ -100,7 +112,7 @@
 
 <script type="text/x-handlebars" data-template-name="quest-resource-rewards-view">
   <div>
-    <h4>{{t tutorial.questEnd.resources}}</h4>
+    <h4>{{t tutorial.quest.end.resources}}</h4>
     {{#each resources }}
     {{view AWE.UI.Ember.QuestResourceRewardView resourceBinding="this"}}
     {{/each}}
@@ -117,7 +129,7 @@
 
 <script type="text/x-handlebars" data-template-name="quest-unit-rewards-view">
   <div>
-    <h4>{{t tutorial.questEnd.units}}</h4>
+    <h4>{{t tutorial.quest.end.units}}</h4>
     {{#each units }}
     {{view AWE.UI.Ember.QuestUnitRewardView unitBinding="this"}}
     {{/each}}

@@ -60,9 +60,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     showWelcomeDialog: function() {
       var dialog = AWE.UI.Ember.WelcomeDialog.create({
         okPressed:    function() {
-          if (AWE.Config.USE_TUTORIAL) {
-            AWE.GS.TutorialStateManager.checkForNewQuests();
-          }
+          AWE.GS.TutorialStateManager.checkForNewQuests();
           this.destroy();
         },            
       });
@@ -79,14 +77,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var self = this;
       var dialog = AWE.UI.Ember.QuestListView.create({
         tutorialState: AWE.GS.TutorialStateManager.getTutorialState(),
-        redeemButtonPressed: function(questStateId) {
-          log('-----> redeem Button Pressed', questStateId)
-          AWE.GS.TutorialStateManager.redeemRewards(questStateId);
-        },
-        showQuestInfoPressed: function(questId) {
-          log('-----> show Quest Info Button Pressed', questId)
-          AWE.GS.TutorialStateManager.showQuestInfoDialog(questId);
-        },
       });
       this.presentModalDialog(dialog);      
       AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
@@ -101,9 +91,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           var dialog = AWE.UI.Ember.AnnouncementDialog.create({
             announcement: announcement,
             okPressed:    function() {
-              if (AWE.Config.USE_TUTORIAL) {
-                AWE.GS.TutorialStateManager.checkForNewQuests();
-              }
+              AWE.GS.TutorialStateManager.checkForNewQuests();
               this.destroy();
             },            
           });
@@ -190,7 +178,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         var hud = AWE.Controller.createHUDController();
         hud.init();
         self.setHudController(hud);
-    
+        
+        AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
+          AWE.UI.rootNode = AWE.Map.Manager.rootNode();
+        });
+        
         var controller = AWE.Controller.createMapController('#layers');
         controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
         self.set('mapScreenController', controller);
@@ -199,9 +191,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
   
   
-        var startQuest = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(0);  // get first tutorial quest
+        var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
         
-        if (AWE.Config.USE_TUTORIAL && startQuest && startQuest.get('status') < AWE.GS.TUTORIAL_STATUS_FINISHED) {
+        if (AWE.Config.USE_TUTORIAL && tutorialState && tutorialState.questStateWithQuestId(0) && tutorialState.questStateWithQuestId(0).get('status') < AWE.GS.QUEST_STATUS_FINISHED) {
           var locationId = AWE.GS.CharacterManager.getCurrentCharacter().get('base_location_id');
           self.activateBaseController({locationId: locationId});
         }
@@ -248,21 +240,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           throw "ABORT Due to Failure to load rules.";
         }
       });
-      
-      if (AWE.Config.USE_TUTORIAL) {
-        _numAssets +=1;
-        AWE.GS.TutorialManager.updateTutorial(function(tutorial, statusCode) {
-          if (statusCode === AWE.Net.OK) {
-            console.log('Tutorial', tutorial);
-            assetLoaded();
-          }
-          else {
-            console.log('CRITICAL ERROR: could not load tutorial from server. Error code: ' + statusCode + '. Terminate App.');
-            throw "ABORT Due to Failure to load tutorial.";
-          }
-        });
-      }
-      
+            
       _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
       AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
         if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.getCurrentCharacter()) {
@@ -274,6 +252,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               assetLoaded();
             });
           }
+          
           if (currentCharacter.get('base_node_id')) {
             _numAssets +=1;
             AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
@@ -282,11 +261,26 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               assetLoaded();
             });
           }
-          _numAssets +=1;
-          AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
-            console.log("TutorialState", tutorialState)
-            assetLoaded();
-          });
+
+          if (AWE.Config.USE_TUTORIAL) {
+            _numAssets += 2;
+            AWE.GS.TutorialManager.updateTutorial(function(tutorial, statusCode) {
+              if (statusCode === AWE.Net.OK) {
+                console.log('Tutorial', tutorial);
+                assetLoaded();
+                
+                AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
+                  console.log("TutorialState", tutorialState)
+                  assetLoaded();
+                });
+              }
+              else {
+                console.log('CRITICAL ERROR: could not load tutorial from server. Error code: ' + statusCode + '. Terminate App.');
+                throw "ABORT Due to Failure to load tutorial.";
+              }
+            });
+          }
+
           AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
             if (statusCode === AWE.Net.OK) {
               console.log(resourcePool);
@@ -451,11 +445,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         access_token: accessToken,
         expiration: (new Date()).add(expiration-120).seconds(),
       });
-                
+      
       AWE.Net.init();                                   // initialize the network stack
-      AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
-        AWE.UI.rootNode = AWE.Map.Manager.rootNode();
-      });
    
       this.loadAssets();
     }

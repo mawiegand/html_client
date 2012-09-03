@@ -16,12 +16,14 @@ AWE.UI.Ember = (function(module) {
     
     questStatesBinding: 'tutorialState.notClosedQuestStates',
     
-    showQuestInfoPressed: function(questId) {
-      log('ERROR Action not connected: showQuestInfoPressed.');
+    redeemButtonPressed: function(questStateId) {
+      log('--> redeem Button Pressed', questStateId)
+      AWE.GS.TutorialStateManager.redeemRewards(questStateId);
     },
     
-    redeemButtonPressed: function(questStateId) {
-      log('ERROR Action not connected: redeemButtonPressed.');
+    showQuestInfoPressed: function(questId) {
+      log('--> show Quest Info Button Pressed', questId)
+      AWE.GS.TutorialStateManager.showQuestInfoDialog(questId);
     },
     
     okPressed: function() {
@@ -56,6 +58,18 @@ AWE.UI.Ember = (function(module) {
     templateName: 'quest-finished-dialog',
     quest: null,
     questState: null,
+    redeeming: false,
+
+    redeemButtonPressed: function() {
+      var that = this;
+      this.set('redeeming', true);
+      
+      AWE.GS.TutorialStateManager.redeemRewards(this.getPath('questState.id'), function() {
+        that.destroy();
+      }, function() {
+        that.set('redeeming', false);
+      });
+    },
   });  
   
   module.QuestInfoDialog = module.InfoDialog.extend({
@@ -69,14 +83,57 @@ AWE.UI.Ember = (function(module) {
     quest: null,
     questState: null,
     answerText: null,
+    answerTextObserver: function() {
+      this.set('error', false);
+    }.observes('answerText'),
+    
+    error: false,
+    checking: false,
+    
     finished: function() {
-      return this.getPath('questState.status') >= AWE.GS.TUTORIAL_STATUS_FINISHED;
+      return this.getPath('questState.status') >= AWE.GS.QUEST_STATUS_FINISHED;
     }.property('questState.status').cacheable(),
     
     checkQuestAnswerPressed: function() {
-      this.get('parentView').destroy();
-      AWE.GS.TutorialStateManager.checkForTextboxRewards(this.get('questState'), this.get('answerText'));
-    }, 
+      if (!AWE.GS.TutorialStateManager.tutorialEnabled()) return;
+      
+      var that = this;
+
+      var quest = this.get('quest');
+      var questState = this.get('questState');
+      var textboxTest = quest.reward_tests.textbox_test;
+      var answerText = this.get('answerText');
+      
+      if (textboxTest != null) {
+        if (questState.checkTextbox(textboxTest, answerText)) {
+          this.set('checking', true);  // knopf ausblenden
+          
+          // action erzeugen und an server schicken
+          var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(quest.id, answerText);
+          questCheckAction.send(function(status) {
+            if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+              
+              // set already to finished to avoid showing of form in quest finished view
+              questState.set('status', AWE.GS.QUEST_STATUS_FINISHED);
+              
+              that.get('parentView').destroy();
+              AWE.GS.TutorialStateManager.showQuestFinishedDialog(questState);
+            }
+            else {
+              that.set('checking', false);
+              that.set('error', true);
+            }
+          });
+        }
+        else {
+          that.set('checking', false);
+          that.set('error', true);
+        }
+      }
+      else {
+        log('ERROR in AWE.GS.TutorialManager.checkForTextboxRewards: missing textboxTest');
+      }
+    }
   });  
   
   module.QuestResourceRewardView = Ember.View.extend({

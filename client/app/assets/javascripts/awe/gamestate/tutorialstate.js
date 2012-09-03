@@ -7,10 +7,10 @@ var AWE = window.AWE || {};
 
 AWE.GS = (function(module) {
     
-  module.TUTORIAL_STATUS_NEW        = 0; 
-  module.TUTORIAL_STATUS_DISPLAYED  = 1;
-  module.TUTORIAL_STATUS_FINISHED   = 2;
-  module.TUTORIAL_STATUS_CLOSED     = 3;
+  module.QUEST_STATUS_NEW        = 0; 
+  module.QUEST_STATUS_DISPLAYED  = 1;
+  module.QUEST_STATUS_FINISHED   = 2;
+  module.QUEST_STATUS_CLOSED     = 3;
         
   module.TutorialStateAccess = {};
 
@@ -37,7 +37,7 @@ AWE.GS = (function(module) {
       var questStates = this.getPath('quests.content');   // hier
       var newQuestStates = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
-        if (questState && questState.get('status') === module.TUTORIAL_STATUS_NEW) {
+        if (questState && questState.get('status') === module.QUEST_STATUS_NEW) {
           newQuestStates.push(questState);
         }
       });
@@ -49,7 +49,7 @@ AWE.GS = (function(module) {
       var questStates = this.getPath('quests.content');
       var openQuestStates = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
-        if (questState && questState.get('status') <= module.TUTORIAL_STATUS_DISPLAYED) {
+        if (questState && questState.get('status') <= module.QUEST_STATUS_DISPLAYED) {
           openQuestStates.push(questState);
         }
       });
@@ -61,7 +61,7 @@ AWE.GS = (function(module) {
       var questStates = this.getPath('quests.content');
       var notClosedQuestStates = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
-        if (questState && questState.get('status') < module.TUTORIAL_STATUS_CLOSED) {
+        if (questState && questState.get('status') < module.QUEST_STATUS_CLOSED) {
           notClosedQuestStates.push(questState);
         }
       });
@@ -120,10 +120,11 @@ AWE.GS = (function(module) {
     
     statusString: function() {
       switch (this.get('status')) {
-        case module.TUTORIAL_STATUS_NEW:
-        case module.TUTORIAL_STATUS_DISPLAYED:
+        case module.QUEST_STATUS_NEW:
+          return AWE.I18n.lookupTranslation('tutorial.new');
+        case module.QUEST_STATUS_DISPLAYED:
           return AWE.I18n.lookupTranslation('tutorial.open');
-        case module.TUTORIAL_STATUS_FINISHED:
+        case module.QUEST_STATUS_FINISHED:
           return AWE.I18n.lookupTranslation('tutorial.finished');
         default:
           return null;
@@ -131,7 +132,7 @@ AWE.GS = (function(module) {
     }.property('status').cacheable(),
     
     finished: function() {
-      return this.get('status') === module.TUTORIAL_STATUS_FINISHED;
+      return this.get('status') === module.QUEST_STATUS_FINISHED;
     }.property('status').cacheable(),
     
     checkForRewards: function() {
@@ -561,9 +562,13 @@ AWE.GS = (function(module) {
       }     
     }
 
+    that.tutorialEnabled = function() {
+      return AWE.Config.USE_TUTORIAL && that.tutorialState != null;
+    }
+
     that.checkForRewards = function() {
       
-      if (!AWE.Config.USE_TUTORIAL) return;
+      if (!that.tutorialEnabled()) return;
 
       log('---> checkForRewards');
       
@@ -598,7 +603,7 @@ AWE.GS = (function(module) {
     
     that.checkForCustomTestRewards = function(questName) {
       
-      if (!AWE.Config.USE_TUTORIAL) return;
+      if (!that.tutorialEnabled()) return;
 
       // quest finden
       var quest = AWE.GS.TutorialManager.getTutorial().questWithSymbolicId(questName);
@@ -609,7 +614,7 @@ AWE.GS = (function(module) {
         var questState = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(quest['id']);
         log('---> checkForCustomTestRewards2', quest, questState);
         
-        if (questState && questState.get('status') <= AWE.GS.TUTORIAL_STATUS_DISPLAYED) {
+        if (questState && questState.get('status') <= AWE.GS.QUEST_STATUS_DISPLAYED) {
           // action erzeugen und an server schicken
           log('---> checkForCustomTestRewards action sent');
           var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(questState.get('quest_id'));
@@ -630,64 +635,9 @@ AWE.GS = (function(module) {
       }
     }
     
-    that.checkForTextboxRewards = function(questState, answerText) {
-      
-      if (!AWE.Config.USE_TUTORIAL) return;
-
-      log('---> checkForTextboxRewards', questState);
-      
-      var questId = questState.get('quest_id');
-      var quest = AWE.GS.TutorialManager.getTutorial().quest(questId);
-      var textboxTest = quest.reward_tests.textbox_test;
-      
-      if (textboxTest != null) {
-        if (questState.checkTextbox(textboxTest, answerText)) {
-          log('---> checkForTextboxRewards', true, 'with answerText', answerText);
-          // action erzeugen und an server schicken
-          var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(questId, answerText);
-          questCheckAction.send(function(status) {
-            if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-              // callback: dialog anzeigen mit reward
-              that.showQuestFinishedDialog(questState);
-            }
-            else {
-              var dialog = AWE.UI.Ember.InfoDialog.create({
-                heading: 'Fehler',
-                message: 'Falsche Antwort, probier es gleich noch mal',
-                okPressed: function() {
-                  this.destroy();
-                  that.showQuestInfoDialog(questId);
-                },            
-              });          
-              WACKADOO.presentModalDialog(dialog);
-              log('---> checkForTextboxRewards', false);
-              that.checkForNewQuests();
-            }
-          });
-        }
-        else {
-          log('---> Fehlermeldung für Textbox Test');
-          var dialog = AWE.UI.Ember.InfoDialog.create({
-            heading: 'Fehler',
-            message: 'Falsche Antwort, probier es gleich noch mal',
-            okPressed: function() {
-              this.destroy();
-              that.showQuestInfoDialog(questId);
-            },            
-          });          
-          WACKADOO.presentModalDialog(dialog);
-          log('---> checkForTextboxRewards', false);
-          that.checkForNewQuests();
-        }
-      }
-      else {
-        log('ERROR in AWE.GS.TutorialManager.checkForTextboxRewards: missing textboxTest');
-      }
-    }
-    
     that.checkForNewQuests = function() {
       
-      if (!AWE.Config.USE_TUTORIAL) return;
+      if (!that.tutorialEnabled()) return;
       
       log('---> checkForNewQuests');
       
@@ -707,10 +657,14 @@ AWE.GS = (function(module) {
                 quest: newQuestState.get('quest'),
                 questState: newQuestState,
               });
-              that.tutorialState.set('newQuestDialog', dialog);   
-              WACKADOO.presentModalDialog(dialog);
+              that.tutorialState.set('newQuestDialog', dialog);
               
-              newQuestState.set('status', module.TUTORIAL_STATUS_DISPLAYED);
+              window.setTimeout(function() {
+                WACKADOO.presentModalDialog(dialog);
+              }, AWE.Config.TUTORIAL_STATE_DELAY_INTERVAL);   
+              
+              
+              newQuestState.set('status', module.QUEST_STATUS_DISPLAYED);
               
               // send action that quest was displayed
               var questDisplayedAction = AWE.Action.Tutorial.createQuestDisplayedAction(newQuestState.getId());
@@ -732,9 +686,9 @@ AWE.GS = (function(module) {
     }    
     
 
-    that.redeemRewards = function(questStateId) {
+    that.redeemRewards = function(questStateId, success, error) {
       
-      if (!AWE.Config.USE_TUTORIAL) return;
+      if (!that.tutorialEnabled()) return;
 
       log('---> redeemRewards', questStateId);
       
@@ -744,9 +698,22 @@ AWE.GS = (function(module) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
           log('---> redeemRewards ok');
           that.updateTutorialState();
+          if (success) {
+            success();
+          }
         }
         else if (status === AWE.Net.CONFLICT) {
-          alert('conflict');
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('tutorial.quest.redeemError.header'),
+            message: AWE.I18n.lookupTranslation('tutorial.quest.redeemError.message'),
+            okPressed: function() {
+              this.destroy();
+              if (error) {
+                error();
+              }
+            },
+          });          
+          WACKADOO.presentModalDialog(dialog);
         }
         else {
           log('ERROR in AWE.GS.TutorialManager.redeemRewards');
@@ -756,7 +723,7 @@ AWE.GS = (function(module) {
     
     that.showQuestInfoDialog = function(questId) {
       
-      if (!AWE.Config.USE_TUTORIAL) return;      
+      if (!that.tutorialEnabled()) return;
       
       var infoDialog = AWE.UI.Ember.QuestInfoDialog.create({
         quest: AWE.GS.TutorialManager.getTutorial().quest(questId),
@@ -767,7 +734,7 @@ AWE.GS = (function(module) {
     
     that.showQuestFinishedDialog = function(questState) {
       
-      if (!AWE.Config.USE_TUTORIAL) return;
+      if (!that.tutorialEnabled()) return;
       
       var dialog = AWE.UI.Ember.QuestFinishedDialog.create({
         // beim schließen:
