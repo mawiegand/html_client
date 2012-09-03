@@ -375,7 +375,7 @@ AWE.GS = (function(module) {
 		}.property('buildingId', 'nextLevel').cacheable(),
 		
 		unlockedPlayerToPlayerTrade: function() {
-		  return this.calculatePlayerToPlayerTrade(this.get('level'));
+		  return this.calculatePlayerToPlayerTrade(this.get('level')) && AWE.Config.TRADE_ENABLED;
 		}.property('buildingId', 'level').cacheable(),
 
 		unlockedPlayerToPlayerTradeNextLevel: function() {
