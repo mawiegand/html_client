@@ -62,6 +62,8 @@ AWE.GS = (function(module) {
     hashableQueues: null,
     hashableTrainingQueues: null,
     hashableResearchQueues: null,
+    hashableIncomingCarts: null,
+    hashableOutgoingCarts: null,
     
     hashableSlots: null,
         
@@ -73,10 +75,18 @@ AWE.GS = (function(module) {
         var hashableTrainingQueues = AWE.GS.TrainingQueueAccess.getHashableCollectionForSettlement_id(this.get('id'));
         var hashableQueues         = AWE.GS.ConstructionQueueAccess.getHashableCollectionForSettlement_id(this.get('id'));
         var hashableSlots          = AWE.GS.SlotAccess.getHashableCollectionForSettlement_id(this.get('id'));
+        
+        var hashableIncomingCarts  = AWE.GS.TradingCartActionAccess.getHashableCollectionForTarget_settlement_id(this.get('id'));
+        var hashableOutgoingCarts  = AWE.GS.TradingCartActionAccess.getHashableCollectionForStarting_settlement_id(this.get('id'));
 
         this.set('hashableTrainingQueues', hashableTrainingQueues);
         this.set('hashableQueues',         hashableQueues);
         this.set('hashableSlots',          hashableSlots);
+        this.set('hashableIncomingCarts',  hashableIncomingCarts);
+        this.set('hashableOutgoingCarts',  hashableOutgoingCarts);
+        
+        console.log('SETTLEMENT WITH ID', this.get('id'), 'CARTS REQ', hashableIncomingCarts, hashableOutgoingCarts)
+        
       }
     },
     
@@ -127,10 +137,21 @@ AWE.GS = (function(module) {
       return this.getPath('hashableSlots.collection');
     }.property('id', 'hashableSlots.changedAt').cacheable(),
     
+
+    enumerableIncomingTradingCartActions: function() {
+      console.log('SET INCOMING CARTS', this.getPath('hashableIncomingCarts.collection'))
+      return this.getPath('hashableIncomingCarts.collection');
+    }.property('id', 'hashableIncomingCarts.changedAt').cacheable(),
+
+    enumerableOutgoingTradingCartActions: function() {
+      console.log('SET OUTGOING CARTS', this.getPath('hashableOutgoingCarts'), this.getPath('hashableOutgoingCarts.collection'))
+      return this.getPath('hashableOutgoingCarts.collection');
+    }.property('id', 'hashableOutgoingCarts.changedAt').cacheable(),
+    
+    
     commandPointsUsed: function() {
       return this.getPath('armies_count')-1;
     }.property('armies_count').cacheable(),
-
     
     settlementType: function() {
       return AWE.GS.RulesManager.getRules().getSettlementType(this.get('type_id'));

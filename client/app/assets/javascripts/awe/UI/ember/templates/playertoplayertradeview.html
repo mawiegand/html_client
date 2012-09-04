@@ -1,8 +1,8 @@
 <script type="text/x-handlebars" data-template-name="player-to-player-trade-view">
   
-  <h1>Rohstoffe versenden</h1>
+  <h2>Rohstoffe versenden</h2>
   
-  {{#if errorMessage}}<p class="red-color"><b>{{errorMessage}}</b></p>{{/if}}
+  <p>Handelskarren unterwegs: {{ settlement.trading_carts_used }} / {{ settlement.trading_carts }}</p>
   
   <p>Empfänger: {{view Ember.TextField class="text-field" placeholder="Spielername" valueBinding="recipientName"}}</p>
 
@@ -11,6 +11,8 @@
       {{local type.name}}: {{view Ember.TextField class="text-field resource-amount" placeholder="Menge" valueBinding="amount"}}
     {{/each}}
   </p>  
+
+  {{#if errorMessage}}<p class="red-color"><b>{{errorMessage}}</b></p>{{/if}}
     
   {{#if sending}}
     <p>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Aktualisiere...</p>
@@ -18,4 +20,81 @@
     <a href="#" {{bindAttr class=":button inactive impossible"}} {{action "sendPressed"}}>Sende {{numCarts}} Handelskarren</a>
   {{/if}}
   
+  <hr/>
+  
+  <h2>Ausgehend</h2>
+  <table>
+    <tr><th>Karren</th><th>Ziel</th><th>Ankunftszeit</th></tr>
+    {{#each settlement.enumerableOutgoingTradingCartActions}}
+      {{view AWE.UI.Ember.TradingCartActionView settlementBinding="view.settlement" tradingCartActionBinding="this"}}
+    {{/each}}
+  </table>
+  
+  <h2>Eingehend</h2>
+  <table>
+    <tr><th>Karren</th><th>Ziel</th><th>Ankunftszeit</th></tr>
+    {{#each settlement.enumerableIncomingTradingCartActions}}
+      {{view AWE.UI.Ember.TradingCartActionView settlementBinding="view.settlement" tradingCartActionBinding="this"}}
+    {{/each}}
+  </table>
+  
 </script>
+
+<script type="text/x-handlebars" data-template-name="linked-character-spinning-view">
+  {{#if character}} 
+    {{character.name}} {{#if character.alliance_tag}} | {{character.alliance_tag}} {{/if}}
+  {{else}}
+    {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} 
+  {{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="resources-amount-view">
+  {{#each resources}}
+    <span class="resource-icon {{unbound resourceType.symbolic_id}}">&nbsp;</span> {{formatNumber amount maxPlaces="0"}} &nbsp;
+  {{/each}}
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="trading-cart-action-view">
+  <tr>
+    <td>{{tradingCartAction.num_carts}}</td>
+    <td>
+      {{#if tradingCartAction.returning}}
+        {{#if outgoing}}
+          Rückkehr von {{view AWE.UI.Ember.WheelOrValueView valueBinding="targetSettlement.name"}} 
+          ({{view Ember.View characterBinding="recipient" templateName="linked-character-spinning-view" classNames="inline"}})
+        {{else}}
+          Rückkehr nach {{view AWE.UI.Ember.WheelOrValueView valueBinding="startingSettlement.name"}} 
+          ({{view Ember.View characterBinding="sender" templateName="linked-character-spinning-view" classNames="inline"}})
+        {{/if}}
+      {{else}}
+        {{#if outgoing}}
+          {{view AWE.UI.Ember.WheelOrValueView valueBinding="targetSettlement.name"}} 
+          ({{view Ember.View characterBinding="recipient" templateName="linked-character-spinning-view" classNames="inline"}})          
+        {{else}}
+          {{view AWE.UI.Ember.WheelOrValueView valueBinding="startingSettlement.name"}} 
+          ({{view Ember.View characterBinding="sender" templateName="linked-character-spinning-view" classNames="inline"}})                    
+        {{/if}}
+      {{/if}}
+    </td>
+    <td>
+      {{#if tradingCartAction.returning}}
+        {{formatTime tradingCartAction.returned_at}}
+      {{else}}
+        {{formatTime tradingCartAction.target_reached_at}}
+        {{#if cancelable}}
+          {{#if sending}}
+            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} sending...
+          {{else}}
+            <a href="#" {{action "cancelPressed"}}>abbrechen</a>
+          {{/if}}
+        {{/if}}
+      {{/if}}
+    </td>
+  </tr>
+  <tr>
+    <td></td><td colspan="2">{{#if empty}} <em>leer</em> {{else}} Ladung: {{view Ember.View templateName="resources-amount-view" resourcesBinding="load" classNames="inline"}} {{/if}}</td>
+  </tr>
+</script>
+
+

@@ -435,6 +435,48 @@ AWE.Controller = (function(module) {
       });
     }    
     
+    that.sendTradingCarts = function(settlementId, recipientName, resources, callback) {
+      var action = AWE.Action.Trading.createSendTradingCartsAction(settlementId, recipientName, resources);
+      action.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+          that.updateTradingCartActions(true);
+        }
+        else {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });          
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the trading carts send command.");
+        }
+        if (callback) {
+          callback(status);
+        }
+      });      
+    }
+    
+    
+    that.cancelTradingCartAction = function(tradingCartActionId, callback) {
+      var action = AWE.Action.Trading.createTradingCartCancelAction(tradingCartActionId);
+      action.send(function(status) {
+        if (status !== AWE.Net.OK) {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });          
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the trading carts cancel command.");
+        }
+        if (callback) {
+          callback(status);
+        }
+      });
+    }
+    
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -484,6 +526,38 @@ AWE.Controller = (function(module) {
         }
       });
     }
+     
+    that.updateTradingCartActions = (function() {
+      
+      var lastUpdate = null;
+      
+      return function(forceNow, callback) {
+        forceNow = forceNow || false;
+                
+        if (forceNow || lastUpdate === null || lastUpdate < new Date().add(-20).seconds()) { // attention: "add" modifies the date and doesn't create a copy with altered time!
+                    
+          var updates = 0;
+          lastUpdate = new Date();
+      
+          AWE.GS.TradingCartActionManager.updateIncomingTradingCartsAtSettlement(this.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(tradingCartActions) {
+            log('updated incoming trading cart actions');
+            if (callback && ++updates == 2) { // can't be sure, which update finishes first
+              callback();
+            }
+          });
+
+          AWE.GS.TradingCartActionManager.updateOutgoingTradingCartsAtSettlement(this.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(tradingCartActions) {
+            log('updated outgoing trading cart actions');
+            var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
+
+            console.log('GOT OUTGOING CARTS', settlement.getPath('hashableOutgoingCarts'))
+            if (callback && ++updates == 2) {
+              callback();
+            }
+          });
+        }
+      }
+    }());     
         
     that.updateAllConstructionQueuesAndJobs = function() {
       AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
@@ -662,7 +736,13 @@ AWE.Controller = (function(module) {
         if (settlement && this.view.get('selectedSlot')) {
           that.updateOldJobsInTrainingQueues(this.view.getPath('selectedSlot.building.trainingQueues'));
         }
+
+        if (settlement && this.view.getPath('selectedSlot.building.unlockedPlayerToPlayerTrade')) {
+          that.updateTradingCartActions();
+        }
+
       }
+      
       else if (!this.settlementId && this.locationId) {
         this.setLocationId(this.locationId); 
       }

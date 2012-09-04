@@ -60,6 +60,38 @@ AWE.Action.Trading = (function(module) {
     
   };
   
+  
+  module.createTradingCartCancelAction = function(actionId, my) {
+      
+    // private attributes and methods //////////////////////////////////////
+    var that;
+    
+    // protected attributes and methods ////////////////////////////////////
+    my = my || {};
+    my.actionId = actionId;
+
+    // public attributes and methods ///////////////////////////////////////
+    that = AWE.Action.createAction(my);    
+    
+    that.getRequestBody = function() {
+      return null;
+    }
+    
+    that.getURL = function() {
+      return AWE.Config.ACTION_SERVER_BASE + 'trading/trading_carts_actions/' + actionId;
+    }
+  
+    that.getHTTPMethod = function() {
+      return 'DELETE';
+    }
+    
+    that.postProcess = function(statusCode, xhr) {
+      AWE.GS.TradingCartActionManager.updateTradingCartAction(my.actionId);
+    }
+    
+    return that;
+  };
+  
 
   return module;
   

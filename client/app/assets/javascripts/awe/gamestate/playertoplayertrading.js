@@ -30,7 +30,9 @@ AWE.GS = (function(module) {
     startingSettlementIdObserver: AWE.Partials.attributeHashObserver(module.TradingCartActionAccess, 'starting_settlement_id', 'old_starting_settlement_id').observes('starting_settlement_id'),   
 
     target_settlement_id: null, old_target_settlement_id: null,
-    targetSettlementIdObserver: AWE.Partials.attributeHashObserver(module.TradingCartActionAccess, 'target_settlement_id', 'old_target_settlement_id').observes('target_settlement_id'),   
+    targetSettlementIdObserver: AWE.Partials.attributeHashObserver(module.TradingCartActionAccess, 'target_settlement_id', 'old_target_settlement_id').observes('target_settlement_id'),  
+    
+    tt: function() { console.log('IN OBSERVER', this.get('target_settlement_id')) }.observes('target_settlement_id'), 
     
     nextArrivalTime: function() {
       return (this.get('returning') ? this.get('returned_at') : this.get('target_reached_at')) || null;
@@ -53,7 +55,7 @@ AWE.GS = (function(module) {
   // ///////////////////////////////////////////////////////////////////////  
 
   /** basic manager for fetching trading cart actions. */
-  module.createMessageBoxManager = (function(my) {   
+  module.TradingCartActionManager = (function(my) {   
   
     // private attributes and methods //////////////////////////////////////
   
@@ -66,8 +68,9 @@ AWE.GS = (function(module) {
     my.runningUpdatesPerSettlementIncoming = {};///< hash that contains all running requests for incoming to a settlement.
     my.runningUpdatesPerSettlementOutgoing = {};///< hash that contains all running requests for outgoing of a settlement.
 
+    my.createEntity = function() { return module.TradingCartAction.create(); }
 
-    my.collectionURL     = AWE.Config.TRADING_SERVER_BASE     + 'trading_carts_actions/';
+    my.collectionURL     = AWE.Config.ACTION_SERVER_BASE      + 'trading/trading_carts_actions/';
     my.settlementURL     = AWE.Config.SETTLEMENT_SERVER_BASE  + 'settlements/';
     my.incomingURLFragment = '/incoming_trading_carts';
     my.outgoingURLFragment = '/outgoing_trading_carts';
@@ -81,19 +84,19 @@ AWE.GS = (function(module) {
     }
     
     that.lastUpdateForSettlementIncoming = function(settlementId, updateType) {
-      return module.InboxAccess.lastUpdateForTarget_settlement_id(settlementId, updateType);    // modified after
+      return module.TradingCartActionAccess.lastUpdateForTarget_settlement_id(settlementId, updateType);    // modified after
     };
   
     that.setLastUpdateForSettlementIncoming = function(settlementId, timestamp) {
-      module.InboxAccess.accessHashForTarget_settlement_id().setLastUpdateAtForValue(settlementId, timestamp);
+      module.TradingCartActionAccess.accessHashForTarget_settlement_id().setLastUpdateAtForValue(settlementId, timestamp);
     };
       
     that.lastUpdateForSettlementOutgoing = function(settlementId, updateType) {
-      return module.InboxAccess.lastUpdateForStarting_settlement_id(settlementId, updateType);  // modified after
+      return module.TradingCartActionAccess.lastUpdateForStarting_settlement_id(settlementId, updateType);  // modified after
     };
   
     that.setLastUpdateForSettlementOutgoing = function(settlementId, timestamp) {
-      module.InboxAccess.accessHashForStarting_settlement_id().setLastUpdateAtForValue(settlementId, timestamp);
+      module.TradingCartActionAccess.accessHashForStarting_settlement_id().setLastUpdateAtForValue(settlementId, timestamp);
     };      
                 
     /** returns true, if update is executed, returns false, if request did 
@@ -115,7 +118,7 @@ AWE.GS = (function(module) {
         this.lastUpdateForSettlementIncoming(settlementId, updateType),// modified after
         function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            that.setLastUpdateForSettlementIncoming(settlementId, timestamp.add(-1).second());
+            that.setLastUpdateForSettlementIncoming(settlementId, timestamp.add(-1).seconds());
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
@@ -138,7 +141,7 @@ AWE.GS = (function(module) {
         this.lastUpdateForSettlementOutgoing(settlementId, updateType),// modified after
         function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            that.setLastUpdateForSettlementOutgoing(settlementId, timestamp.add(-1).second());
+            that.setLastUpdateForSettlementOutgoing(settlementId, timestamp.add(-1).seconds());
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
