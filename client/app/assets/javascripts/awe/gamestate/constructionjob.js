@@ -83,15 +83,20 @@ AWE.GS = (function(module) {
     }.property('active_job').cacheable(),
         
     cancelable: function() {
-      
       // jobs des slots holen
-      var jobs = this.get('slot').get('hashableJobs').get('collection');
+      var jobs = this.getPath('slot.hashableJobs.collection') || [];
       
-      // max suchen
-      jobs.sort(function(a, b) {return b.get('position') - a.get('position')});
-
+      var max = jobs.reduce(function(previousValue, item) {  // finds the job with max position (last in queue)
+        if (previousValue === undefined || previousValue === null) {
+          return item;
+        } 
+        else {
+          return item.get('position') > previousValue.get('position') ? item : previousValue;
+        }
+      }, null);
+      
       // mit this vergleichen      
-      return this.getId() == jobs[0].getId();
+      return max && this.getId() === max.getId();
     }.property('slot.hashableJobs.changedAt').cacheable(),
   });     
     
