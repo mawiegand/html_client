@@ -4533,7 +4533,7 @@ JSJaCHttpBindingConnection.prototype._suspend = function() {
   this.oDbg.log("Disconnecting: " + reqstr,4);
   this._req[slot].r.send(reqstr);
 };
-﻿/**
+/**
  * jQuery.timers - Timer abstractions for jQuery
  * Written by Blair Mitchelmore (blair DOT mitchelmore AT gmail DOT com)
  * Licensed under the WTFPL (http://sam.zoy.org/wtfpl/).
