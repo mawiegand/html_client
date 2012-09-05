@@ -447,7 +447,12 @@ AWE.Controller = (function(module) {
           AWE.GS.SettlementManager.updateSettlement(settlementId);
           that.updateResourcePool();
         }
-        else {
+        else if (status === AWE.Net.NOT_FOUND) {  // no error dialog
+          if (callback) {
+            callback(status);
+          }
+        }
+        else {  // show error dialog
           var dialog = AWE.UI.Ember.InfoDialog.create({
             contentTemplateName: 'server-command-failed-info',
             cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
