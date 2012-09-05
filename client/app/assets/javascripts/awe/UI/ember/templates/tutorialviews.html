@@ -42,12 +42,15 @@
 
 <script type="text/x-handlebars" data-template-name="quest-view">
       <p class="citation">{{local quest.flavour}}</p>
-      <h2>{{local quest.name}}</h4>
-      {{local quest.description}}
+      <h3>{{local quest.name}}</h3><!-- use task when xml is final -->
+      {{#if finished}}
+        {{local quest.reward_text}}
+      {{else}}
+        {{local quest.description}}
+      {{/if}}
+
       {{#if quest.reward_tests.textbox_test }}
-        {{#if finished}}
-          <p>{{t tutorial.correctAnswered }}</p>
-        {{else}}
+        {{#unless finished}}
           <div>
             {{view Ember.TextField class="quest-answer-field" placeholder="answer" type="text" valueBinding="answerText"}}
             {{#if checking}}
@@ -59,7 +62,7 @@
           {{#if error}}
             <p>{{t tutorial.quest.error}}</p>
           {{/if}} 
-        {{/if}}
+        {{/unless}}
       {{/if}}
 </script>
 
