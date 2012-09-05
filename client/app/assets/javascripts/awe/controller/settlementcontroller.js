@@ -439,7 +439,13 @@ AWE.Controller = (function(module) {
       var action = AWE.Action.Trading.createSendTradingCartsAction(settlementId, recipientName, resources);
       action.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
-          that.updateTradingCartActions(true);
+          that.updateTradingCartActions(true, function() {
+            if (callback) {
+              callback(status); // send original status, ignore status of update
+            }
+          });
+          AWE.GS.SettlementManager.updateSettlement(settlementId);
+          that.updateResourcePool();
         }
         else {
           var dialog = AWE.UI.Ember.InfoDialog.create({
@@ -450,9 +456,9 @@ AWE.Controller = (function(module) {
           });          
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the trading carts send command.");
-        }
-        if (callback) {
-          callback(status);
+          if (callback) {
+            callback(status);
+          }
         }
       });      
     }
@@ -461,7 +467,14 @@ AWE.Controller = (function(module) {
     that.cancelTradingCartAction = function(tradingCartActionId, callback) {
       var action = AWE.Action.Trading.createTradingCartCancelAction(tradingCartActionId);
       action.send(function(status) {
-        if (status !== AWE.Net.OK) {
+        if (status === AWE.Net.OK) {
+          AWE.GS.TradingCartActionManager.updateTradingCartAction(tradingCartActionId, function() {
+            if (callback) {
+              callback(status);
+            }
+          });
+        }  
+        else {
           var dialog = AWE.UI.Ember.InfoDialog.create({
             contentTemplateName: 'server-command-failed-info',
             cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
@@ -470,9 +483,9 @@ AWE.Controller = (function(module) {
           });          
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the trading carts cancel command.");
-        }
-        if (callback) {
-          callback(status);
+          if (callback) {
+            callback(status);
+          }
         }
       });
     }
@@ -539,20 +552,20 @@ AWE.Controller = (function(module) {
           var updates = 0;
           lastUpdate = new Date();
       
-          AWE.GS.TradingCartActionManager.updateIncomingTradingCartsAtSettlement(this.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(tradingCartActions) {
+          AWE.GS.TradingCartActionManager.updateIncomingTradingCartsAtSettlement(this.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(tradingCartActions, status) {
             log('updated incoming trading cart actions');
             if (callback && ++updates == 2) { // can't be sure, which update finishes first
-              callback();
+              callback(status);
             }
           });
 
-          AWE.GS.TradingCartActionManager.updateOutgoingTradingCartsAtSettlement(this.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(tradingCartActions) {
+          AWE.GS.TradingCartActionManager.updateOutgoingTradingCartsAtSettlement(this.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(tradingCartActions, status) {
             log('updated outgoing trading cart actions');
             var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
 
             console.log('GOT OUTGOING CARTS', settlement.getPath('hashableOutgoingCarts'))
             if (callback && ++updates == 2) {
-              callback();
+              callback(status);
             }
           });
         }

@@ -172,9 +172,20 @@ AWE.UI.Ember = (function(module) {
       var resources = this.get('resources') || [];
       var total = 0;
       resources.forEach(function(item) {
-        total += parseInt(item.amount || "0");
+        var amount = parseInt(item.amount || "0");
+        total += Math.max(amount, 0);
       });
       return total;
+    }.property('resources.@each.amount').cacheable(),
+    
+    valid: function() {
+      var resources = this.get('resources') || [];
+      var valid = true;
+      resources.forEach(function(item) {
+        var amount = parseInt(item.amount || "0");
+        valid = valid && amount >= 0; // TODO: check with maximum available
+      });
+      return valid;      
     }.property('resources.@each.amount').cacheable(),
     
     numCarts: function() {
@@ -184,24 +195,38 @@ AWE.UI.Ember = (function(module) {
     
     inactive: function() {
       var total = this.get('totalAmount') || 0;
-      var name = this.get('recipientName') || null;
-      return name === null || total < 1;
-    }.property('totalAmount', 'recipientName').cacheable(),
+      var name  = this.get('recipientName') || null;
+      var valid = this.get('valid') || false;
+      return name === null || total < 1 || !valid;
+    }.property('totalAmount', 'recipientName', 'valid').cacheable(),
     
     impossible: function() {
       var carts = this.get('numCarts') || 0;
       var availableCarts = this.getPath('settlement.trading_carts') || 0;
       var inactive = this.get('inactive');
-      console.log('SETTLEMENT', this.get('settlement'), this.getPath('settlement.trading_carts'))
       return !inactive && carts > availableCarts;
     }.property('settlement.trading_carts', 'numCarts').cacheable(),
+    
+    sanitizedInput: function() {
+      var resources = this.get('resources') || [];
+      var cleaned   = [];
+      resources.forEach(function(item) {
+        var amount = parseInt(item.amount || "0");  // make integer
+        amount = Math.max(amount, 0);               // min 0
+        cleaned.push({
+          type: item.type,
+          amount: amount,
+        })
+      }); 
+      return cleaned;   
+    },
         
     sendPressed: function() {
       
       if (this.get('inactive') || this.get('impossible')) {
         return false;   // minimal necessary conditions (entered a name, enough carts) not met 
       }
-      var resources     = this.get('resources') || [];
+      var resources     = this.sanitizedInput();
       var recipientName = this.get('recipientName') || "";
       var settlementId  = this.getPath('settlement.id');
       var self          = this;
@@ -210,12 +235,12 @@ AWE.UI.Ember = (function(module) {
       this.set('errorMessage', null);
       
       this.get('controller').sendTradingCarts(settlementId, recipientName, resources, function(status) {
-        self.set('sending', false);
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
         }
         else {
           self.set('errorMessage', 'The server did not accept the command.');
         }
+        self.set('sending', false);
       });   
       return false;     // prevent default behavior
     },

@@ -51,9 +51,6 @@ AWE.Action.Trading = (function(module) {
     that.getHTTPMethod = function() { return 'POST'; }
     
     that.postProcess = function(statusCode, xhr) {
-      if (statusCode == AWE.Net.CREATED || statusCode == AWE.Net.OK) {
-        AWE.GS.SettlementManager.updateSettlement(my.settlementId);
-      }
     }
     
     return that;
@@ -86,7 +83,6 @@ AWE.Action.Trading = (function(module) {
     }
     
     that.postProcess = function(statusCode, xhr) {
-      AWE.GS.TradingCartActionManager.updateTradingCartAction(my.actionId);
     }
     
     return that;
