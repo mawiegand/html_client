@@ -543,6 +543,7 @@ AWE.Controller = (function(module) {
     that.updateTradingCartActions = (function() {
       
       var lastUpdate = null;
+      var individualRequests = {};
       
       return function(forceNow, callback) {
         forceNow = forceNow || false;
@@ -553,22 +554,41 @@ AWE.Controller = (function(module) {
           lastUpdate = new Date();
       
           AWE.GS.TradingCartActionManager.updateIncomingTradingCartsAtSettlement(this.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(tradingCartActions, status) {
-            log('updated incoming trading cart actions');
             if (callback && ++updates == 2) { // can't be sure, which update finishes first
               callback(status);
             }
           });
 
           AWE.GS.TradingCartActionManager.updateOutgoingTradingCartsAtSettlement(this.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(tradingCartActions, status) {
-            log('updated outgoing trading cart actions');
             var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
 
-            console.log('GOT OUTGOING CARTS', settlement.getPath('hashableOutgoingCarts'))
             if (callback && ++updates == 2) {
               callback(status);
             }
           });
         }
+        
+        /** update outgoing trading cart actions that should have returned to settlement by now. */
+        var hash    = AWE.GS.TradingCartActionManager.getOutgoingTradingCartsForSettlementHash(that.settlementId);
+        var actions = hash ? hash.get('collection') : [];
+        actions.forEach(function(item) {
+          if (item.get('returning') && Date.parseISODate(item.get('returned_at')) < new Date().add(-2).seconds() &&
+              (individualRequests[item.get('id')] === undefined || individualRequests[item.get('id')] < new Date().add(-10).seconds())) {
+            individualRequests[item.get('id')] = new Date();
+            AWE.GS.TradingCartActionManager.updateTradingCartAction(item.get('id'));
+          } 
+        });
+
+        /** destroy (client side) incoming trading cart actions that should have reached the settlement by now. */
+        hash    = AWE.GS.TradingCartActionManager.getIncomingTradingCartsForSettlementHash(that.settlementId);
+        var actions = hash ? hash.get('collection') : [];
+        actions.forEach(function(item) {
+          if (Date.parseISODate(item.get('target_reached_at')) < new Date().add(-2).seconds()) {
+            console.log('destroyed incoming trading carts action id', item.get('id'));
+            item.destroy();
+          } 
+        });        
+  
       }
     }());     
         

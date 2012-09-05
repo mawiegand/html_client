@@ -78,10 +78,18 @@ AWE.GS = (function(module) {
     // public attributes and methods ///////////////////////////////////////
   
     that = module.createEntityManager(my);
-  
+    
     that.getTradingCartAction = function(id) {
       return that.getEntity(id);
     }
+
+    that.getIncomingTradingCartsForSettlementHash = function(settlementId) {
+      return module.TradingCartActionAccess.getHashableCollectionForTarget_settlement_id(settlementId);
+    }
+
+    that.getOutgoingTradingCartsForSettlementHash = function(settlementId) {
+      return module.TradingCartActionAccess.getHashableCollectionForStarting_settlement_id(settlementId);
+    }    
     
     that.lastUpdateForSettlementIncoming = function(settlementId, updateType) {
       return module.TradingCartActionAccess.lastUpdateForTarget_settlement_id(settlementId, updateType);    // modified after
