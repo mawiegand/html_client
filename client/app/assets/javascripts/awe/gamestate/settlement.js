@@ -161,6 +161,12 @@ AWE.GS = (function(module) {
       return Math.floor(parseFloat(this.get('tax_rate') || "0.0") * 100.0 + 0.5);
     }.property('tax_rate').cacheable(),
     
+    availableTradingCarts: function() {
+      var carts = this.get('trading_carts') || 0;
+      var used  = this.get('trading_carts_used') || 0;
+      return Math.max(0, carts-used);
+    }.property('trading_carts', 'trading_carts_used'),
+    
     resourceProductions: function() {
       var self = this;
   		var productions = [];

@@ -53,8 +53,6 @@ AWE.UI.Ember = (function(module) {
       var resourceTypes = rules.get('resource_types') || [];
       var action = this.get('tradingCartAction');
       var load = [];
-
-      console.log('ACTION AMOUNT', action);
       
       if (action === undefined || action === null) {
         return null;
@@ -194,18 +192,18 @@ AWE.UI.Ember = (function(module) {
     }.property('totalAmount').cacheable(),
     
     inactive: function() {
-      var total = this.get('totalAmount') || 0;
-      var name  = this.get('recipientName') || null;
-      var valid = this.get('valid') || false;
-      return name === null || total < 1 || !valid;
-    }.property('totalAmount', 'recipientName', 'valid').cacheable(),
+      var total      = this.get('totalAmount') || 0;
+      var name       = this.get('recipientName') || null;
+      var valid      = this.get('valid') || false;
+      var impossible = this.get('impossible') || false;
+      return name === null || total < 1 || !valid || impossible;
+    }.property('totalAmount', 'recipientName', 'valid', 'impossible').cacheable(),
     
     impossible: function() {
       var carts = this.get('numCarts') || 0;
-      var availableCarts = this.getPath('settlement.trading_carts') || 0;
-      var inactive = this.get('inactive');
-      return !inactive && carts > availableCarts;
-    }.property('settlement.trading_carts', 'numCarts').cacheable(),
+      var availableCarts = this.getPath('settlement.availableTradingCarts') || 0;
+      return carts > availableCarts;
+    }.property('settlement.availableTradingCarts', 'numCarts').cacheable(),
     
     sanitizedInput: function() {
       var resources = this.get('resources') || [];
@@ -223,19 +221,29 @@ AWE.UI.Ember = (function(module) {
         
     sendPressed: function() {
       
-      if (this.get('inactive') || this.get('impossible')) {
+      if (this.get('inactive')) {
         return false;   // minimal necessary conditions (entered a name, enough carts) not met 
       }
       var resources     = this.sanitizedInput();
       var recipientName = this.get('recipientName') || "";
       var settlementId  = this.getPath('settlement.id');
       var self          = this;
+
+      var ownName       = AWE.GS.player.getPath('currentCharacter.name') || "";
+      
+      if (recipientName === ownName) {
+        this.set('errorMessage', 'Deine Anhänger sind viel zu faul, als dass sie Ressourcen an sich selbst senden würden.');
+        return false;
+      }
       
       this.set('sending', true);
       this.set('errorMessage', null);
       
       this.get('controller').sendTradingCarts(settlementId, recipientName, resources, function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+        }
+        else if (status === AWE.Net.NOT_FOUND) {
+          self.set('errorMessage', 'Empfänger unbekannt.');          
         }
         else {
           self.set('errorMessage', 'The server did not accept the command.');
