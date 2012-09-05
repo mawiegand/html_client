@@ -16,9 +16,14 @@ AWE.UI.Ember = (function(module) {
     
     questStatesBinding: 'tutorialState.notClosedQuestStates',
     
-    redeemButtonPressed: function(questStateId) {
-      log('--> redeem Button Pressed', questStateId)
-      AWE.GS.TutorialStateManager.redeemRewards(questStateId);
+    redeemButtonPressed: function(questState) {
+      log('--> redeem Button Pressed', questState)
+      questState.set('redeeming', true);
+      AWE.GS.TutorialStateManager.redeemRewards(questState, function() {
+        AWE.GS.TutorialStateManager.checkForRewards();
+      }, function() {
+        questState.set('redeeming', false);
+      });
     },
     
     showQuestInfoPressed: function(questId) {
@@ -38,44 +43,48 @@ AWE.UI.Ember = (function(module) {
     questState: null,
   
     redeemButtonPressed: function() {
-      log('---> QuestListEntryView redeemButtonPressed', this.getPath('questState.id'));
-      this.get('parentView').redeemButtonPressed(this.getPath('questState.id'));
+      log('---> QuestListEntryView redeemButtonPressed', this.get('questState'));
+      this.get('parentView').redeemButtonPressed(this.get('questState'));
     },
   
     showQuestInfoPressed: function() {
       log('---> QuestListEntryView showQuestInfoPressed', this.getPath('questState.quest_id'));
       this.get('parentView').showQuestInfoPressed(this.getPath('questState.quest_id'));
     },
+    
+    classNameBindings: ['finished'],
+    
+    finished: function() {
+      return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('questState.status'),        
   });  
   
-  module.QuestStartedDialog = module.InfoDialog.extend({
-    templateName: 'quest-started-dialog',
-    quest: null,
-    questState: null,
-  });  
-  
-  module.QuestFinishedDialog = module.InfoDialog.extend({
-    templateName: 'quest-finished-dialog',
+  module.QuestDialog = module.InfoDialog.extend({
+    templateName: 'quest-dialog',
+    header: null,
     quest: null,
     questState: null,
     redeeming: false,
+
+    finished: function() {
+      return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
+    }.property('questState.status'),        
 
     redeemButtonPressed: function() {
       var that = this;
       this.set('redeeming', true);
       
-      AWE.GS.TutorialStateManager.redeemRewards(this.getPath('questState.id'), function() {
+      AWE.GS.TutorialStateManager.redeemRewards(this.get('questState'), function() {
         that.destroy();
+        AWE.GS.TutorialStateManager.checkForRewards();
       }, function() {
         that.set('redeeming', false);
       });
     },
-  });  
-  
-  module.QuestInfoDialog = module.InfoDialog.extend({
-    templateName: 'quest-info-dialog',
-    quest: null,
-    questState: null,
+
+    advisor: function() {
+      return 'advisor ' + this.getPath('quest.advisor');
+    }.property('quest.advisor').cacheable(),
   });  
   
   module.QuestView = Ember.View.extend({

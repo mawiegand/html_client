@@ -54,7 +54,11 @@ AWE.GS = (function(module) {
         }
       });
       return openQuestStates;
-    }.property('quests.@each.status').cacheable(),    
+    }.property('quests.@each.status').cacheable(),
+    
+    openQuestStateCount: function() {
+      return this.get('openQuestStates').length;
+    }.property('quests.@each.status').cacheable(),
 
     // finished quests, which resources aren't rewarded yet
     notClosedQuestStates: function() {
@@ -68,6 +72,10 @@ AWE.GS = (function(module) {
       return notClosedQuestStates;
     }.property('quests.@each').cacheable(),
     
+    notClosedQuestStateCount: function() {
+      return this.get('notClosedQuestStates').length;
+    }.property('quests.@each.status').cacheable(),
+
     questStateWithQuestId: function(questId) {
       var questStates = this.getPath('quests.content');
       log('---> questStates', questStates);
@@ -582,6 +590,7 @@ AWE.GS = (function(module) {
             questCheckAction.send(function(status) {
               if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
                 // callback: dialog anzeigen mit reward
+                questState.set('status', AWE.GS.QUEST_STATUS_FINISHED);
                 that.showQuestFinishedDialog(questState);
               }
               else {
@@ -642,42 +651,41 @@ AWE.GS = (function(module) {
       log('---> checkForNewQuests');
       
       that.updateTutorialState(function() {
-      
-        if (that.tutorialState) {
-          var newQuestStates = that.tutorialState.get('newQuestStates');
-          log('---> checkForNewQuests newQuestStates', newQuestStates);
-          if (newQuestStates != null && newQuestStates.length > 0) {
-            
-            // only display first new quest, even if there are more. TODO implement overvie of new quests            
-            var newQuestState = newQuestStates[0];
-            
-            // display newQuestStates[0];
-            if (that.tutorialState.get('newQuestDialog') == null || that.tutorialState.get('newQuestDialog').get('isDestroyed')) {
-              var dialog = AWE.UI.Ember.QuestStartedDialog.create({
-                quest: newQuestState.get('quest'),
-                questState: newQuestState,
-              });
-              that.tutorialState.set('newQuestDialog', dialog);
-              
-              window.setTimeout(function() {
-                WACKADOO.presentModalDialog(dialog);
-              }, AWE.Config.TUTORIAL_STATE_DELAY_INTERVAL);   
-              
-              
-              newQuestState.set('status', module.QUEST_STATUS_DISPLAYED);
-              
-              // send action that quest was displayed
-              var questDisplayedAction = AWE.Action.Tutorial.createQuestDisplayedAction(newQuestState.getId());
-              questDisplayedAction.send(function(status) {
-                if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-                  log('---> quest state set to displayed')
+
+        if (that.tutorialState.get('newQuestDialog') == null || that.tutorialState.get('newQuestDialog').get('isDestroyed')) {      
+          window.setTimeout(function() {
+            if (that.tutorialState) {
+              var newQuestStates = that.tutorialState.get('newQuestStates');
+              log('---> checkForNewQuests newQuestStates', newQuestStates);
+              if (newQuestStates != null && newQuestStates.length > 0) {
+                
+                // only display first new quest, even if there are more. the other quest will be displayed later on.            
+                var newQuestState = newQuestStates[0];
+                
+                // display newQuestStates[0];
+                if (that.tutorialState.get('newQuestDialog') == null || that.tutorialState.get('newQuestDialog').get('isDestroyed')) {
+                  var dialog = AWE.UI.Ember.QuestDialog.create({
+                    quest: newQuestState.get('quest'),
+                    questState: newQuestState,
+                    header: AWE.I18n.lookupTranslation('tutorial.quest.start.header'),
+                  });
+                  WACKADOO.presentModalDialog(dialog);
+                  newQuestState.set('status', module.QUEST_STATUS_DISPLAYED);
+                  
+                  // send action that quest was displayed
+                  var questDisplayedAction = AWE.Action.Tutorial.createQuestDisplayedAction(newQuestState.getId());
+                  questDisplayedAction.send(function(status) {
+                    if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+                      log('---> quest state set to displayed')
+                    }
+                    else {
+                      log('---> quest state could not be set to displayed')
+                    }
+                  });
                 }
-                else {
-                  log('---> quest state could not be set to displayed')
-                }
-              });
+              }
             }
-          }
+          }, AWE.Config.TUTORIAL_STATE_DELAY_INTERVAL);   
         }
         else {
           log('ERROR in AWE.GS.TutorialManager.checkForNewQuests: missing tutorialState');
@@ -686,13 +694,13 @@ AWE.GS = (function(module) {
     }    
     
 
-    that.redeemRewards = function(questStateId, success, error) {
+    that.redeemRewards = function(questState, success, error) {
       
       if (!that.tutorialEnabled()) return;
 
-      log('---> redeemRewards', questStateId);
+      log('---> redeemRewards', questState);
       
-      var redeemRewardsAction = AWE.Action.Tutorial.createRedeemRewardsAction(questStateId);
+      var redeemRewardsAction = AWE.Action.Tutorial.createRedeemRewardsAction(questState.getId());
       log('---> redeemRewards getRequestBody', redeemRewardsAction.getRequestBody());
       redeemRewardsAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
@@ -703,15 +711,12 @@ AWE.GS = (function(module) {
           }
         }
         else if (status === AWE.Net.CONFLICT) {
+          if (error) {
+            error();
+          }
           var dialog = AWE.UI.Ember.InfoDialog.create({
             heading: AWE.I18n.lookupTranslation('tutorial.quest.redeemError.header'),
             message: AWE.I18n.lookupTranslation('tutorial.quest.redeemError.message'),
-            okPressed: function() {
-              this.destroy();
-              if (error) {
-                error();
-              }
-            },
           });          
           WACKADOO.presentModalDialog(dialog);
         }
@@ -725,20 +730,37 @@ AWE.GS = (function(module) {
       
       if (!that.tutorialEnabled()) return;
       
-      var infoDialog = AWE.UI.Ember.QuestInfoDialog.create({
+      var questState = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(questId);
+      
+      var infoDialog = AWE.UI.Ember.QuestDialog.create({
+        header: AWE.I18n.lookupTranslation('tutorial.quest.info.header'),
         quest: AWE.GS.TutorialManager.getTutorial().quest(questId),
-        questState: AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(questId),
+        questState: questState,
       });
       WACKADOO.presentModalDialog(infoDialog);      
+
+      if (questState.get('status') === AWE.GS.QUEST_STATUS_NEW) {      
+        questState.set('status', AWE.GS.QUEST_STATUS_DISPLAYED);
+        
+        // send action that quest was displayed
+        var questDisplayedAction = AWE.Action.Tutorial.createQuestDisplayedAction(questState.getId());
+        questDisplayedAction.send(function(status) {
+          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+            log('---> quest state set to displayed')
+          }
+          else {
+            log('---> quest state could not be set to displayed')
+          }
+        });
+      }
     }
     
     that.showQuestFinishedDialog = function(questState) {
       
       if (!that.tutorialEnabled()) return;
       
-      var dialog = AWE.UI.Ember.QuestFinishedDialog.create({
-        // beim schließen:
-        // TS aktualisieren und neue quest anzeigen, falls vorhanden
+      var dialog = AWE.UI.Ember.QuestDialog.create({
+        header: AWE.I18n.lookupTranslation('tutorial.quest.end.header'),
         quest: questState.get('quest'),
         questState: questState,
                     

@@ -14,7 +14,7 @@
          {{#if changingName }}
            &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Processing...
          {{else}} 
-           <a href="#" {{action "changeNamePressed"}}>{{#if firstNameChange}}choose name{{else}}change name (20 toads){{/if}}</a>
+           <span class="simple-button" {{action "changeNamePressed"}}>{{#if firstNameChange}}choose name{{else}}change name (20 toads){{/if}}</span>
          {{/if}}
       </p>      
       <p>Please choose your name wisely, ideally it should fit into the stoneage setting.
