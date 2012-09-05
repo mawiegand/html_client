@@ -169,6 +169,18 @@ AWE.UI = (function(module) {
           that.onToggleButtonClick()
         };
         this.addChild(my.toggleButtonView);
+      } 
+      
+      if (AWE.GS.TutorialStateManager.getTutorialState()) {
+        var openQuestStates = AWE.GS.TutorialStateManager.getTutorialState().get('openQuestStateCount');
+        var allQuestStates = AWE.GS.TutorialStateManager.getTutorialState().get('notClosedQuestStateCount');
+        var string = "Quests";
+        if (openQuestStates !== undefined && allQuestStates !== undefined && allQuestStates > 0) {
+          string += "\n(" + openQuestStates + "/" + allQuestStates + ")";
+        }
+        if (string !== my.toggleButtonView.text()) {
+          my.toggleButtonView.setText(string);
+        }
       }      
     }
     

@@ -5,17 +5,17 @@
 
       <h1>{{t tutorial.questList}}</h1>
       
-      <table>
-        <tr>
-          <th>{{t general.nr}}</th>
-          <th>{{t tutorial.name}}</th>
-          <th>{{t tutorial.status}}</th>
-          <th>{{t tutorial.reward}}</th>
-        </tr>
-        {{#each questStates}}
-        {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this"}}</td>
-        {{/each}}
-      </table>
+      <div class="quest-list-header">
+        <div class="quest-list-item-nr">{{t general.nr}}</div>
+        <div class="quest-list-item-name">{{ t tutorial.name }}</div>
+        <div class="quest-list-item-status">{{ t tutorial.status }}</div>
+        <div class="quest-list-item-reward"></div>
+        <div class="quest-list-item-show"></div>
+      </div>
+
+      {{#each questStates}}
+        {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item"}}</td>
+      {{/each}}
             
       <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
       
@@ -24,29 +24,38 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="quest-list-entry-view">
-        <tr>
-          <td>#{{questState.questNr}}</td>
-          <td>{{local questState.questName}}</td>
-          <td>{{questState.statusString}}</td>
-          <td>{{#if questState.finished}}<a href="#" {{action "redeemButtonPressed" }}>{{t tutorial.rewardLink }}</a>{{/if}}</td>
-          <td><a href="#" {{action "showQuestInfoPressed" }}>{{t tutorial.showQuestLink }}</a></td>
-        </tr>
+        <div class="quest-list-item-nr">#{{questState.questNr}}</div>
+        <div class="quest-list-item-name">{{local questState.questName}}</div>
+        <div class="quest-list-item-status">{{questState.statusString}}</div>
+        <div class="quest-list-item-reward">
+            {{#if questState.finished}}
+              {{#if questState.redeeming}}
+                {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+              {{else}}
+                <div class="simple-button" {{action "redeemButtonPressed" }}>{{t tutorial.rewardLink }}</div>
+              {{/if}}
+            {{/if}}
+          </div>
+        <div class="quest-list-item-show"><div class="simple-button" {{action "showQuestInfoPressed" }}>{{t tutorial.showQuestLink }}</div></div>
 </script>
 
 
 <script type="text/x-handlebars" data-template-name="quest-view">
-      <h3>{{local quest.name}}</h4>
+      <p class="citation">{{local quest.flavour}}</p>
+      <h2>{{local quest.name}}</h4>
       {{local quest.description}}
       {{#if quest.reward_tests.textbox_test }}
         {{#if finished}}
           <p>{{t tutorial.correctAnswered }}</p>
         {{else}}
-          {{view Ember.TextField class="text-field" placeholder="answer" type="text" valueBinding="answerText"}}
-          {{#if checking}}
-            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-          {{else}}
-            <a href="#" {{action "checkQuestAnswerPressed"}} class="upgrade" title="click to answer"><img src="<%= asset_path('icons/cross_green.png') %>"></img> {{t tutorial.answerQuestLink }}</a>
-          {{/if}}
+          <div>
+            {{view Ember.TextField class="quest-answer-field" placeholder="answer" type="text" valueBinding="answerText"}}
+            {{#if checking}}
+              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+            {{else}}
+              <div class="simple-button" {{action "checkQuestAnswerPressed"}} >{{t tutorial.answerQuestLink }}</div>
+            {{/if}}
+          </div>
           {{#if error}}
             <p>{{t tutorial.quest.error}}</p>
           {{/if}} 
@@ -55,53 +64,34 @@
 </script>
 
 
-<script type="text/x-handlebars" data-template-name="quest-info-dialog">
+<script type="text/x-handlebars" data-template-name="quest-dialog">
   <div class="modal-dialog-background"></div>
   <div class="center-helper">
-    <div class="modal-dialog-pane quest-info-dialog">
+    <div class="modal-dialog-pane quest-dialog">
 
-      <h1>{{t tutorial.quest.info.header}}</h1>
-      {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
-      <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
-      
-    </div>
-  </div>
-</script>
-
-
-<script type="text/x-handlebars" data-template-name="quest-started-dialog">
-  <div class="modal-dialog-background"></div>
-  <div class="center-helper">
-    <div class="modal-dialog-pane quest-start-dialog">
-
-      <h1>{{t tutorial.quest.start.header}}</h1>
-      {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
-      <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
-      
-    </div>
-  </div>
-</script>
-
-
-<script type="text/x-handlebars" data-template-name="quest-finished-dialog">
-  <div class="modal-dialog-background"></div>
-  <div class="center-helper">
-    <div class="modal-dialog-pane quest-finished-dialog">
-
-      <h1>{{t tutorial.quest.end.header}}</h1>
+      <div {{bindAttr class="advisor"}}></div>
+      <h1>{{header}}</h1>
       {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
         
-      <p>{{t tutorial.quest.end.bonus}}</p>
-      {{#if quest.rewards.resource_rewards}}
-      {{view AWE.UI.Ember.QuestResourceRewardsView resourcesBinding="quest.rewards.resource_rewards"}}
-      {{/if}}
-      {{#if quest.rewards.unit_rewards}}
-      {{view AWE.UI.Ember.QuestUnitRewardsView unitsBinding="quest.rewards.unit_rewards"}}
-      {{/if}}
-      {{#if redeeming}}
-        {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-      {{else}}
-        <a href="#" {{action "redeemButtonPressed" }}>{{t tutorial.rewardLink }}</a>
+      {{#if finished}}
+        <hr />
+        <div>
+          <div class="quest-redeem-button">
+            {{#if redeeming}}
+              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+            {{else}}
+              <div class="simple-button" {{action "redeemButtonPressed" }}>{{t tutorial.redeemNow }}</div>
+            {{/if}}
+          </div>
+          <p>{{t tutorial.quest.end.bonus}}</p>
+          {{#if quest.rewards.resource_rewards}}
+          {{view AWE.UI.Ember.QuestResourceRewardsView resourcesBinding="quest.rewards.resource_rewards" classNames="quest-rewards"}}
+          {{/if}}
+          {{#if quest.rewards.unit_rewards}}
+          {{view AWE.UI.Ember.QuestUnitRewardsView unitsBinding="quest.rewards.unit_rewards" classNames="quest-rewards"}}
+          {{/if}}
+          
+        </div>
       {{/if}}
       <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
       
@@ -112,7 +102,7 @@
 
 <script type="text/x-handlebars" data-template-name="quest-resource-rewards-view">
   <div>
-    <h4>{{t tutorial.quest.end.resources}}</h4>
+    <b>{{t tutorial.quest.end.resources}}</b>
     {{#each resources }}
     {{view AWE.UI.Ember.QuestResourceRewardView resourceBinding="this"}}
     {{/each}}
@@ -121,15 +111,15 @@
 
 <script type="text/x-handlebars" data-template-name="quest-resource-reward-view">
   <div>
-    <div style="display: inline-block; width: 100px;">{{resourceName}}</div>
-    <div style="display: inline-block; width: 100px; text-align:right;">{{resource.amount}}</div>
+    <div class="quest-reward-name">{{resourceName}}</div>
+    <div class="quest-reward-amount">{{resource.amount}}</div>
   </div>
 </script>
 
 
 <script type="text/x-handlebars" data-template-name="quest-unit-rewards-view">
   <div>
-    <h4>{{t tutorial.quest.end.units}}</h4>
+    <b>{{t tutorial.quest.end.units}}</b>
     {{#each units }}
     {{view AWE.UI.Ember.QuestUnitRewardView unitBinding="this"}}
     {{/each}}
@@ -138,8 +128,8 @@
 
 <script type="text/x-handlebars" data-template-name="quest-unit-reward-view">
   <div>
-    <div style="display: inline-block; width: 100px;">{{unitName}}</div>
-    <div style="display: inline-block; width: 100px; text-align:right;">{{unit.amount}}</div>
+    <div class="quest-reward-name">{{unitName}}</div>
+    <div class="quest-reward-amount">{{unit.amount}}</div>
   </div>
 </script>
 

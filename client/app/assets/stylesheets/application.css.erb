@@ -759,6 +759,20 @@ html, body {
   border-radius: 7px;
 }
 
+.simple-button {
+  display: inline;
+  min-height: 28px;
+  padding: 2px 2px 2px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #777;  
+}
+
+.simple-button:hover {
+  border-color: #000;
+  color: #000;
+}
+
 .icon-button {
   padding: 4px 8px 4px 48px;
 }
@@ -2744,6 +2758,108 @@ a.resource-offer:hover {
   display: inline-block;
   background-image: url('<%= asset_path("icons/activityindicator_small.svg") %>');
 }
+
+
+
+
+.quest-answer-field {
+  display: inline;
+}
+
+.quest-list-view {
+  position: absolute; 
+  margin-left: -300px;
+  margin-top: -300px;
+  width: 600px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 16px 20px 16px 20px;
+  z-index:256;
+}
+
+.quest-list-item {
+  background-color: #FBB;
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.quest-list-item.finished {
+  background-color: #BFB;
+}
+
+.quest-list-header {
+  padding: 10px;
+  font-weight: bold;
+}
+
+.quest-list-item-nr {
+  width: 30px;
+  display: inline-block;
+  text-align: right;
+}
+
+.quest-list-item-name {
+  width: 290px;
+  display: inline-block;
+}
+
+.quest-list-item-status {
+  text-align: center;
+  width: 80px;
+  display: inline-block;
+}
+
+.quest-list-item-reward {
+  text-align: center;
+  width: 80px;
+  display: inline-block;
+}
+
+.quest-list-item-show {
+  text-align: center;
+  width: 80px;
+  display: inline-block;
+}
+
+.quest-start-dialog, .quest-finished-dialog, .quest-info-dialog, .quest-dialog {
+  position: absolute; 
+  margin-left: -300px;
+  margin-top: -250px;
+  width: 600px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 16px 20px 16px 20px;
+  z-index:256;
+}
+
+.quest-start-dialog .advisor, .quest-finished-dialog .advisor, .quest-info-dialog .advisor, .quest-dialog .advisor { 
+  float:right;
+  margin-left: 10px;
+}
+
+.quest-rewards {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.quest-redeem-button {
+  float: right;
+}
+
+.quest-reward-name {
+  display: inline-block;
+  width: 120px;
+  padding-right: 20px;
+}
+
+.quest-reward-amount {
+  display: inline-block;
+  width: 60px;
+  text-align: right:
+  padding-right: 20px;
+}
+
+
 
 
 

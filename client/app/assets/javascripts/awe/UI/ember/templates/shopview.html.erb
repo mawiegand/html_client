@@ -4,7 +4,7 @@
       <div class="shop-dialog-pane">
         <h1>{{ t shop.title }}</h1>
         
-        <p>{{ t shop.currentCreditAmount }}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }} {{ t shop.credits }}  | <a href="#" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</a></p>
+        <p>{{ t shop.currentCreditAmount }}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }} {{ t shop.credits }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="simple-button" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span></p>
         
         {{#if resourceOffers}}
         <h4>{{ t shop.resourceOffers }}</h4>
@@ -53,13 +53,9 @@
         {{/if}}
         
         {{#if offer.isBuying}}
-          {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Sending...
+          {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{t shop.activating }}
         {{else}}
-          {{#if offer.resource_effect}}
-            <a href="#" {{action "buyBonusOfferPressed"}}>{{t shop.extend }}</a>
-          {{else}}
-            <a href="#" {{action "buyBonusOfferPressed"}}>{{t shop.buy }}</a>
-          {{/if}}
+          <div class="simple-button" {{action "buyBonusOfferPressed"}}>{{#if offer.resource_effect}}{{t shop.extend }}{{else}}{{t shop.buy }}{{/if}}</div>
         {{/if}}
       </div>
 </script>
