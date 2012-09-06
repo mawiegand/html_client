@@ -663,10 +663,10 @@ AWE.GS = (function(module) {
                 
               window.setTimeout(function() {
                 
-                log('---> that.tutorialState.get(newQuestDialog)', that.tutorialState.get('newQuestDialog'))
+                log('---> newQuestState.getPath(quest.hide_start_dialog)', newQuestState.getPath('quest.hide_start_dialog'))
             
                 if ((that.tutorialState.get('newQuestDialog') == null || that.tutorialState.get('newQuestDialog').get('isDestroyed')) &&
-                    newQuestState.get('status') === AWE.GS.QUEST_STATUS_NEW) {
+                    newQuestState.get('status') === AWE.GS.QUEST_STATUS_NEW && !newQuestState.getPath('quest.hide_start_dialog')) {
                   var dialog = AWE.UI.Ember.QuestDialog.create({
                     quest: newQuestState.get('quest'),
                     questState: newQuestState,

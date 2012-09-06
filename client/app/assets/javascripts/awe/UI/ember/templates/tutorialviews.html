@@ -41,7 +41,13 @@
 
 
 <script type="text/x-handlebars" data-template-name="quest-view">
-      <p class="citation">{{local quest.flavour}}</p>
+      <p class="citation">
+      {{#unless questState.finished}}
+        {{local quest.flavour}}
+      {{else}}
+        {{local quest.reward_flavor}}
+      {{/unless}}
+      </p>
       <h3>{{local quest.task}}</h3>
       {{#if questState.finished}}
         {{local quest.reward_text}}
@@ -76,25 +82,25 @@
       <h1>{{header}}</h1>
       {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
         
-      {{#if finished}}
-        <hr />
-        <div>
-          <div class="quest-redeem-button">
-            {{#if redeeming}}
-              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-            {{else}}
-              <div class="simple-button" {{action "redeemButtonPressed" }}>{{t tutorial.redeemNow }}</div>
-            {{/if}}
-          </div>
-          <p>{{t tutorial.quest.end.bonus}}</p>
-          {{#if quest.rewards.resource_rewards}}
-          {{view AWE.UI.Ember.QuestResourceRewardsView resourcesBinding="quest.rewards.resource_rewards" classNames="quest-rewards"}}
+      {{#if quest.rewards}}
+      <hr />
+      <div>
+        {{#if finished}}
+        <div class="quest-redeem-button">
+          {{#if redeeming}}
+            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+          {{else}}
+            <div class="simple-button" {{action "redeemButtonPressed" }}>{{t tutorial.redeemNow }}</div>
           {{/if}}
-          {{#if quest.rewards.unit_rewards}}
-          {{view AWE.UI.Ember.QuestUnitRewardsView unitsBinding="quest.rewards.unit_rewards" classNames="quest-rewards"}}
-          {{/if}}
-          
         </div>
+        {{/if}}
+        {{#if quest.rewards.resource_rewards}}
+          {{view AWE.UI.Ember.QuestResourceRewardsView resourcesBinding="quest.rewards.resource_rewards" classNames="quest-rewards"}}
+        {{/if}}
+        {{#if quest.rewards.unit_rewards}}
+          {{view AWE.UI.Ember.QuestUnitRewardsView unitsBinding="quest.rewards.unit_rewards" classNames="quest-rewards"}}
+        {{/if}}
+      </div>
       {{/if}}
       <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
       
