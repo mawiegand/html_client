@@ -153,8 +153,8 @@ AWE.UI = (function(module) {
           var mapControllerActive = WACKADOO.mapControllerActive();
           WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
           if (mapControllerActive) {
-            AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button');
-          }
+            AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button2');
+          } 
         }; 
         this.addChild(_villageImageView);
       }
