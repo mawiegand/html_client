@@ -42,8 +42,8 @@
 
 <script type="text/x-handlebars" data-template-name="quest-view">
       <p class="citation">{{local quest.flavour}}</p>
-      <h3>{{local quest.name}}</h3><!-- use task when xml is final -->
-      {{#if finished}}
+      <h3>{{local quest.task}}</h3>
+      {{#if questState.finished}}
         {{local quest.reward_text}}
       {{else}}
         {{local quest.description}}
