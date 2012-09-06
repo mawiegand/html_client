@@ -653,15 +653,16 @@ AWE.GS = (function(module) {
       that.updateTutorialState(function() {
 
         if (that.tutorialState.get('newQuestDialog') == null || that.tutorialState.get('newQuestDialog').get('isDestroyed')) {      
-          window.setTimeout(function() {
-            if (that.tutorialState) {
-              var newQuestStates = that.tutorialState.get('newQuestStates');
-              log('---> checkForNewQuests newQuestStates', newQuestStates);
-              if (newQuestStates != null && newQuestStates.length > 0) {
+          if (that.tutorialState) {
+            var newQuestStates = that.tutorialState.get('newQuestStates');
+            log('---> checkForNewQuests newQuestStates', newQuestStates);
+            if (newQuestStates != null && newQuestStates.length > 0) {
+              
+              // only display first new quest, even if there are more. the other quest will be displayed later on.            
+              var newQuestState = newQuestStates[0];
                 
-                // only display first new quest, even if there are more. the other quest will be displayed later on.            
-                var newQuestState = newQuestStates[0];
-                
+              window.setTimeout(function() {
+            
                 // display newQuestStates[0];
                 if (that.tutorialState.get('newQuestDialog') == null || that.tutorialState.get('newQuestDialog').get('isDestroyed')) {
                   var dialog = AWE.UI.Ember.QuestDialog.create({
@@ -683,9 +684,9 @@ AWE.GS = (function(module) {
                     }
                   });
                 }
-              }
+              }, newQuestState.get('quest_id') === 0 ? 1 : AWE.Config.TUTORIAL_STATE_DELAY_INTERVAL);   
             }
-          }, AWE.Config.TUTORIAL_STATE_DELAY_INTERVAL);   
+          }
         }
         else {
           log('ERROR in AWE.GS.TutorialManager.checkForNewQuests: missing tutorialState');
