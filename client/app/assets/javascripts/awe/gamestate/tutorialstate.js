@@ -666,7 +666,7 @@ AWE.GS = (function(module) {
                 log('---> that.tutorialState.get(newQuestDialog)', that.tutorialState.get('newQuestDialog'))
             
                 if ((that.tutorialState.get('newQuestDialog') == null || that.tutorialState.get('newQuestDialog').get('isDestroyed')) &&
-                    newQuestState.get('status') === AWE.GS.QUEST_STATE_NEW) {
+                    newQuestState.get('status') === AWE.GS.QUEST_STATUS_NEW) {
                   var dialog = AWE.UI.Ember.QuestDialog.create({
                     quest: newQuestState.get('quest'),
                     questState: newQuestState,
