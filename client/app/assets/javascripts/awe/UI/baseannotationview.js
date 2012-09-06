@@ -76,7 +76,10 @@ AWE.UI = (function(module) {
         enterButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         enterButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
         enterButton.setFrame(AWE.Geometry.createRect(12, 0, 52, 52));
-        enterButton.onClick = function() { that.onEnterButtonClick(); }
+        enterButton.onClick = function() {
+          that.onEnterButtonClick();
+          AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button2');
+        }
         this.addChild(enterButton);
       }
       else if (enterButton && !isOwnLocation) {
