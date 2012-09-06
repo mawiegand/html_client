@@ -662,9 +662,11 @@ AWE.GS = (function(module) {
               var newQuestState = newQuestStates[0];
                 
               window.setTimeout(function() {
+                
+                log('---> that.tutorialState.get(newQuestDialog)', that.tutorialState.get('newQuestDialog'))
             
-                // display newQuestStates[0];
-                if (that.tutorialState.get('newQuestDialog') == null || that.tutorialState.get('newQuestDialog').get('isDestroyed')) {
+                if ((that.tutorialState.get('newQuestDialog') == null || that.tutorialState.get('newQuestDialog').get('isDestroyed')) &&
+                    newQuestState.get('status') === AWE.GS.QUEST_STATE_NEW) {
                   var dialog = AWE.UI.Ember.QuestDialog.create({
                     quest: newQuestState.get('quest'),
                     questState: newQuestState,
@@ -672,17 +674,7 @@ AWE.GS = (function(module) {
                   });
                   WACKADOO.presentModalDialog(dialog);
                   newQuestState.set('status', module.QUEST_STATUS_DISPLAYED);
-                  
-                  // send action that quest was displayed
-                  var questDisplayedAction = AWE.Action.Tutorial.createQuestDisplayedAction(newQuestState.getId());
-                  questDisplayedAction.send(function(status) {
-                    if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-                      log('---> quest state set to displayed')
-                    }
-                    else {
-                      log('---> quest state could not be set to displayed')
-                    }
-                  });
+                  that.setQuestDisplayed(newQuestState.getId());
                 }
               }, newQuestState.get('quest_id') === 0 ? 1 : AWE.Config.TUTORIAL_STATE_DELAY_INTERVAL);   
             }
@@ -742,17 +734,7 @@ AWE.GS = (function(module) {
 
       if (questState.get('status') === AWE.GS.QUEST_STATUS_NEW) {      
         questState.set('status', AWE.GS.QUEST_STATUS_DISPLAYED);
-        
-        // send action that quest was displayed
-        var questDisplayedAction = AWE.Action.Tutorial.createQuestDisplayedAction(questState.getId());
-        questDisplayedAction.send(function(status) {
-          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-            log('---> quest state set to displayed')
-          }
-          else {
-            log('---> quest state could not be set to displayed')
-          }
-        });
+        that.setQuestDisplayed(questState.getId());
       }
     }
     
@@ -771,6 +753,18 @@ AWE.GS = (function(module) {
         },            
       });          
       WACKADOO.presentModalDialog(dialog);
+    }
+    
+    that.setQuestDisplayed = function(questStateId) {
+      var questDisplayedAction = AWE.Action.Tutorial.createQuestDisplayedAction(questStateId);
+      questDisplayedAction.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          log('---> quest state set to displayed')
+        }
+        else {
+          log('---> quest state could not be set to displayed')
+        }
+      });
     }
 
     return that;
