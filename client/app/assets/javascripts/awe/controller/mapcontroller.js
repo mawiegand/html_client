@@ -820,7 +820,7 @@ AWE.Controller = (function(module) {
       
       var dialog = AWE.UI.Ember.SettlementInfoDialog.create({
         locationId: location.id(),
-        cancelPressed: function(evt) {
+        closePressed: function(evt) {
           this.destroy();
         },
       });
