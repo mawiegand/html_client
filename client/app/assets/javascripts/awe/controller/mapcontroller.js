@@ -146,12 +146,6 @@ AWE.Controller = (function(module) {
       inspectorViews.encyclopediaButtonView = AWE.UI.createEncyclopediaButtonView();
       inspectorViews.encyclopediaButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
       _stages[3].addChild(inspectorViews.encyclopediaButtonView.displayObject());
-      
-      if (AWE.GS.TutorialStateManager.tutorialEnabled()) {
-        inspectorViews.questListButtonView = AWE.UI.createQuestListButtonView();
-        inspectorViews.questListButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
-        _stages[3].addChild(inspectorViews.questListButtonView.displayObject());
-      }      
     };   
     
         
@@ -2326,9 +2320,6 @@ AWE.Controller = (function(module) {
       }
       if (inspectorViews.encyclopediaButtonView) {
         inspectorViews.encyclopediaButtonView.setOrigin(AWE.Geometry.createPoint(20+60, _windowSize.height - 68));
-      }
-      if (inspectorViews.questListButtonView) {
-        inspectorViews.questListButtonView.setOrigin(AWE.Geometry.createPoint(20+120, _windowSize.height - 68));
       }
       return _inspectorChanged || _windowChanged;
     };
