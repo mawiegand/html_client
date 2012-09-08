@@ -370,6 +370,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this.setScreenController(baseController);
     },
    
+    baseControllerActive: function() {
+      return this.get('presentScreenController') === this.get('settlementScreenController');
+    },
+       
     activateFortressController: function(reference) {
       var fortressController = this.get('settlementScreenController');
       if (!fortressController) {
