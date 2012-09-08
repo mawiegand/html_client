@@ -26,9 +26,9 @@ AWE.UI.Ember = (function(module) {
       });
     },
     
-    showQuestInfoPressed: function(questId) {
-      log('--> show Quest Info Button Pressed', questId)
-      AWE.GS.TutorialStateManager.showQuestInfoDialog(questId);
+    showQuestInfoPressed: function(quest) {
+      log('--> show Quest Info Button Pressed', quest)
+      AWE.GS.TutorialStateManager.showQuestInfoDialog(quest);
     },
     
     okPressed: function() {
@@ -48,8 +48,8 @@ AWE.UI.Ember = (function(module) {
     },
   
     showQuestInfoPressed: function() {
-      log('---> QuestListEntryView showQuestInfoPressed', this.getPath('questState.quest_id'));
-      this.get('parentView').showQuestInfoPressed(this.getPath('questState.quest_id'));
+      log('---> QuestListEntryView showQuestInfoPressed', this.getPath('questState.quest'));
+      this.get('parentView').showQuestInfoPressed(this.getPath('questState.quest'));
     },
     
     classNameBindings: ['finished'],
@@ -121,12 +121,7 @@ AWE.UI.Ember = (function(module) {
           var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(quest.id, answerText);
           questCheckAction.send(function(status) {
             if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-              
-              // set already to finished to avoid showing of form in quest finished view
               questState.set('status', AWE.GS.QUEST_STATUS_FINISHED);
-              
-              that.get('parentView').destroy();
-              AWE.GS.TutorialStateManager.showQuestFinishedDialog(questState);
             }
             else {
               that.set('checking', false);

@@ -45,10 +45,17 @@
       {{#unless questState.finished}}
         {{local quest.flavour}}
       {{else}}
-        {{local quest.reward_flavor}}
+        {{local quest.reward_flavour}}
       {{/unless}}
       </p>
-      <h3>{{local quest.task}}</h3>
+      <h3>
+        {{#unless questState.finished}}
+          {{t tutorial.quest.start.task}}
+        {{else}}
+          {{t tutorial.quest.end.task}}
+        {{/unless}}
+        {{local quest.task}}
+      </h3>
       {{#if questState.finished}}
         {{local quest.reward_text}}
       {{else}}
