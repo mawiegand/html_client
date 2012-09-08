@@ -272,31 +272,50 @@ AWE.UI = (function(module) {
       if (!_army.get("npc") && (_army.get("stance") != _stance || !_animation)) {
         _stance = _army.get("stance");
         var image = "map/army/animation";
-        var standFrame = 0;
+        var standFrame = 11;
         
         switch (_army.get('stance') || 0) {
-          case 0:  standFrame = 0; break;
-          case 1:  standFrame = 1; break;
-          case 2:  standFrame = 0; break;
-          default: standFrame = 0; 
+          case 0:  standFrame = 11; break;
+          case 1:  standFrame =  8; break;
+          case 2:  standFrame = 11; break;
+          default: standFrame = 11; 
         }
         
         var data = {
           images: [AWE.UI.ImageCache.getImage(image).src],
           frames: {width:128, height:128},
           animations: { 
-            toWalk: [standFrame, 2,  'walk', 2], 
-            walk:   [3,  6, 'walk', 2], 
+            toWalk: {
+              frames: [ 14, 16],
+              next:   'walk',
+              frequency: 2,
+            },
+            walk:   {
+              frames:    [ 17,18,19,20,21,22,23,24],
+              next:      'walk',
+              frequency: 1, 
+            },
             fight:  {
-              frames: [7,8,9,10,11,12,12, 7,8,9,10,11,12,12, 12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12, 7,8,9,10,11,12,12,7,8,9,10,11,12,12,7,8,9,10,11,12,12, 12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12, ],
+              frames: [15,0,1,2,3,4, 0,1,2,3,4,
+                       6,6,6, 5,5, 7,7,7, 5,5,    15,0,1,2,3,4,
+                       6,6,6, 5,5, 7,7,7, 5,5, 6,6,6, 5,5, 7,7,7, 5,5, 6,6,6, 5,5, 7,7,7, 5,5, 6,6,6, 5,5, 7,7,7, 5,5, 6,6,6, 5,5, 7,7,7, 5,5,
+               ],
               next:   'fight',
             }, 
+            
             toStand: {
-              frames:    [2, standFrame],
+              frames:    [16, 14],
               next:      'stand',
               frequency: 2,
             },
-            stand: [standFrame],
+            stand: {
+              frames: [ standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, 
+                        standFrame+1, standFrame+1, standFrame+1, standFrame+1, standFrame+1,
+                        standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame,
+                        standFrame+2, standFrame+2, standFrame+2, standFrame+2, standFrame+2],
+              next: 'stand',
+              frequency: 1,
+            },
           },
         };
         

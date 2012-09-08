@@ -809,6 +809,19 @@ AWE.Controller = (function(module) {
       });
     }
     
+    that.settlementInfoButtonClicked = function(location) {
+      if (!location) return;
+      
+      var dialog = AWE.UI.Ember.SettlementInfoDialog.create({
+        locationId: location.id(),
+        closePressed: function(evt) {
+          this.destroy();
+        },
+      });
+            
+      that.applicationController.presentModalDialog(dialog);      
+    }
+    
     that.newArmyButtonClicked = function(location) {
       if (!location) return;
       
@@ -1141,7 +1154,11 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector.onNewArmyButtonClick = function(location) {
           that.newArmyButtonClicked(location);
         };
-      }
+        
+        inspectorViews.inspector.onInfoButtonClick = function(location) {
+          that.settlementInfoButtonClicked(location);
+        };        
+      }      
       else if (view.typeName() === 'ArmyView') {
         inspectorViews.inspector = AWE.UI.createArmyInspectorView();
         inspectorViews.inspector.initWithControllerAndArmy(that, view.army());
@@ -1165,6 +1182,14 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector.onNewArmyButtonClick = function(location) {
           that.newArmyButtonClicked(location);
         };
+        
+        inspectorViews.inspector.onFlagClicked = function(allianceId) {
+          WACKADOO.activateAllianceController(allianceId);
+        }
+        
+        inspectorViews.inspector.onInfoButtonClick = function(location) {
+          that.settlementInfoButtonClicked(location);
+        }; 
       }
       else if (view.typeName() === 'OutpostView') {
         inspectorViews.inspector = AWE.UI.createOutpostInspectorView();
@@ -1173,6 +1198,10 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector.onNewArmyButtonClick = function(location) {
           that.newArmyButtonClicked(location);
         };
+
+        inspectorViews.inspector.onInfoButtonClick = function(location) {
+          that.settlementInfoButtonClicked(location);
+        }; 
       }
       
       if (inspectorViews.inspector) {
