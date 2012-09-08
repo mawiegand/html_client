@@ -150,10 +150,11 @@ AWE.UI = (function(module) {
         _villageImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("map/colony/big"));
         _villageImageView.setFrame(AWE.Geometry.createRect(293, 20, 100, 100));
         _villageImageView.onClick = function() {
-          var mapControllerActive = WACKADOO.mapControllerActive();
+          var baseControllerActive = WACKADOO.baseControllerActive();
           WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
-          if (mapControllerActive) {
-            AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button2');
+          log('---------------> baseControllerActive', baseControllerActive);
+          if (baseControllerActive) {
+            AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button1');
           } 
         }; 
         this.addChild(_villageImageView);
