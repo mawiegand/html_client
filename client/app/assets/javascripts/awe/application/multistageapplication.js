@@ -515,6 +515,10 @@ AWE.Application = (function(module) {
         this.modalDialogs.push(dialog);
         dialog.append();
       },
+      
+      modalDialogOpen: function() {
+        return this.get('isModal');
+      },
 
       //****** dom elements handlers ******/
       /** adds a dom element to the list of dom elements which can prevent a click 
