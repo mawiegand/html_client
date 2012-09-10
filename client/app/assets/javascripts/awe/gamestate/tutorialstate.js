@@ -65,7 +65,7 @@ AWE.GS = (function(module) {
       var questStates = this.getPath('quests.content');
       var notClosedQuestStates = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
-        if (questState && questState.get('status') < module.QUEST_STATUS_CLOSED && questState.get('quest') && questState.getPath('quest.rewards')) {
+        if (questState && questState.get('status') < module.QUEST_STATUS_CLOSED && questState.get('quest') && (questState.getPath('quest.rewards') || questState.get('status') < module.QUEST_STATUS_FINISHED)) {
           notClosedQuestStates.push(questState);
         }
       });
