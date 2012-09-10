@@ -684,7 +684,6 @@ AWE.GS = (function(module) {
                 if (!WACKADOO.modalDialogOpen() && newQuestState.get('status') === AWE.GS.QUEST_STATUS_NEW && !newQuestState.getPath('quest.hide_start_dialog')) {
                   log('---> checkForNewQuests: show dialog');
                   var dialog = AWE.UI.Ember.QuestDialog.create({
-                    quest: newQuestState.get('quest'),
                     questState: newQuestState,
                     header: AWE.I18n.lookupTranslation('tutorial.quest.start.header'),
                     okPressed:    function() {
@@ -764,7 +763,6 @@ AWE.GS = (function(module) {
       
       var infoDialog = AWE.UI.Ember.QuestDialog.create({
         header: AWE.I18n.lookupTranslation('tutorial.quest.info.header'),
-        quest: quest,
         questState: questState,
       });
       WACKADOO.presentModalDialog(infoDialog);      
@@ -785,9 +783,7 @@ AWE.GS = (function(module) {
         log('---> showQuestFinishedDialog: no modal open');
         var dialog = AWE.UI.Ember.QuestDialog.create({
           header: AWE.I18n.lookupTranslation('tutorial.quest.end.header'),
-          quest: questState.get('quest'),
           questState: questState,
-                      
           okPressed:    function() {
             that.checkForNewQuests();
             this.destroy();

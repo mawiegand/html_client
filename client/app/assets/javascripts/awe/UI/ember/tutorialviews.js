@@ -62,7 +62,7 @@ AWE.UI.Ember = (function(module) {
   module.QuestDialog = module.InfoDialog.extend({
     templateName: 'quest-dialog',
     header: null,
-    quest: null,
+    questBinding: 'questState.quest',
     questState: null,
     redeeming: false,
 
@@ -89,7 +89,7 @@ AWE.UI.Ember = (function(module) {
   
   module.QuestView = Ember.View.extend({
     templateName: 'quest-view',
-    quest: null,
+    questBinding: 'questState.quest',
     questState: null,
     answerText: null,
     answerTextObserver: function() {
