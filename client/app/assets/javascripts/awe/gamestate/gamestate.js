@@ -335,7 +335,7 @@ AWE.GS = (
               }         
             }
             else {                                    //   B) process a single entity
-              result = my.processUpdateResponse(data, updateType, start);
+              result = my.processUpdateResponse(data, updateType, my.extractDateFromXHR(xhr) || start);
             };
             if (callback) {      
               var s = new Date();
