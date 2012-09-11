@@ -144,58 +144,6 @@ AWE.UI = (function(module) {
     return that;
   };
   
-  module.createQuestListButtonView = function(spec, my) {
-
-    var that;
-    
-    my = my || {};
-
-    my.toggleButtonView = null;
-
-    that = module.createContainer(spec, my);
-
-    var _super = {
-      initWithController: AWE.Ext.superior(that, "initWithController"),
-      updateView: AWE.Ext.superior(that, "updateView"),
-    };
-    
-    that.recalcView = function() {
-      if (!my.toggleButtonView) {
-        my.toggleButtonView = AWE.UI.createButtonView();
-        my.toggleButtonView.initWithControllerTextAndImage(my.controller, 'Quests', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-        my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        my.toggleButtonView.setFrame(AWE.Geometry.createRect(0, 0, 48, 48));
-        my.toggleButtonView.onClick = function() {
-          that.onToggleButtonClick()
-        };
-        this.addChild(my.toggleButtonView);
-      } 
-      
-      if (AWE.GS.TutorialStateManager.getTutorialState()) {
-        var openQuestStates = AWE.GS.TutorialStateManager.getTutorialState().get('openQuestStateCount');
-        var allQuestStates = AWE.GS.TutorialStateManager.getTutorialState().get('notClosedQuestStateCount');
-        var string = "Quests";
-        if (openQuestStates !== undefined && allQuestStates !== undefined && allQuestStates > 0) {
-          string += "\n(" + openQuestStates + "/" + allQuestStates + ")";
-        }
-        if (string !== my.toggleButtonView.text()) {
-          my.toggleButtonView.setText(string);
-        }
-      }      
-    }
-    
-    that.onToggleButtonClick = function() {
-      WACKADOO.showQuestListDialog();
-    }
-    
-    that.updateView = function() {
-      this.recalcView() 
-      _super.updateView();
-    };   
-    
-    return that;
-  };
-  
   return module;
     
 }(AWE.UI || {}));

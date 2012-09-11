@@ -20,7 +20,7 @@ AWE.UI.Ember = (function(module) {
       log('--> redeem Button Pressed', questState)
       questState.set('redeeming', true);
       AWE.GS.TutorialStateManager.redeemRewards(questState, function() {
-        AWE.GS.TutorialStateManager.checkForRewards();
+        AWE.GS.TutorialStateManager.checkForRewards(); // besser updateTutorial?
       }, function() {
         questState.set('redeeming', false);
       });
@@ -29,11 +29,6 @@ AWE.UI.Ember = (function(module) {
     showQuestInfoPressed: function(quest) {
       log('--> show Quest Info Button Pressed', quest)
       AWE.GS.TutorialStateManager.showQuestInfoDialog(quest);
-    },
-    
-    okPressed: function() {
-      this.destroy();
-      AWE.GS.TutorialStateManager.checkForRewards();
     },
   });  
   
@@ -62,7 +57,7 @@ AWE.UI.Ember = (function(module) {
   module.QuestDialog = module.InfoDialog.extend({
     templateName: 'quest-dialog',
     header: null,
-    quest: null,
+    questBinding: 'questState.quest',
     questState: null,
     redeeming: false,
 
@@ -76,7 +71,7 @@ AWE.UI.Ember = (function(module) {
       
       AWE.GS.TutorialStateManager.redeemRewards(this.get('questState'), function() {
         that.destroy();
-        AWE.GS.TutorialStateManager.checkForRewards();
+        AWE.GS.TutorialStateManager.stopChecking();
       }, function() {
         that.set('redeeming', false);
       });
@@ -89,7 +84,7 @@ AWE.UI.Ember = (function(module) {
   
   module.QuestView = Ember.View.extend({
     templateName: 'quest-view',
-    quest: null,
+    questBinding: 'questState.quest',
     questState: null,
     answerText: null,
     answerTextObserver: function() {

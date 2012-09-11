@@ -331,6 +331,7 @@ AWE.Application = (function(module) {
           // TODO: Game State Runloop!
           
           AWE.GS.InboxManager.triggerInboxAutoUpdate();          
+          AWE.GS.TutorialStateManager.triggerTutorialChecks();          
           
         }
         window.requestAnimFrame(function(self) { return function() {self.runloop(); }; }(this));  // request next animation frame that will initiate the next cycle of the runloop
