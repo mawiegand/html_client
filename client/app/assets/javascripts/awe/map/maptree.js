@@ -295,18 +295,21 @@ AWE.Map = (function(module) {
             console.warn("no node found for path", path);
           }
         }
+        
 
         var tms = AWE.Mapping.GlobalMercator.QuadTreeToTMSTileCode(that.path());
+        //console.log('NEIGHBORS of ', that.path(), 'at level', tms.zoom)
+
         if (tms.x > 0) {
           addNeighbour({ x: tms.x-1, y: tms.y, zoom:tms.zoom }, that.level());
         }
         if (tms.y > 0) {
           addNeighbour({ x: tms.x, y: tms.y-1, zoom:tms.zoom }, that.level()); 
         }
-        if (tms.y < Math.pow(4,that.level())-1) {
+        if (tms.y < Math.pow(2,that.level())-1) {
           addNeighbour({ x: tms.x, y: tms.y+1, zoom:tms.zoom }, that.level()); 
         }
-        if (tms.x < Math.pow(4,that.level())-1) {
+        if (tms.x < Math.pow(2,that.level())-1) {
           addNeighbour({ x: tms.x+1, y: tms.y, zoom:tms.zoom }, that.level());
         }
         return nodes;
@@ -360,10 +363,10 @@ AWE.Map = (function(module) {
         if (tms.y > 0) {
           addNeighbours({ x: tms.x, y: tms.y-1, zoom:tms.zoom }, that.level(), 0); 
         }
-        if (tms.y < Math.pow(4,that.level())-1) {
+        if (tms.y < Math.pow(2,that.level())-1) {
           addNeighbours({ x: tms.x, y: tms.y+1, zoom:tms.zoom }, that.level(), 2); 
         }
-        if (tms.x < Math.pow(4,that.level())-1) {
+        if (tms.x < Math.pow(2,that.level())-1) {
           addNeighbours({ x: tms.x+1, y: tms.y, zoom:tms.zoom }, that.level(), 1);
         }
         return nodes;
@@ -417,10 +420,10 @@ AWE.Map = (function(module) {
         if (tms.y > 0 && side == 0) {
           addNeighbours({ x: tms.x, y: tms.y-1, zoom:tms.zoom }, that.level(), 0); 
         }
-        if (tms.y < Math.pow(4,that.level()-1)-1 && side == 2) {
+        if (tms.y < Math.pow(2,that.level())-1 && side == 2) {
           addNeighbours({ x: tms.x, y: tms.y+1, zoom:tms.zoom }, that.level(), 2); 
         }
-        if (tms.x < Math.pow(4,that.level()-1)-1 && side == 1) {
+        if (tms.x < Math.pow(2,that.level())-1 && side == 1) {
           addNeighbours({ x: tms.x+1, y: tms.y, zoom:tms.zoom }, that.level(), 1);
         }
         return nodes;
