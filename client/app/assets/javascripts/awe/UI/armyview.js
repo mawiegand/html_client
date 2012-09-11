@@ -286,7 +286,7 @@ AWE.UI = (function(module) {
           frames: {width:128, height:128},
           animations: { 
             toWalk: {
-              frames: [ 14, 16],
+              frames: [ standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, 14, 16],
               next:   'walk',
               frequency: 2,
             },
