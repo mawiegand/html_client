@@ -101,12 +101,26 @@
           {{/if}}
         </div>
         {{/if}}
+        <div class="quest-rewards">      
         {{#if quest.rewards.resource_rewards}}
-          {{view AWE.UI.Ember.QuestResourceRewardsView resourcesBinding="quest.rewards.resource_rewards" classNames="quest-rewards"}}
+          {{#each quest.rewards.resource_rewards}}
+            <div class="quest-reward-item">
+              <div class="quest-reward-item-image">
+                <span class="resource-icon {{unbound this.resource}}"}}>&nbsp;</span>
+              </div>
+              <div class="quest-reward-item-amount">{{this.amount}}</div>
+            </div>
+          {{/each}}
         {{/if}}
         {{#if quest.rewards.unit_rewards}}
-          {{view AWE.UI.Ember.QuestUnitRewardsView unitsBinding="quest.rewards.unit_rewards" classNames="quest-rewards"}}
+          {{#each quest.rewards.unit_rewards}}
+            <div class="quest-reward-item">
+              <div class="quest-reward-item-image">HHH</div>
+              <div class="quest-reward-item-amount">{{this.amount}}</div>
+            </div>
+          {{/each}}
         {{/if}}
+        </div>
       </div>
       {{/if}}
       <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
@@ -115,31 +129,10 @@
   </div>
 </script>
 
-
-<script type="text/x-handlebars" data-template-name="quest-resource-rewards-view">
-  <div>
-    <b>{{t tutorial.quest.end.resources}}</b>
-    {{#each resources }}
-    {{view AWE.UI.Ember.QuestResourceRewardView resourceBinding="this"}}
-    {{/each}}
-  </div>
-</script>
-
-<script type="text/x-handlebars" data-template-name="quest-resource-reward-view">
-  <div>
-    <div class="quest-reward-name">{{resourceName}}</div>
-    <div class="quest-reward-amount">{{resource.amount}}</div>
-  </div>
-</script>
-
-
 <script type="text/x-handlebars" data-template-name="quest-unit-rewards-view">
-  <div>
-    <b>{{t tutorial.quest.end.units}}</b>
-    {{#each units }}
+  {{#each units }}
     {{view AWE.UI.Ember.QuestUnitRewardView unitBinding="this"}}
-    {{/each}}
-  </div>
+  {{/each}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="quest-unit-reward-view">
