@@ -601,24 +601,26 @@ AWE.GS = (function(module) {
     that.triggerTutorialChecks = function() {
       
       if (!that.tutorialEnabled()) return;
+      log('---> triggerTutorialChecks');
       
       if (!WACKADOO.modalDialogOpen() && !checking && lastRewardsCheck.getTime() + 3000 < new Date().getTime()) { // timeout
         lastRewardsCheck = new Date();
-        log('---> start checking');
+        log('---> triggerTutorialChecks: start checking');
         
         if (delayedFinishedQuestState) {
           // show finished dialog
+          log('---> triggerTutorialChecks: show delayed finished dialog');
           that.showQuestFinishedDialog(delayedFinishedQuestState);
-          log('---> show delayed finished dialog');
           delayedFinishedQuestState = null;
         }
         else if (delayedStartQuestState) {
           // show start dialog
+          log('---> triggerTutorialChecks: show delayed start dialog');
           that.showQuestStartDialog(delayedStartQuestState);
-          log('---> show delayed start dialog');
           delayedStartQuestState = null;
         }
         else {
+          log('---> triggerTutorialChecks: check for rewards');
           that.checkForRewards2();
         }
       }
@@ -809,27 +811,29 @@ AWE.GS = (function(module) {
           log('ERROR in AWE.GS.TutorialManager.redeemRewards');
         }
       });
-    }
+    }    
     
     that.showQuestStartDialog = function(questState) {
       
       if (!that.tutorialEnabled()) return;
 
-      log('---> showQuestInfoDialog');
+      log('------------------------------------------> showQuestInfoDialog ', questState.get('status'));
       
-      checking = true;
-      var dialog = AWE.UI.Ember.QuestDialog.create({
-        questState: questState,
-        header: AWE.I18n.lookupTranslation('tutorial.quest.start.header'),
-        okPressed:    function() {
-          this.destroy();
-          log('---> checkForNewQuests: set displayed');
-          that.setQuestDisplayed(questState);
-          checking = false;
-          log('---> stop checking in showQuestStartDialog, close dialog');
-        },            
-      });
-      WACKADOO.presentModalDialog(dialog);
+      if (questState.get('status') === AWE.GS.QUEST_STATUS_NEW) {
+        checking = true;
+        var dialog = AWE.UI.Ember.QuestDialog.create({
+          questState: questState,
+          header: AWE.I18n.lookupTranslation('tutorial.quest.start.header'),
+          okPressed:    function() {
+            this.destroy();
+            log('---> checkForNewQuests: set displayed');
+            that.setQuestDisplayed(questState);
+            checking = false;
+            log('---> stop checking in showQuestStartDialog, close dialog');
+          },            
+        });
+        WACKADOO.presentModalDialog(dialog);
+      }
     }
     
     that.showQuestInfoDialog = function(quest) {
