@@ -91,47 +91,37 @@ AWE.GS = (
     setPropertiesWithHash: function(hash) {
       for (var key in hash) {
         if (hash.hasOwnProperty(key)) {
-          
-   /*       if (this[key] === undefined) {
-            console.log ('ERROR in AWE.GS.Entity.setPropertiesWithHash: unknown property ' + key + '.');
-          }
-          else {*/
-            if (AWE.Ext.isArrayProxy(this[key])) {
-              log('setPropertiesWithHash with hash', hash[key]);
-              var baseTypeName = this[key].get('baseTypeName');
-              var data = hash[key];
-              var result = [];
-              if (data && data.length !== undefined) {  //   A) process an array of entities
-                for (var i = 0; i < data.length; i++) { 
-                  var entityData = data[i];
-                  var entity = null;
-                  if (AWE.GS[baseTypeName + 'Manager']) {
-                    entity = AWE.GS[baseTypeName + 'Manager'].getEntity(entityData['id']);
-                  }
-                  if (entity) {
-                    entity.updateWith(entityData);
-                  }
-                  else {
-                    entity = AWE.GS[baseTypeName].create({id: entityData['id']});
-                    entity.init(entityData);
-                    entity.set(this.typeName.toLowerCase(), this)
-                  }
-                  result[entity.get('id')] = entity;
-                }          
+          if (AWE.Ext.isArrayProxy(this[key])) {
+            log('setPropertiesWithHash with hash', hash[key]);
+            var baseTypeName = this[key].get('baseTypeName');
+            var data = hash[key];
+            var result = [];
+            if (data) {
+              if (data.length === undefined) { 
+                data = [ data ];  //   B) process a single entity (remaining from old version, assumption: presently not used!)
               }
-              else {                                    //   B) process a single entity
-                var entity = AWE.GS[baseTypeName].create({id: entityData['id']});              
-                entity.init(entityData);
-                entity.set(this.typeName.toLowerCase(), this)
+              for (var i = 0; i < data.length; i++) { 
+                var entityData = data[i];
+                var entity = null;
+                if (AWE.GS[baseTypeName + 'Manager']) {
+                  entity = AWE.GS[baseTypeName + 'Manager'].getEntity(entityData['id']);
+                }
+                if (entity) {
+                  entity.updateWith(entityData);
+                }
+                else {
+                  entity = AWE.GS[baseTypeName].create({id: entityData['id']});
+                  entity.init(entityData);
+                  entity.set(this.typeName.toLowerCase(), this)
+                }
                 result[entity.get('id')] = entity;
-              }
-
-              this.get(key).set('content', result);  
-            }          
-            else {
-              this.set(key, hash[key]);
+              }          
             }
-    //      }
+            this.get(key).set('content', result);  
+          }          
+          else {
+            this.set(key, hash[key]);
+          }
         }
       }
     },

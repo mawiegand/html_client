@@ -122,14 +122,30 @@ AWE.GS = (function(module) {
     created_at: null,
     updated_at: null,
     total_experience_gained: null,
+    disbanded: null,
     
     init: function(spec) {
       this._super(spec);
     },
+
+    hashableArmiesAtBattle: function() {
+      var battleId = this.get('battle_id');
+      return battleId ? AWE.GS.ArmyAccess.getHashableCollectionForBattle_id(battleId) : null;
+    }.property('battle_id').cacheable(),
+
     
-    army: function(){
-      return AWE.GS.ArmyManager.getArmy(this.get('army_id'));
-    }.property('army_id').cacheable(),
+    army: function() {
+      var disbanded = this.get('disbanded');
+      if (disbanded) {
+        return null;
+      }
+      var army = AWE.GS.ArmyManager.getArmy(this.get('army_id'));
+      if (!army) {
+        AWE.GS.ArmyManager.updateArmy(this.get('army_id'));
+        console.log('REQUEST MISSING ARMY FOR BATTLE');
+      }
+      return army;
+    }.property('disbanded', 'army_id', 'hashableArmiesAtBattle.changed_at').cacheable(),
     
     isOwn: function(){
       return this.get('army').isOwn();
@@ -170,10 +186,6 @@ AWE.GS = (function(module) {
         }),
         participants: Ember.ArrayProxy.create({
           baseTypeName: 'BattleParticipants',
-          content: [],
-        }),
-        armies: Ember.ArrayProxy.create({
-          baseTypeName: 'Army',
           content: [],
         }),
       });        

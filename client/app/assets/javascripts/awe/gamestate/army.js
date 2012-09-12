@@ -68,7 +68,9 @@ AWE.GS = (function(module) {
     kills: null,
     victories: null,
     
-    battle_id: 0,
+    battle_id: 0, old_battle_id: 0,
+    battleIdObserver: AWE.Partials.attributeHashObserver(module.ArmyAccess, 'battle_id', 'old_battle_id').observes('battle_id'),
+
     battle_retreat: false,
     
     target_location_id: null,
