@@ -1782,6 +1782,45 @@ li.shout .sender {
   background-image: url("<%= asset_path 'icons/toad.png' %>");
 }
 
+.resource-icon.finished {
+  display: inline-block;
+  width: 36px; height: 36px;
+}
+
+.resource-icon.resource_wood.finished {
+  background-image: url("<%= asset_path 'icons/wood-large.png' %>");
+}
+
+.resource-icon.resource_stone.finished {
+  background-image: url("<%= asset_path 'icons/stone-large.png' %>");
+}
+
+.resource-icon.resource_fur.finished {
+  background-image: url("<%= asset_path 'icons/fur-large.png' %>");
+}
+
+.resource-icon.resource_cash.finished {
+  background-image: url("<%= asset_path 'icons/toad-large.png' %>");
+}
+
+.unit-icon {
+  display: inline-block;
+  width: 24px; height: 24px;
+}
+
+.unit-icon.unit_clubbers {
+  background-image: url("<%= asset_path 'icons/unit.png' %>");
+}
+
+.unit-icon.finished {
+  display: inline-block;
+  width: 36px; height: 36px;
+}
+
+.unit-icon.unit_clubbers.finished {
+  background-image: url("<%= asset_path 'icons/unit-large.png' %>");
+}
+
 .down-icon {
   display: inline-block;
   width: 21px; height: 21px;
@@ -2840,28 +2879,30 @@ a.resource-offer:hover {
 }
 
 .quest-rewards {
+  width: 460px;
   display: inline-block;
   vertical-align: top;
+  text-align: center;
 }
 
 .quest-redeem-button {
   float: right;
 }
 
-.quest-reward-name {
+.quest-reward-item {
+  width: 80px;
+  text-align: center;
   display: inline-block;
-  width: 120px;
-  padding-right: 20px;
 }
 
-.quest-reward-amount {
-  display: inline-block;
-  width: 60px;
-  text-align: right;
-  padding-right: 20px;
+.quest-reward-item-image, .quest-reward-item-amount {
+  height: 30px;
 }
 
-
+.quest-reward-item-image.finished, .quest-reward-item-amount.finished {
+  height: 40px;
+  font-size: 24px;
+}
 
 
 

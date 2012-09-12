@@ -99,6 +99,7 @@ AWE.UI.Ember = (function(module) {
     }.property('questState.status').cacheable(),
     
     checkQuestAnswerPressed: function() {
+      
       if (!AWE.GS.TutorialStateManager.tutorialEnabled()) return;
       
       var that = this;
@@ -110,9 +111,8 @@ AWE.UI.Ember = (function(module) {
       
       if (textboxTest != null) {
         if (questState.checkTextbox(textboxTest, answerText)) {
-          this.set('checking', true);  // knopf ausblenden
+          this.set('checking', true);  // hide check button
           
-          // action erzeugen und an server schicken
           var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(quest.id, answerText);
           questCheckAction.send(function(status) {
             if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
