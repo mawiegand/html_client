@@ -625,51 +625,16 @@ AWE.Controller = (function(module) {
         return ;
       }
       
-      var dialog = AWE.UI.Ember.InfoDialog.create({
-        classNames: ['army-info-dialog'],
-        contentTemplateName: 'army-info-dialog',
-        arguments: {
-          army: army,
-          isSaving: false,
-        },
-        
-        changeNamePressed: function(event) {
-              
-          var changeDialog = AWE.UI.Ember.TextInputDialog.create({
-            classNames: ['change-army-name-dialog'],
-            heading: 'Enter the new name of this army.',
-            input: this.getPath('arguments.army.name'),
-            army: this.getPath('arguments.army'),
-            okPressed: function() {
-              var action = AWE.Action.Military.createChangeArmyNameAction(this.get('army'), this.get('input'));
-              AWE.Action.Manager.queueAction(action);  
-              this.destroy();            
-            },
-            cancelPressed: function() { this.destroy(); }
-          });
-          that.applicationController.presentModalDialog(changeDialog);
-        },
+      var dialog = AWE.UI.Ember.ArmyInfoDialog.create({
+        army: army,
 
-        changeStancePressed: function(event) {
-          var self = this;
-
-          // isSaving = true
-          this.setPath('arguments.isSaving', true);
-           
-          var newStance = this.getPath('arguments.army.stance') === 0 ? 1 : 0;
-          var action = AWE.Action.Military.createChangeArmyStanceAction(this.getPath('arguments.army'), newStance);
-          AWE.Action.Manager.queueAction(action, function() {
-            AWE.GS.ArmyManager.updateArmy(army.getId(), null, function() {
-              self.setPath('arguments.isSaving', false);
-              if (inspectorViews.inspector) {
-                inspectorViews.inspector.updateView();
-              } 
-            });
-          });  
+        changeStanceCallback: function() {
+          if (inspectorViews.inspector) {
+            inspectorViews.inspector.updateView();
+          } 
         },
       });
-      
-      that.applicationController.presentModalDialog(dialog);
+      dialog.showModal();
     }; 
     
     that.armyMoveButtonClicked = function(armyAnnotationView) {

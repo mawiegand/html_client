@@ -17,7 +17,7 @@ AWE.UI.Ember = (function(module) {
     },
 
     battle: null,
-    participantsOwnFaction: 'battle.participantsOwnFaction',
+    participantsOwnFaction:   'battle.participantsOwnFaction',
     participantsOtherFaction: 'battle.participantsOtherFaction',
     
     ratioLengthOwn: function(){
@@ -52,12 +52,29 @@ AWE.UI.Ember = (function(module) {
   
   module.BattleParticipantView = module.Dialog.extend({
     templateName: 'battle-participant-view',
+
+    participant: null,
     
     init: function() {
       this._super();      
     },
+    
+    characterLinkPressed: function() {
+      alert('Present Modal dialog for Character ' + army.owner_name + '.');
+      return false;
+    },
 
-    participant: null,
+    armyLinkPressed: function() {
+      var army = this.get('army'); 
+      if (!army) {
+        return ;
+      }
+      var dialog = AWE.UI.Ember.ArmyInfoDialog.create({
+        army: army,
+      });
+      dialog.showModal();      
+      return false; // prevent default behaviour
+    },
   });
   
   return module;
