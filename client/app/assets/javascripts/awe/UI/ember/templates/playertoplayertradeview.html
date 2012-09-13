@@ -43,13 +43,7 @@
   
 </script>
 
-<script type="text/x-handlebars" data-template-name="linked-character-spinning-view">
-  {{#if character}} 
-    {{character.name}} {{#if character.alliance_tag}} | {{character.alliance_tag}} {{/if}}
-  {{else}}
-    {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} 
-  {{/if}}
-</script>
+
 
 <script type="text/x-handlebars" data-template-name="resources-amount-view">
   {{#each resources}}
@@ -65,18 +59,18 @@
       {{#if tradingCartAction.returning}}
         {{#if outgoing}}
           Rückkehr von {{view AWE.UI.Ember.WheelOrValueView valueBinding="targetSettlement.name"}} 
-          ({{view Ember.View characterBinding="recipient" templateName="linked-character-spinning-view" classNames="inline"}})
+          ({{view AWE.UI.Ember.LinkedCharacterView characterBinding="recipient"}})
         {{else}}
           Rückkehr nach {{view AWE.UI.Ember.WheelOrValueView valueBinding="startingSettlement.name"}} 
-          ({{view Ember.View characterBinding="sender" templateName="linked-character-spinning-view" classNames="inline"}})
+          ({{view AWE.UI.Ember.LinkedCharacterView characterBinding="sender"}})
         {{/if}}
       {{else}}
         {{#if outgoing}}
           {{view AWE.UI.Ember.WheelOrValueView valueBinding="targetSettlement.name"}} 
-          ({{view Ember.View characterBinding="recipient" templateName="linked-character-spinning-view" classNames="inline"}})          
+          ({{view AWE.UI.Ember.LinkedCharacterView characterBinding="recipient"}})          
         {{else}}
           {{view AWE.UI.Ember.WheelOrValueView valueBinding="startingSettlement.name"}} 
-          ({{view Ember.View characterBinding="sender" templateName="linked-character-spinning-view" classNames="inline"}})                    
+          ({{view AWE.UI.Ember.LinkedCharacterView characterBinding="sender"}})                    
         {{/if}}
       {{/if}}
     </td>

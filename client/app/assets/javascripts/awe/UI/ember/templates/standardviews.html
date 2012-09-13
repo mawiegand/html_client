@@ -1,3 +1,26 @@
+<script type="text/x-handlebars" data-template-name="linked-character-spinning-view">
+  {{#if character}} 
+    {{#if linkCharacter}}
+      <a href="#" class="character-name-link" {{action nameClicked}}>{{character.name}}</a> 
+    {{else}}
+      {{character.name}}     
+    {{/if}}
+    {{#if character.alliance_tag}} | <a href="#" class="alliance-tag-link" {{action tagClicked}}>{{character.alliance_tag}}</a> {{/if}}
+  {{else}}
+    {{#if army}}
+      {{#if linkCharacter}}
+        <a href="#" class="character-name-link" {{action nameClicked}}>{{army.owner_name}}</a> 
+      {{else}}
+        {{army.owner_name}}     
+      {{/if}}
+      {{#if army.alliance_tag}} | <a href="#" class="alliance-tag-link" {{action tagClicked}}>{{army.alliance_tag}}</a> {{/if}}
+    {{else}}
+      {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} 
+    {{/if}}
+  {{/if}}
+</script>
+
+
 <script type="text/x-handlebars" data-template-name="text-input-dialog">
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="center-helper">

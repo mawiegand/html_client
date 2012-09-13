@@ -86,6 +86,10 @@ AWE.Controller = (function(module) {
     that.newClicked = function() {
       this.view.showForm();
     };
+    that.createDraftTo = function(recipientName) {
+      this.view.showForm();
+      this.view.setPath('newMessage.recipient', recipientName);
+    };
     that.discardDraft = function() {
       this.view.set('newMessage', null);
       this.view.hideForm();

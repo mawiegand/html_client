@@ -396,13 +396,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },   
    
    
-    activateMessagesController: function() {
+    activateMessagesController: function(args) {
+      args = args || {};
       var messageCenterController = this.get('messageCenterController');
       if (!messageCenterController) {
         messageCenterController = AWE.Controller.createMessageCenterController('#layers');
         this.set('messageCenterController', messageCenterController);
       }
       this.setScreenController(messageCenterController);      
+      if (args.recipient !== undefined && args.recipient !== null) {
+        messageCenterController.createDraftTo(args.recipient.name);
+      }
     },
     
     activateMapController: function() {

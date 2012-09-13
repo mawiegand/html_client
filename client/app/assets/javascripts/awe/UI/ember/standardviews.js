@@ -9,6 +9,43 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
 
+
+
+  module.LinkedCharacterView = Ember.View.extend( /** @lends AWE.UI.Ember.LinkedCharacterView# */ {
+    templateName: "linked-character-spinning-view",
+    classNames:   ["inline"],
+    tagName:      'span',
+    
+    character: null,
+    army: null,
+    
+    linkCharacter: true,
+    linkAlliance: true,
+    
+    nameClicked: function() {
+      var character = this.get('character')
+      var army = this.get('army');
+      var characterId = character ? character.get('id') : (army ? army.get('owner_id') : null);
+      if (!characterId) {
+        return false;
+      }
+      var dialog = AWE.UI.Ember.CharacterInfoDialog.create({
+        characterId: characterId,
+      });
+      WACKADOO.presentModalDialog(dialog);      
+      return false; // prevent default behavior     
+    },
+    
+    tagClicked: function() {
+      var character = this.get('character')
+      var army = this.get('army');
+      WACKADOO.activateAllianceController(character ? character.get('alliance_id') : army.get('alliance_id'));
+      WACKADOO.closeAllModalDialogs();
+      return false; // prevent default behavior
+    },
+
+  });
+
   /**
    * @class
    *

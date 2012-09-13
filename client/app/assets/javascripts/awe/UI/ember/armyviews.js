@@ -82,10 +82,22 @@ AWE.UI.Ember = (function(module) {
     templateName: "army-info-view",
     
     army: null,
+    owner: null,
+    
+    ownerObserver: function() {
+      var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('army.owner_id'));
+      var self = this;
+      this.set('owner', owner);
+      if (!owner) {
+        AWE.GS.CharacterManager.updateCharacter(this.getPath('army.owner_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+          self.set('owner', character);
+        });
+      }
+    }.observes('army', 'army.owner_id'),
 
     displayUnits: function() {
-      return this.getPath('units') !== undefined && this.getPath('units') !== null;
-    }.property('units.length').cacheable(),
+      return !this.getPath('army.garrison');
+    }.property('garrison').cacheable(),
     
     isChangeNamePossible: function() {
       return !this.getPath('army.isGarrisonProp') && this.get('isOwnArmy');
@@ -120,6 +132,8 @@ AWE.UI.Ember = (function(module) {
       }
       return list;
     }.property('army.details', 'army.details.@each').cacheable(),
+    
+    haveDetailsBinding: Ember.Binding.bool('army.details'),
     
     message: function() {
       var own = this.get('isOwnArmy');

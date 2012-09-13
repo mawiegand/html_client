@@ -2,9 +2,14 @@
   <div class="modal-dialog-background"></div>
   <div class="center-helper">
     <div class="modal-dialog-pane settlement-info-dialog-pane">
-      <h1>Settlement</h1>
- 
-      <a class="icon-button ok-button" href="#" {{action "closePressed"}}>close</a>  
+      {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner" width=120 height=120}}
+      <h1>{{settlement.name}} ({{settlement.score}} Einwohner)</h1>
+      
+      <p><b>Besitzer:</b> {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
+      <p><b>Gegründet:</b> {{formatDatetime settlement.created_at}}</p>
+      <p><b>Verteidigungsbonus:</b> {{formatPercentage settlement.defense_bonus}}</p>
+            
+      <a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>  
     </div>
   </div>
 </script>
