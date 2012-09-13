@@ -1,19 +1,27 @@
 <script type="text/x-handlebars" data-template-name="linked-character-spinning-view">
   {{#if character}} 
-    {{#if linkCharacter}}
-      <a href="#" class="character-name-link" {{action nameClicked}}>{{character.name}}</a> 
-    {{else}}
-      {{character.name}}     
+    {{#if displayCharacter}}
+      {{#if linkCharacter}}
+        <a href="#" class="character-name-link" {{action nameClicked}}>{{character.name}}</a> 
+      {{else}}
+        {{character.name}}     
+      {{/if}}
     {{/if}}
-    {{#if character.alliance_tag}} | <a href="#" class="alliance-tag-link" {{action tagClicked}}>{{character.alliance_tag}}</a> {{/if}}
+    {{#if displayAlliance}}
+      {{#if character.alliance_tag}} | <a href="#" class="alliance-tag-link" {{action tagClicked}}>{{character.alliance_tag}}</a> {{/if}}
+    {{/if}}
   {{else}}
     {{#if army}}
-      {{#if linkCharacter}}
-        <a href="#" class="character-name-link" {{action nameClicked}}>{{army.owner_name}}</a> 
-      {{else}}
-        {{army.owner_name}}     
+      {{#if displayCharacter}}
+        {{#if linkCharacter}}
+          <a href="#" class="character-name-link" {{action nameClicked}}>{{army.owner_name}}</a> 
+        {{else}}
+          {{army.owner_name}}     
+        {{/if}}
       {{/if}}
-      {{#if army.alliance_tag}} | <a href="#" class="alliance-tag-link" {{action tagClicked}}>{{army.alliance_tag}}</a> {{/if}}
+      {{#if displayAlliance}}
+        {{#if army.alliance_tag}} | <a href="#" class="alliance-tag-link" {{action tagClicked}}>{{army.alliance_tag}}</a> {{/if}}
+      {{/if}}
     {{else}}
       {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} 
     {{/if}}

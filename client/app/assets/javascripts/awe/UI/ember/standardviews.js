@@ -22,6 +22,9 @@ AWE.UI.Ember = (function(module) {
     linkCharacter: true,
     linkAlliance: true,
     
+    displayAlliance: true,
+    displayCharacter: true,
+    
     nameClicked: function() {
       var character = this.get('character')
       var army = this.get('army');
