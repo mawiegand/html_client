@@ -121,6 +121,11 @@ AWE.UI.Ember = (function(module) {
     shape: null,
     controller: null,
     
+    init: function() {
+      this._super();
+      this.bannerUpdate();
+    },
+    
     bannerUpdate: function() {
       var allianceId = this.getPath('alliance.id');
       var shape  = this.get('shape');
