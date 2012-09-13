@@ -173,6 +173,8 @@ AWE.Controller = (function(module) {
         this.appendView();         
       }
       
+      console.log('ALLIANCE SCREEN', this.visible, this.view, this.allianceId, AWE.GS.AllianceManager.getAlliance(that.allianceId))
+      
       if (this.view) {   // make sure the view displays the right settlement.
         // this is executed, in case the settlement is received from the 
         // server for the first time or the settlementId has been changed by 
