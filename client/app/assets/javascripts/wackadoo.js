@@ -423,6 +423,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         allianceController = AWE.Controller.createAllianceController('#layers');
         this.set('allianceScreenController', allianceController);
       }
+      console.log('ACTIVATE ALLIANCE CONTROLLER FOR ALLIANCE ID', alliance_id);
       allianceController.setAllianceId(alliance_id);
       this.setScreenController(allianceController);
     },
