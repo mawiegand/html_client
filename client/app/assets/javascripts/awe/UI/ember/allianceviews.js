@@ -123,10 +123,10 @@ AWE.UI.Ember = (function(module) {
     
     init: function() {
       this._super();
-      this.bannerUpdate();
     },
     
     bannerUpdate: function() {
+      console.log('BANNER UPDATE');
       var allianceId = this.getPath('alliance.id');
       var shape  = this.get('shape');
       var width  = this.get('width')  || 200;
@@ -155,6 +155,7 @@ AWE.UI.Ember = (function(module) {
       this.addChild(shape);
       this.set('shape', shape);
       shape.updateView();      
+      this.update();
     }.observes('alliance.id'),
     
   });
