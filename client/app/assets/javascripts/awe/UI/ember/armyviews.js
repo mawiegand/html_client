@@ -84,6 +84,8 @@ AWE.UI.Ember = (function(module) {
     army: null,
     owner: null,
     
+    displayHeading: true,
+    
     ownerObserver: function() {
       var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('army.owner_id'));
       var self = this;
@@ -96,7 +98,7 @@ AWE.UI.Ember = (function(module) {
     }.observes('army', 'army.owner_id'),
 
     displayUnits: function() {
-      return !this.getPath('army.garrison');
+      return !this.getPath('army.garrison') || this.get('isOwnArmy');
     }.property('garrison').cacheable(),
     
     isChangeNamePossible: function() {

@@ -6,21 +6,23 @@
 
     <div class="army-info-view clearfix">
       <div class="clearfix header">
-        {{#if army.npc}}
-          <div class="advisor neanderthal"></div>
-        {{else}}
-          <div class="advisor warrior"></div>
-        {{/if}}
-        <h2>{{ army.name }} 
-          {{#if isChangeNamePossible}}
-            <a href="#" class="change-name" {{action "changeNamePressed" target="parentView.parentView"}}>{{ t army.details.changeName }}</a>
+        {{#if displayHeading}}
+          {{#if army.npc}}
+            <div class="advisor neanderthal"></div>
+          {{else}}
+            <div class="advisor warrior"></div>
           {{/if}}
-        </h2>
-        <p class="citation">{{message}}</p>
-        {{#if army.npc}}
-          <p>{{ army.details.npcMsg }}</p>
-        {{else}}
-          <p>Owner: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
+          <h2>{{ army.name }} 
+            {{#if isChangeNamePossible}}
+              <a href="#" class="change-name" {{action "changeNamePressed" target="parentView.parentView"}}>{{ t army.details.changeName }}</a>
+            {{/if}}
+          </h2>
+          <p class="citation">{{message}}</p>
+          {{#if army.npc}}
+            <p>{{ army.details.npcMsg }}</p>
+          {{else}}
+            <p>Besitzer: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
+          {{/if}}
         {{/if}}
         <div title="A higher rank improves the efficiency of your troops. You need to gain experience in order to reach a higher the rank.">{{ t army.details.rank }}: {{army.rankToDisplay}} </div>
         {{#if army.isOwnProp}}

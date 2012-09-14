@@ -9,7 +9,6 @@ AWE.UI = (function(module) {
             
   module.createButtonView = function(spec, my) {
         
-    var _container = null;
     var _labelText = null;
     var _imageView = null;
     
@@ -18,6 +17,7 @@ AWE.UI = (function(module) {
     my = my || {};
     
     my.typeName = "ButtonView";
+    my.container = null;
         
     var that = module.createView(spec, my);
     
@@ -32,7 +32,7 @@ AWE.UI = (function(module) {
     that.initWithControllerTextAndImage = function(controller, text, image, frame) {
       _super.initWithController(controller, frame);
       
-      _container = new Container();
+      my.container = new Container();
       
       imagesForStates[module.CONTROL_STATE_NORMAL] = image;
 
@@ -46,7 +46,7 @@ AWE.UI = (function(module) {
       }; // CAUTION: need to wrap the call in a function, because otherwise it's not possible to attach a different function to that as onClick handler
       _imageView.onMouseOver = function(self) { return function() { self.setHovered(true); if (controller) controller.setNeedsDisplay(); }}(this);
       _imageView.onMouseOut = function(self) { return function() { self.setHovered(false); if (controller) controller.setNeedsDisplay(); }}(this);
-      _container.addChild(_imageView.displayObject());
+      my.container.addChild(_imageView.displayObject());
       
       _labelText = new Text(text, "10px Arial", "#FFF");
       _labelText.textAlign = "center";
@@ -56,10 +56,10 @@ AWE.UI = (function(module) {
       _labelText.view = that;
       _labelText.onMouseOver = function(self) { return function() { self.setHovered(true); if (controller) controller.setNeedsDisplay(); }}(this);
       _labelText.onMouseOut = function(self) { return function() { self.setHovered(false); if (controller) controller.setNeedsDisplay(); }}(this);
-      _container.addChild(_labelText);
+      my.container.addChild(_labelText);
     
-      _container.x = my.frame.origin.x;
-      _container.y = my.frame.origin.y;
+      my.container.x = my.frame.origin.x;
+      my.container.y = my.frame.origin.y;
     }
     
     that.updateView = function() {
@@ -90,8 +90,8 @@ AWE.UI = (function(module) {
     that.setFrame = function(frame) {
       _super.setFrame(frame);
       
-      _container.x = frame.origin.x;
-      _container.y = frame.origin.y;
+      my.container.x = frame.origin.x;
+      my.container.y = frame.origin.y;
 
       _labelText.x = frame.size.width / 2;
       _labelText.y = frame.size.height / 2;
@@ -100,7 +100,7 @@ AWE.UI = (function(module) {
     }
     
     that.displayObject = function() {
-      return _container;
+      return my.container;
     }
     
     that.setImageForState = function(image, controlState) {

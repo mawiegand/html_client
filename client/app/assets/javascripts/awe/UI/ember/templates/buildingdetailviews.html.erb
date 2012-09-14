@@ -218,7 +218,8 @@
 
     {{#if building.garrisonArmy }}
     <hr>
-      {{view AWE.UI.Ember.ArmyInfoView armyBinding="building.garrisonArmy"}}
+      <h2>Garnison</h2>
+      {{view AWE.UI.Ember.ArmyInfoView armyBinding="building.garrisonArmy" displayHeading=false}}
     {{/if}}
     
     {{#if building.unlockedDiplomacy}}

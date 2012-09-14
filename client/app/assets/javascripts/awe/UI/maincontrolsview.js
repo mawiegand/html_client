@@ -39,6 +39,8 @@ AWE.UI = (function(module) {
 
     var _resource5LabelView;
     var _resource6LabelView;
+    
+    var _resourceBubbleView;
         
     my = my || {};
     
@@ -222,6 +224,16 @@ AWE.UI = (function(module) {
         };
         this.addChild(_shopButton);
       }
+      
+  /*    if (!_resourceBubbleView) {
+        _resourceBubbleView = AWE.UI.createResourceBubbleView();
+        _resourceBubbleView.initWithControllerAndResourceImage(my.controller, "resource/icon/wood/large");
+//        _resource1LabelView.setTextAlign("left");
+//        _resource1LabelView.setIconImage("resource/icon/wood");
+//        _resource1LabelView.setFont("14px Arial");
+//        _resource1LabelView.setFrame(AWE.Geometry.createRect(100, 30, 80, 24));      
+        this.addChild(_resourceBubbleView);
+      }*/
       
       if (!_resource1LabelView) {
         _resource1LabelView = AWE.UI.createLabelView();
