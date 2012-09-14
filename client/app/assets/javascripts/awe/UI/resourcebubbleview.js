@@ -19,20 +19,28 @@ AWE.UI = (function(module) {
     my.rateView          = null;
     my.capacityView      = null;
     my.capacityLabelView = null;
+    
+    my.amount   = null;
+    my.rate     = null;
+    my.capacity = null;
+    
+    my.resourceName;
         
     var that = module.createButtonView(spec, my);
     
     var _super = {
       initWithControllerTextAndImage: AWE.Ext.superior(that, "initWithControllerTextAndImage"),
       updateView:                     AWE.Ext.superior(that, "updateView"),
+      updateIfNeeded:                 AWE.Ext.superior(that, "updateIfNeeded"),
     }
     
-    that.initWithControllerAndResourceImage = function(controller, imageName, frame) {
+    that.initWithControllerAndResourceImage = function(controller, imageName, resourceName, frame) {
       _super.initWithControllerTextAndImage(controller, "",
                                             AWE.UI.ImageCache.getImage("hud/bubble/normal"),
                                             frame || AWE.Geometry.createRect(0, 0, 244, 51));
       this.setImageForState(AWE.UI.ImageCache.getImage("hud/bubble/hovered"), module.CONTROL_STATE_HOVERED);
       my.resourceImageName = imageName;
+      my.resourceName = resourceName;
       
       this.recalcView();
     }
@@ -52,7 +60,6 @@ AWE.UI = (function(module) {
         my.amountView.setFont("16px Arial");
         my.amountView.setColor('rgb(80,80,80)');
         my.amountView.setFrame(AWE.Geometry.createRect(78, 10, 80, 24));      
-        my.amountView.setText('1,123,293');
         my.container.addChild(my.amountView.displayObject());
       }
 
@@ -63,7 +70,6 @@ AWE.UI = (function(module) {
         my.rateView.setFont("12px Arial");
         my.rateView.setColor('rgb(120,120,150)');
         my.rateView.setFrame(AWE.Geometry.createRect(150, 13, 58, 20));      
-        my.rateView.setText('+10,123/h');
         my.container.addChild(my.rateView.displayObject());
       }
 
@@ -85,8 +91,21 @@ AWE.UI = (function(module) {
         my.capacityView.setFont("12px Arial");
         my.capacityView.setColor('rgb(120,120,150)');
         my.capacityView.setFrame(AWE.Geometry.createRect(118, 28, 100, 20));      
-        my.capacityView.setText('4,000,000');
         my.container.addChild(my.capacityView.displayObject());
+      }
+      that.setValues();
+    }
+
+    that.setValues = function() {
+      var pool = AWE.GS.ResourcePoolManager.getResourcePool();
+      if (pool) {
+        my.amount = pool.presentAmount(my.resourceName);
+        my.rate = Math.floor(pool.get(my.resourceName+'_production_rate'));
+        my.capacity = pool.get(my.resourceName+'_capacity');
+        
+        my.amountView.setText(""+my.amount);
+        my.rateView.setText("+"+my.rate+"/h");
+        my.capacityView.setText(""+my.capacity);
       }
     }
     
@@ -94,6 +113,23 @@ AWE.UI = (function(module) {
       _super.updateView();
       this.recalcView();
     }
+    
+    /** checks for itself whether the view needs an update (changed reosources) or not. */
+    that.updateIfNeeded = function() {
+      var changed = false;
+      var pool = AWE.GS.ResourcePoolManager.getResourcePool();
+      if (pool) {
+        changed = changed || pool.presentAmount(my.resourceName)                      !== my.amount;
+        changed = changed || Math.floor(pool.get(my.resourceName+'_production_rate')) !== my.rate;
+        changed = changed || pool.get(my.resourceName+'_capacity')                    !== my.capacity;
+      }
+      
+      if (changed) {
+        console.log(">> NEED TO UPDATE BUBBLE DUE TO CHANGED RESOURCE PRODUCTION: " + my.resourceName);
+        this.setNeedsUpdate();
+      }
+      _super.updateIfNeeded();
+    }    
         
     that.onClick = function() {
       log('resource bubble clicked');

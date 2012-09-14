@@ -11,6 +11,8 @@ AWE.Controller = (function(module) {
     
     var _stage  = null;          ///< easelJS stage for displaying the HUD
     var _canvas = null;          ///< canvas elements for the four stages
+    var _resourceStage  = null;
+    var _resourceCanvas = null;
     
     var _windowSize = null;      ///< size of window in view coordinates
 
@@ -32,7 +34,6 @@ AWE.Controller = (function(module) {
     var HUDViews = {};
     
     
-    
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Initialization
@@ -45,7 +46,7 @@ AWE.Controller = (function(module) {
     that.init = function() {
       _super.init();    
       var root = that.rootElement();  
-      root.append('<canvas id="hud-canvas"></canvas>');
+      root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas"></canvas>');
       
       // HUD layer ("static", not zoomable, not moveable)
       _canvas = root.find('#hud-canvas')[0];
@@ -54,6 +55,13 @@ AWE.Controller = (function(module) {
       
       _canvas.width = 500;
       _canvas.height = 250;
+
+      _resourceCanvas = root.find('#resource-canvas')[0];
+      _resourceStage = new Stage(_resourceCanvas);
+      _resourceStage.onClick = function() {};
+      
+      _resourceCanvas.width  = 800;
+      _resourceCanvas.height = 52;
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setNeedsLayout();
@@ -61,7 +69,8 @@ AWE.Controller = (function(module) {
     
     that.getStages = function() {
       return [
-        { stage: _stage, mouseOverEvents: true},
+        { stage: _stage,         mouseOverEvents: true},
+        { stage: _resourceStage, mouseOverEvents: true},
       ];
     };
     
@@ -328,6 +337,24 @@ AWE.Controller = (function(module) {
         HUDViews.controlButtonsView.setOrigin(AWE.Geometry.createPoint(384, 126));
       }
       
+      if (!HUDViews.stoneView) {
+        
+        HUDViews.stoneView = AWE.UI.createResourceBubbleView();
+        HUDViews.stoneView.initWithControllerAndResourceImage(that, "resource/icon/stone/large", "resource_stone");
+        HUDViews.stoneView.setOrigin(AWE.Geometry.createPoint(20, 0));
+        _resourceStage.addChild(HUDViews.stoneView.displayObject());       
+
+        HUDViews.woodView = AWE.UI.createResourceBubbleView();
+        HUDViews.woodView.initWithControllerAndResourceImage(that, "resource/icon/wood/large", "resource_wood");
+        HUDViews.woodView.setOrigin(AWE.Geometry.createPoint(280, 0));
+        _resourceStage.addChild(HUDViews.woodView.displayObject()); 
+        
+        HUDViews.furView = AWE.UI.createResourceBubbleView();
+        HUDViews.furView.initWithControllerAndResourceImage(that, "resource/icon/fur/large", "resource_fur");
+        HUDViews.furView.setOrigin(AWE.Geometry.createPoint(540, 0));
+        _resourceStage.addChild(HUDViews.furView.displayObject()); 
+      }
+      
       return true; 
     };
 
@@ -407,6 +434,7 @@ AWE.Controller = (function(module) {
           var updateNeeded = that.updateViewHierarchy();      
           if (updateNeeded ) { // TODO: remove true, update only, if necessary 
             _stage.update();
+            _resourceStage.update();
             AWE.Ext.applyFunctionToElements(HUDViews, function(view) {
               view.notifyRedraw();
             });

@@ -79,7 +79,7 @@ AWE.UI = (function(module) {
         var _resourcesShapeGraphics = new Graphics();
         _resourcesShapeGraphics.setStrokeStyle(0);
         _resourcesShapeGraphics.beginFill('rgba(0, 0, 0, 0.5)');
-        _resourcesShapeGraphics.drawRoundRect(0, 20, 300, 80, 5);
+        _resourcesShapeGraphics.drawRoundRect(110, 50, 190, 50, 5);
         _resourcesShape = AWE.UI.createShapeView();
         _resourcesShape.initWithControllerAndGraphics(my.controller, _resourcesShapeGraphics);    
         this.addChild(_resourcesShape);
@@ -218,24 +218,14 @@ AWE.UI = (function(module) {
         _shopButton = AWE.UI.createButtonView();
         _shopButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('shop.button'), AWE.UI.ImageCache.getImage("hud/shop/normal"));
         _shopButton.setImageForState(AWE.UI.ImageCache.getImage("hud/shop/hovered"), module.CONTROL_STATE_HOVERED);
-        _shopButton.setFrame(AWE.Geometry.createRect(20, 95, 100, 30));
+        _shopButton.setFrame(AWE.Geometry.createRect(120, 90, 100, 30));
         _shopButton.onClick = function() {
           my.controller.ingameShopButtonClicked();
         };
         this.addChild(_shopButton);
       }
       
-  /*    if (!_resourceBubbleView) {
-        _resourceBubbleView = AWE.UI.createResourceBubbleView();
-        _resourceBubbleView.initWithControllerAndResourceImage(my.controller, "resource/icon/wood/large");
-//        _resource1LabelView.setTextAlign("left");
-//        _resource1LabelView.setIconImage("resource/icon/wood");
-//        _resource1LabelView.setFont("14px Arial");
-//        _resource1LabelView.setFrame(AWE.Geometry.createRect(100, 30, 80, 24));      
-        this.addChild(_resourceBubbleView);
-      }*/
-      
-      if (!_resource1LabelView) {
+/*      if (!_resource1LabelView) {
         _resource1LabelView = AWE.UI.createLabelView();
         _resource1LabelView.initWithControllerAndLabel(my.controller);
         _resource1LabelView.setTextAlign("left");
@@ -287,7 +277,7 @@ AWE.UI = (function(module) {
         _resource3ProductionView.setFont("12px Arial");
         _resource3ProductionView.setFrame(AWE.Geometry.createRect(200, 48, 60, 24));      
         this.addChild(_resource3ProductionView);
-      }   
+      }   */
       
       if (!_resource4LabelView) {
         _resource4LabelView = AWE.UI.createLabelView();
@@ -295,7 +285,7 @@ AWE.UI = (function(module) {
         _resource4LabelView.setTextAlign("left");
         _resource4LabelView.setIconImage("hud/frog/face");
         _resource4LabelView.setFont("14px Arial");
-        _resource4LabelView.setFrame(AWE.Geometry.createRect(20, 70, 80, 24));      
+        _resource4LabelView.setFrame(AWE.Geometry.createRect(150, 60, 80, 24));      
         this.addChild(_resource4LabelView);
       }
       if (!_resource4ProductionView) {
@@ -303,7 +293,7 @@ AWE.UI = (function(module) {
         _resource4ProductionView.initWithControllerAndLabel(my.controller);
         _resource4ProductionView.setTextAlign("left");
         _resource4ProductionView.setFont("12px Arial");
-        _resource4ProductionView.setFrame(AWE.Geometry.createRect(80, 72, 60, 24));      
+        _resource4ProductionView.setFrame(AWE.Geometry.createRect(210, 62, 60, 24));      
         this.addChild(_resource4ProductionView);
       }         
       
@@ -334,19 +324,19 @@ AWE.UI = (function(module) {
       
       var pool = AWE.GS.ResourcePoolManager.getResourcePool();
       if (pool) {
-        my.amounts[0] = pool.presentAmount('resource_wood');
-        my.amounts[1] = pool.presentAmount('resource_stone');
-        my.amounts[2] = pool.presentAmount('resource_fur');
+//        my.amounts[0] = pool.presentAmount('resource_wood');
+//        my.amounts[1] = pool.presentAmount('resource_stone');
+//        my.amounts[2] = pool.presentAmount('resource_fur');
         my.amounts[3] = pool.presentAmount('resource_cash');
 
-        _resource1LabelView.setText(""+my.amounts[0]);
+/*        _resource1LabelView.setText(""+my.amounts[0]);
         _resource1ProductionView.setText("+"+Math.floor(pool.get('resource_wood_production_rate'))+"/h");
 
         _resource2LabelView.setText(""+my.amounts[1]);
         _resource2ProductionView.setText("+"+Math.floor(pool.get('resource_stone_production_rate'))+"/h");
 
         _resource3LabelView.setText(""+my.amounts[2]);
-        _resource3ProductionView.setText("+"+Math.floor(pool.get('resource_fur_production_rate'))+"/h");
+        _resource3ProductionView.setText("+"+Math.floor(pool.get('resource_fur_production_rate'))+"/h");*/
 
         _resource4LabelView.setText(""+my.amounts[3]);
         _resource4ProductionView.setText("+"+(Math.floor(pool.get('resource_cash_production_rate')*100.0)/100.0)+"/h");
@@ -361,9 +351,9 @@ AWE.UI = (function(module) {
       var changed = false;
       var pool = AWE.GS.ResourcePoolManager.getResourcePool();
       if (pool) {
-        changed = changed || pool.presentAmount('resource_wood')  !== my.amounts[0];
-        changed = changed || pool.presentAmount('resource_stone') !== my.amounts[1];
-        changed = changed || pool.presentAmount('resource_fur')   !== my.amounts[2];
+//        changed = changed || pool.presentAmount('resource_wood')  !== my.amounts[0];
+//        changed = changed || pool.presentAmount('resource_stone') !== my.amounts[1];
+//        changed = changed || pool.presentAmount('resource_fur')   !== my.amounts[2];
         changed = changed || pool.presentAmount('resource_cash')  !== my.amounts[3];
       }
       
