@@ -344,6 +344,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this.activateMessagesController();
     },
     
+    presentResourceDetailsDialog: function() {
+      var dialog = AWE.UI.Ember.ResourceDetailsDialog.create({
+        pool: AWE.GS.ResourcePoolManager.getResourcePool(),
+      });
+      this.presentModalDialog(dialog);
+    },
+    
     
     // ///////////////////////////////////////////////////////////////////////
     //

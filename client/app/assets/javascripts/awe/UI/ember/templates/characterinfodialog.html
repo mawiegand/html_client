@@ -17,10 +17,10 @@
         {{/if}}
       </p>
 
+      <a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>     
       {{#if character}}
-        <a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>     
+        <a class="button" href="#" {{action "sendMessageClicked"}}>Nachricht senden</a>  
       {{/if}}   
-      <a class="button" href="#" {{action "sendMessageClicked"}}>Nachricht senden</a>  
     </div>
   </div>
 </script>

@@ -105,7 +105,7 @@ AWE.UI = (function(module) {
         
         my.amountView.setText(""+my.amount);
         my.rateView.setText("+"+my.rate+"/h");
-        my.capacityView.setText(""+my.capacity);
+        my.capacityView.setText(""+Math.floor(my.capacity));
       }
     }
     
@@ -132,7 +132,6 @@ AWE.UI = (function(module) {
     }    
         
     that.onClick = function() {
-      log('resource bubble clicked');
     };        
         
     return that;
