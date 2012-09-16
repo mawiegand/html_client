@@ -96,7 +96,7 @@ AWE.GS = (function(module) {
       if (cav / total > 1.0) { // todo: presently never happens due to missing animation.
         return 'cavalry';
       }
-      else if (art / total > 0.3) {
+      else if (1 || art / total > 0.4) {
         return 'artillery';
       }
       return 'infantry';

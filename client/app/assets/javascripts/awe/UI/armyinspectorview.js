@@ -197,7 +197,16 @@ AWE.UI = (function(module) {
           }
         }
         else {
-          stanceImage = AWE.UI.ImageCache.getImage(AWE.Config.MAP_STANCE_IMAGES[stance]);
+          var armyCategory = _army.get('armyCategory');
+          var stanceImages = AWE.Config.MAP_STANCE_IMAGES;
+      
+          if (armyCategory === 'artillery') {
+            stanceImages = AWE.Config.MAP_STANCE_IMAGES_AMAZON;
+          }
+          else if (armyCategory === 'cavalry') {
+            stanceImages = AWE.Config.MAP_STANCE_IMAGES_CHEF;
+          }
+          stanceImage = AWE.UI.ImageCache.getImage(stanceImages[stance]);
         }        
       
         if (!_stanceView) { 

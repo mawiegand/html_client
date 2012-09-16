@@ -404,6 +404,7 @@ AWE.UI = (function(module) {
       
       if (!_army.get("npc") && (_army.get("stance") != _stance || !_animation)) {
         var data = this.prepareSpriteSheet();
+        _stance = _army.get('stance');
         
         var spriteSheet = new SpriteSheet(data);
         var newAnimation = AWE.UI.createAnimatedSpriteView()

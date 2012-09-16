@@ -139,11 +139,23 @@ AWE.UI.Ember = (function(module) {
     
     message: function() {
       var own = this.get('isOwnArmy');
+      var advisor = this.get('advisor') || 'warrior';
       if (own === undefined || own === null) {
         return null; // return nothing, if value hasn't been computed so far.
       }
-      return this.get('isOwnArmy') ? AWE.I18n.lookupTranslation('army.messages.own') : AWE.I18n.lookupTranslation('army.messages.other');
+      return this.get('isOwnArmy') ? AWE.I18n.lookupTranslation('army.messages.own.'+advisor) : AWE.I18n.lookupTranslation('army.messages.other.'+advisor);
     }.property('isOwnArmy').cacheable(),
+    
+    advisor: function() {
+      var category = this.getPath('army.armyCategory') || 'infantry';
+      if (category === 'artillery') {
+        return 'girl';
+      }
+      else if (category === 'cavalry') {
+        return 'chef';
+      }
+      return 'warrior';
+    }.property('army.armyCategory').cacheable(),
     
   });
   
