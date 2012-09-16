@@ -25,7 +25,7 @@ AWE.UI.Ember = (function(module) {
       var self = this;
       var timer = setInterval(function() {
         self.set('seconds', Math.floor(new Date().getTime() / 1000));
-      }, 1000);
+      }, 500);
       this.set('timer', timer);
     },
 

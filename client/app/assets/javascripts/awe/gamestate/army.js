@@ -87,6 +87,21 @@ AWE.GS = (function(module) {
       return this.isOwn();
     }.property('owner_id', 'AWE.GS.player.currentCharacter').cacheable(),
     
+    armyCategory: function() {
+      var art = this.get('unitcategory_artillery_strength') || 0.0;
+      var cav = this.get('unitcategory_cavalry_strength')   || 0.0;
+      var inf = this.get('unitcategory_infantry_strength')  || 0.0;
+      var total = (art + cav + inf) || 1.0;   
+      
+      if (cav / total > 1.0) { // todo: presently never happens due to missing animation.
+        return 'cavalry';
+      }
+      else if (art / total > 0.3) {
+        return 'artillery';
+      }
+      return 'infantry';
+    }.property('unitcategory_artillery_strength', 'unitcategory_cavalry_strength', 'unitcategory_infantry_strength'),
+    
     rankToDisplay: function() {
       return (this.get('rank') || 0 ) + 1;
     }.property('rank').cacheable(),
