@@ -13,11 +13,28 @@ AWE.UI.Ember = (function(module) {
     templateName: 'resource-details-dialog',
     
     pool: null,
+    seconds: null,
+    timer: null,
         
     okClicked: function() {
       this.destroy();
       return false;
     },
+
+    didInsertElement: function() {
+      var self = this;
+      var timer = setInterval(function() {
+        self.set('seconds', Math.floor(new Date().getTime() / 1000));
+      }, 1000);
+      this.set('timer', timer);
+    },
+
+    willDestroyElement: function() {
+      var timer = this.get('timer');
+      if (timer) {
+        clearInterval(timer);
+      }
+    },    
   
     productionDetails: function() {
       var self = this;
@@ -39,7 +56,7 @@ AWE.UI.Ember = (function(module) {
           rate:         Math.floor(rate*10) / 10.0,
           dailyRate:    Math.floor(rate*24),
           amount:       Math.floor(amount),
-          effects:      Math.floor(effects*10) / 10.0,
+          effects:      Math.floor(effects*1000) / 100.0,
           capacity:     Math.floor(capacity),
           fillDuration: Math.floor(fullInSeconds),
           filled:       amount >= capacity,
@@ -48,7 +65,7 @@ AWE.UI.Ember = (function(module) {
         }));
       });
       return productions;
-    }.property('pool.updated_at'),  
+    }.property('pool.updated_at', 'seconds'),  
     
     pressedShop: function() {
       WACKADOO.hudController.ingameShopButtonClicked();
