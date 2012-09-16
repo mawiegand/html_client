@@ -56,7 +56,7 @@ AWE.UI.Ember = (function(module) {
           rate:         Math.floor(rate*10) / 10.0,
           dailyRate:    Math.floor(rate*24),
           amount:       Math.floor(amount),
-          effects:      Math.floor(effects*1000) / 100.0,
+          effects:      Math.floor(effects*1000) / 1000.0,
           capacity:     Math.floor(capacity),
           fillDuration: Math.floor(fullInSeconds),
           filled:       amount >= capacity,
