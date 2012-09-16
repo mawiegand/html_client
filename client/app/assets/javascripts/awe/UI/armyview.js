@@ -302,6 +302,7 @@ AWE.UI = (function(module) {
         return null;
       }
       var armyCategory = _army.get('armyCategory');
+      
       if (armyCategory === 'artillery') {
         return this.createAmazonSpriteSheet(_army.get('id'));
       }

@@ -88,11 +88,11 @@ AWE.GS = (function(module) {
     }.property('owner_id', 'AWE.GS.player.currentCharacter').cacheable(),
     
     armyCategory: function() {
-      var art = this.get('unitcategory_artillery_strength') || 0.0;
-      var cav = this.get('unitcategory_cavalry_strength')   || 0.0;
-      var inf = this.get('unitcategory_infantry_strength')  || 0.0;
+      var art = parseFloat(this.get('unitcategory_artillery_strength') || "0.0");
+      var cav = parseFloat(this.get('unitcategory_cavalry_strength')   || "0.0");
+      var inf = parseFloat(this.get('unitcategory_infantry_strength')  || "0.0");
       var total = (art + cav + inf) || 1.0;   
-      
+            
       if (cav / total > 1.0) { // todo: presently never happens due to missing animation.
         return 'cavalry';
       }
