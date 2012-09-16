@@ -21,7 +21,7 @@
           {{#if army.npc}}
             <p>{{ army.details.npcMsg }}</p>
           {{else}}
-            <p>Besitzer: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
+            <p>Halbgott: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
           {{/if}}
         {{/if}}
         <div title="A higher rank improves the efficiency of your troops. You need to gain experience in order to reach a higher the rank.">{{ t army.details.rank }}: {{army.rankToDisplay}} </div>
