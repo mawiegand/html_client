@@ -106,6 +106,16 @@ AWE.UI = (function(module) {
         my.amountView.setText(""+my.amount);
         my.rateView.setText("+"+my.rate+"/h");
         my.capacityView.setText(""+Math.floor(my.capacity));
+        
+        if (pool.full(my.resourceName)) {
+          my.amountView.setColor('rgb(255,0,0)');
+        }
+        else if (pool.nearlyFull(my.resourceName)) {
+          my.amountView.setColor('rgb(255,128,0)');
+        }
+        else {
+          my.amountView.setColor('rgb(120,120,150)');
+        }
       }
     }
     
