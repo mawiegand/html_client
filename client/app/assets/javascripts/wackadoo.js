@@ -9,6 +9,10 @@
  */
 
 
+/*window.onunload = function() {
+  alert('hello')
+}*/
+
 /**
  * Customized Application controller for WACKADOO client
  *
