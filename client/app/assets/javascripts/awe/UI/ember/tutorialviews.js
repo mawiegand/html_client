@@ -38,12 +38,12 @@ AWE.UI.Ember = (function(module) {
     questState: null,
   
     redeemButtonPressed: function() {
-      log('---> QuestListEntryView redeemButtonPressed', this.get('questState'));
+      // log('---> QuestListEntryView redeemButtonPressed', this.get('questState'));
       this.get('parentView').redeemButtonPressed(this.get('questState'));
     },
   
     showQuestInfoPressed: function() {
-      log('---> QuestListEntryView showQuestInfoPressed', this.getPath('questState.quest'));
+      // log('---> QuestListEntryView showQuestInfoPressed', this.getPath('questState.quest'));
       this.get('parentView').showQuestInfoPressed(this.getPath('questState.quest'));
     },
     

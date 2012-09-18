@@ -32,10 +32,10 @@ AWE.GS = (function(module) {
 
     questWithSymbolicId: function(symbolicId) {
       quests = this.get('quests');
-      log('---> quests', quests);
+      // log('---> quests', quests);
       for (var i = 0; i < quests.length; i++) {
         var quest = quests[i];
-        log('---> quest', quest);
+        // log('---> quest', quest);
         if (quest != null && quest['symbolic_id'] === symbolicId) {
           return quest;
         }

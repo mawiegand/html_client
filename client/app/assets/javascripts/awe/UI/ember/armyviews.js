@@ -231,7 +231,7 @@ AWE.UI.Ember = (function(module) {
     
     hashableSettlements: function() {
       var locationId = this.get('locationId');
-      log('---> hashableSettlements', AWE.GS.SettlementAccess.getHashableCollectionForLocation_id(locationId));
+      // log('---> hashableSettlements', AWE.GS.SettlementAccess.getHashableCollectionForLocation_id(locationId));
       return AWE.GS.SettlementAccess.getHashableCollectionForLocation_id(locationId);
     }.property('locationId').cacheable(),          
 
