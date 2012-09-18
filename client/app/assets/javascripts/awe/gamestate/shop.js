@@ -27,25 +27,17 @@ AWE.GS = (function(module) {
       
       my.shop = module.Shop.create();
       
-      that.fetchResourceOffers();
       that.fetchCreditAmount();
       AWE.GS.BonusOfferManager.updateBonusOffers(null, function(result) {
         my.shop.set('bonusOffers', AWE.GS.BonusOfferManager.getBonusOffers());
+      });
+      AWE.GS.ResourceOfferManager.updateResourceOffers(null, function(result) {
+        my.shop.set('resourceOffers', AWE.GS.ResourceOfferManager.getResourceOffers());
       });
     };
     
     that.getShop = function(){
       return my.shop;
-    };
-    
-    that.fetchResourceOffers = function(callback) {
-      $.getJSON(AWE.Config.SHOP_SERVER_BASE + 'resource_offers', function(data) {
-        my.shop.set('resourceOffers', data);
-        
-        if (callback) {
-          callback(data);
-        }
-      });
     };
     
     that.fetchCreditAmount = function(callback) {
@@ -60,8 +52,15 @@ AWE.GS = (function(module) {
     };
     
     that.buyResourceOffer = function(offerId, successCallback, errorCallback) {
+      var offer = module.ResourceOfferManager.getResourceOffer(offerId);
+      if (offer) {
+        offer.set('isBuying', true);
+      }
       var transaction = AWE.Action.Shop.createOfferTransaction(offerId, 'resource');
       transaction.send(function(status) {
+        if (offer) {
+          offer.set('isBuying', false);
+        }
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
           AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
             log('AWE.GS.ResourcePoolManager.updateResourcePool completed')

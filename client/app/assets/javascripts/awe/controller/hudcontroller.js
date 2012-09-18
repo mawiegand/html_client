@@ -130,7 +130,7 @@ AWE.Controller = (function(module) {
         
         buyResourceOfferPressed: function(offerId) {
           AWE.GS.ShopManager.buyResourceOffer(offerId, function(transaction) { // success handler
-            if (transaction.state == AWE.Action.Shop.STATE_CLOSED) {
+            if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
               var info = AWE.UI.Ember.InfoDialog.create({
                 heading: "Perfect!",
                 message: "You got a bunch of fresh toads. Spend them wisely so your clan may live long and prosper.",
@@ -168,7 +168,7 @@ AWE.Controller = (function(module) {
 
         buyBonusOfferPressed: function(offerId) {
           AWE.GS.ShopManager.buyBonusOffer(offerId, function(transaction) { // success handler
-            if (transaction.state == 5) {
+            if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
               var info = AWE.UI.Ember.InfoDialog.create({
                 heading: "Yeaha!",
                 message: "The bonus effect has been unlocked and will help your clan to prosper.",

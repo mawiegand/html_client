@@ -36,28 +36,36 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="shop-resource-offer">
-    <a class="resource-offer" href="#" {{action "buyResourceOfferPressed"}}>
+  {{#if offer.isBuying}}
+    <div class="resource-offer">
+      <p>{{ offer.amount }} {{resourceName}}</p>
+      <p>&nbsp;</p>
+      <p>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{t shop.activating }}</p>
+    </div>
+  {{else}}
+    <div class="resource-offer" {{action "buyResourceOfferPressed"}}>
       <p>{{ offer.amount }} {{resourceName}}</p>
       <p>{{t shop.for }}</p>
       <p>{{ offer.price}} {{ t shop.credits }}</p>
-    </a>
+    </div>
+  {{/if}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="shop-bonus-offer">
-      <div class="bonus-offer-description">+{{ formatAsPercent offer.bonus }} {{t shop.production }} {{ resourceName }}</div>
-      <div class="bonus-offer-duration">{{ offer.duration }}h</div>
-      <div class="bonus-offer-price">{{ offer.price}} </div>
-      <div class="bonus-offer-end">
-        {{#if offer.resource_effect }}
-          {{ formatDatetime offer.resource_effect.finished_at }}
-        {{/if}}
-        
-        {{#if offer.isBuying}}
-          {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{t shop.activating }}
-        {{else}}
-          <div class="simple-button" {{action "buyBonusOfferPressed"}}>{{#if offer.resource_effect}}{{t shop.extend }}{{else}}{{t shop.buy }}{{/if}}</div>
-        {{/if}}
-      </div>
+  <div class="bonus-offer-description">+{{ formatAsPercent offer.bonus }} {{t shop.production }} {{ resourceName }}</div>
+  <div class="bonus-offer-duration">{{ offer.duration }}h</div>
+  <div class="bonus-offer-price">{{ offer.price}} </div>
+  <div class="bonus-offer-end">
+    {{#if offer.resource_effect }}
+      {{ formatDatetime offer.resource_effect.finished_at }}
+    {{/if}}
+    
+    {{#if offer.isBuying}}
+      {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{t shop.activating }}
+    {{else}}
+      <div class="simple-button" {{action "buyBonusOfferPressed"}}>{{#if offer.resource_effect}}{{t shop.extend }}{{else}}{{t shop.buy }}{{/if}}</div>
+    {{/if}}
+  </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="not-enough-credits-info">
