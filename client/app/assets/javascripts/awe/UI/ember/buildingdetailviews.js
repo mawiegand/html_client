@@ -107,7 +107,7 @@ AWE.UI.Ember = (function(module) {
       this.get('controller').constructionDestroyClicked(this.get('slot'));
     },         
     
-    convertClicked: function(event) {
+    conversionClicked: function(event) {
       this.get('controller').constructionConvertClicked(this.get('slot'));
     },         
     
