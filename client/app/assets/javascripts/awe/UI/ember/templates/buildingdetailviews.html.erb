@@ -43,7 +43,7 @@
 <script type="text/x-handlebars" data-template-name="settlement-dialog-select-building">
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-pane settlement-dialog-select-building">
-    <a href="#" {{action "cancelPressed"}} class="close"></a>
+    <a {{action "cancelPressed"}} class="close"></a>
     <h1>{{t settlement.buildings.select.heading }}</h1>    
     {{#if constructionOptions }}
       <div class="clearfix">
@@ -65,7 +65,7 @@
 <script type="text/x-handlebars" data-template-name="settlement-dialog-building-details">
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-pane settlement-dialog-building-details">
-    <a href="#" {{action "cancelPressed" }} class="close" title="click to close"></a>
+    <a {{action "cancelPressed" }} class="close" title="click to close"></a>
     {{view AWE.UI.Ember.BuildingView classNames="building-option-image" buildingBinding="building"}}
     <div class="building-description-box">
       {{#if building.level }}
@@ -123,111 +123,131 @@
       {{/each}}
     {{/if}}
     
-    &nbsp;
-    <hr>
     
-    {{#if building.upgradable}}
-      {{#if sendingUpgrade}}
-        <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Updating...</div>
-      {{else}}
-      <a href="#" {{action "upgradeClicked"}} class="upgrade" title="click to upgrade"><img src="<%= asset_path('icons/cross_green.png') %>"></img> Upgrade</a>
+    {{#unless building.underConversion}}
+
+      {{#if building.convertable }}
+        <hr class="clear" />
+        {{#if sendingConvert }}
+          <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Converting...</div>
+        {{else}}
+        <a {{action "conversionClicked"}} class="upgrade" title="click to convert"><img src="<%= asset_path('icons/cross_green.png') %>"></img> Conversion</a>
+        {{/if}}
+        <h3>Convert {{local building.name }} to {{local building.converted.name }} Level {{ building.convertedLevel }}</h2>
+      
+        {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building.converted" levelBinding="building.converted.level"}}
+        
+        <p>TODO: Show Conversion Details</p>
       {{/if}}
-      <h2>Next Upgrade: Level {{ building.nextLevel }}</h2>
-    
-     {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building" levelBinding="building.nextLevel"}}
 
-      <b>{{t settlement.population}}:</b> {{building.populationNextLevel}}<br/>
-
-      {{#if building.costsOfNextLevel}}
-        <b>{{t building.cost}}:</b>
-        {{#each building.costsOfNextLevel}}
-          {{amount}} {{local resourceType.name}} &nbsp;  
-        {{/each}}
+      {{#if building.upgradable}}
+        <hr class="clear" />
+        {{#if sendingUpgrade}}
+          <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Updating...</div>
+        {{else}}
+        <a {{action "upgradeClicked"}} class="upgrade" title="click to upgrade"><img src="<%= asset_path('icons/cross_green.png') %>"></img> Upgrade</a>
+        {{/if}}
+        <h3>Upgrade {{local building.name }} to Level {{ building.nextLevel }}</h3>
+      
+        {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building" levelBinding="building.nextLevel"}}
+  
+        <b>{{t settlement.population}}:</b> {{building.populationNextLevel}}<br/>
+  
+        {{#if building.costsOfNextLevel}}
+          <b>{{t building.cost}}:</b>
+          {{#each building.costsOfNextLevel}}
+            {{amount}} {{local resourceType.name}} &nbsp;  
+          {{/each}}
+          <br/>
+        {{/if}}
+        <b>{{t building.duration}}:</b> {{formatDuration building.productionTimeOfNextLevel}}<br />
         <br/>
-      {{/if}}
-      <b>{{t building.duration}}:</b> {{formatDuration building.productionTimeOfNextLevel}}<br />
-      <br/>
+        
+        {{#if building.productionsNextLevel}}
+          <b>{{t building.produces}}:</b><br/>
+          {{#each building.productionsNextLevel}}
+            {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{local resourceType.name}} {{t general.perHour}} <br/>  
+          {{/each}}
+        {{/if}}
+        
+        {{#if building.capacityNextLevel}}
+          <b>{{t building.capacity}}:</b>
+          {{#each building.capacityNextLevel}}
+            {{capacity}} {{local resourceType.name}} &nbsp;  
+          {{/each}}<br/>
+        {{/if}}
+        
+        {{#if building.productionBoniNextLevel}}
+          <b>{{t building.productionBoni}}:</b>
+          {{#each building.productionBoniNextLevel}}
+            +{{bonus}}% {{local resourceType.name}} &nbsp;  
+          {{/each}}<br/>
+        {{/if}}
+  
+        
+        {{#if building.unlockedDiplomacyNextLevel}}
+          <p><b>Ermöglicht Diplomatie und Allianzbeitritt.</b></p>
+        {{/if}}
+        {{#if building.unlockedAllianceCreationNextLevel}}
+          <p><b>Ermöglicht die Gründung einer Allianz.</b></p>
+        {{/if}}   
+        {{#if building.unlockedPlayerToPlayerTradeNextLevel}}
+          <p><b>Ermöglicht den Handel mit anderen Spielern.</b></p>
+        {{/if}}    
+        {{#if building.tradingCartsNextLevel}}
+          <p><b>Handleskarren:</b> {{building.tradingCartsNextLevel}}</p>
+        {{/if}} 
+  
       
-      {{#if building.productionsNextLevel}}
-        <b>{{t building.produces}}:</b><br/>
-        {{#each building.productionsNextLevel}}
-          {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{local resourceType.name}} {{t general.perHour}} <br/>  
-        {{/each}}
-      {{/if}}
+        {{#if building.unlockedQueuesNextLevel}}
+          <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.unlockedQueuesNextLevel}}{{local name}}, {{/each}}</p>
+        {{/if}}
       
-      {{#if building.capacityNextLevel}}
-        <b>{{t building.capacity}}:</b>
-        {{#each building.capacityNextLevel}}
-          {{capacity}} {{local resourceType.name}} &nbsp;  
-        {{/each}}<br/>
-      {{/if}}
-      
-      {{#if building.productionBoniNextLevel}}
-        <b>{{t building.productionBoni}}:</b>
-        {{#each building.productionBoniNextLevel}}
-          +{{bonus}}% {{local resourceType.name}} &nbsp;  
-        {{/each}}<br/>
-      {{/if}}
-
-      
-      {{#if building.unlockedDiplomacyNextLevel}}
-        <p><b>Ermöglicht Diplomatie und Allianzbeitritt.</b></p>
-      {{/if}}
-      {{#if building.unlockedAllianceCreationNextLevel}}
-        <p><b>Ermöglicht die Gründung einer Allianz.</b></p>
-      {{/if}}   
-      {{#if building.unlockedPlayerToPlayerTradeNextLevel}}
-        <p><b>Ermöglicht den Handel mit anderen Spielern.</b></p>
-      {{/if}}    
-      {{#if building.tradingCartsNextLevel}}
-        <p><b>Handleskarren:</b> {{building.tradingCartsNextLevel}}</p>
-      {{/if}} 
-
-    
-      {{#if building.unlockedQueuesNextLevel}}
-        <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.unlockedQueuesNextLevel}}{{local name}}, {{/each}}</p>
-      {{/if}}
-    
-      {{#if building.speedupQueuesNextLevel}}
-        {{#each building.speedupQueuesNextLevel}}
-          <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
-        {{/each}}
-      {{/if}}
-          
-    {{else}}
-      <p><b>Cannot be upgraded further.</b></p>
-    {{/if}}
-    
-
-    {{#if building.destroyable}}
-      <h3>Destroy Building</h3>
-      {{#if sendingDestroy}}
-        <div class="destroy">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Destroying...</div>
+        {{#if building.speedupQueuesNextLevel}}
+          {{#each building.speedupQueuesNextLevel}}
+            <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
+          {{/each}}
+        {{/if}}
+            
       {{else}}
-      <a href="#" {{action "destroyClicked"}} {{bindAttr class="destroyClasses"}} title="click to destroy"><img src="<%= asset_path('icons/cross_red.png') %>"></img> Destroy Building</a>
+        <p><h3>Cannot be upgraded further.</h3></p>
+      {{/if}}      
+      
+      {{#if building.destroyable}}
+      <hr class="clear" />
+        {{#if sendingDestroy}}
+          <div class="destroy">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Destroying...</div>
+        {{else}}
+          <a {{action "destroyClicked"}} {{bindAttr class="destroyClasses"}} title="click to destroy"><img src="<%= asset_path('icons/cross_red.png') %>"></img> Destroy Building</a>
+        {{/if}}
+        <h3>Destroy {{local building.name }}</h3>
+        <p>
+          <b>{{t building.duration}}:</b> {{formatDuration building.destructionTime}}
+        </p>
       {{/if}}
-      <b>{{t building.duration}}:</b> {{formatDuration building.destructionTime}}<br />
-    {{/if}}
+    {{else}}
+      <p>Conversion in Progress</p>      
+    {{/unless}}
 
     {{#if building.trainingQueues}}
-    <hr>
+    <hr class="clear">
       {{#each building.trainingQueues }}
         {{view AWE.UI.Ember.TrainingQueueView controllerBinding="controller" classNames="training-queue-list" queueBinding="this"}}
       {{/each}}
     {{/if}}
 
     {{#if building.garrisonArmy }}
-    <hr>
+    <hr class="clear">
       {{view AWE.UI.Ember.ArmyInfoView armyBinding="building.garrisonArmy"}}
     {{/if}}
     
     {{#if building.unlockedDiplomacy}}
-    <hr>
+    <hr class="clear">
       {{view AWE.UI.Ember.DiplomacyView unlockedAllianceCreation="unlockedAllianceCreation"}}
     {{/if}}
 
     {{#if building.unlockedPlayerToPlayerTrade}}
-    <hr>
+    <hr class="clear">
       {{view AWE.UI.Ember.PlayerToPlayerTradeView settlementBinding="building.slot.settlement" controllerBinding="controller"}}
     {{/if}}
 

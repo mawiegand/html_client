@@ -12,6 +12,7 @@ AWE.GS = (function(module) {
   module.CONSTRUCTION_JOB_TYPE_UPGRADE   = 'upgrade';
   module.CONSTRUCTION_JOB_TYPE_DOWNGRADE = 'downgrade';
   module.CONSTRUCTION_JOB_TYPE_DESTROY   = 'destroy';
+  module.CONSTRUCTION_JOB_TYPE_CONVERT   = 'convert';
     
   module.ConstructionJobAccess = {};
 

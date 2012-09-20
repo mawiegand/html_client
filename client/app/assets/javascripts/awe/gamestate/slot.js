@@ -102,6 +102,8 @@ AWE.GS = (function(module) {
 		  return this.get('level') > this.get('levelAfterJobs');
 		}.property('level', 'levelAfterJobs').cacheable(),
 		
+		underConversion: false,
+		
 		nextLevel: function() {
 		  return (this.get('levelAfterJobs') || 0) +1;
 		}.property('levelAfterJobs', 'level').cacheable(),
@@ -227,6 +229,62 @@ AWE.GS = (function(module) {
       return buildingType && buildingType.demolishable;
     }.property('id').cacheable(),
 
+    convertable: function() {
+      var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(this.get('buildingId'));
+      if (buildingType && buildingType.conversion_option != undefined && buildingType.conversion_option.building) {
+        return this.requirementsMetForConversionBuilding();
+      }
+      else {
+        return false;
+      }
+    }.property('id', 'slot.settlement.enumerableSlots.@each.level').cacheable(),
+    
+    converted: function() {
+      var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(this.get('buildingId'));
+      if (buildingType && buildingType.conversion_option && buildingType.conversion_option.building) {
+        var convertedBuildingType = AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId(buildingType.conversion_option.building);
+        convertedBuilding = module.Building.create({
+          buildingId: convertedBuildingType.id,
+          level: this.get('convertedLevel'),
+        });
+        log('---> buildingType buildingType.conversion_option.building convertedBuildingType', buildingType, buildingType.conversion_option.building, convertedBuildingType);
+        return convertedBuilding;
+      }
+      else {
+        return null;
+      }
+    }.property('levelAfterJobs').cacheable(),
+    
+    convertedLevel: function() {
+      var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(this.get('buildingId'));
+      var level = AWE.GS.Util.parseAndEval(buildingType.conversion_option.target_level_formula, this.get('levelAfterJobs'));
+      return level;
+    }.property('levelAfterJobs').cacheable(),
+    
+    // conversionTime: function() {
+//       
+    // }.property('id', 'levelAfterJobs').cacheable(),
+//     
+    // conversionCost: function() {
+//       
+    // }.property('id', 'levelAfterJobs').cacheable(),
+
+    unmetRequirementsOfConversionBuilding: function() {
+      var settlement = this.getPath('slot.settlement');
+      var character = settlement ? settlement.owner() : null;
+      log('---> RECALC UNMET REQUIREMENTS FOR CONVERSION BUILDING');
+      var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(this.get('buildingId'));
+      var convertedBuildingType = AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId(buildingType.conversion_option.building);
+      var failed =  AWE.Util.Rules.failedRequirements(convertedBuildingType.requirements, settlement, character, null, true);
+      log('---> FAILED', failed)
+      return failed || []
+    },
+
+    requirementsMetForConversionBuilding: function() {
+      var unmetRequirements = this.unmetRequirementsOfConversionBuilding();
+      return !unmetRequirements || unmetRequirements.length === 0;
+    }, 
+    
     unmetRequirements: function() {
       var settlement = this.getPath('slot.settlement');
       var character = settlement ? settlement.owner() : null;
@@ -557,13 +615,6 @@ AWE.GS = (function(module) {
       });
       return categories;
     },
-    
-    levelObserver: function() {
-      if (this.get('level') != null && this.get('level') > 0) {
-        // Tutorial Hook
-        AWE.GS.TutorialStateManager.checkForRewards();
-      }
-    }.observes('level'),
   });     
 
     

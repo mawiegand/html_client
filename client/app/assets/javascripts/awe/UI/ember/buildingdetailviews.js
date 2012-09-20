@@ -93,6 +93,7 @@ AWE.UI.Ember = (function(module) {
   
     sendingUpgradeBinding: 'controller.status.sendingUpgrade',
     sendingDestroyBinding: 'controller.status.sendingDestroy',
+    sendingConvertBinding: 'controller.status.sendingConvert',
   
     cancelPressed: function() {
       this.get('controller').unselectSlot();
@@ -104,6 +105,10 @@ AWE.UI.Ember = (function(module) {
     
     destroyClicked: function(event) {
       this.get('controller').constructionDestroyClicked(this.get('slot'));
+    },         
+    
+    convertClicked: function(event) {
+      this.get('controller').constructionConvertClicked(this.get('slot'));
     },         
     
     destroyClasses: function() {
