@@ -9,6 +9,10 @@
  */
 
 
+/*window.onunload = function() {
+  alert('hello')
+}*/
+
 /**
  * Customized Application controller for WACKADOO client
  *
@@ -344,6 +348,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this.activateMessagesController();
     },
     
+    presentResourceDetailsDialog: function() {
+      var dialog = AWE.UI.Ember.ResourceDetailsDialog.create({
+        pool: AWE.GS.ResourcePoolManager.getResourcePool(),
+      });
+      this.presentModalDialog(dialog);
+    },
+    
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -396,13 +407,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },   
    
    
-    activateMessagesController: function() {
+    activateMessagesController: function(args) {
+      args = args || {};
       var messageCenterController = this.get('messageCenterController');
       if (!messageCenterController) {
         messageCenterController = AWE.Controller.createMessageCenterController('#layers');
         this.set('messageCenterController', messageCenterController);
       }
       this.setScreenController(messageCenterController);      
+      if (args.recipient !== undefined && args.recipient !== null) {
+        messageCenterController.createDraftTo(args.recipient.name);
+      }
     },
     
     activateMapController: function() {

@@ -1,0 +1,72 @@
+<script type="text/x-handlebars" data-template-name="resource-details-dialog">
+  <div class="modal-dialog-background"></div>
+    <div class="modal-dialog-pane resource-details-dialog-pane">
+      <h2>Rohstoffproduktion im Herrschaftsgebiet</h2>
+      
+      <table>
+        <tr>
+         <th></th>
+          {{#each productionDetails}}
+            <th><span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span></th> 
+          {{/each}}
+        </tr>
+        <tr>
+         <td>Menge</td>
+          {{#each productionDetails}}
+            <td class="number">{{formatNumber amount maxPlaces="0"}}</td> 
+          {{/each}}
+        </tr>
+
+        <tr>
+         <td>Produktionsrate</td>
+          {{#each productionDetails}}
+            <td class="number">{{formatNumber rate maxPlaces="1"}}/h</td> 
+          {{/each}}
+        </tr>
+        <tr>
+         <td>Tagesproduktion</td>
+          {{#each productionDetails}}
+            <td class="number">{{formatNumber dailyRate maxPlaces="0"}}</td> 
+          {{/each}}
+        </tr>
+        
+        <tr>
+         <td>Lagerkapazität</td>
+          {{#each productionDetails}}
+            <td class="number">{{formatNumber capacity maxPlaces="0"}}</td> 
+          {{/each}}
+        </tr>
+        <tr>
+         <td>Lager voll in</td>
+          {{#each productionDetails}}
+            <td class="number">
+            {{#if filled}}
+              <span class="red-color">voll</span>
+            {{else}}
+              {{#if fillNever}}
+                - 
+              {{else}}
+                {{formatDuration fillDuration}}
+              {{/if}} 
+            {{/if}}
+          </td>
+          {{/each}}
+        </tr>
+
+        <tr>
+         <td>Effekte</td>
+          {{#each productionDetails}}
+            <td class="number">{{formatPercentage effects}}</td> 
+          {{/each}}
+        </tr>
+      </table>     
+      
+      <p>Rohstoffe werden durch <em>Gebäude</em> in der Hauptsiedlung und in Außenposten produziert oder 
+         in Festungen als <em>Steuern</em> eingenommen. In dieser Übersicht angezeigte Effekte wirken
+         im gesamten Herrschaftsgebiet auf die <em>Basisproduktion</em> von Gebäuden und können zum Beispiel 
+         in der <a href="#" {{action "pressedShop"}}>Fundgrube</a> erhöht werden.</p>
+      
+      <a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>     
+    </div>
+</script>
+

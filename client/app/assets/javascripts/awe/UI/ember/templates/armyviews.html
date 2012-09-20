@@ -6,19 +6,23 @@
 
     <div class="army-info-view clearfix">
       <div class="clearfix header">
-        {{#if army.npc}}
-          <div class="advisor neanderthal"></div>
-        {{else}}
-          <div class="advisor warrior"></div>
-        {{/if}}
-        <h2>{{ army.name }} 
-          {{#if isChangeNamePossible}}
-            <a href="#" class="change-name" {{action "changeNamePressed" target="parentView.parentView"}}>{{ t army.details.changeName }}</a>
+        {{#if displayHeading}}
+          {{#if army.npc}}
+            <div class="advisor neanderthal"></div>
+          {{else}}
+            <div class="advisor {{unbound advisor}}"></div>
           {{/if}}
-        </h2>
-        <p class="citation">{{message}}</p>
-        {{#if army.npc}}
-          <p>{{ army.details.npcMsg }}</p>
+          <h2>{{ army.name }} 
+            {{#if isChangeNamePossible}}
+              <a href="#" class="change-name" {{action "changeNamePressed" target="parentView.parentView"}}>{{ t army.details.changeName }}</a>
+            {{/if}}
+          </h2>
+          <p class="citation">{{message}}</p>
+          {{#if army.npc}}
+            <p>{{ army.details.npcMsg }}</p>
+          {{else}}
+            <p>Halbgott: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
+          {{/if}}
         {{/if}}
         <div title="A higher rank improves the efficiency of your troops. You need to gain experience in order to reach a higher the rank.">{{ t army.details.rank }}: {{army.rankToDisplay}} </div>
         {{#if army.isOwnProp}}
@@ -41,16 +45,20 @@
         <div class="army-view-unit-list">
           <h3>{{ t army.details.units }}</h3>
           {{#if displayUnits}}
-            <table class="table-list">
+            {{#if haveDetails}}
+              <table class="table-list">
                 {{#each units}}
-              <tr>
-                <th>{{local name}}:</th>
-                <td>{{number}}</td>
-              </tr>
+                  <tr>
+                    <th>{{local name}}:</th>
+                    <td>{{number}}</td>
+                  </tr>
                 {{/each}}
-            </table>
+              </table>
+            {{else}}
+              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+            {{/if}}
           {{else}}
-            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+            Unbekannt.
           {{/if}}
         </div>
       

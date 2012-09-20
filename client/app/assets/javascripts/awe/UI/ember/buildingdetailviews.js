@@ -28,7 +28,7 @@ AWE.UI.Ember = (function(module) {
       var slot = this.get('slot');
       var building = event.view.getPath('building');
       var type = event.view.getPath('building.type');
-      this.get('controller').constructionOptionClicked(slot, building, type);
+      this.get('controller').constructionOptionClicked(slot, building, type, event.view);
     }, 
     
     constructionOptions: function() {
@@ -42,15 +42,15 @@ AWE.UI.Ember = (function(module) {
   module.BuildingOptionView = module.HoverableView.extend( /** @lends AWE.UI.Ember.BuildingOptionView# */ {
     classNameBindings: ['requirementUnmet'],
 
-    unmetRequirements: function() {
+    unmetRequirementGroups: function() {
       var building = this.get('building');
-      return building ? building.unmetRequirements() : null;
+      return building ? building.unmetRequirementGroups() : null;
     }.property('building.buildingType', 'building.slot.settlement.hashableSlots.collection@each.level', 'building.slot.settlement.hashableSlots.changedAt'),    
 
     requirementsMet: function() {
-      var unmetRequirements = this.get('unmetRequirements');
-      return !unmetRequirements || unmetRequirements.length === 0;
-    }.property('unmetRequirements', 'unmetRequirements.length'), 
+      var unmetRequirementGroups = this.get('unmetRequirementGroups');
+      return !unmetRequirementGroups || unmetRequirementGroups.length === 0;
+    }.property('unmetRequirementGroups', 'unmetRequirementGroups.length'), 
     
     requirementUnmet: function() {
       return !this.get('requirementsMet');
@@ -66,15 +66,15 @@ AWE.UI.Ember = (function(module) {
     building: null,
     hovered: null,
    
-    unmetRequirements: function() {
+    unmetRequirementGroups: function() {
       var building = this.get('building');
-      return building ? building.unmetRequirements() : null;
+      return building ? building.unmetRequirementGroups() : null;
     }.property('building.buildingType', 'building.slot.settlement.hashableSlots.collection@each.level', 'building.slot.settlement.hashableSlots.changedAt'),    
 
     requirementsMet: function() {
-      var unmetRequirements = this.get('unmetRequirements');
+      var unmetRequirements = this.get('unmetRequirementGroups');
       return !unmetRequirements || unmetRequirements.length === 0;
-    }.property('unmetRequirements', 'unmetRequirements.length'), 
+    }.property('unmetRequirementGroups', 'unmetRequirementGroups.length'), 
     
     requirementUnmet: function() {
       return !this.get('requirementsMet');
@@ -134,10 +134,10 @@ AWE.UI.Ember = (function(module) {
     }.property('parentView.selectedUnitButton').cacheable(),
     
 
-    unmetRequirements: function() {
+    unmetRequirementGroups: function() {
       var settlement = this.getPath('queue.settlement');
       var character = settlement ? settlement.owner() : null;
-      var failed =  AWE.Util.Rules.failedRequirements(this.getPath('unitType.requirements'), settlement, character, null, true);
+      var failed =  AWE.Util.Rules.failedRequirementGroups(this.getPath('unitType.requirementGroups'), settlement, character, null, true);
       return failed || []
     }.property('unitType', 'queue.settlement.hashableSlots.collection@each.level', 'queue.settlement.hashableSlots.changedAt'),
 
@@ -145,15 +145,25 @@ AWE.UI.Ember = (function(module) {
 		/** bool for indicating whether or not all requirements for constructin
 		 * this building are met. */
     requirementsMet: function() {
-      var unmetRequirements = this.get('unmetRequirements');
+      var unmetRequirements = this.get('unmetRequirementGroups');
       return !unmetRequirements || unmetRequirements.length === 0;
-    }.property('unmetRequirements', 'unmetRequirements.length'), 
+    }.property('unmetRequirementGroups', 'unmetRequirementGroups.length'), 
     
     requirementUnmet: function() {
       return !this.get('requirementsMet');
     }.property('requirementsMet'), 
     
     
+  });
+  
+  module.ArrayItemView = Ember.View.extend({
+    array: null,
+    item:  null,
+    
+    /** dirty hack to determine the last item in the groups array */
+    isLastItem: function() {
+      return this.getPath('array.lastObject') == this.get('item');
+    }.property('array.lastObject', 'item').cacheable(),
   });
   
   /** @class
@@ -189,6 +199,9 @@ AWE.UI.Ember = (function(module) {
       return this.getPath('requirement.max_level') || this.getPath('requirement.max_level') === 0;
     }.property('requirement.max_level').cacheable(),
 
+    maxLevelZero: function() {
+      return this.getPath('requirement.max_level') !== undefined && this.getPath('requirement.max_level') === 0;
+    }.property('requirement.max_level').cacheable(),
   });
   
   /** @class

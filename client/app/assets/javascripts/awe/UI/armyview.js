@@ -60,13 +60,21 @@ AWE.UI = (function(module) {
     
     var _frameRectShape = null;
     
+    var multiplyArray = function(array, factor) {
+      var result = array;
+      for (var i=1; i < factor; i++) {
+        result = result.concat(array);
+      }
+      return result;
+    }
+    
     that = module.createGamingPieceView(spec, my);
 
     var _super = {
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
-      setFrame: AWE.Ext.superior(that, "setFrame"),
-      setSelected: AWE.Ext.superior(that, "setSelected"),
-      updateView: AWE.Ext.superior(that, "updateView"),
+      setFrame:       AWE.Ext.superior(that, "setFrame"),
+      setSelected:    AWE.Ext.superior(that, "setSelected"),
+      updateView:     AWE.Ext.superior(that, "updateView"),
     };
     
     /** overwritten view methods */
@@ -178,6 +186,131 @@ AWE.UI = (function(module) {
       }
       _super.updateView();
     }
+    
+    that.createWarriorSpriteSheet = function(number) {
+      var image = "map/army/animation";
+      var standFrame = 11;
+      number = number || Math.floor(Math.random()*1000);
+      
+      switch (_army.get('stance') || 0) {
+        case 0:  standFrame = 11; break;
+        case 1:  standFrame =  8; break;
+        case 2:  standFrame = 11; break;
+        default: standFrame = 11; 
+      }    
+      
+      return {
+        images: [AWE.UI.ImageCache.getImage(image).src],
+        frames: {width:128, height:128},
+        animations: { 
+          toWalk: {
+            frames: multiplyArray([standFrame], number % 7).concat([ 14, 16]),
+            next:   'walk',
+            frequency: 2,
+          },
+          walk:   {
+            frames:    [ 17,18,19,20,21,22,23,24],
+            next:      'walk',
+            frequency: 1, 
+          },
+          fight:  {
+            frames: [15].concat(
+              multiplyArray([0,1,2,3,4],              (number % 3)+2), 
+              multiplyArray([6,6,6, 5,5, 7,7,7, 5,5], (number % 2)+1), 
+              multiplyArray([0,1,2,3,4],              (number % 3)+1), 
+              multiplyArray([6,6,6, 5,5, 7,7,7, 5,5], (number % 5)+4) 
+            ),
+            next:   'fight',
+          }, 
+          
+          toStand: {
+            frames:    [16, 14],
+            next:      'stand',
+            frequency: 2,
+          },
+          stand: {
+            frames: [ standFrame ].concat(
+              multiplyArray([standFrame], (number % 67)+23),
+              multiplyArray([standFrame+1], (number % 2)+4), 
+              multiplyArray([standFrame], (number % 23)+13),
+              multiplyArray([standFrame+2, standFrame+2], (number % 2)+1) 
+            ),
+            next: 'stand',
+            frequency: 1,
+          },
+        },
+      };
+    }
+    
+    that.createAmazonSpriteSheet = function(number) {
+      var image = "map/army/animation/amazon";
+      var standFrame = 11;
+      number = number || Math.floor(Math.random()*1000);
+      
+      switch (_army.get('stance') || 0) {
+        case 0:  standFrame = 11; break;
+        case 1:  standFrame =  8; break;
+        case 2:  standFrame = 11; break;
+        default: standFrame = 11; 
+      }    
+      
+      return {
+        images: [AWE.UI.ImageCache.getImage(image).src],
+        frames: {width:128, height:128},
+        animations: { 
+          toWalk: {
+            frames: multiplyArray([standFrame], number % 7).concat([ standFrame ]),  // need to do different animations for neutral and defensive stance!
+            next:   'walk',
+            frequency: 2,
+          },
+          walk:   {
+            frames:    [ 15,16,17,18,19,20,21,22],
+            next:      'walk',
+            frequency: 1, 
+          },
+          fight:  {
+            frames: [].concat(
+              multiplyArray([0,1,2,3,4],              (number % 3)+2), 
+              multiplyArray([6,6,6, 5,5, 7,7,7, 5,5], (number % 2)+1), 
+              multiplyArray([0,1,2,3,4],              (number % 3)+1), 
+              multiplyArray([6,6,6, 5,5, 7,7,7, 5,5], (number % 5)+4) 
+            ),
+            next:   'fight',
+          }, 
+          
+          toStand: {
+            frames:    [12],    // need to do different animations for neutral and defensive stance!
+            next:      'stand',
+            frequency: 2,
+          },
+          stand: {
+            frames: [ standFrame ].concat(
+              multiplyArray([standFrame], (number % 67)+23),
+              multiplyArray([standFrame+1], (number % 2)+4), 
+              multiplyArray([standFrame], (number % 23)+13),
+              multiplyArray([standFrame+2, standFrame+2], (number % 2)+1) 
+            ),
+            next: 'stand',
+            frequency: 1,
+          },
+        },
+      };      
+    }
+    
+    that.prepareSpriteSheet = function() {
+      if (!_army) {
+        return null;
+      }
+      var armyCategory = _army.get('armyCategory');
+      
+      if (armyCategory === 'artillery') {
+        return this.createAmazonSpriteSheet(_army.get('id'));
+      }
+      else if (armyCategory === 'cavalry') {
+        return this.createChefSpriteSheet(_army.get('id'));
+      }
+      return this.createWarriorSpriteSheet(_army.get('id'));
+    }
         
     that.recalcView = function() {
       
@@ -262,7 +395,7 @@ AWE.UI = (function(module) {
         _battleView.onClick = that.onClick;
         _battleView.onMouseOver = that.onMouseOver;
         _battleView.onMouseOut = that.onMouseOut;
-        this.addChild(_battleView);
+        this.addChildAt(_battleView,0);
       }
       else if (!_army.get('isFighting') && _battleView) {
         this.removeChild(_battleView);
@@ -270,60 +403,17 @@ AWE.UI = (function(module) {
       }
       
       if (!_army.get("npc") && (_army.get("stance") != _stance || !_animation)) {
-        _stance = _army.get("stance");
-        var image = "map/army/animation";
-        var standFrame = 11;
-        
-        switch (_army.get('stance') || 0) {
-          case 0:  standFrame = 11; break;
-          case 1:  standFrame =  8; break;
-          case 2:  standFrame = 11; break;
-          default: standFrame = 11; 
-        }
-        
-        var data = {
-          images: [AWE.UI.ImageCache.getImage(image).src],
-          frames: {width:128, height:128},
-          animations: { 
-            toWalk: {
-              frames: [ standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, 14, 16],
-              next:   'walk',
-              frequency: 2,
-            },
-            walk:   {
-              frames:    [ 17,18,19,20,21,22,23,24],
-              next:      'walk',
-              frequency: 1, 
-            },
-            fight:  {
-              frames: [15,0,1,2,3,4, 0,1,2,3,4,
-                       6,6,6, 5,5, 7,7,7, 5,5,    15,0,1,2,3,4,
-                       6,6,6, 5,5, 7,7,7, 5,5, 6,6,6, 5,5, 7,7,7, 5,5, 6,6,6, 5,5, 7,7,7, 5,5, 6,6,6, 5,5, 7,7,7, 5,5, 6,6,6, 5,5, 7,7,7, 5,5,
-               ],
-              next:   'fight',
-            }, 
-            
-            toStand: {
-              frames:    [16, 14],
-              next:      'stand',
-              frequency: 2,
-            },
-            stand: {
-              frames: [ standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, 
-                        standFrame+1, standFrame+1, standFrame+1, standFrame+1, standFrame+1,
-                        standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame, standFrame,
-                        standFrame+2, standFrame+2, standFrame+2, standFrame+2, standFrame+2],
-              next: 'stand',
-              frequency: 1,
-            },
-          },
-        };
+        var data = this.prepareSpriteSheet();
+        _stance = _army.get('stance');
         
         var spriteSheet = new SpriteSheet(data);
         var newAnimation = AWE.UI.createAnimatedSpriteView()
         newAnimation.initWithControllerAndSpriteSheet(that, spriteSheet);
         if (_army.get('mode') == 1) { // 1: walking
-          newAnimation.animation().gotoAndPlay('walk');      
+          newAnimation.animation().gotoAndPlay('toWalk');      
+        }
+        else if (_army.get('mode') == 2) {
+          newAnimation.animation().gotoAndPlay('fight');
         }
         else {
           newAnimation.animation().gotoAndPlay('stand');

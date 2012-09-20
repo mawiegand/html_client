@@ -65,8 +65,20 @@ AWE.GS = (function(module) {
     presentAmount: function(symbolic_resource_id) {
       var diff = new Date() - Date.parseISODate(this.get('productionUpdatedAt'));
       diff = (diff < 0) ? 0 : (diff / 3600000); // diff is in milliseconds, production_rates count per hour
-      return Math.floor(parseInt(this.get(symbolic_resource_id + '_amount')) + diff * (this.get(symbolic_resource_id+'_production_rate') || 0));   
+      return Math.min(this.get(symbolic_resource_id + '_capacity') || 0, Math.floor(parseFloat(this.get(symbolic_resource_id + '_amount')) + diff * (this.get(symbolic_resource_id+'_production_rate') || 0)));   
     },
+    
+    full: function(symbolic_resource_id) {
+      var amount   = this.presentAmount(symbolic_resource_id);
+      var capacity = this.get(symbolic_resource_id + '_capacity') || 0;
+      return amount >= capacity-1;
+    },
+    
+    nearlyFull: function(symbolic_resource_id) {
+      var amount   = this.presentAmount(symbolic_resource_id);
+      var capacity = this.get(symbolic_resource_id + '_capacity') || 0;
+      return amount >= (capacity * 0.8);
+    }, 
   });     
 
     

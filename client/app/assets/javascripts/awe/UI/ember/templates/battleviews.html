@@ -78,7 +78,7 @@
       {{#if army.npc}}
         <div class="participant-owner">{{army.owner_name}}{{#if army.alliance_tag}} | {{army.alliance_tag}}{{/if}}</div> 
       {{else}}
-        <div class="participant-owner"><a href="#" {{action "characterLinkPressed"}}>{{army.owner_name}}{{#if army.alliance_tag}} | {{army.alliance_tag}}{{/if}}</a></div>
+        <div class="participant-owner">{{view AWE.UI.Ember.LinkedCharacterView armyBinding="army"}}</div>
       {{/if}}
       <div class="participant-size">{{army.size_present}}</div>
       <div class="participant-strength">{{army.strength}}</div>

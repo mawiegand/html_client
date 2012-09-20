@@ -158,6 +158,13 @@ Ember.registerBoundHelper("formatDatetime", function(datetime) {
   return Date.parseISODate(datetime).toString('dd.MM. HH:mm:ss');
 });
 
+/** TODO: extracts and formats the given date and time. 
+ * @name Handlebars.Helper.formatDatetime
+ */
+Ember.registerBoundHelper("formatPercentage", function(percentage) {
+  return "" + (percentage*100) + "%";
+});
+
 /** calculates and returns the cost for speeding up a construction job
  * with the given remaining duration in seconds 
  * @name Handlebars.Helper.constructionSpeedupCost

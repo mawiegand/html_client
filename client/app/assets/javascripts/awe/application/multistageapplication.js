@@ -505,6 +505,12 @@ AWE.Application = (function(module) {
         }
       },
       
+      closeAllModalDialogs: function() {
+        while (this.modalDialogs.length > 0) {
+         this.modalDialogs[this.modalDialogs.length-1].destroy(); 
+        }
+      },
+      
       modalDialogClosed: function(dialog) {
         do {
           console.log('poped the top-most modal dialog.');

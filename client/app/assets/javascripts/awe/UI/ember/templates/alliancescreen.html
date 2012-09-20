@@ -22,7 +22,7 @@
   <div class="alliance-infobox clearfix">
     <h1>{{ alliance.name }} [{{ alliance.tag }}]</h1>
     <p> {{t alliance.founded }}: {{ creation }}</p>
-    <p> {{t alliance.leader }}: {{ alliance.leader.name }}</p>
+    <p> {{t alliance.leader }}: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="alliance.leader" displayAlliance=false}}</p>
   </div>
   {{#if alliance.description}}
     <div class="alliance-description">
@@ -44,7 +44,7 @@
     <h1>{{t alliance.members }}</h1>
     <ul>
       {{#each characters}}
-        <li>{{ name }}</li>
+        <li>{{view AWE.UI.Ember.LinkedCharacterView characterBinding="this" displayAlliance=false}}</li>
       {{/each}}
     </ul>
   </div>

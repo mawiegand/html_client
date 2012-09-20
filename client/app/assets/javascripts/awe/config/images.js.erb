@@ -43,10 +43,16 @@ AWE.Config = (function(module) {
     "map/army":               "<%= asset_path('army.png') %>",
 
     "map/army/animation":     "<%= asset_path('army/warrior_animation_final_128.png') %>",
+    "map/army/animation/amazon": "<%= asset_path('army/amazon_animation_128.png') %>",
     
     "map/army/stanceAggressive": "<%= asset_path('army/warrior_pose_2_96.png') %>",
     "map/army/stanceDefensive":  "<%= asset_path('army/warrior_pose_1_96.png') %>",
     "map/army/stanceNeutral":    "<%= asset_path('army/warrior_pose_1_96.png') %>",
+
+    "map/army/amazon/stanceAggressive": "<%= asset_path('army/amazon_pose_2_96.png') %>",
+    "map/army/amazon/stanceDefensive":  "<%= asset_path('army/amazon_pose_1_96.png') %>",
+    "map/army/amazon/stanceNeutral":    "<%= asset_path('army/amazon_pose_1_96.png') %>",
+
 
     "map/army/npc/small":     "<%= asset_path('army/neandertaler_size1.png') %>",
     "map/army/npc/medium":    "<%= asset_path('army/neandertaler_size2.png') %>",
@@ -121,11 +127,21 @@ AWE.Config = (function(module) {
     "hud/main/frame":         "<%= asset_path('ui/hud_main.png') %>",
     "hud/shop/hovered":       "<%= asset_path('ui/shop.png') %>",
     "hud/shop/normal":        "<%= asset_path('ui/shop_hover.png') %>",
+
+    "hud/bubble/normal":      "<%= asset_path('ui/resource_bubble.png') %>",
+    "hud/bubble/hovered":     "<%= asset_path('ui/resource_bubble_hover.png') %>",
+    "hud/bubble/pressed":     "<%= asset_path('ui/resource_bubble_hover.png') %>",
     
     "resource/icon/wood" :    "<%= asset_path('icons/wood.png') %>",
     "resource/icon/stone":    "<%= asset_path('icons/stone.png') %>",
     "resource/icon/fur"  :    "<%= asset_path('icons/fur.png') %>",
     "resource/icon/cash" :    "<%= asset_path('icons/toad.png') %>",
+
+    "resource/icon/wood/large" :    "<%= asset_path('icons/wood-large.png') %>",
+    "resource/icon/stone/large":    "<%= asset_path('icons/stone-large.png') %>",
+    "resource/icon/fur/large"  :    "<%= asset_path('icons/fur-large.png') %>",
+    "resource/icon/cash/large" :    "<%= asset_path('icons/toad-large.png') %>",
+
   };
   
   module.MAP_STANCE_IMAGES = [
@@ -133,6 +149,12 @@ AWE.Config = (function(module) {
     "map/army/stanceAggressive",
     "map/army/stanceDefensive",
   ];
+  
+  module.MAP_STANCE_IMAGES_AMAZON = [
+    "map/army/amazon/stanceNeutral",
+    "map/army/amazon/stanceAggressive",
+    "map/army/amazon/stanceDefensive",
+  ];  
   
   return module;
   

@@ -113,7 +113,7 @@ AWE.UI = (function(module) {
       this.addChild(_rankImageView);
       
       infoContainer = AWE.UI.createMultiLineContainer();
-      infoContainer.initWithController(controller, AWE.Geometry.createRect(130,0,120,0));
+      infoContainer.initWithController(controller, AWE.Geometry.createRect(145,-6,120,0));
       this.addChild(infoContainer);
       
       _infoText1View = AWE.UI.createLabelView();

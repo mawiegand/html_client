@@ -7,12 +7,10 @@ var AWE = AWE || {};
 
 AWE.Controller = (function(module) {
           
-  module.createHUDController = function(anchor) {
+  module.createResourceController = function(anchor) {
     
     var _stage  = null;          ///< easelJS stage for displaying the HUD
     var _canvas = null;          ///< canvas elements for the four stages
-    var _resourceStage  = null;
-    var _resourceCanvas = null;
     
     var _windowSize = null;      ///< size of window in view coordinates
 
@@ -31,7 +29,8 @@ AWE.Controller = (function(module) {
     var _frameCounter = 0;       ///< counts every rendered frame
     
     var _modelChanged = false;   ///< true, if anything in the model changed    
-    var HUDViews = {};
+    var _resourceViews = {};
+    
     
     
     // ///////////////////////////////////////////////////////////////////////
@@ -46,22 +45,15 @@ AWE.Controller = (function(module) {
     that.init = function() {
       _super.init();    
       var root = that.rootElement();  
-      root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas"></canvas>');
+      root.append('<canvas id="resource-canvas"></canvas>');
       
       // HUD layer ("static", not zoomable, not moveable)
-      _canvas = root.find('#hud-canvas')[0];
+      _canvas = root.find('#resource-canvas')[0];
       _stage = new Stage(_canvas);
       _stage.onClick = function() {};
       
-      _canvas.width = 500;
-      _canvas.height = 250;
-
-      _resourceCanvas = root.find('#resource-canvas')[0];
-      _resourceStage = new Stage(_resourceCanvas);
-      _resourceStage.onClick = function() {};
-      
-      _resourceCanvas.width  = 800;
-      _resourceCanvas.height = 52;
+      _canvas.width = 800;
+      _canvas.height = 100;
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setNeedsLayout();
@@ -69,8 +61,7 @@ AWE.Controller = (function(module) {
     
     that.getStages = function() {
       return [
-        { stage: _stage,         mouseOverEvents: true},
-        { stage: _resourceStage, mouseOverEvents: true},
+        { stage: _stage, mouseOverEvents: true},
       ];
     };
     
@@ -118,146 +109,8 @@ AWE.Controller = (function(module) {
     //
     // ///////////////////////////////////////////////////////////////////////
     
-    var shopDialog = null;
 
-    that.ingameShopButtonClicked = function() {
-      
-      AWE.GS.ShopManager.init();
-      
-      shopDialog = AWE.UI.Ember.ShopDialog.create({
-        
-        // resourceOffers: AWE.GS.ShopManager.content.get('resourceOffers'),
-        // bonusOffers: AWE.GS.ShopManager.content.get('bonusOffers'),
-// 
-        // creditAmount: AWE.GS.ShopManager.content.get('creditAmount'),
-        
-        shop: AWE.GS.ShopManager.getShop(),
-        
-        buyCreditsPressed: function(evt) {
-          AWE.GS.ShopManager.openCreditShopWindow()
-        },
-        
-        buyResourceOfferPressed: function(offerId) {
-          AWE.GS.ShopManager.buyResourceOffer(offerId, function(transaction) { // success handler
-            if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
-              var info = AWE.UI.Ember.InfoDialog.create({
-                heading: "Perfect!",
-                message: "You got a bunch of fresh toads. Spend them wisely so your clan may live long and prosper.",
-              });      
-              that.applicationController.presentModalDialog(info);
-            }
-            else {
-              var info = AWE.UI.Ember.InfoDialog.create({
-                contentTemplateName: 'not-enough-credits-info',
-                cancelText:          'Cancel',
-                okText:              "Get mo' credits",
-                okPressed:           function() {
-                  AWE.GS.ShopManager.openCreditShopWindow();
-                  this.destroy();
-                },
-                cancelPressed:       function() { this.destroy(); },
-              });          
-              that.applicationController.presentModalDialog(info);
-            }
-            
-            AWE.GS.ShopManager.fetchCreditAmount(function(){
-              that.setModelChanged();
-            });
-            AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
-              that.setModelChanged();
-            });
-          }, function() {                                   // error handler
-            var info = AWE.UI.Ember.InfoDialog.create({
-              heading: 'Server Error',
-              message: "There's a problem with the shop. Try again later",
-            });      
-            that.applicationController.presentModalDialog(info);
-          })
-        },
-
-        buyBonusOfferPressed: function(offerId) {
-          AWE.GS.ShopManager.buyBonusOffer(offerId, function(transaction) { // success handler
-            if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
-              var info = AWE.UI.Ember.InfoDialog.create({
-                heading: "Yeaha!",
-                message: "The bonus effect has been unlocked and will help your clan to prosper.",
-              });      
-              that.applicationController.presentModalDialog(info);
-            }
-            else {
-              var info = AWE.UI.Ember.InfoDialog.create({
-                contentTemplateName: 'not-enough-credits-info',
-                cancelText:          'Cancel',
-                okText:              "Get mo' credits",
-                okPressed:           function() {
-                  AWE.GS.ShopManager.openCreditShopWindow();
-                  this.destroy();
-                },
-                cancelPressed:       function() { this.destroy(); },
-              });          
-              that.applicationController.presentModalDialog(info);
-            }
-            
-            AWE.GS.BonusOfferManager.updateBonusOffers();
-            AWE.GS.ShopManager.fetchCreditAmount(function(){
-              that.setModelChanged();
-            });
-            AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
-              that.setModelChanged();
-            });
-          }, function() {                                   // error handler
-            var info = AWE.UI.Ember.InfoDialog.create({
-              heading: 'Server Error',
-              message: "There's a problem with the shop. Try again later",
-            });      
-            that.applicationController.presentModalDialog(info);
-          })
-        },
-
-        closePressed: function(evt) {
-          shopDialog = null;
-          this.destroy();
-        },
-
-        updateCreditsPressed: function() {
-          AWE.GS.ShopManager.fetchCreditAmount();
-        },
-      });
-      
-      that.applicationController.presentModalDialog(shopDialog);
-    };
-    
-    that.shopButtonClicked = function() {
-      
-      var queue = AWE.GS.TrainingQueueManager.getQueue(1);
-      var unitId = 1;
-      var quantity = 10;
-      
-      var action = AWE.Action.Training.createJobCreateAction(queue, unitId, quantity);
-      
-      action.send(function(status) {
-        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-          log(status, "Training job created.");
-        }
-        else {
-          log(status, "The server did not accept the training command.");
-          // TODO Fehlermeldung 
-        }
-      });
-      
-    };
-    
-    that.rankingButtonClicked = function() {
-      
-      console.log('Ranking button clicked.');
-      
-      $('<form style="display:none;" action="' + AWE.Config.RANKING_SERVER_BASE + '" method="GET" target="_blank">' +
-        '  <input type="hidden" name="sort" value="overall" />' +
-        '</form>').appendTo('body').submit().remove();      
-      
-    };
-        
-
+ 
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Serialization, inspection & debugging
@@ -319,8 +172,8 @@ AWE.Controller = (function(module) {
     //
     // ///////////////////////////////////////////////////////////////////////    
     
-    that.updateHUD = function() { 
-      
+    that.updateResourceBubbles = function() { 
+/*      
       if (!HUDViews.mainControlsView) {
         HUDViews.mainControlsView = AWE.UI.createMainControlsView();
         HUDViews.mainControlsView.initWithController(that);
@@ -335,32 +188,7 @@ AWE.Controller = (function(module) {
           _stage.addChild(HUDViews.controlButtonsView.displayObject());
         }
         HUDViews.controlButtonsView.setOrigin(AWE.Geometry.createPoint(384, 126));
-      }
-      
-      if (!HUDViews.stoneView) {
-        
-        var detailsHandler = function() {
-          WACKADOO.presentResourceDetailsDialog();
-        };
-        
-        HUDViews.stoneView = AWE.UI.createResourceBubbleView();
-        HUDViews.stoneView.initWithControllerAndResourceImage(that, "resource/icon/stone/large", "resource_stone");
-        HUDViews.stoneView.setOrigin(AWE.Geometry.createPoint(20, 0));
-        HUDViews.stoneView.onClick = detailsHandler;
-        _resourceStage.addChild(HUDViews.stoneView.displayObject());       
-
-        HUDViews.woodView = AWE.UI.createResourceBubbleView();
-        HUDViews.woodView.initWithControllerAndResourceImage(that, "resource/icon/wood/large", "resource_wood");
-        HUDViews.woodView.setOrigin(AWE.Geometry.createPoint(280, 0));
-        HUDViews.woodView.onClick = detailsHandler;
-        _resourceStage.addChild(HUDViews.woodView.displayObject()); 
-        
-        HUDViews.furView = AWE.UI.createResourceBubbleView();
-        HUDViews.furView.initWithControllerAndResourceImage(that, "resource/icon/fur/large", "resource_fur");
-        HUDViews.furView.setOrigin(AWE.Geometry.createPoint(540, 0));
-        HUDViews.furView.onClick = detailsHandler;
-        _resourceStage.addChild(HUDViews.furView.displayObject()); 
-      }
+      }*/
       
       return true; 
     };
@@ -395,14 +223,14 @@ AWE.Controller = (function(module) {
       return function() {
         
         var stageNeedsUpdate = true;     // replace true with false as soon as stage 1 and 2 are implemented correctly.
-                        
+    /*                    
         if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || !HUDViews.mainControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
           stageNeedsUpdate = that.updateHUD() || stageNeedsUpdate; 
         }
         // update hierarchies and check which stages need to be redrawn
-        stageNeedsUpdate = propUpdates(HUDViews) || stageNeedsUpdate;
+        stageNeedsUpdate = propUpdates(_resourceViews) || stageNeedsUpdate;
 
-        oldWindowSize = _windowSize.copy();
+        oldWindowSize = _windowSize.copy(); */
       
         return stageNeedsUpdate;
       };
@@ -441,8 +269,7 @@ AWE.Controller = (function(module) {
           var updateNeeded = that.updateViewHierarchy();      
           if (updateNeeded ) { // TODO: remove true, update only, if necessary 
             _stage.update();
-            _resourceStage.update();
-            AWE.Ext.applyFunctionToElements(HUDViews, function(view) {
+            AWE.Ext.applyFunctionToElements(_resourceViews, function(view) {
               view.notifyRedraw();
             });
           }

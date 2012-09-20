@@ -1,7 +1,31 @@
+<script type="text/x-handlebars" data-template-name="requirement-groups-view">
+  {{#each unmetRequirementGroups}}
+    {{#view AWE.UI.Ember.ArrayItemView arrayBinding="view.unmetRequirementGroups" itemBinding="this" classNames="inline requirement-group"}}
+      <ul>
+        {{#each item}}
+          {{view AWE.UI.Ember.RequirementView requirementBinding="this" tagName="li"}}
+        {{/each}}
+      </ul>
+      {{#unless view.isLastItem}} oder {{/unless}}
+    {{/view}}
+  {{/each}}
+</script>
+
+
 <script type="text/x-handlebars" data-template-name="requirement-view">
-  {{#if haveMinLevel }}{{requirement.min_level}} <={{/if}}
-  {{local type.name}}
-  {{#if haveMaxLevel }} <= {{requirement.max_level}}{{/if}}
+  {{# if haveMaxLevel }} 
+    {{#if maxLevelZero }}
+      <b>kein</b> einziges <b>{{local type.name}}</b>
+    {{else }}
+      <b>kein {{local type.name}}</b> größer als <b>Level {{ requirement.max_level }}</b>
+    {{/if}}
+    {{#if haveMinLevel}}
+      </{{unbound tagName}}><{{ubound tagName}}>
+    {{/if}}
+  {{/if}} 
+  {{# if haveMinLevel }} 
+    <b>{{local type.name}}</b> mit <b>Level {{requirement.min_level}}</b> oder größer 
+  {{/if}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="building-option-details">
@@ -19,9 +43,7 @@
     {{#unless requirementsMet}}
       <p>
         {{{t settlement.buildings.select.missingRequirements}}}:<br/>
-        {{#each unmetRequirements}}
-          {{view AWE.UI.Ember.RequirementView requirementBinding="this"}}<br />
-        {{/each}}
+        {{view Ember.View templateName="requirement-groups-view" unmetRequirementGroupsBinding="unmetRequirementGroups"}}
       </p>
     {{/unless}} 
     {{#if building.productionsNextLevel}}
@@ -238,7 +260,8 @@
 
     {{#if building.garrisonArmy }}
     <hr class="clear">
-      {{view AWE.UI.Ember.ArmyInfoView armyBinding="building.garrisonArmy"}}
+      <h2>Garnison</h2>
+      {{view AWE.UI.Ember.ArmyInfoView armyBinding="building.garrisonArmy" displayHeading=false}}
     {{/if}}
     
     {{#if building.unlockedDiplomacy}}
@@ -257,11 +280,9 @@
 <script type="text/x-handlebars" data-template-name="requirements-missing-info">
 {{#with arguments}}
   <div class="advisor girl"></div>
-  <p>{{t settlement.buildings.missingReqWarning.start}} {{local name}} {{t settlement.buildings.missingReqWarning.end}}:</p>
+  <p>{{t settlement.buildings.missingReqWarning.start}} {{local building.name}} {{t settlement.buildings.missingReqWarning.end}}:</p>
   <p>
-    {{#each unmetRequirements}}
-      {{view AWE.UI.Ember.RequirementView requirementBinding="this"}}<br />
-    {{/each}}
+    {{view Ember.View templateName="requirement-groups-view" unmetRequirementGroupsBinding="unmetRequirementGroups" tagName="span"}} 
   </p>
 {{/with}}
 </script>

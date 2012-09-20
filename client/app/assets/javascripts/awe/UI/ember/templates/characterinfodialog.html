@@ -1,0 +1,27 @@
+<script type="text/x-handlebars" data-template-name="character-info-dialog">
+  <div class="modal-dialog-background"></div>
+  <div class="center-helper">
+    <div class="modal-dialog-pane character-info-dialog-pane">
+      {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner" width=120 height=120}}
+      <h1>{{view AWE.UI.Ember.LinkedCharacterView characterBinding="character" linkCharacter=false}}</h1>
+      
+      <p><b>Heimatsiedlung:</b> {{homeSettlement.name}}</p>
+      <p><b>Spielt seit:</b> {{formatDatetime character.created_at}}</p>
+      <p><b>Punkte:</b> {{character.score}} &nbsp; <b>Festungen:</b> {{character.fortress_count}}</p>
+      
+      <p><b>Heimatsiedlung:</b>
+        {{#if homeSettlement}}
+          {{homeSettlement.name}} ({{homeSettlement.score}} Einwohner)
+        {{else}}
+          {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+        {{/if}}
+      </p>
+
+      <a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>     
+      {{#if character}}
+        <a class="button" href="#" {{action "sendMessageClicked"}}>Nachricht senden</a>  
+      {{/if}}   
+    </div>
+  </div>
+</script>
+

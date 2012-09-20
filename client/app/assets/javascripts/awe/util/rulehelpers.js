@@ -189,6 +189,36 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
   //
   ////////////////////////////////////////////////////////////////////////////
 
+
+  module.meetRequirements = function(requirementGroups, settlement, character, slotToExclude, considerJobs) {
+    var unmetGroups = module.failedRequirementGroups(requirementGroups, settlement, character, slotToEclude, considerJobs);
+    return unmetGroups === null || unmetGroups.length === 0;
+  };
+
+
+  /** checks the given array of requirements for those requirements that are
+   * not met in the given settlement and for the given character. 
+   * @returns an array of all non-met requiremnts or null, if all
+   *          checks passed positive.
+   * @function
+   * @name AWE.Util.Rules.failedRequirementGroups */
+  module.failedRequirementGroups = function(requirementGroups, settlement, character, slotToExclude, considerJobs) {
+    considerJobs       = considerJobs       || false;
+    settlement         = settlement         || null;
+    requirementGroups  = requirementGroups  || [];
+    slotToExclude      = slotToExclude      || null;
+    
+    var requirementsMet = false;
+    
+    var failedRequirementGroups = requirementGroups.map(function(item) {
+      var failedInsideGroup = module.failedRequirements(item, settlement, character, slotToExclude, considerJobs);
+      requirementsMet = requirementsMet || (failedInsideGroup === null || failedInsideGroup.length === 0);
+      return failedInsideGroup;
+    });
+    
+    return requirementsMet ? null : failedRequirementGroups.compact();
+  }; 
+
   /** checks the given array of requirements for those requirements that are
    * not met in the given settlement and for the given character. 
    * @returns an array of all non-met requiremnts or null, if all

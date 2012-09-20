@@ -301,7 +301,7 @@ AWE.Controller = (function(module) {
       }
     } 
 
-    that.constructionOptionClicked = function(slot, building, type) {
+    that.constructionOptionClicked = function(slot, building, type, buildingOptionView) {
       
       log('constructionOptionClicked', slot, building, type);  // TODO type is production category - > rename
       
@@ -313,7 +313,7 @@ AWE.Controller = (function(module) {
       else {
         var dialog = AWE.UI.Ember.InfoDialog.create({
           contentTemplateName: 'requirements-missing-info',
-          arguments:           building,
+          arguments:           buildingOptionView,
           cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
           okPressed:           null,
           cancelPressed:       function() { this.destroy(); },

@@ -399,6 +399,15 @@ html, body {
   z-index: 10;
 }
 
+#resource-canvas {
+  position: absolute;
+  left: 0px;
+  top: 30px;
+  width: 800px;
+  height: 52px;
+  z-index: 9;
+}
+
 .z-layer-3 {
   z-index: 512;
 }
@@ -474,10 +483,10 @@ html, body {
 /* zoom slider definitions */
 .zoom_slider {
   position: absolute;
-  top: 60px;
+  top: 100px;
   left: 32px;
   width: 20px;
-  height: 400px;
+  height: 360px;
   z-index: 201;
 }
 .zoom_slider .slider_bar {
@@ -1671,6 +1680,14 @@ span.bonus {
   margin-top: -35px;
 }
 
+.settlement-info-dialog-pane .alliance-banner,
+.character-info-dialog-pane .alliance-banner {
+  float: right;
+  width: 120px;
+  height: 120px;
+  margin-top: -30px;
+}
+
 
 input[type="text"],
 .alliance-pane input[type="text"] {
@@ -1771,6 +1788,7 @@ li.shout .sender {
   width: 24px; height: 24px;
 }
 
+
 .resource-icon.resource_wood {
   background-image: url("<%= asset_path 'icons/wood.png' %>");
 }
@@ -1778,18 +1796,16 @@ li.shout .sender {
 .resource-icon.resource_stone {
   background-image: url("<%= asset_path 'icons/stone.png' %>");
 }
-
 .resource-icon.resource_fur {
   background-image: url("<%= asset_path 'icons/fur.png' %>");
 }
-
 .resource-icon.resource_cash {
   background-image: url("<%= asset_path 'icons/toad.png' %>");
 }
 
 .resource-icon.finished {
   display: inline-block;
-  width: 36px; height: 36px;
+  width: 48px; height: 48px;
 }
 
 .resource-icon.resource_wood.finished {
@@ -1879,7 +1895,7 @@ li.shout .sender {
   text-shadow: none;
   position: absolute;
   left: 40px;
-  top: 8px;  
+  top: 90px;  
   background-color: rgba(0,0,0,0.4);
 }
 
@@ -1908,8 +1924,8 @@ table .number {
 
 
 .fortress-picture-spacer, .base-picture-spacer {
-  width: 450px;
-  height: 180px;
+  width: 360px;
+  height: 110px;
   float: right;
 }
 
@@ -1931,6 +1947,7 @@ table .number {
 } 
 
 .base-picture {
+  margin-top: 100px;
   background: url('<%= asset_path("settlements/base/base_background.png") %>');
 } 
 
@@ -2505,6 +2522,21 @@ table .number {
 }
 
 
+.resource-details-dialog-pane.modal-dialog-pane { 
+  position: absolute;
+  left: 80px; top: 90px;
+  margin: 0px;
+  width: 700px;
+}
+
+.resource-details-dialog-pane td.number {
+  padding-left: 20px;
+}
+
+.resource-details-dialog-pane th {
+  text-align: right;
+}
+
 .army-info-view {
   display: inline-block;
   width: 100%;
@@ -2901,7 +2933,7 @@ table .number {
 }
 
 .quest-reward-item-image.finished, .quest-reward-item-amount.finished {
-  height: 40px;
+  height: 52px;
   font-size: 24px;
 }
 

@@ -285,17 +285,12 @@ AWE.GS = (function(module) {
       return !unmetRequirements || unmetRequirements.length === 0;
     }, 
     
-    unmetRequirements: function() {
+    unmetRequirementGroups: function() {
       var settlement = this.getPath('slot.settlement');
       var character = settlement ? settlement.owner() : null;
       var slot = this.get('slot');
-      console.log('RECALC UNMET REQUIREMENTS');
-     //console.log(this.getPath('slot'), this.getPath('slot.settlement'), this.getPath('slot.settlement.enumerableSlots.firstObject.level'))
-      var failed =  AWE.Util.Rules.failedRequirements(this.getPath('buildingType.requirements'), settlement, character, slot, true);
-      if (this.get('buildingId') === 9) {
-        console.log('FAILED', failed, failed ? failed.length : 'null')
-      }
-     // console.log('FAILED', failed)
+      console.log('RECALC UNMET REQUIREMENT GROUPS');
+      var failed =  AWE.Util.Rules.failedRequirementGroups(this.getPath('buildingType.requirementGroups'), settlement, character, slot, true);
       return failed || []
     },
     // Fehleranalyse: unmetRequirements wird nicht getriggert, nachdem  slot gebaut wurde...
@@ -304,7 +299,7 @@ AWE.GS = (function(module) {
 		/** bool for indicating whether or not all requirements for constructin
 		 * this building are met. */
     requirementsMet: function() {
-      var unmetRequirements = this.unmetRequirements();
+      var unmetRequirements = this.unmetRequirementGroups();
       return !unmetRequirements || unmetRequirements.length === 0;
     }, 
     
