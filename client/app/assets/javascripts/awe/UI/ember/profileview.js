@@ -230,7 +230,7 @@ AWE.UI.Ember = (function(module) {
     }.property('character.gender_change_count'), 
     
     changeGenderPressed: function() {
-      var female = this.get('character.female');
+      var female = this.getPath('character.female');
       var newGender = female ? "male" : "female";
       var self = this;
       var changeCounter = this.getPath('character.gender_change_count');
