@@ -3,11 +3,21 @@
   <div class="center-helper">
     <div class="modal-dialog-pane character-info-dialog-pane">
       {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner" width=120 height=120}}
+      
+      {{#if character.female}}
+        <img class="character-head" src="{{unbound "AWE.Config.IMAGE_CACHE_LOAD_LIST.hud/head/female/normal" }}" />
+      {{else}}
+        <img class="character-head" src="{{unbound "AWE.Config.IMAGE_CACHE_LOAD_LIST.hud/head/male/normal" }}" />
+      {{/if}}
+      
       <h1>{{view AWE.UI.Ember.LinkedCharacterView characterBinding="character" linkCharacter=false}}</h1>
       
-      <p><b>Heimatsiedlung:</b> {{homeSettlement.name}}</p>
-      <p><b>Spielt seit:</b> {{formatDatetime character.created_at}}</p>
-      <p><b>Punkte:</b> {{character.score}} &nbsp; <b>Festungen:</b> {{character.fortress_count}}</p>
+      <p>Halbgott, <b>{{local character.mundaneTitle.name}}</b> und <b>{{local character.sacredTitle.name}}</b><br/>
+         dabei seit: {{formatDatetime character.created_at}}</p>
+      
+      <p><b>Erfahrung:</b> {{character.exp}} &nbsp; 
+         <b>Gesamtbevölkerung:</b> {{character.score}} &nbsp; 
+         <b>Festungen:</b> {{character.fortress_count}}</p>
       
       <p><b>Heimatsiedlung:</b>
         {{#if homeSettlement}}
