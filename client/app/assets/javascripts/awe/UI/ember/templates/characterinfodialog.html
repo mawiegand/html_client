@@ -12,7 +12,7 @@
       
       <h1>{{view AWE.UI.Ember.LinkedCharacterView characterBinding="character" linkCharacter=false}}</h1>
       
-      <p>{{#if character.female}}Halbgötting,{{else}}Halbgott,{{/if}} 
+      <p>{{#if character.female}}Halbgöttin,{{else}}Halbgott,{{/if}} 
          <b>{{local character.mundaneTitle.name}}</b> und <b>{{local character.sacredTitle.name}}</b><br/>
          dabei seit: {{formatDatetime character.created_at}}</p>
       
