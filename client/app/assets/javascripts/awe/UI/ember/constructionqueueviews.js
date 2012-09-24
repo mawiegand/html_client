@@ -113,6 +113,14 @@ AWE.UI.Ember = (function(module) {
       return 'width: ' + Math.ceil(100 * ratio) + 'px;';
     }.property('timeRemaining', 'job.productionTime'),    
     
+    building: function() {
+      if (this.getPath('job.job_type') == AWE.GS.CONSTRUCTION_JOB_TYPE_CONVERT) {
+        return this.getPath('job.slot.building.converted');
+      }
+      else {
+        return this.getPath('job.slot.building');
+      } 
+    }.property('id').cacheable(),  
   });
 
   return module;

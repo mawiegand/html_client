@@ -124,6 +124,43 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
 	  });
 	};
 	
+  module.addedResourceCosts = function(costsA, costsB) {
+  	costsA  = costsA || [];
+  	costsB  = costsB || [];
+  	var costSum = [];
+  	var helper = [];
+  	
+  	for (var i = 0; i < costsA.length; i++) {
+  	  helper[costsA[i].getPath('resourceType.id')] = (helper[costsA[i].getPath('resourceType.id')] || 0) + costsA[i].get('amount');
+  	}
+  	
+  	for (var i = 0; i < costsB.length; i++) {
+  	  helper[costsB[i].getPath('resourceType.id')] = (helper[costsB[i].getPath('resourceType.id')] || 0) + costsB[i].get('amount');
+  	}
+  	
+  	for (var i = 0; i < helper.length; i++) {
+      costSum.push(Ember.Object.create({
+        amount:       helper[i],
+        resourceType: AWE.GS.RulesManager.getRules().getResourceType(i),
+      }));        
+  	}
+  	
+    return costSum;
+	};
+	
+  
+  module.resourceCostsWithResourceId = function(costs, resourceId) {
+  	costs  = costs || [];
+  	
+  	for (var i = 0; i < costs.length; i++) {
+  	  if (costs[i].getPath('resourceType.id') === resourceId) {
+  	    return costs[i].get('amount');
+  	  }
+  	}
+  	
+    return 0;
+	};
+	
   
   ////////////////////////////////////////////////////////////////////////////
   // 

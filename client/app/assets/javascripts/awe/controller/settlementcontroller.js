@@ -403,13 +403,13 @@ AWE.Controller = (function(module) {
     that.constructionConvertClicked = function(slot) {
       
       var buildingId = slot.get('building_id');
-      log('constructionDestroyClicked', slot, buildingId, slot.get('jobsInQueue') );
+      var convertedLevel = slot.getPath('building.convertedLevel');
+      log('constructionConvertClicked', slot, buildingId, convertedLevel, slot.get('jobsInQueue') );
       
       // testen ob queue keine jobs enthält
-      
       if (buildingId && slot.get('jobsInQueue')) {
         if(slot.get('jobsInQueue').length == 0) {
-          createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CONVERT, slot.get('level'), 0);      
+          createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CONVERT, slot.get('level'), convertedLevel);      
         }
         else {
           var dialog = AWE.UI.Ember.InfoDialog.create({

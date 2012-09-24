@@ -159,7 +159,17 @@
       
         {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building.converted" levelBinding="building.converted.level"}}
         
-        <p>TODO: Show Conversion Details</p>
+        {{#if building.conversionCosts}}
+          <b>{{t building.cost}}:</b>
+          {{#each building.conversionCosts}}
+            {{amount}} {{local resourceType.name}} &nbsp;  
+          {{/each}}
+          <br/>
+        {{/if}}
+        <b>{{t building.duration}}:</b> {{formatDuration building.conversionTime}}<br />
+        <br/>
+        
+
       {{/if}}
 
       {{#if building.upgradable}}
@@ -248,6 +258,7 @@
         </p>
       {{/if}}
     {{else}}
+      <hr class="clear">
       <p>Conversion in Progress</p>      
     {{/unless}}
 

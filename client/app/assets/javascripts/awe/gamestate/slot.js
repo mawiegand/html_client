@@ -102,7 +102,9 @@ AWE.GS = (function(module) {
 		  return this.get('level') > this.get('levelAfterJobs');
 		}.property('level', 'levelAfterJobs').cacheable(),
 		
-		underConversion: false,
+		underConversion: function() {
+		  return this.getPath('sortedJobs.firstObject.job_type') === AWE.GS.CONSTRUCTION_JOB_TYPE_CONVERT;
+		}.property('sortedJobs.firstObject.job_type').cacheable(),
 		
 		nextLevel: function() {
 		  return (this.get('levelAfterJobs') || 0) +1;
@@ -197,8 +199,29 @@ AWE.GS = (function(module) {
         time += this.calcProductionTime(l);
       }
       return time;
-    }.property('level', 'buildingType.production_time', 'queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes. 
-    
+    }.property('level', 'buildingType.production_time', 'queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.
+     
+    conversionTime: function() {
+      var time = 0;
+      for (var l = 1; l <= this.get('level'); l++) {
+        time += this.calcProductionTime(l);
+      }
+      var convertedTime = 0;
+      log('---> conversionTime', time);
+      var convertedBuilding = this.get('converted');
+      log('---> convertedBuilding', convertedBuilding);
+      var convertedLevel = this.get('convertedLevel') || 1;
+      log('---> convertedLevel', convertedLevel);
+      var speed = this.getPath('queue.speed');
+      log('---> speed', speed);
+
+      for (var l = 1; l <= convertedLevel; l++) {
+        var productionTime = convertedBuilding.getPath('buildingType.production_time');
+        convertedTime += AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(productionTime), l) / speed
+      }
+      log('---> conversionTime', convertedTime);
+      return Math.max(convertedTime - time, convertedTime * (1 - AWE.GS.RulesManager.getRules().building_conversion.time_factor));
+    }.property('level', 'buildingType.production_time', 'queue.speed').cacheable(),
 
     calcCosts: function(level) {
 		  var costs = this.getPath('buildingType.costs');
@@ -213,6 +236,46 @@ AWE.GS = (function(module) {
 		costsOfNextLevel: function() {
 		  return this.calcCosts(this.get('nextLevel'));
 		}.property('nextLevel', 'buildingId').cacheable(),
+		
+		conversionCosts: function() {
+      var costs = this.getPath('buildingType.costs');
+      var level = this.get('level');
+      var costSum = [];
+      for (var l = 1; l <= level; l++) {
+        costSum = AWE.Util.Rules.addedResourceCosts(AWE.Util.Rules.evaluateResourceCosts(costs, l), costSum);
+      }
+      
+      var convertedCosts = this.getPath('converted.buildingType.costs');
+      log('---> convertedBuilding', convertedCosts);
+      var convertedLevel = this.get('convertedLevel') || 1;
+      log('---> convertedLevel', convertedLevel);
+      
+      var convertedCostSum = [];
+      
+      for (var l = 1; l <= convertedLevel; l++) {
+        convertedCostSum = AWE.Util.Rules.addedResourceCosts(AWE.Util.Rules.evaluateResourceCosts(convertedCosts, l), convertedCostSum);
+      }
+
+      log('---> convertedCostSum', convertedCostSum, AWE.Util.Rules.resourceCostsWithResourceId(costSum, 1));
+      
+      costsResult = [];
+      AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
+        var sum = AWE.Util.Rules.resourceCostsWithResourceId(costSum, item.id);
+        log('---> a', sum);
+        var convertedSum = AWE.Util.Rules.resourceCostsWithResourceId(convertedCostSum, item.id);
+        log('---> a', convertedSum);
+        var amount = Math.max(convertedSum - sum, convertedSum * (1 - AWE.GS.RulesManager.getRules().building_conversion.cost_factor));
+        log('---> a', amount);
+        if (amount > 0) {
+          costsResult.push(Ember.Object.create({  
+            amount:       amount,
+            resourceType: item,
+          }));
+        }        
+      });
+      
+      return costsResult;  
+		}.property('level', 'buildingId').cacheable(),
 		
 		upgradable: function() {
 		  var nextLevel = this.get('nextLevel');
@@ -261,14 +324,6 @@ AWE.GS = (function(module) {
       return level;
     }.property('levelAfterJobs').cacheable(),
     
-    // conversionTime: function() {
-//       
-    // }.property('id', 'levelAfterJobs').cacheable(),
-//     
-    // conversionCost: function() {
-//       
-    // }.property('id', 'levelAfterJobs').cacheable(),
-
     unmetRequirementsOfConversionBuilding: function() {
       var settlement = this.getPath('slot.settlement');
       var character = settlement ? settlement.owner() : null;
