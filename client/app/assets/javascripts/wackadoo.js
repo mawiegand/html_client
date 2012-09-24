@@ -25,6 +25,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
   
   return /** @lends WACKADOO# */ {
     
+    startupArguments: null,
+    
     mapScreenController: null,
     allianceScreenController: null,  
     settlementScreenController: null,
@@ -35,6 +37,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     /** custom object initialization goes here. */
     init: function() {
       this._super();
+    },
+    
+    reload: function() {
+      window.name = this.get('startupArguments');
+      window.location.reload();
     },
   
     /** the application's runloop. Does basic stuff needed by the application and then hands over
@@ -449,10 +456,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }
       catch (e) {
       }
-      // window.name = "";                                 // unset variables
+      this.set('startupArguments', window.name);
+      window.name = "";                                 // unset variables
       
       if (!args || !args.accessToken) {
-        alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
+        // alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
         document.location.href = AWE.Config.SERVER_ROOT;
         return ;
       }

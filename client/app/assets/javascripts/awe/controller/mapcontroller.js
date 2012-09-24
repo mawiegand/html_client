@@ -162,7 +162,8 @@ AWE.Controller = (function(module) {
       $("body").append(zoomSlider.getContainer());
       $("body").append('<div class="link-pane"><a href="'+ AWE.Config.EXTERNAL_FACEBOOK_URL +'" target="_blank"><img class="fb-icon" src="' + AWE.Config.RAILS_ASSET_PATH + 'icons/fb.png" /></a> &nbsp; '+
                        '                       <a href="'+ AWE.Config.EXTERNAL_FORUM_URL    +'" target="_blank">Forum</a> &nbsp; '+
-                       '                       <a href="'+ AWE.Config.EXTERNAL_MANUAL_URL   +'" target="_blank">Manual</a></div>');
+                       '                       <a href="'+ AWE.Config.EXTERNAL_MANUAL_URL   +'" target="_blank">Manual</a> &nbsp; '+
+                       '                       <a href="#" onClick="WACKADOO.reload()">Reload</a></div>');
       window.WACKADOO.addDomElement($('.link-pane'), false);
       window.WACKADOO.addDomElement(zoomSlider.getContainer(), true);
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height())); // prevents distortion in case window has resized while displaying another screen
