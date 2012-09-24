@@ -1,33 +1,102 @@
+<script type="text/x-handlebars" data-template-name="tab-view">
+
+  <ul class="tab-bar">
+    {{#each tabViews}}
+      {{#view AWE.UI.Ember.TabButtonView keyBinding="key" titleBinding="title" }}{{title}}{{/view}}
+    {{/each}}
+  </ul>  
+    
+  <div class="tab-content">
+    {{view Ember.ContainerView currentViewBinding="currentView"}}
+  </div>
+
+</script>
+
 <script type="text/x-handlebars" data-template-name="character-profile-view">
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="center-helper">
     <div class="modal-dialog-pane z-layer-4 character-profile-view">
-      <h1>Your Character: {{character.name}}</h1>
-      <hr>
-      {{#if firstNameChange}}
-        <h2>Choose Your Name</h2>
-      {{else}}
-        <h2>Change Your Name</h2>
-      {{/if}}
-      <p class="red-color">{{message}}</p>
-      <p><b>Present Name:</b> {{character.name}}
-         {{#if changingName }}
-           &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Processing...
-         {{else}} 
-           <span class="simple-button" {{action "changeNamePressed"}}>{{#if firstNameChange}}choose name{{else}}change name (20 toads){{/if}}</span>
-         {{/if}}
-      </p>      
-      <p>Please choose your name wisely, ideally it should fit into the stoneage setting.
-         The name you choose also needs to be unique.</p>
-      {{#if firstNameChange}}
-        <p>Choosing a name for the first time (this time!) is free, a
-           change afterwards does cost a few toads in order to prevent abuse. </p>
-      {{else}}
-        <p>You've already chosen a character name. Changing your name again is possible, 
-           but does cost 20 toads in order to prevent abuse.</p>      
-      {{/if}}
-      <hr>
-      <div class="icon-button ok-button" {{action "closePressed"}}>Close</div>
+      {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner" width=120 height=120}}
+
+      <h1>{{t profile.youAre }}: {{character.name}}</h1>
+      
+      {{view AWE.UI.Ember.ProfileTabView characterBinding="character"}}
+
+      <hr/>
+
+      <div class="icon-button ok-button" {{action "closePressed"}}>{{t general.close}}</div>
     </div>
   </div>
 </script>
+
+<script type="text/x-handlebars" data-template-name="character-customization-view">
+
+  <p>Hier kannst Du Deine Erscheinung als Halbgott anpassen. Im Moment sind Dein Name und
+     Dein Geschlecht wählbar, mit denen Du im Spiel auftreten möchtest. 
+     Später werden weitere Individualisierungen hinzukommen.</p>
+     
+  <hr/>
+
+  {{#if firstNameChange}}
+    <h2>{{t profile.customization.chooseName}}</h2>
+  {{else}}
+    <h2>{{t profile.customization.changeName}}</h2>
+  {{/if}}
+  <p class="red-color">{{message}}</p>
+  <p><b>{{t profile.customization.presentName}}:</b> {{character.name}}
+     {{#if changingName }}
+       &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+     {{else}} 
+       <span class="simple-button" {{action "changeNamePressed"}}>{{#if firstNameChange}}{{t profile.customization.chooseNameCaption}}{{else}}{{t profile.customization.changeNameCaption}} (20 toads){{/if}}</span>
+     {{/if}}
+  </p>      
+  <p>{{t profile.customization.nameChangeAdvice}}</p>
+  {{#if firstNameChange}}
+    <p>{{t profile.customization.nameChangeFreeAdvice}}</p>
+  {{else}}
+    <p>{{t profile.customization.nameChangeCostAdvice}}</p>      
+  {{/if}}
+  
+  <hr/>
+  
+  {{#if firstGenderChange}}
+    <h2>{{t profile.customization.chooseGender}}</h2>
+  {{else}}
+    <h2>{{t profile.customization.changeGender}}</h2>
+  {{/if}}
+    
+  <p><b>{{t profile.customization.presentGender}}:</b> {{#if character.female}} weiblich {{else}} männlich {{/if}} 
+     {{#if changingGender }}
+       &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+     {{else}} 
+       <span class="simple-button" {{action "changeGenderPressed"}}>{{#if firstGenderChange}}{{t profile.customization.chooseGenderCaption}}{{else}}{{t profile.customization.changeGenderCaption}} (20 toads){{/if}}</span>
+     {{/if}}  
+  </p>
+  {{#if firstGenderChange}}
+    <p>{{t profile.customization.genderChangeFreeAdvice}}</p>
+  {{else}}
+    <p>{{t profile.customization.genderChangeCostAdvice}}</p>      
+  {{/if}}
+
+</script>
+
+<script type="text/x-handlebars" data-template-name="character-profile-info-view">
+  <p><b>Weltlicher Rang:</b> <em>{{local character.mundaneTitle.name }}</em>. 
+     Aufstieg bei {{ character.nextMundaneTitle.exp }} zu <em>{{local character.nextMundaneTitle.name }}</em>.<br/>
+     <b>Geistlicher Rang:</b> <em>{{local character.sacredTitle.name }}</em>. Derzeit kein weiterer Aufstieg möglich.
+  </p>
+  
+  <p>Ein Aufstieg im weltlichen Rang gibt mehr Siedlungs- und Skillpunkte. 
+     Ein Aufstieg im geistlichen Rang ist Voraussetzung für Aufstiege im
+     weltlichen Rang und erhöht Dein Verständnis des Übernatürlichen.</p>   
+     
+  <p><b>Erfahrung:</b> {{ character.exp }}. Deine Erfahrung steigt indem Du baust und kämpfst.<br/>
+     <b>Siedlungspunkte:</b> {{ character.settlement_points_used }} / {{ character.settlement_points_total }} (verwendet/insgesamt)
+  </p>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="settings-view">
+  <p>Here Be Dragons.</p>
+</script>
+

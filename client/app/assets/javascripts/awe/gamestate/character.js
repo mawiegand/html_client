@@ -59,7 +59,31 @@ AWE.GS = (function(module) {
     premium_expiration: null,
     
     resourcePool: null,
+    
+    female: function() {
+      var gender = this.get('gender') || "";
+      return gender == "female";
+    }.property('gender').cacheable(), 
+    
+    mundaneTitle: function() {
+      var rank = this.get('mundane_rank') || 0;
+      return AWE.GS.RulesManager.getRules().character_ranks.mundane[rank];
+    }.property('mundane_rank').cacheable(),
 
+    nextMundaneTitle: function() {
+      var rank = (this.get('mundane_rank') || 0)+1;
+      return AWE.GS.RulesManager.getRules().character_ranks.mundane[rank];
+    }.property('mundane_rank'),
+
+    sacredTitle: function() {
+      var rank = this.get('sacred_rank') || 0;
+      return AWE.GS.RulesManager.getRules().character_ranks.sacred[rank];
+    }.property('sacred_rank').cacheable(),    
+    
+    nextSacredTitle: function() {
+      var rank = (this.get('sacred_rank') || 0)+1;
+      return AWE.GS.RulesManager.getRules().character_ranks.sacred[rank];
+    }.property('sacred_rank'),      
     
     //
     // //// MESSAGING //////////////////////////////////////////////////////// 

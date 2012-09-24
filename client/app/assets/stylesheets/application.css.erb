@@ -51,8 +51,8 @@ body { margin: 0; font-size: 1em; line-height: 1.4; }
  * Also: hot pink! (or customize the background color to match your design)
  */
 
-::-moz-selection { background: #fe57a1; color: #fff; text-shadow: none; }
-::selection { background: #fe57a1; color: #fff; text-shadow: none; }
+::-moz-selection { background: #DDD; color: #fff; text-shadow: none; }
+::selection { background: #DDD; color: #fff; text-shadow: none; }
 
 
 /* =============================================================================
@@ -916,6 +916,77 @@ html, body {
   margin-right: 10px;
 }
 
+.tab-bar li {
+  z-index: 99;
+  float: left;
+  display: table-cell;
+  border-color: #AAA;
+  border-width: 1px;
+  border-style: solid solid none solid;
+  margin: 0px;
+  padding: 10px 4px 10px 4px;
+  min-width: 100px;
+  text-align: center;
+  border-radius: 6px 6px 0px 0px;
+  background-color: white;
+  color: #AAA;
+}
+
+.tab-bar li:hover {
+  background-color: #FAFAFF;
+  cursor: pointer;
+  color: #FA0;
+}
+.tab-bar li.current:hover {
+  background-color: #FFF;
+  cursor: auto;
+  color: #333;  
+}
+
+
+.tab-bar li:first-of-type {
+  margin-left: 20px;
+  font-weight: bold;
+}
+
+.tab-bar li.current:first-of-type {
+  margin-left: 19px;
+}
+
+.tab-bar li.current {
+  z-index: 100;
+  font-weight: bold;
+  min-width: 102px;
+  padding: 11px 5px 11px 5px;
+  margin: -1px;
+  border-color: black;
+  border-bottom: 1px hidden;
+  color: #333;
+}
+
+.tab-bar {
+  height: 2em;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tab-content {
+  clear:left;
+  padding: 16px 8px 24px 8px;
+  border: 1px solid black;
+}
+
+.character-profile-view .tab-content {
+  border-style: solid none none none;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.tab-view {
+  width: 100%;
+}
+
 .army-info-view .advisor { 
   float:right;
   margin-left: 10px;
@@ -1680,6 +1751,7 @@ span.bonus {
   margin-top: -35px;
 }
 
+.character-profile-view .alliance-banner,
 .settlement-info-dialog-pane .alliance-banner,
 .character-info-dialog-pane .alliance-banner {
   float: right;
@@ -1688,6 +1760,9 @@ span.bonus {
   margin-top: -30px;
 }
 
+.character-info-dialog-pane .character-head {
+  float:left;
+}
 
 input[type="text"],
 .alliance-pane input[type="text"] {
