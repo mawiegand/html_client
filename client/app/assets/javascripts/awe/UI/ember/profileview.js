@@ -75,8 +75,7 @@ AWE.UI.Ember = (function(module) {
     character: null,   // must be bound to the character
     
     init: function() {
-      var characterId = this.getPath('character.id') || null;
-      
+     
       this.set('tabViews', [
         { key:   "tab1",
           title: "Info", 
@@ -97,13 +96,16 @@ AWE.UI.Ember = (function(module) {
           })
         },
       ]);
-
-      if (characterId) {
-        AWE.GS.CharacterManager.updateCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
-      }      
       
       this._super();
     },
+    
+    characterObserver: function() {
+      var characterId = this.getPath('character.id') || null;
+      if (characterId) {
+        AWE.GS.CharacterManager.updateCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      }       
+    }.observes('character.id'),
   });
 
 
