@@ -17,6 +17,9 @@ AWE.UI.Ember = (function(module) {
     },
 
     shop: null,
+    
+    shopEnabledBinding: 'shop.enabled',
+    loadingBinding: 'shop.loading',
 
     resourceOffersBinding: 'shop.resourceOffers',
     bonusOffersBinding: 'shop.bonusOffers',

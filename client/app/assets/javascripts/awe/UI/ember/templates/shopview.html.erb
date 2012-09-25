@@ -4,29 +4,37 @@
       <div class="shop-dialog-pane">
         <h1>{{ t shop.title }}</h1>
         
-        <p>{{ t shop.currentCreditAmount }}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }} {{ t shop.credits }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="simple-button" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span></p>
-        
-        {{#if resourceOffers}}
-        <h4>{{ t shop.resourceOffers }}</h4>
-                  
-          {{#each resourceOffers}}
-            {{view AWE.UI.Ember.ShopResourceOffer offerBinding="this" shopBinding="shop"}}
-          {{/each}}
-        {{/if}}
-        
-        {{#if bonusOffers}}
-        
-        <div class="clearfix"></div>
-                          
-        <div class="bonus-offer-header">
-          <div class="bonus-offer-description">{{ t shop.description }}</div>
-          <div class="bonus-offer-duration">{{ t shop.duration }}</div>
-          <div class="bonus-offer-price">{{ t shop.price }}</div>
-          <div class="bonus-offer-end">{{ t shop.expiry }}</div>
-        </div>
-          {{#each bonusOffers}}
-            {{view AWE.UI.Ember.ShopBonusOffer offerBinding="this" shopBinding="shop" classNames="bonus-offer"}}
-          {{/each}}
+        {{#if loading }}
+          {{view AWE.UI.Ember.WheelOrValueView valueBinding="null" }}&nbsp;&nbsp;&nbsp;Shop wird geladen...
+        {{else}}
+          {{#unless shopEnabled }}
+            <p>Der Shop ist vorübergehend nicht erreichbar!</p>
+          {{else}}
+            <p>{{ t shop.currentCreditAmount }}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }} {{ t shop.credits }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="simple-button" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span></p>
+            
+            {{#if resourceOffers}}
+            <h4>{{ t shop.resourceOffers }}</h4>
+                      
+              {{#each resourceOffers}}
+                {{view AWE.UI.Ember.ShopResourceOffer offerBinding="this" shopBinding="shop"}}
+              {{/each}}
+            {{/if}}
+            
+            {{#if bonusOffers}}
+            
+            <div class="clearfix"></div>
+                              
+            <div class="bonus-offer-header">
+              <div class="bonus-offer-description">{{ t shop.description }}</div>
+              <div class="bonus-offer-duration">{{ t shop.duration }}</div>
+              <div class="bonus-offer-price">{{ t shop.price }}</div>
+              <div class="bonus-offer-end">{{ t shop.expiry }}</div>
+            </div>
+              {{#each bonusOffers}}
+                {{view AWE.UI.Ember.ShopBonusOffer offerBinding="this" shopBinding="shop" classNames="bonus-offer"}}
+              {{/each}}
+            {{/if}}
+          {{/unless}}
         {{/if}}
         
         

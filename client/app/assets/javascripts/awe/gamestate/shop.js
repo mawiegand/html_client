@@ -11,6 +11,8 @@ AWE.GS = (function(module) {
     resourceOffers: null,
     bonusOffers: null,
     creditAmount: null,
+    
+    loading: true,
   })
 
   // singleton for in app shop.
@@ -46,8 +48,11 @@ AWE.GS = (function(module) {
         if (callback) {
           callback(data);
         }
+        my.shop.set('loading', false);
+        my.shop.set('enabled', true);
       }).error(function() {
-        my.shop.set('creditAmount', 0);
+        my.shop.set('loading', false);
+        my.shop.set('enabled', false);
       });
     };
     
@@ -105,7 +110,7 @@ AWE.GS = (function(module) {
       $('<form style="display:none;" id="paymentstarter" action="' + AWE.Config.PAYMENT_PROVIDER_BASE + 'auth/sessions/" method="POST" target="_blank">' +
         '  <input type="hidden" name="access_token" value="' + AWE.Net.currentUserCredentials.get('access_token') + '" />' +
         '</form>').appendTo('body').submit().remove();
-      // $('<form style="display:none;" id="paymentstarter" action="http://217.86.148.136/cl-5dshop/index.php?eID=api&action=openPartnerShop&key=wackadooShop" method="POST" target="_blank">' +
+      // $('<form style="display:none;" id="paymentstarter" action="https://secure.bytro.com/index.php?eID=api&action=openPartnerShop&key=wackadooShop" method="POST" target="_blank">' +
         // '  <input type="hidden" name="hash" value="' + AWE.Net.currentUserCredentials.get('access_token') + '" />' +
         // '</form>').appendTo('body').submit().remove();
     }; 
