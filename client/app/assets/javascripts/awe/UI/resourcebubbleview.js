@@ -37,7 +37,7 @@ AWE.UI = (function(module) {
     that.initWithControllerAndResourceImage = function(controller, imageName, resourceName, frame) {
       _super.initWithControllerTextAndImage(controller, "",
                                             AWE.UI.ImageCache.getImage("hud/bubble/normal"),
-                                            frame || AWE.Geometry.createRect(0, 0, 244, 51));
+                                            frame || AWE.Geometry.createRect(0, 0, 160, 36));
       this.setImageForState(AWE.UI.ImageCache.getImage("hud/bubble/hovered"), module.CONTROL_STATE_HOVERED);
       my.resourceImageName = imageName;
       my.resourceName = resourceName;
@@ -49,7 +49,7 @@ AWE.UI = (function(module) {
       if (!my.resourceImageView) {
         my.resourceImageView = AWE.UI.createImageView();
         my.resourceImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(my.resourceImageName));
-        my.resourceImageView.setFrame(AWE.Geometry.createRect(22, 8, 36, 36));
+        my.resourceImageView.setFrame(AWE.Geometry.createRect(0, 0, 36, 36));
         my.container.addChild(my.resourceImageView.displayObject());     
       } 
 
@@ -58,8 +58,8 @@ AWE.UI = (function(module) {
         my.amountView.initWithControllerAndLabel(my.controller);
         my.amountView.setTextAlign("left");
         my.amountView.setFont("16px Arial");
-        my.amountView.setColor('rgb(80,80,80)');
-        my.amountView.setFrame(AWE.Geometry.createRect(78, 10, 80, 24));      
+        my.amountView.setColor('rgb(255,255,255)');
+        my.amountView.setFrame(AWE.Geometry.createRect(38, 3, 80, 16));      
         my.container.addChild(my.amountView.displayObject());
       }
 
@@ -68,8 +68,8 @@ AWE.UI = (function(module) {
         my.rateView.initWithControllerAndLabel(my.controller);
         my.rateView.setTextAlign("right");
         my.rateView.setFont("12px Arial");
-        my.rateView.setColor('rgb(120,120,150)');
-        my.rateView.setFrame(AWE.Geometry.createRect(150, 13, 58, 20));      
+        my.rateView.setColor('rgb(200,200,200)');
+        my.rateView.setFrame(AWE.Geometry.createRect(100, 7, 58, 12));      
         my.container.addChild(my.rateView.displayObject());
       }
 
@@ -78,8 +78,8 @@ AWE.UI = (function(module) {
         my.capacityLabelView.initWithControllerAndLabel(my.controller);
         my.capacityLabelView.setTextAlign("left");
         my.capacityLabelView.setFont("12px Arial");
-        my.capacityLabelView.setColor('rgb(120,120,150)');
-        my.capacityLabelView.setFrame(AWE.Geometry.createRect(78, 28, 40, 20));      
+        my.capacityLabelView.setColor('rgb(200,200,200)');
+        my.capacityLabelView.setFrame(AWE.Geometry.createRect(38, 21, 40, 12));      
         my.capacityLabelView.setText('MAX:');
         my.container.addChild(my.capacityLabelView.displayObject());
       }
@@ -89,8 +89,8 @@ AWE.UI = (function(module) {
         my.capacityView.initWithControllerAndLabel(my.controller);
         my.capacityView.setTextAlign("left");
         my.capacityView.setFont("12px Arial");
-        my.capacityView.setColor('rgb(120,120,150)');
-        my.capacityView.setFrame(AWE.Geometry.createRect(118, 28, 100, 20));      
+        my.capacityView.setColor('rgb(200,200,200)');
+        my.capacityView.setFrame(AWE.Geometry.createRect(70, 21, 80, 12));      
         my.container.addChild(my.capacityView.displayObject());
       }
       that.setValues();
@@ -114,7 +114,7 @@ AWE.UI = (function(module) {
           my.amountView.setColor('rgb(255,128,0)');
         }
         else {
-          my.amountView.setColor('rgb(120,120,150)');
+          my.amountView.setColor('rgb(255,255,255)');
         }
       }
     }

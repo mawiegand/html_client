@@ -351,13 +351,13 @@ AWE.Controller = (function(module) {
 
         HUDViews.woodView = AWE.UI.createResourceBubbleView();
         HUDViews.woodView.initWithControllerAndResourceImage(that, "resource/icon/wood/large", "resource_wood");
-        HUDViews.woodView.setOrigin(AWE.Geometry.createPoint(280, 0));
+        HUDViews.woodView.setOrigin(AWE.Geometry.createPoint(200, 0));
         HUDViews.woodView.onClick = detailsHandler;
         _resourceStage.addChild(HUDViews.woodView.displayObject()); 
         
         HUDViews.furView = AWE.UI.createResourceBubbleView();
         HUDViews.furView.initWithControllerAndResourceImage(that, "resource/icon/fur/large", "resource_fur");
-        HUDViews.furView.setOrigin(AWE.Geometry.createPoint(540, 0));
+        HUDViews.furView.setOrigin(AWE.Geometry.createPoint(380, 0));
         HUDViews.furView.onClick = detailsHandler;
         _resourceStage.addChild(HUDViews.furView.displayObject()); 
       }
