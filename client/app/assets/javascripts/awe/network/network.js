@@ -8,15 +8,16 @@ var AWE = window.AWE || {};
 
 AWE.Net = function(module) {
   
-  module.OK           = 200;
-  module.CREATED      = 201;
+  module.OK            = 200;
+  module.CREATED       = 201;
   
-  module.NOT_MODIFIED = 304;
+  module.NOT_MODIFIED  = 304;
 
-  module.BAD_REQUEST  = 400;
-  module.FORBIDDEN    = 403;
-  module.NOT_FOUND    = 404;
-  module.CONFLICT     = 409;
+  module.BAD_REQUEST   = 400;
+  module.FORBIDDEN     = 403;
+  module.NOT_FOUND     = 404;
+  module.CONFLICT      = 409;
+  module.UNPROCESSABLE = 422;
   
   module.INTERNAL_SERVER_ERORR = 500;
 

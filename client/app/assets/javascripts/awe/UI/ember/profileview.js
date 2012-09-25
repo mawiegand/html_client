@@ -157,9 +157,9 @@ AWE.UI.Ember = (function(module) {
     
     character: null,
     
-    changingName:   false,
-    changingGender: false,
-            
+    changingName:     false,
+    changingGender:   false,
+
     firstNameChange: function() {
       var count = this.getPath('character.name_change_count');
       return count === undefined || count === null || count === 0;
@@ -253,9 +253,7 @@ AWE.UI.Ember = (function(module) {
           self.set('message', 'The gender could not be changed for unknown reasons. Please try again later.');
         }
       });        
-    },    
-    
-    
+    },        
   });  
 
   module.ProfileInfoView = Ember.View.extend({    
@@ -269,6 +267,47 @@ AWE.UI.Ember = (function(module) {
     templateName: 'settings-view',
     
     character: null,
+
+    changingPassword: false,
+    
+    password:             null,
+    passwordConfirmation: null,
+    
+    passwordObserver: function() {
+      this.set('changePasswordMessage', '');
+    }.observes('password', 'passwordConfirmation'),
+            
+    changePasswordPressed: function() {
+      this.set('changePasswordMessage', '');
+      this.set('changingPassword', true);
+      
+      if (this.get('password') != this.get('passwordConfirmation')) {
+        this.set('changingPassword', false);
+        this.set('changePasswordMessage', "The two passwords doesn't match. Try again.");
+      }
+      else {
+        var self = this;
+        var action = AWE.Action.Fundamental.createChangePasswordAction(this.get('password'));
+        AWE.Action.Manager.queueAction(action, function(status) {
+          self.set('changingPassword', false);
+          if (status === AWE.Net.OK) {
+            self.set('password', '');
+            self.set('passwordConfirmation', '');
+            self.set('changePasswordMessage', "Password changed.")
+          }
+          else if (status === AWE.Net.CONFLICT) {
+            self.set('password', '');
+            self.set('passwordConfirmation', '');
+            self.set('changePasswordMessage', "The password isn't long enough. Please choose a password with at least six characters length.")
+          }
+          else {
+            self.set('password', '');
+            self.set('passwordConfirmation', '');
+            self.set('changePasswordMessage', 'Your password could not be changed for unknown reasons. Please try again later.');
+          }
+        });
+      }        
+    },    
   });
       
   return module;  
