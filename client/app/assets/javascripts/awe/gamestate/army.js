@@ -93,10 +93,10 @@ AWE.GS = (function(module) {
       var inf = parseFloat(this.get('unitcategory_infantry_strength')  || "0.0");
       var total = (art + cav + inf) || 1.0;   
             
-      if (cav / total > 1.0) { // todo: presently never happens due to missing animation.
+      if (cav / total >= 0.15) { // todo: presently never happens due to missing animation.
         return 'cavalry';
       }
-      else if (art / total > 0.4) {
+      else if (art / total >= 0.4) {
         return 'artillery';
       }
       return 'infantry';
