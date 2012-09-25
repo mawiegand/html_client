@@ -297,6 +297,68 @@ AWE.UI = (function(module) {
       };      
     }
     
+    that.createChefSpriteSheet = function(number) {
+      var image = "map/army/animation/chef";
+      var standFrame = 13;
+      var laughing = true;
+      number = number || Math.floor(Math.random()*1000);
+      
+      switch (_army.get('stance') || 0) {
+        case 0:  standFrame = 13; break;
+        case 1:  standFrame = 11; laughing = false; break;
+        case 2:  standFrame = 13; break;
+        default: standFrame = 13; 
+      }    
+      
+      return {
+        images: [AWE.UI.ImageCache.getImage(image).src],
+        frames: {width:128, height:128},
+        animations: { 
+          toWalk: {
+            frames: multiplyArray([standFrame], number % 4).concat([ standFrame ]),  // no transition, but random delay to prevent units from walking in sync
+            next:   'walk',
+            frequency: 1,
+          },
+          walk:   {
+            frames:    [ 19,20,21,22, 23,24,25,26],
+            next:      'walk',
+            frequency: 1, 
+          },
+          fight:  {
+            frames: [].concat(     
+              multiplyArray([7], (number % 29)+23),
+              [8, 8],   // blink x1
+              multiplyArray([7], (number % 17)+27),
+              multiplyArray([8, 8, 7, 7, 7,], (number % 3)),  // blink 0 to 2 times
+              multiplyArray([7], (number % 23)+17),
+              multiplyArray([0,1,2,3,4,5,6],          (number % 3)+2),    // jump 2 to 4 times
+              multiplyArray([7,7,7,7],                (number % 8)+1),    // pause for a while
+              multiplyArray([0,1,2,3,4,5,6],          (number % 4))       // jump 0 to 3 times
+            ),
+            next:   'fight',
+          },
+          toStand: {
+            frames:    [ standFrame ],    // actually has no transition
+            next:      'stand',
+            frequency: 2,
+          },
+          stand: {
+            frames: [ standFrame ].concat(
+              multiplyArray([standFrame], (number % 67)+23),
+              [standFrame+1, standFrame+1],   // blink x1
+              multiplyArray([standFrame], (number % 23)+13),
+              [standFrame+1, standFrame+1, standFrame, standFrame, standFrame, standFrame+1, standFrame+1], // blink x2
+              multiplyArray([standFrame], (number % 77)+17),
+              (laughing ? 
+               multiplyArray([standFrame+4, standFrame+5], (number % 3)+3) : [])   // laughing
+            ),
+            next: 'stand',
+            frequency: 1,
+          },
+        },
+      };      
+    }
+    
     that.prepareSpriteSheet = function() {
       if (!_army) {
         return null;

@@ -44,6 +44,7 @@ AWE.Config = (function(module) {
 
     "map/army/animation":     "<%= asset_path('army/warrior_animation_final_128.png') %>",
     "map/army/animation/amazon": "<%= asset_path('army/amazon_animation_128.png') %>",
+    "map/army/animation/chef":   "<%= asset_path('army/chef_animation_128.png') %>",
     
     "map/army/stanceAggressive": "<%= asset_path('army/warrior_pose_2_96.png') %>",
     "map/army/stanceDefensive":  "<%= asset_path('army/warrior_pose_1_96.png') %>",
@@ -52,6 +53,10 @@ AWE.Config = (function(module) {
     "map/army/amazon/stanceAggressive": "<%= asset_path('army/amazon_pose_2_96.png') %>",
     "map/army/amazon/stanceDefensive":  "<%= asset_path('army/amazon_pose_1_96.png') %>",
     "map/army/amazon/stanceNeutral":    "<%= asset_path('army/amazon_pose_1_96.png') %>",
+
+    "map/army/chef/stanceAggressive": "<%= asset_path('army/chef_pose_2_96.png') %>",
+    "map/army/chef/stanceDefensive":  "<%= asset_path('army/chef_pose_1_96.png') %>",
+    "map/army/chef/stanceNeutral":    "<%= asset_path('army/chef_pose_1_96.png') %>",
 
 
     "map/army/npc/small":     "<%= asset_path('army/neandertaler_size1.png') %>",
@@ -155,6 +160,12 @@ AWE.Config = (function(module) {
     "map/army/amazon/stanceAggressive",
     "map/army/amazon/stanceDefensive",
   ];  
+
+  module.MAP_STANCE_IMAGES_CHEF = [
+    "map/army/chef/stanceNeutral",
+    "map/army/chef/stanceAggressive",
+    "map/army/chef/stanceDefensive",
+  ];
   
   return module;
   
