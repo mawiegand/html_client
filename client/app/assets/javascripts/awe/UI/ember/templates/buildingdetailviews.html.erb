@@ -36,7 +36,7 @@
     {{#if building.costsOfNextLevel}}
       {{t building.cost }}:
       {{#each building.costsOfNextLevel}}
-        {{amount}} {{local resourceType.name}} &nbsp;  
+        <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>{{amount}} &nbsp;  
       {{/each}}<br/>
     {{/if}}
     {{t building.duration}}: {{formatDuration building.productionTimeOfNextLevel}}<br />     
@@ -49,7 +49,8 @@
     {{#if building.productionsNextLevel}}
       <b>{{t building.produces}}:</b><br/>
       {{#each building.productionsNextLevel}}
-        {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{local resourceType.name}} {{t general.perHour}} <br/>  
+        <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>   
+        {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{t general.perHour}} <br/>  
       {{/each}}
     {{/if}}
     {{#if building.unlockDiplomacyNextLevel}}
@@ -102,21 +103,24 @@
       {{#if building.productions}}
         <b>{{t building.produces}}:</b><br/>
         {{#each building.productions}}
-          {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{local resourceType.name}} {{t general.perHour}} <br/>  
+          <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
+          {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{t general.perHour}} <br/>  
         {{/each}}
       {{/if}}
       
       {{#if building.capacity}}
         <b>{{t building.capacity}}:</b>
         {{#each building.capacity}}
-          {{capacity}} {{local resourceType.name}} &nbsp;  
+          <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
+          {{capacity}} &nbsp;  
         {{/each}}<br/>
       {{/if}}
 
       {{#if building.productionBoni}}
         <b>{{t building.productionBoni}}:</b>
         {{#each building.productionBoni}}
-          +{{bonus}}% {{local resourceType.name}} &nbsp;  
+        <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
+          +{{bonus}}% &nbsp;  
         {{/each}}<br/>
       {{/if}}
 
@@ -162,7 +166,7 @@
         {{#if building.conversionCosts}}
           <b>{{t building.cost}}:</b>
           {{#each building.conversionCosts}}
-            {{amount}} {{local resourceType.name}} &nbsp;  
+            <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>{{amount}} &nbsp;
           {{/each}}
           <br/>
         {{/if}}
@@ -188,7 +192,7 @@
         {{#if building.costsOfNextLevel}}
           <b>{{t building.cost}}:</b>
           {{#each building.costsOfNextLevel}}
-            {{amount}} {{local resourceType.name}} &nbsp;  
+            <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>{{amount}} &nbsp;          
           {{/each}}
           <br/>
         {{/if}}
@@ -198,21 +202,24 @@
         {{#if building.productionsNextLevel}}
           <b>{{t building.produces}}:</b><br/>
           {{#each building.productionsNextLevel}}
-            {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{local resourceType.name}} {{t general.perHour}} <br/>  
+            <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
+            {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{t general.perHour}} <br/>  
           {{/each}}
         {{/if}}
         
         {{#if building.capacityNextLevel}}
           <b>{{t building.capacity}}:</b>
           {{#each building.capacityNextLevel}}
-            {{capacity}} {{local resourceType.name}} &nbsp;  
+            <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
+            {{capacity}} &nbsp;  
           {{/each}}<br/>
         {{/if}}
         
         {{#if building.productionBoniNextLevel}}
           <b>{{t building.productionBoni}}:</b>
           {{#each building.productionBoniNextLevel}}
-            +{{bonus}}% {{local resourceType.name}} &nbsp;  
+            <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
+            +{{bonus}}% &nbsp;  
           {{/each}}<br/>
         {{/if}}
   

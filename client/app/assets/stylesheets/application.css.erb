@@ -1863,11 +1863,19 @@ li.shout .sender {
   width: 24px; height: 24px;
 }
 
+.resource-icon.large {
+  display: inline-block;
+  width: 48px; height: 48px;
+}
+
+.resource-icon.middle {
+  display: inline-block;
+  width: 36px; height: 36px;
+}
 
 .resource-icon.resource_wood {
   background-image: url("<%= asset_path 'icons/wood.png' %>");
 }
-
 .resource-icon.resource_stone {
   background-image: url("<%= asset_path 'icons/stone.png' %>");
 }
@@ -1878,23 +1886,41 @@ li.shout .sender {
   background-image: url("<%= asset_path 'icons/toad.png' %>");
 }
 
+.resource-icon.resource_wood.middle {
+  background-image: url("<%= asset_path 'icons/wood-middle.png' %>");
+}
+.resource-icon.resource_stone.middle {
+  background-image: url("<%= asset_path 'icons/stone-middle.png' %>");
+}
+.resource-icon.resource_fur.middle {
+  background-image: url("<%= asset_path 'icons/fur-middle.png' %>");
+}
+.resource-icon.resource_cash.middle {
+  background-image: url("<%= asset_path 'icons/toad-middle.png' %>");
+}
+
+
 .resource-icon.finished {
   display: inline-block;
   width: 48px; height: 48px;
 }
 
+.resource-icon.resource_wood.large,
 .resource-icon.resource_wood.finished {
   background-image: url("<%= asset_path 'icons/wood-large.png' %>");
 }
 
+.resource-icon.resource_stone.large,
 .resource-icon.resource_stone.finished {
   background-image: url("<%= asset_path 'icons/stone-large.png' %>");
 }
 
+.resource-icon.resource_fur.large,
 .resource-icon.resource_fur.finished {
   background-image: url("<%= asset_path 'icons/fur-large.png' %>");
 }
 
+.resource-icon.resource_cash.large,
 .resource-icon.resource_cash.finished {
   background-image: url("<%= asset_path 'icons/toad-large.png' %>");
 }
