@@ -25,7 +25,9 @@ AWE.Action.Fundamental = (function(module) {
     
     that.getRequestBody = function() {
       return {
-        password: password || "",
+        character: {
+          password: password || "",
+        },
       };
     }
     
@@ -38,9 +40,6 @@ AWE.Action.Fundamental = (function(module) {
     }
     
     that.postProcess = function(statusCode, xhr) {
-      if (statusCode == 200) {
-        // AWE.GS.CharacterManager.updateCurrentCharacter();
-      }
     }
   
     return that;

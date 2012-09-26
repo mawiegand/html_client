@@ -300,7 +300,7 @@ AWE.UI.Ember = (function(module) {
           else if (status === AWE.Net.CONFLICT) {
             self.set('password', '');
             self.set('passwordConfirmation', '');
-            self.set('changePasswordMessage', "The password isn't long enough. Please choose a password with at least six characters length.")
+            self.set('changePasswordMessage', "The password doesn't meet the requirements. Please choose a appropriate password.")
           }
           else {
             self.set('password', '');
