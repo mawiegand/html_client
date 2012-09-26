@@ -283,7 +283,7 @@ AWE.UI = (function(module) {
         _resource4LabelView = AWE.UI.createLabelView();
         _resource4LabelView.initWithControllerAndLabel(my.controller);
         _resource4LabelView.setTextAlign("left");
-        _resource4LabelView.setIconImage("hud/frog/face");
+        _resource4LabelView.setIconImage("resource/icon/cash");
         _resource4LabelView.setFont("14px Arial");
         _resource4LabelView.setFrame(AWE.Geometry.createRect(150, 60, 80, 24));      
         this.addChild(_resource4LabelView);
