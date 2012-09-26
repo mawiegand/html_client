@@ -122,14 +122,11 @@ AWE.Controller = (function(module) {
 
     that.ingameShopButtonClicked = function() {
       
-      AWE.GS.ShopManager.init();
+      if (!AWE.GS.ShopManager.getShop()) {
+        AWE.GS.ShopManager.init();
+      }
       
       shopDialog = AWE.UI.Ember.ShopDialog.create({
-        
-        // resourceOffers: AWE.GS.ShopManager.content.get('resourceOffers'),
-        // bonusOffers: AWE.GS.ShopManager.content.get('bonusOffers'),
-// 
-        // creditAmount: AWE.GS.ShopManager.content.get('creditAmount'),
         
         shop: AWE.GS.ShopManager.getShop(),
         
