@@ -293,7 +293,7 @@ AWE.GS = (function(module) {
         return this.updateCharacter(currentCharacter.get('id'), updateType, callback);
       }
       else { // no current character, need to fetch self
-        var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/self';
+        var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/self?create_if_new=true';
         return my.fetchEntitiesFromURL(
           url, 
           my.runningUpdatesPerId, 
