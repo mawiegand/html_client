@@ -107,12 +107,12 @@ AWE.GS = (function(module) {
     }
     
     that.openCreditShopWindow = function() {
-      $('<form style="display:none;" id="paymentstarter" action="' + AWE.Config.PAYMENT_PROVIDER_BASE + 'auth/sessions/" method="POST" target="_blank">' +
-        '  <input type="hidden" name="access_token" value="' + AWE.Net.currentUserCredentials.get('access_token') + '" />' +
-        '</form>').appendTo('body').submit().remove();
-      // $('<form style="display:none;" id="paymentstarter" action="https://secure.bytro.com/index.php?eID=api&action=openPartnerShop&key=wackadooShop" method="POST" target="_blank">' +
-        // '  <input type="hidden" name="hash" value="' + AWE.Net.currentUserCredentials.get('access_token') + '" />' +
+      // $('<form style="display:none;" id="paymentstarter" action="' + AWE.Config.PAYMENT_PROVIDER_BASE + 'auth/sessions/" method="POST" target="_blank">' +
+        // '  <input type="hidden" name="access_token" value="' + AWE.Net.currentUserCredentials.get('access_token') + '" />' +
         // '</form>').appendTo('body').submit().remove();
+      $('<form style="display:none;" id="paymentstarter" action="https://secure.bytro.com/index.php?eID=api&action=openPartnerShop&key=wackadooShop" method="POST" target="_blank">' +
+        '  <input type="hidden" name="hash" value="' + AWE.Net.currentUserCredentials.get('access_token') + '" />' +
+        '</form>').appendTo('body').submit().remove();
     }; 
         
     return that;
