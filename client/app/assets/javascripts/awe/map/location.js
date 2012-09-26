@@ -135,6 +135,25 @@ AWE.Map = (function(module) {
       return garrisonArmy;
     };
     
+    that.settleable = function() {
+      return _settlementTypeId !== undefined && _settlementTypeId === 0;
+    }
+    
+    that.canFoundSettlementHere = function(character) {
+      var locations = _region ? _region.locations() : null;
+      if (_slot === 0 || !this.settleable() || !locations) {
+        return false;          // fortress slot, settlement present or not enough data to decide
+      }
+      var numOwnSettlements = 0;
+      var characterId = character.get('id');
+      for (var i=1; i < locations.length; i++) {
+        if (locations[i].ownerId() === characterId) {
+          numOwnSettlements += 1;
+        }
+      }
+      return numOwnSettlements === 0;
+    }
+    
     that.lastArmyUpdateAt = function() {
       return AWE.GS.ArmyAccess.lastUpdateForLocation_id(_id);
     }
