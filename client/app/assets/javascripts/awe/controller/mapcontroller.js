@@ -664,6 +664,7 @@ AWE.Controller = (function(module) {
       _actionViewChanged = true;
     };
     
+
     that.settlementAttackButtonClicked = function(settlementAnnotationView) {
       
       log('settlementAnnotationView', settlementAnnotationView);
@@ -747,6 +748,47 @@ AWE.Controller = (function(module) {
         }
       });
     }
+    
+    that.armyFoundSettlementButtonClicked = function(armyAnnotationView) {
+      armyAnnotationView.setActionMode('foundSettlement');
+      _actionViewChanged = true;
+
+      var dialog = AWE.UI.Ember.FoundSettlementDialog.create({
+        army: armyAnnotationView.army(),      
+        
+        foundPressed: function(evt) {
+          var army = this.get('army');
+          var location = AWE.Map.Manager.getLocation(this.getPath('army.location_id'));
+          
+          if (!army || !location) {
+            that.handleError("ClientError", "Der Außenposten konnte leider nicht gegründet werden. Die Daten in Deinem Client sind veraltet. Bitte versuch es gleich noch mal oder kontaktiere den Support, wenn es sich um einen Fehler handelt.");
+            armyAnnotationView.setActionMode('');
+            return ;
+          }
+          
+          var action = AWE.Action.Military.createFoundOutpostAction(army, location);
+          action.send(function(status) {
+            armyAnnotationView.setActionMode('');
+            if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+              AWE.GS.Map.Manager.fetchLocationsForRegion(location.region(), function() {
+                that.setModelChanged();
+              });
+              AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id());
+            }
+            else {
+              that.handleError(status, "Der Außenposten konnte leider nicht gegründet werden. Bitte versuch es gleich noch mal oder kontaktiere den Support, wenn es sich um einen Fehler handelt.");
+            }
+          });
+          this.destroy();
+        },
+        cancelPressed: function(evt) {
+          armyAnnotationView.setActionMode('');
+          this.destroy();
+        },
+      });
+      that.applicationController.presentModalDialog(dialog);      
+    };
+    
     
     var createArmyCreateAction = function(location, units, armyName, callback) {
       log('createArmyCreateAction', location, units, armyName);
@@ -2093,6 +2135,10 @@ AWE.Controller = (function(module) {
           annotationView.onMoveButtonClick = (function(self) {
             return function(view) { self.armyMoveButtonClicked(view); }
           })(that);
+          
+          annotationView.onFoundButtonClick = (function(self) {
+            return function(view) { self.armyFoundSettlementButtonClicked(view); }
+          })(that);          
           
           annotationView.onCancelMoveButtonClick = (function(self) {
             return function(view) { self.armyCancelMoveButtonClicked(view); }

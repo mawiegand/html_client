@@ -43,7 +43,6 @@ AWE.Action.Military = (function(module) {
     that.postProcess = function(statusCode, xhr) {
       if (statusCode == 200) {
         AWE.GS.ArmyManager.updateArmy(my.army.getId());
-        AWE.GS.MapManager.fetchLocationsForRegion(my.location.region());
         AWE.GS.CharacterManager.updateCharacter(army.get('owner_id'));
       }
     }

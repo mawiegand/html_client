@@ -234,7 +234,7 @@ AWE.UI = (function(module) {
       
       _moveButtonView.setSelected(_actionMode === 'moveTargetSelection');
       _attackButtonView.setSelected(_actionMode === 'attackTargetSelection');
-      _foundButtonView.setSelected(_actionMode === 'foundSettlementSelection');     
+      _foundButtonView.setSelected(_actionMode === 'foundSettlement');     
       _retreatButtonView.setSelected(_army.get('battle_retreat'));     
     }
     
