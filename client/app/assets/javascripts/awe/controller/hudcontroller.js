@@ -276,6 +276,7 @@ AWE.Controller = (function(module) {
     that.updateModel = (function() {
             
       var lastResourcesUpdate = new Date(1970);
+      var lastCreditAmountUpdate = new Date(1970);
       var amounts = [100];
       
       return function() {
@@ -307,6 +308,15 @@ AWE.Controller = (function(module) {
           }
         }
         
+        if (lastCreditAmountUpdate.getTime() + AWE.Config.CREDIT_AMOUNT_REFRESH_INTERVAL < new Date().getTime()) {
+          lastCreditAmountUpdate = new Date();
+          if (shopDialog) {
+            AWE.GS.ShopManager.fetchCreditAmount(function() {
+              that.setModelChanged();
+              console.log('U: updated credit amount');
+            });
+          }
+        }
       };
     }());     
     
