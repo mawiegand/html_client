@@ -1187,7 +1187,7 @@ AWE.Controller = (function(module) {
           that.changeArmyButtonClicked(view.army());
         };
       }
-      else if (view.typeName() === 'BaseView') { 
+      else if (view.typeName() === 'BaseView' || view.typeName() === 'OutpostView') { 
         inspectorViews.inspector = AWE.UI.createBaseInspectorView();
         inspectorViews.inspector.initWithControllerAndLocation(that, view.location());
 
@@ -1199,18 +1199,6 @@ AWE.Controller = (function(module) {
           WACKADOO.activateAllianceController(allianceId);
         }
         
-        inspectorViews.inspector.onInfoButtonClick = function(location) {
-          that.settlementInfoButtonClicked(location);
-        }; 
-      }
-      else if (view.typeName() === 'OutpostView') {
-        inspectorViews.inspector = AWE.UI.createOutpostInspectorView();
-        inspectorViews.inspector.initWithControllerAndLocation(that, view.location());
-
-        inspectorViews.inspector.onNewArmyButtonClick = function(location) {
-          that.newArmyButtonClicked(location);
-        };
-
         inspectorViews.inspector.onInfoButtonClick = function(location) {
           that.settlementInfoButtonClicked(location);
         }; 
@@ -2158,7 +2146,7 @@ AWE.Controller = (function(module) {
           
           armyUpdates[annotatedView.army().getId()] = annotatedView.army();
         }
-        else if (annotatedView.typeName() === 'BaseView') {
+        else if (annotatedView.typeName() === 'BaseView' || annotatedView.typeName() === 'OutpostView') {
           annotationView = AWE.UI.createBaseAnnotationView();
           annotationView.initWithControllerAndView(that, annotatedView);
 
@@ -2174,14 +2162,6 @@ AWE.Controller = (function(module) {
           else {
             console.log("ERROR: expected location to be there, but its missing!");
           }
-        }
-        else if (annotatedView.typeName() === 'OutpostView') {
-          annotationView = AWE.UI.createOutpostAnnotationView();
-          annotationView.initWithControllerAndView(that, annotatedView);
-
-          annotationView.onAttackButtonClick = (function(self) {
-            return function(view) { self.settlementAttackButtonClicked(view); }
-          })(that);
         }
         else if (annotatedView.typeName() === 'EmptySlotView') {
           annotationView = AWE.UI.createEmptySlotAnnotationView();
