@@ -13,13 +13,18 @@ AWE.UI.Ember = (function(module) {
     templateName: 'shop',
     
     init: function() {
-      this._super();      
+      this._super();
+      
+      // TODO add onfocus event to capture event when user comes back from bytro shop
     },
 
     shop: null,
     
     shopEnabledBinding: 'shop.enabled',
-    loadingBinding: 'shop.loading',
+    
+    loading: function() {
+      return this.getPath('shop.loading') && this.get('creditAmount') == null;
+    }.property('shop.loading', 'creditAmount').cacheable(),
 
     resourceOffersBinding: 'shop.resourceOffers',
     bonusOffersBinding: 'shop.bonusOffers',

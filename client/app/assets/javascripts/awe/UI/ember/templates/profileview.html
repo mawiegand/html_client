@@ -97,6 +97,18 @@
 
 
 <script type="text/x-handlebars" data-template-name="settings-view">
-  <p>Here Be Dragons.</p>
+  <h2>{{t profile.customization.changePasswordCaption}}</h2>
+  <p>{{t profile.customization.changePasswordAdvice}}</p>
+  <p>   
+     {{view Ember.TextField type="password" placeholder="Passwort" valueBinding="password" }}
+     {{view Ember.TextField type="password" placeholder="Passwortbestätigung" valueBinding="passwordConfirmation" }}
+     
+     {{#if changingPassword }}
+       &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+     {{else}} 
+       <span class="simple-button" {{action "changePasswordPressed"}}>{{t profile.customization.changePasswordButton}}</span>
+     {{/if}}  
+  </p>
+  <p class="red-color">{{changePasswordMessage}}</p>
 </script>
 
