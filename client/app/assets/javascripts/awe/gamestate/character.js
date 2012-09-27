@@ -85,6 +85,12 @@ AWE.GS = (function(module) {
       return AWE.GS.RulesManager.getRules().character_ranks.sacred[rank];
     }.property('sacred_rank'),      
     
+    canFoundSettlement: function() {
+      var used  = this.get('settlement_points_used');
+      var total = this.get('settlement_points_total');
+      return used && total && total > used; // assumes used is at least one, what is ok right now as each character always has a home settlement
+    },
+    
     //
     // //// MESSAGING //////////////////////////////////////////////////////// 
     //
