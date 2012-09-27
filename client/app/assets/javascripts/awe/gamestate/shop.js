@@ -29,7 +29,13 @@ AWE.GS = (function(module) {
       
       my.shop = module.Shop.create();
       
-      that.fetchCreditAmount();
+      that.fetchCreditAmount(function(){
+        my.shop.set('loading', false);
+        my.shop.set('enabled', true);        
+      },function(){
+        my.shop.set('loading', false);
+        my.shop.set('enabled', false);
+      });
       AWE.GS.BonusOfferManager.updateBonusOffers(null, function(result) {
         my.shop.set('bonusOffers', AWE.GS.BonusOfferManager.getBonusOffers());
       });
@@ -42,17 +48,16 @@ AWE.GS = (function(module) {
       return my.shop;
     };
     
-    that.fetchCreditAmount = function(callback) {
+    that.fetchCreditAmount = function(success, error) {
       $.getJSON(AWE.Config.SHOP_SERVER_BASE + 'account', function(data) {
         my.shop.set('creditAmount', data.credit_amount);
-        if (callback) {
-          callback(data);
+        if (success) {
+          success(data);
         }
-        my.shop.set('loading', false);
-        my.shop.set('enabled', true);
       }).error(function() {
-        my.shop.set('loading', false);
-        my.shop.set('enabled', false);
+        if (error) {
+          error(data);
+        }
       });
     };
     
