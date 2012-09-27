@@ -38,6 +38,8 @@ AWE.UI = (function(module) {
     my.baseView = null;
     my.location = null;
     my.infoContainer = null;
+    
+    my.settlementType = null;
 
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
@@ -52,7 +54,7 @@ AWE.UI = (function(module) {
       _super.initWithController(controller, frame);
       my.location = view.location();
       my.baseView = view;
-      
+      my.settlementType = AWE.Config.MAP_LOCATION_TYPE_CODES[my.location.settlementTypeId() || 2];
       my.frame.size.width = 192;
       my.frame.size.height = 128;      
     };

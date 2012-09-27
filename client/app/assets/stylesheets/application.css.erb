@@ -1231,6 +1231,7 @@ span.bonus {
   margin-top: 30px;
 } 
 
+.outpost-screen .building-option-image,
 .base-screen .building-option-image {
   width: 120px;
   height:150px;
@@ -1238,13 +1239,14 @@ span.bonus {
   background: url('<%= asset_path("settlements/base/building_category_large_building.png") %>');
 }
 
+.outpost-screen .settlement-dialog-select-building .building-option-image,
 .base-screen .settlement-dialog-select-building .building-option-image {
   margin-top: -8px;
   margin-bottom: 2px;
 }
 
 
-/** image for base buildings */
+/** image for base and outpost buildings */
 .building-option-image.building_quarry {
   background: url('<%= asset_path("settlements/base/building_quarry_large.png") %>');
 }
@@ -1316,21 +1318,27 @@ span.bonus {
 }
 
 
+.outpost-screen .building-option-image.size1,
 .base-screen .building-option-image.size1 {
   background-position: -120px 0px;
 }
+.outpost-screen .building-option-image.size2,
 .base-screen .building-option-image.size2 {
   background-position: -240px 0px;
 }
+.outpost-screen .building-option-image.size3,
 .base-screen .building-option-image.size3 {
   background-position: -360px 0px;
 }
+.outpost-screen .building-option-image.size4,
 .base-screen .building-option-image.size4 {
   background-position: -480px 0px;
 }
+.outpost-screen .building-option-image.size5,
 .base-screen .building-option-image.size5 {
   background-position: -600px 0px;
 }
+.outpost-screen .building-option-image.size6,
 .base-screen .building-option-image.size6 {
   background-position: -720px 0px;
 }
@@ -1454,6 +1462,7 @@ span.bonus {
   margin: -32px 6px 0px -8px;
 }
 
+.outpost-screen .queue-job-image,
 .base-screen .queue-job-image {
   width: 72px;
   height: 90px;
@@ -1648,70 +1657,76 @@ span.bonus {
   background-position: -159px 0px;
 }
 
-
+.outpost-screen,
 .base-screen {
   background-color: rgb(224, 232, 195);
 }
 
+.outpost-screen .queue-job-image,
 .base-screen .queue-job-image {
   background: url('<%= asset_path("settlements/base/building_category_large_building_small.png") %>');  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
-.base-screen .queue-job-image.building_quarry {
+.queue-job-image.building_quarry {
   background: url('<%= asset_path("settlements/base/building_quarry_large_small.png") %>');
 }
-.base-screen .queue-job-image.building_chief_cottage {
+.queue-job-image.building_chief_cottage {
   background: url('<%= asset_path("settlements/base/building_chief_cottage_large_small.png") %>');
 }
-.base-screen .queue-job-image.building_logger{
+.queue-job-image.building_logger{
   background: url('<%= asset_path("settlements/base/building_logger_large_small.png") %>');
 }
-.base-picture .queue-job-image.building_barracks {
+.queue-job-image.building_barracks {
   background: url('<%= asset_path("settlements/base/building_barracks_large_small.png") %>');
 }
-.base-picture .queue-job-image.building_campfire {
+.queue-job-image.building_campfire {
   background: url('<%= asset_path("settlements/base/building_campfire_large_small.png") %>');
 }
-.base-picture .queue-job-image.building_cottage  {
+.queue-job-image.building_cottage  {
   background: url('<%= asset_path("settlements/base/building_cottage_large_small.png") %>');
 }
-.base-picture .queue-job-image.building_firing_range {
+.queue-job-image.building_firing_range {
   background: url('<%= asset_path("settlements/base/building_firing_range_large_small.png") %>');
 }
-.base-picture .queue-job-image.building_furrier  {
+.queue-job-image.building_furrier  {
   background: url('<%= asset_path("settlements/base/building_furrier_large_small.png") %>');
 }
-.base-picture .queue-job-image.building_gatherer {
+.queue-job-image.building_gatherer {
   background: url('<%= asset_path("settlements/base/building_gatherer_large_small.png") %>');
 }
-.base-picture .queue-job-image.building_stud     {
+.queue-job-image.building_stud     {
   background: url('<%= asset_path("settlements/base/building_stud_large_small.png") %>');
 }
-.base-picture .queue-job-image.building_workshop {
+.queue-job-image.building_workshop {
   background: url('<%= asset_path("settlements/base/building_workshop_large_small.png") %>');
 }
-.base-picture .queue-job-image.building_storage {
+.queue-job-image.building_storage {
   background: url('<%= asset_path("settlements/base/building_storage_large_small.png") %>');
 }
 
 
 
 
-
+.outpost-screen .queue-job-image.size1,
 .base-screen .queue-job-image.size1 {
   background-position: -72px 0px;
 }
+.outpost-screen .queue-job-image.size2,
 .base-screen .queue-job-image.size2 {
   background-position: -144px 0px;
 }
+.outpost-screen .queue-job-image.size3,
 .base-screen .queue-job-image.size3 {
   background-position: -216px 0px;
 }
+.outpost-screen .queue-job-image.size4,
 .base-screen .queue-job-image.size4 {
   background-position: -288px 0px;
 }
+.outpost-screen .queue-job-image.size5,
 .base-screen .queue-job-image.size5 {
   background-position: -360px 0px;
 }
+.outpost-screen .queue-job-image.size6,
 .base-screen .queue-job-image.size6 {
   background-position: -432px 0px;
 }
@@ -1952,6 +1967,7 @@ li.shout .sender {
   background-image: url("<%= asset_path 'icons/down.png' %>");
 }
 
+.outpost-screen .down-icon,
 .base-screen .down-icon {
   background-image: url("<%= asset_path 'icons/down-white.png' %>");  
 }
@@ -1989,6 +2005,7 @@ li.shout .sender {
   background-color: rgba(255,255,255,0.4);
 }
 
+.outpost-screen .settlement-info-box,
 .base-screen .settlement-info-box {
   font-size: 12px;
   width: 430px;
@@ -2002,6 +2019,7 @@ li.shout .sender {
   background-color: rgba(0,0,0,0.4);
 }
 
+.outpost-screen .settlement-info-box.expanded,
 .fortress-screen .settlement-info-box.expanded, 
 .base-screen .settlement-info-box.expanded {
  width: 600px;
@@ -2016,6 +2034,7 @@ li.shout .sender {
   left:40px;
 }
 
+.outpost-screen .settlement-info-box.expanded h1,
 .base-screen .settlement-info-box.expanded h1,
 .fortress-screen .settlement-info-box.expanded h1 {
   font-size: 20px; 
@@ -2032,13 +2051,15 @@ table .number {
   float: right;
 }
 
+.outpost-screen .settlement-info-box h1,
 .base-screen .settlement-info-box h1 {
   font-size: 16px;
   margin: 0px;
 }
 
-
-.fortress-picture, .base-picture {
+.outpost-picture, 
+.fortress-picture, 
+.base-picture {
   position: relative;
   float: left;
   width: 800px;
@@ -2049,12 +2070,15 @@ table .number {
   background: url('<%= asset_path("settlements/fortress/fortress_background.png") %>');
 } 
 
+.outpost-picture,
 .base-picture {
   margin-top: 100px;
   background: url('<%= asset_path("settlements/base/base_background.png") %>');
 } 
 
-.fortress-picture .mouse-over, .base-picture .mouse-over {
+.outpost-picture .mouse-over, 
+.fortress-picture .mouse-over, 
+.base-picture .mouse-over {
   position: absolute;
   width: 360px;
   height: 160px;
@@ -2068,22 +2092,27 @@ table .number {
   background-color: rgba(255,255,255,0.4);
 } 
 
+.outpost-picture .mouse-over,
 .base-picture .mouse-over {
   background-color: rgba(0,0,0,0.4);
   color: white;
   text-shadow: none;
 }
 
-
-.fortress-picture .mouse-over h1, .base-picture .mouse-over h1 {
+.outpost-picture .mouse-over h1, 
+.fortress-picture .mouse-over h1, 
+.base-picture .mouse-over h1 {
   margin-top: 0px;
 }
 
-
-.fortress-picture .mouse-over p, .base-picture .mouse-over p {
+.outpost-picture .mouse-over p ,
+.fortress-picture .mouse-over p,
+.base-picture .mouse-over p {
 }
 
-.fortress-picture .mouse-over .advisor, .base-picture .mouse-over .advisor {
+.outpost-picture .mouse-over .advisor, 
+.fortress-picture .mouse-over .advisor, 
+.base-picture .mouse-over .advisor {
   position: absolute;
   left: -30px;
 }
@@ -2116,6 +2145,7 @@ table .number {
   background: url('<%= asset_path("settlements/fortress/fortress_wall.png") %>');
 }
 
+.outpost-picture .small-building,
 .base-picture .small-building {
 /*  border: 1px solid black;*/
   position: absolute;
@@ -2126,6 +2156,7 @@ table .number {
   background: url('<%= asset_path("settlements/base/building_category_small_building.png") %>');  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
 
+.outpost-picture .large-building,
 .base-picture .large-building {
 /*  border: 1px solid black;*/
   position: absolute;
@@ -2160,11 +2191,17 @@ table .number {
   right: 0px;
 }
 
-.constructing, .fortress-picture .level.constructing, .base-picture .level.constructing {
+.constructing, 
+.outpost-picture .level.destructing,
+.fortress-picture .level.constructing, 
+.base-picture .level.constructing {
   color: #3F3;
 }
 
-.destructing, .fortress-picture .level.destructing, .base-picture .level.destructing {
+.destructing, 
+.outpost-picture .level.destructing,
+.fortress-picture .level.destructing,
+.base-picture .level.destructing {
   color: #F33;
 }
 
@@ -2186,79 +2223,81 @@ table .number {
 }
 
 /** base: large slots */
-.base-picture .large-building.building_quarry {
+.large-building.building_quarry {
   background: url('<%= asset_path("settlements/base/building_quarry_large.png") %>');
 }
-.base-picture .large-building.building_chief_cottage {
+.large-building.building_chief_cottage {
   background: url('<%= asset_path("settlements/base/building_chief_cottage_large.png") %>');
 }
-.base-picture .large-building.building_logger   {
+.large-building.building_logger   {
   background: url('<%= asset_path("settlements/base/building_logger_large.png") %>');
 }
-.base-picture .large-building.building_barracks {
+.large-building.building_barracks {
   background: url('<%= asset_path("settlements/base/building_barracks_large.png") %>');
 }
-.base-picture .large-building.building_campfire {
+.large-building.building_campfire {
   background: url('<%= asset_path("settlements/base/building_campfire_large.png") %>');
 }
-.base-picture .large-building.building_cottage  {
+.large-building.building_cottage  {
   background: url('<%= asset_path("settlements/base/building_cottage_large.png") %>');
 }
-.base-picture .large-building.building_firing_range {
+.large-building.building_firing_range {
   background: url('<%= asset_path("settlements/base/building_firing_range_large.png") %>');
 }
-.base-picture .large-building.building_furrier  {
+.large-building.building_furrier  {
   background: url('<%= asset_path("settlements/base/building_furrier_large.png") %>');
 }
-.base-picture .large-building.building_gatherer {
+.large-building.building_gatherer {
   background: url('<%= asset_path("settlements/base/building_gatherer_large.png") %>');
 }
-.base-picture .large-building.building_stud     {
+.large-building.building_stud     {
   background: url('<%= asset_path("settlements/base/building_stud_large.png") %>');
 }
-.base-picture .large-building.building_workshop {
+.large-building.building_workshop {
   background: url('<%= asset_path("settlements/base/building_workshop_large.png") %>');
 }
-.base-picture .large-building.building_storage {
+.large-building.building_storage {
   background: url('<%= asset_path("settlements/base/building_storage_large.png") %>');
 }
 
 /** base: small slots */
-.base-picture .small-building.building_quarry {
+.small-building.building_quarry {
   background: url('<%= asset_path("settlements/base/building_quarry_small.png") %>');
 }
-.base-picture .small-building.building_logger   {
+.small-building.building_logger   {
   background: url('<%= asset_path("settlements/base/building_logger_small.png") %>');
 }
-.base-picture .small-building.building_barracks {
+.small-building.building_barracks {
   background: url('<%= asset_path("settlements/base/building_barracks_small.png") %>');
 }
-.base-picture .small-building.building_campfire {
+.small-building.building_campfire {
   background: url('<%= asset_path("settlements/base/building_campfire_small.png") %>');
 }
-.base-picture .small-building.building_cottage  {
+.small-building.building_cottage  {
   background: url('<%= asset_path("settlements/base/building_cottage_small.png") %>');
 }
-.base-picture .small-building.building_firing_range {
+.small-building.building_firing_range {
   background: url('<%= asset_path("settlements/base/building_firing_range_small.png") %>');
 }
-.base-picture .small-building.building_furrier  {
+.small-building.building_furrier  {
   background: url('<%= asset_path("settlements/base/building_furrier_small.png") %>');
 }
-.base-picture .small-building.building_gatherer {
+.small-building.building_gatherer {
   background: url('<%= asset_path("settlements/base/building_gatherer_small.png") %>');
 }
-.base-picture .small-building.building_stud     {
+.small-building.building_stud     {
   background: url('<%= asset_path("settlements/base/building_stud_small.png") %>');
 }
-.base-picture .small-building.building_workshop {
+.small-building.building_workshop {
   background: url('<%= asset_path("settlements/base/building_workshop_small.png") %>');
 }
-.base-picture .small-building.building_storage {
+.small-building.building_storage {
   background: url('<%= asset_path("settlements/base/building_storage_small.png") %>');
 }
 
-.fortress-picture .level, .base-picture .level {
+.outpost-picture .level, 
+.fortress-picture .level, 
+.base-picture .level {
   background-color: #BBB;
   color: #444;
   text-align: center;
@@ -2272,6 +2311,7 @@ table .number {
   padding: 8px 0px;
 }
 
+.outpost-picture .level,
 .base-picture .level {
   font-size: 12px;
   border: 2px solid #444;
@@ -2327,48 +2367,59 @@ table .number {
   background-position: -714px -454px;
 }
 
+.outpost-picture .small-building .level,
 .base-picture .small-building .level {
   position: absolute;
   left:   2px;
   bottom: 6px;
 }
 
+.outpost-picture .large-building .level,
 .base-picture .large-building .level {
   position: absolute;
   right: 10px;
   top:   10px;
 }
 
+.outpost-picture .small-building.size1,
 .base-picture .small-building.size1 {
   background-position: -80px 0px;
 }
+.outpost-picture .small-building.size2,
 .base-picture .small-building.size2 {
   background-position: -160px 0px;
 }
+.outpost-picture .small-building.size3,
 .base-picture .small-building.size3 {
   background-position: -240px 0px;
 }
 
+.outpost-picture .large-building.size1,
 .base-picture .large-building.size1 {
   background-position: -120px 0px;
 }
+.outpost-picture .large-building.size2,
 .base-picture .large-building.size2 {
   background-position: -240px 0px;
 }
+.outpost-picture .large-building.size3,
 .base-picture .large-building.size3 {
   background-position: -360px 0px;
 }
+.outpost-picture .large-building.size4,
 .base-picture .large-building.size4 {
   background-position: -480px 0px;
 }
+.outpost-picture .large-building.size5,
 .base-picture .large-building.size5 {
   background-position: -600px 0px;
 }
+.outpost-picture .large-building.size6,
 .base-picture .large-building.size6 {
   background-position: -720px 0px;
 }
 
-
+.outpost-picture .small-building:hover,
 .base-picture .small-building:hover {
   margin-left: -4px; 
   margin-top: -4px;
@@ -2382,6 +2433,7 @@ table .number {
 .base-picture .small-building.size3:hover {
 }
 
+.outpost-picture .large-building:hover,
 .base-picture .large-building:hover {
   margin-left: -4px; 
   margin-top: -4px;
@@ -2429,10 +2481,12 @@ table .number {
 
 
 /** position of slots in base view */
+.outpost-picture .small-building,
 .base-picture .small-building {
   top:  200px;
   right: 0;
 }
+.outpost-picture .large-building,
 .base-picture .large-building {
   top:  200px;
   right: 0px;
@@ -2612,6 +2666,64 @@ table .number {
   top:  430px;
   left: 680px;
 }
+
+
+
+
+/** row 1 */
+.outpost-picture .small-building.slot3 {
+  top:  145px;
+  left: 120px;
+}
+.outpost-picture .small-building.slot4 {
+  top:  145px;
+  left: 200px;
+}
+.outpost-picture .small-building.slot5 {
+  top:  145px;
+  left: 280px;
+}
+.outpost-picture .small-building.slot6 {
+  top:  145px;
+  left: 360px;
+}
+.outpost-picture .small-building.slot7 {
+  top:  145px;
+  left: 440px;
+}
+.outpost-picture .large-building.slot1 {
+  top:  145px;
+  left: 520px;
+}
+
+/** row 2 */
+.outpost-picture .small-building.slot8 {
+  top:  335px;
+  left: 120px;
+}
+.outpost-picture .small-building.slot9 {
+  top:  335px;
+  left: 200px;
+}
+.outpost-picture .small-building.slot10 {
+  top:  335px;
+  left: 280px;
+}
+.outpost-picture .small-building.slot11 {
+  top:  335px;
+  left: 360px;
+}
+.outpost-picture .small-building.slot12 {
+  top:  335px;
+  left: 440px;
+}
+.outpost-picture .large-building.slot2 {
+  top:  290px;
+  left: 520px;
+}
+
+
+
 
 .army-view-unit-list {
   float: left;

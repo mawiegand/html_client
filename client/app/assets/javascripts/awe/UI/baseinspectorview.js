@@ -14,6 +14,7 @@ AWE.UI = (function(module) {
     my = my || {};
     
     my.typeName = 'BaseInspectorView';
+    my.settlementType = null;
     
     var _location = null;
     
@@ -47,7 +48,10 @@ AWE.UI = (function(module) {
     
     that.initWithControllerAndLocation = function(controller, location, frame) {
       _super.initWithController(controller, frame);      
-      _location = location;      
+      _location = location;   
+      
+      my.settlementType = AWE.Config.MAP_LOCATION_TYPE_CODES[_location.settlementTypeId() || 2];
+   
       that.recalcView();
     };
     
@@ -105,18 +109,24 @@ AWE.UI = (function(module) {
           
       if (!_imageView) {
         var level = AWE.Util.Rules.normalizedLevel(_location.settlementLevel(), _location.settlementTypeId());
+        var imageName = null;
         
-        if (level < 4) {
-          modifier = "small";
-        }
-        else if (level < 8) {
-          modifier = "middle";
+        if (my.settlementType === 'outpost') {
+          imageName = "map/outpost"
         }
         else {
-          modifier = "big";
-        }
+          if (level < 4) {
+            modifier = "small";
+          }
+          else if (level < 8) {
+            modifier = "middle";
+          }
+          else {
+            modifier = "big";
+          }
         
-        var imageName = "map/colony/" + modifier;
+          imageName = "map/colony/" + modifier;
+        }
                 
         _imageView = AWE.UI.createImageView();
         _imageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(imageName));
