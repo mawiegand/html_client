@@ -90,14 +90,19 @@ AWE.UI = (function(module) {
         if (_labelIcon) _labelIcon.setOrigin(AWE.Geometry.createPoint(_padding, my.frame.size.height / 2 - 10));
       }
             
-      if (_background) {
+      if (_background !== false) {
         if (_backgroundShape) {
           _container.removeChild(_backgroundShape);
         }
         
         var _backgroundGraphics = new Graphics();
         _backgroundGraphics.setStrokeStyle(0);
-        _backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
+        if (_background === true) {
+          _backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
+        }
+        else {
+          _backgroundGraphics.beginFill(_background);
+        }
         _backgroundGraphics.drawRoundRect(rectX, (my.frame.size.height - _labelText.getMeasuredLineHeight() - 2 * _padding) / 2, _labelText.getMeasuredWidth() + 2 * _padding + iconWidth, _labelText.getMeasuredLineHeight() + 2 * _padding, 4);
         _backgroundShape = new Shape(_backgroundGraphics);
 
@@ -158,6 +163,11 @@ AWE.UI = (function(module) {
     
     that.setColor = function(color) {
       _labelText.color = color;
+      that.setNeedsLayout();      
+    }
+    
+    that.setBackground = function(background) {
+      _background = background;
       that.setNeedsLayout();      
     }
     

@@ -100,7 +100,8 @@ AWE.UI = (function(module) {
       var ownerName = _location.ownerName() + (_location.allianceTag() ? " | " +  _location.allianceTag() : "");
       if (_labelView.text() != ownerName) {
         _labelView.setText(ownerName);
-        AWE.GS.player.getPath('currentCharacter.id') == _location.ownerId() ? _labelView.setColor('#F70') : _labelView.setColor('#FFF');
+        AWE.GS.player.getPath('currentCharacter.id') == _location.ownerId() ? _labelView.setColor('#000') : _labelView.setColor('#FFF');
+        AWE.GS.player.getPath('currentCharacter.id') == _location.ownerId() ? _labelView.setBackground('rgba(255, 255, 255, 0.5)') : _labelView.setBackground(true);
       }  
       
       if (!_flagView) {

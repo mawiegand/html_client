@@ -138,7 +138,8 @@ AWE.UI = (function(module) {
       var ownerName = _node.region().ownerName() + (_node.region().allianceTag() ? " | " +  _node.region().allianceTag() : "");
       if (_labelView.text() != ownerName) {
         _labelView.setText(ownerName);
-        AWE.GS.player.getPath('currentCharacter.id') == _node.region().ownerId() ? _labelView.setColor('#F70') : _labelView.setColor('#FFF');
+        AWE.GS.player.getPath('currentCharacter.id') == _node.region().ownerId() ? _labelView.setColor('#000') : _labelView.setColor('#FFF');
+        AWE.GS.player.getPath('currentCharacter.id') == _node.region().ownerId() ? _labelView.setBackground('rgba(255, 255, 255, 0.5)') : _labelView.setBackground(true);
       }
       
       if (_node.region().location(0) && _node.region().location(0).garrisonArmy() && _node.region().location(0).garrisonArmy().get('isFighting') && !_battleView) {
