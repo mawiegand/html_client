@@ -8,7 +8,7 @@
       <th>Level</th>
       <th>Pop</th>
       {{#each parentView.resourceTypes}}
-        <th><span {{bindAttr class="symbolic_id :resource-icon"}}">&nbsp;</span></th>
+        <th><span {{bindAttr class="symbolic_id :resource-icon"}}>&nbsp;</span></th>
       {{/each}}
     </tr>
     {{#each stats}}
@@ -25,6 +25,8 @@
 
 
 <script type="text/x-handlebars" data-template-name="encyclopedia-unit">
+  <div class="unit-image large" {{bindAttr class="categoryClass unit.db_field"}}>&nbsp;</div>
+
   <h1>{{local unit.name}}</h1>
   {{local unit.flavour}}
   {{local unit.description}}
@@ -103,7 +105,7 @@
             {{view Ember.View templateName="encyclopedia-resource" resourceBinding="selected"}}
           {{else}}
             {{#if selectedUnit}}
-              {{view Ember.View templateName="encyclopedia-unit" unitBinding="selected"}}
+              {{view AWE.UI.Ember.EncyclopediaUnitView templateName="encyclopedia-unit" unitBinding="selected"}}
             {{/if}}
           {{/if}}
         {{/if}}

@@ -881,6 +881,12 @@ html, body {
   background-color: #FFF;    
 }
 
+.encyclopedia-view .unit-image {
+  float: right;
+  margin: 0px 0px 10px 20px;
+}
+
+
 .encyclopedia-view .overview {
   float: left;
   padding-right: 10px;
@@ -1005,14 +1011,27 @@ html, body {
   border: 1px solid #777;
 }
 .unit-image.tiny {
+  border-radius: 3px;
   width: 32px; height: 32px;
   background: url('<%= asset_path("units/unit_default-tiny.jpg") %>');
 }
-.unit-image.uc-0.tiny {
-  background: url('<%= asset_path("units/unit_default-tiny.jpg") %>');
+.unit-image.large {
+  border-radius: 7px;
+  width: 256px; height: 256px;
+  background: url('<%= asset_path("units/unit_default-large.jpg") %>');
 }
-.unit-image.uc-2.tiny {
+
+.unit-image.uc-0.tiny {
+  background: url('<%= asset_path("units/unit_clubbers-tiny.jpg") %>');
+}
+.unit-image.uc-0.large {
+  background: url('<%= asset_path("units/unit_clubbers-large.jpg") %>');
+}
+.unit-image.uc-2.large {
   background: url('<%= asset_path("units/unit_slingshotwarrior-tiny.jpg") %>');
+}
+.unit-image.uc-2.large {
+  background: url('<%= asset_path("units/unit_slingshotwarrior-large.jpg") %>');
 }
 
 
