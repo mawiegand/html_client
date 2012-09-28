@@ -93,11 +93,15 @@ AWE.UI = (function(module) {
 
       if (!_labelView) {
         _labelView = AWE.UI.createLabelView();
-        var ownerName = _location.ownerName() + (_location.allianceTag() ? " | " +  _location.allianceTag() : "");
-        _labelView.initWithControllerAndLabel(my.controller, ownerName, true);
+        _labelView.initWithControllerAndLabel(my.controller, "owner", true);
         _labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE, 16));      
         that.addChild(_labelView);
       }
+      var ownerName = _location.ownerName() + (_location.allianceTag() ? " | " +  _location.allianceTag() : "");
+      if (_labelView.text() != ownerName) {
+        _labelView.setText(ownerName);
+        AWE.GS.player.getPath('currentCharacter.id') == _location.ownerId() ? _labelView.setColor('#F70') : _labelView.setColor('#FFF');
+      }  
       
       if (!_flagView) {
         _flagView = AWE.UI.createAllianceFlagView();
@@ -114,14 +118,13 @@ AWE.UI = (function(module) {
 
       // FRAME RECT //////////////////////////////////////////////////////////     
       if (!_frameRect && AWE.Config.MAP_DEBUG_FRAMES) {
-        log(my.frame.size.width, my.frame.size.height);
-        var frame = new Graphics();
-        frame.setStrokeStyle(1);
-        frame.beginStroke(Graphics.getRGB(0,0,0));
-        frame.beginFill('rgba(0,0,0,0.2)');
-        frame.drawRoundRect(0, 0, my.frame.size.width, my.frame.size.height,0);
+        var _frameRectGraphics = new Graphics();
+        _frameRectGraphics.setStrokeStyle(1);
+        _frameRectGraphics.beginStroke(Graphics.getRGB(0,0,0));
+        _frameRectGraphics.beginFill('rgba(0,0,0,0.2)');
+        _frameRectGraphics.drawRoundRect(0, 0, my.frame.size.width, my.frame.size.height,0);
         _frameRect = AWE.UI.createShapeView();
-        _frameRect.initWithControllerAndGraphics(my.controller, frame);
+        _frameRect.initWithControllerAndGraphics(my.controller, _frameRectGraphics);
         _frameRect.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
         this.addChild(_frameRect);
       }     
