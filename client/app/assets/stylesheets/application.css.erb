@@ -838,9 +838,9 @@ html, body {
 .info-dialog { 
   font-size: 18px;
   position: absolute; 
-  margin-left: -300px;
+  margin-left: -350px;
   margin-top: -100px;
-  width: 600px; 
+  width: 700px; 
   min-height: 200px;
   background-color: #FFF;  
 }
@@ -905,15 +905,13 @@ html, body {
 }
 
 .advisor { 
-  width: 196px;
-  height: 196px;
-  margin-top:-10px;
-  margin-bottom:-30px;
+  width: 256px;
+  height: 256px;
+  margin-top:-30px;
 }
 
 .advisor { 
   float:left;
-  margin-right: 10px;
 }
 
 .tab-bar li {
@@ -1008,6 +1006,15 @@ html, body {
 }
 .advisor.chef { 
   background: url('<%= asset_path("advisors/head_chef_colored_small.png") %>');
+}
+.advisor.girl-special { 
+  background: url('<%= asset_path("advisors/head_girl_colored_small_special.png") %>');
+}
+.advisor.warrior-special { 
+  background: url('<%= asset_path("advisors/head_warrior_colored_small_special.png") %>');
+}
+.advisor.chef-special { 
+  background: url('<%= asset_path("advisors/head_chef_colored_small_special.png") %>');
 }
 .advisor.neanderthal { 
   background: url('<%= asset_path("advisors/head_neanderthal_colored_small.png") %>');
@@ -2085,7 +2092,8 @@ table .number {
 
 .fortress-picture .mouse-over .advisor, .base-picture .mouse-over .advisor {
   position: absolute;
-  left: -30px;
+  left: -90px;
+  top: -20px;
 }
 
 .fortress-picture .background {
@@ -2874,7 +2882,7 @@ table .number {
 
 .battle-ratio {
   position: relative;
-  margin-top: 40px;
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 

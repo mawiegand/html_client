@@ -78,7 +78,12 @@ AWE.UI.Ember = (function(module) {
     },
 
     advisor: function() {
-      return 'advisor ' + this.getPath('quest.advisor');
+      if (this.get('finished')) {
+        return 'advisor ' + this.getPath('quest.advisor') + '-special';
+      }
+      else {
+        return 'advisor ' + this.getPath('quest.advisor');
+      }
     }.property('quest.advisor').cacheable(),
   });  
   
