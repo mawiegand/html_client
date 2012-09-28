@@ -116,19 +116,22 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     initChat: function() {
       DEVELOPER = 'on'
-
+      
+      var identifier  = AWE.GS.player.currentCharacter.get('identifier');
+      var accessToken = AWE.Net.currentUserCredentials.get('access_token');
+    
       // we're using a standalone js-script (MPL licensed)
       // extracted from JAPPIX. details can be found in this pull request:
       // https://github.com/jappix/jappix/pull/110
 
-      HOST_MAIN      = "jabber.wack-a-doo.de"
-      HOST_MUC       = "conference.jabber.wack-a-doo.de"
-      HOST_PUBSUB    = "pubsub.jabber.wack-a-doo.de"
-      HOST_VJUD      = "vjud.jabber.wack-a-doo.de"
-      HOST_ANONYMOUS = "anonymous.jabber.wack-a-doo.de"
+      HOST_MAIN      = "jabber.wack-a-doo.com"
+      HOST_MUC       = "conference.jabber.wack-a-doo.com"
+      HOST_PUBSUB    = "pubsub.jabber.wack-a-doo.com"
+      HOST_VJUD      = "vjud.jabber.wack-a-doo.com"
+      HOST_ANONYMOUS = "anonymous.jabber.wack-a-doo.com"
       HOST_BOSH      = "http://jabber.wack-a-doo.de/http-bind/"
 
-      // Define groupchats here
+  // Define groupchats here
 //     MINI_GROUPCHATS = [ "global@conference.jabber.wack-a-doo.de" ];
 //     MINI_SUGGEST_GROUPCHATS = [ "stamm@conference.jabber.wack-a-doo.de", "region@conference.jabber.wack-a-doo.de" ];
       
@@ -152,7 +155,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       // Connect the user (autoconnect, show_pane, domain, username, password)
       // Notice: put true/false to autoconnect and show_pane
       // Notice: exclude "user" and "password" if using anonymous login
-      launchMini(false, true, "jabber.5dlab.com", "sascha", "");
+      
+      console.log('CHAT', identifier, accessToken)
+      
+      launchMini(false, true, "jabber.wack-a-doo.com", identifier, accessToken);
       
       this.addDomElement(('.jm_starter'), false);
       this.addDomElement(('.jm_pane'), false);
