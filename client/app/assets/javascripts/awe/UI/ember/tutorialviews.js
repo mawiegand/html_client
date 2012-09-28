@@ -79,12 +79,12 @@ AWE.UI.Ember = (function(module) {
 
     advisor: function() {
       if (this.get('finished')) {
-        return 'advisor ' + this.getPath('quest.advisor') + '-special';
+        return 'advisor ' + this.getPath('quest.advisor') + '-quest-end';
       }
       else {
-        return 'advisor ' + this.getPath('quest.advisor');
+        return 'advisor ' + this.getPath('quest.advisor') + '-quest-start';
       }
-    }.property('quest.advisor').cacheable(),
+    }.property('quest.advisor', 'finished').cacheable(),
   });  
   
   module.QuestView = Ember.View.extend({

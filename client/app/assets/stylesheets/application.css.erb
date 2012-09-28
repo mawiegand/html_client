@@ -1038,24 +1038,30 @@ html, body {
 .advisor.girl { 
   background: url('<%= asset_path("advisors/head_girl_colored_small.png") %>');
 }
-.advisor.warrior { 
+.advisor.warrior, .advisor.warrior-quest-start { 
   background: url('<%= asset_path("advisors/head_warrior_colored_small.png") %>');
 }
-.advisor.chef { 
+.advisor.chef, .advisor.chef-quest-start { 
   background: url('<%= asset_path("advisors/head_chef_colored_small.png") %>');
-}
-.advisor.girl-special { 
-  background: url('<%= asset_path("advisors/head_girl_colored_small_special.png") %>');
-}
-.advisor.warrior-special { 
-  background: url('<%= asset_path("advisors/head_warrior_colored_small_special.png") %>');
-}
-.advisor.chef-special { 
-  background: url('<%= asset_path("advisors/head_chef_colored_small_special.png") %>');
 }
 .advisor.neanderthal { 
   background: url('<%= asset_path("advisors/head_neanderthal_colored_small.png") %>');
 }
+
+.advisor.girl-quest-start { 
+  background: url('<%= asset_path("advisors/head_girl_colored_small_quest_start.png") %>');
+}
+
+.advisor.girl-quest-end { 
+  background: url('<%= asset_path("advisors/head_girl_colored_small_quest_end.png") %>');
+}
+.advisor.warrior-quest-end { 
+  background: url('<%= asset_path("advisors/head_warrior_colored_small_quest_end.png") %>');
+}
+.advisor.chef-quest-end { 
+  background: url('<%= asset_path("advisors/head_chef_colored_small_quest_end.png") %>');
+}
+
 
 .controls-bar {
   width: 100%;
@@ -1088,7 +1094,7 @@ html, body {
 
   background: url('<%= asset_path("splashscreen/mapsw.jpg") %>');
   border: 2px solid #333;
-}
+} 
 
 .loaddialog-progress {
   width: 0%; height: 100%;
@@ -1989,20 +1995,20 @@ li.shout .sender {
 
 .unit-icon {
   display: inline-block;
-  width: 24px; height: 24px;
+  width: 32px; height: 32px;
 }
 
 .unit-icon.unit_clubbers {
-  background-image: url("<%= asset_path 'icons/unit.png' %>");
+  background: url('<%= asset_path("units/unit_clubbers-tiny.jpg") %>');
 }
 
 .unit-icon.finished {
   display: inline-block;
-  width: 36px; height: 36px;
+  width: 32px; height: 32px;
 }
 
 .unit-icon.unit_clubbers.finished {
-  background-image: url("<%= asset_path 'icons/unit-large.png' %>");
+  background: url('<%= asset_path("units/unit_clubbers-tiny.jpg") %>');
 }
 
 .down-icon {
@@ -2161,7 +2167,7 @@ table .number {
 .fortress-picture .mouse-over .advisor, 
 .base-picture .mouse-over .advisor {
   position: absolute;
-  left: -90px;
+  left: -70px;
   top: -20px;
 }
 
@@ -3173,9 +3179,9 @@ table .number {
 
 .quest-start-dialog, .quest-finished-dialog, .quest-info-dialog, .quest-dialog {
   position: absolute; 
-  margin-left: -300px;
+  margin-left: -350px;
   margin-top: -250px;
-  width: 600px; min-height: 100px;
+  width: 700px; min-height: 100px;
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
   z-index:256;
@@ -3187,7 +3193,7 @@ table .number {
 }
 
 .quest-rewards {
-  width: 460px;
+  width: 560px;
   display: inline-block;
   vertical-align: top;
   text-align: center;
