@@ -128,7 +128,7 @@ AWE.UI.Ember = (function(module) {
       if (army && army.details) { log('build list')
         AWE.Ext.applyFunction(unitTypes, function(unitType) {
           if (army.details[unitType.db_field] !== undefined && army.details[unitType.db_field] > 0) {
-            list.push({ name: unitType.name, number: army.details[unitType.db_field] }) ;
+            list.push({ name: AWE.Util.Rules.lookupTranslation(unitType.name), number: army.details[unitType.db_field], unitType: unitType }) ;
           }
         });
       }

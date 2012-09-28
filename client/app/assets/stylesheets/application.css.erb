@@ -1000,6 +1000,24 @@ html, body {
   text-align: right;
 }
 
+.unit-image {
+  display: inline-block;
+  border: 1px solid #777;
+}
+.unit-image.tiny {
+  width: 32px; height: 32px;
+  background: url('<%= asset_path("units/unit_default-tiny.jpg") %>');
+}
+.unit-image.uc-0.tiny {
+  background: url('<%= asset_path("units/unit_default-tiny.jpg") %>');
+}
+.unit-image.uc-2.tiny {
+  background: url('<%= asset_path("units/unit_slingshotwarrior-tiny.jpg") %>');
+}
+
+
+
+
 .advisor.girl { 
   background: url('<%= asset_path("advisors/head_girl_colored_small.png") %>');
 }
@@ -2111,6 +2129,8 @@ table .number {
 .base-picture .mouse-over p {
 }
 
+
+
 .outpost-picture .mouse-over .advisor, 
 .fortress-picture .mouse-over .advisor, 
 .base-picture .mouse-over .advisor {
@@ -2784,10 +2804,11 @@ table .number {
 .table-list th {
   text-align: left;
   font-weight: normal;
-  padding: 0px 10px 0px 0px;
+  padding: 1px 10px 1px 0px;
 }
 
 .table-list td {
+  padding-top: 5px;
   text-align: right;
 }
 
