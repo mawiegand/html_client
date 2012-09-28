@@ -134,8 +134,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_BOSH      = "http://jabber.wack-a-doo.com/http-bind/";
 
   // Define groupchats here
-      MINI_GROUPCHATS = ["global@conference.jabber.wack-a-doo.com"];
-      MINI_SUGGEST_GROUPCHATS =  tag?[tag+"@conference.jabber.wack-a-doo.com"] : [];
+      MINI_GROUPCHATS = tag ? [tag+"@conference.jabber.wack-a-doo.com", "global@conference.jabber.wack-a-doo.com"] : ["global@conference.jabber.wack-a-doo.com"];
+      MINI_SUGGEST_GROUPCHATS =  [];
       
       JAPPIX_STATIC = 'jappix/'
       
@@ -152,16 +152,15 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       MINI_RANDNICK = true;
       
       // Override the default session resource
-      MINI_RESOURCE = "MyOwnResource";
+      MINI_RESOURCE = "WackadooChat" + Math.floot(Math.random()*100000);
       
       // Connect the user (autoconnect, show_pane, domain, username, password)
       // Notice: put true/false to autoconnect and show_pane
       // Notice: exclude "user" and "password" if using anonymous login
-      
-      console.log('CHAT', identifier, accessToken)
-      
+            
       launchMini(false, true, "jabber.wack-a-doo.com", identifier, accessToken);
-      
+
+      this.addDomElement(('.jm_prompt'), false);      
       this.addDomElement(('.jm_starter'), false);
       this.addDomElement(('.jm_pane'), false);
       this.addDomElement(('.jm_chat-content'), false);
