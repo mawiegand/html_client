@@ -225,7 +225,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         self.readyToRun();                            // ready to run
         self.showStartupDialogs();
         
-        if (AWE.Config.CHAT_SHOW) {
+        if (AWE.Config.CHAT_SHOW && AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') > 1) {
           self.initChat();
         }
       }
