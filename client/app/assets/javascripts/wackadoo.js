@@ -126,16 +126,16 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       // extracted from JAPPIX. details can be found in this pull request:
       // https://github.com/jappix/jappix/pull/110
 
-      HOST_MAIN      = "jabber.wack-a-doo.com"
-      HOST_MUC       = "conference.jabber.wack-a-doo.com"
-      HOST_PUBSUB    = "pubsub.jabber.wack-a-doo.com"
-      HOST_VJUD      = "vjud.jabber.wack-a-doo.com"
-      HOST_ANONYMOUS = "anonymous.jabber.wack-a-doo.com"
-      HOST_BOSH      = "http://jabber.wack-a-doo.com/http-bind/"
+      HOST_MAIN      = "jabber.wack-a-doo.com";
+      HOST_MUC       = "conference.jabber.wack-a-doo.com";
+      HOST_PUBSUB    = "pubsub.jabber.wack-a-doo.com";
+      HOST_VJUD      = "vjud.jabber.wack-a-doo.com";
+      HOST_ANONYMOUS = "anonymous.jabber.wack-a-doo.com";
+      HOST_BOSH      = "http://jabber.wack-a-doo.com/http-bind/";
 
   // Define groupchats here
-      MINI_GROUPCHATS = [ "global@conference.jabber.wack-a-doo.com" ];
-      MINI_SUGGEST_GROUPCHATS =  tag ? [ tag+"@conference.jabber.wack-a-doo.com" ];
+      MINI_GROUPCHATS = ["global@conference.jabber.wack-a-doo.com"];
+      MINI_SUGGEST_GROUPCHATS =  tag?[tag+"@conference.jabber.wack-a-doo.com"] : [];
       
       JAPPIX_STATIC = 'jappix/'
       
