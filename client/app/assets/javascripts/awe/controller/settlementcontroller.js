@@ -149,8 +149,9 @@ AWE.Controller = (function(module) {
       
       var type = settlement.get('type_id');
       var viewClasses = {
-        base:     AWE.UI.Ember.BaseView,
         fortress: AWE.UI.Ember.FortressView,
+        base:     AWE.UI.Ember.BaseView,
+        outpost:  AWE.UI.Ember.OutpostView,
       };
       var viewClass = viewClasses[AWE.Config.MAP_LOCATION_TYPE_CODES[type]];
       

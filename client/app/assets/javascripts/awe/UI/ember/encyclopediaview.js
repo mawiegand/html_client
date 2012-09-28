@@ -30,6 +30,17 @@ AWE.UI.Ember = (function(module) {
     
   });  
 
+  module.EncyclopediaUnitView = Ember.View.extend({
+    unit: null,
+    
+    categoryClass: function() {
+      var unit = this.get('unit');
+      return unit ? "uc-"+unit.category : null;
+    }.property('unit.category').cacheable(),
+    
+  });  
+
+
   module.ResourceButton = Ember.View.extend({
     resourceType: null,
     click: function(event) {

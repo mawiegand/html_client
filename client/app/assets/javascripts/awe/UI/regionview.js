@@ -447,9 +447,9 @@ AWE.UI = (function(module) {
 	        else if (_node.region().terrainId() == 2) {
 	          newImage = AWE.UI.ImageCache.getImage("map/tiles/mountains"+size);      
 	        }
-	      /*  else if (_node.region().terrainId() == 3) {
-	          newImage = AWE.UI.ImageCache.getImage("map/tiles/mud"+size);      
-	        }*/
+	        else if (_node.region().terrainId() == 3) {
+	          newImage = AWE.UI.ImageCache.getImage("map/tiles/desert"+size);      
+	        }
 	        else {
 	          newImage = AWE.UI.ImageCache.getImage("map/tiles/plain"+size);              
 	        }
