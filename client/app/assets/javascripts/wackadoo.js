@@ -168,7 +168,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this.addDomElement(('.jm_conversations'), false)
       this.addDomElement(('.jm_roster'), false)
       this.addDomElement(('.jm_send-messages'), false)
-
+      this.addDomElement(('.jm_chat-content form'), false);
     },   
     
     showStartupDialogs: function() {

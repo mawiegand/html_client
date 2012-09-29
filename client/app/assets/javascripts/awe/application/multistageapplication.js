@@ -354,6 +354,7 @@ AWE.Application = (function(module) {
         console.log('MSA.onMouseDown')
         //if this event is already handled by a dom element ignore it
         if (this.isCatchedByDomElement(evt.pageX, evt.pageY, evt.type)) {
+          console.log('catched by DOM ELEMENT');
           return;
         }
         var controller = this.get('presentScreenController');
