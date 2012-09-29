@@ -563,7 +563,7 @@ AWE.Application = (function(module) {
             ); 
         };
         var result = false;
-        var checkForEvent = function(i, element) {
+        var checkForEvent = function(element) {
           var eventsData = $(element).data("events");
           if (eventsData !== undefined && eventsData.hasOwnProperty(eventName) && eventsData[eventName].length > 0) {
             if (isIn(element)) {
@@ -573,24 +573,31 @@ AWE.Application = (function(module) {
           }
           $(element).children().each(checkForEvent);
         };
+        
         for (var i = 0; i < this.domElements.length; i++) {
           var element = this.domElements[i].element;
-          if (typeof element === "string") {
-            console.log('STRING', element)
+          if (typeof element === "string") {  // it is possible to specify string selectors
             element = $(element);
-            console.log('ELEMENT', element)
           }
-          if (element && (element.length === undefined || element.length > 0)) {
-            if (this.domElements[i].checkForEvents) {
-              checkForEvent(0, element);
-              if (result) {
-                return true;
-              }
-            } else {
-              if (isIn(element)) {
-                return true;
+          
+          if (element) {
+            element = element.length === undefined ? [element] : element; // make sure it is an array
+            for (var j=0; j < element.length; j++) {
+              console.log('CHECK FOR EVENTS', element[j], j)
+              if (this.domElements[i].checkForEvents) {
+                checkForEvent(element[j]);
+                if (result) {
+                  console.log('CATCHED BY THIS ELEMENT');
+                  return true;
+                }
+              } else {
+                if (isIn(element[j])) {
+                  console.log('CATCHED BY THIS ELEMENT');
+                  return true;
+                }
               }
             }
+            console.log('NOT CATCHED BY THIS ELEMENT');
           }
         }
         return false;
