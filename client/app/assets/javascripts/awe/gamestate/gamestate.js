@@ -32,6 +32,8 @@ AWE.GS = (
    * @name AWE.GS.ENTITY_CREATE_TYPE */ 
   module.ENTITY_CREATE_TYPE = 0;            
 
+  module.TimeManager = AWE.Util.TimeCorrection.createManager();
+
   
   // /////////////////////////////////////////////////////////////////////////
   //
@@ -312,6 +314,13 @@ AWE.GS = (
         })
         .success(function(data, statusText, xhr) {
           var result = null;
+          var end = new Date();
+          var requestServerTime = my.extractDateFromXHR(xhr);
+          
+          if (requestServerTime) {
+            module.TimeManager.registerMeasurement(requestServerTime, start, end);
+          }
+          
           if (xhr.status === 304)  {                   // Not modified
             // not modified, let the caller process this event
           }
@@ -320,12 +329,12 @@ AWE.GS = (
               result = {};
               for (var i=0; i < data.length; i++) { 
                 var entityData = data[i];
-                var entity = (my.processUpdateResponse(entityData, updateType, my.extractDateFromXHR(xhr) || start));
+                var entity = (my.processUpdateResponse(entityData, updateType, requestServerTime || start));
                 result[entity.get('id')] = entity;
               }         
             }
             else {                                    //   B) process a single entity
-              result = my.processUpdateResponse(data, updateType, my.extractDateFromXHR(xhr) || start);
+              result = my.processUpdateResponse(data, updateType, requestServerTime || start);
             };
             if (callback) {      
               var s = new Date();

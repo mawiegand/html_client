@@ -50,6 +50,7 @@ AWE.Application = (function(module) {
     var stageHovered=-1;
     var nextMouseOverTest = new Date(1970).getTime();
     var mouseOverTestTimeout = 200; // test every x ms
+    
 
     return /** @lends AWE.Application.MultiStageApplication# */ {
       
@@ -73,6 +74,8 @@ AWE.Application = (function(module) {
       isPassingEvent: false,
       
       modalDialogs: null,
+      
+      
 
       domElements: [], //< contains the list of dom elements that can also catch mouse events
   
