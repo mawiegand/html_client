@@ -255,6 +255,15 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
     
     return requirementsMet ? null : failedRequirementGroups.compact();
   }; 
+  
+  module.requirementGroupFailsDueToMaxRequirement = function(requirementGroup, settlement, character, slotToExclude, considerJobs) {
+    considerJobs       = considerJobs       || false;
+    settlement         = settlement         || null;
+    slotToExclude      = slotToExclude      || null;
+    
+    var failedReqs = module.failedRequirements(requirementGroup, settlement, character, slotToExclude, considerJobs, true); // consider only max reqs
+    return failedReqs && failedReqs.length > 0;    
+  };
 
   /** checks the given array of requirements for those requirements that are
    * not met in the given settlement and for the given character. 
@@ -262,14 +271,15 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
    *          checks passed positive.
    * @function
    * @name AWE.Util.Rules.failedRequirements */
-  module.failedRequirements = function(requirements, settlement, character, slotToExclude, considerJobs) {
-    considerJobs = considerJobs || false;
-    settlement   = settlement || null;
-    requirements = requirements || [];
+  module.failedRequirements = function(requirements, settlement, character, slotToExclude, considerJobs, onlyMax) {
+    considerJobs = considerJobs  || false;
+    settlement   = settlement    || null;
+    requirements = requirements  || [];
     slotToExclude= slotToExclude || null;
+    onlyMax      = onlyMax       || false;
     
     var failedRequirements = requirements.filter(function(item) {
-      return !module.meetsRequirement(item, settlement, character, slotToExclude, considerJobs);
+      return !module.meetsRequirement(item, settlement, character, slotToExclude, considerJobs, onlyMax);
     });
     
     return failedRequirements.length > 0 ? failedRequirements : null;
@@ -281,12 +291,12 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
    * @returns true, iff the requirement is met.
    * @function
    * @name AWE.Util.Rules.meetsRequirement */
-  module.meetsRequirement = function(requirement, settlement, character, slotToExclude, considerJobs) {
+  module.meetsRequirement = function(requirement, settlement, character, slotToExclude, considerJobs, onlyMax) {
     if (requirement.type === 'building') {
-      return module.meetsBuildingRequirement(requirement, settlement, slotToExclude, considerJobs);
+      return module.meetsBuildingRequirement(requirement, settlement, slotToExclude, considerJobs, onlyMax);
     }
     else if (requirement.type === 'science') {
-      return module.meetsScienceRequirement(requirement, character, considerJobs);
+      return module.meetsScienceRequirement(requirement, character, considerJobs, onlyMax);
     }
     else {
       //console.log('ERROR: Requirement of unknown type ', requirement.type);
@@ -311,7 +321,7 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
    * @returns true, iff the requirement is met.
    * @function
    * @name AWE.Util.Rules.meetsBuildingRequirement */
-  module.meetsBuildingRequirement = function(requirement, settlement, slotToExclude, considerJobs) {
+  module.meetsBuildingRequirement = function(requirement, settlement, slotToExclude, considerJobs, onlyMax) {
     if (!settlement) {
       return false;
     }
@@ -320,7 +330,7 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
     }
     var slots = settlement.get('enumerableSlots') || [];
     var maxMet = !(requirement.max_level !== undefined && requirement.max_level !== null && requirement.max_level < 0) ; // cannot bet true, when smaller than zero.
-    var minMet = requirement.min_level === undefined || requirement.min_level === null || requirement.min_level <= 0; // it's always true, if it's not specified or less equal 0
+    var minMet = onlyMax || requirement.min_level === undefined || requirement.min_level === null || requirement.min_level <= 0; // it's always true, if it's not specified or less equal 0
     var excludeSlotNum = slotToExclude ? slotToExclude.get('slot_num') : -1;
     
     slots.forEach(function(item) {
@@ -331,7 +341,7 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
         if (requirement.id === buildingId && requirement.max_level !== undefined && requirement.max_level !== null) {
           maxMet = maxMet && requirement.max_level >= (considerJobs ? item.get('levelAfterJobs') : item.get('level'));    // all buildings must not be larger than the max level. may consider ongoing jobs in order to prevent queueing two mutually exclusive buildings
         }
-        if (requirement.id === buildingId && requirement.min_level) {
+        if (requirement.id === buildingId && requirement.min_level && !onlyMax) {
           minMet = minMet || requirement.min_level <= item.get('level');    // one building must be larger than or equal to the min level; no not consider ongoing jobs; building must be finished to allow queueing of a dependent building
         }
       }
