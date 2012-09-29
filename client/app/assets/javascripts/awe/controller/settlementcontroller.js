@@ -642,7 +642,7 @@ AWE.Controller = (function(module) {
         var hash    = AWE.GS.TradingCartActionManager.getOutgoingTradingCartsForSettlementHash(that.settlementId);
         var actions = hash ? hash.get('collection') : [];
         actions.forEach(function(item) {
-          if (item.get('returning') && Date.parseISODate(item.get('returned_at')) < new Date().add(-2).seconds() &&
+          if (item.get('returning') && Date.parseISODate(item.get('returned_at')) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds() &&
               (individualRequests[item.get('id')] === undefined || individualRequests[item.get('id')] < new Date().add(-10).seconds())) {
             individualRequests[item.get('id')] = new Date();
             AWE.GS.TradingCartActionManager.updateTradingCartAction(item.get('id'));
@@ -653,7 +653,7 @@ AWE.Controller = (function(module) {
         hash    = AWE.GS.TradingCartActionManager.getIncomingTradingCartsForSettlementHash(that.settlementId);
         var actions = hash ? hash.get('collection') : [];
         actions.forEach(function(item) {
-          if (Date.parseISODate(item.get('target_reached_at')) < new Date().add(-2).seconds()) {
+          if (Date.parseISODate(item.get('target_reached_at')) < AWE.GS.TimeManager.estimatedServerTime().add(-2).seconds()) {
             console.log('destroyed incoming trading carts action id', item.get('id'));
             item.destroy();
           } 
@@ -765,7 +765,7 @@ AWE.Controller = (function(module) {
               if (job.get('active_job')) {
                 var jobId = job.getId();
                 pendingConstructionJobUpdates[jobId] = pendingConstructionJobUpdates[jobId] > 0 ? pendingConstructionJobUpdates[jobId] : AWE.Config.TIME_DIFF_RANGE;
-                if (Date.parseISODate(job.get('active_job').finished_at).add({seconds: pendingConstructionJobUpdates[jobId]}) < new Date()) {
+                if (Date.parseISODate(job.get('active_job').finished_at).add({seconds: pendingConstructionJobUpdates[jobId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
                   pendingConstructionJobUpdates[jobId] *= 2;
                   that.updateConstructionQueueSlotAndJobs(queue.getId());
                 }
@@ -790,7 +790,7 @@ AWE.Controller = (function(module) {
               if (job.get('active_job')) {
                 var jobId = job.getId();
                 pendingTrainingJobUpdates[jobId] = pendingTrainingJobUpdates[jobId] > 0 ? pendingTrainingJobUpdates[jobId] : AWE.Config.TIME_DIFF_RANGE;
-                if (Date.parseISODate(job.get('active_job').finished_active_at).add({seconds: pendingTrainingJobUpdates[jobId]}) < new Date()) {
+                if (Date.parseISODate(job.get('active_job').finished_active_at).add({seconds: pendingTrainingJobUpdates[jobId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
                   pendingTrainingJobUpdates[jobId] *= 2;
                   that.updateTrainingQueueAndJobs(queue.getId());
                 }
