@@ -401,7 +401,7 @@ AWE.GS = (function(module) {
           }
         });
       }
-      else if (inbox && (forceNow || inbox.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 10000 < new Date().getTime())) { // timeout
+      else if (inbox && (forceNow || inbox.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 10000 <  AWE.GS.TimeManager.estimatedServerTime().getTime())) { // timeout
         AWE.GS.InboxManager.updateMessageBox(inbox.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(inbox, status) {
 					if (inbox && inbox.getId() && status !== AWE.Net.NOT_MODIFIED) {
             inbox.fetchEntries()

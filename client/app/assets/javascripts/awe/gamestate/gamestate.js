@@ -130,6 +130,8 @@ AWE.GS = (
     
     /** return the timestamp of the last update in the client that at least
      * contained as many data as the specified update type. 
+     * ATTENTION: IN MOST CASES THIS REPORTS THE SERVER TIME, NOT THE 
+     *            LOCAL CLIENT'S TIME OF THE LAST UPDATE REQUEST!
      * @param kind of update to query for. If nothing is specified, a full 
      *        update is assumed. */
     lastUpdateAt: function(updateType) {
