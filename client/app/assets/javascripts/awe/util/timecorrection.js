@@ -20,8 +20,8 @@ AWE.Util.TimeCorrection = (function(module) {
   
     my = my || {}; 
     
-    my.remoteLag = 0.0;
-    my.alpha     = 0.98;
+    my.remoteLag = null;
+    my.alpha     = 0.95;
     
     
     that = {};  
@@ -33,7 +33,7 @@ AWE.Util.TimeCorrection = (function(module) {
       var duration   = requestEndTime.getTime()-localTime.getTime();
       var normalized = localTime.getTime()+duration/2.0;
       var difference = normalized-remoteTime.getTime();
-      var newLag     = difference * (1.0-my.alpha) + my.remoteLag * my.alpha;
+      var newLag     = my.remoteLag ? (difference * (1.0-my.alpha) + my.remoteLag * my.alpha) : difference;
 
       if (AWE.Config.TIME_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
         console.log('TIME_CORRECTION MEASUREMENT', remoteTime, localTime, requestEndTime);
