@@ -8,6 +8,24 @@
       <p><b>Halbgott:</b> {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
       <p><b>Gegründet:</b> {{formatDatetime settlement.created_at}}</p>
       <p><b>Verteidigungsbonus:</b> {{formatPercentage settlement.defense_bonus}}</p>
+      
+      <p>
+      {{#if settlement.typeIsConquerable}}
+        {{#if settlement.canBeTakenOver}}
+          <b>Diese Siedlung kann von anderen Spielern geklaut werden.</b><br/>
+        {{else}}
+          <b>Diese Siedlung kann nicht übernommen werden!</b><br/>
+        {{/if}}
+      {{/if}}
+      
+      {{#if settlement.typeIsDestroyable}}
+        {{#if settlement.canBeDestroyed}}
+          <b>Diese Siedlung kann von anderen Spielern zerstörrt werden.</b>
+        {{else}}
+          <b>Diese Siedlung kann nicht zerstörrt werden!</b>
+        {{/if}}
+      {{/if}}
+      </p>
             
       <a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>  
     </div>

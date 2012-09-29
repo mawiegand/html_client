@@ -62,7 +62,7 @@ AWE.UI.Ember = (function(module) {
         return ;
       }
       var finish = Date.parseISODate(finishedAt);
-      var now = new Date();
+      var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
       var remaining = (finish.getTime() - now.getTime()) / 1000.0;
       remaining = remaining < 0 ? 0 : remaining;
       this.set('timeRemaining', remaining);

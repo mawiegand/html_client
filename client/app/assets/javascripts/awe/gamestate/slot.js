@@ -348,6 +348,21 @@ AWE.GS = (function(module) {
       var failed =  AWE.Util.Rules.failedRequirementGroups(this.getPath('buildingType.requirementGroups'), settlement, character, slot, true);
       return failed || []
     },
+    
+    impossibleToBuildDueToMaxRequirement: function(group) {
+      var settlement = this.getPath('slot.settlement');
+      var character = settlement ? settlement.owner() : null;
+      var slot = this.get('slot');
+      var reqGroups = this.getPath('buildingType.requirementGroups') || [];
+      var maxFail = true;
+      console.log('RECALC IMPOSSIBLE DUE TO MAX REQUIREMENT');
+      reqGroups.forEach(function(group) {
+        maxFail = maxFail && AWE.Util.Rules.requirementGroupFailsDueToMaxRequirement(group, settlement, character, slot, true);
+      });
+      return maxFail;
+    },
+            
+    
     // Fehleranalyse: unmetRequirements wird nicht getriggert, nachdem  slot gebaut wurde...
     // Update: tatsächlich wird einer der beiden dependent-Dinger nicht geupdated, wenn sie auf cacheable stehen. bool-binding?
 
