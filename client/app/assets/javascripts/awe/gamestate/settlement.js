@@ -147,7 +147,40 @@ AWE.GS = (function(module) {
       console.log('SET OUTGOING CARTS', this.getPath('hashableOutgoingCarts'), this.getPath('hashableOutgoingCarts.collection'))
       return this.getPath('hashableOutgoingCarts.collection');
     }.property('id', 'hashableOutgoingCarts.changedAt').cacheable(),
+
+    typeIsDestroyable: function() {
+      var settlementType = this.settlementType();
+      if (!settlementType) {
+        return false;
+      }
+      return settlementType.destroyable && 0; // FIXME  presently destroying is not implemented
+    }.property('type_id'),    
+
+    typeIsConquerable: function() {
+      var settlementType = this.settlementType();
+      if (!settlementType) {
+        return false;
+      }
+      return settlementType.conquerable; 
+    }.property('type_id'),
     
+    canBeTakenOver: function() {
+      var preventedByBuilding = (this.get('settlement_unlock_prevent_takeover_count') || 0) >= 1;
+      var settlementType = this.settlementType();
+      if (!settlementType) {
+        return false;
+      }
+      return settlementType.conquerable && !preventedByBuilding;
+    }.property('type_id', 'settlement_unlock_prevent_takeover_count'),
+    
+    canBeDestroyed: function() {
+      var preventedByBuilding = (this.get('settlement_unlock_prevent_takeover_count') || 0) >= 1;
+      var settlementType = this.settlementType();
+      if (!settlementType) {
+        return false;
+      }
+      return settlementType.destroyable && !preventedByBuilding && 0; // FIXME  presently destroying is not implemented
+    }.property('type_id', 'settlement_unlock_prevent_takeover_count'),    
     
     commandPointsUsed: function() {
       return this.getPath('armies_count')-1;
