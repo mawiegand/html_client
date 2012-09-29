@@ -43,16 +43,19 @@
       </div>
       
         <div class="army-view-unit-list">
-          <h3>{{ t army.details.units }}</h3>
           {{#if displayUnits}}
             {{#if haveDetails}}
               <table class="table-list">
-                {{#each units}}
-                  <tr>
+                <tr>
+                  {{#each units}}
                     <th><span class="unit-image uc-{{unbound unitType.category}} tiny {{unbound unitType.db_field}}" title="{{unbound name}}">&nbsp;</span></th>
+                  {{/each}}
+                </tr>
+                <tr>
+                  {{#each units}}
                     <td>{{number}}</td>
-                  </tr>
-                {{/each}}
+                  {{/each}}
+                </tr>
               </table>
             {{else}}
               {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
@@ -63,26 +66,19 @@
         </div>
       
         <div class="army-view-property-list">   <!-- TODO: display categories dynamically! (wherever possible) -->
-          <h3>{{ t army.details.properties }}</h3>
+              <p><b>Stärken:</b>
+                 {{formatNumber army.unitcategory_infantry_strength places="0"}} / 
+                 {{formatNumber army.unitcategory_cavalry_strength places="0"}} /
+                 {{formatNumber army.unitcategory_artillery_strength places="0"}} 
+                 (Nahkämpfer, Berittene, Fernkämpfer)</p>
+        
           <table class="table-list">
-            <tr>
-              <th>{{ t army.details.strength.melee }}:</th>
-              <td>{{formatNumber army.unitcategory_infantry_strength places="0"}}</td>
-            <tr>
-            </tr>
-              <th>{{ t army.details.strength.riders }}:</th>
-              <td>{{formatNumber army.unitcategory_cavalry_strength places="0"}}</td>
-            <tr>
-            </tr>
-              <th>{{ t army.details.strength.distance }}:</th>
-              <td>{{formatNumber army.unitcategory_artillery_strength places="0"}}</td>
-            <tr>
             </tr>
               <th>{{ t army.details.strength.all }}:</th>
               <td>{{formatNumber army.strength places="0"}}</td>
             <tr>
             </tr>
-              <th>{{ t army.details.size }}:</th>
+              <th>Einheitenanzahl:</th>
               <td>{{ army.size_present }} / {{army.size_max}}</td>
             <tr>
             </tr>

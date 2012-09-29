@@ -996,6 +996,7 @@ html, body {
 .army-info-view .advisor { 
   float:right;
   margin-left: 10px;
+  margin-right: -100px;
 }
 
 .citation {
@@ -2136,7 +2137,7 @@ table .number {
   z-index:10;
   padding: 16px;
   border-radius: 11px;
-  padding-left: 170px;
+  padding-right: 140px;
 }
 
 .fortress-picture .mouse-over {
@@ -2167,8 +2168,8 @@ table .number {
 .fortress-picture .mouse-over .advisor, 
 .base-picture .mouse-over .advisor {
   position: absolute;
-  left: -70px;
-  top: -20px;
+  left: 360px;
+  top: -10px;
 }
 
 .fortress-picture .background {
@@ -2780,20 +2781,15 @@ table .number {
 
 
 .army-view-unit-list {
-  float: left;
-  margin-right: 20px;
+  width: 100%;
+  margin: 20px 0px 20px 0px;
 }
 
-.army-info-dialog .modal-dialog-pane { 
-  margin-top:-280px;
-  width: 700px;
-  margin-left: -350px;
-}
 
 .army-info-dialog .modal-dialog-pane { 
-  margin-top:-280px;
-  width: 700px;
-  margin-left: -350px;
+  margin-top:-300px;
+  width: 600px;
+  margin-left: -300px;
 }
 
 .found-settlement-dialog {
@@ -2837,7 +2833,12 @@ table .number {
 .table-list th {
   text-align: left;
   font-weight: normal;
-  padding: 1px 10px 1px 0px;
+  padding: 1px 1px 1px 1px;
+}
+
+.army-view-unit-list .table-list td,
+.army-view-unit-list .table-list th {
+  text-align: center;
 }
 
 .table-list td {

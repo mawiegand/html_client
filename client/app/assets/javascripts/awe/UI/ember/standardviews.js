@@ -73,12 +73,12 @@ AWE.UI.Ember = (function(module) {
   
     updatePosition: function() {
       var parent = this.get('parentView');
-      var posX = this.get('mouseX') + 50; // - parent.$().offset().left + 10;
-      var posY = this.get('mouseY') + 36; // - parent.$().offset().top + 18;
+      var posX = this.get('mouseX') + 20; // - parent.$().offset().left + 10;
+      var posY = this.get('mouseY') + 16; // - parent.$().offset().top + 18;
       
       if (posY > 460) {
         posY = this.get('mouseY')- 200;
-        posX += 48;
+        posX += 28;
       }
         
       this.$().css({'left': posX, 'top': posY});    
