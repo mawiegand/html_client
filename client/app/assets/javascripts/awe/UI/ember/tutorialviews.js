@@ -19,9 +19,7 @@ AWE.UI.Ember = (function(module) {
     redeemButtonPressed: function(questState) {
       log('--> redeem Button Pressed', questState)
       questState.set('redeeming', true);
-      AWE.GS.TutorialStateManager.redeemRewards(questState, function() {
-        AWE.GS.TutorialStateManager.checkForRewards(); // besser updateTutorial?
-      }, function() {
+      AWE.GS.TutorialStateManager.redeemRewards(questState, null, function() {
         questState.set('redeeming', false);
       });
     },

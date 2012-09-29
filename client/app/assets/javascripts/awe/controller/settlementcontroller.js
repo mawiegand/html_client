@@ -682,7 +682,6 @@ AWE.Controller = (function(module) {
       
       AWE.GS.TrainingJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
         log('updated training jobs', jobs);
-        AWE.GS.TutorialStateManager.checkForRewards();
       });
     }
         
