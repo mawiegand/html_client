@@ -31,8 +31,28 @@ AWE.Util.TimeCorrection = (function(module) {
     };
     
     that.estimatedServerTime = function() {
-      
+      var time = new Date().addMilliseconds(-this.estimatedLag());
+      if (AWE.Config.TIME_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
+        console.log('TIME_CORRECTION ESTIMATED SERVER TIME', time, 'now', new Date(), 'elag', this.estimatedLag());
+      }      
+      return time;
     };
+    
+    that.localToServerTime = function(localDate) {
+      var serverTime = localDate.clone().addMilliseconds(-this.estimateLag());
+      if (AWE.Config.TIME_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
+        console.log('TIME_CORRECTION LOCAL TIME', localDate, 'TO SERVER TIME', serverTime, 'elag', this.estimatedLag());
+      }
+      return serverTime;
+    }
+    
+    that.serverToLocalTime = function(serverDate) {
+      var localTime = serverDate.clone().addMilliseconds(this.estimateLag());
+      if (AWE.Config.TIME_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
+        console.log('TIME_CORRECTION SERVER TIME', serverDate, 'TO LOCAL TIME', localTime, 'elag', this.estimatedLag());
+      }
+      return localTime;
+    }    
     
     /** requestEndTime argument is optional. 
      * remoteTime has SECONDS precision (last 3 places always 000).
