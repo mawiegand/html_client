@@ -1,0 +1,1 @@
+PORTAL_CONFIG = YAML.load_file("#{Rails.root}/config/client.yml")[Rails.env]
