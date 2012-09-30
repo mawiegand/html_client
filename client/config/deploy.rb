@@ -4,7 +4,7 @@ require "bundler/capistrano"
 
 default_run_options[:pty] = true                  # problem with ubuntu
 set :ssh_options, :forward_agent => true          # ssh forwarding
-set :gateway, 'wack-a-doo.de:5775'
+set :port, 5775
 
 set :application, "html client"
 set :repository,  "git@github.com:wackadoo/html_client.git"
@@ -19,8 +19,8 @@ set :deploy_via, :remote_cache
 
 set :deploy_subdir, "client"
 
-role :web, "test1.wack-a-doo.de", "gs02.wack-a-doo.de"    # Your HTTP server, Apache/etc
-role :app, "test1.wack-a-doo.de", "gs02.wack-a-doo.de"    # This may be the same as your `Web` server
+role :web, "test1.wack-a-doo.de"    # Your HTTP server, Apache/etc
+role :app, "test1.wack-a-doo.de"    # This may be the same as your `Web` server
 role :db,  "test1.wack-a-doo.de", :primary => true        # This is where Rails migrations will run
 
 namespace :deploy do
