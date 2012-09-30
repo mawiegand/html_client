@@ -698,8 +698,6 @@ AWE.Controller = (function(module) {
             that.setModelChanged();
             that.addDisappearingAnnotationLabel(targetView, 'ETA ' + Date.parseISODate(army.get('target_reached_at')).toString('HH:mm:ss'), 1500);
             that.addDisappearingAnnotationLabel(armyView, '-1 AP', 1000);
-            // Tutorial Hook
-            AWE.GS.TutorialStateManager.checkForRewards();
           });
         }
         else {
@@ -799,9 +797,6 @@ AWE.Controller = (function(module) {
           AWE.GS.ArmyManager.updateArmiesAtLocation(location.id(), null, function(armies) {
             log('armies updated at location', armies, location);
             that.setModelChanged();
-            
-            // Tutorial Hook
-            AWE.GS.TutorialStateManager.checkForRewards();
           }); 
           AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id(), null, function(settlements) {
             log('settlements updated at location', settlements, location);
