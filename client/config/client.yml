@@ -1,5 +1,5 @@
 defaults: &defaults
-  
+  value: 1
   
 development:
   <<: *defaults
