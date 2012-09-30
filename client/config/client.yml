@@ -1,5 +1,5 @@
 defaults: &defaults
-  value: 1
+  jabber_server_base: "jabber.wack-a-doo.com"
   
 development:
   <<: *defaults
@@ -9,7 +9,10 @@ test:
 
 staging:
   <<: *defaults
+  jabber_server_base: "jabber.wack-a-doo.com"
+
 
 production:
   <<: *defaults
+  jabber_server_base: "jabber_runde2.wack-a-doo.com"
 

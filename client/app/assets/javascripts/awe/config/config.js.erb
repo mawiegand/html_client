@@ -41,11 +41,13 @@ AWE.Config = (function(module) {
   module.PAYMENT_PROVIDER_BASE    = module.SERVER_ROOT + '/payment_provider/';
   
   module.RAILS_ASSET_PATH         = "<%= asset_path('') %>";
+
+  module.JABBER_SERVER_BASE       = "<%= CLIENT_CONFIG['jabber_server_base'] %>"
   
   module.EXTERNAL_FORUM_URL       = 'http://forum.uga-agga.de/wack-a-doo-f235/';
   module.EXTERNAL_MANUAL_URL      = 'http://wiki.wack-a-doo.de';
   module.EXTERNAL_FACEBOOK_URL    = 'http://www.facebook.com/pages/Wackadoo/239722582763809';
-
+  
   module.RANKING_SERVER_BASE      = module.SERVER_ROOT + '/game_server/de/ranking/character_rankings';
 
   
