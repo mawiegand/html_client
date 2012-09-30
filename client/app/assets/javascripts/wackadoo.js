@@ -133,7 +133,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_PUBSUB    = "pubsub."    +base;
       HOST_VJUD      = "vjud."      +base;
       HOST_ANONYMOUS = "anonymous." +base;
-      HOST_BOSH      = "http://"+jabber.wack-a-doo.com+"/http-bind/";
+      HOST_BOSH      = "http://"+base+"/http-bind/";
 
   // Define groupchats here
       MINI_GROUPCHATS = tag ? [tag+"@conference."+base, "global@conference."+base] : ["global@conference."+base];
