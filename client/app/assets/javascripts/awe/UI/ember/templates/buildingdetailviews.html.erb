@@ -179,7 +179,7 @@
       {{#if building.upgradable}}
         <hr class="clear" />
         {{#if sendingUpgrade}}
-          <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Updating...</div>
+          <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Aktualisieren...</div>
         {{else}}
         <a {{action "upgradeClicked"}} class="upgrade" title="click to upgrade"><img src="<%= asset_path('icons/cross_green.png') %>"></img> Ausbauen</a>
         {{/if}}
@@ -284,7 +284,7 @@
     
     {{#if building.unlockedDiplomacy}}
     <hr class="clear">
-      {{view AWE.UI.Ember.DiplomacyView unlockedAllianceCreation="unlockedAllianceCreation"}}
+      {{view AWE.UI.Ember.DiplomacyView unlockedAllianceCreationBinding="building.unlockedAllianceCreation"}}
     {{/if}}
 
     {{#if building.unlockedPlayerToPlayerTrade}}
@@ -352,15 +352,17 @@
         Trete einer existierenden Allianz bei, indem du ihr Kürzel und das geheime Allianzpasswort eingibst.<br/>
         {{view Ember.TextField class="text-field" placeholder="alliance tag" type="text" valueBinding="allianceTag"}} 
         {{view Ember.TextField class="text-field" placeholder="password" type="text" valueBinding="alliancePassword"}} 
-        <div class="icon-button ok-button" {{action "joinAlliance"}}>join alliance</div>
+        <div class="icon-button ok-button" {{action "joinAlliance"}}>Allianz beitreten</div>
       </p>
   
-      <p>
-        Gründe eine neue Allianz, mit dir als Anführer.<br/>
-        {{view Ember.TextField class="text-field" placeholder="alliance tag" type="text" valueBinding="newAllianceTag"}} 
-        {{view Ember.TextField class="text-field" placeholder="alliance name" type="text" valueBinding="newAllianceName"}} 
-        <div class="icon-button ok-button" {{action "createAlliance"}}>found alliance</div>
-      </p>
+      {{#if unlockedAllianceCreation}}
+        <p>
+          Gründe eine neue Allianz, mit dir als Anführer.<br/>
+          {{view Ember.TextField class="text-field" placeholder="alliance tag" type="text" valueBinding="newAllianceTag"}} 
+          {{view Ember.TextField class="text-field" placeholder="alliance name" type="text" valueBinding="newAllianceName"}} 
+          <div class="icon-button ok-button" {{action "createAlliance"}}>Allianz gründen</div>
+        </p>
+      {{/if}}
     {{/if}}
   {{/if}}
   

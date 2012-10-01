@@ -62,7 +62,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       
       if (!this.get('sessionEnded') && AWE.Net.currentUserCredentials.expiration.getTime() < new Date().getTime()) {
         this.set('sessionEnded', true);
-        document.location.href = AWE.Config.SERVER_ROOT;
+        document.location.href = AWE.Config.PORTAL_ROOT;
       }
       
       this._super();
@@ -71,6 +71,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     showWelcomeDialog: function() {
       var dialog = AWE.UI.Ember.WelcomeDialog.create({
         okPressed:    function() {
+          
           AWE.GS.TutorialStateManager.checkForNewQuests();
           this.destroy();
         },            
@@ -174,6 +175,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },   
     
     showStartupDialogs: function() {
+      
+      if (AWE.GS.player.currentCharacter && !AWE.GS.player.currentCharacter.get('reached_game')) {
+        // track conversion: character reached the game (and pressed a button!)
+        var action = AWE.Action.Fundamental.createTrackCharacterConversionAction("reached_game");
+        action.send();   
+      }  
+            
       if (AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') <= 1) {
         this.showWelcomeDialog();
       }
@@ -473,7 +481,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       
       if (!args || !args.accessToken) {
         // alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
-        document.location.href = AWE.Config.SERVER_ROOT;
+        document.location.href = AWE.Config.PORTAL_ROOT;
         return ;
       }
       var accessToken = args.accessToken ;                             // || AWE.Config.DEV_ACCESS_TOKEN || null;
