@@ -275,6 +275,62 @@ AWE.UI.Ember = (function(module) {
     password:             null,
     passwordConfirmation: null,
     
+    time: null,
+    
+    localTime: null,
+    serverTime: null,
+    timeLag: null,
+    
+    
+    startTimer: function() {
+      var timer = this.get('timer');
+      if (!timer) {
+        timer = setInterval((function(self) {
+          return function() {
+            self.updateClock();
+          };
+        }(this)), 5000);
+        this.set('timer', timer);
+      }
+    },
+    
+    stopTimer: function() {
+      var timer = this.get('timer');
+      if (timer) {
+        clearInterval(timer);
+        this.set('timer', null);
+      }
+    },
+    
+    
+    didInsertElement: function() {
+      this.updateClock();
+      this.startTimer();
+    },
+    
+    willDestroyElement: function() {
+      this.stopTimer();
+    },
+    
+    updateClock: function() {
+      var now    = new Date();
+      var lag    = AWE.GS.TimeManager.estimatedLag();
+      var server = AWE.GS.TimeManager.estimatedServerTime();
+      
+      this.set('localTime', now);
+      this.set('serverTime', server);
+      this.set('timeLag', Math.floor(lag / 100.0) / 10.0);
+    },
+    
+    isLagTolerable: function() {
+      var lag = this.get('timeLag') || 0.0;
+      return Math.abs(lag) < 5;
+    }.property('timeLag'),
+    
+    isLagZero: function() {
+      return Math.abs(this.get('timeLag') || 0.0) < 0.8;
+    }.property('timeLag'),
+    
     passwordObserver: function() {
       this.set('changePasswordMessage', '');
     }.observes('password', 'passwordConfirmation'),

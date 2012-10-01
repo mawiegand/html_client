@@ -33,7 +33,13 @@ AWE.UI.Ember = (function(module) {
     
     constructionOptions: function() {
       var slot = this.get('slot');
-      return slot ? slot.constructionOptions() : null;
+      var options = slot ? slot.constructionOptions() : [];
+      console.log ('OPTIONS', options)
+      var result = options.filter(function(building) {
+        console.log('BUILDING', building)
+        return !building.impossibleToBuildDueToMaxRequirement();
+      });
+      return result && result.length > 0 ? result : null;
     }.property('slot.building_id', 'slot.settlement'),  
   });  
 

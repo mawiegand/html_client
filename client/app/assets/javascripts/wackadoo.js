@@ -121,20 +121,22 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var tag         = AWE.GS.player.currentCharacter.get('alliance_tag');
       var name        = AWE.GS.player.currentCharacter.get('name');
       var accessToken = AWE.Net.currentUserCredentials.get('access_token');
+      
+      var base        = AWE.Config.JABBER_SERVER_BASE;
     
       // we're using a standalone js-script (MPL licensed)
       // extracted from JAPPIX. details can be found in this pull request:
       // https://github.com/jappix/jappix/pull/110
 
-      HOST_MAIN      = "jabber.wack-a-doo.com";
-      HOST_MUC       = "conference.jabber.wack-a-doo.com";
-      HOST_PUBSUB    = "pubsub.jabber.wack-a-doo.com";
-      HOST_VJUD      = "vjud.jabber.wack-a-doo.com";
-      HOST_ANONYMOUS = "anonymous.jabber.wack-a-doo.com";
-      HOST_BOSH      = "http://jabber.wack-a-doo.com/http-bind/";
+      HOST_MAIN      = base;
+      HOST_MUC       = "conference."+base;
+      HOST_PUBSUB    = "pubsub."    +base;
+      HOST_VJUD      = "vjud."      +base;
+      HOST_ANONYMOUS = "anonymous." +base;
+      HOST_BOSH      = "http://"+base+"/http-bind/";
 
   // Define groupchats here
-      MINI_GROUPCHATS = tag ? [tag+"@conference.jabber.wack-a-doo.com", "global@conference.jabber.wack-a-doo.com"] : ["global@conference.jabber.wack-a-doo.com"];
+      MINI_GROUPCHATS = tag ? [tag+"@conference."+base, "global@conference."+base] : ["global@conference."+base];
       MINI_SUGGEST_GROUPCHATS =  [];
       
       JAPPIX_STATIC = 'jappix/'
@@ -158,7 +160,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       // Notice: put true/false to autoconnect and show_pane
       // Notice: exclude "user" and "password" if using anonymous login
             
-      launchMini(false, true, "jabber.wack-a-doo.com", identifier, accessToken);
+      launchMini(true, true, "jabber.wack-a-doo.com", identifier, accessToken);
 
       this.addDomElement(('.jm_prompt'), false);      
       this.addDomElement(('.jm_starter'), false);

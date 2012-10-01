@@ -32,6 +32,8 @@ AWE.GS = (
    * @name AWE.GS.ENTITY_CREATE_TYPE */ 
   module.ENTITY_CREATE_TYPE = 0;            
 
+  module.TimeManager = AWE.Util.TimeCorrection.createManager();
+
   
   // /////////////////////////////////////////////////////////////////////////
   //
@@ -128,6 +130,8 @@ AWE.GS = (
     
     /** return the timestamp of the last update in the client that at least
      * contained as many data as the specified update type. 
+     * ATTENTION: IN MOST CASES THIS REPORTS THE SERVER TIME, NOT THE 
+     *            LOCAL CLIENT'S TIME OF THE LAST UPDATE REQUEST!
      * @param kind of update to query for. If nothing is specified, a full 
      *        update is assumed. */
     lastUpdateAt: function(updateType) {
@@ -312,6 +316,13 @@ AWE.GS = (
         })
         .success(function(data, statusText, xhr) {
           var result = null;
+          var end = new Date();
+          var requestServerTime = my.extractDateFromXHR(xhr);
+          
+          if (requestServerTime) {
+            module.TimeManager.registerMeasurement(requestServerTime, start, end);
+          }
+          
           if (xhr.status === 304)  {                   // Not modified
             // not modified, let the caller process this event
           }
@@ -320,12 +331,12 @@ AWE.GS = (
               result = {};
               for (var i=0; i < data.length; i++) { 
                 var entityData = data[i];
-                var entity = (my.processUpdateResponse(entityData, updateType, my.extractDateFromXHR(xhr) || start));
+                var entity = (my.processUpdateResponse(entityData, updateType, requestServerTime || start));
                 result[entity.get('id')] = entity;
               }         
             }
             else {                                    //   B) process a single entity
-              result = my.processUpdateResponse(data, updateType, my.extractDateFromXHR(xhr) || start);
+              result = my.processUpdateResponse(data, updateType, requestServerTime || start);
             };
             if (callback) {      
               var s = new Date();

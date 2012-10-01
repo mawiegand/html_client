@@ -1,10 +1,15 @@
 require "bundler/capistrano"
 
+set :stages, %w(production staging)
+set :default_stage, "staging"
+
+require "capistrano/ext/multistage"
+
 `ssh-add`
 
 default_run_options[:pty] = true                  # problem with ubuntu
 set :ssh_options, :forward_agent => true          # ssh forwarding
-set :gateway, 'wackadoo.de:5775'
+set :port, 5775
 
 set :application, "html client"
 set :repository,  "git@github.com:wackadoo/html_client.git"
@@ -19,9 +24,11 @@ set :deploy_via, :remote_cache
 
 set :deploy_subdir, "client"
 
-role :web, "wackadoo.de"                          # Your HTTP server, Apache/etc
-role :app, "wackadoo.de"                          # This may be the same as your `Web` server
-role :db,  "wackadoo.de", :primary => true        # This is where Rails migrations will run
+
+desc "Print server name"
+task :uname do
+  run "uname -a"
+end
 
 namespace :deploy do
   desc "Restart Thin"
@@ -32,11 +39,11 @@ namespace :deploy do
 
   desc "Start Thin"
   task :start do
-    run "cd #{current_path}; bundle exec thin -C config/thin_server.yml start"
+    run "cd #{current_path}; bundle exec thin -C config/thin_#{stage}.yml start"
   end
 
   desc "Stop Thin"
   task :stop do
-    run "cd #{current_path}; bundle exec thin -C config/thin_server.yml stop"
+    run "cd #{current_path}; bundle exec thin -C config/thin_#{stage}.yml stop"
   end
 end

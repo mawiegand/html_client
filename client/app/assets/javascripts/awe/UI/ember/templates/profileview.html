@@ -110,5 +110,24 @@
      {{/if}}  
   </p>
   <p class="red-color">{{changePasswordMessage}}</p>
+  
+  <h2>Systemzeit</h2>
+  
+  <p>Approximierte Serverzeit: {{ serverTime }}<br/>
+     Lokale Rechneruhr: {{ localTime }}<br/>
+     Differenz: {{ formatDuration timeLag }} &nbsp;
+    {{#if isLagZero }}
+      <b>Perfekt!</b>
+    {{else}}
+      {{#if isLagTolerable}}
+        <b>Diese Zeitdifferenz ist tolerabel.</b>
+      {{else}}
+        <b>Bitte stelle Deine Rechneruhr auf die korrekte Uhrzeit</b> oder schalte den automatischen Abgleich mit der Internetzeit an, sofern Dein 
+        Betriebssystem diese Möglichkeit bietet. Die Reaktivität des Spiels und Deine Nutzungserfahrung würden dadurch deutlich verbessert.
+      {{/if}}
+    {{/if}}
+  </p>
+  
+  
 </script>
 
