@@ -16,6 +16,6 @@ staging:
 
 production:
   <<: *defaults
-  jabber_server_base: "jabber_runde2.wack-a-doo.com"
+  jabber_server_base: "jabber2.wack-a-doo.com"
   portal_server_base: "wack-a-doo.de"
 
