@@ -71,6 +71,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     showWelcomeDialog: function() {
       var dialog = AWE.UI.Ember.WelcomeDialog.create({
         okPressed:    function() {
+          
+          // track conversion: character reached the game (and pressed a button!)
+          var action = AWE.Action.Fundamental.createTrackCharacterConversionAction("reached_game");
+          action.send(function(status));     
+          
           AWE.GS.TutorialStateManager.checkForNewQuests();
           this.destroy();
         },            
