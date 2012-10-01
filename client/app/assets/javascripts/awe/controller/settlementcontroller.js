@@ -27,6 +27,8 @@ AWE.Controller = (function(module) {
           
     var that = module.createScreenController(anchor); // create base object
     
+    that.typeName = 'SettlementController';
+    
     that.view    = null;
     that.visible = false;
     that.settlementId  = null;

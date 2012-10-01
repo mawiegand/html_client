@@ -34,6 +34,8 @@ AWE.Controller = (function(module) {
     var _camera; ///< camera for handeling camera panning
     
     var that = module.createScreenController(anchor); ///< create base object
+
+    that.typeName = 'MapController';
     
     var _super = {};             ///< store locally overwritten methods of super object
     _super.init = that.init; 
@@ -1000,6 +1002,7 @@ AWE.Controller = (function(module) {
     
     /** sets the selected view */
     that.setSelectedView = function(view) {
+      
       // when selected view is set from outside, the view type has to determined
       // and the viewport has to be transformed to show the view. 
       if (_selectedView === view) {
@@ -1013,6 +1016,39 @@ AWE.Controller = (function(module) {
         _selectView(view);
       }
     };
+    
+    var preselectedFortressNodeId = null;
+    var preselectedLocationId = null;
+    
+    that.setSelectedSettlement = function(settlement) {
+      if (settlement.get('type_id') == AWE.GS.SETTLEMENT_TYPE_FORTRESS) {
+        var nodeId = settlement.get('node_id'); 
+        
+        var view = fortressViews[nodeId];
+        if (view) {
+          if (_selectedView) {
+            _unselectView(_selectedView);
+          }
+          that.setSelectedView(view);
+        }
+        else {
+          preselectedFortressNodeId = nodeId;
+        }
+      }
+      else {
+        var locationId = settlement.get('location_id'); 
+        var view = locationViews[locationId];
+        if (view) {
+         if (_selectedView) {
+            _unselectView(_selectedView);
+          }
+          that.setSelectedView(view);
+        }
+        else {
+          preselectedLocationId = locationId;
+        }
+      }
+    }
         
     var _actionViewChanged = false;
 
@@ -1728,6 +1764,10 @@ AWE.Controller = (function(module) {
             view.initWithControllerAndNode(that, nodes[i]);
 //            view.displayObject().alpha=0.3;
             _stages[1].addChild(view.displayObject()); // add view's displayObject to stage
+            if (nodes[i].id() == preselectedFortressNodeId) {
+              that.setSelectedView(view);
+              preselectedFortressNodeId = null;
+            }
           }
           if (view) {
             setFortressPosition(view, frame);
@@ -1785,7 +1825,11 @@ AWE.Controller = (function(module) {
                 if (view) {   // if base, outpost or empty slot on location, init the view
                   view.initWithControllerAndLocation(that, location);
 //                  view.displayObject().alpha=0.3;
-                 _stages[1].addChild(view.displayObject());                  
+                  _stages[1].addChild(view.displayObject());
+                  if (location.id() == preselectedLocationId) {
+                    that.setSelectedView(view);
+                    preselectedLocationId = null;
+                  }
                 }
               }
               

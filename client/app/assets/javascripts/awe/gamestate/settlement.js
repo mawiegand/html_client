@@ -7,6 +7,11 @@
 var AWE = window.AWE || {};
 
 AWE.GS = (function(module) {
+  
+  module.SETTLEMENT_TYPE_EMPTY = 0;
+  module.SETTLEMENT_TYPE_FORTRESS = 1;
+  module.SETTLEMENT_TYPE_BASE = 2;
+  module.SETTLEMENT_TYPE_OUTPOST = 3;
     
   module.SettlementAccess = {};
 
@@ -89,6 +94,16 @@ AWE.GS = (function(module) {
         
       }
     },
+    
+    region: function() {
+      var regionId = this.get('region_id');
+      if (regionId != null) {
+        return AWE.Map.Manager.getRegion(regionId);
+      }
+      else {
+        return null;
+      }
+    }.property('region_id').cacheable(),
     
     isOwn: function() {
       return this.get('owner_id') === module.CharacterManager.currentCharacter.getId();

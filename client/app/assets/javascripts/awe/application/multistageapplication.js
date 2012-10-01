@@ -474,6 +474,13 @@ AWE.Application = (function(module) {
             rootController.viewWillDisappear();
             this.remove(rootController);
             rootController.viewDidDisappear();
+            
+            if (rootController.typeName == 'SettlementController' && controller.typeName == 'MapController') {
+              var settlement = AWE.GS.SettlementManager.getSettlement(rootController.settlementId);
+              var node = settlement.get('region').node();
+              controller.moveTo(node);
+              controller.setSelectedSettlement(settlement);
+            }
           }
           this.set('presentScreenController', controller);
           if (controller) {
@@ -586,21 +593,21 @@ AWE.Application = (function(module) {
           if (element) {
             element = element.length === undefined ? [element] : element; // make sure it is an array
             for (var j=0; j < element.length; j++) {
-              console.log('CHECK FOR EVENTS', element[j], j)
+              // console.log('CHECK FOR EVENTS', element[j], j)
               if (this.domElements[i].checkForEvents) {
                 checkForEvent(element[j]);
                 if (result) {
-                  console.log('CATCHED BY THIS ELEMENT');
+                  // console.log('CATCHED BY THIS ELEMENT');
                   return true;
                 }
               } else {
                 if (isIn(element[j])) {
-                  console.log('CATCHED BY THIS ELEMENT');
+                  // console.log('CATCHED BY THIS ELEMENT');
                   return true;
                 }
               }
             }
-            console.log('NOT CATCHED BY THIS ELEMENT');
+            // console.log('NOT CATCHED BY THIS ELEMENT');
           }
         }
         return false;

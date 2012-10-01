@@ -316,9 +316,6 @@ AWE.Map = (function(module) {
     
   }(); 
   
-  
-
-  
   return module;
 
 }(AWE.Map || {}));
