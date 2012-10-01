@@ -17,17 +17,17 @@
 
 
 
-  <b>Per Unit:</b>
+  <b>Pro Einheit:</b>
     {{#each costs}}
       {{amount}} {{local resourceType.name}} &nbsp;  
     {{/each}}    
-    <b>Duration:</b> {{formatDuration productionTime}}
+    <b>Dauer:</b> {{formatDuration productionTime}}
   <br />
   <b>Total:</b>
     {{#each totalCosts}}
       {{amount}} {{local resourceType.name}} &nbsp;  
     {{/each}}    
-    <b>Duration:</b> {{formatDuration totalProductionTime}}
+    <b>Dauer:</b> {{formatDuration totalProductionTime}}
   <br />  
 
   {{#if selectedUnitButton.requirementsMet }}
@@ -36,7 +36,7 @@
       {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} processing...
     {{else}}
       {{#if number}}
-        <div class="button ok-button" {{action "createJobPressed"}}>Train {{local selectedUnitButton.unitType.name}}</div>
+        <div class="button ok-button" {{action "createJobPressed"}}>Rekrutiere {{local selectedUnitButton.unitType.name}}</div>
       {{/if}}
     {{/if}}    
   {{else}}
@@ -63,7 +63,7 @@
           </div>  
           <p class="queue-job-button finish-button">
             {{#if isTrainingSpeedupPossible }}
-              <a href="#" {{action "speedupJobPressed"}} title="spend toads for training units twice as fast. Costs depend on the remaining total training time.">
+              <a href="#" {{action "speedupJobPressed"}} title="gib Goldkröten aus um Einheiten doppelt so schnell zu rekrutieren. Die Kosten hängen von der verbleibenden Rekrutierungszeit ab.">
                halve {{trainingSpeedupCost timeRemaining}} 
                <span class="resource-icon {{trainingSpeedupResource timeRemaining}}">&nbsp;</span>
               </a>

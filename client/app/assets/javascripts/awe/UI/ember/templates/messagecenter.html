@@ -32,14 +32,14 @@
     {{#if recipient}}
       {{recipient}}
     {{else}}
-      Unknown Recipient
+      Unbekannter Empfänger
     {{/if}}
   </span>   <br />
   <span class="subject">
     {{#if subject}}
       {{subject}}
     {{else}}
-      Without subject
+      Kein Betreff
     {{/if}}
   </span>
 {{/with}}
@@ -49,22 +49,22 @@
 {{#with message}}
   <div class="message-edit-menue">
     <div class="message-edit-commands">
-      <a href="#" {{action "submit"}}>Send</a>
-      <a href="#" {{action "cancelForm"}}>Discard</a>
+      <a href="#" {{action "submit"}}>Senden</a>
+      <a href="#" {{action "cancelForm"}}>Verwerfen</a>
     </div>
     <div class="message-edit-title">
-      New Message {{#if recipient}}
-       To {{recipient}}
+      Neue Nachricht {{#if recipient}}
+       An {{recipient}}
       {{/if}}
     </div>
     <div class="message-edit-fill"></div>
   </div>
   <div class="message-edit-header">
     <table>
-      <tr><th {{bindAttr class="recipientUnknown:red-color"}}>{{#if recipientUnknown }}<em>unkown</em>{{/if}} To:</th>
+      <tr><th {{bindAttr class="recipientUnknown:red-color"}}>{{#if recipientUnknown }}<em>Unbekannt</em>{{/if}} An:</th>
         <td><b>{{view Ember.TextField valueBinding="recipient" placeholder="recipient"}}</b></td>
       </tr>
-      <tr><th>Subject:</th>
+      <tr><th>Betreff:</th>
         <td>{{view Ember.TextField valueBinding="subject" placeholder="subject"}}</td>
       </tr>
     </table>
@@ -75,7 +75,7 @@
 
 <script type="text/x-handlebars" data-template-name="message">
   <table>
-    <tr><th>From:</th><td>
+    <tr><th>Von:</th><td>
       <b>{{#if message.sender_id}}
            {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
            {{#if "message.sender.alliance_tag"}}
@@ -86,9 +86,9 @@
          {{/if}}
       <b>
     </td></tr>
-    <tr><th>Subject:</th><td>{{message.subject}}</td></tr>
-    <tr><th>Date:</th><td>{{timeString}}</td></tr>
-    <tr><th>To:</th><td>{{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}} 
+    <tr><th>Betreff:</th><td>{{message.subject}}</td></tr>
+    <tr><th>Datum:</th><td>{{timeString}}</td></tr>
+    <tr><th>An:</th><td>{{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}} 
       {{#if "message.recipient.alliance_tag"}}
         | {{message.recipient.alliance_tag}}
       {{/if}}</td>
@@ -103,25 +103,25 @@
 <div class="message-center">
   <div class="header">
     <div id="inbox-control">
-      <div {{action "inboxClicked"  target="controller"}}>Inbox</div>
-      <div {{action "outboxClicked" target="controller"}}>Outbox</div>  
-      <div {{action "newClicked"    target="controller"}}>New</div>
+      <div {{action "inboxClicked"  target="controller"}}>Eingang</div>
+      <div {{action "outboxClicked" target="controller"}}>Ausgang</div>  
+      <div {{action "newClicked"    target="controller"}}>Neu</div>
     </div>
     <div id="actions">
       {{#if isReplyPossible}}
-        <div {{action "replyClicked" }}>Reply</div>
+        <div {{action "replyClicked" }}>Antworten</div>
       {{else}}
-        <div class="inactive">Reply</div>
+        <div class="inactive">Antworten</div>
       {{/if}}
       {{#if isForwardPossible}}
-        <div {{action "forwardClicked" }}>Forward</div>
+        <div {{action "forwardClicked" }}>Weiterleiten</div>
       {{else}}
-        <div class="inactive">Forward</div>
+        <div class="inactive">Weiterleiten</div>
       {{/if}} &nbsp;&nbsp;
       {{#if isDeletePossible}}
-        <div {{action "deleteClicked" }}>Delete</div>
+        <div {{action "deleteClicked" }}>Löschen</div>
       {{else}}
-        <div class="inactive">Delete</div>
+        <div class="inactive">Löschen</div>
       {{/if}}      
     </div>
   </div>
@@ -153,7 +153,7 @@
           {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Loading...
         {{/if}}
       {{else}}
-        No Message Selected.
+        Keine Nachricht ausgewählt.
       {{/if}}
     {{/if}}
   </div>
