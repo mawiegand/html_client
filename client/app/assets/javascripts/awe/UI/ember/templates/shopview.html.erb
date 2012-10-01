@@ -15,6 +15,10 @@
             {{#if resourceOffers}}
             <h4>{{ t shop.resourceOffers }}</h4>
                       
+              <div class="platinum-button" {{action "buyCreditsPressed" target="parentView"}}>
+                <p>Aktuelle</p><p>Platinum-Account</p><p>Angebote</p>
+              </div>
+                      
               {{#each resourceOffers}}
                 {{view AWE.UI.Ember.ShopResourceOffer offerBinding="this" shopBinding="shop"}}
               {{/each}}
