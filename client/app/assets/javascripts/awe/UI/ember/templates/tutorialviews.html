@@ -127,6 +127,14 @@
               </div>
             {{/each}}
           {{/if}}
+          {{#if quest.rewards.experience_reward}}
+            <div class="quest-reward-item">
+              <div class="quest-reward-item-image">
+                XP
+              </div>
+              <div class="quest-reward-item-amount">{{quest.rewards.experience_reward}}</div>
+            </div>
+          {{/if}}
         {{else}}
           {{#if quest.rewards.resource_rewards}}
             {{#each quest.rewards.resource_rewards}}
