@@ -225,7 +225,20 @@ AWE.Controller = (function(module) {
       var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(buildingId);
       var queue = AWE.GS.ConstructionQueueManager.getQueueForBuildingCategorieInSettlement(buildingType.category, slot.get('settlement_id'));
       
-      if (queue && queue.get('max_length') > queue.get('jobs_count')) {
+      var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
+      var space = settlement.get('availableBuildingSlots');
+      
+      
+      if (space <= 0 && jobType === AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE) {
+        var dialog = AWE.UI.Ember.InfoDialog.create({
+          contentTemplateName: 'no-building-slots-free-info',
+          cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+          okPressed:           null,
+          cancelPressed:       function() { this.destroy(); },
+        });          
+        WACKADOO.presentModalDialog(dialog);
+      }
+      else if (queue && queue.get('max_length') > queue.get('jobs_count')) {
         switch (jobType) {
           case AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE:
             that.status.set('sendingUpgrade', true);
