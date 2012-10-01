@@ -72,10 +72,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var dialog = AWE.UI.Ember.WelcomeDialog.create({
         okPressed:    function() {
           
-          // track conversion: character reached the game (and pressed a button!)
-          var action = AWE.Action.Fundamental.createTrackCharacterConversionAction("reached_game");
-          action.send(function(status));     
-          
           AWE.GS.TutorialStateManager.checkForNewQuests();
           this.destroy();
         },            
@@ -179,6 +175,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },   
     
     showStartupDialogs: function() {
+      
+      if (AWE.GS.player.currentCharacter && !AWE.GS.player.currentCharacter.get('reached_game')) {
+        // track conversion: character reached the game (and pressed a button!)
+        var action = AWE.Action.Fundamental.createTrackCharacterConversionAction("reached_game");
+        action.send(function(status));   
+      }  
+            
       if (AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') <= 1) {
         this.showWelcomeDialog();
       }
