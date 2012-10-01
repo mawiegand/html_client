@@ -284,7 +284,7 @@
     
     {{#if building.unlockedDiplomacy}}
     <hr class="clear">
-      {{view AWE.UI.Ember.DiplomacyView unlockedAllianceCreation="unlockedAllianceCreation"}}
+      {{view AWE.UI.Ember.DiplomacyView unlockedAllianceCreationBinding="unlockedAllianceCreation"}}
     {{/if}}
 
     {{#if building.unlockedPlayerToPlayerTrade}}
@@ -355,12 +355,15 @@
         <div class="icon-button ok-button" {{action "joinAlliance"}}>join alliance</div>
       </p>
   
-      <p>
-        Found a new alliance and install yourself as leader.<br/>
-        {{view Ember.TextField class="text-field" placeholder="alliance tag" type="text" valueBinding="newAllianceTag"}} 
-        {{view Ember.TextField class="text-field" placeholder="alliance name" type="text" valueBinding="newAllianceName"}} 
-        <div class="icon-button ok-button" {{action "createAlliance"}}>found alliance</div>
-      </p>
+      {{#if unlockedAllianceCreation}}
+        <p>
+          Found a new alliance and install yourself as leader.<br/>
+          {{view Ember.TextField class="text-field" placeholder="alliance tag" type="text" valueBinding="newAllianceTag"}} 
+          {{view Ember.TextField class="text-field" placeholder="alliance name" type="text" valueBinding="newAllianceName"}} 
+          <div class="icon-button ok-button" {{action "createAlliance"}}>found alliance</div>
+        </p>
+      {{end}}
+      
     {{/if}}
   {{/if}}
   
