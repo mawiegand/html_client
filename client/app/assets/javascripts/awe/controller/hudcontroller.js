@@ -146,8 +146,8 @@ AWE.Controller = (function(module) {
             else {
               var info = AWE.UI.Ember.InfoDialog.create({
                 contentTemplateName: 'not-enough-credits-info',
-                cancelText:          'Cancel',
-                okText:              "Get mo' credits",
+                cancelText:          AWE.I18n.lookupTranslation('general.cancel'),
+                okText:              AWE.I18n.lookupTranslation('shop.notenoughcredits.getCredits'),
                 okPressed:           function() {
                   AWE.GS.ShopManager.openCreditShopWindow();
                   this.destroy();
@@ -184,8 +184,8 @@ AWE.Controller = (function(module) {
             else {
               var info = AWE.UI.Ember.InfoDialog.create({
                 contentTemplateName: 'not-enough-credits-info',
-                cancelText:          'Cancel',
-                okText:              "Get mo' credits",
+                cancelText:          AWE.I18n.lookupTranslation('general.cancel'),
+                okText:              AWE.I18n.lookupTranslation('shop.notenoughcredits.getCredits'),
                 okPressed:           function() {
                   AWE.GS.ShopManager.openCreditShopWindow();
                   this.destroy();

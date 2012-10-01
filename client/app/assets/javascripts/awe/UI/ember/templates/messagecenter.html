@@ -128,7 +128,7 @@
 
   <div class="list">
     {{#if "newMessage"}}
-      <h1>Draft</h1>
+      <h1>Entwurf</h1>
       {{view AWE.UI.Ember.DraftTeaserView draftBinding="newMessage" classNames="message-header" classNameBindings="selected"}}
     {{/if}}
     {{#if "messageBox"}}
@@ -137,7 +137,7 @@
         {{view AWE.UI.Ember.MessageTeaserView messageBinding="this" classNames="message-header" classNameBindings="selected"}}
       {{/each}}
     {{else}}
-      <h1>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Loading...</h1>
+      <h1>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Lade...</h1>
     {{/if}}
     </hr>
   </div>

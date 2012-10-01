@@ -8,10 +8,10 @@
     <div class="float-right down-icon" title="click to expand">&nbsp;</div>
 
     <p><span title="Verteidigungsbonus für alle Armeen, die auf der Seite dieser Siedlung kämpfen.">Def +{{formatNumber defenseBonus places="0"}}%</span> | 
-       <span title="Baugeschwindigkeit"> B {{formatNumber buildingSpeed maxPlaces="0"}}%</span> | 
-       <span title="Infanterierekrutierungsrate"     >I {{formatNumber infantryTrainingSpeed maxPlaces="0"}}%</span> |
-       <span title="Kavallerierekrutierungsrate"    >K {{formatNumber cavalryTrainingSpeed maxPlaces="0"}}%</span> | 
-       <span title="Fernkampfrekrutierungsrate"     >F {{formatNumber artilleryTrainingSpeed maxPlaces="0"}}%</span> | 
+       <span title="Baugeschwindigkeit"> G {{formatNumber buildingSpeed maxPlaces="0"}}%</span> | 
+       <span title="Rekrutierunggeschwindigkeit von Nahkämpfern"     >N {{formatNumber infantryTrainingSpeed maxPlaces="0"}}%</span> |
+       <span title="Rekrutierunggeschwindigkeit von Berittenen"    >B {{formatNumber cavalryTrainingSpeed maxPlaces="0"}}%</span> | 
+       <span title="Rekrutierunggeschwindigkeit von Fernkämpfern"     >F {{formatNumber artilleryTrainingSpeed maxPlaces="0"}}%</span> | 
        <span title="benutzte Kommandopunkte / verfügbare Kommandopunkte. Jede Armee benötigt einen Kommandopunkt.">Kommandopunkte: {{formatNumber settlement.commandPointsUsed maxPlaces="0"}} / {{formatNumber settlement.command_points places="0"}}</span><br> 
   
       {{t settlement.population}} {{settlement.score}}
@@ -34,19 +34,19 @@
         <td><b>Baugeschwindigkeit:</b></td><td class="number"> {{formatNumber buildingSpeed maxPlaces="0"}}% </td>
       </tr>
       <tr> 
-        <td><b>Infanterierekrutierungsgeschwindigkeit:</b></td><td class="number"> {{formatNumber infantryTrainingSpeed maxPlaces="0"}}%</td> 
+        <td><b>Rekrutierunggeschwindigkeit von Nahkämpfern:</b></td><td class="number"> {{formatNumber infantryTrainingSpeed maxPlaces="0"}}%</td> 
       </tr>
       <tr>
-        <td><b>Kavallerierekrutierungsgeschwindigkeit:</b></td><td class="number"> {{formatNumber cavalryTrainingSpeed maxPlaces="0"}}%</td> 
+        <td><b>Rekrutierunggeschwindigkeit von Berittenen:</b></td><td class="number"> {{formatNumber cavalryTrainingSpeed maxPlaces="0"}}%</td> 
       </tr>
       <tr>
-        <td><b>Fernkämpferrekrutierungsgeschwindigkeit:</b></td><td class="number"> {{formatNumber artilleryTrainingSpeed maxPlaces="0"}}%</td> 
+        <td><b>Rekrutierunggeschwindigkeit von Fernkämpfern:</b></td><td class="number"> {{formatNumber artilleryTrainingSpeed maxPlaces="0"}}%</td> 
       </tr>
     </table>
     <p>Du kannst die Geschwindigkeit, mit der Einheiten und Gebäude produziert werden, erhöhen, indem du die jeweiligen Gebäude ausbaust.</p>
     
     <p>
-      <span title="benutzte Kommandopunkte / verfügbare Kommandopunkte. Jede Armee benötigt einen Kommandopunkt."><b>Kommandopunkte:</b> {{formatNumber settlement.commandPointsUsed places="0"}} / {{formatNumber settlement.command_points places="0"}}</span>. 
+      <span title="benutzte Kommandopunkte / verfügbare Kommandopunkte. Jede Armee benötigt einen Kommandopunkt."><b>Kommandopunkte:</b> {{formatNumber settlement.commandPointsUsed places="0"}} / {{formatNumber settlement.command_points places="0"}}</span> 
     
     <span class="help-icon" title="Du benötigst einen Kommandopunkt für Jede Armee, die zu dieser Siedlung gehört. Die Garnison ist eine Ausnahme und benötigt keinen Kommandopunkt.">&nbsp;</span></p>
     
@@ -54,7 +54,7 @@
     <p><b>Steuersatz:</b> {{formatNumber settlement.taxPercentage}}%
       {{#if settlement.owns_region }}
         {{#if changeTaxPossible }}
-          <a href="#" {{action "changeTaxPressed"}}>change</a><span class="help-icon" title="Die Steuersatz, die du hier setzt, gilt für die komplette Region und alle ihre Einwohner.">&nbsp;</span>
+          <a href="#" {{action "changeTaxPressed"}}>ändern</a><span class="help-icon" title="Die Steuersatz, die du hier setzt, gilt für die komplette Region und alle ihre Einwohner.">&nbsp;</span>
         {{else}}
           Die nächste Änderung ist eine Stunde nach der letzten Änderung möglich.
         {{/if}}
@@ -63,7 +63,7 @@
       {{/if}}
     </p>
 
-    <h2>Rohstoff</h2>
+    <h2>Rohstoffproduktion</h2>
     <table>
       <tr>
        <th></th>
@@ -84,13 +84,13 @@
         {{/each}}
       </tr>
       <tr>
-       <td>{{#if settlement.owns_region}}+{{else}}-{{/if}} Tax</td>
+       <td>{{#if settlement.owns_region}}+{{else}}-{{/if}} Steuern</td>
         {{#each settlement.resourceProductions}}
           <td class="number">{{formatNumber tax maxPlaces="2"}}/h</td> 
         {{/each}}
       </tr>
       <tr>
-       <td>= Result</td>
+       <td>= Ergebnis</td>
         {{#each settlement.resourceProductions}}
           <td class="number">{{formatNumber rate maxPlaces="2"}}/h</td> 
         {{/each}}

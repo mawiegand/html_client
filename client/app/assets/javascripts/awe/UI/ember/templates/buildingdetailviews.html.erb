@@ -88,15 +88,15 @@
 <script type="text/x-handlebars" data-template-name="settlement-dialog-building-details">
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-pane settlement-dialog-building-details">
-    <a {{action "cancelPressed" }} class="close" title="click to close"></a>
+    <a {{action "cancelPressed" }} class="close" title="Schließen"></a>
     {{view AWE.UI.Ember.BuildingView classNames="building-option-image" buildingBinding="building"}}
     <div class="building-description-box">
       {{#if building.level }}
-        <h1>{{local building.name }} <span title="present level of building">Level {{ building.level }}</span>
-            {{#if building.underConstruction }}(<span class="constructing" title="level after finishing all upgrades already in the queue">{{building.levelAfterJobs}}</span>){{/if}}
+        <h1>{{local building.name }} <span title="derzeitiges Gebäudelevel">Level {{ building.level }}</span>
+            {{#if building.underConstruction }}(<span class="constructing" title="Level nach Abschluss aller Ausbauaufträge in der Bauschleife">{{building.levelAfterJobs}}</span>){{/if}}
             {{#if building.underDestruction }}(<span class="destructing" title="level after finishing all downgrades already in the queue">{{building.levelAfterJobs}}</span>){{/if}}</h1>   
       {{else}}
-        <h1>Under Construction: {{local building.name }}</h1>        
+        <h1>Im Bau: {{local building.name }}</h1>        
       {{/if}}
       {{#if building.buildingCategory}}<div class="building-category">{{t settlement.buildings.category}}: {{local building.buildingCategory.name}}</div>{{/if}}
       <b>{{t settlement.population}}:</b> {{building.population}}<br/>
@@ -155,11 +155,11 @@
       {{#if building.convertable }}
         <hr class="clear" />
         {{#if sendingConvert }}
-          <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Converting...</div>
+          <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Umwandeln...</div>
         {{else}}
-        <a {{action "conversionClicked"}} class="upgrade" title="click to convert"><img src="<%= asset_path('icons/cross_green.png') %>"></img> Conversion</a>
+        <a {{action "conversionClicked"}} class="upgrade" title="click to convert"><img src="<%= asset_path('icons/cross_green.png') %>"></img> Umwandlung</a>
         {{/if}}
-        <h3>Convert {{local building.name }} to {{local building.converted.name }} Level {{ building.convertedLevel }}</h2>
+        <h3>{{local building.name }} in {{local building.converted.name }} Level {{ building.convertedLevel }} umwandeln</h2>
       
         {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building.converted" levelBinding="building.converted.level"}}
         
@@ -181,9 +181,9 @@
         {{#if sendingUpgrade}}
           <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Updating...</div>
         {{else}}
-        <a {{action "upgradeClicked"}} class="upgrade" title="click to upgrade"><img src="<%= asset_path('icons/cross_green.png') %>"></img> Upgrade</a>
+        <a {{action "upgradeClicked"}} class="upgrade" title="click to upgrade"><img src="<%= asset_path('icons/cross_green.png') %>"></img> Ausbauen</a>
         {{/if}}
-        <h3>Upgrade {{local building.name }} to Level {{ building.nextLevel }}</h3>
+        <h3>{{local building.name }} auf Level {{ building.nextLevel }} ausbauen</h3>
       
         {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building" levelBinding="building.nextLevel"}}
   
@@ -249,24 +249,24 @@
         {{/if}}
             
       {{else}}
-        <p><h3>Cannot be upgraded further.</h3></p>
+        <p><h3>Kann nicht weiter ausgebaut werden.</h3></p>
       {{/if}}      
       
       {{#if building.destroyable}}
       <hr class="clear" />
         {{#if sendingDestroy}}
-          <div class="destroy">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Destroying...</div>
+          <div class="destroy">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Abreißen...</div>
         {{else}}
-          <a {{action "destroyClicked"}} {{bindAttr class="destroyClasses"}} title="click to destroy"><img src="<%= asset_path('icons/cross_red.png') %>"></img> Destroy Building</a>
+          <a {{action "destroyClicked"}} {{bindAttr class="destroyClasses"}} title="click to destroy"><img src="<%= asset_path('icons/cross_red.png') %>"></img> Gebäude abreißen</a>
         {{/if}}
-        <h3>Destroy {{local building.name }}</h3>
+        <h3>{{local building.name }} abreißen</h3>
         <p>
           <b>{{t building.duration}}:</b> {{formatDuration building.destructionTime}}
         </p>
       {{/if}}
     {{else}}
       <hr class="clear">
-      <p>Conversion in Progress</p>      
+      <p>Umwandlung in Arbeit</p>      
     {{/unless}}
 
     {{#if building.trainingQueues}}
@@ -316,7 +316,7 @@
 
 <script type="text/x-handlebars" data-template-name="not-enough-cash-info">
   <div class="advisor girl"></div>
-  <p>You don't have enough toads to give in exchange for that action.</p>
+  <p>Du hast nicht genug Kröten, um diese Aktion auszuführen.</p>
 </script>
 
 
@@ -344,19 +344,19 @@
   {{else}}
     {{#if character.alliance_id}}
       <p>
-        Presently, you are member of the alliance [{{character.alliance_tag}}].
+        Du bist derzeit ein Mitglied der Allianz [{{character.alliance_tag}}].
         <div class="icon-button cancel-button" {{action "leaveAlliance"}}>leave {{character.alliance_tag}}</div>
       </p> 
     {{else}}
       <p>
-        Join an existing alliance by entering its tag and the secret password.<br/>
+        Trete einer existierenden Allianz bei, indem du ihr Kürzel und das geheime Allianzpasswort eingibst.<br/>
         {{view Ember.TextField class="text-field" placeholder="alliance tag" type="text" valueBinding="allianceTag"}} 
         {{view Ember.TextField class="text-field" placeholder="password" type="text" valueBinding="alliancePassword"}} 
         <div class="icon-button ok-button" {{action "joinAlliance"}}>join alliance</div>
       </p>
   
       <p>
-        Found a new alliance and install yourself as leader.<br/>
+        Gründe eine neue Allianz, mit dir als Anführer.<br/>
         {{view Ember.TextField class="text-field" placeholder="alliance tag" type="text" valueBinding="newAllianceTag"}} 
         {{view Ember.TextField class="text-field" placeholder="alliance name" type="text" valueBinding="newAllianceName"}} 
         <div class="icon-button ok-button" {{action "createAlliance"}}>found alliance</div>
