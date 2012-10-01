@@ -13,7 +13,8 @@
        <span title="Rekrutierunggeschwindigkeit von Berittenen"    >B {{formatNumber cavalryTrainingSpeed maxPlaces="0"}}%</span> | 
        <span title="Rekrutierunggeschwindigkeit von Fernkämpfern"     >F {{formatNumber artilleryTrainingSpeed maxPlaces="0"}}%</span> | 
        <span title="benutzte Kommandopunkte / verfügbare Kommandopunkte. Jede Armee benötigt einen Kommandopunkt.">Kommandopunkte: {{formatNumber settlement.commandPointsUsed maxPlaces="0"}} / {{formatNumber settlement.command_points places="0"}}</span><br> 
-  
+
+      Bauslots: {{settlement.availableBuildingSlots}}
       {{t settlement.population}} {{settlement.score}}
       {{#each settlement.resourceProductions}}
         &nbsp; <span class="resource-icon {{unbound resourceType.symbolic_id}}">&nbsp;</span>   <span {{bindAttr title="localizedDetails"}}> {{formatNumber rate maxPlaces="0"}}/h</span> 
@@ -25,7 +26,7 @@
   
     <h1>{{settlement.name}} <!-- <a href="#" class="change-name" {{action "changeNamePressed"}}>Namen ändern</a>--></h1>  
 
-    <p><b>{{t settlement.population}}:</b> {{settlement.score}}</p>
+    <p><b>Bauslots:</b> {{settlement.availableBuildingSlots}} &nbsp;<b>{{t settlement.population}}:</b> {{settlement.score}}</p>
     <p><b>{{t settlement.defenseBonus}}:</b> {{formatNumber defenseBonus places="0"}}<span class="help-icon" title="Wenn die Siedlung an einem Kampf beteiligt ist, wirkt der Verteidigungsbonus auf den Verteidigungswert aller Truppen, die auf der Seite dieser Festung kämpfen; egal, ob sie innerhalb oder außerhalb der Mauern stationiert sind.">&nbsp;</span></p>
     </p>
 

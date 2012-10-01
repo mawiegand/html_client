@@ -242,6 +242,19 @@ AWE.GS = (function(module) {
       });
       return productions;
     }.property('updated_at'),
+    
+    usedBuildingSlots: function() {
+      var enumerableSlots = this.get('enumerableSlots') || [];
+      return enumerableSlots.filter(function(item) {
+        return item.building_id !== undefined && item.building_id !== null 
+      }).length
+    }.property('enumerableSlots.@each.building_id').cacheable(),
+    
+    availableBuildingSlots: function() {
+      var total = this.get('building_slots_total') || 1; // every settlement has at least one slot
+      var used  = this.get('usedBuildingSlots') || 1;
+      return total-used;
+    }.property('building_slots_total', 'usedBuildingSlots').cacheable(),
         
   });     
 
