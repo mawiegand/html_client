@@ -1082,24 +1082,45 @@ html, body {
   width: 500px; height: 400px;
 }
 
+.loaddialog {
+  width: 800px;
+  margin-left: -400px;
+  height: 400px;
+  margin-top: -200px;
+  overflow: hidden;
+}
+
+loaddialog-positioner {
+  position: relative;
+  top: 0px; left: 0px;
+}
+
 .loaddialog-heading {
+  position: absolute;
+  left: 175px; top: 354px;
   font-size: 27px;
   line-height: 27px;
   font-weight: normal;
 }
 
 .loaddialog-progressbar {
-  margin-top: 20px;
-  margin-left: -2px;
-  width: 100%; height: 20px;
-
+  position: absolute;
+  left: 50px;
+  top: 70px;
+  width: 701px; height: 283px;
   background: url('<%= asset_path("splashscreen/mapsw.jpg") %>');
-  border: 2px solid #333;
 } 
 
 .loaddialog-progress {
   width: 0%; height: 100%;
   background: url('<%= asset_path("splashscreen/mapcolor.jpg") %>');
+}
+
+.loaddialog-image {
+  position: absolute;
+  width: 800px; height: 530px;
+  margin-top: -70px;
+  background: url('<%= asset_path("splashscreen/ladedame.png") %>');
 }
 
 
