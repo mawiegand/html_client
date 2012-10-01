@@ -179,7 +179,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (AWE.GS.player.currentCharacter && !AWE.GS.player.currentCharacter.get('reached_game')) {
         // track conversion: character reached the game (and pressed a button!)
         var action = AWE.Action.Fundamental.createTrackCharacterConversionAction("reached_game");
-        action.send(function(status));   
+        action.send();   
       }  
             
       if (AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') <= 1) {
