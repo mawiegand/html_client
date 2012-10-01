@@ -1083,6 +1083,7 @@ html, body {
 }
 
 .loaddialog {
+  position: absolute;
   width: 800px;
   margin-left: -400px;
   height: 400px;
@@ -1097,7 +1098,7 @@ loaddialog-positioner {
 
 .loaddialog-heading {
   position: absolute;
-  left: 175px; top: 354px;
+  left: 175px; top: 330px;
   font-size: 27px;
   line-height: 27px;
   font-weight: normal;
@@ -1114,6 +1115,7 @@ loaddialog-positioner {
 .loaddialog-progress {
   width: 0%; height: 100%;
   background: url('<%= asset_path("splashscreen/mapcolor.jpg") %>');
+  overflow:hidden;
 }
 
 .loaddialog-image {
