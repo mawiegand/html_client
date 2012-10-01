@@ -37,8 +37,8 @@
     Kann nicht von Spielern trainiert werden.<br/>
   {{/if}}
   Lebenspunkte: {{unit.hitpoints}}<br/>
+  Angriff: {{unit.attack}}<br/>
   Verteidigung: {{unit.armor}}<br/>
-  Schaden: {{unit.attack}}<br/>
   Kritischer Schaden: {{unit.critical_hit_damage}} (Chance: {{unit.critical_hit_chance}})
 </script>
 
@@ -69,7 +69,7 @@
     <div class="modal-dialog-pane z-layer-4 encyclopedia-view">
       
       <div class="overview">
-        <a href="#" {{action toggleResources}}><b>Resources</b></a><br/>
+        <a href="#" {{action toggleResources}}><b>Rohstoffe</b></a><br/>
         {{#if displayResources}}
           {{#each resourceTypes }}
             {{#view AWE.UI.Ember.ResourceButton resourceTypeBinding="this" }}
@@ -78,7 +78,7 @@
           {{/each}}
         {{/if}}
         
-        <a href="#" {{action toggleBuildings}}><b>Buildings</b></a><br/>
+        <a href="#" {{action toggleBuildings}}><b>Gebäude</b></a><br/>
         {{#if displayBuildings}}
           {{#each buildingTypes }}
             {{#view AWE.UI.Ember.BuildingButton buildingTypeBinding="this" }}
@@ -87,7 +87,7 @@
           {{/each}}
         {{/if}}
         
-        <a href="#" {{action toggleUnits}}><b>Units</b></a><br/>
+        <a href="#" {{action toggleUnits}}><b>Einheiten</b></a><br/>
         {{#if displayUnits}}
           {{#each unitTypes }}
             {{#view AWE.UI.Ember.UnitButton unitTypeBinding="this" }}
@@ -111,7 +111,7 @@
         {{/if}}
       </div>
       
-      <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
+      <div class="icon-button ok-button" {{action "okPressed"}}>Schließen</div>
       
     </div>
   </div>

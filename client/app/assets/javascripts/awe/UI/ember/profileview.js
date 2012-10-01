@@ -171,7 +171,7 @@ AWE.UI.Ember = (function(module) {
       this.set('message', null);
       var changeDialog = AWE.UI.Ember.TextInputDialog.create({
         classNames: ['change-army-name-dialog'],
-        heading: 'Enter the new name of your character.',
+        heading: AWE.I18n.lookupTranslation('profile.customization.changeNameDialogCaption'),
         input: this.getPath('character.name'),
         controller: this,
         
@@ -191,13 +191,13 @@ AWE.UI.Ember = (function(module) {
     processNewName: function(newName) {
       
       if (!newName || newName.length < 3) {
-        this.set('message', 'Way to short. The name must have at least 3 characters.');
+        this.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.nameTooShort'));
       }
       else if (!newName || newName.length > 12) {
-        this.set('message', 'Way to long. The name must be shorter than 12 characters.');
+        this.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.nameTooLong'));
       }
       else if (newName === this.getPath('character.name')) {
-        this.set('message', 'Same name as before. Did nothing.');
+        this.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.nameNoChange'));
       }      
       else {  // now, really send the name
         var self = this;
@@ -213,13 +213,13 @@ AWE.UI.Ember = (function(module) {
             }
           }
           else if (status === AWE.Net.CONFLICT) {
-            self.set('message', 'This name is already taken or on the black list. Please choose another name.')
+            self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.nameTaken'))
           }
           else if (status === AWE.Net.FORBIDDEN) {
-            self.set('message', "You don't have enough toads to pay for this name change.")
+            self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeNameCost'))
           }
           else {
-            self.set('message', 'The name could not be changed for unknown reasons. Please try a different one.');
+            self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeNameError'));
           }
         });        
       }
@@ -249,10 +249,10 @@ AWE.UI.Ember = (function(module) {
           }
         }
         else if (status === AWE.Net.FORBIDDEN) {
-          self.set('message', "You don't have enough toads to pay for this gender change.")
+          self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeGenderCost'))
         }
         else {
-          self.set('message', 'The gender could not be changed for unknown reasons. Please try again later.');
+          self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeGenderError'));
         }
       });        
     },        
