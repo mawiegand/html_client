@@ -2024,6 +2024,16 @@ li.shout .sender {
   background-image: url("<%= asset_path 'icons/down-white.png' %>");  
 }
 
+.outpost-screen .left-icon,
+.base-screen .left-icon {
+  background-image: url("<%= asset_path 'icons/left-white.png' %>");  
+}
+
+.outpost-screen .right-icon,
+.base-screen .right-icon {
+  background-image: url("<%= asset_path 'icons/right-white.png' %>");  
+}
+
 
 
 .up-icon {
@@ -2991,6 +3001,31 @@ table .number {
 .shop-dialog-pane a.close:hover {
   opacity: 0.6;
 }
+
+
+.platinum-button {
+  color: #c83;
+  width: 140px;
+  height: 80px;
+  float: right;
+  text-align: center;
+  vertical-align: middle;
+  margin-right: 50px;
+  padding: 10px 0px 10px 0px;
+  background: url('<%= asset_path("shop/button_platinum.png") %>');
+}
+
+.platinum-button p {
+  margin: 3px 0px 3px 0px;
+}
+
+.platinum-button:hover {
+  color: #ea5;
+  background: url('<%= asset_path("shop/button_platinum_hover.png") %>');
+}
+
+
+
 
 .participant div {
   display: inline-block;
