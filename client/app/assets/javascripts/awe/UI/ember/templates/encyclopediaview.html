@@ -32,12 +32,12 @@
   {{local unit.description}}
 
   {{#if unit.trainable}}
-    Poduktionszeit: {{formatDuration unit.production_time}}<br/>
+    Produktionszeit: {{formatDuration unit.production_time}}<br/>
   {{else}}
     Kann nicht von Spielern trainiert werden.<br/>
   {{/if}}
-  Hitpoints: {{unit.hitpoints}}<br/>
-  Panzerung: {{unit.armor}}<br/>
+  Lebenspunkte: {{unit.hitpoints}}<br/>
+  Verteidigung: {{unit.armor}}<br/>
   Schaden: {{unit.attack}}<br/>
   Kritischer Schaden: {{unit.critical_hit_damage}} (Chance: {{unit.critical_hit_chance}})
 </script>

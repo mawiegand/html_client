@@ -24,9 +24,9 @@
             <p>Halbgott: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
           {{/if}}
         {{/if}}
-        <div title="A higher rank improves the efficiency of your troops. You need to gain experience in order to reach a higher the rank.">{{ t army.details.rank }}: {{army.rankToDisplay}} </div>
+        <div title="Ein höherer Rang verbessert die Effektivität deiner Truppen. Die Armee muss Erfahrung sammeln um einen höheren Rang zu erreichen.">{{ t army.details.rank }}: {{army.rankToDisplay}} </div>
         {{#if army.isOwnProp}}
-          <div title="Experience is gained through losing own troops, not by killing opponents. Reason: you learn more from making errors.">{{ t army.details.experience }}: {{army.exp}}. Rangaufstieg bei {{army.expForNextRank}}.</div> 
+          <div title="Erfahrung wird gewonnen, eigene Truppen sterben, nicht für getötete Gegner. Der Grund: Man lernt nur aus seinen eigenen Fehlern.">{{ t army.details.experience }}: {{army.exp}}. Rangaufstieg bei {{army.expForNextRank}}.</div> 
         {{/if}}
         {{#unless army.garrison}}
         <div>
@@ -102,7 +102,7 @@
             {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }}
           {{else}}
             {{#if settlement.garrison.isFighting}}
-              Cannot create a new army while garrison is fighting.
+              Während die Garnison kämpft, kann keine neue Armee erstellt werden.
             {{else}}
               {{#if remainingArmies }}
                 <a href="#" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</a> | 

@@ -83,14 +83,14 @@
 <script type="text/x-handlebars" data-template-name="character-profile-info-view">
   <p><b>Weltlicher Rang:</b> <em>{{local character.mundaneTitle.name }}</em>. 
      Aufstieg bei {{ character.nextMundaneTitle.exp }} zu <em>{{local character.nextMundaneTitle.name }}</em>.<br/>
-     <b>Geistlicher Rang:</b> <em>{{local character.sacredTitle.name }}</em>. Derzeit kein weiterer Aufstieg möglich.
+     <b>Geistlicher Rang:</b> <em>{{local character.sacredTitle.name }}</em>. Derzeit ist kein Aufstieg möglich.
   </p>
   
   <p>Ein Aufstieg im weltlichen Rang gibt mehr Siedlungs- und Skillpunkte. 
      Ein Aufstieg im geistlichen Rang ist Voraussetzung für Aufstiege im
      weltlichen Rang und erhöht Dein Verständnis des Übernatürlichen.</p>   
      
-  <p><b>Erfahrung:</b> {{ character.exp }}. Deine Erfahrung steigt indem Du baust und kämpfst.<br/>
+  <p><b>Erfahrung:</b> {{ character.exp }}. Deine Erfahrung steigt, indem Du baust und kämpfst.<br/>
      <b>Siedlungspunkte:</b> {{ character.settlement_points_used }} / {{ character.settlement_points_total }} (verwendet/insgesamt)
   </p>
 </script>
