@@ -251,8 +251,24 @@ AWE.GS = (function(module) {
     }.property('enumerableSlots.@each.building_id').cacheable(),
     
     availableBuildingSlots: function() {
-      var total = this.get('building_slots_total') || 1; // every settlement has at least one slot
+      var total = 1; // every settlement has at least one slot
       var used  = this.get('usedBuildingSlots') || 1;
+      
+      if (AWE.Config.SETTLEMENT_DYNAMIC_SLOTS) {
+        total = this.get('building_slots_total') || 1;
+      }
+      else {
+        var type_id = this.get('type_id');
+        if (type_id === 1) {
+          total = 3;
+        }
+        else if (type_id === 2) {
+          total = 40;
+        }
+        else {
+          total = 12;
+        }
+      }
       return total-used;
     }.property('building_slots_total', 'usedBuildingSlots').cacheable(),
         

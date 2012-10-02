@@ -53,7 +53,9 @@ AWE.Config = (function(module) {
   module.RANKING_SERVER_BASE      = module.SERVER_ROOT + '/game_server/de/ranking/character_rankings';
 
   
-  module.DEFAULT_LOCALE = 'en_US';
+  module.DEFAULT_LOCALE           = 'en_US';
+  
+  module.SETTLEMENT_DYNAMIC_SLOTS = <%= Rails.env.production? || Rails.env.development? ? 'true' : 'false' %> ;
   
   // access token of Egbert, expires in 100 days.
   module.DEV_ACCESS_TOKEN = "eyJ0b2tlbiI6eyJpZGVudGlmaWVyIjoiZU9tS3ZOa1hTUkxtYlREUSIsInNjb3BlIjpbIjVkZW50aXR5Iiwid2Fja2Fkb28iXSwidGltZXN0YW1wIjoiMjAxMi0wNS0wMlQxNjozMDowMyswMjowMCJ9LCJzaWduYXR1cmUiOiJhZDQ0MzU4NzRmMGFmYTg2N2RlOTAwOTExYTJlMmNlODQzNmNlYTU0In0="
