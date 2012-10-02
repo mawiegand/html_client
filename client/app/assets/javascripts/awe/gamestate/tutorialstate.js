@@ -628,6 +628,10 @@ AWE.GS = (function(module) {
       if (that.tutorialState.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime()) {
         that.updateTutorialState();
       }
+      
+      if (AWE.GS.TutorialManager.getTutorial().lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 300000 < new Date().getTime()) {
+        AWE.GS.TutorialManager.updateTutorial();
+      }
     };
 
     that.checkForRewards2 = function() {
@@ -833,6 +837,8 @@ AWE.GS = (function(module) {
           },            
         });
         WACKADOO.presentModalDialog(dialog);
+
+        that.setQuestDisplayed(questState);
       }
     }
     

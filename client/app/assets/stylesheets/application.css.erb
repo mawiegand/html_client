@@ -1973,6 +1973,24 @@ li.shout .sender {
   float: right;
 }
 
+.xp-icon {
+  display: inline-block;
+  width: 24px; height: 24px;
+  background-image: url("<%= asset_path 'icons/xp_small.png' %>");
+}
+
+.xp-icon.large, .xp-icon.finished {
+  display: inline-block;
+  width: 48px; height: 48px;
+  background-image: url("<%= asset_path 'icons/xp_large.png' %>");
+}
+
+.xp-icon.middle {
+  display: inline-block;
+  width: 36px; height: 36px;
+  background-image: url("<%= asset_path 'icons/xp_middle.png' %>");
+}
+
 .resource-icon {
   display: inline-block;
   width: 24px; height: 24px;
@@ -2042,20 +2060,20 @@ li.shout .sender {
 
 .unit-icon {
   display: inline-block;
-  width: 32px; height: 32px;
+  width: 24px; height: 24px;
+  background: url('<%= asset_path("icons/unit_default-small.png") %>');
 }
 
 .unit-icon.unit_clubbers {
-  background: url('<%= asset_path("units/unit_clubbers-tiny.jpg") %>');
 }
 
 .unit-icon.finished {
   display: inline-block;
-  width: 32px; height: 32px;
+  width: 48px; height: 48px;
+  background: url('<%= asset_path("icons/unit_default-large.png") %>');
 }
 
 .unit-icon.unit_clubbers.finished {
-  background: url('<%= asset_path("units/unit_clubbers-tiny.jpg") %>');
 }
 
 .down-icon {
