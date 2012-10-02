@@ -85,7 +85,7 @@
         {{/each}}
       </tr>
       <tr>
-       <td>{{#if settlement.owns_region}}+{{else}}-{{/if}} Steuern</td>
+       <td>{{#if settlement.owns_region}}+{{else}}-{{/if}} Steuern </td>
         {{#each settlement.resourceProductions}}
           <td class="number">{{formatNumber tax maxPlaces="2"}}/h</td> 
         {{/each}}
@@ -97,6 +97,10 @@
         {{/each}}
       </tr>
     </table>
+    
+    <p>Steuern werden nur auf die Gebäude-Basisproduktion erhoben. 
+       Die Bonusproduktion bezieht sich auf die unversteuerte Gebäude-Basisproduktion
+       und wird <b>nicht</b> besteuert.</p>
 
     <div class="float-right up-icon" title="click to minimize">&nbsp;</div>
 
