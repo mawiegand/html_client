@@ -833,6 +833,8 @@ AWE.GS = (function(module) {
           },            
         });
         WACKADOO.presentModalDialog(dialog);
+
+        that.setQuestDisplayed(questState);
       }
     }
     
