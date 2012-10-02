@@ -17,9 +17,15 @@ AWE.UI.Ember = (function(module) {
   module.SingleConstructionQueueView = Ember.View.extend({
     queue:      null,
     controller: null,
-    
+        
     capacityBinding: "queue.max_length",
     lengthBinding: "queue.jobs_count",  
+    
+    lengthClassName: function() {
+      var capacity = this.get('capacity') || 0;
+      return 'capacity-' + capacity;
+    }.property('capacity'),
+    
   });
 
   module.ConstructionJobView = Ember.View.extend({

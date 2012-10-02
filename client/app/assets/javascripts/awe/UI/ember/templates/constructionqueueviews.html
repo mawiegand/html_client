@@ -5,7 +5,7 @@
       <div class="queue-length">{{length}} / {{capacity}}</div>
       <h1>{{local queue.queueType.name}}</h1>
         {{#unless queue.empty }}
-        <div class="queue-job-list">    
+        <div {{bindAttr class=":queue-job-list lengthClassName"}}>    
           {{#each queue.hashableJobs.collection }}
             {{#view AWE.UI.Ember.ConstructionJobView controllerBinding="controller" jobBinding="this" classNames="queue-job"}}
               {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" buildingBinding="job.slot.building" levelBinding="job.level_after" }}
