@@ -106,14 +106,14 @@ AWE.UI.Ember = (function(module) {
       var changeDialog = AWE.UI.Ember.TextInputDialog.create({
         classNames: ['change-army-name-dialog'],
         
-        heading:    'Enter the new tax rate (5-20%).',
+        heading:    'Gib den neuen Steuersatz ein (5-15%).',
         input:      this.getPath('settlement.taxPercentage'),
         settlement: this.get('settlement'),
         
         okPressed:  function() {
           var number = parseInt(this.get('input') || "0");
           console.log('OK_PRESSED', self,this, this.get('input'), number)
-          if (number >= 5 && number <= 20) {
+          if (number >= 5 && number <= 15) {
             var action = AWE.Action.Settlement.createChangeTaxRateAction(self.get('settlement'), number/100.0);
             AWE.Action.Manager.queueAction(action, function(statusCode) {
               if (statusCode === 200 || statusCode === 203) {
