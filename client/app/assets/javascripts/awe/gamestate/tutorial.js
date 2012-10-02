@@ -56,7 +56,6 @@ AWE.GS = (function(module) {
     // private attributes and methods //////////////////////////////////////
   
     var that;
-    
 
     // protected attributes and methods ////////////////////////////////////
 
