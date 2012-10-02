@@ -129,10 +129,10 @@
           {{/if}}
           {{#if quest.rewards.experience_reward}}
             <div class="quest-reward-item">
-              <div class="quest-reward-item-image">
-                XP
+              <div class="quest-reward-item-image finished">
+                <span class="xp-icon finished">&nbsp;</span>
               </div>
-              <div class="quest-reward-item-amount">{{quest.rewards.experience_reward}}</div>
+              <div class="quest-reward-item-amount finished">{{quest.rewards.experience_reward}}</div>
             </div>
           {{/if}}
         {{else}}
@@ -159,7 +159,7 @@
           {{#if quest.rewards.experience_reward}}
             <div class="quest-reward-item">
               <div class="quest-reward-item-image">
-                XP
+                <span class="xp-icon">&nbsp;</span>
               </div>
               <div class="quest-reward-item-amount">{{quest.rewards.experience_reward}}</div>
             </div>
