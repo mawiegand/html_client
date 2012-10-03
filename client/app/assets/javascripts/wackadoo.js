@@ -161,7 +161,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       // Notice: put true/false to autoconnect and show_pane
       // Notice: exclude "user" and "password" if using anonymous login
             
-      launchMini(true, true, "jabber.wack-a-doo.com", identifier, accessToken);
+      launchMini(false, true, base, identifier, accessToken);
 
       this.addDomElement(('.jm_prompt'), false);      
       this.addDomElement(('.jm_starter'), false);
