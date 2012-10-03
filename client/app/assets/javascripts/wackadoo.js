@@ -161,7 +161,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       // Notice: put true/false to autoconnect and show_pane
       // Notice: exclude "user" and "password" if using anonymous login
             
-      launchMini(true, true, base, identifier, accessToken);
+      automaticLogin = AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') > 1;      
+            
+      launchMini(automaticLogin, true, base, identifier, accessToken);
 
       this.addDomElement(('.jm_prompt'), false);      
       this.addDomElement(('.jm_starter'), false);
@@ -238,9 +240,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         self.readyToRun();                            // ready to run
         self.showStartupDialogs();
         
-    //    if (AWE.Config.CHAT_SHOW && AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') > 1) {
+        if (AWE.Config.CHAT_SHOW) {  // && AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') > 1) {
           self.initChat();
-    //    }
+        }
       }
       
   
