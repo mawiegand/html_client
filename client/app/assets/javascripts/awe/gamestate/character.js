@@ -264,7 +264,7 @@ AWE.GS = (function(module) {
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
     that.updateCharacter = function(id, updateType, callback) {
-      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/'+id;
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/'+id+'?client_id=' + AWE.Settings.signin_with_client_id;
       return my.updateEntity(url, id, updateType, callback); 
     };
   
