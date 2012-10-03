@@ -214,7 +214,7 @@ AWE.UI = (function(module) {
         this.addChild(_armiesButton);
       }*/
       
-      if (!_shopButton) {
+      if (!_shopButton && AWE.Config.SHOP_ENABLED) {
         _shopButton = AWE.UI.createButtonView();
         _shopButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('shop.button'), AWE.UI.ImageCache.getImage("hud/shop/normal"));
         _shopButton.setImageForState(AWE.UI.ImageCache.getImage("hud/shop/hovered"), module.CONTROL_STATE_HOVERED);
