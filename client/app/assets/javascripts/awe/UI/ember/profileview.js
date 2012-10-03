@@ -124,6 +124,14 @@ AWE.UI.Ember = (function(module) {
 
     onClose:   null,
     
+    // FIXME hack for users that have already changed their name before reached the appropriate quest 
+    characterObserver: function() {
+      var characterId = this.getPath('character.id') || null;
+      if (characterId && this.getPath('character.name_change_count') > 0) {
+        AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_profile');
+      }       
+    }.observes('character.id'),
+    
     setAndUpdateAlliance: function() {
       var allianceId = this.getPath('character.alliance_id');
       var self = this;
