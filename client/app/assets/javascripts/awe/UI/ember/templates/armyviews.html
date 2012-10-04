@@ -21,12 +21,12 @@
           {{#if army.npc}}
             <p>{{ army.details.npcMsg }}</p>
           {{else}}
-            <p>Halbgott: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
+            <p>{{t army.details.demigod}}: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
           {{/if}}
         {{/if}}
-        <div title="Ein höherer Rang verbessert die Effektivität deiner Truppen. Die Armee muss Erfahrung sammeln um einen höheren Rang zu erreichen.">{{ t army.details.rank }}: {{army.rankToDisplay}} </div>
+        <div title="{{t army.details.rankDescription}}">{{ t army.details.rank }}: {{army.rankToDisplay}} </div>
         {{#if army.isOwnProp}}
-          <div title="Erfahrung wird gewonnen, eigene Truppen sterben, nicht für getötete Gegner. Der Grund: Man lernt nur aus seinen eigenen Fehlern.">{{ t army.details.experience }}: {{army.exp}}. Rangaufstieg bei {{army.expForNextRank}}.</div> 
+          <div title="{{t army.details.experienceDescription}}">{{ t army.details.experience }}: {{army.exp}}. {{t army.details.rankUpAt}} {{army.expForNextRank}}.</div> 
         {{/if}}
         {{#unless army.garrison}}
         <div>
@@ -61,16 +61,16 @@
               {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
             {{/if}}
           {{else}}
-            Unbekannt.
+            {{t general.unknown}}.
           {{/if}}
         </div>
       
         <div class="army-view-property-list">   <!-- TODO: display categories dynamically! (wherever possible) -->
-              <p><b>Stärken:</b>
+              <p><b>{{t army.details.strength.strengths}}</b>
                  {{formatNumber army.unitcategory_infantry_strength places="0"}} / 
                  {{formatNumber army.unitcategory_cavalry_strength places="0"}} /
                  {{formatNumber army.unitcategory_artillery_strength places="0"}} 
-                 (Nahkämpfer, Berittene, Fernkämpfer)</p>
+                 ({{t army.details.melee}}, {{t army.details.riders}}, {{t army.details.ranged}})</p>
         
           <table class="table-list">
             </tr>
@@ -78,7 +78,7 @@
               <td>{{formatNumber army.strength places="0"}}</td>
             <tr>
             </tr>
-              <th>Einheitenanzahl:</th>
+              <th>{{t army.details.unitCount}}:</th>
               <td>{{ army.size_present }} / {{army.size_max}}</td>
             <tr>
             </tr>
@@ -102,7 +102,7 @@
             {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }}
           {{else}}
             {{#if settlement.garrison.isFighting}}
-              Während die Garnison kämpft, kann keine neue Armee erstellt werden.
+              {{t army.form.garrisonFighting}}
             {{else}}
               {{#if remainingArmies }}
                 <a href="#" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</a> | 

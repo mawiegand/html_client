@@ -24,9 +24,10 @@ AWE.I18n.en_US =  function(module) {
       yes:      'yes',
       no:       'no',
       processing: 'Processing...',
+      unknown:  'unknown.',
 
       startup: {
-        loading: 'Loading....'
+        loading: 'Loading....',
       },
       
       shoutBox: {
@@ -47,6 +48,23 @@ AWE.I18n.en_US =  function(module) {
     battle: {
       details: {
         heading: "Battle Info",
+        afterRound: "After Round",
+        preparingRound: "Preparing for Round",
+        lastRound: "Last Round",
+        nextRound: "Next Round",
+        firstRound: "First Round",
+        myFaction: "My Faction",
+        oneFaction: "One Faction",
+        otherFaction: "Other Faction",
+
+        participants: {
+          name: "Name",
+          owner: "Owner",
+          strength: "Strength",
+          retreat: "Retreat",
+          armyDisbanded: "Disbanded Army",
+          armyDisbandedDescription: "this happens, if the home settlement of an army is lost",
+        },
       },        
       messages: {
         own: {
@@ -70,19 +88,28 @@ AWE.I18n.en_US =  function(module) {
         npcMsg: 'This army of raving wildlings is without leadership and thus, makes a good target for your armies to gain experience and improve their fighting skill.',
         properties: 'Properties',
         strength: {
+          strengths: 'Strengths',
           melee: 'Strength Melee',
           riders: 'Strength Riders',
           distance: 'Strength Distance',
           all: 'Overall Strength',
         },
+        melee: 'Melee',
+        riders: 'Riders',
+        ranged: 'Ranged',
+        unitCount: 'Unit Count',
         size: 'Size',
         sizeAll: "Total Size",
         sizeMax: "Maximum Size",
         velocity: 'Velocity',
         changeName: 'Change name',
         rank: "Rank",
+        rankDescription: "Higher ranks increase the effectiveness of your troops. Your Army needs to gain Experience to reach a higher rank.",
+        rankUpAt: "Rank up at",
         experience: "Experience",
-        stance: "Defend fortress when attacked"
+        experienceDescription: "Experience is awarded for deaths in your troops not for kills. Reason: You only learn from your own mistakes.",
+        stance: "Defend fortress when attacked",
+        demigod: "Demigod",
       },
       messages: {
         own: [
@@ -115,6 +142,7 @@ AWE.I18n.en_US =  function(module) {
         create: "Create",
         errors: {
           garrison: "The garrison army is too full",
+          garrisonFighting: "Cannot create a new army while the garrison is fighting.",
           other: "The army is too full",
           new: "The new army is too full",
           message: "Reduce units to match the maximum size of the army!",
@@ -156,7 +184,8 @@ AWE.I18n.en_US =  function(module) {
       messageExplanation: "This is only visible to members.",
       members: "Members",
       shoutBox: "Shout Box",
-      shoutBoxExplanation: "Everything entered here is instantly visible to all other members."
+      shoutBoxExplanation: "Everything entered here is instantly visible to all other members.",
+      changePassword: 'save new password',
     },
     
     welcome: {

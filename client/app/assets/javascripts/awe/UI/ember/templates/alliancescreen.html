@@ -59,10 +59,10 @@
     {{/if}}
     {{view Ember.TextField class="text-field" placeholder="alliance password" type="text" valueBinding="password"}} 
     {{#if ongoingAction}}
-      {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} processing...
+      {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}...
     {{else}}
       {{#if modifiedPassword}}
-        <div class="icon-button ok-button" {{action "changePassword"}}>save new password</div>
+        <div class="icon-button ok-button" {{action "changePassword"}}>{{t alliance.changePassword}}</div>
       {{/if}}
     {{/if}}
   </div>
