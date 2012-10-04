@@ -78,10 +78,10 @@ AWE.UI = (function(module) {
         _poleGraphics.setStrokeStyle(1);
         _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
         _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
-        _poleGraphics.drawRoundRect(0, 0, 2, 36, 0);
+        _poleGraphics.drawRoundRect(0, 0, 2, 26, 0);
         _poleShape = AWE.UI.createShapeView();
         _poleShape.initWithControllerAndGraphics(my.controller, _poleGraphics);
-        _poleShape.setFrame(AWE.Geometry.createRect(44, 0, 2, 48));
+        _poleShape.setFrame(AWE.Geometry.createRect(46, 0, 2, 48));
         this.addChildAt(_poleShape, 0);
       }
       
@@ -130,7 +130,7 @@ AWE.UI = (function(module) {
       if (!_flagView) {
         _flagView = AWE.UI.createAllianceFlagView();
         _flagView.initWithController(my.controller);
-        _flagView.setFrame(AWE.Geometry.createRect(16, 0, 28, 16));
+        _flagView.setFrame(AWE.Geometry.createRect(18, 0, 28, 16));
         _flagView.setAllianceId(allianceId);
         _flagView.setDirection('left');
         that.addChild(_flagView);
