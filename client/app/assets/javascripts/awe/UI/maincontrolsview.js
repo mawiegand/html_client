@@ -17,6 +17,7 @@ AWE.UI = (function(module) {
     var _heroHeadImageView;
     var _fortressButton;
     var _villageImageView;
+    var _settlementImageView;
     var _messagesButton;
     var _moreButton;
     var _locationsButton;
@@ -81,7 +82,7 @@ AWE.UI = (function(module) {
         var _resourcesShapeGraphics = new Graphics();
         _resourcesShapeGraphics.setStrokeStyle(0);
         _resourcesShapeGraphics.beginFill('rgba(0, 0, 0, 0.5)');
-        _resourcesShapeGraphics.drawRoundRect(110, 50, 190, 50, 5);
+        _resourcesShapeGraphics.drawRoundRect(10, 50, 190, 50, 5);
         _resourcesShape = AWE.UI.createShapeView();
         _resourcesShape.initWithControllerAndGraphics(my.controller, _resourcesShapeGraphics);    
         this.addChild(_resourcesShape);
@@ -90,7 +91,7 @@ AWE.UI = (function(module) {
       if (!_flagView && character && allianceId) {
         _flagView = AWE.UI.createAllianceFlagView();
         _flagView.initWithController(my.controller);
-        _flagView.setFrame(AWE.Geometry.createRect(242, 4, 74, 98));
+        _flagView.setFrame(AWE.Geometry.createRect(142, 4, 74, 98));
         _flagView.setAllianceId(allianceId);
         _flagView.setTagVisible(true);
         _flagView.onClick = function() { 
@@ -100,7 +101,7 @@ AWE.UI = (function(module) {
 
         _flagFrameView = AWE.UI.createImageView();
         _flagFrameView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/banner/large"));
-        _flagFrameView.setFrame(AWE.Geometry.createRect(239, 0, 82, 104));
+        _flagFrameView.setFrame(AWE.Geometry.createRect(139, 0, 82, 104));
         _flagView.onClick = function() { 
           WACKADOO.activateAllianceController(allianceId);   
         }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
@@ -116,7 +117,7 @@ AWE.UI = (function(module) {
       if (!_frameView) {
         _frameView = AWE.UI.createImageView();
         _frameView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/main/frame"));
-        _frameView.setFrame(AWE.Geometry.createRect(188, 24, 220, 190));
+        _frameView.setFrame(AWE.Geometry.createRect(88, 24, 220, 190));
         this.addChild(_frameView);
       }
       
@@ -125,7 +126,7 @@ AWE.UI = (function(module) {
         _heroHeadImageView.initWithControllerTextAndImage(my.controller, "", AWE.UI.ImageCache.getImage("hud/head/male/normal"));
         _heroHeadImageView.setImageForState(AWE.UI.ImageCache.getImage("hud/head/male/hovered"), module.CONTROL_STATE_HOVERED);
         _presentGender = "male";
-        _heroHeadImageView.setFrame(AWE.Geometry.createRect(188, 85, 128, 128));
+        _heroHeadImageView.setFrame(AWE.Geometry.createRect(88, 85, 128, 128));
         _heroHeadImageView.onClick = function() { WACKADOO.characterButtonClicked(); };
         this.addChild(_heroHeadImageView);
       }   
@@ -152,17 +153,26 @@ AWE.UI = (function(module) {
       if (!_villageImageView) {   
         _settlementImageName = "map/colony/small";
              
-        _villageImageView = AWE.UI.createImageView();
-        _villageImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_settlementImageName));
-        _villageImageView.setFrame(AWE.Geometry.createRect(304, 48, 80, 80));
+        _villageImageView = AWE.UI.createButtonView();
+        _villageImageView.initWithControllerTextAndImage(my.controller, "", AWE.UI.ImageCache.getImage("hud/settlement/normal"));
+        _villageImageView.setImageForState(AWE.UI.ImageCache.getImage("hud/settlement/hovered"), module.CONTROL_STATE_HOVERED);
+        _villageImageView.setFrame(AWE.Geometry.createRect(180, 24, 128, 128));
         _villageImageView.onClick = function() {
           var baseControllerActive = WACKADOO.baseControllerActive();
           WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
           if (baseControllerActive) {
             AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button1');
           } 
+        };
+          
+        _settlementImageView = AWE.UI.createImageView();
+        _settlementImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_settlementImageName));
+        _settlementImageView.setFrame(AWE.Geometry.createRect(212, 58, 64, 64));
+        _settlementImageView.onClick = function() { 
+          _villageImageView.onClick();   
         }; 
         this.addChild(_villageImageView);
+        this.addChild(_settlementImageView);
       }
       
       if (AWE.GS.player.get('currentCharacter')) {
@@ -183,9 +193,9 @@ AWE.UI = (function(module) {
             newSettlementImageName   = 'map/colony/big';
           }
       
-          if (newSettlementImageName != _settlementImageName && _villageImageView) {
+          if (newSettlementImageName != _settlementImageName && _settlementImageView) {
             _settlementImageName = newSettlementImageName;
-            _villageImageView.setImage(AWE.UI.ImageCache.getImage(_settlementImageName));
+            _settlementImageView.setImage(AWE.UI.ImageCache.getImage(_settlementImageName));
           }
         }
       }
@@ -196,7 +206,7 @@ AWE.UI = (function(module) {
         _messagesButton = AWE.UI.createButtonView();
         _messagesButton.initWithControllerTextAndImage(my.controller, 'Messages', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         _messagesButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        _messagesButton.setFrame(AWE.Geometry.createRect(364, -10, 72, 72));
+        _messagesButton.setFrame(AWE.Geometry.createRect(264, -10, 72, 72));
         _messagesButton.onClick = function() { WACKADOO.messagesButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
         this.addChild(_messagesButton);
       }
@@ -215,7 +225,7 @@ AWE.UI = (function(module) {
         _moreButton = AWE.UI.createButtonView();
         _moreButton.initWithControllerTextAndImage(my.controller, 'Ranking', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         _moreButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        _moreButton.setFrame(AWE.Geometry.createRect(390, 48, 72, 72));
+        _moreButton.setFrame(AWE.Geometry.createRect(290, 48, 72, 72));
         // _moreButton.onClick = function() { WACKADOO.messagesButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
         _moreButton.onClick = function() {
           my.controller.rankingButtonClicked();
@@ -248,7 +258,7 @@ AWE.UI = (function(module) {
         _shopButton = AWE.UI.createButtonView();
         _shopButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('shop.button'), AWE.UI.ImageCache.getImage("hud/shop/normal"));
         _shopButton.setImageForState(AWE.UI.ImageCache.getImage("hud/shop/hovered"), module.CONTROL_STATE_HOVERED);
-        _shopButton.setFrame(AWE.Geometry.createRect(120, 90, 100, 30));
+        _shopButton.setFrame(AWE.Geometry.createRect(20, 90, 100, 30));
         _shopButton.onClick = function() {
           my.controller.ingameShopButtonClicked();
         };
@@ -315,7 +325,7 @@ AWE.UI = (function(module) {
         _resource4LabelView.setTextAlign("left");
         _resource4LabelView.setIconImage("resource/icon/cash");
         _resource4LabelView.setFont("14px Arial");
-        _resource4LabelView.setFrame(AWE.Geometry.createRect(150, 60, 80, 24));      
+        _resource4LabelView.setFrame(AWE.Geometry.createRect(50, 60, 80, 24));      
         this.addChild(_resource4LabelView);
       }
       if (!_resource4ProductionView) {
@@ -323,7 +333,7 @@ AWE.UI = (function(module) {
         _resource4ProductionView.initWithControllerAndLabel(my.controller);
         _resource4ProductionView.setTextAlign("left");
         _resource4ProductionView.setFont("12px Arial");
-        _resource4ProductionView.setFrame(AWE.Geometry.createRect(210, 62, 60, 24));      
+        _resource4ProductionView.setFrame(AWE.Geometry.createRect(110, 62, 60, 24));      
         this.addChild(_resource4ProductionView);
       }         
       
