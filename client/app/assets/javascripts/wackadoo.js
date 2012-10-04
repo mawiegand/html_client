@@ -327,7 +327,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           assetLoaded();
         }
         else {
-          alert ('Das Spiel konnte nicht geladen werden. Bitte drücke den Aktualisieren-Knopf Deines Browsers, meist hilft schlichtes Neuladen der Seite. Falls auch das nicht hilft, kontaktiere bitte den Support. Bitte beachte, dass derzeit nur Chrome und Safari unterstützt werden; Firefox und IE funktionieren nicht.');
+          alert ('Das Spiel konnte nicht geladen werden. Bitte drücke den Aktualisieren-Knopf Deines Browsers, meist hilft schlichtes Neuladen der Seite und Login. Falls auch das nicht hilft, kontaktiere bitte den Support. Wir unterstützen folgende Browser: Chrome, Firefox, Internet Explorer 9 und Safari; je neuer, desto besser (und schneller).');
           console.log('CRITICAL ERROR: could not load current character from server. Error code: ' + statusCode + '. Terminate App.');
           throw "ABORT Due to Failure to Load Player's Current Character.";
         }
