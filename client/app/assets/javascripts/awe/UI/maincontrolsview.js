@@ -174,7 +174,7 @@ AWE.UI = (function(module) {
           });
         }
         else {
-          var level = AWE.Util.Rules.normalizedLevel(settlement.get('score'), settlement.get('type_id'));
+          var level = AWE.Util.Rules.normalizedLevel(settlement.get('level'), settlement.get('type_id'));
           var newSettlementImageName = 'map/colony/small'
           if (level > 3) {
             newSettlementImageName   = 'map/colony/middle';
