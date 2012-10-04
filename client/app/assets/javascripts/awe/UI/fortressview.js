@@ -76,7 +76,7 @@ AWE.UI = (function(module) {
         _imageView = AWE.UI.createImageView();
         _imageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_fortressImageName));
         _imageView.setContentMode(module.ViewContentModeNone);
-        _imageView.setFrame(AWE.Geometry.createRect(0, 6, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
+        _imageView.setFrame(AWE.Geometry.createRect(0, 4, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
         _imageView.onClick = that.onClick;
         _imageView.onMouseOver = that.onMouseOver;
         _imageView.onMouseOut = that.onMouseOut;
@@ -110,7 +110,7 @@ AWE.UI = (function(module) {
       if (!_flagView) {
         _flagView = AWE.UI.createAllianceFlagView();
         _flagView.initWithController(my.controller);
-        _flagView.setFrame(AWE.Geometry.createRect(27, 37, 8, 13));
+        _flagView.setFrame(AWE.Geometry.createRect(27, 39, 8, 13));
         _flagView.setAllianceId(allianceId);
         _flagView.setDirection('down');
         _flagView.onClick = that.onClick;

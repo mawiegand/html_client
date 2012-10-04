@@ -1693,7 +1693,7 @@ AWE.Controller = (function(module) {
     var setFortressPosition = function(view, frame) {
       view.setCenter(AWE.Geometry.createPoint(
         frame.origin.x + frame.size.width / 2,
-        frame.origin.y + frame.size.height / 2 - 5
+        frame.origin.y + frame.size.height / 2 - 14
       ));
     }
     
