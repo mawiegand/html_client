@@ -46,45 +46,45 @@ AWE.MapDebug = function(module) {
 }(AWE.MapDebug || {});
 
 
-$(document).ready(function() {
-  
-  AWE.Net.init();
-  
-  if (!AWE.Config.MAP_RUN_TESTS) return ;
-  
-  // tests all available methods for fetching nodes from server; individual, subtrees disconnected from present
-  // tree, subtrees connected to present tree, areas (driven client-side, fetching only missing nodes) and
-  // areas (server-side, fetching the complete subtree spanning the area)
-  
-  AWE.Map.Manager.init(2, function(rootNode) {
-    
-    AWE.Map.Manager.fetchMissingNodesForArea(AWE.Map.Manager.rootNode(),
-                                             AWE.Geometry.createRect(-500000,-500000,1000000,1000000),
-                                             3, true);
-    
-    AWE.Map.Manager.updateNode(rootNode, false, function() {
-      AWE.Map.Manager.fetchNodesForArea(AWE.Geometry.createRect(-15000000,5000000,1000000,1000000),
-                                        7, function() {
-        AWE.Map.Manager.fetchSubtreeForPath('011', 1, function() {
-          AWE.Map.Manager.fetchSubtreeForPath('11', 1, function() {
-            var map = AWE.MapDebug.showTree(AWE.Map.Manager.rootNode(), 1024, 7); // everything that's available (has mamimal 7 levels)
-            $('#map').append(map);
-          });
-        });
-      });
-    });
-  });
-  
-  $('#map').on("click", ".subtree", function(eventObject) {  // event handler attached at #map (delegate) for all future .subtree elements        
-    var path = $(this).text();
-    
-    AWE.Map.Manager.fetchSubtreeForPath(path, 1, function () {
-      var map = AWE.MapDebug.showTree(AWE.Map.Manager.rootNode(), 1024, 7);
-      $('#map').empty();
-      $('#map').append(map);
-    });
-
-  });
-  
-});
-  
+// $(document).ready(function() {
+//   
+  // AWE.Net.init();
+//   
+  // if (!AWE.Config.MAP_RUN_TESTS) return ;
+//   
+  // // tests all available methods for fetching nodes from server; individual, subtrees disconnected from present
+  // // tree, subtrees connected to present tree, areas (driven client-side, fetching only missing nodes) and
+  // // areas (server-side, fetching the complete subtree spanning the area)
+//   
+  // AWE.Map.Manager.init(2, function(rootNode) {
+//     
+    // AWE.Map.Manager.fetchMissingNodesForArea(AWE.Map.Manager.rootNode(),
+                                             // AWE.Geometry.createRect(-500000,-500000,1000000,1000000),
+                                             // 3, true);
+//     
+    // AWE.Map.Manager.updateNode(rootNode, false, function() {
+      // AWE.Map.Manager.fetchNodesForArea(AWE.Geometry.createRect(-15000000,5000000,1000000,1000000),
+                                        // 7, function() {
+        // AWE.Map.Manager.fetchSubtreeForPath('011', 1, function() {
+          // AWE.Map.Manager.fetchSubtreeForPath('11', 1, function() {
+            // var map = AWE.MapDebug.showTree(AWE.Map.Manager.rootNode(), 1024, 7); // everything that's available (has mamimal 7 levels)
+            // $('#map').append(map);
+          // });
+        // });
+      // });
+    // });
+  // });
+//   
+  // $('#map').on("click", ".subtree", function(eventObject) {  // event handler attached at #map (delegate) for all future .subtree elements        
+    // var path = $(this).text();
+//     
+    // AWE.Map.Manager.fetchSubtreeForPath(path, 1, function () {
+      // var map = AWE.MapDebug.showTree(AWE.Map.Manager.rootNode(), 1024, 7);
+      // $('#map').empty();
+      // $('#map').append(map);
+    // });
+// 
+  // });
+//   
+// });
+//   
