@@ -44,5 +44,11 @@
 
 <%= yield %>
 
+<% if Rails.env.staging? %>
+  <div class="<%= Rails.env %>" id="environment">Testrunde</div>
+<% elsif Rails.env.development? %>
+  <div class="<%= Rails.env %>" id="environment"><%= Rails.env %></div>
+<% end %>
+
 </body>
 </html>
