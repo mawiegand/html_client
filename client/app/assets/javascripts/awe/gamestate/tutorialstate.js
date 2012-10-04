@@ -625,11 +625,11 @@ AWE.GS = (function(module) {
         }
       }
       
-      if (that.tutorialState.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime()) {
+      if (that.tutorialState.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < AWE.GS.TimeManager.estimatedServerTime().getTime()) {
         that.updateTutorialState();
       }
       
-      if (AWE.GS.TutorialManager.getTutorial().lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 300000 < new Date().getTime()) {
+      if (AWE.GS.TutorialManager.getTutorial().lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 300000 < AWE.GS.TimeManager.estimatedServerTime().getTime()) {
         AWE.GS.TutorialManager.updateTutorial();
       }
     };
