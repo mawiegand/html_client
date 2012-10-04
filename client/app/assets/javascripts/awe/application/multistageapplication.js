@@ -604,7 +604,7 @@ AWE.Application = (function(module) {
                 }
               } else {
                 if (isIn(element[j])) {
-                  // console.log('CATCHED BY THIS ELEMENT');
+                  console.log('CATCHED BY THIS ELEMENT:', element[j]);
                   return true;
                 }
               }
