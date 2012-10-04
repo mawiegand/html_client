@@ -53,7 +53,7 @@ AWE.Controller = (function(module) {
       _stage = new Stage(_canvas);
       _stage.onClick = function() {};
       
-      _canvas.width = 500;
+      _canvas.width = 400;
       _canvas.height = 250;
 
       _resourceCanvas = root.find('#resource-canvas')[0];
@@ -341,7 +341,7 @@ AWE.Controller = (function(module) {
           HUDViews.controlButtonsView.initWithController(that);
           _stage.addChild(HUDViews.controlButtonsView.displayObject());
         }
-        HUDViews.controlButtonsView.setOrigin(AWE.Geometry.createPoint(384, 126));
+        HUDViews.controlButtonsView.setOrigin(AWE.Geometry.createPoint(284, 126));
       }
       
       if (!HUDViews.stoneView) {

@@ -589,7 +589,7 @@ AWE.Application = (function(module) {
         for (var i = 0; i < this.domElements.length; i++) {
           var element = this.domElements[i].element;
           if (typeof element === "string") {  // it is possible to specify string selectors
-            element = $(element);
+            element = $(element+":visible");
           }
           
           if (element) {
@@ -604,7 +604,7 @@ AWE.Application = (function(module) {
                 }
               } else {
                 if (isIn(element[j])) {
-                  // console.log('CATCHED BY THIS ELEMENT');
+                  console.log('CATCHED BY THIS ELEMENT:', element[j]);
                   return true;
                 }
               }
