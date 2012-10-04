@@ -170,9 +170,9 @@ AWE.UI.Ember = (function(module) {
     changingName:     false,
     changingGender:   false,
 
-    firstNameChange: function() {
+    firstTwoNameChange: function() { 
       var count = this.getPath('character.name_change_count');
-      return count === undefined || count === null || count === 0;
+      return count === undefined || count === null || count < 2;
     }.property('character.name_change_count'), 
     
     changeNamePressed: function() {
@@ -234,9 +234,9 @@ AWE.UI.Ember = (function(module) {
     },
     
     
-    firstGenderChange: function() {
+    firstTwoGenderChange: function() {
       var count = this.getPath('character.gender_change_count');
-      return count === undefined || count === null || count === 0;
+      return count === undefined || count === null || count < 2;
     }.property('character.gender_change_count'), 
     
     changeGenderPressed: function() {
