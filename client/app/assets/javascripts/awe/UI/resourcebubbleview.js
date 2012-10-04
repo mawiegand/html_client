@@ -51,6 +51,11 @@ AWE.UI = (function(module) {
         my.resourceImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(my.resourceImageName));
         my.resourceImageView.setFrame(AWE.Geometry.createRect(0, 0, 36, 36));
         my.container.addChild(my.resourceImageView.displayObject());     
+        my.resourceImageView.onClick = function() { 
+          if (that.enabled()) {
+            that.onClick() 
+          }
+        }
       } 
 
       if (!my.amountView) {
@@ -61,6 +66,11 @@ AWE.UI = (function(module) {
         my.amountView.setColor('rgb(255,255,255)');
         my.amountView.setFrame(AWE.Geometry.createRect(38, 3, 80, 16));      
         my.container.addChild(my.amountView.displayObject());
+        my.amountView.onClick = function() { 
+          if (that.enabled()) {
+            that.onClick() 
+          }
+        }
       }
 
       if (!my.rateView) {
@@ -69,8 +79,13 @@ AWE.UI = (function(module) {
         my.rateView.setTextAlign("right");
         my.rateView.setFont("12px Arial");
         my.rateView.setColor('rgb(200,200,200)');
-        my.rateView.setFrame(AWE.Geometry.createRect(100, 7, 58, 12));      
+        my.rateView.setFrame(AWE.Geometry.createRect(100, 7, 57, 12));      
         my.container.addChild(my.rateView.displayObject());
+        my.rateView.onClick = function() { 
+          if (that.enabled()) {
+            that.onClick() 
+          }
+        }
       }
 
       if (!my.capacityLabelView) {
@@ -82,6 +97,11 @@ AWE.UI = (function(module) {
         my.capacityLabelView.setFrame(AWE.Geometry.createRect(38, 21, 40, 12));      
         my.capacityLabelView.setText('MAX:');
         my.container.addChild(my.capacityLabelView.displayObject());
+        my.capacityLabelView.onClick = function() { 
+          if (that.enabled()) {
+            that.onClick() 
+          }
+        }
       }
 
       if (!my.capacityView) {
@@ -92,6 +112,11 @@ AWE.UI = (function(module) {
         my.capacityView.setColor('rgb(200,200,200)');
         my.capacityView.setFrame(AWE.Geometry.createRect(70, 21, 80, 12));      
         my.container.addChild(my.capacityView.displayObject());
+        my.capacityView.onClick = function() { 
+          if (that.enabled()) {
+            that.onClick() 
+          }
+        }
       }
       that.setValues();
     }
