@@ -831,7 +831,6 @@ AWE.GS = (function(module) {
           okPressed:    function() {
             this.destroy();
             // log('---> checkForNewQuests: set displayed');
-            that.setQuestDisplayed(questState);
             checking = false;
             // log('---> stop checking in showQuestStartDialog, close dialog');
           },            
