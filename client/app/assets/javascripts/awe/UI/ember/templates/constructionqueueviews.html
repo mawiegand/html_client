@@ -34,7 +34,7 @@
                 <p class="queue-job-button finish-button">
                   {{#if isConstructionSpeedupPossible }}
                     <a href="#" {{action "finishJobPressed"}} title="Gib Goldkröten aus, um den Bauauftrag sofort fertig zu stellen. Die Kosten hängen von der verbleibenden Bauzeit ab.">
-                     Hurry {{constructionSpeedupCost timeRemaining}} 
+                     {{t settlement.construction.hurry }} {{constructionSpeedupCost timeRemaining}} 
                      <span class="resource-icon {{constructionSpeedupResource timeRemaining}}">&nbsp;</span>
                     </a>
                   {{/if}}

@@ -64,7 +64,7 @@
           <p class="queue-job-button finish-button">
             {{#if isTrainingSpeedupPossible }}
               <a href="#" {{action "speedupJobPressed"}} title="gib Goldkröten aus um Einheiten doppelt so schnell zu rekrutieren. Die Kosten hängen von der verbleibenden Rekrutierungszeit ab.">
-               halve {{trainingSpeedupCost timeRemaining}} 
+               {{t settlement.training.hurry }} {{trainingSpeedupCost timeRemaining}} 
                <span class="resource-icon {{trainingSpeedupResource timeRemaining}}">&nbsp;</span>
               </a>
             {{else}}
