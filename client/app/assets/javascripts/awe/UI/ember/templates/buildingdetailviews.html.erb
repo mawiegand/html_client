@@ -138,7 +138,10 @@
     {{#if building.tradingCarts}}
       <p><b>Handleskarren:</b> {{building.tradingCarts}}</p>
     {{/if}} 
-
+    {{#if building.commandPoints}}
+      <p><b>Kommandopunkte:</b> {{building.commandPoints}}</p>
+    {{/if}} 
+    
     {{#if building.unlockedQueues}}
         <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.unlockedQueues}}{{local name}},    {{/each}}</p>
     {{/if}}
@@ -236,7 +239,9 @@
         {{#if building.tradingCartsNextLevel}}
           <p><b>Handleskarren:</b> {{building.tradingCartsNextLevel}}</p>
         {{/if}} 
-  
+        {{#if building.commandPointsNextLevel}}
+          <p><b>Kommandopunkte:</b> {{building.commandPointsNextLevel}}</p>
+        {{/if}} 
       
         {{#if building.unlockedQueuesNextLevel}}
           <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.unlockedQueuesNextLevel}}{{local name}}, {{/each}}</p>

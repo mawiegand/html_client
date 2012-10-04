@@ -519,6 +519,23 @@ AWE.GS = (function(module) {
 		tradingCartsNextLevel: function() {
 		  return this.calcTradingCarts(this.get('nextLevel'));
 		}.property('nextLevel', 'buildingType.trading_carts').cacheable(),		
+		
+		
+		
+    calcCommandPoints: function(level) {
+		  var formula = this.getPath('buildingType.abilities.command_points');
+		  level       = level || this.get('level') || 1;
+		  return formula ? (AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(formula), level)) : null;
+    },
+		
+		commandPoints: function() {
+		  return this.calcCommandPoints(this.get('level'));
+		}.property('level', 'buildingType.command_points').cacheable(),   ///< TODO : also update, when queue's speedup changes.	
+		
+		commandPointsNextLevel: function() {
+		  return this.calcCommandPoints(this.get('nextLevel'));
+		}.property('nextLevel', 'buildingType.command_points').cacheable(),		
+		
 
     // ///////////////////////////////////////////////////////////////////////
     
