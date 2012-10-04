@@ -107,7 +107,7 @@ AWE.UI = (function(module) {
       
       
       // FLAG VIEW ///////////////////////////////////////////////////////////    
-      if (!_flagView) {
+      if (!_flagView && allianceId) {
         _flagView = AWE.UI.createAllianceFlagView();
         _flagView.initWithController(my.controller);
         _flagView.setFrame(AWE.Geometry.createRect(27, 39, 8, 13));
@@ -119,7 +119,7 @@ AWE.UI = (function(module) {
         this.addChild(_flagView);
       }
       
-      if (allianceId != _flagView.allianceId()) {
+      if (_flagView && allianceId != _flagView.allianceId()) {
         _flagView.setAllianceId(allianceId);
       }
       
