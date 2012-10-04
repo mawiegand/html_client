@@ -31,10 +31,22 @@ AWE.UI.Ember = (function(module) {
   module.ConstructionJobView = Ember.View.extend({
     classNameBindings: ['active', 'first'],
     
+    attributeBindings: ['title'],
+    
     job: null,
     timer: null,
     
     timeReamining: null,
+    
+    title: function() {
+      var active = this.get('active');
+      var first = this.get('first');
+      var hint = first ? 'Wird gerade gebaut.' : 'Wartet darauf, bis es an der Reihe ist.';
+      if (first && !active) {
+        hint = 'Kann derzeit nicht gebaut werden. Wird automatisch begonnen, sobald die nötigen Rohstoffe und Bauslots vorhanden sind.'
+      }
+      return hint;
+    }.property('active', 'first'),
     
     isConstructionSpeedupPossible: function() {
       return this.getPath('job.active_job') && AWE.Util.Rules.isConstructionSpeedupPossible(this.get('timeRemaining'));
