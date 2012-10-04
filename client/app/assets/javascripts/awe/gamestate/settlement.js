@@ -314,6 +314,17 @@ AWE.GS = (function(module) {
       return AWE.GS.SettlementAccess.getAllForOwner_id(AWE.GS.CharacterManager.getCurrentCharacter().getId());
     }
     
+    that.getHomeBaseOfCharacter = function(character) {
+      var locationId = character.get('base_location_id');
+      return locationId ? this.getSettlementAtLocation(locationId) : null;
+    }
+    
+    /** updates the home settlement of the given character. */
+    that.updateHomeBaseOfCharacter = function(character, updateType, callback) {
+      var locationId = character.get('base_location_id');
+      return this.updateSettlementsAtLocation(locationId, updateType, callback);
+    }        
+    
     /** returns the settlement at locationId or null, if there is no settlement or data. */
     that.getSettlementAtLocation = function(locationId) {
       var settlements = AWE.GS.SettlementAccess.getAllForLocation_id(locationId);

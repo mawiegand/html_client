@@ -166,7 +166,7 @@ AWE.UI = (function(module) {
       if (!rightOfWayIcon) {
         rightOfWayIcon = AWE.UI.createImageView();
         rightOfWayIcon.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/army/target_background"));
-        rightOfWayIcon.setFrame(AWE.Geometry.createRect(56, 82, 32, 32));
+        rightOfWayIcon.setFrame(AWE.Geometry.createRect(56, 76, 32, 32));
         rightOfWayIcon.setContentMode(module.setContentModeNone);
         this.addChild(rightOfWayIcon); 
       }

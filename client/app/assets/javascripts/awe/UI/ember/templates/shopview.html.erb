@@ -56,7 +56,7 @@
     </div>
   {{else}}
     <div class="resource-offer" {{action "buyResourceOfferPressed"}}>
-      <p>{{ offer.amount }} {{resourceName}}</p>
+      <p>{{ offer.amount }} {{resourceName}}{{t general.naivePlural }}</p>
       <p>{{t shop.for }}</p>
       <p>{{ offer.price}} {{ t shop.credits }}</p>
     </div>

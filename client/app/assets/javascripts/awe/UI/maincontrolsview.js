@@ -24,6 +24,8 @@ AWE.UI = (function(module) {
     var _shopButton;
     var _resourcesShape;
     
+    var _settlementImageName = null;
+    
     var _presentGender = null;
     
     var _resource1LabelView;
@@ -147,10 +149,12 @@ AWE.UI = (function(module) {
         _heroHeadImageView.setText(name);
       }
   
-      if (!_villageImageView) {
+      if (!_villageImageView) {   
+        _settlementImageName = "map/colony/small";
+             
         _villageImageView = AWE.UI.createImageView();
-        _villageImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("map/colony/big"));
-        _villageImageView.setFrame(AWE.Geometry.createRect(293, 20, 100, 100));
+        _villageImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_settlementImageName));
+        _villageImageView.setFrame(AWE.Geometry.createRect(304, 48, 80, 80));
         _villageImageView.onClick = function() {
           var baseControllerActive = WACKADOO.baseControllerActive();
           WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
@@ -160,6 +164,32 @@ AWE.UI = (function(module) {
         }; 
         this.addChild(_villageImageView);
       }
+      
+      if (AWE.GS.player.get('currentCharacter')) {
+        var settlement = AWE.GS.SettlementManager.getHomeBaseOfCharacter(AWE.GS.player.get('currentCharacter'));
+        if (!settlement) {
+          var self = this;
+          AWE.GS.SettlementManager.updateHomeBaseOfCharacter(AWE.GS.player.get('currentCharacter'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+            self.setNeedsUpdate();
+          });
+        }
+        else {
+          var level = AWE.Util.Rules.normalizedLevel(settlement.get('level'), settlement.get('type_id'));
+          var newSettlementImageName = 'map/colony/small'
+          if (level > 3) {
+            newSettlementImageName   = 'map/colony/middle';
+          }
+          if (level > 7) {
+            newSettlementImageName   = 'map/colony/big';
+          }
+      
+          if (newSettlementImageName != _settlementImageName && _villageImageView) {
+            _settlementImageName = newSettlementImageName;
+            _villageImageView.setImage(AWE.UI.ImageCache.getImage(_settlementImageName));
+          }
+        }
+      }
+      
 
       // Messages
       if (!_messagesButton) {

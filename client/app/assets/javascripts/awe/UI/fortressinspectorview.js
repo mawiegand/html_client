@@ -199,7 +199,7 @@ AWE.UI = (function(module) {
       if (!my.fortressView) {
         my.fortressView = AWE.UI.createImageView();
         my.fortressView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_fortressImageName));
-        my.fortressView.setFrame(AWE.Geometry.createRect(202, 20, AWE.Config.MAPPING_FORTRESS_SIZE*1.5, AWE.Config.MAPPING_FORTRESS_SIZE*1.5));
+        my.fortressView.setFrame(AWE.Geometry.createRect(210, 30, AWE.Config.MAPPING_FORTRESS_SIZE*1.2, AWE.Config.MAPPING_FORTRESS_SIZE*1.2));
         my.fortressView.onClick = function() { my.controller.moveTo(my.node); };
         this.addChild(my.fortressView);
       }
