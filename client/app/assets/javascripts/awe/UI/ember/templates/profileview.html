@@ -69,11 +69,7 @@
      {{#if changingGender }}
        &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
      {{else}} 
-<<<<<<< HEAD
-       <span class="simple-button" {{action "changeGenderPressed"}}>{{#if firstGenderChange}}{{t profile.customization.chooseGenderCaption}}{{else}}{{t profile.customization.changeGenderCaption}} (20 Kröten){{/if}}</span>
-=======
-       <span class="simple-button" {{action "changeGenderPressed"}}>{{#if firstTwoGenderChange}}{{t profile.customization.chooseGenderCaption}}{{else}}{{t profile.customization.changeGenderCaption}} (20 toads){{/if}}</span>
->>>>>>> 93ec97bca157d3da0be6d1823a4f12bc5c1c0b04
+       <span class="simple-button" {{action "changeGenderPressed"}}>{{#if firstTwoGenderChange}}{{t profile.customization.chooseGenderCaption}}{{else}}{{t profile.customization.changeGenderCaption}} (20 Kröten){{/if}}</span>
      {{/if}}  
   </p>
   {{#if firstTwoGenderChange}}
