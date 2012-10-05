@@ -468,8 +468,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     
-    /** starts the app when the document is ready. */
-    ready: function() {
+    start: function() {      
       this._super();
       
       try {
@@ -499,12 +498,21 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Net.init();                                   // initialize the network stack
    
       this.loadAssets();
-    }
+    },
+
+    showBrowserSelection: function() {
+      document.location.href = AWE.Config.PORTAL_ROOT + '/browser.html';
+    },
+
+    /** starts the app when the document is ready. */
+    ready: function() {
+      
+      if (!AWE.Config.BROWSER_CHECK_ENABLED || AWE.Util.Browser.checkRequirements()) {
+        this.start();
+      }
+      else {
+        this.showBrowserSelection();
+      }
+    },
   }
 }());
-
-
-
-
-
-

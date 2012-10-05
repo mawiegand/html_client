@@ -120,12 +120,15 @@ AWE.Config = (function(module) {
   module.RESOURCES_REFRESH_INTERVAL  =  5 * 1000;
   module.CREDIT_AMOUNT_REFRESH_INTERVAL  =  4 * 1000;
   module.SHOP_ENABLED = <%= CLIENT_CONFIG['shop_enabled'] ? 'true' : 'false' %>;
+  module.SHOP_ENV = '<%= Rails.env %>';
 
   module.USE_TUTORIAL = true;  // switch to enable/disable tutorial
   module.TUTORIAL_STATE_REFRESH_INTERVAL = 5 * 1000;
   module.TUTORIAL_STATE_DELAY_INTERVAL   = 4 * 1000;
   module.CHAT_SHOW    = true;  // switch chat system on / off
   module.TRADE_ENABLED= true;   // switch trade system on / off
+  
+  module.BROWSER_CHECK_ENABLED = false;
 
   return module;
   
