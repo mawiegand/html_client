@@ -20,7 +20,34 @@ AWE.Util.Browser = (function(module) {
       Modernizr.svg
     );
     
+    if (!(AWE.Config.BROWSER_CHECK_FAILURES_ONLY && requirementsSatisfied)) {
+      module.logCheck(requirementsSatisfied);
+    }
+    
     return requirementsSatisfied;
+  }
+
+  module.logCheck = function(success) {
+    var options = {
+      url: AWE.Config.BACKEND_SERVER_BASE + 'browser_stats',
+      type: 'POST',
+      data: {
+        backend_browser_stat: {
+          success: success,
+          user_agent: navigator.userAgent,
+          modernizr: JSON.stringify(Modernizr),
+        },
+      },
+      dataType: 'json',
+    };
+    
+    var jqXHR = $.ajax(options)
+      .error(function(jqXHR, statusText) {           // On failure:
+        log('ERROR TRACKING EVENT TO URL ' + AWE.Config.BACKEND_SERVER_BASE + '/browser_stats'); 
+      })
+      .success(function(data, statusText, jqXHR) {   // On success:
+        log('SUCCESS TRACKING EVENT TO URL ' + AWE.Config.BACKEND_SERVER_BASE + '/browser_stats'); 
+      })
   }
 
   return module;

@@ -468,7 +468,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     
-    start: function() {      
+    showBrowserSelection: function() {
+      document.location.href = AWE.Config.PORTAL_ROOT + '/browser.html';
+    },
+
+    /** starts the app when the document is ready. */
+    ready: function() {
       this._super();
       
       try {
@@ -493,22 +498,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
         expiration: (new Date()).add(expiration-120).seconds(),
-      });
+      });      
       
-      AWE.Net.init();                                   // initialize the network stack
-   
-      this.loadAssets();
-    },
-
-    showBrowserSelection: function() {
-      document.location.href = AWE.Config.PORTAL_ROOT + '/browser.html';
-    },
-
-    /** starts the app when the document is ready. */
-    ready: function() {
+      AWE.Net.init();                                                  // initialize the network stack
       
       if (!AWE.Config.BROWSER_CHECK_ENABLED || AWE.Util.Browser.checkRequirements()) {
-        this.start();
+        this.loadAssets();
       }
       else {
         this.showBrowserSelection();
