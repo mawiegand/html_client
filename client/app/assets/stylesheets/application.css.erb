@@ -334,7 +334,7 @@ html, body {
   font-size: 12px;
   padding: 2px 6px 2px 6px;
   color: white;
-  z-index: 10000;
+  z-index: 10001;
 }
 
 .link-pane a {
@@ -394,7 +394,7 @@ html, body {
   position: absolute;
   right: 0px;
   top: 0px;
-  width: 500px;
+  width: 400px;
   height: 250px;
   z-index: 10;
 }
@@ -1176,6 +1176,7 @@ loaddialog-positioner {
   float: right;
   display: block;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .settlement-dialog-pane .upgrade {
@@ -1188,6 +1189,7 @@ loaddialog-positioner {
 
 .settlement-dialog-pane .destroy.disabled {
   opacity: 0.6;
+  cursor: normal;
 }
 
 .settlement-dialog-pane a.destroy {
@@ -1196,6 +1198,7 @@ loaddialog-positioner {
   float: right;
   display: block;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .settlement-dialog-pane .destroy {
@@ -1632,6 +1635,10 @@ span.bonus {
 
 .queue-job-button.finish-button {
   width: 100px;
+}
+
+.training-queue-list-pane .queue-job-button.finish-button {
+  width: 114px;
 }
 
 .queue-job-button a {
@@ -3074,7 +3081,7 @@ table .number {
   float: right;
   text-align: center;
   vertical-align: middle;
-  margin-right: 50px;
+  margin-right: 0px;
   padding: 10px 0px 10px 0px;
   background: url('<%= asset_path("shop/button_platinum.png") %>');
 }
@@ -3316,6 +3323,37 @@ table .number {
 .quest-reward-item-image.finished, .quest-reward-item-amount.finished {
   height: 52px;
   font-size: 24px;
+}
+
+
+#environment {
+  position: absolute;
+  width: 200px;
+  height: 32px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 20px;
+  font-weight: bold;
+  left: 50%;
+  margin-left: -100px;
+  top: 5px;
+  text-align: center; 
+  z-index: 90000;
+}
+
+#environment.development {
+  border-color: #0a0;
+  color: #0a0;
+}
+
+#environment.staging {
+  border-color: #cc0;
+  color: #cc0;
+}
+
+#environment.production {
+  border-color: #a00;
+  color: #a00;
 }
 
 

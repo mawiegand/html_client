@@ -37,7 +37,7 @@
      
   <hr/>
 
-  {{#if firstNameChange}}
+  {{#if firstTwoNameChange}}
     <h2>{{t profile.customization.chooseName}}</h2>
   {{else}}
     <h2>{{t profile.customization.changeName}}</h2>
@@ -47,11 +47,11 @@
      {{#if changingName }}
        &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
      {{else}} 
-       <span class="simple-button" {{action "changeNamePressed"}}>{{#if firstNameChange}}{{t profile.customization.chooseNameCaption}}{{else}}{{t profile.customization.changeNameCaption}} (20 Kröten){{/if}}</span>
+       <span class="simple-button" {{action "changeNamePressed"}}>{{#if firstTwoNameChange}}{{t profile.customization.chooseNameCaption}}{{else}}{{t profile.customization.changeNameCaption}} (20 Kröten){{/if}}</span>
      {{/if}}
   </p>      
   <p>{{t profile.customization.nameChangeAdvice}}</p>
-  {{#if firstNameChange}}
+  {{#if firstTwoNameChange}}
     <p>{{t profile.customization.nameChangeFreeAdvice}}</p>
   {{else}}
     <p>{{t profile.customization.nameChangeCostAdvice}}</p>      
@@ -59,7 +59,7 @@
   
   <hr/>
   
-  {{#if firstGenderChange}}
+  {{#if firstTwoGenderChange}}
     <h2>{{t profile.customization.chooseGender}}</h2>
   {{else}}
     <h2>{{t profile.customization.changeGender}}</h2>
@@ -69,10 +69,14 @@
      {{#if changingGender }}
        &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
      {{else}} 
+<<<<<<< HEAD
        <span class="simple-button" {{action "changeGenderPressed"}}>{{#if firstGenderChange}}{{t profile.customization.chooseGenderCaption}}{{else}}{{t profile.customization.changeGenderCaption}} (20 Kröten){{/if}}</span>
+=======
+       <span class="simple-button" {{action "changeGenderPressed"}}>{{#if firstTwoGenderChange}}{{t profile.customization.chooseGenderCaption}}{{else}}{{t profile.customization.changeGenderCaption}} (20 toads){{/if}}</span>
+>>>>>>> 93ec97bca157d3da0be6d1823a4f12bc5c1c0b04
      {{/if}}  
   </p>
-  {{#if firstGenderChange}}
+  {{#if firstTwoGenderChange}}
     <p>{{t profile.customization.genderChangeFreeAdvice}}</p>
   {{else}}
     <p>{{t profile.customization.genderChangeCostAdvice}}</p>      

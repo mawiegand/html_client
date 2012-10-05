@@ -130,7 +130,7 @@ AWE.UI = (function(module) {
                 
         _imageView = AWE.UI.createImageView();
         _imageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(imageName));
-        _imageView.setFrame(AWE.Geometry.createRect(200, 16, 96, 96));
+        _imageView.setFrame(AWE.Geometry.createRect(212, 36, 64, 64));
         //_imageView.onClick = that.onClick;
         _imageView.onClick = function() { my.controller.moveTo(_location); };
         _imageView.onMouseOver = that.onMouseOver;

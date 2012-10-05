@@ -2,8 +2,14 @@ defaults: &defaults
   jabber_server_base: "jabber.wack-a-doo.com"
   portal_server_base: "localhost"
   
+  use_dynamic_construction_lots: true
+  
+  shop_enabled: true
+  
+  
 development:
   <<: *defaults
+  
   
 test:
   <<: *defaults
@@ -12,6 +18,10 @@ staging:
   <<: *defaults
   jabber_server_base: "jabber.wack-a-doo.com"
   portal_server_base: "test1.wack-a-doo.de"
+  
+  use_dynamic_construction_lots: false
+  
+  shop_enabled: false
 
 
 production:

@@ -161,7 +161,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       // Notice: put true/false to autoconnect and show_pane
       // Notice: exclude "user" and "password" if using anonymous login
             
-      launchMini(true, true, "jabber.wack-a-doo.com", identifier, accessToken);
+      automaticLogin = AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') > 1;      
+            
+      launchMini(automaticLogin, true, base, identifier, accessToken);
 
       this.addDomElement(('.jm_prompt'), false);      
       this.addDomElement(('.jm_starter'), false);
@@ -218,8 +220,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
         self.set('mapScreenController', controller);
       
-        $('#zoomin').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, true); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
-        $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
+       // $('#zoomin').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, true); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
+       // $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
   
   
         var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
@@ -238,7 +240,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         self.readyToRun();                            // ready to run
         self.showStartupDialogs();
         
-        if (AWE.Config.CHAT_SHOW && AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') > 1) {
+        if (AWE.Config.CHAT_SHOW) {  // && AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') > 1) {
           self.initChat();
         }
       }
@@ -325,7 +327,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           assetLoaded();
         }
         else {
-          alert ('Das Spiel konnte nicht geladen werden. Bitte drücke den Aktualisieren-Knopf Deines Browsers, meist hilft schlichtes Neuladen der Seite. Falls auch das nicht hilft, kontaktiere bitte den Support. Bitte beachte, dass derzeit nur Chrome und Safari unterstützt werden; Firefox und IE funktionieren nicht.');
+          alert ('Das Spiel konnte nicht geladen werden. Bitte drücke den Aktualisieren-Knopf Deines Browsers, meist hilft schlichtes Neuladen der Seite und Login. Falls auch das nicht hilft, kontaktiere bitte den Support. Wir unterstützen folgende Browser: Chrome, Firefox, Internet Explorer 9 und Safari; je neuer, desto besser (und schneller).');
           console.log('CRITICAL ERROR: could not load current character from server. Error code: ' + statusCode + '. Terminate App.');
           throw "ABORT Due to Failure to Load Player's Current Character.";
         }
@@ -466,8 +468,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     
-    /** starts the app when the document is ready. */
-    ready: function() {
+    start: function() {      
       this._super();
       
       try {
@@ -487,6 +488,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var accessToken = args.accessToken ;                             // || AWE.Config.DEV_ACCESS_TOKEN || null;
       var expiration  = parseInt(args.expiration || "3600");           // asume one hour validity as default
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;  // TODO: This is a hack, should go to settings.
+      AWE.Settings.signin_with_client_id = args.client_id || '';   
             
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
@@ -496,12 +498,21 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Net.init();                                   // initialize the network stack
    
       this.loadAssets();
-    }
+    },
+
+    showBrowserSelection: function() {
+      document.location.href = AWE.Config.PORTAL_ROOT + '/browser.html';
+    },
+
+    /** starts the app when the document is ready. */
+    ready: function() {
+      
+      if (!AWE.Config.BROWSER_CHECK_ENABLED || AWE.Util.Browser.checkRequirements()) {
+        this.start();
+      }
+      else {
+        this.showBrowserSelection();
+      }
+    },
   }
 }());
-
-
-
-
-
-

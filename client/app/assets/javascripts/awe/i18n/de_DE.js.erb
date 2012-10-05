@@ -17,8 +17,11 @@ AWE.I18n.de_DE = function(module) {
       yes:      'ja',
       no:       'nein',
       nr:       'Nr.',
+
       processing: 'Verarbeiten...',
       unknown:  'Unbekannt.',
+      naivePlural: 'n',
+      
       
       perHour:  'pro Stunde',
       perHourSym: '/h',
@@ -251,7 +254,7 @@ AWE.I18n.de_DE = function(module) {
       headingPlan: 'Der Plan',
       image: '<%= asset_path("whatdoido_de_DE.jpeg") %>',
       headingSituation: 'Die Situation',
-      formattedText: '<p>Du bist ein <b>Halbgott</b> und hast gerade einen kleinen, Dir folgenden Stamm von Steinzeithöhlenmenschen davon überzeugt, ihre Höhle zu verlassen und ab jetzt in einer hochmodernen Siedlung zu leben. Leider hat der glorreiche Stammesführer bis jetzt aber nur eine pompöse Hütte für sich selbst bauen lassen.</p><p>Ein kleines Tutorial wird Dich als Halbgott durch die ersten Schwierigkeiten Deiner neuen Herrschaft führen. Tatsächlich bedeutet die Führung eines Stammes mehr als nur die eigene Häuptlingshütte ausbauen, aber das wirst Du schon herausfinden...</p> <p><b>Viel Spaß!</p>',
+      formattedText: '<p>Du bist ein <b>Halbgott</b> und hast gerade einen kleinen, Dir folgenden Stamm von Steinzeithöhlenmenschen davon überzeugt, ihre Höhle zu verlassen und ab jetzt in einer hochmodernen Siedlung zu leben. Leider hat der glorreiche Stammesführer aber bisher nur eine pompöse Hütte für sich selbst bauen lassen.</p><p>Ein kleines Tutorial wird Dich als Halbgott durch die ersten Schwierigkeiten Deiner neuen Herrschaft führen. Tatsächlich bedeutet die Führung eines Stammes mehr als nur die eigene Häuptlingshütte auszubauen, aber das wirst Du schon herausfinden...</p> <p><b>Viel Spaß!</p>',
     },
     
     shop: {
@@ -289,6 +292,8 @@ AWE.I18n.de_DE = function(module) {
       buildings: {
         
         category: 'Kategorie',
+        level: 'Stufe',
+        Level: 'Stufe',
         
         details: {
           enables: 'Ermöglicht',
@@ -305,6 +310,8 @@ AWE.I18n.de_DE = function(module) {
           costOfNextLevel: 'Kosten für',
 
           noUpgrade: 'Kein weiterer Ausbau möglich.',
+          clickToEnter: 'Klicken, um das Gebäude zu betreten.',
+          upgradePossible: 'Dieses Gebäude kann verbessert werden:',
           empty: {
             heading: 'Freier Bauplatz',
             categoriesStart: 'Hier können ',
@@ -324,11 +331,15 @@ AWE.I18n.de_DE = function(module) {
           end: " Bauaufträge aufreihen. Bitte warte, bis etwas anderes fertig wird.",
         },
       },
+      construction: {
+        hurry: "hurtig!",
+      },
       training: {
         queueFull: {
           start: "Sorry, aber die Trainingschleife ist bereits voll. Du kannst maximal ",
           end: " Aufträge aufreihen. Bitte warte, bis etwas anderes fertig wird.",
         },
+        hurry: "halbieren",
       },
     },
     
@@ -342,16 +353,16 @@ AWE.I18n.de_DE = function(module) {
         chooseNameCaption: 'Namen wählen',
         changeNameCaption: 'Namen ändern',
         nameChangeAdvice: 'Bitte wähle Deinen Namen mit Bedacht, idealerweise passt der Name in die Steinzeit. Der Name muss einzigartig in Wackadoo sein.',
-        nameChangeFreeAdvice: 'Einmal kannst Du Deinen Namen kostenlos ändern, jede weitere Änderung kostet ein paar Kröten um Missbrauch zu verhindern.',
-        nameChangeCostAdvice: 'Du hast bereits einmal Deinen Namen geändert. Eine weitere Namensänderung ist natürlich möglich, kostet aber zur Verhinderung von Missbrauch 20 Kröten.',
+        nameChangeFreeAdvice: 'Zweimal kannst Du Deinen Namen kostenlos ändern, jede weitere Änderung kostet ein paar Kröten um Missbrauch zu verhindern.',
+        nameChangeCostAdvice: 'Du hast Deinen Namen bereits mehrmals geändert. Eine weitere Namensänderung ist natürlich möglich, kostet aber zur Verhinderung von Missbrauch 20 Kröten.',
 
         chooseGender: "Dein Geschlecht wählen",
         changeGender: "Dein Geschlecht ändern",
         presentGender: "Aktuelles Geschlecht",
         chooseGenderCaption: 'Geschlecht wählen',
         changeGenderCaption: 'Geschlecht ändern',
-        genderChangeFreeAdvice: 'Die erstmalige Änderung der Geschlechtseinstellung ist kostenlose, jede weitere Änderung kostet ein paar Kröten um Missbrauch zu verhindern.',
-        genderChangeCostAdvice: 'Du hast die Einstellung Deines Geschlechts bereits geändert. Eine weitere Änderung der Geschlechtseinstellung ist möglich, kostet aber zur Verhinderung von Missbrauch 20 Kröten.',
+        genderChangeFreeAdvice: 'Die ersten beiden Änderungen der Geschlechtseinstellung sind kostenlos, jede weitere Änderung kostet ein paar Kröten um Missbrauch zu verhindern.',
+        genderChangeCostAdvice: 'Du hast die Einstellung Deines Geschlechts bereits mehrfach geändert. Eine weitere Änderung der Geschlechtseinstellung ist möglich, kostet aber zur Verhinderung von Missbrauch 20 Kröten.',
         
         changePasswordCaption: "Änderung des Passwortes",
         changePasswordAdvice: "Hier kannst du dein Passwort ändern. Das Passwort muss eine Länge von 6 bis 40 Zeichen haben.",

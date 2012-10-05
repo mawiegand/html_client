@@ -1494,8 +1494,8 @@ AWE.Controller = (function(module) {
             
             
             AWE.Ext.applyFunctionToElements(armiesInRegion, function(army) {
-              if (!isUpdateRunning('movingArmy') && army.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 5000 < new Date().getTime()) {
-                if (army.get('mode') === 1 && army.get('target_reached_at') && Date.parseISODate(army.get('target_reached_at')).getTime() + 4000 < new Date().getTime()) { // wait four seconds before posting update request
+              if (!isUpdateRunning('movingArmy') && army.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 5000 < AWE.GS.TimeManager.estimatedServerTime().getTime()) {
+                if (army.get('mode') === 1 && army.get('target_reached_at') && Date.parseISODate(army.get('target_reached_at')).getTime() + 4000 < AWE.GS.TimeManager.estimatedServerTime().getTime()) { // wait four seconds before posting update request
                   console.log('start update of moving army');
                   startUpdate('movingArmy');
                   AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
@@ -1511,8 +1511,8 @@ AWE.Controller = (function(module) {
             if (!that.areArmiesAtFortressVisible(frame)) continue ; // no update necessary, region is to small (perhaps fetch aggregate info)
                         
             if (!that.areArmiesAtSettlementsVisible(frame)) {
-              if(AWE.GS.ArmyManager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 30000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
-                nodes[i].region().lastArmyUpdateAt().getTime() + 30000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
+              if(AWE.GS.ArmyManager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 30000 < AWE.GS.TimeManager.estimatedServerTime().getTime() && // haven't fetched armies for fortess within last 60s
+                nodes[i].region().lastArmyUpdateAt().getTime() + 30000 < AWE.GS.TimeManager.estimatedServerTime().getTime()) {        // haven't fetched armies for region within last 60s
                 
                 startUpdate('armies');
                 AWE.GS.ArmyManager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
@@ -1523,7 +1523,7 @@ AWE.Controller = (function(module) {
               }
             }
             else {
-              if (nodes[i].region().lastArmyUpdateAt().getTime() + 30000 < new Date().getTime()) {
+              if (nodes[i].region().lastArmyUpdateAt().getTime() + 30000 < AWE.GS.TimeManager.estimatedServerTime().getTime()) {
                 
                 startUpdate('armies');
                 nodes[i].region().updateArmies(AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
@@ -1544,7 +1544,7 @@ AWE.Controller = (function(module) {
               var army = armyUpdates[armyId];
               delete armyUpdates[armyId];                           // process this event, remove it from queue
               
-              if (army.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime()) {
+              if (army.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < AWE.GS.TimeManager.estimatedServerTime().getTime()) {
                 startUpdate('armies');
                 AWE.GS.ArmyManager.updateArmy(armyId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
                   stopUpdate('armies');
@@ -1567,8 +1567,8 @@ AWE.Controller = (function(module) {
                                                 
             if (!that.areArmiesAtSettlementsVisible(frame)) {
               
-              if(AWE.GS.ArmyManager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < new Date().getTime() && // haven't fetched armies for fortess within last 60s
-                nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {        // haven't fetched armies for region within last 60s
+              if(AWE.GS.ArmyManager.lastUpdateForFortress(nodes[i].region().id()).getTime() + 60000 < AWE.GS.TimeManager.estimatedServerTime().getTime() && // haven't fetched armies for fortess within last 60s
+                nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < AWE.GS.TimeManager.estimatedServerTime().getTime()) {        // haven't fetched armies for region within last 60s
                 
                 startUpdate('armies');
                 AWE.GS.ArmyManager.updateArmiesAtFortress(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
@@ -1579,7 +1579,7 @@ AWE.Controller = (function(module) {
               }
             }
             else {
-              if (nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < new Date().getTime()) {
+              if (nodes[i].region().lastArmyUpdateAt().getTime() + 60000 < AWE.GS.TimeManager.estimatedServerTime().getTime()) {
                 
                 startUpdate('armies');
                 nodes[i].region().updateArmies(AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
@@ -1693,7 +1693,7 @@ AWE.Controller = (function(module) {
     var setFortressPosition = function(view, frame) {
       view.setCenter(AWE.Geometry.createPoint(
         frame.origin.x + frame.size.width / 2,
-        frame.origin.y + frame.size.height / 2 - 5
+        frame.origin.y + frame.size.height / 2 - 14
       ));
     }
     

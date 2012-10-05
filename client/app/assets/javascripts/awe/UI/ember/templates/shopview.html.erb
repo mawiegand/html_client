@@ -50,13 +50,13 @@
 <script type="text/x-handlebars" data-template-name="shop-resource-offer">
   {{#if offer.isBuying}}
     <div class="resource-offer">
-      <p>{{ offer.amount }} {{resourceName}}</p>
+      <p>{{ offer.amount }} {{resourceName}}{{t general.naivePlural }}</p>
       <p>&nbsp;</p>
       <p>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{t shop.activating }}</p>
     </div>
   {{else}}
     <div class="resource-offer" {{action "buyResourceOfferPressed"}}>
-      <p>{{ offer.amount }} {{resourceName}}</p>
+      <p>{{ offer.amount }} {{resourceName}}{{t general.naivePlural }}</p>
       <p>{{t shop.for }}</p>
       <p>{{ offer.price}} {{ t shop.credits }}</p>
     </div>

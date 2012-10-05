@@ -19,17 +19,19 @@
     <h1>{{local building.name}} L{{building.level}}</h1>
     <p>
       {{#if building.upgradable}}
+        {{t settlement.buildings.tooltip.upgradePossible }}<br/>
         {{#if building.costsOfNextLevel}}
-          <b>{{t settlement.buildings.tooltip.costOfNextLevel}} L{{building.nextLevel}}:</b>
+          <b>{{t settlement.buildings.tooltip.costOfNextLevel}} {{t settlement.buildings.level}} {{building.nextLevel}}:</b>
           {{#each building.costsOfNextLevel}}
-            {{amount}} {{local resourceType.name}} &nbsp;  
-          {{/each}}<br/>
+            <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>{{amount}} &nbsp;  
+          {{/each}}
         {{/if}}
-        <b>{{t building.duration}}:</b> {{formatDuration building.productionTimeOfNextLevel}}    
+        <b>{{t building.duration}}:</b>&nbsp;{{formatDuration building.productionTimeOfNextLevel}}    
       {{else}}
         {{t settlement.buildings.tooltip.noUpgrade}}
       {{/if}}
     </p>
+    <p>{{t settlement.buildings.tooltip.clickToEnter }}</p>
   {{else}}
     <h1>{{t settlement.buildings.tooltip.empty.heading}}</h1>
     {{#if buildingSlotView.buildingCategoryNames }}
