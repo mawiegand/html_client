@@ -468,6 +468,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     
+    showBrowserSelection: function() {
+      document.location.href = AWE.Config.PORTAL_ROOT + '/browser.html';
+    },
+
     /** starts the app when the document is ready. */
     ready: function() {
       this._super();
