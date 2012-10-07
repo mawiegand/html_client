@@ -184,7 +184,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         action.send();   
       }  
             
-      if (AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') <= 1) {
+      if (1 || AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') <= 1) {
         this.showWelcomeDialog();
       }
       else {

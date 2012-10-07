@@ -1,6 +1,7 @@
 defaults: &defaults
   jabber_server_base: "jabber.wack-a-doo.com"
   portal_server_base: "localhost"
+
   
   use_dynamic_construction_lots: true
   
