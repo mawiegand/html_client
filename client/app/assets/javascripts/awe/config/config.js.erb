@@ -11,7 +11,7 @@ AWE.Config = (function(module) {
   
   // automatically determine the server to use -> same origin policy
   module.SERVER_ROOT = document.location.protocol + '//' + document.location.host ;
-  module.PORTAL_ROOT = document.location.protocol + '//' + ("<%= CLIENT_CONFIG['portal_server_base'] %>" || document.location.host) ;
+  module.PORTAL_ROOT = document.location.protocol + '//' + ("<%= CLIENT_CONFIG['portal_server_base'] %>") ;
   if (!document.location.host) { // for the case where it's loaded from file 
     module.SERVER_ROOT = 'http://localhost'
     module.PORTAL_ROOT = 'http://localhost'
