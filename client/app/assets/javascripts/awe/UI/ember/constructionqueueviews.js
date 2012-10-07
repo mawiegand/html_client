@@ -74,6 +74,12 @@ AWE.UI.Ember = (function(module) {
       return jobCollection && jobCollection[0] && jobCollection[0] === this.get('job')
     }.property('parentView.queue.hashableJobs.changedAt'),    
     
+    waitingForResources: function() {
+      var active = this.get('active');
+      var first  = this.get('first');
+      return !active && first;
+    }.property('active', 'first'),
+    
     calcTimeRemaining: function() {
       var finishedAt = this.getPath('job.active_job.finished_at');
       if (!finishedAt) {

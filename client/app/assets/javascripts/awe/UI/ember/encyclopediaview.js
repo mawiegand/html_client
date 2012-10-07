@@ -21,8 +21,9 @@ AWE.UI.Ember = (function(module) {
       for (var level=1; level <= 20; level++) {
         stats.push({
           level: level,
-          population: AWE.GS.Util.parseAndEval(building.population, level),
-          costs: AWE.Util.Rules.evaluateResourceCosts(building.costs, level, 0, true),
+          population:     AWE.GS.Util.parseAndEval(building.population, level),
+          costs:          AWE.Util.Rules.evaluateResourceCosts(building.costs, level, 0, true),
+          productionTime: AWE.GS.Util.parseAndEval(building.production_time, level),
         })
       };
       return stats;
