@@ -173,7 +173,6 @@ AWE.UI = (function(module) {
         _infoText2View.setIconImage("map/icon/army/strength");
         my.infoContainer.addChild(_infoText2View);
       }
-      _infoText2View.setText('' + (settlement ? Math.floor((settlement.get('defense_bonus') || 0)*100)+"%" : '-'));      
       
       if (!_infoText1View) {
         _infoText1View = AWE.UI.createLabelView();
@@ -185,6 +184,7 @@ AWE.UI = (function(module) {
       }
       var settlement = my.location.settlement();
       _infoText1View.setText('' + (settlement ? settlement.get('score') : my.location.settlementScore()));
+      _infoText2View.setText('' + (settlement ? Math.floor((settlement.get('defense_bonus') || 0)*100)+"%" : '-'));      
 
 
       my.infoContainer.layoutSubviews(); 
