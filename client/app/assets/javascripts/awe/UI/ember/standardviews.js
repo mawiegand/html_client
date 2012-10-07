@@ -159,22 +159,7 @@ AWE.UI.Ember = (function(module) {
     },
   });
   
-  module.WelcomeDialog = module.InfoDialog.extend({
-    templateName: 'welcome-dialog',
     
-    imageSrc: function() {
-      console.log('IMAGE SOURCE')
-      return AWE.I18n.lookupTranslation('welcome.image');
-      
-    }.property('templateName'),
-  });
-
-
-  module.AnnouncementDialog = module.InfoDialog.extend({
-    templateName: 'announcement-dialog',
-    announcement: null,
-  });  
-  
   /**
    * @class
    * @name AWE.UI.Ember.ShoutBox 
@@ -203,6 +188,7 @@ AWE.UI.Ember = (function(module) {
     },
     shout: null,
   });
+
     
   
   /**

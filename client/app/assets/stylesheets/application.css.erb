@@ -817,6 +817,25 @@ html, body {
   background: url('<%= asset_path("icons/cross_red_small.png") %>') no-repeat left center;
 }
 
+.image-button {
+  width: 197px;
+  height: 40px;
+  cursor: pointer;
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  text-shadow: none;
+  background: url('<%= asset_path("ui/orange_button-normal.png") %>') no-repeat;  
+}
+.image-button:hover {
+  background: url('<%= asset_path("ui/orange_button-hovered.png") %>') no-repeat;  
+}
+
+.welcome-dialog .image-button {
+  float: right; 
+}
+
+
 .cancel-button {
   color: #F77;
 }
