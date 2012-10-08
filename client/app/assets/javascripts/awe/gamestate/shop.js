@@ -117,6 +117,7 @@ AWE.GS = (function(module) {
         // '</form>').appendTo('body').submit().remove();
       $('<form style="display:none;" id="paymentstarter" action="https://secure.bytro.com/index.php?eID=api&action=openPartnerShop&key=wackadooShop" method="POST" target="_blank">' +
         '  <input type="hidden" name="hash" value="' + AWE.Net.currentUserCredentials.get('access_token') + '" />' +
+        '  <input type="hidden" name="data" value="' + AWE.Util.Base64.encode('hostname=' + escape(AWE.Config.SHOP_HOSTNAME)) + '" />' +
         '</form>').appendTo('body').submit().remove();
     }; 
         
