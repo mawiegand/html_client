@@ -1,6 +1,7 @@
 defaults: &defaults
   jabber_server_base: "jabber.wack-a-doo.com"
   portal_server_base: "localhost"
+  shop_callback_hostname: "test2" # linked per nginx to patrick's ip
   
   use_dynamic_construction_lots: true
   
@@ -18,6 +19,7 @@ staging:
   <<: *defaults
   jabber_server_base: "jabber.wack-a-doo.com"
   portal_server_base: "test1.wack-a-doo.de"
+  shop_callback_hostname: "test1"
   
   use_dynamic_construction_lots: false
   
@@ -28,4 +30,4 @@ production:
   <<: *defaults
   jabber_server_base: "jabber2.wack-a-doo.com"
   portal_server_base: "wack-a-doo.de"
-
+  shop_callback_hostname: "gs02"
