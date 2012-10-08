@@ -23,7 +23,7 @@ staging:
   
   use_dynamic_construction_lots: false
   
-  shop_enabled: false
+  shop_enabled: true
 
 
 production:
