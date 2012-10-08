@@ -115,8 +115,7 @@ AWE.GS = (function(module) {
       // $('<form style="display:none;" id="paymentstarter" action="' + AWE.Config.PAYMENT_PROVIDER_BASE + 'auth/sessions/" method="POST" target="_blank">' +
         // '  <input type="hidden" name="access_token" value="' + AWE.Net.currentUserCredentials.get('access_token') + '" />' +
         // '</form>').appendTo('body').submit().remove();
-      log('-------> shop', AWE.Config.SHOP_HOSTNAME, AWE.Util.Base64.encode('hostname=' + escape(AWE.Config.SHOP_HOSTNAME)))
-      $('<form style="display:none;" id="paymentstarter" action="http://217.86.148.136/www/index.php?eID=api&action=openPartnerShop&key=wackadooShop" method="POST" target="_blank">' +
+      $('<form style="display:none;" id="paymentstarter" action="https://secure.bytro.com/index.php?eID=api&action=openPartnerShop&key=wackadooShop" method="POST" target="_blank">' +
         '  <input type="hidden" name="hash" value="' + AWE.Net.currentUserCredentials.get('access_token') + '" />' +
         '  <input type="hidden" name="data" value="' + AWE.Util.Base64.encode('hostname=' + escape(AWE.Config.SHOP_HOSTNAME)) + '" />' +
         '</form>').appendTo('body').submit().remove();
