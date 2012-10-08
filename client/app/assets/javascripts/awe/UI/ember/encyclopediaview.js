@@ -12,6 +12,10 @@ AWE.UI.Ember = (function(module) {
   module.EncyclopediaBuildingView = Ember.View.extend({
     building: null,
     
+    capacity: function() {
+      return this.getPath('building.capacity');
+    }.property('building.capacity').cacheable(),
+    
     stats: function() {
       var building = this.get('building');
       if (building === undefined || building === null) {
@@ -24,6 +28,7 @@ AWE.UI.Ember = (function(module) {
           population:     AWE.GS.Util.parseAndEval(building.population, level),
           costs:          AWE.Util.Rules.evaluateResourceCosts(building.costs, level, 0, true),
           productionTime: AWE.GS.Util.parseAndEval(building.production_time, level),
+          capacities:     AWE.Util.Rules.evaluateResourceCapacity(building.capacity, level, false),
         })
       };
       return stats;

@@ -11,6 +11,9 @@
         <th><span {{bindAttr class="symbolic_id :resource-icon"}}>&nbsp;</span></th>
       {{/each}}
       <th>Bauzeit</th>
+      {{#if capacity}}
+        <th>Lagerkapazität</th>
+      {{/if}}
     </tr>
     {{#each stats}}
       <tr>
@@ -20,6 +23,13 @@
           <td class="number">{{amount}}</td>
         {{/each}}
         <td class="number">{{formatDuration productionTime}}</td>
+        {{#if view.capacity}}
+          <td class="number"> 
+            {{#each capacities}}
+              <span {{bindAttr class="resourceType.symbolic_id :resource-icon"}}>&nbsp;</span> {{capacity}}
+            {{/each}}
+          </td>
+        {{/if}}
       </tr>
     {{/each}}
   </table>
