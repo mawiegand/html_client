@@ -10,6 +10,7 @@
       {{#each parentView.resourceTypes}}
         <th><span {{bindAttr class="symbolic_id :resource-icon"}}>&nbsp;</span></th>
       {{/each}}
+      <th>Bauzeit</th>
     </tr>
     {{#each stats}}
       <tr>
@@ -18,6 +19,7 @@
         {{#each costs}}
           <td class="number">{{amount}}</td>
         {{/each}}
+        <td class="number">{{formatDuration productionTime}}</td>
       </tr>
     {{/each}}
   </table>

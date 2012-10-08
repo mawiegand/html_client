@@ -817,6 +817,40 @@ html, body {
   background: url('<%= asset_path("icons/cross_red_small.png") %>') no-repeat left center;
 }
 
+.image-button {
+  width: 197px;
+  height: 40px;
+  cursor: pointer;
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  text-shadow: none;
+  background: url('<%= asset_path("ui/orange_button-normal.png") %>') no-repeat;  
+}
+.image-button:hover {
+  background: url('<%= asset_path("ui/orange_button-hovered.png") %>') no-repeat;  
+}
+
+.news-archive-link,
+.news-archive-link:visited {
+  float: right;
+  color: #AAA;
+  text-decoration: none;
+  padding-right: 24px;
+  padding-top: 10px;
+  font-weight: normal;
+}
+
+.news-archive-link:hover {
+  color: #FA0;
+  text-decoration: underline;
+}
+
+.welcome-dialog .image-button {
+  float: right; 
+}
+
+
 .cancel-button {
   color: #F77;
 }

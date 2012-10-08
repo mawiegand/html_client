@@ -15,7 +15,7 @@
                     <div class="duration progress-bar-border">
                       <div class="progress-bar" {{bindAttr style="progressBarWidth"}}>
                         {{#if finished}}
-                          finishing...
+                          gleich fertig...
                         {{else}}
                           {{formatDuration timeRemaining}}
                         {{/if}}
@@ -30,7 +30,16 @@
                       {{/unless}}
                     </p>
                   {{/if}}
-                <p class="finished">{{#if job.active_job }}{{ job.parsedFinishingDate }}{{else}}&nbsp;{{/if}}</p>
+                <p class="finished">
+                  {{#if job.active_job }}
+                    {{ job.parsedFinishingDate }}
+                  {{else}}
+                    {{#if waitingForResources}}
+                      Mangel!
+                    {{else}}
+                      &nbsp;
+                    {{/if}}
+                  {{/if}}</p>
                 <p class="queue-job-button finish-button">
                   {{#if isConstructionSpeedupPossible }}
                     <a href="#" {{action "finishJobPressed"}} title="Gib Goldkröten aus, um den Bauauftrag sofort fertig zu stellen. Die Kosten hängen von der verbleibenden Bauzeit ab.">
