@@ -214,6 +214,9 @@ AWE.GS = (function(module) {
     updateSender: function() {
       var self = this;
       var senderId = this.get('sender_id');
+      if (!senderId) {  // system message
+        return ;
+      }
       var sender = AWE.GS.CharacterManager.getCharacter(senderId) || null;
       this.set('sender', sender); 
       if (!sender) {
@@ -230,6 +233,9 @@ AWE.GS = (function(module) {
       var self = this;
       var recipientId = this.get('recipient_id');
       var recipient = AWE.GS.CharacterManager.getCharacter(recipientId) || null;
+      if (!recipientid) { // round-message
+        return ;
+      }
       this.set('recipient', recipient); 
       if (!recipient) {
         AWE.GS.CharacterManager.updateCharacter(recipientId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
