@@ -95,16 +95,17 @@ AWE.GS = (function(module) {
 		
 		
 		underConstruction: function() {
-		  return this.get('level') < this.get('levelAfterJobs');
+		  return this.getPath('sortedJobs.firstObject.job_type') === AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE ||
+		         this.getPath('sortedJobs.firstObject.job_type') === AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE;
 		}.property('level', 'levelAfterJobs').cacheable(),
 		
 		underDestruction: function() {
-		  return this.get('level') > this.get('levelAfterJobs');
+		  return this.getPath('sortedJobs.firstObject.job_type') === AWE.GS.CONSTRUCTION_JOB_TYPE_DESTROY;
 		}.property('level', 'levelAfterJobs').cacheable(),
 		
 		underConversion: function() {
 		  return this.getPath('sortedJobs.firstObject.job_type') === AWE.GS.CONSTRUCTION_JOB_TYPE_CONVERT;
-		}.property('sortedJobs.firstObject.job_type').cacheable(),
+		}.property('buildingType', 'sortedJobs.firstObject.job_type').cacheable(),
 		
 		nextLevel: function() {
 		  return (this.get('levelAfterJobs') || 0) +1;
@@ -195,11 +196,11 @@ AWE.GS = (function(module) {
 
     destructionTime: function() {
       var time = 0;
-      for (var l = 1; l <= this.get('level'); l++) {
+      for (var l = 1; l <= this.get('levelAfterJobs'); l++) {
         time += this.calcProductionTime(l);
       }
       return time;
-    }.property('level', 'buildingType.production_time', 'queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.
+    }.property('levelAfterJobs', 'buildingType.production_time', 'queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.
      
     conversionTime: function() {
       var time = 0;
@@ -285,12 +286,12 @@ AWE.GS = (function(module) {
         return nextLevel <= slotType.max_level;
       }
       return false ; // not enough information available
-		}.property('nextLevel').cacheable(),
+		}.property('buildingId', 'nextLevel').cacheable(),
 
     destroyable: function() {
       var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(this.get('buildingId'));
       return buildingType && buildingType.demolishable;
-    }.property('id').cacheable(),
+    }.property('buildingId').cacheable(),
 
     convertable: function() {
       var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(this.get('buildingId'));
@@ -300,7 +301,7 @@ AWE.GS = (function(module) {
       else {
         return false;
       }
-    }.property('id', 'slot.settlement.enumerableSlots.@each.level').cacheable(),
+    }.property('buildingId', 'slot.settlement.enumerableSlots.@each.level').cacheable(),
     
     converted: function() {
       var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(this.get('buildingId'));
@@ -310,28 +311,27 @@ AWE.GS = (function(module) {
           buildingId: convertedBuildingType.id,
           level: this.get('convertedLevel'),
         });
-        log('---> buildingType buildingType.conversion_option.building convertedBuildingType', buildingType, buildingType.conversion_option.building, convertedBuildingType);
         return convertedBuilding;
       }
       else {
         return null;
       }
-    }.property('levelAfterJobs').cacheable(),
+    }.property('buildingId', 'convertedLevel').cacheable(),
     
     convertedLevel: function() {
       var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(this.get('buildingId'));
       var level = AWE.GS.Util.parseAndEval(buildingType.conversion_option.target_level_formula, this.get('levelAfterJobs'));
       return level;
-    }.property('levelAfterJobs').cacheable(),
+    }.property('buildingId', 'levelAfterJobs').cacheable(),
     
     unmetRequirementsOfConversionBuilding: function() {
       var settlement = this.getPath('slot.settlement');
       var character = settlement ? settlement.owner() : null;
-      log('---> RECALC UNMET REQUIREMENTS FOR CONVERSION BUILDING');
+      log('RECALC UNMET REQUIREMENTS FOR CONVERSION BUILDING');
       var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(this.get('buildingId'));
       var convertedBuildingType = AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId(buildingType.conversion_option.building);
-      var failed =  AWE.Util.Rules.failedRequirements(convertedBuildingType.requirements, settlement, character, null, true);
-      log('---> FAILED', failed)
+      var failed =  AWE.Util.Rules.failedRequirementGroups(convertedBuildingType.requirementGroups, settlement, character, null, true);
+      log('FAILED REQUIREMENTS', failed)
       return failed || []
     },
 
@@ -380,6 +380,26 @@ AWE.GS = (function(module) {
 		
 		// // Abilities //////////////////////////////////////////////////////////		
 		
+		/** filters the training queues at the settlements to return only those,
+		 * that, according to the rules, are unlocked by this particular building
+		 * (or, actually, by another building of the same type). */
+		trainingQueues: function() {
+		  var queueTypes = this.get('unlockedQueues');   // unlocked by this building according to the rules
+		  var trainingQueuesSettlement = this.getPath('slot.settlement.hashableTrainingQueues.collection'); // all "living" queues in the settlement
+		  var settlementId = this.getPath('slot.settlement.id');
+		  
+		  if (!queueTypes || queueTypes.length === 0 || !trainingQueuesSettlement || trainingQueuesSettlement.length === 0 || !settlementId) {
+		    return [];
+		  }
+		  var queues = queueTypes.filter(function(item) {
+		    return item.category === 'queue_category_training';
+		  });
+		  return queues.map(function(item) {
+        return AWE.GS.TrainingQueueManager.getQueueOfSettlementWithType(settlementId, item.id);
+		  }); ///< returns the "living" queues that have been unlocked by this building(type)
+		}.property('unlockedQueues', 'slot.settlement.hashableTrainingQueues.changedAt').cacheable(),
+		
+		
 		/** calculate the queues that are unlocked by this particular building.
 		 * Includes all types of queues; construction, training as well as
 		 * (later on) research queues. */
@@ -403,33 +423,22 @@ AWE.GS = (function(module) {
 		  }
 		},
 		
-		/** filters the training queues at the settlements to return only those,
-		 * that, according to the rules, are unlocked by this particular building
-		 * (or, actually, by another building of the same type). */
-		trainingQueues: function() {
-		  var queueTypes = this.get('unlockedQueues');   // unlocked by this building according to the rules
-		  var trainingQueuesSettlement = this.getPath('slot.settlement.hashableTrainingQueues.collection'); // all "living" queues in the settlement
-		  var settlementId = this.getPath('slot.settlement.id');
-		  
-		  if (!queueTypes || queueTypes.length === 0 || !trainingQueuesSettlement || trainingQueuesSettlement.length === 0 || !settlementId) {
-		    return [];
-		  }
-		  var queues = queueTypes.filter(function(item) {
-		    return item.category === 'queue_category_training';
-		  });
-		  return queues.map(function(item) {
-        return AWE.GS.TrainingQueueManager.getQueueOfSettlementWithType(settlementId, item.id);
-		  }); ///< returns the "living" queues that have been unlocked by this building(type)
-		}.property('unlockedQueues', 'slot.settlement.hashableTrainingQueues.changedAt').cacheable(),
-		
-		
 		unlockedQueues: function() {
 		  return this.calculateUnlockedQueues();
 		}.property('buildingId', 'level').cacheable(),
 		
-		
 		unlockedQueuesNextLevel: function() {
 		  return this.calculateUnlockedQueues(this.get('nextLevel'));
+		}.property('buildingId', 'nextLevel').cacheable(),
+	
+		unlockedQueuesAfterConversion: function() {
+      var converted = this.get('converted');
+      if (converted) {
+  		  return this.calculateUnlockedQueues(this.get('convertedLevel'));
+      }
+      else {
+        return null;
+      }
 		}.property('buildingId', 'nextLevel').cacheable(),
 	
 	
@@ -462,6 +471,16 @@ AWE.GS = (function(module) {
 		  return this.calculateSpeedupQueues(this.get('nextLevel'));
 		}.property('buildingId', 'nextLevel').cacheable(),		
 		
+		speedupQueuesAfterConversion: function() {
+		  var converted = this.get('converted');
+		  if (converted) {
+		    return this.get('converted').calculateSpeedupQueues(this.get('levelAfterJobs'));
+		  }
+		  else {
+		    return null;
+		  }
+		}.property('buildingId', 'converted', 'levelAfterJobs').cacheable(),		
+		
 		
 		calculateUnlockedDiplomacy: function(level) {
       var unlockLevel = this.getPath('buildingType.abilities.unlock_diplomacy');
@@ -469,33 +488,55 @@ AWE.GS = (function(module) {
       return unlockLevel && unlockLevel <= level;
 		},
 
+		unlockedDiplomacy: function() {
+      return this.calculateUnlockedDiplomacy();
+		}.property('buildingId', 'level').cacheable(),
+		
+		unlockedDiplomacyNextLevel: function() {
+      return this.calculateUnlockedDiplomacy(this.get('nextLevel'));
+		}.property('buildingId', 'nextLevel').cacheable(),
+		
+		unlockedDiplomacyAfterConversion: function() {
+      var converted = this.get('converted');
+      if (converted) {
+        return this.get('converted').calculateUnlockedDiplomacy(this.get('levelAfterJobs'));
+      }
+      else {
+        return null;
+      }
+		}.property('buildingId', 'converted', 'levelAfterJobs').cacheable(),
+		
+
 		calculateUnlockedAllianceCreation: function(level) {
       var unlockLevel = this.getPath('buildingType.abilities.unlock_alliance_creation');
       level = level || this.get('level'); 
       return unlockLevel && unlockLevel <= level;
 		},		
 		
+		unlockedAllianceCreation: function() {
+      return this.calculateUnlockedAllianceCreation();
+		}.property('buildingId', 'level').cacheable(),
+
+		unlockedAllianceCreationNextLevel: function() {
+      return this.calculateUnlockedAllianceCreation(this.get('nextLevel'));
+		}.property('buildingId', 'nextLevel').cacheable(),
+		
+		unlockedAllianceCreationAfterConversion: function() {
+      var converted = this.get('converted');
+      if (converted) {
+        return this.get('converted').calculateUnlockedAllianceCreation(this.get('levelAfterJobs'));
+      }
+      else {
+        return null;
+      }
+		}.property('buildingId', 'converted', 'levelAfterJobs').cacheable(),
+		
+		
 		calculatePlayerToPlayerTrade: function(level) {
       var unlockLevel = this.getPath('buildingType.abilities.unlock_p2p_trade');
       level = level || this.get('level'); 
       return unlockLevel && unlockLevel <= level;
 		},		
-		
-		unlockedDiplomacy: function() {
-      return this.calculateUnlockedDiplomacy();
-		}.property('buildingId', 'level').cacheable(),
-		
-		unlockedAllianceCreation: function() {
-      return this.calculateUnlockedAllianceCreation();
-		}.property('buildingId', 'level').cacheable(),
-
-		unlockedDiplomacyNextLevel: function() {
-      return this.calculateUnlockedDiplomacy(this.get('nextLevel'));
-		}.property('buildingId', 'nextLevel').cacheable(),
-		
-		unlockedAllianceCreationNextLevel: function() {
-      return this.calculateUnlockedAllianceCreation(this.get('nextLevel'));
-		}.property('buildingId', 'nextLevel').cacheable(),
 		
 		unlockedPlayerToPlayerTrade: function() {
 		  return this.calculatePlayerToPlayerTrade(this.get('level')) && AWE.Config.TRADE_ENABLED;
@@ -504,6 +545,16 @@ AWE.GS = (function(module) {
 		unlockedPlayerToPlayerTradeNextLevel: function() {
 		  return this.calculatePlayerToPlayerTrade(this.get('nextLevel'));
 		}.property('buildingId', 'nextLevel').cacheable(),
+		
+		unlockedPlayerToPlayerTradeAfterConversion: function() {
+      var converted = this.get('converted');
+      if (converted) {
+  		  return this.get('converted').calculatePlayerToPlayerTrade(this.get('levelAfterJobs'));
+      }
+      else {
+        return null;
+      }
+		}.property('buildingId', 'converted', 'levelAfterJobs').cacheable(),
 		
 		
     calcTradingCarts: function(level) {
@@ -520,6 +571,16 @@ AWE.GS = (function(module) {
 		  return this.calcTradingCarts(this.get('nextLevel'));
 		}.property('nextLevel', 'buildingType.trading_carts').cacheable(),		
 		
+		tradingCartsAfterConversion: function() {
+      var converted = this.get('converted');
+      if (converted) {
+  		  return this.get('converted').calcTradingCarts(this.get('levelAfterJobs'));
+      }
+      else {
+        return null;
+      }
+		}.property('converted', 'levelAfterJobs', 'buildingType.trading_carts').cacheable(),		
+		
 		
 		
     calcCommandPoints: function(level) {
@@ -535,6 +596,10 @@ AWE.GS = (function(module) {
 		commandPointsNextLevel: function() {
 		  return this.calcCommandPoints(this.get('nextLevel'));
 		}.property('nextLevel', 'buildingType.command_points').cacheable(),		
+		
+		commandPointsAfterConversion: function() {
+		  return this.get('converted').calcCommandPoints(this.get('levelAfterJobs'));
+		}.property('converted', 'levelAfterJobs', 'buildingType.command_points').cacheable(),		
 		
 
     // ///////////////////////////////////////////////////////////////////////
@@ -621,6 +686,19 @@ AWE.GS = (function(module) {
 				return building;
 			}
 		}.property('building_id').cacheable(),
+		
+		/** return the building standing at this slot. Returns NULL, in case this
+		 * slot is empty. */
+		buildingAfterJob: function() {
+		  var underConversion = this.getPath('building.underConversion');
+		  
+		  if (underConversion) {
+		    return this.getPath('building.converted');
+		  }
+		  else {
+		    return this.get('building');
+		  }
+		}.property('building.levelAfterJobs', 'level').cacheable(),
 		
 		/** determine the building types that can be constructed in this 
 		 * particular slot. */
