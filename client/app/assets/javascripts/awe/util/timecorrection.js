@@ -6,6 +6,8 @@
  
 var AWE = window.AWE || {};
 
+AWE.Util = AWE.Util || {}
+
 /** extensions of JavaScript base types. */
 AWE.Util.TimeCorrection = (function(module) {
 
