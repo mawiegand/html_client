@@ -233,7 +233,7 @@ AWE.GS = (function(module) {
       var self = this;
       var recipientId = this.get('recipient_id');
       var recipient = AWE.GS.CharacterManager.getCharacter(recipientId) || null;
-      if (!recipientid) { // round-message
+      if (!recipientId) { // round-message
         return ;
       }
       this.set('recipient', recipient); 
