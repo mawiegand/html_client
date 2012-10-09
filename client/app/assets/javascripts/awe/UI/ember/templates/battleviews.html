@@ -5,12 +5,12 @@
         
         <div class="advisor chef"></div>
         
-        <h2>Battle Info</h2>
+        <h2>{{t battle.details.heading}}</h2>
 
         {{#if battle.lastRound}}
-        <div>After Round {{battle.lastRound.number}}</div>
+        <div>{{t battle.details.afterRound}} {{battle.lastRound.number}}</div>
         {{else}}
-        <div>Vorbereitung auf Runde {{ battle.nextRoundNumber }}</div>
+        <div>{{t battle.details.preparingRound}} {{ battle.nextRoundNumber }}</div>
         {{/if}}
         <p class="citation">{{message}}</p>
         
@@ -18,24 +18,24 @@
         
         <div class="battle-ratio">
           <div {{bindAttr style="ratioLengthOwn"}} class="battle-ratio-left"></div><div {{bindAttr style="ratioLengthOther"}} class="battle-ratio-right"></div>
-          <div class="battle-ratio-left-text">{{#if battle.ownBattle}}Meine Fraktion{{else}}Eine Fraktion{{/if}}</div>
-          <div class="battle-ratio-right-text">Andere Fraktion</div>
+          <div class="battle-ratio-left-text">{{#if battle.ownBattle}}{{t battle.details.myFaction}}{{else}}{{t battle.details.oneFaction}}{{/if}}</div>
+          <div class="battle-ratio-right-text">{{t battle.details.otherFaction}}</div>
         </div>
 
         <div class="participants-left">
           <div class="participant header">
-            <div class="participant-name">Name</div>
-            <div class="participant-owner">Besitzer</div>
-            <div class="participant-size">Anzahl</div>
-            <div class="participant-strength">Stärke</div>
-            <div class="participant-exp">Rang</div>
+            <div class="participant-name">{{t battle.details.participants.name}}</div>
+            <div class="participant-owner">{{t battle.details.participants.owner}}</div>
+            <div class="participant-size">{{t army.details.size}}</div>
+            <div class="participant-strength">{{t battle.details.participants.strength}}</div>
+            <div class="participant-exp">{{t army.details.rank}}</div>
 {{#if retreat_ausblenden_hotfix }}  
-            <div class="participant-retreat">Rückzug</div>
+            <div class="participant-retreat">{{t battle.details.participants.retreat}}</div>
 {{/if}}
           </div>
           {{#each battle.participantsOwnFaction}}
             {{#if disbanded}}
-              <div><span title="das passiert, wenn die Heimatsiedlung einer Armee verloren geht">Aufgelöste Armee</span></div>
+              <div><span title="{{t battle.details.participants.armyDisbandedDescription}}">{{t battle.details.participants.armyDisbanded}}</span></div>
             {{else}}
               {{view AWE.UI.Ember.BattleParticipantView participantBinding="this" armyBinding="army" classNames="participant"}}
             {{/if}}
@@ -44,18 +44,18 @@
       
         <div class="participants-right">
           <div class="participant header">
-            <div class="participant-name">Name</div>
-            <div class="participant-owner">Besitzer</div>
-            <div class="participant-size">Anzahl</div>
-            <div class="participant-strength">Stärke</div>
-            <div class="participant-exp">Rang</div>
+            <div class="participant-name">{{t battle.details.participants.name}}</div>
+            <div class="participant-owner">{{t battle.details.participants.owner}}</div>
+            <div class="participant-size">{{t army.details.size}}</div>
+            <div class="participant-strength">{{t battle.details.participants.strength}}</div>
+            <div class="participant-exp">{{t army.details.rank}}</div>
 {{#if retreat_ausblenden_hotfix }}  
-            <div class="participant-retreat">Rückzug</div>
+            <div class="participant-retreat">{{t battle.details.participants.retreat}}</div>
 {{/if}}
           </div>
           {{#each battle.participantsOtherFaction}}
             {{#if disbanded}}
-              <div><span title="das passiert, wenn die Heimatsiedlung einer Armee verloren geht">Aufgelöste Armee</span></div>
+              <div><span title="{{t battle.details.participants.armyDisbandedDescription}}">{{t battle.details.participants.armyDisbanded}}</span></div>
             {{else}}
               {{view AWE.UI.Ember.BattleParticipantView participantBinding="this" armyBinding="army" classNames="participant"}}
             {{/if}}
@@ -63,9 +63,9 @@
         </div>
         
         {{#if battle.lastRound}}
-        <div class="battle-time">Letzte Runde: {{formatTime battle.lastRound.executed_at}} | Nächste Runde: {{formatTime battle.next_round_at}}</div>
+        <div class="battle-time">{{t battle.details.lastRound}}: {{formatTime battle.lastRound.executed_at}} | {{t battle.details.nextRound}}: {{formatTime battle.next_round_at}}</div>
         {{else}}
-        <div class="battle-time">Erste Runde: {{formatTime battle.next_round_at}}</div>
+        <div class="battle-time">{{t battle.details.firstRound}}: {{formatTime battle.next_round_at}}</div>
         {{/if}}
       
         <a class="close" href="#" {{action "closePressed" target="parentView"}}></a>  
@@ -93,9 +93,9 @@
           {{/if}}
         {{else}}
           {{#if army.battle_retreat}}
-            yes
+            {{t general.yes}}
           {{else}}
-            no
+            {{t general.no}}
           {{/if}}
         {{/if}}
 {{/if}}
