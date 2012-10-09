@@ -88,11 +88,16 @@
     </td></tr>
     <tr><th>Betreff:</th><td>{{message.subject}}</td></tr>
     <tr><th>Datum:</th><td>{{timeString}}</td></tr>
-    <tr><th>An:</th><td>{{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}} 
-      {{#if "message.recipient.alliance_tag"}}
-        | {{message.recipient.alliance_tag}}
-      {{/if}}</td>
-    </tr>
+    <tr><th>An:</th><td>
+      {{#if message.recipient_id}}
+        {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}} 
+        {{#if "message.recipient.alliance_tag"}}
+          | {{message.recipient.alliance_tag}}
+        {{/if}}
+      {{else}}
+        Alle Spieler
+      {{/if}}
+    </td></tr>
   </table>
   <hr>
   {{{message.body}}}
