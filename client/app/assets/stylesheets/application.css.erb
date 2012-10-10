@@ -1271,6 +1271,7 @@ loaddialog-positioner {
 
 
 .settlement-dialog-select-building { 
+  padding-bottom: 400px;
 }
 
 span.bonus {
@@ -1411,6 +1412,14 @@ span.bonus {
 }
 .building-option-image.building_storage {
   background: url('<%= asset_path("settlements/base/building_storage_large.png") %>');
+}
+
+/** special colony buildings */
+.building-option-image.building_haunt {
+  background: url('<%= asset_path("settlements/colony/building_haunt_large.png") %>');
+}
+.building-option-image.building_altar {
+  background: url('<%= asset_path("settlements/colony/building_altar_large.png") %>');
 }
 
 
@@ -1606,6 +1615,10 @@ span.bonus {
 
 .queue-job-image {
   float: left;
+}
+
+.fortress-screen .queue-list {
+  top: 200px;
 }
 
 .fortress-screen .queue-job-image {
@@ -1858,7 +1871,13 @@ span.bonus {
 .queue-job-image.building_storage {
   background: url('<%= asset_path("settlements/base/building_storage_large_small.png") %>');
 }
-
+/** colony buildings */
+.queue-job-image.building_haunt {
+  background: url('<%= asset_path("settlements/colony/building_haunt_large_small.png") %>');
+}
+.queue-job-image.building_altar {
+  background: url('<%= asset_path("settlements/colony/building_altar_large_small.png") %>');
+}
 
 
 
@@ -2229,7 +2248,7 @@ table .number {
 }
 
 
-.fortress-picture-spacer, .base-picture-spacer {
+.fortress-picture-spacer, .base-picture-spacer, .outpost-picture-spacer {
   width: 360px;
   height: 110px;
   float: right;
@@ -2445,6 +2464,13 @@ table .number {
 }
 .large-building.building_storage {
   background: url('<%= asset_path("settlements/base/building_storage_large.png") %>');
+}
+
+.large-building.building_haunt {
+  background: url('<%= asset_path("settlements/colony/building_haunt_large.png") %>');
+}
+.large-building.building_altar {
+  background: url('<%= asset_path("settlements/colony/building_altar_large.png") %>');
 }
 
 /** base: small slots */
