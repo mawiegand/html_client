@@ -174,7 +174,7 @@ AWE.GS = (function(module) {
       // log('---> quest', quest, quest.reward_tests);
       
       // check all reward tests. if anyone fails, return false.
-      if (quest.reward_tests) {
+      if (quest && quest.reward_tests) {
         if (quest.reward_tests.building_tests) {
           // log('---> building_tests', quest.reward_tests.building_tests);
         
@@ -276,7 +276,7 @@ AWE.GS = (function(module) {
         return true;
       }
       else {
-        log('ERROR in AWE.GS.QuestState.checkForRewards: no reward tests given for quest type ' + this.get('quest_id'));
+        log('ERROR in AWE.GS.QuestState.checkForRewards: no quest or reward tests given for quest type ' + this.get('quest_id'));
       }
     },
     
