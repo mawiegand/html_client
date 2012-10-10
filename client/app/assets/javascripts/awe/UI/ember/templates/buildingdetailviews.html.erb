@@ -53,6 +53,11 @@
         {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{t general.perHour}} <br/>  
       {{/each}}
     {{/if}}
+
+    {{#unless building.buildingType.buyable}}
+      <p><b>Konstruktion kann nicht mit Kröten beschleunigt werden.</b></p>
+    {{/unless}}
+
     {{#if building.unlockDiplomacyNextLevel}}
       <p><b>Ermöglicht Diplomatie und Allianzbeitritt.</b></p>
     {{/if}}
@@ -126,6 +131,8 @@
       {{/if}}
 
     </div>
+    
+
     
     {{#if building.unlockedDiplomacy}}
       <p><b>Ermöglicht Diplomatie und Allianzbeitritt.</b></p>
@@ -277,6 +284,9 @@
           {{/each}}<br/>
         {{/if}}
   
+        {{#unless building.buildingType.buyable}}
+          <p><b>Ausbau kann nicht mit Kröten beschleunigt werden.</b></p>
+        {{/unless}}
         
         {{#if building.unlockedDiplomacyNextLevel}}
           <p><b>Ermöglicht Diplomatie und Allianzbeitritt.</b></p>

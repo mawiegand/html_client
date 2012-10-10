@@ -49,7 +49,7 @@ AWE.UI.Ember = (function(module) {
     }.property('active', 'first'),
     
     isConstructionSpeedupPossible: function() {
-      return this.getPath('job.active_job') && AWE.Util.Rules.isConstructionSpeedupPossible(this.get('timeRemaining'));
+      return this.getPath('job.active_job') && this.getPath('job.buildingType.buyable') && AWE.Util.Rules.isConstructionSpeedupPossible(this.get('timeRemaining'));
     }.property('timeRemaining', 'job.active_job'),
     
     finished: function() {
