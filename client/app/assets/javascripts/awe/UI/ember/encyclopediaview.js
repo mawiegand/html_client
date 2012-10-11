@@ -12,12 +12,13 @@ AWE.UI.Ember = (function(module) {
   module.EncyclopediaBuildingView = Ember.View.extend({
     building: null,
     
-   // capacityBinding: Ember.Binding.bool('building.capacity'),
-    
-    
+    production: function() {
+      return this.getPath('building.production') !== undefined && this.getPath('building.production') !== null && this.getPath('building.production').length > 0;
+    }.property('building.production').cacheable(),
+  
     capacity: function() {
       return this.getPath('building.capacity') !== undefined && this.getPath('building.capacity') !== null && this.getPath('building.capacity').length > 0;
-    }.property('building.capacity').cacheable(),
+    }.property('building.capacity').cacheable(),  
   
     stats: function() {
       var building = this.get('building');
@@ -32,10 +33,11 @@ AWE.UI.Ember = (function(module) {
           costs:          AWE.Util.Rules.evaluateResourceCosts(building.costs, level, 0, true),
           productionTime: AWE.GS.Util.parseAndEval(building.production_time, level),
           capacities:     this.get('capacity') ? AWE.Util.Rules.evaluateResourceCapacity(building.capacity, level, false) : null,
+          productions:    this.get('production') ? AWE.Util.Rules.evaluateResourceProduction(building.production, level, false) : null,
         })
       };
       return stats;
-    }.property('building', 'capacity').cacheable(),
+    }.property('building', 'capacity', 'production').cacheable(),
     
   });  
 

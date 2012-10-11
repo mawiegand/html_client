@@ -30,6 +30,13 @@
             {{/each}}
           </td>
         {{/if}}
+        {{#if view.production}}
+          <td class="number"> 
+            {{#each productions}}
+              <span {{bindAttr class="resourceType.symbolic_id :resource-icon"}}>&nbsp;</span> {{baseProduction}}
+            {{/each}}
+          </td>
+        {{/if}}        
       </tr>
     {{/each}}
   </table>
@@ -93,9 +100,11 @@
         <a href="#" {{action toggleBuildings}}><b>Gebäude</b></a><br/>
         {{#if displayBuildings}}
           {{#each buildingTypes }}
-            {{#view AWE.UI.Ember.BuildingButton buildingTypeBinding="this" }}
-              {{local buildingType.name}}
-            {{/view}}
+            {{#unless hidden}}
+              {{#view AWE.UI.Ember.BuildingButton buildingTypeBinding="this" }}
+                {{local buildingType.name}}
+              {{/view}}
+            {{/unless}}
           {{/each}}
         {{/if}}
         
