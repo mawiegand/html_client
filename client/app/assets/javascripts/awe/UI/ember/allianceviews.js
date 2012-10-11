@@ -47,11 +47,113 @@ AWE.UI.Ember = (function(module) {
     
   });
 
+  module.AllianceMemberView = Ember.View.extend({
+    templateName: 'alliance-member',
+    
+    character:  null,
+    alliance:   null,
+    controller: null,
+    
+    isLeader: function() {
+      var cid      = this.getPath('character.id');
+      var leaderId = this.getPath('alliance.leader_id');
+      return cid !== undefined && cid !== null && cid === leaderId;
+    }.property('character.id', 'alliance.leader_id'),
+    
+    kickMember: function() {
+      var parentView = this.get('parentView');
+      if (parentView) {
+        parentView.kickMember(this.get('character'));
+      }
+      return false; // prevent default action!
+    },
+    
+  });
+
   module.AllianceMemberListView = Ember.View.extend({
     templateName: 'alliance-member-list',
     
     controller: null,
     alliance:   null,
+    
+    kickMember: function(character) {
+      var currentCharacter = AWE.GS.player.get('currentCharacter');
+      var alliance         = this.get('alliance');
+      var allianceId       = this.getPath('alliance.id');
+
+      if (character        === undefined || character        === null ||
+          alliance         === undefined || alliance         === null ||
+          currentCharacter === undefined || currentCharacter === null) {
+
+        var dialog = AWE.UI.Ember.Dialog.create({
+          contentTemplateName: 'info-dialog',
+          
+          heading:             'Client Fehler',
+          message:             'Es ist ein Fehler bei Deiner Aktion aufgetaucht. Bitte kontaktiere den Support, wenn dieser Fehler auch nach einem Neuladen bestehen bleibt.',
+          
+          cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+          okPressed:           null,
+          cancelPressed:       function() { this.destroy(); },
+        });          
+        WACKADOO.presentModalDialog(dialog);
+
+      }
+      else if (character.get('alliance_id')        !== allianceId ||
+               currentCharacter.get('alliance_id') !== allianceId ||
+               currentCharacter.get('id')          !== alliance.get('leader_id') ||
+               character.get('id')                 === alliance.get('leader_id')) {
+
+        var dialog = AWE.UI.Ember.Dialog.create({
+          contentTemplateName: 'info-dialog',
+          
+          heading:             'Geht nicht!',
+          message:             'Dieses Mitglied kann nicht von Dir rausgeworfen werden.',
+          
+          cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+          okPressed:           null,
+          cancelPressed:       function() { this.destroy(); },
+        });          
+        WACKADOO.presentModalDialog(dialog);
+
+      }
+      else {
+        var confirmationDialog = AWE.UI.Ember.Dialog.create({
+          templateName: 'info-dialog',
+
+          classNames: ['confirmation-dialog'],
+        
+          heading:    'Aktion bestätigen', 
+          message:    'Willst Du ' + character.get('name') + ' wirklich aus der Allianz werfen?',
+          
+          cancelText: 'Nein, doch nicht',
+          okText:     'Raus!',
+        
+          okPressed:  function() {
+            var self = this;
+            var action = AWE.Action.Fundamental.createKickAllianceMemberAction(character.get('id'), allianceId);
+            action.send(function(status) {
+              self.destroy();      
+              if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+                log(status, "Member kicked.");
+              }
+              else {
+                log(status, "The server did not accept the kick member command.");
+                var dialog = AWE.UI.Ember.InfoDialog.create({
+                  contentTemplateName: 'server-command-failed-info',
+                  cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+                  okPressed:           null,
+                  cancelPressed:       function() { this.destroy(); },
+                });          
+                WACKADOO.presentModalDialog(dialog);
+              } 
+            });     
+          },
+          cancelPressed: function() { this.destroy(); }
+        });
+        WACKADOO.presentModalDialog(confirmationDialog);
+      }
+      return false; // prevent default behavior
+    },    
   });
   
   module.AllianceManagementView = Ember.View.extend({

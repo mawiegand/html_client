@@ -22,6 +22,7 @@ AWE.Action = (function(module) {
     my.status = 0
     
     my.getSanitizedAndEscapedRequestBody = function() {
+      console.log('call get request body');
       return that.getRequestBody();  // TODO SECURITY : sanitize and escape it
     }
     
@@ -32,6 +33,8 @@ AWE.Action = (function(module) {
     /** overwrite and return appropriate information to send to the server. 
      */
     that.getRequestBody = function() {
+      console.log('wrong get request body');
+
       return '';
     };
     

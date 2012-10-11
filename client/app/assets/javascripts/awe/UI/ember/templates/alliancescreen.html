@@ -12,7 +12,8 @@
       {{view AWE.UI.Ember.ShoutBox controllerBinding="controller" shoutsBinding="controller.content.shouts" }}
     {{/if}}
     <hr>
-    {{view AWE.UI.Ember.AllianceMemberListView controllerBinding="controller" charactersBinding="alliance.members"}}
+    {{view AWE.UI.Ember.AllianceMemberListView controllerBinding="controller" charactersBinding="alliance.members"
+                                               allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader"}}
   </div>
 </div>
 </script>
@@ -39,12 +40,23 @@
 </script>
 
 
+<script type="text/x-handlebars" data-template-name="alliance-member">
+  {{view AWE.UI.Ember.LinkedCharacterView characterBinding="character" displayAlliance=false}}
+  {{#if isCurrentCharacterAllianceLeader}}
+    {{#unless isLeader}}
+      <a href="#" {{action "kickMember"}}>kick</a>
+    {{/unless}}
+  {{/if}}
+</script>
+
 <script type="text/x-handlebars" data-template-name="alliance-member-list">
   <div class="alliance-member-list">
     <h1>{{t alliance.members }}</h1>
     <ul>
       {{#each characters}}
-        <li>{{view AWE.UI.Ember.LinkedCharacterView characterBinding="this" displayAlliance=false}}</li>
+        {{view AWE.UI.Ember.AllianceMemberView tagName="li" characterBinding="this" allianceBinding="view.alliance"
+                                               isCurrentCharacterAllianceLeaderBinding="view.isAllianceLeader"
+                                               controllerBinding="controller"}}
       {{/each}}
     </ul>
   </div>
