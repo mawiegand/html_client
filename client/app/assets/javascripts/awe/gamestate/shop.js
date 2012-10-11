@@ -10,6 +10,7 @@ AWE.GS = (function(module) {
   module.Shop = module.Entity.extend({
     resourceOffers: null,
     bonusOffers: null,
+    platinumOffers: null,
     creditAmount: null,
     
     loading: true,
@@ -41,6 +42,9 @@ AWE.GS = (function(module) {
       });
       AWE.GS.ResourceOfferManager.updateResourceOffers(null, function(result) {
         my.shop.set('resourceOffers', AWE.GS.ResourceOfferManager.getResourceOffers());
+      });
+      AWE.GS.PlatinumOfferManager.updatePlatinumOffers(null, function(result) {
+        my.shop.set('platinumOffers', AWE.GS.PlatinumOfferManager.getPlatinumOffers());
       });
     };
     
@@ -99,6 +103,30 @@ AWE.GS = (function(module) {
         }
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
           AWE.GS.BonusOfferManager.updateBonusOffers();
+          if (successCallback) {
+            successCallback(transaction.data());
+          }
+        }
+        else {
+          if (errorCallback) {
+            errorCallback();
+          }
+        }
+      });
+    }
+    
+    that.buyPlatinumOffer = function(offerId, successCallback, errorCallback) {
+      var offer = module.PlatinumOfferManager.getPlatinumOffer(offerId);
+      if (offer) {
+        offer.set('isBuying', true);
+      }
+      var transaction = AWE.Action.Shop.createOfferTransaction(offerId, 'platinum');
+      transaction.send(function(status) {
+        if (offer) {
+          offer.set('isBuying', false);
+        }
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
+          AWE.GS.PlatinumOfferManager.updatePlatinumOffers();
           if (successCallback) {
             successCallback(transaction.data());
           }

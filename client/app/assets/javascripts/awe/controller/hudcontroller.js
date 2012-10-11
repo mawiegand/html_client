@@ -211,6 +211,42 @@ AWE.Controller = (function(module) {
           })
         },
 
+        buyPlatinumOfferPressed: function(offerId) {
+          AWE.GS.ShopManager.buyPlatinumOffer(offerId, function(transaction) { // success handler
+            if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
+              var info = AWE.UI.Ember.InfoDialog.create({
+                heading: "Yeaha!",
+                message: "The platinum account has been credited to your character. Platinum features are available immediately.",
+              });      
+              that.applicationController.presentModalDialog(info);
+            }
+            else {
+              var info = AWE.UI.Ember.InfoDialog.create({
+                contentTemplateName: 'not-enough-credits-info',
+                cancelText:          AWE.I18n.lookupTranslation('general.cancel'),
+                okText:              AWE.I18n.lookupTranslation('shop.notenoughcredits.getCredits'),
+                okPressed:           function() {
+                  AWE.GS.ShopManager.openCreditShopWindow();
+                  this.destroy();
+                },
+                cancelPressed:       function() { this.destroy(); },
+              });          
+              that.applicationController.presentModalDialog(info);
+            }
+            
+            AWE.GS.CharacterManager.updateCurrentCharacter();
+            AWE.GS.ShopManager.fetchCreditAmount(function(){
+              that.setModelChanged();
+            });
+          }, function() {                                   // error handler
+            var info = AWE.UI.Ember.InfoDialog.create({
+              heading: 'Server Error',
+              message: "There's a problem with the shop. Try again later",
+            });      
+            that.applicationController.presentModalDialog(info);
+          })
+        },
+
         closePressed: function(evt) {
           shopDialog = null;
           this.destroy();
