@@ -28,6 +28,7 @@ AWE.UI.Ember = (function(module) {
 
     resourceOffersBinding: 'shop.resourceOffers',
     bonusOffersBinding: 'shop.bonusOffers',
+    platinumOffersBinding: 'shop.platinumOffers',
 
     creditAmountBinding: 'shop.creditAmount',
 
@@ -42,6 +43,11 @@ AWE.UI.Ember = (function(module) {
     buyBonusOfferPressed: function() {
       log('Action not connected: buyOfferWasPressed.');
     },
+    
+    buyPlatinumOfferPressed: function() {
+      log('Action not connected: buyOfferWasPressed.');
+    },
+    
     closePressed: function() {
       log('Action not connected: closedWasPressed.');
     },
@@ -79,6 +85,30 @@ AWE.UI.Ember = (function(module) {
     active: function() {
       return this.get('offer').resource_effect !== null;
     }.property('offer.resource_effect'),    
+  });
+  
+  module.ShopPlatinumOffer = Ember.View.extend({
+    templateName: 'shop-platinum-offer',
+    
+    offer: null,
+    
+    platinumExpiration: function() {
+      var expiration = Date.parseISODate(AWE.GS.player.getPath('currentCharacter.premium_expiration'));
+      if (expiration && expiration > new Date()) {
+        return AWE.GS.player.getPath('currentCharacter.premium_expiration');
+      }
+      return null;
+    }.property('AWE.GS.player.currentCharacter.premium_expiration').cacheable(),
+    
+    buyPlatinumOfferPressed: function() {
+      this.get('parentView').buyPlatinumOfferPressed(this.getPath('offer.id'));
+    },
+    
+    classNameBindings: ['active'],
+    
+    active: function() {
+      return this.get('platinumExpiration') !== null;
+    }.property('platinumExpiration'),    
   });
   
   return module;

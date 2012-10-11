@@ -10,10 +10,10 @@
           {{#unless shopEnabled }}
             <p>Der Shop ist vorübergehend nicht erreichbar!</p>
           {{else}}
-            <p>{{ t shop.currentCreditAmount }}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }} {{ t shop.credits }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="simple-button" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span></p>
+            <p>{{ t shop.currentCreditAmount }}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }} {{ t shop.platinumCredits }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="simple-button" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span></p>
             
             {{#if resourceOffers}}
-            <h4>{{ t shop.resourceOffers }}</h4>
+            <h3>{{ t shop.resourceOffers }}</h3>
                       
               <div class="platinum-button" {{action "buyCreditsPressed" target="parentView"}}>
                 <p>Aktuelle</p><p>Platinum-Credit</p><p>Angebote</p>
@@ -27,6 +27,7 @@
             {{#if bonusOffers}}
             
             <div class="clearfix"></div>
+            <h3>{{ t shop.bonusOffers }}</h3>
                               
             <div class="bonus-offer-header">
               <div class="bonus-offer-description">{{ t shop.description }}</div>
@@ -36,6 +37,22 @@
             </div>
               {{#each bonusOffers}}
                 {{view AWE.UI.Ember.ShopBonusOffer offerBinding="this" shopBinding="shop" classNames="bonus-offer"}}
+              {{/each}}
+            {{/if}}
+
+            {{#if platinumOffers}}
+            
+            <h3>{{ t shop.platinumOffers }}</h3>
+            <div class="clearfix"></div>
+                              
+            <div class="bonus-offer-header">
+              <div class="bonus-offer-description">{{ t shop.description }}</div>
+              <div class="bonus-offer-duration">{{ t shop.duration }}</div>
+              <div class="bonus-offer-price">{{ t shop.price }}</div>
+              <div class="bonus-offer-end">{{ t shop.expiry }}</div>
+            </div>
+              {{#each platinumOffers}}
+                {{view AWE.UI.Ember.ShopPlatinumOffer offerBinding="this" shopBinding="shop" classNames="bonus-offer"}}
               {{/each}}
             {{/if}}
           {{/unless}}
@@ -76,6 +93,23 @@
       {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{t shop.activating }}
     {{else}}
       <div class="simple-button" {{action "buyBonusOfferPressed"}}>{{#if offer.resource_effect}}{{t shop.extend }}{{else}}{{t shop.buy }}{{/if}}</div>
+    {{/if}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="shop-platinum-offer">
+  <div class="bonus-offer-description">{{ t shop.platinumOffers}}</div>
+  <div class="bonus-offer-duration">{{ offer.duration }}h</div>
+  <div class="bonus-offer-price">{{ offer.price}} </div>
+  <div class="bonus-offer-end">
+    {{#if platinumExpiration }}
+      {{ formatDatetime platinumExpiration }}
+    {{/if}}
+    
+    {{#if offer.isBuying}}
+      {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{t shop.activating }}
+    {{else}}
+      <div class="simple-button" {{action "buyPlatinumOfferPressed"}}>{{#if platinumExpiration}}{{t shop.extend }}{{else}}{{t shop.buy }}{{/if}}</div>
     {{/if}}
   </div>
 </script>
