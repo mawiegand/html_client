@@ -118,10 +118,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     initChat: function() {
       DEVELOPER = 'on'
       
-      var jappix_addBuddyMini = addBuddyMini;
+      var jappix_addBuddyMini = addBuddyMini; // jappix is in global namespace :-(
       
       addBuddyMini = function(xid, hash, nick, groupchat, subscription) {
-        var filter             = [ 'global', 'handel', 'plauderecke' ] ;
+        var filter             = [ 'global', 'handel', 'plauderhöhle', 'help' ] ;
         
         var shouldAdd = true ;
         filter.forEach(function(channel) {
@@ -154,10 +154,18 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_VJUD      = "vjud."      +base;
       HOST_ANONYMOUS = "anonymous." +base;
       HOST_BOSH      = "http://"+base+"/http-bind/";
+      
+      var beginner = AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') > 1;      
 
-  // Define groupchats here
-      MINI_GROUPCHATS = tag ? [tag+"@conference."+base, "global@conference."+base] : ["global@conference."+base];
-      MINI_SUGGEST_GROUPCHATS =  [];
+      // Define groupchats here
+      if beginner {
+        MINI_GROUPCHATS = tag ? [ 'help'+"@conference."+base,  tag+"@conference."+base ] : [ 'help'+"@conference."+base ];
+        MINI_SUGGEST_GROUPCHATS =  [ "global@conference."+base, 'handel'+"@conference."+base, 'plauderhöhle'+"@conference."+base ];        
+      }
+      else {
+        MINI_GROUPCHATS = tag ? [ tag+"@conference."+base, "global@conference."+base ] : [ "global@conference."+base ];
+        MINI_SUGGEST_GROUPCHATS =  [ 'help'+"@conference."+base, 'handel'+"@conference."+base, 'plauderhöhle'+"@conference."+base ];
+      }
       
       JAPPIX_STATIC = 'jappix/'
       
@@ -180,9 +188,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       // Notice: put true/false to autoconnect and show_pane
       // Notice: exclude "user" and "password" if using anonymous login
             
-      automaticLogin = AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') > 1;      
             
-      launchMini(automaticLogin, true, base, identifier, accessToken);
+      launchMini(true, true, base, identifier, accessToken);
 
       this.addDomElement(('.jm_prompt'), false);      
       this.addDomElement(('.jm_starter'), false);
