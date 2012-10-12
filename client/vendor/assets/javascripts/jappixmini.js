@@ -7736,6 +7736,8 @@ function groupchatPromptMini() {
 function chatMini(type, xid, nick, hash, pwd, show_pane) {
 	var current = '#jappix_mini #chat-' + hash;
 	
+	console.log('IN CHAT MINI', type, xid, nick, hash, pwd, show_pane) // 5D DEBUG
+	
 	// Not yet added?
 	if(!exists(current)) {
 		// Groupchat nickname
