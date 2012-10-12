@@ -118,6 +118,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     initChat: function() {
       DEVELOPER = 'on'
       
+      var orig = addBuddyMini;
+      
+      addBuddyMini = function(xid, hash, nick, groupchat, subscription) {
+        if (groupchat === 'global') {
+          return false ;
+        }
+        else {
+          oig(xid, hash, nick, groupchat, subscription);
+        }
+      }
+      
       var identifier  = AWE.GS.player.currentCharacter.get('identifier');
       var tag         = AWE.GS.player.currentCharacter.get('alliance_tag');
       var name        = AWE.GS.player.currentCharacter.get('name');
