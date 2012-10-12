@@ -7743,6 +7743,8 @@ function chatMini(type, xid, nick, hash, pwd, show_pane) {
 		// Groupchat nickname
 		if(type == 'groupchat') {
 			// Random nickname?
+	    console.log('IN GROUPCHAT') // 5D DEBUG
+
 			if(!MINI_NICKNAME && MINI_RANDNICK)
 				MINI_NICKNAME = randomNickMini();
 			
@@ -7778,6 +7780,8 @@ function chatMini(type, xid, nick, hash, pwd, show_pane) {
 			}
 		}
 		
+	  console.log('IN CHAT nickname', nickname) // 5D DEBUG
+		
 		// Create the HTML markup
 		var html = '<div class="jm_conversation jm_type_' + type + '" id="chat-' + hash + '" data-xid="' + escape(xid) + '" data-type="' + type + '" data-nick="' + escape(nick) + '" data-hash="' + hash + '" data-origin="' + escape(cutResource(xid)) + '">' + 
 				'<div class="jm_chat-content">' + 
@@ -7798,6 +7802,9 @@ function chatMini(type, xid, nick, hash, pwd, show_pane) {
 			}
 		}
 		
+	  console.log('IN CHAT, after bareXID') // 5D DEBUG
+
+		
 		if((type == 'chat') && MINI_CHATS && MINI_CHATS.length) {
 			for(c in MINI_CHATS) {
 				if(xid == bareXID(generateXID(MINI_CHATS[c], 'chat'))) {
@@ -7807,7 +7814,9 @@ function chatMini(type, xid, nick, hash, pwd, show_pane) {
 				}
 			}
 		}
-		
+
+	  console.log('IN CHAT, before close button') // 5D DEBUG		
+
 		// Any close button to display?
 		if(((type == 'groupchat') && !groupchat_exists) || ((type == 'chat') && !chat_exists) || ((type != 'groupchat') && (type != 'chat')))
 			html += '<a class="jm_one-action jm_close jm_images" title="' + _e("Close") + '" href="#"></a>';
@@ -7829,6 +7838,9 @@ function chatMini(type, xid, nick, hash, pwd, show_pane) {
 				'<span class="jm_name">' + nick.htmlEnc() + '</span>' + 
 			'</a>' + 
 		'</div>';
+		
+	  console.log('IN CHAT, before prepend') // 5D DEBUG		
+
 		
 		jQuery('#jappix_mini div.jm_conversations').prepend(html);
 		
