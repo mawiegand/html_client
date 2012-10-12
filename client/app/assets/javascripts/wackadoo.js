@@ -121,7 +121,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var jappix_addBuddyMini = addBuddyMini; // jappix is in global namespace :-(
       
       addBuddyMini = function(xid, hash, nick, groupchat, subscription) {
-        var filter             = [ 'global', 'handel', 'plauderhöhle', 'help' ] ;
+        var filter             = [ 'global', 'help' ] ;
         
         var shouldAdd = true ;
         filter.forEach(function(channel) {
@@ -187,7 +187,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       // Connect the user (autoconnect, show_pane, domain, username, password)
       // Notice: put true/false to autoconnect and show_pane
       // Notice: exclude "user" and "password" if using anonymous login
-            
             
       launchMini(true, true, base, identifier, accessToken);
 
