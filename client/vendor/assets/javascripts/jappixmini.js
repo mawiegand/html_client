@@ -5379,7 +5379,13 @@ function isFocused() {
 // Generates the good XID
 function generateXID(xid, type) {
 	// XID needs to be transformed
+	console.log('GENERATE XID FOR', xid, type) // 5D DEBUG
+	
+	
 	if(xid && (xid.indexOf('@') == -1)) {
+	  console.log('IN GXID FOR', xid, type) // 5D DEBUG
+	  
+	  
 		// Groupchat
 		if(type == 'groupchat')
 			return xid + '@' + HOST_MUC;
@@ -5391,6 +5397,8 @@ function generateXID(xid, type) {
 		// It might be a gateway?
 		return xid;
 	}
+		console.log('BARE XID FOR', xid, type) // 5D DEBUG
+
 	
 	// Nothing special (yet bare XID)
 	return xid;
