@@ -5422,6 +5422,8 @@ function strAfterLast(given_char, str) {
 
 // Properly explodes a string with a given character
 function explodeThis(toEx, toStr, i) {
+	console.log('EXPLODE THIS FOR', toEx, toStr, i) // 5D DEBUG
+
 	// Get the index of our char to explode
 	var index = toStr.indexOf(toEx);
 	
@@ -5439,6 +5441,8 @@ function explodeThis(toEx, toStr, i) {
 
 // Cuts the resource of a XID
 function cutResource(aXID) {
+ console.log('CUT RESOURCE FOR', aXID) // 5D DEBUG
+
 	return explodeThis('/', aXID, 0);
 }
 
@@ -5474,6 +5478,7 @@ function encodeQuotes(str) {
 // Gets the bare XID from a XID
 function bareXID(xid) {
 	// Cut the resource
+	console.log('BARE XID FOR', xid) // 5D DEBUG
 	xid = cutResource(xid);
 	
 	// Launch the stringprep
