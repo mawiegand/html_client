@@ -201,7 +201,7 @@
         {{/if}}
         
         {{#if building.converted.productionBoniNextLevel}}
-          <b>{{t building.converted.productionBoni}}:</b>
+          <b>{{t building.productionBoni}}:</b>
           {{#each building.converted.productionBoniNextLevel}}
             <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
             +{{bonus}}% &nbsp;  
