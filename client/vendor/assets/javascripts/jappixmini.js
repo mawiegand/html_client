@@ -5485,8 +5485,13 @@ function bareXID(xid) {
 	// xid = stringPrep(xid);
 	// stringPrep() transforms 'a' to 's' in Safari, without any reason!
 	
+	console.log('to lower case', xid) // 5D DEBUG
+	
 	// Set the XID to lower case
 	xid = xid.toLowerCase();
+	
+	console.log('result', xid) // 5D DEBUG
+
 	
 	return xid;
 }
