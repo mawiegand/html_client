@@ -135,7 +135,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         else {
           return jappix_addBuddyMini(xid, hash, nick, groupchat, subscription);
         }
-      }
+      };
       
       var identifier  = AWE.GS.player.currentCharacter.get('identifier');
       var tag         = AWE.GS.player.currentCharacter.get('alliance_tag');
@@ -158,13 +158,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var beginner = AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') > 1;      
 
       // Define groupchats here
-      if beginner {
-        MINI_GROUPCHATS = tag ? [ 'help'+"@conference."+base,  tag+"@conference."+base ] : [ 'help'+"@conference."+base ];
-        MINI_SUGGEST_GROUPCHATS =  [ "global@conference."+base, 'handel'+"@conference."+base, 'plauderhöhle'+"@conference."+base ];        
+      if (beginner) {
+        MINI_GROUPCHATS = tag ? [ 'help@conference.'+base,  tag+"@conference."+base ] : [ 'help@conference.'+base ];
+        MINI_SUGGEST_GROUPCHATS =  [ "global@conference."+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ];        
       }
       else {
         MINI_GROUPCHATS = tag ? [ tag+"@conference."+base, "global@conference."+base ] : [ "global@conference."+base ];
-        MINI_SUGGEST_GROUPCHATS =  [ 'help'+"@conference."+base, 'handel'+"@conference."+base, 'plauderhöhle'+"@conference."+base ];
+        MINI_SUGGEST_GROUPCHATS =  [ 'help@conference.'+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ];
       }
       
       JAPPIX_STATIC = 'jappix/'
