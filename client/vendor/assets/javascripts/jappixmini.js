@@ -8117,7 +8117,7 @@ function addBuddyMini(xid, hash, nick, groupchat, subscription) {
 	// Groupchat buddy
 	if(groupchat) {
 		// Generate the groupchat group path
-		path = '#jappix_mini div.jm_roster div.jm_grouped[data-xid=' + escape(groupchat) + ']';
+		path = '#jappix_mini div.jm_roster div.jm_grouped[data-xid="' + escape(groupchat) + '"]';  // BUGFIX 1: must be quoted 
 		
 		console.log("GROUP CHAT PATH", path, exists(path), groupchat, escape(groupchat));
 		
