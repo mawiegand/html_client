@@ -8130,7 +8130,7 @@ function addBuddyMini(xid, hash, nick, groupchat, subscription) {
 			);
 		}
 		else {
-		  console('SELECTOR', $(path))
+		  console.log('SELECTOR', $(path))
 		}
 	}
 	
