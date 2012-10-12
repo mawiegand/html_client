@@ -5378,13 +5378,9 @@ function isFocused() {
 
 // Generates the good XID
 function generateXID(xid, type) {
-	// XID needs to be transformed
-	console.log('GENERATE XID FOR', xid, type) // 5D DEBUG
+	// XID needs to be transformed	
 	
-	
-	if(xid && (xid.indexOf('@') == -1)) {
-	  console.log('IN GXID FOR', xid, type) // 5D DEBUG
-	  
+	if(xid && (xid.indexOf('@') == -1)) {	  
 	  
 		// Groupchat
 		if(type == 'groupchat')
@@ -5397,8 +5393,6 @@ function generateXID(xid, type) {
 		// It might be a gateway?
 		return xid;
 	}
-		console.log('BARE XID FOR', xid, type) // 5D DEBUG
-
 	
 	// Nothing special (yet bare XID)
 	return xid;
@@ -5430,7 +5424,6 @@ function strAfterLast(given_char, str) {
 
 // Properly explodes a string with a given character
 function explodeThis(toEx, toStr, i) {
-	console.log('EXPLODE THIS FOR', toEx, toStr, i) // 5D DEBUG
 
 	// Get the index of our char to explode
 	var index = toStr.indexOf(toEx);
@@ -5449,8 +5442,6 @@ function explodeThis(toEx, toStr, i) {
 
 // Cuts the resource of a XID
 function cutResource(aXID) {
- console.log('CUT RESOURCE FOR', aXID) // 5D DEBUG
-
 	return explodeThis('/', aXID, 0);
 }
 
@@ -5486,20 +5477,14 @@ function encodeQuotes(str) {
 // Gets the bare XID from a XID
 function bareXID(xid) {
 	// Cut the resource
-	console.log('BARE XID FOR', xid) // 5D DEBUG
 	xid = cutResource(xid);
 	
 	// Launch the stringprep
 	// xid = stringPrep(xid);
 	// stringPrep() transforms 'a' to 's' in Safari, without any reason!
 	
-	console.log('to lower case', xid) // 5D DEBUG
-	
 	// Set the XID to lower case
 	xid = xid.toLowerCase();
-	
-	console.log('result', xid) // 5D DEBUG
-
 	
 	return xid;
 }
@@ -6289,7 +6274,7 @@ function handleMessageMini(msg) {
 					if(!nick) {
 						// If the roster does not give us any nick the user may have send us a nickname to use with his first message
 						// @see http://xmpp.org/extensions/xep-0172.html
-						var unknown_entry = jQuery('#jappix_mini a.jm_unknown[data-xid=' + xid + ']');
+						var unknown_entry = jQuery('#jappix_mini a.jm_unknown[data-xid="' + xid + '"]');
 						
 						if(unknown_entry.size() > 0) {
 							nick =  unknown_entry.attr('data-nick');
@@ -6666,7 +6651,7 @@ function sendMessageMini(aForm) {
 			
 			// If the roster does not give us any nick the user may have send us a nickname to use with his first message
             // @see http://xmpp.org/extensions/xep-0172.html
-            var known_roster_entry = jQuery('#jappix_mini a.jm_friend[data-xid=' + xid + ']');
+            var known_roster_entry = jQuery('#jappix_mini a.jm_friend[data-xid="' + xid + '"]');
             
 			if(known_roster_entry.size() == 0) {
 		        var subscription = known_roster_entry.attr('data-sub');
@@ -7754,15 +7739,12 @@ function groupchatPromptMini() {
 function chatMini(type, xid, nick, hash, pwd, show_pane) {
 	var current = '#jappix_mini #chat-' + hash;
 	
-	console.log('IN CHAT MINI', type, xid, nick, hash, pwd, show_pane) // 5D DEBUG
-	
 	// Not yet added?
 	if(!exists(current)) {
 		// Groupchat nickname
 		if(type == 'groupchat') {
 			// Random nickname?
-	    console.log('IN GROUPCHAT') // 5D DEBUG
-
+			
 			if(!MINI_NICKNAME && MINI_RANDNICK)
 				MINI_NICKNAME = randomNickMini();
 			
@@ -7798,15 +7780,11 @@ function chatMini(type, xid, nick, hash, pwd, show_pane) {
 			}
 		}
 		
-	  console.log('IN CHAT nickname', nickname) // 5D DEBUG
-		
 		// Create the HTML markup
 		var html = '<div class="jm_conversation jm_type_' + type + '" id="chat-' + hash + '" data-xid="' + escape(xid) + '" data-type="' + type + '" data-nick="' + escape(nick) + '" data-hash="' + hash + '" data-origin="' + escape(cutResource(xid)) + '">' + 
 				'<div class="jm_chat-content">' + 
 					'<div class="jm_actions">' + 
 						'<span class="jm_nick">' + nick + '</span>';
-
-	  console.log('IN CHAT, after html') // 5D DEBUG
 
 		
 		// Check if the chat/groupchat exists
@@ -7823,9 +7801,6 @@ function chatMini(type, xid, nick, hash, pwd, show_pane) {
 			}
 		}
 		
-	  console.log('IN CHAT, after bareXID') // 5D DEBUG
-
-		
 		if((type == 'chat') && MINI_CHATS && MINI_CHATS.length) {
 			for(var c=0; c < MINI_CHATS.length; MINI_CHATS.length) {  // 5D FIX: no global variable, save loop
 				if(xid == bareXID(generateXID(MINI_CHATS[c], 'chat'))) {
@@ -7835,8 +7810,6 @@ function chatMini(type, xid, nick, hash, pwd, show_pane) {
 				}
 			}
 		}
-
-	  console.log('IN CHAT, before close button') // 5D DEBUG		
 
 		// Any close button to display?
 		if(((type == 'groupchat') && !groupchat_exists) || ((type == 'chat') && !chat_exists) || ((type != 'groupchat') && (type != 'chat')))
@@ -7859,9 +7832,6 @@ function chatMini(type, xid, nick, hash, pwd, show_pane) {
 				'<span class="jm_name">' + nick.htmlEnc() + '</span>' + 
 			'</a>' + 
 		'</div>';
-		
-	  console.log('IN CHAT, before prepend') // 5D DEBUG		
-
 		
 		jQuery('#jappix_mini div.jm_conversations').prepend(html);
 		
@@ -8085,7 +8055,7 @@ function hideRosterMini() {
 // Removes a groupchat from DOM
 function removeGroupchatMini(xid) {
 	// Remove the groupchat private chats & the groupchat buddies from the roster
-	jQuery('#jappix_mini div.jm_conversation[data-origin=' + escape(cutResource(xid)) + '], #jappix_mini div.jm_roster div.jm_grouped[data-xid=' + escape(xid) + ']').remove();
+	jQuery('#jappix_mini div.jm_conversation[data-origin="' + escape(cutResource(xid)) + '"], #jappix_mini div.jm_roster div.jm_grouped[data-xid="' + escape(xid) + '"]').remove();
 	
 	// Update the presence counter
 	updateRosterMini();
@@ -8245,7 +8215,7 @@ function removeBuddyMini(hash, groupchat) {
 	jQuery('#jappix_mini a.jm_friend#friend-' + hash).remove();
 	
 	// Empty group?
-	var group = '#jappix_mini div.jm_roster div.jm_grouped[data-xid=' + escape(groupchat) + ']';
+	var group = '#jappix_mini div.jm_roster div.jm_grouped[data-xid="' + escape(groupchat) + '"]';
 	
 	if(groupchat && !jQuery(group + ' a.jm_friend').size())
 		jQuery(group).remove();
