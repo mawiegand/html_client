@@ -5959,6 +5959,9 @@ var MINI_PASSWORDS				= [];
 var MINI_RESOURCE				= JAPPIX_RESOURCE + ' Mini';
 var MINI_ERROR_LINK				= 'https://mini.jappix.com/issues';
 
+// 5D MODS
+var MINI_5D_HIDE_SUGGEST_OTHER_CHAT_PROMPT = true;
+
 // Setups connection handlers
 function setupConMini(con) {
 	con.registerHandler('message', handleMessageMini);
@@ -7177,20 +7180,24 @@ function createMini(domain, user, password) {
 					if(chans_html)
 						chans_html += '<div class="jm_space"></div>';
 					
+					// 5D MOD : INTRODUCED IF TO GIVE OPTION: NO OTHER SUGGEST PROMPT
 					// Append selector code
-					jQuery('#jappix_mini div.jm_actions').append(
-						'<div class="jm_chan_suggest">' + 
-							chans_html + 
+					if (!MINI_5D_HIDE_SUGGEST_OTHER_CHAT_PROMPT) {
+  					jQuery('#jappix_mini div.jm_actions').append(
+  						'<div class="jm_chan_suggest">' + 
+  							chans_html + 
 							
-							'<a class="jm_suggest_prompt" href="#">' + 
-								'<span class="jm_chan_icon"></span>' + 
-								'<span class="jm_chan_name">' + _e("Other") + '</span>' + 
-							'</a>' + 
-						'</div>'
-					);
+  							'<a class="jm_suggest_prompt" href="#">' + 
+  								'<span class="jm_chan_icon"></span>' + 
+  								'<span class="jm_chan_name">' + _e("Other") + '</span>' + 
+  							'</a>' + 
+  						'</div>'
+  					);
+				  }
 					
 					// Click events
 					jQuery('#jappix_mini div.jm_chan_suggest a').click(function() {
+					  console.log('CLICKED CHANNEL'); // 5D DEBUG: DOES IT RECEIVE CLICKS???
 						// Using a try/catch override IE issues
 						try {
 							// Chat?
@@ -8117,9 +8124,9 @@ function addBuddyMini(xid, hash, nick, groupchat, subscription) {
 	// Groupchat buddy
 	if(groupchat) {
 		// Generate the groupchat group path
-		path = '#jappix_mini div.jm_roster div.jm_grouped[data-xid="' + escape(groupchat) + '"]';  // BUGFIX 1: must be quoted 
+		path = '#jappix_mini div.jm_roster div.jm_grouped[data-xid="' + escape(groupchat) + '"]';  // 5D BUGFIX 1: must be quoted 
 		
-		console.log("GROUP CHAT PATH", path, exists(path), groupchat, escape(groupchat));
+		// console.log("GROUP CHAT PATH", path, exists(path), groupchat, escape(groupchat));
 		
 		// Must add a groupchat group?
 		if(!exists(path)) {
@@ -8128,9 +8135,6 @@ function addBuddyMini(xid, hash, nick, groupchat, subscription) {
 					'<div class="jm_name">' + getXIDNick(groupchat).htmlEnc() + '</div>' + 
 				'</div>'
 			);
-		}
-		else {
-		  console.log('SELECTOR', $(path))
 		}
 	}
 	
