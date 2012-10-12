@@ -7180,20 +7180,21 @@ function createMini(domain, user, password) {
 					if(chans_html)
 						chans_html += '<div class="jm_space"></div>';
 					
-					// 5D MOD : INTRODUCED IF TO GIVE OPTION: NO OTHER SUGGEST PROMPT
 					// Append selector code
-					if (!MINI_5D_HIDE_SUGGEST_OTHER_CHAT_PROMPT) {
-  					jQuery('#jappix_mini div.jm_actions').append(
-  						'<div class="jm_chan_suggest">' + 
-  							chans_html + 
+					jQuery('#jappix_mini div.jm_actions').append(
+						'<div class="jm_chan_suggest">' + 
+							chans_html + 
 							
-  							'<a class="jm_suggest_prompt" href="#">' + 
-  								'<span class="jm_chan_icon"></span>' + 
-  								'<span class="jm_chan_name">' + _e("Other") + '</span>' + 
-  							'</a>' + 
-  						'</div>'
-  					);
-				  }
+				      // 5D MOD : INTRODUCED IF TO GIVE OPTION: NO OTHER SUGGEST PROMPT:
+				      (MINI_5D_HIDE_SUGGEST_OTHER_CHAT_PROMPT ?
+							  '<a class="jm_suggest_prompt" href="#">' + 
+								  '<span class="jm_chan_icon"></span>' + 
+								  '<span class="jm_chan_name">' + _e("Other") + '</span>' + 
+							  '</a>' : ''
+							) + 
+							
+						'</div>'
+					);
 					
 					// Click events
 					jQuery('#jappix_mini div.jm_chan_suggest a').click(function() {
