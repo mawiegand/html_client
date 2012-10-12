@@ -121,6 +121,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var orig = addBuddyMini;
       
       addBuddyMini = function(xid, hash, nick, groupchat, subscription) {
+        console.log('FILTER groupchat', groupchat);
         if (groupchat === 'global') {
           return false ;
         }
