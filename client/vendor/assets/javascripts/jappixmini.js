@@ -7787,6 +7787,9 @@ function chatMini(type, xid, nick, hash, pwd, show_pane) {
 				'<div class="jm_chat-content">' + 
 					'<div class="jm_actions">' + 
 						'<span class="jm_nick">' + nick + '</span>';
+
+	  console.log('IN CHAT, after html') // 5D DEBUG
+
 		
 		// Check if the chat/groupchat exists
 		var groupchat_exists = false;
