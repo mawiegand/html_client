@@ -118,17 +118,22 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     initChat: function() {
       DEVELOPER = 'on'
       
-      var orig = addBuddyMini;
+      var jappix_addBuddyMini = addBuddyMini;
       
       addBuddyMini = function(xid, hash, nick, groupchat, subscription) {
-        console.log('FILTER groupchat', groupchat);
-        var filter = 'global';
+        var filter             = [ 'global', 'handel', 'plauderecke' ] ;
         
-        if (groupchat.slice(0, filter.length) === filter) {
+        var shouldAdd = true ;
+        filter.forEach(function(channel) {
+          var start = groupchat.slice(0, channel.length);
+          shouldAdd = shouldAdd && channel !== start;
+        });
+        
+        if (!shouldAdd) {
           return false ;
         }
         else {
-          oig(xid, hash, nick, groupchat, subscription);
+          return jappix_addBuddyMini(xid, hash, nick, groupchat, subscription);
         }
       }
       
@@ -163,7 +168,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       MINI_ANIMATE = false;
       
       // Define the user nickname
-      MINI_NICKNAME = (name || "ChatUser") + (tag ? "|"+tag : "");
+      MINI_NICKNAME = (name || "ChatUser") + (tag ? " | "+tag : "");
       
       // Random user nickname (if no nickname)
       MINI_RANDNICK = true;
