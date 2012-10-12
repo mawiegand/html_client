@@ -119,8 +119,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       DEVELOPER = 'on'
       
       var jappix_addBuddyMini = addBuddyMini; // jappix is in global namespace :-(
+
       
-      addBuddyMini = function(xid, hash, nick, groupchat, subscription) {
+/*      addBuddyMini = function(xid, hash, nick, groupchat, subscription) {
         var filter             = [ 'global', 'help' ] ;
         
         var shouldAdd = true ;
@@ -135,7 +136,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         else {
           return jappix_addBuddyMini(xid, hash, nick, groupchat, subscription);
         }
-      };
+      };    */
       
       var identifier  = AWE.GS.player.currentCharacter.get('identifier');
       var tag         = AWE.GS.player.currentCharacter.get('alliance_tag');
