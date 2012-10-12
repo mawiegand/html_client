@@ -7186,11 +7186,11 @@ function createMini(domain, user, password) {
 							chans_html + 
 							
 				      // 5D MOD : INTRODUCED IF TO GIVE OPTION: NO OTHER SUGGEST PROMPT:
-				      (MINI_5D_HIDE_SUGGEST_OTHER_CHAT_PROMPT ?
+				      (MINI_5D_HIDE_SUGGEST_OTHER_CHAT_PROMPT ? '' :
 							  '<a class="jm_suggest_prompt" href="#">' + 
 								  '<span class="jm_chan_icon"></span>' + 
 								  '<span class="jm_chan_name">' + _e("Other") + '</span>' + 
-							  '</a>' : ''
+							  '</a>'
 							) + 
 							
 						'</div>'
@@ -7198,9 +7198,10 @@ function createMini(domain, user, password) {
 					
 					// Click events
 					jQuery('#jappix_mini div.jm_chan_suggest a').click(function() {
-					  console.log('CLICKED CHANNEL'); // 5D DEBUG: DOES IT RECEIVE CLICKS???
 						// Using a try/catch override IE issues
 						try {
+							console.log("CLICKED CHANNEL", $(this), this); // 5D DEBUG
+  
 							// Chat?
 							if(jQuery(this).is('.jm_suggest_chat')) {
 								var current_chat = unescape(jQuery(this).attr('data-xid'));
@@ -7215,6 +7216,8 @@ function createMini(domain, user, password) {
 								
 								if(current_password)
 									current_password = unescape(current_password);
+
+							  console.log('GROUP CHAT CLICKED', current_groupchat);
 								
 								chatMini('groupchat', current_groupchat, jQuery(this).find('span.jm_chan_name').text(), hex_md5(current_groupchat), current_password);
 							}
@@ -7224,7 +7227,9 @@ function createMini(domain, user, password) {
 								groupchatPromptMini();
 						}
 						
-						catch(e) {}
+						catch(e) {
+						  console.log('in jappix mini, catched exception', e); // 5D MOD: DEBUG OUTPUT
+						}
 						
 						finally {
 							return false;
