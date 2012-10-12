@@ -155,7 +155,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_ANONYMOUS = "anonymous." +base;
       HOST_BOSH      = "http://"+base+"/http-bind/";
       
-      var beginner = AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') > 1;      
+      var beginner = AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') <= 1;      
 
       // Define groupchats here
       if (beginner) {
