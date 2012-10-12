@@ -8129,6 +8129,9 @@ function addBuddyMini(xid, hash, nick, groupchat, subscription) {
 				'</div>'
 			);
 		}
+		else {
+		  console('SELECTOR', $(path))
+		}
 	}
 	
 	if (subscription) {
