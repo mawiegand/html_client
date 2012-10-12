@@ -167,6 +167,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         MINI_GROUPCHATS = tag ? [ tag+"@conference."+base, "global@conference."+base ] : [ "global@conference."+base ];
         MINI_SUGGEST_GROUPCHATS =  [ 'help@conference.'+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ];
       }
+      MINI_GROUPCHATS.forEach(function(item) {
+        console.log('GROUPCHAT', item)
+      });
       
       JAPPIX_STATIC = 'jappix/'
       

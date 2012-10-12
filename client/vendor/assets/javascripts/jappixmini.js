@@ -7814,7 +7814,7 @@ function chatMini(type, xid, nick, hash, pwd, show_pane) {
 		var chat_exists = false;
 		
 		if((type == 'groupchat') && MINI_GROUPCHATS && MINI_GROUPCHATS.length) {
-			for(g in MINI_GROUPCHATS) {
+			for(var g=0; g < MINI_GROUPCHATS.length; g++) {           // 5D FIX: no global variable, save loop
 				if(xid == bareXID(generateXID(MINI_GROUPCHATS[g], 'groupchat'))) {
 					groupchat_exists = true;
 					
@@ -7827,7 +7827,7 @@ function chatMini(type, xid, nick, hash, pwd, show_pane) {
 
 		
 		if((type == 'chat') && MINI_CHATS && MINI_CHATS.length) {
-			for(c in MINI_CHATS) {
+			for(var c=0; c < MINI_CHATS.length; MINI_CHATS.length) {  // 5D FIX: no global variable, save loop
 				if(xid == bareXID(generateXID(MINI_CHATS[c], 'chat'))) {
 					chat_exists = true;
 					
