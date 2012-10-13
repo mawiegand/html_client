@@ -169,6 +169,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         MINI_SUGGEST_GROUPCHATS          =  [ 'help@conference.'+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ];
         MINI_5D_NON_CLOSEABLE_GROUPCHATS = tag ? [ tag+"@conference."+base, "global@conference."+base ] : [ "global@conference."+base ];       
       }
+      MINI_5D_NO_USERLIST_GROUPCHATS     = [ 'help@conference.'+base, 'global@conference.'+base ];
+      MINI_5D_STAFF_POSTFIXES            = [ '| 5D', '@mod', '@admin', '@staff' ];
+      
       MINI_GROUPCHATS.forEach(function(item) {
         console.log('GROUPCHAT', item)
       });

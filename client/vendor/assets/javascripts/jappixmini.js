@@ -5950,21 +5950,24 @@ var MINI_RANDNICK				= false;
 var MINI_NICKNAME				= '';
 var MINI_TITLE					= null;
 var MINI_DOMAIN					= null;
-var MINI_USER					= null;
+var MINI_USER					  = null;
 var MINI_PASSWORD				= null;
-var MINI_RECONNECT				= 0;
+var MINI_RECONNECT			= 0;
 var MINI_CHATS					= [];
 var MINI_GROUPCHATS				= [];
 var MINI_SUGGEST_CHATS			= [];
 var MINI_SUGGEST_GROUPCHATS		= [];
 var MINI_SUGGEST_PASSWORDS		= [];
 var MINI_PASSWORDS				= [];
-var MINI_RESOURCE				= JAPPIX_RESOURCE + ' Mini';
+var MINI_RESOURCE				  = JAPPIX_RESOURCE + ' Mini';
 var MINI_ERROR_LINK				= 'https://mini.jappix.com/issues';
 
 // 5D MODS
 var MINI_5D_HIDE_SUGGEST_OTHER_CHAT_PROMPT = true;
 var MINI_5D_NON_CLOSEABLE_GROUPCHATS       = [];
+var MINI_5D_NO_USERLIST_GROUPCHATS         = [];
+var MINI_5D_STAFF_POSTFIXES                = [];
+
 
 // Setups connection handlers
 function setupConMini(con) {
@@ -8121,6 +8124,31 @@ function initializeMini() {
 		});
 }
 
+// 5d specific function
+function mini_5d_list_contains_groupchat(chat_list, xid) {
+  if (chat_list && chat_list.length) {
+  	for(var g=0; g < chat_list.length; g++) {                     
+  		if(xid == bareXID(generateXID(chat_list[g], 'groupchat'))) {
+        return true;
+  		}
+  	} 
+  } 
+	return false ;
+}
+
+function mini_5d_nickname_ends_with_postfix(postfix_list, xid) {
+  var user = thisResource(xid);
+  if (postfix_list && postfix_list.length) {
+  	for(var g=0; g < postfix_list.length; g++) {    
+  	  var postfix = postfix_list[g];
+  	  if (user.length >= postfix.length && user.slice(-postfix.length) == postfix) {
+  	    return true;
+  	  } 
+  	} 
+  }   
+  return false ;
+}
+
 // Displays a roster buddy
 function addBuddyMini(xid, hash, nick, groupchat, subscription) {
 	// Element
@@ -8155,8 +8183,21 @@ function addBuddyMini(xid, hash, nick, groupchat, subscription) {
 	} else {
 	  substr = '';
 	}
+	
+  console.log('JAPPIX ADD BUDDY TO', groupchat, 'HIDE USERLIST IN', MINI_5D_NO_USERLIST_GROUPCHATS);
+  
+  // 5D MOD:  A) Determine whether or not this is a channel, where users should be hidden
+	var hideUsers = mini_5d_list_contains_groupchat(MINI_5D_NO_USERLIST_GROUPCHATS, groupchat);  
+  
+  // 5D MOD:  B) Determine, whether or not this is a staff user
+	var staffUser = mini_5d_nickname_ends_with_postfix(MINI_5D_STAFF_POSTFIXES, xid);
+	
+	if (hideUsers && !staffUser) {
+	  return false;  // 5D MOD: don't add to buddy list
+	}
+	
 	// Append this buddy content
-	var code = '<a class="jm_friend jm_offline" id="friend-' + hash
+	var code = '<a class="jm_friend jm_offline '+ (staffUser ? "jm_5d_staff_user" : "") +'" id="friend-' + hash
 	           + '" data-xid="' + escape(xid)
 	           + '" data-nick="' + escape(nick)
 	           +  '" data-hash="' + hash + '" href="#" '
