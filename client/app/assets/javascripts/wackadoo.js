@@ -160,13 +160,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
       // Define groupchats here
       if (beginner) {
-        MINI_GROUPCHATS               = tag ? [ tag+"@conference."+base, "plauderhöhle@conference."+base, 'help@conference.'+base ] : [ "plauderhöhle@conference."+base, 'help@conference.'+base ];
-        MINI_SUGGEST_GROUPCHATS       =  [ "global@conference."+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ]; 
+        MINI_GROUPCHATS                  = tag ? [ tag+"@conference."+base, "plauderhöhle@conference."+base, 'help@conference.'+base ] : [ "plauderhöhle@conference."+base, 'help@conference.'+base ];
+        MINI_SUGGEST_GROUPCHATS          =  [ "global@conference."+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ]; 
         MINI_5D_NON_CLOSEABLE_GROUPCHATS = tag ? [ 'help@conference.'+base,  tag+"@conference."+base ] : [ 'help@conference.'+base ];       
       }
       else {
-        MINI_GROUPCHATS               = tag ? [ tag+"@conference."+base, "plauderhöhle@conference."+base , "global@conference."+base] : [ "plauderhöhle@conference."+base,  "global@conference."+base ];
-        MINI_SUGGEST_GROUPCHATS       =  [ 'help@conference.'+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ];
+        MINI_GROUPCHATS                  = tag ? [ tag+"@conference."+base, "plauderhöhle@conference."+base , "global@conference."+base] : [ "plauderhöhle@conference."+base,  "global@conference."+base ];
+        MINI_SUGGEST_GROUPCHATS          =  [ 'help@conference.'+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ];
         MINI_5D_NON_CLOSEABLE_GROUPCHATS = tag ? [ tag+"@conference."+base, "global@conference."+base ] : [ "global@conference."+base ];       
       }
       MINI_GROUPCHATS.forEach(function(item) {
@@ -195,7 +195,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       // Notice: exclude "user" and "password" if using anonymous login
             
       if (AWE.Config.IN_DEVELOPMENT_MODE) {
-        console.log('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD, AWE.Config);
+        console.log('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
         launchMini(!beginner, true, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
       }
       else {
