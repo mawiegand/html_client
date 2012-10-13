@@ -368,6 +368,13 @@ AWE.Application = (function(module) {
     
     
       onMouseWheel: function(evt) {
+        var pageX = evt.pageX || (evt.originalEvent ? evt.originalEvent.pageX : null);
+        var pageY = evt.pageY || (evt.originalEvent ? evt.originalEvent.pageY : null);
+        
+        if (pageX && pageY && this.isCatchedByDomElement(pageX, pageY, evt.type)) {
+          return;
+        }
+        
         var controller = this.get('presentScreenController');
         if (!this.get('isModal') && controller && controller.onMouseWheel) {   
           controller.onMouseWheel(evt);
