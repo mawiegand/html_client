@@ -590,7 +590,9 @@ AWE.Application = (function(module) {
               return;
             }
           }
-          $(element).children().each(checkForEvent);
+          $(element).children().each(function(i, child) { 
+            checkForEvent(child); 
+          });
         };
         
         for (var i = 0; i < this.domElements.length; i++) {
@@ -602,16 +604,16 @@ AWE.Application = (function(module) {
           if (element) {
             element = element.length === undefined ? [element] : element; // make sure it is an array
             for (var j=0; j < element.length; j++) {
-              // console.log('CHECK FOR EVENTS', element[j], j)
+//              console.log('CHECK ELEMENT', element[j], j, this.domElements[i].checkForEvents);
               if (this.domElements[i].checkForEvents) {
                 checkForEvent(element[j]);
                 if (result) {
-                  // console.log('CATCHED BY THIS ELEMENT');
+//                  console.log('CATCHED BY THIS ELEMENT');
                   return true;
                 }
               } else {
                 if (isIn(element[j])) {
-                  console.log('CATCHED BY THIS ELEMENT:', element[j]);
+//                  console.log('CATCHED BY THIS ELEMENT:', element[j]);
                   return true;
                 }
               }
