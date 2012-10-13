@@ -22,11 +22,14 @@ AWE.Config = (function(module) {
   module.DEBUG_LEVEL_INFO    = 2;
   module.DEBUG_LEVEL_DEBUG   = 3;
 
-  module.TIME_DEBUG_LEVEL = module.DEBUG_LEVEL_INFO
+  module.IN_DEVELOPMENT_MODE      =  <%= Rails.env.development? ? 'true' : 'false' %>;
+
+  module.TIME_DEBUG_LEVEL = module.DEBUG_LEVEL_INFO;
 
   
-  module.MAP_DEBUG_LEVEL  = module.DEBUG_LEVEL_INFO
+  module.MAP_DEBUG_LEVEL  = module.DEBUG_LEVEL_INFO;
   module.MAP_DEBUG_FRAMES = false;
+
   
   module.MAP_RUN_TESTS = false;
   module.MAP_SERVER_BASE          = module.SERVER_ROOT + '/game_server/de/map/';
@@ -45,7 +48,9 @@ AWE.Config = (function(module) {
   
   module.RAILS_ASSET_PATH         = "<%= asset_path('') %>";
 
-  module.JABBER_SERVER_BASE       = "<%= CLIENT_CONFIG['jabber_server_base'] %>"
+  module.JABBER_SERVER_BASE       = "<%= CLIENT_CONFIG['jabber_server_base'] %>";
+  module.JABBER_DEVELOPMENT_JID   = "<%= CLIENT_CONFIG['jabber_id'] %>";
+  module.JABBER_DEVELOPMENT_PWD   = "<%= CLIENT_CONFIG['jabber_pwd'] %>";
   
   module.EXTERNAL_FORUM_URL       = 'http://forum.uga-agga.de/wack-a-doo-f235/';
   module.EXTERNAL_MANUAL_URL      = 'http://wiki.wack-a-doo.de';

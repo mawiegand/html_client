@@ -6,10 +6,15 @@ defaults: &defaults
   use_dynamic_construction_lots: true
   
   shop_enabled: true
+  jabber_id: "none"
+  jabber_pwd: "none"
   
   
 development:
   <<: *defaults
+  
+  jabber_id: "service"
+  jabber_pwd: "P5Dda5eZmvCLFTw2"
   
   
 test:

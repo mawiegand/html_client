@@ -5964,6 +5964,7 @@ var MINI_ERROR_LINK				= 'https://mini.jappix.com/issues';
 
 // 5D MODS
 var MINI_5D_HIDE_SUGGEST_OTHER_CHAT_PROMPT = true;
+var MINI_5D_NON_CLOSEABLE_GROUPCHATS       = [];
 
 // Setups connection handlers
 function setupConMini(con) {
@@ -7788,13 +7789,13 @@ function chatMini(type, xid, nick, hash, pwd, show_pane) {
 
 		
 		// Check if the chat/groupchat exists
-		var groupchat_exists = false;
+		var groupchat_non_closeable = false;  // 5D MOD: explicitly specify non-closeable group chats
 		var chat_exists = false;
 		
-		if((type == 'groupchat') && MINI_GROUPCHATS && MINI_GROUPCHATS.length) {
-			for(var g=0; g < MINI_GROUPCHATS.length; g++) {           // 5D FIX: no global variable, save loop
-				if(xid == bareXID(generateXID(MINI_GROUPCHATS[g], 'groupchat'))) {
-					groupchat_exists = true;
+		if((type == 'groupchat') && MINI_5D_NON_CLOSEABLE_GROUPCHATS && MINI_5D_NON_CLOSEABLE_GROUPCHATS.length) { // 5D MOD: non-closeable
+			for(var g=0; g < MINI_5D_NON_CLOSEABLE_GROUPCHATS.length; g++) {                      // 5D FIX: no global variable, save loop
+				if(xid == bareXID(generateXID(MINI_5D_NON_CLOSEABLE_GROUPCHATS[g], 'groupchat'))) { // 5D MOD: non-closeable
+					groupchat_non_closeable = true;                                                   // 5D MOD: non-closeable
 					
 					break;
 				}
@@ -7812,7 +7813,7 @@ function chatMini(type, xid, nick, hash, pwd, show_pane) {
 		}
 
 		// Any close button to display?
-		if(((type == 'groupchat') && !groupchat_exists) || ((type == 'chat') && !chat_exists) || ((type != 'groupchat') && (type != 'chat')))
+		if(((type == 'groupchat') && !groupchat_non_closeable) || ((type == 'chat') && !chat_exists) || ((type != 'groupchat') && (type != 'chat'))) // 5D MOD: non-closeable
 			html += '<a class="jm_one-action jm_close jm_images" title="' + _e("Close") + '" href="#"></a>';
 		
 		html += '</div>' + 
