@@ -406,6 +406,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }
     },
     
+    baseButtonDoubleClicked: function() {
+      this.activateBaseController();
+    },    
+    
     characterButtonClicked: function() {
       var dialog = AWE.UI.Ember.ProfileView.create({
         characterBinding: 'AWE.GS.player.currentCharacter',
@@ -432,6 +436,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     // /////////////////////////////////////////////////////////////////////// 
     
     activateBaseController: function(reference) {
+      reference = reference ||  { locationId: AWE.GS.player.getPath('currentCharacter.base_location_id') };
       var baseController = this.get('settlementScreenController');
       if (!baseController) {
         baseController = AWE.Controller.createSettlementController('#layers');

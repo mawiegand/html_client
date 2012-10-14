@@ -44,6 +44,9 @@ AWE.UI = (function(module) {
     var _resource6LabelView;
     
     var _resourceBubbleView;
+    
+    var _lastClick;
+		var _maxTimeForDoubleClick = AWE.Config.MAP_DBLCLK_MAX_TIME_FOR_DBLCLK;
         
     my = my || {};
     
@@ -158,11 +161,19 @@ AWE.UI = (function(module) {
         _villageImageView.setImageForState(AWE.UI.ImageCache.getImage("hud/settlement/hovered"), module.CONTROL_STATE_HOVERED);
         _villageImageView.setFrame(AWE.Geometry.createRect(180, 24, 128, 128));
         _villageImageView.onClick = function() {
-          var baseControllerActive = WACKADOO.baseControllerActive();
-          WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
-          if (baseControllerActive) {
-            AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button1');
-          } 
+			    if (_lastClick !== undefined &&
+				      new Date().getTime() - _lastClick <= _maxTimeForDoubleClick) {  // double click
+				    WACKADOO.baseButtonDoubleClicked();
+				  }
+				  else {  // single click
+				    _lastClick = new Date().getTime();                 
+
+            var baseControllerActive = WACKADOO.baseControllerActive();
+            WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+            if (baseControllerActive) {
+              AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button1');
+            } 
+				  }   
         };
           
         _settlementImageView = AWE.UI.createImageView();
