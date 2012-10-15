@@ -273,6 +273,11 @@ AWE.UI.Ember = (function(module) {
     
     progressBarPosition: null,
     
+    showProgressBar: function() {
+      var exp = this.getPath('character.exp');
+      return exp && exp > 1000; // hack to prevent layout errors. number must go to config
+    }.property('character.exp').cacheable(),
+    
     nextMundaneRanks: function() {
       var ranks   = AWE.GS.RulesManager.getRules().character_ranks.mundane;
       var present = this.getPath('character.mundane_rank');
