@@ -104,6 +104,10 @@ AWE.UI.Ember = (function(module) {
       this.get('parentView').buyPlatinumOfferPressed(this.getPath('offer.id'));
     },
     
+    offerDurationDays: function() {
+      return this.getPath('offer.duration') / 24;
+    }.property('offer').cacheable(),
+    
     classNameBindings: ['active'],
     
     active: function() {
