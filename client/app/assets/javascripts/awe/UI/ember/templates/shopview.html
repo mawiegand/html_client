@@ -10,7 +10,7 @@
           {{#unless shopEnabled }}
             <p>Der Shop ist vorübergehend nicht erreichbar!</p>
           {{else}}
-            <p>{{ t shop.currentCreditAmount }}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }} {{ t shop.platinumCredits }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="simple-button" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span></p>
+            <p>{{ t shop.currentCreditAmount }} <b>{{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }}</b> {{ t shop.platinumCredits }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="simple-button" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span></p>
             
             {{#if resourceOffers}}
             <h3>{{ t shop.resourceOffers }}</h3>
