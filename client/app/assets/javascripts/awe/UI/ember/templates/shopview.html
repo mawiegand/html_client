@@ -24,26 +24,10 @@
               {{/each}}
             {{/if}}
             
-            {{#if bonusOffers}}
-              <div class="clearfix"></div>
-              <h3>{{ t shop.bonusOffers }}</h3>
-                                
-              <div class="bonus-offer-header">
-                <div class="bonus-offer-description">{{ t shop.description }}</div>
-                <div class="bonus-offer-duration">{{ t shop.duration }}</div>
-                <div class="bonus-offer-price">{{ t shop.price }}</div>
-                <div class="bonus-offer-end">{{ t shop.expiry }}</div>
-                <div class="bonus-offer-button">{{ t shop.action }}</div>
-              </div>
-              {{#each bonusOffers}}
-                {{view AWE.UI.Ember.ShopBonusOffer offerBinding="this" shopBinding="shop" classNames="bonus-offer"}}
-              {{/each}}
-            {{/if}}
-
             {{#if platinumOffers}}
             
               <div class="clearfix"></div>
-              <h3>{{ t shop.platinumOffers }}</h3>
+              <h3>{{ t shop.platinumFunction }}</h3>
                                 
               <div class="bonus-offer-header">
                 <div class="bonus-offer-description">{{ t shop.description }}</div>
@@ -59,6 +43,22 @@
                 {{{ t shop.platinumDescription }}}
               </div>
             {{/if}}
+
+            {{#if bonusOffers}}
+              <div class="clearfix"></div>
+                                
+              <div class="bonus-offer-header">
+                <div class="bonus-offer-description">{{ t shop.description }}</div>
+                <div class="bonus-offer-duration">{{ t shop.duration }}</div>
+                <div class="bonus-offer-price">{{ t shop.price }}</div>
+                <div class="bonus-offer-end">{{ t shop.expiry }}</div>
+                <div class="bonus-offer-button">{{ t shop.action }}</div>
+              </div>
+              {{#each bonusOffers}}
+                {{view AWE.UI.Ember.ShopBonusOffer offerBinding="this" shopBinding="shop" classNames="bonus-offer"}}
+              {{/each}}
+            {{/if}}
+
           {{/unless}}
         {{/if}}
         
