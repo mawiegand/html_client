@@ -60,6 +60,15 @@ AWE.GS = (function(module) {
     
     resourcePool: null,
     
+    mundane_rank_numeric: function() {
+      return (this.get('mundane_rank') || 0) +1;
+    }.property('mundane_rank').cacheable(),
+
+    sacred_rank_numeric: function() {
+      return (this.get('sacred_rank') || 0) +1;
+    }.property('sacred_rank').cacheable(),
+
+    
     female: function() {
       var gender = this.get('gender') || "";
       return gender == "female";

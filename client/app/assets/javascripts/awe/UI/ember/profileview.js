@@ -271,6 +271,40 @@ AWE.UI.Ember = (function(module) {
     
     character: null,
     
+    progressBarPosition: null,
+    
+    nextMundaneRanks: function() {
+      var ranks   = AWE.GS.RulesManager.getRules().character_ranks.mundane;
+      var present = this.getPath('character.mundane_rank');
+      
+      if (present === undefined || present === null) {
+        return [];
+      }
+      
+      var infos = [];
+      for (var i=present; i < ranks.length; i++) {
+        infos.push({
+          rule:        ranks[i],
+          position:    ranks[i].exp,
+          presentRank: i === present,
+        });
+        if (i !== present && ranks[i].settlement_points > 0) {
+          break ;
+        }
+      }
+      
+      var maxExp = infos[infos.length-1].position;
+      infos.forEach(function(item) {
+        item.position = (1.0 - item.position/(1.0*maxExp)) * 100 + "%";
+      });
+      
+      var ownPosition = (1.0 - (this.getPath('character.exp') || 0)/(1.0*maxExp))*100 + "%";
+      this.set('progressBarPosition', ownPosition);
+      
+      return infos;
+    }.property('character.mundane_rank').cacheable(),
+    
+    
   });
   
   module.SettingsView = Ember.View.extend({    
