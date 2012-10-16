@@ -48,6 +48,10 @@ AWE.UI.Ember = (function(module) {
       log('Action not connected: buyOfferWasPressed.');
     },
     
+    platinumHelpPressed: function() {
+      window.open(AWE.Config.SHOP_SERVER_BASE + 'info', '_blank');
+    },
+    
     closePressed: function() {
       log('Action not connected: closedWasPressed.');
     },

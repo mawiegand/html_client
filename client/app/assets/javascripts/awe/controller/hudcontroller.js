@@ -260,26 +260,6 @@ AWE.Controller = (function(module) {
       that.applicationController.presentModalDialog(shopDialog);
     };
     
-    that.shopButtonClicked = function() {
-      
-      var queue = AWE.GS.TrainingQueueManager.getQueue(1);
-      var unitId = 1;
-      var quantity = 10;
-      
-      var action = AWE.Action.Training.createJobCreateAction(queue, unitId, quantity);
-      
-      action.send(function(status) {
-        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-          log(status, "Training job created.");
-        }
-        else {
-          log(status, "The server did not accept the training command.");
-          // TODO Fehlermeldung 
-        }
-      });
-      
-    };
-    
     that.rankingButtonClicked = function() {
       
       console.log('Ranking button clicked.');
