@@ -327,13 +327,29 @@ AWE.UI.Ember = (function(module) {
       }
       
       var infos = [];
+      var prevPos  = null;
+      var prevLine = null;
       members.filter(function(character) {
         return character.get('exp') > 1000.0 && character.get('id') !== characterId;
+      }).sort(function(a,b) {
+        return a.get('exp') - b.get('exp');
       }).forEach(function(character) {
+        var exp = character.get('exp') || 0;
+        var position = Math.max(0, 1.0 - exp / (1.0*maxExp));
+        var line = 0;
+        
+        if (prevPos && Math.abs(position-prevPos) < 0.10) {
+          line = (prevLine + 1) % 3;
+        }
+
         infos.push({
           name:     character.get('name'),
-          position: Math.min(1.0, 1.0 - (character.get('exp') || 0) / (1.0*maxExp)) * 100 + "%",
+          position: position * 100 + "%",
+          height:   11 * (line+1),
+          margin:   11 * line,
         });
+        prevPos  = position;
+        prevLine = line;
       });
             
       return infos;
