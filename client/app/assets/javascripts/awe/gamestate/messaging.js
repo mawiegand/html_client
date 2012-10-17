@@ -55,7 +55,9 @@ AWE.GS = (function(module) {
 
   module.Inbox = module.MessageBox.extend({
     typeName: 'Inbox',
-    name:     'Inbox',
+    name: function() {
+      return AWE.I18n.lookupTranslation('messaging.inbox');
+    }.property('id').cacheable(),
     ownerIdObserver: AWE.Partials.attributeHashObserver(module.InboxAccess, 'owner_id', 'old_owner_id').observes('owner_id'),   
   
     hashableEntries: function() {
@@ -73,7 +75,10 @@ AWE.GS = (function(module) {
 
   module.Outbox = module.MessageBox.extend({
     typeName: 'Outbox',
-    name:     'Outbox',
+    name: function() {
+      return AWE.I18n.lookupTranslation('messaging.outbox');
+    }.property('id').cacheable(),
+    
     ownerIdObserver: AWE.Partials.attributeHashObserver(module.OutboxAccess, 'owner_id', 'old_owner_id').observes('owner_id'),    
 
     hashableEntries: function() {
@@ -90,7 +95,9 @@ AWE.GS = (function(module) {
 
   module.Archive = module.MessageBox.extend({
     typeName: 'Archive',
-    name:     'Archive',
+    name: function() {
+      return AWE.I18n.lookupTranslation('messaging.archive');
+    }.property('id').cacheable(),
     ownerIdObserver: AWE.Partials.attributeHashObserver(module.ArchiveAccess, 'owner_id', 'old_owner_id').observes('owner_id'),    
 
     hashableEntries: function() {

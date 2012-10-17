@@ -144,10 +144,9 @@ AWE.UI = (function(module) {
         _presentGender = "male";
       }
       
-      var heroNameView = _heroHeadImageView.textLabel();
-      heroNameView.font = "11px Arial";
-      heroNameView.color = 'rgb(0,0,0)';
-      heroNameView.y = 96;
+      _heroHeadImageView.setFont("11px Arial");
+      _heroHeadImageView.setColor('rgb(0,0,0)');
+      _heroHeadImageView.setTextPos(null, 96);
       var name = character.get('name') ? character.get('name').substring(0, Math.min(12, character.get('name').length)) : ""
       if (_heroHeadImageView.text() != name) {
         _heroHeadImageView.setText(name);
@@ -215,7 +214,7 @@ AWE.UI = (function(module) {
       // Messages
       if (!_messagesButton) {
         _messagesButton = AWE.UI.createButtonView();
-        _messagesButton.initWithControllerTextAndImage(my.controller, 'Messages', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _messagesButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.messages'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         _messagesButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         _messagesButton.setFrame(AWE.Geometry.createRect(264, -10, 72, 72));
         _messagesButton.onClick = function() { WACKADOO.messagesButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
@@ -223,9 +222,9 @@ AWE.UI = (function(module) {
       }
       if (AWE.GS.CharacterManager.getCurrentCharacter()) {
         var unread = AWE.GS.CharacterManager.getCurrentCharacter().getPath('inbox.unread_messages_count');
-        var string = "Messages";
+        var string = AWE.I18n.lookupTranslation('map.button.messages');
         if (unread !== undefined && unread > 0) {
-          string = "Messages\n(" + unread + ")";
+          string += "\n(" + unread + ")";
         }
         if (string !== _messagesButton.text()) {
           _messagesButton.setText(string);
@@ -234,7 +233,7 @@ AWE.UI = (function(module) {
   
       if (!_moreButton) {
         _moreButton = AWE.UI.createButtonView();
-        _moreButton.initWithControllerTextAndImage(my.controller, 'Ranking', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _moreButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.ranking'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         _moreButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         _moreButton.setFrame(AWE.Geometry.createRect(290, 48, 72, 72));
         // _moreButton.onClick = function() { WACKADOO.messagesButtonClicked();  }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
@@ -267,7 +266,7 @@ AWE.UI = (function(module) {
       
       if (!_shopButton && AWE.Config.SHOP_ENABLED) {
         _shopButton = AWE.UI.createButtonView();
-        _shopButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('shop.button'), AWE.UI.ImageCache.getImage("hud/shop/normal"));
+        _shopButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.shop'), AWE.UI.ImageCache.getImage("hud/shop/normal"));
         _shopButton.setImageForState(AWE.UI.ImageCache.getImage("hud/shop/hovered"), module.CONTROL_STATE_HOVERED);
         _shopButton.setFrame(AWE.Geometry.createRect(20, 90, 100, 30));
         _shopButton.onClick = function() {
@@ -410,9 +409,9 @@ AWE.UI = (function(module) {
       
       if (!changed && AWE.GS.CharacterManager.getCurrentCharacter()) {
         var unread = AWE.GS.CharacterManager.getCurrentCharacter().getPath('inbox.unread_messages_count');
-        var string = "Messages";
+        var string = AWE.I18n.lookupTranslation('map.button.messages');
         if (unread !== undefined && unread > 0) {
-          string = "Messages\n(" + unread + ")";
+          string += "\n(" + unread + ")";
         }
         changed = changed || string !== _messagesButton.text();
       }      

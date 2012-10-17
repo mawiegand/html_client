@@ -262,7 +262,7 @@ AWE.UI = (function(module) {
       // buttons oben
       if (!_infoButtonView) {
         _infoButtonView = AWE.UI.createButtonView();
-        _infoButtonView.initWithControllerTextAndImage(my.controller, 'Info', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _infoButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.info'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         _infoButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         _infoButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
         _infoButtonView.onClick = function() {
@@ -273,7 +273,7 @@ AWE.UI = (function(module) {
   
       if (!_reinforceButtonView && isOwnArmy) { 
         _reinforceButtonView = AWE.UI.createButtonView();
-        _reinforceButtonView.initWithControllerTextAndImage(my.controller, 'Reinforce', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _reinforceButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.reinforce'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         _reinforceButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         _reinforceButtonView.setFrame(AWE.Geometry.createRect(268, 0, 48, 48));
         _reinforceButtonView.onClick = function() {

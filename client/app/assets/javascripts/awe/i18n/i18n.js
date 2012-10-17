@@ -5,9 +5,8 @@
 
  
 var AWE = window.AWE || {};
-AWE.I18n = function(module) {
-  
 
+AWE.I18n = function(module) {
 
   module.lookupTranslation = function(path) {
     if (path === undefined || path === null) return "" ;

@@ -76,7 +76,7 @@ AWE.UI = (function(module) {
       
       if (!enterButton && my.region.ownerId() === currentCharacter.get('id')) {
         enterButton = AWE.UI.createButtonView();
-        enterButton.initWithControllerTextAndImage(my.controller, 'Enter', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        enterButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.enter'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         enterButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         enterButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
         enterButton.setFrame(AWE.Geometry.createRect(12, 0, 52, 52));
@@ -93,7 +93,7 @@ AWE.UI = (function(module) {
       
       if (!attackButton && my.region.ownerId() === currentCharacter.get('id') && !0) { // check ongoing battle
         attackButton = AWE.UI.createButtonView();
-        attackButton.initWithControllerTextAndImage(my.controller, 'Attack', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        attackButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.attack'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         attackButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         attackButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
         attackButton.setFrame(AWE.Geometry.createRect(12, 56, 52, 52));
@@ -131,7 +131,7 @@ AWE.UI = (function(module) {
       
       if (!battleButton && 0) {  // ongoing battle -> attribute is missing in database ("mode")
         battleButton = AWE.UI.createButtonView();
-        battleButton.initWithControllerTextAndImage(my.controller, 'Battle', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        battleButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.battle'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         battleButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         battleButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
         battleButton.setFrame(AWE.Geometry.createRect(12, 56, 52, 52));
@@ -148,7 +148,7 @@ AWE.UI = (function(module) {
       
       if (!_battleInfoButtonView) {
         _battleInfoButtonView = AWE.UI.createButtonView();
-        _battleInfoButtonView.initWithControllerTextAndImage(my.controller, 'Battle Info', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _battleInfoButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.battleInfo'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         _battleInfoButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         _battleInfoButtonView.setFrame(AWE.Geometry.createRect(128, -70, 52, 52));
         _battleInfoButtonView.onClick = function() {

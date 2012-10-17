@@ -42,7 +42,7 @@ AWE.UI = (function(module) {
 
       if (!my.tutorialButtonView) {
         my.tutorialButtonView = AWE.UI.createButtonView();
-        my.tutorialButtonView.initWithControllerTextAndImage(my.controller, 'Quests', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        my.tutorialButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.quests'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         my.tutorialButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         my.tutorialButtonView.setFrame(AWE.Geometry.createRect(0, 0, 72, 72));
         my.tutorialButtonView.onClick = function() {

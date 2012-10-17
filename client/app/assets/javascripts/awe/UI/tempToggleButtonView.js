@@ -29,7 +29,7 @@ AWE.UI = (function(module) {
       
       if (!my.toggleButtonView) {
         my.toggleButtonView = AWE.UI.createButtonView();
-        my.toggleButtonView.initWithControllerTextAndImage(my.controller, 'Game', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        my.toggleButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.game'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         my.toggleButtonView.setFrame(AWE.Geometry.createRect(0, 0, 48, 48));
         my.toggleButtonView.onClick = function() {
@@ -38,7 +38,7 @@ AWE.UI = (function(module) {
         this.addChild(my.toggleButtonView);
       }
       
-      my.toggleButtonView.setText(worldMap ? 'World' : 'Game');
+      my.toggleButtonView.setText(worldMap ? AWE.I18n.lookupTranslation('map.button.world') : AWE.I18n.lookupTranslation('map.button.game'));
     }
     
     that.onToggleButtonClick = function() {
@@ -77,7 +77,7 @@ AWE.UI = (function(module) {
       
       if (!my.toggleButtonView) {
         my.toggleButtonView = AWE.UI.createButtonView();
-        my.toggleButtonView.initWithControllerTextAndImage(my.controller, 'Strategic', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        my.toggleButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.strategic'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         my.toggleButtonView.setFrame(AWE.Geometry.createRect(0, 0, 48, 48));
         my.toggleButtonView.onClick = function() {
@@ -86,7 +86,7 @@ AWE.UI = (function(module) {
         this.addChild(my.toggleButtonView);
       }
       
-      my.toggleButtonView.setText(politicalMap ? 'Terrain' : 'Strategic');
+      my.toggleButtonView.setText(politicalMap ? AWE.I18n.lookupTranslation('map.button.terrain') : AWE.I18n.lookupTranslation('map.button.strategic'));
     }
     
     that.onToggleButtonClick = function() {
@@ -122,7 +122,7 @@ AWE.UI = (function(module) {
     that.recalcView = function() {
       if (!my.toggleButtonView) {
         my.toggleButtonView = AWE.UI.createButtonView();
-        my.toggleButtonView.initWithControllerTextAndImage(my.controller, 'Encyclopedia', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        my.toggleButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.encyclopedia'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         my.toggleButtonView.setFrame(AWE.Geometry.createRect(0, 0, 48, 48));
         my.toggleButtonView.onClick = function() {

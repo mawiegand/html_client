@@ -220,7 +220,7 @@ AWE.UI = (function(module) {
       // buttons oben
       if (!_infoButtonView && my.region.location(0)) {
         _infoButtonView = AWE.UI.createButtonView();
-        _infoButtonView.initWithControllerTextAndImage(my.controller, 'Info', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _infoButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.info'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         _infoButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         _infoButtonView.setFrame(AWE.Geometry.createRect(168, 0, 48, 48));
         _infoButtonView.onClick = function() {
@@ -231,7 +231,7 @@ AWE.UI = (function(module) {
 
       if (!_newArmyButtonView && my.region.location(0) && my.region.location(0).isOwn()) {
         _newArmyButtonView = AWE.UI.createButtonView();
-        _newArmyButtonView.initWithControllerTextAndImage(my.controller, 'New Army', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _newArmyButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.newArmy'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         _newArmyButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         _newArmyButtonView.setFrame(AWE.Geometry.createRect(280, 0, 48, 48));
         _newArmyButtonView.onClick = function() {
