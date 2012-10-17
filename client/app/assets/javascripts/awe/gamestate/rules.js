@@ -119,6 +119,18 @@ AWE.GS = (function(module) {
       console.log('ERROR: requested non-existing building type ' + symbolicId);
 		},
 		
+		getSettlementTypeWithSymbolicId: function(symbolicId) {
+      var settlementTypes = this.get('settlement_types');
+      
+      for (var i = 0; i < settlementTypes.length; i++) {
+        var settlementType = settlementTypes[i];
+        if (settlementType['symbolic_id'] === symbolicId) {
+          return settlementType;
+        }
+      }
+      console.log('ERROR: requested non-existing settlement type ' + symbolicId);
+		},
+		
 		/** looks-up the queue type for the given (numeric) id. */
 		getQueueType: function(queueTypeId) {
 		  var queueType = this.get('queue_types')[queueTypeId];

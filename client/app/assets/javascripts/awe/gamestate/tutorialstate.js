@@ -321,13 +321,15 @@ AWE.GS = (function(module) {
     checkSettlements: function(settlementTest) {
       // log('---> checkSettlements', settlementTest);
 
-      if (settlementTest.min_count == null) {
-        log('ERROR in AWE.GS.QuestState.checkSettlements: checkSettlements.min_count missing in quest id ' + this.get('quest_id'));
+      if (settlementTest.min_count == null || settlementTest.type == null) {
+        log('ERROR in AWE.GS.QuestState.checkSettlements: settlementTest.min_count or settlementTest.type missing in quest id ' + this.get('quest_id'));
         return false;
       }
 
-      // log('---> settlements', AWE.Util.hashCount(AWE.GS.SettlementManager.getOwnSettlements()), settlementTest.min_count);
-      return AWE.Util.hashCount(AWE.GS.SettlementManager.getOwnSettlements()) > settlementTest.min_count  // don't check equality => don't count home base
+      var settlementType = AWE.GS.RulesManager.getRules().getSettlementTypeWithSymbolicId(settlementTest.type);
+        
+      // log('---> settlements', AWE.GS.SettlementManager.getOwnSettlementsOfType(settlementType.id), settlementTest.min_count, settlementTest.type, settlementType);
+      return AWE.Util.hashCount(AWE.GS.SettlementManager.getOwnSettlementsOfType(settlementType.id)) >= settlementTest.min_count
     },
         
     checkArmies: function(armyTest) {

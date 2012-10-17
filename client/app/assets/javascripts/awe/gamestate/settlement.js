@@ -314,6 +314,19 @@ AWE.GS = (function(module) {
       return AWE.GS.SettlementAccess.getAllForOwner_id(AWE.GS.CharacterManager.getCurrentCharacter().getId());
     }
     
+    that.getOwnSettlementsOfType = function(type) {
+      var ownSettlements = AWE.GS.SettlementAccess.getAllForOwner_id(AWE.GS.CharacterManager.getCurrentCharacter().getId());
+      var foundSettlements = {};
+      
+      AWE.Ext.applyFunctionToElements(ownSettlements, function(settlement) {
+        if (settlement.get('type_id') == type) {
+          foundSettlements[settlement.getId()] = settlement;
+        }
+      });
+      
+      return foundSettlements;
+    }
+    
     that.getHomeBaseOfCharacter = function(character) {
       var locationId = character.get('base_location_id');
       return locationId ? this.getSettlementAtLocation(locationId) : null;
