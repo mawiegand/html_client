@@ -259,6 +259,10 @@ AWE.GS = (function(module) {
       return AWE.GS.CharacterAccess.getAllForAlliance_id(id)
     };
     
+    that.getEnumerableMembersOfAlliance = function(id) { 
+      return AWE.GS.CharacterAccess.getEnumerableForAlliance_id(id)
+    };
+    
     that.lastUpdateAtForAllianceId = function(allianceId, updateType) {
       return module.CharacterAccess.lastUpdateForAlliance_id(allianceId, updateType);// modified after
     };

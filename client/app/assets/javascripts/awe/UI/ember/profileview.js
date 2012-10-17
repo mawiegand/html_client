@@ -80,7 +80,8 @@ AWE.UI.Ember = (function(module) {
         { key:   "tab1",
           title: "Info", 
           view:  AWE.UI.Ember.ProfileInfoView.extend({ 
-            characterBinding: "parentView.parentView.character" 
+            characterBinding: "parentView.parentView.character", 
+            allianceBinding:  "parentView.parentView.alliance", 
           })
         }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
         { key:   "tab2",
@@ -121,6 +122,7 @@ AWE.UI.Ember = (function(module) {
     
     character: null,
     alliance:  null,
+    allianceMember: null,
 
     onClose:   null,
     
@@ -147,7 +149,7 @@ AWE.UI.Ember = (function(module) {
     
     allianceIdObserver: function() {
       this.setAndUpdateAlliance();
-    }.observes('character.alliance_id'),
+    }.observes('character.alliance_id'),  
     
     closePressed: function() {
       this.destroy();
@@ -269,9 +271,13 @@ AWE.UI.Ember = (function(module) {
   module.ProfileInfoView = Ember.View.extend({    
     templateName: 'character-profile-info-view',
     
-    character: null,
+    character:           null,
+    alliance:            null,
+    allianceMembers:     null,
     
     progressBarPosition: null,
+    
+    maxExp:              null,
     
     showProgressBar: function() {
       var exp = this.getPath('character.exp');
@@ -306,10 +312,71 @@ AWE.UI.Ember = (function(module) {
       var ownPosition = (1.0 - (this.getPath('character.exp') || 0)/(1.0*maxExp))*100 + "%";
       this.set('progressBarPosition', ownPosition);
       
+      this.set('maxExp', maxExp);
+      
       return infos;
-    }.property('character.mundane_rank').cacheable(),
+    }.property('character.exp').cacheable(),
     
+    friendProgress: function() {
+      var maxExp      = this.get('maxExp');
+      var members     = this.get('allianceMembers');
+      var characterId = this.getPath('character.id');
+      
+      if (!maxExp || !members) {
+        return null;
+      }
+      
+      var infos = [];
+      var prevPos  = null;
+      var prevLine = null;
+      members.filter(function(character) {
+        return character.get('exp') > 1000.0 && character.get('id') !== characterId;
+      }).sort(function(a,b) {
+        return a.get('exp') - b.get('exp');
+      }).forEach(function(character) {
+        var exp = character.get('exp') || 0;
+        var position = Math.max(0, 1.0 - exp / (1.0*maxExp));
+        var line = 0;
+        
+        if (prevPos && Math.abs(position-prevPos) < 0.10) {
+          line = (prevLine + 1) % 7;
+        }
+
+        infos.push({
+          name:     character.get('name'),
+          position: position * 100 + "%",
+          height:   11 * (line+1),
+          margin:   11 * line,
+        });
+        prevPos  = position;
+        prevLine = line;
+      });
+            
+      return infos;
+    }.property('allianceMembers.@each.exp', 'maxExp').cacheable(),
     
+    allianceObserver: function() {
+
+      var allianceId = this.getPath('alliance.id');
+
+      if (!allianceId) { 
+        this.set('allianceMembers', null);
+        return ; 
+      }
+      var members = AWE.GS.CharacterManager.getEnumerableMembersOfAlliance(allianceId);
+      if ((!members || members.length == 0) ||
+          (members && AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < AWE.GS.TimeManager.estimatedServerTime().getTime())) { // have alliance id, but no corresponding alliance
+        var self = this;
+        AWE.GS.CharacterManager.updateMembersOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+          var members = AWE.GS.CharacterManager.getEnumerableMembersOfAlliance(allianceId);
+          self.set('allianceMembers', members);
+        });
+      }
+      else {
+        this.set('allianceMembers', members);   
+      }
+    }.observes('alliance.id'),  
+        
   });
   
   module.SettingsView = Ember.View.extend({    
