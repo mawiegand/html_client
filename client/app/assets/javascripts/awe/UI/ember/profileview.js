@@ -339,7 +339,7 @@ AWE.UI.Ember = (function(module) {
         var line = 0;
         
         if (prevPos && Math.abs(position-prevPos) < 0.10) {
-          line = (prevLine + 1) % 6;
+          line = (prevLine + 1) % 7;
         }
 
         infos.push({
