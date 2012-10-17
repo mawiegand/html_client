@@ -485,7 +485,7 @@ AWE.Application = (function(module) {
             if (rootController.typeName == 'SettlementController' && controller.typeName == 'MapController') {
               var settlement = AWE.GS.SettlementManager.getSettlement(rootController.settlementId);
               var node = settlement.get('region').node();
-              if (!controller.selectedView() || controller.selectedView().location() != settlement.get('location')) {
+              if (!controller.selectedView() || (controller.selectedView().location && controller.selectedView().location() != settlement.get('location'))) {
                 controller.moveTo(node);
               }
               controller.setSelectedSettlement(settlement);
