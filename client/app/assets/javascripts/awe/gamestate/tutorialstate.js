@@ -533,7 +533,6 @@ AWE.GS = (function(module) {
     var checking = false;
     var delayedFinishedQuestState = null;
     var delayedStartQuestState = null;
-    
 
     // protected attributes and methods ////////////////////////////////////
 
@@ -608,9 +607,10 @@ AWE.GS = (function(module) {
       
       if (!that.tutorialEnabled()) return;
       log('---> triggerTutorialChecks');
-      log('---> triggerTutorialChecks', !WACKADOO.modalDialogOpen(), !checking, lastRewardsCheck.getTime() + 3000 < new Date().getTime());
+      log('---> triggerTutorialChecks', new Date().getTime() - (lastQuestClosed.getTime() + AWE.Config.TUTORIAL_STATE_DELAY_INTERVAL));
       
-      if (!WACKADOO.modalDialogOpen() && lastRewardsCheck.getTime() + 3000 < new Date().getTime()) { // timeout
+      if (!WACKADOO.modalDialogOpen() &&
+          lastRewardsCheck.getTime() + 3000 < new Date().getTime()) { // timeout
         lastRewardsCheck = new Date();
         log('---> triggerTutorialChecks: start checking');
         
@@ -830,7 +830,8 @@ AWE.GS = (function(module) {
 
       log('---> showQuestInfoDialog ', AWE.GS.TutorialLocalState.questsDisplayed[questState.get('quest_id')], questState.get('status'));
       
-      if (AWE.GS.TutorialLocalState.questsDisplayed[questState.get('quest_id')] !== true && questState.get('status') === AWE.GS.QUEST_STATUS_NEW) {
+      if (AWE.GS.TutorialLocalState.questsDisplayed[questState.get('quest_id')] !== true &&
+          questState.get('status') === AWE.GS.QUEST_STATUS_NEW) {
         checking = true;
         var dialog = AWE.UI.Ember.QuestDialog.create({
           questState: questState,

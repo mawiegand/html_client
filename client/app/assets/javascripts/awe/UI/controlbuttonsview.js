@@ -47,6 +47,7 @@ AWE.UI = (function(module) {
         my.tutorialButtonView.setFrame(AWE.Geometry.createRect(0, 0, 72, 72));
         my.tutorialButtonView.onClick = function() {
           WACKADOO.showQuestListDialog();
+          AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_quest_button');          
         };
         this.addChild(my.tutorialButtonView);
       }
