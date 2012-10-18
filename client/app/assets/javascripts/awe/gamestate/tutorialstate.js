@@ -607,7 +607,6 @@ AWE.GS = (function(module) {
       
       if (!that.tutorialEnabled()) return;
       log('---> triggerTutorialChecks');
-      log('---> triggerTutorialChecks', new Date().getTime() - (lastQuestClosed.getTime() + AWE.Config.TUTORIAL_STATE_DELAY_INTERVAL));
       
       if (!WACKADOO.modalDialogOpen() &&
           lastRewardsCheck.getTime() + 3000 < new Date().getTime()) { // timeout
