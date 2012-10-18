@@ -164,12 +164,14 @@ AWE.UI = (function(module) {
     
     that.setColor = function(color) {
       _labelText.color = color;
+//      _labelText2.color = color;
       this.setNeedsUpdate();
     }
     
     that.setFont = function(font) {
       _labelText.font = font;
       _labelText2.font = font;
+      _labelText2.color = "#000";
       this.setNeedsUpdate();
     }
     
