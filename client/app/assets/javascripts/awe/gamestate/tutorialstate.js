@@ -20,6 +20,10 @@ AWE.GS = (function(module) {
   //
   // ///////////////////////////////////////////////////////////////////////    
     
+  module.TutorialLocalState = Ember.Object.create({
+    questsDisplayed: [],
+  });
+    
   module.TutorialState = module.Entity.extend({     // extends Entity to Tutorial State
     typeName: 'TutorialState',          ///< identifies instances of this type
     
@@ -763,7 +767,7 @@ AWE.GS = (function(module) {
         // only display first new quest, even if there are more. the other quest will be displayed later on.            
         var newQuestState = newQuestStates[0];
           
-        if (newQuestState.get('quest') != null && !newQuestState.getPath('quest.hide_start_dialog') && newQuestState.get('status') === module.QUEST_STATUS_NEW) {
+        if (newQuestState.get('quest') != null && !newQuestState.getPath('quest.hide_start_dialog')) {
           log('---> showNextNewQuest: hide_start_dialog', false);
           if (WACKADOO.modalDialogOpen()) {
             log('---> showNextNewQuest: delay start dialog');
@@ -823,9 +827,9 @@ AWE.GS = (function(module) {
       
       if (!that.tutorialEnabled()) return;
 
-      log('---> showQuestInfoDialog ', questState.get('status'));
+      log('---> showQuestInfoDialog ', AWE.GS.TutorialLocalState.questsDisplayed[questState.get('quest_id')], questState.get('status'));
       
-      if (questState.get('status') === AWE.GS.QUEST_STATUS_NEW) {
+      if (AWE.GS.TutorialLocalState.questsDisplayed[questState.get('quest_id')] !== true && questState.get('status') === AWE.GS.QUEST_STATUS_NEW) {
         checking = true;
         var dialog = AWE.UI.Ember.QuestDialog.create({
           questState: questState,
@@ -880,9 +884,10 @@ AWE.GS = (function(module) {
     }
     
     that.setQuestDisplayed = function(questState) {
-      log('---> setQuestDisplayed before setting to displayed', questState.get('status'))
+      log('---> setQuestDisplayed before setting to displayed', questState.get('quest_id'), questState.get('status'), AWE.GS.TutorialLocalState.questsDisplayed[questState.get('quest_id')])
       questState.set('status', AWE.GS.QUEST_STATUS_DISPLAYED);
-      log('---> setQuestDisplayed after setting to displayed', questState.get('status'))
+      AWE.GS.TutorialLocalState.questsDisplayed[questState.get('quest_id')] = true;
+      log('---> setQuestDisplayed after setting to displayed', questState.get('quest_id'), questState.get('status'), AWE.GS.TutorialLocalState.questsDisplayed[questState.get('quest_id')])
       var questDisplayedAction = AWE.Action.Tutorial.createQuestDisplayedAction(questState.getId());
       questDisplayedAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
