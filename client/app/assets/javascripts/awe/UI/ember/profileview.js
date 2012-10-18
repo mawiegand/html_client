@@ -78,7 +78,7 @@ AWE.UI.Ember = (function(module) {
      
       this.set('tabViews', [
         { key:   "tab1",
-          title: "Info", 
+          title: "Fortschritt", 
           view:  AWE.UI.Ember.ProfileInfoView.extend({ 
             characterBinding: "parentView.parentView.character", 
             allianceBinding:  "parentView.parentView.alliance", 
@@ -293,7 +293,7 @@ AWE.UI.Ember = (function(module) {
       }
       
       var infos = [];
-      for (var i=present; i < ranks.length; i++) {
+      for (var i=Math.max(present,1); i < ranks.length; i++) { // don't display first rank (Zero Experience)
         infos.push({
           rule:        ranks[i],
           position:    ranks[i].exp,
