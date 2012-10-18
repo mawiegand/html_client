@@ -57,7 +57,7 @@
         {{local quest.task}}
       </h3>
       {{#if questState.finished}}
-        Tipp: {{local quest.reward_text}}
+        {{#if local quest.reward_text}}Tipp:{{/if}} {{local quest.reward_text}}
       {{else}}
         {{local quest.description}}
       {{/if}}
