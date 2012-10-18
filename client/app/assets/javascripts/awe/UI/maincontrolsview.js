@@ -163,6 +163,9 @@ AWE.UI = (function(module) {
 			    if (_lastClick !== undefined &&
 				      new Date().getTime() - _lastClick <= _maxTimeForDoubleClick) {  // double click
 				    WACKADOO.baseButtonDoubleClicked();
+            if (!baseControllerActive) {
+              AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button2');
+            }
 				  }
 				  else {  // single click
 				    _lastClick = new Date().getTime();                 
