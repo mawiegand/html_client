@@ -530,7 +530,6 @@ AWE.GS = (function(module) {
     var lastTutorialStateUpdate = new Date(1970);
     
     var lastRewardsCheck = new Date(1970);
-    var checking = false;
     var delayedFinishedQuestState = null;
     var delayedStartQuestState = null;
 
@@ -646,7 +645,6 @@ AWE.GS = (function(module) {
 
       log('---> checkForRewards');
 
-      checking = true;
       var openQuestStates = that.tutorialState.get('openQuestStates');
       var success = false;
       AWE.Ext.applyFunction(openQuestStates, function(questState) {
@@ -665,12 +663,10 @@ AWE.GS = (function(module) {
               }
               else {
                 delayedFinishedQuestState = questState;
-                checking = false;
                 log('---> stop checking in checkForRewards2, modal');
               }
             }
             else {
-              checking = false;
               log('---> stop checking in checkForRewards2, !AWE.Net.OK');
             }
           });
@@ -686,7 +682,6 @@ AWE.GS = (function(module) {
     }
     
     that.stopChecking = function() {
-      checking = false;
       // log('---> stop checking with stopChecking method');
     }
     
@@ -694,7 +689,6 @@ AWE.GS = (function(module) {
       
       if (!that.tutorialEnabled()) return;
 
-      checking = true;
       // quest finden
       var quest = AWE.GS.TutorialManager.getTutorial().questWithSymbolicId(questName);
       log('-----> checkForCustomTestRewards 1', questName, quest);
@@ -718,24 +712,20 @@ AWE.GS = (function(module) {
               }
               else {
                 delayedFinishedQuestState = questState;
-                checking = false;
                 log('---> stop checking in checkForCustomTestRewards, modal');
               }
             }
             else {
-              checking = false;
               log('---> stop checking in checkForCustomTestRewards, !AWE.Net.OK');
             }
           });
         }
         else {
-          checking = false;
           log('---> stop checking in checkForCustomTestRewards, questState.get(status) > AWE.GS.QUEST_STATUS_DISPLAYED');
         }
       }
       else {
         log('ERROR in AWE.GS.TutorialManager.checkForCustomTestRewards: missing quest');
-        checking = false;
         log('---> stop checking in checkForCustomTestRewards, ERROR');
       }
     }
@@ -746,14 +736,12 @@ AWE.GS = (function(module) {
       
       log('---> checkForNewQuests');
 
-      checking = true;
       that.updateTutorialState(function() {
         if (that.tutorialState) {
           that.showNextNewQuest();
         }
         else {
           log('ERROR in AWE.GS.TutorialManager.checkForNewQuests: missing tutorialState');
-          checking = false;
           log('---> stop checking in checkForNewQuests, ERROR');
         }
       });
@@ -772,7 +760,6 @@ AWE.GS = (function(module) {
           if (WACKADOO.modalDialogOpen()) {
             log('---> showNextNewQuest: delay start dialog');
             delayedStartQuestState = newQuestState;
-            checking = false;
             log('---> stop checking in showNextNewQuest, modal');
           }
           else {
@@ -781,12 +768,10 @@ AWE.GS = (function(module) {
           }
         }
         else {
-          checking = false;
           log('---> stop checking in checkForNewQuests, hide_start_dialog');
         }   
       }
       else {
-        checking = false;
         log('---> stop checking in checkForNewQuests, newQuestStates == null');
       }
     }
@@ -831,14 +816,12 @@ AWE.GS = (function(module) {
       
       if (AWE.GS.TutorialLocalState.questsDisplayed[questState.get('quest_id')] !== true &&
           questState.get('status') === AWE.GS.QUEST_STATUS_NEW) {
-        checking = true;
         var dialog = AWE.UI.Ember.QuestDialog.create({
           questState: questState,
           header: AWE.I18n.lookupTranslation('tutorial.quest.start.header'),
           okPressed:    function() {
             this.destroy();
             log('---> checkForNewQuests: set displayed');
-            checking = false;
             log('---> stop checking in showQuestStartDialog, close dialog');
           },            
         });
@@ -872,7 +855,6 @@ AWE.GS = (function(module) {
 
       log('---> showQuestFinishedDialog');
 
-      checking = true;
       var dialog = AWE.UI.Ember.QuestDialog.create({
         header: AWE.I18n.lookupTranslation('tutorial.quest.end.header'),
         questState: questState,
