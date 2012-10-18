@@ -681,10 +681,6 @@ AWE.GS = (function(module) {
       }
     }
     
-    that.stopChecking = function() {
-      // log('---> stop checking with stopChecking method');
-    }
-    
     that.checkForCustomTestRewards = function(questName) {
       
       if (!that.tutorialEnabled()) return;

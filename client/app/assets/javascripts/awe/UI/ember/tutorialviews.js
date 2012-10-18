@@ -74,7 +74,6 @@ AWE.UI.Ember = (function(module) {
       
       AWE.GS.TutorialStateManager.redeemRewards(this.get('questState'), function() {
         that.destroy();
-        AWE.GS.TutorialStateManager.stopChecking();
       }, function() {
         that.set('redeeming', false);
       });
