@@ -28,6 +28,11 @@ AWE.UI.Ember = (function(module) {
       log('--> show Quest Info Button Pressed', quest)
       AWE.GS.TutorialStateManager.showQuestInfoDialog(quest);
     },
+    
+    okPressed: function() {
+      AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_quest_button');          
+      this.destroy();
+    }
   });  
   
   module.QuestListEntryView = Ember.View.extend({
