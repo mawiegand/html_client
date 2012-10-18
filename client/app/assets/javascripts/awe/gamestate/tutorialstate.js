@@ -610,7 +610,7 @@ AWE.GS = (function(module) {
       log('---> triggerTutorialChecks');
       log('---> triggerTutorialChecks', !WACKADOO.modalDialogOpen(), !checking, lastRewardsCheck.getTime() + 3000 < new Date().getTime());
       
-      if (!WACKADOO.modalDialogOpen() && !checking && lastRewardsCheck.getTime() + 3000 < new Date().getTime()) { // timeout
+      if (!WACKADOO.modalDialogOpen() && lastRewardsCheck.getTime() + 3000 < new Date().getTime()) { // timeout
         lastRewardsCheck = new Date();
         log('---> triggerTutorialChecks: start checking');
         
