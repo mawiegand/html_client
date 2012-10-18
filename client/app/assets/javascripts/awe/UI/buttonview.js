@@ -164,7 +164,6 @@ AWE.UI = (function(module) {
     
     that.setColor = function(color) {
       _labelText.color = color;
-      _labelText2.color = color;
       this.setNeedsUpdate();
     }
     
