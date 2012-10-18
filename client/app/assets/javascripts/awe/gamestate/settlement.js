@@ -244,7 +244,10 @@ AWE.GS = (function(module) {
     }.property('updated_at'),
     
     usedBuildingSlots: function() {
-      var enumerableSlots = this.get('enumerableSlots') || [];
+      var enumerableSlots = this.get('enumerableSlots');
+      if (!enumerableSlots || enumerableSlots.length === 0) {
+        return null;
+      }
       return enumerableSlots.filter(function(item) {
         return item.building_id !== undefined && item.building_id !== null 
       }).length
