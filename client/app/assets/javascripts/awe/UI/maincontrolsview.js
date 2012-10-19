@@ -164,7 +164,7 @@ AWE.UI = (function(module) {
 				      new Date().getTime() - _lastClick <= _maxTimeForDoubleClick) {  // double click
 				    WACKADOO.baseButtonDoubleClicked();
             if (!baseControllerActive) {
-              AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button2');
+              AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button2');
             }
 				  }
 				  else {  // single click
@@ -173,7 +173,7 @@ AWE.UI = (function(module) {
             var baseControllerActive = WACKADOO.baseControllerActive();
             WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
             if (baseControllerActive) {
-              AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button1');
+              AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button1');
             } 
 				  }   
         };
