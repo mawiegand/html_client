@@ -507,7 +507,7 @@ AWE.UI = (function(module) {
         _stanceView.setImage(stanceImage);
       }
       else {
-        console.log('CHECK ANIMATION')
+        log('CHECK ANIMATION')
         if      (_army.get("mode") === 0 && _animation.animation().currentAnimation !== 'stand' && _animation.animation().currentAnimation !== 'toStand') {        // 0: standing!, 1: walking, 2: fighting
           _animation.animation().gotoAndPlay('toStand');
         }

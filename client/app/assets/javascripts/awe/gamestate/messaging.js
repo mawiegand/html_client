@@ -46,7 +46,7 @@ AWE.GS = (function(module) {
     fetchEntries: function() {
       var entryManager = this.get('entryManager');
       if (!entryManager) {
-        console.log('ERROR: Message Box Entry Manager is missing.')
+        log('ERROR: Message Box Entry Manager is missing.')
         return ;
       }
       entryManager.updateEntriesOfMessageBox(this.get('id'));
@@ -401,7 +401,7 @@ AWE.GS = (function(module) {
       if (!inbox) {
         character.fetchInbox(function(inboxes, status) {
           if (status === AWE.Net.NOT_FOUND || !inboxes) {
-            console.log('ERROR: inbox of current character not found on server.');
+            log('ERROR: inbox of current character not found on server.');
           } 
           else { 
             inbox = AWE.GS.CharacterManager.getCurrentCharacter().get('inbox');
@@ -409,7 +409,7 @@ AWE.GS = (function(module) {
               inbox.fetchEntries();
             }
             else {
-              console.log('ERROR: inbox could not be fetched from server.');
+              log('ERROR: inbox could not be fetched from server.');
             }
           }
         });

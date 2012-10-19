@@ -59,7 +59,7 @@ AWE.Map = (function(module) {
         my.regions[region.id()] = region;
       }
      else {
-        console.log('WARNING: tried to add a region without an id to the map manager.')
+        log('WARNING: tried to add a region without an id to the map manager.')
       }
     };
     
@@ -68,7 +68,7 @@ AWE.Map = (function(module) {
         return my.locations[location.id()] = location;
       }
       else {
-        console.log('WARNING: tried to add a location without an id to the map manager.')
+        log('WARNING: tried to add a location without an id to the map manager.')
       }
     };
     
@@ -259,7 +259,7 @@ AWE.Map = (function(module) {
           var retVal = that.updateRegionForNode(node, function() {
             numRunningUpdates -= 1;
             if (recLevel <= 0 && numRunningUpdates == 0) {  // finished everything!!!
-              console.log ('finished updating regions in area.');
+              log ('finished updating regions in area.');
               if (callback) {
                 callback();
               }
@@ -293,7 +293,7 @@ AWE.Map = (function(module) {
       }
       else {
         region.startUpdate();
-        //console.log ( 'Fetch locations for ' + region);
+        //log ( 'Fetch locations for ' + region);
         $.getJSON(AWE.Config.MAP_SERVER_BASE+'regions/'+region.id()+'/locations', function(data) {
           if (data && data.length > 0) {
             var locations = new Array(data.length);

@@ -13,7 +13,7 @@ AWE.UI.Ember = (function(module) {
     templateName: 'welcome-dialog',
     
     imageSrc: function() {
-      console.log('IMAGE SOURCE')
+      log('IMAGE SOURCE')
       return AWE.I18n.lookupTranslation('welcome.image');
       
     }.property('templateName'),

@@ -66,7 +66,7 @@ AWE.Controller = (function(module) {
         character: character,
         
       });
-      console.log(center, center.get('character'), center.get('character').get('inbox'));
+      log(center, center.get('character'), center.get('character').get('inbox'));
       
       return center;
     }
@@ -98,7 +98,7 @@ AWE.Controller = (function(module) {
       var self = this;
       action = AWE.Action.Messaging.createSendMessageAction(message);
       action.send(function(status, jqXHR) {
-        console.log('SENT MESSAGE, STATUS', status);
+        log('SENT MESSAGE, STATUS', status);
         if (status === AWE.Net.CREATED || status === AWE.Net.OK) {
           self.discardDraft();
         }
@@ -106,7 +106,7 @@ AWE.Controller = (function(module) {
           self.view.setRecipientIsUnknown(true);
         }
         else {
-          console.log(status, "ERROR: The server did not accept the message.");
+          log(status, "ERROR: The server did not accept the message.");
           var dialog = AWE.UI.Ember.InfoDialog.create({
             contentTemplateName: 'server-command-failed-info',
             cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
@@ -123,7 +123,7 @@ AWE.Controller = (function(module) {
       if (this.view) {
         this.removeView();
       }
-      console.log('append MESSAGE CENTER')
+      log('append MESSAGE CENTER')
       this.updateView();
       this.view = this.createView();
       this.view.appendTo('#main-screen-controller');      
@@ -150,7 +150,7 @@ AWE.Controller = (function(module) {
           if (!outbox) {
             AWE.GS.CharacterManager.getCurrentCharacter().fetchOutbox(function(outboxes, status) {
               if (status === AWE.Net.NOT_FOUND || !outboxes) {
-                console.log('ERROR: outboxes of current character not found on server.');
+                log('ERROR: outboxes of current character not found on server.');
               } 
               else { 
                 outbox = AWE.GS.CharacterManager.getCurrentCharacter().get('outbox');
@@ -158,7 +158,7 @@ AWE.Controller = (function(module) {
                   outbox.fetchEntries();
                 }
                 else {
-                  console.log('ERROR: no outbox found.');
+                  log('ERROR: no outbox found.');
                 }
               }
             });

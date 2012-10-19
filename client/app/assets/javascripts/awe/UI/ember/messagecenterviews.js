@@ -214,7 +214,7 @@ AWE.UI.Ember = (function(module) {
     deleteClicked: function() {
       var selectedMessageEntry = this.get('selectedMessageEntry');
       if (!selectedMessageEntry || !this.get('displayingInbox')) {
-        console.log('ERROR: could not delete message.');
+        log('ERROR: could not delete message.');
         return ;
       }
       AWE.Action.Messaging.createDeleteMessageAction(selectedMessageEntry).send();
@@ -235,7 +235,7 @@ AWE.UI.Ember = (function(module) {
     messageReadMarker: function() {
       var selectedMessageEntry = this.get('selectedMessageEntry');
       if (this.get('displayingInbox') && selectedMessageEntry && !selectedMessageEntry.get('read')) {
-        console.log('mark message as read');
+        log('mark message as read');
         this.markRead(selectedMessageEntry);
       }
     }.observes('selectedMessageEntry'),

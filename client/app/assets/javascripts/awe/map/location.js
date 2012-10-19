@@ -175,7 +175,7 @@ AWE.Map = (function(module) {
     that.updateLocationFrom = function(location) {
 
       if (location.id() != _id) {
-        console.log('WARNING: updating data of location ' + _id + ' from a different location with id '+ location.id() + '.');
+        log('WARNING: updating data of location ' + _id + ' from a different location with id '+ location.id() + '.');
       }
         
       _id = location.id();

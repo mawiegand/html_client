@@ -31,7 +31,7 @@ AWE.GS = (function(module) {
     getSettlementType: function(id) {
       var settlementType = this.get('settlement_types')[id];
       if (settlementType === undefined || !settlementType) {
-        console.log('ERROR: requested non-existing settlement type ' + settlementType);
+        log('ERROR: requested non-existing settlement type ' + settlementType);
       }
       return settlementType;    
     },
@@ -39,7 +39,7 @@ AWE.GS = (function(module) {
     getUnitType: function(id) {
       var unitType = this.get('unit_types')[id];
       if (unitType === undefined || !unitType) {
-        console.log('ERROR: requested non-existing unit type ' + unitType);
+        log('ERROR: requested non-existing unit type ' + unitType);
       }
       return unitType;    
     },
@@ -60,13 +60,13 @@ AWE.GS = (function(module) {
           return unitType;
         }
       }
-      console.log('ERROR: requested non-existing unit type ' + symbolicId);
+      log('ERROR: requested non-existing unit type ' + symbolicId);
     },
     
     getBuildingType: function(id) {
       var buildingType = this.get('building_types')[id];
       if (buildingType === undefined || !buildingType) {
-        console.log('ERROR: requested non-existing building type ' + buildingType);
+        log('ERROR: requested non-existing building type ' + buildingType);
       }
       return buildingType;
     },    
@@ -74,7 +74,7 @@ AWE.GS = (function(module) {
 		getResourceType: function(id) {
 			var resourceType = this.get('resource_types')[id];
 			if (resourceType === undefined || !resourceType) {
-				console.log('ERROR: requested non-existing resource type ' + resourceType);
+				log('ERROR: requested non-existing resource type ' + resourceType);
 			}
 			return resourceType;
 		},
@@ -88,13 +88,13 @@ AWE.GS = (function(module) {
     			return resourceType;
 			  }
       }
- 			console.log('ERROR: requested non-existing resource type ' + symbolicId);
+ 			log('ERROR: requested non-existing resource type ' + symbolicId);
 		},
 		
 		getBuildingCategory: function(id) {
 			var buildingCategory = this.get('building_categories')[id];
 			if (buildingCategory === undefined || !buildingCategory) {
-				console.log('ERROR: requested non-existing building category ' + id);
+				log('ERROR: requested non-existing building category ' + id);
 				return null;
 			}
 			return buildingCategory;
@@ -116,7 +116,7 @@ AWE.GS = (function(module) {
           return buildingType;
         }
       }
-      console.log('ERROR: requested non-existing building type ' + symbolicId);
+      log('ERROR: requested non-existing building type ' + symbolicId);
 		},
 		
 		getSettlementTypeWithSymbolicId: function(symbolicId) {
@@ -128,14 +128,14 @@ AWE.GS = (function(module) {
           return settlementType;
         }
       }
-      console.log('ERROR: requested non-existing settlement type ' + symbolicId);
+      log('ERROR: requested non-existing settlement type ' + symbolicId);
 		},
 		
 		/** looks-up the queue type for the given (numeric) id. */
 		getQueueType: function(queueTypeId) {
 		  var queueType = this.get('queue_types')[queueTypeId];
 		  if (queueType === undefined || queueType === null) {
-				console.log('ERROR: requested non-existing queue type ' + queueTypeId);
+				log('ERROR: requested non-existing queue type ' + queueTypeId);
 		    return null;
 		  }
 		  return queueType;

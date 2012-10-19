@@ -299,7 +299,7 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
       return module.meetsScienceRequirement(requirement, character, considerJobs, onlyMax);
     }
     else {
-      //console.log('ERROR: Requirement of unknown type ', requirement.type);
+      //log('ERROR: Requirement of unknown type ', requirement.type);
     }
     return true ;
   };

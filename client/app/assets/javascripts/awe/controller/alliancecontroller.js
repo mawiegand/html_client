@@ -102,7 +102,7 @@ AWE.Controller = (function(module) {
     }
     
     that.shout = function(message) {
-      console.log('shout: ', message);
+      log('shout: ', message);
       var action = AWE.Action.Fundamental.createShoutToAllianceAction(message);
       action.send(function(self) {
         return function() {
@@ -173,7 +173,7 @@ AWE.Controller = (function(module) {
         this.appendView();         
       }
       
-  //    console.log('ALLIANCE SCREEN', this.visible, this.view, this.allianceId, AWE.GS.AllianceManager.getAlliance(that.allianceId))
+  //    log('ALLIANCE SCREEN', this.visible, this.view, this.allianceId, AWE.GS.AllianceManager.getAlliance(that.allianceId))
       
       if (this.view) {   // make sure the view displays the right settlement.
         // this is executed, in case the settlement is received from the 
@@ -183,7 +183,7 @@ AWE.Controller = (function(module) {
         
         if (this.view.get('alliance') != alliance) {
           this.view.set('alliance', alliance);
-          console.log('SWITCHED ALLIANCE IN RUNLOOP TO', alliance);
+          log('SWITCHED ALLIANCE IN RUNLOOP TO', alliance);
         }
         that.updateModel();
       }

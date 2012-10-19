@@ -181,7 +181,7 @@ AWE.UI.Ember = (function(module) {
           controller.shout(input);
         } 
         else {
-          console.log('ERROR in ShoutBox: shout not connected and no controller set.');
+          log('ERROR in ShoutBox: shout not connected and no controller set.');
         }
         this.set('shoutBoxInput', '');
       }

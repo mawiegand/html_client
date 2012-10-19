@@ -32,7 +32,7 @@ AWE.GS = (function(module) {
     target_settlement_id: null, old_target_settlement_id: null,
     targetSettlementIdObserver: AWE.Partials.attributeHashObserver(module.TradingCartActionAccess, 'target_settlement_id', 'old_target_settlement_id').observes('target_settlement_id'),  
     
-    tt: function() { console.log('IN OBSERVER', this.get('target_settlement_id')) }.observes('target_settlement_id'), 
+    tt: function() { log('IN OBSERVER', this.get('target_settlement_id')) }.observes('target_settlement_id'), 
     
     nextArrivalTime: function() {
       return (this.get('returning') ? this.get('returned_at') : this.get('target_reached_at')) || null;

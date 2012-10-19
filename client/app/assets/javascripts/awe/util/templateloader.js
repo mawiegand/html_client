@@ -32,7 +32,7 @@ AWE.Util = (function(module) {
       
     that.loadAllTemplates = function () {
       for (var i=0; i < _templates.length; i++) {
-        console.log(_templates[i].url);
+        log(_templates[i].url);
         $('#templates').load(_templates[i].url, (function(entry) {
           return function(responseText, textStatus, jqXHR) {
             $('body').append($('#templates').html()); // TODO: last script will be twice in DOM. Prune templates, when finished, or make individual tmp-nodes for all scripts.

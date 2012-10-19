@@ -30,7 +30,7 @@ AWE.UI.Ember = (function(module) {
 		productionTime: function() {
 		  var unitType = this.getPath('selectedUnitButton.unitType');
 		  var speed    = this.getPath('queue.speed') || 1.0;
-		  console.log('SPEED', this.getPath('queue.speed'));
+		  log('SPEED', this.getPath('queue.speed'));
 		  return unitType ? AWE.Util.Rules.calculateProductionTime(unitType.production_time, speed) : null;
 		}.property('queue.speed', 'selectedUnitButton.unitType').cacheable(),   ///< TODO : also update, when queue's speedup changes.
 

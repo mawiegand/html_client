@@ -390,7 +390,7 @@ AWE.UI = (function(module) {
     
     that.node = function() { return _node; }
 
-    that.setFrame = function(frame) { //console.log('set frame');
+    that.setFrame = function(frame) { //log('set frame');
       _super.setFrame(frame);
       _scaledContainer.setFrame(frame);
       _nonScaledContainer.setFrame(frame);
@@ -636,17 +636,17 @@ AWE.UI = (function(module) {
 				tms = AWE.Mapping.GlobalMercator.TMSToGoogleTileCode(tms.x, tms.y, tms.zoom);
 
 		  	var src = "http://a.tile.openstreetmap.org/"+tms.zoom+"/"+tms.x+"/"+tms.y+".png";
-				console.log(tms, src);
+				log(tms, src);
 
 				newImage = new Image();
 			
 	      if (!_scheduledImage && !_backgroundImage) {
-					console.log('schedule');
+					log('schedule');
 					_scheduledImage = true;
 					module.queueImageZoom(newImage, src, tms.zoom, _node.isLeaf(), function() {
 						_scheduledImage = false;
 	        	_backgroundImage = module.createImageView();
-						console.log('set background image')
+						log('set background image')
 		        _backgroundImage.initWithControllerAndImage(that.controller(), newImage);
 		        _backgroundImage.setContentMode(module.ViewContentModeNone);
 		        // link to encircling view for click events
@@ -655,7 +655,7 @@ AWE.UI = (function(module) {
 						that.autoscaleIfNeeded();
 						that.setNeedsDisplay();
 
-						console.log('done')		
+						log('done')		
 					}, function() {
 					  _scheduledImage = false;
 					});
@@ -685,18 +685,18 @@ AWE.UI = (function(module) {
 				newImage = new Image();
 			
 	      if (!_scheduledImage && !_backgroundImage) {
-					console.log('schedule');
+					log('schedule');
 					_scheduledImage = true;
 					module.queueImage(newImage, src, function() {
 
 	        	_backgroundImage = module.createImageView();
-						console.log('set background image')
+						log('set background image')
 		        _backgroundImage.initWithControllerAndImage(that.controller(), newImage);
 		        _backgroundImage.setContentMode(module.ViewContentModeNone);
 		        // link to encircling view for click events
 		        _backgroundImage.displayObject().view = that;
 		        _scaledContainer.addChild(_backgroundImage);			
-						console.log('done')		
+						log('done')		
 					});
 				}
 			}

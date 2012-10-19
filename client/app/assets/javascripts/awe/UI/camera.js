@@ -314,7 +314,7 @@ AWE.UI = (function(module) {
 		that.update = function() {
 			if (_activePan !== undefined && _isMoving) {
 				_activePan.update();
-				//console.log("pan created viewport "+_activePan.getCurrentViewport().toString());
+				//log("pan created viewport "+_activePan.getCurrentViewport().toString());
 				_currentViewport = _scaleToScreen(_activePan.getCurrentViewport());
 				_isMoving = !_activePan.done();
 				if (!_isMoving && _cacheLastViewport) {
@@ -353,7 +353,7 @@ AWE.UI = (function(module) {
 			}
 
 			var frame = that.getResultingFrame(value, addBorder);
-			//console.log(frame);
+			//log(frame);
 			var panTime = _panTime;
 			if (!animated) {
 				panTime = 0.0;
@@ -564,7 +564,7 @@ AWE.UI = (function(module) {
 					newWidth,
 					newHeight
 				);
-				//console.log(target.toString());
+				//log(target.toString());
 			} else {
 				return null;
 			}

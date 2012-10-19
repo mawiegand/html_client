@@ -107,7 +107,7 @@ AWE.UI.Ember = (function(module) {
 		    controller.slotClicked(slot);
 		  }
 		  else {
-		    console.log('In Interactive Building View: no controller found!');
+		    log('In Interactive Building View: no controller found!');
 		  }
 		},  
 		

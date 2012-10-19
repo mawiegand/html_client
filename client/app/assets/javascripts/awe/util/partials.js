@@ -100,7 +100,7 @@ AWE.Partials = (function(module) {
           collection[index] = entry;                     // overwrite existing object
         }
         else {
-          console.log('ERROR IN ATTRIBUTE HASHS: already known object is missing in collection.');
+          log('ERROR IN ATTRIBUTE HASHS: already known object is missing in collection.');
           collection.pushObject(entry); // although an error, just add the object
         }
       }
@@ -112,7 +112,7 @@ AWE.Partials = (function(module) {
     },
     
     replaceAll: function(newEntries, timestamp) {
-      console.log('REPLACE ALL ENTRIES', newEntries);    // just for debugging purposes, remove
+      log('REPLACE ALL ENTRIES', newEntries);    // just for debugging purposes, remove
 
       var now = new Date();
       timestamp = timestamp || now;
@@ -137,7 +137,7 @@ AWE.Partials = (function(module) {
         this.set('internalChangedAt', new Date());
       }
       else {
-        console.log('WARNING: object to be removed was not found in HashableCollection.')
+        log('WARNING: object to be removed was not found in HashableCollection.')
       }
     },
     

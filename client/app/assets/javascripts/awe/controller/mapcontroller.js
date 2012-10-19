@@ -307,7 +307,7 @@ AWE.Controller = (function(module) {
      **/
     that.moveTo = function(value, addBorder, animated) {
       if (_camera.isMoving()) {
-        console.log("The camera cannot be moved while it is already moving");
+        log("The camera cannot be moved while it is already moving");
         return;
       }
       _camera.moveTo(value, addBorder, animated);
@@ -400,7 +400,7 @@ AWE.Controller = (function(module) {
       v = 1 - Math.sqrt(v);
       //v = 1 - v;
       v = Math.max(0,Math.min(v, 1));
-      console.log("setting value to ");
+      log("setting value to ");
       zoomSlider.setValue(v);
       /*var viewport = that.viewport();
       var valueW = (viewport.size.width - AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.width)/(AWE.Config.MAP_CAMERA_MAX_VIEWFRAME_SIZE.width - AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.width);
@@ -608,7 +608,7 @@ AWE.Controller = (function(module) {
     // ///////////////////////////////////////////////////////////////////////
     
 		that.switchMapMode = function(realMap) {
-			console.log("SWITCH MAP MODE", realMap);
+			log("SWITCH MAP MODE", realMap);
 			mapMode = realMap ? AWE.UI.MAP_MODE_REAL : AWE.UI.MAP_MODE_TERRAIN;
 			AWE.Ext.applyFunctionToElements(regionViews, function(view) {
         view.setMapMode(mapMode);
@@ -616,7 +616,7 @@ AWE.Controller = (function(module) {
 		}
 
 		that.switchMapType = function(political) {
-			console.log("SWITCH MAP TYPE", political);
+			log("SWITCH MAP TYPE", political);
 			mapMode = political ? AWE.UI.MAP_MODE_STRATEGIC : AWE.UI.MAP_MODE_TERRAIN;
 			AWE.Ext.applyFunctionToElements(regionViews, function(view) {
         view.setMapMode(mapMode);
@@ -683,7 +683,7 @@ AWE.Controller = (function(module) {
     };
     
     that.handleError = function(errorCode, errorDesc) { 
-      console.log('ERROR ' + errorCode + ': ' + errorDesc);     
+      log('ERROR ' + errorCode + ': ' + errorDesc);     
       var dialog = AWE.UI.Ember.InfoDialog.create({
         heading: 'Failure',
         message: errorDesc,
@@ -983,7 +983,7 @@ AWE.Controller = (function(module) {
       });
 
       AWE.GS.BattleManager.updateBattle(battle_id, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(battle) {
-        console.log('U: battle', battle);
+        log('U: battle', battle);
         dialog.set('battle', battle);
       });      
       
@@ -1110,7 +1110,7 @@ AWE.Controller = (function(module) {
       }
     };
 
-    that.viewMouseOver = function(view) { // console.log('view mouse over: ' + view.typeName())
+    that.viewMouseOver = function(view) { // log('view mouse over: ' + view.typeName())
       if (view.typeName() === 'FortressView'
           || view.typeName() === 'ArmyView'
           || view.typeName() === 'BaseView'
@@ -1271,7 +1271,7 @@ AWE.Controller = (function(module) {
       offset = offset || AWE.Geometry.createPoint(100,50);
       
       _stages[2].addChild(annotation.displayObject());
-      console.log('added transient view.')
+      log('added transient view.')
 
       
       var animation = AWE.UI.createTimedAnimation({
@@ -1287,7 +1287,7 @@ AWE.Controller = (function(module) {
         onAnimationEnd: function(viewToRemove) {
           return function() {
             _stages[2].removeChild(viewToRemove.displayObject());
-            console.log('removed animated label on animation end');
+            log('removed animated label on animation end');
           };
         }(annotation),
       });
@@ -1313,7 +1313,7 @@ AWE.Controller = (function(module) {
       label.setPadding(10);
       
       _stages[2].addChild(label.displayObject());
-      console.log('added disappearing view.');
+      log('added disappearing view.');
       
       var animation = AWE.UI.createTimedAnimation({
         view: label,
@@ -1330,7 +1330,7 @@ AWE.Controller = (function(module) {
         onAnimationEnd: function(viewToRemove) {
           return function() {
             _stages[2].removeChild(viewToRemove.displayObject());
-            console.log('removed animated label on animation end');
+            log('removed animated label on animation end');
           };
         }(label),
       });
@@ -1380,7 +1380,7 @@ AWE.Controller = (function(module) {
       
       var startUpdate = function(type) {
         runningUpdate[type] = new Date();
-       // console.log('MapController: starting update for ' + type + '.' );
+       // log('MapController: starting update for ' + type + '.' );
       }
       
       var stopUpdate = function(type) {
@@ -1400,7 +1400,7 @@ AWE.Controller = (function(module) {
       
       return function(visibleAreaMC) {
         
-        //console.log('update model ' + visibleAreaMC + ' changed: ' + viewportHasChanged(visibleAreaMC) + ' ongoing: ' + requestingMapNodesFromServer);
+        //log('update model ' + visibleAreaMC + ' changed: ' + viewportHasChanged(visibleAreaMC) + ' ongoing: ' + requestingMapNodesFromServer);
 
         // viewport change -> time to check for the need for additional map nodes.
         if (viewportHasChanged('nodes', visibleAreaMC) && !isUpdateRunning('nodes')) {
@@ -1470,11 +1470,11 @@ AWE.Controller = (function(module) {
             if (nodes[i].isLeaf() && nodes[i].lastChange().getTime() + 60000 < new Date().getTime()) {
               startUpdate('nodes');
               AWE.Map.Manager.updateNode(nodes[i], true, function(node) {
-                console.log('UPDATED NODE', node.id());
+                log('UPDATED NODE', node.id());
                 that.setMaptreeChanged();
                 stopUpdate('nodes'); // TODO: start / stop this properly! (many parallel requests)
                 AWE.Map.Manager.updateRegionForNode(node, function(region) {
-                  console.log('UPDATED REGION', region.id());
+                  log('UPDATED REGION', region.id());
                 });
               });
               break ;
@@ -1496,7 +1496,7 @@ AWE.Controller = (function(module) {
             AWE.Ext.applyFunctionToElements(armiesInRegion, function(army) {
               if (!isUpdateRunning('movingArmy') && army.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 5000 < AWE.GS.TimeManager.estimatedServerTime().getTime()) {
                 if (army.get('mode') === 1 && army.get('target_reached_at') && Date.parseISODate(army.get('target_reached_at')).getTime() + 4000 < AWE.GS.TimeManager.estimatedServerTime().getTime()) { // wait four seconds before posting update request
-                  console.log('start update of moving army');
+                  log('start update of moving army');
                   startUpdate('movingArmy');
                   AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
                     stopUpdate('movingArmy');
@@ -1753,7 +1753,7 @@ AWE.Controller = (function(module) {
           var view = fortressViews[nodes[i].id()];// get existing view for node 
 
           if (view) {                             // if view exists already   
-//            console.log('MODEL CHANGE CHECK', view.lastChange ? view.lastChange() : null, nodes[i].region().lastChange(), view.lastChange !== undefined && nodes[i].region() && view.lastChange() < nodes[i].region().lastChange())
+//            log('MODEL CHANGE CHECK', view.lastChange ? view.lastChange() : null, nodes[i].region().lastChange(), view.lastChange !== undefined && nodes[i].region() && view.lastChange() < nodes[i].region().lastChange())
             if (view.lastChange !== undefined &&  // if model of view updated
                 nodes[i].region() && view.lastChange() < nodes[i].region().lastChange()) {
               view.setNeedsUpdate();
@@ -2199,7 +2199,7 @@ AWE.Controller = (function(module) {
             });
           }
           else {
-            console.log("ERROR: expected location to be there, but its missing!");
+            log("ERROR: expected location to be there, but its missing!");
           }
         }
         else if (annotatedView.typeName() === 'EmptySlotView') {
@@ -2439,7 +2439,7 @@ AWE.Controller = (function(module) {
         
         // log('Update:                   ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
-        // console.log('propagate update');
+        // log('propagate update');
 
 
         // update hierarchies and check which stages need to be redrawn
@@ -2505,7 +2505,7 @@ AWE.Controller = (function(module) {
         if (_camera.hasChanged()) {
           _camera.update();
           var newViewport = _camera.viewport();
-          //console.log("newViewport="+newViewport.toString());
+          //log("newViewport="+newViewport.toString());
           if (newViewport !== null && newViewport !== undefined) {
             that.setViewport(newViewport);
             that.setNeedsLayout();

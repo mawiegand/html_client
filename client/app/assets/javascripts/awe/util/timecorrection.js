@@ -35,7 +35,7 @@ AWE.Util.TimeCorrection = (function(module) {
     that.estimatedServerTime = function() {
       var time = new Date().addMilliseconds(-this.estimatedLag());
       if (AWE.Config.TIME_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
-        console.log('TIME_CORRECTION ESTIMATED SERVER TIME', time, 'now', new Date(), 'elag', this.estimatedLag());
+        log('TIME_CORRECTION ESTIMATED SERVER TIME', time, 'now', new Date(), 'elag', this.estimatedLag());
       }      
       return time;
     };
@@ -43,7 +43,7 @@ AWE.Util.TimeCorrection = (function(module) {
     that.localToServerTime = function(localDate) {
       var serverTime = localDate.clone().addMilliseconds(-this.estimateLag());
       if (AWE.Config.TIME_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
-        console.log('TIME_CORRECTION LOCAL TIME', localDate, 'TO SERVER TIME', serverTime, 'elag', this.estimatedLag());
+        log('TIME_CORRECTION LOCAL TIME', localDate, 'TO SERVER TIME', serverTime, 'elag', this.estimatedLag());
       }
       return serverTime;
     }
@@ -51,7 +51,7 @@ AWE.Util.TimeCorrection = (function(module) {
     that.serverToLocalTime = function(serverDate) {
       var localTime = serverDate.clone().addMilliseconds(this.estimateLag());
       if (AWE.Config.TIME_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
-        console.log('TIME_CORRECTION SERVER TIME', serverDate, 'TO LOCAL TIME', localTime, 'elag', this.estimatedLag());
+        log('TIME_CORRECTION SERVER TIME', serverDate, 'TO LOCAL TIME', localTime, 'elag', this.estimatedLag());
       }
       return localTime;
     }    
@@ -72,12 +72,12 @@ AWE.Util.TimeCorrection = (function(module) {
       var newLag     = my.remoteLag ? (difference * (1.0-my.alpha) + my.remoteLag * my.alpha) : difference;
 
       if (AWE.Config.TIME_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
-        console.log('TIME_CORRECTION MEASUREMENT', remoteTime, localTime, requestEndTime);
-        console.log('TIME_CORRECTION MEASUREMENT-GT', remoteTime.getTime(), localTime.getTime(), requestEndTime.getTime());
-        console.log('TIME_CORRECTION NEW_LAG', newLag, 'duration', duration, 'normalized', normalized, 'difference', difference, 'lag before', my.remoteLag);
+        log('TIME_CORRECTION MEASUREMENT', remoteTime, localTime, requestEndTime);
+        log('TIME_CORRECTION MEASUREMENT-GT', remoteTime.getTime(), localTime.getTime(), requestEndTime.getTime());
+        log('TIME_CORRECTION NEW_LAG', newLag, 'duration', duration, 'normalized', normalized, 'difference', difference, 'lag before', my.remoteLag);
       }
       if (AWE.Config.TIME_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_INFO) {      
-        console.log('LAG: '+(newLag < 0.0 ? "-" : ""),
+        log('LAG: '+(newLag < 0.0 ? "-" : ""),
                     'HOURS:',   Math.floor(Math.abs(newLag / (1000*60*60))),   
                     'MINUTES:', Math.floor(Math.abs(newLag / (1000*60)))%60,   
                     'SECONDS:', Math.floor(Math.abs(newLag / 1000))%60,   

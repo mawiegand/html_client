@@ -90,7 +90,7 @@ AWE.Controller = (function(module) {
           });         
         }
         else {  // seems as there's no settlement at this location!
-          console.log('ERROR: could not obtain settlement at present location from server.')
+          log('ERROR: could not obtain settlement at present location from server.')
         }
       }
       else {
@@ -164,7 +164,7 @@ AWE.Controller = (function(module) {
         });
       }
       else {
-        console.log('ERROR: screen for settlement of type ' + type + ' not yet implemented.');
+        log('ERROR: screen for settlement of type ' + type + ' not yet implemented.');
       }    
       return settlementScreen;
     }
@@ -276,7 +276,7 @@ AWE.Controller = (function(module) {
             });
           }
           else {
-            console.log(status, "ERROR: The server did not accept the construction command.");
+            log(status, "ERROR: The server did not accept the construction command.");
             var dialog = AWE.UI.Ember.InfoDialog.create({
               contentTemplateName: 'server-command-failed-info',
               cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
@@ -300,7 +300,7 @@ AWE.Controller = (function(module) {
           // update queue in any case: success: jobs gone. failure: old data on client side
           AWE.GS.ConstructionQueueManager.updateQueue(queue.getId(), null, function() { //
             AWE.GS.ConstructionJobManager.updateJobsOfQueue(queue.getId());
-            console.log('U: construction queue, success');
+            log('U: construction queue, success');
           });          
         });
       }
@@ -313,7 +313,7 @@ AWE.Controller = (function(module) {
           cancelPressed:       function() { this.destroy(); },
         });          
         WACKADOO.presentModalDialog(dialog);
-        console.log("WARNING: Could not find appropiate queue for building category, or no empty slot left.");
+        log("WARNING: Could not find appropiate queue for building category, or no empty slot left.");
       }
     } 
 
@@ -669,7 +669,7 @@ AWE.Controller = (function(module) {
         var actions = hash ? hash.get('collection') : [];
         actions.forEach(function(item) {
           if (Date.parseISODate(item.get('target_reached_at')) < AWE.GS.TimeManager.estimatedServerTime().add(-2).seconds()) {
-            console.log('destroyed incoming trading carts action id', item.get('id'));
+            log('destroyed incoming trading carts action id', item.get('id'));
             item.destroy();
           } 
         });        
@@ -771,7 +771,7 @@ AWE.Controller = (function(module) {
       if (queues) {
         queues.forEach(function(queue) {
           if (!queue) {
-            console.log('queue was undefined');
+            log('queue was undefined');
           }
           else {
             var jobs = AWE.GS.ConstructionJobManager.getJobsInQueue(queue.getId());
@@ -797,7 +797,7 @@ AWE.Controller = (function(module) {
       if (queues) {
         queues.forEach(function(queue) {
           if (!queue) {
-            console.log('training queue was undefined');
+            log('training queue was undefined');
           }
           else {          var jobs = AWE.GS.TrainingJobManager.getJobsInQueue(queue.getId());
             jobs.forEach(function(job) {
@@ -826,7 +826,7 @@ AWE.Controller = (function(module) {
       this.updateDebug();
       
       if (this.visible && !this.view && this.settlementId) {
-        console.log('APPEND', this.settlementId, this.settlement);
+        log('APPEND', this.settlementId, this.settlement);
         this.appendView();           
       }
       
@@ -843,7 +843,7 @@ AWE.Controller = (function(module) {
         
         if (this.view.get('settlement') != settlement) {
           this.view.set('settlement', settlement);
-          console.log('SWITCHED BASE IN RUNLOOP TO', settlement);
+          log('SWITCHED BASE IN RUNLOOP TO', settlement);
         }
                 
         if (settlement && settlement.getPath('hashableQueues.collection')) {

@@ -420,7 +420,7 @@ AWE.UI = (function(module) {
       }      
       
       if (changed) {
-        console.log(">> NEED TO UPDATE HUD DUE TO CHANGED RESOURCE AMOUNT");
+        log(">> NEED TO UPDATE HUD DUE TO CHANGED RESOURCE AMOUNT");
         this.setNeedsUpdate();
       }
       _super.updateIfNeeded();
