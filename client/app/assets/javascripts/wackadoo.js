@@ -266,14 +266,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
   
         var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
         
-        if (AWE.Config.USE_TUTORIAL && tutorialState && tutorialState.questStateWithQuestId(0) && tutorialState.questStateWithQuestId(0).get('status') < AWE.GS.QUEST_STATUS_FINISHED) {
-          var locationId = AWE.GS.CharacterManager.getCurrentCharacter().get('base_location_id');
-          self.activateBaseController({locationId: locationId});
-        }
-        else {
+        if (!AWE.Config.USE_TUTORIAL ||
+            (tutorialState &&
+             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID) &&
+             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') >= AWE.GS.QUEST_STATUS_FINISHED)) {
           self.activateMapController();
           var node = AWE.GS.CharacterManager.getCurrentCharacter().get('base_node');
           controller.moveTo(node);
+        }
+        else {
+          var locationId = AWE.GS.CharacterManager.getCurrentCharacter().get('base_location_id');
+          self.activateBaseController({locationId: locationId});
         }
         
         self.startRunloop();
