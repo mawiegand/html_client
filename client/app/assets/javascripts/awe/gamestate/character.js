@@ -60,6 +60,11 @@ AWE.GS = (function(module) {
     
     resourcePool: null,
     
+    isPlatinumActive: function() {
+      var expiration = this.get('premium_expiration');
+      return expiration && Date.parseISODate(expiration) > AWE.GS.TimeManager.estimatedServerTime().getTime();
+    }.property('premium_expiration').cacheable(),
+    
     mundane_rank_numeric: function() {
       return (this.get('mundane_rank') || 0) +1;
     }.property('mundane_rank').cacheable(),
