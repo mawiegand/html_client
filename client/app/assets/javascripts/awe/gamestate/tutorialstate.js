@@ -530,7 +530,6 @@ AWE.GS = (function(module) {
     var lastTutorialStateUpdate = new Date(1970);
     
     var lastRewardsCheck = new Date(1970);
-    var checking = false;
     var delayedFinishedQuestState = null;
     var delayedStartQuestState = null;
 
@@ -646,7 +645,6 @@ AWE.GS = (function(module) {
 
       log('---> checkForRewards');
 
-      checking = true;
       var openQuestStates = that.tutorialState.get('openQuestStates');
       var success = false;
       AWE.Ext.applyFunction(openQuestStates, function(questState) {
@@ -665,12 +663,10 @@ AWE.GS = (function(module) {
               }
               else {
                 delayedFinishedQuestState = questState;
-                checking = false;
                 log('---> stop checking in checkForRewards2, modal');
               }
             }
             else {
-              checking = false;
               log('---> stop checking in checkForRewards2, !AWE.Net.OK');
             }
           });
@@ -685,16 +681,10 @@ AWE.GS = (function(module) {
       }
     }
     
-    that.stopChecking = function() {
-      checking = false;
-      // log('---> stop checking with stopChecking method');
-    }
-    
     that.checkForCustomTestRewards = function(questName) {
       
       if (!that.tutorialEnabled()) return;
 
-      checking = true;
       // quest finden
       var quest = AWE.GS.TutorialManager.getTutorial().questWithSymbolicId(questName);
       log('-----> checkForCustomTestRewards 1', questName, quest);
@@ -718,27 +708,78 @@ AWE.GS = (function(module) {
               }
               else {
                 delayedFinishedQuestState = questState;
-                checking = false;
                 log('---> stop checking in checkForCustomTestRewards, modal');
               }
             }
             else {
-              checking = false;
               log('---> stop checking in checkForCustomTestRewards, !AWE.Net.OK');
             }
           });
         }
         else {
-          checking = false;
           log('---> stop checking in checkForCustomTestRewards, questState.get(status) > AWE.GS.QUEST_STATUS_DISPLAYED');
         }
       }
       else {
         log('ERROR in AWE.GS.TutorialManager.checkForCustomTestRewards: missing quest');
-        checking = false;
         log('---> stop checking in checkForCustomTestRewards, ERROR');
       }
     }
+    
+        
+    // that.checkForCustomTestRewards = function(testId) {
+//       
+      // if (!that.tutorialEnabled()) return;
+// 
+      // log('---> checkForCustomTestRewards');
+//         
+      // // questState finden
+      // var openQuestStates = that.tutorialState.get('openQuestStates');
+      // var openQuestState = null;
+      // AWE.Ext.applyFunction(openQuestStates, function(questState) {
+        // log('---> checkForCustomTestRewards questState', questState, questState.get('quest'));
+        // var quest = questState.get('quest');
+        // if (quest.reward_tests &&
+            // quest.reward_tests.custom_test &&
+            // quest.reward_tests.custom_test.id &&
+            // quest.reward_tests.custom_test.id == testId) {
+          // openQuestState = questState;
+        // }
+      // });
+      // log('---> checkForCustomTestRewards found questState', openQuestState);
+//       
+      // if (openQuestState) {
+        // if (openQuestState && openQuestState.get('status') <= AWE.GS.QUEST_STATUS_DISPLAYED) {
+          // // action erzeugen und an server schicken
+          // log('---> checkForCustomTestRewards action sent');
+          // var questCheckAction = AWE.Action.Tutorial.createCheckQuestAction(openQuestState.get('quest_id'));
+          // questCheckAction.send(function(status) {
+            // if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+              // // callback: dialog anzeigen mit reward
+              // openQuestState.set('status', AWE.GS.QUEST_STATUS_FINISHED);
+              // log('---> checkForRewards modalDialogOpen', WACKADOO.modalDialogOpen());
+              // if (!WACKADOO.modalDialogOpen()) {
+                // that.showQuestFinishedDialog(openQuestState);
+              // }
+              // else {
+                // delayedFinishedQuestState = openQuestState;
+                // log('---> stop checking in checkForCustomTestRewards, modal');
+              // }
+            // }
+            // else {
+              // log('---> stop checking in checkForCustomTestRewards, !AWE.Net.OK');
+            // }
+          // });
+        // }
+        // else {
+          // log('---> stop checking in checkForCustomTestRewards, questState.get(status) > AWE.GS.QUEST_STATUS_DISPLAYED');
+        // }
+      // }
+      // else {
+        // log('NOTICE in AWE.GS.TutorialManager.checkForCustomTestRewards: no open quest found for id', testId);
+        // log('---> stop checking in checkForCustomTestRewards, ERROR');
+      // }
+    // }
     
     that.checkForNewQuests = function() {
       
@@ -746,14 +787,12 @@ AWE.GS = (function(module) {
       
       log('---> checkForNewQuests');
 
-      checking = true;
       that.updateTutorialState(function() {
         if (that.tutorialState) {
           that.showNextNewQuest();
         }
         else {
           log('ERROR in AWE.GS.TutorialManager.checkForNewQuests: missing tutorialState');
-          checking = false;
           log('---> stop checking in checkForNewQuests, ERROR');
         }
       });
@@ -772,7 +811,6 @@ AWE.GS = (function(module) {
           if (WACKADOO.modalDialogOpen()) {
             log('---> showNextNewQuest: delay start dialog');
             delayedStartQuestState = newQuestState;
-            checking = false;
             log('---> stop checking in showNextNewQuest, modal');
           }
           else {
@@ -781,12 +819,10 @@ AWE.GS = (function(module) {
           }
         }
         else {
-          checking = false;
           log('---> stop checking in checkForNewQuests, hide_start_dialog');
         }   
       }
       else {
-        checking = false;
         log('---> stop checking in checkForNewQuests, newQuestStates == null');
       }
     }
@@ -831,14 +867,12 @@ AWE.GS = (function(module) {
       
       if (AWE.GS.TutorialLocalState.questsDisplayed[questState.get('quest_id')] !== true &&
           questState.get('status') === AWE.GS.QUEST_STATUS_NEW) {
-        checking = true;
         var dialog = AWE.UI.Ember.QuestDialog.create({
           questState: questState,
           header: AWE.I18n.lookupTranslation('tutorial.quest.start.header'),
           okPressed:    function() {
             this.destroy();
             log('---> checkForNewQuests: set displayed');
-            checking = false;
             log('---> stop checking in showQuestStartDialog, close dialog');
           },            
         });
@@ -872,7 +906,6 @@ AWE.GS = (function(module) {
 
       log('---> showQuestFinishedDialog');
 
-      checking = true;
       var dialog = AWE.UI.Ember.QuestDialog.create({
         header: AWE.I18n.lookupTranslation('tutorial.quest.end.header'),
         questState: questState,

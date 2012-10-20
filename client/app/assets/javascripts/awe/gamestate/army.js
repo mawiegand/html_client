@@ -150,7 +150,7 @@ AWE.GS = (function(module) {
         }
       });
       if (numSettlementFounders > 0) {
-        console.log('UNIT CAN FOUND SETTLEMENTS', numSettlementFounders);
+        log('UNIT CAN FOUND SETTLEMENTS', numSettlementFounders);
       }
       return numSettlementFounders > 0;
     }.property('details.updated_at', 'updated_at').cacheable(),

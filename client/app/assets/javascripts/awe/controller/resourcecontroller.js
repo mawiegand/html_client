@@ -141,7 +141,7 @@ AWE.Controller = (function(module) {
           if (HUDViews.mainControlsView) {
             AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
               that.setModelChanged(); // always re-paint, if new data available
-              console.log('U: updated resource');
+              log('U: updated resource');
             });
           }
         }

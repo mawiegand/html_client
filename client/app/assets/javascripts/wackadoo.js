@@ -110,7 +110,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           self.presentModalDialog(dialog);      
         }
         else {
-          console.log('ERROR: could not fetch latest announcement.')
+          log('ERROR: could not fetch latest announcement.')
         }
       });
     },
@@ -173,7 +173,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       MINI_5D_STAFF_POSTFIXES            = [ '| 5D', '@mod', '@admin', '@staff' ];
       
       MINI_GROUPCHATS.forEach(function(item) {
-        console.log('GROUPCHAT', item)
+        log('GROUPCHAT', item)
       });
       
       JAPPIX_STATIC = 'jappix/'
@@ -198,7 +198,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       // Notice: exclude "user" and "password" if using anonymous login
             
       if (AWE.Config.IN_DEVELOPMENT_MODE) {
-        console.log('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
+        log('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
         launchMini(!beginner, true, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
       }
       else {
@@ -266,16 +266,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
   
         var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
         
-        var backToSettlementQuest = 11;
-        
-        if (AWE.Config.USE_TUTORIAL && tutorialState && tutorialState.questStateWithQuestId(0) && tutorialState.questStateWithQuestId(0).get('status') < AWE.GS.QUEST_STATUS_FINISHED) {
-          var locationId = AWE.GS.CharacterManager.getCurrentCharacter().get('base_location_id');
-          self.activateBaseController({locationId: locationId});
-        }
-        else {
+        if (!AWE.Config.USE_TUTORIAL ||
+            (tutorialState &&
+             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID) &&
+             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') >= AWE.GS.QUEST_STATUS_FINISHED)) {
           self.activateMapController();
           var node = AWE.GS.CharacterManager.getCurrentCharacter().get('base_node');
           controller.moveTo(node);
+        }
+        else {
+          var locationId = AWE.GS.CharacterManager.getCurrentCharacter().get('base_location_id');
+          self.activateBaseController({locationId: locationId});
         }
         
         self.startRunloop();
@@ -307,11 +308,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       _numAssets +=1;
       AWE.GS.RulesManager.updateRules(function(rules, statusCode) {
         if (statusCode === AWE.Net.OK) {
-          console.log('Rules', rules);
+          log('Rules', rules);
           assetLoaded();
         }
         else {
-          console.log('CRITICAL ERROR: could not load rules from server. Error code: ' + statusCode + '. Terminate App.');
+          log('CRITICAL ERROR: could not load rules from server. Error code: ' + statusCode + '. Terminate App.');
           throw "ABORT Due to Failure to load rules.";
         }
       });
@@ -319,7 +320,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
       AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
         if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.getCurrentCharacter()) {
-          console.log('INFO: playing as character ', entity);
+          log('INFO: playing as character ', entity);
           var currentCharacter = AWE.GS.CharacterManager.getCurrentCharacter();
           if (currentCharacter.get('alliance_id') && currentCharacter.get('alliance_id') > 0) {
             _numAssets +=1;
@@ -332,7 +333,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             _numAssets +=1;
             AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
               AWE.GS.CharacterManager.getCurrentCharacter().set('base_node', node);
-              console.log("Node", node)
+              log("Node", node)
               assetLoaded();
             });
           }
@@ -341,16 +342,16 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             _numAssets += 2;
             AWE.GS.TutorialManager.updateTutorial(function(tutorial, statusCode) {
               if (statusCode === AWE.Net.OK) {
-                console.log('Tutorial', tutorial);
+                log('Tutorial', tutorial);
                 assetLoaded();
                 
                 AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
-                  console.log("TutorialState", tutorialState)
+                  log("TutorialState", tutorialState)
                   assetLoaded();
                 });
               }
               else {
-                console.log('CRITICAL ERROR: could not load tutorial from server. Error code: ' + statusCode + '. Terminate App.');
+                log('CRITICAL ERROR: could not load tutorial from server. Error code: ' + statusCode + '. Terminate App.');
                 throw "ABORT Due to Failure to load tutorial.";
               }
             });
@@ -358,10 +359,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
           AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
             if (statusCode === AWE.Net.OK) {
-              console.log(resourcePool);
+              log(resourcePool);
             }
             else {
-              console.log('CRITICAL ERROR: could not load resource pool from server. Error code: ' + statusCode + '. Terminate App.');
+              log('CRITICAL ERROR: could not load resource pool from server. Error code: ' + statusCode + '. Terminate App.');
               throw "ABORT Due to Failure to load player's resource pool.";
             }
           });
@@ -370,7 +371,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         }
         else {
           alert ('Das Spiel konnte nicht geladen werden. Bitte drücke den Aktualisieren-Knopf Deines Browsers, meist hilft schlichtes Neuladen der Seite und Login. Falls auch das nicht hilft, kontaktiere bitte den Support. Wir unterstützen folgende Browser: Chrome, Firefox, Internet Explorer 9 und Safari; je neuer, desto besser (und schneller).');
-          console.log('CRITICAL ERROR: could not load current character from server. Error code: ' + statusCode + '. Terminate App.');
+          log('CRITICAL ERROR: could not load current character from server. Error code: ' + statusCode + '. Terminate App.');
           throw "ABORT Due to Failure to Load Player's Current Character.";
         }
       });
@@ -451,9 +452,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         baseController.setLocationId(reference.locationId);
       }
       else {
-        console.log('ERROR: no base to enter specified.')
+        log('ERROR: no base to enter specified.')
       }
-      console.log(reference)
+      log(reference)
       this.setScreenController(baseController);
     },
    
@@ -477,7 +478,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         fortressController.setNode(reference.node);
       }
       else {
-        console.log('ERROR: no fortress to enter specified.')
+        log('ERROR: no fortress to enter specified.')
       }
       this.setScreenController(fortressController);
     },   
@@ -525,7 +526,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       
       try {
         var args = JSON.parse(window.name ) //|| "{}")
-        console.log('window.name, parsed window.name', window.name, args)
+        log('window.name, parsed window.name', window.name, args)
       }
       catch (e) {
       }

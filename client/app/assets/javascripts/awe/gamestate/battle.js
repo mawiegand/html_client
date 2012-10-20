@@ -142,7 +142,7 @@ AWE.GS = (function(module) {
       var army = AWE.GS.ArmyManager.getArmy(this.get('army_id'));
       if (!army) {
         AWE.GS.ArmyManager.updateArmy(this.get('army_id'));
-        console.log('REQUEST MISSING ARMY FOR BATTLE');
+        log('REQUEST MISSING ARMY FOR BATTLE');
       }
       return army;
     }.property('disbanded', 'army_id', 'hashableArmiesAtBattle.changed_at').cacheable(),

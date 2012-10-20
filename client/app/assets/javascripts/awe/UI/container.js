@@ -85,7 +85,7 @@ AWE.UI = (function(module) {
 
     
     that.layoutSubviews = function() {
-    //console.log('container needs layout');
+    //log('container needs layout');
     //_super.layoutSubviews();
       AWE.Ext.applyFunction(my.subviews, function(obj) {
         obj.layoutIfNeeded();
@@ -93,7 +93,7 @@ AWE.UI = (function(module) {
     }
     
     that.updateView = function() {
-    // console.log('container needs update');
+    // log('container needs update');
     //_super.layoutSubviews();
       AWE.Ext.applyFunction(my.subviews, function(obj) {
         obj.updateIfNeeded();

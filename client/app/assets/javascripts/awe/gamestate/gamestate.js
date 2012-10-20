@@ -213,7 +213,7 @@ AWE.GS = (
         this.set('lastAggregateUpdateAt', timestamp);
       }
       else {
-        console.log('ERROR in AWE.GS.Entity.updateWith: unknown update type: ' + updateType + '.');
+        log('ERROR in AWE.GS.Entity.updateWith: unknown update type: ' + updateType + '.');
       }
     },
   
@@ -254,8 +254,8 @@ AWE.GS = (
     my.processUpdateResponse = my.processUpdateResponse || function(data, updateType, start) {
       
       if (data === null) {
-        console.log("PROCESS UPDATE WITH NULL DATA:", data, updateType, start);
-        console.log("ENTITY: ", my.createEntity({id:"null"}))
+        log("PROCESS UPDATE WITH NULL DATA:", data, updateType, start);
+        log("ENTITY: ", my.createEntity({id:"null"}))
         return null;
       }
       
@@ -281,7 +281,7 @@ AWE.GS = (
         return null;
       }
       var date = xhr.getResponseHeader('Date');
-//      console.log('RESPONSE HEADER DATE (string, parsed)', date, new Date(date));
+//      log('RESPONSE HEADER DATE (string, parsed)', date, new Date(date));
       return date ? new Date(date) : null;
     };
     
@@ -312,7 +312,7 @@ AWE.GS = (
         .error(function(jqHXR, textStatus) {          // On failure: 
           callback(null, jqXHR.status, jqXHR, my.extractDateFromXHR(jqXHR) || start);
           my.unregisterRequest(queue, id, updateType);//   unregister request 
-          console.log ('ERROR FETCHING ENTITIES FROM URL ' + url + ': ' + textStatus); 
+          log ('ERROR FETCHING ENTITIES FROM URL ' + url + ': ' + textStatus); 
         })
         .success(function(data, statusText, xhr) {
           var result = null;
@@ -341,7 +341,7 @@ AWE.GS = (
             if (callback) {      
               var s = new Date();
               Ember.run.sync(); // sync the bindings now, before continuing with the execution (e.g. calling callbacks)
-              console.log('Manual Sync in GameStateManager Elapsed (ms): ',  (new Date().getTime() - s.getTime()));
+              log('Manual Sync in GameStateManager Elapsed (ms): ',  (new Date().getTime() - s.getTime()));
             }
           }
           if (callback) {
@@ -380,11 +380,11 @@ AWE.GS = (
         var lastUpdate = entity.lastUpdateAt(updateType);  // last update (requested from server) for this particular type
         if (serverUpdate.getTime() > lastUpdate.getTime()) {
           modifiedSince = lastUpdate;
-//          console.log('>> GAMESTATE UPDATE: Using LOCAL UPDATE timestamp (loc/sever):', lastUpdate, serverUpdate);
+//          log('>> GAMESTATE UPDATE: Using LOCAL UPDATE timestamp (loc/sever):', lastUpdate, serverUpdate);
         }
         else {
           modifiedSince = serverUpdate;
-//          console.log('>> GAMESTATE UPDATE: Using SERVER UPDATED AT timestamp (loc/server):', lastUpdate, serverUpdate);          
+//          log('>> GAMESTATE UPDATE: Using SERVER UPDATED AT timestamp (loc/server):', lastUpdate, serverUpdate);          
         }
       }
       var newRequest = my.fetchEntitiesFromURL(url, my.runningUpdatesPerId, id, updateType, modifiedSince, function(entity, statusCode, xhr, serverTime) {
@@ -394,13 +394,13 @@ AWE.GS = (
             entity.setNotModifiedAfter(updateType, serverTime); // this sets the LOCAL update time-stamp to the server time, so the client knows it has tried to fetch this data recently.
           }
           else {
-            console.log('ERROR: received a not-modified answer for an entity that is not already downloaded.');
+            log('ERROR: received a not-modified answer for an entity that is not already downloaded.');
           }
         }
         else if (statusCode === AWE.Net.NOT_FOUND) {
-//          console.log('ENTITY NOT FOUND ON SERVER.');
+//          log('ENTITY NOT FOUND ON SERVER.');
           if (my.entities[id]) {
-//            console.log('CORRESPONDING ENTITY IS GONE ON SERVER. Destroy local entity.', entity);
+//            log('CORRESPONDING ENTITY IS GONE ON SERVER. Destroy local entity.', entity);
             my.entities[id].destroy();
           }
         }

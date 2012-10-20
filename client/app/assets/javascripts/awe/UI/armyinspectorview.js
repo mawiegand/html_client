@@ -309,8 +309,8 @@ AWE.UI = (function(module) {
       }*/
     }
     
-  //  that.onInventoryButtonClick = function() { console.log('inventory button clicked'); }
-    that.onChangeArmyButtonClick = function(army) { console.log('inventory button clicked'); }
+  //  that.onInventoryButtonClick = function() { log('inventory button clicked'); }
+    that.onChangeArmyButtonClick = function(army) { log('inventory button clicked'); }
         
     that.updateView = function() {
       that.recalcView();      

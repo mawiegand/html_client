@@ -95,12 +95,12 @@ AWE.Application = (function(module) {
         });
         // register controller to receive click events in screen
         $('#layers').mouseup(function(evt) {
-          console.log('Mouse up event in multi stage application controller.');
+          log('Mouse up event in multi stage application controller.');
           self.handleMouseUp(evt);
         });
         ///DEBUG
         /*$('body').mouseup(function(evt) { 
-          console.log("got body mouse up");
+          log("got body mouse up");
         });
         bla = this;
         $('body').mousemove(function(evt) {
@@ -148,7 +148,7 @@ AWE.Application = (function(module) {
             /*evt.srcElement = el;
             evt.target = el;
             evt.toElement = el;*/
-            console.log("triggering "+evt.type);
+            log("triggering "+evt.type);
             $("#"+el.id).triggerHandler(evt.type);
             //$(el).triggerHandler(evt.type);//, evt);
             //$(el).css("border", "2px");
@@ -157,31 +157,31 @@ AWE.Application = (function(module) {
 
           //reattach
           if (prev.length > 0) {
-            console.log("inserting after prev");
+            log("inserting after prev");
             prev.after(srcElement);
           } else {
-            console.log("prepending in parent");
+            log("prepending in parent");
             parent.prepend(srcElement);
           }
           this.set('isPassingEvent', false);
         } else if (this.get('isPassingEvent')) {
-          console.log("passing event state");
+          log("passing event state");
         }
       },
   
       readyToRun: function() { this.set('readyForRunloop', true); log ('RREADY', this.readyForRunloop, this.get('readyForRunloop')); },
   
       generateClickIfNeeded: function(evt) { 
-        console.log('entered click handler');
+        log('entered click handler');
         var presentScreenController = this.get('presentScreenController');
 
         if (presentScreenController && presentScreenController.isScrolling()) {
-          console.log("ignored click --> presentScreenController.isScrolling() == true");
+          log("ignored click --> presentScreenController.isScrolling() == true");
           return ; // just ignore it here!
         }
         
         if (this.get('isModal')) {
-          console.log("ignored click --> isModal == true");
+          log("ignored click --> isModal == true");
           return ;
         }
       
@@ -219,7 +219,7 @@ AWE.Application = (function(module) {
           this.get('presentScreenController').onClick(evt);
         }
         else {
-          console.log("click passed through all layers");
+          log("click passed through all layers");
           //this.sendEventToDom(evt);
         }  
       },
@@ -228,9 +228,9 @@ AWE.Application = (function(module) {
        * or to the present screen controller that gets the chance to handle the
        * otherwise unhandled click. */
       handleMouseUp:  function(evt) { 
-        console.log('HANDLE MOUSE UP');
+        log('HANDLE MOUSE UP');
         if (this.isCatchedByDomElement(evt.pageX, evt.pageY, evt.type)) {
-          console.log("click ignored -- isCatchedByDomElement(...) == true");
+          log("click ignored -- isCatchedByDomElement(...) == true");
           return;
         }
         var presentScreenController = this.get('presentScreenController');
@@ -354,10 +354,10 @@ AWE.Application = (function(module) {
       },
     
       onMouseDown: function(evt) {
-        console.log('MSA.onMouseDown')
+        log('MSA.onMouseDown')
         //if this event is already handled by a dom element ignore it
         if (this.isCatchedByDomElement(evt.pageX, evt.pageY, evt.type)) {
-          console.log('catched by DOM ELEMENT');
+          log('catched by DOM ELEMENT');
           return;
         }
         var controller = this.get('presentScreenController');
@@ -533,7 +533,7 @@ AWE.Application = (function(module) {
       
       modalDialogClosed: function(dialog) {
         do {
-          console.log('poped the top-most modal dialog.');
+          log('poped the top-most modal dialog.');
         } while (this.modalDialogs.length > 0 && this.modalDialogs.pop() != dialog);
         this.setModal(this.modalDialogs.length > 0);
       },
@@ -604,21 +604,21 @@ AWE.Application = (function(module) {
           if (element) {
             element = element.length === undefined ? [element] : element; // make sure it is an array
             for (var j=0; j < element.length; j++) {
-//              console.log('CHECK ELEMENT', element[j], j, this.domElements[i].checkForEvents);
+//              log('CHECK ELEMENT', element[j], j, this.domElements[i].checkForEvents);
               if (this.domElements[i].checkForEvents) {
                 checkForEvent(element[j]);
                 if (result) {
-//                  console.log('CATCHED BY THIS ELEMENT');
+//                  log('CATCHED BY THIS ELEMENT');
                   return true;
                 }
               } else {
                 if (isIn(element[j])) {
-//                  console.log('CATCHED BY THIS ELEMENT:', element[j]);
+//                  log('CATCHED BY THIS ELEMENT:', element[j]);
                   return true;
                 }
               }
             }
-            // console.log('NOT CATCHED BY THIS ELEMENT');
+            // log('NOT CATCHED BY THIS ELEMENT');
           }
         }
         return false;

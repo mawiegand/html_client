@@ -52,7 +52,7 @@ AWE.UI = (function(module) {
     
     that.recalcView = function() {
       
-    //console.log('update fortress for region id ' + _node.region().id());
+    //log('update fortress for region id ' + _node.region().id());
 
       var allianceId = _node.region().allianceId();
 

@@ -52,11 +52,11 @@ AWE.Action.Shop = (function(module) {
       
       var jqXHR = $.ajax(options)
         .error(function(jqXHR, statusText) {           // On failure:
-          console.log ('ERROR SENDING TRANSACTION TO URL ' + that.getURL() + ': ' + statusText); 
+          log ('ERROR SENDING TRANSACTION TO URL ' + that.getURL() + ': ' + statusText); 
         })
         .success(function(data, statusText, jqXHR) {   // On success:
           my.data = data;
-          console.log ('Successfully sent transaction to url: ' + that.getURL() + ': ' + statusText);
+          log ('Successfully sent transaction to url: ' + that.getURL() + ': ' + statusText);
         })
         .complete(function(jqXHR, statusText) {
           my.completed = true;
