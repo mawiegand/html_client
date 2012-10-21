@@ -53,7 +53,7 @@ AWE.UI = (function(module) {
       if (AWE.GS.TutorialStateManager.getTutorialState()) {
         var openQuestStates = AWE.GS.TutorialStateManager.getTutorialState().get('openQuestStateCount');
         var allQuestStates = AWE.GS.TutorialStateManager.getTutorialState().get('notClosedQuestStateCount');
-        my.tutorialButtonView.setColor(openQuestStates > 0 ? '#F53' : '#FFF')
+        my.tutorialButtonView.setColor(openQuestStates > 0 ? '#FFF' : '#FFF')
         var string = "Quests";
         if (openQuestStates !== undefined && allQuestStates !== undefined && allQuestStates > 0) {
           string += "\n(" + openQuestStates + "/" + allQuestStates + ")";
