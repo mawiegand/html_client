@@ -37,6 +37,31 @@ AWE.I18n = function(module) {
     return string;
   };
 
+  module.printTranslationTable = function() {
+    var div = $('#screen-content');
+    var table = $('<table border="1"></table>');
+    div.append(table);
+    table.append('<tr><th>Key</th><th>Deutsch</th><th>Englisch</th></tr>');
+    
+    var traverse = function(keys, obj) {
+      if (typeof obj === 'string') {
+        table.append('<tr><td>' + keys + '</td><td>' + AWE.Util.removeHtmlTags(obj) + '</td><td></td></tr>\n');
+      }
+      else if (AWE.Ext.isArray(obj)) {
+        for (var i = 0; i < obj.length; i++) {
+          traverse(keys + i, obj[i]);
+        }
+      }
+      else {
+        AWE.Ext.applyFunctionToHash(obj, function(key, elem) {
+          traverse(keys + '.' + key, elem);
+        })
+      }
+    }
+    
+    traverse('all', AWE.I18n.de_DE.localizedStrings);
+  }
+
   return module;
   
 }(AWE.I18n|| {});
