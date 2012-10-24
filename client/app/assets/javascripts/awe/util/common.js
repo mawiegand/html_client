@@ -127,9 +127,12 @@ AWE.Util = (function(module) {
   };
   
   module.htmlToAscii = function(html) {
-    return (html || "").replace(/<br\s*[\/]?>/gi, "\n")
+    return (html || "").replace(/<br\s*[\/]?>/gi, "\n");
   };
 
+  module.removeHtmlTags = function(html) {
+    return (html || "").replace(/<[\/]?.*[\/]?>/gi, " ");
+  };
   
   return module;
       

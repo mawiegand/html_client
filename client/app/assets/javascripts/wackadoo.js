@@ -522,6 +522,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
     /** starts the app when the document is ready. */
     ready: function() {
+      
+      /** uncomment the following two lines to print translation table and exit */
+      // AWE.I18n.printTranslationTable();
+      // return;
+      
       this._super();
       
       try {
