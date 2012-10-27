@@ -29,7 +29,7 @@ AWE.UI.Ember = (function(module) {
     templateName: 'message',
     
     timeString: function() {
-      return AWE.Util.localizedTime(this.getPath('message.created_at'));
+      return AWE.Util.localizedDateTime(this.getPath('message.created_at'));
     }.property('message.created_at').cacheable(),
   });
   
@@ -191,7 +191,7 @@ AWE.UI.Ember = (function(module) {
       this.set('newMessage', module.NewMessage.create({
         recipient: this.getPath('selectedMessage.sender.name'),  
         subject:   'Re: ' + (this.getPath('selectedMessage.subject') || ''),
-        body:      ' \n\n\n---- On  ' + AWE.Util.localizedTime(this.getPath('selectedMessage.created_at')) + ' ' +
+        body:      ' \n\n\n---- On  ' + AWE.Util.localizedDateTime(this.getPath('selectedMessage.created_at')) + ' ' +
                     (this.getPath('selectedMessage.sender.name') || 'someone') + ' wrote:\n\n' +
                     AWE.Util.htmlToAscii(this.getPath('selectedMessage.body')),
         sender_id: AWE.GS.CharacterManager.getCurrentCharacter().get('id'),
@@ -202,7 +202,7 @@ AWE.UI.Ember = (function(module) {
     forwardClicked: function() {
       this.set('newMessage', module.NewMessage.create({
         subject:   'Fwd: ' + (this.getPath('selectedMessage.subject') || ''),
-        body:      ' \n\n\n---- On  ' + AWE.Util.localizedTime(this.getPath('selectedMessage.created_at')) + ' ' +
+        body:      ' \n\n\n---- On  ' + AWE.Util.localizedDateTime(this.getPath('selectedMessage.created_at')) + ' ' +
                     (this.getPath('selectedMessage.sender.name') || 'Sytem') + ' wrote to ' +
                     this.getPath('selectedMessage.recipient.name') + ':\n\n' +
                     AWE.Util.htmlToAscii(this.getPath('selectedMessage.body')),

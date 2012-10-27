@@ -9,8 +9,6 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
 
-
-
   module.LinkedCharacterView = Ember.View.extend( /** @lends AWE.UI.Ember.LinkedCharacterView# */ {
     templateName: "linked-character-spinning-view",
     classNames:   ["inline"],
@@ -46,7 +44,10 @@ AWE.UI.Ember = (function(module) {
       WACKADOO.closeAllModalDialogs();
       return false; // prevent default behavior
     },
-
+  });
+  
+  module.LinkedCharacterWithRankView = module.LinkedCharacterView.extend( /** @lends AWE.UI.Ember.LinkedCharacterWithRankView# */ {
+    rankBinding: 'character.mundaneTitle',
   });
 
   /**
