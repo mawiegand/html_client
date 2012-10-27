@@ -122,7 +122,7 @@
 <script type="text/x-handlebars" data-template-name="character-profile-info-view">
   
 {{#if showProgressBar }}  
-  {{view  AWE.UI.Ember.CharacterProgressBarView characterBinding="character"}}
+  {{view  AWE.UI.Ember.CharacterProgressBarView allianceBinding="alliance" characterBinding="character"}}
 {{/if }}
 
   <p><b>Weltlicher Rang {{ character.mundane_rank_numeric }}:</b> <em>{{local character.mundaneTitle.name }}</em>.<br/>

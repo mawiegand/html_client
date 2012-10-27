@@ -18,6 +18,24 @@ AWE.UI.Ember = (function(module) {
       this.destroy();
     },
     
+    
+    setAndUpdateAlliance: function() {
+      var allianceId = this.getPath('character.alliance_id');
+      var self = this;
+      if (!allianceId) {
+        return ;
+      }
+      var alliance = AWE.GS.AllianceManager.getAlliance(allianceId);
+      this.set('alliance', alliance);
+      AWE.GS.AllianceManager.updateAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {
+        self.set('alliance', result);
+      });
+    },     
+    
+    allianceIdObserver: function() {
+      this.setAndUpdateAlliance();
+    }.observes('character.alliance_id'),  
+    
   });
   
   return module;
