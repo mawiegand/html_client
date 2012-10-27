@@ -59,6 +59,8 @@ AWE.Application = (function(module) {
     
       presentScreenController: null,    
       readyForRunloop: false,
+      
+      runloopStartedAt: null,
 
     
       screenContentAnchor: $('#screen-content'),
@@ -169,7 +171,11 @@ AWE.Application = (function(module) {
         }
       },
   
-      readyToRun: function() { this.set('readyForRunloop', true); log ('RREADY', this.readyForRunloop, this.get('readyForRunloop')); },
+      readyToRun: function() { 
+        this.set('readyForRunloop', true); 
+        this.set('runloopStartedAt', new Date());       
+        log ('RREADY', this.readyForRunloop, this.get('readyForRunloop')); 
+      },
   
       generateClickIfNeeded: function(evt) { 
         log('entered click handler');
@@ -337,12 +343,28 @@ AWE.Application = (function(module) {
             this.lastRunloopRun = new Date();
             AWE.GS.InboxManager.triggerInboxAutoUpdate();          
             AWE.GS.TutorialStateManager.triggerTutorialChecks();
+            this.checkCharacterRankProgress();
           }          
         }
         window.requestAnimFrame(function(self) { return function() {self.runloop(); }; }(this));  // request next animation frame that will initiate the next cycle of the runloop
       },
       
       lastRunloopRun: new Date(1970),
+      
+      checkCharacterRankProgress: function() {
+        var character = AWE.GS.CharacterManager.getCurrentCharacter();
+        var startedAt = this.get('runloopStartedAt');
+        if (startedAt && startedAt.getTime() + 5000 < new Date().getTime() && 
+            character && !this.get('isModal') && character.advancedInMundaneRank()) {
+          var action = AWE.Action.Fundamental.createChangeCharacterNotifiedRankAction(true,false); // notifed user of mundane rank
+          var dialog = AWE.UI.Ember.CharacterProgressDialog.create({
+            character: character,
+          });
+          this.presentModalDialog(dialog);
+          character.setNotifiedAvancedInMundaneRank();
+          action.send();
+        }
+      },
     
       setModal: function(state) {
         if (this.get('isModal') != state) {

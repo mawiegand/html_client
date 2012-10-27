@@ -156,7 +156,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_ANONYMOUS = "anonymous." +base;
       HOST_BOSH      = "http://"+base+"/http-bind/";
       
-      var beginner = AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') <= 1;      
+      var character = AWE.GS.player && AWE.GS.player.get('currentCharacter');
+      var beginner  = character && character.get('login_count') <= 1;      
 
       // Define groupchats here
       if (beginner) {
@@ -167,14 +168,15 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       else {
         MINI_GROUPCHATS                  = tag ? [ tag+"@conference."+base, "plauderhöhle@conference."+base , "global@conference."+base] : [ "plauderhöhle@conference."+base,  "global@conference."+base ];
         MINI_SUGGEST_GROUPCHATS          =  [ 'help@conference.'+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ];
-        MINI_5D_NON_CLOSEABLE_GROUPCHATS = tag ? [ tag+"@conference."+base, "global@conference."+base ] : [ "global@conference."+base ];       
+        MINI_5D_NON_CLOSEABLE_GROUPCHATS = tag ? [ tag+"@conference."+base, "global@conference."+base ] : [ "global@conference."+base ];     
+          
+        if (character && character.hasStaffRole('help')) {
+          MINI_GROUPCHATS.push("help@conference."+base);
+        }
       }
+      
       MINI_5D_NO_USERLIST_GROUPCHATS     = [ 'help@conference.'+base, 'global@conference.'+base ];
       MINI_5D_STAFF_POSTFIXES            = [ '| 5D', '@mod', '@admin', '@staff' ];
-      
-      MINI_GROUPCHATS.forEach(function(item) {
-        log('GROUPCHAT', item)
-      });
       
       JAPPIX_STATIC = 'jappix/'
       

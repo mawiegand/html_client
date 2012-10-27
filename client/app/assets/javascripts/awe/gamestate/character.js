@@ -105,6 +105,16 @@ AWE.GS = (function(module) {
       return used && total && total > used; // assumes used is at least one, what is ok right now as each character always has a home settlement
     },
     
+    advancedInMundaneRank: function() {
+      var rank = this.get('mundane_rank');
+      var notified = this.get('notified_mundane_rank');
+      return rank && notified !== undefined && notified !== null && rank > notified;
+    },
+    
+    setNotifiedAvancedInMundaneRank: function() {
+      this.set('notified_mundane_rank', (this.get('mundane_rank') || 0));
+    },
+    
     //
     // //// MESSAGING //////////////////////////////////////////////////////// 
     //
@@ -158,6 +168,11 @@ AWE.GS = (function(module) {
     
     fetchArchive: function(callback) {
       AWE.GS.ArchiveManager.updateMessageBoxOfCharacter(this.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, callback);
+    },
+    
+    hasStaffRole: function(role) {
+      var roles = this.get('staff_roles');
+      return roles && roles.indexOf(role) >= 0;
     },
 
     // ////////////////////////////////////////////////////////////////// ////
