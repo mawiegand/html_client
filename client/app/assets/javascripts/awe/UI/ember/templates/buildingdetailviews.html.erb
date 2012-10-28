@@ -77,7 +77,7 @@
       <div class="clearfix">
         {{#each constructionOptions}}
           {{#view AWE.UI.Ember.BuildingOptionView buildingBinding="this" classNames="building-option" }}
-            <div {{action "optionClicked" target="parentView"}}>
+            <div {{action "optionClicked" target="parentView"}} class="building-option-action">
               {{view AWE.UI.Ember.BuildingView buildingBinding="building" classNames="building-option-image"}}
               <p>{{local building.name}}</p>
             </div>
