@@ -27,20 +27,20 @@
   <%= javascript_include_tag "application" %>
 
   
-  <script type="text/x-handlebars" data-template-name="load-dialog">
-      <div class="center-helper">
-        <div class="loaddialog">
-            <div class="loaddialog-progressbar">
-              <div class="loaddialog-progress"></div>
-            </div>
-            <img class="loaddialog-image" src="<%= asset_path("splashscreen/ladedame_neu.png") %>" />
-            <div class="loaddialog-heading">Lade...</div>
-        </div>
-      </div>
-  </script>
 </head>
 
 <body>
+
+  <div id="loaddialog-wrapper" class="center-helper">
+    <div class="loaddialog">
+        <div class="loaddialog-progressbar">
+          <div class="loaddialog-progress"></div>
+        </div>
+        <img class="loaddialog-image" src="<%= asset_path("splashscreen/ladedame_neu.png") %>" />
+        <div class="loaddialog-heading">Lade...</div>
+    </div>
+  </div>
+
 
 <%= yield %>
 

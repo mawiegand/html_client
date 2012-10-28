@@ -240,12 +240,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
      * doing anything wit the app controller. */
     loadAssets: function() {
       var self = this;
-      var loadDialog;
 
       /** does final initialization after loading has finished */
       var postLoading = function() {
-        loadDialog.remove();
-        loadDialog = null;                             // done, can be garbage collected.
+        $('#loaddialog-wrapper').remove();
+
         $('#debug2').html("Initialization done.");
         
         Ember.Handlebars.bootstrap();                  // Bootstrap Ember a second time to parse the newly loaded templates.
@@ -294,18 +293,30 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       /** callback executed for each asset that completely loaded. */
       var assetLoaded = function() {
         _numLoadedAssets += 1;
-        $('div.loaddialog-progress').css('width', '' + Math.floor(_numLoadedAssets / _numAssets * 100) + '%');
+        $('div.loaddialog-progress').css('width', '' + Math.floor(Math.pow(_numLoadedAssets / _numAssets, 2.0) * 100) + '%');
         if (_numLoadedAssets === _numAssets) {           // have loaded all assets?
           postLoading(); 
         }
       };
-    
-      loadDialog = Ember.View.create({
-        templateName: 'load-dialog',
-      });
-      loadDialog.append();   
-          
+              
       _numLoadedAssets = _numAssets = 0;
+      
+      // /// REGISTER AND COUNT IMAGES AND TEMPLATES ////
+
+      AWE.UI.ImageCache.init();                   // initializes the central image cache
+      for (var k in AWE.Config.IMAGE_CACHE_LOAD_LIST) {     // and preload assets
+        if (AWE.Config.IMAGE_CACHE_LOAD_LIST.hasOwnProperty(k)) {
+          _numAssets += 1;                        // count assets
+        }
+      }
+
+      _numAssets += AWE.UI.Ember.templates.length;
+      for (var i=0; i < AWE.UI.Ember.templates.length; i++) {
+        AWE.Util.TemplateLoader.registerTemplate(AWE.UI.Ember.templates[i], function() {
+          assetLoaded();
+        });
+      }
+      // /// DONE ///      
       
       _numAssets +=1;
       AWE.GS.RulesManager.updateRules(function(rules, statusCode) {
@@ -378,17 +389,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         }
       });
 
-      for (var i=0; i < AWE.UI.Ember.templates.length; i++) {
-        _numAssets += 1;
-        AWE.Util.TemplateLoader.registerTemplate(AWE.UI.Ember.templates[i], function() {
-          assetLoaded();
-        });
-      }
-
-      AWE.UI.ImageCache.init();                   // initializes the central image cache
       for (var k in AWE.Config.IMAGE_CACHE_LOAD_LIST) {     // and preload assets
         if (AWE.Config.IMAGE_CACHE_LOAD_LIST.hasOwnProperty(k)) {
-          _numAssets += 1;                        // count assets
           AWE.UI.ImageCache.loadImage(k, AWE.Config.IMAGE_CACHE_LOAD_LIST[k], function(name) {
             assetLoaded();
           });
