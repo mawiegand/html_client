@@ -17,7 +17,8 @@ AWE.Util.Browser = (function(module) {
       Modernizr.canvas &&
       Modernizr.canvastext &&
       Modernizr.inlinesvg &&
-      Modernizr.svg
+      Modernizr.svg &&
+      !(window.opera && window.opera.buildNumber)
     );
     
     if (!(AWE.Config.BROWSER_CHECK_FAILURES_ONLY && requirementsSatisfied)) {
