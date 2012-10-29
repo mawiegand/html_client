@@ -208,19 +208,19 @@ AWE.GS = (function(module) {
         time += this.calcProductionTime(l);
       }
       var convertedTime = 0;
-      log('---> conversionTime', time);
+      // log('---> conversionTime', time);
       var convertedBuilding = this.get('converted');
-      log('---> convertedBuilding', convertedBuilding);
+      // log('---> convertedBuilding', convertedBuilding);
       var convertedLevel = this.get('convertedLevel') || 1;
-      log('---> convertedLevel', convertedLevel);
+      // log('---> convertedLevel', convertedLevel);
       var speed = this.getPath('queue.speed');
-      log('---> speed', speed);
+      // log('---> speed', speed);
 
       for (var l = 1; l <= convertedLevel; l++) {
         var productionTime = convertedBuilding.getPath('buildingType.production_time');
         convertedTime += AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(productionTime), l) / speed
       }
-      log('---> conversionTime', convertedTime);
+      // log('---> conversionTime', convertedTime);
       return Math.max(convertedTime - time, convertedTime * (1 - AWE.GS.RulesManager.getRules().building_conversion.time_factor));
     }.property('level', 'buildingType.production_time', 'queue.speed').cacheable(),
 
@@ -247,9 +247,9 @@ AWE.GS = (function(module) {
       }
       
       var convertedCosts = this.getPath('converted.buildingType.costs');
-      log('---> convertedBuilding', convertedCosts);
+      // log('---> convertedBuilding', convertedCosts);
       var convertedLevel = this.get('convertedLevel') || 1;
-      log('---> convertedLevel', convertedLevel);
+      // log('---> convertedLevel', convertedLevel);
       
       var convertedCostSum = [];
       
@@ -257,16 +257,16 @@ AWE.GS = (function(module) {
         convertedCostSum = AWE.Util.Rules.addedResourceCosts(AWE.Util.Rules.evaluateResourceCosts(convertedCosts, l), convertedCostSum);
       }
 
-      log('---> convertedCostSum', convertedCostSum, AWE.Util.Rules.resourceCostsWithResourceId(costSum, 1));
+      // log('---> convertedCostSum', convertedCostSum, AWE.Util.Rules.resourceCostsWithResourceId(costSum, 1));
       
       costsResult = [];
       AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
         var sum = AWE.Util.Rules.resourceCostsWithResourceId(costSum, item.id);
-        log('---> a', sum);
+        // log('---> a', sum);
         var convertedSum = AWE.Util.Rules.resourceCostsWithResourceId(convertedCostSum, item.id);
-        log('---> a', convertedSum);
+        // log('---> a', convertedSum);
         var amount = Math.max(convertedSum - sum, convertedSum * (1 - AWE.GS.RulesManager.getRules().building_conversion.cost_factor));
-        log('---> a', amount);
+        // log('---> a', amount);
         if (amount > 0) {
           costsResult.push(Ember.Object.create({  
             amount:       amount,
