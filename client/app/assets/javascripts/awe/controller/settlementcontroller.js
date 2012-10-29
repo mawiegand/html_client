@@ -260,7 +260,7 @@ AWE.Controller = (function(module) {
             AWE.GS.ResourcePoolManager.updateResourcePool();
             AWE.GS.SlotManager.updateSlot(slot.getId(), null, function() {
               
-              log('---> next level', slot.getPath('building.nextLevel'));
+              // log('---> next level', slot.getPath('building.nextLevel'));
               
               switch (jobType) {
                 case AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE:
