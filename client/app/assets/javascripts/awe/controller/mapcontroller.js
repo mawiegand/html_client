@@ -1733,9 +1733,26 @@ AWE.Controller = (function(module) {
         }          
         
         if (targetPos) {
+          var factor   = 0.0;                                  // default value, in case another value is missing.
+          if (AWE.Config.MAP_MOVE_ARMIES) {
+            var maxDistance     = 0.48;
+            var minDistance     = 0.0;
+            var targetReachedAt = army.get('target_reached_at');
+            var velocity        = army.get('velocity');
+            var totalSeconds    = 15*60*1000.0/(velocity || 1.0);  // assumption: movement time is 15 minutes. TODO : make this dynamic 
+            if (targetReachedAt) {
+              var seconds = Date.parseISODate(targetReachedAt).getTime() - new Date().getTime();
+              factor = Math.max(minDistance, Math.min((1.0-seconds / totalSeconds) * (maxDistance-minDistance) + minDistance, maxDistance));
+              log("MOVEMENT", seconds, totalSeconds, factor);
+            }
+          }
+          else { // factor, in case army movement is switched off
+            factor = 0.2;
+          }
+          
           var dir = AWE.Geometry.createPoint(targetPos.x - view.center().x, targetPos.y - view.center().y);
-          view.setCenter(AWE.Geometry.createPoint(view.center().x + dir.x * 0.2,
-                                                  view.center().y + dir.y * 0.2));          
+          view.setCenter(AWE.Geometry.createPoint(view.center().x + dir.x * factor,
+                                                  view.center().y + dir.y * factor));          
         }
       }      
     }
@@ -2425,7 +2442,8 @@ AWE.Controller = (function(module) {
           stagesNeedUpdate[0] = this.rebuildMapHierarchy(nodes) || stagesNeedUpdate[0];
         }
         
-        if (_windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _actionViewChanged ) {
+        if ((AWE.Config.MAP_MOVE_ARMIES &&_loopCounter % 60 == 0) ||
+            _windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _actionViewChanged ) { // if moving armies
           stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         };
         

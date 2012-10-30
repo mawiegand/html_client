@@ -14,14 +14,44 @@ AWE.GS = (function(module) {
    */
   module.Util = (function(that) /** @lends AWE.GS.Util */ {    
 
+    that.equal = function(a, b) {
+      return a === b ? 1 : 0;
+    }
+    
+    that.less = function(a, b) {
+      return a < b ? 1 : 0;
+    }
+    
+    that.greater = function(a, b) {
+      return a > b ? 1 : 0;
+    }
+    
+    that.not = function(a) {
+      return a === 0 ? 1 : 0;
+    }
+    
+    that.and = function(a,b) {
+      return that.not(a) === 0 && that.not(b) === 0 ? 1 : 0;
+    }
+
+    that.or = function(a,b) {
+      return that.not(a) === 0 || that.not(b) === 0 ? 1 : 0;
+    }
+
     functions = {
-      'MIN':   'Math.min',
-      'MAX':   'Math.max',
-      'ROUND': 'Math.round',
-      'CEIL':  'Math.ceil',
-      'FLOOR': 'Math.floor',
-      'POW':   'Math.pow',
-      'SIGN':  'AWE.Ext.sign',
+      'MIN':     'Math.min',
+      'MAX':     'Math.max',
+      'ROUND':   'Math.round',
+      'CEIL':    'Math.ceil',
+      'FLOOR':   'Math.floor',
+      'POW':     'Math.pow',
+      'SIGN':    'AWE.Ext.sign',
+      'EQUAL':   'AWE.GS.Util.equal',
+      'LESS':    'AWE.GS.Util.less',
+      'GREATER': 'AWE.GS.Util.greater',
+      'NOT':     'AWE.GS.Util.not',
+      'AND':     'AWE.GS.Util.and',
+      'OR':      'AWE.GS.Util.or',
     }
 
     /**
