@@ -11,6 +11,10 @@ AWE.UI.Ember = (function(module) {
   
   module.EncyclopediaBuildingView = Ember.View.extend({
     building: null,
+
+    commandPoints: function() {
+      return this.getPath('building.abilities.command_points') !== undefined && this.getPath('building.abilities.command_points') !== null && this.getPath('building.abilities.command_points').length > 0;
+    }.property('building.abilities.command_points').cacheable(),
     
     production: function() {
       return this.getPath('building.production') !== undefined && this.getPath('building.production') !== null && this.getPath('building.production').length > 0;
@@ -34,6 +38,7 @@ AWE.UI.Ember = (function(module) {
           productionTime: AWE.GS.Util.parseAndEval(building.production_time, level),
           capacities:     this.get('capacity') ? AWE.Util.Rules.evaluateResourceCapacity(building.capacity, level, false) : null,
           productions:    this.get('production') ? AWE.Util.Rules.evaluateResourceProduction(building.production, level, false) : null,
+          commandPoints:  this.get('commandPoints') ? AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(building.abilities.command_points), level) : null,
         })
       };
       return stats;
@@ -53,6 +58,7 @@ AWE.UI.Ember = (function(module) {
 
 
   module.ResourceButton = Ember.View.extend({
+    classNames: ['enc-button'],
     resourceType: null,
     click: function(event) {
       var resourceType = this.get('resourceType');
@@ -62,6 +68,7 @@ AWE.UI.Ember = (function(module) {
   });  
 
   module.BuildingButton = Ember.View.extend({
+    classNames: ['enc-button'],
     buildingType: null,
     click: function(event) {
       var buildingType = this.get('buildingType');
@@ -71,6 +78,7 @@ AWE.UI.Ember = (function(module) {
   }); 
   
   module.UnitButton = Ember.View.extend({
+    classNames: ['enc-button'],
     unitType: null,
     click: function(event) {
       var unitType = this.get('unitType');
