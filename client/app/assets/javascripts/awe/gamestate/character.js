@@ -105,6 +105,12 @@ AWE.GS = (function(module) {
       return used && total && total > used; // assumes used is at least one, what is ok right now as each character always has a home settlement
     },
     
+    settlementPointsAvailable: function() {
+      var used  = this.get('settlement_points_used') || 0;
+      var total = this.get('settlement_points_total') || 0;
+      return Math.max(0, total-used); // assumes used is at least one, what is ok right now as each character always has a home settlement
+    }.property('settlement_points_used', 'settlement_points_total'),
+    
     advancedInMundaneRank: function() {
       var rank = this.get('mundane_rank');
       var notified = this.get('notified_mundane_rank');

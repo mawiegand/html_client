@@ -1,7 +1,17 @@
 <script type="text/x-handlebars" data-template-name="encyclopedia-building">
+
   <h1>{{local building.name}}</h1>
+  
+  {{#unless building.demolishable}}
+    <p><b>Achtung:</b> Einmal gebaut, kann dieses Gebäude nicht mehr abgerissen werden.</p>
+  {{/unless}}
+  
   {{local building.flavour}}
   {{local building.description}}
+  
+  {{#if building.buyable}}
+    <p>Dieses Gebäude kann durch den Einsatz von Kröten beschleunigt werden.</p>
+  {{/if}}
   
   <table>
     <tr>
@@ -13,6 +23,12 @@
       <th>Bauzeit</th>
       {{#if capacity}}
         <th>Lagerkapazität</th>
+      {{/if}}
+      {{#if commandPoints}}
+        <th title="Kommandopunkte">KP</th>
+      {{/if}}
+      {{#if production}}
+        <th>Produktion</th>
       {{/if}}
     </tr>
     {{#each stats}}
@@ -30,6 +46,11 @@
             {{/each}}
           </td>
         {{/if}}
+        {{#if view.commandPoints}}
+          <td class="number"> 
+            {{commandPoints}}
+          </td>
+        {{/if}} 
         {{#if view.production}}
           <td class="number"> 
             {{#each productions}}
@@ -88,7 +109,7 @@
     <div class="modal-dialog-pane z-layer-4 encyclopedia-view">
       
       <div class="overview">
-        <a href="#" {{action toggleResources}}><b>Rohstoffe</b></a><br/>
+        <a href="#" class="enc-category" {{action toggleResources}}><b>Rohstoffe</b></a><br/>
         {{#if displayResources}}
           {{#each resourceTypes }}
             {{#view AWE.UI.Ember.ResourceButton resourceTypeBinding="this" }}
@@ -97,7 +118,7 @@
           {{/each}}
         {{/if}}
         
-        <a href="#" {{action toggleBuildings}}><b>Gebäude</b></a><br/>
+        <a href="#" class="enc-category" {{action toggleBuildings}}><b>Gebäude</b></a><br/>
         {{#if displayBuildings}}
           {{#each buildingTypes }}
             {{#unless hidden}}
@@ -108,7 +129,7 @@
           {{/each}}
         {{/if}}
         
-        <a href="#" {{action toggleUnits}}><b>Einheiten</b></a><br/>
+        <a href="#" class="enc-category" {{action toggleUnits}}><b>Einheiten</b></a><br/>
         {{#if displayUnits}}
           {{#each unitTypes }}
             {{#view AWE.UI.Ember.UnitButton unitTypeBinding="this" }}

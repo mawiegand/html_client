@@ -1739,7 +1739,7 @@ AWE.Controller = (function(module) {
             var minDistance     = 0.0;
             var targetReachedAt = army.get('target_reached_at');
             var velocity        = army.get('velocity');
-            var totalSeconds    = 15*60*1000.0/(velocity || 1.0);  // assumption: movement time is 15 minutes. TODO : make this dynamic 
+            var totalSeconds    = (15*60*1000.0)/(velocity || 1.0);  // assumption: movement time is 15 minutes. TODO : make this dynamic 
             if (targetReachedAt) {
               var seconds = Date.parseISODate(targetReachedAt).getTime() - new Date().getTime();
               factor = Math.max(minDistance, Math.min((1.0-seconds / totalSeconds) * (maxDistance-minDistance) + minDistance, maxDistance));
