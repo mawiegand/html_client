@@ -363,15 +363,27 @@ AWE.UI = (function(module) {
       if (!_army) {
         return null;
       }
-      var armyCategory = _army.get('armyCategory');
       
-      if (armyCategory === 'artillery') {
-        return this.createAmazonSpriteSheet(_army.get('id'));
+      if (_army.get("npc") && AWE.Config.DISABLE_NPC_IMAGES) {
+        if (_army.get('id') % 3 == 0) {
+          return this.createAmazonSpriteSheet(_army.get('id'));
+        }
+        else if (_army.get('id') % 3 == 1) {
+          return this.createChefSpriteSheet(_army.get('id'));
+        }
+        return this.createWarriorSpriteSheet(_army.get('id'));
       }
-      else if (armyCategory === 'cavalry') {
-        return this.createChefSpriteSheet(_army.get('id'));
+      else {
+        var armyCategory = _army.get('armyCategory');
+        
+        if (armyCategory === 'artillery') {
+          return this.createAmazonSpriteSheet(_army.get('id'));
+        }
+        else if (armyCategory === 'cavalry') {
+          return this.createChefSpriteSheet(_army.get('id'));
+        }
+        return this.createWarriorSpriteSheet(_army.get('id'));
       }
-      return this.createWarriorSpriteSheet(_army.get('id'));
     }
         
     that.recalcView = function() {
