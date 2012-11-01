@@ -103,7 +103,7 @@ AWE.UI = (function(module) {
       _baseImage.onMouseOut = that.onMouseOut;
       this.addChild(_baseImage);      
 
-      if (_army.get("npc")) {
+      if (_army.get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) {
         var stanceImage;
 
         var size = _army.get('size_present') || 0;
@@ -464,7 +464,7 @@ AWE.UI = (function(module) {
         _battleView = null;
       }
       
-      if (!_army.get("npc") && (_army.get("stance") != _stance || !_animation)) {
+      if (!(_army.get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) && (_army.get("stance") != _stance || !_animation)) {
         var data = this.prepareSpriteSheet();
         _stance = _army.get('stance');
         
@@ -492,7 +492,7 @@ AWE.UI = (function(module) {
         _animation = newAnimation;
       }
 
-      if (_army.get("npc")) {
+      if (_army.get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) {
         var stanceImage;
         var size = _army.get('size_present') || 0;
         if (size >= 800) {
