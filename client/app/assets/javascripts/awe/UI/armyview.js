@@ -373,6 +373,15 @@ AWE.UI = (function(module) {
         }
         return this.createWarriorSpriteSheet(_army.get('id'));
       }
+      else if (AWE.Config.DISABLE_NPC_IMAGES) {
+        if (_army.get('id') % 3 == 0) {
+          return this.createAmazonSpriteSheet(_army.get('id'));
+        }
+        else if (_army.get('id') % 3 == 1) {
+          return this.createChefSpriteSheet(_army.get('id'));
+        }
+        return this.createWarriorSpriteSheet(_army.get('id'));
+      }
       else {
         var armyCategory = _army.get('armyCategory');
         
