@@ -103,7 +103,7 @@ AWE.UI = (function(module) {
       _baseImage.onMouseOut = that.onMouseOut;
       this.addChild(_baseImage);      
 
-      if (_army.get("npc")) {
+      if (_army.get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) {
         var stanceImage;
 
         var size = _army.get('size_present') || 0;
@@ -363,15 +363,36 @@ AWE.UI = (function(module) {
       if (!_army) {
         return null;
       }
-      var armyCategory = _army.get('armyCategory');
       
-      if (armyCategory === 'artillery') {
-        return this.createAmazonSpriteSheet(_army.get('id'));
+      if (_army.get("npc") && AWE.Config.DISABLE_NPC_IMAGES) {
+        if (_army.get('id') % 3 == 0) {
+          return this.createAmazonSpriteSheet(_army.get('id'));
+        }
+        else if (_army.get('id') % 3 == 1) {
+          return this.createChefSpriteSheet(_army.get('id'));
+        }
+        return this.createWarriorSpriteSheet(_army.get('id'));
       }
-      else if (armyCategory === 'cavalry') {
-        return this.createChefSpriteSheet(_army.get('id'));
+      else if (AWE.Config.DISABLE_NPC_IMAGES) {
+        if (_army.get('id') % 3 == 0) {
+          return this.createAmazonSpriteSheet(_army.get('id'));
+        }
+        else if (_army.get('id') % 3 == 1) {
+          return this.createChefSpriteSheet(_army.get('id'));
+        }
+        return this.createWarriorSpriteSheet(_army.get('id'));
       }
-      return this.createWarriorSpriteSheet(_army.get('id'));
+      else {
+        var armyCategory = _army.get('armyCategory');
+        
+        if (armyCategory === 'artillery') {
+          return this.createAmazonSpriteSheet(_army.get('id'));
+        }
+        else if (armyCategory === 'cavalry') {
+          return this.createChefSpriteSheet(_army.get('id'));
+        }
+        return this.createWarriorSpriteSheet(_army.get('id'));
+      }
     }
         
     that.recalcView = function() {
@@ -464,7 +485,7 @@ AWE.UI = (function(module) {
         _battleView = null;
       }
       
-      if (!_army.get("npc") && (_army.get("stance") != _stance || !_animation)) {
+      if (!(_army.get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) && (_army.get("stance") != _stance || !_animation)) {
         var data = this.prepareSpriteSheet();
         _stance = _army.get('stance');
         
@@ -492,7 +513,7 @@ AWE.UI = (function(module) {
         _animation = newAnimation;
       }
 
-      if (_army.get("npc")) {
+      if (_army.get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) {
         var stanceImage;
         var size = _army.get('size_present') || 0;
         if (size >= 800) {
