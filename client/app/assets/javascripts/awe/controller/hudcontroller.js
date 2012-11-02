@@ -262,10 +262,13 @@ AWE.Controller = (function(module) {
     
     that.rankingButtonClicked = function() {
       
+      var character = AWE.GS.player.get('currentCharacter') || null;
+      
       log('Ranking button clicked.');
       
       $('<form style="display:none;" action="' + AWE.Config.RANKING_SERVER_BASE + '" method="GET" target="_blank">' +
-        '  <input type="hidden" name="sort" value="overall" />' +
+        '  <input type="hidden" name="sort"   value="overall" />' +
+        (character ? '  <input type="hidden" name="marked" value="' + character.get('id') + '" />' : '') +
         '</form>').appendTo('body').submit().remove();      
       
     };
