@@ -262,13 +262,14 @@ AWE.Controller = (function(module) {
     
     that.rankingButtonClicked = function() {
       
-      var character = AWE.GS.player.get('currentCharacter') || null;
+      var characterId = AWE.GS.player.getPath('currentCharacter.id') || 0;
       
       log('Ranking button clicked.');
       
-      $('<form style="display:none;" action="' + AWE.Config.RANKING_SERVER_BASE + '" method="GET" target="_blank">' +
+      $('<form style="display:none;" action="' + AWE.Config.RANKING_SERVER_BASE + 
+        (characterId ? '#char'+ characterId : '') + '" method="GET" target="_blank">' +
         '  <input type="hidden" name="sort"   value="overall" />' +
-        (character ? '  <input type="hidden" name="marked" value="' + character.get('id') + '" />' : '') +
+        (characterId ? '  <input type="hidden" name="mark" value="' + characterId + '" />' : '') +
         '</form>').appendTo('body').submit().remove();      
       
     };
