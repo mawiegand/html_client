@@ -95,6 +95,7 @@ AWE.UI.Ember = (function(module) {
   module.NewMessage = Ember.View.extend({
     sender_id: null,
     recipient: null,
+    alliance:  null,
     subject:   null,
     body:      null,
 
@@ -114,6 +115,8 @@ AWE.UI.Ember = (function(module) {
     templateName: 'message-center',
     
     character: null,
+    alliance: null,
+    
     inboxBinding: "character.inbox",
     outboxBinding: "character.outbox",
     archiveBinding: "character.archive",
@@ -127,13 +130,24 @@ AWE.UI.Ember = (function(module) {
     
     isFormVisible: false,
     
-    showForm: function() {
+    showForm: function(alliance) {
       if (!this.get('newMessage')) {
         this.set('newMessage', module.NewMessage.create({
           sender_id: AWE.GS.CharacterManager.getCurrentCharacter().get('id'),
+          alliance:  alliance || null
         }));
       }
       this.set('isFormVisible', true);
+    },
+
+    showAllianceMessageForm: function() {
+      var alliance = this.get('alliance');
+      if (alliance) {
+        this.showForm(alliance);
+      }
+      else {
+        log('could not create alliance message, because character seems to be in no alliance.');
+      }
     },
     
     hideForm: function() {
@@ -185,7 +199,13 @@ AWE.UI.Ember = (function(module) {
     isDeletePossible: function() {
       return ! this.get('newMessage') && this.get('selectedMessage') && this.get('displayingInbox');
     }.property('selectedMessage', 'newMessage', 'displayingInbox'),
-
+    
+    isAllianceMessagePossible: function() {
+      var characterId = this.getPath('character.id');
+      var leaderId    = this.getPath('alliance.leader_id');
+      log('IS POSSIBLE ALLY MESSAGE', characterId, leaderId);
+      return characterId && characterId === leaderId;
+    }.property('character', 'alliance.leader_id'),
     
     replyClicked: function() {
       this.set('newMessage', module.NewMessage.create({

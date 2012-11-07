@@ -59,14 +59,21 @@ AWE.Controller = (function(module) {
     
     that.createView = function() {
       
-      var character = AWE.GS.CharacterManager.getCurrentCharacter();
+      var character   = AWE.GS.CharacterManager.getCurrentCharacter();
+      var allianceId  = character.get('alliance_id');
+      var alliance    = allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
       
       var center = AWE.UI.Ember.MessageCenterView.create({
         controller: this,    
         character: character,
-        
+        alliance:  alliance,
       });
-      log(center, center.get('character'), center.get('character').get('inbox'));
+       
+      if (!alliance && allianceId) { // fetch alliance from server if it's not available yet
+        AWE.GS.AllianceManager.updateAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+          center.set('alliance', AWE.GS.AllianceManager.getAlliance(allianceId));
+        });
+      }
       
       return center;
     }
@@ -86,6 +93,9 @@ AWE.Controller = (function(module) {
     that.newClicked = function() {
       this.view.showForm();
     };
+    that.newAllianceMessageClicked = function() {
+      this.view.showAllianceMessageForm();
+    };
     that.createDraftTo = function(recipientName) {
       this.view.showForm();
       this.view.setPath('newMessage.recipient', recipientName);
@@ -94,6 +104,8 @@ AWE.Controller = (function(module) {
       this.view.set('newMessage', null);
       this.view.hideForm();
     };
+    
+    
     that.sendMessage = function(message) {
       var self = this;
       action = AWE.Action.Messaging.createSendMessageAction(message);
@@ -117,7 +129,6 @@ AWE.Controller = (function(module) {
         }
       });
     };
-    
     
     that.appendView = function() {
       if (this.view) {

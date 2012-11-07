@@ -252,6 +252,16 @@ AWE.GS = (function(module) {
         });
       }
     }.observes('recipient_id'),
+    
+    isSystemMessage: function() {
+      var typeId = this.get('type_id');
+      return typeId !== null && typeId !== undefined && typeId !== 0 && typeId !== 13 && typeId !== 12;
+    }.property('type_id'),
+    
+    isAllianceMessage: function() {
+      return (this.get('type_id') || 0) === 13; // TODO : DEFINE CONSTANT
+    }.property('type_id'),
+    
   });  
       
   // ///////////////////////////////////////////////////////////////////////

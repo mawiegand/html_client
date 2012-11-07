@@ -25,12 +25,18 @@ AWE.Action.Messaging = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return {
+      return message.get('alliance') ? {     // alliance message ?
         message: {
           subject:        (message.subject),
-          recipient_name: (message.recipient),
           body:           (message.body),
+          alliance_id:    (message.getPath('alliance.id')),
         }
+      } : {                                  // or user message ?
+        message: {
+          subject:        (message.subject),
+          body:           (message.body),
+          recipient_name: (message.recipient),
+        }        
       };
     }
     

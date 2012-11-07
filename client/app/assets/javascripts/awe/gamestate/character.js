@@ -240,7 +240,13 @@ AWE.GS = (function(module) {
       else {
         return 'loading';
       }
-    }
+    },
+    
+    getAlliance: function() {
+      var allianceId = this.get('alliance_id');
+      return allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
+    },
+    
   });     
 
     
