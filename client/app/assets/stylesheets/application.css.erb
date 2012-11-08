@@ -808,6 +808,7 @@ html, body {
   margin: -2px;
 }
 
+
 .ok-button:hover {
   border-color: #9D9;
 }
@@ -815,6 +816,18 @@ html, body {
 .ok-button {
   color: #9D9;
 }
+
+.quest-dialog .ok-button:hover {
+  border-color: #BC4;
+  border-width: 4px;
+  margin: -4px;
+}
+
+.quest-dialog .ok-button {
+  font-weight: bold;
+  color: #BC4;
+}
+
 .icon-button.ok-button {
   background: url('<%= asset_path("icons/cross_green_small.png") %>') no-repeat left center;  
 }
@@ -3531,17 +3544,25 @@ table .number {
 
 .quest-start-dialog, .quest-finished-dialog, .quest-info-dialog, .quest-dialog {
   position: absolute; 
-  margin-left: -350px;
+  margin-left: -366px;
   margin-top: -250px;
-  width: 700px; min-height: 100px;
+  width: 732px; min-height: 100px;
   background-color: #FFF;  
-  padding: 16px 20px 16px 20px;
+  padding: 4px 4px 4px 4px;
   z-index:256;
+}
+
+.quest-dialog.tutorial .inner-border {
+  border: 8px solid #BC4;
+  border-radius: 11px;
+  margin: 0;
+  padding: 14px 14px 14px 14px;
 }
 
 .quest-start-dialog .advisor, .quest-finished-dialog .advisor, .quest-info-dialog .advisor, .quest-dialog .advisor { 
   float:right;
   margin-left: 10px;
+  margin-right: -10px;
 }
 
 .quest-rewards {

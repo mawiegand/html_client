@@ -79,14 +79,55 @@
       {{/if}}
 </script>
 
+<script type="text/x-handlebars" data-template-name="quest-dialog-header">
+  {{#if modeStart}}
+    {{t tutorial.quest.start.header }}
+  {{else}}
+    {{#if modeEnd}}
+      {{t tutorial.quest.end.header }}
+    {{else}}
+      {{#if modeExisting}}
+        {{t tutorial.quest.info.header }}
+      {{else}}
+        {{#if parentView.header}} 
+          {{parentView.header}}
+        {{else}}
+          {{t tutorial.quest.info.header }}
+        {{/if}}
+      {{/if}}
+    {{/if}}
+  {{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="tutorial-dialog-header">
+  {{#if modeStart}}
+    {{t tutorial.task.start.header }}
+  {{else}}
+    {{#if modeEnd}}
+      {{t tutorial.task.end.header }}
+    {{else}}
+      {{#if modeExisting}}
+        {{t tutorial.task.info.header }}
+      {{else}}
+        {{t tutorial.task.info.header }}
+      {{/if}}
+    {{/if}}
+  {{/if}}
+</script>
+
 
 <script type="text/x-handlebars" data-template-name="quest-dialog">
   <div class="modal-dialog-background"></div>
   <div class="center-helper">
-    <div class="modal-dialog-pane quest-dialog">
+    <div {{bindAttr class="quest.tutorial:tutorial :modal-dialog-pane :quest-dialog"}}>
+      <div class="inner-border clearfix">
 
       <div {{bindAttr class="advisor"}}></div>
-      <h1>{{header}}</h1>
+      {{#if quest.tutorial}}
+        {{view Ember.View templateName="tutorial-dialog-header" tagName="h1" modeStartBinding="modeStart" modeEndBinding="modeEnd" modeExistingBinding="modeExisting"}}
+      {{else}}
+        {{view Ember.View templateName="quest-dialog-header" tagName="h1" modeStartBinding="modeStart" modeEndBinding="modeEnd" modeExistingBinding="modeExisting"}}
+      {{/if}}
       {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
         
       {{#if quest.rewards}}
@@ -168,8 +209,10 @@
         </div>
       </div>
       {{/if}}
-      <div class="icon-button ok-button" {{action "okPressed"}}>Close</div>
-      
+
+        <div class="button ok-button clearfix" {{action "okPressed"}}>Close</div>
+
+      </div>
     </div>
   </div>
 </script>
