@@ -58,11 +58,13 @@
       {{/unless}}
       </p>
       <h3>
-        {{#unless questState.finished}}
+        {{#if questState.finished}}
+          {{#unless quest.tutorial }}
+            {{t tutorial.quest.end.task}} {{local quest.task}}
+          {{/unless}}
         {{else}}
-          {{t tutorial.quest.end.task}}
-        {{/unless}}
-        {{local quest.task}}
+          {{local quest.task}}
+        {{/if}}
       </h3>
       {{#if questState.finished}}
         {{#if quest.reward_text}}Tipp:{{/if}} {{local quest.reward_text}}
@@ -88,19 +90,23 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="quest-dialog-header">
-  {{#if modeStart}}
-    {{t tutorial.quest.start.header }}
+  {{#if finished}}
+    {{t tutorial.quest.end.header }}
   {{else}}
-    {{#if modeEnd}}
-      {{t tutorial.quest.end.header }}
+    {{#if modeStart}}
+      {{t tutorial.quest.start.header }}
     {{else}}
-      {{#if modeExisting}}
-        {{t tutorial.quest.info.header }}
+      {{#if modeEnd}}
+        {{t tutorial.quest.end.header }}
       {{else}}
-        {{#if parentView.header}} 
-          {{parentView.header}}
-        {{else}}
+        {{#if modeExisting}}
           {{t tutorial.quest.info.header }}
+        {{else}}
+          {{#if parentView.header}} 
+            {{parentView.header}}
+          {{else}}
+            {{t tutorial.quest.info.header }}
+          {{/if}}
         {{/if}}
       {{/if}}
     {{/if}}
@@ -108,16 +114,20 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="tutorial-dialog-header">
-  {{#if modeStart}}
-    {{t tutorial.task.start.header }}
+  {{#if finished}}
+    {{t tutorial.task.end.header }}
   {{else}}
-    {{#if modeEnd}}
-      {{t tutorial.task.end.header }}
+    {{#if modeStart}}
+      {{t tutorial.task.start.header }}
     {{else}}
-      {{#if modeExisting}}
-        {{t tutorial.task.info.header }}
+      {{#if modeEnd}}
+        {{t tutorial.task.end.header }}
       {{else}}
-        {{t tutorial.task.info.header }}
+        {{#if modeExisting}}
+          {{t tutorial.task.info.header }}
+        {{else}}
+          {{t tutorial.task.info.header }}
+        {{/if}}
       {{/if}}
     {{/if}}
   {{/if}}
@@ -126,15 +136,15 @@
 
 <script type="text/x-handlebars" data-template-name="quest-dialog">
   <div class="modal-dialog-background"></div>
-  <div class="center-helper">
+  <div class="horizontal-center-helper">
     <div {{bindAttr class="quest.tutorial:tutorial :modal-dialog-pane :quest-dialog"}}>
       <div {{bindAttr class="quest.advisor :inner-border :clearfix"}}>
 
       <div {{bindAttr class="advisor"}}></div>
       {{#if quest.tutorial}}
-        {{view Ember.View templateName="tutorial-dialog-header" tagName="h1" modeStartBinding="modeStart" modeEndBinding="modeEnd" modeExistingBinding="modeExisting"}}
+        {{view Ember.View templateName="tutorial-dialog-header" tagName="h1" finishedBinding="finished" modeStartBinding="modeStart" modeEndBinding="modeEnd" modeExistingBinding="modeExisting"}}
       {{else}}
-        {{view Ember.View templateName="quest-dialog-header" tagName="h1" modeStartBinding="modeStart" modeEndBinding="modeEnd" modeExistingBinding="modeExisting"}}
+        {{view Ember.View templateName="quest-dialog-header" tagName="h1" finishedBinding="finished" modeStartBinding="modeStart" modeEndBinding="modeEnd" modeExistingBinding="modeExisting"}}
       {{/if}}
       
       {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
@@ -144,11 +154,9 @@
       <div>
         {{#if finished}}
           <div class="quest-redeem-button">
-            {{#if redeeming}}
-              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-            {{else}}
-              <div class="simple-button" {{action "redeemButtonPressed" }}>{{t tutorial.redeemNow }}</div>
-            {{/if}}
+            {{#unless redeeming}}
+              <div class="simple-button" {{action "redeemLaterButtonPressed" }}>{{t tutorial.redeemLater }}</div>
+            {{/unless}}
           </div>
         {{else}}
           <div class="quest-redeem-button">
@@ -219,7 +227,14 @@
       </div>
       {{/if}}
 
-        <div class="button ok-button clearfix" {{action "okPressed"}}>Ok!</div>
+
+        <div class="button ok-button clearfix" {{action "okPressed"}}>
+          {{#if redeeming}}
+            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+          {{else}}
+            Ok!
+          {{/if}}
+        </div>
         <div class="quest-item-nr">#{{questState.questNr}}</div>
 
 

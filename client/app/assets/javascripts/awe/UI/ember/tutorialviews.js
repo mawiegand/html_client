@@ -14,7 +14,7 @@ AWE.UI.Ember = (function(module) {
     
     tutorialState: null,
     
-    questStatesBinding: 'tutorialState.notClosedQuestStates',
+    questStatesBinding: 'tutorialState.notClosedQuestStates',  
     
     redeemButtonPressed: function(questState) {
       log('--> redeem Button Pressed', questState)
@@ -39,6 +39,7 @@ AWE.UI.Ember = (function(module) {
     templateName: 'quest-list-entry-view',
     
     questState: null,
+
   
     redeemButtonPressed: function() {
       // log('---> QuestListEntryView redeemButtonPressed', this.get('questState'));
@@ -49,6 +50,7 @@ AWE.UI.Ember = (function(module) {
       // log('---> QuestListEntryView showQuestInfoPressed', this.getPath('questState.quest'));
       this.get('parentView').showQuestInfoPressed(this.getPath('questState.quest'));
     },
+  
     
     classNameBindings: ['finished'],
     
@@ -68,7 +70,14 @@ AWE.UI.Ember = (function(module) {
       return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
     }.property('questState.status'),        
 
+    redeemLaterButtonPressed: function() {
+      this.destroy();
+    },
+
     redeemButtonPressed: function() {
+      if (this.get('redeeming')) {
+        return ;
+      }
       var that = this;
       this.set('redeeming', true);
       
@@ -77,6 +86,18 @@ AWE.UI.Ember = (function(module) {
       }, function() {
         that.set('redeeming', false);
       });
+    },
+
+    okPressed: function() {
+      var hasRewards = this.getPath('quest.rewards');
+      var isFinished = this.getPath('finished');
+      
+      if (hasRewards && isFinished) {
+        this.redeemButtonPressed(); // remove the function later, if this proves to be good.
+      }
+      else {
+        this.destroy();
+      }
     },
 
     advisor: function() {

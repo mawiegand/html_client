@@ -221,7 +221,7 @@ AWE.GS = (function(module) {
   		var settlement = this.get('settlement');
   	  AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {  	    
   	    productions.push(Ember.Object.create({  // need to return an ember project so bindings on resourceType.name do work inside local helper
-          rate:  self.get(item.symbolic_id+'_production_rate'),
+          rate:  AWE.Util.Rules.roundProductionRate(self.get(item.symbolic_id+'_production_rate')),
           base:  self.get(item.symbolic_id+'_base_production'),
           bonus: self.get(item.symbolic_id+'_production_bonus'),
           bonusAbs: parseFloat(self.get(item.symbolic_id+'_production_bonus') || "0.0") * parseFloat(self.get(item.symbolic_id+'_base_production')),

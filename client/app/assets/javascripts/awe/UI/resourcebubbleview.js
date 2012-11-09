@@ -125,7 +125,7 @@ AWE.UI = (function(module) {
       var pool = AWE.GS.ResourcePoolManager.getResourcePool();
       if (pool) {
         my.amount = pool.presentAmount(my.resourceName);
-        my.rate = Math.floor(pool.get(my.resourceName+'_production_rate'));
+        my.rate = AWE.Util.Rules.roundProductionRate(pool.get(my.resourceName+'_production_rate'));
         my.capacity = pool.get(my.resourceName+'_capacity');
         
         my.amountView.setText(""+my.amount);

@@ -17,7 +17,7 @@
       Gebäude: {{view AWE.UI.Ember.WheelOrValueView valueBinding="settlement.usedBuildingSlots"}} / {{settlement.building_slots_total}}
       {{t settlement.population}} {{settlement.score}}
       {{#each settlement.resourceProductions}}
-        &nbsp; <span class="resource-icon {{unbound resourceType.symbolic_id}}">&nbsp;</span>   <span {{bindAttr title="localizedDetails"}}> {{formatNumber rate maxPlaces="0"}}/h</span> 
+        &nbsp; <span class="resource-icon {{unbound resourceType.symbolic_id}}">&nbsp;</span>   <span {{bindAttr title="localizedDetails"}}> {{formatNumber rate maxPlaces="2"}}/h</span> 
       {{/each}}
     </p>  
 

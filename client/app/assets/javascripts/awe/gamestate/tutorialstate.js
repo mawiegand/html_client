@@ -144,7 +144,7 @@ AWE.GS = (function(module) {
       if (questId === undefined || questId === null) {
         return null;
       }
-      return questId + 1;
+      return questId;
     }.property('quest_id').cacheable(),
     
     questNameBinding: 'quest.name',
