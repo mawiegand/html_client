@@ -391,8 +391,8 @@ AWE.GS = (function(module) {
     checkConstructionQueues: function(queueTest) {
       // log('---> checkConstructionQueues', queueTest);
       
-      if (queueTest.min_count == null) {
-        log('ERROR in AWE.GS.QuestState.checkConstructionQueues: queueTest.min_count missing in quest id ' + this.get('quest_id'));
+      if (queueTest.min_count == null || queueTest.min_level == null) {
+        log('ERROR in AWE.GS.QuestState.checkConstructionQueues: queueTest.min_level or queueTest.min_level missing in quest id ' + this.get('quest_id'));
         return false;
       }
         
@@ -414,25 +414,48 @@ AWE.GS = (function(module) {
               if (job) {
                 // log('---> job', job);
                 var jobType = job.get('job_type'); // CONSTRUCTION_JOB_TYPE_CREATE
+                var level = job.get('level_after'); // CONSTRUCTION_JOB_TYPE_CREATE
                 var buildingId = job.get('building_id');
                 // log('-----> ', jobType, buildingId);
                 if (buildingId != null && jobType != null) {
                   var buildingSymbolicId = AWE.GS.RulesManager.getRules().getBuildingType(buildingId)['symbolic_id'];
-                  if (buildingSymbolicId === queueTest.building && (jobType == AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE || jobType == AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE)) {
+                  if (buildingSymbolicId === queueTest.building &&
+                      (jobType == AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE || jobType == AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE) &&
+                      level != null && level >= queueTest.min_level) {
                     checkCount++;
-                    // log('-----> job min_count test ok', buildingSymbolicId, checkCount, queueTest.min_count);
+                    // log('-----> job min_count test ok', buildingSymbolicId, level, checkCount, queueTest.min_level, queueTest.min_count);
                   }
                   else {
-                    // log('-----> job min_count test failed', buildingSymbolicId);
+                    // log('-----> job min_count test failed', buildingSymbolicId, level, checkCount, queueTest.min_level, queueTest.min_count);
                   }
                 }
               }
             });
           }
         });
+        
+        var slots = settlement.slots();
+        // log('---> slots', slots);
+        
+        AWE.Ext.applyFunctionToElements(slots, function(slot) {
+          var level = slot.get('level');
+          var buildingId = slot.get('building_id');
+          // log('-----> ', level, buildingId);
+          if (buildingId != null) {
+            var buildingSymbolicId = AWE.GS.RulesManager.getRules().getBuildingType(buildingId)['symbolic_id'];
+            if (buildingSymbolicId === queueTest.building &&
+                level != null && level >= queueTest.min_level) {
+              checkCount++;
+              // log('-----> slot min_count test ok', buildingSymbolicId, level, checkCount, queueTest.min_level, queueTest.min_count);
+            }
+            else {
+              // log('-----> slot min_count test failed', buildingSymbolicId, level, checkCount, queueTest.min_level, queueTest.min_count);
+            }
+          }
+        });
       });
-            
-      // log('---> job count', checkCount, queueTest.min_count);
+
+      // log('---> job count', checkCount, queueTest.min_level, queueTest.min_count);
       return checkCount >= queueTest.min_count;
     },
 
