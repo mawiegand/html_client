@@ -90,7 +90,9 @@ AWE.UI.Ember = (function(module) {
 
     okPressed: function() {
       var hasRewards = this.getPath('quest.rewards');
-      var isFinished = this.getPath('finished');
+      var isFinished = this.get('finished');
+      
+      log('QUEST STATUS', hasRewards, isFinished, this.get('quest'), this.get('questState'), this.getPath('questState.status'));
       
       if (hasRewards && isFinished) {
         this.redeemButtonPressed(); // remove the function later, if this proves to be good.

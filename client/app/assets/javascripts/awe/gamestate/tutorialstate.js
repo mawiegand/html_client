@@ -179,6 +179,19 @@ AWE.GS = (function(module) {
       
       // check all reward tests. if anyone fails, return false.
       if (quest && quest.reward_tests) {
+        if (quest.reward_tests.resource_production_tests) {
+        
+          for (var i = 0; i < quest.reward_tests.resource_production_tests.length; i++) {
+            var test = quest.reward_tests.resource_production_tests[i];
+
+            // log('---> building_test', building_test);
+            if (!self.checkResourceProduction(test)) {
+              // log('---> building_test failed');
+              return false;              
+            }
+            // log('---> building_test ok');
+          }
+        }
         if (quest.reward_tests.building_tests) {
           // log('---> building_tests', quest.reward_tests.building_tests);
         
@@ -284,6 +297,17 @@ AWE.GS = (function(module) {
       }
     },
     
+
+    checkResourceProduction: function(test) {
+      var pool = AWE.GS.ResourcePoolManager.getResourcePool();
+      
+      if (test.minimum == null) {
+        log('ERROR in AWE.GS.QuestState.checkResourceProduction: minimum missing in quest id ' + this.get('quest_id'));
+        return false;
+      }
+
+      return pool && (pool.get(test.resource + '_production_rate') || 0) >= test.minimum;
+    },
     
     checkBuildings: function(buildingTest) {
       // log('---> checkBuildings', buildingTest);
@@ -910,8 +934,8 @@ AWE.GS = (function(module) {
         modeEnd: true,
         questState: questState,
         okPressed: function() {
-          this.destroy();
           that.checkForNewQuests();
+          this._super();
         },            
       });          
       WACKADOO.presentModalDialog(dialog);

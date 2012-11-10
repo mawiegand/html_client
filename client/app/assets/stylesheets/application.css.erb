@@ -2156,6 +2156,7 @@ li.shout .sender {
   z-index: 5;
   -moz-border-radius: 6px;
   border-radius:      6px;
+  cursor: pointer;
 }
 
 
@@ -3519,13 +3520,18 @@ table .number {
 .quest-list-item.girl {
   background-color: #BC4;
 }
+.quest-list-item.chef {
+  background-color: #AAC;
+}
+.quest-list-item.warrior {
+  background-color: #F94;
+}
+.quest-list-item.chef.tutorial ,
+.quest-list-item.warrior.tutorial ,
 .quest-list-item.girl.tutorial {
-  background-color: #FC4;
+  background-color: #DBD;
 }
 
-.quest-list-item.finished {
-  background-color: #BFB;
-}
 
 .quest-list-header {
   padding: 20px 10px 4px 10px;
@@ -3604,15 +3610,34 @@ table .number {
   border-color: #BC4;
   background-color: rgba(176, 192, 64, 0.15);
 }
-
+.quest-dialog .inner-border.chef {
+  border-color: #AAC;
+  background-color: rgba(160, 160, 192, 0.15);
+}
+.quest-dialog .inner-border.warrior {
+  border-color: #F94;
+  background-color: rgba(176, 192, 64, 0.15);
+}
 .quest-dialog.tutorial .inner-border {
-  border-color: #FC4;
-  background-color: rgba(255, 192, 64, 0.15);
+  border-color: #DBD;
+  background-color: rgba(208, 176, 208, 0.15);
 }
 
+.quest-dialog .girl .ok-button {
+  border-color: #BC4;
+  color: #BC4;
+}
+.quest-dialog .chef .ok-button {
+  border-color: #AAC;
+  color: #AAC;
+}
+.quest-dialog .warrior .ok-button {
+  border-color: #F94;
+  color: #F94;
+}
 .quest-dialog.tutorial .ok-button {
-  border-color: #FC4;
-  color: #FC4;
+  border-color: #DBD;
+  color: #DBD;
 }
 
 
