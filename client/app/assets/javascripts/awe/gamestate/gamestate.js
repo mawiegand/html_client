@@ -285,7 +285,7 @@ AWE.GS = (
       return date ? new Date(date) : null;
     };
     
-    my.fetchEntitiesFromURL = function(url, queue, id, updateType, modifiedSince, callback) {
+    my.fetchEntitiesFromURL = function(url, queue, id, updateType, modifiedSince, callback, beforeSend) {
       if (updateType === undefined || updateType === null) { 
         updateType = module.ENTITY_UPDATE_TYPE_FULL;
       }
@@ -307,6 +307,9 @@ AWE.GS = (
         };
         if (modifiedSince) {
           options.headers = { 'If-Modified-Since': modifiedSince.toUTCString() };
+        }
+        if (beforeSend) {
+          options.beforeSend = beforeSend;
         }
         var jqXHR = $.ajax(options)
         .error(function(jqHXR, textStatus) {          // On failure: 

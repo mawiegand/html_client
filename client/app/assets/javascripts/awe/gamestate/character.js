@@ -359,6 +359,11 @@ AWE.GS = (function(module) {
             if (callback) {
               callback(character, statusCode, xhr, timestamp);
             }
+          },
+          function(xhr) {
+            if (AWE.Settings.referer !== undefined && AWE.Settings.referer !== null) {
+              xhr.setRequestHeader('X-Alt-Referer', AWE.Settings.referer);
+            }            
           }
         );
       }        

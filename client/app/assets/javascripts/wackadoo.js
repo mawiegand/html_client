@@ -551,6 +551,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var expiration  = parseInt(args.expiration || "3600");           // asume one hour validity as default
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;  // TODO: This is a hack, should go to settings.
       AWE.Settings.signin_with_client_id = args.client_id || '';   
+      AWE.Settings.referer = args.referer;
             
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
