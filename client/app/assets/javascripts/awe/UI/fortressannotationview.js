@@ -91,7 +91,7 @@ AWE.UI = (function(module) {
         enterButton.setVisible(my.fortressView.selected());
       }
       
-      if (!attackButton && my.region.ownerId() === currentCharacter.get('id') && !0) { // check ongoing battle
+      if (!attackButton && my.region.ownerId() === currentCharacter.get('id') && my.region.location(0) && my.region.location(0).garrisonArmy() && !my.region.location(0).garrisonArmy().get('isSuspended')) { // check ongoing battle
         attackButton = AWE.UI.createButtonView();
         attackButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.attack'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         attackButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
@@ -104,7 +104,7 @@ AWE.UI = (function(module) {
         }
         this.addChild(attackButton);
       }
-      else if (attackButton && my.region.ownerId() !== currentCharacter.get('id') && !0) {
+      else if (attackButton && (my.region.ownerId() !== currentCharacter.get('id') || (my.region.location(0) && my.region.location(0).garrisonArmy() && my.region.location(0).garrisonArmy().get('isSuspended')))) {
         this.removeChild(attackButton);
         attackButton = null;
       }
@@ -211,17 +211,6 @@ AWE.UI = (function(module) {
       var settlement = location ? location.settlement() : null;
       _infoText1View.setText('' + (settlement ? Math.floor((settlement.defense_bonus || 0)*100)+"%" : '-'));
 
-      /*
-      if (!_infoText2View) {
-        _infoText2View = AWE.UI.createLabelView();
-        _infoText2View.initWithControllerAndLabel(my.controller);
-        _infoText2View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
-        _infoText2View.setTextAlign("left");
-        _infoText2View.setIconImage("map/display/icon");
-        my.infoContainer.addChild(_infoText2View);
-      }
-      _infoText2View.setText('Relation');*/
-
       if (!_infoText3View) {
         _infoText3View = AWE.UI.createLabelView();
         _infoText3View.initWithControllerAndLabel(my.controller);
@@ -232,6 +221,17 @@ AWE.UI = (function(module) {
       }
       _infoText3View.setText('' + (settlement ? settlement.get('score') : my.region.fortressScore()));
 
+      if (!_infoText2View && my.region.location(0) && my.region.location(0).garrisonArmy() && my.region.location(0).garrisonArmy().get('isSuspended')) {
+        _infoText2View = AWE.UI.createLabelView();
+        _infoText2View.initWithControllerAndLabel(my.controller);
+        _infoText2View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
+        _infoText2View.setTextAlign("left");
+        _infoText2View.setIconImage("map/army/suspended");
+        my.infoContainer.addChild(_infoText2View);
+      }
+      if (_infoText2View) {
+        _infoText2View.setText('' + Date.parseISODate(my.region.location(0).garrisonArmy().get('suspension_ends_at')).toString('HH:mm:ss'));
+      }
 
       my.infoContainer.layoutSubviews(); 
        

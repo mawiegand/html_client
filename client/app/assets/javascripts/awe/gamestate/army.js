@@ -73,6 +73,8 @@ AWE.GS = (function(module) {
 
     battle_retreat: false,
     
+    suspension_ends_at: null,
+    
     target_location_id: null,
     target_reached_at: null,
     target_region_id: null,
@@ -109,6 +111,10 @@ AWE.GS = (function(module) {
     isFighting: function() {
       return this.get('battle_id') > 0;
     }.property('battle_id').cacheable(),
+    
+    isSuspended: function() {
+      return this.get('suspension_ends_at') !== null && Date.parseISODate(this.get('suspension_ends_at')).getTime() > AWE.GS.TimeManager.estimatedServerTime().getTime();
+    }.property('suspension_ends_at').cacheable(),
     
     isMoving: function() {
       return this.get('mode') === 1;
