@@ -74,12 +74,17 @@ AWE.GS = (function(module) {
       // log('---> questStates', questStates);
       var notClosedQuestStates = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
-        // log('---> questState', questState, questState.get('status'), questState.get('quest'), questState.getPath('quest.rewards'));
+        if (questState) {
+          log('---> questState', questState, questState.get('status'), questState.get('quest'), questState.getPath('quest.rewards'));
+        }
+        else {
+          log('---> questState', questState);
+        }
         if (questState && questState.get('status') < module.QUEST_STATUS_CLOSED && questState.get('quest') && (questState.getPath('quest.rewards') || questState.get('status') < module.QUEST_STATUS_FINISHED)) {
           notClosedQuestStates.push(questState);
         }
       });
-      // log('---> notClosedQuestStates', notClosedQuestStates);
+      log('---> notClosedQuestStates', notClosedQuestStates);
       return notClosedQuestStates;
     }.property('quests.@each').cacheable(),
     
