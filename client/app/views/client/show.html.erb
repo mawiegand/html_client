@@ -52,6 +52,29 @@
   
   <%= javascript_include_tag    "wackadoo" %>
 
+  <% if @do_tracking %>
+    <script type="text/javascript">
+    /* <![CDATA[ */
+    var google_conversion_id = 995608782;
+    var google_conversion_language = "en";
+    var google_conversion_format = "3";
+    var google_conversion_color = "ffffff";
+    var google_conversion_label = "4F4CCOqdgwQQzpHf2gM";
+    var google_conversion_value = 0;
+  
+    alert=("Hello");
+  
+    /* ]]> */
+    </script>
+    <script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js">
+    </script>
+    <noscript>
+    <div style="display:inline;">
+    <img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/995608782/?value=0&amp;label=4F4CCOqdgwQQzpHf2gM&amp;guid=ON&amp;script=0"/>
+    </div>
+    </noscript>  
+  <% end %>
+
   <!-- end scripts -->
   <div id="templates">
   </div>
