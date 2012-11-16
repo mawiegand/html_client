@@ -70,6 +70,30 @@ AWE.GS = (function(module) {
     
     battle_id: 0, old_battle_id: 0,
     battleIdObserver: AWE.Partials.attributeHashObserver(module.ArmyAccess, 'battle_id', 'old_battle_id').observes('battle_id'),
+    
+    battle: function() {
+      var battleId = this.get('battle_id');
+      if (battleId != null) {
+        return AWE.GS.BattleManager.getBattle(battleId);
+      }
+      else {
+        return null;
+      }
+    },
+
+    battleParticipant: function() {
+      var self = this;
+      var participants = this.battle().getPath('participants.content');
+      var participant = null;
+      if (participants != null && participants != undefined) {
+        participants.forEach(function(p) {
+          if (p.get('army_id') === self.getId()) {
+            participant = p;
+          }
+        })
+      }
+      return participant;
+    }.property('battle.participants.content').cacheable(),
 
     battle_retreat: false,
     
@@ -128,9 +152,13 @@ AWE.GS = (function(module) {
       return !this.get('isFighting') && !this.isGarrison();
     },
     
-    stanceString: function() {
-      return (this.get('stance') == 1 ? AWE.I18n.lookupTranslation('general.yes') : AWE.I18n.lookupTranslation('general.no'));
+    isDefendingFortress: function() {
+      return this.get('stance') == 1;
     }.property('stance').cacheable(),
+    
+    stanceString: function() {
+      return (this.get('isDefendingFortress') ? AWE.I18n.lookupTranslation('general.yes') : AWE.I18n.lookupTranslation('general.no'));
+    }.property('isDefendingFortress').cacheable(),
     
     empty: function() {
       return false;
@@ -205,6 +233,15 @@ AWE.GS = (function(module) {
     isRelationAtLeast: function(relation, acceptUnknown) {
       return module.Relation.isRelationToAtLeast(this.get('owner_id'), this.get('alliance_id'), relation, acceptUnknown);
     },
+    
+    ownerString: function() {
+      if (this.get('alliance_tag') && this.get('alliance_tag') != '') {
+        return this.get('owner_name') + ' | ' + this.get('alliance_tag');
+      }
+      else {
+        return this.get('owner_name');
+      }
+    }.property('owner_name', 'alliance_tag').cacheable(),
   });     
 
     

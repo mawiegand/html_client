@@ -726,6 +726,28 @@ AWE.Controller = (function(module) {
 
     var armyAttackTargetClicked = function(army, targetArmy, armyView) {
       log('armyAttackTargetClicked', army, targetArmy, armyView);
+      
+      var dialog = AWE.UI.Ember.AttackDialog.create({
+        army: army,
+        targetArmy: targetArmy,
+        
+        friendlyPlayers: [],
+        enemyPlayers: [],
+            
+        cancelPressed: function(evt) {
+          // armyAnnotationView.setActionMode('');
+          this.destroy();
+        },
+        attackPressed: function(evt) {
+          createArmyAttackAction(army, targetArmy, armyView);
+          this.destroy();
+        },
+      });
+      that.applicationController.presentModalDialog(dialog);      
+    }
+    
+    var createArmyAttackAction = function(army, targetArmy, armyView) {
+      log('createArmyAttackAction', army, targetArmy, armyView);
       var attackAction = AWE.Action.Military.createAttackArmyAction(army, targetArmy.getId());
       attackAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK 
@@ -966,8 +988,8 @@ AWE.Controller = (function(module) {
     
     that.battleInfoButtonClicked = function(army) {
       var battle_id = army.get('battle_id');
-      var battle = AWE.GS.BattleManager.getBattle(battle_id);
-      
+      var battle = army.battle();
+     
       var dialog = AWE.UI.Ember.BattleDialog.create({
         battle: battle,
         

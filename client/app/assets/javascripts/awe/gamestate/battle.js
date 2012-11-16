@@ -82,6 +82,24 @@ AWE.GS = (function(module) {
       })
     }.property('participants', 'participants.content').cacheable(),
     
+    participantsOfFactionWithArmy: function(army) {
+      var self = this;
+      var participant = army.get('battleParticipant');
+      
+      return this.get('participants').filter(function(p) {
+        return p && p.get('faction_id') === participant.get('faction_id');        
+      })
+    },
+    
+    participantsOfFactionAgainstArmy: function(army) {
+      var self = this;
+      var participant = army.get('battleParticipant');
+      
+      return this.get('participants').filter(function(p) {
+        return p && p.get('faction_id') !== participant.get('faction_id');        
+      })
+    },
+    
     lastRound: function(){
       var lastRound = null;
       this.get('rounds').forEach(function(round) {
