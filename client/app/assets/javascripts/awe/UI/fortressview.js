@@ -18,6 +18,7 @@ AWE.UI = (function(module) {
     var _selectShape = null;
     var _flagView = null;
     var _battleView = null;
+    var _suspensionView = null;
     var _poleShape = null;
     var _fortressImageName = null;
     
@@ -154,6 +155,20 @@ AWE.UI = (function(module) {
       else if (_battleView && _node.region().location(0) && _node.region().location(0).garrisonArmy() && !_node.region().location(0).garrisonArmy().get('isFighting')) {
         this.removeChild(_battleView);
         _battleView = null;
+      }
+      
+      if (_node.region().location(0) && _node.region().location(0).garrisonArmy() && _node.region().location(0).garrisonArmy().get('isSuspended') && !_suspensionView) {
+        _suspensionView = AWE.UI.createImageView();
+        _suspensionView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage('map/army/suspended'));
+        _suspensionView.setFrame(AWE.Geometry.createRect(0, -50, 65, 65));
+        _suspensionView.onClick = that.onClick;
+        _suspensionView.onMouseOver = that.onMouseOver;
+        _suspensionView.onMouseOut = that.onMouseOut;
+        this.addChild(_suspensionView);
+      }    
+      else if (_suspensionView && _node.region().location(0) && _node.region().location(0).garrisonArmy() && !_node.region().location(0).garrisonArmy().get('isSuspended')) {
+        this.removeChild(_suspensionView);
+        _suspensionView = null;
       }
       
       // FRAME RECT //////////////////////////////////////////////////////////     

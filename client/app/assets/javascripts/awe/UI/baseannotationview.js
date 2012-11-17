@@ -192,7 +192,7 @@ AWE.UI = (function(module) {
         _infoText3View.initWithControllerAndLabel(my.controller);
         _infoText3View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
         _infoText3View.setTextAlign("left");
-        _infoText3View.setIconImage("map/army/suspended");
+        _infoText3View.setIconImage("map/army/sandglass");
         my.infoContainer.addChild(_infoText3View);
       }
       if (_infoText3View) {
