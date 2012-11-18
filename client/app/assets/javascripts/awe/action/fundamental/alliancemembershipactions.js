@@ -13,7 +13,7 @@ AWE.Action.Fundamental = (function(module) {
     var characterId = AWE.GS.player.getPath('currentCharacter.id')
     AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
       WACKADOO.reconnectChat();
-    }););
+    });
     AWE.GS.ResourcePoolManager.updateResourcePool();
     AWE.GS.SettlementManager.getOwnSettlements();
     AWE.GS.ArmyManager.updateArmiesForCharacter(characterId);
