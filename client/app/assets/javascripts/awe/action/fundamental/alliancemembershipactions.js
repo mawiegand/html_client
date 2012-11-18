@@ -11,7 +11,9 @@ AWE.Action.Fundamental = (function(module) {
   
   module.runUpdatesAfterAllianceChange = function() {
     var characterId = AWE.GS.player.getPath('currentCharacter.id')
-    AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+    AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+      WACKADOO.reconnectChat();
+    }););
     AWE.GS.ResourcePoolManager.updateResourcePool();
     AWE.GS.SettlementManager.getOwnSettlements();
     AWE.GS.ArmyManager.updateArmiesForCharacter(characterId);
