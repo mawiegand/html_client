@@ -146,11 +146,11 @@ AWE.UI = (function(module) {
         my.etaView = AWE.UI.createLabelView();
         my.etaView.initWithControllerAndLabel(this.controller(), 'ETA ' + Date.parseISODate(my.army.get('target_reached_at')).toString('HH:mm:ss'), true);
         my.etaView.setTextAlign('center');
-        my.etaView.setPadding(10);
+        my.etaView.setPadding(8);
         my.container.addChild(my.etaView.displayObject());
       }
       if (my.etaView) {
-        my.etaView.setFrame(AWE.Geometry.createRect(epX+23, epY-20, 130, 20));
+        my.etaView.setFrame(AWE.Geometry.createRect(spX- 45, spY - 56, 130, 20));
       }
       
       // FRAME RECT //////////////////////////////////////////////////////////  
