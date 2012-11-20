@@ -731,8 +731,8 @@ AWE.Controller = (function(module) {
         army: army,
         targetArmy: targetArmy,
         
-        friendlyPlayers: [],
-        enemyPlayers: [],
+        friendlyArmies: [],
+        enemyArmies: [],
             
         cancelPressed: function(evt) {
           // armyAnnotationView.setActionMode('');

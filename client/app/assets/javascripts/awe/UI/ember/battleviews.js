@@ -83,28 +83,26 @@ AWE.UI.Ember = (function(module) {
     army: null,
     targetArmy: null,
     
-    friendlyPlayers: null,
-    enemyPlayers: null,
+    friendlyArmies: null,
+    enemyArmies: null,
     
     friendlyPlayerNames: function() {
-      var friendlyPlayers = this.get('friendlyPlayers');
+      var friendlyArmies = this.get('friendlyArmies');
       var playerNames = [];
-      this.get('friendlyPlayers').forEach(function(army) {
+      this.get('friendlyArmies').forEach(function(army) {
         playerNames.pushObject(army.get('ownerString'));
       });
-      log('---> playerNames', playerNames.uniq());
       return playerNames.uniq();
-    }.property('friendlyPlayers.@each').cacheable(),
+    }.property('friendlyArmies.@each').cacheable(),
     
     enemyPlayerNames: function() {
-      var friendlyPlayers = this.get('enemyPlayers');
+      var friendlyArmies = this.get('enemyArmies');
       var playerNames = [];
-      this.get('enemyPlayers').forEach(function(army) {
+      this.get('enemyArmies').forEach(function(army) {
         playerNames.pushObject(army.get('ownerString'));
       });
-      log('---> playerNames', playerNames.uniq());
       return playerNames.uniq();
-    }.property('enemyPlayers.@each').cacheable(),
+    }.property('enemyArmies.@each').cacheable(),
     
     init: function() {
       this._super();
@@ -118,22 +116,76 @@ AWE.UI.Ember = (function(module) {
       return this.get('attackerBattleLoading') || this.get('defenderBattleLoading');
     }.property('attackerBattleLoading', 'defenderBattleLoading').cacheable(),
     
+    factionContainsArmyOf: function(factionArmies, characterId) {
+      for (var i = 0; i < factionArmies.length; i++) {
+        var factionArmy = factionArmies[i];
+        if (factionArmy != null && factionArmy.get('owner_id') === characterId) {
+          return true;
+        }
+      }
+      return false;
+    },
+
+    addFortressDefenders: function() {
+      var self = this;
+      var army = self.get('army');
+      var targetArmy = self.get('targetArmy');
+      var enemyArmies = self.getPath('enemyArmies');
+      var friendlyArmies = self.get('friendlyArmies');
+      
+      if (army.get('location').isFortress()) {
+        if (army.get('garrison')) {
+          var otherArmies = AWE.GS.ArmyManager.getArmiesAtLocation(army.get('location_id'));
+          AWE.Ext.applyFunctionToHash(otherArmies, function(otherArmyId, otherArmy){
+            if (army != otherArmy &&
+                targetArmy != otherArmy &&
+                !otherArmy.get('isFighting') &&
+                !self.factionContainsArmyOf(enemyArmies, otherArmy.get('owner_id')) &&
+                otherArmy.get('isDefendingFortress')) {
+              friendlyArmies.pushObject(otherArmy);
+            }
+          });
+        }
+        
+        if (targetArmy.get('garrison') ||
+            targetArmy.get('isDefendingFortress') ||
+            targetArmy.factionContainsGarrison()) {
+          var otherArmies = AWE.GS.ArmyManager.getArmiesAtLocation(army.get('location_id'));
+          AWE.Ext.applyFunctionToHash(otherArmies, function(otherArmyId, otherArmy){
+            if (army != otherArmy &&
+                targetArmy != otherArmy &&
+                !otherArmy.get('isFighting') &&
+                !self.factionContainsArmyOf(friendlyArmies, otherArmy.get('owner_id')) &&
+                (otherArmy.get('isDefendingFortress') || otherArmy.get('garrison'))) {
+              enemyArmies.pushObject(otherArmy);
+            }
+          });
+        }
+      }
+    },
+    
     addParticipants: function() {
       var self = this;
-      var enemyPlayers = self.getPath('enemyPlayers');
-      var friendlyPlayers = self.get('friendlyPlayers');
+      var enemyArmies = self.getPath('enemyArmies');
+      var friendlyArmies = self.get('friendlyArmies');
+      
+      friendlyArmies.pushObject(this.get('army'));
+      enemyArmies.pushObject(this.get('targetArmy'));
+        
+      if (this.getPath('army.isFighting') && this.getPath('targetArmy.isFighting')) {
 
-      // add armies of attacker's faction if fighting      
-      if (this.getPath('army.isFighting')) {
         this.set('attackerBattleLoading', true);
+        this.set('defenderBattleLoading', true);
+
         AWE.GS.BattleManager.updateBattle(this.getPath('army.battle_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(battle) {          
-          // remove spinwheel
+
           self.set('attackerBattleLoading', false);
+          
           var participants = battle.participantsOfFactionWithArmy(self.get('army'));
           AWE.Ext.applyFunction(participants, function(participant){
             var army = participant.get('army');
             if (army) {
-              friendlyPlayers.pushObject(army);
+              friendlyArmies.pushObject(army);
             }
           });
           
@@ -141,25 +193,75 @@ AWE.UI.Ember = (function(module) {
           AWE.Ext.applyFunction(participants, function(participant){
             var army = participant.get('army');
             if (army) {
-              enemyPlayers.pushObject(army);
+              enemyArmies.pushObject(army);
             }
           });
-        });      
+        
+          // the two battles must be loaded successively to add non fighting defenders after both battles have been fully loaded.          
+          AWE.GS.BattleManager.updateBattle(self.getPath('targetArmy.battle_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(battle) {
+                      
+            self.set('defenderBattleLoading', false);
+            
+            var participants = battle.participantsOfFactionWithArmy(self.get('targetArmy'));
+            AWE.Ext.applyFunction(participants, function(participant){
+              var army = participant.get('army');
+              if (army) {
+                enemyArmies.pushObject(army);
+              }
+            });
+            
+            var participants = battle.participantsOfFactionAgainstArmy(self.get('targetArmy'));
+            AWE.Ext.applyFunction(participants, function(participant){
+              var army = participant.get('army');
+              if (army) {
+                friendlyArmies.pushObject(army);
+              }
+            });
+            
+            self.addFortressDefenders();
+          });
+        });
       }
-      else { // add only attacker if not fighting
-        friendlyPlayers.pushObject(this.get('army'));
+      else if (this.getPath('army.isFighting')) {
+        
+        this.set('attackerBattleLoading', true);
+        
+        AWE.GS.BattleManager.updateBattle(this.getPath('army.battle_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(battle) {
+                    
+          self.set('attackerBattleLoading', false);
+          
+          var participants = battle.participantsOfFactionWithArmy(self.get('army'));
+          AWE.Ext.applyFunction(participants, function(participant){
+            var army = participant.get('army');
+            if (army) {
+              friendlyArmies.pushObject(army);
+            }
+          });
+          
+          var participants = battle.participantsOfFactionAgainstArmy(self.get('army'));
+          AWE.Ext.applyFunction(participants, function(participant){
+            var army = participant.get('army');
+            if (army) {
+              enemyArmies.pushObject(army);
+            }
+          });
+          
+          self.addFortressDefenders();
+        });     
       }
-      
-      // add armies of defender's faction if fighting
-      if (this.getPath('targetArmy.isFighting')) {
+      else if (this.getPath('targetArmy.isFighting')) {
+        
         this.set('defenderBattleLoading', true);
-        AWE.GS.BattleManager.updateBattle(this.getPath('targetArmy.battle_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(battle) {          
+        
+        AWE.GS.BattleManager.updateBattle(this.getPath('targetArmy.battle_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(battle) {
+                    
           self.set('defenderBattleLoading', false);
+          
           var participants = battle.participantsOfFactionWithArmy(self.get('targetArmy'));
           AWE.Ext.applyFunction(participants, function(participant){
             var army = participant.get('army');
             if (army) {
-              enemyPlayers.pushObject(army);
+              enemyArmies.pushObject(army);
             }
           });
           
@@ -167,41 +269,42 @@ AWE.UI.Ember = (function(module) {
           AWE.Ext.applyFunction(participants, function(participant){
             var army = participant.get('army');
             if (army) {
-              friendlyPlayers.pushObject(army);
+              friendlyArmies.pushObject(army);
             }
           });
+          
+          self.addFortressDefenders();
+        });      
+      }
+      else if (this.getPath('targetArmy.isFighting')) {
+        
+        this.set('defenderBattleLoading', true);
+        
+        AWE.GS.BattleManager.updateBattle(this.getPath('targetArmy.battle_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(battle) {
+                    
+          self.set('defenderBattleLoading', false);
+          
+          var participants = battle.participantsOfFactionWithArmy(self.get('targetArmy'));
+          AWE.Ext.applyFunction(participants, function(participant){
+            var army = participant.get('army');
+            if (army) {
+              enemyArmies.pushObject(army);
+            }
+          });
+          
+          var participants = battle.participantsOfFactionAgainstArmy(self.get('targetArmy'));
+          AWE.Ext.applyFunction(participants, function(participant){
+            var army = participant.get('army');
+            if (army) {
+              friendlyArmies.pushObject(army);
+            }
+          });
+          
+          self.addFortressDefenders();
         });      
       }
       else { // add only defender if not fighting
-        enemyPlayers.pushObject(this.get('targetArmy'));
-      }
-
-      // look for defending armies at fortresses when attacker is fortress garrison army. same conditions as in rails models are implemented
-      if (this.getPath('army.garrison') && this.getPath('army.location').isFortress()) {
-        var otherArmies = AWE.GS.ArmyManager.getArmiesAtLocation(this.getPath('army.location').id());
-        AWE.Ext.applyFunctionToHash(otherArmies, function(otherArmyId, otherArmy){
-          if (self.get('army') != otherArmy &&
-              self.get('targetArmy') != otherArmy &&
-              !otherArmy.get('isFighting') &&
-              otherArmy.get('owner_id') != self.getPath('targetArmy.owner_id') &&
-              otherArmy.get('isDefendingFortress')) {
-            friendlyPlayers.pushObject(otherArmy);
-          }
-        });
-      }
-
-      // look for defending armies at fortresses when defender is fortress garrison army. same conditions as in rails models are implemented
-      if (this.getPath('targetArmy.garrison') && this.getPath('targetArmy.location').isFortress()) {
-        var otherArmies = AWE.GS.ArmyManager.getArmiesAtLocation(this.getPath('targetArmy.location').id());
-        AWE.Ext.applyFunctionToHash(otherArmies, function(otherArmyId, otherArmy){
-          if (self.get('army') != otherArmy &&
-              self.get('targetArmy') != otherArmy &&
-              !otherArmy.get('isFighting') &&
-              otherArmy.get('owner_id') != self.getPath('army.owner_id') &&
-              otherArmy.get('isDefendingFortress')) {
-            enemyPlayers.pushObject(otherArmy);
-          }
-        });
+        self.addFortressDefenders();
       }
     },
   });

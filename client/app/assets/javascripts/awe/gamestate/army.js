@@ -242,6 +242,20 @@ AWE.GS = (function(module) {
         return this.get('owner_name');
       }
     }.property('owner_name', 'alliance_tag').cacheable(),
+    
+    factionContainsGarrison: function() {
+      var battle = this.battle();
+      if (battle != null) {
+        participants = battle.participantsOfFactionWithArmy(this);
+        for (var i = 0; i < participants.length; i++) {
+          var participatingArmy = participants[i].get('army');
+          if (participatingArmy != null && participatingArmy.get('garrison')) {
+            return true;
+          }
+        }
+      }
+      return false;
+    },
   });     
 
     
