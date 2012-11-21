@@ -70,8 +70,34 @@ AWE.GS = (function(module) {
     
     battle_id: 0, old_battle_id: 0,
     battleIdObserver: AWE.Partials.attributeHashObserver(module.ArmyAccess, 'battle_id', 'old_battle_id').observes('battle_id'),
+    
+    battle: function() {
+      var battleId = this.get('battle_id');
+      if (battleId != null) {
+        return AWE.GS.BattleManager.getBattle(battleId);
+      }
+      else {
+        return null;
+      }
+    },
+
+    battleParticipant: function() {
+      var self = this;
+      var participants = this.battle().getPath('participants.content');
+      var participant = null;
+      if (participants != null && participants != undefined) {
+        participants.forEach(function(p) {
+          if (p.get('army_id') === self.getId()) {
+            participant = p;
+          }
+        })
+      }
+      return participant;
+    }.property('battle.participants.content').cacheable(),
 
     battle_retreat: false,
+    
+    suspension_ends_at: null,
     
     target_location_id: null,
     target_reached_at: null,
@@ -110,6 +136,10 @@ AWE.GS = (function(module) {
       return this.get('battle_id') > 0;
     }.property('battle_id').cacheable(),
     
+    isSuspended: function() {
+      return this.get('suspension_ends_at') !== null && Date.parseISODate(this.get('suspension_ends_at')).getTime() > AWE.GS.TimeManager.estimatedServerTime().getTime();
+    }.property('suspension_ends_at').cacheable(),
+    
     isMoving: function() {
       return this.get('mode') === 1;
     }.property('mode').cacheable(),    
@@ -122,9 +152,13 @@ AWE.GS = (function(module) {
       return !this.get('isFighting') && !this.isGarrison();
     },
     
-    stanceString: function() {
-      return (this.get('stance') == 1 ? AWE.I18n.lookupTranslation('general.yes') : AWE.I18n.lookupTranslation('general.no'));
+    isDefendingFortress: function() {
+      return this.get('stance') == 1;
     }.property('stance').cacheable(),
+    
+    stanceString: function() {
+      return (this.get('isDefendingFortress') ? AWE.I18n.lookupTranslation('general.yes') : AWE.I18n.lookupTranslation('general.no'));
+    }.property('isDefendingFortress').cacheable(),
     
     empty: function() {
       return false;
@@ -150,7 +184,7 @@ AWE.GS = (function(module) {
         }
       });
       if (numSettlementFounders > 0) {
-        console.log('UNIT CAN FOUND SETTLEMENTS', numSettlementFounders);
+        log('UNIT CAN FOUND SETTLEMENTS', numSettlementFounders);
       }
       return numSettlementFounders > 0;
     }.property('details.updated_at', 'updated_at').cacheable(),
@@ -198,6 +232,29 @@ AWE.GS = (function(module) {
      * positive answer for unknown relation state. Just ignore it otherwise.*/
     isRelationAtLeast: function(relation, acceptUnknown) {
       return module.Relation.isRelationToAtLeast(this.get('owner_id'), this.get('alliance_id'), relation, acceptUnknown);
+    },
+    
+    ownerString: function() {
+      if (this.get('alliance_tag') && this.get('alliance_tag') != '') {
+        return this.get('owner_name') + ' | ' + this.get('alliance_tag');
+      }
+      else {
+        return this.get('owner_name');
+      }
+    }.property('owner_name', 'alliance_tag').cacheable(),
+    
+    factionContainsGarrison: function() {
+      var battle = this.battle();
+      if (battle != null) {
+        participants = battle.participantsOfFactionWithArmy(this);
+        for (var i = 0; i < participants.length; i++) {
+          var participatingArmy = participants[i].get('army');
+          if (participatingArmy != null && participatingArmy.get('garrison')) {
+            return true;
+          }
+        }
+      }
+      return false;
     },
   });     
 

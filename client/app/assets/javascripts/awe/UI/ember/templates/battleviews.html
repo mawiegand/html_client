@@ -102,3 +102,53 @@
       </div>
 </script>
 
+<script type="text/x-handlebars" data-template-name="attack-dialog">
+    <div class="modal-dialog-background"></div>
+    <div class="center-helper">
+      <div class="attack-dialog-pane">
+        
+        <div class="advisor chef"></div>
+        
+        <h2>{{t battle.attack.heading}}</h2>
+
+        <p class="citation">{{t battle.attack.citation}}</p>
+        
+        <p>{{t battle.attack.description}}</p>
+          
+        <table class="attack-participant-table">
+          <tbody>
+            <tr>
+              <th class="left">Fraktion 1</th>
+              <th class="right">Fraktion 2</th>
+            </tr>
+            <tr>
+              {{#if loading}}
+              <td colspan="2" class="attack-participant-spinwheel">
+                {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }}
+              </td>
+              {{else}}
+              <td class="attack-participant-faction">
+                {{#each friendlyPlayerNames}}
+                  {{view AWE.UI.Ember.AttackParticipantView nameBinding="this"}}
+                {{/each}}
+              </td>
+              <td class="attack-participant-faction">
+                {{#each enemyPlayerNames}}
+                  {{view AWE.UI.Ember.AttackParticipantView nameBinding="this"}}
+                {{/each}}
+              </td>
+              {{/if}}
+            </tr>
+          </tbody>
+        </table>
+        
+        <div class="icon-button cancel-button float-right" {{action "cancelPressed" target="parentView"}}>{{t battle.attack.cancel}}</div>
+        <div class="icon-button ok-button float-right" {{action "attackPressed" target="parentView"}}>{{t battle.attack.attack}}</div>
+      </div>
+    </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="attack-participant-view">
+  {{name}}
+</script>
+

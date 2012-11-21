@@ -33,7 +33,7 @@ AWE.UI.Ember = (function(module) {
     /** reference to all building-slots of the base. May be null or empty. */
     slots: function() {
       var collection = this.getPath('hashableSlots.collection');
-      console.log ('SORTING SLOTS')
+      log ('SORTING SLOTS')
       return collection ? collection.sort(function(a,b) {
         return a.get('slot_num') - b.get('slot_num');
       }) : null;
@@ -112,12 +112,12 @@ AWE.UI.Ember = (function(module) {
         
         okPressed:  function() {
           var number = parseInt(this.get('input') || "0");
-          console.log('OK_PRESSED', self,this, this.get('input'), number)
+          log('OK_PRESSED', self,this, this.get('input'), number)
           if (number >= 5 && number <= 15) {
             var action = AWE.Action.Settlement.createChangeTaxRateAction(self.get('settlement'), number/100.0);
             AWE.Action.Manager.queueAction(action, function(statusCode) {
               if (statusCode === 200 || statusCode === 203) {
-                console.log('changed tax rate');
+                log('changed tax rate');
               }
               else {
                 self.set('lastError', 'settlement.error.serverDidNotAcceptTaxRate');

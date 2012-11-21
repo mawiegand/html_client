@@ -1,4 +1,10 @@
+
+
+
 <script type="text/x-handlebars" data-template-name="linked-character-spinning-view">
+  {{#if rank}}
+    {{local rank.name}}
+  {{/if}}
   {{#if character}} 
     {{#if displayCharacter}}
       {{#if linkCharacter}}
@@ -8,7 +14,7 @@
       {{/if}}
     {{/if}}
     {{#if displayAlliance}}
-      {{#if character.alliance_tag}} | <a href="#" class="alliance-tag-link" {{action tagClicked}}>{{character.alliance_tag}}</a> {{/if}}
+      {{#if character.alliance_tag}} | <a href="#" class="alliance-tag-link" {{action tagClicked}}>{{character.alliance_tag}}</a>   {{/if}}
     {{/if}}
   {{else}}
     {{#if army}}

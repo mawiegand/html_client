@@ -5960,13 +5960,14 @@ var MINI_SUGGEST_GROUPCHATS		= [];
 var MINI_SUGGEST_PASSWORDS		= [];
 var MINI_PASSWORDS				= [];
 var MINI_RESOURCE				  = JAPPIX_RESOURCE + ' Mini';
-var MINI_ERROR_LINK				= 'https://mini.jappix.com/issues';
+var MINI_ERROR_LINK				= 'http://forum.uga-agga.de/bugs-feedback-f237/';
 
 // 5D MODS
 var MINI_5D_HIDE_SUGGEST_OTHER_CHAT_PROMPT = true;
 var MINI_5D_NON_CLOSEABLE_GROUPCHATS       = [];
 var MINI_5D_NO_USERLIST_GROUPCHATS         = [];
 var MINI_5D_STAFF_POSTFIXES                = [];
+var MINI_5D_NO_COOKIE                      = true;
 
 
 // Setups connection handlers
@@ -6100,6 +6101,9 @@ function connectedMini() {
 function saveSessionMini() {
 	// Not connected?
 	if(!isConnected())
+		return;
+		
+	if(MINI_5D_NO_COOKIE)
 		return;
 	
 	// Save the actual Jappix Mini DOM

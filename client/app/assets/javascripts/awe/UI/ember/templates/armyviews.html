@@ -21,14 +21,22 @@
           {{#if army.npc}}
             <p>{{ army.details.npcMsg }}</p>
           {{else}}
-            <p>{{t army.details.demigod}}: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
+            <p>{{t army.details.ownerLabel}}: {{view AWE.UI.Ember.LinkedCharacterWithRankView characterBinding="owner"}}</p>
           {{/if}}
         {{/if}}
-        <div title="{{t army.details.rankDescription}}">{{ t army.details.rank }}: {{army.rankToDisplay}} </div>
-        {{#if army.isOwnProp}}
-          <div title="{{t army.details.experienceDescription}}">{{ t army.details.experience }}: {{army.exp}}. {{t army.details.rankUpAt}} {{army.expForNextRank}}.</div> 
-        {{/if}}
+        <div>
+          <span title="{{t army.details.rankDescription}}">{{ t army.details.rank }}: {{army.rankToDisplay}}. </span>
+          {{#if army.isOwnProp}}
+            <span title="{{t army.details.experienceDescription}}">{{ t army.details.experience }}: {{army.exp}}. {{t army.details.rankUpAt}} {{army.expForNextRank}}.</span> 
+          {{/if}}
+        </div>
         {{#unless army.garrison}}
+        <div>
+          Aktionspunkte: {{army.ap_present}} von {{army.ap_max}}.
+          {{#if nextAPTimeString}} 
+            Nächster Aktionspunkt um {{nextAPTimeString}} Uhr.
+          {{/if}}
+        </div>
         <div>
           {{ t army.details.stance }}: {{ army.stanceString }}
           {{#if army.isOwnProp}}

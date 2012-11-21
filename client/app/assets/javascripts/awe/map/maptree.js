@@ -190,10 +190,10 @@ AWE.Map = (function(module) {
        * This only concerns the 'local' data, that is level, path, etc. Children
        * are _not_ touched and will not be imported from the given node. */
       that.updateNodeFrom = function(node) {
-        //console.log('Updating node at '+_path+'.');
+        //log('Updating node at '+_path+'.');
 
         if (node.path() != _path) {
-          console.log('WARNING: updating data at node ' + _path + ' from a node with different path '+ node.path() + '.');
+          log('WARNING: updating data at node ' + _path + ' from a node with different path '+ node.path() + '.');
         }
         
         _id = node.id();
@@ -249,7 +249,7 @@ AWE.Map = (function(module) {
               var node = subtree.pruneChild(i);       // prune child from one tree (subtree)
               that.insertAsChild(i, node);            // and add it to the other tree (node at hand)
               
-              //console.log('Importing child '+i+' into node at '+_path+'.');
+              //log('Importing child '+i+' into node at '+_path+'.');
             }
             else {
               result = result && that.child(i).importSubtree(subtree.child(i));
@@ -270,7 +270,7 @@ AWE.Map = (function(module) {
           }
           
           if (!node) {
-            console.log('Faild to incorporate subtree with path ' + subtree.path() + ' into tree from path ' + _path + '.' );
+            log('Faild to incorporate subtree with path ' + subtree.path() + ' into tree from path ' + _path + '.' );
             return false ;      
           }
           else {
@@ -286,7 +286,7 @@ AWE.Map = (function(module) {
         //log("getNeighbourNodes for ",that);
         var addNeighbour = function (tms, level) {
           var path = AWE.Mapping.GlobalMercator.TMSToQuadTreeTileCode(tms.x, tms.y, level);
-          //console.log(path);
+          //log(path);
           var rootNode = AWE.Map.Manager.rootNode();
           var node = rootNode.traverse(path, true);
           if (node) {
@@ -298,7 +298,7 @@ AWE.Map = (function(module) {
         
 
         var tms = AWE.Mapping.GlobalMercator.QuadTreeToTMSTileCode(that.path());
-        //console.log('NEIGHBORS of ', that.path(), 'at level', tms.zoom)
+        //log('NEIGHBORS of ', that.path(), 'at level', tms.zoom)
 
         if (tms.x > 0) {
           addNeighbour({ x: tms.x-1, y: tms.y, zoom:tms.zoom }, that.level());

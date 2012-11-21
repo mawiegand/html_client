@@ -90,7 +90,7 @@ AWE.GS = (function(module) {
         this.set('hashableIncomingCarts',  hashableIncomingCarts);
         this.set('hashableOutgoingCarts',  hashableOutgoingCarts);
         
-        console.log('SETTLEMENT WITH ID', this.get('id'), 'CARTS REQ', hashableIncomingCarts, hashableOutgoingCarts)
+        log('SETTLEMENT WITH ID', this.get('id'), 'CARTS REQ', hashableIncomingCarts, hashableOutgoingCarts)
         
       }
     },
@@ -154,12 +154,12 @@ AWE.GS = (function(module) {
     
 
     enumerableIncomingTradingCartActions: function() {
-      console.log('SET INCOMING CARTS', this.getPath('hashableIncomingCarts.collection'))
+      log('SET INCOMING CARTS', this.getPath('hashableIncomingCarts.collection'))
       return this.getPath('hashableIncomingCarts.collection');
     }.property('id', 'hashableIncomingCarts.changedAt').cacheable(),
 
     enumerableOutgoingTradingCartActions: function() {
-      console.log('SET OUTGOING CARTS', this.getPath('hashableOutgoingCarts'), this.getPath('hashableOutgoingCarts.collection'))
+      log('SET OUTGOING CARTS', this.getPath('hashableOutgoingCarts'), this.getPath('hashableOutgoingCarts.collection'))
       return this.getPath('hashableOutgoingCarts.collection');
     }.property('id', 'hashableOutgoingCarts.changedAt').cacheable(),
 
@@ -221,7 +221,7 @@ AWE.GS = (function(module) {
   		var settlement = this.get('settlement');
   	  AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {  	    
   	    productions.push(Ember.Object.create({  // need to return an ember project so bindings on resourceType.name do work inside local helper
-          rate:  self.get(item.symbolic_id+'_production_rate'),
+          rate:  AWE.Util.Rules.roundProductionRate(self.get(item.symbolic_id+'_production_rate')),
           base:  self.get(item.symbolic_id+'_base_production'),
           bonus: self.get(item.symbolic_id+'_production_bonus'),
           bonusAbs: parseFloat(self.get(item.symbolic_id+'_production_bonus') || "0.0") * parseFloat(self.get(item.symbolic_id+'_base_production')),

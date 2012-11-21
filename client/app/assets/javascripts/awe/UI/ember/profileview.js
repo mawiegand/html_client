@@ -130,7 +130,7 @@ AWE.UI.Ember = (function(module) {
     characterObserver: function() {
       var characterId = this.getPath('character.id') || null;
       if (characterId && this.getPath('character.name_change_count') > 0) {
-        AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_change_profile');
+        AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_profile');
       }       
     }.observes('character.id'),
     
@@ -217,7 +217,7 @@ AWE.UI.Ember = (function(module) {
         AWE.Action.Manager.queueAction(action, function(status) {
           self.set('changingName', false);
           if (status === AWE.Net.OK) {
-            AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_change_profile');
+            AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_profile');
             if (changeCounter > 0) {
               AWE.GS.ResourcePoolManager.updateResourcePool();
             }
@@ -272,110 +272,12 @@ AWE.UI.Ember = (function(module) {
     templateName: 'character-profile-info-view',
     
     character:           null,
-    alliance:            null,
-    allianceMembers:     null,
-    
-    progressBarPosition: null,
-    
-    maxExp:              null,
     
     showProgressBar: function() {
       var exp = this.getPath('character.exp');
       return exp && exp > 1000; // hack to prevent layout errors. number must go to config
     }.property('character.exp').cacheable(),
     
-    nextMundaneRanks: function() {
-      var ranks   = AWE.GS.RulesManager.getRules().character_ranks.mundane;
-      var present = this.getPath('character.mundane_rank');
-      
-      if (present === undefined || present === null) {
-        return [];
-      }
-      
-      var infos = [];
-      for (var i=Math.max(present,1); i < ranks.length; i++) { // don't display first rank (Zero Experience)
-        infos.push({
-          rule:        ranks[i],
-          position:    ranks[i].exp,
-          presentRank: i === present,
-        });
-        if (i !== present && ranks[i].settlement_points > 0) {
-          break ;
-        }
-      }
-      
-      var maxExp = infos[infos.length-1].position;
-      infos.forEach(function(item) {
-        item.position = (1.0 - item.position/(1.0*maxExp)) * 100 + "%";
-      });
-      
-      var ownPosition = (1.0 - (this.getPath('character.exp') || 0)/(1.0*maxExp))*100 + "%";
-      this.set('progressBarPosition', ownPosition);
-      
-      this.set('maxExp', maxExp);
-      
-      return infos;
-    }.property('character.exp').cacheable(),
-    
-    friendProgress: function() {
-      var maxExp      = this.get('maxExp');
-      var members     = this.get('allianceMembers');
-      var characterId = this.getPath('character.id');
-      
-      if (!maxExp || !members) {
-        return null;
-      }
-      
-      var infos = [];
-      var prevPos  = null;
-      var prevLine = null;
-      members.filter(function(character) {
-        return character.get('exp') > 1000.0 && character.get('id') !== characterId;
-      }).sort(function(a,b) {
-        return a.get('exp') - b.get('exp');
-      }).forEach(function(character) {
-        var exp = character.get('exp') || 0;
-        var position = Math.max(0, 1.0 - exp / (1.0*maxExp));
-        var line = 0;
-        
-        if (prevPos && Math.abs(position-prevPos) < 0.10) {
-          line = (prevLine + 1) % 7;
-        }
-
-        infos.push({
-          name:     character.get('name'),
-          position: position * 100 + "%",
-          height:   11 * (line+1),
-          margin:   11 * line,
-        });
-        prevPos  = position;
-        prevLine = line;
-      });
-            
-      return infos;
-    }.property('allianceMembers.@each.exp', 'maxExp').cacheable(),
-    
-    allianceObserver: function() {
-
-      var allianceId = this.getPath('alliance.id');
-
-      if (!allianceId) { 
-        this.set('allianceMembers', null);
-        return ; 
-      }
-      var members = AWE.GS.CharacterManager.getEnumerableMembersOfAlliance(allianceId);
-      if ((!members || members.length == 0) ||
-          (members && AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < AWE.GS.TimeManager.estimatedServerTime().getTime())) { // have alliance id, but no corresponding alliance
-        var self = this;
-        AWE.GS.CharacterManager.updateMembersOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-          var members = AWE.GS.CharacterManager.getEnumerableMembersOfAlliance(allianceId);
-          self.set('allianceMembers', members);
-        });
-      }
-      else {
-        this.set('allianceMembers', members);   
-      }
-    }.observes('alliance.id'),  
         
   });
   
@@ -481,6 +383,113 @@ AWE.UI.Ember = (function(module) {
       }        
     },    
   });
+  
+  
+  module.CharacterProgressBarView = Ember.View.extend({    
+    templateName: 'character-progress-bar-view',
+    
+    character:           null,
+    allianceMembers:     null,
+    
+    progressBarPosition: null,
+    
+    maxExp:              null,
+        
+    nextMundaneRanks: function() {
+      var ranks   = AWE.GS.RulesManager.getRules().character_ranks.mundane;
+      var present = this.getPath('character.mundane_rank');
+      
+      if (present === undefined || present === null) {
+        return [];
+      }
+      
+      var infos = [];
+      for (var i=Math.max(present,1); i < ranks.length; i++) { // don't display first rank (Zero Experience)
+        infos.push({
+          rule:        ranks[i],
+          position:    ranks[i].exp,
+          presentRank: i === present,
+        });
+        if (i !== present && ranks[i].settlement_points > 0) {
+          break ;
+        }
+      }
+      
+      var maxExp = infos[infos.length-1].position;
+      infos.forEach(function(item) {
+        item.position = (1.0 - item.position/(1.0*maxExp)) * 100 + "%";
+      });
+      
+      var ownPosition = (1.0 - (this.getPath('character.exp') || 0)/(1.0*maxExp))*100 + "%";
+      this.set('progressBarPosition', ownPosition);
+      
+      this.set('maxExp', maxExp);
+      
+      return infos;
+    }.property('character.exp').cacheable(),
+    
+    friendProgress: function() {
+      var maxExp      = this.get('maxExp');
+      var members     = this.get('allianceMembers');
+      var characterId = this.getPath('character.id');
+      
+      if (!maxExp || !members) {
+        return null;
+      }
+      
+      var infos = [];
+      var prevPos  = null;
+      var prevLine = null;
+      members.filter(function(character) {
+        return character.get('exp') > 1000.0 && character.get('id') !== characterId;
+      }).sort(function(a,b) {
+        return a.get('exp') - b.get('exp');
+      }).forEach(function(character) {
+        var exp = character.get('exp') || 0;
+        var position = Math.max(0, 1.0 - exp / (1.0*maxExp));
+        var line = 0;
+        
+        if (prevPos && Math.abs(position-prevPos) < 0.10) {
+          line = (prevLine + 1) % 7;
+        }
+
+        infos.push({
+          name:     character.get('name'),
+          position: position * 100 + "%",
+          height:   11 * (line+1),
+          margin:   11 * line,
+        });
+        prevPos  = position;
+        prevLine = line;
+      });
+            
+      return infos;
+    }.property('allianceMembers.@each.exp', 'maxExp').cacheable(),
+    
+    allianceObserver: function() {
+
+      var allianceId = this.getPath('alliance.id');
+
+      if (!allianceId) { 
+        this.set('allianceMembers', null);
+        return ; 
+      }
+      var members = AWE.GS.CharacterManager.getEnumerableMembersOfAlliance(allianceId);
+      if ((!members || members.length == 0) ||
+          (members && AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < AWE.GS.TimeManager.estimatedServerTime().getTime())) { // have alliance id, but no corresponding alliance
+        var self = this;
+        AWE.GS.CharacterManager.updateMembersOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+          var members = AWE.GS.CharacterManager.getEnumerableMembersOfAlliance(allianceId);
+          self.set('allianceMembers', members);
+        });
+      }
+      else {
+        this.set('allianceMembers', members);   
+      }
+    }.observes('alliance.id'),  
+        
+  });  
+  
       
   return module;  
     

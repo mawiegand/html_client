@@ -34,9 +34,9 @@ AWE.UI.Ember = (function(module) {
     constructionOptions: function() {
       var slot = this.get('slot');
       var options = slot ? slot.constructionOptions() : [];
-      console.log ('OPTIONS', options)
+      log ('OPTIONS', options)
       var result = options.filter(function(building) {
-        console.log('BUILDING', building)
+        log('BUILDING', building)
         return !building.impossibleToBuildDueToMaxRequirement();
       });
       return result && result.length > 0 ? result : null;

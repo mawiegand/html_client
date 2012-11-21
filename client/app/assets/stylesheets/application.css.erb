@@ -672,6 +672,7 @@ html, body {
 
 .message-center .message {
   padding: 24px;
+  overflow-x: scroll;  
 }
 
 .message-center .message table {
@@ -807,6 +808,7 @@ html, body {
   margin: -2px;
 }
 
+
 .ok-button:hover {
   border-color: #9D9;
 }
@@ -814,6 +816,7 @@ html, body {
 .ok-button {
   color: #9D9;
 }
+
 .icon-button.ok-button {
   background: url('<%= asset_path("icons/cross_green_small.png") %>') no-repeat left center;  
 }
@@ -937,6 +940,35 @@ html, body {
   width: 140px;
 }
 
+.encyclopedia-view .overview .enc-button {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.encyclopedia-view .overview .enc-button:hover {
+  text-decoration: underline;
+}
+
+.encyclopedia-view .overview .enc-category {
+  text-decoration: none;
+  cursor: pointer;
+  color: #333;
+  font-weight: bold;
+}
+
+.encyclopedia-view .overview .enc-category:hover {
+  text-decoration: underline;
+}
+
+.encyclopedia-view .building-option-image {
+  width: 120px;
+  height:150px;
+  margin-left: 0px;
+  float: right;
+  background-position: -120px 0px;
+}
+
+
 .encyclopedia-view .details {
   float:left;
   padding-left: 8px;
@@ -958,6 +990,12 @@ html, body {
   width: 256px;
   height: 256px;
   margin-top:-30px;
+}
+
+.advisor.tiny { 
+  width: 96px;
+  height: 96px;
+  margin-top:-12px;
 }
 
 .advisor.neanderthal { 
@@ -1042,6 +1080,7 @@ html, body {
 }
 
 
+.character-progress-dialog-pane .advisor,
 .found-settlement-dialog .advisor,
 .army-info-view .advisor { 
   float:right;
@@ -1100,11 +1139,20 @@ html, body {
 .advisor.girl { 
   background: url('<%= asset_path("advisors/head_girl_colored_small.png") %>');
 }
+.advisor.girl.tiny { 
+  background: url('<%= asset_path("advisors/head_girl_colored_tiny.png") %>');
+}
 .advisor.warrior, .advisor.warrior-quest-start { 
   background: url('<%= asset_path("advisors/head_warrior_colored_small.png") %>');
 }
+.advisor.warrior.tiny { 
+  background: url('<%= asset_path("advisors/head_warrior_colored_tiny.png") %>');
+}
 .advisor.chef, .advisor.chef-quest-start { 
   background: url('<%= asset_path("advisors/head_chef_colored_small.png") %>');
+}
+.advisor.chef.tiny { 
+  background: url('<%= asset_path("advisors/head_chef_colored_tiny.png") %>');
 }
 .advisor.neanderthal { 
   background: url('<%= asset_path("advisors/head_neanderthal_colored_small.png") %>');
@@ -1159,7 +1207,7 @@ loaddialog-positioner {
 
 .loaddialog-heading {
   position: absolute;
-  left: 175px; top: 330px;
+  left: 225px; top: 310px;
   font-size: 27px;
   line-height: 27px;
   font-weight: normal;
@@ -1169,21 +1217,21 @@ loaddialog-positioner {
   position: absolute;
   left: 50px;
   top: 50px;
-  width: 701px; height: 283px;
-  background: url('<%= asset_path("splashscreen/mapsw.jpg") %>');
+  width: 665px; height: 300px;
+  background: url('<%= asset_path("splashscreen/crack_sw.jpg") %>');
 } 
 
 .loaddialog-progress {
   width: 0%; height: 100%;
-  background: url('<%= asset_path("splashscreen/mapcolor.jpg") %>');
+  background: url('<%= asset_path("splashscreen/crack_color.jpg") %>');
   overflow:hidden;
 }
 
 .loaddialog-image {
   position: absolute;
-  width: 800px; height: 530px;
-  margin-top: -70px;
-  background: url('<%= asset_path("splashscreen/ladedame.png") %>');
+  width: 241px; height: 304px;
+  margin-top: 60px;
+  margin-left: 510px;
 }
 
 
@@ -1315,6 +1363,7 @@ span.bonus {
   margin-bottom: 8px;
   
   cursor: pointer; 
+  vertical-align: top;
 }
 
 .building-option p {
@@ -1322,6 +1371,13 @@ span.bonus {
   padding: 0px;
   text-align: center;
   font-size: 12px;
+  height: 32px;
+}
+
+.building-option-action {
+  margin: 0;
+  padding: 0;
+  height: 184px; 
 }
 
 
@@ -1385,16 +1441,32 @@ span.bonus {
   margin-bottom: 2px;
 }
 
+.base-screen .settlement-quest-advisor {
+  position: absolute;
+  top: 410px;
+  left: 750px;
+  width: 135px;
+  height: 199px;
+  background: url('<%= asset_path("advisors/amazon.png") %>');
+  cursor: pointer;
+}
+
 
 /** image for base and outpost buildings */
 .building-option-image.building_quarry {
   background: url('<%= asset_path("settlements/base/building_quarry_large.png") %>');
+}
+.building-option-image.building_quarry_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_quarry_large.png") %>');
 }
 .building-option-image.building_chief_cottage {
   background: url('<%= asset_path("settlements/base/building_chief_cottage_large.png") %>');
 }
 .building-option-image.building_logger   {
   background: url('<%= asset_path("settlements/base/building_logger_large.png") %>');
+}
+.building-option-image.building_logger_2   {
+  background: url('<%= asset_path("settlements/base/building_copper_logger_large.png") %>');
 }
 .building-option-image.building_barracks {
   background: url('<%= asset_path("settlements/base/building_barracks_large.png") %>');
@@ -1405,11 +1477,17 @@ span.bonus {
 .building-option-image.building_cottage  {
   background: url('<%= asset_path("settlements/base/building_cottage_large.png") %>');
 }
+.building-option-image.building_cottage_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_cottage_large.png") %>');
+}
 .building-option-image.building_firing_range {
   background: url('<%= asset_path("settlements/base/building_firing_range_large.png") %>');
 }
 .building-option-image.building_furrier  {
   background: url('<%= asset_path("settlements/base/building_furrier_large.png") %>');
+}
+.building-option-image.building_furrier_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_furrier_large.png") %>');
 }
 .building-option-image.building_gatherer {
   background: url('<%= asset_path("settlements/base/building_gatherer_large.png") %>');
@@ -1423,8 +1501,17 @@ span.bonus {
 .building-option-image.building_storage {
   background: url('<%= asset_path("settlements/base/building_storage_large.png") %>');
 }
+.building-option-image.building_storage_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_storage_large.png") %>');
+}
 .building-option-image.building_copper_smelter {
   background: url('<%= asset_path("settlements/base/building_copper_smelter_large.png") %>');
+}
+.building-option-image.building_garrison {
+  background: url('<%= asset_path("settlements/base/building_garrison_large.png") %>');
+}
+.building-option-image.building_command_post {
+  background: url('<%= asset_path("settlements/base/building_command_post_large.png") %>');
 }
 
 /** special colony buildings */
@@ -1434,7 +1521,9 @@ span.bonus {
 .building-option-image.building_altar {
   background: url('<%= asset_path("settlements/colony/building_altar_large.png") %>');
 }
-
+.building-option-image.building_field_camp {
+  background: url('<%= asset_path("settlements/colony/building_field_camp_large.png") %>');
+}
 
 /** image for building_siege_tower */
 .building-option-image.building_siege_tower {
@@ -1851,11 +1940,17 @@ span.bonus {
 .queue-job-image.building_quarry {
   background: url('<%= asset_path("settlements/base/building_quarry_large_small.png") %>');
 }
+.queue-job-image.building_quarry_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_quarry_large_small.png") %>');
+}
 .queue-job-image.building_chief_cottage {
   background: url('<%= asset_path("settlements/base/building_chief_cottage_large_small.png") %>');
 }
 .queue-job-image.building_logger{
   background: url('<%= asset_path("settlements/base/building_logger_large_small.png") %>');
+}
+.queue-job-image.building_logger_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_logger_large_small.png") %>');
 }
 .queue-job-image.building_barracks {
   background: url('<%= asset_path("settlements/base/building_barracks_large_small.png") %>');
@@ -1866,11 +1961,17 @@ span.bonus {
 .queue-job-image.building_cottage  {
   background: url('<%= asset_path("settlements/base/building_cottage_large_small.png") %>');
 }
+.queue-job-image.building_cottage_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_cottage_large_small.png") %>');
+}
 .queue-job-image.building_firing_range {
   background: url('<%= asset_path("settlements/base/building_firing_range_large_small.png") %>');
 }
 .queue-job-image.building_furrier  {
   background: url('<%= asset_path("settlements/base/building_furrier_large_small.png") %>');
+}
+.queue-job-image.building_furrier_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_furrier_large_small.png") %>');
 }
 .queue-job-image.building_gatherer {
   background: url('<%= asset_path("settlements/base/building_gatherer_large_small.png") %>');
@@ -1884,8 +1985,14 @@ span.bonus {
 .queue-job-image.building_storage {
   background: url('<%= asset_path("settlements/base/building_storage_large_small.png") %>');
 }
+.queue-job-image.building_storage_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_storage_large_small.png") %>');
+}
 .queue-job-image.building_copper_smelter {
   background: url('<%= asset_path("settlements/base/building_copper_smelter_large_small.png") %>');
+}
+.queue-job-image.building_command_post {
+  background: url('<%= asset_path("settlements/base/building_command_post_large_small.png") %>');
 }
 /** colony buildings */
 .queue-job-image.building_haunt {
@@ -1894,7 +2001,9 @@ span.bonus {
 .queue-job-image.building_altar {
   background: url('<%= asset_path("settlements/colony/building_altar_large_small.png") %>');
 }
-
+.queue-job-image.building_field_camp {
+  background: url('<%= asset_path("settlements/colony/building_field_camp_large_small.png") %>');
+}
 
 
 .outpost-screen .queue-job-image.size1,
@@ -2047,6 +2156,7 @@ li.shout .sender {
   z-index: 5;
   -moz-border-radius: 6px;
   border-radius:      6px;
+  cursor: pointer;
 }
 
 
@@ -2449,11 +2559,17 @@ table .number {
 .large-building.building_quarry {
   background: url('<%= asset_path("settlements/base/building_quarry_large.png") %>');
 }
+.large-building.building_quarry_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_quarry_large.png") %>');
+}
 .large-building.building_chief_cottage {
   background: url('<%= asset_path("settlements/base/building_chief_cottage_large.png") %>');
 }
 .large-building.building_logger   {
   background: url('<%= asset_path("settlements/base/building_logger_large.png") %>');
+}
+.large-building.building_logger_2   {
+  background: url('<%= asset_path("settlements/base/building_copper_logger_large.png") %>');
 }
 .large-building.building_barracks {
   background: url('<%= asset_path("settlements/base/building_barracks_large.png") %>');
@@ -2464,11 +2580,17 @@ table .number {
 .large-building.building_cottage  {
   background: url('<%= asset_path("settlements/base/building_cottage_large.png") %>');
 }
+.large-building.building_cottage_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_cottage_large.png") %>');
+}
 .large-building.building_firing_range {
   background: url('<%= asset_path("settlements/base/building_firing_range_large.png") %>');
 }
 .large-building.building_furrier  {
   background: url('<%= asset_path("settlements/base/building_furrier_large.png") %>');
+}
+.large-building.building_furrier_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_furrier_large.png") %>');
 }
 .large-building.building_gatherer {
   background: url('<%= asset_path("settlements/base/building_gatherer_large.png") %>');
@@ -2482,6 +2604,16 @@ table .number {
 .large-building.building_storage {
   background: url('<%= asset_path("settlements/base/building_storage_large.png") %>');
 }
+.large-building.building_storage_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_storage_large.png") %>');
+}
+.large-building.building_garrison {
+  background: url('<%= asset_path("settlements/base/building_garrison_large.png") %>');
+}
+.large-building.building_command_post {
+  background: url('<%= asset_path("settlements/base/building_command_post_large.png") %>');
+}
+
 /** no copper smelter on large spots! */
 
 .large-building.building_haunt {
@@ -2490,13 +2622,22 @@ table .number {
 .large-building.building_altar {
   background: url('<%= asset_path("settlements/colony/building_altar_large.png") %>');
 }
+.large-building.building_field_camp {
+  background: url('<%= asset_path("settlements/colony/building_field_camp_large.png") %>');
+}
 
 /** base: small slots */
 .small-building.building_quarry {
   background: url('<%= asset_path("settlements/base/building_quarry_small.png") %>');
 }
+.small-building.building_quarry_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_quarry_small.png") %>');
+}
 .small-building.building_logger   {
   background: url('<%= asset_path("settlements/base/building_logger_small.png") %>');
+}
+.small-building.building_logger_2   {
+  background: url('<%= asset_path("settlements/base/building_copper_logger_small.png") %>');
 }
 .small-building.building_barracks {
   background: url('<%= asset_path("settlements/base/building_barracks_small.png") %>');
@@ -2507,11 +2648,17 @@ table .number {
 .small-building.building_cottage  {
   background: url('<%= asset_path("settlements/base/building_cottage_small.png") %>');
 }
+.small-building.building_cottage_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_cottage_small.png") %>');
+}
 .small-building.building_firing_range {
   background: url('<%= asset_path("settlements/base/building_firing_range_small.png") %>');
 }
 .small-building.building_furrier  {
   background: url('<%= asset_path("settlements/base/building_furrier_small.png") %>');
+}
+.small-building.building_furrier_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_furrier_small.png") %>');
 }
 .small-building.building_gatherer {
   background: url('<%= asset_path("settlements/base/building_gatherer_small.png") %>');
@@ -2525,9 +2672,16 @@ table .number {
 .small-building.building_storage {
   background: url('<%= asset_path("settlements/base/building_storage_small.png") %>');
 }
+.small-building.building_storage_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_storage_small.png") %>');
+}
 .small-building.building_copper_smelter {
   background: url('<%= asset_path("settlements/base/building_copper_smelter_small.png") %>');
 }
+.small-building.building_garrison {
+  background: url('<%= asset_path("settlements/base/building_garrison_small.png") %>');
+}
+
 
 .outpost-picture .level, 
 .fortress-picture .level, 
@@ -2964,11 +3118,11 @@ table .number {
   margin: 20px 0px 20px 0px;
 }
 
-
+.character-progress-dialog-pane,
 .army-info-dialog .modal-dialog-pane { 
   margin-top:-300px;
-  width: 600px;
-  margin-left: -300px;
+  width: 700px;
+  margin-left: -350px;
 }
 
 .found-settlement-dialog {
@@ -3323,6 +3477,70 @@ table .number {
   top: 10px;
 }
 
+.attack-dialog-pane {
+  position: absolute; 
+  margin-left: -370px;
+  margin-top: -200px;
+  width: 700px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 16px 20px 16px 20px;
+  z-index:258;
+
+  -moz-border-radius: 12px;
+  border-radius:      12px;
+  -moz-box-shadow:    3px 3px 2px 2px #333;
+  -webkit-box-shadow: 3px 3px 2px 2px #333;
+  box-shadow:         3px 3px 2px 2px #333;
+}
+
+.attack-dialog-pane .icon-button {
+  margin-left: 20px;
+}
+
+.attack-participant-table {
+  width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0px 0px 10px 0px;
+}
+
+.attack-participant-table th {
+  background-color: #555;  
+  color: #fff;
+  padding: 4px 4px 4px 4px;
+}
+
+.attack-participant-table th.left {
+  border-top-left-radius: 10px;
+  border-bottom-left-radsius: 10px;
+}
+
+.attack-participant-table th.right {
+  border-top-right-radius: 10px;
+  border-bottom-right-rasdius: 10px;
+}
+
+.attack-participant-table td {
+  padding: 4px 4px 4px 14px;
+}
+
+.attack-participant-faction {
+  width: 200px;
+}
+
+.attack-participant-spinwheel {
+  width: 400px;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.attack-participant-faction .own-character {
+  font-weight: bold;
+}
+
 .activity-indicator-small {
   width: 16px;
   height: 16px;
@@ -3340,11 +3558,15 @@ table .number {
 .quest-list-view {
   position: absolute; 
   margin-left: -300px;
-  margin-top: -300px;
+  margin-top: 80px;
   width: 600px; min-height: 100px;
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
   z-index:256;
+}
+
+.quest-list-view .advisor {
+  float: right;
 }
 
 .quest-list-item {
@@ -3352,26 +3574,45 @@ table .number {
   -moz-border-radius: 7px;
   border-radius:      7px;
   padding: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
-.quest-list-item.finished {
-  background-color: #BFB;
+.quest-list-body {
+  margin-bottom: 40px;
 }
+
+.quest-list-item.girl {
+  background-color: #BC4;
+}
+.quest-list-item.chef {
+  background-color: #AAC;
+}
+.quest-list-item.warrior {
+  background-color: #F94;
+}
+.quest-list-item.chef.tutorial ,
+.quest-list-item.warrior.tutorial ,
+.quest-list-item.girl.tutorial {
+  background-color: #DBD;
+}
+
 
 .quest-list-header {
-  padding: 10px;
+  padding: 20px 10px 4px 10px;
   font-weight: bold;
 }
 
-.quest-list-item-nr {
-  width: 30px;
-  display: inline-block;
-  text-align: right;
+.quest-item-nr {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  font-size: 14px;
+  font-weight: lighter;
+  color: #BBB;
 }
 
 .quest-list-item-name {
-  width: 290px;
+  width: 320px;
   display: inline-block;
 }
 
@@ -3395,17 +3636,85 @@ table .number {
 
 .quest-start-dialog, .quest-finished-dialog, .quest-info-dialog, .quest-dialog {
   position: absolute; 
-  margin-left: -350px;
-  margin-top: -250px;
-  width: 700px; min-height: 100px;
+  margin-left: -366px;
+  margin-top: 50px;
+  width: 732px; min-height: 100px;
   background-color: #FFF;  
-  padding: 16px 20px 16px 20px;
+  padding: 4px 4px 4px 4px;
   z-index:256;
 }
 
+
+.quest-dialog .inner-border {
+  border: 8px solid #BBB;
+  background-color: rgba(176, 176, 176, 0.15);
+  border-radius: 11px;
+  margin: 0;
+  padding: 4px 14px 14px 14px;
+}
+
+.quest-list-view .ok-button,
+.quest-dialog .ok-button {
+  border: solid 2px #BC4;
+  background-color: #FFF;
+  margin: -2px;
+  font-weight: bold;
+  color: #BC4;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.quest-list-view .ok-button:hover,
+.quest-dialog .ok-button:hover {
+  border-width: 4px;
+  margin: -4px;
+}
+
+.quest-dialog .inner-border.girl {
+  border-color: #BC4;
+  background-color: rgba(176, 192, 64, 0.15);
+}
+.quest-dialog .inner-border.chef {
+  border-color: #AAC;
+  background-color: rgba(160, 160, 192, 0.15);
+}
+.quest-dialog .inner-border.warrior {
+  border-color: #F94;
+  background-color: rgba(255, 144, 64, 0.15);
+}
+.quest-dialog.tutorial .inner-border {
+  border-color: #DBD;
+  background-color: rgba(208, 176, 208, 0.15);
+}
+
+.quest-dialog .girl .ok-button {
+  border-color: #BC4;
+  color: #BC4;
+}
+.quest-dialog .chef .ok-button {
+  border-color: #AAC;
+  color: #AAC;
+}
+.quest-dialog .warrior .ok-button {
+  border-color: #F94;
+  color: #F94;
+}
+.quest-dialog.tutorial .ok-button {
+  border-color: #DBD;
+  color: #DBD;
+}
+
+
+
 .quest-start-dialog .advisor, .quest-finished-dialog .advisor, .quest-info-dialog .advisor, .quest-dialog .advisor { 
   float:right;
-  margin-left: 10px;
+  margin-left: 4px;
+  margin-right: -22px;
+  margin-top: -30px;
+}
+
+.quest-dialog .citation {
+  color: #999;
 }
 
 .quest-rewards {
@@ -3432,6 +3741,14 @@ table .number {
 .quest-reward-item-image.finished, .quest-reward-item-amount.finished {
   height: 52px;
   font-size: 24px;
+}
+
+
+.facebook-iframe {
+  width: 500px;
+  height: 30px;
+  display: inline-block;
+  padding: 8px 0px 0px 0px;
 }
 
 

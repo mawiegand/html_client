@@ -262,10 +262,14 @@ AWE.Controller = (function(module) {
     
     that.rankingButtonClicked = function() {
       
-      console.log('Ranking button clicked.');
+      var characterId = AWE.GS.player.getPath('currentCharacter.id') || 0;
       
-      $('<form style="display:none;" action="' + AWE.Config.RANKING_SERVER_BASE + '" method="GET" target="_blank">' +
-        '  <input type="hidden" name="sort" value="overall" />' +
+      log('Ranking button clicked.');
+      
+      $('<form style="display:none;" action="' + AWE.Config.RANKING_SERVER_BASE + 
+        (characterId ? '#char'+ characterId : '') + '" method="GET" target="_blank">' +
+        '  <input type="hidden" name="sort"   value="overall" />' +
+        (characterId ? '  <input type="hidden" name="mark" value="' + characterId + '" />' : '') +
         '</form>').appendTo('body').submit().remove();      
       
     };
@@ -302,7 +306,7 @@ AWE.Controller = (function(module) {
           if (HUDViews.mainControlsView) {
             AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
               that.setModelChanged(); // always re-paint, if new data available
-              console.log('U: updated resource');
+              log('U: updated resource');
             });
           }
         }
@@ -329,7 +333,7 @@ AWE.Controller = (function(module) {
           if (shopDialog) {
             AWE.GS.ShopManager.fetchCreditAmount(function() {
               that.setModelChanged();
-              console.log('U: updated credit amount');
+              log('U: updated credit amount');
             });
           }
         }

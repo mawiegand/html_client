@@ -119,19 +119,19 @@ $(document).ready(function() {
   if (!AWE.Config.MAP_RUN_TESTS) return ;
   
   var gtc = AWE.Mapping.GlobalMercator.TMSToGoogleTileCode(4,4,10);
-  console.log("google x: " + gtc.x + " y: " + gtc.y + " zoom: " + gtc.zoom); 
+  log("google x: " + gtc.x + " y: " + gtc.y + " zoom: " + gtc.zoom); 
 
   var tms = AWE.Mapping.GlobalMercator.googleToTMSTileCode(gtc.x,gtc.y,gtc.zoom);
-  console.log("tms x: " + tms.x + " y: " + tms.y + " zoom: " + tms.zoom); 
-  console.log("should be x: 4 y: 4 zoom: 10"); 
+  log("tms x: " + tms.x + " y: " + tms.y + " zoom: " + tms.zoom); 
+  log("should be x: 4 y: 4 zoom: 10"); 
 
   var qtc = AWE.Mapping.GlobalMercator.TMSToQuadTreeTileCode(7,8,4);
-  console.log("qtc: " + qtc); 
-  console.log("should be: 0333");
+  log("qtc: " + qtc); 
+  log("should be: 0333");
   
   var tms2 = AWE.Mapping.GlobalMercator.QuadTreeToTMSTileCode(qtc);
-  console.log("tms x: " + tms2.x + " y: " + tms2.y + " zoom: " + tms2.zoom); 
-  console.log("should be x: 7 y: 8 zoom: 4"); 
+  log("tms x: " + tms2.x + " y: " + tms2.y + " zoom: " + tms2.zoom); 
+  log("should be x: 7 y: 8 zoom: 4"); 
   
 }); */
 

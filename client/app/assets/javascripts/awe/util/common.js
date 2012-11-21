@@ -118,18 +118,36 @@ AWE.Util = (function(module) {
     }
   };
   
-  module.localizedTime = function(isoDate) {
-    if (!isoDate) {
+  module.localizedDateTime = function(isoDateString) { 
+    if (!isoDateString) {
       return null;
     }
-    var date = Date.parseISODate(isoDate);
+    var date = Date.parseISODate(isoDateString);
     return date ? date.toLocaleString() : null;  
   };
   
+  module.localizedTime = function(isoDateString, hideSeconds) {
+    hideSeconds = hideSeconds || false;
+    if (!isoDateString) {
+      return null;
+    }
+    var date = Date.parseISODate(isoDateString);
+    if (date) {
+      var string = zeroPadTime(date.getHours()) + ":" + zeroPadTime(date.getMinutes());
+      string += hideSeconds ? "" : ":"+zeroPadTime(date.getSeconds());
+      return string;
+    }
+    return null;  
+  };  
+
+  
   module.htmlToAscii = function(html) {
-    return (html || "").replace(/<br\s*[\/]?>/gi, "\n")
+    return (html || "").replace(/<br\s*[\/]?>/gi, "\n");
   };
 
+  module.removeHtmlTags = function(html) {
+    return (html || "").replace(/<[\/]?.*[\/]?>/gi, " ");
+  };
   
   return module;
       

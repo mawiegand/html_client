@@ -43,7 +43,7 @@ AWE.GS = (function(module) {
     }.property('hashableMembers.changedAt').cacheable(),
     
     shouts: function() {
-      console.log('SHOUTS')
+      log('SHOUTS')
       return this.getPath('hashableShouts.collection');
     }.property('hashableShouts.changedAt').cacheable(),    
     

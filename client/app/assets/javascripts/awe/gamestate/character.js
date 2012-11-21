@@ -60,6 +60,11 @@ AWE.GS = (function(module) {
     
     resourcePool: null,
     
+    isPlatinumActive: function() {
+      var expiration = this.get('premium_expiration');
+      return expiration && Date.parseISODate(expiration) > AWE.GS.TimeManager.estimatedServerTime().getTime();
+    }.property('premium_expiration').cacheable(),
+    
     mundane_rank_numeric: function() {
       return (this.get('mundane_rank') || 0) +1;
     }.property('mundane_rank').cacheable(),
@@ -98,6 +103,22 @@ AWE.GS = (function(module) {
       var used  = this.get('settlement_points_used');
       var total = this.get('settlement_points_total');
       return used && total && total > used; // assumes used is at least one, what is ok right now as each character always has a home settlement
+    },
+    
+    settlementPointsAvailable: function() {
+      var used  = this.get('settlement_points_used') || 0;
+      var total = this.get('settlement_points_total') || 0;
+      return Math.max(0, total-used); // assumes used is at least one, what is ok right now as each character always has a home settlement
+    }.property('settlement_points_used', 'settlement_points_total'),
+    
+    advancedInMundaneRank: function() {
+      var rank = this.get('mundane_rank');
+      var notified = this.get('notified_mundane_rank');
+      return rank && notified !== undefined && notified !== null && rank > notified;
+    },
+    
+    setNotifiedAvancedInMundaneRank: function() {
+      this.set('notified_mundane_rank', (this.get('mundane_rank') || 0));
     },
     
     //
@@ -153,6 +174,11 @@ AWE.GS = (function(module) {
     
     fetchArchive: function(callback) {
       AWE.GS.ArchiveManager.updateMessageBoxOfCharacter(this.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, callback);
+    },
+    
+    hasStaffRole: function(role) {
+      var roles = this.get('staff_roles');
+      return roles && roles.indexOf(role) >= 0;
     },
 
     // ////////////////////////////////////////////////////////////////// ////
@@ -214,7 +240,13 @@ AWE.GS = (function(module) {
       else {
         return 'loading';
       }
-    }
+    },
+    
+    getAlliance: function() {
+      var allianceId = this.get('alliance_id');
+      return allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
+    },
+    
   });     
 
     
@@ -327,6 +359,11 @@ AWE.GS = (function(module) {
             if (callback) {
               callback(character, statusCode, xhr, timestamp);
             }
+          },
+          function(xhr) {
+            if (AWE.Settings.referer !== undefined && AWE.Settings.referer !== null) {
+              xhr.setRequestHeader('X-Alt-Referer', AWE.Settings.referer);
+            }            
           }
         );
       }        

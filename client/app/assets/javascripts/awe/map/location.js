@@ -170,12 +170,16 @@ AWE.Map = (function(module) {
       return _ownerId === AWE.GS.CharacterManager.getCurrentCharacter().id;
     }
             
+    that.isFortress = function() {
+      return _slot == 0;
+    }
+            
     /** this method updates the data stored at the local region from the given 
      * region. Does not change the association to a node. */ 
     that.updateLocationFrom = function(location) {
 
       if (location.id() != _id) {
-        console.log('WARNING: updating data of location ' + _id + ' from a different location with id '+ location.id() + '.');
+        log('WARNING: updating data of location ' + _id + ' from a different location with id '+ location.id() + '.');
       }
         
       _id = location.id();

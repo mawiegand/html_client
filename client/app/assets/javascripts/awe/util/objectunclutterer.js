@@ -120,7 +120,7 @@ AWE.Util = (function(module) {
         }
       }
       
-    //  console.log('UNCLUTTER GROUP ', group.length, 'SCALE', scaleFactor);
+    //  log('UNCLUTTER GROUP ', group.length, 'SCALE', scaleFactor);
   
       var minBounceStart = Math.min( 4.0 * scaleFactor,  20.0);
       var maxBounceStart = Math.min(10.0 * scaleFactor,  80.0);
@@ -147,7 +147,7 @@ AWE.Util = (function(module) {
                   if (index1 < index2) {  // there are really two armies on exactly the same spot! move the first one
                     dir.x = 1.0;
                     length = 1.0;
-                    //console.log('WARNING: two models share the exact same position.', view.id, view2.id)
+                    //log('WARNING: two models share the exact same position.', view.id, view2.id)
                   }
                 }
                 else {            
@@ -182,7 +182,7 @@ AWE.Util = (function(module) {
             var center = view.view.center();
             var dir    = view.tmpMovement;
           
-            // console.log("(", center.x, center.y, ") + ", dir.x, dir.y)
+            // log("(", center.x, center.y, ") + ", dir.x, dir.y)
           
             view.view.setCenter(AWE.Geometry.createPoint(
               center.x + dir.x, center.y + dir.y
@@ -211,7 +211,7 @@ AWE.Util = (function(module) {
       var frame2 = view2.frame();
       
       if (!frame1 || !frame2) {
-        console.log("ERROR: tried to intersect null frame:", frame1, frame2);
+        log("ERROR: tried to intersect null frame:", frame1, frame2);
         return false;
       }
   

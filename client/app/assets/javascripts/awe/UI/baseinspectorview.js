@@ -198,8 +198,8 @@ AWE.UI = (function(module) {
       }*/
     }
     
-    that.onInfoButtonClick = function() { console.log('info button clicked'); } 
-    that.onNewArmyButtonClick = function() { console.log('new army button clicked'); }
+    that.onInfoButtonClick = function() { log('info button clicked'); } 
+    that.onNewArmyButtonClick = function() { log('new army button clicked'); }
 
     that.updateView = function() {
       that.recalcView();      

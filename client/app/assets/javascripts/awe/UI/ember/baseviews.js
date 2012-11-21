@@ -41,7 +41,19 @@ AWE.UI.Ember = (function(module) /** @lend AWE.UI.Ember */ {
     smallSlots: function() {
       var slots = this.get('slots');
       return slots && slots.length > 0 ? slots.slice(5,slots.length) : null;
-    }.property('slots').cacheable(),		
+    }.property('slots').cacheable(),	
+    
+    questAdvisorClicked: function() {
+      WACKADOO.showQuestListDialog();
+    },
+    
+    displayQuestAdvisor: function() {
+      var character = AWE.GS.player.get('currentCharacter');
+      if (!character) { return false; }
+      var platinum = character.get('isPlatinumActive');
+      var state = character.get('max_conversion_state');
+      return !platinum || !state || (state !== "active" && state !== "long_term" && state !== "paying");
+    }.property('AWE.GS.player.currentCharacter.isPlatinumActive'),
 						
 	});
     

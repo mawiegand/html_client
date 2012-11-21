@@ -22,7 +22,7 @@ AWE.Action = (function(module) {
     my.status = 0
     
     my.getSanitizedAndEscapedRequestBody = function() {
-      console.log('call get request body');
+      log('call get request body');
       return that.getRequestBody();  // TODO SECURITY : sanitize and escape it
     }
     
@@ -33,7 +33,7 @@ AWE.Action = (function(module) {
     /** overwrite and return appropriate information to send to the server. 
      */
     that.getRequestBody = function() {
-      console.log('wrong get request body');
+      log('wrong get request body');
 
       return '';
     };
@@ -49,10 +49,10 @@ AWE.Action = (function(module) {
       
       var jqXHR = $.ajax(options)
         .error(function(jqXHR, statusText) {           // On failure:
-          console.log ('ERROR SENDING ACTION TO URL ' + that.getURL() + ': ' + statusText); 
+          log ('ERROR SENDING ACTION TO URL ' + that.getURL() + ': ' + statusText); 
         })
         .success(function(data, statusText, jqXHR) {   // On success:
-          console.log ('Successfully sent action to url: ' + that.getURL() + ': ' + statusText); 
+          log ('Successfully sent action to url: ' + that.getURL() + ': ' + statusText); 
         })
         .complete(function(jqXHR, statusText) {
           my.completed = true;

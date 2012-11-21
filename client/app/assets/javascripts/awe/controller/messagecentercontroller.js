@@ -59,14 +59,21 @@ AWE.Controller = (function(module) {
     
     that.createView = function() {
       
-      var character = AWE.GS.CharacterManager.getCurrentCharacter();
+      var character   = AWE.GS.CharacterManager.getCurrentCharacter();
+      var allianceId  = character.get('alliance_id');
+      var alliance    = allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
       
       var center = AWE.UI.Ember.MessageCenterView.create({
         controller: this,    
         character: character,
-        
+        alliance:  alliance,
       });
-      console.log(center, center.get('character'), center.get('character').get('inbox'));
+       
+      if (!alliance && allianceId) { // fetch alliance from server if it's not available yet
+        AWE.GS.AllianceManager.updateAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+          center.set('alliance', AWE.GS.AllianceManager.getAlliance(allianceId));
+        });
+      }
       
       return center;
     }
@@ -86,6 +93,9 @@ AWE.Controller = (function(module) {
     that.newClicked = function() {
       this.view.showForm();
     };
+    that.newAllianceMessageClicked = function() {
+      this.view.showAllianceMessageForm();
+    };
     that.createDraftTo = function(recipientName) {
       this.view.showForm();
       this.view.setPath('newMessage.recipient', recipientName);
@@ -94,11 +104,13 @@ AWE.Controller = (function(module) {
       this.view.set('newMessage', null);
       this.view.hideForm();
     };
+    
+    
     that.sendMessage = function(message) {
       var self = this;
       action = AWE.Action.Messaging.createSendMessageAction(message);
       action.send(function(status, jqXHR) {
-        console.log('SENT MESSAGE, STATUS', status);
+        log('SENT MESSAGE, STATUS', status);
         if (status === AWE.Net.CREATED || status === AWE.Net.OK) {
           self.discardDraft();
         }
@@ -106,7 +118,7 @@ AWE.Controller = (function(module) {
           self.view.setRecipientIsUnknown(true);
         }
         else {
-          console.log(status, "ERROR: The server did not accept the message.");
+          log(status, "ERROR: The server did not accept the message.");
           var dialog = AWE.UI.Ember.InfoDialog.create({
             contentTemplateName: 'server-command-failed-info',
             cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
@@ -118,12 +130,11 @@ AWE.Controller = (function(module) {
       });
     };
     
-    
     that.appendView = function() {
       if (this.view) {
         this.removeView();
       }
-      console.log('append MESSAGE CENTER')
+      log('append MESSAGE CENTER')
       this.updateView();
       this.view = this.createView();
       this.view.appendTo('#main-screen-controller');      
@@ -150,7 +161,7 @@ AWE.Controller = (function(module) {
           if (!outbox) {
             AWE.GS.CharacterManager.getCurrentCharacter().fetchOutbox(function(outboxes, status) {
               if (status === AWE.Net.NOT_FOUND || !outboxes) {
-                console.log('ERROR: outboxes of current character not found on server.');
+                log('ERROR: outboxes of current character not found on server.');
               } 
               else { 
                 outbox = AWE.GS.CharacterManager.getCurrentCharacter().get('outbox');
@@ -158,7 +169,7 @@ AWE.Controller = (function(module) {
                   outbox.fetchEntries();
                 }
                 else {
-                  console.log('ERROR: no outbox found.');
+                  log('ERROR: no outbox found.');
                 }
               }
             });

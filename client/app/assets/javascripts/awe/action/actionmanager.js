@@ -47,7 +47,7 @@ AWE.Action = (function(module) {
     
     that.processNextAction = function() {
       if (my.processing) {
-        console.log("ERROR: action manager should process next action while it's still processing.");
+        log("ERROR: action manager should process next action while it's still processing.");
         return ; // already processing
       }
       if (my.queue.length == 0) {

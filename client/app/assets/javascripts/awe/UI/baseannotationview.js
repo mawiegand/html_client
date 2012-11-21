@@ -23,6 +23,7 @@ AWE.UI = (function(module) {
     //  hovered
     var _infoText1View = null;    
     var _infoText2View = null;    
+    var _infoText3View = null;
 
     var _backgroundShapeView = null;
 
@@ -80,7 +81,7 @@ AWE.UI = (function(module) {
         enterButton.setFrame(AWE.Geometry.createRect(12, 0, 52, 52));
         enterButton.onClick = function() {
           that.onEnterButtonClick();
-          AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button2');
+          AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button2');
         }
         this.addChild(enterButton);
       }
@@ -93,7 +94,7 @@ AWE.UI = (function(module) {
       }
       
       var battleCheck = false;
-      if (!attackButton && isOwnLocation && !battleCheck) { // check ongoing battle
+      if (!attackButton && isOwnLocation && my.location.garrisonArmy() && !my.location.garrisonArmy().get('isSuspended')) { // check ongoing battle
         attackButton = AWE.UI.createButtonView();
         attackButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.attack'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
         attackButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
@@ -102,7 +103,7 @@ AWE.UI = (function(module) {
         attackButton.onClick = function() { if (attackButton.enabled()) { that.onAttackButtonClick(that); } }
         this.addChild(attackButton);
       }
-      else if (attackButton && !isOwnLocation && !battleCheck) {
+      else if (attackButton && (!isOwnLocation || (my.location.garrisonArmy() && my.location.garrisonArmy().get('isSuspended')))) {
         this.removeChild(attackButton);
         attackButton = null;
       }
@@ -186,6 +187,17 @@ AWE.UI = (function(module) {
       _infoText1View.setText('' + (settlement ? settlement.get('score') : my.location.settlementScore()));
       _infoText2View.setText('' + (settlement ? Math.floor((settlement.get('defense_bonus') || 0)*100)+"%" : '-'));      
 
+      if (!_infoText3View && my.location.garrisonArmy() && my.location.garrisonArmy().get('isSuspended')) {
+        _infoText3View = AWE.UI.createLabelView();
+        _infoText3View.initWithControllerAndLabel(my.controller);
+        _infoText3View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));      
+        _infoText3View.setTextAlign("left");
+        _infoText3View.setIconImage("map/army/sandglass");
+        my.infoContainer.addChild(_infoText3View);
+      }
+      if (_infoText3View) {
+        _infoText3View.setText('' + Date.parseISODate(my.location.garrisonArmy().get('suspension_ends_at')).toString('HH:mm:ss'));
+      }
 
       my.infoContainer.layoutSubviews(); 
        

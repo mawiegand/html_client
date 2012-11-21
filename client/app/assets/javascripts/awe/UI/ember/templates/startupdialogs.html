@@ -21,10 +21,13 @@
     <div class="modal-dialog-pane z-layer-4 welcome-dialog">
       <h1>{{announcement.heading}}</h1>
       {{{announcement.body}}}
-      {{#if okPressed }}
-        <div class="image-button image-ok-button" {{action "okPressed"}}>Spielen</div>
-      {{/if}}
-      <a href="{{unbound AWE.Config.PORTAL_ROOT}}/announcements" target="_blank" class="news-archive-link">Archiv</a>
+      <div>
+        {{view AWE.UI.Ember.FacebookSubcribeView classNames="facebook-iframe"}}
+        {{#if okPressed }}
+          <div class="image-button image-ok-button" {{action "okPressed"}}>Spielen</div>
+        {{/if}}
+        <a href="{{unbound AWE.Config.PORTAL_ROOT}}/announcements" target="_blank" class="news-archive-link">Archiv</a>
+      </div>
     </div>
   </div>
 </script>

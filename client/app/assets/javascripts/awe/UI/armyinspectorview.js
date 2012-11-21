@@ -98,7 +98,8 @@ AWE.UI = (function(module) {
       }
       
       if (isOwnArmy) {
-        _apLabelView.setText('AP: ' + AWE.UI.Util.secondsToString(_army.get('ap_seconds_per_point')));
+        var apNext = _army.get('ap_next');
+        _apLabelView.setText('AP: ' + (apNext ? AWE.Util.localizedTime(apNext, true) : "-")); // AWE.UI.Util.secondsToString(_army.get('ap_seconds_per_point')));
       }
       else {
         _apLabelView.setText(_army.get('owner_name') + (_army.get('alliance_tag') ? ' | ' + _army.get('alliance_tag') : ''));        
@@ -309,8 +310,8 @@ AWE.UI = (function(module) {
       }*/
     }
     
-  //  that.onInventoryButtonClick = function() { console.log('inventory button clicked'); }
-    that.onChangeArmyButtonClick = function(army) { console.log('inventory button clicked'); }
+  //  that.onInventoryButtonClick = function() { log('inventory button clicked'); }
+    that.onChangeArmyButtonClick = function(army) { log('inventory button clicked'); }
         
     that.updateView = function() {
       that.recalcView();      

@@ -47,6 +47,16 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
   //
   ////////////////////////////////////////////////////////////////////////////
   
+  module.roundProductionRate = function(value) {
+    if (value < 0) {
+      return value;
+    }
+    if (value < 10) {
+      return Math.floor(value*100)/100.0;
+    }
+    return Math.floor(value);
+  }
+  
   /** 
    * processes a given array of resource productions. 
    *
@@ -299,7 +309,7 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
       return module.meetsScienceRequirement(requirement, character, considerJobs, onlyMax);
     }
     else {
-      //console.log('ERROR: Requirement of unknown type ', requirement.type);
+      //log('ERROR: Requirement of unknown type ', requirement.type);
     }
     return true ;
   };

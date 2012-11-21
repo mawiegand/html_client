@@ -32,7 +32,11 @@
     {{#if recipient}}
       {{recipient}}
     {{else}}
-      Unbekannter Empfänger
+      {{#if alliance}}
+        Allianz-Rundmail
+      {{else}}
+        Unbekannter Empfänger
+      {{/if}}
     {{/if}}
   </span>   <br />
   <span class="subject">
@@ -55,6 +59,10 @@
     <div class="message-edit-title">
       Neue Nachricht {{#if recipient}}
        An {{recipient}}
+      {{else}}
+        {{#if alliance}}
+          An Alle Allianzmitglieder
+        {{/if}}
       {{/if}}
     </div>
     <div class="message-edit-fill"></div>
@@ -62,7 +70,13 @@
   <div class="message-edit-header">
     <table>
       <tr><th {{bindAttr class="recipientUnknown:red-color"}}>{{#if recipientUnknown }}<em>Unbekannt</em>{{/if}} An:</th>
-        <td><b>{{view Ember.TextField valueBinding="recipient" placeholder="recipient"}}</b></td>
+        <td>
+          {{#if alliance}}
+            Alle Mitglieder von {{alliance.name}}
+          {{else}}
+            <b>{{view Ember.TextField valueBinding="recipient" placeholder="recipient"}}</b>
+          {{/if}}
+        </td>
       </tr>
       <tr><th>Betreff:</th>
         <td>{{view Ember.TextField valueBinding="subject" placeholder="subject"}}</td>
@@ -95,7 +109,11 @@
           | {{message.recipient.alliance_tag}}
         {{/if}}
       {{else}}
-        Alle Spieler
+        {{#if message.isAllianceMessage}}
+          Alle Allianzmitglieder
+        {{else}}
+          Alle Spieler
+        {{/if}}
       {{/if}}
     </td></tr>
   </table>
@@ -112,6 +130,7 @@
       <div {{action "outboxClicked" target="controller"}}>Ausgang</div>  
       <div {{action "newClicked"    target="controller"}}>Neu</div>
     </div>
+
     <div id="actions">
       {{#if isReplyPossible}}
         <div {{action "replyClicked" }}>Antworten</div>
@@ -127,7 +146,11 @@
         <div {{action "deleteClicked" }}>Löschen</div>
       {{else}}
         <div class="inactive">Löschen</div>
-      {{/if}}      
+      {{/if}}
+      
+      {{#if isAllianceMessagePossible}}
+        <div {{action "newAllianceMessageClicked" target="controller"}}>Neue Ally-Rundmail</div>
+      {{/if}}            
     </div>
   </div>
 

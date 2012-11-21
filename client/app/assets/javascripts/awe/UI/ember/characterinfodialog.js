@@ -52,7 +52,7 @@ AWE.UI.Ember = (function(module) {
       var settlement = AWE.GS.SettlementManager.getSettlementAtLocation(baseLocationId);
       this.set('homeSettlement', settlement);
       AWE.GS.SettlementManager.updateSettlementsAtLocation(baseLocationId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {
-        console.log('U: settlement at character.base_location_id', baseLocationId);
+        log('U: settlement at character.base_location_id', baseLocationId);
         self.set('homeSettlement', AWE.GS.SettlementManager.getSettlementAtLocation(baseLocationId));
       });
     },     

@@ -29,6 +29,8 @@ AWE.Config = (function(module) {
   
   module.MAP_DEBUG_LEVEL  = module.DEBUG_LEVEL_INFO;
   module.MAP_DEBUG_FRAMES = false;
+  
+  module.MAP_MOVE_ARMIES          = false;
 
   
   module.MAP_RUN_TESTS = false;
@@ -131,11 +133,15 @@ AWE.Config = (function(module) {
   module.USE_TUTORIAL = true;  // switch to enable/disable tutorial
   module.TUTORIAL_STATE_REFRESH_INTERVAL = 5 * 1000;
   module.TUTORIAL_STATE_DELAY_INTERVAL   = 10 * 1000;
+  module.TUTORIAL_MAP_QUEST_ID = 11;
+  
   module.CHAT_SHOW    = true;  // switch chat system on / off
   module.TRADE_ENABLED= true;   // switch trade system on / off
   
   module.BROWSER_CHECK_ENABLED = true;
   module.BROWSER_CHECK_FAILURES_ONLY = false;
+  
+  module.DISABLE_NPC_IMAGES = false
 
   return module;
   

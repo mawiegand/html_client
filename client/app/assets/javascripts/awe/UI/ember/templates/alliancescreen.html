@@ -41,7 +41,7 @@
 
 
 <script type="text/x-handlebars" data-template-name="alliance-member">
-  {{view AWE.UI.Ember.LinkedCharacterView characterBinding="character" displayAlliance=false}}
+  {{view AWE.UI.Ember.LinkedCharacterWithRankView characterBinding="character" displayAlliance=false}}
   {{#if isCurrentCharacterAllianceLeader}}
     {{#unless isLeader}}
       <a href="#" {{action "kickMember"}}>kick</a>

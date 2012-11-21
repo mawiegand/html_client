@@ -39,7 +39,9 @@ AWE.Action.Fundamental = (function(module) {
     
     that.postProcess = function(statusCode, xhr) {
       if (statusCode == 200) {
-        AWE.GS.CharacterManager.updateCurrentCharacter();
+        AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+          WACKADOO.reconnectChat();
+        });
       }
     }
   

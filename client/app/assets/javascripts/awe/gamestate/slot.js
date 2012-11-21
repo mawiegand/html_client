@@ -59,7 +59,7 @@ AWE.GS = (function(module) {
       var settlementId = this.getPath('slot.settlement_id');
       queue = queue || 
         (category !== undefined && category !== null && settlementId ? AWE.GS.ConstructionQueueManager.getQueueForBuildingCategorieInSettlement(category, settlementId) : null);
-      console.log('>>>>> RECALC QUEUE', queue, category);
+      log('>>>>> RECALC QUEUE', queue, category);
       return queue;
     }.property('slot.queue', 'buildingType', 'slot.settlement_id', 'slot.settlement.hashableQueues.changedAt').cacheable(),
 
@@ -180,13 +180,13 @@ AWE.GS = (function(module) {
     },
 		
 		productionTime: function() {
-		  console.log('PROD OF LEVEL ++++++++++++++++++++++++++++++++++');
+		  log('PROD OF LEVEL ++++++++++++++++++++++++++++++++++');
 		  return this.calcProductionTime(this.get('level'));
 		}.property('level', 'buildingType.production_time', 'queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.	
 		
 		productionTimeOfNextLevel: function() {
-		  console.log('PROD OF NEXT LEVEL +++++++++++++++++++++++++++++', this.get('nextLevel'));
-/*	  console.log('PRODUCTION TIME', 
+		  log('PROD OF NEXT LEVEL +++++++++++++++++++++++++++++', this.get('nextLevel'));
+/*	  log('PRODUCTION TIME', 
 		              this.getPath('buildingType.name.en_US'), 
 		              this.getPath('buildingType.production_time'),
 		              this.getPath('slot.queue.speed'),
@@ -208,19 +208,19 @@ AWE.GS = (function(module) {
         time += this.calcProductionTime(l);
       }
       var convertedTime = 0;
-      log('---> conversionTime', time);
+      // log('---> conversionTime', time);
       var convertedBuilding = this.get('converted');
-      log('---> convertedBuilding', convertedBuilding);
+      // log('---> convertedBuilding', convertedBuilding);
       var convertedLevel = this.get('convertedLevel') || 1;
-      log('---> convertedLevel', convertedLevel);
+      // log('---> convertedLevel', convertedLevel);
       var speed = this.getPath('queue.speed');
-      log('---> speed', speed);
+      // log('---> speed', speed);
 
       for (var l = 1; l <= convertedLevel; l++) {
         var productionTime = convertedBuilding.getPath('buildingType.production_time');
         convertedTime += AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(productionTime), l) / speed
       }
-      log('---> conversionTime', convertedTime);
+      // log('---> conversionTime', convertedTime);
       return Math.max(convertedTime - time, convertedTime * (1 - AWE.GS.RulesManager.getRules().building_conversion.time_factor));
     }.property('level', 'buildingType.production_time', 'queue.speed').cacheable(),
 
@@ -247,9 +247,9 @@ AWE.GS = (function(module) {
       }
       
       var convertedCosts = this.getPath('converted.buildingType.costs');
-      log('---> convertedBuilding', convertedCosts);
+      // log('---> convertedBuilding', convertedCosts);
       var convertedLevel = this.get('convertedLevel') || 1;
-      log('---> convertedLevel', convertedLevel);
+      // log('---> convertedLevel', convertedLevel);
       
       var convertedCostSum = [];
       
@@ -257,16 +257,16 @@ AWE.GS = (function(module) {
         convertedCostSum = AWE.Util.Rules.addedResourceCosts(AWE.Util.Rules.evaluateResourceCosts(convertedCosts, l), convertedCostSum);
       }
 
-      log('---> convertedCostSum', convertedCostSum, AWE.Util.Rules.resourceCostsWithResourceId(costSum, 1));
+      // log('---> convertedCostSum', convertedCostSum, AWE.Util.Rules.resourceCostsWithResourceId(costSum, 1));
       
       costsResult = [];
       AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
         var sum = AWE.Util.Rules.resourceCostsWithResourceId(costSum, item.id);
-        log('---> a', sum);
+        // log('---> a', sum);
         var convertedSum = AWE.Util.Rules.resourceCostsWithResourceId(convertedCostSum, item.id);
-        log('---> a', convertedSum);
+        // log('---> a', convertedSum);
         var amount = Math.max(convertedSum - sum, convertedSum * (1 - AWE.GS.RulesManager.getRules().building_conversion.cost_factor));
-        log('---> a', amount);
+        // log('---> a', amount);
         if (amount > 0) {
           costsResult.push(Ember.Object.create({  
             amount:       amount,
@@ -344,7 +344,7 @@ AWE.GS = (function(module) {
       var settlement = this.getPath('slot.settlement');
       var character = settlement ? settlement.owner() : null;
       var slot = this.get('slot');
-      console.log('RECALC UNMET REQUIREMENT GROUPS');
+      log('RECALC UNMET REQUIREMENT GROUPS');
       var failed =  AWE.Util.Rules.failedRequirementGroups(this.getPath('buildingType.requirementGroups'), settlement, character, slot, true);
       return failed || []
     },
@@ -355,7 +355,7 @@ AWE.GS = (function(module) {
       var slot = this.get('slot');
       var reqGroups = this.getPath('buildingType.requirementGroups') || [];
       var maxFail = true;
-      console.log('RECALC IMPOSSIBLE DUE TO MAX REQUIREMENT');
+      log('RECALC IMPOSSIBLE DUE TO MAX REQUIREMENT');
       reqGroups.forEach(function(group) {
         maxFail = maxFail && AWE.Util.Rules.requirementGroupFailsDueToMaxRequirement(group, settlement, character, slot, true);
       });
@@ -654,7 +654,7 @@ AWE.GS = (function(module) {
     },
     
     destroy: function(spec) {  // disonnect all manually concstructed bindings
-      console.log('DESTROY Slot');
+      log('DESTROY Slot');
       var bindings = this.get('bindings');
       if (bindings && bindings.length) {
         bindings.forEach(function(item) {
@@ -675,7 +675,7 @@ AWE.GS = (function(module) {
 			else {
 				var building = this.get('_buildingInstance');
 				if (!building) {
-					console.log('CREATED NEW BUILDING OBJECT');
+					log('CREATED NEW BUILDING OBJECT');
 					building = module.Building.create({
 						slot: this,
 						buildingIdBinding: 'slot.building_id',
@@ -840,7 +840,7 @@ AWE.GS = (function(module) {
         function(result, status, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {   
             if (!timestamp) {
-              console.log('TIMESTAMP ERROR', timestamp);
+              log('TIMESTAMP ERROR', timestamp);
               timestamp = new Date(2000);
             }    
             module.SlotAccess.accessHashForSettlement_id().setLastUpdateAtForValue(settlementId, timestamp.add(-1).second());

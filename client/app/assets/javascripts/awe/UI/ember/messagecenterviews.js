@@ -29,7 +29,7 @@ AWE.UI.Ember = (function(module) {
     templateName: 'message',
     
     timeString: function() {
-      return AWE.Util.localizedTime(this.getPath('message.created_at'));
+      return AWE.Util.localizedDateTime(this.getPath('message.created_at'));
     }.property('message.created_at').cacheable(),
   });
   
@@ -95,6 +95,7 @@ AWE.UI.Ember = (function(module) {
   module.NewMessage = Ember.View.extend({
     sender_id: null,
     recipient: null,
+    alliance:  null,
     subject:   null,
     body:      null,
 
@@ -114,6 +115,8 @@ AWE.UI.Ember = (function(module) {
     templateName: 'message-center',
     
     character: null,
+    alliance: null,
+    
     inboxBinding: "character.inbox",
     outboxBinding: "character.outbox",
     archiveBinding: "character.archive",
@@ -127,13 +130,24 @@ AWE.UI.Ember = (function(module) {
     
     isFormVisible: false,
     
-    showForm: function() {
+    showForm: function(alliance) {
       if (!this.get('newMessage')) {
         this.set('newMessage', module.NewMessage.create({
           sender_id: AWE.GS.CharacterManager.getCurrentCharacter().get('id'),
+          alliance:  alliance || null
         }));
       }
       this.set('isFormVisible', true);
+    },
+
+    showAllianceMessageForm: function() {
+      var alliance = this.get('alliance');
+      if (alliance) {
+        this.showForm(alliance);
+      }
+      else {
+        log('could not create alliance message, because character seems to be in no alliance.');
+      }
     },
     
     hideForm: function() {
@@ -185,13 +199,19 @@ AWE.UI.Ember = (function(module) {
     isDeletePossible: function() {
       return ! this.get('newMessage') && this.get('selectedMessage') && this.get('displayingInbox');
     }.property('selectedMessage', 'newMessage', 'displayingInbox'),
-
+    
+    isAllianceMessagePossible: function() {
+      var characterId = this.getPath('character.id');
+      var leaderId    = this.getPath('alliance.leader_id');
+      log('IS POSSIBLE ALLY MESSAGE', characterId, leaderId);
+      return characterId && characterId === leaderId;
+    }.property('character', 'alliance.leader_id'),
     
     replyClicked: function() {
       this.set('newMessage', module.NewMessage.create({
         recipient: this.getPath('selectedMessage.sender.name'),  
         subject:   'Re: ' + (this.getPath('selectedMessage.subject') || ''),
-        body:      ' \n\n\n---- On  ' + AWE.Util.localizedTime(this.getPath('selectedMessage.created_at')) + ' ' +
+        body:      ' \n\n\n---- On  ' + AWE.Util.localizedDateTime(this.getPath('selectedMessage.created_at')) + ' ' +
                     (this.getPath('selectedMessage.sender.name') || 'someone') + ' wrote:\n\n' +
                     AWE.Util.htmlToAscii(this.getPath('selectedMessage.body')),
         sender_id: AWE.GS.CharacterManager.getCurrentCharacter().get('id'),
@@ -202,7 +222,7 @@ AWE.UI.Ember = (function(module) {
     forwardClicked: function() {
       this.set('newMessage', module.NewMessage.create({
         subject:   'Fwd: ' + (this.getPath('selectedMessage.subject') || ''),
-        body:      ' \n\n\n---- On  ' + AWE.Util.localizedTime(this.getPath('selectedMessage.created_at')) + ' ' +
+        body:      ' \n\n\n---- On  ' + AWE.Util.localizedDateTime(this.getPath('selectedMessage.created_at')) + ' ' +
                     (this.getPath('selectedMessage.sender.name') || 'Sytem') + ' wrote to ' +
                     this.getPath('selectedMessage.recipient.name') + ':\n\n' +
                     AWE.Util.htmlToAscii(this.getPath('selectedMessage.body')),
@@ -214,7 +234,7 @@ AWE.UI.Ember = (function(module) {
     deleteClicked: function() {
       var selectedMessageEntry = this.get('selectedMessageEntry');
       if (!selectedMessageEntry || !this.get('displayingInbox')) {
-        console.log('ERROR: could not delete message.');
+        log('ERROR: could not delete message.');
         return ;
       }
       AWE.Action.Messaging.createDeleteMessageAction(selectedMessageEntry).send();
@@ -229,13 +249,13 @@ AWE.UI.Ember = (function(module) {
       AWE.Action.Messaging.createMarkMessageReadAction(inboxEntry).send();
 
       // Tutorial Hook
-      AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_open_message');
+      AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_message');
     },
     
     messageReadMarker: function() {
       var selectedMessageEntry = this.get('selectedMessageEntry');
       if (this.get('displayingInbox') && selectedMessageEntry && !selectedMessageEntry.get('read')) {
-        console.log('mark message as read');
+        log('mark message as read');
         this.markRead(selectedMessageEntry);
       }
     }.observes('selectedMessageEntry'),

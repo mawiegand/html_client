@@ -146,6 +146,12 @@ AWE.UI.Ember = (function(module) {
       return this.get('isOwnArmy') ? AWE.I18n.lookupTranslation('army.messages.own.'+advisor) : AWE.I18n.lookupTranslation('army.messages.other.'+advisor);
     }.property('isOwnArmy').cacheable(),
     
+    nextAPTimeString: function() {
+      var own  = this.get('isOwnArmy');
+      var next = this.getPath('army.ap_next');
+      return own && next ? AWE.Util.localizedTime(next) : null;
+    }.property('isOwnArmy', 'ap_next'),
+    
     advisor: function() {
       var category = this.getPath('army.armyCategory') || 'infantry';
       if (category === 'artillery') {

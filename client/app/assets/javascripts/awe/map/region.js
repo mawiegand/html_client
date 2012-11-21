@@ -163,7 +163,7 @@ AWE.Map = (function(module) {
     that.updateRegionFrom = function(region) {
 
       if (region.id() != _id) {
-        console.log('ERROR: updating data of region ' + _id + ' from a different region with id '+ region.id() + '.');
+        log('ERROR: updating data of region ' + _id + ' from a different region with id '+ region.id() + '.');
       }
         
       _id = region.id();

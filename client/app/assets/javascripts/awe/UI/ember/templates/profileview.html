@@ -81,10 +81,8 @@
 </script>
 
 
-<script type="text/x-handlebars" data-template-name="character-profile-info-view">
-  
-{{#if showProgressBar }}  
-  
+<script type="text/x-handlebars" data-template-name="character-progress-bar-view">
+
   <div style="width:100%; height: 20px; position: relative; background: #EEF; border: 1px solid black; margin-top: 70px; margin-bottom: 80px;">
     <div style="position:absolute; top: 0; left: 0; width: 100px; height: 90px; margin-top: -70px; border-left: 1px solid black; margin-left: -1px; padding-left: 3px;">
       <div style="height: 70px; font-size: 14px;">Beginn</div>
@@ -117,6 +115,14 @@
     {{/if}}
   </div>
   
+</script>
+
+
+
+<script type="text/x-handlebars" data-template-name="character-profile-info-view">
+  
+{{#if showProgressBar }}  
+  {{view  AWE.UI.Ember.CharacterProgressBarView allianceBinding="alliance" characterBinding="character"}}
 {{/if }}
 
   <p><b>Weltlicher Rang {{ character.mundane_rank_numeric }}:</b> <em>{{local character.mundaneTitle.name }}</em>.<br/>
@@ -129,7 +135,7 @@
      weltlichen Rang und erhöht Dein Verständnis des Übernatürlichen.</p>   
      
   <p><b>Erfahrung:</b> {{ character.exp }}. Deine Erfahrung steigt, indem Du baust und kämpfst.<br/>
-     <b>Siedlungspunkte:</b> {{ character.settlement_points_used }} / {{ character.settlement_points_total }} (verwendet/insgesamt)
+     <b>Siedlungspunkte:</b> Noch nicht verwendet: {{ character.settlementPointsAvailable }}. Insgesamt: {{ character.settlement_points_total }}.
   </p>
 </script>
 

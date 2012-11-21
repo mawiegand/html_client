@@ -110,12 +110,18 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           self.presentModalDialog(dialog);      
         }
         else {
-          console.log('ERROR: could not fetch latest announcement.')
+          log('ERROR: could not fetch latest announcement.')
         }
       });
     },
+
+    reconnectChat: function() {
+	    disconnectMini();
+	    this.initChat(true);
+    },
     
-    initChat: function() {
+    initChat: function(reconnect) {
+	  reconnect = reconnect || false;
       DEVELOPER = 'on'
       
       var jappix_addBuddyMini = addBuddyMini; // jappix is in global namespace :-(
@@ -156,7 +162,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_ANONYMOUS = "anonymous." +base;
       HOST_BOSH      = "http://"+base+"/http-bind/";
       
-      var beginner = AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') <= 1;      
+      var character = AWE.GS.player && AWE.GS.player.get('currentCharacter');
+      var beginner  = character && character.get('login_count') <= 1;      
 
       // Define groupchats here
       if (beginner) {
@@ -167,14 +174,15 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       else {
         MINI_GROUPCHATS                  = tag ? [ tag+"@conference."+base, "plauderhöhle@conference."+base , "global@conference."+base] : [ "plauderhöhle@conference."+base,  "global@conference."+base ];
         MINI_SUGGEST_GROUPCHATS          =  [ 'help@conference.'+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ];
-        MINI_5D_NON_CLOSEABLE_GROUPCHATS = tag ? [ tag+"@conference."+base, "global@conference."+base ] : [ "global@conference."+base ];       
+        MINI_5D_NON_CLOSEABLE_GROUPCHATS = tag ? [ tag+"@conference."+base, "global@conference."+base ] : [ "global@conference."+base ];     
+          
+        if (character && character.hasStaffRole('help')) {
+          MINI_GROUPCHATS.push("help@conference."+base);
+        }
       }
+      
       MINI_5D_NO_USERLIST_GROUPCHATS     = [ 'help@conference.'+base, 'global@conference.'+base ];
       MINI_5D_STAFF_POSTFIXES            = [ '| 5D', '@mod', '@admin', '@staff' ];
-      
-      MINI_GROUPCHATS.forEach(function(item) {
-        console.log('GROUPCHAT', item)
-      });
       
       JAPPIX_STATIC = 'jappix/'
       
@@ -198,22 +206,24 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       // Notice: exclude "user" and "password" if using anonymous login
             
       if (AWE.Config.IN_DEVELOPMENT_MODE) {
-        console.log('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
+        log('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
         launchMini(!beginner, true, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
       }
       else {
         launchMini(!beginner, true, base, identifier, accessToken);
       }
 
-      this.addDomElement(('.jm_prompt'), false);      
-      this.addDomElement(('.jm_starter'), false);
-      this.addDomElement(('.jm_pane'), false);
-      this.addDomElement(('.jm_chat-content'), false);
-      this.addDomElement(('.jm_conversation'), false);
-      this.addDomElement(('.jm_conversations'), false)
-      this.addDomElement(('.jm_roster'), false)
-      this.addDomElement(('.jm_send-messages'), false)
-      this.addDomElement(('.jm_chat-content form'), false);
+	  if (!reconnect) {
+        this.addDomElement(('.jm_prompt'), false);      
+        this.addDomElement(('.jm_starter'), false);
+        this.addDomElement(('.jm_pane'), false);
+        this.addDomElement(('.jm_chat-content'), false);
+        this.addDomElement(('.jm_conversation'), false);
+        this.addDomElement(('.jm_conversations'), false)
+        this.addDomElement(('.jm_roster'), false)
+        this.addDomElement(('.jm_send-messages'), false)
+        this.addDomElement(('.jm_chat-content form'), false);
+	  }
     },   
     
     showStartupDialogs: function() {
@@ -238,12 +248,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
      * doing anything wit the app controller. */
     loadAssets: function() {
       var self = this;
-      var loadDialog;
 
       /** does final initialization after loading has finished */
       var postLoading = function() {
-        loadDialog.remove();
-        loadDialog = null;                             // done, can be garbage collected.
+        $('#loaddialog-wrapper').remove();
+
         $('#debug2').html("Initialization done.");
         
         Ember.Handlebars.bootstrap();                  // Bootstrap Ember a second time to parse the newly loaded templates.
@@ -266,14 +275,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
   
         var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
         
-        if (AWE.Config.USE_TUTORIAL && tutorialState && tutorialState.questStateWithQuestId(0) && tutorialState.questStateWithQuestId(0).get('status') < AWE.GS.QUEST_STATUS_FINISHED) {
-          var locationId = AWE.GS.CharacterManager.getCurrentCharacter().get('base_location_id');
-          self.activateBaseController({locationId: locationId});
-        }
-        else {
+        if (!AWE.Config.USE_TUTORIAL ||
+            (tutorialState &&
+             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID) &&
+             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') >= AWE.GS.QUEST_STATUS_FINISHED)) {
           self.activateMapController();
           var node = AWE.GS.CharacterManager.getCurrentCharacter().get('base_node');
           controller.moveTo(node);
+        }
+        else {
+          var locationId = AWE.GS.CharacterManager.getCurrentCharacter().get('base_location_id');
+          self.activateBaseController({locationId: locationId});
         }
         
         self.startRunloop();
@@ -289,27 +301,39 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       /** callback executed for each asset that completely loaded. */
       var assetLoaded = function() {
         _numLoadedAssets += 1;
-        $('div.loaddialog-progress').css('width', '' + Math.floor(_numLoadedAssets / _numAssets * 100) + '%');
+        $('div.loaddialog-progress').css('width', '' + Math.floor(Math.pow(_numLoadedAssets / _numAssets, 2.0) * 100) + '%');
         if (_numLoadedAssets === _numAssets) {           // have loaded all assets?
           postLoading(); 
         }
       };
-    
-      loadDialog = Ember.View.create({
-        templateName: 'load-dialog',
-      });
-      loadDialog.append();   
-          
+              
       _numLoadedAssets = _numAssets = 0;
+      
+      // /// REGISTER AND COUNT IMAGES AND TEMPLATES ////
+
+      AWE.UI.ImageCache.init();                   // initializes the central image cache
+      for (var k in AWE.Config.IMAGE_CACHE_LOAD_LIST) {     // and preload assets
+        if (AWE.Config.IMAGE_CACHE_LOAD_LIST.hasOwnProperty(k)) {
+          _numAssets += 1;                        // count assets
+        }
+      }
+
+      _numAssets += AWE.UI.Ember.templates.length;
+      for (var i=0; i < AWE.UI.Ember.templates.length; i++) {
+        AWE.Util.TemplateLoader.registerTemplate(AWE.UI.Ember.templates[i], function() {
+          assetLoaded();
+        });
+      }
+      // /// DONE ///      
       
       _numAssets +=1;
       AWE.GS.RulesManager.updateRules(function(rules, statusCode) {
         if (statusCode === AWE.Net.OK) {
-          console.log('Rules', rules);
+          log('Rules', rules);
           assetLoaded();
         }
         else {
-          console.log('CRITICAL ERROR: could not load rules from server. Error code: ' + statusCode + '. Terminate App.');
+          log('CRITICAL ERROR: could not load rules from server. Error code: ' + statusCode + '. Terminate App.');
           throw "ABORT Due to Failure to load rules.";
         }
       });
@@ -317,7 +341,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
       AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
         if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.getCurrentCharacter()) {
-          console.log('INFO: playing as character ', entity);
+          log('INFO: playing as character ', entity);
           var currentCharacter = AWE.GS.CharacterManager.getCurrentCharacter();
           if (currentCharacter.get('alliance_id') && currentCharacter.get('alliance_id') > 0) {
             _numAssets +=1;
@@ -330,7 +354,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             _numAssets +=1;
             AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
               AWE.GS.CharacterManager.getCurrentCharacter().set('base_node', node);
-              console.log("Node", node)
+              log("Node", node)
               assetLoaded();
             });
           }
@@ -339,16 +363,16 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             _numAssets += 2;
             AWE.GS.TutorialManager.updateTutorial(function(tutorial, statusCode) {
               if (statusCode === AWE.Net.OK) {
-                console.log('Tutorial', tutorial);
+                log('Tutorial', tutorial);
                 assetLoaded();
                 
                 AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
-                  console.log("TutorialState", tutorialState)
+                  log("TutorialState", tutorialState)
                   assetLoaded();
                 });
               }
               else {
-                console.log('CRITICAL ERROR: could not load tutorial from server. Error code: ' + statusCode + '. Terminate App.');
+                log('CRITICAL ERROR: could not load tutorial from server. Error code: ' + statusCode + '. Terminate App.');
                 throw "ABORT Due to Failure to load tutorial.";
               }
             });
@@ -356,10 +380,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
           AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
             if (statusCode === AWE.Net.OK) {
-              console.log(resourcePool);
+              log(resourcePool);
             }
             else {
-              console.log('CRITICAL ERROR: could not load resource pool from server. Error code: ' + statusCode + '. Terminate App.');
+              log('CRITICAL ERROR: could not load resource pool from server. Error code: ' + statusCode + '. Terminate App.');
               throw "ABORT Due to Failure to load player's resource pool.";
             }
           });
@@ -368,22 +392,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         }
         else {
           alert ('Das Spiel konnte nicht geladen werden. Bitte drücke den Aktualisieren-Knopf Deines Browsers, meist hilft schlichtes Neuladen der Seite und Login. Falls auch das nicht hilft, kontaktiere bitte den Support. Wir unterstützen folgende Browser: Chrome, Firefox, Internet Explorer 9 und Safari; je neuer, desto besser (und schneller).');
-          console.log('CRITICAL ERROR: could not load current character from server. Error code: ' + statusCode + '. Terminate App.');
+          log('CRITICAL ERROR: could not load current character from server. Error code: ' + statusCode + '. Terminate App.');
           throw "ABORT Due to Failure to Load Player's Current Character.";
         }
       });
 
-      for (var i=0; i < AWE.UI.Ember.templates.length; i++) {
-        _numAssets += 1;
-        AWE.Util.TemplateLoader.registerTemplate(AWE.UI.Ember.templates[i], function() {
-          assetLoaded();
-        });
-      }
-
-      AWE.UI.ImageCache.init();                   // initializes the central image cache
       for (var k in AWE.Config.IMAGE_CACHE_LOAD_LIST) {     // and preload assets
         if (AWE.Config.IMAGE_CACHE_LOAD_LIST.hasOwnProperty(k)) {
-          _numAssets += 1;                        // count assets
           AWE.UI.ImageCache.loadImage(k, AWE.Config.IMAGE_CACHE_LOAD_LIST[k], function(name) {
             assetLoaded();
           });
@@ -449,9 +464,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         baseController.setLocationId(reference.locationId);
       }
       else {
-        console.log('ERROR: no base to enter specified.')
+        log('ERROR: no base to enter specified.')
       }
-      console.log(reference)
+      log(reference)
       this.setScreenController(baseController);
     },
    
@@ -475,7 +490,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         fortressController.setNode(reference.node);
       }
       else {
-        console.log('ERROR: no fortress to enter specified.')
+        log('ERROR: no fortress to enter specified.')
       }
       this.setScreenController(fortressController);
     },   
@@ -519,11 +534,16 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
     /** starts the app when the document is ready. */
     ready: function() {
+      
+      /** uncomment the following two lines to print translation table and exit */
+      // AWE.I18n.printTranslationTable();
+      // return;
+      
       this._super();
       
       try {
         var args = JSON.parse(window.name ) //|| "{}")
-        console.log('window.name, parsed window.name', window.name, args)
+        log('window.name, parsed window.name', window.name, args)
       }
       catch (e) {
       }
@@ -539,6 +559,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var expiration  = parseInt(args.expiration || "3600");           // asume one hour validity as default
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;  // TODO: This is a hack, should go to settings.
       AWE.Settings.signin_with_client_id = args.client_id || '';   
+      AWE.Settings.referer = args.referer;
             
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
