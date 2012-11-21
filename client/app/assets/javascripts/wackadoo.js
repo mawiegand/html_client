@@ -213,17 +213,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         launchMini(!beginner, true, base, identifier, accessToken);
       }
 
-	  if (!reconnect) {
-        this.addDomElement(('.jm_prompt'), false);      
-        this.addDomElement(('.jm_starter'), false);
-        this.addDomElement(('.jm_pane'), false);
-        this.addDomElement(('.jm_chat-content'), false);
-        this.addDomElement(('.jm_conversation'), false);
-        this.addDomElement(('.jm_conversations'), false)
-        this.addDomElement(('.jm_roster'), false)
-        this.addDomElement(('.jm_send-messages'), false)
-        this.addDomElement(('.jm_chat-content form'), false);
-	  }
+  	  if (!reconnect) {
+          this.addDomElement(('.jm_prompt'), false);      
+          this.addDomElement(('.jm_starter'), false);
+          this.addDomElement(('.jm_pane'), false);
+          this.addDomElement(('.jm_chat-content'), false);
+          this.addDomElement(('.jm_conversation'), false);
+          this.addDomElement(('.jm_conversations'), false)
+          this.addDomElement(('.jm_roster'), false)
+          this.addDomElement(('.jm_send-messages'), false)
+          this.addDomElement(('.jm_chat-content form'), false);
+  	  }
     },   
     
     showStartupDialogs: function() {
