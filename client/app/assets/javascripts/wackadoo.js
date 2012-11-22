@@ -207,10 +207,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             
       if (AWE.Config.IN_DEVELOPMENT_MODE) {
         log('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
-        launchMini(!beginner, true, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
+        launchMini(!beginner, false, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
       }
       else {
-        launchMini(!beginner, true, base, identifier, accessToken);
+        launchMini(!beginner, false, base, identifier, accessToken);
       }
 
   	  if (!reconnect) {
