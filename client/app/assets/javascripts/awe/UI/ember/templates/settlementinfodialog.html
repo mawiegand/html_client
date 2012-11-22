@@ -7,7 +7,7 @@
       
       <p><b>Halbgott:</b> {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
       <p><b>Gegründet:</b> {{formatDatetime settlement.created_at}}</p>
-      <p><b>Verteidigungsbonus:</b> {{formatPercentage settlement.defense_bonus}}</p>
+      <p><b>{{t settlement.defenseBonus}}:</b> {{formatPercentage settlement.defense_bonus}}</p>
       
       <p>
       {{#if settlement.typeIsConquerable}}
