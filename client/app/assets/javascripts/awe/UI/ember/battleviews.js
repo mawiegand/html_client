@@ -146,10 +146,21 @@ AWE.UI.Ember = (function(module) {
             }
           });
         }
-        
-        if (targetArmy.get('garrison') ||
-            targetArmy.get('isDefendingFortress') ||
-            targetArmy.factionContainsGarrison()) {
+        else if (targetArmy.get('garrison') || targetArmy.factionContainsGarrison()) {
+          var otherArmies = AWE.GS.ArmyManager.getArmiesAtLocation(army.get('location_id'));
+          AWE.Ext.applyFunctionToHash(otherArmies, function(otherArmyId, otherArmy){
+            if (army != otherArmy &&
+                targetArmy != otherArmy &&
+                !otherArmy.get('isFighting') &&
+                !self.factionContainsArmyOf(friendlyArmies, otherArmy.get('owner_id')) &&
+                (otherArmy.get('isDefendingFortress') || otherArmy.get('garrison'))) {
+              enemyArmies.pushObject(otherArmy);
+            }
+          });
+        }
+        else if (targetArmy.get('isDefendingFortress') &&
+            !targetArmy.get('isFighting') &&
+            targetArmy.sameAllianceAs(army.get('location'))) {
           var otherArmies = AWE.GS.ArmyManager.getArmiesAtLocation(army.get('location_id'));
           AWE.Ext.applyFunctionToHash(otherArmies, function(otherArmyId, otherArmy){
             if (army != otherArmy &&
