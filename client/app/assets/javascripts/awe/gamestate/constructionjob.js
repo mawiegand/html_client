@@ -56,11 +56,21 @@ AWE.GS = (function(module) {
     active_job: null,
     
     productionTime: function() { // todo: need more complex functions for tearing down!
-      var building = this.getPath('slot.building');
-      var level    = this.get('level_after');
-      var speed    = this.getPath('queue.speed');
-      return building && level ? building.calcProductionTime(level, speed) : null;
-    }.property('level_after', 'slot.building', 'queue.speed').cacheable(),
+      var jobType  = this.get('job_type');
+      if (jobType === undefined || jobType === null) {
+        return null;
+      }
+      else if (jobType === 'convert') {
+        var conversionTime = this.getPath('slot.building.conversionTime');
+        return conversionTime || null;
+      }
+      else { // upgrade or create, since destroy has its own function
+        var building = this.getPath('slot.building');
+        var level    = this.get('level_after');
+        var speed    = this.getPath('queue.speed');
+        return building && level ? building.calcProductionTime(level, speed) : null;
+      }
+    }.property('level_after', 'slot.building', 'queue.speed', 'job_type').cacheable(),
         
     destructionTime: function() { // todo: need more complex functions for tearing down!
       var building = this.getPath('slot.building');

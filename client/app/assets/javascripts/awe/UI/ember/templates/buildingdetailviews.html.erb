@@ -189,49 +189,49 @@
         <b>{{t building.duration}}:</b> {{formatDuration building.conversionTime}}<br />
         <br/>
         
-        {{#if building.productionsNextLevel}}
+        {{#if building.converted.productions}}
           <b>{{t building.produces}}:</b><br/>
-          {{#each building.productionsNextLevel}}
+          {{#each building.converted.productions}}
             <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
             {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{t general.perHour}} <br/>  
           {{/each}}
         {{/if}}
         
-        {{#if building.capacityNextLevel}}
+        {{#if building.converted.capacity}}
           <b>{{t building.capacity}}:</b>
-          {{#each building.capacityNextLevel}}
+          {{#each building.converted.capacity}}
             <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
             {{capacity}} &nbsp;  
           {{/each}}<br/>
         {{/if}}
         
-        {{#if building.converted.productionBoniNextLevel}}
+        {{#if building.converted.productionBoni}}
           <b>{{t building.productionBoni}}:</b>
-          {{#each building.converted.productionBoniNextLevel}}
+          {{#each building.converted.productionBoni}}
             <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
             +{{bonus}}% &nbsp;  
           {{/each}}<br/>
         {{/if}}
   
         
-        {{#if building.converted.unlockedDiplomacyNextLevel}}
+        {{#if building.converted.unlockedDiplomacy}}
           <p><b>Ermöglicht Diplomatie und Allianzbeitritt.</b></p>
         {{/if}}
-        {{#if building.converted.unlockedAllianceCreationNextLevel}}
+        {{#if building.converted.unlockedAllianceCreation}}
           <p><b>Ermöglicht die Gründung einer Allianz.</b></p>
         {{/if}}   
-        {{#if building.converted.unlockedPlayerToPlayerTradeNextLevel}}
+        {{#if building.converted.unlockedPlayerToPlayerTrade}}
           <p><b>Ermöglicht den Handel mit anderen Spielern.</b></p>
         {{/if}}    
-        {{#if building.converted.tradingCartsNextLevel}}
-          <p><b>Handleskarren:</b> {{building.converted.tradingCartsNextLevel}}</p>
+        {{#if building.converted.tradingCarts}}
+          <p><b>Handleskarren:</b> {{building.converted.tradingCarts}}</p>
         {{/if}} 
-        {{#if building.converted.commandPointsNextLevel}}
-          <p><b>Kommandopunkte:</b> {{building.converted.commandPointsNextLevel}}</p>
+        {{#if building.converted.commandPoints}}
+          <p><b>Kommandopunkte:</b> {{building.converted.commandPoints}}</p>
         {{/if}} 
       
-        {{#if building.converted.unlockedQueuesNextLevel}}
-          <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.converted.unlockedQueuesNextLevel}}{{local name}}, {{/each}}</p>
+        {{#if building.converted.unlockedQueues}}
+          <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.converted.unlockedQueues}}{{local name}}, {{/each}}</p>
         {{/if}}
       
         {{#if building.converted.speedupQueues}}

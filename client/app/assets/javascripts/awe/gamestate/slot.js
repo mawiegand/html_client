@@ -182,7 +182,7 @@ AWE.GS = (function(module) {
 		productionTime: function() {
 		  log('PROD OF LEVEL ++++++++++++++++++++++++++++++++++');
 		  return this.calcProductionTime(this.get('level'));
-		}.property('level', 'buildingType.production_time', 'queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.	
+		}.property('level', 'buildingType.production_time', 'queue.speed').cacheable(),   
 		
 		productionTimeOfNextLevel: function() {
 		  log('PROD OF NEXT LEVEL +++++++++++++++++++++++++++++', this.get('nextLevel'));
@@ -200,7 +200,7 @@ AWE.GS = (function(module) {
         time += this.calcProductionTime(l);
       }
       return time;
-    }.property('levelAfterJobs', 'buildingType.production_time', 'queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.
+    }.property('levelAfterJobs', 'buildingType.production_time', 'queue.speed').cacheable(),  
      
     conversionTime: function() {
       var time = 0;
