@@ -256,6 +256,15 @@ AWE.GS = (function(module) {
       }
       return false;
     },
+    
+    sameAllianceAs: function(location) {
+      var armyAllianceId = this.get('alliance_id');
+      var locationAllianceId = location.allianceId();
+      
+      return armyAllianceId != null && armyAllianceId > 0 &&
+             locationAllianceId != null && locationAllianceId > 0 &&
+             armyAllianceId == locationAllianceId;
+    },
   });     
 
     
