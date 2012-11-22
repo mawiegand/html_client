@@ -23,6 +23,10 @@ AWE.UI.Ember = (function(module) {
     capacity: function() {
       return this.getPath('building.capacity') !== undefined && this.getPath('building.capacity') !== null && this.getPath('building.capacity').length > 0;
     }.property('building.capacity').cacheable(),  
+
+    tradingCarts: function() {
+      return this.getPath('building.abilities.trading_carts') !== undefined && this.getPath('building.abilities.trading_carts') !== null && this.getPath('building.abilities.trading_carts').length > 0;
+    }.property('building.abilities.trading_carts').cacheable(),
   
     stats: function() {
       var building = this.get('building');
@@ -36,10 +40,11 @@ AWE.UI.Ember = (function(module) {
           population:     AWE.GS.Util.parseAndEval(building.population, level),
           costs:          AWE.Util.Rules.evaluateResourceCosts(building.costs, level, 0, true),
           productionTime: AWE.GS.Util.parseAndEval(building.production_time, level),
-          capacities:     this.get('capacity') ? AWE.Util.Rules.evaluateResourceCapacity(building.capacity, level, false) : null,
-          productions:    this.get('production') ? AWE.Util.Rules.evaluateResourceProduction(building.production, level, false) : null,
+          capacities:     this.get('capacity')      ? AWE.Util.Rules.evaluateResourceCapacity(building.capacity, level, false)                    : null,
+          productions:    this.get('production')    ? AWE.Util.Rules.evaluateResourceProduction(building.production, level, false)                : null,
           commandPoints:  this.get('commandPoints') ? AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(building.abilities.command_points), level) : null,
-        })
+          tradingCarts:   this.get('tradingCarts')  ? AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(building.abilities.trading_carts), level)  : null,
+        });
       };
       return stats;
     }.property('building', 'capacity', 'production').cacheable(),
