@@ -388,6 +388,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             }
           });
 
+          // var startupArguments = JSON.parse(self.get('startupArguments'));
+          // if (startupArguments.retention != null) {
+            // var action = AWE.Action.Fundamental.redeemretentionreward(startupArguments.retention);
+            // action.send();   
+          // }  
+
           assetLoaded();
         }
         else {
