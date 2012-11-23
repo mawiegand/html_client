@@ -4,3 +4,5 @@ role :db,  "gs02.wack-a-doo.de", :primary => true        # This is where Rails m
 
 set :rails_env, 'production'
 set :port, 5775                                            # until 5775 is working!
+
+set :branch,    "master"

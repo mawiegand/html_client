@@ -13,6 +13,7 @@ set :port, 5775
 
 set :application, "html client"
 set :repository,  "git@github.com:wackadoo/html_client.git"
+set :branch,      "staging"
 
 set :scm, :git
 
