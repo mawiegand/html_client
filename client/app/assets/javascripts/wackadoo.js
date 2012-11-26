@@ -163,7 +163,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_BOSH      = "http://"+base+"/http-bind/";
       
       var character = AWE.GS.player && AWE.GS.player.get('currentCharacter');
-      var beginner  = character && character.get('login_count') <= 1;      
+      var beginner  = character && character.get('login_count') <= 1;    
+      var openPane  = character && character.get('login_count') <= 3;  // whether or not to open a chat pane initially
 
       // Define groupchats here
       if (beginner) {
@@ -207,10 +208,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             
       if (AWE.Config.IN_DEVELOPMENT_MODE) {
         log('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
-        launchMini(!beginner, false, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
+        launchMini(!beginner, openPane, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
       }
       else {
-        launchMini(!beginner, false, base, identifier, accessToken);
+        launchMini(!beginner, openPane, base, identifier, accessToken);
       }
 
   	  if (!reconnect) {
