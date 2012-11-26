@@ -215,6 +215,10 @@ AWE.GS = (function(module) {
       // log('---> convertedLevel', convertedLevel);
       var speed = this.getPath('queue.speed');
       // log('---> speed', speed);
+      
+      if (!convertedBuilding || !convertedLevel) {
+        return null;
+      }
 
       for (var l = 1; l <= convertedLevel; l++) {
         var productionTime = convertedBuilding.getPath('buildingType.production_time');
