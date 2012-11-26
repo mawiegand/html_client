@@ -36,7 +36,14 @@ AWE.GS = (function(module) {
     hashableMembers: function() {
       var id = this.get('id');
       return id ? AWE.GS.CharacterAccess.getHashableCollectionForAlliance_id(id) : null;
-    }.property('id').cacheable(),      
+    }.property('id').cacheable(),
+    
+    membersCount: function() {
+      var members = this.get('members');
+      return members.filter(function(member) {
+        return member != null;
+      }).get('length');
+    }.property('members').cacheable(),    
     
     members: function() {
       return this.getPath('hashableMembers.collection');

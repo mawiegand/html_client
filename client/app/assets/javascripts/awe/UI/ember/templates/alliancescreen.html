@@ -52,6 +52,7 @@
 <script type="text/x-handlebars" data-template-name="alliance-member-list">
   <div class="alliance-member-list">
     <h1>{{t alliance.members }}</h1>
+    <p>{{alliance.membersCount}} von maximal {{maxMembers}}</p>
     <ul>
       {{#each characters}}
         {{view AWE.UI.Ember.AllianceMemberView tagName="li" characterBinding="this" allianceBinding="view.alliance"

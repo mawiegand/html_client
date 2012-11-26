@@ -76,6 +76,10 @@ AWE.UI.Ember = (function(module) {
     controller: null,
     alliance:   null,
     
+    maxMembers: function() {
+      return AWE.GS.RulesManager.getRules().get('alliance_max_members');
+    }.property('controller').cacheable(),
+    
     kickMember: function(character) {
       var currentCharacter = AWE.GS.player.get('currentCharacter');
       var alliance         = this.get('alliance');
