@@ -320,6 +320,10 @@ AWE.GS = (function(module) {
     
     convertedLevel: function() {
       var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(this.get('buildingId'));
+      if (buildingType === undefined || buildingType === null || 
+          buildingType.conversion_option === undefined || building_type.conversion_option === null) {
+        return null;
+      }
       var level = AWE.GS.Util.parseAndEval(buildingType.conversion_option.target_level_formula, this.get('levelAfterJobs'));
       return level;
     }.property('buildingId', 'levelAfterJobs').cacheable(),
