@@ -216,6 +216,10 @@ AWE.GS = (function(module) {
       var speed = this.getPath('queue.speed');
       // log('---> speed', speed);
 
+      if (!convertedBuilding || !convertedLevel) {
+        return null;
+      }
+      
       for (var l = 1; l <= convertedLevel; l++) {
         var productionTime = convertedBuilding.getPath('buildingType.production_time');
         convertedTime += AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(productionTime), l) / speed
@@ -304,7 +308,7 @@ AWE.GS = (function(module) {
     }.property('buildingId', 'slot.settlement.enumerableSlots.@each.level').cacheable(),
     
     converted: function() {
-      var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(this.get('buildingId'));
+      var buildingType = this.get('buildingType');
       if (buildingType && buildingType.conversion_option && buildingType.conversion_option.building) {
         var convertedBuildingType = AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId(buildingType.conversion_option.building);
         convertedBuilding = module.Building.create({
@@ -316,13 +320,17 @@ AWE.GS = (function(module) {
       else {
         return null;
       }
-    }.property('buildingId', 'convertedLevel').cacheable(),
+    }.property('buildingType', 'convertedLevel').cacheable(),
     
     convertedLevel: function() {
-      var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(this.get('buildingId'));
+      var buildingType = this.get('buildingType');
+      if (buildingType === undefined || buildingType === null || 
+          buildingType.conversion_option === undefined || buildingType.conversion_option === null) {
+        return null;
+      }
       var level = AWE.GS.Util.parseAndEval(buildingType.conversion_option.target_level_formula, this.get('levelAfterJobs'));
       return level;
-    }.property('buildingId', 'levelAfterJobs').cacheable(),
+    }.property('buildingType', 'levelAfterJobs').cacheable(),
     
     unmetRequirementsOfConversionBuilding: function() {
       var settlement = this.getPath('slot.settlement');
