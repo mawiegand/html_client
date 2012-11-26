@@ -337,7 +337,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           throw "ABORT Due to Failure to load rules.";
         }
       });
-            
+     
       _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
       AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
         if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.getCurrentCharacter()) {
@@ -566,6 +566,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;  // TODO: This is a hack, should go to settings.
       AWE.Settings.signin_with_client_id = args.client_id || '';   
       AWE.Settings.referer = args.referer;
+      AWE.Settings.playerInvitation = args.playerInvitation;
+      AWE.Settings.allianceInvitation = args.allianceInvitation;
             
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
