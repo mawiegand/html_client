@@ -215,6 +215,10 @@ AWE.GS = (function(module) {
       // log('---> convertedLevel', convertedLevel);
       var speed = this.getPath('queue.speed');
       // log('---> speed', speed);
+      
+      if (!convertedBuilding || !convertedLevel) {
+        return null;
+      }
 
       if (!convertedBuilding || !convertedLevel) {
         return null;

@@ -294,6 +294,9 @@ AWE.UI.Ember = (function(module) {
         else if (statusCode === 403) {
           self.set('errorMessage', 'Alliance tag and password do not match.');
         }
+        else if (statusCode === AWE.Net.CONFLICT) {
+          self.set('errorMessage', 'The maximum number of alliance members has already been reached.')
+        }
         else if (statusCode !== 200) {
           self.set('errorMessage', 'For some reason, joining the alliance did fail.')
         }
