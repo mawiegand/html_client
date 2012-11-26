@@ -216,6 +216,10 @@ AWE.GS = (function(module) {
       var speed = this.getPath('queue.speed');
       // log('---> speed', speed);
 
+      if (!convertedBuilding || !convertedLevel) {
+        return null;
+      }
+      
       for (var l = 1; l <= convertedLevel; l++) {
         var productionTime = convertedBuilding.getPath('buildingType.production_time');
         convertedTime += AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(productionTime), l) / speed
