@@ -109,6 +109,14 @@ AWE.GS = (function(module) {
       return this.get('owner_id') === module.CharacterManager.currentCharacter.getId();
     },
     
+    isFortress: function() {
+      return this.get('type_id') === module.SETTLEMENT_TYPE_FORTRESS;
+    }.property('type_id').cacheable(),
+    
+    regionInvitationCode: function() {
+      return this.get('region').invitationCode();
+    }.property('region_id').cacheable(),
+    
     garrison: function() {
       return module.ArmyManager.getArmy(this.get('garrison_id'));
     }.property('garrison_id').cacheable(),  

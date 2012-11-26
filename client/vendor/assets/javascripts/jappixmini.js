@@ -6836,7 +6836,6 @@ function updateOverflowMini() {
 		var index_visible = number_visible - 1;
 	  jQuery('#jappix_mini div.jm_conversation:gt(' + index_visible + '):visible').hide();
 		
-		alert('hello')
 		
 		// Close the opened chat
 		if(jQuery('#jappix_mini div.jm_conversation:hidden a.jm_pane.jm_clicked').size())

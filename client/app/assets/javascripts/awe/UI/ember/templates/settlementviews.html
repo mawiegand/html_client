@@ -102,6 +102,12 @@
        Die Bonusproduktion bezieht sich auf die unversteuerte Gebäude-Basisproduktion
        und wird <b>nicht</b> besteuert.</p>
 
+    {{#if settlement.isFortress }}
+      <h2>Einladungslink</h2>
+      <p>Lade Deine Freunde zum Spielen ein. Wenn sie sich über den folgenden Link registrieren, starten sie direkt in Deiner Region und zahlen Dir von Beginn an Steuern.</p>
+      <p {{action invitationLinkPressed}}>{{ unbound AWE.Config.PLAYER_INVITATION_BASE }}{{ unbound settlement.regionInvitationCode }}</p>
+    {{/if}}
+
     <div class="float-right up-icon" title="click to minimize">&nbsp;</div>
 
   {{/unless}}
