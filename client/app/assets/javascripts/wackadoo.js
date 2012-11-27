@@ -230,7 +230,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     showStartupDialogs: function() {
       
  
-      if (!AWE.GS.player.currentCharacter || AWE.GS.player.currentCharacter.get('login_count') <= 1) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
+      if (!AWE.GS.player.getPath('currentCharacter.login_count') || AWE.GS.player.getPath('currentCharacter.login_count') <= 1) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
         this.showWelcomeDialog();
       }
       else {
