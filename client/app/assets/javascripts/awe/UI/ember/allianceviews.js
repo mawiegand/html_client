@@ -45,6 +45,18 @@ AWE.UI.Ember = (function(module) {
       return AWE.Util.createTimeString(this.getPath('alliance.created_at'));
     }.property('alliance.created_at').cacheable(),
     
+    
+    invitationLinkPressed: function() {
+      
+      var mailWindow = window.open('mailto:?' +
+        encodeURI('subject=Einladung zu Wack-A-Doo von der Allianz'+ this.getPath('alliance.name') +'&') + 
+        encodeURI('body=Fange jetzt an Wack-A-Doo zu spielen und ziehe über diesen Einladungslink direkt in das Gebiet der Allianz '+ this.getPath("alliance.name") +':\n\n' + AWE.Config.ALLIANCE_INVITATION_BASE + this.getPath('alliance.invitation_code')));
+      mailWindow.close();
+      
+      event.preventDefault();
+      return false;
+    },
+    
   });
 
   module.AllianceMemberView = Ember.View.extend({
