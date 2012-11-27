@@ -229,18 +229,20 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     showStartupDialogs: function() {
       
-      if (AWE.GS.player.currentCharacter && !AWE.GS.player.currentCharacter.get('reached_game')) {
-        // track conversion: character reached the game (and pressed a button!)
-        var action = AWE.Action.Fundamental.createTrackCharacterConversionAction("reached_game");
-        action.send();   
-      }  
-            
-      if (AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') <= 1) {
+ 
+      if (!AWE.GS.player.currentCharacter || AWE.GS.player.currentCharacter.get('login_count') <= 1) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
         this.showWelcomeDialog();
       }
       else {
         this.showAnnouncement();
       }
+      
+      if (AWE.GS.player.currentCharacter && !AWE.GS.player.currentCharacter.get('reached_game')) {
+        // track conversion: character reached the game (and pressed a button!)
+        var action = AWE.Action.Fundamental.createTrackCharacterConversionAction("reached_game");
+        action.send();   
+      }  
+      
     },
   
     /** loads and initializes needed modules. 
