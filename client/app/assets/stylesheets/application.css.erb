@@ -694,6 +694,132 @@ html, body {
   padding: 5px 5px 5px 5px;
 }
 
+/* ===== non-semantic helper classes ========================================
+   Message Center Battle Report
+   ========================================================================== */
+
+.message-center .battle_report {
+  margin: 5px 5px 5px 5px;
+  padding: 5px 5px 5px 5px;
+  vertical-align: middle;
+}
+
+.message-center .battle_report td {
+  vertical-align: middle;
+}
+
+.message-center .battle_report .block,
+.message-center .battle_report .round_block {
+  display: inline-block;
+  border-radius: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #9b9b9b;
+  margin: 5px 5px 5px 5px;
+  padding: 5px 5px 5px 5px;
+  background-color: white;
+}
+.message-center .battle_report .unit_name_text {
+  display: inline-block;
+  height: 12px;
+  padding-left: 5px;
+}
+
+.message-center .battle_report .round_block {
+  background-color: #f6f6f6;
+}
+
+.message-center .battle_report .block h2,
+.message-center .battle_report .round_block h2 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+.message-center .battle_report .block h3,
+.message-center .battle_report .round_block h3 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px
+}
+
+.message-center .battle_report .bar_container {
+  display: inline-block;
+  position: relative;
+  width: 200px;
+  height:22px;
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  background-color: #e4e4e4;
+  border-radius: 5px;
+}
+.message-center .battle_report .bar_text_padding {
+  display: inline-block;
+  position: relative;
+  margin: 0px 0px 0px 0px;
+  padding: 0px 5px 0px 5px;
+  /*color: black;
+  background-color: orange;*/
+}
+.message-center .battle_report hr {
+  border: 0px;
+  height: 1px;
+  color: #9b9b9b;
+  background-color: #9b9b9b; 
+}
+.message-center .battle_report .bar, 
+.message-center .battle_report .survivor_bar,
+.message-center .battle_report .dead_bar,
+.message-center .battle_report .damage_bar,
+.message-center .battle_report .xp_bar,
+.message-center .battle_report .xp_bar_bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 20px;
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #2d8900;
+  background-color: #becd05;
+  z-index: 1;
+  float: left;
+}
+.message-center .battle_report .survivor_bar {
+  border-color: #2d8900;
+  background-color: #becd05;
+}
+.message-center .battle_report .dead_bar {
+  border-color: #aa6a1e;
+  background-color: #f99b2c;
+}
+.message-center .battle_report .damage_bar {
+  border-color: #9b3f1b;
+  background-color: #f9662c;
+}
+.message-center .battle_report .xp_bar {
+  border-color: #467ca5;
+  background-color: #61abe4;
+}
+.message-center .battle_report .xp_bar_bg {
+  border-color: #9b3f1b;
+  background-color: #f9662c;
+}
+.message-center .battle_report .bar_numbers {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  text-align:center;
+  display: inline-block;
+  float: left;
+  z-index: 12;
+  /*color: white;*/
+}
+
 /* ===== JAPPIX 5D MOD ===== */
 
 #jappix_mini .jm_grouped .jm_friend.jm_5d_staff_user {
