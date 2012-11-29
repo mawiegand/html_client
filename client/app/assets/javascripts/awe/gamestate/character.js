@@ -344,7 +344,14 @@ AWE.GS = (function(module) {
         return this.updateCharacter(currentCharacter.get('id'), updateType, callback);
       }
       else { // no current character, need to fetch self
-        var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/self?create_if_new=true&client_id=' + AWE.Settings.signin_with_client_id;
+        var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/self?create_if_new=true&client_id=' + AWE.Settings.signin_with_client_id;
+        if (AWE.Settings.playerInvitation) {
+          url += '&player_invitation=' + AWE.Settings.playerInvitation;
+        }
+        if (AWE.Settings.allianceInvitation) {
+          url += '&alliance_invitation=' + AWE.Settings.allianceInvitation;
+        }
+        log('SIGNUP URL', url, 'SETTINGS', AWE.Settings);
         return my.fetchEntitiesFromURL(
           url, 
           my.runningUpdatesPerId, 

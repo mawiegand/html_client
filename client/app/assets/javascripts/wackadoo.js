@@ -163,7 +163,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_BOSH      = "http://"+base+"/http-bind/";
       
       var character = AWE.GS.player && AWE.GS.player.get('currentCharacter');
-      var beginner  = character && character.get('login_count') <= 1;      
+      var beginner  = character && character.get('login_count') <= 1;    
+      var openPane  = character && character.get('login_count') <= 3;  // whether or not to open a chat pane initially
 
       // Define groupchats here
       if (beginner) {
@@ -207,10 +208,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             
       if (AWE.Config.IN_DEVELOPMENT_MODE) {
         log('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
-        launchMini(!beginner, false, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
+        launchMini(!beginner, openPane, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
       }
       else {
-        launchMini(!beginner, false, base, identifier, accessToken);
+        launchMini(!beginner, openPane, base, identifier, accessToken);
       }
 
   	  if (!reconnect) {
@@ -228,18 +229,20 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     showStartupDialogs: function() {
       
-      if (AWE.GS.player.currentCharacter && !AWE.GS.player.currentCharacter.get('reached_game')) {
-        // track conversion: character reached the game (and pressed a button!)
-        var action = AWE.Action.Fundamental.createTrackCharacterConversionAction("reached_game");
-        action.send();   
-      }  
-            
-      if (AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') <= 1) {
+ 
+      if (!AWE.GS.player.getPath('currentCharacter.login_count') || AWE.GS.player.getPath('currentCharacter.login_count') <= 1) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
         this.showWelcomeDialog();
       }
       else {
         this.showAnnouncement();
       }
+      
+      if (AWE.GS.player.currentCharacter && !AWE.GS.player.currentCharacter.get('reached_game')) {
+        // track conversion: character reached the game (and pressed a button!)
+        var action = AWE.Action.Fundamental.createTrackCharacterConversionAction("reached_game");
+        action.send();   
+      }  
+      
     },
   
     /** loads and initializes needed modules. 
@@ -337,7 +340,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           throw "ABORT Due to Failure to load rules.";
         }
       });
-            
+     
       _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
       AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
         if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.getCurrentCharacter()) {
@@ -566,6 +569,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;  // TODO: This is a hack, should go to settings.
       AWE.Settings.signin_with_client_id = args.client_id || '';   
       AWE.Settings.referer = args.referer;
+      AWE.Settings.playerInvitation = args.playerInvitation;
+      AWE.Settings.allianceInvitation = args.allianceInvitation;
+      
+      log('SETTINGS', AWE.Settings);
             
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,

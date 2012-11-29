@@ -136,6 +136,17 @@ AWE.UI.Ember = (function(module) {
       
       return false;
     },
+    
+    invitationLinkPressed: function() {
+      
+      var mailWindow = window.open('mailto:?' +
+        encodeURI('subject=Einladung zu Wack-A-Doo&') + 
+        encodeURI('body=Spiele jetzt Wack-A-Doo:\n\n' + AWE.Config.PLAYER_INVITATION_BASE + this.getPath('settlement.regionInvitationCode')));
+      mailWindow.close();
+      
+      event.preventDefault();
+      return false;
+    },
             
     buildingQueue: function() {
       var queues = this.getPath('hashableConstructionQueues.collection');
