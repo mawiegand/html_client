@@ -37,6 +37,7 @@ AWE.GS = (function(module) {
     alliance_id: null,
     alliance_tag: null,
     
+    ap_seconds_per_point: null,
     ap_next: null,
     ap_max: null,
     ap_present: null,
