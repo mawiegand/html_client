@@ -293,25 +293,43 @@ AWE.UI = (function(module) {
                                         _army.get('mode') === 0);
       }
 
-/*
+
       if (!_prevButtonView && isOwnArmy) {
         // button unten
         _prevButtonView = AWE.UI.createButtonView();
-        _prevButtonView.initWithControllerTextAndImage(my.controller, '<<', AWE.UI.ImageCache.getImage("map/button1"));
+        _prevButtonView.initWithControllerTextAndImage(my.controller, '<<', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _prevButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         _prevButtonView.setFrame(AWE.Geometry.createRect(180, 92, 36, 36));
+        _prevButtonView.onClick = function() {
+           that.onPreviousArmyButtonClick(_army) 
+        };
         this.addChild(_prevButtonView);
+      }
+      else if (_prevButtonView && !isOwnArmy) {
+        this.removeChild(_prevButtonView);
+        _prevButtonView = null;
       }
   
       if (!_nextButtonView && isOwnArmy) {
         _nextButtonView = AWE.UI.createButtonView();
-        _nextButtonView.initWithControllerTextAndImage(my.controller, '>>', AWE.UI.ImageCache.getImage("map/button1"));
+        _nextButtonView.initWithControllerTextAndImage(my.controller, '>>', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _nextButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
+        _nextButtonView.onClick = function() {
+           that.onNextArmyButtonClick(_army) 
+        };
         this.addChild(_nextButtonView);
-      }*/
+      }
+      else if (_nextButtonView && !isOwnArmy) {
+        this.removeChild(_nextButtonView);
+        _nextButtonView = null;
+      }      
     }
     
   //  that.onInventoryButtonClick = function() { log('inventory button clicked'); }
-    that.onChangeArmyButtonClick = function(army) { log('inventory button clicked'); }
+    that.onChangeArmyButtonClick   = function(army) { log('inventory button clicked'); }
+    that.onPreviousArmyButtonClick = function(army) { log('previous army button clicked'); }
+    that.onNextArmyButtonClick     = function(army) { log('next army button clicked'); }
         
     that.updateView = function() {
       that.recalcView();      
