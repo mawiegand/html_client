@@ -36,6 +36,7 @@ AWE.Map = (function(module) {
     var _rightOfWay = spec.right_of_way;
     
     
+    
     var _region = null;
         
     var that = {};
@@ -50,6 +51,7 @@ AWE.Map = (function(module) {
      * changes or changes in 'sub-properties' like the region; use lastChange() 
      * instead! */
     that.updatedAt = function() { return _updated_at; }
+    that.createdAt = function() { return _created_at; }
     
     that.updatedOnServerAt = function() {
       return _updated_at ? Date.parseISODate(_updated_at) : null;
@@ -108,7 +110,13 @@ AWE.Map = (function(module) {
     that.rightOfWay = function() { return _rightOfWay; }
 
     /** returns the level of the settlement / fortress / outpost (0 to 10). */
+    var _oldSettlementLevel = _settlementLevel;
     that.settlementLevel = function() { return _settlementLevel; }
+    that.oldSettlementLevel = function() { return _oldSettlementLevel; }
+    that.resetOldSettlementLevel = function() { return _oldSettlementLevel = null; }
+    
+    that.lastAnimationAt = null;
+
 
     that.settlementScore = function() { return _settlementScore; }
 
@@ -193,9 +201,14 @@ AWE.Map = (function(module) {
       _ownerName = location.ownerName() || null;
       _allianceId = location.allianceId() || 0;
       _allianceTag = location.allianceTag() || null;
-      _typeId = location.typeId() || 0;
-      _level = location.level() || 0; 
+      _settlementTypeId = location.settlementTypeId() || 0;
       
+      if ((location.settlementLevel() || 0) !== _settlementLevel) {
+        _oldSettlementLevel = _settlementLevel;
+        _settlementLevel    = location.settlementLevel() || 0; 
+      }
+      _settlementScore      = location.settlementScore() || 0; 
+            
       module.Manager.addLocation(this); // just to be sure it's under control of the manager   
       
       that.setChangedNow();  

@@ -1357,6 +1357,7 @@ AWE.Controller = (function(module) {
       });
       
       that.addAnimation(animation);
+      return animation;
     }
     
 
@@ -1874,6 +1875,14 @@ AWE.Controller = (function(module) {
               if (view) {
                 setBasePosition(view, that.mc2vc(location.position()), frame);
                 newLocationViews[location.id()] = view;
+                
+                // ANIMATE LEVEL CHANGE AT LOCATIONS
+                if (location.oldSettlementLevel() &&  location.settlementLevel() && 
+                    location.oldSettlementLevel() !== location.settlementLevel()) {
+                  var diff = (location.settlementLevel() - location.oldSettlementLevel()) || 1;
+                  var animation = that.addDisappearingAnnotationLabel(view, (diff > 0 ? '+' : '-') + diff + ' Level', 1000);
+                  location.resetOldSettlementLevel();
+                }
               }
             }
           }

@@ -296,13 +296,22 @@ AWE.Map = (function(module) {
         //log ( 'Fetch locations for ' + region);
         $.getJSON(AWE.Config.MAP_SERVER_BASE+'regions/'+region.id()+'/locations', function(data) {
           if (data && data.length > 0) {
-            var locations = new Array(data.length);
-            for (var i=0; i < data.length; i++) {
-              var location = AWE.Map.createLocation(data[i]);
-              location.setRegion(region);
-              locations[i] = location;
+            var existingLocations = region.locations();
+            if (existingLocations && existingLocations.length > 1) {
+              for (var i=0; i < data.length; i++) {
+                var location = AWE.Map.createLocation(data[i]);
+                region.location(i).updateLocationFrom(location);
+              }              
             }
-            region.setLocations(locations);
+            else {
+              var locations = new Array(data.length);
+              for (var i=0; i < data.length; i++) {
+                var location = AWE.Map.createLocation(data[i]);
+                location.setRegion(region);
+                locations[i] = location;
+              }
+              region.setLocations(locations);
+            }
           }
           region.endUpdate();
           if (callback) callback(region);
