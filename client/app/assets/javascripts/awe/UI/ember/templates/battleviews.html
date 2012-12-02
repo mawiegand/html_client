@@ -40,6 +40,8 @@
               {{view AWE.UI.Ember.BattleParticipantView participantBinding="this" armyBinding="army" classNames="participant"}}
             {{/if}}
           {{/each}}
+          
+          <p>Verlorene Einheiten: {{#if ownFaction.total_casualties}}{{ownFaction.total_casualties}}{{else}}-{{/if}}</p>
         </div>
       
         <div class="participants-right">
@@ -60,6 +62,8 @@
               {{view AWE.UI.Ember.BattleParticipantView participantBinding="this" armyBinding="army" classNames="participant"}}
             {{/if}}
           {{/each}}
+
+          <p>Verlorene Einheiten: {{#if otherFaction.total_casualties}}{{otherFaction.total_casualties}}{{else}}-{{/if}}</p>
         </div>
         
         {{#if battle.lastRound}}

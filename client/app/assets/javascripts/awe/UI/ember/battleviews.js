@@ -19,13 +19,16 @@ AWE.UI.Ember = (function(module) {
     battle: null,
     participantsOwnFaction:   'battle.participantsOwnFaction',
     participantsOtherFaction: 'battle.participantsOtherFaction',
+
+    ownFactionBinding:        'battle.ownFaction',
+    otherFactionBinding:      'battle.otherFaction',
     
     ratioLengthOwn: function(){
-      return 'width: ' + Math.round(780 * this.getPath('battle.ratio')) + 'px;';
+      return 'width: ' + Math.round(780 * (this.getPath('battle.ratio') || 0)) + 'px;';
     }.property('battle.ratio').cacheable(),
 
     ratioLengthOther: function(){
-      return 'width: ' + Math.round(780 * (1 - this.getPath('battle.ratio'))) + 'px;';
+      return 'width: ' + Math.round(780 * (1 - (this.getPath('battle.ratio') || 0))) + 'px;';
     }.property('battle.ratio').cacheable(),
 
     message: function() {
@@ -47,7 +50,7 @@ AWE.UI.Ember = (function(module) {
       else {
         return AWE.I18n.lookupTranslation('battle.messages.other');
       }
-    }.property('battle').cacheable(),
+    }.property('battle.ratio').cacheable(),
   });
   
   module.BattleParticipantView = module.Dialog.extend({

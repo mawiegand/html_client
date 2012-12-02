@@ -12,7 +12,7 @@ AWE.GS = (function(module) {
 
   // ///////////////////////////////////////////////////////////////////////
   //
-  //   ARMY
+  //   BATTLE
   //
   // ///////////////////////////////////////////////////////////////////////    
     
@@ -33,19 +33,21 @@ AWE.GS = (function(module) {
         };        
       })
       return own;
-    }.property('id').cacheable(),
+    }.property('participants', 'participants.content', 'updated_at').cacheable(),
     
     ratio: function(){
+      log('RATIO RECALC');
       var ownStrength = 0;
       this.get('participantsOwnFaction').forEach(function(participant) {
-        ownStrength += participant.getPath('army.strength');
+        ownStrength += participant.getPath('army.strength') || 0;
       });
       var otherStrength = 0;
       this.get('participantsOtherFaction').forEach(function(participant) {
-        otherStrength += participant.getPath('army.strength');
+        otherStrength += participant.getPath('army.strength') || 0;
       });
-      return ownStrength / (ownStrength + otherStrength);
-    }.property('id').cacheable(),
+      log('NEW RATIO', (ownStrength + otherStrength > 0) ? ownStrength / (ownStrength + otherStrength) : 0.5, this.get('participantsOwnFaction'));
+      return (ownStrength + otherStrength > 0) ? ownStrength / (ownStrength + otherStrength) : 0.5;
+    }.property('participantsOwnFaction.@each.strength', 'participantsOtherFaction.@each.strength').cacheable(),
     
     ownFactionId: function() {
       var factionId;
@@ -56,10 +58,35 @@ AWE.GS = (function(module) {
         var factions = this.get('factions').filter(function(faction){
           return faction != undefined && faction != null;
         });
-        factionId = factions.get('firstObject').get('id');
+        factionId = factions.getPath('firstObject.id') || null;
       }
       return factionId; 
-    }.property('participants').cacheable(),
+    }.property('ownBattle', 'ownParticipants.firstObject.faction_id', 'factions.@each.id').cacheable(),
+    
+    /** returns the faction, that is identified by ownFactionId as the own faction. */
+    ownFaction: function() {
+      var factions  = this.get('factions');
+      var factionId = this.get('ownFactionId');
+      if (!factions || !factionId) {
+        return null;
+      }
+      var result = factions.filter(function(faction) {
+        return faction && faction.get('id') === factionId;
+      });
+      return result && result.length == 1 ? result[0] : null;
+    }.property('ownFactionId', 'factions.content').cacheable(),
+    
+    otherFaction: function() {
+      var factions  = this.get('factions');
+      var factionId = this.get('ownFactionId');
+      if (!factions || !factionId) {
+        return null;
+      }
+      var result = factions.filter(function(faction) {
+        return faction && faction.get('id') !== factionId;
+      });
+      return result && result.length == 1 ? result[0] : null;
+    }.property('ownFactionId', 'factions.content').cacheable(),    
     
     ownParticipants: function(){
       var self = this;
@@ -70,17 +97,18 @@ AWE.GS = (function(module) {
     
     participantsOwnFaction: function() {
       var self = this;
+      log('PARTICIPANTS OWN FACTION', this.get('participants'), this.getPath('participants.length'), this.getPath('participants.content'));
       return this.get('participants').filter(function(participant) {
         return participant && participant.get('faction_id') === self.get('ownFactionId');        
       });
-    }.property('participants', 'participants.content').cacheable(),
+    }.property('participants', 'participants.content.length', 'ownFactionId').cacheable(),
     
     participantsOtherFaction: function(){
       var self = this;
       return this.get('participants').filter(function(participant) {
         return participant && participant.get('faction_id') !== self.get('ownFactionId');        
       })
-    }.property('participants', 'participants.content').cacheable(),
+    }.property('participants', 'participants.content', 'ownFactionId').cacheable(),
     
     participantsOfFactionWithArmy: function(army) {
       var self = this;
@@ -116,7 +144,7 @@ AWE.GS = (function(module) {
     
   });     
 
-  module.BattleRounds = module.Entity.extend({
+  module.BattleRounds = module.Entity.extend({ // warum plural?  
     typeName: 'BattleRounds',
     
     number: function() {

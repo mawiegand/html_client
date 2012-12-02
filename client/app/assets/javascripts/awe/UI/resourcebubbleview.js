@@ -160,7 +160,7 @@ AWE.UI = (function(module) {
       }
       
       if (changed) {
-        log(">> NEED TO UPDATE BUBBLE DUE TO CHANGED RESOURCE PRODUCTION: " + my.resourceName);
+       // log(">> NEED TO UPDATE BUBBLE DUE TO CHANGED RESOURCE PRODUCTION: " + my.resourceName);
         this.setNeedsUpdate();
       }
       _super.updateIfNeeded();
