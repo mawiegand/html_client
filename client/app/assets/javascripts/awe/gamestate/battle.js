@@ -135,6 +135,7 @@ AWE.GS = (function(module) {
           lastRound = round;
         }
       });
+      log ("ROUND", lastRound, lastRound ? lastRound.get('round_num') : null);
       return lastRound;
     }.property('rounds', 'rounds.length').cacheable(),
     
@@ -147,9 +148,11 @@ AWE.GS = (function(module) {
   module.BattleRounds = module.Entity.extend({ // warum plural?  
     typeName: 'BattleRounds',
     
+    round_num: null,
+    
     number: function() {
       var num = this.get('round_num');
-      return num ? num + 1 : null;
+      return num !== undefined && num !== null ? num + 1 : null;  // must check undefined and null because 0 is ok!
     }.property('round_num').cacheable(),
     
 
