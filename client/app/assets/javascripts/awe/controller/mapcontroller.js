@@ -1880,7 +1880,7 @@ AWE.Controller = (function(module) {
                 if (location.oldSettlementLevel() &&  location.settlementLevel() && 
                     location.oldSettlementLevel() !== location.settlementLevel()) {
                   var diff = (location.settlementLevel() - location.oldSettlementLevel()) || 1;
-                  var animation = that.addDisappearingAnnotationLabel(view, (diff > 0 ? '+' : '-') + diff + ' Level', 1000);
+                  var animation = that.addDisappearingAnnotationLabel(view, (diff > 0 ? '+' : '') + diff + ' Level', 1000); // minus is added automatically
                   location.resetOldSettlementLevel();
                 }
               }
@@ -1960,6 +1960,21 @@ AWE.Controller = (function(module) {
                                          
             setArmyPosition(view, pos, army);
             newArmyViews[army.getId()] = view;
+            
+            // ANIMATE AP CHANGE AT ARMY
+            if (army.get('ap_present_old') !== null && army.get('ap_present') && 
+                army.get('ap_present_old') < army.get('ap_present')) {
+              var diff = army.get('ap_present') - army.get('ap_present_old');
+              var animation = that.addDisappearingAnnotationLabel(view, '+' + diff + ' AP', 1000);
+              army.set('ap_present_old', null);
+            }
+            // ANIMATE EXP CHANGE AT ARMY
+            if (army.get('exp_old') !== null && army.get('exp') && 
+                army.get('exp_old') < army.get('exp')) {
+              var diff = army.get('exp') - army.get('exp_old');
+              var animation = that.addDisappearingAnnotationLabel(view, '+' + diff + ' XP', 1000);
+              army.set('exp_old', null);
+            }
           }
         }
       }

@@ -40,9 +40,29 @@ AWE.GS = (function(module) {
     ap_next: null,
     ap_max: null,
     ap_present: null,
-    ap_seconds_per_point: null,
+    ap_present_old: null,
+    apObserver: ((function() {
+      var tmpValue = null;
+      return function() {
+        var ap = this.get('ap_present');
+        this.set('ap_present_old', tmpValue);
+        tmpValue = ap;
+        log('U ARMY AP', ap);
+      };
+    })()).observes('ap_present'),
     
     exp: null,
+    oldExp: null,
+    expObserver: ((function() {
+      var tmpValue = null;
+      return function() {
+        var exp = this.get('exp');
+        this.set('oldExp', tmpValue);
+        tmpValue = exp;
+        log('U ARMY EXP', exp);
+      };
+    })()).observes('exp'),
+    
     rank: null,
     npc: null,
     
