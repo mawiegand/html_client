@@ -12,16 +12,49 @@ AWE.UI.Ember = (function(module) {
   module.BattleDialog = module.Dialog.extend({
     templateName: 'battle-dialog',
     
-    init: function() {
-      this._super();      
-    },
-
-    battle: null,
+    battle:                    null,
+    timer:                     null,
+    
     participantsOwnFaction:   'battle.participantsOwnFaction',
     participantsOtherFaction: 'battle.participantsOtherFaction',
 
     ownFactionBinding:        'battle.ownFaction',
     otherFactionBinding:      'battle.otherFaction',
+        
+ 
+    init: function() {
+      this._super();      
+    },
+    
+    didInsertElement: function() {
+      this.startTimer();
+    },
+    
+    willDestroyElement: function() {
+      this.stopTimer();
+    },
+
+
+    startTimer: function() {
+      var timer = this.get('timer');
+      if (!timer) {
+        timer = setInterval((function(self) {
+          return function() {
+            self.updateBattle();
+          };
+        }(this)), 1000*30);  // update every 30 seconds
+        this.set('timer', timer);
+      }
+    },
+
+    stopTimer: function() {
+      var timer = this.get('timer');
+      if (timer) {
+        clearInterval(timer);
+        this.set('timer', null);
+      }
+    },
+        
     
     ratioLengthOwn: function(){
       return 'width: ' + Math.round(780 * (this.getPath('battle.ratio') || 0)) + 'px;';
@@ -51,6 +84,14 @@ AWE.UI.Ember = (function(module) {
         return AWE.I18n.lookupTranslation('battle.messages.other');
       }
     }.property('battle.ratio').cacheable(),
+    
+    updateBattle: function() {
+      var battleId = this.getPath('battle.id');
+      if (battleId) {
+        AWE.GS.BattleManager.updateBattle(battleId);    
+      }  
+    },
+    
   });
   
   module.BattleParticipantView = module.Dialog.extend({

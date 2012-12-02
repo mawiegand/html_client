@@ -135,7 +135,6 @@ AWE.GS = (function(module) {
           lastRound = round;
         }
       });
-      log ("ROUND", lastRound, lastRound ? lastRound.get('round_num') : null);
       return lastRound;
     }.property('rounds', 'rounds.length').cacheable(),
     
