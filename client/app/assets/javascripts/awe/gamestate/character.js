@@ -57,6 +57,7 @@ AWE.GS = (function(module) {
     
     frog_amount: 0,
     premium_expiration: null,
+    login_count: 0;
     
     resourcePool: null,
     
