@@ -361,6 +361,7 @@ AWE.GS = (function(module) {
           function(character, statusCode, xhr, timestamp) {
             if (statusCode === AWE.Net.OK) {
               module.player.set('currentCharacter', character);
+              log('--------> update cc', character.get('login_count'));
               self.currentCharacter = character; 
             }
             if (callback) {
