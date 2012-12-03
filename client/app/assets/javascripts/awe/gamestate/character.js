@@ -342,6 +342,7 @@ AWE.GS = (function(module) {
       var self = this;
       var currentCharacter = module.player.get('currentCharacter');
       if (currentCharacter !== undefined && currentCharacter !== null) {
+        log('--------> update old', currentCharacter.get('login_count'));
         return this.updateCharacter(currentCharacter.get('id'), updateType, callback);
       }
       else { // no current character, need to fetch self
@@ -362,7 +363,7 @@ AWE.GS = (function(module) {
           function(character, statusCode, xhr, timestamp) {
             if (statusCode === AWE.Net.OK) {
               module.player.set('currentCharacter', character);
-              log('--------> update cc', character.get('login_count'));
+              log('--------> update new', character.get('login_count'));
               self.currentCharacter = character; 
             }
             if (callback) {
