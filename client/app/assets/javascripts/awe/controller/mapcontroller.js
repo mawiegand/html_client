@@ -915,18 +915,51 @@ AWE.Controller = (function(module) {
         }
       });
     }
+    
+    that.centerRegion = function(region) {
+      var nodeId = region.nodeId() || 0;
+      var node   = region.node() || AWE.Map.Manager.getNode(nodeId);
+      if (node) {
+        that.moveTo(node);
+      }
+      else {
+        AWE.Map.Manager.fetchSingleNodeById(nodeId, function(node) {
+          that.moveTo(node);
+        });
+      }
+    }
+    
+    that.centerArmy = function(army) {
+      if (!army) {
+        return ;
+      }
+      var regionId = army.get('region_id');
+      var region = AWE.Map.Manager.getRegion(regionId);
+      if (region) {
+        that.centerRegion(region);
+      }
+      else {
+        AWE.Map.Manager.fetchSingleRegionById(regionId, function(region) {
+          that.centerRegion(region);
+        });
+      }
+    }
 
     that.previousArmyButtonClicked = function(army) {
+      log ('switch to previous army');
       var previousArmy = AWE.GS.ArmyManager.getPreviousArmyOfCharacter(army);
-      if (!previousArmy) {
+      if (previousArmy) {
         that.setSelectedArmy(previousArmy);
+        that.centerArmy(previousArmy);
       }
     }
 
     that.nextArmyButtonClicked = function(army) {
+      log ('switch to next army');
       var nextArmy = AWE.GS.ArmyManager.getNextArmyOfCharacter(army);
-      if (!nextArmy) {
+      if (nextArmy) {
         that.setSelectedArmy(nextArmy);
+        that.centerArmy(nextArmy);
       }
     }
 
@@ -1266,6 +1299,9 @@ AWE.Controller = (function(module) {
           WACKADOO.activateAllianceController(allianceId);
         }
 
+        inspectorViews.inspector.onCenterButtonClick = function(army) {
+          that.centerArmy(view.army());
+        };
         inspectorViews.inspector.onChangeArmyButtonClick = function(army) {
           that.changeArmyButtonClicked(view.army());
         };
@@ -1426,6 +1462,7 @@ AWE.Controller = (function(module) {
     that.updateModel = (function() {
             
       var lastArmyCheck = new Date(1970);
+      var lastOwnArmiesCheck = new Date(1970);
       var lastLocationUpdateCheck = new Date(1970);
       var lastRegionUpdateCheck = new Date(1970);
       var lastNodeUpdateCheck = new Date(1970);
@@ -1540,7 +1577,15 @@ AWE.Controller = (function(module) {
               break ;
             }
           }
-        }       
+        }      
+        
+        if (lastOwnArmiesCheck.getTime() + 60*1000 < new Date().getTime() && !isUpdateRunning('ownArmies')) { // check for own armies every minute
+          startUpdate('ownArmies');
+          lastOwnArmiesCheck = new Date();
+          AWE.GS.ArmyManager.updateArmiesForCharacter(AWE.GS.player.getPath('currentCharacter.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+            stopUpdate('ownArmies');
+          });
+        }
         
         if (lastArmyCheck.getTime() + 400 < new Date().getTime() && !isUpdateRunning('armies')) { // check for needed armies once per second
           

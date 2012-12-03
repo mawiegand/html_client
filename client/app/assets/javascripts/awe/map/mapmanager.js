@@ -6,8 +6,6 @@ AWE.Map = (function(module) {
   // creates a singleton object for handling one single map.
   module.Manager = function(my) {
     
-    
-    
     var that;    
     var _root = null;    
     var _initialized = false;
@@ -40,6 +38,10 @@ AWE.Map = (function(module) {
     
     that.rootNode = function() {
       return _root;
+    };
+    
+    that.getNode = function(nodeId) {
+      return null; // TODO  implement somehow!  -> we also need a hash for nodes
     };
     
     that.getRegion = function(regionId) {
@@ -126,6 +128,15 @@ AWE.Map = (function(module) {
         if (callback) callback(node);
       });
     };
+    
+    /** fetches a single region from the server and passes it to a callback. 
+     * Does _not_ automatically include the node in the local subtree. */
+    that.fetchSingleRegionById = function(regionId, callback) {
+      $.getJSON(AWE.Config.MAP_SERVER_BASE+'regions/'+regionId, function(data) {
+        var region = AWE.Map.createRegion(data);
+        if (callback) callback(region);
+      });
+    };    
     
     /** updates a given node and incorporates the received data into the tree. */
     that.updateNode = function(node, conditional, callback) {

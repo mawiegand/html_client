@@ -172,8 +172,8 @@ AWE.UI = (function(module) {
         _inspectorFrame.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/inspector/frame"));
         _inspectorFrame.setFrame(AWE.Geometry.createRect(184, 0, 128, 128));
         _inspectorFrame.onClick = function() { 
-          my.controller.moveTo(AWE.Map.Manager.getLocation(_army.get('location_id')));
-        };  
+          that.onCenterButtonClick();
+        };
         this.addChild(_inspectorFrame);
       }      
       
@@ -215,9 +215,9 @@ AWE.UI = (function(module) {
           _stanceView.initWithControllerAndImage(my.controller, stanceImage);
           _stanceView.setFrame(AWE.Geometry.createRect(186 + offX, 4 + offY, 96, 96));
           //_stanceView.onClick = that.onClick;
-          _stanceView.onClick = function() {
-            my.controller.moveTo(AWE.Map.Manager.getLocation(_army.get('location_id')));
-          };  
+          _stanceView.onClick = function() { 
+            that.onCenterButtonClick();
+          };
           _stanceView.onMouseOver = that.onMouseOver;
           _stanceView.onMouseOut = that.onMouseOut;
           this.addChild(_stanceView);
@@ -326,10 +326,11 @@ AWE.UI = (function(module) {
       }      
     }
     
-  //  that.onInventoryButtonClick = function() { log('inventory button clicked'); }
+//  that.onInventoryButtonClick = function() { log('inventory button clicked'); }
     that.onChangeArmyButtonClick   = function(army) { log('inventory button clicked'); }
     that.onPreviousArmyButtonClick = function(army) { log('previous army button clicked'); }
     that.onNextArmyButtonClick     = function(army) { log('next army button clicked'); }
+    that.onCenterButtonClick       = function(army) { log('center button clicked'); }
         
     that.updateView = function() {
       that.recalcView();      

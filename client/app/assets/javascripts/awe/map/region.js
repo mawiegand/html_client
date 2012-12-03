@@ -74,6 +74,8 @@ AWE.Map = (function(module) {
     /** sets the node the region is associated with. */
     that.setNode = function(node) { _node = node; _nodeId = node.id(); }
     
+    that.nodeId = function() { return _nodeId; }
+    
     /** returns the name of the character owning the region (fortress). */
     that.ownerName = function() { 
       var character = _ownerId  ? AWE.GS.CharacterManager.getCharacter(_ownerId) : null;

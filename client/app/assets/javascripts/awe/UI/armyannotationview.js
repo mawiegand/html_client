@@ -190,9 +190,7 @@ AWE.UI = (function(module) {
       else if (_army.isOwn() && (_army.get('mode') === null || _army.get('mode') === AWE.Config.ARMY_MODE_IDLE)) { // 0 -> idle or null -> unkown
         _moveButtonView.setVisible(true);
         _attackButtonView.setVisible(true);
-        if (_army.get('hasSettlementFounder')) {
-          _foundButtonView.setVisible(true);    
-        }
+        _foundButtonView.setVisible(_army.get('hasSettlementFounder'));    
         _cancelButtonView.setVisible(false);
         _retreatButtonView.setVisible(false);        
         _battleInfoButtonView.setVisible(false);        
@@ -222,6 +220,15 @@ AWE.UI = (function(module) {
         _retreatButtonView.setVisible(false);        
         _battleInfoButtonView.setVisible(true);        
       }
+      else {
+        _moveButtonView.setVisible(false);
+        _attackButtonView.setVisible(false);
+        _foundButtonView.setVisible(false);    
+        _cancelButtonView.setVisible(false);        
+        _retreatButtonView.setVisible(false);        
+        _battleInfoButtonView.setVisible(false);        
+      }
+      log('FOUND BUTTON', _foundButtonView.visible())
     }
     
     that.updateButtonState = function() {
