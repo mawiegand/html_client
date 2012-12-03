@@ -915,6 +915,21 @@ AWE.Controller = (function(module) {
         }
       });
     }
+
+    that.previousArmyButtonClicked = function(army) {
+      var previousArmy = AWE.GS.ArmyManager.getPreviousArmyOfCharacter(army);
+      if (!previousArmy) {
+        that.setSelectedArmy(previousArmy);
+      }
+    }
+
+    that.nextArmyButtonClicked = function(army) {
+      var nextArmy = AWE.GS.ArmyManager.getNextArmyOfCharacter(army);
+      if (!nextArmy) {
+        that.setSelectedArmy(nextArmy);
+      }
+    }
+
     
     that.changeArmyButtonClicked = function(army) {
       if (!army) return;
@@ -1040,6 +1055,22 @@ AWE.Controller = (function(module) {
     
     var preselectedFortressNodeId = null;
     var preselectedLocationId = null;
+    var preselectedArmyId = null;
+
+
+    that.setSelectedArmy = function(army) {
+      var armyId = army.get('id'); 
+      var view = armyViews[armyId];
+      if (view) {
+        if (_selectedView) {
+          _unselectView(_selectedView);
+        }
+        that.setSelectedView(view);
+      }
+      else {
+        preselectedArmyId = army.get('id'); // TOOD -> improve!
+      }
+    }
     
     that.setSelectedSettlement = function(settlement) {
       if (settlement.get('type_id') == AWE.GS.SETTLEMENT_TYPE_FORTRESS) {
@@ -1238,6 +1269,13 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector.onChangeArmyButtonClick = function(army) {
           that.changeArmyButtonClicked(view.army());
         };
+        inspectorViews.inspector.onPreviousArmyButtonClick = function(army) {
+          that.previousArmyButtonClicked(view.army());
+        };
+        inspectorViews.inspector.onNextArmyButtonClick = function(army) {
+          that.nextArmyButtonClicked(view.army());
+        };
+
       }
       else if (view.typeName() === 'BaseView' || view.typeName() === 'OutpostView') { 
         inspectorViews.inspector = AWE.UI.createBaseInspectorView();
@@ -1975,6 +2013,10 @@ AWE.Controller = (function(module) {
               var animation = that.addDisappearingAnnotationLabel(view, '+' + diff + ' XP', 1000);
               army.set('exp_old', null);
             }
+            if (army.get('id') === preselectedArmyId) {
+              that.setSelectedView(view);
+              preselectedArmyId = null;
+            }            
           }
         }
       }

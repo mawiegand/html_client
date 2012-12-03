@@ -327,6 +327,42 @@ AWE.GS = (function(module) {
     }
     that.getArmiesOfCharacter = function(id) { 
       return AWE.GS.ArmyAccess.getAllForOwner_id(id)
+    }   
+    
+    that.getNextArmyOfCharacter = function(army) {
+      if (!army) {
+        return null;
+      }
+      var armyId = army.get('id');
+      var armies = AWE.GS.ArmyAccess.getEnumerableForOwner_id(army.get('owner_id')) || [];
+      var index = -1;
+      var filtered = armies.filter(function(a) {
+        return !a.isGarrison();
+      });
+      filtered.forEach(function(a, i) {
+        if (a.get('id') == armyId) {
+          index = i;
+        }
+      });
+      return index < 0 ? null : filtered[(index+1)%filtered.length];
+    }
+    
+    that.getPreviousArmyOfCharacter = function(army) {
+      if (!army) {
+        return null;
+      }
+      var armyId = army.get('id');
+      var armies = AWE.GS.ArmyAccess.getEnumerableForOwner_id(army.get('owner_id')) || [];
+      var index = -1;
+      var filtered = armies.filter(function(a) {
+        return !a.isGarrison();
+      });
+      filtered.forEach(function(a, i) {
+        if (a.get('id') == armyId) {
+          index = i;
+        }
+      });
+      return index < 0 ? null : filtered[(index-1+filtered.length)%filtered.length];
     }    
     
     that.lastUpdateForFortress = function(regionId) {
