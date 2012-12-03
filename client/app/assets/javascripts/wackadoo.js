@@ -71,7 +71,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     showWelcomeDialog: function() {
       var dialog = AWE.UI.Ember.WelcomeDialog.create({
         okPressed:    function() {
-          
+                log('--->', AWE.GS.player.currentCharacter, AWE.GS.player.get('currentCharacter'), AWE.GS.player.currentCharacter.get('login_count'), AWE.GS.player.getPath('currentCharacter.login_count'), AWE.GS.player.get('currentCharacter').get('login_count'));
+
           AWE.GS.TutorialStateManager.checkForNewQuests();
           this.destroy();
         },            
