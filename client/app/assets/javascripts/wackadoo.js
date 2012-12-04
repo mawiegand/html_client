@@ -32,6 +32,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     settlementScreenController: null,
     messageCenterController: null,
     
+    baseScreenController: null,
+    fortressScreenController: null,
+    
     sessionEnded: false,
   
     /** custom object initialization goes here. */
@@ -456,12 +459,21 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
+    activateSettlementController: function(settlement) {
+      if (settlement.get('type_id') === AWE.GS.SETTLEMENT_TYPE_FORTRESS) {
+        this.activateFortressController({ settlementId: settlement.get('id')});
+      }
+      else {
+        this.activateBaseController({ settlementId: settlement.get('id')});
+      }
+    },
+    
     activateBaseController: function(reference) {
       reference = reference ||  { locationId: AWE.GS.player.getPath('currentCharacter.base_location_id') };
-      var baseController = this.get('settlementScreenController');
+      var baseController = this.get('baseScreenController');
       if (!baseController) {
         baseController = AWE.Controller.createSettlementController('#layers');
-        this.set('settlementScreenController', baseController);
+        this.set('baseScreenController', baseController);
       }
       if (reference.settlementId !== undefined) {
         baseController.setSettlementId(reference.baseId);
@@ -477,14 +489,15 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
    
     baseControllerActive: function() {
-      return this.get('presentScreenController') === this.get('settlementScreenController');
+      return (this.get('presentScreenController') === this.get('baseScreenController') && this.get('baseScreenController')) || (this.get('presentScreenController') === this.get('fortressScreenController') && this.get('fortressScreenController'));
     },
+      
        
     activateFortressController: function(reference) {
-      var fortressController = this.get('settlementScreenController');
+      var fortressController = this.get('fortressScreenController');
       if (!fortressController) {
         fortressController = AWE.Controller.createSettlementController('#layers');
-        this.set('settlementScreenController', fortressController);
+        this.set('fortressScreenController', fortressController);
       }
       if (reference.settlementId !== undefined) {
         fortressController.setSettlementId(reference.settlementId);

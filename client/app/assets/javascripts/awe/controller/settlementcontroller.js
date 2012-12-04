@@ -195,11 +195,31 @@ AWE.Controller = (function(module) {
       this.visible = false;
     };
     
+    
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Actions
     //
     // /////////////////////////////////////////////////////////////////////// 
+    
+    that.previousSettlementPressed = function() {
+      var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
+      var previousSettlement = AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(settlement);
+      if (previousSettlement) {
+        log('PREVIOUS SETTLEMENT', previousSettlement.get('id'));
+        WACKADOO.activateSettlementController(previousSettlement);
+      }      
+    }
+    
+    that.nextSettlementPressed = function() {
+      var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
+      var nextSettlement = AWE.GS.SettlementManager.getNextSettlementOfCharacter(settlement);
+      if (nextSettlement) {
+        log('NEXT SETTLEMENT', nextSettlement.get('id'));
+        WACKADOO.activateSettlementController(nextSettlement);
+      }      
+    }
+    
     
     that.slotClicked = function(slot) {
       that.view.set('selectedSlot', slot);

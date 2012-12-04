@@ -56,6 +56,11 @@ AWE.UI.Ember = (function(module) {
 		  return this.getPath('settlement.hashableTrainingQueues');
 		}.property('settlement', 'settlement.hashableTrainingQueues.changedAt').cacheable(),
 		
+    shouldDisplaySettlementSwitch: function() {
+      var settlement = this.get('settlement');
+      return settlement && settlement !== AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(settlement);
+    }.property('settlement.owner_id'),
+		
 	});
 
   /** 
