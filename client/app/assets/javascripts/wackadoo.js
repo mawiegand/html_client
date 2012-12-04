@@ -460,6 +460,19 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
+    // it's not necessary to have three different controllers for the different
+    // settlement types, as the settlement controller will handle a switch
+    // from a settlement of one type to a settlement of another type gracefully.
+    // But there is one benefit of using different controllers: it allows
+    // the user to switch faster between different settlements, as the most time
+    // is needed to recreate a view for another type. Having three different 
+    // controllers (with the correct view already associated and created), 
+    // completely removes the need for recreating the view.
+    //
+    // a small glitch: when you enter an outpost from the map, the base-controller
+    // is instantiated presently. on your first switch to your base you will
+    // see a short flicker because the view has to be recreated with the correct
+    // type. this should be improved later.
     activateSettlementController: function(settlement) {
       if (settlement.get('type_id') === AWE.GS.SETTLEMENT_TYPE_FORTRESS) {
         log('ACTIVATE FORTRESS CONTROLLER');

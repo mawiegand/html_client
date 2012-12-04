@@ -210,7 +210,7 @@ AWE.Controller = (function(module) {
       var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
       var previousSettlement = AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(settlement);
       if (previousSettlement) {
-        log('PREVIOUS SETTLEMENT', previousSettlement.get('id'), that.settlementId);
+        log('PREVIOUS SETTLEMENT', previousSettlement.get('id'));
         WACKADOO.activateSettlementController(previousSettlement);
       }      
     }

@@ -372,11 +372,8 @@ AWE.GS = (function(module) {
         if (s.get('id') === settlementId) {
           index = i;
         }
-        log('SEARCH', s, s.get('id'), "index", index, i);
       });
-      var settlementNew = index < 0 ? null : sorted[(index-1+sorted.length)%sorted.length];
-      log('SEARCH SELECTED', settlementNew, settlementNew ? settlementNew.get('id') : '-', 'PRESENT', settlement.get('id'));
-      return settlementNew;
+      return index < 0 ? null : sorted[(index-1+sorted.length)%sorted.length];
     }    
     
     that.getHomeBaseOfCharacter = function(character) {
