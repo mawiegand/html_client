@@ -40,7 +40,11 @@
         {{view AWE.UI.Ember.ToolTipView templateName="building-slot-tooltip" classNames="mouse-over" mouseXBinding="hoveredBuildingSlotView.mouseX" mouseYBinding="hoveredBuildingSlotView.mouseY" buildingBinding="hoveredBuildingSlotView.slot.building" buildingSlotViewBinding="hoveredBuildingSlotView" }}
       {{/if}}      
     </div>
-  
+
+    {{#if shouldDisplaySettlementSwitch}}
+      <div class="settlement-switch previous"  {{action  nextSettlementPressed target="controller"}}>&lt;</div>
+      <div class="settlement-switch next"      {{action  previousSettlementPressed target="controller"}}>&gt;</div>  
+    {{/if}}
     {{view AWE.UI.Ember.SettlementInfoBoxView classNames="settlement-info-box" settlementBinding="settlement" controller="this"}}
   {{/if}}
 </div>

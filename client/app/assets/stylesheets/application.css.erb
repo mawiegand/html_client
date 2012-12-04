@@ -2280,12 +2280,57 @@ li.shout .sender {
 
 .settlement-info-box {
   z-index: 5;
-  -moz-border-radius: 6px;
-  border-radius:      6px;
+  -moz-border-radius: 3px;
+  border-radius:      3px;
   cursor: pointer;
 }
 
 
+.settlement-switch {
+  z-index: 5;
+  position: absolute;
+  width: 10px;
+  height: 36px;
+  padding: 18px 2px;
+  border-radius: 3px;
+  color: white;
+  text-shadow: none;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.fortress-screen .settlement-switch {
+  height: 20px;
+  padding: 56px 2px;
+  background-color: rgba(255,255,255,0.4);
+  color: black;
+}
+
+.settlement-switch:hover {
+  background-color: #999;
+}
+
+.outpost-screen .settlement-switch.previous,
+.base-screen .settlement-switch.previous {
+  top: 90px;
+  left: 20px;
+}
+
+.outpost-screen .settlement-switch.next,
+.base-screen .settlement-switch.next {
+  top: 90px;
+  left: 545px;
+}
+
+
+.fortress-screen .settlement-switch.previous {
+  top: 70px;
+  left: 200px;
+}
+
+.fortress-screen .settlement-switch.next {
+  top: 70px;
+  left: 726px;
+}
 
 
 

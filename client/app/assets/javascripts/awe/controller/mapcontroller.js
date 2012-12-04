@@ -929,11 +929,11 @@ AWE.Controller = (function(module) {
       }
     }
     
-    that.centerArmy = function(army) {
-      if (!army) {
+    that.centerGamingPiece = function(gp) {
+      if (!gp) {
         return ;
       }
-      var regionId = army.get('region_id');
+      var regionId = gp.get('region_id');
       var region = AWE.Map.Manager.getRegion(regionId);
       if (region) {
         that.centerRegion(region);
@@ -943,6 +943,14 @@ AWE.Controller = (function(module) {
           that.centerRegion(region);
         });
       }
+    }
+    
+    that.centerSettlement = function(settlement) {
+      this.centerGamingPiece(settlement);
+    }
+    
+    that.centerArmy = function(army) {
+      this.centerGamingPiece(army);
     }
 
     that.previousArmyButtonClicked = function(army) {
@@ -1466,6 +1474,7 @@ AWE.Controller = (function(module) {
       var lastLocationUpdateCheck = new Date(1970);
       var lastRegionUpdateCheck = new Date(1970);
       var lastNodeUpdateCheck = new Date(1970);
+      var lastOwnSettlementCheck = new Date(1970);
       
       var viewports = {};  ///< stores the viewport at the time of an update for each of the different update types 
       
@@ -1555,6 +1564,15 @@ AWE.Controller = (function(module) {
             //stopUpdate('locations'); // TODO: start / stop this properly! (many parallel requests)
           }
           setViewport('locations', visibleAreaMC);
+        }
+
+        // updating settlements
+        if (lastOwnSettlementCheck.getTime() + 1000*180 < new Date().getTime() && ! isUpdateRunning('settlements')) {
+          startUpdate('settlements');
+          lastOwnSettlementCheck = new Date();
+          AWE.GS.SettlementManager.updateOwnSettlements(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+            stopUpdate('settlements');
+          });
         }
         
         // updating nodes
