@@ -851,7 +851,7 @@ AWE.Controller = (function(module) {
       this.updateDebug();
       
       if (this.visible && !this.view && this.settlementId) {
-        log('APPEND', this.settlementId, this.settlement);
+        log('APPEND', this.settlementId);
         this.appendView();           
       }
       
@@ -864,11 +864,15 @@ AWE.Controller = (function(module) {
         // this is executed, in case the settlement is received from the 
         // server for the first time or the settlementId has been changed by 
         // this.setSettlementId(int).
-        var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
+        var settlement = AWE.GS.SettlementManager.getSettlement(this.settlementId);
         
-        if (this.view.get('settlement') != settlement) {
-            //this.appendView();  // type may also have been switched, thus recreate the whole view
-          this.view.set('settlement', settlement);
+        if (this.view.get('settlement') !== settlement) {
+          if (settlement && this.view.getPath('settlement.type_id') !== settlement.get('type_id')) {
+            this.appendView();  // type may also have been switched, thus recreate the whole view
+          }
+          else {
+            this.view.set('settlement', settlement);
+          }
           log('SWITCHED BASE IN RUNLOOP TO', settlement);
         }
                 
