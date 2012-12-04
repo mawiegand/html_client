@@ -350,13 +350,14 @@ AWE.GS = (function(module) {
       }
       var settlementId = settlement.get('id');
       var settlements  = AWE.GS.SettlementAccess.getEnumerableForOwner_id(settlement.get('owner_id')) || [];
-      var index = -1;
-      settlements.forEach(function(s, i) {
-        if (s.get('id') == settlementId) {
+      var index        = -1;
+      var sorted       = settlements.sort(function(a,b) { return a.get('id') - b.get('id'); });
+      sorted.forEach(function(s, i) {
+        if (s.get('id') === settlementId) {
           index = i;
         }
       });
-      return index < 0 ? null : settlements[(index+1)%settlements.length];
+      return index < 0 ? null : sorted[(index+1)%settlements.length];
     }    
     
     that.getPreviousSettlementOfCharacter = function(settlement) {
@@ -365,13 +366,14 @@ AWE.GS = (function(module) {
       }
       var settlementId = settlement.get('id');
       var settlements  = AWE.GS.SettlementAccess.getEnumerableForOwner_id(settlement.get('owner_id')) || [];
-      var index = -1;
-      settlements.forEach(function(s, i) {
-        if (s.get('id') == settlementId) {
+      var index        = -1;
+      var sorted       = settlements.sort(function(a,b) { return a.get('id') - b.get('id'); });
+      sorted.forEach(function(s, i) {
+        if (s.get('id') === settlementId) {
           index = i;
         }
       });
-      return index < 0 ? null : settlements[(index-1+settlements.length)%settlements.length];
+      return index < 0 ? null : sorted[(index-1+settlements.length)%settlements.length];
     }    
     
     that.getHomeBaseOfCharacter = function(character) {

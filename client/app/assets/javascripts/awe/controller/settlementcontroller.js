@@ -206,13 +206,13 @@ AWE.Controller = (function(module) {
       var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
       var previousSettlement = AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(settlement);
       if (previousSettlement) {
-        log('PREVIOUS SETTLEMENT', previousSettlement.get('id'));
+        log('PREVIOUS SETTLEMENT', previousSettlement.get('id'), that.settlementId);
         WACKADOO.activateSettlementController(previousSettlement);
       }      
     }
     
     that.nextSettlementPressed = function() {
-      var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
+      var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId, that.settlementId);
       var nextSettlement = AWE.GS.SettlementManager.getNextSettlementOfCharacter(settlement);
       if (nextSettlement) {
         log('NEXT SETTLEMENT', nextSettlement.get('id'));
