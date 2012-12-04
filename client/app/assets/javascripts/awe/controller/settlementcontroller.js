@@ -70,7 +70,9 @@ AWE.Controller = (function(module) {
      * @function
      * @name AWE.Controller.SettlementController#setSettlementId */
     that.setSettlementId = function(settlementId) { 
+      log('PRESENT SETTLEMENT ID', that.settlementId);
       this.settlementId = settlementId; 
+      log('NEW SETTLEMENT ID', settlementId, that.settlementId);
     }
     
     /** set the id of the settlement to display by setting the location id.
@@ -156,6 +158,8 @@ AWE.Controller = (function(module) {
         outpost:  AWE.UI.Ember.OutpostView,
       };
       var viewClass = viewClasses[AWE.Config.MAP_LOCATION_TYPE_CODES[type]];
+
+      log('CREATE VIEW OF TYPE', viewClass, type, settlement.get('type_id'), settlement.get('id'));
       
       if (viewClass) {
         settlementScreen = viewClass.create({

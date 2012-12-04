@@ -29,9 +29,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     mapScreenController:        null,
     allianceScreenController:   null,  
-    settlementScreenController: null,
     messageCenterController:    null,
-    
+
+    settlementScreenController: null,    
     baseScreenController:       null,
     fortressScreenController:   null,
     outpostScreenController:    null,
@@ -462,12 +462,15 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     activateSettlementController: function(settlement) {
       if (settlement.get('type_id') === AWE.GS.SETTLEMENT_TYPE_FORTRESS) {
+        log('ACTIVATE FORTRESS CONTROLLER');
         this.activateFortressController({ settlementId: settlement.get('id')});
       }
-      if (settlement.get('type_id') === AWE.GS.SETTLEMENT_TYPE_OUTPOST) {
+      else if (settlement.get('type_id') === AWE.GS.SETTLEMENT_TYPE_OUTPOST) {
+        log('ACTIVATE OUTPOST CONTROLLER');
         this.activateOutpostController({ settlementId: settlement.get('id')});
       }
       else {
+        log('ACTIVATE BASE CONTROLLER');
         this.activateBaseController({ settlementId: settlement.get('id')});
       }
     },
@@ -480,7 +483,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         this.set('baseScreenController', baseController);
       }
       if (reference.settlementId !== undefined) {
-        baseController.setSettlementId(reference.baseId);
+        baseController.setSettlementId(reference.settlementId);
       }
       else if (reference.locationId !== undefined) {
         baseController.setLocationId(reference.locationId);
