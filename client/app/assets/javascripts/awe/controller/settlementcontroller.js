@@ -863,7 +863,8 @@ AWE.Controller = (function(module) {
         var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
         
         if (this.view.get('settlement') != settlement) {
-          this.view.set('settlement', settlement);
+          this.createView();  // type may also have been switched, thus recreate the whole view
+          //  this.view.set('settlement', settlement);
           log('SWITCHED BASE IN RUNLOOP TO', settlement);
         }
                 
