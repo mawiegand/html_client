@@ -27,13 +27,14 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     startupArguments: null,
     
-    mapScreenController: null,
-    allianceScreenController: null,  
+    mapScreenController:        null,
+    allianceScreenController:   null,  
     settlementScreenController: null,
-    messageCenterController: null,
+    messageCenterController:    null,
     
-    baseScreenController: null,
-    fortressScreenController: null,
+    baseScreenController:       null,
+    fortressScreenController:   null,
+    outpostScreenController:    null,
     
     sessionEnded: false,
   
@@ -463,6 +464,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (settlement.get('type_id') === AWE.GS.SETTLEMENT_TYPE_FORTRESS) {
         this.activateFortressController({ settlementId: settlement.get('id')});
       }
+      if (settlement.get('type_id') === AWE.GS.SETTLEMENT_TYPE_OUTPOST) {
+        this.activateOutpostController({ settlementId: settlement.get('id')});
+      }
       else {
         this.activateBaseController({ settlementId: settlement.get('id')});
       }
@@ -489,7 +493,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
    
     baseControllerActive: function() {
-      return (this.get('presentScreenController') === this.get('baseScreenController') && this.get('baseScreenController')) || (this.get('presentScreenController') === this.get('fortressScreenController') && this.get('fortressScreenController'));
+      return (this.get('presentScreenController') === this.get('outpostScreenController') && this.get('outpostScreenController')) ||(this.get('presentScreenController') === this.get('baseScreenController') && this.get('baseScreenController')) || (this.get('presentScreenController') === this.get('fortressScreenController') && this.get('fortressScreenController'));
     },
       
        
@@ -513,7 +517,27 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }
       this.setScreenController(fortressController);
     },   
-   
+    
+    activateOutpostController: function(reference) {
+      var outpostController = this.get('outpostScreenController');
+      if (!outpostController) {
+        outpostController = AWE.Controller.createSettlementController('#layers');
+        this.set('outpostScreenController', outpostController);
+      }
+      if (reference.settlementId !== undefined) {
+        outpostController.setSettlementId(reference.settlementId);
+      }
+      else if (reference.locationId !== undefined) {
+        outpostController.setLocationId(reference.locationId);
+      }
+      else if (reference.node !== undefined) {
+        outpostController.setNode(reference.node);
+      }
+      else {
+        log('ERROR: no outpost to enter specified.')
+      }
+      this.setScreenController(outpostController);
+    },   
    
     activateMessagesController: function(args) {
       args = args || {};
