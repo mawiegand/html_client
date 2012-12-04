@@ -61,6 +61,13 @@ AWE.GS = (function(module) {
     
     resourcePool: null,
     
+    victories: 0,
+    defeats: 0,
+    
+    battle_count: function() {
+      return (this.get('victories') || 0) + (this.get('defeats') || 0);
+    }.property('victories', 'defeats').cacheable(),
+    
     isPlatinumActive: function() {
       var expiration = this.get('premium_expiration');
       return expiration && Date.parseISODate(expiration) > AWE.GS.TimeManager.estimatedServerTime().getTime();
