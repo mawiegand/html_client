@@ -522,7 +522,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var outpostController = this.get('outpostScreenController');
       if (!outpostController) {
         outpostController = AWE.Controller.createSettlementController('#layers');
-        this.set('outpostScreenController', fortressController);
+        this.set('outpostScreenController', outpostController);
       }
       if (reference.settlementId !== undefined) {
         outpostController.setSettlementId(reference.settlementId);
