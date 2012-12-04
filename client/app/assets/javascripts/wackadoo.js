@@ -71,7 +71,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     showWelcomeDialog: function() {
       var dialog = AWE.UI.Ember.WelcomeDialog.create({
         okPressed:    function() {
-          
           AWE.GS.TutorialStateManager.checkForNewQuests();
           this.destroy();
         },            
@@ -85,7 +84,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     showQuestListDialog: function() {
-      // log('-----> showQuestListDialog')
       var self = this;
       var dialog = AWE.UI.Ember.QuestListView.create({
         tutorialState: AWE.GS.TutorialStateManager.getTutorialState(),
@@ -229,7 +227,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     showStartupDialogs: function() {
       
- 
       if (!AWE.GS.player.getPath('currentCharacter.login_count') || AWE.GS.player.getPath('currentCharacter.login_count') <= 1) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
         this.showWelcomeDialog();
       }
