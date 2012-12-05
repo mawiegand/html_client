@@ -166,7 +166,6 @@ AWE.UI = (function(module) {
         };
           
         _villageImageView.onDoubleClick = function(evt) {
-          alert('_villageImageView');
 			    WACKADOO.baseButtonDoubleClicked();
           var baseControllerActive = WACKADOO.baseControllerActive();
           if (!baseControllerActive) {
@@ -182,7 +181,6 @@ AWE.UI = (function(module) {
         };
          
         _settlementImageView.onDoubleClick = function(evt) {
-          alert('_settlementImageView');
 			    WACKADOO.baseButtonDoubleClicked();
           var baseControllerActive = WACKADOO.baseControllerActive();
           if (!baseControllerActive) {
