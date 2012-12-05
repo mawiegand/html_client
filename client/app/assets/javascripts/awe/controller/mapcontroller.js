@@ -525,7 +525,10 @@ AWE.Controller = (function(module) {
 
     that.onMouseUp = function(evt) {
       that.endScrolling();
-      _camera.onMouseUp(evt);
+    }
+    
+    that.onDoubleClick = function(evt) {
+      _camera.onDoubleClick(evt);
     }
     
     that.onMouseLeave = function(evt) {
