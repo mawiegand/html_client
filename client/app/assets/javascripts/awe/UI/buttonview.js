@@ -45,6 +45,11 @@ AWE.UI = (function(module) {
           that.onClick() 
         }
       }; // CAUTION: need to wrap the call in a function, because otherwise it's not possible to attach a different function to that as onClick handler
+      _imageView.onDoubleClick = function() { 
+        if (that.enabled()) {
+          that.onDoubleClick() 
+        }
+      };
       _imageView.onMouseOver = function(self) { return function() { self.setHovered(true); if (controller) controller.setNeedsDisplay(); }}(this);
       _imageView.onMouseOut = function(self) { return function() { self.setHovered(false); if (controller) controller.setNeedsDisplay(); }}(this);
       my.container.addChild(_imageView.displayObject());

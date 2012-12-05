@@ -45,9 +45,6 @@ AWE.UI = (function(module) {
     
     var _resourceBubbleView;
     
-    var _lastClick;
-		var _maxTimeForDoubleClick = AWE.Config.MAP_DBLCLK_MAX_TIME_FOR_DBLCLK;
-        
     my = my || {};
     
     my.typeName = "MainControlsView";
@@ -159,23 +156,22 @@ AWE.UI = (function(module) {
         _villageImageView.initWithControllerTextAndImage(my.controller, "", AWE.UI.ImageCache.getImage("hud/settlement/normal"));
         _villageImageView.setImageForState(AWE.UI.ImageCache.getImage("hud/settlement/hovered"), module.CONTROL_STATE_HOVERED);
         _villageImageView.setFrame(AWE.Geometry.createRect(180, 24, 128, 128));
+        
         _villageImageView.onClick = function() {
-			    if (_lastClick !== undefined &&
-				      new Date().getTime() - _lastClick <= _maxTimeForDoubleClick) {  // double click
-				    WACKADOO.baseButtonDoubleClicked();
-            if (!baseControllerActive) {
-              AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button2');
-            }
-				  }
-				  else {  // single click
-				    _lastClick = new Date().getTime();                 
-
-            var baseControllerActive = WACKADOO.baseControllerActive();
-            WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
-            if (baseControllerActive) {
-              AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button1');
-            } 
-				  }   
+          WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+          var baseControllerActive = WACKADOO.baseControllerActive();
+          if (baseControllerActive) {
+            AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button1');
+          } 
+        };
+          
+        _villageImageView.onDoubleClick = function(evt) {
+          alert('_villageImageView');
+			    WACKADOO.baseButtonDoubleClicked();
+          var baseControllerActive = WACKADOO.baseControllerActive();
+          if (!baseControllerActive) {
+            AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button2');
+          }
         };
           
         _settlementImageView = AWE.UI.createImageView();
@@ -183,7 +179,17 @@ AWE.UI = (function(module) {
         _settlementImageView.setFrame(AWE.Geometry.createRect(212, 58, 64, 64));
         _settlementImageView.onClick = function() { 
           _villageImageView.onClick();   
-        }; 
+        };
+         
+        _settlementImageView.onDoubleClick = function(evt) {
+          alert('_settlementImageView');
+			    WACKADOO.baseButtonDoubleClicked();
+          var baseControllerActive = WACKADOO.baseControllerActive();
+          if (!baseControllerActive) {
+            AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button2');
+          }
+        };
+          
         this.addChild(_villageImageView);
         this.addChild(_settlementImageView);
       }
