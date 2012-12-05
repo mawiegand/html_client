@@ -79,6 +79,7 @@ AWE.UI = (function(module) {
         _imageView.setContentMode(module.ViewContentModeNone);
         _imageView.setFrame(AWE.Geometry.createRect(0, 4, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
         _imageView.onClick = that.onClick;
+        _imageView.onDoubleClick = that.onDoubleClick;
         _imageView.onMouseOver = that.onMouseOver;
         _imageView.onMouseOut = that.onMouseOut;
         this.addChildAt(_imageView, 0);
@@ -115,6 +116,7 @@ AWE.UI = (function(module) {
         _flagView.setAllianceId(allianceId);
         _flagView.setDirection('down');
         _flagView.onClick = that.onClick;
+        _flagView.onDoubleClick = that.onDoubleClick;
         _flagView.onMouseOver = that.onMouseOver;
         _flagView.onMouseOut = that.onMouseOut;
         this.addChild(_flagView);
@@ -131,6 +133,7 @@ AWE.UI = (function(module) {
         _labelView.initWithControllerAndLabel(my.controller, "owner", true);
         _labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE + 6, AWE.Config.MAPPING_FORTRESS_SIZE, 20));      
         _labelView.onClick = that.onClick;
+        _labelView.onDoubleClick = that.onDoubleClick;
         _labelView.onMouseOver = that.onMouseOver;
         _labelView.onMouseOut = that.onMouseOut;
         this.addChild(_labelView);
@@ -148,6 +151,7 @@ AWE.UI = (function(module) {
         _battleView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage('map/army/battle'));
         _battleView.setFrame(AWE.Geometry.createRect(0, -50, 65, 65));
         _battleView.onClick = that.onClick;
+        _battleView.onDoubleClick = that.onDoubleClick;
         _battleView.onMouseOver = that.onMouseOver;
         _battleView.onMouseOut = that.onMouseOut;
         this.addChild(_battleView);
@@ -162,6 +166,7 @@ AWE.UI = (function(module) {
         _suspensionView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage('map/army/suspended'));
         _suspensionView.setFrame(AWE.Geometry.createRect(0, -50, 65, 65));
         _suspensionView.onClick = that.onClick;
+        _suspensionView.onDoubleClick = that.onDoubleClick;
         _suspensionView.onMouseOver = that.onMouseOver;
         _suspensionView.onMouseOut = that.onMouseOut;
         this.addChild(_suspensionView);
@@ -204,7 +209,21 @@ AWE.UI = (function(module) {
       var location = this.location();
       return location ? location.garrisonArmy() : null;
     }
+    
+    that.onDoubleClick = function() {
+      if (AWE.GS.player.getPath('currentCharacter.id') == _node.region().ownerId()) {
+        var reference = {};
+        if (that.location()) {
+          reference.locationId = that.location().id();
+        }
+        else {
+          reference.node = my.node();
+        }
         
+        WACKADOO.activateFortressController(reference); // TODO: pass fortress id
+      }
+    };
+
     return that;
   };
     
