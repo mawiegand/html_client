@@ -66,6 +66,19 @@
          im gesamten Herrschaftsgebiet auf die <em>Basisproduktion</em> von Gebäuden und können zum Beispiel 
          in der <a href="#" {{action "pressedShop"}}>Fundgrube</a> erhöht werden.</p>
       
+      <table>
+        <tr>
+          <td>Likes verfügbar</td>
+          <td class="number">{{formatNumber pool.like_amount maxPlaces="0"}}</td>
+          <td class="number">+{{formatNumber pool.like_production_rate maxPlaces="1"}}/h</td>
+        </tr>
+        <tr>
+          <td>Dislikes verfügbar</td>
+          <td class="number">{{formatNumber pool.dislike_amount maxPlaces="0"}}</td>
+          <td class="number">+{{formatNumber pool.dislike_production_rate maxPlaces="1"}}/h</td>
+        </tr>
+      </table>
+      
       <a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>     
     </div>
 </script>
