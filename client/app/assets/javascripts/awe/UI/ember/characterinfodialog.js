@@ -80,6 +80,28 @@ AWE.UI.Ember = (function(module) {
       this.destroy();
     },
     
+    sendLike: function() {
+      var characterId = this.get('characterId');
+      var self = this;
+      if (!characterId) {
+        return ;
+      }
+      AWE.Action.Fundamental.createSendLikeAction(characterId).send(function(status, data){
+        
+      });
+    },
+    
+    sendDislike: function() {
+      var characterId = this.get('characterId');
+      var self = this;
+      if (!characterId) {
+        return ;
+      }
+      AWE.Action.Fundamental.createSendDislikeAction(characterId).send(function(status, data){
+        
+      });
+    },
+	
     sendMessageClicked: function() {
       var character = this.get('character')
       if (!character) {
