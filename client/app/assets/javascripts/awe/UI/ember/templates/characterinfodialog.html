@@ -27,10 +27,13 @@
           {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
         {{/if}}
       </p>
-
+      
+      <p><b>{{character.received_likes_count}} Likes</b> <a href="#" {{action "sendLike"}}>sende Like</a> &nbsp;
+         <b>{{character.received_dislikes_count}} Dislikes</b> <a href="#" {{action "sendDislike"}}>sende Dislike</a></p>
+      
       <a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>     
       {{#if character}}
-        <a class="button" href="#" {{action "sendMessageClicked"}}>Nachricht senden</a>  
+        <a class="button" href="#" {{action "sendMessageClicked"}}>Nachricht senden</a>
       {{/if}}   
     </div>
   </div>
