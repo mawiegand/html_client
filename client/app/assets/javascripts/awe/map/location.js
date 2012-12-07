@@ -182,6 +182,10 @@ AWE.Map = (function(module) {
       return _slot == 0;
     }
             
+    that.isEmpty = function() {
+      return _settlementTypeId === AWE.GS.SETTLEMENT_TYPE_EMPTY;
+    }
+            
     /** this method updates the data stored at the local region from the given 
      * region. Does not change the association to a node. */ 
     that.updateLocationFrom = function(location) {

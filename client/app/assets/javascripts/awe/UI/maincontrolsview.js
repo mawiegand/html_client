@@ -158,16 +158,16 @@ AWE.UI = (function(module) {
         _villageImageView.setFrame(AWE.Geometry.createRect(180, 24, 128, 128));
         
         _villageImageView.onClick = function() {
-          WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
           var baseControllerActive = WACKADOO.baseControllerActive();
+          WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
           if (baseControllerActive) {
             AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button1');
           } 
         };
           
         _villageImageView.onDoubleClick = function(evt) {
-			    WACKADOO.baseButtonDoubleClicked();
           var baseControllerActive = WACKADOO.baseControllerActive();
+			    WACKADOO.baseButtonDoubleClicked();
           if (!baseControllerActive) {
             AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button2');
           }
@@ -180,9 +180,17 @@ AWE.UI = (function(module) {
           _villageImageView.onClick();   
         };
          
-        _settlementImageView.onDoubleClick = function(evt) {
-			    WACKADOO.baseButtonDoubleClicked();
+        _settlementImageView.onClick = function() {
           var baseControllerActive = WACKADOO.baseControllerActive();
+          WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+          if (baseControllerActive) {
+            AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button1');
+          } 
+        };
+          
+        _settlementImageView.onDoubleClick = function(evt) {
+          var baseControllerActive = WACKADOO.baseControllerActive();
+			    WACKADOO.baseButtonDoubleClicked();
           if (!baseControllerActive) {
             AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button2');
           }

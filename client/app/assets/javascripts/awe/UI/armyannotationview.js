@@ -228,7 +228,6 @@ AWE.UI = (function(module) {
         _retreatButtonView.setVisible(false);        
         _battleInfoButtonView.setVisible(false);        
       }
-      log('FOUND BUTTON', _foundButtonView.visible())
     }
     
     that.updateButtonState = function() {
