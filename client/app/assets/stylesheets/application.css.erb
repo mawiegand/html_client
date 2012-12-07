@@ -2060,7 +2060,7 @@ span.bonus {
 
 .outpost-screen,
 .base-screen {
-  background-color: rgb(224, 232, 195);
+  background-color: #555;
 }
 
 .outpost-screen .queue-job-image,
@@ -2582,8 +2582,21 @@ table .number {
 .outpost-picture,
 .base-picture {
   margin-top: 100px;
-  background: url('<%= asset_path("settlements/base/base_background.png") %>');
+  overflow: visible;
 } 
+
+.outpost-background-picture,
+.base-background-picture {
+  background: url('<%= asset_path("settlements/base/base_background_1280.jpg") %>');
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 0px;
+  top: -220px;
+  width: 1280px;
+  height: 960px;
+  z-index: 0;
+}
+
 
 .outpost-picture .mouse-over, 
 .fortress-picture .mouse-over, 
