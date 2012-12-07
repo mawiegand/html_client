@@ -77,8 +77,8 @@ AWE.UI = (function(module) {
         my.rateView = AWE.UI.createLabelView();
         my.rateView.initWithControllerAndLabel(my.controller);
         my.rateView.setTextAlign("right");
-        my.rateView.setFont("bold 12px Arial");
-        my.rateView.setColor('rgb(200,200,200)');
+        my.rateView.setFont("12px Arial");
+        my.rateView.setColor('rgb(255,255,255)');
         my.rateView.setFrame(AWE.Geometry.createRect(100, 7, 57, 12));      
         my.container.addChild(my.rateView.displayObject());
         my.rateView.onClick = function() { 
@@ -92,8 +92,8 @@ AWE.UI = (function(module) {
         my.capacityLabelView = AWE.UI.createLabelView();
         my.capacityLabelView.initWithControllerAndLabel(my.controller);
         my.capacityLabelView.setTextAlign("left");
-        my.capacityLabelView.setFont("bold 12px Arial");
-        my.capacityLabelView.setColor('rgb(200,200,200)');
+        my.capacityLabelView.setFont("12px Arial");
+        my.capacityLabelView.setColor('rgb(255,255,255)');
         my.capacityLabelView.setFrame(AWE.Geometry.createRect(38, 21, 40, 12));      
         my.capacityLabelView.setText('MAX:');
         my.container.addChild(my.capacityLabelView.displayObject());
@@ -108,8 +108,8 @@ AWE.UI = (function(module) {
         my.capacityView = AWE.UI.createLabelView();
         my.capacityView.initWithControllerAndLabel(my.controller);
         my.capacityView.setTextAlign("left");
-        my.capacityView.setFont("bold 12px Arial");
-        my.capacityView.setColor('rgb(200,200,200)');
+        my.capacityView.setFont("12px Arial");
+        my.capacityView.setColor('rgb(255,255,255)');
         my.capacityView.setFrame(AWE.Geometry.createRect(70, 21, 80, 12));      
         my.container.addChild(my.capacityView.displayObject());
         my.capacityView.onClick = function() { 
