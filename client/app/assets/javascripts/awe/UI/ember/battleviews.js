@@ -61,7 +61,7 @@ AWE.UI.Ember = (function(module) {
     }.property('battle.ratio').cacheable(),
 
     ratioLengthOther: function(){
-      return 'width: ' + Math.round(780 * (1 - (this.getPath('battle.ratio') || 0))) + 'px;';
+      return 'width: ' + Math.round(780 * (1 - (this.getPath('battle.ratio') || 0))) + 'px;';
     }.property('battle.ratio').cacheable(),
 
     message: function() {
@@ -177,7 +177,7 @@ AWE.UI.Ember = (function(module) {
       var enemyArmies = self.getPath('enemyArmies');
       var friendlyArmies = self.get('friendlyArmies');
       
-      if (!army.get('location').isEmpty()) {
+      if (army.get('location').isFortress()) {
         if (army.get('garrison')) {
           var otherArmies = AWE.GS.ArmyManager.getArmiesAtLocation(army.get('location_id'));
           AWE.Ext.applyFunctionToHash(otherArmies, function(otherArmyId, otherArmy){
@@ -213,36 +213,6 @@ AWE.UI.Ember = (function(module) {
                 !self.factionContainsArmyOf(friendlyArmies, otherArmy.get('owner_id')) &&
                 (otherArmy.get('isDefendingFortress') || otherArmy.get('garrison'))) {
               enemyArmies.pushObject(otherArmy);
-            }
-            else if (army != otherArmy &&
-                targetArmy != otherArmy &&
-                otherArmy.get('isFighting') &&
-                otherArmy.get('garrison')) {
-              log('---> vor Battle loading');    
-              self.set('attackerBattleLoading', true);
-              enemyArmies.pushObject(otherArmy);
-              AWE.GS.BattleManager.updateBattle(otherArmy.get('battle_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(battle) {
-                log('---> nach Battle loading');    
-                self.set('attackerBattleLoading', false);
-                log('---> participantsOfFactionWithArmy');    
-                var participants = battle.participantsOfFactionWithArmy(otherArmy);
-                AWE.Ext.applyFunction(participants, function(participant){
-                  var a = participant.get('army');
-                  if (a) {
-                    log('---> Army zu enemyArmies hinzufügen', a);    
-                    enemyArmies.pushObject(a);
-                  }
-                });
-                log('---> participantsOfFactionAgainstArmy');    
-                participants = battle.participantsOfFactionAgainstArmy(otherArmy);
-                AWE.Ext.applyFunction(participants, function(participant){
-                  var a = participant.get('army');
-                  if (a) {
-                    log('---> Army zu friendlyArmies hinzufügen', a);    
-                    friendlyArmies.pushObject(a);
-                  }
-                });
-              });     
             }
           });
         }
@@ -416,7 +386,3 @@ AWE.UI.Ember = (function(module) {
   return module;
     
 }(AWE.UI.Ember || {}));
-
-
-
-
