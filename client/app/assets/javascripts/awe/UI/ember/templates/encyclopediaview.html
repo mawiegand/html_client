@@ -30,6 +30,12 @@
       {{#if production}}
         <th>{{t building.production}}</th>
       {{/if}}
+      {{#if experienceProduction}}
+        <th>XP-Produktion</th>
+      {{/if}}
+      {{#if tradingCarts}}
+        <th>Karren</th>
+      {{/if}}
     </tr>
     {{#each stats}}
       <tr>
@@ -56,6 +62,16 @@
             {{#each productions}}
               <span {{bindAttr class="resourceType.symbolic_id :resource-icon"}}>&nbsp;</span> {{baseProduction}}
             {{/each}}
+          </td>
+        {{/if}}        
+        {{#if view.experienceProduction}}
+          <td class="number"> 
+            <span>&nbsp;</span> {{experienceProductions}}
+          </td>
+        {{/if}}        
+        {{#if view.tradingCarts}}
+          <td class="number"> 
+            {{tradingCarts}}
           </td>
         {{/if}}        
       </tr>

@@ -56,6 +56,11 @@ AWE.UI.Ember = (function(module) {
 		  return this.getPath('settlement.hashableTrainingQueues');
 		}.property('settlement', 'settlement.hashableTrainingQueues.changedAt').cacheable(),
 		
+    shouldDisplaySettlementSwitch: function() {
+      var settlement = this.get('settlement');
+      return settlement && settlement !== AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(settlement);
+    }.property('settlement.owner_id'),
+		
 	});
 
   /** 
@@ -134,6 +139,17 @@ AWE.UI.Ember = (function(module) {
       WACKADOO.presentModalDialog(changeDialog);
       event.preventDefault();
       
+      return false;
+    },
+    
+    invitationLinkPressed: function() {
+      
+      var mailWindow = window.open('mailto:?' +
+        encodeURI('subject=Einladung zu Wack-A-Doo&') + 
+        encodeURI('body=Spiele jetzt Wack-A-Doo:\n\n' + AWE.Config.PLAYER_INVITATION_BASE + this.getPath('settlement.regionInvitationCode')));
+      mailWindow.close();
+      
+      event.preventDefault();
       return false;
     },
             

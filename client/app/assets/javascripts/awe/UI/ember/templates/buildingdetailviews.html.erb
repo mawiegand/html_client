@@ -111,12 +111,18 @@
       {{/if}}
       {{#if building.buildingCategory}}<div class="building-category">{{t settlement.buildings.category}}: {{local building.buildingCategory.name}}</div>{{/if}}
       <b>{{t settlement.population}}:</b> {{building.population}}<br/>
+      {{#if building.experienceOrResourceProduction}}
+      <b>{{t building.produces}}:</b><br/>
+      {{/if}}
       {{#if building.productions}}
-        <b>{{t building.produces}}:</b><br/>
         {{#each building.productions}}
           <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
           {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{t general.perHour}} <br/>  
         {{/each}}
+      {{/if}}
+      {{#if building.experienceProduction}}
+          <span class="xp-icon" title="XP"}}>&nbsp;</span>
+          {{building.experienceProduction}} {{t general.perHour}} <br/>  
       {{/if}}
       
       {{#if building.capacity}}
@@ -189,49 +195,49 @@
         <b>{{t building.duration}}:</b> {{formatDuration building.conversionTime}}<br />
         <br/>
         
-        {{#if building.productionsNextLevel}}
+        {{#if building.converted.productions}}
           <b>{{t building.produces}}:</b><br/>
-          {{#each building.productionsNextLevel}}
+          {{#each building.converted.productions}}
             <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
             {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{t general.perHour}} <br/>  
           {{/each}}
         {{/if}}
         
-        {{#if building.capacityNextLevel}}
+        {{#if building.converted.capacity}}
           <b>{{t building.capacity}}:</b>
-          {{#each building.capacityNextLevel}}
+          {{#each building.converted.capacity}}
             <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
             {{capacity}} &nbsp;  
           {{/each}}<br/>
         {{/if}}
         
-        {{#if building.converted.productionBoniNextLevel}}
+        {{#if building.converted.productionBoni}}
           <b>{{t building.productionBoni}}:</b>
-          {{#each building.converted.productionBoniNextLevel}}
+          {{#each building.converted.productionBoni}}
             <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
             +{{bonus}}% &nbsp;  
           {{/each}}<br/>
         {{/if}}
   
         
-        {{#if building.converted.unlockedDiplomacyNextLevel}}
+        {{#if building.converted.unlockedDiplomacy}}
           <p><b>{{t building.info.unlockJoinAlliance}}</b></p>
         {{/if}}
-        {{#if building.converted.unlockedAllianceCreationNextLevel}}
+        {{#if building.converted.unlockedAllianceCreation}}
           <p><b>{{t building.info.unlockCreateAlliance}}</b></p>
         {{/if}}   
-        {{#if building.converted.unlockedPlayerToPlayerTradeNextLevel}}
+        {{#if building.converted.unlockedPlayerToPlayerTrade}}
           <p><b>{{t building.info.unlockTrade}}</b></p>
         {{/if}}    
-        {{#if building.converted.tradingCartsNextLevel}}
-          <p><b>{{t building.tradingCarts}}:</b> {{building.converted.tradingCartsNextLevel}}</p>
+        {{#if building.converted.tradingCarts}}
+          <p><b>{{t building.tradingCarts}}:</b> {{building.converted.tradingCarts}}</p>
         {{/if}} 
-        {{#if building.converted.commandPointsNextLevel}}
-          <p><b>{{t building.commandPoints}}:</b> {{building.converted.commandPointsNextLevel}}</p>
+        {{#if building.converted.commandPoints}}
+          <p><b>{{t building.commandPoints}}:</b> {{building.converted.commandPoints}}</p>
         {{/if}} 
       
-        {{#if building.converted.unlockedQueuesNextLevel}}
-          <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.converted.unlockedQueuesNextLevel}}{{local name}}, {{/each}}</p>
+        {{#if building.converted.unlockedQueues}}
+          <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.converted.unlockedQueues}}{{local name}}, {{/each}}</p>
         {{/if}}
       
         {{#if building.converted.speedupQueues}}
@@ -265,12 +271,20 @@
         <b>{{t building.duration}}:</b> {{formatDuration building.productionTimeOfNextLevel}}<br />
         <br/>
         
-        {{#if building.productionsNextLevel}}
+        {{#if building.experienceOrResourceProductionNextLevel}}
           <b>{{t building.produces}}:</b><br/>
+        {{/if}}
+        
+        {{#if building.productionsNextLevel}}
           {{#each building.productionsNextLevel}}
             <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
             {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{t general.perHour}} <br/>  
           {{/each}}
+        {{/if}}
+        
+        {{#if building.experienceProductionNextLevel}}
+          <span class="xp-icon" title="XP"}}>&nbsp;</span>
+          {{building.experienceProductionNextLevel}} {{t general.perHour}} <br/>  
         {{/if}}
         
         {{#if building.capacityNextLevel}}

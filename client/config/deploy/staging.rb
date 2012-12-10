@@ -4,3 +4,5 @@ role :db,  "test1.wack-a-doo.de", :primary => true        # This is where Rails 
 
 set :rails_env, 'staging'
 set :port, 5775
+
+set :branch,    "staging"

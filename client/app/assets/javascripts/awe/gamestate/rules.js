@@ -27,6 +27,7 @@ AWE.GS = (function(module) {
 		resource_types: null,
 		queue_types: null,
 		queue_categories: null,
+		alliance_max_members: 0,
 		
     getSettlementType: function(id) {
       var settlementType = this.get('settlement_types')[id];

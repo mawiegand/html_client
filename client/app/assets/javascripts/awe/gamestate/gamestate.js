@@ -116,7 +116,7 @@ AWE.GS = (
                   entity.init(entityData);
                   entity.set(this.typeName.toLowerCase(), this)
                 }
-                result[entity.get('id')] = entity;
+                result.push(entity); // cqn't use ids; because that assumes sparse arrays.
               }          
             }
             this.get(key).set('content', result);  

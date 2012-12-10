@@ -25,6 +25,12 @@
     <p> {{t alliance.founded }}: {{ creation }}</p>
     <p> {{t alliance.leader }}: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="alliance.leader" displayAlliance=false}}</p>
   </div>
+  {{#if alliance.invitation_code }}
+    <h2>Einladungslink</h2>
+    <p>Ladet neue Spieler direkt in das Allianzgebiet ein. Wenn sich ein neuer Spieler über diesen Link registriert, wird seine Hauptsiedlung in einer Region platziert, die von der Allianz beherrscht wird. Einfach markieren und kopieren oder per Email versenden.</p>
+    <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action invitationLinkPressed}}>Per Mail versenden</div>      
+    <p class="clearfix" {{action catchClick}}>{{ unbound AWE.Config.ALLIANCE_INVITATION_BASE }}{{ unbound alliance.invitation_code }}</p>
+  {{/if}}  
   {{#if alliance.description}}
     <div class="alliance-description">
       <h1>{{t alliance.description }}</h1>
@@ -52,6 +58,7 @@
 <script type="text/x-handlebars" data-template-name="alliance-member-list">
   <div class="alliance-member-list">
     <h1>{{t alliance.members }}</h1>
+    <p>{{alliance.membersCount}} von maximal {{maxMembers}}</p>
     <ul>
       {{#each characters}}
         {{view AWE.UI.Ember.AllianceMemberView tagName="li" characterBinding="this" allianceBinding="view.alliance"

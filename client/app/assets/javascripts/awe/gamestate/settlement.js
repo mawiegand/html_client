@@ -95,19 +95,33 @@ AWE.GS = (function(module) {
       }
     },
     
-    region: function() {
+    region: null,
+    regionIdObserver: function() {
       var regionId = this.get('region_id');
-      if (regionId != null) {
-        return AWE.Map.Manager.getRegion(regionId);
+      var self = this;
+      if (regionId) {
+        var region = AWE.Map.Manager.getRegion(regionId);
+        this.set('region', region);
+        if (!region) {
+          AWE.Map.Manager.fetchSingleRegionById(regionId, function(region) {
+            self.set('region', region);
+          });
+        }
       }
-      else {
-        return null;
-      }
-    }.property('region_id').cacheable(),
+    }.observes('region_id'),
     
     isOwn: function() {
       return this.get('owner_id') === module.CharacterManager.currentCharacter.getId();
     },
+    
+    isFortress: function() {
+      return this.get('type_id') === module.SETTLEMENT_TYPE_FORTRESS;
+    }.property('type_id').cacheable(),
+    
+    regionInvitationCode: function() {
+      var region = this.get('region');
+      return region ? region.invitationCode() : null;
+    }.property('region').cacheable(),
     
     garrison: function() {
       return module.ArmyManager.getArmy(this.get('garrison_id'));
@@ -329,6 +343,38 @@ AWE.GS = (function(module) {
       
       return foundSettlements;
     }
+    
+    that.getNextSettlementOfCharacter = function(settlement) {
+      if (!settlement) {
+        return null;
+      }
+      var settlementId = settlement.get('id');
+      var settlements  = AWE.GS.SettlementAccess.getEnumerableForOwner_id(settlement.get('owner_id')) || [];
+      var index        = -1;
+      var sorted       = settlements.sort(function(a,b) { return a.get('id') - b.get('id'); });
+      sorted.forEach(function(s, i) {
+        if (s.get('id') === settlementId) {
+          index = i;
+        }
+      });
+      return index < 0 ? null : sorted[(index+1)%sorted.length];
+    }    
+    
+    that.getPreviousSettlementOfCharacter = function(settlement) {
+      if (!settlement) {
+        return null;
+      }
+      var settlementId = settlement.get('id');
+      var settlements  = AWE.GS.SettlementAccess.getEnumerableForOwner_id(settlement.get('owner_id')) || [];
+      var index        = -1;
+      var sorted       = settlements.sort(function(a,b) { return a.get('id') - b.get('id'); });
+      sorted.forEach(function(s, i) {
+        if (s.get('id') === settlementId) {
+          index = i;
+        }
+      });
+      return index < 0 ? null : sorted[(index-1+sorted.length)%sorted.length];
+    }    
     
     that.getHomeBaseOfCharacter = function(character) {
       var locationId = character.get('base_location_id');

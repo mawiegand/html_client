@@ -70,7 +70,9 @@ AWE.Controller = (function(module) {
      * @function
      * @name AWE.Controller.SettlementController#setSettlementId */
     that.setSettlementId = function(settlementId) { 
+      log('PRESENT SETTLEMENT ID', that.settlementId);
       this.settlementId = settlementId; 
+      log('NEW SETTLEMENT ID', settlementId, that.settlementId);
     }
     
     /** set the id of the settlement to display by setting the location id.
@@ -156,6 +158,8 @@ AWE.Controller = (function(module) {
         outpost:  AWE.UI.Ember.OutpostView,
       };
       var viewClass = viewClasses[AWE.Config.MAP_LOCATION_TYPE_CODES[type]];
+
+      log('CREATE VIEW OF TYPE', viewClass, type, settlement.get('type_id'), settlement.get('id'));
       
       if (viewClass) {
         settlementScreen = viewClass.create({
@@ -195,11 +199,31 @@ AWE.Controller = (function(module) {
       this.visible = false;
     };
     
+    
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Actions
     //
     // /////////////////////////////////////////////////////////////////////// 
+    
+    that.previousSettlementPressed = function() {
+      var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
+      var previousSettlement = AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(settlement);
+      if (previousSettlement) {
+        log('PREVIOUS SETTLEMENT', previousSettlement.get('id'));
+        WACKADOO.activateSettlementController(previousSettlement);
+      }      
+    }
+    
+    that.nextSettlementPressed = function() {
+      var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId, that.settlementId);
+      var nextSettlement = AWE.GS.SettlementManager.getNextSettlementOfCharacter(settlement);
+      if (nextSettlement) {
+        log('NEXT SETTLEMENT', nextSettlement.get('id'));
+        WACKADOO.activateSettlementController(nextSettlement);
+      }      
+    }
+    
     
     that.slotClicked = function(slot) {
       that.view.set('selectedSlot', slot);
@@ -827,7 +851,7 @@ AWE.Controller = (function(module) {
       this.updateDebug();
       
       if (this.visible && !this.view && this.settlementId) {
-        log('APPEND', this.settlementId, this.settlement);
+        log('APPEND', this.settlementId);
         this.appendView();           
       }
       
@@ -840,10 +864,15 @@ AWE.Controller = (function(module) {
         // this is executed, in case the settlement is received from the 
         // server for the first time or the settlementId has been changed by 
         // this.setSettlementId(int).
-        var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
+        var settlement = AWE.GS.SettlementManager.getSettlement(this.settlementId);
         
-        if (this.view.get('settlement') != settlement) {
-          this.view.set('settlement', settlement);
+        if (this.view.get('settlement') !== settlement) {
+          if (settlement && this.view.getPath('settlement.type_id') !== settlement.get('type_id')) {
+            this.appendView();  // type may also have been switched, thus recreate the whole view
+          }
+          else {
+            this.view.set('settlement', settlement);
+          }
           log('SWITCHED BASE IN RUNLOOP TO', settlement);
         }
                 

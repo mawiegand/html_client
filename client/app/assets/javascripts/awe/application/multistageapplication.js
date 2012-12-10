@@ -77,7 +77,7 @@ AWE.Application = (function(module) {
       
       modalDialogs: null,
       
-      
+      lastClick: null,
 
       domElements: [], //< contains the list of dom elements that can also catch mouse events
   
@@ -230,18 +230,82 @@ AWE.Application = (function(module) {
         }  
       },
 
+      generateDoubleClickIfNeeded: function(evt) { 
+        log('entered click handler');
+        var presentScreenController = this.get('presentScreenController');
+
+        if (presentScreenController && presentScreenController.isScrolling()) {
+          log("ignored click --> presentScreenController.isScrolling() == true");
+          return ; // just ignore it here!
+        }
+        
+        if (this.get('isModal')) {
+          log("ignored click --> isModal == true");
+          return ;
+        }
+      
+        var allStages = this.get('allStages');
+        // TODO: can we use stage.mouseX here or should we better apply the stage-transformations to pageX?
+      
+        var target = null, relX, relY;
+  	    for (var layer=0; layer < allStages.length && !target; layer++) {
+  	      // targetLayer = layer;
+  	      if (allStages[layer].stage.mouseInBounds && !allStages[layer].transparent) {
+  	        var stage = allStages[layer].stage;
+  	        target = stage.getObjectUnderPoint(stage.mouseX, stage.mouseY); // TODO: don't use absolute evt.pageX here, right?!
+  	        relX= stage.mouseX;  // store coordinates in stage's local coordinate system
+  	        relY= stage.mouseY;
+  	      }
+  	    }
+
+        if (target) {
+          if (target && target.view && target.view.onDoubleClick) { // TODO: in our view layer: propagate clicks upwards along responder chain.
+            log('click on target', target.view, target.view.typeName())
+            if (target.view.enabled()) { 
+              log("click forwarded to target.view.onClick(..)");
+              target.view.onDoubleClick(evt); // TODO: I think this is wrong; we somehow need to get the relative coordinates in.
+            }
+            else {
+              log('click on disabled view.');
+            }
+          }
+          else if (target && target.onDoubleClick) {
+            log("click forwarded to target.onClick(..)");
+            target.onDoubleClick(evt);
+          }
+        }
+        else if (this.get('presentScreenController').onDoubleClick) {    // no view hit, let the event bubble to controller (TODO: make this a pattern through views and controllers, aka repsonder-chain)
+          this.get('presentScreenController').onDoubleClick(evt);
+        }
+        else {
+          log("click passed through all layers");
+          //this.sendEventToDom(evt);
+        }  
+      },
+
       /** passes a click in the browser window either to the view that was hit
        * or to the present screen controller that gets the chance to handle the
        * otherwise unhandled click. */
       handleMouseUp:  function(evt) { 
         log('HANDLE MOUSE UP');
+        
+        var now = (new Date()).getTime();
+        
         if (this.isCatchedByDomElement(evt.pageX, evt.pageY, evt.type)) {
           log("click ignored -- isCatchedByDomElement(...) == true");
           return;
         }
+        
         var presentScreenController = this.get('presentScreenController');
-        this.generateClickIfNeeded(evt);
-      
+        
+        if (this.get('lastClick') !== null && now - this.get('lastClick') <= AWE.Config.MAP_DBLCLK_MAX_TIME_FOR_DBLCLK) {
+          this.generateDoubleClickIfNeeded(evt);
+        }
+        else {
+          this.generateClickIfNeeded(evt);
+          this.set('lastClick', now);
+        }
+        
         // finally pass the mouse up event itself to controller, if it listens
         if (presentScreenController && presentScreenController.onMouseUp) {   
           presentScreenController.onMouseUp(evt);
@@ -506,9 +570,8 @@ AWE.Application = (function(module) {
             
             if (rootController.typeName == 'SettlementController' && controller.typeName == 'MapController') {
               var settlement = AWE.GS.SettlementManager.getSettlement(rootController.settlementId);
-              var node = settlement.get('region').node();
               if (!controller.selectedView() || (controller.selectedView().location && controller.selectedView().location() != settlement.get('location'))) {
-                controller.moveTo(node);
+                controller.centerSettlement(settlement);
               }
               controller.setSelectedSettlement(settlement);
             }

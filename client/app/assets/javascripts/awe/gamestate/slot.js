@@ -111,6 +111,14 @@ AWE.GS = (function(module) {
 		  return (this.get('levelAfterJobs') || 0) +1;
 		}.property('levelAfterJobs', 'level').cacheable(),
 
+    experienceOrResourceProduction: function() {
+      return this.get('productions') != null || this.get('experienceProduction') != null;
+    }.property('productions', 'experienceProduction').cacheable(),
+
+    experienceOrResourceProductionNextLevel: function() {
+      return this.get('productionsNextLevel') != null || this.get('experienceProductionNextLevel') != null;
+    }.property('productionsNextLevel', 'experienceProductionNextLevel').cacheable(),
+
 		productions: function() {
 		  var production            = this.getPath('buildingType.production');
 		  var settlementProductions = this.getPath('slot.settlement.resourceProductions');
@@ -125,6 +133,17 @@ AWE.GS = (function(module) {
 		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, nextLevel, settlementProductions) : null;
 		}.property('nextLevel', 'buildingType').cacheable(),
 		
+		experienceProduction: function() {
+		  var experienceProduction = this.getPath('buildingType.experience_production');
+		  var level                = this.get('level');
+		  return experienceProduction ? AWE.GS.Util.parseAndEval(experienceProduction, level) : null;
+		}.property('level', 'buildingType').cacheable(),
+
+		experienceProductionNextLevel: function() {
+      var experienceProduction = this.getPath('buildingType.experience_production');
+		  var nextLevel            = this.get('nextLevel');
+      return experienceProduction ? AWE.GS.Util.parseAndEval(experienceProduction, nextLevel) : null;
+		}.property('nextLevel', 'buildingType').cacheable(),		
 
 		capacity: function() {
 		  var capacity = this.getPath('buildingType.capacity');
@@ -182,7 +201,7 @@ AWE.GS = (function(module) {
 		productionTime: function() {
 		  log('PROD OF LEVEL ++++++++++++++++++++++++++++++++++');
 		  return this.calcProductionTime(this.get('level'));
-		}.property('level', 'buildingType.production_time', 'queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.	
+		}.property('level', 'buildingType.production_time', 'queue.speed').cacheable(),   
 		
 		productionTimeOfNextLevel: function() {
 		  log('PROD OF NEXT LEVEL +++++++++++++++++++++++++++++', this.get('nextLevel'));
@@ -200,7 +219,7 @@ AWE.GS = (function(module) {
         time += this.calcProductionTime(l);
       }
       return time;
-    }.property('levelAfterJobs', 'buildingType.production_time', 'queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.
+    }.property('levelAfterJobs', 'buildingType.production_time', 'queue.speed').cacheable(),  
      
     conversionTime: function() {
       var time = 0;
@@ -215,7 +234,15 @@ AWE.GS = (function(module) {
       // log('---> convertedLevel', convertedLevel);
       var speed = this.getPath('queue.speed');
       // log('---> speed', speed);
+      
+      if (!convertedBuilding || !convertedLevel) {
+        return null;
+      }
 
+      if (!convertedBuilding || !convertedLevel) {
+        return null;
+      }
+      
       for (var l = 1; l <= convertedLevel; l++) {
         var productionTime = convertedBuilding.getPath('buildingType.production_time');
         convertedTime += AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(productionTime), l) / speed
@@ -304,7 +331,7 @@ AWE.GS = (function(module) {
     }.property('buildingId', 'slot.settlement.enumerableSlots.@each.level').cacheable(),
     
     converted: function() {
-      var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(this.get('buildingId'));
+      var buildingType = this.get('buildingType');
       if (buildingType && buildingType.conversion_option && buildingType.conversion_option.building) {
         var convertedBuildingType = AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId(buildingType.conversion_option.building);
         convertedBuilding = module.Building.create({
@@ -316,13 +343,17 @@ AWE.GS = (function(module) {
       else {
         return null;
       }
-    }.property('buildingId', 'convertedLevel').cacheable(),
+    }.property('buildingType', 'convertedLevel').cacheable(),
     
     convertedLevel: function() {
-      var buildingType = AWE.GS.RulesManager.getRules().getBuildingType(this.get('buildingId'));
+      var buildingType = this.get('buildingType');
+      if (buildingType === undefined || buildingType === null || 
+          buildingType.conversion_option === undefined || buildingType.conversion_option === null) {
+        return null;
+      }
       var level = AWE.GS.Util.parseAndEval(buildingType.conversion_option.target_level_formula, this.get('levelAfterJobs'));
       return level;
-    }.property('buildingId', 'levelAfterJobs').cacheable(),
+    }.property('buildingType', 'levelAfterJobs').cacheable(),
     
     unmetRequirementsOfConversionBuilding: function() {
       var settlement = this.getPath('slot.settlement');

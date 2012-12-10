@@ -36,6 +36,7 @@ AWE.Map = (function(module) {
     var _fortress_id = spec.fortress_id || 0;
     var _settlementLevel = spec.settlement_level || 0;
     var _settlementScore = spec.settlement_score || 0;
+    var _invitationCode = spec.invitation_code || 0;
         
     var _node = null;
     
@@ -72,6 +73,8 @@ AWE.Map = (function(module) {
     
     /** sets the node the region is associated with. */
     that.setNode = function(node) { _node = node; _nodeId = node.id(); }
+    
+    that.nodeId = function() { return _nodeId; }
     
     /** returns the name of the character owning the region (fortress). */
     that.ownerName = function() { 
@@ -110,6 +113,9 @@ AWE.Map = (function(module) {
     
     /** returns the location id of the fortress. */
     that.fortressLocationId = function() { return _fortress_id; }
+    
+    /** returns the invitation code of the region. */
+    that.invitationCode = function() { return _invitationCode; }
     
     /** returns the type of the terrain of that region. Later terrain types should
      * be defined in the game rules. */
@@ -181,6 +187,7 @@ AWE.Map = (function(module) {
       _terrain_id = region.terrainId() || 0;
       _fortress_level = region.fortressLevel() || 0;    
       _fortress_id = region.fortressLocationId() || 0;    
+      _invitationCode = region.invitationCode() || 0;    
       
       module.Manager.addRegion(this); // just to be sure it's under control of the manager
       

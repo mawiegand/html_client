@@ -27,10 +27,14 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     startupArguments: null,
     
-    mapScreenController: null,
-    allianceScreenController: null,  
-    settlementScreenController: null,
-    messageCenterController: null,
+    mapScreenController:        null,
+    allianceScreenController:   null,  
+    messageCenterController:    null,
+
+    settlementScreenController: null,    
+    baseScreenController:       null,
+    fortressScreenController:   null,
+    outpostScreenController:    null,
     
     sessionEnded: false,
   
@@ -71,7 +75,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     showWelcomeDialog: function() {
       var dialog = AWE.UI.Ember.WelcomeDialog.create({
         okPressed:    function() {
-          
           AWE.GS.TutorialStateManager.checkForNewQuests();
           this.destroy();
         },            
@@ -85,7 +88,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     showQuestListDialog: function() {
-      // log('-----> showQuestListDialog')
       var self = this;
       var dialog = AWE.UI.Ember.QuestListView.create({
         tutorialState: AWE.GS.TutorialStateManager.getTutorialState(),
@@ -163,7 +165,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_BOSH      = "http://"+base+"/http-bind/";
       
       var character = AWE.GS.player && AWE.GS.player.get('currentCharacter');
-      var beginner  = character && character.get('login_count') <= 1;      
+      var beginner  = character && character.get('login_count') <= 1;    
+      var openPane  = character && character.get('login_count') <= 3;  // whether or not to open a chat pane initially
 
       // Define groupchats here
       if (beginner) {
@@ -207,39 +210,40 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             
       if (AWE.Config.IN_DEVELOPMENT_MODE) {
         log('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
-        launchMini(!beginner, true, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
+        launchMini(!beginner, openPane, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
       }
       else {
-        launchMini(!beginner, true, base, identifier, accessToken);
+        launchMini(!beginner, openPane, base, identifier, accessToken);
       }
 
-	  if (!reconnect) {
-        this.addDomElement(('.jm_prompt'), false);      
-        this.addDomElement(('.jm_starter'), false);
-        this.addDomElement(('.jm_pane'), false);
-        this.addDomElement(('.jm_chat-content'), false);
-        this.addDomElement(('.jm_conversation'), false);
-        this.addDomElement(('.jm_conversations'), false)
-        this.addDomElement(('.jm_roster'), false)
-        this.addDomElement(('.jm_send-messages'), false)
-        this.addDomElement(('.jm_chat-content form'), false);
-	  }
+  	  if (!reconnect) {
+          this.addDomElement(('.jm_prompt'), false);      
+          this.addDomElement(('.jm_starter'), false);
+          this.addDomElement(('.jm_pane'), false);
+          this.addDomElement(('.jm_chat-content'), false);
+          this.addDomElement(('.jm_conversation'), false);
+          this.addDomElement(('.jm_conversations'), false)
+          this.addDomElement(('.jm_roster'), false)
+          this.addDomElement(('.jm_send-messages'), false)
+          this.addDomElement(('.jm_chat-content form'), false);
+  	  }
     },   
     
     showStartupDialogs: function() {
+      
+      if (!AWE.GS.player.getPath('currentCharacter.login_count') || AWE.GS.player.getPath('currentCharacter.login_count') <= 1) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
+        this.showWelcomeDialog();
+      }
+      else {
+        this.showAnnouncement();
+      }
       
       if (AWE.GS.player.currentCharacter && !AWE.GS.player.currentCharacter.get('reached_game')) {
         // track conversion: character reached the game (and pressed a button!)
         var action = AWE.Action.Fundamental.createTrackCharacterConversionAction("reached_game");
         action.send();   
       }  
-            
-      if (AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') <= 1) {
-        this.showWelcomeDialog();
-      }
-      else {
-        this.showAnnouncement();
-      }
+      
     },
   
     /** loads and initializes needed modules. 
@@ -337,7 +341,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           throw "ABORT Due to Failure to load rules.";
         }
       });
-            
+     
       _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
       AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
         if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.getCurrentCharacter()) {
@@ -387,6 +391,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               throw "ABORT Due to Failure to load player's resource pool.";
             }
           });
+
+          // var startupArguments = JSON.parse(self.get('startupArguments'));
+          // if (startupArguments.retention != null) {
+            // var action = AWE.Action.Fundamental.redeemretentionreward(startupArguments.retention);
+            // action.send();   
+          // }  
 
           assetLoaded();
         }
@@ -450,15 +460,43 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     //
     // /////////////////////////////////////////////////////////////////////// 
     
+    // it's not necessary to have three different controllers for the different
+    // settlement types, as the settlement controller will handle a switch
+    // from a settlement of one type to a settlement of another type gracefully.
+    // But there is one benefit of using different controllers: it allows
+    // the user to switch faster between different settlements, as the most time
+    // is needed to recreate a view for another type. Having three different 
+    // controllers (with the correct view already associated and created), 
+    // completely removes the need for recreating the view.
+    //
+    // a small glitch: when you enter an outpost from the map, the base-controller
+    // is instantiated presently. on your first switch to your base you will
+    // see a short flicker because the view has to be recreated with the correct
+    // type. this should be improved later.
+    activateSettlementController: function(settlement) {
+      if (settlement.get('type_id') === AWE.GS.SETTLEMENT_TYPE_FORTRESS) {
+        log('ACTIVATE FORTRESS CONTROLLER');
+        this.activateFortressController({ settlementId: settlement.get('id')});
+      }
+      else if (settlement.get('type_id') === AWE.GS.SETTLEMENT_TYPE_OUTPOST) {
+        log('ACTIVATE OUTPOST CONTROLLER');
+        this.activateOutpostController({ settlementId: settlement.get('id')});
+      }
+      else {
+        log('ACTIVATE BASE CONTROLLER');
+        this.activateBaseController({ settlementId: settlement.get('id')});
+      }
+    },
+    
     activateBaseController: function(reference) {
       reference = reference ||  { locationId: AWE.GS.player.getPath('currentCharacter.base_location_id') };
-      var baseController = this.get('settlementScreenController');
+      var baseController = this.get('baseScreenController');
       if (!baseController) {
         baseController = AWE.Controller.createSettlementController('#layers');
-        this.set('settlementScreenController', baseController);
+        this.set('baseScreenController', baseController);
       }
       if (reference.settlementId !== undefined) {
-        baseController.setSettlementId(reference.baseId);
+        baseController.setSettlementId(reference.settlementId);
       }
       else if (reference.locationId !== undefined) {
         baseController.setLocationId(reference.locationId);
@@ -471,14 +509,15 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
    
     baseControllerActive: function() {
-      return this.get('presentScreenController') === this.get('settlementScreenController');
+      return (this.get('presentScreenController') === this.get('outpostScreenController') && this.get('outpostScreenController')) ||(this.get('presentScreenController') === this.get('baseScreenController') && this.get('baseScreenController')) || (this.get('presentScreenController') === this.get('fortressScreenController') && this.get('fortressScreenController'));
     },
+      
        
     activateFortressController: function(reference) {
-      var fortressController = this.get('settlementScreenController');
+      var fortressController = this.get('fortressScreenController');
       if (!fortressController) {
         fortressController = AWE.Controller.createSettlementController('#layers');
-        this.set('settlementScreenController', fortressController);
+        this.set('fortressScreenController', fortressController);
       }
       if (reference.settlementId !== undefined) {
         fortressController.setSettlementId(reference.settlementId);
@@ -494,7 +533,27 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }
       this.setScreenController(fortressController);
     },   
-   
+    
+    activateOutpostController: function(reference) {
+      var outpostController = this.get('outpostScreenController');
+      if (!outpostController) {
+        outpostController = AWE.Controller.createSettlementController('#layers');
+        this.set('outpostScreenController', outpostController);
+      }
+      if (reference.settlementId !== undefined) {
+        outpostController.setSettlementId(reference.settlementId);
+      }
+      else if (reference.locationId !== undefined) {
+        outpostController.setLocationId(reference.locationId);
+      }
+      else if (reference.node !== undefined) {
+        outpostController.setNode(reference.node);
+      }
+      else {
+        log('ERROR: no outpost to enter specified.')
+      }
+      this.setScreenController(outpostController);
+    },   
    
     activateMessagesController: function(args) {
       args = args || {};
@@ -560,6 +619,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;  // TODO: This is a hack, should go to settings.
       AWE.Settings.signin_with_client_id = args.client_id || '';   
       AWE.Settings.referer = args.referer;
+      AWE.Settings.playerInvitation = args.playerInvitation;
+      AWE.Settings.allianceInvitation = args.allianceInvitation;
+      
+      log('SETTINGS', AWE.Settings);
             
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,

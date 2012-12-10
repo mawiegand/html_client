@@ -99,6 +99,7 @@ AWE.UI = (function(module) {
       _baseImage.initWithControllerAndImage(controller, baseImage);
       _baseImage.setFrame(AWE.Geometry.createRect(0, 9, 96, 96));
       _baseImage.onClick = that.onClick;
+      _baseImage.onDoubleClick = that.onDoubleClick;
       _baseImage.onMouseOver = that.onMouseOver;
       _baseImage.onMouseOut = that.onMouseOut;
       this.addChild(_baseImage);      
@@ -121,6 +122,7 @@ AWE.UI = (function(module) {
         
         _stanceView.setFrame(AWE.Geometry.createRect(-6, -7, 96, 96));
         _stanceView.onClick = that.onClick;
+        _stanceView.onDoubleClick = that.onDoubleClick;
         _stanceView.onMouseOver = that.onMouseOver;
         _stanceView.onMouseOut = that.onMouseOut;
         this.addChild(_stanceView);        
@@ -476,6 +478,7 @@ AWE.UI = (function(module) {
         _battleView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage('map/army/battle'));
         _battleView.setFrame(AWE.Geometry.createRect(16, -50, 65, 65));
         _battleView.onClick = that.onClick;
+        _battleView.onDoubleClick = that.onDoubleClick;
         _battleView.onMouseOver = that.onMouseOver;
         _battleView.onMouseOut = that.onMouseOut;
         this.addChildAt(_battleView,0);
@@ -504,6 +507,7 @@ AWE.UI = (function(module) {
         newAnimation.snapToPixel = true;
         newAnimation.setFrame(AWE.Geometry.createRect(-23, -35, 128, 128));
         newAnimation.onClick = that.onClick;
+        newAnimation.onDoubleClick = that.onDoubleClick;
         newAnimation.onMouseOver = that.onMouseOver;
         newAnimation.onMouseOut  = that.onMouseOut;
         if (_animation) {
@@ -557,6 +561,10 @@ AWE.UI = (function(module) {
    
     that.onClick = function(evt) {
       my.controller.viewClicked(that);
+    };
+    
+    that.onDoubleClick = function(evt) {
+      my.controller.armyInfoButtonClicked(_army);
     };
     
     that.onMouseOver = function(evt){ 

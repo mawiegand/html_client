@@ -172,8 +172,8 @@ AWE.UI = (function(module) {
         _inspectorFrame.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/inspector/frame"));
         _inspectorFrame.setFrame(AWE.Geometry.createRect(184, 0, 128, 128));
         _inspectorFrame.onClick = function() { 
-          my.controller.moveTo(AWE.Map.Manager.getLocation(_army.get('location_id')));
-        };  
+          that.onCenterButtonClick();
+        };
         this.addChild(_inspectorFrame);
       }      
       
@@ -215,9 +215,9 @@ AWE.UI = (function(module) {
           _stanceView.initWithControllerAndImage(my.controller, stanceImage);
           _stanceView.setFrame(AWE.Geometry.createRect(186 + offX, 4 + offY, 96, 96));
           //_stanceView.onClick = that.onClick;
-          _stanceView.onClick = function() {
-            my.controller.moveTo(AWE.Map.Manager.getLocation(_army.get('location_id')));
-          };  
+          _stanceView.onClick = function() { 
+            that.onCenterButtonClick();
+          };
           _stanceView.onMouseOver = that.onMouseOver;
           _stanceView.onMouseOut = that.onMouseOut;
           this.addChild(_stanceView);
@@ -293,25 +293,44 @@ AWE.UI = (function(module) {
                                         _army.get('mode') === 0);
       }
 
-/*
+
       if (!_prevButtonView && isOwnArmy) {
         // button unten
         _prevButtonView = AWE.UI.createButtonView();
-        _prevButtonView.initWithControllerTextAndImage(my.controller, '<<', AWE.UI.ImageCache.getImage("map/button1"));
+        _prevButtonView.initWithControllerTextAndImage(my.controller, '<<', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _prevButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         _prevButtonView.setFrame(AWE.Geometry.createRect(180, 92, 36, 36));
+        _prevButtonView.onClick = function() {
+           that.onPreviousArmyButtonClick(_army) 
+        };
         this.addChild(_prevButtonView);
+      }
+      else if (_prevButtonView && !isOwnArmy) {
+        this.removeChild(_prevButtonView);
+        _prevButtonView = null;
       }
   
       if (!_nextButtonView && isOwnArmy) {
         _nextButtonView = AWE.UI.createButtonView();
-        _nextButtonView.initWithControllerTextAndImage(my.controller, '>>', AWE.UI.ImageCache.getImage("map/button1"));
+        _nextButtonView.initWithControllerTextAndImage(my.controller, '>>', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _nextButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
         _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
+        _nextButtonView.onClick = function() {
+           that.onNextArmyButtonClick(_army) 
+        };
         this.addChild(_nextButtonView);
-      }*/
+      }
+      else if (_nextButtonView && !isOwnArmy) {
+        this.removeChild(_nextButtonView);
+        _nextButtonView = null;
+      }      
     }
     
-  //  that.onInventoryButtonClick = function() { log('inventory button clicked'); }
-    that.onChangeArmyButtonClick = function(army) { log('inventory button clicked'); }
+//  that.onInventoryButtonClick = function() { log('inventory button clicked'); }
+    that.onChangeArmyButtonClick   = function(army) { log('inventory button clicked'); }
+    that.onPreviousArmyButtonClick = function(army) { log('previous army button clicked'); }
+    that.onNextArmyButtonClick     = function(army) { log('next army button clicked'); }
+    that.onCenterButtonClick       = function(army) { log('center button clicked'); }
         
     that.updateView = function() {
       that.recalcView();      

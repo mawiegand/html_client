@@ -62,7 +62,7 @@ AWE.UI = (function(module) {
         my.amountView = AWE.UI.createLabelView();
         my.amountView.initWithControllerAndLabel(my.controller);
         my.amountView.setTextAlign("left");
-        my.amountView.setFont("16px Arial");
+        my.amountView.setFont("bold 16px Arial");
         my.amountView.setColor('rgb(255,255,255)');
         my.amountView.setFrame(AWE.Geometry.createRect(38, 3, 80, 16));      
         my.container.addChild(my.amountView.displayObject());
@@ -78,7 +78,7 @@ AWE.UI = (function(module) {
         my.rateView.initWithControllerAndLabel(my.controller);
         my.rateView.setTextAlign("right");
         my.rateView.setFont("12px Arial");
-        my.rateView.setColor('rgb(200,200,200)');
+        my.rateView.setColor('rgb(255,255,255)');
         my.rateView.setFrame(AWE.Geometry.createRect(100, 7, 57, 12));      
         my.container.addChild(my.rateView.displayObject());
         my.rateView.onClick = function() { 
@@ -93,7 +93,7 @@ AWE.UI = (function(module) {
         my.capacityLabelView.initWithControllerAndLabel(my.controller);
         my.capacityLabelView.setTextAlign("left");
         my.capacityLabelView.setFont("12px Arial");
-        my.capacityLabelView.setColor('rgb(200,200,200)');
+        my.capacityLabelView.setColor('rgb(255,255,255)');
         my.capacityLabelView.setFrame(AWE.Geometry.createRect(38, 21, 40, 12));      
         my.capacityLabelView.setText('MAX:');
         my.container.addChild(my.capacityLabelView.displayObject());
@@ -109,7 +109,7 @@ AWE.UI = (function(module) {
         my.capacityView.initWithControllerAndLabel(my.controller);
         my.capacityView.setTextAlign("left");
         my.capacityView.setFont("12px Arial");
-        my.capacityView.setColor('rgb(200,200,200)');
+        my.capacityView.setColor('rgb(255,255,255)');
         my.capacityView.setFrame(AWE.Geometry.createRect(70, 21, 80, 12));      
         my.container.addChild(my.capacityView.displayObject());
         my.capacityView.onClick = function() { 
@@ -160,7 +160,7 @@ AWE.UI = (function(module) {
       }
       
       if (changed) {
-        log(">> NEED TO UPDATE BUBBLE DUE TO CHANGED RESOURCE PRODUCTION: " + my.resourceName);
+       // log(">> NEED TO UPDATE BUBBLE DUE TO CHANGED RESOURCE PRODUCTION: " + my.resourceName);
         this.setNeedsUpdate();
       }
       _super.updateIfNeeded();

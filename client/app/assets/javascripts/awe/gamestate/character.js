@@ -57,8 +57,21 @@ AWE.GS = (function(module) {
     
     frog_amount: 0,
     premium_expiration: null,
+    login_count: 0,
     
     resourcePool: null,
+    
+    victories: 0,
+    defeats: 0,
+    
+    exp_production_rate_zero: function() {
+      log('---->',this.get('exp_production_rate'));
+      return !((this.get('exp_production_rate') || 0) > 0);
+    }.property('exp_production_rate').cacheable(),
+    
+    battle_count: function() {
+      return (this.get('victories') || 0) + (this.get('defeats') || 0);
+    }.property('victories', 'defeats').cacheable(),
     
     isPlatinumActive: function() {
       var expiration = this.get('premium_expiration');
@@ -344,7 +357,14 @@ AWE.GS = (function(module) {
         return this.updateCharacter(currentCharacter.get('id'), updateType, callback);
       }
       else { // no current character, need to fetch self
-        var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/self?create_if_new=true&client_id=' + AWE.Settings.signin_with_client_id;
+        var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/self?create_if_new=true&client_id=' + AWE.Settings.signin_with_client_id;
+        if (AWE.Settings.playerInvitation) {
+          url += '&player_invitation=' + AWE.Settings.playerInvitation;
+        }
+        if (AWE.Settings.allianceInvitation) {
+          url += '&alliance_invitation=' + AWE.Settings.allianceInvitation;
+        }
+        log('SIGNUP URL', url, 'SETTINGS', AWE.Settings);
         return my.fetchEntitiesFromURL(
           url, 
           my.runningUpdatesPerId, 

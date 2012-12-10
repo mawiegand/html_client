@@ -12,20 +12,56 @@ AWE.UI.Ember = (function(module) {
   module.BattleDialog = module.Dialog.extend({
     templateName: 'battle-dialog',
     
+    battle:                    null,
+    timer:                     null,
+    
+    participantsOwnFaction:   'battle.participantsOwnFaction',
+    participantsOtherFaction: 'battle.participantsOtherFaction',
+
+    ownFactionBinding:        'battle.ownFaction',
+    otherFactionBinding:      'battle.otherFaction',
+        
+ 
     init: function() {
       this._super();      
     },
+    
+    didInsertElement: function() {
+      this.startTimer();
+    },
+    
+    willDestroyElement: function() {
+      this.stopTimer();
+    },
 
-    battle: null,
-    participantsOwnFaction:   'battle.participantsOwnFaction',
-    participantsOtherFaction: 'battle.participantsOtherFaction',
+
+    startTimer: function() {
+      var timer = this.get('timer');
+      if (!timer) {
+        timer = setInterval((function(self) {
+          return function() {
+            self.updateBattle();
+          };
+        }(this)), 1000*30);  // update every 30 seconds
+        this.set('timer', timer);
+      }
+    },
+
+    stopTimer: function() {
+      var timer = this.get('timer');
+      if (timer) {
+        clearInterval(timer);
+        this.set('timer', null);
+      }
+    },
+        
     
     ratioLengthOwn: function(){
-      return 'width: ' + Math.round(780 * this.getPath('battle.ratio')) + 'px;';
+      return 'width: ' + Math.round(780 * (this.getPath('battle.ratio') || 0)) + 'px;';
     }.property('battle.ratio').cacheable(),
 
     ratioLengthOther: function(){
-      return 'width: ' + Math.round(780 * (1 - this.getPath('battle.ratio'))) + 'px;';
+      return 'width: ' + Math.round(780 * (1 - (this.getPath('battle.ratio') || 0))) + 'px;';
     }.property('battle.ratio').cacheable(),
 
     message: function() {
@@ -47,7 +83,15 @@ AWE.UI.Ember = (function(module) {
       else {
         return AWE.I18n.lookupTranslation('battle.messages.other');
       }
-    }.property('battle').cacheable(),
+    }.property('battle.ratio').cacheable(),
+    
+    updateBattle: function() {
+      var battleId = this.getPath('battle.id');
+      if (battleId) {
+        AWE.GS.BattleManager.updateBattle(battleId);    
+      }  
+    },
+    
   });
   
   module.BattleParticipantView = module.Dialog.extend({
@@ -146,10 +190,21 @@ AWE.UI.Ember = (function(module) {
             }
           });
         }
-        
-        if (targetArmy.get('garrison') ||
-            targetArmy.get('isDefendingFortress') ||
-            targetArmy.factionContainsGarrison()) {
+        else if (targetArmy.get('garrison') || targetArmy.factionContainsGarrison()) {
+          var otherArmies = AWE.GS.ArmyManager.getArmiesAtLocation(army.get('location_id'));
+          AWE.Ext.applyFunctionToHash(otherArmies, function(otherArmyId, otherArmy){
+            if (army != otherArmy &&
+                targetArmy != otherArmy &&
+                !otherArmy.get('isFighting') &&
+                !self.factionContainsArmyOf(friendlyArmies, otherArmy.get('owner_id')) &&
+                (otherArmy.get('isDefendingFortress') || otherArmy.get('garrison'))) {
+              enemyArmies.pushObject(otherArmy);
+            }
+          });
+        }
+        else if (targetArmy.get('isDefendingFortress') &&
+            !targetArmy.get('isFighting') &&
+            targetArmy.sameAllianceAs(army.get('location'))) {
           var otherArmies = AWE.GS.ArmyManager.getArmiesAtLocation(army.get('location_id'));
           AWE.Ext.applyFunctionToHash(otherArmies, function(otherArmyId, otherArmy){
             if (army != otherArmy &&
@@ -331,7 +386,3 @@ AWE.UI.Ember = (function(module) {
   return module;
     
 }(AWE.UI.Ember || {}));
-
-
-
-

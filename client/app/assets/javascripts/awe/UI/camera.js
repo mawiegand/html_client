@@ -225,87 +225,78 @@ AWE.UI = (function(module) {
 			return that.windowSize().width / _getCurrentViewport().size.width;
 		};
 
-		that.onMouseUp = function(event) {
-			var now = (new Date()).getTime();
-			if (_lastClick !== undefined &&
-				now - _lastClick <= _maxTimeForDoubleClick &&
-				!that.isMoving()
-			) {
-				//generate model point
-				var p = _rootController.vc2mc(AWE.Geometry.createPoint(event.pageX, event.pageY));
-				//get node[s]
-				var node = AWE.Map.getNodeThatContainsPoint(
-					AWE.Map.Manager.rootNode(),
-					p,
-					_rootController.level()
-				);
+		that.onDoubleClick = function(event) {
+			//generate model point
+			var p = _rootController.vc2mc(AWE.Geometry.createPoint(event.pageX, event.pageY));
+			//get node[s]
+			var node = AWE.Map.getNodeThatContainsPoint(
+				AWE.Map.Manager.rootNode(),
+				p,
+				_rootController.level()
+			);
 
-				//if there is no node there just return
-				if (node == null) return;
+			//if there is no node there just return
+			if (node == null) return;
 
-				var nodes = AWE.Map.getNodesInAreaAtLevel(
-					AWE.Map.Manager.rootNode(), 
-					_rootController.vc2mc(
-						AWE.Geometry.createRect(
-							event.pageX-_crossClickSize/2.0,
-							event.pageY-_crossClickSize/2.0,
-							_crossClickSize,
-							_crossClickSize
-						)
-					),
-					_rootController.level(), 
-					false, //only completly inside
-					true //force recalc
-				);
+			var nodes = AWE.Map.getNodesInAreaAtLevel(
+				AWE.Map.Manager.rootNode(), 
+				_rootController.vc2mc(
+					AWE.Geometry.createRect(
+						event.pageX-_crossClickSize/2.0,
+						event.pageY-_crossClickSize/2.0,
+						_crossClickSize,
+						_crossClickSize
+					)
+				),
+				_rootController.level(), 
+				false, //only completly inside
+				true //force recalc
+			);
 
-				//detected a click on a cross section
-				if (nodes.length < 3) {
-					nodes = [node];
-				}
-
-				//get the frame
-				var nodeFrame = that.getResultingFrame(nodes,true);
-
-				if (nodeFrame === null || nodeFrame === undefined) {
-					return;
-				}
-
-				if (_lastPanEndViewport !== undefined &&
-					_lastPanEndViewport.equals(_rootController.viewport(), _framePrecision) && 
-					_nodesEqual(_lastNodes, nodes) &&
-					//_scaleToScreen(nodeFrame).equals(_rootController.viewport()) &&
-					_lastScale !== undefined ) {
-
-					//calculate current center
-					var curr = _getCurrentViewport();
-					var center = AWE.Geometry.createPoint(
-						curr.origin.x + curr.size.width/2,
-						curr.origin.y + curr.size.height/2
-					);
-					//create new frame according to center and old scale and move there
-					that.moveTo(
-						AWE.Geometry.createRect(
-							center.x - _lastScale.width/2,
-							center.y - _lastScale.height/2,
-							_lastScale.width,
-							_lastScale.height
-						), 
-						false);
-				} else {
-					if (_lastScale === undefined ||
-						//_lastScale.area() > nodeFrame.area() 
-						_getCurrentViewport().size.area() - _scaleToScreen(nodeFrame).size.area() > _framePrecision
-					) {
-						_lastScale = _rootController.viewport().size.copy();	
-					}
-					_lastNodes = nodes;
-					_cacheLastViewport = true;
-					that.moveTo(nodeFrame, false);
-				}
-
-
+			//detected a click on a cross section
+			if (nodes.length < 3) {
+				nodes = [node];
 			}
-			_lastClick = now;
+
+			//get the frame
+			var nodeFrame = that.getResultingFrame(nodes,true);
+
+			if (nodeFrame === null || nodeFrame === undefined) {
+				return;
+			}
+
+			if (_lastPanEndViewport !== undefined &&
+				_lastPanEndViewport.equals(_rootController.viewport(), _framePrecision) && 
+				_nodesEqual(_lastNodes, nodes) &&
+				//_scaleToScreen(nodeFrame).equals(_rootController.viewport()) &&
+				_lastScale !== undefined ) {
+
+				//calculate current center
+				var curr = _getCurrentViewport();
+				var center = AWE.Geometry.createPoint(
+					curr.origin.x + curr.size.width/2,
+					curr.origin.y + curr.size.height/2
+				);
+				//create new frame according to center and old scale and move there
+				that.moveTo(
+					AWE.Geometry.createRect(
+						center.x - _lastScale.width/2,
+						center.y - _lastScale.height/2,
+						_lastScale.width,
+						_lastScale.height
+					), 
+					false);
+			} else {
+				if (_lastScale === undefined ||
+					//_lastScale.area() > nodeFrame.area() 
+					_getCurrentViewport().size.area() - _scaleToScreen(nodeFrame).size.area() > _framePrecision
+				) {
+					_lastScale = _rootController.viewport().size.copy();	
+				}
+				_lastNodes = nodes;
+				_cacheLastViewport = true;
+				that.moveTo(nodeFrame, false);
+			}
 		};
 
 		/**

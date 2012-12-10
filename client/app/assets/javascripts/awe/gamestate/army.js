@@ -37,12 +37,33 @@ AWE.GS = (function(module) {
     alliance_id: null,
     alliance_tag: null,
     
+    ap_seconds_per_point: null,
     ap_next: null,
     ap_max: null,
     ap_present: null,
-    ap_seconds_per_point: null,
+    ap_present_old: null,
+    apObserver: ((function() {
+      var tmpValue = null;
+      return function() {
+        var ap = this.get('ap_present');
+        this.set('ap_present_old', tmpValue);
+        tmpValue = ap;
+        log('U ARMY AP', ap);
+      };
+    })()).observes('ap_present'),
     
     exp: null,
+    oldExp: null,
+    expObserver: ((function() {
+      var tmpValue = null;
+      return function() {
+        var exp = this.get('exp');
+        this.set('oldExp', tmpValue);
+        tmpValue = exp;
+        log('U ARMY EXP', exp);
+      };
+    })()).observes('exp'),
+    
     rank: null,
     npc: null,
     
@@ -93,7 +114,7 @@ AWE.GS = (function(module) {
         })
       }
       return participant;
-    }.property('battle.participants.content').cacheable(),
+    }.property('battle_id', 'battle.participants.content').cacheable(),
 
     battle_retreat: false,
     
@@ -256,6 +277,15 @@ AWE.GS = (function(module) {
       }
       return false;
     },
+    
+    sameAllianceAs: function(location) {
+      var armyAllianceId = this.get('alliance_id');
+      var locationAllianceId = location.allianceId();
+      
+      return armyAllianceId != null && armyAllianceId > 0 &&
+             locationAllianceId != null && locationAllianceId > 0 &&
+             armyAllianceId == locationAllianceId;
+    },
   });     
 
     
@@ -297,6 +327,42 @@ AWE.GS = (function(module) {
     }
     that.getArmiesOfCharacter = function(id) { 
       return AWE.GS.ArmyAccess.getAllForOwner_id(id)
+    }   
+    
+    that.getNextArmyOfCharacter = function(army) {
+      if (!army) {
+        return null;
+      }
+      var armyId = army.get('id');
+      var armies = AWE.GS.ArmyAccess.getEnumerableForOwner_id(army.get('owner_id')) || [];
+      var index = -1;
+      var filtered = armies.filter(function(a) {
+        return !a.isGarrison();
+      });
+      filtered.forEach(function(a, i) {
+        if (a.get('id') == armyId) {
+          index = i;
+        }
+      });
+      return index < 0 ? null : filtered[(index+1)%filtered.length];
+    }
+    
+    that.getPreviousArmyOfCharacter = function(army) {
+      if (!army) {
+        return null;
+      }
+      var armyId = army.get('id');
+      var armies = AWE.GS.ArmyAccess.getEnumerableForOwner_id(army.get('owner_id')) || [];
+      var index = -1;
+      var filtered = armies.filter(function(a) {
+        return !a.isGarrison();
+      });
+      filtered.forEach(function(a, i) {
+        if (a.get('id') == armyId) {
+          index = i;
+        }
+      });
+      return index < 0 ? null : filtered[(index-1+filtered.length)%filtered.length];
     }    
     
     that.lastUpdateForFortress = function(regionId) {

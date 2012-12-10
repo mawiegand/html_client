@@ -5958,7 +5958,7 @@ var MINI_GROUPCHATS				= [];
 var MINI_SUGGEST_CHATS			= [];
 var MINI_SUGGEST_GROUPCHATS		= [];
 var MINI_SUGGEST_PASSWORDS		= [];
-var MINI_PASSWORDS				= [];
+var MINI_PASSWORDS	  			= [];
 var MINI_RESOURCE				  = JAPPIX_RESOURCE + ' Mini';
 var MINI_ERROR_LINK				= 'http://forum.uga-agga.de/bugs-feedback-f237/';
 
@@ -6834,7 +6834,8 @@ function updateOverflowMini() {
 		
 		// Show first visible chats
 		var index_visible = number_visible - 1;
-		jQuery('#jappix_mini div.jm_conversation:gt(' + index_visible + '):visible').hide();
+	  jQuery('#jappix_mini div.jm_conversation:gt(' + index_visible + '):visible').hide();
+		
 		
 		// Close the opened chat
 		if(jQuery('#jappix_mini div.jm_conversation:hidden a.jm_pane.jm_clicked').size())

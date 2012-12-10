@@ -45,6 +45,18 @@ AWE.UI.Ember = (function(module) {
       return AWE.Util.createTimeString(this.getPath('alliance.created_at'));
     }.property('alliance.created_at').cacheable(),
     
+    
+    invitationLinkPressed: function() {
+      
+      var mailWindow = window.open('mailto:?' +
+        encodeURI('subject=Einladung zu Wack-A-Doo von der Allianz'+ this.getPath('alliance.name') +'&') + 
+        encodeURI('body=Fange jetzt an Wack-A-Doo zu spielen und ziehe über diesen Einladungslink direkt in das Gebiet der Allianz '+ this.getPath("alliance.name") +':\n\n' + AWE.Config.ALLIANCE_INVITATION_BASE + this.getPath('alliance.invitation_code')));
+      mailWindow.close();
+      
+      event.preventDefault();
+      return false;
+    },
+    
   });
 
   module.AllianceMemberView = Ember.View.extend({
@@ -75,6 +87,10 @@ AWE.UI.Ember = (function(module) {
     
     controller: null,
     alliance:   null,
+    
+    maxMembers: function() {
+      return AWE.GS.RulesManager.getRules().get('alliance_max_members');
+    }.property('controller').cacheable(),
     
     kickMember: function(character) {
       var currentCharacter = AWE.GS.player.get('currentCharacter');

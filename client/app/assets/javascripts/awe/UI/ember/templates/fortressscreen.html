@@ -15,7 +15,11 @@
         {{view AWE.UI.Ember.ConstructionQueueView controllerBinding="controller" classNames="queue-list" queuesBinding="queues.collection"}}
       {{/if}}
 
-      {{view AWE.UI.Ember.SettlementInfoBoxView classNames="settlement-info-box" settlementBinding="settlement"}}
+      {{#if shouldDisplaySettlementSwitch}}
+        <div class="settlement-switch previous"  {{action  nextSettlementPressed target="controller"}}>&lt;</div>
+        <div class="settlement-switch next"      {{action  previousSettlementPressed target="controller"}}>&gt;</div>  
+      {{/if}}
+      {{view AWE.UI.Ember.SettlementInfoBoxView classNames="settlement-info-box fortress" settlementBinding="settlement"}}
 
       {{#if selectedSlot}}
         {{#if selectedSlot.building }}

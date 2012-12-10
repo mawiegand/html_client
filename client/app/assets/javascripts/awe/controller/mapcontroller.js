@@ -525,7 +525,10 @@ AWE.Controller = (function(module) {
 
     that.onMouseUp = function(evt) {
       that.endScrolling();
-      _camera.onMouseUp(evt);
+    }
+    
+    that.onDoubleClick = function(evt) {
+      _camera.onDoubleClick(evt);
     }
     
     that.onMouseLeave = function(evt) {
@@ -916,6 +919,62 @@ AWE.Controller = (function(module) {
       });
     }
     
+    that.centerRegion = function(region) {
+      var nodeId = region.nodeId() || 0;
+      var node   = region.node() || AWE.Map.Manager.getNode(nodeId);
+      if (node) {
+        that.moveTo(node);
+      }
+      else {
+        AWE.Map.Manager.fetchSingleNodeById(nodeId, function(node) {
+          that.moveTo(node);
+        });
+      }
+    }
+    
+    that.centerGamingPiece = function(gp) {
+      if (!gp) {
+        return ;
+      }
+      var regionId = gp.get('region_id');
+      var region = AWE.Map.Manager.getRegion(regionId);
+      if (region) {
+        that.centerRegion(region);
+      }
+      else {
+        AWE.Map.Manager.fetchSingleRegionById(regionId, function(region) {
+          that.centerRegion(region);
+        });
+      }
+    }
+    
+    that.centerSettlement = function(settlement) {
+      this.centerGamingPiece(settlement);
+    }
+    
+    that.centerArmy = function(army) {
+      this.centerGamingPiece(army);
+    }
+
+    that.previousArmyButtonClicked = function(army) {
+      log ('switch to previous army');
+      var previousArmy = AWE.GS.ArmyManager.getPreviousArmyOfCharacter(army);
+      if (previousArmy) {
+        that.setSelectedArmy(previousArmy);
+        that.centerArmy(previousArmy);
+      }
+    }
+
+    that.nextArmyButtonClicked = function(army) {
+      log ('switch to next army');
+      var nextArmy = AWE.GS.ArmyManager.getNextArmyOfCharacter(army);
+      if (nextArmy) {
+        that.setSelectedArmy(nextArmy);
+        that.centerArmy(nextArmy);
+      }
+    }
+
+    
     that.changeArmyButtonClicked = function(army) {
       if (!army) return;
 
@@ -1005,7 +1064,6 @@ AWE.Controller = (function(module) {
       });
 
       AWE.GS.BattleManager.updateBattle(battle_id, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(battle) {
-        log('U: battle', battle);
         dialog.set('battle', battle);
       });      
       
@@ -1041,6 +1099,22 @@ AWE.Controller = (function(module) {
     
     var preselectedFortressNodeId = null;
     var preselectedLocationId = null;
+    var preselectedArmyId = null;
+
+
+    that.setSelectedArmy = function(army) {
+      var armyId = army.get('id'); 
+      var view = armyViews[armyId];
+      if (view) {
+        if (_selectedView) {
+          _unselectView(_selectedView);
+        }
+        that.setSelectedView(view);
+      }
+      else {
+        preselectedArmyId = army.get('id'); // TOOD -> improve!
+      }
+    }
     
     that.setSelectedSettlement = function(settlement) {
       if (settlement.get('type_id') == AWE.GS.SETTLEMENT_TYPE_FORTRESS) {
@@ -1236,9 +1310,19 @@ AWE.Controller = (function(module) {
           WACKADOO.activateAllianceController(allianceId);
         }
 
+        inspectorViews.inspector.onCenterButtonClick = function(army) {
+          that.centerArmy(view.army());
+        };
         inspectorViews.inspector.onChangeArmyButtonClick = function(army) {
           that.changeArmyButtonClicked(view.army());
         };
+        inspectorViews.inspector.onPreviousArmyButtonClick = function(army) {
+          that.previousArmyButtonClicked(view.army());
+        };
+        inspectorViews.inspector.onNextArmyButtonClick = function(army) {
+          that.nextArmyButtonClicked(view.army());
+        };
+
       }
       else if (view.typeName() === 'BaseView' || view.typeName() === 'OutpostView') { 
         inspectorViews.inspector = AWE.UI.createBaseInspectorView();
@@ -1358,6 +1442,7 @@ AWE.Controller = (function(module) {
       });
       
       that.addAnimation(animation);
+      return animation;
     }
     
 
@@ -1388,9 +1473,11 @@ AWE.Controller = (function(module) {
     that.updateModel = (function() {
             
       var lastArmyCheck = new Date(1970);
+      var lastOwnArmiesCheck = new Date(1970);
       var lastLocationUpdateCheck = new Date(1970);
       var lastRegionUpdateCheck = new Date(1970);
       var lastNodeUpdateCheck = new Date(1970);
+      var lastOwnSettlementCheck = new Date(1970);
       
       var viewports = {};  ///< stores the viewport at the time of an update for each of the different update types 
       
@@ -1481,6 +1568,15 @@ AWE.Controller = (function(module) {
           }
           setViewport('locations', visibleAreaMC);
         }
+
+        // updating settlements
+        if (lastOwnSettlementCheck.getTime() + 1000*180 < new Date().getTime() && ! isUpdateRunning('settlements')) {
+          startUpdate('settlements');
+          lastOwnSettlementCheck = new Date();
+          AWE.GS.SettlementManager.updateOwnSettlements(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+            stopUpdate('settlements');
+          });
+        }
         
         // updating nodes
         if (lastNodeUpdateCheck.getTime() + 1000 < new Date().getTime() && ! isUpdateRunning('nodes')) {
@@ -1502,7 +1598,15 @@ AWE.Controller = (function(module) {
               break ;
             }
           }
-        }       
+        }      
+        
+        if (lastOwnArmiesCheck.getTime() + 60*1000 < new Date().getTime() && !isUpdateRunning('ownArmies')) { // check for own armies every minute
+          startUpdate('ownArmies');
+          lastOwnArmiesCheck = new Date();
+          AWE.GS.ArmyManager.updateArmiesForCharacter(AWE.GS.player.getPath('currentCharacter.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+            stopUpdate('ownArmies');
+          });
+        }
         
         if (lastArmyCheck.getTime() + 400 < new Date().getTime() && !isUpdateRunning('armies')) { // check for needed armies once per second
           
@@ -1875,6 +1979,14 @@ AWE.Controller = (function(module) {
               if (view) {
                 setBasePosition(view, that.mc2vc(location.position()), frame);
                 newLocationViews[location.id()] = view;
+                
+                // ANIMATE LEVEL CHANGE AT LOCATIONS
+                if (location.oldSettlementLevel() &&  location.settlementLevel() && 
+                    location.oldSettlementLevel() !== location.settlementLevel()) {
+                  var diff = (location.settlementLevel() - location.oldSettlementLevel()) || 1;
+                  var animation = that.addDisappearingAnnotationLabel(view, (diff > 0 ? '+' : '') + diff + ' Level', 1000); // minus is added automatically
+                  location.resetOldSettlementLevel();
+                }
               }
             }
           }
@@ -1952,6 +2064,25 @@ AWE.Controller = (function(module) {
                                          
             setArmyPosition(view, pos, army);
             newArmyViews[army.getId()] = view;
+            
+            // ANIMATE AP CHANGE AT ARMY
+            if (army.get('ap_present_old') !== null && army.get('ap_present') && 
+                army.get('ap_present_old') < army.get('ap_present')) {
+              var diff = army.get('ap_present') - army.get('ap_present_old');
+              var animation = that.addDisappearingAnnotationLabel(view, '+' + diff + ' AP', 1000);
+              army.set('ap_present_old', null);
+            }
+            // ANIMATE EXP CHANGE AT ARMY
+            if (army.get('exp_old') !== null && army.get('exp') && 
+                army.get('exp_old') < army.get('exp')) {
+              var diff = army.get('exp') - army.get('exp_old');
+              var animation = that.addDisappearingAnnotationLabel(view, '+' + diff + ' XP', 1000);
+              army.set('exp_old', null);
+            }
+            if (army.get('id') === preselectedArmyId) {
+              that.setSelectedView(view);
+              preselectedArmyId = null;
+            }            
           }
         }
       }
