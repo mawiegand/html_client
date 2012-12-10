@@ -44,7 +44,7 @@
   {{view AWE.UI.Ember.LinkedCharacterWithRankView characterBinding="character" displayAlliance=false}}
   {{#if isCurrentCharacterAllianceLeader}}
     {{#unless isLeader}}
-      <a href="#" {{action "kickMember"}}>kick</a>
+      <a href="#" {{action "kickMember"}}>{{t alliance.kickMember}}</a>
     {{/unless}}
   {{/if}}
 </script>

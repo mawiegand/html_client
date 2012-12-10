@@ -1,7 +1,7 @@
 <script type="text/x-handlebars" data-template-name="resource-details-dialog">
   <div class="modal-dialog-background"></div>
     <div class="modal-dialog-pane resource-details-dialog-pane">
-      <h2>Rohstoffproduktion im Herrschaftsgebiet</h2>
+      <h2>{{t resource.productionInfo.header}}</h2>
       
       <table>
         <tr>
@@ -11,37 +11,37 @@
           {{/each}}
         </tr>
         <tr>
-         <td>Menge</td>
+         <td>{{t resource.productionInfo.amount}}</td>
           {{#each productionDetails}}
             <td class="number">{{formatNumber amount maxPlaces="0"}}</td> 
           {{/each}}
         </tr>
 
         <tr>
-         <td>Produktionsrate</td>
+         <td>{{t resource.productionInfo.productionRate}}</td>
           {{#each productionDetails}}
             <td class="number">{{formatNumber rate maxPlaces="1"}}/h</td> 
           {{/each}}
         </tr>
         <tr>
-         <td>Tagesproduktion</td>
+         <td>{{t resource.productionInfo.dailyProduction}}</td>
           {{#each productionDetails}}
             <td class="number">{{formatNumber dailyRate maxPlaces="0"}}</td> 
           {{/each}}
         </tr>
         
         <tr>
-         <td>Lagerkapazität</td>
+         <td>{{t resource.productionInfo.capacity}}</td>
           {{#each productionDetails}}
             <td class="number">{{formatNumber capacity maxPlaces="0"}}</td> 
           {{/each}}
         </tr>
         <tr>
-         <td>Lager voll in</td>
+         <td>{{t resource.productionInfo.capacityReachedIn}}</td>
           {{#each productionDetails}}
             <td class="number">
             {{#if filled}}
-              <span class="red-color">voll</span>
+              <span class="red-color">{{t resource.productionInfo.full}}</span>
             {{else}}
               {{#if fillNever}}
                 - 
@@ -54,19 +54,16 @@
         </tr>
 
         <tr>
-         <td>Effekte</td>
+         <td>{{t resource.productionInfo.effects}}</td>
           {{#each productionDetails}}
             <td class="number">{{formatPercentage effects}}</td> 
           {{/each}}
         </tr>
       </table>     
       
-      <p>Rohstoffe werden durch <em>Gebäude</em> in der Hauptsiedlung und in Außenposten produziert oder 
-         in Festungen als <em>Steuern</em> eingenommen. In dieser Übersicht angezeigte Effekte wirken
-         im gesamten Herrschaftsgebiet auf die <em>Basisproduktion</em> von Gebäuden und können zum Beispiel 
-         in der <a href="#" {{action "pressedShop"}}>Fundgrube</a> erhöht werden.</p>
+      <p>{{t resource.productionInfo.help1}} <em>{{t settlement.info.buildings}}</em> {{t resource.productionInfo.help2}} <em>{{t settlement.info.tax}}</em> {{t resource.productionInfo.help3}} <em>{{t resource.productionInfo.baseProduction}}</em> von{{t resource.productionInfo.help4}} <a href="#" {{action "pressedShop"}}>{{t shop.title}}</a> {{t resource.productionInfo.help5}}</p>
       
-      <a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>     
+      <a class="icon-button ok-button" href="#" {{action "okClicked"}}>{{t general.ok}}</a>     
     </div>
 </script>
 

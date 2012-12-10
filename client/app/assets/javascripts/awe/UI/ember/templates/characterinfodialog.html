@@ -12,17 +12,17 @@
       
       <h1>{{view AWE.UI.Ember.LinkedCharacterView characterBinding="character" linkCharacter=false}}</h1>
       
-      <p>{{#if character.female}}Halbgöttin,{{else}}Halbgott,{{/if}} 
-         <b>{{local character.mundaneTitle.name}}</b> und <b>{{local character.sacredTitle.name}}</b><br/>
-         dabei seit: {{formatDatetime character.created_at}}</p>
+      <p>{{#if character.female}}{{t general.demigoddess}},{{else}}{{t general.demigod}},{{/if}} 
+         <b>{{local character.mundaneTitle.name}}</b> {{t general.and}} <b>{{local character.sacredTitle.name}}</b><br/>
+         {{t profile.playingSince}}: {{formatDatetime character.created_at}}</p>
       
-      <p><b>Erfahrung:</b> {{character.exp}} &nbsp; 
-         <b>Gesamtbevölkerung:</b> {{character.score}} &nbsp; 
-         <b>Festungen:</b> {{character.fortress_count}}</p>
+      <p><b>{{t profile.experience}}:</b> {{character.exp}} &nbsp; 
+         <b>{{t profile.totalPopulation}}:</b> {{character.score}} &nbsp; 
+         <b>{{t profile.fortresses}}:</b> {{character.fortress_count}}</p>
       
-      <p><b>Heimatsiedlung:</b>
+      <p><b>{{t profile.homeSettlement}}:</b>
         {{#if homeSettlement}}
-          {{homeSettlement.name}} ({{homeSettlement.score}} Einwohner)
+          {{homeSettlement.name}} ({{homeSettlement.score}} {{t settlement.population}})
         {{else}}
           {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
         {{/if}}
@@ -30,7 +30,7 @@
 
       <a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>     
       {{#if character}}
-        <a class="button" href="#" {{action "sendMessageClicked"}}>Nachricht senden</a>  
+        <a class="button" href="#" {{action "sendMessageClicked"}}>{{t profile.sendMessage}}</a>  
       {{/if}}   
     </div>
   </div>
