@@ -12,31 +12,44 @@ AWE.I18n.de_DE = function(module) {
       finished: 'fertig',
       info:     'Info',
       error:    'Fehler',
-      warning:  'Warnung',
+      warning:  'Achtung',
       and:      'und',
       yes:      'ja',
       no:       'nein',
       nr:       'Nr.',
+      of:       'von',
+      with:     'mit',
+      change:   'ändern',
 
       processing: 'Verarbeiten...',
       unknown:  'Unbekannt.',
       naivePlural: 'n',
       
-      
       perHour:  'pro Stunde',
       perHourSym: '/h',
-      
+      days: 'Tage',
+      oclock: "Uhr",
+
+      demigod: 'Halbgott',
+      demigoddess: "Halbgöttin",
+
+      playerName: "Spielername",
+      name: "Name",
+      password: "Passwort",
+      passwordConfirmation: "Passwortbestätigung",
+
       startup: {
-        loading: 'Lade....'
+        loading: 'Lade....',
       },
       
       shoutBox: {
         heading: 'Shout Box',
         ago:     'alt',
       },
-      
-      days: 'Tage',
-      
+      announcement: {
+        play: "Spielen",
+        archive: "Archiv",
+      },
     },
     
     server: {
@@ -55,7 +68,10 @@ AWE.I18n.de_DE = function(module) {
         description: "Dein Angriff würde einen Kampf zwischen folgenden Spielern erzeugen:",
         attack: "Attacke",
         cancel: "Abbrechen",
+        faction1: "Fraktion 1",
+        faction2: "Fraktion 2",
       },
+
       details: {
         heading: "Kampf Informationen",
         afterRound: "Nach Runde",
@@ -93,6 +109,8 @@ AWE.I18n.de_DE = function(module) {
     },    
    
     army: {
+      newArmy: "Neue Armee",
+
       details: {
         heading: "Armee",
         units: "Einheiten",
@@ -122,6 +140,8 @@ AWE.I18n.de_DE = function(module) {
         stance: "Festung oder Siedlung bei Angriff mitverteidigen",
         demigod: "Gehört",
         ownerLabel: "Gehört",
+        actionPoints: "Aktionspunkte",
+        nextActionPointAt: "Nächster Aktionspunkt um",
       },
       messages: {
         own: {
@@ -155,11 +175,13 @@ AWE.I18n.de_DE = function(module) {
             "Leise! Ich versuche hier zu schlafen.",
             "Hart wie Federkissen.",
           ],
+
           girl: [
             "Wir sollten immer auf der Hut sein.",
             "Ich liebe es, hier draußen rumzustreifen.",
             "Ist das nicht ein wundervoller Tag?",
           ],
+
           chef: [
             "Hm, vielleicht sollten wir unseren Nachbarn angreifen?",
             "Ich überlege gerade, wie wir unser Gebiet vergrößern können.",
@@ -170,6 +192,8 @@ AWE.I18n.de_DE = function(module) {
             "Angriff ist die beste Verteidigung.",
           ]
         },
+
+
         other: {
           warrior: [
             "Nichts und niemand hält mich auf!",
@@ -235,6 +259,64 @@ AWE.I18n.de_DE = function(module) {
       produces:       'Produziert',
       capacity:       'Lagerkapazität',
       productionBoni: 'Produktionsbonus',
+      tradingCarts:   'Handelskarren',
+      commandPoints:  'Kommandopunkte',
+      garrison: "Garnison",
+      populationAbbreviation: "Pop",
+      buildingTime: "Bauzeit",
+      storageCapacity: "Lagerkapazität",
+      production: "Produktion",
+
+      upgrade: {
+        conversion: "Umwandeln",
+        upgrade: "Ausbauen",
+        converting: "Umwandeln",
+        conversionStart: " ",
+        conversionEnd: " umwandeln",
+        upgradeStart: " ",
+        upgradeEnd: " ausbauen",
+        toIn: "in",
+        toAuf: "auf",
+        updating: "Aktualisieren",
+        demolishing: "Abreißen",
+        demolishBuilding: "Gebäude abreißen",
+        demolishStart: " ",
+        demolishEnd: "abreißen",
+        convertingMid: " wird ",
+        convertingEnd: " umgewandelt",
+
+      },
+      tooltip: {
+        clickToConvert: "zum Umwandeln hier klicken",
+        clickToUpgrade: "zum Ausbauen hier klicken",
+        clickToDemolish: "zum Abreißen hier klicken",
+        currentLevel: "derzeitiges Gebäudelevel",
+        levelAfterUpgrade: "Level nach Abschluss aller Ausbauaufträge in der Bauschleife",
+        levelAfterDowngrade: "Level nach Abschluss des Abrissauftrages in der Bauschleife",
+        levelAfterConversion: "Level nach Abschluss des Umwandlungsauftrages in der Bauschleife",
+        notEnoughBuildingSlots: "Du kannst derzeit nicht mehr Gebäude bauen. Es wird zuvor eine höhere Stufe der Häuptlingshütte benötigt.",
+      },
+
+
+      info: {
+        notDemolishable: "Einmal gebaut, kann dieses Gebäude nicht mehr abgerissen werden.",
+        notBuyable: "Konstruktion kann nicht mit Kröten beschleunigt werden.",
+        unlockJoinAlliance: "Ermöglicht Diplomatie und Allianzbeitritt.",
+        unlockCreateAlliance: "Ermöglicht die Gründung einer Allianz.",
+        unlockTrade: "Ermöglicht den Handel mit anderen Spielern.",
+      },
+
+      requirement: {
+        none: "Kein",
+        single: "einziges",
+        greaterThan: "größer als",
+        orGreater: "oder größer",
+        },
+      error: {
+        notEnoughBuildingSlots: "Du kannst derzeit nicht mehr Gebäude bauen. Es wird zuvor eine höhere Stufe der Häuptlingshütte benötigt.",
+        notEnoughCash: "Du hast nicht genug Kröten, um diese Aktion auszuführen.",
+      },
+
     },
     
     error: {
@@ -246,6 +328,13 @@ AWE.I18n.de_DE = function(module) {
     },
     
     alliance: {
+      memberOf: "Du bist derzeit ein Mitglied der Allianz ",
+      joinAlliance: "Allianz beitreten",
+      joinAllianceText: "Tritt einer existierenden Allianz bei, indem du ihr Kürzel und das geheime Allianzpasswort eingibst.",
+      createAlliance: "Allianz gründen",
+      createAllianceText: "Gründe eine neue Allianz, mit dir als Anführer.",
+      leave: "verlassen",
+
       founded: 'Gründung',
       leader: 'Anführer',
       description: 'Beschreibung',
@@ -256,6 +345,7 @@ AWE.I18n.de_DE = function(module) {
       shoutBox: 'Shout Box',
       shoutBoxExplanation: 'Alles was hier eingegeben wird, ist umgehend für alle anderen Mitglieder sichtbar.',
       changePassword: 'neues Password speichern',
+      kickMember: 'kick',
     },
     
     welcome: {
@@ -287,7 +377,16 @@ AWE.I18n.de_DE = function(module) {
       production: 'Produktion',
       duration: 'Dauer',
       expiry: 'Ablauf',
-      
+
+      current: "Aktuelle",
+      platinumCredit: "Platinum Credits",
+      offers: "Angebote",
+      loading: "Shop wird geladen",
+      unreachable: "Der Shop ist vorübergehend nicht erreichbar!",
+
+      goldenFrog: "Kröte",
+      goldenFrogs: "Kröten",
+
       platinumDescription:
         "Der Platinum Account bietet Dir " +
         "stressfreies Bauen mit zusätzlichen Plätzen in Bauschleife (+3) und " +
@@ -306,7 +405,8 @@ AWE.I18n.de_DE = function(module) {
       
       population: 'Bewohner',
       defenseBonus: 'Kampfbonus',
-      
+      founded: 'Gründung',
+
       buildings: {
         
         category: 'Kategorie',
@@ -336,7 +436,7 @@ AWE.I18n.de_DE = function(module) {
             categoriesEnd:   ' gebaut werden.',
             maxLevel: 'Maximale Stufe',
             advise:  'Klicken, um ein neues Gebäude zu bauen.'
-          }
+          },
         },
         
         missingReqWarning: {
@@ -351,20 +451,155 @@ AWE.I18n.de_DE = function(module) {
       },
       construction: {
         hurry: "Hurtig!",
+        cashTooltip: "Gib Goldkröten aus, um den Bauauftrag sofort fertig zu stellen. Die Kosten hängen von der verbleibenden Bauzeit ab.",
+        insufficentResources: "Mangel",
+        finishing: "gleich fertig",
+        beingBuilt: "Wird gerade gebaut.",
+        waitingToBuild: "Wartet darauf, bis es an der Reihe ist.",
+        cannotBeBuilt: "Kann derzeit nicht gebaut werden. Wird automatisch begonnen, sobald die nötigen Rohstoffe und Bauslots vorhanden sind.",
       },
       training: {
+        perUnit: "Pro Einheit",
+        duration: "Dauer",
+        total: "Total",
+        recruit: "Rekrutiere ",
+        hurryTooltip: "Gib Goldkröten aus um Einheiten doppelt so schnell zu rekrutieren. Die Kosten hängen von der verbleibenden Rekrutierungszeit ab.",
+        hurryIndicator: "x2",
+
         queueFull: {
           start: "Sorry, aber die Trainingschleife ist bereits voll. Du kannst maximal ",
           end: " Aufträge aufreihen. Bitte warte, bis etwas anderes fertig wird.",
         },
         hurry: "halbieren",
       },
+
+      military: {
+        takeOver: "Diese Siedlung kann von anderen Spielern geklaut werden.",
+        noTakeOver: "Diese Siedlung kann nicht übernommen werden!",
+        destroyable: "Diese Siedlung kann von anderen Spielern zerstört werden.",
+        notDestroyable: "Diese Siedlung kann nicht zerstört werden!",
+      },
+
+      trade: {
+        sendResources: "Rohstoffe versenden",
+        cartsEnRoute: "Handelskarren unterwegs",
+        recipient: "Empfänger",
+        send: "Sende",
+        enRoute: "Ausgehend",
+        carts: "Karren",
+        timeOfArrival: "Ankunftszeit",
+        inbound: "Eingehend",
+        sending: "senden",
+        empty: "leer",
+        cargo: "Ladung",
+        returnTo: "Rückkehr nach",
+        returnFrom: "Rückkehr von",
+        origin: "Herkunft",
+        destination: "Ziel",
+        amount: "Menge",
+      },
+
+      found: {
+        confirmationHeader: "Hier eine Lagerstätte gründen?",
+        confirmationFlavour: "Eine Siedlung in Ehren kann niemand verwehren. Harrharrharr.",
+        confirmationText: "Die Lagerstätte wird an diesem Ort gegründet, kann nicht mehr verschoben werden und verbraucht einen Deiner Siedlungspunkte. Außerdem bleibt ein kleiner Anführer aus Deiner Armee permanent bei Deiner Lagerstätte und steht Dir nicht mehr zur Verfügung.",
+        confirmation: "jetzt und hier gründen",
+        errorHeader: "Lagerstätte kann nicht gegründet werden.",
+        errorFlavour: "Grmpf.",
+        errorText: "Lagerstätten können nur an derzeit unbewohnten Orten und auch nur in Regionen gegründet werden, in der sich noch keine andere Lagerstätte von Dir oder Dein Hauptdorf befindet.",
+        requirements: {
+          text:"Außerdem müssen folgende Bedingungen erfüllt sein",
+          req1: "Du hast einen freien Siedlungspunkt zur Verfügung,",
+          req2: "Deine Armee hat mindestens einen kleinen Anführer dabei und",
+          req3: "Deine Armee hat noch mindestens einen Aktionspunkt zur Verfügung.",
+        },
+      },
+
+      info: {
+        clickToExpand: "zum erweitern klicken",
+        clickToMinimize: "zum minimieren klicken",
+        combatBonus: "Kampfbonus für alle Armeen, die auf der Seite dieser Siedlung kämpfen.",
+        combatBonusInfo: "Wenn die Siedlung an einem Kampf beteiligt ist, wirkt der Kampfbonus auf den Verteidigungswert aller Truppen, die auf der Seite dieser Festung kämpfen; egal, ob sie innerhalb oder außerhalb der Mauern stationiert sind.",
+        combatBonusAbbreviation: "KB",
+        buildingSpeed: "Baugeschwindigkeit",
+        buildingSpeedAbbreviation: "G",
+        meleeTrainingSpeed: "Rekrutierunggeschwindigkeit von Nahkämpfern",
+        meleeTrainingSpeedAbbreviation: "N",
+        rangedTrainingSpeed: "Rekrutierunggeschwindigkeit von Fernkämpfern",
+        rangedTrainingSpeedAbbreviation: "F",
+        ridersTrainingSpeed: "Rekrutierunggeschwindigkeit von Berittenen",
+        ridersTrainingSpeedAbbreviation: "B",
+        commandPointsInfo: "benutzte Kommandopunkte / verfügbare Kommandopunkte. Jede Armee benötigt einen Kommandopunkt.",
+        commandPointsHelp: "Du benötigst einen Kommandopunkt für Jede Armee, die zu dieser Siedlung gehört. Die Garnison ist eine Ausnahme und benötigt keinen Kommandopunkt.",
+        buildings: "Gebäude",
+        changeName: "Namen ändern",
+        availableBuildingSlots: "Verfügbare Gebäudeplätze",
+        speedUpInfo: "Du kannst die Geschwindigkeit, mit der Einheiten und Gebäude produziert werden, erhöhen, indem du die jeweiligen Gebäude ausbaust.",
+        taxRate: "Steuersatz",
+        taxRateChangeInfo: "Der Steuersatz, die du hier setzt, gilt für die komplette Region und alle ihre Einwohner.",
+        taxRateChangeNotPossible: "Die nächste Änderung ist eine Stunde nach der letzten Änderung möglich",
+        taxRateHelp: "Der Steuersatz wird vom Besitzer der Festung in der Region festgesetzt. Das Minimum sind 5%, der Standardwert und das Maximum sind 15%. Du findest den Steuersatz ungerecht? Verbünde dich mit den anderen Bewohnern der Region gegen den Unterdrücker. Er hat es bestimmt verdient. Nimm die Festung ein und ziehe die Steuern für dich selbst ein.",
+        change: "ändern",
+        resourceProduction: "Rohstoffproduktion",
+        bonus: "Bonus",
+        tax: "Steuern",
+        result: "Ergebnis",
+        resourceProductionInfo1: "Steuern werden nur auf die Gebäude-Basisproduktion erhoben. Die Bonusproduktion bezieht sich auf die unversteuerte Gebäude-Basisproduktion und wird",
+        resourceProductionInfo2: "nicht",
+        resourceProductionInfo3: "besteuert.",
+      },
     },
     
     profile: {
       youAre: "Du bist",
-      
+      playingSince: "dabei seit",
+      totalPopulation: "Gesamtbevölkerung",
+      experience: "Erfahrung",
+      fortresses: "Festungen",
+      homeSettlement: "Heimatsiedlung",
+      sendMessage: "Nachricht senden",
+
+      progressTab: "Fortschritt",
+      customizationTab: "Anpassung",
+      optionsTab: "Einstellungen",
+
+      rank: {
+        start: "Beginn",
+        experience: "Erfahrung",
+        experienceAbbreviation: "XP",
+        settlementPoint: "Siedlungspunkt",
+        mundaneRank: "Weltlicher Rank",
+        sacredRank: "Geistlicher Rang",
+        noRankUpPossible: "Derzeit ist kein Aufstieg möglich.",
+        rankInfo: "Ein Aufstieg im weltlichen Rang gibt mehr Siedlungs- und Skillpunkte. Ein Aufstieg im geistlichen Rang ist Voraussetzung für Aufstiege im weltlichen Rang und erhöht Dein Verständnis des Übernatürlichen.",
+        experienceInfo: "Deine Erfahrung steigt, indem Du baust und kämpfst.",
+        settlementPoints: "Siedlungspunkte",
+        notUsed: "Noch nicht verwendet",
+        total: "Insgesamt",
+
+        progress: {
+          dialogHeader: "Rangaufstieg!",
+          flavour1: "Du bist soeben in einen neuen Rang aufgestiegen und darfst Dich jetzt",
+          flavour2: "nennen.",
+          flavour3: "Mach weiter so, dann steigst Du Null-Komma-Nix in den Rang",
+          flavour4: "auf.",
+          text: "Du hast genug Erfahrung durch Kämpfen und Bauen gesammelt, um einen Rang aufzusteigen. Rangaufstiege versprechend Dir ein höheres Ansehen bei Deinen Mitspielern. Die werden schon ganz neidisch. Außerdem benötigst Du einen höheren Rang, um mehr Festungen und Lagerstätten kontrollieren zu können.",
+        },
+      },
+
+      time: {
+        systemTime: "Systemzeit",
+        approxServerTime: "Approximierte Serverzeit",
+        localTime: "Lokale Rechneruhr",
+        deviation: "Differenz",
+        lagZero: "Perfekt!",
+        lagTolerable: "Diese Zeitdifferenz ist tolerabel.",
+        lagUntolerable1: "Bitte stelle Deine Rechneruhr auf die korrekte Uhrzeit",
+        lagUntolerable2: "oder schalte den automatischen Abgleich mit der Internetzeit an, sofern Dein Betriebssystem diese Möglichkeit bietet. Die Reaktivität des Spiels und Deine Nutzungserfahrung würden dadurch deutlich verbessert.",
+      },
+
       customization: {
+        info: "Hier kannst Du Deine Erscheinung als Halbgott anpassen. Im Moment sind Dein Name und Dein Geschlecht wählbar, mit denen Du im Spiel auftreten möchtest. Später werden weitere Individualisierungen hinzukommen.",
         chooseName: "Deinen Namen wählen",
         changeName: "Deinen Namen ändern",
         presentName: "Aktueller Name",
@@ -373,7 +608,6 @@ AWE.I18n.de_DE = function(module) {
         nameChangeAdvice: 'Bitte wähle Deinen Namen mit Bedacht, idealerweise passt der Name in die Steinzeit. Der Name muss einzigartig in Wackadoo sein.',
         nameChangeFreeAdvice: 'Zweimal kannst Du Deinen Namen kostenlos ändern, jede weitere Änderung kostet ein paar Kröten um Missbrauch zu verhindern.',
         nameChangeCostAdvice: 'Du hast Deinen Namen bereits mehrmals geändert. Eine weitere Namensänderung ist natürlich möglich, kostet aber zur Verhinderung von Missbrauch 20 Kröten.',
-
         chooseGender: "Dein Geschlecht wählen",
         changeGender: "Dein Geschlecht ändern",
         presentGender: "Aktuelles Geschlecht",
@@ -381,7 +615,9 @@ AWE.I18n.de_DE = function(module) {
         changeGenderCaption: 'Geschlecht ändern',
         genderChangeFreeAdvice: 'Die ersten beiden Änderungen der Geschlechtseinstellung sind kostenlos, jede weitere Änderung kostet ein paar Kröten um Missbrauch zu verhindern.',
         genderChangeCostAdvice: 'Du hast die Einstellung Deines Geschlechts bereits mehrfach geändert. Eine weitere Änderung der Geschlechtseinstellung ist möglich, kostet aber zur Verhinderung von Missbrauch 20 Kröten.',
-        
+        male: "männlich",
+        female: "weiblich",
+
         changePasswordCaption: "Änderung des Passwortes",
         changePasswordAdvice: "Hier kannst du dein Passwort ändern. Das Passwort muss eine Länge von 6 bis 40 Zeichen haben.",
         changePasswordButton: "Passwort ändern",
@@ -456,6 +692,28 @@ AWE.I18n.de_DE = function(module) {
       inbox:            "Eingang",
       outbox:           "Ausgang",
       archive:          "Archiv",
+      unknownRecipient: "Unbekannter Empfänger",
+      allianceMail: "Allianz-Rundmail",
+      subject: "Betreff",
+      send: "Senden",
+      cancel: "Verwerfen",
+      newMessage: "Neue Nachricht",
+      to: "An",
+      toAlliance: "An Alle Allianzmitglieder",
+      unknown: "Unbekannt",
+      allMembersOf: "Alle Mitglieder von",
+      recipient: "Empfänger",
+      date: "Datum",
+      allAllianceMembers: "Alle Allianzmitglieder",
+      allPlayers: "Alle Spieler",
+      new: "Neu",
+      reply: "Antworten",
+      forward: "Weiterleiten",
+      delete: "Löschen",
+      newAllianceMail: "Neue Ally-Rundmail",
+      noMessageSelected: "Keine Nachricht ausgewählt.",
+      from: "Von",
+      yourMessage: "deine Nachricht",
     },
     
     map: {
@@ -480,9 +738,62 @@ AWE.I18n.de_DE = function(module) {
         terrain:        "Gelände",
         encyclopedia:   "Enzyklo-\npädie",
         shop:           'Fundgrube',
-      }
-    }
+      },
+    },
+
+    encyclopedia: {
+      productionTime: "Produktionszeit",
+      hitpoints: "Lebenspunkte",
+      attack: "Angriff",
+      defense: "Verteidigung",
+      criticalDamage: "Kritischer Schaden",
+      criticalChance: "Chance",
+      cannotBeTrained: "Kann nicht von Spielern trainiert werden.",
+
+      commandPointsAbbreviation: "KP",
+      buildingTime: "Bauzeit",
+
+      resources: "Rohstoffe",
+      buildings: "Gebäude",
+      units: "Einheiten",
     
+      resource: {
+        taxable: "Auf diesen Rohstoff werden Steuern erhoben.",
+        notTaxable1: "Auf diesen Rohstoff werden ",
+        notTaxable2: "keine",
+        notTaxable3: " Steuern erhoben.",
+        stealable: "Dieser Rohstoff kann geklaut und gehandelt werden.",
+        notStealable: "Dieser Rohstoff kann nicht geklaut oder gehandelt werden.",
+      },
+    },
+
+    resource: {
+      productionInfo: {
+        header: "Rohstoffproduktion im Herrschaftsgebiet",
+        amount: "Menge",
+        productionRate: "Produktionsrate",
+        dailyProduction: "Tagesproduction",
+        capacity: "Lagerkapazität",
+        capacityReachedIn: "Lager voll in",
+        effects: "Effekte",
+        baseProduction: "Basisproduktion",
+        full: "voll",
+    
+        help1: "Rohstoffe werden durch",
+        help2: "in der Hauptsiedlung und in Außenposten produziert oder in Festungen als",
+        help3: "eingenommen. In dieser Übersicht angezeigte Effekte wirken im gesamten Herrschaftsgebiet auf die",
+        help4: "von Gebäuden und können zum Beispiel in der",
+        help5: "erhöht werden.",
+      },
+      productionTooltip: {
+        base: "Basis",
+        science: "Forschung",
+        buildings: "Gebäude",
+        bonus: "Bonus",
+        tax: "Steuern",
+      },
+    },
+
   }
   
   return module;
