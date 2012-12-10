@@ -242,13 +242,13 @@ AWE.GS = (function(module) {
           tax: self.get(item.symbolic_id+'_production_tax_rate'),
           resourceType: item,
           localizedDetails: function() {
-            var description = 'base: '+Math.floor(this.get('base'))+'\nscience: '+ 
-              Math.floor(self.get(item.symbolic_id+'_production_bonus_sciences')*1000)/10.0+'%\nbuildings: '+ 
-              Math.floor(self.get(item.symbolic_id+'_production_bonus_buildings')*1000)/10.0+'%\nbonus: ' +
+            var description = AWE.I18n.lookupTranslation('resource.productionTooltip.base')+': '+Math.floor(this.get('base'))+'\n'+AWE.I18n.lookupTranslation('resource.productionTooltip.science')+': '+ 
+              Math.floor(self.get(item.symbolic_id+'_production_bonus_sciences')*1000)/10.0+'%\n'+AWE.I18n.lookupTranslation('resource.productionTooltip.buildings')+': '+ 
+              Math.floor(self.get(item.symbolic_id+'_production_bonus_buildings')*1000)/10.0+'%\n'+AWE.I18n.lookupTranslation('resource.productionTooltip.bonus')+': ' +
               Math.floor((parseFloat(self.get(item.symbolic_id+'_production_bonus_effects')) + 
                           parseFloat(self.get(item.symbolic_id+'_production_bonus_global_effects')))*1000)/10.0+'%';
             if (item.taxable) {
-              description += "\ntax:" + Math.floor(parseFloat(self.get(item.symbolic_id+'_production_tax_rate'))*10)/10.0;   
+              description += '\n'+AWE.I18n.lookupTranslation('resource.productionTooltip.tax')+': ' + Math.floor(parseFloat(self.get(item.symbolic_id+'_production_tax_rate'))*10)/10.0;   
             }
             return description;
           }.property('base','bonus').cacheable(),

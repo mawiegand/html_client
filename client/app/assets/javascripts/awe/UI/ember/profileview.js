@@ -78,20 +78,20 @@ AWE.UI.Ember = (function(module) {
      
       this.set('tabViews', [
         { key:   "tab1",
-          title: "Fortschritt", 
+          title: AWE.I18n.lookupTranslation('profile.progressTab'), 
           view:  AWE.UI.Ember.ProfileInfoView.extend({ 
             characterBinding: "parentView.parentView.character", 
             allianceBinding:  "parentView.parentView.alliance", 
           })
         }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
         { key:   "tab2",
-          title: "Anpassung", 
+          title: AWE.I18n.lookupTranslation('profile.customizationTab'), 
           view:  AWE.UI.Ember.CharacterCustomizationView.extend({ 
             characterBinding: "parentView.parentView.character"
           })
         },
         { key:   "tab3",
-          title: "Einstellungen", 
+          title: AWE.I18n.lookupTranslation('profile.optionsTab'), 
           view:  AWE.UI.Ember.SettingsView.extend({ 
             characterBinding: "parentView.parentView.character"
           })

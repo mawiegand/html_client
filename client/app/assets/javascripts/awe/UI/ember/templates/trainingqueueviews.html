@@ -17,26 +17,26 @@
 
 
 
-  <b>Pro Einheit:</b>
+  <b>{{t settlement.training.perUnit}}:</b>
     {{#each costs}}
       {{amount}} {{local resourceType.name}} &nbsp;  
     {{/each}}    
-    <b>Dauer:</b> {{formatDuration productionTime}}
+    <b>{{t settlement.training.duration}}:</b> {{formatDuration productionTime}}
   <br />
-  <b>Total:</b>
+  <b>{{t settlement.training.total}}:</b>
     {{#each totalCosts}}
       {{amount}} {{local resourceType.name}} &nbsp;  
     {{/each}}    
-    <b>Dauer:</b> {{formatDuration totalProductionTime}}
+    <b>{{t settlement.training.duration}}:</b> {{formatDuration totalProductionTime}}
   <br />  
 
   {{#if selectedUnitButton.requirementsMet }}
     {{view Ember.TextField class="text-field" valueBinding="number"}} 
     {{#if ongoingAction}}
-      {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} processing...
+      {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}...
     {{else}}
       {{#if number}}
-        <div class="button ok-button" {{action "createJobPressed"}}>Rekrutiere {{local selectedUnitButton.unitType.name}}</div>
+        <div class="button ok-button" {{action "createJobPressed"}}>{{t settlement.training.recruit}} {{local selectedUnitButton.unitType.name}}</div>
       {{/if}}
     {{/if}}    
   {{else}}
@@ -63,16 +63,16 @@
           </div>  
           <p class="queue-job-button finish-button">
             {{#if isTrainingSpeedupPossible }}
-              <a href="#" {{action "speedupJobPressed"}} title="gib Goldkröten aus um Einheiten doppelt so schnell zu rekrutieren. Die Kosten hängen von der verbleibenden Rekrutierungszeit ab.">
+              <a href="#" {{action "speedupJobPressed"}} title="{{t settlement.training.hurryTooltip}}">
                {{t settlement.training.hurry }} {{trainingSpeedupCost timeRemaining}} 
                <span class="resource-icon {{trainingSpeedupResource timeRemaining}}">&nbsp;</span>
               </a>
             {{else}}
-              {{#if job.hurried}} <em> x2 </em> {{/if}}
+              {{#if job.hurried}} <em> {{t settlement.training.hurryIndicator}} </em> {{/if}}
             {{/if}}
           </p>
           <p class="queue-job-button cancel">    
-            <a href="#" {{action "cancelJobPressed"}}>Abbruch</a>
+            <a href="#" {{action "cancelJobPressed"}}>{{t map.button.cancel}}</a>
           </p> 
         {{/view}}
       {{/each}}

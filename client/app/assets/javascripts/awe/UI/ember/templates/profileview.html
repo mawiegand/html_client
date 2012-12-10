@@ -31,9 +31,7 @@
 
 <script type="text/x-handlebars" data-template-name="character-customization-view">
 
-  <p>Hier kannst Du Deine Erscheinung als Halbgott anpassen. Im Moment sind Dein Name und
-     Dein Geschlecht wählbar, mit denen Du im Spiel auftreten möchtest. 
-     Später werden weitere Individualisierungen hinzukommen.</p>
+  <p>{{t profile.customization.info}}</p>
      
   <hr/>
 
@@ -47,7 +45,7 @@
      {{#if changingName }}
        &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
      {{else}} 
-       <span class="simple-button" {{action "changeNamePressed"}}>{{#if firstTwoNameChange}}{{t profile.customization.chooseNameCaption}}{{else}}{{t profile.customization.changeNameCaption}} (20 Kröten){{/if}}</span>
+       <span class="simple-button" {{action "changeNamePressed"}}>{{#if firstTwoNameChange}}{{t profile.customization.chooseNameCaption}}{{else}}{{t profile.customization.changeNameCaption}} (20 {{t shop.goldenFrogs}}){{/if}}</span>
      {{/if}}
   </p>      
   <p>{{t profile.customization.nameChangeAdvice}}</p>
@@ -65,11 +63,11 @@
     <h2>{{t profile.customization.changeGender}}</h2>
   {{/if}}
     
-  <p><b>{{t profile.customization.presentGender}}:</b> {{#if character.female}} weiblich {{else}} männlich {{/if}} 
+  <p><b>{{t profile.customization.presentGender}}:</b> {{#if character.female}} {{t profile.customization.female}} {{else}} {{t profile.customization.male}} {{/if}} 
      {{#if changingGender }}
        &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
      {{else}} 
-       <span class="simple-button" {{action "changeGenderPressed"}}>{{#if firstTwoGenderChange}}{{t profile.customization.chooseGenderCaption}}{{else}}{{t profile.customization.changeGenderCaption}} (20 Kröten){{/if}}</span>
+       <span class="simple-button" {{action "changeGenderPressed"}}>{{#if firstTwoGenderChange}}{{t profile.customization.chooseGenderCaption}}{{else}}{{t profile.customization.changeGenderCaption}} (20 {{t shop.goldenFrogs}}){{/if}}</span>
      {{/if}}  
   </p>
   {{#if firstTwoGenderChange}}
@@ -85,18 +83,18 @@
 
   <div style="width:100%; height: 20px; position: relative; background: #EEF; border: 1px solid black; margin-top: 70px; margin-bottom: 80px;">
     <div style="position:absolute; top: 0; left: 0; width: 100px; height: 90px; margin-top: -70px; border-left: 1px solid black; margin-left: -1px; padding-left: 3px;">
-      <div style="height: 70px; font-size: 14px;">Beginn</div>
-      <div>0 XP</div>
+      <div style="height: 70px; font-size: 14px;">{{t profile.rank.start}}</div>
+      <div>0 {{t profile.rank.experienceAbbreviation}}</div>
     </div>
     {{#each nextMundaneRanks}}
       <div style="position:absolute; top: 0; right: {{unbound position}}; width: 200px; height: 90px; margin-top: -70px; border-right: 1px solid black; margin-right: -1px; text-align:right;">
         <div style="height: 70px; padding-right: 3px; font-size:14px;">
           {{local rule.name}}<br/>
           {{#if rule.settlement_points}}
-            +{{rule.settlement_points}} Siedlungspunkt
+            +{{rule.settlement_points}} {{t profile.rank.settlementPoint}}
           {{/if}}
         </div>
-        <div style="padding-right: 3px;">{{rule.exp}} XP</div>
+        <div style="padding-right: 3px;">{{rule.exp}} {{t profile.rank.experienceAbbreviation}}</div>
       </div>
     {{/each}}
     {{#each friendProgress}}
@@ -125,18 +123,17 @@
   {{view  AWE.UI.Ember.CharacterProgressBarView allianceBinding="alliance" characterBinding="character"}}
 {{/if }}
 
-  <p><b>Weltlicher Rang {{ character.mundane_rank_numeric }}:</b> <em>{{local character.mundaneTitle.name }}</em>.<br/>
-     <b>Geistlicher Rang {{ character.sacred_rank_numeric }}:</b> <em>{{local character.sacredTitle.name }}</em>. Derzeit ist kein Aufstieg möglich.
+  <p><b>{{t profile.rank.mundaneRank}} {{ character.mundane_rank_numeric }}:</b> <em>{{local character.mundaneTitle.name }}</em>.<br/>
+     <b>{{t profile.rank.sacredRank}} {{ character.sacred_rank_numeric }}:</b> <em>{{local character.sacredTitle.name }}</em>. {{t profile.rank.noRankUpPossible}}
   </p>
 
   
-  <p>Ein Aufstieg im weltlichen Rang gibt mehr Siedlungs- und Skillpunkte. 
-     Ein Aufstieg im geistlichen Rang ist Voraussetzung für Aufstiege im
-     weltlichen Rang und erhöht Dein Verständnis des Übernatürlichen.</p>   
+  <p>{{t profile.rank.info}}</p>   
      
-  <p><b>Erfahrung:</b> {{ character.exp }}{{#unless character.exp_production_rate_zero}} (+ {{formatNumber character.exp_production_rate maxPlaces="0"}}/h){{/unless}}. Deine Erfahrung steigt, indem Du baust und kämpfst.<br/>
-     <b>Siedlungspunkte:</b> Noch nicht verwendet: {{ character.settlementPointsAvailable }}. Insgesamt: {{ character.settlement_points_total }}.<br/>
-     <b>Kämpfe:</b> {{character.battle_count}}. Siege: {{ character.victories }}. Niederlagen: {{ character.defeats }}.
+  <p><b>{{t profile.rank.experience}}:</b> {{ character.exp }}. {{t profile.rank.experienceInfo}}<br/>
+     <b>{{t profile.rank.settlementPoints}}:</b> {{t profile.rank.notUsed}}: {{ character.settlementPointsAvailable }}. {{t profile.rank.total}}: {{ character.settlement_points_total }}.
+<br/>
+     <b>{{t profile.battles}}:</b> {{character.battle_count}}. {{t profile.victories}}: {{ character.victories }}. {{t profile.defeats}}: {{ character.defeats }}.
   </p>
 </script>
 
@@ -156,19 +153,18 @@
   </p>
   <p class="red-color">{{changePasswordMessage}}</p>
   
-  <h2>Systemzeit</h2>
+  <h2>{{t profile.time.systemTime}}</h2>
   
-  <p>Approximierte Serverzeit: {{ serverTime }}<br/>
-     Lokale Rechneruhr: {{ localTime }}<br/>
-     Differenz: {{ formatDuration timeLag }} &nbsp;
+  <p>{{t profile.time.approxServerTime}}: {{ serverTime }}<br/>
+     {{t profile.time.localTime}}: {{ localTime }}<br/>
+     {{t profile.time.deviation}}: {{ formatDuration timeLag }} &nbsp;
     {{#if isLagZero }}
-      <b>Perfekt!</b>
+      <b>{{t profile.time.lagZero}}</b>
     {{else}}
       {{#if isLagTolerable}}
-        <b>Diese Zeitdifferenz ist tolerabel.</b>
+        <b>{{t profile.time.lagTolerable}}</b>
       {{else}}
-        <b>Bitte stelle Deine Rechneruhr auf die korrekte Uhrzeit</b> oder schalte den automatischen Abgleich mit der Internetzeit an, sofern Dein 
-        Betriebssystem diese Möglichkeit bietet. Die Reaktivität des Spiels und Deine Nutzungserfahrung würden dadurch deutlich verbessert.
+        <b>{{t profile.time.lagUntolerable1}}</b> {{t profile.time.lagUntolerable2}}
       {{/if}}
     {{/if}}
   </p>

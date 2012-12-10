@@ -5,10 +5,10 @@
         <h1>{{ t shop.title }}</h1>
         
         {{#if loading }}
-          {{view AWE.UI.Ember.WheelOrValueView valueBinding="null" }}&nbsp;&nbsp;&nbsp;Shop wird geladen...
+          {{view AWE.UI.Ember.WheelOrValueView valueBinding="null" }}&nbsp;&nbsp;&nbsp;{{t shop.loading}}...
         {{else}}
           {{#unless shopEnabled }}
-            <p>Der Shop ist vorübergehend nicht erreichbar!</p>
+            <p>{{t shop.unreachable}}</p>
           {{else}}
             <p>{{ t shop.currentCreditAmount }} <b>{{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }}</b> {{ t shop.platinumCredits }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="simple-button" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span></p>
             
@@ -16,7 +16,7 @@
             <h3>{{ t shop.resourceOffers }}</h3>
                       
               <div class="platinum-button" {{action "buyCreditsPressed" target="parentView"}}>
-                <p>Aktuelle</p><p>Platinum Credit</p><p>Angebote</p>
+                <p>{{t shop.current}}</p><p>{{t shop.platinumCredit}}</p><p>{{t shop.offers}}</p>
               </div>
                       
               {{#each resourceOffers}}

@@ -3,40 +3,35 @@
     <div class="modal-dialog-pane found-settlement-dialog">
       {{#if canFound }}
         <div class="clearfix header">
-          <h2>Hier eine Lagerstätte gründen?</h2>
+          <h2>{{t settlement.found.confirmationHeader}}</h2>
 
           <div class="advisor chef"></div>        
-          <p class="citation">Eine Siedlung in Ehren kann niemand verwehren. Harrharrharr.</p>     
+          <p class="citation">{{t settlement.found.confirmationFlavour}}</p>     
         </div>   
         
-        <p>Die Lagerstätte wird an diesem Ort gegründet, kann nicht mehr verschoben werden
-           und verbraucht einen Deiner Siedlungspunkte. Außerdem bleibt ein kleiner Anführer
-           aus Deiner Armee permanent bei Deiner Lagerstätte und steht Dir nicht mehr zur
-           Verfügung.</p>
+        <p>{{t settlement.found.confirmationText}}</p>
            
-        <a class="icon-button ok-button" href="#" {{action "foundPressed" target="parentView"}}>jetzt und hier gründen</a>
+        <a class="icon-button ok-button" href="#" {{action "foundPressed" target="parentView"}}>{{t settlement.found.confirmation}}</a>
         
       {{ else }}
         <div class="clearfix header">
-          <h2>Lagerstätte kann nicht gegründet werden.</h2>
+          <h2>{{t settlement.found.errorHeader}}.</h2>
 
           <div class="advisor chef"></div>        
-          <p class="citation">Grmpf.</p>          
+          <p class="citation">{{t settlement.found.errorFlavour}}</p>          
         </div>
         
-        <p>Lagerstätten können nur an derzeit unbewohnten Orten und auch nur in Regionen
-           gegründet werden, in der sich noch keine andere Lagerstätte von Dir oder 
-           Dein Hauptdorf befindet.</p>
-        <p>Außerdem müssen folgende Bedingungen erfüllt sein:</p>
+        <p>{{t settlement.found.errorText}}</p>
+        <p>{{t settlement.found.requirement.text}}:</p>
         <ul>
-          <li>Du hast einen freien Siedlungspunkt zur Verfügung,</li>
-          <li>Deine Armee hat mindestens einen kleinen Anführer dabei und</li>
-          <li>Deine Armee hat noch mindestens einen Aktionspunkt zur Verfügung.</li>
+          <li>{{t settlement.found.requirement.req1}}</li>
+          <li>{{t settlement.found.requirement.req2}}</li>
+          <li>{{t settlement.found.requirement.req3}}</li>
         </ul>
            
       {{/if }}      
 
-      <a class="icon-button cancel-button" href="#" {{action "cancelPressed" target="parentView"}}>abbrechen</a>
+      <a class="icon-button cancel-button" href="#" {{action "cancelPressed" target="parentView"}}>{{t general.cancel}}</a>
     </div>
 </script>
 

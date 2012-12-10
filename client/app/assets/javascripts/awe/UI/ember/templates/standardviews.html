@@ -42,8 +42,8 @@
       <h1>{{ heading }}</h1>
       {{view Ember.TextField class="text-field" placeholder="Name" type="text" valueBinding="input"}} 
       <div class="controls-bar">
-        <div class="icon-button ok-button" {{action "okPressed"}}>ändern</div>
-        <div class="icon-button cancel-button" {{action "cancelPressed"}}>abbrechen</div>
+        <div class="icon-button ok-button" {{action "okPressed"}}>{{t general.change}}</div>
+        <div class="icon-button cancel-button" {{action "cancelPressed"}}>{{t general.cancel}}</div>
       </div>
     </div>
   </div>

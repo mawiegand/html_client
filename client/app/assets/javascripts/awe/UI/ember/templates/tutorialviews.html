@@ -22,7 +22,7 @@
         {{/each}}
       </div>
             
-      <div class="button ok-button" {{action "okPressed"}}>Ok!</div>
+      <div class="button ok-button" {{action "okPressed"}}>{{t general.ok}}</div>
       
     </div>
   </div>
@@ -232,7 +232,7 @@
           {{#if redeeming}}
             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
           {{else}}
-            Ok!
+            {{t general.ok}}
           {{/if}}
         </div>
         <div class="quest-item-nr">#{{questState.questNr}}</div>
