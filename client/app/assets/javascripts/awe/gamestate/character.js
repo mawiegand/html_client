@@ -384,6 +384,9 @@ AWE.GS = (function(module) {
             if (AWE.Settings.referer !== undefined && AWE.Settings.referer !== null) {
               xhr.setRequestHeader('X-Alt-Referer', AWE.Settings.referer);
             }            
+            if (AWE.Settings.requestUrl !== undefined && AWE.Settings.requestUrl !== null) {
+              xhr.setRequestHeader('X-Alt-Request', AWE.Settings.requestUrl);
+            }            
           }
         );
       }        
