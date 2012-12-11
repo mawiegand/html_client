@@ -281,13 +281,13 @@ AWE.GS = (function(module) {
           // log('---> alliance_test ok');
         }
         if (quest.reward_tests.kill_test) {
-          log('---> kill_test', quest.reward_tests.kill_test);
+          // log('---> kill_test', quest.reward_tests.kill_test);
         
           if (!self.checkKills(quest.reward_tests.kill_test)) {
-            log('---> kill_test failed');
+            // log('---> kill_test failed');
             return false;              
           }
-          log('---> kill_test ok');
+          // log('---> kill_test ok');
         }
         if (quest.reward_tests.army_experience_test) {
           // log('---> alliance_test', quest.reward_tests.alliance_test);
