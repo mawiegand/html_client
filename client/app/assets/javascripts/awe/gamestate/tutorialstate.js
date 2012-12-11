@@ -281,13 +281,13 @@ AWE.GS = (function(module) {
           // log('---> alliance_test ok');
         }
         if (quest.reward_tests.kill_test) {
-          // log('---> kill_test', quest.reward_tests.kill_test);
+          log('---> kill_test', quest.reward_tests.kill_test);
         
           if (!self.checkKills(quest.reward_tests.kill_test)) {
-            // log('---> kill_test failed');
+            log('---> kill_test failed');
             return false;              
           }
-          // log('---> kill_test ok');
+          log('---> kill_test ok');
         }
         if (quest.reward_tests.army_experience_test) {
           // log('---> alliance_test', quest.reward_tests.alliance_test);
@@ -299,13 +299,13 @@ AWE.GS = (function(module) {
           // log('---> alliance_test ok');
         }
         if (quest.reward_tests.score_test) {
-          // log('---> alliance_test', quest.reward_tests.alliance_test);
+          // log('---> score_test', quest.reward_tests.score_test);
         
           if (!self.checkScore(quest.reward_tests.score_test)) {
-            // log('---> alliance_test failed');
+            // log('---> score_test failed');
             return false;              
           }
-          // log('---> alliance_test ok');
+          // log('---> score_test ok');
         }
         if (quest.reward_tests.settlement_production_test) {
           // log('---> settlement_production_test', quest.reward_tests.settlement_production_test);
@@ -597,12 +597,13 @@ AWE.GS = (function(module) {
 
     checkKills: function(killTest) {
       var minUnits = killTest.min_units;
+      log('---> checkKills with min_units', minUnits);
       
       if (minUnits == null) {
         log('ERROR in AWE.GS.QuestState.testKills: killTest.min_units missing in quest id ' + this.get('quest_id'));
         return false;
       }
-      // log('---> checkKills with min_units', minUnits, AWE.GS.player.getPath('currentCharacter.kills'));
+      log('---> checkKills with min_units', minUnits, AWE.GS.player.getPath('currentCharacter.kills'));
         
       return AWE.GS.player.getPath('currentCharacter.kills') != null && AWE.GS.player.getPath('currentCharacter.kills') >= minUnits;
     },
@@ -636,7 +637,7 @@ AWE.GS = (function(module) {
         return false;
       }
         
-      return AWE.GS.player.getPath('currentCharacter.kills') != null && AWE.GS.player.getPath('currentCharacter.kills') >= minPopulation;
+      return AWE.GS.player.getPath('currentCharacter.score') != null && AWE.GS.player.getPath('currentCharacter.score') >= minPopulation;
     },
 
     checkSettlementProduction: function(settlementProductionTest) {
