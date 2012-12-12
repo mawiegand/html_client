@@ -664,7 +664,7 @@ AWE.GS = (function(module) {
         if (productions != null) {
           AWE.Ext.applyFunctionToElements(productions, function(production) {
             // log('---> resources', resources, productionTestWeights[production.resourceType.symbolic_id], production.resourceType.symbolic_id, production.get('base'));
-            resources += parseFloat(production.get('base')) * (productionTestWeights[production.resourceType.symbolic_id] || 0);
+            resources += parseFloat(production.get('rate')) * (productionTestWeights[production.resourceType.symbolic_id] || 0);
           });
         }
         
