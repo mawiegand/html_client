@@ -138,8 +138,8 @@ AWE.Controller = (function(module) {
           AWE.GS.ShopManager.buyResourceOffer(offerId, function(transaction) { // success handler
             if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
               var info = AWE.UI.Ember.InfoDialog.create({
-                heading: "Perfect!",
-                message: "You got a bunch of fresh toads. Spend them wisely so your clan may live long and prosper.",
+                heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
+                message: AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
               });      
               that.applicationController.presentModalDialog(info);
             }
@@ -165,8 +165,8 @@ AWE.Controller = (function(module) {
             });
           }, function() {                                   // error handler
             var info = AWE.UI.Ember.InfoDialog.create({
-              heading: 'Server Error',
-              message: "There's a problem with the shop. Try again later",
+              heading: AWE.I18n.lookupTranslation('shop.error.heading'),
+              message: AWE.I18n.lookupTranslation('shop.error.message'),
             });      
             that.applicationController.presentModalDialog(info);
           })
@@ -176,8 +176,8 @@ AWE.Controller = (function(module) {
           AWE.GS.ShopManager.buyBonusOffer(offerId, function(transaction) { // success handler
             if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
               var info = AWE.UI.Ember.InfoDialog.create({
-                heading: "Yeaha!",
-                message: "The bonus effect has been unlocked and will help your clan to prosper.",
+                heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusHeader'),
+                message: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusMessage'),
               });      
               that.applicationController.presentModalDialog(info);
             }
@@ -204,8 +204,8 @@ AWE.Controller = (function(module) {
             });
           }, function() {                                   // error handler
             var info = AWE.UI.Ember.InfoDialog.create({
-              heading: 'Server Error',
-              message: "There's a problem with the shop. Try again later",
+              heading: AWE.I18n.lookupTranslation('shop.error.heading'),
+              message: AWE.I18n.lookupTranslation('shop.error.message'),
             });      
             that.applicationController.presentModalDialog(info);
           })
@@ -215,8 +215,8 @@ AWE.Controller = (function(module) {
           AWE.GS.ShopManager.buyPlatinumOffer(offerId, function(transaction) { // success handler
             if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
               var info = AWE.UI.Ember.InfoDialog.create({
-                heading: "Yeaha!",
-                message: "The platinum account has been credited to your character. Platinum features are available immediately.",
+                heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.platinumAccountHeader'),
+                message: AWE.I18n.lookupTranslation('shop.buyConfirmation.platinumAccountMessage'),
               });      
               that.applicationController.presentModalDialog(info);
             }
@@ -240,8 +240,8 @@ AWE.Controller = (function(module) {
             });
           }, function() {                                   // error handler
             var info = AWE.UI.Ember.InfoDialog.create({
-              heading: 'Server Error',
-              message: "There's a problem with the shop. Try again later",
+              heading: AWE.I18n.lookupTranslation('shop.error.heading'),
+              message: AWE.I18n.lookupTranslation('shop.error.message'),
             });      
             that.applicationController.presentModalDialog(info);
           })
