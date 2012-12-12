@@ -281,13 +281,13 @@ AWE.GS = (function(module) {
           // log('---> alliance_test ok');
         }
         if (quest.reward_tests.kill_test) {
-          log('---> kill_test', quest.reward_tests.kill_test);
+          // log('---> kill_test', quest.reward_tests.kill_test);
         
           if (!self.checkKills(quest.reward_tests.kill_test)) {
-            log('---> kill_test failed');
+            // log('---> kill_test failed');
             return false;              
           }
-          log('---> kill_test ok');
+          // log('---> kill_test ok');
         }
         if (quest.reward_tests.army_experience_test) {
           // log('---> alliance_test', quest.reward_tests.alliance_test);
@@ -664,7 +664,7 @@ AWE.GS = (function(module) {
         if (productions != null) {
           AWE.Ext.applyFunctionToElements(productions, function(production) {
             // log('---> resources', resources, productionTestWeights[production.resourceType.symbolic_id], production.resourceType.symbolic_id, production.get('base'));
-            resources += parseFloat(production.get('base')) * (productionTestWeights[production.resourceType.symbolic_id] || 0);
+            resources += parseFloat(production.get('rate')) * (productionTestWeights[production.resourceType.symbolic_id] || 0);
           });
         }
         

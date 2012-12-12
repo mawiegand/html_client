@@ -619,6 +619,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;  // TODO: This is a hack, should go to settings.
       AWE.Settings.signin_with_client_id = args.client_id || '';   
       AWE.Settings.referer = args.referer;
+      AWE.Settings.requestUrl = args.requestUrl;
       AWE.Settings.playerInvitation = args.playerInvitation;
       AWE.Settings.allianceInvitation = args.allianceInvitation;
       
