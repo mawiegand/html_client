@@ -63,18 +63,18 @@
       
       <p>{{t resource.productionInfo.help1}} <em>{{t settlement.info.buildings}}</em> {{t resource.productionInfo.help2}} <em>{{t settlement.info.tax}}</em> {{t resource.productionInfo.help3}} <em>{{t resource.productionInfo.baseProduction}}</em> von{{t resource.productionInfo.help4}} <a href="#" {{action "pressedShop"}}>{{t shop.title}}</a> {{t resource.productionInfo.help5}}</p>
       
-      <table>
-        <tr>
-          <td>Likes verfügbar</td>
-          <td class="number">{{formatNumber pool.like_amount maxPlaces="0"}}</td>
-          <td class="number">+{{formatNumber pool.like_production_rate maxPlaces="1"}}/h</td>
-        </tr>
-        <tr>
-          <td>Dislikes verfügbar</td>
-          <td class="number">{{formatNumber pool.dislike_amount maxPlaces="0"}}</td>
-          <td class="number">+{{formatNumber pool.dislike_production_rate maxPlaces="1"}}/h</td>
-        </tr>
-      </table>
+      {{#if AWE.Config.LIKE_ENABLED}}
+        <table>
+          <tr>
+            <td>Likes verfügbar</td>
+            <td class="number">{{formatNumber pool.like_amount maxPlaces="0"}}</td>
+          </tr>
+          <tr>
+            <td>Dislikes verfügbar</td>
+            <td class="number">{{formatNumber pool.dislike_amount maxPlaces="0"}}</td>
+          </tr>
+        </table>
+      {{/if}}
       
       <a class="icon-button ok-button" href="#" {{action "okClicked"}}>{{t general.ok}}</a>     
     </div>
