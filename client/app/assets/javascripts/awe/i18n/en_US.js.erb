@@ -241,6 +241,7 @@ AWE.I18n.en_US =  function(module) {
         reset: "Reset",
         change: "Change",
         create: "Create",
+        changeNameHeading: "Enter the new name of this army.",
         errors: {
           garrison: "The garrison army is too full",
           garrisonFighting: "While the garrison is fighting you cannot create another army.",
@@ -325,6 +326,9 @@ AWE.I18n.en_US =  function(module) {
     
     error: {
       stringMissing: "(error: text missing!)",
+      genericClientHeading: "Client Error",
+      genericClientMessage: "An error occured while trying to complete your action. Please contac support if the error persists after reloading.",
+      genericServer: "The server did not accept the command.",
     },
     
     map: {
@@ -371,6 +375,37 @@ AWE.I18n.en_US =  function(module) {
       shoutBoxExplanation: "Everything entered here is immediately visible to all members",
       changePassword: 'Save new password',
       kickMember: 'kick',
+
+      error: {
+        blankPassword: "Setting a blank password is not possible.",
+        failedToSetPassword: "For some reason, setting the alliance password failed.",
+        kickHeading: "Not Possible!",
+        kickMessage: "You don't have permissions to kick this member.",
+        leaveFailedClient: "Client Error: Could not leave alliance.",
+        leaveFailed: "Could not leave alliance",
+        invalidTag: "Enter a valid alliance tag.",
+        invalidPassword: "Enter the secret alliance slogan",
+        tagNotTaken: "There is no alliance with the tag you entered.",
+        wrongPassword: "Alliance tag and password do not match.",
+        memberLimitReached: "The maximum number of alliance members has already been reached.",
+        unkownJoin: "For some reason, joining the alliance did fail.",
+        enterValidTag: "Enter a valid alliance tag with 2 to 5 characters.",
+        enterValidName: "Enter a valid alliance name of at least 2 characters.",
+        tagTaken: "The tag you've chosen is already taken by another alliance.",
+        noPermissionCreate: "You're not allowed to create an alliance.",
+        unknownCreate: "For some reason, creating the alliance did fail.",
+      },
+      confirmKick: {
+        heading: "Confirm action",
+        message1: "Do you realy want to kick ",
+        message2: " out of the alliance?",
+        cancel: "No",
+        ok: "Kick!",
+      },
+      confirmLeave: {
+        heading: "Leave Alliance",
+        message: "Are you sure about leaving your alliance?",
+      },
     },
     
     welcome: {
@@ -444,6 +479,8 @@ AWE.I18n.en_US =  function(module) {
         header: "Invatation link",
         text: "Invite your friends to play with you. If they register with the following link, they start right in this region and pay taxes to you from the beggining.",
         send: "Send per email",
+        mailSubject: "Invitation to Wack-A-Doo",
+        mailBody: "Play Wack-A-Doo now: ",
       },
 
       buildings: {
@@ -537,6 +574,11 @@ AWE.I18n.en_US =  function(module) {
         origin: "Origin",
         destination: "Destination",
         amount: "amount",
+
+        error: {
+          recipientUnknown: "Your workers are far to lazy to send resources to themself.",
+          recipientSelf: "Recipient unknown.",
+        },
       },
 
       found: {
@@ -587,6 +629,11 @@ AWE.I18n.en_US =  function(module) {
         resourceProductionInfo1: "Taxes are only raised on the base building production. The bonus production is calculated on top of the untaxed base production and there are ",
         resourceProductionInfo2: "no",
         resourceProductionInfo3: "taxes being raised on the bonus production.",
+        setTaxRate: "Enter new tax rate (5-15%).",
+      },
+      error: {
+        serverDidNotAcceptTaxRate: "The server did not accept the tax rate change.",
+        couldNotChangeTaxRate: "Enter a number between 5 and 15.",
       },
     },
     
@@ -666,6 +713,7 @@ AWE.I18n.en_US =  function(module) {
         changePasswordCaption: "Change of Password",
         changePasswordAdvice: "Here you can change your password. The password must contain between 6 and 40 characters.",
         changePasswordButton: "Change Password",
+        changePasswordChanged: "Password changed",
 
         changeNameDialogCaption: "Enter your character's new name.",
 
@@ -679,6 +727,10 @@ AWE.I18n.en_US =  function(module) {
           changeNameError: "Your name could not be changed for some reason. Please try again later.",
           changeGenderCost: "You don't have enough golden frogs to change your gender.",
           changeGenderError: "Your gender could not be changed for some reason. Please try again later.",
+
+          changePasswordInvalid: "The password doesn't meet the requirements. Please choose a appropriate password.",
+          changePasswordUnknown: "Your password could not be changed for unknown reasons. Please try again later.",
+          changePasswordNoMatch: "The  two passwords don't match. Try again.",
         },
       },
     },

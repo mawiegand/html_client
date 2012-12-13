@@ -37,7 +37,7 @@ AWE.UI.Ember = (function(module) {
           
       var changeDialog = AWE.UI.Ember.TextInputDialog.create({
         classNames: ['change-army-name-dialog'],
-        heading: 'Enter the new name of this army.',
+        heading: AWE.I18n.lookupTranslation('army.form.changeNameHeading'),
         input: this.getPath('army.name'),
         army: this.getPath('army'),
         

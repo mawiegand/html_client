@@ -18,7 +18,7 @@ AWE.UI.Ember = (function(module) {
    * @name AWE.UI.Ember.SelectBuildingDialog */
   module.SelectBuildingDialog = Ember.View.extend( /** @lends AWE.UI.Ember.SelectBuildingDialog# */ {
     templateName: "settlement-dialog-select-building",
-    heading: 'Select Building',
+    heading: AWE.I18n.lookupTranslation('settlement.buildings.select.heading'),
   
     cancelPressed: function() {
       this.get('controller').unselectSlot();
@@ -240,24 +240,25 @@ AWE.UI.Ember = (function(module) {
     leaveAlliance: function() {
       var self = this;
       var dialog = AWE.UI.Ember.InfoDialog.create({
-        heading:    'Leave Alliance',
-        message:    'Are you sure about leaving your alliance?',
+        heading:    AWE.I18n.lookupTranslation('alliance.confirmLeave.heading'),
+        message:    AWE.I18n.lookupTranslation('alliance.confirmLeave.message'),
         allianceId: this.getPath('character.alliance_id'),
         
         cancelPressed: function() {
           this.destroy();
         },
-        okText: 'Yes',
+        okText: AWE.I18n.lookupTranslation('general.yes'),
+        cancelText: AWE.I18n.lookupTranslation('general.cancel'),
         okPressed: function(event) {
           var action = AWE.Action.Fundamental.createLeaveAllianceAction(this.get('allianceId'));
           if (!action) {
-            this.set('errorMessage', 'Client Error: Could not leave alliance.');
+            this.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.leaveFailedClient'));
           }
           else {
             self.startAction();
             AWE.Action.Manager.queueAction(action, function(statusCode) {
               if (statusCode !== 200) {
-                this.set('errorMessage', 'Could not leave alliance.');
+                this.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.leaveFailed'));
               }
               self.endAction();
             });       
@@ -277,11 +278,11 @@ AWE.UI.Ember = (function(module) {
       this.resetError();
       
       if (!tag || tag.length < 2) {
-        this.set('errorMessage', 'Enter a valid alliance tag.');
+        this.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.invalidTag'));
         return ;
       }
       if (!password) {
-        this.set('errorMessage', 'Enter the secret password of the alliance.');
+        this.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.invalidPassword'));
         return ;
       }
       
@@ -289,16 +290,16 @@ AWE.UI.Ember = (function(module) {
       this.startAction();
       AWE.Action.Manager.queueAction(action, function(statusCode) {
         if (statusCode === 404) {
-          self.set('errorMessage', 'There is no alliance with the tag you entered.');
+          self.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.tagNotTaken'));
         }
         else if (statusCode === 403) {
-          self.set('errorMessage', 'Alliance tag and password do not match.');
+          self.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.wrongPassword'));
         }
         else if (statusCode === AWE.Net.CONFLICT) {
-          self.set('errorMessage', 'The maximum number of alliance members has already been reached.')
+          self.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.memberLimitReached'));
         }
         else if (statusCode !== 200) {
-          self.set('errorMessage', 'For some reason, joining the alliance did fail.')
+          self.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.unknownJoin'));
         }
         self.endAction();
       });       
@@ -312,11 +313,11 @@ AWE.UI.Ember = (function(module) {
       this.resetError();
       
       if (!tag || tag.length < 2 || tag.length > 5) {
-        this.set('errorMessage', 'Enter a valid alliance tag with 2 to 5 characters.');
+        this.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.enterValidTag'));
         return ;
       }
       if (!name || name.length < 2) {
-        this.set('errorMessage', 'Enther a valid alliance name of at least 2 characters.');
+        this.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.enterValidName'));
         return ;
       }
       
@@ -324,13 +325,13 @@ AWE.UI.Ember = (function(module) {
       this.startAction();
       AWE.Action.Manager.queueAction(action, function(statusCode) {
         if (statusCode === AWE.Net.CONFLICT) {
-          self.set('errorMessage', "The tag you've chosen is already taken by another alliance.");
+          self.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.tagTaken'));
         }
         else if (statusCode === AWE.Net.FORBIDDEN) {
-          self.set('errorMessage', "You're not allowed to create an alliance.");
+          self.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.noPermissionCreate'));
         }
         else if (statusCode !== AWE.Net.CREATED) {
-          self.set('errorMessage', 'For some reason, creating the alliance did fail.')
+          self.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.unknownCreate'))
         }
         self.endAction();
       });          

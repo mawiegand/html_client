@@ -51,7 +51,7 @@
     
     <span class="help-icon" title="{{t settlement.info.commandPointsHelp}}">&nbsp;</span></p>
     
-    {{#if lastError}} <p class="red-color"><b>{{t lastError}}</b></p>{{/if}}
+    {{#if lastError}} <p class="red-color"><b>{{lastError}}</b></p>{{/if}}
     <p><b>{{t settlement.info.taxRate}}:</b> {{formatNumber settlement.taxPercentage}}%
       {{#if settlement.owns_region }}
         {{#if changeTaxPossible }}
@@ -103,7 +103,7 @@
     {{#if settlement.isFortress }}
       <h2>{{settlement.invitationLink.header}}</h2>
       <p>{{settlement.invitationLink.text}}</p>
-      <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action invitationLinkPressed}}>{{settlement.invitationLink.send}}</div>      
+      <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action invitationLinkPressed}}>{{t settlement.invitationLink.send}}</div>      
       <p class="clearfix" {{action catchClick}}>{{ unbound AWE.Config.PLAYER_INVITATION_BASE }}{{ unbound settlement.regionInvitationCode }}</p>
     {{/if}}
 
