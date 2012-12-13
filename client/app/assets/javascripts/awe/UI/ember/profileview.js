@@ -357,7 +357,7 @@ AWE.UI.Ember = (function(module) {
       
       if (this.get('password') != this.get('passwordConfirmation')) {
         this.set('changingPassword', false);
-        this.set('changePasswordMessage', "The two passwords doesn't match. Try again.");
+        this.set('changePasswordMessage', AWE.I18n.lookupTranslation('profile.customization.errors.changePasswordNoMatch'));
       }
       else {
         var self = this;
@@ -367,17 +367,17 @@ AWE.UI.Ember = (function(module) {
           if (status === AWE.Net.OK) {
             self.set('password', '');
             self.set('passwordConfirmation', '');
-            self.set('changePasswordMessage', "Password changed.")
+            self.set('changePasswordMessage', AWE.I18n.lookupTranslation('profile.customization.changePasswordChanged'))
           }
           else if (status === AWE.Net.CONFLICT) {
             self.set('password', '');
             self.set('passwordConfirmation', '');
-            self.set('changePasswordMessage', "The password doesn't meet the requirements. Please choose a appropriate password.")
+            self.set('changePasswordMessage', AWE.I18n.lookupTranslation('profile.customization.errors.changePasswordInvalid'))
           }
           else {
             self.set('password', '');
             self.set('passwordConfirmation', '');
-            self.set('changePasswordMessage', 'Your password could not be changed for unknown reasons. Please try again later.');
+            self.set('changePasswordMessage', AWE.I18n.lookupTranslation('profile.customization.errors.changePasswordUnknown'));
           }
         });
       }        

@@ -232,7 +232,7 @@ AWE.UI.Ember = (function(module) {
       var ownName       = AWE.GS.player.getPath('currentCharacter.name') || "";
       
       if (recipientName === ownName) {
-        this.set('errorMessage', 'Deine Anhänger sind viel zu faul, als dass sie Ressourcen an sich selbst senden würden.');
+        this.set('errorMessage', AWE.I18n.lookupTranslation('settlement.trade.error.recipientUnknown'));
         return false;
       }
       
@@ -243,10 +243,10 @@ AWE.UI.Ember = (function(module) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
         }
         else if (status === AWE.Net.NOT_FOUND) {
-          self.set('errorMessage', 'Empfänger unbekannt.');          
+          self.set('errorMessage', AWE.I18n.lookupTranslation('settlement.trade.error.recipientSelf'));          
         }
         else {
-          self.set('errorMessage', 'The server did not accept the command.');
+          self.set('errorMessage', AWE.I18n.lookupTranslation('error.genericServer'));
         }
         self.set('sending', false);
       });   
