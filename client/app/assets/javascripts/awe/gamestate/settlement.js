@@ -262,9 +262,11 @@ AWE.GS = (function(module) {
       if (!enumerableSlots || enumerableSlots.length === 0) {
         return null;
       }
-      return enumerableSlots.filter(function(item) {
+      var numSlots = enumerableSlots.filter(function(item) {
         return item.building_id !== undefined && item.building_id !== null 
       }).length
+      log('---> usedBuildingSlots', numSlots);
+      return numSlots;
     }.property('enumerableSlots.@each.building_id').cacheable(),
     
     availableBuildingSlots: function() {
@@ -286,6 +288,7 @@ AWE.GS = (function(module) {
           total = 12;
         }
       }
+      log('---> availableBuildingSlots', total, used, total - used);
       return total - used;
     }.property('building_slots_total', 'usedBuildingSlots', 'enumerableSlots.@each.building_id').cacheable(),
   });     
