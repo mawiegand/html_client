@@ -3,7 +3,7 @@ defaults: &defaults
   portal_server_base: "localhost"
   shop_callback_hostname: "test2" # linked per nginx to patrick's ip
   
-  use_dynamic_construction_lots: true
+  use_dynamic_construction_slots: true
   
   shop_enabled: true
   jabber_id: "none"
@@ -26,7 +26,7 @@ staging:
   portal_server_base: "test1.wack-a-doo.de"
   shop_callback_hostname: "test1"
   
-  use_dynamic_construction_lots: false
+  use_dynamic_construction_slots: true
   
   shop_enabled: true
 
