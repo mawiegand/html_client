@@ -19,7 +19,9 @@
       <p><b>{{t profile.experience}}:</b> {{character.exp}} &nbsp; 
          <b>{{t profile.totalPopulation}}:</b> {{character.score}} &nbsp; 
          <b>{{t profile.fortresses}}:</b> {{character.fortress_count}}</p>
-      
+         
+      <p><b>{{t profile.battles}}:</b> {{character.battle_count}} ({{t profile.victories}}: {{ character.victories }}, {{t profile.defeats}}: {{ character.defeats }})</p>
+
       <p><b>{{t profile.homeSettlement}}:</b>
         {{#if homeSettlement}}
           {{homeSettlement.name}} ({{homeSettlement.score}} {{t settlement.population}})
