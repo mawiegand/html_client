@@ -286,9 +286,8 @@ AWE.GS = (function(module) {
           total = 12;
         }
       }
-      return total-used;
-    }.property('building_slots_total', 'usedBuildingSlots').cacheable(),
-        
+      return total - used;
+    }.property('building_slots_total', 'usedBuildingSlots', 'enumerableSlots.@each.building_id').cacheable(),
   });     
 
     
