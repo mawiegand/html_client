@@ -43,6 +43,10 @@ AWE.UI = (function(module) {
     };
     
     
+    that.getNumChildren = function() {
+      return my.container.getNumChildren();
+    }
+    
     that.addChildAt = function(view, pos) { 
       my.subviews.push(view);
       view.setSuperview(this);

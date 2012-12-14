@@ -2544,7 +2544,7 @@ AWE.Controller = (function(module) {
     
     that.updateInspectorViews = function() {
       if (inspectorViews.inspector) {
-        inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width-345, _windowSize.height-155));
+        inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width-430, _windowSize.height-234));
       }
       if (inspectorViews.tempToggleButtonView) {
         inspectorViews.tempToggleButtonView.setOrigin(AWE.Geometry.createPoint(180+20, _windowSize.height - 68));
