@@ -114,6 +114,10 @@ AWE.GS = (function(module) {
       return this.get('owner_id') === module.CharacterManager.currentCharacter.getId();
     },
     
+	isOutpost: function() {
+      return this.get('type_id') === module.SETTLEMENT_TYPE_OUTPOST;
+    }.property('type_id').cacheable(),
+	
     isFortress: function() {
       return this.get('type_id') === module.SETTLEMENT_TYPE_FORTRESS;
     }.property('type_id').cacheable(),

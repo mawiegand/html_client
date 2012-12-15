@@ -101,7 +101,10 @@
     <p>Steuern werden nur auf die Gebäude-Basisproduktion erhoben. 
        Die Bonusproduktion bezieht sich auf die unversteuerte Gebäude-Basisproduktion
        und wird <b>nicht</b> besteuert.</p>
-
+	{{#if settlement.isOutpost }}   
+    <div class="simple-button" style="min-height: 10px; margin-right: 100px;" {{action abandonOutpostPressed}}>Lagerstätte aufgeben!</div>      
+    {{/if}}
+	
     {{#if settlement.isFortress }}
       <h2>Einladungslink</h2>
       <p>Lade Deine Freunde zum Spielen ein. Wenn sie sich über den folgenden Link registrieren, starten sie direkt in dieser Region und zahlen Dir von Beginn an Steuern.</p>
