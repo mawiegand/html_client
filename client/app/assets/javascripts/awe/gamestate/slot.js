@@ -112,11 +112,11 @@ AWE.GS = (function(module) {
 		}.property('levelAfterJobs', 'level').cacheable(),
 
     experienceOrResourceProduction: function() {
-      return this.get('productions') != null || this.get('experienceProduction') != null;
+      return (AWE.Ext.isArray(this.get('productions')) && this.get('productions').length > 0) || this.get('experienceProduction') != null;
     }.property('productions', 'experienceProduction').cacheable(),
 
     experienceOrResourceProductionNextLevel: function() {
-      return this.get('productionsNextLevel') != null || this.get('experienceProductionNextLevel') != null;
+      return (AWE.Ext.isArray(this.get('productionsNextLevel')) && this.get('productionsNextLevel').length > 0) || this.get('experienceProductionNextLevel') != null;
     }.property('productionsNextLevel', 'experienceProductionNextLevel').cacheable(),
 
 		productions: function() {

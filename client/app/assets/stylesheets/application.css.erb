@@ -394,8 +394,8 @@ html, body {
   position: absolute;
   right: 0px;
   top: 0px;
-  width: 400px;
-  height: 250px;
+  width: 380px;
+  height: 260px;
   z-index: 10;
 }
 
@@ -404,7 +404,7 @@ html, body {
   left: 0px;
   top: 30px;
   width: 800px;
-  height: 52px;
+  height: 42px;
   z-index: 9;
 }
 
@@ -1378,27 +1378,54 @@ loaddialog-positioner {
   z-index:5; 
 }
 
-.settlement-dialog-pane { 
+.settlement-dialog-window {
   position: absolute; 
-  margin-left: 90px;
-  margin-top:  100px;
-  width: 580px; 
-  min-height: 480px;
-  background-color: #FFF;  
-  padding: 16px 20px 16px 20px;
-  z-index:6;
+  margin-left: 20px;
+  margin-top:  60px;
+  width: 758px; 
+  padding: 0px;
+  z-index:6;  
+} 
 
-  -moz-border-radius: 12px;
-  border-radius:      12px;
+.fortress-screen .settlement-dialog-window {
+  margin-top: 160px;
+}
+
+.settlement-dialog-header { 
+  margin-left: 2px;
+  width: 758px; 
+  height: 40px;
+  padding: 0;
+  background-image: url('<%= asset_path("ui/settlement/details_window_header.png") %>');
+}
+
+.settlement-dialog-footer { 
+  margin-left: 2px;
+  margin-bottom:  0px;
+  width: 758px; 
+  height: 40px;
+  padding: 0;
+  background-image: url('<%= asset_path("ui/settlement/details_window_footer.png") %>');
+}
+
+.settlement-dialog-pane { 
+  width: 660px; 
+  min-height: 480px;
+  padding: 6px 49px 6px 49px;
+  background-image: url('<%= asset_path("ui/settlement/details_window_tile.png") %>');
 }
 
 .settlement-dialog-pane a.close {
   position: absolute;
-  background: url('<%= asset_path("icons/cross_small.png") %>');
-  width: 36px;
-  height: 36px;
-  right: 12px;
-  top: 10px;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.settlement-dialog-pane a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
 .settlement-dialog-pane a.close:hover {
@@ -1412,6 +1439,10 @@ loaddialog-positioner {
   display: block;
   text-decoration: none;
   cursor: pointer;
+  border: 2px solid #AE9;
+  border-radius: 5px;
+  padding: 4px 10px;
+  background-color: #F6FFF4;
 }
 
 .settlement-dialog-pane .upgrade {
@@ -1454,8 +1485,8 @@ loaddialog-positioner {
 }
 
 
-.settlement-dialog-select-building { 
-  padding-bottom: 400px;
+.settlement-dialog-select-building.settlement-dialog-footer {
+  margin-bottom: 400px; 
 }
 
 span.bonus {
@@ -1529,7 +1560,7 @@ span.bonus {
 .settlement-dialog-building-details .building-description-box {
   float: left;
   min-height: 150px;
-  width: 440px;
+  width: 500px;
   margin-left: 20px;
   display: inline-block;
 }
@@ -1964,6 +1995,10 @@ span.bonus {
   margin: 20px 10px 6px 0px;
 }
 
+.training-queue-list-pane {
+  
+}
+
 .training-queue-job {
   float: left;
   width: 240px;
@@ -2287,57 +2322,83 @@ li.shout .sender {
 
 .settlement-info-box {
   z-index: 5;
-  -moz-border-radius: 3px;
-  border-radius:      3px;
   cursor: pointer;
+  background-image: url("<%= asset_path 'ui/settlement/info_box.png' %>");
+  width: 538px;
+  height: 83px;
 }
+
+.settlement-info-box:hover {
+  background-image: url("<%= asset_path 'ui/settlement/info_box-hovered.png' %>");
+}
+
+.fortress-picture .settlement-info-box,
+.outpost-screen .settlement-info-box,
+.base-screen .settlement-info-box {
+  font-size: 12px;
+  width: 518px;
+  height: 71px;
+  padding: 6px 10px 6px 10px;
+  color: white;
+  text-shadow: none;
+  position: absolute;
+  left: 57px;
+  top: 72px;  
+}
+
+.outpost-screen .settlement-info-box.expanded,
+.fortress-screen .settlement-info-box.expanded, 
+.base-screen .settlement-info-box.expanded {
+  width: 640px;
+  min-height:620px; 
+  background-color: white;
+  background-image: none;
+  color: #333;
+  text-shadow: none;
+  font-size: 14px;
+  z-index: 7;
+  left: 17px;
+  top: 71px;
+  border-radius: 9px;
+}
+
+.fortress-screen .settlement-info-box.expanded {
+  min-height:750px; 
+}
+
 
 
 .settlement-switch {
-  z-index: 5;
+  z-index: 6;
   position: absolute;
-  width: 10px;
-  height: 36px;
-  padding: 18px 2px;
+  width: 47px;
+  height: 83px;
   border-radius: 3px;
-  color: white;
-  text-shadow: none;
-  background-color: rgba(0,0,0,0.4);
 }
 
-.fortress-screen .settlement-switch {
-  height: 20px;
-  padding: 56px 2px;
-  background-color: rgba(255,255,255,0.4);
-  color: black;
+.settlement-switch.previous {
+  top: 72px;
+  left: 20px;
+  background-image: url("<%= asset_path 'ui/settlement/switch_left.png' %>");  
+}
+.settlement-switch.next {
+  top: 72px;
+  left: 585px;
+  background-image: url("<%= asset_path 'ui/settlement/switch_right.png' %>");    
 }
 
 .settlement-switch:hover {
-  background-color: #999;
+  cursor: pointer;
 }
 
-.outpost-screen .settlement-switch.previous,
-.base-screen .settlement-switch.previous {
-  top: 90px;
-  left: 20px;
+.settlement-switch.previous:hover {
+  background-image: url("<%= asset_path 'ui/settlement/switch_left-hovered.png' %>");  
 }
 
-.outpost-screen .settlement-switch.next,
-.base-screen .settlement-switch.next {
-  top: 90px;
-  left: 545px;
+.settlement-switch.next:hover {
+  background-image: url("<%= asset_path 'ui/settlement/switch_right-hovered.png' %>");    
 }
 
-
-.fortress-screen .settlement-switch.previous {
-  top: 70px;
-  left: 200px;
-}
-
-.fortress-screen .settlement-switch.next {
-  top: 70px;
-  left: 726px;
-}
 
 
 
@@ -2464,11 +2525,6 @@ li.shout .sender {
   background-image: url("<%= asset_path 'icons/down.png' %>");
 }
 
-.outpost-screen .down-icon,
-.base-screen .down-icon {
-  background-image: url("<%= asset_path 'icons/down-white.png' %>");  
-}
-
 .outpost-screen .left-icon,
 .base-screen .left-icon {
   background-image: url("<%= asset_path 'icons/left-white.png' %>");  
@@ -2502,46 +2558,7 @@ li.shout .sender {
   color: #DDF;
 }
 
-.fortress-picture .settlement-info-box {
-  font-size: 12px;
-  width: 480px;
-  height: 120px;
-  padding: 6px 10px 6px 10px;
-  position: absolute;
-  left: 220px;
-  top: 70px;  
-  background-color: rgba(255,255,255,0.4);
-}
 
-.outpost-screen .settlement-info-box,
-.base-screen .settlement-info-box {
-  font-size: 12px;
-  width: 480px;
-  height: 70px;
-  padding: 2px 10px 0px 10px;
-  color: white;
-  text-shadow: none;
-  position: absolute;
-  left: 40px;
-  top: 90px;  
-  background-color: rgba(0,0,0,0.4);
-}
-
-.outpost-screen .settlement-info-box.expanded,
-.fortress-screen .settlement-info-box.expanded, 
-.base-screen .settlement-info-box.expanded {
-  width: 600px;
-  min-height:620px; 
-  background-color: white;
-  color: #333;
-  text-shadow: none;
-  font-size: 14px;
-}
-
-.fortress-screen .settlement-info-box.expanded {
-  left:40px;
-  min-height:750px; 
-}
 
 .outpost-screen .settlement-info-box.expanded h1,
 .base-screen .settlement-info-box.expanded h1,
@@ -2560,6 +2577,7 @@ table .number {
   float: right;
 }
 
+.fortress-screen .settlement-info-box h1,
 .outpost-screen .settlement-info-box h1,
 .base-screen .settlement-info-box h1 {
   font-size: 16px;
@@ -2587,7 +2605,7 @@ table .number {
 
 .outpost-background-picture,
 .base-background-picture {
-  background: url('<%= asset_path("settlements/base/base_background_1280.jpg") %>');
+  background: url('<%= asset_path("settlements/base/base_c_background_1280.jpg") %>');
   background-repeat: no-repeat;
   position: absolute;
   left: 0px;
@@ -3556,6 +3574,48 @@ table .number {
 }
 
 
+.participant-table {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0px 0px 10px 0px;
+}
+
+.participant-table th {
+  background-color: #555;  
+  color: #fff;
+  padding: 4px 4px 4px 4px;
+  font-size: 14px;
+}
+
+.participant-table td {
+  font-size: 14px;
+  padding: 4px 4px 4px 4px;
+}
+
+.participant-table td.inner-table {
+  padding: 0px;
+}
+
+.participant-table th.left {
+  border-top-left-radius: 10px;
+  border-bottom-left-radsius: 10px;
+}
+
+.participant-table th.right {
+  border-top-right-radius: 10px;
+  border-bottom-right-rasdius: 10px;
+}
+
+.participant-table td.right-line {
+  border-right: 1px solid #ccc;
+}
+
+.participant-inner-table td {
+  padding: 4px 4px 4px 4px;
+  font-size: 14px;
+}
 
 
 .participant div {
@@ -3565,35 +3625,31 @@ table .number {
   margin-bottom: 5px;
 }
 
-.participant.header div {
-  font-weight: bold;
-}
-
 .participant-name {
-  width: 80px;
-}
-
-.participant-owner {
   width: 100px;
 }
 
+.participant-owner {
+  width: 120px;
+}
+
 .participant-size {
-  width: 30px;
+  width: 50px;
   text-align: center;
 }
 
 .participant-strength {
-  width: 60px;
+  width: 50px;
   text-align: center;
 }
 
 .participant-exp {
-  width: 30px;
+  width: 80px;
   text-align: center;
 }
 
 .participant-retreat {
-  width: 70px;
+  width: 0px;
 }
 
 .participants-left {
@@ -3631,7 +3687,7 @@ table .number {
   font-size: 16px;
   font-weight: bold;
   padding: 5px;
-  width: 770px;
+  width: 870px;
 }
 
 .battle-ratio-right-text {
@@ -3642,7 +3698,7 @@ table .number {
   font-weight: bold;
   text-align: right;
   padding: 5px;
-  width: 770px;
+  width: 870px;
 }
 
 .battle-time {
@@ -3651,9 +3707,9 @@ table .number {
 
 .battle-dialog-pane {
   position: absolute; 
-  margin-left: -400px;
-  margin-top: -200px;
-  width: 800px; min-height: 100px;
+  margin-left: -445px;
+  margin-top: -240px;
+  width: 890px; min-height: 100px;
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
   z-index:256;

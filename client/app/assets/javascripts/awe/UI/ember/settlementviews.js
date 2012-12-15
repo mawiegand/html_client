@@ -111,7 +111,7 @@ AWE.UI.Ember = (function(module) {
       var changeDialog = AWE.UI.Ember.TextInputDialog.create({
         classNames: ['change-army-name-dialog'],
         
-        heading:    'Gib den neuen Steuersatz ein (5-15%).',
+        heading:    AWE.I18n.lookupTranslation('settlement.info.setTaxRate'),
         input:      this.getPath('settlement.taxPercentage'),
         settlement: this.get('settlement'),
         
@@ -125,12 +125,12 @@ AWE.UI.Ember = (function(module) {
                 log('changed tax rate');
               }
               else {
-                self.set('lastError', 'settlement.error.serverDidNotAcceptTaxRate');
+                self.set('lastError', AWE.I18n.lookupTranslation('settlement.error.serverDidNotAcceptTaxRate'));
               }
             });  
           }
           else {
-            self.set('lastError', 'settlement.error.couldNotChangeTaxRate');
+            self.set('lastError', AWE.I18n.lookupTranslation('settlement.error.couldNotChangeTaxRate'));
           }
           this.destroy();            
         },
@@ -145,8 +145,8 @@ AWE.UI.Ember = (function(module) {
     invitationLinkPressed: function() {
       
       var mailWindow = window.open('mailto:?' +
-        encodeURI('subject=Einladung zu Wack-A-Doo&') + 
-        encodeURI('body=Spiele jetzt Wack-A-Doo:\n\n' + AWE.Config.PLAYER_INVITATION_BASE + this.getPath('settlement.regionInvitationCode')));
+        encodeURI('subject=' + AWE.I18n.lookupTranslation('settlement.invitationLink.mailSubject') +'&') + 
+        encodeURI('body=' + AWE.I18n.lookupTranslation('settlement.invitationLink.mailBody') + AWE.Config.PLAYER_INVITATION_BASE + this.getPath('settlement.regionInvitationCode')));
       mailWindow.close();
       
       event.preventDefault();

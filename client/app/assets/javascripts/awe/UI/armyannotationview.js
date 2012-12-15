@@ -118,7 +118,7 @@ AWE.UI = (function(module) {
       
       _rankImageView = AWE.UI.createImageView();
       _rankImageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/army/rank1"));
-      _rankImageView.setFrame(AWE.Geometry.createRect(86, 0, 20, 20));
+      _rankImageView.setFrame(AWE.Geometry.createRect(86, -20, 20, 20));
       this.addChild(_rankImageView);
       
       infoContainer = AWE.UI.createMultiLineContainer();

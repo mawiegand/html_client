@@ -21,6 +21,8 @@ AWE.GS = (function(module) {
       
     version: null,
     quests: null,
+    
+    production_test_weights: null,
 		
     quest: function(questId) {
       var quest = this.get('quests')[questId];

@@ -173,23 +173,6 @@ AWE.Controller = (function(module) {
     // ///////////////////////////////////////////////////////////////////////    
     
     that.updateResourceBubbles = function() { 
-/*      
-      if (!HUDViews.mainControlsView) {
-        HUDViews.mainControlsView = AWE.UI.createMainControlsView();
-        HUDViews.mainControlsView.initWithController(that);
-        _stage.addChild(HUDViews.mainControlsView.displayObject());
-      }
-      HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(20, 20));
-      
-      if (AWE.GS.TutorialStateManager.tutorialEnabled()) {
-        if (!HUDViews.controlButtonsView) {
-          HUDViews.controlButtonsView = AWE.UI.createControlButtonsView();
-          HUDViews.controlButtonsView.initWithController(that);
-          _stage.addChild(HUDViews.controlButtonsView.displayObject());
-        }
-        HUDViews.controlButtonsView.setOrigin(AWE.Geometry.createPoint(384, 126));
-      }*/
-      
       return true; 
     };
 

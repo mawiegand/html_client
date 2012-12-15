@@ -1,4 +1,5 @@
-/* Author: Patrick Fox <patrick@5dlab.com>
+/* Authors: Patrick Fox <patrick@5dlab.com>
+ *          Sascha Lange <sascha@5dlab.com>
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
@@ -13,12 +14,8 @@ AWE.UI = (function(module) {
 
     my = my || {};
     
-    my.typeName = 'ArmyInspectorView';
-    
-    var _army = null;
     var _stance = null;
     
-    var _backgroundShapeView = null;
     var _nameLabelView = null;
     var _apLabelView = null;
     var _locationLabelView = null;
@@ -29,176 +26,185 @@ AWE.UI = (function(module) {
     var _sizeType2LabelView = null;
     var _sizeType3LabelView = null;
     
-    var _inspectorFrame = null;
     var _stanceView = null;
-    var _flagView = null;
-    var _flagFrameView = null;
 
-    var _infoButtonView = null;
     var _reinforceButtonView = null;
-    var _prevButtonView = null;
-    var _nextButtonView = null;
     
-    that = module.createContainer(spec, my);
+    that = module.createInspectorView(spec, my);
+
+    my.typeName = 'ArmyInspectorView';
 
     var _super = {
-      initWithController: AWE.Ext.superior(that, "initWithController"),
-      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
-      setFrame: AWE.Ext.superior(that, "setFrame"),
-      updateView: AWE.Ext.superior(that, "updateView"),
+      initWithControllerAndAllianceId: AWE.Ext.superior(that, "initWithControllerAndAllianceId"),
+      layoutSubviews:                  AWE.Ext.superior(that, "layoutSubviews"),
+      setFrame:                        AWE.Ext.superior(that, "setFrame"),
+      updateView:                      AWE.Ext.superior(that, "updateView"),
+      recalcView:                      AWE.Ext.superior(that, "recalcView"),
     };
     
     that.onFlagClicked = null;
+    that.onPreviousArmyButtonClick = null;
+    that.onNextArmyButtonClick = null;
     
     /** overwritten view methods */
     
     that.initWithControllerAndArmy = function(controller, army, frame) {
-      _super.initWithController(controller, frame);      
-      _army = army;      
+      _super.initWithControllerAndAllianceId(controller, army ? army.get('alliance_id') : null, frame);      
+      
+      my.inspectedObject = army;  
+        
+      that.onPreviousButtonClick  = function(army) {
+        this.onPreviousArmyButtonClick(army);
+      }
+      that.onNextButtonClick      = function(army) {
+        this.onNextArmyButtonClick(army);
+      }
+      
       that.recalcView();
     };
     
     that.recalcView = function() {
       
-      var isOwnArmy = _army.isOwn();
+      var army       = my.inspectedObject;
       
-      if (!_backgroundShapeView) {
-        var backgroundShapeGraphics = new Graphics();
-        backgroundShapeGraphics.setStrokeStyle(0);
-        backgroundShapeGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-        backgroundShapeGraphics.drawRoundRect(0, 14, 230, 100, 6);
-        _backgroundShapeView = AWE.UI.createShapeView();
-        _backgroundShapeView.initWithControllerAndGraphics(my.controller, backgroundShapeGraphics);
-        _backgroundShapeView.setFrame(AWE.Geometry.createRect(0, 0, 230, 100));
-        this.addChildAt(_backgroundShapeView, 0);
+      var allianceId = army ? army.get('alliance_id') : null;
+      var isOwnArmy  = army ? army.isOwn() : false;
+      
+      this.setAllianceId(allianceId);
+      this.setSkimButtonsEnabled(isOwnArmy);
+      
+      _super.recalcView();
+      
+      if (!_reinforceButtonView && isOwnArmy) { 
+        _reinforceButtonView = AWE.UI.createButtonView();
+        _reinforceButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/inspector/button/reinforce/normal"));
+        _reinforceButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/inspector/button/reinforce/hovered"), module.CONTROL_STATE_HOVERED);
+        _reinforceButtonView.setFrame(AWE.Geometry.createRect(346, 0, 68, 66));
+        _reinforceButtonView.onClick = function() {
+          if (that.onChangeArmyButtonClick) {
+            that.onChangeArmyButtonClick(army); 
+          }
+        };
+        this.addChildAt(_reinforceButtonView, 3);
       }      
+      
+      if (_reinforceButtonView && isOwnArmy) {
+        var location = AWE.Map.Manager.getLocation(army.get('location_id'));
+        var settlement = location ? location.settlement() : null;
+        var garrison = settlement ? settlement.getPath('garrison') : null;
+        _reinforceButtonView.setEnabled(settlement && garrison !== undefined && 
+                                        garrison !== null && !garrison.get('isFighting') &&
+                                        army.get('home_settlement_id') === settlement.getId() &&
+                                        army.get('mode') === 0);
+      }
 
       if (!_nameLabelView) {
         _nameLabelView = AWE.UI.createLabelView();
         _nameLabelView.initWithControllerAndLabel(my.controller);
-        _nameLabelView.setFrame(AWE.Geometry.createRect(5, 15, 100, 36));      
+        _nameLabelView.setFrame(AWE.Geometry.createRect(31, 25, 160, 36));      
         _nameLabelView.setFont('24px "Helvetica Neue", Helvetica, Arial');
         _nameLabelView.setTextAlign("left");
         // _nameLabelView.setIconImage("map/icon/heads");
         this.addChild(_nameLabelView);
       }
       
-      if (_army.get('name') !== _nameLabelView.text()) {
-        _nameLabelView.setText(_army.get('name'));
+      if (army.get('name') !== _nameLabelView.text()) {
+        _nameLabelView.setText(army.get('name'));
       }
 
 
       if (!_apLabelView) {
         _apLabelView = AWE.UI.createLabelView();
         _apLabelView.initWithControllerAndLabel(my.controller);
-        _apLabelView.setFrame(AWE.Geometry.createRect(5, 46, 100, 24));      
+        _apLabelView.setFrame(AWE.Geometry.createRect(31, 61, 100, 28));      
         _apLabelView.setTextAlign("left");
         _apLabelView.setIconImage("map/icon/actionpoints");
         this.addChild(_apLabelView);
       }
       
       if (isOwnArmy) {
-        var apNext = _army.get('ap_next');
-        _apLabelView.setText('AP: ' + (apNext ? AWE.Util.localizedTime(apNext, true) : "-")); // AWE.UI.Util.secondsToString(_army.get('ap_seconds_per_point')));
+        var apNext = army.get('ap_next');
+        _apLabelView.setText('AP: ' + (apNext ? AWE.Util.localizedTime(apNext, true) : "-")); // AWE.UI.Util.secondsToString(army.get('ap_seconds_per_point')));
       }
       else {
-        _apLabelView.setText(_army.get('owner_name') + (_army.get('alliance_tag') ? ' | ' + _army.get('alliance_tag') : ''));        
+        _apLabelView.setText(army.get('owner_name') + (army.get('alliance_tag') ? ' | ' + army.get('alliance_tag') : ''));        
       }
       
 
       if (!_locationLabelView) {
         _locationLabelView = AWE.UI.createLabelView();
         _locationLabelView.initWithControllerAndLabel(my.controller);
-        _locationLabelView.setFrame(AWE.Geometry.createRect(5, 68, 100, 24));      
+        _locationLabelView.setFrame(AWE.Geometry.createRect(31, 89, 100, 28));      
         _locationLabelView.setTextAlign("left");
         _locationLabelView.setIconImage("map/icon/home");
         this.addChild(_locationLabelView);
       }
       
-      _locationLabelView.setText(_army.get('home_settlement_name') ? _army.get('home_settlement_name') : '[Home]');
+      _locationLabelView.setText(army.get('home_settlement_name') ? army.get('home_settlement_name') : '[Home]');
       
-  /*    if (!_rankLabelView) {
-        _rankLabelView = AWE.UI.createLabelView();
-        _rankLabelView.initWithControllerAndLabel(my.controller);
-        _rankLabelView.setTextAlign("left");
-        _rankLabelView.setIconImage("map/icon/rank");
-        _rankLabelView.setFrame(AWE.Geometry.createRect(5, 90, 100, 24));      
-        this.addChild(_rankLabelView);
-      }
-      _rankLabelView.setText(_army.get('rank')); */
 
       if (!_sizeAllLabelView) {  // ATTENTION: TOTAL STRENGTH; NOT SIZE!!!
         _sizeAllLabelView = AWE.UI.createLabelView();
         _sizeAllLabelView.initWithControllerAndLabel(my.controller);
-        _sizeAllLabelView.setFrame(AWE.Geometry.createRect(5, 90, 100, 24)); //105, 24, 100, 24));      
+        _sizeAllLabelView.setFrame(AWE.Geometry.createRect(31, 117, 100, 28)); //105, 24, 100, 24));      
         _sizeAllLabelView.setTextAlign("left");
         _sizeAllLabelView.setIconImage("map/icon/fist");
         this.addChild(_sizeAllLabelView);
       }
-      _sizeAllLabelView.setText(_army.get('strength'));
+      _sizeAllLabelView.setText(army.get('strength'));
       
       if (!_sizeType1LabelView) {
         _sizeType1LabelView = AWE.UI.createLabelView();
         _sizeType1LabelView.initWithControllerAndLabel(my.controller);
-        _sizeType1LabelView.setFrame(AWE.Geometry.createRect(105, 46, 100, 24));      
+        _sizeType1LabelView.setFrame(AWE.Geometry.createRect(162, 61, 100, 28));      
         _sizeType1LabelView.setTextAlign("left");
         _sizeType1LabelView.setIconImage("map/icon/army/infantry");
         this.addChild(_sizeType1LabelView);
       }
-      _sizeType1LabelView.setText(Math.floor(_army.get('unitcategory_infantry_strength')));
+      _sizeType1LabelView.setText(Math.floor(army.get('unitcategory_infantry_strength')));
       
       if (!_sizeType2LabelView) {
         _sizeType2LabelView = AWE.UI.createLabelView();
         _sizeType2LabelView.initWithControllerAndLabel(my.controller);
-        _sizeType2LabelView.setFrame(AWE.Geometry.createRect(105, 68, 100, 24));      
+        _sizeType2LabelView.setFrame(AWE.Geometry.createRect(162, 89, 100, 28));      
         _sizeType2LabelView.setTextAlign("left");
         _sizeType2LabelView.setIconImage("map/icon/army/cavalry");
         this.addChild(_sizeType2LabelView);
       }
-      _sizeType2LabelView.setText(Math.floor(_army.get('unitcategory_cavalry_strength')));
+      _sizeType2LabelView.setText(Math.floor(army.get('unitcategory_cavalry_strength')));
       
       if (!_sizeType3LabelView) {
         _sizeType3LabelView = AWE.UI.createLabelView();
         _sizeType3LabelView.initWithControllerAndLabel(my.controller);
         _sizeType3LabelView.setTextAlign("left");
         _sizeType3LabelView.setIconImage("map/icon/army/artillery");
-        _sizeType3LabelView.setFrame(AWE.Geometry.createRect(105, 90, 100, 24));      
+        _sizeType3LabelView.setFrame(AWE.Geometry.createRect(162, 117, 100, 28));      
         this.addChild(_sizeType3LabelView);
       }
-      _sizeType3LabelView.setText(Math.floor(_army.get('unitcategory_artillery_strength')));
-      
-      if (!_inspectorFrame) {
-        _inspectorFrame = AWE.UI.createImageView();
-        _inspectorFrame.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/inspector/frame"));
-        _inspectorFrame.setFrame(AWE.Geometry.createRect(184, 0, 128, 128));
-        _inspectorFrame.onClick = function() { 
-          that.onCenterButtonClick();
-        };
-        this.addChild(_inspectorFrame);
-      }      
-      
-      if (!_stanceView || _army.get('stance') != _stance) {
-        _stance = _army.get('stance');
+      _sizeType3LabelView.setText(Math.floor(army.get('unitcategory_artillery_strength')));
+            
+      if (!_stanceView || army.get('stance') != _stance) {
+        _stance = army.get('stance');
         // Image view für held
-        var stance = _army.get('stance') || 0;
-        var offX = 12;
-        var offY = 2;
+        var stance = army.get('stance') || 0;
+        var offX = 0;
+        var offY = 0;
               
         var stanceImage = null;
-        if (_army.get("npc")) {
-          var size = _army.get('size_present') || 0;
+        if (army.get("npc")) {
+          var size = army.get('size_present') || 0;
           if (size >= 800) {
-            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/large');
+            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/stanceLarge');
           }
           else if (size >= 100) {
-            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/medium');
+            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/stanceMedium');
           }
           else {
-            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/small');
+            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/stanceSmall');
           }
         }
         else {
-          var armyCategory = _army.get('armyCategory');
+          var armyCategory = army.get('armyCategory');
           var stanceImages = AWE.Config.MAP_STANCE_IMAGES;
       
           if (armyCategory === 'artillery') {
@@ -210,135 +216,23 @@ AWE.UI = (function(module) {
           stanceImage = AWE.UI.ImageCache.getImage(stanceImages[stance]);
         }        
       
-        if (!_stanceView) { 
-          _stanceView = AWE.UI.createImageView();
-          _stanceView.initWithControllerAndImage(my.controller, stanceImage);
-          _stanceView.setFrame(AWE.Geometry.createRect(186 + offX, 4 + offY, 96, 96));
-          //_stanceView.onClick = that.onClick;
-          _stanceView.onClick = function() { 
-            that.onCenterButtonClick();
-          };
-          _stanceView.onMouseOver = that.onMouseOver;
-          _stanceView.onMouseOut = that.onMouseOut;
-          this.addChild(_stanceView);
-        }
-        else {
-          _stanceView.setImage(stanceImage);
-        }
-      }
-
-      var allianceId = _army.get('alliance_id')
-      if (_flagView && _flagView.allianceId() !== allianceId) {      
-        this.removeChild(_flagView);
-        this.removeChild(_flagFrameView);
-        _flagView = null;
-        _flagFrameView = null;
-      }
-      if (!_flagView) {
-        // Allicance Flag
-        if (allianceId) {
-          _flagView = AWE.UI.createAllianceFlagView();
-          _flagView.initWithController(my.controller);
-          _flagView.setFrame(AWE.Geometry.createRect(152, 3, 56, 74));
-          _flagView.setAllianceId(allianceId);
-          _flagView.setTagVisible(true);
-          _flagView.onClick = function() { 
-            if (that.onFlagClicked) {
-              that.onFlagClicked(allianceId);
-            };
-          };
-          this.addChildAt(_flagView, 10);
-          
-          _flagFrameView = AWE.UI.createImageView();
-          _flagFrameView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/banner/small"));
-          _flagFrameView.setFrame(AWE.Geometry.createRect(149, 0, 61, 78));
-          _flagView.onClick = function() { 
-            WACKADOO.activateAllianceController(allianceId);   
-          }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
-          this.addChildAt(_flagFrameView, 11);
-          
-        }
-      }
-
-      // buttons oben
-      if (!_infoButtonView) {
-        _infoButtonView = AWE.UI.createButtonView();
-        _infoButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.info'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-        _infoButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        _infoButtonView.setFrame(AWE.Geometry.createRect(180, 0, 48, 48));
-        _infoButtonView.onClick = function() {
-           that.onInventoryButtonClick(_army) 
-        };
-        this.addChild(_infoButtonView);
-      }
-  
-      if (!_reinforceButtonView && isOwnArmy) { 
-        _reinforceButtonView = AWE.UI.createButtonView();
-        _reinforceButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.reinforce'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-        _reinforceButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        _reinforceButtonView.setFrame(AWE.Geometry.createRect(268, 0, 48, 48));
-        _reinforceButtonView.onClick = function() {
-           that.onChangeArmyButtonClick(_army) 
-        };
-        this.addChild(_reinforceButtonView);
+        _stanceView = AWE.UI.createImageView();
+        _stanceView.initWithControllerAndImage(my.controller, stanceImage);
+        _stanceView.setFrame(AWE.Geometry.createRect(0 + offX, 0 + offY, 144, 144));
+        this.setInspectedObjectView(_stanceView);
       }
       
-      if (_reinforceButtonView && isOwnArmy) {
-        var location = AWE.Map.Manager.getLocation(_army.get('location_id'));
-        var settlement = location ? location.settlement() : null;
-        var garrison = settlement ? settlement.getPath('garrison') : null;
-        _reinforceButtonView.setEnabled(settlement && garrison !== undefined && 
-                                        garrison !== null && !garrison.get('isFighting') &&
-                                        _army.get('home_settlement_id') === settlement.getId() &&
-                                        _army.get('mode') === 0);
-      }
 
 
-      if (!_prevButtonView && isOwnArmy) {
-        // button unten
-        _prevButtonView = AWE.UI.createButtonView();
-        _prevButtonView.initWithControllerTextAndImage(my.controller, '<<', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-        _prevButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        _prevButtonView.setFrame(AWE.Geometry.createRect(180, 92, 36, 36));
-        _prevButtonView.onClick = function() {
-           that.onPreviousArmyButtonClick(_army) 
-        };
-        this.addChild(_prevButtonView);
-      }
-      else if (_prevButtonView && !isOwnArmy) {
-        this.removeChild(_prevButtonView);
-        _prevButtonView = null;
-      }
-  
-      if (!_nextButtonView && isOwnArmy) {
-        _nextButtonView = AWE.UI.createButtonView();
-        _nextButtonView.initWithControllerTextAndImage(my.controller, '>>', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-        _nextButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
-        _nextButtonView.onClick = function() {
-           that.onNextArmyButtonClick(_army) 
-        };
-        this.addChild(_nextButtonView);
-      }
-      else if (_nextButtonView && !isOwnArmy) {
-        this.removeChild(_nextButtonView);
-        _nextButtonView = null;
-      }      
+      
+
+
+
     }
     
-//  that.onInventoryButtonClick = function() { log('inventory button clicked'); }
-    that.onChangeArmyButtonClick   = function(army) { log('inventory button clicked'); }
-    that.onPreviousArmyButtonClick = function(army) { log('previous army button clicked'); }
-    that.onNextArmyButtonClick     = function(army) { log('next army button clicked'); }
-    that.onCenterButtonClick       = function(army) { log('center button clicked'); }
         
-    that.updateView = function() {
-      that.recalcView();      
-      _super.updateView();
-    };   
-    
     that.army = function() {
-      return _army;
+      return my.inspectedObject;
     };
    
     return that;

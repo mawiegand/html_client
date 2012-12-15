@@ -280,6 +280,42 @@ AWE.GS = (function(module) {
           }
           // log('---> alliance_test ok');
         }
+        if (quest.reward_tests.kill_test) {
+          // log('---> kill_test', quest.reward_tests.kill_test);
+        
+          if (!self.checkKills(quest.reward_tests.kill_test)) {
+            // log('---> kill_test failed');
+            return false;              
+          }
+          // log('---> kill_test ok');
+        }
+        if (quest.reward_tests.army_experience_test) {
+          // log('---> alliance_test', quest.reward_tests.alliance_test);
+        
+          if (!self.checkArmyExperience(quest.reward_tests.army_experience_test)) {
+            // log('---> alliance_test failed');
+            return false;              
+          }
+          // log('---> alliance_test ok');
+        }
+        if (quest.reward_tests.score_test) {
+          // log('---> score_test', quest.reward_tests.score_test);
+        
+          if (!self.checkScore(quest.reward_tests.score_test)) {
+            // log('---> score_test failed');
+            return false;              
+          }
+          // log('---> score_test ok');
+        }
+        if (quest.reward_tests.settlement_production_test) {
+          // log('---> settlement_production_test', quest.reward_tests.settlement_production_test);
+        
+          if (!self.checkSettlementProduction(quest.reward_tests.settlement_production_test)) {
+            // log('---> settlement_production_test failed');
+            return false;              
+          }
+          // log('---> settlement_production_test ok');
+        }
         if (quest.reward_tests.textbox_test) {
           // log('---> textbox_test');
           // log('---> textbox_test failed');
@@ -559,7 +595,87 @@ AWE.GS = (function(module) {
       return false;      
     },
 
-    
+    checkKills: function(killTest) {
+      var minUnits = killTest.min_units;
+      log('---> checkKills with min_units', minUnits);
+      
+      if (minUnits == null) {
+        log('ERROR in AWE.GS.QuestState.testKills: killTest.min_units missing in quest id ' + this.get('quest_id'));
+        return false;
+      }
+      log('---> checkKills with min_units', minUnits, AWE.GS.player.getPath('currentCharacter.kills'));
+        
+      return AWE.GS.player.getPath('currentCharacter.kills') != null && AWE.GS.player.getPath('currentCharacter.kills') >= minUnits;
+    },
+
+    checkArmyExperience: function(armyExperienceTest) {
+      var minExp = armyExperienceTest.min_experience;
+      
+      if (minExp == null) {
+        log('ERROR in AWE.GS.QuestState.checkArmyExperience: armyExperienceTest.min_experience missing in quest id ' + this.get('quest_id'));
+        return false;
+      }
+      // log('---> checkcheckArmyExperienceKills with min_experience', minExp);
+        
+      var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.player.getPath('currentCharacter.id'));
+      
+      if (armies != null) {
+        for (var id in armies) {
+          if (armies.hasOwnProperty(id) && armies[id].get('exp') !== null && armies[id].get('exp') >= minExp) {
+            return true;
+          }
+        }
+      }
+      return false;
+    },
+
+    checkScore: function(scoreTest) {
+      var minPopulation = scoreTest.min_population;
+      
+      if (minPopulation == null) {
+        log('ERROR in AWE.GS.QuestState.testScore: scoreTest.min_population missing in quest id ' + this.get('quest_id'));
+        return false;
+      }
+        
+      return AWE.GS.player.getPath('currentCharacter.score') != null && AWE.GS.player.getPath('currentCharacter.score') >= minPopulation;
+    },
+
+    checkSettlementProduction: function(settlementProductionTest) {
+      var minResources = settlementProductionTest.min_resources;
+      
+      if (minResources == null) {
+        log('ERROR in AWE.GS.QuestState.checkSettlementProduction: settlementProductionTest.min_resources missing in quest id ' + this.get('quest_id'));
+        return false;
+      }
+      
+      var productionTestWeights = AWE.GS.TutorialManager.getTutorial().get('production_test_weights');
+      // log('---> productionTestWeights', productionTestWeights);
+        
+      var ownSettlements = AWE.GS.SettlementManager.getOwnSettlements();
+      // log('---> ownSettlements', ownSettlements);
+
+      var check = false;
+
+      AWE.Ext.applyFunctionToElements(ownSettlements, function(settlement) {
+        var productions = settlement.get('resourceProductions');
+        var resources = 0.0;
+        // log('---> productions', productions);
+        
+        if (productions != null) {
+          AWE.Ext.applyFunctionToElements(productions, function(production) {
+            // log('---> resources', resources, productionTestWeights[production.resourceType.symbolic_id], production.resourceType.symbolic_id, production.get('base'));
+            resources += parseFloat(production.get('rate')) * (productionTestWeights[production.resourceType.symbolic_id] || 0);
+          });
+        }
+        
+        if (resources >= minResources) {
+          check = true;
+        }
+      });
+
+      return check;
+    },
+   
   });    
 
 

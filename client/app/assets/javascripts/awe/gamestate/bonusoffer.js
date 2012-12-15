@@ -104,16 +104,6 @@ AWE.GS = (function(module) {
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
             lastUpdate = timestamp.add(-1).second();
           }
-          // delete old jobs from queue
-          // if (status === AWE.Net.OK) {
-            // var jobs = module.TrainingJobAccess.getHashableCollectionForQueue_id(queueId);
-            // AWE.Ext.applyFunction(jobs.get('collection'), function(job){
-              // var jobId = job.getId();
-              // if (!result.hasOwnProperty(jobId)) {
-                // job.destroy();
-              // }
-            // });
-          // }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
               result = that.getBonusOffers();

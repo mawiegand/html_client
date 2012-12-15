@@ -9,7 +9,7 @@
       <h2>{{t welcome.headingSituation}}</h2>
       {{{t welcome.formattedText}}}
       {{#if okPressed }}
-        <div class="image-button image-ok-button" {{action "okPressed"}}>Spielen</div>
+        <div class="image-button image-ok-button" {{action "okPressed"}}>{{t general.announcement.play}}</div>
       {{/if}}
     </div>
   </div>
@@ -24,9 +24,9 @@
       <div>
         {{view AWE.UI.Ember.FacebookSubcribeView classNames="facebook-iframe"}}
         {{#if okPressed }}
-          <div class="image-button image-ok-button" {{action "okPressed"}}>Spielen</div>
+          <div class="image-button image-ok-button" {{action "okPressed"}}>{{t general.announcement.play}}</div>
         {{/if}}
-        <a href="{{unbound AWE.Config.PORTAL_ROOT}}/announcements" target="_blank" class="news-archive-link">Archiv</a>
+        <a href="{{unbound AWE.Config.PORTAL_ROOT}}/announcements" target="_blank" class="news-archive-link">{{t general.announcement.archive}}</a>
       </div>
     </div>
   </div>

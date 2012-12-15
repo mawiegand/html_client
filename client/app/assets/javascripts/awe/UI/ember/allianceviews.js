@@ -26,7 +26,6 @@ AWE.UI.Ember = (function(module) {
       return leaderId && leaderId === characterId;
     }.property('alliance.leader_id', 'AWE.GS.player.currentCharacter.id').cacheable(),
 
-    
     ownAlliance: function() {
       var allianceId = this.getPath('alliance.id');
       var ownAllyId = AWE.GS.player.getPath('currentCharacter.alliance_id');
@@ -104,8 +103,8 @@ AWE.UI.Ember = (function(module) {
         var dialog = AWE.UI.Ember.Dialog.create({
           contentTemplateName: 'info-dialog',
           
-          heading:             'Client Fehler',
-          message:             'Es ist ein Fehler bei Deiner Aktion aufgetaucht. Bitte kontaktiere den Support, wenn dieser Fehler auch nach einem Neuladen bestehen bleibt.',
+          heading:             AWE.I18n.lookupTranslation('error.genericClientHeading'),
+          message:             AWE.I18n.lookupTranslation('error.genericClientMessage'),
           
           cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
           okPressed:           null,
@@ -122,8 +121,8 @@ AWE.UI.Ember = (function(module) {
         var dialog = AWE.UI.Ember.Dialog.create({
           contentTemplateName: 'info-dialog',
           
-          heading:             'Geht nicht!',
-          message:             'Dieses Mitglied kann nicht von Dir rausgeworfen werden.',
+          heading:             AWE.I18n.lookupTranslation('alliance.error.kickHeading'),
+          message:             AWE.I18n.lookupTranslation('alliance.error.kickMessage'),
           
           cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
           okPressed:           null,
@@ -138,11 +137,11 @@ AWE.UI.Ember = (function(module) {
 
           classNames: ['confirmation-dialog'],
         
-          heading:    'Aktion bestätigen', 
-          message:    'Willst Du ' + character.get('name') + ' wirklich aus der Allianz werfen?',
+          heading:    AWE.I18n.lookupTranslation('alliance.confirmKick.heading'), 
+          message:    AWE.I18n.lookupTranslation('alliance.confirmKick.message1')  + character.get('name') + AWE.I18n.lookupTranslation('alliance.confirmKick.message2'),
           
-          cancelText: 'Nein, doch nicht',
-          okText:     'Raus!',
+          cancelText: AWE.I18n.lookupTranslation('alliance.confirmKick.cancel'),
+          okText:     AWE.I18n.lookupTranslation('alliance.confirmKick.ok'),
         
           okPressed:  function() {
             var self = this;
@@ -205,7 +204,7 @@ AWE.UI.Ember = (function(module) {
       this.resetError();
       
       if (!password) {
-        this.set('errorMessage', 'Setting a blank password is not possible.');
+        this.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.blankPassword'));
         this.displayPresentPassword();
         return ;
       }
@@ -218,7 +217,7 @@ AWE.UI.Ember = (function(module) {
       this.startAction();
       AWE.Action.Manager.queueAction(action, function(statusCode) {
         if (statusCode !== 200) {
-          self.set('errorMessage', 'For some reason, setting the alliance password did fail.')
+          self.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.failedToSetPassword'));
         }
         self.endAction();
       });       
@@ -229,7 +228,6 @@ AWE.UI.Ember = (function(module) {
     }.property('alliance.password', 'password').cacheable(),
        
   });
-  
   
   module.AllianceBannerView = AWE.UI.Ember.Pane.extend({
     width: 200,
