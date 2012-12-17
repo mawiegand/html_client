@@ -44,7 +44,7 @@ AWE.UI = (function(module) {
         };
       }
       if (!child.onMouseOut) {
-        child.onMouseOut = function() { 
+        child.onMouseOut = function(event) { 
           if (that.onMouseOut) {
             that.onMouseOut(event);
           }
