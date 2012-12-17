@@ -31,6 +31,14 @@ AWE.UI = (function(module) {
       setVisible: AWE.Ext.superior(that, "setVisible"),
     }
     
+    that.onMouseOver = function() { 
+      that.setHovered(true);  
+    }
+    that.onMouseOut =  function() {
+      that.setHovered(false); 
+    }
+
+    
     that.initWithControllerTextAndImage = function(controller, text, image, frame) {
       _super.initWithController(controller, frame);
       
@@ -51,8 +59,8 @@ AWE.UI = (function(module) {
           that.onDoubleClick() 
         }
       };
-      _imageView.onMouseOver = function(self) { return function() { self.setHovered(true);  }}(this);
-      _imageView.onMouseOut =  function(self) { return function() { self.setHovered(false); }}(this);
+      _imageView.onMouseOver = function(event) { that.onMouseOver(event); }
+      _imageView.onMouseOut =  function(event) { that.onMouseOut(event); }
       my.container.addChild(_imageView.displayObject());
       
       _labelText2 = new Text(text, "10px Arial", "#000");
@@ -61,8 +69,8 @@ AWE.UI = (function(module) {
       _labelText2.x = my.frame.size.width / 2;
       _labelText2.y = my.frame.size.height / 2;
       _labelText2.view = that;
-      _labelText2.onMouseOver = function(self) { return function() { self.setHovered(true);  }}(this);
-      _labelText2.onMouseOut  = function(self) { return function() { self.setHovered(false); }}(this);
+      _labelText2.onMouseOver = function(event) { that.onMouseOver(event); }
+      _labelText2.onMouseOut =  function(event) { that.onMouseOut(event); }
       my.container.addChild(_labelText2);
     
       _labelText = new Text(text, "10px Arial", "#fff");
@@ -71,8 +79,8 @@ AWE.UI = (function(module) {
       _labelText.x = my.frame.size.width / 2;
       _labelText.y = my.frame.size.height / 2;
       _labelText.view = that;
-      _labelText.onMouseOver = function(self) { return function() { self.setHovered(true);  }}(this);
-      _labelText.onMouseOut  = function(self) { return function() { self.setHovered(false); }}(this);
+      _labelText.onMouseOver = function(event) { that.onMouseOver(event); }
+      _labelText.onMouseOut =  function(event) { that.onMouseOut(event); }
       my.container.addChild(_labelText);
     
       my.container.x = my.frame.origin.x;

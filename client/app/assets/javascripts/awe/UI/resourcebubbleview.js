@@ -37,7 +37,7 @@ AWE.UI = (function(module) {
     that.initWithControllerAndResourceImage = function(controller, imageName, resourceName, frame) {
       _super.initWithControllerTextAndImage(controller, "",
                                             AWE.UI.ImageCache.getImage("hud/bubble/normal"),
-                                            frame || AWE.Geometry.createRect(0, 0, 160, 36));
+                                            frame || AWE.Geometry.createRect(0, 0, 200, 38));
       this.setImageForState(AWE.UI.ImageCache.getImage("hud/bubble/hovered"), module.CONTROL_STATE_HOVERED);
       my.resourceImageName = imageName;
       my.resourceName = resourceName;
@@ -49,11 +49,21 @@ AWE.UI = (function(module) {
       if (!my.resourceImageView) {
         my.resourceImageView = AWE.UI.createImageView();
         my.resourceImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(my.resourceImageName));
-        my.resourceImageView.setFrame(AWE.Geometry.createRect(0, 0, 36, 36));
+        my.resourceImageView.setFrame(AWE.Geometry.createRect(12, 3, 32, 32));
         my.container.addChild(my.resourceImageView.displayObject());     
         my.resourceImageView.onClick = function() { 
           if (that.enabled()) {
             that.onClick() 
+          }
+        }
+        my.resourceImageView.onMouseOver = function() {
+          if (that.onMouseOver) {
+            that.onMouseOver();
+          }
+        }
+        my.resourceImageView.onMouseOut = function() {
+          if (that.onMouseOut) {
+            that.onMouseOut();
           }
         }
       } 
@@ -62,13 +72,23 @@ AWE.UI = (function(module) {
         my.amountView = AWE.UI.createLabelView();
         my.amountView.initWithControllerAndLabel(my.controller);
         my.amountView.setTextAlign("left");
-        my.amountView.setFont("bold 16px Arial");
+        my.amountView.setFont("italic bold 16px Arial");
         my.amountView.setColor('rgb(255,255,255)');
-        my.amountView.setFrame(AWE.Geometry.createRect(38, 3, 80, 16));      
+        my.amountView.setFrame(AWE.Geometry.createRect(58, 5, 80, 16));      
         my.container.addChild(my.amountView.displayObject());
         my.amountView.onClick = function() { 
           if (that.enabled()) {
             that.onClick() 
+          }
+        }
+        my.amountView.onMouseOver = function() {
+          if (that.onMouseOver) {
+            that.onMouseOver();
+          }
+        }
+        my.amountView.onMouseOut = function() {
+          if (that.onMouseOut) {
+            that.onMouseOut();
           }
         }
       }
@@ -77,13 +97,23 @@ AWE.UI = (function(module) {
         my.rateView = AWE.UI.createLabelView();
         my.rateView.initWithControllerAndLabel(my.controller);
         my.rateView.setTextAlign("right");
-        my.rateView.setFont("12px Arial");
+        my.rateView.setFont("italic 12px Arial");
         my.rateView.setColor('rgb(255,255,255)');
-        my.rateView.setFrame(AWE.Geometry.createRect(100, 7, 57, 12));      
+        my.rateView.setFrame(AWE.Geometry.createRect(130, 9, 57, 12));      
         my.container.addChild(my.rateView.displayObject());
         my.rateView.onClick = function() { 
           if (that.enabled()) {
             that.onClick() 
+          }
+        }
+        my.rateView.onMouseOver = function() {
+          if (that.onMouseOver) {
+            that.onMouseOver();
+          }
+        }
+        my.rateView.onMouseOut = function() {
+          if (that.onMouseOut) {
+            that.onMouseOut();
           }
         }
       }
@@ -92,14 +122,24 @@ AWE.UI = (function(module) {
         my.capacityLabelView = AWE.UI.createLabelView();
         my.capacityLabelView.initWithControllerAndLabel(my.controller);
         my.capacityLabelView.setTextAlign("left");
-        my.capacityLabelView.setFont("12px Arial");
+        my.capacityLabelView.setFont("italic 12px Arial");
         my.capacityLabelView.setColor('rgb(255,255,255)');
-        my.capacityLabelView.setFrame(AWE.Geometry.createRect(38, 21, 40, 12));      
+        my.capacityLabelView.setFrame(AWE.Geometry.createRect(56, 21, 40, 12));      
         my.capacityLabelView.setText('MAX:');
         my.container.addChild(my.capacityLabelView.displayObject());
         my.capacityLabelView.onClick = function() { 
           if (that.enabled()) {
             that.onClick() 
+          }
+        }
+        my.capacityLabelView.onMouseOver = function() {
+          if (that.onMouseOver) {
+            that.onMouseOver();
+          }
+        }
+        my.capacityLabelView.onMouseOut = function() {
+          if (that.onMouseOut) {
+            that.onMouseOut();
           }
         }
       }
@@ -110,13 +150,24 @@ AWE.UI = (function(module) {
         my.capacityView.setTextAlign("left");
         my.capacityView.setFont("12px Arial");
         my.capacityView.setColor('rgb(255,255,255)');
-        my.capacityView.setFrame(AWE.Geometry.createRect(70, 21, 80, 12));      
+        my.capacityView.setFrame(AWE.Geometry.createRect(90, 21, 80, 12));      
         my.container.addChild(my.capacityView.displayObject());
         my.capacityView.onClick = function() { 
           if (that.enabled()) {
             that.onClick() 
           }
         }
+        my.capacityView.onMouseOver = function() {
+          if (that.onMouseOver) {
+            that.onMouseOver();
+          }
+        }
+        my.capacityView.onMouseOut = function() {
+          if (that.onMouseOut) {
+            that.onMouseOut();
+          }
+        }
+
       }
       that.setValues();
     }
