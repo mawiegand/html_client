@@ -423,7 +423,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (this.get('presentScreenController') === this.get('mapScreenController')) {
         var node = AWE.GS.player.getPath('currentCharacter.base_node');
         if (node) {
-          this.get('presentScreenController').moveTo(node);
+          this.get('presentScreenController').moveTo(node, true);
         }
       }
       else {

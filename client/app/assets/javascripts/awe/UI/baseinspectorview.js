@@ -18,7 +18,10 @@ AWE.UI = (function(module) {
     my.settlementType = null;
         
     var _nameLabelView = null;
-    var _levelLabelView = null;
+    var _ownerLabelView = null;
+    var _scoreLabelView = null;
+    var _bonusLabelView = null;
+    
     var _newArmyButtonView = null;
 
     var _settlementView = null;
@@ -81,10 +84,9 @@ AWE.UI = (function(module) {
       if (!_nameLabelView) {
         _nameLabelView = AWE.UI.createLabelView();
         _nameLabelView.initWithControllerAndLabel(my.controller);
-        _nameLabelView.setFrame(AWE.Geometry.createRect(5, 27, 100, 36));      
-        _nameLabelView.setFont('24px "Helvetica Neue", Helvetica, Arial');
+        _nameLabelView.setFrame(AWE.Geometry.createRect(31, 30, 160, 36));      
+        _nameLabelView.setFont('19px "Helvetica Neue", Helvetica, Arial');
         _nameLabelView.setTextAlign("left");
-        // _nameLabelView.setIconImage("map/icon/heads");
         this.addChild(_nameLabelView);
       }
       
@@ -92,18 +94,41 @@ AWE.UI = (function(module) {
         _nameLabelView.setText(location.name());
       }
 
+      if (!_ownerLabelView) {
+        _ownerLabelView = AWE.UI.createLabelView();
+        _ownerLabelView.initWithControllerAndLabel(my.controller);
+        _ownerLabelView.setFrame(AWE.Geometry.createRect(31, 55, 120, 24));      
+        _ownerLabelView.setTextAlign("left");
+        this.addChild(_ownerLabelView);
+      }
+      var owner = location.ownerName(); 
+      if (_ownerLabelView.text() != owner) {
+        _ownerLabelView.setText(owner);
+      }
+      
+      
+      if (!_scoreLabelView) {
+        _scoreLabelView = AWE.UI.createLabelView();
+        _scoreLabelView.initWithControllerAndLabel(my.controller);
+        _scoreLabelView.setFrame(AWE.Geometry.createRect(31, 83, 100, 24));      
+        _scoreLabelView.setTextAlign("left");
+        _scoreLabelView.setIconImage("map/icon/army/size");
+        this.addChild(_scoreLabelView);
+      }
+      if (location.settlementScore() != _scoreLabelView.text()) {
+        _scoreLabelView.setText(location.settlementScore());
+      }
+      
+      if (!_bonusLabelView) {
+        _bonusLabelView = AWE.UI.createLabelView();
+        _bonusLabelView.initWithControllerAndLabel(my.controller);
+        _bonusLabelView.setTextAlign("left");
+        _bonusLabelView.setIconImage("map/icon/army/strength");
+        _bonusLabelView.setFrame(AWE.Geometry.createRect(162, 83, 100, 24));      
+        this.addChild(_bonusLabelView);
+      }
+      _bonusLabelView.setText('' + (location.settlement() ? Math.floor((location.settlement().get('defense_bonus') || 0)*100)+"%" : '-'));
 
-      if (!_levelLabelView) {
-        _levelLabelView = AWE.UI.createLabelView();
-        _levelLabelView.initWithControllerAndLabel(my.controller);
-        _levelLabelView.setFrame(AWE.Geometry.createRect(5, 68, 100, 24));      
-        _levelLabelView.setTextAlign("left");
-        _levelLabelView.setIconImage("map/icon/actionpoints");
-        this.addChild(_levelLabelView);
-      }
-      if (location.settlementLevel() != _levelLabelView.text()) {
-        _levelLabelView.setText(location.settlementLevel());
-      }
                 
       if (!_settlementView) {
         var level = AWE.Util.Rules.normalizedLevel(location.settlementLevel(), location.settlementTypeId());

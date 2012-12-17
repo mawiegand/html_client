@@ -920,19 +920,18 @@ AWE.Controller = (function(module) {
     }
     
     that.centerLocation = function(location) {
-      var region = location.region();
-      that.centerRegion(location.region());
+      that.moveTo(location, true);
     }
     
     that.centerRegion = function(region) {
       var nodeId = region.nodeId() || 0;
       var node   = region.node() || AWE.Map.Manager.getNode(nodeId);
       if (node) {
-        that.moveTo(node);
+        that.moveTo(node, true);
       }
       else {
         AWE.Map.Manager.fetchSingleNodeById(nodeId, function(node) {
-          that.moveTo(node);
+          that.moveTo(node, true);
         });
       }
     }

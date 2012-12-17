@@ -20,10 +20,10 @@ AWE.UI = (function(module) {
     var _ownerLabelView = null;
     var _pathLabelView = null;
 
-    var _apLabelView = null;
-    var _locationLabelView = null;
-    var _rankLabelView = null;
-    var _sizeAllLabelView = null;
+    var _apLabelView        = null;
+    var _locationLabelView  = null;
+    var _rankLabelView      = null;
+    var _sizeAllLabelView   = null;
     var _sizeType1LabelView = null;
     var _sizeType2LabelView = null;
     var _sizeType3LabelView = null;
@@ -67,7 +67,7 @@ AWE.UI = (function(module) {
         f(region.location(0));
       }
       else if (region) {
-        AWE.MapManager.fetchLocationsForRegion(region, function() {
+        AWE.Map.Manager.fetchLocationsForRegion(region, function() {
           if (region.location(0)) {
             f(region.location(0));
           }
@@ -124,8 +124,8 @@ AWE.UI = (function(module) {
       if (!_nameLabelView) {
         _nameLabelView = AWE.UI.createLabelView();
         _nameLabelView.initWithControllerAndLabel(my.controller);
-        _nameLabelView.setFont('24px "Helvetica Neue", Helvetica, Arial');
-        _nameLabelView.setFrame(AWE.Geometry.createRect(5, 15, 200, 36));      
+        _nameLabelView.setFont('19px "Helvetica Neue", Helvetica, Arial');
+        _nameLabelView.setFrame(AWE.Geometry.createRect(31, 30, 160, 36));      
         _nameLabelView.setTextAlign("left");
         this.addChild(_nameLabelView);
       }
@@ -137,7 +137,7 @@ AWE.UI = (function(module) {
       if (!_ownerLabelView) {
         _ownerLabelView = AWE.UI.createLabelView();
         _ownerLabelView.initWithControllerAndLabel(my.controller);
-        _ownerLabelView.setFrame(AWE.Geometry.createRect(5, 45, 95, 24));      
+        _ownerLabelView.setFrame(AWE.Geometry.createRect(31, 55, 120, 24));      
         _ownerLabelView.setTextAlign("left");
         this.addChild(_ownerLabelView);
       }
@@ -149,7 +149,7 @@ AWE.UI = (function(module) {
       if (!_pathLabelView) {
         _pathLabelView = AWE.UI.createLabelView();
         _pathLabelView.initWithControllerAndLabel(my.controller);
-        _pathLabelView.setFrame(AWE.Geometry.createRect(105, 45, 60, 24));      
+        _pathLabelView.setFrame(AWE.Geometry.createRect(150, 55, 60, 24));      
         _pathLabelView.setTextAlign("right");
         _pathLabelView.setColor('rgb(190,190,190)');
         this.addChild(_pathLabelView);
@@ -158,26 +158,28 @@ AWE.UI = (function(module) {
         _pathLabelView.setText('('+my.node.path()+')');
       }
 
+      var settlement = region && region.location(0) ? region.location(0).settlement() : null;
+
       if (!_apLabelView) {
         _apLabelView = AWE.UI.createLabelView();
         _apLabelView.initWithControllerAndLabel(my.controller);
-        _apLabelView.setFrame(AWE.Geometry.createRect(5, 64, 100, 24));      
+        _apLabelView.setFrame(AWE.Geometry.createRect(31, 83, 100, 24));      
         _apLabelView.setTextAlign("left");
-        _apLabelView.setIconImage("map/display/icon");
+        _apLabelView.setIconImage("map/icon/actionpoints");
         this.addChild(_apLabelView);
       }
-      _apLabelView.setText('AP: keine');
+      _apLabelView.setText('Steuer: ' + (settlement ? Math.floor((settlement.tax_rate || 0)*100)+"%" : '-'));
 
 
       if (!_rankLabelView) {
         _rankLabelView = AWE.UI.createLabelView();
         _rankLabelView.initWithControllerAndLabel(my.controller);
         _rankLabelView.setTextAlign("left");
-        _rankLabelView.setIconImage("map/display/icon");
-        _rankLabelView.setFrame(AWE.Geometry.createRect(5, 84, 100, 24));      
+        _rankLabelView.setIconImage("map/icon/army/strength");
+        _rankLabelView.setFrame(AWE.Geometry.createRect(162, 83, 100, 24));      
         this.addChild(_rankLabelView);
       }
-      _rankLabelView.setText(region.fortressLevel());
+      _rankLabelView.setText('' + (settlement ? Math.floor((settlement.get('defense_bonus') || 0)*100)+"%" : '-'));
 
       
       
