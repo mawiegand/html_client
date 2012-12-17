@@ -42,6 +42,8 @@ AWE.UI = (function(module) {
     };
     
     that.onFlagClicked = null;
+    that.onPreviousArmyButtonClick = null;
+    that.onNextArmyButtonClick = null;
     
     /** overwritten view methods */
     

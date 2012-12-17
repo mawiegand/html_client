@@ -956,6 +956,57 @@ AWE.Controller = (function(module) {
       this.centerGamingPiece(army);
     }
 
+
+    that.switchToPreviousSettlement = function(settlement) {
+      if (!settlement) {
+        return ;
+      }
+      var previous = AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(settlement);
+      if (previous) {
+        that.setSelectedSettlement(previous);
+        that.centerSettlement(previous);
+      }      
+    }
+    
+    that.switchToNextSettlement = function(settlement) {
+      if (!settlement) {
+        return ;
+      }
+      var next = AWE.GS.SettlementManager.getNextSettlementOfCharacter(settlement);
+      if (next) {
+        that.setSelectedSettlement(next);
+        that.centerSettlement(next);
+      }      
+    }
+
+    that.previousSettlementButtonClicked = function(location) {
+      log ('switch to previous settlement');
+      var settlement = location.settlement();
+      if (!settlement) {
+        AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+          settlement = location.settlement();
+          that.switchToPreviousSettlement(settlement);
+        });
+      }
+      else {
+        that.switchToPreviousSettlement(settlement);        
+      }
+    }
+
+    that.nextSettlementButtonClicked = function(location) {
+      log ('switch to next settlement');
+      var settlement = location.settlement();
+      if (!settlement) {
+        AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+          settlement = location.settlement();
+          that.switchToNextSettlement(settlement);
+        });
+      }
+      else {
+        that.switchToNextSettlement(settlement);        
+      }
+    }
+
     that.previousArmyButtonClicked = function(army) {
       log ('switch to previous army');
       var previousArmy = AWE.GS.ArmyManager.getPreviousArmyOfCharacter(army);
@@ -1339,6 +1390,13 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector.onInfoButtonClick = function(location) {
           that.settlementInfoButtonClicked(location);
         }; 
+        inspectorViews.inspector.onPreviousSettlementButtonClick = function(location) {
+          that.previousSettlementButtonClicked(location);
+        };
+        inspectorViews.inspector.onNextSettlementButtonClick = function(location) {
+          that.nextSettlementButtonClicked(location);
+        };
+
       }
       
       if (inspectorViews.inspector) {
