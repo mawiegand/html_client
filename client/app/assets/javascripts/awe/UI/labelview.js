@@ -106,6 +106,7 @@ AWE.UI = (function(module) {
         _backgroundGraphics.drawRoundRect(rectX, (my.frame.size.height - _labelText.getMeasuredLineHeight() - 2 * _padding) / 2, _labelText.getMeasuredWidth() + 2 * _padding + iconWidth, _labelText.getMeasuredLineHeight() + 2 * _padding, 4);
         _backgroundShape = new Shape(_backgroundGraphics);
 
+
         _backgroundShape.onClick = function() { 
           if (that.onClick) that.onClick();   
         };
@@ -114,7 +115,7 @@ AWE.UI = (function(module) {
         };
         _backgroundShape.onMouseOut = function() {
           if (that.onMouseOut) that.onMouseOut();
-        };         
+        };        
 
         _container.addChildAt(_backgroundShape, 0);
       }
@@ -178,12 +179,21 @@ AWE.UI = (function(module) {
         _labelIcon.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(image));
         _labelIcon.setContentMode(module.ViewContentModeNone);
         _labelIcon.setFrame(AWE.Geometry.createRect(0, 0, 20, 20));
+
+        _labelIcon.onClick = function() { 
+          if (that.onClick) that.onClick();   
+        };
+        _labelIcon.onMouseOver = function() {
+          if (that.onMouseOver) that.onMouseOver();
+        };
+        _labelIcon.onMouseOut = function() {
+          if (that.onMouseOut) that.onMouseOut();
+        };
         _container.addChild(_labelIcon.displayObject());
       }
       else {
         _labelIcon.setImage(AWE.UI.ImageCache.getImage(image));
       }
-            
       that.setNeedsDisplay();
     }
             

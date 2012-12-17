@@ -19,6 +19,7 @@ AWE.UI = (function(module) {
     
     my.typeName = "ButtonView";
     my.container = null;
+    my.shadowEnabled = true;
         
     var that = module.createView(spec, my);
     
@@ -140,6 +141,14 @@ AWE.UI = (function(module) {
       return !(imagesForStates[controlState] === undefined || imagesForStates[controlState] === null)
     }
     
+    that.setShadowEnabled = function(flag) {
+      if (flag === undefined || flag === null || flag === 0 || flag === false) {
+        _labelText2.alpha = 0.0;
+      }
+      else {
+        _labelText2.alpha = 1.0;
+      }
+    }
 
     that.setText = function(text) {
       _labelText2.text = text;
