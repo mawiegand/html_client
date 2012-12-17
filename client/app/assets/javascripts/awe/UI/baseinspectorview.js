@@ -1,4 +1,5 @@
-/* Author: Patrick Fox <patrick@5dlab.com>
+/* Authors: Patrick Fox <patrick@5dlab.com>,
+ *          Sascha Lange <sascha@5dlab.com>
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
@@ -32,6 +33,7 @@ AWE.UI = (function(module) {
     that.onFlagClicked = null;
     that.onPreviousSettlementButtonClick = null;
     that.onNextSettlementButtonClick = null;
+    that.onNewArmyButtonClick = null;        
         
     /** overwritten view methods */
     
@@ -61,7 +63,7 @@ AWE.UI = (function(module) {
       this.setAllianceId(allianceId);
       this.setSkimButtonsEnabled(isOwnLocation);
       
-      _super.recalcView()
+      _super.recalcView();
       
       if (!_newArmyButtonView && isOwnLocation) {
         _newArmyButtonView = AWE.UI.createButtonView();
@@ -69,7 +71,7 @@ AWE.UI = (function(module) {
         _newArmyButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/inspector/button/reinforce/hovered"), module.CONTROL_STATE_HOVERED);
         _newArmyButtonView.setFrame(AWE.Geometry.createRect(346, 0, 68, 66));
         _newArmyButtonView.onClick = function() {
-          if (onNewArmyButtonClick) {
+          if (that.onNewArmyButtonClick) {
             that.onNewArmyButtonClick(location);
           }
         };
@@ -127,9 +129,6 @@ AWE.UI = (function(module) {
         _settlementView = AWE.UI.createImageView();
         _settlementView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(imageName));
         _settlementView.setFrame(AWE.Geometry.createRect(30, 30, 64, 64));
-        _settlementView.onClick = function() { my.controller.moveTo(location); };
-        _settlementView.onMouseOver = that.onMouseOver;
-        _settlementView.onMouseOut = that.onMouseOut;
         this.setInspectedObjectView(_settlementView);
       }
 

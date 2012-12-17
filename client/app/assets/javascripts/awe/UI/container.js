@@ -20,8 +20,38 @@ AWE.UI = (function(module) {
     my = my || {};
     my.container = null;
     my.subviews = Array();
-
-
+    
+    my.connectEvents = function(child) {
+      if (!child.onClick) {
+        child.onClick = function(event) { 
+          if (that.onClick) {
+            that.onClick(event);
+          }
+        };
+      }
+      if (!child.onDoubleClick) {
+        child.onDoubleClick = function(event) { 
+          if (that.onDoubleClick) {
+            that.onDoubleClick(event); 
+          }
+        };
+      }
+      if (!child.onMouseOver) {
+        child.onMouseOver = function(event) { 
+          if (that.onMouseOver) {
+            that.onMouseOver(event);
+          }
+        };
+      }
+      if (!child.onMouseOut) {
+        child.onMouseOut = function() { 
+          if (that.onMouseOut) {
+            that.onMouseOut(event);
+          }
+        };        
+      }
+    };
+    
     // public attributes and methods /////////////////////////////////////////
     
     that = module.createView(spec, my);
@@ -50,6 +80,7 @@ AWE.UI = (function(module) {
     that.addChildAt = function(view, pos) { 
       my.subviews.push(view);
       view.setSuperview(this);
+      my.connectEvents(view);
       AWE.Ext.applyFunction(view.displayObject(), function(obj){
         my.container.addChildAt(obj, pos);
       });
@@ -61,6 +92,7 @@ AWE.UI = (function(module) {
     that.addChild = function(view) {
       my.subviews.push(view);
       view.setSuperview(this);
+      my.connectEvents(view);
       AWE.Ext.applyFunction(view.displayObject(), function(obj){
         my.container.addChild(obj);
       });

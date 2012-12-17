@@ -41,8 +41,10 @@ AWE.UI = (function(module) {
         };
         objectView.onMouseOver = function(self) { return function() { self.setHovered(true);  }}(this);
         objectView.onMouseOut  = function(self) { return function() { self.setHovered(false); }}(this);        
+     
+        var index = 0;
         AWE.Ext.applyFunction(objectView.displayObject(), function(obj){
-          my.container.addChildAt(obj, 0);
+          my.container.addChildAt(obj, index++);
         });
       }
       my.objectView = objectView;
@@ -239,7 +241,7 @@ AWE.UI = (function(module) {
 
         my.inspectorBubbleView.onClick = function() { 
           if (that.onCenterButtonClick) {
-            that.onCenterButtonClick();
+            that.onCenterButtonClick(my.inspectedObject);
           }
         };
         

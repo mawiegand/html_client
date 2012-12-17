@@ -919,6 +919,11 @@ AWE.Controller = (function(module) {
       });
     }
     
+    that.centerLocation = function(location) {
+      var region = location.region();
+      that.centerRegion(location.region());
+    }
+    
     that.centerRegion = function(region) {
       var nodeId = region.nodeId() || 0;
       var node   = region.node() || AWE.Map.Manager.getNode(nodeId);
@@ -1341,13 +1346,21 @@ AWE.Controller = (function(module) {
           WACKADOO.activateAllianceController(allianceId);
         }
         
-        inspectorViews.inspector.onNewArmyButtonClick = function(location) {
-          that.newArmyButtonClicked(location);
+        inspectorViews.inspector.onNewArmyButtonClick = function(region) {
+          that.newArmyButtonClicked(region.location(0));
         };
-        
-        inspectorViews.inspector.onInfoButtonClick = function(location) {
-          that.settlementInfoButtonClicked(location);
+        inspectorViews.inspector.onCenterButtonClick = function(region) {
+          that.centerRegion(region);
         };        
+        inspectorViews.inspector.onInventoryButtonClick = function(region) {
+          that.settlementInfoButtonClicked(region.location(0));
+        };        
+        inspectorViews.inspector.onPreviousSettlementButtonClick = function(location) {
+          that.previousSettlementButtonClicked(location);
+        };
+        inspectorViews.inspector.onNextSettlementButtonClick = function(location) {
+          that.nextSettlementButtonClicked(location);
+        };
       }      
       else if (view.typeName() === 'ArmyView') {
         inspectorViews.inspector = AWE.UI.createArmyInspectorView();
@@ -1360,7 +1373,6 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector.onFlagClicked = function(allianceId) {
           WACKADOO.activateAllianceController(allianceId);
         }
-
         inspectorViews.inspector.onCenterButtonClick = function(army) {
           that.centerArmy(view.army());
         };
@@ -1386,8 +1398,10 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector.onFlagClicked = function(allianceId) {
           WACKADOO.activateAllianceController(allianceId);
         }
-        
-        inspectorViews.inspector.onInfoButtonClick = function(location) {
+        inspectorViews.inspector.onCenterButtonClick = function(location) {
+          that.centerLocation(location);
+        };
+        inspectorViews.inspector.onInventoryButtonClick = function(location) {
           that.settlementInfoButtonClicked(location);
         }; 
         inspectorViews.inspector.onPreviousSettlementButtonClick = function(location) {
