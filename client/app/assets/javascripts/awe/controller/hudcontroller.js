@@ -119,6 +119,10 @@ AWE.Controller = (function(module) {
     // ///////////////////////////////////////////////////////////////////////
     
     var shopDialog = null;
+    
+    that.questsButtonClicked = function() {
+      WACKADOO.showQuestListDialog();      
+    }
 
     that.ingameShopButtonClicked = function() {
       
@@ -354,15 +358,6 @@ AWE.Controller = (function(module) {
         _stage.addChild(HUDViews.mainControlsView.displayObject());
       }
       HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(20, 20));
-      
-      if (AWE.GS.TutorialStateManager.tutorialEnabled()) {
-        if (!HUDViews.controlButtonsView) {
-          HUDViews.controlButtonsView = AWE.UI.createControlButtonsView();
-          HUDViews.controlButtonsView.initWithController(that);
-          _stage.addChild(HUDViews.controlButtonsView.displayObject());
-        }
-        HUDViews.controlButtonsView.setOrigin(AWE.Geometry.createPoint(284, 126));
-      }
       
       if (!HUDViews.stoneView) {
         

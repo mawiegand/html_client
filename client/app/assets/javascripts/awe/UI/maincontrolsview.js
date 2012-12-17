@@ -24,6 +24,7 @@ AWE.UI = (function(module) {
     var _messagesCallout;
     var _rankingButton;
     var _questsButton;
+    var _questsCallout = null;
     var _locationsButton;
     var _armiesButton;
     var _shopButton;
@@ -176,7 +177,7 @@ AWE.UI = (function(module) {
             _messagesCallout.setText(''+unread);
           }
         }
-        else if (!_messagesCallout) {
+        else if (_messagesCallout) {
           this.removeChild(_messagesCallout);
           _messagesCallout = null;
         }
@@ -202,6 +203,31 @@ AWE.UI = (function(module) {
           my.controller.questsButtonClicked();
         };
         this.addChild(_questsButton);
+      }         
+      if (AWE.GS.TutorialStateManager.getTutorialState()) {
+        var allQuestStates = AWE.GS.TutorialStateManager.getTutorialState().get('notClosedQuestStateCount');
+        if (allQuestStates !== undefined && allQuestStates > 0) {
+          if (!_questsCallout) {
+            _questsCallout = AWE.UI.createButtonView();
+            _questsCallout.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/callout"));
+            _questsCallout.setFrame(AWE.Geometry.createRect(304, 132, 38, 38));
+            _questsCallout.setColor('rgb(255,255,255)');
+            _questsCallout.setShadowEnabled(false);
+            _questsCallout.setFont("bold 14px Arial");
+            _questsCallout.setTextPos(18, 16);
+            _questsCallout.onClick = function() { 
+              my.controller.questsButtonClicked();  
+            };
+            this.addChild(_questsCallout);
+          }
+          if (''+allQuestStates !== _questsCallout.text()) {
+            _questsCallout.setText(''+allQuestStates);
+          }
+        }
+        else if (_questsCallout) {
+          this.removeChild(_questsCallout);
+          _questsCallout = null;
+        }
       }      
       
       if (!_resource4LabelView) {
@@ -331,20 +357,8 @@ AWE.UI = (function(module) {
       
       var pool = AWE.GS.ResourcePoolManager.getResourcePool();
       if (pool) {
-//        my.amounts[0] = pool.presentAmount('resource_wood');
-//        my.amounts[1] = pool.presentAmount('resource_stone');
-//        my.amounts[2] = pool.presentAmount('resource_fur');
         my.amounts[3] = pool.presentAmount('resource_cash');
-
-/*        _resource1LabelView.setText(""+my.amounts[0]);
-        _resource1ProductionView.setText("+"+Math.floor(pool.get('resource_wood_production_rate'))+"/h");
-
-        _resource2LabelView.setText(""+my.amounts[1]);
-        _resource2ProductionView.setText("+"+Math.floor(pool.get('resource_stone_production_rate'))+"/h");
-
-        _resource3LabelView.setText(""+my.amounts[2]);
-        _resource3ProductionView.setText("+"+Math.floor(pool.get('resource_fur_production_rate'))+"/h");*/
-
+        
         _resource4LabelView.setText(""+my.amounts[3]);
         _resource4ProductionView.setText("+"+(Math.floor(pool.get('resource_cash_production_rate')*100.0)/100.0)+"/h");
 
@@ -358,20 +372,28 @@ AWE.UI = (function(module) {
       var changed = false;
       var pool = AWE.GS.ResourcePoolManager.getResourcePool();
       if (pool) {
-//        changed = changed || pool.presentAmount('resource_wood')  !== my.amounts[0];
-//        changed = changed || pool.presentAmount('resource_stone') !== my.amounts[1];
-//        changed = changed || pool.presentAmount('resource_fur')   !== my.amounts[2];
         changed = changed || pool.presentAmount('resource_cash')  !== my.amounts[3];
       }
       
       if (!changed && AWE.GS.CharacterManager.getCurrentCharacter()) {
         var unread = AWE.GS.CharacterManager.getCurrentCharacter().getPath('inbox.unread_messages_count');
-        var string = AWE.I18n.lookupTranslation('map.button.messages');
         if (unread !== undefined && unread > 0) {
-          string += "\n(" + unread + ")";
+          changed = changed || !_messagesCallout || (''+unread !== _messagesCallout.text());
         }
-        changed = changed || string !== _messagesButton.text();
-      }      
+        else {
+          changed = changed || _messagesCallout;
+        }
+      }  
+      
+      if (!changed && AWE.GS.TutorialStateManager.getTutorialState()) {
+        var allQuestStates = AWE.GS.TutorialStateManager.getTutorialState().get('notClosedQuestStateCount');
+        if (allQuestStates !== undefined && allQuestStates !== null) {
+          changed = changed || !_questsCallout || (''+allQuestStates !== _questsCallout.text());
+        }
+        else {
+          changed = changed || _questsCallout;
+        }
+      }    
       
       if (changed) {
         log(">> NEED TO UPDATE HUD DUE TO CHANGED RESOURCE AMOUNT");
