@@ -16,12 +16,40 @@ AWE.UI = (function(module) {
 
     my.typeName   = "InspectorBubbleView";
     my.objectView = null;
+    
+    my.foregroundImage = null;
+    my.backgroundImage = null;
+    
+    my.connectEvents = function(view) {
+      if (view) {
+        view.onClick = function() { 
+          if (that.enabled()) {
+            that.onClick();
+          }
+        }; 
+        view.onDoubleClick = function() { 
+          if (that.enabled()) {
+            that.onDoubleClick(); 
+          }
+        };
+        view.onMouseOver = function(event) { that.onMouseOver(event);  }
+        view.onMouseOut  = function(event) { that.onMouseOut(event);   }
+      }
+    };
 
-    var _super = {
-    }
+    var _super = {}
 
-    that.initWithControllerAndImage = function(controller, image, frame) {
-      this.initWithControllerTextAndImage(controller, null, image, frame);
+    that.initWithControllerAndImage = function(controller, backgroundImage, foregroundImage, frame) {
+      this.initWithControllerTextAndImage(controller, null, foregroundImage, frame);
+      
+      var bgImage = module.createImageView();
+      bgImage.initWithControllerAndImage(controller, backgroundImage);
+      
+      my.container.addChildAt(bgImage.displayObject(), 0);
+      my.connectEvents(bgImage);
+      
+      my.foregroundImage = foregroundImage;
+      my.backgroundImage = backgroundImage;
     }
     
     that.setObjectView = function(objectView) {
@@ -29,20 +57,9 @@ AWE.UI = (function(module) {
         my.container.removeChild(my.objectView.displayObject());
       }
       if (objectView) {
-        objectView.onClick = function() { 
-          if (that.enabled()) {
-            that.onClick();
-          }
-        }; 
-        objectView.onDoubleClick = function() { 
-          if (that.enabled()) {
-            that.onDoubleClick(); 
-          }
-        };
-        objectView.onMouseOver = function(self) { return function() { self.setHovered(true);  }}(this);
-        objectView.onMouseOut  = function(self) { return function() { self.setHovered(false); }}(this);        
+        my.connectEvents(objectView);     
      
-        var index = 0;
+        var index = 1;
         AWE.Ext.applyFunction(objectView.displayObject(), function(obj){
           my.container.addChildAt(obj, index++);
         });
@@ -235,7 +252,9 @@ AWE.UI = (function(module) {
       
       if (!my.inspectorBubbleView) {
         my.inspectorBubbleView = AWE.UI.createInspectorBubbleView();
-        my.inspectorBubbleView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/inspector/glass/normal"));
+        my.inspectorBubbleView.initWithControllerAndImage(my.controller, 
+                                                          AWE.UI.ImageCache.getImage("hud/inspector/inset"),
+                                                          AWE.UI.ImageCache.getImage("hud/inspector/glass/normal"));
         my.inspectorBubbleView.setImageForState(AWE.UI.ImageCache.getImage("hud/inspector/glass/hovered"), module.CONTROL_STATE_HOVERED);
         my.inspectorBubbleView.setFrame(AWE.Geometry.createRect(250, 9, 144, 146));
 

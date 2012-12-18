@@ -97,7 +97,7 @@ AWE.UI = (function(module) {
       var baseImage = army.isOwn() ? AWE.UI.ImageCache.getImage('map/army/base/own') : AWE.UI.ImageCache.getImage('map/army/base/other')
       _baseImage = AWE.UI.createImageView();
       _baseImage.initWithControllerAndImage(controller, baseImage);
-      _baseImage.setFrame(AWE.Geometry.createRect(0, 9, 96, 96));
+      _baseImage.setFrame(AWE.Geometry.createRect(-15, -21, 128, 128));
       _baseImage.onClick = that.onClick;
       _baseImage.onDoubleClick = that.onDoubleClick;
       _baseImage.onMouseOver = that.onMouseOver;
@@ -363,6 +363,7 @@ AWE.UI = (function(module) {
     
     that.prepareSpriteSheet = function() {
       if (!_army) {
+        log('WARNING: army view without an associated army object.');
         return null;
       }
       
@@ -387,10 +388,10 @@ AWE.UI = (function(module) {
       else {
         var armyCategory = _army.get('armyCategory');
         
-        if (armyCategory === 'artillery') {
+        if (armyCategory && armyCategory === 'artillery') {
           return this.createAmazonSpriteSheet(_army.get('id'));
         }
-        else if (armyCategory === 'cavalry') {
+        else if (armyCategory && armyCategory === 'cavalry') {
           return this.createChefSpriteSheet(_army.get('id'));
         }
         return this.createWarriorSpriteSheet(_army.get('id'));
@@ -409,7 +410,7 @@ AWE.UI = (function(module) {
       var flagLength = 8 + Math.round(Math.min(_army.get('size_present') / _army.get('size_max'), 1) * 48);
       _flagView = AWE.UI.createAllianceFlagView();
       _flagView.initWithController(my.controller);
-      _flagView.setFrame(AWE.Geometry.createRect(66 - flagLength, 11, flagLength, 20));
+      _flagView.setFrame(AWE.Geometry.createRect(66 - flagLength, -15, flagLength, 20));
       _flagView.setAllianceId(_army.get('alliance_id'));
       _flagView.setDirection('left');
       that.addChildAt(_flagView, 0);

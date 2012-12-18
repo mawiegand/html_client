@@ -205,7 +205,7 @@ AWE.UI = (function(module) {
         
         my.fortressView = AWE.UI.createImageView();
         my.fortressView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_fortressImageName));
-        my.fortressView.setFrame(AWE.Geometry.createRect(30, 30, AWE.Config.MAPPING_FORTRESS_SIZE*1.2, AWE.Config.MAPPING_FORTRESS_SIZE*1.2));
+        my.fortressView.setFrame(AWE.Geometry.createRect(32, 36, AWE.Config.MAPPING_FORTRESS_SIZE*1.2, AWE.Config.MAPPING_FORTRESS_SIZE*1.2));
         
         container.addChild(my.fortressView)
         

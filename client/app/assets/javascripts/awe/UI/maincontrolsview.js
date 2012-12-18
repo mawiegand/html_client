@@ -258,7 +258,9 @@ AWE.UI = (function(module) {
         _settlementImageName = "map/colony/small";
   
         _villageImageView = AWE.UI.createInspectorBubbleView();
-        _villageImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/main/glass/normal"));
+        _villageImageView.initWithControllerAndImage(my.controller, 
+                                                     AWE.UI.ImageCache.getImage("hud/main/inset"),
+                                                     AWE.UI.ImageCache.getImage("hud/main/glass/normal"));
         _villageImageView.setImageForState(AWE.UI.ImageCache.getImage("hud/main/glass/hovered"), module.CONTROL_STATE_HOVERED);
         _villageImageView.setFrame(AWE.Geometry.createRect(154, 40, 148, 148));
 
