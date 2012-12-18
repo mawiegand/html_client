@@ -283,7 +283,7 @@ AWE.UI = (function(module) {
           
         _settlementImageView = AWE.UI.createImageView();
         _settlementImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_settlementImageName));
-        _settlementImageView.setFrame(AWE.Geometry.createRect(30, 30, 64, 64));
+        _settlementImageView.setFrame(AWE.Geometry.createRect(32, 38, 64, 64));
           
         _villageImageView.setObjectView(_settlementImageView);
         this.addChild(_villageImageView);
