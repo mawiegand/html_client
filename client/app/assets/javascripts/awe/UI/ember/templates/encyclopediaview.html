@@ -9,9 +9,9 @@
   {{local building.flavour}}
   {{local building.description}}
   
-  {{#if building.buyable}}
+  {{#unless building.buyable}}
     <p>{{t building.info.notBuyable}}</p>
-  {{/if}}
+  {{/unless}}
   
   <table>
     <tr>

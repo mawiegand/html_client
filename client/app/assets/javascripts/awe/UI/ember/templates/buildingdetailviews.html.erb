@@ -41,7 +41,7 @@
     {{#if building.costsOfNextLevel}}
       {{t building.cost }}:
       {{#each building.costsOfNextLevel}}
-        <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>{{amount}} &nbsp;  
+        <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>{{amount}} &nbsp;  
       {{/each}}<br/>
     {{/if}}
     {{t building.duration}}: {{formatDuration building.productionTimeOfNextLevel}}<br />     
@@ -54,7 +54,7 @@
     {{#if building.productionsNextLevel}}
       <b>{{t building.produces}}:</b><br/>
       {{#each building.productionsNextLevel}}
-        <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>   
+        <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>   
         {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{t general.perHour}} <br/>  
       {{/each}}
     {{/if}}
@@ -98,11 +98,32 @@
   </div>
 </script>
 
+<script type="text/x-handlebars" data-template-name="building-cost-view">
+  <b>{{t building.cost}}:</b>
+  {{#each resources}}
+    <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>{{formatNumber amount maxPlaces="0"}} &nbsp;
+  {{/each}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="building-production-view">
+  <b>{{t building.produces}} ({{t general.perHour}}):</b>
+  {{#if resources}}
+    {{#each resources}}
+      <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>
+      {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span>  &nbsp; 
+    {{/each}}
+  {{/if}}
+  {{#if experience}}
+      <span class="xp-icon" title="XP"}}>&nbsp;</span>
+      {{experience}}  &nbsp;  
+  {{/if}}
+</script>
+
 
 <script type="text/x-handlebars" data-template-name="settlement-dialog-building-details">
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-window">
-    <div class="settlement-dialog-header settlement-dialog-select-details"></div>
+    <div class="settlement-dialog-header settlement-dialog-building-details"></div>
     <div class="settlement-dialog-pane settlement-dialog-building-details">
       <a {{action "cancelPressed" }} class="close" title="{{t general.close}}"></a>
       {{view AWE.UI.Ember.BuildingView classNames="building-option-image" buildingBinding="building"}}
@@ -118,23 +139,14 @@
         {{#if building.buildingCategory}}<div class="building-category">{{t settlement.buildings.category}}: {{local building.buildingCategory.name}}</div>{{/if}}
         <b>{{t settlement.population}}:</b> {{building.population}}<br/>
         {{#if building.experienceOrResourceProduction}}
-        <b>{{t building.produces}}:</b><br/>
-        {{/if}}
-        {{#if building.productions}}
-          {{#each building.productions}}
-            <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
-            {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{t general.perHour}} <br/>  
-          {{/each}}
-        {{/if}}
-        {{#if building.experienceProduction}}
-            <span class="xp-icon" title="XP"}}>&nbsp;</span>
-            {{building.experienceProduction}} {{t general.perHour}} <br/>  
+          {{view AWE.UI.Ember.ResourceProductionView resourcesBinding="building.productions" experienceBinding="building.experienceProduction"}}
+          <br/>
         {{/if}}
       
         {{#if building.capacity}}
           <b>{{t building.capacity}}:</b>
           {{#each building.capacity}}
-            <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
+            <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>
             {{capacity}} &nbsp;  
           {{/each}}<br/>
         {{/if}}
@@ -142,7 +154,7 @@
         {{#if building.productionBoni}}
           <b>{{t building.productionBoni}}:</b>
           {{#each building.productionBoni}}
-          <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
+          <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>
             +{{bonus}}% &nbsp;  
           {{/each}}<br/>
         {{/if}}
@@ -176,12 +188,12 @@
           <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
         {{/each}}
       {{/if}}
-    
+      <br />
     
       {{#unless building.underConversion}}
 
         {{#if building.convertable }}
-          <hr class="clear" />
+          <hr class="clearfix" />
           {{#if sendingConvert }}
             <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t building.upgrade.converting}}...</div>
           {{else}}
@@ -192,27 +204,21 @@
           {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building.converted" levelBinding="building.converted.level"}}
         
           {{#if building.conversionCosts}}
-            <b>{{t building.cost}}:</b>
-            {{#each building.conversionCosts}}
-              <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>{{formatNumber amount maxPlaces="0"}} &nbsp;
-            {{/each}}
+            {{view AWE.UI.Ember.ResourceCostView resourcesBinding="building.conversionCosts"}}
             <br/>
           {{/if}}
           <b>{{t building.duration}}:</b> {{formatDuration building.conversionTime}}<br />
           <br/>
         
           {{#if building.converted.productions}}
-            <b>{{t building.produces}}:</b><br/>
-            {{#each building.converted.productions}}
-              <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
-              {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{t general.perHour}} <br/>  
-            {{/each}}
+            {{view AWE.UI.Ember.ResourceProductionView resourcesBinding="building.converted.productions" experienceBinding="building.converted.experienceProduction"}}
+            <br/>
           {{/if}}
         
           {{#if building.converted.capacity}}
             <b>{{t building.capacity}}:</b>
             {{#each building.converted.capacity}}
-              <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
+              <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>
               {{capacity}} &nbsp;  
             {{/each}}<br/>
           {{/if}}
@@ -220,7 +226,7 @@
           {{#if building.converted.productionBoni}}
             <b>{{t building.productionBoni}}:</b>
             {{#each building.converted.productionBoni}}
-              <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
+              <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>
               +{{bonus}}% &nbsp;  
             {{/each}}<br/>
           {{/if}}
@@ -268,35 +274,22 @@
           <b>{{t settlement.population}}:</b> {{building.populationNextLevel}}<br/>
   
           {{#if building.costsOfNextLevel}}
-            <b>{{t building.cost}}:</b>
-            {{#each building.costsOfNextLevel}}
-              <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>{{amount}} &nbsp;          
-            {{/each}}
+            {{view AWE.UI.Ember.ResourceCostView resourcesBinding="building.costsOfNextLevel"}}
             <br/>
           {{/if}}
           <b>{{t building.duration}}:</b> {{formatDuration building.productionTimeOfNextLevel}}<br />
           <br/>
         
           {{#if building.experienceOrResourceProductionNextLevel}}
-            <b>{{t building.produces}}:</b><br/>
+            {{view AWE.UI.Ember.ResourceProductionView resourcesBinding="building.productionsNextLevel" experienceBinding="building.experienceProductionNextLevel"}}
+            <br/>
           {{/if}}
         
-          {{#if building.productionsNextLevel}}
-            {{#each building.productionsNextLevel}}
-              <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
-              {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{t general.perHour}} <br/>  
-            {{/each}}
-          {{/if}}
-        
-          {{#if building.experienceProductionNextLevel}}
-            <span class="xp-icon" title="XP"}}>&nbsp;</span>
-            {{building.experienceProductionNextLevel}} {{t general.perHour}} <br/>  
-          {{/if}}
         
           {{#if building.capacityNextLevel}}
             <b>{{t building.capacity}}:</b>
             {{#each building.capacityNextLevel}}
-              <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
+              <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>
               {{capacity}} &nbsp;  
             {{/each}}<br/>
           {{/if}}
@@ -304,7 +297,7 @@
           {{#if building.productionBoniNextLevel}}
             <b>{{t building.productionBoni}}:</b>
             {{#each building.productionBoniNextLevel}}
-              <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>
+              <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>
               +{{bonus}}% &nbsp;  
             {{/each}}<br/>
           {{/if}}
@@ -391,30 +384,30 @@
 
 
       {{#if building.trainingQueues}}
-      <hr class="clear">
+      <hr class="clearfix" />
         {{#each building.trainingQueues }}
           {{view AWE.UI.Ember.TrainingQueueView controllerBinding="controller" classNames="training-queue-list" queueBinding="this"}}
         {{/each}}
       {{/if}}
 
       {{#if building.garrisonArmy }}
-      <hr class="clear">
+      <hr class="clearfix" />
         <h2>{{t building.garrison}}</h2>
         {{view AWE.UI.Ember.ArmyInfoView armyBinding="building.garrisonArmy" displayHeading=false}}
       {{/if}}
     
       {{#if building.unlockedDiplomacy}}
-      <hr class="clear">
+      <hr class="clearfix">
         {{view AWE.UI.Ember.DiplomacyView unlockedAllianceCreationBinding="building.unlockedAllianceCreation"}}
       {{/if}}
 
       {{#if building.unlockedPlayerToPlayerTrade}}
-      <hr class="clear">
+      <hr class="clearfix" />
         {{view AWE.UI.Ember.PlayerToPlayerTradeView settlementBinding="building.slot.settlement" controllerBinding="controller"}}
       {{/if}}
 
     </div>
-    <div class="settlement-dialog-footer settlement-dialog-select-details"></div>
+    <div class="settlement-dialog-footer settlement-dialog-building-details"></div>
   </div>
 </script>
 
