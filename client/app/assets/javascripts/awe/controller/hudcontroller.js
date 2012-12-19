@@ -53,15 +53,15 @@ AWE.Controller = (function(module) {
       _stage = new Stage(_canvas);
       _stage.onClick = function() {};
       
-      _canvas.width = 400;
-      _canvas.height = 250;
+      _canvas.width = 380;
+      _canvas.height = 260;
 
       _resourceCanvas = root.find('#resource-canvas')[0];
       _resourceStage = new Stage(_resourceCanvas);
       _resourceStage.onClick = function() {};
       
       _resourceCanvas.width  = 800;
-      _resourceCanvas.height = 52;
+      _resourceCanvas.height = 42;
       
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setNeedsLayout();
@@ -119,6 +119,10 @@ AWE.Controller = (function(module) {
     // ///////////////////////////////////////////////////////////////////////
     
     var shopDialog = null;
+    
+    that.questsButtonClicked = function() {
+      WACKADOO.showQuestListDialog();      
+    }
 
     that.ingameShopButtonClicked = function() {
       
@@ -355,15 +359,6 @@ AWE.Controller = (function(module) {
       }
       HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(20, 20));
       
-      if (AWE.GS.TutorialStateManager.tutorialEnabled()) {
-        if (!HUDViews.controlButtonsView) {
-          HUDViews.controlButtonsView = AWE.UI.createControlButtonsView();
-          HUDViews.controlButtonsView.initWithController(that);
-          _stage.addChild(HUDViews.controlButtonsView.displayObject());
-        }
-        HUDViews.controlButtonsView.setOrigin(AWE.Geometry.createPoint(284, 126));
-      }
-      
       if (!HUDViews.stoneView) {
         
         var detailsHandler = function() {
@@ -372,19 +367,19 @@ AWE.Controller = (function(module) {
         
         HUDViews.stoneView = AWE.UI.createResourceBubbleView();
         HUDViews.stoneView.initWithControllerAndResourceImage(that, "resource/icon/stone/large", "resource_stone");
-        HUDViews.stoneView.setOrigin(AWE.Geometry.createPoint(20, 0));
+        HUDViews.stoneView.setOrigin(AWE.Geometry.createPoint(10, 0));
         HUDViews.stoneView.onClick = detailsHandler;
         _resourceStage.addChild(HUDViews.stoneView.displayObject());       
 
         HUDViews.woodView = AWE.UI.createResourceBubbleView();
         HUDViews.woodView.initWithControllerAndResourceImage(that, "resource/icon/wood/large", "resource_wood");
-        HUDViews.woodView.setOrigin(AWE.Geometry.createPoint(200, 0));
+        HUDViews.woodView.setOrigin(AWE.Geometry.createPoint(216, 0));
         HUDViews.woodView.onClick = detailsHandler;
         _resourceStage.addChild(HUDViews.woodView.displayObject()); 
         
         HUDViews.furView = AWE.UI.createResourceBubbleView();
         HUDViews.furView.initWithControllerAndResourceImage(that, "resource/icon/fur/large", "resource_fur");
-        HUDViews.furView.setOrigin(AWE.Geometry.createPoint(380, 0));
+        HUDViews.furView.setOrigin(AWE.Geometry.createPoint(422, 0));
         HUDViews.furView.onClick = detailsHandler;
         _resourceStage.addChild(HUDViews.furView.displayObject()); 
       }

@@ -5,16 +5,14 @@
     
     <h1>{{settlement.name}}</h1>
     
-    <div class="float-right down-icon" title="{{t settlement.info.clickToExpand}}">&nbsp;</div>
-
-    <p><span title="{{t settlement.info.combatBonus}}.">{{t settlement.info.combatBonusAbbreviation}} +{{formatNumber defenseBonus places="0"}}%</span> | 
+    <p>&nbsp;&nbsp;<span title="{{t settlement.info.combatBonus}}.">{{t settlement.info.combatBonusAbbreviation}} +{{formatNumber defenseBonus places="0"}}%</span> | 
        <span title="{{t settlement.info.buildingSpeed}}"> {{t settlement.info.buildingSpeedAbbreviation}} {{formatNumber buildingSpeed maxPlaces="0"}}%</span> | 
        <span title="{{t settlement.info.meleeTrainingSpeed}}"     >{{t settlement.info.meleeTrainingSpeedAbbreviation}} {{formatNumber infantryTrainingSpeed maxPlaces="0"}}%</span> |
        <span title="{{t settlement.info.ridersTrainingSpeed}}"    >{{t settlement.info.ridersTrainingSpeedAbbreviation}} {{formatNumber cavalryTrainingSpeed maxPlaces="0"}}%</span> | 
        <span title="{{t settlement.info.rangedTrainingSpeed}}"     >{{t settlement.info.rangedTrainingSpeedAbbreviation}} {{formatNumber artilleryTrainingSpeed maxPlaces="0"}}%</span> | 
-       <span title="{{t settlement.info.commandPoints}}">{{t building.commandPoints}}: {{formatNumber settlement.commandPointsUsed maxPlaces="0"}} / {{formatNumber settlement.command_points places="0"}}</span><br> 
+       <span title="{{t settlement.info.commandPoints}}">{{t building.commandPoints}}: {{formatNumber settlement.commandPointsUsed maxPlaces="0"}} / {{formatNumber settlement.command_points places="0"}}</span><br/> 
 
-      {{t settlement.info.buildings}}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="settlement.usedBuildingSlots"}} / {{settlement.building_slots_total}}
+      &nbsp;&nbsp;&nbsp;{{t settlement.info.buildings}}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="settlement.usedBuildingSlots"}} / {{settlement.building_slots_total}}
       {{t settlement.population}} {{settlement.score}}
       {{#each settlement.resourceProductions}}
         &nbsp; <span class="resource-icon {{unbound resourceType.symbolic_id}}">&nbsp;</span>   <span {{bindAttr title="localizedDetails"}}> {{formatNumber rate maxPlaces="2"}}/h</span> 

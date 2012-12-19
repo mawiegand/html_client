@@ -20,83 +20,116 @@ AWE.UI = (function(module) {
     var _ownerLabelView = null;
     var _pathLabelView = null;
 
-    var _apLabelView = null;
-    var _locationLabelView = null;
-    var _rankLabelView = null;
-    var _sizeAllLabelView = null;
+    var _apLabelView        = null;
+    var _locationLabelView  = null;
+    var _rankLabelView      = null;
+    var _sizeAllLabelView   = null;
     var _sizeType1LabelView = null;
     var _sizeType2LabelView = null;
     var _sizeType3LabelView = null;
     
-    var _baseShape = null;
-    var _infoButtonView = null;
     var _newArmyButtonView = null;
-    var _prevButtonView = null;
-    var _nextButtonView = null;
-    var _inspectorFrame = null;
     
     var _fortressImageName = null;
 
 
     my = my || {};
 
-    my.region = null;
     my.node = null;
     
-    my.backgroundShape = null;
-    my.flagView = null;
     my.fortressView = null;
     my.fortressFlagView = null;
 
-    that = module.createContainer(spec, my);
+    that = module.createInspectorView(spec, my);
 
     that.onFlagClicked = null;
+    that.onPreviousSettlementButtonClick = null;
+    that.onNextSettlementButtonClick = null;
+    that.onNewArmyButtonClick = null;
 
     var _super = {
-      initWithController: AWE.Ext.superior(that, "initWithController"),
-      updateView: AWE.Ext.superior(that, "updateView"),
+      recalcView: AWE.Ext.superior(that, "recalcView"),
     };
     
     /** overwritten view methods */
     
     that.initWithControllerAndNode = function(controller, node, frame) {
-      _super.initWithController(controller, frame);
+      that.initWithControllerAndAllianceId(controller, node ? node.region() : null, frame);      
       
-      my.node = node;
-      my.region = node.region();
+      my.node            = node;
+      my.inspectedObject = node.region();
 
       this.recalcView();
-
-      my.container.x = my.frame.origin.x;
-      my.container.y = my.frame.origin.y;
-      my.container.width  = my.frame.size.height;
-      my.container.height = my.frame.size.height;
     };
     
+    var callWithFortressLocation = function(f, region) {
+      if (region && region.location(0)) {
+        f(region.location(0));
+      }
+      else if (region) {
+        AWE.Map.Manager.fetchLocationsForRegion(region, function() {
+          if (region.location(0)) {
+            f(region.location(0));
+          }
+        });
+      }
+    }
+    
+    that.onPreviousButtonClick  = function(region) {
+      if (this.onPreviousSettlementButtonClick) {
+        callWithFortressLocation(function(self) {  // wrap in function to keep context with this
+          return function(location) {
+            self.onPreviousSettlementButtonClick(location);
+          };
+        }(this), region);
+      }
+    }
+    
+    that.onNextButtonClick  = function(region) {
+      if (this.onNextSettlementButtonClick) {
+        callWithFortressLocation(function(self) {  // wrap in function to keep context with this
+          return function(location) {
+            self.onNextSettlementButtonClick(location);
+          };
+        }(this), region);
+      }
+    }    
     
     that.recalcView = function() {
       
       var currentCharacter = AWE.GS.CharacterManager.currentCharacter;
+      var region           = my.inspectedObject;
       
-      if (!my.backgroundShape) {
-        var backgroundShapeGraphics = new Graphics();
-        backgroundShapeGraphics.setStrokeStyle(0);
-        backgroundShapeGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-        backgroundShapeGraphics.drawRoundRect(0, 14, 230, 100, 6);
-        my.backgroundShape = AWE.UI.createShapeView();
-        my.backgroundShape.initWithControllerAndGraphics(my.controller, backgroundShapeGraphics);    
-        this.addChild(my.backgroundShape);
+      var allianceId       = region ? region.allianceId()  : null;
+      var isOwnRegion      = region.isOwn();
+      
+      this.setAllianceId(allianceId);
+      this.setSkimButtonsEnabled(isOwnRegion);
+      
+      _super.recalcView();
+      
+      if (!_newArmyButtonView && isOwnRegion) {
+        _newArmyButtonView = AWE.UI.createButtonView();
+        _newArmyButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/inspector/button/reinforce/normal"));
+        _newArmyButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/inspector/button/reinforce/hovered"), module.CONTROL_STATE_HOVERED);
+        _newArmyButtonView.setFrame(AWE.Geometry.createRect(346, 0, 68, 66));
+        _newArmyButtonView.onClick = function() {
+          if (that.onNewArmyButtonClick) {
+            that.onNewArmyButtonClick(region);
+          }
+        };
+        this.addChildAt(_newArmyButtonView, 2);
       }
-
+      
       if (!_nameLabelView) {
         _nameLabelView = AWE.UI.createLabelView();
         _nameLabelView.initWithControllerAndLabel(my.controller);
-        _nameLabelView.setFont('24px "Helvetica Neue", Helvetica, Arial');
-        _nameLabelView.setFrame(AWE.Geometry.createRect(5, 15, 200, 36));      
+        _nameLabelView.setFont('19px "Helvetica Neue", Helvetica, Arial');
+        _nameLabelView.setFrame(AWE.Geometry.createRect(31, 30, 160, 36));      
         _nameLabelView.setTextAlign("left");
         this.addChild(_nameLabelView);
       }
-      var name = my.region.name();
+      var name = region.name();
       if (_nameLabelView.text() != name) {
         _nameLabelView.setText(name);
       }
@@ -104,11 +137,11 @@ AWE.UI = (function(module) {
       if (!_ownerLabelView) {
         _ownerLabelView = AWE.UI.createLabelView();
         _ownerLabelView.initWithControllerAndLabel(my.controller);
-        _ownerLabelView.setFrame(AWE.Geometry.createRect(5, 45, 95, 24));      
+        _ownerLabelView.setFrame(AWE.Geometry.createRect(31, 55, 120, 24));      
         _ownerLabelView.setTextAlign("left");
         this.addChild(_ownerLabelView);
       }
-      var owner = my.region.ownerName(); // + (my.region.allianceId() > 0 ? ' | ' + my.region.allianceTag() : '');
+      var owner = region.ownerName(); // + (region.allianceId() > 0 ? ' | ' + region.allianceTag() : '');
       if (_ownerLabelView.text() != owner) {
         _ownerLabelView.setText(owner);
       }
@@ -116,7 +149,7 @@ AWE.UI = (function(module) {
       if (!_pathLabelView) {
         _pathLabelView = AWE.UI.createLabelView();
         _pathLabelView.initWithControllerAndLabel(my.controller);
-        _pathLabelView.setFrame(AWE.Geometry.createRect(105, 45, 60, 24));      
+        _pathLabelView.setFrame(AWE.Geometry.createRect(150, 55, 60, 24));      
         _pathLabelView.setTextAlign("right");
         _pathLabelView.setColor('rgb(190,190,190)');
         this.addChild(_pathLabelView);
@@ -125,68 +158,37 @@ AWE.UI = (function(module) {
         _pathLabelView.setText('('+my.node.path()+')');
       }
 
+      var settlement = region && region.location(0) ? region.location(0).settlement() : null;
+
       if (!_apLabelView) {
         _apLabelView = AWE.UI.createLabelView();
         _apLabelView.initWithControllerAndLabel(my.controller);
-        _apLabelView.setFrame(AWE.Geometry.createRect(5, 64, 100, 24));      
+        _apLabelView.setFrame(AWE.Geometry.createRect(31, 83, 100, 24));      
         _apLabelView.setTextAlign("left");
-        _apLabelView.setIconImage("map/display/icon");
+        _apLabelView.setIconImage("map/icon/actionpoints");
         this.addChild(_apLabelView);
       }
-      _apLabelView.setText('AP: keine');
+      _apLabelView.setText('Steuer: ' + (settlement ? Math.floor((settlement.tax_rate || 0)*100)+"%" : '-'));
 
 
       if (!_rankLabelView) {
         _rankLabelView = AWE.UI.createLabelView();
         _rankLabelView.initWithControllerAndLabel(my.controller);
         _rankLabelView.setTextAlign("left");
-        _rankLabelView.setIconImage("map/display/icon");
-        _rankLabelView.setFrame(AWE.Geometry.createRect(5, 84, 100, 24));      
+        _rankLabelView.setIconImage("map/icon/army/strength");
+        _rankLabelView.setFrame(AWE.Geometry.createRect(162, 83, 100, 24));      
         this.addChild(_rankLabelView);
       }
-      _rankLabelView.setText(my.region.fortressLevel());
+      _rankLabelView.setText('' + (settlement ? Math.floor((settlement.get('defense_bonus') || 0)*100)+"%" : '-'));
 
-
-
-      
-      // Allicance Flag
-      if (!my.flagView && my.region.allianceId()) {
-        my.flagView = AWE.UI.createAllianceFlagView();
-        my.flagView.initWithController(my.controller);
-        my.flagView.setFrame(AWE.Geometry.createRect(150, 0, 60, 75));
-        my.flagView.setTagVisible(true);
-        my.flagView.onClick = function() { 
-          if (that.onFlagClicked) {
-            that.onFlagClicked(my.region.allianceId());
-          };
-        };
-        this.addChild(my.flagView);
-      }
-      if (my.flagView && my.flagView.allianceId() !== my.region.allianceId()) {
-        my.flagView.setAllianceId(my.region.allianceId());
-      }
-      if (my.flagView && my.flagView.allianceTag() !== my.region.allianceTag()) {
-        my.flagView.setAllianceTag(my.region.allianceTag());
-      }      
-      
-      // circle
-      if (!_inspectorFrame) {
-        _inspectorFrame = AWE.UI.createImageView();
-        _inspectorFrame.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/inspector/frame"));
-        _inspectorFrame.setFrame(AWE.Geometry.createRect(184, 0, 128, 128));
-        _inspectorFrame.onClick = function() { 
-          my.controller.moveTo(my.node);
-        };  
-        this.addChild(_inspectorFrame);
-      }
       
       
       // FORTRESS IMAGE //////////////////////////////////////////////////////     
       var newFortressImageName = 'map/fortress/small';        
-      if (my.region.fortressLevel() > 3) {
+      if (region.fortressLevel() > 3) {
         newFortressImageName = 'map/fortress/middle';
       }
-      if (my.region.fortressLevel() > 7) {
+      if (region.fortressLevel() > 7) {
         newFortressImageName = 'map/fortress/large';
       }
       
@@ -197,76 +199,38 @@ AWE.UI = (function(module) {
       _fortressImageName = newFortressImageName;
 
       if (!my.fortressView) {
+        var container = AWE.UI.createContainer();
+        container.initWithController(my.controller);
+        container.setFrame(AWE.Geometry.createRect(0,0,144,144));
+        
         my.fortressView = AWE.UI.createImageView();
         my.fortressView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_fortressImageName));
-        my.fortressView.setFrame(AWE.Geometry.createRect(210, 30, AWE.Config.MAPPING_FORTRESS_SIZE*1.2, AWE.Config.MAPPING_FORTRESS_SIZE*1.2));
-        my.fortressView.onClick = function() { my.controller.moveTo(my.node); };
-        this.addChild(my.fortressView);
-      }
+        my.fortressView.setFrame(AWE.Geometry.createRect(32, 36, AWE.Config.MAPPING_FORTRESS_SIZE*1.2, AWE.Config.MAPPING_FORTRESS_SIZE*1.2));
+        
+        container.addChild(my.fortressView)
+        
       
-      // FORTRESS FLAG ///////////////////////////////////////////////////////////    
-      if (!my.fortressFlagView && my.region.allianceId()) {
+        // FORTRESS FLAG ///////////////////////////////////////////////////////////    
+        
         my.fortressFlagView = AWE.UI.createAllianceFlagView();
         my.fortressFlagView.initWithController(my.controller);
-        my.fortressFlagView.setFrame(AWE.Geometry.createRect(242, 70, 12, 20));
+        my.fortressFlagView.setFrame(AWE.Geometry.createRect(65, 60, 12, 20));
         my.fortressFlagView.setDirection('down');
-        this.addChild(my.fortressFlagView);
+        my.fortressFlagView.setAllianceId(allianceId);
+        
+        container.addChild(my.fortressFlagView);
+        
+        this.setInspectedObjectView(container);
       }
       
-      if (my.fortressFlagView && my.region.allianceId() != my.fortressFlagView.allianceId()) {
-        my.fortressFlagView.setAllianceId(my.region.allianceId());
+      if (my.fortressFlagView && allianceId != my.fortressFlagView.allianceId()) {
+        my.fortressFlagView.setAllianceId(allianceId);
       }
-
-      // buttons oben
-      if (!_infoButtonView && my.region.location(0)) {
-        _infoButtonView = AWE.UI.createButtonView();
-        _infoButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.info'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-        _infoButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        _infoButtonView.setFrame(AWE.Geometry.createRect(168, 0, 48, 48));
-        _infoButtonView.onClick = function() {
-           that.onInfoButtonClick(my.region.location(0)) 
-        };
-        this.addChild(_infoButtonView);
-      }
-
-      if (!_newArmyButtonView && my.region.location(0) && my.region.location(0).isOwn()) {
-        _newArmyButtonView = AWE.UI.createButtonView();
-        _newArmyButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.newArmy'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-        _newArmyButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        _newArmyButtonView.setFrame(AWE.Geometry.createRect(280, 0, 48, 48));
-        _newArmyButtonView.onClick = function() {
-          that.onNewArmyButtonClick(my.region.location(0))
-        };
-        this.addChild(_newArmyButtonView);
-      }
-      
-      // TODO disablen wenn garrison army leer
- /*
-      // button unten
-      if (!_prevButtonView && my.region.ownerId() === currentCharacter.getId()) {
-        _prevButtonView = AWE.UI.createButtonView();
-        _prevButtonView.initWithControllerTextAndImage(my.controller, '<<', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-        _prevButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        _prevButtonView.setFrame(AWE.Geometry.createRect(180, 92, 36, 36));
-        this.addChild(_prevButtonView);
-      }
-
-      if (!_nextButtonView && my.region.ownerId() === currentCharacter.getId()) {
-        _nextButtonView = AWE.UI.createButtonView();
-        _nextButtonView.initWithControllerTextAndImage(my.controller, '>>', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-        _nextButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        _nextButtonView.setFrame(AWE.Geometry.createRect(280, 92, 36, 36));
-        this.addChild(_nextButtonView);
-      }*/
     }
-    
-    that.onInfoButtonClick = function() { log('info button clicked'); }
-    that.onNewArmyButtonClick = function(location) { log('new army button clicked'); }
-    
-    that.updateView = function() {
-      this.recalcView() 
-      _super.updateView();
-    };   
+        
+    that.region = function() {
+      return my.inspectedObject;
+    }
     
     return that;
   };

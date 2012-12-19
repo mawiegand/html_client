@@ -919,15 +919,19 @@ AWE.Controller = (function(module) {
       });
     }
     
+    that.centerLocation = function(location) {
+      that.moveTo(location, true);
+    }
+    
     that.centerRegion = function(region) {
       var nodeId = region.nodeId() || 0;
       var node   = region.node() || AWE.Map.Manager.getNode(nodeId);
       if (node) {
-        that.moveTo(node);
+        that.moveTo(node, true);
       }
       else {
         AWE.Map.Manager.fetchSingleNodeById(nodeId, function(node) {
-          that.moveTo(node);
+          that.moveTo(node, true);
         });
       }
     }
@@ -954,6 +958,57 @@ AWE.Controller = (function(module) {
     
     that.centerArmy = function(army) {
       this.centerGamingPiece(army);
+    }
+
+
+    that.switchToPreviousSettlement = function(settlement) {
+      if (!settlement) {
+        return ;
+      }
+      var previous = AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(settlement);
+      if (previous) {
+        that.setSelectedSettlement(previous);
+        that.centerSettlement(previous);
+      }      
+    }
+    
+    that.switchToNextSettlement = function(settlement) {
+      if (!settlement) {
+        return ;
+      }
+      var next = AWE.GS.SettlementManager.getNextSettlementOfCharacter(settlement);
+      if (next) {
+        that.setSelectedSettlement(next);
+        that.centerSettlement(next);
+      }      
+    }
+
+    that.previousSettlementButtonClicked = function(location) {
+      log ('switch to previous settlement');
+      var settlement = location.settlement();
+      if (!settlement) {
+        AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+          settlement = location.settlement();
+          that.switchToPreviousSettlement(settlement);
+        });
+      }
+      else {
+        that.switchToPreviousSettlement(settlement);        
+      }
+    }
+
+    that.nextSettlementButtonClicked = function(location) {
+      log ('switch to next settlement');
+      var settlement = location.settlement();
+      if (!settlement) {
+        AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+          settlement = location.settlement();
+          that.switchToNextSettlement(settlement);
+        });
+      }
+      else {
+        that.switchToNextSettlement(settlement);        
+      }
     }
 
     that.previousArmyButtonClicked = function(army) {
@@ -1290,13 +1345,21 @@ AWE.Controller = (function(module) {
           WACKADOO.activateAllianceController(allianceId);
         }
         
-        inspectorViews.inspector.onNewArmyButtonClick = function(location) {
-          that.newArmyButtonClicked(location);
+        inspectorViews.inspector.onNewArmyButtonClick = function(region) {
+          that.newArmyButtonClicked(region.location(0));
         };
-        
-        inspectorViews.inspector.onInfoButtonClick = function(location) {
-          that.settlementInfoButtonClicked(location);
+        inspectorViews.inspector.onCenterButtonClick = function(region) {
+          that.centerRegion(region);
         };        
+        inspectorViews.inspector.onInventoryButtonClick = function(region) {
+          that.settlementInfoButtonClicked(region.location(0));
+        };        
+        inspectorViews.inspector.onPreviousSettlementButtonClick = function(location) {
+          that.previousSettlementButtonClicked(location);
+        };
+        inspectorViews.inspector.onNextSettlementButtonClick = function(location) {
+          that.nextSettlementButtonClicked(location);
+        };
       }      
       else if (view.typeName() === 'ArmyView') {
         inspectorViews.inspector = AWE.UI.createArmyInspectorView();
@@ -1309,7 +1372,6 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector.onFlagClicked = function(allianceId) {
           WACKADOO.activateAllianceController(allianceId);
         }
-
         inspectorViews.inspector.onCenterButtonClick = function(army) {
           that.centerArmy(view.army());
         };
@@ -1335,10 +1397,19 @@ AWE.Controller = (function(module) {
         inspectorViews.inspector.onFlagClicked = function(allianceId) {
           WACKADOO.activateAllianceController(allianceId);
         }
-        
-        inspectorViews.inspector.onInfoButtonClick = function(location) {
+        inspectorViews.inspector.onCenterButtonClick = function(location) {
+          that.centerLocation(location);
+        };
+        inspectorViews.inspector.onInventoryButtonClick = function(location) {
           that.settlementInfoButtonClicked(location);
         }; 
+        inspectorViews.inspector.onPreviousSettlementButtonClick = function(location) {
+          that.previousSettlementButtonClicked(location);
+        };
+        inspectorViews.inspector.onNextSettlementButtonClick = function(location) {
+          that.nextSettlementButtonClicked(location);
+        };
+
       }
       
       if (inspectorViews.inspector) {
