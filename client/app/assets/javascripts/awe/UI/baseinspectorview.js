@@ -153,7 +153,12 @@ AWE.UI = (function(module) {
                 
         _settlementView = AWE.UI.createImageView();
         _settlementView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(imageName));
-        _settlementView.setFrame(AWE.Geometry.createRect(30, 30, 64, 64));
+        if (my.settlementType === 'outpost') {
+          _settlementView.setFrame(AWE.Geometry.createRect(30, 20, 96, 96));
+        }
+        else {
+          _settlementView.setFrame(AWE.Geometry.createRect(32, 36, 64, 64));          
+        }
         this.setInspectedObjectView(_settlementView);
       }
 
