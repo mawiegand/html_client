@@ -20,6 +20,7 @@ AWE.GS = (function(module) {
       
     version: null,
     settlement_types: null,
+		victory_types: null,
     unit_types: null,
     unit_categories: null,
 		building_types: null,
@@ -29,6 +30,26 @@ AWE.GS = (function(module) {
 		queue_categories: null,
 		alliance_max_members: 0,
 		
+    getVictoryType: function(id) {
+      var victoryType = this.get('victory_types')[id];
+      if (victoryType === undefined || !victoryType) {
+        log('ERROR: requested non-existing victory type ' + victoryType);
+      }
+      return victoryType;    
+    },
+    
+    getVictoryTypeWithSymbolicId: function(symbolicId) {
+      var victoryTypes = this.get('victory_types');
+      
+      for (var i = 0; i < victoryTypes.length; i++) {
+        var victoryType = victoryTypes[i];
+        if (victoryType['symbolic_id'] === symbolicId) {
+          return victoryType;
+        }
+      }
+      log('ERROR: requested non-existing victory type ' + symbolicId);
+    },
+
     getSettlementType: function(id) {
       var settlementType = this.get('settlement_types')[id];
       if (settlementType === undefined || !settlementType) {
