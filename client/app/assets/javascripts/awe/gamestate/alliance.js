@@ -27,6 +27,8 @@ AWE.GS = (function(module) {
     locked: false,                  ///< TODO: don't communicate this!
     locked_by: null,
     locked_at: null,
+    
+    victory_progresses: [],
         
     hashableShouts: function() {
       var id = this.get('id');
@@ -62,6 +64,25 @@ AWE.GS = (function(module) {
         
   });     
 
+
+  // ///////////////////////////////////////////////////////////////////////
+  //
+  //   VICTORY PROGRESS
+  //
+  // ///////////////////////////////////////////////////////////////////////    
+    
+  module.VictoryProgress = module.Entity.extend({
+    typeName: 'VictoryProgress',
+    victory_type: null,
+    alliance_id: null,
+    fulfillment_count: null,
+    first_fulfilled_at: null,
+    
+    victoryType: function() {
+      return AWE.GS.RulesManager.getRules().get('victory_types')[this.get('victory_type')];
+    }.property('victory_type').cacheable(),
+  });    
+
     
   // ///////////////////////////////////////////////////////////////////////
   //
@@ -81,9 +102,16 @@ AWE.GS = (function(module) {
 
     my = my || {};
       
-    my.createEntity = function() { return module.Alliance.create(); }
 
-  
+    my.createEntity = function(spec) {
+      return module.Alliance.create({
+        victory_progresses: Ember.ArrayProxy.create({          
+          baseTypeName: 'VictoryProgress',
+          content: Ember.A([]),
+        }),
+      });        
+    }
+
     // public attributes and methods ///////////////////////////////////////
   
     that = module.createEntityManager(my);
