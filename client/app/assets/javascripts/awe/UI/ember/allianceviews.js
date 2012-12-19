@@ -26,7 +26,6 @@ AWE.UI.Ember = (function(module) {
       return leaderId && leaderId === characterId;
     }.property('alliance.leader_id', 'AWE.GS.player.currentCharacter.id').cacheable(),
 
-    
     ownAlliance: function() {
       var allianceId = this.getPath('alliance.id');
       var ownAllyId = AWE.GS.player.getPath('currentCharacter.alliance_id');
@@ -230,6 +229,61 @@ AWE.UI.Ember = (function(module) {
        
   });
   
+  module.AllianceVictoryView = Ember.View.extend({
+    templateName: 'alliance-victory-view',
+    
+    // init: function() {
+      // this.set('victoryTypes', );
+    // },
+     
+    alliance:     null,
+    controller:   null,
+  });
+  
+  module.AllianceVictoryProgressView = Ember.View.extend({
+    alliance:     null,
+    controller:   null,
+    victoryType:  null,
+  });
+  
+  module.AllianceVictoryProgressDominationView = module.AllianceVictoryProgressView.extend({
+    templateName: 'alliance-victory-progress-domination-view',
+    
+    init: function() {
+      this.set('victoryType', AWE.GS.RulesManager.getRules().getVictoryTypeWithSymbolicId('victory_domination'));
+    },
+    
+    progress: function() {
+      var progresses = this.getPath('alliance.victory_progresses.content');
+      for (var i = 0; i < progresses.length; i++) {
+        var progress = progresses[i];
+        if (progress['victory_type'] === this.getPath('victoryType.id')) {
+          return progress;
+        }
+      }
+      log('ERROR: no victory progress found');
+      return null;
+    }.property('alliance.victory_progresses.@each').cacheable(),
+    
+    fulfillmentRate: function() {
+      var allRegions = AWE.GS.game.roundInfo.get('regions_count');
+      var allianceRegions = this.getPath('progress.fulfillment_count');
+      var reqRegionsRatio = this.getPath('victoryType.condition.required_regions_ratio')
+      var fulfillmentRate = 1.0 * (allianceRegions / allRegions) / reqRegionsRatio;
+      return (fulfillmentRate > 1) ? 1 : fulfillmentRate;
+    }.property('progress').cacheable(),
+    
+    fulfillmentDuration: function() {
+      var firstFulfilledAt = this.getPath('progress.first_fulfilled_at');
+      if (firstFulfilledAt != null) {
+        var duration = AWE.Util.secondsToDuration((new Date().getTime() - Date.parseISODate(firstFulfilledAt).getTime())/1000);
+        return duration.h;
+      }
+      else {
+        return 0;
+      }
+    }.property('progress').cacheable(),
+  });
   
   module.AllianceBannerView = AWE.UI.Ember.Pane.extend({
     width: 200,
