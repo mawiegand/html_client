@@ -101,6 +101,10 @@ AWE.UI.Ember = (function(module) {
         
       });
     },
+    
+    displayLikeSystemButtons: function() {
+        return AWE.GS.CharacterManager.getCurrentCharacter() !== this.get('character');
+    }.property('character'),
 	
     sendMessageClicked: function() {
       var character = this.get('character')
