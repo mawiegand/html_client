@@ -101,7 +101,7 @@
   <div class="alliance-victory-progress-domination">
     <h2>{{ local progress.victoryType.name }}</h2>
     <p>{{ local progress.victoryType.description }}</p>
-    <p>{{t alliance.progress.requiredRegions}}: {{formatAsPercent victoryType.condition.required_regions_ratio}}, {{t alliance.progress.requiredDuration}}; {{victoryType.condition.duration}} {{t general.days}}</p>
+    <p>{{t alliance.progress.requiredRegions}}: {{formatAsPercent victoryType.condition.required_regions_ratio}} ({{requiredRegions}} {{t map.regions}}), {{t alliance.progress.requiredDuration}}; {{victoryType.condition.duration}} {{t general.days}}</p>
   </div>
   
   <div style="width:100%; height: 20px; position: relative; background: #eef; border: 1px solid black; margin-top: 70px; margin-bottom: 80px;">
