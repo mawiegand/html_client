@@ -16,6 +16,9 @@ AWE.UI.Ember = (function(module) {
     character: null,
     alliance: null,
     homeSettlement: null,
+    historyEvents: null,
+    
+    loadingHistory: false,
     
     setAndUpdateCharacter: function() {
       var characterId = this.get('characterId');
@@ -27,6 +30,19 @@ AWE.UI.Ember = (function(module) {
       this.set('character', character);
       AWE.GS.CharacterManager.updateCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {
         self.set('character', result);
+      });
+    },
+
+    setAndUpdateHistory: function() {
+      var characterId = this.get('characterId');
+      var self = this;
+      if (!characterId) {
+        return ;
+      }
+      this.set('loadingHistory', true);
+      AWE.GS.HistoryEventManager.updateHistoryEventsOfCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {
+        self.set('loadingHistory', false);
+        self.set('historyEvents', AWE.GS.HistoryEventManager.getHistoryEventsOfCharacter(characterId));
       });
     },
 
@@ -59,6 +75,7 @@ AWE.UI.Ember = (function(module) {
     
     characterIdObserver: function() {
       this.setAndUpdateCharacter();
+      this.setAndUpdateHistory();
     }.observes('characterId'),
     
     allianceIdObserver: function() {
@@ -72,6 +89,7 @@ AWE.UI.Ember = (function(module) {
     init: function() {
       this._super();     
       this.setAndUpdateCharacter();
+      this.setAndUpdateHistory();
       this.setAndUpdateAlliance(); 
       this.setAndUpdateHomeSettlement(); 
     },

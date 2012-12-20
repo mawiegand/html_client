@@ -16,8 +16,7 @@
          <b>{{local character.mundaneTitle.name}}</b> {{t general.and}} <b>{{local character.sacredTitle.name}}</b><br/>
          {{t profile.playingSince}}: {{formatDatetime character.created_at}}</p>
       
-      <p><b>{{t profile.experience}}:</b> {{character.exp}} &nbsp; 
-         <b>{{t profile.totalPopulation}}:</b> {{character.score}} &nbsp; 
+      <p><b>{{t profile.totalPopulation}}:</b> {{character.score}} &nbsp; 
          <b>{{t profile.fortresses}}:</b> {{character.fortress_count}}</p>
          
       <p><b>{{t profile.battles}}:</b> {{character.battle_count}} ({{t profile.victories}}: {{ character.victories }}, {{t profile.defeats}}: {{ character.defeats }})</p>
@@ -35,6 +34,20 @@
            <b>{{character.received_dislikes_count}} Dislikes</b> <a href="#" {{action "sendDislike"}}>sende Dislike</a></p>
       {{/if}}
       
+      <p><b>{{t profile.history}}:</b><br />
+      {{#if loadingHistory }}
+        {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+      {{else}}
+        {{#if historyEvents}}
+          {{#each historyEvents}}
+          {{local this.localized_description}}<br />
+          {{/each}}
+        {{else}}
+          {{t profile.emptyHistory}}}<br />
+        {{/if}}
+      {{/if}}
+      </p>
+      
       <a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>     
       {{#if character}}
         <a class="button" href="#" {{action "sendMessageClicked"}}>{{t profile.sendMessage}}</a>  
@@ -42,4 +55,3 @@
     </div>
   </div>
 </script>
-
