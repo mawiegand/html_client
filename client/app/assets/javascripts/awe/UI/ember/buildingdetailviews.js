@@ -89,8 +89,21 @@ AWE.UI.Ember = (function(module) {
     same: function() {
       return this.getPath('building.buildingId') === this.getPath('hovered.buildingId');
     }.property('building', 'hovered').cacheable(),
- });
+  });
    
+  module.GeneralResourceView = Ember.View.extend({
+    tagName:      'span', 
+    experience:   null,
+    resources:    null,
+  });
+  
+  module.ResourceProductionView = module.GeneralResourceView.extend({
+    templateName: 'building-production-view',
+  });
+  
+  module.ResourceCostView = module.GeneralResourceView.extend({
+    templateName: 'building-cost-view',
+  });
  
   /** @class
    * @name AWE.UI.Ember.BuildingDetailsDialog */  

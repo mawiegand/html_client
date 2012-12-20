@@ -349,6 +349,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           var currentCharacter = AWE.GS.CharacterManager.getCurrentCharacter();
           if (currentCharacter.get('alliance_id') && currentCharacter.get('alliance_id') > 0) {
             _numAssets +=1;
+            // log('---> load alliance');
             AWE.GS.AllianceManager.updateAlliance(currentCharacter.get('alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
               assetLoaded();
             });
@@ -382,9 +383,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             });
           }
 
+          _numAssets += 1;
           AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
             if (statusCode === AWE.Net.OK) {
               log(resourcePool);
+              assetLoaded();
             }
             else {
               log('CRITICAL ERROR: could not load resource pool from server. Error code: ' + statusCode + '. Terminate App.');
@@ -392,11 +395,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             }
           });
 
-          // var startupArguments = JSON.parse(self.get('startupArguments'));
-          // if (startupArguments.retention != null) {
-            // var action = AWE.Action.Fundamental.redeemretentionreward(startupArguments.retention);
-            // action.send();   
-          // }  
+          _numAssets += 1;
+          AWE.GS.RoundInfoManager.updateRoundInfo(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
+            if (statusCode === AWE.Net.OK) {
+              log('RoundInfo', AWE.GS.game.roundInfo);
+              assetLoaded();
+            }
+            else {
+              log('CRITICAL ERROR: could not load round info from server. Error code: ' + statusCode + '. Terminate App.');
+              throw "ABORT Due to Failure to load game's round info.";
+            }
+          });
 
           assetLoaded();
         }

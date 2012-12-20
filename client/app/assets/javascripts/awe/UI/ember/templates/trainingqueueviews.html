@@ -49,9 +49,9 @@
   {{/if}}
 
 
-  <div class="training-queue-list-pane">    
+  <div class="training-queue-list-pane clearfix">    
     {{#unless queue.empty }}
-      <hr>
+      <hr />
       {{#each queue.hashableJobs.collection }}
         {{#view AWE.UI.Ember.TrainingJobView controllerBinding="controller" jobBinding="this" classNames="training-queue-job"}}
           <div class="training-queue-job-text">    
@@ -78,6 +78,8 @@
       {{/each}}
     {{/unless}}
   </div>
+  
+  <br class="clearfix" />
 </script>
 
 
