@@ -265,7 +265,7 @@ AWE.UI.Ember = (function(module) {
       }
       log('ERROR: no victory progress found');
       return null;
-    }.property('alliance.victory_progresses.content').cacheable(),
+    }.property('alliance', 'alliance.victory_progresses.content').cacheable(),
     
     fulfilled: function() {
       return this.get('fulfillmentRatio') >= 1;
@@ -277,7 +277,7 @@ AWE.UI.Ember = (function(module) {
       var reqRegionsRatio = this.getPath('victoryType.condition.required_regions_ratio');
       var fulfillmentRatio = 1.0 * (allianceRegions / allRegions) / reqRegionsRatio;
       return (fulfillmentRatio > 1) ? 1 : fulfillmentRatio;
-    }.property('progress.fulfillment_count', 'AWE.GS.game.roundInfo.regions_count', 'victoryType').cacheable(),
+    }.property('alliance', 'progress.fulfillment_count', 'AWE.GS.game.roundInfo.regions_count', 'victoryType').cacheable(),
     
     fulfillmentDurationRatio: function() {
       var firstFulfilledAt = this.getPath('progress.first_fulfilled_at');
@@ -298,7 +298,7 @@ AWE.UI.Ember = (function(module) {
       else {
         return Math.floor(25 * (1 - this.get('fulfillmentDurationRatio'))) + '%';
       }
-    }.property('fulfillmentRatio', 'fulfillmentDurationRatio').cacheable(),
+    }.property('alliance', 'fulfillmentRatio', 'fulfillmentDurationRatio').cacheable(),
     
     daysRemaining: function() {
       var reqDuration = this.getPath('victoryType.condition.duration');
