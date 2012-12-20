@@ -30,8 +30,19 @@
       </p>
       
       {{#if AWE.Config.LIKE_ENABLED}}
-        <p><b>{{character.received_likes_count}} Likes</b>{{#if displayLikeSystemButtons}} <a href="#" {{action "sendLike"}}>sende Like</a>{{/if}}&nbsp;
-           <b>{{character.received_dislikes_count}} Dislikes</b>{{#if displayLikeSystemButtons}} <a href="#" {{action "sendDislike"}}>sende Dislike</a>{{/if}}</p>
+        <p>
+           {{#if updatingLikes }}
+             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+           {{else}}
+             {{character.received_likes_count}}
+           {{/if}}
+           <b> Likes</b>{{#if displayLikeSystemButtons}} <a href="#" {{action "sendLike"}}>sende Like</a>{{/if}}&nbsp;
+           {{#if updatingLikes }}
+             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+           {{else}}
+             {{character.received_dislikes_count}}
+           {{/if}}
+           <b> Dislikes</b>{{#if displayLikeSystemButtons}} <a href="#" {{action "sendDislike"}}>sende Dislike</a>{{/if}}</p>
       {{/if}}
       
       <p><b>{{t profile.history}}:</b><br />

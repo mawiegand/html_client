@@ -19,6 +19,7 @@ AWE.UI.Ember = (function(module) {
     historyEvents: null,
     
     loadingHistory: false,
+    updatingLikes: false,
     
     setAndUpdateCharacter: function() {
       var characterId = this.get('characterId');
@@ -30,6 +31,7 @@ AWE.UI.Ember = (function(module) {
       this.set('character', character);
       AWE.GS.CharacterManager.updateCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {
         self.set('character', result);
+        self.set('updatingLikes', false);
       });
     },
 
@@ -104,8 +106,9 @@ AWE.UI.Ember = (function(module) {
       if (!characterId) {
         return ;
       }
-      AWE.Action.Fundamental.createSendLikeAction(characterId).send(function(status, data){
-        
+      this.set('updatingLikes', true);
+      AWE.Action.Fundamental.createSendLikeAction(characterId).send(function(status, data) {
+        self.setAndUpdateCharacter();
       });
     },
     
@@ -115,8 +118,9 @@ AWE.UI.Ember = (function(module) {
       if (!characterId) {
         return ;
       }
-      AWE.Action.Fundamental.createSendDislikeAction(characterId).send(function(status, data){
-        
+      this.set('updatingLikes', true);
+      AWE.Action.Fundamental.createSendDislikeAction(characterId).send(function(status, data) {
+        self.setAndUpdateCharacter();
       });
     },
     
