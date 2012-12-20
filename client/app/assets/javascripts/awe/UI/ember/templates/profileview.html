@@ -130,12 +130,25 @@
   
   <p>{{t profile.rank.info}}</p>   
      
-  <p><b>{{t profile.rank.experience}}:</b> {{ character.exp }}{{#unless character.exp_production_rate_zero}} (+ {{formatNumber character.exp_production_rate maxPlaces="0"}}/h){{/unless}}. {{t profile.rank.experienceInfo}}<br/>
-       
-     <b>{{t profile.rank.settlementPoints}}:</b> {{t profile.rank.notUsed}}: {{ character.settlementPointsAvailable }}. {{t profile.rank.total}}: {{ character.settlement_points_total }}.
-<br/>
+  <p><b>{{t profile.rank.experience}}:</b> {{ character.exp }}{{#unless character.exp_production_rate_zero}} (+ {{formatNumber character.exp_production_rate maxPlaces="0"}}/h){{/unless}}. {{t profile.rank.experienceInfo}}<br/>       
+     <b>{{t profile.rank.settlementPoints}}:</b> {{t profile.rank.notUsed}}: {{ character.settlementPointsAvailable }}. {{t profile.rank.total}}: {{ character.settlement_points_total }}.<br/>
      <b>{{t profile.battles}}:</b> {{character.battle_count}}. {{t profile.victories}}: {{ character.victories }}. {{t profile.defeats}}: {{ character.defeats }}.
   </p>
+  
+  <p><b>{{t profile.history}}:</b><br />
+  {{#if loadingHistory }}
+    {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+  {{else}}
+    {{#if historyEvents}}
+      {{#each historyEvents}}
+      {{local this.localized_description}}<br />
+      {{/each}}
+    {{else}}
+      {{t profile.emptyHistory}}}<br />
+    {{/if}}
+  {{/if}}
+  </p>
+  
 </script>
 
 

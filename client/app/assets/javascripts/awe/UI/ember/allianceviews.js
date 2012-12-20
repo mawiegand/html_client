@@ -279,6 +279,12 @@ AWE.UI.Ember = (function(module) {
       return (fulfillmentRatio > 1) ? 1 : fulfillmentRatio;
     }.property('alliance', 'progress.fulfillment_count', 'AWE.GS.game.roundInfo.regions_count', 'victoryType').cacheable(),
     
+    requiredRegions: function() {
+      var allRegions = AWE.GS.game.roundInfo.get('regions_count');
+      var reqRegionsRatio = this.getPath('victoryType.condition.required_regions_ratio');
+      return Math.ceil(allRegions * reqRegionsRatio);
+    }.property('victoryType.condition.required_regions_ratio', 'AWE.GS.game.roundInfo.regions_count', 'victoryType').cacheable(),
+    
     fulfillmentDurationRatio: function() {
       var firstFulfilledAt = this.getPath('progress.first_fulfilled_at');
       var reqDuration = this.getPath('victoryType.condition.duration')
