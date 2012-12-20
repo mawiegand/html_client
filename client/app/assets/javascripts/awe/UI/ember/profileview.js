@@ -272,13 +272,35 @@ AWE.UI.Ember = (function(module) {
     templateName: 'character-profile-info-view',
     
     character:           null,
+    historyEvents: null,
+    
+    loadingHistory: false,
     
     showProgressBar: function() {
       var exp = this.getPath('character.exp');
       return exp && exp > 1000; // hack to prevent layout errors. number must go to config
     }.property('character.exp').cacheable(),
     
-        
+    characterObserver: function() {
+      var characterId = this.getPath('character.id') || null;
+      if (characterId && this.getPath('character.name_change_count') > 0) {
+        AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_profile');
+      }       
+      this.setAndUpdateHistory();
+    }.observes('character.id'),
+    
+    setAndUpdateHistory: function() {
+      var characterId = this.getPath('character.id');
+      var self = this;
+      if (!characterId) {
+        return ;
+      }
+      this.set('loadingHistory', true);
+      AWE.GS.HistoryEventManager.updateHistoryEventsOfCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {
+        self.set('loadingHistory', false);
+        self.set('historyEvents', AWE.GS.HistoryEventManager.getHistoryEventsOfCharacter(characterId));
+      });
+    },
   });
   
   module.SettingsView = Ember.View.extend({    
