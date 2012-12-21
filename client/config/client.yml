@@ -38,5 +38,5 @@ production:
   jabber_server_base: "jabber2.wack-a-doo.com"
   portal_server_base: "wack-a-doo.de"
   shop_callback_hostname: "gs02"
-  like_system_enabled: false  
+  like_system_enabled: true  
 
