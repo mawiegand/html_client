@@ -21,6 +21,20 @@ AWE.UI.Ember = (function(module) {
     loadingHistory: false,
     updatingLikes: false,
     
+    displayLikeSystemButtons: function() {
+        return AWE.GS.CharacterManager.getCurrentCharacter() !== this.get('character');
+    }.property('character'),
+	
+    likeAmount: function() {
+        var amount = AWE.GS.ResourcePoolManager.getResourcePool().get('like_amount');
+        return "Noch " + amount + " Likes zu vergeben";
+    }.property('character'),
+    
+    dislikeAmount: function() {
+        var amount = AWE.GS.ResourcePoolManager.getResourcePool().get('dislike_amount');
+        return "Noch " + amount + " Dislikes zu vergeben";
+    }.property('character'),
+    
     setAndUpdateCharacter: function() {
       var characterId = this.get('characterId');
       var self = this;
@@ -124,10 +138,6 @@ AWE.UI.Ember = (function(module) {
       });
     },
     
-    displayLikeSystemButtons: function() {
-        return AWE.GS.CharacterManager.getCurrentCharacter() !== this.get('character');
-    }.property('character'),
-	
     sendMessageClicked: function() {
       var character = this.get('character')
       if (!character) {

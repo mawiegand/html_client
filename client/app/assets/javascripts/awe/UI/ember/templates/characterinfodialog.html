@@ -36,13 +36,14 @@
            {{else}}
              {{character.received_likes_count}}
            {{/if}}
-           <b> Likes</b>{{#if displayLikeSystemButtons}} <a href="#" {{action "sendLike"}}>sende Like</a>{{/if}}&nbsp;
+           <b> Likes</b>{{#if displayLikeSystemButtons}} <a href="#" {{action "sendLike"}} {{bindAttr title="likeAmount"}}>sende Like</a>{{/if}}&nbsp;
            {{#if updatingLikes }}
              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
            {{else}}
              {{character.received_dislikes_count}}
            {{/if}}
-           <b> Dislikes</b>{{#if displayLikeSystemButtons}} <a href="#" {{action "sendDislike"}}>sende Dislike</a>{{/if}}</p>
+           <b> Dislikes</b>{{#if displayLikeSystemButtons}} <a href="#" {{action "sendDislike"}} {{bindAttr title="dislikeAmount"}}>sende Dislike</a>{{/if}}
+        </p>
       {{/if}}
       
       <p><b>{{t profile.history}}:</b><br />
