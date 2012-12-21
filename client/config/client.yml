@@ -5,7 +5,7 @@ defaults: &defaults
   
   use_dynamic_construction_slots: true
 
-  like_system_enabled: true  
+  like_system_enabled: true
   shop_enabled: true
   jabber_id: "none"
   jabber_pwd: "none"
