@@ -123,6 +123,26 @@ AWE.UI.Ember = (function(module) {
       this.set('updatingLikes', true);
       AWE.Action.Fundamental.createSendLikeAction(characterId).send(function(status, data) {
         self.setAndUpdateCharacter();
+        var dialog;
+        if(status === AWE.Net.CONFLICT)
+        {
+          dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'not-enough-like-amount-info',
+            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+        }
+        if(status === AWE.Net.ERROR)
+        {
+          dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+        });
+        }
+        WACKADOO.presentModalDialog(dialog);
       });
     },
     
@@ -135,6 +155,26 @@ AWE.UI.Ember = (function(module) {
       this.set('updatingLikes', true);
       AWE.Action.Fundamental.createSendDislikeAction(characterId).send(function(status, data) {
         self.setAndUpdateCharacter();
+        var dialog;
+        if(status === AWE.Net.CONFLICT)
+        {
+          dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'not-enough-dislike-amount-info',
+            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+        }
+        if(status === AWE.Net.ERROR)
+        {
+          dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+        });
+        }
+        WACKADOO.presentModalDialog(dialog);
       });
     },
     
