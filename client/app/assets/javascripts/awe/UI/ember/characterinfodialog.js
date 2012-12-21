@@ -26,14 +26,14 @@ AWE.UI.Ember = (function(module) {
     }.property('character'),
 	
     likeAmount: function() {
-        var amount = AWE.GS.ResourcePoolManager.getResourcePool().get('like_amount');
+        var amount = Math.floor(AWE.GS.ResourcePoolManager.getResourcePool().get('like_amount'));
         return "Noch " + amount + " Likes zu vergeben";
-    }.property('character'),
+    }.property('updatingLikes'),
     
     dislikeAmount: function() {
-        var amount = AWE.GS.ResourcePoolManager.getResourcePool().get('dislike_amount');
+        var amount = Math.floor(AWE.GS.ResourcePoolManager.getResourcePool().get('dislike_amount'));
         return "Noch " + amount + " Dislikes zu vergeben";
-    }.property('character'),
+    }.property('updatingLikes'),
     
     setAndUpdateCharacter: function() {
       var characterId = this.get('characterId');
