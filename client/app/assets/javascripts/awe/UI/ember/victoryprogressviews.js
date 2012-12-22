@@ -46,19 +46,7 @@ AWE.UI.Ember = (function(module) {
       }
       log('ERROR: no victory progress found');
       return null;
-    }.property('alliance', 'alliance.victory_progresses.content').cacheable(),
-    
-    fulfilled: function() {
-      return this.get('fulfillmentRatio') >= 1;
-    }.property('fulfillmentRatio').cacheable(),
-    
-    fulfillmentRatio: function() {
-      var allRegions = AWE.GS.game.roundInfo.get('regions_count');
-      var allianceRegions = this.getPath('progress.fulfillment_count');
-      var reqRegionsRatio = this.getPath('victoryType.condition.required_regions_ratio');
-      var fulfillmentRatio = 1.0 * (allianceRegions / allRegions) / reqRegionsRatio;
-      return (fulfillmentRatio > 1) ? 1 : fulfillmentRatio;
-    }.property('alliance', 'progress.fulfillment_count', 'AWE.GS.game.roundInfo.regions_count', 'victoryType').cacheable(),
+    }.property('alliance', 'alliance.victory_progresses.content', 'victoryType').cacheable(),
     
     requiredRegions: function() {
       var allRegions = AWE.GS.game.roundInfo.get('regions_count');
@@ -66,35 +54,58 @@ AWE.UI.Ember = (function(module) {
       return Math.ceil(allRegions * reqRegionsRatio);
     }.property('victoryType.condition.required_regions_ratio', 'AWE.GS.game.roundInfo.regions_count', 'victoryType').cacheable(),
     
-    fulfillmentDurationRatio: function() {
-      var firstFulfilledAt = this.getPath('progress.first_fulfilled_at');
-      var reqDuration = this.getPath('victoryType.condition.duration')
-      if (firstFulfilledAt != null) {
-        var duration = (new Date().getTime() - Date.parseISODate(firstFulfilledAt).getTime())/(24 * 3600 * 1000);
-        return 1.0 * duration / reqDuration;
-      }
-      else {
-        return 0;
-      }
-    }.property('progress.first_fulfilled_at', 'victoryType').cacheable(),
-    
     fulfillmentPercentage: function() {
-      if (this.get('fulfillmentRatio') < 1) {
-        return Math.floor(this.get('fulfillmentRatio') * 100) + '%';
+      if (this.getPath('progress.fulfillmentRatio') < 1) {
+        return Math.floor(this.getPath('progress.fulfillmentRatio') * 100) + '%';
       }
       else {
-        return Math.floor(25 * (1 - this.get('fulfillmentDurationRatio'))) + '%';
+        return Math.floor(25 * (1 - this.getPath('progress.fulfillmentDurationRatio'))) + '%';
       }
-    }.property('alliance', 'fulfillmentRatio', 'fulfillmentDurationRatio').cacheable(),
+    }.property('alliance', 'progress.fulfillmentRatio', 'progress.fulfillmentDurationRatio').cacheable(),
     
-    daysRemaining: function() {
-      var reqDuration = this.getPath('victoryType.condition.duration');
-      return AWE.UI.Util.round(reqDuration * (1 - this.get('fulfillmentDurationRatio')));
-    }.property('victoryType', 'fulfillmentDurationRatio').cacheable(),
+    allianceFirst: 'alliance',
+    allianceSecond: 'alliance',
+    allianceThird: 'alliance',
+  });
+  
+  module.AllianceVictoryProgressOtherAllianceView = Ember.View.extend({
+    templateName: "alliance-victory-progress-other-alliance-view",
     
-    endDate: function() {
-      return this.getPath('progress.first_fulfilled_at');
-    }.property('progress.first_fulfilled_at').cacheable(),
+    alliance:     null,
+    controller:   null,
+    
+    pos: 1,
+    
+    progress: function() {
+      var progresses = this.getPath('alliance.victory_progresses.content');
+      if (progresses != null) {
+        for (var i = 0; i < progresses.length; i++) {
+          var progress = progresses[i];
+          if (progress['victory_type'] === this.getPath('parentView.victoryType.id')) {
+            return progress;
+          }
+        }
+      }
+      log('ERROR: no victory progress found');
+      return null;
+    }.property('alliance', 'alliance.victory_progresses.content').cacheable(),
+    
+    marginTop: function() {
+      return (this.get('pos') - 1) * 12;
+    }.property('pos').cacheable(),
+    
+    height: function() {
+      return this.get('pos') * 12 + 1;
+    }.property('pos').cacheable(),
+    
+    position: function() {
+      if (this.getPath('progress.fulfillmentRatio') < 1) {
+        return Math.floor(this.getPath('progress.fulfillmentRatio') * 100) + '%';
+      }
+      else {
+        return Math.floor(25 * (1 - this.getPath('progress.fulfillmentDurationRatio'))) + '%';
+      }
+    }.property('alliance', 'progress.fulfillmentRatio', 'progress.fulfillmentDurationRatio').cacheable(),
   });
   
   return module;

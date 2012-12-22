@@ -81,6 +81,39 @@ AWE.GS = (function(module) {
     victoryType: function() {
       return AWE.GS.RulesManager.getRules().get('victory_types')[this.get('victory_type')];
     }.property('victory_type').cacheable(),
+    
+    fulfilled: function() {
+      return this.get('fulfillmentRatio') >= 1;
+    }.property('fulfillmentRatio').cacheable(),
+    
+    fulfillmentRatio: function() {
+      var allRegions = AWE.GS.game.roundInfo.get('regions_count');
+      var allianceRegions = this.get('fulfillment_count');
+      var reqRegionsRatio = this.getPath('victoryType.condition.required_regions_ratio');
+      var fulfillmentRatio = 1.0 * (allianceRegions / allRegions) / reqRegionsRatio;
+      return (fulfillmentRatio > 1) ? 1 : fulfillmentRatio;
+    }.property('alliance_id', 'fulfillment_count', 'AWE.GS.game.roundInfo.regions_count', 'victory_type').cacheable(),
+    
+    fulfillmentDurationRatio: function() {
+      var firstFulfilledAt = this.get('first_fulfilled_at');
+      var reqDuration = this.getPath('victoryType.condition.duration')
+      if (firstFulfilledAt != null) {
+        var duration = (new Date().getTime() - Date.parseISODate(firstFulfilledAt).getTime())/(24 * 3600 * 1000);
+        return 1.0 * duration / reqDuration;
+      }
+      else {
+        return 0;
+      }
+    }.property('alliance_id', 'first_fulfilled_at', 'victory_type').cacheable(),
+    
+    daysRemaining: function() {
+      var reqDuration = this.getPath('victoryType.condition.duration');
+      return AWE.UI.Util.round(reqDuration * (1 - this.get('fulfillmentDurationRatio')));
+    }.property('victoryType', 'fulfillmentDurationRatio').cacheable(),
+    
+    endDate: function() {
+      return this.get('first_fulfilled_at');
+    }.property('first_fulfilled_at').cacheable(),
   });    
 
     
