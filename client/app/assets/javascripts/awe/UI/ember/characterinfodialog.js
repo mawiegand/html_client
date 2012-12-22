@@ -19,6 +19,33 @@ AWE.UI.Ember = (function(module) {
     historyEvents: null,
     
     loadingHistory: false,
+    updatingLikes: false,
+    
+    ownResourcePool: false,
+    
+    init: function() {
+      this._super();     
+      this.setAndUpdateCharacter();
+      this.setAndUpdateHistory();
+      this.setAndUpdateAlliance(); 
+      this.setAndUpdateHomeSettlement(); 
+
+      this.set('ownResourcePool', AWE.GS.ResourcePoolManager.getResourcePool());     
+    },    
+    
+    displayLikeSystemButtons: function() {
+      return AWE.GS.CharacterManager.getCurrentCharacter() !== this.get('character');
+    }.property('character'),
+	
+    likeAmountText: function() {
+        var amount = Math.floor(this.getPath('ownResourcePool.like_amount') || 0);
+        return "Noch " + amount + " Likes zu vergeben";
+    }.property('ownResourcePool.like_amount'),
+    
+    dislikeAmountText: function() {
+      var amount = Math.floor(this.getPath('ownResourcePool.dislike_amount') || 0);
+      return "Noch " + amount + " Dislikes zu vergeben";
+    }.property('ownResourcePool.dislike_amount'),
     
     setAndUpdateCharacter: function() {
       var characterId = this.get('characterId');
@@ -86,13 +113,7 @@ AWE.UI.Ember = (function(module) {
       this.setAndUpdateHomeSettlement();
     }.observes('character.base_location_id'),        
     
-    init: function() {
-      this._super();     
-      this.setAndUpdateCharacter();
-      this.setAndUpdateHistory();
-      this.setAndUpdateAlliance(); 
-      this.setAndUpdateHomeSettlement(); 
-    },
+
     
     okClicked: function() {
       this.destroy();
@@ -104,8 +125,43 @@ AWE.UI.Ember = (function(module) {
       if (!characterId) {
         return ;
       }
-      AWE.Action.Fundamental.createSendLikeAction(characterId).send(function(status, data){
-        
+      this.set('updatingLikes', true);
+      AWE.Action.Fundamental.createSendLikeAction(characterId).send(function(status, data) {
+        AWE.GS.CharacterManager.updateCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {
+          self.set('updatingLikes', false);
+        });
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+          AWE.GS.ResourcePoolManager.updateResourcePool(); // trigger immediately to update mouse-over          
+        }
+        else if(status === AWE.Net.CONFLICT)
+        {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'already-liked-info',
+            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
+        else if (status === AWE.Net.NOT_FOUND) {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'not-enough-like-amount-info',
+            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
+        else // handle unexpected error
+        {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
       });
     },
     
@@ -115,11 +171,46 @@ AWE.UI.Ember = (function(module) {
       if (!characterId) {
         return ;
       }
-      AWE.Action.Fundamental.createSendDislikeAction(characterId).send(function(status, data){
-        
+      this.set('updatingLikes', true);
+      AWE.Action.Fundamental.createSendDislikeAction(characterId).send(function(status, data) {
+        AWE.GS.CharacterManager.updateCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {
+          self.set('updatingLikes', false);
+        });
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+          AWE.GS.ResourcePoolManager.updateResourcePool(); // trigger immediately to update mouse-over          
+        }
+        else if(status === AWE.Net.CONFLICT)
+        {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'already-liked-info',
+            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
+        else if (status === AWE.Net.NOT_FOUND) {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'not-enough-dislike-amount-info',
+            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
+        else // handle unexpected error
+        {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('likesystem.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
       });
     },
-	
+    
     sendMessageClicked: function() {
       var character = this.get('character')
       if (!character) {

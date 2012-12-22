@@ -121,6 +121,13 @@ Ember.registerBoundHelper("formatNumber", function(number, options) {
   // TODO add option to append '0's to fill maxPlaces
 });
 
+Ember.registerBoundHelper("formatNumberFloor", function(number, options) {
+  if (number === undefined || number === null) {
+    return "" ;
+  }
+  return Math.floor(number);
+});
+
 Ember.registerBoundHelper("formatAsPercent", function(number, options) {
   var maxPlaces = options.maxPlaces || 0;
   if (number === undefined || number === null) {
