@@ -29,9 +29,27 @@
         {{/if}}
       </p>
       
-      {{#if AWE.Config.LIKE_ENABLED}}
-        <p><b>{{character.received_likes_count}} Likes</b> <a href="#" {{action "sendLike"}}>sende Like</a> &nbsp;
-           <b>{{character.received_dislikes_count}} Dislikes</b> <a href="#" {{action "sendDislike"}}>sende Dislike</a></p>
+      {{#if AWE.Config.LIKE_ENABLED}} 
+        <p>
+           {{character.received_likes_count}}
+           <b> Likes</b>
+           {{#if displayLikeSystemButtons}}
+             {{#if updatingLikes }}
+               {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+             {{else}}
+               <a href="#" {{action "sendLike"}} {{bindAttr title="likeAmountText"}}>sende Like</a>
+             {{/if}}
+           {{/if}} &nbsp;
+           {{character.received_dislikes_count}}
+           <b> Dislikes</b>
+           {{#if displayLikeSystemButtons}} 
+             {{#if updatingLikes }}
+               {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+             {{else}}
+               <a href="#" {{action "sendDislike"}} {{bindAttr title="dislikeAmountText"}}>sende Dislike</a>
+             {{/if}}
+           {{/if}}
+        </p>
       {{/if}}
       
       <p><b>{{t profile.history}}:</b><br />
@@ -54,4 +72,19 @@
       {{/if}}   
     </div>
   </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="already-liked-info">
+  <div class="advisor girl"></div>
+  <p>{{t likesystem.alreadyLikedInfo }}</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="not-enough-like-amount-info">
+  <div class="advisor girl"></div>
+  <p>{{t likesystem.notEnoughLikeAmount }}</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="not-enough-dislike-amount-info">
+  <div class="advisor girl"></div>
+  <p>{{t likesystem.notEnoughDislikeAmount }}</p>
 </script>

@@ -67,13 +67,15 @@
         <table>
           <tr>
             <td>Likes verfügbar</td>
-            <td class="number">{{formatNumber pool.like_amount maxPlaces="0"}}</td>
+            <td class="number">{{formatNumberFloor pool.like_amount}}</td>
           </tr>
           <tr>
             <td>Dislikes verfügbar</td>
-            <td class="number">{{formatNumber pool.dislike_amount maxPlaces="0"}}</td>
+            <td class="number">{{formatNumberFloor pool.dislike_amount}}</td>
           </tr>
         </table>
+        <p>Es steht nur eine begrenzte Menge von Likes und Dislikes zur Verfügung.
+           Nach dem Gebrauch regeneriert sich der Vorrat langsam.</p>
       {{/if}}
       
       <a class="icon-button ok-button" href="#" {{action "okClicked"}}>{{t general.ok}}</a>     
