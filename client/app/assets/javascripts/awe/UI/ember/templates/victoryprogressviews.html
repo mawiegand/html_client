@@ -43,24 +43,23 @@
         </div>
       </div>
     {{/if}}
-    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView allianceBinding="alliance" controllerBinding="controller" pos=1}}
-    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView allianceBinding="alliance" controllerBinding="controller" pos=2}}
-    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView allianceBinding="alliance" controllerBinding="controller" pos=3}}
-    
+    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView progressBinding="progress.progressLeaderFirst"  controllerBinding="controller"}}
+    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView progressBinding="progress.progressLeaderSecond" controllerBinding="controller"}}
+    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView progressBinding="progress.progressLeaderThird"  controllerBinding="controller"}}
   </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-victory-progress-other-alliance-view">
     {{#if progress.fulfilled}}
-    <div style="position:absolute; top: 20px; right: {{unbound position}}; width: 200px; height: {{unbound height}}px; margin-top: 0; border-right: 1px solid #888; margin-right: -1px; text-align:right; font-size: 11px; color: #888;">
-      <div style="height: 11px; margin-top: {{unbound marginTop}}px; padding-right: 3px;">
-        {{pos}}. {{alliance.tag}} ({{daysRemaining}}{{t alliance.progress.remainingDays}})
+    <div {{bindAttr style="styleFulfilled1" }}>
+      <div {{bindAttr style="styleFulfilled2" }}>
+        {{progress.pos}}. {{progress.alliance_name}} ({{progress.daysRemaining}}{{t alliance.progress.remainingDays}})
       </div>
     </div>
     {{else}}
-    <div style="position:absolute; top: 20px; left: {{unbound position}}; width: 200px; height: {{unbound height}}px; margin-top: 0; border-left: 1px solid #888; margin-left: -1px; font-size: 11px; color: #888;">
-      <div style="height: 11px; margin-top: {{unbound marginTop}}px; padding-right: 3px;">
-        {{pos}}. {{alliance.tag}} ({{progress.fulfillment_count}})
+    <div {{bindAttr style="styleNotFulfilled1" }}>
+      <div {{bindAttr style="styleNotFulfilled2" }}>
+        {{progress.pos}}. {{progress.alliance_name}} ({{progress.fulfillment_count}}) {{position}} {{height}} {{marginTop}}
       </div>
     </div>
     {{/if}}

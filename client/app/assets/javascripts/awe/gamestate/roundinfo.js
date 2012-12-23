@@ -9,6 +9,7 @@ AWE.GS = (function(module) {
   
   module.game = Ember.Object.create({
     roundInfo: null,
+    victoryProgressLeaders: null,
   });
     
   // ///////////////////////////////////////////////////////////////////////
