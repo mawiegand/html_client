@@ -27,19 +27,19 @@ AWE.GS = (function(module) {
     
     ownBattle: function() {
       var own = false;
-      this.get('participants').forEach(function(participant) {
-        if (participant && participant.getPath('charcter_id') === AWE.GS.CharacterManager.getCurrentCharacter().getId()) {
+      this.getPath('participants.content').forEach(function(participant) {
+        if (participant && participant.get('character_id') === AWE.GS.CharacterManager.getCurrentCharacter().getId()) {
           own = true;
         };        
       })
       return own;
-    }.property('participants', 'participants.length', 'updated_at').cacheable(),
+    }.property('participants', 'participants.content.length', 'updated_at').cacheable(),
     
     ratio: function(){
       log('RATIO RECALC');
       var ownStrength = 0;
       this.get('participantsOwnFaction').forEach(function(participant) {
-        ownStrength += participant.getPath('army.strength') || 0;
+        ownStrength += participant.getPath('army.strength') || 0;
       });
       var otherStrength = 0;
       this.get('participantsOtherFaction').forEach(function(participant) {
