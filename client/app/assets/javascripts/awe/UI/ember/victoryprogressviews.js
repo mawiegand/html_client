@@ -103,11 +103,11 @@ AWE.UI.Ember = (function(module) {
     }.property('position', 'height').cacheable(),
     
     styleFulfilled2: function() {
-      return "height: 11px; margin-top: " + this.get('marginTop') + "px; padding-left: 3px;";
+      return "height: 11px; margin-top: " + this.get('marginTop') + "px; padding-right: 3px;";
     }.property('marginTop').cacheable(),
     
     styleNotFulfilled2: function() {
-      return "height: 11px; margin-top: " + this.get('marginTop') + "px; padding-right: 3px;";
+      return "height: 11px; margin-top: " + this.get('marginTop') + "px; padding-left: 3px;";
     }.property('marginTop').cacheable(),
   });
   
