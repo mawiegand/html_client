@@ -22,50 +22,58 @@
           <div class="battle-ratio-right-text">{{t battle.details.otherFaction}}</div>
         </div>
 
-        <div class="participants-left">
-          <div class="participant header">
-            <div class="participant-name">{{t battle.details.participants.name}}</div>
-            <div class="participant-owner">{{t battle.details.participants.owner}}</div>
-            <div class="participant-size">{{t army.details.size}}</div>
-            <div class="participant-strength">{{t battle.details.participants.strength}}</div>
-            <div class="participant-exp">{{t army.details.rank}}</div>
+        <table class="participant-table">
+          <tr>
+            <th class="participant-name left">{{t battle.details.participants.name}}</th>
+            <th class="participant-owner">{{t battle.details.participants.owner}}</th>
+            <th class="participant-size">{{t army.details.size}}</th>
+            <th class="participant-strength">{{t battle.details.participants.strength}}</th>
+            <th class="participant-exp right-line">{{t army.details.rank}}</th>
 {{#if retreat_ausblenden_hotfix }}  
-            <div class="participant-retreat">{{t battle.details.participants.retreat}}</div>
+            <th class="participant-retreat">{{t battle.details.participants.retreat}}</th>
 {{/if}}
-          </div>
-          {{#each battle.participantsOwnFaction}}
-            {{#if disbanded}}
-              <div><span title="{{t battle.details.participants.armyDisbandedDescription}}">{{t battle.details.participants.armyDisbanded}}</span></div>
-            {{else}}
-              {{view AWE.UI.Ember.BattleParticipantView participantBinding="this" armyBinding="army" classNames="participant"}}
-            {{/if}}
-          {{/each}}
-          
-          <p>Verlorene Einheiten: {{#if ownFaction.total_casualties}}{{ownFaction.total_casualties}}{{else}}-{{/if}}</p>
-        </div>
-      
-        <div class="participants-right">
-          <div class="participant header">
-            <div class="participant-name">{{t battle.details.participants.name}}</div>
-            <div class="participant-owner">{{t battle.details.participants.owner}}</div>
-            <div class="participant-size">{{t army.details.size}}</div>
-            <div class="participant-strength">{{t battle.details.participants.strength}}</div>
-            <div class="participant-exp">{{t army.details.rank}}</div>
-{{#if retreat_ausblenden_hotfix }}  
-            <div class="participant-retreat">{{t battle.details.participants.retreat}}</div>
-{{/if}}
-          </div>
-          {{#each battle.participantsOtherFaction}}
-            {{#if disbanded}}
-              <div><span title="{{t battle.details.participants.armyDisbandedDescription}}">{{t battle.details.participants.armyDisbanded}}</span></div>
-            {{else}}
-              {{view AWE.UI.Ember.BattleParticipantView participantBinding="this" armyBinding="army" classNames="participant"}}
-            {{/if}}
-          {{/each}}
 
-          <p>Verlorene Einheiten: {{#if otherFaction.total_casualties}}{{otherFaction.total_casualties}}{{else}}-{{/if}}</p>
-        </div>
-        
+            
+            <th class="participant-name">{{t battle.details.participants.name}}</th>
+            <th class="participant-owner">{{t battle.details.participants.owner}}</th>
+            <th class="participant-size">{{t army.details.size}}</th>
+            <th class="participant-strength">{{t battle.details.participants.strength}}</th>
+            <th class="participant-exp right">{{t army.details.rank}}</th>
+          </tr>
+          <tr>
+            <td colspan="5" class="right-line inner-table">
+              <table class="participant-inner-table">
+                {{#each battle.participantsOwnFaction}}
+                <tr>                    
+                  {{#if disbanded}}
+                    <td colspan="5"><span title="{{t battle.details.participants.armyDisbandedDescription}}">{{t battle.details.participants.armyDisbanded}}</span></td>
+                  {{else}}
+                    {{view AWE.UI.Ember.BattleParticipantView participantBinding="this" armyBinding="army" classNames="participant"}}
+                  {{/if}}
+                </tr>
+                {{/each}}
+              </table>
+            </td>
+            <td colspan="5" class="inner-table">
+              <table class="participant-inner-table">
+                {{#each battle.participantsOtherFaction}}
+                <tr>                    
+                  {{#if disbanded}}
+                    <td colspan="5"><span title="{{t battle.details.participants.armyDisbandedDescription}}">{{t battle.details.participants.armyDisbanded}}</span></td>
+                  {{else}}
+                    {{view AWE.UI.Ember.BattleParticipantView participantBinding="this" armyBinding="army" classNames="participant"}}
+                  {{/if}}
+                </tr>
+                {{/each}}
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="5" class="right-line">Verlorene Einheiten: {{#if ownFaction.total_casualties}}{{ownFaction.total_casualties}}{{else}}-{{/if}}</td>
+            <td colspan="5">Verlorene Einheiten: {{#if otherFaction.total_casualties}}{{otherFaction.total_casualties}}{{else}}-{{/if}}</td>
+          </tr>
+        </table>
+
         {{#if battle.lastRound}}
         <div class="battle-time">{{t battle.details.lastRound}}: {{formatTime battle.lastRound.executed_at}} | {{t battle.details.nextRound}}: {{formatTime battle.next_round_at}}</div>
         {{else}}
@@ -78,17 +86,20 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="battle-participant-view">
-      <div class="participant-name"><a href="#" {{action "armyLinkPressed"}}>{{army.name}}</a></div>
+      <td class="participant-name"><a href="#" {{action "armyLinkPressed"}}>{{army.name}}</a></td>
+      <td class="participant-owner">
       {{#if army.npc}}
-        <div class="participant-owner">{{army.owner_name}}{{#if army.alliance_tag}} | {{army.alliance_tag}}{{/if}}</div> 
+        {{army.owner_name}}{{#if army.alliance_tag}} | {{army.alliance_tag}}{{/if}} 
       {{else}}
-        <div class="participant-owner">{{view AWE.UI.Ember.LinkedCharacterView armyBinding="army"}}</div>
+        {{view AWE.UI.Ember.LinkedCharacterView armyBinding="army"}}
       {{/if}}
-      <div class="participant-size">{{army.size_present}}</div>
-      <div class="participant-strength">{{army.strength}}</div>
-      <div class="participant-exp">{{army.rankToDisplay}}</div>
-      <div class="participant-retreat">
+      </td>
+      <td class="participant-size">{{army.size_present}}</td>
+      <td class="participant-strength">{{army.strength}}</td>
+      <td class="participant-exp">{{army.rankToDisplay}}</td>
+      
 {{#if retreat_ausblenden_hotfix }}  
+      <div class="participant-retreat">
         {{#if participant.isOwn }}
           {{#if army.battle_retreat }}
             <a href="#" {{action "cancelRetreatPressed" target="parentView"}}>cancel</a>  
@@ -102,8 +113,9 @@
             {{t general.no}}
           {{/if}}
         {{/if}}
-{{/if}}
       </div>
+{{/if}}
+
 </script>
 
 <script type="text/x-handlebars" data-template-name="attack-dialog">
