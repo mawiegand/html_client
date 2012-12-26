@@ -47,7 +47,7 @@ AWE.GS = (function(module) {
       });
       log('NEW RATIO', (ownStrength + otherStrength > 0) ? ownStrength / (ownStrength + otherStrength) : 0.5, this.get('participantsOwnFaction'));
       return (ownStrength + otherStrength > 0) ? ownStrength / (ownStrength + otherStrength) : 0.5;
-    }.property('participantsOwnFaction.@each.strength', 'participantsOtherFaction.@each.strength').cacheable(),
+    }.property('participantsOwnFaction', 'participantsOtherFaction', 'participantsOwnFaction.@each.strength', 'participantsOtherFaction.@each.strength').cacheable(),
     
     ownFactionId: function() {
       var factionId;
@@ -61,7 +61,7 @@ AWE.GS = (function(module) {
         factionId = factions.getPath('firstObject.id') || null;
       }
       return factionId; 
-    }.property('ownBattle', 'ownParticipants.firstObject.faction_id', 'factions.@each.id').cacheable(),
+    }.property('ownBattle', 'ownParticipants', 'ownParticipants.firstObject.faction_id', 'factions.@each.id').cacheable(),
     
     /** returns the faction, that is identified by ownFactionId as the own faction. */
     ownFaction: function() {
@@ -90,22 +90,21 @@ AWE.GS = (function(module) {
     
     ownParticipants: function(){
       var self = this;
-      return this.get('participants').filter(function(participant) {
+      return this.getPath('participants.content').filter(function(participant) {
         return participant && participant.getPath('army.owner_id') === AWE.GS.CharacterManager.getCurrentCharacter().getId(); 
       });
-    }.property('participants', 'participants.content').cacheable(),
+    }.property('participants', 'participants.content', 'ownFactionId').cacheable(),
     
     participantsOwnFaction: function() {
       var self = this;
-      log('PARTICIPANTS OWN FACTION', this.get('participants'), this.getPath('participants.length'), this.getPath('participants.content'));
-      return this.get('participants').filter(function(participant) {
+      return this.getPath('participants.content').filter(function(participant) {
         return participant && participant.get('faction_id') === self.get('ownFactionId');        
       });
-    }.property('participants', 'participants.content.length', 'ownFactionId').cacheable(),
+    }.property('participants', 'participants.content', 'ownFactionId').cacheable(),
     
     participantsOtherFaction: function(){
       var self = this;
-      return this.get('participants').filter(function(participant) {
+      return this.getPath('participants.content').filter(function(participant) {
         return participant && participant.get('faction_id') !== self.get('ownFactionId');        
       })
     }.property('participants', 'participants.content', 'ownFactionId').cacheable(),
