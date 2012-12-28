@@ -266,16 +266,21 @@ AWE.Controller = (function(module) {
     
     that.rankingButtonClicked = function() {
       
-      var characterId = AWE.GS.player.getPath('currentCharacter.id') || 0;
-      
-      log('Ranking button clicked.');
-      
-      $('<form style="display:none;" action="' + AWE.Config.RANKING_SERVER_BASE + 
-        (characterId ? '#char'+ characterId : '') + '" method="GET" target="_blank">' +
-        '  <input type="hidden" name="sort"   value="overall" />' +
-        (characterId ? '  <input type="hidden" name="mark" value="' + characterId + '" />' : '') +
-        '</form>').appendTo('body').submit().remove();      
-      
+      // var characterId = AWE.GS.player.getPath('currentCharacter.id') || 0;
+//       
+      // log('Ranking button clicked.');
+//       
+      // $('<form style="display:none;" action="' + AWE.Config.CHARACTER_RANKING_SERVER_BASE + 
+        // (characterId ? '#char'+ characterId : '') + '" method="GET" target="_blank">' +
+        // '  <input type="hidden" name="sort"   value="overall" />' +
+        // (characterId ? '  <input type="hidden" name="mark" value="' + characterId + '" />' : '') +
+        // '</form>').appendTo('body').submit().remove();      
+// 
+
+      var dialog = AWE.UI.Ember.RankingView.create({
+        // characterBinding: 'AWE.GS.player.currentCharacter',
+      });
+      this.applicationController.presentModalDialog(dialog);      
     };
         
 

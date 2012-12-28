@@ -7,11 +7,6 @@ var AWE = window.AWE || {};
 
 AWE.GS = (function(module) {
   
-  module.game = Ember.Object.create({
-    roundInfo: null,
-    victoryProgressLeaders: null,
-  });
-    
   // ///////////////////////////////////////////////////////////////////////
   //
   //   ROUND INFO
@@ -46,7 +41,6 @@ AWE.GS = (function(module) {
   
     my.createEntity = function(spec) { return module.RoundInfo.create(spec); }
 
-  
     // public attributes and methods ///////////////////////////////////////
   
     that = module.createEntityManager(my);

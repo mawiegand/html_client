@@ -14,9 +14,18 @@ var AWE = window.AWE || {};
 /** State, manager and helpers for representing the game state in the client. 
  * @namespace
  * @name AWE.GS */
-AWE.GS = (
-  function(module) /** @lends AWE.GS */ {
-  
+AWE.GS = (function(module) /** @lends AWE.GS */ {
+
+  /** ember object for information that is not kept in any entity manager
+   * @name AWE.GS.game */ 
+  module.game = Ember.Object.create({
+    roundInfo: null,
+    victoryProgressLeaders: null,
+    characterRanking: null,
+    allianceRanking: null,
+    fortressRanking: null,
+  });
+    
   /** shortest type of update, just the ID and very basic data
    * @name AWE.GS.ENTITY_UPDATE_TYPE_AGGREGATE */ 
   module.ENTITY_UPDATE_TYPE_AGGREGATE = 0;  

@@ -1,0 +1,43 @@
+<script type="text/x-handlebars" data-template-name="ranking-view">
+  <div class="modal-dialog-background z-layer-3"></div>
+  <div class="center-helper">
+    <div class="modal-dialog-pane z-layer-4 ranking-view">
+      <h1>{{t ranking.header }}</h1>
+      
+      {{view AWE.UI.Ember.RankingTabView }}
+
+      <hr/>
+
+      <div class="icon-button ok-button" {{action "closePressed"}}>{{t general.close}}</div>
+    </div>
+  </div>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="character-ranking-view">
+
+  <p>Character Ranking</p>
+  
+  {{#each characterRankingEntries}}
+    {{#view AWE.UI.Ember.CharacterRankingEntryView entryBinding="this" }}Entry{{/view}}
+  {{/each}}
+
+</script>
+
+<script type="text/x-handlebars" data-template-name="alliance-ranking-view">
+
+  <p>Alliance Ranking</p>
+     
+</script>
+
+<script type="text/x-handlebars" data-template-name="fortress-ranking-view">
+
+  <p>Fortress Ranking</p>
+     
+</script>
+
+<script type="text/x-handlebars" data-template-name="victory-progress-ranking-view">
+
+  <p>Victory Progresses</p>
+     
+</script>
