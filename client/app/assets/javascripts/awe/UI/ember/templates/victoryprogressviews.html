@@ -24,25 +24,43 @@
     </div>
     <div style="position:absolute; top: 0; right: 0; width: 200px; height: 50px; margin-top: -30px; border-right: 1px solid black; margin-right: -1px; padding-right: 3px;">
       <div style="height: 30px; font-size: 14px; text-align: right;">Kriterium gehalten</div>
-    {{#if fulfilled }}
+    {{#if progress.fulfilled }}
       <div style="font-size: 14px; text-align: right;">Sieg am {{formatDatetime endDate}}</div>
     {{else}}
       <div style="font-size: 14px; text-align: right;">Sieg nach {{victoryType.condition.duration}} Tagen</div>
     {{/if}}
     </div>
-    {{#if fulfilled }}
-      <div style="position:absolute; top: 0px; right: {{unbound fulfillmentPercentage}}; width: 200px; height: 60px; margin-top: 0; border-right: 2px solid black; margin-right: -1px; text-align:right;">
-        <div style="height: 20px; margin-top: 40px; padding-right: 3px;">
+    {{#if progress.fulfilled }}
+      <div style="position:absolute; top: 0px; right: {{unbound fulfillmentPercentage}}; width: 200px; height: 80px; margin-top: 0; border-right: 2px solid black; margin-right: -1px; text-align:right;">
+        <div style="height: 20px; margin-top: 60px; padding-right: 3px;">
           <b>{{daysRemaining}} {{t alliance.progress.remainingDays}}</b>
         </div>
       </div>
     {{else}}
-      <div style="position:absolute; top: 0px; left: {{unbound fulfillmentPercentage}}; width: 200px; height: 60px; margin-top: 0; border-left: 2px solid black; margin-left: -1px;">
-        <div style="height: 20px; margin-top: 40px; padding-left: 3px;">
+      <div style="position:absolute; top: 0px; left: {{unbound fulfillmentPercentage}}; width: 200px; height: 80px; margin-top: 0; border-left: 2px solid black; margin-left: -1px;">
+        <div style="height: 20px; margin-top: 60px; padding-left: 3px;">
           <b>{{progress.fulfillment_count}}</b>
         </div>
       </div>
     {{/if}}
+    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView progressBinding="progress.progressLeaderFirst"  controllerBinding="controller"}}
+    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView progressBinding="progress.progressLeaderSecond" controllerBinding="controller"}}
+    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView progressBinding="progress.progressLeaderThird"  controllerBinding="controller"}}
   </div>
-  
+</script>
+
+<script type="text/x-handlebars" data-template-name="alliance-victory-progress-other-alliance-view">
+    {{#if progress.fulfilled}}
+    <div {{bindAttr style="styleFulfilled1" }}>
+      <div {{bindAttr style="styleFulfilled2" }}>
+        {{progress.pos}}. {{progress.alliance_name}} ({{progress.daysRemaining}}{{t alliance.progress.remainingDays}})
+      </div>
+    </div>
+    {{else}}
+    <div {{bindAttr style="styleNotFulfilled1" }}>
+      <div {{bindAttr style="styleNotFulfilled2" }}>
+        {{progress.pos}}. {{progress.alliance_name}} ({{progress.fulfillment_count}})
+      </div>
+    </div>
+    {{/if}}
 </script>
