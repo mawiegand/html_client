@@ -3,32 +3,32 @@
   <h1>{{local building.name}}</h1>
   
   {{#unless building.demolishable}}
-    <p><b>Achtung:</b> Einmal gebaut, kann dieses Gebäude nicht mehr abgerissen werden.</p>
+    <p><b>{{t general.warning}}:</b> {{t building.info.notDemolishable}}</p>
   {{/unless}}
   
   {{local building.flavour}}
   {{local building.description}}
   
-  {{#if building.buyable}}
-    <p>Dieses Gebäude kann durch den Einsatz von Kröten beschleunigt werden.</p>
-  {{/if}}
+  {{#unless building.buyable}}
+    <p>{{t building.info.notBuyable}}</p>
+  {{/unless}}
   
   <table>
     <tr>
-      <th>Level</th>
-      <th>Pop</th>
+      <th>{{t building.level}}</th>
+      <th>{{t building.populationAbbreviation}}</th>
       {{#each parentView.resourceTypes}}
         <th><span {{bindAttr class="symbolic_id :resource-icon"}}>&nbsp;</span></th>
       {{/each}}
-      <th>Bauzeit</th>
+      <th>{{t encyclopedia.buildingTime}}</th>
       {{#if capacity}}
-        <th>Lagerkapazität</th>
+        <th>{{t building.storageCapacity}}</th>
       {{/if}}
       {{#if commandPoints}}
-        <th title="Kommandopunkte">KP</th>
+        <th title="{{t building.commandPoints}}">{{t encyclopedia.commandPointsAbbreviation}}</th>
       {{/if}}
       {{#if production}}
-        <th>Produktion</th>
+        <th>{{t building.production}}</th>
       {{/if}}
       {{#if experienceProduction}}
         <th>XP-Produktion</th>
@@ -88,14 +88,14 @@
   {{local unit.description}}
 
   {{#if unit.trainable}}
-    Produktionszeit: {{formatDuration unit.production_time}}<br/>
+    {{t encyclopedia.productionTime}}: {{formatDuration unit.production_time}}<br/>
   {{else}}
-    Kann nicht von Spielern trainiert werden.<br/>
+    {{t encyclopedia.cannotBeTrained}}<br/>
   {{/if}}
-  Lebenspunkte: {{unit.hitpoints}}<br/>
-  Angriff: {{unit.attack}}<br/>
-  Verteidigung: {{unit.armor}}<br/>
-  Kritischer Schaden: {{unit.critical_hit_damage}} (Chance: {{unit.critical_hit_chance}})
+  {{t encyclopedia.hitpoints}}: {{unit.hitpoints}}<br/>
+  {{t encyclopedia.attack}}: {{unit.attack}}<br/>
+  {{t encyclopedia.defense}}: {{unit.armor}}<br/>
+  {{t encyclopedia.criticalDamage}}: {{unit.critical_hit_damage}} ({{t encyclopedia.criticalChance}}: {{unit.critical_hit_chance}})
 </script>
 
 
@@ -106,15 +106,15 @@
 
   <ul>
     {{#if resource.taxable}}
-      <li>Auf diesen Rohstoff werden Steuern erhoben.</li>
+      <li>{{t encyclopedia.resource.taxable}}</li>
     {{else}}
-      <li>Auf diesen Rohstoff werden <b>keine</b> Steuern erhoben.</li>
+      <li>{{t encyclopedia.resource.notTaxable1}} <b>{{t encyclopedia.resource.notTaxable2}}</b> {{t encyclopedia.resource.notTaxable3}}.</li>
     {{/if}}
 
     {{#if resource.stealable}}
-      <li>Dieser Rohstoff kann geklaut und gehandelt werden.</li>
+      <li>{{t encyclopedia.resource.stealable}}</li>
     {{else}}
-      <li>Dieser Rohstoff kann nicht geklaut oder gehandelt werden.</li>
+      <li>{{t encyclopedia.resource.notStealable}}</li>
     {{/if}} 
   </ul>
 </script>
@@ -125,7 +125,7 @@
     <div class="modal-dialog-pane z-layer-4 encyclopedia-view">
       
       <div class="overview">
-        <a href="#" class="enc-category" {{action toggleResources}}><b>Rohstoffe</b></a><br/>
+        <a href="#" class="enc-category" {{action toggleResources}}><b>{{t encyclopedia.resources}}</b></a><br/>
         {{#if displayResources}}
           {{#each resourceTypes }}
             {{#view AWE.UI.Ember.ResourceButton resourceTypeBinding="this" }}
@@ -134,7 +134,7 @@
           {{/each}}
         {{/if}}
         
-        <a href="#" class="enc-category" {{action toggleBuildings}}><b>Gebäude</b></a><br/>
+        <a href="#" class="enc-category" {{action toggleBuildings}}><b>{{t encyclopedia.buildings}}</b></a><br/>
         {{#if displayBuildings}}
           {{#each buildingTypes }}
             {{#unless hidden}}
@@ -145,7 +145,7 @@
           {{/each}}
         {{/if}}
         
-        <a href="#" class="enc-category" {{action toggleUnits}}><b>Einheiten</b></a><br/>
+        <a href="#" class="enc-category" {{action toggleUnits}}><b>{{t encyclopedia.units}}</b></a><br/>
         {{#if displayUnits}}
           {{#each unitTypes }}
             {{#view AWE.UI.Ember.UnitButton unitTypeBinding="this" }}
@@ -169,7 +169,7 @@
         {{/if}}
       </div>
       
-      <div class="icon-button ok-button" {{action "okPressed"}}>Schließen</div>
+      <div class="icon-button ok-button" {{action "okPressed"}}>{{t general.close}}</div>
       
     </div>
   </div>

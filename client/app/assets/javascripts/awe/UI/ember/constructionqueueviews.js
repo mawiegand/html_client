@@ -41,9 +41,9 @@ AWE.UI.Ember = (function(module) {
     title: function() {
       var active = this.get('active');
       var first = this.get('first');
-      var hint = first ? 'Wird gerade gebaut.' : 'Wartet darauf, bis es an der Reihe ist.';
+      var hint = first ? AWE.I18n.lookupTranslation('settlement.construction.beingBuilt') : AWE.I18n.lookupTranslation('settlement.construction.waitingToBeBuilt');
       if (first && !active) {
-        hint = 'Kann derzeit nicht gebaut werden. Wird automatisch begonnen, sobald die nötigen Rohstoffe und Bauslots vorhanden sind.'
+        hint = AWE.I18n.lookupTranslation('settlement.construction.cannotBeBuilt')
       }
       return hint;
     }.property('active', 'first'),

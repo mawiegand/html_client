@@ -101,6 +101,10 @@ AWE.Map = (function(module) {
         return _allianceTag;
       }
     }
+
+    that.isOwn = function() {
+      return _ownerId === AWE.GS.CharacterManager.getCurrentCharacter().id;
+    }
         
     /** returns the id of the alliance owning the region (owner of fortress). 0 for 
      * no alliance. */

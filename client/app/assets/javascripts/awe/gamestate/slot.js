@@ -111,6 +111,14 @@ AWE.GS = (function(module) {
 		  return (this.get('levelAfterJobs') || 0) +1;
 		}.property('levelAfterJobs', 'level').cacheable(),
 
+    experienceOrResourceProduction: function() {
+      return (AWE.Ext.isArray(this.get('productions')) && this.get('productions').length > 0) || this.get('experienceProduction') != null;
+    }.property('productions', 'experienceProduction').cacheable(),
+
+    experienceOrResourceProductionNextLevel: function() {
+      return (AWE.Ext.isArray(this.get('productionsNextLevel')) && this.get('productionsNextLevel').length > 0) || this.get('experienceProductionNextLevel') != null;
+    }.property('productionsNextLevel', 'experienceProductionNextLevel').cacheable(),
+
 		productions: function() {
 		  var production            = this.getPath('buildingType.production');
 		  var settlementProductions = this.getPath('slot.settlement.resourceProductions');
@@ -125,6 +133,17 @@ AWE.GS = (function(module) {
 		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, nextLevel, settlementProductions) : null;
 		}.property('nextLevel', 'buildingType').cacheable(),
 		
+		experienceProduction: function() {
+		  var experienceProduction = this.getPath('buildingType.experience_production');
+		  var level                = this.get('level');
+		  return experienceProduction ? AWE.GS.Util.parseAndEval(experienceProduction, level) : null;
+		}.property('level', 'buildingType').cacheable(),
+
+		experienceProductionNextLevel: function() {
+      var experienceProduction = this.getPath('buildingType.experience_production');
+		  var nextLevel            = this.get('nextLevel');
+      return experienceProduction ? AWE.GS.Util.parseAndEval(experienceProduction, nextLevel) : null;
+		}.property('nextLevel', 'buildingType').cacheable(),		
 
 		capacity: function() {
 		  var capacity = this.getPath('buildingType.capacity');

@@ -1,10 +1,10 @@
 <script type="text/x-handlebars" data-template-name="player-to-player-trade-view">
   
-  <h2>Rohstoffe versenden</h2>
+  <h2>{{t settlement.trade.sendResources}}</h2>
     
-  <p>Handelskarren unterwegs: {{ settlement.trading_carts_used }} / {{ settlement.trading_carts }}</p>
+  <p>{{t settlement.trade.cartsEnRoute}}: {{ settlement.trading_carts_used }} / {{ settlement.trading_carts }}</p>
   
-  <p>Empfänger: {{view Ember.TextField class="text-field" placeholder="Spielername" valueBinding="recipientName"}}</p>
+  <p>{{t settlement.trade.recipient}}: {{view Ember.TextField class="text-field" placeholder="Spielername" valueBinding="recipientName"}}</p>
 
   <p>
     {{#each resources}}
@@ -15,24 +15,24 @@
   {{#if errorMessage}}<p class="red-color"><b>{{errorMessage}}</b></p>{{/if}}
     
   {{#if sending}}
-    <p>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} Aktualisiere...</p>
+    <p>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}</p>
   {{else}}
-    <a href="#" {{bindAttr class=":button inactive impossible"}} {{action "sendPressed"}}>Sende {{numCarts}} Handelskarren</a>
+    <a href="#" {{bindAttr class=":button inactive impossible"}} {{action "sendPressed"}}>{{t settlement.trade.send}} {{numCarts}} {{t building.tradingCarts}}</a>
   {{/if}}
   
   <hr/>
   
-  <h2>Ausgehend</h2>
+  <h2>{{t settlement.trade.enRoute}}</h2>
   <table>
-    <tr><th>Karren</th><th>Ziel</th><th>Ankunftszeit</th></tr>
+    <tr><th>{{t settlement.trade.carts}}</th><th>{{t settlement.trade.destination}}</th><th>{{t settlement.trade.timeOfArrival}}</th></tr>
     {{#each settlement.enumerableOutgoingTradingCartActions}}
       {{view AWE.UI.Ember.TradingCartActionView settlementBinding="view.settlement" tradingCartActionBinding="this"}}
     {{/each}}
   </table>
   
-  <h2>Eingehend</h2>
+  <h2>{{t settlement.trade.inbound}}</h2>
   <table>
-    <tr><th>Karren</th><th>Herkunft</th><th>Ankunftszeit</th></tr>
+    <tr><th>{{t settlement.trade.carts}}</th><th>{{t settlement.trade.origin}}</th><th>{{t settlement.trade.timeOfArrival}}</th></tr>
     {{#each settlement.enumerableIncomingTradingCartActions}}
       {{view AWE.UI.Ember.TradingCartActionView settlementBinding="view.settlement" tradingCartActionBinding="this"}}
     {{/each}}
@@ -55,10 +55,10 @@
     <td>
       {{#if tradingCartAction.returning}}
         {{#if outgoing}}
-          Rückkehr von {{view AWE.UI.Ember.WheelOrValueView valueBinding="targetSettlement.name"}} 
+          {{t settlement.trade.returnFrom}} {{view AWE.UI.Ember.WheelOrValueView valueBinding="targetSettlement.name"}} 
           ({{view AWE.UI.Ember.LinkedCharacterView characterBinding="recipient"}})
         {{else}}
-          Rückkehr nach {{view AWE.UI.Ember.WheelOrValueView valueBinding="startingSettlement.name"}} 
+          {{t settlement.trade.returnTo}} {{view AWE.UI.Ember.WheelOrValueView valueBinding="startingSettlement.name"}} 
           ({{view AWE.UI.Ember.LinkedCharacterView characterBinding="sender"}})
         {{/if}}
       {{else}}
@@ -78,16 +78,16 @@
         {{formatTime tradingCartAction.target_reached_at}}
         {{#if cancelable}}
           {{#if sending}}
-            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} sending...
+            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t settlement.trade.sending}}...
           {{else}}
-            <a href="#" {{action "cancelPressed"}}>abbrechen</a>
+            <a href="#" {{action "cancelPressed"}}>{{t general.cancel}}</a>
           {{/if}}
         {{/if}}
       {{/if}}
     </td>
   </tr>
   <tr>
-    <td></td><td colspan="2">{{#if empty}} <em>leer</em> {{else}} Ladung: {{view Ember.View templateName="resources-amount-view" resourcesBinding="load" classNames="inline"}} {{/if}}</td>
+    <td></td><td colspan="2">{{#if empty}} <em>{{t settlement.trade.empty}}</em> {{else}} {{t settlement.trade.cargo}}: {{view Ember.View templateName="resources-amount-view" resourcesBinding="load" classNames="inline"}} {{/if}}</td>
   </tr>
 </script>
 

@@ -32,9 +32,9 @@
         </div>
         {{#unless army.garrison}}
         <div>
-          Aktionspunkte: {{army.ap_present}} von {{army.ap_max}}.
+          {{t army.details.actionPoints}}: {{army.ap_present}} {{t general.of}} {{army.ap_max}}.
           {{#if nextAPTimeString}} 
-            Nächster Aktionspunkt um {{nextAPTimeString}} Uhr.
+            {{t army.details.nextActionPointAt}} {{nextAPTimeString}} {{t general.oclock}}
           {{/if}}
         </div>
         <div>

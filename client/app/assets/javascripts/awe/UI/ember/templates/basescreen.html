@@ -4,6 +4,7 @@
 <div class="base-screen settlement-screen">
   <div class="base-picture-spacer"></div>
   <div class="base-picture">
+    <div class="base-background-picture"></div>
     {{#if "settlement"}}
       {{#if "haveSlots"}}
         {{view AWE.UI.Ember.BuildingView classNames="wallTop" levelBinding="wallSlot.building.level"}}
@@ -42,8 +43,8 @@
     </div>
 
     {{#if shouldDisplaySettlementSwitch}}
-      <div class="settlement-switch previous"  {{action  nextSettlementPressed target="controller"}}>&lt;</div>
-      <div class="settlement-switch next"      {{action  previousSettlementPressed target="controller"}}>&gt;</div>  
+      <div class="settlement-switch previous"  {{action  nextSettlementPressed target="controller"}}>&nbsp;</div>
+      <div class="settlement-switch next"      {{action  previousSettlementPressed target="controller"}}>&nbsp;</div>  
     {{/if}}
     {{view AWE.UI.Ember.SettlementInfoBoxView classNames="settlement-info-box" settlementBinding="settlement" controller="this"}}
   {{/if}}

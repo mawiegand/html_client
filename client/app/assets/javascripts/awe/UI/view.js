@@ -294,6 +294,9 @@ AWE.UI = (function(module) {
     that.setState = function(controlState) {
       if (my.state != controlState) {
         this.setNeedsUpdate();    // trigger repainting of view
+        if (my.controller && my.controller.setNeedsDisplay) {
+          my.controller.setNeedsDisplay();
+        }
       }
       my.state = controlState;
     }

@@ -46,6 +46,25 @@ Ember.registerBoundHelper("local", function(hash) {
   return AWE.Util.Rules.lookupTranslation(hash); 
 });
 
+/** This helper selects a string according to the present locale from a 
+ * multi-language hash holding translations for different locales. In contrast
+ * to the previous version ("local"), this helper is not bound, thus it
+ * does not update if the argument changes. This helper
+ * is mainly used to select the correct name and description from the rules in
+ * html attributes like title, where binding is not an option.
+ *
+ * Presently, the LOCALE as well as the DEFAULT_LOCALE to fall-back in case
+ * of a missing translation are both set in AWE.Config.  
+ * @name Handlebars.Helper.local
+ */
+Handlebars.registerHelper("unboundLocal", function(path) {
+  var names = Ember.getPath(this, path);
+  if (names === undefined || names === null) {
+    return "" ;
+  }
+  return AWE.Util.Rules.lookupTranslation(names); 
+});
+
 /** Look-up the text for a given path in the translation file of the current
  * LOCALE. Falls-back to the DEFAULT_LOCALE in case the key cannot be found.
  *
@@ -100,6 +119,13 @@ Ember.registerBoundHelper("formatNumber", function(number, options) {
   var fac = Math.pow(10, maxPlaces);
   return maxPlaces == 0 && number < 1.0 && number > 0.01 ? Math.floor(number*100.0) / 100.0 :  Math.floor(number * fac + 0.5) / fac; // TODO: use locale!
   // TODO add option to append '0's to fill maxPlaces
+});
+
+Ember.registerBoundHelper("formatNumberFloor", function(number, options) {
+  if (number === undefined || number === null) {
+    return "" ;
+  }
+  return Math.floor(number);
 });
 
 Ember.registerBoundHelper("formatAsPercent", function(number, options) {

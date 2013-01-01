@@ -15,7 +15,7 @@
                     <div class="duration progress-bar-border">
                       <div class="progress-bar" {{bindAttr style="progressBarWidth"}}>
                         {{#if finished}}
-                          gleich fertig...
+                          {{t settlement.construction.finishing}}...
                         {{else}}
                           {{formatDuration timeRemaining}}
                         {{/if}}
@@ -35,14 +35,14 @@
                     {{ job.parsedFinishingDate }}
                   {{else}}
                     {{#if waitingForResources}}
-                      Mangel!
+                      {{t settlement.construction.insufficentResources}}!
                     {{else}}
                       &nbsp;
                     {{/if}}
                   {{/if}}</p>
                 <p class="queue-job-button finish-button">
                   {{#if isConstructionSpeedupPossible }}
-                    <a {{action "finishJobPressed"}} title="Gib Goldkröten aus, um den Bauauftrag sofort fertig zu stellen. Die Kosten hängen von der verbleibenden Bauzeit ab.">
+                    <a {{action "finishJobPressed"}} title="{{t settlement.construction.cashTooltip}}">
                      {{t settlement.construction.hurry }} {{constructionSpeedupCost timeRemaining}} 
                      <span class="resource-icon {{constructionSpeedupResource timeRemaining}}">&nbsp;</span>
                     </a>
@@ -50,7 +50,7 @@
                 </p>
                 <p class="queue-job-button cancel">    
                   {{#if job.cancelable }}
-                    <a {{action "cancelJobPressed"}}>Abbruch</a>
+                    <a {{action "cancelJobPressed"}}>{{t map.button.cancel}}</a>
                   {{/if}}
                 </p>  
               </div>  

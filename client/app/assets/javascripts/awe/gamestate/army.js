@@ -114,7 +114,7 @@ AWE.GS = (function(module) {
         })
       }
       return participant;
-    }.property('battle.participants.content').cacheable(),
+    }.property('battle_id', 'battle.participants.content').cacheable(),
 
     battle_retreat: false,
     

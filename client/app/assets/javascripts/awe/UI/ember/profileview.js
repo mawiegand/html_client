@@ -78,20 +78,20 @@ AWE.UI.Ember = (function(module) {
      
       this.set('tabViews', [
         { key:   "tab1",
-          title: "Fortschritt", 
+          title: AWE.I18n.lookupTranslation('profile.progressTab'), 
           view:  AWE.UI.Ember.ProfileInfoView.extend({ 
             characterBinding: "parentView.parentView.character", 
             allianceBinding:  "parentView.parentView.alliance", 
           })
         }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
         { key:   "tab2",
-          title: "Anpassung", 
+          title: AWE.I18n.lookupTranslation('profile.customizationTab'), 
           view:  AWE.UI.Ember.CharacterCustomizationView.extend({ 
             characterBinding: "parentView.parentView.character"
           })
         },
         { key:   "tab3",
-          title: "Einstellungen", 
+          title: AWE.I18n.lookupTranslation('profile.optionsTab'), 
           view:  AWE.UI.Ember.SettingsView.extend({ 
             characterBinding: "parentView.parentView.character"
           })
@@ -272,13 +272,35 @@ AWE.UI.Ember = (function(module) {
     templateName: 'character-profile-info-view',
     
     character:           null,
+    historyEvents: null,
+    
+    loadingHistory: false,
     
     showProgressBar: function() {
       var exp = this.getPath('character.exp');
       return exp && exp > 1000; // hack to prevent layout errors. number must go to config
     }.property('character.exp').cacheable(),
     
-        
+    characterObserver: function() {
+      var characterId = this.getPath('character.id') || null;
+      if (characterId && this.getPath('character.name_change_count') > 0) {
+        AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_profile');
+      }       
+      this.setAndUpdateHistory();
+    }.observes('character.id'),
+    
+    setAndUpdateHistory: function() {
+      var characterId = this.getPath('character.id');
+      var self = this;
+      if (!characterId) {
+        return ;
+      }
+      this.set('loadingHistory', true);
+      AWE.GS.HistoryEventManager.updateHistoryEventsOfCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {
+        self.set('loadingHistory', false);
+        self.set('historyEvents', AWE.GS.HistoryEventManager.getHistoryEventsOfCharacter(characterId));
+      });
+    },
   });
   
   module.SettingsView = Ember.View.extend({    
@@ -357,7 +379,7 @@ AWE.UI.Ember = (function(module) {
       
       if (this.get('password') != this.get('passwordConfirmation')) {
         this.set('changingPassword', false);
-        this.set('changePasswordMessage', "The two passwords doesn't match. Try again.");
+        this.set('changePasswordMessage', AWE.I18n.lookupTranslation('profile.customization.errors.changePasswordNoMatch'));
       }
       else {
         var self = this;
@@ -367,17 +389,17 @@ AWE.UI.Ember = (function(module) {
           if (status === AWE.Net.OK) {
             self.set('password', '');
             self.set('passwordConfirmation', '');
-            self.set('changePasswordMessage', "Password changed.")
+            self.set('changePasswordMessage', AWE.I18n.lookupTranslation('profile.customization.changePasswordChanged'))
           }
           else if (status === AWE.Net.CONFLICT) {
             self.set('password', '');
             self.set('passwordConfirmation', '');
-            self.set('changePasswordMessage', "The password doesn't meet the requirements. Please choose a appropriate password.")
+            self.set('changePasswordMessage', AWE.I18n.lookupTranslation('profile.customization.errors.changePasswordInvalid'))
           }
           else {
             self.set('password', '');
             self.set('passwordConfirmation', '');
-            self.set('changePasswordMessage', 'Your password could not be changed for unknown reasons. Please try again later.');
+            self.set('changePasswordMessage', AWE.I18n.lookupTranslation('profile.customization.errors.changePasswordUnknown'));
           }
         });
       }        

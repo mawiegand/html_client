@@ -4,30 +4,23 @@
     <div class="modal-dialog-pane character-progress-dialog-pane">
 
       <div class="advisor girl"></div>
-      <h1>Rangaufstieg!</h1>
+      <h1>{{t profile.rank.progress.dialogHeader}}</h1>
       
       <p class="citation">
-        {{#if character.female}}Halbgöttin,{{else}}Halbgott,{{/if}} 
-        Du bist soeben in einen neuen Rang aufgestiegen und darfst Dich jetzt    
-        <b>{{local character.mundaneTitle.name}}</b> nennen.<br/><br/>
-        Mach weiter so, dann steigst Du Null-Komma-Nix in den Rang          
-        <b>{{local character.nextMundaneTitle.name}}</b> auf.      
+        {{#if character.female}}{{t general.demigoddess}},{{else}}{{t general.demigod}},{{/if}} 
+        {{t profile.rank.progress.flavour1}}    
+        <b>{{local character.mundaneTitle.name}}</b> {{t profile.rank.progress.flavour2}}<br/><br/>
+        {{t profile.rank.progress.flavour3}}          
+        <b>{{local character.nextMundaneTitle.name}}</b> {{t profile.rank.progress.flavour4}}      
       </p>
       
       <br/><br/>
       
       {{view  AWE.UI.Ember.CharacterProgressBarView characterBinding="character"}}
 
-      <p>
-        Du hast genug Erfahrung durch Kämpfen und Bauen gesammelt, um 
-        einen Rang aufzusteigen. 
-        Rangaufstiege versprechend Dir ein höheres Ansehen bei Deinen
-        Mitspielern. Die werden schon ganz neidisch. Außerdem benötigst Du
-        einen höheren Rang, um mehr Festungen und Lagerstätten 
-        kontrollieren zu können.
-      </p>
+      <p>{{t profile.rank.progress.text}}</p>
 
-      <a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>     
+      <a class="icon-button ok-button" href="#" {{action "okClicked"}}>{{t general.ok}}</a>     
     </div>
   </div>
 </script>

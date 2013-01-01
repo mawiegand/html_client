@@ -66,7 +66,7 @@ AWE.Config = (function(module) {
   
   module.DEFAULT_LOCALE           = 'en_US';
   
-  module.SETTLEMENT_DYNAMIC_SLOTS = <%= CLIENT_CONFIG['use_dynamic_construction_lots'] ? 'true' : 'false' %> ;
+  module.SETTLEMENT_DYNAMIC_SLOTS = <%= CLIENT_CONFIG['use_dynamic_construction_slots'] ? 'true' : 'false' %> ;
   
   // access token of Egbert, expires in 100 days.
   module.DEV_ACCESS_TOKEN = "eyJ0b2tlbiI6eyJpZGVudGlmaWVyIjoiZU9tS3ZOa1hTUkxtYlREUSIsInNjb3BlIjpbIjVkZW50aXR5Iiwid2Fja2Fkb28iXSwidGltZXN0YW1wIjoiMjAxMi0wNS0wMlQxNjozMDowMyswMjowMCJ9LCJzaWduYXR1cmUiOiJhZDQ0MzU4NzRmMGFmYTg2N2RlOTAwOTExYTJlMmNlODQzNmNlYTU0In0="
@@ -108,7 +108,7 @@ AWE.Config = (function(module) {
   //frame.width * MAP_REGION_STREETS_WIDTH = offset from the broder away
   module.MAP_LOCATION_SPOT_BORDER_MARGIN = 0.14;
   module.MAP_LOCATION_SPOT_COLOR = "rgba(177, 173, 110, .5)";//"#b1ad6e";//"#EEE894";
-
+ 
   module.MAP_LOCATION_MIN_DETAIL_LEVEL = 2;
   module.MAP_LOCATION_TYPE_CODES = ["empty","fortress","base","outpost"];
   
@@ -138,8 +138,9 @@ AWE.Config = (function(module) {
   module.TUTORIAL_STATE_DELAY_INTERVAL   = 10 * 1000;
   module.TUTORIAL_MAP_QUEST_ID = 11;
   
-  module.CHAT_SHOW    = true;  // switch chat system on / off
+  module.CHAT_SHOW    = true;   // switch chat system on / off
   module.TRADE_ENABLED= true;   // switch trade system on / off
+  module.LIKE_ENABLED = <%= CLIENT_CONFIG['like_system_enabled'] ? 'true' : 'false' %>;  // switch like system on / off
   
   module.BROWSER_CHECK_ENABLED = true;
   module.BROWSER_CHECK_FAILURES_ONLY = false;

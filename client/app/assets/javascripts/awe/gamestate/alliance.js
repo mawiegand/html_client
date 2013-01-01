@@ -27,6 +27,8 @@ AWE.GS = (function(module) {
     locked: false,                  ///< TODO: don't communicate this!
     locked_by: null,
     locked_at: null,
+    
+    victory_progresses: [],
         
     hashableShouts: function() {
       var id = this.get('id');
@@ -62,6 +64,8 @@ AWE.GS = (function(module) {
         
   });     
 
+
+
     
   // ///////////////////////////////////////////////////////////////////////
   //
@@ -81,9 +85,16 @@ AWE.GS = (function(module) {
 
     my = my || {};
       
-    my.createEntity = function() { return module.Alliance.create(); }
 
-  
+    my.createEntity = function(spec) {
+      return module.Alliance.create({
+        victory_progresses: Ember.ArrayProxy.create({          
+          baseTypeName: 'VictoryProgress',
+          content: Ember.A([]),
+        }),
+      });        
+    }
+
     // public attributes and methods ///////////////////////////////////////
   
     that = module.createEntityManager(my);
@@ -109,7 +120,154 @@ AWE.GS = (function(module) {
       
   }());
     
+  // ///////////////////////////////////////////////////////////////////////
+  //
+  //   VICTORY PROGRESS
+  //
+  // ///////////////////////////////////////////////////////////////////////    
+    
+  module.VictoryProgress = module.Entity.extend({
+    typeName: 'VictoryProgress',
+    victory_type: null,
+    alliance_id: null,
+    fulfillment_count: null,
+    first_fulfilled_at: null,
+    
+    victoryType: function() {
+      return AWE.GS.RulesManager.getRules().get('victory_types')[this.get('victory_type')];
+    }.property('victory_type').cacheable(),
+    
+    fulfilled: function() {
+      return this.get('fulfillmentRatio') >= 1;
+    }.property('fulfillmentRatio').cacheable(),
+    
+    fulfillmentRatio: function() {
+      var allRegions = AWE.GS.game.roundInfo.get('regions_count');
+      var allianceRegions = this.get('fulfillment_count');
+      var reqRegionsRatio = this.getPath('victoryType.condition.required_regions_ratio');
+      var fulfillmentRatio = 1.0 * (allianceRegions / allRegions) / reqRegionsRatio;
+      return (fulfillmentRatio > 1) ? 1 : fulfillmentRatio;
+    }.property('alliance_id', 'fulfillment_count', 'AWE.GS.game.roundInfo.regions_count', 'victory_type').cacheable(),
+    
+    fulfillmentDurationRatio: function() {
+      var firstFulfilledAt = this.get('first_fulfilled_at');
+      var reqDuration = this.getPath('victoryType.condition.duration')
+      if (firstFulfilledAt != null) {
+        var duration = (new Date().getTime() - Date.parseISODate(firstFulfilledAt).getTime())/(24 * 3600 * 1000);
+        return 1.0 * duration / reqDuration;
+      }
+      else {
+        return 0;
+      }
+    }.property('alliance_id', 'first_fulfilled_at', 'victory_type').cacheable(),
+    
+    daysRemaining: function() {
+      var reqDuration = this.getPath('victoryType.condition.duration');
+      return AWE.UI.Util.round(reqDuration * (1 - this.get('fulfillmentDurationRatio')));
+    }.property('victoryType', 'fulfillmentDurationRatio').cacheable(),
+    
+    endDate: function() {
+      return this.get('first_fulfilled_at');
+    }.property('first_fulfilled_at').cacheable(),
+    
+    progressLeaders: function() {
+      var self = this;
+      var victoryProgressLeaders = AWE.GS.game.get('victoryProgressLeaders');
+      var leadersOfThisType = [];
+      if (victoryProgressLeaders != null) {
+        AWE.Ext.applyFunctionToElements(victoryProgressLeaders, function(leader) {
+          if (leader.get('victory_type') === self.get('victory_type')) {
+            leadersOfThisType.push(leader);
+          }
+        })
+      }
+      return leadersOfThisType;
+    }.property('AWE.GS.game.victoryProgressLeaders').cacheable(),
+    
+    progressLeaderFirst: function() {
+      var progressLeaders = this.get('progressLeaders');
+      var first = null;
+      if (progressLeaders != null) {
+        first = progressLeaders.filter(function(leader) {
+          return leader.get('pos') === 1;
+        })[0];
+      }
+      return first;
+    }.property('progressLeaders').cacheable(),
+    
+    progressLeaderSecond: function() {
+      var progressLeaders = this.get('progressLeaders');
+      var second = null;
+      if (progressLeaders != null) {
+        second = progressLeaders.filter(function(leader) {
+          return leader.get('pos') === 2;
+        })[0];
+      }
+      return second;
+    }.property('progressLeaders').cacheable(),
+    
+    progressLeaderThird: function() {
+      var progressLeaders = this.get('progressLeaders');
+      var third = null;
+      if (progressLeaders != null) {
+        third = progressLeaders.filter(function(leader) {
+          return leader.get('pos') === 3;
+        })[0];
+      }
+      return third;
+    }.property('progressLeaders').cacheable(),
+  });    
   
+  // ///////////////////////////////////////////////////////////////////////
+  //
+  //   ALLIANCE MANAGER
+  //
+  // ///////////////////////////////////////////////////////////////////////  
+
+  module.VictoryProgressManager = (function(my) {
+  
+    // private attributes and methods //////////////////////////////////////
+  
+    var that;
+
+    // protected attributes and methods ////////////////////////////////////
+
+    my = my || {};
+      
+    my.runningUpdates = {};         ///< hash that contains all running requests for characters, using the id as key.
+
+    my.createEntity = function(spec) {
+      return module.VictoryProgress.create();        
+    }
+
+    // public attributes and methods ///////////////////////////////////////
+  
+    that = module.createEntityManager(my);
+    
+    that.updateLeaders = function(callback) {
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'victory_progress_leaders';
+      return my.fetchEntitiesFromURL(
+        url,                                               // url to fetch from
+        my.runningUpdates,                                 // queue to register this request during execution
+        0,                                                 
+        AWE.GS.ENTITY_UPDATE_TYPE_FULL,                    // type of update (aggregate, short, full)
+        null,                                              // modified after
+        function(result, statusCode, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
+          if (statusCode === AWE.Net.OK) {
+            lastUpdate = timestamp.add(-1).second();
+            AWE.GS.game.set('victoryProgressLeaders', result);
+          }
+          if (callback) {
+            callback(result, statusCode, xhr, timestamp);
+          }
+        }
+      ); 
+    };
+
+    return that;
+      
+  }());
+    
   return module;
   
 }(AWE.GS || {}));

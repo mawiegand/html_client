@@ -33,9 +33,9 @@
       {{recipient}}
     {{else}}
       {{#if alliance}}
-        Allianz-Rundmail
+        {{t messaging.allianceMail}}
       {{else}}
-        Unbekannter Empfänger
+        {{t messaging.unknownRecipient}}
       {{/if}}
     {{/if}}
   </span>   <br />
@@ -43,7 +43,7 @@
     {{#if subject}}
       {{subject}}
     {{else}}
-      Kein Betreff
+      {{t messaging.subject}}
     {{/if}}
   </span>
 {{/with}}
@@ -53,15 +53,15 @@
 {{#with message}}
   <div class="message-edit-menue">
     <div class="message-edit-commands">
-      <a href="#" {{action "submit"}}>Senden</a>
-      <a href="#" {{action "cancelForm"}}>Verwerfen</a>
+      <a href="#" {{action "submit"}}>{{t messaging.send}}</a>
+      <a href="#" {{action "cancelForm"}}>{{t messaging.cancel}}</a>
     </div>
     <div class="message-edit-title">
-      Neue Nachricht {{#if recipient}}
-       An {{recipient}}
+      {{t messaging.newMessage}} {{#if recipient}}
+       {{t messaging.toHeader}} {{recipient}}
       {{else}}
         {{#if alliance}}
-          An Alle Allianzmitglieder
+          {{t messaging.toAlliance}}
         {{/if}}
       {{/if}}
     </div>
@@ -69,16 +69,16 @@
   </div>
   <div class="message-edit-header">
     <table>
-      <tr><th {{bindAttr class="recipientUnknown:red-color"}}>{{#if recipientUnknown }}<em>Unbekannt</em>{{/if}} An:</th>
+      <tr><th {{bindAttr class="recipientUnknown:red-color"}}>{{#if recipientUnknown }}<em>{{t messaging.unknown}}</em>{{/if}} {{t messaging.to}}:</th>
         <td>
           {{#if alliance}}
-            Alle Mitglieder von {{alliance.name}}
+            {{t messaging.allMembersOf}} {{alliance.name}}
           {{else}}
             <b>{{view Ember.TextField valueBinding="recipient" placeholder="recipient"}}</b>
           {{/if}}
         </td>
       </tr>
-      <tr><th>Betreff:</th>
+      <tr><th>{{t messaging.subject}}:</th>
         <td>{{view Ember.TextField valueBinding="subject" placeholder="subject"}}</td>
       </tr>
     </table>
@@ -89,7 +89,7 @@
 
 <script type="text/x-handlebars" data-template-name="message">
   <table>
-    <tr><th>Von:</th><td>
+    <tr><th>{{t messaging.from}}:</th><td>
       <b>{{#if message.sender_id}}
            {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
            {{#if "message.sender.alliance_tag"}}
@@ -100,9 +100,9 @@
          {{/if}}
       <b>
     </td></tr>
-    <tr><th>Betreff:</th><td>{{message.subject}}</td></tr>
-    <tr><th>Datum:</th><td>{{timeString}}</td></tr>
-    <tr><th>An:</th><td>
+    <tr><th>{{t messaging.subject}}:</th><td>{{message.subject}}</td></tr>
+    <tr><th>{{t messaging.date}}:</th><td>{{timeString}}</td></tr>
+    <tr><th>{{t messaging.to}}:</th><td>
       {{#if message.recipient_id}}
         {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}} 
         {{#if "message.recipient.alliance_tag"}}
@@ -110,9 +110,9 @@
         {{/if}}
       {{else}}
         {{#if message.isAllianceMessage}}
-          Alle Allianzmitglieder
+          {{t messaging.allAllianceMembers}}
         {{else}}
-          Alle Spieler
+          {{t messaging.allPlayers}}
         {{/if}}
       {{/if}}
     </td></tr>
@@ -126,30 +126,30 @@
 <div class="message-center">
   <div class="header">
     <div id="inbox-control">
-      <div {{action "inboxClicked"  target="controller"}}>Eingang</div>
-      <div {{action "outboxClicked" target="controller"}}>Ausgang</div>  
-      <div {{action "newClicked"    target="controller"}}>Neu</div>
+      <div {{action "inboxClicked"  target="controller"}}>{{t messaging.inbox}}</div>
+      <div {{action "outboxClicked" target="controller"}}>{{t messaging.outbox}}</div>  
+      <div {{action "newClicked"    target="controller"}}>{{t messaging.new}}</div>
     </div>
 
     <div id="actions">
       {{#if isReplyPossible}}
-        <div {{action "replyClicked" }}>Antworten</div>
+        <div {{action "replyClicked" }}>{{t messaging.reply}}</div>
       {{else}}
-        <div class="inactive">Antworten</div>
+        <div class="inactive">{{t messaging.reply}}</div>
       {{/if}}
       {{#if isForwardPossible}}
-        <div {{action "forwardClicked" }}>Weiterleiten</div>
+        <div {{action "forwardClicked" }}>{{t messaging.forward}}</div>
       {{else}}
-        <div class="inactive">Weiterleiten</div>
+        <div class="inactive">{{t messaging.forward}}</div>
       {{/if}} &nbsp;&nbsp;
       {{#if isDeletePossible}}
-        <div {{action "deleteClicked" }}>Löschen</div>
+        <div {{action "deleteClicked" }}>{{t messaging.delete}}</div>
       {{else}}
-        <div class="inactive">Löschen</div>
+        <div class="inactive">{{t messaging.delete}}</div>
       {{/if}}
       
       {{#if isAllianceMessagePossible}}
-        <div {{action "newAllianceMessageClicked" target="controller"}}>Neue Ally-Rundmail</div>
+        <div {{action "newAllianceMessageClicked" target="controller"}}>{{t messaging.newAllianceMail}}</div>
       {{/if}}            
     </div>
   </div>
@@ -165,7 +165,7 @@
         {{view AWE.UI.Ember.MessageTeaserView messageBinding="this" classNames="message-header" classNameBindings="selected"}}
       {{/each}}
     {{else}}
-      <h1>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Lade...</h1>
+      <h1>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{t general.startup.loading}}</h1>
     {{/if}}
     </hr>
   </div>
@@ -178,10 +178,10 @@
         {{#if "selectedMessage" }}
           {{view AWE.UI.Ember.MessageView messageBinding="selectedMessage" classNames="message"}}
         {{else}}
-          {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} Loading...
+          {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{t general.startup.loading}}
         {{/if}}
       {{else}}
-        Keine Nachricht ausgewählt.
+        {{t messaging.noMessageSelected}}
       {{/if}}
     {{/if}}
   </div>
