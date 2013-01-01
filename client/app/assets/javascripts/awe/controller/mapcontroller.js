@@ -302,7 +302,7 @@ AWE.Controller = (function(module) {
     /**
       * Moves the camera to the given value.
       * @param value the value can be a array of nodes, a node, a frame, a location, a region or a point. In case it is a point the viewport center will be moved there.
-      * @param animated default:true. if false 
+      * @param animated default:true. if false there will be no animation
       * @param addBorder default:true. if true there will be. If a point is given, addBroder should probably be set to false.
      **/
     that.moveTo = function(value, addBorder, animated) {
