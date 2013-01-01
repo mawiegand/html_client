@@ -14,12 +14,18 @@
   * - moveBy
   * - zoom
   *
+  * If your only interessted in theses methods skip ahed to the camera movement section
+  *
 **/
 
 var AWE = AWE || {};
 
 AWE.UI = (function(module) {
 
+	/** @class AWE.UI.CameraPan
+	  * This a internal helper class for camera, to create camera movement animation.
+	  * A CameraPan represents the movement from one viewport position to another one within a certain time.
+	 **/
 	module.createCameraPan = function (startViewport, targetViewport, panTime) {
 		var that = {};
 
@@ -73,6 +79,14 @@ AWE.UI = (function(module) {
 	    return that;
 	};
 
+	/** @class AWE.UI.Camera
+	  * The camera class controlls the visible area of the map. 
+	  * The methods that can be used to modify this visible area are the following:
+	  *
+	  * - moveTo
+	  * - moveBy
+	  * - zoom
+	**/
 	module.createCamera = function (spec) {
 		var that = {};
 
@@ -154,12 +168,14 @@ AWE.UI = (function(module) {
 		//***public methods***
 
 		//--getter/setter for settings
+		/** Defines the time that can pass between clicks, so that two clicks get taken as double clicks */
 		that.maxTimeForDoubleClick = function(value) {
 			if (value !== undefined) { 
 				_maxTimeForDoubleClick = value; 
 			}
 			return _maxTimeForDoubleClick;
 		};
+		/** Defines the default time that the animated movement of the camera takes from one position to another */
 		that.panTime = function(value) {
 			if (value !== undefined) {
 				_panTime = value;
@@ -317,7 +333,9 @@ AWE.UI = (function(module) {
 			}
 			_viewportChanged = false;
 		};
+
 		//****CAMERA MOVEMENT FUNTIONS*****
+
 		/**
 		  * Moves the camera to the given value.
 		  * @param value the value can be a array of nodes, a node, a frame, a location, a region or a point. In case it is a point the viewport center will be moved there.
