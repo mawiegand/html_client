@@ -23,6 +23,17 @@ AWE.GS = (function(module) {
     
     name: null,
     started_at: null,
+    
+    age: function() {
+      var startedAt = this.get('started_at');
+      if (startedAt != null) {
+        return Math.floor((new Date().getTime() - Date.parseISODate(startedAt).getTime())/(24 * 3600 * 1000));
+      }
+      else {
+        return 0;
+      }
+    }.property('started_at').cacheable(),
+    
     regions_count: null,    
   });     
 

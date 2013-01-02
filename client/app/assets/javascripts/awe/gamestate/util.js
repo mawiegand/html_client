@@ -57,26 +57,28 @@ AWE.GS = (function(module) {
     /**
      * @function
      * @name AWE.GS.Util.parseFormula */
-    that.parseFormula = function(formula) {
+    that.parseFormula = function(formula, varName) {
+      varName = varName || 'LEVEL';
       AWE.Ext.applyFunctionToHash(functions, function(key, val) {
         formula = formula.replace(new RegExp(key, "g"), val);
       })    
-      formula = formula.replace(/LEVEL/g, 'level');
+      formula = formula.replace(new RegExp(varName, "g"), 'x');
       return formula;
     }
         
     /**
      * @function
      * @name AWE.GS.Util.evalFormula */
-    that.evalFormula = function(formula, level) {
+    that.evalFormula = function(formula, x) {
       return formula ? eval(formula) : 0; // TODO: return null or 0 on missing formula?
     }
     
     /**
      * @function
      * @name AWE.GS.Util.parseAndEval */
-    that.parseAndEval = function(formula, level) {
-      return that.evalFormula(that.parseFormula(formula || ""), level);
+    that.parseAndEval = function(formula, x, varName) {
+      varName = varName || 'LEVEL';
+      return that.evalFormula(that.parseFormula(formula || "", varName), x);
     }
     
     /**
