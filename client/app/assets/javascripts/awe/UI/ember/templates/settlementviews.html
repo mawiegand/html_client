@@ -98,13 +98,15 @@
     
     <p>{{t settlement.info.resourceProductionInfo1}} <b>{{t settlement.info.resourceProductionInfo2}}</b> {{t settlement.info.resourceProductionInfo3}}.</p>
 	
-	{{#if settlement.isOutpost }}   
-    <div class="simple-button" style="min-height: 10px; margin-right: 100px;" {{action abandonOutpostPressed}}>Lagerstätte aufgeben!</div>      
+	  {{#if settlement.isOutpost }}   
+      <h2>{{t settlement.abandon.header}}</h2>
+      <p>{{t settlement.abandon.text}}</p>
+      <div class="simple-button" style="min-height: 10px; margin-right: 100px;" {{action abandonOutpostPressed}}>{{t settlement.abandon.send}}</div>      
     {{/if}}
 	
     {{#if settlement.isFortress }}
-      <h2>{{settlement.invitationLink.header}}</h2>
-      <p>{{settlement.invitationLink.text}}</p>
+      <h2>{{t settlement.invitationLink.header}}</h2>
+      <p>{{t settlement.invitationLink.text}}</p>
       <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action invitationLinkPressed}}>{{t settlement.invitationLink.send}}</div>      
       <p class="clearfix" {{action catchClick}}>{{ unbound AWE.Config.PLAYER_INVITATION_BASE }}{{ unbound settlement.regionInvitationCode }}</p>
     {{/if}}
