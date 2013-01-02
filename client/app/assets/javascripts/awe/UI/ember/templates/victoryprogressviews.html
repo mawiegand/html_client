@@ -1,8 +1,6 @@
 <script type="text/x-handlebars" data-template-name="alliance-victory-view">
   <div class="alliance-victory">
-    <h1>{{t alliance.progress.header}}</h1>
-    <p>{{t alliance.progress.description}}</p>
-    {{view AWE.UI.Ember.AllianceVictoryProgressDominationView allianceBinding="alliance" controllerBinding="controller"}}
+    {{view AWE.UI.Ember.AllianceVictoryProgressDominationView allianceBinding="alliance"}}
   </div>
 </script>
 
@@ -30,22 +28,24 @@
       <div style="font-size: 14px; text-align: right;">Sieg nach {{victoryType.condition.duration}} Tagen</div>
     {{/if}}
     </div>
-    {{#if progress.fulfilled }}
-      <div style="position:absolute; top: 0px; right: {{unbound fulfillmentPercentage}}; width: 200px; height: 80px; margin-top: 0; border-right: 2px solid black; margin-right: -1px; text-align:right;">
-        <div style="height: 20px; margin-top: 60px; padding-right: 3px;">
-          <b>{{daysRemaining}} {{t alliance.progress.remainingDays}}</b>
+    {{#if alliance}}
+      {{#if progress.fulfilled }}
+        <div style="position:absolute; top: 0px; right: {{unbound fulfillmentPercentage}}; width: 200px; height: 80px; margin-top: 0; border-right: 2px solid black; margin-right: -1px; text-align:right;">
+          <div style="height: 20px; margin-top: 60px; padding-right: 3px;">
+            <b>{{daysRemaining}} {{t alliance.progress.remainingDays}}</b>
+          </div>
         </div>
-      </div>
-    {{else}}
-      <div style="position:absolute; top: 0px; left: {{unbound fulfillmentPercentage}}; width: 200px; height: 80px; margin-top: 0; border-left: 2px solid black; margin-left: -1px;">
-        <div style="height: 20px; margin-top: 60px; padding-left: 3px;">
-          <b>{{progress.fulfillment_count}}</b>
+      {{else}}
+        <div style="position:absolute; top: 0px; left: {{unbound fulfillmentPercentage}}; width: 200px; height: 80px; margin-top: 0; border-left: 2px solid black; margin-left: -1px;">
+          <div style="height: 20px; margin-top: 60px; padding-left: 3px;">
+            <b>{{progress.fulfillment_count}}</b>
+          </div>
         </div>
-      </div>
+      {{/if}}
     {{/if}}
-    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView progressBinding="progress.progressLeaderFirst"  controllerBinding="controller"}}
-    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView progressBinding="progress.progressLeaderSecond" controllerBinding="controller"}}
-    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView progressBinding="progress.progressLeaderThird"  controllerBinding="controller"}}
+    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView progressBinding="AWE.GS.game.victoryProgressLeaders.victory_domination.first"}}
+    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView progressBinding="AWE.GS.game.victoryProgressLeaders.victory_domination.second"}}
+    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView progressBinding="AWE.GS.game.victoryProgressLeaders.victory_domination.third"}}
   </div>
 </script>
 

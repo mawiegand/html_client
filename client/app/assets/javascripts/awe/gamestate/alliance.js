@@ -252,13 +252,35 @@ AWE.GS = (function(module) {
         0,                                                 
         AWE.GS.ENTITY_UPDATE_TYPE_FULL,                    // type of update (aggregate, short, full)
         null,                                              // modified after
-        function(result, statusCode, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
+        function(allLeaders, statusCode, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (statusCode === AWE.Net.OK) {
             lastUpdate = timestamp.add(-1).second();
-            AWE.GS.game.set('victoryProgressLeaders', result);
+            
+            var leaders = {}
+            AWE.GS.RulesManager.getRules().get('victory_types').forEach(function(victoryType) {
+              log('---> victoryType', victoryType);
+              var leadersThisType = {};
+              AWE.Ext.applyFunctionToElements(allLeaders, function(leader) {
+                log('---> leader', leader, leader.get('victory_type'));
+                if (leader.get('victory_type') === victoryType.id) {
+                  if (leader.get('pos') === 1) {
+                    leadersThisType['first'] = leader;
+                  }
+                  if (leader.get('pos') === 2) {
+                    leadersThisType['second'] = leader;
+                  }
+                  if (leader.get('pos') === 3) {
+                    leadersThisType['third'] = leader;
+                  }
+                }
+              })
+              leaders[victoryType.symbolic_id] = leadersThisType;
+            });
+            
+            AWE.GS.game.set('victoryProgressLeaders', leaders);
           }
           if (callback) {
-            callback(result, statusCode, xhr, timestamp);
+            callback(allLeaders, statusCode, xhr, timestamp);
           }
         }
       ); 
