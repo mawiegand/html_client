@@ -260,6 +260,11 @@ AWE.GS = (function(module) {
       return allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
     },
     
+    alliance: function() {
+      var allianceId = this.get('alliance_id');
+      return allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
+    }.property('alliance_id').cacheable(),
+    
   });     
 
     

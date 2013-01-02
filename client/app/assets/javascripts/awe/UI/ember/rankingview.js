@@ -60,10 +60,11 @@ AWE.UI.Ember = (function(module) {
   module.CharacterRankingView = Ember.View.extend({
     templateName: 'character-ranking-view',
     
-    // setAndUpdateCharacterRanking: function() {
     init: function() {
-      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, null, function(ranking) {
-      });
+      if (AWE.GS.game.get('characterRanking') == null) {
+        AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 5, null, function(ranking) {
+        });
+      }
       this._super();
     },
     
@@ -77,6 +78,42 @@ AWE.UI.Ember = (function(module) {
       }
       return entries;
     }.property('AWE.GS.game.characterRanking').cacheable(),
+    
+    nextPage: function() {
+      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(2, 15, null);
+    },
+    
+    sortByRank: function() {
+      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 15, null);
+    },
+    
+    sortByOverall: function() {
+      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 15, 'overall');
+    },
+    
+    sortByResource: function() {
+      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 15, 'resource');
+    },
+    
+    sortByLikes: function() {
+      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 15, 'likes');
+    },
+    
+    sortByVictories: function() {
+      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 15, 'victories');
+    },
+    
+    sortByVictoryRatio: function() {
+      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 15, 'victory_ratio');
+    },
+    
+    sortByKills: function() {
+      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 15, 'kills');
+    },
+    
+    sortByExperience: function() {
+      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 15, 'experience');
+    },
   });
   
   module.CharacterRankingEntryView = Ember.View.extend({

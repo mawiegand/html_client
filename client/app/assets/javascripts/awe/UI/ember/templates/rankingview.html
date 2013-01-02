@@ -6,8 +6,6 @@
       
       {{view AWE.UI.Ember.RankingTabView }}
 
-      <hr/>
-
       <div class="icon-button ok-button" {{action "closePressed"}}>{{t general.close}}</div>
     </div>
   </div>
@@ -16,11 +14,44 @@
 
 <script type="text/x-handlebars" data-template-name="character-ranking-view">
 
-  <p>Character Ranking</p>
-  
-  {{#each characterRankingEntries}}
-    {{#view AWE.UI.Ember.CharacterRankingEntryView entryBinding="this" }}Entry{{/view}}
-  {{/each}}
+  <span {{action "nextPage"}}>next</span>
+
+  <table class="participant-table">
+    <tr>
+      <th class="left" {{action "sortByRank"}}>{{t ranking.rank}}</th>
+      <th>{{t ranking.character}}</th>
+      <th {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
+      <th {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
+      <th {{action "sortByLikes"}}>{{t ranking.likes}}</th>
+      <th {{action "sortByVictories"}}>{{t ranking.victories}}</th>
+      <th {{action "sortByVictoryRatio"}}>{{t ranking.victoryRatio}}</th>
+      <th {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
+      <th class="right" {{action "sortByExperience"}}>{{t ranking.experiencedArmy}}</th>
+    </tr>
+    {{#if characterRankingEntries}}
+      {{#each characterRankingEntries}}
+        {{#view AWE.UI.Ember.CharacterRankingEntryView entryBinding="this" }}
+          <tr>
+            <td class="number">{{entry.rank}}</td>
+            <td>{{entry.character_name}}</td>
+            <td class="number">{{entry.overall_score}}</td>
+            <td class="number">{{entry.resource_score}}</td>
+            <td class="number">{{entry.likes}} ({{formatAsPercent entry.like_ratio}})</td>
+            <td class="number">{{entry.victories}}</td>
+            <td class="number">{{formatNumber entry.victory_ratio maxPlaces="1"}}</td>
+            <td class="number">{{entry.kills}}</td>
+            <td class="number">{{entry.max_experience}}</td>
+          </tr>
+        {{/view}}
+      {{/each}}
+    {{else}}
+          <tr>
+            <td colspan="9" style="text-align:center;">
+              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+            </th>
+          </tr>
+    {{/if}}  
+  </table>
 
 </script>
 
@@ -38,6 +69,6 @@
 
 <script type="text/x-handlebars" data-template-name="victory-progress-ranking-view">
 
-  <p>Victory Progresses</p>
+  {{view AWE.UI.Ember.AllianceVictoryView controllerBinding="controller" allianceBinding="AWE.GS.player.currentCharacter.alliance"}}
      
 </script>

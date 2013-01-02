@@ -46,9 +46,22 @@ AWE.GS = (function(module) {
   
     that = module.createEntityManager(my);
       
-    that.updateCharacterRanking = function(page, sort, callback) {
+    that.updateCharacterRanking = function(page, perPage, sort, callback) {
       var self = this;
-      var url = AWE.Config.CHARACTER_RANKING_SERVER_BASE;
+      var url = AWE.Config.CHARACTER_RANKING_SERVER_BASE + '?';
+
+      if (page != null) {
+        url += 'page=' + page + '&';
+      }
+      
+      if (perPage != null) {
+        url += 'per_page=' + perPage + '&';
+      }
+      
+      if (sort != null) {
+        url += 'sort=' + sort + '&';
+      }
+      
       return my.fetchEntitiesFromURL(
         url, 
         my.runningUpdatesPerId, 
