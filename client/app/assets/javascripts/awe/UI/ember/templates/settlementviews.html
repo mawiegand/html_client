@@ -101,7 +101,11 @@
 	  {{#if settlement.isOutpost }}   
       <h2>{{t settlement.abandon.header}}</h2>
       <p>{{t settlement.abandon.text}}</p>
-      <div class="simple-button" style="min-height: 10px; margin-right: 100px;" {{action abandonOutpostPressed}}>{{t settlement.abandon.send}}</div>      
+      {{#unless settlement.garrison.isFighting}}
+        <div class="simple-button" style="min-height: 10px; margin-right: 100px;" {{action abandonOutpostPressed}}>{{t settlement.abandon.send}}</div>
+      {{else}}
+      <p>{{t settlement.abandon.fighting}}</p>
+      {{/unless}}      
     {{/if}}
 	
     {{#if settlement.isFortress }}
