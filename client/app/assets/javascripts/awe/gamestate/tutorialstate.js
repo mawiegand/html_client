@@ -597,13 +597,13 @@ AWE.GS = (function(module) {
 
     checkKills: function(killTest) {
       var minUnits = killTest.min_units;
-      log('---> checkKills with min_units', minUnits);
+      // log('---> checkKills with min_units', minUnits);
       
       if (minUnits == null) {
         log('ERROR in AWE.GS.QuestState.testKills: killTest.min_units missing in quest id ' + this.get('quest_id'));
         return false;
       }
-      log('---> checkKills with min_units', minUnits, AWE.GS.player.getPath('currentCharacter.kills'));
+      // log('---> checkKills with min_units', minUnits, AWE.GS.player.getPath('currentCharacter.kills'));
         
       return AWE.GS.player.getPath('currentCharacter.kills') != null && AWE.GS.player.getPath('currentCharacter.kills') >= minUnits;
     },
