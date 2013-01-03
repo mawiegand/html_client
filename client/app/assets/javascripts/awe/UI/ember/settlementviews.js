@@ -153,21 +153,20 @@ AWE.UI.Ember = (function(module) {
       return false;
     },
 	
-	abandonOutpostPressed: function() {
+    abandonOutpostPressed: function() {
       var self = this;
       var abandonDialog = AWE.UI.Ember.InfoDialog.create({
         classNames: ['change-army-name-dialog'],
         heading:    'Willst du diese Lagerstätte wirklich aufgeben?',
 
-		okText:       'Ja',
-		cancelText:    'Nein',
+        okText:       'Ja',
+        cancelText:    'Nein',
 		
         okPressed:  function() {
           var action = AWE.Action.Settlement.createAbandonOutpostAction(self.get('settlement'));
           AWE.Action.Manager.queueAction(action, function(statusCode) {
             if (statusCode === 200 || statusCode === 203) {
-              log('outpost abanded');
-			  WACKADOO.activateMapController();
+              WACKADOO.activateMapController();
             }
             else {
              self.set('lastError', 'abanding outpost failed');
