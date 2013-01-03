@@ -2291,43 +2291,36 @@ AWE.Controller = (function(module) {
               targetLocations.push(regionLocations[i]);        
             }
           }
-          
-          // add fortresses in bordering regions
-          var neighbourNodes = armyRegion.node().getNeighbourLeaves();
-          for (var i = 0; i < neighbourNodes.length; i++) {
-            var region = neighbourNodes[i].region();
-            if (region) {
-              var location = region.location(0);             
-              if (location) {
-                targetLocations.push(location);
+
+          log('---> debug', armyRegion.node());
+
+
+          if (armyRegion.node()) {
+            // add fortresses in bordering regions
+            var neighbourNodes = armyRegion.node().getNeighbourLeaves();
+            for (var i = 0; i < neighbourNodes.length; i++) {
+              var region = neighbourNodes[i].region();
+              if (region) {
+                var location = region.location(0);
+                if (location) {
+                  targetLocations.push(location);
+                }
+                else {
+                  AWE.Map.Manager.fetchLocationsForRegion(region);
+                }
               }
               else {
-                AWE.Map.Manager.fetchLocationsForRegion(region);
+                AWE.Map.Manager.updateRegionForNode(neighbourNodes[i]);
               }
             }
-            else {
-              AWE.Map.Manager.updateRegionForNode(neighbourNodes[i]);
-            }
+          }
+          else {
+            AWE.Map.Manager.fetchSingleNodeById(armyRegion.nodeId());
           }
         }
         else {
           targetLocations.push(armyLocation.region().location(0));
         }
-        
-/* tesing code for movement command:
- * make all fetched location available as target location 
-        
-        targetLocations = [];
-        var locations = AWE.Map.Manager.getLocations();
-        
-        for (var i in locations) {
-          if (locations[i]) {
-            targetLocations.push(locations[i]);
-          }
-        }
-        
- */        
-        
       }
       else {
         AWE.Map.Manager.fetchLocationsForRegion(armyRegion);
