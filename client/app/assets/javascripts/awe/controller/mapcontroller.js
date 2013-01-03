@@ -2338,9 +2338,9 @@ AWE.Controller = (function(module) {
       if (armyLocation) {
         var armiesAtLocation = armyLocation.getArmies();
         
-        AWE.Ext.applyFunctionToElements(armiesAtLocation, function(army) {
-          if (!army.isOwn()) {
-            targetArmies.push(army);
+        AWE.Ext.applyFunctionToElements(armiesAtLocation, function(locationArmy) {
+          if (!locationArmy.isOwn()) {
+            targetArmies.push(locationArmy);
           }        
         });
       }
@@ -2566,10 +2566,16 @@ AWE.Controller = (function(module) {
         else if (currentAction.typeName === 'attackAction') {
           // target views entsprechend der sichtbarkeit der armeen verschieben
           var targetArmies = getTargetArmies(currentAction.army);
-          AWE.Ext.applyFunctionToElements(targetArmies, function(army) {
-            var targetView = targetViews[army.getId()];
-            var armyLocation = AWE.Map.Manager.getLocation(army.get('location_id'));
-            var targetedView = army.isGarrison() ? fortressViews[armyLocation.node().id()] : armyViews[army.getId()];
+          AWE.Ext.applyFunctionToElements(targetArmies, function(targetArmy) {
+            var targetView = targetViews[targetArmy.getId()];
+            var armyLocation = AWE.Map.Manager.getLocation(targetArmy.get('location_id'));
+
+            if (targetArmy.isGarrison()) {            
+              var targetedView = armyLocation.isFortress() ? fortressViews[armyLocation.node().id()] : locationViews[armyLocation.id()];
+            }
+            else {
+              var targetedView = armyViews[targetArmy.getId()];
+            }
             
             if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.settlementTypeId()] === 'fortress') {
               var visible = that.areArmiesAtFortressVisible(that.mc2vc(armyLocation.node().frame()));
@@ -2583,10 +2589,9 @@ AWE.Controller = (function(module) {
                 targetView = AWE.UI.createTargetView();
                 targetView.initWithControllerAndTargetedView(that, targetedView);
                 _stages[2].addChild(targetView.displayObject());
-                // locationView.setTargetView(targetView);
               }                                  
               setTargetPosition(targetView, targetedView.center());
-              newTargetViews[army.getId()] = targetView;
+              newTargetViews[targetArmy.getId()] = targetView;
             }
           });
         }
