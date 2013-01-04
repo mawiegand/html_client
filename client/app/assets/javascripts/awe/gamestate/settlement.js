@@ -269,7 +269,6 @@ AWE.GS = (function(module) {
       var numSlots = enumerableSlots.filter(function(item) {
         return item.building_id !== undefined && item.building_id !== null 
       }).length
-      log('---> usedBuildingSlots', numSlots);
       return numSlots;
     }.property('enumerableSlots.@each.building_id').cacheable(),
     
