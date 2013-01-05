@@ -129,6 +129,8 @@ AWE.Config = (function(module) {
   
   module.SETTLEMENT_REFRESH_INTERVAL = 30 * 1000;
   
+  module.RANKING_LIST_ENTRIES = 15;
+  
   module.RESOURCES_REFRESH_INTERVAL  =  5 * 1000;
   module.CREDIT_AMOUNT_REFRESH_INTERVAL  =  4 * 1000;
   module.SHOP_ENABLED = <%= CLIENT_CONFIG['shop_enabled'] ? 'true' : 'false' %>;
@@ -146,7 +148,7 @@ AWE.Config = (function(module) {
   module.BROWSER_CHECK_ENABLED = true;
   module.BROWSER_CHECK_FAILURES_ONLY = false;
   
-  module.DISABLE_NPC_IMAGES = false
+  module.DISABLE_NPC_IMAGES = false;
 
   return module;
   

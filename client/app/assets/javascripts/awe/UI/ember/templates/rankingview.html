@@ -13,62 +13,124 @@
 
 
 <script type="text/x-handlebars" data-template-name="character-ranking-view">
-
-  <span {{action "nextPage"}}>next</span>
-
-  <table class="participant-table">
-    <tr>
-      <th class="left" {{action "sortByRank"}}>{{t ranking.rank}}</th>
-      <th>{{t ranking.character}}</th>
-      <th {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
-      <th {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
-      <th {{action "sortByLikes"}}>{{t ranking.likes}}</th>
-      <th {{action "sortByVictories"}}>{{t ranking.victories}}</th>
-      <th {{action "sortByVictoryRatio"}}>{{t ranking.victoryRatio}}</th>
-      <th {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
-      <th class="right" {{action "sortByExperience"}}>{{t ranking.experiencedArmy}}</th>
-    </tr>
-    {{#if characterRankingEntries}}
-      {{#each characterRankingEntries}}
-        {{#view AWE.UI.Ember.CharacterRankingEntryView entryBinding="this" }}
-          <tr>
-            <td class="number">{{entry.rank}}</td>
-            <td>{{entry.character_name}}</td>
-            <td class="number">{{entry.overall_score}}</td>
-            <td class="number">{{entry.resource_score}}</td>
-            <td class="number">{{entry.likes}} ({{formatAsPercent entry.like_ratio}})</td>
-            <td class="number">{{entry.victories}}</td>
-            <td class="number">{{formatNumber entry.victory_ratio maxPlaces="1"}}</td>
-            <td class="number">{{entry.kills}}</td>
-            <td class="number">{{entry.max_experience}}</td>
-          </tr>
-        {{/view}}
-      {{/each}}
-    {{else}}
-          <tr>
-            <td colspan="9" style="text-align:center;">
-              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-            </th>
-          </tr>
-    {{/if}}  
-  </table>
-
+    <table class="ranking-table">
+      <tr>
+        <th class="left" {{action "sortByRank"}}>{{t ranking.rank}}</th>
+        <th>{{t ranking.character}}</th>
+        <th {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
+        <th {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
+        <th {{action "sortByLikes"}}>{{t ranking.likes}}</th>
+        <th {{action "sortByVictories"}}>{{t ranking.victories}}</th>
+        <th {{action "sortByVictoryRatio"}}>{{t ranking.victoryRatio}}</th>
+        <th {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
+        <th class="right" {{action "sortByExperience"}}>{{t ranking.experiencedArmy}}</th>
+      </tr>
+      {{#if characterRankingEntries}}
+        {{#each characterRankingEntries}}
+            <tr>
+              <td class="number">{{this.rank}}</td>
+              <td>{{view AWE.UI.Ember.LinkedCharacterView characterIdBinding="character_id"}}</td>
+              <td class="number">{{this.overall_score}}</td>
+              <td class="number">{{this.resource_score}}</td>
+              <td class="number">{{this.likes}} ({{formatAsPercent this.like_ratio}})</td>
+              <td class="number">{{this.victories}}</td>
+              <td class="number">{{formatNumber this.victory_ratio maxPlaces="1"}}</td>
+              <td class="number">{{this.kills}}</td>
+              <td class="number">{{this.max_experience}}</td>
+            </tr>
+        {{/each}}
+        <tr>
+          <td colspan="9" style="text-align:center;">
+            <a href="#" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a href="#" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
+          </th>
+        </tr>
+      {{else}}
+        <tr>
+          <td colspan="9" style="text-align:center;">
+            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+          </th>
+        </tr>
+      {{/if}}  
+    </table>
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-ranking-view">
-
-  <p>Alliance Ranking</p>
-     
+    <table class="ranking-table">
+      <tr>
+        <th class="left" {{action "sortByRank"}}>{{t ranking.rank}}</th>
+        <th>{{t ranking.alliance}}</th>
+        <th {{action "sortByFortress"}}>{{t ranking.numFortresses}}</th>
+        <th {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
+        <th {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
+        <th {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
+        <th {{action "sortByMembers"}}>{{t ranking.numMembers}}</th>
+        <th class="right" {{action "sortByFortressMembers"}}>{{t ranking.regionsPerMember}}</th>
+      </tr>
+      {{#if allianceRankingEntries}}
+        {{#each allianceRankingEntries}}
+          <tr>
+            <td class="number">{{this.rank}}</td>
+            <td><a {{action "alliancePressed"}}>{{this.alliance_tag}}</a></td>
+            <td class="number">{{this.num_fortress}}</td>
+            <td class="number">{{this.overall_score}}</td>
+            <td class="number">{{this.resource_score}}</td>
+            <td class="number">{{this.kills}}</td>
+            <td class="number">{{this.num_members}}</td>
+            <td class="number">{{this.num_members}}</td>
+          </tr>
+        {{/each}}
+        <tr>
+          <td colspan="8" style="text-align:center;">
+            <a href="#" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a href="#" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
+          </th>
+        </tr>
+        
+      {{else}}
+        <tr>
+          <td colspan="8" style="text-align:center;">
+            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+          </th>
+        </tr>
+      {{/if}}  
+    </table>
 </script>
 
 <script type="text/x-handlebars" data-template-name="fortress-ranking-view">
-
-  <p>Fortress Ranking</p>
-     
+    <table class="ranking-table">
+      <tr>
+        <th class="left" {{action "sortByTaxRate"}}>{{t ranking.rank}}</th>
+        <th>{{t ranking.fortress}}</th>
+        <th>{{t ranking.owner}}</th>
+        <th {{action "sortByTaxRate"}}>{{t ranking.taxRate}}</th>
+        <th {{action "sortByIncome"}}>{{t ranking.income}}</th>
+        <th class="right" {{action "sortByDefense"}}>{{t ranking.defenseBonus}}</th>
+      </tr>
+      {{#if fortressRankingEntries}}
+        {{#each fortressRankingEntries}}
+          <tr>
+            <td class="number">{{this.rank}}</td>
+            <td>{{this.region_name}}</td>
+            <td>{{view AWE.UI.Ember.LinkedCharacterView characterIdBinding="owner_id"}}</td>
+            <td class="number">{{formatAsPercent this.tax_rate}}</td>
+            <td class="number">{{formatNumber this.resource_production_score maxPlaces="0"}}</td>
+            <td class="number">{{formatAsPercent this.defense_bonus}}</td>
+          </tr>
+        {{/each}}
+        <tr>
+          <td colspan="6" style="text-align:center;">
+            <a href="#" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a href="#" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
+          </th>
+        </tr>
+      {{else}}
+        <tr>
+          <td colspan="6" style="text-align:center;">
+            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+          </th>
+        </tr>
+      {{/if}}  
+    </table>
 </script>
 
 <script type="text/x-handlebars" data-template-name="victory-progress-ranking-view">
-
   {{view AWE.UI.Ember.AllianceVictoryView controllerBinding="controller" allianceBinding="AWE.GS.player.currentCharacter.alliance"}}
-     
 </script>

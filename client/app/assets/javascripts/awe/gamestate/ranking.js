@@ -21,6 +21,14 @@ AWE.GS = (function(module) {
     typeName: 'CharacterRankingEntry',
   });     
     
+  module.AllianceRankingEntry = module.RankingEntry.extend({
+    typeName: 'AllianceRankingEntry',
+  });     
+    
+  module.FortressRankingEntry = module.RankingEntry.extend({
+    typeName: 'FortressRankingEntry',
+  });     
+    
   // ///////////////////////////////////////////////////////////////////////
   //
   //   ROUND INFO MANAGER
@@ -46,16 +54,12 @@ AWE.GS = (function(module) {
   
     that = module.createEntityManager(my);
       
-    that.updateCharacterRanking = function(page, perPage, sort, callback) {
+    that.updateCharacterRanking = function(page, sort, callback) {
       var self = this;
-      var url = AWE.Config.CHARACTER_RANKING_SERVER_BASE + '?';
+      var url = AWE.Config.CHARACTER_RANKING_SERVER_BASE + '?per_page=' + AWE.Config.RANKING_LIST_ENTRIES + '&';
 
       if (page != null) {
         url += 'page=' + page + '&';
-      }
-      
-      if (perPage != null) {
-        url += 'per_page=' + perPage + '&';
       }
       
       if (sort != null) {
@@ -70,6 +74,108 @@ AWE.GS = (function(module) {
           if (statusCode === AWE.Net.OK) {
             AWE.GS.game.set('characterRanking', rankingEntries);
             log('---> set character ranking', rankingEntries);
+          }
+          if (callback) {
+            callback(rankingEntries, statusCode, xhr, timestamp);
+          }
+        }
+      );
+    }
+    
+    return that;
+      
+  }());
+    
+  module.AllianceRankingEntryManager = (function(my) {
+  
+    // private attributes and methods //////////////////////////////////////
+  
+    var that;
+    var lastAllianceRankingUpdate = null;
+
+    // protected attributes and methods ////////////////////////////////////
+
+    my = my || {};
+  
+    my.createEntity = function(spec) {
+      return module.AllianceRankingEntry.create(spec);
+    }
+    
+    // public attributes and methods ///////////////////////////////////////
+  
+    that = module.createEntityManager(my);
+      
+    that.updateAllianceRanking = function(page, sort, callback) {
+      var self = this;
+      var url = AWE.Config.ALLIANCE_RANKING_SERVER_BASE + '?per_page=' + AWE.Config.RANKING_LIST_ENTRIES + '&';
+
+      if (page != null) {
+        url += 'page=' + page + '&';
+      }
+      
+      if (sort != null) {
+        url += 'sort=' + sort + '&';
+      }
+      
+      return my.fetchEntitiesFromURL(
+        url, 
+        my.runningUpdatesPerId, 
+        1, null, null,
+        function(rankingEntries, statusCode, xhr, timestamp) {
+          if (statusCode === AWE.Net.OK) {
+            AWE.GS.game.set('allianceRanking', rankingEntries);
+            log('---> set alliance ranking', rankingEntries);
+          }
+          if (callback) {
+            callback(rankingEntries, statusCode, xhr, timestamp);
+          }
+        }
+      );
+    }
+    
+    return that;
+      
+  }());
+    
+  module.FortressRankingEntryManager = (function(my) {
+  
+    // private attributes and methods //////////////////////////////////////
+  
+    var that;
+    var lastFortressRankingUpdate = null;
+
+    // protected attributes and methods ////////////////////////////////////
+
+    my = my || {};
+  
+    my.createEntity = function(spec) {
+      return module.FortressRankingEntry.create(spec);
+    }
+    
+    // public attributes and methods ///////////////////////////////////////
+  
+    that = module.createEntityManager(my);
+      
+    that.updateFortressRanking = function(page, sort, callback) {
+      var self = this;
+      var url = AWE.Config.FORTRESS_RANKING_SERVER_BASE + '?per_page=' + AWE.Config.RANKING_LIST_ENTRIES + '&';
+
+      if (page != null) {
+        url += 'page=' + page + '&';
+      }
+      
+      if (sort != null) {
+        url += 'sort=' + sort + '&';
+      }
+      
+      return my.fetchEntitiesFromURL(
+        url, 
+        my.runningUpdatesPerId, 
+        1, null, null,
+        function(rankingEntries, statusCode, xhr, timestamp) {
+          if (statusCode === AWE.Net.OK) {
+            AWE.GS.game.set('fortressRanking', rankingEntries);
+            log('---> set fortress ranking', rankingEntries);
           }
           if (callback) {
             callback(rankingEntries, statusCode, xhr, timestamp);
