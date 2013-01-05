@@ -44,15 +44,30 @@ AWE.UI.Ember = (function(module) {
     }.property('level').cacheable(),
       
     size3: function() {
-      return this.get('level') >= 8 && this.get('level') < 11;
+      if (this.getPath('settlement.isFortress')) {
+        return this.get('level') >= 8 && this.get('level') < 16;
+      }
+      else {
+        return this.get('level') >= 8 && this.get('level') < 11;
+      }
     }.property('level').cacheable(),
     
     size4: function() {
-      return this.get('level') >= 11 && this.get('level') < 14;
+      if (this.getPath('settlement.isFortress')) {
+        return this.get('level') >= 16 && this.get('level') < 17;
+      }
+      else {
+        return this.get('level') >= 11 && this.get('level') < 14;
+      }
     }.property('level').cacheable(),
 
     size5: function() {
-      return this.get('level') >= 14 && this.get('level') < 18;
+      if (this.getPath('settlement.isFortress')) {
+        return this.get('level') >= 17 && this.get('level') < 18;
+      }
+      else {
+        return this.get('level') >= 14 && this.get('level') < 18;
+      }
     }.property('level').cacheable(),  
   
     size6: function() {
