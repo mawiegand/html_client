@@ -64,8 +64,8 @@ AWE.UI.Ember = (function(module) {
     
     init: function() {
       if (AWE.GS.game.get('characterRanking') == null) {
-        AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, null, function(ranking) {
-        });
+        AWE.GS.CharacterRankingEntryManager.updateCharacterRanking();
+        this.set('sortOrder', 'overall');
       }
       this._super();
     },
@@ -105,42 +105,72 @@ AWE.UI.Ember = (function(module) {
       }
     },
     
-    sortByRank: function() {
-      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking();
-      this.set('sortOrder', null);
-    },
+    sortedByOverall: function() {
+      return this.get('sortOrder') === 'overall' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
     
     sortByOverall: function() {
+      AWE.GS.game.set('characterRanking', null);
       AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 'overall');
       this.set('sortOrder', 'overall');
     },
     
+    sortedByResource: function() {
+      return this.get('sortOrder') === 'resource' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
+    
     sortByResource: function() {
+      AWE.GS.game.set('characterRanking', null);
       AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 'resource');
       this.set('sortOrder', 'resource');
     },
     
+    sortedByLikes: function() {
+      return this.get('sortOrder') === 'likes' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
+    
     sortByLikes: function() {
+      AWE.GS.game.set('characterRanking', null);
       AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 'likes');
       this.set('sortOrder', 'likes');
     },
     
+    sortedByVictories: function() {
+      return this.get('sortOrder') === 'victories' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
+    
     sortByVictories: function() {
+      AWE.GS.game.set('characterRanking', null);
       AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 'victories');
       this.set('sortOrder', 'victories');
     },
     
+    sortedByVictoryRatio: function() {
+      return this.get('sortOrder') === 'victory_ratio' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
+    
     sortByVictoryRatio: function() {
+      AWE.GS.game.set('characterRanking', null);
       AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 'victory_ratio');
       this.set('sortOrder', 'victory_ratio');
     },
     
+    sortedByKills: function() {
+      return this.get('sortOrder') === 'kills' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
+    
     sortByKills: function() {
+      AWE.GS.game.set('characterRanking', null);
       AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 'kills');
       this.set('sortOrder', 'kills');
     },
     
+    sortedByExperience: function() {
+      return this.get('sortOrder') === 'experience' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
+    
     sortByExperience: function() {
+      AWE.GS.game.set('characterRanking', null);
       AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(null, 'experience');
       this.set('sortOrder', 'experience');
     },
@@ -192,32 +222,64 @@ AWE.UI.Ember = (function(module) {
       }
     },
         
-    sortByRank: function() {
-      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking();
-    },
+    sortedByFortress: function() {
+      return this.get('sortOrder') === 'fortress' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
     
     sortByFortress: function() {
+      AWE.GS.game.set('allianceRanking', null);
       AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'fortress');
+      this.set('sortOrder', 'fortress');
     },
+    
+    sortedByOverall: function() {
+      return this.get('sortOrder') === 'overall' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
     
     sortByOverall: function() {
+      AWE.GS.game.set('allianceRanking', null);
       AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'overall');
+      this.set('sortOrder', 'overall');
     },
+    
+    sortedByResource: function() {
+      return this.get('sortOrder') === 'resource' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
     
     sortByResource: function() {
+      AWE.GS.game.set('allianceRanking', null);
       AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'resource');
+      this.set('sortOrder', 'resource');
     },
+    
+    sortedByKills: function() {
+      return this.get('sortOrder') === 'kills' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
     
     sortByKills: function() {
-      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'kill');
+      AWE.GS.game.set('allianceRanking', null);
+      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'kills');
+      this.set('sortOrder', 'kills');
     },
+    
+    sortedByMembers: function() {
+      return this.get('sortOrder') === 'members' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
     
     sortByMembers: function() {
+      AWE.GS.game.set('allianceRanking', null);
       AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'members');
+      this.set('sortOrder', 'members');
     },
     
+    sortedByFortressMembers: function() {
+      return this.get('sortOrder') === 'fortressmembers' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
+    
     sortByFortressMembers: function() {
+      AWE.GS.game.set('allianceRanking', null);
       AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'fortressmembers');
+      this.set('sortOrder', 'fortressmembers');
     },
     
     alliancePressed: function(evt) {
@@ -273,17 +335,35 @@ AWE.UI.Ember = (function(module) {
         AWE.GS.FortressRankingEntryManager.updateFortressRanking(previousPage, this.get('sortOrder'));
       }
     },
-    
+
+    sortedByTaxRate: function() {
+      return this.get('sortOrder') === 'taxRate' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
+        
     sortByTaxRate: function() {
+      AWE.GS.game.set('fortressRanking', null);
       AWE.GS.FortressRankingEntryManager.updateFortressRanking();
+      this.set('sortOrder', 'taxRate');
     },
+    
+    sortedByIncome: function() {
+      return this.get('sortOrder') === 'income' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
     
     sortByIncome: function() {
+      AWE.GS.game.set('fortressRanking', null);
       AWE.GS.FortressRankingEntryManager.updateFortressRanking(null, 'income');
+      this.set('sortOrder', 'defense');
     },
     
+    sortedByDefense: function() {
+      return this.get('sortOrder') === 'defense' ? 'sortOrder' : 'clickable';
+    }.property('sortOrder').cacheable(),
+    
     sortByDefense: function() {
+      AWE.GS.game.set('fortressRanking', null);
       AWE.GS.FortressRankingEntryManager.updateFortressRanking(null, 'defense');
+      this.set('sortOrder', 'defense');
     },
   });
   

@@ -15,15 +15,15 @@
 <script type="text/x-handlebars" data-template-name="character-ranking-view">
     <table class="ranking-table">
       <tr>
-        <th class="left clickable" {{action "sortByRank"}}>{{t ranking.rank}}</th>
+        <th>{{t ranking.rank}}</th>
         <th>{{t ranking.character}}</th>
-        <th class="clickable" {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
-        <th class="clickable" {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
-        <th class="clickable" {{action "sortByLikes"}}>{{t ranking.likes}}</th>
-        <th class="clickable" {{action "sortByVictories"}}>{{t ranking.victories}}</th>
-        <th class="clickable" {{action "sortByVictoryRatio"}}>{{t ranking.victoryRatio}}</th>
-        <th class="clickable" {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
-        <th class="clickable right" {{action "sortByExperience"}}>{{t ranking.experiencedArmy}}</th>
+        <th {{bindAttr class="sortedByOverall"}} {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
+        <th {{bindAttr class="sortedByResource"}} {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
+        <th {{bindAttr class="sortedByLikes"}} {{action "sortByLikes"}}>{{t ranking.likes}}</th>
+        <th {{bindAttr class="sortedByVictories"}} {{action "sortByVictories"}}>{{t ranking.victories}}</th>
+        <th {{bindAttr class="sortedByVictoryRatio"}} {{action "sortByVictoryRatio"}}>{{t ranking.victoryRatio}}</th>
+        <th {{bindAttr class="sortedByKills"}} {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
+        <th {{bindAttr class="sortedByExperience"}} {{action "sortByExperience"}}>{{t ranking.experiencedArmy}}</th>
       </tr>
       {{#if characterRankingEntries}}
         {{#each characterRankingEntries}}
@@ -57,14 +57,14 @@
 <script type="text/x-handlebars" data-template-name="alliance-ranking-view">
     <table class="ranking-table">
       <tr>
-        <th class="left" {{action "sortByRank"}}>{{t ranking.rank}}</th>
+        <th>{{t ranking.rank}}</th>
         <th>{{t ranking.alliance}}</th>
-        <th {{action "sortByFortress"}}>{{t ranking.numFortresses}}</th>
-        <th {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
-        <th {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
-        <th {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
-        <th {{action "sortByMembers"}}>{{t ranking.numMembers}}</th>
-        <th class="right" {{action "sortByFortressMembers"}}>{{t ranking.regionsPerMember}}</th>
+        <th {{bindAttr class="sortedByFortress"}} {{action "sortByFortress"}}>{{t ranking.numFortresses}}</th>
+        <th {{bindAttr class="sortedByOverall"}} {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
+        <th {{bindAttr class="sortedByResource"}} {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
+        <th {{bindAttr class="sortedByKills"}} {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
+        <th {{bindAttr class="sortedByMembers"}} {{action "sortByMembers"}}>{{t ranking.numMembers}}</th>
+        <th {{bindAttr class="sortedByFortressMembers"}} {{action "sortByFortressMembers"}}>{{t ranking.regionsPerMember}}</th>
       </tr>
       {{#if allianceRankingEntries}}
         {{#each allianceRankingEntries}}
@@ -98,12 +98,12 @@
 <script type="text/x-handlebars" data-template-name="fortress-ranking-view">
     <table class="ranking-table">
       <tr>
-        <th class="left" {{action "sortByTaxRate"}}>{{t ranking.rank}}</th>
+        <th>{{t ranking.rank}}</th>
         <th>{{t ranking.fortress}}</th>
         <th>{{t ranking.owner}}</th>
-        <th {{action "sortByTaxRate"}}>{{t ranking.taxRate}}</th>
-        <th {{action "sortByIncome"}}>{{t ranking.income}}</th>
-        <th class="right" {{action "sortByDefense"}}>{{t ranking.defenseBonus}}</th>
+        <th {{bindAttr class="sortedByTaxRate"}} {{action "sortByTaxRate"}}>{{t ranking.taxRate}}</th>
+        <th {{bindAttr class="sortedByIncome"}} {{action "sortByIncome"}}>{{t ranking.income}}</th>
+        <th {{bindAttr class="sortedByDefense"}} {{action "sortByDefense"}}>{{t ranking.defenseBonus}}</th>
       </tr>
       {{#if fortressRankingEntries}}
         {{#each fortressRankingEntries}}

@@ -308,6 +308,10 @@ html, body {
   font-weight: bold;
 }
 
+.clickable {
+  cursor: pointer;  
+}
+
 #layers {
   position: absolute;
   left: 0px;
@@ -3613,6 +3617,15 @@ table .number {
   color: #fff;
   padding: 4px 4px 4px 4px;
   font-size: 14px;
+  text-shadow: none;
+}
+
+.ranking-table th.clickable {
+  color: #ddf;
+}
+
+.ranking-table th.sortOrder {
+  color: #aaf;
 }
 
 .participant-table td, .ranking-table td {
@@ -3624,12 +3637,12 @@ table .number {
   padding: 0px;
 }
 
-.participant-table th.left, .ranking-table th.left {
+.participant-table th:first-child, .ranking-table th:first-child {
   border-top-left-radius: 10px;
   border-bottom-left-radsius: 10px;
 }
 
-.participant-table th.right, .ranking-table th.right {
+.participant-table th:last-child, .ranking-table th:last-child {
   border-top-right-radius: 10px;
   border-bottom-right-rasdius: 10px;
 }
