@@ -15,33 +15,33 @@
 <script type="text/x-handlebars" data-template-name="character-ranking-view">
     <table class="ranking-table">
       <tr>
-        <th class="left" {{action "sortByRank"}}>{{t ranking.rank}}</th>
+        <th class="left clickable" {{action "sortByRank"}}>{{t ranking.rank}}</th>
         <th>{{t ranking.character}}</th>
-        <th {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
-        <th {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
-        <th {{action "sortByLikes"}}>{{t ranking.likes}}</th>
-        <th {{action "sortByVictories"}}>{{t ranking.victories}}</th>
-        <th {{action "sortByVictoryRatio"}}>{{t ranking.victoryRatio}}</th>
-        <th {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
-        <th class="right" {{action "sortByExperience"}}>{{t ranking.experiencedArmy}}</th>
+        <th class="clickable" {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
+        <th class="clickable" {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
+        <th class="clickable" {{action "sortByLikes"}}>{{t ranking.likes}}</th>
+        <th class="clickable" {{action "sortByVictories"}}>{{t ranking.victories}}</th>
+        <th class="clickable" {{action "sortByVictoryRatio"}}>{{t ranking.victoryRatio}}</th>
+        <th class="clickable" {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
+        <th class="clickable right" {{action "sortByExperience"}}>{{t ranking.experiencedArmy}}</th>
       </tr>
       {{#if characterRankingEntries}}
         {{#each characterRankingEntries}}
-            <tr>
-              <td class="number">{{this.rank}}</td>
-              <td>{{view AWE.UI.Ember.LinkedCharacterView characterIdBinding="character_id"}}</td>
-              <td class="number">{{this.overall_score}}</td>
-              <td class="number">{{this.resource_score}}</td>
-              <td class="number">{{this.likes}} ({{formatAsPercent this.like_ratio}})</td>
-              <td class="number">{{this.victories}}</td>
-              <td class="number">{{formatNumber this.victory_ratio maxPlaces="1"}}</td>
-              <td class="number">{{this.kills}}</td>
-              <td class="number">{{this.max_experience}}</td>
-            </tr>
+          <tr {{bindAttr class="this.ownEntry:bold"}}>
+            <td class="number">{{this.rank}}</td>
+            <td>{{view AWE.UI.Ember.LinkedCharacterView characterIdBinding="character_id"}}</td>
+            <td class="number">{{this.overall_score}}</td>
+            <td class="number">{{this.resource_score}}</td>
+            <td class="number">{{this.likes}} ({{formatAsPercent this.like_ratio}})</td>
+            <td class="number">{{this.victories}}</td>
+            <td class="number">{{formatNumber this.victory_ratio maxPlaces="1"}}</td>
+            <td class="number">{{this.kills}}</td>
+            <td class="number">{{this.max_experience}}</td>
+          </tr>
         {{/each}}
         <tr>
           <td colspan="9" style="text-align:center;">
-            <a href="#" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a href="#" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
+            <a class="clickable" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a class="clickable" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
           </th>
         </tr>
       {{else}}
@@ -68,7 +68,7 @@
       </tr>
       {{#if allianceRankingEntries}}
         {{#each allianceRankingEntries}}
-          <tr>
+          <tr {{bindAttr class="this.ownEntry:bold"}}>
             <td class="number">{{this.rank}}</td>
             <td><a {{action "alliancePressed"}}>{{this.alliance_tag}}</a></td>
             <td class="number">{{this.num_fortress}}</td>
@@ -107,7 +107,7 @@
       </tr>
       {{#if fortressRankingEntries}}
         {{#each fortressRankingEntries}}
-          <tr>
+          <tr {{bindAttr class="this.ownEntry:bold"}}>
             <td class="number">{{this.rank}}</td>
             <td>{{this.region_name}}</td>
             <td>{{view AWE.UI.Ember.LinkedCharacterView characterIdBinding="owner_id"}}</td>

@@ -19,14 +19,26 @@ AWE.GS = (function(module) {
 
   module.CharacterRankingEntry = module.RankingEntry.extend({
     typeName: 'CharacterRankingEntry',
+    
+    ownEntry: function() {
+      return AWE.GS.player.currentCharacter.getId() == this.get('character_id');
+    }.property('character_id').cacheable(),
   });     
     
   module.AllianceRankingEntry = module.RankingEntry.extend({
     typeName: 'AllianceRankingEntry',
+    
+    ownEntry: function() {
+      return AWE.GS.player.currentCharacter.get('alliance_id') == this.get('alliance_id');
+    }.property('character_id').cacheable(),
   });     
     
   module.FortressRankingEntry = module.RankingEntry.extend({
     typeName: 'FortressRankingEntry',
+    
+    ownEntry: function() {
+      return AWE.GS.player.currentCharacter.getId() == this.get('owner_id');
+    }.property('character_id').cacheable(),
   });     
     
   // ///////////////////////////////////////////////////////////////////////
