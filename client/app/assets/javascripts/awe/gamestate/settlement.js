@@ -114,6 +114,10 @@ AWE.GS = (function(module) {
       return this.get('owner_id') === module.CharacterManager.currentCharacter.getId();
     },
     
+    isOutpost: function() {
+      return this.get('type_id') === module.SETTLEMENT_TYPE_OUTPOST;
+    }.property('type_id').cacheable(),
+	
     isFortress: function() {
       return this.get('type_id') === module.SETTLEMENT_TYPE_FORTRESS;
     }.property('type_id').cacheable(),
@@ -265,7 +269,6 @@ AWE.GS = (function(module) {
       var numSlots = enumerableSlots.filter(function(item) {
         return item.building_id !== undefined && item.building_id !== null 
       }).length
-      log('---> usedBuildingSlots', numSlots);
       return numSlots;
     }.property('enumerableSlots.@each.building_id').cacheable(),
     

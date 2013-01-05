@@ -108,7 +108,7 @@ AWE.UI = (function(module) {
       
       _super.recalcView();
       
-      if (!_newArmyButtonView && isOwnRegion) {
+      if (!_newArmyButtonView && isOwnRegion && region.location(0) != null && region.location(0).garrisonArmy() != null && !region.location(0).garrisonArmy().get('isFighting')) {
         _newArmyButtonView = AWE.UI.createButtonView();
         _newArmyButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/inspector/button/reinforce/normal"));
         _newArmyButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/inspector/button/reinforce/hovered"), module.CONTROL_STATE_HOVERED);

@@ -144,10 +144,10 @@ AWE.GS = (function(module) {
     fulfillmentRatio: function() {
       var allRegions = AWE.GS.game.roundInfo.get('regions_count');
       var allianceRegions = this.get('fulfillment_count');
-      var reqRegionsRatio = this.getPath('victoryType.condition.required_regions_ratio');
+      var reqRegionsRatio = AWE.GS.Util.parseAndEval(this.getPath('victoryType.condition.required_regions_ratio'), AWE.GS.game.roundInfo.get('age'), 'DAYS');
       var fulfillmentRatio = 1.0 * (allianceRegions / allRegions) / reqRegionsRatio;
       return (fulfillmentRatio > 1) ? 1 : fulfillmentRatio;
-    }.property('alliance_id', 'fulfillment_count', 'AWE.GS.game.roundInfo.regions_count', 'victory_type').cacheable(),
+    }.property('alliance_id', 'fulfillment_count', 'AWE.GS.game.roundInfo.regions_count', 'victoryType.condition.required_regions_ratio', 'AWE.GS.game.roundInfo.started_at').cacheable(),
     
     fulfillmentDurationRatio: function() {
       var firstFulfilledAt = this.get('first_fulfilled_at');

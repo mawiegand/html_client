@@ -2291,43 +2291,36 @@ AWE.Controller = (function(module) {
               targetLocations.push(regionLocations[i]);        
             }
           }
-          
-          // add fortresses in bordering regions
-          var neighbourNodes = armyRegion.node().getNeighbourLeaves();
-          for (var i = 0; i < neighbourNodes.length; i++) {
-            var region = neighbourNodes[i].region();
-            if (region) {
-              var location = region.location(0);             
-              if (location) {
-                targetLocations.push(location);
+
+          log('---> debug', armyRegion.node());
+
+
+          if (armyRegion.node()) {
+            // add fortresses in bordering regions
+            var neighbourNodes = armyRegion.node().getNeighbourLeaves();
+            for (var i = 0; i < neighbourNodes.length; i++) {
+              var region = neighbourNodes[i].region();
+              if (region) {
+                var location = region.location(0);
+                if (location) {
+                  targetLocations.push(location);
+                }
+                else {
+                  AWE.Map.Manager.fetchLocationsForRegion(region);
+                }
               }
               else {
-                AWE.Map.Manager.fetchLocationsForRegion(region);
+                AWE.Map.Manager.updateRegionForNode(neighbourNodes[i]);
               }
             }
-            else {
-              AWE.Map.Manager.updateRegionForNode(neighbourNodes[i]);
-            }
+          }
+          else {
+            AWE.Map.Manager.fetchSingleNodeById(armyRegion.nodeId());
           }
         }
         else {
           targetLocations.push(armyLocation.region().location(0));
         }
-        
-/* tesing code for movement command:
- * make all fetched location available as target location 
-        
-        targetLocations = [];
-        var locations = AWE.Map.Manager.getLocations();
-        
-        for (var i in locations) {
-          if (locations[i]) {
-            targetLocations.push(locations[i]);
-          }
-        }
-        
- */        
-        
       }
       else {
         AWE.Map.Manager.fetchLocationsForRegion(armyRegion);
@@ -2345,9 +2338,9 @@ AWE.Controller = (function(module) {
       if (armyLocation) {
         var armiesAtLocation = armyLocation.getArmies();
         
-        AWE.Ext.applyFunctionToElements(armiesAtLocation, function(army) {
-          if (!army.isOwn()) {
-            targetArmies.push(army);
+        AWE.Ext.applyFunctionToElements(armiesAtLocation, function(locationArmy) {
+          if (!locationArmy.isOwn()) {
+            targetArmies.push(locationArmy);
           }        
         });
       }
@@ -2573,10 +2566,16 @@ AWE.Controller = (function(module) {
         else if (currentAction.typeName === 'attackAction') {
           // target views entsprechend der sichtbarkeit der armeen verschieben
           var targetArmies = getTargetArmies(currentAction.army);
-          AWE.Ext.applyFunctionToElements(targetArmies, function(army) {
-            var targetView = targetViews[army.getId()];
-            var armyLocation = AWE.Map.Manager.getLocation(army.get('location_id'));
-            var targetedView = army.isGarrison() ? fortressViews[armyLocation.node().id()] : armyViews[army.getId()];
+          AWE.Ext.applyFunctionToElements(targetArmies, function(targetArmy) {
+            var targetView = targetViews[targetArmy.getId()];
+            var armyLocation = AWE.Map.Manager.getLocation(targetArmy.get('location_id'));
+
+            if (targetArmy.isGarrison()) {            
+              var targetedView = armyLocation.isFortress() ? fortressViews[armyLocation.node().id()] : locationViews[armyLocation.id()];
+            }
+            else {
+              var targetedView = armyViews[targetArmy.getId()];
+            }
             
             if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.settlementTypeId()] === 'fortress') {
               var visible = that.areArmiesAtFortressVisible(that.mc2vc(armyLocation.node().frame()));
@@ -2590,10 +2589,9 @@ AWE.Controller = (function(module) {
                 targetView = AWE.UI.createTargetView();
                 targetView.initWithControllerAndTargetedView(that, targetedView);
                 _stages[2].addChild(targetView.displayObject());
-                // locationView.setTargetView(targetView);
               }                                  
               setTargetPosition(targetView, targetedView.center());
-              newTargetViews[army.getId()] = targetView;
+              newTargetViews[targetArmy.getId()] = targetView;
             }
           });
         }
