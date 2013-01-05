@@ -14,6 +14,7 @@ AWE.UI.Ember = (function(module) {
     classNames:   ["inline"],
     tagName:      'span',
     
+    characterId: null,
     character: null,
     army: null,
     
@@ -23,10 +24,33 @@ AWE.UI.Ember = (function(module) {
     displayAlliance: true,
     displayCharacter: true,
     
+    characterIdObserver: function() {
+      var self = this;
+      var characterId = this.get('characterId');
+      
+      if (characterId != null) {
+        var character = this.get('character');
+        if (character == null) {
+          character =  AWE.GS.CharacterManager.getCharacter(characterId);
+          if (character == null) {
+            AWE.GS.CharacterManager.updateCharacter(this.get('characterId'), null, function(character) {
+              self.set('character', AWE.GS.CharacterManager.getCharacter(characterId));
+            });
+          }
+          else {
+            self.set('character', character);
+          }
+        }
+      }
+    }.observes('characterId'),
+    
     nameClicked: function() {
-      var character = this.get('character')
-      var army = this.get('army');
-      var characterId = character ? character.get('id') : (army ? army.get('owner_id') : null);
+      var characterId = this.get('characterId')
+      if (!characterId) {
+        var character = this.get('character')
+        var army = this.get('army');
+        characterId = character ? character.get('id') : (army ? army.get('owner_id') : null);
+      }
       if (!characterId) {
         return false;
       }
