@@ -41,17 +41,26 @@
             <td class="number">{{this.max_experience}}</td>
           </tr>
         {{/each}}
+        {{#each emptyCharacterRankingEntries}}
+          <tr><td colspan="9"></td></tr>
+        {{/each}}
         <tr>
           <td colspan="9" style="text-align:center;">
             <a class="clickable" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a class="clickable" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
-          </th>
+          </td>
         </tr>
       {{else}}
-        <tr>
+        {{#each emptyEntriesAheadOfSpinwheel}}
+          <tr><td colspan="9"></td></tr>
+        {{/each}}
+        </tr>
           <td colspan="9" style="text-align:center;">
             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-          </th>
+          </td>
         </tr>
+        {{#each emptyEntriesAfterSpinwheel}}
+          <tr><td colspan="9"></td></tr>
+        {{/each}}
       {{/if}}  
     </table>
 </script>
@@ -81,18 +90,26 @@
             <td class="number">{{this.regions_per_member}}</td>
           </tr>
         {{/each}}
+        {{#each emptyAllianceRankingEntries}}
+          <tr><td colspan="8"></td></tr>
+        {{/each}}
         <tr>
           <td colspan="8" style="text-align:center;">
-            <a href="#" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a href="#" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
-          </th>
+            <a class="clickable" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a class="clickable" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
+          </td>
         </tr>
-        
       {{else}}
-        <tr>
+        {{#each emptyEntriesAheadOfSpinwheel}}
+          <tr><td colspan="8"></td></tr>
+        {{/each}}
+        </tr>
           <td colspan="8" style="text-align:center;">
             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-          </th>
+          </td>
         </tr>
+        {{#each emptyEntriesAfterSpinwheel}}
+          <tr><td colspan="9"></td></tr>
+        {{/each}}
       {{/if}}  
     </table>
 </script>
@@ -118,17 +135,26 @@
             <td class="number">{{formatAsPercent this.defense_bonus}}</td>
           </tr>
         {{/each}}
+        {{#each emptyFortressRankingEntries}}
+          <tr><td colspan="6"></td></tr>
+        {{/each}}
         <tr>
           <td colspan="6" style="text-align:center;">
-            <a href="#" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a href="#" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
-          </th>
+            <a class="clickable" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a class="clickable" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
+          </td>
         </tr>
       {{else}}
-        <tr>
+        {{#each emptyEntriesAheadOfSpinwheel}}
+          <tr><td colspan="6"></td></tr>
+        {{/each}}
+        </tr>
           <td colspan="6" style="text-align:center;">
             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-          </th>
+          </td>
         </tr>
+        {{#each emptyEntriesAfterSpinwheel}}
+          <tr><td colspan="6"></td></tr>
+        {{/each}}
       {{/if}}  
     </table>
 </script>
