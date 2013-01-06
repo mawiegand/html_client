@@ -124,7 +124,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     sortedByOverall: function() {
-      return this.get('sortOrder') === 'overall' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'overall' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
     sortByOverall: function() {
@@ -134,7 +134,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     sortedByResource: function() {
-      return this.get('sortOrder') === 'resource' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'resource' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
     sortByResource: function() {
@@ -144,7 +144,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     sortedByLikes: function() {
-      return this.get('sortOrder') === 'likes' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'likes' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
     sortByLikes: function() {
@@ -154,7 +154,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     sortedByVictories: function() {
-      return this.get('sortOrder') === 'victories' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'victories' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
     sortByVictories: function() {
@@ -164,7 +164,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     sortedByVictoryRatio: function() {
-      return this.get('sortOrder') === 'victory_ratio' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'victory_ratio' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
     sortByVictoryRatio: function() {
@@ -174,7 +174,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     sortedByKills: function() {
-      return this.get('sortOrder') === 'kills' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'kills' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
     sortByKills: function() {
@@ -184,7 +184,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     sortedByExperience: function() {
-      return this.get('sortOrder') === 'experience' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'experience' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
     sortByExperience: function() {

@@ -278,6 +278,13 @@ html, body {
 }
 
 
+a { color: #787da8; text-decoration: none; }
+a:visited { color: #787da8; }
+a:hover { color: #333666; text-decoration: underline;}
+a:focus { outline: thin dotted; }
+
+
+
 .inline {
   display: inline-block;
 }
@@ -3610,6 +3617,7 @@ table .number {
   border-collapse: separate;
   border-spacing: 0;
   margin: 0px auto 0px auto;
+  width: 800px;
 }
 
 .participant-table {
@@ -3621,7 +3629,7 @@ table .number {
 }
 
 .participant-table th {
-  background-color: #AAC;  
+  background-color: #787da8;  
   color: #fff;
   padding: 4px 4px 4px 4px;
   font-size: 14px;
@@ -3629,7 +3637,7 @@ table .number {
 }
 
 .ranking-table th {
-  background-color: #AAC;  
+  background-color: #787da8;  
   color: #fff;
   padding: 4px 4px 4px 4px;
   font-size: 14px;
@@ -3640,8 +3648,12 @@ table .number {
   color: #ddf;
 }
 
+.ranking-table th.clickable:hover {
+  color: #333666;
+}
+
 .ranking-table th.sortOrder {
-  color: #aaf;
+  color: #333666;
 }
 
 .ranking-table tr:nth-child(even) {
@@ -3652,6 +3664,8 @@ table .number {
   height: 22px;
   font-size: 14px;
   padding: 4px 4px 4px 4px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .participant-table td {
