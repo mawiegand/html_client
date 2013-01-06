@@ -3596,6 +3596,14 @@ table .number {
   background: url('<%= asset_path("shop/button_platinum_hover.png") %>');
 }
 
+
+.ranking-view .advisor { 
+  position: absolute;
+  left: 530px;
+  top: -65px;
+}
+
+
 .ranking-table {
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -3612,8 +3620,16 @@ table .number {
   margin: 0px 0px 10px 0px;
 }
 
-.participant-table th, .ranking-table th {
-  background-color: #555;  
+.participant-table th {
+  background-color: #AAC;  
+  color: #fff;
+  padding: 4px 4px 4px 4px;
+  font-size: 14px;
+  text-shadow: none;
+}
+
+.ranking-table th {
+  background-color: #AAC;  
   color: #fff;
   padding: 4px 4px 4px 4px;
   font-size: 14px;
@@ -3626,6 +3642,10 @@ table .number {
 
 .ranking-table th.sortOrder {
   color: #aaf;
+}
+
+.ranking-table tr:nth-child(even) {
+  background-color: rgba(160, 160, 192, 0.15);
 }
 
 .participant-table td, .ranking-table td {
