@@ -19,9 +19,8 @@ AWE.UI.Ember = (function(module) {
     
     init: function() {
       this._super();
-      AWE.GS.VictoryProgressManager.updateLeaders(function() {
-        log('---> Leaders', AWE.GS.game.get('victoryProgressLeaders'));
-      });
+      AWE.GS.VictoryProgressManager.updateLeaders();
+      AWE.GS.RoundInfoManager.updateRoundInfo(AWE.GS.ENTITY_UPDATE_TYPE_FULL);
     },
     
     alliance:     null,
@@ -57,9 +56,13 @@ AWE.UI.Ember = (function(module) {
     
     requiredRegions: function() {
       var allRegions = AWE.GS.game.roundInfo.get('regions_count');
-      var reqRegionsRatio = this.getPath('victoryType.condition.required_regions_ratio');
+      var reqRegionsRatio = this.get('requiredRegionsRatio'); 
       return Math.ceil(allRegions * reqRegionsRatio);
     }.property('victoryType.condition.required_regions_ratio', 'AWE.GS.game.roundInfo.regions_count', 'victoryType').cacheable(),
+    
+    requiredRegionsRatio: function() {
+      return AWE.GS.Util.parseAndEval(this.getPath('victoryType.condition.required_regions_ratio'), AWE.GS.game.roundInfo.get('age'), 'DAYS');
+    }.property('victoryType.condition.required_regions_ratio', 'AWE.GS.game.roundInfo.started_at').cacheable(),
     
     fulfillmentPercentage: function() {
       if (this.getPath('progress.fulfillmentRatio') < 1) {
@@ -69,6 +72,14 @@ AWE.UI.Ember = (function(module) {
         return Math.floor(25 * (1 - this.getPath('progress.fulfillmentDurationRatio'))) + '%';
       }
     }.property('alliance', 'progress.fulfillmentRatio', 'progress.fulfillmentDurationRatio').cacheable(),
+    
+    styleFulfilled: function() {
+      return "position:absolute; top: 0px; right: " + this.get('fulfillmentPercentage') + "; width: 200px; height: 80px; margin-top: 0; border-right: 2px solid black; margin-right: -1px; text-align:right;";
+    }.property('fulfillmentPercentage').cacheable(),
+    
+    styleNotFulfilled: function() {
+      return "position:absolute; top: 0px; left: " + this.get('fulfillmentPercentage') + "; width: 200px; height: 80px; margin-top: 0; border-left: 2px solid black; margin-left: -1px;";
+    }.property('fulfillmentPercentage').cacheable(),
   });
   
   module.AllianceVictoryProgressOtherAllianceView = Ember.View.extend({
