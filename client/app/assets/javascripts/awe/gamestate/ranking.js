@@ -85,7 +85,6 @@ AWE.GS = (function(module) {
         function(rankingEntries, statusCode, xhr, timestamp) {
           if (statusCode === AWE.Net.OK) {
             AWE.GS.game.set('characterRanking', rankingEntries);
-            log('---> set character ranking', rankingEntries);
           }
           if (callback) {
             callback(rankingEntries, statusCode, xhr, timestamp);
@@ -136,7 +135,6 @@ AWE.GS = (function(module) {
         function(rankingEntries, statusCode, xhr, timestamp) {
           if (statusCode === AWE.Net.OK) {
             AWE.GS.game.set('allianceRanking', rankingEntries);
-            log('---> set alliance ranking', rankingEntries);
           }
           if (callback) {
             callback(rankingEntries, statusCode, xhr, timestamp);
@@ -187,7 +185,6 @@ AWE.GS = (function(module) {
         function(rankingEntries, statusCode, xhr, timestamp) {
           if (statusCode === AWE.Net.OK) {
             AWE.GS.game.set('fortressRanking', rankingEntries);
-            log('---> set fortress ranking', rankingEntries);
           }
           if (callback) {
             callback(rankingEntries, statusCode, xhr, timestamp);

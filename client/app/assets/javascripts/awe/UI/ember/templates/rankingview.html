@@ -31,7 +31,7 @@
         {{#each characterRankingEntries}}
           <tr {{bindAttr class="this.ownEntry:bold"}}>
             <td class="number">{{this.rank}}</td>
-            <td>{{view AWE.UI.Ember.LinkedCharacterView characterIdBinding="character_id"}}</td>
+            <td>{{view AWE.UI.Ember.RankingLinkedCharacterView characterIdBinding="character_id"}}</td>
             <td class="number">{{this.overall_score}}</td>
             <td class="number">{{this.resource_score}}</td>
             <td class="number">{{this.likes}} ({{formatAsPercent this.like_ratio}})</td>
@@ -112,7 +112,7 @@
           <tr {{bindAttr class="this.ownEntry:bold"}}>
             <td class="number">{{this.rank}}</td>
             <td>{{this.region_name}}</td>
-            <td>{{view AWE.UI.Ember.LinkedCharacterView characterIdBinding="owner_id"}}</td>
+            <td>{{view AWE.UI.Ember.RankingLinkedCharacterView characterIdBinding="owner_id"}}</td>
             <td class="number">{{formatAsPercent this.tax_rate}}</td>
             <td class="number">{{formatNumber this.resource_production_score maxPlaces="0"}}</td>
             <td class="number">{{formatAsPercent this.defense_bonus}}</td>

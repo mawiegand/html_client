@@ -176,6 +176,50 @@ AWE.UI.Ember = (function(module) {
     },
   });
   
+  module.RankingLinkedCharacterView = AWE.UI.Ember.LinkedCharacterView.extend({
+    
+    characterId: null,
+    
+    characterIdObserver: function() {
+      var self = this;
+      var characterId = this.get('characterId');
+      
+      if (characterId != null) {
+        var character = this.get('character');
+        if (character == null) {
+          character =  AWE.GS.CharacterManager.getCharacter(characterId);
+          if (character == null) {
+            AWE.GS.CharacterManager.updateCharacter(this.get('characterId'), null, function(character) {
+              if (!self.get('isDestroyed')) {
+                self.set('character', AWE.GS.CharacterManager.getCharacter(characterId));
+              }
+            });
+          }
+          else {
+            self.set('character', character);
+          }
+        }
+      }
+    }.observes('characterId'),    
+    
+    nameClicked: function() {
+      var characterId = this.get('characterId');
+      if (!characterId) {
+        var character = this.get('character')
+        var army = this.get('army');
+        characterId = character ? character.get('id') : (army ? army.get('owner_id') : null);
+      }
+      if (!characterId) {
+        return false;
+      }
+      var dialog = AWE.UI.Ember.CharacterInfoDialog.create({
+        characterId: characterId,
+      });
+      WACKADOO.presentModalDialog(dialog);      
+      return false; // prevent default behavior     
+    },
+  });  
+  
   module.AllianceRankingView = Ember.View.extend({
     templateName: 'alliance-ranking-view',
     
