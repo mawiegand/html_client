@@ -9,12 +9,17 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
 
-  module.RankingView = Ember.View.extend({
+  module.RankingDialog = Ember.View.extend({
     templateName: 'ranking-view',
     
     onClose:   null,
     
     sortOrder: null,
+    
+    init: function() {
+      AWE.GS.RankingInfoManager.updateRankingInfo();
+      this._super();
+    },
     
     closePressed: function() {
       this.destroy();
@@ -59,7 +64,51 @@ AWE.UI.Ember = (function(module) {
     },
   });
 
-  module.CharacterRankingView = Ember.View.extend({
+  module.RankingView = Ember.View.extend({
+
+    emptyEntriesAheadOfSpinwheel: function() {
+      return new Array(Math.ceil(AWE.Config.RANKING_LIST_ENTRIES / 2));
+    }.property('AWE.Config.RANKING_LIST_ENTRIES').cacheable(),
+    
+    emptyEntriesAfterSpinwheel: function() {
+      return new Array(Math.floor(AWE.Config.RANKING_LIST_ENTRIES / 2));
+    }.property('AWE.Config.RANKING_LIST_ENTRIES').cacheable(),
+    
+    gotoFirstPage: function() {
+      this.gotoPage(1);
+    },
+    
+    gotoSecondPage: function() {
+      this.gotoPage(2);
+    },
+    
+    gotoPreviousPreviousPage: function() {
+      this.gotoPage(this.get('currentPage') - 2);
+    },
+    
+    gotoPreviousPage: function() {
+      this.gotoPage(this.get('currentPage') - 1);
+    },
+    
+    gotoNextPage: function() {
+      this.gotoPage(this.get('currentPage') + 1);
+    },
+    
+    gotoNextNextPage: function() {
+      this.gotoPage(this.get('currentPage') + 2);
+    },
+    
+    gotoMaxPreviousPage: function() {
+      this.gotoPage(this.get('maxPage') - 1);
+    },
+    
+    gotoMaxPage: function() {
+      this.gotoPage(this.get('maxPage'));
+    },
+    
+  });
+
+  module.CharacterRankingView = module.RankingView.extend({
     templateName: 'character-ranking-view',
     
     init: function() {
@@ -91,14 +140,6 @@ AWE.UI.Ember = (function(module) {
       }
     }.property('characterRankingEntries').cacheable(),
     
-    emptyEntriesAheadOfSpinwheel: function() {
-      return new Array(8);
-    }.property('AWE.Config.RANKING_LIST_ENTRIES').cacheable(),
-    
-    emptyEntriesAfterSpinwheel: function() {
-      return new Array(7);
-    }.property('AWE.Config.RANKING_LIST_ENTRIES').cacheable(),
-    
     currentPage: function() {
       var entries = this.get('characterRankingEntries');
       if (entries != null && entries.length > 0) {
@@ -108,19 +149,14 @@ AWE.UI.Ember = (function(module) {
         return 1;
       }
     }.property('AWE.GS.game.characterRanking').cacheable(),
+
+    maxPage: function() {
+      return Math.ceil(AWE.GS.game.rankingInfo.character_entries_count / AWE.Config.RANKING_LIST_ENTRIES); 
+    }.property('AWE.GS.game.rankingInfo.character_entries_count').cacheable(),
     
-    nextPage: function() {
-      var nextPage = this.get('currentPage') + 1;
+    gotoPage: function(page) {
       AWE.GS.game.set('characterRanking', null);
-      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(nextPage, this.get('sortOrder'));
-    },
-    
-    previousPage: function() {
-      var previousPage = this.get('currentPage') - 1;
-      if (this.get('currentPage') > 1) {
-        AWE.GS.game.set('characterRanking', null);
-        AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(previousPage, this.get('sortOrder'));
-      }
+      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking(page, this.get('sortOrder'));
     },
     
     sortedByOverall: function() {
@@ -194,51 +230,7 @@ AWE.UI.Ember = (function(module) {
     },
   });
   
-  module.RankingLinkedCharacterView = AWE.UI.Ember.LinkedCharacterView.extend({
-    
-    characterId: null,
-    
-    characterIdObserver: function() {
-      var self = this;
-      var characterId = this.get('characterId');
-      
-      if (characterId != null) {
-        var character = this.get('character');
-        if (character == null) {
-          character =  AWE.GS.CharacterManager.getCharacter(characterId);
-          if (character == null) {
-            AWE.GS.CharacterManager.updateCharacter(this.get('characterId'), null, function(character) {
-              if (!self.get('isDestroyed')) {
-                self.set('character', AWE.GS.CharacterManager.getCharacter(characterId));
-              }
-            });
-          }
-          else {
-            self.set('character', character);
-          }
-        }
-      }
-    }.observes('characterId'),    
-    
-    nameClicked: function() {
-      var characterId = this.get('characterId');
-      if (!characterId) {
-        var character = this.get('character')
-        var army = this.get('army');
-        characterId = character ? character.get('id') : (army ? army.get('owner_id') : null);
-      }
-      if (!characterId) {
-        return false;
-      }
-      var dialog = AWE.UI.Ember.CharacterInfoDialog.create({
-        characterId: characterId,
-      });
-      WACKADOO.presentModalDialog(dialog);      
-      return false; // prevent default behavior     
-    },
-  });  
-  
-  module.AllianceRankingView = Ember.View.extend({
+  module.AllianceRankingView = module.RankingView.extend({
     templateName: 'alliance-ranking-view',
     
     init: function() {
@@ -270,14 +262,6 @@ AWE.UI.Ember = (function(module) {
       }
     }.property('allianceRankingEntries').cacheable(),
     
-    emptyEntriesAheadOfSpinwheel: function() {
-      return new Array(8);
-    }.property('AWE.Config.RANKING_LIST_ENTRIES').cacheable(),
-    
-    emptyEntriesAfterSpinwheel: function() {
-      return new Array(7);
-    }.property('AWE.Config.RANKING_LIST_ENTRIES').cacheable(),
-    
     currentPage: function() {
       var entries = this.get('allianceRankingEntries');
       if (entries != null && entries.length > 0) {
@@ -288,20 +272,15 @@ AWE.UI.Ember = (function(module) {
       }
     }.property('AWE.GS.game.allianceRanking').cacheable(),
     
-    nextPage: function() {
-      var nextPage = this.get('currentPage') + 1;
+    maxPage: function() {
+      return Math.ceil(AWE.GS.game.rankingInfo.alliance_entries_count / AWE.Config.RANKING_LIST_ENTRIES); 
+    }.property('AWE.GS.game.rankingInfo.alliance_entries_count').cacheable(),
+    
+    gotoPage: function(page) {
       AWE.GS.game.set('allianceRanking', null);
-      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(nextPage, this.get('sortOrder'));
+      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(page, this.get('sortOrder'));
     },
     
-    previousPage: function() {
-      var previousPage = this.get('currentPage') - 1;
-      if (this.get('currentPage') > 1) {
-        AWE.GS.game.set('allianceRanking', null);
-        AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(previousPage, this.get('sortOrder'));
-      }
-    },
-        
     sortedByFortress: function() {
       return this.get('sortOrder') === 'fortress' ? 'sortOrder clickable' : 'clickable';
     }.property('sortOrder').cacheable(),
@@ -370,7 +349,7 @@ AWE.UI.Ember = (function(module) {
     },
   });
   
-  module.FortressRankingView = Ember.View.extend({
+  module.FortressRankingView = module.RankingView.extend({
     templateName: 'fortress-ranking-view',
 
     init: function() {
@@ -402,14 +381,6 @@ AWE.UI.Ember = (function(module) {
       }
     }.property('fortressRankingEntries').cacheable(),
     
-    emptyEntriesAheadOfSpinwheel: function() {
-      return new Array(8);
-    }.property('AWE.Config.RANKING_LIST_ENTRIES').cacheable(),
-    
-    emptyEntriesAfterSpinwheel: function() {
-      return new Array(7);
-    }.property('AWE.Config.RANKING_LIST_ENTRIES').cacheable(),
-    
     currentPage: function() {
       var entries = this.get('fortressRankingEntries');
       if (entries != null && entries.length > 0) {
@@ -420,20 +391,15 @@ AWE.UI.Ember = (function(module) {
       }
     }.property('AWE.GS.game.fortressRanking').cacheable(),
     
-    nextPage: function() {
-      var nextPage = this.get('currentPage') + 1;
+    maxPage: function() {
+      return Math.ceil(AWE.GS.game.rankingInfo.fortress_entries_count / AWE.Config.RANKING_LIST_ENTRIES); 
+    }.property('AWE.GS.game.rankingInfo.fortress_entries_count').cacheable(),
+    
+    gotoPage: function(page) {
       AWE.GS.game.set('fortressRanking', null);
-      AWE.GS.FortressRankingEntryManager.updateFortressRanking(nextPage, this.get('sortOrder'));
+      AWE.GS.FortressRankingEntryManager.updateFortressRanking(page, this.get('sortOrder'));
     },
     
-    previousPage: function() {
-      var previousPage = this.get('currentPage') - 1;
-      if (this.get('currentPage') > 1) {
-        AWE.GS.game.set('fortressRanking', null);
-        AWE.GS.FortressRankingEntryManager.updateFortressRanking(previousPage, this.get('sortOrder'));
-      }
-    },
-
     sortedByTaxRate: function() {
       return this.get('sortOrder') === 'taxRate' ? 'sortOrder clickable' : 'clickable';
     }.property('sortOrder').cacheable(),
@@ -465,9 +431,116 @@ AWE.UI.Ember = (function(module) {
     },
   });
   
+  module.RankingNavigationView = Ember.View.extend({
+    templateName: 'ranking-navigation-view',
+    
+    previousPreviousPage: function() {
+      return this.get('currentPage') - 2; 
+    }.property('currentPage').cacheable(),
+    
+    previousPage: function() {
+      return this.get('currentPage') - 1; 
+    }.property('currentPage').cacheable(),
+    
+    currentPage: null,
+    
+    nextPage: function() {
+      return this.get('currentPage') + 1; 
+    }.property('currentPage').cacheable(),
+    
+    nextNextPage: function() {
+      return this.get('currentPage') + 2; 
+    }.property('currentPage').cacheable(),
+    
+    maxPreviousPage: function() {
+      return this.get('maxPage') - 1; 
+    }.property('maxPage').cacheable(),
+    
+    maxPage: null,
+    
+    pageGreater1: function() {
+      return this.get('currentPage') > 1; 
+    }.property('currentPage').cacheable(),
+    
+    pageGreater2: function() {
+      return this.get('currentPage') > 2; 
+    }.property('currentPage').cacheable(),
+    
+    pageGreater3: function() {
+      return this.get('currentPage') > 3; 
+    }.property('currentPage').cacheable(),
+    
+    pageGreater4: function() {
+      return this.get('currentPage') > 4; 
+    }.property('currentPage').cacheable(),
+    
+    pageGreater5: function() {
+      return this.get('currentPage') > 5; 
+    }.property('currentPage').cacheable(),
+    
+    pageLessMax1: function() {
+      return this.get('currentPage') < this.get('maxPage'); 
+    }.property('currentPage').cacheable(),
+    
+    pageLessMax2: function() {
+      return this.get('currentPage') < this.get('maxPage') - 1; 
+    }.property('currentPage').cacheable(),
+    
+    pageLessMax3: function() {
+      return this.get('currentPage') < this.get('maxPage') - 2; 
+    }.property('currentPage').cacheable(),
+    
+    pageLessMax4: function() {
+      return this.get('currentPage') < this.get('maxPage') - 3; 
+    }.property('currentPage').cacheable(),
+    
+    pageLessMax5: function() {
+      return this.get('currentPage') < this.get('maxPage') - 4; 
+    }.property('currentPage').cacheable(),
+  });
+  
   module.VictoryProgressRankingView = Ember.View.extend({
     templateName: 'victory-progress-ranking-view',
   });
+  
+  module.RankingLinkedCharacterView = AWE.UI.Ember.LinkedCharacterView.extend({
+    
+    characterId: null,
+    
+    characterIdObserver: function() {
+      var self = this;
+      var characterId = this.get('characterId');
+      
+      if (characterId != null) {
+        var character = this.get('character');
+        if (character == null) {
+          character =  AWE.GS.CharacterManager.getCharacter(characterId);
+          if (character == null) {
+            AWE.GS.CharacterManager.updateCharacter(this.get('characterId'), null, function(character) {
+              if (!self.get('isDestroyed')) {
+                self.set('character', AWE.GS.CharacterManager.getCharacter(characterId));
+              }
+            });
+          }
+          else {
+            self.set('character', character);
+          }
+        }
+      }
+    }.observes('characterId'),    
+    
+    nameClicked: function() {
+      var characterId = this.get('characterId');
+      if (!characterId) {
+        return false;
+      }
+      var dialog = AWE.UI.Ember.CharacterInfoDialog.create({
+        characterId: characterId,
+      });
+      WACKADOO.presentModalDialog(dialog);      
+      return false; // prevent default behavior     
+    },
+  });  
   
   return module;  
     

@@ -24,6 +24,7 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
     characterRanking: null,
     allianceRanking: null,
     fortressRanking: null,
+    rankinginfo: null,
   });
     
   /** shortest type of update, just the ID and very basic data

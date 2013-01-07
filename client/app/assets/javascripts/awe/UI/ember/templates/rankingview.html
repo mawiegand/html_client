@@ -4,7 +4,7 @@
     <div class="modal-dialog-pane z-layer-4 ranking-view">
       <h1>{{t ranking.header }}</h1>
       <div class="advisor chef"></div>
-
+      <br />
       
       {{view AWE.UI.Ember.RankingTabView }}
 
@@ -46,7 +46,7 @@
         {{/each}}
         <tr>
           <td colspan="9" style="text-align:center;">
-            <a class="clickable" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a class="clickable" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
+            {{view AWE.UI.Ember.RankingNavigationView currentPageBinding="currentPage" maxPageBinding="maxPage"}}
           </td>
         </tr>
       {{else}}
@@ -95,7 +95,7 @@
         {{/each}}
         <tr>
           <td colspan="8" style="text-align:center;">
-            <a class="clickable" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a class="clickable" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
+            {{view AWE.UI.Ember.RankingNavigationView currentPageBinding="currentPage" maxPageBinding="maxPage"}}
           </td>
         </tr>
       {{else}}
@@ -140,7 +140,7 @@
         {{/each}}
         <tr>
           <td colspan="6" style="text-align:center;">
-            <a class="clickable" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a class="clickable" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
+            {{view AWE.UI.Ember.RankingNavigationView currentPageBinding="currentPage" maxPageBinding="maxPage"}}
           </td>
         </tr>
       {{else}}
@@ -157,6 +157,20 @@
         {{/each}}
       {{/if}}  
     </table>
+</script>
+
+<script type="text/x-handlebars" data-template-name="ranking-navigation-view">
+  {{#if pageGreater1}}<a class="clickable" {{action "gotoPreviousPage" target="parentView"}}>&lt;&lt;</a> | <a class="clickable" {{action "gotoFirstPage" target="parentView"}}>1</a> |{{/if}}
+  {{#if pageGreater3}}<a class="clickable" {{action "gotoSecondPage" target="parentView"}}>2</a> |{{/if}}
+  {{#if pageGreater5}} ... |{{/if}}
+  {{#if pageGreater4}}<a class="clickable" {{action "gotoPreviousPreviousPage" target="parentView"}}>{{previousPreviousPage}}</a> |{{/if}}
+  {{#if pageGreater2}}<a class="clickable" {{action "gotoPreviousPage" target="parentView"}}>{{previousPage}}</a> |{{/if}} 
+  <b>{{currentPage}}</b>
+  {{#if pageLessMax2}}| <a class="clickable" {{action "gotoNextPage" target="parentView"}}>{{nextPage}}</a>{{/if}} 
+  {{#if pageLessMax4}}| <a class="clickable" {{action "gotoNextNextPage" target="parentView"}}>{{nextNextPage}}</a>{{/if}} 
+  {{#if pageLessMax5}}| ... {{/if}} 
+  {{#if pageLessMax3}}| <a class="clickable" {{action "gotoMaxPreviousPage" target="parentView"}}>{{maxPreviousPage}}</a>{{/if}} 
+  {{#if pageLessMax1}}| <a class="clickable" {{action "gotoMaxPage" target="parentView"}}>{{maxPage}}</a> | <a class="clickable" {{action "gotoNextPage" target="parentView"}}>>></a>{{/if}} 
 </script>
 
 <script type="text/x-handlebars" data-template-name="victory-progress-ranking-view">

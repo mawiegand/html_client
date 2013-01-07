@@ -196,6 +196,56 @@ AWE.GS = (function(module) {
     return that;
       
   }());
+  
+  module.RankingInfo = module.Entity.extend({
+    typeName: 'RankingInfo',
+    
+    character_entries_count: 0,
+    alliance_entries_count: 0,
+    fortress_entries_count: 0,
+  });       
+    
+  module.RankingInfoManager = (function(my) {
+  
+    // private attributes and methods //////////////////////////////////////
+  
+    var that;
+    var lastRankingInfoUpdate = null;
+
+    // protected attributes and methods ////////////////////////////////////
+
+    my = my || {};
+  
+    my.createEntity = function(spec) {
+      return module.RankingInfo.create(spec);
+    }
+    
+    // public attributes and methods ///////////////////////////////////////
+  
+    that = module.createEntityManager(my);
+      
+    that.updateRankingInfo = function(callback) {
+      var self = this;
+      var url = AWE.Config.RANKING_INFO_SERVER_BASE;
+
+      return my.fetchEntitiesFromURL(
+        url, 
+        my.runningUpdatesPerId, 
+        1, null, null,
+        function(rankingInfo, statusCode, xhr, timestamp) {
+          if (statusCode === AWE.Net.OK) {
+            AWE.GS.game.set('rankingInfo', rankingInfo);
+          }
+          if (callback) {
+            callback(rankingInfo, statusCode, xhr, timestamp);
+          }
+        }
+      );
+    }
+    
+    return that;
+      
+  }());
     
   
   return module;
