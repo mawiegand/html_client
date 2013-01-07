@@ -229,7 +229,7 @@ AWE.UI.Ember = (function(module) {
       var settlementId  = this.getPath('settlement.id');
       var self          = this;
 
-      var ownName       = AWE.GS.player.getPath('currentCharacter.name') || "";
+      var ownName       = AWE.GS.game.getPath('currentCharacter.name') || "";
       
       if (recipientName === ownName) {
         this.set('errorMessage', AWE.I18n.lookupTranslation('settlement.trade.error.recipientUnknown'));

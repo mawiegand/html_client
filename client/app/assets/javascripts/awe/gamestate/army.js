@@ -132,7 +132,7 @@ AWE.GS = (function(module) {
     
     isOwnProp: function() {
       return this.isOwn();
-    }.property('owner_id', 'AWE.GS.player.currentCharacter').cacheable(),
+    }.property('owner_id', 'AWE.GS.game.currentCharacter').cacheable(),
     
     armyCategory: function() {
       var art = parseFloat(this.get('unitcategory_artillery_strength') || "0.0");

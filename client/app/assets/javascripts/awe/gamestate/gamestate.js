@@ -19,6 +19,7 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
   /** ember object for information that is not kept in any entity manager
    * @name AWE.GS.game */ 
   module.game = Ember.Object.create({
+    currentCharacter: null,
     roundInfo: null,
     victoryProgressLeaders: null,
     characterRanking: null,

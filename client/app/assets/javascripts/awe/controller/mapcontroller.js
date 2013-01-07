@@ -1674,7 +1674,7 @@ AWE.Controller = (function(module) {
         if (lastOwnArmiesCheck.getTime() + 60*1000 < new Date().getTime() && !isUpdateRunning('ownArmies')) { // check for own armies every minute
           startUpdate('ownArmies');
           lastOwnArmiesCheck = new Date();
-          AWE.GS.ArmyManager.updateArmiesForCharacter(AWE.GS.player.getPath('currentCharacter.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+          AWE.GS.ArmyManager.updateArmiesForCharacter(AWE.GS.game.getPath('currentCharacter.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
             stopUpdate('ownArmies');
           });
         }

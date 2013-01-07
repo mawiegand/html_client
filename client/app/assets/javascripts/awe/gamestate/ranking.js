@@ -21,7 +21,7 @@ AWE.GS = (function(module) {
     typeName: 'CharacterRankingEntry',
     
     ownEntry: function() {
-      return AWE.GS.player.currentCharacter.getId() == this.get('character_id');
+      return AWE.GS.game.currentCharacter.getId() == this.get('character_id');
     }.property('character_id').cacheable(),
   });     
     
@@ -29,7 +29,7 @@ AWE.GS = (function(module) {
     typeName: 'AllianceRankingEntry',
     
     ownEntry: function() {
-      return AWE.GS.player.currentCharacter.get('alliance_id') == this.get('alliance_id');
+      return AWE.GS.game.currentCharacter.get('alliance_id') == this.get('alliance_id');
     }.property('character_id').cacheable(),
   });     
     
@@ -37,7 +37,7 @@ AWE.GS = (function(module) {
     typeName: 'FortressRankingEntry',
     
     ownEntry: function() {
-      return AWE.GS.player.currentCharacter.getId() == this.get('owner_id');
+      return AWE.GS.game.currentCharacter.getId() == this.get('owner_id');
     }.property('character_id').cacheable(),
   });     
     

@@ -146,9 +146,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         }
       };    */
       
-      var identifier  = AWE.GS.player.currentCharacter.get('identifier');
-      var tag         = AWE.GS.player.currentCharacter.get('alliance_tag');
-      var name        = AWE.GS.player.currentCharacter.get('name');
+      var identifier  = AWE.GS.game.currentCharacter.get('identifier');
+      var tag         = AWE.GS.game.currentCharacter.get('alliance_tag');
+      var name        = AWE.GS.game.currentCharacter.get('name');
       var accessToken = AWE.Net.currentUserCredentials.get('access_token');
       
       var base        = AWE.Config.JABBER_SERVER_BASE;
@@ -164,7 +164,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_ANONYMOUS = "anonymous." +base;
       HOST_BOSH      = "http://"+base+"/http-bind/";
       
-      var character = AWE.GS.player && AWE.GS.player.get('currentCharacter');
+      var character = AWE.GS.game && AWE.GS.game.get('currentCharacter');
       var beginner  = character && character.get('login_count') <= 1;    
       var openPane  = character && character.get('login_count') <= 3;  // whether or not to open a chat pane initially
 
@@ -231,14 +231,14 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     showStartupDialogs: function() {
       
-      if (!AWE.GS.player.getPath('currentCharacter.login_count') || AWE.GS.player.getPath('currentCharacter.login_count') <= 1) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
+      if (!AWE.GS.game.getPath('currentCharacter.login_count') || AWE.GS.game.getPath('currentCharacter.login_count') <= 1) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
         this.showWelcomeDialog();
       }
       else {
         this.showAnnouncement();
       }
       
-      if (AWE.GS.player.currentCharacter && !AWE.GS.player.currentCharacter.get('reached_game')) {
+      if (AWE.GS.game.currentCharacter && !AWE.GS.game.currentCharacter.get('reached_game')) {
         // track conversion: character reached the game (and pressed a button!)
         var action = AWE.Action.Fundamental.createTrackCharacterConversionAction("reached_game");
         action.send();   
@@ -296,7 +296,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         self.readyToRun();                            // ready to run
         self.showStartupDialogs();
         
-        if (AWE.Config.CHAT_SHOW) {  // && AWE.GS.player.currentCharacter && AWE.GS.player.currentCharacter.get('login_count') > 1) {
+        if (AWE.Config.CHAT_SHOW) {  // && AWE.GS.game.currentCharacter && AWE.GS.game.currentCharacter.get('login_count') > 1) {
           self.initChat();
         }
       }
@@ -430,7 +430,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     baseButtonClicked: function() {
       if (this.get('presentScreenController') === this.get('mapScreenController')) {
-        var node = AWE.GS.player.getPath('currentCharacter.base_node');
+        var node = AWE.GS.game.getPath('currentCharacter.base_node');
         if (node) {
           this.get('presentScreenController').moveTo(node, true);
         }
@@ -446,7 +446,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     characterButtonClicked: function() {
       var dialog = AWE.UI.Ember.ProfileView.create({
-        characterBinding: 'AWE.GS.player.currentCharacter',
+        characterBinding: 'AWE.GS.game.currentCharacter',
       });
       this.presentModalDialog(dialog);      
     },
@@ -498,7 +498,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     activateBaseController: function(reference) {
-      reference = reference ||  { locationId: AWE.GS.player.getPath('currentCharacter.base_location_id') };
+      reference = reference ||  { locationId: AWE.GS.game.getPath('currentCharacter.base_location_id') };
       var baseController = this.get('baseScreenController');
       if (!baseController) {
         baseController = AWE.Controller.createSettlementController('#layers');
