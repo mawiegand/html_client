@@ -2,13 +2,12 @@
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="center-helper">
     <div class="modal-dialog-pane z-layer-4 ranking-view">
+      <a {{action "closePressed"}} class="close clickable"></a>
       <h1>{{t ranking.header }}</h1>
       <div class="advisor chef"></div>
       <br />
       
       {{view AWE.UI.Ember.RankingTabView }}
-
-      <div class="icon-button ok-button" {{action "closePressed"}}>{{t general.close}}</div>
     </div>
   </div>
 </script>

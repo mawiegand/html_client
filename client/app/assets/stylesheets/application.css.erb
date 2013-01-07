@@ -3606,8 +3606,21 @@ table .number {
 
 .ranking-view .advisor { 
   position: absolute;
-  left: 550px;
-  top: -65px;
+  left: 510px;
+  top: -60px;
+}
+
+.ranking-view a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.ranking-view a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
 
