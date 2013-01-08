@@ -10,7 +10,7 @@
        <span title="{{t settlement.info.meleeTrainingSpeed}}"     >{{t settlement.info.meleeTrainingSpeedAbbreviation}} {{formatNumber infantryTrainingSpeed maxPlaces="0"}}%</span> |
        <span title="{{t settlement.info.ridersTrainingSpeed}}"    >{{t settlement.info.ridersTrainingSpeedAbbreviation}} {{formatNumber cavalryTrainingSpeed maxPlaces="0"}}%</span> | 
        <span title="{{t settlement.info.rangedTrainingSpeed}}"     >{{t settlement.info.rangedTrainingSpeedAbbreviation}} {{formatNumber artilleryTrainingSpeed maxPlaces="0"}}%</span> | 
-       <span title="{{t settlement.info.commandPoints}}">{{t building.commandPoints}}: {{formatNumber settlement.commandPointsUsed maxPlaces="0"}} / {{formatNumber settlement.command_points places="0"}}</span><br/> 
+       <span title="{{t settlement.info.commandPoints}}">{{t building.commandPoints}}: {{settlement.commandPointsUsed}} / {{settlement.command_points}}</span><br/> 
 
       &nbsp;&nbsp;&nbsp;{{t settlement.info.buildings}}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="settlement.usedBuildingSlots"}} / {{settlement.building_slots_total}}
       {{t settlement.population}} {{settlement.score}}
@@ -45,7 +45,7 @@
     <p>{{t settlement.info.speedUpInfo}}</p>
     
     <p>
-      <span title="{{t settlement.info.commandPoints}}"><b>{{t building.commandPoints}}:</b> {{formatNumber settlement.commandPointsUsed places="0"}} / {{formatNumber settlement.command_points places="0"}}</span> 
+      <span title="{{t settlement.info.commandPoints}}"><b>{{t building.commandPoints}}:</b> {{settlement.commandPointsUsed}} / {{settlement.command_points}}</span> 
     
     <span class="help-icon" title="{{t settlement.info.commandPointsHelp}}">&nbsp;</span></p>
     
