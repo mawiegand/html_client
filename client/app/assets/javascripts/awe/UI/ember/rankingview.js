@@ -105,6 +105,28 @@ AWE.UI.Ember = (function(module) {
     gotoMaxPage: function() {
       this.gotoPage(this.get('maxPage'));
     },
+
+    characterPressed: function(evt) {
+      var entry = evt.context;
+      var characterId = entry.get('character_id');
+      if (characterId != null) {
+        var dialog = AWE.UI.Ember.CharacterInfoDialog.create({
+          characterId: characterId,
+        });
+        WACKADOO.presentModalDialog(dialog);      
+      }     
+      return false; // prevent default behavior
+    },
+    
+    alliancePressed: function(evt) {
+      var entry = evt.context;
+      var allianceId = entry.get('alliance_id');
+      if (allianceId != null) {
+        WACKADOO.activateAllianceController(allianceId);
+        WACKADOO.closeAllModalDialogs();
+      }
+      return false; // prevent default behavior
+    },
     
   });
 
@@ -151,7 +173,12 @@ AWE.UI.Ember = (function(module) {
     }.property('AWE.GS.game.characterRanking').cacheable(),
 
     maxPage: function() {
-      return Math.ceil(AWE.GS.game.rankingInfo.character_entries_count / AWE.Config.RANKING_LIST_ENTRIES); 
+      if (AWE.GS.game.rankingInfo != null && AWE.GS.game.rankingInfo.character_entries_count != null) {
+        return Math.ceil(AWE.GS.game.rankingInfo.character_entries_count / AWE.Config.RANKING_LIST_ENTRIES);
+      }
+      else {
+        return 0;
+      } 
     }.property('AWE.GS.game.rankingInfo.character_entries_count').cacheable(),
     
     gotoPage: function(page) {
@@ -502,46 +529,7 @@ AWE.UI.Ember = (function(module) {
   module.VictoryProgressRankingView = Ember.View.extend({
     templateName: 'victory-progress-ranking-view',
   });
-  
-  module.RankingLinkedCharacterView = AWE.UI.Ember.LinkedCharacterView.extend({
     
-    characterId: null,
-    
-    characterIdObserver: function() {
-      var self = this;
-      var characterId = this.get('characterId');
-      
-      if (characterId != null) {
-        var character = this.get('character');
-        if (character == null) {
-          character =  AWE.GS.CharacterManager.getCharacter(characterId);
-          if (character == null) {
-            AWE.GS.CharacterManager.updateCharacter(this.get('characterId'), null, function(character) {
-              if (!self.get('isDestroyed')) {
-                self.set('character', AWE.GS.CharacterManager.getCharacter(characterId));
-              }
-            });
-          }
-          else {
-            self.set('character', character);
-          }
-        }
-      }
-    }.observes('characterId'),    
-    
-    nameClicked: function() {
-      var characterId = this.get('characterId');
-      if (!characterId) {
-        return false;
-      }
-      var dialog = AWE.UI.Ember.CharacterInfoDialog.create({
-        characterId: characterId,
-      });
-      WACKADOO.presentModalDialog(dialog);      
-      return false; // prevent default behavior     
-    },
-  });  
-  
   return module;  
     
 }(AWE.UI.Ember || {}));
