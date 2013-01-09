@@ -516,23 +516,23 @@ AWE.UI.Ember = (function(module) {
     
     pageLessMax1: function() {
       return this.get('currentPage') < this.get('maxPage'); 
-    }.property('currentPage').cacheable(),
+    }.property('currentPage', 'maxPage').cacheable(),
     
     pageLessMax2: function() {
       return this.get('currentPage') < this.get('maxPage') - 1; 
-    }.property('currentPage').cacheable(),
+    }.property('currentPage', 'maxPage').cacheable(),
     
     pageLessMax3: function() {
       return this.get('currentPage') < this.get('maxPage') - 2; 
-    }.property('currentPage').cacheable(),
+    }.property('currentPage', 'maxPage').cacheable(),
     
     pageLessMax4: function() {
       return this.get('currentPage') < this.get('maxPage') - 3; 
-    }.property('currentPage').cacheable(),
+    }.property('currentPage', 'maxPage').cacheable(),
     
     pageLessMax5: function() {
       return this.get('currentPage') < this.get('maxPage') - 4; 
-    }.property('currentPage').cacheable(),
+    }.property('currentPage', 'maxPage').cacheable(),
   });
   
   module.VictoryProgressRankingView = Ember.View.extend({
