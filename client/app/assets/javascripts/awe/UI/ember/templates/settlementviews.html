@@ -120,3 +120,24 @@
   {{/unless}}
 </script>
 
+<script type="text/x-handlebars" data-template-name="settlement-abandon-dialog">
+  <div class="modal-dialog-background z-layer-3"></div>
+  <div class="center-helper">
+    <div class="modal-dialog-pane z-layer-4 abandon-dialog">
+      <h1>Aufgabe der Lagerstätte</h1>
+      {{#if error}}
+        <p>Fehler: Lagerstätte konnte nicht aufgegeben werden.</p>
+        <div class="icon-button close-button" {{action "cancelPressed"}}>{{t general.close}}</div>
+      {{else}}
+        {{#if loading}}
+          <p>Lagerstätte wird aufgegeben... {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}</p>
+        {{else}}
+          <p>Willst du diese Lagerstätte wirklich aufgeben?</p>
+          <div class="icon-button ok-button" {{action "okPressed"}}>{{t general.ok}}</div>
+          <div class="icon-button cancel-button" {{action "cancelPressed"}}>{{t general.cancel}}</div>
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
+</script>
+
