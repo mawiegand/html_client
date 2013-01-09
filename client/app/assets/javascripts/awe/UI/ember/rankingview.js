@@ -149,9 +149,11 @@ AWE.UI.Ember = (function(module) {
           entries.push(rankingEntry);
         });
       }
-      entries.sort(function(a, b) {
+      log('---> entries', entries);
+      sortedEntries = entries.sort(function(a, b) {
         return b.get('rank') - a.get('rank');
       });
+      log('---> sortedEntries', sortedEntries, entries);
       return entries;
     }.property('AWE.GS.game.characterRanking').cacheable(),
     
