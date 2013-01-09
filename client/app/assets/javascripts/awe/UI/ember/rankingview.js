@@ -149,11 +149,9 @@ AWE.UI.Ember = (function(module) {
           entries.push(rankingEntry);
         });
       }
-      log('---> entries', entries);
-      sortedEntries = entries.sort(function(a, b) {
-        return b.get('rank') - a.get('rank');
+      entries.sort(function(a, b) {
+        return a.get('rank') - b.get('rank');
       });
-      log('---> sortedEntries', sortedEntries, entries);
       return entries;
     }.property('AWE.GS.game.characterRanking').cacheable(),
     
@@ -282,7 +280,7 @@ AWE.UI.Ember = (function(module) {
         });
       }
       entries.sort(function(a, b) {
-        return b.get('rank') - a.get('rank');
+        return a.get('rank') - b.get('rank');
       });
       return entries;
     }.property('AWE.GS.game.allianceRanking').cacheable(),
@@ -404,7 +402,7 @@ AWE.UI.Ember = (function(module) {
         });
       }
       entries.sort(function(a, b) {
-        return b.get('rank') - a.get('rank');
+        return a.get('rank') - b.get('rank');
       });
       return entries;
     }.property('AWE.GS.game.fortressRanking').cacheable(),
