@@ -315,7 +315,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     sortedByFortress: function() {
-      return this.get('sortOrder') === 'fortress' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'fortress' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
     sortByFortress: function() {
@@ -325,7 +325,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     sortedByOverall: function() {
-      return this.get('sortOrder') === 'overall' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'overall' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
     sortByOverall: function() {
@@ -335,7 +335,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     sortedByResource: function() {
-      return this.get('sortOrder') === 'resource' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'resource' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
     sortByResource: function() {
@@ -345,7 +345,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     sortedByKills: function() {
-      return this.get('sortOrder') === 'kills' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'kills' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
     sortByKills: function() {
@@ -355,7 +355,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     sortedByMembers: function() {
-      return this.get('sortOrder') === 'members' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'members' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
     sortByMembers: function() {
@@ -365,7 +365,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     sortedByFortressMembers: function() {
-      return this.get('sortOrder') === 'fortressmembers' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'fortressmembers' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
     sortByFortressMembers: function() {
@@ -436,8 +436,18 @@ AWE.UI.Ember = (function(module) {
       AWE.GS.FortressRankingEntryManager.updateFortressRanking(page, this.get('sortOrder'));
     },
     
+    sortedByName: function() {
+      return this.get('sortOrder') === 'name' ? 'sortOrder' : '';
+    }.property('sortOrder').cacheable(),
+        
+    sortByName: function() {
+      AWE.GS.game.set('fortressRanking', null);
+      AWE.GS.FortressRankingEntryManager.updateFortressRanking(null, 'name');
+      this.set('sortOrder', 'name');
+    },
+    
     sortedByTaxRate: function() {
-      return this.get('sortOrder') === 'taxRate' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'taxRate' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
         
     sortByTaxRate: function() {
@@ -447,7 +457,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     sortedByIncome: function() {
-      return this.get('sortOrder') === 'income' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'income' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
     sortByIncome: function() {
@@ -457,7 +467,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     sortedByDefense: function() {
-      return this.get('sortOrder') === 'defense' ? 'sortOrder clickable' : 'clickable';
+      return this.get('sortOrder') === 'defense' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
     
     sortByDefense: function() {

@@ -117,7 +117,7 @@
     <table class="ranking-table">
       <tr>
         <th class="rank2">{{t ranking.rank}}</th>
-        <th class="fortress2">{{t ranking.fortress}}</th>
+        <th {{bindAttr class="sortedByName :clickable :fortress2"}} {{action "sortByName"}}>{{t ranking.fortress}}</th>
         <th class="character">{{t ranking.owner}}</th>
         <th {{bindAttr class="sortedByTaxRate :clickable :tax"}} {{action "sortByTaxRate"}}>{{t ranking.taxRate}}</th>
         <th {{bindAttr class="sortedByIncome :clickable :income"}} {{action "sortByIncome"}}>{{t ranking.income}}</th>
