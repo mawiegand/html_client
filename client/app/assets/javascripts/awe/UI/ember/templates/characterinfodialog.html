@@ -37,7 +37,7 @@
              {{#if updatingLikes }}
                {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
              {{else}}
-               <a href="#" {{action "sendLike"}} {{bindAttr title="likeAmountText"}}>sende Like</a>
+               <a class="clickable" {{action "sendLike"}} {{bindAttr title="likeAmountText"}}>sende Like</a>
              {{/if}}
            {{/if}} &nbsp;
            {{character.received_dislikes_count}}
@@ -46,7 +46,7 @@
              {{#if updatingLikes }}
                {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
              {{else}}
-               <a href="#" {{action "sendDislike"}} {{bindAttr title="dislikeAmountText"}}>sende Dislike</a>
+               <a class="clickable" {{action "sendDislike"}} {{bindAttr title="dislikeAmountText"}}>sende Dislike</a>
              {{/if}}
            {{/if}}
         </p>

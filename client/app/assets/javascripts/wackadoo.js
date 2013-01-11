@@ -577,8 +577,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }
     },
     
-    activateMapController: function() {
-      this.setScreenController(this.get('mapScreenController'));
+    activateMapController: function(preventZoomingToLastSelection) {
+      var controller = this.get('mapScreenController');
+      this.setScreenController(controller, preventZoomingToLastSelection);
+      return controller;
     },
     
     mapControllerActive: function() {
