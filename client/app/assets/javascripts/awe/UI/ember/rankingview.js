@@ -463,7 +463,7 @@ AWE.UI.Ember = (function(module) {
     sortByIncome: function() {
       AWE.GS.game.set('fortressRanking', null);
       AWE.GS.FortressRankingEntryManager.updateFortressRanking(null, 'income');
-      this.set('sortOrder', 'defense');
+      this.set('sortOrder', 'income');
     },
     
     sortedByDefense: function() {
