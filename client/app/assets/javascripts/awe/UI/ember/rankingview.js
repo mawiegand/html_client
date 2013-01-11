@@ -475,6 +475,24 @@ AWE.UI.Ember = (function(module) {
       AWE.GS.FortressRankingEntryManager.updateFortressRanking(null, 'defense');
       this.set('sortOrder', 'defense');
     },
+    
+    regionPressed: function(evt) {
+      var entry = evt.context;
+      var regionId = entry.get('region_id');
+      var region = AWE.Map.Manager.getRegion(regionId);
+      if (region != null) {
+        var mapController = WACKADOO.activateMapController(true);
+        WACKADOO.closeAllModalDialogs();
+        mapController.centerRegion(region);
+      }
+      else {
+        AWE.Map.Manager.fetchSingleRegionById(regionId, function(region) {
+          var mapController = WACKADOO.activateMapController(true);
+          WACKADOO.closeAllModalDialogs();
+          mapController.centerRegion(region);
+        });
+      }
+    },    
   });
   
   module.RankingNavigationView = Ember.View.extend({

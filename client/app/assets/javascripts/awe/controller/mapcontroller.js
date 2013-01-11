@@ -149,7 +149,6 @@ AWE.Controller = (function(module) {
       inspectorViews.encyclopediaButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
       _stages[3].addChild(inspectorViews.encyclopediaButtonView.displayObject());
     };   
-    
         
     that.getStages = function() {
       return [
