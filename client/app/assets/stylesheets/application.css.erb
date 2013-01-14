@@ -3906,13 +3906,18 @@ table .number {
   box-shadow:         3px 3px 2px 2px #333;
 }
 
+
 .battle-dialog-pane a.close {
   position: absolute;
-  background: url('<%= asset_path("icons/cross_small.png") %>');
-  width: 36px;
-  height: 36px;
-  right: 12px;
-  top: 10px;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.battle-dialog-pane a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
 .attack-dialog-pane {
