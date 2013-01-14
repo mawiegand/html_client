@@ -797,6 +797,7 @@ AWE.Controller = (function(module) {
             if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
               AWE.GS.Map.Manager.fetchLocationsForRegion(location.region(), function() {
                 that.setModelChanged();
+                log('LOCATION UPDATED', location, 'IN REGION', location.region());
               });
               AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id());
             }
