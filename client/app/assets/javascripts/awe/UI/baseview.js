@@ -207,7 +207,7 @@ AWE.UI = (function(module) {
         WACKADOO.activateBaseController({
           locationId: _location.id()
         });
-        AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button2');
+        AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button2');
       }
     };
 
