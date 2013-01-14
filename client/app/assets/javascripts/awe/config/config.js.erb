@@ -47,6 +47,10 @@ AWE.Config = (function(module) {
   module.TUTORIAL_SERVER_BASE     = module.SERVER_ROOT + '/game_server/de/tutorial/';
   module.BACKEND_SERVER_BASE      = module.SERVER_ROOT + '/game_server/de/backend/';
   module.PAYMENT_PROVIDER_BASE    = module.SERVER_ROOT + '/payment_provider/';
+  module.CHARACTER_RANKING_SERVER_BASE = module.SERVER_ROOT + '/game_server/de/ranking/character_rankings';
+  module.ALLIANCE_RANKING_SERVER_BASE  = module.SERVER_ROOT + '/game_server/de/ranking/alliance_rankings';
+  module.FORTRESS_RANKING_SERVER_BASE  = module.SERVER_ROOT + '/game_server/de/ranking/fortress_rankings';
+  module.RANKING_INFO_SERVER_BASE  = module.SERVER_ROOT + '/game_server/de/ranking/ranking_info';
   
   module.PLAYER_INVITATION_BASE   = module.PORTAL_ROOT + '/player_invitation/';
   module.ALLIANCE_INVITATION_BASE = module.PORTAL_ROOT + '/alliance_invitation/';
@@ -60,9 +64,6 @@ AWE.Config = (function(module) {
   module.EXTERNAL_FORUM_URL       = 'http://forum.uga-agga.de/wack-a-doo-f235/';
   module.EXTERNAL_MANUAL_URL      = 'http://wiki.wack-a-doo.de';
   module.EXTERNAL_FACEBOOK_URL    = 'http://www.facebook.com/pages/Wackadoo/239722582763809';
-  
-  module.RANKING_SERVER_BASE      = module.SERVER_ROOT + '/game_server/de/ranking/character_rankings';
-
   
   module.DEFAULT_LOCALE           = 'en_US';
   
@@ -128,6 +129,8 @@ AWE.Config = (function(module) {
   
   module.SETTLEMENT_REFRESH_INTERVAL = 30 * 1000;
   
+  module.RANKING_LIST_ENTRIES = 15;
+  
   module.RESOURCES_REFRESH_INTERVAL  =  5 * 1000;
   module.CREDIT_AMOUNT_REFRESH_INTERVAL  =  4 * 1000;
   module.SHOP_ENABLED = <%= CLIENT_CONFIG['shop_enabled'] ? 'true' : 'false' %>;
@@ -145,7 +148,7 @@ AWE.Config = (function(module) {
   module.BROWSER_CHECK_ENABLED = true;
   module.BROWSER_CHECK_FAILURES_ONLY = false;
   
-  module.DISABLE_NPC_IMAGES = false
+  module.DISABLE_NPC_IMAGES = false;
 
   return module;
   

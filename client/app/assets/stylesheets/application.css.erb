@@ -278,6 +278,13 @@ html, body {
 }
 
 
+a { color: #787da8; text-decoration: none; }
+a:visited { color: #787da8; }
+a:hover { color: #333666; text-decoration: underline;}
+a:focus { outline: thin dotted; }
+
+
+
 .inline {
   display: inline-block;
 }
@@ -306,6 +313,10 @@ html, body {
 
 .bold {
   font-weight: bold;
+}
+
+.clickable {
+  cursor: pointer;  
 }
 
 #layers {
@@ -561,10 +572,6 @@ html, body {
   overflow: hidden;
   min-width: 500px;
   min-height: 300px;
-}
-
-.ios.message-center {
-  min-width: 100px;
 }
 
 .message-center .header {
@@ -1116,6 +1123,16 @@ html, body {
   background-color: #FFF;    
 }
 
+.ranking-view {
+  font-size: 16px;
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: 80px;  
+  width: 800px; 
+  min-height: 600px;
+  background-color: #FFF;    
+}
+
 .advisor { 
   width: 256px;
   height: 256px;
@@ -1207,6 +1224,12 @@ html, body {
 
 .tab-view {
   width: 100%;
+}
+
+.ranking-view .tab-content {
+  border-style: solid none none none;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 
@@ -2370,6 +2393,9 @@ li.shout .sender {
   min-height:750px; 
 }
 
+.outpost-screen .settlement-info-box.expanded {
+  min-height:720px; 
+}
 
 
 .settlement-switch {
@@ -2609,7 +2635,7 @@ table .number {
 
 .outpost-background-picture,
 .base-background-picture {
-  background: url('<%= asset_path("settlements/base/base_c_background_1280.jpg") %>');
+  background: url('<%= asset_path("settlements/base/base_c2_background_1280.jpg") %>');
   background-repeat: no-repeat;
   position: absolute;
   left: 0px;
@@ -3578,6 +3604,35 @@ table .number {
 }
 
 
+.ranking-view .advisor { 
+  position: absolute;
+  left: 510px;
+  top: -60px;
+}
+
+.ranking-view a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.ranking-view a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+
+.ranking-table {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0px auto 0px auto;
+  width: 800px;
+}
+
 .participant-table {
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -3587,10 +3642,127 @@ table .number {
 }
 
 .participant-table th {
-  background-color: #555;  
+  background-color: #787da8;  
   color: #fff;
   padding: 4px 4px 4px 4px;
   font-size: 14px;
+  text-shadow: none;
+}
+
+.ranking-table th {
+  background-color: #787da8;  
+  color: #fff;
+  padding: 4px 4px 4px 4px;
+  font-size: 14px;
+  text-shadow: none;
+}
+
+.ranking-table th.clickable {
+  color: #ddf;
+}
+
+.ranking-table th.clickable:hover {
+  color: #333666;
+}
+
+.ranking-table th.sortOrder {
+  color: #333666;
+}
+
+.ranking-table tr:nth-child(even) {
+  background-color: rgba(160, 160, 192, 0.15);
+}
+
+.ranking-table td {
+  height: 20px;
+  font-size: 14px;
+  padding: 2px 4px 2px 4px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ranking-table td.number {
+  padding: 2px 8px 2px 0px;
+}
+
+.ranking-table .rank {
+  width: 42px;
+}
+
+.ranking-table .character {
+  width: 148px;
+}
+
+.ranking-table .overall {
+  width: 58px;
+}
+
+.ranking-table .resource {
+  width: 88px;
+}
+
+.ranking-table .likes {
+  width: 64px;
+}
+
+.ranking-table .victories {
+  width: 42px;
+}
+
+.ranking-table .victory-ratio {
+  width: 104px;
+}
+
+.ranking-table .kills {
+  width: 106px;
+}
+
+.ranking-table .experience {
+  width: 74px;
+}
+
+.ranking-table .rank2 {
+  width: 48px;
+}
+
+.ranking-table .alliance {
+  width: 72px;
+}
+
+.ranking-table .fortress {
+  width: 80px;
+}
+
+.ranking-table .overall2 {
+  width: 76px;
+}
+
+.ranking-table .resource2 {
+  width: 98px;
+}
+
+.ranking-table .kills2 {
+  width: 112px;
+}
+
+.ranking-table .members {
+  width: 80px;
+}
+
+.ranking-table .region-members {
+  width: 178px;
+}
+
+.ranking-table .tax {
+  width: 84px;
+}
+
+.ranking-table .income {
+  width: 130px;
+}
+
+.ranking-table .defense {
+  width: 170px;
 }
 
 .participant-table td {
@@ -3602,12 +3774,12 @@ table .number {
   padding: 0px;
 }
 
-.participant-table th.left {
+.participant-table th:first-child, .ranking-table th:first-child {
   border-top-left-radius: 10px;
   border-bottom-left-radsius: 10px;
 }
 
-.participant-table th.right {
+.participant-table th:last-child, .ranking-table th:last-child {
   border-top-right-radius: 10px;
   border-bottom-right-rasdius: 10px;
 }
@@ -4099,3 +4271,4 @@ table .number {
   p, h2, h3 { orphans: 3; widows: 3; }
   h2, h3 { page-break-after: avoid; }
 }
+

@@ -396,14 +396,14 @@ AWE.UI.Ember = (function(module) {
     classNameBindings: ['ownCharacter'],
     
     ownCharacter: function() {
-      var owner = AWE.GS.player.get('currentCharacter');
+      var owner = AWE.GS.game.get('currentCharacter');
       if (owner.get('alliance_tag') && owner.get('alliance_tag') != '') {
         return this.get('name') == owner.get('name') + ' | ' + owner.get('alliance_tag');
       }
       else {
         return this.get('name') == owner.get('name');
       }      
-    }.property('AWE.GS.player').cacheable(),
+    }.property('AWE.GS.game.currentCharacter').cacheable(),
     
   });
   

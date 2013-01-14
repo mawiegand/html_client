@@ -220,7 +220,27 @@ AWE.UI.Ember = (function(module) {
       WACKADOO.closeAllModalDialogs();
       return false; // prevent default behavior
     },
-
+    
+    // settlementPressed: function() {
+      // var regionId = this.getPath('character.base_region_id');
+      // log('-----> region', regionId);
+      // var region = AWE.Map.Manager.getRegion(regionId);
+      // if (region != null) {
+        // log('-----> region vorhanden');
+        // var mapController = WACKADOO.activateMapController(true);
+        // WACKADOO.closeAllModalDialogs();
+        // mapController.centerRegion(location);
+      // }
+      // else {
+        // log('-----> region nicht vorhanden');
+        // AWE.Map.Manager.fetchSingleRegionById(this.getPath('character.base_region_id'), function(region) {
+          // log('-----> region geholt');
+          // var mapController = WACKADOO.activateMapController(true);
+          // WACKADOO.closeAllModalDialogs();
+          // mapController.centerRegion(region);
+        // });
+      // }
+    // },    
   });
   
   return module;

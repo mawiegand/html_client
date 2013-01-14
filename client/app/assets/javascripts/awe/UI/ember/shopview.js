@@ -97,12 +97,12 @@ AWE.UI.Ember = (function(module) {
     offer: null,
     
     platinumExpiration: function() {
-      var expiration = Date.parseISODate(AWE.GS.player.getPath('currentCharacter.premium_expiration'));
+      var expiration = Date.parseISODate(AWE.GS.game.getPath('currentCharacter.premium_expiration'));
       if (expiration && expiration > new Date()) {
-        return AWE.GS.player.getPath('currentCharacter.premium_expiration');
+        return AWE.GS.game.getPath('currentCharacter.premium_expiration');
       }
       return null;
-    }.property('AWE.GS.player.currentCharacter.premium_expiration').cacheable(),
+    }.property('AWE.GS.game.currentCharacter.premium_expiration').cacheable(),
     
     buyPlatinumOfferPressed: function() {
       this.get('parentView').buyPlatinumOfferPressed(this.getPath('offer.id'));

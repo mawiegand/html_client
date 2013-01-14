@@ -7,8 +7,8 @@
         {{#unless queue.empty }}
         <div {{bindAttr class=":queue-job-list lengthClassName"}}>    
           {{#each queue.hashableJobs.collection }}
-            {{#view AWE.UI.Ember.ConstructionJobView controllerBinding="controller" jobBinding="this" classNames="queue-job" }}
-              {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" buildingBinding="job.slot.buildingAfterJob" levelBinding="job.level_after" }}
+            {{#view AWE.UI.Ember.ConstructionJobView controllerBinding="controller" jobBinding="this" classNames="queue-job"}}
+              {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" buildingBinding="job.slot.buildingAfterJob" levelBinding="job.level_after" settlementBinding="job.slot.settlement" }}
               <div class="queue-job-text">    
                 <p class="building">{{local job.slot.buildingAfterJob.name }} (L{{ job.level_after }})</p>
                   {{#if active}}

@@ -289,11 +289,11 @@ AWE.UI = (function(module) {
         this.addChild(_villageImageView);
       }
       
-      if (AWE.GS.player.get('currentCharacter')) {
-        var settlement = AWE.GS.SettlementManager.getHomeBaseOfCharacter(AWE.GS.player.get('currentCharacter'));
+      if (AWE.GS.game.get('currentCharacter')) {
+        var settlement = AWE.GS.SettlementManager.getHomeBaseOfCharacter(AWE.GS.game.get('currentCharacter'));
         if (!settlement) {
           var self = this;
-          AWE.GS.SettlementManager.updateHomeBaseOfCharacter(AWE.GS.player.get('currentCharacter'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+          AWE.GS.SettlementManager.updateHomeBaseOfCharacter(AWE.GS.game.get('currentCharacter'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
             self.setNeedsUpdate();
           });
         }

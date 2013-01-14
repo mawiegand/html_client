@@ -144,10 +144,10 @@ AWE.GS = (function(module) {
     fulfillmentRatio: function() {
       var allRegions = AWE.GS.game.roundInfo.get('regions_count');
       var allianceRegions = this.get('fulfillment_count');
-      var reqRegionsRatio = this.getPath('victoryType.condition.required_regions_ratio');
+      var reqRegionsRatio = AWE.GS.Util.parseAndEval(this.getPath('victoryType.condition.required_regions_ratio'), AWE.GS.game.roundInfo.get('age'), 'DAYS');
       var fulfillmentRatio = 1.0 * (allianceRegions / allRegions) / reqRegionsRatio;
       return (fulfillmentRatio > 1) ? 1 : fulfillmentRatio;
-    }.property('alliance_id', 'fulfillment_count', 'AWE.GS.game.roundInfo.regions_count', 'victory_type').cacheable(),
+    }.property('alliance_id', 'fulfillment_count', 'AWE.GS.game.roundInfo.regions_count', 'victoryType.condition.required_regions_ratio', 'AWE.GS.game.roundInfo.started_at').cacheable(),
     
     fulfillmentDurationRatio: function() {
       var firstFulfilledAt = this.get('first_fulfilled_at');
@@ -252,13 +252,35 @@ AWE.GS = (function(module) {
         0,                                                 
         AWE.GS.ENTITY_UPDATE_TYPE_FULL,                    // type of update (aggregate, short, full)
         null,                                              // modified after
-        function(result, statusCode, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
+        function(allLeaders, statusCode, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (statusCode === AWE.Net.OK) {
             lastUpdate = timestamp.add(-1).second();
-            AWE.GS.game.set('victoryProgressLeaders', result);
+            
+            var leaders = {}
+            AWE.GS.RulesManager.getRules().get('victory_types').forEach(function(victoryType) {
+              log('---> victoryType', victoryType);
+              var leadersThisType = {};
+              AWE.Ext.applyFunctionToElements(allLeaders, function(leader) {
+                log('---> leader', leader, leader.get('victory_type'));
+                if (leader.get('victory_type') === victoryType.id) {
+                  if (leader.get('pos') === 1) {
+                    leadersThisType['first'] = leader;
+                  }
+                  if (leader.get('pos') === 2) {
+                    leadersThisType['second'] = leader;
+                  }
+                  if (leader.get('pos') === 3) {
+                    leadersThisType['third'] = leader;
+                  }
+                }
+              })
+              leaders[victoryType.symbolic_id] = leadersThisType;
+            });
+            
+            AWE.GS.game.set('victoryProgressLeaders', leaders);
           }
           if (callback) {
-            callback(result, statusCode, xhr, timestamp);
+            callback(allLeaders, statusCode, xhr, timestamp);
           }
         }
       ); 
