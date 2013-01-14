@@ -2426,6 +2426,10 @@ AWE.Controller = (function(module) {
             return function(view) { self.settlementAttackButtonClicked(view); }
           })(that);
           
+          annotationView.onBattleInfoButtonClick = (function(self) {
+            return function(army) { self.battleInfoButtonClicked(army); }
+          })(that); 
+          
           if (annotatedView.location()) {
             AWE.GS.SettlementManager.updateSettlementsAtLocation(annotatedView.location().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
               that.setModelChanged();
