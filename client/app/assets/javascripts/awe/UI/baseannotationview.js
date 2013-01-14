@@ -18,7 +18,9 @@ AWE.UI = (function(module) {
     var enterButton = null;    
     var spyButton = null;    
     var attackButton = null;    
-    var battleButton = null;    
+    var battleButton = null;
+    
+    var _battleInfoButtonView = null;    
 
     //  hovered
     var _infoText1View = null;    
@@ -110,6 +112,24 @@ AWE.UI = (function(module) {
       if (attackButton) {
         attackButton.setVisible(my.baseView.selected());
       }
+      
+      if (!_battleInfoButtonView) {
+        _battleInfoButtonView = AWE.UI.createButtonView();
+        _battleInfoButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.battleInfo'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+        _battleInfoButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
+        _battleInfoButtonView.setFrame(AWE.Geometry.createRect(128, -70, 52, 52));
+        _battleInfoButtonView.onClick = function() {
+          if (_battleInfoButtonView.enabled() && my.location.garrisonArmy()) {
+            that.onBattleInfoButtonClick(my.location.garrisonArmy());
+          }
+        }
+        this.addChild(_battleInfoButtonView);
+      }      
+      
+      if (_battleInfoButtonView) {
+        _battleInfoButtonView.setVisible(my.baseView.selected() && my.location.garrisonArmy() && my.location.garrisonArmy().get('isFighting'));
+      }
+      
       
       /*
       if (!spyButton && !isOwnLocation) {

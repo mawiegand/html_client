@@ -14,7 +14,7 @@
 
 <script type="text/x-handlebars" data-template-name="character-profile-view">
   <div class="modal-dialog-background z-layer-3"></div>
-  <div class="center-helper">
+  <div class="horizontal-center-helper">
     <div class="modal-dialog-pane z-layer-4 character-profile-view">
       {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner" width=120 height=120}}
 
@@ -166,6 +166,19 @@
      {{/if}}  
   </p>
   <p class="red-color">{{changePasswordMessage}}</p>
+  
+  <h2>{{t profile.customization.changeSameIPCaption}}</h2>
+  <p>{{{t profile.customization.changeSameIPAdvice}}}</p>
+  <p>   
+     {{view Ember.TextField placeholder="Mitspielerliste" valueBinding="character.same_ip" }}
+     
+     {{#if changingSameIP }}
+       &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+     {{else}} 
+       <span class="simple-button" {{action "changeSameIPPressed"}}>{{t profile.customization.changeSameIPButton}}</span>
+     {{/if}}  
+  </p>
+  <p class="red-color">{{changeSameIPMessage}}</p>
   
   <h2>{{t profile.time.systemTime}}</h2>
   

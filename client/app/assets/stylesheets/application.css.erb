@@ -278,6 +278,13 @@ html, body {
 }
 
 
+a { color: #787da8; text-decoration: none; }
+a:visited { color: #787da8; }
+a:hover { color: #333666; text-decoration: underline;}
+a:focus { outline: thin dotted; }
+
+
+
 .inline {
   display: inline-block;
 }
@@ -543,7 +550,7 @@ html, body {
   float: right;
 }
 
-.modal-dialog-pane input[type="text"] {
+.modal-dialog-pane input[type="text"], .modal-dialog-pane input[type="password"] {
   font-size: 20px;
   height: 28px;
   border-radius: 5px;
@@ -1110,17 +1117,26 @@ html, body {
   font-size: 16px;
   position: absolute; 
   margin-left: -350px;
-  margin-top: -300px;  
+  margin-top: 100px;  
   width: 700px; 
   min-height: 300px;
   background-color: #FFF;    
+}
+
+.character-profile-view input[type="text"] {
+  width: 450px;
+  margin-right: 0px;  
+}
+
+.character-profile-view input[type="password"] {
+  width: 220px; 
 }
 
 .ranking-view {
   font-size: 16px;
   position: absolute; 
   margin-left: -400px;
-  margin-top: -350px;  
+  margin-top: 80px;  
   width: 800px; 
   min-height: 600px;
   background-color: #FFF;    
@@ -2628,7 +2644,7 @@ table .number {
 
 .outpost-background-picture,
 .base-background-picture {
-  background: url('<%= asset_path("settlements/base/base_c_background_1280.jpg") %>');
+  background: url('<%= asset_path("settlements/base/base_c2_background_1280.jpg") %>');
   background-repeat: no-repeat;
   position: absolute;
   left: 0px;
@@ -3599,8 +3615,21 @@ table .number {
 
 .ranking-view .advisor { 
   position: absolute;
-  left: 530px;
-  top: -65px;
+  left: 510px;
+  top: -60px;
+}
+
+.ranking-view a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.ranking-view a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
 
@@ -3610,6 +3639,7 @@ table .number {
   border-collapse: separate;
   border-spacing: 0;
   margin: 0px auto 0px auto;
+  width: 800px;
 }
 
 .participant-table {
@@ -3621,7 +3651,7 @@ table .number {
 }
 
 .participant-table th {
-  background-color: #AAC;  
+  background-color: #787da8;  
   color: #fff;
   padding: 4px 4px 4px 4px;
   font-size: 14px;
@@ -3629,7 +3659,7 @@ table .number {
 }
 
 .ranking-table th {
-  background-color: #AAC;  
+  background-color: #787da8;  
   color: #fff;
   padding: 4px 4px 4px 4px;
   font-size: 14px;
@@ -3640,15 +3670,111 @@ table .number {
   color: #ddf;
 }
 
+.ranking-table th.clickable:hover {
+  color: #333666;
+}
+
 .ranking-table th.sortOrder {
-  color: #aaf;
+  color: #333666;
 }
 
 .ranking-table tr:nth-child(even) {
   background-color: rgba(160, 160, 192, 0.15);
 }
 
-.participant-table td, .ranking-table td {
+.ranking-table td {
+  height: 20px;
+  font-size: 14px;
+  padding: 2px 4px 2px 4px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ranking-table td.number {
+  padding: 2px 8px 2px 0px;
+}
+
+.ranking-table .rank {
+  width: 42px;
+}
+
+.ranking-table .character {
+  width: 148px;
+}
+
+.ranking-table .overall {
+  width: 58px;
+}
+
+.ranking-table .resource {
+  width: 88px;
+}
+
+.ranking-table .likes {
+  width: 64px;
+}
+
+.ranking-table .victories {
+  width: 42px;
+}
+
+.ranking-table .victory-ratio {
+  width: 104px;
+}
+
+.ranking-table .kills {
+  width: 106px;
+}
+
+.ranking-table .experience {
+  width: 74px;
+}
+
+.ranking-table .rank2 {
+  width: 48px;
+}
+
+.ranking-table .alliance {
+  width: 72px;
+}
+
+.ranking-table .fortress {
+  width: 80px;
+}
+
+.ranking-table .overall2 {
+  width: 76px;
+}
+
+.ranking-table .resource2 {
+  width: 98px;
+}
+
+.ranking-table .kills2 {
+  width: 112px;
+}
+
+.ranking-table .members {
+  width: 80px;
+}
+
+.ranking-table .region-members {
+  width: 178px;
+}
+
+.ranking-table .tax {
+  width: 84px;
+}
+
+.ranking-table .income {
+  width: 130px;
+}
+
+.ranking-table .defense {
+  width: 170px;
+}
+
+.participant-table td {
   font-size: 14px;
   padding: 4px 4px 4px 4px;
 }
@@ -3780,13 +3906,18 @@ table .number {
   box-shadow:         3px 3px 2px 2px #333;
 }
 
+
 .battle-dialog-pane a.close {
   position: absolute;
-  background: url('<%= asset_path("icons/cross_small.png") %>');
-  width: 36px;
-  height: 36px;
-  right: 12px;
-  top: 10px;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.battle-dialog-pane a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
 .attack-dialog-pane {

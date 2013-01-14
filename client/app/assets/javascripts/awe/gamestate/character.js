@@ -7,9 +7,11 @@ var AWE = window.AWE || {};
 
 AWE.GS = (function(module) {
   
-  module.player = Ember.Object.create({
-    currentCharacter: null,
-  });
+  // moved to gamestate.js
+  //
+  // module.player = Ember.Object.create({
+    // currentCharacter: null,
+  // });
     
   module.CharacterAccess = {};
   module.rightOfWayTypes = [ 'all', 'noEnemies', 'noNeutrals', 'noResidents'];
@@ -302,7 +304,7 @@ AWE.GS = (function(module) {
     };
     
     that.getCurrentCharacter = function() {
-      return module.player.get('currentCharacter');
+      return module.game.get('currentCharacter');
     };
     
     that.getMembersOfAlliance = function(id) { 
@@ -357,7 +359,7 @@ AWE.GS = (function(module) {
     
     that.updateCurrentCharacter = function(updateType, callback) {
       var self = this;
-      var currentCharacter = module.player.get('currentCharacter');
+      var currentCharacter = module.game.get('currentCharacter');
       if (currentCharacter !== undefined && currentCharacter !== null) {
         return this.updateCharacter(currentCharacter.get('id'), updateType, callback);
       }
@@ -378,7 +380,7 @@ AWE.GS = (function(module) {
           null,
           function(character, statusCode, xhr, timestamp) {
             if (statusCode === AWE.Net.OK) {
-              module.player.set('currentCharacter', character);
+              module.game.set('currentCharacter', character);
               self.currentCharacter = character; 
             }
             if (callback) {

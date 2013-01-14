@@ -216,7 +216,7 @@ AWE.GS = (function(module) {
     }.property('type_id', 'settlement_unlock_prevent_takeover_count'),    
     
     commandPointsUsed: function() {
-      return this.getPath('armies_count')-1;
+      return this.get('armies_count') - 1;
     }.property('armies_count').cacheable(),
     
     settlementType: function() {

@@ -404,7 +404,7 @@ AWE.GS = (function(module) {
         return false;
       }
         
-      var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.player.getPath('currentCharacter.id'));
+      var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
       // log('---> armies', armies);
       
       var unitCount = 0;
@@ -544,7 +544,7 @@ AWE.GS = (function(module) {
     
     checkMovement: function() {
       // log('---> checkcheckMovement');
-      var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.player.getPath('currentCharacter.id'));
+      var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
       
       if (armies != null) {
         for (var id in armies) {
@@ -558,7 +558,7 @@ AWE.GS = (function(module) {
 
     checkAlliance: function() {
       // log('---> checkAlliance');
-      return AWE.GS.player.getPath('currentCharacter.alliance_id') != null;
+      return AWE.GS.game.getPath('currentCharacter.alliance_id') != null;
     },
 
     checkTextbox: function(textboxTest, answerText) {
@@ -603,9 +603,9 @@ AWE.GS = (function(module) {
         log('ERROR in AWE.GS.QuestState.testKills: killTest.min_units missing in quest id ' + this.get('quest_id'));
         return false;
       }
-      // log('---> checkKills with min_units', minUnits, AWE.GS.player.getPath('currentCharacter.kills'));
+      // log('---> checkKills with min_units', minUnits, AWE.GS.game.getPath('currentCharacter.kills'));
         
-      return AWE.GS.player.getPath('currentCharacter.kills') != null && AWE.GS.player.getPath('currentCharacter.kills') >= minUnits;
+      return AWE.GS.game.getPath('currentCharacter.kills') != null && AWE.GS.game.getPath('currentCharacter.kills') >= minUnits;
     },
 
     checkArmyExperience: function(armyExperienceTest) {
@@ -617,7 +617,7 @@ AWE.GS = (function(module) {
       }
       // log('---> checkcheckArmyExperienceKills with min_experience', minExp);
         
-      var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.player.getPath('currentCharacter.id'));
+      var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
       
       if (armies != null) {
         for (var id in armies) {
@@ -637,7 +637,7 @@ AWE.GS = (function(module) {
         return false;
       }
         
-      return AWE.GS.player.getPath('currentCharacter.score') != null && AWE.GS.player.getPath('currentCharacter.score') >= minPopulation;
+      return AWE.GS.game.getPath('currentCharacter.score') != null && AWE.GS.game.getPath('currentCharacter.score') >= minPopulation;
     },
 
     checkSettlementProduction: function(settlementProductionTest) {

@@ -75,6 +75,19 @@ AWE.UI.Ember = (function(module) {
         });
       });  
     },
+    
+    locationPressed: function(event) {
+      var self = this;
+      log('---> army.homeSettlement', this.getPath('army.homeSettlement'));
+      log('---> army.homeSettlement.location', this.getPath('army.homeSettlement.location'));
+      var location = this.getPath('army.homeSettlement.location');
+      
+      if (location != null) {
+        var mapController = WACKADOO.activateMapController(true);
+        WACKADOO.closeAllModalDialogs();
+        mapController.centerLocation(location);
+      }
+    },
   });
 
   
@@ -163,6 +176,9 @@ AWE.UI.Ember = (function(module) {
       return 'warrior';
     }.property('army.armyCategory').cacheable(),
     
+    locationName: function() {
+      return this.getPath('army.location').settlement().get('name');
+    }.property('army.location').cacheable(),
   });
   
   module.ArmyDialog = module.Dialog.extend({

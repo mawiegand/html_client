@@ -19,11 +19,13 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
   /** ember object for information that is not kept in any entity manager
    * @name AWE.GS.game */ 
   module.game = Ember.Object.create({
+    currentCharacter: null,
     roundInfo: null,
     victoryProgressLeaders: null,
     characterRanking: null,
     allianceRanking: null,
     fortressRanking: null,
+    rankingInfo: null,
   });
     
   /** shortest type of update, just the ID and very basic data

@@ -149,7 +149,6 @@ AWE.Controller = (function(module) {
       inspectorViews.encyclopediaButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
       _stages[3].addChild(inspectorViews.encyclopediaButtonView.displayObject());
     };   
-    
         
     that.getStages = function() {
       return [
@@ -1675,7 +1674,7 @@ AWE.Controller = (function(module) {
         if (lastOwnArmiesCheck.getTime() + 60*1000 < new Date().getTime() && !isUpdateRunning('ownArmies')) { // check for own armies every minute
           startUpdate('ownArmies');
           lastOwnArmiesCheck = new Date();
-          AWE.GS.ArmyManager.updateArmiesForCharacter(AWE.GS.player.getPath('currentCharacter.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+          AWE.GS.ArmyManager.updateArmiesForCharacter(AWE.GS.game.getPath('currentCharacter.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
             stopUpdate('ownArmies');
           });
         }
@@ -2427,6 +2426,10 @@ AWE.Controller = (function(module) {
           annotationView.onAttackButtonClick = (function(self) {
             return function(view) { self.settlementAttackButtonClicked(view); }
           })(that);
+          
+          annotationView.onBattleInfoButtonClick = (function(self) {
+            return function(army) { self.battleInfoButtonClicked(army); }
+          })(that); 
           
           if (annotatedView.location()) {
             AWE.GS.SettlementManager.updateSettlementsAtLocation(annotatedView.location().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {

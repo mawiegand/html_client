@@ -155,27 +155,26 @@ AWE.UI.Ember = (function(module) {
 	
     abandonOutpostPressed: function() {
       var self = this;
-      var abandonDialog = AWE.UI.Ember.InfoDialog.create({
-        classNames: ['change-army-name-dialog'],
-        heading:    'Willst du diese Lagerstätte wirklich aufgeben?',
-
-        okText:       'Ja',
-        cancelText:    'Nein',
-		
+      var abandonDialog = AWE.UI.Ember.SettlementAbandonDialog.create({
         okPressed:  function() {
+          abandonDialog.set('loading', true);
           var action = AWE.Action.Settlement.createAbandonOutpostAction(self.get('settlement'));
           AWE.Action.Manager.queueAction(action, function(statusCode) {
             if (statusCode === 200 || statusCode === 203) {
+              abandonDialog.destroy();
+              WACKADOO.modalDialogClosed();
               WACKADOO.activateMapController();
             }
             else {
-             self.set('lastError', 'abanding outpost failed');
+              abandonDialog.set('error', true);
             }
           });  
-          this.destroy();            
         },
 		
-        cancelPressed: function() { this.destroy(); }
+        cancelPressed: function() {
+          this.destroy();
+          WACKADOO.modalDialogClosed();
+        }
       });
       WACKADOO.presentModalDialog(abandonDialog);
     },
@@ -245,6 +244,12 @@ AWE.UI.Ember = (function(module) {
     
   });
   
+  module.SettlementAbandonDialog = Ember.View.extend({
+    templateName: "settlement-abandon-dialog",
+    
+    loading: null,
+    error: null,
+  });
   
   return module;
     

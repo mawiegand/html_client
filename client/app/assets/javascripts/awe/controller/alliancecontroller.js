@@ -70,7 +70,7 @@ AWE.Controller = (function(module) {
       if ((!messages) || forceUpdate ||
           (messages && AWE.GS.AllianceShoutManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 10000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
         AWE.GS.AllianceShoutManager.updateMessagesOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-          var characterId = AWE.GS.player.getPath('currentCharacter.id');
+          var characterId = AWE.GS.game.getPath('currentCharacter.id');
           var leaderId = AWE.GS.AllianceManager.getAlliance(self.allianceId).get('leader_id');
           var messages = AWE.GS.AllianceShoutAccess.getEnumerableForAlliance_id(allianceId);
           var messageArray =  messages.sort(function(a,b) {

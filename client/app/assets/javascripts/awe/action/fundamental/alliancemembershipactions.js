@@ -10,7 +10,7 @@ AWE.Action = AWE.Action || {};
 AWE.Action.Fundamental = (function(module) {
   
   module.runUpdatesAfterAllianceChange = function() {
-    var characterId = AWE.GS.player.getPath('currentCharacter.id')
+    var characterId = AWE.GS.game.getPath('currentCharacter.id')
     AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
       WACKADOO.reconnectChat();
     });
