@@ -12,11 +12,10 @@
           {{else}}
             <div class="advisor {{unbound advisor}}"></div>
           {{/if}}
-          <h2>{{ army.name }} 
-            {{#if isChangeNamePossible}}
-              <a href="#" class="change-name" {{action "changeNamePressed" target="parentView.parentView"}}>{{ t army.details.changeName }}</a>
-            {{/if}}
-          </h2>
+          <h2>{{ army.name }}</h2>
+          {{#if isChangeNamePossible}}
+            <span class="simple-button" {{action "changeNamePressed" target="parentView.parentView"}}>{{ t army.details.changeName }}</span>
+          {{/if}}
           <p class="citation">{{message}}</p>
           {{#if army.npc}}
             <p>{{ army.details.npcMsg }}</p>
@@ -41,7 +40,7 @@
           {{ t army.details.stance }}: {{ army.stanceString }}
           {{#if army.isOwnProp}}
             {{#unless isSaving }}
-            <a href="#" class="change-name" {{action "changeStancePressed" target="parentView.parentView"}}>{{ t army.form.change }}</a>
+            <span class="simple-button" {{action "changeStancePressed" target="parentView.parentView"}}>{{ t army.form.change }}</span>
             {{else}}
               {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
             {{/unless}}
