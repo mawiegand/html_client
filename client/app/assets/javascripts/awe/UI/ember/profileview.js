@@ -9,7 +9,6 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
 
-
   module.TabButtonView = Ember.View.extend({
     tagName:    'li',
     classNames: ['tab-button-view'],
@@ -309,6 +308,7 @@ AWE.UI.Ember = (function(module) {
     character: null,
 
     changingPassword: false,
+    changingSameIP: false,
     
     password:             null,
     passwordConfirmation: null,
@@ -373,6 +373,21 @@ AWE.UI.Ember = (function(module) {
       this.set('changePasswordMessage', '');
     }.observes('password', 'passwordConfirmation'),
             
+    changeSameIPPressed: function() {
+      var self = this;
+      self.set('changingSameIP', true);
+      var action = AWE.Action.Fundamental.createChangeCharacterSameIPAction(this.getPath('character.same_ip'));
+      AWE.Action.Manager.queueAction(action, function(status) {
+        self.set('changingSameIP', false);
+        if (status === AWE.Net.OK) {
+          self.set('changeSameIPMessage', AWE.I18n.lookupTranslation('profile.customization.changeSameIIPChanged'))
+        }
+        else {
+          self.set('changeSameIPMessage', AWE.I18n.lookupTranslation('profile.customization.errors.changeSameIIUnknown'));
+        }
+      });
+    },    
+
     changePasswordPressed: function() {
       this.set('changePasswordMessage', '');
       this.set('changingPassword', true);
