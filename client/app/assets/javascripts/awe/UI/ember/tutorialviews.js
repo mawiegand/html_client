@@ -30,7 +30,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     okPressed: function() {
-      AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_quest_button');          
+      AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_quest_button');          
       this.destroy();
     }
   });  
