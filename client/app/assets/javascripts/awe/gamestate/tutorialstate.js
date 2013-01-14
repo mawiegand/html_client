@@ -1075,7 +1075,15 @@ AWE.GS = (function(module) {
         okPressed: function() {
           that.checkForNewQuests();
           this._super();
-        },            
+        },     
+
+        willDestroyElement: function() {
+          log('---> willDestroyElement', questState.getPath('quest.tutorial_end_quest'), AWE.GS.TutorialStateManager.getTutorialState().get('tutorial_completed'));
+          if (questState.getPath('quest.tutorial_end_quest')) {
+            var dialog = AWE.UI.Ember.TutorialEndDialog.create();          
+            WACKADOO.presentModalDialog(dialog);
+          }
+        },
       });          
       WACKADOO.presentModalDialog(dialog);
     }
@@ -1098,7 +1106,30 @@ AWE.GS = (function(module) {
 
     that.checkForRewards = function() {
     };
+    
+    that.redeemTutorialEndRewards = function(success, error) {
+      
+      if (!that.tutorialEnabled()) return;
 
+      var redeemRewardsAction = AWE.Action.Tutorial.createRedeemTutorialEndRewardsAction();
+      log('---> redeemTutorialEndRewards getRequestBody', redeemRewardsAction.getRequestBody());
+      redeemRewardsAction.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          log('---> redeemTutorialEndRewards ok');
+          that.updateTutorialState();
+          if (success) {
+            success();
+          }
+        }
+        else {
+          if (error) {
+            error();
+          }
+          log('ERROR in AWE.GS.TutorialManager.redeemRewards');
+        }
+      });
+    }    
+    
     return that;
   }());
 

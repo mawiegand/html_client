@@ -63,7 +63,6 @@ AWE.Action.Tutorial = (function(module) {
     
   };
   
-
   module.createRedeemRewardsAction = function(questStateId, my) {
       
     // private attributes and methods //////////////////////////////////////
@@ -108,7 +107,43 @@ AWE.Action.Tutorial = (function(module) {
     
   };
   
-
+  module.createRedeemTutorialEndRewardsAction = function(my) {
+      
+    // private attributes and methods //////////////////////////////////////
+    
+    var that;
+    
+    // protected attributes and methods ////////////////////////////////////
+  
+    my = my || {};
+    
+    // public attributes and methods ///////////////////////////////////////
+    
+    that = AWE.Action.createAction(my);    
+    
+    that.getRequestBody = function() {
+      return {};
+    }
+    
+    that.getURL = function() {
+      return AWE.Config.ACTION_SERVER_BASE + 'tutorial/redeem_tutorial_end_rewards_actions';
+    }
+  
+    that.getHTTPMethod = function() {
+      return 'POST';
+    }
+    
+    that.postProcess = function(statusCode, xhr) {
+    }
+  
+    that.questId = function() {
+      return my.questStateId;
+    }
+  
+    return that;
+    
+  };
+  
   module.createQuestDisplayedAction = function(questStateId, my) {
       
     // private attributes and methods //////////////////////////////////////
@@ -150,7 +185,6 @@ AWE.Action.Tutorial = (function(module) {
     }
   
     return that;
-    
   };
   
   return module;

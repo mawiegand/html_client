@@ -97,6 +97,7 @@ AWE.UI.Ember = (function(module) {
     offer: null,
     
     platinumExpiration: function() {
+      log('----> platinumExpiration', AWE.GS.game.getPath('currentCharacter.premium_expiration'));
       var expiration = Date.parseISODate(AWE.GS.game.getPath('currentCharacter.premium_expiration'));
       if (expiration && expiration > new Date()) {
         return AWE.GS.game.getPath('currentCharacter.premium_expiration');
