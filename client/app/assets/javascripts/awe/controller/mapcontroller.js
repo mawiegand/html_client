@@ -794,7 +794,7 @@ AWE.Controller = (function(module) {
           action.send(function(status) {
             armyAnnotationView.setActionMode('');
             if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
-              AWE.GS.Map.Manager.fetchLocationsForRegion(location.region(), function() {
+              AWE.Map.Manager.fetchLocationsForRegion(location.region(), function() {
                 that.setModelChanged();
                 log('LOCATION UPDATED', location, 'IN REGION', location.region());
               });
