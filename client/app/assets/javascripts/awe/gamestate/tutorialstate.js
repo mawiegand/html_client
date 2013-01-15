@@ -686,7 +686,6 @@ AWE.GS = (function(module) {
     },
    
     checkBuildingSpeed: function(speedTest) {
-      // log('---> checkBuildingSpeed', speedTest);
       
       if (speedTest.min_speed == null) {
         log('ERROR in AWE.GS.QuestState.checkBuildingSpeed: queueTest.min_speed missing in quest id ' + this.get('quest_id'));
@@ -694,16 +693,13 @@ AWE.GS = (function(module) {
       }
         
       var ownSettlements = AWE.GS.SettlementManager.getOwnSettlements();
-      // log('---> ownSettlements', ownSettlements);
-      var checkCount = 0;
 
       for (var sid in ownSettlements) {
         if (ownSettlements.hasOwnProperty(sid) && ownSettlements[sid].get('isBase')) {
           var queues = ownSettlements[sid].queues();
-          // log('---> queues', queues);
           
-          for (var id in queues) {
-            if (queues.hasOwnProperty(id) && queues[id].get('speed') >= speedTest.min_speed) {
+          for (var i = 0; i < queues.length; i++) {
+            if (queues[i].get('speed') >= speedTest.min_speed) {
               return true;
             }
           }
