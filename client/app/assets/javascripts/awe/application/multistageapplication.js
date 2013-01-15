@@ -182,12 +182,12 @@ AWE.Application = (function(module) {
         var presentScreenController = this.get('presentScreenController');
 
         if (presentScreenController && presentScreenController.isScrolling()) {
-          log("ignored click --> presentScreenController.isScrolling() == true");
+          // log("ignored click --> presentScreenController.isScrolling() == true");
           return ; // just ignore it here!
         }
         
         if (this.get('isModal')) {
-          log("ignored click --> isModal == true");
+          // log("ignored click --> isModal == true");
           return ;
         }
       
@@ -235,12 +235,12 @@ AWE.Application = (function(module) {
         var presentScreenController = this.get('presentScreenController');
 
         if (presentScreenController && presentScreenController.isScrolling()) {
-          log("ignored click --> presentScreenController.isScrolling() == true");
+          // log("ignored click --> presentScreenController.isScrolling() == true");
           return ; // just ignore it here!
         }
         
         if (this.get('isModal')) {
-          log("ignored click --> isModal == true");
+          // log("ignored click --> isModal == true");
           return ;
         }
       

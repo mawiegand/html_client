@@ -258,10 +258,8 @@ AWE.GS = (function(module) {
             
             var leaders = {}
             AWE.GS.RulesManager.getRules().get('victory_types').forEach(function(victoryType) {
-              log('---> victoryType', victoryType);
               var leadersThisType = {};
               AWE.Ext.applyFunctionToElements(allLeaders, function(leader) {
-                log('---> leader', leader, leader.get('victory_type'));
                 if (leader.get('victory_type') === victoryType.id) {
                   if (leader.get('pos') === 1) {
                     leadersThisType['first'] = leader;

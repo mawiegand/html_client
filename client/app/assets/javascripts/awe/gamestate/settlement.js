@@ -122,6 +122,10 @@ AWE.GS = (function(module) {
       return this.get('type_id') === module.SETTLEMENT_TYPE_FORTRESS;
     }.property('type_id').cacheable(),
     
+    isBase: function() {
+      return this.get('type_id') === module.SETTLEMENT_TYPE_BASE;
+    }.property('type_id').cacheable(),
+    
     regionInvitationCode: function() {
       var region = this.get('region');
       return region ? region.invitationCode() : null;
@@ -291,7 +295,6 @@ AWE.GS = (function(module) {
           total = 12;
         }
       }
-      log('---> availableBuildingSlots', total, used, total - used);
       return total - used;
     }.property('building_slots_total', 'usedBuildingSlots', 'enumerableSlots.@each.building_id').cacheable(),
   });     
