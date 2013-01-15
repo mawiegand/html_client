@@ -89,8 +89,6 @@ AWE.UI.Ember = (function(module) {
     },
 
     okPressed: function() {
-      log('---> show_finish_dialog auch gedrückt');
-
       var hasRewards = this.getPath('quest.rewards');
       var isFinished = this.get('finished');
       
