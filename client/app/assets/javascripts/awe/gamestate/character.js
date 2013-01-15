@@ -67,7 +67,6 @@ AWE.GS = (function(module) {
     defeats: 0,
     
     exp_production_rate_zero: function() {
-      log('---->',this.get('exp_production_rate'));
       return !((this.get('exp_production_rate') || 0) > 0);
     }.property('exp_production_rate').cacheable(),
     
