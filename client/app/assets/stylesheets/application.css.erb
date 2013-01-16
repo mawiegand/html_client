@@ -3998,7 +3998,25 @@ table .number {
   display: inline;
 }
 
-.quest-list-view, .tutorial-end-dialog {
+.tutorial-end-dialog {
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: 80px;
+  width: 800px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 4px 4px 4px 4px;
+  z-index:256;
+}
+
+.tutorial-end-dialog .inner-border {
+  border: 8px solid #BBB;
+  background-color: rgba(176, 176, 176, 0.15);
+  border-radius: 11px;
+  margin: 0;
+  padding: 4px 14px 14px 14px;
+}
+
+.quest-list-view {
   position: absolute; 
   margin-left: -300px;
   margin-top: 80px;
@@ -4113,7 +4131,7 @@ table .number {
   margin: -4px;
 }
 
-.quest-dialog .inner-border.girl {
+.quest-dialog .inner-border.girl, .tutorial-end-dialog .inner-border.girl {
   border-color: #BC4;
   background-color: rgba(176, 192, 64, 0.15);
 }
