@@ -83,7 +83,7 @@ AWE.UI = (function(module) {
         enterButton.setFrame(AWE.Geometry.createRect(12, 0, 52, 52));
         enterButton.onClick = function() {
           that.onEnterButtonClick();
-          AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button2');
+          AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button2');
         }
         this.addChild(enterButton);
       }
