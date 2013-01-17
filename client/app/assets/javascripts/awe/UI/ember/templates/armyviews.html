@@ -116,8 +116,10 @@
             {{else}}
               {{#if remainingArmies }}
                 <p>{{ t army.create.remainingArmies }}: {{ remainingArmies }}</p>
-                <a class="clickable" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</a> | 
-                <a class="clickable" {{action "createPressed" target="parentView"}}>{{ t army.form.create }}</a>
+                <p>
+                  <span class="clickable simple-button right" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</span>&nbsp;&nbsp;&nbsp;
+                  <span class="clickable simple-button right" {{action "createPressed" target="parentView"}}>{{ t army.form.create }}</span>
+                </p>
               {{else}}
                 {{ t army.create.error }}
               {{/if}}
@@ -137,10 +139,14 @@
         <div class="modal-dialog-pane" id="army-change-form">
           <h2>{{ t army.change.header }}</h2>
           {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" armyNameBinding="otherArmy.name" garrisonOverfullClassBinding="garrisonOverfullClass" otherOverfullClassBinding="otherOverfullClass" }}
-          <a class="clickable simple-button" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</a> | <a class="clickable simple-button" {{action "changePressed" target="parentView"}}>{{ t army.form.change }}</a>
-          {{#if "loading" }}
-            <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ t    army.change.loadingMessage }}</p>
-          {{/if}}
+          <p>{{ t army.create.remainingArmies }}: {{ remainingArmies }}</p>
+          <p>
+            <span class="clickable simple-button" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</span>&nbsp;&nbsp;&nbsp;
+            <span class="clickable simple-button" {{action "changePressed" target="parentView"}}>{{ t army.form.change }}</span>
+            {{#if "loading" }}
+              <span>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ t army.change.loadingMessage }}</span>
+            {{/if}}
+          </p>
           <a class="close clickable" {{action "cancelPressed" target="parentView"}}></a>
         </div>
       </div>
