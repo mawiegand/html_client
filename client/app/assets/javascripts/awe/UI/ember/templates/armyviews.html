@@ -101,8 +101,11 @@
       <div class="modal-dialog-background"></div>
       <div class="center-helper">
         <div class="modal-dialog-pane" id="army-create-form">
+          <div class="advisor warrior"></div>
+        
           <h2>{{ t army.create.header }}</h2>
-          <p>{{ t army.create.remainingArmies }}: {{ remainingArmies }}</p>
+          <p class="citation">Wie viele Einheiten sollen denn in die Armee? Schreibe zum Beispiel "25" unter "neue Armee" und drücke anschließend auf "erzeugen".</p>
+           
           {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" garrisonOverfullClassBinding="garrisonOverfullClass" otherOverfullClassBinding="otherOverfullClass" }}
           <p>{{ t army.form.name }}: {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" placeholder="New Army" classNames="army-name-field" }}</p>
           {{#if loadingSettlement }}
@@ -112,6 +115,8 @@
               {{t army.form.garrisonFighting}}
             {{else}}
               {{#if remainingArmies }}
+                <p>{{ t army.create.remainingArmies }}: {{ remainingArmies }}</p>
+              
                 <a href="#" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</a> | 
                 <a href="#" {{action "createPressed" target="parentView"}}>{{ t army.form.create }}</a>
               {{else}}
