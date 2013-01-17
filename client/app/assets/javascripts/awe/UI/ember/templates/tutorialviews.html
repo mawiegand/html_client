@@ -69,6 +69,7 @@
       {{#if questState.finished}}
         {{#if quest.reward_text}}Tipp:{{/if}} {{local quest.reward_text}}
       {{else}}
+        {{#if newArmyQuest}}<div class="description-image"></div>{{/if}}}
         {{local quest.description}}
       {{/if}}
 
