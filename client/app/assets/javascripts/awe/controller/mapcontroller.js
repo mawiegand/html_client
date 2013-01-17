@@ -61,6 +61,7 @@ AWE.Controller = (function(module) {
     var actionViews = {};
     var targetViews = {};
     var inspectorViews = {};
+    var ownBaseMarkerAnimation = null;
 
     var zoomSlider = undefined;
     
@@ -1478,6 +1479,40 @@ AWE.Controller = (function(module) {
       this.addTransientAnnotationView(annotatedView, label, duration, offset);
     }
     
+
+    that.addBouncingAnnotationLabel = function(annotatedView, annotation, duration, offset, frame) {
+      duration = duration || 10000;
+      offset = offset || AWE.Geometry.createPoint(0,-50);
+      
+      var bounceHeight = 50;
+      var bounceDuration = 1000.0;
+      
+      _stages[2].addChild(annotation.displayObject());
+      
+      var animation = AWE.UI.createTimedAnimation({
+        view:     annotation,
+        duration: duration,
+        
+        updateView: function() {
+          return function(view, elapsed) {
+            var height = (Math.sin(elapsed * duration / bounceDuration * 2.0 * Math.PI) / 2.0 + 0.5) * bounceHeight;
+            view.setOrigin(AWE.Geometry.createPoint(annotatedView.frame().origin.x + offset.x, 
+                                                    annotatedView.frame().origin.y + offset.y - height));  
+          };
+        }(),
+        
+        onAnimationEnd: function(viewToRemove) {
+          return function() {
+            _stages[2].removeChild(viewToRemove.displayObject());
+            log('removed animated label on animation end');
+          };
+        }(annotation),
+      });
+      
+      that.addAnimation(animation);
+      return animation;
+    }
+    
     
     that.addDisappearingAnnotationLabel = function(annotatedView, message, duration, font, offset, frame) {
       duration = duration || 1000;
@@ -1900,6 +1935,20 @@ AWE.Controller = (function(module) {
         pos.y - 10        
       ));
     }
+    
+    var shouldDisplayBaseMarker = function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      
+      var returnedFromMap = 
+         (!AWE.Config.USE_TUTORIAL ||
+          (tutorialState &&
+           tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID) &&
+           tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') >= AWE.GS.QUEST_STATUS_FINISHED));
+      
+      var character = AWE.GS.game && AWE.GS.game.get('currentCharacter');
+      return character.get('login_count') < 10 || !returnedFromMap;    
+    }
+    
         
     var setArmyPosition = function(view, pos, army) {
       view.setCenter(AWE.Geometry.createPoint(pos.x+view.frame().size.width/4, pos.y-view.frame().size.height/2));
@@ -2029,6 +2078,11 @@ AWE.Controller = (function(module) {
               else {                                        
                 if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === "base") {
                   view = AWE.UI.createBaseView();
+                  if (location.isOwn() && shouldDisplayBaseMarker()) {
+                    var arrow = AWE.UI.createTargetView();
+                    arrow.initWithControllerAndTargetedView(that, view);
+                    that.ownBaseMarkerAnimation = that.addBouncingAnnotationLabel(view, arrow, 10000000);
+                  }
                 }             
                 else if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === "outpost") {
                   view = AWE.UI.createOutpostView();
@@ -2068,6 +2122,16 @@ AWE.Controller = (function(module) {
           && (_selectedView.typeName() === 'BaseView' || _selectedView.typeName() === 'OutpostView')
           && that.isSettlementVisible(that.mc2vc(_selectedView.location().node().frame()))) {
         newLocationViews[_selectedView.location().id()] = _selectedView;
+      }
+      
+      if (that.ownBaseMarkerAnimation) {
+        var toRemove = AWE.Util.hashSubtraction(locationViews, newLocationViews);
+        AWE.Ext.applyFunctionToElements(toRemove, function(view) {
+          if (view.location().isOwn()) {
+            that.ownBaseMarkerAnimation.cancel();
+            that.ownBaseMarkerAnimation = null;
+          }
+        }); 
       }
       
       var removedSomething = purgeDispensableViewsFromStage(locationViews, newLocationViews, _stages[1]);
