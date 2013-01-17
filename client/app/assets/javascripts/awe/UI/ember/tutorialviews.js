@@ -132,6 +132,10 @@ AWE.UI.Ember = (function(module) {
       return this.getPath('quest.id') == 17;  // FIXME schneller Hack zur Anzeige der Knopfes in der Quest
     }.property('quest.id').cacheable(),
     
+    toSettlementQuest: function() {
+      return this.getPath('quest.id') == 11;  // FIXME schneller Hack zur Anzeige der Knopfes in der Quest
+    }.property('quest.id').cacheable(),
+    
     checkQuestAnswerPressed: function() {
       
       if (!AWE.GS.TutorialStateManager.tutorialEnabled()) return;
