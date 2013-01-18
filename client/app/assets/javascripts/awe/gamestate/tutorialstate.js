@@ -38,7 +38,7 @@ AWE.GS = (function(module) {
     
     
     // TODO --> nach nr sortieren
-    
+        
     // new, not displayed quests
     newQuestStates: function() {
       // log('---> recalc newQuestStates');
@@ -99,6 +99,10 @@ AWE.GS = (function(module) {
       return this.get('closedQuestStates').length;
     }.property('quests.@each.status').cacheable(),
 
+    closedQuestStateCountPlusOne: function() {
+      return (this.get('closedQuestStateCount') || 0) + 1;
+    }.property('closedQuestStateCount').cacheable(),
+
     questStateWithQuestId: function(questId) {
       var questStates = this.getPath('quests.content');
       // log('---> questStates', questStates);
@@ -130,6 +134,10 @@ AWE.GS = (function(module) {
     displayed_at: null,
     finished_at: null,
     closed_at: null,
+    
+    tutorialState: function() {
+      return module.TutorialStateManager.getTutorialState();
+    }.property('quest_id'),
     
     quest: function() {
       var questId = this.get('quest_id');
