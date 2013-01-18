@@ -447,7 +447,17 @@ AWE.UI.Ember = (function(module) {
         this.set('otherUnits', allUnits - units);
         return units;
       }
-    }).property('garrisonUnits')
+    }).property('garrisonUnits'),
+    
+    insertNewline: function() {
+      if (this.getPath('parentView.parentView.parentView').createPressed) {
+        this.getPath('parentView.parentView.parentView').createPressed();
+      };
+      
+      if (this.getPath('parentView.parentView.parentView').changePressed) {
+        this.getPath('parentView.parentView.parentView').changePressed();
+      };
+    },    
   });
   
   module.OtherArmyUnitTextfield = Ember.TextField.extend({
@@ -476,7 +486,17 @@ AWE.UI.Ember = (function(module) {
         this.set('garrisonUnits', allUnits - units);
         return units;
       }
-    }).property('otherUnits')
+    }).property('otherUnits'),
+    
+    insertNewline: function() {
+      if (this.getPath('parentView.parentView.parentView').createPressed) {
+        this.getPath('parentView.parentView.parentView').createPressed();
+      };
+      
+      if (this.getPath('parentView.parentView.parentView').changePressed) {
+        this.getPath('parentView.parentView.parentView').changePressed();
+      };
+    },
   });
   
   return module;

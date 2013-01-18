@@ -99,36 +99,40 @@
 
 <script type="text/x-handlebars" data-template-name="army-create-dialog">
       <div class="modal-dialog-background"></div>
-      <div class="center-helper">
+      <div class="horizontal-center-helper">
         <div class="modal-dialog-pane" id="army-create-form">
-          <div class="advisor warrior"></div>
-        
-          <h2>{{ t army.create.header }}</h2>
-          <p class="citation">{{t army.form.advisorHint}}</p>
-           
-          {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" garrisonOverfullClassBinding="garrisonOverfullClass" otherOverfullClassBinding="otherOverfullClass" }}
-          <p>{{ t army.form.name }}: {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" placeholder="New Army" classNames="army-name-field" }}</p>
-          {{#if loadingSettlement }}
-            {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }}
-          {{else}}
-            {{#if settlement.garrison.isFighting}}
-              {{t army.form.garrisonFighting}}
+          <div class="inner-border">
+            <a class="close clickable" {{action "cancelPressed" target="parentView"}}></a>
+            <div class="advisor warrior"></div>
+          
+            <h2>{{ t army.create.header }}</h2>
+            <p class="citation">{{t army.form.advisorHint}}</p>
+            
+            <div class="clear"></div>
+             
+            {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" garrisonOverfullClassBinding="garrisonOverfullClass" otherOverfullClassBinding="otherOverfullClass" }}
+            <p>{{ t army.form.name }}: {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" placeholder="New Army" classNames="army-name-field" }}</p>
+            {{#if loadingSettlement }}
+              {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }}
             {{else}}
-              {{#if remainingArmies }}
-                <p>{{ t army.create.remainingArmies }}: {{ remainingArmies }}</p>
-                <p>
-                  <span class="clickable simple-button right" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</span>&nbsp;&nbsp;&nbsp;
-                  <span class="clickable simple-button right" {{action "createPressed" target="parentView"}}>{{ t army.form.create }}</span>
-                </p>
+              {{#if settlement.garrison.isFighting}}
+                {{t army.form.garrisonFighting}}
               {{else}}
-                {{ t army.create.error }}
+                {{#if remainingArmies }}
+                  <p>{{ t army.create.remainingArmies }}: {{ remainingArmies }}</p>
+                  <div class="buttons">
+                    <div class="clickable button" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</div>&nbsp;&nbsp;&nbsp;
+                    <div class="clickable button" {{action "createPressed" target="parentView"}}>{{ t army.form.create }}</div>
+                  </div>
+                {{else}}
+                  {{ t army.create.error }}
+                {{/if}}
               {{/if}}
             {{/if}}
-          {{/if}}
-          {{#if "loading" }}
-            <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ t army.create.loadingMessage }}</p>
-          {{/if}}
-          <a class="close clickable" {{action "cancelPressed" target="parentView"}}></a>
+            {{#if "loading" }}
+              <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ t army.create.loadingMessage }}</p>
+            {{/if}}
+          </div>
         </div>
       </div>
 </script>
@@ -137,16 +141,17 @@
       <div class="modal-dialog-background"></div>
       <div class="center-helper">
         <div class="modal-dialog-pane" id="army-change-form">
+          <a class="close clickable" {{action "cancelPressed" target="parentView"}}></a>
           <h2>{{ t army.change.header }}</h2>
           {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" armyNameBinding="otherArmy.name" garrisonOverfullClassBinding="garrisonOverfullClass" otherOverfullClassBinding="otherOverfullClass" }}
-          <p>
-            <span class="clickable simple-button" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</span>&nbsp;&nbsp;&nbsp;
-            <span class="clickable simple-button" {{action "changePressed" target="parentView"}}>{{ t army.form.change }}</span>
+          <div class="right">
             {{#if "loading" }}
               <span>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ t army.change.loadingMessage }}</span>
+            {{else}}
+              <span class="clickable button" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</span>&nbsp;&nbsp;&nbsp;
+              <span class="clickable button" {{action "changePressed" target="parentView"}}>{{ t army.form.change }}</span>
             {{/if}}
-          </p>
-          <a class="close clickable" {{action "cancelPressed" target="parentView"}}></a>
+          </div>
         </div>
       </div>
 </script>
