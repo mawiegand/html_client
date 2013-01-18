@@ -262,21 +262,24 @@
   <div class="horizontal-center-helper">
     <div class="modal-dialog-pane tutorial-end-dialog">
       <div class="inner-border girl clearfix">
-  
-        <div class="advisor warrior tiny"></div>
-        <div class="advisor girl tiny"></div>
-        <div class="advisor chef tiny"></div>      
-  
-        <h1>{{t tutorial.end.header}}</h1>
         
+        <div class="advisor warrior"></div>
+        <h1>{{t tutorial.end.header}}</h1>
         <p>{{t tutorial.end.p1}}</p>
-        <p>{{t tutorial.end.p2}}</p>
-        <p>{{t tutorial.end.p3}}</p>
-        <p>{{t tutorial.end.p4}}</p>
-        <p>{{t tutorial.end.p5}}</p>
+        <p><b>{{t tutorial.end.p2}}</b></p>
+        <div class="clearfix"></div>
+
+        <div class="advisor chef"></div>
+        <p class="chef">{{t tutorial.end.p3}}</p>
+        <p class="chef">{{t tutorial.end.p4}}</p>
+        <div class="clearfix"></div>
+                
+        <div class="advisor girl"></div>
+        <p class="p5">{{t tutorial.end.p5}}</p>
         <p>{{t tutorial.end.p6}}</p>
-  
-        <div class="button ok-button" {{action "okPressed"}}>
+        <div class="clearfix"></div>
+          
+        <div class="button ok-button clearfix" {{action "okPressed"}}>
           {{#if redeeming}}
             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
           {{else}}
