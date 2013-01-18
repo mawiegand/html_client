@@ -62,6 +62,7 @@ AWE.Controller = (function(module) {
     var targetViews = {};
     var inspectorViews = {};
     var ownBaseMarkerAnimation = null;
+    var ownArmyMarkerAnimation = null;
 
     var zoomSlider = undefined;
     
@@ -1936,7 +1937,23 @@ AWE.Controller = (function(module) {
       ));
     }
     
+    var shouldDisplayArmyMarker = function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      
+      if (!AWE.Config.USE_TUTORIAL ||
+          (tutorialState && 
+           ((tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_FIGHT_QUEST_ID) &&
+             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_FIGHT_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED) || 
+            (tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MOVE_QUEST_ID) &&
+             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MOVE_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED)))) {
+        return true;
+      }
+      return false;
+    }
+    
     var shouldDisplayBaseMarker = function() {
+      return AWE.Config.ON;
+      
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
       
       var returnedFromMap = 
@@ -1946,7 +1963,7 @@ AWE.Controller = (function(module) {
            tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') >= AWE.GS.QUEST_STATUS_FINISHED));
       
       var character = AWE.GS.game && AWE.GS.game.get('currentCharacter');
-      return character.get('login_count') < 10 || !returnedFromMap;    
+      return (character.get('login_count') < 10 || !returnedFromMap) && !shouldDisplayArmyMarker();    
     }
     
         
@@ -2055,6 +2072,14 @@ AWE.Controller = (function(module) {
     that.updateSettlements = function(nodes) {     // views for slot 1-8
       
       var newLocationViews = {};
+      var changedAnimation = true;
+      
+      // beginner tutorial hack for removing jumping arrow from own settlement:
+      if (that.ownBaseMarkerAnimation && !shouldDisplayBaseMarker()) {
+        that.ownBaseMarkerAnimation.cancel();
+        that.ownBaseMarkerAnimation = null;
+        changedAnimation = true;
+      }          
       
       for (var i = 0; i < nodes.length; i++) {       
         var frame = that.mc2vc(nodes[i].frame()); 
@@ -2069,7 +2094,16 @@ AWE.Controller = (function(module) {
             if (location) {
               var view = locationViews[location.id()];
               
-              if (view) {                      
+              if (view) { 
+                // beginner tutorial hack for adding jumping arrow to own settlement:
+                if (!that.ownBaseMarkerAnimation && AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === "base" &&
+                    location.isOwn() && shouldDisplayBaseMarker()) {
+                  var arrow = AWE.UI.createTargetView();
+                  arrow.initWithControllerAndTargetedView(that, view);
+                  that.ownBaseMarkerAnimation = that.addBouncingAnnotationLabel(view, arrow, 10000000);
+                  changedAnimation = true;
+                  view.setNeedsUpdate();
+                }   
                 if (view.lastChange !== undefined &&  // if model of view updated
                     view.lastChange().getTime() < location.lastChange().getTime()) {
                   view.setNeedsUpdate();
@@ -2078,11 +2112,6 @@ AWE.Controller = (function(module) {
               else {                                        
                 if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === "base") {
                   view = AWE.UI.createBaseView();
-                  if (location.isOwn() && shouldDisplayBaseMarker()) {
-                    var arrow = AWE.UI.createTargetView();
-                    arrow.initWithControllerAndTargetedView(that, view);
-                    that.ownBaseMarkerAnimation = that.addBouncingAnnotationLabel(view, arrow, 10000000);
-                  }
                 }             
                 else if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === "outpost") {
                   view = AWE.UI.createOutpostView();
@@ -2124,25 +2153,29 @@ AWE.Controller = (function(module) {
         newLocationViews[_selectedView.location().id()] = _selectedView;
       }
       
+      // beginner tutorial hack for killing animation on own base
       if (that.ownBaseMarkerAnimation) {
         var toRemove = AWE.Util.hashSubtraction(locationViews, newLocationViews);
         AWE.Ext.applyFunctionToElements(toRemove, function(view) {
           if (view.location().isOwn()) {
             that.ownBaseMarkerAnimation.cancel();
             that.ownBaseMarkerAnimation = null;
+            changedAnimation = true;
           }
         }); 
       }
       
       var removedSomething = purgeDispensableViewsFromStage(locationViews, newLocationViews, _stages[1]);
       locationViews = newLocationViews;      
-      return removedSomething;
+      return removedSomething || changedAnimation;
     }
     
         
     /** update the army views. */
     that.updateArmies = function(nodes) {
   
+      var changedAnimation = false; 
+      
       var newArmyViews = {};
       var newMovementArrowViews = {};
       
@@ -2186,7 +2219,15 @@ AWE.Controller = (function(module) {
             var army = armies[key];
             var view = armyViews[army.getId()];
             
-            if (view) {       
+            if (view) {    
+              // beginner tutorial hack for adding jumping arrow to own army:
+              if (!that.ownArmyMarkerAnimation && army.isOwn() && shouldDisplayArmyMarker()) {
+                var arrow = AWE.UI.createTargetView();
+                arrow.initWithControllerAndTargetedView(that, view);
+                that.ownArmyMarkerAnimation = that.addBouncingAnnotationLabel(view, arrow, 10000000);
+                changedAnimation = true;
+                view.setNeedsUpdate();
+              }
               if (view.lastChange !== undefined && view.lastChange() < army.lastChange()) {
                 view.setNeedsUpdate(); 
               }             
@@ -2284,6 +2325,13 @@ AWE.Controller = (function(module) {
         }
       };
       
+      // beginner tutorial hack for removing jumping arrow from own army:
+      if (that.ownArmyMarkerAnimation && !shouldDisplayArmyMarker()) {
+        that.ownArmyMarkerAnimation.cancel();
+        that.ownArmyMarkerAnimation = null;
+        changedAnimation = true;
+      }
+      
       for (var i = 0; i < nodes.length; i++) {       
         var frame = that.mc2vc(nodes[i].frame()); 
 
@@ -2314,12 +2362,22 @@ AWE.Controller = (function(module) {
         }
       }
           
+      if (that.ownArmyMarkerAnimation) {
+        var toRemove = AWE.Util.hashSubtraction(armyViews, newArmyViews);
+        AWE.Ext.applyFunctionToElements(toRemove, function(view) {
+          if (view.army().isOwn()) {
+            that.ownArmyMarkerAnimation.cancel();
+            that.ownArmyMarkerAnimation = null;
+          }
+        }); 
+      }          
+          
       var removedSomething = purgeDispensableViewsFromStage(armyViews, newArmyViews, _stages[1]);
       removedSomething = purgeDispensableViewsFromStage(movementArrowViews, newMovementArrowViews, _stages[1]) || removedSomething;
       armyViews = newArmyViews;      
       movementArrowViews = newMovementArrowViews;      
         
-      return removedSomething;          
+      return removedSomething || changedAnimation;          
     }
     
     that.updateGamingPieces = function(nodes) {
