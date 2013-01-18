@@ -3465,7 +3465,7 @@ table .number {
   text-align: right;
 }
 
-#army-create-form, #army-change-form {
+#army-create-form {
   margin-left: -350px;
   margin-top: 100px;
   width: 700px; min-height: 400px;
@@ -3473,7 +3473,13 @@ table .number {
   z-index:256;
 }
 
-#army-create-form .inner-border, #army-change-form .inner-border {
+#army-change-form {
+  margin-left: -300px;
+  margin-top: 150px;
+  width: 600px; min-height: 200px;
+}
+
+#army-create-form .inner-border {
   border: 8px solid #F94;
   background-color: rgba(255, 144, 64, 0.15);
   border-radius: 11px;
@@ -3483,6 +3489,8 @@ table .number {
 
 #army-create-form .button, #army-change-form .button {
   float: none;
+  border: 2px solid #777;
+  margin: -2px;
 }
 
 #army-create-form .buttons, #army-change-form .buttons {
