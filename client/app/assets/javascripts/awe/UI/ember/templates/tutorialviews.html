@@ -69,7 +69,8 @@
       {{#if questState.finished}}
         {{#if quest.reward_text}}Tipp:{{/if}} {{local quest.reward_text}}
       {{else}}
-        {{#if newArmyQuest}}<div class="description-image"></div>{{/if}}}
+        {{#if newArmyQuest}}<div class="description-image-army"></div>{{/if}}}
+        {{#if toSettlementQuest}}<div class="description-image-settlement"></div>{{/if}}}
         {{local quest.description}}
       {{/if}}
 

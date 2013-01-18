@@ -276,7 +276,7 @@ AWE.UI.Ember = (function(module) {
     remainingArmies: function() {
       var commandPoints = (this.getPath('settlement.command_points') || 0);
       var armiesCount   = (this.getPath('settlement.armies_count') || 0) - 1;    // without garrison army
-      return commandPoints > armiesCount ? commandPoints - armiesCount : null;
+      return commandPoints > armiesCount ? commandPoints - armiesCount : 0;
     }.property('settlement.command_points', 'settlement.armies_count').cacheable(),
     
     hashableSettlements: function() {
@@ -447,7 +447,17 @@ AWE.UI.Ember = (function(module) {
         this.set('otherUnits', allUnits - units);
         return units;
       }
-    }).property('garrisonUnits')
+    }).property('garrisonUnits'),
+    
+    insertNewline: function() {
+      if (this.getPath('parentView.parentView.parentView').createPressed) {
+        this.getPath('parentView.parentView.parentView').createPressed();
+      };
+      
+      if (this.getPath('parentView.parentView.parentView').changePressed) {
+        this.getPath('parentView.parentView.parentView').changePressed();
+      };
+    },    
   });
   
   module.OtherArmyUnitTextfield = Ember.TextField.extend({
@@ -476,7 +486,17 @@ AWE.UI.Ember = (function(module) {
         this.set('garrisonUnits', allUnits - units);
         return units;
       }
-    }).property('otherUnits')
+    }).property('otherUnits'),
+    
+    insertNewline: function() {
+      if (this.getPath('parentView.parentView.parentView').createPressed) {
+        this.getPath('parentView.parentView.parentView').createPressed();
+      };
+      
+      if (this.getPath('parentView.parentView.parentView').changePressed) {
+        this.getPath('parentView.parentView.parentView').changePressed();
+      };
+    },
   });
   
   return module;
