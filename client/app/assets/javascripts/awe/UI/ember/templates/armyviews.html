@@ -139,7 +139,6 @@
         <div class="modal-dialog-pane" id="army-change-form">
           <h2>{{ t army.change.header }}</h2>
           {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" armyNameBinding="otherArmy.name" garrisonOverfullClassBinding="garrisonOverfullClass" otherOverfullClassBinding="otherOverfullClass" }}
-          <p>{{ t army.create.remainingArmies }}: {{ remainingArmies }}</p>
           <p>
             <span class="clickable simple-button" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</span>&nbsp;&nbsp;&nbsp;
             <span class="clickable simple-button" {{action "changePressed" target="parentView"}}>{{ t army.form.change }}</span>
