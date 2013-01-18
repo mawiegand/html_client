@@ -144,12 +144,12 @@
           <a class="close clickable" {{action "cancelPressed" target="parentView"}}></a>
           <h2>{{ t army.change.header }}</h2>
           {{view AWE.UI.Ember.ArmyForm unitTypesBinding="unitTypes" garrisonSumBinding="garrisonSum" otherSumBinding="otherSum" armyNameBinding="otherArmy.name" garrisonOverfullClassBinding="garrisonOverfullClass" otherOverfullClassBinding="otherOverfullClass" }}
-          <div class="right">
+          <div class="buttons">
             {{#if "loading" }}
-              <span>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ t army.change.loadingMessage }}</span>
+              <div>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{ t army.change.loadingMessage }}</div>
             {{else}}
-              <span class="clickable button" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</span>&nbsp;&nbsp;&nbsp;
-              <span class="clickable button" {{action "changePressed" target="parentView"}}>{{ t army.form.change }}</span>
+              <div class="clickable button" {{action "reset" target="parentView"}}>{{ t army.form.reset }}</div>&nbsp;&nbsp;&nbsp;
+              <div class="clickable button" {{action "changePressed" target="parentView"}}>{{ t army.form.change }}</div>
             {{/if}}
           </div>
         </div>
