@@ -101,8 +101,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     showAnnouncement: function() {
       var self = this;
       
+      /*
       var dialog = AWE.UI.Ember.TutorialEndDialog.create();
-      self.presentModalDialog(dialog);
+      self.presentModalDialog(dialog); */
       
       AWE.GS.AnnouncementManager.updateAnnouncement(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(announcement, statusCode) {
         if (statusCode === AWE.Net.OK) {
