@@ -1939,8 +1939,8 @@ AWE.Controller = (function(module) {
     
     var shouldDisplayArmyMarker = function() {
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
-      
-      if (!AWE.Config.USE_TUTORIAL ||
+  
+      if (AWE.Config.USE_TUTORIAL &&
           (tutorialState && 
            ((tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_FIGHT_QUEST_ID) &&
              tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_FIGHT_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED) || 
@@ -1952,8 +1952,6 @@ AWE.Controller = (function(module) {
     }
     
     var shouldDisplayBaseMarker = function() {
-      return AWE.Config.ON;
-      
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
       
       var returnedFromMap = 
