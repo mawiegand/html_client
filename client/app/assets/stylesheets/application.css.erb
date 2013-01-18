@@ -315,6 +315,10 @@ a:focus { outline: thin dotted; }
   font-weight: bold;
 }
 
+.right {
+  text-aling: right;
+}
+
 .clickable {
   cursor: pointer;  
 }
@@ -3462,9 +3466,27 @@ table .number {
 }
 
 #army-create-form, #army-change-form {
-  margin-left: -300px;
-  margin-top: -250px;
-  width: 600px; min-height: 200px;
+  margin-left: -350px;
+  margin-top: 100px;
+  width: 700px; min-height: 400px;
+  padding: 4px 4px 4px 4px;
+  z-index:256;
+}
+
+#army-create-form .inner-border, #army-change-form .inner-border {
+  border: 8px solid #F94;
+  background-color: rgba(255, 144, 64, 0.15);
+  border-radius: 11px;
+  margin: 0;
+  padding: 4px 14px 14px 14px;
+}
+
+#army-create-form .button, #army-change-form .button {
+  float: none;
+}
+
+#army-create-form .buttons, #army-change-form .buttons {
+  text-align: right;
 }
 
 #army-create-form table td, #army-change-form table td {
@@ -3647,7 +3669,7 @@ table .number {
   top: -60px;
 }
 
-.ranking-view a.close {
+#army-create-form a.close, #army-create-form a.close, .ranking-view a.close {
   position: absolute;
   background: url('<%= asset_path("ui/close_button.png") %>');
   width: 50px;
@@ -3656,7 +3678,7 @@ table .number {
   top: 26px;
 }
 
-.ranking-view a.close:hover {
+#army-create-form a.close:hover, #army-create-form a.close:hover, .ranking-view a.close:hover {
   background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
@@ -4194,12 +4216,20 @@ table .number {
   color: #DBD;
 }
 
-.quest-dialog .description-image {
+.quest-dialog .description-image-army {
   float: left;
-  margin: 0px 8px 8px 0px;
-  width: 96px;
-  height: 99px;
+  margin: 0px 14px 14px 0px;
+  width: 317px;
+  height: 287px;
   background-image: url('<%= asset_path("newarmybutton.png") %>');
+}
+
+.quest-dialog .description-image-settlement {
+  float: left;
+  margin: 0px 14px 14px 0px;
+  width: 263px;
+  height: 173px;
+  background-image: url('<%= asset_path("settlementbutton.png") %>');
 }
 
 
