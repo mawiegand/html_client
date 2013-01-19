@@ -595,7 +595,7 @@ AWE.Controller = (function(module) {
       
       if (currentAction) {
         currentAction = null;
-        if (_selectedView) {
+        if (_selectedView && _selectedView.annotationView()) {
           _selectedView.annotationView().setActionMode(null);
         }
         _actionViewChanged = true;
@@ -1233,7 +1233,9 @@ AWE.Controller = (function(module) {
           }
           _actionViewChanged = true;
           currentAction = null;
-          _selectedView.annotationView().setActionMode(null);
+          if (_selectedView && _selectedView.annotationView()) {
+            _selectedView.annotationView().setActionMode(null);
+          }
         }
         else if (currentAction.typeName === 'attackAction') {
           var targetArmies = getTargetArmies(currentAction.army);
@@ -1255,7 +1257,9 @@ AWE.Controller = (function(module) {
           }
           _actionViewChanged = true;
           currentAction = null;
-          _selectedView.annotationView().setActionMode(null);
+          if (_selectedView && _selectedView.annotationView()) {
+            _selectedView.annotationView().setActionMode(null);
+          }
         }
       }
       else {
