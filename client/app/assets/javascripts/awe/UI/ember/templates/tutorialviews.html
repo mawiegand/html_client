@@ -118,18 +118,18 @@
 
 <script type="text/x-handlebars" data-template-name="tutorial-dialog-header">
   {{#if finished}}
-    {{t tutorial.task.end.header }} {{parentView.questState.tutorialState.closedQuestStateCountPlusOne}} / {{parentView.questState.tutorialState.tutorial.num_tutorial_quests}}
+    {{t tutorial.task.end.header }}
   {{else}}
     {{#if modeStart}}
-      {{t tutorial.task.start.header }} {{parentView.questState.tutorialState.closedQuestStateCountPlusOne}} / {{parentView.questState.tutorialState.tutorial.num_tutorial_quests}}
+      {{t tutorial.task.start.header }}
     {{else}}
       {{#if modeEnd}}
-        {{t tutorial.task.end.header }}  {{parentView.questState.tutorialState.closedQuestStateCountPlusOne}} / {{parentView.questState.tutorialState.tutorial.num_tutorial_quests}}
+        {{t tutorial.task.end.header }} 
       {{else}}
         {{#if modeExisting}}
-          {{t tutorial.task.info.header }}  {{parentView.questState.tutorialState.closedQuestStateCountPlusOne}} / {{parentView.questState.tutorialState.tutorial.num_tutorial_quests}}
+          {{t tutorial.task.info.header }} 
         {{else}}
-          {{t tutorial.task.info.header }}  {{parentView.questState.tutorialState.closedQuestStateCountPlusOne}} / {{parentView.questState.tutorialState.tutorial.num_tutorial_quests}}
+          {{t tutorial.task.info.header }}  
         {{/if}}
       {{/if}}
     {{/if}}
