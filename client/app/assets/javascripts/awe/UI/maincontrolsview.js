@@ -362,7 +362,7 @@ AWE.UI = (function(module) {
         my.amounts[3] = pool.presentAmount('resource_cash');
         
         _resource4LabelView.setText(""+my.amounts[3]);
-        if (pool.get('resource_cash_production_rate') >= 0))
+        if (pool.get('resource_cash_production_rate') >= 0)) {
           _resource4ProductionView.setText("+"+(Math.floor(pool.get('resource_cash_production_rate')*100.0)/100.0)+"/h");
         }
         else {
