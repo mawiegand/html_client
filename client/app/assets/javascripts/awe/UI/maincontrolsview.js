@@ -347,7 +347,7 @@ AWE.UI = (function(module) {
       }
       
 
-      var name = character.get('name') ? character.get('name').substring(0, Math.min(12, character.get('name').length)) : ""
+      var name = character.get('name');
       if (_heroNameView.text() != name) {
         _heroNameView.setText(name);
       }   
