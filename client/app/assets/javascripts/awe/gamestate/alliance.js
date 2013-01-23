@@ -135,7 +135,7 @@ AWE.GS = (function(module) {
     
     victoryType: function() {
       var rules = AWE.GS.RulesManager.getRules()
-      return rules ? rules.get('victory_types')[this.get('victory_type')] : nil;
+      return rules ? rules.get('victory_types')[this.get('victory_type')] : null;
     }.property('victory_type').cacheable(),
     
     fulfilled: function() {
