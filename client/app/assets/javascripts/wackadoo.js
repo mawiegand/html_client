@@ -339,7 +339,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.GS.RulesManager.updateRules(function(rules, statusCode) {
         if (statusCode === AWE.Net.OK) {
           log('Rules', rules);
-          assetLoaded();
 
           _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
           AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
@@ -415,6 +414,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             }
           });
 
+          assetLoaded();
         }
         else {
           log('CRITICAL ERROR: could not load rules from server. Error code: ' + statusCode + '. Terminate App.');
