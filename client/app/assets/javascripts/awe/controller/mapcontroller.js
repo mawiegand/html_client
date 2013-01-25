@@ -1942,16 +1942,16 @@ AWE.Controller = (function(module) {
     }
     
     var shouldDisplayArmyMarker = function() {
-      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
-  
-      if (AWE.Config.USE_TUTORIAL &&
-          (tutorialState && 
-           ((tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_FIGHT_QUEST_ID) &&
-             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_FIGHT_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED) || 
-            (tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MOVE_QUEST_ID) &&
-             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MOVE_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED)))) {
-        return true;
-      }
+      // var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+//   
+      // if (AWE.Config.USE_TUTORIAL &&
+       //    (tutorialState && 
+           // ((tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_FIGHT_QUEST_ID) &&
+       //       tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_FIGHT_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED) || 
+            // (tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MOVE_QUEST_ID) &&
+    //          tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MOVE_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED)))) {
+        // return true;
+      // }
       return false;
     }
     
