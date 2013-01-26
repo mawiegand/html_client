@@ -347,7 +347,7 @@ AWE.UI = (function(module) {
       }
       
 
-      var name = character.get('name') ? character.get('name').substring(0, Math.min(12, character.get('name').length)) : ""
+      var name = character.get('name');
       if (_heroNameView.text() != name) {
         _heroNameView.setText(name);
       }   
@@ -362,8 +362,13 @@ AWE.UI = (function(module) {
         my.amounts[3] = pool.presentAmount('resource_cash');
         
         _resource4LabelView.setText(""+my.amounts[3]);
-        _resource4ProductionView.setText("+"+(Math.floor(pool.get('resource_cash_production_rate')*100.0)/100.0)+"/h");
-
+        var productionRate = pool.get('resource_cash_production_rate');
+        if (productionRate >= 0) {
+          _resource4ProductionView.setText("+"+(Math.floor(productionRate*100.0)/100.0)+"/h");
+        }
+        else {
+          _resource4ProductionView.setText("+"+(Math.ceil(productionRate*100.0)/100.0)+"/h");
+        }
       }
       
       _super.updateView();

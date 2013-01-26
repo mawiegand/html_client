@@ -100,6 +100,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     showAnnouncement: function() {
       var self = this;
+      
+      /*
+      var dialog = AWE.UI.Ember.TutorialEndDialog.create();
+      self.presentModalDialog(dialog); */
+      
       AWE.GS.AnnouncementManager.updateAnnouncement(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(announcement, statusCode) {
         if (statusCode === AWE.Net.OK) {
           var dialog = AWE.UI.Ember.AnnouncementDialog.create({
@@ -334,6 +339,81 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.GS.RulesManager.updateRules(function(rules, statusCode) {
         if (statusCode === AWE.Net.OK) {
           log('Rules', rules);
+
+          _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
+          AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
+            if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.getCurrentCharacter()) {
+              log('INFO: playing as character ', entity);
+              var currentCharacter = AWE.GS.CharacterManager.getCurrentCharacter();
+              if (currentCharacter.get('alliance_id') && currentCharacter.get('alliance_id') > 0) {
+                _numAssets +=1;
+                // log('---> load alliance');
+                AWE.GS.AllianceManager.updateAlliance(currentCharacter.get('alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
+                  assetLoaded();
+                });
+              }
+          
+              if (currentCharacter.get('base_node_id')) {
+                _numAssets +=1;
+                AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
+                  AWE.GS.CharacterManager.getCurrentCharacter().set('base_node', node);
+                  log("Node", node)
+                  assetLoaded();
+                });
+              }
+
+              if (AWE.Config.USE_TUTORIAL) {
+                _numAssets += 2;
+                AWE.GS.TutorialManager.updateTutorial(function(tutorial, statusCode) {
+                  if (statusCode === AWE.Net.OK) {
+                    log('Tutorial', tutorial);
+                    assetLoaded();
+                
+                    AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
+                      log("TutorialState", tutorialState)
+                      assetLoaded();
+                    });
+                  }
+                  else {
+                    log('CRITICAL ERROR: could not load tutorial from server. Error code: ' + statusCode + '. Terminate App.');
+                    throw "ABORT Due to Failure to load tutorial.";
+                  }
+                });
+              }
+
+              _numAssets += 1;
+              AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
+                if (statusCode === AWE.Net.OK) {
+                  log(resourcePool);
+                  assetLoaded();
+                }
+                else {
+                  log('CRITICAL ERROR: could not load resource pool from server. Error code: ' + statusCode + '. Terminate App.');
+                  throw "ABORT Due to Failure to load player's resource pool.";
+                }
+              });
+
+              _numAssets += 1;
+              AWE.GS.RoundInfoManager.updateRoundInfo(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
+                if (statusCode === AWE.Net.OK) {
+                  log('RoundInfo', AWE.GS.game.roundInfo);
+                  assetLoaded();
+                }
+                else {
+                  log('CRITICAL ERROR: could not load round info from server. Error code: ' + statusCode + '. Terminate App.');
+                  throw "ABORT Due to Failure to load game's round info.";
+                }
+              });
+
+              assetLoaded();
+            }
+            else {
+              alert ('Das Spiel konnte nicht geladen werden. Bitte drücke den Aktualisieren-Knopf Deines Browsers, meist hilft schlichtes Neuladen der Seite und Login. Falls auch das nicht hilft, kontaktiere bitte den Support. Wir unterstützen folgende Browser: Chrome, Firefox, Internet Explorer 9 und Safari; je neuer, desto besser (und schneller).');
+              log('CRITICAL ERROR: could not load current character from server. Error code: ' + statusCode + '. Terminate App.');
+              throw "ABORT Due to Failure to Load Player's Current Character.";
+            }
+          });
+
           assetLoaded();
         }
         else {
@@ -341,81 +421,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           throw "ABORT Due to Failure to load rules.";
         }
       });
-     
-      _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
-      AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
-        if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.getCurrentCharacter()) {
-          log('INFO: playing as character ', entity);
-          var currentCharacter = AWE.GS.CharacterManager.getCurrentCharacter();
-          if (currentCharacter.get('alliance_id') && currentCharacter.get('alliance_id') > 0) {
-            _numAssets +=1;
-            // log('---> load alliance');
-            AWE.GS.AllianceManager.updateAlliance(currentCharacter.get('alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
-              assetLoaded();
-            });
-          }
-          
-          if (currentCharacter.get('base_node_id')) {
-            _numAssets +=1;
-            AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
-              AWE.GS.CharacterManager.getCurrentCharacter().set('base_node', node);
-              log("Node", node)
-              assetLoaded();
-            });
-          }
-
-          if (AWE.Config.USE_TUTORIAL) {
-            _numAssets += 2;
-            AWE.GS.TutorialManager.updateTutorial(function(tutorial, statusCode) {
-              if (statusCode === AWE.Net.OK) {
-                log('Tutorial', tutorial);
-                assetLoaded();
-                
-                AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
-                  log("TutorialState", tutorialState)
-                  assetLoaded();
-                });
-              }
-              else {
-                log('CRITICAL ERROR: could not load tutorial from server. Error code: ' + statusCode + '. Terminate App.');
-                throw "ABORT Due to Failure to load tutorial.";
-              }
-            });
-          }
-
-          _numAssets += 1;
-          AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
-            if (statusCode === AWE.Net.OK) {
-              log(resourcePool);
-              assetLoaded();
-            }
-            else {
-              log('CRITICAL ERROR: could not load resource pool from server. Error code: ' + statusCode + '. Terminate App.');
-              throw "ABORT Due to Failure to load player's resource pool.";
-            }
-          });
-
-          _numAssets += 1;
-          AWE.GS.RoundInfoManager.updateRoundInfo(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
-            if (statusCode === AWE.Net.OK) {
-              log('RoundInfo', AWE.GS.game.roundInfo);
-              assetLoaded();
-            }
-            else {
-              log('CRITICAL ERROR: could not load round info from server. Error code: ' + statusCode + '. Terminate App.');
-              throw "ABORT Due to Failure to load game's round info.";
-            }
-          });
-
-          assetLoaded();
-        }
-        else {
-          alert ('Das Spiel konnte nicht geladen werden. Bitte drücke den Aktualisieren-Knopf Deines Browsers, meist hilft schlichtes Neuladen der Seite und Login. Falls auch das nicht hilft, kontaktiere bitte den Support. Wir unterstützen folgende Browser: Chrome, Firefox, Internet Explorer 9 und Safari; je neuer, desto besser (und schneller).');
-          log('CRITICAL ERROR: could not load current character from server. Error code: ' + statusCode + '. Terminate App.');
-          throw "ABORT Due to Failure to Load Player's Current Character.";
-        }
-      });
-
+      
       for (var k in AWE.Config.IMAGE_CACHE_LOAD_LIST) {     // and preload assets
         if (AWE.Config.IMAGE_CACHE_LOAD_LIST.hasOwnProperty(k)) {
           AWE.UI.ImageCache.loadImage(k, AWE.Config.IMAGE_CACHE_LOAD_LIST[k], function(name) {

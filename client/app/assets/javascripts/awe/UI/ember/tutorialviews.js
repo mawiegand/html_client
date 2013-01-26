@@ -128,6 +128,18 @@ AWE.UI.Ember = (function(module) {
       return this.getPath('questState.status') >= AWE.GS.QUEST_STATUS_FINISHED;
     }.property('questState.status').cacheable(),
     
+    newArmyQuest: function() {
+      return this.getPath('quest.id') == 17;  // FIXME schneller Hack zur Anzeige der Knopfes in der Quest
+    }.property('quest.id').cacheable(),
+    
+    toSettlementQuest: function() {
+      return this.getPath('quest.id') == 11 || this.getPath('quest.id') == 7;  // FIXME schneller Hack zur Anzeige der Knopfes in der Quest
+    }.property('quest.id').cacheable(),
+    
+    attackQuest: function() {
+      return this.getPath('quest.id') == 147;  // FIXME schneller Hack zur Anzeige der Knopfes in der Quest
+    }.property('quest.id').cacheable(),
+    
     checkQuestAnswerPressed: function() {
       
       if (!AWE.GS.TutorialStateManager.tutorialEnabled()) return;

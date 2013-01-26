@@ -134,7 +134,8 @@ AWE.GS = (function(module) {
     first_fulfilled_at: null,
     
     victoryType: function() {
-      return AWE.GS.RulesManager.getRules().get('victory_types')[this.get('victory_type')];
+      var rules = AWE.GS.RulesManager.getRules()
+      return rules ? rules.get('victory_types')[this.get('victory_type')] : null;
     }.property('victory_type').cacheable(),
     
     fulfilled: function() {
@@ -257,25 +258,27 @@ AWE.GS = (function(module) {
             lastUpdate = timestamp.add(-1).second();
             
             var leaders = {}
-            AWE.GS.RulesManager.getRules().get('victory_types').forEach(function(victoryType) {
-              var leadersThisType = {};
-              AWE.Ext.applyFunctionToElements(allLeaders, function(leader) {
-                if (leader.get('victory_type') === victoryType.id) {
-                  if (leader.get('pos') === 1) {
-                    leadersThisType['first'] = leader;
+            var rules = AWE.GS.RulesManager.getRules();
+            if (rules) {
+              rules.get('victory_types').forEach(function(victoryType) {
+                var leadersThisType = {};
+                AWE.Ext.applyFunctionToElements(allLeaders, function(leader) {
+                  if (leader.get('victory_type') === victoryType.id) {
+                    if (leader.get('pos') === 1) {
+                      leadersThisType['first'] = leader;
+                    }
+                    if (leader.get('pos') === 2) {
+                      leadersThisType['second'] = leader;
+                    }
+                    if (leader.get('pos') === 3) {
+                      leadersThisType['third'] = leader;
+                    }
                   }
-                  if (leader.get('pos') === 2) {
-                    leadersThisType['second'] = leader;
-                  }
-                  if (leader.get('pos') === 3) {
-                    leadersThisType['third'] = leader;
-                  }
-                }
-              })
-              leaders[victoryType.symbolic_id] = leadersThisType;
-            });
-            
-            AWE.GS.game.set('victoryProgressLeaders', leaders);
+                })
+                leaders[victoryType.symbolic_id] = leadersThisType;
+              });
+              AWE.GS.game.set('victoryProgressLeaders', leaders);
+            }
           }
           if (callback) {
             callback(allLeaders, statusCode, xhr, timestamp);
