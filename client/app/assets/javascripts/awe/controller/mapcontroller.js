@@ -2095,23 +2095,42 @@ AWE.Controller = (function(module) {
             var location = locations[l];
             if (location) {
               var view = locationViews[location.id()];
-              
-              if (view) { 
+
+              if (view && view.locationType() == AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()]) {
                 // beginner tutorial hack for adding jumping arrow to own settlement:
                 if (!that.ownBaseMarkerAnimation && AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === "base" &&
-                    location.isOwn() && shouldDisplayBaseMarker()) {
+                  location.isOwn() && shouldDisplayBaseMarker()) {
                   var arrow = AWE.UI.createTargetView();
                   arrow.initWithControllerAndTargetedView(that, view);
                   that.ownBaseMarkerAnimation = that.addBouncingAnnotationLabel(view, arrow, 10000000);
                   changedAnimation = true;
                   view.setNeedsUpdate();
-                }   
+                }
                 if (view.lastChange !== undefined &&  // if model of view updated
-                    view.lastChange().getTime() < location.lastChange().getTime()) {
+                  view.lastChange().getTime() < location.lastChange().getTime()) {
                   view.setNeedsUpdate();
-                }                                     
+                }
               }
-              else {                                        
+              else if (view && view.locationType() != AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()]) {
+                if (view === _selectedView) {
+                  _unselectView(view);
+                }
+                _stages[1].removeChild(view.displayObject());
+                if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === "base") {
+                  view = AWE.UI.createBaseView();
+                }
+                else if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === "outpost") {
+                  view = AWE.UI.createOutpostView();
+                }
+                else if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === "empty") {
+                  view = AWE.UI.createEmptySlotView();
+                }
+                if (view) {   // if base, outpost or empty slot on location, init the view
+                  view.initWithControllerAndLocation(that, location);
+                  _stages[1].addChild(view.displayObject());
+                }
+              }
+              else {
                 if (AWE.Config.MAP_LOCATION_TYPE_CODES[location.settlementTypeId()] === "base") {
                   view = AWE.UI.createBaseView();
                 }             
@@ -2166,9 +2185,9 @@ AWE.Controller = (function(module) {
           }
         }); 
       }
-      
+
       var removedSomething = purgeDispensableViewsFromStage(locationViews, newLocationViews, _stages[1]);
-      locationViews = newLocationViews;      
+      locationViews = newLocationViews;
       return removedSomething || changedAnimation;
     }
     

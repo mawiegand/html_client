@@ -478,6 +478,11 @@ AWE.GS = (function(module) {
           if (status === AWE.Net.OK  || status === AWE.Net.NOT_MODIFIED) {
             lastLocationUpdates[locationId] = timestamp;
           }
+          // remove deleted settlement from location
+          if (status === AWE.Net.OK) {           
+            var settlements = module.SettlementAccess.getHashableCollectionForLocation_id(locationId);
+            that.fetchMissingEntities(result, settlements.get('collection'), that.updateSettlement);
+          }          
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
               result = that.getEntities();
