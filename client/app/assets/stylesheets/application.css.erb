@@ -278,6 +278,13 @@ html, body {
 }
 
 
+a { color: #787da8; text-decoration: none; }
+a:visited { color: #787da8; }
+a:hover { color: #333666; text-decoration: underline;}
+a:focus { outline: thin dotted; }
+
+
+
 .inline {
   display: inline-block;
 }
@@ -306,6 +313,14 @@ html, body {
 
 .bold {
   font-weight: bold;
+}
+
+.right {
+  text-aling: right;
+}
+
+.clickable {
+  cursor: pointer;  
 }
 
 #layers {
@@ -539,7 +554,7 @@ html, body {
   float: right;
 }
 
-.modal-dialog-pane input[type="text"] {
+.modal-dialog-pane input[type="text"], .modal-dialog-pane input[type="password"] {
   font-size: 20px;
   height: 28px;
   border-radius: 5px;
@@ -561,10 +576,6 @@ html, body {
   overflow: hidden;
   min-width: 500px;
   min-height: 300px;
-}
-
-.ios.message-center {
-  min-width: 100px;
 }
 
 .message-center .header {
@@ -1110,9 +1121,28 @@ html, body {
   font-size: 16px;
   position: absolute; 
   margin-left: -350px;
-  margin-top: -300px;  
+  margin-top: 100px;  
   width: 700px; 
   min-height: 300px;
+  background-color: #FFF;    
+}
+
+.character-profile-view input[type="text"] {
+  width: 450px;
+  margin-right: 0px;  
+}
+
+.character-profile-view input[type="password"] {
+  width: 220px; 
+}
+
+.ranking-view {
+  font-size: 16px;
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: 80px;  
+  width: 800px; 
+  min-height: 600px;
   background-color: #FFF;    
 }
 
@@ -1209,6 +1239,12 @@ html, body {
   width: 100%;
 }
 
+.ranking-view .tab-content {
+  border-style: solid none none none;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
 
 .character-progress-dialog-pane .advisor,
 .found-settlement-dialog .advisor,
@@ -1224,10 +1260,38 @@ html, body {
   margin-right: -60px;
 }
 
+#army-create-form .advisor.warrior {
+  margin-left: -100px;
+  margin-top: -60px;
+}
+
+.tutorial-end-dialog .advisor.warrior {
+  float: left;
+  margin-left: -80px;
+}
+.tutorial-end-dialog .advisor.chef {
+  float: right;
+  margin-top: -50px;
+  margin-right: -80px;
+}
+.tutorial-end-dialog .chef {
+  text-align:right;
+}
+.tutorial-end-dialog .advisor.girl {
+  margin-top: -60px;
+  margin-left: -80px;
+  float: left;
+}
+.tutorial-end-dialog .p5 {
+  margin-top: 30px;
+}
 .citation {
   color: #AAA;
   font-style: italic;
   text-align: right;
+}
+#army-create-form .citation {
+  text-align: left;
 }
 
 .unit-image {
@@ -2370,6 +2434,9 @@ li.shout .sender {
   min-height:750px; 
 }
 
+.outpost-screen .settlement-info-box.expanded {
+  min-height:720px; 
+}
 
 
 .settlement-switch {
@@ -2609,7 +2676,7 @@ table .number {
 
 .outpost-background-picture,
 .base-background-picture {
-  background: url('<%= asset_path("settlements/base/base_c_background_1280.jpg") %>');
+  background: url('<%= asset_path("settlements/base/base_c2_background_1280.jpg") %>');
   background-repeat: no-repeat;
   position: absolute;
   left: 0px;
@@ -3398,11 +3465,29 @@ table .number {
   text-align: right;
 }
 
-#army-create-form, #army-change-form {
+#army-create-form {
+  margin-left: -350px;
+  margin-top: 100px;
+  width: 700px; min-height: 400px;
+  padding: 4px 4px 4px 4px;
+  z-index:256;
+}
+
+#army-change-form {
   margin-left: -300px;
-  margin-top: -250px;
+  margin-top: 150px;
   width: 600px; min-height: 200px;
 }
+
+#army-create-form .inner-border {
+  border: 8px solid #F94;
+  background-color: rgba(255, 144, 64, 0.15);
+  border-radius: 11px;
+  margin: 0;
+  padding: 4px 14px 14px 14px;
+}
+
+
 
 #army-create-form table td, #army-change-form table td {
   text-align: center;
@@ -3578,6 +3663,35 @@ table .number {
 }
 
 
+.ranking-view .advisor { 
+  position: absolute;
+  left: 510px;
+  top: -60px;
+}
+
+#army-create-form a.close, #army-create-form a.close, .ranking-view a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+#army-create-form a.close:hover, #army-create-form a.close:hover, .ranking-view a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+
+.ranking-table {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0px auto 0px auto;
+  width: 800px;
+}
+
 .participant-table {
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -3587,10 +3701,127 @@ table .number {
 }
 
 .participant-table th {
-  background-color: #555;  
+  background-color: #787da8;  
   color: #fff;
   padding: 4px 4px 4px 4px;
   font-size: 14px;
+  text-shadow: none;
+}
+
+.ranking-table th {
+  background-color: #787da8;  
+  color: #fff;
+  padding: 4px 4px 4px 4px;
+  font-size: 14px;
+  text-shadow: none;
+}
+
+.ranking-table th.clickable {
+  color: #ddf;
+}
+
+.ranking-table th.clickable:hover {
+  color: #333666;
+}
+
+.ranking-table th.sortOrder {
+  color: #333666;
+}
+
+.ranking-table tr:nth-child(even) {
+  background-color: rgba(160, 160, 192, 0.15);
+}
+
+.ranking-table td {
+  height: 20px;
+  font-size: 14px;
+  padding: 2px 4px 2px 4px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ranking-table td.number {
+  padding: 2px 8px 2px 0px;
+}
+
+.ranking-table .rank {
+  width: 42px;
+}
+
+.ranking-table .character {
+  width: 148px;
+}
+
+.ranking-table .overall {
+  width: 58px;
+}
+
+.ranking-table .resource {
+  width: 88px;
+}
+
+.ranking-table .likes {
+  width: 64px;
+}
+
+.ranking-table .victories {
+  width: 42px;
+}
+
+.ranking-table .victory-ratio {
+  width: 104px;
+}
+
+.ranking-table .kills {
+  width: 106px;
+}
+
+.ranking-table .experience {
+  width: 74px;
+}
+
+.ranking-table .rank2 {
+  width: 48px;
+}
+
+.ranking-table .alliance {
+  width: 72px;
+}
+
+.ranking-table .fortress {
+  width: 80px;
+}
+
+.ranking-table .overall2 {
+  width: 76px;
+}
+
+.ranking-table .resource2 {
+  width: 98px;
+}
+
+.ranking-table .kills2 {
+  width: 112px;
+}
+
+.ranking-table .members {
+  width: 80px;
+}
+
+.ranking-table .region-members {
+  width: 178px;
+}
+
+.ranking-table .tax {
+  width: 84px;
+}
+
+.ranking-table .income {
+  width: 130px;
+}
+
+.ranking-table .defense {
+  width: 170px;
 }
 
 .participant-table td {
@@ -3602,12 +3833,12 @@ table .number {
   padding: 0px;
 }
 
-.participant-table th.left {
+.participant-table th:first-child, .ranking-table th:first-child {
   border-top-left-radius: 10px;
   border-bottom-left-radsius: 10px;
 }
 
-.participant-table th.right {
+.participant-table th:last-child, .ranking-table th:last-child {
   border-top-right-radius: 10px;
   border-bottom-right-rasdius: 10px;
 }
@@ -3725,13 +3956,18 @@ table .number {
   box-shadow:         3px 3px 2px 2px #333;
 }
 
+
 .battle-dialog-pane a.close {
   position: absolute;
-  background: url('<%= asset_path("icons/cross_small.png") %>');
-  width: 36px;
-  height: 36px;
-  right: 12px;
-  top: 10px;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.battle-dialog-pane a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
 .attack-dialog-pane {
@@ -3812,6 +4048,24 @@ table .number {
   display: inline;
 }
 
+.tutorial-end-dialog {
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: 80px;
+  width: 800px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 4px 4px 4px 4px;
+  z-index:256;
+}
+
+.tutorial-end-dialog .inner-border {
+  border: 8px solid #BBB;
+  background-color: rgba(176, 176, 176, 0.15);
+  border-radius: 11px;
+  margin: 0;
+  padding: 4px 14px 14px 14px;
+}
+
 .quest-list-view {
   position: absolute; 
   margin-left: -300px;
@@ -3822,7 +4076,7 @@ table .number {
   z-index:256;
 }
 
-.quest-list-view .advisor {
+.quest-list-view .advisor, .tutorial-end-dialog .advisor {
   float: right;
 }
 
@@ -3895,7 +4149,7 @@ table .number {
   position: absolute; 
   margin-left: -366px;
   margin-top: 50px;
-  width: 732px; min-height: 100px;
+  width: 780px; min-height: 100px;
   background-color: #FFF;  
   padding: 4px 4px 4px 4px;
   z-index:256;
@@ -3910,6 +4164,7 @@ table .number {
   padding: 4px 14px 14px 14px;
 }
 
+.tutorial-end-dialog .ok-button,
 .quest-list-view .ok-button,
 .quest-dialog .ok-button {
   border: solid 2px #BC4;
@@ -3927,7 +4182,7 @@ table .number {
   margin: -4px;
 }
 
-.quest-dialog .inner-border.girl {
+.quest-dialog .inner-border.girl, .tutorial-end-dialog .inner-border.girl {
   border-color: #BC4;
   background-color: rgba(176, 192, 64, 0.15);
 }
@@ -3959,6 +4214,30 @@ table .number {
 .quest-dialog.tutorial .ok-button {
   border-color: #DBD;
   color: #DBD;
+}
+
+.quest-dialog .description-image-army {
+  float: left;
+  margin: 0px 14px 14px 0px;
+  width: 317px;
+  height: 287px;
+  background-image: url('<%= asset_path("newarmybutton.png") %>');
+}
+
+.quest-dialog .description-image-settlement {
+  float: left;
+  margin: 0px 14px 14px 0px;
+  width: 263px;
+  height: 173px;
+  background-image: url('<%= asset_path("settlementbutton.png") %>');
+}
+
+.quest-dialog .description-image-attack {
+  float: left;
+  margin: 0px 14px 14px 0px;
+  width: 338px;
+  height: 281px;
+  background-image: url('<%= asset_path("attacknpc.png") %>');
 }
 
 
@@ -4039,6 +4318,36 @@ table .number {
   color: #a00;
 }
 
+#army-create-form .buttons, #army-change-form .buttons {
+  margin-top: 24px;
+  text-align: right;
+}
+
+#army-create-form .button {
+  border: solid 2px #F94;
+  margin: -2px;
+  font-weight: bold;
+  color: #F94;
+  padding-left: 20px;
+  padding-right: 20px;
+  float: none;
+  background-color: #FFF;  
+}
+
+#army-change-form .button {
+  border: solid 2px #777;
+  margin: -2px;
+  font-weight: bold;
+  color: #777;
+  padding-left: 20px;
+  padding-right: 20px;
+  float: none;
+}
+
+#army-create-form .button:hover, #army-change-form .button:hover {
+  border-width: 4px;
+  margin: -4px;
+}
 
 
 /* ==|== media queries ======================================================
@@ -4099,3 +4408,4 @@ table .number {
   p, h2, h3 { orphans: 3; widows: 3; }
   h2, h3 { page-break-after: avoid; }
 }
+

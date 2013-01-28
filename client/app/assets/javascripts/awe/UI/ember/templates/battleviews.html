@@ -3,6 +3,8 @@
     <div class="center-helper">
       <div class="battle-dialog-pane">
         
+        <a class="close clickable" {{action "closePressed" target="parentView"}}></a>
+           
         <div class="advisor chef"></div>
         
         <h2>{{t battle.details.heading}}</h2>
@@ -79,8 +81,6 @@
         {{else}}
         <div class="battle-time">{{t battle.details.firstRound}}: {{formatTime battle.next_round_at}}</div>
         {{/if}}
-      
-        <a class="close" href="#" {{action "closePressed" target="parentView"}}></a>  
       </div>
     </div>
 </script>

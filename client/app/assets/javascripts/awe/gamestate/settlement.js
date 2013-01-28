@@ -114,8 +114,16 @@ AWE.GS = (function(module) {
       return this.get('owner_id') === module.CharacterManager.currentCharacter.getId();
     },
     
+    isOutpost: function() {
+      return this.get('type_id') === module.SETTLEMENT_TYPE_OUTPOST;
+    }.property('type_id').cacheable(),
+	
     isFortress: function() {
       return this.get('type_id') === module.SETTLEMENT_TYPE_FORTRESS;
+    }.property('type_id').cacheable(),
+    
+    isBase: function() {
+      return this.get('type_id') === module.SETTLEMENT_TYPE_BASE;
     }.property('type_id').cacheable(),
     
     regionInvitationCode: function() {
@@ -212,7 +220,7 @@ AWE.GS = (function(module) {
     }.property('type_id', 'settlement_unlock_prevent_takeover_count'),    
     
     commandPointsUsed: function() {
-      return this.getPath('armies_count')-1;
+      return this.get('armies_count') - 1;
     }.property('armies_count').cacheable(),
     
     settlementType: function() {
@@ -265,7 +273,6 @@ AWE.GS = (function(module) {
       var numSlots = enumerableSlots.filter(function(item) {
         return item.building_id !== undefined && item.building_id !== null 
       }).length
-      log('---> usedBuildingSlots', numSlots);
       return numSlots;
     }.property('enumerableSlots.@each.building_id').cacheable(),
     
@@ -288,7 +295,6 @@ AWE.GS = (function(module) {
           total = 12;
         }
       }
-      log('---> availableBuildingSlots', total, used, total - used);
       return total - used;
     }.property('building_slots_total', 'usedBuildingSlots', 'enumerableSlots.@each.building_id').cacheable(),
   });     

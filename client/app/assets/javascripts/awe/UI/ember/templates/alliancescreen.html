@@ -15,6 +15,8 @@
     {{view AWE.UI.Ember.AllianceMemberListView controllerBinding="controller" charactersBinding="alliance.members"
                                                allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader"}}
     <hr>
+    <h1>{{t alliance.progress.header}}</h1>
+    <p>{{t alliance.progress.description}}</p>
     {{view AWE.UI.Ember.AllianceVictoryView controllerBinding="controller" allianceBinding="alliance"}}
   </div>
 </div>

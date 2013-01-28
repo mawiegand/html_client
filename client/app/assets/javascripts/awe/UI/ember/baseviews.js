@@ -48,12 +48,12 @@ AWE.UI.Ember = (function(module) /** @lend AWE.UI.Ember */ {
     },
     
     displayQuestAdvisor: function() {
-      var character = AWE.GS.player.get('currentCharacter');
+      var character = AWE.GS.game.get('currentCharacter');
       if (!character) { return false; }
       var platinum = character.get('isPlatinumActive');
       var state = character.get('max_conversion_state');
       return !platinum || !state || (state !== "active" && state !== "long_term" && state !== "paying");
-    }.property('AWE.GS.player.currentCharacter.isPlatinumActive'),
+    }.property('AWE.GS.game.currentCharacter.isPlatinumActive'),
 						
 	});
     
