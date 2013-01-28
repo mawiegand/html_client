@@ -36,6 +36,16 @@ AWE.Controller = (function(module) {
     that.onClick = null;
     that.onMouseUp = null;
     that.onMouseLeave = null;
+
+    /** Defines the margin that is beeing subtracted from the bottom if the window is resized. 
+     * If you wish to change the value use setScreenBottomMargin. */ 
+    that.screenBottomMargin = 0;
+    /** Allows to change the margin that is beeing subtracted from the bottom if the window is resized 
+     * @function
+     * @name AWE.Controller.ScreenController#setScreenBottomMargin */
+    that.setScreenBottomMargin = function(pixelValue) { 
+        that.screenBottomMargin = pixelValue; 
+    }
     
     /** this needs to be implemented, in case the controller implements its own
      * scrolling (e.g. map screen controller). 

@@ -267,6 +267,12 @@ AWE.Controller = (function(module) {
     
     /** returns the window size (canvas internal view coordinates). */
     that.windowSize = function() { return _windowSize; };
+
+    
+    that.setScreenBottomMargin = function(pixelValue) { 
+      that.screenBottomMargin = pixelValue;
+      that.setNeedsLayout();
+    }
     
     /** sets the map to display the specified region (in model coordinates).
      */
@@ -432,16 +438,26 @@ AWE.Controller = (function(module) {
       if (_needsLayout) {   ///// WRONG: no _needsLayout after zooming!!!
         if (_canvas[0].width != _windowSize.width || _canvas[0].height != _windowSize.height) {
           _canvas[0].width  = _windowSize.width;
-          _canvas[0].height = _windowSize.height;
+          _canvas[0].height = _windowSize.height - that.screenBottomMargin;
+          /*$(_canvas[0]).css("height", _windowSize.height - that.screenBottomMargin);
+          $(_canvas[0]).css("margin-bottom", that.screenBottomMargin);*/
     
           _canvas[1].width  = _windowSize.width;
-          _canvas[1].height = _windowSize.height;
+          _canvas[1].height = _windowSize.height - that.screenBottomMargin;
+          /*$(_canvas[1]).css("height", _windowSize.height - that.screenBottomMargin); 
+          $(_canvas[1]).css("margin-bottom", that.screenBottomMargin);*/
+           
     
           _canvas[2].width  = _windowSize.width;
-          _canvas[2].height = _windowSize.height;             
+          _canvas[2].height = _windowSize.height - that.screenBottomMargin;
+          /*$(_canvas[2]).css("height", _windowSize.height - that.screenBottomMargin); 
+          $(_canvas[2]).css("margin-bottom", that.screenBottomMargin); */     
 
           _canvas[3].width  = _windowSize.width;
-          _canvas[3].height = _windowSize.height;          
+          _canvas[3].height = _windowSize.height - that.screenBottomMargin;
+          /*$(_canvas[3]).css("height", _windowSize.height - that.screenBottomMargin); 
+          $(_canvas[3]).css("margin-bottom", that.screenBottomMargin);  */
+          console.warn("needs layout canvas change");    
         };
         that.setNeedsDisplay();
       };
