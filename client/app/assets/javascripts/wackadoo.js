@@ -38,7 +38,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     sessionEnded: false,
 
-    screenBottomMargin: 20,
+    screenBottomMargin: 0,
   
     /** custom object initialization goes here. */
     init: function() {
@@ -77,7 +77,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     setControllerScreenOffset: function(bottomScreenOffset) {
       this.bottomScreenOffset = bottomScreenOffset;
       if (this.mapScreenController !== null) {
-        
+        this.mapScreenController.screenBottomMargin = bottomScreenOffset;
       }
     },
     
