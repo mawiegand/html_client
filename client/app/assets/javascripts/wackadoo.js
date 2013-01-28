@@ -97,6 +97,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (this.outpostScreenController !== null) {
         this.outpostScreenController.setScreenBottomMargin(screenBottomMargin);
       }
+      //chat
+      $("#jappix_mini").css("bottom", screenBottomMargin+"px");
     },
     
     showWelcomeDialog: function() {
