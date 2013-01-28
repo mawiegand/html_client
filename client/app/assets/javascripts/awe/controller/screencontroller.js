@@ -43,15 +43,16 @@ AWE.Controller = (function(module) {
     /** Allows to change the margin that is beeing subtracted from the bottom if the window is resized 
      * @function
      * @name AWE.Controller.ScreenController#setScreenBottomMargin */
-    that.setScreenBottomMargin = function(pixelValue) { 
-        that.screenBottomMargin = pixelValue; 
-    }
+    that.setScreenBottomMargin = function(pixelValue) {
+        that.screenBottomMargin = pixelValue;
+        that.domRootElement.css("margin-bottom", that.screenBottomMargin);
+    };
     
     /** this needs to be implemented, in case the controller implements its own
      * scrolling (e.g. map screen controller). 
      * @function
      * @name AWE.Controller.ScreenController#isScrolling*/
-    that.isScrolling = function() { return false; } 
+    that.isScrolling = function() { return false; } ;
     
     /** 
      * @function

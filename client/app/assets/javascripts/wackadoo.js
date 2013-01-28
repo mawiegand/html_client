@@ -74,10 +74,28 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this._super();
     },
 
-    setControllerScreenOffset: function(bottomScreenOffset) {
-      this.bottomScreenOffset = bottomScreenOffset;
+    setControllerScreenBottomMargin: function(screenBottomMargin) {
+      this.screenBottomMargin = screenBottomMargin;
       if (this.mapScreenController !== null) {
-        this.mapScreenController.screenBottomMargin = bottomScreenOffset;
+        this.mapScreenController.setScreenBottomMargin(screenBottomMargin);
+      }
+      if (this.allianceScreenController !== null) {
+        this.allianceScreenController.setScreenBottomMargin(screenBottomMargin);
+      }
+      if (this.messageCenterController !== null) {
+        this.messageCenterController.setScreenBottomMargin(screenBottomMargin);
+      }
+      if (this.settlementScreenController !== null) {
+        this.settlementScreenController.setScreenBottomMargin(screenBottomMargin);
+      }
+      if (this.baseScreenController !== null) {
+        this.baseScreenController.setScreenBottomMargin(screenBottomMargin);
+      }
+      if (this.fortressScreenController !== null) {
+        this.fortressScreenController.setScreenBottomMargin(screenBottomMargin);
+      }
+      if (this.outpostScreenController !== null) {
+        this.outpostScreenController.setScreenBottomMargin(screenBottomMargin);
       }
     },
     
@@ -285,7 +303,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         
         var controller = AWE.Controller.createMapController('#layers');
         controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
-        controller.screenBottomMargin = this.screenBottomMargin;
+        controller.setScreenBottomMargin(self.screenBottomMargin);
         self.set('mapScreenController', controller);
       
        // $('#zoomin').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, true); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
@@ -563,7 +581,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var outpostController = this.get('outpostScreenController');
       if (!outpostController) {
         outpostController = AWE.Controller.createSettlementController('#layers');
-        outpostController.screenBottomMargin = this.screenBottomMargin;
+        outpostController.setScreenBottomMargin(this.screenBottomMargin);
         this.set('outpostScreenController', outpostController);
       }
       if (reference.settlementId !== undefined) {
@@ -586,7 +604,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var messageCenterController = this.get('messageCenterController');
       if (!messageCenterController) {
         messageCenterController = AWE.Controller.createMessageCenterController('#layers');
-        messageCenterController.screenBottomMargin = this.screenBottomMargin;
+        messageCenterController.setScreenBottomMargin(this.screenBottomMargin);
         this.set('messageCenterController', messageCenterController);
       }
       this.setScreenController(messageCenterController);      
@@ -609,7 +627,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var allianceController = this.get('allianceScreenController');
       if (!allianceController) {
         allianceController = AWE.Controller.createAllianceController('#layers');
-        allianceController.screenBottomMargin = this.screenBottomMargin;
+        allianceController.setScreenBottomMargin(this.screenBottomMargin);
         this.set('allianceScreenController', allianceController);
       }
       allianceController.setAllianceId(alliance_id);

@@ -47,6 +47,14 @@ AWE.Controller = (function(module) {
       }
     }
     
+    /** Allows to change the margin that is beeing subtracted from the bottom if the window is resized 
+     * @function
+     * @name AWE.Controller.ScreenController#setScreenBottomMargin */
+    that.setScreenBottomMargin = function(pixelValue) {
+        that.screenBottomMargin = pixelValue;
+        $(".message-center .list").css("bottom", that.screenBottomMargin+"px");
+        $(".message-center .detail").css("bottom", that.screenBottomMargin+"px");
+    };
     
     /** update the view in case the OBJECTS (alliance, members) did change. A change
      * of object properties (e.g. alliance.description) is propagated automatically

@@ -261,7 +261,8 @@ AWE.Controller = (function(module) {
         _windowChanged = true;
         that.setNeedsLayout();
         if (_camera !== undefined) {
-          _camera.windowSize(size);
+          var cameraWindowSize = AWE.Geometry.createSize(size.width, (size.height - that.screenBottomMargin));
+          _camera.windowSize(cameraWindowSize);
         }
       }
     };
@@ -270,8 +271,9 @@ AWE.Controller = (function(module) {
     that.windowSize = function() { return _windowSize; };
 
     
-    that.setScreenBottomMargin = function(pixelValue) { 
+    that.setScreenBottomMargin = function(pixelValue) {
       that.screenBottomMargin = pixelValue;
+      _windowChanged = true;
       that.setNeedsLayout();
     }
     
@@ -281,7 +283,7 @@ AWE.Controller = (function(module) {
       mc2vcScale = 1. * _windowSize.width / visibleRectMC.size.width;
       mc2vcTrans = AWE.Geometry.createPoint(
         -1. * visibleRectMC.origin.x * _windowSize.width  / visibleRectMC.size.width,
-        -1. * visibleRectMC.origin.y * _windowSize.height / visibleRectMC.size.height
+        -1. * visibleRectMC.origin.y * (_windowSize.height - that.screenBottomMargin) / visibleRectMC.size.height
       );
       //
       if (zoomSlider !== undefined) {
@@ -295,7 +297,7 @@ AWE.Controller = (function(module) {
       var h = _windowSize.height/mc2vcScale;
       return AWE.Geometry.createRect(
         -1. * mc2vcTrans.x * w / _windowSize.width,
-        -1. * mc2vcTrans.y * h / _windowSize.height,
+        -1. * mc2vcTrans.y * h / (_windowSize.height - that.screenBottomMargin),
         w,
         h
       );
@@ -409,18 +411,6 @@ AWE.Controller = (function(module) {
       v = Math.max(0,Math.min(v, 1));
       log("setting value to ");
       zoomSlider.setValue(v);
-      /*var viewport = that.viewport();
-      var valueW = (viewport.size.width - AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.width)/(AWE.Config.MAP_CAMERA_MAX_VIEWFRAME_SIZE.width - AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.width);
-      valueW = Math.max(0,Math.min(valueW, 1));
-      valueW = 1 -  Math.sqrt(valueW);
-      var valueH = (viewport.size.height - AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.height)/(AWE.Config.MAP_CAMERA_MAX_VIEWFRAME_SIZE.height - AWE.Config.MAP_CAMERA_MIN_VIEWFRAME_SIZE.height);
-      valueH = Math.max(0,Math.min(valueH, 1));
-      valueH = 1 - Math.sqrt(valueH);
-      if (valueH > valueW) {
-        zoomSlider.setValue(valueH);
-      } else {
-        zoomSlider.setValue(valueW);
-      }*/
     };
     
     // ///////////////////////////////////////////////////////////////////////
@@ -437,28 +427,28 @@ AWE.Controller = (function(module) {
      * changed. */
     that.layoutIfNeeded = function() {
       if (_needsLayout) {   ///// WRONG: no _needsLayout after zooming!!!
-        if (_canvas[0].width != _windowSize.width || _canvas[0].height != _windowSize.height) {
+        if (_canvas[0].width != _windowSize.width || _canvas[0].height != (_windowSize.height - that.screenBottomMargin) || $(_canvas[0]).css("margin-bottom") != (that.screenBottomMargin+"px")) {
+          console.warn($(_canvas[0]).css("margin-bottom"));
           _canvas[0].width  = _windowSize.width;
           _canvas[0].height = _windowSize.height - that.screenBottomMargin;
-          /*$(_canvas[0]).css("height", _windowSize.height - that.screenBottomMargin);
-          $(_canvas[0]).css("margin-bottom", that.screenBottomMargin);*/
+          $(_canvas[0]).css("height", _windowSize.height - that.screenBottomMargin);
+          $(_canvas[0]).css("margin-bottom", that.screenBottomMargin);
     
           _canvas[1].width  = _windowSize.width;
           _canvas[1].height = _windowSize.height - that.screenBottomMargin;
-          /*$(_canvas[1]).css("height", _windowSize.height - that.screenBottomMargin); 
-          $(_canvas[1]).css("margin-bottom", that.screenBottomMargin);*/
+          $(_canvas[1]).css("height", _windowSize.height - that.screenBottomMargin); 
+          $(_canvas[1]).css("margin-bottom", that.screenBottomMargin);
            
     
           _canvas[2].width  = _windowSize.width;
           _canvas[2].height = _windowSize.height - that.screenBottomMargin;
-          /*$(_canvas[2]).css("height", _windowSize.height - that.screenBottomMargin); 
-          $(_canvas[2]).css("margin-bottom", that.screenBottomMargin); */     
+          $(_canvas[2]).css("height", _windowSize.height - that.screenBottomMargin); 
+          $(_canvas[2]).css("margin-bottom", that.screenBottomMargin);     
 
           _canvas[3].width  = _windowSize.width;
           _canvas[3].height = _windowSize.height - that.screenBottomMargin;
-          /*$(_canvas[3]).css("height", _windowSize.height - that.screenBottomMargin); 
-          $(_canvas[3]).css("margin-bottom", that.screenBottomMargin);  */
-          console.warn("needs layout canvas change");    
+          $(_canvas[3]).css("height", _windowSize.height - that.screenBottomMargin); 
+          $(_canvas[3]).css("margin-bottom", that.screenBottomMargin); 
         };
         that.setNeedsDisplay();
       };
@@ -2757,16 +2747,16 @@ AWE.Controller = (function(module) {
     
     that.updateInspectorViews = function() {
       if (inspectorViews.inspector) {
-        inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width-430, _windowSize.height-234));
+        inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width-430, (_windowSize.height - that.screenBottomMargin) - 234));
       }
       if (inspectorViews.tempToggleButtonView) {
-        inspectorViews.tempToggleButtonView.setOrigin(AWE.Geometry.createPoint(180+20, _windowSize.height - 68));
+        inspectorViews.tempToggleButtonView.setOrigin(AWE.Geometry.createPoint(180+20, (_windowSize.height - that.screenBottomMargin) - 68));
       }
       if (inspectorViews.mapTypeToggleButtonView) {
-        inspectorViews.mapTypeToggleButtonView.setOrigin(AWE.Geometry.createPoint(20, _windowSize.height - 68));
+        inspectorViews.mapTypeToggleButtonView.setOrigin(AWE.Geometry.createPoint(20, (_windowSize.height - that.screenBottomMargin) - 68));
       }
       if (inspectorViews.encyclopediaButtonView) {
-        inspectorViews.encyclopediaButtonView.setOrigin(AWE.Geometry.createPoint(20+60, _windowSize.height - 68));
+        inspectorViews.encyclopediaButtonView.setOrigin(AWE.Geometry.createPoint(20+60, (_windowSize.height - that.screenBottomMargin) - 68));
       }
       return _inspectorChanged || _windowChanged;
     };
@@ -2899,7 +2889,7 @@ AWE.Controller = (function(module) {
         }
         
         // STEP 1: determine visible area (may have changed through user interaction)
-        var visibleArea = that.vc2mc(AWE.Geometry.createRect(0, 0, _windowSize.width,_windowSize.height));
+        var visibleArea = that.vc2mc(AWE.Geometry.createRect(0, 0, _windowSize.width,(_windowSize.height - that.screenBottomMargin)));
         
         // STEP 2: trigger update of model as needed, fetch new data from server
         that.updateModel(visibleArea);
