@@ -41,9 +41,9 @@ AWE.Controller = (function(module) {
     
     
     that.removeView = function() {
-      if (this.view) {
-        this.view.destroy();
-        this.view = null;
+      if (that.view) {
+        that.view.destroy();
+        that.view = null;
       }
     }
     
@@ -72,7 +72,7 @@ AWE.Controller = (function(module) {
       var alliance    = allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
       
       var center = AWE.UI.Ember.MessageCenterView.create({
-        controller: this,    
+        controller: that,    
         character: character,
         alliance:  alliance,
       });
@@ -87,35 +87,35 @@ AWE.Controller = (function(module) {
     }
     
     that.inboxClicked = function() {
-      this.view.hideForm(); // make sure, form is hidden
-      this.view.switchTo('inbox');
+      that.view.hideForm(); // make sure, form is hidden
+      that.view.switchTo('inbox');
     };
     that.outboxClicked = function() {
-      this.view.hideForm(); // make sure, form is hidden
-      this.view.switchTo('outbox');
+      that.view.hideForm(); // make sure, form is hidden
+      that.view.switchTo('outbox');
     };
     that.archiveClicked = function() {
-      this.view.hideForm(); // make sure, form is hidden
-      this.view.switchTo('archive');
+      that.view.hideForm(); // make sure, form is hidden
+      that.view.switchTo('archive');
     };
     that.newClicked = function() {
-      this.view.showForm();
+      that.view.showForm();
     };
     that.newAllianceMessageClicked = function() {
-      this.view.showAllianceMessageForm();
+      that.view.showAllianceMessageForm();
     };
     that.createDraftTo = function(recipientName) {
-      this.view.showForm();
-      this.view.setPath('newMessage.recipient', recipientName);
+      that.view.showForm();
+      that.view.setPath('newMessage.recipient', recipientName);
     };
     that.discardDraft = function() {
-      this.view.set('newMessage', null);
-      this.view.hideForm();
+      that.view.set('newMessage', null);
+      that.view.hideForm();
     };
     
     
     that.sendMessage = function(message) {
-      var self = this;
+      var self = that;
       action = AWE.Action.Messaging.createSendMessageAction(message);
       action.send(function(status, jqXHR) {
         log('SENT MESSAGE, STATUS', status);
@@ -139,29 +139,33 @@ AWE.Controller = (function(module) {
     };
     
     that.appendView = function() {
-      if (this.view) {
-        this.removeView();
+      if (that.view) {
+        that.removeView();
       }
-      log('append MESSAGE CENTER')
-      this.updateView();
-      this.view = this.createView();
-      this.view.appendTo('#main-screen-controller');      
+      log('append MESSAGE CENTER');
+      that.updateView();
+      that.view = that.createView();
+      that.view.didInsertElement = function() {
+        that.view.$(".message-center .list").css("bottom", that.screenBottomMargin+"px");
+        that.view.$(".message-center .detail").css("bottom", that.screenBottomMargin+"px");
+      };
+      that.view.appendTo('#main-screen-controller');
     }
     
     
     that.viewDidAppear = function() {
-      this.visible = true;
-      this.appendView();
+      that.visible = true;
+      that.appendView();
     };
     
     that.viewWillDisappear = function() {
-      this.removeView();
-      this.visible = false;
+      that.removeView();
+      that.visible = false;
     };
     
     that.updateModel = function() {
-      if (this.view) {
-        var display = this.view.get('display');
+      if (that.view) {
+        var display = that.view.get('display');
         
         if (display === "outbox") {
 
@@ -212,14 +216,14 @@ AWE.Controller = (function(module) {
     };    
 
     that.runloop = function() {
-      this.updateDebug();
-      if (this.visible && (_viewNeedsUpdate)) {
-        this.updateView();
+      that.updateDebug();
+      if (that.visible && (_viewNeedsUpdate)) {
+        that.updateView();
         _viewNeedsUpdate = false;
       }
       
-      if (this.visible) {
-        this.updateModel();
+      if (that.visible) {
+        that.updateModel();
       }
       
     }
