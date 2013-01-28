@@ -82,6 +82,10 @@ AWE.GS = (function(module) {
     home_settlement_id: null,
     home_settlement_name: null,
     
+    homeSettlement: function(){
+      return AWE.GS.SettlementManager.getSettlement(this.get('home_settlement_id'));    
+    }.property('home_settlement_id').cacheable(),    
+    
     size_max: null,
     size_present: null,
     

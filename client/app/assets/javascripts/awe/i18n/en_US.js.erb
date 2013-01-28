@@ -238,6 +238,7 @@ AWE.I18n.en_US =  function(module) {
         available: "Available units",
         new: "New army",
         name: "Name of the army",
+        advisorHint: 'How many units should join the new army? Enter the number below "new army" and press "create".',
         all: "All",
         reset: "Reset",
         change: "Change",
@@ -321,7 +322,7 @@ AWE.I18n.en_US =  function(module) {
         orGreater: "or greater",
       },
       error: {
-        notEnoughBuildingSlots: "You cannot build more buildings right now. You need to upgrade your main building (chieftain's hut in main settlement, Versammlungsplatz in Lagerstätten).",
+        notEnoughBuildingSlots: "You cannot build more buildings right now. You need to upgrade your main building (chieftain's hut in main settlement, meeting place in camp).",
         notEnoughCash: "You don't have enough golden frogs for this action.",
       },
     },
@@ -379,16 +380,16 @@ AWE.I18n.en_US =  function(module) {
       kickMember: 'kick',
 
       progress: {
-        header: 'Siegesfortschritt',
-        description: 'Die aktuelle Spielrunde kann von einer Allianz gewonnen werden, indem eines der folgenden Siegkriterien erreicht und über einen bestimmten Zeitraum gehalten wird.',
-        requiredRegions: 'Benötigte Regionen',
-        requiredDuration: 'Minimale Haltedauer',
-        remainingDays: 'Tage noch',
-        criteriaFulfilled: 'Kriterium erfüllt',
-        criteriaHeld: 'Kriterium gehalten',
-        victoryAt: 'Sieg am',
-        victoryAfter: 'Sieg nach',
-        days: 'Tagen',
+		header: 'Victory Progress', 
+		description: 'An alliance can win a game round if one of the following victory criteria are achieved and maintained over a certain time period.', 
+		requiredRegions: 'Required Regions', 
+		requiredDuration: 'Minimum Holding Period', 
+		remainingDays: 'Remaining Days', 
+		criteriaFulfilled: 'Fulfilled Criterion', 
+		criteriaHeld: 'Hold Criterion', 
+		victoryAt: 'Victory At', 
+		victoryAfter: 'Victory After', 
+		days: 'Days',
       },
 
       error: {
@@ -542,7 +543,7 @@ AWE.I18n.en_US =  function(module) {
         },
       },
       construction: {
-        hurry: "Speedy!",
+        hurry: "Hurry!",
         cashTooltip: "Spend golden frogs to finish this job instantly. The costs depend on the remaining building time.",
         insufficentResources: "insufficent resources",
         finishing: "finishing",
@@ -732,13 +733,18 @@ AWE.I18n.en_US =  function(module) {
         changePasswordAdvice: "Here you can change your password. The password must contain between 6 and 40 characters.",
         changePasswordButton: "Change Password",
         changePasswordChanged: "Password changed",
-
+        
         changeNameDialogCaption: "Enter your character's new name.",
+        
+        changeSameIPCaption: "Several players on the same IP address",
+        changeSameIPAdvice: 'If you play Wack-A-Doo along with multiple players over the same IP address, enter the comma-separated player names here. More information can be found here: <a href="http://wiki.wack-a-doo.de/x/index.php?title=Mehrere_Spieler_unter_derselben_IP-Adresse&action=edit&redlink=1" target="_blank">Wiki</a>',
+        changeSameIPButton: "Change the List",
+        changeSameIIPChanged: "List has been saved.",
 
         errors: {
           nameTooShort: "Much too short. The name has to have at least 3 characters.",
           nameTooLong: "Much too long. The name may only have up to 12 characters.",
-          nameNoChange: "That's the same name as before. No change.",
+          nameNoChange: "That's the name as before. No change.",
 
           nameTaken: "This name is already in use or been blacklisted. Please choose another name.",
           changeNameCost: "You don't have enough golden frogs to change your name.",
@@ -810,6 +816,22 @@ AWE.I18n.en_US =  function(module) {
       questEnd: {
         header: "Finished Quest successfully",
       },
+
+      end: {
+		header: "Tutorial Successfully Completed.",        
+		    p1: "Congratulations demigod, you have taken the first step on your journey! You have successfully navigated the tutorial and you have got to know to the basic functions of Wack-A-Doo.",        
+		    p2: "As a reward we give you a Platinum account and bonuses to all the three commodities. These bonuses are now visible in the repository",        
+		    p3: "We will watch your further development and accompany you in a series of ongoing tasks. You can accomplish these tasks if you always enjoy it.",        
+		    p4: "Do not get upset by the numerous simultaneously open tasks.   Build up your settlement, set up armies and multiply your power and your alliance’s influence.",        
+		    p5: "For the way ahead in Wack-A-Doo there are no guidelines, just a statement which is generally valid: Raw material, raw material, and yet more raw material. A powerful army wins a battle, a rich commodity production wins a war.",       
+		    p6: "Have fun in Wack-A-Doo and wack on!",        
+		    redeemError: {          
+			    header:       "Attention",          
+			    message:      "Rewards could not be released because they have been already unlocked once.",        
+			  },
+			  
+      },      
+      
     },
 
     messaging: {

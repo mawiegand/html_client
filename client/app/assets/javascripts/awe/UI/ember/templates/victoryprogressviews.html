@@ -53,13 +53,13 @@
     {{#if progress.fulfilled}}
     <div {{bindAttr style="styleFulfilled1" }}>
       <div {{bindAttr style="styleFulfilled2" }}>
-        {{progress.pos}}. {{progress.alliance_name}} ({{progress.daysRemaining}}{{t alliance.progress.remainingDays}})
+        {{progress.pos}}. {{progress.alliance_tag}} ({{progress.daysRemaining}}{{t alliance.progress.remainingDays}})
       </div>
     </div>
     {{else}}
     <div {{bindAttr style="styleNotFulfilled1" }}>
       <div {{bindAttr style="styleNotFulfilled2" }}>
-        {{progress.pos}}. {{progress.alliance_name}} ({{progress.fulfillment_count}})
+        {{progress.pos}}. {{progress.alliance_tag}} ({{progress.fulfillment_count}})
       </div>
     </div>
     {{/if}}

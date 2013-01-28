@@ -30,7 +30,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     okPressed: function() {
-      AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_quest_button');          
+      AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_quest_button');          
       this.destroy();
     }
   });  
@@ -101,7 +101,7 @@ AWE.UI.Ember = (function(module) {
         this.destroy();
       }
     },
-
+    
     advisor: function() {
       if (this.get('finished')) {
         return 'advisor ' + this.getPath('quest.advisor') + '-quest-end';
@@ -127,6 +127,18 @@ AWE.UI.Ember = (function(module) {
     finished: function() {
       return this.getPath('questState.status') >= AWE.GS.QUEST_STATUS_FINISHED;
     }.property('questState.status').cacheable(),
+    
+    newArmyQuest: function() {
+      return this.getPath('quest.id') == 17;  // FIXME schneller Hack zur Anzeige der Knopfes in der Quest
+    }.property('quest.id').cacheable(),
+    
+    toSettlementQuest: function() {
+      return this.getPath('quest.id') == 11 || this.getPath('quest.id') == 7;  // FIXME schneller Hack zur Anzeige der Knopfes in der Quest
+    }.property('quest.id').cacheable(),
+    
+    attackQuest: function() {
+      return this.getPath('quest.id') == 147;  // FIXME schneller Hack zur Anzeige der Knopfes in der Quest
+    }.property('quest.id').cacheable(),
     
     checkQuestAnswerPressed: function() {
       
@@ -189,6 +201,30 @@ AWE.UI.Ember = (function(module) {
   module.QuestUnitRewardsView = Ember.View.extend({
     templateName: 'quest-unit-rewards-view',
     units: null,
+  });  
+  
+  module.TutorialEndDialog = module.InfoDialog.extend({
+    templateName: 'tutorial-end-dialog',
+    
+    okPressed: function() {
+      var self = this;
+      self.set('redeeming', true);
+      AWE.GS.TutorialStateManager.redeemTutorialEndRewards(function() {
+        self.destroy();
+      }, function() {
+        self.set('redeeming', false);
+        var dialog = AWE.UI.Ember.InfoDialog.create({
+          heading: AWE.I18n.lookupTranslation('tutorial.end.redeemError.header'),
+          message: AWE.I18n.lookupTranslation('tutorial.end.redeemError.message'),
+          
+          okPressed: function() {
+            self.destroy();
+            this._super();
+          },     
+        });
+        WACKADOO.presentModalDialog(dialog);
+      });
+    },
   });  
   
   return module;  

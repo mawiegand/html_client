@@ -291,6 +291,7 @@ AWE.Controller = (function(module) {
     that.updateModel = (function() {
             
       var lastResourcesUpdate = new Date(1970);
+      var lastCharacterUpdate = new Date(1970);
       var lastCreditAmountUpdate = new Date(1970);
       var amounts = [100];
       
@@ -321,6 +322,14 @@ AWE.Controller = (function(module) {
             amounts[2] = pool.presentAmount('resource_fur')  ;
             amounts[3] = pool.presentAmount('resource_cash') ;
           }
+        }
+        
+        if (lastCharacterUpdate.getTime() + AWE.Config.CHARACTER_REFRESH_INTERVAL < new Date().getTime()) {
+          lastCharacterUpdate = new Date();
+          AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+            that.setModelChanged();
+            log('U: updated current character');
+          });
         }
         
         if (lastCreditAmountUpdate.getTime() + AWE.Config.CREDIT_AMOUNT_REFRESH_INTERVAL < new Date().getTime()) {

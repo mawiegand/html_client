@@ -315,6 +315,10 @@ a:focus { outline: thin dotted; }
   font-weight: bold;
 }
 
+.right {
+  text-aling: right;
+}
+
 .clickable {
   cursor: pointer;  
 }
@@ -550,7 +554,7 @@ a:focus { outline: thin dotted; }
   float: right;
 }
 
-.modal-dialog-pane input[type="text"] {
+.modal-dialog-pane input[type="text"], .modal-dialog-pane input[type="password"] {
   font-size: 20px;
   height: 28px;
   border-radius: 5px;
@@ -1117,10 +1121,19 @@ a:focus { outline: thin dotted; }
   font-size: 16px;
   position: absolute; 
   margin-left: -350px;
-  margin-top: -300px;  
+  margin-top: 100px;  
   width: 700px; 
   min-height: 300px;
   background-color: #FFF;    
+}
+
+.character-profile-view input[type="text"] {
+  width: 450px;
+  margin-right: 0px;  
+}
+
+.character-profile-view input[type="password"] {
+  width: 220px; 
 }
 
 .ranking-view {
@@ -1247,10 +1260,38 @@ a:focus { outline: thin dotted; }
   margin-right: -60px;
 }
 
+#army-create-form .advisor.warrior {
+  margin-left: -100px;
+  margin-top: -60px;
+}
+
+.tutorial-end-dialog .advisor.warrior {
+  float: left;
+  margin-left: -80px;
+}
+.tutorial-end-dialog .advisor.chef {
+  float: right;
+  margin-top: -50px;
+  margin-right: -80px;
+}
+.tutorial-end-dialog .chef {
+  text-align:right;
+}
+.tutorial-end-dialog .advisor.girl {
+  margin-top: -60px;
+  margin-left: -80px;
+  float: left;
+}
+.tutorial-end-dialog .p5 {
+  margin-top: 30px;
+}
 .citation {
   color: #AAA;
   font-style: italic;
   text-align: right;
+}
+#army-create-form .citation {
+  text-align: left;
 }
 
 .unit-image {
@@ -3424,11 +3465,29 @@ table .number {
   text-align: right;
 }
 
-#army-create-form, #army-change-form {
+#army-create-form {
+  margin-left: -350px;
+  margin-top: 100px;
+  width: 700px; min-height: 400px;
+  padding: 4px 4px 4px 4px;
+  z-index:256;
+}
+
+#army-change-form {
   margin-left: -300px;
-  margin-top: -250px;
+  margin-top: 150px;
   width: 600px; min-height: 200px;
 }
+
+#army-create-form .inner-border {
+  border: 8px solid #F94;
+  background-color: rgba(255, 144, 64, 0.15);
+  border-radius: 11px;
+  margin: 0;
+  padding: 4px 14px 14px 14px;
+}
+
+
 
 #army-create-form table td, #army-change-form table td {
   text-align: center;
@@ -3610,7 +3669,7 @@ table .number {
   top: -60px;
 }
 
-.ranking-view a.close {
+#army-create-form a.close, #army-create-form a.close, .ranking-view a.close {
   position: absolute;
   background: url('<%= asset_path("ui/close_button.png") %>');
   width: 50px;
@@ -3619,7 +3678,7 @@ table .number {
   top: 26px;
 }
 
-.ranking-view a.close:hover {
+#army-create-form a.close:hover, #army-create-form a.close:hover, .ranking-view a.close:hover {
   background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
@@ -3897,13 +3956,18 @@ table .number {
   box-shadow:         3px 3px 2px 2px #333;
 }
 
+
 .battle-dialog-pane a.close {
   position: absolute;
-  background: url('<%= asset_path("icons/cross_small.png") %>');
-  width: 36px;
-  height: 36px;
-  right: 12px;
-  top: 10px;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.battle-dialog-pane a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
 .attack-dialog-pane {
@@ -3984,6 +4048,24 @@ table .number {
   display: inline;
 }
 
+.tutorial-end-dialog {
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: 80px;
+  width: 800px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 4px 4px 4px 4px;
+  z-index:256;
+}
+
+.tutorial-end-dialog .inner-border {
+  border: 8px solid #BBB;
+  background-color: rgba(176, 176, 176, 0.15);
+  border-radius: 11px;
+  margin: 0;
+  padding: 4px 14px 14px 14px;
+}
+
 .quest-list-view {
   position: absolute; 
   margin-left: -300px;
@@ -3994,7 +4076,7 @@ table .number {
   z-index:256;
 }
 
-.quest-list-view .advisor {
+.quest-list-view .advisor, .tutorial-end-dialog .advisor {
   float: right;
 }
 
@@ -4067,7 +4149,7 @@ table .number {
   position: absolute; 
   margin-left: -366px;
   margin-top: 50px;
-  width: 732px; min-height: 100px;
+  width: 780px; min-height: 100px;
   background-color: #FFF;  
   padding: 4px 4px 4px 4px;
   z-index:256;
@@ -4082,6 +4164,7 @@ table .number {
   padding: 4px 14px 14px 14px;
 }
 
+.tutorial-end-dialog .ok-button,
 .quest-list-view .ok-button,
 .quest-dialog .ok-button {
   border: solid 2px #BC4;
@@ -4099,7 +4182,7 @@ table .number {
   margin: -4px;
 }
 
-.quest-dialog .inner-border.girl {
+.quest-dialog .inner-border.girl, .tutorial-end-dialog .inner-border.girl {
   border-color: #BC4;
   background-color: rgba(176, 192, 64, 0.15);
 }
@@ -4131,6 +4214,30 @@ table .number {
 .quest-dialog.tutorial .ok-button {
   border-color: #DBD;
   color: #DBD;
+}
+
+.quest-dialog .description-image-army {
+  float: left;
+  margin: 0px 14px 14px 0px;
+  width: 317px;
+  height: 287px;
+  background-image: url('<%= asset_path("newarmybutton.png") %>');
+}
+
+.quest-dialog .description-image-settlement {
+  float: left;
+  margin: 0px 14px 14px 0px;
+  width: 263px;
+  height: 173px;
+  background-image: url('<%= asset_path("settlementbutton.png") %>');
+}
+
+.quest-dialog .description-image-attack {
+  float: left;
+  margin: 0px 14px 14px 0px;
+  width: 338px;
+  height: 281px;
+  background-image: url('<%= asset_path("attacknpc.png") %>');
 }
 
 
@@ -4211,6 +4318,36 @@ table .number {
   color: #a00;
 }
 
+#army-create-form .buttons, #army-change-form .buttons {
+  margin-top: 24px;
+  text-align: right;
+}
+
+#army-create-form .button {
+  border: solid 2px #F94;
+  margin: -2px;
+  font-weight: bold;
+  color: #F94;
+  padding-left: 20px;
+  padding-right: 20px;
+  float: none;
+  background-color: #FFF;  
+}
+
+#army-change-form .button {
+  border: solid 2px #777;
+  margin: -2px;
+  font-weight: bold;
+  color: #777;
+  padding-left: 20px;
+  padding-right: 20px;
+  float: none;
+}
+
+#army-create-form .button:hover, #army-change-form .button:hover {
+  border-width: 4px;
+  margin: -4px;
+}
 
 
 /* ==|== media queries ======================================================

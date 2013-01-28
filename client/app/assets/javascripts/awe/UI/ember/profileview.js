@@ -9,7 +9,6 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
 
-
   module.TabButtonView = Ember.View.extend({
     tagName:    'li',
     classNames: ['tab-button-view'],
@@ -130,7 +129,7 @@ AWE.UI.Ember = (function(module) {
     characterObserver: function() {
       var characterId = this.getPath('character.id') || null;
       if (characterId && this.getPath('character.name_change_count') > 0) {
-        AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_profile');
+        AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_profile');
       }       
     }.observes('character.id'),
     
@@ -217,7 +216,7 @@ AWE.UI.Ember = (function(module) {
         AWE.Action.Manager.queueAction(action, function(status) {
           self.set('changingName', false);
           if (status === AWE.Net.OK) {
-            AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_profile');
+            AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_profile');
             if (changeCounter > 0) {
               AWE.GS.ResourcePoolManager.updateResourcePool();
             }
@@ -284,7 +283,7 @@ AWE.UI.Ember = (function(module) {
     characterObserver: function() {
       var characterId = this.getPath('character.id') || null;
       if (characterId && this.getPath('character.name_change_count') > 0) {
-        AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_profile');
+        AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_profile');
       }       
       this.setAndUpdateHistory();
     }.observes('character.id'),
@@ -309,6 +308,7 @@ AWE.UI.Ember = (function(module) {
     character: null,
 
     changingPassword: false,
+    changingSameIP: false,
     
     password:             null,
     passwordConfirmation: null,
@@ -373,6 +373,21 @@ AWE.UI.Ember = (function(module) {
       this.set('changePasswordMessage', '');
     }.observes('password', 'passwordConfirmation'),
             
+    changeSameIPPressed: function() {
+      var self = this;
+      self.set('changingSameIP', true);
+      var action = AWE.Action.Fundamental.createChangeCharacterSameIPAction(this.getPath('character.same_ip'));
+      AWE.Action.Manager.queueAction(action, function(status) {
+        self.set('changingSameIP', false);
+        if (status === AWE.Net.OK) {
+          self.set('changeSameIPMessage', AWE.I18n.lookupTranslation('profile.customization.changeSameIIPChanged'))
+        }
+        else {
+          self.set('changeSameIPMessage', AWE.I18n.lookupTranslation('profile.customization.errors.changeSameIIUnknown'));
+        }
+      });
+    },    
+
     changePasswordPressed: function() {
       this.set('changePasswordMessage', '');
       this.set('changingPassword', true);

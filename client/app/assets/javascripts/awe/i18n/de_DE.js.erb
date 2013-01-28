@@ -143,6 +143,7 @@ AWE.I18n.de_DE = function(module) {
         ownerLabel: "Gehört",
         actionPoints: "Aktionspunkte",
         nextActionPointAt: "Nächster Aktionspunkt um",
+        homeSettlement: "Heimatsiedlung",
       },
       messages: {
         own: {
@@ -229,6 +230,7 @@ AWE.I18n.de_DE = function(module) {
         available: "Verfügbare Einheiten",
         new: "Neue Armee",
         name: "Name der Armee",
+        advisorHint: 'Wie viele Einheiten sollen denn in die Armee? Schreibe zum Beispiel "25" unter "neue Armee" und drücke anschließend auf "erzeugen".',
         all: "Alle",
         reset: "Zurücksetzen",
         change: "Ändern",
@@ -245,7 +247,7 @@ AWE.I18n.de_DE = function(module) {
       create: {
         header: "Neue Armee erzeugen",
         remainingArmies: "Anzahl der verbleibenden Kommandopunkte für diese Siedlung",
-        error: "Keine Kommandopunkte mehr verfügbar in dieser Siedlung",
+        error: "Keine Kommandopunkte verfügbar in dieser Siedlung",
         loadingMessage: "Erzeuge Armee...",
       },
       change: {
@@ -439,7 +441,7 @@ AWE.I18n.de_DE = function(module) {
       platinumDescription:
         "Der Platinum Account bietet Dir " +
         "stressfreies Bauen mit zusätzlichen Plätzen in Bauschleife (+3) und " +
-        "Ausbildungsschleife (+1) sowie " +
+        "Ausbildungsschleife (+3) sowie " +
         "E-Mailbenachrichtigungen bei Angriffen. " +
         "Weitere Komfortfunktionen folgen in Kürze.",
 
@@ -720,6 +722,11 @@ AWE.I18n.de_DE = function(module) {
 
         changeNameDialogCaption: "Gib den neuen Namen für deinen Charakter ein.",
 
+        changeSameIPCaption: "Mehrere Spieler unter derselben IP-Adresse",
+        changeSameIPAdvice: 'Wenn Du mit mehreren Spielern über die gleiche IP-Adresse Wack-A-Doo spielst, gib hier die Spielernamen Komma getrennt ein. Nähere Infos findest Du hier: <a href="http://wiki.wack-a-doo.de/x/index.php?title=Mehrere_Spieler_unter_derselben_IP-Adresse&action=edit&redlink=1" target="_blank">Wiki</a>',
+        changeSameIPButton: "Liste ändern",
+        changeSameIIPChanged: "Die Liste wurde gespeichert.",
+        
         errors: {
           nameTooShort: "Viel zu kurz. Der Name muss mindestens 3 Zeichen enthalten.",
           nameTooLong: "Viel zu lang. Der Name darf höchstens 12 Zeichen enthalten.",
@@ -734,6 +741,8 @@ AWE.I18n.de_DE = function(module) {
           changePasswordInvalid: "Das Passwort entspricht nicht den Vorraussetzungen. Bitte wähle ein passendes Passwort.",
           changePasswordUnknown: "Dein Passwort konnte aus unbekannten Gründen nicht geändert werden. Bitte versuche es später noch einmal.",
           changePasswordNoMatch: "Die Passwörter stimmen nicht überein. Bitte versuche es noch einmal.",
+          
+          changeSameIIUnknown: "Die Liste konnte aus unbekannten Gründen nicht geändert werden. Bitte versuche es später noch einmal.",
         },
       },
     },
@@ -786,6 +795,20 @@ AWE.I18n.de_DE = function(module) {
         },
         error:          "Leider falsch. Probier's gleich noch mal!",
       },
+      
+      end: {
+        header: "Tutorial erfolgreich beendet.",
+        p1: "Glückwunsch Halbgott, Du hast den ersten Schritt auf Deiner Reise getan! Du hat das Tutorial erfolgreich durchlaufen und die grundlegenden Funktionen von Wack-A-Doo kennen gelernt.",
+        p2: "Zu diesem Erfolg schenken wir Dir für einige Tage den optionalen Platinum-Account sowie Boni auf die Rohstoffproduktion. Sichtbar sind diese Boni in der Fundgrube.",
+        p3: "Deine weitere Entwicklung werden wir beobachten und Dich mit einer Reihe von fortlaufenen Aufgaben begleiten. Diese Aufgaben kannst Du erfüllen, wann immer es Dir gefällt.",
+        p4: "Lass Dich von unseren Aufgaben nicht ablenken. Baue die Siedlungen aus, stelle Armeen auf und mehre Deine Macht und deinen Einfluss, wie es Dir gefällt, solange Du am Ende nur die Weltherrschaft erlangst!",
+        p5: "Viele Wege führen in Wack-A-Doo zum Erfolg, aber wenn es eine Aussage mit Allgemeingültigkeit gibt, ist es folgende: Rohstoffe, Rohstoffe und noch mehr Rohstoffe. Eine schlagkräftige Armee gewinnt einen Kampf, eine hohe Rohstoffproduktion einen Krieg.",
+      	p6: "Viel Spass in Wack-A-Doo und whack on!",
+        redeemError: {
+          header:       "Achtung",
+          message:      "Die Belohnungen konnte nicht freigeschaltet werden, da sie bereits einmal freigeschaltet wurden.",
+        },
+      }
     },
     
     messaging: {
@@ -874,7 +897,7 @@ AWE.I18n.de_DE = function(module) {
         header: "Rohstoffproduktion im Herrschaftsgebiet",
         amount: "Menge",
         productionRate: "Produktionsrate",
-        dailyProduction: "Tagesproduction",
+        dailyProduction: "Tagesproduktion",
         capacity: "Lagerkapazität",
         capacityReachedIn: "Lager voll in",
         effects: "Effekte",
@@ -899,7 +922,7 @@ AWE.I18n.de_DE = function(module) {
     likesystem: {
       notEnoughLikeAmount: "Du hast zu wenig Likes um einen Like zu senden.",
       notEnoughDislikeAmount: "Du hast zu wenig Dislikes um einen Dislike zu senden.",
-      cancelText: ['Argh!', 'Grmpf!', 'Hmpf', 'Na gut.'],
+      cancelText: ['Argh!', 'Grmpf!', 'Hmpf', 'Na gut.', 'Narf'],
       alreadyLikedInfo: "Du hast diesen Spieler in den letzten 24 Stunden schon einmal bewertet.",
     },
     
