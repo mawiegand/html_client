@@ -57,7 +57,7 @@ AWE.UI.Ember = (function(module) {
           key:   "tab4",
           title: AWE.I18n.lookupTranslation('ranking.victoryProgress'), 
           view:  AWE.UI.Ember.VictoryProgressRankingView.extend(),
-        },
+        }
       ]);
       
       this._super();
