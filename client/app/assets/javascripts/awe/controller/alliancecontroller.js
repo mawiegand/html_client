@@ -8,9 +8,7 @@ var AWE = AWE || {};
 AWE.Controller = (function(module) {
           
   module.createAllianceController = function(anchor) {
-      
-    var _viewNeedsUpdate = false;  
-          
+
     var that = module.createScreenController(anchor); ///< create base object
     
     that.view = null;
@@ -98,7 +96,9 @@ AWE.Controller = (function(module) {
     that.updateModel = function() {
       that.updateAlliance(this.allianceId);
       that.updateMembers(this.allianceId);
-      that.updateShouts(this.allianceId);     // side-effect: starts another update, if older than 60s 
+      if (this.allianceId == AWE.GS.game.current_character.alliance_id) {
+        that.updateShouts(this.allianceId);     // side-effect: starts another update, if older than 60s
+      }
     }
     
     that.shout = function(message) {
