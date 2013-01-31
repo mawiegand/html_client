@@ -31,9 +31,10 @@ AWE.GS = function (module) {
     region_id: null, old_region_id: null,
     regionIdObserver:AWE.Partials.attributeHashObserver(module.ArtifactAccess, 'region_id', 'old_region_id').observes('region_id'),
 
-    owner_id: null,
+    owner_id: null, old_owner_id: null,
+    ownerIdObserver:AWE.Partials.attributeHashObserver(module.ArtifactAccess, 'owner_id', 'old_owner_id').observes('owner_id'),
 
-    settlement_id: null, old_owner_id: null,
+    settlement_id: null, old_settlement_id: null,
     settlementIdObserver:AWE.Partials.attributeHashObserver(module.ArtifactAccess, 'settlement_id', 'old_settlement_id').observes('settlement_id'),
 
     settlement: function () {
@@ -73,8 +74,6 @@ AWE.GS = function (module) {
     // private attributes and methods //////////////////////////////////////
 
     var that;
-    var lastFortressUpdates = {};
-
 
     // protected attributes and methods ////////////////////////////////////
 
@@ -105,11 +104,6 @@ AWE.GS = function (module) {
       return AWE.GS.ArtifactAccess.getAllForLocation_id(id)
     }
 
-    // TODO
-    that.getArtifactOfCharacter = function (id) {
-      return AWE.GS.ArtifactAccess.getAllForOwner_id(id)
-    }
-
     /** returns true, if update is executed, returns false, if request did
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
@@ -131,6 +125,15 @@ AWE.GS = function (module) {
         function (result, status, xhr, timestamp) {   // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
             module.ArtifactAccess.accessHashForRegion_id().setLastUpdateAtForValue(regionId, timestamp.add(-1).second());
+          }
+          if (status === AWE.Net.OK) {
+            var artifacts = module.ArtifactAccess.getHashableCollectionForRegion_id(regionId);
+            that.fetchMissingEntities(result, artifacts.get('collection'), that.updateArtifact); // careful: this breaks "this" inside updateArmy
+            artifacts.get('collection').forEach(function(artifact) {
+              if (artifact.get('owner_id') === AWE.GS.game.getPath('currentCharacter.id')) {
+                AWE.GS.game.set('currentArtifact', artifact);
+              }
+            });
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
@@ -158,6 +161,11 @@ AWE.GS = function (module) {
           if (status === AWE.Net.OK) {
             var artifacts = module.ArtifactAccess.getHashableCollectionForLocation_id(locationId);
             that.fetchMissingEntities(result, artifacts.get('collection'), that.updateArtifact); // careful: this breaks "this" inside updateArmy
+            artifacts.get('collection').forEach(function(artifact) {
+              if (artifact.get('owner_id') === AWE.GS.game.getPath('currentCharacter.id')) {
+                AWE.GS.game.set('currentArtifact', artifact);
+              }
+            });
           }
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
@@ -169,7 +177,6 @@ AWE.GS = function (module) {
       );
     }
 
-    // TODO
     that.updateArtifactOfCharacter = function (characterId, updateType, callback) {
       var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/' + characterId + '/artifact';
       return my.fetchEntitiesFromURL(
@@ -177,20 +184,18 @@ AWE.GS = function (module) {
         my.runningUpdatesPerCharacter,
         characterId,
         updateType,
-        module.ArmyAccess.lastUpdateForOwner_id(characterId),
+        null, // timestamp of user's artifact
         function (result, status, xhr, timestamp) {   // wrap handler in order to set the lastUpdate timestamp
-          if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
-            module.ArmyAccess.accessHashForOwner_id().setLastUpdateAtForValue(characterId, timestamp.add(-1).second());
-          }
-          // remove deleted army from location
           if (status === AWE.Net.OK) {
-            var armies = module.ArmyAccess.getHashableCollectionForOwner_id(characterId);
-            that.fetchMissingEntities(result, armies.get('collection'), that.updateArmy); // careful: this breaks "this" inside updateArmy
+            var artifacts = module.ArtifactAccess.getHashableCollectionForOwner_id(characterId);
+            that.fetchMissingEntities(result, artifacts.get('collection'), that.updateArtifact); // careful: this breaks "this" inside updateArmy
+            artifacts.get('collection').forEach(function(artifact) {
+              if (artifact.get('owner_id') === AWE.GS.game.getPath('currentCharacter.id')) {
+                AWE.GS.game.set('currentArtifact', artifact);
+              }
+            });
           }
           if (callback) {
-            if (status === AWE.Net.NOT_MODIFIED) {
-              result = module.ArmyAccess.getAllForOwner_id(characterId);
-            }
             callback(result, status, xhr, timestamp);
           }
         }

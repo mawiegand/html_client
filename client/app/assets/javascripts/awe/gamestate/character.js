@@ -62,7 +62,7 @@ AWE.GS = (function(module) {
     login_count: 0,
     
     resourcePool: null,
-    
+
     victories: 0,
     defeats: 0,
     

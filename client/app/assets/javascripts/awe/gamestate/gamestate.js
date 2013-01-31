@@ -14,6 +14,7 @@ AWE.GS = (function(module) {
    * @name AWE.GS.game */ 
   module.game = Ember.Object.create({
     currentCharacter: null,
+    currentArtifact: null,
     roundInfo: null,
     victoryProgressLeaders: null,
     characterRanking: null,

@@ -586,8 +586,33 @@ AWE.GS = (function(module) {
         return null;
       }
 		}.property('buildingId', 'converted', 'levelAfterJobs').cacheable(),
-		
-		
+
+
+    calculateArtifactInitiation: function(level) {
+      var unlockLevel = this.getPath('buildingType.abilities.unlock_artifact_initiation');
+      level = level || this.get('level');
+      return unlockLevel && unlockLevel <= level;
+    },
+
+    unlockedArtifactInitiation: function() {
+      return this.calculateArtifactInitiation(this.get('level'));
+    }.property('buildingId', 'level').cacheable(),
+
+    unlockedArtifactInitiationNextLevel: function() {
+      return this.calculateArtifactInitiation(this.get('nextLevel'));
+    }.property('buildingId', 'nextLevel').cacheable(),
+
+    unlockedArtifactInitiationAfterConversion: function() {
+      var converted = this.get('converted');
+      if (converted) {
+        return this.get('converted').calculateArtifactInitiation(this.get('levelAfterJobs'));
+      }
+      else {
+        return null;
+      }
+    }.property('buildingId', 'converted', 'levelAfterJobs').cacheable(),
+
+
     calcTradingCarts: function(level) {
 		  var formula = this.getPath('buildingType.abilities.trading_carts');
 		  level       = level || this.get('level') || 1;

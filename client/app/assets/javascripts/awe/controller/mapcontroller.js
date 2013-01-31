@@ -1996,8 +1996,8 @@ AWE.Controller = function (module) {
 
     var setArtifactPosition = function (view, pos) {
       view.setCenter(AWE.Geometry.createPoint(
-        pos.x,
-        pos.y - 10
+        pos.x - 48,
+        pos.y - 48
       ));
     }
 
