@@ -8,21 +8,22 @@ AWE.UI.Ember = function(module) {
 
     settlement: null,
     controller: null,
-    artifact: 'AWE.GS.game.currentArtifact',
+    artifactBinding: 'AWE.GS.game.currentArtifact',
 
     init: function() {
-      var self = this;
-      // update des eigenen artefakts;
-      log('-----> start init', AWE.GS.game.get('currentArtifact'));
-      AWE.GS.ArtifactManager.updateArtifactOfCharacter(AWE.GS.game.getPath('currentCharacter.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(artifact) {
-        log('-----> artifact', artifact);
-//        self.set('artifact', artifact);
-        log('-----> stop init', AWE.GS.game.get('currentArtifact'));
-      });
+      AWE.GS.ArtifactManager.updateArtifactOfCharacter(AWE.GS.game.getPath('currentCharacter.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
     },
 
     startInitiationPressed: function() {
-      // action bauen und wegschicken
+      this.get('controller').startArtifactInitiation(this.get('artifact'), function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+          log('-----> startInitiationPressed ok or created', status);
+        }
+        else {
+          log('-----> startInitiationPressed error', status);
+        }
+      });
+      return false;     // prevent default behavior
     },
 
     cancelInitiationPressed: function() {

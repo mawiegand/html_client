@@ -589,9 +589,9 @@ AWE.GS = (function(module) {
 
 
     calculateArtifactInitiation: function(level) {
-      var unlockLevel = this.getPath('buildingType.abilities.unlock_artifact_initiation');
-      level = level || this.get('level');
-      return unlockLevel && unlockLevel <= level;
+      var formula = this.getPath('buildingType.abilities.unlock_artifact_initiation');
+      level = level || this.get('level') || 0;
+      return formula ? (AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(formula), level)) > 0 : false;
     },
 
     unlockedArtifactInitiation: function() {
@@ -608,7 +608,7 @@ AWE.GS = (function(module) {
         return this.get('converted').calculateArtifactInitiation(this.get('levelAfterJobs'));
       }
       else {
-        return null;
+        return false;
       }
     }.property('buildingId', 'converted', 'levelAfterJobs').cacheable(),
 

@@ -9,8 +9,8 @@
   {{#if sending}}
     <p>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}</p>
   {{else}}
-    <a href="clickable button" {{action "startInitiationPressed"}}>{{t general.send}}</a>
+    <a class="clickable button" {{action "startInitiationPressed"}}>send</a>
   {{/if}}
 
-  <a href="clickable button" {{action "cancelInitiationPressed"}}>{{t general.cancel}}</a>
+  <a class="clickable button" {{action "cancelInitiationPressed"}}>{{t general.cancel}}</a>
 </script>

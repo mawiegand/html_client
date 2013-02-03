@@ -41,9 +41,10 @@ AWE.GS = function (module) {
       return AWE.GS.SettlementManager.getSettlement(this.get('settlement_id'));
     }.property('settlement_id').cacheable(),
 
-    active: false,
-    last_activated_at: null,
+    initiated: false,
+    initiation: null,
 
+    last_initiated_at: null,
     last_captured_at: null,
 
     artifactType: function () {
@@ -62,6 +63,12 @@ AWE.GS = function (module) {
     }.property().cacheable(),
   });
 
+  module.ArtifactInitiation = module.Entity.extend({
+    typeName: 'ArtifactInitiation',
+
+    started_at: null,
+    finished_at: null,
+  });
 
   // ///////////////////////////////////////////////////////////////////////
   //
@@ -184,7 +191,7 @@ AWE.GS = function (module) {
         my.runningUpdatesPerCharacter,
         characterId,
         updateType,
-        null, // timestamp of user's artifact
+        module.ArtifactAccess.lastUpdateForOwner_id(characterId),
         function (result, status, xhr, timestamp) {   // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK) {
             var artifacts = module.ArtifactAccess.getHashableCollectionForOwner_id(characterId);

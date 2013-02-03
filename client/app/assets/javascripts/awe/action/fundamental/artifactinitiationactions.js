@@ -28,7 +28,7 @@ AWE.Action.Fundamental = (function(module) {
     }
 
     that.getURL = function() {
-      return AWE.Config.FUNDAMENTAL_SERVER_BASE + 'artifact_initiation';
+      return AWE.Config.FUNDAMENTAL_SERVER_BASE + 'artifact_initiations';
     }
 
     that.getHTTPMethod = function() {
@@ -63,7 +63,7 @@ AWE.Action.Fundamental = (function(module) {
     }
 
     that.getURL = function() {
-      return AWE.Config.FUNDAMENTAL_SERVER_BASE + 'artifact_initiation/' + artifactInitiationId;
+      return AWE.Config.FUNDAMENTAL_SERVER_BASE + 'artifact_initiations/' + artifactInitiationId;
     }
 
     that.getHTTPMethod = function() {

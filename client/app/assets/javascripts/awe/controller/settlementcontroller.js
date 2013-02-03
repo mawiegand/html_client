@@ -599,7 +599,50 @@ AWE.Controller = (function(module) {
       });
     }
     
-    
+    that.startArtifactInitiation = function(artifact) {
+      var action = AWE.Action.Fundamental.createStartArtifactInitiationAction(artifact);
+      action.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+          AWE.GS.ArtifactManager.updateArtifact(artifact.getId());
+          AWE.GS.SettlementManager.updateSettlement(artifact.get('settlement_id'));
+          // TODO anything else to update?
+          that.updateResourcePool();
+        }
+        else {  // show error dialog
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the trading carts send command.");
+        }
+      });
+    }
+
+    that.cancelArtifactInitiation = function(artifactInitiation) {
+      var action = AWE.Action.Fundamental.createCancelArtifactInitiationAction(artifact);
+      action.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+          AWE.GS.ArtifactManager.updateArtifact(artifact.getId());
+          AWE.GS.SettlementManager.updateSettlement(settlementId);
+          // TODO anything else to update?
+          that.updateResourcePool();
+        }
+        else {  // show error dialog
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the trading carts send command.");
+        }
+      });
+    }
+
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Model
