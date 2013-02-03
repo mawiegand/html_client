@@ -16,8 +16,9 @@ AWE.UI = (function(module) {
     var _frameRectShape = null;
     
     my = my || {};
-    
+
     my.typeName = "EmptySlotView";
+    my.locationType = "empty";
 
     var that = module.createSettlementView(spec, my);
 
@@ -86,6 +87,10 @@ AWE.UI = (function(module) {
         _selectShape.visible = this.selected() || this.hovered();
         _selectShape.alpha = (this.selected() ? 1. : 0.2);
       }
+    }
+
+    that.locationType = function() {
+      return my.locationType;
     }
 
     return that;

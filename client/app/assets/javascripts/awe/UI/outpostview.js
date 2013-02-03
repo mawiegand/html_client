@@ -28,6 +28,7 @@ AWE.UI = (function(module) {
     that = module.createSettlementView(spec, my);
 
     my.typeName = "OutpostView";
+    my.locationType = "outpost";
     
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
@@ -176,7 +177,11 @@ AWE.UI = (function(module) {
     that.location = function() {
       return _location;
     };
-    
+
+    that.locationType = function() {
+      return my.locationType;
+    }
+
     that.army = function() {
       return _location.garrisonArmy();
     };
