@@ -8,10 +8,14 @@ AWE.UI.Ember = function(module) {
 
     settlement: null,
     controller: null,
-    artifactBinding: 'AWE.GS.game.currentArtifact',
+    artifact: null,
+    hasArtifact: true,
 
     init: function() {
-      AWE.GS.ArtifactManager.updateArtifactOfCharacter(AWE.GS.game.getPath('currentCharacter.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      var self = this;
+      AWE.GS.ArtifactManager.updateArtifactOfCharacter(AWE.GS.game.getPath('currentCharacter.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(artifact) {
+        self.set('artifact', artifact);
+      });
     },
 
     startInitiationPressed: function() {

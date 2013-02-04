@@ -1,16 +1,9 @@
 <script type="text/x-handlebars" data-template-name="artifact-initiation-view">
 
-  <h2>{{t artifact.initiation}}</h2>
+  <h2>Artefakt</h2>
 
-  <h4>ID: {{artifact.id}}</h4>
+  <h4>{{artifact.name}} ({{artifact.id}})</h4>
 
-  {{#if errorMessage}}<p class="red-color"><b>{{errorMessage}}</b></p>{{/if}}
+  <p>Name: {{artifact.name}}</p>
 
-  {{#if sending}}
-    <p>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}</p>
-  {{else}}
-    <a class="clickable button" {{action "startInitiationPressed"}}>send</a>
-  {{/if}}
-
-  <a class="clickable button" {{action "cancelInitiationPressed"}}>{{t general.cancel}}</a>
 </script>

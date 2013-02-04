@@ -121,16 +121,16 @@ AWE.UI = (function(module) {
 //      _rankImageView.setFrame(AWE.Geometry.createRect(86, -20, 20, 20));
 //      this.addChild(_rankImageView);
 //
-//      infoContainer = AWE.UI.createMultiLineContainer();
-//      infoContainer.initWithController(controller, AWE.Geometry.createRect(145,-6,120,0));
-//      this.addChild(infoContainer);
-//
-//      _infoText1View = AWE.UI.createLabelView();
-//      _infoText1View.initWithControllerAndLabel(controller);
-//      _infoText1View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));
-//      _infoText1View.setTextAlign("left");
-//      //_infoText1View.setIconImage("map/icon/owner");
-//      infoContainer.addChild(_infoText1View);
+      infoContainer = AWE.UI.createMultiLineContainer();
+      infoContainer.initWithController(controller, AWE.Geometry.createRect(145,-6,120,0));
+      this.addChild(infoContainer);
+
+      _infoText1View = AWE.UI.createLabelView();
+      _infoText1View.initWithControllerAndLabel(controller);
+      _infoText1View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));
+      _infoText1View.setTextAlign("left");
+      //_infoText1View.setIconImage("map/icon/owner");
+      infoContainer.addChild(_infoText1View);
 //
 //      _infoText2View = AWE.UI.createLabelView();
 //      _infoText2View.initWithControllerAndLabel(controller);
@@ -238,31 +238,31 @@ AWE.UI = (function(module) {
 //      // rank image
 //      _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + Math.min(4, Math.floor((_army.get('rank') || 0) / 5 + 1))));
 //
-//      // info view
-//      if (_backgroundShapeView) {
-//        this.removeChild(_backgroundShapeView);
-//      }
+      // info view
+      if (_backgroundShapeView) {
+        this.removeChild(_backgroundShapeView);
+      }
 //
-//      _infoText1View.setText(_army.get('owner_name') + (_army.get('alliance_tag') ? (' | ' + _army.get('alliance_tag')) : ''));
+      _infoText1View.setText(_artifact.get('name'));
 //      _infoText2View.setText(_army.get('strength'));
 //      _infoText3View.setText(_army.get('size_present'));
 //
-//      infoContainer.layoutSubviews(); // call this by hand, as only changed visibility
-//
-//      var backgroundGraphics = new Graphics();
-//      backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-//      backgroundGraphics.drawRoundRect(0, 0,
-//                                       infoContainer.frame().size.width + 12,
-//                                       infoContainer.frame().size.height+ 4, 4);
-//      _backgroundShapeView = AWE.UI.createShapeView();
-//      _backgroundShapeView.initWithControllerAndGraphics(my.controller, backgroundGraphics);
-//      _backgroundShapeView.setFrame(AWE.Geometry.createRect(infoContainer.frame().origin.x - 6,
-//                                                            infoContainer.frame().origin.y - 2,
-//                                                            infoContainer.frame().size.width + 12,
-//                                                            infoContainer.frame().size.height+ 4));
-//      this.addChildAt(_backgroundShapeView, 0);
-//
-//      that.setNeedsDisplay();
+      infoContainer.layoutSubviews(); // call this by hand, as only changed visibility
+
+      var backgroundGraphics = new Graphics();
+      backgroundGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
+      backgroundGraphics.drawRoundRect(0, 0,
+                                       infoContainer.frame().size.width + 12,
+                                       infoContainer.frame().size.height+ 4, 4);
+      _backgroundShapeView = AWE.UI.createShapeView();
+      _backgroundShapeView.initWithControllerAndGraphics(my.controller, backgroundGraphics);
+      _backgroundShapeView.setFrame(AWE.Geometry.createRect(infoContainer.frame().origin.x - 6,
+                                                            infoContainer.frame().origin.y - 2,
+                                                            infoContainer.frame().size.width + 12,
+                                                            infoContainer.frame().size.height+ 4));
+      this.addChildAt(_backgroundShapeView, 0);
+
+      that.setNeedsDisplay();
     }
                 
     that.layoutSubviews = function() {

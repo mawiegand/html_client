@@ -860,6 +860,14 @@ AWE.Controller = function (module) {
       });
     }
 
+    that.artifactInfoButtonClicked = function (artifact) {
+      if (!artifact) {
+        return;
+      }
+
+      alert('Klick');
+    };
+
     that.settlementInfoButtonClicked = function (location) {
       if (!location) return;
 
@@ -1305,6 +1313,7 @@ AWE.Controller = function (module) {
 
     that.viewMouseOver = function (view) { // log('view mouse over: ' + view.typeName())
       if (view.typeName() === 'FortressView'
+        || view.typeName() === 'ArtifactView'
         || view.typeName() === 'ArmyView'
         || view.typeName() === 'BaseView'
         || view.typeName() === 'OutpostView'
@@ -1322,6 +1331,7 @@ AWE.Controller = function (module) {
     that.viewMouseOut = function (view) {
       if (view.typeName() === 'FortressView'
         || view.typeName() === 'ArmyView'
+        || view.typeName() === 'ArtifactView'
         || view.typeName() === 'BaseView'
         || view.typeName() === 'OutpostView'
         || view.typeName() === 'EmptySlotView') {
@@ -1433,6 +1443,12 @@ AWE.Controller = function (module) {
       else if (view.typeName() === 'ArtifactView') {
         inspectorViews.inspector = AWE.UI.createArtifactInspectorView();
         inspectorViews.inspector.initWithControllerAndArtifact(that, view.artifact());
+
+        inspectorViews.inspector.onInventoryButtonClick = (function (self) {
+          return function (artifact) {
+            self.artifactInfoButtonClicked(artifact);
+          }
+        })(that);
       }
       else if (view.typeName() === 'BaseView' || view.typeName() === 'OutpostView') {
         inspectorViews.inspector = AWE.UI.createBaseInspectorView();
@@ -1728,7 +1744,6 @@ AWE.Controller = function (module) {
 
               // updating artifacts
               AWE.GS.ArtifactManager.updateArtifactsInRegion(nodes[i].region().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (artifacts) {
-                log('----> artifacts loaded', artifacts);
                 that.setModelChanged();
               });
             }
@@ -2297,9 +2312,9 @@ AWE.Controller = function (module) {
       }
 
       if (_selectedView &&
-        _selectedView.typeName() === 'ArtifactView' &&
-        that.isSettlementVisible(that.mc2vc(_selectedView.location().node().frame()))) {
-        newArtifactViews[_selectedView.location().id()] = _selectedView;
+          _selectedView.typeName() === 'ArtifactView' &&
+          that.isSettlementVisible(that.mc2vc(_selectedView.location().node().frame()))) {
+        newArtifactViews[_selectedView.artifact().getId()] = _selectedView;
       }
 
       var removedSomething = purgeDispensableViewsFromStage(artifactViews, newArtifactViews, _stages[1]);
@@ -3012,10 +3027,11 @@ AWE.Controller = function (module) {
       var numRegionViews = AWE.Util.hashCount(regionViews);
       var numFortressViews = AWE.Util.hashCount(fortressViews);
       var numArmyViews = AWE.Util.hashCount(armyViews);
+      var numArtifactViews = AWE.Util.hashCount(artifactViews);
       var numLocationViews = AWE.Util.hashCount(locationViews);
 
       $("#debug2").html('&nbsp; Number of visible views: ' + numRegionViews + '/' + numFortressViews +
-        '/' + numLocationViews + '/' + numArmyViews + '/' + ' (regions, fortresses, locations, armies)');
+        '/' + numLocationViews + '/' + numArmyViews + '/' + numArtifactViews + '/' + ' (regions, fortresses, locations, armies, artifacts)');
     };
 
 

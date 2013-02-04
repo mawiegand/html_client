@@ -42,6 +42,10 @@ AWE.GS = function (module) {
     }.property('settlement_id').cacheable(),
 
     initiated: false,
+    initiating: function() {
+      return !this.get('initiated') && this.get('initiation') != null;
+    }.property('initiation', 'initiated').cacheable(),
+
     initiation: null,
 
     last_initiated_at: null,
@@ -60,7 +64,7 @@ AWE.GS = function (module) {
       if (type != null) {
         return AWE.Util.Rules.lookupTranslation(type.name);
       }
-    }.property().cacheable(),
+    }.property('artifactType').cacheable(),
   });
 
   module.ArtifactInitiation = module.Entity.extend({

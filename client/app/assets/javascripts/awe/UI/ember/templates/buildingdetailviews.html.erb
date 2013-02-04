@@ -366,15 +366,15 @@
         {{/if}}    
         {{#if building.converted.tradingCarts}}
           <p><b>{{t building.tradingCarts}}:</b> {{building.converted.tradingCarts}}</p>
-        {{/if}} 
+        {{/if}}
         {{#if building.converted.commandPoints}}
           <p><b>{{t building.commandPoints}}:</b> {{building.converted.commandPoints}}</p>
-        {{/if}} 
-    
+        {{/if}}
+
         {{#if building.converted.unlockedQueues}}
           <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.converted.unlockedQueues}}{{local name}}, {{/each}}</p>
         {{/if}}
-    
+
         {{#if building.speedupQueuesAfterConversion}}
           {{#each building.speedupQueuesAfterConversion}}
             <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
@@ -382,6 +382,10 @@
         {{/if}}
       {{/unless}}
 
+      {{#if building.unlockedArtifactInitiation}}
+      <hr class="clearfix" />
+        {{view AWE.UI.Ember.ArtifactInitiationView }}
+      {{/if}}
 
       {{#if building.trainingQueues}}
       <hr class="clearfix" />
@@ -395,15 +399,10 @@
         <h2>{{t building.garrison}}</h2>
         {{view AWE.UI.Ember.ArmyInfoView armyBinding="building.garrisonArmy" displayHeading=false}}
       {{/if}}
-    
+
       {{#if building.unlockedDiplomacy}}
       <hr class="clearfix">
         {{view AWE.UI.Ember.DiplomacyView unlockedAllianceCreationBinding="building.unlockedAllianceCreation"}}
-      {{/if}}
-
-      {{#if building.unlockedArtifactInitiation}}
-      <hr class="clearfix" />
-        {{view AWE.UI.Ember.ArtifactInitiationView settlementBinding="building.slot.settlement" controllerBinding="controller"}}
       {{/if}}
 
       {{#if building.unlockedPlayerToPlayerTrade}}

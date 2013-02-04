@@ -604,7 +604,7 @@ AWE.Controller = (function(module) {
       action.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
           AWE.GS.ArtifactManager.updateArtifact(artifact.getId());
-          AWE.GS.SettlementManager.updateSettlement(artifact.get('settlement_id'));
+          AWE.GS.SettlementManager.updateSettlement(that.settlementId);
           // TODO anything else to update?
           that.updateResourcePool();
         }
@@ -621,12 +621,12 @@ AWE.Controller = (function(module) {
       });
     }
 
-    that.cancelArtifactInitiation = function(artifactInitiation) {
-      var action = AWE.Action.Fundamental.createCancelArtifactInitiationAction(artifact);
+    that.cancelArtifactInitiation = function(artifact) {
+      var action = AWE.Action.Fundamental.createCancelArtifactInitiationAction(artifact.getPath('artifactInitiation.id'));
       action.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
           AWE.GS.ArtifactManager.updateArtifact(artifact.getId());
-          AWE.GS.SettlementManager.updateSettlement(settlementId);
+          AWE.GS.SettlementManager.updateSettlement(that.settlementId);
           // TODO anything else to update?
           that.updateResourcePool();
         }

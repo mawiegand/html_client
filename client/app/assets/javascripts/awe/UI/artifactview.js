@@ -21,17 +21,8 @@ AWE.UI = (function(module) {
     var _annotationView = null;
 
     var _baseImage = null;
-    var _baseShape = null;    
-    var _poleShape = null;    
-    var _flagView = null;
-    var _selectShape = null;    
-    var _healthShape = null;    
-    var _healthBGShape = null;   
-    var _movementView = null; 
-    var _movementArrow = null; 
-    var _movementETA = null; 
-    var _actionPointsLabelView = null;
-    
+    var _selectShape = null;
+
     var _frameRectShape = null;
     
     that = module.createGamingPieceView(spec, my);
