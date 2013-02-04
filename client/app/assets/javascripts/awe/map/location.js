@@ -58,7 +58,15 @@ AWE.Map = (function(module) {
     };
     
     /** returns the regions name; */
-    that.name = function() { return _name; }
+    that.name = function() {
+      var settlementType = AWE.GS.RulesManager.getRules().getSettlementType(_settlementTypeId || 0);
+      if (settlementType != null) {
+        return AWE.Util.Rules.lookupTranslation(settlementType.name);
+      }
+      else {
+        return "Siedlung";
+      }
+    }
     
     /** returns the region the location is associated with. */
     that.region = function() { return _region; }
