@@ -7,16 +7,16 @@
 var AWE = window.AWE || {};
 
 
-AWE.Config = (function(module) { 
-  
+AWE.Config = (function(module) {
+
   // automatically determine the server to use -> same origin policy
   module.SERVER_ROOT = document.location.protocol + '//' + document.location.host ;
   module.PORTAL_ROOT = document.location.protocol + '//' + ("<%= CLIENT_CONFIG['portal_server_base'] %>") ;
-  if (!document.location.host) { // for the case where it's loaded from file 
+  if (!document.location.host) { // for the case where it's loaded from file
     module.SERVER_ROOT = 'http://localhost'
     module.PORTAL_ROOT = 'http://localhost'
   }
-  
+
   module.DEBUG_LEVEL_ERROR   = 0;
   module.DEBUG_LEVEL_WARNING = 1;
   module.DEBUG_LEVEL_INFO    = 2;
@@ -26,13 +26,12 @@ AWE.Config = (function(module) {
 
   module.TIME_DEBUG_LEVEL = module.DEBUG_LEVEL_INFO;
 
-  
   module.MAP_DEBUG_LEVEL  = module.DEBUG_LEVEL_INFO;
   module.MAP_DEBUG_FRAMES = false;
-  
+
   module.MAP_MOVE_ARMIES          = false;
 
-  
+
   module.MAP_RUN_TESTS = false;
   module.MAP_SERVER_BASE          = module.SERVER_ROOT + '/game_server/de/map/';
   module.MILITARY_SERVER_BASE     = module.SERVER_ROOT + '/game_server/de/military/';
@@ -51,68 +50,68 @@ AWE.Config = (function(module) {
   module.ALLIANCE_RANKING_SERVER_BASE  = module.SERVER_ROOT + '/game_server/de/ranking/alliance_rankings';
   module.FORTRESS_RANKING_SERVER_BASE  = module.SERVER_ROOT + '/game_server/de/ranking/fortress_rankings';
   module.RANKING_INFO_SERVER_BASE  = module.SERVER_ROOT + '/game_server/de/ranking/ranking_info';
-  
+
   module.PLAYER_INVITATION_BASE   = module.PORTAL_ROOT + '/player_invitation/';
   module.ALLIANCE_INVITATION_BASE = module.PORTAL_ROOT + '/alliance_invitation/';
-  
+
   module.RAILS_ASSET_PATH         = "<%= asset_path('') %>";
 
   module.JABBER_SERVER_BASE       = "<%= CLIENT_CONFIG['jabber_server_base'] %>";
   module.JABBER_DEVELOPMENT_JID   = "<%= CLIENT_CONFIG['jabber_id'] %>";
   module.JABBER_DEVELOPMENT_PWD   = "<%= CLIENT_CONFIG['jabber_pwd'] %>";
-  
+
   module.EXTERNAL_FORUM_URL       = 'http://forum.uga-agga.de/wack-a-doo-f235/';
   module.EXTERNAL_MANUAL_URL      = 'http://wiki.wack-a-doo.de';
   module.EXTERNAL_FACEBOOK_URL    = 'http://www.facebook.com/pages/Wackadoo/239722582763809';
-  
+
   module.DEFAULT_LOCALE           = 'en_US';
-  
+
   module.SETTLEMENT_DYNAMIC_SLOTS = <%= CLIENT_CONFIG['use_dynamic_construction_slots'] ? 'true' : 'false' %> ;
-  
+
   // access token of Egbert, expires in 100 days.
   module.DEV_ACCESS_TOKEN = "eyJ0b2tlbiI6eyJpZGVudGlmaWVyIjoiZU9tS3ZOa1hTUkxtYlREUSIsInNjb3BlIjpbIjVkZW50aXR5Iiwid2Fja2Fkb28iXSwidGltZXN0YW1wIjoiMjAxMi0wNS0wMlQxNjozMDowMyswMjowMCJ9LCJzaWduYXR1cmUiOiJhZDQ0MzU4NzRmMGFmYTg2N2RlOTAwOTExYTJlMmNlODQzNmNlYTU0In0="
-  
+
   module.DEV_ALLIANCE_ID = 1;
-  
+
   module.TIME_DIFF_RANGE = 2; // TODO problem with slot refresh if less than 2
-  
+
   module.NET_AUTO_DETECT_REDIRECT_FLAWS = false ;
-  
+
   module.BASE_LEVEL_DIVISOR     = 40;
   module.FORTRESS_LEVEL_DIVISOR =  3;
   module.OUTPOST_LEVEL_DIVISOR  = 10;
-  
+
   module.MAPPING_FORTRESS_SIZE  = 64;
-  
+
   module.MAP_ARMY_WIDTH  =  96;
   module.MAP_ARMY_HEIGHT = 105;
-  
+
   module.ARMY_MODE_IDLE     = 0;
   module.ARMY_MODE_MOVING   = 1;
   module.ARMY_MODE_FIGHTING = 2;
 
 	module.MAP_USE_GOOGLE = false;
   module.MAP_USE_OSM    = false;
-  
+
   // how many tiles showing minimum when not at leaf level
   module.MAP_MIN_VISIBLE_TILES = 64;
 
   module.MAP_REGION_STREETS_COLOR = "#857d66"; //#444
-  module.MAP_REGION_STREETS_WIDTH = 2; 
+  module.MAP_REGION_STREETS_WIDTH = 2;
   module.MAP_REGION_STREETS_MIN_DETAIL_LEVEL = 1;
 
   module.MAP_LOCATION_STREETS_COLOR = "#b1ad6e"; //#444
-  module.MAP_LOCATION_STREETS_WIDTH = 1; 
+  module.MAP_LOCATION_STREETS_WIDTH = 1;
 
   module.MAP_LOCATION_SPOT_WIDTH = 49;
   module.MAP_LOCATION_SPOT_HEIGHT = 30;
   //frame.width * MAP_REGION_STREETS_WIDTH = offset from the broder away
   module.MAP_LOCATION_SPOT_BORDER_MARGIN = 0.14;
   module.MAP_LOCATION_SPOT_COLOR = "rgba(177, 173, 110, .5)";//"#b1ad6e";//"#EEE894";
- 
+
   module.MAP_LOCATION_MIN_DETAIL_LEVEL = 2;
   module.MAP_LOCATION_TYPE_CODES = ["empty","fortress","base","outpost"];
-  
+
   module.MAPVIEW_DONT_UPDATE_MODEL_WHILE_SCROLLING = true;
 
   //Settings for the camera that handles the panning after a double click
@@ -126,11 +125,11 @@ AWE.Config = (function(module) {
 
   module.MAP_CAMERA_MIN_ZOOMFACTOR   = 0.00001333333333; //< defines the minimum zoom factor (the maximum amount that can be zoomed out). The factor is defined by window.width/viewport.size.width
   module.MAP_CAMERA_MAX_ZOOMFACTOR   = 0.0012; ///< //< defines the maximum zoom factor (the maximum amount that can be zoomed in). The factor is defined by window.width/viewport.size.width
-  
+
   module.SETTLEMENT_REFRESH_INTERVAL = 30 * 1000;
-  
+
   module.RANKING_LIST_ENTRIES = 15;
-  
+
   module.RESOURCES_REFRESH_INTERVAL  =  5 * 1000;
   module.CHARACTER_REFRESH_INTERVAL  =  20 * 1000;
   module.CREDIT_AMOUNT_REFRESH_INTERVAL  =  4 * 1000;
@@ -143,16 +142,16 @@ AWE.Config = (function(module) {
   module.TUTORIAL_MAP_QUEST_ID   = 11;
   module.TUTORIAL_FIGHT_QUEST_ID = 147;
   module.TUTORIAL_MOVE_QUEST_ID  =  18;
-  
+
   module.CHAT_SHOW    = true;   // switch chat system on / off
   module.TRADE_ENABLED= true;   // switch trade system on / off
   module.LIKE_ENABLED = <%= CLIENT_CONFIG['like_system_enabled'] ? 'true' : 'false' %>;  // switch like system on / off
-  
+
   module.BROWSER_CHECK_ENABLED = true;
   module.BROWSER_CHECK_FAILURES_ONLY = false;
-  
+
   module.DISABLE_NPC_IMAGES = false;
 
   return module;
-  
+
 }(AWE.Config || {}));

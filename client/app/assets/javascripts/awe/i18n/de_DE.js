@@ -96,13 +96,13 @@ AWE.I18n.de_DE = function(module) {
       messages: {
         own: {
           winning: [
-            "Yeah, platt machen wir sie!",
+            "Yeah, platt machen wir sie!"
           ],
           losing: [
-            "Tu was, unsere Armee geht grad den Bach runter!",
+            "Tu was, unsere Armee geht grad den Bach runter!"
           ],
           neutral: [
-            "Hau mal auf den Putz, da passiert ja gar nix!",
+            "Hau mal auf den Putz, da passiert ja gar nix!"
           ]
         },
         other: "Du willst da doch nicht etwa mitmischen, oder?",
@@ -175,13 +175,13 @@ AWE.I18n.de_DE = function(module) {
             "Die Leute haben sich übrigens über's Essen beschwert. Kannst Du uns nicht was veganes schicken?",
             "Pass auf, einen haue ich noch für Dich um, aber dann ist's wirklich gut für heute, ja?!",
             "Leise! Ich versuche hier zu schlafen.",
-            "Hart wie Federkissen.",
+            "Hart wie Federkissen."
           ],
 
           girl: [
             "Wir sollten immer auf der Hut sein.",
             "Ich liebe es, hier draußen rumzustreifen.",
-            "Ist das nicht ein wundervoller Tag?",
+            "Ist das nicht ein wundervoller Tag?"
           ],
 
           chef: [
@@ -191,7 +191,7 @@ AWE.I18n.de_DE = function(module) {
             "Besorg mir mal was zu essen. Aber was leckeres!",
             "Heute unseren Nachbarn, morgen die ganze Welt!",
             "Unter meiner Führung werden wir keinen einzigen Kampf verlieren. Du wirst schon sehen!",
-            "Angriff ist die beste Verteidigung.",
+            "Angriff ist die beste Verteidigung."
           ]
         },
 
@@ -213,16 +213,16 @@ AWE.I18n.de_DE = function(module) {
             "Geh weg!",
             "Was denn?",
             "Reg mich bloß nicht auf!",
-            "Nein, hier gibt's keine Gänseblümchen!",
+            "Nein, hier gibt's keine Gänseblümchen!"
           ],
           girl: [
             "Freund oder Feind?",
             "Hui, wer bist Du denn?",
-            "Pass auf was Du tust, ich verstehe heute gar keinen Spaß.",
+            "Pass auf was Du tust, ich verstehe heute gar keinen Spaß."
           ],
           chef: [
             "Muhahaha!",
-            "Pass auf, in Kürze gehört Dein Land uns!",
+            "Pass auf, in Kürze gehört Dein Land uns!"
           ]
         },
       },
@@ -331,9 +331,9 @@ AWE.I18n.de_DE = function(module) {
     },
     
     map: {
-      
+
     },
-    
+
     alliance: {
       memberOf: "Du bist derzeit ein Mitglied der Allianz ",
       joinAlliance: "Allianz beitreten",
@@ -402,7 +402,7 @@ AWE.I18n.de_DE = function(module) {
     welcome: {
       heading: 'Willkomen bei Wack-a-Doo!',
       headingPlan: 'Der Plan',
-      image: '<%= asset_path("whatdoido_de_DE.jpeg") %>',
+      image: AWE.Config.RAILS_ASSET_PATH + 'whatdoido_de_DE.jpeg',
       headingSituation: 'Die Situation',
       formattedText: '<p>Du bist ein <b>Halbgott</b> und hast gerade einen kleinen, Dir folgenden Stamm von Steinzeithöhlenmenschen davon überzeugt, ihre Höhle zu verlassen und ab jetzt in einer hochmodernen Siedlung zu leben. Leider hat der glorreiche Stammesführer aber bisher nur eine pompöse Hütte für sich selbst bauen lassen.</p><p>Ein kleines Tutorial wird Dich als Halbgott durch die ersten Schwierigkeiten Deiner neuen Herrschaft führen. Tatsächlich bedeutet die Führung eines Stammes mehr als nur die eigene Häuptlingshütte auszubauen, aber das wirst Du schon herausfinden...</p> <p><b>Viel Spaß!</p>',
     },

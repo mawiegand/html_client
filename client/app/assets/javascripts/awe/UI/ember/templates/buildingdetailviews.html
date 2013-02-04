@@ -197,7 +197,7 @@
           {{#if sendingConvert }}
             <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t building.upgrade.converting}}...</div>
           {{else}}
-          <a {{action "conversionClicked"}} class="upgrade" title="{{t building.tooltip.clickToConvert}}"><img src="<%= asset_path('icons/cross_green.png') %>"></img> {{t building.upgrade.conversion}}</a>
+          <a {{action "conversionClicked"}} class="upgrade" title="{{t building.tooltip.clickToConvert}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png"></img> {{t building.upgrade.conversion}}</a>
           {{/if}}
           <h3>{{t building.upgrade.conversionStart}}{{local building.name }} {{t building.upgrade.toIn}} {{local building.converted.name }} {{t building.level}} {{ building.convertedLevel }} {{t building.upgrade.conversionEnd}}</h2>
       
@@ -265,7 +265,7 @@
           {{#if sendingUpgrade}}
             <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t building.upgrade.updating}}...</div>
           {{else}}
-          <a {{action "upgradeClicked"}} class="upgrade" title="{{t building.tooltip.clickToUpgrade}}"><img src="<%= asset_path('icons/cross_green.png') %>"></img> {{t building.upgrade.upgrade}}</a>
+          <a {{action "upgradeClicked"}} class="upgrade" title="{{t building.tooltip.clickToUpgrade}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png"></img> {{t building.upgrade.upgrade}}</a>
           {{/if}}
           <h3>{{t building.upgrade.upgradeStart}} {{local building.name }} {{t building.upgrade.toAuf}} {{t building.level}} {{ building.nextLevel }} {{t building.upgrade.upgradeEnd}}</h3>
       
@@ -342,7 +342,7 @@
           {{#if sendingDestroy}}
             <div class="destroy">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t building.upgrade.demolishing}}...</div>
           {{else}}
-            <a {{action "destroyClicked"}} {{bindAttr class="destroyClasses"}} title="{{t building.tooltip.clickToDemolish}}"><img src="<%= asset_path('icons/cross_red.png') %>"></img> {{t building.upgrade.demolishBuilding}}</a>
+            <a {{action "destroyClicked"}} {{bindAttr class="destroyClasses"}} title="{{t building.tooltip.clickToDemolish}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH  }}icons/cross_red.png"></img> {{t building.upgrade.demolishBuilding}}</a>
           {{/if}}
           <h3>{{t building.upgrade.demolishStart}} {{local building.name }} {{t building.upgrade.demolishEnd}}</h3>
           <p>
