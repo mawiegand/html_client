@@ -442,7 +442,7 @@ AWE.GS = (function(module) {
       var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/'+characterId+'/armies';
       return my.fetchEntitiesFromURL(
         url, 
-        my.runningUpdatesPerLocation, 
+        my.runningUpdatesPerCharacter, 
         characterId, 
         updateType, 
         module.ArmyAccess.lastUpdateForOwner_id(characterId),

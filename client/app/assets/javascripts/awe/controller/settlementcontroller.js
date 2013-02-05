@@ -89,7 +89,8 @@ AWE.Controller = (function(module) {
         if (AWE.GS.SettlementManager.lastUpdateForLocation(locationId).getTime() + 1000 < new Date().getTime()) { // information to old
           AWE.GS.SettlementManager.updateSettlementsAtLocation(locationId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result, status) {
             that.setLocationId(locationId); // try again to set it
-          });         
+          });
+          AWE.GS.ArtifactManager.updateArtifactOfCharacter(AWE.GS.game.getPath('currentCharacter.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
         }
         else {  // seems as there's no settlement at this location!
           log('ERROR: could not obtain settlement at present location from server.')
@@ -599,7 +600,50 @@ AWE.Controller = (function(module) {
       });
     }
     
-    
+    that.startArtifactInitiation = function(artifact) {
+      var action = AWE.Action.Fundamental.createStartArtifactInitiationAction(artifact);
+      action.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+          AWE.GS.ArtifactManager.updateArtifact(artifact.getId());
+          AWE.GS.SettlementManager.updateSettlement(that.settlementId);
+          // TODO anything else to update?
+          that.updateResourcePool();
+        }
+        else {  // show error dialog
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the trading carts send command.");
+        }
+      });
+    }
+
+    that.cancelArtifactInitiation = function(artifact) {
+      var action = AWE.Action.Fundamental.createCancelArtifactInitiationAction(artifact.getPath('artifactInitiation.id'));
+      action.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+          AWE.GS.ArtifactManager.updateArtifact(artifact.getId());
+          AWE.GS.SettlementManager.updateSettlement(that.settlementId);
+          // TODO anything else to update?
+          that.updateResourcePool();
+        }
+        else {  // show error dialog
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the trading carts send command.");
+        }
+      });
+    }
+
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Model
