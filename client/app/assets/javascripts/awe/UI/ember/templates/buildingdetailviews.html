@@ -13,23 +13,25 @@
 
 
 <script type="text/x-handlebars" data-template-name="requirement-view">
-  {{# if haveMaxLevel }} 
+  {{#if haveMaxLevel }}
     {{#if maxLevelZero }}
       <b>{{t building.requirement.none}}</b> {{t building.requirement.single}} <b>{{local type.name}}</b>
     {{else }}
-      <b>kein {{local type.name}}</b> {{t building.requirement.greaterThan}} <b>{{t building.level}} {{ requirement.max_level }}</b>
+      <b>{{t building.requirement.none}} {{local type.name}}</b> {{t building.requirement.greaterThan}} <b>{{t building.level}} {{ requirement.max_level }}</b>
     {{/if}}
     {{#if haveMinLevel}}
-      </{{unbound tagName}}><{{ubound tagName}}>
+      </{{unbound tagName}}>
+      <{{unbound tagName}}>
     {{/if}}
-  {{/if}} 
-  {{# if haveMinLevel }} 
+  {{/if}}
+  {{#if haveMinLevel }}
     <b>{{local type.name}}</b> {{t general.with}} <b>{{t building.level}} {{requirement.min_level}}</b> {{t building.requirement.orGreater}} 
   {{/if}}
 </script>
 
+
 <script type="text/x-handlebars" data-template-name="building-option-details">
-{{#if same}}
+  {{#if same}}
     <h1>{{local building.name}} {{t building.level }} {{building.nextLevel}}</h1>
     {{#if building.buildingCategory}}<div class="building-category">{{t settlement.buildings.category}}: {{local building.buildingCategory.name}}</div>{{/if}}
     
@@ -69,7 +71,7 @@
     {{#if building.unlockedAllianceCreationNextLevel}}
       <p><b>{{t building.info.unlockCreateAlliance}}</b></p>
     {{/if}}
-{{/if}}
+  {{/if}}
 </script>
 
 
@@ -98,12 +100,14 @@
   </div>
 </script>
 
+
 <script type="text/x-handlebars" data-template-name="building-cost-view">
   <b>{{t building.cost}}:</b>
   {{#each resources}}
     <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>{{formatNumber amount maxPlaces="0"}} &nbsp;
   {{/each}}
 </script>
+
 
 <script type="text/x-handlebars" data-template-name="building-production-view">
   <b>{{t building.produces}} ({{t general.perHour}}):</b>
@@ -114,8 +118,8 @@
     {{/each}}
   {{/if}}
   {{#if experience}}
-      <span class="xp-icon" title="XP"}}>&nbsp;</span>
-      {{experience}}  &nbsp;  
+    <span class="xp-icon" title="XP">&nbsp;</span>
+    {{experience}}  &nbsp;
   {{/if}}
 </script>
 
@@ -188,6 +192,11 @@
           <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
         {{/each}}
       {{/if}}
+
+      {{#if building.unlockedArtifactInitiation}}
+        <p><b>{{t building.info.unlockedArtifactInitiation}}</b></p>
+      {{/if}}
+
       <br />
     
       {{#unless building.underConversion}}
@@ -197,9 +206,9 @@
           {{#if sendingConvert }}
             <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t building.upgrade.converting}}...</div>
           {{else}}
-          <a {{action "conversionClicked"}} class="upgrade" title="{{t building.tooltip.clickToConvert}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png"></img> {{t building.upgrade.conversion}}</a>
+          <a {{action "conversionClicked"}} class="upgrade" title="{{t building.tooltip.clickToConvert}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png" /> {{t building.upgrade.conversion}}</a>
           {{/if}}
-          <h3>{{t building.upgrade.conversionStart}}{{local building.name }} {{t building.upgrade.toIn}} {{local building.converted.name }} {{t building.level}} {{ building.convertedLevel }} {{t building.upgrade.conversionEnd}}</h2>
+          <h3>{{t building.upgrade.conversionStart}}{{local building.name }} {{t building.upgrade.toIn}} {{local building.converted.name }} {{t building.level}} {{ building.convertedLevel }} {{t building.upgrade.conversionEnd}}</h3>
       
           {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building.converted" levelBinding="building.converted.level"}}
         
@@ -258,6 +267,10 @@
             {{/each}}
           {{/if}}
 
+          {{#if building.converted.unlockedArtifactInitiation}}
+            <p><b>{{t building.info.unlockedArtifactInitiation}}</b></p>
+          {{/if}}
+
         {{/if}}
 
         {{#if building.upgradable}}
@@ -265,7 +278,7 @@
           {{#if sendingUpgrade}}
             <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t building.upgrade.updating}}...</div>
           {{else}}
-          <a {{action "upgradeClicked"}} class="upgrade" title="{{t building.tooltip.clickToUpgrade}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png"></img> {{t building.upgrade.upgrade}}</a>
+          <a {{action "upgradeClicked"}} class="upgrade" title="{{t building.tooltip.clickToUpgrade}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png" /> {{t building.upgrade.upgrade}}</a>
           {{/if}}
           <h3>{{t building.upgrade.upgradeStart}} {{local building.name }} {{t building.upgrade.toAuf}} {{t building.level}} {{ building.nextLevel }} {{t building.upgrade.upgradeEnd}}</h3>
       
@@ -331,7 +344,11 @@
               <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
             {{/each}}
           {{/if}}
-            
+
+          {{#if building.unlockedArtifactInitiation}}
+            <p><b>{{t building.info.unlockedArtifactInitiation}}</b></p>
+          {{/if}}
+
         {{else}}
           <hr class="clear" />
           <h3>{{t settlement.buildings.details.noUpgrade}}</h3>
@@ -342,7 +359,7 @@
           {{#if sendingDestroy}}
             <div class="destroy">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t building.upgrade.demolishing}}...</div>
           {{else}}
-            <a {{action "destroyClicked"}} {{bindAttr class="destroyClasses"}} title="{{t building.tooltip.clickToDemolish}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH  }}icons/cross_red.png"></img> {{t building.upgrade.demolishBuilding}}</a>
+            <a {{action "destroyClicked"}} {{bindAttr class="destroyClasses"}} title="{{t building.tooltip.clickToDemolish}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH  }}icons/cross_red.png" /> {{t building.upgrade.demolishBuilding}}</a>
           {{/if}}
           <h3>{{t building.upgrade.demolishStart}} {{local building.name }} {{t building.upgrade.demolishEnd}}</h3>
           <p>
@@ -380,6 +397,12 @@
             <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
           {{/each}}
         {{/if}}
+
+        {{#if building.converted.unlockedArtifactInitiation}}
+          <p><b>{{t building.info.unlockedArtifactInitiation}}</b></p>
+        {{/if}}
+
+
       {{/unless}}
 
       {{#if building.unlockedArtifactInitiation}}
@@ -415,6 +438,7 @@
   </div>
 </script>
 
+
 <script type="text/x-handlebars" data-template-name="requirements-missing-info">
 {{#with arguments}}
   <div class="advisor girl"></div>
@@ -424,9 +448,6 @@
   </p>
 {{/with}}
 </script>
-
-
-
 
 
 <script type="text/x-handlebars" data-template-name="no-building-slots-free-info">
@@ -462,8 +483,6 @@
 </script>
 
 
-
-
 <script type="text/x-handlebars" data-template-name="diplomacy-view">
   {{#if errorMessage}}
     <div class="red-color">{{errorMessage}}</div>
@@ -496,4 +515,3 @@
   {{/if}}
   
 </script>
-

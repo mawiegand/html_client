@@ -2,8 +2,10 @@
 
   <h2>Artefakt</h2>
 
-  <h4>{{artifact.name}} ({{artifact.id}})</h4>
-
-  <p>Name: {{artifact.name}}</p>
+  {{#if artifact}}
+    Meldung: Artefakt {{artifact.name}}
+  {{else}}
+    Meldung: kein Artefakt
+  {{/if}}
 
 </script>

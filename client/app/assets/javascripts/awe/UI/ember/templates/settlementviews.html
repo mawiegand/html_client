@@ -48,8 +48,7 @@
       <span title="{{t settlement.info.commandPoints}}"><b>{{t building.commandPoints}}:</b> {{settlement.commandPointsUsed}} / {{settlement.command_points}}</span> 
     
     <span class="help-icon" title="{{t settlement.info.commandPointsHelp}}">&nbsp;</span></p>
-    
-    {{#if lastError}} <p class="red-color"><b>{{lastError}}</b></p>{{/if}}
+
     <p><b>{{t settlement.info.taxRate}}:</b> {{formatNumber settlement.taxPercentage}}%
       {{#if settlement.owns_region }}
         {{#if changeTaxPossible }}
@@ -61,6 +60,12 @@
         <span class="help-icon" title="{{t settlement.info.taxRateHelp}}">&nbsp;</span>
       {{/if}}
     </p>
+
+    {{#if settlement.artifact }}
+      <p><b>{{t settlement.info.artifact}}:</b> {{settlement.artifact.name}}</p>
+    {{/if}}
+
+    {{#if lastError}} <p class="red-color"><b>{{lastError}}</b></p>{{/if}}
 
     <h2>{{t settlement.info.resourceProduction}}</h2>
     <table>

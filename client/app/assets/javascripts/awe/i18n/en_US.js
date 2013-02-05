@@ -314,6 +314,7 @@ AWE.I18n.en_US = function(module) {
         unlockJoinAlliance:"Unlocks diplomacy and joining an alliance.",
         unlockCreateAlliance:"Unlocks creating an alliance.",
         unlockTrade:"Unlocks trading with other players.",
+        unlockedArtifactInitiation: "Unlocks initiation of artifacts."
       },
       requirement:{
         none:"No",
@@ -646,6 +647,7 @@ AWE.I18n.en_US = function(module) {
         resourceProductionInfo2:"no",
         resourceProductionInfo3:"taxes being raised on the bonus production.",
         setTaxRate:"Enter new tax rate (5-15%).",
+        artifact: "Artifact"
       },
       error:{
         serverDidNotAcceptTaxRate:"The server did not accept the tax rate change.",

@@ -89,7 +89,8 @@ AWE.Controller = (function(module) {
         if (AWE.GS.SettlementManager.lastUpdateForLocation(locationId).getTime() + 1000 < new Date().getTime()) { // information to old
           AWE.GS.SettlementManager.updateSettlementsAtLocation(locationId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result, status) {
             that.setLocationId(locationId); // try again to set it
-          });         
+          });
+          AWE.GS.ArtifactManager.updateArtifactOfCharacter(AWE.GS.game.getPath('currentCharacter.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
         }
         else {  // seems as there's no settlement at this location!
           log('ERROR: could not obtain settlement at present location from server.')

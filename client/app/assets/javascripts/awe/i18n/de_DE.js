@@ -308,6 +308,7 @@ AWE.I18n.de_DE = function(module) {
         unlockJoinAlliance: "Ermöglicht Diplomatie und Allianzbeitritt.",
         unlockCreateAlliance: "Ermöglicht die Gründung einer Allianz.",
         unlockTrade: "Ermöglicht den Handel mit anderen Spielern.",
+        unlockedArtifactInitiation: "Ermöglicht das Einweihen von Artefakten."
       },
 
       requirement: {
@@ -633,6 +634,7 @@ AWE.I18n.de_DE = function(module) {
         resourceProductionInfo2: "nicht",
         resourceProductionInfo3: "besteuert.",
         setTaxRate: "Gib den neuen Steuersatz ein (5-15%).",
+        artifact: "Artefakt"
       },
       error: {
         serverDidNotAcceptTaxRate: "The server did not accept the tax rate change.",
