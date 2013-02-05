@@ -88,6 +88,7 @@ AWE.Controller = (function(module) {
     };
     that.archiveClicked = function() {
       this.view.hideForm(); // make sure, form is hidden
+      log('archiveClicked passed succesfull');
       this.view.switchTo('archive');
     };
     that.newClicked = function() {
@@ -185,6 +186,32 @@ AWE.Controller = (function(module) {
           
         }
         else if (display === "archive") {
+          
+          var archive = AWE.GS.CharacterManager.getCurrentCharacter().get('archive');
+          if (!archive) {
+            AWE.GS.CharacterManager.getCurrentCharacter().fetchArchive(function(archives, status) {
+              if (status === AWE.Net.NOT_FOUND || !archives) {
+                log('ERROR: archives of current character not found on server.');
+              } 
+              else { 
+                archive = AWE.GS.CharacterManager.getCurrentCharacter().get('archive');
+                if (archive) {
+                  archive.fetchEntries();
+                }
+                else {
+                  log('ERROR: no archive found.');
+                }
+              }
+            });
+          }
+          else if (archive && archive.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime()) { // timeout
+            AWE.GS.ArchiveManager.updateMessageBox(archive.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(archive, status) {
+          
+    					if (archive && archive.getId() && status !== AWE.Net.NOT_MODIFIED) {
+                archive.fetchEntries()
+    					}
+            });
+          }
           
         }
         else {

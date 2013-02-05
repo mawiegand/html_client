@@ -240,6 +240,12 @@ AWE.UI.Ember = (function(module) {
       AWE.Action.Messaging.createDeleteMessageAction(selectedMessageEntry).send();
       this.set('selectedMessageEntry', null);
     },
+    
+    archiveingClicked: function() {
+      var selectedMessageEntry = this.get('selectedMessageEntry');
+      AWE.Action.Messaging.createMoveToArchiveMessageAction(selectedMessageEntry).send();
+      this.set('selectedMessageEntry', null);
+    },
 
     markRead: function(inboxEntry) {
       var selectedMessageEntry = this.get('selectedMessageEntry');

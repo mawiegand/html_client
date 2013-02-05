@@ -102,7 +102,7 @@ AWE.GS = (function(module) {
 
     hashableEntries: function() {
       var id = this.get('id');
-      return id ? AWE.GS.ArchiveEntryAccess.getHashableCollectionForArchive_id(id) : null;
+      return id ? AWE.GS.ArchiveEntryAccess.getHashableCollectionForArchivebox_id(id) : null;
     }.property('id').cacheable(),  
 
     init: function(spec) {
@@ -195,6 +195,28 @@ AWE.GS = (function(module) {
     }.observes('recipient_id'),
   });
   
+  
+  module.ArchiveEntry = module.MessageBoxEntry.extend({ 
+    typeName: 'ArchiveEntry',
+    archivebox_id: null, old_archivebox_id: null,
+    archiveIdObserver: AWE.Partials.attributeHashObserver(module.ArchiveEntryAccess, 'archivebox_id', 'old_archivebox_id').observes('archivebox_id'),
+    
+    sender: null,
+ 
+    updateSender: function() {
+      var self = this;
+      var senderId = this.get('sender_id');
+      var sender = AWE.GS.CharacterManager.getCharacter(senderId) || null;
+      this.set('sender', sender); 
+      if (!sender) {
+        AWE.GS.CharacterManager.updateCharacter(senderId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+          if (character) {
+            self.set('sender', character);
+          }
+        });
+      }
+    }.observes('sender_id'),
+  });
   
   // ///////////////////////////////////////////////////////////////////////
   //
@@ -474,7 +496,41 @@ AWE.GS = (function(module) {
       
   }());
   
+  /** basic manager for fetching individual messages. You should not call
+   * updateMessage manually, but request the message via a message box 
+   * entry. */
+  module.ArchiveManager = (function(my) {   
+  
+    // private attributes and methods //////////////////////////////////////
+  
+    var that;
     
+    // protected attributes and methods ////////////////////////////////////
+
+    my = my || {};
+    
+    my.runningUpdatesPerCharacter = {};///< hash that contains all running requests for alliances, using the alliance.id as key.
+    my.boxURL            = AWE.Config.MESSAGING_SERVER_BASE   + 'archives/';
+    my.characterBoxesURL = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/';
+    my.boxFragementURL   = '/archives';
+
+    my.createEntity = function() { return module.Archive.create(); }
+  
+    // public attributes and methods ///////////////////////////////////////
+  
+    that = module.createMessageBoxManager(my);
+
+    that.lastUpdateForCharacter = function(characterId, updateType) {
+      return module.ArchiveAccess.lastUpdateForOwner_id(characterId, updateType);// modified after
+    };
+  
+    that.setLastUpdateForCharacter = function(characterId, timestamp) {
+      module.ArchiveAccess.accessHashForOwner_id().setLastUpdateAtForValue(characterId, timestamp);
+    };
+  
+    return that;
+      
+  }());
     
   // ///////////////////////////////////////////////////////////////////////
   //
@@ -607,7 +663,38 @@ AWE.GS = (function(module) {
   
   }());
   
+  /** basic manager for fetching individual messages. You should not call
+   * updateMessage manually, but request the message via a message box 
+   * entry. */
+  module.ArchiveEntryManager = (function(my) {   
+  
+    // private attributes and methods //////////////////////////////////////
+  
+    var that;
     
+    // protected attributes and methods ////////////////////////////////////
+
+    my = my || {};
+    
+    my.createEntity = function() { return module.ArchiveEntry.create(); }
+    my.boxEntriesURL = AWE.Config.MESSAGING_SERVER_BASE + 'archives/';
+    my.entriesURL    = AWE.Config.MESSAGING_SERVER_BASE + 'archive_entries/';
+  
+    // public attributes and methods ///////////////////////////////////////
+  
+    that = module.createMessageBoxEntryManager(my);
+
+    that.lastUpdateForMessageBox = function(archiveId, updateType) {
+      return module.ArchiveEntryAccess.lastUpdateForArchivebox_id(archiveId, updateType);// modified after
+    };
+    
+    that.setLastUpdateForMessageBox = function(archiveId, timestamp) {
+      module.ArchiveEntryAccess.accessHashForArchivebox_id().setLastUpdateAtForValue(archiveId, timestamp);
+    };
+
+    return that;
+  
+  }());  
   
   return module;
   

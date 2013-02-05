@@ -127,7 +127,10 @@
   <div class="header">
     <div id="inbox-control">
       <div {{action "inboxClicked"  target="controller"}}>{{t messaging.inbox}}</div>
-      <div {{action "outboxClicked" target="controller"}}>{{t messaging.outbox}}</div>  
+      <div {{action "outboxClicked" target="controller"}}>{{t messaging.outbox}}</div>
+      {{#if character.isPlatinumActive}}
+        <div {{action "archiveClicked"  target="controller"}}>Archive</div>
+      {{/if}}
       <div {{action "newClicked"    target="controller"}}>{{t messaging.new}}</div>
     </div>
 
@@ -147,7 +150,13 @@
       {{else}}
         <div class="inactive">{{t messaging.delete}}</div>
       {{/if}}
-      
+      {{#if character.isPlatinumActive}}
+        {{#if isForwardPossible}}
+          <div {{action "archiveingClicked" }}>Archivieren</div>
+        {{else}}
+          <div class="inactive">Archivieren</div>
+        {{/if}}
+      {{/if}}
       {{#if isAllianceMessagePossible}}
         <div {{action "newAllianceMessageClicked" target="controller"}}>{{t messaging.newAllianceMail}}</div>
       {{/if}}            
