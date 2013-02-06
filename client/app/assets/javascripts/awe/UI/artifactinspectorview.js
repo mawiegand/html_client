@@ -15,7 +15,10 @@ AWE.UI = (function(module) {
     my = my || {};
     
     var _nameLabelView = null;
+    var _ownerLabelView = null;
     var _locationLabelView = null;
+
+    var _artifactView = null;
 
     that = module.createInspectorView(spec, my);
 
@@ -54,26 +57,54 @@ AWE.UI = (function(module) {
       if (!_nameLabelView) {
         _nameLabelView = AWE.UI.createLabelView();
         _nameLabelView.initWithControllerAndLabel(my.controller);
-        _nameLabelView.setFrame(AWE.Geometry.createRect(31, 25, 160, 36));
-        _nameLabelView.setFont('24px "Helvetica Neue", Helvetica, Arial');
+        _nameLabelView.setFrame(AWE.Geometry.createRect(31, 30, 160, 36));
+        _nameLabelView.setFont('20px "Helvetica Neue", Helvetica, Arial');
         _nameLabelView.setTextAlign("left");
         this.addChild(_nameLabelView);
       }
 
-      if (artifact.get('name') !== _nameLabelView.text()) {
+      if (artifact.get('name') != _nameLabelView.text()) {
         _nameLabelView.setText(artifact.get('name'));
       }
 
-      if (!_locationLabelView) {
+      if (!_ownerLabelView) {
+        _ownerLabelView = AWE.UI.createLabelView();
+        _ownerLabelView.initWithControllerAndLabel(my.controller);
+        _ownerLabelView.setFrame(AWE.Geometry.createRect(31, 55, 120, 24));
+        _ownerLabelView.setTextAlign("left");
+        this.addChild(_ownerLabelView);
+      }
+
+      if (artifact.get('ownerName') != _ownerLabelView.text()) {
+        _ownerLabelView.setText(artifact.get('ownerName'));
+      }
+
+      if (!_locationLabelView && artifact.get('settlement_id')) {
         _locationLabelView = AWE.UI.createLabelView();
         _locationLabelView.initWithControllerAndLabel(my.controller);
-        _locationLabelView.setFrame(AWE.Geometry.createRect(31, 89, 100, 28));
+        _locationLabelView.setFrame(AWE.Geometry.createRect(31, 83, 100, 28));
         _locationLabelView.setTextAlign("left");
         _locationLabelView.setIconImage("map/icon/home");
         this.addChild(_locationLabelView);
       }
+      else if (_locationLabelView && !artifact.get('settlement_id')) {
+        this.removeChild(_locationLabelView);
+      }
 
-      _locationLabelView.setText(artifact.getPath('settlement.name'));
+      if (_locationLabelView) {
+        _locationLabelView.setText(artifact.getPath('settlement.name'));
+      }
+
+      if (!_artifactView) {
+        var imageName = 'map/artifact' + ((my.inspectedObject.get('initiated')) ? 'initiated' : '') + '/' + my.inspectedObject.get('type_id');
+
+        _artifactView = AWE.UI.createImageView();
+        _artifactView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(imageName));
+        _artifactView.setFrame(AWE.Geometry.createRect(20, 20, 96, 96));
+//        _artifactView.setFrame(AWE.Geometry.createRect(32, 36, 64, 64));
+        this.setInspectedObjectView(_artifactView);
+      }
+
     };
 
     that.artifact = function() {

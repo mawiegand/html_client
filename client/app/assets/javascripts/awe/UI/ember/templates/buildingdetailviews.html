@@ -20,8 +20,6 @@
       <b>{{t building.requirement.none}} {{local type.name}}</b> {{t building.requirement.greaterThan}} <b>{{t building.level}} {{ requirement.max_level }}</b>
     {{/if}}
     {{#if haveMinLevel}}
-      </{{unbound tagName}}>
-      <{{unbound tagName}}>
     {{/if}}
   {{/if}}
   {{#if haveMinLevel }}
@@ -206,7 +204,7 @@
           {{#if sendingConvert }}
             <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t building.upgrade.converting}}...</div>
           {{else}}
-          <a {{action "conversionClicked"}} class="upgrade" title="{{t building.tooltip.clickToConvert}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png" /> {{t building.upgrade.conversion}}</a>
+          <a {{action "conversionClicked"}} class="upgrade" title="{{t building.tooltip.clickToConvert}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png" alt="" /> {{t building.upgrade.conversion}}</a>
           {{/if}}
           <h3>{{t building.upgrade.conversionStart}}{{local building.name }} {{t building.upgrade.toIn}} {{local building.converted.name }} {{t building.level}} {{ building.convertedLevel }} {{t building.upgrade.conversionEnd}}</h3>
       
@@ -278,7 +276,7 @@
           {{#if sendingUpgrade}}
             <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t building.upgrade.updating}}...</div>
           {{else}}
-          <a {{action "upgradeClicked"}} class="upgrade" title="{{t building.tooltip.clickToUpgrade}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png" /> {{t building.upgrade.upgrade}}</a>
+          <a {{action "upgradeClicked"}} class="upgrade" title="{{t building.tooltip.clickToUpgrade}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png" alt="" /> {{t building.upgrade.upgrade}}</a>
           {{/if}}
           <h3>{{t building.upgrade.upgradeStart}} {{local building.name }} {{t building.upgrade.toAuf}} {{t building.level}} {{ building.nextLevel }} {{t building.upgrade.upgradeEnd}}</h3>
       
@@ -359,7 +357,7 @@
           {{#if sendingDestroy}}
             <div class="destroy">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t building.upgrade.demolishing}}...</div>
           {{else}}
-            <a {{action "destroyClicked"}} {{bindAttr class="destroyClasses"}} title="{{t building.tooltip.clickToDemolish}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH  }}icons/cross_red.png" /> {{t building.upgrade.demolishBuilding}}</a>
+            <a {{action "destroyClicked"}} {{bindAttr class="destroyClasses"}} title="{{t building.tooltip.clickToDemolish}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH  }}icons/cross_red.png" alt="" /> {{t building.upgrade.demolishBuilding}}</a>
           {{/if}}
           <h3>{{t building.upgrade.demolishStart}} {{local building.name }} {{t building.upgrade.demolishEnd}}</h3>
           <p>
@@ -407,7 +405,7 @@
 
       {{#if building.unlockedArtifactInitiation}}
       <hr class="clearfix" />
-        {{view AWE.UI.Ember.ArtifactInitiationView }}
+        {{view AWE.UI.Ember.ArtifactInitiationView settlementBinding="building.slot.settlement" controllerBinding="controller"}}
       {{/if}}
 
       {{#if building.trainingQueues}}
@@ -476,10 +474,17 @@
 </script>
 
 
+<script type="text/x-handlebars" data-template-name="artifact-not-enough-resources">
+  <div class="advisor chef"></div>
+  <h1>{{t settlement.artifact.notEnoughResources.header }}</h1>
+  <p>{{t settlement.artifact.notEnoughResources.content  }}</p>
+</script>
+
+
 <script type="text/x-handlebars" data-template-name="server-command-failed-info">
   <div class="advisor chef"></div>
   <h1>{{t server.error.failedAction.heading }}</h1>
-  <p >{{t server.error.failedAction.unknown  }}</p>
+  <p>{{t server.error.failedAction.unknown  }}</p>
 </script>
 
 
@@ -494,7 +499,7 @@
       <p>
         {{t alliance.memberOf}} [{{character.alliance_tag}}].
         <div class="icon-button cancel-button" {{action "leaveAlliance"}}>{{t alliance.leave}} {{character.alliance_tag}}</div>
-      </p> 
+      </p>
     {{else}}
       <p>
         {{t alliance.joinAllianceText}}<br/>

@@ -23,6 +23,9 @@ AWE.UI = (function(module) {
     var _baseImage = null;
     var _selectShape = null;
 
+    var _artifactImageView = null;
+    var _artifactImage = null;
+
     var _frameRectShape = null;
     
     that = module.createGamingPieceView(spec, my);
@@ -51,8 +54,7 @@ AWE.UI = (function(module) {
       _selectShape.setFrame(AWE.Geometry.createRect(0, 74, 72, 36));
       this.addChild(_selectShape);      
       
-      var baseImage = AWE.UI.ImageCache.getImage('map/army/base/own');
-//      var baseImage = _artifact.isOwn() ? AWE.UI.ImageCache.getImage('map/army/base/own') : AWE.UI.ImageCache.getImage('map/army/base/other')
+      var baseImage = _artifact.isOwn() ? AWE.UI.ImageCache.getImage('map/army/base/own') : AWE.UI.ImageCache.getImage('map/army/base/other')
       _baseImage = AWE.UI.createImageView();
       _baseImage.initWithControllerAndImage(controller, baseImage);
       _baseImage.setFrame(AWE.Geometry.createRect(-15, -21, 128, 128));
@@ -62,15 +64,6 @@ AWE.UI = (function(module) {
       _baseImage.onMouseOut = that.onMouseOut;
       this.addChild(_baseImage);      
 
-      var artifactImage = AWE.UI.ImageCache.getImage('map/artifact');
-      _artifactImageView = AWE.UI.createImageView();
-      _artifactImageView.initWithControllerAndImage(controller, artifactImage);
-      _artifactImageView.setFrame(AWE.Geometry.createRect(-6, -7, 96, 96));
-      _artifactImageView.onClick = that.onClick;
-      _artifactImageView.onDoubleClick = that.onDoubleClick;
-      _artifactImageView.onMouseOver = that.onMouseOver;
-      _artifactImageView.onMouseOut = that.onMouseOut;
-      this.addChild(_artifactImageView);
 
       if (!frame) {
         that.resizeToFit();        
@@ -108,6 +101,28 @@ AWE.UI = (function(module) {
       if (_selectShape) {
         _selectShape.setVisible(this.selected() || this.hovered());
         _selectShape.setAlpha(this.selected() ? 1. : 0.2);
+      }
+
+      if (!_artifactImageView) {
+        _artifactImage = 'map/artifact' + ((_artifact.get('initiated')) ? 'initiated' : '') + '/' + _artifact.get('type_id');
+        var artifactImage = AWE.UI.ImageCache.getImage(_artifactImage) ;
+        _artifactImageView = AWE.UI.createImageView();
+        _artifactImageView.initWithControllerAndImage(my.controller, artifactImage);
+        _artifactImageView.setFrame(AWE.Geometry.createRect(-6, -7, 96, 96));
+        _artifactImageView.onClick = that.onClick;
+        _artifactImageView.onDoubleClick = that.onDoubleClick;
+        _artifactImageView.onMouseOver = that.onMouseOver;
+        _artifactImageView.onMouseOut = that.onMouseOut;
+        this.addChild(_artifactImageView);
+      }
+
+      if (_artifactImageView) {
+        var image = 'map/artifact' + ((_artifact.get('initiated')) ? 'initiated' : '') + '/' + _artifact.get('type_id');
+        if (image != _artifactImage) {
+          var artifactImage = AWE.UI.ImageCache.getImage(image);
+          _artifactImageView.setImage(artifactImage);
+          _artifactImage = image;
+        }
       }
     }
     
@@ -151,6 +166,3 @@ AWE.UI = (function(module) {
   return module;
     
 }(AWE.UI || {}));
-
-
-

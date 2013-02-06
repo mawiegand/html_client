@@ -2015,8 +2015,8 @@ AWE.Controller = function (module) {
 
     var setArtifactPosition = function (view, pos) {
       view.setCenter(AWE.Geometry.createPoint(
-        pos.x - 48,
-        pos.y - 48
+        pos.x + 68,
+        pos.y - 20
       ));
     }
 
@@ -2044,7 +2044,7 @@ AWE.Controller = function (module) {
             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') >= AWE.GS.QUEST_STATUS_FINISHED));
 
       var character = AWE.GS.game && AWE.GS.game.get('currentCharacter');
-      return (character.get('login_count') < 10 || !returnedFromMap) && !shouldDisplayArmyMarker();
+      return !AWE.Config.IN_DEVELOPMENT_MODE && (character.get('login_count') < 10 || !returnedFromMap) && !shouldDisplayArmyMarker();
     }
 
     var setArmyPosition = function (view, pos, army) {

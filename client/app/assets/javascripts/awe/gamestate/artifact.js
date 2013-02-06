@@ -65,6 +65,33 @@ AWE.GS = function (module) {
         return AWE.Util.Rules.lookupTranslation(type.name);
       }
     }.property('artifactType').cacheable(),
+
+    ownerName:function() {
+      var owner = AWE.GS.CharacterManager.getCharacter(this.get('owner_id'))
+      if (owner != null) {
+        return owner.get('name');
+      }
+      else {
+        return '-';
+      }
+    }.property('owner_id').cacheable(),
+
+    initiationTime: function() {
+      var initiationTime = this.getPath('artifactType.initiation_time');
+      var level = this.getPath('settlement.artifact_initiation_level') || 0;
+      log('-----> initiationTime, duration', initiationTime, level, this.get('settlement'), this.getPath('settlement.artifact_initiation_level'));
+      return initiationTime ? AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(initiationTime), level) : null;
+    }.property('type_id', 'settlement.artifact_initiation_level').cacheable(),
+
+    initiationCosts: function() {
+      var costs = this.getPath('artifactType.initiation_costs');
+      var mrank = AWE.GS.game.getPath('currentCharacter.mundane_rank') || 1;
+      return costs ? AWE.Util.Rules.evaluateResourceCosts(costs, mrank) : null;
+    }.property('AWE.GS.game.currentCharacter.mundane_rank', 'type_id').cacheable(),
+
+    isOwn: function() {
+      return this.get('owner_id') == AWE.GS.game.getPath('currentCharacter.id');
+    },
   });
 
   module.ArtifactInitiation = module.Entity.extend({
@@ -134,6 +161,7 @@ AWE.GS = function (module) {
         updateType, // type of update (aggregate, short, full)
         module.ArtifactAccess.lastUpdateForRegion_id(regionId), // modified after
         function (result, status, xhr, timestamp) {   // wrap handler in order to set the lastUpdate timestamp
+          log('------> a in region', result);
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
             module.ArtifactAccess.accessHashForRegion_id().setLastUpdateAtForValue(regionId, timestamp.add(-1).second());
           }
@@ -165,6 +193,7 @@ AWE.GS = function (module) {
         updateType,
         module.ArtifactAccess.lastUpdateForLocation_id(locationId),
         function (result, status, xhr, timestamp) {   // wrap handler in order to set the lastUpdate timestamp
+          log('------> a in location', result);
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
             module.ArtifactAccess.accessHashForLocation_id().setLastUpdateAtForValue(locationId, timestamp.add(-1).second());
           }
@@ -197,6 +226,7 @@ AWE.GS = function (module) {
         updateType,
         module.ArtifactAccess.lastUpdateForOwner_id(characterId),
         function (result, status, xhr, timestamp) {   // wrap handler in order to set the lastUpdate timestamp
+          log('------> a in character', result);
           if (status === AWE.Net.OK) {
             var artifacts = module.ArtifactAccess.getHashableCollectionForOwner_id(characterId);
             that.fetchMissingEntities(result, artifacts.get('collection'), that.updateArtifact); // careful: this breaks "this" inside updateArmy

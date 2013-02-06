@@ -17,7 +17,7 @@
   {{#if sending}}
     <p>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}</p>
   {{else}}
-    <a href="#" {{bindAttr class=":button inactive impossible"}} {{action "sendPressed"}}>{{t settlement.trade.send}} {{numCarts}} {{t building.tradingCarts}}</a>
+    <a class="clickable" {{bindAttr class=":button inactive impossible"}} {{action "sendPressed"}}>{{t settlement.trade.send}} {{numCarts}} {{t building.tradingCarts}}</a>
   {{/if}}
   
   <hr/>
@@ -80,7 +80,7 @@
           {{#if sending}}
             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t settlement.trade.sending}}...
           {{else}}
-            <a href="#" {{action "cancelPressed"}}>{{t general.cancel}}</a>
+            <a class="clickable" {{action "cancelPressed"}}>{{t general.cancel}}</a>
           {{/if}}
         {{/if}}
       {{/if}}

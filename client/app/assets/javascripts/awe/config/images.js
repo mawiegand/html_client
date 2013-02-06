@@ -95,7 +95,21 @@ AWE.Config = (function(module) {
     "map/army/suspended":     AWE.Config.RAILS_ASSET_PATH + 'suspension.png',
     "map/army/sandglass":     AWE.Config.RAILS_ASSET_PATH + 'icons/sandglass.png',
 
-    "map/artifact":           AWE.Config.RAILS_ASSET_PATH + 'artifact.png',
+    "map/artifact/0":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact0.png',
+    "map/artifact/1":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact1.png',
+    "map/artifact/2":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact2.png',
+    "map/artifact/3":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact3.png',
+    "map/artifact/4":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact4.png',
+    "map/artifact/5":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact5.png',
+    "map/artifact/6":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact6.png',
+
+    "map/artifactinitiated/0": AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact0ini.png',
+    "map/artifactinitiated/1": AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact1ini.png',
+    "map/artifactinitiated/2": AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact2ini.png',
+    "map/artifactinitiated/3": AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact3ini.png',
+    "map/artifactinitiated/4": AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact4ini.png',
+    "map/artifactinitiated/5": AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact5ini.png',
+    "map/artifactinitiated/6": AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact6ini.png',
 
     "map/outpost":            AWE.Config.RAILS_ASSET_PATH + 'settlements/outpost.png',
     "map/emptyslot" :         AWE.Config.RAILS_ASSET_PATH + 'white_icon.png',

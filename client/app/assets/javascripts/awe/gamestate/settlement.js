@@ -44,7 +44,14 @@ AWE.GS = (function(module) {
       return AWE.Map.Manager.getLocation(this.get('location_id'));    
     }.property('location_id').cacheable(),
 
-    artifactBinding: 'AWE.GS.game.currentArtifact',
+    artifact: function() {
+      if (this.get('isBase') && AWE.GS.game.get('currentArtifact')) {
+        return AWE.GS.game.get('currentArtifact');
+      }
+      else {
+        return null;
+      }
+    }.property('type_id', 'AWE.GS.game.currentArtifact').cacheable(),
 
     armies_count: null,
     besieged: null,

@@ -500,6 +500,13 @@ AWE.I18n.en_US = function(module) {
         mailBody:"Play Wack-A-Doo now: ",
       },
 
+      abandon: {
+        header: "Lagerstätte aufgeben",
+        text: "Wenn Du knapp an Siedlungspunkten bist, kannst Du diese Lagerstätte aufgeben. Sie geht dann in den Besitz der Neandertaler über und ist anschließend für andere Spieler übernehmbar.",
+        send: "Lagerstätte aufgeben!",
+        fighting: "Die Lagerstätte kann zur Zeit nicht aufgegeben werden, da die Garnisonsarmee am Kämpfen ist.",
+      },
+
       buildings:{
 
         category:'Category',
@@ -910,11 +917,11 @@ AWE.I18n.en_US = function(module) {
         help5:".",
       },
       productionTooltip:{
-        base:"Basis",
-        science:"Forschung",
-        buildings:"Gebäude",
+        base:"Base",
+        science:"Science",
+        buildings:"Buildings",
         bonus:"Bonus",
-        tax:"Steuern",
+        tax:"Tax",
       },
     },
 
@@ -925,6 +932,33 @@ AWE.I18n.en_US = function(module) {
       alreadyLikedInfo:"You've already rated this player during the last 24 hours.",
     },
 
+    ranking: {
+      header: "Ranglisten",
+      characters: "Spieler",
+      alliances:  "Allianzen",
+      alliance:  "Allianz",
+      fortresses: "Festungen",
+      fortress: "Festung",
+      victoryProgress: "Siegfortschritt",
+      rank: 'Rang',
+      character: 'Spieler',
+      owner: 'Besitzer',
+      overallScore: 'Gesamt',
+      resourceScore: 'Ressourcen',
+      likes: 'Likes',
+      victories: 'Siege',
+      victoryRatio: 'Siegverhältnis',
+      beatenUnits: 'Bes. Einheiten',
+      experiencedArmy: 'Armee XP',
+      numFortresses: 'Festungen',
+      numMembers: 'Mitglieder',
+      regionsPerMember: 'Regionen pro Mitglied',
+      taxRate: 'Steuersatz',
+      income: 'Ressourcenrate',
+      defenseBonus: 'Verteidigungsbonus',
+      nextPage: "Nächste Seite",
+      previousPage: "Vorige Seite",
+    },
   };
   
   return module;

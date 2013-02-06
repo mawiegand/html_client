@@ -601,6 +601,19 @@ AWE.I18n.de_DE = function(module) {
         },
       },
 
+      artifact: {
+        costs: "Kosten",
+        duration: "Dauer",
+        start: "Start",
+        initiate: "Einweihen",
+        initiated: "eingeweiht",
+        notEnoughResources: {
+          header: "Halt!",
+          content: "Du hast aktuell leider nicht genügend Resourcen, um das Artefakt einzuweihen.",
+        },
+        cancelText: "Schade",
+      },
+
       info: {
         clickToExpand: "zum erweitern klicken",
         clickToMinimize: "zum minimieren klicken",
@@ -797,7 +810,14 @@ AWE.I18n.de_DE = function(module) {
         },
         error:          "Leider falsch. Probier's gleich noch mal!",
       },
-      
+
+      questStart:{
+        header:"Neue Quest",
+      },
+      questEnd:{
+        header:"Quest erledigt",
+      },
+
       end: {
         header: "Tutorial erfolgreich beendet.",
         p1: "Glückwunsch Halbgott, Du hast den ersten Schritt auf Deiner Reise getan! Du hat das Tutorial erfolgreich durchlaufen und die grundlegenden Funktionen von Wack-A-Doo kennen gelernt.",
@@ -824,6 +844,7 @@ AWE.I18n.de_DE = function(module) {
       cancel: "Verwerfen",
       newMessage: "Neue Nachricht",
       to: "An",
+      toHeader:"an",
       toAlliance: "An Alle Allianzmitglieder",
       unknown: "Unbekannt",
       allMembersOf: "Alle Mitglieder von",

@@ -14,23 +14,10 @@ AWE.UI = (function(module) {
     var _artifact = null;
     var _artifactView = null;
     
-    var _actionMode = null;
-        
-    // selected
-    var _stanceButtonView = null;    
-    var _moveButtonView = null;    
-    var _attackButtonView = null;    
-    var _retreatButtonView = null;    
-    var _battleInfoButtonView = null;    
-    var _foundButtonView = null;
-    var _cancelButtonView = null;    
-    var _rankImageView = null;   
-    
     var _backgroundShapeView = null;
     var _infoText1View = null;    
     var _infoText2View = null;    
-    var _infoText3View = null;    
-    
+
     var infoContainer = null;  
     
     my = my || {};
@@ -55,74 +42,8 @@ AWE.UI = (function(module) {
       _artifactView = view;
       _artifact = view.artifact();
       
-//      _stanceButtonView = AWE.UI.createButtonView();
-//      _stanceButtonView.initWithControllerTextAndImage(controller, AWE.I18n.lookupTranslation('map.button.stance'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-////    _stanceButtonView.setDisabledImage(AWE.UI.ImageCache.getImage("map/button1disabled"));
-//      _stanceButtonView.setFrame(AWE.Geometry.createRect(12, 6, 52, 52));
-////      this.addChild(_stanceButtonView);
-//
-//      _moveButtonView = AWE.UI.createButtonView();
-//      _moveButtonView.initWithControllerTextAndImage(controller, AWE.I18n.lookupTranslation('map.button.move'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-//      _moveButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-//      _moveButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
-//      _moveButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
-//      _moveButtonView.onClick = function() { if (_moveButtonView.enabled()) { that.onMoveButtonClick(that); } }
-//      this.addChild(_moveButtonView);
-//
-//      _foundButtonView = AWE.UI.createButtonView();
-//      _foundButtonView.initWithControllerTextAndImage(controller, AWE.I18n.lookupTranslation('map.button.settle'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-//      _foundButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-//      _foundButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
-//      _foundButtonView.setFrame(AWE.Geometry.createRect(12, 16, 52, 52));
-//      _foundButtonView.onClick = function() { if (_foundButtonView.enabled()) { that.onFoundButtonClick(that); } }
-//      this.addChild(_foundButtonView);
-//
-//      _cancelButtonView = AWE.UI.createButtonView();
-//      _cancelButtonView.initWithControllerTextAndImage(controller, AWE.I18n.lookupTranslation('map.button.cancel'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-//      _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-//      _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
-//      _cancelButtonView.setFrame(AWE.Geometry.createRect(12, 70, 52, 52));
-//      _cancelButtonView.onClick = function() { if (_cancelButtonView.enabled()) { that.onCancelMoveButtonClick(that); } }
-//      this.addChild(_cancelButtonView);
-//
-//      _attackButtonView = AWE.UI.createButtonView();
-//      _attackButtonView.initWithControllerTextAndImage(controller, AWE.I18n.lookupTranslation('map.button.attack'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-//      _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-//      _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
-//      _attackButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
-//      _attackButtonView.onClick = function() { if (_attackButtonView.enabled()) { that.onAttackButtonClick(that); } }
-//      this.addChild(_attackButtonView);
-//
-//      _retreatButtonView = AWE.UI.createButtonView();
-//      _retreatButtonView.initWithControllerTextAndImage(controller, AWE.I18n.lookupTranslation('map.button.retreat'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-//      _retreatButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-//      _retreatButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
-//      _retreatButtonView.setFrame(AWE.Geometry.createRect(128, 70, 52, 52));
-//      _retreatButtonView.onClick = function() {
-//        if (_retreatButtonView.enabled()) {
-//          that.onRetreatButtonClick(_army);
-//        }
-//      }
-//      this.addChild(_retreatButtonView);
-//
-//      _battleInfoButtonView = AWE.UI.createButtonView();
-//      _battleInfoButtonView.initWithControllerTextAndImage(controller, AWE.I18n.lookupTranslation('map.button.battleInfo'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-//      _battleInfoButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-//      _battleInfoButtonView.setFrame(AWE.Geometry.createRect(128, -70, 52, 52));
-//      _battleInfoButtonView.onClick = function() {
-//        if (_battleInfoButtonView.enabled()) {
-//          that.onBattleInfoButtonClick(_army);
-//        }
-//      }
-//      this.addChild(_battleInfoButtonView);
-//
-//      _rankImageView = AWE.UI.createImageView();
-//      _rankImageView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("map/army/rank1"));
-//      _rankImageView.setFrame(AWE.Geometry.createRect(86, -20, 20, 20));
-//      this.addChild(_rankImageView);
-//
       infoContainer = AWE.UI.createMultiLineContainer();
-      infoContainer.initWithController(controller, AWE.Geometry.createRect(145,-6,120,0));
+      infoContainer.initWithController(controller, AWE.Geometry.createRect(145,-6,130,0));
       this.addChild(infoContainer);
 
       _infoText1View = AWE.UI.createLabelView();
@@ -131,21 +52,7 @@ AWE.UI = (function(module) {
       _infoText1View.setTextAlign("left");
       //_infoText1View.setIconImage("map/icon/owner");
       infoContainer.addChild(_infoText1View);
-//
-//      _infoText2View = AWE.UI.createLabelView();
-//      _infoText2View.initWithControllerAndLabel(controller);
-//      _infoText2View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));
-//      _infoText2View.setTextAlign("left");
-//      _infoText2View.setIconImage("map/icon/fist");
-//      infoContainer.addChild(_infoText2View);
-//
-//      _infoText3View = AWE.UI.createLabelView();
-//      _infoText3View.initWithControllerAndLabel(controller);
-//      _infoText3View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));
-//      _infoText3View.setTextAlign("left");
-//      _infoText3View.setIconImage("map/icon/owner");
-//       infoContainer.addChild(_infoText3View);
-            
+
       if (!frame) {
         my.frame.size.width = 192;
         my.frame.size.height = 128;
@@ -244,9 +151,17 @@ AWE.UI = (function(module) {
       }
 //
       _infoText1View.setText(_artifact.get('name'));
-//      _infoText2View.setText(_army.get('strength'));
-//      _infoText3View.setText(_army.get('size_present'));
-//
+
+      if (!_infoText2View && _artifact.get('initiated')) {
+        _infoText2View = AWE.UI.createLabelView();
+        _infoText2View.initWithControllerAndLabel(my.controller);
+        _infoText2View.setFrame(AWE.Geometry.createRect(0, 0, 66, 24));
+        _infoText2View.setTextAlign("left");
+        _infoText2View.setIconImage("map/icon/rank");
+        _infoText2View.setText(AWE.I18n.lookupTranslation('settlement.artifact.initiated'));
+        infoContainer.addChild(_infoText2View);
+      }
+
       infoContainer.layoutSubviews(); // call this by hand, as only changed visibility
 
       var backgroundGraphics = new Graphics();
