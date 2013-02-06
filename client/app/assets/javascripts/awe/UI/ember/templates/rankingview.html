@@ -1,14 +1,13 @@
 <script type="text/x-handlebars" data-template-name="ranking-view">
   <div class="modal-dialog-background z-layer-3"></div>
-  <div class="center-helper">
+  <div class="horizontal-center-helper">
     <div class="modal-dialog-pane z-layer-4 ranking-view">
+      <a {{action "closePressed"}} class="close clickable"></a>
       <h1>{{t ranking.header }}</h1>
       <div class="advisor chef"></div>
-
+      <br />
       
       {{view AWE.UI.Ember.RankingTabView }}
-
-      <div class="icon-button ok-button" {{action "closePressed"}}>{{t general.close}}</div>
     </div>
   </div>
 </script>
@@ -17,28 +16,28 @@
 <script type="text/x-handlebars" data-template-name="character-ranking-view">
     <table class="ranking-table">
       <tr>
-        <th>{{t ranking.rank}}</th>
-        <th>{{t ranking.character}}</th>
-        <th {{bindAttr class="sortedByOverall :clickable"}} {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
-        <th {{bindAttr class="sortedByResource :clickable"}} {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
-        <th {{bindAttr class="sortedByLikes :clickable"}} {{action "sortByLikes"}}>{{t ranking.likes}}</th>
-        <th {{bindAttr class="sortedByVictories :clickable"}} {{action "sortByVictories"}}>{{t ranking.victories}}</th>
-        <th {{bindAttr class="sortedByVictoryRatio :clickable"}} {{action "sortByVictoryRatio"}}>{{t ranking.victoryRatio}}</th>
-        <th {{bindAttr class="sortedByKills :clickable"}} {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
-        <th {{bindAttr class="sortedByExperience :clickable"}} {{action "sortByExperience"}}>{{t ranking.experiencedArmy}}</th>
+        <th class="rank">{{t ranking.rank}}</th>
+        <th class="character">{{t ranking.character}}</th>
+        <th {{bindAttr class="sortedByOverall :clickable :overall"}} {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
+        <th {{bindAttr class="sortedByResource :clickable :resource"}} {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
+        <th {{bindAttr class="sortedByLikes :clickable :likes"}} {{action "sortByLikes"}}>{{t ranking.likes}}</th>
+        <th {{bindAttr class="sortedByVictories :clickable :victories"}} {{action "sortByVictories"}}>{{t ranking.victories}}</th>
+        <th {{bindAttr class="sortedByVictoryRatio :clickable :victory-ratio"}} {{action "sortByVictoryRatio"}}>{{t ranking.victoryRatio}}</th>
+        <th {{bindAttr class="sortedByKills :clickable :kills"}} {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
+        <th {{bindAttr class="sortedByExperience :clickable :experience"}} {{action "sortByExperience"}}>{{t ranking.experiencedArmy}}</th>
       </tr>
       {{#if characterRankingEntries}}
         {{#each characterRankingEntries}}
           <tr {{bindAttr class="this.ownEntry:bold"}}>
-            <td class="number">{{this.rank}}</td>
-            <td>{{view AWE.UI.Ember.RankingLinkedCharacterView characterIdBinding="character_id"}}</td>
-            <td class="number">{{this.overall_score}}</td>
-            <td class="number">{{this.resource_score}}</td>
-            <td class="number">{{this.likes}} ({{formatAsPercent this.like_ratio}})</td>
-            <td class="number">{{this.victories}}</td>
-            <td class="number">{{formatNumber this.victory_ratio maxPlaces="1"}}</td>
-            <td class="number">{{this.kills}}</td>
-            <td class="number">{{this.max_experience}}</td>
+            <td class="number rank">{{this.rank}}</td>
+            <td><a class="clickable character" {{action "characterPressed"}}>{{this.character_name}}</a>{{#if this.alliance_tag}} | <a class="clickable" {{action "alliancePressed" target="parentView"}}>{{this.alliance_tag}}{{/if}}</a></td>
+            <td class="number overall">{{this.overall_score}}</td>
+            <td class="number resource">{{this.resource_score}}</td>
+            <td class="number likes">{{this.likes}} ({{formatAsPercent this.like_ratio}})</td>
+            <td class="number victories">{{this.victories}}</td>
+            <td class="number victory-ratio">{{formatNumber this.victory_ratio maxPlaces="1"}}</td>
+            <td class="number kills">{{this.kills}}</td>
+            <td class="number experience">{{this.max_experience}}</td>
           </tr>
         {{/each}}
         {{#each emptyCharacterRankingEntries}}
@@ -46,7 +45,7 @@
         {{/each}}
         <tr>
           <td colspan="9" style="text-align:center;">
-            <a class="clickable" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a class="clickable" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
+            {{view AWE.UI.Ember.RankingNavigationView currentPageBinding="currentPage" maxPageBinding="maxPage"}}
           </td>
         </tr>
       {{else}}
@@ -68,14 +67,14 @@
 <script type="text/x-handlebars" data-template-name="alliance-ranking-view">
     <table class="ranking-table">
       <tr>
-        <th>{{t ranking.rank}}</th>
-        <th>{{t ranking.alliance}}</th>
-        <th {{bindAttr class="sortedByFortress :clickable"}} {{action "sortByFortress"}}>{{t ranking.numFortresses}}</th>
-        <th {{bindAttr class="sortedByOverall :clickable"}} {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
-        <th {{bindAttr class="sortedByResource :clickable"}} {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
-        <th {{bindAttr class="sortedByKills :clickable"}} {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
-        <th {{bindAttr class="sortedByMembers :clickable"}} {{action "sortByMembers"}}>{{t ranking.numMembers}}</th>
-        <th {{bindAttr class="sortedByFortressMembers :clickable"}} {{action "sortByFortressMembers"}}>{{t ranking.regionsPerMember}}</th>
+        <th class="rank2">{{t ranking.rank}}</th>
+        <th class="alliance">{{t ranking.alliance}}</th>
+        <th {{bindAttr class="sortedByFortress :clickable :fortress"}} {{action "sortByFortress"}}>{{t ranking.numFortresses}}</th>
+        <th {{bindAttr class="sortedByOverall :clickable :overall2"}} {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
+        <th {{bindAttr class="sortedByResource :clickable :resource2"}} {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
+        <th {{bindAttr class="sortedByKills :clickable :kills2"}} {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
+        <th {{bindAttr class="sortedByMembers :clickable :members"}} {{action "sortByMembers"}}>{{t ranking.numMembers}}</th>
+        <th {{bindAttr class="sortedByFortressMembers :clickable :region-members"}} {{action "sortByFortressMembers"}}>{{t ranking.regionsPerMember}}</th>
       </tr>
       {{#if allianceRankingEntries}}
         {{#each allianceRankingEntries}}
@@ -95,7 +94,7 @@
         {{/each}}
         <tr>
           <td colspan="8" style="text-align:center;">
-            <a class="clickable" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a class="clickable" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
+            {{view AWE.UI.Ember.RankingNavigationView currentPageBinding="currentPage" maxPageBinding="maxPage"}}
           </td>
         </tr>
       {{else}}
@@ -117,19 +116,19 @@
 <script type="text/x-handlebars" data-template-name="fortress-ranking-view">
     <table class="ranking-table">
       <tr>
-        <th>{{t ranking.rank}}</th>
-        <th>{{t ranking.fortress}}</th>
-        <th>{{t ranking.owner}}</th>
-        <th {{bindAttr class="sortedByTaxRate :clickable"}} {{action "sortByTaxRate"}}>{{t ranking.taxRate}}</th>
-        <th {{bindAttr class="sortedByIncome :clickable"}} {{action "sortByIncome"}}>{{t ranking.income}}</th>
-        <th {{bindAttr class="sortedByDefense :clickable"}} {{action "sortByDefense"}}>{{t ranking.defenseBonus}}</th>
+        <th class="rank2">{{t ranking.rank}}</th>
+        <th {{bindAttr class="sortedByName :clickable :fortress2"}} {{action "sortByName"}}>{{t ranking.fortress}}</th>
+        <th class="character">{{t ranking.owner}}</th>
+        <th {{bindAttr class="sortedByTaxRate :clickable :tax"}} {{action "sortByTaxRate"}}>{{t ranking.taxRate}}</th>
+        <th {{bindAttr class="sortedByIncome :clickable :income"}} {{action "sortByIncome"}}>{{t ranking.income}}</th>
+        <th {{bindAttr class="sortedByDefense :clickable :defense"}} {{action "sortByDefense"}}>{{t ranking.defenseBonus}}</th>
       </tr>
       {{#if fortressRankingEntries}}
         {{#each fortressRankingEntries}}
           <tr {{bindAttr class="this.ownEntry:bold"}}>
             <td class="number">{{this.rank}}</td>
-            <td>{{this.region_name}}</td>
-            <td>{{view AWE.UI.Ember.RankingLinkedCharacterView characterIdBinding="owner_id"}}</td>
+            <td><a class="clickable" {{action "regionPressed"}}>{{this.region_name}}</a></td>
+            <td><a class="clickable" {{action "characterPressed"}}>{{this.character_name}}</a>{{#if this.alliance_tag}} | <a class="clickable" {{action "alliancePressed"}}>{{this.alliance_tag}}{{/if}}</a></td>
             <td class="number">{{formatAsPercent this.tax_rate}}</td>
             <td class="number">{{formatNumber this.resource_production_score maxPlaces="0"}}</td>
             <td class="number">{{formatAsPercent this.defense_bonus}}</td>
@@ -140,7 +139,7 @@
         {{/each}}
         <tr>
           <td colspan="6" style="text-align:center;">
-            <a class="clickable" {{action "previousPage"}}>&lt;&lt; {{t ranking.previousPage}}</a> | {{currentPage}} | <a class="clickable" {{action "nextPage"}}>{{t ranking.nextPage}}>></a>
+            {{view AWE.UI.Ember.RankingNavigationView currentPageBinding="currentPage" maxPageBinding="maxPage"}}
           </td>
         </tr>
       {{else}}
@@ -159,6 +158,20 @@
     </table>
 </script>
 
+<script type="text/x-handlebars" data-template-name="ranking-navigation-view">
+  {{#if pageGreater1}}<a class="clickable" {{action "gotoPreviousPage" target="parentView"}}>&lt;&lt;</a> | <a class="clickable" {{action "gotoFirstPage" target="parentView"}}>1</a> |{{/if}}
+  {{#if pageGreater3}}<a class="clickable" {{action "gotoSecondPage" target="parentView"}}>2</a> |{{/if}}
+  {{#if pageGreater5}} ... |{{/if}}
+  {{#if pageGreater4}}<a class="clickable" {{action "gotoPreviousPreviousPage" target="parentView"}}>{{previousPreviousPage}}</a> |{{/if}}
+  {{#if pageGreater2}}<a class="clickable" {{action "gotoPreviousPage" target="parentView"}}>{{previousPage}}</a> |{{/if}} 
+  <b>{{currentPage}}</b>
+  {{#if pageLessMax2}}| <a class="clickable" {{action "gotoNextPage" target="parentView"}}>{{nextPage}}</a>{{/if}} 
+  {{#if pageLessMax4}}| <a class="clickable" {{action "gotoNextNextPage" target="parentView"}}>{{nextNextPage}}</a>{{/if}} 
+  {{#if pageLessMax5}}| ... {{/if}} 
+  {{#if pageLessMax3}}| <a class="clickable" {{action "gotoMaxPreviousPage" target="parentView"}}>{{maxPreviousPage}}</a>{{/if}} 
+  {{#if pageLessMax1}}| <a class="clickable" {{action "gotoMaxPage" target="parentView"}}>{{maxPage}}</a> | <a class="clickable" {{action "gotoNextPage" target="parentView"}}>>></a>{{/if}} 
+</script>
+
 <script type="text/x-handlebars" data-template-name="victory-progress-ranking-view">
-  {{view AWE.UI.Ember.AllianceVictoryView controllerBinding="controller" allianceBinding="AWE.GS.player.currentCharacter.alliance"}}
+  {{view AWE.UI.Ember.AllianceVictoryView controllerBinding="controller" allianceBinding="AWE.GS.game.currentCharacter.alliance"}}
 </script>

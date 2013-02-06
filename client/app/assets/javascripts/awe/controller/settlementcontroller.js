@@ -89,7 +89,8 @@ AWE.Controller = (function(module) {
         if (AWE.GS.SettlementManager.lastUpdateForLocation(locationId).getTime() + 1000 < new Date().getTime()) { // information to old
           AWE.GS.SettlementManager.updateSettlementsAtLocation(locationId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result, status) {
             that.setLocationId(locationId); // try again to set it
-          });         
+          });
+          AWE.GS.ArtifactManager.updateArtifactOfCharacter(AWE.GS.game.getPath('currentCharacter.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
         }
         else {  // seems as there's no settlement at this location!
           log('ERROR: could not obtain settlement at present location from server.')
@@ -599,7 +600,34 @@ AWE.Controller = (function(module) {
       });
     }
     
-    
+    that.startArtifactInitiation = function(artifact, callback) {
+      var action = AWE.Action.Fundamental.createStartArtifactInitiationAction(artifact);
+      action.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+          AWE.GS.ArtifactManager.updateArtifact(artifact.getId());
+          AWE.GS.SettlementManager.updateSettlement(that.settlementId);
+          // TODO anything else to update?
+          that.updateResourcePool();
+          if (callback) {
+            callback();
+          }
+        }
+        else {  // show error dialog
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'artifact-not-enough-resources',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.artifact.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the artifact initiation command.");
+          if (callback) {
+            callback();
+          }
+        }
+      });
+    }
+
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Model
@@ -815,9 +843,9 @@ AWE.Controller = (function(module) {
       }
     }
 
- 
+
     var pendingTrainingJobUpdates = {};
-    
+
     that.updateOldJobsInTrainingQueues = function(queues) {
       if (queues) {
         queues.forEach(function(queue) {
@@ -833,10 +861,23 @@ AWE.Controller = (function(module) {
                   pendingTrainingJobUpdates[jobId] *= 2;
                   that.updateTrainingQueueAndJobs(queue.getId());
                 }
-              }      
+              }
             });
           }
         });
+      }
+    }
+
+    var pendingInitiationUpdate = 0;
+
+    that.updateArtifactInitiation = function(artifact) {
+      if (artifact && !artifact.get('initiated') && artifact.get('initiation')) {
+        var initiation = artifact.get('initiation');
+        pendingInitiationUpdate = pendingInitiationUpdate > 0 ? pendingInitiationUpdate : AWE.Config.TIME_DIFF_RANGE;
+        if (Date.parseISODate(initiation.finished_at).add({seconds: pendingInitiationUpdate}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
+          pendingInitiationUpdate *= 2;
+          AWE.GS.ArtifactManager.updateArtifact(artifact.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+        }
       }
     }
 
@@ -886,6 +927,10 @@ AWE.Controller = (function(module) {
 
         if (settlement && this.view.getPath('selectedSlot.building.unlockedPlayerToPlayerTrade')) {
           that.updateTradingCartActions();
+        }
+
+        if (settlement && settlement.get('artifact')) {
+          that.updateArtifactInitiation(settlement.get('artifact'));
         }
 
       }

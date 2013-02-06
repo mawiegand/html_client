@@ -10,7 +10,7 @@
        <span title="{{t settlement.info.meleeTrainingSpeed}}"     >{{t settlement.info.meleeTrainingSpeedAbbreviation}} {{formatNumber infantryTrainingSpeed maxPlaces="0"}}%</span> |
        <span title="{{t settlement.info.ridersTrainingSpeed}}"    >{{t settlement.info.ridersTrainingSpeedAbbreviation}} {{formatNumber cavalryTrainingSpeed maxPlaces="0"}}%</span> | 
        <span title="{{t settlement.info.rangedTrainingSpeed}}"     >{{t settlement.info.rangedTrainingSpeedAbbreviation}} {{formatNumber artilleryTrainingSpeed maxPlaces="0"}}%</span> | 
-       <span title="{{t settlement.info.commandPoints}}">{{t building.commandPoints}}: {{formatNumber settlement.commandPointsUsed maxPlaces="0"}} / {{formatNumber settlement.command_points places="0"}}</span><br/> 
+       <span title="{{t settlement.info.commandPoints}}">{{t building.commandPoints}}: {{settlement.commandPointsUsed}} / {{settlement.command_points}}</span><br/> 
 
       &nbsp;&nbsp;&nbsp;{{t settlement.info.buildings}}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="settlement.usedBuildingSlots"}} / {{settlement.building_slots_total}}
       {{t settlement.population}} {{settlement.score}}
@@ -26,7 +26,6 @@
 
     <p><b>{{t settlement.info.availableBuildingSlots}}:</b> {{settlement.availableBuildingSlots}} &nbsp;<b>{{t settlement.population}}:</b> {{settlement.score}}</p>
     <p><b>{{t settlement.defenseBonus}}:</b> {{formatNumber defenseBonus places="0"}}<span class="help-icon" title="{{t settlement.info.combatBonusInfo}}.">&nbsp;</span></p>
-    </p>
 
     <table>
       <tr>
@@ -45,11 +44,10 @@
     <p>{{t settlement.info.speedUpInfo}}</p>
     
     <p>
-      <span title="{{t settlement.info.commandPoints}}"><b>{{t building.commandPoints}}:</b> {{formatNumber settlement.commandPointsUsed places="0"}} / {{formatNumber settlement.command_points places="0"}}</span> 
+      <span title="{{t settlement.info.commandPoints}}"><b>{{t building.commandPoints}}:</b> {{settlement.commandPointsUsed}} / {{settlement.command_points}}</span> 
     
     <span class="help-icon" title="{{t settlement.info.commandPointsHelp}}">&nbsp;</span></p>
-    
-    {{#if lastError}} <p class="red-color"><b>{{lastError}}</b></p>{{/if}}
+
     <p><b>{{t settlement.info.taxRate}}:</b> {{formatNumber settlement.taxPercentage}}%
       {{#if settlement.owns_region }}
         {{#if changeTaxPossible }}
@@ -61,6 +59,12 @@
         <span class="help-icon" title="{{t settlement.info.taxRateHelp}}">&nbsp;</span>
       {{/if}}
     </p>
+
+    {{#if settlement.artifact }}
+      <p><b>{{t settlement.info.artifact}}:</b> {{settlement.artifact.name}}</p>
+    {{/if}}
+
+    {{#if lastError}} <p class="red-color"><b>{{lastError}}</b></p>{{/if}}
 
     <h2>{{t settlement.info.resourceProduction}}</h2>
     <table>
@@ -118,5 +122,26 @@
     <div class="float-right up-icon" title="{{t settlement.info.clickToMinimize}}">&nbsp;</div>
 
   {{/unless}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="settlement-abandon-dialog">
+  <div class="modal-dialog-background z-layer-3"></div>
+  <div class="center-helper">
+    <div class="modal-dialog-pane z-layer-4 abandon-dialog">
+      <h1>Aufgabe der Lagerstätte</h1>
+      {{#if error}}
+        <p>Fehler: Lagerstätte konnte nicht aufgegeben werden.</p>
+        <div class="icon-button close-button" {{action "cancelPressed"}}>{{t general.close}}</div>
+      {{else}}
+        {{#if loading}}
+          <p>Lagerstätte wird aufgegeben... {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}</p>
+        {{else}}
+          <p>Willst du diese Lagerstätte wirklich aufgeben?</p>
+          <div class="icon-button ok-button" {{action "okPressed"}}>{{t general.ok}}</div>
+          <div class="icon-button cancel-button" {{action "cancelPressed"}}>{{t general.cancel}}</div>
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
 </script>
 

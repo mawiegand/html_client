@@ -255,7 +255,7 @@ AWE.UI.Ember = (function(module) {
       AWE.Action.Messaging.createMarkMessageReadAction(inboxEntry).send();
 
       // Tutorial Hook
-      AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_message');
+      AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_message');
     },
     
     messageReadMarker: function() {

@@ -22,15 +22,15 @@ AWE.UI.Ember = (function(module) {
     
     isAllianceLeader: function() {
       var leaderId = this.getPath('alliance.leader_id');
-      var characterId = AWE.GS.player.getPath('currentCharacter.id');
+      var characterId = AWE.GS.game.getPath('currentCharacter.id');
       return leaderId && leaderId === characterId;
-    }.property('alliance.leader_id', 'AWE.GS.player.currentCharacter.id').cacheable(),
+    }.property('alliance.leader_id', 'AWE.GS.game.currentCharacter.id').cacheable(),
 
     ownAlliance: function() {
       var allianceId = this.getPath('alliance.id');
-      var ownAllyId = AWE.GS.player.getPath('currentCharacter.alliance_id');
+      var ownAllyId = AWE.GS.game.getPath('currentCharacter.alliance_id');
       return allianceId && allianceId === ownAllyId;
-    }.property('alliance.id', 'AWE.GS.player.currentCharacter.alliance_id').cacheable(),
+    }.property('alliance.id', 'AWE.GS.game.currentCharacter.alliance_id').cacheable(),
     
   });
   
@@ -92,7 +92,7 @@ AWE.UI.Ember = (function(module) {
     }.property('controller').cacheable(),
     
     kickMember: function(character) {
-      var currentCharacter = AWE.GS.player.get('currentCharacter');
+      var currentCharacter = AWE.GS.game.get('currentCharacter');
       var alliance         = this.get('alliance');
       var allianceId       = this.getPath('alliance.id');
 

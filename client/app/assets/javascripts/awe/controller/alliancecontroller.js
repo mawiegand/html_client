@@ -8,9 +8,7 @@ var AWE = AWE || {};
 AWE.Controller = (function(module) {
           
   module.createAllianceController = function(anchor) {
-      
-    var _viewNeedsUpdate = false;  
-          
+
     var that = module.createScreenController(anchor); ///< create base object
     
     that.view = null;
@@ -70,7 +68,7 @@ AWE.Controller = (function(module) {
       if ((!messages) || forceUpdate ||
           (messages && AWE.GS.AllianceShoutManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 10000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
         AWE.GS.AllianceShoutManager.updateMessagesOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-          var characterId = AWE.GS.player.getPath('currentCharacter.id');
+          var characterId = AWE.GS.game.getPath('currentCharacter.id');
           var leaderId = AWE.GS.AllianceManager.getAlliance(self.allianceId).get('leader_id');
           var messages = AWE.GS.AllianceShoutAccess.getEnumerableForAlliance_id(allianceId);
           var messageArray =  messages.sort(function(a,b) {
@@ -98,7 +96,9 @@ AWE.Controller = (function(module) {
     that.updateModel = function() {
       that.updateAlliance(this.allianceId);
       that.updateMembers(this.allianceId);
-      that.updateShouts(this.allianceId);     // side-effect: starts another update, if older than 60s 
+      if (this.allianceId == AWE.GS.game.currentCharacter.alliance_id) {
+        that.updateShouts(this.allianceId);     // side-effect: starts another update, if older than 60s
+      }
     }
     
     that.shout = function(message) {

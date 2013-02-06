@@ -265,21 +265,7 @@ AWE.Controller = (function(module) {
     };
     
     that.rankingButtonClicked = function() {
-      
-      // var characterId = AWE.GS.player.getPath('currentCharacter.id') || 0;
-//       
-      // log('Ranking button clicked.');
-//       
-      // $('<form style="display:none;" action="' + AWE.Config.CHARACTER_RANKING_SERVER_BASE + 
-        // (characterId ? '#char'+ characterId : '') + '" method="GET" target="_blank">' +
-        // '  <input type="hidden" name="sort"   value="overall" />' +
-        // (characterId ? '  <input type="hidden" name="mark" value="' + characterId + '" />' : '') +
-        // '</form>').appendTo('body').submit().remove();      
-// 
-
-      var dialog = AWE.UI.Ember.RankingView.create({
-        // characterBinding: 'AWE.GS.player.currentCharacter',
-      });
+      var dialog = AWE.UI.Ember.RankingDialog.create();
       this.applicationController.presentModalDialog(dialog);      
     };
         
@@ -305,6 +291,7 @@ AWE.Controller = (function(module) {
     that.updateModel = (function() {
             
       var lastResourcesUpdate = new Date(1970);
+      var lastCharacterUpdate = new Date(1970);
       var lastCreditAmountUpdate = new Date(1970);
       var amounts = [100];
       
@@ -335,6 +322,14 @@ AWE.Controller = (function(module) {
             amounts[2] = pool.presentAmount('resource_fur')  ;
             amounts[3] = pool.presentAmount('resource_cash') ;
           }
+        }
+        
+        if (lastCharacterUpdate.getTime() + AWE.Config.CHARACTER_REFRESH_INTERVAL < new Date().getTime()) {
+          lastCharacterUpdate = new Date();
+          AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+            that.setModelChanged();
+            log('U: updated current character');
+          });
         }
         
         if (lastCreditAmountUpdate.getTime() + AWE.Config.CREDIT_AMOUNT_REFRESH_INTERVAL < new Date().getTime()) {

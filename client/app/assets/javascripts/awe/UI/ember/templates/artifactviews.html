@@ -1,0 +1,38 @@
+<script type="text/x-handlebars" data-template-name="artifact-initiation-view">
+
+  <h3>Artefakt einweihen</h3>
+
+  {{#if artifact}}
+    <p>Du bist im Besitzt des Artefakts <b>{{artifact.name}}</b></p>
+
+    {{#if artifact.initiated}}
+      <p>Das Artefakt ist eingeweiht.</p>
+    {{else}}
+      {{#if artifact.initiating}}
+        <p>Das Artefakt wird eingeweiht.</p>
+        <p><b>Restdauer:</b> {{formatDuration timeRemaining}}</p>
+      {{else}}
+        {{#if sending }}
+          <div class="initiate">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t settlement.artifact.start}}...</div>
+        {{else}}
+          <a {{action "startInitiationPressed"}} class="initiate" title="{{t settlement.artifact.initiate}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png" alt="" /> {{t settlement.artifact.initiate}}</a>
+        {{/if}}
+        <p>Das Artefakt ist noch nicht eingeweiht.</p>
+        <p>
+        {{#if artifact.artifactType.initiation_costs}}
+          <b>{{t settlement.artifact.costs }}:</b>
+          {{#each artifact.initiationCosts}}
+            <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>{{amount}} &nbsp;
+          {{/each}}<br/>
+        {{/if}}
+        <b>{{t settlement.artifact.duration}}:</b> {{formatDuration artifact.initiationTime}}</p>
+
+      {{/if}}
+    {{/if}}
+  {{else}}
+    <p>Kein Artefakt vorhanden</p>
+  {{/if}}
+
+  {{#if errorMessage}}<p class="red-color"><b>{{errorMessage}}</b></p>{{/if}}
+
+</script>

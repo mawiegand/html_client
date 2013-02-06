@@ -96,13 +96,13 @@ AWE.I18n.de_DE = function(module) {
       messages: {
         own: {
           winning: [
-            "Yeah, platt machen wir sie!",
+            "Yeah, platt machen wir sie!"
           ],
           losing: [
-            "Tu was, unsere Armee geht grad den Bach runter!",
+            "Tu was, unsere Armee geht grad den Bach runter!"
           ],
           neutral: [
-            "Hau mal auf den Putz, da passiert ja gar nix!",
+            "Hau mal auf den Putz, da passiert ja gar nix!"
           ]
         },
         other: "Du willst da doch nicht etwa mitmischen, oder?",
@@ -143,6 +143,7 @@ AWE.I18n.de_DE = function(module) {
         ownerLabel: "Gehört",
         actionPoints: "Aktionspunkte",
         nextActionPointAt: "Nächster Aktionspunkt um",
+        homeSettlement: "Heimatsiedlung",
       },
       messages: {
         own: {
@@ -174,13 +175,13 @@ AWE.I18n.de_DE = function(module) {
             "Die Leute haben sich übrigens über's Essen beschwert. Kannst Du uns nicht was veganes schicken?",
             "Pass auf, einen haue ich noch für Dich um, aber dann ist's wirklich gut für heute, ja?!",
             "Leise! Ich versuche hier zu schlafen.",
-            "Hart wie Federkissen.",
+            "Hart wie Federkissen."
           ],
 
           girl: [
             "Wir sollten immer auf der Hut sein.",
             "Ich liebe es, hier draußen rumzustreifen.",
-            "Ist das nicht ein wundervoller Tag?",
+            "Ist das nicht ein wundervoller Tag?"
           ],
 
           chef: [
@@ -190,7 +191,7 @@ AWE.I18n.de_DE = function(module) {
             "Besorg mir mal was zu essen. Aber was leckeres!",
             "Heute unseren Nachbarn, morgen die ganze Welt!",
             "Unter meiner Führung werden wir keinen einzigen Kampf verlieren. Du wirst schon sehen!",
-            "Angriff ist die beste Verteidigung.",
+            "Angriff ist die beste Verteidigung."
           ]
         },
 
@@ -212,16 +213,16 @@ AWE.I18n.de_DE = function(module) {
             "Geh weg!",
             "Was denn?",
             "Reg mich bloß nicht auf!",
-            "Nein, hier gibt's keine Gänseblümchen!",
+            "Nein, hier gibt's keine Gänseblümchen!"
           ],
           girl: [
             "Freund oder Feind?",
             "Hui, wer bist Du denn?",
-            "Pass auf was Du tust, ich verstehe heute gar keinen Spaß.",
+            "Pass auf was Du tust, ich verstehe heute gar keinen Spaß."
           ],
           chef: [
             "Muhahaha!",
-            "Pass auf, in Kürze gehört Dein Land uns!",
+            "Pass auf, in Kürze gehört Dein Land uns!"
           ]
         },
       },
@@ -229,6 +230,7 @@ AWE.I18n.de_DE = function(module) {
         available: "Verfügbare Einheiten",
         new: "Neue Armee",
         name: "Name der Armee",
+        advisorHint: 'Wie viele Einheiten sollen denn in die Armee? Schreibe zum Beispiel "25" unter "neue Armee" und drücke anschließend auf "erzeugen".',
         all: "Alle",
         reset: "Zurücksetzen",
         change: "Ändern",
@@ -245,7 +247,7 @@ AWE.I18n.de_DE = function(module) {
       create: {
         header: "Neue Armee erzeugen",
         remainingArmies: "Anzahl der verbleibenden Kommandopunkte für diese Siedlung",
-        error: "Keine Kommandopunkte mehr verfügbar in dieser Siedlung",
+        error: "Keine Kommandopunkte verfügbar in dieser Siedlung",
         loadingMessage: "Erzeuge Armee...",
       },
       change: {
@@ -306,6 +308,7 @@ AWE.I18n.de_DE = function(module) {
         unlockJoinAlliance: "Ermöglicht Diplomatie und Allianzbeitritt.",
         unlockCreateAlliance: "Ermöglicht die Gründung einer Allianz.",
         unlockTrade: "Ermöglicht den Handel mit anderen Spielern.",
+        unlockedArtifactInitiation: "Ermöglicht das Einweihen von Artefakten."
       },
 
       requirement: {
@@ -329,9 +332,9 @@ AWE.I18n.de_DE = function(module) {
     },
     
     map: {
-      
+
     },
-    
+
     alliance: {
       memberOf: "Du bist derzeit ein Mitglied der Allianz ",
       joinAlliance: "Allianz beitreten",
@@ -400,7 +403,7 @@ AWE.I18n.de_DE = function(module) {
     welcome: {
       heading: 'Willkomen bei Wack-a-Doo!',
       headingPlan: 'Der Plan',
-      image: '<%= asset_path("whatdoido_de_DE.jpeg") %>',
+      image: AWE.Config.RAILS_ASSET_PATH + 'whatdoido_de_DE.jpeg',
       headingSituation: 'Die Situation',
       formattedText: '<p>Du bist ein <b>Halbgott</b> und hast gerade einen kleinen, Dir folgenden Stamm von Steinzeithöhlenmenschen davon überzeugt, ihre Höhle zu verlassen und ab jetzt in einer hochmodernen Siedlung zu leben. Leider hat der glorreiche Stammesführer aber bisher nur eine pompöse Hütte für sich selbst bauen lassen.</p><p>Ein kleines Tutorial wird Dich als Halbgott durch die ersten Schwierigkeiten Deiner neuen Herrschaft führen. Tatsächlich bedeutet die Führung eines Stammes mehr als nur die eigene Häuptlingshütte auszubauen, aber das wirst Du schon herausfinden...</p> <p><b>Viel Spaß!</p>',
     },
@@ -439,7 +442,7 @@ AWE.I18n.de_DE = function(module) {
       platinumDescription:
         "Der Platinum Account bietet Dir " +
         "stressfreies Bauen mit zusätzlichen Plätzen in Bauschleife (+3) und " +
-        "Ausbildungsschleife (+1) sowie " +
+        "Ausbildungsschleife (+3) sowie " +
         "E-Mailbenachrichtigungen bei Angriffen. " +
         "Weitere Komfortfunktionen folgen in Kürze.",
 
@@ -533,7 +536,7 @@ AWE.I18n.de_DE = function(module) {
         insufficentResources: "Mangel",
         finishing: "gleich fertig",
         beingBuilt: "Wird gerade gebaut.",
-        waitingToBuild: "Wartet darauf, bis es an der Reihe ist.",
+        waitingToBeBuilt: "Wartet darauf, bis es an der Reihe ist.",
         cannotBeBuilt: "Kann derzeit nicht gebaut werden. Wird automatisch begonnen, sobald die nötigen Rohstoffe und Bauslots vorhanden sind.",
       },
       training: {
@@ -598,6 +601,19 @@ AWE.I18n.de_DE = function(module) {
         },
       },
 
+      artifact: {
+        costs: "Kosten",
+        duration: "Dauer",
+        start: "Start",
+        initiate: "Einweihen",
+        initiated: "eingeweiht",
+        notEnoughResources: {
+          header: "Halt!",
+          content: "Du hast aktuell leider nicht genügend Resourcen, um das Artefakt einzuweihen.",
+        },
+        cancelText: "Schade",
+      },
+
       info: {
         clickToExpand: "zum erweitern klicken",
         clickToMinimize: "zum minimieren klicken",
@@ -631,6 +647,7 @@ AWE.I18n.de_DE = function(module) {
         resourceProductionInfo2: "nicht",
         resourceProductionInfo3: "besteuert.",
         setTaxRate: "Gib den neuen Steuersatz ein (5-15%).",
+        artifact: "Artefakt"
       },
       error: {
         serverDidNotAcceptTaxRate: "The server did not accept the tax rate change.",
@@ -720,6 +737,11 @@ AWE.I18n.de_DE = function(module) {
 
         changeNameDialogCaption: "Gib den neuen Namen für deinen Charakter ein.",
 
+        changeSameIPCaption: "Mehrere Spieler unter derselben IP-Adresse",
+        changeSameIPAdvice: 'Wenn Du mit mehreren Spielern über die gleiche IP-Adresse Wack-A-Doo spielst, gib hier die Spielernamen Komma getrennt ein. Nähere Infos findest Du hier: <a href="http://wiki.wack-a-doo.de/x/index.php?title=Mehrere_Spieler_unter_derselben_IP-Adresse&action=edit&redlink=1" target="_blank">Wiki</a>',
+        changeSameIPButton: "Liste ändern",
+        changeSameIIPChanged: "Die Liste wurde gespeichert.",
+        
         errors: {
           nameTooShort: "Viel zu kurz. Der Name muss mindestens 3 Zeichen enthalten.",
           nameTooLong: "Viel zu lang. Der Name darf höchstens 12 Zeichen enthalten.",
@@ -734,6 +756,8 @@ AWE.I18n.de_DE = function(module) {
           changePasswordInvalid: "Das Passwort entspricht nicht den Vorraussetzungen. Bitte wähle ein passendes Passwort.",
           changePasswordUnknown: "Dein Passwort konnte aus unbekannten Gründen nicht geändert werden. Bitte versuche es später noch einmal.",
           changePasswordNoMatch: "Die Passwörter stimmen nicht überein. Bitte versuche es noch einmal.",
+          
+          changeSameIIUnknown: "Die Liste konnte aus unbekannten Gründen nicht geändert werden. Bitte versuche es später noch einmal.",
         },
       },
     },
@@ -786,6 +810,27 @@ AWE.I18n.de_DE = function(module) {
         },
         error:          "Leider falsch. Probier's gleich noch mal!",
       },
+
+      questStart:{
+        header:"Neue Quest",
+      },
+      questEnd:{
+        header:"Quest erledigt",
+      },
+
+      end: {
+        header: "Tutorial erfolgreich beendet.",
+        p1: "Glückwunsch Halbgott, Du hast den ersten Schritt auf Deiner Reise getan! Du hat das Tutorial erfolgreich durchlaufen und die grundlegenden Funktionen von Wack-A-Doo kennen gelernt.",
+        p2: "Zu diesem Erfolg schenken wir Dir für einige Tage den optionalen Platinum-Account sowie Boni auf die Rohstoffproduktion. Sichtbar sind diese Boni in der Fundgrube.",
+        p3: "Deine weitere Entwicklung werden wir beobachten und Dich mit einer Reihe von fortlaufenen Aufgaben begleiten. Diese Aufgaben kannst Du erfüllen, wann immer es Dir gefällt.",
+        p4: "Lass Dich von unseren Aufgaben nicht ablenken. Baue die Siedlungen aus, stelle Armeen auf und mehre Deine Macht und deinen Einfluss, wie es Dir gefällt, solange Du am Ende nur die Weltherrschaft erlangst!",
+        p5: "Viele Wege führen in Wack-A-Doo zum Erfolg, aber wenn es eine Aussage mit Allgemeingültigkeit gibt, ist es folgende: Rohstoffe, Rohstoffe und noch mehr Rohstoffe. Eine schlagkräftige Armee gewinnt einen Kampf, eine hohe Rohstoffproduktion einen Krieg.",
+      	p6: "Viel Spass in Wack-A-Doo und whack on!",
+        redeemError: {
+          header:       "Achtung",
+          message:      "Die Belohnungen konnte nicht freigeschaltet werden, da sie bereits einmal freigeschaltet wurden.",
+        },
+      }
     },
     
     messaging: {
@@ -799,6 +844,7 @@ AWE.I18n.de_DE = function(module) {
       cancel: "Verwerfen",
       newMessage: "Neue Nachricht",
       to: "An",
+      toHeader:"an",
       toAlliance: "An Alle Allianzmitglieder",
       unknown: "Unbekannt",
       allMembersOf: "Alle Mitglieder von",
@@ -874,7 +920,7 @@ AWE.I18n.de_DE = function(module) {
         header: "Rohstoffproduktion im Herrschaftsgebiet",
         amount: "Menge",
         productionRate: "Produktionsrate",
-        dailyProduction: "Tagesproduction",
+        dailyProduction: "Tagesproduktion",
         capacity: "Lagerkapazität",
         capacityReachedIn: "Lager voll in",
         effects: "Effekte",
@@ -899,7 +945,7 @@ AWE.I18n.de_DE = function(module) {
     likesystem: {
       notEnoughLikeAmount: "Du hast zu wenig Likes um einen Like zu senden.",
       notEnoughDislikeAmount: "Du hast zu wenig Dislikes um einen Dislike zu senden.",
-      cancelText: ['Argh!', 'Grmpf!', 'Hmpf', 'Na gut.'],
+      cancelText: ['Argh!', 'Grmpf!', 'Hmpf', 'Na gut.', 'Narf'],
       alreadyLikedInfo: "Du hast diesen Spieler in den letzten 24 Stunden schon einmal bewertet.",
     },
     

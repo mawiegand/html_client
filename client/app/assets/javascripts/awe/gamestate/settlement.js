@@ -44,6 +44,15 @@ AWE.GS = (function(module) {
       return AWE.Map.Manager.getLocation(this.get('location_id'));    
     }.property('location_id').cacheable(),
 
+    artifact: function() {
+      if (this.get('isBase') && AWE.GS.game.get('currentArtifact')) {
+        return AWE.GS.game.get('currentArtifact');
+      }
+      else {
+        return null;
+      }
+    }.property('type_id', 'AWE.GS.game.currentArtifact').cacheable(),
+
     armies_count: null,
     besieged: null,
     command_points: null,
@@ -120,6 +129,10 @@ AWE.GS = (function(module) {
 	
     isFortress: function() {
       return this.get('type_id') === module.SETTLEMENT_TYPE_FORTRESS;
+    }.property('type_id').cacheable(),
+    
+    isBase: function() {
+      return this.get('type_id') === module.SETTLEMENT_TYPE_BASE;
     }.property('type_id').cacheable(),
     
     regionInvitationCode: function() {
@@ -216,7 +229,7 @@ AWE.GS = (function(module) {
     }.property('type_id', 'settlement_unlock_prevent_takeover_count'),    
     
     commandPointsUsed: function() {
-      return this.getPath('armies_count')-1;
+      return this.get('armies_count') - 1;
     }.property('armies_count').cacheable(),
     
     settlementType: function() {
@@ -291,7 +304,6 @@ AWE.GS = (function(module) {
           total = 12;
         }
       }
-      log('---> availableBuildingSlots', total, used, total - used);
       return total - used;
     }.property('building_slots_total', 'usedBuildingSlots', 'enumerableSlots.@each.building_id').cacheable(),
   });     
@@ -420,6 +432,7 @@ AWE.GS = (function(module) {
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
     that.updateSettlement = function(id, updateType, callback) {
+      log('---> updateSettlement');
       var url = AWE.Config.SETTLEMENT_SERVER_BASE + 'settlements/'+id;
       return my.updateEntity(url, id, updateType, callback); 
     };
@@ -427,6 +440,7 @@ AWE.GS = (function(module) {
     /** updates all settlements for the current character. Calls the callback with a
      * list of all the updated settlements. */
     that.updateOwnSettlements = function(updateType, callback) {
+      log('---> updateOwnSettlements');
       var characterId = AWE.GS.CharacterManager.getCurrentCharacter().getId();
       that.updateSettlementsOfCharacter(characterId, updateType, callback);
     }
@@ -435,6 +449,7 @@ AWE.GS = (function(module) {
     /** updates all settlements for a given character. Calls the callback with a
      * list of all the updated settlements. */
     that.updateSettlementsOfCharacter = function(characterId, updateType, callback) {
+      log('---> updateSettlementsOfCharacter');
       var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/' + characterId + '/settlements';
       return my.fetchEntitiesFromURL(
         url,                                               // url to fetch from
@@ -459,6 +474,7 @@ AWE.GS = (function(module) {
     /** updates all settlements at a given location. Calls the callback with a
      * list of all the updated settlements. */
     that.updateSettlementsAtLocation = function(locationId, updateType, callback) {
+      log('---> updateSettlementsAtLocation');
       var url = AWE.Config.MAP_SERVER_BASE + 'locations/' + locationId + '/settlements';
       return my.fetchEntitiesFromURL(
         url,                                               // url to fetch from
@@ -467,9 +483,15 @@ AWE.GS = (function(module) {
         updateType,                                        // type of update (aggregate, short, full)
         this.lastUpdateForLocation(locationId),            // modified after
         function(result, status, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
+          log('---> updateSettlementsAtLocation result', status, result);
           if (status === AWE.Net.OK  || status === AWE.Net.NOT_MODIFIED) {
             lastLocationUpdates[locationId] = timestamp;
           }
+          // remove deleted settlement from location
+          if (status === AWE.Net.OK) {           
+            var settlements = module.SettlementAccess.getHashableCollectionForLocation_id(locationId);
+            that.fetchMissingEntities(result, settlements.get('collection'), that.updateSettlement);
+          }          
           if (callback) {
             if (status === AWE.Net.NOT_MODIFIED) {
               result = that.getEntities();

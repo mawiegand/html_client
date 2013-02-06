@@ -182,12 +182,12 @@ AWE.Application = (function(module) {
         var presentScreenController = this.get('presentScreenController');
 
         if (presentScreenController && presentScreenController.isScrolling()) {
-          log("ignored click --> presentScreenController.isScrolling() == true");
+          // log("ignored click --> presentScreenController.isScrolling() == true");
           return ; // just ignore it here!
         }
         
         if (this.get('isModal')) {
-          log("ignored click --> isModal == true");
+          // log("ignored click --> isModal == true");
           return ;
         }
       
@@ -235,12 +235,12 @@ AWE.Application = (function(module) {
         var presentScreenController = this.get('presentScreenController');
 
         if (presentScreenController && presentScreenController.isScrolling()) {
-          log("ignored click --> presentScreenController.isScrolling() == true");
+          // log("ignored click --> presentScreenController.isScrolling() == true");
           return ; // just ignore it here!
         }
         
         if (this.get('isModal')) {
-          log("ignored click --> isModal == true");
+          // log("ignored click --> isModal == true");
           return ;
         }
       
@@ -553,7 +553,7 @@ AWE.Application = (function(module) {
         }
       },
     
-      setScreenController: function(controller) {
+      setScreenController: function(controller, preventZoomingToLastSelection) {
         var rootController = this.get('presentScreenController');
         if (controller != rootController) {
           if (rootController) {
@@ -568,7 +568,7 @@ AWE.Application = (function(module) {
             this.remove(rootController);
             rootController.viewDidDisappear();
             
-            if (rootController.typeName == 'SettlementController' && controller.typeName == 'MapController') {
+            if (rootController.typeName == 'SettlementController' && controller.typeName == 'MapController' && !preventZoomingToLastSelection === true) {
               var settlement = AWE.GS.SettlementManager.getSettlement(rootController.settlementId);
               if (!controller.selectedView() || (controller.selectedView().location && controller.selectedView().location() != settlement.get('location'))) {
                 controller.centerSettlement(settlement);

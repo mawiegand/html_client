@@ -228,7 +228,7 @@ AWE.UI.Ember = (function(module) {
   module.DiplomacyView = Ember.View.extend( /** @lends AWE.UI.Ember.DiplomacyView# */ {
     templateName: "diplomacy-view",
     
-    characterBinding: 'AWE.GS.player.currentCharacter',
+    characterBinding: 'AWE.GS.game.currentCharacter',
     
     allianceTag:      null,   // input bindings
     alliancePassword: null,

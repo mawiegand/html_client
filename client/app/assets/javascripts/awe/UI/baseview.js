@@ -31,8 +31,9 @@ AWE.UI = (function(module) {
     my = my || {};
    
     that = module.createSettlementView(spec, my);
-    
+
     my.typeName = "BaseView";
+    my.locationType = "base";
 
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
@@ -127,8 +128,8 @@ AWE.UI = (function(module) {
       var ownerName = _location.ownerName() + (_location.allianceTag() ? " | " +  _location.allianceTag() : "");
       if (_labelView.text() != ownerName) {
         _labelView.setText(ownerName);
-        AWE.GS.player.getPath('currentCharacter.id') == _location.ownerId() ? _labelView.setColor('#000') : _labelView.setColor('#FFF');
-        AWE.GS.player.getPath('currentCharacter.id') == _location.ownerId() ? _labelView.setBackground('rgba(255, 255, 255, 0.5)') : _labelView.setBackground(true);
+        AWE.GS.game.getPath('currentCharacter.id') == _location.ownerId() ? _labelView.setColor('#000') : _labelView.setColor('#FFF');
+        AWE.GS.game.getPath('currentCharacter.id') == _location.ownerId() ? _labelView.setBackground('rgba(255, 255, 255, 0.5)') : _labelView.setBackground(true);
       }  
       
       if (!_flagView) {
@@ -197,17 +198,21 @@ AWE.UI = (function(module) {
     that.location = function() {
       return _location;
     };
-    
+
+    that.locationType = function() {
+      return my.locationType;
+    }
+
     that.army = function() {
       return _location.garrisonArmy();
     };
 
     that.onDoubleClick = function() {
-      if (AWE.GS.player.getPath('currentCharacter.id') == _location.ownerId()) {
+      if (AWE.GS.game.getPath('currentCharacter.id') == _location.ownerId()) {
         WACKADOO.activateBaseController({
           locationId: _location.id()
         });
-        AWE.GS.TutorialStateManager.checkForCustomTestRewards('quest_settlement_button2');
+        AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button2');
       }
     };
 
