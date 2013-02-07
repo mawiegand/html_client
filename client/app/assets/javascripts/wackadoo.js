@@ -88,7 +88,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     showQuestListDialog: function() {
-      var self = this;
       var dialog = AWE.UI.Ember.QuestListView.create({
         tutorialState: AWE.GS.TutorialStateManager.getTutorialState(),
       });
@@ -128,7 +127,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     initChat: function(reconnect) {
-	  reconnect = reconnect || false;
+	    reconnect = reconnect || false;
       DEVELOPER = 'on'
       
       var jappix_addBuddyMini = addBuddyMini; // jappix is in global namespace :-(
@@ -170,7 +169,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_BOSH      = "http://"+base+"/http-bind/";
       
       var character = AWE.GS.game && AWE.GS.game.get('currentCharacter');
-      var beginner  = character && character.get('login_count') <= 1;    
+      var beginner  = character && character.get('login_count') <= 1;
       var openPane  = character && character.get('login_count') <= 3;  // whether or not to open a chat pane initially
 
       // Define groupchats here
@@ -347,7 +346,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               var currentCharacter = AWE.GS.CharacterManager.getCurrentCharacter();
               if (currentCharacter.get('alliance_id') && currentCharacter.get('alliance_id') > 0) {
                 _numAssets +=1;
-                // log('---> load alliance');
                 AWE.GS.AllianceManager.updateAlliance(currentCharacter.get('alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
                   assetLoaded();
                 });
@@ -384,7 +382,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               _numAssets += 1;
               AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
                 if (statusCode === AWE.Net.OK) {
-                  log(resourcePool);
+                  log('RESOURCE_POOL', resourcePool);
                   assetLoaded();
                 }
                 else {
@@ -396,7 +394,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               _numAssets += 1;
               AWE.GS.RoundInfoManager.updateRoundInfo(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
                 if (statusCode === AWE.Net.OK) {
-                  log('RoundInfo', AWE.GS.game.roundInfo);
+                  log('ROUND_INFO', AWE.GS.game.roundInfo);
                   assetLoaded();
                 }
                 else {
@@ -519,7 +517,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       else {
         log('ERROR: no base to enter specified.')
       }
-      log(reference)
       this.setScreenController(baseController);
     },
    
@@ -619,7 +616,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       
       try {
         var args = JSON.parse(window.name ) //|| "{}")
-        log('window.name, parsed window.name', window.name, args)
+//        log('window.name, parsed window.name', window.name, args)
       }
       catch (e) {
       }
