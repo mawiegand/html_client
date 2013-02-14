@@ -4,7 +4,7 @@
  */
 
  
-var AWE = window.AWE || {};
+var AWE = AWE || {};
 AWE.I18n = AWE.I18n || {};
 
 AWE.I18n.en_US = function(module) {
