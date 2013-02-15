@@ -727,9 +727,10 @@ AWE.GS = (function(module) {
 		    return this.getPath('building.converted');
 		  }
 		  else {
+		    log("BUILDING AFTER JOB:", this.get('building'));
 		    return this.get('building');
 		  }
-		}.property('building.levelAfterJobs', 'level').cacheable(),
+		}.property('building', 'building.buildingId', 'building.levelAfterJobs', 'level', 'building.underConversion').cacheable(),
 		
 		/** determine the building types that can be constructed in this 
 		 * particular slot. */
