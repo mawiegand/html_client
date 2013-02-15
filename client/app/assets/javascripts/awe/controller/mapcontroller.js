@@ -2178,7 +2178,7 @@ AWE.Controller = (function(module) {
       if (that.ownBaseMarkerAnimation) {
         var toRemove = AWE.Util.hashSubtraction(locationViews, newLocationViews);
         AWE.Ext.applyFunctionToElements(toRemove, function(view) {
-          if (view.location().isOwn()) {
+          if (that.ownBaseMarkerAnimation && view.location().isOwn()) {
             that.ownBaseMarkerAnimation.cancel();
             that.ownBaseMarkerAnimation = null;
             changedAnimation = true;
