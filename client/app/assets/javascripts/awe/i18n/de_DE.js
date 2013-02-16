@@ -1,4 +1,5 @@
-
+var AWE = AWE || {};
+AWE.I18n = AWE.I18n || {};
 
 AWE.I18n.de_DE = function(module) {
     
