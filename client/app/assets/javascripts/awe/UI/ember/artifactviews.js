@@ -2,7 +2,44 @@ var AWE = window.AWE || {};
 AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = function(module) {
-
+  module.ArtifactInfoDialog = module.InfoDialog.extend({
+    classNames: ['artifact-info-dialog'],
+    contentTemplateName: 'artifact-info-dialog',
+  });
+  
+  module.ArtifactInfoView = Ember.View.extend({
+    templateName: "artifact-info-view",
+    
+    artifactBinding: 'AWE.GS.game.currentArtifact',
+    owner: null,
+    
+    description: function() {
+      var artifact = this.get('artifact');
+      if (artifact != null) {
+        var type = artifact.get('artifactType');
+      }
+      if (type != null) {
+        if (artifact.initiated) {
+          return AWE.Util.Rules.lookupTranslation(type.description_initiated);
+        }
+        else {
+          return AWE.Util.Rules.lookupTranslation(type.description);
+        }
+      }
+    }.property('artifact'),
+    
+    ownerObserver: function() {
+      var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('artifact.owner_id'));
+      var self = this;
+      this.set('owner', owner);
+      if (!owner) {
+        AWE.GS.CharacterManager.updateCharacter(this.getPath('artifact.owner_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+          self.set('owner', character);
+        });
+      }
+    }.observes('artifact', 'artifact.owner_id'),
+  });
+  
   module.ArtifactInitiationView = Ember.View.extend({
     templateName: "artifact-initiation-view",
 

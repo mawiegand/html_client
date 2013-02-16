@@ -959,6 +959,13 @@ AWE.I18n.en_US = function(module) {
       nextPage: "Nächste Seite",
       previousPage: "Vorige Seite",
     },
+    
+    artifact: {
+      owner: "Besitzer",
+      location: "Ort",
+      captured_at: "Erobert am",
+      initiated_at: "Eingeweiht am"
+    },
   };
   
   return module;

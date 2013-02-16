@@ -864,8 +864,15 @@ AWE.Controller = function (module) {
       if (!artifact) {
         return;
       }
+      
+      var dialog = AWE.UI.Ember.ArtifactInfoDialog.create({
+        artifact:artifact,
+        closePressed:function (evt) {
+          this.destroy();
+        },
+      });
 
-      alert('Klick');
+      that.applicationController.presentModalDialog(dialog);
     };
 
     that.settlementInfoButtonClicked = function (location) {
