@@ -621,6 +621,23 @@ AWE.I18n.en_US = function(module) {
         },
       },
 
+      artifact: {
+        costs: "Costs",
+        duration: "Duration",
+        start: "Start",
+        initiate: "Initiate",
+        initiated: "initiated",
+        owner: "Owner",
+        location: "Location",
+        capturedAt: "Captured",
+        initiatedAt: "Initiated",
+        notEnoughResources: {
+          header: "Halt!",
+          content: "Du hast aktuell leider nicht genügend Resourcen, um das Artefakt einzuweihen.",
+        },
+        cancelText: "Schade",
+      },
+
       info:{
         clickToExpand:"click to expand",
         clickToMinimize:"click to minimize",
@@ -958,13 +975,6 @@ AWE.I18n.en_US = function(module) {
       defenseBonus: 'Verteidigungsbonus',
       nextPage: "Nächste Seite",
       previousPage: "Vorige Seite",
-    },
-    
-    artifact: {
-      owner: "Besitzer",
-      location: "Ort",
-      captured_at: "Erobert am",
-      initiated_at: "Eingeweiht am"
     },
   };
   

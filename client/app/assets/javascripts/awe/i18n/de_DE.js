@@ -608,11 +608,17 @@ AWE.I18n.de_DE = function(module) {
         start: "Start",
         initiate: "Einweihen",
         initiated: "eingeweiht",
+        owner: "Besitzer",
+        location: "Ort",
+        captured_at: "Erobert",
+        initiated_at: "Eingeweiht",
         notEnoughResources: {
           header: "Halt!",
           content: "Du hast aktuell leider nicht genügend Resourcen, um das Artefakt einzuweihen.",
         },
         cancelText: "Schade",
+        characterBoni: "Bonus für den Besitzer",
+        allianceBoni: "Bonus für die Allianzmitglieder",
       },
 
       info: {
@@ -977,13 +983,6 @@ AWE.I18n.de_DE = function(module) {
       nextPage: "Nächste Seite",
       previousPage: "Vorige Seite",
     },    
-    
-    artifact: {
-      owner: "Besitzer",
-      location: "Ort",
-      captured_at: "Erobert am",
-      initiated_at: "Eingeweiht am"
-    },
   }
   
   return module;
