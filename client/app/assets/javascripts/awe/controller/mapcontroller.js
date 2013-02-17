@@ -2254,7 +2254,7 @@ AWE.Controller = function (module) {
       // beginner tutorial hack for killing animation on own base
       if (that.ownBaseMarkerAnimation) {
         var toRemove = AWE.Util.hashSubtraction(locationViews, newLocationViews);
-        AWE.Ext.applyFunctionToElements(toRemove, function (view) {
+        AWE.Ext.applyFunctionToElements(toRemove, function(view) {
           if (that.ownBaseMarkerAnimation && view.location().isOwn()) {
             that.ownBaseMarkerAnimation.cancel();
             that.ownBaseMarkerAnimation = null;
