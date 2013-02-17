@@ -861,18 +861,23 @@ AWE.Controller = function (module) {
     }
 
     that.artifactInfoButtonClicked = function (artifact) {
-      if (!artifact) {
-        return;
-      }
+      if (!artifact) return;
 
-      alert('Klick');
+      var dialog = AWE.UI.Ember.ArtifactInfoDialog.create({
+        artifact: artifact,
+        closePressed:function (evt) {
+          this.destroy();
+        },
+      });
+
+      that.applicationController.presentModalDialog(dialog);
     };
 
     that.settlementInfoButtonClicked = function (location) {
       if (!location) return;
 
       var dialog = AWE.UI.Ember.SettlementInfoDialog.create({
-        locationId:location.id(),
+        locationId: location.id(),
         closePressed:function (evt) {
           this.destroy();
         },
@@ -885,8 +890,8 @@ AWE.Controller = function (module) {
       if (!location) return;
 
       var dialog = AWE.UI.Ember.ArmyCreateDialog.create({
-        locationId:location.id(),
-        createPressed:function (evt) {
+        locationId: location.id(),
+        createPressed: function (evt) {
           if (this.get('garrisonOverfull')) {
             var errorDialog = AWE.UI.Ember.InfoDialog.create({
               heading:AWE.I18n.lookupTranslation('army.form.errors.garrison'),

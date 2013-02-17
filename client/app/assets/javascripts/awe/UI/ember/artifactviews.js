@@ -3,6 +3,48 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = function(module) {
 
+  module.ArtifactInfoDialog = Ember.View.extend({
+    templateName: "artifact-info-view",
+    artifact: null,
+
+    owner: null,
+    
+    description: function() {
+      var artifact = this.get('artifact');
+      if (artifact != null) {
+        var type = artifact.get('artifactType');
+      }
+      if (type != null) {
+        if (artifact.initiated) {
+          return AWE.Util.Rules.lookupTranslation(type.description_initiated);
+        }
+        else {
+          return AWE.Util.Rules.lookupTranslation(type.description);
+        }
+      }
+    }.property('artifact').cacheable(),
+    
+    ownerObserver: function() {
+      var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('artifact.owner_id'));
+      var self = this;
+      this.set('owner', owner);
+      if (!owner) {
+        AWE.GS.CharacterManager.updateCharacter(this.getPath('artifact.owner_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+          self.set('owner', character);
+        });
+      }
+    }.observes('artifact', 'artifact.owner_id'),
+
+    onClose: null,
+
+    destroy: function() {
+      if (this.onClose) {
+        this.onClose(this);
+      }
+      this._super();
+    },
+  });
+  
   module.ArtifactInitiationView = Ember.View.extend({
     templateName: "artifact-initiation-view",
 
@@ -82,6 +124,42 @@ AWE.UI.Ember = function(module) {
         this.startTimer();
       }
     }.observes('artifact.initiating'),
+  });
+
+  module.ArtifactBonusView = Ember.View.extend({
+    templateName: "artifact-bonus-view",
+
+    artifactType: null,
+
+    allianceBoni: function() {
+      var boni = [];
+
+      this.getPath('artifactType.production_bonus').forEach(function(bonus) {
+        if (bonus.domain_id == 2) {
+          boni.push(Ember.Object.create({
+            resourceType: AWE.GS.RulesManager.getRules().getResourceType(bonus.resource_id),
+            bonus: bonus.bonus,
+          }));
+        }
+      });
+
+      return boni;
+    }.property('artifactType').cacheable(),
+
+    characterBoni: function() {
+      var boni = [];
+
+      this.getPath('artifactType.production_bonus').forEach(function(bonus) {
+        if (bonus.domain_id == 0) {
+          boni.push(Ember.Object.create({
+            resourceType: AWE.GS.RulesManager.getRules().getResourceType(bonus.resource_id),
+            bonus: bonus.bonus,
+          }));
+        }
+      });
+
+      return boni;
+    }.property('artifactType').cacheable(),
   });
 
   return module;
