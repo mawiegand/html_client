@@ -8,7 +8,6 @@
       <p class="citation">{{local artifact.artifactType.flavour}}</p>
       <p>{{{description}}}</p>
       <p><b>{{t settlement.artifact.owner}}:</b> {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
-      <p><b>{{t settlement.artifact.location}}:</b> {{artifact.settlement.name}}</p>
       <p><b>{{t settlement.artifact.captured_at}}:</b> {{formatDatetime artifact.last_captured_at}}</p>
       {{#if settlement.artifact.initiated}}
         <p><b>{{t settlement.artifact.initiated_at}}:</b>

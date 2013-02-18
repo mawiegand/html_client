@@ -24,7 +24,7 @@ AWE.UI.Ember = (function(module) {
     displayCharacter: true,
 
     nameClicked: function() {
-      var character = this.get('character')
+      var character = this.get('character');
       var army = this.get('army');
       var characterId = character ? character.get('id') : (army ? army.get('owner_id') : null);
       if (!characterId) {
