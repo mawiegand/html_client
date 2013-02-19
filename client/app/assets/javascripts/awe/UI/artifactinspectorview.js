@@ -79,7 +79,7 @@ AWE.UI = (function(module) {
         _ownerLabelView.setText(artifact.get('ownerName'));
       }
 
-      if (!_locationLabelView && artifact.get('settlement_id')) {
+      if (!_locationLabelView) {
         _locationLabelView = AWE.UI.createLabelView();
         _locationLabelView.initWithControllerAndLabel(my.controller);
         _locationLabelView.setFrame(AWE.Geometry.createRect(31, 83, 100, 28));
@@ -87,12 +87,9 @@ AWE.UI = (function(module) {
         _locationLabelView.setIconImage("map/icon/home");
         this.addChild(_locationLabelView);
       }
-      else if (_locationLabelView && !artifact.get('settlement_id')) {
-        this.removeChild(_locationLabelView);
-      }
 
       if (_locationLabelView) {
-        _locationLabelView.setText(artifact.getPath('settlement.name'));
+        _locationLabelView.setText(artifact.get('region').name());
       }
 
       if (!_artifactView) {

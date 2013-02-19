@@ -29,7 +29,21 @@ AWE.GS = function (module) {
     }.property('location_id').cacheable(),
 
     region_id: null, old_region_id: null,
-    regionIdObserver:AWE.Partials.attributeHashObserver(module.ArtifactAccess, 'region_id', 'old_region_id').observes('region_id'),
+    regionIdObserver: AWE.Partials.attributeHashObserver(module.ArtifactAccess, 'region_id', 'old_region_id').observes('region_id'),
+    region: null,
+    regionObserver: function() {
+      var regionId = this.get('region_id');
+      var self = this;
+      if (regionId) {
+        var region = AWE.Map.Manager.getRegion(regionId);
+        this.set('region', region);
+        if (!region) {
+          AWE.Map.Manager.fetchSingleRegionById(regionId, function(region) {
+            self.set('region', region);
+          });
+        }
+      }
+    }.observes('region_id'),
 
     owner_id: null, old_owner_id: null,
     ownerIdObserver:AWE.Partials.attributeHashObserver(module.ArtifactAccess, 'owner_id', 'old_owner_id').observes('owner_id'),
@@ -67,19 +81,18 @@ AWE.GS = function (module) {
     }.property('artifactType').cacheable(),
 
     ownerName:function() {
-      var owner = AWE.GS.CharacterManager.getCharacter(this.get('owner_id'))
+      var owner = AWE.GS.CharacterManager.getCharacter(this.get('owner_id'));
       if (owner != null) {
         return owner.get('name');
       }
       else {
-        return '-';
+        return AWE.I18n.lookupTranslation('general.neanderthal');
       }
     }.property('owner_id').cacheable(),
 
     initiationTime: function() {
       var initiationTime = this.getPath('artifactType.initiation_time');
       var level = this.getPath('settlement.artifact_initiation_level') || 0;
-      log('-----> initiationTime, duration', initiationTime, level, this.get('settlement'), this.getPath('settlement.artifact_initiation_level'));
       return initiationTime ? AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(initiationTime), level) : null;
     }.property('type_id', 'settlement.artifact_initiation_level').cacheable(),
 
@@ -88,6 +101,12 @@ AWE.GS = function (module) {
       var mrank = AWE.GS.game.getPath('currentCharacter.mundane_rank') || 1;
       return costs ? AWE.Util.Rules.evaluateResourceCosts(costs, mrank) : null;
     }.property('AWE.GS.game.currentCharacter.mundane_rank', 'type_id').cacheable(),
+
+    experienceProduction: function() {
+      var experienceProduction = this.getPath('artifactType.experience_production');
+      var mrank                = AWE.GS.game.getPath('currentCharacter.mundane_rank') || 1;
+      return experienceProduction ? AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(experienceProduction, 'MRANK'), mrank) : null;
+    }.property('type_id', 'AWE.GS.game.currentCharacter.mundane_rank').cacheable(),
 
     isOwn: function() {
       return this.get('owner_id') == AWE.GS.game.getPath('currentCharacter.id');

@@ -137,14 +137,12 @@ AWE.UI.Ember = function(module) {
   module.ArtifactBonusView = Ember.View.extend({
     templateName: "artifact-bonus-view",
 
-    artifactType: null,
-
-    expProduction: null, // TODO add!
+    artifact: null,
 
     allianceBoni: function() {
       var boni = [];
 
-      this.getPath('artifactType.production_bonus').forEach(function(bonus) {
+      this.getPath('artifact.artifactType.production_bonus').forEach(function(bonus) {
         if (bonus.domain_id == AWE.GS.DOMAIN_ALLIANCE) {
           boni.push(Ember.Object.create({
             resourceType: AWE.GS.RulesManager.getRules().getResourceType(bonus.resource_id),
@@ -154,12 +152,12 @@ AWE.UI.Ember = function(module) {
       });
 
       return boni;
-    }.property('artifactType').cacheable(),
+    }.property('artifact.type_id').cacheable(),
 
     characterBoni: function() {
       var boni = [];
 
-      this.getPath('artifactType.production_bonus').forEach(function(bonus) {
+      this.getPath('artifact.artifactType.production_bonus').forEach(function(bonus) {
         if (bonus.domain_id == AWE.GS.DOMAIN_CHARACTER) {
           boni.push(Ember.Object.create({
             resourceType: AWE.GS.RulesManager.getRules().getResourceType(bonus.resource_id),
@@ -169,7 +167,7 @@ AWE.UI.Ember = function(module) {
       });
 
       return boni;
-    }.property('artifactType').cacheable(),
+    }.property('artifact.type_id').cacheable(),
   });
 
   return module;

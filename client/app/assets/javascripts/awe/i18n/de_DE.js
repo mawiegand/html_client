@@ -35,6 +35,8 @@ AWE.I18n.de_DE = function(module) {
       demigod: 'Halbgott',
       demigoddess: "Halbgöttin",
 
+      neanderthal: "Neandertaler",
+
       playerName: "Spielername",
       name: "Name",
       password: "Passwort",

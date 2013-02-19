@@ -14,7 +14,7 @@
         {{formatDatetime artifact.last_initiated_at}}
         </p>
       {{/if}}
-      {{view AWE.UI.Ember.ArtifactBonusView artifactTypeBinding="artifact.artifactType"}}
+      {{view AWE.UI.Ember.ArtifactBonusView artifactBinding="artifact"}}
     </div>
   </div>
 </script>
@@ -65,7 +65,7 @@
 
       {{/if}}
     {{/if}}
-    {{view AWE.UI.Ember.ArtifactBonusView artifactTypeBinding="artifact.artifactType"}}
+    {{view AWE.UI.Ember.ArtifactBonusView artifactBinding="artifact"}}
   {{else}}
     <p>Kein Artefakt vorhanden</p>
   {{/if}}
@@ -94,5 +94,12 @@
       {{/each}}<br/>
     {{/if}}
   </p>
+
+  {{#if artifact.experienceProduction}}
+  <p><b>{{t building.produces}} ({{t general.perHour}}):</b>
+    <span class="xp-icon" title="XP">&nbsp;</span>
+    {{artifact.experienceProduction}}  &nbsp;
+  </p>
+  {{/if}}
 
 </script>
