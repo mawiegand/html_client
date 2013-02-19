@@ -86,6 +86,14 @@ AWE.UI.Ember = function(module) {
       return false;
     },
 
+    speedupInitiationPressed: function() {
+      var self = this;
+      this.set('sending', true);
+      this.get('controller').artifactInitiationSpeedupPressed(this.get('artifact'), function() {
+        self.set('sending', false);
+      });
+    },
+
     calcTimeRemaining: function() {
       var finishedAt = this.getPath('artifact.initiation.finished_at');
       if (!finishedAt) {
@@ -131,11 +139,13 @@ AWE.UI.Ember = function(module) {
 
     artifactType: null,
 
+    expProduction: null, // TODO add!
+
     allianceBoni: function() {
       var boni = [];
 
       this.getPath('artifactType.production_bonus').forEach(function(bonus) {
-        if (bonus.domain_id == 2) {
+        if (bonus.domain_id == AWE.GS.DOMAIN_ALLIANCE) {
           boni.push(Ember.Object.create({
             resourceType: AWE.GS.RulesManager.getRules().getResourceType(bonus.resource_id),
             bonus: bonus.bonus,
@@ -150,7 +160,7 @@ AWE.UI.Ember = function(module) {
       var boni = [];
 
       this.getPath('artifactType.production_bonus').forEach(function(bonus) {
-        if (bonus.domain_id == 0) {
+        if (bonus.domain_id == AWE.GS.DOMAIN_CHARACTER) {
           boni.push(Ember.Object.create({
             resourceType: AWE.GS.RulesManager.getRules().getResourceType(bonus.resource_id),
             bonus: bonus.bonus,
