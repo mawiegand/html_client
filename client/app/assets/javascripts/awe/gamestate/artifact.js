@@ -111,6 +111,10 @@ AWE.GS = function (module) {
     isOwn: function() {
       return this.get('owner_id') == AWE.GS.game.getPath('currentCharacter.id');
     },
+
+    isOwnProp: function() {
+      return this.isOwn();
+    }.property('owner_id', 'AWE.GS.game.currentCharacter.id'),
   });
 
   module.ArtifactInitiation = module.Entity.extend({

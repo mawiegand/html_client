@@ -95,11 +95,13 @@
     {{/if}}
   </p>
 
-  {{#if artifact.experienceProduction}}
-  <p><b>{{t building.produces}} ({{t general.perHour}}):</b>
-    <span class="xp-icon" title="XP">&nbsp;</span>
-    {{artifact.experienceProduction}}  &nbsp;
-  </p>
+  {{#if artifact.isOwnProp}}
+    {{#if artifact.experienceProduction}}
+      <p><b>{{t building.produces}} ({{t general.perHour}}):</b>
+        <span class="xp-icon" title="XP">&nbsp;</span>
+        {{artifact.experienceProduction}}  &nbsp;
+      </p>
+    {{/if}}
   {{/if}}
 
 </script>
