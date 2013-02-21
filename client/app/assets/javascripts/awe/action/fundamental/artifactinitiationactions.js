@@ -43,7 +43,7 @@ AWE.Action.Fundamental = (function(module) {
     return that;
   };
 
-  module.createCancelArtifactInitiationAction = function(artifactInitiationId, my) {
+  module.createSpeedupArtifactInitiationAction = function(artifact, my) {
 
     // private attributes and methods //////////////////////////////////////
 
@@ -52,22 +52,26 @@ AWE.Action.Fundamental = (function(module) {
     // protected attributes and methods ////////////////////////////////////
 
     my = my || {};
-    my.artifactInitiation = artifactInitiation;
+    my.artifact  = artifact
 
     // public attributes and methods ///////////////////////////////////////
 
     that = AWE.Action.createAction(my);
 
     that.getRequestBody = function() {
-      return null;
+      return {
+        action_fundamental_speedup_artifact_initiation: {
+          artifact_id: my.artifact.getId(),
+        }
+      };
     }
 
     that.getURL = function() {
-      return AWE.Config.FUNDAMENTAL_SERVER_BASE + 'artifact_initiations/' + artifactInitiationId;
+      return AWE.Config.ACTION_SERVER_BASE + 'fundamental/speedup_artifact_initiation_actions';
     }
 
     that.getHTTPMethod = function() {
-      return 'DELETE';
+      return 'POST';
     }
 
     that.postProcess = function(statusCode, xhr) {

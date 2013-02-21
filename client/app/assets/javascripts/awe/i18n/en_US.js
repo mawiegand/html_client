@@ -4,7 +4,7 @@
  */
 
  
-var AWE = window.AWE || {};
+var AWE = AWE || {};
 AWE.I18n = AWE.I18n || {};
 
 AWE.I18n.en_US = function(module) {
@@ -619,6 +619,23 @@ AWE.I18n.en_US = function(module) {
           req2:"there is a little chief in your army",
           req3:"your army has at least one action point.",
         },
+      },
+
+      artifact: {
+        costs: "Costs",
+        duration: "Duration",
+        start: "Start",
+        initiate: "Initiate",
+        initiated: "initiated",
+        owner: "Owner",
+        location: "Location",
+        capturedAt: "Captured",
+        initiatedAt: "Initiated",
+        notEnoughResources: {
+          header: "Halt!",
+          content: "Du hast aktuell leider nicht genügend Resourcen, um das Artefakt einzuweihen.",
+        },
+        cancelText: "Schade",
       },
 
       info:{

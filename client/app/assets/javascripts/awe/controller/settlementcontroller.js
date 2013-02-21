@@ -626,7 +626,48 @@ AWE.Controller = (function(module) {
           }
         }
       });
-    }
+    };
+
+    that.artifactInitiationSpeedupPressed = function(artifact, callback) {
+      var action = AWE.Action.Fundamental.createSpeedupArtifactInitiationAction(artifact);
+      action.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          AWE.GS.ArtifactManager.updateArtifact(artifact.getId(), null, function() {
+            if (callback) {
+              callback();
+            }
+          });
+          AWE.GS.SettlementManager.updateSettlement(that.settlementId);
+          that.updateResourcePool();
+        }
+        else if (status === AWE.Net.FORBIDDEN) {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'not-enough-cash-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.artifact.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+          if (callback) {
+            callback();
+          }
+        }
+        else {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.artifact.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the artifact initiation speedup command.");
+          if (callback) {
+            callback();
+          }
+        }
+      });
+    };
+
 
     // ///////////////////////////////////////////////////////////////////////
     //

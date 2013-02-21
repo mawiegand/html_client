@@ -1,4 +1,5 @@
-
+var AWE = AWE || {};
+AWE.I18n = AWE.I18n || {};
 
 AWE.I18n.de_DE = function(module) {
     
@@ -33,6 +34,8 @@ AWE.I18n.de_DE = function(module) {
 
       demigod: 'Halbgott',
       demigoddess: "Halbgöttin",
+
+      neanderthal: "Neandertaler",
 
       playerName: "Spielername",
       name: "Name",
@@ -551,7 +554,7 @@ AWE.I18n.de_DE = function(module) {
           start: "Sorry, aber die Trainingschleife ist bereits voll. Du kannst maximal ",
           end: " Aufträge aufreihen. Bitte warte, bis etwas anderes fertig wird.",
         },
-        hurry: "halbieren",
+        hurry: "Halbieren",
       },
 
       military: {
@@ -607,11 +610,22 @@ AWE.I18n.de_DE = function(module) {
         start: "Start",
         initiate: "Einweihen",
         initiated: "eingeweiht",
+        owner: "Besitzer",
+        location: "Ort",
+        captured_at: "Erobert",
+        initiated_at: "Eingeweiht",
         notEnoughResources: {
           header: "Halt!",
           content: "Du hast aktuell leider nicht genügend Resourcen, um das Artefakt einzuweihen.",
         },
         cancelText: "Schade",
+        characterBoni: "Bonus für den Besitzer",
+        allianceBoni: "Bonus für die Allianzmitglieder",
+        hurry: "Halbieren",
+        hurrying: "beschleunigen",
+        hurried: "beschleunigt",
+        hurryTooltip: "Gib Goldkröten aus um das Artefakt doppelt so schnell einzuweihen. Die Kosten hängen von der Einweihungszeit ab.",
+        hurryIndicator: "x2",
       },
 
       info: {

@@ -13,8 +13,12 @@ AWE.GS = (function(module) {
   //
   //   Rules
   //
-  // ///////////////////////////////////////////////////////////////////////    
-    
+  // ///////////////////////////////////////////////////////////////////////
+
+  module.DOMAIN_CHARACTER = 0;
+  module.DOMAIN_SETTLEMENT = 1;
+  module.DOMAIN_ALLIANCE = 2;
+
   module.Rules = module.Entity.extend({     // extends Entity to Rules
     typeName: 'Rules',              ///< identifies instances of this type
       

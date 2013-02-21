@@ -66,7 +66,7 @@ AWE.UI.Ember = (function(module) {
     
     fulfillmentPercentage: function() {
       if (this.getPath('progress.fulfillmentRatio') < 1) {
-        return Math.floor(this.getPath('progress.fulfillmentRatio') * 100) + '%';
+        return Math.floor(this.getPath('progress.fulfillmentRatio') * 75) + '%';
       }
       else {
         return Math.floor(25 * (1 - this.getPath('progress.fulfillmentDurationRatio'))) + '%';
@@ -98,7 +98,7 @@ AWE.UI.Ember = (function(module) {
     
     position: function() {
       if (this.getPath('progress.fulfillmentRatio') < 1) {
-        return Math.floor(this.getPath('progress.fulfillmentRatio') * 100) + '%';
+        return Math.floor(this.getPath('progress.fulfillmentRatio') * 75) + '%';
       }
       else {
         return Math.floor(25 * (1 - this.getPath('progress.fulfillmentDurationRatio'))) + '%';

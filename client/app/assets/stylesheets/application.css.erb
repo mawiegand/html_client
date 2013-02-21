@@ -604,7 +604,7 @@ a:focus { outline: thin dotted; }
 }
 
 .message-center #actions div.inactive {
-  cursor: normal;
+  cursor: default;
   color: #AAA;
   font-style: italic;
 }
@@ -1248,13 +1248,21 @@ a:focus { outline: thin dotted; }
 
 .character-progress-dialog-pane .advisor,
 .found-settlement-dialog .advisor,
-.army-info-view .advisor { 
+.army-info-view .advisor {
   float:right;
   margin-left: 10px;
   margin-right: -100px;
 }
 
-.army-info-view .advisor.neanderthal { 
+.artifact-info-view .advisor {
+  margin-top: 30px;
+  float:right;
+  margin-left: 10px;
+  margin-right: -100px;
+}
+
+
+.army-info-view .advisor.neanderthal {
   float:right;
   margin-left: 10px;
   margin-right: -60px;
@@ -1523,7 +1531,7 @@ loaddialog-positioner {
 
 .settlement-dialog-pane .destroy.disabled {
   opacity: 0.6;
-  cursor: normal;
+  cursor: default;
 }
 
 .settlement-dialog-pane a.destroy {
@@ -2009,7 +2017,7 @@ span.bonus {
 .queue-job-text p.duration {
   float: left;
   width: 100px;
-  overflow: none;
+  overflow: hidden;
   padding: 2px;
   height: 20px;
 }
@@ -2676,7 +2684,7 @@ table .number {
 
 .outpost-background-picture,
 .base-background-picture {
-  background: url('<%= asset_path("settlements/base/base_c2_background_1280.jpg") %>');
+  background: url('<%= asset_path("settlements/base/base_background_1280.jpg") %>');
   background-repeat: no-repeat;
   position: absolute;
   left: 0px;
@@ -3432,12 +3440,31 @@ table .number {
   text-align: right;
 }
 
+.artifact-info-view {
+  top: 200px;
+}
+
+a.artifact-speedup-button {
+  padding: 2px 6px;
+  color: #333;
+  border-radius: 3px;
+  text-decoration: none;
+  border: 1px solid #333;
+  margin: -2px;
+}
+
+a.artifact-speedup-button:hover {
+  color: #000;
+  border: 1px solid #000;
+}
+
 .army-info-view {
   display: inline-block;
   width: 100%;
 }
 
-.army-info-view .header {
+.army-info-view .header,
+.artifact-info-view .header {
   width: 100%;
 }
 
@@ -3669,7 +3696,10 @@ table .number {
   top: -60px;
 }
 
-#army-create-form a.close, #army-create-form a.close, .ranking-view a.close {
+#army-create-form a.close,
+#army-create-form a.close,
+.ranking-view a.close,
+.artifact-info-view a.close {
   position: absolute;
   background: url('<%= asset_path("ui/close_button.png") %>');
   width: 50px;
@@ -3678,7 +3708,10 @@ table .number {
   top: 26px;
 }
 
-#army-create-form a.close:hover, #army-create-form a.close:hover, .ranking-view a.close:hover {
+#army-create-form a.close:hover,
+#army-create-form a.close:hover,
+.ranking-view a.close:hover,
+.artifact-info-view a.close:hover {
   background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
@@ -3835,12 +3868,12 @@ table .number {
 
 .participant-table th:first-child, .ranking-table th:first-child {
   border-top-left-radius: 10px;
-  border-bottom-left-radsius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 .participant-table th:last-child, .ranking-table th:last-child {
   border-top-right-radius: 10px;
-  border-bottom-right-rasdius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .participant-table td.right-line {
