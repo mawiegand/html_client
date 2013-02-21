@@ -125,7 +125,12 @@ AWE.GS = (function(module) {
   //   VICTORY PROGRESS
   //
   // ///////////////////////////////////////////////////////////////////////    
-    
+
+  module.VICTORY_TYPE_DOMINATION = 0;
+  module.VICTORY_TYPE_ARTIFACTS  = 1;
+  module.VICTORY_TYPE_POPULARITY = 2;
+  module.VICTORY_TYPE_SCIENCE    = 3;
+
   module.VictoryProgress = module.Entity.extend({
     typeName: 'VictoryProgress',
     type_id: null,
@@ -139,15 +144,20 @@ AWE.GS = (function(module) {
     }.property('type_id').cacheable(),
     
     fulfilled: function() {
-      return this.get('fulfillmentRatio') >= 1;
+      return this.get('fulfillmentRatio') > 0.9999;
     }.property('fulfillmentRatio').cacheable(),
     
     fulfillmentRatio: function() {
-      var allRegions = AWE.GS.game.roundInfo.get('regions_count');
-      var allianceRegions = this.get('fulfillment_count');
-      var reqRegionsRatio = AWE.GS.Util.parseAndEval(this.getPath('victoryType.condition.required_regions_ratio'), AWE.GS.game.roundInfo.get('age'), 'DAYS');
-      var fulfillmentRatio = 1.0 * (allianceRegions / allRegions) / reqRegionsRatio;
-      return (fulfillmentRatio > 1) ? 1 : fulfillmentRatio;
+      if (this.get('type_id') === module.VICTORY_TYPE_DOMINATION) {
+        var allRegions = AWE.GS.game.roundInfo.get('regions_count');
+        var allianceRegions = this.get('fulfillment_count');
+        var reqRegionsRatio = AWE.GS.Util.parseAndEval(this.getPath('victoryType.condition.required_regions_ratio'), AWE.GS.game.roundInfo.get('age'), 'DAYS');
+        var fulfillmentRatio = 1.0 * (allianceRegions / allRegions) / reqRegionsRatio;
+      }
+      else if (this.get('type_id') === module.VICTORY_TYPE_ARTIFACTS) {
+        var fulfillmentRatio = 1.0 * this.get('fulfillment_count') / AWE.GS.RulesManager.getRules().artifact_count;
+      }
+      return (fulfillmentRatio > 0.9999) ? 1 : fulfillmentRatio;
     }.property('alliance_id', 'fulfillment_count', 'AWE.GS.game.roundInfo.regions_count', 'victoryType.condition.required_regions_ratio', 'AWE.GS.game.roundInfo.started_at').cacheable(),
     
     fulfillmentDurationRatio: function() {

@@ -94,7 +94,7 @@ AWE.UI.Ember = (function(module) {
       if (progresses != null) {
         for (var i = 0; i < progresses.length; i++) {
           var progress = progresses[i];
-          if (progress['type_id'] === 1){//} this.getPath('victoryType.id')) {
+          if (progress['type_id'] === this.getPath('victoryType.id')) {
             return progress;
           }
         }
@@ -127,10 +127,20 @@ AWE.UI.Ember = (function(module) {
 
   module.AllianceVictoryProgressOtherAllianceView = Ember.View.extend({
     templateName: "alliance-victory-progress-other-alliance-view",
-    
-    progress:     null,
-    controller:   null,
-    
+
+    nr: null,
+
+    progress: function() {
+      var type = this.getPath('parentView.victoryType.symbolic_id');
+      var nr = this.get('nr');
+      if (AWE.GS.game.victoryProgressLeaders != null) {
+        return AWE.GS.game.victoryProgressLeaders[type][nr];
+      }
+      else {
+        return null;
+      }
+    }.property('AWE.GS.game.victoryProgressLeaders', 'parentView.victoryType', 'nr').cacheable(),
+
     marginTop: function() {
       return (this.getPath('progress.pos') - 1) * 12;
     }.property('progress.pos').cacheable(),
