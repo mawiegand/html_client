@@ -2,12 +2,15 @@
   <div class="alliance-victory">
     {{view AWE.UI.Ember.AllianceVictoryProgressDominationView allianceBinding="alliance"}}
   </div>
+  <div class="alliance-victory">
+    {{view AWE.UI.Ember.AllianceVictoryProgressArtifactView allianceBinding="alliance"}}
+  </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-victory-progress-domination-view">
   <div class="alliance-victory-progress-domination">
-    <h2>{{ local progress.victoryType.name }}</h2>
-    <p>{{ local progress.victoryType.description }}</p>
+    <h3>{{ local victoryType.name }}</h3>
+    <p>{{ local victoryType.description }}</p>
     <p>{{t alliance.progress.requiredRegions}}: {{requiredRegions}} {{t general.of}} {{AWE.GS.game.roundInfo.regions_count}} ({{formatAsPercent requiredRegionsRatio}}), {{t alliance.progress.requiredDuration}}: {{victoryType.condition.duration}} {{t general.days}}</p>
   </div>
   
@@ -19,6 +22,51 @@
     <div style="position:absolute; top: 0; right: 25%; width: 100px; height: 50px; margin-top: -30px; border-right: 1px solid black; margin-right: -1px; padding-right: 3px;">
       <div style="height: 30px; font-size: 14px; text-align: right;">{{t alliance.progress.criteriaFulfilled}}</div>
       <div style="font-size: 14px; text-align: right;">{{requiredRegions}}</div>
+    </div>
+    <div style="position:absolute; top: 0; right: 0; width: 200px; height: 50px; margin-top: -30px; border-right: 1px solid black; margin-right: -1px; padding-right: 3px;">
+      <div style="height: 30px; font-size: 14px; text-align: right;">{{t alliance.progress.criteriaHeld}}</div>
+    {{#if progress.fulfilled }}
+      <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAt}} {{formatDatetime endDate}}</div>
+    {{else}}
+      <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAfter}} {{victoryType.condition.duration}} {{t alliance.progress.days}}</div>
+    {{/if}}
+    </div>
+    {{#if alliance}}
+      {{#if progress.fulfilled }}
+        <div style="position:absolute; top: 0px; right: {{unbound fulfillmentPercentage}}; width: 200px; height: 80px; margin-top: 0; border-right: 2px solid black; margin-right: -1px; text-align:right;">
+          <div style="height: 20px; margin-top: 60px; padding-right: 3px;">
+            <b>{{daysRemaining}} {{t alliance.progress.remainingDays}}</b>
+          </div>
+        </div>
+      {{else}}
+        <div style="position:absolute; top: 0px; left: {{unbound fulfillmentPercentage}}; width: 200px; height: 80px; margin-top: 0; border-left: 2px solid black; margin-left: -1px;">
+          <div style="height: 20px; margin-top: 60px; padding-left: 3px;">
+            <b>{{progress.fulfillment_count}}</b>
+          </div>
+        </div>
+      {{/if}}
+    {{/if}}
+    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView progressBinding="AWE.GS.game.victoryProgressLeaders.victory_domination.first"}}
+    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView progressBinding="AWE.GS.game.victoryProgressLeaders.victory_domination.second"}}
+    {{view AWE.UI.Ember.AllianceVictoryProgressOtherAllianceView progressBinding="AWE.GS.game.victoryProgressLeaders.victory_domination.third"}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="alliance-victory-progress-artifact-view">
+  <div class="alliance-victory-progress-artifacts">
+    <h2>{{ local victoryType.name }}</h2>
+    <p>{{ local victoryType.description }}</p>
+    <p>{{t alliance.progress.requiredArtifacts}}: {{requiredArtifacts}}, {{t alliance.progress.requiredDuration}}: {{victoryType.condition.duration}} {{t general.days}}</p>
+  </div>
+
+  <div style="width:100%; height: 20px; position: relative; background: #eef; border: 1px solid black; margin-top: 70px; margin-bottom: 80px;">
+    <div style="position:absolute; top: 0; left: 0; width: 100px; height: 50px; margin-top: -30px; border-left: 1px solid black; margin-left: -1px; padding-left: 3px;">
+      <div style="height: 30px; font-size: 14px;">{{t general.start}}</div>
+      <div style="font-size: 14px;">0</div>
+    </div>
+    <div style="position:absolute; top: 0; right: 25%; width: 100px; height: 50px; margin-top: -30px; border-right: 1px solid black; margin-right: -1px; padding-right: 3px;">
+      <div style="height: 30px; font-size: 14px; text-align: right;">{{t alliance.progress.criteriaFulfilled}}</div>
+      <div style="font-size: 14px; text-align: right;">{{requiredArtifacts}}</div>
     </div>
     <div style="position:absolute; top: 0; right: 0; width: 200px; height: 50px; margin-top: -30px; border-right: 1px solid black; margin-right: -1px; padding-right: 3px;">
       <div style="height: 30px; font-size: 14px; text-align: right;">{{t alliance.progress.criteriaHeld}}</div>

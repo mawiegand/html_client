@@ -360,6 +360,7 @@ AWE.I18n.de_DE = function(module) {
         header: 'Siegesfortschritt',
         description: 'Die aktuelle Spielrunde kann von einer Allianz gewonnen werden, indem eines der folgenden Siegkriterien erreicht und über einen bestimmten Zeitraum gehalten wird.',
         requiredRegions: 'Benötigte Regionen',
+        requiredArtifacts: 'Verschiedene Artefakttypen',
         requiredDuration: 'Minimale Haltedauer',
         remainingDays: 'Tage noch',
         criteriaFulfilled: 'Kriterium erfüllt',
