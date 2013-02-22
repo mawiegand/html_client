@@ -31,7 +31,7 @@
     {{else}}
       {{#if artifact.initiating}}
         <p>Das Artefakt wird eingeweiht.</p>
-        <p><b>Restdauer:</b> {{formatDuration timeRemaining}}&nbsp;&nbsp;&nbsp;&nbsp;
+        <p><b>Einweihungsende:</b> {{formatTime artifact.initiation.finished_at}} (Restdauer: {{formatDuration timeRemaining}})&nbsp;&nbsp;&nbsp;&nbsp;
         {{#if timeRemaining}}
           {{#if artifact.initiation.hurried}}
             ({{t settlement.artifact.hurried}})

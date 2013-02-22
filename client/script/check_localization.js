@@ -12,8 +12,8 @@ AWE.I18n = {};
 AWE.Config = {};
 AWE.Config.RAILS_ASSET_PATH = '';
 
-load('../app/assets/javascripts/awe/i18n/de_DE.js');
-load('../app/assets/javascripts/awe/i18n/en_US.js');
+load('app/assets/javascripts/awe/i18n/de_DE.js');
+load('app/assets/javascripts/awe/i18n/en_US.js');
 
 var missingCount = 0;
 var notTranslatedCount = 0;
