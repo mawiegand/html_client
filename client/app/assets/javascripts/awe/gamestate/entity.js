@@ -118,7 +118,9 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
             this.get(key).set('content', result);  
           }          
           else {
+//            log('-----> davor', key, hash, hash[key]);
             this.set(key, hash[key]);
+//            log('-----> danach');
           }
         }
       }
@@ -263,12 +265,12 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
         entity.updateWith(data, updateType, start);
       }
       else {
-        entity = my.createEntity({ id: data['id'] });  // need to always set id before a hash-observer is triggered
-        // log(entity, entity.id, entity.get('id'), data);
+        entity = my.createEntity({'id': data.id });  // need to always set id before a hash-observer is triggered
         entity.init(data);
         entity.setNotModifiedAfter(updateType, start); // set the last-update timestamp appropriately
         my.entities[entity.get('id')] = entity;
       }
+
       return entity;
     };
     
@@ -328,11 +330,11 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
           else {                                      // On success:
             if (data && data.length !== undefined) {  //   A) process an array of entities
               result = {};
-              for (var i=0; i < data.length; i++) { 
+              for (var i=0; i < data.length; i++) {
                 var entityData = data[i];
                 var entity = (my.processUpdateResponse(entityData, updateType, requestServerTime || start));
                 result[entity.get('id')] = entity;
-              }         
+              }
             }
             else {                                    //   B) process a single entity
               result = my.processUpdateResponse(data, updateType, requestServerTime || start);
@@ -492,23 +494,6 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
         }
       });
     }
-    
-    /**
-     * removes an entity from an entity manager. first look for all observed attributes with
-     * ending '_id' an set them to undefined in order to remove the entity from all 
-     * access hashes. then remove entity from entity manager. 
-     */
-     /* DEPRECATED
-    that.removeEntity = function(id) {
-      var entity = my.entities[id];
-      for (var property in entity) {
-        if (entity.hasOwnProperty(property) && property.match(/_id$/)) {
-          var newProperty = property.replace(/old_/, '');
-          entity.set(newProperty, undefined);
-        }
-      }
-      delete my.entities[id];
-    } */
             
     return that;
   };
