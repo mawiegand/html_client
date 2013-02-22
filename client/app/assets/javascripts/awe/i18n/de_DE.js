@@ -870,10 +870,12 @@ AWE.I18n.de_DE = function(module) {
       reply: "Antworten",
       forward: "Weiterleiten",
       delete: "Löschen",
+      archiving: "Archivieren",
       newAllianceMail: "Neue Ally-Rundmail",
       noMessageSelected: "Keine Nachricht ausgewählt.",
       from: "Von",
       yourMessage: "deine Nachricht",
+      system: "System",
     },
     
     map: {

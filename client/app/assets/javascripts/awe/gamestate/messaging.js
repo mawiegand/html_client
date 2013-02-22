@@ -46,7 +46,7 @@ AWE.GS = (function(module) {
     fetchEntries: function() {
       var entryManager = this.get('entryManager');
       if (!entryManager) {
-        log('ERROR: Message Box Entry Manager is missing.')
+        log('ERROR: Message Box Entry Manager is missing.');
         return ;
       }
       entryManager.updateEntriesOfMessageBox(this.get('id'));
@@ -98,11 +98,12 @@ AWE.GS = (function(module) {
     name: function() {
       return AWE.I18n.lookupTranslation('messaging.archive');
     }.property('id').cacheable(),
-    ownerIdObserver: AWE.Partials.attributeHashObserver(module.ArchiveAccess, 'owner_id', 'old_owner_id').observes('owner_id'),    
+
+    ownerIdObserver: AWE.Partials.attributeHashObserver(module.ArchiveAccess, 'owner_id', 'old_owner_id').observes('owner_id'),
 
     hashableEntries: function() {
       var id = this.get('id');
-      return id ? AWE.GS.ArchiveEntryAccess.getHashableCollectionForArchivebox_id(id) : null;
+      return id ? AWE.GS.ArchiveEntryAccess.getHashableCollectionForArchive_id(id) : null;
     }.property('id').cacheable(),  
 
     init: function(spec) {
@@ -198,17 +199,25 @@ AWE.GS = (function(module) {
   
   module.ArchiveEntry = module.MessageBoxEntry.extend({ 
     typeName: 'ArchiveEntry',
-    archivebox_id: null, old_archivebox_id: null,
-    archiveIdObserver: AWE.Partials.attributeHashObserver(module.ArchiveEntryAccess, 'archivebox_id', 'old_archivebox_id').observes('archivebox_id'),
-    
+
+    archive_id: null, old_archive_id: null,
+    archiveIdObserver: AWE.Partials.attributeHashObserver(module.ArchiveEntryAccess, 'archive_id', 'old_archive_id').observes('archive_id'),
+
     sender: null,
- 
+    recipient: null,
+
+    type_id: null,
+
+    isSentEntry: function() {
+      return this.get('type_id') === 0;
+    }.property('type_id').cacheable(),
+
     updateSender: function() {
       var self = this;
       var senderId = this.get('sender_id');
       var sender = AWE.GS.CharacterManager.getCharacter(senderId) || null;
-      this.set('sender', sender); 
-      if (!sender) {
+      this.set('sender', sender);
+      if (sender == null && senderId != null) {
         AWE.GS.CharacterManager.updateCharacter(senderId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
           if (character) {
             self.set('sender', character);
@@ -216,6 +225,20 @@ AWE.GS = (function(module) {
         });
       }
     }.observes('sender_id'),
+
+    updateRecipient: function() {
+      var self = this;
+      var recipientId = this.get('recipient_id');
+      var recipient = AWE.GS.CharacterManager.getCharacter(recipientId) || null;
+      this.set('recipient', recipient);
+      if (recipient == null && recipientId != null) {
+        AWE.GS.CharacterManager.updateCharacter(recipientId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+          if (character) {
+            self.set('receiver', character);
+          }
+        });
+      }
+    }.observes('recipient_id'),
   });
   
   // ///////////////////////////////////////////////////////////////////////
@@ -349,7 +372,9 @@ AWE.GS = (function(module) {
     // public attributes and methods ///////////////////////////////////////
   
     that = module.createEntityManager(my);
-  
+
+    that.typeName = "MessageBoxManager";
+
     that.getMessageBox = function(id) {
       return that.getEntity(id);
     }
@@ -555,6 +580,8 @@ AWE.GS = (function(module) {
     // public attributes and methods ///////////////////////////////////////
   
     that = module.createEntityManager(my);
+
+    that.typeName = "MessageBoxEntryManager";
   
     that.getEntry = function(id) {
       return that.getEntity(id);
@@ -685,11 +712,11 @@ AWE.GS = (function(module) {
     that = module.createMessageBoxEntryManager(my);
 
     that.lastUpdateForMessageBox = function(archiveId, updateType) {
-      return module.ArchiveEntryAccess.lastUpdateForArchivebox_id(archiveId, updateType);// modified after
+      return module.ArchiveEntryAccess.lastUpdateForArchive_id(archiveId, updateType);// modified after
     };
     
     that.setLastUpdateForMessageBox = function(archiveId, timestamp) {
-      module.ArchiveEntryAccess.accessHashForArchivebox_id().setLastUpdateAtForValue(archiveId, timestamp);
+      module.ArchiveEntryAccess.accessHashForArchive_id().setLastUpdateAtForValue(archiveId, timestamp);
     };
 
     return that;

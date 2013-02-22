@@ -189,16 +189,16 @@ AWE.UI.Ember = (function(module) {
     },
     
     isForwardPossible: function() {
-      return ! this.get('newMessage') && this.getPath('selectedMessage');
+      return !this.get('newMessage') && this.getPath('selectedMessage') && (this.get('displayingInbox') || this.get('displayingOutbox'));
     }.property('selectedMessage', 'newMessage'),
 
     isReplyPossible: function() {
-      return ! this.get('newMessage') && this.getPath('selectedMessage.sender.name');
+      return !this.get('newMessage') && this.getPath('selectedMessage.sender.name');
     }.property('selectedMessage', 'selectedMessage.sender.name', 'newMessage'),
 
     isDeletePossible: function() {
-      return ! this.get('newMessage') && this.get('selectedMessage') && this.get('displayingInbox');
-    }.property('selectedMessage', 'newMessage', 'displayingInbox'),
+      return !this.get('newMessage') && this.get('selectedMessage');
+    }.property('selectedMessage', 'newMessage'),
     
     isAllianceMessagePossible: function() {
       var characterId = this.getPath('character.id');
@@ -233,7 +233,7 @@ AWE.UI.Ember = (function(module) {
     
     deleteClicked: function() {
       var selectedMessageEntry = this.get('selectedMessageEntry');
-      if (!selectedMessageEntry || !this.get('displayingInbox')) {
+      if (!selectedMessageEntry) {
         log('ERROR: could not delete message.');
         return ;
       }
@@ -241,7 +241,7 @@ AWE.UI.Ember = (function(module) {
       this.set('selectedMessageEntry', null);
     },
     
-    archiveingClicked: function() {
+    archivingClicked: function() {
       var selectedMessageEntry = this.get('selectedMessageEntry');
       AWE.Action.Messaging.createMoveToArchiveMessageAction(selectedMessageEntry).send();
       this.set('selectedMessageEntry', null);

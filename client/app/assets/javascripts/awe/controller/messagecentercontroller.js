@@ -88,7 +88,6 @@ AWE.Controller = (function(module) {
     };
     that.archiveClicked = function() {
       this.view.hideForm(); // make sure, form is hidden
-      log('archiveClicked passed succesfull');
       this.view.switchTo('archive');
     };
     that.newClicked = function() {

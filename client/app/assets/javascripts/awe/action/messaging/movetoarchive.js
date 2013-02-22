@@ -30,16 +30,21 @@ AWE.Action.Messaging = (function(module) {
     
     that.getRequestBody = function() {
       return {
-          message_id:           (boxEntry.message_id),        
+          message_id: boxEntry.message_id,
       };
     }
-    that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'/messaging/archive_entries_actions/'; }
+    that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE + '/messaging/archive_entries_actions/'; }
     
     that.getHTTPMethod = function() { return 'POST'; }
     
     that.postProcess = function(statusCode, xhr) {
       if (statusCode === AWE.Net.OK) {
-        //If all is okay we could delete Post
+        if (boxEntry.get('typeName') == 'InboxEntry') {
+          AWE.GS.InboxEntryManager.updateEntry(boxEntry.get('id'));
+        }
+        else {
+          AWE.GS.OutboxEntryManager.updateEntry(boxEntry.get('id'));
+        }
       }
     }
   
