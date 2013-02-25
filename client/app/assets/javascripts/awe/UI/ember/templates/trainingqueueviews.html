@@ -5,6 +5,13 @@
 
 <script type="text/x-handlebars" data-template-name="training-queue-view">
   <h2>{{local queue.queueType.name }}</h2>
+  
+  <div >
+    <div {{action "resourceExchangePressed"}} class="button icon-button cash-button-large quest-list-item girl" style="float: left; margin-right:2px;">
+      {{t resource.exchange.header}}
+    </div>
+    {{t resource.exchange.advert}}
+  </div><br class="clear">
 
   <div class="clearfix">
     {{#each trainableUnitTypes}}
@@ -13,9 +20,6 @@
   </div>
 
   {{local selectedUnitButton.unitType.flavour}}
-
-
-
 
   <b>{{t settlement.training.perUnit}}:</b>
     {{#each costs}}

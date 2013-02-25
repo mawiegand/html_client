@@ -30,6 +30,12 @@ AWE.UI.Ember = (function(module) {
       var type = event.view.getPath('building.type');
       this.get('controller').constructionOptionClicked(slot, building, type, event.view);
     }, 
+
+    resourceExchangePressed: function() {
+      var dialog = AWE.UI.Ember.ResourceExchangeDialog.create();
+      WACKADOO.presentModalDialog(dialog);
+      return false;
+    },
     
     constructionOptions: function() {
       var slot = this.get('slot');
