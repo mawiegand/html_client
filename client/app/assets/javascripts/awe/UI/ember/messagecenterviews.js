@@ -188,8 +188,12 @@ AWE.UI.Ember = (function(module) {
       }
     },
     
+    isArchivingVisible: function() {
+      return this.getPath('character.isPlatinumActive') && (this.get('displayingInbox') || this.get('displayingOutbox'));
+    }.property('selectedMessage', 'displayingInbox', 'displayingOutbox'),
+
     isForwardPossible: function() {
-      return !this.get('newMessage') && this.getPath('selectedMessage') && (this.get('displayingInbox') || this.get('displayingOutbox'));
+      return !this.get('newMessage') && this.getPath('selectedMessage');
     }.property('selectedMessage', 'newMessage'),
 
     isReplyPossible: function() {
@@ -199,7 +203,11 @@ AWE.UI.Ember = (function(module) {
     isDeletePossible: function() {
       return !this.get('newMessage') && this.get('selectedMessage');
     }.property('selectedMessage', 'newMessage'),
-    
+
+    isArchivingPossible: function() {
+      return !this.get('newMessage') && this.get('selectedMessage');
+    }.property('selectedMessage', 'newMessage'),
+
     isAllianceMessagePossible: function() {
       var characterId = this.getPath('character.id');
       var leaderId    = this.getPath('alliance.leader_id');
