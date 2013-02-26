@@ -9,7 +9,7 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Messaging = (function(module) {
   
-  module.createDeleteMessageAction = function(boxEntry, my) {
+  module.createMoveToArchiveMessageAction = function(boxEntry, my) {
       
     // private attributes and methods //////////////////////////////////////
     
@@ -28,36 +28,29 @@ AWE.Action.Messaging = (function(module) {
       return {};
     }
     
-    that.getURL = function() {
-      if (boxEntry.get('typeName') == 'InboxEntry') {
-        var path = 'inbox_entries/';
-      }
-      else if (boxEntry.get('typeName') == 'OutboxEntry') {
-        var path = 'outbox_entries/';
-      }
-      else {
-        var path = 'archive_entries/';
-      }
-      return AWE.Config.MESSAGING_SERVER_BASE + path + (boxEntry.get('id') || 0);
+    that.getRequestBody = function() {
+      return {
+          message_id: boxEntry.message_id,
+      };
     }
-  
-    that.getHTTPMethod = function() {
-      return 'DELETE';
-    };
+    that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE + '/messaging/archive_entries_actions/'; }
+    
+    that.getHTTPMethod = function() { return 'POST'; };
     
     that.postProcess = function(statusCode, xhr) {
       if (statusCode === AWE.Net.OK) {
         if (boxEntry.get('typeName') == 'InboxEntry') {
           AWE.GS.InboxEntryManager.updateEntry(boxEntry.get('id'));
         }
-        else if (boxEntry.get('typeName') == 'OutboxEntry') {
+        else {
           AWE.GS.OutboxEntryManager.updateEntry(boxEntry.get('id'));
         }
-        else {
-          AWE.GS.ArchiveEntryManager.updateEntry(boxEntry.get('id'));
+        var archive = AWE.GS.CharacterManager.getCurrentCharacter().get('archive');
+        if (archive) {
+          archive.fetchEntries();
         }
       }
-    }
+    };
   
     return that;
     

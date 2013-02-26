@@ -93,7 +93,8 @@ AWE.Partials = (function(module) {
       var hash = this.get('hash');
       var collection = this.get('collection');
       var id = entry.get('id');
-      
+
+      log('-----> hash, entry, collection, id', hash, entry, collection, id);
       if (hash[id] !== undefined && hash[id] !== null) { // object is already known?
         var index = this.indexOfEntryWithId(entry.get('id'));
         if (index >= 0) {
@@ -126,11 +127,11 @@ AWE.Partials = (function(module) {
     remove: function(entryOrId) {
       var hash = this.get('hash');
       var collection = this.get('collection');
-      var id = entryOrId.get === undefined  ? entryOrId : entryOrId.get('id');     
-      
+      var id = entryOrId.get === undefined  ? entryOrId : entryOrId.get('id');
+
       if (hash[id]) {
         delete hash[id];
-        var index = this.indexOfEntryWithId(id)
+        var index = this.indexOfEntryWithId(id);
         if (index >= 0) {
           collection.removeAt(index);
         }

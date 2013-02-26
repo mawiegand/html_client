@@ -184,7 +184,6 @@ AWE.GS = function (module) {
         updateType, // type of update (aggregate, short, full)
         module.ArtifactAccess.lastUpdateForRegion_id(regionId), // modified after
         function (result, status, xhr, timestamp) {   // wrap handler in order to set the lastUpdate timestamp
-          log('------> a in region', result);
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
             module.ArtifactAccess.accessHashForRegion_id().setLastUpdateAtForValue(regionId, timestamp.add(-1).second());
           }
@@ -216,7 +215,6 @@ AWE.GS = function (module) {
         updateType,
         module.ArtifactAccess.lastUpdateForLocation_id(locationId),
         function (result, status, xhr, timestamp) {   // wrap handler in order to set the lastUpdate timestamp
-          log('------> a in location', result);
           if (status === AWE.Net.OK || status === AWE.Net.NOT_MODIFIED) {
             module.ArtifactAccess.accessHashForLocation_id().setLastUpdateAtForValue(locationId, timestamp.add(-1).second());
           }
@@ -249,7 +247,6 @@ AWE.GS = function (module) {
         updateType,
         module.ArtifactAccess.lastUpdateForOwner_id(characterId),
         function (result, status, xhr, timestamp) {   // wrap handler in order to set the lastUpdate timestamp
-          log('------> a in character', result);
           if (status === AWE.Net.OK) {
             var artifacts = module.ArtifactAccess.getHashableCollectionForOwner_id(characterId);
             that.fetchMissingEntities(result, artifacts.get('collection'), that.updateArtifact); // careful: this breaks "this" inside updateArmy
