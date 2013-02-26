@@ -35,7 +35,7 @@ AWE.Action.Messaging = (function(module) {
     }
     that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE + '/messaging/archive_entries_actions/'; }
     
-    that.getHTTPMethod = function() { return 'POST'; }
+    that.getHTTPMethod = function() { return 'POST'; };
     
     that.postProcess = function(statusCode, xhr) {
       if (statusCode === AWE.Net.OK) {
@@ -45,8 +45,12 @@ AWE.Action.Messaging = (function(module) {
         else {
           AWE.GS.OutboxEntryManager.updateEntry(boxEntry.get('id'));
         }
+        var archive = AWE.GS.CharacterManager.getCurrentCharacter().get('archive');
+        if (archive) {
+          archive.fetchEntries();
+        }
       }
-    }
+    };
   
     return that;
     
