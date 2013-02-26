@@ -57,7 +57,7 @@ AWE.Action.Messaging = (function(module) {
           AWE.GS.ArchiveEntryManager.updateEntry(boxEntry.get('id'));
         }
       }
-    }
+    };
   
     return that;
     
