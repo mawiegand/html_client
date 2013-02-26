@@ -245,14 +245,55 @@ AWE.UI.Ember = (function(module) {
         log('ERROR: could not delete message.');
         return ;
       }
-      AWE.Action.Messaging.createDeleteMessageAction(selectedMessageEntry).send();
-      this.set('selectedMessageEntry', null);
+
+      var position = null;
+      var messageEntries = this.getPath('messageBox.sortedEntries');
+
+      messageEntries.find(function(entry, index) {
+        if (entry == selectedMessageEntry) {
+          position = index + 1;
+          return true;
+        }
+        else return false;
+      }, selectedMessageEntry);
+
+      var self = this;
+
+      AWE.Action.Messaging.createDeleteMessageAction(selectedMessageEntry).send(function() {
+        self.set('selectedMessageEntry', null);
+        if (messageEntries != null && messageEntries.length > position && messageEntries[position] != null) {
+          self.set('selectedMessageEntry', messageEntries[position]);
+          if (!messageEntries[position].get('message')) {
+            messageEntries[position].fetchMessage();
+          }
+        }
+      });
     },
     
     archivingClicked: function() {
       var selectedMessageEntry = this.get('selectedMessageEntry');
-      AWE.Action.Messaging.createMoveToArchiveMessageAction(selectedMessageEntry).send();
-      this.set('selectedMessageEntry', null);
+      var position = null;
+      var messageEntries = this.getPath('messageBox.sortedEntries');
+
+      messageEntries.find(function(entry, index) {
+        if (entry == selectedMessageEntry) {
+          position = index + 1;
+          return true;
+        }
+        else return false;
+      }, selectedMessageEntry);
+
+      var self = this;
+
+      AWE.Action.Messaging.createMoveToArchiveMessageAction(selectedMessageEntry).send(function() {
+        self.set('selectedMessageEntry', null);
+        if (messageEntries != null && messageEntries.length > position && messageEntries[position] != null) {
+          self.set('selectedMessageEntry', messageEntries[position]);
+          if (!messageEntries[position].get('message')) {
+            messageEntries[position].fetchMessage();
+          }
+        }
+      });
     },
 
     markRead: function(inboxEntry) {

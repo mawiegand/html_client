@@ -37,7 +37,7 @@ AWE.GS = (function(module) {
     entriesBinding: 'hashableEntries.collection',
     
     sortedEntries: function() {
-      var messages = this.getPath('entries');
+      var messages = this.get('entries');
       return messages ? messages.slice(0).sort(function(a,b) { // why copy (slice)? because the original message array at the collection will be changed outside this method
         return Date.parseISODate(b.get('created_at')).getTime() - Date.parseISODate(a.get('created_at')).getTime();
       }) : null; 
@@ -51,7 +51,7 @@ AWE.GS = (function(module) {
       }
       entryManager.updateEntriesOfMessageBox(this.get('id'));
     },
-  });     
+  });
 
   module.Inbox = module.MessageBox.extend({
     typeName: 'Inbox',
