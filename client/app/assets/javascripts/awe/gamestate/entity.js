@@ -81,7 +81,7 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
       var createdAt = this.get('created_at');
       return createdAt ? Date.parseISODate(createdAt) : null;
     },
-    
+
     /** sets all properties of this entity to the values of the given
      * hash.
      * @param {Object} hash holding key - value pairs to apply to this 

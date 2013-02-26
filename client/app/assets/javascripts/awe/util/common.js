@@ -38,9 +38,9 @@ AWE.Util = (function(module) {
   }
   
   module.hashEmpty = function(hash) {
-    return module.hashCount(hash) === 0;  
+    return module.hashCount(hash) === 0;
   }
-  
+
   module.hashFirst = function(_hash) {
     var value = null;
     for (var key in _hash) {
@@ -51,16 +51,25 @@ AWE.Util = (function(module) {
     }
     return value ;
   }
-  
+
+  module.arrayCount = function(array) {
+    var count = 0;
+
+    for (var i = 0; i < array.length; i++) {
+      if (array[i] != null) { count++; }
+    }
+    return count;
+  }
+
   module.secondsToDuration = function(secs) {
     var hours = Math.floor(secs / (60 * 60));
-   
+
     var divisor_for_minutes = secs % (60 * 60);
     var minutes = Math.floor(divisor_for_minutes / 60);
- 
+
     var divisor_for_seconds = divisor_for_minutes % 60;
     var seconds = Math.floor(divisor_for_seconds);
-   
+
     var duration = {
         h: hours,
         m: minutes,

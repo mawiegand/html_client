@@ -94,7 +94,7 @@ AWE.Partials = (function(module) {
       var collection = this.get('collection');
       var id = entry.get('id');
 
-      log('-----> hash, entry, collection, id', hash, entry, collection, id);
+//      log('-----> hash, entry, collection, id', hash, entry, collection, id);
       if (hash[id] !== undefined && hash[id] !== null) { // object is already known?
         var index = this.indexOfEntryWithId(entry.get('id'));
         if (index >= 0) {

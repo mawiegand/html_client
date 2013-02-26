@@ -45,6 +45,23 @@ AWE.GS = function (module) {
       }
     }.observes('region_id'),
 
+    alliance_id: null, old_alliance_id: null,
+    allianceIdObserver: AWE.Partials.attributeHashObserver(module.ArtifactAccess, 'alliance_id', 'old_alliance_id').observes('alliance_id'),
+    alliance: null,
+    allianceObserver: function() {
+      var allianceId = this.get('alliance_id');
+      var self = this;
+      if (allianceId) {
+        var alliance = AWE.GS.AllianceManager.getAlliance(allianceId);
+        this.set('alliance', alliance);
+        if (!alliance) {
+          AWE.GS.AllianceManager.updateAlliance(allianceId, null, function(alliance) {
+            self.set('alliance', alliance);
+          });
+        }
+      }
+    }.observes('alliance_id'),
+
     owner_id: null, old_owner_id: null,
     ownerIdObserver:AWE.Partials.attributeHashObserver(module.ArtifactAccess, 'owner_id', 'old_owner_id').observes('owner_id'),
 
@@ -80,7 +97,7 @@ AWE.GS = function (module) {
       }
     }.property('artifactType').cacheable(),
 
-    ownerName:function() {
+    ownerName: function() {
       var owner = AWE.GS.CharacterManager.getCharacter(this.get('owner_id'));
       if (owner != null) {
         return owner.get('name');
@@ -90,7 +107,25 @@ AWE.GS = function (module) {
       }
     }.property('owner_id').cacheable(),
 
+    regionName: function() {
+      if (this.get('region') != null) {
+        return this.get('region').name();
+      }
+      else {
+        return null;
+      }
+    }.property('region_id').cacheable(),
+
     initiationTime: function() {
+      if (this.get('initiated') && this.get('last_initiated_at') != null) {
+        return Date.parseISODate(this.get('last_initiated_at')).toString('dd.MM. HH:mm:ss');
+      }
+      else {
+        return null;
+      }
+    }.property('initiated', 'last_initiated_at').cacheable(),
+
+    initiationDuration: function() {
       var initiationTime = this.getPath('artifactType.initiation_time');
       var level = this.getPath('settlement.artifact_initiation_level') || 0;
       return initiationTime ? AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(initiationTime), level) : null;
@@ -157,6 +192,47 @@ AWE.GS = function (module) {
       return that.getEntity(id);
     }
 
+    that.getArtifactCount = function () {
+      return AWE.Util.arrayCount(that.getEntities());
+    }
+
+    that.getArtifactRanking = function (order) {
+      if (order == null) {
+        order = 'id';
+      }
+      var artifacts = that.getEntities();
+      var artifactRanking = [];
+      artifacts.forEach(function(artifact) {
+        var artifactRankingEntry = Ember.Object.create({
+          artifact: artifact,
+        });
+        artifactRanking.push(artifactRankingEntry);
+      });
+      artifactRanking.sort(function(entry1, entry2) {
+        if (entry1.get('artifact').get(order) == null) {
+          return 1;
+        }
+        if (entry2.get('artifact').get(order) == null) {
+          return -1;
+        }
+        if (typeof(entry1.get('artifact').get(order)) == 'string') {
+          return entry1.get('artifact').get(order) < entry2.get('artifact').get(order) ? -1 : 1;
+        }
+        else {
+          return entry1.get('artifact').get(order) - entry2.get('artifact').get(order);
+        }
+      });
+      var rank = 1;
+      artifactRanking.forEach(function(artifactRankingEntry) {
+        artifactRankingEntry.set('rank', rank++);
+      });
+      return artifactRanking;
+    }
+
+    that.getArtifactRankingPage = function (page, order) {
+      return that.getArtifactRanking(order).slice((page - 1) * AWE.Config.RANKING_LIST_ENTRIES, page * AWE.Config.RANKING_LIST_ENTRIES);
+    }
+
     that.getArtifactsInRegion = function (id) {
       return AWE.GS.ArtifactAccess.getAllForRegion_id(id)
     }
@@ -173,8 +249,22 @@ AWE.GS = function (module) {
       return my.updateEntity(url, id, updateType, callback);
     };
 
-    /** updates all armies in a given region. Calls the callback with a
-     * list of all the updated armies. */
+    that.updateArtifacts = function (updateType, callback) {
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'artifacts';
+      return my.fetchEntitiesFromURL(
+        url, // url to fetch from
+        my.runningUpdatesPerId, // queue to register this request during execution
+        1, // regionId to fetch -> is used to register the request
+        updateType, // type of update (aggregate, short, full)
+        null,
+        function (result, status, xhr, timestamp) {   // wrap handler in order to set the lastUpdate timestamp
+          if (callback) {
+            callback(result, status, xhr, timestamp);
+          }
+        }
+      );
+    }
+
     that.updateArtifactsInRegion = function (regionId, updateType, callback) {
       var url = AWE.Config.MAP_SERVER_BASE + 'regions/' + regionId + '/artifacts';
       return my.fetchEntitiesFromURL(
