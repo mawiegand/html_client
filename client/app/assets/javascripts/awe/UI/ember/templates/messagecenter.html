@@ -167,11 +167,11 @@
       {{else}}
         <div class="inactive">{{t messaging.delete}}</div>
       {{/if}}
-      {{#if character.isPlatinumActive}}
-        {{#if isForwardPossible}}
+      {{#if isArchivingVisible}}
+        {{#if isArchivingPossible}}
           <div {{action "archivingClicked" }}>{{t messaging.archiving}}</div>
         {{else}}
-          <div class="inactive">Archivieren</div>
+          <div class="inactive">{{t messaging.archiving}}</div>
         {{/if}}
       {{/if}}
       {{#if isAllianceMessagePossible}}
