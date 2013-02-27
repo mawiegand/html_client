@@ -940,7 +940,9 @@ AWE.I18n.de_DE = function(module) {
         dailyProduction: "Tagesproduktion",
         capacity: "Lagerkapazität",
         capacityReachedIn: "Lager voll in",
-        effects: "Effekte",
+        characterEffects: "Spieler-Effekte",
+        allianceEffects: "Allianz-Effekte",
+        effectDetails: "Details",
         baseProduction: "Basisproduktion",
         full: "voll",
     

@@ -423,14 +423,6 @@ a:focus { outline: thin dotted; }
   z-index: 9;
 }
 
-.z-layer-3 {
-  z-index: 512;
-}
-
-.z-layer-4 {
-  z-index: 768;
-}
-
 
 .change-army-name-dialog .z-layer-3 {
   z-index: 800;
@@ -3429,7 +3421,7 @@ table .datetime {
   margin-left: 80px;  
 }
 
-.resource-details-dialog-pane.modal-dialog-pane { 
+.resource-details-dialog-pane.modal-dialog-pane {
   position: absolute;
   left: 80px; top: 90px;
   margin: 0px;
@@ -3442,6 +3434,22 @@ table .datetime {
 
 .resource-details-dialog-pane th {
   text-align: right;
+}
+
+.effect-details-dialog-pane.modal-dialog-pane {
+  position: absolute;
+  margin-left: -225px;
+  top: 100px;
+  width: 410px;
+}
+
+.effect-details-dialog-pane td.number {
+  padding-right: 10px;
+}
+
+.effect-wheel {
+  text-align: center;
+  width: 100%;
 }
 
 .artifact-info-view {
@@ -3701,8 +3709,9 @@ a.artifact-speedup-button:hover {
 }
 
 #army-create-form a.close,
-#army-create-form a.close,
 .ranking-view a.close,
+.resource-details-dialog-pane a.close,
+.effect-details-dialog-pane a.close,
 .artifact-info-view a.close {
   position: absolute;
   background: url('<%= asset_path("ui/close_button.png") %>');
@@ -3712,13 +3721,33 @@ a.artifact-speedup-button:hover {
   top: 26px;
 }
 
-#army-create-form a.close:hover,
+.resource-details-dialog-pane a.close {
+  left: 650px;
+}
+
+.effect-details-dialog-pane a.close {
+  left: 380px;
+}
+
 #army-create-form a.close:hover,
 .ranking-view a.close:hover,
+.resource-details-dialog-pane a.close:hover,
+.effect-details-dialog-pane a.close:hover,
 .artifact-info-view a.close:hover {
   background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
+.effect-details-table th.name {
+  width: 180px;
+}
+
+.effect-details-table th.resource {
+  width: 50px;
+}
+
+.effect-details-table tr.sum {
+  border-top: 1px solid #ccc;
+}
 
 .ranking-table {
   border: 1px solid #ccc;
@@ -4411,11 +4440,21 @@ a.artifact-speedup-button:hover {
 }
 
 
-/* ==|== media queries ======================================================
-   EXAMPLE Media Query for Responsive Design.
-   This example overrides the primary ('mobile first') styles
-   Modify as content requires.
-   ========================================================================== */
+.z-layer-3 {
+  z-index: 512;
+}
+
+.z-layer-4 {
+  z-index: 768;
+}
+
+
+
+  /* ==|== media queries ======================================================
+     EXAMPLE Media Query for Responsive Design.
+     This example overrides the primary ('mobile first') styles
+     Modify as content requires.
+     ========================================================================== */
 
 @media only screen and (min-width: 35em) {
   /* Style adjustments for viewports that meet the condition */

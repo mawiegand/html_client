@@ -1,43 +1,44 @@
 <script type="text/x-handlebars" data-template-name="resource-details-dialog">
   <div class="modal-dialog-background"></div>
     <div class="modal-dialog-pane resource-details-dialog-pane">
+      <a {{action "okPressed"}} class="close clickable"></a>
       <h2>{{t resource.productionInfo.header}}</h2>
       
       <table>
         <tr>
-         <th></th>
+          <th></th>
           {{#each productionDetails}}
             <th><span class="resource-icon {{unbound resourceType.symbolic_id}} middle" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span></th> 
           {{/each}}
         </tr>
         <tr>
-         <td>{{t resource.productionInfo.amount}}</td>
+          <td>{{t resource.productionInfo.amount}}</td>
           {{#each productionDetails}}
             <td class="number">{{formatNumber amount maxPlaces="0"}}</td> 
           {{/each}}
         </tr>
 
         <tr>
-         <td>{{t resource.productionInfo.productionRate}}</td>
+          <td>{{t resource.productionInfo.productionRate}}</td>
           {{#each productionDetails}}
             <td class="number">{{formatNumber rate maxPlaces="1"}}/h</td> 
           {{/each}}
         </tr>
         <tr>
-         <td>{{t resource.productionInfo.dailyProduction}}</td>
+          <td>{{t resource.productionInfo.dailyProduction}}</td>
           {{#each productionDetails}}
             <td class="number">{{formatNumber dailyRate maxPlaces="0"}}</td> 
           {{/each}}
         </tr>
         
         <tr>
-         <td>{{t resource.productionInfo.capacity}}</td>
+          <td>{{t resource.productionInfo.capacity}}</td>
           {{#each productionDetails}}
             <td class="number">{{formatNumber capacity maxPlaces="0"}}</td> 
           {{/each}}
         </tr>
         <tr>
-         <td>{{t resource.productionInfo.capacityReachedIn}}</td>
+          <td>{{t resource.productionInfo.capacityReachedIn}}</td>
           {{#each productionDetails}}
             <td class="number">
             {{#if filled}}
@@ -54,14 +55,23 @@
         </tr>
 
         <tr>
-         <td>{{t resource.productionInfo.effects}}</td>
+          <td>{{t resource.productionInfo.characterEffects}}</td>
           {{#each productionDetails}}
-            <td class="number">{{formatPercentage effects}}</td> 
+            <td class="number">{{formatPercentage characterEffects}}</td>
           {{/each}}
         </tr>
-      </table>     
+
+        <tr>
+          <td>{{t resource.productionInfo.allianceEffects}}</td>
+          {{#each productionDetails}}
+            <td class="number">{{formatPercentage allianceEffects}}</td>
+          {{/each}}
+          <td><span class="clickable help-icon" title="{{t resource.productionInfo.effectDetails}}" {{action effectDetailsPressed}}></span></td>
+
+        </tr>
+      </table>
       
-      <p>{{t resource.productionInfo.help1}} <em>{{t settlement.info.buildings}}</em> {{t resource.productionInfo.help2}} <em>{{t settlement.info.tax}}</em> {{t resource.productionInfo.help3}} <em>{{t resource.productionInfo.baseProduction}}</em> {{t resource.productionInfo.help4}} <a href="#" {{action "pressedShop"}}>{{t shop.title}}</a> {{t resource.productionInfo.help5}}</p>
+      <p>{{t resource.productionInfo.help1}} <em>{{t settlement.info.buildings}}</em> {{t resource.productionInfo.help2}} <em>{{t settlement.info.tax}}</em> {{t resource.productionInfo.help3}} <em>{{t resource.productionInfo.baseProduction}}</em> {{t resource.productionInfo.help4}} <a href="#" {{action "shopPressed"}}>{{t shop.title}}</a> {{t resource.productionInfo.help5}}</p>
       
       {{#if AWE.Config.LIKE_ENABLED}}
         <table>
@@ -77,8 +87,96 @@
         <p>Es steht nur eine begrenzte Menge von Likes und Dislikes zur Verfügung.
            Nach dem Gebrauch regeneriert sich der Vorrat langsam.</p>
       {{/if}}
-      
-      <a class="icon-button ok-button" href="#" {{action "okClicked"}}>{{t general.ok}}</a>     
     </div>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="effect-details-dialog">
+  <div class="z-layer-3 modal-dialog-background"></div>
+  <div class="horizontal-center-helper z-layer-4">
+    <div class="modal-dialog-pane effect-details-dialog-pane">
+      <a {{action "okPressed"}} class="close clickable"></a>
+      <h2>Effekte</h2>
+
+      <h3>{{t resource.productionInfo.characterEffects}}</h3>
+      {{#if loadingCharacterEffects}}
+        <div class="effect-wheel">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}</div>
+      {{else}}
+        {{#if characterResourceEffects}}
+          <table class="effect-details-table">
+          <tr>
+            <th class="name"></th>
+            {{#each resourceTypes}}
+              <th class="resource"><span class="resource-icon {{unbound symbolic_id}} middle" {{bindAttr title="{{local name}}"}}>&nbsp;</span></th>
+            {{/each}}
+          </tr>
+
+          {{#each effect in characterResourceEffectDetails}}
+            <tr>
+              <td>{{effect.typeName}}</td>
+              {{#each resource in parentView.resourceTypes}}
+                {{#view AWE.UI.Ember.ResourceEffectDetail effectBinding="effect" resourceBinding="resource"}}
+                  <td class="number">{{formatAsPercent value}}</td>
+                {{/view}}
+              {{/each}}
+            </tr>
+          {{/each}}
+
+          <tr class="sum">
+            <td><b>Summe</b></td>
+            {{#each resource in resourceTypes}}
+              {{#view AWE.UI.Ember.CharacterResourceDetail resourcePoolBinding="parentView.resourcePool" resourceBinding="resource"}}
+                <td class="number">{{formatAsPercent value}}</td>
+              {{/view}}
+            {{/each}}
+          </tr>
+
+          </table>
+        {{else}}
+          <p>Keine Spieler-Effekte vorhanden</p>
+        {{/if}}
+      {{/if}}
+
+      <h3>{{t resource.productionInfo.allianceEffects}}</h3>
+      {{#if loadingAllianceEffects}}
+        <div class="effect-wheel">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}</div>
+      {{else}}
+        {{#if allianceResourceEffects}}
+          <table class="effect-details-table">
+            <tr>
+              <th class="name"></th>
+              {{#each resourceTypes}}
+                <th class="resource"><span class="resource-icon {{unbound symbolic_id}} middle" {{bindAttr title="{{local name}}"}}>&nbsp;</span></th>
+              {{/each}}
+            </tr>
+
+            {{#each effect in allianceResourceEffectDetails}}
+              <tr>
+                <td>{{effect.typeName}}</td>
+                {{#each resource in parentView.resourceTypes}}
+                  {{#view AWE.UI.Ember.ResourceEffectDetail effectBinding="effect" resourceBinding="resource"}}
+                    <td class="number">{{formatAsPercent value}}</td>
+                  {{/view}}
+                {{/each}}
+              </tr>
+            {{/each}}
+
+            <tr class="sum">
+              <td><b>Summe</b></td>
+              {{#each resource in resourceTypes}}
+                {{#view AWE.UI.Ember.AllianceResourceDetail resourcePoolBinding="parentView.resourcePool" resourceBinding="resource"}}
+                  <td class="number">{{formatAsPercent value}}</td>
+                {{/view}}
+              {{/each}}
+            </tr>
+
+          </table>
+        {{else}}
+          <p>Keine Allianz-Effekte vorhanden</p>
+        {{/if}}
+      {{/if}}
+
+    </div>
+  </div>
 </script>
 
