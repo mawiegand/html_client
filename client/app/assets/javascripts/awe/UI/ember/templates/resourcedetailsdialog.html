@@ -76,16 +76,15 @@
       {{#if AWE.Config.LIKE_ENABLED}}
         <table>
           <tr>
-            <td>Likes verfügbar</td>
+            <td>{{t likesystem.likesAvailable}}</td>
             <td class="number">{{formatNumberFloor pool.like_amount}}</td>
           </tr>
           <tr>
-            <td>Dislikes verfügbar</td>
+            <td>{{t likesystem.dislikesAvailable}}</td>
             <td class="number">{{formatNumberFloor pool.dislike_amount}}</td>
           </tr>
         </table>
-        <p>Es steht nur eine begrenzte Menge von Likes und Dislikes zur Verfügung.
-           Nach dem Gebrauch regeneriert sich der Vorrat langsam.</p>
+        <p>{{t likesystem.info}}</p>
       {{/if}}
     </div>
 </script>
@@ -96,7 +95,7 @@
   <div class="horizontal-center-helper z-layer-4">
     <div class="modal-dialog-pane effect-details-dialog-pane">
       <a {{action "okPressed"}} class="close clickable"></a>
-      <h2>Effekte</h2>
+      <h2>{{t effects.effects}}</h2>
 
       <h3>{{t resource.productionInfo.characterEffects}}</h3>
       {{#if loadingCharacterEffects}}
@@ -133,7 +132,7 @@
 
           </table>
         {{else}}
-          <p>Keine Spieler-Effekte vorhanden</p>
+          <p>{{t effects.characterEffectsNotAvailable}}</p>
         {{/if}}
       {{/if}}
 
@@ -172,7 +171,7 @@
 
           </table>
         {{else}}
-          <p>Keine Allianz-Effekte vorhanden</p>
+          <p>{{t effects.allianceEffectsNotAvailable}}</p>
         {{/if}}
       {{/if}}
 
