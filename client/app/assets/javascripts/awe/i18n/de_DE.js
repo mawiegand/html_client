@@ -24,7 +24,7 @@ AWE.I18n.de_DE = function(module) {
       start:    'Start',
 
       processing: 'Verarbeiten...',
-      unknown:  'Unbekannt.',
+      unknown:  'Unbekannt',
       naivePlural: 'n',
       
       perHour:  'pro Stunde',
@@ -465,7 +465,7 @@ AWE.I18n.de_DE = function(module) {
         platinumAccountHeader: "Juhuu!",
         platinumAccountMessage: "Der Platinum Account wurde aktiviert. Platinum Features sind ab sofort freigeschaltet.",
         bonusHeader: "Juhuu!",
-        bonusMessage: "Der Bonus Effekt wurde aktiviert und wird Deinem Stamm helfen seinen Wohlstand zu mehren.",
+        bonusMessage: "Der Bonus wurde aktiviert und wird Deinem Stamm helfen seinen Wohlstand zu mehren.",
       },
     },
     
@@ -940,15 +940,15 @@ AWE.I18n.de_DE = function(module) {
         dailyProduction: "Tagesproduktion",
         capacity: "Lagerkapazität",
         capacityReachedIn: "Lager voll in",
-        characterEffects: "Spieler-Effekte",
-        allianceEffects: "Allianz-Effekte",
+        characterEffects: "Spieler-Boni",
+        allianceEffects: "Allianz-Boni",
         effectDetails: "Details",
         baseProduction: "Basisproduktion",
         full: "voll",
     
         help1: "Rohstoffe werden durch",
         help2: "in der Hauptsiedlung und in Außenposten produziert oder in Festungen als",
-        help3: "eingenommen. In dieser Übersicht angezeigte Effekte wirken im gesamten Herrschaftsgebiet auf die",
+        help3: "eingenommen. In dieser Übersicht angezeigte Boni wirken im gesamten Herrschaftsgebiet auf die",
         help4: "von Gebäuden und können zum Beispiel in der",
         help5: "erhöht werden.",
       },
@@ -960,12 +960,23 @@ AWE.I18n.de_DE = function(module) {
         tax: "Steuern",
       },
     },
+
+    effects: {
+      effects: "Boni",
+      type0: "Fundgrube",
+      type1: "Artefakt",
+      characterEffectsNotAvailable: "Keine Spieler-Boni vorhanden.",
+      allianceEffectsNotAvailable: "Keine Allianz-Boni vorhanden.",
+    },
     
     likesystem: {
       notEnoughLikeAmount: "Du hast zu wenig Likes um einen Like zu senden.",
       notEnoughDislikeAmount: "Du hast zu wenig Dislikes um einen Dislike zu senden.",
       cancelText: ['Argh!', 'Grmpf!', 'Hmpf', 'Na gut.', 'Narf'],
       alreadyLikedInfo: "Du hast diesen Spieler in den letzten 24 Stunden schon einmal bewertet.",
+      likesAvailable: "Likes verfügbar",
+      dislikesAvailable: "Dislikes verfügbar",
+      info: "Es steht nur eine begrenzte Menge von Likes und Dislikes zur Verfügung. Nach dem Gebrauch regeneriert sich der Vorrat langsam.",
     },
     
     ranking: {

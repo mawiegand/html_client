@@ -39,11 +39,11 @@ AWE.GS = (function(module) {
     type: function() {
       switch (this.get('type_id')) {
         case 0:
-          return 'Kaufbonus';
+          return AWE.I18n.lookupTranslation('effects.type0');
         case 1:
-          return 'Artefakt';
+          return AWE.I18n.lookupTranslation('effects.type1');
         default:
-          return 'Unbekannt';
+          return AWE.I18n.lookupTranslation('general.unknown');
       }
     }.property('type_id').cacheable(),
   });
