@@ -192,47 +192,6 @@ AWE.GS = function (module) {
       return that.getEntity(id);
     }
 
-    that.getArtifactCount = function () {
-      return AWE.Util.arrayCount(that.getEntities());
-    }
-
-    that.getArtifactRanking = function (order) {
-      if (order == null) {
-        order = 'id';
-      }
-      var artifacts = that.getEntities();
-      var artifactRanking = [];
-      artifacts.forEach(function(artifact) {
-        var artifactRankingEntry = Ember.Object.create({
-          artifact: artifact,
-        });
-        artifactRanking.push(artifactRankingEntry);
-      });
-      artifactRanking.sort(function(entry1, entry2) {
-        if (entry1.get('artifact').get(order) == null) {
-          return 1;
-        }
-        if (entry2.get('artifact').get(order) == null) {
-          return -1;
-        }
-        if (typeof(entry1.get('artifact').get(order)) == 'string') {
-          return entry1.get('artifact').get(order) < entry2.get('artifact').get(order) ? -1 : 1;
-        }
-        else {
-          return entry1.get('artifact').get(order) - entry2.get('artifact').get(order);
-        }
-      });
-      var rank = 1;
-      artifactRanking.forEach(function(artifactRankingEntry) {
-        artifactRankingEntry.set('rank', rank++);
-      });
-      return artifactRanking;
-    }
-
-    that.getArtifactRankingPage = function (page, order) {
-      return that.getArtifactRanking(order).slice((page - 1) * AWE.Config.RANKING_LIST_ENTRIES, page * AWE.Config.RANKING_LIST_ENTRIES);
-    }
-
     that.getArtifactsInRegion = function (id) {
       return AWE.GS.ArtifactAccess.getAllForRegion_id(id)
     }

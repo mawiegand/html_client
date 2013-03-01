@@ -1005,6 +1005,7 @@ AWE.I18n.de_DE = function(module) {
       income: 'Ressourcenrate',
       defenseBonus: 'Kampfbonus',
       name: "Name",
+      type: "Typ",
       region: "Region",
       artifacts: "Artefakte",
       artifact: "Artefakt",
