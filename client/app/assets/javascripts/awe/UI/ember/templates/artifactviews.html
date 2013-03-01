@@ -4,17 +4,21 @@
     <div class="modal-dialog-pane z-layer-4 artifact-info-view">
       <a {{action "closePressed"}} class="close clickable"></a>
       <div class="advisor girl"></div>
-      <h2>{{local artifact.artifactType.name}}</h2>
-      <p class="citation">{{local artifact.artifactType.flavour}}</p>
-      <p>{{{description}}}</p>
-      <p><b>{{t settlement.artifact.owner}}:</b> {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
-      <p><b>{{t settlement.artifact.captured_at}}:</b> {{formatDatetime artifact.last_captured_at}}</p>
-      {{#if settlement.artifact.initiated}}
-        <p><b>{{t settlement.artifact.initiated_at}}:</b>
-        {{formatDatetime artifact.last_initiated_at}}
-        </p>
+      {{#if artifact}}
+        <h2>{{local artifact.artifactType.name}}</h2>
+        <p class="citation">{{local artifact.artifactType.flavour}}</p>
+        <p>{{{description}}}</p>
+        <p><b>{{t settlement.artifact.owner}}:</b> {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
+        <p><b>{{t settlement.artifact.captured_at}}:</b> {{formatDatetime artifact.last_captured_at}}</p>
+        {{#if settlement.artifact.initiated}}
+          <p><b>{{t settlement.artifact.initiated_at}}:</b>
+          {{formatDatetime artifact.last_initiated_at}}
+          </p>
+        {{/if}}
+        {{view AWE.UI.Ember.ArtifactBonusView artifactBinding="artifact"}}
+      {{else}}
+        <p>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}</p>
       {{/if}}
-      {{view AWE.UI.Ember.ArtifactBonusView artifactBinding="artifact"}}
     </div>
   </div>
 </script>

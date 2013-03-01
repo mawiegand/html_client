@@ -174,7 +174,7 @@
       {{#each artifactRankingEntries}}
         <tr {{bindAttr class="this.ownEntry:bold"}}>
           <td><a class="clickable" {{action "artifactPressed"}}>{{local this.name}}</a></td>
-          <td><a class="clickable" {{action "characterPressed"}}>{{this.owner_name}}</a>{{#if this.alliance.tag}} | <a class="clickable" {{action "alliancePressed"}}>{{this.alliance.tag}}{{/if}}</a></td>
+          <td><a class="clickable" {{action "characterPressed"}}>{{this.owner_name}}</a>{{#if this.alliance_tag}} | <a class="clickable" {{action "alliancePressed"}}>{{this.alliance_tag}}{{/if}}</a></td>
           <td><a class="clickable" {{action "regionPressed"}}>{{this.region_name}}</a></td>
           <td class="datetime">{{formatDatetime this.last_captured_at}}</td>
           <td class="datetime">{{formatDatetime this.last_initiated_at}}</td>
