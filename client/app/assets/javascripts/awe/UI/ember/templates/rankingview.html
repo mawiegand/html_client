@@ -164,7 +164,7 @@
 <script type="text/x-handlebars" data-template-name="artifact-ranking-view">
   <table class="ranking-table">
     <tr>
-      <th {{bindAttr class="sortedByName :clickable :name"}} {{action "sortByName"}}>{{t ranking.name}}</th>
+      <th {{bindAttr class="sortedByName :clickable :name"}} {{action "sortByName"}}>{{t ranking.type}}</th>
       <th {{bindAttr class="sortedByOwner :clickable :owner"}} {{action "sortByOwner"}}>{{t ranking.owner}}</th>
       <th {{bindAttr class="sortedByRegion :clickable :region"}} {{action "sortByRegion"}}>{{t ranking.region}}</th>
       <th {{bindAttr class="sortedByCapture :clickable :capture"}} {{action "sortByCapture"}}>{{t ranking.captured}}</th>
@@ -173,11 +173,11 @@
     {{#if artifactRankingEntries}}
       {{#each artifactRankingEntries}}
         <tr {{bindAttr class="this.ownEntry:bold"}}>
-          <td><a class="clickable" {{action "artifactPressed"}}>{{this.artifact.name}}</a></td>
-          <td><a class="clickable" {{action "characterPressed"}}>{{this.artifact.ownerName}}</a>{{#if this.artifact.alliance.tag}} | <a class="clickable" {{action "alliancePressed"}}>{{this.artifact.alliance.tag}}{{/if}}</a></td>
-          <td><a class="clickable" {{action "regionPressed"}}>{{this.artifact.regionName}}</a></td>
-          <td class="datetime">{{formatDatetime this.artifact.last_captured_at}}</td>
-          <td class="datetime">{{this.artifact.initiationTime}}</td>
+          <td><a class="clickable" {{action "artifactPressed"}}>{{local this.name}}</a></td>
+          <td><a class="clickable" {{action "characterPressed"}}>{{this.owner_name}}</a>{{#if this.alliance.tag}} | <a class="clickable" {{action "alliancePressed"}}>{{this.alliance.tag}}{{/if}}</a></td>
+          <td><a class="clickable" {{action "regionPressed"}}>{{this.region_name}}</a></td>
+          <td class="datetime">{{formatDatetime this.last_captured_at}}</td>
+          <td class="datetime">{{formatDatetime this.last_initiated_at}}</td>
         </tr>
       {{/each}}
       {{#each emptyArtifactRankingEntries}}

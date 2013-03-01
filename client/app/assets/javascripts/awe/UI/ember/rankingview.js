@@ -502,23 +502,27 @@ AWE.UI.Ember = (function(module) {
   module.ArtifactRankingView = module.RankingView.extend({
     templateName: 'artifact-ranking-view',
 
-    sortOrder: 'id',
-
     init: function() {
-      var self = this;
-      self.set('artifactCount', AWE.GS.ArtifactManager.getArtifactCount());
-      if (AWE.GS.game.get('artifacts') == null) {
-        AWE.GS.ArtifactManager.updateArtifacts(null, function() {
-          AWE.GS.game.set('artifactRanking', AWE.GS.ArtifactManager.getArtifactRankingPage(1, self.get('sortOrder')));
-          self.set('artifactCount', AWE.GS.ArtifactManager.getArtifactCount());
+      if (AWE.GS.game.get('artifactRanking') == null) {
+        AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, null, function(ranking) {
         });
       }
       this._super();
     },
 
-    artifactCount: null,
-
-    artifactRankingEntriesBinding: 'AWE.GS.game.artifactRanking',
+    artifactRankingEntries: function() {
+      var entries = [];
+      var rankingEntries = AWE.GS.game.get('artifactRanking');
+      if (rankingEntries) {
+        AWE.Ext.applyFunctionToHash(rankingEntries, function(id, rankingEntry) {
+          entries.push(rankingEntry);
+        });
+      }
+      entries.sort(function(a, b) {
+        return a.get('rank') - b.get('rank');
+      });
+      return entries;
+    }.property('AWE.GS.game.artifactRanking').cacheable(),
 
     emptyArtifactRankingEntries: function() {
       var entries = this.get('artifactRankingEntries');
@@ -526,7 +530,7 @@ AWE.UI.Ember = (function(module) {
         return new Array(AWE.Config.RANKING_LIST_ENTRIES);
       }
       else {
-        return new Array(AWE.Config.RANKING_LIST_ENTRIES - AWE.Util.arrayCount(entries));
+        return new Array(AWE.Config.RANKING_LIST_ENTRIES - entries.length);
       }
     }.property('artifactRankingEntries').cacheable(),
 
@@ -538,20 +542,15 @@ AWE.UI.Ember = (function(module) {
       else {
         return 1;
       }
-    }.property('artifactRankingEntries').cacheable(),
+    }.property('AWE.GS.game.artifactRanking').cacheable(),
 
     maxPage: function() {
-      var entries = this.get('artifactRankingEntries');
-      if (entries != null && entries.length > 0) {
-        return Math.ceil(1.0 * this.get('artifactCount') / AWE.Config.RANKING_LIST_ENTRIES);
-      }
-      else {
-        return 1;
-      }
-    }.property('artifactRankingEntries').cacheable(),
+      return Math.ceil(AWE.GS.game.rankingInfo.artifact_entries_count / AWE.Config.RANKING_LIST_ENTRIES);
+    }.property('AWE.GS.game.rankingInfo.artifact_entries_count').cacheable(),
 
     gotoPage: function(page) {
-      AWE.GS.game.set('artifactRanking', AWE.GS.ArtifactManager.getArtifactRankingPage(page, this.get('sortOrder')));
+      AWE.GS.game.set('artifactRanking', null);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(page, this.get('sortOrder'));
     },
 
     sortedByName: function() {
@@ -559,17 +558,19 @@ AWE.UI.Ember = (function(module) {
     }.property('sortOrder').cacheable(),
 
     sortByName: function() {
-      AWE.GS.game.set('artifactRanking', AWE.GS.ArtifactManager.getArtifactRankingPage(this.get('currentPage'), 'name'));
+      AWE.GS.game.set('artifactRanking', null);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'name');
       this.set('sortOrder', 'name');
     },
 
     sortedByOwner: function() {
-      return this.get('sortOrder') === 'ownerName' ? 'sortOrder' : '';
+      return this.get('sortOrder') === 'owner_name' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
 
     sortByOwner: function() {
-      AWE.GS.game.set('artifactRanking', AWE.GS.ArtifactManager.getArtifactRankingPage(this.get('currentPage'), 'ownerName'));
-      this.set('sortOrder', 'ownerName');
+      AWE.GS.game.set('artifactRanking', null);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'owner_name');
+      this.set('sortOrder', 'owner_name');
     },
 
     sortedByRegion: function() {
@@ -577,8 +578,9 @@ AWE.UI.Ember = (function(module) {
     }.property('sortOrder').cacheable(),
 
     sortByRegion: function() {
-      AWE.GS.game.set('artifactRanking', AWE.GS.ArtifactManager.getArtifactRankingPage(this.get('currentPage'), 'regionName'));
-      this.set('sortOrder', 'regionName');
+      AWE.GS.game.set('artifactRanking', null);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'region_name');
+      this.set('sortOrder', 'region_name');
     },
 
     sortedByCapture: function() {
@@ -586,17 +588,19 @@ AWE.UI.Ember = (function(module) {
     }.property('sortOrder').cacheable(),
 
     sortByCapture: function() {
-      AWE.GS.game.set('artifactRanking', AWE.GS.ArtifactManager.getArtifactRankingPage(this.get('currentPage'), 'last_captured_at'));
+      AWE.GS.game.set('artifactRanking', null);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'last_captured_at');
       this.set('sortOrder', 'last_captured_at');
     },
 
     sortedByInitiation: function() {
-      return this.get('sortOrder') === 'initiationTime' ? 'sortOrder' : '';
+      return this.get('sortOrder') === 'last_initiated_at' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
 
     sortByInitiation: function() {
-      AWE.GS.game.set('artifactRanking', AWE.GS.ArtifactManager.getArtifactRankingPage(this.get('currentPage'), 'initiationTime'));
-      this.set('sortOrder', 'initiationTime');
+      AWE.GS.game.set('artifactRanking', null);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'last_initiated_at');
+      this.set('sortOrder', 'last_initiated_at');
     },
 
     artifactPressed: function(evt) {
@@ -616,7 +620,7 @@ AWE.UI.Ember = (function(module) {
 
     characterPressed: function(evt) {
       var entry = evt.context;
-      var characterId = entry.getPath('artifact.owner_id');
+      var characterId = entry.getPath('owner_id');
       if (characterId != null) {
         var dialog = AWE.UI.Ember.CharacterInfoDialog.create({
           characterId: characterId,
@@ -628,7 +632,7 @@ AWE.UI.Ember = (function(module) {
 
     alliancePressed: function(evt) {
       var entry = evt.context;
-      var allianceId = entry.getPath('artifact.alliance_id');
+      var allianceId = entry.getPath('alliance_id');
       if (allianceId != null) {
         WACKADOO.activateAllianceController(allianceId);
         WACKADOO.closeAllModalDialogs();
@@ -638,7 +642,7 @@ AWE.UI.Ember = (function(module) {
 
     regionPressed: function(evt) {
       var entry = evt.context;
-      var regionId = entry.getPath('artifact.region_id');
+      var regionId = entry.getPath('region_id');
       var region = AWE.Map.Manager.getRegion(regionId);
       if (region != null) {
         var mapController = WACKADOO.activateMapController(true);
@@ -669,8 +673,7 @@ AWE.UI.Ember = (function(module) {
     currentPage: null,
     
     nextPage: function() {
-      log('---> currentPage', this.get('currentPage'));
-      return this.get('currentPage') + 1; 
+      return this.get('currentPage') + 1;
     }.property('currentPage').cacheable(),
     
     nextNextPage: function() {
