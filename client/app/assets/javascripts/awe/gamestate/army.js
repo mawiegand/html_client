@@ -186,8 +186,8 @@ AWE.GS = (function(module) {
     }.property('isDefendingFortress').cacheable(),
     
     empty: function() {
-      return false;
-    },
+      return !this.get('size_present') > 0;
+    }.property('size_present').cacheable(),
     
     relation: function() {
       return module.Relation.relationTo(this.get('owner_id'), this.get('alliance_id'));
