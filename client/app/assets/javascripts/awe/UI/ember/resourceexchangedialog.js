@@ -21,9 +21,6 @@ AWE.UI.Ember = (function(module) {
     left: null,
     loading: null,
     loading2: null,
-    /* Timervariablen */
-    /*seconds: null,
-    timer: null,*/
 
     init: function() {
       this._super();
@@ -34,12 +31,6 @@ AWE.UI.Ember = (function(module) {
         self.updateResources();
         self.set('loading', false);
       });
-      
-      /* Timer zum Atkualisieren */
-      /*var self = this;
-      this.set('timer', setInterval(function() {
-	      self.updateResources();
-      }, 500));*/
     },
 
     updateResources: function() {
@@ -49,40 +40,37 @@ AWE.UI.Ember = (function(module) {
         this.set('stone_capacity', Math.floor(AWE.GS.ResourcePoolManager.getResourcePool().resource_stone_capacity));
         this.set('wood_capacity',  Math.floor(AWE.GS.ResourcePoolManager.getResourcePool().resource_wood_capacity));
         this.set('fur_capacity',   Math.floor(AWE.GS.ResourcePoolManager.getResourcePool().resource_fur_capacity));
-        this.set('sum',   this.get('stone')+this.get('wood')+this.get('fur'));
+        this.set('sum',   this.get('stone')+this.get('wood')+Math.floor(this.get('fur')*2));
         this.set('left',  0); /* initial value is always 0 */
     },
 
+    /* return html class for properties */
     stoneClass: function() {
+      if(this.get('stone') < 0) this.set('stone', this.get('stone')*(-1));
       this.set('left', this.leftOver());
       return this.get('stone') > this.get('stone_capacity') ? 'red-color bold' : '';
     }.property('stone'),
    
     woodClass: function() {
+      if(this.get('wood') < 0) this.set('wood', this.get('wood')*(-1));
       this.set('left', this.leftOver());
       return this.get('wood') > this.get('wood_capacity') ? 'red-color bold' : '';
     }.property('wood'),
    
     furClass: function() {
+      if(this.get('fur') < 0) this.set('fur', this.get('fur')*(-1));
       this.set('left', this.leftOver());
       return this.get('fur') > this.get('fur_capacity') ? 'red-color bold' : '';
     }.property('fur'),
 
-    leftOver: function() {
-      return this.get('sum')-this.get('stone')-this.get('wood')-this.get('fur');
-    },
-
     remainingClass: function() {
       return this.left < 0 ? 'red-color bold' : '';
     }.property('left'),
-   
-    /*
-    willDestroyElement: function() {
-      var timer = this.get('timer');
-      if (timer) {
-        clearInterval(timer);
-      }
-    },*/ 
+
+    /* values */
+    leftOver: function() {
+      return this.get('sum')-this.get('stone')-this.get('wood')-Math.floor(this.get('fur')*2);
+    },
 
     okClicked: function() {
       var self = this;
@@ -173,7 +161,4 @@ AWE.UI.Ember = (function(module) {
   return module;
     
 }(AWE.UI.Ember || {}));
-
-
-
 
