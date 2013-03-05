@@ -65,6 +65,7 @@ AWE.UI = (function(module) {
     that.updateButtonState = function() {
       if (attackButton) {
         attackButton.setSelected(_actionMode === 'attackTargetSelection');
+        attackButton.setEnabled(my.location.garrisonArmy() && !my.location.garrisonArmy().get('empty'));
       }
     }
 
