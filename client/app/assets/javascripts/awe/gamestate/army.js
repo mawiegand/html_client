@@ -123,6 +123,7 @@ AWE.GS = (function(module) {
     battle_retreat: false,
     
     suspension_ends_at: null,
+    attack_protection_ends_at: null,
     
     target_location_id: null,
     target_reached_at: null,
@@ -165,6 +166,10 @@ AWE.GS = (function(module) {
       return this.get('suspension_ends_at') !== null && Date.parseISODate(this.get('suspension_ends_at')).getTime() > AWE.GS.TimeManager.estimatedServerTime().getTime();
     }.property('suspension_ends_at').cacheable(),
     
+    isProtected: function() {
+      return this.get('attack_protection_ends_at') !== null && Date.parseISODate(this.get('attack_protection_ends_at')).getTime() > AWE.GS.TimeManager.estimatedServerTime().getTime();
+    }.property('attack_protection_ends_at').cacheable(false),
+
     isMoving: function() {
       return this.get('mode') === 1;
     }.property('mode').cacheable(),    
@@ -282,13 +287,22 @@ AWE.GS = (function(module) {
       return false;
     },
     
-    sameAllianceAs: function(location) {
-      var armyAllianceId = this.get('alliance_id');
-      var locationAllianceId = location.allianceId();
+    sameAllianceAs: function(otherArmy) {
+      var thisArmyAllianceId = this.get('alliance_id');
+      var otherArmyAllianceId = otherArmy.get('alliance_id');
       
-      return armyAllianceId != null && armyAllianceId > 0 &&
-             locationAllianceId != null && locationAllianceId > 0 &&
-             armyAllianceId == locationAllianceId;
+      return thisArmyAllianceId != null && thisArmyAllianceId > 0 &&
+        otherArmyAllianceId != null && otherArmyAllianceId > 0 &&
+        thisArmyAllianceId == otherArmyAllianceId;
+    },
+    
+    sameOwnerAs: function(otherArmy) {
+      var thisArmyOwnerId = this.get('owner_id');
+      var otherArmyOwnerId = otherArmy.get('owner_id');
+      
+      return thisArmyOwnerId != null && thisArmyOwnerId > 0 &&
+        otherArmyOwnerId != null && otherArmyOwnerId > 0 &&
+        thisArmyOwnerId == otherArmyOwnerId;
     },
   });     
 
