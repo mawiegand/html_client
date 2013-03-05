@@ -40,6 +40,15 @@ AWE.UI.Ember = (function(module) {
       return false; // don't execute default action
     },
     
+    speedupPressed: function() {
+      var self = this;
+      this.set('sending', true);
+      this.getPath('parentView.controller').speedupTradingCartAction(this.getPath('tradingCartAction.id'), function(status) {
+        self.set('sending', false);
+      });  
+      return false; // don't execute default action
+    },
+    
     outgoing: function() {
       return this.getPath('settlement.id') === (this.getPath('tradingCartAction.starting_settlement_id') || -1);
     }.property('settlement.id', 'tradingCartAction.starting_settlement_id'),

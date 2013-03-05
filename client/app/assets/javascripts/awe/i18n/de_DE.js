@@ -582,6 +582,8 @@ AWE.I18n.de_DE = function(module) {
         origin: "Herkunft",
         destination: "Ziel",
         amount: "Menge",
+        hurry: "Hurtig!",
+        hurryTooltip: "Gib Goldkröten aus um die Handelskarren zu beschleunigen.",
 
         error: {
           recipientUnknown: "Deine Anhänger sind viel zu faul, als dass sie Ressourcen an sich selbst senden würden.",

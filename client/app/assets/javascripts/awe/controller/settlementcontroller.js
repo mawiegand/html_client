@@ -600,6 +600,32 @@ AWE.Controller = (function(module) {
       });
     }
     
+    that.speedupTradingCartAction = function(tradingCartActionId, callback) {
+      var action = AWE.Action.Trading.createTradingCartSpeedupAction(tradingCartActionId);
+      action.send(function(status) {
+        if (status === AWE.Net.OK) {
+          AWE.GS.TradingCartActionManager.updateTradingCartAction(tradingCartActionId, function() {
+            if (callback) {
+              callback(status);
+            }
+          });
+        }  
+        else {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });          
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the trading carts speedup command.");
+          if (callback) {
+            callback(status);
+          }
+        }
+      });
+    }
+    
     that.startArtifactInitiation = function(artifact, callback) {
       var action = AWE.Action.Fundamental.createStartArtifactInitiationAction(artifact);
       action.send(function(status) {

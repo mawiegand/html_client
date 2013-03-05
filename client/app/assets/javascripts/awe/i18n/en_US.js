@@ -598,6 +598,8 @@ AWE.I18n.en_US = function(module) {
         origin:"Origin",
         destination:"Destination",
         amount:"amount",
+        hurry: "Hurtig!",
+        hurryTooltip: "Gib Goldkröten aus um die Handelskarren zu beschleunigen.",
 
         error:{
           recipientUnknown:"Your workers are far to lazy to send resources to themself.",
