@@ -487,7 +487,7 @@ AWE.UI = (function(module) {
       if (_army.get('isProtected') && !_protectionView) {
         _protectionView = AWE.UI.createImageView();
         _protectionView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage('map/army/protected'));
-        _protectionView.setFrame(AWE.Geometry.createRect(32, -34, 32, 32));
+        _protectionView.setFrame(AWE.Geometry.createRect(32, -64, 32, 32));
         _protectionView.onClick = that.onClick;
         _protectionView.onDoubleClick = that.onDoubleClick;
         _protectionView.onMouseOver = that.onMouseOver;
