@@ -266,7 +266,7 @@ AWE.Map = (function(module) {
           if (subtree.path().length >= _path.length &&
               (subtree.path().substr(0,_path.length) == _path)
               ) {
-            var node = that.traverse(subtree.path().substr(_path.length));
+            node = that.traverse(subtree.path().substr(_path.length));
           }
           
           if (!node) {
