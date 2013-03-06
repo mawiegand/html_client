@@ -184,7 +184,6 @@ AWE.UI.Ember = (function(module) {
             if (attackerArmy != otherArmy &&
                 defenderArmy != otherArmy &&
                 !otherArmy.get('isFighting') &&
-                !otherArmy.get('isProtected') &&
                 (otherArmy.sameAllianceAs(attackerArmy) || otherArmy.sameOwnerAs(attackerArmy)) &&
                 !self.factionContainsArmyOf(enemyArmies, otherArmy.get('owner_id')) &&
                 otherArmy.get('isDefendingFortress')) {
@@ -198,7 +197,6 @@ AWE.UI.Ember = (function(module) {
             if (attackerArmy != otherArmy &&
                 defenderArmy != otherArmy &&
                 !otherArmy.get('isFighting') &&
-                !otherArmy.get('isProtected') &&
                 (otherArmy.sameAllianceAs(defenderArmy) || otherArmy.sameOwnerAs(defenderArmy)) &&
                 !self.factionContainsArmyOf(friendlyArmies, otherArmy.get('owner_id')) &&
                 (otherArmy.get('isDefendingFortress') || otherArmy.get('garrison'))) {
@@ -214,7 +212,6 @@ AWE.UI.Ember = (function(module) {
             if (attackerArmy != otherArmy &&
                 defenderArmy != otherArmy &&
                 !otherArmy.get('isFighting') &&
-                !otherArmy.get('isProtected') &&
                 (otherArmy.sameAllianceAs(defenderArmy) || otherArmy.sameOwnerAs(defenderArmy)) &&
                 !self.factionContainsArmyOf(friendlyArmies, otherArmy.get('owner_id')) &&
                 (otherArmy.get('isDefendingFortress') || otherArmy.get('garrison'))) {
