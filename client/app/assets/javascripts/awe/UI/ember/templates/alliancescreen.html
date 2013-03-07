@@ -7,6 +7,8 @@
       {{#if isAllianceLeader}}
         <hr>
         {{view AWE.UI.Ember.AllianceManagementView controllerBinding="controller" allianceBinding="alliance"}}
+        <hr>
+        {{view AWE.UI.Ember.AllianceReservationView controllerBinding="controller" allianceBinding="alliance"}}
       {{/if}}
       <hr>
       {{view AWE.UI.Ember.ShoutBox controllerBinding="controller" shoutsBinding="controller.content.shouts" }}
@@ -82,8 +84,26 @@
     {{/if}}
     {{view Ember.TextField class="text-field" placeholder="alliance password" type="text" valueBinding="password"}} 
     {{#if ongoingAction}}
-      {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}...
+      {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
     {{else}}
+      {{#if modifiedPassword}}
+        <div class="icon-button ok-button" {{action "changePassword"}}>{{t alliance.changePassword}}</div>
+      {{/if}}
+    {{/if}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="alliance-reservation">
+  <div class="alliance-reservation">
+    <h1>{{t alliance.reservation }}</h1>
+    <p>{{t alliance.reservationDescription}}</p>
+    {{#if errorMessage}}
+      <p class="red-color">{{errorMessage}}</p>
+    {{/if}}
+    {{#if ongoingAction}}
+      {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.loading}}
+    {{else}}
+      {{view Ember.TextField class="text-field" placeholder="new reservation password" type="text" valueBinding="password"}}
       {{#if modifiedPassword}}
         <div class="icon-button ok-button" {{action "changePassword"}}>{{t alliance.changePassword}}</div>
       {{/if}}

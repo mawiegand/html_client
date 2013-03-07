@@ -22,6 +22,7 @@ AWE.I18n.de_DE = function(module) {
       with:     'mit',
       change:   'ändern',
       start:    'Start',
+      loading:  'Laden...',
 
       processing: 'Verarbeiten...',
       unknown:  'Unbekannt',
@@ -340,16 +341,25 @@ AWE.I18n.de_DE = function(module) {
 
     alliance: {
       memberOf: "Du bist derzeit ein Mitglied der Allianz ",
-      joinAlliance: "Allianz beitreten",
+      joinAllianceHeader: "Allianzbeitritt",
+      joinAllianceButton: "Allianz beitreten",
       joinAllianceText: "Tritt einer existierenden Allianz bei, indem du ihr Kürzel und das geheime Allianzpasswort eingibst.",
       createAlliance: "Allianz gründen",
       createAllianceText: "Gründe eine neue Allianz, mit dir als Anführer.",
+      redeemAllianceReservationHeader: "Allianzreservierung",
+      redeemAllianceReservationButton: "Allianzreservierung einlösen",
+      redeemAllianceReservationText: "Löse die Reservierung einer Allianz aus einer vergangenen Runde ein, indem du ihr Kürzel und das geheime Reservierungspasswort eingibst.",
       leave: "Verlasse",
 
       founded: 'Gründung',
       leader: 'Anführer',
       description: 'Beschreibung',
       management: 'Geheime Allianzlosung',
+      reservation: 'Reservierung für die nächste Runde',
+      reservationDescription: 'Als Allianzanführer kannst du deine Allianz für die nächste Runde reservieren. Um die Reservierung in der nächsten ' +
+        'Runde einzulösen, benötigst du den Allianztag und ein Password.',
+      reservationDescriptionNew: 'Setze jetzt ein Passwort.',
+      reservationDescriptionChange: 'Ändere das Passwort.',
       message: 'Nachricht des Tages',
       messageExplanation: 'Nur für Mitglieder sichtbar!',
       members: 'Mitglieder',
@@ -390,6 +400,9 @@ AWE.I18n.de_DE = function(module) {
         tagTaken: "Das Kürzel wird bereits von einer anderen Allianz benutzt.",
         noPermissionCreate: "Du hast nicht die Befugnis eine Allianz zu gründen.",
         unknownCreate: "Die Allianz zu gründen ist aus unbekanntem Grund fehlgeschlagen.",
+      },
+      success: {
+        passwordSet: "Das Passwort wurde gespeichert."
       },
       confirmKick: {
         heading: "Aktion bestätigen",

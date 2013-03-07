@@ -498,22 +498,29 @@
     {{#if character.alliance_id}}
       <p>
         {{t alliance.memberOf}} [{{character.alliance_tag}}].
-        <div class="icon-button cancel-button" {{action "leaveAlliance"}}>{{t alliance.leave}} {{character.alliance_tag}}</div>
+        <span class="simple-button clickable" {{action "leaveAlliance"}}>{{t alliance.leave}} {{character.alliance_tag}}</span>
       </p>
     {{else}}
+      <h4>{{formHeader}}</h4>
+      <p>{{formDescription}}</p>
       <p>
-        {{t alliance.joinAllianceText}}<br/>
-        {{view Ember.TextField class="text-field" placeholder="alliance tag" type="text" valueBinding="allianceTag"}} 
-        {{view Ember.TextField class="text-field" placeholder="password" type="text" valueBinding="alliancePassword"}} 
-        <div class="icon-button ok-button" {{action "joinAlliance"}}>{{t alliance.joinAlliance}}</div>
+        {{view Ember.TextField class="small-text-field" placeholder="alliance tag" type="text" valueBinding="allianceTag"}}
+        {{view Ember.TextField class="small-text-field" placeholder="password" type="text" valueBinding="alliancePassword"}}
+        <span class="simple-button" {{action "joinAlliance"}}>{{formButton}}</span>
       </p>
-  
+
+      <h4>{{formSwitchHeader}}</h4>
+      <p>
+        <span class="simple-button" {{action "switchForm"}}>{{formSwitchButton}}</span>
+      </p>
+
       {{#if unlockedAllianceCreation}}
+        <h4>{{t alliance.createAlliance}}</h4>
+        <p>{{t alliance.createAllianceText}}</p>
         <p>
-          {{t alliance.createAllianceText}}<br/>
-          {{view Ember.TextField class="text-field" placeholder="alliance tag" type="text" valueBinding="newAllianceTag"}} 
-          {{view Ember.TextField class="text-field" placeholder="alliance name" type="text" valueBinding="newAllianceName"}} 
-          <div class="icon-button ok-button" {{action "createAlliance"}}>{{t alliance.createAlliance}}</div>
+          {{view Ember.TextField class="small-text-field" placeholder="alliance tag" type="text" valueBinding="newAllianceTag"}}
+          {{view Ember.TextField class="small-text-field" placeholder="alliance name" type="text" valueBinding="newAllianceName"}}
+          <span class="simple-button" {{action "createAlliance"}}>{{t alliance.createAlliance}}</span>
         </p>
       {{/if}}
     {{/if}}
