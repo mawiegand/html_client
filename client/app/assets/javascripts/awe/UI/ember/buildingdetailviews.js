@@ -238,7 +238,55 @@ AWE.UI.Ember = (function(module) {
     
     errorMessage:     null,
     ongoingAction:    false,
-    
+
+    redeemReservation: false,
+
+    formHeader: function() {
+      if (this.get('redeemReservation')) {
+        return AWE.I18n.lookupTranslation('alliance.redeemAllianceReservationHeader');
+      }
+      else {
+        return AWE.I18n.lookupTranslation('alliance.joinAllianceHeader');
+      }
+    }.property('redeemReservation').cacheable(),
+
+    formDescription: function() {
+      if (this.get('redeemReservation')) {
+        return AWE.I18n.lookupTranslation('alliance.redeemAllianceReservationText');
+      }
+      else {
+        return AWE.I18n.lookupTranslation('alliance.joinAllianceText');
+      }
+    }.property('redeemReservation').cacheable(),
+
+    formButton: function() {
+      if (this.get('redeemReservation')) {
+        return AWE.I18n.lookupTranslation('alliance.redeemAllianceReservationButton');
+      }
+      else {
+        return AWE.I18n.lookupTranslation('alliance.joinAllianceButton');
+      }
+    }.property('redeemReservation').cacheable(),
+
+    formSwitchHeader: function() {
+      if (this.get('redeemReservation')) {
+        return AWE.I18n.lookupTranslation('alliance.joinAllianceHeader');
+      }
+      else {
+        return AWE.I18n.lookupTranslation('alliance.redeemAllianceReservationHeader');
+      }
+    }.property('redeemReservation').cacheable(),
+
+
+    formSwitchButton: function() {
+      if (this.get('redeemReservation')) {
+        return AWE.I18n.lookupTranslation('alliance.joinAllianceButton');
+      }
+      else {
+        return AWE.I18n.lookupTranslation('alliance.redeemAllianceReservationButton');
+      }
+    }.property('redeemReservation').cacheable(),
+
     resetError: function() {
       this.set('errorMessage', null);
     },
@@ -348,7 +396,11 @@ AWE.UI.Ember = (function(module) {
         }
         self.endAction();
       });          
-    }
+    },
+
+    switchForm: function() {
+      this.set('redeemReservation', !this.get('redeemReservation'));
+    },
     
   });  
   
