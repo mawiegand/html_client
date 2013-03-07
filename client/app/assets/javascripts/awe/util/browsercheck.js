@@ -13,7 +13,7 @@ AWE.Util.Browser = (function(module) {
 
   module.checkRequirements = function() {
     
-    requirementsSatisfied = !!(
+    var requirementsSatisfied = !!(
       Modernizr.canvas &&
       Modernizr.canvastext &&
       Modernizr.inlinesvg &&

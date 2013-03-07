@@ -62,7 +62,7 @@ AWE.GS = (function(module) {
     login_count: 0,
     
     resourcePool: null,
-    
+
     victories: 0,
     defeats: 0,
     
@@ -230,7 +230,7 @@ AWE.GS = (function(module) {
       if (locationOwner) {
         
         var rightOfWay = location.rightOfWay();
-        log('type? ', module.rightOfWayTypes[rightOfWay]);
+//        log('type? ', module.rightOfWayTypes[rightOfWay]);
         
         if (module.rightOfWayTypes[rightOfWay] == 'all') {
           return true;
@@ -329,7 +329,7 @@ AWE.GS = (function(module) {
      */
     that.updateCharacter = function(id, updateType, callback) {
       var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'characters/'+id;
-      return my.updateEntity(url, id, updateType, callback); 
+      return my.updateEntity(url, id, updateType, callback);
     };
   
     /** updates all characters in a given alliance. Calls the callback with a
@@ -370,7 +370,6 @@ AWE.GS = (function(module) {
         if (AWE.Settings.allianceInvitation) {
           url += '&alliance_invitation=' + AWE.Settings.allianceInvitation;
         }
-        log('SIGNUP URL', url, 'SETTINGS', AWE.Settings);
         return my.fetchEntitiesFromURL(
           url, 
           my.runningUpdatesPerId, 

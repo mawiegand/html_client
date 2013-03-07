@@ -36,7 +36,7 @@ AWE.UI.Ember = (function(module) {
     job: null,
     timer: null,
     
-    timeReamining: null,
+    timeRemaining: null,
     
     title: function() {
       var active = this.get('active');

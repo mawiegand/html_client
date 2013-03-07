@@ -17,7 +17,7 @@ AWE.UI.Ember = (function(module) {
     questStatesBinding: 'tutorialState.notClosedQuestStates',  
     
     redeemButtonPressed: function(questState) {
-      log('--> redeem Button Pressed', questState)
+//      log('--> redeem Button Pressed', questState)
       questState.set('redeeming', true);
       AWE.GS.TutorialStateManager.redeemRewards(questState, null, function() {
         questState.set('redeeming', false);
@@ -25,7 +25,7 @@ AWE.UI.Ember = (function(module) {
     },
     
     showQuestInfoPressed: function(quest) {
-      log('--> show Quest Info Button Pressed', quest)
+//      log('--> show Quest Info Button Pressed', quest)
       AWE.GS.TutorialStateManager.showQuestInfoDialog(quest);
     },
     

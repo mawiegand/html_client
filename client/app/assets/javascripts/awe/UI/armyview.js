@@ -43,19 +43,14 @@ AWE.UI = (function(module) {
     var _annotationView = null;
 
     var _battleView = null;
+    var _protectionView = null;
     var _animation  = null;
     var _stance = null;
-    var _stanceImage = null;
-    var _baseImage = null;  
-    var _baseShape = null;    
-    var _poleShape = null;    
+    var _baseImage = null;
     var _flagView = null;
     var _selectShape = null;    
     var _healthShape = null;    
     var _healthBGShape = null;   
-    var _movementView = null; 
-    var _movementArrow = null; 
-    var _movementETA = null; 
     var _actionPointsLabelView = null;
     
     var _frameRectShape = null;
@@ -331,7 +326,7 @@ AWE.UI = (function(module) {
               multiplyArray([7], (number % 29)+23),
               [8, 8],   // blink x1
               multiplyArray([7], (number % 17)+27),
-              multiplyArray([8, 8, 7, 7, 7,], (number % 3)),  // blink 0 to 2 times
+              multiplyArray([8,8,7,7,7], (number % 3)),  // blink 0 to 2 times
               multiplyArray([7], (number % 23)+17),
               multiplyArray([0,1,2,3,4,5,6],          (number % 3)+2),    // jump 2 to 4 times
               multiplyArray([7,7,7,7],                (number % 8)+1),    // pause for a while
@@ -489,6 +484,21 @@ AWE.UI = (function(module) {
         _battleView = null;
       }
       
+      if (_army.get('isProtected') && !_protectionView) {
+        _protectionView = AWE.UI.createImageView();
+        _protectionView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage('map/army/protected'));
+        _protectionView.setFrame(AWE.Geometry.createRect(32, -64, 32, 32));
+        _protectionView.onClick = that.onClick;
+        _protectionView.onDoubleClick = that.onDoubleClick;
+        _protectionView.onMouseOver = that.onMouseOver;
+        _protectionView.onMouseOut = that.onMouseOut;
+        this.addChildAt(_protectionView,0);
+      }
+      else if (!_army.get('isProtected') && _protectionView) {
+        this.removeChild(_protectionView);
+        _protectionView = null;
+      }
+
       if (!(_army.get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) && (_army.get("stance") != _stance || !_animation)) {
         var data = this.prepareSpriteSheet();
         _stance = _army.get('stance');

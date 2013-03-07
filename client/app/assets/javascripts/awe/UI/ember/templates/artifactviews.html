@@ -1,0 +1,111 @@
+<script type="text/x-handlebars" data-template-name="artifact-info-view">
+  <div class="modal-dialog-background z-layer-3"></div>
+  <div class="horizontal-center-helper">
+    <div class="modal-dialog-pane z-layer-4 artifact-info-view">
+      <a {{action "closePressed"}} class="close clickable"></a>
+      <div class="advisor girl"></div>
+      {{#if artifact}}
+        <h2>{{local artifact.artifactType.name}}</h2>
+        <p class="citation">{{local artifact.artifactType.flavour}}</p>
+        <p>{{{description}}}</p>
+        <p><b>{{t settlement.artifact.owner}}:</b> {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
+        <p><b>{{t settlement.artifact.captured_at}}:</b> {{formatDatetime artifact.last_captured_at}}</p>
+        {{#if settlement.artifact.initiated}}
+          <p><b>{{t settlement.artifact.initiated_at}}:</b>
+          {{formatDatetime artifact.last_initiated_at}}
+          </p>
+        {{/if}}
+        {{view AWE.UI.Ember.ArtifactBonusView artifactBinding="artifact"}}
+      {{else}}
+        <p>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}</p>
+      {{/if}}
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="artifact-initiation-view">
+
+  <h3>Artefakt einweihen</h3>
+
+  {{#if artifact}}
+    <p>Du bist im Besitzt des Artefakts <b>{{artifact.name}}</b></p>
+
+    {{#if artifact.initiated}}
+      <p>Das Artefakt ist eingeweiht.</p>
+    {{else}}
+      {{#if artifact.initiating}}
+        <p>Das Artefakt wird eingeweiht.</p>
+        <p><b>Einweihungsende:</b> {{formatTime artifact.initiation.finished_at}} (Restdauer: {{formatDuration timeRemaining}})&nbsp;&nbsp;&nbsp;&nbsp;
+        {{#if timeRemaining}}
+          {{#if artifact.initiation.hurried}}
+            ({{t settlement.artifact.hurried}})
+          {{else}}
+            {{#if sending}}
+              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t settlement.artifact.hurrying}}...</div>
+            {{else}}
+              <a class="artifact-speedup-button clickable" {{action "speedupInitiationPressed"}} title="{{t settlement.artifact.hurryTooltip}}">
+                {{t settlement.artifact.hurry }} {{artifactInitiationSpeedupCost timeRemaining}}
+                <span class="resource-icon {{artifactInitiationSpeedupResource timeRemaining}}">&nbsp;</span>
+              </a>
+            {{/if}}
+          {{/if}}
+        {{/if}}
+        </p>
+      {{else}}
+        {{#if sending }}
+          <div class="initiate">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t settlement.artifact.start}}...</div>
+        {{else}}
+          <a {{action "startInitiationPressed"}} class="initiate" title="{{t settlement.artifact.initiate}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png" alt="" /> {{t settlement.artifact.initiate}}</a>
+        {{/if}}
+        <p>Das Artefakt ist noch nicht eingeweiht.</p>
+        <p>
+        {{#if artifact.artifactType.initiation_costs}}
+          <b>{{t settlement.artifact.costs }}:</b>
+          {{#each artifact.initiationCosts}}
+            <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>{{amount}} &nbsp;
+          {{/each}}<br/>
+        {{/if}}
+        <b>{{t settlement.artifact.duration}}:</b> {{formatDuration artifact.initiationDuration}}</p>
+
+      {{/if}}
+    {{/if}}
+    {{view AWE.UI.Ember.ArtifactBonusView artifactBinding="artifact"}}
+  {{else}}
+    <p>Kein Artefakt vorhanden</p>
+  {{/if}}
+
+  {{#if errorMessage}}<p class="red-color"><b>{{errorMessage}}</b></p>{{/if}}
+
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="artifact-bonus-view">
+
+  <p>
+    {{#if characterBoni}}
+      <b>{{t settlement.artifact.characterBoni}}:</b>
+      {{#each characterBoni}}
+        <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal characterBoni.resourceType.name}}">&nbsp;</span>
+        +{{formatAsPercent bonus}} &nbsp;
+      {{/each}}<br/>
+    {{/if}}
+
+    {{#if allianceBoni}}
+      <b>{{t settlement.artifact.allianceBoni}}:</b>
+      {{#each allianceBoni}}
+        <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal allianceBoni.resourceType.name}}">&nbsp;</span>
+        +{{formatAsPercent bonus}} &nbsp;
+      {{/each}}<br/>
+    {{/if}}
+  </p>
+
+  {{#if artifact.isOwnProp}}
+    {{#if artifact.experienceProduction}}
+      <p><b>{{t building.produces}} ({{t general.perHour}}):</b>
+        <span class="xp-icon" title="XP">&nbsp;</span>
+        {{artifact.experienceProduction}}  &nbsp;
+      </p>
+    {{/if}}
+  {{/if}}
+
+</script>
