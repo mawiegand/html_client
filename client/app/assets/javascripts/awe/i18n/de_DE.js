@@ -340,6 +340,7 @@ AWE.I18n.de_DE = function(module) {
     },
 
     alliance: {
+      membershipHeader: "Allianzmitgliedschaft",
       memberOf: "Du bist derzeit ein Mitglied der Allianz ",
       joinAllianceHeader: "Allianzbeitritt",
       joinAllianceButton: "Allianz beitreten",

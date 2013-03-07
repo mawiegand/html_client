@@ -496,10 +496,9 @@
     {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
   {{else}}
     {{#if character.alliance_id}}
-      <p>
-        {{t alliance.memberOf}} [{{character.alliance_tag}}].
-        <span class="simple-button clickable" {{action "leaveAlliance"}}>{{t alliance.leave}} {{character.alliance_tag}}</span>
-      </p>
+      <h4>{{t alliance.membershipHeader}}</h4>
+      <p>{{t alliance.memberOf}} [{{character.alliance_tag}}].</p>
+      <p><span class="simple-button clickable" {{action "leaveAlliance"}}>{{t alliance.leave}} {{character.alliance_tag}}</span></p>
     {{else}}
       <h4>{{formHeader}}</h4>
       <p>{{formDescription}}</p>
