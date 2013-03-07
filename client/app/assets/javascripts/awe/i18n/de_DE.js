@@ -947,13 +947,8 @@ AWE.I18n.de_DE = function(module) {
         full: "voll",
     
         help1: "Rohstoffe werden durch",
-<<<<<<< HEAD:client/app/assets/javascripts/awe/i18n/de_DE.js.erb
         help2: "in der Hauptsiedlung und in Lagerstätten produziert oder in Festungen als",
-        help3: "eingenommen. In dieser Übersicht angezeigte Effekte wirken im gesamten Herrschaftsgebiet auf die",
-=======
-        help2: "in der Hauptsiedlung und in Außenposten produziert oder in Festungen als",
         help3: "eingenommen. In dieser Übersicht angezeigte Boni wirken im gesamten Herrschaftsgebiet auf die",
->>>>>>> 483c0104af68dbf31f504ad23f729a8df4a4605e:client/app/assets/javascripts/awe/i18n/de_DE.js
         help4: "von Gebäuden und können zum Beispiel in der",
         help5: "erhöht werden.",
       },
