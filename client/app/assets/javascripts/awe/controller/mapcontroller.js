@@ -2063,7 +2063,7 @@ AWE.Controller = function (module) {
 
         if (targetRegionId != regionId) {
           var targetRegion = AWE.Map.Manager.getRegion(targetRegionId);
-          if (targetRegion) {
+          if (targetRegion && targetRegion.node()) {
             var tframe = that.mc2vc(targetRegion.node().frame());
             targetPos = AWE.Geometry.createPoint(
               tframe.origin.x + tframe.size.width / 2,
@@ -2437,7 +2437,7 @@ AWE.Controller = function (module) {
 
               if (targetRegionId != regionId) {
                 var targetRegion = AWE.Map.Manager.getRegion(targetRegionId);
-                if (targetRegion) {
+                if (targetRegion && targetRegion.node()) {
                   var tframe = that.mc2vc(targetRegion.node().frame());
                   targetPos = AWE.Geometry.createPoint(
                     tframe.origin.x + tframe.size.width / 2,
