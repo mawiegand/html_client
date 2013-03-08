@@ -104,9 +104,15 @@ Handlebars.registerHelper("artifactInitiationSpeedupResource", function(path) {
     return "" ;
   }
   var costs = AWE.Util.Rules.lookupArtifactInitiationSpeedupCost(seconds);
+  return costs ? AWE.GS.RulesManager.getRules().getResourceType(costs.resource_id).symbolic_id : null;
+});
 
-
-
+Handlebars.registerHelper("tradingSpeedupResource", function(path) {
+  var seconds = Ember.getPath(this, path);
+  if (seconds === undefined || seconds === null) {
+    return "" ;
+  }
+  var costs = AWE.Util.Rules.lookupTradingSpeedupCost(seconds);
   return costs ? AWE.GS.RulesManager.getRules().getResourceType(costs.resource_id).symbolic_id : null;
 });
 
@@ -238,6 +244,19 @@ Ember.registerBoundHelper("artifactInitiationSpeedupCost", function(seconds) {
     return "" ;
   }
   var costs = AWE.Util.Rules.lookupArtifactInitiationSpeedupCost(seconds);
+  return costs ? costs.amount : null;
+});
+
+
+/** calculates and returns the cost for speeding up a training job
+ * with the given remaining duration in seconds
+ * @name Handlebars.Helper.trainingSpeedupCost
+ */
+Ember.registerBoundHelper("tradingSpeedupCost", function(seconds) {
+  if (seconds === undefined || seconds === null) {
+    return "" ;
+  }
+  var costs = AWE.Util.Rules.lookupTradingSpeedupCost(seconds);
   return costs ? costs.amount : null;
 });
 

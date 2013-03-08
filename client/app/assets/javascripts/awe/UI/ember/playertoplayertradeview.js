@@ -30,7 +30,11 @@ AWE.UI.Ember = (function(module) {
     sender: null,
     
     sending: false,
-    
+
+    speedupCosts: function() {
+      return AWE.Util.Rules.lookupTradingSpeedupCost(0).amount;
+    }.property().cacheable(),
+
     cancelPressed: function() {
       var self = this;
       this.set('sending', true);
