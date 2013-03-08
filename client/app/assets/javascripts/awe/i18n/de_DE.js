@@ -584,10 +584,10 @@ AWE.I18n.de_DE = function(module) {
         cartsEnRoute: "Handelskarren unterwegs",
         recipient: "Empfänger",
         send: "Sende",
-        enRoute: "Ausgehend",
+        enRoute: "Ausgehende Karren",
         carts: "Karren",
         timeOfArrival: "Ankunftszeit",
-        inbound: "Eingehend",
+        inbound: "Eingehende Karren",
         sending: "senden",
         empty: "leer",
         cargo: "Ladung",
@@ -596,6 +596,9 @@ AWE.I18n.de_DE = function(module) {
         origin: "Herkunft",
         destination: "Ziel",
         amount: "Menge",
+        hurry: "Hurtig!",
+        hurryTooltip: "Gib Goldkröten aus um die Handelskarren zu beschleunigen.",
+        noCartsInTransit: "Keine Karren unterwegs.",
 
         error: {
           recipientUnknown: "Deine Anhänger sind viel zu faul, als dass sie Ressourcen an sich selbst senden würden.",

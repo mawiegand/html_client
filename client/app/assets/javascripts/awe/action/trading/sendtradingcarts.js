@@ -88,6 +88,40 @@ AWE.Action.Trading = (function(module) {
     return that;
   };
   
+  module.createTradingCartSpeedupAction = function(actionId, my) {
+
+    // private attributes and methods //////////////////////////////////////
+    var that;
+
+    // protected attributes and methods ////////////////////////////////////
+    my = my || {};
+    my.actionId = actionId;
+
+    // public attributes and methods ///////////////////////////////////////
+    that = AWE.Action.createAction(my);
+
+    that.getRequestBody = function() {
+//      return null;
+      return {
+        action_trading_speedup_trading_carts: {
+          trading_carts_action_id: my.actionId,
+        }
+      };
+    }
+
+    that.getURL = function() {
+      return AWE.Config.ACTION_SERVER_BASE + 'trading/speedup_trading_carts_actions';
+    }
+
+    that.getHTTPMethod = function() {
+      return 'POST';
+    }
+
+    that.postProcess = function(statusCode, xhr) {
+    }
+
+    return that;
+  };
 
   return module;
   

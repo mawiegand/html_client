@@ -30,12 +30,26 @@ AWE.UI.Ember = (function(module) {
     sender: null,
     
     sending: false,
-    
+    hurrying: false,
+
+    speedupCosts: function() {
+      return AWE.Util.Rules.lookupTradingSpeedupCost(0).amount;
+    }.property().cacheable(),
+
     cancelPressed: function() {
       var self = this;
       this.set('sending', true);
       this.getPath('parentView.controller').cancelTradingCartAction(this.getPath('tradingCartAction.id'), function(status) {
         self.set('sending', false);
+      });  
+      return false; // don't execute default action
+    },
+    
+    speedupPressed: function() {
+      var self = this;
+      this.set('hurrying', true);
+      this.getPath('parentView.controller').speedupTradingCartAction(this.getPath('tradingCartAction.id'), function(status) {
+        self.set('hurrying', false);
       });  
       return false; // don't execute default action
     },

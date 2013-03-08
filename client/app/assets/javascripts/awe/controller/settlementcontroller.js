@@ -578,7 +578,7 @@ AWE.Controller = (function(module) {
       var action = AWE.Action.Trading.createTradingCartCancelAction(tradingCartActionId);
       action.send(function(status) {
         if (status === AWE.Net.OK) {
-          AWE.GS.TradingCartActionManager.updateTradingCartAction(tradingCartActionId, function() {
+          AWE.GS.TradingCartActionManager.updateTradingCartAction(tradingCartActionId, null, function() {
             if (callback) {
               callback(status);
             }
@@ -593,6 +593,32 @@ AWE.Controller = (function(module) {
           });          
           WACKADOO.presentModalDialog(dialog);
           log(status, "The server did not accept the trading carts cancel command.");
+          if (callback) {
+            callback(status);
+          }
+        }
+      });
+    }
+    
+    that.speedupTradingCartAction = function(tradingCartActionId, callback) {
+      var action = AWE.Action.Trading.createTradingCartSpeedupAction(tradingCartActionId);
+      action.send(function(status) {
+        if (status === AWE.Net.OK) {
+          AWE.GS.TradingCartActionManager.updateTradingCartAction(tradingCartActionId, null, function() {
+            if (callback) {
+              callback(status);
+            }
+          });
+        }  
+        else {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });          
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the trading carts speedup command.");
           if (callback) {
             callback(status);
           }
