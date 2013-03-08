@@ -30,6 +30,7 @@ AWE.UI.Ember = (function(module) {
     sender: null,
     
     sending: false,
+    hurrying: false,
 
     speedupCosts: function() {
       return AWE.Util.Rules.lookupTradingSpeedupCost(0).amount;
@@ -46,9 +47,9 @@ AWE.UI.Ember = (function(module) {
     
     speedupPressed: function() {
       var self = this;
-      this.set('sending', true);
+      this.set('hurrying', true);
       this.getPath('parentView.controller').speedupTradingCartAction(this.getPath('tradingCartAction.id'), function(status) {
-        self.set('sending', false);
+        self.set('hurrying', false);
       });  
       return false; // don't execute default action
     },

@@ -578,7 +578,7 @@ AWE.Controller = (function(module) {
       var action = AWE.Action.Trading.createTradingCartCancelAction(tradingCartActionId);
       action.send(function(status) {
         if (status === AWE.Net.OK) {
-          AWE.GS.TradingCartActionManager.updateTradingCartAction(tradingCartActionId, function() {
+          AWE.GS.TradingCartActionManager.updateTradingCartAction(tradingCartActionId, null, function() {
             if (callback) {
               callback(status);
             }
@@ -604,7 +604,7 @@ AWE.Controller = (function(module) {
       var action = AWE.Action.Trading.createTradingCartSpeedupAction(tradingCartActionId);
       action.send(function(status) {
         if (status === AWE.Net.OK) {
-          AWE.GS.TradingCartActionManager.updateTradingCartAction(tradingCartActionId, function() {
+          AWE.GS.TradingCartActionManager.updateTradingCartAction(tradingCartActionId, null, function() {
             if (callback) {
               callback(status);
             }

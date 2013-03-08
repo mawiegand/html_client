@@ -37,7 +37,7 @@
             ({{t settlement.artifact.hurried}})
           {{else}}
             {{#if sending}}
-              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t settlement.artifact.hurrying}}...</div>
+              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t settlement.artifact.hurrying}}...
             {{else}}
               <a class="artifact-speedup-button clickable" {{action "speedupInitiationPressed"}} title="{{t settlement.artifact.hurryTooltip}}">
                 {{t settlement.artifact.hurry }} {{artifactInitiationSpeedupCost timeRemaining}}
