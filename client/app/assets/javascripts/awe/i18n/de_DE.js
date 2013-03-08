@@ -1,4 +1,5 @@
-
+var AWE = AWE || {};
+AWE.I18n = AWE.I18n || {};
 
 AWE.I18n.de_DE = function(module) {
     
@@ -23,7 +24,7 @@ AWE.I18n.de_DE = function(module) {
       start:    'Start',
 
       processing: 'Verarbeiten...',
-      unknown:  'Unbekannt.',
+      unknown:  'Unbekannt',
       naivePlural: 'n',
       
       perHour:  'pro Stunde',
@@ -33,6 +34,8 @@ AWE.I18n.de_DE = function(module) {
 
       demigod: 'Halbgott',
       demigoddess: "Halbgöttin",
+
+      neanderthal: "Neandertaler",
 
       playerName: "Spielername",
       name: "Name",
@@ -96,13 +99,13 @@ AWE.I18n.de_DE = function(module) {
       messages: {
         own: {
           winning: [
-            "Yeah, platt machen wir sie!",
+            "Yeah, platt machen wir sie!"
           ],
           losing: [
-            "Tu was, unsere Armee geht grad den Bach runter!",
+            "Tu was, unsere Armee geht grad den Bach runter!"
           ],
           neutral: [
-            "Hau mal auf den Putz, da passiert ja gar nix!",
+            "Hau mal auf den Putz, da passiert ja gar nix!"
           ]
         },
         other: "Du willst da doch nicht etwa mitmischen, oder?",
@@ -175,13 +178,13 @@ AWE.I18n.de_DE = function(module) {
             "Die Leute haben sich übrigens über's Essen beschwert. Kannst Du uns nicht was veganes schicken?",
             "Pass auf, einen haue ich noch für Dich um, aber dann ist's wirklich gut für heute, ja?!",
             "Leise! Ich versuche hier zu schlafen.",
-            "Hart wie Federkissen.",
+            "Hart wie Federkissen."
           ],
 
           girl: [
             "Wir sollten immer auf der Hut sein.",
             "Ich liebe es, hier draußen rumzustreifen.",
-            "Ist das nicht ein wundervoller Tag?",
+            "Ist das nicht ein wundervoller Tag?"
           ],
 
           chef: [
@@ -191,7 +194,7 @@ AWE.I18n.de_DE = function(module) {
             "Besorg mir mal was zu essen. Aber was leckeres!",
             "Heute unseren Nachbarn, morgen die ganze Welt!",
             "Unter meiner Führung werden wir keinen einzigen Kampf verlieren. Du wirst schon sehen!",
-            "Angriff ist die beste Verteidigung.",
+            "Angriff ist die beste Verteidigung."
           ]
         },
 
@@ -213,16 +216,16 @@ AWE.I18n.de_DE = function(module) {
             "Geh weg!",
             "Was denn?",
             "Reg mich bloß nicht auf!",
-            "Nein, hier gibt's keine Gänseblümchen!",
+            "Nein, hier gibt's keine Gänseblümchen!"
           ],
           girl: [
             "Freund oder Feind?",
             "Hui, wer bist Du denn?",
-            "Pass auf was Du tust, ich verstehe heute gar keinen Spaß.",
+            "Pass auf was Du tust, ich verstehe heute gar keinen Spaß."
           ],
           chef: [
             "Muhahaha!",
-            "Pass auf, in Kürze gehört Dein Land uns!",
+            "Pass auf, in Kürze gehört Dein Land uns!"
           ]
         },
       },
@@ -308,6 +311,7 @@ AWE.I18n.de_DE = function(module) {
         unlockJoinAlliance: "Ermöglicht Diplomatie und Allianzbeitritt.",
         unlockCreateAlliance: "Ermöglicht die Gründung einer Allianz.",
         unlockTrade: "Ermöglicht den Handel mit anderen Spielern.",
+        unlockedArtifactInitiation: "Ermöglicht das Einweihen von Artefakten."
       },
 
       requirement: {
@@ -331,9 +335,9 @@ AWE.I18n.de_DE = function(module) {
     },
     
     map: {
-      
+
     },
-    
+
     alliance: {
       memberOf: "Du bist derzeit ein Mitglied der Allianz ",
       joinAlliance: "Allianz beitreten",
@@ -358,6 +362,7 @@ AWE.I18n.de_DE = function(module) {
         header: 'Siegesfortschritt',
         description: 'Die aktuelle Spielrunde kann von einer Allianz gewonnen werden, indem eines der folgenden Siegkriterien erreicht und über einen bestimmten Zeitraum gehalten wird.',
         requiredRegions: 'Benötigte Regionen',
+        requiredArtifacts: 'Verschiedene Artefakttypen',
         requiredDuration: 'Minimale Haltedauer',
         remainingDays: 'Tage noch',
         criteriaFulfilled: 'Kriterium erfüllt',
@@ -402,7 +407,7 @@ AWE.I18n.de_DE = function(module) {
     welcome: {
       heading: 'Willkomen bei Wack-a-Doo!',
       headingPlan: 'Der Plan',
-      image: '<%= asset_path("whatdoido_de_DE.jpeg") %>',
+      image: AWE.Config.RAILS_ASSET_PATH + 'whatdoido_de_DE.jpeg',
       headingSituation: 'Die Situation',
       formattedText: '<p>Du bist ein <b>Halbgott</b> und hast gerade einen kleinen, Dir folgenden Stamm von Steinzeithöhlenmenschen davon überzeugt, ihre Höhle zu verlassen und ab jetzt in einer hochmodernen Siedlung zu leben. Leider hat der glorreiche Stammesführer aber bisher nur eine pompöse Hütte für sich selbst bauen lassen.</p><p>Ein kleines Tutorial wird Dich als Halbgott durch die ersten Schwierigkeiten Deiner neuen Herrschaft führen. Tatsächlich bedeutet die Führung eines Stammes mehr als nur die eigene Häuptlingshütte auszubauen, aber das wirst Du schon herausfinden...</p> <p><b>Viel Spaß!</p>',
     },
@@ -460,7 +465,7 @@ AWE.I18n.de_DE = function(module) {
         platinumAccountHeader: "Juhuu!",
         platinumAccountMessage: "Der Platinum Account wurde aktiviert. Platinum Features sind ab sofort freigeschaltet.",
         bonusHeader: "Juhuu!",
-        bonusMessage: "Der Bonus Effekt wurde aktiviert und wird Deinem Stamm helfen seinen Wohlstand zu mehren.",
+        bonusMessage: "Der Bonus wurde aktiviert und wird Deinem Stamm helfen seinen Wohlstand zu mehren.",
       },
     },
     
@@ -550,7 +555,7 @@ AWE.I18n.de_DE = function(module) {
           start: "Sorry, aber die Trainingschleife ist bereits voll. Du kannst maximal ",
           end: " Aufträge aufreihen. Bitte warte, bis etwas anderes fertig wird.",
         },
-        hurry: "halbieren",
+        hurry: "Halbieren",
       },
 
       military: {
@@ -600,6 +605,30 @@ AWE.I18n.de_DE = function(module) {
         },
       },
 
+      artifact: {
+        costs: "Kosten",
+        duration: "Dauer",
+        start: "Start",
+        initiate: "Einweihen",
+        initiated: "eingeweiht",
+        owner: "Besitzer",
+        location: "Ort",
+        captured_at: "Erobert",
+        initiated_at: "Eingeweiht",
+        notEnoughResources: {
+          header: "Halt!",
+          content: "Du hast aktuell leider nicht genügend Resourcen, um das Artefakt einzuweihen.",
+        },
+        cancelText: "Schade",
+        characterBoni: "Bonus für den Besitzer",
+        allianceBoni: "Bonus für die Allianzmitglieder",
+        hurry: "Halbieren",
+        hurrying: "beschleunigen",
+        hurried: "beschleunigt",
+        hurryTooltip: "Gib Goldkröten aus um das Artefakt doppelt so schnell einzuweihen. Die Kosten hängen von der Einweihungszeit ab.",
+        hurryIndicator: "x2",
+      },
+
       info: {
         clickToExpand: "zum erweitern klicken",
         clickToMinimize: "zum minimieren klicken",
@@ -633,6 +662,7 @@ AWE.I18n.de_DE = function(module) {
         resourceProductionInfo2: "nicht",
         resourceProductionInfo3: "besteuert.",
         setTaxRate: "Gib den neuen Steuersatz ein (5-15%).",
+        artifact: "Artefakt"
       },
       error: {
         serverDidNotAcceptTaxRate: "The server did not accept the tax rate change.",
@@ -795,7 +825,14 @@ AWE.I18n.de_DE = function(module) {
         },
         error:          "Leider falsch. Probier's gleich noch mal!",
       },
-      
+
+      questStart:{
+        header:"Neue Quest",
+      },
+      questEnd:{
+        header:"Quest erledigt",
+      },
+
       end: {
         header: "Tutorial erfolgreich beendet.",
         p1: "Glückwunsch Halbgott, Du hast den ersten Schritt auf Deiner Reise getan! Du hat das Tutorial erfolgreich durchlaufen und die grundlegenden Funktionen von Wack-A-Doo kennen gelernt.",
@@ -822,6 +859,7 @@ AWE.I18n.de_DE = function(module) {
       cancel: "Verwerfen",
       newMessage: "Neue Nachricht",
       to: "An",
+      toHeader:"an",
       toAlliance: "An Alle Allianzmitglieder",
       unknown: "Unbekannt",
       allMembersOf: "Alle Mitglieder von",
@@ -833,10 +871,12 @@ AWE.I18n.de_DE = function(module) {
       reply: "Antworten",
       forward: "Weiterleiten",
       delete: "Löschen",
+      archiving: "Archivieren",
       newAllianceMail: "Neue Ally-Rundmail",
       noMessageSelected: "Keine Nachricht ausgewählt.",
       from: "Von",
       yourMessage: "deine Nachricht",
+      system: "System",
     },
     
     map: {
@@ -900,13 +940,15 @@ AWE.I18n.de_DE = function(module) {
         dailyProduction: "Tagesproduktion",
         capacity: "Lagerkapazität",
         capacityReachedIn: "Lager voll in",
-        effects: "Effekte",
+        characterEffects: "Spieler-Boni",
+        allianceEffects: "Allianz-Boni",
+        effectDetails: "Details",
         baseProduction: "Basisproduktion",
         full: "voll",
     
         help1: "Rohstoffe werden durch",
         help2: "in der Hauptsiedlung und in Außenposten produziert oder in Festungen als",
-        help3: "eingenommen. In dieser Übersicht angezeigte Effekte wirken im gesamten Herrschaftsgebiet auf die",
+        help3: "eingenommen. In dieser Übersicht angezeigte Boni wirken im gesamten Herrschaftsgebiet auf die",
         help4: "von Gebäuden und können zum Beispiel in der",
         help5: "erhöht werden.",
       },
@@ -956,12 +998,23 @@ AWE.I18n.de_DE = function(module) {
         },
       },
     },
+
+    effects: {
+      effects: "Boni",
+      type0: "Fundgrube",
+      type1: "Artefakt",
+      characterEffectsNotAvailable: "Keine Spieler-Boni vorhanden.",
+      allianceEffectsNotAvailable: "Keine Allianz-Boni vorhanden.",
+    },
     
     likesystem: {
       notEnoughLikeAmount: "Du hast zu wenig Likes um einen Like zu senden.",
       notEnoughDislikeAmount: "Du hast zu wenig Dislikes um einen Dislike zu senden.",
       cancelText: ['Argh!', 'Grmpf!', 'Hmpf', 'Na gut.', 'Narf'],
       alreadyLikedInfo: "Du hast diesen Spieler in den letzten 24 Stunden schon einmal bewertet.",
+      likesAvailable: "Likes verfügbar",
+      dislikesAvailable: "Dislikes verfügbar",
+      info: "Es steht nur eine begrenzte Menge von Likes und Dislikes zur Verfügung. Nach dem Gebrauch regeneriert sich der Vorrat langsam.",
     },
     
     ranking: {
@@ -970,7 +1023,7 @@ AWE.I18n.de_DE = function(module) {
       alliances:  "Allianzen",
       alliance:  "Allianz",
       fortresses: "Festungen",      
-      fortress: "Festung",      
+      fortress: "Festung",
       victoryProgress: "Siegfortschritt",
       rank: 'Rang',
       character: 'Spieler',
@@ -984,10 +1037,18 @@ AWE.I18n.de_DE = function(module) {
       experiencedArmy: 'Armee XP',
       numFortresses: 'Festungen',
       numMembers: 'Mitglieder',
-      regionsPerMember: 'Regionen pro Mitglied',
+      perMember: 'p. Mitgl.',
+      regionsPerMember: 'Schnitt',
       taxRate: 'Steuersatz',
       income: 'Ressourcenrate',
-      defenseBonus: 'Verteidigungsbonus',
+      defenseBonus: 'Kampfbonus',
+      name: "Name",
+      type: "Typ",
+      region: "Region",
+      artifacts: "Artefakte",
+      artifact: "Artefakt",
+      captured: "Erobert",
+      initiated: "Eingeweiht",
       nextPage: "Nächste Seite",
       previousPage: "Vorige Seite",
     },    

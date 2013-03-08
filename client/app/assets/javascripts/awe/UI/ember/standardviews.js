@@ -13,18 +13,18 @@ AWE.UI.Ember = (function(module) {
     templateName: "linked-character-spinning-view",
     classNames:   ["inline"],
     tagName:      'span',
-    
+
     character: null,
     army: null,
-    
+
     linkCharacter: true,
     linkAlliance: true,
-    
+
     displayAlliance: true,
     displayCharacter: true,
-    
+
     nameClicked: function() {
-      var character = this.get('character')
+      var character = this.get('character');
       var army = this.get('army');
       var characterId = character ? character.get('id') : (army ? army.get('owner_id') : null);
       if (!characterId) {
@@ -33,10 +33,10 @@ AWE.UI.Ember = (function(module) {
       var dialog = AWE.UI.Ember.CharacterInfoDialog.create({
         characterId: characterId,
       });
-      WACKADOO.presentModalDialog(dialog);      
-      return false; // prevent default behavior     
+      WACKADOO.presentModalDialog(dialog);
+      return false; // prevent default behavior
     },
-    
+
     tagClicked: function() {
       var character = this.get('character')
       var army = this.get('army');
@@ -45,7 +45,7 @@ AWE.UI.Ember = (function(module) {
       return false; // prevent default behavior
     },
   });
-  
+
   module.LinkedCharacterWithRankView = module.LinkedCharacterView.extend( /** @lends AWE.UI.Ember.LinkedCharacterWithRankView# */ {
     rankBinding: 'character.mundaneTitle',
   });
@@ -53,47 +53,48 @@ AWE.UI.Ember = (function(module) {
   /**
    * @class
    *
-   * View that follows the mouse-position and can be used to display a 
+   * View that follows the mouse-position and can be used to display a
    * tooltip. Instantiate this view with your specific template in order
    * to display tool-specific content.
    *
    * @example
    *    {{#if "myView.hovered" }}
    *      {{view AWE.UI.Ember.ToolTipView templateName="myView-tooltip" mouseXBinding="myView.mouseX" mouseYBinding="myView.mouseY" contentBinding="myView"}}
-   *    {{/if}} 
+   *    {{/if}}
    *    <script type="text/x-handlebars" data-template-name="myView-tooltip">
    *      Tooltip for {{content.name}}
    *    </script>
-   *   
-   * @name AWE.UI.Ember.ToolTipView 
+   *
+   * @name AWE.UI.Ember.ToolTipView
    */
   module.ToolTipView = Ember.View.extend( /** @lends AWE.UI.Ember.ToolTipView# */ {
-  
+
     mouseX: 0,
     mouseY: 0,
-  
+
     updatePosition: function() {
-      var parent = this.get('parentView');
       var posX = this.get('mouseX') + 20; // - parent.$().offset().left + 10;
       var posY = this.get('mouseY') + 16; // - parent.$().offset().top + 18;
-      
+
       if (posY > 460) {
         posY = this.get('mouseY')- 200;
         posX += 28;
       }
-        
-      this.$().css({'left': posX, 'top': posY});    
+
+      if (this && this.$()) {
+        this.$().css({'left': posX, 'top': posY});
+      }
     }.observes('mouseX', 'mouseY'),
-  
+
     didInsertElement: function() {
       this.updatePosition();
     },
-    
+
   });
-  
+
   /**
    * @class
-   * @name AWE.UI.Ember.Dialog 
+   * @name AWE.UI.Ember.Dialog
    */
   module.Dialog = Ember.View.extend({
     onClose: null,
@@ -104,10 +105,10 @@ AWE.UI.Ember = (function(module) {
       this._super();
     },
   });
-  
+
   /**
    * @class
-   * @name AWE.UI.Ember.TextInputDialog 
+   * @name AWE.UI.Ember.TextInputDialog
    */
   module.TextInputDialog = module.Dialog.extend({
     templateName: 'text-input-dialog',
@@ -116,59 +117,59 @@ AWE.UI.Ember = (function(module) {
     okPressed: function() { alert ('Action not connected: okPressed.'); },
     cancelPressed: function() { alert ('Action not connected: okPressed.'); },
   });
-  
+
   /**
    * @class
    * @extends AWE.UI.Ember.Dialog
    *
    * Displays a simple modal dialog.
-   * Either provide or bind a content object and corresponding content 
+   * Either provide or bind a content object and corresponding content
    * or, alternatively, a message and heading. As default, the dialog bears
    * an ok button that closes the dialog when clicked. Attach your own
    * handlers to the [ok,cancel,close]Pressed methods to provide customized
    * behaviour, call a controller's method and / or show more buttons.
    *
-   * The dialog should be displayed using the corresponding method of the 
+   * The dialog should be displayed using the corresponding method of the
    * multistagecontroller.
    * @example
         var dialog = AWE.UI.Ember.InfoDialog.create({
           templateName: 'requirements-missing-info-dialog',
           building: building,
-        });          
+        });
         WACKADOO.presentModalDialog(dialog);
    *
-   * @name AWE.UI.Ember.InfoDialog 
-   */  
+   * @name AWE.UI.Ember.InfoDialog
+   */
   module.InfoDialog = module.Dialog.extend({
     templateName: 'info-dialog',
-    
+
     arguments:    null,
     contentTemplateName: null,
-    
+
     heading:      'Info',
     message:      '',
-    
+
     okText:       'ok',
     cancelText:   'cancel',
     closeText:    'close',
-    
+
     okPressed:     function() { this.destroy(); },
     cancelPressed: null,
-    
+
     showModal: function() {
       WACKADOO.presentModalDialog(this);
     },
   });
-  
-    
+
+
   /**
    * @class
-   * @name AWE.UI.Ember.ShoutBox 
-   */    
+   * @name AWE.UI.Ember.ShoutBox
+   */
   module.ShoutBox = Ember.View.extend({
     templateName: 'shout-box',
 
-    shouts: null,    
+    shouts: null,
     shoutBoxInput: null,
     shoutBoxSendPressed: function() {
       var input = this.get('shoutBoxInput');
@@ -180,7 +181,7 @@ AWE.UI.Ember = (function(module) {
         }
         else if (controller) {
           controller.shout(input);
-        } 
+        }
         else {
           log('ERROR in ShoutBox: shout not connected and no controller set.');
         }
@@ -190,22 +191,22 @@ AWE.UI.Ember = (function(module) {
     shout: null,
   });
 
-    
-  
+
+
   /**
    * General modal dialog pane that is inserted in the special stage for modal
    * dialgos in the multi-stage controller.
    * @class
-   * @name AWE.UI.Ember.Pane 
-   */   
+   * @name AWE.UI.Ember.Pane
+   */
   module.Pane = Ember.View.extend( /** @lends AWE.UI.Ember.Pane#  */{
     templateName: 'pane',
-    
+
     init: function() {
       this._super();
       this.set('subviews', []);
     },
-    
+
     didInsertElement: function() {
       this._super();
       var canvas = this.$('canvas');
@@ -226,7 +227,7 @@ AWE.UI.Ember = (function(module) {
           stage.addChild(obj);
         });
       });
-      
+
       this.update();
     },
 
@@ -239,32 +240,32 @@ AWE.UI.Ember = (function(module) {
       }
       this.get('subviews').pushObject(view);
     },
-    
+
     removeChild: function(view) {
       if (this.get('inDOM')) {
         var stage = this.get('stage');
         AWE.Ext.applyFunction(view.displayObject(), function(obj) {
           stage.removeChild(obj);
-        });        
+        });
       };
       delete this.get('subviews')[this.get('subviews').indexOf(view)];
     },
-    
+
     update: function() {
       if (this.get('inDOM') && this.get('stage')) {
         this.get('stage').update();
       }
     },
-    
+
     inDOM: false,
     stage: null,
     canvas: null,
     subviews: null,
     setWidth: function() {
     },
-  });     
-     
-      
-  return module;  
-    
+  });
+
+
+  return module;
+
 }(AWE.UI.Ember || {}));

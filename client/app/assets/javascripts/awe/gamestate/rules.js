@@ -13,8 +13,12 @@ AWE.GS = (function(module) {
   //
   //   Rules
   //
-  // ///////////////////////////////////////////////////////////////////////    
-    
+  // ///////////////////////////////////////////////////////////////////////
+
+  module.DOMAIN_CHARACTER = 0;
+  module.DOMAIN_SETTLEMENT = 1;
+  module.DOMAIN_ALLIANCE = 2;
+
   module.Rules = module.Entity.extend({     // extends Entity to Rules
     typeName: 'Rules',              ///< identifies instances of this type
       
@@ -29,7 +33,16 @@ AWE.GS = (function(module) {
 		queue_types: null,
 		queue_categories: null,
 		alliance_max_members: 0,
+		artifact_types: null,
 		
+    getArtifactType: function(id) {
+      var artifactType = this.get('artifact_types')[id];
+      if (artifactType === undefined || !artifactType) {
+        log('ERROR: requested non-existing artifact type ' + artifactType);
+      }
+      return artifactType;    
+    },
+    
     getVictoryType: function(id) {
       var victoryType = this.get('victory_types')[id];
       if (victoryType === undefined || !victoryType) {

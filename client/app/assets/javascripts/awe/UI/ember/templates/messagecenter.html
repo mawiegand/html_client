@@ -11,16 +11,32 @@
 <script type="text/x-handlebars" data-template-name="message-teaser">
   {{#if parentView.displayingOutbox}}
     <span class="recipient">
-      {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}}
+      {{t messaging.to}}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}}
     </span>   
   {{else}}
-    <span {{bindAttr class=":sender message.unread"}}>
-      {{#if message.sender_id}}
-        {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
-      {{else}}
-        System
-      {{/if}}
-    </span> 
+    {{#if parentView.displayingInbox}}
+      <span {{bindAttr class=":sender message.unread"}}>
+        {{t messaging.from}}:
+        {{#if message.sender_id}}
+          {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
+        {{else}}
+          {{t messaging.system}}
+        {{/if}}
+      </span>
+    {{else}}
+      <span class="recipient">
+        {{#if message.isSentEntry}}
+          {{t messaging.to}}: {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.recipient.name"}}
+        {{else}}
+          {{t messaging.from}}:
+          {{#if message.sender_id}}
+            {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
+          {{else}}
+            {{t messaging.system}}
+          {{/if}}
+        {{/if}}
+      </span>
+    {{/if}}
   {{/if}} <span class="time">{{timeString}}</span><br />
   <span {{bindAttr class=":subject message.unread"}}>{{message.subject}}</span>
 </script>
@@ -89,7 +105,8 @@
 
 <script type="text/x-handlebars" data-template-name="message">
   <table>
-    <tr><th>{{t messaging.from}}:</th><td>
+    <tr><th>{{t messaging.from}}:</th>
+    <td>
       <b>{{#if message.sender_id}}
            {{view AWE.UI.Ember.WheelOrValueView valueBinding="message.sender.name"}}
            {{#if "message.sender.alliance_tag"}}
@@ -98,7 +115,7 @@
          {{else}}
            System
          {{/if}}
-      <b>
+      </b>
     </td></tr>
     <tr><th>{{t messaging.subject}}:</th><td>{{message.subject}}</td></tr>
     <tr><th>{{t messaging.date}}:</th><td>{{timeString}}</td></tr>
@@ -127,7 +144,10 @@
   <div class="header">
     <div id="inbox-control">
       <div {{action "inboxClicked"  target="controller"}}>{{t messaging.inbox}}</div>
-      <div {{action "outboxClicked" target="controller"}}>{{t messaging.outbox}}</div>  
+      <div {{action "outboxClicked" target="controller"}}>{{t messaging.outbox}}</div>
+      {{#if character.isPlatinumActive}}
+        <div {{action "archiveClicked"  target="controller"}}>{{t messaging.archive}}</div>
+      {{/if}}
       <div {{action "newClicked"    target="controller"}}>{{t messaging.new}}</div>
     </div>
 
@@ -147,7 +167,13 @@
       {{else}}
         <div class="inactive">{{t messaging.delete}}</div>
       {{/if}}
-      
+      {{#if isArchivingVisible}}
+        {{#if isArchivingPossible}}
+          <div {{action "archivingClicked" }}>{{t messaging.archiving}}</div>
+        {{else}}
+          <div class="inactive">{{t messaging.archiving}}</div>
+        {{/if}}
+      {{/if}}
       {{#if isAllianceMessagePossible}}
         <div {{action "newAllianceMessageClicked" target="controller"}}>{{t messaging.newAllianceMail}}</div>
       {{/if}}            
@@ -178,7 +204,7 @@
         {{#if "selectedMessage" }}
           {{view AWE.UI.Ember.MessageView messageBinding="selectedMessage" classNames="message"}}
         {{else}}
-          {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{t general.startup.loading}}
+          <p>{{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small" }} {{t general.startup.loading}}</p>
         {{/if}}
       {{else}}
         {{t messaging.noMessageSelected}}

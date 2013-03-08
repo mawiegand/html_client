@@ -188,18 +188,26 @@ AWE.UI.Ember = (function(module) {
       }
     },
     
+    isArchivingVisible: function() {
+      return this.getPath('character.isPlatinumActive') && (this.get('displayingInbox') || this.get('displayingOutbox'));
+    }.property('selectedMessage', 'displayingInbox', 'displayingOutbox'),
+
     isForwardPossible: function() {
-      return ! this.get('newMessage') && this.getPath('selectedMessage');
+      return !this.get('newMessage') && this.getPath('selectedMessage');
     }.property('selectedMessage', 'newMessage'),
 
     isReplyPossible: function() {
-      return ! this.get('newMessage') && this.getPath('selectedMessage.sender.name');
+      return !this.get('newMessage') && this.getPath('selectedMessage.sender.name');
     }.property('selectedMessage', 'selectedMessage.sender.name', 'newMessage'),
 
     isDeletePossible: function() {
-      return ! this.get('newMessage') && this.get('selectedMessage') && this.get('displayingInbox');
-    }.property('selectedMessage', 'newMessage', 'displayingInbox'),
-    
+      return !this.get('newMessage') && this.get('selectedMessage');
+    }.property('selectedMessage', 'newMessage'),
+
+    isArchivingPossible: function() {
+      return !this.get('newMessage') && this.get('selectedMessage');
+    }.property('selectedMessage', 'newMessage'),
+
     isAllianceMessagePossible: function() {
       var characterId = this.getPath('character.id');
       var leaderId    = this.getPath('alliance.leader_id');
@@ -233,12 +241,59 @@ AWE.UI.Ember = (function(module) {
     
     deleteClicked: function() {
       var selectedMessageEntry = this.get('selectedMessageEntry');
-      if (!selectedMessageEntry || !this.get('displayingInbox')) {
+      if (!selectedMessageEntry) {
         log('ERROR: could not delete message.');
         return ;
       }
-      AWE.Action.Messaging.createDeleteMessageAction(selectedMessageEntry).send();
-      this.set('selectedMessageEntry', null);
+
+      var position = null;
+      var messageEntries = this.getPath('messageBox.sortedEntries');
+
+      messageEntries.find(function(entry, index) {
+        if (entry == selectedMessageEntry) {
+          position = index + 1;
+          return true;
+        }
+        else return false;
+      }, selectedMessageEntry);
+
+      var self = this;
+
+      AWE.Action.Messaging.createDeleteMessageAction(selectedMessageEntry).send(function() {
+        self.set('selectedMessageEntry', null);
+        if (messageEntries != null && messageEntries.length > position && messageEntries[position] != null) {
+          self.set('selectedMessageEntry', messageEntries[position]);
+          if (!messageEntries[position].get('message')) {
+            messageEntries[position].fetchMessage();
+          }
+        }
+      });
+    },
+    
+    archivingClicked: function() {
+      var selectedMessageEntry = this.get('selectedMessageEntry');
+      var position = null;
+      var messageEntries = this.getPath('messageBox.sortedEntries');
+
+      messageEntries.find(function(entry, index) {
+        if (entry == selectedMessageEntry) {
+          position = index + 1;
+          return true;
+        }
+        else return false;
+      }, selectedMessageEntry);
+
+      var self = this;
+
+      AWE.Action.Messaging.createMoveToArchiveMessageAction(selectedMessageEntry).send(function() {
+        self.set('selectedMessageEntry', null);
+        if (messageEntries != null && messageEntries.length > position && messageEntries[position] != null) {
+          self.set('selectedMessageEntry', messageEntries[position]);
+          if (!messageEntries[position].get('message')) {
+            messageEntries[position].fetchMessage();
+          }
+        }
+      });
     },
 
     markRead: function(inboxEntry) {

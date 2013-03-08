@@ -230,6 +230,24 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
     return module.lookupTrainingSpeedupCost(duration) !== null ;
   };	
 	
+  module.lookupArtifactInitiationSpeedupCost = function(duration) {
+    if (duration === undefined || duration === null) {
+      return null;
+    }
+	  var costs = AWE.GS.RulesManager.getRules().artifact_initiation_speedup;
+	  var entry = null;
+	  costs.forEach(function(item) {
+	    if (!entry && duration < item.hours * 3600) { // hours to seconds
+	      entry = item;
+	    }
+	  });
+	  return entry;
+  };
+
+  module.isArtifactInitiationSpeedupPossible = function(duration) {
+    return module.lookupArtifactInitiationSpeedupCost(duration) !== null ;
+  };
+
   ////////////////////////////////////////////////////////////////////////////
   // 
   //  REQUIREMENTS

@@ -55,9 +55,14 @@ AWE.UI.Ember = (function(module) {
         },
         {
           key:   "tab4",
-          title: AWE.I18n.lookupTranslation('ranking.victoryProgress'), 
-          view:  AWE.UI.Ember.VictoryProgressRankingView.extend(),
+          title: AWE.I18n.lookupTranslation('ranking.artifacts'),
+          view:  AWE.UI.Ember.ArtifactRankingView.extend(),
         },
+        {
+          key:   "tab5",
+          title: AWE.I18n.lookupTranslation('ranking.victoryProgress'),
+          view:  AWE.UI.Ember.VictoryProgressRankingView.extend(),
+        }
       ]);
       
       this._super();
@@ -133,7 +138,6 @@ AWE.UI.Ember = (function(module) {
       }
       return false; // prevent default behavior
     },
-    
   });
 
   module.CharacterRankingView = module.RankingView.extend({
@@ -387,7 +391,7 @@ AWE.UI.Ember = (function(module) {
       return false; // prevent default behavior
     },
   });
-  
+
   module.FortressRankingView = module.RankingView.extend({
     templateName: 'fortress-ranking-view',
 
@@ -398,7 +402,7 @@ AWE.UI.Ember = (function(module) {
       }
       this._super();
     },
-    
+
     fortressRankingEntries: function() {
       var entries = [];
       var rankingEntries = AWE.GS.game.get('fortressRanking');
@@ -412,7 +416,7 @@ AWE.UI.Ember = (function(module) {
       });
       return entries;
     }.property('AWE.GS.game.fortressRanking').cacheable(),
-    
+
     emptyFortressRankingEntries: function() {
       var entries = this.get('fortressRankingEntries');
       if (entries == null) {
@@ -422,7 +426,7 @@ AWE.UI.Ember = (function(module) {
         return new Array(AWE.Config.RANKING_LIST_ENTRIES - entries.length);
       }
     }.property('fortressRankingEntries').cacheable(),
-    
+
     currentPage: function() {
       var entries = this.get('fortressRankingEntries');
       if (entries != null && entries.length > 0) {
@@ -432,56 +436,56 @@ AWE.UI.Ember = (function(module) {
         return 1;
       }
     }.property('AWE.GS.game.fortressRanking').cacheable(),
-    
+
     maxPage: function() {
-      return Math.ceil(AWE.GS.game.rankingInfo.fortress_entries_count / AWE.Config.RANKING_LIST_ENTRIES); 
+      return Math.ceil(AWE.GS.game.rankingInfo.fortress_entries_count / AWE.Config.RANKING_LIST_ENTRIES);
     }.property('AWE.GS.game.rankingInfo.fortress_entries_count').cacheable(),
-    
+
     gotoPage: function(page) {
       AWE.GS.game.set('fortressRanking', null);
       AWE.GS.FortressRankingEntryManager.updateFortressRanking(page, this.get('sortOrder'));
     },
-    
+
     sortedByName: function() {
       return this.get('sortOrder') === 'name' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
-        
+
     sortByName: function() {
       AWE.GS.game.set('fortressRanking', null);
       AWE.GS.FortressRankingEntryManager.updateFortressRanking(null, 'name');
       this.set('sortOrder', 'name');
     },
-    
+
     sortedByTaxRate: function() {
       return this.get('sortOrder') === 'taxRate' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
-        
+
     sortByTaxRate: function() {
       AWE.GS.game.set('fortressRanking', null);
       AWE.GS.FortressRankingEntryManager.updateFortressRanking();
       this.set('sortOrder', 'taxRate');
     },
-    
+
     sortedByIncome: function() {
       return this.get('sortOrder') === 'income' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
-    
+
     sortByIncome: function() {
       AWE.GS.game.set('fortressRanking', null);
       AWE.GS.FortressRankingEntryManager.updateFortressRanking(null, 'income');
       this.set('sortOrder', 'income');
     },
-    
+
     sortedByDefense: function() {
       return this.get('sortOrder') === 'defense' ? 'sortOrder' : '';
     }.property('sortOrder').cacheable(),
-    
+
     sortByDefense: function() {
       AWE.GS.game.set('fortressRanking', null);
       AWE.GS.FortressRankingEntryManager.updateFortressRanking(null, 'defense');
       this.set('sortOrder', 'defense');
     },
-    
+
     regionPressed: function(evt) {
       var entry = evt.context;
       var regionId = entry.get('region_id');
@@ -498,9 +502,179 @@ AWE.UI.Ember = (function(module) {
           mapController.centerRegion(region);
         });
       }
-    },    
+    },
   });
-  
+
+  module.ArtifactRankingView = module.RankingView.extend({
+    templateName: 'artifact-ranking-view',
+
+    init: function() {
+      if (AWE.GS.game.get('artifactRanking') == null) {
+        AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, null, function(ranking) {
+        });
+      }
+      this._super();
+    },
+
+    artifactRankingEntries: function() {
+      var entries = [];
+      var rankingEntries = AWE.GS.game.get('artifactRanking');
+      if (rankingEntries) {
+        AWE.Ext.applyFunctionToHash(rankingEntries, function(id, rankingEntry) {
+          entries.push(rankingEntry);
+        });
+      }
+      entries.sort(function(a, b) {
+        return a.get('rank') - b.get('rank');
+      });
+      return entries;
+    }.property('AWE.GS.game.artifactRanking').cacheable(),
+
+    emptyArtifactRankingEntries: function() {
+      var entries = this.get('artifactRankingEntries');
+      if (entries == null) {
+        return new Array(AWE.Config.RANKING_LIST_ENTRIES);
+      }
+      else {
+        return new Array(AWE.Config.RANKING_LIST_ENTRIES - entries.length);
+      }
+    }.property('artifactRankingEntries').cacheable(),
+
+    currentPage: function() {
+      var entries = this.get('artifactRankingEntries');
+      if (entries != null && entries.length > 0) {
+        return Math.ceil(1.0 * entries[0]['rank'] / AWE.Config.RANKING_LIST_ENTRIES);
+      }
+      else {
+        return 1;
+      }
+    }.property('AWE.GS.game.artifactRanking').cacheable(),
+
+    maxPage: function() {
+      return Math.ceil(AWE.GS.game.rankingInfo.artifact_entries_count / AWE.Config.RANKING_LIST_ENTRIES);
+    }.property('AWE.GS.game.rankingInfo.artifact_entries_count').cacheable(),
+
+    gotoPage: function(page) {
+      AWE.GS.game.set('artifactRanking', null);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(page, this.get('sortOrder'));
+    },
+
+    sortedByName: function() {
+      return this.get('sortOrder') === 'name' ? 'sortOrder' : '';
+    }.property('sortOrder').cacheable(),
+
+    sortByName: function() {
+      AWE.GS.game.set('artifactRanking', null);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'name');
+      this.set('sortOrder', 'name');
+    },
+
+    sortedByOwner: function() {
+      return this.get('sortOrder') === 'owner_name' ? 'sortOrder' : '';
+    }.property('sortOrder').cacheable(),
+
+    sortByOwner: function() {
+      AWE.GS.game.set('artifactRanking', null);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'owner_name');
+      this.set('sortOrder', 'owner_name');
+    },
+
+    sortedByRegion: function() {
+      return this.get('sortOrder') === 'regionName' ? 'sortOrder' : '';
+    }.property('sortOrder').cacheable(),
+
+    sortByRegion: function() {
+      AWE.GS.game.set('artifactRanking', null);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'region_name');
+      this.set('sortOrder', 'region_name');
+    },
+
+    sortedByCapture: function() {
+      return this.get('sortOrder') === 'last_captured_at' ? 'sortOrder' : '';
+    }.property('sortOrder').cacheable(),
+
+    sortByCapture: function() {
+      AWE.GS.game.set('artifactRanking', null);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'last_captured_at');
+      this.set('sortOrder', 'last_captured_at');
+    },
+
+    sortedByInitiation: function() {
+      return this.get('sortOrder') === 'last_initiated_at' ? 'sortOrder' : '';
+    }.property('sortOrder').cacheable(),
+
+    sortByInitiation: function() {
+      AWE.GS.game.set('artifactRanking', null);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'last_initiated_at');
+      this.set('sortOrder', 'last_initiated_at');
+    },
+
+    artifactPressed: function(evt) {
+      var entry = evt.context;
+      var artifactId = entry.get('id');
+      if (artifactId != null) {
+        var dialog = AWE.UI.Ember.ArtifactInfoDialog.create({
+          closePressed: function () {
+            this.destroy();
+          },
+        });
+        var artifact = AWE.GS.ArtifactManager.getArtifact(artifactId);
+        if (artifact) {
+          dialog.set('artifact', artifact);
+        }
+        else {
+          AWE.GS.ArtifactManager.updateArtifact(artifactId, null, function(newArtifact) {
+            if (!dialog.get('isDestroyed')) {
+              dialog.set('artifact', newArtifact);
+            }
+          });
+        }
+        WACKADOO.presentModalDialog(dialog);
+      }
+      return false; // prevent default behavior
+    },
+
+    characterPressed: function(evt) {
+      var entry = evt.context;
+      var characterId = entry.getPath('owner_id');
+      if (characterId != null) {
+        var dialog = AWE.UI.Ember.CharacterInfoDialog.create({
+          characterId: characterId,
+        });
+        WACKADOO.presentModalDialog(dialog);
+      }
+      return false; // prevent default behavior
+    },
+
+    alliancePressed: function(evt) {
+      var entry = evt.context;
+      var allianceId = entry.getPath('alliance_id');
+      if (allianceId != null) {
+        WACKADOO.activateAllianceController(allianceId);
+        WACKADOO.closeAllModalDialogs();
+      }
+      return false; // prevent default behavior
+    },
+
+    regionPressed: function(evt) {
+      var entry = evt.context;
+      var regionId = entry.getPath('region_id');
+      var region = AWE.Map.Manager.getRegion(regionId);
+      if (region != null) {
+        var mapController = WACKADOO.activateMapController(true);
+        WACKADOO.closeAllModalDialogs();
+        mapController.centerRegion(region);
+      }
+      else {
+        AWE.Map.Manager.fetchSingleRegionById(regionId, function(region) {
+          var mapController = WACKADOO.activateMapController(true);
+          WACKADOO.closeAllModalDialogs();
+          mapController.centerRegion(region);
+        });
+      }
+    },
+  });
+
   module.RankingNavigationView = Ember.View.extend({
     templateName: 'ranking-navigation-view',
     
@@ -515,7 +689,7 @@ AWE.UI.Ember = (function(module) {
     currentPage: null,
     
     nextPage: function() {
-      return this.get('currentPage') + 1; 
+      return this.get('currentPage') + 1;
     }.property('currentPage').cacheable(),
     
     nextNextPage: function() {

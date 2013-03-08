@@ -586,8 +586,33 @@ AWE.GS = (function(module) {
         return null;
       }
 		}.property('buildingId', 'converted', 'levelAfterJobs').cacheable(),
-		
-		
+
+
+    calculateArtifactInitiation: function(level) {
+      var formula = this.getPath('buildingType.abilities.unlock_artifact_initiation');
+      level = level || this.get('level') || 0;
+      return formula ? (AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(formula), level)) > 0 : false;
+    },
+
+    unlockedArtifactInitiation: function() {
+      return this.calculateArtifactInitiation(this.get('level'));
+    }.property('buildingId', 'level').cacheable(),
+
+    unlockedArtifactInitiationNextLevel: function() {
+      return this.calculateArtifactInitiation(this.get('nextLevel'));
+    }.property('buildingId', 'nextLevel').cacheable(),
+
+    unlockedArtifactInitiationAfterConversion: function() {
+      var converted = this.get('converted');
+      if (converted) {
+        return this.get('converted').calculateArtifactInitiation(this.get('levelAfterJobs'));
+      }
+      else {
+        return false;
+      }
+    }.property('buildingId', 'converted', 'levelAfterJobs').cacheable(),
+
+
     calcTradingCarts: function(level) {
 		  var formula = this.getPath('buildingType.abilities.trading_carts');
 		  level       = level || this.get('level') || 1;
@@ -727,9 +752,10 @@ AWE.GS = (function(module) {
 		    return this.getPath('building.converted');
 		  }
 		  else {
+		    log("BUILDING AFTER JOB:", this.get('building'));
 		    return this.get('building');
 		  }
-		}.property('building.levelAfterJobs', 'level').cacheable(),
+		}.property('building', 'building.buildingId', 'building.levelAfterJobs', 'level', 'building.underConversion').cacheable(),
 		
 		/** determine the building types that can be constructed in this 
 		 * particular slot. */

@@ -423,6 +423,7 @@ a:focus { outline: thin dotted; }
   z-index: 9;
 }
 
+
 .z-layer-3 {
   z-index: 512;
 }
@@ -430,7 +431,6 @@ a:focus { outline: thin dotted; }
 .z-layer-4 {
   z-index: 768;
 }
-
 
 .change-army-name-dialog .z-layer-3 {
   z-index: 800;
@@ -604,7 +604,7 @@ a:focus { outline: thin dotted; }
 }
 
 .message-center #actions div.inactive {
-  cursor: normal;
+  cursor: default;
   color: #AAA;
   font-style: italic;
 }
@@ -1253,13 +1253,21 @@ a:focus { outline: thin dotted; }
 
 .character-progress-dialog-pane .advisor,
 .found-settlement-dialog .advisor,
-.army-info-view .advisor { 
+.army-info-view .advisor {
   float:right;
   margin-left: 10px;
   margin-right: -100px;
 }
 
-.army-info-view .advisor.neanderthal { 
+.artifact-info-view .advisor {
+  margin-top: 30px;
+  float:right;
+  margin-left: 10px;
+  margin-right: -100px;
+}
+
+
+.army-info-view .advisor.neanderthal {
   float:right;
   margin-left: 10px;
   margin-right: -60px;
@@ -1505,7 +1513,7 @@ loaddialog-positioner {
   opacity: 0.6;
 }
 
-.settlement-dialog-pane a.upgrade {
+.settlement-dialog-pane a.upgrade, .settlement-dialog-pane a.initiate {
   margin-top: 6px;
   color: #AE9;
   float: right;
@@ -1518,7 +1526,7 @@ loaddialog-positioner {
   background-color: #F6FFF4;
 }
 
-.settlement-dialog-pane .upgrade {
+.settlement-dialog-pane .upgrade, .settlement-dialog-pane .initiate {
   margin-top: 6px;
   color: #333;
   float: right;
@@ -1528,7 +1536,7 @@ loaddialog-positioner {
 
 .settlement-dialog-pane .destroy.disabled {
   opacity: 0.6;
-  cursor: normal;
+  cursor: default;
 }
 
 .settlement-dialog-pane a.destroy {
@@ -1548,7 +1556,7 @@ loaddialog-positioner {
   text-decoration: none;
 }
 
-.settlement-dialog-pane a.upgrade:hover, .settlement-dialog-pane a.destroy:hover {
+.settlement-dialog-pane a.upgrade:hover, .settlement-dialog-pane a.initiate:hover, .settlement-dialog-pane a.destroy:hover {
   opacity: 0.6;
 }
 
@@ -2015,7 +2023,7 @@ span.bonus {
 .queue-job-text p.duration {
   float: left;
   width: 100px;
-  overflow: none;
+  overflow: hidden;
   padding: 2px;
   height: 20px;
 }
@@ -2424,7 +2432,7 @@ li.shout .sender {
 .fortress-screen .settlement-info-box.expanded, 
 .base-screen .settlement-info-box.expanded {
   width: 640px;
-  min-height:620px; 
+  min-height:640px;
   background-color: white;
   background-image: none;
   color: #333;
@@ -2647,6 +2655,10 @@ table .number {
   text-align: right;
 }
 
+table .datetime {
+  text-align: center;
+}
+
 
 .fortress-picture-spacer, .base-picture-spacer, .outpost-picture-spacer {
   width: 360px;
@@ -2682,7 +2694,7 @@ table .number {
 
 .outpost-background-picture,
 .base-background-picture {
-  background: url('<%= asset_path("settlements/base/base_c2_background_1280.jpg") %>');
+  background: url('<%= asset_path("settlements/base/base_background_1280.jpg") %>');
   background-repeat: no-repeat;
   position: absolute;
   left: 0px;
@@ -3423,7 +3435,7 @@ table .number {
   margin-left: 80px;  
 }
 
-.resource-details-dialog-pane.modal-dialog-pane { 
+.resource-details-dialog-pane.modal-dialog-pane {
   position: absolute;
   left: 80px; top: 90px;
   margin: 0px;
@@ -3438,12 +3450,47 @@ table .number {
   text-align: right;
 }
 
+.effect-details-dialog-pane.modal-dialog-pane {
+  position: absolute;
+  margin-left: -225px;
+  top: 100px;
+  width: 410px;
+}
+
+.effect-details-dialog-pane td.number {
+  padding-right: 10px;
+}
+
+.effect-wheel {
+  text-align: center;
+  width: 100%;
+}
+
+.artifact-info-view {
+  top: 200px;
+}
+
+a.artifact-speedup-button {
+  padding: 2px 6px;
+  color: #333;
+  border-radius: 3px;
+  text-decoration: none;
+  border: 1px solid #333;
+  margin: -2px;
+}
+
+a.artifact-speedup-button:hover {
+  color: #000;
+  border: 1px solid #000;
+}
+
 .army-info-view {
   display: inline-block;
   width: 100%;
 }
 
-.army-info-view .header {
+.army-info-view .header,
+.artifact-info-view .header {
   width: 100%;
 }
 
@@ -3671,23 +3718,54 @@ table .number {
 
 .ranking-view .advisor { 
   position: absolute;
-  left: 510px;
+  left: 660px;
   top: -60px;
 }
 
-#army-create-form a.close, #army-create-form a.close, .ranking-view a.close {
+#army-create-form a.close,
+.ranking-view a.close,
+.resource-details-dialog-pane a.close,
+.effect-details-dialog-pane a.close,
+.artifact-info-view a.close {
   position: absolute;
   background: url('<%= asset_path("ui/close_button.png") %>');
   width: 50px;
   height: 46px;
-  right: 24px;
+  left: 610px;
   top: 26px;
 }
 
-#army-create-form a.close:hover, #army-create-form a.close:hover, .ranking-view a.close:hover {
+.resource-details-dialog-pane a.close {
+  left: 650px;
+}
+
+.effect-details-dialog-pane a.close {
+  left: 380px;
+}
+
+.artifact-info-view a.close {
+  left: 560px;
+}
+
+#army-create-form a.close:hover,
+.ranking-view a.close:hover,
+.resource-details-dialog-pane a.close:hover,
+.effect-details-dialog-pane a.close:hover,
+.artifact-info-view a.close:hover {
   background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
+.effect-details-table th.name {
+  width: 180px;
+}
+
+.effect-details-table th.resource {
+  width: 50px;
+}
+
+.effect-details-table tr.sum {
+  border-top: 1px solid #ccc;
+}
 
 .ranking-table {
   border: 1px solid #ccc;
@@ -3815,7 +3893,7 @@ table .number {
 }
 
 .ranking-table .region-members {
-  width: 178px;
+  width: 78px;
 }
 
 .ranking-table .tax {
@@ -3830,6 +3908,30 @@ table .number {
   width: 170px;
 }
 
+.ranking-table .artifacts {
+  width: 94px;
+}
+
+.ranking-table .artifact {
+  width: 94px;
+}
+
+.ranking-table .owner {
+  width: 170px;
+}
+
+.ranking-table .region {
+  width: 170px;
+}
+
+.ranking-table .capture {
+  width: 170px;
+}
+
+.ranking-table .initiation {
+  width: 170px;
+}
+
 .participant-table td {
   font-size: 14px;
   padding: 4px 4px 4px 4px;
@@ -3841,12 +3943,12 @@ table .number {
 
 .participant-table th:first-child, .ranking-table th:first-child {
   border-top-left-radius: 10px;
-  border-bottom-left-radsius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 .participant-table th:last-child, .ranking-table th:last-child {
   border-top-right-radius: 10px;
-  border-bottom-right-rasdius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .participant-table td.right-line {
@@ -4417,11 +4519,21 @@ table .number {
 .hurry-button a:hover {
   background-color: white;
 }
-/* ==|== media queries ======================================================
-   EXAMPLE Media Query for Responsive Design.
-   This example overrides the primary ('mobile first') styles
-   Modify as content requires.
-   ========================================================================== */
+.z-layer-5 {
+  z-index: 512;
+}
+
+.z-layer-6 {
+  z-index: 768;
+}
+
+
+
+  /* ==|== media queries ======================================================
+     EXAMPLE Media Query for Responsive Design.
+     This example overrides the primary ('mobile first') styles
+     Modify as content requires.
+     ========================================================================== */
 
 @media only screen and (min-width: 35em) {
   /* Style adjustments for viewports that meet the condition */
