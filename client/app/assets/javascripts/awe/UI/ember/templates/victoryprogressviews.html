@@ -33,13 +33,13 @@
     </div>
     {{#if alliance}}
       {{#if progress.fulfilled }}
-        <div style="position:absolute; top: 0px; right: {{unbound fulfillmentPercentage}}; width: 200px; height: 80px; margin-top: 0; border-right: 2px solid black; margin-right: -1px; text-align:right;">
+        <div {{bindAttr style="styleFulfilled"}}>
           <div style="height: 20px; margin-top: 60px; padding-right: 3px;">
             <b>{{daysRemaining}} {{t alliance.progress.remainingDays}}</b>
           </div>
         </div>
       {{else}}
-        <div style="position:absolute; top: 0px; left: {{unbound fulfillmentPercentage}}; width: 200px; height: 80px; margin-top: 0; border-left: 2px solid black; margin-left: -1px;">
+        <div {{bindAttr style="styleNotFulfilled"}}>
           <div style="height: 20px; margin-top: 60px; padding-left: 3px;">
             <b>{{progress.fulfillment_count}}</b>
           </div>
@@ -78,13 +78,13 @@
     </div>
     {{#if alliance}}
       {{#if progress.fulfilled }}
-        <div style="position:absolute; top: 0px; right: {{unbound fulfillmentPercentage}}; width: 200px; height: 80px; margin-top: 0; border-right: 2px solid black; margin-right: -1px; text-align:right;">
+        <div {{bindAttr style="styleFulfilled"}}>
           <div style="height: 20px; margin-top: 60px; padding-right: 3px;">
             <b>{{daysRemaining}} {{t alliance.progress.remainingDays}}</b>
           </div>
         </div>
       {{else}}
-        <div style="position:absolute; top: 0px; left: {{unbound fulfillmentPercentage}}; width: 200px; height: 80px; margin-top: 0; border-left: 2px solid black; margin-left: -1px;">
+        <div {{bindAttr style="styleNotFulfilled"}}>
           <div style="height: 20px; margin-top: 60px; padding-left: 3px;">
             <b>{{progress.fulfillment_count}}</b>
           </div>
