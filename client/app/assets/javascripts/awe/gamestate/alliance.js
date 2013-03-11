@@ -28,7 +28,7 @@ AWE.GS = (function(module) {
     locked_by: null,
     locked_at: null,
     
-    victory_progresses: [],
+    victoryProgressesBinding: 'AWE.GS.game.victoryProgresses',
         
     hashableShouts: function() {
       var id = this.get('id');
@@ -131,13 +131,17 @@ AWE.GS = (function(module) {
   module.VICTORY_TYPE_POPULARITY = 2;
   module.VICTORY_TYPE_SCIENCE    = 3;
 
+  module.VictoryProgressAccess = {};
+
   module.VictoryProgress = module.Entity.extend({
     typeName: 'VictoryProgress',
     type_id: null,
-    alliance_id: null,
     fulfillment_count: null,
     first_fulfilled_at: null,
-    
+
+    alliance_id: null,  old_alliance_id: null,
+    allianceIdObserver: AWE.Partials.attributeHashObserver(module.VictoryProgressAccess, 'alliance_id', 'old_alliance_id').observes('alliance_id'),
+
     victoryType: function() {
       var rules = AWE.GS.RulesManager.getRules()
       return rules ? rules.get('victory_types')[this.get('type_id')] : null;
@@ -265,9 +269,7 @@ AWE.GS = (function(module) {
         null,                                              // modified after
         function(allLeaders, statusCode, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (statusCode === AWE.Net.OK) {
-            lastUpdate = timestamp.add(-1).second();
-            
-            var leaders = {}
+            var leaders = {};
             var rules = AWE.GS.RulesManager.getRules();
             if (rules) {
               rules.get('victory_types').forEach(function(victoryType) {
@@ -295,6 +297,29 @@ AWE.GS = (function(module) {
           }
         }
       ); 
+    };
+
+    that.updateProgressOfAlliance = function(allianceId, callback) {
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'alliances/' + allianceId + '/victory_progresses';
+      return my.fetchEntitiesFromURL(
+        url,                                     // url to fetch from
+        my.runningUpdates,                       // queue to register this request during execution
+        1,                                       // regionId to fetch -> is used to register the request
+        AWE.GS.ENTITY_UPDATE_TYPE_FULL,          // type of update (aggregate, short, full)
+        null, // modified after
+        function(progresses, statusCode, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
+          if (statusCode === AWE.Net.OK) {
+            var newProgresses = [];
+            AWE.Ext.applyFunctionToElements(progresses, function(progress) {
+              newProgresses.push(progress);
+            });
+            AWE.GS.game.set('victoryProgresses', newProgresses);
+          }
+          if (callback) {
+            callback(progresses, statusCode, xhr, timestamp);
+          }
+        }
+      );
     };
 
     return that;

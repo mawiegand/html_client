@@ -2048,7 +2048,7 @@ AWE.Controller = function (module) {
             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') >= AWE.GS.QUEST_STATUS_FINISHED));
 
       var character = AWE.GS.game && AWE.GS.game.get('currentCharacter');
-      return !AWE.Config.IN_DEVELOPMENT_MODE && (character.get('login_count') < 10 || !returnedFromMap) && !shouldDisplayArmyMarker();
+      return !AWE.Config.IN_DEVELOPMENT_MODE && (character.get('show_base_marker') || !returnedFromMap) && !shouldDisplayArmyMarker();
     }
 
     var setArmyPosition = function (view, pos, army) {
@@ -2063,7 +2063,7 @@ AWE.Controller = function (module) {
 
         if (targetRegionId != regionId) {
           var targetRegion = AWE.Map.Manager.getRegion(targetRegionId);
-          if (targetRegion) {
+          if (targetRegion && targetRegion.node()) {
             var tframe = that.mc2vc(targetRegion.node().frame());
             targetPos = AWE.Geometry.createPoint(
               tframe.origin.x + tframe.size.width / 2,
@@ -2437,7 +2437,7 @@ AWE.Controller = function (module) {
 
               if (targetRegionId != regionId) {
                 var targetRegion = AWE.Map.Manager.getRegion(targetRegionId);
-                if (targetRegion) {
+                if (targetRegion && targetRegion.node()) {
                   var tframe = that.mc2vc(targetRegion.node().frame());
                   targetPos = AWE.Geometry.createPoint(
                     tframe.origin.x + tframe.size.width / 2,
