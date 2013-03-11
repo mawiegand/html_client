@@ -964,7 +964,7 @@ AWE.I18n.de_DE = function(module) {
         full: "voll",
     
         help1: "Rohstoffe werden durch",
-        help2: "in der Hauptsiedlung und in Außenposten produziert oder in Festungen als",
+        help2: "in der Hauptsiedlung und in Lagerstätten produziert oder in Festungen als",
         help3: "eingenommen. In dieser Übersicht angezeigte Boni wirken im gesamten Herrschaftsgebiet auf die",
         help4: "von Gebäuden und können zum Beispiel in der",
         help5: "erhöht werden.",
