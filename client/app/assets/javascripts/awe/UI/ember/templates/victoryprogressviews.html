@@ -26,7 +26,7 @@
     <div style="position:absolute; top: 0; right: 0; width: 200px; height: 50px; margin-top: -30px; border-right: 1px solid black; margin-right: -1px; padding-right: 3px;">
       <div style="height: 30px; font-size: 14px; text-align: right;">{{t alliance.progress.criteriaHeld}}</div>
     {{#if progress.fulfilled }}
-      <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAt}} {{formatDatetime endDate}}</div>
+      <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAt}} {{formatDatetime progress.endDate}}</div>
     {{else}}
       <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAfter}} {{victoryType.condition.duration}} {{t alliance.progress.days}}</div>
     {{/if}}
@@ -35,7 +35,7 @@
       {{#if progress.fulfilled }}
         <div {{bindAttr style="styleFulfilled"}}>
           <div style="height: 20px; margin-top: 60px; padding-right: 3px;">
-            <b>{{daysRemaining}} {{t alliance.progress.remainingDays}}</b>
+            <b>{{progress.daysRemaining}} {{t alliance.progress.remainingDays}}</b>
           </div>
         </div>
       {{else}}
@@ -71,7 +71,7 @@
     <div style="position:absolute; top: 0; right: 0; width: 200px; height: 50px; margin-top: -30px; border-right: 1px solid black; margin-right: -1px; padding-right: 3px;">
       <div style="height: 30px; font-size: 14px; text-align: right;">{{t alliance.progress.criteriaHeld}}</div>
     {{#if progress.fulfilled }}
-      <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAt}} {{formatDatetime endDate}}</div>
+      <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAt}} {{formatDatetime progress.endDate}}</div>
     {{else}}
       <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAfter}} {{victoryType.condition.duration}} {{t alliance.progress.days}}</div>
     {{/if}}
@@ -80,7 +80,7 @@
       {{#if progress.fulfilled }}
         <div {{bindAttr style="styleFulfilled"}}>
           <div style="height: 20px; margin-top: 60px; padding-right: 3px;">
-            <b>{{daysRemaining}} {{t alliance.progress.remainingDays}}</b>
+            <b>{{progress.daysRemaining}} {{t alliance.progress.remainingDays}}</b>
           </div>
         </div>
       {{else}}

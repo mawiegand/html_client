@@ -61,7 +61,6 @@ AWE.GS = (function(module) {
 
     that.getReservationOfAlliance = function(allianceId) {
       var reservations = AWE.GS.AllianceReservationAccess.getEnumerableForAlliance_id(allianceId);
-      log('----> manager', reservations);
       return reservations != null ? reservations[0] : null;
     };
 
