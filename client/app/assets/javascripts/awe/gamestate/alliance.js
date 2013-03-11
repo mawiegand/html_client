@@ -156,20 +156,20 @@ AWE.GS = (function(module) {
         var allRegions = AWE.GS.game.roundInfo.get('regions_count');
         var allianceRegions = this.get('fulfillment_count');
         var reqRegionsRatio = AWE.GS.Util.parseAndEval(this.getPath('victoryType.condition.required_regions_ratio'), AWE.GS.game.roundInfo.get('age'), 'DAYS');
-        var fulfillmentRatio = 1.0 * (allianceRegions / allRegions) / reqRegionsRatio;
+        var fulfillmentRatio = (allianceRegions / allRegions) / reqRegionsRatio;
       }
       else if (this.get('type_id') === module.VICTORY_TYPE_ARTIFACTS) {
-        var fulfillmentRatio = 1.0 * this.get('fulfillment_count') / AWE.GS.RulesManager.getRules().artifact_count;
+        var fulfillmentRatio = this.get('fulfillment_count') / AWE.GS.RulesManager.getRules().artifact_count;
       }
       return (fulfillmentRatio > 0.9999) ? 1 : fulfillmentRatio;
     }.property('alliance_id', 'fulfillment_count', 'AWE.GS.game.roundInfo.regions_count', 'victoryType.condition.required_regions_ratio', 'AWE.GS.game.roundInfo.started_at').cacheable(),
     
     fulfillmentDurationRatio: function() {
       var firstFulfilledAt = this.get('first_fulfilled_at');
-      var reqDuration = this.getPath('victoryType.condition.duration')
+      var reqDuration = this.getPath('victoryType.condition.duration');
       if (firstFulfilledAt != null) {
         var duration = (new Date().getTime() - Date.parseISODate(firstFulfilledAt).getTime())/(24 * 3600 * 1000);
-        return 1.0 * duration / reqDuration;
+        return duration / reqDuration;
       }
       else {
         return 0;
@@ -182,7 +182,9 @@ AWE.GS = (function(module) {
     }.property('victoryType', 'fulfillmentDurationRatio').cacheable(),
     
     endDate: function() {
-      return this.get('first_fulfilled_at');
+      var reqDuration = this.getPath('victoryType.condition.duration');
+      var firstFulfilledAt = Date.parseISODate(this.get('first_fulfilled_at')).getTime();
+      return new Date(firstFulfilledAt + reqDuration * 24 * 60 * 60 * 1000).toString('dd.MM. HH:mm:ss');
     }.property('first_fulfilled_at').cacheable(),
     
     progressLeaders: function() {
