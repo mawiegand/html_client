@@ -270,7 +270,7 @@ AWE.I18n.de_DE = function(module) {
       tradingCarts:   'Handelskarren',
       commandPoints:  'Kommandopunkte',
       garrison: "Garnison",
-      populationAbbreviation: "Pop",
+      populationAbbreviation: "Bev",
       buildingTime: "Bauzeit",
       storageCapacity: "Lagerkapazität",
       production: "Produktion",
@@ -336,7 +336,30 @@ AWE.I18n.de_DE = function(module) {
     },
     
     map: {
-
+      regions: 'Regionen',
+      
+      button: {
+        attack:         "Angriff",
+        newArmy:        "Neue Armee",
+        move:           "Bewegen",
+        settle:         "Siedeln",
+        retreat:        "Rückzug",
+        cancel:         "Abbruch",
+        battleInfo:     "Kampfinfo",
+        messages:       "Mail",
+        stance:         "Stance",
+        reinforce:      "Verstärken",
+        info:           "Info",
+        enter:          "Betreten",
+        quests:         "Quests",
+        ranking:        "Rangliste",
+        game:           "Spiel",
+        world:          "Welt",
+        strategic:      "Strategie",
+        terrain:        "Gelände",
+        encyclopedia:   "Enzyklo-\npädie",
+        shop:           'Fundgrube',
+      },
     },
 
     alliance: {
@@ -357,8 +380,8 @@ AWE.I18n.de_DE = function(module) {
       description: 'Beschreibung',
       management: 'Geheime Allianzlosung',
       reservation: 'Reservierung für die nächste Runde',
-      reservationDescription: 'Als Allianzanführer kannst du deine Allianz für die nächste Runde reservieren. Um die Reservierung in der nächsten ' +
-        'Runde einzulösen, benötigst du den Allianztag und ein Password.',
+      reservationDescription: 'Als Allianzanführer kannst du Deine Allianz für die nächste Runde reservieren. Um die Reservierung in der nächsten ' +
+        'Runde einzulösen, benötigst du den Allianztag und ein Passwort.',
       reservationDescriptionNew: 'Setze jetzt ein Passwort.',
       reservationDescriptionChange: 'Ändere das Passwort.',
       message: 'Nachricht des Tages',
@@ -427,6 +450,7 @@ AWE.I18n.de_DE = function(module) {
     },
     
     shop: {
+      button:'Shop',
       title: 'Fundgrube',
       currentCreditAmount: 'Du besitzt im Moment ein Guthaben von',
       credits: 'Credits',
@@ -444,6 +468,7 @@ AWE.I18n.de_DE = function(module) {
       resourceOffers: "Krötenpakete",
       platinumFunction: "Platinum Funktionen",
       platinumOffers: "Platinum Account",
+      bonusOffers:"Bonus Pakete",
       production: 'Produktion',
       duration: 'Dauer',
       expiry: 'Ablauf',
@@ -467,7 +492,7 @@ AWE.I18n.de_DE = function(module) {
       notenoughcredits: {
         getCredits: 'Hol dir Credits',
         title: 'Nicht genug Credits',
-        message: 'Leider  hast du nicht genug Credits. Besuche den Credit Shop, um mehr 5D Platinum Credits zu kaufen.',
+        message: 'Leider hast du nicht genug Credits. Besuche den Credit Shop, um mehr 5D Platinum Credits zu kaufen.',
       },
       error: {
         heading: "Server Fehler",
@@ -597,7 +622,7 @@ AWE.I18n.de_DE = function(module) {
         destination: "Ziel",
         amount: "Menge",
         hurry: "Hurtig!",
-        hurryTooltip: "Gib Goldkröten aus um die Handelskarren zu beschleunigen.",
+        hurryTooltip: "Beschleunige mit Goldkröten den Handel.",
         noCartsInTransit: "Keine Karren unterwegs.",
 
         error: {
@@ -682,8 +707,8 @@ AWE.I18n.de_DE = function(module) {
         artifact: "Artefakt"
       },
       error: {
-        serverDidNotAcceptTaxRate: "The server did not accept the tax rate change.",
-        couldNotChangeTaxRate: "Enter a number between 5 and 15.",
+        serverDidNotAcceptTaxRate: "Der Server hat die Änderung des Steuersatzes nicht akzeptiert.",
+        couldNotChangeTaxRate: "Gib eine Zahl zwischen 5 und 15 ein.",
       },
     },
     
@@ -715,7 +740,7 @@ AWE.I18n.de_DE = function(module) {
         mundaneRank: "Weltlicher Rang",
         sacredRank: "Geistlicher Rang",
         noRankUpPossible: "Derzeit ist kein Aufstieg möglich.",
-        info: "Ein Aufstieg im weltlichen Rang gibt mehr Siedlungs- und Skillpunkte. Ein Aufstieg im geistlichen Rang ist Voraussetzung für Aufstiege im weltlichen Rang und erhöht Dein Verständnis des Übernatürlichen.",
+        info: "Ein Aufstieg im weltlichen Rang gibt mehr Siedlungspunkte.",
         experienceInfo: "Deine Erfahrung steigt, indem Du baust und kämpfst.",
         settlementPoints: "Siedlungspunkte",
         notUsed: "Noch nicht verwendet",
@@ -896,33 +921,6 @@ AWE.I18n.de_DE = function(module) {
       system: "System",
     },
     
-    map: {
-      regions: 'Regionen',
-      
-      button: {
-        attack:         "Angriff",
-        newArmy:        "Neue Armee",
-        move:           "Bewegen",
-        settle:         "Siedeln",
-        retreat:        "Rückzug",
-        cancel:         "Abbruch",
-        battleInfo:     "Kampfinfo",
-        messages:       "Mail",
-        stance:         "Stance",
-        reinforce:      "Verstärken",
-        info:           "Info",
-        enter:          "Betreten",
-        quests:         "Quests",
-        ranking:        "Rangliste",
-        game:           "Game",
-        world:          "World",
-        strategic:      "Strategie",
-        terrain:        "Gelände",
-        encyclopedia:   "Enzyklo-\npädie",
-        shop:           'Fundgrube',
-      },
-    },
-
     encyclopedia: {
       productionTime: "Produktionszeit",
       hitpoints: "Lebenspunkte",
