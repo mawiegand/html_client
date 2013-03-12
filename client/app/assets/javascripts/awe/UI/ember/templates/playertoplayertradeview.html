@@ -17,25 +17,38 @@
   {{#if sending}}
     <p>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}</p>
   {{else}}
-    <a class="clickable" {{bindAttr class=":button inactive impossible"}} {{action "sendPressed"}}>{{t settlement.trade.send}} {{numCarts}} {{t building.tradingCarts}}</a>
+    <p><span class="simple-button clickable" {{bindAttr class="inactive impossible"}} {{action "sendPressed"}}>{{t settlement.trade.send}} {{numCarts}} {{t building.tradingCarts}}</span></p>
   {{/if}}
   
   <hr/>
   
   <h2>{{t settlement.trade.enRoute}}</h2>
   <table>
-    <tr><th>{{t settlement.trade.carts}}</th><th>{{t settlement.trade.destination}}</th><th>{{t settlement.trade.timeOfArrival}}</th></tr>
-    {{#each settlement.enumerableOutgoingTradingCartActions}}
-      {{view AWE.UI.Ember.TradingCartActionView settlementBinding="view.settlement" tradingCartActionBinding="this"}}
-    {{/each}}
+    {{#if settlement.enumerableOutgoingTradingCartActions}}
+      <tr><th>{{t settlement.trade.carts}}</th><th>{{t settlement.trade.destination}}</th><th>{{t settlement.trade.timeOfArrival}}</th></tr>
+      {{#each settlement.enumerableOutgoingTradingCartActions}}
+        {{view AWE.UI.Ember.TradingCartActionView settlementBinding="view.settlement" tradingCartActionBinding="this"}}
+      {{/each}}
+    {{else}}
+      <tr>
+        <td colspan="4">{{t settlement.trade.noCartsInTransit}}</td>
+      </tr>
+    {{/if}}
   </table>
   
   <h2>{{t settlement.trade.inbound}}</h2>
   <table>
-    <tr><th>{{t settlement.trade.carts}}</th><th>{{t settlement.trade.origin}}</th><th>{{t settlement.trade.timeOfArrival}}</th></tr>
-    {{#each settlement.enumerableIncomingTradingCartActions}}
-      {{view AWE.UI.Ember.TradingCartActionView settlementBinding="view.settlement" tradingCartActionBinding="this"}}
-    {{/each}}
+    {{#if settlement.enumerableIncomingTradingCartActions}}
+      <tr><th>{{t settlement.trade.carts}}</th><th>{{t settlement.trade.origin}}</th><th>{{t settlement.trade.timeOfArrival}}</th></tr>
+      {{#each settlement.enumerableIncomingTradingCartActions}}
+        {{view AWE.UI.Ember.TradingCartActionView settlementBinding="view.settlement" tradingCartActionBinding="this"}}
+      {{else}}
+      {{/each}}
+    {{else}}
+      <tr>
+        <td colspan="4">{{t settlement.trade.noCartsInTransit}}</td>
+      </tr>
+    {{/if}}
   </table>
   
 </script>
@@ -80,14 +93,25 @@
           {{#if sending}}
             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t settlement.trade.sending}}...
           {{else}}
-            <a class="clickable" {{action "cancelPressed"}}>{{t general.cancel}}</a>
+            <span class="simple-button clickable" {{action "cancelPressed"}}>{{t general.cancel}}</span>
           {{/if}}
         {{/if}}
       {{/if}}
     </td>
+    <td>
+      {{#if hurrying}}
+        {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t settlement.trade.sending}}...
+      {{else}}
+        <!-- span class="simple-button clickable" {{action "speedupPressed"}} title="{{t settlement.trade.hurryTooltip}}">
+        {{t settlement.trade.hurry}} {{speedupCosts}}
+          <span class="resource-icon resource_cash">&nbsp;</span>
+        </span -->
+      {{/if}}
+    </td>
   </tr>
   <tr>
-    <td></td><td colspan="2">{{#if empty}} <em>{{t settlement.trade.empty}}</em> {{else}} {{t settlement.trade.cargo}}: {{view Ember.View templateName="resources-amount-view" resourcesBinding="load" classNames="inline"}} {{/if}}</td>
+    <td></td>
+    <td colspan="2">{{#if empty}} <em>{{t settlement.trade.empty}}</em> {{else}} {{t settlement.trade.cargo}}: {{view Ember.View templateName="resources-amount-view" resourcesBinding="load" classNames="inline"}} {{/if}}</td>
   </tr>
 </script>
 

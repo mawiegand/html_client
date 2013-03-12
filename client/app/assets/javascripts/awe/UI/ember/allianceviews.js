@@ -229,6 +229,115 @@ AWE.UI.Ember = (function(module) {
        
   });
   
+  module.AllianceReservationView = Ember.View.extend({
+    templateName: 'alliance-reservation',
+    controller:    null,
+    alliance:      null,
+    reservation:   null,
+
+    password:      null,
+
+    errorMessage:  null,
+    ongoingAction: null,
+
+    init: function() {
+      this.loadReservation();
+      this._super();
+    },
+
+    allianceObserver: function() {
+      this.loadReservation();
+    }.observes('alliance'),
+
+    loadReservation: function() {
+      var allianceId = this.getPath('alliance.id');
+      if (allianceId != null) {
+        var self = this;
+        var oldReservation = AWE.GS.AllianceReservationManager.getReservationOfAlliance(allianceId);
+        if (oldReservation != null) {
+          self.set('reservation', oldReservation);
+        }
+        else {
+          this.set('ongoingAction', true);
+        }
+        AWE.GS.AllianceReservationManager.updateReservationsOfAlliance(allianceId, null, function(reservations) {
+          var newReservation = AWE.GS.AllianceReservationManager.getReservationOfAlliance(allianceId);
+          if (newReservation != null) {
+            self.set('reservation', newReservation);
+          }
+          self.set('ongoingAction', false);
+        });
+      }
+    },
+
+    resetError: function() {
+      this.set('errorMessage', null);
+    },
+
+    startAction: function() {
+      this.set('ongoingAction', true);
+    },
+    endAction: function() {
+      this.set('ongoingAction', false);
+      this.loadReservation();
+    },
+
+    displayPresentPassword: function() {
+      this.set('password', this.getPath('reservation.password'));
+    }.observes('reservation', 'reservation.password'),
+
+    changePassword: function() {
+      var self     = this;
+      var password = this.get('password');
+      var allianceId = this.getPath('alliance.id');
+      var allianceReservationId = this.getPath('reservation.id');
+
+      this.resetError();
+
+      if (!password) {
+        this.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.blankPassword'));
+        this.displayPresentPassword();
+        return;
+      }
+
+      if (password === this.getPath('reservation.password')) { // do nothing, password hasn't changed
+        return;
+      }
+
+      if (this.get('reservation') == null) {
+        var action = AWE.Action.Fundamental.createCreateAllianceReservationAction(allianceId, password);
+        this.startAction();
+        AWE.Action.Manager.queueAction(action, function(statusCode) {
+          if (statusCode !== 201) {
+            self.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.failedToSetPassword'));
+          }
+          else {
+            self.set('errorMessage', AWE.I18n.lookupTranslation('alliance.success.reservationSaved'));
+          }
+          self.endAction();
+        });
+        }
+      else {
+        var action = AWE.Action.Fundamental.createUpdateAllianceReservationAction(allianceReservationId, password);
+        this.startAction();
+        AWE.Action.Manager.queueAction(action, function(statusCode) {
+          if (statusCode !== 200) {
+            self.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.failedToSetPassword'));
+          }
+          else {
+            self.set('errorMessage', AWE.I18n.lookupTranslation('alliance.success.passwordSet'));
+          }
+          self.endAction();
+        });
+      }
+    },
+
+    modifiedPassword: function() {
+      return this.get('password') !== this.getPath('reservation.password');
+    }.property('reservation.password', 'password').cacheable(),
+
+  });
+
   module.AllianceBannerView = AWE.UI.Ember.Pane.extend({
     width: 200,
     height: 200,
