@@ -32,6 +32,13 @@ AWE.UI.Ember = (function(module) {
       }
     }.observes('alliance'),
 
+    victoryType: function() {
+      var rules = AWE.GS.RulesManager.getRules();
+      return rules ? rules.get('victory_types')[AWE.GS.game.roundInfo.get('victory_type')] : null;
+    }.property('winner_alliance_id', 'AWE.GS.game.roundInfo.victory_type').cacheable(),
+
+    victoryGainedAtBinding: 'AWE.GS.game.roundInfo.victory_gained_at',
+
     alliance:     null,
     controller:   null,
   });

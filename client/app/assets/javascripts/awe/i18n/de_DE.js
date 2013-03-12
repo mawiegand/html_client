@@ -403,6 +403,7 @@ AWE.I18n.de_DE = function(module) {
         criteriaHeld: 'Kriterium gehalten',
         victoryAt: 'Sieg am',
         victoryAfter: 'Sieg nach',
+        won: "Gewonnen",
         days: 'Tagen',
       },
 
