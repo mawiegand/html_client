@@ -312,7 +312,7 @@ AWE.UI.Ember = (function(module) {
             self.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.failedToSetPassword'));
           }
           else {
-            self.set('errorMessage', AWE.I18n.lookupTranslation('alliance.success.passwordSet'));
+            self.set('errorMessage', AWE.I18n.lookupTranslation('alliance.success.reservationSaved'));
           }
           self.endAction();
         });
