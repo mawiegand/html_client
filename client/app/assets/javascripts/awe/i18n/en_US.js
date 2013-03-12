@@ -1,9 +1,3 @@
-/* Author: Sascha Lange <sascha@5dlab.com>
- * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
- * Do not copy, do not distribute. All rights reserved.
- */
-
- 
 var AWE = AWE || {};
 AWE.I18n = AWE.I18n || {};
 
@@ -28,9 +22,10 @@ AWE.I18n.en_US = function(module) {
       with:'with',
       change:'Change',
       start:'Start',
+      loading:  'Loading...',
 
       processing:'Processing...',
-      unknown:'Unknown.',
+      unknown:'Unknown',
       naivePlural:'s',
 
       perHour:'per hour',
@@ -40,6 +35,8 @@ AWE.I18n.en_US = function(module) {
 
       demigod:'Demi-god',
       demigoddess:"Demi-goddess",
+      
+      neanderthal: "Neanderthal",
 
       playerName:"player name",
       name:"name",
@@ -150,6 +147,7 @@ AWE.I18n.en_US = function(module) {
         ownerLabel:"Owner",
         actionPoints:"action points",
         nextActionPointAt:"next action point at",
+        homeSettlement: "Home settlement",
       },
       messages:{
         own:{
@@ -336,6 +334,8 @@ AWE.I18n.en_US = function(module) {
     },
 
     map:{
+         regions: 'Regions',
+      
       button:{
         attack:"Attack",
         newArmy:"New army",
@@ -361,17 +361,27 @@ AWE.I18n.en_US = function(module) {
     },
 
     alliance:{
+      membershipHeader: "Alliancemembership",
       memberOf:"You are currently a member of the alliance ",
-      joinAlliance:"join alliance",
+      joinAllianceHeader: "Join alliance",
+      joinAllianceButton: "join alliance",
       joinAllianceText:"Join an existing alliance by entering their alliance tag and the secret alliance slogan.",
       createAlliance:"found alliance",
       createAllianceText:"Found a new alliance with yourself as the leader.",
+      redeemAllianceReservationHeader: "Alliance reservation",
+      redeemAllianceReservationButton: "Alliance resercvation redeem",
+      redeemAllianceReservationText: "Redeem an alliance reservation from last round. Enter alliance tag and secret reservation password.",
       leave:"leave",
 
       founded:"Founded",
       leader:"Leader",
       description:"Description",
       management:"Secret alliance slogan",
+      reservation: 'Reservation for next round',
+      reservationDescription: 'As leader of the alliance can you reserve your alliance for the next round. To redeem the reservation in the next ' +
+        'round, you need the alliance tag and the password.',
+      reservationDescriptionNew: 'Set a password.',
+      reservationDescriptionChange: 'Change the password.',
       message:"Daily news",
       messageExplanation:"For members‘ eyes only!",
       members:"Members",
@@ -384,6 +394,7 @@ AWE.I18n.en_US = function(module) {
         header:'Victory Progress',
         description:'An alliance can win a game round if one of the following victory criteria are achieved and maintained over a certain time period.',
         requiredRegions:'Required Regions',
+        requiredArtifacts: 'Different artifact types',
         requiredDuration:'Minimum Holding Period',
         remainingDays:'Remaining Days',
         criteriaFulfilled:'Fulfilled Criterion',
@@ -412,6 +423,9 @@ AWE.I18n.en_US = function(module) {
         noPermissionCreate:"You're not allowed to create an alliance.",
         unknownCreate:"For some reason, creating the alliance did fail.",
       },
+      success: {
+        passwordSet: "The password has been saved."
+       },
       confirmKick:{
         heading:"Confirm action",
         message1:"Do you realy want to kick ",
@@ -456,16 +470,16 @@ AWE.I18n.en_US = function(module) {
       production:'Production',
       duration:'Duration',
       expiry:'Expiry',
-      platinumDescription:"A platinum account offers you stress-free construction with additional places in your building queue (+3) and training queue (+1) as well as email messages when you're being attacked. More comfort functions coming soon.",
-
-      goldenFrog:"golden frog",
-      goldenFrogs:"golden frogs",
+      platinumDescription:"A platinum account offers you stress-free construction with additional places in your building queue (+3) and training queue (+3) as well as email messages when you're being attacked. More comfort functions coming soon.",
 
       current:"current",
       platinumCredit:"platinum credits",
       offers:"offers",
       loading:"Loading shop",
       unreachable:"Shop temporarily unavailable!",
+
+      goldenFrog:"golden frog",
+      goldenFrogs:"golden frogs",
 
       notenoughcredits:{
         getCredits:'Get credits',
@@ -501,10 +515,10 @@ AWE.I18n.en_US = function(module) {
       },
 
       abandon: {
-        header: "Lagerstätte aufgeben",
-        text: "Wenn Du knapp an Siedlungspunkten bist, kannst Du diese Lagerstätte aufgeben. Sie geht dann in den Besitz der Neandertaler über und ist anschließend für andere Spieler übernehmbar.",
-        send: "Lagerstätte aufgeben!",
-        fighting: "Die Lagerstätte kann zur Zeit nicht aufgegeben werden, da die Garnisonsarmee am Kämpfen ist.",
+        header: "Abondon Camp",
+        text: "If you are short at settlement points, you can abondon you camp. The neanderthal will take possession, and other player can occupy the camp.",
+        send: "Abondon Camp!",
+        fighting: "You can´t abondon your camp, because the garrison army is still fighting.",
       },
 
       buildings:{
@@ -598,8 +612,9 @@ AWE.I18n.en_US = function(module) {
         origin:"Origin",
         destination:"Destination",
         amount:"amount",
-        hurry: "Hurtig!",
-        hurryTooltip: "Gib Goldkröten aus um die Handelskarren zu beschleunigen.",
+        hurry: "Hurry!",
+        hurryTooltip: "Hurry the trade by golden frogs.",
+        noCartsInTransit: "No carts in transit.",
 
         error:{
           recipientUnknown:"Your workers are far to lazy to send resources to themself.",
@@ -607,7 +622,7 @@ AWE.I18n.en_US = function(module) {
         },
       },
 
-      found:{
+      found: {
         confirmationHeader:"Found an encampment here?",
         confirmationFlavour:"This looks like a nice place.",
         confirmationText:"The encampment is founded at this place, cannot be moved and uses one of your settlement points. Furthermore a little chief from your army permanently stays at this encampment and will no longer be available.",
@@ -615,7 +630,7 @@ AWE.I18n.en_US = function(module) {
         errorHeader:"Encampment cannot be founded.",
         errorFlavour:"Grmpf.",
         errorText:"Encampments can only be founded at empty locations and only in regions in which you don't already own an encampment or in which your home settlement is situated.",
-        requirement:{
+        requirements:{
           text:"Furthermore the following requirements must be met",
           req1:"You have an unused settlement point,",
           req2:"there is a little chief in your army",
@@ -631,13 +646,20 @@ AWE.I18n.en_US = function(module) {
         initiated: "initiated",
         owner: "Owner",
         location: "Location",
-        capturedAt: "Captured",
-        initiatedAt: "Initiated",
+        captured_at: "Captured",
+        initiated_at: "Initiated",
         notEnoughResources: {
-          header: "Halt!",
-          content: "Du hast aktuell leider nicht genügend Resourcen, um das Artefakt einzuweihen.",
+          header: "Hold!",
+          content: "You don´t have sufficient resources to initiate the artifact.",
         },
         cancelText: "Schade",
+        characterBoni: "Bonus for the owner",
+        allianceBoni: "Bonus fot the alliance member",
+        hurry: "Halve",
+        hurrying: "hurry",
+        hurried: "hurried",
+        hurryTooltip: "You can halve the initiation time by using golden frogs. The costs depents on the initiation time.",
+        hurryIndicator: "x2",
       },
 
       info:{
@@ -654,7 +676,7 @@ AWE.I18n.en_US = function(module) {
         rangedTrainingSpeedAbbreviation:"R",
         ridersTrainingSpeed:"training speed of mounted units",
         ridersTrainingSpeedAbbreviation:"C",
-        commandPoints:"used command points / available command points. Each army needs one command point.",
+        commandPointsInfo:"used command points / available command points. Each army needs one command point.",
         commandPointsHelp:"Each command point lets you put one army in the field from this settlement. The garrison army is an exception and does not need a command point.",
         buildings:"buildings",
         changeName:"change name",
@@ -709,7 +731,7 @@ AWE.I18n.en_US = function(module) {
         mundaneRank:"mundane rank",
         sacredRank:"sacred rank",
         noRankUpPossible:"No advancement possible at this time.",
-        info:"Advancing your mundane rank grants settlement and skill points. Advancing your sacred rank is required to advance in your mundane rank and gives you a deeper understanding the supernatural.",
+        info:"Advancing your mundane rank grants settlement points.",
         experienceInfo:"You acquire more experience by building and fighting.",
         settlementPoints:"settlement points",
         notUsed:"unused",
@@ -746,7 +768,6 @@ AWE.I18n.en_US = function(module) {
         nameChangeAdvice:'Choose your name carefully: ideally, it should fit in with a Stone Age environment! The name must be unique in Wack-a-Doo.',
         nameChangeFreeAdvice:'You can change your name twice for free, then each change costs a couple of golden frogs – to prevent misuse.',
         nameChangeCostAdvice:"You've already changed your name several times. Of course, you can change it again, but to prevent misuse it will cost you 20 golden frogs.",
-
         chooseGender:"Choose your gender",
         changeGender:"Change your gender",
         presentGender:"Present gender",
@@ -783,6 +804,8 @@ AWE.I18n.en_US = function(module) {
           changePasswordInvalid:"The password doesn't meet the requirements. Please choose a appropriate password.",
           changePasswordUnknown:"Your password could not be changed for unknown reasons. Please try again later.",
           changePasswordNoMatch:"The  two passwords don't match. Try again.",
+          
+          changeSameIIUnknown: "The list can´t be changed right now. Please try again later.",
         },
       },
     },
@@ -885,10 +908,12 @@ AWE.I18n.en_US = function(module) {
       reply:"Reply",
       forward:"Forward",
       delete:"Delete",
+      archiving: "Archiving",
       newAllianceMail:"New alliance mail",
       noMessageSelected:"No message selected.",
       from:"From",
       yourMessage:"your message",
+      system: "System",
     },
 
     encyclopedia:{
@@ -925,6 +950,8 @@ AWE.I18n.en_US = function(module) {
         dailyProduction:"Daily production",
         capacity:"Storage capacity",
         capacityReachedIn:"Capacity reached in",
+        characterEffects: "Player-Boni",
+        allianceEffects: "Alliance-Boni",
         effects:"Effects",
         baseProduction:"Base production",
         full:"full",
@@ -943,40 +970,59 @@ AWE.I18n.en_US = function(module) {
         tax:"Tax",
       },
     },
+    
+    effects: {
+      effects: "Boni",
+      type0: "Shop",
+      type1: "Artifactt",
+      characterEffectsNotAvailable: "No Player-Boni.",
+      allianceEffectsNotAvailable: "No Alliance-Boni.",
+    },
 
     likesystem:{
       notEnoughLikeAmount:"You have not enough Likes to like this player.",
       notEnoughDislikeAmount:"You have not enough Dislikes to dislike this player.",
       cancelText:['Aargh!', 'Grmpf!', 'Hgnnhgn.', 'Oh well.'],
       alreadyLikedInfo:"You've already rated this player during the last 24 hours.",
+      likesAvailable: "Likes available",
+      dislikesAvailable: "Dislikes available",
+      info: "There ist only a limited amonut of Likes and Dislikes. After use it will regenerate.",
     },
 
     ranking: {
-      header: "Ranglisten",
-      characters: "Spieler",
-      alliances:  "Allianzen",
-      alliance:  "Allianz",
-      fortresses: "Festungen",
-      fortress: "Festung",
-      victoryProgress: "Siegfortschritt",
-      rank: 'Rang',
-      character: 'Spieler',
-      owner: 'Besitzer',
-      overallScore: 'Gesamt',
+      header: "Ranking",
+      characters: "Player",
+      alliances:  "Alliances",
+      alliance:  "Alliance",
+      fortresses: "Fortresses",
+      fortress: "Forttress",
+      victoryProgress: "Victory progress",
+      rank: 'Rank',
+      character: 'Player',
+      owner: 'Owner',
+      overallScore: 'Overall',
       resourceScore: 'Ressourcen',
       likes: 'Likes',
-      victories: 'Siege',
-      victoryRatio: 'Siegverhältnis',
-      beatenUnits: 'Bes. Einheiten',
-      experiencedArmy: 'Armee XP',
-      numFortresses: 'Festungen',
-      numMembers: 'Mitglieder',
-      regionsPerMember: 'Regionen pro Mitglied',
-      taxRate: 'Steuersatz',
+      victories: 'Victories',
+      victoryRatio: 'Victory ratio',
+      beatenUnits: 'Def. units',
+      experiencedArmy: 'Army XP',
+      numFortresses: 'Fortresses',
+      numMembers: 'Member',
+      perMember: 'p. memb.',
+      regionsPerMember: 'Regions per member',
+      taxRate: 'Tax rate',
       income: 'Ressourcenrate',
-      defenseBonus: 'Verteidigungsbonus',
-      nextPage: "Nächste Seite",
-      previousPage: "Vorige Seite",
+      defenseBonus: 'Battlebonus',
+      name: "Name",
+      type: "Typ",
+      region: "Region",
+      artifacts: "Artifacts",
+      artifact: "Artifact",
+      captured: "Conquered",
+      initiated: "Initiated",
+      nextPage: "Next page",
+      previousPage: "Previous page",
     },
   };
   
