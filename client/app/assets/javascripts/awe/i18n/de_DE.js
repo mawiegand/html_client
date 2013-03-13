@@ -69,7 +69,7 @@ AWE.I18n.de_DE = function(module) {
     battle: {
       attack: {
         heading: "Kampfvorschau",
-        citation: "Willst du da etwa wirklich in den Kampf ziehen?",
+        citation: "Willst Du da etwa wirklich in den Kampf ziehen?",
         description: "Dein Angriff würde einen Kampf zwischen folgenden Spielern erzeugen:",
         attack: "Attacke",
         cancel: "Abbrechen",
@@ -119,7 +119,7 @@ AWE.I18n.de_DE = function(module) {
       details: {
         heading: "Armee",
         units: "Einheiten",
-        npcMsg: "Diese Armee von völlig Wilden ist ohne Führung und gibt daher für deine Armeen ein sehr gutes Ziel ab, die Erfahrung zu erhöhen und die Kampfkraft zu verbessern.",
+        npcMsg: "Diese Armee von völlig Wilden ist ohne Führung und gibt daher für Deine Armeen ein sehr gutes Ziel ab, die Erfahrung zu erhöhen und die Kampfkraft zu verbessern.",
         properties: "Eigenschaften",
         strength: {
           strengths: 'Stärken',
@@ -139,7 +139,7 @@ AWE.I18n.de_DE = function(module) {
         changeName: "Namen ändern",
         rank: "Armeerang",
         rankUpAt: "Rangaufstieg bei",
-        rankDescription: "Ein höherer Rang verbessert die Effektivität deiner Truppen. Die Armee muss Erfahrung sammeln um einen höheren Rang zu erreichen.",
+        rankDescription: "Ein höherer Rang verbessert die Effektivität Deiner Truppen. Die Armee muss Erfahrung sammeln um einen höheren Rang zu erreichen.",
         experience: "Erfahrung",
         experienceDescription: "Erfahrung wird gewonnen, wenn eigene Truppen sterben. Es gibt keine Erfahrung für getötete Gegner. Der Grund: Man lernt nur aus seinen eigenen Fehlern.",
         stance: "Festung oder Siedlung bei Angriff mitverteidigen",
@@ -367,12 +367,12 @@ AWE.I18n.de_DE = function(module) {
       memberOf: "Du bist derzeit ein Mitglied der Allianz ",
       joinAllianceHeader: "Allianzbeitritt",
       joinAllianceButton: "Allianz beitreten",
-      joinAllianceText: "Tritt einer existierenden Allianz bei, indem du ihr Kürzel und das geheime Allianzpasswort eingibst.",
+      joinAllianceText: "Tritt einer existierenden Allianz bei, indem Du ihr Kürzel und das geheime Allianzpasswort eingibst.",
       createAlliance: "Allianz gründen",
-      createAllianceText: "Gründe eine neue Allianz, mit dir als Anführer.",
+      createAllianceText: "Gründe eine neue Allianz, mit Dir als Anführer.",
       redeemAllianceReservationHeader: "Allianzreservierung",
       redeemAllianceReservationButton: "Allianzreservierung einlösen",
-      redeemAllianceReservationText: "Löse die Reservierung einer Allianz aus einer vergangenen Runde ein, indem du ihr Kürzel und das geheime Reservierungspasswort eingibst.",
+      redeemAllianceReservationText: "Löse die Reservierung einer Allianz aus einer vergangenen Runde ein, indem Du ihr Kürzel und das geheime Reservierungspasswort eingibst.",
       leave: "Verlasse",
 
       founded: 'Gründung',
@@ -380,8 +380,8 @@ AWE.I18n.de_DE = function(module) {
       description: 'Beschreibung',
       management: 'Geheime Allianzlosung',
       reservation: 'Reservierung für die nächste Runde',
-      reservationDescription: 'Als Allianzanführer kannst du Deine Allianz für die nächste Runde reservieren. Um die Reservierung in der nächsten ' +
-        'Runde einzulösen, benötigst du den Allianztag und ein Passwort.',
+      reservationDescription: 'Als Allianzanführer kannst Du Deine Allianz für die nächste Runde reservieren. Um die Reservierung in der nächsten ' +
+        'Runde einzulösen, benötigst Du den Allianztag und ein Passwort.',
       reservationDescriptionNew: 'Setze jetzt ein Passwort.',
       reservationDescriptionChange: 'Ändere das Passwort.',
       message: 'Nachricht des Tages',
@@ -389,7 +389,8 @@ AWE.I18n.de_DE = function(module) {
       members: 'Mitglieder',
       shoutBox: 'Shout Box',
       shoutBoxExplanation: 'Alles was hier eingegeben wird, ist umgehend für alle anderen Mitglieder sichtbar.',
-      changePassword: 'neues Password speichern',
+      changePassword: 'neues Passwort speichern',
+      saveReservation: 'Reservierung speichern',
       kickMember: 'kick',
       
       progress: {
@@ -427,7 +428,8 @@ AWE.I18n.de_DE = function(module) {
         unknownCreate: "Die Allianz zu gründen ist aus unbekanntem Grund fehlgeschlagen.",
       },
       success: {
-        passwordSet: "Das Passwort wurde gespeichert."
+        passwordSet: "Das Passwort wurde gespeichert.",
+        reservationSaved: "Allianz wurde reserviert.",
       },
       confirmKick: {
         heading: "Aktion bestätigen",
@@ -438,7 +440,7 @@ AWE.I18n.de_DE = function(module) {
       },
       confirmLeave: {
         heading: "Allianz verlassen",
-        message: "Möchtest du deine Allianz wirklich verlassen?",
+        message: "Möchtest Du Deine Allianz wirklich verlassen?",
       },
     },
     
@@ -491,9 +493,9 @@ AWE.I18n.de_DE = function(module) {
         "Weitere Komfortfunktionen folgen in Kürze.",
 
       notenoughcredits: {
-        getCredits: 'Hol dir Credits',
+        getCredits: 'Hol Dir Credits',
         title: 'Nicht genug Credits',
-        message: 'Leider hast du nicht genug Credits. Besuche den Credit Shop, um mehr 5D Platinum Credits zu kaufen.',
+        message: 'Leider hast Du nicht genug Credits. Besuche den Credit Shop, um mehr 5D Platinum Credits zu kaufen.',
       },
       error: {
         heading: "Server Fehler",
@@ -691,9 +693,9 @@ AWE.I18n.de_DE = function(module) {
         buildings: "Gebäude",
         changeName: "Namen ändern",
         availableBuildingSlots: "Verfügbare Gebäudeplätze",
-        speedUpInfo: "Du kannst die Geschwindigkeit, mit der Einheiten und Gebäude produziert werden, erhöhen, indem du die jeweiligen Gebäude ausbaust.",
+        speedUpInfo: "Du kannst die Geschwindigkeit, mit der Einheiten und Gebäude produziert werden, erhöhen, indem die jeweiligen Gebäude ausbaust.",
         taxRate: "Steuersatz",
-        taxRateChangeInfo: "Der Steuersatz, die du hier setzt, gilt für die komplette Region und alle ihre Einwohner.",
+        taxRateChangeInfo: "Der Steuersatz, die Du hier setzt, gilt für die komplette Region und alle ihre Einwohner.",
         taxRateChangeNotPossible: "Die nächste Änderung ist eine Stunde nach der letzten Änderung möglich",
         taxRateHelp: "Der Steuersatz wird vom Besitzer der Festung in der Region festgesetzt. Das Minimum sind 5%, der Standardwert und das Maximum sind 15%. Du findest den Steuersatz ungerecht? Verbünde dich mit den anderen Bewohnern der Region gegen den Unterdrücker. Er hat es bestimmt verdient. Nimm die Festung ein und ziehe die Steuern für dich selbst ein.",
         change: "ändern",
@@ -789,11 +791,11 @@ AWE.I18n.de_DE = function(module) {
         female: "weiblich",
 
         changePasswordCaption: "Änderung des Passwortes",
-        changePasswordAdvice: "Hier kannst du dein Passwort ändern. Das Passwort muss eine Länge von 6 bis 40 Zeichen haben.",
+        changePasswordAdvice: "Hier kannst Du Dein Passwort ändern. Das Passwort muss eine Länge von 6 bis 40 Zeichen haben.",
         changePasswordButton: "Passwort ändern",
         changePasswordChanged: "Passwort geändert",
 
-        changeNameDialogCaption: "Gib den neuen Namen für deinen Charakter ein.",
+        changeNameDialogCaption: "Gib den neuen Namen für Deinen Charakter ein.",
 
         changeSameIPCaption: "Mehrere Spieler unter derselben IP-Adresse",
         changeSameIPAdvice: 'Wenn Du mit mehreren Spielern über die gleiche IP-Adresse Wack-A-Doo spielst, gib hier die Spielernamen Komma getrennt ein. Nähere Infos findest Du hier: <a href="http://wiki.wack-a-doo.de/x/index.php?title=Mehrere_Spieler_unter_derselben_IP-Adresse&action=edit&redlink=1" target="_blank">Wiki</a>',
@@ -806,9 +808,9 @@ AWE.I18n.de_DE = function(module) {
           nameNoChange: "Das ist der gleiche Name wie vorher. Keine Veränderung",
 
           nameTaken: "Dieser Name wird schon benutzt oder ist auf der Blacklist. Bitte wähle einen anderen Namen.",
-          changeNameCost: "Du hast nicht genug Kröten, um deinen Namen zu ändern.",
+          changeNameCost: "Du hast nicht genug Kröten, um Deinen Namen zu ändern.",
           changeNameError: "Dein Name konnte aus unbekannten Gründen nicht geändert werden. Bitte versuch es später noch einmal.",
-          changeGenderCost: "Du hast nicht genug Kröten, um dein Geschlecht zu ändern.",
+          changeGenderCost: "Du hast nicht genug Kröten, um Dein Geschlecht zu ändern.",
           changeGenderError: "Dein Geschlecht konnte aus unbekannten Gründen nicht geändert werden. Bitte versuch es später noch einmal.",
 
           changePasswordInvalid: "Das Passwort entspricht nicht den Vorraussetzungen. Bitte wähle ein passendes Passwort.",
@@ -881,7 +883,7 @@ AWE.I18n.de_DE = function(module) {
         p1: "Glückwunsch Halbgott, Du hast den ersten Schritt auf Deiner Reise getan! Du hat das Tutorial erfolgreich durchlaufen und die grundlegenden Funktionen von Wack-A-Doo kennen gelernt.",
         p2: "Zu diesem Erfolg schenken wir Dir für einige Tage den optionalen Platinum-Account sowie Boni auf die Rohstoffproduktion. Sichtbar sind diese Boni in der Fundgrube.",
         p3: "Deine weitere Entwicklung werden wir beobachten und Dich mit einer Reihe von fortlaufenen Aufgaben begleiten. Diese Aufgaben kannst Du erfüllen, wann immer es Dir gefällt.",
-        p4: "Lass Dich von unseren Aufgaben nicht ablenken. Baue die Siedlungen aus, stelle Armeen auf und mehre Deine Macht und deinen Einfluss, wie es Dir gefällt, solange Du am Ende nur die Weltherrschaft erlangst!",
+        p4: "Lass Dich von unseren Aufgaben nicht ablenken. Baue die Siedlungen aus, stelle Armeen auf und mehre Deine Macht und Deinen Einfluss, wie es Dir gefällt, solange Du am Ende nur die Weltherrschaft erlangst!",
         p5: "Viele Wege führen in Wack-A-Doo zum Erfolg, aber wenn es eine Aussage mit Allgemeingültigkeit gibt, ist es folgende: Rohstoffe, Rohstoffe und noch mehr Rohstoffe. Eine schlagkräftige Armee gewinnt einen Kampf, eine hohe Rohstoffproduktion einen Krieg.",
       	p6: "Viel Spass in Wack-A-Doo und whack on!",
         redeemError: {
