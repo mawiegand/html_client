@@ -976,6 +976,11 @@ AWE.I18n.en_US = function(module) {
             heading: "Umtausch fehlgeschlagen",
             text:    "Der Umtausch ist fehlgeschlagen. Bitte versuche es erneut oder wende dich an einen Administrator.",
           },
+
+          isnan: {
+            heading: "Wert ist keine Zahl",
+            text:    "Die Werte müssen Zahlen sein. Bitte korrigiere deine Eingabe.",
+          },
         },
       },
     },

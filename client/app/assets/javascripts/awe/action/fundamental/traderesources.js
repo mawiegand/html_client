@@ -9,7 +9,7 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Fundamental = (function(module) {
   
-  module.createTradeResourcesAction = function(stone_ratio, wood_ratio, fur_ratio, my) {
+  module.createTradeResourcesAction = function(stoneRatio, woodRatio, furRatio, my) {
       
     // private attributes and methods //////////////////////////////////////
     
@@ -26,9 +26,9 @@ AWE.Action.Fundamental = (function(module) {
     
     that.getRequestBody = function() {
       return {
-        resource_stone: stone_ratio || 0.0,
-        resource_wood:  wood_ratio  || 0.0,
-        resource_fur:   fur_ratio   || 0.0,
+        resource_stone: stoneRatio || 0.0,
+        resource_wood:  woodRatio  || 0.0,
+        resource_fur:   furRatio   || 0.0,
       };
     }
 

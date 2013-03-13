@@ -18,9 +18,9 @@ AWE.UI.Ember = (function(module) {
     wood_capacity: null,
     fur_capacity: null,
     sum: null,
-    left: null,
-    loading: null,
-    loading2: null,
+    left: null,       /* left over */
+    loading: null,    /* init loading */
+    loading2: null,   /* exchange loading */
 
     init: function() {
       this._super();
@@ -40,7 +40,7 @@ AWE.UI.Ember = (function(module) {
         this.set('stone_capacity', Math.floor(AWE.GS.ResourcePoolManager.getResourcePool().resource_stone_capacity));
         this.set('wood_capacity',  Math.floor(AWE.GS.ResourcePoolManager.getResourcePool().resource_wood_capacity));
         this.set('fur_capacity',   Math.floor(AWE.GS.ResourcePoolManager.getResourcePool().resource_fur_capacity));
-        this.set('sum',   this.get('stone')+this.get('wood')+Math.floor(this.get('fur')*2));
+        this.set('sum',   this.get('stone')+this.get('wood')+this.get('fur'));
         this.set('left',  0); /* initial value is always 0 */
     },
 
@@ -69,7 +69,24 @@ AWE.UI.Ember = (function(module) {
 
     /* values */
     leftOver: function() {
-      return this.get('sum')-this.get('stone')-this.get('wood')-Math.floor(this.get('fur')*2);
+      return this.get('sum')-this.get('stone')-this.get('wood')-this.get('fur');
+    },
+
+    /* actions */
+    fill: function(res) {
+      this.set(res, this.get(res)+this.get('left'));
+    },
+
+    fillStone: function() {
+      this.fill('stone');
+    },
+
+    fillWood: function() {
+      this.fill('wood');
+    },
+
+    fillFur: function() {
+      this.fill('fur');
     },
 
     okClicked: function() {
@@ -125,10 +142,22 @@ AWE.UI.Ember = (function(module) {
         WACKADOO.presentModalDialog(errorDialog);
       }
 
+      else if(isNaN(this.get('stone')) || isNaN(this.get('wood')) || isNaN(this.get('fur'))) {
+        var errorDialog = AWE.UI.Ember.InfoDialog.create({
+          heading: AWE.I18n.lookupTranslation('resource.exchange.errors.isnan.heading'),
+          message: AWE.I18n.lookupTranslation('resource.exchange.errors.isnan.text'),
+        });
+        WACKADOO.presentModalDialog(errorDialog);
+      }
+
       else {
         this.set('loading2', true);
         var self = this;
-        var action = AWE.Action.Fundamental.createTradeResourcesAction((this.get('stone')/this.get('sum')), (this.get('wood')/this.get('sum')),  (this.get('fur')/this.get('sum')));
+        var action = AWE.Action.Fundamental.createTradeResourcesAction(
+            /* round up here to avoid rounding errors on the server side */
+            Math.ceil(this.get('stone')/this.get('sum')),              
+            Math.ceil(this.get('wood')/this.get('sum')),
+            Math.ceil(this.get('fur')/this.get('sum')));
         AWE.Action.Manager.queueAction(action, function(statusCode) {
           var parent = self;
           if(statusCode == 200) {

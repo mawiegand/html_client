@@ -970,6 +970,7 @@ AWE.I18n.de_DE = function(module) {
         loading2: "Führe Umtausch durch",
         sum:      "Gesamt",
         remaining:"Verbleibend",
+        fill:     "Auffüllen",
 
         form: {
           exchange: "Umtauschen",
@@ -994,6 +995,11 @@ AWE.I18n.de_DE = function(module) {
           failed: {
             heading: "Umtausch fehlgeschlagen",
             text:    "Der Umtausch ist fehlgeschlagen. Bitte versuche es erneut oder wende dich an einen Administrator.",
+          },
+
+          isnan: {
+            heading: "Wert ist keine Zahl",
+            text:    "Die Werte müssen Zahlen sein. Bitte korrigiere deine Eingabe.",
           },
         },
       },

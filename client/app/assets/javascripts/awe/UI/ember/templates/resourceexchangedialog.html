@@ -16,9 +16,9 @@
     {{else}}
     <table>
       <tr>
-        <th><span class="resource-icon resource_stone middle" title="{{t resouce.stone}}"}}>&nbsp;</span></th> 
-        <th><span class="resource-icon resource_wood middle" title="{{t resouce.wood}}"}}>&nbsp;</span></th> 
-        <th><span class="resource-icon resource_fur middle" title="{{t resouce.fur}}"}}>&nbsp;</span></th> 
+        <th><span class="resource-icon resource_stone middle" title="{{t resouce.stone}}">&nbsp;</span></th> 
+        <th><span class="resource-icon resource_wood middle" title="{{t resouce.wood}}">&nbsp;</span></th> 
+        <th><span class="resource-icon resource_fur middle" title="{{t resouce.fur}}">&nbsp;</span></th> 
         <th><span class="middle">{{t resource.exchange.sum}}</span></th> 
         <th><span class="middle">{{t resource.exchange.remaining}}</span></th> 
       </tr>
@@ -31,6 +31,13 @@
         <td {{bindAttr class=":number remainingClass"}}>{{formatNumber left}}</td>
       </tr>
 
+      <tr>
+        <td><div class="simple-button clickable" {{action "fillStone"}}>{{t resource.exchange.fill}}</td> 
+        <td><div class="simple-button clickable" {{action "fillWood"}}>{{t resource.exchange.fill}}</td> 
+        <td><div class="simple-button clickable" {{action "fillFur"}}>{{t resource.exchange.fill}}</td> 
+        <td></td>
+        <td></td>
+      </tr>
     </table> 
     {{/if}}
 
