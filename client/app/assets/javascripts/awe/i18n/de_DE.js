@@ -583,7 +583,8 @@ AWE.I18n.de_DE = function(module) {
         destination: "Ziel",
         amount: "Menge",
         hurry: "Hurtig!",
-        hurryTooltip: "Gib Goldkröten aus um die Handelskarren zu beschleunigen.",
+        hurryTooltip: "Gib Goldkröten aus um die Transportzeit der Handelskarren um 30 Minuten zu verringern.",
+        hurryTooltipHurried: "Gib Goldkröten aus um die Handelskarren sofort beim Ziel eintreffen zu lassen.",
         noCartsInTransit: "Keine Karren unterwegs.",
 
         error: {

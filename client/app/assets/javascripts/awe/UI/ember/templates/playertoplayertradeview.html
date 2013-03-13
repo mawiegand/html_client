@@ -102,7 +102,7 @@
       {{#if hurrying}}
         {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t settlement.trade.sending}}...
       {{else}}
-        <span class="simple-button clickable" {{action "speedupPressed"}} title="{{t settlement.trade.hurryTooltip}}">
+        <span class="simple-button clickable" {{action "speedupPressed"}} {{bindAttr title="speedupTooltipText"}}>
         {{t settlement.trade.hurry}} {{speedupCosts}}
           <span class="resource-icon resource_cash">&nbsp;</span>
         </span>

@@ -35,7 +35,14 @@ AWE.UI.Ember = (function(module) {
     speedupCosts: function() {
       return AWE.Util.Rules.lookupTradingSpeedupCost(0).amount;
     }.property().cacheable(),
-
+    
+    speedupTooltipText: function() {
+      if ((this.getPath('tradingCartAction.send_hurried') && !this.getPath('tradingCartAction.returning')) || (this.getPath('tradingCartAction.return_hurried') && this.getPath('tradingCartAction.returning')))
+        return AWE.I18n.lookupTranslation('settlement.trade.hurryTooltipHurried');
+      else
+        return AWE.I18n.lookupTranslation('settlement.trade.hurryTooltip');
+    }.property('tradingCartAction.send_hurried', 'tradingCartAction.return_hurried'),
+    
     cancelPressed: function() {
       var self = this;
       this.set('sending', true);
