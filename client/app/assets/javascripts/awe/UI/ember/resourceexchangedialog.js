@@ -74,7 +74,7 @@ AWE.UI.Ember = (function(module) {
 
     /* actions */
     fill: function(res) {
-      this.set(res, this.get(res)+this.get('left'));
+      this.set(res, parseInt(this.get(res))+this.get('left'));
     },
 
     fillStone: function() {
