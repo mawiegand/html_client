@@ -98,7 +98,15 @@ AWE.UI.Ember = (function(module) {
     
     updateHurryButton: function() {
       var self = this;
-      self.set('hurrying', false);
+      var returned_at = this.getPath('tradingCartAction.returned_at');
+      var returned = Date.parseISODate(returned_at);
+      var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
+      
+      console.log("TEST")
+      console.log(now);
+      console.log(returned);
+      if(now.getTime() < returned.getTime())
+        self.set('hurrying', false);
     }.observes('tradingCartAction.updated_at'),
     
     /** automatically fetch and set sender to sending character. */
