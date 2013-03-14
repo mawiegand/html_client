@@ -41,7 +41,7 @@ AWE.UI.Ember = (function(module) {
         return AWE.I18n.lookupTranslation('settlement.trade.hurryTooltipHurried');
       else
         return AWE.I18n.lookupTranslation('settlement.trade.hurryTooltip');
-    }.property('tradingCartAction.send_hurried', 'tradingCartAction.return_hurried'),
+    }.property('tradingCartAction.send_hurried', 'tradingCartAction.return_hurried', 'tradingCartAction.returning'),
     
     cancelPressed: function() {
       var self = this;
