@@ -154,10 +154,10 @@ AWE.UI.Ember = (function(module) {
         this.set('loading2', true);
         var self = this;
         var action = AWE.Action.Fundamental.createTradeResourcesAction(
-            /* round up here to avoid rounding errors on the server side */
-            Math.ceil(this.get('stone')/this.get('sum')),              
-            Math.ceil(this.get('wood')/this.get('sum')),
-            Math.ceil(this.get('fur')/this.get('sum')));
+            /* round up to avoid rounding errors on the server side */
+            Math.ceil( (this.get('stone')/this.get('sum'))*100 ) / 100,
+            Math.ceil( (this.get('wood') /this.get('sum'))*100 ) / 100,
+            Math.ceil( (this.get('fur')  /this.get('sum'))*100 ) / 100);
         AWE.Action.Manager.queueAction(action, function(statusCode) {
           var parent = self;
           if(statusCode == 200) {
