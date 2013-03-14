@@ -30,6 +30,7 @@ AWE.UI.Ember = (function(module) {
     sender: null,
     
     sending: false,
+    loading: false,
     hurrying: false,
 
     speedupCosts: function() {
@@ -54,9 +55,10 @@ AWE.UI.Ember = (function(module) {
     
     speedupPressed: function() {
       var self = this;
+      this.set('loading', true);
       this.set('hurrying', true);
       this.getPath('parentView.controller').speedupTradingCartAction(this.getPath('tradingCartAction.id'), function(status) {
-        self.set('hurrying', false);
+        self.set('loading', false);
       });  
       return false; // don't execute default action
     },
@@ -95,6 +97,13 @@ AWE.UI.Ember = (function(module) {
     empty: function() {
       return (this.get('load') || []).length == 0;
     }.property('laod').cacheable(),
+    
+    updateHurryButton: function() {
+      var self = this;
+      if (!this.loading) {
+        self.set('hurrying', false);
+      }
+    }.observes('tradingCartAction.updated_at'),
     
     /** automatically fetch and set sender to sending character. */
     updateSender: function() {
