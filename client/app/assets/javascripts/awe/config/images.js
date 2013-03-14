@@ -93,6 +93,7 @@ AWE.Config = (function(module) {
 
     "map/army/battle":        AWE.Config.RAILS_ASSET_PATH + 'battle.png',
     "map/army/suspended":     AWE.Config.RAILS_ASSET_PATH + 'suspension.png',
+    "map/army/protected":     AWE.Config.RAILS_ASSET_PATH + 'verbot.png',
     "map/army/sandglass":     AWE.Config.RAILS_ASSET_PATH + 'icons/sandglass.png',
 
     "map/artifact/0":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artifact_0.png',

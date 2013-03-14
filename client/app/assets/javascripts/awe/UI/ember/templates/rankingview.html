@@ -21,8 +21,8 @@
         <th {{bindAttr class="sortedByOverall :clickable :overall"}} {{action "sortByOverall"}}>{{t ranking.overallScore}}</th>
         <th {{bindAttr class="sortedByResource :clickable :resource"}} {{action "sortByResource"}}>{{t ranking.resourceScore}}</th>
         <th {{bindAttr class="sortedByLikes :clickable :likes"}} {{action "sortByLikes"}}>{{t ranking.likes}}</th>
-        <th {{bindAttr class="sortedByVictories :clickable :victories"}} {{action "sortByVictories"}}>{{t ranking.victories}}</th>
         <th {{bindAttr class="sortedByKills :clickable :kills"}} {{action "sortByKills"}}>{{t ranking.beatenUnits}}</th>
+        <th {{bindAttr class="sortedByVictories :clickable :victories"}} {{action "sortByVictories"}}>{{t ranking.victories}}</th>
         <th {{bindAttr class="sortedByExperience :clickable :experience"}} {{action "sortByExperience"}}>{{t ranking.experiencedArmy}}</th>
         <th class="artifact">{{t ranking.artifacts}}</th>
       </tr>
@@ -34,8 +34,8 @@
             <td class="number overall">{{this.overall_score}}</td>
             <td class="number resource">{{this.resource_score}}</td>
             <td class="number likes">{{this.likes}} ({{formatAsPercent this.like_ratio}})</td>
-            <td class="number victories">{{this.victories}} ({{formatNumber this.victory_ratio maxPlaces="1"}})</td>
             <td class="number kills">{{this.kills}}</td>
+            <td class="number victories">{{this.victories}} ({{formatNumber this.victory_ratio maxPlaces="1"}})</td>
             <td class="number experience">{{this.max_experience}}</td>
             <td class="artifact">{{this.artifact_name}}</td>
           </tr>
@@ -174,10 +174,10 @@
       {{#each artifactRankingEntries}}
         <tr {{bindAttr class="this.ownEntry:bold"}}>
           <td><a class="clickable" {{action "artifactPressed"}}>{{local this.name}}</a></td>
-          <td><a class="clickable" {{action "characterPressed"}}>{{this.owner_name}}</a>{{#if this.alliance.tag}} | <a class="clickable" {{action "alliancePressed"}}>{{this.alliance.tag}}{{/if}}</a></td>
+          <td><a class="clickable" {{action "characterPressed"}}>{{this.owner_name}}</a>{{#if this.alliance_tag}} | <a class="clickable" {{action "alliancePressed"}}>{{this.alliance_tag}}{{/if}}</a></td>
           <td><a class="clickable" {{action "regionPressed"}}>{{this.region_name}}</a></td>
           <td class="datetime">{{formatDatetime this.last_captured_at}}</td>
-          <td class="datetime">{{formatDatetime this.last_initiated_at}}</td>
+          <td class="datetime">{{#if this.initiated}}{{formatDatetime this.last_initiated_at}}{{/if}}</td>
         </tr>
       {{/each}}
       {{#each emptyArtifactRankingEntries}}

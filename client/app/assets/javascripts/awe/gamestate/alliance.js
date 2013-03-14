@@ -28,7 +28,7 @@ AWE.GS = (function(module) {
     locked_by: null,
     locked_at: null,
     
-    victory_progresses: [],
+    victoryProgressesBinding: 'AWE.GS.game.victoryProgresses',
         
     hashableShouts: function() {
       var id = this.get('id');
@@ -131,15 +131,19 @@ AWE.GS = (function(module) {
   module.VICTORY_TYPE_POPULARITY = 2;
   module.VICTORY_TYPE_SCIENCE    = 3;
 
+  module.VictoryProgressAccess = {};
+
   module.VictoryProgress = module.Entity.extend({
     typeName: 'VictoryProgress',
     type_id: null,
-    alliance_id: null,
     fulfillment_count: null,
     first_fulfilled_at: null,
-    
+
+    alliance_id: null,  old_alliance_id: null,
+    allianceIdObserver: AWE.Partials.attributeHashObserver(module.VictoryProgressAccess, 'alliance_id', 'old_alliance_id').observes('alliance_id'),
+
     victoryType: function() {
-      var rules = AWE.GS.RulesManager.getRules()
+      var rules = AWE.GS.RulesManager.getRules();
       return rules ? rules.get('victory_types')[this.get('type_id')] : null;
     }.property('type_id').cacheable(),
     
@@ -152,20 +156,20 @@ AWE.GS = (function(module) {
         var allRegions = AWE.GS.game.roundInfo.get('regions_count');
         var allianceRegions = this.get('fulfillment_count');
         var reqRegionsRatio = AWE.GS.Util.parseAndEval(this.getPath('victoryType.condition.required_regions_ratio'), AWE.GS.game.roundInfo.get('age'), 'DAYS');
-        var fulfillmentRatio = 1.0 * (allianceRegions / allRegions) / reqRegionsRatio;
+        var fulfillmentRatio = (allianceRegions / allRegions) / reqRegionsRatio;
       }
       else if (this.get('type_id') === module.VICTORY_TYPE_ARTIFACTS) {
-        var fulfillmentRatio = 1.0 * this.get('fulfillment_count') / AWE.GS.RulesManager.getRules().artifact_count;
+        var fulfillmentRatio = this.get('fulfillment_count') / AWE.GS.RulesManager.getRules().artifact_count;
       }
       return (fulfillmentRatio > 0.9999) ? 1 : fulfillmentRatio;
     }.property('alliance_id', 'fulfillment_count', 'AWE.GS.game.roundInfo.regions_count', 'victoryType.condition.required_regions_ratio', 'AWE.GS.game.roundInfo.started_at').cacheable(),
     
     fulfillmentDurationRatio: function() {
       var firstFulfilledAt = this.get('first_fulfilled_at');
-      var reqDuration = this.getPath('victoryType.condition.duration')
+      var reqDuration = this.getPath('victoryType.condition.duration');
       if (firstFulfilledAt != null) {
         var duration = (new Date().getTime() - Date.parseISODate(firstFulfilledAt).getTime())/(24 * 3600 * 1000);
-        return 1.0 * duration / reqDuration;
+        return Math.min(duration / reqDuration, 1);
       }
       else {
         return 0;
@@ -174,11 +178,13 @@ AWE.GS = (function(module) {
     
     daysRemaining: function() {
       var reqDuration = this.getPath('victoryType.condition.duration');
-      return AWE.UI.Util.round(reqDuration * (1 - this.get('fulfillmentDurationRatio')));
+      return Math.max(AWE.UI.Util.round(reqDuration * (1 - this.get('fulfillmentDurationRatio'))), 0);
     }.property('victoryType', 'fulfillmentDurationRatio').cacheable(),
     
     endDate: function() {
-      return this.get('first_fulfilled_at');
+      var reqDuration = this.getPath('victoryType.condition.duration');
+      var firstFulfilledAt = Date.parseISODate(this.get('first_fulfilled_at')).getTime();
+      return new Date(firstFulfilledAt + reqDuration * 24 * 60 * 60 * 1000).toString('dd.MM. HH:mm:ss');
     }.property('first_fulfilled_at').cacheable(),
     
     progressLeaders: function() {
@@ -265,9 +271,7 @@ AWE.GS = (function(module) {
         null,                                              // modified after
         function(allLeaders, statusCode, xhr, timestamp)  {        // wrap handler in order to set the lastUpdate timestamp
           if (statusCode === AWE.Net.OK) {
-            lastUpdate = timestamp.add(-1).second();
-            
-            var leaders = {}
+            var leaders = {};
             var rules = AWE.GS.RulesManager.getRules();
             if (rules) {
               rules.get('victory_types').forEach(function(victoryType) {
@@ -295,6 +299,29 @@ AWE.GS = (function(module) {
           }
         }
       ); 
+    };
+
+    that.updateProgressOfAlliance = function(allianceId, callback) {
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'alliances/' + allianceId + '/victory_progresses';
+      return my.fetchEntitiesFromURL(
+        url,                                     // url to fetch from
+        my.runningUpdates,                       // queue to register this request during execution
+        1,                                       // regionId to fetch -> is used to register the request
+        AWE.GS.ENTITY_UPDATE_TYPE_FULL,          // type of update (aggregate, short, full)
+        null, // modified after
+        function(progresses, statusCode, xhr, timestamp)  {   // wrap handler in order to set the lastUpdate timestamp
+          if (statusCode === AWE.Net.OK) {
+            var newProgresses = [];
+            AWE.Ext.applyFunctionToElements(progresses, function(progress) {
+              newProgresses.push(progress);
+            });
+            AWE.GS.game.set('victoryProgresses', newProgresses);
+          }
+          if (callback) {
+            callback(progresses, statusCode, xhr, timestamp);
+          }
+        }
+      );
     };
 
     return that;

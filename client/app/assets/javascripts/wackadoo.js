@@ -169,8 +169,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_BOSH      = "http://"+base+"/http-bind/";
       
       var character = AWE.GS.game && AWE.GS.game.get('currentCharacter');
-      var beginner  = character && character.get('login_count') <= 1;
-      var openPane  = character && character.get('login_count') <= 3;  // whether or not to open a chat pane initially
+      var beginner  = character && character.get('beginner');
+      var openPane  = character && character.get('open_chat_pane');  // whether or not to open a chat pane initially
 
       // Define groupchats here
       if (beginner) {
@@ -235,11 +235,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     showStartupDialogs: function() {
       
-      if (!AWE.GS.game.getPath('currentCharacter.login_count') || AWE.GS.game.getPath('currentCharacter.login_count') <= 1) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
-        this.showWelcomeDialog();
+      if (AWE.GS.game.getPath('currentCharacter.beginner') === false) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
+        this.showAnnouncement();
       }
       else {
-        this.showAnnouncement();
+        this.showWelcomeDialog();
       }
       
       if (AWE.GS.game.currentCharacter && !AWE.GS.game.currentCharacter.get('reached_game')) {
@@ -300,7 +300,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         self.readyToRun();                            // ready to run
         self.showStartupDialogs();
         
-        if (AWE.Config.CHAT_SHOW) {  // && AWE.GS.game.currentCharacter && AWE.GS.game.currentCharacter.get('login_count') > 1) {
+        if (AWE.Config.CHAT_SHOW) {
           self.initChat();
         }
       }

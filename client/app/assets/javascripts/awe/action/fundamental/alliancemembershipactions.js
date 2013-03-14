@@ -10,7 +10,7 @@ AWE.Action = AWE.Action || {};
 AWE.Action.Fundamental = (function(module) {
   
   module.runUpdatesAfterAllianceChange = function() {
-    var characterId = AWE.GS.game.getPath('currentCharacter.id')
+    var characterId = AWE.GS.game.getPath('currentCharacter.id');
     AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
       WACKADOO.reconnectChat();
     });
@@ -51,17 +51,22 @@ AWE.Action.Fundamental = (function(module) {
           name: my.allianceName,
         }
       };
-    }
+    };
     
-    that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'fundamental/create_alliance_actions'; }
+    that.getURL = function() {
+      return AWE.Config.ACTION_SERVER_BASE + 'fundamental/create_alliance_actions';
+    };
   
-    that.getHTTPMethod = function() { return 'POST'; }
+    that.getHTTPMethod = function() {
+      return 'POST';
+    };
     
-    that.postProcess = function(statusCode, xhr) {
+    that.postProcess = function(statusCode) {
       if (statusCode === AWE.Net.CREATED) {
         module.runUpdatesAfterAllianceChange();
       }
-    }  
+    };
+
     return that;
   };
   
@@ -95,17 +100,19 @@ AWE.Action.Fundamental = (function(module) {
           password: my.alliancePassword,
         }
       }; 
-    }
+    };
     
-    that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'fundamental/join_alliance_actions'; }
+    that.getURL = function() {
+      return AWE.Config.ACTION_SERVER_BASE + 'fundamental/join_alliance_actions';
+    };
   
-    that.getHTTPMethod = function() { return 'POST'; }
+    that.getHTTPMethod = function() { return 'POST'; };
     
-    that.postProcess = function(statusCode, xhr) {
+    that.postProcess = function(statusCode) {
       if (statusCode === AWE.Net.OK || statusCode === AWE.Net.CREATED) {
         module.runUpdatesAfterAllianceChange();
       }
-    }  
+    };
     return that;
   };
   
@@ -139,20 +146,19 @@ AWE.Action.Fundamental = (function(module) {
           character_id: my.characterId 
         }
       }; 
-    }
+    };
     
-    that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'fundamental/kick_alliance_member_actions'; }
+    that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'fundamental/kick_alliance_member_actions'; };
   
-    that.getHTTPMethod = function() { return 'POST'; }
+    that.getHTTPMethod = function() { return 'POST'; };
     
-    that.postProcess = function(statusCode, xhr) {
+    that.postProcess = function(statusCode) {
       if (statusCode === AWE.Net.OK || statusCode === AWE.Net.CREATED) {
         AWE.GS.CharacterManager.updateCharacter(characterId); // this update will delete the character from the members list, as his alliance_id has changed.
       }
-    }
+    };
   
     return that;
-    
   };
   
   
@@ -184,20 +190,113 @@ AWE.Action.Fundamental = (function(module) {
           alliance_id: my.allianceId
         }
       };
-    }
+    };
     
-    that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'fundamental/leave_alliance_actions'; }
+    that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'fundamental/leave_alliance_actions'; };
   
-    that.getHTTPMethod = function() { return 'POST'; }
+    that.getHTTPMethod = function() { return 'POST'; };
     
-    that.postProcess = function(statusCode, xhr) {
+    that.postProcess = function(statusCode) {
       if (statusCode === AWE.Net.OK || statusCode === AWE.Net.CREATED) {
         module.runUpdatesAfterAllianceChange();
       }
-    }
+    };
   
     return that;
-    
+  };
+
+
+  ////////////////////////////////////////////////////////////////////////////
+  //
+  //  CREATE ALLIANCE RESERVATION
+  //
+  ////////////////////////////////////////////////////////////////////////////
+
+  module.createCreateAllianceReservationAction = function(allianceId, password, my) {
+
+    // private attributes and methods //////////////////////////////////////
+
+    var that;
+
+    // protected attributes and methods ////////////////////////////////////
+
+    my = my || {};
+    my.allianceId = allianceId || 0;
+    my.password   = password || 0;
+
+
+    // public attributes and methods ///////////////////////////////////////
+
+    that = AWE.Action.createAction(my);
+
+    that.getRequestBody = function() {
+      return {
+        fundamental_alliance_reservation: {
+          password: my.password
+        }
+      };
+    };
+
+    that.getURL = function() {
+      return AWE.Config.FUNDAMENTAL_SERVER_BASE + 'alliances/' + my.allianceId + '/alliance_reservation';
+    };
+
+    that.getHTTPMethod = function() {
+      return 'POST';
+    };
+
+    that.postProcess = function(statusCode) {
+    };
+
+    return that;
+
+  };
+
+
+  ////////////////////////////////////////////////////////////////////////////
+  //
+  //  UPDATE ALLIANCE RESERVATION
+  //
+  ////////////////////////////////////////////////////////////////////////////
+
+  module.createUpdateAllianceReservationAction = function(allianceReservationId, password, my) {
+
+    // private attributes and methods //////////////////////////////////////
+
+    var that;
+
+    // protected attributes and methods ////////////////////////////////////
+
+    my = my || {};
+    my.allianceReservationId = allianceReservationId || 0;
+    my.password = password || 0;
+
+
+    // public attributes and methods ///////////////////////////////////////
+
+    that = AWE.Action.createAction(my);
+
+    that.getRequestBody = function() {
+      return {
+        fundamental_alliance_reservation: {
+          password: my.password
+        }
+      };
+    };
+
+    that.getURL = function() {
+      return AWE.Config.FUNDAMENTAL_SERVER_BASE + 'alliance_reservations/' + my.allianceReservationId;
+    };
+
+    that.getHTTPMethod = function() {
+      return 'PUT';
+    };
+
+    that.postProcess = function(statusCode, xhr) {
+    };
+
+    return that;
+
   };
 
   return module;

@@ -21,8 +21,24 @@ AWE.UI.Ember = (function(module) {
       this._super();
       AWE.GS.VictoryProgressManager.updateLeaders();
       AWE.GS.RoundInfoManager.updateRoundInfo(AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      if (this.getPath('alliance.id') != null) {
+        AWE.GS.VictoryProgressManager.updateProgressOfAlliance(this.getPath('alliance.id'));
+      }
     },
-    
+
+    allianceObserver: function() {
+      if (this.getPath('alliance.id') != null) {
+        AWE.GS.VictoryProgressManager.updateProgressOfAlliance(this.getPath('alliance.id'));
+      }
+    }.observes('alliance'),
+
+    victoryType: function() {
+      var rules = AWE.GS.RulesManager.getRules();
+      return rules ? rules.get('victory_types')[AWE.GS.game.roundInfo.get('victory_type')] : null;
+    }.property('winner_alliance_id', 'AWE.GS.game.roundInfo.victory_type').cacheable(),
+
+    victoryGainedAtBinding: 'AWE.GS.game.roundInfo.victory_gained_at',
+
     alliance:     null,
     controller:   null,
   });
@@ -41,7 +57,7 @@ AWE.UI.Ember = (function(module) {
     }.property('AWE.GS.Rules.victory_types').cacheable(),
 
     progress: function() {
-      var progresses = this.getPath('alliance.victory_progresses.content');
+      var progresses = this.getPath('alliance.victoryProgresses');
       if (progresses != null) {
         for (var i = 0; i < progresses.length; i++) {
           var progress = progresses[i];
@@ -52,7 +68,7 @@ AWE.UI.Ember = (function(module) {
       }
       log('ERROR: no victory progress found');
       return null;
-    }.property('alliance', 'alliance.victory_progresses.content', 'victoryType').cacheable(),
+    }.property('alliance', 'alliance.victoryProgresses', 'victoryType').cacheable(),
 
     requiredRegions: function() {
       var allRegions = AWE.GS.game.roundInfo.get('regions_count');
@@ -90,7 +106,7 @@ AWE.UI.Ember = (function(module) {
     }.property('AWE.GS.Rules.victory_types').cacheable(),
 
     progress: function() {
-      var progresses = this.getPath('alliance.victory_progresses.content');
+      var progresses = this.getPath('alliance.victoryProgresses');
       if (progresses != null) {
         for (var i = 0; i < progresses.length; i++) {
           var progress = progresses[i];
@@ -101,7 +117,7 @@ AWE.UI.Ember = (function(module) {
       }
       log('ERROR: no victory progress found');
       return null;
-    }.property('alliance', 'alliance.victory_progresses.content', 'victoryType').cacheable(),
+    }.property('alliance', 'alliance.victoryProgresses', 'victoryType').cacheable(),
 
     requiredArtifacts: function() {
       return AWE.GS.RulesManager.getRules().artifact_count;

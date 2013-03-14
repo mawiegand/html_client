@@ -16,7 +16,7 @@ AWE.GS = (function(module) {
   // ///////////////////////////////////////////////////////////////////////    
     
   module.AllianceShout = module.Entity.extend({     // extends Entity to Army
-    typeName: 'Alliance',                                   ///< identifies instances of this type
+    typeName: 'AllianceReservation',                                   ///< identifies instances of this type
     character_id: null, old_character_id: null,             ///< character that posted this message
     characterIdObserver: AWE.Partials.attributeHashObserver(module.AllianceShoutAccess, 'character_id', 'old_character_id').observes('character_id'),
 

@@ -605,14 +605,24 @@ AWE.UI.Ember = (function(module) {
 
     artifactPressed: function(evt) {
       var entry = evt.context;
-      var artifact = entry.get('artifact');
-      if (artifact != null) {
+      var artifactId = entry.get('id');
+      if (artifactId != null) {
         var dialog = AWE.UI.Ember.ArtifactInfoDialog.create({
           closePressed: function () {
             this.destroy();
           },
         });
-        dialog.set('artifact', artifact);
+        var artifact = AWE.GS.ArtifactManager.getArtifact(artifactId);
+        if (artifact) {
+          dialog.set('artifact', artifact);
+        }
+        else {
+          AWE.GS.ArtifactManager.updateArtifact(artifactId, null, function(newArtifact) {
+            if (!dialog.get('isDestroyed')) {
+              dialog.set('artifact', newArtifact);
+            }
+          });
+        }
         WACKADOO.presentModalDialog(dialog);
       }
       return false; // prevent default behavior
