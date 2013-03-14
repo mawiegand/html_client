@@ -1,0 +1,14 @@
+---
+pid: /var/run/client_staging_test.pid
+timeout: 30
+wait: 30
+log: log/thin/client_staging_test.log
+max_conns: 1024
+require: []
+
+environment: staging_test
+max_persistent_conns: 512
+servers: 2
+daemonize: true
+chdir: /var/www/html_client_staging_test/current
+socket: /var/run/client_staging_test.sock

@@ -40,3 +40,15 @@ production:
   shop_callback_hostname: "gs02"
   like_system_enabled: true  
 
+
+staging_test:
+  <<: *defaults
+  jabber_server_base: "jabber.wack-a-doo.com"
+  portal_server_base: "staging-test.wack-a-doo.de"
+  shop_callback_hostname: "test1"
+
+  use_dynamic_construction_slots: true
+
+  shop_enabled: true
+
+
