@@ -32,6 +32,13 @@ AWE.UI.Ember = (function(module) {
       }
     }.observes('alliance'),
 
+    victoryType: function() {
+      var rules = AWE.GS.RulesManager.getRules();
+      return rules ? rules.get('victory_types')[AWE.GS.game.roundInfo.get('victory_type')] : null;
+    }.property('winner_alliance_id', 'AWE.GS.game.roundInfo.victory_type').cacheable(),
+
+    victoryGainedAtBinding: 'AWE.GS.game.roundInfo.victory_gained_at',
+
     alliance:     null,
     controller:   null,
   });
@@ -40,6 +47,16 @@ AWE.UI.Ember = (function(module) {
     alliance:     null,
     controller:   null,
     victoryType:  null,
+
+    leaderProgress: function() {
+      var type = this.getPath('victoryType.symbolic_id');
+      if (AWE.GS.game.victoryProgressLeaders != null) {
+        return AWE.GS.game.victoryProgressLeaders[type]['first'];
+      }
+      else {
+        return null;
+      }
+    }.property('AWE.GS.game.victoryProgressLeaders', 'victoryType').cacheable(),
   });
 
   module.AllianceVictoryProgressDominationView = module.AllianceVictoryProgressView.extend({
