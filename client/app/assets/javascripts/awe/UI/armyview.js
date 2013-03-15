@@ -245,10 +245,10 @@ AWE.UI = (function(module) {
       number = number || Math.floor(Math.random()*1000);
       
       switch (_army.get('stance') || 0) {
-        case 0:  standFrame = 11; break;
-        case 1:  standFrame =  8; break;
-        case 2:  standFrame = 11; break;
-        default: standFrame = 11; 
+        case 0:  standFrame =  9; break;
+        case 1:  standFrame =  7; break;
+        case 2:  standFrame =  9; break;
+        default: standFrame =  9; 
       }    
       
       return {
@@ -261,31 +261,36 @@ AWE.UI = (function(module) {
             frequency: 2,
           },
           walk:   {
-            frames:    [ 15,16,17,18,19,20,21,22],
+            frames:    [ 12,13,14,15,16,17,18,19 ],
             next:      'walk',
             frequency: 1, 
           },
           fight:  {
             frames: [].concat(
               multiplyArray([0,1,2,3,4],              (number % 3)+2), 
+              multiplyArray([5, 5, 5, 5, 5,5,5, 6,6], (number % 2)+1), 
+              multiplyArray([0,1,2,3,4],              (number % 3)+1), 
+              multiplyArray([5,5,5, 5,5, 5,5,5, 5,5], (number % 5)+4) 
+
+/*            multiplyArray([0,1,2,3,4],              (number % 3)+2), 
               multiplyArray([6,6,6, 5,5, 7,7,7, 5,5], (number % 2)+1), 
               multiplyArray([0,1,2,3,4],              (number % 3)+1), 
-              multiplyArray([6,6,6, 5,5, 7,7,7, 5,5], (number % 5)+4) 
+              multiplyArray([6,6,6, 5,5, 7,7,7, 5,5], (number % 5)+4) */
             ),
             next:   'fight',
           }, 
           
           toStand: {
-            frames:    [12],    // need to do different animations for neutral and defensive stance!
+            frames:    [11, standFrame],    // need to do different animations for neutral and defensive stance!
             next:      'stand',
-            frequency: 2,
+            frequency: 1,
           },
           stand: {
             frames: [ standFrame ].concat(
               multiplyArray([standFrame], (number % 67)+23),
-              multiplyArray([standFrame+1], (number % 2)+4), 
+              multiplyArray([standFrame+1, standFrame+1, standFrame], (number % 2)+1), 
               multiplyArray([standFrame], (number % 23)+13),
-              multiplyArray([standFrame+2, standFrame+2], (number % 2)+1) 
+              multiplyArray([standFrame+1 ], (number % 2)+1) 
             ),
             next: 'stand',
             frequency: 1,
