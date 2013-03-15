@@ -139,9 +139,9 @@ AWE.UI.Ember = (function(module) {
     
     init: function() {
       if (AWE.GS.game.get('characterRanking') == null) {
-        AWE.GS.CharacterRankingEntryManager.updateCharacterRanking();
         this.set('sortOrder', 'overall');
       }
+      AWE.GS.CharacterRankingEntryManager.updateCharacterRanking();
       this._super();
     },
     
@@ -172,7 +172,7 @@ AWE.UI.Ember = (function(module) {
     currentPage: function() {
       var entries = this.get('characterRankingEntries');
       if (entries != null && entries.length > 0) {
-        return Math.ceil(1.0 * entries[0]['rank'] / AWE.Config.RANKING_LIST_ENTRIES);
+        return Math.ceil(entries[0]['rank'] / AWE.Config.RANKING_LIST_ENTRIES);
       }
       else {
         return 1;
@@ -302,7 +302,7 @@ AWE.UI.Ember = (function(module) {
     currentPage: function() {
       var entries = this.get('allianceRankingEntries');
       if (entries != null && entries.length > 0) {
-        return Math.ceil(1.0 * entries[0]['rank'] / AWE.Config.RANKING_LIST_ENTRIES);
+        return Math.ceil(entries[0]['rank'] / AWE.Config.RANKING_LIST_ENTRIES);
       }
       else {
         return 1;
@@ -424,7 +424,7 @@ AWE.UI.Ember = (function(module) {
     currentPage: function() {
       var entries = this.get('fortressRankingEntries');
       if (entries != null && entries.length > 0) {
-        return Math.ceil(1.0 * entries[0]['rank'] / AWE.Config.RANKING_LIST_ENTRIES);
+        return Math.ceil(entries[0]['rank'] / AWE.Config.RANKING_LIST_ENTRIES);
       }
       else {
         return 1;
@@ -537,7 +537,7 @@ AWE.UI.Ember = (function(module) {
     currentPage: function() {
       var entries = this.get('artifactRankingEntries');
       if (entries != null && entries.length > 0) {
-        return Math.ceil(1.0 * entries[0]['rank'] / AWE.Config.RANKING_LIST_ENTRIES);
+        return Math.ceil(entries[0]['rank'] / AWE.Config.RANKING_LIST_ENTRIES);
       }
       else {
         return 1;
