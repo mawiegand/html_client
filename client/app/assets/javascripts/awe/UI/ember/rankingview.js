@@ -268,10 +268,7 @@ AWE.UI.Ember = (function(module) {
     templateName: 'alliance-ranking-view',
     
     init: function() {
-      if (AWE.GS.game.get('allianceRanking') == null) {
-        AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, null, function(ranking) {
-        });
-      }
+      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking();
       this._super();
     },
     
@@ -390,10 +387,7 @@ AWE.UI.Ember = (function(module) {
     templateName: 'fortress-ranking-view',
 
     init: function() {
-      if (AWE.GS.game.get('fortressRanking') == null) {
-        AWE.GS.FortressRankingEntryManager.updateFortressRanking(null, null, function(ranking) {
-        });
-      }
+      AWE.GS.FortressRankingEntryManager.updateFortressRanking();
       this._super();
     },
 
@@ -503,10 +497,7 @@ AWE.UI.Ember = (function(module) {
     templateName: 'artifact-ranking-view',
 
     init: function() {
-      if (AWE.GS.game.get('artifactRanking') == null) {
-        AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, null, function(ranking) {
-        });
-      }
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking();
       this._super();
     },
 
