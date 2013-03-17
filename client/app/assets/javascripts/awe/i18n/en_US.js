@@ -567,7 +567,7 @@ AWE.I18n.en_US = function(module) {
       construction:{
         hurry:"Hurry!",
         cashTooltip:"Spend golden frogs to finish this job instantly. The costs depend on the remaining building time.",
-        insufficentResources:"insufficent resources",
+        insufficentResources:"insufficient resources",
         finishing:"finishing",
         beingBuilt:"Building is being constructed.",
         waitingToBeBuilt:"Waiting for its turn.",
