@@ -753,7 +753,7 @@ AWE.I18n.de_DE = function(module) {
           dialogHeader: "Rangaufstieg!",
           flavour1: "Du bist soeben in einen neuen Rang aufgestiegen und darfst Dich jetzt",
           flavour2: "nennen.",
-          flavour3: "Mach weiter so, dann steigst Du Null-Komma-Nix in den Rang",
+          flavour3: "Mach weiter so, dann steigst Du in Null-Komma-Nix in den Rang",
           flavour4: "auf.",
           text: "Du hast genug Erfahrung durch Kämpfen und Bauen gesammelt, um einen Rang aufzusteigen. Rangaufstiege versprechend Dir ein höheres Ansehen bei Deinen Mitspielern. Die werden schon ganz neidisch. Außerdem benötigst Du einen höheren Rang, um mehr Festungen und Lagerstätten kontrollieren zu können.",
         },
@@ -880,8 +880,8 @@ AWE.I18n.de_DE = function(module) {
 
       end: {
         header: "Tutorial erfolgreich beendet.",
-        p1: "Glückwunsch Halbgott, Du hast den ersten Schritt auf Deiner Reise getan! Du hat das Tutorial erfolgreich durchlaufen und die grundlegenden Funktionen von Wack-A-Doo kennen gelernt.",
-        p2: "Zu diesem Erfolg schenken wir Dir für einige Tage den optionalen Platinum-Account sowie Boni auf die Rohstoffproduktion. Sichtbar sind diese Boni in der Fundgrube.",
+        p1: "Glückwunsch Halbgott, Du hast den ersten Schritt auf Deiner Reise getan! Du hast das Tutorial erfolgreich durchlaufen und die grundlegenden Funktionen von Wack-A-Doo kennen gelernt.",
+        p2: "Zu diesem Erfolg schenken wir Dir für einige Tage den optionalen Platinum-Account sowie Boni auf die Rohstoffproduktion. Sichtbar sind diese Boni in der Fundgrube oben rechts.",
         p3: "Deine weitere Entwicklung werden wir beobachten und Dich mit einer Reihe von fortlaufenen Aufgaben begleiten. Diese Aufgaben kannst Du erfüllen, wann immer es Dir gefällt.",
         p4: "Lass Dich von unseren Aufgaben nicht ablenken. Baue die Siedlungen aus, stelle Armeen auf und mehre Deine Macht und Deinen Einfluss, wie es Dir gefällt, solange Du am Ende nur die Weltherrschaft erlangst!",
         p5: "Viele Wege führen in Wack-A-Doo zum Erfolg, aber wenn es eine Aussage mit Allgemeingültigkeit gibt, ist es folgende: Rohstoffe, Rohstoffe und noch mehr Rohstoffe. Eine schlagkräftige Armee gewinnt einen Kampf, eine hohe Rohstoffproduktion einen Krieg.",
