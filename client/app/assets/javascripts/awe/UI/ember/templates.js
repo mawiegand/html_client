@@ -36,8 +36,9 @@ AWE.UI.Ember = (function(module) {
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/playertoplayertradeview.html');  
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/settlementinfodialog.html');  
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/characterinfodialog.html');  
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/resourcedetailsdialog.html');  
-  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/foundsettlementdialog.html');  
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/resourcedetailsdialog.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/resourceexchangedialog.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/foundsettlementdialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/facebookviews.html');  
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/characterprogressdialog.html');  
 

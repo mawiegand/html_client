@@ -52,6 +52,12 @@ AWE.UI.Ember = (function(module) {
     createJobPressed: function(evt) {
       this.get('controller').trainingCreateClicked(this.get('queue'), this.getPath('selectedUnitButton.unitType.id'), this.get('number'));
     },
+
+    resourceExchangePressed: function() { 
+      var dialog = AWE.UI.Ember.ResourceExchangeDialog.create(); 
+      WACKADOO.presentModalDialog(dialog); 
+      return false; 
+    },  
     
   });
   
