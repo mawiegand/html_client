@@ -1008,7 +1008,7 @@ AWE.I18n.de_DE = function(module) {
       rank: 'Rang',
       character: 'Spieler',
       owner: 'Besitzer',
-      overallScore: 'Gesamt',
+      overallScore: 'Bevölkerung',
       resourceScore: 'Ressourcen',
       likes: 'Likes',
       victories: 'Siege',
