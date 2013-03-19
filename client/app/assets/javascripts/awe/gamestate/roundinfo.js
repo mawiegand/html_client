@@ -17,6 +17,7 @@ AWE.GS = (function(module) {
     typeName: 'RoundInfo',
     
     name: null,
+    number: null,
     started_at: null,
     
     age: function() {
@@ -29,8 +30,22 @@ AWE.GS = (function(module) {
       }
     }.property('started_at').cacheable(),
     
-    regions_count: null,    
-  });     
+    regions_count: null,
+    victory_gained_at: null,
+    winner_alliance_id: null,
+
+    victoryGained: function() {
+      return this.get('winner_alliance_id') != null;
+    }.property('winner_alliance_id').cacheable(),
+
+    winnerAlliance: function() {
+      log('----> winnerAlliance', this.get('winner_alliance_id'));
+      var alliance_id = this.get('winner_alliance_id');
+      return alliance_id != null ? AWE.GS.AllianceManager.getAlliance(this.get('winner_alliance_id')) : null;
+    }.property('winner_alliance_id').cacheable(),
+
+    victory_type: null,
+  });
 
     
   // ///////////////////////////////////////////////////////////////////////

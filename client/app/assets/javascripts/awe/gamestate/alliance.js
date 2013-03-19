@@ -143,7 +143,7 @@ AWE.GS = (function(module) {
     allianceIdObserver: AWE.Partials.attributeHashObserver(module.VictoryProgressAccess, 'alliance_id', 'old_alliance_id').observes('alliance_id'),
 
     victoryType: function() {
-      var rules = AWE.GS.RulesManager.getRules()
+      var rules = AWE.GS.RulesManager.getRules();
       return rules ? rules.get('victory_types')[this.get('type_id')] : null;
     }.property('type_id').cacheable(),
     
@@ -169,7 +169,7 @@ AWE.GS = (function(module) {
       var reqDuration = this.getPath('victoryType.condition.duration');
       if (firstFulfilledAt != null) {
         var duration = (new Date().getTime() - Date.parseISODate(firstFulfilledAt).getTime())/(24 * 3600 * 1000);
-        return duration / reqDuration;
+        return Math.min(duration / reqDuration, 1);
       }
       else {
         return 0;
@@ -178,7 +178,7 @@ AWE.GS = (function(module) {
     
     daysRemaining: function() {
       var reqDuration = this.getPath('victoryType.condition.duration');
-      return AWE.UI.Util.round(reqDuration * (1 - this.get('fulfillmentDurationRatio')));
+      return Math.max(AWE.UI.Util.round(reqDuration * (1 - this.get('fulfillmentDurationRatio'))), 0);
     }.property('victoryType', 'fulfillmentDurationRatio').cacheable(),
     
     endDate: function() {
