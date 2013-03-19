@@ -1056,7 +1056,7 @@ AWE.I18n.en_US = function(module) {
       regionsPerMember: 'p. Memb.',
       taxRate: 'Tax rate',
       income: 'Resourcerate',
-      defenseBonus: 'Battlebonus',
+      defenseBonus: 'Battle Bonus',
       name: "Name",
       type: "Typ",
       region: "Region",
