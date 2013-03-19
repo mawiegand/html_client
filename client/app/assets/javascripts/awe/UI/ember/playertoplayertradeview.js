@@ -35,7 +35,14 @@ AWE.UI.Ember = (function(module) {
     speedupCosts: function() {
       return AWE.Util.Rules.lookupTradingSpeedupCost(0).amount;
     }.property().cacheable(),
-
+    
+    speedupTooltipText: function() {
+      if ((this.getPath('tradingCartAction.send_hurried') && !this.getPath('tradingCartAction.returning')) || (this.getPath('tradingCartAction.return_hurried') && this.getPath('tradingCartAction.returning')))
+        return AWE.I18n.lookupTranslation('settlement.trade.hurryTooltipHurried');
+      else
+        return AWE.I18n.lookupTranslation('settlement.trade.hurryTooltip');
+    }.property('tradingCartAction.send_hurried', 'tradingCartAction.return_hurried', 'tradingCartAction.returning'),
+    
     cancelPressed: function() {
       var self = this;
       this.set('sending', true);
@@ -49,7 +56,7 @@ AWE.UI.Ember = (function(module) {
       var self = this;
       this.set('hurrying', true);
       this.getPath('parentView.controller').speedupTradingCartAction(this.getPath('tradingCartAction.id'), function(status) {
-        self.set('hurrying', false);
+        
       });  
       return false; // don't execute default action
     },
@@ -88,6 +95,19 @@ AWE.UI.Ember = (function(module) {
     empty: function() {
       return (this.get('load') || []).length == 0;
     }.property('laod').cacheable(),
+    
+    updateHurryButton: function() {
+      var self = this;
+      var returned_at = this.getPath('tradingCartAction.returned_at');
+      var returned = Date.parseISODate(returned_at);
+      var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
+      
+      console.log("TEST")
+      console.log(now);
+      console.log(returned);
+      if(now.getTime() < returned.getTime())
+        self.set('hurrying', false);
+    }.observes('tradingCartAction.updated_at'),
     
     /** automatically fetch and set sender to sending character. */
     updateSender: function() {

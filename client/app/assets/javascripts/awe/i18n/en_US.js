@@ -613,7 +613,8 @@ AWE.I18n.en_US = function(module) {
         destination:"Destination",
         amount:"amount",
         hurry: "Hurry!",
-        hurryTooltip: "Hurry the trade by golden frogs.",
+        hurryTooltip: "Gib Goldkröten aus um die Transportzeit der Handelskarren um 30 Minuten zu verringern.",
+        hurryTooltipHurried: "Gib Goldkröten aus um die Handelskarren sofort beim Ziel eintreffen zu lassen.",
         noCartsInTransit: "No carts in transit.",
 
         error:{
