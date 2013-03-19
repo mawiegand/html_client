@@ -123,6 +123,12 @@ AWE.UI.Ember = (function(module) {
       return false; // prevent default behavior
     },
     
+    exchangePressed: function(evt) {
+      var dialog = AWE.UI.Ember.ResourceExchangeDialog.create();
+      WACKADOO.presentModalDialog(dialog);
+      return false; // prevent default behavior
+    },
+
     alliancePressed: function(evt) {
       var entry = evt.context;
       var allianceId = entry.get('alliance_id');

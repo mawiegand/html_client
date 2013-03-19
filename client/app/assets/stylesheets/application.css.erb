@@ -969,6 +969,11 @@ a:focus { outline: thin dotted; }
   background: url('<%= asset_path("icons/cross_red_small.png") %>') no-repeat left center;
 }
 
+.icon-button.cash-button-large {
+  background: url('<%= asset_path("icons/toad-large.png") %>') no-repeat left center;
+  padding-left:55px;
+}
+
 .image-button {
   width: 197px;
   height: 40px;
@@ -1563,6 +1568,7 @@ loaddialog-positioner {
 .settlement-dialog-select-building.settlement-dialog-footer {
   margin-bottom: 400px; 
 }
+
 
 span.bonus {
   color: #9D9;
@@ -4459,7 +4465,75 @@ a.trading-carts-speedup-button:hover {
   margin: -4px;
 }
 
+#resource-exchange-dialog .resource-exchange-input {
+  width:100px;
+}
+  
+#resource-exchange-dialog .green-color .resource-exchange-input {
+  color: #9D9;
+}
 
+#resource-exchange-dialog .red-color .resource-exchange-input {
+  color: #F77;
+}
+
+#resource-exchange-dialog .bold .resource-exchange-input {
+  font-weight: bold;
+}
+
+#resource-exchange-dialog a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+#resource-exchange-dialog a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+#resource-exchange-dialog .right {
+  float:right;
+}
+
+#resource-exchange-dialog table {
+  width:100%;
+}
+
+#resource-exchange-dialog table th, #resource-exchange-dialog table td {
+  text-align:center;
+}
+
+
+.hurry-button {
+  font-size: 14px;
+  width: 130px;
+  height: 24px;
+  padding-top: 6px;
+  background-color:#fff;
+}
+
+hurry-button:hover {
+}
+.hurry-button a {
+  padding: 2px 6px;
+  color: #333;
+  border-radius: 3px;
+  text-decoration: none;
+  border: 1px solid #333;
+  margin: -2px;
+}
+
+.hurry-button a:hover {
+  border-color: #000;
+  color: #000;
+  background-color: #BBF;
+}
+
+.simple-button:hover {
+}
 .z-layer-5 {
   z-index: 512;
 }

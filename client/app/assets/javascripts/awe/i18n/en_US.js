@@ -969,6 +969,49 @@ AWE.I18n.en_US = function(module) {
         bonus:"Bonus",
         tax:"Tax",
       },
+      exchange: {
+        header:   "Umkröten",
+        advert:   "Nicht genug Ressourcen übrig? Dann probiere unsere Umkröten-Funktion aus!",
+        info:     "Mithilfe der Umkröten-Funktion können gegen einen kleinen Obolus die Ressourcen neu verteilen.",
+        warning:  "Im Dialog aktualisieren sich die Ressourcen nicht. Das neu verteilen bezieht sich dennoch auf deinen aktuellen Ressourcenstand.",
+        fee:      "Es fallen Kosten in Höhe von 3",
+        fee2:     "Kröten an.",
+        loading:  "Lade Ressourcen",
+        loading2: "Führe Umtausch durch",
+        sum:      "Gesamt",
+        remaining:"Verbleibend",
+
+        form: {
+          exchange: "Umtauschen",
+          reset:    "Zurücksetzen",
+        },
+
+        errors: {
+          toomuch: {
+            heading: "Zu viel verteilt",
+            left:    "Du kannst nicht mehr Resourcen verteilen als du maximal hast. ;-)",
+            stone:   "Du hast mehr Stein zugeteilt als du lagern kannst.",
+            wood:    "Du hast mehr Holz zugeteilt als du lagern kannst.",
+            fur:     "Du hast mehr Fell zugeteilt als du lagern kannst.",
+          },
+
+          tooless: {
+            heading: "Zu wenig",
+            text:    "Du hast nicht alle Ressourcen neuverteilt. Du musst alle verteilen, da sie sonst verschwinden würden",
+            cash:    "Du hast nicht genügend Kröten um den Umtausch zu bezahlen.",
+          },
+
+          failed: {
+            heading: "Umtausch fehlgeschlagen",
+            text:    "Der Umtausch ist fehlgeschlagen. Bitte versuche es erneut oder wende dich an einen Administrator.",
+          },
+
+          isnan: {
+            heading: "Wert ist keine Zahl",
+            text:    "Die Werte müssen Zahlen sein. Bitte korrigiere deine Eingabe.",
+          },
+        },
+      },
     },
     
     effects: {
