@@ -109,6 +109,7 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-victory-progress-other-alliance-view">
+  {{#if progress}}
     {{#if progress.fulfilled}}
     <div {{bindAttr style="styleFulfilled1" }}>
       <div {{bindAttr style="styleFulfilled2" }}>
@@ -126,4 +127,5 @@
       </div>
     </div>
     {{/if}}
+  {{/if}}
 </script>
