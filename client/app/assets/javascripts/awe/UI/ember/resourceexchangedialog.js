@@ -87,12 +87,42 @@ AWE.UI.Ember = (function(module) {
 
     /* actions */
     exchangeClicked: function() {
-      /* TODO: add submit functionality */
+      if(this.get('newStoneValue') == 0 && this.get('newWoodValue') == 0 && this.get('newFurValue') == 0) {
+        var errorDialog = AWE.UI.Ember.InfoDialog.create({
+          heading: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.heading'),
+          message: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.left'),
+        });
+        WACKADOO.presentModalDialog(errorDialog);
+      }
+
+      else {
+        this.set('loadingSend', true);
+        var self = this;
+        var action = AWE.Action.Fundamental.createTradeResourcesAction(self.get('newStoneValue'), self.get('newWoodValue'), self.get('newFurValue'));
+        AWE.Action.Manager.queueAction(action, function(statusCode) {
+          var parent = self;
+          if(statusCode == 200) {
+            /* update resources in client */
+            AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
+              parent.set('loadingSend', false);
+              parent.destroy();
+            });
+          } else {
+            var errorDialog = AWE.UI.Ember.InfoDialog.create({
+              heading: AWE.I18n.lookupTranslation('resource.exchange.errors.failed.heading'),
+              message: AWE.I18n.lookupTranslation('resource.exchange.errors.failed.text'),
+            });
+            WACKADOO.presentModalDialog(errorDialog);
+            self.destroy();
+          }
+        });
+      }
+
       return false;
     },
 
     resetClicked: function() {
-      /* TODO: reset dialog */
+      this.init();
       return false;
     },
 
