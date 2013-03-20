@@ -321,6 +321,11 @@ AWE.Controller = (function(module) {
             amounts[1] = pool.presentAmount('resource_stone');
             amounts[2] = pool.presentAmount('resource_fur')  ;
             amounts[3] = pool.presentAmount('resource_cash') ;
+
+            pool.set('resource_wood_present', pool.presentAmount('resource_wood'));
+            pool.set('resource_stone_present', pool.presentAmount('resource_stone'));
+            pool.set('resource_fur_present', pool.presentAmount('resource_fur'));
+            pool.set('resource_cash_present', pool.presentAmount('resource_cash'));
           }
         }
         
