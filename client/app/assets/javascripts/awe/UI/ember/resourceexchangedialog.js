@@ -73,22 +73,6 @@ AWE.UI.Ember = (function(module) {
     },
 
     /* actions */
-    fill: function(res) {
-      this.set(res, parseInt(this.get(res))+this.get('left'));
-    },
-
-    fillStone: function() {
-      this.fill('stone');
-    },
-
-    fillWood: function() {
-      this.fill('wood');
-    },
-
-    fillFur: function() {
-      this.fill('fur');
-    },
-
     okClicked: function() {
       var self = this;
 
