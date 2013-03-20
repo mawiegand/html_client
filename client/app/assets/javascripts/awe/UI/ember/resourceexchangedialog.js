@@ -48,6 +48,11 @@ AWE.UI.Ember = (function(module) {
       return this.get('sum');
     }.property('pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present').cacheable(),
 
+    getNewSum: function() {
+      this.set('newSum', parseInt(this.get('newStoneValue')) + parseInt(this.get('newWoodValue')) + parseInt(this.get('newFurValue')));
+      return this.get('newSum');
+    }.property('newStoneValue', 'newWoodValue', 'newFurValue').cacheable(),
+
     getStoneDiff: function () {
       if(parseInt(this.get('newStoneValue')) > this.getPath('pool.resource_stone_capacity')) {
         this.set('newStoneValue', parseInt(this.getPath('pool.resource_stone_capacity')));

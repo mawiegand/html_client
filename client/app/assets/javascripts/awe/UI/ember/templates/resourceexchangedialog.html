@@ -19,7 +19,14 @@
         <th><span class="resource-icon resource_stone" title="{{t resource.stone}}"></span>{{pool.resource_stone_present}}</th> 
         <th><span class="resource-icon resource_wood" title="{{t resource.wood}}"></span>{{pool.resource_wood_present}}</th> 
         <th><span class="resource-icon resource_fur" title="{{t resource.fur}}"></span>{{pool.resource_fur_present}}</th> 
-        <th colspan="2"></th>
+        <th>
+          <table>
+            <tr>
+              <td>{{t resource.exchange.sum}}:</td>
+              <td class="remaining">{{formatNumber getSum}}</td>
+            </tr>
+          </table>
+        </th>
       </tr>
 
       <tr>
@@ -30,7 +37,7 @@
           <table>
             <tr>
               <td>{{t resource.exchange.sum}}:</td>
-              <td class="remaining">{{formatNumber getSum}}</td>
+              <td class="remaining">{{formatNumber getNewSum}}</td>
             </tr>
           </table>
         </td>
