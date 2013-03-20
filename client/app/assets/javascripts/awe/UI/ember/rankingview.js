@@ -71,6 +71,8 @@ AWE.UI.Ember = (function(module) {
 
   module.RankingView = Ember.View.extend({
 
+    loading: null,
+
     emptyEntriesAheadOfSpinwheel: function() {
       return new Array(Math.ceil(AWE.Config.RANKING_LIST_ENTRIES / 2));
     }.property('AWE.Config.RANKING_LIST_ENTRIES').cacheable(),
@@ -274,7 +276,11 @@ AWE.UI.Ember = (function(module) {
     templateName: 'alliance-ranking-view',
     
     init: function() {
-      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking();
+      var self = this;
+      this.set('loading', true);
+      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, null, function() {
+        self.set('loading', false);
+      });
       this._super();
     },
     
@@ -503,7 +509,11 @@ AWE.UI.Ember = (function(module) {
     templateName: 'artifact-ranking-view',
 
     init: function() {
-      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking();
+      var self = this;
+      this.set('loading', true);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, null, function() {
+        self.set('loading', false);
+      });
       this._super();
     },
 

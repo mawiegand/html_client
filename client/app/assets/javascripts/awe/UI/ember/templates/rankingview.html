@@ -60,7 +60,7 @@
         {{#each emptyEntriesAfterSpinwheel}}
           <tr><td colspan="9"></td></tr>
         {{/each}}
-      {{/if}}  
+      {{/if}}
     </table>
 </script>
 
@@ -105,13 +105,17 @@
         {{/each}}
         </tr>
           <td colspan="9" style="text-align:center;">
-            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+            {{#if loading}}
+              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+            {{else}}
+              {{t ranking.noAlliances}}
+            {{/if}}
           </td>
         </tr>
         {{#each emptyEntriesAfterSpinwheel}}
           <tr><td colspan="9"></td></tr>
         {{/each}}
-      {{/if}}  
+      {{/if}}
     </table>
 </script>
 
@@ -194,7 +198,11 @@
       {{/each}}
       </tr>
       <td colspan="5" style="text-align:center;">
-        {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+        {{#if loading}}
+          {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+        {{else}}
+          {{t ranking.noArtifacts}}
+        {{/if}}
       </td>
       </tr>
       {{#each emptyEntriesAfterSpinwheel}}
