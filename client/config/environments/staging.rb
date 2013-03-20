@@ -22,7 +22,7 @@ Client::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true
   
-  config.action_controller.asset_host = "https://test1.wack-a-doo.de/client"    # this can't remain static if we want to use several game servers
+  config.action_controller.asset_host = "/client"
 
   # Defaults to Rails.root.join("public/assets")
   # config.assets.manifest = YOUR_PATH
