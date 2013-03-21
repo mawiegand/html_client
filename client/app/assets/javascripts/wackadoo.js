@@ -640,8 +640,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       
       log('SETTINGS', AWE.Settings);
 
-      AWE.Config.init();
-            
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
         expiration: (new Date()).add(expiration-120).seconds(),
