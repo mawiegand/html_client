@@ -997,28 +997,22 @@ AWE.I18n.de_DE = function(module) {
         },
 
         errors: {
-          toomuch: {
-            heading: "Zu viel verteilt",
-            left:    "Du kannst nicht mehr Resourcen verteilen als du maximal hast. ;-)",
-            stone:   "Du hast mehr Stein zugeteilt als du lagern kannst.",
-            wood:    "Du hast mehr Holz zugeteilt als du lagern kannst.",
-            fur:     "Du hast mehr Fell zugeteilt als du lagern kannst.",
+          noinput: {
+            heading: "Keine Werte eingegeben",
+            text:    "Du hast keine Werte eingegeben. Um einen Umtausch zu vollziehen, solltest du zumindest einen Wert eingeben. :-)",
           },
 
-          tooless: {
-            heading: "Zu wenig",
-            text:    "Du hast nicht alle Ressourcen neuverteilt. Du musst alle verteilen, da sie sonst verschwinden würden",
-            cash:    "Du hast nicht genügend Kröten um den Umtausch zu bezahlen.",
+          toomuch: {
+            heading: "Zu viele Ressourcen verteilt",
+            text:    "Du hast mehr Ressourcen verteilt als dir zur Verfügung stehen. Bitte korrigiere deinen Fehler.",
+            stone:   "Du hast mehr Stein verteilt, als du lagern kannst. :) Bitte korrigiere deinen Fehler vor dem Umtausch.",
+            wood:    "Du hast mehr Holz verteilt, als du lagern kannst. :) Bitte korrigiere deinen Fehler vor dem Umtausch.",
+            fur:     "Du hast mehr Fell verteilt, als du lagern kannst. :) Bitte korrigiere deinen Fehler vor dem Umtausch.",
           },
 
           failed: {
             heading: "Umtausch fehlgeschlagen",
             text:    "Der Umtausch ist fehlgeschlagen. Bitte versuche es erneut oder wende dich an einen Administrator.",
-          },
-
-          isnan: {
-            heading: "Wert ist keine Zahl",
-            text:    "Die Werte müssen Zahlen sein. Bitte korrigiere deine Eingabe.",
           },
         },
       },

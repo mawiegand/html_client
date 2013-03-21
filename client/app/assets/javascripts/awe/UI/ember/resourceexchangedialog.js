@@ -1,9 +1,3 @@
-/* Authors: Sascha Lange <sascha@5dlab.com>, 
- *          Patrick Fox <patrick@5dlab.com>, Julian Schmid
- * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
- * Do not copy, do not distribute. All rights reserved.
- */
-
 var AWE = AWE || {};
 AWE.UI = AWE.UI || {};
 
@@ -49,7 +43,7 @@ AWE.UI.Ember = (function(module) {
     }.property('pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present').cacheable(),
 
     getNewSum: function() {
-      this.set('newSum', parseInt(this.get('newStoneValue')) + parseInt(this.get('newWoodValue')) + parseInt(this.get('newFurValue')));
+      this.set('newSum', (parseInt(this.get('newStoneValue')) || 0) + (parseInt(this.get('newWoodValue')) || 0) + (parseInt(this.get('newFurValue')) || 0));
       return this.get('newSum');
     }.property('newStoneValue', 'newWoodValue', 'newFurValue').cacheable(),
 
@@ -75,8 +69,8 @@ AWE.UI.Ember = (function(module) {
     }.property('pool.resource_fur_present', 'newFurValue').cacheable(),
 
     getRemaining: function() {
-      this.set('remaining', this.get('sum') - parseInt(this.get('newStoneValue') || 0) - parseInt(this.get('newWoodValue') || 0) - parseInt(this.get('newFurValue') || 0));
-      return this.get('remaining');
+      this.set('remaining', this.get('sum') - (parseInt(this.get('newStoneValue')) || 0) - (parseInt(this.get('newWoodValue')) || 0) - (parseInt(this.get('newFurValue')) || 0));
+      return this.get('remaining')
     }.property('newStoneValue', 'newWoodValue', 'newFurValue', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present').cacheable(),
 
     /* html classes */
@@ -87,10 +81,45 @@ AWE.UI.Ember = (function(module) {
 
     /* actions */
     exchangeClicked: function() {
-      if(this.get('newStoneValue') == 0 && this.get('newWoodValue') == 0 && this.get('newFurValue') == 0) {
+      if((parseInt(this.get('newStoneValue')) || 0) == 0 && (parseInt(this.get('newWoodValue')) || 0) == 0 && (parseInt(this.get('newFurValue')) || 0) == 0) {
+        var errorDialog = AWE.UI.Ember.InfoDialog.create({
+          heading: AWE.I18n.lookupTranslation('resource.exchange.errors.noinput.heading'),
+          message: AWE.I18n.lookupTranslation('resource.exchange.errors.noinput.text'),
+        });
+        WACKADOO.presentModalDialog(errorDialog);
+      }
+
+      /* NOTICE: I added those ifs because I thought they are necessary, since you can't type in values that
+       * are higher than the capacity, those cases should never appear. Even if they appear, they'll be
+       * detected by the game server resulting in an exception */
+      /*else if(this.get('newStoneValue') > parseInt(this.getPath('pool.resource_stone_capacity'))) {
         var errorDialog = AWE.UI.Ember.InfoDialog.create({
           heading: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.heading'),
-          message: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.left'),
+          message: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.stone'),
+        });
+        WACKADOO.presentModalDialog(errorDialog);
+      }
+  
+      else if(this.get('newWoodValue') > parseInt(this.getPath('pool.resource_wood_capacity'))) {
+        var errorDialog = AWE.UI.Ember.InfoDialog.create({
+          heading: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.heading'),
+          message: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.wood'),
+        });
+        WACKADOO.presentModalDialog(errorDialog);
+      }
+
+      else if(this.get('newFurValue') > parseInt(this.getPath('pool.resource_fur_capacity'))) {
+        var errorDialog = AWE.UI.Ember.InfoDialog.create({
+          heading: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.heading'),
+          message: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.fur'),
+        });
+        WACKADOO.presentModalDialog(errorDialog);
+      }*/
+
+      else if(parseInt(this.get('remaining'))  < 0) {
+        var errorDialog = AWE.UI.Ember.InfoDialog.create({
+          heading: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.heading'),
+          message: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.text'),
         });
         WACKADOO.presentModalDialog(errorDialog);
       }
