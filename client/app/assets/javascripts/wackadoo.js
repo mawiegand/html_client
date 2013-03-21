@@ -630,14 +630,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }
       var accessToken = args.accessToken ;                             // || AWE.Config.DEV_ACCESS_TOKEN || null;
       var expiration  = parseInt(args.expiration || "3600");           // asume one hour validity as default
-      AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;  // TODO: This is a hack, should go to settings.
-      AWE.Settings.signin_with_client_id = args.client_id || '';   
+      AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;
+      AWE.Settings.lang = args.locale ? args.locale.substr(0, 2) : AWE.Config.DEFAULT_LANG;
+      AWE.Settings.signin_with_client_id = args.client_id || '';
       AWE.Settings.referer = args.referer;
       AWE.Settings.requestUrl = args.requestUrl;
       AWE.Settings.playerInvitation = args.playerInvitation;
       AWE.Settings.allianceInvitation = args.allianceInvitation;
       
       log('SETTINGS', AWE.Settings);
+
+      AWE.Config.init();
             
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,

@@ -8,9 +8,8 @@ var AWE = window.AWE || {};
 
 AWE.Settings = (function(module) { 
   
-  module.locale                = AWE.Config.DEFAULT_LOCALE;
   module.signin_with_client_id = '';
-    
+
   return module;
   
 }(AWE.Settings || {}));
