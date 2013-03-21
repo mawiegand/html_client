@@ -17,4 +17,5 @@ try {
 }
 catch (e) {
 }
+
 AWE.Settings.lang = args.locale ? args.locale.substr(0, 2) : 'en';
