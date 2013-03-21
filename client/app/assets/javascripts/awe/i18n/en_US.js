@@ -506,6 +506,28 @@ AWE.I18n.en_US = function(module) {
       defenseBonus:'Combat Bonus',
       founded:'Founded',
 
+      customization: {
+        chooseName: "Deinen Namen wählen",
+        changeName: "Deinen Namen ändern",
+        chooseNameCaption: 'Namen wählen',
+        changeNameCaption: 'Namen ändern',
+        nameChangeAdvice: 'Bitte wähle den Namen mit Bedacht, idealerweise passt der Name in die Steinzeit.',
+        nameChangeFreeAdvice: 'Einmal kannst Du den Namen kostenlos ändern, jede weitere Änderung kostet ein paar Kröten um Missbrauch zu verhindern.',
+        nameChangeCostAdvice: 'Du hast den Namen bereits einmal geändert. Eine weitere Namensänderung ist natürlich möglich, kostet aber zur Verhinderung von Missbrauch ein paar Kröten.',
+
+        changeNameDialogCaption: "Gib den neuen Namen ein.",
+        
+        errors: {
+          nameTooShort: "Viel zu kurz. Der Name muss mindestens 3 Zeichen enthalten.",
+          nameTooLong: "Viel zu lang. Der Name darf höchstens 16 Zeichen enthalten.",
+          nameNoChange: "Das ist der gleiche Name wie vorher. Keine Veränderung",
+
+          nameTaken: "Dieser Name wird schon benutzt oder ist auf der Blacklist. Bitte wähle einen anderen Namen.",
+          changeNameCost: "Du hast nicht genug Kröten, um Deinen Namen zu ändern.",
+          changeNameError: "Der Name konnte aus unbekannten Gründen nicht geändert werden. Bitte versuch es später noch einmal.",
+        },
+      },
+
       invitationLink:{
         header:"Invatation link",
         text:"Invite your friends to play with you. If they register with the following link, they start right in this region and pay taxes to you from the beggining.",

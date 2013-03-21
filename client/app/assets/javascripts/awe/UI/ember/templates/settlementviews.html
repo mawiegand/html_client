@@ -22,8 +22,23 @@
   {{else}}
   
   
-    <h1>{{settlement.name}} <!-- <a href="#" class="change-name" {{action "changeNamePressed"}}>{{t settlement.info.changeName}}</a>--></h1>  
-
+    <h1>{{settlement.name}}
+      {{#if changingName }}
+        &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+      {{else}}
+        <span class="simple-button" {{action "changeNamePressed"}}>{{#if firstNameChange}}{{t settlement.customization.chooseNameCaption}}{{else}}{{t settlement.customization.changeNameCaption}} 1<span class="resource-icon resource_cash">&nbsp;</span>{{/if}}</span>
+      {{/if}}
+    </h1>  
+    
+    <p class="red-color">{{message}}</p>
+    
+    <p>{{t settlement.customization.nameChangeAdvice}}</p>
+    {{#if firstNameChange}}
+      <p>{{t settlement.customization.nameChangeFreeAdvice}}</p>
+    {{else}}
+      <p>{{t settlement.customization.nameChangeCostAdvice}}</p>      
+    {{/if}}
+    
     <p><b>{{t settlement.info.availableBuildingSlots}}:</b> {{settlement.availableBuildingSlots}} &nbsp;<b>{{t settlement.population}}:</b> {{settlement.score}}</p>
     <p><b>{{t settlement.defenseBonus}}:</b> {{formatNumber defenseBonus places="0"}}<span class="help-icon" title="{{t settlement.info.combatBonusInfo}}.">&nbsp;</span></p>
 

@@ -81,6 +81,70 @@ AWE.UI.Ember = (function(module) {
     
     lastError: null, 
     
+    changingName: false,
+    
+    firstNameChange: function() { 
+      var count = this.getPath('settlement.name_change_count');
+      return count === undefined || count === null || count < 1;
+    }.property('settlement.name_change_count'), 
+    
+    changeNamePressed: function() {
+      this.set('message', null);
+      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
+        classNames: ['change-army-name-dialog'],
+        heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'),
+        input: this.getPath('settlement.name'),
+        controller: this,
+        
+        okPressed: function() {
+          var controller = this.get('controller');
+          if (controller) {
+            controller.processNewName(this.getPath('input'));
+          }
+          this.destroy();            
+        },
+        
+        cancelPressed: function() { this.destroy(); },
+      });
+      WACKADOO.presentModalDialog(changeDialog);
+    },
+    
+    processNewName: function(newName) {
+      
+      if (!newName || newName.length < 3) {
+        this.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.nameTooShort'));
+      }
+      else if (!newName || newName.length > 16) {
+        this.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.nameTooLong'));
+      }
+      else if (newName === this.getPath('settlement.name')) {
+        this.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.nameNoChange'));
+      }      
+      else {  // now, really send the name
+        var self = this;
+        var changeCounter = this.getPath('settlement.name_change_count');
+        this.set('changingName', true);
+        var action = AWE.Action.Settlement.createChangeSettlementNameAction(self.get('settlement'), newName);
+        AWE.Action.Manager.queueAction(action, function(status) {
+          self.set('changingName', false);
+          if (status === AWE.Net.OK) {
+            if (changeCounter > 0) {
+              AWE.GS.ResourcePoolManager.updateResourcePool();
+            }
+          }
+          else if (status === AWE.Net.CONFLICT) {
+            self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.nameTaken'))
+          }
+          else if (status === AWE.Net.FORBIDDEN) {
+            self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.changeNameCost'))
+          }
+          else {
+            self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.changeNameError'));
+          }
+        });        
+      }
+    },
+    
 //    defenseBonusBinding: Ember.Binding.notNull("settlement.defense_bonus", "0"),
             
     click: function() {
