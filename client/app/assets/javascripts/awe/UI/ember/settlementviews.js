@@ -97,7 +97,7 @@ AWE.UI.Ember = (function(module) {
       return count === undefined || count === null || count < AWE.GS.RulesManager.getRules().change_settlement_name.free_changes;
     }.property('settlement.name_change_count'), 
     
-    changeNamePressed: function() {
+    changeNamePressed: function(event) {
       this.set('message', null);
       var changeDialog = AWE.UI.Ember.TextInputDialog.create({
         classNames: ['change-army-name-dialog'],
@@ -116,6 +116,9 @@ AWE.UI.Ember = (function(module) {
         cancelPressed: function() { this.destroy(); },
       });
       WACKADOO.presentModalDialog(changeDialog);
+      event.preventDefault();
+      
+      return false;
     },
     
     processNewName: function(newName) {
