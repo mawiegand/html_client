@@ -323,8 +323,12 @@ AWE.UI.Ember = (function(module) {
     }.property('AWE.GS.game.rankingInfo.alliance_entries_count').cacheable(),
     
     gotoPage: function(page) {
+      var self = this;
       AWE.GS.game.set('allianceRanking', null);
-      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(page, this.get('sortOrder'));
+      this.set('loading', true);
+      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(page, this.get('sortOrder'), function() {
+        self.set('loading', false);
+      });
     },
     
     sortedByFortress: function() {
@@ -332,8 +336,12 @@ AWE.UI.Ember = (function(module) {
     }.property('sortOrder').cacheable(),
     
     sortByFortress: function() {
+      var self = this;
       AWE.GS.game.set('allianceRanking', null);
-      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'fortress');
+      this.set('loading', true);
+      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'fortress', function() {
+        self.set('loading', false);
+      });
       this.set('sortOrder', 'fortress');
     },
     
@@ -342,8 +350,12 @@ AWE.UI.Ember = (function(module) {
     }.property('sortOrder').cacheable(),
     
     sortByOverall: function() {
+      var self = this;
       AWE.GS.game.set('allianceRanking', null);
-      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'overall');
+      this.set('loading', true);
+      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'overall', function() {
+        self.set('loading', false);
+      });
       this.set('sortOrder', 'overall');
     },
     
@@ -352,8 +364,12 @@ AWE.UI.Ember = (function(module) {
     }.property('sortOrder').cacheable(),
     
     sortByResource: function() {
+      var self = this;
       AWE.GS.game.set('allianceRanking', null);
-      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'resource');
+      this.set('loading', true);
+      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'resource', function() {
+        self.set('loading', false);
+      });
       this.set('sortOrder', 'resource');
     },
     
@@ -362,8 +378,12 @@ AWE.UI.Ember = (function(module) {
     }.property('sortOrder').cacheable(),
     
     sortByKills: function() {
+      var self = this;
       AWE.GS.game.set('allianceRanking', null);
-      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'kills');
+      this.set('loading', true);
+      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'kills', function() {
+        self.set('loading', false);
+      });
       this.set('sortOrder', 'kills');
     },
     
@@ -372,8 +392,12 @@ AWE.UI.Ember = (function(module) {
     }.property('sortOrder').cacheable(),
     
     sortByMembers: function() {
+      var self = this;
       AWE.GS.game.set('allianceRanking', null);
-      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'members');
+      this.set('loading', true);
+      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'members', function() {
+        self.set('loading', false);
+      });
       this.set('sortOrder', 'members');
     },
     
@@ -382,8 +406,12 @@ AWE.UI.Ember = (function(module) {
     }.property('sortOrder').cacheable(),
     
     sortByFortressMembers: function() {
+      var self = this;
       AWE.GS.game.set('allianceRanking', null);
-      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'fortressmembers');
+      this.set('loading', true);
+      AWE.GS.AllianceRankingEntryManager.updateAllianceRanking(null, 'fortressmembers', function() {
+        self.set('loading', false);
+      });
       this.set('sortOrder', 'fortressmembers');
     },
     
@@ -556,8 +584,12 @@ AWE.UI.Ember = (function(module) {
     }.property('AWE.GS.game.rankingInfo.artifact_entries_count').cacheable(),
 
     gotoPage: function(page) {
+      var self = this;
       AWE.GS.game.set('artifactRanking', null);
-      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(page, this.get('sortOrder'));
+      this.set('loading', true);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(page, this.get('sortOrder'), function() {
+        self.set('loading', false);
+      });
     },
 
     sortedByName: function() {
@@ -565,8 +597,12 @@ AWE.UI.Ember = (function(module) {
     }.property('sortOrder').cacheable(),
 
     sortByName: function() {
+      var self = this;
       AWE.GS.game.set('artifactRanking', null);
-      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'name');
+      this.set('loading', true);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'name', function() {
+        self.set('loading', false);
+      });
       this.set('sortOrder', 'name');
     },
 
@@ -575,8 +611,12 @@ AWE.UI.Ember = (function(module) {
     }.property('sortOrder').cacheable(),
 
     sortByOwner: function() {
+      var self = this;
       AWE.GS.game.set('artifactRanking', null);
-      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'owner_name');
+      this.set('loading', true);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'owner_name', function() {
+        self.set('loading', false);
+      });
       this.set('sortOrder', 'owner_name');
     },
 
@@ -585,8 +625,12 @@ AWE.UI.Ember = (function(module) {
     }.property('sortOrder').cacheable(),
 
     sortByRegion: function() {
+      var self = this;
       AWE.GS.game.set('artifactRanking', null);
-      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'region_name');
+      this.set('loading', true);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'regionName', function() {
+        self.set('loading', false);
+      });
       this.set('sortOrder', 'region_name');
     },
 
@@ -595,8 +639,12 @@ AWE.UI.Ember = (function(module) {
     }.property('sortOrder').cacheable(),
 
     sortByCapture: function() {
+      var self = this;
       AWE.GS.game.set('artifactRanking', null);
-      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'last_captured_at');
+      this.set('loading', true);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'last_captured_at', function() {
+        self.set('loading', false);
+      });
       this.set('sortOrder', 'last_captured_at');
     },
 
@@ -605,8 +653,12 @@ AWE.UI.Ember = (function(module) {
     }.property('sortOrder').cacheable(),
 
     sortByInitiation: function() {
+      var self = this;
       AWE.GS.game.set('artifactRanking', null);
-      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'last_initiated_at');
+      this.set('loading', true);
+      AWE.GS.ArtifactRankingEntryManager.updateArtifactRanking(null, 'last_initiated_at', function() {
+        self.set('loading', false);
+      });
       this.set('sortOrder', 'last_initiated_at');
     },
 
