@@ -6,7 +6,6 @@
     
     <h2>{{t resource.exchange.header}}</h2>
     <p>{{t resource.exchange.info}}</p>
-    <aside><em>{{t resource.exchange.warning}}</em></aside>
     <aside><b><em>{{t resource.exchange.fee}} <span class="resource-icon resource_cash">&nbsp;</span> {{t resource.exchange.fee2}}</em></b></aside>
 
     <br class="clear">
@@ -16,9 +15,9 @@
     {{else}}
     <table>
       <tr>
-        <th><span class="resource-icon resource_stone" title="{{t resource.stone}}"></span>{{pool.resource_stone_present}}</th> 
-        <th><span class="resource-icon resource_wood" title="{{t resource.wood}}"></span>{{pool.resource_wood_present}}</th> 
-        <th><span class="resource-icon resource_fur" title="{{t resource.fur}}"></span>{{pool.resource_fur_present}}</th> 
+        <th><span class="resource-icon resource_stone" title="{{t resource.stone}}">&nbsp;&nbsp;&nbsp;</span>{{pool.resource_stone_present}}</th>
+        <th><span class="resource-icon resource_wood" title="{{t resource.wood}}">&nbsp;&nbsp;&nbsp;</span>{{pool.resource_wood_present}}</th>
+        <th><span class="resource-icon resource_fur" title="{{t resource.fur}}">&nbsp;&nbsp;&nbsp;</span>{{pool.resource_fur_present}}</th>
         <th>
           <table>
             <tr>
