@@ -114,6 +114,7 @@ AWE.UI.Ember = (function(module) {
     templateName: 'text-input-dialog',
     heading: 'set a heading',
     input: '',
+    inputMaxLength: null,
     okPressed: function() { alert ('Action not connected: okPressed.'); },
     cancelPressed: function() { alert ('Action not connected: okPressed.'); },
   });

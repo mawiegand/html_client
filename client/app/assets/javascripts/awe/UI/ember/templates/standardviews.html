@@ -40,7 +40,7 @@
   <div class="center-helper">
     <div class="modal-dialog-pane z-layer-4" id="text-input-dialog">
       <h1>{{ heading }}</h1>
-      {{view Ember.TextField class="text-field" placeholder="Name" type="text" valueBinding="input"}} 
+      {{view Ember.TextField class="text-field" maxlength=inputMaxLength placeholder="Name" type="text" valueBinding="input"}} 
       <div class="controls-bar">
         <div class="icon-button ok-button" {{action "okPressed"}}>{{t general.change}}</div>
         <div class="icon-button cancel-button" {{action "cancelPressed"}}>{{t general.cancel}}</div>
