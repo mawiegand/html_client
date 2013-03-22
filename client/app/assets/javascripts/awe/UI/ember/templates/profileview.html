@@ -45,7 +45,7 @@
      {{#if changingName }}
        &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
      {{else}} 
-       <span class="simple-button" {{action "changeNamePressed"}}>{{#if firstTwoNameChange}}{{t profile.customization.chooseNameCaption}}{{else}}{{t profile.customization.changeNameCaption}} (20 {{t shop.goldenFrogs}}){{/if}}</span>
+       <span class="simple-button" {{action "changeNamePressed"}}>{{#if firstTwoNameChange}}{{t profile.customization.chooseNameCaption}}{{else}}{{t profile.customization.changeNameCaption}} {{nameChangeCosts}}<span class="resource-icon {{unbound nameChangeResource}}">&nbsp;</span>{{/if}}</span>
      {{/if}}
   </p>      
   <p>{{t profile.customization.nameChangeAdvice}}</p>

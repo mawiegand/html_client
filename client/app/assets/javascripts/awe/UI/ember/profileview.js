@@ -170,10 +170,19 @@ AWE.UI.Ember = (function(module) {
     
     changingName:     false,
     changingGender:   false,
-
+    
+    nameChangeCosts: function() {
+      return AWE.GS.RulesManager.getRules().change_character_name.amount;
+    }.property().cacheable(),
+    
+    nameChangeResource: function() {
+      var resourceId = AWE.GS.RulesManager.getRules().change_character_name.resource_id;
+      return AWE.GS.RulesManager.getRules().getResourceType(resourceId).symbolic_id;
+    }.property().cacheable(),
+    
     firstTwoNameChange: function() { 
       var count = this.getPath('character.name_change_count');
-      return count === undefined || count === null || count < 2;
+      return count === undefined || count === null || count < AWE.GS.RulesManager.getRules().change_character_name.free_changes;
     }.property('character.name_change_count'), 
     
     changeNamePressed: function() {
