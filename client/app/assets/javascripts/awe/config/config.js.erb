@@ -12,6 +12,7 @@ AWE.Config = (function(module) {
   // automatically determine the server to use -> same origin policy
   module.SERVER_ROOT = document.location.protocol + '//' + document.location.host ;
   module.PORTAL_ROOT = document.location.protocol + '//' + ("<%= CLIENT_CONFIG['portal_server_base'] %>") ;
+
   if (!document.location.host) { // for the case where it's loaded from file
     module.SERVER_ROOT = 'http://localhost'
     module.PORTAL_ROOT = 'http://localhost'
@@ -33,27 +34,6 @@ AWE.Config = (function(module) {
 
 
   module.MAP_RUN_TESTS = false;
-  module.MAP_SERVER_BASE          = module.SERVER_ROOT + '/game_server/de/map/';
-  module.MILITARY_SERVER_BASE     = module.SERVER_ROOT + '/game_server/de/military/';
-  module.TRAINING_SERVER_BASE     = module.SERVER_ROOT + '/game_server/de/training/';
-  module.FUNDAMENTAL_SERVER_BASE  = module.SERVER_ROOT + '/game_server/de/fundamental/';
-  module.ACTION_SERVER_BASE       = module.SERVER_ROOT + '/game_server/de/action/';
-  module.RULES_SERVER_BASE        = module.SERVER_ROOT + '/game_server/de/game_rules/';
-  module.SETTLEMENT_SERVER_BASE   = module.SERVER_ROOT + '/game_server/de/settlement/';
-  module.CONSTRUCTION_SERVER_BASE = module.SERVER_ROOT + '/game_server/de/construction/';
-  module.SHOP_SERVER_BASE         = module.SERVER_ROOT + '/game_server/de/shop/';
-  module.MESSAGING_SERVER_BASE    = module.SERVER_ROOT + '/game_server/de/messaging/';
-  module.TUTORIAL_SERVER_BASE     = module.SERVER_ROOT + '/game_server/de/tutorial/';
-  module.BACKEND_SERVER_BASE      = module.SERVER_ROOT + '/game_server/de/backend/';
-  module.PAYMENT_PROVIDER_BASE    = module.SERVER_ROOT + '/payment_provider/';
-  module.CHARACTER_RANKING_SERVER_BASE = module.SERVER_ROOT + '/game_server/de/ranking/character_rankings';
-  module.ALLIANCE_RANKING_SERVER_BASE  = module.SERVER_ROOT + '/game_server/de/ranking/alliance_rankings';
-  module.FORTRESS_RANKING_SERVER_BASE  = module.SERVER_ROOT + '/game_server/de/ranking/fortress_rankings';
-  module.ARTIFACT_RANKING_SERVER_BASE  = module.SERVER_ROOT + '/game_server/de/ranking/artifact_rankings';
-  module.RANKING_INFO_SERVER_BASE  = module.SERVER_ROOT + '/game_server/de/ranking/ranking_info';
-
-  module.PLAYER_INVITATION_BASE   = module.PORTAL_ROOT + '/player_invitation/';
-  module.ALLIANCE_INVITATION_BASE = module.PORTAL_ROOT + '/alliance_invitation/';
 
   module.RAILS_ASSET_PATH         = "<%= asset_path('') %>";
 
@@ -66,6 +46,7 @@ AWE.Config = (function(module) {
   module.EXTERNAL_FACEBOOK_URL    = 'http://www.facebook.com/pages/Wackadoo/239722582763809';
 
   module.DEFAULT_LOCALE           = 'en_US';
+  module.DEFAULT_LANG             = 'en';
 
   module.SETTLEMENT_DYNAMIC_SLOTS = <%= CLIENT_CONFIG['use_dynamic_construction_slots'] ? 'true' : 'false' %> ;
 
@@ -152,6 +133,30 @@ AWE.Config = (function(module) {
   module.BROWSER_CHECK_FAILURES_ONLY = false;
 
   module.DISABLE_NPC_IMAGES = false;
+
+  console.log(AWE);
+
+  module.MAP_SERVER_BASE          = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/map/';
+  module.MILITARY_SERVER_BASE     = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/military/';
+  module.TRAINING_SERVER_BASE     = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/training/';
+  module.FUNDAMENTAL_SERVER_BASE  = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/fundamental/';
+  module.ACTION_SERVER_BASE       = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/action/';
+  module.RULES_SERVER_BASE        = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/game_rules/';
+  module.SETTLEMENT_SERVER_BASE   = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/settlement/';
+  module.CONSTRUCTION_SERVER_BASE = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/construction/';
+  module.SHOP_SERVER_BASE         = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/shop/';
+  module.MESSAGING_SERVER_BASE    = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/messaging/';
+  module.TUTORIAL_SERVER_BASE     = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/tutorial/';
+  module.BACKEND_SERVER_BASE      = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/backend/';
+  module.PAYMENT_PROVIDER_BASE    = module.SERVER_ROOT + '/payment_provider/';
+  module.CHARACTER_RANKING_SERVER_BASE = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/ranking/character_rankings';
+  module.ALLIANCE_RANKING_SERVER_BASE  = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/ranking/alliance_rankings';
+  module.FORTRESS_RANKING_SERVER_BASE  = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/ranking/fortress_rankings';
+  module.ARTIFACT_RANKING_SERVER_BASE  = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/ranking/artifact_rankings';
+  module.RANKING_INFO_SERVER_BASE  = module.SERVER_ROOT + '/game_server/' + AWE.Settings.lang + '/ranking/ranking_info';
+
+  module.PLAYER_INVITATION_BASE   = module.PORTAL_ROOT + '/player_invitation/';
+  module.ALLIANCE_INVITATION_BASE = module.PORTAL_ROOT + '/alliance_invitation/';
 
   return module;
 

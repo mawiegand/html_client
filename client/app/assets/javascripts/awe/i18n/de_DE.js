@@ -87,6 +87,7 @@ AWE.I18n.de_DE = function(module) {
         myFaction: "Meine Fraktion",
         oneFaction: "Eine Fraktion",
         otherFaction: "Andere Fraktion",
+        lostUnits: "Verlorene Einheiten",
 
         participants: {
           name: "Name",
