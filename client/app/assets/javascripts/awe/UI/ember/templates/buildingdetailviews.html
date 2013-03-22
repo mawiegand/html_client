@@ -282,11 +282,6 @@
 
         {{#if building.upgradable}}
           <hr class="clear" />
-          {{#if sendingUpgrade}}
-            <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t building.upgrade.updating}}...</div>
-          {{else}}
-          <a {{action "upgradeClicked"}} class="upgrade" title="{{t building.tooltip.clickToUpgrade}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png" alt="" /> {{t building.upgrade.upgrade}}</a>
-          {{/if}}
           <div>
             <p class="hurry-button clickable">
               <a {{action "resourceExchangePressed"}} title="{{t resource.exchange.advert}}">
@@ -295,6 +290,11 @@
               </a>
             </p>
           </div>
+          {{#if sendingUpgrade}}
+            <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t building.upgrade.updating}}...</div>
+          {{else}}
+          <a {{action "upgradeClicked"}} class="upgrade" title="{{t building.tooltip.clickToUpgrade}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png" alt="" /> {{t building.upgrade.upgrade}}</a>
+          {{/if}}
           <h3>{{t building.upgrade.upgradeStart}} {{local building.name }} {{t building.upgrade.toAuf}} {{t building.level}} {{ building.nextLevel }} {{t building.upgrade.upgradeEnd}}</h3>
 
           {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building" levelBinding="building.nextLevel"}}

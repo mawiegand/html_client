@@ -134,12 +134,18 @@ AWE.UI.Ember = (function(module) {
     
     conversionClicked: function(event) {
       this.get('controller').constructionConvertClicked(this.get('slot'));
-    },         
+    },
     
     destroyClasses: function() {
       return this.getPath('slot.building_id') && (this.getPath('slot.hashableJobs.collection').length == 0 ? 'destroy' : 'destroy disabled');
     }.property('slot.hashableJobs.changedAt').cacheable(),
-  }); 
+
+    resourceExchangePressed: function() {
+      var dialog = AWE.UI.Ember.ResourceExchangeDialog.create();
+      WACKADOO.presentModalDialog(dialog);
+      return false;
+    },
+  });
   
   
   /** @class
