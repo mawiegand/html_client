@@ -83,9 +83,18 @@ AWE.UI.Ember = (function(module) {
     
     changingName: false,
     
+    nameChangeCosts: function() {
+      return AWE.GS.RulesManager.getRules().change_settlement_name.amount;
+    }.property().cacheable(),
+    
+    nameChangeResource: function() {
+      var resourceId = AWE.GS.RulesManager.getRules().change_settlement_name.resource_id;
+      return AWE.GS.RulesManager.getRules().getResourceType(resourceId).symbolic_id;
+    }.property().cacheable(),
+    
     firstNameChange: function() { 
       var count = this.getPath('settlement.name_change_count');
-      return count === undefined || count === null || count < 1;
+      return count === undefined || count === null || count < AWE.GS.RulesManager.getRules().change_settlement_name.free_changes;
     }.property('settlement.name_change_count'), 
     
     changeNamePressed: function() {
@@ -131,9 +140,6 @@ AWE.UI.Ember = (function(module) {
             if (changeCounter > 0) {
               AWE.GS.ResourcePoolManager.updateResourcePool();
             }
-          }
-          else if (status === AWE.Net.CONFLICT) {
-            self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.nameTaken'))
           }
           else if (status === AWE.Net.FORBIDDEN) {
             self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.changeNameCost'))

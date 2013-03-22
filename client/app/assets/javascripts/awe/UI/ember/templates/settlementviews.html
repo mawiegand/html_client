@@ -26,7 +26,7 @@
       {{#if changingName }}
         &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
       {{else}}
-        <span class="simple-button" {{action "changeNamePressed"}}>{{#if firstNameChange}}{{t settlement.customization.chooseNameCaption}}{{else}}{{t settlement.customization.changeNameCaption}} 1<span class="resource-icon resource_cash">&nbsp;</span>{{/if}}</span>
+        <span class="simple-button" {{action "changeNamePressed"}}>{{#if firstNameChange}}{{t settlement.customization.chooseNameCaption}}{{else}}{{t settlement.customization.changeNameCaption}} {{nameChangeCosts}}<span class="resource-icon {{unbound nameChangeResource}}">&nbsp;</span>{{/if}}</span>
       {{/if}}
     </h1>  
     
