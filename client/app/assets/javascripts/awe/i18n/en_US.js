@@ -510,8 +510,8 @@ AWE.I18n.en_US = function(module) {
       customization: {
         chooseName: "Deinen Namen wählen",
         changeName: "Deinen Namen ändern",
-        chooseNameCaption: 'Namen wählen',
-        changeNameCaption: 'Namen ändern',
+        chooseNameCaption: 'Siedlungsnamen wählen',
+        changeNameCaption: 'Siedlungsnamen ändern',
         nameChangeAdvice: 'Bitte wähle den Namen mit Bedacht, idealerweise passt der Name in die Steinzeit.',
         nameChangeFreeAdvice: 'Einmal kannst Du den Namen kostenlos ändern, jede weitere Änderung kostet ein paar Kröten um Missbrauch zu verhindern.',
         nameChangeCostAdvice: 'Du hast den Namen bereits einmal geändert. Eine weitere Namensänderung ist natürlich möglich, kostet aber zur Verhinderung von Missbrauch ein paar Kröten.',
