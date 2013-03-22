@@ -1,55 +1,73 @@
 <script type="text/x-handlebars" data-template-name="resource-exchange-dialog">
   <div class="modal-dialog-background"></div>
   <div class="modal-dialog-pane resource-details-dialog-pane" id="resource-exchange-dialog">
-    <a class="close clickable" {{action "cancelPressed" target="parentView"}}></a>
+    <a class="close clickable" {{action "cancelClicked" target="parentView"}}></a>
     <div class="advisor warrior"></div>
     
     <h2>{{t resource.exchange.header}}</h2>
     <p>{{t resource.exchange.info}}</p>
-    <aside><em>{{t resource.exchange.warning}}</em></aside>
     <aside><b><em>{{t resource.exchange.fee}} <span class="resource-icon resource_cash">&nbsp;</span> {{t resource.exchange.fee2}}</em></b></aside>
 
     <br class="clear">
 
-    {{#if loading}}
+    {{#if loadingInit}}
       {{view AWE.UI.Ember.WheelOrValueView valueBinding="null"}}&nbsp;&nbsp;&nbsp;{{t resource.exchange.loading}}
     {{else}}
     <table>
       <tr>
-        <th><span class="resource-icon resource_stone middle" title="{{t resouce.stone}}">&nbsp;</span></th> 
-        <th><span class="resource-icon resource_wood middle" title="{{t resouce.wood}}">&nbsp;</span></th> 
-        <th><span class="resource-icon resource_fur middle" title="{{t resouce.fur}}">&nbsp;</span></th> 
-        <th><span class="middle">{{t resource.exchange.sum}}</span></th> 
-        <th><span class="middle">{{t resource.exchange.remaining}}</span></th> 
+        <th><span class="resource-icon resource_stone" title="{{t resource.stone}}">&nbsp;&nbsp;&nbsp;</span>{{pool.resource_stone_present}}</th>
+        <th><span class="resource-icon resource_wood" title="{{t resource.wood}}">&nbsp;&nbsp;&nbsp;</span>{{pool.resource_wood_present}}</th>
+        <th><span class="resource-icon resource_fur" title="{{t resource.fur}}">&nbsp;&nbsp;&nbsp;</span>{{pool.resource_fur_present}}</th>
+        <th>
+          <table>
+            <tr>
+              <td>{{t resource.exchange.sum}}:</td>
+              <td class="remaining">{{formatNumber getSum}}</td>
+            </tr>
+          </table>
+        </th>
       </tr>
 
       <tr>
-        <td {{bindAttr class=":number stoneClass"}}>{{view Ember.TextField valueBinding="stone" classNames="resource-exchange-input"}}</td> 
-        <td {{bindAttr class=":number woodClass"}}>{{view Ember.TextField valueBinding="wood" classNames="resource-exchange-input"}}</td> 
-        <td {{bindAttr class=":number furClass"}}>{{view Ember.TextField valueBinding="fur" classNames="resource-exchange-input"}}</td>
-        <td class="number">{{formatNumber sum}}</td>
-        <td {{bindAttr class=":number remainingClass"}}>{{formatNumber left}}</td>
+        <td>{{view Ember.TextField valueBinding="newStoneValue" classNames="resource-exchange-input"}}</td> 
+        <td>{{view Ember.TextField valueBinding="newWoodValue" classNames="resource-exchange-input"}}</td> 
+        <td>{{view Ember.TextField valueBinding="newFurValue" classNames="resource-exchange-input"}}</td>
+        <td>
+          <table>
+            <tr>
+              <td>{{t resource.exchange.sum}}:</td>
+              <td class="remaining">{{formatNumber getNewSum}}</td>
+            </tr>
+          </table>
+        </td>
       </tr>
 
       <tr>
-        <td><div class="simple-button clickable" {{action "fillStone"}}>{{t resource.exchange.fill}}</td> 
-        <td><div class="simple-button clickable" {{action "fillWood"}}>{{t resource.exchange.fill}}</td> 
-        <td><div class="simple-button clickable" {{action "fillFur"}}>{{t resource.exchange.fill}}</td> 
-        <td></td>
-        <td></td>
+        <td>{{getStoneDiff}}</td>
+        <td>{{getWoodDiff}}</td>
+        <td>{{getFurDiff}}</td>
+        <td>
+          <table>
+            <tr>
+              <td>{{t resource.exchange.remaining}}:</td>
+              <td {{bindAttr class=":number :remaining remainingClass"}}>{{getRemaining}}</td>
+            </tr>
+          </table>
+        </td>
       </tr>
+
     </table> 
     {{/if}}
 
 
     <br>
     <div>
-      {{#if loading2}}
+      {{#if loadingSend}}
       <div class="right">{{view AWE.UI.Ember.WheelOrValueView valueBinding="null"}}&nbsp;&nbsp;&nbsp;{{t resource.exchange.loading2}}</div>
       <br class="clear">
       {{else}}
-      <a class="icon-button button" href="#" {{action "updateResources"}}>{{t resource.exchange.form.reset}}</a>
-      <a class="icon-button ok-button" href="#" {{action "okClicked"}}>{{t resource.exchange.form.exchange}}</a>
+      <a class="icon-button button" href="#" {{action "resetClicked"}}>{{t resource.exchange.form.reset}}</a>
+      <a class="icon-button ok-button" href="#" {{action "exchangeClicked"}}>{{t resource.exchange.form.exchange}}</a>
       {{/if}}
     </div>
 
