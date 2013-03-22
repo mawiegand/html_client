@@ -103,6 +103,7 @@ AWE.UI.Ember = (function(module) {
         classNames: ['change-army-name-dialog'],
         heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'),
         input: this.getPath('settlement.name'),
+        inputMaxLength: 16,
         controller: this,
         
         okPressed: function() {
