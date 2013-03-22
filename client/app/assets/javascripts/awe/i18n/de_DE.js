@@ -1001,10 +1001,10 @@ AWE.I18n.de_DE = function(module) {
       exchange: {
         header:   "Umkröten",
         advert:   "Nicht genug Ressourcen übrig? Dann probiere unsere Umkröten-Funktion aus!",
-        info:     "Mithilfe der Umkröten-Funktion können gegen einen kleinen Obolus die Ressourcen neu verteilen.",
-        warning:  "Im Dialog aktualisieren sich die Ressourcen nicht. Das neu verteilen bezieht sich dennoch auf deinen aktuellen Ressourcenstand.",
-        fee:      "Es fallen Kosten in Höhe von 3",
-        fee2:     "Kröten an.",
+        info:     "Du kannst gegen eine kleine Abgabe Deine vorhandenen Rohstoffe neu verteilen.",
+        warning:  "Du kannst entweder alle drei Rohstoffe festlegen oder aber auch nur einen oder zwei Rohstoffe bestimmen. Der verbleibende Rest wird unter den nicht gewählten Rohstoffen gleichmäßig verteilt.",
+        fee:      "Das Umkröten kostet Dich jeweils",
+        fee2:     "Kröten.",
         loading:  "Lade Ressourcen",
         loading2: "Führe Umtausch durch",
         sum:      "Gesamt",
@@ -1019,15 +1019,15 @@ AWE.I18n.de_DE = function(module) {
         errors: {
           noinput: {
             heading: "Keine Werte eingegeben",
-            text:    "Du hast keine Werte eingegeben. Um einen Umtausch zu vollziehen, solltest du zumindest einen Wert eingeben. :-)",
+            text:    "Du hast keine Werte eingegeben. So wird das nix mit dem Umtauschen...",
           },
 
           toomuch: {
             heading: "Zu viele Ressourcen verteilt",
-            text:    "Du hast mehr Ressourcen verteilt als dir zur Verfügung stehen. Bitte korrigiere deinen Fehler.",
-            stone:   "Du hast mehr Stein verteilt, als du lagern kannst. :) Bitte korrigiere deinen Fehler vor dem Umtausch.",
-            wood:    "Du hast mehr Holz verteilt, als du lagern kannst. :) Bitte korrigiere deinen Fehler vor dem Umtausch.",
-            fur:     "Du hast mehr Fell verteilt, als du lagern kannst. :) Bitte korrigiere deinen Fehler vor dem Umtausch.",
+            text:    "Du hast mehr Ressourcen verteilt als dir zur Verfügung stehen.",
+            stone:   "Du hast mehr Stein verteilt, als du lagern kannst.",
+            wood:    "Du hast mehr Holz verteilt, als du lagern kannst.",
+            fur:     "Du hast mehr Fell verteilt, als du lagern kannst.",
           },
 
           failed: {

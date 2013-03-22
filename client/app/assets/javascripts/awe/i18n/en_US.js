@@ -508,24 +508,21 @@ AWE.I18n.en_US = function(module) {
       founded:'Founded',
 
       customization: {
-        chooseName: "Deinen Namen wählen",
-        changeName: "Deinen Namen ändern",
-        chooseNameCaption: 'Siedlungsnamen wählen',
-        changeNameCaption: 'Siedlungsnamen ändern',
-        nameChangeAdvice: 'Bitte wähle den Namen mit Bedacht, idealerweise passt der Name in die Steinzeit.',
-        nameChangeFreeAdvice: 'Einmal kannst Du den Namen kostenlos ändern, jede weitere Änderung kostet ein paar Kröten um Missbrauch zu verhindern.',
-        nameChangeCostAdvice: 'Du hast den Namen bereits einmal geändert. Eine weitere Namensänderung ist natürlich möglich, kostet aber zur Verhinderung von Missbrauch ein paar Kröten.',
+        chooseName: "Choose your name",
+        changeName: "Change your name",
+        chooseNameCaption: 'Name your settlement',
+        changeNameCaption: 'Change your settlements name',
+        nameChangeAdvice: 'The first name change is for free any additional changes will cost you a few golden frogs.',
 
-        changeNameDialogCaption: "Gib den neuen Namen ein.",
-        
+        changeNameDialogCaption: "Enter your new name.",
+
         errors: {
-          nameTooShort: "Viel zu kurz. Der Name muss mindestens 3 Zeichen enthalten.",
-          nameTooLong: "Viel zu lang. Der Name darf höchstens 16 Zeichen enthalten.",
-          nameNoChange: "Das ist der gleiche Name wie vorher. Keine Veränderung",
+          nameTooShort: "Way too short. The name must have at least 3 characters.",
+          nameTooLong: "Way to long. The name can have maximum 16 characters.",
+          nameNoChange: "Thats the same name as before.",
 
-          nameTaken: "Dieser Name wird schon benutzt oder ist auf der Blacklist. Bitte wähle einen anderen Namen.",
-          changeNameCost: "Du hast nicht genug Kröten, um Deinen Namen zu ändern.",
-          changeNameError: "Der Name konnte aus unbekannten Gründen nicht geändert werden. Bitte versuch es später noch einmal.",
+          changeNameCost: "You dont have enough golden frogs right now to change your settlements name.",
+          changeNameError: "The name could not be changed for some reason. Please try again later.",
         },
       },
 
@@ -996,10 +993,10 @@ AWE.I18n.en_US = function(module) {
       exchange: {
         header:   "Umkröten",
         advert:   "Nicht genug Ressourcen übrig? Dann probiere unsere Umkröten-Funktion aus!",
-        info:     "Mithilfe der Umkröten-Funktion können gegen einen kleinen Obolus die Ressourcen neu verteilen.",
-        warning:  "Im Dialog aktualisieren sich die Ressourcen nicht. Das neu verteilen bezieht sich dennoch auf deinen aktuellen Ressourcenstand.",
-        fee:      "Es fallen Kosten in Höhe von 3",
-        fee2:     "Kröten an.",
+        info:     "Du kannst gegen eine kleine Abgabe Deine vorhandenen Rohstoffe neu verteilen.",
+        warning:  "Du kannst entweder alle drei Rohstoffe festlegen oder aber auch nur einen oder zwei Rohstoffe bestimmen. Der verbleibende Rest wird unter den nicht gewählten Rohstoffen gleichmäßig verteilt.",
+        fee:      "Das Umkröten kostet Dich jeweils",
+        fee2:     "Kröten.",
         loading:  "Lade Ressourcen",
         loading2: "Führe Umtausch durch",
         sum:      "Gesamt",
@@ -1014,15 +1011,15 @@ AWE.I18n.en_US = function(module) {
         errors: {
           noinput: {
             heading: "Keine Werte eingegeben",
-            text:    "Du hast keine Werte eingegeben. Um einen Umtausch zu vollziehen, solltest du zumindest einen Wert eingeben. :-)",
+            text:    "Du hast keine Werte eingegeben. So wird das nix mit dem Umtauschen...",
           },
 
           toomuch: {
             heading: "Zu viele Ressourcen verteilt",
-            text:    "Du hast mehr Ressourcen verteilt als dir zur Verfügung stehen. Bitte korrigiere deinen Fehler.",
-            stone:   "Du hast mehr Stein verteilt, als du lagern kannst. :) Bitte korrigiere deinen Fehler vor dem Umtausch.",
-            wood:    "Du hast mehr Holz verteilt, als du lagern kannst. :) Bitte korrigiere deinen Fehler vor dem Umtausch.",
-            fur:     "Du hast mehr Fell verteilt, als du lagern kannst. :) Bitte korrigiere deinen Fehler vor dem Umtausch.",
+            text:    "Du hast mehr Ressourcen verteilt als dir zur Verfügung stehen.",
+            stone:   "Du hast mehr Stein verteilt, als du lagern kannst.",
+            wood:    "Du hast mehr Holz verteilt, als du lagern kannst.",
+            fur:     "Du hast mehr Fell verteilt, als du lagern kannst.",
           },
 
           failed: {

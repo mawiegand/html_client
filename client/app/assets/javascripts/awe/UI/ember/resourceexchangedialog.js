@@ -36,6 +36,10 @@ AWE.UI.Ember = (function(module) {
       });
     },
 
+    cost: function() {
+      return AWE.GS.RulesManager.getRules().resource_exchange.amount;
+    }.property().cacheable(),
+
     /* properties */
     getSum: function() {
       this.set('sum', this.getPath('pool.resource_stone_present') + this.getPath('pool.resource_wood_present') + this.getPath('pool.resource_fur_present'));
