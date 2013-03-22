@@ -87,6 +87,7 @@ AWE.I18n.en_US = function(module) {
         myFaction:"My faction",
         oneFaction:"One faction",
         otherFaction:"Other faction",
+        lostUnits: "Lost Units",
 
         participants:{
           name:"Name",
@@ -444,7 +445,7 @@ AWE.I18n.en_US = function(module) {
       headingPlan:'The Plan',
       image:AWE.Config.RAILS_ASSET_PATH + 'whatdoido_en_US.jpeg',
       headingSituation:'The Situation',
-      formattedText:'<p>Being a <b>demigod</b> to a tiny tribe of stoneage caveman you\'ve just convinced your followers to leave their cave behind and to live in something modern called "a village". Unfortunately, the only thing their glorious chieftain let them build was a pompous hut for himself. Now, you should <b>build housing for some Hunter-Gatherers</b> ASAP.</p><p><b>Please note:</b> Presently, the English version of Wack-A-Doo is still in the making. A lot of translations and texts are still missing. If possible, please play the German version.</p><p><b>Have fun!</p>',
+      formattedText:'<p>Being a <b>demigod</b> to a tiny tribe of stoneage caveman you\'ve just convinced your followers to leave their cave behind and to live in something modern called "a village". Unfortunately, the only thing their glorious chieftain let them build was a pompous hut for himself. Now, you should <b>build housing for some Hunter-Gatherers</b> ASAP.</p><p><b>Have fun!</p>',
     },
 
     shop:{
@@ -1036,10 +1037,11 @@ AWE.I18n.en_US = function(module) {
     ranking: {
       header: "Ranking",
       characters: "Player",
-      alliances:  "Alliances",
       alliance:  "Alliance",
-      fortresses: "Fortresses",
+      alliances:  "Alliances",
+      noAlliances:  "There are no Alliances yet.",
       fortress: "Forttress",
+      fortresses: "Fortresses",
       victoryProgress: "Victory progress",
       rank: 'Rank',
       character: 'Player',
@@ -1061,8 +1063,9 @@ AWE.I18n.en_US = function(module) {
       name: "Name",
       type: "Typ",
       region: "Region",
-      artifacts: "Artifacts",
       artifact: "Artifact",
+      artifacts: "Artifacts",
+      noArtifacts:  "There are no Artifacts found yet.",
       captured: "Conquered",
       initiated: "Initiated",
       nextPage: "Next page",

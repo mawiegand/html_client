@@ -71,8 +71,8 @@
             </td>
           </tr>
           <tr>
-            <td colspan="5" class="right-line">Verlorene Einheiten: {{#if ownFaction.total_casualties}}{{ownFaction.total_casualties}}{{else}}-{{/if}}</td>
-            <td colspan="5">Verlorene Einheiten: {{#if otherFaction.total_casualties}}{{otherFaction.total_casualties}}{{else}}-{{/if}}</td>
+            <td colspan="5" class="right-line">{{t battle.details.lostUnits}}: {{#if ownFaction.total_casualties}}{{ownFaction.total_casualties}}{{else}}-{{/if}}</td>
+            <td colspan="5">{{t battle.details.lostUnits}}: {{#if otherFaction.total_casualties}}{{otherFaction.total_casualties}}{{else}}-{{/if}}</td>
           </tr>
         </table>
 

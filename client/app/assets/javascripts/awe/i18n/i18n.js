@@ -10,7 +10,7 @@ AWE.I18n = function(module) {
 
   module.lookupTranslation = function(path) {
     if (path === undefined || path === null) return "" ;
-    var locale = AWE.Settings.locale || AWE.Config.DEFAULT_LOCALE
+    var locale = AWE.Settings.locale || AWE.Config.DEFAULT_LOCALE;
     if (!AWE.I18n[locale]) return "(NO TRANSLATION FOR "+locale+" LOADED.)";
     path = "localizedStrings." + path;   
     var string = Ember.getPath(AWE.I18n[locale], path);
