@@ -1002,7 +1002,7 @@ AWE.I18n.de_DE = function(module) {
         header:   "Umkröten",
         advert:   "Nicht genug Ressourcen übrig? Dann probiere unsere Umkröten-Funktion aus!",
         info:     "Du kannst gegen eine kleine Abgabe Deine vorhandenen Rohstoffe neu verteilen.",
-        warning:  "Du kannst entweder alle drei Rohstoffe festlegen oder aber auch nur einen oder zwei Rohstoffe bestimmen. Der verbleibende Rest wird unter den nicht gewählten Rohstoffen gleichmäßig verteilt.",
+        warning:  "Du kannst entweder alle drei Rohstoffe festlegen oder aber auch nur einen oder zwei Rohstoffe bestimmen. Der verbleibende Rest wird unter allen drei Rohstoffen gleichmäßig verteilt.",
         fee:      "Das Umkröten kostet Dich jeweils",
         fee2:     "Kröten.",
         loading:  "Lade Ressourcen",
