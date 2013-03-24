@@ -16,9 +16,9 @@
     {{else}}
     <table>
       <tr>
-        <th><span class="resource-icon resource_stone" title="{{t resource.stone}}">&nbsp;&nbsp;&nbsp;</span>{{pool.resource_stone_present}}</th>
-        <th><span class="resource-icon resource_wood" title="{{t resource.wood}}">&nbsp;&nbsp;&nbsp;</span>{{pool.resource_wood_present}}</th>
-        <th><span class="resource-icon resource_fur" title="{{t resource.fur}}">&nbsp;&nbsp;&nbsp;</span>{{pool.resource_fur_present}}</th>
+        <th><span class="resource-icon resource_stone number no-bg-repeat" title="{{t resource.stone}}">{{pool.resource_stone_present}}</span></th>
+        <th><span class="resource-icon resource_wood number no-bg-repeat" title="{{t resource.wood}}">{{pool.resource_wood_present}}</span></th>
+        <th><span class="resource-icon resource_fur number no-bg-repeat" title="{{t resource.fur}}">{{pool.resource_fur_present}}</span></th>
         <th>
           <table>
             <tr>
@@ -44,16 +44,13 @@
       </tr>
 
       <tr>
-        <td>{{getStoneDiff}}</td>
-        <td>{{getWoodDiff}}</td>
-        <td>{{getFurDiff}}</td>
+        <td><span class="number">{{getStoneDiff}}</span></td>
+        <td><span class="number">{{getWoodDiff}}</span></td>
+        <td><span class="number">{{getFurDiff}}</span></td>
         <td>
-          <table>
-            <tr>
-              <td>{{t resource.exchange.remaining}}:</td>
-              <td {{bindAttr class=":number :remaining remainingClass"}}>{{getRemaining}}</td>
-            </tr>
-          </table>
+          <div class="left">{{t resource.exchange.remaining}}:</div>
+          <div {{bindAttr class=":remaining :right remainingClass"}}>{{getRemaining}}</div>
+          <div class="clear"></div>
         </td>
       </tr>
 
