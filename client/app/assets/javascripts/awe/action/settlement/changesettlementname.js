@@ -51,4 +51,4 @@ AWE.Action.Settlement = (function(module) {
 
   return module;
   
-}(AWE.Action.Fundamental || {}));
+}(AWE.Action.Settlement || {}));
