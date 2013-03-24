@@ -953,6 +953,7 @@ AWE.I18n.de_DE = function(module) {
       criticalDamage: "Kritischer Schaden",
       criticalChance: "Chance",
       cannotBeTrained: "Kann nicht von Spielern trainiert werden.",
+      experienceForLostUnits: "XP für verlorene Einheiten",
 
       commandPointsAbbreviation: "KP",
       buildingTime: "Bauzeit",

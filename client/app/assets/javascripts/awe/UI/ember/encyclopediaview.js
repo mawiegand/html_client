@@ -64,6 +64,15 @@ AWE.UI.Ember = (function(module) {
       var unit = this.get('unit');
       return unit ? "uc-"+unit.category : null;
     }.property('unit.category').cacheable(),
+
+    experienceForLostUnits: function() {
+      var costs = this.getPath('unit.costs');
+      var sum = 0;
+      AWE.Ext.applyFunctionToElements(costs, function(cost) {
+        sum += parseInt(cost);
+      });
+      return Math.floor(sum * 0.05);
+    }.property('unit').cacheable(),
     
   });  
 
