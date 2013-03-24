@@ -248,16 +248,3 @@ Ember.registerBoundHelper("artifactInitiationSpeedupCost", function(seconds) {
 });
 
 
-/** calculates and returns the cost for speeding up a training job
- * with the given remaining duration in seconds
- * @name Handlebars.Helper.trainingSpeedupCost
- */
-Ember.registerBoundHelper("tradingSpeedupCost", function(seconds) {
-  if (seconds === undefined || seconds === null) {
-    return "" ;
-  }
-  var costs = AWE.Util.Rules.lookupTradingSpeedupCost(seconds);
-  return costs ? costs.amount : null;
-});
-
-

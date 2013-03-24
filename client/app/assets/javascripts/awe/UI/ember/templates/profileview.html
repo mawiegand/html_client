@@ -45,7 +45,7 @@
      {{#if changingName }}
        &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
      {{else}} 
-       <span class="simple-button" {{action "changeNamePressed"}}>{{#if firstTwoNameChange}}{{t profile.customization.chooseNameCaption}}{{else}}{{t profile.customization.changeNameCaption}} {{nameChangeCosts}}<span class="resource-icon {{unbound nameChangeResource}}">&nbsp;</span>{{/if}}</span>
+       <span class="simple-button" {{action "changeNamePressed"}}>{{#if firstTwoNameChange}}{{t profile.customization.chooseNameCaption}}{{else}}{{t profile.customization.changeNameCaption}} {{nameChangeCosts}} <span class="resource-icon {{unbound nameChangeResource}}">&nbsp;</span>{{/if}}</span>
      {{/if}}
   </p>      
   <p>{{t profile.customization.nameChangeAdvice}}</p>
@@ -66,8 +66,8 @@
   <p><b>{{t profile.customization.presentGender}}:</b> {{#if character.female}} {{t profile.customization.female}} {{else}} {{t profile.customization.male}} {{/if}} 
      {{#if changingGender }}
        &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
-     {{else}} 
-       <span class="simple-button" {{action "changeGenderPressed"}}>{{#if firstTwoGenderChange}}{{t profile.customization.chooseGenderCaption}}{{else}}{{t profile.customization.changeGenderCaption}} (20 {{t shop.goldenFrogs}}){{/if}}</span>
+     {{else}}
+       <span class="simple-button" {{action "changeGenderPressed"}}>{{#if firstTwoGenderChange}}{{t profile.customization.chooseGenderCaption}}{{else}}{{t profile.customization.changeGenderCaption}} {{genderChangeCosts}} <span class="resource-icon {{unbound genderChangeResource}}">&nbsp;</span>{{/if}}</span>
      {{/if}}  
   </p>
   {{#if firstTwoGenderChange}}

@@ -242,8 +242,16 @@ AWE.UI.Ember = (function(module) {
         });        
       }
     },
-    
-    
+
+    genderChangeCosts: function() {
+      return AWE.GS.RulesManager.getRules().change_character_gender.amount;
+    }.property().cacheable(),
+
+    genderChangeResource: function() {
+      var resourceId = AWE.GS.RulesManager.getRules().change_character_gender.resource_id;
+      return AWE.GS.RulesManager.getRules().getResourceType(resourceId).symbolic_id;
+    }.property().cacheable(),
+
     firstTwoGenderChange: function() {
       var count = this.getPath('character.gender_change_count');
       return count === undefined || count === null || count < 2;

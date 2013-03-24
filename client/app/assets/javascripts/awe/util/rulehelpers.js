@@ -248,38 +248,6 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
     return module.lookupArtifactInitiationSpeedupCost(duration) !== null ;
   };
 
-  module.lookupTradingSpeedupCost = function(duration) {
-    if (duration === undefined || duration === null) {
-      return null;
-    }
-	  var costs = AWE.GS.RulesManager.getRules().trading_speedup;
-	  var entry = null;
-	  costs.forEach(function(item) {
-	    if (!entry && duration < item.hours * 3600) { // hours to seconds
-	      entry = item;
-	    }
-	  });
-	  return entry;
-  };
-
-  module.isTradingSpeedupPossible = function(duration) {
-    return module.lookupTradingSpeedupCost(duration) !== null ;
-  };
-
-  module.lookupResourceExchangeCost = function() {
-    if (duration === undefined || duration === null) {
-      return null;
-    }
-	  var costs = AWE.GS.RulesManager.getRules().trading_speedup;
-	  var entry = null;
-	  costs.forEach(function(item) {
-	    if (!entry && duration < item.hours * 3600) { // hours to seconds
-	      entry = item;
-	    }
-	  });
-	  return entry;
-  };
-
   ////////////////////////////////////////////////////////////////////////////
   //
   //  REQUIREMENTS

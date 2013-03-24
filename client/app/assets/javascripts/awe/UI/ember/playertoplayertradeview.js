@@ -33,7 +33,7 @@ AWE.UI.Ember = (function(module) {
     hurrying: false,
 
     speedupCosts: function() {
-      return AWE.Util.Rules.lookupTradingSpeedupCost(0).amount;
+      return AWE.GS.RulesManager.getRules().trading_speedup.amount;
     }.property().cacheable(),
     
     speedupTooltipText: function() {
