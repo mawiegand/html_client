@@ -91,7 +91,7 @@ AWE.UI = (function(module) {
       }
       
       if (location.name() !== _nameLabelView.text()) {
-        _nameLabelView.setText(location.name());
+        _nameLabelView.setText(location.settlement() ? location.settlement().get('name') : location.name());
       }
 
       if (!_ownerLabelView) {
