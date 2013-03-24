@@ -15,6 +15,7 @@ AWE.I18n.de_DE = function(module) {
       error:    'Fehler',
       warning:  'Achtung',
       and:      'und',
+      or:       'oder',
       yes:      'ja',
       no:       'nein',
       nr:       'Nr.',
@@ -648,6 +649,10 @@ AWE.I18n.de_DE = function(module) {
         hurryTooltip: "Gib Goldkröten aus um die Transportzeit der Handelskarren um 30 Minuten zu verringern.",
         hurryTooltipHurried: "Gib Goldkröten aus um die Handelskarren sofort beim Ziel eintreffen zu lassen.",
         noCartsInTransit: "Keine Karren unterwegs.",
+
+        frogTradeHeader: "Umkröten",
+        frogTradeDescription: "Beschreibung für's Umkröten",
+        frogTradeButton: "Umkröten",
 
         error: {
           recipientUnknown: "Deine Anhänger sind viel zu faul, als dass sie Ressourcen an sich selbst senden würden.",

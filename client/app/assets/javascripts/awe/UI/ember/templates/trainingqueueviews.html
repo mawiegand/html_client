@@ -5,18 +5,6 @@
 
 <script type="text/x-handlebars" data-template-name="training-queue-view">
   <h2>{{local queue.queueType.name }}</h2>
-
-  <div>
-    <p class="hurry-button finish-button clickable">
-    <a {{action "resourceExchangePressed"}} title="{{t resource.exchange.advert}}">
-      {{t resource.exchange.header }}
-      <span class="resource-icon resource_cash">&nbsp;</span>
-    </a>
-    </p>
-  </div>
-  <div class="clear"></div>
-
-
   <div class="clearfix">
     {{#each trainableUnitTypes}}
       {{view AWE.UI.Ember.TrainableUnitButtonView unitTypeBinding="this" queueBinding="view.queue" classNames="training-option"}}

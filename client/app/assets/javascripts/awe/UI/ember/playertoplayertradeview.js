@@ -284,9 +284,18 @@ AWE.UI.Ember = (function(module) {
       return false;     // prevent default behavior
     },
     
-  });  
+  });
 
-  
+  module.FrogTradeView = Ember.View.extend({
+    templateName: "frog-trade-view",
+
+    resourceExchangePressed: function() {
+      var dialog = AWE.UI.Ember.ResourceExchangeDialog.create();
+      WACKADOO.presentModalDialog(dialog);
+      return false;
+    },
+  });
+
   return module;
     
 }(AWE.UI.Ember || {}));

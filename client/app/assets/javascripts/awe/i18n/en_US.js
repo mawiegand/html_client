@@ -15,6 +15,7 @@ AWE.I18n.en_US = function(module) {
       error:'Error',
       warning:'Warning',
       and:'and',
+      or:'or',
       yes:'Yes',
       no:'No',
       nr:'No.',
@@ -636,6 +637,10 @@ AWE.I18n.en_US = function(module) {
         hurryTooltip: "Gib Goldkröten aus um die Transportzeit der Handelskarren um 30 Minuten zu verringern.",
         hurryTooltipHurried: "Gib Goldkröten aus um die Handelskarren sofort beim Ziel eintreffen zu lassen.",
         noCartsInTransit: "No carts in transit.",
+
+        frogTradeHeader: "Umkröten",
+        frogTradeDescription: "Beschreibung für's Umkröten",
+        frogTradeButton: "Umkröten",
 
         error:{
           recipientUnknown:"Your workers are far to lazy to send resources to themself.",

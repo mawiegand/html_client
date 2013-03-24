@@ -6,7 +6,7 @@
           {{view AWE.UI.Ember.RequirementView requirementBinding="this" tagName="li"}}
         {{/each}}
       </ul>
-      {{#unless view.isLastItem}} oder {{/unless}}
+      {{#unless view.isLastItem}} {{t general.or}} {{/unless}}
     {{/view}}
   {{/each}}
 </script>
@@ -80,14 +80,6 @@
     <div class="settlement-dialog-pane settlement-dialog-select-building">
       <a {{action "cancelPressed"}} class="close"></a>
       <h1>{{t settlement.buildings.select.heading }}</h1>
-      <div>
-        <p class="hurry-button clickable">
-        <a {{action "resourceExchangePressed"}} title="{{t resource.exchange.advert}}">
-          {{t resource.exchange.header }}
-          <span class="resource-icon resource_cash">&nbsp;</span>
-        </a>
-        </p>
-      </div>
       <div class="clear"></div>
       {{#if constructionOptions }}
       <div class="clearfix">
@@ -282,14 +274,6 @@
 
         {{#if building.upgradable}}
           <hr class="clear" />
-          <div>
-            <p class="hurry-button clickable">
-              <a {{action "resourceExchangePressed"}} title="{{t resource.exchange.advert}}">
-                {{t resource.exchange.header }}
-                <span class="resource-icon resource_cash">&nbsp;</span>
-              </a>
-            </p>
-          </div>
           {{#if sendingUpgrade}}
             <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t building.upgrade.updating}}...</div>
           {{else}}
@@ -446,6 +430,8 @@
       {{#if building.unlockedPlayerToPlayerTrade}}
       <hr class="clearfix" />
         {{view AWE.UI.Ember.PlayerToPlayerTradeView settlementBinding="building.slot.settlement" controllerBinding="controller"}}
+      <hr class="clearfix" />
+        {{view AWE.UI.Ember.FrogTradeView controllerBinding="controller"}}
       {{/if}}
 
     </div>
