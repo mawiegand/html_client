@@ -153,7 +153,7 @@ AWE.UI = (function(module) {
       }
       _sizeAllLabelView.setText(army.get('strength'));
       
-      if (!_sizeType1LabelView) {
+      if (_sizeType1LabelView == null) {
         _sizeType1LabelView = AWE.UI.createLabelView();
         _sizeType1LabelView.initWithControllerAndLabel(my.controller);
         _sizeType1LabelView.setFrame(AWE.Geometry.createRect(162, 61, 100, 28));      
@@ -161,9 +161,9 @@ AWE.UI = (function(module) {
         _sizeType1LabelView.setIconImage("map/icon/army/infantry");
         this.addChild(_sizeType1LabelView);
       }
-      _sizeType1LabelView.setText(Math.floor(army.get('unitcategory_infantry_strength')));
+      _sizeType1LabelView.setText(Math.floor(army.get('unitcategory_infantry_strength')).toString());
       
-      if (!_sizeType2LabelView) {
+      if (_sizeType2LabelView == null) {
         _sizeType2LabelView = AWE.UI.createLabelView();
         _sizeType2LabelView.initWithControllerAndLabel(my.controller);
         _sizeType2LabelView.setFrame(AWE.Geometry.createRect(162, 89, 100, 28));      
@@ -171,9 +171,9 @@ AWE.UI = (function(module) {
         _sizeType2LabelView.setIconImage("map/icon/army/cavalry");
         this.addChild(_sizeType2LabelView);
       }
-      _sizeType2LabelView.setText(Math.floor(army.get('unitcategory_cavalry_strength')));
+      _sizeType2LabelView.setText(Math.floor(army.get('unitcategory_cavalry_strength')).toString());
       
-      if (!_sizeType3LabelView) {
+      if (_sizeType3LabelView == null) {
         _sizeType3LabelView = AWE.UI.createLabelView();
         _sizeType3LabelView.initWithControllerAndLabel(my.controller);
         _sizeType3LabelView.setTextAlign("left");
@@ -181,7 +181,7 @@ AWE.UI = (function(module) {
         _sizeType3LabelView.setFrame(AWE.Geometry.createRect(162, 117, 100, 28));      
         this.addChild(_sizeType3LabelView);
       }
-      _sizeType3LabelView.setText(Math.floor(army.get('unitcategory_artillery_strength')));
+      _sizeType3LabelView.setText(Math.floor(army.get('unitcategory_artillery_strength')).toString());
             
       if (!_stanceView || army.get('stance') != _stance) {
         _stance = army.get('stance');
@@ -221,15 +221,8 @@ AWE.UI = (function(module) {
         _stanceView.setFrame(AWE.Geometry.createRect(0 + offX, 0 + offY, 144, 144));
         this.setInspectedObjectView(_stanceView);
       }
-      
+    };
 
-
-      
-
-
-
-    }
-    
         
     that.army = function() {
       return my.inspectedObject;
