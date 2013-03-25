@@ -6,3 +6,5 @@ set :rails_env, 'round2'
 set :port, 5775                                            # until 5775 is working!
 
 set :branch,    "backup-round2"
+
+set :deploy_to, "/var/www/html_client_round2"
