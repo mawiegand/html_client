@@ -47,6 +47,16 @@ AWE.UI.Ember = (function(module) {
     alliance:     null,
     controller:   null,
     victoryType:  null,
+
+    leaderProgress: function() {
+      var type = this.getPath('victoryType.symbolic_id');
+      if (AWE.GS.game.victoryProgressLeaders != null) {
+        return AWE.GS.game.victoryProgressLeaders[type]['first'];
+      }
+      else {
+        return null;
+      }
+    }.property('AWE.GS.game.victoryProgressLeaders', 'victoryType').cacheable(),
   });
 
   module.AllianceVictoryProgressDominationView = module.AllianceVictoryProgressView.extend({

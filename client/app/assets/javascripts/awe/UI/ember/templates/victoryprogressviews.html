@@ -1,6 +1,6 @@
 <script type="text/x-handlebars" data-template-name="alliance-victory-view">
   {{#if AWE.GS.game.roundInfo.victoryGained}}
-    <p class="red-color">Diese Runde hat die Allianz [{{AWE.GS.game.roundInfo.winnerAlliance.tag}}] am {{formatDatetime victoryGainedAt}} durch einen {{local victoryType.name}} gewonnen.</p>
+    <p class="red-color">Diese Runde hat die Allianz [{{AWE.GS.game.roundInfo.winner_alliance_tag}}] am {{formatDatetime victoryGainedAt}} durch einen {{local victoryType.name}} gewonnen.</p>
   {{/if}}
   <div class="alliance-victory">
     {{view AWE.UI.Ember.AllianceVictoryProgressDominationView allianceBinding="alliance"}}
@@ -28,8 +28,8 @@
     </div>
     <div style="position:absolute; top: 0; right: 0; width: 200px; height: 50px; margin-top: -30px; border-right: 1px solid black; margin-right: -1px; padding-right: 3px;">
       <div style="height: 30px; font-size: 14px; text-align: right;">{{t alliance.progress.criteriaHeld}}</div>
-    {{#if progress.fulfilled }}
-      <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAt}} {{progress.endDate}}</div>
+    {{#if leaderProgress.fulfilled }}
+      <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAt}} {{leaderProgress.endDate}}</div>
     {{else}}
       <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAfter}} {{victoryType.condition.duration}} {{t alliance.progress.days}}</div>
     {{/if}}
@@ -77,8 +77,8 @@
     </div>
     <div style="position:absolute; top: 0; right: 0; width: 200px; height: 50px; margin-top: -30px; border-right: 1px solid black; margin-right: -1px; padding-right: 3px;">
       <div style="height: 30px; font-size: 14px; text-align: right;">{{t alliance.progress.criteriaHeld}}</div>
-    {{#if progress.fulfilled }}
-      <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAt}} {{progress.endDate}}</div>
+    {{#if leaderProgress.fulfilled }}
+      <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAt}} {{leaderProgress.endDate}}</div>
     {{else}}
       <div style="font-size: 14px; text-align: right;">{{t alliance.progress.victoryAfter}} {{victoryType.condition.duration}} {{t alliance.progress.days}}</div>
     {{/if}}
@@ -109,6 +109,7 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-victory-progress-other-alliance-view">
+  {{#if progress}}
     {{#if progress.fulfilled}}
     <div {{bindAttr style="styleFulfilled1" }}>
       <div {{bindAttr style="styleFulfilled2" }}>
@@ -126,4 +127,5 @@
       </div>
     </div>
     {{/if}}
+  {{/if}}
 </script>
