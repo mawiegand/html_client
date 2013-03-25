@@ -1025,8 +1025,8 @@ AWE.I18n.de_DE = function(module) {
 
         errors: {
           noinput: {
-            heading: "Keine Werte eingegeben",
-            text:    "Du hast keine Werte eingegeben. So wird das nix mit dem Umtauschen...",
+            heading: "Ungültiger Wert eingegeben",
+            text:    "Du hast keinen gültigen Rohstoffwert eingegeben. So wird das nix mit dem Umtauschen...",
           },
 
           toomuch: {
@@ -1035,6 +1035,11 @@ AWE.I18n.de_DE = function(module) {
             stone:   "Du hast mehr Stein verteilt, als du lagern kannst.",
             wood:    "Du hast mehr Holz verteilt, als du lagern kannst.",
             fur:     "Du hast mehr Fell verteilt, als du lagern kannst.",
+          },
+
+          noFrogs: {
+            heading: "Du bist pleite!",
+            text:    "Leider hast du nicht genügend Kröten zum Bezahlen. Daher, gleich in die Fundgrube und neue kaufen...",
           },
 
           failed: {
