@@ -533,6 +533,7 @@ AWE.I18n.de_DE = function(module) {
           nameTooLong: "Viel zu lang. Der Name darf höchstens 16 Zeichen enthalten.",
           nameNoChange: "Das ist der gleiche Name wie vorher. Keine Veränderung",
 
+          nameTaken: "Dieser Name wird schon benutzt oder ist auf der Blacklist. Bitte wähle einen anderen Namen.",
           changeNameCost: "Du hast nicht genug Kröten, um den Siedlungsnamen zu ändern.",
           changeNameError: "Der Name konnte aus unbekannten Gründen nicht geändert werden. Bitte versuch es später noch einmal.",
         },

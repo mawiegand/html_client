@@ -145,6 +145,9 @@ AWE.UI.Ember = (function(module) {
               AWE.GS.ResourcePoolManager.updateResourcePool();
             }
           }
+          else if (status === AWE.Net.CONFLICT) {
+            self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.nameTaken'))
+          }
           else if (status === AWE.Net.FORBIDDEN) {
             self.set('message', AWE.I18n.lookupTranslation('settlement.customization.errors.changeNameCost'))
           }

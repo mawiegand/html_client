@@ -514,7 +514,6 @@ AWE.I18n.en_US = function(module) {
         chooseNameCaption: 'Name your settlement',
         changeNameCaption: 'Change your settlements name',
         nameChangeAdvice: 'The first name change is for free any additional changes will cost you a few golden frogs.',
-
         changeNameDialogCaption: "Enter your new name.",
 
         errors: {
@@ -522,6 +521,7 @@ AWE.I18n.en_US = function(module) {
           nameTooLong: "Way to long. The name can have maximum 16 characters.",
           nameNoChange: "Thats the same name as before.",
 
+          nameTaken:"This name is already in use or been blacklisted. Please choose another name.",
           changeNameCost: "You dont have enough golden frogs right now to change your settlements name.",
           changeNameError: "The name could not be changed for some reason. Please try again later.",
         },
