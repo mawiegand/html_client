@@ -236,7 +236,7 @@ AWE.I18n.de_DE = function(module) {
         available: "Verfügbare Einheiten",
         new: "Neue Armee",
         name: "Name der Armee",
-        advisorHint: 'Wie viele Einheiten sollen denn in die Armee? Schreibe zum Beispiel "25" unter "neue Armee" und drücke anschließend auf "erzeugen".',
+        advisorHint: 'Wie viele Einheiten sollen denn in die Armee? Schreibe zum Beispiel "5" unter "neue Armee" und drücke anschließend auf "erzeugen".',
         all: "Alle",
         reset: "Zurücksetzen",
         change: "Ändern",
