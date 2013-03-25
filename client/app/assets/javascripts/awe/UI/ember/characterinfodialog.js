@@ -98,7 +98,26 @@ AWE.UI.Ember = (function(module) {
         log('U: settlement at character.base_location_id', baseLocationId);
         self.set('homeSettlement', AWE.GS.SettlementManager.getSettlementAtLocation(baseLocationId));
       });
-    },     
+    },    
+    
+    
+    basePressed: function(evt) {
+      var entry = evt.context;
+      var regionId = this.getPath('character.base_region_id');
+      var region = AWE.Map.Manager.getRegion(regionId);
+      if (region != null) {
+        var mapController = WACKADOO.activateMapController(true);
+        WACKADOO.closeAllModalDialogs();
+        mapController.centerRegion(region);
+      }
+      else {
+        AWE.Map.Manager.fetchSingleRegionById(regionId, function(region) {
+          var mapController = WACKADOO.activateMapController(true);
+          WACKADOO.closeAllModalDialogs();
+          mapController.centerRegion(region);
+        });
+      }
+    }, 
     
     characterIdObserver: function() {
       this.setAndUpdateCharacter();
