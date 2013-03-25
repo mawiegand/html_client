@@ -30,3 +30,10 @@ staging:
   database: db/production.sqlite3
   pool: 5
   timeout: 5000
+
+round2:
+  adapter: sqlite3
+  database: db/round2.sqlite3
+  pool: 5
+  timeout: 5000
+

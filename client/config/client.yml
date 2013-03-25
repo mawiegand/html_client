@@ -40,3 +40,11 @@ production:
   shop_callback_hostname: "gs02"
   like_system_enabled: true  
 
+
+round2:
+  <<: *defaults
+  jabber_server_base: "jabber.wack-a-doo.com"
+  portal_server_base: "wack-a-doo.de"
+  shop_callback_hostname: "test1"
+  like_system_enabled: true
+

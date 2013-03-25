@@ -1,0 +1,14 @@
+---
+pid: /var/run/client_round2.pid
+timeout: 30
+wait: 30
+log: log/thin/client_round2.log
+max_conns: 1024
+require: []
+
+environment: round2
+max_persistent_conns: 512
+servers: 3
+daemonize: true
+chdir: /var/www/html_client_round2/current
+socket: /var/run/client_round2.sock
