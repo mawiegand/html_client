@@ -71,7 +71,7 @@ AWE.UI.Ember = (function(module) {
       AWE.Ext.applyFunctionToElements(costs, function(cost) {
         sum += parseInt(cost);
       });
-      return Math.floor(sum * 0.05);
+      return Math.floor(sum * 0.08);
     }.property('unit').cacheable(),
     
   });  
