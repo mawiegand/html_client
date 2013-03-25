@@ -84,17 +84,17 @@ AWE.UI.Ember = (function(module) {
     changingName: false,
     
     nameChangeCosts: function() {
-      return AWE.GS.RulesManager.getRules().change_settlement_name.amount;
-    }.property().cacheable(),
+      return this.getPath('settlement.type').change_name_cost.amount;
+    }.property('settlement').cacheable(),
     
     nameChangeResource: function() {
-      var resourceId = AWE.GS.RulesManager.getRules().change_settlement_name.resource_id;
+      var resourceId = this.getPath('settlement.type').change_name_cost.resource_id;
       return AWE.GS.RulesManager.getRules().getResourceType(resourceId).symbolic_id;
-    }.property().cacheable(),
+    }.property('settlement').cacheable(),
     
     firstNameChange: function() { 
       var count = this.getPath('settlement.name_change_count');
-      return count === undefined || count === null || count < AWE.GS.RulesManager.getRules().change_settlement_name.free_changes;
+      return count === undefined || count === null || count < this.getPath('settlement.type').change_name_cost.free_changes;
     }.property('settlement.name_change_count'), 
     
     changeNamePressed: function(event) {
