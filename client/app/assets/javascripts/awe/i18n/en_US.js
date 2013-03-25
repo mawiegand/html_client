@@ -997,45 +997,50 @@ AWE.I18n.en_US = function(module) {
         tax:"Tax",
       },
       exchange: {
-        header:   "Umkröten",
-        advert:   "Nicht genug Ressourcen übrig? Dann probiere unsere Umkröten-Funktion aus!",
-        info:     "Du kannst gegen eine kleine Abgabe Deine vorhandenen Rohstoffe neu verteilen.",
-        warning:  "Du kannst entweder alle drei Rohstoffe festlegen oder aber auch nur einen oder zwei Rohstoffe bestimmen. Der verbleibende Rest wird unter den nicht gewählten Rohstoffen gleichmäßig verteilt.",
-        fee:      "Das Umkröten kostet Dich jeweils",
-        fee2:     "Kröten.",
-        loading:  "Lade Ressourcen",
-        loading2: "Führe Umtausch durch",
-        sum:      "Gesamt",
-        remaining:"Verbleibend",
-        fill:     "Auffüllen",
+        header:   "Frog-Trade",
+        advert:   "Not enough resources?? Try out our Frog-Trade!",
+        info:     "For a small fee you can redistribute your existing resources.",
+        warning:  "You can either configure all 3 resources or only 1 or 2 of them. Any left overs will be distributed evenly.",
+        fee:      "Frog-Trading costs you",
+        fee2:     "golden frogs.",
+        loading:  "Loading ressources",
+        loading2: "Redistributing",
+        sum:      "Total",
+        remaining:"Remaining",
+        fill:     "Fill up",
 
         form: {
-          exchange: "Umtauschen",
-          reset:    "Zurücksetzen",
+          exchange: "Exchange",
+          reset:    "Reset",
         },
 
         errors: {
           noinput: {
-            heading: "Keine Werte eingegeben",
-            text:    "Du hast keine Werte eingegeben. So wird das nix mit dem Umtauschen...",
+            heading: "Didn‘t enter a value",
+            text:    "You didn‘t enter a value. No wonder it didnt work",
+          },
+
+          noFrogs: {
+            heading: "You are broke!",
+            text:    "You don't have enough golden frogs to pay. Get some new at bonanza.",
           },
 
           toomuch: {
-            heading: "Zu viele Ressourcen verteilt",
-            text:    "Du hast mehr Ressourcen verteilt als dir zur Verfügung stehen.",
-            stone:   "Du hast mehr Stein verteilt, als du lagern kannst.",
-            wood:    "Du hast mehr Holz verteilt, als du lagern kannst.",
-            fur:     "Du hast mehr Fell verteilt, als du lagern kannst.",
+            heading: "Distributed too many resources",
+            text:    "You distributed more resources than you have avaiable.",
+            stone:   "You assigned more stone than you can store.",
+            wood:    "You assigned more wood than you can store.",
+            fur:     "You assigned more fur than you can store.",
           },
 
           failed: {
-            heading: "Umtausch fehlgeschlagen",
-            text:    "Der Umtausch ist fehlgeschlagen. Bitte versuche es erneut oder wende dich an einen Administrator.",
+            heading: "Exchange",
+            text:    "Exchange failed. Please try again or contact an Administrator.",
           },
         },
       },
     },
-    
+
     effects: {
       effects: "Boni",
       type0: "Shop",
