@@ -108,7 +108,7 @@ AWE.UI = (function(module) {
         var artifactImage = AWE.UI.ImageCache.getImage(_artifactImage) ;
         _artifactImageView = AWE.UI.createImageView();
         _artifactImageView.initWithControllerAndImage(my.controller, artifactImage);
-        _artifactImageView.setFrame(AWE.Geometry.createRect(-6, -7, 96, 96));
+        _artifactImageView.setFrame(AWE.Geometry.createRect(-15, -20, 128, 128));
         _artifactImageView.onClick = that.onClick;
         _artifactImageView.onDoubleClick = that.onDoubleClick;
         _artifactImageView.onMouseOver = that.onMouseOver;
