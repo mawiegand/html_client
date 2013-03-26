@@ -24,6 +24,19 @@
               {{/each}}
             {{/if}}
             
+            <div class="clearfix"></div>
+            
+            
+            <div class="frog-trade">
+              <div class="frog-trade-description">{{ t shop.frog_trade }}</div>
+              <div class="frog-trade-button">
+                <div class="simple-button"  {{action "resourceExchangePressed"}}>
+                  <img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/toad.png" alt="" /> 
+                  {{t settlement.trade.frogTradeButton}}
+                </div>
+              </div>
+            </div>
+            
             {{#if platinumOffers}}
             
               <div class="clearfix"></div>

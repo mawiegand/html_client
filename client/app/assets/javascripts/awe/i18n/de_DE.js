@@ -477,6 +477,7 @@ AWE.I18n.de_DE = function(module) {
       production: 'Produktion',
       duration: 'Dauer',
       expiry: 'Ablauf',
+      frog_trade: 'Reisender Händler: schneller Rohstofftausch', 
 
       current: "Aktuelle",
       platinumCredit: "Platinum Credits",
