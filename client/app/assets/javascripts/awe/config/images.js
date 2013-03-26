@@ -134,7 +134,13 @@ AWE.Config = (function(module) {
     "ui/button/orange/normal":   AWE.Config.RAILS_ASSET_PATH + 'ui/orange_button-normal.png',
     "ui/button/orange/hovered":  AWE.Config.RAILS_ASSET_PATH + 'ui/orange_button-hovered.png',
 
-
+    "ui/button/mapstrategy/normal":  AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_strategy.png',
+    "ui/button/mapstrategy/hover":   AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_strategy_hover.png',
+    "ui/button/mapterrain/normal":   AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_terrain.png',
+    "ui/button/mapterrain/hover":    AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_terrain_hover.png',
+    "ui/button/mapency/normal":      AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_ency.png',
+    "ui/button/mapency/hover":       AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_ency_hover.png',
+    "ui/button/map/background":      AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_background.png',
     
     "map/icon/owner":         AWE.Config.RAILS_ASSET_PATH + 'icons/heads.png',
     "map/icon/home":          AWE.Config.RAILS_ASSET_PATH + 'icons/house.png',
