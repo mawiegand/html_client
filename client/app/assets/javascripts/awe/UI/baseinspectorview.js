@@ -68,7 +68,7 @@ AWE.UI = (function(module) {
       
       _super.recalcView();
       
-      if (!_newArmyButtonView && isOwnLocation) {
+      if (!_newArmyButtonView && isOwnLocation && location != null && location.garrisonArmy() != null && !location.garrisonArmy().get('isFighting')) {
         _newArmyButtonView = AWE.UI.createButtonView();
         _newArmyButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/inspector/button/reinforce/normal"));
         _newArmyButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/inspector/button/reinforce/hovered"), module.CONTROL_STATE_HOVERED);
@@ -79,6 +79,10 @@ AWE.UI = (function(module) {
           }
         };
         this.addChildAt(_newArmyButtonView, 2);
+      }
+
+      if (_newArmyButtonView && isOwnLocation && location != null && location.garrisonArmy() != null && location.garrisonArmy().get('isFighting')) {
+        this.removeChild(_newArmyButtonView);
       }
       
       if (!_nameLabelView) {
