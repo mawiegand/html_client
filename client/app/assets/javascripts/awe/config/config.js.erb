@@ -144,7 +144,7 @@ AWE.Config = (function(module) {
   module.TUTORIAL_FIGHT_QUEST_ID = 147;
   module.TUTORIAL_MOVE_QUEST_ID  =  18;
 
-  module.CHAT_SHOW    = <%= Rails.env.development? ? 'false' : 'true' %>;   // switch chat system on / off
+  module.CHAT_SHOW    = <%= Rails.env.development? ? 'false' : 'false' %>;   // switch chat system on / off
   module.TRADE_ENABLED= true;   // switch trade system on / off
   module.LIKE_ENABLED = <%= CLIENT_CONFIG['like_system_enabled'] ? 'true' : 'false' %>;  // switch like system on / off
 
