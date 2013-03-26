@@ -168,7 +168,7 @@ AWE.UI.Ember = (function(module) {
     unmetRequirementGroups: function() {
       var settlement = this.getPath('queue.settlement');
       var character = settlement ? settlement.owner() : null;
-      var failed =  AWE.Util.Rules.failedRequirementGroups(this.getPath('unitType.requirementGroups'), settlement, character, null, true);
+      var failed =  AWE.Util.Rules.failedRequirementGroups(this.getPath('unitType.requirementGroups'), settlement, character, null, false); // do NOT consider construction jobs in building queue
       return failed || []
     }.property('unitType', 'queue.settlement.hashableSlots.collection@each.level', 'queue.settlement.hashableSlots.changedAt'),
 
