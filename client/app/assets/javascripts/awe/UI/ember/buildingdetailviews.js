@@ -43,7 +43,7 @@ AWE.UI.Ember = (function(module) {
       log ('OPTIONS', options)
       var result = options.filter(function(building) {
         log('BUILDING', building)
-        return building.impossibleToBuildDueToMaxRequirement();
+        return !building.impossibleToBuildDueToMaxRequirement();
       });
       return result && result.length > 0 ? result : null;
     }.property('slot.building_id', 'slot.settlement'),  
