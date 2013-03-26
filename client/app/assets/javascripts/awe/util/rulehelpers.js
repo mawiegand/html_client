@@ -367,7 +367,7 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
         var buildingId = item.get('building_id'); 
         buildingId = buildingId === undefined || buildingId === null ? -1 : buildingId; //protect against undefined and null, wheras id 0 is ok!
         if (requirement.id === buildingId && requirement.max_level !== undefined && requirement.max_level !== null) {
-          maxMet = maxMet && requirement.max_level >= (considerJobs ? item.get('levelAfterJobs') : item.get('level'));    // all buildings must not be larger than the max level. may consider ongoing jobs in order to prevent queueing two mutually exclusive buildings
+          maxMet = maxMet && requirement.max_level >= (considerJobs ? item.getPath('building.levelAfterJobs') : item.get('level'));    // all buildings must not be larger than the max level. may consider ongoing jobs in order to prevent queueing two mutually exclusive buildings
         }
         if (requirement.id === buildingId && requirement.min_level && !onlyMax) {
           minMet = minMet || requirement.min_level <= item.get('level');    // one building must be larger than or equal to the min level; no not consider ongoing jobs; building must be finished to allow queueing of a dependent building
