@@ -236,7 +236,7 @@ AWE.I18n.de_DE = function(module) {
         available: "Verfügbare Einheiten",
         new: "Neue Armee",
         name: "Name der Armee",
-        advisorHint: 'Wie viele Einheiten sollen denn in die Armee? Schreibe zum Beispiel "25" unter "neue Armee" und drücke anschließend auf "erzeugen".',
+        advisorHint: 'Wie viele Einheiten sollen denn in die Armee? Schreibe zum Beispiel "5" unter "neue Armee" und drücke anschließend auf "erzeugen".',
         all: "Alle",
         reset: "Zurücksetzen",
         change: "Ändern",
@@ -533,6 +533,7 @@ AWE.I18n.de_DE = function(module) {
           nameTooLong: "Viel zu lang. Der Name darf höchstens 16 Zeichen enthalten.",
           nameNoChange: "Das ist der gleiche Name wie vorher. Keine Veränderung",
 
+          nameTaken: "Dieser Name wird schon benutzt oder ist auf der Blacklist. Bitte wähle einen anderen Namen.",
           changeNameCost: "Du hast nicht genug Kröten, um den Siedlungsnamen zu ändern.",
           changeNameError: "Der Name konnte aus unbekannten Gründen nicht geändert werden. Bitte versuch es später noch einmal.",
         },
@@ -1024,8 +1025,8 @@ AWE.I18n.de_DE = function(module) {
 
         errors: {
           noinput: {
-            heading: "Keine Werte eingegeben",
-            text:    "Du hast keine Werte eingegeben. So wird das nix mit dem Umtauschen...",
+            heading: "Ungültiger Wert eingegeben",
+            text:    "Du hast keinen gültigen Rohstoffwert eingegeben. So wird das nix mit dem Umtauschen...",
           },
 
           toomuch: {
@@ -1034,6 +1035,11 @@ AWE.I18n.de_DE = function(module) {
             stone:   "Du hast mehr Stein verteilt, als du lagern kannst.",
             wood:    "Du hast mehr Holz verteilt, als du lagern kannst.",
             fur:     "Du hast mehr Fell verteilt, als du lagern kannst.",
+          },
+
+          noFrogs: {
+            heading: "Du bist pleite!",
+            text:    "Leider hast du nicht genügend Kröten zum Bezahlen. Daher, gleich in die Fundgrube und neue kaufen...",
           },
 
           failed: {

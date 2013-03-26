@@ -23,7 +23,7 @@
 
       <p><b>{{t profile.homeSettlement}}:</b>
         {{#if homeSettlement}}
-          {{homeSettlement.name}} ({{homeSettlement.score}} {{t settlement.population}})
+          <a class="clickable" {{action "basePressed"}}>{{homeSettlement.name}}</a> ({{homeSettlement.score}} {{t settlement.population}})
         {{else}}
           {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
         {{/if}}

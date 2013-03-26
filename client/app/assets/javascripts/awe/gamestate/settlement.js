@@ -236,6 +236,10 @@ AWE.GS = (function(module) {
       return AWE.GS.RulesManager.getRules().getSettlementType(this.get('type_id'));
     },
     
+    type: function() {
+      return AWE.GS.RulesManager.getRules().getSettlementType(this.get('type_id'));
+    }.property('type_id').cacheable(),
+
     taxPercentage: function() {
       return Math.floor(parseFloat(this.get('tax_rate') || "0.0") * 100.0 + 0.5);
     }.property('tax_rate').cacheable(),

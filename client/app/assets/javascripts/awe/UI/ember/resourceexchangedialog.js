@@ -85,40 +85,13 @@ AWE.UI.Ember = (function(module) {
 
     /* actions */
     exchangeClicked: function() {
-      if((parseInt(this.get('newStoneValue')) || 0) == 0 && (parseInt(this.get('newWoodValue')) || 0) == 0 && (parseInt(this.get('newFurValue')) || 0) == 0) {
+      if (isNaN(parseInt(this.get('newStoneValue'))) || isNaN(parseInt(this.get('newWoodValue'))) || isNaN(parseInt(this.get('newFurValue')))) {
         var errorDialog = AWE.UI.Ember.InfoDialog.create({
           heading: AWE.I18n.lookupTranslation('resource.exchange.errors.noinput.heading'),
           message: AWE.I18n.lookupTranslation('resource.exchange.errors.noinput.text'),
         });
         WACKADOO.presentModalDialog(errorDialog);
       }
-
-      /* NOTICE: I added those ifs because I thought they are necessary, since you can't type in values that
-       * are higher than the capacity, those cases should never appear. Even if they appear, they'll be
-       * detected by the game server resulting in an exception */
-      /*else if(this.get('newStoneValue') > parseInt(this.getPath('pool.resource_stone_capacity'))) {
-        var errorDialog = AWE.UI.Ember.InfoDialog.create({
-          heading: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.heading'),
-          message: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.stone'),
-        });
-        WACKADOO.presentModalDialog(errorDialog);
-      }
-  
-      else if(this.get('newWoodValue') > parseInt(this.getPath('pool.resource_wood_capacity'))) {
-        var errorDialog = AWE.UI.Ember.InfoDialog.create({
-          heading: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.heading'),
-          message: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.wood'),
-        });
-        WACKADOO.presentModalDialog(errorDialog);
-      }
-
-      else if(this.get('newFurValue') > parseInt(this.getPath('pool.resource_fur_capacity'))) {
-        var errorDialog = AWE.UI.Ember.InfoDialog.create({
-          heading: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.heading'),
-          message: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.fur'),
-        });
-        WACKADOO.presentModalDialog(errorDialog);
-      }*/
 
       else if(parseInt(this.get('remaining'))  < 0) {
         var errorDialog = AWE.UI.Ember.InfoDialog.create({
@@ -140,7 +113,16 @@ AWE.UI.Ember = (function(module) {
               parent.set('loadingSend', false);
               parent.destroy();
             });
-          } else {
+          }
+          else if (statusCode == AWE.Net.CONFLICT) {
+            var errorDialog = AWE.UI.Ember.InfoDialog.create({
+              heading: AWE.I18n.lookupTranslation('resource.exchange.errors.noFrogs.heading'),
+              message: AWE.I18n.lookupTranslation('resource.exchange.errors.noFrogs.text'),
+            });
+            WACKADOO.presentModalDialog(errorDialog);
+            self.destroy();
+          }
+          else {
             var errorDialog = AWE.UI.Ember.InfoDialog.create({
               heading: AWE.I18n.lookupTranslation('resource.exchange.errors.failed.heading'),
               message: AWE.I18n.lookupTranslation('resource.exchange.errors.failed.text'),

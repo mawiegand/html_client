@@ -57,14 +57,14 @@
         <tr>
           <td>{{t resource.productionInfo.characterEffects}}</td>
           {{#each productionDetails}}
-            <td class="number">{{formatPercentage characterEffects}}</td>
+            <td class="number">{{formatAsPercent characterEffects maxPlaces="0"}}</td>
           {{/each}}
         </tr>
 
         <tr>
           <td>{{t resource.productionInfo.allianceEffects}}</td>
           {{#each productionDetails}}
-            <td class="number">{{formatPercentage allianceEffects}}</td>
+            <td class="number">{{formatAsPercent allianceEffects maxPlaces="0"}}</td>
           {{/each}}
           <td><span class="clickable help-icon" title="{{t resource.productionInfo.effectDetails}}" {{action effectDetailsPressed}}></span></td>
 
@@ -77,11 +77,11 @@
         <table>
           <tr>
             <td>{{t likesystem.likesAvailable}}</td>
-            <td class="number">{{formatNumberFloor pool.like_amount}}</td>
+            <td class="number">{{formatNumberFloor pool.like_amount maxPlaces="0"}}</td>
           </tr>
           <tr>
             <td>{{t likesystem.dislikesAvailable}}</td>
-            <td class="number">{{formatNumberFloor pool.dislike_amount}}</td>
+            <td class="number">{{formatNumberFloor pool.dislike_amount maxPlaces="0"}}</td>
           </tr>
         </table>
         <p>{{t likesystem.info}}</p>
@@ -115,7 +115,7 @@
               <td>{{effect.typeName}}</td>
               {{#each resource in parentView.resourceTypes}}
                 {{#view AWE.UI.Ember.ResourceEffectDetail effectBinding="effect" resourceBinding="resource"}}
-                  <td class="number">{{formatAsPercent value}}</td>
+                  <td class="number">{{formatAsPercent value maxPlaces="0"}}</td>
                 {{/view}}
               {{/each}}
             </tr>
@@ -125,7 +125,7 @@
             <td><b>Summe</b></td>
             {{#each resource in resourceTypes}}
               {{#view AWE.UI.Ember.CharacterResourceDetail resourcePoolBinding="parentView.resourcePool" resourceBinding="resource"}}
-                <td class="number">{{formatAsPercent value}}</td>
+                <td class="number">{{formatAsPercent value maxPlaces="0"}}</td>
               {{/view}}
             {{/each}}
           </tr>
@@ -154,7 +154,7 @@
                 <td>{{effect.typeName}}</td>
                 {{#each resource in parentView.resourceTypes}}
                   {{#view AWE.UI.Ember.ResourceEffectDetail effectBinding="effect" resourceBinding="resource"}}
-                    <td class="number">{{formatAsPercent value}}</td>
+                    <td class="number">{{formatAsPercent value maxPlaces="0"}}</td>
                   {{/view}}
                 {{/each}}
               </tr>
@@ -164,7 +164,7 @@
               <td><b>Summe</b></td>
               {{#each resource in resourceTypes}}
                 {{#view AWE.UI.Ember.AllianceResourceDetail resourcePoolBinding="parentView.resourcePool" resourceBinding="resource"}}
-                  <td class="number">{{formatAsPercent value}}</td>
+                  <td class="number">{{formatAsPercent value maxPlaces="0"}}</td>
                 {{/view}}
               {{/each}}
             </tr>
