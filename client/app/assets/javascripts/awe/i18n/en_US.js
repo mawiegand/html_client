@@ -638,8 +638,8 @@ AWE.I18n.en_US = function(module) {
         hurryTooltipHurried: "You can finish the transport with golden frogs.",
         noCartsInTransit: "No carts in transit.",
 
-        frogTradeHeader: "Pedlar",
-        frogTradeDescription: "missing ",
+        frogTradeHeader: "Traveling Merchant",
+        frogTradeDescription: "Always happy to serve. The traveling merchant will gladly help you swap around your resources, for a small fee of course. ",
         frogTradeButton: "Trade",
 
         error:{
@@ -997,14 +997,14 @@ AWE.I18n.en_US = function(module) {
         tax:"Tax",
       },
       exchange: {
-        header:   "Pedlar",
-        advert:   "You need another allocation of your resources? The pedlar will do it for you!",
-        info:     "For a small amont you can get a new allocation.",
-        warning:  "You can tell the amonut aof alle three or only one or two. The remaining resources will be .",
+        header:   "Traveling Merchant",
+        advert:   "Dont like the distribution of your resources? The traveling merchant can help you!",
+        info:     "For a small fee the merchant can help you to redistribute your resources.",
+        warning:  "You can configure the amonut of all three resources or only one or two. The remaining resources will be distributed evenly.",
         fee:      "The trade",
         fee2:     " golden frogs.",
         loading:  "Load Ressourcen",
-        loading2: "Führe Umtausch durch",
+        loading2: "Exchanging",
         sum:      "Sum",
         remaining:"Remaining",
         fill:     "Fill",
@@ -1016,12 +1016,12 @@ AWE.I18n.en_US = function(module) {
 
         errors: {
           noinput: {
-            heading: "Keine Werte eingegeben",
-            text:    "Du hast keine Werte eingegeben. So wird das nix mit dem Umtauschen...",
+            heading: "Didn't enter an amount",
+            text:    "You didn't enter an amount. No wonder it didnt work.",
           },
 
           toomuch: {
-            heading: "You allocated to may resorces",
+            heading: "You allocated to many resorces",
             text:    "You allocated more resources than you can store.",
             stone:   "You allocated more stone than you can store.",
             wood:    "You allocated more wood than you can store.",
