@@ -62,7 +62,7 @@ AWE.UI.Ember = (function(module) {
       var maxFail = true;
       log('RECALC IMPOSSIBLE DUE TO MAX REQUIREMENT');
       reqGroups.forEach(function(group) {
-        maxFail = maxFail && AWE.Util.Rules.requirementGroupFailsDueToMaxRequirement(group, settlement, character, null, true);
+        maxFail = maxFail && AWE.Util.Rules.requirementGroupFailsDueToMaxRequirement(group, settlement, character, null, false); // DO NOT CONSIDER JOBS IN QUEUE
       });
       return maxFail;
     },    
