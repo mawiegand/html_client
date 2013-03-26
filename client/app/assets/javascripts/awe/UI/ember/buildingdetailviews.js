@@ -184,6 +184,8 @@ AWE.UI.Ember = (function(module) {
       return !this.get('requirementsMet');
     }.property('requirementsMet'), 
     
+
+    
     
   });
   
