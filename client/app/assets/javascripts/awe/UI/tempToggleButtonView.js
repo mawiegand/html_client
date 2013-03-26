@@ -77,16 +77,24 @@ AWE.UI = (function(module) {
       
       if (!my.toggleButtonView) {
         my.toggleButtonView = AWE.UI.createButtonView();
-        my.toggleButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.strategic'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-        my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        my.toggleButtonView.setFrame(AWE.Geometry.createRect(0, 0, 48, 48));
+        my.toggleButtonView.initWithControllerTextAndImage(my.controller, "", AWE.UI.ImageCache.getImage("ui/button/mapstrategy/normal"));
+        my.toggleButtonView.setFrame(AWE.Geometry.createRect(0, 0, 68, 70));
         my.toggleButtonView.onClick = function() {
           that.onToggleButtonClick()
         };
         this.addChild(my.toggleButtonView);
       }
-      
-      my.toggleButtonView.setText(politicalMap ? AWE.I18n.lookupTranslation('map.button.terrain') : AWE.I18n.lookupTranslation('map.button.strategic'));
+
+      if (my.toggleButtonView) {
+        if (politicalMap) {
+          my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapterrain/normal"), module.CONTROL_STATE_NORMAL);
+          my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapterrain/hover"), module.CONTROL_STATE_HOVERED);
+        }
+        else {
+          my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapstrategy/normal"), module.CONTROL_STATE_NORMAL);
+          my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapstrategy/hover"), module.CONTROL_STATE_HOVERED);
+        }
+      }
     }
     
     that.onToggleButtonClick = function() {
@@ -122,9 +130,9 @@ AWE.UI = (function(module) {
     that.recalcView = function() {
       if (!my.toggleButtonView) {
         my.toggleButtonView = AWE.UI.createButtonView();
-        my.toggleButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.encyclopedia'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-        my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        my.toggleButtonView.setFrame(AWE.Geometry.createRect(0, 0, 48, 48));
+        my.toggleButtonView.initWithControllerTextAndImage(my.controller, "", AWE.UI.ImageCache.getImage("ui/button/mapency/normal"));
+        my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapency/hover"), module.CONTROL_STATE_HOVERED);
+        my.toggleButtonView.setFrame(AWE.Geometry.createRect(0, 0, 68, 70));
         my.toggleButtonView.onClick = function() {
           that.onToggleButtonClick()
         };

@@ -149,18 +149,23 @@ AWE.Controller = function (module) {
       });
 
 
-      if (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM) {
-        inspectorViews.tempToggleButtonView = AWE.UI.createTempToggleButtonView();
-        inspectorViews.tempToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
-        _stages[3].addChild(inspectorViews.tempToggleButtonView.displayObject());
-      }
+//      if (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM) {
+//        inspectorViews.tempToggleButtonView = AWE.UI.createTempToggleButtonView();
+//        inspectorViews.tempToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
+//        _stages[3].addChild(inspectorViews.tempToggleButtonView.displayObject());
+//      }
+//
+      inspectorViews.mapButtonsBackgroundView = AWE.UI.createImageView();
+      inspectorViews.mapButtonsBackgroundView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage('ui/button/map/background'));
+      inspectorViews.mapButtonsBackgroundView.setFrame(AWE.Geometry.createRect(0, 0, 190, 150));
+      _stages[3].addChild(inspectorViews.mapButtonsBackgroundView.displayObject());
 
       inspectorViews.mapTypeToggleButtonView = AWE.UI.createMapTypeToggleButtonView();
-      inspectorViews.mapTypeToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
+      inspectorViews.mapTypeToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
       _stages[3].addChild(inspectorViews.mapTypeToggleButtonView.displayObject());
 
       inspectorViews.encyclopediaButtonView = AWE.UI.createEncyclopediaButtonView();
-      inspectorViews.encyclopediaButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
+      inspectorViews.encyclopediaButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
       _stages[3].addChild(inspectorViews.encyclopediaButtonView.displayObject());
     };
 
@@ -2926,14 +2931,17 @@ AWE.Controller = function (module) {
       if (inspectorViews.inspector) {
         inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 430, _windowSize.height - 234));
       }
-      if (inspectorViews.tempToggleButtonView) {
-        inspectorViews.tempToggleButtonView.setOrigin(AWE.Geometry.createPoint(180 + 20, _windowSize.height - 68));
+//      if (inspectorViews.tempToggleButtonView) {
+//        inspectorViews.tempToggleButtonView.setOrigin(AWE.Geometry.createPoint(180 + 20, _windowSize.height - 68));
+//      }
+      if (inspectorViews.mapButtonsBackgroundView) {
+        inspectorViews.mapButtonsBackgroundView.setOrigin(AWE.Geometry.createPoint(20, _windowSize.height - 160));
       }
       if (inspectorViews.mapTypeToggleButtonView) {
-        inspectorViews.mapTypeToggleButtonView.setOrigin(AWE.Geometry.createPoint(20, _windowSize.height - 68));
+        inspectorViews.mapTypeToggleButtonView.setOrigin(AWE.Geometry.createPoint(20 + 46, _windowSize.height - 154));
       }
       if (inspectorViews.encyclopediaButtonView) {
-        inspectorViews.encyclopediaButtonView.setOrigin(AWE.Geometry.createPoint(20 + 60, _windowSize.height - 68));
+        inspectorViews.encyclopediaButtonView.setOrigin(AWE.Geometry.createPoint(20 + 114, _windowSize.height - 101));
       }
       return _inspectorChanged || _windowChanged;
     };
