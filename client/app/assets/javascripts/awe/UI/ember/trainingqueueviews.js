@@ -46,8 +46,26 @@ AWE.UI.Ember = (function(module) {
       if (!queueType || !queueType.produces) {
         return null;
       }
-      return AWE.GS.RulesManager.getRules().getUnitTypesWithCategories(queueType.produces);
+      var options = AWE.GS.RulesManager.getRules().getUnitTypesWithCategories(queueType.produces);
+      var self = this;
+      var result = options.filter(function(unitType) {
+        return !self.impossibleToTrainDueToMaxRequirement(unitType);
+      });
+      return result && result.length > 0 ? result : null;
     }.property('queue.queueType').cacheable(),
+    
+    
+    impossibleToTrainDueToMaxRequirement: function(unitType) {
+      var settlement = this.getPath('queue.settlement');
+      var character = settlement ? settlement.owner() : null;
+      var reqGroups = unitType.requirementGroups || [];
+      var maxFail = true;
+      log('RECALC IMPOSSIBLE DUE TO MAX REQUIREMENT');
+      reqGroups.forEach(function(group) {
+        maxFail = maxFail && AWE.Util.Rules.requirementGroupFailsDueToMaxRequirement(group, settlement, character, null, false); // DO NOT CONSIDER JOBS IN QUEUE
+      });
+      return maxFail;
+    },    
 
     createJobPressed: function(evt) {
       this.get('controller').trainingCreateClicked(this.get('queue'), this.getPath('selectedUnitButton.unitType.id'), this.get('number'));

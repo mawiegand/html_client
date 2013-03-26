@@ -514,6 +514,7 @@ AWE.I18n.en_US = function(module) {
         chooseNameCaption: 'Name your settlement',
         changeNameCaption: 'Change your settlements name',
         nameChangeAdvice: 'The first name change is for free any additional changes will cost you a few golden frogs.',
+
         changeNameDialogCaption: "Enter your new name.",
 
         errors: {
@@ -521,7 +522,6 @@ AWE.I18n.en_US = function(module) {
           nameTooLong: "Way to long. The name can have maximum 16 characters.",
           nameNoChange: "Thats the same name as before.",
 
-          nameTaken:"This name is already in use or been blacklisted. Please choose another name.",
           changeNameCost: "You dont have enough golden frogs right now to change your settlements name.",
           changeNameError: "The name could not be changed for some reason. Please try again later.",
         },
@@ -634,13 +634,13 @@ AWE.I18n.en_US = function(module) {
         destination:"Destination",
         amount:"amount",
         hurry: "Hurry!",
-        hurryTooltip: "Gib Goldkröten aus um die Transportzeit der Handelskarren um 30 Minuten zu verringern.",
-        hurryTooltipHurried: "Gib Goldkröten aus um die Handelskarren sofort beim Ziel eintreffen zu lassen.",
+        hurryTooltip: "You can reduce the transporttime by 30 minutes with golden frogs.",
+        hurryTooltipHurried: "You can finish the transport with golden frogs.",
         noCartsInTransit: "No carts in transit.",
 
-        frogTradeHeader: "Umkröten",
-        frogTradeDescription: "Beschreibung für's Umkröten",
-        frogTradeButton: "Umkröten",
+        frogTradeHeader: "Traveling Merchant",
+        frogTradeDescription: "Always happy to serve. The traveling merchant will gladly help you swap around your resources, for a small fee of course. ",
+        frogTradeButton: "Trade",
 
         error:{
           recipientUnknown:"Your workers are far to lazy to send resources to themself.",
@@ -678,7 +678,7 @@ AWE.I18n.en_US = function(module) {
           header: "Hold!",
           content: "You don´t have sufficient resources to initiate the artifact.",
         },
-        cancelText: "Schade",
+        cancelText: "Boring.",
         characterBoni: "Bonus for the owner",
         allianceBoni: "Bonus fot the alliance member",
         hurry: "Halve",
@@ -736,7 +736,7 @@ AWE.I18n.en_US = function(module) {
       experience:"Experience",
       fortresses:"Fortresses",
       homeSettlement:"Home settlement",
-      sendMessage:"send message",
+      sendMessage:"Send message",
 
       battles:"Battles",
       victories:"Victories",
@@ -997,17 +997,17 @@ AWE.I18n.en_US = function(module) {
         tax:"Tax",
       },
       exchange: {
-        header:   "Frog-Trade",
-        advert:   "Not enough resources?? Try out our Frog-Trade!",
-        info:     "For a small fee you can redistribute your existing resources.",
-        warning:  "You can either configure all 3 resources or only 1 or 2 of them. Any left overs will be distributed evenly.",
-        fee:      "Frog-Trading costs you",
-        fee2:     "golden frogs.",
-        loading:  "Loading ressources",
-        loading2: "Redistributing",
-        sum:      "Total",
+        header:   "Traveling Merchant",
+        advert:   "Dont like the distribution of your resources? The traveling merchant can help you!",
+        info:     "For a small fee the merchant can help you to redistribute your resources.",
+        warning:  "You can configure the amonut of all three resources or only one or two. The remaining resources will be distributed evenly.",
+        fee:      "The trade",
+        fee2:     " golden frogs.",
+        loading:  "Load Ressourcen",
+        loading2: "Exchanging",
+        sum:      "Sum",
         remaining:"Remaining",
-        fill:     "Fill up",
+        fill:     "Fill",
 
         form: {
           exchange: "Exchange",
@@ -1016,35 +1016,30 @@ AWE.I18n.en_US = function(module) {
 
         errors: {
           noinput: {
-            heading: "Didn‘t enter a value",
-            text:    "You didn‘t enter a value. No wonder it didnt work",
-          },
-
-          noFrogs: {
-            heading: "You are broke!",
-            text:    "You don't have enough golden frogs to pay. Get some new at bonanza.",
+            heading: "Didn't enter an amount",
+            text:    "You didn't enter an amount. No wonder it didnt work.",
           },
 
           toomuch: {
-            heading: "Distributed too many resources",
-            text:    "You distributed more resources than you have avaiable.",
-            stone:   "You assigned more stone than you can store.",
-            wood:    "You assigned more wood than you can store.",
-            fur:     "You assigned more fur than you can store.",
+            heading: "You allocated to many resorces",
+            text:    "You allocated more resources than you can store.",
+            stone:   "You allocated more stone than you can store.",
+            wood:    "You allocated more wood than you can store.",
+            fur:     "You allocated more fur than you can store.",
           },
 
           failed: {
-            heading: "Exchange",
-            text:    "Exchange failed. Please try again or contact an Administrator.",
+            heading: "Exchange failed.",
+            text:    "The exchange has failed. Please try again or contact a administrator.",
           },
         },
       },
     },
-
+    
     effects: {
       effects: "Boni",
       type0: "Shop",
-      type1: "Artifactt",
+      type1: "Artifact",
       characterEffectsNotAvailable: "No Player-Boni.",
       allianceEffectsNotAvailable: "No Alliance-Boni.",
     },
@@ -1065,7 +1060,7 @@ AWE.I18n.en_US = function(module) {
       alliance:  "Alliance",
       alliances:  "Alliances",
       noAlliances:  "There are no Alliances yet.",
-      fortress: "Forttress",
+      fortress: "Fortress",
       fortresses: "Fortresses",
       victoryProgress: "Victory progress",
       rank: 'Rank',
