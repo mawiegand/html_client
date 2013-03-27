@@ -52,6 +52,12 @@ AWE.UI.Ember = (function(module) {
       window.open(AWE.Config.SHOP_SERVER_BASE + 'info', '_blank');
     },
     
+    resourceExchangePressed: function() {
+      var dialog = AWE.UI.Ember.ResourceExchangeDialog.create();
+      WACKADOO.presentModalDialog(dialog);
+      return false;
+    },
+    
     closePressed: function() {
       log('Action not connected: closedWasPressed.');
     },

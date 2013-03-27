@@ -473,6 +473,8 @@ AWE.I18n.en_US = function(module) {
       duration:'Duration',
       expiry:'Expiry',
       platinumDescription:"A platinum account offers you stress-free construction with additional places in your building queue (+3) and training queue (+3) as well as email messages when you're being attacked. More comfort functions coming soon.",
+      frog_trade: 'Travelling Merchant: instant resource trade', 
+
 
       current:"current",
       platinumCredit:"platinum credits",
@@ -1001,7 +1003,7 @@ AWE.I18n.en_US = function(module) {
         advert:   "Dont like the distribution of your resources? The traveling merchant can help you!",
         info:     "For a small fee the merchant can help you to redistribute your resources.",
         warning:  "You can configure the amonut of all three resources or only one or two. The remaining resources will be distributed evenly.",
-        fee:      "The trade",
+        fee:      "Each trade does cost",
         fee2:     " golden frogs.",
         loading:  "Load Ressourcen",
         loading2: "Exchanging",

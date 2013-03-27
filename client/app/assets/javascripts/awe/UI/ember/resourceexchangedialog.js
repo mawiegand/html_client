@@ -27,6 +27,9 @@ AWE.UI.Ember = (function(module) {
       this.set('loadingInit', true);
       var self = this;
 
+      /* jump to top */
+      $('html, body').animate({ scrollTop: 0 }, 'slow');
+
       AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
         self.set('loadingInit', false);
         self.set('pool', AWE.GS.ResourcePoolManager.getResourcePool());
