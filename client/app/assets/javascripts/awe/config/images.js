@@ -100,11 +100,13 @@ AWE.Config = (function(module) {
     "map/artifact/1":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_steinrad.png',
     "map/artifact/2":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_streitaxt.png',
     "map/artifact/3":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_monolith.png',
+    "map/artifact/4":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_osterei.png',
 
     "map/artifactinitiated/0": AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_tnt_aktiviert.png',
     "map/artifactinitiated/1": AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_steinrad_aktiviert.png',
     "map/artifactinitiated/2": AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_streitaxt_aktiviert.png',
     "map/artifactinitiated/3": AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_monolith_aktiviert.png',
+    "map/artifactinitiated/4": AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_osterei_aktiviert.png',
 
     "map/outpost":            AWE.Config.RAILS_ASSET_PATH + 'settlements/outpost.png',
     "map/emptyslot" :         AWE.Config.RAILS_ASSET_PATH + 'white_icon.png',
