@@ -140,33 +140,39 @@ AWE.UI.Ember = function(module) {
     artifact: null,
 
     allianceBoni: function() {
-      var boni = [];
+      var bonuses = [];
+      var productionBonuses = this.getPath('artifact.artifactType.production_bonus');
 
-      this.getPath('artifact.artifactType.production_bonus').forEach(function(bonus) {
-        if (bonus.domain_id == AWE.GS.DOMAIN_ALLIANCE) {
-          boni.push(Ember.Object.create({
-            resourceType: AWE.GS.RulesManager.getRules().getResourceType(bonus.resource_id),
-            bonus: bonus.bonus,
-          }));
-        }
-      });
+      if (productionBonuses != null) {
+        productionBonuses.forEach(function(bonus) {
+          if (bonus.domain_id == AWE.GS.DOMAIN_ALLIANCE) {
+            bonuses.push(Ember.Object.create({
+              resourceType: AWE.GS.RulesManager.getRules().getResourceType(bonus.resource_id),
+              bonus: bonus.bonus,
+            }));
+          }
+        });
+      }
 
-      return boni;
+      return bonuses;
     }.property('artifact.type_id').cacheable(),
 
     characterBoni: function() {
-      var boni = [];
+      var bonuses = [];
+      var productionBonuses = this.getPath('artifact.artifactType.production_bonus');
 
-      this.getPath('artifact.artifactType.production_bonus').forEach(function(bonus) {
-        if (bonus.domain_id == AWE.GS.DOMAIN_CHARACTER) {
-          boni.push(Ember.Object.create({
-            resourceType: AWE.GS.RulesManager.getRules().getResourceType(bonus.resource_id),
-            bonus: bonus.bonus,
-          }));
-        }
-      });
+      if (productionBonuses != null) {
+        productionBonuses.forEach(function(bonus) {
+          if (bonus.domain_id == AWE.GS.DOMAIN_CHARACTER) {
+            bonuses.push(Ember.Object.create({
+              resourceType: AWE.GS.RulesManager.getRules().getResourceType(bonus.resource_id),
+              bonus: bonus.bonus,
+            }));
+          }
+        });
+      }
 
-      return boni;
+      return bonuses;
     }.property('artifact.type_id').cacheable(),
   });
 
