@@ -15,7 +15,7 @@ AWE.UI = (function(module) {
   module.MAP_MODE_REAL      = 3;
 
 
-	if (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM) {
+	//if (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM) {
 		module.imageQueue = [];
 	
 		module.queueImage = function(image, src, callback) {
@@ -53,7 +53,7 @@ AWE.UI = (function(module) {
 		};
 	
 		setInterval("AWE.UI.nextImage()", 50);
-	}
+//	}
 	
   
   /*** AWE.UI.View ***/
