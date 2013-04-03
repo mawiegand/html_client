@@ -180,7 +180,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }
       else {
         MINI_GROUPCHATS                  = tag ? [ tag+"@conference."+base, "plauderhöhle@conference."+base , "global@conference."+base] : [ "plauderhöhle@conference."+base,  "global@conference."+base ];
-        MINI_SUGGEST_GROUPCHATS          =  [ 'help@conference.'+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ];
+        MINI_SUGGEST_GROUPCHATS          =  [ 'help@conference.'+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base, "global@conference."+base ];
         MINI_5D_NON_CLOSEABLE_GROUPCHATS = tag ? [ tag+"@conference."+base ] : [ ];
           
         if (character && character.hasStaffRole('help')) {
