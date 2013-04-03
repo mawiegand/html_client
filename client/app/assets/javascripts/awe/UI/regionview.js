@@ -635,7 +635,7 @@ AWE.UI = (function(module) {
 				var tms = AWE.Mapping.GlobalMercator.QuadTreeToTMSTileCode(path);
 				tms = AWE.Mapping.GlobalMercator.TMSToGoogleTileCode(tms.x, tms.y, tms.zoom);
 
-		  	var src = "http://a.tile.openstreetmap.org/"+tms.zoom+"/"+tms.x+"/"+tms.y+".png";
+		  	var src = "http://5.9.102.171:8080/1.0.0/osm_new/"+tms.zoom+"/"+tms.x+"/"+tms.y+".png";
 				log(tms, src);
 
 				newImage = new Image();
