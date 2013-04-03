@@ -53,7 +53,7 @@ AWE.GS = (function(module) {
     };
     
     that.fetchCreditAmount = function(success, error) {
-      $.getJSON(AWE.Config.SHOP_SERVER_BASE + 'account', function(data) {
+      $.getJSON(AWE.Config.SHOP_SERVER_BASE + 'accounts/' + AWE.GS.game.getPath('currentCharacter.id'), function(data) {
         my.shop.set('creditAmount', data.credit_amount);
         if (success) {
           success(data);
