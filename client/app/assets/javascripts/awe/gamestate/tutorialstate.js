@@ -43,9 +43,11 @@ AWE.GS = (function(module) {
     newQuestStates: function() {
       // log('---> recalc newQuestStates');
       var questStates = this.getPath('quests.content');   // hier
+      // log('---> recalc newQuestStates: all quest', questStates);
       var newQuestStates = [];
       AWE.Ext.applyFunction(questStates, function(questState) {
         if (questState && questState.get('status') === module.QUEST_STATUS_NEW && questState.get('quest') && !questState.getPath('quest.hide_start_dialog')) {
+          // log('---> recalc newQuestStates: quest', questState.getId(), questState.get('status'), questState.get('updated_at'), questState.get('created_at'));
           newQuestStates.push(questState);
         }
       });
@@ -962,7 +964,7 @@ AWE.GS = (function(module) {
         
         // only display first new quest, even if there are more. the other quest will be displayed later on.            
         var newQuestState = newQuestStates[0];
-          
+
         if (newQuestState.get('quest') != null && !newQuestState.getPath('quest.hide_start_dialog')) {
           // log('---> showNextNewQuest: hide_start_dialog', false);
           if (WACKADOO.modalDialogOpen()) {
@@ -1020,7 +1022,7 @@ AWE.GS = (function(module) {
       
       if (!that.tutorialEnabled()) return;
 
-      // log('---> showQuestInfoDialog ', AWE.GS.TutorialLocalState.questsDisplayed[questState.get('quest_id')], questState.get('status'));
+      // log('---> showQuestInfoDialog ', AWE.GS.TutorialLocalState.questsDisplayed[questState.get('quest_id')], questState.get('status') === AWE.GS.QUEST_STATUS_NEW);
       
       if (AWE.GS.TutorialLocalState.questsDisplayed[questState.get('quest_id')] !== true &&
           questState.get('status') === AWE.GS.QUEST_STATUS_NEW) {
@@ -1037,7 +1039,14 @@ AWE.GS = (function(module) {
 
         that.setQuestDisplayed(questState);
       }
-    }
+
+      // HOTFIX
+      else if (AWE.GS.TutorialLocalState.questsDisplayed[questState.get('quest_id')] === true &&
+          questState.get('status') === AWE.GS.QUEST_STATUS_NEW) {
+        // log('---> questsDisplayed array and quest have different status: updating tutorial state');
+        that.updateTutorialState();
+      }
+    };
     
     that.showQuestInfoDialog = function(quest) {
       
