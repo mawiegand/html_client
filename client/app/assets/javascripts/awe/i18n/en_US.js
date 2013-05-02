@@ -510,6 +510,7 @@ AWE.I18n.en_US = function(module) {
       defenseBonus:'Combat Bonus',
       founded:'Founded',
 
+
       customization: {
         chooseName: "Choose your name",
         changeName: "Change your name",
@@ -590,11 +591,15 @@ AWE.I18n.en_US = function(module) {
       construction:{
         hurry:"Hurry!",
         cashTooltip:"Spend golden frogs to finish this job instantly. The costs depend on the remaining building time.",
+        frogTradeTooltop: "Tausche 2 Kröten zur Neuverteiltung deiner Ressourcen, sodass die Gebäudeproduktion sofort startet.",
         insufficentResources:"insufficient resources",
         finishing:"finishing",
         beingBuilt:"Building is being constructed.",
         waitingToBeBuilt:"Waiting for its turn.",
         cannotBeBuilt:"Cannot be built at the moment. Will be started automatically when the needed resources or building lots are available.",
+        requiredResources: 'Benötigte Ressourcen',
+        required: 'Benötigt',
+        remaining: 'Ausstehend',
       },
       training:{
         perUnit:"Per unit",
