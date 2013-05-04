@@ -88,7 +88,7 @@ AWE.UI.Ember = (function(module) {
     alliance:   null,
     
     maxMembers: function() {
-      return AWE.GS.RulesManager.getRules().get('alliance_max_members');
+      return AWE.GS.RulesManager.getRules().get('alliance_max_members') + this.getPath('alliance.size_bonus');
     }.property('controller').cacheable(),
     
     kickMember: function(character) {
