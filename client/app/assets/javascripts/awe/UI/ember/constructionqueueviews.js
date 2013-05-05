@@ -57,13 +57,33 @@ AWE.UI.Ember = (function(module) {
      *  - insufficient resources
      *  - sum required resources <= sum user resources
      *  - if required resources <= capacity
+     *  - is first and not active
      */
     isFrogTradePossible: function() {
-      if(this.get('first') && !this.get('active'))
+      if(this.get('first') && !this.get('active')) { //absolute notwendigkeit
+        var costs        = this.getPath('job.slot.building.costs');
+        var sum_pool     = 0;
+        var sum_required = 0;
+        var self = this;
+        
+        for(i = 0; i < costs.length; ++i) {
+          /* sum up pool */
+          sum_pool += self.getPath('pool.'+costs[i].resourceType.symbolic_id+'_present');
+          sum_required += costs[i].amount;
+
+          /* check if required resources <= capacity */
+          if(costs[i].amount > self.getPath('pool.'+costs[i].resourceType.symbolic_id+'_capacity')) 
+            return false;
+        }
+
+        /* check if required resources <= capacity */
+        if(sum_required > sum_pool)
+          return false;
+
         return true;
+      }
       else return false;
-      /*return !this.get('active') && !this.get('first');*/
-    }.property('job.active_job', 'active', 'first'),
+    }.property('job.active_job', 'active', 'first', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present'),
 
     /* mouse hover for building details */
     mouseInView: false,
@@ -79,6 +99,7 @@ AWE.UI.Ember = (function(module) {
     }, 
 
     requiredResources: function() {
+      /*alert(this.getPath('job.slot.building.underConversion'));*/
       return this.getPath('job.slot.building.costs');
       /*
       var building = this.getPath('job.slot.building');
@@ -91,13 +112,13 @@ AWE.UI.Ember = (function(module) {
       /*return costs ? AWE.Util.Rules.evaluateResourceCosts(costs, level, 0, true) : [0,0,0];*/
     }.property('active', 'first', 'building'),
 
-    /* return difference */
+    /* return remaining required resources and it's symbolic id */
     diffResources: function() {
       var costs = this.getPath('job.slot.building.costs');
       var diff  = [];
 
       for(i = 0; i < costs.length; ++i) {
-        var symbolic_id = AWE.GS.RulesManager.getRules().getResourceType(i).symbolic_id;
+        var symbolic_id = costs[i].resourceType.symbolic_id; /*AWE.GS.RulesManager.getRules().getResourceType(i).symbolic_id;*/
         var remaining   = parseInt(costs[i].amount) - this.getPath('pool.'+symbolic_id+'_present');
 
         if(remaining > 0)
@@ -107,11 +128,7 @@ AWE.UI.Ember = (function(module) {
           }));
       }
       return diff;
-    }.property('active', 'first', 'building', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present'),
-
-    /*hasInsufficientResources: function() {
-
-    }*/
+    }.property('building', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present'),
     
     finished: function() {
       var t = this.get('timeRemaining');
@@ -184,6 +201,10 @@ AWE.UI.Ember = (function(module) {
     
     didInsertElement: function() {
       this.startTimer();
+      this.initPool();
+    },
+
+    initPool: function() {
       this.set('pool', AWE.GS.ResourcePoolManager.getResourcePool());
     },
     
