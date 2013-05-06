@@ -58,10 +58,11 @@ AWE.UI.Ember = (function(module) {
      *  - sum required resources <= sum user resources
      *  - if required resources <= capacity
      *  - is first and not active
+     *  - user has enough cash for frog trade
      */
     isFrogTradePossible: function() {
-      if(this.get('first') && !this.get('active')) { //absolute notwendigkeit
-        var costs        = this.getPath('job.slot.building.costs');
+      if(this.get('first') && !this.get('active') && (this.getPath('pool.resource_cash_present') >= AWE.GS.RulesManager.getRules().resource_exchange.amount)) {
+        var costs        = this.slotCosts(); /*this.getPath('job.slot.building.costs');*/
         var sum_pool     = 0;
         var sum_required = 0;
         var self = this;
@@ -98,23 +99,23 @@ AWE.UI.Ember = (function(module) {
       this.set('mouseInView', false);
     }, 
 
-    requiredResources: function() {
-      /*alert(this.getPath('job.slot.building.underConversion'));*/
-      return this.getPath('job.slot.building.costs');
-      /*
-      var building = this.getPath('job.slot.building');
-      var level    = this.getPath('job.level_after');
-      var costs    = this.getPath('job.buildingType.costs');
-      */
+    /* return slot costs for conversion or upgrade */
+    slotCosts: function() {
+      /* check if is upgrade or conversion */
+      if(this.getPath('job.slot.building.underConversion')) {
+        return this.getPath('job.slot.building.conversionCosts');
+      } else {
+        return this.getPath('job.slot.building.costs');
+      }
+    },
 
-      /* for some reason I cannot access building.costs. I always get an error when accessing.
-       * So I get the costs formulas via getBuildingTypes and evaluate them on the next line */
-      /*return costs ? AWE.Util.Rules.evaluateResourceCosts(costs, level, 0, true) : [0,0,0];*/
+    requiredResources: function() {
+      return this.slotCosts();
     }.property('active', 'first', 'building'),
 
     /* return remaining required resources and it's symbolic id */
     diffResources: function() {
-      var costs = this.getPath('job.slot.building.costs');
+      var costs = this.slotCosts(); /*this.getPath('job.slot.building.costs');*/
       var diff  = [];
 
       for(i = 0; i < costs.length; ++i) {
@@ -129,6 +130,46 @@ AWE.UI.Ember = (function(module) {
       }
       return diff;
     }.property('building', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present'),
+
+    resourceExchangePressed: function() {
+      var self = this;
+      var costs = this.slotCosts();
+
+      /* fill up to 3 items :) */
+      for(i = costs.length; i < 3; ++i) {
+        costs.push(Ember.Object.create({
+          amount: 0,
+        }));
+      }
+
+      var action = AWE.Action.Fundamental.createTradeResourcesAction((costs[0].amount|0),
+          (costs[1].amount|0),
+          (costs[2].amount|0));
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        var parent = self;
+        if(statusCode == 200) {
+          /* update resources in client */
+          AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
+            /* TODO: Perhaps add a notification of success? */
+            alert("Umrköten erfolgreich!");
+          }); 
+        }   
+        else if (statusCode == AWE.Net.CONFLICT) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('resource.exchange.errors.noFrogs.heading'),
+            message: AWE.I18n.lookupTranslation('resource.exchange.errors.noFrogs.text'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }   
+        else {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('resource.exchange.errors.failed.heading'),
+            message: AWE.I18n.lookupTranslation('resource.exchange.errors.failed.text'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }   
+      }); 
+    },
     
     finished: function() {
       var t = this.get('timeRemaining');

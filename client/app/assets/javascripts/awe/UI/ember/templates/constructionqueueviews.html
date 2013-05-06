@@ -80,7 +80,20 @@
 <script type="text/x-handlebars" data-template-name="construction-queue-detail-view">
   <div class="queue-detail-view">
     <h1>{{t settlement.construction.requiredResources}}</h1>
-    <p style="line-height:24px;"><b>{{t settlement.construction.required}}:</b> {{#each costs}}{{amount}} <span {{bindAttr class=":resource-icon resourceType.symbolic_id"}}>&nbsp;</span>, {{/each}}</p>
-    <p style="line-height:24px;"><b>{{t settlement.construction.remaining}}:</b> {{#each diffs}}{{remaining}} <span {{bindAttr class=":resource-icon symbolic_id"}}>&nbsp;</span>, {{/each}} </p>
+    <p>
+      <b>{{t settlement.construction.required}}:</b>
+      {{#each costs}}
+        {{formatNumber amount}}
+        <span {{bindAttr class=":resource-icon resourceType.symbolic_id"}}>&nbsp;</span>
+      {{/each}}
+    </p>
+
+    <p>
+      <b>{{t settlement.construction.remaining}}:</b>
+      {{#each diffs}}
+        {{formatNumber remaining}}
+        <span {{bindAttr class=":resource-icon symbolic_id"}}>&nbsp;</span>
+      {{/each}}
+    </p>
   </div>
 </script>
