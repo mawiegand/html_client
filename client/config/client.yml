@@ -24,7 +24,7 @@ test:
 
 staging:
   <<: *defaults
-  jabber_server_base: "jabber3.wack-a-doo.com"
+  jabber_server_base: "test1.wack-a-doo.de"
   portal_server_base: "test1.wack-a-doo.de"
   shop_callback_hostname: "test1"
   
