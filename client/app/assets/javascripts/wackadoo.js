@@ -174,8 +174,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
       // Define groupchats here
       if (beginner) {
-        MINI_GROUPCHATS                  = tag ? [ tag+"@conference."+base, "plauderhöhle@conference."+base, 'help@conference.'+base ] : [ "plauderhöhle@conference."+base, 'help@conference.'+base ];
-        MINI_SUGGEST_GROUPCHATS          =  [ "global@conference."+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ]; 
+        MINI_GROUPCHATS                  = tag ? [ tag+"@conference."+base, "plauderhöhle@conference."+base, 'help@conference.'+base, "global@conference."+base ] : [ "plauderhöhle@conference."+base, 'help@conference.'+base, "global@conference."+base ];
+        MINI_SUGGEST_GROUPCHATS          =  [ 'help@conference.'+base, "global@conference."+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ]; 
         MINI_5D_NON_CLOSEABLE_GROUPCHATS = tag ? [ 'help@conference.'+base,  tag+"@conference."+base ] : [ 'help@conference.'+base ];       
       }
       else {
