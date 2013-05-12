@@ -126,6 +126,16 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 	    this.initChat(true);
     },
     
+    boshHost: function() {
+      
+      if (0) { // non-ie server
+        return "http://" + AWE.Config.BOSH_SERVER_BASE + "/http-bind/";
+      }
+      else {
+        return AWE.Config.SERVER_ROOT + "/http-bind/";   // use as proxy to webchat
+      }
+    },
+    
     initChat: function(reconnect) {
 	    reconnect = reconnect || false;
       DEVELOPER = 'on'
@@ -166,7 +176,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_PUBSUB    = "pubsub."    +base;
       HOST_VJUD      = "vjud."      +base;
       HOST_ANONYMOUS = "anonymous." +base;
-      HOST_BOSH      = "https://"+base+"/http-bind/";
+      HOST_BOSH      = this.boshHost();
       
       var character = AWE.GS.game && AWE.GS.game.get('currentCharacter');
       var beginner  = character && character.get('beginner');

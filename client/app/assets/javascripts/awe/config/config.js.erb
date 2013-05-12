@@ -10,6 +10,7 @@ var AWE = window.AWE || {};
 AWE.Config = (function(module) {
 
   // automatically determine the server to use -> same origin policy
+  module.HOSTNAME    = document.location.host ;
   module.SERVER_ROOT = document.location.protocol + '//' + document.location.host ;
   module.PORTAL_ROOT = document.location.protocol + '//' + ("<%= CLIENT_CONFIG['portal_server_base'] %>") ;
 
@@ -37,6 +38,7 @@ AWE.Config = (function(module) {
 
   module.RAILS_ASSET_PATH         = "<%= asset_path('') %>";
 
+  module.BOSH_SERVER_BASE         = "<%= CLIENT_CONFIG['bosh_server_base'] %>";
   module.JABBER_SERVER_BASE       = "<%= CLIENT_CONFIG['jabber_server_base'] %>";
   module.JABBER_DEVELOPMENT_JID   = "<%= CLIENT_CONFIG['jabber_id'] %>";
   module.JABBER_DEVELOPMENT_PWD   = "<%= CLIENT_CONFIG['jabber_pwd'] %>";
