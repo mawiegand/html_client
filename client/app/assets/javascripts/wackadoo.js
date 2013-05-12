@@ -166,7 +166,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_PUBSUB    = "pubsub."    +base;
       HOST_VJUD      = "vjud."      +base;
       HOST_ANONYMOUS = "anonymous." +base;
-      HOST_BOSH      = "http://"+base+"/http-bind/";
+      HOST_BOSH      = "https://"+base+"/http-bind/";
       
       var character = AWE.GS.game && AWE.GS.game.get('currentCharacter');
       var beginner  = character && character.get('beginner');
