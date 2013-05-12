@@ -610,8 +610,7 @@ AWE.I18n.de_DE = function(module) {
         waitingToBeBuilt: "Wartet darauf, bis es an der Reihe ist.",
         cannotBeBuilt: "Kann derzeit nicht gebaut werden. Wird automatisch begonnen, sobald die nötigen Rohstoffe und Bauslots vorhanden sind.",
         requiredResources: 'Benötigte Ressourcen',
-        required: 'Benötigt',
-        remaining: 'Ausstehend',
+        remaining: 'Ausstehende Ressourcen',
       },
       training: {
         perUnit: "Pro Einheit",

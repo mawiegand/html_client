@@ -598,8 +598,7 @@ AWE.I18n.en_US = function(module) {
         waitingToBeBuilt:"Waiting for its turn.",
         cannotBeBuilt:"Cannot be built at the moment. Will be started automatically when the needed resources or building lots are available.",
         requiredResources: 'Benötigte Ressourcen',
-        required: 'Benötigt',
-        remaining: 'Ausstehend',
+        remaining: 'Ausstehende Ressourcen',
       },
       training:{
         perUnit:"Per unit",

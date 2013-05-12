@@ -11,7 +11,7 @@
               {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" buildingBinding="job.slot.buildingAfterJob" levelBinding="job.level_after" settlementBinding="job.slot.settlement" }}
               <div class="queue-job-text">    
                 {{#if "mouseInView" }}
-                  {{view AWE.UI.Ember.ToolTipView templateName="construction-queue-detail-view" classNames="mouse-over construction-detail" mouseYBinding="mouseY" costsBinding="requiredResources" diffsBinding="diffResources" poolBinding="pool" }}
+                {{view AWE.UI.Ember.ToolTipView templateName="construction-queue-detail-view" classNames="mouse-over construction-detail" mouseYBinding="mouseY" mouseXBinding="mouseX" costsBinding="requiredResources" diffsBinding="diffResources" poolBinding="pool" }}
                   
                 {{/if}}
                 <p class="building">{{local job.slot.buildingAfterJob.name }} (L{{ job.level_after }})</p>
@@ -47,7 +47,7 @@
                 </p>
                 {{#if isFrogTradePossible}}
                   <div class="queue-job-button frog-trade-button-inline">
-                    <div class="simple-button"  {{action "resourceExchangePressed"}} title="{{t settlement.construction.frogTradeTooltop}}">
+                    <div class="simple-button"  {{action "resourceExchangePressed"}} ">
                       <img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/toad.png" alt="" /> 
                       {{t settlement.trade.frogTradeButton}}
                     </div>
@@ -80,20 +80,27 @@
 <script type="text/x-handlebars" data-template-name="construction-queue-detail-view">
   <div class="queue-detail-view">
     <h1>{{t settlement.construction.requiredResources}}</h1>
-    <p>
-      <b>{{t settlement.construction.required}}:</b>
-      {{#each costs}}
-        {{formatNumber amount}}
-        <span {{bindAttr class=":resource-icon resourceType.symbolic_id"}}>&nbsp;</span>
-      {{/each}}
-    </p>
+    <table>
+      <tr>
+        {{#each costs}}
+        <td>
+          <span {{bindAttr class=":resource-icon resourceType.symbolic_id"}}>&nbsp;</span>
+          {{formatNumber amount}}
+        </td>
+        {{/each}}
+      </tr>
+    </table>
 
-    <p>
-      <b>{{t settlement.construction.remaining}}:</b>
-      {{#each diffs}}
-        {{formatNumber remaining}}
-        <span {{bindAttr class=":resource-icon symbolic_id"}}>&nbsp;</span>
-      {{/each}}
-    </p>
+    <h1>{{t settlement.construction.remaining}}</h1>
+    <table>
+      <tr>
+        {{#each diffs}}
+        <td>
+          <span {{bindAttr class=":resource-icon symbolic_id"}}>&nbsp;</span>
+          {{formatNumber remaining}}
+        </td>
+        {{/each}}
+      </tr>
+    </table>
   </div>
 </script>

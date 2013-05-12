@@ -31,23 +31,11 @@ AWE.UI.Ember = (function(module) {
   module.ConstructionJobView = Ember.View.extend({
     classNameBindings: ['active', 'first'],
     
-    attributeBindings: ['title'],
-    
     job: null,
     timer: null,
     
     timeRemaining: null,
     pool: null,
-    
-    title: function() {
-      var active = this.get('active');
-      var first = this.get('first');
-      var hint = first ? AWE.I18n.lookupTranslation('settlement.construction.beingBuilt') : AWE.I18n.lookupTranslation('settlement.construction.waitingToBeBuilt');
-      if (first && !active) {
-        hint = AWE.I18n.lookupTranslation('settlement.construction.cannotBeBuilt')
-      }
-      return hint;
-    }.property('active', 'first'),
     
     isConstructionSpeedupPossible: function() {
       return this.getPath('job.active_job') && this.getPath('job.buildingType.buyable') && AWE.Util.Rules.isConstructionSpeedupPossible(this.get('timeRemaining'));
@@ -73,17 +61,22 @@ AWE.UI.Ember = (function(module) {
           sum_required += costs[i].amount;
 
           /* check if required resources <= capacity */
-          if(costs[i].amount > self.getPath('pool.'+costs[i].resourceType.symbolic_id+'_capacity')) 
+          if(costs[i].amount > self.getPath('pool.'+costs[i].resourceType.symbolic_id+'_capacity'))  {
             return false;
+          }
         }
 
         /* check if required resources <= capacity */
-        if(sum_required > sum_pool)
+        if(sum_required > sum_pool) {
           return false;
+        }
 
         return true;
       }
-      else return false;
+      else {
+        log('frog trade not available, probably due to less frogs');
+        return false;
+      }
     }.property('job.active_job', 'active', 'first', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present'),
 
     /* mouse hover for building details */
@@ -92,8 +85,8 @@ AWE.UI.Ember = (function(module) {
       this.set('mouseInView', true);
     },  
     mouseMove: function(event) {
-      /*this.set('mouseX', event.pageX-1140);*/
-      /*this.set('mouseY', this.get('mouseY')-200);*/
+      this.set('mouseX', event.pageX-800);
+      this.set('mouseY', event.pageY-200);
     },
     mouseLeave: function(event) {
       this.set('mouseInView', false);
@@ -107,11 +100,14 @@ AWE.UI.Ember = (function(module) {
       } else {
         return this.getPath('job.slot.building.costs');
       }
+      
+      /* doesn't work; get 'undefined' error */
+      /*return this.getPath('job.costs');*/
     },
 
     requiredResources: function() {
       return this.slotCosts();
-    }.property('active', 'first', 'building'),
+    }.property('active', 'first', 'building').cacheable(),
 
     /* return remaining required resources and it's symbolic id */
     diffResources: function() {
@@ -129,29 +125,25 @@ AWE.UI.Ember = (function(module) {
           }));
       }
       return diff;
-    }.property('building', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present'),
+    }.property('building', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present').cacheable(),
 
     resourceExchangePressed: function() {
       var self = this;
       var costs = this.slotCosts();
 
-      /* fill up to 3 items :) */
-      for(i = costs.length; i < 3; ++i) {
-        costs.push(Ember.Object.create({
-          amount: 0,
-        }));
-      }
-
-      var action = AWE.Action.Fundamental.createTradeResourcesAction((costs[0].amount|0),
-          (costs[1].amount|0),
-          (costs[2].amount|0));
+      /* TODO: re-write createTradeResourcesAction controller to receive an array instead
+       * of 3 parameters */
+      var action = AWE.Action.Fundamental.createTradeResourcesAction(
+          (costs[0] ? costs[0].amount : 0),
+          (costs[1] ? costs[1].amount : 0),
+          (costs[2] ? costs[2].amount : 0),
+          this.job.getId());
       AWE.Action.Manager.queueAction(action, function(statusCode) {
         var parent = self;
         if(statusCode == 200) {
           /* update resources in client */
           AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
             /* TODO: Perhaps add a notification of success? */
-            alert("Umrköten erfolgreich!");
           }); 
         }   
         else if (statusCode == AWE.Net.CONFLICT) {
