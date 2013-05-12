@@ -128,7 +128,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     
     boshHost: function() {
       
-      if (0) { // non-ie server
+      if (!AWE.Config.IE) { // non-ie server
         return "http://" + AWE.Config.BOSH_SERVER_BASE + "/http-bind/";
       }
       else {
