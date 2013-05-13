@@ -36,6 +36,8 @@ AWE.UI.Ember = (function(module) {
     
     timeRemaining: null,
     pool: null,
+
+  disableFrogTrade: false,
     
     isConstructionSpeedupPossible: function() {
       return this.getPath('job.active_job') && this.getPath('job.buildingType.buyable') && AWE.Util.Rules.isConstructionSpeedupPossible(this.get('timeRemaining'));
@@ -49,7 +51,7 @@ AWE.UI.Ember = (function(module) {
      *  - user has enough cash for frog trade
      */
     isFrogTradePossible: function() {
-      if(this.get('first') && !this.get('active') && (this.getPath('pool.resource_cash_present') >= AWE.GS.RulesManager.getRules().resource_exchange.amount)) {
+      if(this.get('first') && !this.get('active') && (this.getPath('pool.resource_cash_present') >= AWE.GS.RulesManager.getRules().resource_exchange.amount) && this.get('disableFrogTrade') != true) {
         var costs        = this.slotCosts(); /*this.getPath('job.slot.building.costs');*/
         var sum_pool     = 0;
         var sum_required = 0;
@@ -77,7 +79,7 @@ AWE.UI.Ember = (function(module) {
         log('frog trade not available, probably due to less frogs');
         return false;
       }
-    }.property('job.active_job', 'active', 'first', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present'),
+    }.property('job.active_job', 'active', 'first', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present', 'disableFrogTrade').cacheable(),
 
     /* mouse hover for building details */
     mouseInView: false,
@@ -131,6 +133,14 @@ AWE.UI.Ember = (function(module) {
       var self = this;
       var costs = this.slotCosts();
 
+      /* ensure that the frogTradeButton will not be clicked twice */
+      if(this.get('disableFrogTrade') == true) {
+        log('ERROR: frog trade was clicked twice');
+        return false;
+      }
+
+      this.set('disableFrogTrade', true);
+
       /* TODO: re-write createTradeResourcesAction controller to receive an array instead
        * of 3 parameters */
       var action = AWE.Action.Fundamental.createTradeResourcesAction(
@@ -144,6 +154,7 @@ AWE.UI.Ember = (function(module) {
           /* update resources in client */
           AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
             /* TODO: Perhaps add a notification of success? */
+            parent.set('disableFrogTrade', true);
           }); 
         }   
         else if (statusCode == AWE.Net.CONFLICT) {
