@@ -9,7 +9,7 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Fundamental = (function(module) {
   
-  module.createTradeResourcesAction = function(stone, wood, fur, my) {
+  module.createTradeResourcesAction = function(stone, wood, fur, jobId, my) {
       
     // private attributes and methods //////////////////////////////////////
     
@@ -25,11 +25,21 @@ AWE.Action.Fundamental = (function(module) {
     that = AWE.Action.createAction(my);    
     
     that.getRequestBody = function() {
-      return {
-        resource_stone: stone || 0.0,
-        resource_wood:  wood  || 0.0,
-        resource_fur:   fur   || 0.0,
-      };
+      if(typeof jobId === 'undefined') {
+        return {
+          resource_stone: stone || 0.0,
+          resource_wood:  wood  || 0.0,
+          resource_fur:   fur   || 0.0,
+        };
+
+      } else {
+        return {
+          resource_stone: stone || 0.0,
+          resource_wood:  wood  || 0.0,
+          resource_fur:   fur   || 0.0,
+          job_id:         jobId || 0,
+        };
+      }
     }
 
     that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'fundamental/trade_resources_actions'; }

@@ -10,6 +10,10 @@
             {{#view AWE.UI.Ember.ConstructionJobView controllerBinding="controller" jobBinding="this" classNames="queue-job"}}
               {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" buildingBinding="job.slot.buildingAfterJob" levelBinding="job.level_after" settlementBinding="job.slot.settlement" }}
               <div class="queue-job-text">    
+                {{#if "mouseInView" }}
+                {{view AWE.UI.Ember.ToolTipView templateName="construction-queue-detail-view" classNames="mouse-over construction-detail queue-detail-view-wrapper" mouseYBinding="mouseY" mouseXBinding="mouseX" costsBinding="requiredResources" diffsBinding="diffResources" poolBinding="pool" actionInfoBinding="action" }}
+                  
+                {{/if}}
                 <p class="building">{{local job.slot.buildingAfterJob.name }} (L{{ job.level_after }})</p>
                   {{#if active}}
                     <div class="duration progress-bar-border">
@@ -39,20 +43,30 @@
                     {{else}}
                       &nbsp;
                     {{/if}}
-                  {{/if}}</p>
-                <p class="queue-job-button finish-button">
-                  {{#if isConstructionSpeedupPossible }}
-                    <a {{action "finishJobPressed"}} title="{{t settlement.construction.cashTooltip}}">
-                     {{t settlement.construction.hurry }} {{constructionSpeedupCost timeRemaining}} 
-                     <span class="resource-icon {{constructionSpeedupResource timeRemaining}}">&nbsp;</span>
-                    </a>
                   {{/if}}
                 </p>
-                <p class="queue-job-button cancel">    
+                {{#if isFrogTradePossible}}
+                  <div class="queue-job-button frog-trade-button-inline">
+                    <div class="simple-button"  {{action "resourceExchangePressed"}} ">
+                      <img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/toad.png" alt="" /> 
+                      {{t settlement.trade.frogTradeButton}}
+                    </div>
+                  </div>
+                {{else}}
+                  <div class="queue-job-button finish-button">
+                    {{#if isConstructionSpeedupPossible }}
+                      <a {{action "finishJobPressed"}} title="{{t settlement.construction.cashTooltip}}">
+                        {{t settlement.construction.hurry }} {{constructionSpeedupCost timeRemaining}} 
+                        <span class="resource-icon {{constructionSpeedupResource timeRemaining}}">&nbsp;</span>
+                      </a>
+                    {{/if}}
+                  </div>
+                {{/if}}
+                <div class="queue-job-button cancel">    
                   {{#if job.cancelable }}
                     <a {{action "cancelJobPressed"}}>{{t map.button.cancel}}</a>
                   {{/if}}
-                </p>  
+                </div>  
               </div>  
             {{/view}}
           {{/each}}
@@ -60,5 +74,36 @@
         {{/unless}}
       {{/view}}
     {{/each}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="construction-queue-detail-view">
+  <div class="queue-detail-view">
+    <h1>{{t settlement.construction.requiredResources}}</h1>
+    <table>
+      <tr>
+        {{#each costs}}
+        <td>
+          <span {{bindAttr class=":resource-icon resourceType.symbolic_id"}}>&nbsp;</span>
+          {{formatNumber amount}}
+        </td>
+        {{/each}}
+      </tr>
+    </table>
+
+    <h1>{{t settlement.construction.remaining}}</h1>
+    <table>
+      <tr>
+        {{#each diffs}}
+        <td>
+          <span {{bindAttr class=":resource-icon symbolic_id"}}>&nbsp;</span>
+          {{formatNumber remaining}}
+        </td>
+        {{/each}}
+      </tr>
+    </table>
+
+    <h1>{{t settlement.construction.actionTitle}}</h1>
+    <span class="action-text">{{actionInfo}}</span>
   </div>
 </script>

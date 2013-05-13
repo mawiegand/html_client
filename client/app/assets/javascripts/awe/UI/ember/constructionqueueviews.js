@@ -31,26 +31,195 @@ AWE.UI.Ember = (function(module) {
   module.ConstructionJobView = Ember.View.extend({
     classNameBindings: ['active', 'first'],
     
-    attributeBindings: ['title'],
-    
     job: null,
     timer: null,
     
     timeRemaining: null,
-    
-    title: function() {
+    pool: null,
+
+    disableFrogTrade: false,
+    elementUnderCursor: this,
+
+    /*
+    action: function() {
       var active = this.get('active');
       var first = this.get('first');
       var hint = first ? AWE.I18n.lookupTranslation('settlement.construction.beingBuilt') : AWE.I18n.lookupTranslation('settlement.construction.waitingToBeBuilt');
+
       if (first && !active) {
         hint = AWE.I18n.lookupTranslation('settlement.construction.cannotBeBuilt')
       }
+
+      $(".cancel").on('mouseover', funciton() {
+        hint = AWE.I18n.lookupTranslation('settlement.construction.cannotBeBuilt')
+      }
+
+      $(".finish-button").on('mouseover', function() {
+        hint = AWE.I18n.lookupTranslation('settlement.construction.cashTooltip')
+      }
+
+      $(".frog-trade-button-inline").on('mouseover', function() {
+        hint = AWE.I18n.lookupTranslation('settlement.construction.frogTradeTooltip')
+      }
+
       return hint;
-    }.property('active', 'first'),
+    }.property('mouseX', 'mouseY').cacheable(),
+    */
+    action: function() {
+      var active = this.get('active');
+      var first = this.get('first');
+      var hint = first ? AWE.I18n.lookupTranslation('settlement.construction.beingBuilt') : AWE.I18n.lookupTranslation('settlement.construction.waitingToBeBuilt');
+      var target = this.get('elementUnderCursor');
+
+      if (first && !active) {
+        hint = AWE.I18n.lookupTranslation('settlement.construction.cannotBeBuilt');
+      } else if($(target).hasClass('cancel') || $('.cancel').has(target).length > 0) {
+        hint = AWE.I18n.lookupTranslation('settlement.construction.cancelTooltip');
+      } else if($(target).hasClass('finish-button') || $('.finish-button').has(target).length > 0) {
+        hint = AWE.I18n.lookupTranslation('settlement.construction.cashTooltip');
+      } else if($(target).hasClass('frog-trade-button-inline') || $('.frog-trade-button-inline').has(target).length > 0) {
+        hint = AWE.I18n.lookupTranslation('settlement.construction.frogTradeTooltip');
+      }
+      
+      return hint;
+    }.property('mouseX', 'mouseY').cacheable(),
     
     isConstructionSpeedupPossible: function() {
       return this.getPath('job.active_job') && this.getPath('job.buildingType.buyable') && AWE.Util.Rules.isConstructionSpeedupPossible(this.get('timeRemaining'));
     }.property('timeRemaining', 'job.active_job'),
+
+    /* button should be available if
+     *  - insufficient resources
+     *  - sum required resources <= sum user resources
+     *  - if required resources <= capacity
+     *  - is first and not active
+     *  - user has enough cash for frog trade
+     */
+    isFrogTradePossible: function() {
+      if(this.get('first') && !this.get('active') && (this.getPath('pool.resource_cash_present') >= AWE.GS.RulesManager.getRules().resource_exchange.amount) && this.get('disableFrogTrade') != true) {
+        var costs        = this.slotCosts(); /*this.getPath('job.slot.building.costs');*/
+        var sum_pool     = 0;
+        var sum_required = 0;
+        var self = this;
+        
+        for(i = 0; i < costs.length; ++i) {
+          /* sum up pool */
+          sum_pool += self.getPath('pool.'+costs[i].resourceType.symbolic_id+'_present');
+          sum_required += costs[i].amount;
+
+          /* check if required resources <= capacity */
+          if(costs[i].amount > self.getPath('pool.'+costs[i].resourceType.symbolic_id+'_capacity'))  {
+            return false;
+          }
+        }
+
+        /* check if required resources <= capacity */
+        if(sum_required > sum_pool) {
+          return false;
+        }
+
+        return true;
+      }
+      else {
+        log('frog trade not available, probably due to less frogs');
+        return false;
+      }
+    }.property('job.active_job', 'active', 'first', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present', 'disableFrogTrade').cacheable(),
+
+    /* mouse hover for building details */
+    mouseInView: false,
+    mouseEnter: function(event) {
+      this.set('mouseInView', true);
+      this.set('elementUnderCursor', event.target);
+    },  
+    mouseMove: function(event) {
+      this.set('mouseX', event.pageX-800);
+      this.set('mouseY', event.pageY-200);
+      this.set('elementUnderCursor', event.target);
+    },
+    mouseLeave: function(event) {
+      this.set('mouseInView', false);
+    }, 
+
+    /* return slot costs for conversion or upgrade */
+    slotCosts: function() {
+      /* check if is upgrade or conversion */
+      if(this.getPath('job.slot.building.underConversion')) {
+        return this.getPath('job.slot.building.conversionCosts');
+      } else {
+        return this.getPath('job.slot.building.costs');
+      }
+      
+      /* doesn't work; get 'undefined' error */
+      /*return this.getPath('job.costs');*/
+    },
+
+    requiredResources: function() {
+      return this.slotCosts();
+    }.property('active', 'first', 'building').cacheable(),
+
+    /* return remaining required resources and it's symbolic id */
+    diffResources: function() {
+      var costs = this.slotCosts(); /*this.getPath('job.slot.building.costs');*/
+      var diff  = [];
+
+      for(i = 0; i < costs.length; ++i) {
+        var symbolic_id = costs[i].resourceType.symbolic_id; /*AWE.GS.RulesManager.getRules().getResourceType(i).symbolic_id;*/
+        var remaining   = parseInt(costs[i].amount) - this.getPath('pool.'+symbolic_id+'_present');
+
+        if(remaining > 0)
+          diff.push(Ember.Object.create({
+            remaining:   remaining,
+            symbolic_id: symbolic_id,
+          }));
+      }
+      return diff;
+    }.property('building', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present').cacheable(),
+
+    resourceExchangePressed: function() {
+      var self = this;
+      var costs = this.slotCosts();
+
+      /* ensure that the frogTradeButton will not be clicked twice */
+      if(this.get('disableFrogTrade') == true) {
+        log('ERROR: frog trade was clicked twice');
+        return false;
+      }
+
+      this.set('disableFrogTrade', true);
+
+      /* TODO: re-write createTradeResourcesAction controller to receive an array instead
+       * of 3 parameters */
+      var action = AWE.Action.Fundamental.createTradeResourcesAction(
+          (costs[0] ? costs[0].amount : 0),
+          (costs[1] ? costs[1].amount : 0),
+          (costs[2] ? costs[2].amount : 0),
+          this.job.getId());
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        var parent = self;
+        if(statusCode == 200) {
+          /* update resources in client */
+          AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
+            /* TODO: Perhaps add a notification of success? */
+            parent.set('disableFrogTrade', true);
+          }); 
+        }   
+        else if (statusCode == AWE.Net.CONFLICT) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('resource.exchange.errors.noFrogs.heading'),
+            message: AWE.I18n.lookupTranslation('resource.exchange.errors.noFrogs.text'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }   
+        else {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('resource.exchange.errors.failed.heading'),
+            message: AWE.I18n.lookupTranslation('resource.exchange.errors.failed.text'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }   
+      }); 
+    },
     
     finished: function() {
       var t = this.get('timeRemaining');
@@ -123,6 +292,11 @@ AWE.UI.Ember = (function(module) {
     
     didInsertElement: function() {
       this.startTimer();
+      this.initPool();
+    },
+
+    initPool: function() {
+      this.set('pool', AWE.GS.ResourcePoolManager.getResourcePool());
     },
     
     willDestroyElement: function() {
