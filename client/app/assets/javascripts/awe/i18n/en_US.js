@@ -102,7 +102,7 @@ AWE.I18n.en_US = function(module) {
       messages:{
         own:{
           winning:[
-            "Yay! Let's mow ‘em down!"
+            "Yay! Let's mow 'em down!"
           ],
           losing:[
             "Do something – our army is going down the tube!"
@@ -162,7 +162,7 @@ AWE.I18n.en_US = function(module) {
             "What is it this time?",
             "What do I have to do this time?",
             "My dad always used to say: never do today what you can put off till tomorrow!",
-            "Can‘t anyone get a bit of peace and quiet round here?",
+            "Can't anyone get a bit of peace and quiet round here?",
             "Well, as long as we're talking I don't have to fight, right?",
             "Hm – when was the last company annual holiday? ",
             "Have you seen our new uniforms? Smart, eh?",
@@ -187,7 +187,7 @@ AWE.I18n.en_US = function(module) {
           girl:[
             "We always have to be very cautious.",
             "I just love standing out here gathering moss.",
-            "Isn‘t it a lovely day?"
+            "Isn't it a lovely day?"
           ],
 
           chef:[
@@ -385,7 +385,7 @@ AWE.I18n.en_US = function(module) {
       reservationDescriptionNew: 'Set a password.',
       reservationDescriptionChange: 'Change the password.',
       message:"Daily news",
-      messageExplanation:"For members‘ eyes only!",
+      messageExplanation:"For members' eyes only!",
       members:"Members",
       shoutBox:"Shout Box",
       shoutBoxExplanation:"Everything entered here is immediately visible to all members",
@@ -901,7 +901,7 @@ AWE.I18n.en_US = function(module) {
         p1:"Congratulations demigod, you have taken the first step on your journey! You have successfully navigated the tutorial and you have got to know to the basic functions of Wack-A-Doo.",
         p2:"As a reward we give you a Platinum account and bonuses to all the three commodities. These bonuses are now visible in the repository",
         p3:"We will watch your further development and accompany you in a series of ongoing tasks. You can accomplish these tasks if you always enjoy it.",
-        p4:"Do not get upset by the numerous simultaneously open tasks.   Build up your settlement, set up armies and multiply your power and your alliance’s influence.",
+        p4:"Do not get upset by the numerous simultaneously open tasks.   Build up your settlement, set up armies and multiply your power and your alliance's influence.",
         p5:"For the way ahead in Wack-A-Doo there are no guidelines, just a statement which is generally valid: Raw material, raw material, and yet more raw material. A powerful army wins a battle, a rich commodity production wins a war.",
         p6:"Have fun in Wack-A-Doo and wack on!",
         redeemError:{
