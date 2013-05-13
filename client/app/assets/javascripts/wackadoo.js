@@ -126,6 +126,16 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 	    this.initChat(true);
     },
     
+    boshHost: function() {
+      
+      if (!AWE.Config.IE) { // non-ie server
+        return "http://" + AWE.Config.BOSH_SERVER_BASE + "/http-bind/";
+      }
+      else {
+        return AWE.Config.SERVER_ROOT + "/http-bind/";   // use as proxy to webchat
+      }
+    },
+    
     initChat: function(reconnect) {
 	    reconnect = reconnect || false;
       DEVELOPER = 'on'
@@ -166,7 +176,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_PUBSUB    = "pubsub."    +base;
       HOST_VJUD      = "vjud."      +base;
       HOST_ANONYMOUS = "anonymous." +base;
-      HOST_BOSH      = "http://"+base+"/http-bind/";
+      HOST_BOSH      = this.boshHost();
       
       var character = AWE.GS.game && AWE.GS.game.get('currentCharacter');
       var beginner  = character && character.get('beginner');
@@ -174,8 +184,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
       // Define groupchats here
       if (beginner) {
-        MINI_GROUPCHATS                  = tag ? [ tag+"@conference."+base, "plauderhöhle@conference."+base, 'help@conference.'+base ] : [ "plauderhöhle@conference."+base, 'help@conference.'+base ];
-        MINI_SUGGEST_GROUPCHATS          =  [ "global@conference."+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ]; 
+        MINI_GROUPCHATS                  = tag ? [ tag+"@conference."+base, "plauderhöhle@conference."+base, 'help@conference.'+base, "global@conference."+base ] : [ "plauderhöhle@conference."+base, 'help@conference.'+base, "global@conference."+base ];
+        MINI_SUGGEST_GROUPCHATS          =  [ 'help@conference.'+base, "global@conference."+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ]; 
         MINI_5D_NON_CLOSEABLE_GROUPCHATS = tag ? [ 'help@conference.'+base,  tag+"@conference."+base ] : [ 'help@conference.'+base ];       
       }
       else {
