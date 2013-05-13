@@ -603,7 +603,8 @@ AWE.I18n.de_DE = function(module) {
       construction: {
         hurry: "Hurtig!",
         cashTooltip: "Gib Goldkröten aus, um den Bauauftrag sofort fertig zu stellen. Die Kosten hängen von der verbleibenden Bauzeit ab.",
-        frogTradeTooltop: "Tausche 2 Kröten zur Neuverteiltung deiner Ressourcen, sodass die Gebäudeproduktion sofort startet.",
+        frogTradeTooltip: "Tausche 2 Kröten zur Neuverteiltung deiner Ressourcen, sodass die Gebäudeproduktion sofort startet.",
+        cancelTooltip: "Den aktuellen Ausbau abbrechen.",
         insufficentResources: "Mangel",
         finishing: "gleich fertig",
         beingBuilt: "Wird gerade gebaut.",
@@ -611,6 +612,7 @@ AWE.I18n.de_DE = function(module) {
         cannotBeBuilt: "Kann derzeit nicht gebaut werden. Wird automatisch begonnen, sobald die nötigen Rohstoffe und Bauslots vorhanden sind.",
         requiredResources: 'Benötigte Ressourcen',
         remaining: 'Ausstehende Ressourcen',
+        actionInfo: 'Aktionsinfo',
       },
       training: {
         perUnit: "Pro Einheit",

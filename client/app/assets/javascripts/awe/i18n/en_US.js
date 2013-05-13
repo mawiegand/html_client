@@ -591,7 +591,8 @@ AWE.I18n.en_US = function(module) {
       construction:{
         hurry:"Hurry!",
         cashTooltip:"Spend golden frogs to finish this job instantly. The costs depend on the remaining building time.",
-        frogTradeTooltop: "Tausche 2 Kröten zur Neuverteiltung deiner Ressourcen, sodass die Gebäudeproduktion sofort startet.",
+        frogTradeTooltip: "Tausche 2 Kröten zur Neuverteiltung deiner Ressourcen, sodass die Gebäudeproduktion sofort startet.",
+        cancelTooltip: "Den aktuellen Ausbau abbrechen.",
         insufficentResources:"insufficient resources",
         finishing:"finishing",
         beingBuilt:"Building is being constructed.",
@@ -599,6 +600,7 @@ AWE.I18n.en_US = function(module) {
         cannotBeBuilt:"Cannot be built at the moment. Will be started automatically when the needed resources or building lots are available.",
         requiredResources: 'Benötigte Ressourcen',
         remaining: 'Ausstehende Ressourcen',
+        actionTitle: 'Aktionsinfo',
       },
       training:{
         perUnit:"Per unit",

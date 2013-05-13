@@ -11,7 +11,7 @@
               {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" buildingBinding="job.slot.buildingAfterJob" levelBinding="job.level_after" settlementBinding="job.slot.settlement" }}
               <div class="queue-job-text">    
                 {{#if "mouseInView" }}
-                {{view AWE.UI.Ember.ToolTipView templateName="construction-queue-detail-view" classNames="mouse-over construction-detail" mouseYBinding="mouseY" mouseXBinding="mouseX" costsBinding="requiredResources" diffsBinding="diffResources" poolBinding="pool" }}
+                {{view AWE.UI.Ember.ToolTipView templateName="construction-queue-detail-view" classNames="mouse-over construction-detail queue-detail-view-wrapper" mouseYBinding="mouseY" mouseXBinding="mouseX" costsBinding="requiredResources" diffsBinding="diffResources" poolBinding="pool" actionInfoBinding="action" }}
                   
                 {{/if}}
                 <p class="building">{{local job.slot.buildingAfterJob.name }} (L{{ job.level_after }})</p>
@@ -102,5 +102,8 @@
         {{/each}}
       </tr>
     </table>
+
+    <h1>{{t settlement.construction.actionTitle}}</h1>
+    <span class="action-text">{{actionInfo}}</span>
   </div>
 </script>
