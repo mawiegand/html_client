@@ -202,7 +202,8 @@ AWE.UI.Ember = (function(module) {
           AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
             /* TODO: Perhaps add a notification of success? */
             parent.set('disableFrogTrade', true);
-          }); 
+          });
+          AWE.GS.ConstructionQueueView.updateJob(self.getPath('job.id'));
         }   
         else if (statusCode == AWE.Net.CONFLICT) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
