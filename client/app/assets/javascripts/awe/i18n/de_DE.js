@@ -971,6 +971,10 @@ AWE.I18n.de_DE = function(module) {
       commandPointsAbbreviation: "KP",
       buildingTime: "Bauzeit",
 
+      experienceProduction: "XP-Produktion",
+      tradingCarts: "Karren",
+      velocity: "Laufgeschwindigkeit",
+
       resources: "Rohstoffe",
       buildings: "Gebäude",
       units: "Einheiten",
