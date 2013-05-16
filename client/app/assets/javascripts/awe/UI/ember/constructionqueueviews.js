@@ -121,13 +121,12 @@ AWE.UI.Ember = (function(module) {
     slotCosts: function() {
       /* check if is upgrade or conversion */
       if(this.getPath('job.slot.building.underConversion')) {
+        /* TODO: job.slot is always the first slot
+         * Need to access the proper slot to show it's resources*/
         return this.getPath('job.slot.building.conversionCosts');
       } else {
-        return this.getPath('job.slot.building.costs');
+        return this.getPath('job.slot.building').calcCosts(this.getPath('job.slot.building.level')+1);
       }
-      
-      /* doesn't work; get 'undefined' error */
-      /*return this.getPath('job.costs');*/
     },
 
     requiredResources: function() {
