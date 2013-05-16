@@ -150,6 +150,7 @@ AWE.I18n.en_US = function(module) {
         actionPoints:"Action points",
         nextActionPointAt:"Next action point at",
         homeSettlement: "Home settlement",
+        apRate: "AP-Aufladerate",
       },
       messages:{
         own:{

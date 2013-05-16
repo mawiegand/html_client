@@ -150,6 +150,7 @@ AWE.I18n.de_DE = function(module) {
         actionPoints: "Aktionspunkte",
         nextActionPointAt: "Nächster Aktionspunkt um",
         homeSettlement: "Heimatsiedlung",
+        apRate: "AP-Aufladerate",
       },
       messages: {
         own: {
