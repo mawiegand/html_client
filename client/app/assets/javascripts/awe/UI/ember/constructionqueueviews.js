@@ -40,31 +40,7 @@ AWE.UI.Ember = (function(module) {
     disableFrogTrade: false,
     elementUnderCursor: this,
 
-    /*
-    action: function() {
-      var active = this.get('active');
-      var first = this.get('first');
-      var hint = first ? AWE.I18n.lookupTranslation('settlement.construction.beingBuilt') : AWE.I18n.lookupTranslation('settlement.construction.waitingToBeBuilt');
-
-      if (first && !active) {
-        hint = AWE.I18n.lookupTranslation('settlement.construction.cannotBeBuilt')
-      }
-
-      $(".cancel").on('mouseover', funciton() {
-        hint = AWE.I18n.lookupTranslation('settlement.construction.cannotBeBuilt')
-      }
-
-      $(".finish-button").on('mouseover', function() {
-        hint = AWE.I18n.lookupTranslation('settlement.construction.cashTooltip')
-      }
-
-      $(".frog-trade-button-inline").on('mouseover', function() {
-        hint = AWE.I18n.lookupTranslation('settlement.construction.frogTradeTooltip')
-      }
-
-      return hint;
-    }.property('mouseX', 'mouseY').cacheable(),
-    */
+    /* returns action info for the queue overlay */
     action: function() {
       var active = this.get('active');
       var first = this.get('first');
