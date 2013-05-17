@@ -124,7 +124,8 @@ AWE.UI = (function(module) {
       
       if (isOwnArmy) {
         var apNext = army.get('ap_next');
-        _apLabelView.setText('AP: ' + (apNext ? AWE.Util.localizedTime(apNext, true) : "-")); // AWE.UI.Util.secondsToString(army.get('ap_seconds_per_point')));
+        var apRate = parseInt(army.get('ap_rate')*100);
+        _apLabelView.setText('AP: ' + (apNext ? AWE.Util.localizedTime(apNext, true) : "-") + ' (' + apRate + '%)'); // AWE.UI.Util.secondsToString(army.get('ap_seconds_per_point')));
       }
       else {
         _apLabelView.setText(army.get('owner_name') + (army.get('alliance_tag') ? ' | ' + army.get('alliance_tag') : ''));        
