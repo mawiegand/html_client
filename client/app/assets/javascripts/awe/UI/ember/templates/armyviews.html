@@ -32,7 +32,7 @@
         {{#unless army.garrison}}
         <div>
           {{t army.details.actionPoints}}: {{army.ap_present}} {{t general.of}} {{army.ap_max}}.<br>
-          {{t army.details.apRate}}: {{FormatNumber army.ap_rate*100}}<br>
+          {{t army.details.apRate}}: {{formatAsPercent army.ap_rate}}<br>
           {{#if nextAPTimeString}} 
             {{t army.details.nextActionPointAt}} {{nextAPTimeString}} {{t general.oclock}}
           {{/if}}
