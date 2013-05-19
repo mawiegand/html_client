@@ -40,31 +40,7 @@ AWE.UI.Ember = (function(module) {
     disableFrogTrade: false,
     elementUnderCursor: this,
 
-    /*
-    action: function() {
-      var active = this.get('active');
-      var first = this.get('first');
-      var hint = first ? AWE.I18n.lookupTranslation('settlement.construction.beingBuilt') : AWE.I18n.lookupTranslation('settlement.construction.waitingToBeBuilt');
-
-      if (first && !active) {
-        hint = AWE.I18n.lookupTranslation('settlement.construction.cannotBeBuilt')
-      }
-
-      $(".cancel").on('mouseover', funciton() {
-        hint = AWE.I18n.lookupTranslation('settlement.construction.cannotBeBuilt')
-      }
-
-      $(".finish-button").on('mouseover', function() {
-        hint = AWE.I18n.lookupTranslation('settlement.construction.cashTooltip')
-      }
-
-      $(".frog-trade-button-inline").on('mouseover', function() {
-        hint = AWE.I18n.lookupTranslation('settlement.construction.frogTradeTooltip')
-      }
-
-      return hint;
-    }.property('mouseX', 'mouseY').cacheable(),
-    */
+    /* returns action info for the queue overlay */
     action: function() {
       var active = this.get('active');
       var first = this.get('first');
@@ -145,13 +121,12 @@ AWE.UI.Ember = (function(module) {
     slotCosts: function() {
       /* check if is upgrade or conversion */
       if(this.getPath('job.slot.building.underConversion')) {
+        /* TODO: job.slot is always the first slot
+         * Need to access the proper slot to show it's resources*/
         return this.getPath('job.slot.building.conversionCosts');
       } else {
-        return this.getPath('job.slot.building.costs');
+        return this.getPath('job.slot.building').calcCosts(this.getPath('job.slot.building.level')+1);
       }
-      
-      /* doesn't work; get 'undefined' error */
-      /*return this.getPath('job.costs');*/
     },
 
     requiredResources: function() {
@@ -201,9 +176,9 @@ AWE.UI.Ember = (function(module) {
           /* update resources in client */
           AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
             /* TODO: Perhaps add a notification of success? */
+            AWE.GS.ConstructionQueueView.updateJob(self.getPath('job.id'));
             parent.set('disableFrogTrade', true);
           });
-          AWE.GS.ConstructionQueueView.updateJob(self.getPath('job.id'));
         }   
         else if (statusCode == AWE.Net.CONFLICT) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
