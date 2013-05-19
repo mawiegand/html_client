@@ -124,7 +124,10 @@ AWE.UI.Ember = (function(module) {
         /* TODO: job.slot is always the first slot
          * Need to access the proper slot to show it's resources*/
         return this.getPath('job.slot.building.conversionCosts');
-      } else {
+      if (this.getPath('job.slot.building.underDestruction')) {
+        return []; // destructions are free!
+      } 
+      else {       // upgrade and creation jobs
         return this.getPath('job.slot.building').calcCosts(this.getPath('job.slot.building.level')+1);
       }
     },
