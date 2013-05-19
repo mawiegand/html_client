@@ -186,6 +186,7 @@ AWE.UI.Ember = (function(module) {
             AWE.GS.ConstructionQueueView.updateJob(self.getPath('job.id'));
             parent.set('disableFrogTrade', true);
           });
+          self.get('controller').updateConstructionQueueSlotAndJobs(self.getPath('job.queue_id'));    
         }   
         else if (statusCode == AWE.Net.CONFLICT) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
