@@ -119,17 +119,20 @@ AWE.UI.Ember = (function(module) {
 
     /* return slot costs for conversion or upgrade */
     slotCosts: function() {
+      /* TODO: the calculation of costs should be placed at the job object (model!!) */
+
       /* check if is upgrade or conversion */
       if(this.getPath('job.slot.building.underConversion')) {
-        /* TODO: job.slot is always the first slot
-         * Need to access the proper slot to show it's resources*/
+        /** this assumes the conversion to be the only job on this slot in the queue.
+            presently, this assumption is save, since the client does not allow for a conversion
+            if there's already an ongoing job on the same slot. */
         return this.getPath('job.slot.building.conversionCosts');
       }
       if (this.getPath('job.slot.building.underDestruction')) {
         return []; // destructions are free!
       } 
       else {       // upgrade and creation jobs
-        return this.getPath('job.slot.building').calcCosts(this.getPath('job.slot.building.level')+1);
+        return this.getPath('job.slot.building').calcCosts(this.getPath('job.level_after')); // level after should be right...
       }
     },
 
