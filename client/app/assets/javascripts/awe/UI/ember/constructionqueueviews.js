@@ -158,6 +158,8 @@ AWE.UI.Ember = (function(module) {
       return diff;
     }.property('building', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present').cacheable(),
 
+    /** the following action must be moved to the settlement controller. 
+     * here's the wrong place for it. */
     resourceExchangePressed: function() {
       var self = this;
       var costs = this.slotCosts();
