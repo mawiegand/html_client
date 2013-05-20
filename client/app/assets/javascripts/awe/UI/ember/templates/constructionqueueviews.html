@@ -91,6 +91,7 @@
       </tr>
     </table>
 
+    {{#if diffs}}
     <h1>{{t settlement.construction.remaining}}</h1>
     <table>
       <tr>
@@ -102,6 +103,7 @@
         {{/each}}
       </tr>
     </table>
+    {{/if}}
 
     <h1>{{t settlement.construction.actionTitle}}</h1>
     <span class="action-text">{{actionInfo}}</span>
