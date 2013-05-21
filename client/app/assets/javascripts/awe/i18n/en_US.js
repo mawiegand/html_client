@@ -598,7 +598,7 @@ AWE.I18n.en_US = function(module) {
         beingBuilt:"Building is being constructed.",
         waitingToBeBuilt:"Waiting for its turn.",
         cannotBeBuilt:"Cannot be built at the moment. Will be started automatically when the needed resources or building lots are available.",
-        requiredResources: 'Required',
+        requiredResources: 'Costs',
         remaining: 'Missing',
         actionTitle: 'Action information',
       },
