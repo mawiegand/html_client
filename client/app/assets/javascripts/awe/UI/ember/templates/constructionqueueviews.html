@@ -53,7 +53,7 @@
                     </div>
                   </div>
                 {{else}}
-                  <div class="queue-job-button finish-button">
+                  <div class="queue-job-button finish-button clickable">
                     {{#if isConstructionSpeedupPossible }}
                       <a {{action "finishJobPressed"}} title="{{t settlement.construction.cashTooltip}}">
                         {{t settlement.construction.hurry }} {{constructionSpeedupCost timeRemaining}} 
