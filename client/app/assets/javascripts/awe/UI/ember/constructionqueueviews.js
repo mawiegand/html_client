@@ -49,11 +49,11 @@ AWE.UI.Ember = (function(module) {
 
       if (first && !active) {
         hint = AWE.I18n.lookupTranslation('settlement.construction.cannotBeBuilt');
-      } else if($(target).hasClass('cancel') || $('.cancel').has(target).length > 0) {
+      } else if($('.cancel').has(target).length > 0) {
         hint = AWE.I18n.lookupTranslation('settlement.construction.cancelTooltip');
-      } else if($(target).hasClass('finish-button') || $('.finish-button').has(target).length > 0) {
+      } else if($('.finish-button').has(target).length > 0) {
         hint = AWE.I18n.lookupTranslation('settlement.construction.cashTooltip');
-      } else if($(target).hasClass('frog-trade-button-inline') || $('.frog-trade-button-inline').has(target).length > 0) {
+      } else if($('.frog-trade-button-inline').has(target).length > 0) {
         hint = AWE.I18n.lookupTranslation('settlement.construction.frogTradeTooltip');
       }
       
