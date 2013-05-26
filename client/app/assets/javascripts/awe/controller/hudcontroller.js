@@ -123,6 +123,20 @@ AWE.Controller = (function(module) {
     that.questsButtonClicked = function() {
       WACKADOO.showQuestListDialog();      
     }
+    
+    that.presentNotEnoughCreditsWarning = function() {
+      var info = AWE.UI.Ember.InfoDialog.create({
+        contentTemplateName: 'not-enough-credits-info',
+        cancelText:          AWE.I18n.lookupTranslation('general.cancel'),
+        okText:              AWE.I18n.lookupTranslation('shop.notenoughcredits.getCredits'),
+        okPressed:           function() {
+          AWE.GS.ShopManager.openCreditShopWindow();
+          this.destroy();
+        },
+        cancelPressed:       function() { this.destroy(); },
+      });          
+      that.applicationController.presentModalDialog(info);
+    }
 
     that.ingameShopButtonClicked = function() {
       
@@ -139,6 +153,17 @@ AWE.Controller = (function(module) {
         },
         
         buyResourceOfferPressed: function(offerId) {
+          
+          var creditAmount = this.getPath('shop.creditAmount') || 0;
+          var offer = AWE.GS.ResourceOfferManager.getResourceOffer(offerId);
+          var price = offer.get('price');
+          
+          if (creditAmount < price) {
+            log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
+            that.presentNotEnoughCreditsWarning();
+            return ;
+          }
+          
           AWE.GS.ShopManager.buyResourceOffer(offerId, function(transaction) { // success handler
             if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
               var info = AWE.UI.Ember.InfoDialog.create({
@@ -148,17 +173,7 @@ AWE.Controller = (function(module) {
               that.applicationController.presentModalDialog(info);
             }
             else {
-              var info = AWE.UI.Ember.InfoDialog.create({
-                contentTemplateName: 'not-enough-credits-info',
-                cancelText:          AWE.I18n.lookupTranslation('general.cancel'),
-                okText:              AWE.I18n.lookupTranslation('shop.notenoughcredits.getCredits'),
-                okPressed:           function() {
-                  AWE.GS.ShopManager.openCreditShopWindow();
-                  this.destroy();
-                },
-                cancelPressed:       function() { this.destroy(); },
-              });          
-              that.applicationController.presentModalDialog(info);
+              that.presentNotEnoughCreditsWarning();
             }
             
             AWE.GS.ShopManager.fetchCreditAmount(function(){
@@ -177,6 +192,17 @@ AWE.Controller = (function(module) {
         },
 
         buyBonusOfferPressed: function(offerId) {
+          
+          var creditAmount = this.getPath('shop.creditAmount') || 0;
+          var offer = AWE.GS.BonusOfferManager.getBonusOffer(offerId);
+          var price = offer.get('price');
+          
+          if (creditAmount < price) {
+            log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
+            that.presentNotEnoughCreditsWarning();
+            return ;
+          }
+          
           AWE.GS.ShopManager.buyBonusOffer(offerId, function(transaction) { // success handler
             if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
               var info = AWE.UI.Ember.InfoDialog.create({
@@ -186,17 +212,7 @@ AWE.Controller = (function(module) {
               that.applicationController.presentModalDialog(info);
             }
             else {
-              var info = AWE.UI.Ember.InfoDialog.create({
-                contentTemplateName: 'not-enough-credits-info',
-                cancelText:          AWE.I18n.lookupTranslation('general.cancel'),
-                okText:              AWE.I18n.lookupTranslation('shop.notenoughcredits.getCredits'),
-                okPressed:           function() {
-                  AWE.GS.ShopManager.openCreditShopWindow();
-                  this.destroy();
-                },
-                cancelPressed:       function() { this.destroy(); },
-              });          
-              that.applicationController.presentModalDialog(info);
+              that.presentNotEnoughCreditsWarning();
             }
             
             AWE.GS.BonusOfferManager.updateBonusOffers();
@@ -216,6 +232,17 @@ AWE.Controller = (function(module) {
         },
 
         buyPlatinumOfferPressed: function(offerId) {
+          
+          var creditAmount = this.getPath('shop.creditAmount') || 0;
+          var offer = AWE.GS.PlatinumOfferManager.getPlatinumOffer(offerId);
+          var price = offer.get('price');
+          
+          if (creditAmount < price) {
+            log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
+            that.presentNotEnoughCreditsWarning();
+            return ;
+          }
+          
           AWE.GS.ShopManager.buyPlatinumOffer(offerId, function(transaction) { // success handler
             if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
               var info = AWE.UI.Ember.InfoDialog.create({
@@ -225,17 +252,7 @@ AWE.Controller = (function(module) {
               that.applicationController.presentModalDialog(info);
             }
             else {
-              var info = AWE.UI.Ember.InfoDialog.create({
-                contentTemplateName: 'not-enough-credits-info',
-                cancelText:          AWE.I18n.lookupTranslation('general.cancel'),
-                okText:              AWE.I18n.lookupTranslation('shop.notenoughcredits.getCredits'),
-                okPressed:           function() {
-                  AWE.GS.ShopManager.openCreditShopWindow();
-                  this.destroy();
-                },
-                cancelPressed:       function() { this.destroy(); },
-              });          
-              that.applicationController.presentModalDialog(info);
+              that.presentNotEnoughCreditsWarning();
             }
             
             AWE.GS.CharacterManager.updateCurrentCharacter();
