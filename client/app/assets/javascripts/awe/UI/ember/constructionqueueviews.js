@@ -185,10 +185,10 @@ AWE.UI.Ember = (function(module) {
           /* update resources in client */
           AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
             /* TODO: Perhaps add a notification of success? */
-            AWE.GS.ConstructionQueueView.updateJob(self.getPath('job.id'));
-            parent.set('disableFrogTrade', true);
+            AWE.GS.ConstructionJobManager.updateJob(self.getPath('job.id'));
+            self.get('controller').updateConstructionQueueSlotAndJobs(self.getPath('job.queue_id'));    
+            self.set('disableFrogTrade', true); // was successful, keep disabled
           });
-          self.get('controller').updateConstructionQueueSlotAndJobs(self.getPath('job.queue_id'));    
         }   
         else if (statusCode == AWE.Net.CONFLICT) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
@@ -196,6 +196,7 @@ AWE.UI.Ember = (function(module) {
             message: AWE.I18n.lookupTranslation('resource.exchange.errors.noFrogs.text'),
           }); 
           WACKADOO.presentModalDialog(errorDialog);
+          self.set('disableFrogTrade', false);          
         }   
         else {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
@@ -203,6 +204,7 @@ AWE.UI.Ember = (function(module) {
             message: AWE.I18n.lookupTranslation('resource.exchange.errors.failed.text'),
           }); 
           WACKADOO.presentModalDialog(errorDialog);
+          self.set('disableFrogTrade', false);
         }   
       }); 
     },
