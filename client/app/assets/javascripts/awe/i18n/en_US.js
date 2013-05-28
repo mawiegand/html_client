@@ -596,7 +596,7 @@ AWE.I18n.en_US = function(module) {
         insufficentResources:"insufficient resources",
         finishing:"finishing",
         beingBuilt:"Building is being constructed.",
-        waitingToBeBuilt:"Waiting for its turn.",
+        waitingToBeBuilt:"Waiting for it's turn.",
         cannotBeBuilt:"Cannot be built at the moment. Will be started automatically when the needed resources or building lots are available.",
         requiredResources: 'Costs',
         remaining: 'Missing',
