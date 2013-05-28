@@ -72,6 +72,11 @@ AWE.UI.Ember = (function(module) {
      *  - user has enough cash for frog trade
      */
     isFrogTradePossible: function() {
+      
+      if (AWE.Config.QUICK_TRADE_ON_JOB_ENABLED === false) {
+        return false;
+      }
+      
       if(this.get('first') && !this.get('active') && (this.getPath('pool.resource_cash_present') >= AWE.GS.RulesManager.getRules().resource_exchange.amount) && this.get('disableFrogTrade') != true) {
         var costs        = this.slotCosts(); /*this.getPath('job.slot.building.costs');*/
         var sum_pool     = 0;
