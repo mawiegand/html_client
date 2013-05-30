@@ -72,6 +72,11 @@ AWE.UI.Ember = (function(module) {
      *  - user has enough cash for frog trade
      */
     isFrogTradePossible: function() {
+      
+      if (AWE.Config.QUICK_TRADE_ON_JOB_ENABLED === false) {
+        return false;
+      }
+      
       if(this.get('first') && !this.get('active') && (this.getPath('pool.resource_cash_present') >= AWE.GS.RulesManager.getRules().resource_exchange.amount) && this.get('disableFrogTrade') != true) {
         var costs        = this.slotCosts(); /*this.getPath('job.slot.building.costs');*/
         var sum_pool     = 0;
@@ -185,10 +190,10 @@ AWE.UI.Ember = (function(module) {
           /* update resources in client */
           AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
             /* TODO: Perhaps add a notification of success? */
-            AWE.GS.ConstructionQueueView.updateJob(self.getPath('job.id'));
-            parent.set('disableFrogTrade', true);
+            AWE.GS.ConstructionJobManager.updateJob(self.getPath('job.id'));
+            self.get('controller').updateConstructionQueueSlotAndJobs(self.getPath('job.queue_id'));    
+            self.set('disableFrogTrade', true); // was successful, keep disabled
           });
-          self.get('controller').updateConstructionQueueSlotAndJobs(self.getPath('job.queue_id'));    
         }   
         else if (statusCode == AWE.Net.CONFLICT) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
@@ -196,6 +201,7 @@ AWE.UI.Ember = (function(module) {
             message: AWE.I18n.lookupTranslation('resource.exchange.errors.noFrogs.text'),
           }); 
           WACKADOO.presentModalDialog(errorDialog);
+          self.set('disableFrogTrade', false);          
         }   
         else {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
@@ -203,6 +209,7 @@ AWE.UI.Ember = (function(module) {
             message: AWE.I18n.lookupTranslation('resource.exchange.errors.failed.text'),
           }); 
           WACKADOO.presentModalDialog(errorDialog);
+          self.set('disableFrogTrade', false);
         }   
       }); 
     },
