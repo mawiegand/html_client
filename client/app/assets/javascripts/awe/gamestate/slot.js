@@ -303,7 +303,7 @@ AWE.GS = (function(module) {
       });
       
       return costsResult;  
-		}.property('level', 'buildingId').cacheable(),
+		}.property('buildingId', 'buildingType', 'levelAfterJobs', 'level', 'sortedJobs.lastObject.level_after').cacheable(),
 		
 		upgradable: function() {
 		  var nextLevel = this.get('nextLevel');
@@ -343,7 +343,7 @@ AWE.GS = (function(module) {
       else {
         return null;
       }
-    }.property('buildingType', 'convertedLevel').cacheable(),
+    }.property('buildingType', 'convertedLevel', 'levelAfterJobs', 'level', 'sortedJobs.lastObject.level_after').cacheable(),
     
     convertedLevel: function() {
       var buildingType = this.get('buildingType');
@@ -353,7 +353,7 @@ AWE.GS = (function(module) {
       }
       var level = AWE.GS.Util.parseAndEval(buildingType.conversion_option.target_level_formula, this.get('levelAfterJobs'));
       return level;
-    }.property('buildingType', 'levelAfterJobs').cacheable(),
+    }.property('buildingType', 'levelAfterJobs', 'level', 'sortedJobs.lastObject.level_after').cacheable(),
     
     unmetRequirementsOfConversionBuilding: function() {
       var settlement = this.getPath('slot.settlement');
