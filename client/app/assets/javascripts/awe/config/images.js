@@ -51,6 +51,11 @@ AWE.Config = (function(module) {
     "map/colony/middle":      AWE.Config.RAILS_ASSET_PATH + 'settlements/colonymiddle.png',
     "map/colony/big":         AWE.Config.RAILS_ASSET_PATH + 'settlements/colonybig.png',
 
+    "map/outpost/small":      AWE.Config.RAILS_ASSET_PATH + 'settlements/outpostsmall.png',
+    "map/outpost/middle":     AWE.Config.RAILS_ASSET_PATH + 'settlements/outpostmiddle.png',
+    "map/outpost/large":      AWE.Config.RAILS_ASSET_PATH + 'settlements/outpostlarge.png',
+    "map/emptyslot" :         AWE.Config.RAILS_ASSET_PATH + 'white_icon.png',
+
     "map/army":               AWE.Config.RAILS_ASSET_PATH + 'army.png',
 
     "map/army/animation":     AWE.Config.RAILS_ASSET_PATH + 'army/warrior_animation_final_128.png',
@@ -107,9 +112,6 @@ AWE.Config = (function(module) {
     "map/artifactinitiated/2": AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_streitaxt_aktiviert.png',
     "map/artifactinitiated/3": AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_monolith_aktiviert.png',
     "map/artifactinitiated/4": AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_osterei_aktiviert.png',
-
-    "map/outpost":            AWE.Config.RAILS_ASSET_PATH + 'settlements/outpost.png',
-    "map/emptyslot" :         AWE.Config.RAILS_ASSET_PATH + 'white_icon.png',
 
     "map/easement/yes":       AWE.Config.RAILS_ASSET_PATH + 'ok.png',
     "map/easement/no":        AWE.Config.RAILS_ASSET_PATH + 'verbot.png',
