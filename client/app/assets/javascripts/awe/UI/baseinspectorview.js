@@ -137,21 +137,21 @@ AWE.UI = (function(module) {
       if (!_settlementView) {
         var level = AWE.Util.Rules.normalizedLevel(location.settlementLevel(), location.settlementTypeId());
         var imageName = null;
-        
-        if (my.settlementType === 'outpost') {
-          imageName = "map/outpost"
+
+        if (level < 4) {
+          var modifier = "small";
+        }
+        else if (level < 8) {
+          modifier = "middle";
         }
         else {
-          if (level < 4) {
-            modifier = "small";
-          }
-          else if (level < 8) {
-            modifier = "middle";
-          }
-          else {
-            modifier = "big";
-          }
-        
+          modifier = "big";
+        }
+
+        if (my.settlementType === 'outpost') {
+          imageName = "map/outpost/" + modifier;
+        }
+        else {
           imageName = "map/colony/" + modifier;
         }
                 
@@ -165,8 +165,7 @@ AWE.UI = (function(module) {
         }
         this.setInspectedObjectView(_settlementView);
       }
-
-    }
+    };
     
     
     that.location = function() {

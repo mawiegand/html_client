@@ -83,16 +83,33 @@ AWE.UI = (function(module) {
         this.addChildAt(_poleShape, 0);
       }
 
+      // BASE IMAGE //////////////////////////////////////////////////////
+      var newSettlementImageName = 'map/outpost/small';
+      var level = AWE.Util.Rules.normalizedLevel(_location.settlementLevel(), _location.settlementTypeId());
+
+      if (level > 3) {
+        newSettlementImageName = 'map/outpost/middle';
+      }
+      if (level > 7) {
+        newSettlementImageName = 'map/outpost/big';
+      }
+
+      if (newSettlementImageName != _settlementImageName && _imageView) {
+        this.removeChild(_imageView);
+        _imageView = null;
+      }
+      _settlementImageName = newSettlementImageName;
+
       if (!_imageView) {
         _imageView = AWE.UI.createImageView();
-        _imageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("map/outpost"));
+        _imageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_settlementImageName));
         _imageView.setContentMode(module.ViewContentModeNone);
         _imageView.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
         _imageView.onClick = that.onClick;
         _imageView.onDoubleClick = that.onDoubleClick;
         _imageView.onMouseOver = that.onMouseOver;
         _imageView.onMouseOut = that.onMouseOut;
-        that.addChild(_imageView);
+        this.addChildAt(_imageView, 0);
       }
 
       if (!_labelView) {
