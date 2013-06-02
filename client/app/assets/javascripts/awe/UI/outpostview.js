@@ -20,7 +20,8 @@ AWE.UI = (function(module) {
     var _battleView = null;
     var _suspensionView = null;
     var _flagView = null;
-    
+    var _settlementImageName = null;
+
     var _frameRect = null;
     
     my = my || {};
