@@ -19,7 +19,6 @@ AWE.UI = (function(module) {
     var _flagView = null;
     var _battleView = null;
     var _suspensionView = null;
-    var _poleShape = null;
     var _fortressImageName = null;
     
     var _frameRect = null;
@@ -53,17 +52,16 @@ AWE.UI = (function(module) {
     
     that.recalcView = function() {
       
-    //log('update fortress for region id ' + _node.region().id());
-
       var allianceId = _node.region().allianceId();
 
+      // FORTRESS IMAGE //////////////////////////////////////////////////////
+      var level = AWE.Util.Rules.normalizedLevel(_node.region().settlementLevel(), _node.region().settlementTypeId());
 
-      // FORTRESS IMAGE //////////////////////////////////////////////////////     
       var newFortressImageName = 'map/fortress/small';        
-      if (_node.region() && _node.region().fortressLevel() > 3) {
+      if (level > 3) {
         newFortressImageName = 'map/fortress/middle';
       }
-      if (_node.region() && _node.region().fortressLevel() > 7) {
+      if (level > 7) {
         newFortressImageName = 'map/fortress/large';
       }
       
