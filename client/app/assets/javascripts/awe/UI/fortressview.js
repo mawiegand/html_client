@@ -55,7 +55,7 @@ AWE.UI = (function(module) {
       var allianceId = _node.region().allianceId();
 
       // FORTRESS IMAGE //////////////////////////////////////////////////////
-      var level = AWE.Util.Rules.normalizedLevel(_node.region().settlementLevel(), _node.region().settlementTypeId());
+      var level = AWE.Util.Rules.normalizedLevel(_node.region().fortressLevel(), AWE.GS.SETTLEMENT_TYPE_FORTRESS);
 
       var newFortressImageName = 'map/fortress/small';        
       if (level > 3) {
