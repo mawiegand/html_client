@@ -183,12 +183,14 @@ AWE.UI = (function(module) {
 
       
       
-      // FORTRESS IMAGE //////////////////////////////////////////////////////     
+      // FORTRESS IMAGE //////////////////////////////////////////////////////
+      var level = AWE.Util.Rules.normalizedLevel(region.fortressLevel(), AWE.GS.SETTLEMENT_TYPE_FORTRESS);
+
       var newFortressImageName = 'map/fortress/small';        
-      if (region.fortressLevel() > 3) {
+      if (level > 3) {
         newFortressImageName = 'map/fortress/middle';
       }
-      if (region.fortressLevel() > 7) {
+      if (level > 7) {
         newFortressImageName = 'map/fortress/large';
       }
       
