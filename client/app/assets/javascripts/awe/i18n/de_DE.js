@@ -612,7 +612,7 @@ AWE.I18n.de_DE = function(module) {
         cannotBeBuilt: "Kann derzeit nicht gebaut werden. Wird automatisch begonnen, sobald die nötigen Rohstoffe und Bauslots vorhanden sind.",
         requiredResources: 'Kosten',
         remaining: 'Fehlend',
-        actionInfo: 'Aktionsinfo',
+        actionTitle: 'Aktionsinfo',
       },
       training: {
         perUnit: "Pro Einheit",
