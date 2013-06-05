@@ -76,16 +76,14 @@ AWE.UI.Ember = (function(module) {
       if (AWE.Config.QUICK_TRADE_ON_JOB_ENABLED === false) {
         return false;
       }
-      
-      if(this.get('first') && !this.get('active') && (this.getPath('pool.resource_cash_present') >= AWE.GS.RulesManager.getRules().resource_exchange.amount) && this.get('disableFrogTrade') != true) {
+
+      if (this.get('first') && !this.get('active') && (this.getPath('pool.resource_cash_present') >= AWE.GS.RulesManager.getRules().resource_exchange.amount) && !this.get('disableFrogTrade')) {
         var costs        = this.slotCosts(); /*this.getPath('job.slot.building.costs');*/
-        var sum_pool     = 0;
         var sum_required = 0;
         var self = this;
         
-        for(i = 0; i < costs.length; ++i) {
+        for (i = 0; i < costs.length; ++i) {
           /* sum up pool */
-          sum_pool += self.getPath('pool.'+costs[i].resourceType.symbolic_id+'_present');
           sum_required += costs[i].amount;
 
           /* check if required resources <= capacity */
@@ -94,8 +92,10 @@ AWE.UI.Ember = (function(module) {
           }
         }
 
+        var sum_pool = self.getPath('pool.resource_wood_present') + self.getPath('pool.resource_stone_present') + self.getPath('pool.resource_fur_present');
+
         /* check if required resources <= capacity */
-        if(sum_required > sum_pool) {
+        if (sum_required > sum_pool) {
           return false;
         }
 
