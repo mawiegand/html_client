@@ -65,6 +65,7 @@ AWE.GS = (function(module) {
 
     victories: 0,
     defeats: 0,
+    avatar_string: 0,
     
     exp_production_rate_zero: function() {
       return !((this.get('exp_production_rate') || 0) > 0);
