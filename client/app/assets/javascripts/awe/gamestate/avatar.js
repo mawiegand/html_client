@@ -17,6 +17,10 @@ AWE.GS = function (module) {
     typeName: 'Avatar',
     avatar_string: null,
 
+    init: function() {
+      this.set('avatar_string', 'm
+    }
+
     /* avatar_string structure
         0   => gender (m/f)
         1   => chain
