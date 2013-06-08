@@ -18,7 +18,7 @@ AWE.GS = function (module) {
     avatar_string: null,
 
     init: function() {
-      this.set('avatar_string', 'm
+      this.set('avatar_string', 'm010300500');
     }
 
     /* avatar_string structure
