@@ -237,6 +237,8 @@ AWE.Config = (function(module) {
     "resource/icon/stone/large":    AWE.Config.RAILS_ASSET_PATH + 'icons/stone-large.png',
     "resource/icon/fur/large"  :    AWE.Config.RAILS_ASSET_PATH + 'icons/fur-large.png',
     "resource/icon/cash/large" :    AWE.Config.RAILS_ASSET_PATH + 'icons/toad-large.png',
+    
+    "avatar/male/head/1"       :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_head.png',
 
   };
   
