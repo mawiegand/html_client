@@ -19,7 +19,7 @@ AWE.GS = function (module) {
 
     init: function() {
       this.set('avatar_string', 'm010300500');
-    }
+    },
 
     /* avatar_string structure
         0   => gender (m/f)
