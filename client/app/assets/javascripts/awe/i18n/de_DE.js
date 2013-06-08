@@ -457,7 +457,7 @@ AWE.I18n.de_DE = function(module) {
     shop: {
       button:'Shop',
       title: 'Fundgrube',
-      currentCreditAmount: 'Du besitzt im Moment ein Guthaben von',
+      currentCreditAmount: 'Du besitzt derzeit   ein Guthaben von',
       credits: 'Credits',
       platinumCredits: '5D Platinum Credits',
       for: 'für',
