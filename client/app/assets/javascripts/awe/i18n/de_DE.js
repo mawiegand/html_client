@@ -769,6 +769,7 @@ AWE.I18n.de_DE = function(module) {
       progressTab: "Fortschritt",
       customizationTab: "Anpassung",
       optionsTab: "Einstellungen",
+      movementTab: "Umziehen",
 
       rank: {
         start: "Beginn",
@@ -854,6 +855,16 @@ AWE.I18n.de_DE = function(module) {
           
           changeSameIIUnknown: "Die Liste konnte aus unbekannten Gründen nicht geändert werden. Bitte versuche es später noch einmal.",
         },
+      },
+      
+      movement: {
+        info1: "Hier kannst Du die Position Deiner Hauptsiedlung auf der Karte verändern. Es gibt 2 Arten des Umziehens, und Du kannst jede davon nur einmal benutzen.",
+        info2: "Du kannst nicht in Regionen ziehen, um die gerade gekämpft wird, oder die vor kurzem erobert wurden.",
+        specificMovementCaption: "Gezieltes Umziehen",
+        presentRegion: "Aktuelle Region",
+        enterSpecificRegion: "Angabe des Regionsnamen",
+        specififcRegionAdvice: "Du kannst den Namen der Region in die Du ziehen möchtest angeben. Gehört die Region einem anderen Spieler, der nicht Teil deiner Allianz ist, musst du zusätzlich noch ein Passwort nennen",
+        moveButton: "Umziehen",
       },
     },
     

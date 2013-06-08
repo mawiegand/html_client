@@ -95,6 +95,12 @@ AWE.UI.Ember = (function(module) {
             characterBinding: "parentView.parentView.character"
           })
         },
+        { key:   "tab4",
+          title: AWE.I18n.lookupTranslation('profile.movementTab'), 
+          view:  AWE.UI.Ember.MovementView.extend({ 
+            characterBinding: "parentView.parentView.character"
+          })
+        },
       ]);
       
       this._super();
@@ -544,6 +550,26 @@ AWE.UI.Ember = (function(module) {
         
   });  
   
+  module.MovementView = Ember.View.extend({
+    templateName: 'movement-view',
+    
+    homeRegion: null,
+    
+    init: function() {
+      this._super();
+      this.setAndUpdateHomeRegion();
+    },
+    
+    setAndUpdateHomeRegion: function() {
+      var regionId = this.getPath('character.base_region_id');
+      var region = AWE.Map.Manager.getRegion(regionId);
+      this.set('homeRegion', region);
+    },
+    
+    baseLocationIdObserver: function() {
+      this.setAndUpdateHomeRegion();
+    }.observes('character.base_location_id'),
+  });
       
   return module;  
     

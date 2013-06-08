@@ -199,3 +199,25 @@
   
 </script>
 
+<script type="text/x-handlebars" data-template-name="movement-view">
+  <p>{{t profile.movement.info1}}</p>
+  <p>{{t profile.movement.info2}}</p>
+  
+  <hr/>
+  
+  <h2>{{t profile.movement.specificMovementCaption}}</h2>
+  <p><b>{{t profile.movement.presentRegion}}:</b> {{homeRegion.name}}</p>
+  <p>
+    <b>{{t profile.movement.enterSpecificRegion}}</b><br>
+    {{t profile.movement.specififcRegionAdvice}}
+  </p>
+   <p>
+     {{view Ember.TextField placeholder="Regionsname" valueBinding="newRegionName" }}
+     
+     {{#if moving }}
+       &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+     {{else}} 
+       <span class="simple-button" {{action "moveToRegion"}}>{{t profile.movement.moveButton}}</span>
+     {{/if}}  
+  </p>
+</script>
