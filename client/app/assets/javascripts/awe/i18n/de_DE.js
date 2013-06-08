@@ -741,7 +741,8 @@ AWE.I18n.de_DE = function(module) {
         resourceProductionInfo2: "nicht",
         resourceProductionInfo3: "besteuert.",
         setTaxRate: "Gib den neuen Steuersatz ein (5-15%).",
-        artifact: "Artefakt"
+        artifact: "Artefakt",
+        movementPassword: "Umzugspasswort",
       },
       error: {
         serverDidNotAcceptTaxRate: "Der Server hat die Änderung des Steuersatzes nicht akzeptiert.",

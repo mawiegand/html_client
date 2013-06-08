@@ -125,6 +125,7 @@
       <p>{{t settlement.invitationLink.text}}</p>
       <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action invitationLinkPressed}}>{{t settlement.invitationLink.send}}</div>      
       <p class="clearfix" {{action catchClick}}>{{ unbound AWE.Config.PLAYER_INVITATION_BASE }}{{ unbound settlement.regionInvitationCode }}</p>
+      <p><b>{{t settlement.info.movementPassword}}:</b> {{settlement.regionMovementPassword}}</p>
     {{/if}}
 
     <div class="float-right up-icon" title="{{t settlement.info.clickToMinimize}}">&nbsp;</div>

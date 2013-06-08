@@ -729,7 +729,8 @@ AWE.I18n.en_US = function(module) {
         resourceProductionInfo2:"no",
         resourceProductionInfo3:"taxes being raised on the bonus production.",
         setTaxRate:"Enter new tax rate (5-15%).",
-        artifact: "Artifact"
+        artifact: "Artifact",
+        movementPassword: "Umzugspasswort",
       },
       error:{
         serverDidNotAcceptTaxRate:"The server did not accept the tax rate change.",
