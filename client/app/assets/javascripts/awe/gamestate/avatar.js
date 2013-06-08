@@ -19,7 +19,7 @@ AWE.GS = function (module) {
 
     init: function() {
       this.set('avatar_string', 'm010300500');
-    }
+    },
 
     /* avatar_string structure
         0   => gender (m/f)
@@ -32,39 +32,39 @@ AWE.GS = function (module) {
         9   => veilchen
         10  => tattoo            */
     gender: function() {
-      return avatar_string[0];
+      return this.get('avatar_string')[0];
     },
 
     chain: function() {
-      return avatar_string[1];
+      return this.get('avatar_string')[1];
     },
 
     eyes: function() {
-      return avatar_string[2]
+      return this.get('avatar_string')[2]
     },
 
     hair: function() {
-      return avatar_string[3] + avatar_string[4];
+      return this.get('avatar_string')[3] + this.get('avatar_string')[4];
     },
 
     mouth: function() {
-      return avatar_string[5];
+      return this.get('avatar_string')[5];
     },
 
     head: function() {
-      return avatar_string[6];
+      return this.get('avatar_string')[6];
     },
 
     beard: function() {
-      return avatar_string[7] + avatar_string[8];
+      return this.get('avatar_string')[7] + this.get('avatar_string')[8];
     },
 
     veilchen: function() {
-      return avatar_string[9];
+      return this.get('avatar_string')[9];
     },
 
     tattoo: function() {
-      return avatar_string[10];
+      return this.get('avatar_string')[10];
     },
 
   });
