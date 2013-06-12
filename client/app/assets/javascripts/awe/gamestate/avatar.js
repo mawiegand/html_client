@@ -17,54 +17,47 @@ AWE.GS = function (module) {
     typeName: 'Avatar',
     avatar_string: null,
 
+    /* TODO: read from AWE Rules */
+    avatar_rules: {
+      chars: {
+        gender:   1,
+        chain:    1,
+        eyes:     2,
+        hair:     2,
+        mouth:    2,
+        head:     1,
+        beard:    2,
+        veilchen: 1,
+        tattoo:   2,
+      },
+      offset: {
+        gender:     0,
+        chain:      1,
+        eyes:       2,
+        hair:       4,
+        mouth:      6,
+        head:       8,
+        beard:      9,
+        veilchen:  11,
+        tattoo:    12,
+      },
+    },
+
     init: function() {
       this.set('avatar_string', 'm010300500');
     },
 
-    /* avatar_string structure
-        0   => gender (m/f)
-        1   => chain
-        2   => eyes
-        3-4 => hair
-        5   => mouth
-        6   => head
-        7-8 => beard
-        9   => veilchen
-        10  => tattoo            */
-    gender: function() {
-      return this.get('avatar_string')[0];
-    },
+    getPart: function(part) {
+      var rules  = this.get('avatar_rules');
+      var result = "";
+      var cursor = rules.offset[part];
+      var a_str  = this.get('avatar_string');
+      var chars  = rules.chars[part];
 
-    chain: function() {
-      return this.get('avatar_string')[1];
-    },
-
-    eyes: function() {
-      return this.get('avatar_string')[2]
-    },
-
-    hair: function() {
-      return this.get('avatar_string')[3] + this.get('avatar_string')[4];
-    },
-
-    mouth: function() {
-      return this.get('avatar_string')[5];
-    },
-
-    head: function() {
-      return this.get('avatar_string')[6];
-    },
-
-    beard: function() {
-      return this.get('avatar_string')[7] + this.get('avatar_string')[8];
-    },
-
-    veilchen: function() {
-      return this.get('avatar_string')[9];
-    },
-
-    tattoo: function() {
-      return this.get('avatar_string')[10];
+      for(var i = 0; i < chars; ++i) {
+        result += a_str[cursor++];
+      }
+      return result;
     },
 
   });
