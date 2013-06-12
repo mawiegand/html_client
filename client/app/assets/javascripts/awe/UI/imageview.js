@@ -88,6 +88,11 @@ AWE.UI = (function(module) {
       _super.setFrame(frame);
       recalcScale();
     }
+
+    that.setNewSize = function(x, y) {
+      _bitmap.scaleX = x / _bitmap.image.width;
+      _bitmap.scaleY = y / _bitmap.image.height;
+    }
         
     that.displayObject = function() { return _bitmap; }
     
