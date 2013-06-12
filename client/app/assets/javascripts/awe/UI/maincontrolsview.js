@@ -327,22 +327,20 @@ AWE.UI = (function(module) {
         _heroNameView.onClick = function() { WACKADOO.characterButtonClicked(); };
         this.addChild(_heroNameView);
         
-        _heroHeadImageView = AWE.UI.createButtonView();
-        _heroHeadImageView.initWithControllerTextAndImage(my.controller, "", AWE.UI.ImageCache.getImage("hud/head/male/normal"));
-        _heroHeadImageView.setImageForState(AWE.UI.ImageCache.getImage("hud/head/male/hovered"), module.CONTROL_STATE_HOVERED);
-        _presentGender = "male";
+        _heroHeadImageView = AWE.UI.createAvatarView();
+        _heroHeadImageView.initWithControllerAndAvatar(my.controller, null); // TODO: get and pass avatar
         _heroHeadImageView.setFrame(AWE.Geometry.createRect(85, 106, 96, 82));
-        _heroHeadImageView.onClick = function() { WACKADOO.characterButtonClicked(); };
+
+//        _heroHeadImageView.onClick = function() { WACKADOO.characterButtonClicked(); };
         this.addChild(_heroHeadImageView);
       }   
       if (character.get('female') && _presentGender === "male") {
-        _heroHeadImageView.setImageForState(AWE.UI.ImageCache.getImage("hud/head/female/normal"), module.CONTROL_STATE_NORMAL);
-        _heroHeadImageView.setImageForState(AWE.UI.ImageCache.getImage("hud/head/female/hovered"), module.CONTROL_STATE_HOVERED);        
+        // TODO: update on change of avatar, not only gender.
         _presentGender = "female";
       }
       else if (!character.get('female') && _presentGender === "female") {
-        _heroHeadImageView.setImageForState(AWE.UI.ImageCache.getImage("hud/head/male/normal"), module.CONTROL_STATE_NORMAL);
-        _heroHeadImageView.setImageForState(AWE.UI.ImageCache.getImage("hud/head/male/hovered"), module.CONTROL_STATE_HOVERED);
+        // TODO: update on change of avatar, not only gender.
+    
         _presentGender = "male";
       }
       

@@ -33,9 +33,11 @@ AWE.UI = (function(module) {
       my.avatar = avatar;
       
       // todo: move this to recalcView
-      var backgroundImgae = AWE.UI.ImageCache.getImage("avatar/male/head/1");
+      var backgroundImage = AWE.UI.ImageCache.getImage("avatar/male/head/1");
+      var bgImageView = module.createImageView();
+      bgImageView.initWithControllerAndImage(controller, backgroundImage);
       
-      my.container.addChildAt(bgImage.displayObject(), 0);
+      my.container.addChildAt(bgImageView.displayObject(), 0);
       
     }
     
