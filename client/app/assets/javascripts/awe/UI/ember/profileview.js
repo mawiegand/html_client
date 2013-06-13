@@ -96,8 +96,8 @@ AWE.UI.Ember = (function(module) {
           })
         },
         { key:   "tab4",
-          title: AWE.I18n.lookupTranslation('profile.movementTab'), 
-          view:  AWE.UI.Ember.MovementView.extend({ 
+          title: AWE.I18n.lookupTranslation('profile.movingTab'), 
+          view:  AWE.UI.Ember.MovingView.extend({ 
             characterBinding: "parentView.parentView.character"
           })
         },
@@ -550,10 +550,12 @@ AWE.UI.Ember = (function(module) {
         
   });  
   
-  module.MovementView = Ember.View.extend({
-    templateName: 'movement-view',
+  module.MovingView = Ember.View.extend({
+    templateName: 'moving-view',
     
+    character: null,
     homeRegion: null,
+    newRegionName: null,
     
     init: function() {
       this._super();
@@ -569,6 +571,32 @@ AWE.UI.Ember = (function(module) {
     baseLocationIdObserver: function() {
       this.setAndUpdateHomeRegion();
     }.observes('character.base_location_id'),
+    
+    moveToRegion: function() {
+      var self = this;
+
+      this.set('message', null);  
+      this.set('moving', true);
+      
+      var action = AWE.Action.Settlement.createMoveSettlementToRegionAction(this.get('newRegionName'), '');
+      AWE.Action.Manager.queueAction(action, function(status) {
+        self.set('moving', false);
+        if (status === AWE.Net.OK) {
+          var location = AWE.Map.Manager.getLocation(this.getPath('character.base_location_id'));
+          AWE.Map.Manager.fetchLocationsForRegion(location.region(), function () {
+                that.setModelChanged();
+                log('LOCATION UPDATED', location, 'IN REGION', location.region());
+              });
+          AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id());
+        }
+        else if (status === AWE.Net.FORBIDDEN) {
+          //self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeGenderCost'))
+        }
+        else {
+         // self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeGenderError'));
+        }
+      });
+    },
   });
       
   return module;  

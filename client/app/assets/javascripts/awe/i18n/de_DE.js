@@ -742,7 +742,7 @@ AWE.I18n.de_DE = function(module) {
         resourceProductionInfo3: "besteuert.",
         setTaxRate: "Gib den neuen Steuersatz ein (5-15%).",
         artifact: "Artefakt",
-        movementPassword: "Umzugspasswort",
+        movingPassword: "Umzugspasswort",
       },
       error: {
         serverDidNotAcceptTaxRate: "Der Server hat die Änderung des Steuersatzes nicht akzeptiert.",
@@ -769,7 +769,7 @@ AWE.I18n.de_DE = function(module) {
       progressTab: "Fortschritt",
       customizationTab: "Anpassung",
       optionsTab: "Einstellungen",
-      movementTab: "Umziehen",
+      movingTab: "Umziehen",
 
       rank: {
         start: "Beginn",
@@ -857,10 +857,10 @@ AWE.I18n.de_DE = function(module) {
         },
       },
       
-      movement: {
+      moving: {
         info1: "Hier kannst Du die Position Deiner Hauptsiedlung auf der Karte verändern. Es gibt 2 Arten des Umziehens, und Du kannst jede davon nur einmal benutzen.",
         info2: "Du kannst nicht in Regionen ziehen, um die gerade gekämpft wird, oder die vor kurzem erobert wurden.",
-        specificMovementCaption: "Gezieltes Umziehen",
+        specificMovingCaption: "Gezieltes Umziehen",
         presentRegion: "Aktuelle Region",
         enterSpecificRegion: "Angabe des Regionsnamen",
         specififcRegionAdvice: "Du kannst den Namen der Region in die Du ziehen möchtest angeben. Gehört die Region einem anderen Spieler, der nicht Teil deiner Allianz ist, musst du zusätzlich noch ein Passwort nennen",

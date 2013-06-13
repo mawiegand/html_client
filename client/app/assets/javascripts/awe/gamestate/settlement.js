@@ -140,9 +140,9 @@ AWE.GS = (function(module) {
       return region ? region.invitationCode() : null;
     }.property('region').cacheable(),
     
-    regionMovementPassword: function() {
+    regionMovingPassword: function() {
       var region = this.get('region');
-      return region ? region.movementPassword() : null;
+      return region ? region.movingPassword() : null;
     }.property('region').cacheable(),
     
     garrison: function() {
