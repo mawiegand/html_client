@@ -20,10 +20,10 @@ AWE.UI = (function(module) {
     /* this is pretty static but we need to ensure a proper order */
     my.layer      = { 
       heads:     0,
-      eyes:      1,
-      hairs:     2,
-      mouths:    3,
-      veilchens: 4,
+      veilchens: 1,
+      eyes:      2,
+      hairs:     3,
+      mouths:    4,
       tattoos:   5,
       beards:    6,
       chains:    7,
