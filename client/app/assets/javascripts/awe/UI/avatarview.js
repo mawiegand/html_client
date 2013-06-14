@@ -16,6 +16,19 @@ AWE.UI = (function(module) {
 
     my.typeName   = "AvatarView";
     my.avatar     = null;
+
+    /* this is pretty static but we need to ensure a proper order */
+    my.layer      = { 
+      heads:     0,
+      eyes:      1,
+      hairs:     2,
+      mouths:    3,
+      veilchens: 4,
+      tattoos:   5,
+      beards:    6,
+      chains:    7,
+    };
+    my.controller = null;
     
     var _super = {}
 
@@ -25,20 +38,39 @@ AWE.UI = (function(module) {
       setFrame:           AWE.Ext.superior(that, "setFrame"),
       updateView:         AWE.Ext.superior(that, "updateView"),
     };
-    
+
+    /* perhaps the name is a bit too long :S */
+    var createAndAddImageToContainerAccordingToFrameSize = function(part) {
+      var gender = (my.avatar.getPart('gender') == 'm' ? 'male' : 'female');
+      //var layer  = (my.layer[part] ? my.layer[part] : (my.layer[part] = ++my.layer.counter));
+      var layer = my.layer[part];
+      var partNr = my.avatar.getPart(part);
+
+      /* probably optional. Skip adding element to avoid errors on runtime */
+      if(partNr == 0 || isNaN(partNr)) {
+        console.log("partNr is either 0 or NaN " + partNr);
+        return;
+      }
+
+      var image  = AWE.UI.ImageCache.getImage("avatar/" + gender + "/" + part + "/" + partNr);
+      /* check if image exists in image cache. Abort otherwise */
+      if(typeof image === 'undefined') {
+        console.log("Tried to access image " + image + " which is not in the image cache");
+        return;
+      }
+
+      var imageView = module.createImageView();
+      imageView.initWithControllerAndImage(my.controller, image);
+      imageView.setNewSize(my.frame.size.width, my.frame.size.height);
+
+      my.container.addChildAt(imageView.displayObject(), layer);
+    }
 
     that.initWithControllerAndAvatar = function(controller, avatar, frame) {
       _super.initWithController(controller, frame);      
       
       my.avatar = avatar;
-      
-      // todo: move this to recalcView
-      var backgroundImage = AWE.UI.ImageCache.getImage("avatar/male/head/1");
-      var bgImageView = module.createImageView();
-      bgImageView.initWithControllerAndImage(controller, backgroundImage);
-      
-      my.container.addChildAt(bgImageView.displayObject(), 0);
-      
+      my.controller = controller;
     }
     
     that.setAvatar = function(avatar) {
@@ -47,7 +79,16 @@ AWE.UI = (function(module) {
     }
     
     that.recalcView = function() {
-      // todo: create image views as needed and add them to the container.
+      var gender = (my.avatar.getPart('gender') == 'm' ? 'male' : 'female');
+      // AWE.GS.RulesManager.getRules().avatar_rules[GENDER]
+     /* AWE.GS.RulesManager.getRules().avatar_rules[gender].forEach(function(item) {
+        createAndAddImageToContainerAccordingToFrameSize('head');
+      });*/
+
+      var parts = AWE.GS.RulesManager.getRules().avatar_config[gender];
+      for(part in parts) { 
+        createAndAddImageToContainerAccordingToFrameSize(part);
+      }
     }
     
     that.updateView = function() {
