@@ -328,8 +328,9 @@ AWE.UI = (function(module) {
         this.addChild(_heroNameView);
         
         _heroHeadImageView = AWE.UI.createAvatarView();
-        _heroHeadImageView.initWithControllerAndAvatar(my.controller, null); // TODO: get and pass avatar
-        _heroHeadImageView.setFrame(AWE.Geometry.createRect(85, 106, 96, 82));
+        _heroHeadImageView.initWithControllerAndAvatar(my.controller, character.get('avatar')); // TODO: get and pass avatar
+        _heroHeadImageView.setFrame(AWE.Geometry.createRect(85, 100, 96, 82));
+        //_heroHeadImageView.setFrame(AWE.Geometry.createRect(85, 106, 96, 82));
 
 //        _heroHeadImageView.onClick = function() { WACKADOO.characterButtonClicked(); };
         this.addChild(_heroHeadImageView);
