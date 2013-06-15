@@ -179,26 +179,46 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       HOST_BOSH      = this.boshHost();
       
       var character = AWE.GS.game && AWE.GS.game.get('currentCharacter');
-      var beginner  = character && character.get('beginner');
+      var firstStart= character && character.get('beginner');
+      var beginner  = character && character.get('chat_beginner');
+      var insider   = character && character.get('insider');
       var openPane  = character && character.get('open_chat_pane');  // whether or not to open a chat pane initially
-
-      // Define groupchats here
-      if (beginner) {
-        MINI_GROUPCHATS                  = tag ? [ tag+"@conference."+base, "plauderhöhle@conference."+base, 'help@conference.'+base, "global@conference."+base ] : [ "plauderhöhle@conference."+base, 'help@conference.'+base, "global@conference."+base ];
-        MINI_SUGGEST_GROUPCHATS          =  [ 'help@conference.'+base, "global@conference."+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base ]; 
-        MINI_5D_NON_CLOSEABLE_GROUPCHATS = tag ? [ 'help@conference.'+base,  tag+"@conference."+base ] : [ 'help@conference.'+base ];       
-      }
-      else {
-        MINI_GROUPCHATS                  = tag ? [ tag+"@conference."+base, "plauderhöhle@conference."+base , "global@conference."+base] : [ "plauderhöhle@conference."+base,  "global@conference."+base ];
-        MINI_SUGGEST_GROUPCHATS          =  [ 'help@conference.'+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base, "global@conference."+base ];
-        MINI_5D_NON_CLOSEABLE_GROUPCHATS = tag ? [ tag+"@conference."+base ] : [ ];
-          
-        if (character && character.hasStaffRole('help')) {
-          MINI_GROUPCHATS.push("help@conference."+base);
-        }
+      
+      MINI_GROUPCHATS                  = tag ? [ tag+"@conference."+base ] : [];
+      MINI_5D_NON_CLOSEABLE_GROUPCHATS = tag ? [ tag+"@conference."+base ] : [];
+      MINI_SUGGEST_GROUPCHATS          = [ 'help@conference.'+base, "global@conference."+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base, 'whisperingcavern@conference.'+base ];              
+             
+      if (insider) {
+        MINI_GROUPCHATS.push( "insider@conference."+base );
+        MINI_SUGGEST_GROUPCHATS.push( "insider@conference."+base );
       }
       
-      MINI_5D_NO_USERLIST_GROUPCHATS     = [ 'help@conference.'+base, 'global@conference.'+base ];
+      var locale = AWE.Settings.locale || AWE.Config.DEFAULT_LOCALE;
+      if (locale && locale === "de_DE") {
+        MINI_GROUPCHATS.push( "plauderhöhle@conference."+base );
+      }
+      else {
+        MINI_GROUPCHATS.push( "whisperingcavern@conference."+base );        
+      }
+      
+      if (character && character.hasStaffRole('help')) {
+        MINI_GROUPCHATS.push("help@conference."+base, "beginner@conference."+base );
+        MINI_SUGGEST_GROUPCHATS.push( "beginner@conference."+base )
+        MINI_5D_NON_CLOSEABLE_GROUPCHATS.push( "help@conference."+base );
+      }
+      
+      if (beginner) {
+        MINI_GROUPCHATS.push( "beginner@conference."+base );
+        MINI_5D_NON_CLOSEABLE_GROUPCHATS.push( "beginner@conference."+base );        
+      }
+      else {
+        MINI_GROUPCHATS.push( "global@conference."+base );        
+      }
+
+      MINI_5D_NO_USERLIST_GROUPCHATS     = [ 'help@conference.'+base, 'global@conference.'+base, 'insider@conference.'+base, 'beginner@conference.'+base  ];      
+      if (character && character.hasStaffRole('help')) {
+        MINI_5D_NO_USERLIST_GROUPCHATS     = [ ];
+      }
       MINI_5D_STAFF_POSTFIXES            = [ '| 5D', '@mod', '@admin', '@staff' ];
       
       JAPPIX_STATIC = 'jappix/'
@@ -224,10 +244,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             
       if (AWE.Config.IN_DEVELOPMENT_MODE) {
         log('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
-        launchMini(!beginner, openPane, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
+        launchMini(true, openPane, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
       }
       else {
-        launchMini(!beginner, openPane, base, identifier, accessToken);
+        launchMini(true, openPane, base, identifier, accessToken); // !firststart
       }
 
   	  if (!reconnect) {
