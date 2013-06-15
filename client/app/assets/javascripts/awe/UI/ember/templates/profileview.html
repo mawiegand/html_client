@@ -211,13 +211,14 @@
     <b>{{t profile.moving.enterSpecificRegion}}</b><br>
     {{t profile.moving.specififcRegionAdvice}}
   </p>
-   <p>
-     {{view Ember.TextField placeholder="Regionsname" valueBinding="newRegionName" }}
-     
-     {{#if moving }}
-       &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
-     {{else}} 
-       <span class="simple-button" {{action "moveToRegion"}}>{{t profile.moving.moveButton}}</span>
-     {{/if}}  
+  <p class="red-color">{{message}}</p>
+  <p>
+    {{view Ember.TextField placeholder="Regionsname" valueBinding="newRegionName" }}
+    
+    {{#if moving }}
+      &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+    {{else}}
+      <span class="simple-button" {{action "moveToRegion"}}>{{t profile.moving.moveButton}}</span>
+    {{/if}}
   </p>
 </script>

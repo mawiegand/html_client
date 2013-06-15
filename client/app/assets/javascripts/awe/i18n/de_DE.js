@@ -865,6 +865,8 @@ AWE.I18n.de_DE = function(module) {
         enterSpecificRegion: "Angabe des Regionsnamen",
         specififcRegionAdvice: "Du kannst den Namen der Region in die Du ziehen möchtest angeben. Gehört die Region einem anderen Spieler, der nicht Teil deiner Allianz ist, musst du zusätzlich noch ein Passwort nennen",
         moveButton: "Umziehen",
+        movingPasswordCaption: "Gib das Umzugspasswort ein.",
+        movingError: "Dein Umzug konnte aus unbekannten Gründen nicht vollzogen werden. Bitte versuch es später noch einmal.",
       },
     },
     

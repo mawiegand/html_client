@@ -572,28 +572,61 @@ AWE.UI.Ember = (function(module) {
       this.setAndUpdateHomeRegion();
     }.observes('character.base_location_id'),
     
+    /*displayRegion: function() {
+      var regionId = this.getPath('character.base_region_id');
+      var region = AWE.Map.Manager.getRegion(regionId);
+      if (region != null) {
+        var mapController = WACKADOO.activateMapController(true);
+        WACKADOO.closeAllModalDialogs();
+        mapController.centerRegion(region);
+      }
+      else {
+        AWE.Map.Manager.fetchSingleRegionById(regionId, function(region) {
+          var mapController = WACKADOO.activateMapController(true);
+          WACKADOO.closeAllModalDialogs();
+          mapController.centerRegion(region);
+        });
+      }
+    },*/
+            
     moveToRegion: function() {
       var self = this;
 
-      this.set('message', null);  
+      this.set('message', null);
       this.set('moving', true);
-      
-      var action = AWE.Action.Settlement.createMoveSettlementToRegionAction(this.get('newRegionName'), '');
+      var newRegionName = this.get('newRegionName');
+      var action = AWE.Action.Settlement.createMoveSettlementToRegionAction(newRegionName, '');
       AWE.Action.Manager.queueAction(action, function(status) {
         self.set('moving', false);
         if (status === AWE.Net.OK) {
           var location = AWE.Map.Manager.getLocation(this.getPath('character.base_location_id'));
-          AWE.Map.Manager.fetchLocationsForRegion(location.region(), function () {
-                that.setModelChanged();
-                log('LOCATION UPDATED', location, 'IN REGION', location.region());
-              });
+          AWE.Map.Manager.fetchLocationsForRegion(location.region(), function() {
+            that.setModelChanged();
+            log('LOCATION UPDATED', location, 'IN REGION', location.region());
+          });
           AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id());
         }
-        else if (status === AWE.Net.FORBIDDEN) {
-          //self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeGenderCost'))
+        else if (status === AWE.Net.CONFLICT) {
+          var passwordDialog = AWE.UI.Ember.TextInputDialog.create({
+            heading: AWE.I18n.lookupTranslation('profile.moving.movingPasswordCaption'),
+            controller: this,
+            okPressed: function() {
+              var action = AWE.Action.Settlement.createMoveSettlementToRegionAction(newRegionName, this.getPath('input'));
+              AWE.Action.Manager.queueAction(action, function(status) {
+                if (status === AWE.Net.OK) {
+                  WACKADOO.closeAllModalDialogs();
+                }
+              });
+              this.destroy();
+            },
+            cancelPressed: function() {
+              this.destroy();
+            },
+          });
+          WACKADOO.presentModalDialog(passwordDialog);
         }
         else {
-         // self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeGenderError'));
+          self.set('message', AWE.I18n.lookupTranslation('profile.moving.movingError'));
         }
       });
     },
