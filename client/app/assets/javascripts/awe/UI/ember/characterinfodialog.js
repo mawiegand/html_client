@@ -57,6 +57,7 @@ AWE.UI.Ember = (function(module) {
       this.set('character', character);
       AWE.GS.CharacterManager.updateCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {
         self.set('character', result);
+      console.log("######## CHAR: " + character);
       });
     },
 
