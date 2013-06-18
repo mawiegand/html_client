@@ -4,7 +4,7 @@
     <div class="modal-dialog-pane character-info-dialog-pane">
       {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner" width=120 height=120}}
       
-      {{view AWE.UI.Ember.AvatarView characterBinding="character" classNames="avatar"}}
+      {{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar"}}
 
       <h1>{{view AWE.UI.Ember.LinkedCharacterView characterBinding="character" linkCharacter=false}}</h1>
       

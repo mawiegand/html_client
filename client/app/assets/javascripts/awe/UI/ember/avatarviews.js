@@ -16,7 +16,7 @@ AWE.UI.Ember = (function(module) {
     width: 96,
     height: 96,
     
-    character: null,
+    avatarString: null,
     shape: null,
     controller: null,
     
@@ -26,7 +26,9 @@ AWE.UI.Ember = (function(module) {
     
     avatarUpdate: function() {
       log('AVATAR UPDATE');
-      var character = this.get('character');
+
+      var avatar = null;
+      var avatar_string = this.get('avatarString');
       var shape  = this.get('shape');
       var width  = this.get('width')  || 96;
       var height = this.get('height') || 96;
@@ -34,22 +36,28 @@ AWE.UI.Ember = (function(module) {
       if(shape) {
         this.removeChild(shape);
       }
-      if(typeof character === 'undefined') {
+
+      if(Ember.none(avatar_string)) {
+        this.set('shape', null);
+        return ;
+      }
+      
+      avatar = AWE.GS.Avatar.create({ avatar_string: avatar_string });
+
+      if(Ember.none(avatar)) {
         this.set('shape', null);
         return ;
       }
 
-      console.log("AVATAR VIEW: " + width + ", " + width);
-      
       shape = AWE.UI.createAvatarView();
-      shape.initWithControllerAndAvatar(this.get('controller'), character.get('avatar'));
+      shape.initWithControllerAndAvatar(this.get('controller'), avatar);
       shape.setFrame(AWE.Geometry.createRect(0, 0, width, height));
       
       this.addChild(shape);
       this.set('shape', shape);
       shape.updateView();      
       this.update();
-    }.observes('character'),
+    }.observes('avatarString'),
     
   });
   

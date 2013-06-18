@@ -30,7 +30,11 @@
         {{#each characterRankingEntries}}
           <tr {{bindAttr class="this.ownEntry:bold"}}>
             <td class="number rank">{{this.rank}}</td>
-            <td><a class="clickable character" {{action "characterPressed"}}>{{this.character_name}}</a>{{#if this.alliance_tag}} | <a class="clickable" {{action "alliancePressed" target="parentView"}}>{{this.alliance_tag}}{{/if}}</a></td>
+            <td>
+              <div style="float:left">
+                {{view AWE.UI.Ember.AvatarView avatarStringBinding="avatar_string" classNames="avatar" width=50 height=50}}
+              </div>
+              <a class="clickable character" {{action "characterPressed"}}>{{this.character_name}}</a>{{#if this.alliance_tag}} | <a class="clickable" {{action "alliancePressed" target="parentView"}}>{{this.alliance_tag}}{{/if}}</a><br style="clear:both"></td>
             <td class="number overall">{{this.overall_score}}</td>
             <td class="number resource">{{this.resource_score}}</td>
             <td class="number likes">{{this.likes}} ({{formatAsPercent this.like_ratio}})</td>
