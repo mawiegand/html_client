@@ -568,10 +568,14 @@ AWE.UI.Ember = (function(module) {
       this.set('homeRegion', region);
     },
     
-    baseLocationIdObserver: function() {
+    baseRegionIdObserver: function() {
       this.setAndUpdateHomeRegion();
-    }.observes('character.base_location_id'),
+    }.observes('character.base_region_id'),
     
+    homeRegionName: function() {
+      return this.homeRegion.name();
+    }.property(),
+
     /*displayRegion: function() {
       var regionId = this.getPath('character.base_region_id');
       var region = AWE.Map.Manager.getRegion(regionId);
