@@ -62,6 +62,8 @@ AWE.UI = (function(module) {
       var imageView = module.createImageView();
       imageView.initWithControllerAndImage(my.controller, image);
       imageView.setNewSize(my.frame.size.width, my.frame.size.height);
+      imageView.onClick = that.onClick;
+
 
       my.container.addChildAt(imageView.displayObject(), layer);
     }
@@ -94,7 +96,7 @@ AWE.UI = (function(module) {
     that.updateView = function() {
       this.recalcView();      
       _super.updateView();
-    };   
+    };
 
     return that;
   };          

@@ -332,7 +332,7 @@ AWE.UI = (function(module) {
         _heroHeadImageView.setFrame(AWE.Geometry.createRect(85, 100, 96, 96));
         //_heroHeadImageView.setFrame(AWE.Geometry.createRect(85, 106, 96, 82));
 
-//        _heroHeadImageView.onClick = function() { WACKADOO.characterButtonClicked(); };
+        _heroHeadImageView.onClick = function() { WACKADOO.characterButtonClicked(); };
         this.addChild(_heroHeadImageView);
       }   
       if (character.get('female') && _presentGender === "male") {
