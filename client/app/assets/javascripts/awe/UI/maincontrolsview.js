@@ -319,7 +319,7 @@ AWE.UI = (function(module) {
         _heroNameView = AWE.UI.createButtonView();
         _heroNameView.initWithControllerTextAndImage(my.controller, "", AWE.UI.ImageCache.getImage("hud/main/name/normal"));
         _heroNameView.setImageForState(AWE.UI.ImageCache.getImage("hud/main/name/hovered"), module.CONTROL_STATE_HOVERED);
-        _heroNameView.setFrame(AWE.Geometry.createRect(75, 174, 123, 30));
+        _heroNameView.setFrame(AWE.Geometry.createRect(75, 168, 123, 30));
         _heroNameView.setFont("12px Arial");
         _heroNameView.setColor('rgb(0,0,0)');
         _heroNameView.setShadowEnabled(false);
