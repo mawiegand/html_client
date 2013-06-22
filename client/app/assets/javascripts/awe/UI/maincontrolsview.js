@@ -319,7 +319,7 @@ AWE.UI = (function(module) {
         _heroNameView = AWE.UI.createButtonView();
         _heroNameView.initWithControllerTextAndImage(my.controller, "", AWE.UI.ImageCache.getImage("hud/main/name/normal"));
         _heroNameView.setImageForState(AWE.UI.ImageCache.getImage("hud/main/name/hovered"), module.CONTROL_STATE_HOVERED);
-        _heroNameView.setFrame(AWE.Geometry.createRect(75, 168, 123, 30));
+        _heroNameView.setFrame(AWE.Geometry.createRect(75, 174, 123, 30));
         _heroNameView.setFont("12px Arial");
         _heroNameView.setColor('rgb(0,0,0)');
         _heroNameView.setShadowEnabled(false);
@@ -329,7 +329,7 @@ AWE.UI = (function(module) {
         
         _heroHeadImageView = AWE.UI.createAvatarView();
         _heroHeadImageView.initWithControllerAndAvatar(my.controller, character.get('avatar')); // TODO: get and pass avatar
-        _heroHeadImageView.setFrame(AWE.Geometry.createRect(85, 100, 96, 96));
+        _heroHeadImageView.setFrame(AWE.Geometry.createRect(85, 92, 96, 96));
         //_heroHeadImageView.setFrame(AWE.Geometry.createRect(85, 106, 96, 82));
 
         _heroHeadImageView.onClick = function() { WACKADOO.characterButtonClicked(); };
