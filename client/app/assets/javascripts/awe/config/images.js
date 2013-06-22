@@ -288,10 +288,10 @@ AWE.Config = (function(module) {
     "avatar/male/tattoos/2"       :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_tattoo_1.png',
     "avatar/male/tattoos/3"       :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_tattoo_2.png',
     "avatar/male/tattoos/4"       :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_tattoo_premium.png',
-    "avatar/male/veilchens/1"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_links_0.png',
-    "avatar/male/veilchens/2"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_links_1.png',
-    "avatar/male/veilchens/3"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_rechts_0.png',
-    "avatar/male/veilchens/4"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_rechts_1.png',
+    "avatar/male/veilchens/1"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_rechts_0.png',
+    "avatar/male/veilchens/2"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_rechts_1.png',
+    "avatar/male/veilchens/3"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_links_0.png',
+    "avatar/male/veilchens/4"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_links_1.png',
 
   };
   
