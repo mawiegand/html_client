@@ -65,6 +65,16 @@ AWE.GS = (function(module) {
 
     victories: 0,
     defeats: 0,
+    avatar_string: null,
+    avatar_obj: null,
+
+    avatar: function() {
+      if(this.get('avatar_obj') == null) {
+        this.set('avatar_obj', AWE.GS.Avatar.create({ avatar_string: this.get('avatar_string') }));
+      }
+
+      return this.get('avatar_obj');
+    }.property('avatar_string'),
     
     exp_production_rate_zero: function() {
       return !((this.get('exp_production_rate') || 0) > 0);
