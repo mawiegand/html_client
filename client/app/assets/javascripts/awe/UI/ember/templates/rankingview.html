@@ -37,7 +37,7 @@
             <td class="number kills">{{this.kills}}</td>
             <td class="number victories">{{this.victories}} ({{formatNumber this.victory_ratio maxPlaces="1"}})</td>
             <td class="number experience">{{this.max_experience}}</td>
-            <td class="artifact">{{this.artifact_name}}</td>
+            <td class="artifact">{{local this.artifact_name}}</td>
           </tr>
         {{/each}}
         {{#each emptyCharacterRankingEntries}}
