@@ -2425,6 +2425,27 @@ AWE.Controller = function (module) {
 
       var processArmiesAtPos = function (armies, settlement, pos, frame) {
 
+        var filterArmies = function(armies) {
+          if (AWE.Config.DONT_RENDER_ARMIES) {
+            return {};
+          }
+          if (!AWE.Config.DONT_RENDER_OTHER_ARMIES) {
+            return armies;
+          }
+          else {
+            var filtered = {};
+            for (var key in armies) {
+              var army = armies[key];
+              if (army.isOwn()) {
+                filtered[key] = army;
+              }
+            }
+            return filtered;
+          }
+        }
+        
+        armies = filterArmies(armies);
+
         initViewsWithBasePosition(armies, pos);
         unclutter(armies, settlement, pos, frame);
 
