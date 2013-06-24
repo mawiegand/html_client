@@ -32,7 +32,7 @@
             <td class="number rank">{{this.rank}}</td>
             <td>
               <div style="float:left">
-                {{view AWE.UI.Ember.AvatarView avatarStringBinding="avatar_string" classNames="avatar" width=24 height=24 postfix="ranking"}}
+                {{view AWE.UI.Ember.AvatarView avatarStringBinding="avatar_string" classNames="avatar" width=24 height=24 prefix="ranking"}}
               </div>
               <a class="clickable character" {{action "characterPressed"}}>{{this.character_name}}</a>{{#if this.alliance_tag}} | <a class="clickable" {{action "alliancePressed" target="parentView"}}>{{this.alliance_tag}}{{/if}}</a><br style="clear:both">
             </td>
