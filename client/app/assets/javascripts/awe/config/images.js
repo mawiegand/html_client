@@ -144,6 +144,8 @@ AWE.Config = (function(module) {
     "ui/button/mapterrain/hover":    AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_terrain_hover.png',
     "ui/button/mapency/normal":      AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_ency.png',
     "ui/button/mapency/hover":       AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_ency_hover.png',
+    "ui/button/visibility/normal":   AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_visibility.png',
+    "ui/button/visibility/hover":    AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_visibility_hover.png',
     "ui/button/map/background":      AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_background.png',
     
     "map/icon/owner":         AWE.Config.RAILS_ASSET_PATH + 'icons/heads.png',

@@ -2357,7 +2357,8 @@ AWE.Controller = function (module) {
         var views = [];
         AWE.Ext.applyFunctionToElements(armies, function (element) {
           if (!element.isGarrison()) {
-            var view = armyViews[element.getId()];
+            var view = armyViews[element.getId()] 
+            view = view ? view : newArmyViews[element.getId()];
             if (view) {
               views.push({
                 view:view,
@@ -2445,9 +2446,11 @@ AWE.Controller = function (module) {
           }
           var filtered = {};
           for (var key in armies) {
-            var army = armies[key];
-            if (army.isOwn() || army.get('npc')) {
-              filtered[key] = army;
+            if (armies.hasOwnProperty(key)) {
+              var army = armies[key];
+              if (army.isOwn() || army.get('npc')) {
+                filtered[key] = army;
+              }
             }
           }
           return filtered;
@@ -2991,6 +2994,8 @@ AWE.Controller = function (module) {
     that.updateViewHierarchy = (function () {
       var oldVisibleArea = null;
       var oldWindowSize = null;
+      var lastHideOtherArmies = hideOtherArmies;
+
 
       var propUpdates = function (viewHash) {
         var needsDisplay = false;
@@ -3017,10 +3022,13 @@ AWE.Controller = function (module) {
         }
 
         if ((AWE.Config.MAP_MOVE_ARMIES && _loopCounter % 60 == 0) ||
-          _windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _actionViewChanged) { // if moving armies
+          _windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) ||
+          _actionViewChanged || lastHideOtherArmies != hideOtherArmies) { // if moving armies
           stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         }
-        ;
+        
+        lastHideOtherArmies = hideOtherArmies;
+        
 
         if (_windowChanged || this.modelChanged() || _actionViewChanged || currentAction || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           stagesNeedUpdate[2] = that.updateActionViews();
@@ -3123,7 +3131,6 @@ AWE.Controller = function (module) {
             animating = true;
           }
         });
-
 
         // STEP 4: update views and repaint view hierarchies as needed
         if (_windowChanged || _needsDisplay || _loopCounter % 6 == 0 || that.modelChanged() || _actionViewChanged || animating) {

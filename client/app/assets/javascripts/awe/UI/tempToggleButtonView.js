@@ -171,8 +171,8 @@ AWE.UI = (function(module) {
     that.recalcView = function() {
       if (!my.toggleButtonView) {
         my.toggleButtonView = AWE.UI.createButtonView();
-        my.toggleButtonView.initWithControllerTextAndImage(my.controller, "", AWE.UI.ImageCache.getImage("ui/button/mapency/normal"));
-        my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapency/hover"), module.CONTROL_STATE_HOVERED);
+        my.toggleButtonView.initWithControllerTextAndImage(my.controller, "", AWE.UI.ImageCache.getImage("ui/button/visibility/normal"));
+        my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/visibility/hover"), module.CONTROL_STATE_HOVERED);
         my.toggleButtonView.setFrame(AWE.Geometry.createRect(0, 0, 68, 70));
         my.toggleButtonView.onClick = function() {
           that.onToggleButtonClick()
