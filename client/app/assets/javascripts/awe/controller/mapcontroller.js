@@ -2991,6 +2991,8 @@ AWE.Controller = function (module) {
     that.updateViewHierarchy = (function () {
       var oldVisibleArea = null;
       var oldWindowSize = null;
+      var lastHideOtherArmies = hideOtherArmies;
+
 
       var propUpdates = function (viewHash) {
         var needsDisplay = false;
@@ -3017,10 +3019,13 @@ AWE.Controller = function (module) {
         }
 
         if ((AWE.Config.MAP_MOVE_ARMIES && _loopCounter % 60 == 0) ||
-          _windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _actionViewChanged) { // if moving armies
+          _windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) ||
+          _actionViewChanged || lastHideOtherArmies != hideOtherArmies) { // if moving armies
           stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         }
-        ;
+        
+        lastHideOtherArmies = hideOtherArmies;
+        
 
         if (_windowChanged || this.modelChanged() || _actionViewChanged || currentAction || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           stagesNeedUpdate[2] = that.updateActionViews();
@@ -3089,7 +3094,6 @@ AWE.Controller = function (module) {
     //
     // ///////////////////////////////////////////////////////////////////////
 
-    var lastHideOtherArmies = hideOtherArmies;
 
     that.runloop = function () {
 
@@ -3126,7 +3130,7 @@ AWE.Controller = function (module) {
         });
 
         // STEP 4: update views and repaint view hierarchies as needed
-        if (_windowChanged || _needsDisplay || _loopCounter % 6 == 0 || that.modelChanged() || _actionViewChanged || animating || lastHideOtherArmies == hideOtherArmies) {
+        if (_windowChanged || _needsDisplay || _loopCounter % 6 == 0 || that.modelChanged() || _actionViewChanged || animating) {
           // STEP 4a: get all visible nodes from the model
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());
 
@@ -3144,10 +3148,7 @@ AWE.Controller = function (module) {
             _animations = runningAnimations;
           }
 
-          stageUpdateNeeded[1] = stageUpdateNeeded[1] || lastHideOtherArmies == hideOtherArmies; 
           stageUpdateNeeded[2] = stageUpdateNeeded[2] || animating; ///< ANIMATION HACK (all animations on layer 2)
-          
-          lastHideOtherArmies = hideOtherArmies;
 
           // STEP 4c: update (repaint) those stages, that have changed (one view that needsDisplay triggers repaint of whole stage)
           var viewsInStages = [
