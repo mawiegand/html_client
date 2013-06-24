@@ -22,10 +22,10 @@ AWE.UI = (function(module) {
     my.layer      = { 
       heads:     0,
       veilchens: 1,
-      eyes:      2,
-      hairs:     3,
-      mouths:    4,
-      tattoos:   5,
+      tattoos:   2,
+      eyes:      3,
+      hairs:     4,
+      mouths:    5,
       beards:    6,
       chains:    7,
     };
