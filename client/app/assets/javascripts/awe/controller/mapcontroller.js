@@ -3089,6 +3089,7 @@ AWE.Controller = function (module) {
     //
     // ///////////////////////////////////////////////////////////////////////
 
+    var lastHideOtherArmies = hideOtherArmies;
 
     that.runloop = function () {
 
@@ -3124,9 +3125,8 @@ AWE.Controller = function (module) {
           }
         });
 
-
         // STEP 4: update views and repaint view hierarchies as needed
-        if (_windowChanged || _needsDisplay || _loopCounter % 6 == 0 || that.modelChanged() || _actionViewChanged || animating) {
+        if (_windowChanged || _needsDisplay || _loopCounter % 6 == 0 || that.modelChanged() || _actionViewChanged || animating || lastHideOtherArmies == hideOtherArmies) {
           // STEP 4a: get all visible nodes from the model
           var visibleNodes = AWE.Map.getNodesInAreaAtLevel(AWE.Map.Manager.rootNode(), visibleArea, level(), false, that.modelChanged());
 
@@ -3144,7 +3144,10 @@ AWE.Controller = function (module) {
             _animations = runningAnimations;
           }
 
+          stageUpdateNeeded[1] = stageUpdateNeeded[1] || lastHideOtherArmies == hideOtherArmies; 
           stageUpdateNeeded[2] = stageUpdateNeeded[2] || animating; ///< ANIMATION HACK (all animations on layer 2)
+          
+          lastHideOtherArmies = hideOtherArmies;
 
           // STEP 4c: update (repaint) those stages, that have changed (one view that needsDisplay triggers repaint of whole stage)
           var viewsInStages = [
