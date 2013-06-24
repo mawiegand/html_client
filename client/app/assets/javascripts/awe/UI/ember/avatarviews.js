@@ -19,6 +19,7 @@ AWE.UI.Ember = (function(module) {
     avatarString: null,
     shape: null,
     controller: null,
+    prefix: null,
     
     init: function() {
       this._super();
@@ -50,7 +51,7 @@ AWE.UI.Ember = (function(module) {
       }
 
       shape = AWE.UI.createAvatarView();
-      shape.initWithControllerAndAvatar(this.get('controller'), avatar);
+      shape.initWithControllerAndAvatar(this.get('controller'), avatar, 'ranking');
       shape.setFrame(AWE.Geometry.createRect(0, 0, width, height));
       
       this.addChild(shape);

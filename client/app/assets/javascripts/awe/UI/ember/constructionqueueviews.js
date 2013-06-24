@@ -108,7 +108,6 @@ AWE.UI.Ember = (function(module) {
         return true;
       }
       else {
-        log('frog trade not available, probably due to less frogs');
         return false;
       }
     }.property('job.active_job', 'active', 'first', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present', 'disableFrogTrade').cacheable(),

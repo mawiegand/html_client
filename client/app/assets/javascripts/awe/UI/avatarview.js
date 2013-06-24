@@ -14,17 +14,18 @@ AWE.UI = (function(module) {
 
     that = module.createContainer(spec, my);
 
-    my.typeName   = "AvatarView";
-    my.avatar     = null;
+    my.typeName    = "AvatarView";
+    my.avatar      = null;
+    my.imagePrefix = null;
 
     /* this is pretty static but we need to ensure a proper order */
     my.layer      = { 
       heads:     0,
       veilchens: 1,
-      eyes:      2,
-      hairs:     3,
-      mouths:    4,
-      tattoos:   5,
+      tattoos:   2,
+      eyes:      3,
+      hairs:     4,
+      mouths:    5,
       beards:    6,
       chains:    7,
     };
@@ -52,7 +53,7 @@ AWE.UI = (function(module) {
         return;
       }
 
-      var image  = AWE.UI.ImageCache.getImage("avatar/" + gender + "/" + part + "/" + partNr);
+      var image  = Ember.none(my.imagePrefix) ? AWE.UI.ImageCache.getImage("avatar/" + gender + "/" + part + "/" + partNr) : AWE.UI.ImageCache.getImage("avatar/" + my.imagePrefix + "/" + gender + "/" + part + "/" + partNr)
       /* check if image exists in image cache. Abort otherwise */
       if(typeof image === 'undefined') {
         console.log("Tried to access image " + image + " which is not in the image cache");
@@ -68,11 +69,12 @@ AWE.UI = (function(module) {
       my.container.addChildAt(imageView.displayObject(), layer);
     }
 
-    that.initWithControllerAndAvatar = function(controller, avatar, frame) {
-      _super.initWithController(controller, frame);      
+    that.initWithControllerAndAvatar = function(controller, avatar, prefix, frame) {
+      _super.initWithController(controller, frame);
       
       my.avatar = avatar;
       my.controller = controller;
+      my.imagePrefix = prefix;
     }
     
     that.setAvatar = function(avatar) {
