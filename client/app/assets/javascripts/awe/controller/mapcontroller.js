@@ -2357,7 +2357,8 @@ AWE.Controller = function (module) {
         var views = [];
         AWE.Ext.applyFunctionToElements(armies, function (element) {
           if (!element.isGarrison()) {
-            var view = armyViews[element.getId()];
+            var view = armyViews[element.getId()] 
+            view = view ? view : newArmyViews[element.getId()];
             if (view) {
               views.push({
                 view:view,
@@ -2445,9 +2446,11 @@ AWE.Controller = function (module) {
           }
           var filtered = {};
           for (var key in armies) {
-            var army = armies[key];
-            if (army.isOwn() || army.get('npc')) {
-              filtered[key] = army;
+            if (armies.hasOwnProperty(key)) {
+              var army = armies[key];
+              if (army.isOwn() || army.get('npc')) {
+                filtered[key] = army;
+              }
             }
           }
           return filtered;
