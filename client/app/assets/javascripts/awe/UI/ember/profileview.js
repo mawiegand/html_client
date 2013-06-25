@@ -1,5 +1,6 @@
 /* Authors: Sascha Lange <sascha@5dlab.com>, 
  *          Patrick Fox <patrick@5dlab.com>, Julian Schmid
+ *          Marcel Wiegand <marcel@5dlab.com>
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
@@ -557,6 +558,8 @@ AWE.UI.Ember = (function(module) {
     homeRegion: null,
     newRegionName: null,
     
+    moving: false,
+    
     init: function() {
       this._super();
       this.setAndUpdateHomeRegion();
@@ -575,52 +578,60 @@ AWE.UI.Ember = (function(module) {
     homeRegionName: function() {
       return this.homeRegion.name();
     }.property(),
-
-    /*displayRegion: function() {
-      var regionId = this.getPath('character.base_region_id');
-      var region = AWE.Map.Manager.getRegion(regionId);
-      if (region != null) {
+    
+    displayRegion: function(regionName, callback) {
+      AWE.Map.Manager.fetchSingleRegionById(regionName, function(region) {
         var mapController = WACKADOO.activateMapController(true);
         WACKADOO.closeAllModalDialogs();
         mapController.centerRegion(region);
-      }
-      else {
-        AWE.Map.Manager.fetchSingleRegionById(regionId, function(region) {
-          var mapController = WACKADOO.activateMapController(true);
-          WACKADOO.closeAllModalDialogs();
-          mapController.centerRegion(region);
-        });
-      }
-    },*/
-            
-    moveToRegion: function() {
-      var self = this;
-
-      this.set('message', null);
-      this.set('moving', true);
-      var newRegionName = this.get('newRegionName');
-      var action = AWE.Action.Settlement.createMoveSettlementToRegionAction(newRegionName, '');
+        if (callback) callback(region);
+      });
+    },
+    
+    moveToRegion: function(regionName, regionPassword) {
+      var action = AWE.Action.Settlement.createMoveSettlementToRegionAction(regionName, regionPassword);
       AWE.Action.Manager.queueAction(action, function(status) {
-        self.set('moving', false);
         if (status === AWE.Net.OK) {
-          var location = AWE.Map.Manager.getLocation(this.getPath('character.base_location_id'));
-          AWE.Map.Manager.fetchLocationsForRegion(location.region(), function() {
-            that.setModelChanged();
-            log('LOCATION UPDATED', location, 'IN REGION', location.region());
-          });
-          AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id());
+          //\TODO UPDATE SETTLEMENT, NAVIGATION (TOP RIGHT)
+          /*var location = AWE.Map.Manager.getLocation(self.getPath('character.base_location_id'));
+           AWE.Map.Manager.fetchLocationsForRegion(location.region(), function() {
+           that.setModelChanged();
+           log('LOCATION UPDATED', location, 'IN REGION', location.region());
+           });
+           AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id());*/
         }
         else if (status === AWE.Net.CONFLICT) {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('profile.moving.movingErrorHeading'),
+            message: AWE.I18n.lookupTranslation('profile.moving.movingErrorWrongPassword'),
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
+        else {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('profile.moving.movingErrorHeading'),
+            message: AWE.I18n.lookupTranslation('profile.moving.movingError'),
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
+      });
+    },
+    
+    moveToRegionClicked: function() {
+      var self = this;
+
+      self.set('message', null);
+      self.set('moving', true);
+      var regionName = self.get('newRegionName');
+      self.displayRegion(regionName, function(region) {
+        var regionPassword = '';
+        if (self.getPath('character.alliance_id') !== region.allianceId()) {
           var passwordDialog = AWE.UI.Ember.TextInputDialog.create({
             heading: AWE.I18n.lookupTranslation('profile.moving.movingPasswordCaption'),
-            controller: this,
+            controller: self,
             okPressed: function() {
-              var action = AWE.Action.Settlement.createMoveSettlementToRegionAction(newRegionName, this.getPath('input'));
-              AWE.Action.Manager.queueAction(action, function(status) {
-                if (status === AWE.Net.OK) {
-                  WACKADOO.closeAllModalDialogs();
-                }
-              });
+              regionPassword = this.getPath('input');
+              self.moveToRegion(regionName, regionPassword);
               this.destroy();
             },
             cancelPressed: function() {
@@ -630,7 +641,22 @@ AWE.UI.Ember = (function(module) {
           WACKADOO.presentModalDialog(passwordDialog);
         }
         else {
-          self.set('message', AWE.I18n.lookupTranslation('profile.moving.movingError'));
+          var confirmationDialog = AWE.UI.Ember.Dialog.create({
+            templateName: 'info-dialog',
+            classNames: ['confirmation-dialog'],
+            heading: AWE.I18n.lookupTranslation('profile.moving.confirmation.caption'),
+            message: AWE.I18n.lookupTranslation('profile.moving.confirmation.message1') + region.name() + AWE.I18n.lookupTranslation('profile.moving.confirmation.message2'),
+            cancelText: AWE.I18n.lookupTranslation('profile.moving.confirmation.cancel'),
+            okText: AWE.I18n.lookupTranslation('profile.moving.confirmation.ok'),
+            okPressed: function() {
+              self.moveToRegion(regionName, '');
+              this.destroy();
+            },
+            cancelPressed: function() {
+              this.destroy();
+            }
+          });
+          WACKADOO.presentModalDialog(confirmationDialog);
         }
       });
     },
