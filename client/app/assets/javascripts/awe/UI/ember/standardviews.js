@@ -212,11 +212,13 @@ AWE.UI.Ember = (function(module) {
       this._super();
       var canvas = this.$('canvas');
       this.set('canvas', canvas);
+      var width = this.get('width') || 200;
+      var height = this.get('height') || 200;
       canvas
-      .css('width', '200px')
-      .css('height', '200px')
-      .attr('width', 200)
-      .attr('height', 200);
+      .css('width', width+'px')
+      .css('height', height+'px')
+      .attr('width', width)
+      .attr('height', height);
 
       var stage = new Stage(canvas[0]);
 

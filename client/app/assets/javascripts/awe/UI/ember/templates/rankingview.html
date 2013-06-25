@@ -30,14 +30,19 @@
         {{#each characterRankingEntries}}
           <tr {{bindAttr class="this.ownEntry:bold"}}>
             <td class="number rank">{{this.rank}}</td>
-            <td><a class="clickable character" {{action "characterPressed"}}>{{this.character_name}}</a>{{#if this.alliance_tag}} | <a class="clickable" {{action "alliancePressed" target="parentView"}}>{{this.alliance_tag}}{{/if}}</a></td>
+            <td>
+              <div style="float:left">
+                {{view AWE.UI.Ember.AvatarView avatarStringBinding="avatar_string" classNames="avatar" width=24 height=24 prefix="ranking"}}
+              </div>
+              <a class="clickable character" {{action "characterPressed"}}>{{this.character_name}}</a>{{#if this.alliance_tag}} | <a class="clickable" {{action "alliancePressed" target="parentView"}}>{{this.alliance_tag}}{{/if}}</a><br style="clear:both">
+            </td>
             <td class="number overall">{{this.overall_score}}</td>
             <td class="number resource">{{this.resource_score}}</td>
             <td class="number likes">{{this.likes}} ({{formatAsPercent this.like_ratio}})</td>
             <td class="number kills">{{this.kills}}</td>
             <td class="number victories">{{this.victories}} ({{formatNumber this.victory_ratio maxPlaces="1"}})</td>
             <td class="number experience">{{this.max_experience}}</td>
-            <td class="artifact">{{this.artifact_name}}</td>
+            <td class="artifact">{{local this.artifact_name}}</td>
           </tr>
         {{/each}}
         {{#each emptyCharacterRankingEntries}}

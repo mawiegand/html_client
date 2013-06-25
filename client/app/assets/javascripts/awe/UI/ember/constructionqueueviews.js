@@ -77,6 +77,12 @@ AWE.UI.Ember = (function(module) {
         return false;
       }
 
+      /* disable fast frog trade button on conversion, see
+       * html_client issue #69 */
+      if(this.getPath('job.slot.building.underConversion')) {
+        return false;
+      }
+
       if (this.get('first') && !this.get('active') && (this.getPath('pool.resource_cash_present') >= AWE.GS.RulesManager.getRules().resource_exchange.amount) && !this.get('disableFrogTrade')) {
         var costs        = this.slotCosts(); /*this.getPath('job.slot.building.costs');*/
         var sum_required = 0;
@@ -102,7 +108,6 @@ AWE.UI.Ember = (function(module) {
         return true;
       }
       else {
-        log('frog trade not available, probably due to less frogs');
         return false;
       }
     }.property('job.active_job', 'active', 'first', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present', 'disableFrogTrade').cacheable(),
