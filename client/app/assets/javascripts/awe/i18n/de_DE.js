@@ -805,6 +805,10 @@ AWE.I18n.de_DE = function(module) {
       },
 
       customization: {
+        changeAvatar: "Deinen Avatar ändern",
+        presentAvatar: "Aktueller Avatar",
+        changeAvatarCaption: 'Avatar ändern',
+        changeAvatarAdvice: 'Keine Lust auf dein Avatar? Dann würfel dir einen neuen zusammen!',
         info: "Hier kannst Du Deine Erscheinung als Halbgott anpassen. Im Moment sind Dein Name und Dein Geschlecht wählbar, mit denen Du im Spiel auftreten möchtest. Später werden weitere Individualisierungen hinzukommen.",
         chooseName: "Deinen Namen wählen",
         changeName: "Deinen Namen ändern",

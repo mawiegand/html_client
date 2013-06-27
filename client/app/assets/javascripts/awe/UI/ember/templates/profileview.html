@@ -1,9 +1,9 @@
 <script type="text/x-handlebars" data-template-name="tab-view">
-
+  
   <ul class="tab-bar">
     {{#each tabViews}}
       {{#view AWE.UI.Ember.TabButtonView keyBinding="key" titleBinding="title" }}{{title}}{{/view}}
-    {{/each}}
+      {{/each}}
   </ul>  
     
   <div class="tab-content">
@@ -33,6 +33,16 @@
 
   <p>{{t profile.customization.info}}</p>
      
+  <hr/>
+
+  <h2>{{t profile.customization.changeAvatar}}</h2>
+  <p>
+    <b>{{t profile.customization.presentAvatar}}:</b> 
+    <span class="simple-button" {{action "changeAvatarPressed"}}>{{t profile.customization.changeAvatarCaption}}</span>
+    <div style="float:right; margin-top:-16px;">{{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar"}}</div><br style="clear:both">
+  </p>
+  <p>{{t profile.customization.changeNameAdvice}}</p>
+
   <hr/>
 
   {{#if firstTwoNameChange}}
