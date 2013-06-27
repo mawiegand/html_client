@@ -796,7 +796,9 @@ AWE.I18n.en_US = function(module) {
         changeAvatar: 'Change avatar',
         presentAvatar: 'Present avatar',
         changeAvatarCaption: 'Change avatar',
-        changeNameAdvice: 'Tired of your avatar? Shuffle it!',
+        changeAvatarAdvice: 'Tired of your avatar? Shuffle it!',
+        changeAvatarButton: 'shuffle',
+        changeAvatarDialogCaption: 'Your new avatar',
         info:"Here you can change your appearance as demi-god. At the moment you can choose the name and gender with which you want to appear in game. Later additional possibilities to customize your demi-god will be added.",
         chooseName:"Choose your name",
         changeName:"Change your name",
@@ -844,6 +846,11 @@ AWE.I18n.en_US = function(module) {
           changePasswordNoMatch:"The  two passwords don't match. Try again.",
           
           changeSameIIUnknown: "The list can´t be changed right now. Please try again later.",
+
+          changeFailed: {
+            heading: 'Saving avatar failed',
+            text: 'Something went wrong. Probably a little gnome cut your connection and your new avatar could not be saved...',
+          },
         },
       },
     },

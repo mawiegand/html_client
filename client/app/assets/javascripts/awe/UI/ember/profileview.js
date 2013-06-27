@@ -171,6 +171,65 @@ AWE.UI.Ember = (function(module) {
     changingName:     false,
     changingGender:   false,
     
+    changeAvatarPressed: function() {
+      /* AWE.Action is just too damn complex for just a simple
+       * GET-Action... */
+      this.set('message', null);
+      var parent = self;
+      var changeDialog = AWE.UI.Ember.ChangeAvatarDialog.create({
+        classNames: ['change-avatar-dialog'],
+        heading: AWE.I18n.lookupTranslation('profile.customization.changeAvatarDialogCaption'),
+        controller: this,
+        newAvatarString: null,
+
+        getNewAvatarString: function() {
+          var self = this;
+          $.get("/game_server/action/fundamental/change_avatar_actions.text", function(data) {
+            self.set('newAvatarString', data);
+          });
+        },
+
+        init: function() {
+          this.getNewAvatarString();
+        },
+
+        okPressed: function() {
+          var self = this;
+          var action = AWE.Action.Fundamental.createChangeAvatarAction(self.get('newAvatarString'));
+
+          AWE.Action.Manager.queueAction(action, function(statusCode) {
+            var parent = self;
+            if(statusCode == 200) {
+              parent.destroy(); 
+            } 
+            else {
+              var errorDialog = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.heading'),
+                message: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.text'),
+              });
+              WACKADOO.presentModalDialog(errorDialog);
+              self.destroy();
+            }
+          });
+
+          this.destroy();            
+
+        },
+
+        shufflePressed: function() {
+          this.getNewAvatarString();
+        },
+
+        cancelPressed: function() { this.destroy(); },
+      });
+      WACKADOO.presentModalDialog(changeDialog);
+
+      //
+      //----------------------------
+      //
+
+    },
+
     nameChangeCosts: function() {
       return AWE.GS.RulesManager.getRules().change_character_name.amount;
     }.property().cacheable(),
@@ -437,7 +496,20 @@ AWE.UI.Ember = (function(module) {
       }        
     },    
   });
-  
+
+  /** 
+   * @class
+   * @name AWE.UI.Ember.ChangeAvatarDialog
+   */
+  module.ChangeAvatarDialog = module.Dialog.extend({
+    templateName: 'avatar-change-dialog',
+    heading: 'set a heading',
+    inputMaxLength: null,
+    okPressed: function() { alert ('Action not connected: okPressed.'); },
+    shufflePressed: function() { alert ('Action not connected: shufflePressed.'); },
+    cancelPressed: function() { alert ('Action not connected: cancelPressed.'); },
+  }); 
+
   
   module.CharacterProgressBarView = Ember.View.extend({    
     templateName: 'character-progress-bar-view',

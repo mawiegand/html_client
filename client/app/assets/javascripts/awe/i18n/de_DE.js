@@ -809,6 +809,8 @@ AWE.I18n.de_DE = function(module) {
         presentAvatar: "Aktueller Avatar",
         changeAvatarCaption: 'Avatar ändern',
         changeAvatarAdvice: 'Keine Lust auf dein Avatar? Dann würfel dir einen neuen zusammen!',
+        changeAvatarButton: 'würfeln',
+        changeAvatarDialogCaption: 'Dein neuer Avatar',
         info: "Hier kannst Du Deine Erscheinung als Halbgott anpassen. Im Moment sind Dein Name und Dein Geschlecht wählbar, mit denen Du im Spiel auftreten möchtest. Später werden weitere Individualisierungen hinzukommen.",
         chooseName: "Deinen Namen wählen",
         changeName: "Deinen Namen ändern",
@@ -856,6 +858,10 @@ AWE.I18n.de_DE = function(module) {
           changePasswordNoMatch: "Die Passwörter stimmen nicht überein. Bitte versuche es noch einmal.",
           
           changeSameIIUnknown: "Die Liste konnte aus unbekannten Gründen nicht geändert werden. Bitte versuche es später noch einmal.",
+          changeFailed: {
+            heading: 'Avatar speichern fehlgeschlagen',
+            text: 'Aus irgendeinem Grund, vermutlich ist der Admin Schuld, konnte dein neues Avatar nicht gespeichert werden ;D',
+          },
         },
       },
     },
