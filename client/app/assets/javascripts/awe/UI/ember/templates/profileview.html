@@ -1,9 +1,9 @@
 <script type="text/x-handlebars" data-template-name="tab-view">
-
+  
   <ul class="tab-bar">
     {{#each tabViews}}
       {{#view AWE.UI.Ember.TabButtonView keyBinding="key" titleBinding="title" }}{{title}}{{/view}}
-    {{/each}}
+      {{/each}}
   </ul>  
     
   <div class="tab-content">
@@ -33,6 +33,16 @@
 
   <p>{{t profile.customization.info}}</p>
      
+  <hr/>
+
+  <h2>{{t profile.customization.changeAvatar}}</h2>
+  <p>
+    <b>{{t profile.customization.presentAvatar}}:</b> 
+    <span class="simple-button" {{action "changeAvatarPressed"}}>{{t profile.customization.changeAvatarCaption}}</span>
+    <div style="float:right; margin-top:-16px;">{{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar"}}</div><br style="clear:both">
+  </p>
+  <p>{{t profile.customization.changeAvatarAdvice}}</p>
+
   <hr/>
 
   {{#if firstTwoNameChange}}
@@ -197,5 +207,20 @@
   </p>
   
   
+</script>
+
+<script type="text/x-handlebars" data-template-name="avatar-change-dialog">
+  <div class="modal-dialog-background z-layer-3"></div>
+  <div class="center-helper">
+    <div class="modal-dialog-pane z-layer-4" id="avatar-change-dialog">
+      <h1>{{ heading }}</h1>
+      {{view AWE.UI.Ember.AvatarView avatarStringBinding="newAvatarString" classNames="avatar"}}
+      <div class="controls-bar">
+        <div class="icon-button ok-button" {{action "okPressed"}}>{{t general.change}}</div>
+        <div class="icon-button shuffle-button" {{action "shufflePressed"}}>{{t profile.customization.changeAvatarButton}}</div>
+        <div class="icon-button cancel-button" {{action "cancelPressed"}}>{{t general.cancel}}</div>
+      </div>
+    </div>
+  </div>
 </script>
 
