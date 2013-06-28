@@ -916,11 +916,11 @@ AWE.I18n.en_US = function(module) {
       end:{
         header:"Tutorial Successfully Completed.",
         p1:"Congratulations demigod, you have taken the first step on your journey! You have successfully navigated the tutorial and you have got to know to the basic functions of Wack-A-Doo.",
-        p2:"As a reward we give you a Platinum account and bonuses to all the three commodities. These bonuses are now visible in the repository",
-        p3:"We will watch your further development and accompany you in a series of ongoing tasks. You can accomplish these tasks if you always enjoy it.",
-        p4:"Do not get upset by the numerous simultaneously open tasks.   Build up your settlement, set up armies and multiply your power and your alliance's influence.",
-        p5:"For the way ahead in Wack-A-Doo there are no guidelines, just a statement which is generally valid: Raw material, raw material, and yet more raw material. A powerful army wins a battle, a rich commodity production wins a war.",
-        p6:"Have fun in Wack-A-Doo and wack on!",
+        p2:"As a reward we unlock the Platinum Account for several days. You can find details in the bonanza, accessible via the upper right menue element.",
+        p3:"We will watch your further development and will provide a series of optional task assignments. Accomplish these tasks whenever it suits you. Or don't.",
+        p4:"Do not get upset by the number of simultaneously open tasks.   Improve up your home settlement, recruit units and armies and increase your power and influence.",
+        p5:"For the way ahead there is no single valid strategy, just one rule to remember: resources, resources, resources. A powerful army wins a battle, a flourishing economy wins the war.",
+        p6:"Have fun and whack on!",
         redeemError:{
           header:"Attention",
           message:"Rewards could not be released because they have been already unlocked once.",

@@ -80,6 +80,8 @@ AWE.Controller = function (module) {
     var currentAction = null;
 
     var mapMode = AWE.UI.MAP_MODE_TERRAIN; //  display game graphics
+    
+    var hideOtherArmies = false;
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -167,7 +169,12 @@ AWE.Controller = function (module) {
       inspectorViews.encyclopediaButtonView = AWE.UI.createEncyclopediaButtonView();
       inspectorViews.encyclopediaButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
       _stages[3].addChild(inspectorViews.encyclopediaButtonView.displayObject());
+
+      inspectorViews.armyVisibilityButtonView = AWE.UI.createArmyVisibilityButtonView();
+      inspectorViews.armyVisibilityButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
+      _stages[3].addChild(inspectorViews.armyVisibilityButtonView.displayObject());
     };
+    
 
     that.getStages = function () {
       return [
@@ -649,6 +656,10 @@ AWE.Controller = function (module) {
       AWE.Ext.applyFunctionToElements(regionViews, function (view) {
         view.setMapMode(mapMode);
       });
+    }
+    
+    that.toggleArmyVisibility = function() {
+      hideOtherArmies = !hideOtherArmies;
     }
 
     that.armyInfoButtonClicked = function (army) {
@@ -2346,7 +2357,8 @@ AWE.Controller = function (module) {
         var views = [];
         AWE.Ext.applyFunctionToElements(armies, function (element) {
           if (!element.isGarrison()) {
-            var view = armyViews[element.getId()];
+            var view = armyViews[element.getId()] 
+            view = view ? view : newArmyViews[element.getId()];
             if (view) {
               views.push({
                 view:view,
@@ -2424,6 +2436,27 @@ AWE.Controller = function (module) {
       }
 
       var processArmiesAtPos = function (armies, settlement, pos, frame) {
+
+        var filterArmies = function(armies, hideOthers) {
+          if (AWE.Config.DONT_RENDER_ARMIES) {
+            return {};
+          }
+          if (!hideOthers) {
+            return armies;
+          }
+          var filtered = {};
+          for (var key in armies) {
+            if (armies.hasOwnProperty(key)) {
+              var army = armies[key];
+              if (army.isOwn() || army.get('npc')) {
+                filtered[key] = army;
+              }
+            }
+          }
+          return filtered;
+        }
+        
+        armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies);
 
         initViewsWithBasePosition(armies, pos);
         unclutter(armies, settlement, pos, frame);
@@ -2943,6 +2976,11 @@ AWE.Controller = function (module) {
       if (inspectorViews.encyclopediaButtonView) {
         inspectorViews.encyclopediaButtonView.setOrigin(AWE.Geometry.createPoint(20 + 114, _windowSize.height - 101));
       }
+
+      if (inspectorViews.armyVisibilityButtonView) {
+        inspectorViews.armyVisibilityButtonView.setOrigin(AWE.Geometry.createPoint(20 + 190, _windowSize.height - 101));
+      }
+
       return _inspectorChanged || _windowChanged;
     };
 
@@ -2956,6 +2994,8 @@ AWE.Controller = function (module) {
     that.updateViewHierarchy = (function () {
       var oldVisibleArea = null;
       var oldWindowSize = null;
+      var lastHideOtherArmies = hideOtherArmies;
+
 
       var propUpdates = function (viewHash) {
         var needsDisplay = false;
@@ -2982,10 +3022,13 @@ AWE.Controller = function (module) {
         }
 
         if ((AWE.Config.MAP_MOVE_ARMIES && _loopCounter % 60 == 0) ||
-          _windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) || _actionViewChanged) { // if moving armies
+          _windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) ||
+          _actionViewChanged || lastHideOtherArmies != hideOtherArmies) { // if moving armies
           stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         }
-        ;
+        
+        lastHideOtherArmies = hideOtherArmies;
+        
 
         if (_windowChanged || this.modelChanged() || _actionViewChanged || currentAction || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           stagesNeedUpdate[2] = that.updateActionViews();
@@ -3088,7 +3131,6 @@ AWE.Controller = function (module) {
             animating = true;
           }
         });
-
 
         // STEP 4: update views and repaint view hierarchies as needed
         if (_windowChanged || _needsDisplay || _loopCounter % 6 == 0 || that.modelChanged() || _actionViewChanged || animating) {

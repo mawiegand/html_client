@@ -144,6 +144,8 @@ AWE.Config = (function(module) {
     "ui/button/mapterrain/hover":    AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_terrain_hover.png',
     "ui/button/mapency/normal":      AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_ency.png',
     "ui/button/mapency/hover":       AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_ency_hover.png',
+    "ui/button/visibility/normal":   AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_visibility.png',
+    "ui/button/visibility/hover":    AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_visibility_hover.png',
     "ui/button/map/background":      AWE.Config.RAILS_ASSET_PATH + 'ui/map_buttons/map_buttons_background.png',
     
     "map/icon/owner":         AWE.Config.RAILS_ASSET_PATH + 'icons/heads.png',
@@ -288,10 +290,10 @@ AWE.Config = (function(module) {
     "avatar/male/tattoos/2"       :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_tattoo_1.png',
     "avatar/male/tattoos/3"       :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_tattoo_2.png',
     "avatar/male/tattoos/4"       :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_tattoo_premium.png',
-    "avatar/male/veilchens/1"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_links_0.png',
-    "avatar/male/veilchens/2"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_links_1.png',
-    "avatar/male/veilchens/3"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_rechts_0.png',
-    "avatar/male/veilchens/4"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_rechts_1.png',
+    "avatar/male/veilchens/1"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_rechts_0.png',
+    "avatar/male/veilchens/2"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_rechts_1.png',
+    "avatar/male/veilchens/3"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_links_0.png',
+    "avatar/male/veilchens/4"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/hg_warrior_veilchen_links_1.png',
 
     "avatar/ranking/female/chains/1"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/ranking/hg_amazone_chain_0.png',
     "avatar/ranking/female/chains/2"     :    AWE.Config.RAILS_ASSET_PATH + 'avatar/ranking/hg_amazone_chain_premium.png',
