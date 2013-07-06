@@ -200,6 +200,7 @@ AWE.UI.Ember = (function(module) {
           AWE.Action.Manager.queueAction(action, function(statusCode) {
             var parent = self;
             if(statusCode == 200) {
+              AWE.GS.CharacterManager.updateCurrentCharacter();
               this.destroy(); 
             } 
             else {
