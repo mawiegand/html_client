@@ -200,7 +200,7 @@ AWE.UI.Ember = (function(module) {
           AWE.Action.Manager.queueAction(action, function(statusCode) {
             var parent = self;
             if(statusCode == 200) {
-              parent.destroy(); 
+              this.destroy(); 
             } 
             else {
               var errorDialog = AWE.UI.Ember.InfoDialog.create({
