@@ -25,6 +25,9 @@ AWE.Config = (function(module) {
   module.DEBUG_LEVEL_WARNING = 1;
   module.DEBUG_LEVEL_INFO    = 2;
   module.DEBUG_LEVEL_DEBUG   = 3;
+  
+  module.DONT_RENDER_ARMIES       = false;
+  module.DONT_RENDER_OTHER_ARMIES = false;
 
   module.IN_DEVELOPMENT_MODE      = <%= Rails.env.development? ? 'true' : 'false' %>;
 
