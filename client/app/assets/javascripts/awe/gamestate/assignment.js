@@ -27,46 +27,35 @@ AWE.GS = function (module) {
     type_id: null,
 
     character_id: null, old_character_id: null,
-    characterIdObserver: AWE.Partials.attributeHashObserver(module.module.StandardAssignmentAccess, 'character_id', 'old_character_id').observes('character_id'),
+    characterIdObserver: AWE.Partials.attributeHashObserver(module.StandardAssignmentAccess, 'character_id', 'old_character_id').observes('character_id'),
+
+    assignmentType: function() {
+      var assignmentId = this.get('type_id');
+      if (assignmentId === undefined || assignmentId === null) {
+        return null;
+      }
+      return AWE.GS.RulesManager.getRules().getAssignmentType(assignmentId);
+    }.property('type_id').cacheable(),
 
     // TODO correct client time
     timeToFinish: function() {
-      return new Date().getTime() - Date.parseISODate(this.get('endet_at')).getTime();
+      return AWE.GS.TimeManager.estimatedServerTime().getTime() - Date.parseISODate(this.get('endet_at')).getTime();
     }.property('endet_at'),
-
 
     progression: function() {
-      return new Date().getTime() - Date.parseISODate(firstFulfilledAt).getTime();
+      var currentInterval = AWE.GS.TimeManager.estimatedServerTime().getTime() - Date.parseISODate(this.get('startet_at')).getTime();
+      var jobInterval     = Date.parseISODate(this.get('ended_at')).getTime() - Date.parseISODate(this.get('startet_at')).getTime();
+
+      return jobInterval != 0 ? currentInterval / jobInterval : -1;
     }.property('endet_at'),
 
+    isActive: function() {
+      return this.get('ended_at') != null;
+    }.property('ended_at'),
 
-
-    -(double)progression
-  {
-    AWETimeCorrection* timeManager = [AWETimeCorrection sharedTimeCorrection];
-
-    NSDate* serverCurrentTime = [timeManager estimatedServerTime];
-
-    NSTimeInterval currentInterval = [serverCurrentTime timeIntervalSinceDate:self.startedAt];
-    NSTimeInterval jobInterval = [self.endedAt timeIntervalSinceDate:self.startedAt];
-
-    if (jobInterval != 0) {
-      return (double)currentInterval/(double)jobInterval;
-    }
-
-    return -1.0f;
-  }
-
-  -(BOOL)isActive
-  {
-    return self.endedAt != nil;
-  }
-
-  -(BOOL)isHalved
-  {
-    return self.halvedAt != nil;
-  }
-  @end
+    isHalved: function() {
+      return this.get('halved_at') != null;
+    }.property('halved_at'),
 
   });
 
@@ -107,7 +96,7 @@ AWE.GS = function (module) {
     };
 
     that.updateStandardAssignmentsOfCharacter = function (characterId, updateType, callback) {
-      var url = AWE.Config.ASSIGNMENT_SERVER_BASE + 'characters/' + characterId + '/standard_assignments';
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/' + characterId + '/standard_assignments';
       return my.fetchEntitiesFromURL(
         url,
         my.runningUpdatesPerCharacter,
@@ -123,6 +112,10 @@ AWE.GS = function (module) {
           }
         }
       );
+    };
+
+    that.updateStandardAssignmentsOfCurrentCharacter = function (updateType, callback) {
+      that.updateStandardAssignmentsOfCharacter(AWE.GS.CharacterManager.getCurrentCharacter().getId(), updateType, callback);
     };
 
     return that;

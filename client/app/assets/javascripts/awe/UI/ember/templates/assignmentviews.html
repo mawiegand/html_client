@@ -1,0 +1,37 @@
+<script type="text/x-handlebars" data-template-name="assignment-list-view">
+
+  <h3>Assignments</h3>
+
+  {{#each assignments}}
+    {{view AWE.UI.Ember.AssignmentView assignmentBinding="this" controllerBinding="controller" }}
+  {{/each}}
+
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="assignment-view">
+
+  <p><b>{{local assignment.assignmentType.name}}</b></p>
+  <p>{{local assignment.assignmentType.description}}</p>
+  {{#if assignment.isActive }}
+    {{#unless assignment.isHalved }}
+      {{#if halving }}
+        <p>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}</p>
+      {{else}}
+        <p>
+          <span class="simple-button clickable" {{action "speedupPressed"}} {{bindAttr title="speedupTooltipText"}}>
+          {{t settlement.assignment.hurry}} {{speedupCosts}}
+            <span class="resource-icon resource_cash">&nbsp;</span>
+          </span>
+        </p>
+      {{/if}}
+    {{/unless }}
+  {{else}}
+    {{#if starting }}
+      <p>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}</p>
+    {{else}}
+      <p><span class="simple-button clickable" {{action "startPressed"}}>Start</span></p>
+    {{/if}}
+  {{/if}}
+
+</script>

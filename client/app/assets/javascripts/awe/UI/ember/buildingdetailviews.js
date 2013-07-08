@@ -183,10 +183,7 @@ AWE.UI.Ember = (function(module) {
     requirementUnmet: function() {
       return !this.get('requirementsMet');
     }.property('requirementsMet'), 
-    
 
-    
-    
   });
   
   module.ArrayItemView = Ember.View.extend({

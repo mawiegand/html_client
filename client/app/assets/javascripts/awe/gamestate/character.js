@@ -275,8 +275,17 @@ AWE.GS = (function(module) {
       var allianceId = this.get('alliance_id');
       return allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
     }.property('alliance_id').cacheable(),
-    
-  });     
+
+    hashableStandardAssignments: function() {
+      var id = this.get('id');
+      return id ? AWE.GS.StandardAssignmentAccess.getHashableCollectionForCharacter_id(id) : null;
+    }.property('id').cacheable(),
+
+    enumerableStandardAssignments: function() {
+      log('-----> enumerableStandardAssignments', this.getPath('hashableStandardAssignments.collection'));
+      return this.getPath('hashableStandardAssignments.collection');
+    }.property('id', 'hashableStandardAssignments.changedAt').cacheable(),
+  });
 
     
   // ///////////////////////////////////////////////////////////////////////

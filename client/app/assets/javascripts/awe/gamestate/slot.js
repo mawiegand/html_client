@@ -613,6 +613,28 @@ AWE.GS = (function(module) {
     }.property('buildingId', 'converted', 'levelAfterJobs').cacheable(),
 
 
+    calculateAssignments: function(level) {
+      return this.getPath('buildingType.symbolic_id') == 'building_tavern';
+    },
+
+    unlockedAssignments: function() {
+      return this.calculateAssignments(this.get('level'));
+    }.property('buildingId', 'level').cacheable(),
+
+    unlockedAssignmentsNextLevel: function() {
+      return this.calculateAssignments(this.get('nextLevel'));
+    }.property('buildingId', 'nextLevel').cacheable(),
+
+    unlockedAssignmentsAfterConversion: function() {
+      var converted = this.get('converted');
+      if (converted) {
+        return this.get('converted').calculateAssignments(this.get('levelAfterJobs'));
+      }
+      else {
+        return false;
+      }
+    }.property('buildingId', 'converted', 'levelAfterJobs').cacheable(),
+
     calcTradingCarts: function(level) {
 		  var formula = this.getPath('buildingType.abilities.trading_carts');
 		  level       = level || this.get('level') || 1;
@@ -832,7 +854,13 @@ AWE.GS = (function(module) {
       });
       return categories;
     },
-  });     
+
+    assignmentTypes: function() {
+      var level = (AWE.GS.game.getPath('currentCharacter.assignment_level') || 0) + this.get('level') - this.getPath('slot.level');
+      return AWE.GS.RulesManager.getRules().getAssignmentTypesOfLevel(level);
+    },
+
+  });
 
     
   // ///////////////////////////////////////////////////////////////////////

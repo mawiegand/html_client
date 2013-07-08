@@ -96,17 +96,32 @@ AWE.GS = (function(module) {
         }
       }
       log('ERROR: requested non-existing unit type ' + symbolicId);
+      return null;
     },
-    
+
     getBuildingType: function(id) {
       var buildingType = this.get('building_types')[id];
       if (buildingType === undefined || !buildingType) {
         log('ERROR: requested non-existing building type ' + buildingType);
       }
       return buildingType;
-    },    
-    
-		getResourceType: function(id) {
+    },
+
+    getAssignmentType: function(id) {
+
+      log('-----> get type', id);
+
+      var assignmentType = this.get('assignment_types')[id];
+
+      log('-----> get type2', assignmentType);
+
+      if (assignmentType === undefined || !assignmentType) {
+        log('ERROR: requested non-existing assignment type ' + assignmentType);
+      }
+      return assignmentType;
+    },
+
+    getResourceType: function(id) {
 			var resourceType = this.get('resource_types')[id];
 			if (resourceType === undefined || !resourceType) {
 				log('ERROR: requested non-existing resource type ' + resourceType);
@@ -152,6 +167,8 @@ AWE.GS = (function(module) {
         }
       }
       log('ERROR: requested non-existing building type ' + symbolicId);
+
+      return null;
 		},
 		
 		getSettlementTypeWithSymbolicId: function(symbolicId) {
@@ -164,6 +181,8 @@ AWE.GS = (function(module) {
         }
       }
       log('ERROR: requested non-existing settlement type ' + symbolicId);
+
+      return null;
 		},
 		
 		/** looks-up the queue type for the given (numeric) id. */
@@ -203,7 +222,15 @@ AWE.GS = (function(module) {
       }
       return null;
     },
-    
+
+    getAssignmentTypesOfLevel: function(level) {
+      log('-----> getAssignmentTypesOfLevel', this.get('assignment_types'));
+      var assignmentTypes = this.get('assignment_types').filter(function(item, index, self) {
+        return true; // item['level'] <= level;
+      });
+      return assignmentTypes;
+    },
+
 		extractIds: function(collection) {
 		  return collection.getEach('id'); // "getEach" is supplied by ember
 		},
