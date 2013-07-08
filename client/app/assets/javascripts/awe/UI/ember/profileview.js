@@ -184,8 +184,22 @@ AWE.UI.Ember = (function(module) {
 
         getNewAvatarString: function() {
           var self = this;
-          $.get("/game_server/action/fundamental/change_avatar_actions.text", function(data) {
-            self.set('newAvatarString', data);
+          var action = AWE.Action.Fundamental.getNewAvatarAction();
+
+          AWE.Action.Manager.queueAction(action, function(statusCode, jqXHR) {
+            var parent = self;
+            if(statusCode == 200) {
+              var response = jQuery.parseJSON(jqXHR.responseText);
+              self.set('newAvatarString', response.avatar_string);
+            } 
+            else {
+              var errorDialog = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.heading'),
+                message: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.text'),
+              });
+              WACKADOO.presentModalDialog(errorDialog);
+              self.destroy();
+            }
           });
         },
 
@@ -200,7 +214,7 @@ AWE.UI.Ember = (function(module) {
 
           AWE.Action.Manager.queueAction(action, function(statusCode) {
             if(statusCode == 200) {
-              AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+              AWE.GS.CharacterManager.updateCurrentCharacter();
               self.destroy();
             }
             else {
