@@ -31,8 +31,6 @@ AWE.UI = (function(module) {
     };
     my.controller = null;
     
-    var _super = {}
-
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
       layoutSubviews:     AWE.Ext.superior(that, "layoutSubviews"),
@@ -64,10 +62,8 @@ AWE.UI = (function(module) {
       imageView.initWithControllerAndImage(my.controller, image);
       imageView.setNewSize(my.frame.size.width, my.frame.size.height);
       imageView.onClick = that.onClick;
-
-
       my.container.addChildAt(imageView.displayObject(), layer);
-    }
+    };
 
     that.initWithControllerAndAvatar = function(controller, avatar, prefix, frame) {
       _super.initWithController(controller, frame);
@@ -93,11 +89,11 @@ AWE.UI = (function(module) {
       for(part in parts) { 
         createAndAddImageToContainerAccordingToFrameSize(part);
       }
-    }
+    };
     
     that.updateView = function() {
-      this.recalcView();      
       _super.updateView();
+      this.recalcView();
     };
 
     return that;

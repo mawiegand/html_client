@@ -33,6 +33,7 @@ AWE.UI = (function(module) {
     var _settlementImageName = null;
     
     var _presentGender = null;
+    var _presentAvatarString = null;
     
     var _resource1LabelView;
     var _resource2LabelView;
@@ -78,7 +79,7 @@ AWE.UI = (function(module) {
     
     that.recalcView = function() {
 
-      var character = AWE.GS.CharacterManager.getCurrentCharacter();
+      var character = AWE.GS.game.get('currentCharacter');
       var allianceId = character.get('alliance_id');
             
       // Ressourcen Leiste
@@ -326,15 +327,26 @@ AWE.UI = (function(module) {
         _heroNameView.setTextPos(null, 13);
         _heroNameView.onClick = function() { WACKADOO.characterButtonClicked(); };
         this.addChild(_heroNameView);
-        
-        _heroHeadImageView = AWE.UI.createAvatarView();
-        _heroHeadImageView.initWithControllerAndAvatar(my.controller, character.get('avatar')); // TODO: get and pass avatar
-        _heroHeadImageView.setFrame(AWE.Geometry.createRect(85, 92, 96, 96));
-        //_heroHeadImageView.setFrame(AWE.Geometry.createRect(85, 106, 96, 82));
+      }
 
+      if (!_heroHeadImageView || AWE.GS.game.getPath('currentCharacter.avatar_string') != _presentAvatarString) {
+
+        if (_heroHeadImageView) {
+          this.removeChild(_heroHeadImageView);
+        }
+        _heroHeadImageView = AWE.UI.createAvatarView();
+        _heroHeadImageView.initWithControllerAndAvatar(my.controller, AWE.GS.game.getPath('currentCharacter.avatar')); // TODO: get and pass avatar
+        _heroHeadImageView.setFrame(AWE.Geometry.createRect(85, 92, 96, 96));
         _heroHeadImageView.onClick = function() { WACKADOO.characterButtonClicked(); };
         this.addChild(_heroHeadImageView);
-      }   
+
+        _presentAvatarString = AWE.GS.game.getPath('currentCharacter.avatar_string');
+        _heroHeadImageView.setNeedsUpdate();
+        _heroHeadImageView.setNeedsDisplay();
+        _heroHeadImageView.setNeedsLayout();
+      }
+
+
       if (character.get('female') && _presentGender === "male") {
         // TODO: update on change of avatar, not only gender.
         _presentGender = "female";
