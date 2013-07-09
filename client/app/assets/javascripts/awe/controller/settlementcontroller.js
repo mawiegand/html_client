@@ -694,11 +694,11 @@ AWE.Controller = (function(module) {
       });
     };
 
-    that.standardAssignmentStartPressed = function(assignment, callback) {
-      var action = AWE.Action.Assignment.createStartStandardAssignmentAction(assignment.get('type_id'));
+    that.standardAssignmentStartPressed = function(assignmentType, callback) {
+      var action = AWE.Action.Assignment.createStartStandardAssignmentAction(assignmentType.id);
       action.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
-          AWE.GS.StandardAssignmentManager.updateStandardAssignment(assignment.getId(), null, function() {
+          AWE.GS.StandardAssignmentManager.updateStandardAssignmentsOfCharacter(AWE.GS.game.getPath('currentCharacter.id'), null, function() {
             if (callback) {
               callback();
             }

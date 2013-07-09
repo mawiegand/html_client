@@ -282,9 +282,7 @@ AWE.GS = (function(module) {
     }.property('id').cacheable(),
 
     enumerableStandardAssignments: function() {
-      return this.getPath('hashableStandardAssignments.collection').sort(function(a, b) {
-        return a.getPath('assignmentType.level') - b.getPath('assignmentType.level');
-      });
+      return this.getPath('hashableStandardAssignments.collection');
     }.property('id', 'hashableStandardAssignments.changedAt').cacheable(),
   });
 

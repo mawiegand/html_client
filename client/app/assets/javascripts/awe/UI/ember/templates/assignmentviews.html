@@ -2,9 +2,9 @@
 
   <h3>{{t settlement.assignment.assignments}}</h3>
 
-  {{#if assignments}}
-    {{#each assignments }}
-      {{view AWE.UI.Ember.AssignmentView assignmentBinding="this" controllerBinding="controller" }}
+  {{#if assignmentTypes}}
+    {{#each assignmentTypes }}
+      {{view AWE.UI.Ember.AssignmentView assignmentTypeBinding="this" controllerBinding="controller" }}
     {{/each}}
   {{else}}
     <p>{{t settlement.assignment.noneAvailable}}</p>
@@ -18,37 +18,38 @@
   {{#if collapsed}}
     <table class="assignment-collapse-table">
       <tr {{action "openPressed"}}>
-        <td class="assignment-header-cell"><b>{{local assignment.assignmentType.name}}</b></td>
-        <td class="assignment-progress-cell">{{#if assignment.isActive }}
-          <div class="duration assignment-progress-bar-border">
-            <div class="assignment-progress-bar" {{bindAttr style="progressBarWidth"}}>
-            {{#if assignment.finished}}
-            {{t settlement.assignment.finishing}}...
-            {{else}}
-            {{formatDuration timeRemaining}}
-            {{/if}}
-          </div>
-          </div>
+        <td class="assignment-header-cell"><b>{{local assignmentType.name}}</b></td>
+        <td class="assignment-progress-cell">
+          {{#if isActive }}
+            <div class="duration assignment-progress-bar-border">
+              <div class="assignment-progress-bar" {{bindAttr style="progressBarWidth"}}>
+                {{#if assignment.finished}}
+                  {{t settlement.assignment.finishing}}...
+                {{else}}
+                  {{formatDuration timeRemaining}}
+                {{/if}}
+              </div>
+            </div>
           {{/if}}
         </td>
         <td class="assignment-button-cell">
-          {{#if assignment.isActive }}
-          {{#unless assignment.isHalved }}
-          {{#if halving }}
-          {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+          {{#if isActive }}
+            {{#unless isHalved }}
+              {{#if halving }}
+                {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+              {{else}}
+                <span class="simple-button clickable" {{action "speedupPressed"}} {{bindAttr title="speedupTooltipText"}}>
+                  {{t settlement.assignment.hurry}} {{speedupCosts}}
+                  <span class="resource-icon resource_cash">&nbsp;</span>&nbsp;
+                </span>
+              {{/if}}
+            {{/unless }}
           {{else}}
-          <span class="simple-button clickable" {{action "speedupPressed"}} {{bindAttr title="speedupTooltipText"}}>
-          {{t settlement.assignment.hurry}} {{speedupCosts}}
-          <span class="resource-icon resource_cash">&nbsp;</span>&nbsp;
-          </span>
-          {{/if}}
-          {{/unless }}
-          {{else}}
-          {{#if starting }}
-          {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
-          {{else}}
-          <span class="simple-button clickable" {{action "startPressed"}}>{{t settlement.assignment.start}}</span>
-          {{/if}}
+            {{#if starting }}
+              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+            {{else}}
+              <span class="simple-button clickable" {{action "startPressed"}}>{{t settlement.assignment.start}}</span>
+            {{/if}}
           {{/if}}
         </td>
       </tr>
@@ -56,8 +57,8 @@
   {{else}}
     <p>
       <div class="float-right">
-        {{#if assignment.isActive }}
-          {{#unless assignment.isHalved }}
+        {{#if isActive }}
+          {{#unless isHalved }}
             {{#if halving }}
               {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
             {{else}}
@@ -76,11 +77,11 @@
         {{/if}}
       </div>
 
-      <b>{{local assignment.assignmentType.name}}</b>
+      <b>{{local assignmentType.name}}</b>
     </p>
-    <p>{{local assignment.assignmentType.description}}</p>
+    <p>{{local assignmentType.description}}</p>
     <p>
-      {{#if assignment.isActive }}
+      {{#if isActive }}
         <div class="float-right duration assignment-progress-bar-border">
           <div class="assignment-progress-bar" {{bindAttr style="progressBarWidth"}}>
           {{#if assignment.finished}}
@@ -93,24 +94,24 @@
       {{/if}}
 
       <b>{{t settlement.assignment.duration}}:</b> {{formatDuration duration}}
-        {{#if assignment.isHalved }}
+        {{#if isHalved }}
           ({{t settlement.assignment.hurried }})
         {{/if}} <br />
-      {{#if assignment.assignmentType.costs}}
+      {{#if assignmentType.costs}}
         <b>{{t settlement.assignment.costs}}:</b>
         {{#each assignment.costs}}
           <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span> {{amount}} &nbsp;
         {{/each}}
         <br />
       {{/if}}
-      {{#if assignment.assignmentType.unit_deposits}}
+      {{#if assignmentType.unit_deposits}}
         <b>{{t settlement.assignment.unitDeposits}}:</b>
           {{#each assignment.unitDeposits}}
             <span class="unit-icon {{unbound unitType.symbolic_id}}" {{bindAttr title="{{local unitType.name}}"}}>&nbsp;</span> {{local unitType.name}} {{amount}} &nbsp;
           {{/each}}
         <br />
       {{/if}}
-      {{#if assignment.assignmentType.rewards}}
+      {{#if assignmentType.rewards}}
         <b>{{t settlement.assignment.rewards}}:</b>
           {{#each assignment.resourceRewards}}
             <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span> {{amount}} &nbsp;
@@ -118,8 +119,8 @@
           {{#each assignment.unitRewards}}
             <span class="unit-icon {{unbound unitType.symbolic_id}}" {{bindAttr title="{{local unitType.name}}"}}>&nbsp;</span> {{local unitType.name}} {{amount}} &nbsp;
           {{/each}}
-          {{#if assignment.assignmentType.rewards.experience_reward }}
-            <span class="xp-icon" title="XP">&nbsp;</span> {{assignment.assignmentType.rewards.experience_reward}} &nbsp;
+          {{#if assignmentType.rewards.experience_reward }}
+            <span class="xp-icon" title="XP">&nbsp;</span> {{assignmentType.rewards.experience_reward}} &nbsp;
           {{/if }}
       {{/if}}
     </p>

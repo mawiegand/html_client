@@ -9,11 +9,20 @@ AWE.UI.Ember = function(module) {
     building: null,
     controller: null,
 
+    assignmentTypes: function() {
+      if (this.get('building')) {
+        return this.get('building').currentAssignmentTypes();
+      }
+      else {
+        return null;
+      }
+    }.property('building').cacheable(),
+
     assignments: null,
 
     init: function() {
       this._super();
-      this.set('assignments', AWE.GS.game.getPath('currentCharacter.enumerableStandardAssignments'));
+      this.set('assignments', AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments'));
     },
 
   });
@@ -21,11 +30,31 @@ AWE.UI.Ember = function(module) {
   module.AssignmentView = Ember.View.extend({
     templateName: "assignment-view",
 
-    assignment: null,
+    assignmentType: null,
+
+    assignment: function() {
+      var self = this;
+      var foundAssignment = null;
+      this.getPath('parentView.assignments.collection').forEach(function(assignment) {
+        if (self.get('assignmentType') && assignment.get('type_id') == self.get('assignmentType').id) {
+          foundAssignment = assignment;
+        }
+      });
+      return foundAssignment;
+    }.property('assignmentType', 'parentView.assignments.changedAt').cacheable(),
+
     controller: null,
 
     starting: false,
     halving: false,
+
+    isActive: function() {
+      return this.get('assignment') && this.getPath('assignment.ended_at') != null;
+    }.property('assignment.ended_at').cacheable(),
+
+    isHalved: function() {
+      return this.get('assignment') && this.getPath('assignment.halved_at') != null;
+    }.property('assignment.halved_at').cacheable(),
 
     timer: null,
 
@@ -39,21 +68,21 @@ AWE.UI.Ember = function(module) {
       var progression = jobInterval != 0 ? currentInterval / jobInterval : -1;
       progression = progression < 0 ? 0 : (progression > 1 ? 1 : progression);
       return 'width: ' + Math.ceil(300 * progression) + 'px;';
-    }.property('timeRemaining'),
+    }.property('timeRemaining').cacheable(),
 
     duration: function() {
-      if (this.getPath('assignment.isHalved')) {
-        return this.getPath('assignment.assignmentType.duration') / 2;
+      if (this.getPath('isHalved')) {
+        return this.getPath('assignmentType.duration') / 2;
       }
       else {
-        return this.getPath('assignment.assignmentType.duration');
+        return this.getPath('assignmentType.duration');
       }
-    }.property('assignment.isHalved', 'assignment.type_id').cacheable(),
+    }.property('isHalved', 'assignment.type_id', 'parentView.assignments.changedAt').cacheable(),
 
     startPressed: function() {
       var self = this;
       this.set('starting', true);
-      this.get('controller').standardAssignmentStartPressed(this.get('assignment'), function() {
+      this.get('controller').standardAssignmentStartPressed(this.get('assignmentType'), function() {
         self.set('starting', false);
       });
       return false;
@@ -109,11 +138,11 @@ AWE.UI.Ember = function(module) {
     },
 
     startTimerOnBecommingActive: function() {
-      var active = this.getPath('assignment.isActive');
+      var active = this.get('isActive');
       if (active && this.get('timer')) {
         this.startTimer();
       }
-    }.observes('assignment.isActive'),
+    }.observes('isActive'),
 
 
     didInsertElement: function() {

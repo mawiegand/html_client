@@ -39,13 +39,13 @@ AWE.GS = function (module) {
 
     // TODO correct client time
     finished: function() {
-      if (this.get('endet_at')) {
-        return AWE.GS.TimeManager.estimatedServerTime().getTime() > Date.parseISODate(this.get('endet_at')).getTime();
+      if (this.get('ended_at')) {
+        return AWE.GS.TimeManager.estimatedServerTime().getTime() > Date.parseISODate(this.get('ended_at')).getTime();
       }
       else {
         return null;
       }
-    }.property('endet_at'),
+    }.property('ended_at'),
 
     costs: function() {
       var costs = this.getPath('assignmentType.costs');
@@ -111,15 +111,6 @@ AWE.GS = function (module) {
       }
       return rewardResult;
     }.property('type_id').cacheable(),
-
-    isActive: function() {
-      return this.get('ended_at') != null;
-    }.property('ended_at'),
-
-    isHalved: function() {
-      return this.get('halved_at') != null;
-    }.property('halved_at'),
-
   });
 
   // ///////////////////////////////////////////////////////////////////////

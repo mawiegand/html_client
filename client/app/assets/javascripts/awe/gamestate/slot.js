@@ -682,12 +682,14 @@ AWE.GS = (function(module) {
 
     // ///////////////////////////////////////////////////////////////////////
     
-
 		canBeTornDown: function() {
 		  
 		}.property('level', 'buildingId').cacheable(),
-		
-		
+
+    currentAssignmentTypes: function() {
+      var level = (AWE.GS.game.getPath('currentCharacter.assignment_level') || 0);
+      return AWE.GS.RulesManager.getRules().getAssignmentTypesOfLevel(level);
+    },
   });    
 
 
@@ -854,12 +856,6 @@ AWE.GS = (function(module) {
       });
       return categories;
     },
-
-    assignmentTypes: function() {
-      var level = (AWE.GS.game.getPath('currentCharacter.assignment_level') || 0) + this.get('level') - this.getPath('slot.level');
-      return AWE.GS.RulesManager.getRules().getAssignmentTypesOfLevel(level);
-    },
-
   });
 
     
