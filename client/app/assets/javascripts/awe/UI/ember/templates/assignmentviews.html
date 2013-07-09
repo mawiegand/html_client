@@ -2,7 +2,7 @@
 
   <h3>{{t settlement.assignment.assignments}}</h3>
 
-  {{#if assignments }}
+  {{#if assignmentsnotavailable }}
     {{#each assignments }}
       {{view AWE.UI.Ember.AssignmentView assignmentBinding="this" controllerBinding="controller" }}
     {{/each}}
