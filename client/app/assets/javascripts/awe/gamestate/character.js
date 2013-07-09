@@ -74,7 +74,7 @@ AWE.GS = (function(module) {
       }
 
       return this.get('avatar_obj');
-    }.property('avatar_string'),
+    }.property('avatar_string').cacheable(),
     
     exp_production_rate_zero: function() {
       return !((this.get('exp_production_rate') || 0) > 0);

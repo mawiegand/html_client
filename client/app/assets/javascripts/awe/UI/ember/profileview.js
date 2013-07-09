@@ -175,7 +175,7 @@ AWE.UI.Ember = (function(module) {
       /* AWE.Action is just too damn complex for just a simple
        * GET-Action... */
       this.set('message', null);
-      var parent = self;
+
       var changeDialog = AWE.UI.Ember.ChangeAvatarDialog.create({
         classNames: ['change-avatar-dialog'],
         heading: AWE.I18n.lookupTranslation('profile.customization.changeAvatarDialogCaption'),
@@ -184,23 +184,13 @@ AWE.UI.Ember = (function(module) {
 
         getNewAvatarString: function() {
           var self = this;
-          $.get("/game_server/action/fundamental/change_avatar_actions.text", function(data) {
-            self.set('newAvatarString', data);
-          });
-        },
+          var action = AWE.Action.Fundamental.getNewAvatarAction();
 
-        init: function() {
-          this.getNewAvatarString();
-        },
-
-        okPressed: function() {
-          var self = this;
-          var action = AWE.Action.Fundamental.createChangeAvatarAction(self.get('newAvatarString'));
-
-          AWE.Action.Manager.queueAction(action, function(statusCode) {
+          AWE.Action.Manager.queueAction(action, function(statusCode, jqXHR) {
             var parent = self;
             if(statusCode == 200) {
-              parent.destroy(); 
+              var response = jQuery.parseJSON(jqXHR.responseText);
+              self.set('newAvatarString', response.avatar_string);
             } 
             else {
               var errorDialog = AWE.UI.Ember.InfoDialog.create({
@@ -211,16 +201,39 @@ AWE.UI.Ember = (function(module) {
               self.destroy();
             }
           });
+        },
 
-          this.destroy();            
+        init: function() {
+          this._super();
+          this.getNewAvatarString();
+        },
 
+        okPressed: function() {
+          var self = this;
+          var action = AWE.Action.Fundamental.createChangeAvatarAction(self.get('newAvatarString'));
+
+          AWE.Action.Manager.queueAction(action, function(statusCode) {
+            if(statusCode == 200) {
+              AWE.GS.CharacterManager.updateCurrentCharacter();
+              self.destroy();
+            }
+            else {
+              var errorDialog = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.heading'),
+                message: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.text'),
+              });
+              WACKADOO.presentModalDialog(errorDialog);
+            }
+          });
         },
 
         shufflePressed: function() {
           this.getNewAvatarString();
         },
 
-        cancelPressed: function() { this.destroy(); },
+        cancelPressed: function() {
+          this.destroy();
+        },
       });
       WACKADOO.presentModalDialog(changeDialog);
 
