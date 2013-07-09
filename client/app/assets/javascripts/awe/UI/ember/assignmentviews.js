@@ -29,6 +29,8 @@ AWE.UI.Ember = function(module) {
 
     timer: null,
 
+    collapsed: true,
+
     speedupCosts: 2,
 
     progressBarWidth: function() {
@@ -54,6 +56,7 @@ AWE.UI.Ember = function(module) {
       this.get('controller').standardAssignmentStartPressed(this.get('assignment'), function() {
         self.set('starting', false);
       });
+      return false;
     },
 
     speedupPressed: function() {
@@ -62,6 +65,15 @@ AWE.UI.Ember = function(module) {
       this.get('controller').standardAssignmentSpeedupPressed(this.get('assignment'), function() {
         self.set('halving', false);
       });
+      return false;
+    },
+
+    collapsePressed: function() {
+      this.set('collapsed', true);
+    },
+
+    openPressed: function() {
+      this.set('collapsed', false);
     },
 
     calcTimeRemaining: function() {
