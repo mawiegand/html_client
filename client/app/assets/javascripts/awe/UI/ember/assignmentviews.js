@@ -34,9 +34,6 @@ AWE.UI.Ember = function(module) {
     progressBarWidth: function() {
       var currentInterval = AWE.GS.TimeManager.estimatedServerTime().getTime() - Date.parseISODate(this.getPath('assignment.started_at')).getTime();
       var jobInterval     = Date.parseISODate(this.getPath('assignment.ended_at')).getTime() - Date.parseISODate(this.getPath('assignment.started_at')).getTime();
-
-      log('-----> progression', currentInterval / jobInterval, this.getPath('assignment.ended_at'), Date.parseISODate(this.getPath('assignment.ended_at')).getTime(), this.getPath('assignment.started_at'), Date.parseISODate(this.getPath('assignment.started_at')).getTime());
-
       var progression = jobInterval != 0 ? currentInterval / jobInterval : -1;
       progression = progression < 0 ? 0 : (progression > 1 ? 1 : progression);
       return 'width: ' + Math.ceil(300 * progression) + 'px;';

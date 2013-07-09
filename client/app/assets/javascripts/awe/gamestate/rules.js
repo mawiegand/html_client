@@ -108,13 +108,7 @@ AWE.GS = (function(module) {
     },
 
     getAssignmentType: function(id) {
-
-      log('-----> get type', id);
-
       var assignmentType = this.get('assignment_types')[id];
-
-      log('-----> get type2', assignmentType);
-
       if (assignmentType === undefined || !assignmentType) {
         log('ERROR: requested non-existing assignment type ' + assignmentType);
       }
@@ -224,7 +218,6 @@ AWE.GS = (function(module) {
     },
 
     getAssignmentTypesOfLevel: function(level) {
-      log('-----> getAssignmentTypesOfLevel', this.get('assignment_types'));
       var assignmentTypes = this.get('assignment_types').filter(function(item, index, self) {
         return true; // item['level'] <= level;
       });

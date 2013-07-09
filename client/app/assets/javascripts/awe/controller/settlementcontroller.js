@@ -897,7 +897,6 @@ AWE.Controller = (function(module) {
 
     that.updateAssignments = function() {
       AWE.GS.StandardAssignmentManager.updateStandardAssignmentsOfCurrentCharacter(null, function(assignments) {
-        log('-----> updated standard assignments', assignments);
       });
     };
 
