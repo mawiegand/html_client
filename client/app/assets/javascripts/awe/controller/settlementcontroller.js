@@ -703,6 +703,8 @@ AWE.Controller = (function(module) {
               callback();
             }
           });
+          AWE.GS.ArmyManager.updateArmiesAtLocation(that.locationId, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+          });
         }
         else if (status === AWE.Net.CONFLICT) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
@@ -1043,6 +1045,8 @@ AWE.Controller = (function(module) {
             if (Date.parseISODate(assignment.get('endet_at')).add({seconds: pendingStandardAssignmentUpdates[assignmentId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
               pendingStandardAssignmentUpdates[assignmentId] *= 2;
               that.updateStandardAssignments();
+              AWE.GS.ArmyManager.updateArmiesAtLocation(that.locationId, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+              });
             }
           }
         });
