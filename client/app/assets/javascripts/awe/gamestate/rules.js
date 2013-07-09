@@ -86,7 +86,7 @@ AWE.GS = (function(module) {
 		  return unitTypes;
 		},
 		
-		getUniTypeWithSymbolicId: function(symbolicId) {
+		getUnitTypeWithSymbolicId: function(symbolicId) {
       var unitTypes = this.get('unit_types');
       
       for (var i = 0; i < unitTypes.length; i++) {

@@ -314,7 +314,8 @@ AWE.I18n.de_DE = function(module) {
         unlockJoinAlliance: "Ermöglicht Diplomatie und Allianzbeitritt.",
         unlockCreateAlliance: "Ermöglicht die Gründung einer Allianz.",
         unlockTrade: "Ermöglicht den Handel mit anderen Spielern.",
-        unlockedArtifactInitiation: "Ermöglicht das Einweihen von Artefakten."
+        unlockedArtifactInitiation: "Ermöglicht das Einweihen von Artefakten.",
+        unlockedAssignments: "Ermöglicht das Ausführen von Aufträgen.",
       },
 
       requirement: {
@@ -706,6 +707,17 @@ AWE.I18n.de_DE = function(module) {
         hurried: "beschleunigt",
         hurryTooltip: "Gib Goldkröten aus um das Artefakt doppelt so schnell einzuweihen. Die Kosten hängen von der Einweihungszeit ab.",
         hurryIndicator: "x2",
+      },
+
+      assignment: {
+        assignments: "Aufträge",
+        duration: "Dauer",
+        unitDeposits: "Benötigte Einheiten",
+        costs: "Kosten",
+        rewards: "Belohnung",
+        start: "Start",
+        hurry: "Hurtig!",
+        hurried: "beschleunigt",
       },
 
       info: {

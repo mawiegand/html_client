@@ -1076,7 +1076,7 @@ AWE.Controller = (function(module) {
           that.updateArtifactInitiation(settlement.get('artifact'));
         }
 
-        if () {
+        if (settlement && this.view.getPath('selectedSlot.building.unlockedAssignments')) {
           that.updateStandardAssignments();
         }
       }

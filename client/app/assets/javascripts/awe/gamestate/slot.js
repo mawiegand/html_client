@@ -286,7 +286,7 @@ AWE.GS = (function(module) {
 
       // log('---> convertedCostSum', convertedCostSum, AWE.Util.Rules.resourceCostsWithResourceId(costSum, 1));
       
-      costsResult = [];
+      var costsResult = [];
       AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
         var sum = AWE.Util.Rules.resourceCostsWithResourceId(costSum, item.id);
         // log('---> a', sum);

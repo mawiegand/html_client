@@ -696,6 +696,17 @@ AWE.I18n.en_US = function(module) {
         hurryIndicator: "x2",
       },
 
+      assignment: {
+        assignments: "Assignments",
+        duration: "Duration",
+        unitDeposits: "Required Units",
+        costs: "Costs",
+        rewards: "Rewards",
+        start: "Start",
+        hurry: "Hurry!",
+        hurried: "hurried",
+      },
+
       info:{
         clickToExpand:"Click to expand",
         clickToMinimize:"Click to minimize",

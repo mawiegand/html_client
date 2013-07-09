@@ -38,16 +38,79 @@ AWE.GS = function (module) {
     }.property('type_id').cacheable(),
 
     // TODO correct client time
-    timeToFinish: function() {
-      return AWE.GS.TimeManager.estimatedServerTime().getTime() - Date.parseISODate(this.get('endet_at')).getTime();
+    finished: function() {
+      if (this.get('endet_at')) {
+        return AWE.GS.TimeManager.estimatedServerTime().getTime() > Date.parseISODate(this.get('endet_at')).getTime();
+      }
+      else {
+        return null;
+      }
     }.property('endet_at'),
 
-    progression: function() {
-      var currentInterval = AWE.GS.TimeManager.estimatedServerTime().getTime() - Date.parseISODate(this.get('startet_at')).getTime();
-      var jobInterval     = Date.parseISODate(this.get('ended_at')).getTime() - Date.parseISODate(this.get('startet_at')).getTime();
+    costs: function() {
+      var costs = this.getPath('assignmentType.costs');
+      var costsResult = [];
+      AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
+        var amount = costs[item.id];
+        if (amount && amount > 0) {
+          costsResult.push(Ember.Object.create({
+            amount:       amount,
+            resourceType: item,
+          }));
+        }
+      });
+      return costsResult;
+    }.property('type_id').cacheable(),
 
-      return jobInterval != 0 ? currentInterval / jobInterval : -1;
-    }.property('endet_at'),
+    unitDeposits: function() {
+      var unitdeposits = this.getPath('assignmentType.unit_deposits');
+      var depositsResult = [];
+      AWE.GS.RulesManager.getRules().unit_types.forEach(function(item) {
+        var amount = unitdeposits[item.id];
+        if (amount && amount > 0) {
+          depositsResult.push(Ember.Object.create({
+            amount:   amount,
+            unitType: item,
+          }));
+        }
+      });
+      return depositsResult;
+    }.property('type_id').cacheable(),
+
+
+    resourceRewards: function() {
+      var rewards = this.getPath('assignmentType.rewards.resource_rewards');
+      var rewardResult = [];
+      if (rewards) {
+        rewards.forEach(function(item) {
+          var resource = AWE.GS.RulesManager.getRules().getResourceTypeWithSymbolicId(item.resource);
+          if (item.amount > 0) {
+            rewardResult.push(Ember.Object.create({
+              amount:       item.amount,
+              resourceType: resource,
+            }));
+          }
+        });
+      }
+      return rewardResult;
+    }.property('type_id').cacheable(),
+
+    unitRewards: function() {
+      var rewards = this.getPath('assignmentType.rewards.unit_rewards');
+      var rewardResult = [];
+      if (rewards) {
+        rewards.forEach(function(item) {
+          var unitType = AWE.GS.RulesManager.getRules().getUnitTypeWithSymbolicId(item.unit);
+          if (item.amount > 0) {
+            rewardResult.push(Ember.Object.create({
+              amount:   item.amount,
+              unitType: unitType,
+            }));
+          }
+        });
+      }
+      return rewardResult;
+    }.property('type_id').cacheable(),
 
     isActive: function() {
       return this.get('ended_at') != null;
