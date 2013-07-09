@@ -707,6 +707,17 @@ AWE.I18n.en_US = function(module) {
         hurry: "Hurry!",
         hurried: "hurried",
         noneAvailable: "There are no assignments currently available.",
+        cancelText: "Ok",
+        error: {
+          conflict: {
+            header: "Error!",
+            content: "The assignment has already started. Wait until it's finished.",
+          },
+          prerequisites: {
+            header: "Stop!",
+            content: "You don´t have sufficient resources or units to start the assignment.",
+          }
+        }
       },
 
       info:{

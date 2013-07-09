@@ -704,6 +704,32 @@ AWE.Controller = (function(module) {
             }
           });
         }
+        else if (status === AWE.Net.CONFLICT) {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'assignment-conflict-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the assignment start command.");
+          if (callback) {
+            callback();
+          }
+        }
+        else if (status === AWE.Net.FORBIDDEN) {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'assignment-not-enough-prerequisites',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the assignment start command.");
+          if (callback) {
+            callback();
+          }
+        }
         else {
           var dialog = AWE.UI.Ember.InfoDialog.create({
             contentTemplateName: 'server-command-failed-info',

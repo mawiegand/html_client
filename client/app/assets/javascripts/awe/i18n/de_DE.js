@@ -719,6 +719,17 @@ AWE.I18n.de_DE = function(module) {
         hurry: "Hurtig!",
         hurried: "beschleunigt",
         noneAvailable: "Zur Zeit zind keine Aufträge verfügbar.",
+        cancelText: "Ok",
+        error: {
+          conflict: {
+            header: "Fehler!",
+            content: "Der Auftrag ist bereits gestartet. Warte, bis er fertig ist.",
+          },
+          prerequisites: {
+            header: "Halt!",
+            content: "Du hast aktuell leider nicht genügend Resourcen oder Einheiten, um den Auftrag zu starten.",
+          }
+        }
       },
 
       info: {
