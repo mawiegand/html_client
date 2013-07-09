@@ -15,7 +15,11 @@ AWE.UI.Ember = function(module) {
       this._super();
       var self = this;
 
-      this.set('assignments', AWE.GS.game.getPath('currentCharacter.enumerableStandardAssignments'));
+      var orderedAssignments = AWE.GS.game.getPath('currentCharacter.enumerableStandardAssignments').sort(function(a, b) {
+        return a.get('level') < b.get('level');
+      });
+
+      this.set('assignments', orderedAssignments);
     },
 
   });
@@ -30,6 +34,8 @@ AWE.UI.Ember = function(module) {
     halving: false,
 
     timer: null,
+
+    speedupCosts: 2,
 
     progressBarWidth: function() {
       var currentInterval = AWE.GS.TimeManager.estimatedServerTime().getTime() - Date.parseISODate(this.getPath('assignment.started_at')).getTime();

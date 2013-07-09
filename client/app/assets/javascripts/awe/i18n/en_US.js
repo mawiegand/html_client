@@ -314,7 +314,8 @@ AWE.I18n.en_US = function(module) {
         unlockJoinAlliance:"Unlocks diplomacy and joining an alliance.",
         unlockCreateAlliance:"Unlocks creating an alliance.",
         unlockTrade:"Unlocks trading with other players.",
-        unlockedArtifactInitiation: "Unlocks initiation of artifacts."
+        unlockedArtifactInitiation: "Unlocks initiation of artifacts.",
+        unlockedAssignments: "Unlocks ordering of assignments.",
       },
       requirement:{
         none:"No",
