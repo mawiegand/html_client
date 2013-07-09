@@ -13,13 +13,7 @@ AWE.UI.Ember = function(module) {
 
     init: function() {
       this._super();
-      var self = this;
-
-      var orderedAssignments = AWE.GS.game.getPath('currentCharacter.enumerableStandardAssignments').sort(function(a, b) {
-        return a.get('level') < b.get('level');
-      });
-
-      this.set('assignments', orderedAssignments);
+      this.set('assignments', AWE.GS.game.getPath('currentCharacter.enumerableStandardAssignments'));
     },
 
   });
