@@ -812,7 +812,7 @@ AWE.I18n.en_US = function(module) {
         changeAvatarAdvice: 'Tired of your avatar? Shuffle it!',
         changeAvatarButton: 'shuffle',
         changeAvatarDialogCaption: 'Your new avatar',
-        info:"Here you can change your appearance as demi-god. At the moment you can choose the name and gender with which you want to appear in game. Later additional possibilities to customize your demi-god will be added.",
+        info: "Here you can change your appearance as demi-god. At the moment you can choose the name and gender with which you want to appear in game. Later additional possibilities to customize your demi-god will be added.",
         chooseName:"Choose your name",
         changeName:"Change your name",
         presentName:"Present name",
@@ -862,7 +862,7 @@ AWE.I18n.en_US = function(module) {
 
           changeFailed: {
             heading: 'Saving avatar failed',
-            text: 'Something went wrong. Probably a little gnome cut your connection and your new avatar could not be saved...',
+            text: 'Something went wrong. Your new avatar could not be saved. Please try again later.',
           },
         },
       },

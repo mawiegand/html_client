@@ -873,7 +873,7 @@ AWE.I18n.de_DE = function(module) {
           changeSameIIUnknown: "Die Liste konnte aus unbekannten Gründen nicht geändert werden. Bitte versuche es später noch einmal.",
           changeFailed: {
             heading: 'Avatar speichern fehlgeschlagen',
-            text: 'Aus irgendeinem Grund, vermutlich ist der Admin Schuld, konnte dein neues Avatar nicht gespeichert werden ;D',
+            text: 'Aus irgendeinem Grund konnte dein neuer Avatar nicht gespeichert werden.',
           },
         },
       },
