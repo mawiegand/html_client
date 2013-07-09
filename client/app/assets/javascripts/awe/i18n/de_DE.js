@@ -718,6 +718,7 @@ AWE.I18n.de_DE = function(module) {
         start: "Start",
         hurry: "Hurtig!",
         hurried: "beschleunigt",
+        noneAvailable: "Zur Zeit zind keine Aufträge verfügbar.",
       },
 
       info: {

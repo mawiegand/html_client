@@ -2,9 +2,13 @@
 
   <h3>{{t settlement.assignment.assignments}}</h3>
 
-  {{#each assignments}}
-    {{view AWE.UI.Ember.AssignmentView assignmentBinding="this" controllerBinding="controller" }}
-  {{/each}}
+  {{#if assignments }}
+    {{#each assignments }}
+      {{view AWE.UI.Ember.AssignmentView assignmentBinding="this" controllerBinding="controller" }}
+    {{/each}}
+  {{else}}
+    <p>{{t settlement.assignment.noneAvailable}}</p>
+  {{/if}}
 
 </script>
 
