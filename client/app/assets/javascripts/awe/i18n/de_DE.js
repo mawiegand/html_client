@@ -604,7 +604,7 @@ AWE.I18n.de_DE = function(module) {
       construction: {
         hurry: "Hurtig!",
         cashTooltip: "Gib Goldkröten aus, um den Bauauftrag sofort fertig zu stellen. Die Kosten hängen von der verbleibenden Bauzeit ab.",
-        frogTradeTooltip: "Tausche 2 Kröten zur Neuverteiltung deiner Ressourcen, sodass die Gebäudeproduktion sofort startet.",
+        frogTradeTooltip: "Tausche 2 Kröten zur Neuverteiltung deiner Ressourcen, so dass die Gebäudeproduktion sofort startet.",
         cancelTooltip: "Den aktuellen Ausbau abbrechen.",
         insufficentResources: "Mangel",
         finishing: "gleich fertig",
@@ -1030,6 +1030,7 @@ AWE.I18n.de_DE = function(module) {
         characterEffects: "Spieler-Boni",
         allianceEffects: "Allianz-Boni",
         effectDetails: "Details",
+        effects: "Effekte",
         baseProduction: "Basisproduktion",
         full: "voll",
     

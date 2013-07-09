@@ -391,6 +391,7 @@ AWE.I18n.en_US = function(module) {
       shoutBox:"Shout Box",
       shoutBoxExplanation:"Everything entered here is immediately visible to all members",
       changePassword:'Save new password',
+      saveReservation: 'Save reservation',
       kickMember:'kick',
 
       progress:{
@@ -404,6 +405,7 @@ AWE.I18n.en_US = function(module) {
         criteriaHeld:'Hold Criterion',
         victoryAt:'Victory At',
         victoryAfter:'Victory After',
+        won: "Winner",
         days:'Days',
       },
 
@@ -427,7 +429,8 @@ AWE.I18n.en_US = function(module) {
         unknownCreate:"For some reason, creating the alliance did fail.",
       },
       success: {
-        passwordSet: "The password has been saved."
+        passwordSet: "The password has been saved.",
+        reservationSaved: "alliance reservation has been saved.",
        },
       confirmKick:{
         heading:"Confirm action",
@@ -526,6 +529,7 @@ AWE.I18n.en_US = function(module) {
           nameTooLong: "Way to long. The name can have maximum 16 characters.",
           nameNoChange: "Thats the same name as before.",
 
+          nameTaken: "This name is already in use or on the black list. Please, choose another one.",
           changeNameCost: "You dont have enough golden frogs right now to change your settlements name.",
           changeNameError: "The name could not be changed for some reason. Please try again later.",
         },
@@ -592,8 +596,8 @@ AWE.I18n.en_US = function(module) {
       construction:{
         hurry:"Hurry!",
         cashTooltip:"Spend golden frogs to finish this job instantly. The costs depend on the remaining building time.",
-        frogTradeTooltip: "Tausche 2 Kröten zur Neuverteiltung deiner Ressourcen, sodass die Gebäudeproduktion sofort startet.",
-        cancelTooltip: "Den aktuellen Ausbau abbrechen.",
+        frogTradeTooltip: "Change 2 golden Frogs for reallocation of your resources to start construction immediately.",
+        cancelTooltip: "Cancel current construction job.",
         insufficentResources:"insufficient resources",
         finishing:"finishing",
         beingBuilt:"Building is being constructed.",
@@ -1014,17 +1018,17 @@ AWE.I18n.en_US = function(module) {
 
     resource:{
       productionInfo:{
-        header:"Resource production in your empire",
-        amount:"Amount",
-        productionRate:"Production rate",
-        dailyProduction:"Daily production",
-        capacity:"Storage capacity",
-        capacityReachedIn:"Capacity reached in",
+        header: "Resource production in your empire",
+        amount: "Amount",
+        productionRate: "Production rate",
+        dailyProduction: "Daily production",
+        capacity: "Storage capacity",
+        capacityReachedIn: "Capacity reached in",
         characterEffects: "Player-Boni",
         allianceEffects: "Alliance-Boni",
-        effects:"Effects",
-        baseProduction:"Base production",
-        full:"full",
+        effects: "Effects",
+        baseProduction: "Base production",
+        full: "full",
 
         help1:"Resources are produced by",
         help2:"in your home settlement and encampement or collected by fortresses as",
@@ -1071,16 +1075,21 @@ AWE.I18n.en_US = function(module) {
             fur:     "You allocated more fur than you can store.",
           },
 
+          noFrogs: {
+            heading: "You are broke!",
+            text:    "You don't have enough golden frogs. Go and get some new in the bonanza.",
+          },
+
           failed: {
             heading: "Exchange failed.",
-            text:    "The exchange has failed. Please try again or contact a administrator.",
+            text:    "The exchange has failed. Please try again or contact the support.",
           },
         },
       },
     },
     
     effects: {
-      effects: "Boni",
+      effects: "Bonuses",
       type0: "Shop",
       type1: "Artifact",
       characterEffectsNotAvailable: "No Player-Boni.",
@@ -1124,7 +1133,7 @@ AWE.I18n.en_US = function(module) {
       income: 'Resourcerate',
       defenseBonus: 'Battle Bonus',
       name: "Name",
-      type: "Typ",
+      type: "Type",
       region: "Region",
       artifact: "Artifact",
       artifacts: "Artifacts",
