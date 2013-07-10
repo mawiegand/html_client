@@ -105,6 +105,11 @@ AWE.UI.Ember = function(module) {
       this.set('collapsed', false);
     },
 
+    finished: function() {
+      var t = this.get('timeRemaining');
+      return t !== undefined && t !== null && t <= 0;
+    }.property('timeRemaining').cacheable(),
+
     calcTimeRemaining: function() {
       var endedAt = this.getPath('assignment.ended_at');
       if (!endedAt) {

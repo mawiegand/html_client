@@ -710,6 +710,7 @@ AWE.I18n.en_US = function(module) {
         start: "Start",
         hurry: "Hurry!",
         hurried: "hurried",
+        finishing: "Finishing...",
         noneAvailable: "There are no assignments currently available.",
         cancelText: "Ok",
         error: {

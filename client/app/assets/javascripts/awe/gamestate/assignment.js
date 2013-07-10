@@ -37,16 +37,6 @@ AWE.GS = function (module) {
       return AWE.GS.RulesManager.getRules().getAssignmentType(assignmentId);
     }.property('type_id').cacheable(),
 
-    // TODO correct client time
-    finished: function() {
-      if (this.get('ended_at')) {
-        return AWE.GS.TimeManager.estimatedServerTime().getTime() > Date.parseISODate(this.get('ended_at')).getTime();
-      }
-      else {
-        return null;
-      }
-    }.property('ended_at'),
-
     costs: function() {
       var costs = this.getPath('assignmentType.costs');
       var costsResult = [];

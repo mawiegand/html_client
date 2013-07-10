@@ -23,8 +23,8 @@
           {{#if isActive }}
             <div class="duration assignment-progress-bar-border">
               <div class="assignment-progress-bar" {{bindAttr style="progressBarWidth"}}>
-                {{#if assignment.finished}}
-                  {{t settlement.assignment.finishing}}...
+                {{#if finished}}
+                  {{t settlement.assignment.finishing}}
                 {{else}}
                   {{formatDuration timeRemaining}}
                 {{/if}}
@@ -84,8 +84,8 @@
       {{#if isActive }}
         <div class="float-right duration assignment-progress-bar-border">
           <div class="assignment-progress-bar" {{bindAttr style="progressBarWidth"}}>
-          {{#if assignment.finished}}
-            {{t settlement.assignment.finishing}}...
+          {{#if finished}}
+            {{t settlement.assignment.finishing}}
           {{else}}
             {{formatDuration timeRemaining}}
           {{/if}}
