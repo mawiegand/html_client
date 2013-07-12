@@ -40,6 +40,16 @@ AWE.Ext = (function(module) {
     return values;
   };
   
+  String.prototype.format = function()
+  {
+     var content = this;
+     for (var i=0; i < arguments.length; i++)
+     {
+          var replacement = '{' + i + '}';
+          content = content.replace(replacement, arguments[i]);  
+     }
+     return content;
+  };
   
   Date.parseISODate = function(s){
     

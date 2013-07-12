@@ -76,25 +76,25 @@ AWE.GS = (function(module) {
   
     that.updateRoundInfo = function(updateType, callback) {
       var self = this;
-      var gossip = module.game.get('gossip');
-      if (gossip !== undefined && gossip !== null) {
-        var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'gossip';
+      var roundInfo = module.game.get('roundInfo');
+      if (roundInfo !== undefined && roundInfo !== null) {
+        var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'round_info';
         return my.updateEntity(url, 1, updateType, callback); 
       }
       else {
-        var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'gossip';
+        var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'round_info';
         return my.fetchEntitiesFromURL(
           url, 
           my.runningUpdatesPerId, 
           1, 
           updateType, 
           null,
-          function(gossip, statusCode, xhr, timestamp) {
+          function(roundInfo, statusCode, xhr, timestamp) {
             if (statusCode === AWE.Net.OK) {
-              module.game.set('gossip', gossip);
+              module.game.set('roundInfo', roundInfo);
             }
             if (callback) {
-              callback(gossip, statusCode, xhr, timestamp);
+              callback(roundInfo, statusCode, xhr, timestamp);
             }
           }
         );

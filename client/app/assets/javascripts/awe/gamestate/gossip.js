@@ -11,8 +11,9 @@ AWE.GS = (function(module) {
   //
   //   GOSSIP
   //
-  // ///////////////////////////////////////////////////////////////////////    
-    
+  // ///////////////////////////////////////////////////////////////////////   
+  
+  
   module.Gossip = module.Entity.extend({
     typeName: 'Gossip',
     
@@ -22,17 +23,17 @@ AWE.GS = (function(module) {
     
     hasEnded: function() {
       var endedAt = this.get('ended_at');
-      if (startedAt != null) {
-        return Math.floor((new Date().getTime() - Date.parseISODate(startedAt).getTime())/(24 * 3600 * 1000));
+      if (endedAt != null) {
+        return true;
       }
       else {
-        return 0;
+        return true;
       }
     }.property('ended_at').cacheable(),
     
     
     localizedDescription: function() {
-      return "Gossip";
+      return gossipFor(this.get('content_type'), this.get('content'));
     }.property('ended_at', 'content_type').cacheable(),
     
   });
@@ -67,25 +68,25 @@ AWE.GS = (function(module) {
   
     that.updateGossip = function(updateType, callback) {
       var self = this;
-      var gossip = module.game.get('roundInfo');
-      if (roundInfo !== undefined && roundInfo !== null) {
-        var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'round_info';
+      var gossip = module.game.get('gossip');
+      if (gossip !== undefined && gossip !== null) {
+        var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'gossip';
         return my.updateEntity(url, 1, updateType, callback); 
       }
       else {
-        var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'round_info';
+        var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'gossip';
         return my.fetchEntitiesFromURL(
           url, 
           my.runningUpdatesPerId, 
           1, 
           updateType, 
           null,
-          function(roundInfo, statusCode, xhr, timestamp) {
+          function(gossip, statusCode, xhr, timestamp) {
             if (statusCode === AWE.Net.OK) {
-              module.game.set('roundInfo', roundInfo);
+              module.game.set('gossip', gossip);
             }
             if (callback) {
-              callback(roundInfo, statusCode, xhr, timestamp);
+              callback(gossip, statusCode, xhr, timestamp);
             }
           }
         );
@@ -95,6 +96,32 @@ AWE.GS = (function(module) {
     return that;
       
   }());
+  
+  var gossips = {
+    "most_liked_player" : function(content) {
+      var string = AWE.I18n.lookupTranslation('building.gossip.likeLeader');
+      return string.format(content.name, content.likes);
+    },
+    
+    "resource_type_production_leader" : function(content) {
+      var male = content.male === null || content.male;
+      var string = male ? AWE.I18n.lookupTranslation('building.gossip.resourceProductionLeader.male') : AWE.I18n.lookupTranslation('building.gossip.resourceProductionLeader.female');
+      var resourceType = AWE.GS.RulesManager.getRules().getResourceType(content.resource_id);
+      return string.format(content.name, AWE.Util.Rules.lookupTranslation(resourceType.name), (int)(parseInt(content.rate) * 24));
+    },
+  }
+  
+  
+  var gossipFor = function(type, content) {
+    var gossipFunction = gossips[type];
+    
+    if (type === "random_advice" || !gossipFunction) {
+      return AWE.I18n.lookupTranslation('building.gossip.advice');
+    }
+    else {
+      return gossipFunction(content);
+    }
+  }
     
   
   return module;
