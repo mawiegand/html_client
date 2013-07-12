@@ -107,7 +107,7 @@ AWE.GS = (function(module) {
       var male = content.male === null || content.male;
       var string = male ? AWE.I18n.lookupTranslation('building.gossip.resourceProductionLeader.male') : AWE.I18n.lookupTranslation('building.gossip.resourceProductionLeader.female');
       var resourceType = AWE.GS.RulesManager.getRules().getResourceType(content.resource_id);
-      return string.format(content.name, AWE.Util.Rules.lookupTranslation(resourceType.name), (int)(parseInt(content.rate) * 24));
+      return string.format(content.name, AWE.Util.Rules.lookupTranslation(resourceType.name), (parseInt(content.rate) * 24));
     },
   }
   
