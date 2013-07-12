@@ -314,7 +314,8 @@ AWE.I18n.de_DE = function(module) {
         unlockJoinAlliance: "Ermöglicht Diplomatie und Allianzbeitritt.",
         unlockCreateAlliance: "Ermöglicht die Gründung einer Allianz.",
         unlockTrade: "Ermöglicht den Handel mit anderen Spielern.",
-        unlockedArtifactInitiation: "Ermöglicht das Einweihen von Artefakten."
+        unlockedArtifactInitiation: "Ermöglicht das Einweihen von Artefakten.",
+        unlockedAssignments: "Ermöglicht das Ausführen von Aufträgen.",
       },
 
       requirement: {
@@ -603,7 +604,7 @@ AWE.I18n.de_DE = function(module) {
       construction: {
         hurry: "Hurtig!",
         cashTooltip: "Gib Goldkröten aus, um den Bauauftrag sofort fertig zu stellen. Die Kosten hängen von der verbleibenden Bauzeit ab.",
-        frogTradeTooltip: "Tausche 2 Kröten zur Neuverteiltung deiner Ressourcen, sodass die Gebäudeproduktion sofort startet.",
+        frogTradeTooltip: "Tausche 2 Kröten zur Neuverteiltung deiner Ressourcen, so dass die Gebäudeproduktion sofort startet.",
         cancelTooltip: "Den aktuellen Ausbau abbrechen.",
         insufficentResources: "Mangel",
         finishing: "gleich fertig",
@@ -706,6 +707,30 @@ AWE.I18n.de_DE = function(module) {
         hurried: "beschleunigt",
         hurryTooltip: "Gib Goldkröten aus um das Artefakt doppelt so schnell einzuweihen. Die Kosten hängen von der Einweihungszeit ab.",
         hurryIndicator: "x2",
+      },
+
+      assignment: {
+        assignments: "Aufträge",
+        duration: "Dauer",
+        unitDeposits: "Benötigte Einheiten",
+        costs: "Kosten",
+        rewards: "Belohnung",
+        start: "Start",
+        hurry: "Hurtig!",
+        hurried: "beschleunigt",
+        finishing: "Beenden...",
+        noneAvailable: "Zur Zeit zind keine Aufträge verfügbar.",
+        cancelText: "Ok",
+        error: {
+          conflict: {
+            header: "Fehler!",
+            content: "Der Auftrag ist bereits gestartet. Warte, bis er fertig ist.",
+          },
+          prerequisites: {
+            header: "Halt!",
+            content: "Du hast aktuell leider nicht genügend Resourcen oder Einheiten, um den Auftrag zu starten.",
+          }
+        }
       },
 
       info: {
@@ -860,7 +885,7 @@ AWE.I18n.de_DE = function(module) {
           changeSameIIUnknown: "Die Liste konnte aus unbekannten Gründen nicht geändert werden. Bitte versuche es später noch einmal.",
           changeFailed: {
             heading: 'Avatar speichern fehlgeschlagen',
-            text: 'Aus irgendeinem Grund, vermutlich ist der Admin Schuld, konnte dein neues Avatar nicht gespeichert werden ;D',
+            text: 'Aus irgendeinem Grund konnte dein neuer Avatar nicht gespeichert werden.',
           },
         },
       },
@@ -1006,6 +1031,7 @@ AWE.I18n.de_DE = function(module) {
         characterEffects: "Spieler-Boni",
         allianceEffects: "Allianz-Boni",
         effectDetails: "Details",
+        effects: "Effekte",
         baseProduction: "Basisproduktion",
         full: "voll",
     

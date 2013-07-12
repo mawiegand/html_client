@@ -74,7 +74,7 @@ AWE.GS = (function(module) {
       }
 
       return this.get('avatar_obj');
-    }.property('avatar_string'),
+    }.property('avatar_string').cacheable(),
     
     exp_production_rate_zero: function() {
       return !((this.get('exp_production_rate') || 0) > 0);
@@ -275,8 +275,16 @@ AWE.GS = (function(module) {
       var allianceId = this.get('alliance_id');
       return allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
     }.property('alliance_id').cacheable(),
-    
-  });     
+
+    hashableStandardAssignments: function() {
+      var id = this.get('id');
+      return id ? AWE.GS.StandardAssignmentAccess.getHashableCollectionForCharacter_id(id) : null;
+    }.property('id').cacheable(),
+
+    enumerableStandardAssignments: function() {
+      return this.getPath('hashableStandardAssignments.collection');
+    }.property('id', 'hashableStandardAssignments.changedAt').cacheable(),
+  });
 
     
   // ///////////////////////////////////////////////////////////////////////

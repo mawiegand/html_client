@@ -694,6 +694,86 @@ AWE.Controller = (function(module) {
       });
     };
 
+    that.standardAssignmentStartPressed = function(assignmentType, callback) {
+      var action = AWE.Action.Assignment.createStartStandardAssignmentAction(assignmentType.id);
+      action.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          AWE.GS.StandardAssignmentManager.updateStandardAssignmentsOfCharacter(AWE.GS.game.getPath('currentCharacter.id'), null, function() {
+            if (callback) {
+              callback();
+            }
+          });
+          AWE.GS.ArmyManager.updateArmiesAtLocation(that.locationId, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+          });
+        }
+        else if (status === AWE.Net.CONFLICT) {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'assignment-conflict-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the assignment start command.");
+          if (callback) {
+            callback();
+          }
+        }
+        else if (status === AWE.Net.FORBIDDEN) {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'assignment-not-enough-prerequisites',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the assignment start command.");
+          if (callback) {
+            callback();
+          }
+        }
+        else {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the assignment start command.");
+          if (callback) {
+            callback();
+          }
+        }
+      });
+    };
+
+    that.standardAssignmentSpeedupPressed = function(assignment, callback) {
+      var action = AWE.Action.Assignment.createSpeedupStandardAssignmentAction(assignment.getId());
+      action.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          AWE.GS.StandardAssignmentManager.updateStandardAssignment(assignment.getId(), null, function() {
+            if (callback) {
+              callback();
+            }
+          });
+        }
+        else {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.assignment.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });
+          WACKADOO.presentModalDialog(dialog);
+          log(status, "The server did not accept the assignment start command.");
+          if (callback) {
+            callback();
+          }
+        }
+      });
+    };
+
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -795,7 +875,7 @@ AWE.Controller = (function(module) {
         });        
   
       }
-    }());     
+    }());
         
     that.updateAllConstructionQueuesAndJobs = function() {
       AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
@@ -836,10 +916,15 @@ AWE.Controller = (function(module) {
     }     
         
     // resource pool update methods
-    
+
     that.updateResourcePool = function() {
       AWE.GS.ResourcePoolManager.updateResourcePool(null, function(pool){
         log('updated resource pool', pool);
+      });
+    };
+
+    that.updateAssignments = function() {
+      AWE.GS.StandardAssignmentManager.updateStandardAssignmentsOfCurrentCharacter(null, function(assignments) {
       });
     };
 
@@ -868,6 +953,7 @@ AWE.Controller = (function(module) {
               else if (that.view) {  // only update queues, not jobs, if training queue is not visible
                 that.updateAllTrainingQueues();
               }
+              that.updateAssignments();
             }
           });
 
@@ -948,6 +1034,25 @@ AWE.Controller = (function(module) {
       }
     }
 
+    var pendingStandardAssignmentUpdates = {};
+
+    that.updateStandardAssignments = function(assignments) {
+      if (assignments) {
+        assignments.forEach(function(assignment) {
+          if (assignment.get('endet_at')) {
+            var assignmentId = assignment.getId();
+            pendingStandardAssignmentUpdates[assignmentId] = pendingStandardAssignmentUpdates[assignmentId] > 0 ? pendingStandardAssignmentUpdates[assignmentId] : AWE.Config.TIME_DIFF_RANGE;
+            if (Date.parseISODate(assignment.get('endet_at')).add({seconds: pendingStandardAssignmentUpdates[assignmentId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
+              pendingStandardAssignmentUpdates[assignmentId] *= 2;
+              that.updateStandardAssignments();
+              AWE.GS.ArmyManager.updateArmiesAtLocation(that.locationId, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+              });
+            }
+          }
+        });
+      }
+    };
+
     that.updateDebug = function() {
       $("#debug2").html('&nbsp;Settlement Screen Visible.');
     };    
@@ -1000,6 +1105,9 @@ AWE.Controller = (function(module) {
           that.updateArtifactInitiation(settlement.get('artifact'));
         }
 
+        if (settlement && this.view.getPath('selectedSlot.building.unlockedAssignments')) {
+          that.updateStandardAssignments();
+        }
       }
       
       else if (!this.settlementId && this.locationId) {

@@ -4,7 +4,7 @@
 //
 // runs only under mac without modifications
 
-var VERBOSE = false;
+var VERBOSE = true;
 
 
 var AWE = {};

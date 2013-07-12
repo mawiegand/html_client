@@ -194,7 +194,7 @@ AWE.UI.Ember = (function(module) {
     templateName: 'quest-unit-reward-view',
     unit: null,
     unitName: function() {
-      return AWE.Util.Rules.lookupTranslation(AWE.GS.RulesManager.getRules().getUniTypeWithSymbolicId(this.getPath('unit.unit')).name);
+      return AWE.Util.Rules.lookupTranslation(AWE.GS.RulesManager.getRules().getUnitTypeWithSymbolicId(this.getPath('unit.unit')).name);
     }.property('unit').cacheable(),
   });  
   

@@ -314,7 +314,8 @@ AWE.I18n.en_US = function(module) {
         unlockJoinAlliance:"Unlocks diplomacy and joining an alliance.",
         unlockCreateAlliance:"Unlocks creating an alliance.",
         unlockTrade:"Unlocks trading with other players.",
-        unlockedArtifactInitiation: "Unlocks initiation of artifacts."
+        unlockedArtifactInitiation: "Unlocks initiation of artifacts.",
+        unlockedAssignments: "Unlocks ordering of assignments.",
       },
       requirement:{
         none:"No",
@@ -390,6 +391,7 @@ AWE.I18n.en_US = function(module) {
       shoutBox:"Shout Box",
       shoutBoxExplanation:"Everything entered here is immediately visible to all members",
       changePassword:'Save new password',
+      saveReservation: 'Save reservation',
       kickMember:'kick',
 
       progress:{
@@ -403,6 +405,7 @@ AWE.I18n.en_US = function(module) {
         criteriaHeld:'Hold Criterion',
         victoryAt:'Victory At',
         victoryAfter:'Victory After',
+        won: "Winner",
         days:'Days',
       },
 
@@ -426,7 +429,8 @@ AWE.I18n.en_US = function(module) {
         unknownCreate:"For some reason, creating the alliance did fail.",
       },
       success: {
-        passwordSet: "The password has been saved."
+        passwordSet: "The password has been saved.",
+        reservationSaved: "alliance reservation has been saved.",
        },
       confirmKick:{
         heading:"Confirm action",
@@ -525,6 +529,7 @@ AWE.I18n.en_US = function(module) {
           nameTooLong: "Way to long. The name can have maximum 16 characters.",
           nameNoChange: "Thats the same name as before.",
 
+          nameTaken: "This name is already in use or on the black list. Please, choose another one.",
           changeNameCost: "You dont have enough golden frogs right now to change your settlements name.",
           changeNameError: "The name could not be changed for some reason. Please try again later.",
         },
@@ -591,8 +596,8 @@ AWE.I18n.en_US = function(module) {
       construction:{
         hurry:"Hurry!",
         cashTooltip:"Spend golden frogs to finish this job instantly. The costs depend on the remaining building time.",
-        frogTradeTooltip: "Tausche 2 Kröten zur Neuverteiltung deiner Ressourcen, sodass die Gebäudeproduktion sofort startet.",
-        cancelTooltip: "Den aktuellen Ausbau abbrechen.",
+        frogTradeTooltip: "Change 2 golden Frogs for reallocation of your resources to start construction immediately.",
+        cancelTooltip: "Cancel current construction job.",
         insufficentResources:"insufficient resources",
         finishing:"finishing",
         beingBuilt:"Building is being constructed.",
@@ -694,6 +699,30 @@ AWE.I18n.en_US = function(module) {
         hurried: "hurried",
         hurryTooltip: "You can halve the initiation time by using golden frogs. The costs depents on the initiation time.",
         hurryIndicator: "x2",
+      },
+
+      assignment: {
+        assignments: "Assignments",
+        duration: "Duration",
+        unitDeposits: "Required Units",
+        costs: "Costs",
+        rewards: "Rewards",
+        start: "Start",
+        hurry: "Hurry!",
+        hurried: "hurried",
+        finishing: "Finishing...",
+        noneAvailable: "There are no assignments currently available.",
+        cancelText: "Ok",
+        error: {
+          conflict: {
+            header: "Error!",
+            content: "The assignment has already started. Wait until it's finished.",
+          },
+          prerequisites: {
+            header: "Stop!",
+            content: "You don´t have sufficient resources or units to start the assignment.",
+          }
+        }
       },
 
       info:{
@@ -799,7 +828,7 @@ AWE.I18n.en_US = function(module) {
         changeAvatarAdvice: 'Tired of your avatar? Shuffle it!',
         changeAvatarButton: 'shuffle',
         changeAvatarDialogCaption: 'Your new avatar',
-        info:"Here you can change your appearance as demi-god. At the moment you can choose the name and gender with which you want to appear in game. Later additional possibilities to customize your demi-god will be added.",
+        info: "Here you can change your appearance as demi-god. At the moment you can choose the name and gender with which you want to appear in game. Later additional possibilities to customize your demi-god will be added.",
         chooseName:"Choose your name",
         changeName:"Change your name",
         presentName:"Present name",
@@ -849,7 +878,7 @@ AWE.I18n.en_US = function(module) {
 
           changeFailed: {
             heading: 'Saving avatar failed',
-            text: 'Something went wrong. Probably a little gnome cut your connection and your new avatar could not be saved...',
+            text: 'Something went wrong. Your new avatar could not be saved. Please try again later.',
           },
         },
       },
@@ -990,17 +1019,17 @@ AWE.I18n.en_US = function(module) {
 
     resource:{
       productionInfo:{
-        header:"Resource production in your empire",
-        amount:"Amount",
-        productionRate:"Production rate",
-        dailyProduction:"Daily production",
-        capacity:"Storage capacity",
-        capacityReachedIn:"Capacity reached in",
+        header: "Resource production in your empire",
+        amount: "Amount",
+        productionRate: "Production rate",
+        dailyProduction: "Daily production",
+        capacity: "Storage capacity",
+        capacityReachedIn: "Capacity reached in",
         characterEffects: "Player-Boni",
         allianceEffects: "Alliance-Boni",
-        effects:"Effects",
-        baseProduction:"Base production",
-        full:"full",
+        effects: "Effects",
+        baseProduction: "Base production",
+        full: "full",
 
         help1:"Resources are produced by",
         help2:"in your home settlement and encampement or collected by fortresses as",
@@ -1047,16 +1076,21 @@ AWE.I18n.en_US = function(module) {
             fur:     "You allocated more fur than you can store.",
           },
 
+          noFrogs: {
+            heading: "You are broke!",
+            text:    "You don't have enough golden frogs. Go and get some new in the bonanza.",
+          },
+
           failed: {
             heading: "Exchange failed.",
-            text:    "The exchange has failed. Please try again or contact a administrator.",
+            text:    "The exchange has failed. Please try again or contact the support.",
           },
         },
       },
     },
     
     effects: {
-      effects: "Boni",
+      effects: "Bonuses",
       type0: "Shop",
       type1: "Artifact",
       characterEffectsNotAvailable: "No Player-Boni.",
@@ -1100,7 +1134,7 @@ AWE.I18n.en_US = function(module) {
       income: 'Resourcerate',
       defenseBonus: 'Battle Bonus',
       name: "Name",
-      type: "Typ",
+      type: "Type",
       region: "Region",
       artifact: "Artifact",
       artifacts: "Artifacts",

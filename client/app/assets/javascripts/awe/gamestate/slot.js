@@ -286,7 +286,7 @@ AWE.GS = (function(module) {
 
       // log('---> convertedCostSum', convertedCostSum, AWE.Util.Rules.resourceCostsWithResourceId(costSum, 1));
       
-      costsResult = [];
+      var costsResult = [];
       AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
         var sum = AWE.Util.Rules.resourceCostsWithResourceId(costSum, item.id);
         // log('---> a', sum);
@@ -613,6 +613,28 @@ AWE.GS = (function(module) {
     }.property('buildingId', 'converted', 'levelAfterJobs').cacheable(),
 
 
+    calculateAssignments: function(level) {
+      return this.getPath('buildingType.symbolic_id') == 'building_tavern';
+    },
+
+    unlockedAssignments: function() {
+      return this.calculateAssignments(this.get('level'));
+    }.property('buildingId', 'level').cacheable(),
+
+    unlockedAssignmentsNextLevel: function() {
+      return this.calculateAssignments(this.get('nextLevel'));
+    }.property('buildingId', 'nextLevel').cacheable(),
+
+    unlockedAssignmentsAfterConversion: function() {
+      var converted = this.get('converted');
+      if (converted) {
+        return this.get('converted').calculateAssignments(this.get('levelAfterJobs'));
+      }
+      else {
+        return false;
+      }
+    }.property('buildingId', 'converted', 'levelAfterJobs').cacheable(),
+
     calcTradingCarts: function(level) {
 		  var formula = this.getPath('buildingType.abilities.trading_carts');
 		  level       = level || this.get('level') || 1;
@@ -660,12 +682,14 @@ AWE.GS = (function(module) {
 
     // ///////////////////////////////////////////////////////////////////////
     
-
 		canBeTornDown: function() {
 		  
 		}.property('level', 'buildingId').cacheable(),
-		
-		
+
+    currentAssignmentTypes: function() {
+      var level = (AWE.GS.game.getPath('currentCharacter.assignment_level') || 0);
+      return AWE.GS.RulesManager.getRules().getAssignmentTypesOfLevel(level);
+    },
   });    
 
 
@@ -832,7 +856,7 @@ AWE.GS = (function(module) {
       });
       return categories;
     },
-  });     
+  });
 
     
   // ///////////////////////////////////////////////////////////////////////

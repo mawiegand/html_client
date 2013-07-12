@@ -161,6 +161,7 @@ AWE.Config = (function(module) {
     "map/icon/army/infantry": AWE.Config.RAILS_ASSET_PATH + 'icons/infantry.png',
     "map/icon/army/artillery":AWE.Config.RAILS_ASSET_PATH + 'icons/artillery.png',
     "map/icon/fist":          AWE.Config.RAILS_ASSET_PATH + 'icons/fist.png',
+    "map/icon/greenCheckMark":AWE.Config.RAILS_ASSET_PATH + 'ok.png',
 
     "activityindicator/small": AWE.Config.RAILS_ASSET_PATH + 'icons/activityindicator_small.svg',
     

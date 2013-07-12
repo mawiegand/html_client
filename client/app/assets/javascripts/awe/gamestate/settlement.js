@@ -185,12 +185,12 @@ AWE.GS = (function(module) {
     
 
     enumerableIncomingTradingCartActions: function() {
-      log('SET INCOMING CARTS', this.getPath('hashableIncomingCarts.collection'))
+      log('SET INCOMING CARTS', this.getPath('hashableIncomingCarts.collection'));
       return this.getPath('hashableIncomingCarts.collection');
     }.property('id', 'hashableIncomingCarts.changedAt').cacheable(),
 
     enumerableOutgoingTradingCartActions: function() {
-      log('SET OUTGOING CARTS', this.getPath('hashableOutgoingCarts'), this.getPath('hashableOutgoingCarts.collection'))
+      log('SET OUTGOING CARTS', this.getPath('hashableOutgoingCarts'), this.getPath('hashableOutgoingCarts.collection'));
       return this.getPath('hashableOutgoingCarts.collection');
     }.property('id', 'hashableOutgoingCarts.changedAt').cacheable(),
 

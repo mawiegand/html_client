@@ -196,6 +196,10 @@
         <p><b>{{t building.info.unlockedArtifactInitiation}}</b></p>
       {{/if}}
 
+      {{#if building.unlockedAssignments}}
+        <p><b>{{t building.info.unlockedAssignments}}</b></p>
+      {{/if}}
+
       <br />
     
       {{#unless building.underConversion}}
@@ -270,7 +274,11 @@
             <p><b>{{t building.info.unlockedArtifactInitiation}}</b></p>
           {{/if}}
 
-        {{/if}}
+          {{#if building.converted.unlockedAssignments}}
+            <p><b>{{t building.info.unlockedAssignments}}</b></p>
+          {{/if}}
+
+      {{/if}}
 
         {{#if building.upgradable}}
           <hr class="clear" />
@@ -344,11 +352,15 @@
             {{/each}}
           {{/if}}
 
-          {{#if building.unlockedArtifactInitiation}}
-            <p><b>{{t building.info.unlockedArtifactInitiation}}</b></p>
+          {{#if building.unlockedArtifactInitiationNextLevel}}
+            <p><b>{{t building.info.unlockedArtifactInitiationNextLevel}}</b></p>
           {{/if}}
 
-        {{else}}
+          {{#if building.unlockedAssignmentsNextLevel}}
+            <p><b>{{t building.info.unlockedAssignments}}</b></p>
+          {{/if}}
+
+      {{else}}
           <hr class="clear" />
           <h3>{{t settlement.buildings.details.noUpgrade}}</h3>
         {{/if}}      
@@ -401,12 +413,20 @@
           <p><b>{{t building.info.unlockedArtifactInitiation}}</b></p>
         {{/if}}
 
+        {{#if building.converted.unlockedAssignments}}
+          <p><b>{{t building.info.unlockedAssignments}}</b></p>
+        {{/if}}
 
       {{/unless}}
 
       {{#if building.unlockedArtifactInitiation}}
       <hr class="clearfix" />
         {{view AWE.UI.Ember.ArtifactInitiationView settlementBinding="building.slot.settlement" controllerBinding="controller"}}
+      {{/if}}
+
+      {{#if building.unlockedAssignments}}
+      <hr class="clearfix" />
+        {{view AWE.UI.Ember.AssignmentListView buildingBinding="building" controllerBinding="controller"}}
       {{/if}}
 
       {{#if building.trainingQueues}}
@@ -488,6 +508,20 @@
   <div class="advisor chef"></div>
   <h1>{{t server.error.failedAction.heading }}</h1>
   <p>{{t server.error.failedAction.unknown  }}</p>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="assignment-not-enough-prerequisites">
+  <div class="advisor girl"></div>
+  <h1>{{t settlement.assignment.error.prerequisites.header }}</h1>
+  <p>{{t settlement.assignment.error.prerequisites.content  }}</p>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="assignment-conflict-info">
+  <div class="advisor girl"></div>
+  <h1>{{t settlement.assignment.error.conflict.header }}</h1>
+  <p>{{t settlement.assignment.error.conflict.content  }}</p>
 </script>
 
 

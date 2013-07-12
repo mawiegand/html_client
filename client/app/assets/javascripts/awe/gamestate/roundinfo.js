@@ -39,7 +39,6 @@ AWE.GS = (function(module) {
     }.property('winner_alliance_id').cacheable(),
 
     winnerAlliance: function() {
-      log('----> winnerAlliance', this.get('winner_alliance_id'));
       var alliance_id = this.get('winner_alliance_id');
       return alliance_id != null ? AWE.GS.AllianceManager.getAlliance(this.get('winner_alliance_id')) : null;
     }.property('winner_alliance_id').cacheable(),
