@@ -159,7 +159,7 @@ AWE.UI.Ember = function(module) {
     },
 
     costs: function() {
-      var costs = this.getPath('assignmentType.costs');
+      var costs = this.getPath('assignmentType.costs') || [];
       var costsResult = [];
       AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
         var amount = costs[item.id];
@@ -174,7 +174,7 @@ AWE.UI.Ember = function(module) {
     }.property('assignmentType').cacheable(),
 
     unitDeposits: function() {
-      var unitdeposits = this.getPath('assignmentType.unit_deposits');
+      var unitdeposits = this.getPath('assignmentType.unit_deposits') || [];
       var depositsResult = [];
       AWE.GS.RulesManager.getRules().unit_types.forEach(function(item) {
         var amount = unitdeposits[item.id];
@@ -190,7 +190,7 @@ AWE.UI.Ember = function(module) {
 
 
     resourceRewards: function() {
-      var rewards = this.getPath('assignmentType.rewards.resource_rewards');
+      var rewards = this.getPath('assignmentType.rewards.resource_rewards') || [];
       var rewardResult = [];
       if (rewards) {
         rewards.forEach(function(item) {
@@ -207,7 +207,7 @@ AWE.UI.Ember = function(module) {
     }.property('assignmentType').cacheable(),
 
     unitRewards: function() {
-      var rewards = this.getPath('assignmentType.rewards.unit_rewards');
+      var rewards = this.getPath('assignmentType.rewards.unit_rewards') || [];
       var rewardResult = [];
       if (rewards) {
         rewards.forEach(function(item) {
