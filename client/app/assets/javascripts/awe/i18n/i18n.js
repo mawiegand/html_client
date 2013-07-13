@@ -41,7 +41,7 @@ AWE.I18n = function(module) {
     var div = $('#screen-content');
     var table = $('<table border="1"></table>');
     div.append(table);
-    table.append('<tr><th>Key</th><th>Deutsch</th><th>Englisch</th></tr>');
+    table.append('<tr><th>Key</th><th>Original</th><th>Edited</th></tr>');
     
     var traverse = function(keys, obj) {
       if (typeof obj === 'string') {
@@ -59,7 +59,7 @@ AWE.I18n = function(module) {
       }
     }
     
-    traverse('all', AWE.I18n.de_DE.localizedStrings);
+    traverse('all', AWE.I18n.en_US.localizedStrings);
   }
 
   return module;

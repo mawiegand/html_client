@@ -226,7 +226,7 @@ AWE.UI.Ember = (function(module) {
             }
           });
         },
-
+        
         shufflePressed: function() {
           this.getNewAvatarString();
         },

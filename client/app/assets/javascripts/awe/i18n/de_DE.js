@@ -328,6 +328,19 @@ AWE.I18n.de_DE = function(module) {
         notEnoughBuildingSlots: "Du kannst derzeit nicht mehr Gebäude bauen. Es wird zuvor eine höhere Stufe der Hauptgebäudes (Häuptlingshütte in Siedlungen, Versammlungsplatz in Lagerstätten) benötigt.",
         notEnoughCash: "Du hast nicht genug Kröten, um diese Aktion auszuführen.",
       },
+      
+      gossip: {
+        heading: "Gerüchteküche",
+        advice: [
+          "Gerüchte besagen, dass die schönsten Gänseblümchen mehrere hundert Meter südich des Dorfes wachsen.",
+          "Der beste Weg einen Kampf zu gewinnen ist es, mit einer klaren Übermacht anzugreifen.",
+        ],
+        likeLeader: "{0} muss eine sehr nette Person sein. Schon {1} Likes. Unglaublich!",
+        resourceProductionLeader: {
+          male:   "{0} ist der {1}könig! Er produziert am Tag über {2}.",
+          female: "{0} ist die {1}königin! Sie produziert am Tag über {2}.",
+        },
+      }
 
     },
     

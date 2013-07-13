@@ -51,7 +51,8 @@ AWE.Controller = (function(module) {
      * @function
      * @name AWE.Controller.SettlementController#init */
     that.init = function(initialFrameModelCoordinates) {
-      _super.init();            
+      _super.init();       
+      that.updateGossipIfNecessary();     
     };   
     
     /** get all stages controlled by this controller. 
@@ -228,6 +229,9 @@ AWE.Controller = (function(module) {
     
     that.slotClicked = function(slot) {
       that.view.set('selectedSlot', slot);
+      if (slot.getPath('building.unlockedAssignments')) {
+        that.updateGossipIfNecessary();
+      }
       that.updateAllTrainingQueuesAndJobs();
     }
     
@@ -886,6 +890,17 @@ AWE.Controller = (function(module) {
           });
         });      
       });
+    }
+        
+        
+    // update gossip
+    
+    that.updateGossipIfNecessary = function() {
+      var gossip = AWE.GS.game.gossip;
+      if (!gossip || gossip.get('hasEnded')) {
+        log('update gossip');
+        AWE.GS.GossipManager.updateGossip(null, null);
+      }
     }
         
     // training queue and job update methods
