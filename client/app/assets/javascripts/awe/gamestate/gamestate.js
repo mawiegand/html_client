@@ -21,6 +21,7 @@ AWE.GS = (function(module) {
     allianceRanking: null,
     fortressRanking: null,
     rankingInfo: null,
+    gossip: null,
   });
 
   module.TimeManager = AWE.Util.TimeCorrection.createManager();

@@ -35,13 +35,11 @@
      
   <hr/>
 
-  <h2>{{t profile.customization.changeAvatar}}</h2>
-  <p>
-    <b>{{t profile.customization.presentAvatar}}:</b> 
+    <div style="float:left;">{{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar"}}</div>
+    <p>
     <span class="simple-button" {{action "changeAvatarPressed"}}>{{t profile.customization.changeAvatarCaption}}</span>
-    <div style="float:right; margin-top:-16px;">{{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar"}}</div><br style="clear:both">
+    <br style="clear:both">
   </p>
-  <p>{{t profile.customization.changeAvatarAdvice}}</p>
 
   <hr/>
 

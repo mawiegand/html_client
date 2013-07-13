@@ -425,6 +425,13 @@
       {{/if}}
 
       {{#if building.unlockedAssignments}}
+
+      <br/>
+      <hr class="clearfix" />
+
+        <h3>{{t building.gossip.heading }}</h3>
+        <p>{{AWE.GS.game.gossip.localizedDescription}}</p>
+
       <hr class="clearfix" />
         {{view AWE.UI.Ember.AssignmentListView buildingBinding="building" controllerBinding="controller"}}
       {{/if}}
