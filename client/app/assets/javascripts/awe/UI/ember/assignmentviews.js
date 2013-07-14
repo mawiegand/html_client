@@ -157,6 +157,71 @@ AWE.UI.Ember = function(module) {
     willDestroyElement: function() {
       this.stopTimer();
     },
+
+    costs: function() {
+      var costs = this.getPath('assignmentType.costs') || [];
+      var costsResult = [];
+      AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
+        var amount = costs[item.id];
+        if (amount && amount > 0) {
+          costsResult.push(Ember.Object.create({
+            amount:       amount,
+            resourceType: item,
+          }));
+        }
+      });
+      return costsResult;
+    }.property('assignmentType').cacheable(),
+
+    unitDeposits: function() {
+      var unitdeposits = this.getPath('assignmentType.unit_deposits') || [];
+      var depositsResult = [];
+      AWE.GS.RulesManager.getRules().unit_types.forEach(function(item) {
+        var amount = unitdeposits[item.id];
+        if (amount && amount > 0) {
+          depositsResult.push(Ember.Object.create({
+            amount:   amount,
+            unitType: item,
+          }));
+        }
+      });
+      return depositsResult;
+    }.property('assignmentType').cacheable(),
+
+
+    resourceRewards: function() {
+      var rewards = this.getPath('assignmentType.rewards.resource_rewards') || [];
+      var rewardResult = [];
+      if (rewards) {
+        rewards.forEach(function(item) {
+          var resource = AWE.GS.RulesManager.getRules().getResourceTypeWithSymbolicId(item.resource);
+          if (item.amount > 0) {
+            rewardResult.push(Ember.Object.create({
+              amount:       item.amount,
+              resourceType: resource,
+            }));
+          }
+        });
+      }
+      return rewardResult;
+    }.property('assignmentType').cacheable(),
+
+    unitRewards: function() {
+      var rewards = this.getPath('assignmentType.rewards.unit_rewards') || [];
+      var rewardResult = [];
+      if (rewards) {
+        rewards.forEach(function(item) {
+          var unitType = AWE.GS.RulesManager.getRules().getUnitTypeWithSymbolicId(item.unit);
+          if (item.amount > 0) {
+            rewardResult.push(Ember.Object.create({
+              amount:   item.amount,
+              unitType: unitType,
+            }));
+          }
+        });
+      }
+      return rewardResult;
+    }.property('assignmentType').cacheable(),
   });
 
   return module;

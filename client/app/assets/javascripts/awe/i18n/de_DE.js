@@ -334,11 +334,30 @@ AWE.I18n.de_DE = function(module) {
         advice: [
           "Gerüchte besagen, dass die schönsten Gänseblümchen mehrere hundert Meter südich des Dorfes wachsen.",
           "Der beste Weg einen Kampf zu gewinnen ist es, mit einer klaren Übermacht anzugreifen.",
+          "Festungen können eingenommen werden, indem man einen Kampf um sie gewinnt",
+          "Es ist nicht möglich, zwei Lagerstätten in einer Region zu gründen. Die Bevölkerung will abwechselungsreiche Ziele für den Wochenendbesuch!",
+          "Ein Wirrkopf behauptet, die Erde sei rund, er hätte es selbst im Traum gesehen. Was für ein Schwachsinn, natürlich ist die Erde flach! Und hört an allen vier Seiten einfach auf!",
+          "Wenn Du nach Wissen über die Funktionsweise der Welt, Gebäude und Einheiten strebst, dann sie in der Enzyklopädie nach. Zu finden ist der Knopf unten links auf der Weltkarte.",
+          "Ein bärtiger Greis teilt sein Wissen über die Wettervorhersagekunst: \"Abendrot - Gutwetterbot!\" - \"Außer, natürlich, vor schlechten Tagen,\" fügst Du abgeklärt hinzu.",
+          "Angeblich soll im Westen vor kurzem eine Armee spurlos verschwunden und von der Welt verschluckt worden sein. Man sollte sich besser fernhalten.",
+          "In den Festungen kann ein Steuersatz von 5 bis 15% Prozent von allen Siedlungen der Region erhoben werden. Dies ist ein Naturgesetz; Steuern über oder unter diesen Grenzen würden den Zorn der Götter heraufbeschwören und den Weltuntergang auslösen.",
+          "Heute keine Gerüchte - so ein Glück!",
+          "In der Region in der Mitte der Karte soll es einen Topf gefüllt mit Kupfer und umgeben von tausenden Kröten geben.",
+          "Ein Weib auf Durchreise behauptet, Kröten und Frösche können man auch essen. Sie hätte selbst im Westen gesehen, wie diese zubereitet und verspeist würden. Was für ein Unfug; Kröten sind DAS Zahlungsmittel und wunderbare Haustiere - aber aufessen???",
+          "Ein Seher versucht Dich davon zu überzeugen, dass Menschen in ferner Zukunft in Zylindern aus Kupfer oder ähnlichem durch die Luft fliegen würden. Das kann dich nicht überzeugen; Kupfer ist viel zu schwer, die würden einfach runterfallen.",
         ],
         likeLeader: "{0} muss eine sehr nette Person sein. Schon {1} Likes. Unglaublich!",
         resourceProductionLeader: {
           male:   "{0} ist der {1}könig! Er produziert in der Stunde über {2}.",
           female: "{0} ist die {1}königin! Sie produziert in der Stunde über {2}.",
+        },
+        mostMessagesSent: {
+          male:   "{0} scheint eine äußerst geschwätzige Person zu sein. Niemand schreibt mehr als {1} Nachrichten am Tag! Wer soll die alle lesen?",
+          female: "{0} ist geradezu eine Klatschtante. Niemand sonst hat am vergangenen Tag mehr als ihre {1} Nachrichten verschickt!",
+        },
+        mostUntis: {
+          male:   "Man geht {0} besser aus dem Weg. Er soll {1} Einheiten befehligen!",
+          female: "Hüte Dich vor {0}. Sie soll {1} Einheiten in ihrer Truppe haben.",
         },
       }
 
