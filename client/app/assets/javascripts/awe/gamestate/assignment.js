@@ -36,6 +36,10 @@ AWE.GS = function (module) {
       }
       return AWE.GS.RulesManager.getRules().getAssignmentType(assignmentId);
     }.property('type_id').cacheable(),
+
+    isActive: function() {
+      return this.get('ended_at') != null;
+    }.property('ended_at').cacheable(),
   });
 
   // ///////////////////////////////////////////////////////////////////////
