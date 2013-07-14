@@ -337,8 +337,8 @@ AWE.I18n.de_DE = function(module) {
         ],
         likeLeader: "{0} muss eine sehr nette Person sein. Schon {1} Likes. Unglaublich!",
         resourceProductionLeader: {
-          male:   "{0} ist der {1}könig! Er produziert am Tag über {2}.",
-          female: "{0} ist die {1}königin! Sie produziert am Tag über {2}.",
+          male:   "{0} ist der {1}könig! Er produziert in der Stunde über {2}.",
+          female: "{0} ist die {1}königin! Sie produziert in der Stunde über {2}.",
         },
       }
 
