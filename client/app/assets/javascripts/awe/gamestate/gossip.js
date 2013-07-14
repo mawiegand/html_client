@@ -24,12 +24,13 @@ AWE.GS = (function(module) {
     hasEnded: function() {
       var endedAt = this.get('ended_at');
       if (endedAt != null) {
-        return true;
+        log('ENDED', Date.parseISODate(endedAt).getTime(), AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds().getTime());
+        return Date.parseISODate(endedAt).getTime() < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds().getTime();
       }
       else {
         return true;
       }
-    }.property('ended_at').cacheable(),
+    }.property('ended_at'),
     
     
     localizedDescription: function() {
@@ -98,6 +99,7 @@ AWE.GS = (function(module) {
   }());
   
   var gossips = {
+    
     "most_liked_player" : function(content) {
       var string = AWE.I18n.lookupTranslation('building.gossip.likeLeader');
       return string.format(content.name, content.likes);
@@ -107,8 +109,21 @@ AWE.GS = (function(module) {
       var male = content.male === null || content.male;
       var string = male ? AWE.I18n.lookupTranslation('building.gossip.resourceProductionLeader.male') : AWE.I18n.lookupTranslation('building.gossip.resourceProductionLeader.female');
       var resourceType = AWE.GS.RulesManager.getRules().getResourceType(content.resource_id);
-      return string.format(content.name, AWE.Util.Rules.lookupTranslation(resourceType.name), (parseInt(content.rate) * 24));
+      return string.format(content.name, AWE.Util.Rules.lookupTranslation(resourceType.name), (parseInt(content.rate)));
     },
+
+    "most_messages_sent" : function(content) {
+      var male = content.male === null || content.male;
+      var string = male ? AWE.I18n.lookupTranslation('building.gossip.mostMessagesSent.male') : AWE.I18n.lookupTranslation('building.gossip.mostMessagesSent.female');
+      return string.format(content.name, parseInt(content.messages));
+    },
+    
+    "most_units" : function(content) {
+      var male = content.male === null || content.male;
+      var string = male ? AWE.I18n.lookupTranslation('building.gossip.mostUnits.male') : AWE.I18n.lookupTranslation('building.gossip.mostUnits.female');
+      return string.format(content.name, parseInt(content.units));
+    },
+    
   }
   
   

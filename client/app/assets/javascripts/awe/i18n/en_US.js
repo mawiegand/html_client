@@ -327,6 +327,31 @@ AWE.I18n.en_US = function(module) {
         notEnoughBuildingSlots:"You cannot build more buildings right now. You need to upgrade your main building (chieftain's hut in main settlement, meeting place in camp).",
         notEnoughCash:"You don't have enough golden frogs for this action.",
       },
+      
+      gossip: {
+        heading: "Gossip",
+        advice: [
+          "Rumors are, the most beautiful daisies can be found a few hundred yards south of the village.",
+          "An old man who definitely had a few pints too much, tells listeners about the secrets of weather forecasting:\n\n'If the sky is tinted red in the evening, weather will be fine the next day.'\n\n'Except, of course, those days it'll be bad,' you add.",
+          "A veteran fighter gives you a free advice about how to spend a free settlement point: 'Attack a fortress, win the battle and it will be yours to command.'",
+          "If you want to know more details about the rules of the world, buildings, units or resources, have a look at the Encyclopedia.",
+          "It's always good advice to choose an alliance that is close by and strong enough to help you against your foes.",
+          "Never upset the local governor, except you plan to end his reign and want to take his fortress from him, of course.",
+        ],
+        likeLeader: "{0} must be a lovely person. About {1} likes. Unbelievable!",
+        resourceProductionLeader: {
+          male:   "{0} is the king of {1}! He produces more than {2} per hour.",
+          female: "{0} is the queen of {1}! She produces more than {2} per hour.",
+        },
+        mostMessagesSent: {
+          male:   "{0} seems to be a very talkative person. Nobody sends more than {1} messages a day! Who should read all those letters?",
+          female: "{0} seems to be a very talkative person. Nobody sends more than {1} messages a day! Who should read all those letters?",
+        },
+        mostUntis: {
+          male:   "You better leave {0} alone. He's said to have {1} units at his command!",
+          female: "Watch out for {0}. She's believed to have {1} units within her troops.",
+        },
+      }
     },
 
     error:{
