@@ -8,6 +8,7 @@ AWE.UI.Ember = function(module) {
 
     building: null,
     controller: null,
+    currentCharacter: null,
 
     assignmentTypes: function() {
       if (this.get('building')) {
@@ -16,13 +17,14 @@ AWE.UI.Ember = function(module) {
       else {
         return null;
       }
-    }.property('building').cacheable(),
+    }.property('building', 'currentCharacter.assignment_level').cacheable(),
 
     assignments: null,
 
     init: function() {
       this._super();
       this.set('assignments', AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments'));
+      this.set('currentCharacter', AWE.GS.game.get('currentCharacter'));
     },
 
   });
