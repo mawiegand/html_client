@@ -355,7 +355,7 @@ AWE.I18n.de_DE = function(module) {
           male:   "{0} scheint eine äußerst geschwätzige Person zu sein. Niemand schreibt mehr als {1} Nachrichten am Tag! Wer soll die alle lesen?",
           female: "{0} ist geradezu eine Klatschtante. Niemand sonst hat am vergangenen Tag mehr als ihre {1} Nachrichten verschickt!",
         },
-        mostUntis: {
+        mostUnits: {
           male:   "Man geht {0} besser aus dem Weg. Er soll {1} Einheiten befehligen!",
           female: "Hüte Dich vor {0}. Sie soll {1} Einheiten in ihrer Truppe haben.",
         },
