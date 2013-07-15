@@ -55,7 +55,42 @@ AWE.UI.Ember = (function(module) {
       event.preventDefault();
       return false;
     },
-    
+
+    changeDescriptionPressed: function() {
+      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
+        classNames: ['change-army-name-dialog'],
+        heading: AWE.I18n.lookupTranslation('alliance.changeDescriptionDialogCaption'),
+        input: this.getPath('alliance.description'),
+        controller: this,
+        
+        okPressed: function() {
+          var controller = this.get('controller');
+          if (controller) {
+            controller.processNewDescription(this.getPath('input'));
+          }
+          this.destroy();            
+        },
+        
+        cancelPressed: function() { this.destroy(); },
+      });
+      WACKADOO.presentModalDialog(changeDialog);
+    },
+
+    processNewDescription: function(newDescription) {
+      var self = this;
+      var action = AWE.Action.Fundamental.createChangeAllianceDescriptionAction(newDescription, this.get('alliance'));
+      AWE.Action.Manager.queueAction(action, function(status) {
+        if (status === AWE.Net.OK) {
+          self.set('message', null);
+        }
+        else if (status === AWE.Net.FORBIDDEN) {
+          self.set('message', AWE.I18n.lookupTranslation('alliance.error.changeDescriptionForbidden'));
+        }
+        else {
+          self.set('message', AWE.I18n.lookupTranslation('alliance.error.changeDescriptionError'));
+        }
+      });        
+		},
   });
 
   module.AllianceMemberView = Ember.View.extend({
