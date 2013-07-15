@@ -219,7 +219,7 @@ AWE.GS = (function(module) {
 
     getAssignmentTypesOfLevel: function(level) {
       var assignmentTypes = this.get('assignment_types').filter(function(item, index, self) {
-        return true; // item['level'] <= level;
+        return item['level'] <= level;
       });
       return assignmentTypes;
     },
