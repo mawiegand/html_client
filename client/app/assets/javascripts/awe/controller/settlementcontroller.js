@@ -699,11 +699,26 @@ AWE.Controller = (function(module) {
     };
 
     that.standardAssignmentStartPressed = function(assignmentType, callback) {
+      var costs = assignmentType.costs || []; 
+      var costsResult = []; 
+      var pool = AWE.GS.ResourcePoolManager.getResourcePool();
+      AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
+        var amount = costs[item.id];
+        if (amount && amount > 0) {
+          if(parseInt(amount) > parseInt(pool[item.symbolic_id+'_present'])) {
+            var errorDialog = AWE.UI.Ember.InfoDialog.create({
+              heading: AWE.I18n.lookupTranslation('settlement.assignment.error.prerequisities.header'),
+              message: AWE.I18n.lookupTranslation('settlement.assignment.error.prerequisities.content'),
+            }); 
+            WACKADOO.presentModalDialog(errorDialog);
+          }
+        }   
+      });
+
       var action = AWE.Action.Assignment.createStartStandardAssignmentAction(assignmentType.id);
       action.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
           AWE.GS.StandardAssignmentManager.updateStandardAssignmentsOfCharacter(AWE.GS.game.getPath('currentCharacter.id'), null, function() {
-            AWE.GS.ResourcePoolManager.updateResourcePool();
             if (callback) {
               callback();
             }
