@@ -703,6 +703,7 @@ AWE.Controller = (function(module) {
       action.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
           AWE.GS.StandardAssignmentManager.updateStandardAssignmentsOfCharacter(AWE.GS.game.getPath('currentCharacter.id'), null, function() {
+            AWE.GS.ResourcePoolManager.updateResourcePool();
             if (callback) {
               callback();
             }
