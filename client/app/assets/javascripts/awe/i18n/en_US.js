@@ -347,7 +347,7 @@ AWE.I18n.en_US = function(module) {
           male:   "{0} seems to be a very talkative person. Nobody sends more than {1} messages a day! Who should read all those letters?",
           female: "{0} seems to be a very talkative person. Nobody sends more than {1} messages a day! Who should read all those letters?",
         },
-        mostUntis: {
+        mostUnits: {
           male:   "You better leave {0} alone. He's said to have {1} units at his command!",
           female: "Watch out for {0}. She's believed to have {1} units within her troops.",
         },
