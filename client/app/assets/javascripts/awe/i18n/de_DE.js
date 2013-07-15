@@ -760,7 +760,13 @@ AWE.I18n.de_DE = function(module) {
           },
           prerequisites: {
             header: "Halt!",
-            content: "Du hast aktuell leider nicht genügend Resourcen oder Einheiten, um den Auftrag zu starten.",
+            content: {
+              resource_wood: "Du hast aktuell leider nicht genügend Holz, um den Auftrag zu starten.",
+              resource_stone: "Du hast aktuell leider nicht genügend Stein, um den Auftrag zu starten.",
+              resource_fur: "Du hast aktuell leider nicht genügend Fell, um den Auftrag zu starten.",
+              resource_cash: "Du hast aktuell leider nicht genügend Kröten, um den Auftrag zu starten.",
+              armies: "Du hast aktuell leider nicht genügend Einheiten, um den Auftrag zu starten.",
+            }
           }
         }
       },
