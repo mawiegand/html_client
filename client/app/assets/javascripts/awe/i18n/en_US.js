@@ -794,7 +794,8 @@ AWE.I18n.en_US = function(module) {
         resourceProductionInfo2:"no",
         resourceProductionInfo3:"taxes being raised on the bonus production.",
         setTaxRate:"Enter new tax rate (5-15%).",
-        artifact: "Artifact"
+        artifact: "Artifact",
+        movingPassword: "Umzugspasswort",
       },
       error:{
         serverDidNotAcceptTaxRate:"The server did not accept the tax rate change.",
@@ -821,6 +822,7 @@ AWE.I18n.en_US = function(module) {
       progressTab:"Progress",
       customizationTab:"Customization",
       optionsTab:"Options",
+      movingTab: "Umziehen",
 
       rank:{
         start:"Start",
@@ -917,6 +919,27 @@ AWE.I18n.en_US = function(module) {
             text: 'Something went wrong. Your new avatar could not be saved. Please try again later.',
           },
         },
+      },
+      
+      moving: {
+        info1: "Hier kannst Du die Position Deiner Hauptsiedlung auf der Karte verändern. Es gibt 2 Arten des Umziehens, und Du kannst jede davon nur einmal benutzen.",
+        info2: "Du kannst nicht in Regionen ziehen, um die gerade gekämpft wird, oder die vor kurzem erobert wurden.",
+        specificMovingCaption: "Gezieltes Umziehen",
+        presentRegion: "Aktuelle Region",
+        enterSpecificRegion: "Angabe des Regionsnamen",
+        specififcRegionAdvice: "Du kannst den Namen der Region in die Du ziehen möchtest angeben. Gehört die Region einem anderen Spieler, der nicht Teil deiner Allianz ist, musst du zusätzlich noch ein Passwort nennen",
+        moveButton: "Umziehen",
+        movingPasswordCaption: "Gib das Umzugspasswort ein.",
+				confirmation: {
+					caption: "Umzug bestätigen",
+					message1: "Willst Du wirklich in die Region ",
+					message2: " umziehen?",
+					cancel: "Nein, doch nicht",
+					ok: "Umziehen!",
+				},
+				movingErrorHeading: "Umzugsfehler",
+				movingErrorWrongPassword: "Das eingegebene Passwort war nicht korrekt! Versuch es noch einmal!",
+        movingError: "Dein Umzug konnte aus unbekannten Gründen nicht vollzogen werden. Bitte versuch es später noch einmal.",
       },
     },
 
