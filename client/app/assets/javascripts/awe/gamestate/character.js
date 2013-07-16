@@ -276,6 +276,11 @@ AWE.GS = (function(module) {
       return allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
     }.property('alliance_id').cacheable(),
 
+    hashableSpecialAssignments: function() {
+      var id = this.get('id');
+      return id ? AWE.GS.SpecialAssignmentAccess.getHashableCollectionForCharacter_id(id) : null;
+    }.property('id').cacheable(),
+
     hashableStandardAssignments: function() {
       var id = this.get('id');
       return id ? AWE.GS.StandardAssignmentAccess.getHashableCollectionForCharacter_id(id) : null;

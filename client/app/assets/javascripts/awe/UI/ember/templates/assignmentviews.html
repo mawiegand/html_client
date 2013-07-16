@@ -2,6 +2,14 @@
 
   <h3>{{t settlement.assignment.assignments}}</h3>
 
+  {{#if specialAssignmentTypes}}
+    {{#each specialAssignmentTypes }}
+      {{view AWE.UI.Ember.AssignmentView assignmentTypeBinding="this" controllerBinding="controller" }}
+    {{/each}}
+  {{else}}
+    <p>{{t settlement.assignment.noneSpecialAvailable}}</p>
+  {{/if}}
+
   {{#if assignmentTypes}}
     {{#each assignmentTypes }}
       {{view AWE.UI.Ember.AssignmentView assignmentTypeBinding="this" controllerBinding="controller" }}
@@ -18,7 +26,8 @@
   {{#if collapsed}}
     <table class="assignment-collapse-table">
       <tr {{action "openPressed"}}>
-        <td class="assignment-header-cell"><b>{{local assignmentType.name}}</b></td>
+        <td class="assignment-header-cell">
+          <b>{{local assignmentType.name}}</b></td>
         <td class="assignment-progress-cell">
           {{#if isActive }}
             <div class="duration assignment-progress-bar-border">

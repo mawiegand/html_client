@@ -19,11 +19,22 @@ AWE.UI.Ember = function(module) {
       }
     }.property('building', 'currentCharacter.assignment_level').cacheable(),
 
+    specialAssignmentTypes: function() {
+      if (this.get('building')) {
+        return this.get('building').currentSpecialAssignmentTypes();
+      }
+      else {
+        return null;
+      }
+    }.property('building', 'currentCharacter.assignment_level').cacheable(),
+
     assignments: null,
+    specialAssignments: null,
 
     init: function() {
       this._super();
       this.set('assignments', AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments'));
+      this.set('specialAssignments', AWE.GS.game.getPath('currentCharacter.specialAssignments'));
       this.set('currentCharacter', AWE.GS.game.get('currentCharacter'));
     },
 
