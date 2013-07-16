@@ -1035,6 +1035,9 @@ AWE.GS = (function(module) {
           WACKADOO.presentModalDialog(dialog);
         }
         else {
+          if (error) {
+            error();
+          }
           log('ERROR in AWE.GS.TutorialManager.redeemRewards');
         }
       });
