@@ -618,7 +618,18 @@ AWE.GS = (function(module) {
     },
 
     unlockedAssignments: function() {
-      return this.calculateAssignments(this.get('level'));
+      var level   = level || this.get('level') || 1;
+      var formula = null;
+      if(this.calculateAssignments()) {
+        formula = this.getPath('buildingType.abilities.assignment_level');
+      } 
+      
+      if(formula) {
+        if((AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(formula), level)) > 0) return true;
+      }
+
+      return false;
+
     }.property('buildingId', 'level').cacheable(),
 
     unlockedAssignmentsNextLevel: function() {

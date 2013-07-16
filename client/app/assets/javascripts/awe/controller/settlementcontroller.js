@@ -699,6 +699,43 @@ AWE.Controller = (function(module) {
     };
 
     that.standardAssignmentStartPressed = function(assignmentType, callback) {
+      try { //we need this to stop this function on errors
+        var costs = assignmentType.costs || []; 
+        var pool = AWE.GS.ResourcePoolManager.getResourcePool();
+        AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
+          var amount = costs[item.id];
+          if (amount && amount > 0) {
+            if(parseInt(amount) > parseInt(pool[item.symbolic_id+'_present'])) {
+              var errorDialog = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('settlement.assignment.error.prerequisites.header'),
+                message: AWE.I18n.lookupTranslation('settlement.assignment.error.prerequisites.content.'+item.symbolic_id),
+              }); 
+              WACKADOO.presentModalDialog(errorDialog);
+              throw 'error';
+            }
+          }
+        });
+      
+        var garrison_id = AWE.GS.SettlementManager.getSettlement(that.settlementId).get('garrison_id');
+        var army = AWE.GS.ArmyManager.getArmy(garrison_id);
+        var deposits = assignmentType.unit_deposits || [];
+        AWE.GS.RulesManager.getRules().unit_types.forEach(function(type) {
+          var required = deposits[type.id];
+          if(required && army) {
+            if(parseInt(army.details[type.db_field]) < parseInt(required)) {
+              var errorDialog = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('settlement.assignment.error.prerequisites.header'),
+                message: AWE.I18n.lookupTranslation('settlement.assignment.error.prerequisites.content.armies'),
+              }); 
+              WACKADOO.presentModalDialog(errorDialog);
+              throw 'error';
+            }
+          }
+        });
+      } catch(err) {
+        return;
+      }
+
       var action = AWE.Action.Assignment.createStartStandardAssignmentAction(assignmentType.id);
       action.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
