@@ -42,12 +42,12 @@
       {{#if message}}
         <div class="red-color">{{message}}</div>
       {{/if}}
-      <p class="red-color">{{message}}</p>
       {{#if alliance.description}}
         <p>{{ alliance.description }}</p>
       {{else}}
 			  <p>{{t alliance.missingDescription}}</p>
       {{/if}}
+      <a {{action "sendUserContentReport"}}>melden</a>
 			{{#if isAllianceLeader}}
 			  <div class="simple-button" {{action "changeDescriptionPressed"}}>{{t alliance.changeDescription}}</div>      
 			{{/if}}
