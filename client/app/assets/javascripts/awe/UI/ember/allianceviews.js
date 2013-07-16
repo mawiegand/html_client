@@ -93,20 +93,44 @@ AWE.UI.Ember = (function(module) {
 		},
 
     sendUserContentReport: function() {
+      var confirmationDialog = AWE.UI.Ember.Dialog.create({
+        templateName: 'info-dialog',
+
+        classNames: ['confirmation-dialog'],
+      
+        controller: this,
+        
+        heading:    AWE.I18n.lookupTranslation('alliance.confirmReport.heading'), 
+        message:    AWE.I18n.lookupTranslation('alliance.confirmReport.message'),
+        
+        cancelText: AWE.I18n.lookupTranslation('alliance.confirmReport.cancel'),
+        okText:     AWE.I18n.lookupTranslation('alliance.confirmReport.ok'),
+       
+        okPressed: function() {
+          var controller = this.get('controller');
+          if (controller) {
+            controller.processUserContentReport();
+          }
+          this.destroy();
+        },
+        
+        cancelPressed: function() { this.destroy(); }
+      });
+      WACKADOO.presentModalDialog(confirmationDialog);
+    },
+
+    processUserContentReport: function() {
       var self = this;
       var action = AWE.Action.Fundamental.createUserContentReportAction(this.getPath('alliance.leader_id'), 'alliance-description', this.get('alliance').getId());
       AWE.Action.Manager.queueAction(action, function(status) {
         if (status === AWE.Net.OK) {
-          self.set('message', null);
-        }
-        else if (status === AWE.Net.FORBIDDEN) {
-          self.set('message', AWE.I18n.lookupTranslation('alliance.error.changeDescriptionForbidden'));
+          self.set('message', AWE.I18n.lookupTranslation('alliance.confirmReport.success'));
         }
         else {
-          self.set('message', AWE.I18n.lookupTranslation('alliance.error.changeDescriptionError'));
+          self.set('message', AWE.I18n.lookupTranslation('alliance.confirmReport.error'));
         }
       });        
-		},
+    },
   });
 
   module.AllianceMemberView = Ember.View.extend({
