@@ -1158,7 +1158,7 @@ AWE.Controller = (function(module) {
         }
 
         if (settlement && this.view.getPath('selectedSlot.building.unlockedAssignments')) {
-          that.updateStandardAssignments();
+          that.updateSpecialAssignments();
         }
       }
       
