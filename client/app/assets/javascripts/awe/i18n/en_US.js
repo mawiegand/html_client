@@ -746,11 +746,11 @@ AWE.I18n.en_US = function(module) {
           prerequisites: {
             header: "Stop!",
             content: {
-              resource_wood: "Du hast aktuell leider nicht genügend Holz, um den Auftrag zu starten.",
-              resource_stone: "Du hast aktuell leider nicht genügend Stein, um den Auftrag zu starten.",
-              resource_fur: "Du hast aktuell leider nicht genügend Fell, um den Auftrag zu starten.",
-              resource_cash: "Du hast aktuell leider nicht genügend Kröten, um den Auftrag zu starten.",
-              armies: "Du hast aktuell leider nicht genügend Einheiten, um den Auftrag zu starten.",
+              resource_wood: "You don't have sufficient wood to start the assignment.",
+              resource_stone: "You don't have sufficient stone to start the assignment.",
+              resource_fur: "You don't have sufficient fur to start the assignment.",
+              resource_cash: "You don't have sufficient toads to start the assignment.",
+              armies: "You don't have sufficient units to start the assignment.",
             }  
           }
         }
