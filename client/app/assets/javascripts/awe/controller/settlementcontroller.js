@@ -1091,12 +1091,43 @@ AWE.Controller = (function(module) {
     that.updateStandardAssignments = function(assignments) {
       if (assignments) {
         assignments.forEach(function(assignment) {
-          if (assignment.get('endet_at')) {
+          if (assignment.get('ended_at')) {
             var assignmentId = assignment.getId();
             pendingStandardAssignmentUpdates[assignmentId] = pendingStandardAssignmentUpdates[assignmentId] > 0 ? pendingStandardAssignmentUpdates[assignmentId] : AWE.Config.TIME_DIFF_RANGE;
-            if (Date.parseISODate(assignment.get('endet_at')).add({seconds: pendingStandardAssignmentUpdates[assignmentId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
+            if (Date.parseISODate(assignment.get('ended_at')).add({seconds: pendingStandardAssignmentUpdates[assignmentId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
               pendingStandardAssignmentUpdates[assignmentId] *= 2;
               that.updateStandardAssignments();
+              AWE.GS.ArmyManager.updateArmiesAtLocation(that.locationId, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+              });
+            }
+          }
+        });
+      }
+    };
+
+    var pendingSpecialAssignmentUpdates = {};
+
+    that.updateSpecialAssignments = function(assignments) {
+      if (assignments) {
+        assignments.forEach(function(assignment) {
+          if (assignment.get('ended_at')) {
+            var assignmentId = assignment.getId();
+            pendingSpecialAssignmentUpdates[assignmentId] = pendingSpecialAssignmentUpdates[assignmentId] > 0 ? pendingSpecialAssignmentUpdates[assignmentId] : AWE.Config.TIME_DIFF_RANGE;
+            if (
+              Date.parseISODate(assignment.get('ended_at')).add({seconds: pendingSpecialAssignmentUpdates[assignmentId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
+              pendingSpecialAssignmentUpdates[assignmentId] *= 2;
+              that.updateSpecialAssignments();
+              AWE.GS.ArmyManager.updateArmiesAtLocation(that.locationId, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
+              });
+            }
+          }
+          if (assignment.get('displayed_until')) {
+            var assignmentId = assignment.getId();
+            pendingSpecialAssignmentUpdates[assignmentId] = pendingSpecialAssignmentUpdates[assignmentId] > 0 ? pendingSpecialAssignmentUpdates[assignmentId] : AWE.Config.TIME_DIFF_RANGE;
+            if (
+              Date.parseISODate(assignment.get('displayed_until')).add({seconds: pendingSpecialAssignmentUpdates[assignmentId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
+              pendingSpecialAssignmentUpdates[assignmentId] *= 2;
+              that.updateSpecialAssignments();
               AWE.GS.ArmyManager.updateArmiesAtLocation(that.locationId, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
               });
             }
