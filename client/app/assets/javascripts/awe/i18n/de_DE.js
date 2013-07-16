@@ -413,6 +413,9 @@ AWE.I18n.de_DE = function(module) {
       founded: 'Gründung',
       leader: 'Anführer',
       description: 'Beschreibung',
+      changeDescriptionDialogCaption: 'Gib deine neue Allianzbeschreibung ein.',
+      changeDescription: 'Ändere Beschreibung',
+			missingDescription: 'Hier könnte eure Allianzbeschreibung stehen.',
       management: 'Geheime Allianzlosung',
       reservation: 'Reservierung für die nächste Runde',
       reservationDescription: 'Als Allianzanführer kannst Du Deine Allianz für die nächste Runde reservieren. Um die Reservierung in der nächsten ' +
@@ -461,6 +464,8 @@ AWE.I18n.de_DE = function(module) {
         tagTaken: "Das Kürzel wird bereits von einer anderen Allianz benutzt.",
         noPermissionCreate: "Du hast nicht die Befugnis eine Allianz zu gründen.",
         unknownCreate: "Die Allianz zu gründen ist aus unbekanntem Grund fehlgeschlagen.",
+        changeDescriptionForbidden: "Nur Allianzanführer können die Beschreibung ändern.",
+        changeDescriptionError: "Die Allianz Beschreibung konnte aus unbekanntem Grund nicht geändert werden.",
       },
       success: {
         passwordSet: "Das Passwort wurde gespeichert.",

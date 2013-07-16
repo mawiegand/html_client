@@ -404,6 +404,9 @@ AWE.I18n.en_US = function(module) {
       founded:"Founded",
       leader:"Leader",
       description:"Description",
+      changeDescriptionDialogCaption: 'Gib deine neue Allianzbeschreibung ein.',
+      changeDescription: 'Ändere Beschreibung',
+      missingDescription: 'Hier könnte eure Allianzbeschreibung stehen.',
       management:"Secret alliance slogan",
       reservation: 'Reservation for next round',
       reservationDescription: 'As leader of the alliance can you reserve your alliance for the next round. To redeem the reservation in the next ' +
@@ -452,6 +455,8 @@ AWE.I18n.en_US = function(module) {
         tagTaken:"The tag you've chosen is already taken by another alliance.",
         noPermissionCreate:"You're not allowed to create an alliance.",
         unknownCreate:"For some reason, creating the alliance did fail.",
+        changeDescriptionForbidden: "Nur Allianzanführer können die Beschreibung ändern.",
+        changeDescriptionError: "Die Allianz Beschreibung konnte aus unbekanntem Grund nicht geändert werden.",
       },
       success: {
         passwordSet: "The password has been saved.",
