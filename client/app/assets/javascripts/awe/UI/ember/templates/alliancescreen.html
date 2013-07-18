@@ -43,13 +43,13 @@
         <div class="red-color">{{message}}</div>
       {{/if}}
       {{#if alliance.description}}
-        <p>{{ alliance.description }}</p>
+			<p>{{{ showDescription }}}</p>
       {{else}}
 			  <p>{{t alliance.missingDescription}}</p>
       {{/if}}
-      <a {{action "sendUserContentReport"}}>{{t alliance.report}}</a>
+			<div class="simple-button" style="min-height: 10px;" {{action "sendUserContentReport"}}>{{t alliance.report}}</div>
 			{{#if isAllianceLeader}}
-			<div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "changeDescriptionPressed"}}>{{t alliance.changeDescription}}</div>      
+			<div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "changeDescriptionPressed"}}>{{t alliance.changeDescription}}</div>
 			{{/if}}
     </div>
   {{#if alliance.message}}

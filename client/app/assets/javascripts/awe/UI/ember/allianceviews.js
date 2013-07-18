@@ -57,10 +57,11 @@ AWE.UI.Ember = (function(module) {
     },
 
     changeDescriptionPressed: function() {
-      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
-        classNames: ['change-army-name-dialog'],
+      var changeDialog = AWE.UI.Ember.TextAreaInputDialog.create({
         heading: AWE.I18n.lookupTranslation('alliance.changeDescriptionDialogCaption'),
         input: this.getPath('alliance.description'),
+        rowsSize: 10,
+        colsSize: 82,
         controller: this,
         
         okPressed: function() {
@@ -75,6 +76,10 @@ AWE.UI.Ember = (function(module) {
       });
       WACKADOO.presentModalDialog(changeDialog);
     },
+
+    showDescription: function() {
+      return $('<div/>').text(this.getPath('alliance.description')).html().replace(/\n/, '<br />');
+    }.property('alliance.description'),
 
     processNewDescription: function(newDescription) {
       var self = this;
