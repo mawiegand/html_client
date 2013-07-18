@@ -19,11 +19,16 @@
 			<div class="character-description">
 				<p>
           <b>{{t profile.customization.description }}:</b><br>
+          {{#if message}}
+            <div class="red-color">{{message}}</div>
+          {{/if}}
           {{#if character.description}}
             {{{ showDescription }}}
           {{else}}
 			      {{t profile.customization.missingDescription}}
           {{/if}}
+          <br>
+          <a {{action "sendUserContentReport"}}>{{t profile.customization.report}}</a>
         </p>
 		  </div>
       

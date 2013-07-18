@@ -902,6 +902,16 @@ AWE.I18n.en_US = function(module) {
         changeDescriptionDialogCaption: 'Gib deine neue Characterbeschreibung ein.',
         changeDescription: 'Ändere Beschreibung',
         missingDescription: 'Hier könnte Deine Characterbeschreibung stehen.',
+        report: 'Melden',
+
+        confirmReport: {
+          heading: "Melden bestätigen",
+          message: "Willst Du wirklich die Character Beschreibung melden?",
+          cancel: "Nein, doch nicht",
+          ok: "Ja, wirklich.",
+          success: "Meldung war erfolgreich",
+          error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
+        },
 
         errors:{
           nameTooShort:"Much too short. The name has to have at least 3 characters.",
