@@ -33,6 +33,10 @@ AWE.UI.Ember = (function(module) {
       this.set('ownResourcePool', AWE.GS.ResourcePoolManager.getResourcePool());     
     },    
     
+    showDescription: function() {
+      return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/, '<br />');
+    }.property('character.description'),
+
     displayLikeSystemButtons: function() {
       return AWE.GS.CharacterManager.getCurrentCharacter() !== this.get('character');
     }.property('character'),

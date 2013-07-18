@@ -122,6 +122,7 @@ AWE.UI.Ember = (function(module) {
   module.TextAreaInputDialog = module.Dialog.extend({
     templateName: 'textarea-input-dialog',
     heading: 'set a heading',
+		placeholderText: '',
     input: '',
     rowsSize: null,
 		colsSize: null,

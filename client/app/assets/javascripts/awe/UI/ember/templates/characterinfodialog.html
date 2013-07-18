@@ -7,7 +7,7 @@
       {{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar"}}
 
       <h1>{{view AWE.UI.Ember.LinkedCharacterView characterBinding="character" linkCharacter=false}}</h1>
-      
+
       <p>{{#if character.female}}{{t general.demigoddess}},{{else}}{{t general.demigod}},{{/if}} 
          <b>{{local character.mundaneTitle.name}}</b> {{t general.and}} <b>{{local character.sacredTitle.name}}</b><br/>
          {{t profile.playingSince}}: {{formatDatetime character.created_at}}
@@ -15,6 +15,17 @@
            <b>Wack-A-Doo Insider</b>
          {{/if}}
       </p>
+
+			<div class="character-description">
+				<p>
+          <b>{{t profile.customization.description }}:</b><br>
+          {{#if character.description}}
+            {{{ showDescription }}}
+          {{else}}
+			      {{t profile.customization.missingDescription}}
+          {{/if}}
+        </p>
+		  </div>
       
       <p><b>{{t profile.totalPopulation}}:</b> {{character.score}} &nbsp; 
          <b>{{t profile.fortresses}}:</b> {{character.fortress_count}}</p>
