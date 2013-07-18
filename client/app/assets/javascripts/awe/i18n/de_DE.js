@@ -430,6 +430,7 @@ AWE.I18n.de_DE = function(module) {
       changePassword: 'neues Passwort speichern',
       saveReservation: 'Reservierung speichern',
       kickMember: 'kick',
+      report: 'Melden',
       
       progress: {
         header: 'Siegesfortschritt',
@@ -482,8 +483,16 @@ AWE.I18n.de_DE = function(module) {
         heading: "Allianz verlassen",
         message: "Möchtest Du Deine Allianz wirklich verlassen?",
       },
+      confirmReport: {
+        heading: "Melden bestätigen",
+        message: "Willst Du wirklich die Allianz Beschreibung melden?",
+        cancel: "Nein, doch nicht",
+        ok: "Ja, wirklich.",
+        success: "Meldung war erfolgreich",
+        error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
+      },
     },
-    
+
     welcome: {
       heading: 'Willkomen bei Wack-a-Doo!',
       headingPlan: 'Der Plan',

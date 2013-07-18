@@ -421,6 +421,7 @@ AWE.I18n.en_US = function(module) {
       changePassword:'Save new password',
       saveReservation: 'Save reservation',
       kickMember:'kick',
+      report: 'Melden',
 
       progress:{
         header:'Victory Progress',
@@ -472,6 +473,14 @@ AWE.I18n.en_US = function(module) {
       confirmLeave:{
         heading:"Leave Alliance",
         message:"Are you sure about leaving your alliance?",
+      },
+      confirmReport: {
+        heading: "Melden bestätigen",
+        message: "Willst Du wirklich die Allianz Beschreibung melden?",
+        cancel: "Nein, doch nicht",
+        ok: "Ja, wirklich.",
+        success: "Meldung war erfolgreich",
+        error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
       },
     },
 
