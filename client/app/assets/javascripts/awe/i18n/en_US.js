@@ -422,6 +422,7 @@ AWE.I18n.en_US = function(module) {
       saveReservation: 'Save reservation',
       kickMember:'kick',
       report: 'Melden',
+      sendApplication: 'Bewerbung einreichen',
 
       progress:{
         header:'Victory Progress',
@@ -481,6 +482,14 @@ AWE.I18n.en_US = function(module) {
         ok: "Ja, wirklich.",
         success: "Meldung war erfolgreich",
         error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
+      },
+      confirmApplication: {
+        heading: "Bewerbung bestätigen",
+        message: "Willst Du Dich wirklich bei dieser Allianz bewerben?",
+        cancel: "Nein, doch nicht",
+        ok: "Ja, wirklich.",
+        success: "Bewerbung war erfolgreich",
+        error: "Die Bewerbung wurde aus unbekanntem Grund nicht ausgeführt.",
       },
     },
 
