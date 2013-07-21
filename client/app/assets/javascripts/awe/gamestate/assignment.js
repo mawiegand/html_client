@@ -128,7 +128,7 @@ AWE.GS = function (module) {
       if (assignmentId === undefined || assignmentId === null) {
         return null;
       }
-      return AWE.GS.RulesManager.getRules().getAssignmentType(assignmentId);
+      return AWE.GS.RulesManager.getRules().getSpecialAssignmentType(assignmentId);
     }.property('type_id').cacheable(),
 
     isActive: function() {
@@ -172,17 +172,19 @@ AWE.GS = function (module) {
       return my.updateEntity(url, id, updateType, callback);
     };
 
-    that.updateSpecialAssignmentsOfCharacter = function (characterId, updateType, callback) {
-      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/' + characterId + '/special_assignments';
+    that.updateSpecialAssignmentOfCharacter = function (characterId, updateType, callback) {
+      var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/' + characterId + '/special_assignment';
+      my.updateEntity(url, 1, updateType, callback);  // update current special assignment
+
       return my.fetchEntitiesFromURL(
         url,
         my.runningUpdatesPerCharacter,
-        characterId,
+        1, // get only one assignment
         updateType,
-        module.StandardAssignmentAccess.lastUpdateForCharacter_id(characterId),
+        module.SpecialAssignmentAccess.lastUpdateForCharacter_id(characterId),
         function (result, status, xhr, timestamp) {   // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK) {
-            module.StandardAssignmentAccess.accessHashForCharacter_id().setLastUpdateAtForValue(characterId, timestamp.add(-1).second());
+            module.SpecialAssignmentAccess.accessHashForCharacter_id().setLastUpdateAtForValue(characterId, timestamp.add(-1).second());
           }
           if (callback) {
             callback(result, status, xhr, timestamp);
@@ -191,8 +193,8 @@ AWE.GS = function (module) {
       );
     };
 
-    that.updateStandardAssignmentsOfCurrentCharacter = function (updateType, callback) {
-      that.updateStandardAssignmentsOfCharacter(AWE.GS.CharacterManager.getCurrentCharacter().getId(), updateType, callback);
+    that.updateSpecialAssignmentOfCurrentCharacter = function (updateType, callback) {
+      that.updateSpecialAssignmentOfCharacter(AWE.GS.CharacterManager.getCurrentCharacter().getId(), updateType, callback);
     };
 
     return that;

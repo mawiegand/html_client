@@ -980,6 +980,11 @@ AWE.Controller = (function(module) {
       });
     };
 
+    that.updateAssignments2 = function() {
+      AWE.GS.SpecialAssignmentManager.updateSpecialAssignmentOfCurrentCharacter(null, null, function(assignments) {
+      });
+    };
+
     that.updateModel = (function() {
             
       var lastSettlementUpdateCheck = new Date(1970);
@@ -1006,6 +1011,7 @@ AWE.Controller = (function(module) {
                 that.updateAllTrainingQueues();
               }
               that.updateAssignments();
+              that.updateAssignments2();
             }
           });
 
@@ -1096,7 +1102,7 @@ AWE.Controller = (function(module) {
             pendingStandardAssignmentUpdates[assignmentId] = pendingStandardAssignmentUpdates[assignmentId] > 0 ? pendingStandardAssignmentUpdates[assignmentId] : AWE.Config.TIME_DIFF_RANGE;
             if (Date.parseISODate(assignment.get('ended_at')).add({seconds: pendingStandardAssignmentUpdates[assignmentId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
               pendingStandardAssignmentUpdates[assignmentId] *= 2;
-              that.updateStandardAssignments();
+              that.updateAssignments();
               AWE.GS.ArmyManager.updateArmiesAtLocation(that.locationId, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
               });
             }
@@ -1106,6 +1112,7 @@ AWE.Controller = (function(module) {
     };
 
     var pendingSpecialAssignmentUpdates = {};
+    var lastSpecialAssignmentUpdate = new Date(1970);
 
     that.updateSpecialAssignments = function(assignments) {
       if (assignments) {
@@ -1116,7 +1123,7 @@ AWE.Controller = (function(module) {
             if (
               Date.parseISODate(assignment.get('ended_at')).add({seconds: pendingSpecialAssignmentUpdates[assignmentId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
               pendingSpecialAssignmentUpdates[assignmentId] *= 2;
-              that.updateSpecialAssignments();
+              that.updateAssignments2();
               AWE.GS.ArmyManager.updateArmiesAtLocation(that.locationId, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
               });
             }
@@ -1127,12 +1134,19 @@ AWE.Controller = (function(module) {
             if (
               Date.parseISODate(assignment.get('displayed_until')).add({seconds: pendingSpecialAssignmentUpdates[assignmentId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
               pendingSpecialAssignmentUpdates[assignmentId] *= 2;
-              that.updateSpecialAssignments();
+              that.updateAssignments2();
               AWE.GS.ArmyManager.updateArmiesAtLocation(that.locationId, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
               });
             }
           }
         });
+        lastSpecialAssignmentUpdate = AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds();
+      } else {
+        if(lastSpecialAssignmentUpdate < (lastSpecialAssignmentUpdate+AWE.GS.TimeManager.estimatedServerTime().add(20).minutes())) {
+          setTimeout(function(){that.updateSpecialAssignments(assignments)}, 30000);
+        } else {
+          that.updateAssignments2();
+        }
       }
     };
 
@@ -1189,7 +1203,8 @@ AWE.Controller = (function(module) {
         }
 
         if (settlement && this.view.getPath('selectedSlot.building.unlockedAssignments')) {
-          that.updateSpecialAssignments();
+          that.updateAssignments();
+          that.updateAssignments2();
         }
       }
       

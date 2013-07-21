@@ -1,15 +1,13 @@
 <script type="text/x-handlebars" data-template-name="assignment-list-view">
 
-  <h3>{{t settlement.assignment.assignments}}</h3>
 
-  {{#if specialAssignmentTypes}}
-    {{#each specialAssignmentTypes }}
-      {{view AWE.UI.Ember.AssignmentView assignmentTypeBinding="this" controllerBinding="controller" }}
-    {{/each}}
-  {{else}}
-    <p>{{t settlement.assignment.noneSpecialAvailable}}</p>
+  <h3>Very special</h3>
+  {{#if specialAssignment}}
+    {{view AWE.UI.Ember.SpecialAssignmentView assignmentBinding="this" controllerBinding="controller" }}
   {{/if}}
+  <h4>{{specialAssignment}}</h4>
 
+  <h3>{{t settlement.assignment.assignments}}</h3>
   {{#if assignmentTypes}}
     {{#each assignmentTypes }}
       {{view AWE.UI.Ember.AssignmentView assignmentTypeBinding="this" controllerBinding="controller" }}
@@ -28,6 +26,130 @@
       <tr {{action "openPressed"}}>
         <td class="assignment-header-cell">
           <b>{{local assignmentType.name}}</b></td>
+        <td class="assignment-progress-cell">
+          {{#if isActive }}
+            <div class="duration assignment-progress-bar-border">
+              <div class="assignment-progress-bar" {{bindAttr style="progressBarWidth"}}>
+                {{#if finished}}
+                  {{t settlement.assignment.finishing}}
+                {{else}}
+                  {{formatDuration timeRemaining}}
+                {{/if}}
+              </div>
+            </div>
+          {{/if}}
+        </td>
+        <td class="assignment-button-cell">
+          {{#if isActive }}
+            {{#unless isHalved }}
+              {{#if halving }}
+                {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+              {{else}}
+                <span class="simple-button clickable" {{action "speedupPressed"}} {{bindAttr title="speedupTooltipText"}}>
+                  {{t settlement.assignment.hurry}} {{speedupCosts}}
+                  <span class="resource-icon resource_cash">&nbsp;</span>&nbsp;
+                </span>
+              {{/if}}
+            {{/unless }}
+          {{else}}
+            {{#if starting }}
+              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+            {{else}}
+              <span class="simple-button clickable" {{action "startPressed"}}>{{t settlement.assignment.start}}</span>
+            {{/if}}
+          {{/if}}
+        </td>
+      </tr>
+    </table>
+  {{else}}
+    <p>
+      <div class="float-right">
+        {{#if isActive }}
+          {{#unless isHalved }}
+            {{#if halving }}
+              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+            {{else}}
+              <span class="simple-button clickable" {{action "speedupPressed"}} {{bindAttr title="speedupTooltipText"}}>
+                {{t settlement.assignment.hurry}} {{speedupCosts}}
+                <span class="resource-icon resource_cash">&nbsp;</span>&nbsp;
+              </span>
+            {{/if}}
+          {{/unless }}
+        {{else}}
+          {{#if starting }}
+            {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+          {{else}}
+            <span class="simple-button clickable" {{action "startPressed"}}>{{t settlement.assignment.start}}</span>
+          {{/if}}
+        {{/if}}
+      </div>
+
+      <b>{{local assignmentType.name}}</b>
+    </p>
+    <p>{{local assignmentType.description}}</p>
+    <p>
+      {{#if isActive }}
+        <div class="float-right duration assignment-progress-bar-border">
+          <div class="assignment-progress-bar" {{bindAttr style="progressBarWidth"}}>
+          {{#if finished}}
+            {{t settlement.assignment.finishing}}
+          {{else}}
+            {{formatDuration timeRemaining}}
+          {{/if}}
+          </div>
+        </div>
+      {{/if}}
+
+      <b>{{t settlement.assignment.duration}}:</b> {{formatDuration duration}}
+        {{#if isHalved }}
+          ({{t settlement.assignment.hurried }})
+        {{/if}} <br />
+      {{#if assignmentType.costs}}
+        <b>{{t settlement.assignment.costs}}:</b>
+        {{#each costs}}
+          <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span> {{amount}} &nbsp;
+        {{/each}}
+        <br />
+      {{/if}}
+      {{#if assignmentType.unit_deposits}}
+        <b>{{t settlement.assignment.unitDeposits}}:</b>
+          {{#each unitDeposits}}
+            <span class="unit-icon {{unbound unitType.symbolic_id}}" {{bindAttr title="{{local unitType.name}}"}}>&nbsp;</span> {{local unitType.name}} {{amount}} &nbsp;
+          {{/each}}
+        <br />
+      {{/if}}
+      {{#if assignmentType.rewards}}
+        <b>{{t settlement.assignment.rewards}}:</b>
+          {{#each resourceRewards}}
+            <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span> {{amount}} &nbsp;
+          {{/each}}
+          {{#each unitRewards}}
+            <span class="unit-icon {{unbound unitType.symbolic_id}}" {{bindAttr title="{{local unitType.name}}"}}>&nbsp;</span> {{local unitType.name}} {{amount}} &nbsp;
+          {{/each}}
+          {{#if assignmentType.rewards.experience_reward }}
+            <span class="xp-icon" title="XP">&nbsp;</span> {{assignmentType.rewards.experience_reward}} &nbsp;
+          {{/if }}
+      {{/if}}
+    </p>
+    <div class="assignment-close-icon">
+      <div class="clickable up-icon" {{bindAttr title="settlement.assignment.collapse"}} {{action "collapsePressed"}}> </div>
+    </div>
+  {{/if}}
+
+  <hr />
+
+</script>
+
+<script type="text/x-handlebars" data-template-name="special-assignment-view">
+
+
+  <h3>Hello</h3>
+
+  {{#if collapsed}}
+    <table class="assignment-collapse-table">
+      <tr {{action "openPressed"}}>
+        <td class="assignment-header-cell">
+          <b>{{local specialAssignment.name}}</b></td>
         <td class="assignment-progress-cell">
           {{#if isActive }}
             <div class="duration assignment-progress-bar-border">

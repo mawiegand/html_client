@@ -276,6 +276,28 @@ AWE.GS = (function(module) {
       return allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
     }.property('alliance_id').cacheable(),
 
+    specialAssignment: function() {
+      var id = this.get('id');
+      var latestDate = new Date(1970);
+      var specialAssignments = id ? AWE.GS.SpecialAssignmentAccess.getHashableCollectionForCharacter_id(id) : null;
+      var latestAssignment = null;
+
+      if(specialAssignments == null) return null;
+
+      specialAssignments = specialAssignments.sort();
+      specialAssignments.forEach(function(assignment) {
+        if(Date.parseISODate(assignment.get('ended_at')) > latestDate) {
+          latestDate = Date.parseISODate(assignment.get('ended_at'));
+        }
+      });
+
+      if(latestAssignment == null || latestDate < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
+        return latestAssignment;
+      } else {
+      return null;
+     } 
+    }.property('id').cacheable(),
+
     hashableSpecialAssignments: function() {
       var id = this.get('id');
       return id ? AWE.GS.SpecialAssignmentAccess.getHashableCollectionForCharacter_id(id) : null;

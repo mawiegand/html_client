@@ -19,22 +19,24 @@ AWE.UI.Ember = function(module) {
       }
     }.property('building', 'currentCharacter.assignment_level').cacheable(),
 
-    specialAssignmentTypes: function() {
+    /*specialAssignmentTypes: function() {
       if (this.get('building')) {
         return this.get('building').currentSpecialAssignmentTypes();
       }
       else {
         return null;
       }
-    }.property('building', 'currentCharacter.assignment_level').cacheable(),
+    }.property('building', 'currentCharacter.assignment_level').cacheable(),*/
 
     assignments: null,
-    specialAssignments: null,
+    specialAssignment: null,
+
+    // property namens "specialassignments()" --> 
 
     init: function() {
       this._super();
       this.set('assignments', AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments'));
-      this.set('specialAssignments', AWE.GS.game.getPath('currentCharacter.specialAssignments'));
+      this.set('specialAssignment', AWE.GS.game.getPath('currentCharacter.specialAssignment'));
       this.set('currentCharacter', AWE.GS.game.get('currentCharacter'));
     },
 
@@ -218,6 +220,200 @@ AWE.UI.Ember = function(module) {
       }
       return rewardResult;
     }.property('assignmentType').cacheable(),
+
+    unitRewards: function() {
+      var rewards = this.getPath('assignmentType.rewards.unit_rewards') || [];
+      var rewardResult = [];
+      if (rewards) {
+        rewards.forEach(function(item) {
+          var unitType = AWE.GS.RulesManager.getRules().getUnitTypeWithSymbolicId(item.unit);
+          if (item.amount > 0) {
+            rewardResult.push(Ember.Object.create({
+              amount:   item.amount,
+              unitType: unitType,
+            }));
+          }
+        });
+      }
+      return rewardResult;
+    }.property('assignmentType').cacheable(),
+  });
+
+  /**
+   * in assignment nicht collection holen, sondern
+   */
+  module.SpecialAssignmentView = Ember.View.extend({
+    templateName: "special-assignment-view",
+
+    specialAssignment: null, //wird per binding reingegeben
+
+    // costss, rewards, unit rewards usw... anpassen da nicht mehr aus type kommen
+    //sondern aus assignment type
+
+    controller: null,
+
+    starting: false,
+    halving: false,
+
+    isActive: function() {
+      return this.get('assignment') && this.getPath('assignment.ended_at') != null;
+    }.property('assignment.ended_at').cacheable(),
+
+    isHalved: function() {
+      return this.get('assignment') && this.getPath('assignment.halved_at') != null;
+    }.property('assignment.halved_at').cacheable(),
+
+    timer: null,
+
+    collapsed: true,
+
+    speedupCosts: 2,
+
+    progressBarWidth: function() {
+      var currentInterval = AWE.GS.TimeManager.estimatedServerTime().getTime() - Date.parseISODate(this.getPath('assignment.started_at')).getTime();
+      var jobInterval     = Date.parseISODate(this.getPath('assignment.ended_at')).getTime() - Date.parseISODate(this.getPath('assignment.started_at')).getTime();
+      var progression = jobInterval != 0 ? currentInterval / jobInterval : -1;
+      progression = progression < 0 ? 0 : (progression > 1 ? 1 : progression);
+      return 'width: ' + Math.ceil(300 * progression) + 'px;';
+    }.property('timeRemaining').cacheable(),
+
+    duration: function() {
+      if (this.getPath('isHalved')) {
+        return this.getPath('specialAssignment.duration') / 2;
+      }
+      else {
+        return this.getPath('specialAssignment.duration');
+      }
+    }.property('isHalved', 'specialAssignment.type_id', 'parentView.assignments.changedAt').cacheable(),
+
+    startPressed: function() {
+      var self = this;
+      this.set('starting', true);
+      this.get('controller').specialAssignmentStartPressed(this.get('specialAssignment'), function() {
+        self.set('starting', false);
+      });
+      return false;
+    },
+
+    speedupPressed: function() {
+      var self = this;
+      this.set('halving', true);
+      this.get('controller').specialAssignmentSpeedupPressed(this.get('specialAssignment'), function() {
+        self.set('halving', false);
+      });
+      return false;
+    },
+
+    collapsePressed: function() {
+      this.set('collapsed', true);
+    },
+
+    openPressed: function() {
+      this.set('collapsed', false);
+    },
+
+    finished: function() {
+      var t = this.get('timeRemaining');
+      return t !== undefined && t !== null && t <= 0;
+    }.property('timeRemaining').cacheable(),
+
+    calcTimeRemaining: function() {
+      var endedAt = this.getPath('specialAssignment.ended_at');
+      if (!endedAt) {
+        return ;
+      }
+      var finish = Date.parseISODate(endedAt);
+      var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
+      var remaining = (finish.getTime() - now.getTime()) / 1000.0;
+      remaining = remaining < 0 ? 0 : remaining;
+      this.set('timeRemaining', remaining);
+    },
+
+    startTimer: function() {
+      var timer = this.get('timer');
+      if (!timer) {
+        timer = setInterval((function(self) {
+          return function() {
+            self.calcTimeRemaining();
+          };
+        }(this)), 1000);
+        this.set('timer', timer);
+      }
+    },
+
+    stopTimer: function() {
+      var timer = this.get('timer');
+      if (timer) {
+        clearInterval(timer);
+        this.set('timer', null);
+      }
+    },
+
+    startTimerOnBecommingActive: function() {
+      var active = this.get('isActive');
+      if (active && this.get('timer')) {
+        this.startTimer();
+      }
+    }.observes('isActive'),
+
+
+    didInsertElement: function() {
+      this.startTimer();
+    },
+
+    willDestroyElement: function() {
+      this.stopTimer();
+    },
+
+    costs: function() {
+      //var costs = this.getPath('assignmentType.costs') || [];
+      var costsResult = [];
+
+      //specialAssignment.resource_XXX_amount
+      AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
+        var amount = this.getPath('specialAssignment.'+item.symbolic_id+'_amount');
+        if (amount && amount > 0) {
+          costsResult.push(Ember.Object.create({
+            amount:       amount,
+            resourceType: item,
+          }));
+        }
+      });
+      return costsResult;
+    }.property('assignment').cacheable(),
+
+    unitDeposits: function() {
+      var unitdeposits = this.getPath('specialAssignment.unit_deposits') || [];
+      var depositsResult = [];
+      AWE.GS.RulesManager.getRules().unit_types.forEach(function(item) {
+        var amount = unitdeposits[item.id];
+        if (amount && amount > 0) {
+          depositsResult.push(Ember.Object.create({
+            amount:   amount,
+            unitType: item,
+          }));
+        }
+      });
+      return depositsResult;
+    }.property('specialAssignment').cacheable(),
+
+
+    resourceRewards: function() {
+      var rewards = this.getPath('specialAssignment.rewards.resource_rewards') || [];
+      var rewardResult = [];
+      if (rewards) {
+        rewards.forEach(function(item) {
+          var resource = AWE.GS.RulesManager.getRules().getResourceTypeWithSymbolicId(item.resource);
+          if (item.amount > 0) {
+            rewardResult.push(Ember.Object.create({
+              amount:       item.amount,
+              resourceType: resource,
+            }));
+          }
+        });
+      }
+      return rewardResult;
+    }.property('specialAssignment').cacheable(),
 
     unitRewards: function() {
       var rewards = this.getPath('assignmentType.rewards.unit_rewards') || [];
