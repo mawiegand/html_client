@@ -19,14 +19,14 @@ AWE.UI.Ember = function(module) {
       }
     }.property('building', 'currentCharacter.assignment_level').cacheable(),
 
-    /*specialAssignmentTypes: function() {
+    specialAssignmentTypes: function() {
       if (this.get('building')) {
         return this.get('building').currentSpecialAssignmentTypes();
       }
       else {
         return null;
       }
-    }.property('building', 'currentCharacter.assignment_level').cacheable(),*/
+    }.property('building', 'currentCharacter.assignment_level').cacheable(),
 
     assignments: null,
     specialAssignment: null,
@@ -38,7 +38,6 @@ AWE.UI.Ember = function(module) {
       this.set('assignments', AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments'));
       this.set('specialAssignment', AWE.GS.game.getPath('currentCharacter.specialAssignment'));
       this.set('currentCharacter', AWE.GS.game.get('currentCharacter'));
-      log('### special assignment:', AWE.GS.game.getPath('currentCharacter.specialAssignment'));
     },
 
   });
@@ -246,23 +245,27 @@ AWE.UI.Ember = function(module) {
   module.SpecialAssignmentView = Ember.View.extend({
     templateName: "special-assignment-view",
 
-    specialAssignment: null, //wird per binding reingegeben
-
-    // costss, rewards, unit rewards usw... anpassen da nicht mehr aus type kommen
-    //sondern aus assignment type
-
     controller: null,
+
+    init: function() {
+      this._super();
+      log('#### sa view', this);
+    },
+
+    assignmentType: function() {
+      return AWE.GS.RulesManager.getRules().getSpecialAssignmentType(AWE.GS.CharacterManager.getCurrentCharacter().getPath('specialAssignment.type_id'));
+    }.property('specialAssignment'),
 
     starting: false,
     halving: false,
 
     isActive: function() {
-      return this.get('assignment') && this.getPath('assignment.ended_at') != null;
+      return this.get('specialAssignment') && this.getPath('specialAssignment.ended_at') != null;
     }.property('assignment.ended_at').cacheable(),
 
     isHalved: function() {
-      return this.get('assignment') && this.getPath('assignment.halved_at') != null;
-    }.property('assignment.halved_at').cacheable(),
+      return this.get('specialAssignment') && this.getPath('specialAssignment.halved_at') != null;
+    }.property('specialAssignment.halved_at').cacheable(),
 
     timer: null,
 
@@ -280,17 +283,17 @@ AWE.UI.Ember = function(module) {
 
     duration: function() {
       if (this.getPath('isHalved')) {
-        return this.getPath('specialAssignment.duration') / 2;
+        return this.getPath('assignmentType.duration') / 2;
       }
       else {
-        return this.getPath('specialAssignment.duration');
+        return this.getPath('assignmentType.duration');
       }
-    }.property('isHalved', 'specialAssignment.type_id', 'parentView.assignments.changedAt').cacheable(),
+    }.property('isHalved', 'assignment.type_id', 'parentView.assignments.changedAt').cacheable(),
 
     startPressed: function() {
       var self = this;
       this.set('starting', true);
-      this.get('controller').specialAssignmentStartPressed(this.get('specialAssignment'), function() {
+      this.get('controller').standardAssignmentStartPressed(this.get('assignmentType'), function() {
         self.set('starting', false);
       });
       return false;
@@ -299,7 +302,7 @@ AWE.UI.Ember = function(module) {
     speedupPressed: function() {
       var self = this;
       this.set('halving', true);
-      this.get('controller').specialAssignmentSpeedupPressed(this.get('specialAssignment'), function() {
+      this.get('controller').standardAssignmentSpeedupPressed(this.get('assignment'), function() {
         self.set('halving', false);
       });
       return false;
@@ -319,7 +322,7 @@ AWE.UI.Ember = function(module) {
     }.property('timeRemaining').cacheable(),
 
     calcTimeRemaining: function() {
-      var endedAt = this.getPath('specialAssignment.ended_at');
+      var endedAt = this.getPath('assignment.ended_at');
       if (!endedAt) {
         return ;
       }
@@ -366,13 +369,14 @@ AWE.UI.Ember = function(module) {
       this.stopTimer();
     },
 
+
     costs: function() {
-      //var costs = this.getPath('assignmentType.costs') || [];
       var costsResult = [];
+      var that = this;
 
       //specialAssignment.resource_XXX_amount
       AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
-        var amount = this.getPath('specialAssignment.'+item.symbolic_id+'_amount');
+        var amount = that.getPath('specialAssignment.'+item.symbolic_id+'_cost');
         if (amount && amount > 0) {
           costsResult.push(Ember.Object.create({
             amount:       amount,
@@ -381,13 +385,17 @@ AWE.UI.Ember = function(module) {
         }
       });
       return costsResult;
-    }.property('assignment').cacheable(),
+    }.property('specialAssignment').cacheable(),
+
 
     unitDeposits: function() {
-      var unitdeposits = this.getPath('specialAssignment.unit_deposits') || [];
+      var unitdeposits = this.getPath('assignmentType.unit_deposits') || [];
       var depositsResult = [];
+      var that = this;
       AWE.GS.RulesManager.getRules().unit_types.forEach(function(item) {
-        var amount = unitdeposits[item.id];
+        log('#### unit', item);
+        var amount = that.getPath('specialAssignment.'+item.db_field+'_deposit');
+        log('### unit amount', amount);
         if (amount && amount > 0) {
           depositsResult.push(Ember.Object.create({
             amount:   amount,
@@ -396,11 +404,11 @@ AWE.UI.Ember = function(module) {
         }
       });
       return depositsResult;
-    }.property('specialAssignment').cacheable(),
+    }.property('assignmentType').cacheable(),
 
 
     resourceRewards: function() {
-      var rewards = this.getPath('specialAssignment.rewards.resource_rewards') || [];
+      var rewards = this.getPath('assignmentType.rewards.resource_rewards') || [];
       var rewardResult = [];
       if (rewards) {
         rewards.forEach(function(item) {
@@ -414,7 +422,7 @@ AWE.UI.Ember = function(module) {
         });
       }
       return rewardResult;
-    }.property('specialAssignment').cacheable(),
+    }.property('assignmentType').cacheable(),
 
     unitRewards: function() {
       var rewards = this.getPath('assignmentType.rewards.unit_rewards') || [];
