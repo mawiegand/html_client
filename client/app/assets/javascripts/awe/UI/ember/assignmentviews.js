@@ -293,7 +293,7 @@ AWE.UI.Ember = function(module) {
     startPressed: function() {
       var self = this;
       this.set('starting', true);
-      this.get('controller').specialAssignmentStartPressed(this.get('assignmentType'), function() {
+      this.get('controller').specialAssignmentStartPressed(this.get('specialAssignment'), function() {
         self.set('starting', false);
       });
       return false;
@@ -389,13 +389,10 @@ AWE.UI.Ember = function(module) {
 
 
     unitDeposits: function() {
-      var unitdeposits = this.getPath('assignmentType.unit_deposits') || [];
       var depositsResult = [];
       var that = this;
       AWE.GS.RulesManager.getRules().unit_types.forEach(function(item) {
-        log('#### unit', item);
         var amount = that.getPath('specialAssignment.'+item.db_field+'_deposit');
-        log('### unit amount', amount);
         if (amount && amount > 0) {
           depositsResult.push(Ember.Object.create({
             amount:   amount,

@@ -95,7 +95,7 @@ AWE.Action.Assignment = (function(module) {
     that.getRequestBody = function() {
       return {
         assignment_special_assignment: {
-          type_id:  my.type_id,
+          special_assignment_id:  my.type_id,
         }
       };
     };
