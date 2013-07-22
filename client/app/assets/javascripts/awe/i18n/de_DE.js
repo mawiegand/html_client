@@ -743,6 +743,7 @@ AWE.I18n.de_DE = function(module) {
 
       assignment: {
         assignments: "Aufträge",
+        specialAssignments: "Spezialaufträge",
         duration: "Dauer",
         unitDeposits: "Benötigte Einheiten",
         costs: "Kosten",

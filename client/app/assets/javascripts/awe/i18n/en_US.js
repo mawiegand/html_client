@@ -728,6 +728,7 @@ AWE.I18n.en_US = function(module) {
 
       assignment: {
         assignments: "Assignments",
+        specialAssignments: "Special Assignments",
         duration: "Duration",
         unitDeposits: "Required Units",
         costs: "Costs",
