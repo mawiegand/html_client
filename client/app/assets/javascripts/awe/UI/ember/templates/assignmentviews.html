@@ -5,7 +5,6 @@
   {{#if specialAssignment}}
     {{view AWE.UI.Ember.SpecialAssignmentView assignmentBinding="this" controllerBinding="controller" }}
   {{/if}}
-  <h4>{{specialAssignment}}</h4>
 
   <h3>{{t settlement.assignment.assignments}}</h3>
   {{#if assignmentTypes}}
@@ -141,9 +140,6 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="special-assignment-view">
-
-
-  <h3>Hello</h3>
 
   {{#if collapsed}}
     <table class="assignment-collapse-table">

@@ -38,6 +38,7 @@ AWE.UI.Ember = function(module) {
       this.set('assignments', AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments'));
       this.set('specialAssignment', AWE.GS.game.getPath('currentCharacter.specialAssignment'));
       this.set('currentCharacter', AWE.GS.game.get('currentCharacter'));
+      log('### special assignment:', AWE.GS.game.getPath('currentCharacter.specialAssignment'));
     },
 
   });

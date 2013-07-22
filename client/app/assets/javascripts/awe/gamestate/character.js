@@ -279,23 +279,23 @@ AWE.GS = (function(module) {
     specialAssignment: function() {
       var id = this.get('id');
       var latestDate = new Date(1970);
-      var specialAssignments = id ? AWE.GS.SpecialAssignmentAccess.getHashableCollectionForCharacter_id(id) : null;
+      var specialAssignments = id ? AWE.GS.SpecialAssignmentAccess.getHashableCollectionForCharacter_id(id).collection : null;
       var latestAssignment = null;
 
       if(specialAssignments == null) return null;
 
-      specialAssignments = specialAssignments.sort();
       specialAssignments.forEach(function(assignment) {
-        if(Date.parseISODate(assignment.get('ended_at')) > latestDate) {
-          latestDate = Date.parseISODate(assignment.get('ended_at'));
+        if(Date.parseISODate(assignment.get('displayed_until')) > latestDate) {
+          latestDate = Date.parseISODate(assignment.get('displayed_until'));
+          latestAssignment = assignment;
         }
       });
-
-      if(latestAssignment == null || latestDate < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
+          
+      if(latestAssignment == null || latestDate > AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
         return latestAssignment;
       } else {
-      return null;
-     } 
+        return null;
+      } 
     }.property('id').cacheable(),
 
     hashableSpecialAssignments: function() {
