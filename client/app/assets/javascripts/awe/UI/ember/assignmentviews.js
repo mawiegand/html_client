@@ -274,8 +274,8 @@ AWE.UI.Ember = function(module) {
     speedupCosts: 2,
 
     progressBarWidth: function() {
-      var currentInterval = AWE.GS.TimeManager.estimatedServerTime().getTime() - Date.parseISODate(this.getPath('assignment.started_at')).getTime();
-      var jobInterval     = Date.parseISODate(this.getPath('assignment.ended_at')).getTime() - Date.parseISODate(this.getPath('assignment.started_at')).getTime();
+      var currentInterval = AWE.GS.TimeManager.estimatedServerTime().getTime() - Date.parseISODate(this.getPath('specialAssignment.started_at')).getTime();
+      var jobInterval     = Date.parseISODate(this.getPath('assignment.ended_at')).getTime() - Date.parseISODate(this.getPath('specialAssignment.started_at')).getTime();
       var progression = jobInterval != 0 ? currentInterval / jobInterval : -1;
       progression = progression < 0 ? 0 : (progression > 1 ? 1 : progression);
       return 'width: ' + Math.ceil(300 * progression) + 'px;';
@@ -288,12 +288,12 @@ AWE.UI.Ember = function(module) {
       else {
         return this.getPath('assignmentType.duration');
       }
-    }.property('isHalved', 'assignment.type_id', 'parentView.assignments.changedAt').cacheable(),
+    }.property('isHalved', 'specialAssignment.type_id', 'parentView.specialAssignments.changedAt').cacheable(),
 
     startPressed: function() {
       var self = this;
       this.set('starting', true);
-      this.get('controller').standardAssignmentStartPressed(this.get('assignmentType'), function() {
+      this.get('controller').specialAssignmentStartPressed(this.get('assignmentType'), function() {
         self.set('starting', false);
       });
       return false;
@@ -302,7 +302,7 @@ AWE.UI.Ember = function(module) {
     speedupPressed: function() {
       var self = this;
       this.set('halving', true);
-      this.get('controller').standardAssignmentSpeedupPressed(this.get('assignment'), function() {
+      this.get('controller').specialAssignmentSpeedupPressed(this.get('specialAssignment'), function() {
         self.set('halving', false);
       });
       return false;
@@ -322,7 +322,7 @@ AWE.UI.Ember = function(module) {
     }.property('timeRemaining').cacheable(),
 
     calcTimeRemaining: function() {
-      var endedAt = this.getPath('assignment.ended_at');
+      var endedAt = this.getPath('specialAssignment.ended_at');
       if (!endedAt) {
         return ;
       }
