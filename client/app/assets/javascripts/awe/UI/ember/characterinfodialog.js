@@ -33,6 +33,50 @@ AWE.UI.Ember = (function(module) {
       this.set('ownResourcePool', AWE.GS.ResourcePoolManager.getResourcePool());     
     },    
     
+    showDescription: function() {
+      return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/, '<br />');
+    }.property('character.description'),
+
+    sendUserContentReport: function() {
+      var confirmationDialog = AWE.UI.Ember.Dialog.create({
+        templateName: 'info-dialog',
+
+        classNames: ['confirmation-dialog'],
+      
+        controller: this,
+        
+        heading:    AWE.I18n.lookupTranslation('profile.customization.confirmReport.heading'), 
+        message:    AWE.I18n.lookupTranslation('profile.customization.confirmReport.message'),
+        
+        cancelText: AWE.I18n.lookupTranslation('profile.customization.confirmReport.cancel'),
+        okText:     AWE.I18n.lookupTranslation('profile.customization.confirmReport.ok'),
+       
+        okPressed: function() {
+          var controller = this.get('controller');
+          if (controller) {
+            controller.processUserContentReport();
+          }
+          this.destroy();
+        },
+        
+        cancelPressed: function() { this.destroy(); }
+      });
+      WACKADOO.presentModalDialog(confirmationDialog);
+    },
+
+    processUserContentReport: function() {
+      var self = this;
+      var action = AWE.Action.Fundamental.createUserContentReportAction(this.get('character').getId(), 'character-description', this.get('character').getId());
+      AWE.Action.Manager.queueAction(action, function(status) {
+        if (status === AWE.Net.OK) {
+          self.set('message', AWE.I18n.lookupTranslation('profile.customization.confirmReport.success'));
+        }
+        else {
+          self.set('message', AWE.I18n.lookupTranslation('profile.customization.confirmReport.error'));
+        }
+      });        
+    },
+    
     displayLikeSystemButtons: function() {
       return AWE.GS.CharacterManager.getCurrentCharacter() !== this.get('character');
     }.property('character'),

@@ -431,6 +431,7 @@ AWE.I18n.de_DE = function(module) {
       saveReservation: 'Reservierung speichern',
       kickMember: 'kick',
       report: 'Melden',
+      sendApplication: 'Bewerbung einreichen',
       
       progress: {
         header: 'Siegesfortschritt',
@@ -490,6 +491,14 @@ AWE.I18n.de_DE = function(module) {
         ok: "Ja, wirklich.",
         success: "Meldung war erfolgreich",
         error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
+      },
+      confirmApplication: {
+        heading: "Bewerbung bestätigen",
+        message: "Willst Du Dich wirklich bei dieser Allianz bewerben?",
+        cancel: "Nein, doch nicht",
+        ok: "Ja, wirklich.",
+        success: "Bewerbung war erfolgreich",
+        error: "Die Bewerbung wurde aus unbekanntem Grund nicht ausgeführt.",
       },
     },
 
@@ -882,7 +891,7 @@ AWE.I18n.de_DE = function(module) {
         lagUntolerable1: "Bitte stelle Deine Rechneruhr auf die korrekte Uhrzeit",
         lagUntolerable2: "oder schalte den automatischen Abgleich mit der Internetzeit an, sofern Dein Betriebssystem diese Möglichkeit bietet. Die Reaktivität des Spiels und Deine Nutzungserfahrung würden dadurch deutlich verbessert.",
       },
-
+      
       customization: {
         changeAvatar: "Deinen Avatar ändern",
         presentAvatar: "Aktueller Avatar",
@@ -921,6 +930,21 @@ AWE.I18n.de_DE = function(module) {
         changeSameIPButton: "Liste ändern",
         changeSameIIPChanged: "Die Liste wurde gespeichert.",
         
+        description: 'Beschreibung',
+        changeDescriptionDialogCaption: 'Gib deine neue Characterbeschreibung ein.',
+        changeDescription: 'Ändere Beschreibung',
+        missingDescription: 'Hier könnte Deine Characterbeschreibung stehen.',
+        report: 'Melden',
+
+        confirmReport: {
+          heading: "Melden bestätigen",
+          message: "Willst Du wirklich die Character Beschreibung melden?",
+          cancel: "Nein, doch nicht",
+          ok: "Ja, wirklich.",
+          success: "Meldung war erfolgreich",
+          error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
+        },
+        
         errors: {
           nameTooShort: "Viel zu kurz. Der Name muss mindestens 3 Zeichen enthalten.",
           nameTooLong: "Viel zu lang. Der Name darf höchstens 12 Zeichen enthalten.",
@@ -935,6 +959,8 @@ AWE.I18n.de_DE = function(module) {
           changePasswordInvalid: "Das Passwort entspricht nicht den Vorraussetzungen. Bitte wähle ein passendes Passwort.",
           changePasswordUnknown: "Dein Passwort konnte aus unbekannten Gründen nicht geändert werden. Bitte versuche es später noch einmal.",
           changePasswordNoMatch: "Die Passwörter stimmen nicht überein. Bitte versuche es noch einmal.",
+
+          changeDescriptionError: "Die Character Beschreibung konnte aus unbekanntem Grund nicht geändert werden.",
           
           changeSameIIUnknown: "Die Liste konnte aus unbekannten Gründen nicht geändert werden. Bitte versuche es später noch einmal.",
           changeFailed: {

@@ -250,6 +250,45 @@ AWE.UI.Ember = (function(module) {
 
     },
 
+    changeDescriptionPressed: function() {
+      var changeDialog = AWE.UI.Ember.TextAreaInputDialog.create({
+        heading: AWE.I18n.lookupTranslation('profile.customization.changeDescriptionDialogCaption'),
+        placeholderText: AWE.I18n.lookupTranslation('profile.customization.description'),
+        input: this.getPath('character.description'),
+        rowsSize: 10,
+        colsSize: 82,
+        controller: this,
+        
+        okPressed: function() {
+          var controller = this.get('controller');
+          if (controller) {
+            controller.processNewDescription(this.getPath('input'));
+          }
+          this.destroy();            
+        },
+        
+        cancelPressed: function() { this.destroy(); },
+      });
+      WACKADOO.presentModalDialog(changeDialog);
+    },
+
+    showDescription: function() {
+      return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/, '<br />');
+    }.property('character.description'),
+
+    processNewDescription: function(newDescription) {
+      var self = this;
+      var action = AWE.Action.Fundamental.createChangeCharacterDescriptionAction(newDescription);
+      AWE.Action.Manager.queueAction(action, function(status) {
+        if (status === AWE.Net.OK) {
+          self.set('message', null);
+        }
+        else {
+          self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeDescriptionError'));
+        }
+      });        
+		},
+
     nameChangeCosts: function() {
       return AWE.GS.RulesManager.getRules().change_character_name.amount;
     }.property().cacheable(),

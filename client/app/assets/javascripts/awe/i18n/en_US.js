@@ -422,6 +422,7 @@ AWE.I18n.en_US = function(module) {
       saveReservation: 'Save reservation',
       kickMember:'kick',
       report: 'Melden',
+      sendApplication: 'Bewerbung einreichen',
 
       progress:{
         header:'Victory Progress',
@@ -481,6 +482,14 @@ AWE.I18n.en_US = function(module) {
         ok: "Ja, wirklich.",
         success: "Meldung war erfolgreich",
         error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
+      },
+      confirmApplication: {
+        heading: "Bewerbung bestätigen",
+        message: "Willst Du Dich wirklich bei dieser Allianz bewerben?",
+        cancel: "Nein, doch nicht",
+        ok: "Ja, wirklich.",
+        success: "Bewerbung war erfolgreich",
+        error: "Die Bewerbung wurde aus unbekanntem Grund nicht ausgeführt.",
       },
     },
 
@@ -906,6 +915,21 @@ AWE.I18n.en_US = function(module) {
         changeSameIPButton:"Change the List",
         changeSameIIPChanged:"List has been saved.",
 
+        description: 'Beschreibung',
+        changeDescriptionDialogCaption: 'Gib deine neue Characterbeschreibung ein.',
+        changeDescription: 'Ändere Beschreibung',
+        missingDescription: 'Hier könnte Deine Characterbeschreibung stehen.',
+        report: 'Melden',
+
+        confirmReport: {
+          heading: "Melden bestätigen",
+          message: "Willst Du wirklich die Character Beschreibung melden?",
+          cancel: "Nein, doch nicht",
+          ok: "Ja, wirklich.",
+          success: "Meldung war erfolgreich",
+          error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
+        },
+
         errors:{
           nameTooShort:"Much too short. The name has to have at least 3 characters.",
           nameTooLong:"Much too long. The name may only have up to 12 characters.",
@@ -921,6 +945,8 @@ AWE.I18n.en_US = function(module) {
           changePasswordUnknown:"Your password could not be changed for unknown reasons. Please try again later.",
           changePasswordNoMatch:"The  two passwords don't match. Try again.",
           
+          changeDescriptionError: "Die Character Beschreibung konnte aus unbekanntem Grund nicht geändert werden.",
+
           changeSameIIUnknown: "The list can´t be changed right now. Please try again later.",
 
           changeFailed: {

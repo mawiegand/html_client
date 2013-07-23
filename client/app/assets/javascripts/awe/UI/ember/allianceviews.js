@@ -57,10 +57,11 @@ AWE.UI.Ember = (function(module) {
     },
 
     changeDescriptionPressed: function() {
-      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
-        classNames: ['change-army-name-dialog'],
+      var changeDialog = AWE.UI.Ember.TextAreaInputDialog.create({
         heading: AWE.I18n.lookupTranslation('alliance.changeDescriptionDialogCaption'),
         input: this.getPath('alliance.description'),
+        rowsSize: 10,
+        colsSize: 82,
         controller: this,
         
         okPressed: function() {
@@ -75,6 +76,10 @@ AWE.UI.Ember = (function(module) {
       });
       WACKADOO.presentModalDialog(changeDialog);
     },
+
+    showDescription: function() {
+      return $('<div/>').text(this.getPath('alliance.description')).html().replace(/\n/, '<br />');
+    }.property('alliance.description'),
 
     processNewDescription: function(newDescription) {
       var self = this;
@@ -128,6 +133,52 @@ AWE.UI.Ember = (function(module) {
         }
         else {
           self.set('message', AWE.I18n.lookupTranslation('alliance.confirmReport.error'));
+        }
+      });        
+    },
+
+    isNotAllianceMember: function() {
+      var currentCharacter = AWE.GS.game.get('currentCharacter');
+      return currentCharacter.get('alliance_id') !== this.get('alliance').getId();
+    }.property('alliance', 'AWE.GS.game.currentCharacter.alliance_id').cacheable(),
+    
+    sendAllianceApplication: function() {
+      this.set('applicationMessage', null);
+      var confirmationDialog = AWE.UI.Ember.Dialog.create({
+        templateName: 'info-dialog',
+
+        classNames: ['confirmation-dialog'],
+      
+        controller: this,
+        
+        heading:    AWE.I18n.lookupTranslation('alliance.confirmApplication.heading'), 
+        message:    AWE.I18n.lookupTranslation('alliance.confirmApplication.message'),
+        
+        cancelText: AWE.I18n.lookupTranslation('alliance.confirmApplication.cancel'),
+        okText:     AWE.I18n.lookupTranslation('alliance.confirmApplication.ok'),
+       
+        okPressed: function() {
+          var controller = this.get('controller');
+          if (controller) {
+            controller.processSendAllianceApplication();
+          }
+          this.destroy();
+        },
+        
+        cancelPressed: function() { this.destroy(); }
+      });
+      WACKADOO.presentModalDialog(confirmationDialog);
+    },
+
+    processSendAllianceApplication: function() {
+      var self = this;
+      var action = AWE.Action.Fundamental.createSendAllianceApplicationAction(this.get('alliance').getId());
+      AWE.Action.Manager.queueAction(action, function(status) {
+        if (status === AWE.Net.OK) {
+          self.set('applicationMessage', AWE.I18n.lookupTranslation('alliance.confirmApplication.success'));
+        }
+        else {
+          self.set('applicationMessage', AWE.I18n.lookupTranslation('alliance.confirmApplication.error'));
         }
       });        
     },
