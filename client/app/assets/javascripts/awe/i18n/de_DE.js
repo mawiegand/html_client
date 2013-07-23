@@ -766,6 +766,7 @@ AWE.I18n.de_DE = function(module) {
 
       assignment: {
         assignments: "Aufträge",
+        specialAssignments: "Spezialaufträge",
         duration: "Dauer",
         unitDeposits: "Benötigte Einheiten",
         costs: "Kosten",
@@ -775,6 +776,7 @@ AWE.I18n.de_DE = function(module) {
         hurried: "beschleunigt",
         finishing: "Beenden...",
         noneAvailable: "Zur Zeit zind keine Aufträge verfügbar.",
+        noneSpecialAvailable: "Zur Zeit zind keine Spezialaufträge verfügbar.",
         cancelText: "Ok",
         error: {
           conflict: {

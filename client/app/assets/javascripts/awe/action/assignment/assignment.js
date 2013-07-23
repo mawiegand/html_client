@@ -80,6 +80,76 @@ AWE.Action.Assignment = (function(module) {
 
   };
   
+  module.createStartSpecialAssignmentAction = function(typeId, my) {
+
+    // private attributes and methods //////////////////////////////////////
+    var that;
+
+    // protected attributes and methods ////////////////////////////////////
+    my = my || {};
+    my.type_id = typeId;
+
+    // public attributes and methods ///////////////////////////////////////
+    that = AWE.Action.createAction(my);
+
+    that.getRequestBody = function() {
+      return {
+        assignment_special_assignment: {
+          special_assignment_id:  my.type_id,
+        }
+      };
+    };
+
+    that.getURL = function() {
+      return AWE.Config.ACTION_SERVER_BASE + 'assignment/start_special_assignment_actions';
+    };
+
+    that.getHTTPMethod = function() {
+      return 'POST';
+    };
+
+    that.postProcess = function(statusCode, xhr) {
+    };
+
+    return that;
+
+  };
+
+  module.createSpeedupSpecialAssignmentAction = function(specialAssignmentId, my) {
+
+    // private attributes and methods //////////////////////////////////////
+    var that;
+
+    // protected attributes and methods ////////////////////////////////////
+    my = my || {};
+    my.specialAssignmentId = specialAssignmentId;
+
+    // public attributes and methods ///////////////////////////////////////
+    that = AWE.Action.createAction(my);
+
+    that.getRequestBody = function() {
+      return {
+        speedup_special_assignment: {
+          pecial_assignment_id:  my.specialAssignmentId,
+        }
+      };
+    };
+
+    that.getURL = function() {
+      return AWE.Config.ACTION_SERVER_BASE + 'assignment/speedup_special_assignment_actions';
+    };
+
+    that.getHTTPMethod = function() {
+      return 'POST';
+    };
+
+    that.postProcess = function(statusCode, xhr) {
+    };
+
+    return that;
+
+  };
+  
   return module;
   
 }(AWE.Action.Construction || {}));

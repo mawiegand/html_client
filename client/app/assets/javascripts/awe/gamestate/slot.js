@@ -701,6 +701,11 @@ AWE.GS = (function(module) {
       var level = (AWE.GS.game.getPath('currentCharacter.assignment_level') || 0);
       return AWE.GS.RulesManager.getRules().getAssignmentTypesOfLevel(level);
     },
+
+    currentSpecialAssignmentTypes: function() {
+      var level = (AWE.GS.game.getPath('currentCharacter.assignment_level') || 0);
+      return AWE.GS.RulesManager.getRules().getSpecialAssignmentTypesOfLevel(level);
+    },
   });    
 
 

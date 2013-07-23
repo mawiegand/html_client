@@ -115,6 +115,14 @@ AWE.GS = (function(module) {
       return assignmentType;
     },
 
+    getSpecialAssignmentType: function(id) {
+      var assignmentType = this.get('special_assignment_types')[id];
+      if (assignmentType === undefined || !assignmentType) {
+        log('ERROR: requested non-existing special assignment type ' + assignmentType);
+      }
+      return assignmentType;
+    },
+
     getResourceType: function(id) {
 			var resourceType = this.get('resource_types')[id];
 			if (resourceType === undefined || !resourceType) {
@@ -219,6 +227,13 @@ AWE.GS = (function(module) {
 
     getAssignmentTypesOfLevel: function(level) {
       var assignmentTypes = this.get('assignment_types').filter(function(item, index, self) {
+        return item['level'] <= level;
+      });
+      return assignmentTypes;
+    },
+
+    getSpecialAssignmentTypesOfLevel: function(level) {
+      var assignmentTypes = this.get('special_assignment_types').filter(function(item, index, self) {
         return item['level'] <= level;
       });
       return assignmentTypes;
