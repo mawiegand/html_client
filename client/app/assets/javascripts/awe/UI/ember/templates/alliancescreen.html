@@ -30,14 +30,14 @@
     <h1>{{ alliance.name }} [{{ alliance.tag }}]</h1>
     <p> {{t alliance.founded }}: {{ creation }}</p>
 		<p> {{t alliance.leader }}: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="alliance.leader" displayAlliance=false}}</p>
-		<p>
+		<!-- p>
 			{{#if isNotAllianceMember}}
 			  <div class="simple-button" style="min-height: 10px;" {{action "sendAllianceApplication"}}>{{t alliance.sendApplication}}</div>
         {{#if applicationMessage}}
           <div class="red-color">{{applicationMessage}}</div>
         {{/if}}
 			{{/if}}
-    </p>
+    </p -->
   </div>
   {{#if alliance.invitation_code }}
     <h2>Einladungslink</h2>
