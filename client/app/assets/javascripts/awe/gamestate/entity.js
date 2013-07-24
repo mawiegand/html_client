@@ -338,7 +338,7 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
             }
             else {                                    //   B) process a single entity
               result = my.processUpdateResponse(data, updateType, requestServerTime || start);
-            };
+            }
             if (callback) {      
               var s = new Date();
               Ember.run.sync(); // sync the bindings now, before continuing with the execution (e.g. calling callbacks)

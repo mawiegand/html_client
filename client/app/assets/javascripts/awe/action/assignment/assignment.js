@@ -130,7 +130,7 @@ AWE.Action.Assignment = (function(module) {
     that.getRequestBody = function() {
       return {
         speedup_special_assignment: {
-          pecial_assignment_id:  my.specialAssignmentId,
+          special_assignment_id:  my.specialAssignmentId,
         }
       };
     };

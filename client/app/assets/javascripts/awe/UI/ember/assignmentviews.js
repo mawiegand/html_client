@@ -29,14 +29,12 @@ AWE.UI.Ember = function(module) {
     }.property('building', 'currentCharacter.assignment_level').cacheable(),
 
     assignments: null,
-    specialAssignment: null,
-
-    // property namens "specialassignments()" --> 
+    specialAssignmentBinding: 'currentCharacter.specialAssignment',
 
     init: function() {
       this._super();
       this.set('assignments', AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments'));
-      this.set('specialAssignment', AWE.GS.game.getPath('currentCharacter.specialAssignment'));
+//      this.set('specialAssignment', AWE.GS.game.getPath('currentCharacter.specialAssignment'));
       this.set('currentCharacter', AWE.GS.game.get('currentCharacter'));
     },
 
@@ -261,7 +259,7 @@ AWE.UI.Ember = function(module) {
 
     isActive: function() {
       return this.get('specialAssignment') && this.getPath('specialAssignment.ended_at') != null;
-    }.property('assignment.ended_at').cacheable(),
+    }.property('specialAssignment.ended_at').cacheable(),
 
     isHalved: function() {
       return this.get('specialAssignment') && this.getPath('specialAssignment.halved_at') != null;
@@ -275,7 +273,7 @@ AWE.UI.Ember = function(module) {
 
     progressBarWidth: function() {
       var currentInterval = AWE.GS.TimeManager.estimatedServerTime().getTime() - Date.parseISODate(this.getPath('specialAssignment.started_at')).getTime();
-      var jobInterval     = Date.parseISODate(this.getPath('assignment.ended_at')).getTime() - Date.parseISODate(this.getPath('specialAssignment.started_at')).getTime();
+      var jobInterval     = Date.parseISODate(this.getPath('specialAssignment.ended_at')).getTime() - Date.parseISODate(this.getPath('specialAssignment.started_at')).getTime();
       var progression = jobInterval != 0 ? currentInterval / jobInterval : -1;
       progression = progression < 0 ? 0 : (progression > 1 ? 1 : progression);
       return 'width: ' + Math.ceil(300 * progression) + 'px;';
@@ -373,8 +371,6 @@ AWE.UI.Ember = function(module) {
     costs: function() {
       var costsResult = [];
       var that = this;
-
-      //specialAssignment.resource_XXX_amount
       AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
         var amount = that.getPath('specialAssignment.'+item.symbolic_id+'_cost');
         if (amount && amount > 0) {
@@ -401,42 +397,38 @@ AWE.UI.Ember = function(module) {
         }
       });
       return depositsResult;
-    }.property('assignmentType').cacheable(),
+    }.property('specialAssignment').cacheable(),
 
 
     resourceRewards: function() {
-      var rewards = this.getPath('assignmentType.rewards.resource_rewards') || [];
-      var rewardResult = [];
-      if (rewards) {
-        rewards.forEach(function(item) {
-          var resource = AWE.GS.RulesManager.getRules().getResourceTypeWithSymbolicId(item.resource);
-          if (item.amount > 0) {
-            rewardResult.push(Ember.Object.create({
-              amount:       item.amount,
-              resourceType: resource,
-            }));
-          }
-        });
-      }
-      return rewardResult;
-    }.property('assignmentType').cacheable(),
+      var rewards = [];
+      var that = this;
+      AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
+        var amount = that.getPath('specialAssignment.'+item.symbolic_id+'_reward');
+        if (amount && amount > 0) {
+          rewards.push(Ember.Object.create({
+            amount:   amount,
+            resourceType: item,
+          }));
+        }
+      });
+      return rewards;
+    }.property('specialAssignment').cacheable(),
 
     unitRewards: function() {
-      var rewards = this.getPath('assignmentType.rewards.unit_rewards') || [];
-      var rewardResult = [];
-      if (rewards) {
-        rewards.forEach(function(item) {
-          var unitType = AWE.GS.RulesManager.getRules().getUnitTypeWithSymbolicId(item.unit);
-          if (item.amount > 0) {
-            rewardResult.push(Ember.Object.create({
-              amount:   item.amount,
-              unitType: unitType,
-            }));
-          }
-        });
-      }
-      return rewardResult;
-    }.property('assignmentType').cacheable(),
+      var rewards = [];
+      var that = this;
+      AWE.GS.RulesManager.getRules().unit_types.forEach(function(item) {
+        var amount = that.getPath('specialAssignment.'+item.db_field+'_reward');
+        if (amount && amount > 0) {
+          rewards.push(Ember.Object.create({
+            amount:   amount,
+            unitType: item,
+          }));
+        }
+      });
+      return rewards;
+    }.property('specialAssignment').cacheable(),
   });
 
   return module;

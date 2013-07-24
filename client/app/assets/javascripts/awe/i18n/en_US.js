@@ -761,7 +761,7 @@ AWE.I18n.en_US = function(module) {
         hurried: "hurried",
         finishing: "Finishing...",
         noneAvailable: "There are no assignments currently available.",
-        noneSpecialAvailable: "There are no special assignments currently available.",
+        noneSpecialAvailable: "There is no special assignment currently available.",
         cancelText: "Ok",
         error: {
           conflict: {

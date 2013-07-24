@@ -174,17 +174,23 @@ AWE.GS = function (module) {
 
     that.updateSpecialAssignmentOfCharacter = function (characterId, updateType, callback) {
       var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'characters/' + characterId + '/special_assignment';
-      my.updateEntity(url, 1, updateType, callback);  // update current special assignment
-
       return my.fetchEntitiesFromURL(
         url,
         my.runningUpdatesPerCharacter,
-        1, // get only one assignment
+        characterId,
         updateType,
         module.SpecialAssignmentAccess.lastUpdateForCharacter_id(characterId),
         function (result, status, xhr, timestamp) {   // wrap handler in order to set the lastUpdate timestamp
           if (status === AWE.Net.OK) {
             module.SpecialAssignmentAccess.accessHashForCharacter_id().setLastUpdateAtForValue(characterId, timestamp.add(-1).second());
+//            var assignments = module.SpecialAssignmentAccess.getHashableCollectionForCharacter_id(characterId);
+
+//            var resultHash = {};
+//
+//            resultHash[result.getId()] = result;
+//            log('---> in assignment update', resultHash, assignments, assignments.get('collection'), module.SpecialAssignmentAccess);
+//
+//            that.fetchMissingEntities(resultHash, assignments.get('collection'), that.updateSpecialAssignment); // careful: this breaks "this" inside updateArmy
           }
           if (callback) {
             callback(result, status, xhr, timestamp);
