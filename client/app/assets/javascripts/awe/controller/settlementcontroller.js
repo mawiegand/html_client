@@ -823,8 +823,6 @@ AWE.Controller = (function(module) {
 
     that.specialAssignmentStartPressed = function(assignment, callback) {
       try { //we need this to stop this function on errors
-        var assignmentType = AWE.GS.RulesManager.getRules().getSpecialAssignmentType(AWE.GS.CharacterManager.getCurrentCharacter().getPath('specialAssignment.type_id'));
-        var costs = assignmentType.costs || []; 
         var pool = AWE.GS.ResourcePoolManager.getResourcePool();
         AWE.GS.RulesManager.getRules().resource_types.forEach(function(item) {
           var amount = assignment.get(item.symbolic_id+'_cost');
