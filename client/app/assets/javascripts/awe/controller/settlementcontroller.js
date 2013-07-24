@@ -1253,7 +1253,7 @@ AWE.Controller = (function(module) {
           }
         }
       }
-      else if(lastSpecialAssignmentUpdate.add({seconds: 10}) < AWE.GS.TimeManager.estimatedServerTime()) {
+      else if(lastSpecialAssignmentUpdate.add({seconds: 6}) < AWE.GS.TimeManager.estimatedServerTime()) {
         lastSpecialAssignmentUpdate = AWE.GS.TimeManager.estimatedServerTime();
         that.updateSpecialAssignmentsFromServer();
       }
