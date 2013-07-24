@@ -63,6 +63,7 @@ AWE.UI.Ember = (function(module) {
         rowsSize: 10,
         colsSize: 82,
         controller: this,
+        classNames: ['alliance-description'],
         
         okPressed: function() {
           var controller = this.get('controller');

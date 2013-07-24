@@ -258,7 +258,8 @@ AWE.UI.Ember = (function(module) {
         rowsSize: 10,
         colsSize: 82,
         controller: this,
-        
+        classNames: ['character-description'],
+
         okPressed: function() {
           var controller = this.get('controller');
           if (controller) {
