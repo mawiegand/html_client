@@ -119,6 +119,17 @@ AWE.UI.Ember = (function(module) {
     cancelPressed: function() { alert ('Action not connected: okPressed.'); },
   });
 
+  module.TextAreaInputDialog = module.Dialog.extend({
+    templateName: 'textarea-input-dialog',
+    heading: 'set a heading',
+		placeholderText: '',
+    input: '',
+    rowsSize: null,
+		colsSize: null,
+    okPressed: function() { alert ('Action not connected: okPressed.'); },
+    cancelPressed: function() { alert ('Action not connected: okPressed.'); },
+  });
+
   /**
    * @class
    * @extends AWE.UI.Ember.Dialog

@@ -618,14 +618,12 @@ AWE.GS = (function(module) {
     },
 
     unlockedAssignments: function() {
+
       var level   = level || this.get('level') || 1;
-      var formula = null;
-      if(this.calculateAssignments()) {
-        formula = this.getPath('buildingType.abilities.assignment_level');
-      } 
-      
+      var formula = this.getPath('buildingType.abilities.assignment_level');
+
       if(formula) {
-        if((AWE.GS.Util.evalFormula(AWE.GS.Util.parseFormula(formula), level)) > 0) return true;
+        return AWE.GS.Util.parseAndEval(formula, level);
       }
 
       return false;
@@ -700,6 +698,11 @@ AWE.GS = (function(module) {
     currentAssignmentTypes: function() {
       var level = (AWE.GS.game.getPath('currentCharacter.assignment_level') || 0);
       return AWE.GS.RulesManager.getRules().getAssignmentTypesOfLevel(level);
+    },
+
+    currentSpecialAssignmentTypes: function() {
+      var level = (AWE.GS.game.getPath('currentCharacter.assignment_level') || 0);
+      return AWE.GS.RulesManager.getRules().getSpecialAssignmentTypesOfLevel(level);
     },
   });    
 

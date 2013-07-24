@@ -37,6 +37,7 @@ AWE.Map = (function(module) {
     var _settlementLevel = spec.settlement_level || 0;
     var _settlementScore = spec.settlement_score || 0;
     var _invitationCode = spec.invitation_code || 0;
+    var _movingPassword = spec.moving_password || 0;
         
     var _node = null;
     
@@ -121,6 +122,9 @@ AWE.Map = (function(module) {
     /** returns the invitation code of the region. */
     that.invitationCode = function() { return _invitationCode; }
     
+    /** returns the invitation code of the region. */
+    that.movingPassword = function() { return _movingPassword; }
+    
     /** returns the type of the terrain of that region. Later terrain types should
      * be defined in the game rules. */
     that.terrainId = function() { return _terrain_id; }
@@ -192,6 +196,7 @@ AWE.Map = (function(module) {
       _fortress_level = region.fortressLevel() || 0;    
       _fortress_id = region.fortressLocationId() || 0;    
       _invitationCode = region.invitationCode() || 0;    
+      _movingPassword = region.movingPassword() || 0;
       
       module.Manager.addRegion(this); // just to be sure it's under control of the manager
       

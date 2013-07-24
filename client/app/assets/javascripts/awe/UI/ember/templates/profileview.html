@@ -41,7 +41,22 @@
     <br style="clear:both">
   </p>
 
-  <hr/>
+	<hr/>
+
+    <!-- div class="character-description clearfix">
+      <h1>{{t profile.customization.description }}</h1>
+      {{#if message}}
+        <div class="red-color">{{message}}</div>
+      {{/if}}
+      {{#if character.description}}
+			<p>{{{ showDescription }}}</p>
+      {{else}}
+        <p>{{t profile.customization.missingDescription}}</p>
+      {{/if}}
+			<div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "changeDescriptionPressed"}}>{{t profile.customization.changeDescription}}</div>
+		</div>
+
+  <hr/ -->
 
   {{#if firstTwoNameChange}}
     <h2>{{t profile.customization.chooseName}}</h2>
@@ -222,3 +237,26 @@
   </div>
 </script>
 
+<script type="text/x-handlebars" data-template-name="moving-view">
+  <p>{{t profile.moving.info1}}</p>
+  <p>{{t profile.moving.info2}}</p>
+  
+  <hr/>
+  
+  <h2>{{t profile.moving.specificMovingCaption}}</h2>
+  <p><b>{{t profile.moving.presentRegion}}:</b> {{homeRegionName}}</p>
+  <p>
+    <b>{{t profile.moving.enterSpecificRegion}}</b><br>
+    {{t profile.moving.specififcRegionAdvice}}
+  </p>
+  <p class="red-color">{{message}}</p>
+  <p>
+    {{view Ember.TextField placeholder="Regionsname" valueBinding="newRegionName" }}
+    
+    {{#if moving }}
+      &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+    {{else}}
+      <span class="simple-button" {{action "moveToRegionClicked"}}>{{t profile.moving.moveButton}}</span>
+    {{/if}}
+  </p>
+</script>

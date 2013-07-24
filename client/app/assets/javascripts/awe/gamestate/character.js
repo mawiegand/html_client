@@ -276,6 +276,34 @@ AWE.GS = (function(module) {
       return allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
     }.property('alliance_id').cacheable(),
 
+    specialAssignment: function() {
+      var latestDate = AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds();
+      var specialAssignments = this.get('enumerableSpecialAssignments');
+
+      if (specialAssignments == null) {
+        return null;
+      }
+
+      var latestAssignment = null;
+      specialAssignments.forEach(function(assignment) {
+        if (Date.parseISODate(assignment.get('displayed_until')) > latestDate) {
+          latestDate = Date.parseISODate(assignment.get('displayed_until'));
+          latestAssignment = assignment;
+        }
+      });
+
+      return latestAssignment;
+    }.property('id', 'hashableSpecialAssignments.changedAt', 'enumerableSpecialAssignments').cacheable(),
+
+    hashableSpecialAssignments: function() {
+      var id = this.get('id');
+      return id ? AWE.GS.SpecialAssignmentAccess.getHashableCollectionForCharacter_id(id) : null;
+    }.property('id').cacheable(),
+
+    enumerableSpecialAssignments: function() {
+      return this.getPath('hashableSpecialAssignments.collection');
+    }.property('id', 'hashableSpecialAssignments.changedAt').cacheable(),
+
     hashableStandardAssignments: function() {
       var id = this.get('id');
       return id ? AWE.GS.StandardAssignmentAccess.getHashableCollectionForCharacter_id(id) : null;

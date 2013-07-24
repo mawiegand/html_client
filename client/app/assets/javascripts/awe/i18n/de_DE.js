@@ -413,6 +413,9 @@ AWE.I18n.de_DE = function(module) {
       founded: 'Gründung',
       leader: 'Anführer',
       description: 'Beschreibung',
+      changeDescriptionDialogCaption: 'Gib deine neue Allianzbeschreibung ein.',
+      changeDescription: 'Ändere Beschreibung',
+			missingDescription: 'Hier könnte eure Allianzbeschreibung stehen.',
       management: 'Geheime Allianzlosung',
       reservation: 'Reservierung für die nächste Runde',
       reservationDescription: 'Als Allianzanführer kannst Du Deine Allianz für die nächste Runde reservieren. Um die Reservierung in der nächsten ' +
@@ -427,6 +430,8 @@ AWE.I18n.de_DE = function(module) {
       changePassword: 'neues Passwort speichern',
       saveReservation: 'Reservierung speichern',
       kickMember: 'kick',
+      report: 'Melden',
+      sendApplication: 'Bewerbung einreichen',
       
       progress: {
         header: 'Siegesfortschritt',
@@ -461,6 +466,8 @@ AWE.I18n.de_DE = function(module) {
         tagTaken: "Das Kürzel wird bereits von einer anderen Allianz benutzt.",
         noPermissionCreate: "Du hast nicht die Befugnis eine Allianz zu gründen.",
         unknownCreate: "Die Allianz zu gründen ist aus unbekanntem Grund fehlgeschlagen.",
+        changeDescriptionForbidden: "Nur Allianzanführer können die Beschreibung ändern.",
+        changeDescriptionError: "Die Allianz Beschreibung konnte aus unbekanntem Grund nicht geändert werden.",
       },
       success: {
         passwordSet: "Das Passwort wurde gespeichert.",
@@ -477,8 +484,24 @@ AWE.I18n.de_DE = function(module) {
         heading: "Allianz verlassen",
         message: "Möchtest Du Deine Allianz wirklich verlassen?",
       },
+      confirmReport: {
+        heading: "Melden bestätigen",
+        message: "Willst Du wirklich die Allianz Beschreibung melden?",
+        cancel: "Nein, doch nicht",
+        ok: "Ja, wirklich.",
+        success: "Meldung war erfolgreich",
+        error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
+      },
+      confirmApplication: {
+        heading: "Bewerbung bestätigen",
+        message: "Willst Du Dich wirklich bei dieser Allianz bewerben?",
+        cancel: "Nein, doch nicht",
+        ok: "Ja, wirklich.",
+        success: "Bewerbung war erfolgreich",
+        error: "Die Bewerbung wurde aus unbekanntem Grund nicht ausgeführt.",
+      },
     },
-    
+
     welcome: {
       heading: 'Willkomen bei Wack-a-Doo!',
       headingPlan: 'Der Plan',
@@ -743,6 +766,7 @@ AWE.I18n.de_DE = function(module) {
 
       assignment: {
         assignments: "Aufträge",
+        specialAssignments: "Spezialaufträge",
         duration: "Dauer",
         unitDeposits: "Benötigte Einheiten",
         costs: "Kosten",
@@ -752,6 +776,7 @@ AWE.I18n.de_DE = function(module) {
         hurried: "beschleunigt",
         finishing: "Beenden...",
         noneAvailable: "Zur Zeit zind keine Aufträge verfügbar.",
+        noneSpecialAvailable: "Zur Zeit ist kein Spezialauftrag verfügbar.",
         cancelText: "Ok",
         error: {
           conflict: {
@@ -804,7 +829,8 @@ AWE.I18n.de_DE = function(module) {
         resourceProductionInfo2: "nicht",
         resourceProductionInfo3: "besteuert.",
         setTaxRate: "Gib den neuen Steuersatz ein (5-15%).",
-        artifact: "Artefakt"
+        artifact: "Artefakt",
+        movingPassword: "Umzugspasswort",
       },
       error: {
         serverDidNotAcceptTaxRate: "Der Server hat die Änderung des Steuersatzes nicht akzeptiert.",
@@ -831,6 +857,7 @@ AWE.I18n.de_DE = function(module) {
       progressTab: "Fortschritt",
       customizationTab: "Anpassung",
       optionsTab: "Einstellungen",
+      movingTab: "Umziehen",
 
       rank: {
         start: "Beginn",
@@ -866,7 +893,7 @@ AWE.I18n.de_DE = function(module) {
         lagUntolerable1: "Bitte stelle Deine Rechneruhr auf die korrekte Uhrzeit",
         lagUntolerable2: "oder schalte den automatischen Abgleich mit der Internetzeit an, sofern Dein Betriebssystem diese Möglichkeit bietet. Die Reaktivität des Spiels und Deine Nutzungserfahrung würden dadurch deutlich verbessert.",
       },
-
+      
       customization: {
         changeAvatar: "Deinen Avatar ändern",
         presentAvatar: "Aktueller Avatar",
@@ -905,6 +932,21 @@ AWE.I18n.de_DE = function(module) {
         changeSameIPButton: "Liste ändern",
         changeSameIIPChanged: "Die Liste wurde gespeichert.",
         
+        description: 'Beschreibung',
+        changeDescriptionDialogCaption: 'Gib deine neue Characterbeschreibung ein.',
+        changeDescription: 'Ändere Beschreibung',
+        missingDescription: 'Hier könnte Deine Characterbeschreibung stehen.',
+        report: 'Melden',
+
+        confirmReport: {
+          heading: "Melden bestätigen",
+          message: "Willst Du wirklich die Character Beschreibung melden?",
+          cancel: "Nein, doch nicht",
+          ok: "Ja, wirklich.",
+          success: "Meldung war erfolgreich",
+          error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
+        },
+        
         errors: {
           nameTooShort: "Viel zu kurz. Der Name muss mindestens 3 Zeichen enthalten.",
           nameTooLong: "Viel zu lang. Der Name darf höchstens 12 Zeichen enthalten.",
@@ -919,6 +961,8 @@ AWE.I18n.de_DE = function(module) {
           changePasswordInvalid: "Das Passwort entspricht nicht den Vorraussetzungen. Bitte wähle ein passendes Passwort.",
           changePasswordUnknown: "Dein Passwort konnte aus unbekannten Gründen nicht geändert werden. Bitte versuche es später noch einmal.",
           changePasswordNoMatch: "Die Passwörter stimmen nicht überein. Bitte versuche es noch einmal.",
+
+          changeDescriptionError: "Die Character Beschreibung konnte aus unbekanntem Grund nicht geändert werden.",
           
           changeSameIIUnknown: "Die Liste konnte aus unbekannten Gründen nicht geändert werden. Bitte versuche es später noch einmal.",
           changeFailed: {
@@ -926,6 +970,27 @@ AWE.I18n.de_DE = function(module) {
             text: 'Aus irgendeinem Grund konnte dein neuer Avatar nicht gespeichert werden.',
           },
         },
+      },
+      
+      moving: {
+        info1: "Hier kannst Du die Position Deiner Hauptsiedlung auf der Karte verändern. Es gibt 2 Arten des Umziehens, und Du kannst jede davon nur einmal benutzen.",
+        info2: "Du kannst nicht in Regionen ziehen, um die gerade gekämpft wird, oder die vor kurzem erobert wurden.",
+        specificMovingCaption: "Gezieltes Umziehen",
+        presentRegion: "Aktuelle Region",
+        enterSpecificRegion: "Angabe des Regionsnamen",
+        specififcRegionAdvice: "Du kannst den Namen der Region in die Du ziehen möchtest angeben. Gehört die Region einem anderen Spieler, der nicht Teil deiner Allianz ist, musst du zusätzlich noch ein Passwort nennen",
+        moveButton: "Umziehen",
+        movingPasswordCaption: "Gib das Umzugspasswort ein.",
+				confirmation: {
+					caption: "Umzug bestätigen",
+					message1: "Willst Du wirklich in die Region ",
+					message2: " umziehen?",
+					cancel: "Nein, doch nicht",
+					ok: "Umziehen!",
+				},
+				movingErrorHeading: "Umzugsfehler",
+				movingErrorWrongPassword: "Das eingegebene Passwort war nicht korrekt! Versuch es noch einmal!",
+        movingError: "Dein Umzug konnte aus unbekannten Gründen nicht vollzogen werden. Bitte versuch es später noch einmal.",
       },
     },
     

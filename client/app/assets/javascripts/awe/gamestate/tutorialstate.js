@@ -291,22 +291,31 @@ AWE.GS = (function(module) {
           // log('---> alliance_test ok');
         }
         if (quest.reward_tests.standard_assignment_test) {
-          log('---> standard_assignment_test', quest.reward_tests.standard_assignment_test);
+//          log('---> standard_assignment_test', quest.reward_tests.standard_assignment_test);
 
           if (!self.checkStandardAssignment(quest.reward_tests.standard_assignment_test)) {
-            log('---> standard_assignment_test failed');
+//            log('---> standard_assignment_test failed');
             return false;
           }
-          log('---> standard_assignment_test ok');
+//          log('---> standard_assignment_test ok');
         }
         if (quest.reward_tests.kill_test) {
           // log('---> kill_test', quest.reward_tests.kill_test);
-        
+
           if (!self.checkKills(quest.reward_tests.kill_test)) {
             // log('---> kill_test failed');
-            return false;              
+            return false;
           }
           // log('---> kill_test ok');
+        }
+        if (quest.reward_tests.battle_test) {
+          // log('---> battle_test', quest.reward_tests.battle_test);
+
+          if (!self.checkBattle(quest.reward_tests.battle_test)) {
+            // log('---> battle_test failed');
+            return false;
+          }
+          // log('---> battle_test ok');
         }
         if (quest.reward_tests.army_experience_test) {
           // log('---> alliance_test', quest.reward_tests.alliance_test);
@@ -590,12 +599,12 @@ AWE.GS = (function(module) {
     },
 
     checkStandardAssignment: function() {
-      log('---> checkStandardAssignment');
+//      log('---> checkStandardAssignment');
       var assignments = AWE.GS.game.getPath('currentCharacter.enumerableStandardAssignments');
 
       if (assignments != null) {
         for (var id in assignments) {
-          if (assignments.hasOwnProperty(id) && assignments[id].get('isActive')) {
+          if (assignments.hasOwnProperty(id) && assignments[id] && assignments[id].get('isActive')) {
             return true;
           }
         }
@@ -647,6 +656,20 @@ AWE.GS = (function(module) {
       // log('---> checkKills with min_units', minUnits, AWE.GS.game.getPath('currentCharacter.kills'));
         
       return AWE.GS.game.getPath('currentCharacter.kills') != null && AWE.GS.game.getPath('currentCharacter.kills') >= minUnits;
+    },
+
+    checkBattle: function() {
+      // log('---> checkBattle');
+      var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
+
+      if (armies != null) {
+        for (var id in armies) {
+          if (armies.hasOwnProperty(id) && armies[id].get('mode') == AWE.Config.ARMY_MODE_FIGHTING) {
+            return true;
+          }
+        }
+      }
+      return false;
     },
 
     checkArmyExperience: function(armyExperienceTest) {
