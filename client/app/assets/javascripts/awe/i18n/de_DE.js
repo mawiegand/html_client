@@ -467,7 +467,8 @@ AWE.I18n.de_DE = function(module) {
         noPermissionCreate: "Du hast nicht die Befugnis eine Allianz zu gründen.",
         unknownCreate: "Die Allianz zu gründen ist aus unbekanntem Grund fehlgeschlagen.",
         changeDescriptionForbidden: "Nur Allianzanführer können die Beschreibung ändern.",
-        changeDescriptionError: "Die Allianz Beschreibung konnte aus unbekanntem Grund nicht geändert werden.",
+        changeDescriptionConflict: "Die Allianz Beschreibung konnte nicht geändert werden, weil sie zu lang ist.",
+        changeDescriptionError: "Die Allianzbeschreibung konnte aus unbekanntem Grund nicht geändert werden.",
       },
       success: {
         passwordSet: "Das Passwort wurde gespeichert.",

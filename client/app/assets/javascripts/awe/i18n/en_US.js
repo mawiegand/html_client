@@ -457,8 +457,9 @@ AWE.I18n.en_US = function(module) {
         tagTaken:"The tag you've chosen is already taken by another alliance.",
         noPermissionCreate:"You're not allowed to create an alliance.",
         unknownCreate:"For some reason, creating the alliance did fail.",
-        changeDescriptionForbidden: "Nur Allianzanführer können die Beschreibung ändern.",
-        changeDescriptionError: "Die Allianz Beschreibung konnte aus unbekanntem Grund nicht geändert werden.",
+        changeDescriptionForbidden: "Only alliance leaders can change the description.",
+        changeDescriptionConflict: "Could not change the description. It's too long.",
+        changeDescriptionError: "Could not change the description.",
       },
       success: {
         passwordSet: "The password has been saved.",

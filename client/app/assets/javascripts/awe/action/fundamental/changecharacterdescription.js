@@ -37,9 +37,9 @@ AWE.Action.Fundamental = (function(module) {
     that.getHTTPMethod = function() { return 'POST'; }
     
     that.postProcess = function(statusCode, xhr) {
-      if (statusCode == 200) {
+//      if (statusCode == 201) {
         AWE.GS.CharacterManager.updateCurrentCharacter();
-      }
+//      }
     }
   
     return that;

@@ -257,6 +257,7 @@ AWE.UI.Ember = (function(module) {
         input: this.getPath('character.description'),
         rowsSize: 10,
         colsSize: 82,
+        inputMaxLength: AWE.Config.DESCRIPTION_MAX_LENGTH,
         controller: this,
         classNames: ['character-description'],
 

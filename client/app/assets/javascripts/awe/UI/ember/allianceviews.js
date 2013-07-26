@@ -63,6 +63,8 @@ AWE.UI.Ember = (function(module) {
         rowsSize: 10,
         colsSize: 82,
         controller: this,
+        inputMaxLength: AWE.Config.DESCRIPTION_MAX_LENGTH,
+
         classNames: ['alliance-description'],
         
         okPressed: function() {
@@ -91,6 +93,9 @@ AWE.UI.Ember = (function(module) {
         }
         else if (status === AWE.Net.FORBIDDEN) {
           self.set('message', AWE.I18n.lookupTranslation('alliance.error.changeDescriptionForbidden'));
+        }
+        else if (status === AWE.Net.CONFLICT) {
+          self.set('message', AWE.I18n.lookupTranslation('alliance.error.changeDescriptionConflict'));
         }
         else {
           self.set('message', AWE.I18n.lookupTranslation('alliance.error.changeDescriptionError'));
