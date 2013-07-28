@@ -1,9 +1,13 @@
 Client::Application.routes.draw do
 
-  scope "(:locale)", :locale => /en|de/ do
-  
-    match :index, :to => 'client#show'
 
+
+  scope "/client" do
+    resource :canvas,  :only => [ :show ]
+    scope "(:locale)", :locale => /en|de/ do
+      match :index, :to => 'client#show'
+      root :to => 'client#show'
+    end
   end
 
   root :to => 'client#show'
