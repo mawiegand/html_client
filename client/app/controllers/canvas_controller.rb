@@ -16,7 +16,11 @@ class CanvasController < ApplicationController
     logger.debug "Facebook Data: #{data}."
     
     @facebook_user = data["user_id"]    unless data.nil? || data["user_id"].blank?
-
+  end
+  
+  
+  def create
+    render action: "show"
   end
   
   protected

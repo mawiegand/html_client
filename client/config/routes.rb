@@ -3,7 +3,7 @@ Client::Application.routes.draw do
 
 
   scope "/client" do
-    resource :canvas,  :only => [ :show ]
+    resource :canvas,  :only => [ :show, :create ]
     scope "(:locale)", :locale => /en|de/ do
       match :index, :to => 'client#show'
       root :to => 'client#show'
