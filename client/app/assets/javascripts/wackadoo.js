@@ -670,6 +670,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       else {
         accessToken = args.accessToken ; 
       }                            // || AWE.Config.DEV_ACCESS_TOKEN || null;
+      
+      log('access', accessToken);
             
       var expiration  = parseInt(args.expiration || "3600");           // asume one hour validity as default
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;
