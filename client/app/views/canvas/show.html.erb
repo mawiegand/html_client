@@ -8,5 +8,5 @@
 <% if @facebook_user %>
   Hello User <%= @facebook_user %>
 <% else %>
-<script> top.location.href='<%= @auth_url %>'</script>");</script>
+<script> top.location.href='<%= raw @auth_url %>'</script>");</script>
 <% end %>
