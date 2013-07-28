@@ -663,7 +663,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         args = args || {};
       }
       else if (!args || !args.accessToken) {
-        alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
+        // alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
         document.location.href = AWE.Config.PORTAL_ROOT;
         return ;
       }
