@@ -12,8 +12,13 @@ class CanvasController < ApplicationController
     logger.debug "Signed Request: #{ @signed_request }"
     
     data = decode_facebook_hash(@signed_request)
+
+    if !params[:code].blank?
+      data = ActiveSupport::JSON.decode(Base64.decode64(params[:code]))
+      logger.debug "Code: #{ code.inspect }"
+    end
     
-    logger.debug "Facebook Data: #{data}."
+    logger.debug "Facebook Data: #{data}."    
     
     @facebook_user = data["user_id"]    unless data.nil? || data["user_id"].blank?
   end
