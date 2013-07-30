@@ -290,6 +290,15 @@ AWE.GS = (function(module) {
           }
           // log('---> alliance_test ok');
         }
+        if (quest.reward_tests.alliance_members_test) {
+          // log('---> alliance_test', quest.reward_tests.alliance_test);
+
+          if (!self.checkAllianceMembers(quest.reward_tests.alliance_members_test)) {
+            // log('---> alliance_test failed');
+            return false;
+          }
+          // log('---> alliance_test ok');
+        }
         if (quest.reward_tests.standard_assignment_test) {
 //          log('---> standard_assignment_test', quest.reward_tests.standard_assignment_test);
 
@@ -596,6 +605,24 @@ AWE.GS = (function(module) {
     checkAlliance: function() {
       // log('---> checkAlliance');
       return AWE.GS.game.getPath('currentCharacter.alliance_id') != null;
+    },
+
+    checkAllianceMembers: function(allianceMembersTest) {
+      log('---> checkAllianceMembers', allianceMembersTest);
+
+      if (allianceMembersTest.min_count == null) {
+        log('ERROR in AWE.GS.QuestState.checkAllianceMembers: allianceMembersTest.min_count missing in quest id ' + this.get('quest_id'));
+        return false;
+      }
+
+      var alliance = AWE.GS.game.getPath('currentCharacter.alliance');
+
+      if (alliance) {
+        return alliance.get('membersCount') >= allianceMembersTest.min_count;
+      }
+      else {
+        return false;
+      }
     },
 
     checkStandardAssignment: function() {
