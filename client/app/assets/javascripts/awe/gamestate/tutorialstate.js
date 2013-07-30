@@ -615,10 +615,10 @@ AWE.GS = (function(module) {
         return false;
       }
 
-      var alliance = AWE.GS.game.getPath('currentCharacter.alliance');
+      var allianceId = AWE.GS.game.getPath('currentCharacter.alliance_id');
 
-      if (alliance) {
-        return alliance.get('membersCount') >= allianceMembersTest.min_count;
+      if (allianceId) {
+        return AWE.GS.AllianceManager.getAlliance(allianceId).get('membersCount') >= allianceMembersTest.min_count;
       }
       else {
         return false;
