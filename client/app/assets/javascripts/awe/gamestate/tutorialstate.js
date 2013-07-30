@@ -619,7 +619,7 @@ AWE.GS = (function(module) {
       if (allianceId) {
         var alliance = AWE.GS.AllianceManager.getAlliance(allianceId);
         if (alliance) {
-          return alliance.get('membersCount') >= allianceMembersTest.min_count;
+          return alliance.get('members_count') >= allianceMembersTest.min_count;
         }
       }
 
