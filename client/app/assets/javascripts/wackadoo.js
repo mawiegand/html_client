@@ -644,21 +644,35 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       
       this._super();
       
+      var args = null;
       try {
-        var args = JSON.parse(window.name ) //|| "{}")
-//        log('window.name, parsed window.name', window.name, args)
+        args = JSON.parse(window.name ) //|| "{}")
+//      log('window.name, parsed window.name', window.name, args)
       }
       catch (e) {
       }
       this.set('startupArguments', window.name);
       window.name = "";                                 // unset variables
+    
       
-      if (!args || !args.accessToken) {
+      var useDevToken = window.facebookCheat && window.facebookCheat === true;
+      var accessToken = null;
+      
+      if (useDevToken) {
+        accessToken = AWE.Config.DEV_ACCESS_TOKEN;
+        args = args || {};
+      }
+      else if (!args || !args.accessToken) {
         // alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
         document.location.href = AWE.Config.PORTAL_ROOT;
         return ;
       }
-      var accessToken = args.accessToken ;                             // || AWE.Config.DEV_ACCESS_TOKEN || null;
+      else {
+        accessToken = args.accessToken ; 
+      }                            // || AWE.Config.DEV_ACCESS_TOKEN || null;
+      
+      log('access', accessToken);
+            
       var expiration  = parseInt(args.expiration || "3600");           // asume one hour validity as default
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;
       AWE.Settings.lang = args.locale ? args.locale.substr(0, 2) : AWE.Config.DEFAULT_LANG;
@@ -669,12 +683,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.allianceInvitation = args.allianceInvitation;
       
       log('SETTINGS', AWE.Settings);
-
+      log('ARGS', args);
+      
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
         expiration: (new Date()).add(expiration-120).seconds(),
       });      
-      
+            
       AWE.Net.init();                                                  // initialize the network stack
       
       if (!AWE.Config.BROWSER_CHECK_ENABLED || AWE.Util.Browser.checkRequirements()) {
