@@ -87,7 +87,10 @@
 
       <b>{{local assignmentType.name}}</b>
     </p>
-    <p>{{local assignmentType.description}}</p>
+    <div class="clearfix">
+      <div {{bindAttr class=":advisor assignmentType.advisor"}}></div>
+      <p>{{local assignmentType.description}}</p>
+    </div>
     <p>
       {{#if isActive }}
         <div class="float-right duration assignment-progress-bar-border">
@@ -208,7 +211,10 @@
 
       <b>{{local assignmentType.name}}</b>
     </p>
-    <p>{{local assignmentType.description}}</p>
+    <div class="clearfix">
+      <div {{bindAttr class=":advisor assignmentType.advisor"}}></div>
+      <p>{{local assignmentType.description}}</p>
+    </div>
     <p>
       {{#if isActive }}
         <div class="float-right duration assignment-progress-bar-border">
