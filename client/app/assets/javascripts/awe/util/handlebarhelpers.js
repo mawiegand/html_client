@@ -129,7 +129,7 @@ Ember.registerBoundHelper("localizedList", function(list) {
 /** formats the specified number to the given number of significant places. 
  * @name Handlebars.Helper.formatNumber
  */
-Ember.registerBoundHelper("formatNumber", function(number, options) {
+Ember.registerBoundHelper("formatNumber", function(number) {
   log('-----> 1 number, options', number, options);
   var maxPlaces = options.maxPlaces || 0;
   log('-----> 2 maxPlaces', maxPlaces);
