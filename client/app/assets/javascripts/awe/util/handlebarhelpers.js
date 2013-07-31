@@ -146,7 +146,7 @@ Ember.registerBoundHelper("formatNumber", function(number, options) {
 
 Ember.registerBoundHelper("formatNumber2", function(number) {
 
-  return 2;
+  return "2";
 
   var options = {};
   options.maxPlaces = 2;
