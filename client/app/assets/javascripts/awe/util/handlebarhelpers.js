@@ -131,7 +131,7 @@ Ember.registerBoundHelper("localizedList", function(list) {
  */
 Ember.registerBoundHelper("formatNumber", function(number, options) {
   var maxPlaces = options.maxPlaces || 0;
-  if (number === undefined || number === null) {
+  if (typeof number === "undefined" || number === null) {
     return "" ;
   }
   var fac = Math.pow(10, maxPlaces);
@@ -140,7 +140,7 @@ Ember.registerBoundHelper("formatNumber", function(number, options) {
 });
 
 Ember.registerBoundHelper("formatNumberFloor", function(number, options) {
-  if (number === undefined || number === null) {
+  if (typeof number === "undefined" || number === null) {
     return "" ;
   }
   return Math.floor(number);
@@ -148,7 +148,7 @@ Ember.registerBoundHelper("formatNumberFloor", function(number, options) {
 
 Ember.registerBoundHelper("formatAsPercent", function(number, options) {
   var maxPlaces = options.maxPlaces || 0;
-  if (number === undefined || number === null) {
+  if (typeof number === "undefined" || number === null) {
     return "" ;
   }
   var fac = Math.pow(10, maxPlaces);
@@ -175,7 +175,7 @@ Ember.registerBoundHelper("formatAsPercent", function(number, options) {
  * @name Handlebars.Helper.formatDuration
  */
 Ember.registerBoundHelper("formatDuration", function(seconds) {
-  if (seconds === undefined || seconds === null) {
+  if (typeof seconds === "undefined" || seconds === null) {
     return "" ;
   }
   return AWE.Util.localizedDurationFromSeconds(seconds); // TODO: use locale!
@@ -214,7 +214,7 @@ Ember.registerBoundHelper("formatPercentage", function(percentage) {
  * @name Handlebars.Helper.constructionSpeedupCost
  */
 Ember.registerBoundHelper("constructionSpeedupCost", function(seconds) {
-  if (seconds === undefined || seconds === null) {
+  if (typeof seconds === "undefined" || seconds === null) {
     return "" ;
   }
   var costs = AWE.Util.Rules.lookupConstructionSpeedupCost(seconds);
@@ -227,7 +227,7 @@ Ember.registerBoundHelper("constructionSpeedupCost", function(seconds) {
  * @name Handlebars.Helper.trainingSpeedupCost
  */
 Ember.registerBoundHelper("trainingSpeedupCost", function(seconds) {
-  if (seconds === undefined || seconds === null) {
+  if (typeof seconds === "undefined" || seconds === null) {
     return "" ;
   }
   var costs = AWE.Util.Rules.lookupTrainingSpeedupCost(seconds);
@@ -240,7 +240,7 @@ Ember.registerBoundHelper("trainingSpeedupCost", function(seconds) {
  * @name Handlebars.Helper.trainingSpeedupCost
  */
 Ember.registerBoundHelper("artifactInitiationSpeedupCost", function(seconds) {
-  if (seconds === undefined || seconds === null) {
+  if (typeof seconds === "undefined" || seconds === null) {
     return "" ;
   }
   var costs = AWE.Util.Rules.lookupArtifactInitiationSpeedupCost(seconds);
