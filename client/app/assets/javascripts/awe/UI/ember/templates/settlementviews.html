@@ -56,7 +56,7 @@
     
     <span class="help-icon" title="{{t settlement.info.commandPointsHelp}}">&nbsp;</span></p>
 
-    <p><b>{{t settlement.info.taxRate}}:</b> {{formatNumber settlement.taxPercentage}}%
+    <p><b>{{t settlement.info.taxRate}}:</b>formatNumber {{ settlement.taxPercentage}}%
       {{#if settlement.owns_region }}
         {{#if changeTaxPossible }}
           <a href="#" {{action "changeTaxPressed"}}>{{t settlement.info.change}}</a><span class="help-icon" title="{{t settlement.info.taxRateChangeInfo}}">&nbsp;</span>
