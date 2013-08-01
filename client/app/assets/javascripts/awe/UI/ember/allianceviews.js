@@ -240,7 +240,20 @@ AWE.UI.Ember = (function(module) {
     }.property('alliance.auto_join_disabled'),
 
     changeStatePressed: function() {
-      startAction();
+      var self = this;
+      var action = AWE.Action.Fundamental.createChangeAlliancePasswordAction(alliance, password);
+      this.startAction();
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        if (statusCode !== 200) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.autoJoinFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.autoJoin.FailedText'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+          self.destroy();
+        }
+        self.endAction();
+      });       
     },
   });
 
