@@ -416,6 +416,10 @@ AWE.I18n.de_DE = function(module) {
       changeDescriptionDialogCaption: 'Gib deine neue Allianzbeschreibung ein.',
       changeDescription: 'Ändere Beschreibung',
 			missingDescription: 'Hier könnte eure Allianzbeschreibung stehen.',
+      autoJoin: "Automatisch beitreten",
+      autoJoinDescription: "Automatisch beitreten",
+      autoJoinActivated: "Aktiviert",
+      autoJoinDeactivated: "Deaktiviert",
       management: 'Geheime Allianzlosung',
       reservation: 'Reservierung für die nächste Runde',
       reservationDescription: 'Als Allianzanführer kannst Du Deine Allianz für die nächste Runde reservieren. Um die Reservierung in der nächsten ' +

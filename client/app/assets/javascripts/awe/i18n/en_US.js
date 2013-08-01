@@ -407,6 +407,10 @@ AWE.I18n.en_US = function(module) {
       changeDescriptionDialogCaption: 'Gib deine neue Allianzbeschreibung ein.',
       changeDescription: 'Ändere Beschreibung',
       missingDescription: 'Hier könnte eure Allianzbeschreibung stehen.',
+      autoJoin: "Auto join",
+      autoJoinDescription: "Automatically join",
+      autoJoinActivated: "Activated",
+      autoJoinDeactivated: "Deactivated",
       management:"Secret alliance slogan",
       reservation: 'Reservation for next round',
       reservationDescription: 'As leader of the alliance can you reserve your alliance for the next round. To redeem the reservation in the next ' +
