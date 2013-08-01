@@ -213,6 +213,37 @@ AWE.UI.Ember = (function(module) {
     
   });
 
+  module.AllianceAutoJoinView = Ember.View.extend({
+    templateName: 'alliance-auto-join',
+    controller:    null,
+    alliance:      null,
+
+    ongoingAction: null,
+    
+    startAction: function() {
+      this.set('ongoingAction', true);
+    },
+
+    endAction: function() {
+      this.set('ongoingAction', false);
+    },
+
+    /**
+     * @return returns "activated" or "deactivated" as string
+     */
+    currentState: function() {
+      if(this.getPath('alliance.auto_join_disabled')) {
+        return AWE.I18n.lookupTranslation('alliance.autoJoinDeactivated');
+      } else {
+        return AWE.I18n.lookupTranslation('alliance.autoJoinActivated');
+      }
+    }.property('alliance.auto_join_disabled'),
+
+    changeStatePressed: function() {
+      startAction();
+    },
+  });
+
   module.AllianceMemberListView = Ember.View.extend({
     templateName: 'alliance-member-list',
     
