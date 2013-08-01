@@ -38,6 +38,7 @@ AWE.Action.Fundamental = (function(module) {
     
     that.postProcess = function(statusCode, xhr) {
       if (statusCode == 200) {
+        AWE.GS.AllianceManager.updateAlliance(allianceId);
       }
     }
   
