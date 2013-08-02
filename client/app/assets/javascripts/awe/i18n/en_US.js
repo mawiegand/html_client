@@ -413,6 +413,8 @@ AWE.I18n.en_US = function(module) {
       autoJoinDeactivated: "Deactivated",
       autoJoinFailedHead: "Failed",
       autoJoinFailedText: "Failed to change setting. Please contact an administrator if the problem persists.",
+      joinRandomAlliance: 'Join a random alliance',
+      joinRandomAllianceDescription: 'Let the server find an alliance for you',
       management:"Secret alliance slogan",
       reservation: 'Reservation for next round',
       reservationDescription: 'As leader of the alliance can you reserve your alliance for the next round. To redeem the reservation in the next ' +
