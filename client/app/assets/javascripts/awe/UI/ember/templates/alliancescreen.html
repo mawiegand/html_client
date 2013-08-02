@@ -96,7 +96,11 @@
 <script type="text/x-handlebars" data-template-name="alliance-auto-join">
   <div class="alliance-auto-join">
     <h1>{{t alliance.autoJoin }}</h1>
-    <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "changeStatePressed"}}>{{currentState}}</div>
+    {{#if ongoingAction}}
+      <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "changeStatePressed"}}>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}</div>
+    {{else}}
+      <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "changeStatePressed"}}>{{currentState}}</div>
+    {{/if}}
     <p class="clearfix">{{t alliance.autoJoinDescription}}</p>
   </div>
 </script>
