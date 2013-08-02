@@ -424,6 +424,7 @@ AWE.I18n.de_DE = function(module) {
       autoJoinFailedText: 'Konnte Einstellung nicht ändern. Bitte wende dich an einen Administrator sollte das Problem weiterhin bestehen.',
       joinRandomAlliance: 'Zufälliger Allianz beitreten',
       joinRandomAllianceDescription: 'Den Server eine Allianz für dich finden lassen',
+      joinRandomAllianceButtonLabel: 'Allianz suchen',
       management: 'Geheime Allianzlosung',
       reservation: 'Reservierung für die nächste Runde',
       reservationDescription: 'Als Allianzanführer kannst Du Deine Allianz für die nächste Runde reservieren. Um die Reservierung in der nächsten ' +
