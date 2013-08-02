@@ -27,7 +27,7 @@ AWE.Action.Fundamental = (function(module) {
       return {
         change_alliance_auto_join_action: {
           alliance_id: allianceId,
-          auto_join_setting: autoJoinSetting,
+          auto_join_setting: autoJoinSetting ? 1 : 0,
         }
       };
     }
@@ -38,7 +38,7 @@ AWE.Action.Fundamental = (function(module) {
     
     that.postProcess = function(statusCode, xhr) {
       if (statusCode == 200) {
-        AWE.GS.AllianceManager.updateAlliance(allianceId);
+        AWE.GS.AllianceManager.updateAlliance(AWE.GS.game.getPath('currentCharacter.alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
       }
     }
   
