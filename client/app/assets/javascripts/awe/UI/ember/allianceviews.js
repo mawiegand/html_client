@@ -241,7 +241,7 @@ AWE.UI.Ember = (function(module) {
 
     changeStatePressed: function() {
       var self = this;
-      var action = AWE.Action.Fundamental.createChangeAlliancePasswordAction(alliance, password);
+      var action = AWE.Action.Fundamental.createChangeAllianceAutoJoinAction(this.getPath('alliance.id'), this.getPath('alliance.auto_join_disabled'));
       this.startAction();
       AWE.Action.Manager.queueAction(action, function(statusCode) {
         if (statusCode !== 200) {
@@ -253,7 +253,7 @@ AWE.UI.Ember = (function(module) {
           self.destroy();
         }
         self.endAction();
-      });       
+      });
     },
   });
 
