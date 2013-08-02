@@ -420,6 +420,8 @@ AWE.I18n.de_DE = function(module) {
       autoJoinDescription: "Automatisch beitreten",
       autoJoinActivated: "Aktiviert",
       autoJoinDeactivated: "Deaktiviert",
+      autoJoinFailedHead: 'Fehlgeschlagen',
+      autoJoinFailedText: 'Konnte Einstellung nicht ändern. Bitte wende dich an einen Administrator sollte das Problem weiterhin bestehen.',
       management: 'Geheime Allianzlosung',
       reservation: 'Reservierung für die nächste Runde',
       reservationDescription: 'Als Allianzanführer kannst Du Deine Allianz für die nächste Runde reservieren. Um die Reservierung in der nächsten ' +
