@@ -397,7 +397,7 @@ AWE.I18n.en_US = function(module) {
       createAlliance:"found alliance",
       createAllianceText:"Found a new alliance with yourself as the leader.",
       redeemAllianceReservationHeader: "Alliance reservation",
-      redeemAllianceReservationButton: "Alliance resercvation redeem",
+      redeemAllianceReservationButton: "Alliance reservation redeem",
       redeemAllianceReservationText: "Redeem an alliance reservation from last round. Enter alliance tag and secret reservation password.",
       leave:"leave",
 
