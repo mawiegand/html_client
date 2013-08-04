@@ -247,7 +247,7 @@ AWE.UI.Ember = (function(module) {
         if (statusCode !== 200) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
             heading: AWE.I18n.lookupTranslation('alliance.autoJoinFailedHead'),
-            message: AWE.I18n.lookupTranslation('alliance.autoJoin.FailedText'),
+            message: AWE.I18n.lookupTranslation('alliance.autoJoinFailedText'),
           }); 
           WACKADOO.presentModalDialog(errorDialog);
           self.destroy();
