@@ -409,6 +409,25 @@ AWE.UI.Ember = (function(module) {
       });          
     },
 
+    joinRandomAlliancePressed: function () {
+      var self = this;
+      var characterId = AWE.GS.game.getPath('currentCharacter.id');
+      
+      var action = AWE.Action.Fundamental.createAutoJoinAllianceAction(characterId);
+      this.startAction();
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        //TODO: check for different error codes
+        if(statusCode !== 200) {
+          errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.joinRandomAllianceFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.joinRandomAllianceFailedText'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+          self.destroy();
+        }
+        self.endAction();
+      });          
+    },
     switchForm: function() {
       this.set('redeemReservation', !this.get('redeemReservation'));
     },
