@@ -423,7 +423,6 @@ AWE.UI.Ember = (function(module) {
             message: AWE.I18n.lookupTranslation('alliance.joinRandomAllianceFailedText'),
           }); 
           WACKADOO.presentModalDialog(errorDialog);
-          self.destroy();
         }
         self.endAction();
       });          
