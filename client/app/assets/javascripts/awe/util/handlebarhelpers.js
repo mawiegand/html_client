@@ -131,24 +131,24 @@ Ember.registerBoundHelper("localizedList", function(list) {
  */
 Ember.registerBoundHelper("formatNumber", function(number, options) {
   var maxPlaces = options.maxPlaces || 0;
-  if (number === undefined || number === null) {
+  if (typeof number === "undefined" || number === null) {
     return "" ;
   }
   var fac = Math.pow(10, maxPlaces);
-  return maxPlaces == 0 && number < 1.0 && number > 0.01 ? Math.floor(number*100.0) / 100.0 :  Math.floor(number * fac + 0.5) / fac; // TODO: use locale!
+  return maxPlaces == 0 && number < 1.0 && number > 0.01 ? "" + (Math.floor(number*100.0) / 100.0) : "" + (Math.floor(number * fac + 0.5) / fac); // TODO: use locale!
   // TODO add option to append '0's to fill maxPlaces
 });
 
 Ember.registerBoundHelper("formatNumberFloor", function(number, options) {
-  if (number === undefined || number === null) {
+  if (typeof number === "undefined" || number === null) {
     return "" ;
   }
-  return Math.floor(number);
+  return "" + Math.floor(number);
 });
 
 Ember.registerBoundHelper("formatAsPercent", function(number, options) {
   var maxPlaces = options.maxPlaces || 0;
-  if (number === undefined || number === null) {
+  if (typeof number === "undefined" || number === null) {
     return "" ;
   }
   var fac = Math.pow(10, maxPlaces);
@@ -175,7 +175,7 @@ Ember.registerBoundHelper("formatAsPercent", function(number, options) {
  * @name Handlebars.Helper.formatDuration
  */
 Ember.registerBoundHelper("formatDuration", function(seconds) {
-  if (seconds === undefined || seconds === null) {
+  if (typeof seconds === "undefined" || seconds === null) {
     return "" ;
   }
   return AWE.Util.localizedDurationFromSeconds(seconds); // TODO: use locale!
@@ -214,11 +214,11 @@ Ember.registerBoundHelper("formatPercentage", function(percentage) {
  * @name Handlebars.Helper.constructionSpeedupCost
  */
 Ember.registerBoundHelper("constructionSpeedupCost", function(seconds) {
-  if (seconds === undefined || seconds === null) {
+  if (typeof seconds === "undefined" || seconds === null) {
     return "" ;
   }
   var costs = AWE.Util.Rules.lookupConstructionSpeedupCost(seconds);
-  return costs ? costs.amount : null;
+  return costs ? "" + costs.amount : null;
 });
 
 
@@ -227,11 +227,11 @@ Ember.registerBoundHelper("constructionSpeedupCost", function(seconds) {
  * @name Handlebars.Helper.trainingSpeedupCost
  */
 Ember.registerBoundHelper("trainingSpeedupCost", function(seconds) {
-  if (seconds === undefined || seconds === null) {
+  if (typeof seconds === "undefined" || seconds === null) {
     return "" ;
   }
   var costs = AWE.Util.Rules.lookupTrainingSpeedupCost(seconds);
-  return costs ? costs.amount : null;
+  return costs ? "" + costs.amount : null;
 });
 
 
@@ -240,11 +240,11 @@ Ember.registerBoundHelper("trainingSpeedupCost", function(seconds) {
  * @name Handlebars.Helper.trainingSpeedupCost
  */
 Ember.registerBoundHelper("artifactInitiationSpeedupCost", function(seconds) {
-  if (seconds === undefined || seconds === null) {
+  if (typeof seconds === "undefined" || seconds === null) {
     return "" ;
   }
   var costs = AWE.Util.Rules.lookupArtifactInitiationSpeedupCost(seconds);
-  return costs ? costs.amount : null;
+  return costs ? "" + costs.amount : null;
 });
 
 

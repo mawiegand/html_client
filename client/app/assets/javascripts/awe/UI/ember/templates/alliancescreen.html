@@ -5,6 +5,7 @@
     {{view AWE.UI.Ember.AllianceInfoBoxView controllerBinding="controller" allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader"}}
     {{#if ownAlliance}}
       {{#if isAllianceLeader}}
+        {{view AWE.UI.Ember.AllianceAutoJoinView controllerBinding="controller" allianceBinding="alliance"}}
         <hr>
         {{view AWE.UI.Ember.AllianceManagementView controllerBinding="controller" allianceBinding="alliance"}}
         <hr>
@@ -30,14 +31,14 @@
     <h1>{{ alliance.name }} [{{ alliance.tag }}]</h1>
     <p> {{t alliance.founded }}: {{ creation }}</p>
 		<p> {{t alliance.leader }}: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="alliance.leader" displayAlliance=false}}</p>
-		<!-- p>
+		<p>
 			{{#if isNotAllianceMember}}
 			  <div class="simple-button" style="min-height: 10px;" {{action "sendAllianceApplication"}}>{{t alliance.sendApplication}}</div>
         {{#if applicationMessage}}
           <div class="red-color">{{applicationMessage}}</div>
         {{/if}}
 			{{/if}}
-    </p -->
+    </p>
   </div>
   {{#if alliance.invitation_code }}
     <h2>Einladungslink</h2>
@@ -51,7 +52,7 @@
         <div class="red-color">{{message}}</div>
       {{/if}}
       {{#if alliance.description}}
-			<p>{{{ showDescription }}}</p>
+			<p class="alliance-description">{{{ showDescription }}}</p>
       {{else}}
 			  <p>{{t alliance.missingDescription}}</p>
       {{/if}}
@@ -92,6 +93,17 @@
   </div>
 </script>
 
+<script type="text/x-handlebars" data-template-name="alliance-auto-join">
+  <div class="alliance-auto-join">
+    <h1>{{t alliance.autoJoin }}</h1>
+    {{#if ongoingAction}}
+      <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "changeStatePressed"}}>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}</div>
+    {{else}}
+      <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "changeStatePressed"}}>{{currentState}}</div>
+    {{/if}}
+    <p class="clearfix">{{t alliance.autoJoinDescription}}</p>
+  </div>
+</script>
 
 <script type="text/x-handlebars" data-template-name="alliance-management">
   <div class="alliance-management">

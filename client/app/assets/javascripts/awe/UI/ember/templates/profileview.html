@@ -38,25 +38,25 @@
     <div style="float:left;">{{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar"}}</div>
     <p>
     <span class="simple-button" {{action "changeAvatarPressed"}}>{{t profile.customization.changeAvatarCaption}}</span>
-    <br style="clear:both">
-  </p>
+    </p>
+  <div class="clearfix" />
 
 	<hr/>
 
-    <!-- div class="character-description clearfix">
+    <div class="character-description clearfix">
       <h1>{{t profile.customization.description }}</h1>
       {{#if message}}
         <div class="red-color">{{message}}</div>
       {{/if}}
       {{#if character.description}}
-			<p>{{{ showDescription }}}</p>
+			  <p class="character-description">{{{ showDescription }}}</p>
       {{else}}
         <p>{{t profile.customization.missingDescription}}</p>
       {{/if}}
 			<div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "changeDescriptionPressed"}}>{{t profile.customization.changeDescription}}</div>
 		</div>
 
-  <hr/ -->
+  <hr/>
 
   {{#if firstTwoNameChange}}
     <h2>{{t profile.customization.chooseName}}</h2>

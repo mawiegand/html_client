@@ -63,6 +63,8 @@ AWE.UI.Ember = (function(module) {
         rowsSize: 10,
         colsSize: 82,
         controller: this,
+        inputMaxLength: AWE.Config.DESCRIPTION_MAX_LENGTH,
+
         classNames: ['alliance-description'],
         
         okPressed: function() {
@@ -91,6 +93,9 @@ AWE.UI.Ember = (function(module) {
         }
         else if (status === AWE.Net.FORBIDDEN) {
           self.set('message', AWE.I18n.lookupTranslation('alliance.error.changeDescriptionForbidden'));
+        }
+        else if (status === AWE.Net.CONFLICT) {
+          self.set('message', AWE.I18n.lookupTranslation('alliance.error.changeDescriptionConflict'));
         }
         else {
           self.set('message', AWE.I18n.lookupTranslation('alliance.error.changeDescriptionError'));
@@ -206,6 +211,50 @@ AWE.UI.Ember = (function(module) {
       return false; // prevent default action!
     },
     
+  });
+
+  module.AllianceAutoJoinView = Ember.View.extend({
+    templateName: 'alliance-auto-join',
+    controller:    null,
+    alliance:      null,
+
+    ongoingAction: null,
+    
+    startAction: function() {
+      this.set('ongoingAction', true);
+    },
+
+    endAction: function() {
+      this.set('ongoingAction', false);
+    },
+
+    /**
+     * @return returns "activated" or "deactivated" as string
+     */
+    currentState: function() {
+      if(this.getPath('alliance.auto_join_disabled')) {
+        return AWE.I18n.lookupTranslation('alliance.autoJoinDeactivated');
+      } else {
+        return AWE.I18n.lookupTranslation('alliance.autoJoinActivated');
+      }
+    }.property('alliance.auto_join_disabled'),
+
+    changeStatePressed: function() {
+      var self = this;
+      var action = AWE.Action.Fundamental.createChangeAllianceAutoJoinAction(this.getPath('alliance.id'), this.getPath('alliance.auto_join_disabled'));
+      this.startAction();
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        if (statusCode !== 200) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.autoJoinFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.autoJoinFailedText'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+          self.destroy();
+        }
+        self.endAction();
+      });
+    },
   });
 
   module.AllianceMemberListView = Ember.View.extend({

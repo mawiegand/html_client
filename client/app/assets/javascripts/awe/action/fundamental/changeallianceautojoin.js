@@ -1,15 +1,14 @@
-/* Author: Marcel Wiegand <marcel@5dlab.com>
+/* Author: Christian Wansart <christian@5dlab.com>
  * Copyright (C) 2013 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
-
  
 var AWE = window.AWE || {};
 AWE.Action = AWE.Action || {};
 
 AWE.Action.Fundamental = (function(module) {
   
-  module.createChangeCharacterDescriptionAction = function(newDescription, my) {
+  module.createChangeAllianceAutoJoinAction = function(allianceId, autoJoinSetting, my) {
       
     // private attributes and methods //////////////////////////////////////
     
@@ -26,20 +25,21 @@ AWE.Action.Fundamental = (function(module) {
     
     that.getRequestBody = function() {
       return {
-        change_character_description_action: {
-          description: newDescription || "",
+        change_alliance_auto_join_action: {
+          alliance_id: allianceId,
+          auto_join_setting: autoJoinSetting ? 1 : 0,
         }
       };
     }
     
-    that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'fundamental/change_character_description_actions'; }
+    that.getURL = function() { return AWE.Config.ACTION_SERVER_BASE+'fundamental/change_alliance_auto_join_setting_actions'; }
   
     that.getHTTPMethod = function() { return 'POST'; }
     
     that.postProcess = function(statusCode, xhr) {
-//      if (statusCode == 201) {
-        AWE.GS.CharacterManager.updateCurrentCharacter();
-//      }
+      if (statusCode == 200) {
+        AWE.GS.AllianceManager.updateAlliance(AWE.GS.game.getPath('currentCharacter.alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      }
     }
   
     return that;

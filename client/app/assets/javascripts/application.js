@@ -12,10 +12,12 @@
 var AWE = window.AWE || {};
 AWE.Settings = AWE.Settings || {};
 
+var my_args = {}
+
 try {
-  var args = JSON.parse(window.name );
+  my_args = JSON.parse(window.name );
 }
 catch (e) {
 }
 
-AWE.Settings.lang = args.locale ? args.locale.substr(0, 2) : 'en';
+AWE.Settings.lang = my_args.locale ? my_args.locale.substr(0, 2) : 'en';

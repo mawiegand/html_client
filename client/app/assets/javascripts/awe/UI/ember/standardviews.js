@@ -126,6 +126,7 @@ AWE.UI.Ember = (function(module) {
     input: '',
     rowsSize: null,
 		colsSize: null,
+    inputMaxLength: null,
     okPressed: function() { alert ('Action not connected: okPressed.'); },
     cancelPressed: function() { alert ('Action not connected: okPressed.'); },
   });

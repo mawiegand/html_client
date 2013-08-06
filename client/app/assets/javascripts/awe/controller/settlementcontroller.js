@@ -833,6 +833,9 @@ AWE.Controller = (function(module) {
                 message: AWE.I18n.lookupTranslation('settlement.assignment.error.prerequisites.content.'+item.symbolic_id),
               }); 
               WACKADOO.presentModalDialog(errorDialog);
+              if(callback) {
+                callback();
+              };
               throw 'error';
             }
           }
@@ -849,6 +852,9 @@ AWE.Controller = (function(module) {
                 message: AWE.I18n.lookupTranslation('settlement.assignment.error.prerequisites.content.armies'),
               }); 
               WACKADOO.presentModalDialog(errorDialog);
+              if(callback) {
+                callback();
+              };
               throw 'error';
             }
           }

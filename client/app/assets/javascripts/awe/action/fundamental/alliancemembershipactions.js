@@ -13,6 +13,10 @@ AWE.Action.Fundamental = (function(module) {
     var characterId = AWE.GS.game.getPath('currentCharacter.id');
     AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
       WACKADOO.reconnectChat();
+      var allianceId = AWE.GS.game.getPath('currentCharacter.alliance_id');
+      if (allianceId) {
+        AWE.GS.AllianceManager.updateAlliance(AWE.GS.game.getPath('currentCharacter.alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      }
     });
     AWE.GS.ResourcePoolManager.updateResourcePool();
     AWE.GS.SettlementManager.getOwnSettlements();

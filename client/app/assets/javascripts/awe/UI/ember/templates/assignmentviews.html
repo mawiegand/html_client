@@ -23,7 +23,7 @@
 <script type="text/x-handlebars" data-template-name="assignment-view">
 
   {{#if collapsed}}
-    <table class="assignment-collapse-table">
+    <table class="assignment-collapse-table clickable">
       <tr {{action "openPressed"}}>
         <td class="assignment-header-cell">
           <b>{{local assignmentType.name}}</b></td>
@@ -87,7 +87,10 @@
 
       <b>{{local assignmentType.name}}</b>
     </p>
-    <p>{{local assignmentType.description}}</p>
+    <div class="clearfix">
+      <div {{bindAttr class=":advisor assignmentType.advisor"}}></div>
+      <p>{{local assignmentType.description}}</p>
+    </div>
     <p>
       {{#if isActive }}
         <div class="float-right duration assignment-progress-bar-border">
@@ -144,7 +147,7 @@
 <script type="text/x-handlebars" data-template-name="special-assignment-view">
 
   {{#if collapsed}}
-    <table class="assignment-collapse-table">
+    <table class="assignment-collapse-table clickable">
       <tr {{action "openPressed"}}>
         <td class="assignment-header-cell">
           <b>{{local assignmentType.name}}</b></td>
@@ -208,7 +211,10 @@
 
       <b>{{local assignmentType.name}}</b>
     </p>
-    <p>{{local assignmentType.description}}</p>
+    <div class="clearfix">
+      <div {{bindAttr class=":advisor assignmentType.advisor"}}></div>
+      <p>{{local assignmentType.description}}</p>
+    </div>
     <p>
       {{#if isActive }}
         <div class="float-right duration assignment-progress-bar-border">
