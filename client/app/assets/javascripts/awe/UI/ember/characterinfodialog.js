@@ -34,7 +34,7 @@ AWE.UI.Ember = (function(module) {
     },    
     
     showDescription: function() {
-      return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/, '<br />');
+      return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/g, '<br />');
     }.property('character.description'),
 
     sendUserContentReport: function() {
