@@ -797,6 +797,7 @@ AWE.I18n.de_DE = function(module) {
           },
           prerequisites: {
             header: "Halt!",
+            text: "Du hast aktuell leider nicht genügend Ressourcen oder Armeen, um den Auftrag zu starten.",
             content: {
               resource_wood: "Du hast aktuell leider nicht genügend Holz, um den Auftrag zu starten.",
               resource_stone: "Du hast aktuell leider nicht genügend Stein, um den Auftrag zu starten.",

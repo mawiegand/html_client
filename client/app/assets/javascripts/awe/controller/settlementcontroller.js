@@ -739,6 +739,9 @@ AWE.Controller = (function(module) {
           }
         });
       } catch(err) {
+        if (callback) {
+          callback();
+        }
         return;
       }
 
@@ -860,6 +863,9 @@ AWE.Controller = (function(module) {
           }
         });
       } catch(err) {
+        if (callback) {
+          callback();
+        }
         return;
       }
 

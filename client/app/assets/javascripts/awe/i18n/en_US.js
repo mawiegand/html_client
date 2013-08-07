@@ -782,6 +782,7 @@ AWE.I18n.en_US = function(module) {
           },
           prerequisites: {
             header: "Stop!",
+            text: "You don't have sufficient resources or armies to start the assignment.",
             content: {
               resource_wood: "You don't have sufficient wood to start the assignment.",
               resource_stone: "You don't have sufficient stone to start the assignment.",
