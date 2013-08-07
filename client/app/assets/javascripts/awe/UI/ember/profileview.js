@@ -96,12 +96,12 @@ AWE.UI.Ember = (function(module) {
             characterBinding: "parentView.parentView.character"
           })
         },
-        { key:   "tab4",
-          title: AWE.I18n.lookupTranslation('profile.movingTab'), 
-          view:  AWE.UI.Ember.MovingView.extend({ 
-            characterBinding: "parentView.parentView.character"
-          })
-        },
+//        { key:   "tab4",
+//          title: AWE.I18n.lookupTranslation('profile.movingTab'),
+//          view:  AWE.UI.Ember.MovingView.extend({
+//            characterBinding: "parentView.parentView.character"
+//          })
+//        },
       ]);
       
       this._super();
