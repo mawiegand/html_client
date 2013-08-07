@@ -79,6 +79,7 @@
 
 <script type="text/x-handlebars" data-template-name="construction-queue-detail-view">
   <div class="queue-detail-view">
+    {{#if active}}
     <h1>{{t settlement.construction.requiredResources}}</h1>
     <table>
       <tr>
@@ -90,6 +91,7 @@
         {{/each}}
       </tr>
     </table>
+    {{/if}}
 
     {{#if diffs}}
     <h1>{{t settlement.construction.remaining}}</h1>
