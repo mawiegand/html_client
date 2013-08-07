@@ -435,6 +435,10 @@ AWE.I18n.en_US = function(module) {
       report: 'Melden',
       sendApplication: 'Bewerbung einreichen',
 
+      invitationLink: 'Invitation link',
+      invitationLinkDescription: 'Invite new players to start in the alliance region. If new players register using the invitation link, his or her home settlement will be placed in the regions governed by the alliance. Just select and copy the link or send it via mail.',
+      invitationLinkSendByMailButton: 'Send by mail',
+
       progress:{
         header:'Victory Progress',
         description:'An alliance can win a game round if one of the following victory criteria are achieved and maintained over a certain time period.',
