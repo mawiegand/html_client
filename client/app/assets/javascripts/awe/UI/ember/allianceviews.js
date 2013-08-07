@@ -81,7 +81,7 @@ AWE.UI.Ember = (function(module) {
     },
 
     showDescription: function() {
-      return $('<div/>').text(this.getPath('alliance.description')).html().replace(/\n/, '<br />');
+      return $('<div/>').text(this.getPath('alliance.description')).html().replace(/\n/g, '<br />');
     }.property('alliance.description'),
 
     processNewDescription: function(newDescription) {
