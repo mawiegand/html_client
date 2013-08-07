@@ -849,7 +849,7 @@ AWE.I18n.en_US = function(module) {
       victories:"Victories",
       defeats:"Defeats",
 
-      history:"Historie",
+      history:"History",
       emptyHistory:"No events available",
 
       progressTab:"Progress",
