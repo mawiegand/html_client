@@ -28,6 +28,7 @@ AWE.Controller = function (module) {
     var _scrollingStartedAtVC;
     var _scrollingOriginalTranslationVC;
     var _scrollingLastVCPosition;
+    var _disableArmies = false;
 
     var _animations = [];
 
@@ -550,6 +551,7 @@ AWE.Controller = function (module) {
     that.endScrolling = function () {
       this.anchor().unbind('mousemove');
       _scrollingStarted = false;
+      _disableArmies = false;
     }
 
     that.isScrolling = function () {
@@ -2456,7 +2458,11 @@ AWE.Controller = function (module) {
           return filtered;
         };
 
-        armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies || (_scrollingStarted && AWE.Util.hashCount(armyViews) > AWE.Config.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING));
+        if (_scrollingStarted) {
+          _disableArmies |= (AWE.Util.hashCount(armyViews) > AWE.Config.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING);
+        }
+
+        armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies || _disableArmies);
 
         initViewsWithBasePosition(armies, pos);
         unclutter(armies, settlement, pos, frame);
