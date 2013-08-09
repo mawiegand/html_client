@@ -2456,7 +2456,7 @@ AWE.Controller = function (module) {
           return filtered;
         };
 
-        armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies || (_scrollingStarted && AWE.Util.hashCount(armies) > AWE.Config.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING));
+        armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies || (_scrollingStarted && AWE.Util.hashCount(armyViews) > AWE.Config.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING));
 
         initViewsWithBasePosition(armies, pos);
         unclutter(armies, settlement, pos, frame);
