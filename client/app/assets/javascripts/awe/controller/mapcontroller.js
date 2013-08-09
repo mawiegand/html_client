@@ -81,7 +81,7 @@ AWE.Controller = function (module) {
 
     var mapMode = AWE.UI.MAP_MODE_TERRAIN; //  display game graphics
     
-    var hideOtherArmies = false;
+    var hideOtherArmies = !AWE.GS.game.getPath('currentCharacter.finishedTutorial');
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -1135,7 +1135,7 @@ AWE.Controller = function (module) {
 
     that.armyRetreatButtonClicked = function (army) {
       if (!runningRetreatAction) {
-        runningRetreatAction = true
+        runningRetreatAction = true;
         var retreatAction = AWE.Action.Military.createRetreatArmyAction(army);
         retreatAction.send(function (status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK #
@@ -2454,9 +2454,9 @@ AWE.Controller = function (module) {
             }
           }
           return filtered;
-        }
-        
-        armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies);
+        };
+
+        armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies || (_scrollingStarted && AWE.Util.hashCount(armies) > AWE.Config.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING));
 
         initViewsWithBasePosition(armies, pos);
         unclutter(armies, settlement, pos, frame);
@@ -2640,7 +2640,7 @@ AWE.Controller = function (module) {
       }
 
       return targetLocations;
-    }
+    };
 
     // determine all possible attack target armies
     var getTargetArmies = function (army) {
@@ -2995,6 +2995,7 @@ AWE.Controller = function (module) {
       var oldVisibleArea = null;
       var oldWindowSize = null;
       var lastHideOtherArmies = hideOtherArmies;
+      var lastScrollingStarted = _scrollingStarted;
 
 
       var propUpdates = function (viewHash) {
@@ -3023,11 +3024,12 @@ AWE.Controller = function (module) {
 
         if ((AWE.Config.MAP_MOVE_ARMIES && _loopCounter % 60 == 0) ||
           _windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) ||
-          _actionViewChanged || lastHideOtherArmies != hideOtherArmies) { // if moving armies
+          _actionViewChanged || lastHideOtherArmies != hideOtherArmies || lastScrollingStarted != _scrollingStarted) { // if moving armies
           stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         }
         
         lastHideOtherArmies = hideOtherArmies;
+        lastScrollingStarted = _scrollingStarted;
         
 
         if (_windowChanged || this.modelChanged() || _actionViewChanged || currentAction || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {

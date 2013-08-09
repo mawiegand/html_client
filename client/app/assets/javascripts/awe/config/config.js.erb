@@ -28,6 +28,7 @@ AWE.Config = (function(module) {
   
   module.DONT_RENDER_ARMIES       = false;
   module.DONT_RENDER_OTHER_ARMIES = false;
+  module.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING = 50;
 
   module.IN_DEVELOPMENT_MODE      = <%= Rails.env.development? ? 'true' : 'false' %>;
 

@@ -284,6 +284,11 @@ AWE.GS = (function(module) {
     enumerableStandardAssignments: function() {
       return this.getPath('hashableStandardAssignments.collection');
     }.property('id', 'hashableStandardAssignments.changedAt').cacheable(),
+
+    finishedTutorial: function() {
+      var finishedTutorial = this.get('tutorial_finished_at');
+      return finishedTutorial && Date.parseISODate(finishedTutorial) < AWE.GS.TimeManager.estimatedServerTime().getTime();
+    }.property('tutorial_finished_at').cacheable(),
   });
 
     
