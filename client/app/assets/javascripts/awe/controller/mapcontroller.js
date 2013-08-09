@@ -29,7 +29,7 @@ AWE.Controller = function (module) {
     var _scrollingOriginalTranslationVC;
     var _scrollingLastVCPosition;
     var _disableArmies = false;
-    var _zoomingStarted = false;
+    var _viewPortChanged = false;
 
     var _animations = [];
 
@@ -2458,7 +2458,7 @@ AWE.Controller = function (module) {
           return filtered;
         };
 
-        if (_camera.isMoving() || _scrollingStarted || _zoomingStarted) {
+        if (_viewPortChanged) {
           _disableArmies |= (AWE.Util.hashCount(armyViews) > AWE.Config.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING);
         }
         else if(_disableArmies) {
@@ -3004,8 +3004,7 @@ AWE.Controller = function (module) {
       var oldVisibleArea = null;
       var oldWindowSize = null;
       var lastHideOtherArmies = hideOtherArmies;
-      var lastScrollingStarted = _scrollingStarted;
-      var lastZoomingStarted = _zoomingStarted;
+      var lastViewPortChanged = _viewPortChanged;
 
 
       var propUpdates = function (viewHash) {
@@ -3034,14 +3033,13 @@ AWE.Controller = function (module) {
 
         if ((AWE.Config.MAP_MOVE_ARMIES && _loopCounter % 60 == 0) ||
           _windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) ||
-          _actionViewChanged || lastHideOtherArmies != hideOtherArmies || lastScrollingStarted != _scrollingStarted ||
-          lastZoomingStarted != _zoomingStarted) { // if moving armies
+          _actionViewChanged || lastHideOtherArmies != hideOtherArmies ||
+          lastViewPortChanged != _viewPortChanged) { // if moving armies
           stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         }
         
         lastHideOtherArmies = hideOtherArmies;
-        lastScrollingStarted = _scrollingStarted;
-        lastZoomingStarted = _zoomingStarted;
+        lastViewPortChanged = _viewPortChanged;
 
         if (_windowChanged || this.modelChanged() || _actionViewChanged || currentAction || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           stagesNeedUpdate[2] = that.updateActionViews();
@@ -3126,10 +3124,10 @@ AWE.Controller = function (module) {
           } else {
             console.error("the camera needed an update, but did not return a new viewport");
           }
-          _zoomingStarted = true;
+          _viewPortChanged = true;
         }
         else {
-          _zoomingStarted = false;
+          _viewPortChanged = false;
         }
 
         // STEP 1: determine visible area (may have changed through user interaction)
