@@ -85,7 +85,7 @@ AWE.Controller = function (module) {
     
     var hideOtherArmies = !AWE.GS.game.getPath('currentCharacter.finishedTutorial');
 
-    log('-----> hideOtherArmies 1', !AWE.GS.game.getPath('currentCharacter.finishedTutorial'));
+    log('-----> hideOtherArmies 1', AWE.GS.game.get('currentCharacter'));
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -199,7 +199,7 @@ AWE.Controller = function (module) {
       window.WACKADOO.addDomElement(zoomSlider.getContainer(), true);
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height())); // prevents distortion in case window has resized while displaying another screen
       zoomSlider.subscribeToDOMEvents();
-      log('-----> hideOtherArmies 1', !AWE.GS.game.getPath('currentCharacter.finishedTutorial'));
+      log('-----> hideOtherArmies 2', !AWE.GS.game.get('currentCharacter'));
     }
 
     that.viewWillDisappear = function () {
