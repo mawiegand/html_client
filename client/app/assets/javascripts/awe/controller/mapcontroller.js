@@ -83,7 +83,7 @@ AWE.Controller = function (module) {
 
     var mapMode = AWE.UI.MAP_MODE_TERRAIN; //  display game graphics
     
-    var hideOtherArmies = false; //!AWE.GS.game.getPath('currentCharacter.finishedTutorial');
+    var hideOtherArmies = !AWE.GS.game.getPath('currentCharacter.finishedTutorial');
 
     // ///////////////////////////////////////////////////////////////////////
     //
