@@ -83,7 +83,7 @@ AWE.Controller = function (module) {
 
     var mapMode = AWE.UI.MAP_MODE_TERRAIN; //  display game graphics
     
-    var hideOtherArmies = !AWE.GS.game.getPath('currentCharacter.finishedTutorial');
+    var hideOtherArmies = false; //!AWE.GS.game.getPath('currentCharacter.finishedTutorial');
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -2458,14 +2458,14 @@ AWE.Controller = function (module) {
           return filtered;
         };
 
-        if (_viewPortChanged) {
-          _disableArmies |= (AWE.Util.hashCount(armyViews) > AWE.Config.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING);
-        }
-        else if(_disableArmies) {
-          _disableArmies = false;
-        }
+//        if (_viewPortChanged) {
+//          _disableArmies |= (AWE.Util.hashCount(armyViews) > AWE.Config.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING);
+//        }
+//        else if(_disableArmies) {
+//          _disableArmies = false;
+//        }
 
-        armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies || _disableArmies);
+        armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies); // || _disableArmies);
 
         initViewsWithBasePosition(armies, pos);
         unclutter(armies, settlement, pos, frame);
@@ -3124,10 +3124,10 @@ AWE.Controller = function (module) {
           } else {
             console.error("the camera needed an update, but did not return a new viewport");
           }
-          _viewPortChanged = true;
+//          _viewPortChanged = true;
         }
         else {
-          _viewPortChanged = false;
+//          _viewPortChanged = false;
         }
 
         // STEP 1: determine visible area (may have changed through user interaction)
