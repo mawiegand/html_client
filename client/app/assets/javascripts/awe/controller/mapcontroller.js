@@ -2469,6 +2469,7 @@ AWE.Controller = function (module) {
             log('----------> callback');
             if (!_viewPortChanged && _disableArmies) {
               _disableArmies = false;
+              that.setModelChanged();
             }
           }, 200);
         }
