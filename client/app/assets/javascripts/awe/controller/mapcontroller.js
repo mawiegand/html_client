@@ -2462,16 +2462,20 @@ AWE.Controller = function (module) {
         if (_viewPortChanged) {
           _disableArmies = _disableArmies || (AWE.Util.hashCount(armyViews) > AWE.Config.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING);
         }
-        else if(_disableArmies) { // } && !_timeout) {
-//          _timeout = true;
-//          setTimeout(function() {
-//            _timeout = false;
-//            log('----------> callback');
-//            if (!_viewPortChanged && _disableArmies) {
+        else if(_disableArmies && !_timeout) {
+          _timeout = true;
+          setTimeout(function() {
+            _timeout = false;
+            log('----------> callback');
+            if (!_viewPortChanged && _disableArmies) {
               _disableArmies = false;
-//            }
-//          }, 200);
+            }
+          }, 200);
         }
+//        else if(_disableArmies) {
+//          _disableArmies = false;
+//        }
+
 
         armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies || _disableArmies);
 
