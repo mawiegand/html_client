@@ -344,7 +344,7 @@ AWE.I18n.de_DE = function(module) {
           "Heute keine Gerüchte - so ein Glück!",
           "In der Region in der Mitte der Karte soll es einen Topf gefüllt mit Kupfer und umgeben von tausenden Kröten geben.",
           "Ein Weib auf Durchreise behauptet, Kröten und Frösche können man auch essen. Sie hätte selbst im Westen gesehen, wie diese zubereitet und verspeist würden. Was für ein Unfug; Kröten sind DAS Zahlungsmittel und wunderbare Haustiere - aber aufessen???",
-          "Ein Seher versucht Dich davon zu überzeugen, dass Menschen in ferner Zukunft in Zylindern aus Kupfer oder ähnlichem durch die Luft fliegen würden. Das kann dich nicht überzeugen; Kupfer ist viel zu schwer, die würden einfach runterfallen.",
+          "Ein Seher versucht Dich davon zu überzeugen, dass Menschen in ferner Zukunft in Zylindern aus Kupfer oder ähnlichem durch die Luft fliegen würden. Das kann dich nicht überzeugen; Kupfer ist viel zu schwer, die würden einfach runterfallen."
         ],
         likeLeader: "{0} muss eine sehr nette Person sein. Schon {1} Likes. Unglaublich!",
         resourceProductionLeader: {
@@ -476,7 +476,7 @@ AWE.I18n.de_DE = function(module) {
         wrongPassword: "Allianzkürzel und Passwort stimmen nicht überein.",
         memberLimitReached: "Die maximale Anzahl Allianzmitglieder wurde bereits erreicht.",
         unkownJoin: "Der Allianz beizutreten ist aus unbekanntem Grund fehlgeschlagen.",
-        enterValidTag: "Gib ein gültiges Allianzkürzel mit 2 bis 5 Buchstaben ein.",
+        enterValidTag: "Gib ein Allianzkürzel mit 2 bis 5 Buchstaben ein. Es darf keine Sonderzeichen enthalten.",
         enterValidName: "Gib einen gültigen Allianznamen mit mindestens 2 Buchstaben ein.",
         tagTaken: "Das Kürzel wird bereits von einer anderen Allianz benutzt.",
         noPermissionCreate: "Du hast nicht die Befugnis eine Allianz zu gründen.",

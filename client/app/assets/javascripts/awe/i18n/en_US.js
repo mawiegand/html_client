@@ -336,7 +336,7 @@ AWE.I18n.en_US = function(module) {
           "A veteran fighter gives you a free advice about how to spend a free settlement point: 'Attack a fortress, win the battle and it will be yours to command.'",
           "If you want to know more details about the rules of the world, buildings, units or resources, have a look at the Encyclopedia.",
           "It's always good advice to choose an alliance that is close by and strong enough to help you against your foes.",
-          "Never upset the local governor, except you plan to end his reign and want to take his fortress from him, of course.",
+          "Never upset the local governor, except you plan to end his reign and want to take his fortress from him, of course."
         ],
         likeLeader: "{0} must be a lovely person. About {1} likes. Unbelievable!",
         resourceProductionLeader: {
@@ -467,7 +467,7 @@ AWE.I18n.en_US = function(module) {
         wrongPassword:"Alliance tag and password do not match.",
         memberLimitReached:"The maximum number of alliance members has already been reached.",
         unkownJoin:"For some reason, joining the alliance did fail.",
-        enterValidTag:"Enter a valid alliance tag with 2 to 5 characters.",
+        enterValidTag:"Enter a valid alliance tag with 2 to 5 characters. It must not contain any special characters.",
         enterValidName:"Enter a valid alliance name of at least 2 characters.",
         tagTaken:"The tag you've chosen is already taken by another alliance.",
         noPermissionCreate:"You're not allowed to create an alliance.",

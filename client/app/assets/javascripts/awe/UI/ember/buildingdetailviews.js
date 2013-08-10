@@ -384,7 +384,7 @@ AWE.UI.Ember = (function(module) {
       
       this.resetError();
       
-      if (!tag || tag.length < 2 || tag.length > 5) {
+      if (!tag || tag.length < 2 || tag.length > 5 || tag.match(/[^A-Za-z0-9]/)) {
         this.set('errorMessage', AWE.I18n.lookupTranslation('alliance.error.enterValidTag'));
         return ;
       }
