@@ -30,6 +30,7 @@ AWE.Controller = function (module) {
     var _scrollingLastVCPosition;
     var _disableArmies = false;
     var _viewPortChanged = false;
+    var _timeout = false;
 
     var _animations = [];
 
@@ -2458,14 +2459,21 @@ AWE.Controller = function (module) {
           return filtered;
         };
 
-//        if (_viewPortChanged) {
-//          _disableArmies |= (AWE.Util.hashCount(armyViews) > AWE.Config.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING);
-//        }
-//        else if(_disableArmies) {
-//          _disableArmies = false;
-//        }
+        if (_viewPortChanged) {
+          _disableArmies = _disableArmies || (AWE.Util.hashCount(armyViews) > AWE.Config.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING);
+        }
+        else if(_disableArmies) { // } && !_timeout) {
+//          _timeout = true;
+//          setTimeout(function() {
+//            _timeout = false;
+//            log('----------> callback');
+//            if (!_viewPortChanged && _disableArmies) {
+              _disableArmies = false;
+//            }
+//          }, 200);
+        }
 
-        armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies); // || _disableArmies);
+        armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies || _disableArmies);
 
         initViewsWithBasePosition(armies, pos);
         unclutter(armies, settlement, pos, frame);
@@ -3004,7 +3012,7 @@ AWE.Controller = function (module) {
       var oldVisibleArea = null;
       var oldWindowSize = null;
       var lastHideOtherArmies = hideOtherArmies;
-      var lastViewPortChanged = _viewPortChanged;
+      var lastDisableArmies = _disableArmies;
 
 
       var propUpdates = function (viewHash) {
@@ -3034,12 +3042,12 @@ AWE.Controller = function (module) {
         if ((AWE.Config.MAP_MOVE_ARMIES && _loopCounter % 60 == 0) ||
           _windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) ||
           _actionViewChanged || lastHideOtherArmies != hideOtherArmies ||
-          lastViewPortChanged != _viewPortChanged) { // if moving armies
+          lastDisableArmies != _disableArmies) { // if moving map
           stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         }
         
         lastHideOtherArmies = hideOtherArmies;
-        lastViewPortChanged = _viewPortChanged;
+        lastDisableArmies = _disableArmies;
 
         if (_windowChanged || this.modelChanged() || _actionViewChanged || currentAction || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           stagesNeedUpdate[2] = that.updateActionViews();
@@ -3124,10 +3132,10 @@ AWE.Controller = function (module) {
           } else {
             console.error("the camera needed an update, but did not return a new viewport");
           }
-//          _viewPortChanged = true;
+          _viewPortChanged = true;
         }
         else {
-//          _viewPortChanged = false;
+          _viewPortChanged = false;
         }
 
         // STEP 1: determine visible area (may have changed through user interaction)
