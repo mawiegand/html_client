@@ -2552,7 +2552,7 @@ AWE.Controller = function (module) {
 
         if (that.areArmiesAtFortressVisible(frame) && nodes[i].isLeaf() && nodes[i].region()) {
           var armies = nodes[i].region().getArmiesAtFortress();       // armies at fortress
-          var fortressView = fortressViews[nodes[i].id()]
+          var fortressView = fortressViews[nodes[i].id()];
           var position = fortressView ? AWE.Geometry.createPoint(
             fortressView.center().x, fortressView.center().y
           ) : AWE.Geometry.createPoint(
@@ -3018,6 +3018,7 @@ AWE.Controller = function (module) {
       var oldWindowSize = null;
       var lastHideOtherArmies = hideOtherArmies;
       var lastDisableArmies = _disableArmies;
+      var lastViewportChanged = _viewPortChanged;
 
 
       var propUpdates = function (viewHash) {
@@ -3046,13 +3047,14 @@ AWE.Controller = function (module) {
 
         if ((AWE.Config.MAP_MOVE_ARMIES && _loopCounter % 60 == 0) ||
           _windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) ||
-          _actionViewChanged || lastHideOtherArmies != hideOtherArmies ||
+          _actionViewChanged || lastHideOtherArmies != hideOtherArmies || lastViewportChanged != _viewPortChanged ||
           lastDisableArmies != _disableArmies) { // if moving map
           stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         }
         
         lastHideOtherArmies = hideOtherArmies;
         lastDisableArmies = _disableArmies;
+        lastViewportChanged = _viewPortChanged;
 
         if (_windowChanged || this.modelChanged() || _actionViewChanged || currentAction || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           stagesNeedUpdate[2] = that.updateActionViews();
