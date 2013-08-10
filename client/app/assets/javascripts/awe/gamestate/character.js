@@ -68,6 +68,8 @@ AWE.GS = (function(module) {
     avatar_string: null,
     avatar_obj: null,
 
+    tutorial_finished_at: null,
+
     avatar: function() {
       if(this.get('avatar_obj') == null) {
         this.set('avatar_obj', AWE.GS.Avatar.create({ avatar_string: this.get('avatar_string') }));
