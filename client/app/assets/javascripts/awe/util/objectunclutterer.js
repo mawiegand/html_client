@@ -174,7 +174,7 @@ AWE.Util = (function(module) {
             });
           
           
-            if (0 && simplify) {
+            if (simplify) {
               if (view.tmpMovementX > maxBounce) {
                 view.tmpMovementX = maxBounce;
               }
