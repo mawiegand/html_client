@@ -137,9 +137,6 @@ AWE.Util = (function(module) {
         var minBounce = minBounceStart * Math.pow(0.8, i);
         var maxBounce = maxBounceStart * Math.pow(0.8, i);
         
-        minBounce = minBounce;
-        maxBounce = maxBounce;
-    
         group.forEach(function(view, index1) {
           if (view.moveable) {
             view.tmpMovementX = 0.0;
@@ -154,7 +151,6 @@ AWE.Util = (function(module) {
                 var dirY = view.centerY - view2.centerY;
                               
                 var length2 = dirX*dirX+dirY*dirY;
-                var length  = Math.sqrt(length2);
                 
                 if (length2 === 0.0) {
                   if (index1 < index2) {  // there are really two armies on exactly the same spot! move the first one
@@ -164,9 +160,9 @@ AWE.Util = (function(module) {
                   }
                 }
                 else {   
-                  var length  = Math.sqrt(length2);
-                  dirX /= length;
-                  dirY /= length;         
+                  var scale  = Math.sqrt(length2);
+                  dirX /= scale;
+                  dirY /= scale;         
                 }
                             
                 var push = (maxBounce * (1.00001-Math.min(1.0, length2/(120.0*120.0)))) ;
@@ -178,7 +174,7 @@ AWE.Util = (function(module) {
             });
           
           
-            if (simplify) {
+            if (0 && simplify) {
               if (view.tmpMovementX > maxBounce) {
                 view.tmpMovementX = maxBounce;
               }
@@ -193,19 +189,18 @@ AWE.Util = (function(module) {
               }
             }
             else {
-              var pos     = AWE.Geometry.createPoint(view.tmpMovementX, view.tmpMovementY);
-              var length  = pos.length();
-              var npos    = null;
+              var length2 = view.tmpMovementX*view.tmpMovementX+view.tmpMovementY*view.tmpMovementY;
+              var scale   = null;
               
-              if (length > maxBounce) {
-                npos = pos.scale((1.0/length)*maxBounce);
-                view.tmpMovementX = npos.x;
-                view.tmpMovementY = npos.y;
+              if (length2 > minBounce*minBounce) {
+                scale = Math.sqrt(length2);
+                view.tmpMovementX = view.tmpMovementX / scale * maxBounce;
+                view.tmpMovementY = view.tmpMovementY / scale * maxBounce;
               }
-              else if (length > 0.000001 && length < minBounce) {
-                npos = pos.scale((1.0/length)*minBounce);
-                view.tmpMovementX = npos.x;
-                view.tmpMovementY = npos.y;
+              else if (length2 > 0.000001 && length2 < minBounce*minBounce) {
+                scale = Math.sqrt(length2);
+                view.tmpMovementX = view.tmpMovementX / scale * minBounce;
+                view.tmpMovementY = view.tmpMovementY / scale * minBounce;
               }
             }
           }
@@ -248,9 +243,9 @@ AWE.Util = (function(module) {
       var min_x = Math.max(view1.centerX-view1.width/2, view2.centerX-view2.width/2);
       var min_y = Math.max(view1.centerY-view1.height/2, view2.centerY-view2.height/2);
       var max_x = Math.min(view1.centerX+view1.width/2, view2.centerX+view2.width/2);
-      var max_y = Math.min(view1.centerX+view1.width/2, view2.centerX+view2.width/2);
+      var max_y = Math.min(view1.centerY+view1.height/2, view2.centerY+view2.height/2);
       
-      return max_x-min_x > 0 && max_y-min_y;
+      return max_x-min_x > 0 && max_y-min_y > 0;
     },
         
   });
