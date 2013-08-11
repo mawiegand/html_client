@@ -174,7 +174,7 @@ AWE.Util = (function(module) {
             });
           
           
-            if (simplify) {
+            if (0 && simplify) {   //  doesn't work that simple!!!  -> we need another approximation that doesn't need sqrt
               if (view.tmpMovementX > maxBounce) {
                 view.tmpMovementX = maxBounce;
               }
