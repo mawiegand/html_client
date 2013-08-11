@@ -132,6 +132,8 @@ AWE.Controller = function (module) {
       _stages[3].onClick = function () {
       };   // we generate our own clicks
 
+//      root.append('<div style="position:abolute; left:0; top:20px; width:50px; height:50px; background-color:#F00;">A</div>');
+
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
       that.setNeedsLayout();
@@ -2367,6 +2369,10 @@ AWE.Controller = function (module) {
                 view:view,
                 moveable:true,
                 id:view.army().getId(),
+                centerX:view.center().x,
+                centerY:view.center().y,
+                width:view.frame().size.width,
+                height:view.frame().size.height,
               });
             }
           }

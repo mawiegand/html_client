@@ -16,10 +16,12 @@ AWE.Util = (function(module) {
     numIterations: 4,
 
     setViews: function(views) {
+      var start = new Date();
       if (views != this.get('views')) {
         this.set('views', views);
         this.recalcClusters();
       };
+      log('RECALC CLUSTERS: duration in ms:', ((new Date()).getTime() - start.getTime()) );
     },
     
     getViews: function() {
@@ -47,7 +49,7 @@ AWE.Util = (function(module) {
             if (cluster !== null) {                 // this cluster has been merged with another cluster.
               for (var j=0; j < cluster.length && !intersects; j++) {
                 var view2 = cluster[j];
-                if (self.intersects(view.view, view2.view)) {
+                if (self.intersects(view, view2)) {
                   intersects = true;
                 }
               }
@@ -77,10 +79,10 @@ AWE.Util = (function(module) {
       
         var frac = ((view.id % 8) / 8.0) * 2*Math.PI;
         var dir  = AWE.Geometry.createPoint(Math.sin(frac), Math.cos(frac));
-        var pos  = view.view.center(); 
         dir.scale(((view.id*2) % 3 === 0 ? 8.0 : 4.0) * scaleFactor); 
       
-        view.view.setCenter(AWE.Geometry.createPoint(pos.x + dir.x, pos.y + dir.y));
+        view.centerX += dir.x;
+        view.centerY += dir.y;
       }
     },
     
@@ -103,16 +105,14 @@ AWE.Util = (function(module) {
         var view1 = group[0];
         var view2 = group[1];
     
-        if (view1.view.center().x === view2.view.center().x &&
-            view1.view.center().y === view2.view.center().y) { // objects at exact same position
+        if (view1.centerX === view2.centerX &&
+            view1.centerY === view2.centerY) { // objects at exact same position
          
           if (view1.moveable) { // move object one
-            view1.view.setCenter(AWE.Geometry.createPoint(view1.view.center().x + 2*scaleFactor,
-                                                          view1.view.center().y));
+            view1.centerX += 2*scaleFactor;
           }
           else if (view2.moveable) {
-            view2.view.setCenter(AWE.Geometry.createPoint(view2.view.center().x + 2*scaleFactor,
-                                                          view2.view.center().y));
+            view2.centerX += 2*scaleFactor;
           }
           else {
             return ; // no object is moveable!
@@ -121,79 +121,115 @@ AWE.Util = (function(module) {
       }
       
     //  log('UNCLUTTER GROUP ', group.length, 'SCALE', scaleFactor);
+    
+      var simplify = group.length > 10;
   
-      var minBounceStart = Math.min( 4.0 * scaleFactor,  20.0);
-      var maxBounceStart = Math.min(10.0 * scaleFactor,  80.0);
+      var minBounceStart = Math.min( 4.0 * scaleFactor,  20.0) * (simplify ? 2 : 1);
+      var maxBounceStart = Math.min(10.0 * scaleFactor,  80.0) * (simplify ? 2 : 1);
   
-      for (var i=0; i < 4; i++) { // 
+  
+      // idea: faster algorithm with just 1 or 2 loops and larger movement
+      
+      var repetitions = simplify ? 2 : 4;
+      
+      for (var i=0; i < repetitions; i++) { // 
     
         var minBounce = minBounceStart * Math.pow(0.8, i);
         var maxBounce = maxBounceStart * Math.pow(0.8, i);
+        
+        minBounce = minBounce;
+        maxBounce = maxBounce;
     
         group.forEach(function(view, index1) {
           if (view.moveable) {
-            view.tmpMovement = AWE.Geometry.createPoint(0.0, 0.0);
+            view.tmpMovementX = 0.0;
+            view.tmpMovementY = 0.0;
           
             group.forEach(function(view2, index2) {
               if (view !== view2) {
-                var doIntersect = self.intersects(view.view, view2.view);
+                var doIntersect = simplify || self.intersects(view, view2);
                 // if (!doIntersect) continue;     // better (closer) distribution, but causes jitter
               
-                var dir = AWE.Geometry.createPoint(view.view.center().x - view2.view.center().x, 
-                                                   view.view.center().y - view2.view.center().y);
+                var dirX = view.centerX - view2.centerX; 
+                var dirY = view.centerY - view2.centerY;
                               
-                var length = dir.length();
-                if (length === 0.0) {
+                var length2 = dirX*dirX+dirY*dirY;
+                var length  = Math.sqrt(length2);
+                
+                if (length2 === 0.0) {
                   if (index1 < index2) {  // there are really two armies on exactly the same spot! move the first one
-                    dir.x = 1.0;
-                    length = 1.0;
+                    dirX = 1.0;
+                    length2 = 1.0;
                     //log('WARNING: two models share the exact same position.', view.id, view2.id)
                   }
                 }
-                else {            
-                  dir.scale(1.0/length); 
+                else {   
+                  var length  = Math.sqrt(length2);
+                  dirX /= length;
+                  dirY /= length;         
                 }
                             
-                var push = (maxBounce * (1.00001-Math.min(1.0, length/120.0))) ;
+                var push = (maxBounce * (1.00001-Math.min(1.0, length2/(120.0*120.0)))) ;
                 push = doIntersect ? push : push * 0.5; 
-              
-                var pos = view.tmpMovement;
-   
-                view.tmpMovement = AWE.Geometry.createPoint(
-                  pos.x + dir.x * push, pos.y + dir.y * push
-                );  
+                 
+                view.tmpMovementX += dirX * push;
+                view.tmpMovementY += dirY * push;
               }
             });
           
-            var pos     = view.tmpMovement;
-            var length  = pos.length();
-
-           if (length > maxBounce) {
-              view.tmpMovement = pos.scale((1.0/length)*maxBounce);
+          
+            if (simplify) {
+              if (view.tmpMovementX > maxBounce) {
+                view.tmpMovementX = maxBounce;
+              }
+              if (view.tmpMovementX > 0.00001 && view.tmpMovementX < minBounce) {
+                view.tmpMovementX = minBounce;
+              }
+              if (view.tmpMovementY > maxBounce) {
+                view.tmpMovementY = maxBounce;
+              }
+              if (view.tmpMovementY > 0.00001 && view.tmpMovementY < minBounce) {
+                view.tmpMovementY = minBounce;
+              }
             }
-            else if (length > 0.000001 && length < minBounce) {
-              view.tmpMovement = pos.scale((1.0/length)*minBounce);
+            else {
+              var pos     = AWE.Geometry.createPoint(view.tmpMovementX, view.tmpMovementY);
+              var length  = pos.length();
+              var npos    = null;
+              
+              if (length > maxBounce) {
+                npos = pos.scale((1.0/length)*maxBounce);
+                view.tmpMovementX = npos.x;
+                view.tmpMovementY = npos.y;
+              }
+              else if (length > 0.000001 && length < minBounce) {
+                npos = pos.scale((1.0/length)*minBounce);
+                view.tmpMovementX = npos.x;
+                view.tmpMovementY = npos.y;
+              }
             }
           }
         });
     
         group.forEach(function(view) {
           if (view.moveable) {
-            var center = view.view.center();
-            var dir    = view.tmpMovement;
-          
-            // log("(", center.x, center.y, ") + ", dir.x, dir.y)
-          
-            view.view.setCenter(AWE.Geometry.createPoint(
-              center.x + dir.x, center.y + dir.y
-            )); 
+            view.centerX += view.tmpMovementX;
+            view.centerY += view.tmpMovementY;          
           }
         });
       } 
+      
+      group.forEach(function(view) {
+        if (view.moveable) {
+          var center = AWE.Geometry.createPoint(view.centerX, view.centerY);
+          view.view.setCenter(center);
+        }
+      });
     },   
 
 
     unclutter: function() {
+      var start = new Date();
       var clusters = this.get('clusters');
       var self = this;
       clusters.forEach(function(cluster) {
@@ -201,21 +237,20 @@ AWE.Util = (function(module) {
           self.unclutterGroup(cluster);
         }
       });
+      
+      log('UNCLUTTER: Number of Clusters (+1): ', clusters.length, 'duration in ms:', ((new Date()).getTime() - start.getTime()));
+      
     },
 
     intersects: function(view1, view2) {
       // Achtung: y-Koordinaten gehen nach UNTEN
-  
-      // Basis: Volle Breite, 1/2 Höhe
-      var frame1 = view1.frame();
-      var frame2 = view2.frame();
       
-      if (!frame1 || !frame2) {
-        log("ERROR: tried to intersect null frame:", frame1, frame2);
-        return false;
-      }
-  
-      return frame1.intersects(frame2);
+      var min_x = Math.max(view1.centerX-view1.width/2, view2.centerX-view2.width/2);
+      var min_y = Math.max(view1.centerY-view1.height/2, view2.centerY-view2.height/2);
+      var max_x = Math.min(view1.centerX+view1.width/2, view2.centerX+view2.width/2);
+      var max_y = Math.min(view1.centerX+view1.width/2, view2.centerX+view2.width/2);
+      
+      return max_x-min_x > 0 && max_y-min_y;
     },
         
   });
