@@ -21,7 +21,7 @@ AWE.Util = (function(module) {
         this.set('views', views);
         this.recalcClusters();
       };
-      log('RECALC CLUSTERS: duration in seconds:', ((new Date()).getTime() - start.getTime()) / 1000.0);
+      log('RECALC CLUSTERS: duration in ms:', ((new Date()).getTime() - start.getTime()) );
     },
     
     getViews: function() {
@@ -207,7 +207,7 @@ AWE.Util = (function(module) {
         }
       });
       
-      log('UNCLUTTER: Number of Clusters (+1): ', clusters.length, 'duration in seconds:', ((new Date()).getTime() - start.getTime()) / 1000.0);
+      log('UNCLUTTER: Number of Clusters (+1): ', clusters.length, 'duration in ms:', ((new Date()).getTime() - start.getTime()));
       
     },
 
