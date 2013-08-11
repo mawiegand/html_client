@@ -123,13 +123,18 @@ AWE.Util = (function(module) {
       }
       
     //  log('UNCLUTTER GROUP ', group.length, 'SCALE', scaleFactor);
+    
+      var simplify = group.length > 10;
   
-      var minBounceStart = Math.min( 4.0 * scaleFactor,  20.0);
-      var maxBounceStart = Math.min(10.0 * scaleFactor,  80.0);
+      var minBounceStart = Math.min( 4.0 * scaleFactor,  20.0) * (simplify ? 2 : 1);
+      var maxBounceStart = Math.min(10.0 * scaleFactor,  80.0) * (simplify ? 2 : 1);
   
   
       // idea: faster algorithm with just 1 or 2 loops and larger movement
-      for (var i=0; i < 4; i++) { // 
+      
+      var repetitions = simplify ? 2 : 4;
+      
+      for (var i=0; i < repetitions; i++) { // 
     
         var minBounce = minBounceStart * Math.pow(0.8, i);
         var maxBounce = maxBounceStart * Math.pow(0.8, i);
@@ -140,7 +145,7 @@ AWE.Util = (function(module) {
           
             group.forEach(function(view2, index2) {
               if (view !== view2) {
-                var doIntersect = self.intersects(view.view, view2.view);
+                var doIntersect = simplify || self.intersects(view.view, view2.view);
                 // if (!doIntersect) continue;     // better (closer) distribution, but causes jitter
               
                 var dir = AWE.Geometry.createPoint(view.view.center().x - view2.view.center().x, 
