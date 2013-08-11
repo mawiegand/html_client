@@ -16,10 +16,12 @@ AWE.Util = (function(module) {
     numIterations: 4,
 
     setViews: function(views) {
+      var start = new Date();
       if (views != this.get('views')) {
         this.set('views', views);
         this.recalcClusters();
       };
+      log('RECALC CLUSTERS: duration in seconds:', ((new Date()).getTime() - start.getTime()) / 1000.0);
     },
     
     getViews: function() {
@@ -125,6 +127,8 @@ AWE.Util = (function(module) {
       var minBounceStart = Math.min( 4.0 * scaleFactor,  20.0);
       var maxBounceStart = Math.min(10.0 * scaleFactor,  80.0);
   
+  
+      // idea: faster algorithm with just 1 or 2 loops and larger movement
       for (var i=0; i < 4; i++) { // 
     
         var minBounce = minBounceStart * Math.pow(0.8, i);
@@ -194,6 +198,7 @@ AWE.Util = (function(module) {
 
 
     unclutter: function() {
+      var start = new Date();
       var clusters = this.get('clusters');
       var self = this;
       clusters.forEach(function(cluster) {
@@ -201,6 +206,9 @@ AWE.Util = (function(module) {
           self.unclutterGroup(cluster);
         }
       });
+      
+      log('UNCLUTTER: Number of Clusters (+1): ', clusters.length, 'duration in seconds:', ((new Date()).getTime() - start.getTime()) / 1000.0);
+      
     },
 
     intersects: function(view1, view2) {
