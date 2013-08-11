@@ -136,6 +136,9 @@ AWE.Util = (function(module) {
     
         var minBounce = minBounceStart * Math.pow(0.8, i);
         var maxBounce = maxBounceStart * Math.pow(0.8, i);
+        
+        minBounce = minBounce;
+        maxBounce = maxBounce;
     
         group.forEach(function(view, index1) {
           if (view.moveable) {
@@ -147,26 +150,30 @@ AWE.Util = (function(module) {
                 var doIntersect = simplify || self.intersects(view, view2);
                 // if (!doIntersect) continue;     // better (closer) distribution, but causes jitter
               
-                var dir = AWE.Geometry.createPoint(view.centerX - view2.centerX, 
-                                                   view.centerY - view2.centerY);
+                var dirX = view.centerX - view2.centerX; 
+                var dirY = view.centerY - view2.centerY;
                               
-                var length = dir.length();
-                if (length === 0.0) {
+                var length2 = dirX*dirX+dirY*dirY;
+                var length  = Math.sqrt(length2);
+                
+                if (length2 === 0.0) {
                   if (index1 < index2) {  // there are really two armies on exactly the same spot! move the first one
-                    dir.x = 1.0;
-                    length = 1.0;
+                    dirX = 1.0;
+                    length2 = 1.0;
                     //log('WARNING: two models share the exact same position.', view.id, view2.id)
                   }
                 }
-                else {            
-                  dir.scale(1.0/length); 
+                else {   
+                  var length  = Math.sqrt(length2);
+                  dirX /= length;
+                  dirY /= length;         
                 }
                             
-                var push = (maxBounce * (1.00001-Math.min(1.0, length/120.0))) ;
+                var push = (maxBounce * (1.00001-Math.min(1.0, length2/(120.0*120.0)))) ;
                 push = doIntersect ? push : push * 0.5; 
                  
-                view.tmpMovementX += dir.x;
-                view.tmpMovementY += dir.y;
+                view.tmpMovementX += dirX * push;
+                view.tmpMovementY += dirY * push;
               }
             });
           
