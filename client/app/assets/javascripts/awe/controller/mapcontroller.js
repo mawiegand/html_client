@@ -2369,6 +2369,10 @@ AWE.Controller = function (module) {
                 view:view,
                 moveable:true,
                 id:view.army().getId(),
+                centerX:view.center().x,
+                centerY:view.center().y,
+                width:view.frame().size.width,
+                height:view.frame().size.height,
               });
             }
           }
