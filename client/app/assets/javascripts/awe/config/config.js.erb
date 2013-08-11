@@ -20,6 +20,8 @@ AWE.Config = (function(module) {
   }
   
   module.IE = eval("/*@cc_on!@*/!1");
+  module.FF = !!navigator.userAgent.match(/firefox/i);
+
 
   module.DEBUG_LEVEL_ERROR   = 0;
   module.DEBUG_LEVEL_WARNING = 1;
