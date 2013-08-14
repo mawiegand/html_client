@@ -94,6 +94,16 @@ AWE.UI.Ember = (function(module) {
 		buildingBinding: 'slot.building',
 				
 		mouseInView: false,
+
+    init: function() {
+      this._super();
+      this.bubbleAnimation();
+    },
+
+    bubbleAnimation: function() {
+      $('.bubble').animate({top: "+=10px"}, 1500)
+                  .animate({top: "-=10px"}, 1500, this.bubbleAnimation);
+    },
   
     showTooltip: function() {
       if (this.get('mouseInView') === true) {  // only show tooltip, if the mouse is still in view

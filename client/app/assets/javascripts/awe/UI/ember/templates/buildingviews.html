@@ -6,6 +6,11 @@
     {{#if slot.building.underDestruction}}
       <div class="level destructing">{{slot.building.level}}</div>
     {{else}}
+      {{#if slot.bubble}}
+        <div class="bubble-wrap">
+          <div class="bubble">&nbsp;</div>
+        </div>
+      {{/if}}
       <div class="level">{{slot.building.level}}</div>
     {{/if}}
   {{/if}}
