@@ -168,7 +168,31 @@ AWE.UI.Ember = (function(module) {
     }.property('slot.slot_num', 'slot.settlement_id' ),
 		
   });
+
   
+  /** @class
+   * @name AWE.UI.Ember.BubbleView */  
+  module.BubbleView = Ember.View.extend({
+    templateName: 'bubble',
+    bubble: null,
+
+    init: function() {
+      this._super();
+    },
+
+    click: function(event) {
+      var slot = this.get('slot');
+      var controller = this.getPath('parentView.controller');
+
+      if (controller) {
+        controller.slotClicked(slot);
+      }
+      else {
+        log('In Interactive Building View: no controller found!');
+      }
+    },  
+		
+  });
 
   /** @class
    * @name AWE.UI.Ember.HoverableView */  

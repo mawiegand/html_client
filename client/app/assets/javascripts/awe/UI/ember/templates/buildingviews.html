@@ -6,11 +6,7 @@
     {{#if slot.building.underDestruction}}
       <div class="level destructing">{{slot.building.level}}</div>
     {{else}}
-      {{#if slot.bubble}}
-        <div class="bubble-wrap">
-          <div class="bubble">&nbsp;</div>
-        </div>
-      {{/if}}
+      {{view AWE.UI.Ember.BubbleView bubbleBinding="slot.bubble"}}
       <div class="level">{{slot.building.level}}</div>
     {{/if}}
   {{/if}}
@@ -44,5 +40,14 @@
       {{t settlement.buildings.tooltip.empty.maxLevel }}: {{ buildingSlotView.maxLevel }}.
     {{/if}}
     <p>{{t settlement.buildings.tooltip.empty.advise}}</p>
+  {{/if}}
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="bubble">
+  {{#if bubble}}
+    <div class="bubble-wrap">
+      <div class="bubble">&nbsp;</div>
+    </div>
   {{/if}}
 </script>
