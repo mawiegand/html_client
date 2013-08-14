@@ -50,6 +50,8 @@ AWE.Config = (function(module) {
     "map/colony/small":       AWE.Config.RAILS_ASSET_PATH + 'settlements/colonysmall.png',
     "map/colony/middle":      AWE.Config.RAILS_ASSET_PATH + 'settlements/colonymiddle.png',
     "map/colony/big":         AWE.Config.RAILS_ASSET_PATH + 'settlements/colonybig.png',
+    
+    "map/icon/bubble":         AWE.Config.RAILS_ASSET_PATH + 'icons/bubble.png',
 
     "map/outpost/small":      AWE.Config.RAILS_ASSET_PATH + 'settlements/outpostsmall.png',
     "map/outpost/middle":     AWE.Config.RAILS_ASSET_PATH + 'settlements/outpostmiddle.png',
