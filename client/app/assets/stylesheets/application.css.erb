@@ -5054,6 +5054,7 @@ hurry-button:hover {
 
 
 .bubble-wrap {
+  position:relative;
   margin: auto auto;
   margin-top:50px;
   padding:0;
@@ -5062,33 +5063,47 @@ hurry-button:hover {
 }
 
 .bubble {
-  position:relative;
+  position:absolute;
+  top: 0px;
+  left: 0px;
   padding:0;
   width:  43px;
   height: 43px;
   background-size:  100%;
   background-image: url('<%= asset_path("icons/bubble.png") %>');
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
+
+.bubble-resource {
+  position:relative;
+  margin-top: 10px;
+  margin-left: 10px;
+  z-index: 20;
+  display: inline-block;
+}
+
+.bubble-xp, .bubble-amount {
+  z-index: 20;
+  visibility: hidden;
+  vertical-align: middle;
 }
 
 
 .small-bubble {
-  width:12px;
-  height:12px;
-  position:relative;
-  border-radius:12px;
+  top: 0px;
+  left: 0px;
+  width:24px;
+  height:24px;
+  position:absolute;
+  border-radius:24px;
   float:left;
-  margin:0;
+  margin-top: 46px;
+  margin-left: 34px;
   padding:0;
   background-size:  100%;
   background-image: url('<%= asset_path("icons/bubble.png") %>');
 }
-
-.bubble span {
-  position: relative;
-  left: 9.5px;
-  top:  9.5px;
-}
-
 
 
 /* ==|== print styles =======================================================

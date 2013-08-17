@@ -101,8 +101,8 @@ AWE.UI.Ember = (function(module) {
     },
 
     bubbleAnimation: function() {
-      $('.bubble').animate({top: "+=10px"}, 1500)
-                  .animate({top: "-=10px"}, 1500, this.bubbleAnimation);
+      $('.bubble').animate({top: "+=15px"}, 1500)
+                  .animate({top: "-=15px"}, 1500, this.bubbleAnimation);
     },
   
     showTooltip: function() {
@@ -176,31 +176,48 @@ AWE.UI.Ember = (function(module) {
     templateName: 'bubble',
     slot: null,
 
+    bubbleAmountBinding: 'slot.bubble_amount',
+    bubbleXPBinding: 'slot.bubble_xp',
+
+    xp: function() {
+      return this.getPath('slot.bubble_xp') && this.getPath('slot.bubble_xp') > 0;
+    }.property('slot.bubble_xp').cacheable(),
+
     init: function() {
       this._super();
     },
 
     click: function(event) {
       var element = event.currentTarget;
-      var bubble_count = 4;
+      var bubbleCount = 4;
       var self = this;
 
       // append small bubbles
-      for(i = 1; i <= bubble_count; ++i) {
+      for(var i = 1; i <= bubbleCount; ++i) {
         $(element).append('<div class="small-bubble n'+i+'">&nbsp;</div>');
       }
 
       // remove big bubble background
-      $(element).fadeTo(400, 0.0);
+      $(element).find('.bubble').css('background', 'none');
+
+      $(element).find(".bubble-resource").animate({
+        opacity: 0.2,
+        top: "-=60px",
+      }, 3000);
+
+      $(element).find('.bubble-xp').css('visibility', 'visible');
+      $(element).find('.bubble-amount').css('visibility', 'visible');
 
       // animate small bubbles
-      for(i = 1; i <= bubble_count; ++i) {
+      for(var i = 1; i <= bubbleCount; ++i) {
         $(".small-bubble.n"+i).animate({
-          opacity: 0.0,
+          opacity: 0.2,
           left: "+="+Math.floor((Math.random()*80)-40),
           top: "+="+Math.floor((Math.random()*80)-40),
-        }, 600, function() {
-          $(element).remove();
+        }, 1000, function() {
+          if (!jQuery.contains(document.documentElement, $(element))) {
+            $(element).remove();
+          }
         });
       }
 
@@ -210,8 +227,7 @@ AWE.UI.Ember = (function(module) {
           AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
           });
           AWE.GS.CharacterManager.updateCurrentCharacter();
-            AWE.GS.SlotManager.updateSlotsAtSettlement(self.getPath('slot.settlement.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
-          });
+//          AWE.GS.SlotManager.updateSlotsAtSettlement(self.getPath('slot.settlement.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
         }
       });
 
