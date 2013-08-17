@@ -183,7 +183,7 @@ AWE.UI.Ember = (function(module) {
     click: function(event) {
       var element = event.currentTarget;
       var bubble_count = 4;
-
+      var self = this;
 
       // append small bubbles
       for(i = 1; i <= bubble_count; ++i) {
@@ -202,18 +202,18 @@ AWE.UI.Ember = (function(module) {
         }, 600, function() {
           $(element).remove();
         });
-      
-        AWE.Action.Fundamental.createRedeemSlotBubbleAction(self.get('id'));
-        AWE.Action.Manager.queueAction(action, function(statusCode) {
-          var parent = self;
-          if(statusCode == 200) {
-            AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
-            }); 
-            AWE.GS.CharacterManager.updateCurrentCharacter();
-//            AWE.GS.SlotManager.updateSlotsAtSettlement(parent.getPath('settlement., AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
-  //          });
-          }   
       }
+
+      var action = AWE.Action.Settlement.createRedeemSlotBubbleAction(this.getPath('slot.id'));
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        if(statusCode == 200) {
+          AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
+          });
+          AWE.GS.CharacterManager.updateCurrentCharacter();
+            AWE.GS.SlotManager.updateSlotsAtSettlement(self.getPath('slot.settlement.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
+          });
+        }
+      });
 
       return false;
     },  
