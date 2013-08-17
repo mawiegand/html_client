@@ -174,24 +174,63 @@ AWE.UI.Ember = (function(module) {
    * @name AWE.UI.Ember.BubbleView */  
   module.BubbleView = Ember.View.extend({
     templateName: 'bubble',
-    bubble: null,
+    slot: null,
 
     init: function() {
       this._super();
     },
 
     click: function(event) {
-      var slot = this.get('slot');
-      var controller = this.getPath('parentView.controller');
+      log("####### eeeevent", event);
+      var element = event.currentTarget;
+      var bubble_count = 4;
 
-      if (controller) {
-        controller.slotClicked(slot);
+
+      // append small bubbles
+      for(i = 1; i <= bubble_count; ++i) {
+        $(element).append('<div class="small-bubble n'+i+'">&nbsp;</div>');
       }
-      else {
-        log('In Interactive Building View: no controller found!');
+
+      // remove big bubble background
+      $(element).fadeTo(400, 0.0);
+
+      // animate small bubbles
+      for(i = 1; i <= bubble_count; ++i) {
+        $(".small-bubble.n"+i).animate({
+          opacity: 0.0,
+          left: "+="+Math.floor((Math.random()*80)-40),
+          top: "+="+Math.floor((Math.random()*80)-40),
+        }, 600, function() {
+          $(element).remove();
+        });
+      
+        AWE.Action.Fundamental.createRedeemSlotBubbleAction(self.get('id'));
+        AWE.Action.Manager.queueAction(action, function(statusCode) {
+          var parent = self;
+          if(statusCode == 200) {
+            AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
+            }); 
+            AWE.GS.CharacterManager.updateCurrentCharacter();
+          }   
       }
+
+      return false;
     },  
-		
+    
+    /**
+     * returns true if bubble_resource_id is not null and thus
+     * activates the bubble
+     */
+	  isActive: function() {
+      return this.getPath('slot.bubble_resource_id') !== null;
+    }.property('slot.bubble_resource_id'),
+
+    /**
+     * returns the resource type for the bubble resource
+     */
+    resourceType: function() {
+      return AWE.GS.RulesManager.getRules().getResourceType(this.getPath('slot.bubble_resource_id'));
+    }.property('slot.bubble_resource_id'),
   });
 
   /** @class
