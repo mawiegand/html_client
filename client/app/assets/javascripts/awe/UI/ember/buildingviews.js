@@ -96,16 +96,18 @@ AWE.UI.Ember = (function(module) {
 		mouseInView: false,
 
     init: function() {
-      this._super();
       this.bubbleAnimation();
+      this._super();
     },
 
     didInsertElement: function() {
       this.bubbleAnimation();
+      this._super();
     },
 
     parentViewDidChange: function() {
       this.bubbleAnimation();
+      this._super();
     },
 
     bubbleAnimation: function() {
