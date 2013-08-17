@@ -100,6 +100,14 @@ AWE.UI.Ember = (function(module) {
       this.bubbleAnimation();
     },
 
+    didInsertElement: function() {
+      this.bubbleAnimation();
+    },
+
+    parentViewDidChange: function() {
+      this.bubbleAnimation();
+    },
+
     bubbleAnimation: function() {
       $('.bubble').animate({top: "+=15px"}, 1500)
                   .animate({top: "-=15px"}, 1500, this.bubbleAnimation);
@@ -192,6 +200,8 @@ AWE.UI.Ember = (function(module) {
       var bubbleCount = 4;
       var self = this;
 
+      $(element).find('.bubble').stop();
+
       // append small bubbles
       for(var i = 1; i <= bubbleCount; ++i) {
         $(element).append('<div class="small-bubble n'+i+'">&nbsp;</div>');
@@ -202,8 +212,8 @@ AWE.UI.Ember = (function(module) {
 
       $(element).find(".bubble-resource").animate({
         opacity: 0.2,
-        top: "-=60px",
-      }, 3000);
+        top: ["-=40px", 'linear'],
+      },  2000);
 
       $(element).find('.bubble-xp').css('visibility', 'visible');
       $(element).find('.bubble-amount').css('visibility', 'visible');
@@ -212,8 +222,8 @@ AWE.UI.Ember = (function(module) {
       for(var i = 1; i <= bubbleCount; ++i) {
         $(".small-bubble.n"+i).animate({
           opacity: 0.2,
-          left: "+="+Math.floor((Math.random()*80)-40),
-          top: "+="+Math.floor((Math.random()*80)-40),
+          left: ["+="+Math.floor((Math.random()*80)-40), 'linear'],
+          top: ["+="+Math.floor((Math.random()*80)-40), 'linear'],
         }, 1000, function() {
           if (!jQuery.contains(document.documentElement, $(element))) {
             $(element).remove();
