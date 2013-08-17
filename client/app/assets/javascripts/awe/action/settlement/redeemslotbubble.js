@@ -38,7 +38,6 @@ AWE.Action.Settlement = (function(module) {
     
     that.postProcess = function(statusCode, xhr) {
       if (statusCode == 200 || statusCode == 203) {
-        AWE.GS.SettlementManager.updateSettlement(settlement.getId());
       }
     }
   
