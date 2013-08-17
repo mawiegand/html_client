@@ -6,7 +6,7 @@
     {{#if slot.building.underDestruction}}
       <div class="level destructing">{{slot.building.level}}</div>
     {{else}}
-      {{view AWE.UI.Ember.BubbleView bubbleBinding="slot.bubble"}}
+      {{view AWE.UI.Ember.BubbleView slotBinding="slot"}}
       <div class="level">{{slot.building.level}}</div>
     {{/if}}
   {{/if}}
@@ -45,9 +45,11 @@
 
 
 <script type="text/x-handlebars" data-template-name="bubble">
-  {{#if bubble}}
+  {{#if isActive}}
     <div class="bubble-wrap">
-      <div class="bubble">&nbsp;</div>
+      <div class="bubble">
+        <span {{bindAttr class=":resource-icon resourceType.symbolic_id"}} {{bindAttr title="Bubble"}}></span>
+      </div>
     </div>
   {{/if}}
 </script>
