@@ -181,7 +181,6 @@ AWE.UI.Ember = (function(module) {
     },
 
     click: function(event) {
-      log("####### eeeevent", event);
       var element = event.currentTarget;
       var bubble_count = 4;
 
@@ -211,6 +210,8 @@ AWE.UI.Ember = (function(module) {
             AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
             }); 
             AWE.GS.CharacterManager.updateCurrentCharacter();
+//            AWE.GS.SlotManager.updateSlotsAtSettlement(parent.getPath('settlement., AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
+  //          });
           }   
       }
 
