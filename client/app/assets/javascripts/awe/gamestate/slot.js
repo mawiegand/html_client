@@ -734,7 +734,6 @@ AWE.GS = (function(module) {
 		_buildingInstance: null,      ///< private method holding the instance of the corresponding building, if needed.
 		hashableJobs:   null,
 
-    bubble: null,
     
     bindings: null,
     
@@ -746,8 +745,6 @@ AWE.GS = (function(module) {
         this.set('hashableJobs', hashableJobs); // TODO: establish connection via a computed property instead?
       }
 
-      this.set('bubble', true); // test value TODO: set dynamically
-      
       //this.updateConstructionOptions();
     },
     
