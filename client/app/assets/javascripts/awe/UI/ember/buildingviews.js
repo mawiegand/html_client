@@ -24,7 +24,7 @@ AWE.UI.Ember = (function(module) {
         if (document.documentElement.contains(bubble)) {
           $(bubble).animate({top: "+=15px"}, 1500, function() {
             if (document.documentElement.contains(bubble)) {
-              $(bubble).stop(true, true);
+              $(bubble).stop(true);
               $(bubble).animate({top: "-=15px"}, 1500, AWE.UI.Ember.animateBubbles);
             }
           });
