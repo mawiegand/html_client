@@ -1325,11 +1325,9 @@ AWE.Controller = (function(module) {
           that.updateStandardAssignments(AWE.GS.game.getPath('currentCharacter.enumerableStandardAssignments'));
           that.updateSpecialAssignments(AWE.GS.game.getPath('currentCharacter.specialAssignment'));
         }
-        log('----> counter', counter);
+
         if (counter % 100 == 0) {
-          log('----> restart');
           settlement.get('enumerableSlots').forEach(function(slot) {
-            log('----> restart', slot.getId());
             AWE.UI.Ember.reanimateBubbles(slot.getId());
           });
         }

@@ -36,8 +36,6 @@ AWE.UI.Ember = (function(module) {
     }
   };
 
-
-
   /** @class
    * @name AWE.UI.Ember.BuildingView */  
   module.BuildingView = Ember.View.extend( /** @lends AWE.UI.Ember.BuildingView# */ {
