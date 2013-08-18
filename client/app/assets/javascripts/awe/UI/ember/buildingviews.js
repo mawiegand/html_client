@@ -17,8 +17,20 @@ AWE.UI.Ember = (function(module) {
   module.presentToolTipOnView = null;
 
   module.animateBubbles = function() {
-    $('.bubble').animate({top: "+=15px"}, 1500)
-      .animate({top: "-=15px"}, 1500, AWE.UI.Ember.animateBubbles);
+    var bubbles = $('.bubble');
+    if (bubbles.length) {
+      for (var i = 0; i < bubbles.length; i++) {
+        var bubble = bubbles[i];
+        if (document.documentElement.contains(bubble)) {
+          $(bubble).animate({top: "+=15px"}, 1500, function() {
+            if (document.documentElement.contains(bubble)) {
+              $(bubble).stop(true, true);
+              $(bubble).animate({top: "-=15px"}, 1500, AWE.UI.Ember.animateBubbles);
+            }
+          });
+        }
+      }
+    }
   };
 
 
@@ -139,7 +151,7 @@ AWE.UI.Ember = (function(module) {
     
   
     click: function(event) {
-		  var slot = this.get('slot');
+      var slot = this.get('slot');
 		  var controller = this.getPath('parentView.controller');
 		  
 		  if (controller) {
@@ -197,12 +209,16 @@ AWE.UI.Ember = (function(module) {
       this._super();
     },
 
+    bubbleObserver: function() {
+      AWE.UI.Ember.animateBubbles();
+    }.observes('slot.bubble_resource_id'),
+
     click: function(event) {
       var element = event.currentTarget;
       var bubbleCount = 4;
       var self = this;
 
-      $(element).find('.bubble').stop();
+      $(element).find('.bubble').stop(true);
 
       // append small bubbles
       for(var i = 1; i <= bubbleCount; ++i) {
