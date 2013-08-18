@@ -118,10 +118,6 @@ AWE.UI.Ember = (function(module) {
       this._super();
     },
 
-    didInsertElement: function() {
-      AWE.UI.Ember.animateBubbles(this.getPath('slot.id'));
-    },
-
     showTooltip: function() {
       if (this.get('mouseInView') === true) {  // only show tooltip, if the mouse is still in view
         this.setPath('parentView.hoveredBuildingSlotView', this);
@@ -236,11 +232,11 @@ AWE.UI.Ember = (function(module) {
       for(var i = 1; i <= bubbleCount; ++i) {
         $(".small-bubble.n"+i).animate({
           opacity: 0.2,
-          left: ["+="+Math.floor((Math.random()*80)-40), 'linear'],
-          top: ["+="+Math.floor((Math.random()*80)-40), 'linear'],
+          left: ["+="+Math.floor((Math.random()*160)-80), 'linear'],
+          top: ["+="+Math.floor((Math.random()*160)-80), 'linear'],
         }, 1000, function() {
           if (!jQuery.contains(document.documentElement, $(element))) {
-            $(element).remove();
+            $(element).hide();
           }
         });
       }
@@ -270,14 +266,20 @@ AWE.UI.Ember = (function(module) {
      */
 	  isActive: function() {
       return this.getPath('slot.bubble_resource_id') != null;
-    }.property('slot.bubble_resource_id'),
+    }.property('slot', 'slot.bubble_resource_id').cacheable(),
+
+    activeObserver: function() {
+      if (this.getPath('slot.bubble_resource_id') != null) {
+        AWE.UI.Ember.animateBubbles(this.getPath('slot.id'));
+      }
+    }.observes('slot.bubble_resource_id'),
 
     /**
      * returns the resource type for the bubble resource
      */
     resourceType: function() {
       return AWE.GS.RulesManager.getRules().getResourceType(this.getPath('slot.bubble_resource_id'));
-    }.property('slot.bubble_resource_id'),
+    }.property('slot', 'slot.bubble_resource_id').cacheable(),
   });
 
   /** @class
