@@ -208,10 +208,6 @@ AWE.UI.Ember = (function(module) {
       this._super();
     },
 
-    bubbleObserver: function() {
-      AWE.UI.Ember.animateBubbles();
-    }.observes('slot.bubble_resource_id'),
-
     click: function(event) {
       var element = event.currentTarget;
       var bubbleCount = 4;
@@ -255,7 +251,13 @@ AWE.UI.Ember = (function(module) {
           AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
           });
           AWE.GS.CharacterManager.updateCurrentCharacter();
-//          AWE.GS.SlotManager.updateSlotsAtSettlement(self.getPath('slot.settlement.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+          AWE.GS.SlotManager.updateSlotsAtSettlement(self.getPath('slot.settlement.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
+//            log('----------> slots', slots);
+            AWE.Ext.applyFunctionToElements(slots, function(slot) {
+//              log('----------> slot', slot);
+//              log('----------> slot res id', slot.get('bubble_resource_id'));
+            });
+          });
         }
       });
 
@@ -267,7 +269,7 @@ AWE.UI.Ember = (function(module) {
      * activates the bubble
      */
 	  isActive: function() {
-      return this.getPath('slot.bubble_resource_id') !== null;
+      return this.getPath('slot.bubble_resource_id') != null;
     }.property('slot.bubble_resource_id'),
 
     /**
