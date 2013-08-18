@@ -15,7 +15,12 @@ AWE.UI = AWE.UI || {};
 AWE.UI.Ember = (function(module) {
   
   module.presentToolTipOnView = null;
-  
+
+  module.animateBubbles = function() {
+    $('.bubble').animate({top: "+=15px"}, 1500)
+      .animate({top: "-=15px"}, 1500, AWE.UI.Ember.animateBubbles);
+  };
+
 
   /** @class
    * @name AWE.UI.Ember.BuildingView */  
@@ -96,25 +101,20 @@ AWE.UI.Ember = (function(module) {
 		mouseInView: false,
 
     init: function() {
-      this.bubbleAnimation();
+      AWE.UI.Ember.animateBubbles();
       this._super();
     },
 
     didInsertElement: function() {
-      this.bubbleAnimation();
+      AWE.UI.Ember.animateBubbles();
       this._super();
     },
 
     parentViewDidChange: function() {
-      this.bubbleAnimation();
+      AWE.UI.Ember.animateBubbles();
       this._super();
     },
 
-    bubbleAnimation: function() {
-      $('.bubble').animate({top: "+=15px"}, 1500)
-                  .animate({top: "-=15px"}, 1500, this.bubbleAnimation);
-    },
-  
     showTooltip: function() {
       if (this.get('mouseInView') === true) {  // only show tooltip, if the mouse is still in view
         this.setPath('parentView.hoveredBuildingSlotView', this);
