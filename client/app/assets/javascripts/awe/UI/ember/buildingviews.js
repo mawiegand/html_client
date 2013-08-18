@@ -16,22 +16,26 @@ AWE.UI.Ember = (function(module) {
   
   module.presentToolTipOnView = null;
 
-  module.animateBubbles = function() {
-    var bubbles = $('.bubble');
-    if (bubbles.length) {
-      for (var i = 0; i < bubbles.length; i++) {
-        var bubble = bubbles[i];
-        if (document.documentElement.contains(bubble)) {
-          $(bubble).animate({top: "+=15px"}, 1500, function() {
-            if (document.documentElement.contains(bubble)) {
-              $(bubble).stop(true);
-              $(bubble).animate({top: "-=15px"}, 1500, AWE.UI.Ember.animateBubbles);
-            }
+  module.animateBubbles = function(slotId) {
+    var bubble = $('.bubble' + slotId)[0];
+    if (jQuery.contains(document.documentElement, bubble)) {
+      $(bubble).animate({top: "+=15px"}, 1500, function() {
+        if (jQuery.contains(document.documentElement, bubble)) {
+          $(bubble).animate({top: "-=15px"}, 1500, function() {
+            AWE.UI.Ember.animateBubbles(slotId)
           });
         }
-      }
+      });
     }
   };
+
+  module.reanimateBubbles = function(slotId) {
+    var bubble = $('.bubble' + slotId);
+    if (jQuery.contains(document.documentElement, bubble[0]) && !bubble.is(':animated')) {
+      module.animateBubbles(slotId);
+    }
+  };
+
 
 
   /** @class
@@ -113,18 +117,11 @@ AWE.UI.Ember = (function(module) {
 		mouseInView: false,
 
     init: function() {
-      AWE.UI.Ember.animateBubbles();
       this._super();
     },
 
     didInsertElement: function() {
-      AWE.UI.Ember.animateBubbles();
-      this._super();
-    },
-
-    parentViewDidChange: function() {
-      AWE.UI.Ember.animateBubbles();
-      this._super();
+      AWE.UI.Ember.animateBubbles(this.getPath('slot.id'));
     },
 
     showTooltip: function() {
@@ -201,6 +198,10 @@ AWE.UI.Ember = (function(module) {
     bubbleAmountBinding: 'slot.bubble_amount',
     bubbleXPBinding: 'slot.bubble_xp',
 
+    bubbleClass: function() {
+      return 'bubble' + this.getPath('slot.id');
+    }.property('slot').cacheable(),
+
     xp: function() {
       return this.getPath('slot.bubble_xp') && this.getPath('slot.bubble_xp') > 0;
     }.property('slot.bubble_xp').cacheable(),
@@ -223,6 +224,7 @@ AWE.UI.Ember = (function(module) {
       // append small bubbles
       for(var i = 1; i <= bubbleCount; ++i) {
         $(element).append('<div class="small-bubble n'+i+'">&nbsp;</div>');
+        $(element).find('.small-bubble').css('top', $(element).find('.bubble').css('top'));
       }
 
       // remove big bubble background

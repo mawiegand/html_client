@@ -1275,7 +1275,7 @@ AWE.Controller = (function(module) {
     
     var counter = 0;
     that.runloop = function() {
-      if (counter++ % 2 !== 0) return ; // skip every other "frame"
+      if (++counter % 2 !== 0) return ; // skip every other "frame"
       
       this.updateDebug();
       
@@ -1324,6 +1324,14 @@ AWE.Controller = (function(module) {
         if (settlement && this.view.getPath('selectedSlot.building.unlockedAssignments')) {
           that.updateStandardAssignments(AWE.GS.game.getPath('currentCharacter.enumerableStandardAssignments'));
           that.updateSpecialAssignments(AWE.GS.game.getPath('currentCharacter.specialAssignment'));
+        }
+        log('----> counter', counter);
+        if (counter % 100 == 0) {
+          log('----> restart');
+          settlement.get('enumerableSlots').forEach(function(slot) {
+            log('----> restart', slot.getId());
+            AWE.UI.Ember.reanimateBubbles(slot.getId());
+          });
         }
       }
       

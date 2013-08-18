@@ -47,7 +47,7 @@
 <script type="text/x-handlebars" data-template-name="bubble">
   {{#if isActive}}
     <div class="bubble-wrap">
-      <div class="bubble">
+      <div {{bindAttr class=":bubble bubbleClass"}}>
         <div class="bubble-resource">
           <span {{bindAttr class=":resource-icon resourceType.symbolic_id"}} {{bindAttr title="Bubble"}}></span><span class="bubble-amount">{{bubbleAmount}}</span>
           {{#if xp}}
