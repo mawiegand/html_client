@@ -233,10 +233,12 @@
           ({{t settlement.assignment.hurried }})
         {{/if}} <br />
       <b>{{t settlement.assignment.costs}}:</b>
-      {{#each costs}}
-        <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span> {{amount}} &nbsp;
-      {{/each}}
-      <br />
+      {{#if costs}}
+        {{#each costs}}
+          <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span> {{amount}} &nbsp;
+        {{/each}}
+        <br />
+      {{/if}}
       {{#if unitDeposits}}
         <b>{{t settlement.assignment.unitDeposits}}:</b>
           {{#each unitDeposits}}
