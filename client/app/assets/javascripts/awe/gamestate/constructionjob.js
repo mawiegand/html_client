@@ -70,7 +70,7 @@ AWE.GS = (function(module) {
         var speed    = this.getPath('queue.speed');
         return building && level ? building.calcProductionTime(level, speed) : null;
       }
-    }.property('level_after', 'slot.building', 'queue.speed', 'job_type').cacheable(),
+    }.property('slot', 'level_after', 'slot.building', 'queue.speed', 'job_type').cacheable(),
         
     destructionTime: function() { // todo: need more complex functions for tearing down!
       var building = this.getPath('slot.building');
@@ -83,7 +83,7 @@ AWE.GS = (function(module) {
         time += building.calcProductionTime(l);
       }
       return time;
-    }.property('level_before', 'buildingType.production_time', 'queue.speed').cacheable(),
+    }.property('slot', 'slot.building', 'level_before', 'buildingType.production_time', 'queue.speed').cacheable(),
         
     parsedFinishingDate: function() {
       var active_job = this.get('active_job');
@@ -108,7 +108,7 @@ AWE.GS = (function(module) {
       
       // mit this vergleichen      
       return max && this.getId() === max.getId();
-    }.property('slot.hashableJobs.changedAt').cacheable(),
+    }.property('slot_id', 'slot.hashableJobs.changedAt').cacheable(),
   });     
     
   // ///////////////////////////////////////////////////////////////////////
