@@ -43,7 +43,7 @@ AWE.GS = (function(module) {
     
     slot: function() {
       return AWE.GS.SlotManager.getSlot(this.get('slot_id'));
-    }.property('slot_id', 'level_after').cacheable(),
+    }.property('slot_id', 'level_after'),
     
     position: null,
     level_after: null,
