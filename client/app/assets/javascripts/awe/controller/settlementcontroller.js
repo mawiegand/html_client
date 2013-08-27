@@ -974,6 +974,7 @@ AWE.Controller = (function(module) {
     // slot update method
     that.updateSlots = function() {
       AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
+        log('-----> slots updated');
       });
     }
       
@@ -982,6 +983,7 @@ AWE.Controller = (function(module) {
     that.updateConstructionQueueSlotAndJobs = function(queueId, callback) {
       // as we don't know the right slot (or slot id), we update all slots
       AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
+        log('-----> slots updated');
         AWE.GS.ConstructionQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queue) {
           log('updated construction queue', queueId);
         });

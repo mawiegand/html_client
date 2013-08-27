@@ -42,6 +42,7 @@ AWE.GS = (function(module) {
     }.property('building_id').cacheable(),
     
     slot: function() {
+      log('-----> slot in job', AWE.GS.SlotManager.getSlot(this.get('slot_id')));
       return AWE.GS.SlotManager.getSlot(this.get('slot_id'));
     }.property('slot_id', 'level_after'),
     
