@@ -244,8 +244,8 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
   
     my = my || {};
         
-    my.entities = [];                 ///< holds all available information about armies
-    my.runningUpdatesPerId = [];      ///< hash that contains all running update requests, using the entity.id as key.
+    my.entities = {};                 ///< holds all available information about armies
+    my.runningUpdatesPerId = {};      ///< hash that contains all running update requests, using the entity.id as key.
 
     my.createEntity = my.createEntity || function(spec) { return module.Entity.create(spec); };
     
