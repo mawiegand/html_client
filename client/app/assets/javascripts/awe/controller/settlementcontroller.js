@@ -972,7 +972,6 @@ AWE.Controller = (function(module) {
     }
 
     // slot update method
-
     that.updateSlots = function() {
       AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
       });
@@ -981,16 +980,15 @@ AWE.Controller = (function(module) {
     // construction queue and job update methods
     
     that.updateConstructionQueueSlotAndJobs = function(queueId, callback) {
-      AWE.GS.ConstructionQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queue) {
-        log('updated construction queue', queueId);
+      // as we don't know the right slot (or slot id), we update all slots
+      AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
+        AWE.GS.ConstructionQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queue) {
+          log('updated construction queue', queueId);
+        });
       });
-      
+
       this.updateResourcePool(); // update the pool for the case this update was triggered because a job was finished (and a new one might have started)
       this.updateSettlement();
-
-      // as we don't know the right slot (or slot id), we update all slots
-      AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {      
-      });
 
       AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
         if (callback) {
