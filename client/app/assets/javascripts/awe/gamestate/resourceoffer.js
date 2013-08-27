@@ -62,7 +62,7 @@ AWE.GS = (function(module) {
     that.getResourceOffers = function() {
       var offers = []
       
-      AWE.Util.applyFunctionToElements(function(offer){
+      AWE.Util.applyFunctionToElements(that.getEntities(), function(offer){
         if (offer) offers.push(offer);
       });
       return offers;
