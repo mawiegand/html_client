@@ -249,6 +249,7 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
 
     my.createEntity = my.createEntity || function(spec) { return module.Entity.create(spec); };
     
+    
     my.processUpdateResponse = my.processUpdateResponse || function(data, updateType, start) {
       
       if (data === null) {
@@ -473,6 +474,10 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
     
     that.getEntities = function() {
       return my.entities;
+    }
+    
+    that.removeAllEntities = function() {
+      my.entities = {};
     }
     
     /** takes an enumerable and a resultHash from a query for entities, then
