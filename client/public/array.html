@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Array Testpage</title>
+  <script type="text/javascript">
+
+    a = [];
+    o = {};
+
+    var startArray1 = function() {
+      a[100000000] = 'b';
+
+      var start = new Date();
+      var c;
+
+      for (var i = 0; i < a.length; i++) {
+        c = a[i];
+      }
+
+      alert(new Date() - start);
+    };
+
+    var startArray2 = function() {
+      a[100000000] = 'b';
+
+      var start = new Date();
+      var c;
+
+      for (var i in a) {
+        if (a.hasOwnProperty(i)) {
+          c = a[i];
+        }
+      }
+
+      alert(new Date() - start);
+    };
+
+    var startObject = function() {
+      o[100000000] = 'b';
+
+      var start = new Date();
+      var c;
+
+      for (var i in o) {
+        if (o.hasOwnProperty(i)) {
+          c = o[i];
+        }
+      }
+
+      alert(new Date() - start);
+    };
+
+  </script>
+</head>
+
+<body>
+  <div class="dialog">
+    <button onclick="startArray1()">Start Array</button>
+    <button onclick="startArray2()">Start Array</button>
+    <button onclick="startObject()">Start Object</button>
+  </div>
+</body>
+</html>
