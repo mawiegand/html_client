@@ -15,11 +15,13 @@ AWE.Config = (function(module) {
   module.PORTAL_ROOT = document.location.protocol + '//' + ("<%= CLIENT_CONFIG['portal_server_base'] %>") ;
 
   if (!document.location.host) { // for the case where it's loaded from file
-    module.SERVER_ROOT = 'http://localhost'
-    module.PORTAL_ROOT = 'http://localhost'
+    module.SERVER_ROOT = 'http://localhost';
+    module.PORTAL_ROOT = 'http://localhost';
   }
   
   module.IE = eval("/*@cc_on!@*/!1");
+  module.FF = !!navigator.userAgent.match(/firefox/i);
+
 
   module.DEBUG_LEVEL_ERROR   = 0;
   module.DEBUG_LEVEL_WARNING = 1;
@@ -28,6 +30,7 @@ AWE.Config = (function(module) {
   
   module.DONT_RENDER_ARMIES       = false;
   module.DONT_RENDER_OTHER_ARMIES = false;
+  module.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING = 40;
 
   module.IN_DEVELOPMENT_MODE      = <%= Rails.env.development? ? 'true' : 'false' %>;
 
@@ -37,6 +40,8 @@ AWE.Config = (function(module) {
   module.MAP_DEBUG_FRAMES = false;
 
   module.MAP_MOVE_ARMIES          = false;
+  
+  module.MAP_DISPLAY_STREETS      = false;
 
 
   module.MAP_RUN_TESTS = false;

@@ -25,6 +25,57 @@ AWE.GS = (function(module) {
   });
 
   module.TimeManager = AWE.Util.TimeCorrection.createManager();
+  
+  
+  module.cleanupMapData = function() {
+    
+    /*
+  
+    NSArray* armies = [[self.armyManager allEntities] copy];
+        for (AWEArmy* army in armies) {
+          if (![army isOwn]) {
+            [self.armyManager removeEntity:army];
+          }
+        }
+
+        NSArray* regions  = [[self.regionManager allEntities] copy];
+        AWERegion* homeRegion = [[self.currentCharacter homeBase] region] ;
+        for (AWERegion* region in regions) {
+          if (![region isOwn] && region != homeRegion) {
+            NSSet* locations = [[region locations] copy];
+            for (AWELocation* location in locations) {
+              [self.locationManager removeEntity:location];
+            }
+            [self.regionManager removeEntity:region];
+          }
+        }
+
+        // TODO: orderly cleanup NODES */
+  }
+
+
+  module.cleanupRankingData = function() {
+    module.CharacterRankingEntryManager.removeAllEntities();
+    module.AllianceRankingEntryManager.removeAllEntities();
+    module.FortressRankingEntryManager.removeAllEntities();
+    module.ArtifactRankingEntryManager.removeAllEntities();
+  }
+
+
+  module.cleanupGeneralData = function() {
+    if (!module.game || !module.game.getPath('currentCharacter')) {
+      return ; // don't run during initialization where no character is present.
+    }
+    
+    var characters = AWE.Ext.hashValues(module.CharacterManager.getEntities());
+    
+    character.forEach(function(character) {
+      if (character.get('id') && character.get('id') !== module.game.getPath('currentCharacter.id')) {
+        module.characterHash.removeEntity(character);
+      }
+    });
+  }
+
 
   return module;
   

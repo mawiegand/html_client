@@ -15,7 +15,26 @@ AWE.UI = AWE.UI || {};
 AWE.UI.Ember = (function(module) {
   
   module.presentToolTipOnView = null;
-  
+
+  module.animateBubbles = function(slotId) {
+    var bubble = $('.bubble' + slotId)[0];
+    if (jQuery.contains(document.documentElement, bubble)) {
+      $(bubble).animate({top: "+=15px"}, 1500, function() {
+        if (jQuery.contains(document.documentElement, bubble)) {
+          $(bubble).animate({top: "-=15px"}, 1500, function() {
+            AWE.UI.Ember.animateBubbles(slotId)
+          });
+        }
+      });
+    }
+  };
+
+  module.reanimateBubbles = function(slotId) {
+    var bubble = $('.bubble' + slotId);
+    if (jQuery.contains(document.documentElement, bubble[0]) && !bubble.is(':animated')) {
+      module.animateBubbles(slotId);
+    }
+  };
 
   /** @class
    * @name AWE.UI.Ember.BuildingView */  
@@ -94,7 +113,11 @@ AWE.UI.Ember = (function(module) {
 		buildingBinding: 'slot.building',
 				
 		mouseInView: false,
-  
+
+    init: function() {
+      this._super();
+    },
+
     showTooltip: function() {
       if (this.get('mouseInView') === true) {  // only show tooltip, if the mouse is still in view
         this.setPath('parentView.hoveredBuildingSlotView', this);
@@ -119,7 +142,7 @@ AWE.UI.Ember = (function(module) {
     
   
     click: function(event) {
-		  var slot = this.get('slot');
+      var slot = this.get('slot');
 		  var controller = this.getPath('parentView.controller');
 		  
 		  if (controller) {
@@ -158,7 +181,106 @@ AWE.UI.Ember = (function(module) {
     }.property('slot.slot_num', 'slot.settlement_id' ),
 		
   });
+
   
+  /** @class
+   * @name AWE.UI.Ember.BubbleView */  
+  module.BubbleView = Ember.View.extend({
+    templateName: 'bubble',
+    slot: null,
+
+    bubbleAmountBinding: 'slot.bubble_amount',
+    bubbleXPBinding: 'slot.bubble_xp',
+
+    bubbleClass: function() {
+      return 'bubble' + this.getPath('slot.id');
+    }.property('slot').cacheable(),
+
+    xp: function() {
+      return this.getPath('slot.bubble_xp') && this.getPath('slot.bubble_xp') > 0;
+    }.property('slot.bubble_xp').cacheable(),
+
+    init: function() {
+      this._super();
+    },
+
+    click: function(event) {
+      var element = event.currentTarget;
+      var bubbleCount = 4;
+      var self = this;
+
+      $(element).find('.bubble').stop(true);
+
+      // append small bubbles
+      for(var i = 1; i <= bubbleCount; ++i) {
+        $(element).append('<div class="small-bubble n'+i+'">&nbsp;</div>');
+        $(element).find('.small-bubble').css('top', $(element).find('.bubble').css('top'));
+      }
+
+      // remove big bubble background
+      $(element).find('.bubble').css('background', 'none');
+
+      $(element).find(".bubble-resource").animate({
+        opacity: 0.2,
+        top: ["-=40px", 'linear'],
+      },  2000);
+
+      $(element).find('.bubble-xp').css('visibility', 'visible');
+      $(element).find('.bubble-amount').css('visibility', 'visible');
+
+      // animate small bubbles
+      for(var i = 1; i <= bubbleCount; ++i) {
+        $(".small-bubble.n"+i).animate({
+          opacity: 0.2,
+          left: ["+="+Math.floor((Math.random()*160)-80), 'linear'],
+          top: ["+="+Math.floor((Math.random()*160)-80), 'linear'],
+        }, 1000, function() {
+          if (!jQuery.contains(document.documentElement, $(element))) {
+            $(element).hide();
+          }
+        });
+      }
+
+      var action = AWE.Action.Settlement.createRedeemSlotBubbleAction(this.getPath('slot.id'));
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        if(statusCode == 200) {
+          AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
+          });
+          AWE.GS.CharacterManager.updateCurrentCharacter();
+          AWE.GS.SlotManager.updateSlotsAtSettlement(self.getPath('slot.settlement.id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
+//            log('----------> slots', slots);
+            AWE.Ext.applyFunctionToElements(slots, function(slot) {
+//              log('----------> slot', slot);
+//              log('----------> slot res id', slot.get('bubble_resource_id'));
+            });
+          });
+        }
+      });
+
+      return false;
+    },  
+    
+    /**
+     * returns true if bubble_resource_id is not null and thus
+     * activates the bubble
+     */
+	  isActive: function() {
+      return this.getPath('slot.bubble_resource_id') != null;
+    }.property('slot', 'slot.bubble_resource_id').cacheable(),
+
+    activeObserver: function() {
+      if (this.getPath('slot.bubble_resource_id') != null) {
+        AWE.UI.Ember.animateBubbles(this.getPath('slot.id'));
+      }
+    }.observes('slot.bubble_resource_id'),
+
+    /**
+     * returns the resource type for the bubble resource
+     */
+    resourceType: function() {
+      return AWE.GS.RulesManager.getRules().getResourceType(this.getPath('slot.bubble_resource_id'));
+    }.property('slot', 'slot.bubble_resource_id').cacheable(),
+  });
 
   /** @class
    * @name AWE.UI.Ember.HoverableView */  

@@ -39,7 +39,10 @@
     
       {{#if "hoveredBuildingSlotView" }}
         {{view AWE.UI.Ember.ToolTipView templateName="building-slot-tooltip" classNames="mouse-over" mouseXBinding="hoveredBuildingSlotView.mouseX" mouseYBinding="hoveredBuildingSlotView.mouseY" buildingBinding="hoveredBuildingSlotView.slot.building" buildingSlotViewBinding="hoveredBuildingSlotView" }}
-      {{/if}}      
+      {{/if}}     
+      
+      <div class="base-picture-right">
+      </div> 
     </div>
 
     {{#if shouldDisplaySettlementSwitch}}

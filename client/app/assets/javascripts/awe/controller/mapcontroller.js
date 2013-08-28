@@ -28,6 +28,9 @@ AWE.Controller = function (module) {
     var _scrollingStartedAtVC;
     var _scrollingOriginalTranslationVC;
     var _scrollingLastVCPosition;
+    var _disableArmies = false;
+    var _viewPortChanged = false;
+    var _timeout = false;
 
     var _animations = [];
 
@@ -81,7 +84,7 @@ AWE.Controller = function (module) {
 
     var mapMode = AWE.UI.MAP_MODE_TERRAIN; //  display game graphics
     
-    var hideOtherArmies = false;
+    var hideOtherArmies = !AWE.GS.game.getPath('currentCharacter.finishedTutorial');
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -128,6 +131,8 @@ AWE.Controller = function (module) {
       _stages[3] = new Stage(_canvas[3]);
       _stages[3].onClick = function () {
       };   // we generate our own clicks
+
+//      root.append('<div style="position:abolute; left:0; top:20px; width:50px; height:50px; background-color:#F00;">A</div>');
 
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setViewport(initialFrameModelCoordinates);
@@ -1135,7 +1140,7 @@ AWE.Controller = function (module) {
 
     that.armyRetreatButtonClicked = function (army) {
       if (!runningRetreatAction) {
-        runningRetreatAction = true
+        runningRetreatAction = true;
         var retreatAction = AWE.Action.Military.createRetreatArmyAction(army);
         retreatAction.send(function (status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK #
@@ -2364,6 +2369,10 @@ AWE.Controller = function (module) {
                 view:view,
                 moveable:true,
                 id:view.army().getId(),
+                centerX:view.center().x,
+                centerY:view.center().y,
+                width:view.frame().size.width,
+                height:view.frame().size.height,
               });
             }
           }
@@ -2454,9 +2463,28 @@ AWE.Controller = function (module) {
             }
           }
           return filtered;
+        };
+
+        if (_viewPortChanged) {
+          _disableArmies = _disableArmies || (AWE.Util.hashCount(armyViews) > AWE.Config.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING);
         }
-        
-        armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies);
+        else if(_disableArmies && !_timeout) {
+          _timeout = true;
+          setTimeout(function() {
+            _timeout = false;
+            log('----------> callback');
+            if (!_viewPortChanged && _disableArmies) {
+              _disableArmies = false;
+              that.setModelChanged();
+            }
+          }, 200);
+        }
+//        else if(_disableArmies) {
+//          _disableArmies = false;
+//        }
+
+
+        armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies || _disableArmies);
 
         initViewsWithBasePosition(armies, pos);
         unclutter(armies, settlement, pos, frame);
@@ -2530,7 +2558,7 @@ AWE.Controller = function (module) {
 
         if (that.areArmiesAtFortressVisible(frame) && nodes[i].isLeaf() && nodes[i].region()) {
           var armies = nodes[i].region().getArmiesAtFortress();       // armies at fortress
-          var fortressView = fortressViews[nodes[i].id()]
+          var fortressView = fortressViews[nodes[i].id()];
           var position = fortressView ? AWE.Geometry.createPoint(
             fortressView.center().x, fortressView.center().y
           ) : AWE.Geometry.createPoint(
@@ -2640,7 +2668,7 @@ AWE.Controller = function (module) {
       }
 
       return targetLocations;
-    }
+    };
 
     // determine all possible attack target armies
     var getTargetArmies = function (army) {
@@ -2995,6 +3023,8 @@ AWE.Controller = function (module) {
       var oldVisibleArea = null;
       var oldWindowSize = null;
       var lastHideOtherArmies = hideOtherArmies;
+      var lastDisableArmies = _disableArmies;
+      var lastViewportChanged = _viewPortChanged;
 
 
       var propUpdates = function (viewHash) {
@@ -3023,12 +3053,14 @@ AWE.Controller = function (module) {
 
         if ((AWE.Config.MAP_MOVE_ARMIES && _loopCounter % 60 == 0) ||
           _windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) ||
-          _actionViewChanged || lastHideOtherArmies != hideOtherArmies) { // if moving armies
+          _actionViewChanged || lastHideOtherArmies != hideOtherArmies || lastViewportChanged != _viewPortChanged ||
+          lastDisableArmies != _disableArmies) { // if moving map
           stagesNeedUpdate[1] = this.updateGamingPieces(nodes) || stagesNeedUpdate[1];
         }
         
         lastHideOtherArmies = hideOtherArmies;
-        
+        lastDisableArmies = _disableArmies;
+        lastViewportChanged = _viewPortChanged;
 
         if (_windowChanged || this.modelChanged() || _actionViewChanged || currentAction || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
           stagesNeedUpdate[2] = that.updateActionViews();
@@ -3113,6 +3145,10 @@ AWE.Controller = function (module) {
           } else {
             console.error("the camera needed an update, but did not return a new viewport");
           }
+          _viewPortChanged = true;
+        }
+        else {
+          _viewPortChanged = false;
         }
 
         // STEP 1: determine visible area (may have changed through user interaction)

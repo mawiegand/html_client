@@ -24,7 +24,7 @@ AWE.UI.Ember = (function(module) {
     lengthClassName: function() {
       var capacity = this.get('capacity') || 0;
       return 'capacity-' + capacity;
-    }.property('capacity'),
+    }.property('capacity').cacheable(),
     
   });
 
@@ -110,7 +110,7 @@ AWE.UI.Ember = (function(module) {
       else {
         return false;
       }
-    }.property('job.active_job', 'active', 'first', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present', 'disableFrogTrade').cacheable(),
+    }.property('job', 'job.active_job', 'active', 'first', 'pool', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present', 'disableFrogTrade').cacheable(),
 
     /* mouse hover for building details */
     mouseInView: false,

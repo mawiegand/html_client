@@ -972,25 +972,25 @@ AWE.Controller = (function(module) {
     }
 
     // slot update method
-
     that.updateSlots = function() {
       AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
+        log('-----> slots updated');
       });
     }
       
     // construction queue and job update methods
     
     that.updateConstructionQueueSlotAndJobs = function(queueId, callback) {
-      AWE.GS.ConstructionQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queue) {
-        log('updated construction queue', queueId);
+      // as we don't know the right slot (or slot id), we update all slots
+      AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
+        log('-----> slots updated');
+        AWE.GS.ConstructionQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queue) {
+          log('updated construction queue', queueId);
+        });
       });
-      
+
       this.updateResourcePool(); // update the pool for the case this update was triggered because a job was finished (and a new one might have started)
       this.updateSettlement();
-
-      // as we don't know the right slot (or slot id), we update all slots
-      AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {      
-      });
 
       AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
         if (callback) {
@@ -1275,7 +1275,7 @@ AWE.Controller = (function(module) {
     
     var counter = 0;
     that.runloop = function() {
-      if (counter++ % 2 !== 0) return ; // skip every other "frame"
+      if (++counter % 2 !== 0) return ; // skip every other "frame"
       
       this.updateDebug();
       
@@ -1324,6 +1324,12 @@ AWE.Controller = (function(module) {
         if (settlement && this.view.getPath('selectedSlot.building.unlockedAssignments')) {
           that.updateStandardAssignments(AWE.GS.game.getPath('currentCharacter.enumerableStandardAssignments'));
           that.updateSpecialAssignments(AWE.GS.game.getPath('currentCharacter.specialAssignment'));
+        }
+
+        if (counter % 100 == 0) {
+          settlement.get('enumerableSlots').forEach(function(slot) {
+            AWE.UI.Ember.reanimateBubbles(slot.getId());
+          });
         }
       }
       

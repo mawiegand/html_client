@@ -733,6 +733,7 @@ AWE.GS = (function(module) {
 		
 		_buildingInstance: null,      ///< private method holding the instance of the corresponding building, if needed.
 		hashableJobs:   null,
+
     
     bindings: null,
     
@@ -743,7 +744,7 @@ AWE.GS = (function(module) {
         var hashableJobs = AWE.GS.ConstructionJobAccess.getHashableCollectionForSlot_id(this.get('id'));
         this.set('hashableJobs', hashableJobs); // TODO: establish connection via a computed property instead?
       }
-      
+
       //this.updateConstructionOptions();
     },
     

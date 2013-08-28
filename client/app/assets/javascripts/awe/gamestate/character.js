@@ -68,6 +68,8 @@ AWE.GS = (function(module) {
     avatar_string: null,
     avatar_obj: null,
 
+    tutorial_finished_at: null,
+
     avatar: function() {
       if(this.get('avatar_obj') == null) {
         this.set('avatar_obj', AWE.GS.Avatar.create({ avatar_string: this.get('avatar_string') }));
@@ -312,6 +314,11 @@ AWE.GS = (function(module) {
     enumerableStandardAssignments: function() {
       return this.getPath('hashableStandardAssignments.collection');
     }.property('id', 'hashableStandardAssignments.changedAt').cacheable(),
+
+    finishedTutorial: function() {
+      var finishedTutorial = this.get('tutorial_finished_at');
+      return finishedTutorial && Date.parseISODate(finishedTutorial) < AWE.GS.TimeManager.estimatedServerTime().getTime();
+    }.property('tutorial_finished_at').cacheable(),
   });
 
     

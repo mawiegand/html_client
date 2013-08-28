@@ -42,8 +42,9 @@ AWE.GS = (function(module) {
     }.property('building_id').cacheable(),
     
     slot: function() {
+      log('-----> slot in job', AWE.GS.SlotManager.getSlot(this.get('slot_id')));
       return AWE.GS.SlotManager.getSlot(this.get('slot_id'));
-    }.property('slot_id', 'level_after').cacheable(),
+    }.property('slot_id', 'level_after'),
     
     position: null,
     level_after: null,
@@ -70,7 +71,7 @@ AWE.GS = (function(module) {
         var speed    = this.getPath('queue.speed');
         return building && level ? building.calcProductionTime(level, speed) : null;
       }
-    }.property('level_after', 'slot.building', 'queue.speed', 'job_type').cacheable(),
+    }.property('slot', 'level_after', 'slot.building', 'queue.speed', 'job_type').cacheable(),
         
     destructionTime: function() { // todo: need more complex functions for tearing down!
       var building = this.getPath('slot.building');
@@ -83,7 +84,7 @@ AWE.GS = (function(module) {
         time += building.calcProductionTime(l);
       }
       return time;
-    }.property('level_before', 'buildingType.production_time', 'queue.speed').cacheable(),
+    }.property('slot', 'slot.building', 'level_before', 'buildingType.production_time', 'queue.speed').cacheable(),
         
     parsedFinishingDate: function() {
       var active_job = this.get('active_job');
@@ -108,7 +109,7 @@ AWE.GS = (function(module) {
       
       // mit this vergleichen      
       return max && this.getId() === max.getId();
-    }.property('slot.hashableJobs.changedAt').cacheable(),
+    }.property('slot_id', 'slot.hashableJobs.changedAt').cacheable(),
   });     
     
   // ///////////////////////////////////////////////////////////////////////
