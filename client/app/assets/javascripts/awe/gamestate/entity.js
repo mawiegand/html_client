@@ -480,6 +480,11 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
       my.entities = {};
     }
     
+    that.removeEntity = function(entity) {
+      delete my.entities[entity.get('id')];
+      entity.destroy();
+    }
+    
     /** takes an enumerable and a resultHash from a query for entities, then
      * checks for entities that are in the enumberable but NOT in the result
      * Hash. Then riggers an individual update for each missing entity.
