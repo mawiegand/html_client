@@ -343,6 +343,43 @@ AWE.GS = (function(module) {
     that.getArmiesAtLocation = function(id) { 
       return AWE.GS.ArmyAccess.getAllForLocation_id(id)
     }
+    that.groupArmiesByTarget = function(armies) {
+      var armiesByTarget = new Array();
+      AWE.Ext.applyFunctionToHash(armies, function(armyId, army) {
+        if(typeof armiesByTarget[army.get('target_location_id')] === 'undefined')
+        {
+          armiesByTarget[army.get('target_location_id')] = new Array();
+        }
+        armiesByTarget[army.get('target_location_id')].pushObject(army);
+        console.log(army.get('name'));
+      });
+      console.log(armiesByTarget);
+      return armiesByTarget;
+    }
+    that.groupArmiesByAllianceOrOwner = function(armies) {
+      var armiesByAllianceOrOwner = new Array();
+      AWE.Ext.applyFunctionToHash(armies, function(armyId, army) {
+        if(army.get('alliance_tag') !== '')
+        {
+          if(typeof armiesByAllianceOrOwner[army.get('alliance_tag')] === 'undefined')
+          {
+            armiesByAllianceOrOwner[army.get('alliance_tag')] = new Array();
+          }
+          armiesByAllianceOrOwner[army.get('alliance_tag')].pushObject(army);
+        }
+        else
+        {
+          if(typeof armiesByAllianceOrOwner[army.get('owner_name')] === 'undefined')
+          {
+            armiesByAllianceOrOwner[army.get('owner_name')] = new Array();
+          }
+          armiesByAllianceOrOwner[army.get('owner_name')].pushObject(army);
+        }
+        console.log(army.get('name'));
+      });
+      console.log(armiesByAllianceOrOwner);
+      return armiesByAllianceOrOwner;
+    }
     that.getArmiesOfCharacter = function(id) { 
       return AWE.GS.ArmyAccess.getAllForOwner_id(id)
     }   
