@@ -69,11 +69,11 @@ AWE.GS = (function(module) {
     
     var characters = AWE.Ext.hashValues(module.characterManager.getEntities());
     
-    character.forEach(function(character)) {
-      if (character.get('id') && character.get('id') !== module.game.currentCharacter.get('id')) {
+    character.forEach(function(character) {
+      if (character.get('id') && character.get('id') !== module.game.getPath('currentCharacter.id')) {
         module.characterHash.removeEntity(character);
       }
-    }
+    });
   }
 
 
