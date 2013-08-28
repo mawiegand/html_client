@@ -1528,20 +1528,22 @@ loaddialog-positioner {
   opacity: 0.6;
 }
 
-.settlement-dialog-pane a.upgrade, .settlement-dialog-pane a.initiate {
+.settlement-dialog-pane a.upgrade, 
+.settlement-dialog-pane a.initiate {
   margin-top: 6px;
-  color: #AE9;
+  color: #bbe166;
   float: right;
   display: block;
   text-decoration: none;
   cursor: pointer;
-  border: 2px solid #AE9;
+  border: 2px solid #bbe166;
   border-radius: 5px;
   padding: 4px 10px;
-  background-color: #F6FFF4;
+  background-color: #FdfFFa;
 }
 
-.settlement-dialog-pane .upgrade, .settlement-dialog-pane .initiate {
+.settlement-dialog-pane .upgrade, 
+.settlement-dialog-pane .initiate {
   margin-top: 6px;
   color: #333;
   float: right;
@@ -1556,11 +1558,15 @@ loaddialog-positioner {
 
 .settlement-dialog-pane a.destroy {
   margin-top: 6px;
-  color: #e99;
+  color: #E6BBAA;
   float: right;
   display: block;
   text-decoration: none;
   cursor: pointer;
+  border: 2px solid #E6BBAA;
+  border-radius: 5px;
+  padding: 4px 10px;
+  background-color: #FFFDFA;
 }
 
 .settlement-dialog-pane .destroy {
@@ -1587,7 +1593,7 @@ loaddialog-positioner {
 
 
 span.bonus {
-  color: #9D9;
+  color: #bbe166;
 }
 
 .building-option-details {
@@ -1609,15 +1615,22 @@ span.bonus {
   display: inline-block;
   width: 117px;
   height: 170px;
-  background-color: #DFD;
   -moz-border-radius: 7px;
   border-radius:      7px;
+  border: 1px solid gray;
   padding: 10px;
   margin-right: 2px;
   margin-bottom: 8px;
   
   cursor: pointer; 
   vertical-align: top;
+  
+  background: #ddf1a4; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #e9f3c3 0%,  #ddf1a4 100%);
+  background: -moz-linear-gradient(top,  #e9f3c3,  #ddf1a4); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#e9f3c3,  #ddf1a4);
 }
 
 .building-option p {
@@ -1637,7 +1650,12 @@ span.bonus {
 
 .training-option.requirement-unmet,
 .building-option.requirement-unmet {
-  background-color: #FDD;
+  background: #ecd8ce; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #f6eae5 0%,  #ecd8ce 100%);
+  background: -moz-linear-gradient(top,  #f6eae5,  #ecd8ce); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#f6eae5,  #ecd8ce);
 }
 
 .settlement-dialog-building-details .building-option-image {
@@ -1663,8 +1681,18 @@ span.bonus {
 }
 
 
+
+
+
+
 .building-option:hover {
-  background-color: #DDF;
+  background: #f8fbee; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #ffffff 0%,  #f8fbee 100%);
+  background: -moz-linear-gradient(top,  #ffffff,  #f8fbee); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#ffffff,  #f8fbee);
+  
   cursor: pointer;
 }
 
@@ -1873,7 +1901,6 @@ span.bonus {
 
 
 .training-option {
-  background-color: #BFB;
   float: left;
   display: inline-block;
   width: 80px;
@@ -1884,16 +1911,26 @@ span.bonus {
   border-radius: 4px;
   cursor: pointer;
   word-wrap: break-word;
+  border: 1px solid gray;
+  
+  background: #ddf1a4; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #e9f3c3 0%,  #ddf1a4 100%);
+  background: -moz-linear-gradient(top,  #e9f3c3,  #ddf1a4); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#e9f3c3,  #ddf1a4);
 }
 
-
-.training-option.selected {
-  background-color: #BBF;
-}
-
+.training-option.selected,
 .training-option:hover {
-  background-color: #BBF;
+  background: #f8fbee; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #ffffff 0%,  #f8fbee 100%);
+  background: -moz-linear-gradient(top,  #ffffff,  #f8fbee); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#ffffff,  #f8fbee);
 }
+
 
 
 
@@ -1964,6 +2001,7 @@ span.bonus {
   height: 60px;
   -moz-border-radius: 7px;
   border-radius:      7px;
+  border: 1px solid gray;
   padding: 10px;
   margin-right: 5px;
   margin-bottom: 5px;
@@ -2149,6 +2187,7 @@ span.bonus {
   height: 80px;
   -moz-border-radius: 7px;
   border-radius:      7px;
+  border: 1px solid gray;
   padding: 10px;
   margin-right: 5px;
   margin-bottom: 5px;
@@ -3062,7 +3101,7 @@ table .datetime {
 }
 
 .constructing, 
-.outpost-picture .level.destructing,
+.outpost-picture .level.constructing,
 .fortress-picture .level.constructing, 
 .base-picture .level.constructing {
   color: #3F3;
@@ -3072,7 +3111,7 @@ table .datetime {
 .outpost-picture .level.destructing,
 .fortress-picture .level.destructing,
 .base-picture .level.destructing {
-  color: #F33;
+  color: #E6BBAA;
 }
 
 /** image for building_siege_tower */
