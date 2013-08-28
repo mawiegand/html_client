@@ -1448,8 +1448,20 @@ loaddialog-positioner {
 /* ===== non-semantic helper classes ========================================
    Settlement Dialogs
    ========================================================================== */
+
+
 .settlement-screen {
   min-height: 1200px;
+}
+
+.settlement-screen.outpost-screen,
+.settlement-screen.base-screen {
+  min-width: 1024px;
+  width: 100%;
+  overflow-x: hidden;
+  background: url('<%= asset_path("settlements/base/base_background_repeat.jpg") %>');
+  background-repeat: repeat;  
+  height: 100%;
 }   
    
    
@@ -2248,10 +2260,7 @@ span.bonus {
   background-position: -159px 0px;
 }
 
-.outpost-screen,
-.base-screen {
-  background-color: #555;
-}
+
 
 .outpost-screen .queue-job-image,
 .base-screen .queue-job-image {
@@ -2849,27 +2858,21 @@ table .datetime {
   height: 600px;
 } 
 
+
+.outpost-picture-right, 
 .base-picture-right {
   position: absolute;
   height: 820px;
   left: 1280px;
-  width: 0px;
+  width: 1200px;
+  margin-right:; -1200px;
   top: -220px;
-  background-color: red;
+  
+  background: url('<%= asset_path("settlements/base/base_background_right.jpg") %>');
+  background-repeat: repeat-x;
   margin-top: 100px;
-  overflow: visible;
 }
 
-.base-picture-right-fill {
-  position: absolute;
-  height: 820px;
-  right: 0px;
-  margin-right: -1000px;
-  width: 1000px;
-  top: -0px;
-  margin-top: 100px;
-  background-color: blue;
-}
 
 .fortress-picture {
   background: url('<%= asset_path("settlements/fortress/fortress_background.png") %>');
