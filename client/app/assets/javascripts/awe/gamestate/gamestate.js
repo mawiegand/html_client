@@ -67,7 +67,7 @@ AWE.GS = (function(module) {
       return ; // don't run during initialization where no character is present.
     }
     
-    var characters = AWE.Ext.hashValues(module.characterManager.getEntities());
+    var characters = AWE.Ext.hashValues(module.CharacterManager.getEntities());
     
     character.forEach(function(character) {
       if (character.get('id') && character.get('id') !== module.game.getPath('currentCharacter.id')) {
