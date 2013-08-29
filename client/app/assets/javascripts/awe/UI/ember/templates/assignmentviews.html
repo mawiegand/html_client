@@ -22,49 +22,30 @@
 
 <script type="text/x-handlebars" data-template-name="assignment-view">
 
-  {{#if collapsed}}
-    <table class="assignment-collapse-table clickable">
-      <tr {{action "openPressed"}}>
-        <td class="assignment-header-cell">
-          <b>{{local assignmentType.name}}</b></td>
-        <td class="assignment-progress-cell">
-          {{#if isActive }}
-            <div class="duration assignment-progress-bar-border">
-              <div class="assignment-progress-bar" {{bindAttr style="progressBarWidth"}}>
-                {{#if finished}}
-                  {{t settlement.assignment.finishing}}
-                {{else}}
-                  {{formatDuration timeRemaining}}
-                {{/if}}
-              </div>
-            </div>
-          {{/if}}
-        </td>
-        <td class="assignment-button-cell">
-          {{#if isActive }}
-            {{#unless isHalved }}
-              {{#if halving }}
-                {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+<div {{bindAttr class=":stone-panel :standard-assignment :clickable assignmentType.advisor"}} {{action "togglePressed"}}>
+
+  <table class="assignment-collapse-table">
+    <tr>
+      <td class="assignment-header-cell">
+        <div class="assignment-icon">
+          <div {{bindAttr class=":advisor assignmentType.advisor"}}></div>
+        </div>
+      
+        {{local assignmentType.name}}</td>
+      <td class="assignment-progress-cell">
+        {{#if isActive }}
+          <div class="duration assignment-progress-bar-border">
+            <div class="assignment-progress-bar" {{bindAttr style="progressBarWidth"}}>
+              {{#if finished}}
+                {{t settlement.assignment.finishing}}
               {{else}}
-                <span class="simple-button clickable" {{action "speedupPressed"}} {{bindAttr title="speedupTooltipText"}}>
-                  {{t settlement.assignment.hurry}} {{speedupCosts}}
-                  <span class="resource-icon resource_cash">&nbsp;</span>&nbsp;
-                </span>
+                {{formatDuration timeRemaining}}
               {{/if}}
-            {{/unless }}
-          {{else}}
-            {{#if starting }}
-              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
-            {{else}}
-              <span class="simple-button clickable" {{action "startPressed"}}>{{t settlement.assignment.start}}</span>
-            {{/if}}
-          {{/if}}
-        </td>
-      </tr>
-    </table>
-  {{else}}
-    <p>
-      <div class="float-right">
+            </div>
+          </div>
+        {{/if}}
+      </td>
+      <td class="assignment-button-cell">
         {{#if isActive }}
           {{#unless isHalved }}
             {{#if halving }}
@@ -83,47 +64,41 @@
             <span class="simple-button clickable" {{action "startPressed"}}>{{t settlement.assignment.start}}</span>
           {{/if}}
         {{/if}}
-      </div>
+      </td>
+    </tr>
+  </table>
 
-      <b>{{local assignmentType.name}}</b>
-    </p>
+  {{#if collapsed}}
+  {{else}}
+  
     <div class="clearfix">
-      <div {{bindAttr class=":advisor :tiny assignmentType.advisor"}}></div>
+      <div {{bindAttr class=":advisor assignmentType.advisor"}}></div>
       <p>{{local assignmentType.description}}</p>
     </div>
-    <p>
-      {{#if isActive }}
-        <div class="float-right duration assignment-progress-bar-border">
-          <div class="assignment-progress-bar" {{bindAttr style="progressBarWidth"}}>
-          {{#if finished}}
-            {{t settlement.assignment.finishing}}
-          {{else}}
-            {{formatDuration timeRemaining}}
-          {{/if}}
-          </div>
-        </div>
-      {{/if}}
+    
+    
+    <div class="assignment-details">
 
-      <b>{{t settlement.assignment.duration}}:</b> {{formatDuration duration}}
+      {{t settlement.assignment.duration}}: {{formatDuration duration}}
         {{#if isHalved }}
           ({{t settlement.assignment.hurried }})
         {{/if}} <br />
       {{#if assignmentType.costs}}
-        <b>{{t settlement.assignment.costs}}:</b>
+        {{t settlement.assignment.costs}}:
         {{#each costs}}
           <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span> {{amount}} &nbsp;
         {{/each}}
         <br />
       {{/if}}
       {{#if assignmentType.unit_deposits}}
-        <b>{{t settlement.assignment.unitDeposits}}:</b>
+        {{t settlement.assignment.unitDeposits}}:
           {{#each unitDeposits}}
             <span class="unit-icon {{unbound unitType.symbolic_id}}" {{bindAttr title="{{local unitType.name}}"}}>&nbsp;</span> {{local unitType.name}} {{amount}} &nbsp;
           {{/each}}
         <br />
       {{/if}}
       {{#if assignmentType.rewards}}
-        <b>{{t settlement.assignment.rewards}}:</b>
+        {{t settlement.assignment.rewards}}:
           {{#each resourceRewards}}
             <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span> {{amount}} &nbsp;
           {{/each}}
@@ -134,61 +109,41 @@
             <span class="xp-icon" title="XP">&nbsp;</span> {{assignmentType.rewards.experience_reward}} &nbsp;
           {{/if }}
       {{/if}}
-    </p>
-    <div class="assignment-close-icon">
-      <div class="clickable up-icon" {{bindAttr title="settlement.assignment.collapse"}} {{action "collapsePressed"}}> </div>
+
+        <div class="clickable up-icon" {{bindAttr title="settlement.assignment.collapse"}} {{action "collapsePressed"}}> </div>
+  
     </div>
+  
   {{/if}}
 
-  <hr />
-
+</div>
 </script>
+
+
+
 
 <script type="text/x-handlebars" data-template-name="special-assignment-view">
 
-  {{#if collapsed}}
-    <table class="assignment-collapse-table clickable">
-      <tr {{action "openPressed"}}>
-        <td class="assignment-header-cell">
-          <b>{{local assignmentType.name}}</b></td>
-        <td class="assignment-progress-cell">
-          {{#if isActive }}
-            <div class="duration assignment-progress-bar-border">
-              <div class="assignment-progress-bar" {{bindAttr style="progressBarWidth"}}>
-                {{#if finished}}
-                  {{t settlement.assignment.finishing}}
-                {{else}}
-                  {{formatDuration timeRemaining}}
-                {{/if}}
-              </div>
-            </div>
-          {{/if}}
-        </td>
-        <td class="assignment-button-cell">
-          {{#if isActive }}
-            {{#unless isHalved }}
-              {{#if halving }}
-                {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
+<div class="stone-panel special-assignment clickable" {{action "togglePressed"}}>
+
+  <table class="assignment-collapse-table">
+    <tr>
+      <td class="assignment-header-cell">
+        {{local assignmentType.name}}</td>
+      <td class="assignment-progress-cell">
+        {{#if isActive }}
+          <div class="duration assignment-progress-bar-border">
+            <div class="assignment-progress-bar" {{bindAttr style="progressBarWidth"}}>
+              {{#if finished}}
+                {{t settlement.assignment.finishing}}
               {{else}}
-                <span class="simple-button clickable" {{action "speedupPressed"}} {{bindAttr title="speedupTooltipText"}}>
-                  {{t settlement.assignment.hurry}} {{speedupCosts}}
-                  <span class="resource-icon resource_cash">&nbsp;</span>&nbsp;
-                </span>
+                {{formatDuration timeRemaining}}
               {{/if}}
-            {{/unless }}
-          {{else}}
-            {{#if starting }}
-              {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
-            {{else}}
-              <span class="simple-button clickable" {{action "startPressed"}}>{{t settlement.assignment.start}}</span>
-            {{/if}}
-          {{/if}}
-        </td>
-      </tr>
-    </table>
-  {{else}}
-    <p>
-      <div class="float-right">
+            </div>
+          </div>
+        {{/if}}
+      </td>
+      <td class="assignment-button-cell">
         {{#if isActive }}
           {{#unless isHalved }}
             {{#if halving }}
@@ -207,32 +162,25 @@
             <span class="simple-button clickable" {{action "startPressed"}}>{{t settlement.assignment.start}}</span>
           {{/if}}
         {{/if}}
-      </div>
+      </td>
+    </tr>
+  </table>
 
-      <b>{{local assignmentType.name}}</b>
-    </p>
+  {{#if collapsed}}
+  {{else}}
+  
     <div class="clearfix">
-      <div {{bindAttr class=":advisor :tiny assignmentType.advisor"}}></div>
+      <div {{bindAttr class=":advisor assignmentType.advisor"}}></div>
       <p>{{local assignmentType.description}}</p>
     </div>
-    <p>
-      {{#if isActive }}
-        <div class="float-right duration assignment-progress-bar-border">
-          <div class="assignment-progress-bar" {{bindAttr style="progressBarWidth"}}>
-          {{#if finished}}
-            {{t settlement.assignment.finishing}}
-          {{else}}
-            {{formatDuration timeRemaining}}
-          {{/if}}
-          </div>
-        </div>
-      {{/if}}
 
-      <b>{{t settlement.assignment.duration}}:</b> {{formatDuration duration}}
+    <div class="assignment-details">
+
+      {{t settlement.assignment.duration}}: {{formatDuration duration}}
         {{#if isHalved }}
           ({{t settlement.assignment.hurried }})
         {{/if}} <br />
-      <b>{{t settlement.assignment.costs}}:</b>
+      {{t settlement.assignment.costs}}:
       {{#if costs}}
         {{#each costs}}
           <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span> {{amount}} &nbsp;
@@ -240,13 +188,13 @@
         <br />
       {{/if}}
       {{#if unitDeposits}}
-        <b>{{t settlement.assignment.unitDeposits}}:</b>
+        {{t settlement.assignment.unitDeposits}}:
           {{#each unitDeposits}}
             <span class="unit-icon {{unbound unitType.symbolic_id}}" {{bindAttr title="{{local unitType.name}}"}}>&nbsp;</span> {{local unitType.name}} {{amount}} &nbsp;
           {{/each}}
         <br />
       {{/if}}
-        <b>{{t settlement.assignment.rewards}}:</b>
+        {{t settlement.assignment.rewards}}:
         {{#each resourceRewards}}
           <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span> {{amount}} &nbsp;
         {{/each}}
@@ -256,12 +204,13 @@
         {{#if settlement.assignment.experience_reward }}
           <span class="xp-icon" title="XP">&nbsp;</span> {{assignmentType.rewards.experience_reward}} &nbsp;
         {{/if }}
-    </p>
-    <div class="assignment-close-icon">
-      <div class="clickable up-icon" {{bindAttr title="settlement.assignment.collapse"}} {{action "collapsePressed"}}> </div>
+
+        <div class="clickable up-icon" {{bindAttr title="settlement.assignment.collapse"}} {{action "collapsePressed"}}> </div>
+
     </div>
+
+    
   {{/if}}
 
-  <hr />
-
+</div>
 </script>

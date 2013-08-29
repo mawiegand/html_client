@@ -2303,12 +2303,77 @@ span.bonus {
   background-color: white;
 }
 
+.stone-panel.standard-assignment,
+.stone-panel.special-assignment {
+  min-height: 34px;
+  padding-top: 20px;
+}
+
+.stone-panel.standard-assignment:hover,
+.stone-panel.special-assignment:hover {
+  border: 1px solid orange;
+  
+  -moz-box-shadow: inset 0 0 0px 1px orange;
+  -webkit-box-shadow: inset 0 0 0px 1px orange;
+  box-shadow: inner 0 0 0px 1px orange;
+}
+
+.stone-panel .assignment-details {
+  margin-top: 0px;
+
+  background-color: rgba(255,255,255,0.4);
+  
+  border-radius: 3px;
+  
+  padding: 6px 8px 6px 8px;
+  border: 1px solid #EBEBEB;
+}
+
+.assignment-icon {
+  float: left;
+  width: 54px;
+  height: 18px;
+  overflow: visible;
+}
+
+.assignment-icon div.advisor {
+  background-image: url('<%= asset_path("ui/settlement/assignment_icon_work.png") %>');
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 64px;
+  height: 64px;
+  margin-top: -21px;
+  margin-left: -10px;
+  margin-right: -2px;
+}
+
+.assignment-icon div.advisor.girl {
+  background-image: url('<%= asset_path("ui/settlement/assignment_icon_work.png") %>');
+}
+.assignment-icon div.advisor.warrior {
+  background-image: url('<%= asset_path("ui/settlement/assignment_icon_fight.png") %>');
+}
+.assignment-icon div.advisor.chef {
+  background-image: url('<%= asset_path("ui/settlement/assignment_icon_special.png") %>');
+}
+
+
+
+.stone-panel.standard-assignment {
+  margin-bottom: 12px;
+}
+
+.standard-assignment .advisor,
+.special-assignment .advisor {
+  margin-left: -10px;
+}
+
 .assignment-collapse-table .assignment-header-cell {
-  width: 210px;
+  width: 260px;
 }
 
 .assignment-collapse-table .assignment-progress-cell {
-  width: 310px;
+  width: 260px;
 }
 
 .assignment-collapse-table .assignment-button-cell {
@@ -2316,19 +2381,15 @@ span.bonus {
   text-align: right;
 }
 
-.assignment-collapse-table tr:hover {
-  background-color: #BFB;
+.assignment-details .up-icon {
+  float: right;
+  height: 21px;
 }
 
-.assignment-close-icon {
-  width: 660px;
-  height: 21px;
-  text-align: right;
-}
 
 .assignment-progress-bar-border {
   overflow: visible;
-  width: 300px;
+  width: 250px;
   display: inline-block;
   white-space: nowrap;
   border: 1px solid #ccc;
@@ -2338,11 +2399,22 @@ span.bonus {
 
 .assignment-progress-bar {
   overflow: visible;
-  background-color: #ccc;
+  background-color: #BC4;
   display: inline-block;
-  border-radius: 3px;
+  border-radius: 2px;
   white-space: nowrap;
 }
+
+.girl .assignment-progress-bar {
+  background-color: #BC4;
+}
+.warrior .assignment-progress-bar {
+  background-color: #F94;
+}
+.chef .assignment-progress-bar {
+  background-color: #AC4;
+}
+
 
 /** image for building_siege_tower */
 .queue-job-image.building_siege_tower {
@@ -2933,6 +3005,22 @@ li.shout .sender {
   text-decoration:underline;
   color: #DDF;
 }
+
+
+.stone-panel {
+  background-image: url("<%= asset_path 'ui/settlement/background_stone_repeat.jpg' %>");
+  background-repeat: repeat;
+  
+  border-radius: 3px;
+  
+  padding: 10px;
+  border: 1px solid #E2E2E2;
+  
+  -moz-box-shadow: inset 0 0 0px 1px #FFF;
+  -webkit-box-shadow: inset 0 0 0px 1px #FFF;
+  box-shadow: inner 0 0 0px 1px #FFF;
+}
+
 
 
 
