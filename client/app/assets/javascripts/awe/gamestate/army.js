@@ -359,7 +359,7 @@ AWE.GS = (function(module) {
     that.groupArmiesByAllianceOrOwner = function(armies) {
       var armiesByAllianceOrOwner = new Array();
       AWE.Ext.applyFunctionToHash(armies, function(armyId, army) {
-        if(army.get('alliance_tag') !== '')
+        if(army.get('alliance_tag') !== null)
         {
           if(typeof armiesByAllianceOrOwner[army.get('alliance_tag')] === 'undefined')
           {
