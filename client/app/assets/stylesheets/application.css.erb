@@ -1617,7 +1617,7 @@ span.bonus {
   height: 170px;
   -moz-border-radius: 7px;
   border-radius:      7px;
-  border: 1px solid gray;
+  border: 2px solid #E2E2E2;
   padding: 10px;
   margin-right: 2px;
   margin-bottom: 8px;
@@ -1911,8 +1911,7 @@ span.bonus {
   border-radius: 4px;
   cursor: pointer;
   word-wrap: break-word;
-  border: 1px solid gray;
-  
+  border: 2px solid #E2E2E2;
   background: #ddf1a4; /* for non-css3 browsers */
 
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
@@ -2187,7 +2186,7 @@ span.bonus {
   height: 80px;
   -moz-border-radius: 7px;
   border-radius:      7px;
-  border: 1px solid gray;
+  border: 2px solid #E2E2E2;
   padding: 10px;
   margin-right: 5px;
   margin-bottom: 5px;
@@ -4111,28 +4110,55 @@ a.trading-carts-speedup-button:hover {
 }
 
 
+.shop-dialog-pane {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light",
+               "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
+}
+
+
+.shop-dialog-pane h1 {
+  font-size: 3em;
+  font-weight: 300;
+}
+
+
+.shop-dialog-pane h2 {
+  font-size: 2em;
+  font-weight: 300;
+}
+
+.shop-dialog-pane h3 {
+  font-size: 1.5em;
+  font-weight: 300;
+}
+
+
+
 
 
 .resource-offer {
   float: left;
-  width: 120px;
-  height: 80px;
-  background-color: #BBF;
-  -moz-border-radius: 7px;
-  border-radius:      7px;
-  padding: 10px;
+  width: 140px;
+  height: 100px;
+  
+  background: url('<%= asset_path("shop/button_cash_package.png") %>');
   margin-right: 10px;
   margin-bottom: 10px;
   text-align: center;
+  
+  color: #c83;
 }
 
 .resource-offer:hover {
-  background-color: #BFB;
+  background: url('<%= asset_path("shop/button_cash_package_hover.png") %>');
+  color: #ea5;
 }
 
 .resource-offer p {
-  margin: 3px;
-  color: #555;
+  font-size: 14px;
+  line-height: 17px;
+  margin-top: 6px;
 }
 
 .frog-trade {
@@ -4173,7 +4199,7 @@ a.trading-carts-speedup-button:hover {
 
 .bonus-offer-header {
   padding: 10px;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 .bonus-offer-description {
