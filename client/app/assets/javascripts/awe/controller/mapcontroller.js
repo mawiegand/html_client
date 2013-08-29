@@ -655,9 +655,25 @@ AWE.Controller = function (module) {
       });
     }
 
-    that.switchMapType = function (political) {
-      log("SWITCH MAP TYPE", political);
-      mapMode = political ? AWE.UI.MAP_MODE_STRATEGIC : AWE.UI.MAP_MODE_TERRAIN;
+    that.switchMapType = function () {
+      log("SWITCH MAP TYPE");
+
+      if(mapMode == AWE.UI.MAP_MODE_TERRAIN && !hideOtherArmies) {
+        mapMode = AWE.UI.MAP_MODE_TERRAIN;
+        that.toggleArmyVisibility();
+      } else if(mapMode == AWE.UI.MAP_MODE_TERRAIN && hideOtherArmies) {
+        mapMode = AWE.UI.MAP_MODE_STRATEGIC;
+        that.toggleArmyVisibility();
+      } else { //if(mapMode == AWE.UI.MAP_MODE_STRATEGIC && !hideOtherArmies) {
+        mapMode = AWE.UI.MAP_MODE_STRATEGIC;
+        that.toggleArmyVisibility();
+      }
+      
+      /*else {  //!political && !hideOtherArmies
+        mapMode = AWE.UI.MAP_MODE_TERRAIN;
+        that.toggleArmyVisibility();
+      }*/
+
       AWE.Ext.applyFunctionToElements(regionViews, function (view) {
         view.setMapMode(mapMode);
       });
