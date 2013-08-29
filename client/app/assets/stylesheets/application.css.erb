@@ -1647,6 +1647,13 @@ span.bonus {
   height: 184px; 
 }
 
+.requirement-group ul {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
 
 .training-option.requirement-unmet,
 .building-option.requirement-unmet {
@@ -4109,13 +4116,21 @@ a.trading-carts-speedup-button:hover {
   opacity: 0.6;
 }
 
-
-.shop-dialog-pane {
-  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; 
+.helvetica-light {
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", 
+               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", 
+               "Tahoma", "Geneva", "Arial", sans-serif; 
   font-weight:300; 
   font-stretch:normal;
 }
 
+.helvetica-regular {
+  font-family: "HelveticaNeue", "Helvetica Neue", "HelveticaNeueRoman", 
+               "HelveticaNeue-Roman", "Helvetica Neue Roman", 
+               'TeXGyreHerosRegular', "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; 
+  font-weight:400; 
+  font-stretch:normal; 
+}
 
 .shop-dialog-pane .simple-button.float-right {
   margin-right: 1px;
@@ -4143,15 +4158,23 @@ a.trading-carts-speedup-button:hover {
   margin-top: 24px;
 }
 
-
-
-.shop-dialog-pane h2 {
+.settlement-dialog-pane h1 {
   font-size: 2em;
+  font-weight: 300;
+  margin-bottom: 24px;
+  margin-top: 12px;
+}
+
+
+.settlement-dialog-pane h2,
+.shop-dialog-pane h2 {
+  font-size: 1.6em;
   font-weight: 300;
 }
 
+.settlement-dialog-pane h3,
 .shop-dialog-pane h3 {
-  font-size: 1.5em;
+  font-size: 1.4em;
   font-weight: 300;
   margin-bottom: 12px;
 }

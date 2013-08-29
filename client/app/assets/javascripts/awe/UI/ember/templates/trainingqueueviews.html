@@ -13,17 +13,17 @@
 
   {{local selectedUnitButton.unitType.flavour}}
 
-  <b>{{t settlement.training.perUnit}}:</b>
+  {{t settlement.training.perUnit}}:
     {{#each costs}}
       {{amount}} {{local resourceType.name}} &nbsp;  
     {{/each}}    
-    <b>{{t settlement.training.duration}}:</b> {{formatDuration productionTime}}
+    {{t settlement.training.duration}}: {{formatDuration productionTime}}
   <br />
-  <b>{{t settlement.training.total}}:</b>
+  {{t settlement.training.total}}:
     {{#each totalCosts}}
       {{amount}} {{local resourceType.name}} &nbsp;  
     {{/each}}    
-    <b>{{t settlement.training.duration}}:</b> {{formatDuration totalProductionTime}}
+    {{t settlement.training.duration}}: {{formatDuration totalProductionTime}}
   <br />  
 
   {{#if selectedUnitButton.requirementsMet }}
