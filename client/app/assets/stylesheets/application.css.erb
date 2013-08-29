@@ -4117,10 +4117,32 @@ a.trading-carts-speedup-button:hover {
 }
 
 
+.shop-dialog-pane .simple-button.float-right {
+  margin-right: 1px;
+  padding: 2px 4px 2px 4px;
+  display: inline-block;
+  min-height: 22px;
+  margin-top: -4px;
+}
+
+.shop-dialog-pane .platinum {
+  background: #F0E8D9; /* for non-css3 browsers */
+  
+  border: 1px solid #E2D6BC;
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #ffffff 0%,  #F0E8D9 100%);
+  background: -moz-linear-gradient(top,  #ffffff,  #F0E8D9); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#ffffff,  #F0E8D9);
+}
+
 .shop-dialog-pane h1 {
   font-size: 3em;
   font-weight: 300;
+  margin-bottom: 18px;
+  margin-top: 24px;
 }
+
 
 
 .shop-dialog-pane h2 {
@@ -4131,6 +4153,7 @@ a.trading-carts-speedup-button:hover {
 .shop-dialog-pane h3 {
   font-size: 1.5em;
   font-weight: 300;
+  margin-bottom: 12px;
 }
 
 
@@ -4178,6 +4201,7 @@ a.trading-carts-speedup-button:hover {
 .frog-trade-description {
   width: 470px;
   display: inline-block;
+  margin-top: 20px;
 }
 
 .frog-trade-button {
@@ -4270,18 +4294,7 @@ a.trading-carts-speedup-button:hover {
 }
 
 
-.shop-dialog-pane a.close {
-  position: absolute;
-  background: url('<%= asset_path("icons/cross_small.png") %>');
-  width: 36px;
-  height: 36px;
-  right: 12px;
-  top: 10px;
-}
 
-.shop-dialog-pane a.close:hover {
-  opacity: 0.6;
-}
 
 
 .platinum-button {
@@ -4312,7 +4325,12 @@ a.trading-carts-speedup-button:hover {
   top: -60px;
 }
 
+
+
+
+
 #army-create-form a.close,
+.shop-dialog-pane a.close,
 .ranking-view a.close,
 .resource-details-dialog-pane a.close,
 .effect-details-dialog-pane a.close,
@@ -4321,8 +4339,13 @@ a.trading-carts-speedup-button:hover {
   background: url('<%= asset_path("ui/close_button.png") %>');
   width: 50px;
   height: 46px;
-  left: 610px;
+  left: 610px;  /* this is an error; must be measured from the right and everything would be fine */
   top: 26px;
+}
+
+.shop-dialog-pane a.close {
+  left: 576px;
+  top: 16px;
 }
 
 .resource-details-dialog-pane a.close {
@@ -4338,6 +4361,7 @@ a.trading-carts-speedup-button:hover {
 }
 
 #army-create-form a.close:hover,
+.shop-dialog-pane a.close:hover,
 .ranking-view a.close:hover,
 .resource-details-dialog-pane a.close:hover,
 .effect-details-dialog-pane a.close:hover,
