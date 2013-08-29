@@ -351,9 +351,7 @@ AWE.GS = (function(module) {
           armiesByTarget[army.get('target_location_id')] = new Array();
         }
         armiesByTarget[army.get('target_location_id')].pushObject(army);
-        console.log(army.get('name'));
       });
-      console.log(armiesByTarget);
       return armiesByTarget;
     }
     that.groupArmiesByAllianceOrOwner = function(armies) {
@@ -375,9 +373,7 @@ AWE.GS = (function(module) {
           }
           armiesByAllianceOrOwner[army.get('owner_name')].pushObject(army);
         }
-        console.log(army.get('name'));
       });
-      console.log(armiesByAllianceOrOwner);
       return armiesByAllianceOrOwner;
     }
     that.getArmiesOfCharacter = function(id) { 
