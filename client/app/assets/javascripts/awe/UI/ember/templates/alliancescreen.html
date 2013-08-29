@@ -1,5 +1,9 @@
 <script type="text/x-handlebars" data-template-name="alliance-screen">
 <div {{bindAttr class="ownAlliance:own-alliance :alliance-screen"}}>
+  <div class="alliance-screen-background">
+    <div class="alliance-screen-picture"></div>
+  </div>
+
   <div class="alliance-pane">
     {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner"}}
     {{view AWE.UI.Ember.AllianceInfoBoxView controllerBinding="controller" allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader"}}
@@ -17,7 +21,7 @@
     <hr>
     {{view AWE.UI.Ember.AllianceMemberListView controllerBinding="controller" charactersBinding="alliance.members"
                                                allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader"}}
-    <hr>
+
     <h1>{{t alliance.progress.header}}</h1>
     <p>{{t alliance.progress.description}}</p>
     {{view AWE.UI.Ember.AllianceVictoryView controllerBinding="controller" allianceBinding="alliance"}}
@@ -51,15 +55,19 @@
       {{#if message}}
         <div class="red-color">{{message}}</div>
       {{/if}}
-      {{#if alliance.description}}
-			<p class="alliance-description">{{{ showDescription }}}</p>
-      {{else}}
-			  <p>{{t alliance.missingDescription}}</p>
-      {{/if}}
-			<div class="simple-button" style="min-height: 10px;" {{action "sendUserContentReport"}}>{{t alliance.report}}</div>
-			{{#if isAllianceLeader}}
-			<div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "changeDescriptionPressed"}}>{{t alliance.changeDescription}}</div>
-			{{/if}}
+
+      <div class="stone-panel">
+        {{#if alliance.description}}
+  			  <p class="alliance-description">{{{ showDescription }}}</p>
+        {{else}}
+  			  <p>{{t alliance.missingDescription}}</p>
+        {{/if}}
+  			<div class="simple-button" style="min-height: 10px;" {{action "sendUserContentReport"}}>{{t alliance.report}}</div>
+  			{{#if isAllianceLeader}}
+  			<div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "changeDescriptionPressed"}}>{{t alliance.changeDescription}}</div>
+  			{{/if}}
+			</div>
+
     </div>
   {{#if alliance.message}}
     <div class="alliance-message-of-the-day">
@@ -82,14 +90,16 @@
 <script type="text/x-handlebars" data-template-name="alliance-member-list">
   <div class="alliance-member-list">
     <h1>{{t alliance.members }}</h1>
-    <p>{{alliance.membersCount}} von maximal {{maxMembers}}</p>
-    <ul>
-      {{#each characters}}
-        {{view AWE.UI.Ember.AllianceMemberView tagName="li" characterBinding="this" allianceBinding="view.alliance"
-                                               isCurrentCharacterAllianceLeaderBinding="view.isAllianceLeader"
-                                               controllerBinding="controller"}}
-      {{/each}}
-    </ul>
+    <div class="stone-panel">
+      <p>{{alliance.membersCount}} von maximal {{maxMembers}}</p>
+      <ul>
+        {{#each characters}}
+          {{view AWE.UI.Ember.AllianceMemberView tagName="li" characterBinding="this" allianceBinding="view.alliance"
+                                                 isCurrentCharacterAllianceLeaderBinding="view.isAllianceLeader"
+                                                 controllerBinding="controller"}}
+        {{/each}}
+      </ul>
+    </div>
   </div>
 </script>
 
