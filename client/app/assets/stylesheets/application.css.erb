@@ -4111,9 +4111,9 @@ a.trading-carts-speedup-button:hover {
 
 
 .shop-dialog-pane {
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light",
-               "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-  font-weight: 300;
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; 
+  font-weight:300; 
+  font-stretch:normal;
 }
 
 
@@ -4156,17 +4156,23 @@ a.trading-carts-speedup-button:hover {
 }
 
 .resource-offer p {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 17px;
   margin-top: 6px;
 }
 
 .frog-trade {
-  background-color: #BBF;
   -moz-border-radius: 7px;
   border-radius:      7px;
   padding: 10px;
   margin-bottom: 10px;
+
+  background: #f8fbee; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #ffffff 0%,  #f8fbee 100%);
+  background: -moz-linear-gradient(top,  #ffffff,  #f8fbee); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#ffffff,  #f8fbee);
 }
 
 .frog-trade-description {
@@ -4186,20 +4192,33 @@ a.trading-carts-speedup-button:hover {
 }
 
 .bonus-offer {
-  background-color: #FBB;
   -moz-border-radius: 7px;
   border-radius:      7px;
   padding: 10px;
   margin-bottom: 10px;
+
+  background: #ecd8ce; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #f6eae5 0%,  #ecd8ce 100%);
+  background: -moz-linear-gradient(top,  #f6eae5,  #ecd8ce); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#f6eae5,  #ecd8ce);
 }
 
 .bonus-offer.active {
-  background-color: #BFB;
+  background: #ddf1a4; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #e9f3c3 0%,  #ddf1a4 100%);
+  background: -moz-linear-gradient(top,  #e9f3c3,  #ddf1a4); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#e9f3c3,  #ddf1a4);
 }
 
 .bonus-offer-header {
-  padding: 10px;
-  font-weight: 500;
+  padding: 8px;
+  font-size: 1.1em;
+  font-weight:300; 
+  font-stretch:normal; 
 }
 
 .bonus-offer-description {
