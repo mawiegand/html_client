@@ -98,8 +98,7 @@ AWE.UI = (function(module) {
     }
     
     that.onToggleButtonClick = function() {
-      politicalMap = !politicalMap;
-      my.controller.switchMapType(politicalMap);
+      my.controller.switchMapType();
       this.recalcView() 
     }
     
