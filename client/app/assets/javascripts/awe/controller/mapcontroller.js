@@ -656,23 +656,18 @@ AWE.Controller = function (module) {
     }
 
     that.switchMapType = function () {
-      log("SWITCH MAP TYPE");
+      log("SWITCH MAP TYPE", hideOtherArmies);
 
-      if(mapMode == AWE.UI.MAP_MODE_TERRAIN && !hideOtherArmies) {
+      if(mapMode == AWE.UI.MAP_MODE_TERRAIN && hideOtherArmies) {
         mapMode = AWE.UI.MAP_MODE_TERRAIN;
-        that.toggleArmyVisibility();
-      } else if(mapMode == AWE.UI.MAP_MODE_TERRAIN && hideOtherArmies) {
+        hideOtherArmies = false;
+      } else if(mapMode == AWE.UI.MAP_MODE_TERRAIN && !hideOtherArmies) {
         mapMode = AWE.UI.MAP_MODE_STRATEGIC;
-        that.toggleArmyVisibility();
+        hideOtherArmies = true;
       } else { //if(mapMode == AWE.UI.MAP_MODE_STRATEGIC && !hideOtherArmies) {
-        mapMode = AWE.UI.MAP_MODE_STRATEGIC;
-        that.toggleArmyVisibility();
-      }
-      
-      /*else {  //!political && !hideOtherArmies
         mapMode = AWE.UI.MAP_MODE_TERRAIN;
-        that.toggleArmyVisibility();
-      }*/
+        hideOtherArmies = true;
+      }
 
       AWE.Ext.applyFunctionToElements(regionViews, function (view) {
         view.setMapMode(mapMode);
