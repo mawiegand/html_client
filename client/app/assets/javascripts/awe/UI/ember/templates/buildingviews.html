@@ -17,24 +17,24 @@
 <script type="text/x-handlebars" data-template-name="building-slot-tooltip">
   <div class="advisor girl"></div>
   {{#if building}}
-    <h1>{{local building.name}} L{{building.level}}</h1>
+    <h1 class="slot-tooltip">{{local building.name}} L{{building.level}}</h1>
     <p>
       {{#if building.upgradable}}
         {{t settlement.buildings.tooltip.upgradePossible }}<br/>
         {{#if building.costsOfNextLevel}}
-          <b>{{t settlement.buildings.tooltip.costOfNextLevel}} {{t settlement.buildings.level}} {{building.nextLevel}}:</b>
+          {{t settlement.buildings.tooltip.costOfNextLevel}} {{t settlement.buildings.level}} {{building.nextLevel}}:
           {{#each building.costsOfNextLevel}}
             <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span>{{amount}} &nbsp;  
           {{/each}}
         {{/if}}
-        <b>{{t building.duration}}:</b>&nbsp;{{formatDuration building.productionTimeOfNextLevel}}    
+        {{t building.duration}}:&nbsp;{{formatDuration building.productionTimeOfNextLevel}}    
       {{else}}
         {{t settlement.buildings.tooltip.noUpgrade}}
       {{/if}}
     </p>
     <p>{{t settlement.buildings.tooltip.clickToEnter }}</p>
   {{else}}
-    <h1>{{t settlement.buildings.tooltip.empty.heading}}</h1>
+    <h1 class="slot-tooltip">{{t settlement.buildings.tooltip.empty.heading}}</h1>
     {{#if buildingSlotView.buildingCategoryNames }}
       {{t settlement.buildings.tooltip.empty.categoriesStart }}{{localizedList buildingSlotView.buildingCategoryNames }}{{t settlement.buildings.tooltip.empty.categoriesEnd }}
       {{t settlement.buildings.tooltip.empty.maxLevel }}: {{ buildingSlotView.maxLevel }}.
