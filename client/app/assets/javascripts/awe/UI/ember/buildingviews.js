@@ -205,11 +205,47 @@ AWE.UI.Ember = (function(module) {
     },
 
     click: function(event) {
+
+      if (this.getPath('slot.bubble_resource_id') == null) {
+        return true;
+      }
+
       var element = event.currentTarget;
-      var bubbleCount = 4;
+      var bubbleCount = 10;
       var self = this;
 
       $(element).find('.bubble').stop(true);
+
+      // remove big bubble background
+      $(element).find('.bubble').addClass('invisible');
+
+      $(element).find(".bubble-resource").animate({
+        opacity: 0.2,
+        top: ["-=40px", 'linear'],
+      },  2000, function() {
+        if (!jQuery.contains(document.documentElement, $(element))) {
+          $(element).find('.bubble').stop(true);
+          $(element).find('.bubble').css('top', '0px');
+          $(element).find('.bubble-resource').css('top', '0px');
+          $(element).find('.bubble-resource').css('opacity', '1.0');
+          $(element).find('.bubble').removeClass('invisible');
+          $(element).find('.resource-icon').removeClass().addClass('resource-icon');
+//          $(element).find('.bubble-amount').css('visibility', 'hidden');
+          $(element).find('.bubble').addClass('hidden');
+        }
+
+        for(var i = 1; i <= bubbleCount; ++i) {
+          var smallBubble = $(element).find(".small-bubble.n"+i)[0];
+
+          if (!jQuery.contains(document.documentElement, $(smallBubble))) {
+            $(smallBubble).remove();
+          }
+        }
+      });
+
+      $(element).find('.bubble-xp').css('visibility', 'visible');
+      $(element).find('.bubble-amount').css('visibility', 'visible');
+      $(element).find('.resource-icon').css('visibility', 'visible');
 
       // append small bubbles
       for(var i = 1; i <= bubbleCount; ++i) {
@@ -217,28 +253,13 @@ AWE.UI.Ember = (function(module) {
         $(element).find('.small-bubble').css('top', $(element).find('.bubble').css('top'));
       }
 
-      // remove big bubble background
-      $(element).find('.bubble').css('background', 'none');
-
-      $(element).find(".bubble-resource").animate({
-        opacity: 0.2,
-        top: ["-=40px", 'linear'],
-      },  2000);
-
-      $(element).find('.bubble-xp').css('visibility', 'visible');
-      $(element).find('.bubble-amount').css('visibility', 'visible');
-
       // animate small bubbles
       for(var i = 1; i <= bubbleCount; ++i) {
-        $(".small-bubble.n"+i).animate({
-          opacity: 0.2,
-          left: ["+="+Math.floor((Math.random()*160)-80), 'linear'],
-          top: ["+="+Math.floor((Math.random()*160)-80), 'linear'],
-        }, 1000, function() {
-          if (!jQuery.contains(document.documentElement, $(element))) {
-            $(element).hide();
-          }
-        });
+        $(element).find(".small-bubble.n"+i).animate({
+          opacity: 0.0,
+          left: ["+="+Math.floor((Math.random()*200)-100), 'linear'],
+          top: ["+="+Math.floor((Math.random()*200)-100), 'linear'],
+        }, 1000);
       }
 
       var action = AWE.Action.Settlement.createRedeemSlotBubbleAction(this.getPath('slot.id'));
@@ -258,28 +279,28 @@ AWE.UI.Ember = (function(module) {
       });
 
       return false;
-    },  
-    
+    },
+
+    didInsertElement: function() {
+      this._super();
+      this.fillBubble();
+    },
+
+    fillBubble: function() {
+      var bubble = $('.bubble' + this.getPath('slot.id'))[0];
+      if (bubble != null && this.getPath('slot.bubble_resource_id') != null) {
+        $(bubble).removeClass('hidden');
+        $(bubble).find('.resource-icon').addClass(AWE.GS.RulesManager.getRules().getResourceType(this.getPath('slot.bubble_resource_id')).symbolic_id)
+      }
+    },
+
     /**
      * returns true if bubble_resource_id is not null and thus
      * activates the bubble
      */
-	  isActive: function() {
-      return this.getPath('slot.bubble_resource_id') != null;
-    }.property('slot', 'slot.bubble_resource_id').cacheable(),
-
-    activeObserver: function() {
-      if (this.getPath('slot.bubble_resource_id') != null) {
-        AWE.UI.Ember.animateBubbles(this.getPath('slot.id'));
-      }
-    }.observes('slot.bubble_resource_id'),
-
-    /**
-     * returns the resource type for the bubble resource
-     */
-    resourceType: function() {
-      return AWE.GS.RulesManager.getRules().getResourceType(this.getPath('slot.bubble_resource_id'));
-    }.property('slot', 'slot.bubble_resource_id').cacheable(),
+	  visibilityObserver: function() {
+      this.fillBubble();
+    }.observes('slot', 'slot.bubble_resource_id', 'slot.updated_at'),
   });
 
   /** @class
