@@ -974,7 +974,6 @@ AWE.Controller = (function(module) {
     // slot update method
     that.updateSlots = function() {
       AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
-        log('-----> slots updated');
       });
     }
       
@@ -983,7 +982,6 @@ AWE.Controller = (function(module) {
     that.updateConstructionQueueSlotAndJobs = function(queueId, callback) {
       // as we don't know the right slot (or slot id), we update all slots
       AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
-        log('-----> slots updated');
         AWE.GS.ConstructionQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queue) {
           log('updated construction queue', queueId);
         });
@@ -1051,14 +1049,16 @@ AWE.Controller = (function(module) {
       }
     }());
         
-    that.updateAllConstructionQueuesAndJobs = function() {
+    that.updateAllConstructionQueuesJobsAndSlots = function() {
       AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
         log('updated queues', queues)
         AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
-          AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
-            log('updated jobs in construction queue', jobs)
+          AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
+            AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+              log('updated jobs in construction queue', jobs);
+            });
           });
-        });      
+        });
       });
     }
         
@@ -1137,8 +1137,7 @@ AWE.Controller = (function(module) {
           AWE.GS.SettlementManager.updateSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
             log('updated settlement', settlement);
             if (settlement && settlement.getId()) {
-              that.updateSlots();
-              that.updateAllConstructionQueuesAndJobs();
+              that.updateAllConstructionQueuesJobsAndSlots();
               if (that.view && that.view.get('selectedSlot')) {  // check view again, may have become invisible during meantime
                 that.updateAllTrainingQueuesAndJobs();
               }

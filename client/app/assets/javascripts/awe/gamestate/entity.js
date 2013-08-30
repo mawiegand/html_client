@@ -244,10 +244,11 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
   
     my = my || {};
         
-    my.entities = [];                 ///< holds all available information about armies
-    my.runningUpdatesPerId = [];      ///< hash that contains all running update requests, using the entity.id as key.
+    my.entities = {};                 ///< holds all available information about armies
+    my.runningUpdatesPerId = {};      ///< hash that contains all running update requests, using the entity.id as key.
 
     my.createEntity = my.createEntity || function(spec) { return module.Entity.create(spec); };
+    
     
     my.processUpdateResponse = my.processUpdateResponse || function(data, updateType, start) {
       
@@ -473,6 +474,10 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
     
     that.getEntities = function() {
       return my.entities;
+    }
+    
+    that.removeAllEntities = function() {
+      my.entities = {};
     }
     
     /** takes an enumerable and a resultHash from a query for entities, then
