@@ -168,7 +168,51 @@
       </td>
     </tr>
   </table>
+  {{#if collapsed}}
+  {{else}}
+  
+    <div class="clearfix">
+      <div {{bindAttr class=":advisor assignmentType.advisor"}}></div>
+      <p>{{local assignmentType.description}}</p>
+    </div>
 
+    <div class="assignment-details">
+
+      {{t settlement.assignment.duration}}: {{formatDuration duration}}
+        {{#if isHalved }}
+          ({{t settlement.assignment.hurried }})
+        {{/if}} <br />
+      {{t settlement.assignment.costs}}:
+      {{#if costs}}
+        {{#each costs}}
+          <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span> {{amount}} &nbsp;
+        {{/each}}
+        <br />
+      {{/if}}
+      {{#if unitDeposits}}
+        {{t settlement.assignment.unitDeposits}}:
+          {{#each unitDeposits}}
+            <span class="unit-icon {{unbound unitType.symbolic_id}}" {{bindAttr title="{{local unitType.name}}"}}>&nbsp;</span> {{local unitType.name}} {{amount}} &nbsp;
+          {{/each}}
+        <br />
+      {{/if}}
+        {{t settlement.assignment.rewards}}:
+        {{#each resourceRewards}}
+          <span class="resource-icon {{unbound resourceType.symbolic_id}}" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span> {{amount}} &nbsp;
+        {{/each}}
+        {{#each unitRewards}}
+          <span class="unit-icon {{unbound unitType.symbolic_id}}" {{bindAttr title="{{local unitType.name}}"}}>&nbsp;</span> {{local unitType.name}} {{amount}} &nbsp;
+        {{/each}}
+        {{#if settlement.assignment.experience_reward }}
+          <span class="xp-icon" title="XP">&nbsp;</span> {{assignmentType.rewards.experience_reward}} &nbsp;
+        {{/if }}
+
+        <div class="clickable up-icon" {{bindAttr title="settlement.assignment.collapse"}} {{action "collapsePressed"}}> </div>
+
+    </div>
+
+    
+  {{/if}}
 
 
 </div>
