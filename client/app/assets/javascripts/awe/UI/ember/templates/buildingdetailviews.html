@@ -88,6 +88,9 @@
               <div {{action "optionClicked" target="parentView"}} class="building-option-action">
                 {{view AWE.UI.Ember.BuildingView buildingBinding="building" classNames="building-option-image"}}
                 <p>{{local building.name}}</p>
+                {{#if uiMarker}}
+                  {{view AWE.UI.Ember.UIMarker direction=2 top="-80" left=10}}
+                {{/if}}
               </div>
             {{/view}}
             {{view AWE.UI.Ember.BuildingOptionDetailView buildingBinding="this" hoveredBinding="view.hoveredView.building"}}
@@ -285,7 +288,11 @@
           {{#if sendingUpgrade}}
             <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t building.upgrade.updating}}...</div>
           {{else}}
-          <a {{action "upgradeClicked"}} class="upgrade" title="{{t building.tooltip.clickToUpgrade}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png" alt="" /> {{t building.upgrade.upgrade}}</a>
+            <a style="position:relative;" {{action "upgradeClicked"}} class="upgrade" title="{{t building.tooltip.clickToUpgrade}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png" alt="" /> {{t building.upgrade.upgrade}}
+              {{#if upgradeUIMarker}}
+                {{view AWE.UI.Ember.UIMarker direction=2 top="-100" left=10}}
+              {{/if}}
+            </a>
           {{/if}}
           <h3>{{t building.upgrade.upgradeStart}} {{local building.name }} {{t building.upgrade.toAuf}} {{t building.level}} {{ building.nextLevel }} {{t building.upgrade.upgradeEnd}}</h3>
 

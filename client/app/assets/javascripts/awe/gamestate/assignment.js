@@ -40,6 +40,8 @@ AWE.GS = function (module) {
     isActive: function() {
       return this.get('ended_at') != null;
     }.property('ended_at').cacheable(),
+
+    uiMarker: false,
   });
 
   // ///////////////////////////////////////////////////////////////////////

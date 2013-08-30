@@ -184,7 +184,10 @@ AWE.Config = (function(module) {
     "ui/settlement/info/normal":          AWE.Config.RAILS_ASSET_PATH + 'ui/settlement/info_box.png',
     "ui/settlement/info/hovered":         AWE.Config.RAILS_ASSET_PATH + 'ui/settlement/info_box-hovered.png',
 
-
+    "ui/marker/up":              AWE.Config.RAILS_ASSET_PATH + 'ui/arrow/up_arrow.png',
+    "ui/marker/right":           AWE.Config.RAILS_ASSET_PATH + 'ui/arrow/right_arrow.png',
+    "ui/marker/down":            AWE.Config.RAILS_ASSET_PATH + 'ui/arrow/down_arrow.png',
+    "ui/marker/left":            AWE.Config.RAILS_ASSET_PATH + 'ui/arrow/left_arrow.png',
 
     "hud/main/background":       AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_background.png',
     "hud/main/body":             AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_body.png',

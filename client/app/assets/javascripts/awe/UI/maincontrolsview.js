@@ -6,7 +6,7 @@
 var AWE = AWE || {};
 
 AWE.UI = (function(module) {
-          
+
   module.createMainControlsView = function(spec, my) {
 
     var that;
@@ -17,7 +17,6 @@ AWE.UI = (function(module) {
     var _frameView;
     var _heroHeadImageView;
     var _heroNameView;
-    var _fortressButton;
     var _villageImageView;
     var _settlementImageView;
     var _messagesButton;
@@ -25,8 +24,6 @@ AWE.UI = (function(module) {
     var _rankingButton;
     var _questsButton;
     var _questsCallout = null;
-    var _locationsButton;
-    var _armiesButton;
     var _shopButton;
     var _resourcesShape;
     
@@ -35,22 +32,12 @@ AWE.UI = (function(module) {
     var _presentGender = null;
     var _presentAvatarString = null;
     
-    var _resource1LabelView;
-    var _resource2LabelView;
-    var _resource3LabelView;
     var _resource4LabelView;
 
-    var _resource1ProductionView;
-    var _resource2ProductionView;
-    var _resource3ProductionView;
     var _resource4ProductionView;
 
+    var _arrowTest = null;
 
-    var _resource5LabelView;
-    var _resource6LabelView;
-    
-    var _resourceBubbleView;
-    
     my = my || {};
     
     my.typeName = "MainControlsView";
@@ -327,6 +314,39 @@ AWE.UI = (function(module) {
         _heroNameView.setTextPos(null, 13);
         _heroNameView.onClick = function() { WACKADOO.characterButtonClicked(); };
         this.addChild(_heroNameView);
+
+        _arrowTest = AWE.UI.createTargetView();
+
+        var duration = duration || 10000;
+        var offset = offset || AWE.Geometry.createPoint(0, -50);
+
+        var bounceHeight = 50;
+        var bounceDuration = 1000.0;
+
+        this.addChild(_arrowTest);
+
+        var animation = AWE.UI.createTimedAnimation({
+          view:_arrowTest,
+          duration:duration,
+
+          updateView:function () {
+            return function (view, elapsed) {
+              var height = (Math.sin(elapsed * duration / bounceDuration * 2.0 * Math.PI) / 2.0 + 0.5) * bounceHeight;
+              view.setOrigin(AWE.Geometry.createPoint(_heroNameView.frame().origin.x + offset.x,
+                _heroNameView.frame().origin.y + offset.y - height));
+            };
+          }(),
+
+          onAnimationEnd:function (viewToRemove) {
+            return function () {
+              this.removeChild(viewToRemove.displayObject());
+              log('removed animated label on animation end');
+            };
+          }(_arrowTest),
+        });
+
+        that.addAnimation(animation);
+        _arrowTest.setNeedsUpdate();
       }
 
       if (!_heroHeadImageView || AWE.GS.game.getPath('currentCharacter.avatar_string') != _presentAvatarString) {

@@ -38,6 +38,7 @@ AWE.UI.Ember = (function(module) {
         return a.get('slot_num') - b.get('slot_num');
       }) : null;
     }.property('hashableSlots.changedAt').cacheable(),
+
     /** true in case there are representations of the slots available. */
     haveSlotsBinding: Ember.Binding.bool('slots'),
     
@@ -60,8 +61,8 @@ AWE.UI.Ember = (function(module) {
       var settlement = this.get('settlement');
       return settlement && settlement !== AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(settlement);
     }.property('settlement.owner_id'),
-		
-	});
+
+  });
 
   /** 
    * View that displays some general information about the settlement. 

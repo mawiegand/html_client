@@ -1,5 +1,10 @@
 <script type="text/x-handlebars" data-template-name="trainable-unit-button">
+  <div style="position: relative;">
   {{local unitType.name}}
+  {{#if unitSelectionButtonUIMarker}}
+    {{view AWE.UI.Ember.UIMarker direction=2 top="-100" left="-10"}}
+  {{/if}}
+  </div>
 </script>
 
 
@@ -7,7 +12,7 @@
   <h2>{{local queue.queueType.name }}</h2>
   <div class="clearfix">
     {{#each trainableUnitTypes}}
-      {{view AWE.UI.Ember.TrainableUnitButtonView unitTypeBinding="this" queueBinding="view.queue" classNames="training-option"}}
+        {{view AWE.UI.Ember.TrainableUnitButtonView unitTypeBinding="this" queueBinding="view.queue" classNames="training-option"}}
     {{/each}}
   </div>
 
@@ -32,7 +37,11 @@
       {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}...
     {{else}}
       {{#if number}}
-        <div class="button ok-button" {{action "createJobPressed"}}>{{t settlement.training.recruit}} {{local selectedUnitButton.unitType.name}}</div>
+        <div style="position: relative;" class="button ok-button" {{action "createJobPressed"}}>{{t settlement.training.recruit}} {{local selectedUnitButton.unitType.name}}
+          {{#if trainingButtonUIMarker}}
+            {{view AWE.UI.Ember.UIMarker direction=3 top="-25" left=225}}
+          {{/if}}
+        </div>
       {{/if}}
     {{/if}}    
   {{else}}
