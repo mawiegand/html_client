@@ -652,18 +652,18 @@ AWE.Controller = function (module) {
       });
     }
 
-    that.switchMapType = function () {
+    that.switchMapType = function (mapTypeIndex) {
       log("SWITCH MAP TYPE", hideOtherArmies);
 
-      if(mapMode == AWE.UI.MAP_MODE_TERRAIN && hideOtherArmies) {
+      if(mapTypeIndex == 0) {
         mapMode = AWE.UI.MAP_MODE_TERRAIN;
         hideOtherArmies = false;
-      } else if(mapMode == AWE.UI.MAP_MODE_TERRAIN && !hideOtherArmies) {
-        mapMode = AWE.UI.MAP_MODE_STRATEGIC;
-        hideOtherArmies = true;
-      } else { //if(mapMode == AWE.UI.MAP_MODE_STRATEGIC && !hideOtherArmies) {
+      } else if(mapTypeIndex == 1) {
         mapMode = AWE.UI.MAP_MODE_TERRAIN;
         hideOtherArmies = true;
+      } else {
+        mapMode = AWE.UI.MAP_MODE_STRATEGIC;
+        hideOtherArmies = false;
       }
 
       AWE.Ext.applyFunctionToElements(regionViews, function (view) {
