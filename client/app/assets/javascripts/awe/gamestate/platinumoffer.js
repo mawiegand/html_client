@@ -61,8 +61,8 @@ AWE.GS = (function(module) {
     }
     
     that.getPlatinumOffers = function() {
-      var offers = []
-      that.getEntities().forEach(function(offer){
+      var offers = [];
+      AWE.Ext.applyFunctionToElements(that.getEntities(), function(offer){
         if (offer) offers.push(offer);
       });
       return offers;
