@@ -1198,6 +1198,7 @@ AWE.Controller = (function(module) {
       this.updateSettlement();
 
       AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+        log('-----> jobs updated', slots);
         if (callback) {
           callback();
         }
@@ -1256,14 +1257,18 @@ AWE.Controller = (function(module) {
       }
     }());
         
-    that.updateAllConstructionQueuesAndJobs = function() {
+    that.updateAllConstructionQueuesJobsAndSlots = function() {
       AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
         log('updated queues', queues)
         AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
-          AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
-            log('updated jobs in construction queue', jobs)
+          AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
+            log('------------> slots updated', slots);
+            AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+              log('updated jobs in construction queue', jobs);
+              log('------------> jobs updated', jobs);
+            });
           });
-        });      
+        });
       });
     }
         
@@ -1342,8 +1347,7 @@ AWE.Controller = (function(module) {
           AWE.GS.SettlementManager.updateSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
             log('updated settlement', settlement);
             if (settlement && settlement.getId()) {
-              that.updateSlots();
-              that.updateAllConstructionQueuesAndJobs();
+              that.updateAllConstructionQueuesJobsAndSlots();
               if (that.view && that.view.get('selectedSlot')) {  // check view again, may have become invisible during meantime
                 that.updateAllTrainingQueuesAndJobs();
               }
