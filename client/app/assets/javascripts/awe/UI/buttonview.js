@@ -98,7 +98,7 @@ AWE.UI = (function(module) {
       if (!this.enabled()) {
         _imageView.setImage(this.imageForState(module.CONTROL_STATE_DISABLED));
         if (!this.hasSpecificImageForState(module.CONTROL_STATE_DISABLED)) {
-          _imageView.setAlpha(0.3 * this.alpha());
+          _imageView.setAlpha(0.5 * this.alpha());
         }
       }
       else if (this.selected()) {

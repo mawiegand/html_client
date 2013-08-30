@@ -2472,7 +2472,6 @@ AWE.Controller = function (module) {
           _timeout = true;
           setTimeout(function() {
             _timeout = false;
-            log('----------> callback');
             if (!_viewPortChanged && _disableArmies) {
               _disableArmies = false;
               that.setModelChanged();

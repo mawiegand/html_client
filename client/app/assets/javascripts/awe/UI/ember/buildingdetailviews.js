@@ -54,6 +54,8 @@ AWE.UI.Ember = (function(module) {
   module.BuildingOptionView = module.HoverableView.extend( /** @lends AWE.UI.Ember.BuildingOptionView# */ {
     classNameBindings: ['requirementUnmet'],
 
+    building: null,
+
     unmetRequirementGroups: function() {
       var building = this.get('building');
       return building ? building.unmetRequirementGroups() : null;
@@ -66,7 +68,17 @@ AWE.UI.Ember = (function(module) {
     
     requirementUnmet: function() {
       return !this.get('requirementsMet');
-    }.property('requirementsMet'),   
+    }.property('requirementsMet'),
+
+    uiMarker: function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      if (tutorialState.isUIMarkerActive(AWE.GS.MARK_BUILDING_OPTION)) {
+        return tutorialState.buildingTypeOfMarkerTest() == this.getPath('building.buildingId');
+      }
+      else {
+        return false;
+      }
+    }.property('building').cacheable(),
   });
   
   
@@ -145,6 +157,11 @@ AWE.UI.Ember = (function(module) {
       WACKADOO.presentModalDialog(dialog);
       return false;
     },
+
+    upgradeUIMarker: function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return this.getPath('building.slot.uiMarker') && tutorialState.isUIMarkerActive(AWE.GS.MARK_UPGRADE_BUTTON) && tutorialState.buildingTypeOfMarkerTest() == this.getPath('building.buildingId');
+    }.property('building.slot.uiMarker'),
   });
   
   
@@ -182,8 +199,12 @@ AWE.UI.Ember = (function(module) {
     
     requirementUnmet: function() {
       return !this.get('requirementsMet');
-    }.property('requirementsMet'), 
+    }.property('requirementsMet'),
 
+    unitSelectionButtonUIMarker: function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return this.get('requirementsMet') && tutorialState.isUIMarkerActive(AWE.GS.MARK_TRAINING_DIALOG_FLOW) && this.getPath('parentView.selectedUnitButton') == null;
+    }.property('parentView.selectedUnitButton').cacheable(),
   });
   
   module.ArrayItemView = Ember.View.extend({

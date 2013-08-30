@@ -1677,6 +1677,7 @@ span.bonus {
 }
 
 .building-option-action {
+  position: relative;
   margin: 0;
   padding: 0;
   height: 184px; 
@@ -5348,43 +5349,54 @@ hurry-button:hover {
 }
 
 
-
-  /* ==|== media queries ======================================================
-     EXAMPLE Media Query for Responsive Design.
-     This example overrides the primary ('mobile first') styles
-     Modify as content requires.
-     ========================================================================== */
-
-@media only screen and (min-width: 35em) {
-  /* Style adjustments for viewports that meet the condition */
+.ui-marker-div {
+  position:absolute;
+  top: 0;
+  left: 0;
+  padding:0;
+  width:  96px;
+  height: 96px;
+  z-index: 9;
 }
 
+.ui-marker-image {
+  position:absolute;
+  padding:0;
+  width:  48px;
+  height: 48px;
+  background-size:  100%;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
 
+.ui-marker-image:hover {
+  opacity: 1.0;
+}
 
-/* ==|== non-semantic helper classes ========================================
-   Please define your styles before this section.
-   ========================================================================== */
+.ui-marker-image.up {
+  top: 0px;
+  left: 24px;
+  background-image: url('<%= asset_path("ui/arrow/up_arrow.png") %>');
+}
 
-/* For image replacement */
-.ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; *line-height: 0; }
-.ir br { display: none; }
+.ui-marker-image.right {
+  top: 24px;
+  left: 48px;
+  background-image: url('<%= asset_path("ui/arrow/right_arrow.png") %>');
+}
 
-/* Hide from both screenreaders and browsers: h5bp.com/u */
-.hidden { display: none !important; visibility: hidden; }
+.ui-marker-image.down {
+  top: 48px;
+  left: 24px;
+  background-image: url('<%= asset_path("ui/arrow/down_arrow.png") %>');
+}
 
-/* Hide only visually, but have it available for screenreaders: h5bp.com/v */
-.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+.ui-marker-image.left {
+  top: 24px;
+  left: 0px;
+  background-image: url('<%= asset_path("ui/arrow/left_arrow.png") %>');
+}
 
-/* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: h5bp.com/p */
-.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
-
-/* Hide visually and from screenreaders, but maintain layout */
-.invisible { visibility: hidden; }
-
-/* Contain floats: h5bp.com/q */
-.clearfix:before, .clearfix:after { content: ""; display: table; }
-.clearfix:after { clear: both; }
-.clearfix { *zoom: 1; }
 
 
 .bubble-wrap {
@@ -5451,6 +5463,47 @@ hurry-button:hover {
   background-size:  100%;
   background-image: url('<%= asset_path("icons/bubble.png") %>');
 }
+
+
+
+
+
+  /* ==|== media queries ======================================================
+     EXAMPLE Media Query for Responsive Design.
+     This example overrides the primary ('mobile first') styles
+     Modify as content requires.
+     ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+  /* Style adjustments for viewports that meet the condition */
+}
+
+
+
+/* ==|== non-semantic helper classes ========================================
+   Please define your styles before this section.
+   ========================================================================== */
+
+/* For image replacement */
+.ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; *line-height: 0; }
+.ir br { display: none; }
+
+/* Hide from both screenreaders and browsers: h5bp.com/u */
+.hidden { display: none !important; visibility: hidden; }
+
+/* Hide only visually, but have it available for screenreaders: h5bp.com/v */
+.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+
+/* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: h5bp.com/p */
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
+
+/* Hide visually and from screenreaders, but maintain layout */
+.invisible { visibility: hidden; }
+
+/* Contain floats: h5bp.com/q */
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { *zoom: 1; }
 
 
 /* ==|== print styles =======================================================

@@ -38,7 +38,7 @@ AWE.UI.Ember = (function(module) {
     tagName:      'form',
     templateName: 'message-edit',
 
-    didInserElement: function() {
+    didInsertElement: function() {
       this._super();
       this.$('input:first').focus();
     },

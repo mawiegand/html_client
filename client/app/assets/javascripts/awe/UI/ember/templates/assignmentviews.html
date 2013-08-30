@@ -62,6 +62,9 @@
             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t general.processing}}
           {{else}}
             <span class="simple-button clickable" {{action "startPressed"}}>{{t settlement.assignment.start}}</span>
+            {{#if uiMarker}}
+              {{view AWE.UI.Ember.UIMarker direction=1 top="-35" left="-110"}}
+            {{/if}}
           {{/if}}
         {{/if}}
       </td>

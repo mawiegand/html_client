@@ -73,6 +73,11 @@ AWE.UI.Ember = function(module) {
 
     collapsed: true,
 
+    uiMarker: function() {
+      var test = this.get('assignment');
+      return this.getPath('assignment.uiMarker');
+    }.property('assignment').cacheable(),
+
     speedupCosts: 2,
 
     progressBarWidth: function() {

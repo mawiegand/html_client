@@ -201,11 +201,11 @@ AWE.UI.Ember = (function(module) {
   module.QuestUnitRewardsView = Ember.View.extend({
     templateName: 'quest-unit-rewards-view',
     units: null,
-  });  
-  
+  });
+
   module.TutorialEndDialog = module.InfoDialog.extend({
     templateName: 'tutorial-end-dialog',
-    
+
     okPressed: function() {
       var self = this;
       self.set('redeeming', true);
@@ -216,17 +216,84 @@ AWE.UI.Ember = (function(module) {
         var dialog = AWE.UI.Ember.InfoDialog.create({
           heading: AWE.I18n.lookupTranslation('tutorial.end.redeemError.header'),
           message: AWE.I18n.lookupTranslation('tutorial.end.redeemError.message'),
-          
+
           okPressed: function() {
             self.destroy();
             this._super();
-          },     
+          },
         });
         WACKADOO.presentModalDialog(dialog);
       });
     },
-  });  
-  
-  return module;  
+  });
+
+  module.UIMarker = Ember.View.extend({
+    templateName: 'ui-marker',
+
+    animate: function() {
+      var self = this;
+      var arrow = this.$().find('.ui-marker-image')[0];
+
+      switch(this.get('direction')) {
+        case 0:
+          $(arrow).animate({top: "+=48px"}, 500, function() {
+            $(arrow).animate({top: "-=48px"}, 500, function() {
+              self.animate();
+            });
+          });
+          break;
+        case 1:
+          $(arrow).animate({left: "-=48px"}, 500, function() {
+            $(arrow).animate({left: "+=48px"}, 500, function() {
+              self.animate();
+            });
+          });
+          break;
+        case 2:
+          $(arrow).animate({top: "-=48px"}, 500, function() {
+            $(arrow).animate({top: "+=48px"}, 500, function() {
+              self.animate();
+            });
+          });
+          break;
+        case 3:
+          $(arrow).animate({left: "+=48px"}, 500, function() {
+            $(arrow).animate({left: "-=48px"}, 500, function() {
+              self.animate();
+            });
+          });
+          break;
+        default:
+      }
+    },
+
+    didInsertElement: function() {
+      this.animate();
+    },
+
+    top: 0,
+    left: 0,
+
+    style: function() {
+      return "top: " + this.get('top') + "px; left: " + this.get('left') + "px;";
+    }.property('top', 'left').cacheable(),
+
+    direction: 0,
+
+    directionClass: function() {
+      switch (this.get('direction')) {
+        case 0:
+          return 'up';
+        case 1:
+          return 'right';
+        case 2:
+          return 'down';
+        default:
+          return 'left';
+      }
+    }.property('direction').cacheable(),
+  });
+
+  return module;
     
 }(AWE.UI.Ember || {}));
