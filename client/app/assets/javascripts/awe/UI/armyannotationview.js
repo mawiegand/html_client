@@ -223,7 +223,7 @@ AWE.UI = (function(module) {
         _foundButtonView.setVisible(false);
       }
       else if (_army.get('isFighting')) {
-        _backgroundView.setVisible(true);
+        _backgroundView.setVisible(false);
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);
@@ -232,7 +232,7 @@ AWE.UI = (function(module) {
         _foundButtonView.setVisible(false);
       }
       else {
-        _backgroundView.setVisible(true);
+        _backgroundView.setVisible(false);
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);
