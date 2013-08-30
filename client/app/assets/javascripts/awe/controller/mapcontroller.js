@@ -24,7 +24,7 @@ AWE.Controller = function (module) {
     var _needsDisplay;           ///< true, in case something (data, subwview) has changed causing a need for a redraw
     var _windowChanged = false;    ///< true, in case the size of the map screen has changed.
 
-    var _scrollingStarted = false;///< user is presently scrolling
+    var _scrollingStarted = false;///< user is pres ently scrolling
     var _scrollingStartedAtVC;
     var _scrollingOriginalTranslationVC;
     var _scrollingLastVCPosition;
@@ -1152,6 +1152,23 @@ AWE.Controller = function (module) {
             that.handleError(status, "The server did not accept the retreat comannd.");
           }
           runningRetreatAction = false;
+        });
+      }
+    };
+
+    var runningStanceAction = false;
+
+    that.stanceButtonClicked = function(army) {
+      if (!runningStanceAction) {
+        runningStanceAction = true;
+
+        var newStance = army.get('stance') === 0 ? 1 : 0;
+        var action = AWE.Action.Military.createChangeArmyStanceAction(army, newStance);
+        AWE.Action.Manager.queueAction(action, function() {
+          AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (army) {
+            that.setModelChanged();
+          });
+          runningStanceAction = false;
         });
       }
     };
@@ -2783,6 +2800,12 @@ AWE.Controller = function (module) {
           annotationView.onBattleInfoButtonClick = (function (self) {
             return function (army) {
               self.battleInfoButtonClicked(army);
+            }
+          })(that);
+
+          annotationView.onStanceButtonClick = (function (self) {
+            return function (army) {
+              self.stanceButtonClicked(army);
             }
           })(that);
 

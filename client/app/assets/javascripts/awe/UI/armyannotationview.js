@@ -17,12 +17,14 @@ AWE.UI = (function(module) {
     var _actionMode = null;
 
     var _backgroundView = null;
-        
+    var _backgroundView3 = null;
+    var _backgroundView4 = null;
+
     // selected
     var _stanceButtonView = null;    
     var _moveButtonView = null;    
     var _attackButtonView = null;    
-    var _retreatButtonView = null;    
+    var _battleInfoButtonBackgroundView = null;
     var _battleInfoButtonView = null;    
     var _foundButtonView = null;
     var _cancelButtonView = null;    
@@ -57,15 +59,22 @@ AWE.UI = (function(module) {
       _armyView = view;
       _army = view.army();
 
-      _backgroundView = AWE.UI.createImageView();
-      _backgroundView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("hud/annotation/panel3"));
-      _backgroundView.setFrame(AWE.Geometry.createRect(-20, -40, 154, 230));
-      this.addChild(_backgroundView);
+      _backgroundView3 = AWE.UI.createImageView();
+      _backgroundView3.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("hud/annotation/panel3"));
+      _backgroundView3.setFrame(AWE.Geometry.createRect(-20, -40, 154, 230));
+      this.addChild(_backgroundView3);
+
+      _backgroundView4 = AWE.UI.createImageView();
+      _backgroundView4.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("hud/annotation/panel4"));
+      _backgroundView4.setFrame(AWE.Geometry.createRect(-20, -40, 154, 230));
+      this.addChild(_backgroundView4);
 
       _stanceButtonView = AWE.UI.createButtonView();
       _stanceButtonView.initWithControllerTextAndImage(controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/defense/normal"));
-//    _stanceButtonView.setDisabledImage(AWE.UI.ImageCache.getImage("map/button1disabled"));
-      _stanceButtonView.setFrame(AWE.Geometry.createRect(12, 6, 48, 48));
+      _stanceButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/defense/hover"), module.CONTROL_STATE_HOVERED);
+      _stanceButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/defense/active"), module.CONTROL_STATE_SELECTED);
+      _stanceButtonView.setFrame(AWE.Geometry.createRect(-10, 82, 48, 48));
+      _stanceButtonView.onClick = function() { if (_stanceButtonView.enabled()) { that.onStanceButtonClick(_army); } }
       this.addChild(_stanceButtonView);
 
       _moveButtonView = AWE.UI.createButtonView();
@@ -80,7 +89,7 @@ AWE.UI = (function(module) {
       _foundButtonView.initWithControllerTextAndImage(controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/settle/normal"));
       _foundButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/settle/hover"), module.CONTROL_STATE_HOVERED);
       _foundButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/settle/active"), module.CONTROL_STATE_SELECTED);
-      _foundButtonView.setFrame(AWE.Geometry.createRect(-10, 82, 48, 48));
+      _foundButtonView.setFrame(AWE.Geometry.createRect(25, 118, 48, 48));
       _foundButtonView.onClick = function() { if (_foundButtonView.enabled()) { that.onFoundButtonClick(that); } }
       this.addChild(_foundButtonView);      
       
@@ -111,11 +120,16 @@ AWE.UI = (function(module) {
 //        }
 //      }
 //      this.addChild(_retreatButtonView);
-      
+
+      _battleInfoButtonBackgroundView = AWE.UI.createImageView();
+      _battleInfoButtonBackgroundView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("hud/annotation/panel1"));
+      _battleInfoButtonBackgroundView.setFrame(AWE.Geometry.createRect(141, 88, 53, 53));
+      this.addChild(_battleInfoButtonBackgroundView);
+
       _battleInfoButtonView = AWE.UI.createButtonView();
       _battleInfoButtonView.initWithControllerTextAndImage(controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/battleinfo/normal"));
       _battleInfoButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/battleinfo/hover"), module.CONTROL_STATE_HOVERED);
-      _battleInfoButtonView.setFrame(AWE.Geometry.createRect(128, -70, 48, 48));
+      _battleInfoButtonView.setFrame(AWE.Geometry.createRect(143, 90, 48, 48));
       _battleInfoButtonView.onClick = function() {
         if (_battleInfoButtonView.enabled()) {
           that.onBattleInfoButtonClick(_army);
@@ -157,9 +171,8 @@ AWE.UI = (function(module) {
         my.frame.size.width = 192;
         my.frame.size.height = 128;
       }
-      
-      this.updateButtonVisibility();
-      this.updateButtonState();
+
+      this.recalcView();
     };
     
     that.onAttackButtonClick = function() {};
@@ -167,9 +180,10 @@ AWE.UI = (function(module) {
     that.onRetreatButtonClick = function() {
       log('onRetreatButtonClick');
     };
-    
+
     that.onBattleButtonClick = function() {};
-    
+    that.onStanceButtonClick = function() {};
+
     that.onMoveButtonClick = function() {
       log('onMoveButtonClick');
     };
@@ -192,8 +206,10 @@ AWE.UI = (function(module) {
         _attackButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);        
 //        _retreatButtonView.setVisible(false);
-        _battleInfoButtonView.setVisible(false);  
-        _foundButtonView.setVisible(false);    
+        _battleInfoButtonView.setVisible(false);
+        _battleInfoButtonBackgroundView.setVisible(false);
+        _foundButtonView.setVisible(false);
+        _stanceButtonView.setVisible(false);
       }
       else if (_army.isOwn() && (_army.get('mode') === null || _army.get('mode') === AWE.Config.ARMY_MODE_IDLE)) { // 0 -> idle or null -> unkown
         _backgroundView.setVisible(true);
@@ -202,7 +218,9 @@ AWE.UI = (function(module) {
         _cancelButtonView.setVisible(false);
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(false);
+        _battleInfoButtonBackgroundView.setVisible(false);
         _foundButtonView.setVisible(_army.get('hasSettlementFounder'));
+        _stanceButtonView.setVisible(true);
       }
       else if (_army.isOwn() && _army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
         _backgroundView.setVisible(true);
@@ -211,16 +229,20 @@ AWE.UI = (function(module) {
         _cancelButtonView.setVisible(true);
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(false);
+        _battleInfoButtonBackgroundView.setVisible(false);
         _foundButtonView.setVisible(false);
+        _stanceButtonView.setVisible(true);
       }
       else if (_army.isOwn() && _army.get('isFighting')) {
-        _backgroundView.setVisible(false);
-        _moveButtonView.setVisible(false);
-        _attackButtonView.setVisible(false);
+        _backgroundView.setVisible(true);
+        _moveButtonView.setVisible(true);
+        _attackButtonView.setVisible(true);
         _cancelButtonView.setVisible(false);    
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(true);
+        _battleInfoButtonBackgroundView.setVisible(true);
         _foundButtonView.setVisible(false);
+        _stanceButtonView.setVisible(true);
       }
       else if (_army.get('isFighting')) {
         _backgroundView.setVisible(false);
@@ -229,7 +251,9 @@ AWE.UI = (function(module) {
         _cancelButtonView.setVisible(false);
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(true);
+        _battleInfoButtonBackgroundView.setVisible(true);
         _foundButtonView.setVisible(false);
+        _stanceButtonView.setVisible(false);
       }
       else {
         _backgroundView.setVisible(false);
@@ -238,7 +262,9 @@ AWE.UI = (function(module) {
         _cancelButtonView.setVisible(false);
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(false);
+        _battleInfoButtonBackgroundView.setVisible(false);
         _foundButtonView.setVisible(false);
+        _stanceButtonView.setVisible(false);
       }
     }
     
@@ -248,18 +274,29 @@ AWE.UI = (function(module) {
       _foundButtonView.setEnabled(
         _army.canFoundSettlementAtPresentLocationNow()
       );
+      _stanceButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('isFighting'));
 //      _retreatButtonView.setEnabled(_army.get('isFighting'));
       
       _moveButtonView.setSelected(_actionMode === 'moveTargetSelection');
       _attackButtonView.setSelected(_actionMode === 'attackTargetSelection');
-      _foundButtonView.setSelected(_actionMode === 'foundSettlement');     
+      _foundButtonView.setSelected(_actionMode === 'foundSettlement');
+      _stanceButtonView.setSelected(_army.get('stance') == 1);
+
 //      _retreatButtonView.setSelected(_army.get('battle_retreat'));
     }
     
     that.recalcView = function() {
+
+      if (_foundButtonView.visible()) {
+        _backgroundView = _backgroundView4;
+        _backgroundView3.setVisible(false);
+      }
+      else {
+        _backgroundView = _backgroundView3;
+        _backgroundView4.setVisible(false);
+      }
       
       // buttons
-      _stanceButtonView.setVisible(false); // NO third button at present
       this.updateButtonVisibility();
       if (_army.isOwn() && _armyView.selected()) {
         this.updateButtonState();
