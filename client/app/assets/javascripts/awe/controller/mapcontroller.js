@@ -175,9 +175,6 @@ AWE.Controller = function (module) {
       inspectorViews.encyclopediaButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
       _stages[3].addChild(inspectorViews.encyclopediaButtonView.displayObject());
 
-      inspectorViews.armyVisibilityButtonView = AWE.UI.createArmyVisibilityButtonView();
-      inspectorViews.armyVisibilityButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
-      _stages[3].addChild(inspectorViews.armyVisibilityButtonView.displayObject());
     };
     
 
@@ -3014,10 +3011,6 @@ AWE.Controller = function (module) {
       }
       if (inspectorViews.encyclopediaButtonView) {
         inspectorViews.encyclopediaButtonView.setOrigin(AWE.Geometry.createPoint(20 + 114, _windowSize.height - 101));
-      }
-
-      if (inspectorViews.armyVisibilityButtonView) {
-        inspectorViews.armyVisibilityButtonView.setOrigin(AWE.Geometry.createPoint(20 + 190, _windowSize.height - 101));
       }
 
       return _inspectorChanged || _windowChanged;
