@@ -306,7 +306,7 @@ AWE.UI = (function(module) {
     that.update = function(streetsHidden, villagesHidden) {
       if (_node.isLeaf()) { 
         _container.visible = true;
-        _updateRegionStreets(streetsHidden);
+        _updateRegionStreets(streetsHidden || !AWE.Config.MAP_DISPLAY_STREETS);
         //_updateVillageStreets(villagesHidden);
       } else {
         _container.visible = false;

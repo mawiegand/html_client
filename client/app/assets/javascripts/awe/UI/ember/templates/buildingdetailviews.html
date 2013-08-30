@@ -15,15 +15,15 @@
 <script type="text/x-handlebars" data-template-name="requirement-view">
   {{#if haveMaxLevel }}
     {{#if maxLevelZero }}
-      <b>{{t building.requirement.none}}</b> {{t building.requirement.single}} <b>{{local type.name}}</b>
+      {{t building.requirement.none}} {{t building.requirement.single}} {{local type.name}}
     {{else }}
-      <b>{{t building.requirement.none}} {{local type.name}}</b> {{t building.requirement.greaterThan}} <b>{{t building.level}} {{ requirement.max_level }}</b>
+      {{t building.requirement.none}} {{local type.name}} {{t building.requirement.greaterThan}} {{t building.level}} {{ requirement.max_level }}
     {{/if}}
     {{#if haveMinLevel}}
     {{/if}}
   {{/if}}
   {{#if haveMinLevel }}
-    <b>{{local type.name}}</b> {{t general.with}} <b>{{t building.level}} {{requirement.min_level}}</b> {{t building.requirement.orGreater}} 
+    {{local type.name}} {{t general.with}} {{t building.level}} {{requirement.min_level}} {{t building.requirement.orGreater}} 
   {{/if}}
 </script>
 
@@ -34,7 +34,7 @@
     {{#if building.buildingCategory}}<div class="building-category">{{t settlement.buildings.category}}: {{local building.buildingCategory.name}}</div>{{/if}}
     
     {{#unless building.buildingType.demolishable}}
-      <div><b>{{t general.warning}}:</b> {{t building.info.notDemolishable}}</div>
+      <div>{{t general.warning}}: {{t building.info.notDemolishable}}</div>
     {{/unless}}    
     
     {{local building.flavour}}
@@ -47,12 +47,12 @@
     {{t building.duration}}: {{formatDuration building.productionTimeOfNextLevel}}<br />     
     {{#unless requirementsMet}}
       <p>
-        {{{t settlement.buildings.select.missingRequirements}}}:<br/>
+        {{{t settlement.buildings.select.missingRequirements}}}:</p>
         {{view Ember.View templateName="requirement-groups-view" unmetRequirementGroupsBinding="unmetRequirementGroups"}}
-      </p>
+      <br/>
     {{/unless}} 
     {{#if building.productionsNextLevel}}
-      <b>{{t building.produces}}:</b><br/>
+      {{t building.produces}}:<br/>
       {{#each building.productionsNextLevel}}
         <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>   
         {{baseProduction}}<span class="bonus" {{bindAttr title="localizedDesc"}}>+{{bonusAbsolute}}</span> {{t general.perHour}} <br/>  
@@ -60,14 +60,14 @@
     {{/if}}
 
     {{#unless building.buildingType.buyable}}
-      <p><b>{{t building.info.notBuyable}}</b></p>
+      <p>{{t building.info.notBuyable}}</p>
     {{/unless}}
 
     {{#if building.unlockDiplomacyNextLevel}}
-      <p><b>{{t building.info.unlockJoinAlliance}}</b></p>
+      <p>{{t building.info.unlockJoinAlliance}}</p>
     {{/if}}
     {{#if building.unlockedAllianceCreationNextLevel}}
-      <p><b>{{t building.info.unlockCreateAlliance}}</b></p>
+      <p>{{t building.info.unlockCreateAlliance}}</p>
     {{/if}}
   {{/if}}
 </script>
@@ -88,6 +88,9 @@
               <div {{action "optionClicked" target="parentView"}} class="building-option-action">
                 {{view AWE.UI.Ember.BuildingView buildingBinding="building" classNames="building-option-image"}}
                 <p>{{local building.name}}</p>
+                {{#if uiMarker}}
+                  {{view AWE.UI.Ember.UIMarker direction=2 top="-80" left=10}}
+                {{/if}}
               </div>
             {{/view}}
             {{view AWE.UI.Ember.BuildingOptionDetailView buildingBinding="this" hoveredBinding="view.hoveredView.building"}}
@@ -101,7 +104,7 @@
 
 
 <script type="text/x-handlebars" data-template-name="building-cost-view">
-  <b>{{t building.cost}}:</b>
+  {{t building.cost}}:
   {{#each resources}}
     <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>{{formatNumber amount maxPlaces="0"}} &nbsp;
   {{/each}}
@@ -109,7 +112,7 @@
 
 
 <script type="text/x-handlebars" data-template-name="building-production-view">
-  <b>{{t building.produces}} ({{t general.perHour}}):</b>
+  {{t building.produces}} ({{t general.perHour}}):
   {{#if resources}}
     {{#each resources}}
       <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>
@@ -125,7 +128,7 @@
 
 <script type="text/x-handlebars" data-template-name="settlement-dialog-building-details">
   <div class="settlement-dialog-background"></div>
-  <div class="settlement-dialog-window">
+  <div class="settlement-dialog-window helvetica-light">
     <div class="settlement-dialog-header settlement-dialog-building-details"></div>
     <div class="settlement-dialog-pane settlement-dialog-building-details">
       <a {{action "cancelPressed" }} class="close" title="{{t general.close}}"></a>
@@ -140,14 +143,14 @@
           <h1>Im Bau: {{local building.name }}</h1>        
         {{/if}}
         {{#if building.buildingCategory}}<div class="building-category">{{t settlement.buildings.category}}: {{local building.buildingCategory.name}}</div>{{/if}}
-        <b>{{t settlement.population}}:</b> {{building.population}}<br/>
+        {{t settlement.population}}: {{building.population}}<br/>
         {{#if building.experienceOrResourceProduction}}
           {{view AWE.UI.Ember.ResourceProductionView resourcesBinding="building.productions" experienceBinding="building.experienceProduction"}}
           <br/>
         {{/if}}
       
         {{#if building.capacity}}
-          <b>{{t building.capacity}}:</b>
+          {{t building.capacity}}:
           {{#each building.capacity}}
             <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>
             {{capacity}} &nbsp;  
@@ -155,7 +158,7 @@
         {{/if}}
 
         {{#if building.productionBoni}}
-          <b>{{t building.productionBoni}}:</b>
+          {{t building.productionBoni}}:
           {{#each building.productionBoni}}
           <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>
             +{{bonus}}% &nbsp;  
@@ -167,37 +170,37 @@
 
     
       {{#if building.unlockedDiplomacy}}
-        <p><b>{{t building.info.unlockJoinAlliance}}</b></p>
+        <p>{{t building.info.unlockJoinAlliance}}</p>
       {{/if}}
       {{#if building.unlockedAllianceCreation}}
-        <p><b>{{t building.info.unlockCreateAlliance}}</b></p>
+        <p>{{t building.info.unlockCreateAlliance}}</p>
       {{/if}}    
       {{#if building.unlockedPlayerToPlayerTrade}}
-        <p><b>{{t building.info.unlockTrade}}</b></p>
+        <p>{{t building.info.unlockTrade}}</p>
       {{/if}}    
       {{#if building.tradingCarts}}
-        <p><b>{{t building.tradingCarts}}:</b> {{building.tradingCarts}}</p>
+        <p>{{t building.tradingCarts}}: {{building.tradingCarts}}</p>
       {{/if}} 
       {{#if building.commandPoints}}
-        <p><b>{{t building.commandPoints}}:</b> {{building.commandPoints}}</p>
+        <p>{{t building.commandPoints}}: {{building.commandPoints}}</p>
       {{/if}} 
     
       {{#if building.unlockedQueues}}
-          <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.unlockedQueues}}{{local name}},    {{/each}}</p>
+          <p>{{t settlement.buildings.details.enables}}: {{#each building.unlockedQueues}}{{local name}},    {{/each}}</p>
       {{/if}}
     
       {{#if building.speedupQueues}}
         {{#each building.speedupQueues}}
-          <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
+          <p>{{t settlement.buildings.details.speedup}} {{local queueType.name}}: {{formatNumber speedup maxPlaces=1}}%</p>
         {{/each}}
       {{/if}}
 
       {{#if building.unlockedArtifactInitiation}}
-        <p><b>{{t building.info.unlockedArtifactInitiation}}</b></p>
+        <p>{{t building.info.unlockedArtifactInitiation}}</p>
       {{/if}}
 
       {{#if building.unlockedAssignments}}
-        <p><b>{{t building.info.unlockedAssignments}}</b></p>
+        <p>{{t building.info.unlockedAssignments}}</p>
       {{/if}}
 
       <br />
@@ -219,7 +222,7 @@
             {{view AWE.UI.Ember.ResourceCostView resourcesBinding="building.conversionCosts"}}
             <br/>
           {{/if}}
-          <b>{{t building.duration}}:</b> {{formatDuration building.conversionTime}}<br />
+          {{t building.duration}}: {{formatDuration building.conversionTime}}<br />
           <br/>
         
           {{#if building.converted.productions}}
@@ -228,7 +231,7 @@
           {{/if}}
         
           {{#if building.converted.capacity}}
-            <b>{{t building.capacity}}:</b>
+            {{t building.capacity}}:
             {{#each building.converted.capacity}}
               <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>
               {{capacity}} &nbsp;  
@@ -236,7 +239,7 @@
           {{/if}}
         
           {{#if building.converted.productionBoni}}
-            <b>{{t building.productionBoni}}:</b>
+            {{t building.productionBoni}}:
             {{#each building.converted.productionBoni}}
               <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>
               +{{bonus}}% &nbsp;  
@@ -245,37 +248,37 @@
   
         
           {{#if building.converted.unlockedDiplomacy}}
-            <p><b>{{t building.info.unlockJoinAlliance}}</b></p>
+            <p>{{t building.info.unlockJoinAlliance}}</p>
           {{/if}}
           {{#if building.converted.unlockedAllianceCreation}}
-            <p><b>{{t building.info.unlockCreateAlliance}}</b></p>
+            <p>{{t building.info.unlockCreateAlliance}}</p>
           {{/if}}   
           {{#if building.converted.unlockedPlayerToPlayerTrade}}
-            <p><b>{{t building.info.unlockTrade}}</b></p>
+            <p>{{t building.info.unlockTrade}}</p>
           {{/if}}    
           {{#if building.converted.tradingCarts}}
-            <p><b>{{t building.tradingCarts}}:</b> {{building.converted.tradingCarts}}</p>
+            <p>{{t building.tradingCarts}}: {{building.converted.tradingCarts}}</p>
           {{/if}} 
           {{#if building.converted.commandPoints}}
-            <p><b>{{t building.commandPoints}}:</b> {{building.converted.commandPoints}}</p>
+            <p>{{t building.commandPoints}}: {{building.converted.commandPoints}}</p>
           {{/if}} 
       
           {{#if building.converted.unlockedQueues}}
-            <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.converted.unlockedQueues}}{{local name}}, {{/each}}</p>
+            <p>{{t settlement.buildings.details.enables}}: {{#each building.converted.unlockedQueues}}{{local name}}, {{/each}}</p>
           {{/if}}
       
           {{#if building.converted.speedupQueues}}
             {{#each building.converted.speedupQueues}}
-              <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
+              <p>{{t settlement.buildings.details.speedup}} {{local queueType.name}}: {{formatNumber speedup maxPlaces=1}}%</p>
             {{/each}}
           {{/if}}
 
           {{#if building.converted.unlockedArtifactInitiation}}
-            <p><b>{{t building.info.unlockedArtifactInitiation}}</b></p>
+            <p>{{t building.info.unlockedArtifactInitiation}}</p>
           {{/if}}
 
           {{#if building.converted.unlockedAssignments}}
-            <p><b>{{t building.info.unlockedAssignments}}</b></p>
+            <p>{{t building.info.unlockedAssignments}}</p>
           {{/if}}
 
       {{/if}}
@@ -285,19 +288,23 @@
           {{#if sendingUpgrade}}
             <div class="upgrade">{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}} {{t building.upgrade.updating}}...</div>
           {{else}}
-          <a {{action "upgradeClicked"}} class="upgrade" title="{{t building.tooltip.clickToUpgrade}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png" alt="" /> {{t building.upgrade.upgrade}}</a>
+            <a style="position:relative;" {{action "upgradeClicked"}} class="upgrade" title="{{t building.tooltip.clickToUpgrade}}"><img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/cross_green.png" alt="" /> {{t building.upgrade.upgrade}}
+              {{#if upgradeUIMarker}}
+                {{view AWE.UI.Ember.UIMarker direction=2 top="-100" left=10}}
+              {{/if}}
+            </a>
           {{/if}}
           <h3>{{t building.upgrade.upgradeStart}} {{local building.name }} {{t building.upgrade.toAuf}} {{t building.level}} {{ building.nextLevel }} {{t building.upgrade.upgradeEnd}}</h3>
 
           {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building" levelBinding="building.nextLevel"}}
   
-          <b>{{t settlement.population}}:</b> {{building.populationNextLevel}}<br/>
+          {{t settlement.population}}: {{building.populationNextLevel}}<br/>
   
           {{#if building.costsOfNextLevel}}
             {{view AWE.UI.Ember.ResourceCostView resourcesBinding="building.costsOfNextLevel"}}
             <br/>
           {{/if}}
-          <b>{{t building.duration}}:</b> {{formatDuration building.productionTimeOfNextLevel}}<br />
+          {{t building.duration}}: {{formatDuration building.productionTimeOfNextLevel}}<br />
           <br/>
         
           {{#if building.experienceOrResourceProductionNextLevel}}
@@ -307,7 +314,7 @@
         
         
           {{#if building.capacityNextLevel}}
-            <b>{{t building.capacity}}:</b>
+            {{t building.capacity}}:
             {{#each building.capacityNextLevel}}
               <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>
               {{capacity}} &nbsp;  
@@ -315,7 +322,7 @@
           {{/if}}
         
           {{#if building.productionBoniNextLevel}}
-            <b>{{t building.productionBoni}}:</b>
+            {{t building.productionBoni}}:
             {{#each building.productionBoniNextLevel}}
               <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal resourceType.name}}">&nbsp;</span>
               +{{bonus}}% &nbsp;  
@@ -323,41 +330,41 @@
           {{/if}}
   
           {{#unless building.buildingType.buyable}}
-            <p><b>{{t building.info.notBuyable}}</b></p>
+            <p>{{t building.info.notBuyable}}</p>
           {{/unless}}
         
           {{#if building.unlockedDiplomacyNextLevel}}
-            <p><b>{{t building.info.unlockJoinAlliance}}</b></p>
+            <p>{{t building.info.unlockJoinAlliance}}</p>
           {{/if}}
           {{#if building.unlockedAllianceCreationNextLevel}}
-            <p><b>{{t building.info.unlockCreateAlliance}}</b></p>
+            <p>{{t building.info.unlockCreateAlliance}}</p>
           {{/if}}   
           {{#if building.unlockedPlayerToPlayerTradeNextLevel}}
-            <p><b>{{t building.info.unlockTrade}}</b></p>
+            <p>{{t building.info.unlockTrade}}</p>
           {{/if}}    
           {{#if building.tradingCartsNextLevel}}
-            <p><b>{{t building.tradingCarts}}:</b> {{building.tradingCartsNextLevel}}</p>
+            <p>{{t building.tradingCarts}}: {{building.tradingCartsNextLevel}}</p>
           {{/if}} 
           {{#if building.commandPointsNextLevel}}
-            <p><b>{{t building.commandPoints}}:</b> {{building.commandPointsNextLevel}}</p>
+            <p>{{t building.commandPoints}}: {{building.commandPointsNextLevel}}</p>
           {{/if}} 
       
           {{#if building.unlockedQueuesNextLevel}}
-            <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.unlockedQueuesNextLevel}}{{local name}}, {{/each}}</p>
+            <p>{{t settlement.buildings.details.enables}}: {{#each building.unlockedQueuesNextLevel}}{{local name}}, {{/each}}</p>
           {{/if}}
       
           {{#if building.speedupQueuesNextLevel}}
             {{#each building.speedupQueuesNextLevel}}
-              <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
+              <p>{{t settlement.buildings.details.speedup}} {{local queueType.name}}: {{formatNumber speedup maxPlaces=1}}%</p>
             {{/each}}
           {{/if}}
 
           {{#if building.unlockedArtifactInitiationNextLevel}}
-            <p><b>{{t building.info.unlockedArtifactInitiationNextLevel}}</b></p>
+            <p>{{t building.info.unlockedArtifactInitiationNextLevel}}</p>
           {{/if}}
 
           {{#if building.unlockedAssignmentsNextLevel}}
-            <p><b>{{t building.info.unlockedAssignments}}</b></p>
+            <p>{{t building.info.unlockedAssignments}}</p>
           {{/if}}
 
       {{else}}
@@ -374,7 +381,7 @@
           {{/if}}
           <h3>{{t building.upgrade.demolishStart}} {{local building.name }} {{t building.upgrade.demolishEnd}}</h3>
           <p>
-            <b>{{t building.duration}}:</b> {{formatDuration building.destructionTime}}
+            {{t building.duration}}: {{formatDuration building.destructionTime}}
           </p>
         {{/if}}
       {{else}}
@@ -384,37 +391,37 @@
         {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building.converted" levelBinding="building.converted.level"}}
       
         {{#if building.converted.unlockedDiplomacy}}
-          <p><b>{{t building.info.unlockJoinAlliance}}</b></p>
+          <p>{{t building.info.unlockJoinAlliance}}</p>
         {{/if}}
         {{#if building.converted.unlockedAllianceCreation}}
-          <p><b>{{t building.info.unlockCreateAlliance}}</b></p>
+          <p>{{t building.info.unlockCreateAlliance}}</p>
         {{/if}}   
         {{#if building.converted.unlockedPlayerToPlayerTrade}}
-          <p><b>{{t building.info.unlockTrade}}</b></p>
+          <p>{{t building.info.unlockTrade}}</p>
         {{/if}}    
         {{#if building.converted.tradingCarts}}
-          <p><b>{{t building.tradingCarts}}:</b> {{building.converted.tradingCarts}}</p>
+          <p>{{t building.tradingCarts}}: {{building.converted.tradingCarts}}</p>
         {{/if}}
         {{#if building.converted.commandPoints}}
-          <p><b>{{t building.commandPoints}}:</b> {{building.converted.commandPoints}}</p>
+          <p>{{t building.commandPoints}}: {{building.converted.commandPoints}}</p>
         {{/if}}
 
         {{#if building.converted.unlockedQueues}}
-          <p><b>{{t settlement.buildings.details.enables}}:</b> {{#each building.converted.unlockedQueues}}{{local name}}, {{/each}}</p>
+          <p>{{t settlement.buildings.details.enables}}: {{#each building.converted.unlockedQueues}}{{local name}}, {{/each}}</p>
         {{/if}}
 
         {{#if building.speedupQueuesAfterConversion}}
           {{#each building.speedupQueuesAfterConversion}}
-            <p><b>{{t settlement.buildings.details.speedup}} {{local queueType.name}}:</b> {{formatNumber speedup maxPlaces=1}}%</p>
+            <p>{{t settlement.buildings.details.speedup}} {{local queueType.name}}: {{formatNumber speedup maxPlaces=1}}%</p>
           {{/each}}
         {{/if}}
 
         {{#if building.converted.unlockedArtifactInitiation}}
-          <p><b>{{t building.info.unlockedArtifactInitiation}}</b></p>
+          <p>{{t building.info.unlockedArtifactInitiation}}</p>
         {{/if}}
 
         {{#if building.converted.unlockedAssignments}}
-          <p><b>{{t building.info.unlockedAssignments}}</b></p>
+          <p>{{t building.info.unlockedAssignments}}</p>
         {{/if}}
 
       {{/unless}}
@@ -429,10 +436,11 @@
       <br/>
       <hr class="clearfix" />
 
+      <div class="stone-panel">
         <h3>{{t building.gossip.heading }}</h3>
         <p>{{AWE.GS.game.gossip.localizedDescription}}</p>
-
-      <hr class="clearfix" />
+      </div>  
+      
         {{view AWE.UI.Ember.AssignmentListView buildingBinding="building" controllerBinding="controller"}}
       {{/if}}
 

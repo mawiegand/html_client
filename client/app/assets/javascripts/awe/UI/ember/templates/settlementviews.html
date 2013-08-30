@@ -32,31 +32,31 @@
 
     <p class="red-color">{{message}}</p>
 
-    <p><b>{{t settlement.info.availableBuildingSlots}}:</b> {{settlement.availableBuildingSlots}} &nbsp;<b>{{t settlement.population}}:</b> {{settlement.score}}</p>
-    <p><b>{{t settlement.defenseBonus}}:</b> {{formatNumber defenseBonus places="0"}}<span class="help-icon" title="{{t settlement.info.combatBonusInfo}}.">&nbsp;</span></p>
+    <p>{{t settlement.info.availableBuildingSlots}}: {{settlement.availableBuildingSlots}} &nbsp;{{t settlement.population}}: {{settlement.score}}</p>
+    <p>{{t settlement.defenseBonus}}: {{formatNumber defenseBonus places="0"}}<span class="help-icon" title="{{t settlement.info.combatBonusInfo}}.">&nbsp;</span></p>
 
     <table>
       <tr>
-        <td><b>{{t settlement.info.buildingSpeed}}:</b></td><td class="number"> {{formatNumber buildingSpeed maxPlaces="0"}}% </td>
+        <td>{{t settlement.info.buildingSpeed}}:</td><td class="number"> {{formatNumber buildingSpeed maxPlaces="0"}}% </td>
       </tr>
       <tr> 
-        <td><b>{{t settlement.info.meleeTrainingSpeed}}:</b></td><td class="number"> {{formatNumber infantryTrainingSpeed maxPlaces="0"}}%</td> 
+        <td>{{t settlement.info.meleeTrainingSpeed}}:</td><td class="number"> {{formatNumber infantryTrainingSpeed maxPlaces="0"}}%</td> 
       </tr>
       <tr>
-        <td><b>{{t settlement.info.ridersTrainingSpeed}}:</b></td><td class="number"> {{formatNumber cavalryTrainingSpeed maxPlaces="0"}}%</td> 
+        <td>{{t settlement.info.ridersTrainingSpeed}}:</td><td class="number"> {{formatNumber cavalryTrainingSpeed maxPlaces="0"}}%</td> 
       </tr>
       <tr>
-        <td><b>{{t settlement.info.rangedTrainingSpeed}}:</b></td><td class="number"> {{formatNumber artilleryTrainingSpeed maxPlaces="0"}}%</td> 
+        <td>{{t settlement.info.rangedTrainingSpeed}}:</td><td class="number"> {{formatNumber artilleryTrainingSpeed maxPlaces="0"}}%</td> 
       </tr>
     </table>
     <p>{{t settlement.info.speedUpInfo}}</p>
     
     <p>
-      <span title="{{t settlement.info.commandPointsInfo}}"><b>{{t building.commandPoints}}:</b> {{settlement.commandPointsUsed}} / {{settlement.command_points}}</span>
+      <span title="{{t settlement.info.commandPointsInfo}}">{{t building.commandPoints}}: {{settlement.commandPointsUsed}} / {{settlement.command_points}}</span>
     
     <span class="help-icon" title="{{t settlement.info.commandPointsHelp}}">&nbsp;</span></p>
 
-    <p><b>{{t settlement.info.taxRate}}:</b>{{formatNumber settlement.taxPercentage}}%
+    <p>{{t settlement.info.taxRate}}:{{formatNumber settlement.taxPercentage}}%
       {{#if settlement.owns_region }}
         {{#if changeTaxPossible }}
           <a href="#" {{action "changeTaxPressed"}}>{{t settlement.info.change}}</a><span class="help-icon" title="{{t settlement.info.taxRateChangeInfo}}">&nbsp;</span>
@@ -69,10 +69,10 @@
     </p>
 
     {{#if settlement.artifact }}
-      <p><b>{{t settlement.info.artifact}}:</b> {{settlement.artifact.name}}</p>
+      <p>{{t settlement.info.artifact}}: {{settlement.artifact.name}}</p>
     {{/if}}
 
-    {{#if lastError}} <p class="red-color"><b>{{lastError}}</b></p>{{/if}}
+    {{#if lastError}} <p class="red-color">{{lastError}}</p>{{/if}}
 
     <h2>{{t settlement.info.resourceProduction}}</h2>
     <table>
@@ -108,7 +108,7 @@
       </tr>
     </table>
     
-    <p>{{t settlement.info.resourceProductionInfo1}} <b>{{t settlement.info.resourceProductionInfo2}}</b> {{t settlement.info.resourceProductionInfo3}}.</p>
+    <p>{{t settlement.info.resourceProductionInfo1}} {{t settlement.info.resourceProductionInfo2}} {{t settlement.info.resourceProductionInfo3}}.</p>
 	
 	  {{#if settlement.isOutpost }}   
       <h2>{{t settlement.abandon.header}}</h2>
@@ -125,7 +125,7 @@
       <p>{{t settlement.invitationLink.text}}</p>
       <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action invitationLinkPressed}}>{{t settlement.invitationLink.send}}</div>      
       <p class="clearfix" {{action catchClick}}>{{ unbound AWE.Config.PLAYER_INVITATION_BASE }}{{ unbound settlement.regionInvitationCode }}</p>
-      <p><b>{{t settlement.info.movingPassword}}:</b> {{settlement.regionMovingPassword}}</p>
+      <p>{{t settlement.info.movingPassword}}: {{settlement.regionMovingPassword}}</p>
     {{/if}}
 
     <div class="float-right up-icon" title="{{t settlement.info.clickToMinimize}}">&nbsp;</div>

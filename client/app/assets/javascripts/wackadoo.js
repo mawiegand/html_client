@@ -401,7 +401,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
                     assetLoaded();
                 
                     AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
-                      log("TutorialState", tutorialState)
+                      log("TutorialState", tutorialState);
                       assetLoaded();
                     });
                   }

@@ -73,6 +73,11 @@ AWE.UI.Ember = function(module) {
 
     collapsed: true,
 
+    uiMarker: function() {
+      var test = this.get('assignment');
+      return this.getPath('assignment.uiMarker');
+    }.property('assignment').cacheable(),
+
     speedupCosts: 2,
 
     progressBarWidth: function() {
@@ -80,7 +85,7 @@ AWE.UI.Ember = function(module) {
       var jobInterval     = Date.parseISODate(this.getPath('assignment.ended_at')).getTime() - Date.parseISODate(this.getPath('assignment.started_at')).getTime();
       var progression = jobInterval != 0 ? currentInterval / jobInterval : -1;
       progression = progression < 0 ? 0 : (progression > 1 ? 1 : progression);
-      return 'width: ' + Math.ceil(300 * progression) + 'px;';
+      return 'width: ' + Math.ceil(250 * progression) + 'px;';
     }.property('timeRemaining').cacheable(),
 
     duration: function() {
@@ -108,6 +113,10 @@ AWE.UI.Ember = function(module) {
         self.set('halving', false);
       });
       return false;
+    },
+
+    togglePressed: function() {
+      this.set('collapsed', !this.get('collapsed'));
     },
 
     collapsePressed: function() {
@@ -276,7 +285,7 @@ AWE.UI.Ember = function(module) {
       var jobInterval     = Date.parseISODate(this.getPath('specialAssignment.ended_at')).getTime() - Date.parseISODate(this.getPath('specialAssignment.started_at')).getTime();
       var progression = jobInterval != 0 ? currentInterval / jobInterval : -1;
       progression = progression < 0 ? 0 : (progression > 1 ? 1 : progression);
-      return 'width: ' + Math.ceil(300 * progression) + 'px;';
+      return 'width: ' + Math.ceil(250 * progression) + 'px;';
     }.property('timeRemaining').cacheable(),
 
     duration: function() {
@@ -304,6 +313,10 @@ AWE.UI.Ember = function(module) {
         self.set('halving', false);
       });
       return false;
+    },
+
+    togglePressed: function() {
+      this.set('collapsed', !this.get('collapsed'));
     },
 
     collapsePressed: function() {
