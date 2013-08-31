@@ -61,6 +61,7 @@ AWE.UI = (function(module) {
     var that;
     
     var politicalMap = false;
+    var mapTypeIndex = 0;
 
     my = my || {};
 
@@ -86,9 +87,13 @@ AWE.UI = (function(module) {
       }
 
       if (my.toggleButtonView) {
-        if (politicalMap) {
+        if(mapTypeIndex == 0) {
           my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapterrain/normal"), module.CONTROL_STATE_NORMAL);
           my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapterrain/hover"), module.CONTROL_STATE_HOVERED);
+        }
+        else if(mapTypeIndex == 1) {
+          my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/visibility/normal"), module.CONTROL_STATE_NORMAL);
+          my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/visibility/hover"), module.CONTROL_STATE_HOVERED);
         }
         else {
           my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapstrategy/normal"), module.CONTROL_STATE_NORMAL);
@@ -98,8 +103,8 @@ AWE.UI = (function(module) {
     }
     
     that.onToggleButtonClick = function() {
-      politicalMap = !politicalMap;
-      my.controller.switchMapType(politicalMap);
+      mapTypeIndex = (mapTypeIndex+1)%3;
+      my.controller.switchMapType(mapTypeIndex);
       this.recalcView() 
     }
     

@@ -175,9 +175,6 @@ AWE.Controller = function (module) {
       inspectorViews.encyclopediaButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
       _stages[3].addChild(inspectorViews.encyclopediaButtonView.displayObject());
 
-      inspectorViews.armyVisibilityButtonView = AWE.UI.createArmyVisibilityButtonView();
-      inspectorViews.armyVisibilityButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
-      _stages[3].addChild(inspectorViews.armyVisibilityButtonView.displayObject());
     };
     
 
@@ -655,9 +652,20 @@ AWE.Controller = function (module) {
       });
     }
 
-    that.switchMapType = function (political) {
-      log("SWITCH MAP TYPE", political);
-      mapMode = political ? AWE.UI.MAP_MODE_STRATEGIC : AWE.UI.MAP_MODE_TERRAIN;
+    that.switchMapType = function (mapTypeIndex) {
+      log("SWITCH MAP TYPE", hideOtherArmies);
+
+      if(mapTypeIndex == 0) {
+        mapMode = AWE.UI.MAP_MODE_TERRAIN;
+        hideOtherArmies = false;
+      } else if(mapTypeIndex == 1) {
+        mapMode = AWE.UI.MAP_MODE_TERRAIN;
+        hideOtherArmies = true;
+      } else {
+        mapMode = AWE.UI.MAP_MODE_STRATEGIC;
+        hideOtherArmies = false;
+      }
+
       AWE.Ext.applyFunctionToElements(regionViews, function (view) {
         view.setMapMode(mapMode);
       });
@@ -3025,10 +3033,6 @@ AWE.Controller = function (module) {
       }
       if (inspectorViews.encyclopediaButtonView) {
         inspectorViews.encyclopediaButtonView.setOrigin(AWE.Geometry.createPoint(20 + 114, _windowSize.height - 101));
-      }
-
-      if (inspectorViews.armyVisibilityButtonView) {
-        inspectorViews.armyVisibilityButtonView.setOrigin(AWE.Geometry.createPoint(20 + 190, _windowSize.height - 101));
       }
 
       return _inspectorChanged || _windowChanged;
