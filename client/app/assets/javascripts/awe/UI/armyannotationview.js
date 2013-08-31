@@ -274,7 +274,7 @@ AWE.UI = (function(module) {
       _foundButtonView.setEnabled(
         _army.canFoundSettlementAtPresentLocationNow()
       );
-      _stanceButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('isFighting'));
+      _stanceButtonView.setEnabled(!_army.get('isFighting'));
 //      _retreatButtonView.setEnabled(_army.get('isFighting'));
       
       _moveButtonView.setSelected(_actionMode === 'moveTargetSelection');
