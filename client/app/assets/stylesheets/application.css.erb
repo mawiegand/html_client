@@ -1112,6 +1112,19 @@ h1.slot-tooltip {
   background-color: #FFF;    
 }
 
+.encyclopedia-view a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.encyclopedia-view a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
 .encyclopedia-view .unit-image {
   float: right;
   margin: 0px 0px 10px 20px;

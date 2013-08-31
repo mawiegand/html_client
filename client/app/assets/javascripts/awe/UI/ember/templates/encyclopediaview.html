@@ -124,6 +124,7 @@
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="center-helper">
     <div class="modal-dialog-pane z-layer-4 encyclopedia-view">
+      <a {{action "okPressed" }} class="close" title="{{t general.close}}"></a>
       
       <div class="overview">
         <a href="#" class="enc-category" {{action toggleResources}}><b>{{t encyclopedia.resources}}</b></a><br/>
@@ -170,7 +171,6 @@
         {{/if}}
       </div>
       
-      <div class="icon-button ok-button" {{action "okPressed"}}>{{t general.close}}</div>
       
     </div>
   </div>
