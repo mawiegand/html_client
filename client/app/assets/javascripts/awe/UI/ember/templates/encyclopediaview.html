@@ -124,34 +124,34 @@
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="center-helper">
     <div class="modal-dialog-pane z-layer-4 encyclopedia-view">
-      <a {{action "okPressed" }} class="close" title="{{t general.close}}"></a>
+      <a {{action "okPressed" }} class="close clickable" title="{{t general.close}}"></a>
       
       <div class="overview">
-        <a href="#" class="enc-category" {{action toggleResources}}><b>{{t encyclopedia.resources}}</b></a><br/>
+        &raquo; <a href="#" class="enc-category" {{action toggleResources}}><b>{{t encyclopedia.resources}}</b></a><br/>
         {{#if displayResources}}
           {{#each resourceTypes }}
             {{#view AWE.UI.Ember.ResourceButton resourceTypeBinding="this" }}
-              {{local resourceType.name}}
+              <span class="encyclopedia-element">&bull; {{local resourceType.name}}</span>
             {{/view}}
           {{/each}}
         {{/if}}
         
-        <a href="#" class="enc-category" {{action toggleBuildings}}><b>{{t encyclopedia.buildings}}</b></a><br/>
+        &raquo; <a href="#" class="enc-category" {{action toggleBuildings}}><b>{{t encyclopedia.buildings}}</b></a><br/>
         {{#if displayBuildings}}
           {{#each buildingTypes }}
             {{#unless hidden}}
               {{#view AWE.UI.Ember.BuildingButton buildingTypeBinding="this" }}
-                {{local buildingType.name}}
+                <span class="encyclopedia-element">&bull; {{local buildingType.name}}</span>
               {{/view}}
             {{/unless}}
           {{/each}}
         {{/if}}
         
-        <a href="#" class="enc-category" {{action toggleUnits}}><b>{{t encyclopedia.units}}</b></a><br/>
+        &raquo; <a href="#" class="enc-category" {{action toggleUnits}}><b>{{t encyclopedia.units}}</b></a><br/>
         {{#if displayUnits}}
           {{#each unitTypes }}
             {{#view AWE.UI.Ember.UnitButton unitTypeBinding="this" }}
-              {{local unitType.name}}
+              <span class="encyclopedia-element">&bull; {{local unitType.name}}</span>
             {{/view}}
           {{/each}}
         {{/if}}
