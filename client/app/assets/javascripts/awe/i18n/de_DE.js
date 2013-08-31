@@ -1114,6 +1114,7 @@ AWE.I18n.de_DE = function(module) {
     },
     
     encyclopedia: {
+      selectCategory: 'Bitte wähle eine Kategorie und ein Thema aus.',
       productionTime: "Produktionszeit",
       hitpoints: "Lebenspunkte",
       attack: "Angriff",

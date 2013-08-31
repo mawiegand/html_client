@@ -1103,6 +1103,7 @@ AWE.I18n.en_US = function(module) {
     },
 
     encyclopedia:{
+      selectCategory: 'Select a category and a topic, please.',
       productionTime:"Training time",
       hitpoints:"Hitpoints",
       attack:"Attack",

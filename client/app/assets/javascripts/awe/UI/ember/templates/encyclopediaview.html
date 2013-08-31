@@ -166,6 +166,8 @@
           {{else}}
             {{#if selectedUnit}}
               {{view AWE.UI.Ember.EncyclopediaUnitView templateName="encyclopedia-unit" unitBinding="selected"}}
+            {{else}}
+              <h3>{{t encyclopedia.selectCategory}}</h3>
             {{/if}}
           {{/if}}
         {{/if}}
