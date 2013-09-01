@@ -1484,7 +1484,7 @@ AWE.Controller = (function(module) {
     that.cleanupIfNecessary = function() {
       if (AWE.Config.GS_CLEANUP_ENABLED) {
         log('CLEANUP DATA IN SETTLEMENT CONTROLLER');
-        AWE.GS.cleanupMapData();
+        // AWE.GS.cleanupMapData();      // commented out because refresh on map doesn't work properly.
         AWE.GS.cleanupMessageData();
         // AWE.GS.cleanupRankingData();  // commented out because it doesn't work properly.
       }
