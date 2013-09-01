@@ -3181,9 +3181,9 @@ AWE.Controller = function (module) {
               if (region) {
                 regionList[region.id()] = true;
               }
-              
-              AWE.GS.ArmyManager.cleanup(regionList);
             });
+              
+            AWE.GS.ArmyManager.cleanup(regionList);
           }
         }
       };
