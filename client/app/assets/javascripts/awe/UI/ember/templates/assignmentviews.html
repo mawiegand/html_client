@@ -71,9 +71,8 @@
     </tr>
   </table>
 
-  {{#if collapsed}}
-  {{else}}
-  
+  {{#unless collapsed}}
+
     <div class="clearfix">
       <div {{bindAttr class=":advisor assignmentType.advisor"}}></div>
       <p>{{local assignmentType.description}}</p>
@@ -113,11 +112,11 @@
           {{/if }}
       {{/if}}
 
-      <div class="clickable up-icon" {{bindAttr title="settlement.assignment.collapse"}} {{action "collapsePressed"}}> </div>
+      <div class="clickable up-icon" {{bindAttr title="settlement.assignment.collapse"}}> </div>
   
     </div>
   
-  {{/if}}
+  {{/unless}}
 
 </div>
 </script>
@@ -171,9 +170,9 @@
       </td>
     </tr>
   </table>
-  {{#if collapsed}}
-  {{else}}
-  
+
+  {{#unless collapsed}}
+
     <div class="clearfix">
       <div {{bindAttr class=":advisor assignmentType.advisor"}}></div>
       <p>{{local assignmentType.description}}</p>
@@ -210,12 +209,12 @@
           <span class="xp-icon" title="XP">&nbsp;</span> {{assignmentType.rewards.experience_reward}} &nbsp;
         {{/if }}
 
-        <div class="clickable up-icon" {{bindAttr title="settlement.assignment.collapse"}} {{action "collapsePressed"}}> </div>
+        <div class="clickable up-icon" {{bindAttr title="settlement.assignment.collapse"}}> </div>
 
     </div>
 
     
-  {{/if}}
+  {{/unless}}
 
 
 </div>
