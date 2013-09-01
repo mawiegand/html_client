@@ -67,18 +67,18 @@ AWE.UI = (function(module) {
         my.updateFrame();
       }
     }
-    
+
     
     /** updates arrow on model or position change. */
     that.updateView = function() {
-      this.updateArrow()
+      this.updateArrow();
       _super.updateView();
     }
     
     
     /** updates arrow on layout change */
     that.layoutSubviews = function() {
-      this.updateArrow()
+      this.updateArrow();
       _super.layoutSubviews();
     }    
     
@@ -144,13 +144,23 @@ AWE.UI = (function(module) {
       // ETA LABEL ///////////////////////////////////////////////////////////  
       if (!my.etaView && focus) {
         my.etaView = AWE.UI.createLabelView();
-        my.etaView.initWithControllerAndLabel(this.controller(), 'ETA ' + Date.parseISODate(my.army.get('target_reached_at')).toString('HH:mm:ss'), true);
+        my.etaView.initWithControllerAndLabel(this.controller(), '', true);
+        my.etaView.setIconImage("map/army/sandglass");
         my.etaView.setTextAlign('center');
         my.etaView.setPadding(8);
         my.container.addChild(my.etaView.displayObject());
       }
       if (my.etaView) {
-        my.etaView.setFrame(AWE.Geometry.createRect(spX- 45, spY - 56, 130, 20));
+        var diff = Date.parseISODate(my.army.get('target_reached_at')).getTime() - AWE.GS.TimeManager.estimatedServerTime().getTime();
+        var eta = null;
+        if (diff > 0) {
+          eta = AWE.UI.Util.secondsToString(diff / 1000);
+        }
+        else {
+          eta = AWE.I18n.lookupTranslation('map.arriving');
+        }
+        my.etaView.setText(eta);
+        my.etaView.setFrame(AWE.Geometry.createRect(spX- 45, spY - 80, 130, 20));
       }
       
       // FRAME RECT //////////////////////////////////////////////////////////  

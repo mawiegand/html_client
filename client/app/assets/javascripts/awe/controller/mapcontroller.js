@@ -2560,6 +2560,9 @@ AWE.Controller = function (module) {
                   movementArrow.initWithControllerAndArmy(that, army);
                   _stages[1].addChild(movementArrow.displayObject());
                 }
+                else {
+                  movementArrow.setNeedsUpdate();
+                }
 
                 movementArrow.setHovered(_hoveredView === view);
                 movementArrow.setSelected(_selectedView === view);
@@ -3080,7 +3083,7 @@ AWE.Controller = function (module) {
           stagesNeedUpdate[0] = this.rebuildMapHierarchy(nodes) || stagesNeedUpdate[0];
         }
 
-        if ((AWE.Config.MAP_MOVE_ARMIES && _loopCounter % 60 == 0) ||
+        if (_loopCounter % 30 == 0 ||
           _windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea)) ||
           _actionViewChanged || lastHideOtherArmies != hideOtherArmies || lastViewportChanged != _viewPortChanged ||
           lastDisableArmies != _disableArmies) { // if moving map

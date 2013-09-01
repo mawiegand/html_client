@@ -372,6 +372,7 @@ AWE.I18n.de_DE = function(module) {
     
     map: {
       regions: 'Regionen',
+      arriving: 'Ankommen...',
       
       button: {
         attack:         "Angriff",
