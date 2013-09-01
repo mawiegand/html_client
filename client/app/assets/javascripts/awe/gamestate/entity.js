@@ -157,6 +157,7 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
      * @param {Object} spec optional specification of the initial values
      *                      of all or some properties. */
     init: function(spec) {
+      this._super();
       this.setPropertiesWithHash(spec);     
       return this; 
     },
@@ -171,6 +172,8 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
       var access = AWE.GS[this.get('typeName') + 'Access'];
       var self = this;
       
+      log('DESTROYING ENTITY', this.get('typeName'), this.get('id'));
+      
       this.set('destroyed', true);
       
       if (access) {
@@ -179,8 +182,10 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
         });
       }
       else {
-        log('ERROR in AWE.GS.Entity.destroy: no access object given for entity ' + this.get('typeName'));
+        log('ERROR in AWE.GS.Entity.willDestroy: no access object given for entity ' + this.get('typeName'));
       }
+      
+      return this._super();
     },
   
     /** 
@@ -477,7 +482,11 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
     }
     
     that.removeAllEntities = function() {
+      var entities = AWE.Ext.hashValues(my.entities);
       my.entities = {};
+      entities.forEach(function(entity) {
+        entity.destroy();
+      });
     }
     
     that.removeEntity = function(entity) {
