@@ -3164,7 +3164,7 @@ AWE.Controller = function (module) {
       var lastCleanup = null;
       
       return function(visibleNodes) {
-        if (AWE.Config.GS_CLEANUP_ENABLED && (!lastCleanup || (new Date()).getTime() - lastCleanup.getTime() > 10*1000)) {
+        if (AWE.Config.GS_CLEANUP_ENABLED && (!lastCleanup || (new Date()).getTime() - lastCleanup.getTime() > 5*1000)) {
           log('CLEANUP?');
 
           lastCleanup   = new Date();
@@ -3172,7 +3172,7 @@ AWE.Controller = function (module) {
           var armies    = AWE.GS.ArmyManager.getEntities();
           var numArmies = AWE.Util.hashCount(armies);
           
-          if (numArmies > 1) {
+          if (numArmies > AWE.Config.GS_CLEANUP_MAX_ARMIES) {
             log('DO CLEANUP ARMIES', numArmies);
             
             var regionList = {};
