@@ -3162,6 +3162,38 @@ AWE.Controller = function (module) {
     // ///////////////////////////////////////////////////////////////////////
 
 
+    that.cleanupData = (function() {
+      
+      var lastCleanup = null;
+      
+      return function(visibleNodes) {
+        if (AWE.Config.GS_CLEANUP_ENABLED && (!lastCleanup || (new Date()).getTime() - lastCleanup.getTime() > 5*1000)) {
+          log('CLEANUP?');
+
+          lastCleanup   = new Date();
+          
+          var armies    = AWE.GS.ArmyManager.getEntities();
+          var numArmies = AWE.Util.hashCount(armies);
+          
+          if (numArmies > AWE.Config.GS_CLEANUP_MAX_ARMIES) {
+            log('DO CLEANUP ARMIES', numArmies);
+            
+            var regionList = {};
+            visibleNodes.forEach(function(node) {
+              var region = node.region();
+              if (region) {
+                regionList[region.id()] = true;
+              }
+            });
+              
+            AWE.GS.ArmyManager.cleanup(regionList);
+          }
+        }
+      };
+
+    })();  
+    
+
     that.runloop = function () {
 
       // only do something after the Map.Manager has been initialized (connected to server and received initial data)
@@ -3207,6 +3239,8 @@ AWE.Controller = function (module) {
 
           // STEP 4b: create, remove and update all views according to visible parts of model
           var stageUpdateNeeded = that.updateViewHierarchy(visibleNodes, visibleArea);
+          
+          that.cleanupData(visibleNodes);
 
           if (animating) {
             var runningAnimations = [];

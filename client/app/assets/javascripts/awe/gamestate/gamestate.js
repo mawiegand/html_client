@@ -28,31 +28,16 @@ AWE.GS = (function(module) {
   
   
   module.cleanupMapData = function() {
-    
-    /*
+    module.ArmyManager.cleanup();
+  }
   
-    NSArray* armies = [[self.armyManager allEntities] copy];
-        for (AWEArmy* army in armies) {
-          if (![army isOwn]) {
-            [self.armyManager removeEntity:army];
-          }
-        }
-
-        NSArray* regions  = [[self.regionManager allEntities] copy];
-        AWERegion* homeRegion = [[self.currentCharacter homeBase] region] ;
-        for (AWERegion* region in regions) {
-          if (![region isOwn] && region != homeRegion) {
-            NSSet* locations = [[region locations] copy];
-            for (AWELocation* location in locations) {
-              [self.locationManager removeEntity:location];
-            }
-            [self.regionManager removeEntity:region];
-          }
-        }
-
-        // TODO: orderly cleanup NODES */
+  module.cleanupSlotData = function() {
+    module.SlotManager.removeAllEntities();
   }
 
+  module.cleanupMessageData = function() {
+    module.MessageManager.removeAllEntities();
+  }
 
   module.cleanupRankingData = function() {
     module.CharacterRankingEntryManager.removeAllEntities();
@@ -60,7 +45,6 @@ AWE.GS = (function(module) {
     module.FortressRankingEntryManager.removeAllEntities();
     module.ArtifactRankingEntryManager.removeAllEntities();
   }
-
 
   module.cleanupGeneralData = function() {
     if (!module.game || !module.game.getPath('currentCharacter')) {
@@ -71,7 +55,7 @@ AWE.GS = (function(module) {
     
     character.forEach(function(character) {
       if (character.get('id') && character.get('id') !== module.game.getPath('currentCharacter.id')) {
-        module.characterHash.removeEntity(character);
+        module.CharacterManager.removeEntity(character); // will automatically call destroy on the entity.
       }
     });
   }

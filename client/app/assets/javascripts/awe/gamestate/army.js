@@ -502,6 +502,39 @@ AWE.GS = (function(module) {
     }
     
     
+    that.cleanup = function(regionList) {
+      regionList = regionList || {};
+      var armies = AWE.Ext.hashValues(module.ArmyManager.getEntities());
+
+      armies.forEach(function(army) {
+        var regionId = army.get('region_id');
+        
+        if (!army.isOwn() && !regionList[regionId]) {
+          var ownerId = army.get('owner_id');
+          var locationId = army.get('location_id');
+          var date70 = new Date(0);
+          
+          log ("REMOVE ARMY FROM REGION", regionId, regionList, regionList[regionId], typeof(regionId));
+          
+          that.removeEntity(army);
+          
+          if (regionId) {
+            delete lastFortressUpdates[regionId];
+            module.ArmyAccess.accessHashForRegion_id().setLastUpdateAtForValue(regionId, date70);
+          }
+
+          if (locationId) {
+            module.ArmyAccess.accessHashForLocation_id().setLastUpdateAtForValue(locationId, date70);
+          }
+          
+          if (ownerId) {
+            module.ArmyAccess.accessHashForOwner_id().setLastUpdateAtForValue(ownerId, date70);
+          }
+        }
+      });
+    };
+      
+    
     return that;
       
   }());
