@@ -512,20 +512,21 @@ AWE.GS = (function(module) {
         if (!army.isOwn() && !regionList[regionId]) {
           var ownerId = army.get('owner_id');
           var locationId = army.get('location_id');
+          var date70 = new Date(0);
           
           that.removeEntity(army);
           
           if (regionId) {
             delete lastFortressUpdates[regionId];
-            module.ArmyAccess.accessHashForRegion_id().setLastUpdateAtForValue(regionId, null);
+            module.ArmyAccess.accessHashForRegion_id().setLastUpdateAtForValue(regionId, date70);
           }
 
           if (locationId) {
-            module.ArmyAccess.accessHashForLocation_id().setLastUpdateAtForValue(locationId, null);
+            module.ArmyAccess.accessHashForLocation_id().setLastUpdateAtForValue(locationId, date70);
           }
           
           if (ownerId) {
-            module.ArmyAccess.accessHashForOwner_id().setLastUpdateAtForValue(ownerId, null);
+            module.ArmyAccess.accessHashForOwner_id().setLastUpdateAtForValue(ownerId, date70);
           }
         }
       });
