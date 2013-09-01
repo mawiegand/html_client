@@ -3172,7 +3172,7 @@ AWE.Controller = function (module) {
           var armies    = AWE.GS.ArmyManager.getEntities();
           var numArmies = AWE.Util.hashCount(armies);
           
-          if (numArmies > 10) {
+          if (numArmies > 1) {
             log('DO CLEANUP ARMIES', numArmies);
             
             var regionList = {};
