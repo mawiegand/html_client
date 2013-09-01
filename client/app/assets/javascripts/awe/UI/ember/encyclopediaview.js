@@ -39,7 +39,8 @@ AWE.UI.Ember = (function(module) {
         return null;
       }
       var stats = [];
-      for (var level=1; level <= 20; level++) {
+      var maxLevel = (this.getPath('building.category') == 4 || this.getPath('building.category') == 5) ? 20 : 10; // depends on the category; only large and small buildings can reach level 20
+      for (var level=1; level <= maxLevel; level++) {
         stats.push({
           level: level,
           population:             AWE.GS.Util.parseAndEval(building.population, level),
