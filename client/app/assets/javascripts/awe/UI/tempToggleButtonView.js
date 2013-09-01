@@ -92,8 +92,8 @@ AWE.UI = (function(module) {
           my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapterrain/hover"), module.CONTROL_STATE_HOVERED);
         }
         else if(mapTypeIndex == 1) {
-          my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/visibility/normal"), module.CONTROL_STATE_NORMAL);
-          my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/visibility/hover"), module.CONTROL_STATE_HOVERED);
+          my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapterrain/normal"), module.CONTROL_STATE_NORMAL);
+          my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapterrain/hover"), module.CONTROL_STATE_HOVERED);
         }
         else {
           my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapstrategy/normal"), module.CONTROL_STATE_NORMAL);

@@ -964,6 +964,8 @@ AWE.Controller = (function(module) {
 
     that.updateUIMarker = function() {
 
+      return;
+
       var selectedSlot = that.view.get('selectedSlot');
 //      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
 //      if (tutorialState.get('noFurtherUserInteractionNeeded')) {
