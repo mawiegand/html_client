@@ -661,9 +661,12 @@ AWE.Controller = function (module) {
       } else if(mapTypeIndex == 1) {
         mapMode = AWE.UI.MAP_MODE_TERRAIN;
         hideOtherArmies = true;
-      } else {
+      } else if(mapTypeIndex == 2) {
         mapMode = AWE.UI.MAP_MODE_STRATEGIC;
         hideOtherArmies = false;
+      } else {
+        mapMode = AWE.UI.MAP_MODE_STRATEGIC;
+        hideOtherArmies = true;
       }
 
       AWE.Ext.applyFunctionToElements(regionViews, function (view) {

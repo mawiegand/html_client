@@ -87,11 +87,7 @@ AWE.UI = (function(module) {
       }
 
       if (my.toggleButtonView) {
-        if(mapTypeIndex == 0) {
-          my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapterrain/normal"), module.CONTROL_STATE_NORMAL);
-          my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapterrain/hover"), module.CONTROL_STATE_HOVERED);
-        }
-        else if(mapTypeIndex == 1) {
+        if(mapTypeIndex == 0 || mapTypeIndex == 1) {
           my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapterrain/normal"), module.CONTROL_STATE_NORMAL);
           my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/mapterrain/hover"), module.CONTROL_STATE_HOVERED);
         }
@@ -103,7 +99,7 @@ AWE.UI = (function(module) {
     }
     
     that.onToggleButtonClick = function() {
-      mapTypeIndex = (mapTypeIndex+1)%3;
+      mapTypeIndex = (mapTypeIndex+1)%4;
       my.controller.switchMapType(mapTypeIndex);
       this.recalcView() 
     }
