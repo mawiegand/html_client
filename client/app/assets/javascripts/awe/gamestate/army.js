@@ -502,6 +502,36 @@ AWE.GS = (function(module) {
     }
     
     
+    that.cleanup = function(regionList) {
+      regionList = regionList || {};
+      var armies = AWE.Ext.hashValues(module.ArmyManager.getEntities());
+
+      armies.forEach(function(army) {
+        var regionId = army.get('region_id');
+        
+        if (!army.isOwn() && !regionList[regionId]) {
+          var ownerId = army.get('owner_id');
+          var locationId = army.get('location_id');
+          
+          that.removeEntity(army);
+          
+          if (regionId) {
+            delete lastFortressUpdates[regionId];
+            module.ArmyAccess.accessHashForRegion_id().setLastUpdateAtForValue(regionId, null);
+          }
+
+          if (locationId) {
+            module.ArmyAccess.accessHashForLocation_id().setLastUpdateAtForValue(locationId, null);
+          }
+          
+          if (ownerId) {
+            module.ArmyAccess.accessHashForOwner_id().setLastUpdateAtForValue(ownerId, null);
+          }
+        }
+      });
+    };
+      
+    
     return that;
       
   }());

@@ -494,6 +494,10 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
       entity.destroy();
     }
     
+    that.cleanup = function() {
+      this.removeAllEntities();
+    }
+    
     /** takes an enumerable and a resultHash from a query for entities, then
      * checks for entities that are in the enumberable but NOT in the result
      * Hash. Then riggers an individual update for each missing entity.

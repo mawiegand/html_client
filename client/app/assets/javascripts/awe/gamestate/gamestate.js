@@ -28,27 +28,7 @@ AWE.GS = (function(module) {
   
   
   module.cleanupMapData = function() {
-    
-    var armies = AWE.Ext.hashValues(module.ArmyManager.getEntities());
-
-    armies.forEach(function(army) {
-      if (!army.isOwn()) {
-        module.ArmyManager.removeEntity(army);
-      }
-    });
- /*
-        NSArray* regions  = [[self.regionManager allEntities] copy];
-        AWERegion* homeRegion = [[self.currentCharacter homeBase] region] ;
-        for (AWERegion* region in regions) {
-          if (![region isOwn] && region != homeRegion) {
-            NSSet* locations = [[region locations] copy];
-            for (AWELocation* location in locations) {
-              [self.locationManager removeEntity:location];
-            }
-            [self.regionManager removeEntity:region];
-          }
-        }
-*/
+    module.ArmyManager.cleanup();
   }
   
   module.cleanupSlotData = function() {
