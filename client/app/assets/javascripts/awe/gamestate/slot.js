@@ -351,7 +351,7 @@ AWE.GS = (function(module) {
           buildingType.conversion_option === undefined || buildingType.conversion_option === null) {
         return null;
       }
-      var level = AWE.GS.Util.parseAndEval(buildingType.conversion_option.target_level_formula, this.get('levelAfterJobs'));
+      var level = AWE.GS.Util.parseAndEval(buildingType.conversion_option.target_level_formula, this.get('level'));
       return level;
     }.property('buildingType', 'levelAfterJobs', 'level', 'sortedJobs.lastObject.level_after').cacheable(),
     
