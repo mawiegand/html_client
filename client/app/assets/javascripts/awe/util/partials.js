@@ -186,6 +186,7 @@ AWE.Partials = (function(module) {
       if (oldValue === undefined) {
         oldValue = entry.get(attribute); // use oldValue, if defined, otherwise assume the object still is unchanged
       }   
+      // option: return on oldValue == null;
       log('REMOVE ENTRY', attribute, oldValue);   
       var hc = this.getHashableCollectionForValue(oldValue);
       hc.remove(entry);
