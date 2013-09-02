@@ -250,7 +250,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         launchMini(true, openPane, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
       }
       else {
-        launchMini(true, openPane, base, identifier, accessToken); // !firststart
+        launchMini(true, !firstStart && openPane, base, identifier, accessToken); // !firststart
       }
 
   	  if (!reconnect) {
@@ -259,9 +259,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           this.addDomElement(('.jm_pane'), false);
           this.addDomElement(('.jm_chat-content'), false);
           this.addDomElement(('.jm_conversation'), false);
-          this.addDomElement(('.jm_conversations'), false)
-          this.addDomElement(('.jm_roster'), false)
-          this.addDomElement(('.jm_send-messages'), false)
+          this.addDomElement(('.jm_conversations'), false);
+          this.addDomElement(('.jm_roster'), false);
+          this.addDomElement(('.jm_send-messages'), false);
           this.addDomElement(('.jm_chat-content form'), false);
   	  }
     },   
