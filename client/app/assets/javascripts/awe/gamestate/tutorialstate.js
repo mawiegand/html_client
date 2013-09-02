@@ -696,9 +696,9 @@ AWE.GS = (function(module) {
     },
     
     checkMovement: function() {
-      // log('---> checkcheckMovement');
+      log('---> checkcheckMovement');
       var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
-      
+      log('---> checkcheckMovement', armies);
       if (armies != null) {
         for (var id in armies) {
           if (armies.hasOwnProperty(id) && armies[id].get('mode') == AWE.Config.ARMY_MODE_MOVING) {
@@ -901,7 +901,6 @@ AWE.GS = (function(module) {
 
     containsUIMarker: function(needle) {
       var quest = this.get('quest');
-      log('---> quest', quest);
       var markers = quest.uimarker;
       if (markers) {
         for (var i = 0; i < markers.length; i++) {
@@ -1013,28 +1012,28 @@ AWE.GS = (function(module) {
         }
 
         if (quest.reward_tests.training_queue_tests) {
-          // log('---> training_queue_tests', quest.reward_tests.training_queue_tests);
+          log('---> training_queue_tests', quest.reward_tests.training_queue_tests);
 
           for (var i = 0; i < quest.reward_tests.training_queue_tests.length; i++) {
             var training_queue_test = quest.reward_tests.training_queue_tests[i];
 
-            // log('---> training_queue_test', training_queue_test);
+            log('---> training_queue_test', training_queue_test);
             if (!self.checkTrainingQueues(training_queue_test)) {
-              // log('---> training_queue_test failed');
+              log('---> training_queue_test failed');
               return false;
             }
-            // log('---> training_queue_test ok');
+            log('---> training_queue_test ok');
           }
         }
 
         if (quest.reward_tests.movement_test) {
-          // log('---> movement_test', quest.reward_tests.movement_test);
+          log('---> movement_test', quest.reward_tests.movement_test);
 
           if (!self.checkMovement(quest.reward_tests.movement_test)) {
-            // log('---> movement_test failed');
+            log('---> movement_test failed');
             return false;
           }
-          // log('---> movement_test ok');
+          log('---> movement_test ok');
         }
 
         if (quest.reward_tests.alliance_test) {
@@ -1133,6 +1132,7 @@ AWE.GS = (function(module) {
         return false;
       }
 
+      log('-----------------------------------> noFurtherUserInteractionNeeded')
       this.set('noFurtherUserInteractionNeeded', true);
       return true;
     },
@@ -1521,6 +1521,10 @@ AWE.GS = (function(module) {
       questDisplayedAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
           // log('---> quest state set to displayed')
+          that.updateTutorialState(function() {
+            questState.set('status', AWE.GS.QUEST_STATUS_DISPLAYED);
+          });
+
         }
         else {
           // log('---> quest state could not be set to displayed')

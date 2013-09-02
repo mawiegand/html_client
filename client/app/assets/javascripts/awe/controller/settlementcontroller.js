@@ -235,6 +235,8 @@ AWE.Controller = (function(module) {
         that.updateGossipIfNecessary();
       }
       that.updateAllTrainingQueuesAndJobs();
+      that.updateStandardAssignmentsFromServer();
+      that.updateSpecialAssignmentsFromServer();
       this.updateUIMarker();
     }
     
@@ -966,14 +968,15 @@ AWE.Controller = (function(module) {
 
     that.updateUIMarker = function() {
 
+
       var selectedSlot = that.view.get('selectedSlot');
-//      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
-//      if (tutorialState.get('noFurtherUserInteractionNeeded')) {
-//        if (selectedSlot != null) {
-//          selectedSlot.set('uiMarker', false);
-//        }
-//        return;
-//      }
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      if (tutorialState.get('noFurtherUserInteractionNeeded')) {
+        if (selectedSlot != null) {
+          selectedSlot.set('uiMarker', false);
+        }
+        return;
+      }
 
       if (selectedSlot != null) {
         if (that.markFirstStandardAssignment()) {
@@ -1003,7 +1006,7 @@ AWE.Controller = (function(module) {
           slotToMark = that.markUnitsButton() ? that.whichSlotToMarkForUnitsButton() : null;
         }
 
-        var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+//        var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
         if (!tutorialState.get('noFurtherUserInteractionNeeded') && placeArrowAboveFreeSpot && slotToMark == null) {
           slotToMark = that.nextBuildingSlotToMark();
         }
@@ -1545,7 +1548,7 @@ AWE.Controller = (function(module) {
         if (settlement && this.view.get('slots') && AWE.Util.arrayCount(this.view.get('slots')) > 0) {
           var lastTutorialUpdate = Date.parseISODate(AWE.GS.TutorialStateManager.getTutorialState().get('updated_at'));
 
-          if (lastTutorialUpdate > that.lastMarkerUpdate || counter % 30 == 0) {
+          if (lastTutorialUpdate > that.lastMarkerUpdate || counter % 10 == 0) {
             that.lastMarkerUpdate = lastTutorialUpdate;
 
             this.updateUIMarker();

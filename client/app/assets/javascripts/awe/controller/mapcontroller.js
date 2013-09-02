@@ -746,12 +746,15 @@ AWE.Controller = function (module) {
     }
 
     var armyMoveTargetClicked = function (army, targetLocation, armyView, targetView) {
-      log('armyMoveTargetClicked', army, targetLocation, AWE.Map.locationTypes[targetLocation.id()]);
 
-      if (that.animatedMarker) {
-        removeMarker();
+      if (that.markMoveOwnArmy()) {
+        var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+        if (tutorialState) {
+          tutorialState.set('noFurtherUserInteractionNeeded', true);
+        }
       }
 
+      log('armyMoveTargetClicked', army, targetLocation, AWE.Map.locationTypes[targetLocation.id()]);
       var moveAction = AWE.Action.Military.createMoveArmyAction(army, targetLocation.id());
       moveAction.send(function (status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
@@ -875,6 +878,13 @@ AWE.Controller = function (module) {
     var createArmyCreateAction = function (location, units, armyName, callback) {
       log('createArmyCreateAction', location, units, armyName);
 
+      if (that.markCreateArmy()) {
+        var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+        if (tutorialState) {
+          tutorialState.set('noFurtherUserInteractionNeeded', true);
+        }
+      }
+
       var armyCreateAction = AWE.Action.Military.createCreateArmyAction(location, units, armyName);
       armyCreateAction.send(function (status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
@@ -965,6 +975,7 @@ AWE.Controller = function (module) {
         },
         cancelPressed:function (evt) {
           this.destroy();
+          that.updateUIMarker();
         },
         loading:false,
       });
@@ -1427,14 +1438,18 @@ AWE.Controller = function (module) {
           var annotationView = view.annotationView();
           addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
         }
-        else if (that.markSelectOwnHomeSettlement()) {
-          var annotationView = view.annotationView();
-          if (annotationView) {
-            addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
+        else {
+          if (!that.markCreateArmy()) {
+            if (that.markSelectOwnHomeSettlement()) {
+              var annotationView = view.annotationView();
+              if (annotationView) {
+                addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
+              }
+            }
+            else {
+              removeMarker();
+            }
           }
-        }
-        else if (!that.markCreateArmy()) {
-          removeMarker();
         }
       }
 
@@ -2059,6 +2074,17 @@ AWE.Controller = function (module) {
         that.animatedMarker = null;
       }
     }
+
+    that.updateUIMarker = function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+
+      log('------------------------> noFurtherUserInteractionNeeded', tutorialState.get('noFurtherUserInteractionNeeded'));
+
+      if (tutorialState.get('noFurtherUserInteractionNeeded')) {
+        removeMarker();
+      }
+    }
+
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -3075,6 +3101,12 @@ AWE.Controller = function (module) {
             var annotationView = view.annotationView();
             addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
           }
+          else if (_selectedView.typeName() === 'BaseView' && that.markCreateArmy()) {
+            var inspector = inspectorViews.inspector;
+            if (inspector && inspector.typeName('BaseInspectorView') && inspector.location().isOwn()) {
+              addMarkerToView(inspector, AWE.Geometry.createPoint(355, -36), 3);
+            }
+          }
           else if (_selectedView.typeName() === 'BaseView' && that.markAttackButton()) {
             var annotationView = _selectedView.annotationView();
             addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
@@ -3085,6 +3117,13 @@ AWE.Controller = function (module) {
           }
         }
       }
+
+
+
+
+
+
+
 
       var removedSomething = purgeDispensableViewsFromStage(targetViews, newTargetViews, _stages[2]);
       targetViews = newTargetViews;
@@ -3316,6 +3355,8 @@ AWE.Controller = function (module) {
           var stageUpdateNeeded = that.updateViewHierarchy(visibleNodes, visibleArea);
           
           that.cleanupData(visibleNodes);
+
+          that.updateUIMarker();
 
           if (true) {
             var runningAnimations = [];
