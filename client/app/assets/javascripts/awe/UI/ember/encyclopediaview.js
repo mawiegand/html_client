@@ -81,6 +81,14 @@ AWE.UI.Ember = (function(module) {
       return !buildingRequirements || buildingRequirements.length === 0;
     }.property('buildingRequirements', 'buildingRequirements.length'),
 
+    buildingCategory: function() {
+      var building = this.get('building');
+      if (building === undefined || building === null) {
+        return null;
+      }
+      return AWE.GS.RulesManager.getRules().getBuildingCategory(building.category).name[AWE.Settings.locale];
+    }.property('building').cacheable(),
+
   });  
 
   module.EncyclopediaUnitView = Ember.View.extend({
