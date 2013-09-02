@@ -1132,7 +1132,6 @@ AWE.GS = (function(module) {
         return false;
       }
 
-      log('-----------------------------------> noFurtherUserInteractionNeeded')
       this.set('noFurtherUserInteractionNeeded', true);
       return true;
     },

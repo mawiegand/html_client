@@ -747,13 +747,11 @@ AWE.Controller = function (module) {
 
     var armyMoveTargetClicked = function (army, targetLocation, armyView, targetView) {
 
-      if (that.markMoveOwnArmy()) {
-        var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
-        if (tutorialState) {
-          tutorialState.set('noFurtherUserInteractionNeeded', true);
-        }
-      }
-
+//      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+//      if (tutorialState && that.markMoveOwnArmy() && !tutorialState.activeTutorialQuestWithUIMarkers().get('noFurtherUserInteractionNeeded')) {
+//        tutorialState.activeTutorialQuestWithUIMarkers().set('noFurtherUserInteractionNeeded', true);
+//      }
+//
       log('armyMoveTargetClicked', army, targetLocation, AWE.Map.locationTypes[targetLocation.id()]);
       var moveAction = AWE.Action.Military.createMoveArmyAction(army, targetLocation.id());
       moveAction.send(function (status) {
@@ -878,13 +876,11 @@ AWE.Controller = function (module) {
     var createArmyCreateAction = function (location, units, armyName, callback) {
       log('createArmyCreateAction', location, units, armyName);
 
-      if (that.markCreateArmy()) {
-        var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
-        if (tutorialState) {
-          tutorialState.set('noFurtherUserInteractionNeeded', true);
-        }
-      }
-
+//      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+//      if (tutorialState && that.markCreateArmy() && !tutorialState.activeTutorialQuestWithUIMarkers().get('noFurtherUserInteractionNeeded')) {
+//        tutorialState.activeTutorialQuestWithUIMarkers().set('noFurtherUserInteractionNeeded', true);
+//      }
+//
       var armyCreateAction = AWE.Action.Military.createCreateArmyAction(location, units, armyName);
       armyCreateAction.send(function (status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
@@ -2077,11 +2073,10 @@ AWE.Controller = function (module) {
 
     that.updateUIMarker = function() {
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
-
-      log('------------------------> noFurtherUserInteractionNeeded', tutorialState.get('noFurtherUserInteractionNeeded'));
-
-      if (tutorialState.get('noFurtherUserInteractionNeeded')) {
-        removeMarker();
+      if (tutorialState) {
+        if (tutorialState.activeTutorialQuestWithUIMarkers() == null || tutorialState.activeTutorialQuestWithUIMarkers().get('noFurtherUserInteractionNeeded')) {
+          removeMarker();
+        }
       }
     }
 
