@@ -28,6 +28,7 @@ AWE.GS = (function(module) {
   module.MARK_CREATE_ARMY                = "mark_create_army";
   module.MARK_CREATE_ARMY_DIALOG_FLOW    = "mark_create_army_dialog_flow";
   module.MARK_SELECT_OWN_ARMY            = "mark_select_own_army";
+  module.MARK_SELECT_OTHER_ARMY          = "mark_select_other_army";
   module.MARK_MOVE_OWN_ARMY              = "mark_move_own_army";
   module.MARK_ATTACK_BUTTON              = "mark_attack_button";
   module.MARK_FIRST_STANDARD_ASSIGNMENT  = "mark_first_standard_assignment";

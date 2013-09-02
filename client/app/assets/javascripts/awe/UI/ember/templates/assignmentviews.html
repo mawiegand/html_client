@@ -45,7 +45,7 @@
           </div>
         {{/if}}
       </td>
-      <td class="assignment-button-cell">
+      <td style="position:relative" class="assignment-button-cell">
         {{#if isActive }}
           {{#unless isHalved }}
             {{#if halving }}
@@ -63,7 +63,7 @@
           {{else}}
             <span class="simple-button clickable" {{action "startPressed"}}>{{t settlement.assignment.start}}</span>
             {{#if uiMarker}}
-              {{view AWE.UI.Ember.UIMarker direction=1 top="-35" left="-110"}}
+              {{view AWE.UI.Ember.UIMarker direction=1 top="-37" left="-3"}}
             {{/if}}
           {{/if}}
         {{/if}}
