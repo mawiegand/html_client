@@ -747,6 +747,11 @@ AWE.Controller = function (module) {
 
     var armyMoveTargetClicked = function (army, targetLocation, armyView, targetView) {
       log('armyMoveTargetClicked', army, targetLocation, AWE.Map.locationTypes[targetLocation.id()]);
+
+      if (that.animatedMarker) {
+        removeMarker();
+      }
+
       var moveAction = AWE.Action.Military.createMoveArmyAction(army, targetLocation.id());
       moveAction.send(function (status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
@@ -920,6 +925,10 @@ AWE.Controller = function (module) {
 
     that.newArmyButtonClicked = function (location) {
       if (!location) return;
+
+      if (that.animatedMarker) {
+        removeMarker();
+      }
 
       var dialog = AWE.UI.Ember.ArmyCreateDialog.create({
         locationId: location.id(),
@@ -1418,6 +1427,12 @@ AWE.Controller = function (module) {
           var annotationView = view.annotationView();
           addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
         }
+        else if (that.markSelectOwnHomeSettlement()) {
+          var annotationView = view.annotationView();
+          if (annotationView) {
+            addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
+          }
+        }
         else if (!that.markCreateArmy()) {
           removeMarker();
         }
@@ -1554,7 +1569,7 @@ AWE.Controller = function (module) {
 
       if (inspectorViews.inspector) {
         _stages[3].addChild(inspectorViews.inspector.displayObject());
-        if (view.typeName() === 'BaseView') {
+        if (view.typeName() === 'BaseView' && that.markCreateArmy()) {
           addMarkerToView(inspectorViews.inspector, AWE.Geometry.createPoint(355, -36), 3);
         }
         _inspectorChanged = true;
@@ -1631,8 +1646,6 @@ AWE.Controller = function (module) {
       var bounceDuration = 1000.0;
 
       _stages[stage].addChild(annotation.displayObject());
-
-      log(annotation, duration, offset, stage, annotatedView.frame().origin.y);
 
       var animation = AWE.UI.createTimedAnimation({
         view:annotation,
@@ -1994,7 +2007,7 @@ AWE.Controller = function (module) {
 
     that.markSelectOwnHomeSettlement = function() {
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
-      return tutorialState.isUIMarkerActive(AWE.GS.MARK_SELECT_OWN_HOME_SETTLEMENT);
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_SELECT_OWN_HOME_SETTLEMENT) || tutorialState.isUIMarkerActive(AWE.GS.MARK_HOME_SETTLEMENT);
     };
 
     that.markSelectOwnArmy = function() {
@@ -3062,6 +3075,10 @@ AWE.Controller = function (module) {
           else if (_selectedView.typeName() === 'BaseView' && that.markAttackButton()) {
             var annotationView = _selectedView.annotationView();
             addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
+          }
+          else if (_selectedView.typeName() === 'BaseView' && that.markSelectOwnHomeSettlement()) {
+            var annotationView = _selectedView.annotationView();
+            addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
           }
         }
       }
