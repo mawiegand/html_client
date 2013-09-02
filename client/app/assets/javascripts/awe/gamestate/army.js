@@ -514,7 +514,7 @@ AWE.GS = (function(module) {
           var locationId = army.get('location_id');
           var date70 = new Date(0);
           
-          log ("REMOVE ARMY FROM REGION", regionId, regionList);
+          log ("REMOVE ARMY FROM REGION", regionId, regionList, regionList[regionId], typeof(regionId));
           
           that.removeEntity(army);
           
