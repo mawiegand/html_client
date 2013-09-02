@@ -55,7 +55,32 @@ AWE.UI.Ember = (function(module) {
       };
       return stats;
     }.property('building', 'capacity', 'production', 'experienceProduction').cacheable(),
-    
+
+    buildingRequirements: function() {
+      var building = this.get('building');
+      if (building === undefined || building === null) {
+        return null;
+      }
+
+      var requirements = building.requirementGroups[0];
+      var requirementsWithNames = [];
+      requirements.forEach(function(item) {
+        if(item.min_level > 0) {
+          requirementsWithNames.push({
+            name: AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId(item.symbolic_id).name[AWE.Settings.locale],
+            level: item.min_level
+          });
+        }
+      });
+
+      return requirementsWithNames;
+    }.property('building.buildingType', 'building.slot.settlement.hashableSlots.collection@each.level', 'building.slot.settlement.hashableSlots.changedAt'),
+
+    requirementsMet: function() {
+      var buildingRequirements = this.get('buildingRequirements');
+      return !buildingRequirements || buildingRequirements.length === 0;
+    }.property('buildingRequirements', 'buildingRequirements.length'),
+
   });  
 
   module.EncyclopediaUnitView = Ember.View.extend({

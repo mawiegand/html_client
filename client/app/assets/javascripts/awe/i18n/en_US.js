@@ -265,6 +265,7 @@ AWE.I18n.en_US = function(module) {
     },
 
     building:{
+      requirements: 'Requirements',
       level:"Level",
       cost:"Cost",
       duration:"Duration",

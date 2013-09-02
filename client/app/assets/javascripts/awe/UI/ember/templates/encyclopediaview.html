@@ -12,6 +12,15 @@
   {{#unless building.buyable}}
     <p>{{t building.info.notBuyable}}</p>
   {{/unless}}
+
+  {{#unless requirementsMet}}
+  <p><b>{{t building.requirements}}:</b></p>
+    <ul>
+    {{#each requirement in buildingRequirements}}
+      <li>{{requirement.name}} >= {{requirement.level}}</li>
+    {{/each}}
+    </ul>
+  {{/unless}}
   
   <table>
     <tr>

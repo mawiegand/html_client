@@ -263,6 +263,7 @@ AWE.I18n.de_DE = function(module) {
     },
     
     building: {
+      requirements:   'Voraussetzung',
       level:          'Stufe',
       cost:           'Kosten',
       duration:       'Dauer',
