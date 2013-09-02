@@ -102,12 +102,14 @@ AWE.Config = (function(module) {
     "map/artifact/2":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_streitaxt.png',
     "map/artifact/3":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_monolith.png',
     "map/artifact/4":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_osterei.png',
+    "map/artifact/5":         AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_hammer.png',
 
     "map/artifactinitiated/0": AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_tnt_aktiviert.png',
     "map/artifactinitiated/1": AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_steinrad_aktiviert.png',
     "map/artifactinitiated/2": AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_streitaxt_aktiviert.png',
     "map/artifactinitiated/3": AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_monolith_aktiviert.png',
     "map/artifactinitiated/4": AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_osterei_aktiviert.png',
+    "map/artifactinitiated/5": AWE.Config.RAILS_ASSET_PATH + 'artifact/artefakt_hammer_aktiviert.png',
 
     "map/easement/yes":       AWE.Config.RAILS_ASSET_PATH + 'ok.png',
     "map/easement/no":        AWE.Config.RAILS_ASSET_PATH + 'verbot.png',

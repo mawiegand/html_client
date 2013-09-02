@@ -13,13 +13,8 @@ AWE.UI = (function(module) {
     
     my.typeName = 'TargetView';
     
-    var _container = null;
-    var _location = null;
-    var _locationView = null;
-    
     var _targetedView = null;
-
-    var _arrowImageView = null;  
+    var _arrowImageView = null;
     var _hoverImageView = null;   
 
     var that = module.createContainer(spec, my);
