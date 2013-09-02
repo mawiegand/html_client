@@ -23,7 +23,7 @@ AWE.Controller = (function(module) {
     var _viewNeedsUpdate = false;  
     var _modelChanged = false;
     var _becameVisible = false;
-
+    var _lastCleanup = null;
           
     var that = module.createScreenController(anchor); // create base object
     
@@ -191,6 +191,8 @@ AWE.Controller = (function(module) {
     
     
     that.viewDidAppear = function() {
+      this.cleanupIfNecessary();
+      
       this.visible = true;
       _becameVisible = true;
       this.appendView();
@@ -1479,6 +1481,15 @@ AWE.Controller = (function(module) {
       $("#debug2").html('&nbsp;Settlement Screen Visible.');
     };    
     
+    that.cleanupIfNecessary = function() {
+      if (AWE.Config.GS_CLEANUP_ENABLED) {
+        log('CLEANUP DATA IN SETTLEMENT CONTROLLER');
+        AWE.GS.cleanupMapData();      // commented out because refresh on map doesn't work properly.
+        AWE.GS.cleanupMessageData();
+        // AWE.GS.cleanupRankingData();  // commented out because it doesn't work properly.
+      }
+    };
+    
     var counter = 0;
     that.runloop = function() {
       if (++counter % 2 !== 0) return ; // skip every other "frame"
@@ -1494,6 +1505,7 @@ AWE.Controller = (function(module) {
         this.updateView();
         _viewNeedsUpdate = false;
       }
+      
       
       if (this.view) {   // make sure the view displays the right settlement.
         // this is executed, in case the settlement is received from the 
