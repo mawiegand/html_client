@@ -13,7 +13,10 @@
     <p>{{t building.info.notBuyable}}</p>
   {{/unless}}
 
-  <p><b>{{t settlement.buildings.category}}:</b> {{buildingCategory}}</p>
+  <p>
+    <b>{{t settlement.buildings.category}}:</b> {{buildingCategory}}
+    ({{#if isLargeBuilding}}{{t encyclopedia.largeBuilding}}{{else}}{{t encyclopedia.smallBuilding}}{{/if}})
+  </p>
 
   {{#unless requirementsMet}}
   <p><b>{{t building.requirements}}:</b></p>

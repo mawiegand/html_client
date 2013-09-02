@@ -1118,6 +1118,9 @@ AWE.I18n.en_US = function(module) {
       commandPointsAbbreviation:"CP",
       buildingTime:"Build time",
 
+      smallBuilding: 'Requires small building slot',
+      largeBuilding: 'Requires large building slot',
+
       resources:"Resources",
       buildings:"Buildings",
       units:"Units",

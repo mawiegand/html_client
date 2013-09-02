@@ -1132,6 +1132,9 @@ AWE.I18n.de_DE = function(module) {
       resources: "Rohstoffe",
       buildings: "Gebäude",
       units: "Einheiten",
+
+      largeBuilding: 'Benötigt großen Bauplatz',
+      smallBuilding: 'Benötigt kleinen Bauplatz',
     
       resource: {
         taxable: "Auf diesen Rohstoff werden Steuern erhoben.",
