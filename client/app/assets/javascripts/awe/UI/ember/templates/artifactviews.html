@@ -82,18 +82,34 @@
 <script type="text/x-handlebars" data-template-name="artifact-bonus-view">
 
   <p>
-    {{#if characterBoni}}
-      <b>{{t settlement.artifact.characterBoni}}:</b>
-      {{#each characterBoni}}
+    {{#if characterProductionBonuses}}
+      <b>{{t settlement.artifact.characterProductionBonus}}:</b>
+      {{#each characterProductionBonuses}}
         <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal characterBoni.resourceType.name}}">&nbsp;</span>
         +{{formatAsPercent bonus}} &nbsp;
       {{/each}}<br/>
     {{/if}}
 
-    {{#if allianceBoni}}
-      <b>{{t settlement.artifact.allianceBoni}}:</b>
-      {{#each allianceBoni}}
+    {{#if allianceProductionBonuses}}
+      <b>{{t settlement.artifact.allianceProductionBonus}}:</b>
+      {{#each allianceProductionBonuses}}
         <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal allianceBoni.resourceType.name}}">&nbsp;</span>
+        +{{formatAsPercent bonus}} &nbsp;
+      {{/each}}<br/>
+    {{/if}}
+  </p>
+
+  <p>
+    {{#if characterConstructionBonuses}}
+      <b>{{t settlement.artifact.characterConstructionBonus}}:</b>
+      {{#each characterConstructionBonuses}}
+        +{{formatAsPercent bonus}} &nbsp;
+      {{/each}}<br/>
+    {{/if}}
+
+    {{#if allianceConstructionBonuses}}
+      <b>{{t settlement.artifact.allianceConstructionBonus}}:</b>
+      {{#each allianceConstructionBonuses}}
         +{{formatAsPercent bonus}} &nbsp;
       {{/each}}<br/>
     {{/if}}
