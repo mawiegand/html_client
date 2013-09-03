@@ -28,6 +28,7 @@ AWE.GS = (function(module) {
   module.MARK_CREATE_ARMY                = "mark_create_army";
   module.MARK_CREATE_ARMY_DIALOG_FLOW    = "mark_create_army_dialog_flow";
   module.MARK_SELECT_OWN_ARMY            = "mark_select_own_army";
+  module.MARK_SELECT_OTHER_ARMY          = "mark_select_other_army";
   module.MARK_MOVE_OWN_ARMY              = "mark_move_own_army";
   module.MARK_ATTACK_BUTTON              = "mark_attack_button";
   module.MARK_FIRST_STANDARD_ASSIGNMENT  = "mark_first_standard_assignment";
@@ -42,6 +43,7 @@ AWE.GS = (function(module) {
     
   module.TutorialLocalState = Ember.Object.create({
     questsDisplayed: [],
+    lastUpdate: null,
   });
     
   module.TutorialState = module.Entity.extend({     // extends Entity to Tutorial State
@@ -697,7 +699,7 @@ AWE.GS = (function(module) {
     checkMovement: function() {
       // log('---> checkcheckMovement');
       var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
-      
+      // log('---> checkcheckMovement', armies);
       if (armies != null) {
         for (var id in armies) {
           if (armies.hasOwnProperty(id) && armies[id].get('mode') == AWE.Config.ARMY_MODE_MOVING) {
@@ -714,7 +716,7 @@ AWE.GS = (function(module) {
     },
 
     checkAllianceMembers: function(allianceMembersTest) {
-      log('---> checkAllianceMembers', allianceMembersTest);
+      // log('---> checkAllianceMembers', allianceMembersTest);
 
       if (allianceMembersTest.min_count == null) {
         log('ERROR in AWE.GS.QuestState.checkAllianceMembers: allianceMembersTest.min_count missing in quest id ' + this.get('quest_id'));
@@ -900,7 +902,6 @@ AWE.GS = (function(module) {
 
     containsUIMarker: function(needle) {
       var quest = this.get('quest');
-      log('---> quest', quest);
       var markers = quest.uimarker;
       if (markers) {
         for (var i = 0; i < markers.length; i++) {
@@ -1133,6 +1134,7 @@ AWE.GS = (function(module) {
       }
 
       this.set('noFurtherUserInteractionNeeded', true);
+      AWE.GS.TutorialLocalState.set('lastUpdate', new Date());
       return true;
     },
   });    
@@ -1520,6 +1522,10 @@ AWE.GS = (function(module) {
       questDisplayedAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
           // log('---> quest state set to displayed')
+          that.updateTutorialState(function() {
+            questState.set('status', AWE.GS.QUEST_STATUS_DISPLAYED);
+          });
+
         }
         else {
           // log('---> quest state could not be set to displayed')

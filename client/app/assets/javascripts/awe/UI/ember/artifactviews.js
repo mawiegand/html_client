@@ -139,7 +139,7 @@ AWE.UI.Ember = function(module) {
 
     artifact: null,
 
-    allianceBoni: function() {
+    allianceProductionBonuses: function() {
       var bonuses = [];
       var productionBonuses = this.getPath('artifact.artifactType.production_bonus');
 
@@ -157,7 +157,7 @@ AWE.UI.Ember = function(module) {
       return bonuses;
     }.property('artifact.type_id').cacheable(),
 
-    characterBoni: function() {
+    characterProductionBonuses: function() {
       var bonuses = [];
       var productionBonuses = this.getPath('artifact.artifactType.production_bonus');
 
@@ -166,6 +166,40 @@ AWE.UI.Ember = function(module) {
           if (bonus.domain_id == AWE.GS.DOMAIN_CHARACTER) {
             bonuses.push(Ember.Object.create({
               resourceType: AWE.GS.RulesManager.getRules().getResourceType(bonus.resource_id),
+              bonus: bonus.bonus,
+            }));
+          }
+        });
+      }
+
+      return bonuses;
+    }.property('artifact.type_id').cacheable(),
+
+    allianceConstructionBonuses: function() {
+      var bonuses = [];
+      var productionBonuses = this.getPath('artifact.artifactType.construction_bonus');
+
+      if (productionBonuses != null) {
+        productionBonuses.forEach(function(bonus) {
+          if (bonus.domain_id == AWE.GS.DOMAIN_ALLIANCE) {
+            bonuses.push(Ember.Object.create({
+              bonus: bonus.bonus,
+            }));
+          }
+        });
+      }
+
+      return bonuses;
+    }.property('artifact.type_id').cacheable(),
+
+    characterConstructionBonuses: function() {
+      var bonuses = [];
+      var productionBonuses = this.getPath('artifact.artifactType.construction_bonus');
+
+      if (productionBonuses != null) {
+        productionBonuses.forEach(function(bonus) {
+          if (bonus.domain_id == AWE.GS.DOMAIN_CHARACTER) {
+            bonuses.push(Ember.Object.create({
               bonus: bonus.bonus,
             }));
           }

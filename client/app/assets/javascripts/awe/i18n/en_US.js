@@ -364,8 +364,9 @@ AWE.I18n.en_US = function(module) {
     },
 
     map:{
-         regions: 'Regions',
-      
+       regions: 'Regions',
+      arriving: 'Arriving...',
+
       button:{
         attack:"Attack",
         newArmy:"New army",
@@ -759,6 +760,10 @@ AWE.I18n.en_US = function(module) {
         cancelText: "Boring.",
         characterBoni: "Bonus for the owner",
         allianceBoni: "Bonus for the Alliance members",
+        characterProductionBonus: "Production bonus for the owner",
+        allianceProductionBonus: "Production bonus for the Alliance members",
+        characterConstructionBonus: "Construction speed bonus for the owner",
+        allianceConstructionBonus: "Construction speed bonus for the Alliance members",
         hurry: "Halve",
         hurrying: "Hurry",
         hurried: "Hurried",

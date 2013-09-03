@@ -374,6 +374,7 @@ AWE.I18n.de_DE = function(module) {
     
     map: {
       regions: 'Regionen',
+      arriving: 'Ankommen...',
       
       button: {
         attack:         "Angriff",
@@ -773,8 +774,10 @@ AWE.I18n.de_DE = function(module) {
           content: "Du hast aktuell leider nicht genügend Resourcen, um das Artefakt einzuweihen.",
         },
         cancelText: "Schade",
-        characterBoni: "Bonus für den Besitzer",
-        allianceBoni: "Bonus für die Allianzmitglieder",
+        characterProductionBonus: "Produktionsbonus für den Besitzer",
+        allianceProductionBonus: "Produktionsbonus für die Allianzmitglieder",
+        characterConstructionBonus: "Baugeschwindigkeitsbonus für den Besitzer",
+        allianceConstructionBonus: "Baugeschwindigkeitsbonus für die Allianzmitglieder",
         hurry: "Halbieren",
         hurrying: "beschleunigen",
         hurried: "beschleunigt",

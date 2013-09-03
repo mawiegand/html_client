@@ -66,7 +66,7 @@ AWE.UI = (function(module) {
     that.updateButtonState = function() {
       if (attackButton) {
         attackButton.setSelected(_actionMode === 'attackTargetSelection');
-        log('-----> army', my.location.garrisonArmy(), !my.location.garrisonArmy().get('empty'), !my.location.garrisonArmy().get('isSuspended'));
+        // log('-----> army', my.location.garrisonArmy(), !my.location.garrisonArmy().get('empty'), !my.location.garrisonArmy().get('isSuspended'));
         attackButton.setEnabled(my.location.garrisonArmy() && !my.location.garrisonArmy().get('empty') && !my.location.garrisonArmy().get('isSuspended'));
       }
     }
