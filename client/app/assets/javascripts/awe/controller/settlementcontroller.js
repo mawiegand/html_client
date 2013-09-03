@@ -1150,7 +1150,7 @@ AWE.Controller = (function(module) {
       for (var i = usedSlots % n; i != (usedSlots-1+n)%n; i = (i+1) % n) {
         var slotId = sequenceOfSlotIds[i];
 
-        if (slotId >= 0 && slots[slotId].get('building_id') == null) {
+        if (slotId != null && slotId >= 0 && slots[slotId].get('building_id') == null) {
           return slots[slotId];
         }
       }
