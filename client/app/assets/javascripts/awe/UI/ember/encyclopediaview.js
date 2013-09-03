@@ -89,12 +89,25 @@ AWE.UI.Ember = (function(module) {
       return AWE.GS.RulesManager.getRules().getBuildingCategory(building.category).name[AWE.Settings.locale];
     }.property('building').cacheable(),
 
-    isLargeBuilding: function() {
+    buildingTypeString: function() {
       var building = this.get('building');
       if (building === undefined || building === null) {
         return null;
       }
-      return building.category == 4; // category 4 is "large buildings"
+      
+      switch(building.category) {
+        case 4:
+          return AWE.I18n.lookupTranslation('encyclopedia.largeBuilding');
+          break;
+        case 5:
+          return AWE.I18n.lookupTranslation('encyclopedia.smallBuilding');
+          break;
+        case 6:
+          return AWE.I18n.lookupTranslation('encyclopedia.specialBuilding');
+          break;
+        default:
+          return AWE.I18n.lookupTranslation('encyclopedia.fortressBuilding');
+      }
     }.property('building').cacheable(),
 
   });  

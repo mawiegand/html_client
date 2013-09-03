@@ -1134,7 +1134,9 @@ AWE.I18n.de_DE = function(module) {
       units: "Einheiten",
 
       largeBuilding: 'Benötigt großen Bauplatz',
-      smallBuilding: 'Benötigt kleinen Bauplatz',
+      smallBuilding: 'Benötigt kleinen oder großen Bauplatz',
+      specialBuilding: 'Benötigt kleinen Bauplatz',
+      fortressBuilding: 'Nur in Festungen',
     
       resource: {
         taxable: "Auf diesen Rohstoff werden Steuern erhoben.",
