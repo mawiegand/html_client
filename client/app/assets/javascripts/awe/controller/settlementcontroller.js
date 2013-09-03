@@ -402,8 +402,8 @@ AWE.Controller = (function(module) {
       queue.sendFinishJobAction(job.getId(), function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
           log(status, "Construction job finished.");
-          that.updateConstructionQueueSlotAndJobs(queue.getId());    
-       //   that.updateResourcePool();      
+          that.updateConstructionQueueSlotAndJobs(queue.getId());
+          that.updateAllTrainingQueues();
         }
         else if (status === AWE.Net.FORBIDDEN) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
@@ -1006,7 +1006,6 @@ AWE.Controller = (function(module) {
           slotToMark = that.markUnitsButton() ? that.whichSlotToMarkForUnitsButton() : null;
         }
 
-//        var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
         if (!tutorialState.get('noFurtherUserInteractionNeeded') && placeArrowAboveFreeSpot && slotToMark == null) {
           slotToMark = that.nextBuildingSlotToMark();
         }
@@ -1391,6 +1390,7 @@ AWE.Controller = (function(module) {
                 if (Date.parseISODate(job.get('active_job').finished_at).add({seconds: pendingConstructionJobUpdates[jobId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
                   pendingConstructionJobUpdates[jobId] *= 2;
                   that.updateConstructionQueueSlotAndJobs(queue.getId());
+                  that.updateAllTrainingQueues();
                 }
               }  
             });
@@ -1408,7 +1408,8 @@ AWE.Controller = (function(module) {
           if (!queue) {
             log('training queue was undefined');
           }
-          else {          var jobs = AWE.GS.TrainingJobManager.getJobsInQueue(queue.getId());
+          else {
+            var jobs = AWE.GS.TrainingJobManager.getJobsInQueue(queue.getId());
             jobs.forEach(function(job) {
               if (job.get('active_job')) {
                 var jobId = job.getId();

@@ -43,6 +43,7 @@ AWE.GS = (function(module) {
     
   module.TutorialLocalState = Ember.Object.create({
     questsDisplayed: [],
+    lastUpdate: null,
   });
     
   module.TutorialState = module.Entity.extend({     // extends Entity to Tutorial State
@@ -696,9 +697,9 @@ AWE.GS = (function(module) {
     },
     
     checkMovement: function() {
-      log('---> checkcheckMovement');
+      // log('---> checkcheckMovement');
       var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
-      log('---> checkcheckMovement', armies);
+      // log('---> checkcheckMovement', armies);
       if (armies != null) {
         for (var id in armies) {
           if (armies.hasOwnProperty(id) && armies[id].get('mode') == AWE.Config.ARMY_MODE_MOVING) {
@@ -715,7 +716,7 @@ AWE.GS = (function(module) {
     },
 
     checkAllianceMembers: function(allianceMembersTest) {
-      log('---> checkAllianceMembers', allianceMembersTest);
+      // log('---> checkAllianceMembers', allianceMembersTest);
 
       if (allianceMembersTest.min_count == null) {
         log('ERROR in AWE.GS.QuestState.checkAllianceMembers: allianceMembersTest.min_count missing in quest id ' + this.get('quest_id'));
@@ -1012,28 +1013,28 @@ AWE.GS = (function(module) {
         }
 
         if (quest.reward_tests.training_queue_tests) {
-          log('---> training_queue_tests', quest.reward_tests.training_queue_tests);
+          // log('---> training_queue_tests', quest.reward_tests.training_queue_tests);
 
           for (var i = 0; i < quest.reward_tests.training_queue_tests.length; i++) {
             var training_queue_test = quest.reward_tests.training_queue_tests[i];
 
-            log('---> training_queue_test', training_queue_test);
+            // log('---> training_queue_test', training_queue_test);
             if (!self.checkTrainingQueues(training_queue_test)) {
-              log('---> training_queue_test failed');
+              // log('---> training_queue_test failed');
               return false;
             }
-            log('---> training_queue_test ok');
+            // log('---> training_queue_test ok');
           }
         }
 
         if (quest.reward_tests.movement_test) {
-          log('---> movement_test', quest.reward_tests.movement_test);
+          // log('---> movement_test', quest.reward_tests.movement_test);
 
           if (!self.checkMovement(quest.reward_tests.movement_test)) {
-            log('---> movement_test failed');
+            // log('---> movement_test failed');
             return false;
           }
-          log('---> movement_test ok');
+          // log('---> movement_test ok');
         }
 
         if (quest.reward_tests.alliance_test) {
@@ -1133,6 +1134,7 @@ AWE.GS = (function(module) {
       }
 
       this.set('noFurtherUserInteractionNeeded', true);
+      AWE.GS.TutorialLocalState.set('lastUpdate', new Date());
       return true;
     },
   });    

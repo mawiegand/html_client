@@ -78,10 +78,9 @@ AWE.UI.Ember = (function(module) {
     },
 
     trainingButtonUIMarker: function() {
-      log('----------> peng');
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
       return tutorialState.isUIMarkerActive(AWE.GS.MARK_TRAINING_DIALOG_FLOW) && this.get('selectedUnitButton') != null;
-    }.property('selectedUnitButton', 'queue.jobs_count').cacheable(),
+    }.property('selectedUnitButton', 'queue.jobs_count', 'AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
   });
   
   module.TrainingJobView = Ember.View.extend({
