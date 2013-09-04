@@ -408,12 +408,15 @@ AWE.UI = (function(module) {
       }
       
       var flagLength = 8 + Math.round(Math.min(_army.get('size_present') / _army.get('size_max'), 1) * 48);
-      _flagView = AWE.UI.createAllianceFlagView();
-      _flagView.initWithController(my.controller);
-      _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
-      _flagView.setAllianceId(_army.get('alliance_id'));
-      _flagView.setDirection('left');
-      that.addChildAt(_flagView, 0);
+      
+      if (!AWE.Config.MAP_ALLIANCE_FLAG_DISABLED) {
+        _flagView = AWE.UI.createAllianceFlagView();
+        _flagView.initWithController(my.controller);
+        _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
+        _flagView.setAllianceId(_army.get('alliance_id'));
+        _flagView.setDirection('left');
+        that.addChildAt(_flagView, 0);
+      }
 
       if (!_frameRectShape && AWE.Config.MAP_DEBUG_FRAMES) {
         var _frameRectGraphics = new Graphics();
