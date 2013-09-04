@@ -287,7 +287,7 @@ AWE.UI = (function(module) {
     /** sets the present selection state to either true or false. Internally
      * sets / unsets the appropriate bit on the state-flags. */
     that.setSelected = function(selected) {
-      this.setState(my.setUnsetBit(my.state, module.CONTROL_STATE_SELECTED, selected));
+      this.setState(AWE.Util.setUnsetBit(my.state, module.CONTROL_STATE_SELECTED, selected));
     }
     that.selected = function() {
       return AWE.Util.testBit(my.state, module.CONTROL_STATE_SELECTED);
