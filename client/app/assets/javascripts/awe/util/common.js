@@ -161,15 +161,18 @@ AWE.Util = (function(module) {
   /** setting bits in bitfields (flags) */
   module.setBit = function(flags, mask) {
     return flags | mask;
-  }
+  };
+  
   /** unsetting bits in bitfields (flags) */
   module.unsetBit = function(flags, mask) {
     return flags & ~mask; 
-  }
+  };
+  
   /** testing bits in bitfields (flags) */
   module.testBit = function(flags, mask) {
     return (flags & mask) == mask;
-  }
+  };
+  
   /** convenience funciton for either setting or unsetting bits in bitfields
    * (flags) */
   module.setUnsetBit = function(flags, mask, set) {
@@ -179,7 +182,7 @@ AWE.Util = (function(module) {
     else {
       return module.unsetBit(flags, mask);
     }
-  }
+  };
   
   return module;
       
