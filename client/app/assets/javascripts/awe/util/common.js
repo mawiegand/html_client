@@ -6,6 +6,25 @@
  
 var AWE = window.AWE || {};
 
+AWE.Log = (function(module) {
+  
+  module.DEBUG_DISABLED = false;
+  
+  module.Debug = function() {
+    if (module.DEBUG_DISABLED) { 
+      return ;
+    }
+    else {
+      window.log(arguments);
+    }
+  }
+  
+  return module;
+  
+}(AWE.Log || {}));
+
+
+
 /** extensions of JavaScript base types. */
 AWE.Util = (function(module) {
 

@@ -96,7 +96,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       });
       this.presentModalDialog(dialog);      
       AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
-        // log('---> tutorial state geladen', tutorialState, statusCode);
+        // AWE.Log.Debug('---> tutorial state geladen', tutorialState, statusCode);
       });
     },
     
@@ -119,7 +119,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           self.presentModalDialog(dialog);      
         }
         else {
-          log('ERROR: could not fetch latest announcement.')
+          AWE.Log.Debug('ERROR: could not fetch latest announcement.')
         }
       });
     },
@@ -246,7 +246,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       // Notice: exclude "user" and "password" if using anonymous login
             
       if (AWE.Config.IN_DEVELOPMENT_MODE) {
-        log('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
+        AWE.Log.Debug('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
         launchMini(true, openPane, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
       }
       else {
@@ -370,12 +370,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       _numAssets +=1;
       AWE.GS.RulesManager.updateRules(function(rules, statusCode) {
         if (statusCode === AWE.Net.OK) {
-          log('Rules', rules);
+          AWE.Log.Debug('Rules', rules);
 
           _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
           AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
             if (statusCode === AWE.Net.OK && AWE.GS.CharacterManager.getCurrentCharacter()) {
-              log('INFO: playing as character ', entity);
+              AWE.Log.Debug('INFO: playing as character ', entity);
               var currentCharacter = AWE.GS.CharacterManager.getCurrentCharacter();
               if (currentCharacter.get('alliance_id') && currentCharacter.get('alliance_id') > 0) {
                 _numAssets +=1;
@@ -388,7 +388,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
                 _numAssets +=1;
                 AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
                   AWE.GS.CharacterManager.getCurrentCharacter().set('base_node', node);
-                  log("Node", node)
+                  AWE.Log.Debug("Node", node)
                   assetLoaded();
                 });
               }
@@ -397,16 +397,16 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
                 _numAssets += 2;
                 AWE.GS.TutorialManager.updateTutorial(function(tutorial, statusCode) {
                   if (statusCode === AWE.Net.OK) {
-                    log('Tutorial', tutorial);
+                    AWE.Log.Debug('Tutorial', tutorial);
                     assetLoaded();
                 
                     AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
-                      log("TutorialState", tutorialState);
+                      AWE.Log.Debug("TutorialState", tutorialState);
                       assetLoaded();
                     });
                   }
                   else {
-                    log('CRITICAL ERROR: could not load tutorial from server. Error code: ' + statusCode + '. Terminate App.');
+                    AWE.Log.Debug('CRITICAL ERROR: could not load tutorial from server. Error code: ' + statusCode + '. Terminate App.');
                     throw "ABORT Due to Failure to load tutorial.";
                   }
                 });
@@ -415,11 +415,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               _numAssets += 1;
               AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
                 if (statusCode === AWE.Net.OK) {
-                  log('RESOURCE_POOL', resourcePool);
+                  AWE.Log.Debug('RESOURCE_POOL', resourcePool);
                   assetLoaded();
                 }
                 else {
-                  log('CRITICAL ERROR: could not load resource pool from server. Error code: ' + statusCode + '. Terminate App.');
+                  AWE.Log.Debug('CRITICAL ERROR: could not load resource pool from server. Error code: ' + statusCode + '. Terminate App.');
                   throw "ABORT Due to Failure to load player's resource pool.";
                 }
               });
@@ -427,11 +427,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               _numAssets += 1;
               AWE.GS.RoundInfoManager.updateRoundInfo(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
                 if (statusCode === AWE.Net.OK) {
-                  log('ROUND_INFO', AWE.GS.game.roundInfo);
+                  AWE.Log.Debug('ROUND_INFO', AWE.GS.game.roundInfo);
                   assetLoaded();
                 }
                 else {
-                  log('CRITICAL ERROR: could not load round info from server. Error code: ' + statusCode + '. Terminate App.');
+                  AWE.Log.Debug('CRITICAL ERROR: could not load round info from server. Error code: ' + statusCode + '. Terminate App.');
                   throw "ABORT Due to Failure to load game's round info.";
                 }
               });
@@ -440,7 +440,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             }
             else {
               alert ('Das Spiel konnte nicht geladen werden. Bitte drücke den Aktualisieren-Knopf Deines Browsers, meist hilft schlichtes Neuladen der Seite und Login. Falls auch das nicht hilft, kontaktiere bitte den Support. Wir unterstützen folgende Browser: Chrome, Firefox, Internet Explorer 9 und Safari; je neuer, desto besser (und schneller).');
-              log('CRITICAL ERROR: could not load current character from server. Error code: ' + statusCode + '. Terminate App.');
+              AWE.Log.Debug('CRITICAL ERROR: could not load current character from server. Error code: ' + statusCode + '. Terminate App.');
               throw "ABORT Due to Failure to Load Player's Current Character.";
             }
           });
@@ -448,7 +448,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           assetLoaded();
         }
         else {
-          log('CRITICAL ERROR: could not load rules from server. Error code: ' + statusCode + '. Terminate App.');
+          AWE.Log.Debug('CRITICAL ERROR: could not load rules from server. Error code: ' + statusCode + '. Terminate App.');
           throw "ABORT Due to Failure to load rules.";
         }
       });
@@ -521,15 +521,15 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     // type. this should be improved later.
     activateSettlementController: function(settlement) {
       if (settlement.get('type_id') === AWE.GS.SETTLEMENT_TYPE_FORTRESS) {
-        log('ACTIVATE FORTRESS CONTROLLER');
+        AWE.Log.Debug('ACTIVATE FORTRESS CONTROLLER');
         this.activateFortressController({ settlementId: settlement.get('id')});
       }
       else if (settlement.get('type_id') === AWE.GS.SETTLEMENT_TYPE_OUTPOST) {
-        log('ACTIVATE OUTPOST CONTROLLER');
+        AWE.Log.Debug('ACTIVATE OUTPOST CONTROLLER');
         this.activateOutpostController({ settlementId: settlement.get('id')});
       }
       else {
-        log('ACTIVATE BASE CONTROLLER');
+        AWE.Log.Debug('ACTIVATE BASE CONTROLLER');
         this.activateBaseController({ settlementId: settlement.get('id')});
       }
     },
@@ -548,7 +548,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         baseController.setLocationId(reference.locationId);
       }
       else {
-        log('ERROR: no base to enter specified.')
+        AWE.Log.Debug('ERROR: no base to enter specified.')
       }
       this.setScreenController(baseController);
     },
@@ -574,7 +574,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         fortressController.setNode(reference.node);
       }
       else {
-        log('ERROR: no fortress to enter specified.')
+        AWE.Log.Debug('ERROR: no fortress to enter specified.')
       }
       this.setScreenController(fortressController);
     },   
@@ -595,7 +595,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         outpostController.setNode(reference.node);
       }
       else {
-        log('ERROR: no outpost to enter specified.')
+        AWE.Log.Debug('ERROR: no outpost to enter specified.')
       }
       this.setScreenController(outpostController);
     },   
@@ -650,7 +650,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var args = null;
       try {
         args = JSON.parse(window.name ) //|| "{}")
-//      log('window.name, parsed window.name', window.name, args)
+//      AWE.Log.Debug('window.name, parsed window.name', window.name, args)
       }
       catch (e) {
       }
@@ -674,7 +674,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         accessToken = args.accessToken ; 
       }                            // || AWE.Config.DEV_ACCESS_TOKEN || null;
       
-      log('access', accessToken);
+      AWE.Log.Debug('access', accessToken);
             
       var expiration  = parseInt(args.expiration || "3600");           // asume one hour validity as default
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;
@@ -685,8 +685,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.playerInvitation = args.playerInvitation;
       AWE.Settings.allianceInvitation = args.allianceInvitation;
       
-      log('SETTINGS', AWE.Settings);
-      log('ARGS', args);
+      AWE.Log.Debug('SETTINGS', AWE.Settings);
+      AWE.Log.Debug('ARGS', args);
       
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
