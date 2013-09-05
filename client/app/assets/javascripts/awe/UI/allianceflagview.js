@@ -83,12 +83,6 @@ AWE.UI = (function(module) {
               this.removeChild(_flagShapeView);
               _flagShapeView = null;
             }
-                      
-            var width = 60, height = 20;
-            if (_direction === 'down') {
-              width = 20;
-              height = 60;
-            }
             
             var image = that.cachedImage(_direction, _allianceId);
 
@@ -207,7 +201,6 @@ AWE.UI = (function(module) {
     
     
     that.generateFlagImage = function(direction, allianceId) {
-      console.log('create new flags image');
       
       var width = 60, height = 20;
       if (direction === "down") {
