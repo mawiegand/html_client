@@ -335,9 +335,6 @@ AWE.UI = (function(module) {
       var flagScale     = flagLength / flagMaxLength;  
       
       if (!AWE.Config.MAP_ALLIANCE_FLAG_DISABLED && (!_flagView || _flagLength === null || _flagLength != flagLength)) {
-        console.log('change flag')
-        console.log(_flagLength)
-        console.log(flagLength)
 
         if (!_flagView) {
           _flagView = AWE.UI.createAllianceFlagView();
