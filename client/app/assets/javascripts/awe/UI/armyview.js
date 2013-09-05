@@ -332,23 +332,18 @@ AWE.UI = (function(module) {
       //      of the army the pole will be in front of the figure, although it should be behind.
       
       var flagLength    = 8.0 + Math.round(Math.min(_army.get('size_present') / _army.get('size_max'), 1) * 48);
-      var flagMaxLength = 56.0;
-      var flagScale     = flagLength / flagMaxLength;  
       
-      if (!AWE.Config.MAP_ALLIANCE_FLAG_DISABLED && (!_flagView || _flagLength === null || _flagLength != flagLength)) {
-
-        if (!_flagView) {
-          _flagView = AWE.UI.createAllianceFlagView();
-          _flagView.setCache(AWE.Config.MAP_CACHE_ALLIANCE_FLAG);
-          _flagView.initWithController(my.controller);
-          _flagView.setAllianceId(_army.get('alliance_id'));
-          _flagView.setDirection('left');
-          _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
-          _flagLength = flagLength;
-          that.addChildAt(_flagView, 0);  
-        }
+      if (!AWE.Config.MAP_ALLIANCE_FLAG_DISABLED && !_flagView) {
+        _flagView = AWE.UI.createAllianceFlagView();
+        _flagView.setCache(AWE.Config.MAP_CACHE_ALLIANCE_FLAG);
+        _flagView.initWithController(my.controller);
+        _flagView.setAllianceId(_army.get('alliance_id'));
+        _flagView.setDirection('left');
+        _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
+        _flagLength = flagLength;
+        that.addChildAt(_flagView, 0);  
       }
-      if (_flagView && _flagView.frame().size.width != flagLength) {
+      if (_flagView && _flagView.frame().size.width !== flagLength) {
         _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
         _flagLength = flagLength;        
       }
