@@ -65,11 +65,15 @@ AWE.UI = (function(module) {
         });
       }
     }
+    
+    that.setFrame = function(frame) {
+      _super.setFrame(frame);
+      this.updateView();
+    }
         
     that.updateView = function () {
             
       var cacheIt = _shouldCache; 
-
 
       if (!_flagShapeView || (my.frame.size.width  !== _flagShapeView.frame().size.width ||
                               my.frame.size.height !== _flagShapeView.frame().size.height) ||
@@ -100,6 +104,7 @@ AWE.UI = (function(module) {
               }
             }
           }
+          AWE.Log.Debug('resize flag shape view');
           _flagShapeView.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
         }
         else {
