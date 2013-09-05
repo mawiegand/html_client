@@ -71,8 +71,8 @@ AWE.UI = (function(module) {
       var cacheIt = _shouldCache; 
 
 
-      if (!_flagShapeView || (!cacheIt && (my.frame.size.width  != _flagShapeView.frame().size.width ||
-                                           my.frame.size.height != _flagShapeView.frame().size.height) ||
+      if (!_flagShapeView || (my.frame.size.width  != _flagShapeView.frame().size.width ||
+                              my.frame.size.height != _flagShapeView.frame().size.height) ||
           _allianceId !== _oldAllianceId)) { // no view, color changed or -if not cached- size changed 
             
         var color    = _allianceId ? AWE.GS.AllianceManager.colorForNumber(_allianceId) : { r: 255, g: 255, b: 255 };
@@ -81,6 +81,7 @@ AWE.UI = (function(module) {
           if (!_flagShapeView || _allianceId !== _oldAllianceId) {
             if (_flagShapeView) {
               this.removeChild(_flagShapeView);
+              _flagShapeView = null;
             }
                       
             var width = 60, height = 20;
@@ -93,8 +94,8 @@ AWE.UI = (function(module) {
 
             _flagShapeView = AWE.UI.createImageView();
             _flagShapeView.initWithControllerAndImage(my.controller, image);
-            _flagShapeView.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
           }
+          _flagShapeView.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
         }
         else {
 
@@ -206,7 +207,7 @@ AWE.UI = (function(module) {
     
     
     that.generateFlagImage = function(direction, allianceId) {
-      AWE.Log.Debug('create new flags image');
+      console.log('create new flags image');
       
       var width = 60, height = 20;
       if (direction === "down") {
