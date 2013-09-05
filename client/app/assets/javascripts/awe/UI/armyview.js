@@ -343,13 +343,14 @@ AWE.UI = (function(module) {
           _flagView.initWithController(my.controller);
           _flagView.setAllianceId(_army.get('alliance_id'));
           _flagView.setDirection('left');
+          _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
+          _flagLength = flagLength;
           that.addChildAt(_flagView, 0);  
         }
-        
-        if (flagLength !== _flagLength) {
-           _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
-           _flagLength = flagLength;
-        }
+      }
+      if (_flagView && _flagView.frame().size.width != flagLength) {
+        _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
+        _flagLength = flagLength;        
       }
 
 
