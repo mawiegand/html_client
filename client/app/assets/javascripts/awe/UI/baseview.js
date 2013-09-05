@@ -108,7 +108,7 @@ AWE.UI = (function(module) {
       if (!_imageView) {
         _imageView = AWE.UI.createImageView();
         _imageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_settlementImageName));
-        _imageView.setContentMode(module.ViewContentModeNone);
+        _imageView.setContentMode(module.ViewContentModeFit);
         _imageView.setFrame(AWE.Geometry.createRect(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
         _imageView.onClick = that.onClick;
         _imageView.onDoubleClick = that.onDoubleClick;
