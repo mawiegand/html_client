@@ -73,7 +73,7 @@ AWE.UI = (function(module) {
 
       if (!_flagShapeView || (my.frame.size.width  != _flagShapeView.frame().size.width ||
                               my.frame.size.height != _flagShapeView.frame().size.height) ||
-          _allianceId !== _oldAllianceId)) { // no view, color changed or -if not cached- size changed 
+          _allianceId !== _oldAllianceId) { // no view, color changed or -if not cached- size changed 
             
         var color    = _allianceId ? AWE.GS.AllianceManager.colorForNumber(_allianceId) : { r: 255, g: 255, b: 255 };
         
