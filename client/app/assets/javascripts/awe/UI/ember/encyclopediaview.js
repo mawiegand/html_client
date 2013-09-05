@@ -62,8 +62,17 @@ AWE.UI.Ember = (function(module) {
         return null;
       }
 
+      if(building.requirementGroups === undefined || building.requirementGroups === null) {
+        return null;
+      }
+
       var requirements = building.requirementGroups[0];
       var requirementsWithNames = [];
+
+      if(requirements === undefined || requirements === null) {
+        return requirementsWithNames;
+      }
+
       requirements.forEach(function(item) {
         if(item.min_level > 0) {
           requirementsWithNames.push({
