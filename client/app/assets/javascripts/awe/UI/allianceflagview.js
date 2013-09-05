@@ -206,7 +206,7 @@ AWE.UI = (function(module) {
     
     
     that.generateFlagImage = function(direction, allianceId) {
-      console.log('create new flags image');
+      AWE.Log.Debug('create new flags image');
       
       var width = 60, height = 20;
       if (direction === "down") {
