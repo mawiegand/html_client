@@ -202,7 +202,7 @@ AWE.UI = (function(module) {
     
     that.generateFlagImage = function(direction, allianceId) {
       
-      var width = 60, height = 20;
+      var width = 56, height = 20;
       if (direction === "down") {
         width = 20, height = 40;
       } 
