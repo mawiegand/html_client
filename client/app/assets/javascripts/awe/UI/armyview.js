@@ -46,6 +46,7 @@ AWE.UI = (function(module) {
     var _protectionView = null;
     var _animation  = null;
     var _stance = null;
+    var _stanceView = null;
     var _baseImage = null;
     var _flagView = null;
     var _selectShape = null;    
