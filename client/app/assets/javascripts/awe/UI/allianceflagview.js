@@ -93,7 +93,7 @@ AWE.UI = (function(module) {
               var func = image.onload || null;  // wrap it
 
               image.onload = function() {
-                that.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
+                _flagShapeView.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
                 if (func) {
                   func();
                 }
