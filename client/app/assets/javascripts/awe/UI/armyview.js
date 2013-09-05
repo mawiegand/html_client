@@ -531,7 +531,7 @@ AWE.UI = (function(module) {
         
         if (!_stanceView) {
           _stanceView = AWE.UI.createImageView();        
-          _stanceView.initWithControllerAndImage(controller, stanceImage);
+          _stanceView.initWithControllerAndImage(my.controller, stanceImage);
 
           _stanceView.setFrame(AWE.Geometry.createRect(-6, -7, 96, 96));
           _stanceView.onClick = that.onClick;
