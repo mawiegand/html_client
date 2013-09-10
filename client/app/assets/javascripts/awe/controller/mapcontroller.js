@@ -174,6 +174,10 @@ AWE.Controller = function (module) {
       inspectorViews.encyclopediaButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
       _stages[3].addChild(inspectorViews.encyclopediaButtonView.displayObject());
 
+      inspectorViews.armyListButtonView = AWE.UI.createEncyclopediaButtonView();
+      inspectorViews.armyListButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
+      _stages[3].addChild(inspectorViews.armyListButtonView.displayObject());
+
     };
     
 
@@ -3148,6 +3152,9 @@ AWE.Controller = function (module) {
       }
       if (inspectorViews.encyclopediaButtonView) {
         inspectorViews.encyclopediaButtonView.setOrigin(AWE.Geometry.createPoint(20 + 114, _windowSize.height - 101));
+      }
+      if (inspectorViews.armyListButtonView) {
+        inspectorViews.armyListButtonView.setOrigin(AWE.Geometry.createPoint(20 + 190, _windowSize.height - 101));
       }
 
       return true;
