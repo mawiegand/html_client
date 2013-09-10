@@ -121,12 +121,12 @@ AWE.GS = (function(module) {
   // ///////////////////////////////////////////////////////////////////////     
     
   module.MessageBoxEntry = module.Entity.extend({ 
-    typeName:   'MessageBoxEntry',
-    owner_id:   null,
-    message_id: null,
-    subject:    null,
+    typeName:    'MessageBoxEntry',
+    owner_id:    null,
+    message_id:  null,
+    subject:     null,
     
-    message:    null,
+    message:     null,
     
     fetchMessage: function() {
       var self = this;
@@ -144,6 +144,14 @@ AWE.GS = (function(module) {
         });
       }
     },
+    
+    /** counterpart to fetchMessage - removes the message in case it was destroyed. */
+    messageObserver: function() {
+      if (this.get('message') && this.get('message').get('isDestroyed')) {
+        this.set('message', null);
+      }
+    }.observes('message.isDestroyed'),
+    
   });
   
   module.InboxEntry = module.MessageBoxEntry.extend({ 

@@ -351,7 +351,7 @@ AWE.GS = (function(module) {
           buildingType.conversion_option === undefined || buildingType.conversion_option === null) {
         return null;
       }
-      var level = AWE.GS.Util.parseAndEval(buildingType.conversion_option.target_level_formula, this.get('levelAfterJobs'));
+      var level = AWE.GS.Util.parseAndEval(buildingType.conversion_option.target_level_formula, this.get('level'));
       return level;
     }.property('buildingType', 'levelAfterJobs', 'level', 'sortedJobs.lastObject.level_after').cacheable(),
     
@@ -734,6 +734,7 @@ AWE.GS = (function(module) {
 		_buildingInstance: null,      ///< private method holding the instance of the corresponding building, if needed.
 		hashableJobs:   null,
 
+    uiMarker: false,
     
     bindings: null,
     

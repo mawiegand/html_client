@@ -138,7 +138,7 @@ AWE.Partials = (function(module) {
         this.set('internalChangedAt', new Date());
       }
       else {
-        log('WARNING: object to be removed was not found in HashableCollection.')
+        log('WARNING: object to be removed was not found in HashableCollection.', entryOrId, entryOrId.get ? entryOrId.get('typeName') : "unknown");
       }
     },
     
@@ -185,7 +185,9 @@ AWE.Partials = (function(module) {
       var attribute = this.get('attribute');      
       if (oldValue === undefined) {
         oldValue = entry.get(attribute); // use oldValue, if defined, otherwise assume the object still is unchanged
-      }      
+      }   
+      // option: return on oldValue == null;
+      log('REMOVE ENTRY', attribute, oldValue);   
       var hc = this.getHashableCollectionForValue(oldValue);
       hc.remove(entry);
     },

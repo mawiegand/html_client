@@ -23,7 +23,7 @@ AWE.Controller = (function(module) {
     var _viewNeedsUpdate = false;  
     var _modelChanged = false;
     var _becameVisible = false;
-
+    var _lastCleanup = null;
           
     var that = module.createScreenController(anchor); // create base object
     
@@ -191,6 +191,8 @@ AWE.Controller = (function(module) {
     
     
     that.viewDidAppear = function() {
+      this.cleanupIfNecessary();
+      
       this.visible = true;
       _becameVisible = true;
       this.appendView();
@@ -233,10 +235,15 @@ AWE.Controller = (function(module) {
         that.updateGossipIfNecessary();
       }
       that.updateAllTrainingQueuesAndJobs();
+      that.updateStandardAssignmentsFromServer();
+      that.updateSpecialAssignmentsFromServer();
+      this.updateUIMarker();
     }
     
     that.unselectSlot = function() {
+      that.view.setPath('selectedSlot.uiMarker', false);
       that.view.set('selectedSlot', null);
+      this.updateUIMarker();
     }
     
     // construction actions //////////////////////////////////////////////////
@@ -329,6 +336,7 @@ AWE.Controller = (function(module) {
           // update queue in any case: success: jobs gone. failure: old data on client side
           AWE.GS.ConstructionQueueManager.updateQueue(queue.getId(), null, function() { //
             AWE.GS.ConstructionJobManager.updateJobsOfQueue(queue.getId());
+            that.updateUIMarker();
             log('U: construction queue, success');
           });          
         });
@@ -349,7 +357,7 @@ AWE.Controller = (function(module) {
     that.constructionOptionClicked = function(slot, building, type, buildingOptionView) {
       
       log('constructionOptionClicked', slot, building, type);  // TODO type is production category - > rename
-      
+
       var buildingId = building.get('buildingId');
       if (building.requirementsMet()) {
         createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE);      
@@ -368,6 +376,7 @@ AWE.Controller = (function(module) {
     }
     
     that.constructionUpgradeClicked = function(slot) {
+      that.updateUIMarker();
       var currentLevel = slot.get('building').get('levelAfterJobs');
       var nextLevel = slot.get('building').get('nextLevel');
       createAndSendConstructionJob(slot, slot.get('building_id'), AWE.GS.CONSTRUCTION_JOB_TYPE_UPGRADE, currentLevel, nextLevel);    
@@ -393,8 +402,8 @@ AWE.Controller = (function(module) {
       queue.sendFinishJobAction(job.getId(), function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
           log(status, "Construction job finished.");
-          that.updateConstructionQueueSlotAndJobs(queue.getId());    
-       //   that.updateResourcePool();      
+          that.updateConstructionQueueSlotAndJobs(queue.getId());
+          that.updateAllTrainingQueues();
         }
         else if (status === AWE.Net.FORBIDDEN) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
@@ -951,6 +960,206 @@ AWE.Controller = (function(module) {
 
     // ///////////////////////////////////////////////////////////////////////
     //
+    //   Tutorial Marker
+    //
+    // ///////////////////////////////////////////////////////////////////////
+
+    that.lastMarkerUpdate = new Date(1970);
+
+    that.updateUIMarker = function() {
+
+
+      var selectedSlot = that.view.get('selectedSlot');
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      if (tutorialState.get('noFurtherUserInteractionNeeded')) {
+        if (selectedSlot != null) {
+          selectedSlot.set('uiMarker', false);
+        }
+        return;
+      }
+
+      if (selectedSlot != null) {
+        if (that.markFirstStandardAssignment()) {
+          var assignments = AWE.GS.game.getPath('currentCharacter.enumerableStandardAssignments');
+          if (assignments != null && AWE.Ext.isArray(assignments) && AWE.Util.arrayCount(assignments) > 0) {
+            assignments[0].set('uiMarker', true);
+          }
+        }
+
+        if (that.markUpgradeButton()) {
+          selectedSlot.set('uiMarker', true);
+        }
+        else {
+          selectedSlot.set('uiMarker', false);
+        }
+      }
+      else {
+
+        var placeArrowAboveFreeSpot = that.markFreeConstructionSpot();
+        var slotToMark = (!placeArrowAboveFreeSpot && this.markUpgradeableBuilding()) ? that.whichSlotToMarkForUpgrade() : null;
+
+        if (!placeArrowAboveFreeSpot && !slotToMark) {
+          slotToMark = that.markBuildingToStartAssignment() ? that.whichSlotToMarkForAssignment() : null;
+        }
+
+        if (!placeArrowAboveFreeSpot && !slotToMark) {
+          slotToMark = that.markUnitsButton() ? that.whichSlotToMarkForUnitsButton() : null;
+        }
+
+        if (!tutorialState.get('noFurtherUserInteractionNeeded') && placeArrowAboveFreeSpot && slotToMark == null) {
+          slotToMark = that.nextBuildingSlotToMark();
+        }
+
+        var slots = that.view.get('slots');
+        if (slots == null || !AWE.Ext.isArray(slots) || AWE.Util.arrayCount(slots) <= 0) {
+          return;
+        }
+        for (var i = 0; i < slots.length; i++) {
+          var slot = slots[i];
+          if (slot.get('slot_num') != 0) {
+            slot.set('uiMarker', slot == slotToMark);
+          }
+        }
+      }
+    };
+
+    that.markFirstStandardAssignment = function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_FIRST_STANDARD_ASSIGNMENT);
+    };
+
+    that.markFreeConstructionSpot = function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_FREE_CONSTRUCTION_SLOT);
+    };
+
+    that.markUpgradeButton = function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_UPGRADE_BUTTON);
+    };
+
+    that.markUpgradeableBuilding = function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_UPGRADABLE_BUILDING);
+    };
+
+    that.markUnitsButton = function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_UNITS_BUTTON);
+    };
+
+    that.markBuildingToStartAssignment = function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_FIRST_STANDARD_ASSIGNMENT);
+    };
+
+    that.whichSlotToMarkForUpgrade = function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      var activeQuestState = tutorialState.activeTutorialQuestWithUIMarkers();
+      var quest = activeQuestState.get('quest');
+
+      var buildingId = null;
+      if (quest.reward_tests.building_tests && quest.reward_tests.building_tests.length > 0) {
+        var buildingSymbolicId = quest.reward_tests.building_tests[0].building;
+        buildingId = AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId(buildingSymbolicId).id;
+      }
+      else if (quest.reward_tests.construction_queue_tests && quest.reward_tests.construction_queue_tests.length > 0) {
+        var buildingSymbolicId = quest.reward_tests.construction_queue_tests[0].building;
+        buildingId = AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId(buildingSymbolicId).id;
+      }
+
+      if (buildingId == null) {
+        return null;
+      }
+
+      var slots = that.view.get('slots');
+      if (slots == null || !AWE.Ext.isArray(slots) || AWE.Util.arrayCount(slots) <= 0) {
+        return null;
+      }
+
+      var toMark = null;
+      for (var i = 0; i < slots.length; i++) {
+        var slot = slots[i];
+        if (slot.get('building_id') == buildingId &&
+          (toMark == null || slot.get('level') > toMark.get('level'))) {
+          toMark = slot;
+        }
+      }
+
+      return toMark;
+    };
+
+    that.whichSlotToMarkForAssignment = function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      var activeQuestState = tutorialState.activeTutorialQuestWithUIMarkers();
+      var quest = activeQuestState.get('quest');
+
+      var slots = that.view.get('slots');
+      if (slots == null || !AWE.Ext.isArray(slots) || AWE.Util.arrayCount(slots) <= 0) {
+        return null;
+      }
+
+      var toMark = null;
+      for (var i = 0; i < slots.length; i++) {
+        var slot = slots[i];
+        if (slot.getPath('building.unlockedAssignments')) {
+          toMark = slot;
+        }
+      }
+
+      return toMark;
+    };
+
+    that.whichSlotToMarkForUnitsButton = function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      var activeQuestState = tutorialState.activeTutorialQuestWithUIMarkers();
+      var quest = activeQuestState.get('quest');
+
+      var slots = that.view.get('slots');
+      if (slots == null || !AWE.Ext.isArray(slots) || AWE.Util.arrayCount(slots) <= 0) {
+        return null;
+      }
+
+      var toMark = null;
+      for (var i = 0; i < slots.length; i++) {
+        var slot = slots[i];
+        var trainingQueues = slot.getPath('building.trainingQueues');
+        if (trainingQueues != null && AWE.Ext.isArray(trainingQueues) && AWE.Util.arrayCount(trainingQueues) > 0) {
+          toMark = slot;
+        }
+      }
+
+      return toMark;
+    };
+
+    that.nextBuildingSlotToMark = function() {
+      var sequenceOfSlotIds = [-1, 17,11,12,18,23,24,10,9,13,19,25,29,30,31,38,39,40,8,37,36,35,7,6,5,16,15,14,22,21,20,28,27,26,34,33,32];
+
+      var usedSlots = that.view.getPath('settlement.usedBuildingSlots');
+      var n = sequenceOfSlotIds.length;
+
+      if (usedSlots >= n) {
+        return null;
+      }
+
+      var slots = that.view.get('slots');
+      if (slots == null || !AWE.Ext.isArray(slots) || AWE.Util.arrayCount(slots) <= usedSlots) {
+        return null;
+      }
+
+      for (var i = usedSlots % n; i != (usedSlots-1+n)%n; i = (i+1) % n) {
+        var slotId = sequenceOfSlotIds[i];
+
+        if (slotId >= 0 && slots[slotId] != null && slots[slotId].get('building_id') == null) {
+          return slots[slotId];
+        }
+      }
+
+      return null;
+    };
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
     //   Model
     //
     // /////////////////////////////////////////////////////////////////////// 
@@ -974,7 +1183,6 @@ AWE.Controller = (function(module) {
     // slot update method
     that.updateSlots = function() {
       AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
-        log('-----> slots updated');
       });
     }
       
@@ -983,7 +1191,6 @@ AWE.Controller = (function(module) {
     that.updateConstructionQueueSlotAndJobs = function(queueId, callback) {
       // as we don't know the right slot (or slot id), we update all slots
       AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
-        log('-----> slots updated');
         AWE.GS.ConstructionQueueManager.updateQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queue) {
           log('updated construction queue', queueId);
         });
@@ -1051,14 +1258,16 @@ AWE.Controller = (function(module) {
       }
     }());
         
-    that.updateAllConstructionQueuesAndJobs = function() {
+    that.updateAllConstructionQueuesJobsAndSlots = function() {
       AWE.GS.ConstructionQueueManager.updateQueuesOfSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(queues) {
         log('updated queues', queues)
         AWE.Ext.applyFunctionToHash(queues, function(queueId, queue) {
-          AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
-            log('updated jobs in construction queue', jobs)
+          AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
+            AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
+              log('updated jobs in construction queue', jobs);
+            });
           });
-        });      
+        });
       });
     }
         
@@ -1137,8 +1346,7 @@ AWE.Controller = (function(module) {
           AWE.GS.SettlementManager.updateSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
             log('updated settlement', settlement);
             if (settlement && settlement.getId()) {
-              that.updateSlots();
-              that.updateAllConstructionQueuesAndJobs();
+              that.updateAllConstructionQueuesJobsAndSlots();
               if (that.view && that.view.get('selectedSlot')) {  // check view again, may have become invisible during meantime
                 that.updateAllTrainingQueuesAndJobs();
               }
@@ -1182,6 +1390,7 @@ AWE.Controller = (function(module) {
                 if (Date.parseISODate(job.get('active_job').finished_at).add({seconds: pendingConstructionJobUpdates[jobId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
                   pendingConstructionJobUpdates[jobId] *= 2;
                   that.updateConstructionQueueSlotAndJobs(queue.getId());
+                  that.updateAllTrainingQueues();
                 }
               }  
             });
@@ -1199,7 +1408,8 @@ AWE.Controller = (function(module) {
           if (!queue) {
             log('training queue was undefined');
           }
-          else {          var jobs = AWE.GS.TrainingJobManager.getJobsInQueue(queue.getId());
+          else {
+            var jobs = AWE.GS.TrainingJobManager.getJobsInQueue(queue.getId());
             jobs.forEach(function(job) {
               if (job.get('active_job')) {
                 var jobId = job.getId();
@@ -1273,6 +1483,15 @@ AWE.Controller = (function(module) {
       $("#debug2").html('&nbsp;Settlement Screen Visible.');
     };    
     
+    that.cleanupIfNecessary = function() {
+      if (AWE.Config.GS_CLEANUP_ENABLED) {
+        log('CLEANUP DATA IN SETTLEMENT CONTROLLER');
+        AWE.GS.cleanupMapData();      // commented out because refresh on map doesn't work properly.
+        AWE.GS.cleanupMessageData();
+        // AWE.GS.cleanupRankingData();  // commented out because it doesn't work properly.
+      }
+    };
+    
     var counter = 0;
     that.runloop = function() {
       if (++counter % 2 !== 0) return ; // skip every other "frame"
@@ -1288,6 +1507,7 @@ AWE.Controller = (function(module) {
         this.updateView();
         _viewNeedsUpdate = false;
       }
+      
       
       if (this.view) {   // make sure the view displays the right settlement.
         // this is executed, in case the settlement is received from the 
@@ -1324,6 +1544,16 @@ AWE.Controller = (function(module) {
         if (settlement && this.view.getPath('selectedSlot.building.unlockedAssignments')) {
           that.updateStandardAssignments(AWE.GS.game.getPath('currentCharacter.enumerableStandardAssignments'));
           that.updateSpecialAssignments(AWE.GS.game.getPath('currentCharacter.specialAssignment'));
+        }
+
+        if (settlement && this.view.get('slots') && AWE.Util.arrayCount(this.view.get('slots')) > 0) {
+          var lastTutorialUpdate = Date.parseISODate(AWE.GS.TutorialStateManager.getTutorialState().get('updated_at'));
+
+          if (lastTutorialUpdate > that.lastMarkerUpdate || counter % 10 == 0) {
+            that.lastMarkerUpdate = lastTutorialUpdate;
+
+            this.updateUIMarker();
+          }
         }
 
         if (counter % 100 == 0) {

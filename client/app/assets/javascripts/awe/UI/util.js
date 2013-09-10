@@ -25,17 +25,17 @@ AWE.UI.Util = (function(module) {
     if (time < 0)
       return;
     
-    var sec = time % 60;
+    var sec = Math.floor(time % 60);
     if (sec < 10) {
       sec = '0' + sec;
     }
     
-    var min = time / 60 % 60;
+    var min = Math.floor(time / 60 % 60);
     if (min < 10) {
       min = '0' + min;
     }
     
-    var hour = time / 3600 % 60;
+    var hour = Math.floor(time / 3600 % 60);
     
     return hour + ':' + min + ':' + sec;
   }

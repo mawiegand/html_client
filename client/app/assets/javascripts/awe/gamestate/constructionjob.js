@@ -42,9 +42,8 @@ AWE.GS = (function(module) {
     }.property('building_id').cacheable(),
     
     slot: function() {
-      log('-----> slot in job', AWE.GS.SlotManager.getSlot(this.get('slot_id')));
       return AWE.GS.SlotManager.getSlot(this.get('slot_id'));
-    }.property('slot_id', 'level_after'),
+    }.property('slot_id', 'level_after').cacheable(),
     
     position: null,
     level_after: null,
@@ -97,7 +96,7 @@ AWE.GS = (function(module) {
     cancelable: function() {
       // jobs des slots holen
       var jobs = this.getPath('slot.hashableJobs.collection') || [];
-      
+
       var max = jobs.reduce(function(previousValue, item) {  // finds the job with max position (last in queue)
         if (previousValue === undefined || previousValue === null) {
           return item;

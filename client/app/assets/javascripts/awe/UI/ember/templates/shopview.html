@@ -1,7 +1,7 @@
 <script type="text/x-handlebars" data-template-name="shop">
     <div class="modal-dialog-background"></div>
     <div class="horizontal-center-helper">
-      <div class="shop-dialog-pane">
+      <div class="shop-dialog-pane helvetica-light">
         <h1>{{ t shop.title }}</h1>
         
         {{#if loading }}
@@ -10,7 +10,7 @@
           {{#unless shopEnabled }}
             <p>{{t shop.unreachable}}</p>
           {{else}}
-            <p>{{ t shop.currentCreditAmount }} <b>{{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }}</b> {{ t shop.platinumCredits }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="simple-button" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span></p>
+            <p>{{ t shop.currentCreditAmount }} <b>{{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }}</b> {{ t shop.platinumCredits }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="simple-button float-right platinum" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span></p>
             
             {{#if resourceOffers}}
             <h3>{{ t shop.resourceOffers }}</h3>
@@ -75,7 +75,6 @@
           {{/unless}}
         {{/if}}
         
-        
         <a class="close" href="#" {{action "closePressed" target="parentView"}}></a>  
       </div>
     </div>
@@ -84,15 +83,13 @@
 <script type="text/x-handlebars" data-template-name="shop-resource-offer">
   {{#if offer.isBuying}}
     <div class="resource-offer">
-      <p>{{ offer.amount }} {{resourceName}}{{t general.naivePlural }}</p>
-      <p>&nbsp;</p>
-      <p>{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{t shop.activating }}</p>
+      <p>&nbsp;<br/>
+         {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{t shop.activating }}</p>
     </div>
   {{else}}
     <div class="resource-offer" {{action "buyResourceOfferPressed"}}>
-      <p>{{ offer.amount }} {{resourceName}}{{t general.naivePlural }}</p>
-      <p>{{t shop.for }}</p>
-      <p>{{ offer.price}} {{ t shop.credits }}</p>
+      <p>{{ offer.amount }} {{resourceName}}{{t general.naivePlural }} {{t shop.for }}<br/>
+         {{ offer.price}} {{ t shop.credits }}</p>
     </div>
   {{/if}}
 </script>

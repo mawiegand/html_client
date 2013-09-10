@@ -6,7 +6,7 @@
 var AWE = AWE || {};
 
 AWE.UI = (function(module) {
-          
+
   module.createMainControlsView = function(spec, my) {
 
     var that;
@@ -17,7 +17,6 @@ AWE.UI = (function(module) {
     var _frameView;
     var _heroHeadImageView;
     var _heroNameView;
-    var _fortressButton;
     var _villageImageView;
     var _settlementImageView;
     var _messagesButton;
@@ -25,8 +24,6 @@ AWE.UI = (function(module) {
     var _rankingButton;
     var _questsButton;
     var _questsCallout = null;
-    var _locationsButton;
-    var _armiesButton;
     var _shopButton;
     var _resourcesShape;
     
@@ -35,22 +32,12 @@ AWE.UI = (function(module) {
     var _presentGender = null;
     var _presentAvatarString = null;
     
-    var _resource1LabelView;
-    var _resource2LabelView;
-    var _resource3LabelView;
     var _resource4LabelView;
 
-    var _resource1ProductionView;
-    var _resource2ProductionView;
-    var _resource3ProductionView;
     var _resource4ProductionView;
 
+    var _arrowTest = null;
 
-    var _resource5LabelView;
-    var _resource6LabelView;
-    
-    var _resourceBubbleView;
-    
     my = my || {};
     
     my.typeName = "MainControlsView";

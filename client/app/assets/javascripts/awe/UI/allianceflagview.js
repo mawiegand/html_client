@@ -7,7 +7,11 @@ var AWE = AWE || {};
 
 AWE.UI = (function(module) {
 
-  module.createAllianceFlagView = function(spec, my) {
+  module.createAllianceFlagView = (function() {
+    
+    var _flagCache = {}; // maps alliance id to pre-rendered image
+    
+    return function(spec, my) {
     
     my = my || {};
     
@@ -17,12 +21,15 @@ AWE.UI = (function(module) {
     var that = module.createContainer(spec, my);
     
     var _allianceId = null;
+    var _oldAllianceId = null;
     var _direction = 'down';
     var _tagVisible = false;
     
     var _flagShapeView = null;
     var _allianceTagLabelView = null;
-
+    
+    var _shouldCache = false;
+    
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
       layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
@@ -32,6 +39,7 @@ AWE.UI = (function(module) {
     
     /** overwritten view methods */
     
+  
     that.initWithController = function(controller, frame) {
       _super.initWithController(controller, frame);
 
@@ -40,6 +48,11 @@ AWE.UI = (function(module) {
         my.frame.size.height = 100;
       }
     };
+    
+    that.setCache = function(value) {
+      _shouldCache = value;
+    };
+    
     
     that.getAllianceTagFromModel = function() {
       var alliance = AWE.GS.AllianceManager.getAlliance(_allianceId);
@@ -52,39 +65,83 @@ AWE.UI = (function(module) {
         });
       }
     }
+    
+    that.setFrame = function(frame) {
+      _super.setFrame(frame);
+      this.updateView();
+    }
         
     that.updateView = function () {
             
-      var color = _allianceId ? AWE.GS.AllianceManager.colorForNumber(_allianceId) : { r: 255, g: 255, b: 255 };
+      var cacheIt = _shouldCache; 
 
-      if (_flagShapeView) {
-        this.removeChild(_flagShapeView);
-      }
+      if (!_flagShapeView || (my.frame.size.width  !== _flagShapeView.frame().size.width ||
+                              my.frame.size.height !== _flagShapeView.frame().size.height) ||
+          _allianceId !== _oldAllianceId) { // no view, color changed or -if not cached- size changed 
             
-      var _flagShapeGraphics = new Graphics();
-      _flagShapeGraphics.setStrokeStyle(1);
-      _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
-      _flagShapeGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
-      if (_direction === 'down') {
-        _flagShapeGraphics.moveTo(0, 0).lineTo(my.frame.size.width, 0).lineTo(my.frame.size.width / 2, my.frame.size.height).lineTo(0, 0);
-      }
-      else if (_direction === 'left') {
-        _flagShapeGraphics.moveTo(my.frame.size.width, 0).lineTo(my.frame.size.width, my.frame.size.height).lineTo(0, my.frame.size.height / 2).lineTo(my.frame.size.width, 0);
-      }
+        var color    = _allianceId ? AWE.GS.AllianceManager.colorForNumber(_allianceId) : { r: 255, g: 255, b: 255 };
+        
+        if (cacheIt) {
+          if (!_flagShapeView || _allianceId !== _oldAllianceId) {
+            if (_flagShapeView) {
+              this.removeChild(_flagShapeView);
+              _flagShapeView = null;
+            }
+            
+            var image = that.cachedImage(_direction, _allianceId);
+
+            _flagShapeView = AWE.UI.createImageView();
+            _flagShapeView.initWithControllerAndImage(my.controller, image);
+            
+            if (image.width == 0) { // image seems to be still loading
+              var func = image.onload || null;  // wrap it
+
+              image.onload = function() {
+                _flagShapeView.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
+                if (func) {
+                  func();
+                }
+              }
+            }
+          }
+          AWE.Log.Debug('resize flag shape view');
+          _flagShapeView.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
+        }
+        else {
+
+          if (_flagShapeView) {
+            this.removeChild(_flagShapeView);
+          }
+          
+          var _flagShapeGraphics = new Graphics();
+          _flagShapeGraphics.setStrokeStyle(1);
+          _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
+          _flagShapeGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
+          if (_direction === 'down') {
+            _flagShapeGraphics.moveTo(0, 0).lineTo(my.frame.size.width, 0).lineTo(my.frame.size.width / 2, my.frame.size.height).lineTo(0, 0);
+          }
+          else if (_direction === 'left') {
+            _flagShapeGraphics.moveTo(my.frame.size.width, 0).lineTo(my.frame.size.width, my.frame.size.height).lineTo(0, my.frame.size.height / 2).lineTo(my.frame.size.width, 0);
+          }
       
-      _flagShapeView = AWE.UI.createShapeView();
-      _flagShapeView.initWithControllerAndGraphics(my.controller, _flagShapeGraphics);
-      _flagShapeView.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
-      _flagShapeView.onClick = function() { 
-        if (that.onClick) that.onClick();   
-      };
-      _flagShapeView.onMouseOver = function() {
-        if (that.onMouseOver) that.onMouseOver();
-      };
-      _flagShapeView.onMouseOut = function() {
-        if (that.onMouseOut) that.onMouseOut();
-      };
-      this.addChildAt(_flagShapeView, 0);
+          _flagShapeView = AWE.UI.createShapeView();
+          _flagShapeView.initWithControllerAndGraphics(my.controller, _flagShapeGraphics);
+          _flagShapeView.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
+        }
+        
+        _oldAllianceId = _allianceId;
+        
+        _flagShapeView.onClick = function() { 
+          if (that.onClick) that.onClick();   
+        };
+        _flagShapeView.onMouseOver = function() {
+          if (that.onMouseOver) that.onMouseOver();
+        };
+        _flagShapeView.onMouseOut = function() {
+          if (that.onMouseOut) that.onMouseOut();
+        };
+        this.addChildAt(_flagShapeView, 0);
+      }
       
       if (_allianceId && !my.allianceTag && _tagVisible) {
         that.getAllianceTagFromModel();
@@ -157,8 +214,55 @@ AWE.UI = (function(module) {
     
     that.onClick = function() {}
     
+    
+    
+    that.generateFlagImage = function(direction, allianceId) {
+      
+      var width = 56, height = 20;
+      if (direction === "down") {
+        width = 20, height = 40;
+      } 
+      
+      var color = allianceId ? AWE.GS.AllianceManager.colorForNumber(allianceId) : { r: 255, g: 255, b: 255 };
+      var flagShapeGraphics = new Graphics();
+        
+      flagShapeGraphics.setStrokeStyle(1);
+      //flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
+      flagShapeGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
+
+      if (direction === 'down') {
+        flagShapeGraphics.moveTo(0, 0).lineTo(width, 0).lineTo(width/2, height).lineTo(0, 0);
+      }
+      else if (_direction === 'left') {
+        flagShapeGraphics.moveTo(width, 0).lineTo(width,height).lineTo(0, height / 2).lineTo(width, 0);
+      }
+
+      var flagShapeView = AWE.UI.createShapeView();
+      flagShapeView.initWithControllerAndGraphics(my.controller, flagShapeGraphics);
+      flagShapeView.setFrame(AWE.Geometry.createRect(0, 0, width, height));
+    
+      var displayObject = flagShapeView.displayObject();
+      displayObject.cache(0, 0, width, height);
+      
+      var image = new Image();
+      image.src = displayObject.cacheCanvas.toDataURL();
+      
+      return image;
+    }
+    
+    that.cachedImage = function(direction, allianceId) {
+      var image = _flagCache[_direction + "_" + _allianceId];
+      
+      if (!image) {
+        image = that.generateFlagImage(direction, allianceId);
+        _flagCache[_direction + "_" + _allianceId] = image;
+      }
+      return image;
+    }
+    
     return that;
-  };
+  }
+  }());
       
   return module;
     

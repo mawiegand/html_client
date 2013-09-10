@@ -284,6 +284,36 @@ a:hover { color: #333666; text-decoration: underline;}
 a:focus { outline: thin dotted; }
 
 
+h1 {
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", 
+               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", 
+               "Tahoma", "Geneva", "Arial", sans-serif; 
+  font-weight:300; 
+  font-stretch:normal;
+  font-size: 2.2em;
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", 
+               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", 
+               "Tahoma", "Geneva", "Arial", sans-serif; 
+  font-weight:300; 
+  font-stretch:normal;
+  font-size: 1.6em;
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", 
+               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", 
+               "Tahoma", "Geneva", "Arial", sans-serif; 
+  font-weight:300; 
+  font-stretch:normal;
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
 
 .inline {
   display: inline-block;
@@ -948,6 +978,11 @@ a:focus { outline: thin dotted; }
   margin: -2px;
 }
 
+h1.slot-tooltip {
+  font-size: 1.6em;
+  margin-bottom: 8px;
+}
+
 
 .ok-button:hover {
   border-color: #9D9;
@@ -1075,6 +1110,24 @@ a:focus { outline: thin dotted; }
   width: 800px; 
   min-height: 300px;
   background-color: #FFF;    
+}
+
+.encyclopedia-view a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.encyclopedia-view a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+.encyclopedia-element {
+  font-size: 12px;
+  margin-left:10px;
 }
 
 .encyclopedia-view .unit-image {
@@ -1451,7 +1504,7 @@ loaddialog-positioner {
 
 
 .settlement-screen {
-  min-height: 1200px;
+  min-height: 2400px; /** just a hack until the background problem is solved */
 }
 
 .settlement-screen.outpost-screen,
@@ -1617,7 +1670,7 @@ span.bonus {
   height: 170px;
   -moz-border-radius: 7px;
   border-radius:      7px;
-  border: 1px solid gray;
+  border: 2px solid #E2E2E2;
   padding: 10px;
   margin-right: 2px;
   margin-bottom: 8px;
@@ -1642,9 +1695,17 @@ span.bonus {
 }
 
 .building-option-action {
+  position: relative;
   margin: 0;
   padding: 0;
   height: 184px; 
+}
+
+.requirement-group ul {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 
@@ -1911,8 +1972,7 @@ span.bonus {
   border-radius: 4px;
   cursor: pointer;
   word-wrap: break-word;
-  border: 1px solid gray;
-  
+  border: 2px solid #E2E2E2;
   background: #ddf1a4; /* for non-css3 browsers */
 
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
@@ -2187,7 +2247,7 @@ span.bonus {
   height: 80px;
   -moz-border-radius: 7px;
   border-radius:      7px;
-  border: 1px solid gray;
+  border: 2px solid #E2E2E2;
   padding: 10px;
   margin-right: 5px;
   margin-bottom: 5px;
@@ -2262,12 +2322,77 @@ span.bonus {
   background-color: white;
 }
 
+.stone-panel.standard-assignment,
+.stone-panel.special-assignment {
+  min-height: 34px;
+  padding-top: 20px;
+}
+
+.stone-panel.standard-assignment:hover,
+.stone-panel.special-assignment:hover {
+  border: 1px solid orange;
+  
+  -moz-box-shadow: inset 0 0 0px 1px orange;
+  -webkit-box-shadow: inset 0 0 0px 1px orange;
+  box-shadow: inner 0 0 0px 1px orange;
+}
+
+.stone-panel .assignment-details {
+  margin-top: 0px;
+
+  background-color: rgba(255,255,255,0.4);
+  
+  border-radius: 3px;
+  
+  padding: 6px 8px 6px 8px;
+  border: 1px solid #EBEBEB;
+}
+
+.assignment-icon {
+  float: left;
+  width: 54px;
+  height: 18px;
+  overflow: visible;
+}
+
+.assignment-icon div {
+  background-image: url('<%= asset_path("ui/settlement/assignment_icon_work.png") %>');
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 64px;
+  height: 64px;
+  margin-top: -21px;
+  margin-left: -10px;
+  margin-right: -2px;
+}
+
+.assignment-icon div.girl {
+  background-image: url('<%= asset_path("ui/settlement/assignment_icon_work.png") %>');
+}
+.assignment-icon div.warrior {
+  background-image: url('<%= asset_path("ui/settlement/assignment_icon_fight.png") %>');
+}
+.assignment-icon div.chef {
+  background-image: url('<%= asset_path("ui/settlement/assignment_icon_special.png") %>');
+}
+
+
+
+.stone-panel.standard-assignment {
+  margin-bottom: 12px;
+}
+
+.standard-assignment .advisor,
+.special-assignment .advisor {
+  margin-left: -10px;
+}
+
 .assignment-collapse-table .assignment-header-cell {
-  width: 210px;
+  width: 260px;
 }
 
 .assignment-collapse-table .assignment-progress-cell {
-  width: 310px;
+  width: 260px;
 }
 
 .assignment-collapse-table .assignment-button-cell {
@@ -2275,19 +2400,15 @@ span.bonus {
   text-align: right;
 }
 
-.assignment-collapse-table tr:hover {
-  background-color: #BFB;
+.assignment-details .up-icon {
+  float: right;
+  height: 21px;
 }
 
-.assignment-close-icon {
-  width: 660px;
-  height: 21px;
-  text-align: right;
-}
 
 .assignment-progress-bar-border {
   overflow: visible;
-  width: 300px;
+  width: 250px;
   display: inline-block;
   white-space: nowrap;
   border: 1px solid #ccc;
@@ -2297,11 +2418,22 @@ span.bonus {
 
 .assignment-progress-bar {
   overflow: visible;
-  background-color: #ccc;
+  background-color: #BC4;
   display: inline-block;
-  border-radius: 3px;
+  border-radius: 2px;
   white-space: nowrap;
 }
+
+.girl .assignment-progress-bar {
+  background-color: #BC4;
+}
+.warrior .assignment-progress-bar {
+  background-color: #F94;
+}
+.chef .assignment-progress-bar {
+  background-color: #AC4;
+}
+
 
 /** image for building_siege_tower */
 .queue-job-image.building_siege_tower {
@@ -2529,7 +2661,8 @@ span.bonus {
   left: 0px;
   right: 0px;
   top: 0px;
-  background-color: #DDF;
+  background: url('<%= asset_path("settlements/base/base_background_repeat.jpg") %>');
+  background-repeat: repeat;  
   width: 100%;
   min-height: 100%;
 }
@@ -2547,6 +2680,7 @@ span.bonus {
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
   border-radius: 12px;
+  z-index: 2;
 }
 
 .alliance-pane .alliance-banner {
@@ -2554,6 +2688,26 @@ span.bonus {
   width: 200px;
   height: 200px;
   margin-top: -35px;
+}
+
+.alliance-screen-background {
+  z-index: 0;
+  margin-top: -100px;
+  height: 960px;
+  margin-bottom: -860px;
+  width: 100%;
+  background: url('<%= asset_path("settlements/base/base_background_right.jpg") %>');
+  background-repeat: repeat-x;
+}
+
+.alliance-screen-picture {
+  background: url('<%= asset_path("settlements/base/base_background_1280.jpg") %>');
+  background-repeat: no-repeat;
+  margin-top: -100px;
+  width: 1280px;
+  height: 960px;
+  z-index: 0;
+  
 }
 
 .character-profile-view .alliance-banner,
@@ -2892,6 +3046,22 @@ li.shout .sender {
   text-decoration:underline;
   color: #DDF;
 }
+
+
+.stone-panel {
+  background-image: url("<%= asset_path 'ui/settlement/background_stone_repeat.jpg' %>");
+  background-repeat: repeat;
+  
+  border-radius: 3px;
+  
+  padding: 10px;
+  border: 1px solid #E2E2E2;
+  
+  -moz-box-shadow: inset 0 0 0px 1px #FFF;
+  -webkit-box-shadow: inset 0 0 0px 1px #FFF;
+  box-shadow: inner 0 0 0px 1px #FFF;
+}
+
 
 
 
@@ -4110,42 +4280,115 @@ a.trading-carts-speedup-button:hover {
   opacity: 0.6;
 }
 
+.helvetica-light {
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", 
+               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", 
+               "Tahoma", "Geneva", "Arial", sans-serif; 
+  font-weight:300; 
+  font-stretch:normal;
+}
+
+.helvetica-regular {
+  font-family: "HelveticaNeue", "Helvetica Neue", "HelveticaNeueRoman", 
+               "HelveticaNeue-Roman", "Helvetica Neue Roman", 
+               'TeXGyreHerosRegular', "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; 
+  font-weight:400; 
+  font-stretch:normal; 
+}
+
+.shop-dialog-pane .simple-button.float-right {
+  margin-right: 1px;
+  padding: 2px 4px 2px 4px;
+  display: inline-block;
+  min-height: 22px;
+  margin-top: -4px;
+}
+
+.shop-dialog-pane .platinum {
+  background: #F0E8D9; /* for non-css3 browsers */
+  
+  border: 1px solid #E2D6BC;
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #ffffff 0%,  #F0E8D9 100%);
+  background: -moz-linear-gradient(top,  #ffffff,  #F0E8D9); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#ffffff,  #F0E8D9);
+}
+
+.shop-dialog-pane h1 {
+  font-size: 3em;
+  font-weight: 300;
+  margin-bottom: 18px;
+  margin-top: 24px;
+}
+
+.settlement-dialog-pane h1 {
+  font-size: 2em;
+  font-weight: 300;
+  margin-bottom: 24px;
+  margin-top: 12px;
+}
+
+
+.settlement-dialog-pane h2,
+.shop-dialog-pane h2 {
+  font-size: 1.6em;
+  font-weight: 300;
+}
+
+.settlement-dialog-pane h3,
+.shop-dialog-pane h3 {
+  font-size: 1.4em;
+  font-weight: 300;
+  margin-bottom: 12px;
+}
+
+
 
 
 
 .resource-offer {
   float: left;
-  width: 120px;
-  height: 80px;
-  background-color: #BBF;
-  -moz-border-radius: 7px;
-  border-radius:      7px;
-  padding: 10px;
+  width: 140px;
+  height: 100px;
+  
+  background: url('<%= asset_path("shop/button_cash_package.png") %>');
   margin-right: 10px;
   margin-bottom: 10px;
   text-align: center;
+  
+  color: #c83;
 }
 
 .resource-offer:hover {
-  background-color: #BFB;
+  background: url('<%= asset_path("shop/button_cash_package_hover.png") %>');
+  color: #ea5;
 }
 
 .resource-offer p {
-  margin: 3px;
-  color: #555;
+  font-size: 15px;
+  line-height: 17px;
+  margin-top: 6px;
 }
 
 .frog-trade {
-  background-color: #BBF;
   -moz-border-radius: 7px;
   border-radius:      7px;
   padding: 10px;
   margin-bottom: 10px;
+
+  background: #f8fbee; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #ffffff 0%,  #f8fbee 100%);
+  background: -moz-linear-gradient(top,  #ffffff,  #f8fbee); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#ffffff,  #f8fbee);
 }
 
 .frog-trade-description {
   width: 470px;
   display: inline-block;
+  margin-top: 20px;
 }
 
 .frog-trade-button {
@@ -4160,20 +4403,33 @@ a.trading-carts-speedup-button:hover {
 }
 
 .bonus-offer {
-  background-color: #FBB;
   -moz-border-radius: 7px;
   border-radius:      7px;
   padding: 10px;
   margin-bottom: 10px;
+
+  background: #ecd8ce; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #f6eae5 0%,  #ecd8ce 100%);
+  background: -moz-linear-gradient(top,  #f6eae5,  #ecd8ce); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#f6eae5,  #ecd8ce);
 }
 
 .bonus-offer.active {
-  background-color: #BFB;
+  background: #ddf1a4; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #e9f3c3 0%,  #ddf1a4 100%);
+  background: -moz-linear-gradient(top,  #e9f3c3,  #ddf1a4); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#e9f3c3,  #ddf1a4);
 }
 
 .bonus-offer-header {
-  padding: 10px;
-  font-weight: bold;
+  padding: 8px;
+  font-size: 1.1em;
+  font-weight:300; 
+  font-stretch:normal; 
 }
 
 .bonus-offer-description {
@@ -4225,18 +4481,7 @@ a.trading-carts-speedup-button:hover {
 }
 
 
-.shop-dialog-pane a.close {
-  position: absolute;
-  background: url('<%= asset_path("icons/cross_small.png") %>');
-  width: 36px;
-  height: 36px;
-  right: 12px;
-  top: 10px;
-}
 
-.shop-dialog-pane a.close:hover {
-  opacity: 0.6;
-}
 
 
 .platinum-button {
@@ -4267,7 +4512,12 @@ a.trading-carts-speedup-button:hover {
   top: -60px;
 }
 
+
+
+
+
 #army-create-form a.close,
+.shop-dialog-pane a.close,
 .ranking-view a.close,
 .resource-details-dialog-pane a.close,
 .effect-details-dialog-pane a.close,
@@ -4276,8 +4526,13 @@ a.trading-carts-speedup-button:hover {
   background: url('<%= asset_path("ui/close_button.png") %>');
   width: 50px;
   height: 46px;
-  left: 610px;
+  left: 610px;  /* this is an error; must be measured from the right and everything would be fine */
   top: 26px;
+}
+
+.shop-dialog-pane a.close {
+  left: 576px;
+  top: 16px;
 }
 
 .resource-details-dialog-pane a.close {
@@ -4293,6 +4548,7 @@ a.trading-carts-speedup-button:hover {
 }
 
 #army-create-form a.close:hover,
+.shop-dialog-pane a.close:hover,
 .ranking-view a.close:hover,
 .resource-details-dialog-pane a.close:hover,
 .effect-details-dialog-pane a.close:hover,
@@ -5111,6 +5367,124 @@ hurry-button:hover {
 }
 
 
+.ui-marker-div {
+  position:absolute;
+  top: 0;
+  left: 0;
+  padding:0;
+  width:  96px;
+  height: 96px;
+}
+
+.ui-marker-image {
+  position:absolute;
+  padding:0;
+  width:  48px;
+  height: 48px;
+  background-size:  100%;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  z-index: 9;
+}
+
+.ui-marker-image:hover {
+  opacity: 1.0;
+}
+
+.ui-marker-image.up {
+  top: 0px;
+  left: 24px;
+  background-image: url('<%= asset_path("ui/arrow/up_arrow.png") %>');
+}
+
+.ui-marker-image.right {
+  top: 24px;
+  left: 48px;
+  background-image: url('<%= asset_path("ui/arrow/right_arrow.png") %>');
+}
+
+.ui-marker-image.down {
+  top: 48px;
+  left: 24px;
+  background-image: url('<%= asset_path("ui/arrow/down_arrow.png") %>');
+}
+
+.ui-marker-image.left {
+  top: 24px;
+  left: 0px;
+  background-image: url('<%= asset_path("ui/arrow/left_arrow.png") %>');
+}
+
+
+
+.bubble-wrap {
+  position:relative;
+  margin: auto auto;
+  margin-top:40px;
+  padding:0;
+  width:  43px;
+  height: 53px; /* bubble height+10px*/
+}
+
+.bubble {
+  position:absolute;
+  top: 0px;
+  left: 0px;
+  padding:0;
+  width:  43px;
+  height: 43px;
+  background-size:  100%;
+  background-image: url('<%= asset_path("icons/bubble.png") %>');
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
+
+.bubble.invisible {
+  background-image: none;
+}
+
+.bubble.hidden {
+  display: none;
+}
+
+.bubble-resource {
+  position:relative;
+  margin-top: 10px;
+  margin-left: 10px;
+  z-index: 20;
+  display: inline-block;
+}
+
+.bubble-xp, .bubble-amount {
+  z-index: 20;
+  visibility: hidden;
+  vertical-align: top;
+}
+
+.bubble-amount {
+  font-weight: bold;
+  color: black;
+  text-shadow: white 1px 1px 1px;
+}
+
+.small-bubble {
+  top: 0px;
+  left: 0px;
+  width:24px;
+  height:24px;
+  position:absolute;
+  border-radius:24px;
+  float:left;
+  margin-top: 48px;
+  margin-left: 33px;
+  padding:0;
+  background-size:  100%;
+  background-image: url('<%= asset_path("icons/bubble.png") %>');
+}
+
+
+
+
 
   /* ==|== media queries ======================================================
      EXAMPLE Media Query for Responsive Design.
@@ -5148,64 +5522,6 @@ hurry-button:hover {
 .clearfix:before, .clearfix:after { content: ""; display: table; }
 .clearfix:after { clear: both; }
 .clearfix { *zoom: 1; }
-
-
-.bubble-wrap {
-  position:relative;
-  margin: auto auto;
-  margin-top:40px;
-  padding:0;
-  width:  43px;
-  height: 53px; /* bubble height+10px*/
-}
-
-.bubble {
-  position:absolute;
-  top: 0px;
-  left: 0px;
-  padding:0;
-  width:  43px;
-  height: 43px;
-  background-size:  100%;
-  background-image: url('<%= asset_path("icons/bubble.png") %>');
-  background-repeat: no-repeat;
-  background-position: 0 0;
-}
-
-.bubble-resource {
-  position:relative;
-  margin-top: 10px;
-  margin-left: 10px;
-  z-index: 20;
-  display: inline-block;
-}
-
-.bubble-xp, .bubble-amount {
-  z-index: 20;
-  visibility: hidden;
-  vertical-align: top;
-}
-
-.bubble-amount {
-  font-weight: bold;
-  color: black;
-  text-shadow: white 1px 1px 1px;
-}
-
-.small-bubble {
-  top: 0px;
-  left: 0px;
-  width:24px;
-  height:24px;
-  position:absolute;
-  border-radius:24px;
-  float:left;
-  margin-top: 48px;
-  margin-left: 33px;
-  padding:0;
-  background-size:  100%;
-  background-image: url('<%= asset_path("icons/bubble.png") %>');
-}
 
 
 /* ==|== print styles =======================================================

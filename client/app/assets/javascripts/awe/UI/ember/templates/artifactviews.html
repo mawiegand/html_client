@@ -82,18 +82,34 @@
 <script type="text/x-handlebars" data-template-name="artifact-bonus-view">
 
   <p>
-    {{#if characterBoni}}
-      <b>{{t settlement.artifact.characterBoni}}:</b>
-      {{#each characterBoni}}
+    {{#if characterProductionBonuses}}
+      {{t settlement.artifact.characterProductionBonus}}:
+      {{#each characterProductionBonuses}}
         <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal characterBoni.resourceType.name}}">&nbsp;</span>
         +{{formatAsPercent bonus}} &nbsp;
       {{/each}}<br/>
     {{/if}}
 
-    {{#if allianceBoni}}
-      <b>{{t settlement.artifact.allianceBoni}}:</b>
-      {{#each allianceBoni}}
+    {{#if allianceProductionBonuses}}
+      {{t settlement.artifact.allianceProductionBonus}}:
+      {{#each allianceProductionBonuses}}
         <span class="resource-icon {{unbound resourceType.symbolic_id}}" title="{{unboundLocal allianceBoni.resourceType.name}}">&nbsp;</span>
+        +{{formatAsPercent bonus}} &nbsp;
+      {{/each}}<br/>
+    {{/if}}
+  </p>
+
+  <p>
+    {{#if characterConstructionBonuses}}
+      {{t settlement.artifact.characterConstructionBonus}}:
+      {{#each characterConstructionBonuses}}
+        +{{formatAsPercent bonus}} &nbsp;
+      {{/each}}<br/>
+    {{/if}}
+
+    {{#if allianceConstructionBonuses}}
+      {{t settlement.artifact.allianceConstructionBonus}}:
+      {{#each allianceConstructionBonuses}}
         +{{formatAsPercent bonus}} &nbsp;
       {{/each}}<br/>
     {{/if}}
@@ -101,7 +117,7 @@
 
   {{#if artifact.isOwnProp}}
     {{#if artifact.experienceProduction}}
-      <p><b>{{t building.produces}} ({{t general.perHour}}):</b>
+      <p>{{t building.produces}} ({{t general.perHour}}):
         <span class="xp-icon" title="XP">&nbsp;</span>
         {{artifact.experienceProduction}}  &nbsp;
       </p>

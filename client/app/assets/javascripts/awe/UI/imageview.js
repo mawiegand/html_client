@@ -20,7 +20,7 @@ AWE.UI = (function(module) {
     
     var _image = null;
     var _bitmap = null;
-    var _contentMode = module.ViewContentModeNone;
+    var _contentMode = module.ViewContentModeFit;
     
     
     // protected attributes and methods //////////////////////////////////////
@@ -38,11 +38,11 @@ AWE.UI = (function(module) {
     };
     
     var recalcScale = function() {
-      if (_contentMode = module.ViewContentModeFit) {
+      if (_contentMode == module.ViewContentModeFit) {
         _bitmap.scaleX = my.frame.size.width / _bitmap.image.width;
         _bitmap.scaleY = my.frame.size.height / _bitmap.image.height;
       }
-      else if (_contentMode = module.ViewContentModeNone) {
+      else if (_contentMode == module.ViewContentModeNone) {
         _bitmap.scaleX = _bitmap.scaleY = 1;
       }
     }

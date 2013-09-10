@@ -265,6 +265,8 @@ AWE.I18n.en_US = function(module) {
     },
 
     building:{
+      requirements: 'Requirements',
+      xpProduction: 'XP Production',
       level:"Level",
       cost:"Cost",
       duration:"Duration",
@@ -362,8 +364,9 @@ AWE.I18n.en_US = function(module) {
     },
 
     map:{
-         regions: 'Regions',
-      
+       regions: 'Regions',
+      arriving: 'Arriving...',
+
       button:{
         attack:"Attack",
         newArmy:"New army",
@@ -757,6 +760,10 @@ AWE.I18n.en_US = function(module) {
         cancelText: "Boring.",
         characterBoni: "Bonus for the owner",
         allianceBoni: "Bonus for the Alliance members",
+        characterProductionBonus: "Production bonus for the owner",
+        allianceProductionBonus: "Production bonus for the Alliance members",
+        characterConstructionBonus: "Construction speed bonus for the owner",
+        allianceConstructionBonus: "Construction speed bonus for the Alliance members",
         hurry: "Halve",
         hurrying: "Hurry",
         hurried: "Hurried",
@@ -1103,6 +1110,7 @@ AWE.I18n.en_US = function(module) {
     },
 
     encyclopedia:{
+      selectCategory: 'Select a category and a topic, please.',
       productionTime:"Training time",
       hitpoints:"Hitpoints",
       attack:"Attack",
@@ -1114,6 +1122,11 @@ AWE.I18n.en_US = function(module) {
 
       commandPointsAbbreviation:"CP",
       buildingTime:"Build time",
+
+      smallBuilding: 'Requires small or large building slot',
+      largeBuilding: 'Requires large building slot',
+      specialBuilding: 'Requires small building slot',
+      fortressBuilding: 'Only in fortresses',
 
       resources:"Resources",
       buildings:"Buildings",

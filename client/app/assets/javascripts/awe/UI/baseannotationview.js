@@ -16,11 +16,11 @@ AWE.UI = (function(module) {
     
     // selected
     var enterButton = null;    
-    var spyButton = null;    
-    var attackButton = null;    
+    var attackButton = null;
     var battleButton = null;
     
-    var _battleInfoButtonView = null;    
+    var _battleInfoButtonView = null;
+    var _battleInfoButtonBackgroundView = null;
 
     //  hovered
     var _infoText1View = null;    
@@ -28,6 +28,7 @@ AWE.UI = (function(module) {
     var _infoText3View = null;
 
     var _backgroundShapeView = null;
+    var _backgroundView3 = null;
 
     var rightOfWayIcon = null;
 
@@ -65,23 +66,31 @@ AWE.UI = (function(module) {
     that.updateButtonState = function() {
       if (attackButton) {
         attackButton.setSelected(_actionMode === 'attackTargetSelection');
-        attackButton.setEnabled(my.location.garrisonArmy() && !my.location.garrisonArmy().get('empty'));
+        // log('-----> army', my.location.garrisonArmy(), !my.location.garrisonArmy().get('empty'), !my.location.garrisonArmy().get('isSuspended'));
+        attackButton.setEnabled(my.location.garrisonArmy() && !my.location.garrisonArmy().get('empty') && !my.location.garrisonArmy().get('isSuspended'));
       }
     }
 
     that.recalcView = function() {
       
-      var currentCharacter = AWE.GS.CharacterManager.getCurrentCharacter();
       var isOwnLocation =  my.location.isOwn();
-      var isOwnAlliance = my.location.allianceId() === AWE.GS.CharacterManager.currentCharacter.get('alliance_id');
 
-      
+      if (!_backgroundView3) {
+        _backgroundView3 = AWE.UI.createImageView();
+        _backgroundView3.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/annotation/panel3"));
+        _backgroundView3.setFrame(AWE.Geometry.createRect(-20, -40, 154, 230));
+        this.addChild(_backgroundView3);
+      }
+      if (_backgroundView3) {
+        _backgroundView3.setVisible(my.baseView.selected() && isOwnLocation);
+      }
+
       if (!enterButton && isOwnLocation) {
         enterButton = AWE.UI.createButtonView();
-        enterButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.enter'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-        enterButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        enterButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
-        enterButton.setFrame(AWE.Geometry.createRect(12, 0, 52, 52));
+        enterButton.initWithControllerTextAndImage(my.controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/enter/normal"));
+        enterButton.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/enter/hover"), module.CONTROL_STATE_HOVERED);
+        enterButton.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/enter/active"), module.CONTROL_STATE_SELECTED);
+        enterButton.setFrame(AWE.Geometry.createRect(20, -25, 48, 48));
         enterButton.onClick = function() {
           that.onEnterButtonClick();
           AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button2');
@@ -97,28 +106,36 @@ AWE.UI = (function(module) {
       }
       
       var battleCheck = false;
-      if (!attackButton && isOwnLocation && my.location.garrisonArmy() && !my.location.garrisonArmy().get('isSuspended')) { // check ongoing battle
+      if (!attackButton && isOwnLocation) { // check ongoing battle
         attackButton = AWE.UI.createButtonView();
-        attackButton.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.attack'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-        attackButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        attackButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
-        attackButton.setFrame(AWE.Geometry.createRect(12, 56, 52, 52));
+        attackButton.initWithControllerTextAndImage(my.controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/attack/normal"));
+        attackButton.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/attack/hover"), module.CONTROL_STATE_HOVERED);
+        attackButton.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/attack/active"), module.CONTROL_STATE_SELECTED);
+        attackButton.setFrame(AWE.Geometry.createRect(-17, 22, 48, 48));
         attackButton.onClick = function() { if (attackButton.enabled()) { that.onAttackButtonClick(that); } }
         this.addChild(attackButton);
       }
-      else if (attackButton && (!isOwnLocation || (my.location.garrisonArmy() && my.location.garrisonArmy().get('isSuspended')))) {
+      else if (attackButton && !isOwnLocation) {
         this.removeChild(attackButton);
         attackButton = null;
       }
       if (attackButton) {
         attackButton.setVisible(my.baseView.selected());
       }
-      
+
+
+      if (!_battleInfoButtonBackgroundView) {
+        _battleInfoButtonBackgroundView = AWE.UI.createImageView();
+        _battleInfoButtonBackgroundView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/annotation/panel1"));
+        _battleInfoButtonBackgroundView.setFrame(AWE.Geometry.createRect(150, 84, 53, 53));
+        this.addChild(_battleInfoButtonBackgroundView);
+      }
+
       if (!_battleInfoButtonView) {
         _battleInfoButtonView = AWE.UI.createButtonView();
-        _battleInfoButtonView.initWithControllerTextAndImage(my.controller, AWE.I18n.lookupTranslation('map.button.battleInfo'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-        _battleInfoButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        _battleInfoButtonView.setFrame(AWE.Geometry.createRect(128, -70, 52, 52));
+        _battleInfoButtonView.initWithControllerTextAndImage(my.controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/battleinfo/normal"));
+        _battleInfoButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/battleinfo/hover"), module.CONTROL_STATE_HOVERED);
+        _battleInfoButtonView.setFrame(AWE.Geometry.createRect(152, 86, 48, 48));
         _battleInfoButtonView.onClick = function() {
           if (_battleInfoButtonView.enabled() && my.location.garrisonArmy()) {
             that.onBattleInfoButtonClick(my.location.garrisonArmy());
@@ -129,57 +146,41 @@ AWE.UI = (function(module) {
       
       if (_battleInfoButtonView) {
         _battleInfoButtonView.setVisible(my.baseView.selected() && my.location.garrisonArmy() && my.location.garrisonArmy().get('isFighting'));
+        _battleInfoButtonBackgroundView.setVisible(my.baseView.selected() && my.location.garrisonArmy() && my.location.garrisonArmy().get('isFighting'));
       }
-      
-      
-      /*
-      if (!spyButton && !isOwnLocation) {
-        spyButton = AWE.UI.createButtonView();
-        spyButton.initWithControllerTextAndImage(my.controller, 'spy', AWE.UI.ImageCache.getImage("map/button1"));
-        spyButton.setImageForState(AWE.UI.ImageCache.getImage("map/button3"), module.CONTROL_STATE_HOVERED);
-        spyButton.setImageForState(AWE.UI.ImageCache.getImage("map/button1highlighted"), module.CONTROL_STATE_SELECTED);
-        spyButton.setFrame(AWE.Geometry.createRect(12, 0, 52, 52));
-        spyButton.onClick = function() { that.onSpyButtonClick(); }
-        this.addChild(spyButton);
-      }
-      else if (spyButton && isOwnLocation) {
-        this.removeChild(spyButton);
-        spyButton = null;
-      }
-      if (spyButton) {
-        spyButton.setVisible(my.baseView.selected());
-      } */
-      
-      if (!battleButton && battleCheck) {  // ongoing battle -> attribute is missing in database ("mode")
-        battleButton = AWE.UI.createButtonView();
-        battleButton.initWithControllerTextAndImage(my.controller, 'battle', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
-        battleButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
-        battleButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
-        battleButton.setFrame(AWE.Geometry.createRect(12, 56, 52, 52));
-        battleButton.onClick = function() { that.onBattleButtonClick(); }
-        this.addChild(battleButton);
-      }
-      else if (battleButton && !battleCheck) {
-        this.removeChild(battleButton);
-        battleButton = null;
-      }  
-      if (battleButton) {
-        battleButton.setVisible(my.baseView.selected());
-      }    
+
+
+
+//      if (!battleButton && battleCheck) {  // ongoing battle -> attribute is missing in database ("mode")
+//        battleButton = AWE.UI.createButtonView();
+//        battleButton.initWithControllerTextAndImage(my.controller, 'battle', AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
+//        battleButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/hovered"), module.CONTROL_STATE_HOVERED);
+//        battleButton.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
+//        battleButton.setFrame(AWE.Geometry.createRect(12, 56, 52, 52));
+//        battleButton.onClick = function() { that.onBattleButtonClick(); }
+//        this.addChild(battleButton);
+//      }
+//      else if (battleButton && !battleCheck) {
+//        this.removeChild(battleButton);
+//        battleButton = null;
+//      }
+//      if (battleButton) {
+//        battleButton.setVisible(my.baseView.selected());
+//      }
 
       this.updateButtonState();
 
-      if (!isOwnLocation && !rightOfWayIcon) {
-        rightOfWayIcon = AWE.UI.createImageView();
-        rightOfWayIcon.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement/no"));
-        rightOfWayIcon.setFrame(AWE.Geometry.createRect(56, 82, 32, 32));
-        rightOfWayIcon.setContentMode(module.setContentModeNone);
-        this.addChild(rightOfWayIcon); 
-      }
-      else if (isOwnLocation && rightOfWayIcon) {
-        this.removeChild(rightOfWayIcon);
-        rightOfWayIcon = null;
-      }        
+//      if (!isOwnLocation && !rightOfWayIcon) {
+//        rightOfWayIcon = AWE.UI.createImageView();
+//        rightOfWayIcon.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/easement/no"));
+//        rightOfWayIcon.setFrame(AWE.Geometry.createRect(56, 82, 32, 32));
+//        rightOfWayIcon.setContentMode(module.setContentModeNone);
+//        this.addChild(rightOfWayIcon);
+//      }
+//      else if (isOwnLocation && rightOfWayIcon) {
+//        this.removeChild(rightOfWayIcon);
+//        rightOfWayIcon = null;
+//      }
 
       if (!my.infoContainer) {
         my.infoContainer = AWE.UI.createMultiLineContainer();

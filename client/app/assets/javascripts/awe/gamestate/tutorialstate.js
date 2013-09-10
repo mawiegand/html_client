@@ -11,7 +11,28 @@ AWE.GS = (function(module) {
   module.QUEST_STATUS_DISPLAYED  = 1;
   module.QUEST_STATUS_FINISHED   = 2;
   module.QUEST_STATUS_CLOSED     = 3;
-        
+
+  module.MARK_HOME_SETTLEMENT            = "mark_home_settlement";
+  module.MARK_MAP                        = "mark_map";
+  module.MARK_QUEST_BUTTON               = "mark_quest_button";
+  module.MARK_PROFILE                    = "mark_profile";
+  module.MARK_FREE_CONSTRUCTION_SLOT     = "mark_free_construction_slot";
+  module.MARK_BUILDING_OPTION            = "mark_building_option";
+  module.MARK_UPGRADABLE_BUILDING        = "mark_upgradable_building";
+  module.MARK_UPGRADE_BUTTON             = "mark_upgrade_button";
+  module.MARK_HURRY_BUTTON               = "mark_hurry_button";
+  module.MARK_UNITS_BUTTON               = "mark_units_button";
+  module.MARK_TRAINING_DIALOG_FLOW       = "mark_training_dialog_flow";
+  module.MARK_NAME_CHANGE                = "mark_name_change";
+  module.MARK_SELECT_OWN_HOME_SETTLEMENT = "mark_select_own_home_settlement";
+  module.MARK_CREATE_ARMY                = "mark_create_army";
+  module.MARK_CREATE_ARMY_DIALOG_FLOW    = "mark_create_army_dialog_flow";
+  module.MARK_SELECT_OWN_ARMY            = "mark_select_own_army";
+  module.MARK_SELECT_OTHER_ARMY          = "mark_select_other_army";
+  module.MARK_MOVE_OWN_ARMY              = "mark_move_own_army";
+  module.MARK_ATTACK_BUTTON              = "mark_attack_button";
+  module.MARK_FIRST_STANDARD_ASSIGNMENT  = "mark_first_standard_assignment";
+
   module.TutorialStateAccess = {};
 
   // ///////////////////////////////////////////////////////////////////////
@@ -22,6 +43,7 @@ AWE.GS = (function(module) {
     
   module.TutorialLocalState = Ember.Object.create({
     questsDisplayed: [],
+    lastUpdate: null,
   });
     
   module.TutorialState = module.Entity.extend({     // extends Entity to Tutorial State
@@ -117,7 +139,92 @@ AWE.GS = (function(module) {
       }
       return null;
     },
-    
+
+    activeTutorialQuestWithUIMarkers: function() {
+
+      if (this.get('tutorial_finished')) {
+        return null;
+      }
+
+      var openQuestStates = this.get('openQuestStates');
+      var activeQuestState = null;
+
+      AWE.Ext.applyFunction(openQuestStates, function(questState) {
+
+        var quest = questState.get('quest');
+
+        if (quest.tutorial) {
+          var qPrio = quest.priority;
+          var aPrio = activeQuestState ? activeQuestState.get('quest').priority : -1;
+
+          var noFurtherUserInteraction = questState.checkNoFurtherUserInteractionRequired() && !questState.containsUIMarker(module.MARK_HURRY_BUTTON);
+
+          // the quest may become active, iff
+          // - its in the tutorial
+          // - its either blocking (so blocks everything else until completed) or does need more user interaction
+          // - and either there is no active quest
+          //   - or the active quest has lower priority
+          //   - or the active quest of same priority has a higher uid
+          if (quest.tutorial &&
+              (quest.blocking || !noFurtherUserInteraction) &&
+              (!activeQuestState || qPrio > aPrio || (qPrio == aPrio && questState.getId() < activeQuestState.getId()))) {
+            activeQuestState = questState;
+          }
+        }
+      });
+
+      return activeQuestState;
+    },
+
+    activeUIMarkers: function() {
+      var activeQuestState = this.activeTutorialQuestWithUIMarkers();
+
+//      log('----> test ', (activeQuestState != null && activeQuestState.get('displayed_at') == null), (activeQuestState.checkNoFurtherUserInteractionRequired() && !activeQuestState.containsUIMarker(module.MARK_HURRY_BUTTON)));
+
+      return activeQuestState == null ||
+        activeQuestState.get('displayed_at') == null ||
+        (activeQuestState.checkNoFurtherUserInteractionRequired() && !activeQuestState.containsUIMarker(module.MARK_HURRY_BUTTON)) ? null : activeQuestState.get('quest').uimarker;
+    },
+
+    hasActiveUIMarkers: function() {
+      var activeUIMarkers = this.activeUIMarkers();
+      return !this.get('tutorial_finished') && activeUIMarkers && AWE.Ext.isArray(activeUIMarkers) && activeUIMarkers.length > 0;
+    },
+
+    isUIMarkerActive: function(marker) {
+      if (this.get('tutorial_finished')) {
+        return false;
+      }
+      else {
+        var activeUIMarkers = this.activeUIMarkers();
+        if (activeUIMarkers && AWE.Ext.isArray(activeUIMarkers)) {
+          for (var i = 0; i < activeUIMarkers.length; i++) {
+            if (activeUIMarkers[i] == marker) {
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+    },
+
+    buildingTypeOfMarkerTest: function() {
+      var activeQuestState = this.activeTutorialQuestWithUIMarkers();
+      var quest = activeQuestState.get('quest');
+
+      var buildingId = null;
+      if (quest.reward_tests.building_tests && quest.reward_tests.building_tests.length > 0) {
+        var buildingSymbolicId = quest.reward_tests.building_tests[0].building;
+        buildingId = AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId(buildingSymbolicId).id;
+      }
+      else if (quest.reward_tests.construction_queue_tests && quest.reward_tests.construction_queue_tests.length > 0) {
+        var buildingSymbolicId = quest.reward_tests.construction_queue_tests[0].building;
+        buildingId = AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId(buildingSymbolicId).id;
+      }
+
+      return buildingId;
+    },
+
     newQuestCheckTimer: false,
   });     
 
@@ -183,7 +290,7 @@ AWE.GS = (function(module) {
       // log('---> check questState for rewards');
       
       // quest ausm tutorial holen
-      var quest = AWE.GS.TutorialManager.getTutorial().quest(this.get('quest_id'));
+      var quest = this.get('quest');
       // alle checks des tutorialquests durchlaufen
       // log('---> quest', quest, quest.reward_tests);
       
@@ -376,6 +483,7 @@ AWE.GS = (function(module) {
       }
       else {
         log('ERROR in AWE.GS.QuestState.checkForRewards: no quest or reward tests given for quest type ' + this.get('quest_id'));
+        return false;
       }
     },
     
@@ -591,7 +699,7 @@ AWE.GS = (function(module) {
     checkMovement: function() {
       // log('---> checkcheckMovement');
       var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
-      
+      // log('---> checkcheckMovement', armies);
       if (armies != null) {
         for (var id in armies) {
           if (armies.hasOwnProperty(id) && armies[id].get('mode') == AWE.Config.ARMY_MODE_MOVING) {
@@ -608,7 +716,7 @@ AWE.GS = (function(module) {
     },
 
     checkAllianceMembers: function(allianceMembersTest) {
-      log('---> checkAllianceMembers', allianceMembersTest);
+      // log('---> checkAllianceMembers', allianceMembersTest);
 
       if (allianceMembersTest.min_count == null) {
         log('ERROR in AWE.GS.QuestState.checkAllianceMembers: allianceMembersTest.min_count missing in quest id ' + this.get('quest_id'));
@@ -790,6 +898,244 @@ AWE.GS = (function(module) {
       };
       
       return false;
+    },
+
+    containsUIMarker: function(needle) {
+      var quest = this.get('quest');
+      var markers = quest.uimarker;
+      if (markers) {
+        for (var i = 0; i < markers.length; i++) {
+          var marker = markers[i];
+          if (marker != null && marker === needle) {
+            return true;
+          }
+        }
+      }
+      return false;
+    },
+
+    noFurtherUserInteractionNeeded: false,
+
+    checkNoFurtherUserInteractionRequired: function() {
+
+      if (this.get('noFurtherUserInteractionNeeded')) {
+        return true;
+      }
+
+      var self = this;
+      var quest = this.get('quest');
+
+      if (quest && quest.reward_tests) {
+        if (quest.reward_tests.building_tests) {
+          // log('---> building_tests', quest.reward_tests.building_tests);
+
+          for (var i = 0; i < quest.reward_tests.building_tests.length; i++) {
+
+            var building_test = quest.reward_tests.building_tests[i];
+
+            // log('---> building_test', building_test);
+            // same params as in constructionQueueTest
+            if (!self.checkConstructionQueues(building_test)) {
+              // log('---> building_test failed');
+              return false;
+            }
+            // log('---> building_test ok');
+          }
+        }
+
+        if (quest.reward_tests.construction_queue_tests) {
+          // log('---> construction_queue_tests', quest.reward_tests.construction_queue_tests);
+
+          for (var i = 0; i < quest.reward_tests.construction_queue_tests.length; i++) {
+            var construction_queue_test = quest.reward_tests.construction_queue_tests[i];
+
+            // log('---> construction_queue_test', construction_queue_test);
+            if (!self.checkConstructionQueues(construction_queue_test)) {
+              // log('---> construction_queue_test failed');
+              return false;
+            }
+            // log('---> construction_queue_test ok');
+          }
+        }
+
+        if (quest.reward_tests.resource_production_tests) {
+
+          for (var i = 0; i < quest.reward_tests.resource_production_tests.length; i++) {
+            var test = quest.reward_tests.resource_production_tests[i];
+
+            // log('---> building_test', building_test);
+            if (!self.checkResourceProduction(test)) {
+              // log('---> building_test failed');
+              return false;
+            }
+            // log('---> building_test ok');
+          }
+        }
+
+        if (quest.reward_tests.settlement_tests) {
+          // log('---> settlement_tests', quest.reward_tests.settlement_tests);
+
+          for (var i = 0; i < quest.reward_tests.settlement_tests.length; i++) {
+            var settlement_test = quest.reward_tests.settlement_tests[i];
+
+            // log('---> settlement_test', settlement_test);
+            if (!self.checkSettlements(settlement_test)) {
+              // log('---> settlement_test failed');
+              return false;
+            }
+            // log('---> settlement_test ok');
+          }
+        }
+
+        if (quest.reward_tests.army_tests) {
+          // log('---> army_tests', quest.reward_tests.army_tests);
+
+          for (var i = 0; i < quest.reward_tests.army_tests.length; i++) {
+            var army_test = quest.reward_tests.army_tests[i];
+
+            // log('---> army_test', army_test);
+            if (!self.checkArmies(army_test)) {
+              // log('---> army_test failed');
+              return false;
+            }
+            // log('---> army_test ok');
+          }
+        }
+
+        if (quest.reward_tests.battle_test) {
+          // log('---> battle_test', quest.reward_tests.battle_test);
+
+          if (!self.checkBattle(quest.reward_tests.battle_test)) {
+            // log('---> battle_test failed');
+            return false;
+          }
+          // log('---> battle_test ok');
+        }
+
+        if (quest.reward_tests.training_queue_tests) {
+          // log('---> training_queue_tests', quest.reward_tests.training_queue_tests);
+
+          for (var i = 0; i < quest.reward_tests.training_queue_tests.length; i++) {
+            var training_queue_test = quest.reward_tests.training_queue_tests[i];
+
+            // log('---> training_queue_test', training_queue_test);
+            if (!self.checkTrainingQueues(training_queue_test)) {
+              // log('---> training_queue_test failed');
+              return false;
+            }
+            // log('---> training_queue_test ok');
+          }
+        }
+
+        if (quest.reward_tests.movement_test) {
+          // log('---> movement_test', quest.reward_tests.movement_test);
+
+          if (!self.checkMovement(quest.reward_tests.movement_test)) {
+            // log('---> movement_test failed');
+            return false;
+          }
+          // log('---> movement_test ok');
+        }
+
+        if (quest.reward_tests.alliance_test) {
+          // log('---> alliance_test', quest.reward_tests.alliance_test);
+
+          if (!self.checkAlliance(quest.reward_tests.alliance_test)) {
+            // log('---> alliance_test failed');
+            return false;
+          }
+          // log('---> alliance_test ok');
+        }
+
+        if (quest.reward_tests.alliance_members_test) {
+          // log('---> alliance_test', quest.reward_tests.alliance_test);
+
+          if (!self.checkAllianceMembers(quest.reward_tests.alliance_members_test)) {
+            // log('---> alliance_test failed');
+            return false;
+          }
+          // log('---> alliance_test ok');
+        }
+
+        if (quest.reward_tests.standard_assignment_test) {
+//          log('---> standard_assignment_test', quest.reward_tests.standard_assignment_test);
+
+          if (!self.checkStandardAssignment(quest.reward_tests.standard_assignment_test)) {
+//            log('---> standard_assignment_test failed');
+            return false;
+          }
+//          log('---> standard_assignment_test ok');
+        }
+
+        if (quest.reward_tests.kill_test) {
+          // log('---> kill_test', quest.reward_tests.kill_test);
+
+          if (!self.checkKills(quest.reward_tests.kill_test)) {
+            // log('---> kill_test failed');
+            return false;
+          }
+          // log('---> kill_test ok');
+        }
+
+        if (quest.reward_tests.army_experience_test) {
+          // log('---> alliance_test', quest.reward_tests.alliance_test);
+
+          if (!self.checkArmyExperience(quest.reward_tests.army_experience_test)) {
+            // log('---> alliance_test failed');
+            return false;
+          }
+          // log('---> alliance_test ok');
+        }
+
+        if (quest.reward_tests.score_test) {
+          // log('---> score_test', quest.reward_tests.score_test);
+
+          if (!self.checkScore(quest.reward_tests.score_test)) {
+            // log('---> score_test failed');
+            return false;
+          }
+          // log('---> score_test ok');
+        }
+
+        if (quest.reward_tests.settlement_production_test) {
+          // log('---> settlement_production_test', quest.reward_tests.settlement_production_test);
+
+          if (!self.checkSettlementProduction(quest.reward_tests.settlement_production_test)) {
+            // log('---> settlement_production_test failed');
+            return false;
+          }
+          // log('---> settlement_production_test ok');
+        }
+
+        if (quest.reward_tests.building_speed_test) {
+          // log('---> building_speed_test', quest.reward_tests.building_speed_test);
+
+          if (!self.checkBuildingSpeed(quest.reward_tests.building_speed_test)) {
+            // log('---> building_speed_test failed');
+            return false;
+          }
+          // log('---> building_speed_test ok');
+        }
+
+        if (quest.reward_tests.textbox_test) {
+          // log('---> textbox_test');
+          // log('---> textbox_test failed');
+          return false;                   // textbox tests are always checked manually with another method
+        }
+
+        if (quest.reward_tests.custom_test) {
+          // log('---> custom_test');
+          // log('---> custom_test failed');
+          return false;                    // custom tests are always checked manually with another method
+        }
+      }
+      else {
+        return false;
+      }
+
+      this.set('noFurtherUserInteractionNeeded', true);
+      AWE.GS.TutorialLocalState.set('lastUpdate', new Date());
+      return true;
     },
   });    
 
@@ -1176,6 +1522,10 @@ AWE.GS = (function(module) {
       questDisplayedAction.send(function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
           // log('---> quest state set to displayed')
+          that.updateTutorialState(function() {
+            questState.set('status', AWE.GS.QUEST_STATUS_DISPLAYED);
+          });
+
         }
         else {
           // log('---> quest state could not be set to displayed')

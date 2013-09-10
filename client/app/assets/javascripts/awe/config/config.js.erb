@@ -21,6 +21,9 @@ AWE.Config = (function(module) {
   
   module.IE = eval("/*@cc_on!@*/!1");
   module.FF = !!navigator.userAgent.match(/firefox/i);
+  
+  module.GS_CLEANUP_ENABLED    = false;
+  module.GS_CLEANUP_MAX_ARMIES = 100;
 
 
   module.DEBUG_LEVEL_ERROR   = 0;
@@ -113,6 +116,9 @@ AWE.Config = (function(module) {
   module.MAP_DBLCLK_CAMERA_PANTIME = 400; ///< time for the panning animation
   module.MAP_DBLCLK_CAMERA_BORDER_FACTOR = 0.15; ///< border around a node after zoom in
   module.MAP_DBLCLK_CAMERA_CROSS_CLICK_SIZE = 35;
+  
+  module.MAP_ALLIANCE_FLAG_DISABLED = false;
+  module.MAP_CACHE_ALLIANCE_FLAG    = true;
 
   //module.MAP_CAMERA_MAX_VIEWFRAME_SIZE = { width: 30000000, height: 30000000 };
   //module.MAP_CAMERA_MIN_VIEWFRAME_SIZE = { width: 500000, height: 500000 };

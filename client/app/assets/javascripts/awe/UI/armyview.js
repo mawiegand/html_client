@@ -46,12 +46,14 @@ AWE.UI = (function(module) {
     var _protectionView = null;
     var _animation  = null;
     var _stance = null;
+    var _stanceView = null;
     var _baseImage = null;
     var _flagView = null;
     var _selectShape = null;    
     var _healthShape = null;    
     var _healthBGShape = null;   
     var _actionPointsLabelView = null;
+    var _flagLength = null;
     
     var _frameRectShape = null;
     
@@ -77,17 +79,9 @@ AWE.UI = (function(module) {
     that.initWithControllerAndArmy = function(controller, army, frame) {
       that.initWithController(controller, frame);
       _army = army;
-      _stance = _army.get('stance');
+      // _stance = null; // will be set in recalc
       
-      var _selectGraphics = new Graphics();
-      _selectGraphics.setStrokeStyle(1);
-      _selectGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
-      _selectGraphics.beginFill(Graphics.getRGB(0, 255, 0));
-      _selectGraphics.drawEllipse(12, 0, 72, 36);
-      _selectShape = AWE.UI.createShapeView();
-      _selectShape.initWithControllerAndGraphics(my.controller, _selectGraphics);
-      _selectShape.setFrame(AWE.Geometry.createRect(0, 74, 72, 36));
-      this.addChild(_selectShape);      
+
       
       var baseImage = army.isOwn() ? AWE.UI.ImageCache.getImage('map/army/base/own') : AWE.UI.ImageCache.getImage('map/army/base/other')
       _baseImage = AWE.UI.createImageView();
@@ -98,72 +92,6 @@ AWE.UI = (function(module) {
       _baseImage.onMouseOver = that.onMouseOver;
       _baseImage.onMouseOut = that.onMouseOut;
       this.addChild(_baseImage);      
-
-      if (_army.get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) {
-        var stanceImage;
-
-        var size = _army.get('size_present') || 0;
-        if (size >= 800) {
-          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/large');
-        }
-        else if (size >= 100) {
-          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/medium');
-        }
-        else {
-          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/small');
-        }
-        _stanceView = AWE.UI.createImageView();        
-        _stanceView.initWithControllerAndImage(controller, stanceImage);
-        
-        _stanceView.setFrame(AWE.Geometry.createRect(-6, -7, 96, 96));
-        _stanceView.onClick = that.onClick;
-        _stanceView.onDoubleClick = that.onDoubleClick;
-        _stanceView.onMouseOver = that.onMouseOver;
-        _stanceView.onMouseOut = that.onMouseOut;
-        this.addChild(_stanceView);        
-      }
-
-      var healthBGGraphics = new Graphics();
-      healthBGGraphics.setStrokeStyle(1);
-      healthBGGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
-      healthBGGraphics.beginFill('rgb(127, 127, 127)');
-      healthBGGraphics.drawRoundRect(0, 0, 64, 12, 4);
-      _healthBGShape = AWE.UI.createShapeView();
-      _healthBGShape.initWithControllerAndGraphics(my.controller, healthBGGraphics);
-      _healthBGShape.setFrame(AWE.Geometry.createRect(16, 108, 64, 12));
-      this.addChild(_healthBGShape);      
-
-      if (army.get('ap_present') / army.get('ap_max') > 0) {
-        if(army.get('ap_present') / army.get('ap_max') > .75) {
-          var fillColor = '#bfb';
-        }
-        else if(army.get('ap_present') / army.get('ap_max') > .5) {
-          var fillColor = '#ffb';
-        }
-        else {
-          var fillColor = '#fbb';
-        }
-        
-        var healthGraphics = new Graphics();
-        healthGraphics.setStrokeStyle(1);
-        healthGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
-        healthGraphics.beginFill(fillColor);
-        healthGraphics.drawRoundRect(0, 0, 64 * (army.get('ap_present') / army.get('ap_max')), 12, 4);
-        _healthShape = AWE.UI.createShapeView();
-        _healthShape.initWithControllerAndGraphics(my.controller, healthGraphics);
-        _healthShape.setFrame(AWE.Geometry.createRect(0, 108, 64 * (army.get('ap_present') / army.get('ap_max')), 12));
-        this.addChild(_healthShape);      
-      }
-      _healthBGShape.visible = this.selected() || this.hovered() || (_army && _army.isOwn());
-      if (_healthShape) {
-        _healthShape.visible = _healthBGShape.visible;
-      }
-      
-      _actionPointsLabelView = AWE.UI.createLabelView();
-      _actionPointsLabelView.initWithControllerAndLabel(controller);
-      _actionPointsLabelView.setColor('#000');
-      _actionPointsLabelView.setFrame(AWE.Geometry.createRect(16, 102, 64, 24));      
-      that.addChild(_actionPointsLabelView);      
 
       if (!frame) {
         that.resizeToFit();        
@@ -403,17 +331,23 @@ AWE.UI = (function(module) {
       // BUG: since the stance-view is not recreated and there is no "addChildBelow" used, after one update
       //      of the army the pole will be in front of the figure, although it should be behind.
       
-      if (_flagView) {
-        that.removeChild(_flagView);
-      }
+      var flagLength    = 8.0 + Math.round(Math.min(_army.get('size_present') / _army.get('size_max'), 1) * 48);
       
-      var flagLength = 8 + Math.round(Math.min(_army.get('size_present') / _army.get('size_max'), 1) * 48);
-      _flagView = AWE.UI.createAllianceFlagView();
-      _flagView.initWithController(my.controller);
-      _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
-      _flagView.setAllianceId(_army.get('alliance_id'));
-      _flagView.setDirection('left');
-      that.addChildAt(_flagView, 0);
+      if (!AWE.Config.MAP_ALLIANCE_FLAG_DISABLED && !_flagView) {
+        _flagView = AWE.UI.createAllianceFlagView();
+        _flagView.setCache(AWE.Config.MAP_CACHE_ALLIANCE_FLAG);
+        _flagView.initWithController(my.controller);
+        _flagView.setAllianceId(_army.get('alliance_id'));
+        _flagView.setDirection('left');
+        _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
+        _flagLength = flagLength;
+        that.addChildAt(_flagView, 0);  
+      }
+      if (_flagView && _flagView.frame().size.width !== flagLength) {
+        _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
+        _flagLength = flagLength;        
+      }
+
 
       if (!_frameRectShape && AWE.Config.MAP_DEBUG_FRAMES) {
         var _frameRectGraphics = new Graphics();
@@ -424,6 +358,7 @@ AWE.UI = (function(module) {
         _frameRectShape = AWE.UI.createShapeView();
         _frameRectShape.initWithControllerAndGraphics(my.controller, _frameRectGraphics);
         _frameRectShape.setFrame(AWE.Geometry.createRect(my.frame.origin.x, my.frame.origin.y, my.frame.size.width, my.frame.size.height));
+
         that.addChildAt(_frameRectShape, 0);    
       }  
                
@@ -432,47 +367,87 @@ AWE.UI = (function(module) {
         _healthShape = null;
       }
       
-      if (_army.get('ap_present') / _army.get('ap_max') > 0.1) {
-        if(_army.get('ap_present') / _army.get('ap_max') > .75) {
-          var fillColor = '#6d6';
-        }
-        else if(_army.get('ap_present') / _army.get('ap_max') > .5) {
-          var fillColor = '#dd6';
-        }
-        else {
-          var fillColor = '#d66';
+      if (that.selected() || that.hovered() || (_army && _army.isOwn())) {
+        
+        if (!_healthBGShape) {
+          var healthBGGraphics = new Graphics();
+          healthBGGraphics.setStrokeStyle(1);
+          healthBGGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
+          healthBGGraphics.beginFill('rgb(127, 127, 127)');
+          healthBGGraphics.drawRoundRect(0, 0, 64, 12, 4);
+          _healthBGShape = AWE.UI.createShapeView();
+          _healthBGShape.initWithControllerAndGraphics(my.controller, healthBGGraphics);
+          _healthBGShape.setFrame(AWE.Geometry.createRect(16, 108, 64, 12));
+          this.addChild(_healthBGShape);    
         }
         
-        var healthGraphics = new Graphics();
-        healthGraphics.setStrokeStyle(1);
-        healthGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
-        healthGraphics.beginFill(fillColor);
-        healthGraphics.drawRoundRect(0, 0, 64 * (_army.get('ap_present') / _army.get('ap_max')), 12, 4);
-        _healthShape = AWE.UI.createShapeView();
-        _healthShape.initWithControllerAndGraphics(my.controller, healthGraphics);
-        _healthShape.setFrame(AWE.Geometry.createRect(16, 108, 64 * (_army.get('ap_present') / _army.get('ap_max')), 12));
-        that.addChild(_healthShape);      
-        if (_actionPointsLabelView) { // move label to top
-          that.removeChild(_actionPointsLabelView);
-          that.addChild(_actionPointsLabelView);
+        if (!_actionPointsLabelView) {
+          _actionPointsLabelView = AWE.UI.createLabelView();
+          _actionPointsLabelView.initWithControllerAndLabel(my.controller);
+          _actionPointsLabelView.setColor('#000');
+          _actionPointsLabelView.setFrame(AWE.Geometry.createRect(16, 102, 64, 24));      
+          that.addChild(_actionPointsLabelView);      
         }
-      }
+        
+        if (_army.get('ap_present') / _army.get('ap_max') > 0.1) {
+          if(_army.get('ap_present') / _army.get('ap_max') > .75) {
+            var fillColor = '#6d6';
+          }
+          else if(_army.get('ap_present') / _army.get('ap_max') > .5) {
+            var fillColor = '#dd6';
+          }
+          else {
+            var fillColor = '#d66';
+          }
+        
+          var healthGraphics = new Graphics();
+          healthGraphics.setStrokeStyle(1);
+          healthGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
+          healthGraphics.beginFill(fillColor);
+          healthGraphics.drawRoundRect(0, 0, 64 * (_army.get('ap_present') / _army.get('ap_max')), 12, 4);
+          _healthShape = AWE.UI.createShapeView();
+          _healthShape.initWithControllerAndGraphics(my.controller, healthGraphics);
+          _healthShape.setFrame(AWE.Geometry.createRect(16, 108, 64 * (_army.get('ap_present') / _army.get('ap_max')), 12));
+          that.addChild(_healthShape);      
+          if (_actionPointsLabelView) { // move label to top
+            that.removeChild(_actionPointsLabelView);
+            that.addChild(_actionPointsLabelView);
+          }
+        }
+      } 
       if (_healthShape) {
         _healthShape.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));
       }
       if (_healthBGShape) {
         _healthBGShape.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));
       }
-      
-      if (_selectShape) {
-        _selectShape.setVisible(this.selected() || this.hovered());
-        _selectShape.setAlpha(this.selected() ? 1. : 0.2);
-      }
-      
       if (_actionPointsLabelView) {
         _actionPointsLabelView.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));
         _actionPointsLabelView.setText(_army.get('ap_present') + " / " + _army.get('ap_max'));
       }
+      
+      
+      
+      if (this.selected() || this.hovered()) {
+        if (!_selectShape) {
+          var _selectGraphics = new Graphics();
+          _selectGraphics.setStrokeStyle(1);
+          _selectGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
+          _selectGraphics.beginFill(Graphics.getRGB(0, 255, 0));
+          _selectGraphics.drawEllipse(12, 0, 72, 36);
+          _selectShape = AWE.UI.createShapeView();
+          _selectShape.initWithControllerAndGraphics(my.controller, _selectGraphics);
+          _selectShape.setFrame(AWE.Geometry.createRect(0, 74, 72, 36));
+          this.addChildAt(_selectShape, 0);      
+        }
+        _selectShape.setVisible(this.selected() || this.hovered());
+        _selectShape.setAlpha(this.selected() ? 1. : 0.2);
+      }
+      else if (_selectShape) {
+        that.removeChild(_selectShape);
+        _selectShape = null;
+      }
+      
       
       if (_army.get('isFighting') && !_battleView) {
         _battleView = AWE.UI.createImageView();
@@ -504,13 +479,17 @@ AWE.UI = (function(module) {
         _protectionView = null;
       }
 
-      if (!(_army.get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) && (_army.get("stance") != _stance || !_animation)) {
-        var data = this.prepareSpriteSheet();
+      if (!(_army.get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) && (_stance === null || _army.get("stance") !== _stance || !_animation)) {
+        var data = null; 
+        var spriteSheet = null;
+        var newAnimation = AWE.UI.createAnimatedSpriteView();
+        
         _stance = _army.get('stance');
         
-        var spriteSheet = new SpriteSheet(data);
-        var newAnimation = AWE.UI.createAnimatedSpriteView()
+        data = this.prepareSpriteSheet();
+        spriteSheet = new SpriteSheet(data);
         newAnimation.initWithControllerAndSpriteSheet(that, spriteSheet);
+        
         if (_army.get('mode') == 1) { // 1: walking
           newAnimation.animation().gotoAndPlay('toWalk');      
         }
@@ -544,6 +523,18 @@ AWE.UI = (function(module) {
         }
         else {
           stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/small');
+        }
+        
+        if (!_stanceView) {
+          _stanceView = AWE.UI.createImageView();        
+          _stanceView.initWithControllerAndImage(my.controller, stanceImage);
+
+          _stanceView.setFrame(AWE.Geometry.createRect(-6, -7, 96, 96));
+          _stanceView.onClick = that.onClick;
+          _stanceView.onDoubleClick = that.onDoubleClick;
+          _stanceView.onMouseOver = that.onMouseOver;
+          _stanceView.onMouseOut = that.onMouseOut;
+          this.addChild(_stanceView);        
         }
         _stanceView.setImage(stanceImage);
       }

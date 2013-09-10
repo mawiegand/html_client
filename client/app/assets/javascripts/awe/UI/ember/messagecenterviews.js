@@ -38,7 +38,7 @@ AWE.UI.Ember = (function(module) {
     tagName:      'form',
     templateName: 'message-edit',
 
-    didInserElement: function() {
+    didInsertElement: function() {
       this._super();
       this.$('input:first').focus();
     },
@@ -73,6 +73,9 @@ AWE.UI.Ember = (function(module) {
       var messageEntry = this.get('message');
       this.get('parentView').hideForm(); // make sure, form is hidden
       this.get('parentView').set('selectedMessageEntry', messageEntry);
+      
+      log ("TEASER CLICKED", messageEntry, messageEntry.get('message'), messageEntry.get('message') ? messageEntry.get('message').get('isDestroyed') : null);
+      
       if (messageEntry && !messageEntry.get('message')) {
         messageEntry.fetchMessage();
       }
