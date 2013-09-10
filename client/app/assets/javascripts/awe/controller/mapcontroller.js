@@ -174,7 +174,7 @@ AWE.Controller = function (module) {
       inspectorViews.encyclopediaButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
       _stages[3].addChild(inspectorViews.encyclopediaButtonView.displayObject());
 
-      inspectorViews.armyListButtonView = AWE.UI.createEncyclopediaButtonView();
+      inspectorViews.armyListButtonView = AWE.UI.createArmyListButtonView();
       inspectorViews.armyListButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
       _stages[3].addChild(inspectorViews.armyListButtonView.displayObject());
 

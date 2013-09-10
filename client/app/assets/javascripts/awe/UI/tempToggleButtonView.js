@@ -195,6 +195,50 @@ AWE.UI = (function(module) {
     return that;
   };
   
+  module.createArmyListButtonView = function(spec, my) {
+
+    var that;
+    
+    my = my || {};
+
+    my.toggleButtonView = null;
+
+    that = module.createContainer(spec, my);
+
+    var _super = {
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      updateView: AWE.Ext.superior(that, "updateView"),
+    };
+    
+    that.recalcView = function() {
+      if (!my.toggleButtonView) {
+        my.toggleButtonView = AWE.UI.createButtonView();
+        my.toggleButtonView.initWithControllerTextAndImage(my.controller, "", AWE.UI.ImageCache.getImage("ui/button/visibility/normal"));
+        my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/visibility/hover"), module.CONTROL_STATE_HOVERED);
+        my.toggleButtonView.setFrame(AWE.Geometry.createRect(0, 0, 68, 70));
+        my.toggleButtonView.onClick = function() {
+          my.controller.openArmyListDialog();
+          //that.onToggleButtonClick()
+        };
+        this.addChild(my.toggleButtonView);
+      }      
+    }
+    
+    /*
+    that.onToggleButtonClick = function() {
+      my.controller.toggleArmyVisibility();
+      this.recalcView();
+    }
+    */
+    
+    that.updateView = function() {
+      this.recalcView() 
+      _super.updateView();
+    };   
+    
+    return that;
+  };
+
   return module;
     
 }(AWE.UI || {}));
