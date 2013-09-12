@@ -217,7 +217,7 @@ AWE.UI = (function(module) {
         my.toggleButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/visibility/hover"), module.CONTROL_STATE_HOVERED);
         my.toggleButtonView.setFrame(AWE.Geometry.createRect(0, 0, 68, 70));
         my.toggleButtonView.onClick = function() {
-          my.controller.openArmyListDialog();
+          my.controller.armyListButtonClicked();
           //that.onToggleButtonClick()
         };
         this.addChild(my.toggleButtonView);
