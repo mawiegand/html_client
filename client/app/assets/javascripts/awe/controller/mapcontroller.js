@@ -681,6 +681,14 @@ AWE.Controller = function (module) {
       hideOtherArmies = !hideOtherArmies;
     }
 
+    that.armyListButtonClicked = function() {
+      var dialog = AWE.UI.Ember.ArmyListDialog.create({
+        controller: that,
+      });
+
+      that.applicationController.presentModalDialog(dialog);
+    }
+
     that.armyInfoButtonClicked = function (army) {
       if (!army) {
         return;
