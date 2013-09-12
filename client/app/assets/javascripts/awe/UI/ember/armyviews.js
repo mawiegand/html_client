@@ -499,10 +499,69 @@ AWE.UI.Ember = (function(module) {
     },
   });
   
+  module.ArmyListDialog = Ember.View.extend({
+    templateName: "army-list-view",
+    
+    controller: null,
+    onClose:    null,
+
+    armies: function() {
+      var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
+      var list   = [];
+      var self   = this;
+      
+      for (id in armies) {
+        var army = armies[id];
+
+        // We need to put them into an ember object to iterate over them in the template
+        if (!army.isGarrison()) {
+          list.push(Ember.Object.create({
+            name:          army.name,
+            region_name:   AWE.Map.Manager.getRegion(army.get('region_id')).name(),
+            status:        self.armyStatus(army),
+            size:          army.get('size_present'),
+            size_max:      army.get('size_max'),
+          }));
+        }
+      }
+
+      return list;
+    }.property('controller'),
+
+    armyStatus: function(army) {
+      if (army.get('isFighting')) {
+        return AWE.I18n.lookupTranslation('army.list.status.fighting');
+      }
+      else if (army.get('isMoving')) {
+        return AWE.I18n.lookupTranslation('army.list.status.moving');
+      }
+      else if (parseInt(army.get('stance')) == 0) {
+        return AWE.I18n.lookupTranslation('army.list.status.neutral');
+      }
+      else if (parseInt(army.get('stance')) == 1) {
+        return AWE.I18n.lookupTranslation('army.list.status.defending');
+      }
+      // Do we need to check another stance here or a default value?
+    },
+
+    closeClicked: function() {
+      this.destroy();
+    },
+
+    destroy: function() {
+      if (this.onClose) {
+        this.onClose(this);
+      }   
+      this._super();    
+    },  
+  });
+
+  module.ArmyListItem = Ember.View.extend({
+    templateName: "army-list-item",
+    army: null,
+  });
+
   return module;
     
 }(AWE.UI.Ember || {}));
-
-
-
 
