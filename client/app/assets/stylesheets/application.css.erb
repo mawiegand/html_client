@@ -5258,6 +5258,111 @@ a.trading-carts-speedup-button:hover {
   margin: -4px;
 }
 
+.army-list-view {
+  font-size: 16px;
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: 80px;  
+  width: 800px; 
+  min-height: 600px;
+  background-color: #FFF;    
+}
+
+#army-list-dialog a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+#army-list-dialog a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+.army-list-table.head {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-bottom:0;
+  margin: 0px auto 0px auto;
+}
+  
+.army-list-table-wrapper .army-list-table {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-top:0;
+  margin: 0px auto 0px auto;
+}
+  
+.army-list-table-wrapper {
+  overflow:auto;
+  height: 600px; /* I took this value because of .army-list-view */
+}
+
+.army-list-table th {
+  background-color: #787da8;  
+  color: #fff;
+  padding: 4px 4px 4px 4px;
+  font-size: 14px;
+  text-shadow: none;
+}
+
+.army-list-table th:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.army-list-table th:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.army-list-table th.clickable {
+  color: #ddf;
+}
+
+.army-list-table th.clickable:hover {
+  color: #333666;
+}
+
+.army-list-table .army-view {
+  width:7%;
+}
+
+.army-list-table .name {
+  width:20%;
+}
+
+.army-list-table .region {
+  width:20%;
+}
+
+.army-list-table .status {
+  width:20%;
+}
+
+.army-list-table .size {
+  width:33%;
+}
+
+.army-list-table td {
+  text-align: center;
+  font-size: 14px;
+}
+
+.army-list-table-wrapper .army-list-table tr:nth-child(even) {
+  background-color: rgba(160, 160, 192, 0.15);
+}
+
 #resource-exchange-dialog .resource-exchange-input {
   width:100px;
 }
