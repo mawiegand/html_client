@@ -177,7 +177,7 @@ AWE.UI = (function(module) {
       if (!_labelIcon) {
         _labelIcon = AWE.UI.createImageView();
         _labelIcon.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(image));
-        _labelIcon.setContentMode(module.ViewContentModeNone);
+        _labelIcon.setContentMode(module.ViewContentModeFit);
         _labelIcon.setFrame(AWE.Geometry.createRect(0, 0, 20, 20));
 
         _labelIcon.onClick = function() { 

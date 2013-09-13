@@ -47,14 +47,14 @@ AWE.UI = (function(module) {
 
       /* probably optional. Skip adding element to avoid errors on runtime */
       if(partNr == 0 || isNaN(partNr)) {
-        console.log("partNr is either 0 or NaN " + partNr);
+        AWE.Log.Debug("partNr is either 0 or NaN " + partNr);
         return;
       }
 
       var image  = Ember.none(my.imagePrefix) ? AWE.UI.ImageCache.getImage("avatar/" + gender + "/" + part + "/" + partNr) : AWE.UI.ImageCache.getImage("avatar/" + my.imagePrefix + "/" + gender + "/" + part + "/" + partNr)
       /* check if image exists in image cache. Abort otherwise */
       if(typeof image === 'undefined') {
-        console.log("Tried to access image " + image + " which is not in the image cache");
+        AWE.Log.Debug("Tried to access image " + image + " which is not in the image cache");
         return;
       }
 

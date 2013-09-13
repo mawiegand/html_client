@@ -6,6 +6,25 @@
  
 var AWE = window.AWE || {};
 
+AWE.Log = (function(module) {
+  
+  module.DEBUG_DISABLED = false;
+  
+  module.Debug = function() {
+    if (module.DEBUG_DISABLED) { 
+      return ;
+    }
+    else {
+      window.log(arguments);
+    }
+  }
+  
+  return module;
+  
+}(AWE.Log || {}));
+
+
+
 /** extensions of JavaScript base types. */
 AWE.Util = (function(module) {
 
@@ -156,6 +175,32 @@ AWE.Util = (function(module) {
 
   module.removeHtmlTags = function(html) {
     return (html || "").replace(/<[\/]?.*[\/]?>/gi, " ");
+  };
+  
+  /** setting bits in bitfields (flags) */
+  module.setBit = function(flags, mask) {
+    return flags | mask;
+  };
+  
+  /** unsetting bits in bitfields (flags) */
+  module.unsetBit = function(flags, mask) {
+    return flags & ~mask; 
+  };
+  
+  /** testing bits in bitfields (flags) */
+  module.testBit = function(flags, mask) {
+    return (flags & mask) == mask;
+  };
+  
+  /** convenience funciton for either setting or unsetting bits in bitfields
+   * (flags) */
+  module.setUnsetBit = function(flags, mask, set) {
+    if (set) {
+      return module.setBit(flags, mask);
+    }
+    else {
+      return module.unsetBit(flags, mask);
+    }
   };
   
   return module;

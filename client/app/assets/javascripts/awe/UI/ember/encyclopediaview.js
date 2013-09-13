@@ -39,7 +39,8 @@ AWE.UI.Ember = (function(module) {
         return null;
       }
       var stats = [];
-      for (var level=1; level <= 20; level++) {
+      var maxLevel = (this.getPath('building.category') == 4 || this.getPath('building.category') == 5) ? 20 : 10; // depends on the category; only large and small buildings can reach level 20
+      for (var level=1; level <= maxLevel; level++) {
         stats.push({
           level: level,
           population:             AWE.GS.Util.parseAndEval(building.population, level),
@@ -54,7 +55,70 @@ AWE.UI.Ember = (function(module) {
       };
       return stats;
     }.property('building', 'capacity', 'production', 'experienceProduction').cacheable(),
-    
+
+    buildingRequirements: function() {
+      var building = this.get('building');
+      if (building === undefined || building === null) {
+        return null;
+      }
+
+      if(building.requirementGroups === undefined || building.requirementGroups === null) {
+        return null;
+      }
+
+      var requirements = building.requirementGroups[0];
+      var requirementsWithNames = [];
+
+      if(requirements === undefined || requirements === null) {
+        return requirementsWithNames;
+      }
+
+      requirements.forEach(function(item) {
+        if(item.min_level > 0) {
+          requirementsWithNames.push({
+            name: AWE.GS.RulesManager.getRules().getBuildingTypeWithSymbolicId(item.symbolic_id).name[AWE.Settings.locale],
+            level: item.min_level
+          });
+        }
+      });
+
+      return requirementsWithNames;
+    }.property('building.buildingType', 'building.slot.settlement.hashableSlots.collection@each.level', 'building.slot.settlement.hashableSlots.changedAt'),
+
+    requirementsMet: function() {
+      var buildingRequirements = this.get('buildingRequirements');
+      return !buildingRequirements || buildingRequirements.length === 0;
+    }.property('buildingRequirements', 'buildingRequirements.length'),
+
+    buildingCategory: function() {
+      var building = this.get('building');
+      if (building === undefined || building === null) {
+        return null;
+      }
+      return AWE.GS.RulesManager.getRules().getBuildingCategory(building.category).name[AWE.Settings.locale];
+    }.property('building').cacheable(),
+
+    buildingTypeString: function() {
+      var building = this.get('building');
+      if (building === undefined || building === null) {
+        return null;
+      }
+      
+      switch(building.category) {
+        case 4:
+          return AWE.I18n.lookupTranslation('encyclopedia.largeBuilding');
+          break;
+        case 5:
+          return AWE.I18n.lookupTranslation('encyclopedia.smallBuilding');
+          break;
+        case 6:
+          return AWE.I18n.lookupTranslation('encyclopedia.specialBuilding');
+          break;
+        default:
+          return AWE.I18n.lookupTranslation('encyclopedia.fortressBuilding');
+      }
+    }.property('building').cacheable(),
+
   });  
 
   module.EncyclopediaUnitView = Ember.View.extend({

@@ -464,7 +464,7 @@ AWE.UI = (function(module) {
 	      if (!_backgroundImage) {
         	_backgroundImage = module.createImageView();
 	        _backgroundImage.initWithControllerAndImage(that.controller(), newImage);
-	        _backgroundImage.setContentMode(module.ViewContentModeNone);
+	        _backgroundImage.setContentMode(module.ViewContentModeFit);
 	        // link to encircling view for click events
 	        _backgroundImage.displayObject().view = that;
 	        _scaledContainer.addChild(_backgroundImage);			

@@ -48,7 +48,7 @@ AWE.UI = (function(module) {
 
       _imageView = AWE.UI.createImageView();
       _imageView.initWithControllerAndImage(controller, image);
-      _imageView.setContentMode(module.ViewContentModeNone);
+      _imageView.setContentMode(module.ViewContentModeFit);
       _imageView.onClick = function() { 
         if (that.enabled()) {
           that.onClick() 

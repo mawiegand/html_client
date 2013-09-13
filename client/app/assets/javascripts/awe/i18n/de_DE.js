@@ -263,6 +263,8 @@ AWE.I18n.de_DE = function(module) {
     },
     
     building: {
+      xpProduction:   'XP-Produktion',
+      requirements:   'Voraussetzung',
       level:          'Stufe',
       cost:           'Kosten',
       duration:       'Dauer',
@@ -1133,6 +1135,11 @@ AWE.I18n.de_DE = function(module) {
       resources: "Rohstoffe",
       buildings: "Gebäude",
       units: "Einheiten",
+
+      largeBuilding: 'Benötigt großen Bauplatz',
+      smallBuilding: 'Benötigt kleinen oder großen Bauplatz',
+      specialBuilding: 'Benötigt kleinen Bauplatz',
+      fortressBuilding: 'Nur in Festungen',
     
       resource: {
         taxable: "Auf diesen Rohstoff werden Steuern erhoben.",

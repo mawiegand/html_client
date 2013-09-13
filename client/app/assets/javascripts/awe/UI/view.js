@@ -44,7 +44,6 @@ AWE.UI = (function(module) {
     var _autoscales = false;   ///< whether the view automatically adapts its internal scale when being resized.
     var _alpha = 1.;           ///< alpha value (transparency) of the view. Continuous value from 0 to 1. 0: transparent, 1: opaque.
   
-  
     // protected attributes and methods //////////////////////////////////////
   
     my = my || {};
@@ -56,23 +55,7 @@ AWE.UI = (function(module) {
     my.state = module.CONTROL_STATE_NORMAL;
     my.visible = true;
   
-    /** setting bits in bitfields (flags) */
-    my.setBit = function(flags, mask) {
-      return flags | mask;
-    }
-    /** unsetting bits in bitfields (flags) */
-    my.unsetBit = function(flags, mask) {
-      return flags & ~mask; 
-    }
-    /** testing bits in bitfields (flags) */
-    my.testBit = function(flags, mask) {
-      return (flags & mask) == mask;
-    }
-    /** convenience funciton for either setting or unsetting bits in bitfields
-     * (flags) */
-    my.setUnsetBit = function(flags, mask, set) {
-      return my[set ? 'setBit' : 'unsetBit'](flags, mask);
-    }    
+  
     
     // public attributes and methods /////////////////////////////////////////
     
@@ -304,24 +287,24 @@ AWE.UI = (function(module) {
     /** sets the present selection state to either true or false. Internally
      * sets / unsets the appropriate bit on the state-flags. */
     that.setSelected = function(selected) {
-      this.setState(my.setUnsetBit(my.state, module.CONTROL_STATE_SELECTED, selected));
+      this.setState(AWE.Util.setUnsetBit(my.state, module.CONTROL_STATE_SELECTED, selected));
     }
     that.selected = function() {
-      return my.testBit(my.state, module.CONTROL_STATE_SELECTED);
+      return AWE.Util.testBit(my.state, module.CONTROL_STATE_SELECTED);
     }
     
     that.setHovered = function(hovered) {
-      this.setState(my.setUnsetBit(my.state, module.CONTROL_STATE_HOVERED, hovered));
+      this.setState(AWE.Util.setUnsetBit(my.state, module.CONTROL_STATE_HOVERED, hovered));
     }
     that.hovered = function() {
-      return my.testBit(my.state, module.CONTROL_STATE_HOVERED);
+      return AWE.Util.testBit(my.state, module.CONTROL_STATE_HOVERED);
     }
     
     that.setEnabled = function(enabled) {
-      this.setState(my.setUnsetBit(my.state, module.CONTROL_STATE_DISABLED, !enabled)); // "!" -> copied inconsistent naming scheme from iOS UI in order to be consistent ;-) 
+      this.setState(AWE.Util.setUnsetBit(my.state, module.CONTROL_STATE_DISABLED, !enabled)); // "!" -> copied inconsistent naming scheme from iOS UI in order to be consistent ;-) 
     }
     that.enabled = function() {
-      return !my.testBit(my.state, module.CONTROL_STATE_DISABLED);                      // "!" -> copied inconsistent naming scheme from iOS UI in order to be consistent ;-) 
+      return !AWE.Util.testBit(my.state, module.CONTROL_STATE_DISABLED);                      // "!" -> copied inconsistent naming scheme from iOS UI in order to be consistent ;-) 
     } 
     
     return that;
