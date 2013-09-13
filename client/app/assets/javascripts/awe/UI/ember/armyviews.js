@@ -502,7 +502,6 @@ AWE.UI.Ember = (function(module) {
   module.ArmyListDialog = Ember.View.extend({
     templateName: "army-list-view",
     
-    controller: null,
     onClose:    null,
 
     armies: function() {
@@ -521,6 +520,7 @@ AWE.UI.Ember = (function(module) {
             status:        self.armyStatus(army),
             size:          army.get('size_present'),
             size_max:      army.get('size_max'),
+            army_obj:      army,
           }));
         }
       }
@@ -559,6 +559,28 @@ AWE.UI.Ember = (function(module) {
   module.ArmyListItem = Ember.View.extend({
     templateName: "army-list-item",
     army: null,
+
+    namePressed: function() {
+      var army = this.getPath('army.army_obj');
+      if (!army) {
+        return ;
+      }   
+      var dialog = AWE.UI.Ember.ArmyInfoDialog.create({
+        army: army,
+      }); 
+      dialog.showModal();    
+      return false; // prevent default behaviour
+    },  
+
+    regionPressed: function() {
+      var regionId = this.getPath('army.army_obj.region_id');
+      var region = AWE.Map.Manager.getRegion(regionId);
+      if (region != null) {
+        var mapController = WACKADOO.activateMapController(true);
+        WACKADOO.closeAllModalDialogs();
+        mapController.centerRegion(region);
+      }
+    },
   });
 
   return module;
