@@ -208,8 +208,8 @@
       </table>
       <div class="army-list-table-wrapper">
         <table class="army-list-table">
-          {{#each army in armies}}
-          {{view AWE.UI.Ember.ArmyListItem armyBinding="this.army"}}
+          {{#each armies}}
+            {{view AWE.UI.Ember.ArmyListItem armyBinding="this"}}
           {{/each}}
         </table>
       </div>
@@ -220,10 +220,10 @@
 
 <script type="text/x-handlebars" data-template-name="army-list-item">
   <tr>
-    <td class="army-view">&nbsp;</td>
+    <td class="army-view">{{view AWE.UI.Ember.ArmyView armyBinding="army"}}</td>
     <td class="name"><a class="clickable" {{action "namePressed"}}>{{army.name}}</a></td>
-    <td class="region">{{army.region_name}}</td>
-    <td class="status">{{army.status}}</td>
-    <td class="size">{{army.size}}/{{army.size_max}}</td>
+    <td class="region"><a class="clickable" {{action "regionPressed"}}>{{regionName}}</a></td>
+    <td class="status">{{armyStatus}}</td>
+    <td class="size">{{army.size_present}}/{{army.size_max}}</td>
   </tr>
 </script>
