@@ -345,33 +345,39 @@ AWE.GS = (function(module) {
     }
     that.groupArmiesByTarget = function(armies) {
       var armiesByTarget = new Array();
-      AWE.Ext.applyFunctionToHash(armies, function(armyId, army) {
-        if(typeof armiesByTarget[army.get('target_location_id')] === 'undefined')
+      AWE.Ext.applyFunctionToElements(armies, function(army) {
+        if (!army.isGarrison())
         {
-          armiesByTarget[army.get('target_location_id')] = new Array();
+          if(typeof armiesByTarget[army.get('target_location_id')] === 'undefined')
+          {
+            armiesByTarget[army.get('target_location_id')] = new Array();
+          }
+          armiesByTarget[army.get('target_location_id')].pushObject(army);
         }
-        armiesByTarget[army.get('target_location_id')].pushObject(army);
       });
       return armiesByTarget;
     }
     that.groupArmiesByAllianceOrOwner = function(armies) {
       var armiesByAllianceOrOwner = new Array();
       AWE.Ext.applyFunctionToHash(armies, function(armyId, army) {
-        if(army.get('alliance_tag') !== null)
+        if (!army.isGarrison())
         {
-          if(typeof armiesByAllianceOrOwner[army.get('alliance_tag')] === 'undefined')
+          if(army.get('alliance_tag') !== null)
           {
-            armiesByAllianceOrOwner[army.get('alliance_tag')] = new Array();
+            if(typeof armiesByAllianceOrOwner[army.get('alliance_tag')] === 'undefined')
+            {
+              armiesByAllianceOrOwner[army.get('alliance_tag')] = new Array();
+            }
+            armiesByAllianceOrOwner[army.get('alliance_tag')].pushObject(army);
           }
-          armiesByAllianceOrOwner[army.get('alliance_tag')].pushObject(army);
-        }
-        else
-        {
-          if(typeof armiesByAllianceOrOwner[army.get('owner_name')] === 'undefined')
+          else
           {
-            armiesByAllianceOrOwner[army.get('owner_name')] = new Array();
+            if(typeof armiesByAllianceOrOwner[army.get('owner_name')] === 'undefined')
+            {
+              armiesByAllianceOrOwner[army.get('owner_name')] = new Array();
+            }
+            armiesByAllianceOrOwner[army.get('owner_name')].pushObject(army);
           }
-          armiesByAllianceOrOwner[army.get('owner_name')].pushObject(army);
         }
       });
       return armiesByAllianceOrOwner;
