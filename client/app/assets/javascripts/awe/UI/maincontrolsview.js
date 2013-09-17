@@ -289,12 +289,14 @@ AWE.UI = (function(module) {
         }
         else {
           var level = AWE.Util.Rules.normalizedLevel(settlement.get('level'), settlement.get('type_id'));
-          var newSettlementImageName = 'map/colony/small'
+          var supporterImage = AWE.GS.game.getPath('currentCharacter.supporter');
+
+          var newSettlementImageName = supporterImage ? 'map/colony/0/small' : 'map/colony/small';
           if (level > 3) {
-            newSettlementImageName   = 'map/colony/middle';
+            newSettlementImageName   = supporterImage ? 'map/colony/0/middle' : 'map/colony/middle';
           }
           if (level > 7) {
-            newSettlementImageName   = 'map/colony/big';
+            newSettlementImageName   = supporterImage ? 'map/colony/0/big' : 'map/colony/big';
           }
       
           if (newSettlementImageName != _settlementImageName && _settlementImageView) {

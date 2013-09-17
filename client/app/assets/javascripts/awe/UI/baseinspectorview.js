@@ -154,7 +154,8 @@ AWE.UI = (function(module) {
           imageName = "map/outpost/" + modifier;
         }
         else {
-          imageName = "map/colony/" + modifier;
+          var supporterImage = location.supporterImage();
+          imageName = supporterImage ? "map/colony/0/" + modifier : "map/colony/" + modifier;
         }
                 
         _settlementView = AWE.UI.createImageView();

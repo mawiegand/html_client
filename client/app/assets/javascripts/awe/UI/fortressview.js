@@ -57,13 +57,14 @@ AWE.UI = (function(module) {
 
       // FORTRESS IMAGE //////////////////////////////////////////////////////
       var level = AWE.Util.Rules.normalizedLevel(_node.region().fortressLevel(), AWE.GS.SETTLEMENT_TYPE_FORTRESS);
+      var imageId = _node.region().imageId();
 
-      var newFortressImageName = 'map/fortress/small';        
+      var newFortressImageName = imageId > 0 ? 'map/fortress/' + imageId + '/small' : 'map/fortress/small';
       if (level > 3) {
-        newFortressImageName = 'map/fortress/middle';
+        newFortressImageName = imageId > 0 ? 'map/fortress/' + imageId + '/middle' : 'map/fortress/middle';
       }
       if (level > 7) {
-        newFortressImageName = 'map/fortress/large';
+        newFortressImageName = imageId > 0 ? 'map/fortress/' + imageId + '/large' : 'map/fortress/large';
       }
       
       if (newFortressImageName != _fortressImageName && _imageView) {

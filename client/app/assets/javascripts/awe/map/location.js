@@ -35,7 +35,8 @@ AWE.Map = (function(module) {
     var _allianceTag = spec.alliance_tag;
     var _allianceColor = spec.alliance_color;
     var _rightOfWay = spec.right_of_way;
-    
+    var _imageId = spec.image_id;
+
     
     
     var _region = null;
@@ -123,6 +124,12 @@ AWE.Map = (function(module) {
       else {   // only use mirrored information if character not available
         return _allianceColor;
       }
+    }
+
+    that.imageId = function() { return _imageId; }
+
+    that.supporterImage = function() {
+      return _imageId === 0;
     }
 
     /** returns the right of way of the location. */

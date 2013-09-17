@@ -39,6 +39,7 @@ AWE.Map = (function(module) {
     var _settlementScore = spec.settlement_score || 0;
     var _invitationCode = spec.invitation_code || 0;
     var _movingPassword = spec.moving_password || 0;
+    var _imageId = spec.image_id;
         
     var _node = null;
     
@@ -121,6 +122,8 @@ AWE.Map = (function(module) {
         return _allianceColor;
       }
     }
+
+    that.imageId = function() { return _imageId; }
 
     /** returns the level of the fortress (0 to 10). */
     that.fortressLevel = function() { return _settlementLevel; }
