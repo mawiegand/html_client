@@ -118,6 +118,24 @@ AWE.I18n.de_DE = function(module) {
     army: {
       newArmy: "Neue Armee",
 
+      list: {
+        header: "Armeeübersicht",
+        table: {
+          name:     "Name",
+          region:   "Region",
+          status:   "Status",
+          size:     "Größe",
+          max_size: "Maximum",
+        },
+
+        status: {
+          neutral:   "Neutral",
+          moving:    "Bewegend",
+          fighting:  "Kämpfend",
+          defending: "Verteidigend",
+        },
+      },
+
       details: {
         heading: "Armee",
         units: "Einheiten",

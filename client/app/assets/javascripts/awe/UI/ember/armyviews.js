@@ -499,10 +499,147 @@ AWE.UI.Ember = (function(module) {
     },
   });
   
+  module.ArmyListDialog = Ember.View.extend({
+    templateName: "army-list-view",
+    
+    onClose:    null,
+
+    init: function() {
+      AWE.GS.ArmyManager.updateArmiesForCharacter(AWE.GS.game.getPath('currentCharacter.id'),
+        AWE.GS.ENTITY_UPDATE_TYPE_FULL, function () {});
+
+      this._super();
+    },
+
+    armies: function() {
+      var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
+      var list   = [];
+      var self   = this;
+      
+      for (id in armies) {
+        var army = armies[id];
+
+        // We need to put them into an ember object to iterate over them in the template
+        if (!army.isGarrison()) {
+          list.push(army);
+        }
+      }
+
+      return list;
+    }.property('controller'),
+
+
+    closeClicked: function() {
+      this.destroy();
+    },
+
+    destroy: function() {
+      if (this.onClose) {
+        this.onClose(this);
+      }   
+      this._super();    
+    },  
+  });
+
+  module.ArmyListItem = Ember.View.extend({
+    templateName: "army-list-item",
+    army: null,
+
+    namePressed: function() {
+      var army = this.getPath('army');
+      if (!army) {
+        return ;
+      }   
+      var dialog = AWE.UI.Ember.ArmyInfoDialog.create({
+        army: army,
+      }); 
+      dialog.showModal();    
+      return false; // prevent default behavior
+    },  
+
+    regionPressed: function() {
+      var regionId = this.getPath('army.region_id');
+      var region = AWE.Map.Manager.getRegion(regionId);
+      if (region != null) {
+        var mapController = WACKADOO.activateMapController(true);
+        WACKADOO.closeAllModalDialogs();
+        mapController.centerRegion(region);
+      }
+    },
+
+    armyStatus: function() {
+      var army = this.get('army');
+
+      if (army.get('isFighting')) {
+        return AWE.I18n.lookupTranslation('army.list.status.fighting');
+      }
+      else if (army.get('isMoving')) {
+        return AWE.I18n.lookupTranslation('army.list.status.moving');
+      }
+      else if (parseInt(army.get('stance')) == 0) {
+        return AWE.I18n.lookupTranslation('army.list.status.neutral');
+      }
+      else if (parseInt(army.get('stance')) == 1) {
+        return AWE.I18n.lookupTranslation('army.list.status.defending');
+      }
+      // Do we need to check another stance here or a default value?
+    }.property('army.updated_at'),
+
+    regionName: function() {
+      var army = this.get('army');
+      return AWE.Map.Manager.getRegion(army.get('region_id')).name();
+    }.property('army.updated_at'),
+
+  });
+
+  module.ArmyView = AWE.UI.Ember.Pane.extend({
+    width: 58,
+    height: 77,
+   
+    shape: null,
+    controller: null,
+    army: null,
+    
+    init: function() {
+      this._super();
+    },
+
+
+    armyUpdate: function() {
+      var army   = this.get('army');
+      var shape  = this.get('shape');
+      var width  = this.get('width');
+      var height = this.get('height');
+
+      var mapController = WACKADOO.activateMapController(true);
+      AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function () {
+        mapController.setModelChanged();
+      });
+   
+      if(shape) {
+        this.removeChild(shape);
+      }
+
+      if(Ember.none(army)) {
+        this.set('shape', null);
+        return ;
+      }
+
+      shape = AWE.UI.createArmyView();
+      shape.initWithControllerAndArmy(this.get('controller'), army);
+      shape.setFrame(AWE.Geometry.createRect(0, 24, width, height));
+      shape.setScaleX(0.5);
+      shape.setScaleY(0.5);
+      
+      this.addChild(shape);
+      this.set('shape', shape);
+      shape.updateView();     
+      this.update();
+    }.observes('army'),
+
+  });
+
   return module;
     
 }(AWE.UI.Ember || {}));
-
-
-
 
