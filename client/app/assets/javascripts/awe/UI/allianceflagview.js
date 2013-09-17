@@ -59,9 +59,6 @@ AWE.UI = (function(module) {
     
     that.getAllianceTagFromModel = function() {
       var alliance = AWE.GS.AllianceManager.getAlliance(_allianceId);
-
-      log('-----> alliance', alliance, alliance.get('color'));
-
       if (alliance) {
         my.allianceTag = alliance.get('tag');
         my.allianceColor = alliance.get('color');
