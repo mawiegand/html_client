@@ -41,9 +41,9 @@ AWE.Config = (function(module) {
     "map/fortress/middle":    AWE.Config.RAILS_ASSET_PATH + 'settlements/fortressmiddle.png',
     "map/fortress/large":     AWE.Config.RAILS_ASSET_PATH + 'settlements/fortresslarge.png',
 
-    "map/fortress/1/small":     AWE.Config.RAILS_ASSET_PATH + 'settlements/alliance_special/1/fortresssmall.png',
-    "map/fortress/1/middle":    AWE.Config.RAILS_ASSET_PATH + 'settlements/alliance_special/1/fortressmiddle.png',
-    "map/fortress/1/large":     AWE.Config.RAILS_ASSET_PATH + 'settlements/alliance_special/1/fortresslarge.png',
+    "map/fortress/3/small":     AWE.Config.RAILS_ASSET_PATH + 'settlements/alliance_special/2/fortresssmall.png',
+    "map/fortress/3/middle":    AWE.Config.RAILS_ASSET_PATH + 'settlements/alliance_special/2/fortressmiddle.png',
+    "map/fortress/3/large":     AWE.Config.RAILS_ASSET_PATH + 'settlements/alliance_special/2/fortresslarge.png',
 
     "map/colony/small":       AWE.Config.RAILS_ASSET_PATH + 'settlements/colonysmall.png',
     "map/colony/middle":      AWE.Config.RAILS_ASSET_PATH + 'settlements/colonymiddle.png',
