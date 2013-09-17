@@ -593,9 +593,9 @@ AWE.UI.Ember = (function(module) {
   });
 
   module.ArmyView = AWE.UI.Ember.Pane.extend({
-    width: 96,
-    height: 106,
-    
+    width: 58,
+    height: 63,
+   
     shape: null,
     controller: null,
     army: null,
@@ -608,8 +608,8 @@ AWE.UI.Ember = (function(module) {
     armyUpdate: function() {
       var army   = this.get('army');
       var shape  = this.get('shape');
-      var width  = this.get('width')  || 96;
-      var height = this.get('height') || 106;
+      var width  = this.get('width');
+      var height = this.get('height');
 
       var mapController = WACKADOO.activateMapController(true);
       AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function () {
@@ -627,11 +627,13 @@ AWE.UI.Ember = (function(module) {
 
       shape = AWE.UI.createArmyView();
       shape.initWithControllerAndArmy(this.get('controller'), army);
-      shape.setFrame(AWE.Geometry.createRect(0, 0, width, height));
+      shape.setFrame(AWE.Geometry.createRect(0, 10, width, height));
+      shape.setScaleX(0.5);
+      shape.setScaleY(0.5);
       
       this.addChild(shape);
       this.set('shape', shape);
-      shape.updateView();      
+      shape.updateView();     
       this.update();
     }.observes('army'),
 
@@ -639,6 +641,7 @@ AWE.UI.Ember = (function(module) {
       var shape = this.get('shape');
       if(shape != null) {
         shape.updateView();      
+        this.update();
       }
     }.observes('army.isMoving'),
 
