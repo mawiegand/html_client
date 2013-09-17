@@ -637,14 +637,6 @@ AWE.UI.Ember = (function(module) {
       this.update();
     }.observes('army'),
 
-    onMoveUpdate: function() {
-      var shape = this.get('shape');
-      if(shape != null) {
-        shape.updateView();      
-        this.update();
-      }
-    }.observes('army.isMoving'),
-
   });
 
   return module;
