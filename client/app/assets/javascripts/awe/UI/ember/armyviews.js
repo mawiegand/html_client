@@ -544,6 +544,22 @@ AWE.UI.Ember = (function(module) {
   module.ArmyListItem = Ember.View.extend({
     templateName: "army-list-item",
     army: null,
+    regionName: null,
+
+    updateRegionName: function() {
+      var regionId = this.getPath('army.region_id');
+      var region = AWE.Map.Manager.getRegion(regionId);
+
+      if(typeof region === 'undefined') {
+        var self = this;
+        AWE.Map.Manager.fetchSingleRegionById(regionId, function(region) {
+          self.set('regionName', region.name());
+        });
+      }
+      else {
+        this.set('regionName', region.name());
+      }
+    }.observes('army', 'army.region_id'),
 
     namePressed: function() {
       var army = this.getPath('army');
@@ -583,11 +599,6 @@ AWE.UI.Ember = (function(module) {
         return AWE.I18n.lookupTranslation('army.list.status.defending');
       }
       // Do we need to check another stance here or a default value?
-    }.property('army.updated_at'),
-
-    regionName: function() {
-      var army = this.get('army');
-      return AWE.Map.Manager.getRegion(army.get('region_id')).name();
     }.property('army.updated_at'),
 
   });
