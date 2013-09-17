@@ -491,9 +491,11 @@ AWE.UI = (function(module) {
           	shape.drawRect(0,0,256,256);
 	        }
 	        else if (_node.region()) {   // terrain available, select appropriate tile
-	          var allianceId = _node.region().allianceId();
+            var allianceId = _node.region().allianceId();
+            var allianceColor = _node.region().allianceColor();
+
 	          if (allianceId) {
-              var color = AWE.GS.AllianceManager.colorForNumber(allianceId);
+              var color = AWE.GS.AllianceManager.colorForAlliance(allianceId, allianceColor);
               shape.beginFill('rgb('+Math.floor((color.r+1024)/5)+','+Math.floor((color.g+1024)/5)+','+Math.floor((color.b+1024)/5)+')');
 	            shape.drawRect(0,0,256,256);
 	            

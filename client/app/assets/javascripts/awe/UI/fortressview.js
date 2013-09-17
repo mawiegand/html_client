@@ -51,8 +51,9 @@ AWE.UI = (function(module) {
     };
     
     that.recalcView = function() {
-      
+
       var allianceId = _node.region().allianceId();
+      var allianceColor = _node.region().allianceColor();
 
       // FORTRESS IMAGE //////////////////////////////////////////////////////
       var level = AWE.Util.Rules.normalizedLevel(_node.region().fortressLevel(), AWE.GS.SETTLEMENT_TYPE_FORTRESS);
@@ -112,6 +113,7 @@ AWE.UI = (function(module) {
         _flagView.initWithController(my.controller);
         _flagView.setFrame(AWE.Geometry.createRect(27, 39, 8, 13));
         _flagView.setAllianceId(allianceId);
+        _flagView.setAllianceColor(allianceColor);
         _flagView.setDirection('down');
         _flagView.onClick = that.onClick;
         _flagView.onDoubleClick = that.onDoubleClick;
@@ -122,6 +124,7 @@ AWE.UI = (function(module) {
       
       if (_flagView && allianceId != _flagView.allianceId()) {
         _flagView.setAllianceId(allianceId);
+        _flagView.setAllianceColor(allianceColor);
       }
       
       

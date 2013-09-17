@@ -29,6 +29,7 @@ AWE.Map = (function(module) {
     var _ownerName = spec.owner_name || null;
     var _allianceId = spec.alliance_id || 0;
     var _allianceTag = spec.alliance_tag;
+    var _allianceColor = spec.alliance_color || null;
     var _countOutposts = spec.count_outposts || 0;
     var _countSettlements = spec.count_settlements || 0;
     var _terrain_id = spec.terrain_id || 0;
@@ -111,6 +112,16 @@ AWE.Map = (function(module) {
      * no alliance. */
     that.allianceId = function() { return _allianceId; }
 
+    that.allianceColor = function() {
+      var character = _ownerId    ? AWE.GS.CharacterManager.getCharacter(_ownerId) : null;
+      if (character && character.updatedOnServerAt() > this.updatedOnServerAt()) {
+        return character.get('alliance_color');
+      }
+      else {   // only use mirrored information if character not available
+        return _allianceColor;
+      }
+    }
+
     /** returns the level of the fortress (0 to 10). */
     that.fortressLevel = function() { return _settlementLevel; }
     
@@ -190,6 +201,7 @@ AWE.Map = (function(module) {
       _ownerName = region.ownerName() || null;
       _allianceId = region.allianceId() || 0;
       _allianceTag = region.allianceTag() || null;
+      _allianceColor = region.allianceColor() || null;
       _countOutposts = region.countOutposts() || 0;
       _countSettlements = region.countSettlements() || 0;
       _terrain_id = region.terrainId() || 0;

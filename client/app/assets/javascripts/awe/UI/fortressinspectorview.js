@@ -99,11 +99,13 @@ AWE.UI = (function(module) {
       
       var currentCharacter = AWE.GS.CharacterManager.currentCharacter;
       var region           = my.inspectedObject;
-      
+
       var allianceId       = region ? region.allianceId()  : null;
+      var allianceColor    = region ? region.allianceColor()  : null;
       var isOwnRegion      = region.isOwn();
-      
+
       this.setAllianceId(allianceId);
+      this.setAllianceColor(allianceColor);
       this.setSkimButtonsEnabled(isOwnRegion);
       
       _super.recalcView();
@@ -219,7 +221,7 @@ AWE.UI = (function(module) {
         my.fortressFlagView.setFrame(AWE.Geometry.createRect(65, 60, 12, 20));
         my.fortressFlagView.setDirection('down');
         my.fortressFlagView.setAllianceId(allianceId);
-        
+        my.fortressFlagView.setAllianceColor(allianceColor);
         container.addChild(my.fortressFlagView);
         
         this.setInspectedObjectView(container);
@@ -227,6 +229,7 @@ AWE.UI = (function(module) {
       
       if (my.fortressFlagView && allianceId != my.fortressFlagView.allianceId()) {
         my.fortressFlagView.setAllianceId(allianceId);
+        my.fortressFlagView.setAllianceColor(allianceColor);
       }
     }
         

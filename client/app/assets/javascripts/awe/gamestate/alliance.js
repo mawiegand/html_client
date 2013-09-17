@@ -109,13 +109,23 @@ AWE.GS = (function(module) {
       var url = AWE.Config.FUNDAMENTAL_SERVER_BASE+'alliances/'+id;
       return my.updateEntity(url, id, updateType, callback); 
     };
-    
-    that.colorForNumber = function(number) {
-      return { r: ((number*5 % 3) * 80 + number*9) % 256  , 
-               g: (((number % 5) * 50) + number*7) % 256, 
-               b: ((3-(number % 3)) * 80 + number*3) % 256 };
+
+    that.colorForAlliance = function(number, color) {
+
+      if (color != null) {
+        return { r: Math.floor(color / (256 * 256) % 256),
+                 g: Math.floor(color / 256 % 256),
+                 b: Math.floor(color % 256)
+        };
+      }
+      else {
+        return { r: ((number*5 % 3) * 80 + number*9) % 256,
+                 g: (((number % 5) * 50) + number*7) % 256,
+                 b: ((3-(number % 3)) * 80 + number*3) % 256
+        };
+      }
     };
-    
+
     return that;
       
   }());

@@ -100,7 +100,7 @@ AWE.UI = (function(module) {
     
     my.inspectedObject       = null;
     my.allianceId            = null;
-  
+    my.allianceColor         = null;
     
     that = module.createContainer(spec, my);
 
@@ -133,14 +133,21 @@ AWE.UI = (function(module) {
         my.inspectorBubbleView.setObjectView(inspectedObjectView);
       }
     }
-    
+
     that.setAllianceId = function(allianceId) {
       if (my.allianceId !== allianceId) {
-        my.allianceId = allianceId; 
+        my.allianceId = allianceId;
         this.setNeedsDisplay();
       }
     }
-    
+
+    that.setAllianceColor = function(allianceColor) {
+      if (my.allianceColor !== allianceColor) {
+        my.allianceColor = allianceColor;
+        this.setNeedsDisplay();
+      }
+    }
+
     /** sets whether or not to display the previous and next
       * buttons */
     that.setSkimButtonsEnabled = function(state) {
@@ -166,10 +173,11 @@ AWE.UI = (function(module) {
         my.inspectorFrame.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/inspector/body"));
         my.inspectorFrame.setFrame(AWE.Geometry.createRect(0, 0, 414, 204));
         this.addChild(my.inspectorFrame);
-      }      
+      }
 
       var allianceId = my.allianceId
-      if (my.flagView && my.flagView.allianceId() !== allianceId) {      
+      var allianceColor = my.allianceColor
+      if (my.flagView && my.flagView.allianceId() !== allianceId) {
         this.removeChild(my.flagView);
 //      this.removeChild(my.flagFrameView);
         my.flagView = null;
@@ -182,6 +190,7 @@ AWE.UI = (function(module) {
           my.flagView.initWithController(my.controller);
           my.flagView.setFrame(AWE.Geometry.createRect(299, 146, 48, 46));
           my.flagView.setAllianceId(allianceId);
+          my.flagView.setAllianceColor(allianceColor);
           my.flagView.setTagVisible(false);
           my.flagView.onClick = function() { 
             if (that.onFlagClicked) {

@@ -68,7 +68,8 @@ AWE.UI = (function(module) {
 
       var character = AWE.GS.game.get('currentCharacter');
       var allianceId = character.get('alliance_id');
-            
+      var allianceColor = character.get('alliance_color');
+
       // Ressourcen Leiste
       if (!_resourcesShape) {   
         _resourcesShape = AWE.UI.createImageView();
@@ -123,6 +124,7 @@ AWE.UI = (function(module) {
         _flagView.initWithController(my.controller);
         _flagView.setFrame(AWE.Geometry.createRect(202, 177, 56, 57));
         _flagView.setAllianceId(allianceId);
+        _flagView.setAllianceColor(allianceColor);
         _flagView.setTagVisible(true);
         _flagView.onClick = function() { 
           WACKADOO.activateAllianceController(allianceId);   

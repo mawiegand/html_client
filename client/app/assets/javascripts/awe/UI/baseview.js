@@ -55,7 +55,8 @@ AWE.UI = (function(module) {
     that.recalcView = function() {
 
       var allianceId = _location.allianceId();
-      
+      var allianceColor = _location.allianceColor();
+
       if (!_selectShape && (that.selected() || that.hovered())) {
         var selectGraphics = new Graphics();
         selectGraphics.setStrokeStyle(1);
@@ -137,12 +138,14 @@ AWE.UI = (function(module) {
         _flagView.initWithController(my.controller);
         _flagView.setFrame(AWE.Geometry.createRect(18, 0, 28, 16));
         _flagView.setAllianceId(allianceId);
+        _flagView.setAllianceColor(allianceColor);
         _flagView.setDirection('left');
         that.addChild(_flagView);
       }
       
       if (allianceId != _flagView.allianceId()) {
         _flagView.setAllianceId(allianceId);
+        _flagView.setAllianceColor(allianceColor);
       }
       
       if (_location.garrisonArmy() && _location.garrisonArmy().get('isFighting') && !_battleView) {

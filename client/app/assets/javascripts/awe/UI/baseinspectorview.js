@@ -59,11 +59,13 @@ AWE.UI = (function(module) {
     that.recalcView = function() {
       
       var location      = my.inspectedObject;
-      
+
       var allianceId    = location ? location.allianceId()  : null;
+      var allianceColor = location ? location.allianceColor()  : null;
       var isOwnLocation = location.isOwn();
-      
+
       this.setAllianceId(allianceId);
+      this.setAllianceColor(allianceColor);
       this.setSkimButtonsEnabled(isOwnLocation);
       
       _super.recalcView();
