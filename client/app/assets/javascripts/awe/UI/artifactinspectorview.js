@@ -49,8 +49,10 @@ AWE.UI = (function(module) {
       var artifact = my.inspectedObject;
 
       var allianceId = artifact ? artifact.get('alliance_id') : null;
+      var allianceColor = artifact ? artifact.get('alliance_color') : null;
 
       this.setAllianceId(allianceId);
+      this.setAllianceColor(allianceColor);
 
       _super.recalcView();
 

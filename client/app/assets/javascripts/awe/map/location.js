@@ -33,8 +33,10 @@ AWE.Map = (function(module) {
     var _ownerName = spec.owner_name || null;
     var _allianceId = spec.alliance_id || 0;
     var _allianceTag = spec.alliance_tag;
+    var _allianceColor = spec.alliance_color;
     var _rightOfWay = spec.right_of_way;
-    
+    var _imageId = spec.image_id;
+
     
     
     var _region = null;
@@ -113,6 +115,22 @@ AWE.Map = (function(module) {
     /** returns the id of the alliance owning the region (owner of fortress). 0 for 
      * no alliance. */
     that.allianceId = function() { return _allianceId; }
+
+    that.allianceColor = function() {
+      var character = _ownerId    ? AWE.GS.CharacterManager.getCharacter(_ownerId) : null;
+      if (character && character.updatedOnServerAt() > this.updatedOnServerAt()) {
+        return character.get('alliance_color');
+      }
+      else {   // only use mirrored information if character not available
+        return _allianceColor;
+      }
+    }
+
+    that.imageId = function() { return _imageId; }
+
+    that.supporterImage = function() {
+      return _imageId === 0;
+    }
 
     /** returns the right of way of the location. */
     that.rightOfWay = function() { return _rightOfWay; }
@@ -213,6 +231,7 @@ AWE.Map = (function(module) {
       _ownerName = location.ownerName() || null;
       _allianceId = location.allianceId() || 0;
       _allianceTag = location.allianceTag() || null;
+      _allianceColor = location.allianceColor() || null;
       _settlementTypeId = location.settlementTypeId() || 0;
       
       if ((location.settlementLevel() || 0) !== _settlementLevel) {

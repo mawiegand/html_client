@@ -101,6 +101,10 @@ AWE.UI.Ember = (function(module) {
     templateName: 'shop-platinum-offer',
     
     offer: null,
+
+    lifetime: function() {
+      return this.get('active') && AWE.GS.game.getPath('currentCharacter.platinum_lifetime');
+    }.property('AWE.GS.game.currentCharacter.premium_expiration', 'AWE.GS.game.currentCharacter.platinum_lifetime').cacheable(),
     
     platinumExpiration: function() {
       var expiration = Date.parseISODate(AWE.GS.game.getPath('currentCharacter.premium_expiration'));
@@ -122,7 +126,7 @@ AWE.UI.Ember = (function(module) {
     
     active: function() {
       return this.get('platinumExpiration') !== null;
-    }.property('platinumExpiration'),    
+    }.property('AWE.GS.game.currentCharacter.premium_expiration'),
   });
   
   return module;

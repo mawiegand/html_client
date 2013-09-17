@@ -562,8 +562,8 @@ AWE.I18n.en_US = function(module) {
       duration:'Duration',
       expiry:'Expiry',
       platinumDescription:"Having a Platinum Account offers you the chance to enjoy stress-free construction with additional places in your building queue (+3) and your training queue (+3) as well as email notifications when you're under attack. More functions will also be coming soon. ",
-      frog_trade: 'Travelling Merchant: instant resource trade', 
-
+      frog_trade: 'Travelling Merchant: instant resource trade',
+      lifetime: 'Lifetime',
 
       current:"Current",
       platinumCredit:"platinum credits",

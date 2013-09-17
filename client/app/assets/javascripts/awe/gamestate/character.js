@@ -77,11 +77,19 @@ AWE.GS = (function(module) {
 
       return this.get('avatar_obj');
     }.property('avatar_string').cacheable(),
-    
+
     exp_production_rate_zero: function() {
       return !((this.get('exp_production_rate') || 0) > 0);
     }.property('exp_production_rate').cacheable(),
-    
+
+    exp_bonus_zero: function() {
+      return !((this.get('exp_bonus_total') || 0) > 0);
+    }.property('exp_bonus_total').cacheable(),
+
+    expBonusAbsolute: function() {
+      return parseFloat(this.get('exp_production_rate')) * parseFloat(this.get('exp_bonus_total'));
+    }.property('exp_bonus_total', 'exp_production_rate').cacheable(),
+
     battle_count: function() {
       return (this.get('victories') || 0) + (this.get('defeats') || 0);
     }.property('victories', 'defeats').cacheable(),

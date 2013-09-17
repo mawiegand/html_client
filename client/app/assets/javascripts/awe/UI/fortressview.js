@@ -51,18 +51,20 @@ AWE.UI = (function(module) {
     };
     
     that.recalcView = function() {
-      
+
       var allianceId = _node.region().allianceId();
+      var allianceColor = _node.region().allianceColor();
 
       // FORTRESS IMAGE //////////////////////////////////////////////////////
       var level = AWE.Util.Rules.normalizedLevel(_node.region().fortressLevel(), AWE.GS.SETTLEMENT_TYPE_FORTRESS);
+      var imageId = _node.region().imageId();
 
-      var newFortressImageName = 'map/fortress/small';        
+      var newFortressImageName = imageId > 0 ? 'map/fortress/' + imageId + '/small' : 'map/fortress/small';
       if (level > 3) {
-        newFortressImageName = 'map/fortress/middle';
+        newFortressImageName = imageId > 0 ? 'map/fortress/' + imageId + '/middle' : 'map/fortress/middle';
       }
       if (level > 7) {
-        newFortressImageName = 'map/fortress/large';
+        newFortressImageName = imageId > 0 ? 'map/fortress/' + imageId + '/large' : 'map/fortress/large';
       }
       
       if (newFortressImageName != _fortressImageName && _imageView) {
@@ -112,6 +114,7 @@ AWE.UI = (function(module) {
         _flagView.initWithController(my.controller);
         _flagView.setFrame(AWE.Geometry.createRect(27, 39, 8, 13));
         _flagView.setAllianceId(allianceId);
+        _flagView.setAllianceColor(allianceColor);
         _flagView.setDirection('down');
         _flagView.onClick = that.onClick;
         _flagView.onDoubleClick = that.onDoubleClick;
@@ -122,6 +125,7 @@ AWE.UI = (function(module) {
       
       if (_flagView && allianceId != _flagView.allianceId()) {
         _flagView.setAllianceId(allianceId);
+        _flagView.setAllianceColor(allianceColor);
       }
       
       
