@@ -594,7 +594,7 @@ AWE.UI.Ember = (function(module) {
 
   module.ArmyView = AWE.UI.Ember.Pane.extend({
     width: 58,
-    height: 63,
+    height: 77,
    
     shape: null,
     controller: null,
@@ -627,7 +627,7 @@ AWE.UI.Ember = (function(module) {
 
       shape = AWE.UI.createArmyView();
       shape.initWithControllerAndArmy(this.get('controller'), army);
-      shape.setFrame(AWE.Geometry.createRect(0, 10, width, height));
+      shape.setFrame(AWE.Geometry.createRect(0, 24, width, height));
       shape.setScaleX(0.5);
       shape.setScaleY(0.5);
       
