@@ -197,6 +197,7 @@
       <a class="close clickable" {{action "closeClicked"}}></a>
       <h1>{{t army.list.header}}</h1>
 
+      {{#if armies}}
       <table class="army-list-table head">
         <tr>
           <th class="army-view">&nbsp;</th>
@@ -213,6 +214,9 @@
           {{/each}}
         </table>
       </div>
+      {{else}}
+      <h2>{{t army.list.none}}</h2>
+      {{/if}}
     </div>
   </div>
   <!--<div class="modal-dialog-pane army-list-dialog-pane" id="army-list-dialog">-->

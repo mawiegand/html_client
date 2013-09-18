@@ -120,6 +120,7 @@ AWE.I18n.en_US = function(module) {
 
       list: {
         header: "Armies overview",
+        none:   "You don't currently have any armies.",
 
         table: {
           name:     "Name",
