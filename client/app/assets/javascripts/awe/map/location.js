@@ -129,7 +129,7 @@ AWE.Map = (function(module) {
     that.imageId = function() { return _imageId; }
 
     that.supporterImage = function() {
-      return _imageId === 0;
+      return _imageId === 1;
     }
 
     /** returns the right of way of the location. */

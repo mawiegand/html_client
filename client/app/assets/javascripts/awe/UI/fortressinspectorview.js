@@ -212,7 +212,7 @@ AWE.UI = (function(module) {
         my.fortressView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_fortressImageName));
         my.fortressView.setFrame(AWE.Geometry.createRect(32, 36, AWE.Config.MAPPING_FORTRESS_SIZE*1.2, AWE.Config.MAPPING_FORTRESS_SIZE*1.2));
         
-        container.addChild(my.fortressView)
+        container.addChild(my.fortressView);
         
       
         // FORTRESS FLAG ///////////////////////////////////////////////////////////    
