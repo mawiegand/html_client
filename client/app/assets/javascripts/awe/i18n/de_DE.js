@@ -120,6 +120,7 @@ AWE.I18n.de_DE = function(module) {
 
       list: {
         header: "Armeeübersicht",
+        none:   "Du besitzt derzeit keine Armeen.",
         table: {
           name:     "Name",
           region:   "Region",

@@ -193,10 +193,12 @@
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="horizontal-center-helper">
     <div class="modal-dialog-pane z-layer-4 army-list-view" id="army-list-dialog">
+    <div class="advisor warrior"></div>
 
       <a class="close clickable" {{action "closeClicked"}}></a>
       <h1>{{t army.list.header}}</h1>
 
+      {{#if armies}}
       <table class="army-list-table head">
         <tr>
           <th class="army-view">&nbsp;</th>
@@ -213,6 +215,9 @@
           {{/each}}
         </table>
       </div>
+      {{else}}
+      <h2>{{t army.list.none}}</h2>
+      {{/if}}
     </div>
   </div>
   <!--<div class="modal-dialog-pane army-list-dialog-pane" id="army-list-dialog">-->
