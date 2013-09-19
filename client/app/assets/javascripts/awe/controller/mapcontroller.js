@@ -1,4 +1,5 @@
-/* Author: Sascha Lange <sascha@5dlab.com>
+/* Author: Sascha Lange <sascha@5dlab.com>,
+ *         Marcel Wiegand <marcel@5dlab.com>
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
@@ -68,6 +69,7 @@ AWE.Controller = function (module) {
     var fortressViews = {};
     var artifactViews = {};
     var armyViews = {};
+    var armyGroupViews = {};
     var movementArrowViews = {};
     var locationViews = {};
     var actionViews = {};
@@ -1544,6 +1546,33 @@ AWE.Controller = function (module) {
         };
 
       }
+      else if (view.typeName() === 'ArmyGroupView') {
+        inspectorViews.inspector = AWE.UI.createArmyInspectorView();
+        inspectorViews.inspector.initWithControllerAndArmy(that, view.army());
+
+        inspectorViews.inspector.onInventoryButtonClick = (function (self) {
+          return function (army) {
+            self.armyInfoButtonClicked(army);
+          }
+        })(that);
+
+        inspectorViews.inspector.onFlagClicked = function (allianceId) {
+          WACKADOO.activateAllianceController(allianceId);
+        };
+        inspectorViews.inspector.onCenterButtonClick = function (army) {
+          that.centerArmy(view.army());
+        };
+        inspectorViews.inspector.onChangeArmyButtonClick = function (army) {
+          that.changeArmyButtonClicked(view.army());
+        };
+        inspectorViews.inspector.onPreviousArmyButtonClick = function (army) {
+          that.previousArmyButtonClicked(view.army());
+        };
+        inspectorViews.inspector.onNextArmyButtonClick = function (army) {
+          that.nextArmyButtonClicked(view.army());
+        };
+
+      }
       else if (view.typeName() === 'ArtifactView') {
         inspectorViews.inspector = AWE.UI.createArtifactInspectorView();
         inspectorViews.inspector.initWithControllerAndArtifact(that, view.artifact());
@@ -2467,6 +2496,7 @@ AWE.Controller = function (module) {
       var changedAnimation = false;
 
       var newArmyViews = {};
+      var newArmyGroupViews = {};
       var newMovementArrowViews = {};
 
       var unclutter = function (armies, settlement, centerPos, frame) {
@@ -2478,6 +2508,45 @@ AWE.Controller = function (module) {
           if (!element.isGarrison()) {
             var view = armyViews[element.getId()] 
             view = view ? view : newArmyViews[element.getId()];
+            if (view) {
+              views.push({
+                view:view,
+                moveable:true,
+                id:view.army().getId(),
+                centerX:view.center().x,
+                centerY:view.center().y,
+                width:view.frame().size.width,
+                height:view.frame().size.height,
+              });
+            }
+          }
+        });
+        if (views.length === 0) {
+          return;
+        }
+        if (settlement) {
+          views.push({
+            view:settlement,
+            moveable:false,
+            id:"fortress",
+          });
+        }
+        var objectUnclutterer = AWE.Util.ObjectUnclutterer.create({
+          scaleFactor:Math.max(frame.size.width / 256.0, 0.2),
+        });
+        objectUnclutterer.setViews(views);
+        objectUnclutterer.unclutter();
+      }
+      
+      var unclutterGroup = function (armyGroups, settlement, centerPos, frame) {
+        if (armyGroups === null || armyGroups === undefined) {
+          return;
+        }
+        var views = [];
+        AWE.Ext.applyFunctionToElements(armyGroups, function (element) {
+          if (element[0] !== undefined && !element[0].isGarrison()) {
+            var view = armyGroupViews[element[0].getId()] 
+            view = view ? view : newArmyGroupViews[element[0].getId()];
             if (view) {
               views.push({
                 view:view,
@@ -2535,6 +2604,56 @@ AWE.Controller = function (module) {
 
             setArmyPosition(view, pos, army);
             newArmyViews[army.getId()] = view;
+
+            // ANIMATE AP CHANGE AT ARMY
+            if (army.get('ap_present_old') !== null && army.get('ap_present') &&
+              army.get('ap_present_old') < army.get('ap_present')) {
+              var diff = army.get('ap_present') - army.get('ap_present_old');
+              var animation = that.addDisappearingAnnotationLabel(view, '+' + diff + ' AP', 1000);
+              army.set('ap_present_old', null);
+            }
+            // ANIMATE EXP CHANGE AT ARMY
+            if (army.get('exp_old') !== null && army.get('exp') &&
+              army.get('exp_old') < army.get('exp')) {
+              var diff = army.get('exp') - army.get('exp_old');
+              var animation = that.addDisappearingAnnotationLabel(view, '+' + diff + ' XP', 1000);
+              army.set('exp_old', null);
+            }
+            if (army.get('id') === preselectedArmyId) {
+              that.setSelectedView(view);
+              preselectedArmyId = null;
+            }
+          }
+        }
+      }
+      
+      var initViewsWithGroupBasePosition = function (armyGroups, pos) {
+        for (var key in armyGroups) {
+          if (armyGroups.hasOwnProperty(key) && armyGroups[key][0] !== undefined && !armyGroups[key][0].isGarrison()) {
+            var army = armyGroups[key][0];
+            var view = armyGroupViews[army.getId()];
+
+            if (view) {
+              // beginner tutorial hack for adding jumping arrow to own army:
+              if (!that.animatedMarker && army.isOwn() && view != _selectedView && that.markSelectOwnArmy()) {
+                var marker = AWE.UI.createMarkerView();
+                marker.initWithControllerAndMarkedView(that, view);
+                that.animatedMarker = that.addBouncingAnnotationLabel(view, marker, 10000000, AWE.Geometry.createPoint(24, -36));
+                changedAnimation = true;
+                view.setNeedsUpdate();
+              }
+              if (view.lastChange !== undefined && view.lastChange() < army.lastChange()) {
+                view.setNeedsUpdate();
+              }
+            }
+            else {  // if view for army doesn't exists
+              view = AWE.UI.createArmyGroupView();
+              view.initWithControllerAndArmy(that, army);
+              _stages[1].addChild(view.displayObject());
+            }
+
+            setArmyPosition(view, pos, army);
+            newArmyGroupViews[army.getId()] = view;
 
             // ANIMATE AP CHANGE AT ARMY
             if (army.get('ap_present_old') !== null && army.get('ap_present') &&
@@ -2658,11 +2777,120 @@ AWE.Controller = function (module) {
         }
       };
 
+      var processArmyGroupsAtPos = function (armyGroups, settlement, pos, frame) {
+
+        /*var filterArmies = function(armies, hideOthers) {
+          if (AWE.Config.DONT_RENDER_ARMIES) {
+            return {};
+          }
+          if (!hideOthers) {
+            return armies;
+          }
+          var filtered = {};
+          for (var key in armies) {
+            if (armies.hasOwnProperty(key)) {
+              var army = armies[key];
+              if (army.isOwn() || army.get('npc')) {
+                filtered[key] = army;
+              }
+            }
+          }
+          return filtered;
+        };*/
+
+        if (_viewPortChanged) {
+          _disableArmies = _disableArmies || (AWE.Util.hashCount(armyGroupViews) > AWE.Config.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING);
+        }
+        else if(_disableArmies && !_timeout) {
+          _timeout = true;
+          setTimeout(function() {
+            _timeout = false;
+            if (!_viewPortChanged && _disableArmies) {
+              _disableArmies = false;
+              that.setModelChanged();
+            }
+          }, 200);
+        }
+
+        //armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies || _disableArmies);
+
+        initViewsWithGroupBasePosition(armyGroups, pos);
+        unclutterGroup(armyGroups, settlement, pos, frame);
+
+        for (var key in armyGroups) {
+          if (armyGroups.hasOwnProperty(key) && armyGroups[key][0] !== undefined && !armyGroups[key][0].isGarrison()) {
+            var army = armyGroups[key][0];
+            var view = armyGroupViews[army.getId()];
+
+            if (army.get('mode') === AWE.Config.ARMY_MODE_MOVING && view) {
+
+              var targetRegionId = army.get('target_region_id');
+              var targetLocationId = army.get('target_location_id');
+              var regionId = army.get('region_id');
+              var targetPos = null;
+
+              if (targetRegionId != regionId) {
+                var targetRegion = AWE.Map.Manager.getRegion(targetRegionId);
+                if (targetRegion && targetRegion.node()) {
+                  var tframe = that.mc2vc(targetRegion.node().frame());
+                  targetPos = AWE.Geometry.createPoint(
+                    tframe.origin.x + tframe.size.width / 2,
+                    tframe.origin.y + tframe.size.height / 2 - 60
+                  );
+                }
+              }
+              else if (targetLocationId && targetRegionId) { // target location in same region as starting region -> this region must be available locally
+                var targetLocation = AWE.Map.Manager.getLocation(targetLocationId);
+                if (!targetLocation) {
+                  AWE.Map.Manager.fetchLocationsForRegion(AWE.Map.Manager.getRegion(targetRegionId), function () {
+                    view.setNeedsUpdate();
+                  });
+                }
+                else {
+                  targetPos = that.mc2vc(targetLocation.position());
+                  targetPos.y -= 60;
+                }
+              }
+
+              if (targetPos) {
+
+                var movementArrow = movementArrowViews[army.getId()];
+
+                if (!movementArrow) {
+                  movementArrow = AWE.UI.createMovementArrowView();
+                  movementArrow.initWithControllerAndArmy(that, army);
+                  _stages[1].addChild(movementArrow.displayObject());
+                }
+                else {
+                  movementArrow.setNeedsUpdate();
+                }
+
+                movementArrow.setHovered(_hoveredView === view);
+                movementArrow.setSelected(_selectedView === view);
+
+                movementArrow.setStart(AWE.Geometry.createPoint(view.frame().origin.x + 24, view.frame().origin.y + 10));
+                movementArrow.setEnd(AWE.Geometry.createPoint(targetPos.x, targetPos.y));
+                newMovementArrowViews[army.getId()] = movementArrow;
+              }
+            }
+          }
+        }
+      };
+
       for (var i = 0; i < nodes.length; i++) {
         var frame = that.mc2vc(nodes[i].frame());
 
         if (that.areArmiesAtFortressVisible(frame) && nodes[i].isLeaf() && nodes[i].region()) {
           var armies = nodes[i].region().getArmiesAtFortress();       // armies at fortress
+          var armiesByTarget = null;
+          if(Object.keys(armies).length > 1)
+            {
+              armiesByTarget = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armies);
+              /*if(Object.keys(armiesByTarget[null]).length > 1)
+              {
+                var armiesByAlliance = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armiesByTarget[null]);
+              }*/
+          }
           var fortressView = fortressViews[nodes[i].id()];
           var position = fortressView ? AWE.Geometry.createPoint(
             fortressView.center().x, fortressView.center().y
@@ -2670,7 +2898,14 @@ AWE.Controller = function (module) {
             frame.origin.x + frame.size.width / 2,
             frame.origin.y + frame.size.height / 2
           );
-          processArmiesAtPos(armies, fortressView, position, frame);
+          if(armiesByTarget !== null)
+          {
+            processArmyGroupsAtPos(armiesByTarget, fortressView, position, frame);
+          }
+          else
+          {
+            processArmiesAtPos(armies, fortressView, position, frame);
+          }
         }
 
         if (that.areArmiesAtSettlementsVisible(frame) &&
@@ -2679,11 +2914,33 @@ AWE.Controller = function (module) {
             var location = nodes[i].region().location(loc);
             if (!location || !location.position()) continue;
             var armies = location.getArmies();       // armies at location
+            
+            var armiesByTarget = null;
+            if(Object.keys(armies).length > 1)
+            {
+              armiesByTarget = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armies);
+              //console.log(Object.keys(armies).length);
+              /*if(Object.keys(armiesByTarget[null]).length > 1 && typeof armiesByTarget[null] !== 'undefined')
+              {
+                console.log("It works");
+                console.log(Object.keys(armiesByTarget[null]).length);
+                var armiesByAlliance = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armiesByTarget[null]);
+                console.log("Alliance");
+                console.log(Object.keys(armiesByAlliance).length);
+              }*/
+            }
             var settlementView = locationViews[location.id()];
             var position = settlementView ? AWE.Geometry.createPoint(
               settlementView.center().x, settlementView.center().y
             ) : that.mc2vc(location.position());
-            processArmiesAtPos(armies, settlementView, position, frame);
+            if(armiesByTarget !== null)
+            {
+              processArmyGroupsAtPos(armiesByTarget, settlementView, position, frame);
+            }
+            else
+            {
+              processArmiesAtPos(armies, settlementView, position, frame);
+            }
           }
         }
       }
@@ -2701,6 +2958,11 @@ AWE.Controller = function (module) {
       var removedSomething = purgeDispensableViewsFromStage(armyViews, newArmyViews, _stages[1]);
       removedSomething = purgeDispensableViewsFromStage(movementArrowViews, newMovementArrowViews, _stages[1]) || removedSomething;
       armyViews = newArmyViews;
+      movementArrowViews = newMovementArrowViews;
+      
+      var removedSomething = purgeDispensableViewsFromStage(armyGroupViews, newArmyGroupViews, _stages[1]);
+      removedSomething = purgeDispensableViewsFromStage(movementArrowViews, newMovementArrowViews, _stages[1]) || removedSomething;
+      armyGroupViews = newArmyGroupViews;
       movementArrowViews = newMovementArrowViews;
 
       return removedSomething || changedAnimation;
@@ -2854,6 +3116,53 @@ AWE.Controller = function (module) {
         }
         else if (annotatedView.typeName() === 'ArmyView') {
           annotationView = AWE.UI.createArmyAnnotationView();
+          annotationView.initWithControllerAndView(that, annotatedView);
+          annotationView.onMoveButtonClick = (function (self) {
+            return function (view) {
+              self.armyMoveButtonClicked(view);
+            }
+          })(that);
+
+          annotationView.onFoundButtonClick = (function (self) {
+            return function (view) {
+              self.armyFoundSettlementButtonClicked(view);
+            }
+          })(that);
+
+          annotationView.onCancelMoveButtonClick = (function (self) {
+            return function (view) {
+              self.armyCancelMoveButtonClicked(view);
+            }
+          })(that);
+
+          annotationView.onAttackButtonClick = (function (self) {
+            return function (view) {
+              self.armyAttackButtonClicked(view);
+            }
+          })(that);
+
+          annotationView.onRetreatButtonClick = (function (self) {
+            return function (army) {
+              self.armyRetreatButtonClicked(army);
+            }
+          })(that);
+
+          annotationView.onBattleInfoButtonClick = (function (self) {
+            return function (army) {
+              self.battleInfoButtonClicked(army);
+            }
+          })(that);
+
+          annotationView.onStanceButtonClick = (function (self) {
+            return function (army) {
+              self.stanceButtonClicked(army);
+            }
+          })(that);
+
+          armyUpdates[annotatedView.army().getId()] = annotatedView.army();
+        }
+        else if (annotatedView.typeName() === 'ArmyGroupView') {
+          annotationView = AWE.UI.createArmyGroupAnnotationView();
           annotationView.initWithControllerAndView(that, annotatedView);
           annotationView.onMoveButtonClick = (function (self) {
             return function (view) {
