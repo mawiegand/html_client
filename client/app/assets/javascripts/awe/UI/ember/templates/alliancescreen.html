@@ -91,7 +91,7 @@
   <div class="alliance-member-list">
     <h1>{{t alliance.members }}</h1>
     <div class="stone-panel">
-      <p>{{alliance.membersCount}} von maximal {{maxMembers}}</p>
+      <p>{{alliance.membersCount}} {{t alliance.ofMax}} {{maxMembers}}{{#if hasBonus}} ({{t alliance.bonus}}: {{alliance.additional_members}}){{/if}}</p>
       <ul>
         {{#each characters}}
           {{view AWE.UI.Ember.AllianceMemberView tagName="li" characterBinding="this" allianceBinding="view.alliance"

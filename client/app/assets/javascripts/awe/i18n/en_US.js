@@ -456,6 +456,8 @@ AWE.I18n.en_US = function(module) {
       kickMember:'Kick',
       report: 'Melden',
       sendApplication: 'Bewerbung einreichen',
+      bonus: 'Bonus',
+      ofMax: 'of maximum',
 
       invitationLink: 'Invitation link',
       invitationLinkDescription: 'Invite new players to start in the alliance region. If new players register using the invitation link, his or her home settlement will be placed in the regions governed by the alliance. Just select and copy the link or send it via mail.',

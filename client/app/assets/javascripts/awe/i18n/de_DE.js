@@ -465,6 +465,8 @@ AWE.I18n.de_DE = function(module) {
       kickMember: 'kick',
       report: 'Melden',
       sendApplication: 'Bewerbung einreichen',
+      bonus: 'Bonus',
+      ofMax: 'von maximal',
 
       invitationLink: 'Einladungslink',
       invitationLinkDescription: 'Ladet neue Spieler direkt in das Allianzgebiet ein. Wenn sich ein neuer Spieler über diesen Link registriert, wird seine Hauptsiedlung in einer Region platziert, die von der Allianz beherrscht wird. Einfach markieren und kopieren oder per Email versenden.',
