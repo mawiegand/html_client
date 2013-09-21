@@ -128,7 +128,7 @@ AWE.Map = (function(module) {
 
     that.imageId = function() { return _imageId; }
 
-    that.supporterImage = function() {
+    that.divineSupporterImage = function() {
       return _imageId === 1;
     }
 

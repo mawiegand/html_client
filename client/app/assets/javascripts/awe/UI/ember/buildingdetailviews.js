@@ -42,8 +42,8 @@ AWE.UI.Ember = (function(module) {
       var options = slot ? slot.constructionOptions() : [];
       log ('OPTIONS', options);
       var result = options.filter(function(building) {
-        log('BUILDING', building)
-        return !building.impossibleToBuildDueToMissingSupporterStatus() && !building.impossibleToBuildDueToMaxRequirement();
+        log('BUILDING', building);
+        return !building.impossibleToBuildDueToMissingDivineSupporterStatus() && !building.impossibleToBuildDueToMaxRequirement();
       });
       return result && result.length > 0 ? result : null;
     }.property('slot.building_id', 'slot.settlement'),  

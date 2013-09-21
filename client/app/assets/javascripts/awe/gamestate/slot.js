@@ -393,8 +393,8 @@ AWE.GS = (function(module) {
       return maxFail;
     },
 
-    impossibleToBuildDueToMissingSupporterStatus: function() {
-      return this.getPath('buildingType.supporters_only') && !AWE.GS.game.getPath('currentCharacter.supporter');
+    impossibleToBuildDueToMissingDivineSupporterStatus: function() {
+      return this.getPath('buildingType.divine_supporters_only') && !AWE.GS.game.getPath('currentCharacter.divine_supporter');
     },
     
     // Fehleranalyse: unmetRequirements wird nicht getriggert, nachdem  slot gebaut wurde...

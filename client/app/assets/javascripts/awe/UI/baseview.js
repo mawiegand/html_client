@@ -90,15 +90,15 @@ AWE.UI = (function(module) {
       }
       
       // BASE IMAGE //////////////////////////////////////////////////////
-      var supporterImage = _location.supporterImage();
-      var newSettlementImageName = supporterImage ? 'map/colony/0/small' : 'map/colony/small';
+      var divineSupporterImage = _location.divineSupporterImage();
+      var newSettlementImageName = divineSupporterImage ? 'map/colony/1/small' : 'map/colony/small';
       var level = AWE.Util.Rules.normalizedLevel(_location.settlementLevel(), _location.settlementTypeId());
   
       if (level > 3) {
-        newSettlementImageName = supporterImage ? 'map/colony/0/middle' : 'map/colony/middle';
+        newSettlementImageName = divineSupporterImage ? 'map/colony/1/middle' : 'map/colony/middle';
       }
       if (level > 7) {
-        newSettlementImageName = supporterImage ? 'map/colony/0/big' : 'map/colony/big';
+        newSettlementImageName = divineSupporterImage ? 'map/colony/1/big' : 'map/colony/big';
       }
       
       if (newSettlementImageName != _settlementImageName && _imageView) {
