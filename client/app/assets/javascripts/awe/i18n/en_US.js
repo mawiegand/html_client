@@ -126,6 +126,7 @@ AWE.I18n.en_US = function(module) {
           name:     "Name",
           region:   "Region",
           status:   "Status",
+          ap:       "AP",
           size:     "Size",
           size_max: "Maxmimum",
         },
