@@ -124,6 +124,7 @@ AWE.I18n.de_DE = function(module) {
         table: {
           name:     "Name",
           region:   "Region",
+          ap:       "AP",
           status:   "Status",
           size:     "Größe",
           max_size: "Maximum",
