@@ -208,6 +208,7 @@
           <th class="ap">{{t army.list.table.ap}}</th>
           <th class="status">{{t army.list.table.status}}</th>
           <th class="size">{{t army.list.table.size}}/{{t army.list.table.max_size}}</th>
+          <th class="info">&nbsp;</th>
         </tr>
       </table>
       <div class="army-list-table-wrapper">
@@ -234,5 +235,6 @@
     <td class="ap">{{army.ap_present}}/{{army.ap_max}}</td>
     <td class="status">{{armyStatus}}</td>
     <td class="size">{{army.size_present}}/{{army.size_max}}</td>
+    <td class="info"><a class="clickable" {{action "infoPressed"}}>{{t army.list.table.info}}</a></td>
   </tr>
 </script>

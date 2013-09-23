@@ -561,7 +561,7 @@ AWE.UI.Ember = (function(module) {
       }
     }.observes('army', 'army.region_id'),
 
-    namePressed: function() {
+    infoPressed: function() {
       var army = this.getPath('army');
       if (!army) {
         return ;
