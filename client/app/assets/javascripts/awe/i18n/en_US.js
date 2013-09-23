@@ -129,7 +129,8 @@ AWE.I18n.en_US = function(module) {
           rank:     "Rank",
           ap:       "AP",
           size:     "Size",
-          size_max: "Maxmimum",
+          max_size: "Maxmimum",
+          info:     "Info",
         },
 
         status: {

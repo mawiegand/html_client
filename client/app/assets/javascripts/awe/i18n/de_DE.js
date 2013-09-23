@@ -129,6 +129,7 @@ AWE.I18n.de_DE = function(module) {
           status:   "Status",
           size:     "Größe",
           max_size: "Maximum",
+          info:     "Info",
         },
 
         status: {
