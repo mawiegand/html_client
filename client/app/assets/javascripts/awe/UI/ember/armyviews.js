@@ -525,6 +525,16 @@ AWE.UI.Ember = (function(module) {
         }
       }
 
+      for (var i = 0; i < list.length; ++i) {
+        for (var j = 0; j < list.length; ++j) {
+          var _army = list[i];
+          if (list[i].get('exp') > list[j].get('exp')) {
+            list[i] = list[j];
+            list[j] = _army;
+          }
+        }
+      }
+
       return list;
     }.property('controller'),
 
@@ -580,6 +590,19 @@ AWE.UI.Ember = (function(module) {
         var mapController = WACKADOO.activateMapController(true);
         WACKADOO.closeAllModalDialogs();
         mapController.centerRegion(region);
+      }
+    },
+
+    namePressed: function(event) {
+      var self = this;
+      var locationId = this.getPath('army.location_id');
+      var location = AWE.Map.Manager.getLocation(locationId);
+
+      alert(location);
+      if (location != null) {
+        var mapController = WACKADOO.activateMapController(true);
+        WACKADOO.closeAllModalDialogs();
+        mapController.centerLocation(location);
       }
     },
 
