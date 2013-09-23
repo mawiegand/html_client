@@ -598,7 +598,6 @@ AWE.UI.Ember = (function(module) {
       var locationId = this.getPath('army.location_id');
       var location = AWE.Map.Manager.getLocation(locationId);
 
-      alert(location);
       if (location != null) {
         var mapController = WACKADOO.activateMapController(true);
         WACKADOO.closeAllModalDialogs();
