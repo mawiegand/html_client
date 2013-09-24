@@ -1387,6 +1387,7 @@ AWE.Controller = function (module) {
       if (view.typeName() === 'FortressView'
         || view.typeName() === 'ArtifactView'
         || view.typeName() === 'ArmyView'
+        || view.typeName() === 'ArmyGroupView'
         || view.typeName() === 'BaseView'
         || view.typeName() === 'OutpostView'
         || view.typeName() === 'EmptySlotView') {
@@ -1403,6 +1404,7 @@ AWE.Controller = function (module) {
     that.viewMouseOut = function (view) {
       if (view.typeName() === 'FortressView'
         || view.typeName() === 'ArmyView'
+        || view.typeName() === 'ArmyGroupView'
         || view.typeName() === 'ArtifactView'
         || view.typeName() === 'BaseView'
         || view.typeName() === 'OutpostView'
@@ -1422,6 +1424,16 @@ AWE.Controller = function (module) {
       _showInspectorWith(_selectedView);
 
       if (view.typeName() === 'ArmyView') {
+        if (that.markMoveOwnArmy()) {
+          var annotationView = view.annotationView();
+          addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
+        }
+        else if (that.markAttackButton()) {
+          var annotationView = view.annotationView();
+          addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
+        }
+      }
+      if (view.typeName() === 'ArmyGroupView') {
         if (that.markMoveOwnArmy()) {
           var annotationView = view.annotationView();
           addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
@@ -1455,7 +1467,7 @@ AWE.Controller = function (module) {
     };
 
     var _unselectView = function (view) {
-      if ((view.typeName() === 'ArmyView' || view.typeName() === 'BaseView')) {
+      if ((view.typeName() === 'ArmyView' || view.typeName() === 'ArmyGroupView' || view.typeName() === 'BaseView')) {
         removeMarker();
       }
 
@@ -2885,7 +2897,7 @@ AWE.Controller = function (module) {
           var armiesByTarget = null;
           if(Object.keys(armies).length > 1)
             {
-              armiesByTarget = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armies);
+              armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armies);
               /*if(Object.keys(armiesByTarget[null]).length > 1)
               {
                 var armiesByAlliance = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armiesByTarget[null]);
@@ -2918,7 +2930,7 @@ AWE.Controller = function (module) {
             var armiesByTarget = null;
             if(Object.keys(armies).length > 1)
             {
-              armiesByTarget = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armies);
+              armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armies);
               //console.log(Object.keys(armies).length);
               /*if(Object.keys(armiesByTarget[null]).length > 1 && typeof armiesByTarget[null] !== 'undefined')
               {
@@ -3402,6 +3414,14 @@ AWE.Controller = function (module) {
             addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
           }
           else if (_selectedView.typeName() === 'ArmyView' && that.markAttackButton()) {
+            var annotationView = view.annotationView();
+            addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
+          }
+          if (_selectedView.typeName() === 'ArmyGroupView' && that.markMoveOwnArmy()) {
+            var annotationView = _selectedView.annotationView();
+            addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
+          }
+          else if (_selectedView.typeName() === 'ArmyGroupView' && that.markAttackButton()) {
             var annotationView = view.annotationView();
             addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
           }
