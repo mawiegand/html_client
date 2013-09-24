@@ -337,6 +337,7 @@ AWE.UI = (function(module) {
         _flagView = AWE.UI.createAllianceFlagView();
         _flagView.setCache(AWE.Config.MAP_CACHE_ALLIANCE_FLAG);
         _flagView.initWithController(my.controller);
+        _flagView.setAllianceColor(_army.get('alliance_color'));
         _flagView.setAllianceId(_army.get('alliance_id'));
         _flagView.setDirection('left');
         _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
@@ -347,7 +348,6 @@ AWE.UI = (function(module) {
         _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
         _flagLength = flagLength;        
       }
-
 
       if (!_frameRectShape && AWE.Config.MAP_DEBUG_FRAMES) {
         var _frameRectGraphics = new Graphics();

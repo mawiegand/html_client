@@ -118,6 +118,25 @@ AWE.I18n.de_DE = function(module) {
     army: {
       newArmy: "Neue Armee",
 
+      list: {
+        header: "Armeeübersicht",
+        none:   "Du besitzt derzeit keine Armeen.",
+        table: {
+          name:     "Name",
+          region:   "Region",
+          status:   "Status",
+          size:     "Größe",
+          max_size: "Maximum",
+        },
+
+        status: {
+          neutral:   "Neutral",
+          moving:    "Bewegend",
+          fighting:  "Kämpfend",
+          defending: "Verteidigend",
+        },
+      },
+
       details: {
         heading: "Armee",
         units: "Einheiten",
@@ -446,6 +465,8 @@ AWE.I18n.de_DE = function(module) {
       kickMember: 'kick',
       report: 'Melden',
       sendApplication: 'Bewerbung einreichen',
+      bonus: 'Bonus',
+      ofMax: 'von maximal',
 
       invitationLink: 'Einladungslink',
       invitationLinkDescription: 'Ladet neue Spieler direkt in das Allianzgebiet ein. Wenn sich ein neuer Spieler über diesen Link registriert, wird seine Hauptsiedlung in einer Region platziert, die von der Allianz beherrscht wird. Einfach markieren und kopieren oder per Email versenden.',
@@ -553,7 +574,7 @@ AWE.I18n.de_DE = function(module) {
       duration: 'Dauer',
       expiry: 'Ablauf',
       frog_trade: 'Reisender Händler: schneller Rohstofftausch', 
-
+      lifetime: 'Lifetime',
       current: "Aktuelle",
       platinumCredit: "Platinum Credits",
       offers: "Angebote",

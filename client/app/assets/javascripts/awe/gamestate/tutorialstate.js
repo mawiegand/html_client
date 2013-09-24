@@ -462,13 +462,16 @@ AWE.GS = (function(module) {
         }
         if (quest.reward_tests.building_speed_test) {
           // log('---> building_speed_test', quest.reward_tests.building_speed_test);
-        
+
           if (!self.checkBuildingSpeed(quest.reward_tests.building_speed_test)) {
             // log('---> building_speed_test failed');
-            return false;              
+            return false;
           }
           // log('---> building_speed_test ok');
         }
+
+        // don't need to check cross platform test, it's always true!
+
         if (quest.reward_tests.textbox_test) {
           // log('---> textbox_test');
           // log('---> textbox_test failed');

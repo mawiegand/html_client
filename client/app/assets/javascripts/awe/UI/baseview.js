@@ -55,7 +55,8 @@ AWE.UI = (function(module) {
     that.recalcView = function() {
 
       var allianceId = _location.allianceId();
-      
+      var allianceColor = _location.allianceColor();
+
       if (!_selectShape && (that.selected() || that.hovered())) {
         var selectGraphics = new Graphics();
         selectGraphics.setStrokeStyle(1);
@@ -88,15 +89,16 @@ AWE.UI = (function(module) {
         this.addChildAt(_poleShape, 0);
       }
       
-      // BASE IMAGE //////////////////////////////////////////////////////     
-      var newSettlementImageName = 'map/colony/small';      
+      // BASE IMAGE //////////////////////////////////////////////////////
+      var divineSupporterImage = _location.divineSupporterImage();
+      var newSettlementImageName = divineSupporterImage ? 'map/colony/1/small' : 'map/colony/small';
       var level = AWE.Util.Rules.normalizedLevel(_location.settlementLevel(), _location.settlementTypeId());
   
       if (level > 3) {
-        newSettlementImageName = 'map/colony/middle';
+        newSettlementImageName = divineSupporterImage ? 'map/colony/1/middle' : 'map/colony/middle';
       }
       if (level > 7) {
-        newSettlementImageName = 'map/colony/big';
+        newSettlementImageName = divineSupporterImage ? 'map/colony/1/big' : 'map/colony/big';
       }
       
       if (newSettlementImageName != _settlementImageName && _imageView) {
@@ -137,12 +139,14 @@ AWE.UI = (function(module) {
         _flagView.initWithController(my.controller);
         _flagView.setFrame(AWE.Geometry.createRect(18, 0, 28, 16));
         _flagView.setAllianceId(allianceId);
+        _flagView.setAllianceColor(allianceColor);
         _flagView.setDirection('left');
         that.addChild(_flagView);
       }
       
       if (allianceId != _flagView.allianceId()) {
         _flagView.setAllianceId(allianceId);
+        _flagView.setAllianceColor(allianceColor);
       }
       
       if (_location.garrisonArmy() && _location.garrisonArmy().get('isFighting') && !_battleView) {

@@ -380,7 +380,7 @@ AWE.GS = (function(module) {
       return failed || []
     },
     
-    impossibleToBuildDueToMaxRequirement: function(group) {
+    impossibleToBuildDueToMaxRequirement: function() {
       var settlement = this.getPath('slot.settlement');
       var character = settlement ? settlement.owner() : null;
       var slot = this.get('slot');
@@ -392,7 +392,10 @@ AWE.GS = (function(module) {
       });
       return maxFail;
     },
-            
+
+    impossibleToBuildDueToMissingDivineSupporterStatus: function() {
+      return this.getPath('buildingType.divine_supporters_only') && !AWE.GS.game.getPath('currentCharacter.divine_supporter');
+    },
     
     // Fehleranalyse: unmetRequirements wird nicht getriggert, nachdem  slot gebaut wurde...
     // Update: tatsächlich wird einer der beiden dependent-Dinger nicht geupdated, wenn sie auf cacheable stehen. bool-binding?

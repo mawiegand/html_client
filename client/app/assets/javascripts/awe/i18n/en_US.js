@@ -118,6 +118,26 @@ AWE.I18n.en_US = function(module) {
     army:{
       newArmy:"New Army",
 
+      list: {
+        header: "Armies overview",
+        none:   "You don't currently have any armies.",
+
+        table: {
+          name:     "Name",
+          region:   "Region",
+          status:   "Status",
+          size:     "Size",
+          size_max: "Maxmimum",
+        },
+
+        status: {
+          neutral:   "neutral",
+          moving:    "moving",
+          fighting:  "fighting",
+          defending: "defending",
+        },
+      },
+
       details:{
         heading:'army',
         units:'units',
@@ -436,6 +456,8 @@ AWE.I18n.en_US = function(module) {
       kickMember:'Kick',
       report: 'Melden',
       sendApplication: 'Bewerbung einreichen',
+      bonus: 'Bonus',
+      ofMax: 'of maximum',
 
       invitationLink: 'Invitation link',
       invitationLinkDescription: 'Invite new players to start in the alliance region. If new players register using the invitation link, his or her home settlement will be placed in the regions governed by the alliance. Just select and copy the link or send it via mail.',
@@ -543,8 +565,8 @@ AWE.I18n.en_US = function(module) {
       duration:'Duration',
       expiry:'Expiry',
       platinumDescription:"Having a Platinum Account offers you the chance to enjoy stress-free construction with additional places in your building queue (+3) and your training queue (+3) as well as email notifications when you're under attack. More functions will also be coming soon. ",
-      frog_trade: 'Travelling Merchant: instant resource trade', 
-
+      frog_trade: 'Travelling Merchant: instant resource trade',
+      lifetime: 'Lifetime',
 
       current:"Current",
       platinumCredit:"platinum credits",

@@ -196,10 +196,16 @@ AWE.UI.Ember = (function(module) {
       this.set('displayResources', !this.get('displayResources'));
     },
     
-    
     buildingTypes: function () {
-      var rules = this.get('rules');
-      return rules ? rules.get('building_types') : null;
+      var buildingTypes = this.getPath('rules.building_types');
+      if (buildingTypes == null) {
+        return null;
+      }
+
+      var divineSupporter = AWE.GS.game.getPath('currentCharacter.divine_supporter');
+      return buildingTypes.filter(function(buildingType) {
+        return !buildingType.divine_supporters_only || divineSupporter;
+      });
     }.property('rules').cacheable(),
     
     selectedBuilding: function() {

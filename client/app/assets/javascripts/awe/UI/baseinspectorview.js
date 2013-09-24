@@ -59,11 +59,13 @@ AWE.UI = (function(module) {
     that.recalcView = function() {
       
       var location      = my.inspectedObject;
-      
+
       var allianceId    = location ? location.allianceId()  : null;
+      var allianceColor = location ? location.allianceColor()  : null;
       var isOwnLocation = location.isOwn();
-      
+
       this.setAllianceId(allianceId);
+      this.setAllianceColor(allianceColor);
       this.setSkimButtonsEnabled(isOwnLocation);
       
       _super.recalcView();
@@ -152,7 +154,8 @@ AWE.UI = (function(module) {
           imageName = "map/outpost/" + modifier;
         }
         else {
-          imageName = "map/colony/" + modifier;
+          var divineSupporterImage = location.divineSupporterImage();
+          imageName = divineSupporterImage ? "map/colony/1/" + modifier : "map/colony/" + modifier;
         }
                 
         _settlementView = AWE.UI.createImageView();

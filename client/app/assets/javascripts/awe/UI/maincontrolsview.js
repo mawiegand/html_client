@@ -68,7 +68,8 @@ AWE.UI = (function(module) {
 
       var character = AWE.GS.game.get('currentCharacter');
       var allianceId = character.get('alliance_id');
-            
+      var allianceColor = character.get('alliance_color');
+
       // Ressourcen Leiste
       if (!_resourcesShape) {   
         _resourcesShape = AWE.UI.createImageView();
@@ -123,6 +124,7 @@ AWE.UI = (function(module) {
         _flagView.initWithController(my.controller);
         _flagView.setFrame(AWE.Geometry.createRect(202, 177, 56, 57));
         _flagView.setAllianceId(allianceId);
+        _flagView.setAllianceColor(allianceColor);
         _flagView.setTagVisible(true);
         _flagView.onClick = function() { 
           WACKADOO.activateAllianceController(allianceId);   
@@ -287,12 +289,14 @@ AWE.UI = (function(module) {
         }
         else {
           var level = AWE.Util.Rules.normalizedLevel(settlement.get('level'), settlement.get('type_id'));
-          var newSettlementImageName = 'map/colony/small'
+          var divineSupporterImage = AWE.GS.game.getPath('currentCharacter.divine_supporter');
+
+          var newSettlementImageName = divineSupporterImage ? 'map/colony/1/small' : 'map/colony/small';
           if (level > 3) {
-            newSettlementImageName   = 'map/colony/middle';
+            newSettlementImageName   = divineSupporterImage ? 'map/colony/1/middle' : 'map/colony/middle';
           }
           if (level > 7) {
-            newSettlementImageName   = 'map/colony/big';
+            newSettlementImageName   = divineSupporterImage ? 'map/colony/1/big' : 'map/colony/big';
           }
       
           if (newSettlementImageName != _settlementImageName && _settlementImageView) {

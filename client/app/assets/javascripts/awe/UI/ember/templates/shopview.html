@@ -118,15 +118,21 @@
   <div class="bonus-offer-price">{{ offer.price}} </div>
   <div class="bonus-offer-end">
     {{#if platinumExpiration }}
-      {{ formatDatetime platinumExpiration }}
+      {{#if lifetime }}
+        {{t shop.lifetime }}
+      {{else}}
+        {{ formatDatetime platinumExpiration }}
+      {{/if}}
     {{/if}}
   </div>
   <div class="bonus-offer-button">
-    {{#if offer.isBuying}}
-      {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{t shop.activating }}
-    {{else}}
-      <div class="simple-button" {{action "buyPlatinumOfferPressed"}}>{{#if platinumExpiration}}{{t shop.extend }}{{else}}{{t shop.buy }}{{/if}}</div>
-    {{/if}}
+    {{#unless lifetime }}
+      {{#if offer.isBuying}}
+        {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{t shop.activating }}
+      {{else}}
+        <div class="simple-button" {{action "buyPlatinumOfferPressed"}}>{{#if platinumExpiration}}{{t shop.extend }}{{else}}{{t shop.buy }}{{/if}}</div>
+      {{/if}}
+    {{/unless}}
   </div>
 </script>
 

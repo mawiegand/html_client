@@ -262,11 +262,15 @@ AWE.UI.Ember = (function(module) {
     
     controller: null,
     alliance:   null,
-    
+
     maxMembers: function() {
       return AWE.GS.RulesManager.getRules().get('alliance_max_members') + this.getPath('alliance.size_bonus');
     }.property('controller').cacheable(),
-    
+
+    hasBonus: function() {
+      return this.getPath('alliance.additional_members') > 0;
+    }.property('alliance.additional_members').cacheable(),
+
     kickMember: function(character) {
       var currentCharacter = AWE.GS.game.get('currentCharacter');
       var alliance         = this.get('alliance');
@@ -529,6 +533,7 @@ AWE.UI.Ember = (function(module) {
     bannerUpdate: function() {   // BUG: presently, if the alliance is set after the creation of the banner view, it sometimes doesn't display the alliance banner: example: on game server open the settlement dialog for another alliance, that you haven't looked-at before (client has not loaded that alliance)
       log('BANNER UPDATE');
       var allianceId = this.getPath('alliance.id');
+      var allianceColor = this.getPath('alliance.color');
       var shape  = this.get('shape');
       var width  = this.get('width')  || 200;
       var height = this.get('height') || 200;
@@ -551,6 +556,7 @@ AWE.UI.Ember = (function(module) {
       shape.initWithController(this.get('controller'));
       shape.setFrame(AWE.Geometry.createRect(0, 0, width, height));
       shape.setAllianceId(allianceId);
+      shape.setAllianceColor(allianceColor);
       shape.setTagVisible(true);
       shape.setDirection('down');
       this.addChild(shape);

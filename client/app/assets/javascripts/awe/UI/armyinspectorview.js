@@ -66,11 +66,13 @@ AWE.UI = (function(module) {
     that.recalcView = function() {
       
       var army       = my.inspectedObject;
-      
+
       var allianceId = army ? army.get('alliance_id') : null;
+      var allianceColor = army ? army.get('alliance_color') : null;
       var isOwnArmy  = army ? army.isOwn() : false;
-      
+
       this.setAllianceId(allianceId);
+      this.setAllianceColor(allianceColor);
       this.setSkimButtonsEnabled(isOwnArmy);
       
       _super.recalcView();

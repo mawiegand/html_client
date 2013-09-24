@@ -40,10 +40,10 @@ AWE.UI.Ember = (function(module) {
     constructionOptions: function() {
       var slot = this.get('slot');
       var options = slot ? slot.constructionOptions() : [];
-      log ('OPTIONS', options)
+      log ('OPTIONS', options);
       var result = options.filter(function(building) {
-        log('BUILDING', building)
-        return !building.impossibleToBuildDueToMaxRequirement();
+        log('BUILDING', building);
+        return !building.impossibleToBuildDueToMissingDivineSupporterStatus() && !building.impossibleToBuildDueToMaxRequirement();
       });
       return result && result.length > 0 ? result : null;
     }.property('slot.building_id', 'slot.settlement'),  
