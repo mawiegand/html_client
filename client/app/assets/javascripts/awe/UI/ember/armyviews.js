@@ -602,6 +602,108 @@ AWE.UI.Ember = (function(module) {
     }.property('army.updated_at'),
 
   });
+  
+  module.ArmyGroupInfoDialog = Ember.View.extend({
+    templateName: "army-group-view",
+    armyGroup: null,
+    onClose:    null,
+
+    init: function() {
+      AWE.GS.ArmyManager.updateArmiesForCharacter(AWE.GS.game.getPath('currentCharacter.id'),
+        AWE.GS.ENTITY_UPDATE_TYPE_FULL, function () {});
+
+      this._super();
+    },
+
+    armies: function() {
+      var armies = this.getPath('armyGroup');
+      
+      var list   = [];
+      var self   = this;
+      
+      AWE.Ext.applyFunctionToElements(armies, function(army) {
+        if (typeof army !== 'undefined') {
+          list.push(army);
+        }
+      });
+
+      return list;
+    }.property('controller'),
+
+
+    closeClicked: function() {
+      this.destroy();
+    },
+
+    destroy: function() {
+      if (this.onClose) {
+        this.onClose(this);
+      }   
+      this._super();    
+    },  
+  });
+
+  module.ArmyGroupItem = Ember.View.extend({
+    templateName: "army-group-item",
+    army: null,
+    regionName: null,
+
+    updateRegionName: function() {
+      var regionId = this.getPath('army.region_id');
+      var region = AWE.Map.Manager.getRegion(regionId);
+
+      if(typeof region === 'undefined') {
+        var self = this;
+        AWE.Map.Manager.fetchSingleRegionById(regionId, function(region) {
+          self.set('regionName', region.name());
+        });
+      }
+      else {
+        this.set('regionName', region.name());
+      }
+    }.observes('army', 'army.region_id'),
+
+    namePressed: function() {
+      var army = this.getPath('army');
+      if (!army) {
+        return ;
+      }   
+      var dialog = AWE.UI.Ember.ArmyInfoDialog.create({
+        army: army,
+      }); 
+      dialog.showModal();    
+      return false; // prevent default behavior
+    },  
+
+    regionPressed: function() {
+      var regionId = this.getPath('army.region_id');
+      var region = AWE.Map.Manager.getRegion(regionId);
+      if (region != null) {
+        var mapController = WACKADOO.activateMapController(true);
+        WACKADOO.closeAllModalDialogs();
+        mapController.centerRegion(region);
+      }
+    },
+
+    armyStatus: function() {
+      var army = this.get('army');
+
+      if (army.get('isFighting')) {
+        return AWE.I18n.lookupTranslation('army.list.status.fighting');
+      }
+      else if (army.get('isMoving')) {
+        return AWE.I18n.lookupTranslation('army.list.status.moving');
+      }
+      else if (parseInt(army.get('stance')) == 0) {
+        return AWE.I18n.lookupTranslation('army.list.status.neutral');
+      }
+      else if (parseInt(army.get('stance')) == 1) {
+        return AWE.I18n.lookupTranslation('army.list.status.defending');
+      }
+      // Do we need to check another stance here or a default value?
+    }.property('army.updated_at'),
+
+  });
 
   module.ArmyView = AWE.UI.Ember.Pane.extend({
     width: 58,

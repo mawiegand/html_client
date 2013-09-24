@@ -47,55 +47,32 @@ AWE.UI = (function(module) {
     
     /** overwritten view methods */
     
-    that.initWithControllerAndArmy = function(controller, army, frame) {
-      _super.initWithControllerAndAllianceId(controller, army ? army.get('alliance_id') : null, frame);      
+    that.initWithControllerAndArmyGroup = function(controller, armyGroup, frame) {
+      _super.initWithControllerAndAllianceId(controller, armyGroup[0] ? armyGroup[0].get('alliance_id') : null, frame);      
       
-      my.inspectedObject = army;  
+      my.inspectedObject = armyGroup;  
         
-      that.onPreviousButtonClick  = function(army) {
+      /*that.onPreviousButtonClick  = function(army) {
         this.onPreviousArmyButtonClick(army);
       }
       that.onNextButtonClick      = function(army) {
         this.onNextArmyButtonClick(army);
-      }
+      }*/
       
       that.recalcView();
     };
     
     that.recalcView = function() {
       
-      var army       = my.inspectedObject;
+      var army       = my.inspectedObject[0];
       
       var allianceId = army ? army.get('alliance_id') : null;
       var isOwnArmy  = army ? army.isOwn() : false;
       
       this.setAllianceId(allianceId);
-      this.setSkimButtonsEnabled(isOwnArmy);
+      this.setSkimButtonsEnabled(false);
       
       _super.recalcView();
-      
-      if (!_reinforceButtonView && isOwnArmy) { 
-        _reinforceButtonView = AWE.UI.createButtonView();
-        _reinforceButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/inspector/button/reinforce/normal"));
-        _reinforceButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/inspector/button/reinforce/hovered"), module.CONTROL_STATE_HOVERED);
-        _reinforceButtonView.setFrame(AWE.Geometry.createRect(346, 0, 68, 66));
-        _reinforceButtonView.onClick = function() {
-          if (that.onChangeArmyButtonClick) {
-            that.onChangeArmyButtonClick(army); 
-          }
-        };
-        this.addChildAt(_reinforceButtonView, 3);
-      }      
-      
-      if (_reinforceButtonView && isOwnArmy) {
-        var location = AWE.Map.Manager.getLocation(army.get('location_id'));
-        var settlement = location ? location.settlement() : null;
-        var garrison = settlement ? settlement.getPath('garrison') : null;
-        _reinforceButtonView.setEnabled(settlement && garrison !== undefined && 
-                                        garrison !== null && !garrison.get('isFighting') &&
-                                        army.get('home_settlement_id') === settlement.getId() &&
-                                        army.get('mode') === 0);
-      }
 
       if (!_nameLabelView) {
         _nameLabelView = AWE.UI.createLabelView();
@@ -223,7 +200,7 @@ AWE.UI = (function(module) {
     };
 
         
-    that.army = function() {
+    that.armyGroup = function() {
       return my.inspectedObject;
     };
    

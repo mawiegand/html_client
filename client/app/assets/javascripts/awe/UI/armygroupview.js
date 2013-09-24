@@ -37,7 +37,7 @@ AWE.UI = (function(module) {
     
     my.typeName = my.typename || 'ArmyGroupView';
     
-    var _army = null;
+    var _armyGroup = null;
     
     var _annotationView = null;
 
@@ -75,14 +75,14 @@ AWE.UI = (function(module) {
     
     /** overwritten view methods */
     
-    that.initWithControllerAndArmy = function(controller, army, frame) {
+    that.initWithControllerAndArmy = function(controller, armyGroup, frame) {
       that.initWithController(controller, frame);
-      _army = army;
+      _armyGroup = armyGroup;
       // _stance = null; // will be set in recalc
       
 
       
-      var baseImage = army.isOwn() ? AWE.UI.ImageCache.getImage('map/army/base/own') : AWE.UI.ImageCache.getImage('map/army/base/other')
+      var baseImage = /*army.isOwn() ? AWE.UI.ImageCache.getImage('map/army/base/own') : */AWE.UI.ImageCache.getImage('map/army/base/other')
       _baseImage = AWE.UI.createImageView();
       _baseImage.initWithControllerAndImage(controller, baseImage);
       _baseImage.setFrame(AWE.Geometry.createRect(-15, -21, 128, 128));
@@ -116,7 +116,7 @@ AWE.UI = (function(module) {
       var standFrame = 11;
       number = number || Math.floor(Math.random()*1000);
       
-      switch (_army.get('stance') || 0) {
+      switch (_armyGroup[0].get('stance') || 0) {
         case 0:  standFrame = 11; break;
         case 1:  standFrame =  8; break;
         case 2:  standFrame = 11; break;
@@ -171,7 +171,7 @@ AWE.UI = (function(module) {
       var standFrame = 11;
       number = number || Math.floor(Math.random()*1000);
       
-      switch (_army.get('stance') || 0) {
+      switch (_armyGroup[0].get('stance') || 0) {
         case 0:  standFrame =  9; break;
         case 1:  standFrame =  7; break;
         case 2:  standFrame =  9; break;
@@ -232,7 +232,7 @@ AWE.UI = (function(module) {
       var laughing = true;
       number = number || Math.floor(Math.random()*1000);
       
-      switch (_army.get('stance') || 0) {
+      switch (_armyGroup[0].get('stance') || 0) {
         case 0:  standFrame = 13; break;
         case 1:  standFrame = 11; laughing = false; break;
         case 2:  standFrame = 13; break;
@@ -289,39 +289,39 @@ AWE.UI = (function(module) {
     }
     
     that.prepareSpriteSheet = function() {
-      if (!_army) {
-        log('WARNING: army view without an associated army object.');
+      if (!_armyGroup) {
+        log('WARNING: army group view without an associated army group object.');
         return null;
       }
       
-      if (_army.get("npc") && AWE.Config.DISABLE_NPC_IMAGES) {
-        if (_army.get('id') % 3 == 0) {
-          return this.createAmazonSpriteSheet(_army.get('id'));
+      if (_armyGroup[0].get("npc") && AWE.Config.DISABLE_NPC_IMAGES) {
+        if (_armyGroup[0].get('id') % 3 == 0) {
+          return this.createAmazonSpriteSheet(_armyGroup[0].get('id'));
         }
-        else if (_army.get('id') % 3 == 1) {
-          return this.createChefSpriteSheet(_army.get('id'));
+        else if (_armyGroup[0].get('id') % 3 == 1) {
+          return this.createChefSpriteSheet(_armyGroup[0].get('id'));
         }
-        return this.createWarriorSpriteSheet(_army.get('id'));
+        return this.createWarriorSpriteSheet(_armyGroup[0].get('id'));
       }
       else if (AWE.Config.DISABLE_NPC_IMAGES) {
-        if (_army.get('id') % 3 == 0) {
-          return this.createAmazonSpriteSheet(_army.get('id'));
+        if (_armyGroup[0].get('id') % 3 == 0) {
+          return this.createAmazonSpriteSheet(_armyGroup[0].get('id'));
         }
-        else if (_army.get('id') % 3 == 1) {
-          return this.createChefSpriteSheet(_army.get('id'));
+        else if (_armyGroup[0].get('id') % 3 == 1) {
+          return this.createChefSpriteSheet(_armyGroup[0].get('id'));
         }
-        return this.createWarriorSpriteSheet(_army.get('id'));
+        return this.createWarriorSpriteSheet(_armyGroup[0].get('id'));
       }
       else {
-        var armyCategory = _army.get('armyCategory');
+        var armyCategory = _armyGroup[0].get('armyCategory');
         
         if (armyCategory && armyCategory === 'artillery') {
-          return this.createAmazonSpriteSheet(_army.get('id'));
+          return this.createAmazonSpriteSheet(_armyGroup[0].get('id'));
         }
         else if (armyCategory && armyCategory === 'cavalry') {
-          return this.createChefSpriteSheet(_army.get('id'));
+          return this.createChefSpriteSheet(_armyGroup[0].get('id'));
         }
-        return this.createWarriorSpriteSheet(_army.get('id'));
+        return this.createWarriorSpriteSheet(_armyGroup[0].get('id'));
       }
     }
         
@@ -330,13 +330,13 @@ AWE.UI = (function(module) {
       // BUG: since the stance-view is not recreated and there is no "addChildBelow" used, after one update
       //      of the army the pole will be in front of the figure, although it should be behind.
       
-      var flagLength    = 8.0 + Math.round(Math.min(_army.get('size_present') / _army.get('size_max'), 1) * 48);
+      var flagLength    = 8.0 + Math.round(Math.min(_armyGroup[0].get('size_present') / _armyGroup[0].get('size_max'), 1) * 48);
       
       if (!AWE.Config.MAP_ALLIANCE_FLAG_DISABLED && !_flagView) {
         _flagView = AWE.UI.createAllianceFlagView();
         _flagView.setCache(AWE.Config.MAP_CACHE_ALLIANCE_FLAG);
         _flagView.initWithController(my.controller);
-        _flagView.setAllianceId(_army.get('alliance_id'));
+        _flagView.setAllianceId(_armyGroup[0].get('alliance_id'));
         _flagView.setDirection('left');
         _flagView.setFrame(AWE.Geometry.createRect(67 - flagLength, -12, flagLength, 20));
         _flagLength = flagLength;
@@ -366,7 +366,7 @@ AWE.UI = (function(module) {
         _healthShape = null;
       }
       
-      if (that.selected() || that.hovered() || (_army && _army.isOwn())) {
+      if (that.selected() || that.hovered() || (_armyGroup && _armyGroup[0].isOwn())) {
         
         if (!_healthBGShape) {
           var healthBGGraphics = new Graphics();
@@ -388,11 +388,11 @@ AWE.UI = (function(module) {
           that.addChild(_actionPointsLabelView);      
         }
         
-        if (_army.get('ap_present') / _army.get('ap_max') > 0.1) {
-          if(_army.get('ap_present') / _army.get('ap_max') > .75) {
+        if (_armyGroup[0].get('ap_present') / _armyGroup[0].get('ap_max') > 0.1) {
+          if(_armyGroup[0].get('ap_present') / _armyGroup[0].get('ap_max') > .75) {
             var fillColor = '#6d6';
           }
-          else if(_army.get('ap_present') / _army.get('ap_max') > .5) {
+          else if(_armyGroup[0].get('ap_present') / _armyGroup[0].get('ap_max') > .5) {
             var fillColor = '#dd6';
           }
           else {
@@ -403,10 +403,10 @@ AWE.UI = (function(module) {
           healthGraphics.setStrokeStyle(1);
           healthGraphics.beginStroke(Graphics.getRGB(0, 0, 0));
           healthGraphics.beginFill(fillColor);
-          healthGraphics.drawRoundRect(0, 0, 64 * (_army.get('ap_present') / _army.get('ap_max')), 12, 4);
+          healthGraphics.drawRoundRect(0, 0, 64 * (_armyGroup[0].get('ap_present') / _armyGroup[0].get('ap_max')), 12, 4);
           _healthShape = AWE.UI.createShapeView();
           _healthShape.initWithControllerAndGraphics(my.controller, healthGraphics);
-          _healthShape.setFrame(AWE.Geometry.createRect(16, 108, 64 * (_army.get('ap_present') / _army.get('ap_max')), 12));
+          _healthShape.setFrame(AWE.Geometry.createRect(16, 108, 64 * (_armyGroup[0].get('ap_present') / _armyGroup[0].get('ap_max')), 12));
           that.addChild(_healthShape);      
           if (_actionPointsLabelView) { // move label to top
             that.removeChild(_actionPointsLabelView);
@@ -415,14 +415,14 @@ AWE.UI = (function(module) {
         }
       } 
       if (_healthShape) {
-        _healthShape.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));
+        _healthShape.setVisible(that.selected() || that.hovered() || (_armyGroup && _armyGroup[0].isOwn()));
       }
       if (_healthBGShape) {
-        _healthBGShape.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));
+        _healthBGShape.setVisible(that.selected() || that.hovered() || (_armyGroup && _armyGroup[0].isOwn()));
       }
       if (_actionPointsLabelView) {
-        _actionPointsLabelView.setVisible(that.selected() || that.hovered() || (_army && _army.isOwn()));
-        _actionPointsLabelView.setText(_army.get('ap_present') + " / " + _army.get('ap_max'));
+        _actionPointsLabelView.setVisible(that.selected() || that.hovered() || (_armyGroup && _armyGroup[0].isOwn()));
+        _actionPointsLabelView.setText(_armyGroup[0].get('ap_present') + " / " + _armyGroup[0].get('ap_max'));
       }
       
       
@@ -448,7 +448,7 @@ AWE.UI = (function(module) {
       }
       
       
-      if (_army.get('isFighting') && !_battleView) {
+      if (_armyGroup[0].get('isFighting') && !_battleView) {
         _battleView = AWE.UI.createImageView();
         _battleView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage('map/army/battle'));
         _battleView.setFrame(AWE.Geometry.createRect(16, -50, 65, 65));
@@ -458,12 +458,12 @@ AWE.UI = (function(module) {
         _battleView.onMouseOut = that.onMouseOut;
         this.addChildAt(_battleView,0);
       }
-      else if (!_army.get('isFighting') && _battleView) {
+      else if (!_armyGroup[0].get('isFighting') && _battleView) {
         this.removeChild(_battleView);
         _battleView = null;
       }
       
-      if (_army.get('isProtected') && !_protectionView) {
+      if (_armyGroup[0].get('isProtected') && !_protectionView) {
         _protectionView = AWE.UI.createImageView();
         _protectionView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage('map/army/protected'));
         _protectionView.setFrame(AWE.Geometry.createRect(32, -64, 32, 32));
@@ -473,26 +473,26 @@ AWE.UI = (function(module) {
         _protectionView.onMouseOut = that.onMouseOut;
         this.addChildAt(_protectionView,0);
       }
-      else if (!_army.get('isProtected') && _protectionView) {
+      else if (!_armyGroup[0].get('isProtected') && _protectionView) {
         this.removeChild(_protectionView);
         _protectionView = null;
       }
 
-      if (!(_army.get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) && (_stance === null || _army.get("stance") !== _stance || !_animation)) {
+      if (!(_armyGroup[0].get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) && (_stance === null || _armyGroup[0].get("stance") !== _stance || !_animation)) {
         var data = null; 
         var spriteSheet = null;
         var newAnimation = AWE.UI.createAnimatedSpriteView();
         
-        _stance = _army.get('stance');
+        _stance = _armyGroup[0].get('stance');
         
         data = this.prepareSpriteSheet();
         spriteSheet = new SpriteSheet(data);
         newAnimation.initWithControllerAndSpriteSheet(that, spriteSheet);
         
-        if (_army.get('mode') == 1) { // 1: walking
+        if (_armyGroup[0].get('mode') == 1) { // 1: walking
           newAnimation.animation().gotoAndPlay('toWalk');      
         }
-        else if (_army.get('mode') == 2) {
+        else if (_armyGroup[0].get('mode') == 2) {
           newAnimation.animation().gotoAndPlay('fight');
         }
         else {
@@ -511,9 +511,9 @@ AWE.UI = (function(module) {
         _animation = newAnimation;
       }
 
-      if (_army.get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) {
+      if (_armyGroup[0].get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) {
         var stanceImage;
-        var size = _army.get('size_present') || 0;
+        var size = _armyGroup[0].get('size_present') || 0;
         if (size >= 800) {
           stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/large');
         }
@@ -539,13 +539,13 @@ AWE.UI = (function(module) {
       }
       else {
         log('CHECK ANIMATION')
-        if      (_army.get("mode") === 0 && _animation.animation().currentAnimation !== 'stand' && _animation.animation().currentAnimation !== 'toStand') {        // 0: standing!, 1: walking, 2: fighting
+        if      (_armyGroup[0].get("mode") === 0 && _animation.animation().currentAnimation !== 'stand' && _animation.animation().currentAnimation !== 'toStand') {        // 0: standing!, 1: walking, 2: fighting
           _animation.animation().gotoAndPlay('toStand');
         }
-        else if (_army.get("mode") === 1 && _animation.animation().currentAnimation !== 'walk' && _animation.animation().currentAnimation !== 'toWalk') {       // 0: standing!, 1: walking, 2: fighting
+        else if (_armyGroup[0].get("mode") === 1 && _animation.animation().currentAnimation !== 'walk' && _animation.animation().currentAnimation !== 'toWalk') {       // 0: standing!, 1: walking, 2: fighting
           _animation.animation().gotoAndPlay('toWalk');
         }
-        else if (_army.get("mode") === 2 && _animation.animation().currentAnimation !== 'fight') {     // 0: standing!, 1: walking, 2: fighting
+        else if (_armyGroup[0].get("mode") === 2 && _animation.animation().currentAnimation !== 'fight') {     // 0: standing!, 1: walking, 2: fighting
           _animation.animation().gotoAndPlay('fight');
         }
       }               
@@ -560,7 +560,11 @@ AWE.UI = (function(module) {
     }
     
     that.army = function() {
-      return _army;
+      return _armyGroup[0];
+    };
+    
+    that.armyGroup = function() {
+      return _armyGroup;
     };
     
     /** actions */
@@ -570,7 +574,7 @@ AWE.UI = (function(module) {
     };
     
     that.onDoubleClick = function(evt) {
-      my.controller.armyInfoButtonClicked(_army);
+      my.controller.armyInfoButtonClicked(_armyGroup[0]);
     };
     
     that.onMouseOver = function(evt){ 

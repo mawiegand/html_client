@@ -707,6 +707,25 @@ AWE.Controller = function (module) {
       });
       dialog.showModal();
     };
+    
+    that.armyGroupInfoButtonClicked = function (armyGroup) {
+      if (!armyGroup) {
+        return;
+      }
+
+      var dialog = AWE.UI.Ember.ArmyGroupInfoDialog.create({
+        armyGroup:armyGroup,
+        
+        controller: this.that,
+
+        changeStanceCallback:function () {
+          if (inspectorViews.inspector) {
+            inspectorViews.inspector.updateView();
+          }
+        },
+      });
+      that.applicationController.presentModalDialog(dialog);
+    };
 
     that.armyMoveButtonClicked = function (armyAnnotationView) {
       // actionObjekt erstellen
@@ -1571,12 +1590,12 @@ AWE.Controller = function (module) {
 
       }
       else if (view.typeName() === 'ArmyGroupView') {
-        inspectorViews.inspector = AWE.UI.createArmyInspectorView();
-        inspectorViews.inspector.initWithControllerAndArmy(that, view.army());
+        inspectorViews.inspector = AWE.UI.createArmyGroupInspectorView();
+        inspectorViews.inspector.initWithControllerAndArmyGroup(that, view.armyGroup());
 
         inspectorViews.inspector.onInventoryButtonClick = (function (self) {
-          return function (army) {
-            self.armyInfoButtonClicked(army);
+          return function (armyGroup) {
+            self.armyGroupInfoButtonClicked(armyGroup);
           }
         })(that);
 
@@ -1586,16 +1605,6 @@ AWE.Controller = function (module) {
         inspectorViews.inspector.onCenterButtonClick = function (army) {
           that.centerArmy(view.army());
         };
-        inspectorViews.inspector.onChangeArmyButtonClick = function (army) {
-          that.changeArmyButtonClicked(view.army());
-        };
-        inspectorViews.inspector.onPreviousArmyButtonClick = function (army) {
-          that.previousArmyButtonClicked(view.army());
-        };
-        inspectorViews.inspector.onNextArmyButtonClick = function (army) {
-          that.nextArmyButtonClicked(view.army());
-        };
-
       }
       else if (view.typeName() === 'ArtifactView') {
         inspectorViews.inspector = AWE.UI.createArtifactInspectorView();
@@ -2672,7 +2681,7 @@ AWE.Controller = function (module) {
             }
             else {  // if view for army doesn't exists
               view = AWE.UI.createArmyGroupView();
-              view.initWithControllerAndArmy(that, army);
+              view.initWithControllerAndArmy(that, armyGroups[key]);
               _stages[1].addChild(view.displayObject());
             }
 
