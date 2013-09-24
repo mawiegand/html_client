@@ -26,8 +26,6 @@ AWE.UI = (function(module) {
     var _sizeType3LabelView = null;
     
     var _stanceView = null;
-
-    var _reinforceButtonView = null;
     
     that = module.createInspectorView(spec, my);
 

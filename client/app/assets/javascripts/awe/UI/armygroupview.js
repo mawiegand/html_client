@@ -574,7 +574,7 @@ AWE.UI = (function(module) {
     };
     
     that.onDoubleClick = function(evt) {
-      my.controller.armyInfoButtonClicked(_armyGroup[0]);
+      my.controller.armyGroupInfoButtonClicked(_armyGroup);
     };
     
     that.onMouseOver = function(evt){ 
