@@ -1016,13 +1016,14 @@ AWE.Controller = function (module) {
     }
 
     that.centerLocationAndMarkArmy = function (army) {
-      debugger;
       if (army.get('location')) {
         that.moveTo(army.get('location'), true);
         that.setSelectedArmy(army);
       }
       else if (army.get('region')) {
         AWE.Map.Manager.fetchLocationsForRegion(army.get('region'), function () {
+          var location = army.get('location');
+          debugger;
           that.moveTo(army.get('location'), true);
           that.setSelectedArmy(army);
         });
