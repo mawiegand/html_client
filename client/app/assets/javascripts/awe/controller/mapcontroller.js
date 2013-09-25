@@ -1015,6 +1015,40 @@ AWE.Controller = function (module) {
       that.moveTo(location, true);
     }
 
+    that.centerLocationAndMarkArmy = function (army) {
+      if (army.get('location')) {
+        that.moveTo(army.get('location'), true);
+        that.setSelectedArmy(army);
+      }
+      else if (army.get('region')) {
+        AWE.Map.Manager.fetchLocationsForRegion(army.get('region'), function () {
+          that.moveTo(army.get('location'), true);
+          that.setSelectedArmy(army);
+        });
+      }
+      else {
+        AWE.Map.Manager.fetchSingleRegionById(army.get('region_id'), function (region) {
+          AWE.Map.Manager.fetchLocationsForRegion(army.get('region'), function () {
+            that.moveTo(army.get('location'), true);
+            that.setSelectedArmy(army);
+          });
+        });
+      }
+    }
+
+    that.centerRegionAndMarkArmy = function (army) {
+      if (army.get('region')) {
+        that.moveTo(army.get('region'), true);
+        that.setSelectedArmy(army);
+      }
+      else {
+        AWE.Map.Manager.fetchSingleRegionById(army.get('region_id'), function (region) {
+          that.moveTo(army.get('region'), true);
+          that.setSelectedArmy(army);
+        });
+      }
+    }
+
     that.centerRegion = function (region) {
       var nodeId = region.nodeId() || 0;
       var node = region.node() || AWE.Map.Manager.getNode(nodeId);

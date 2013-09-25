@@ -25,10 +25,14 @@ AWE.GS = (function(module) {
     
     location: function(){
       return AWE.Map.Manager.getLocation(this.get('location_id'));    
-    }.property('location_id').cacheable(),    
+    }.property('location_id'),
     
     region_id: null, old_region_id: null,
     regionIdObserver: AWE.Partials.attributeHashObserver(module.ArmyAccess, 'region_id', 'old_region_id').observes('region_id'),
+
+    region: function(){
+      return AWE.Map.Manager.getRegion(this.get('region_id'));
+    }.property('region_id'),
 
     owner_id: null, old_owner_id: null,
     ownerIdObserver: AWE.Partials.attributeHashObserver(module.ArmyAccess, 'owner_id', 'old_owner_id').observes('owner_id'),
