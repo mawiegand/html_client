@@ -193,11 +193,11 @@
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="horizontal-center-helper">
     <div class="modal-dialog-pane z-layer-4 army-list-view" id="army-list-dialog">
-    <div class="advisor warrior"></div>
+    <div class="advisor tiny warrior"></div>
 
       <a class="close clickable" {{action "closeClicked"}}></a>
       <h1>{{t army.list.header}}</h1>
-
+      <p class="citation">{{t army.list.flavor}}</p>
       {{#if armies}}
       <table class="army-list-table head">
         <tr>

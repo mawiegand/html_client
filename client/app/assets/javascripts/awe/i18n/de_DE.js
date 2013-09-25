@@ -120,6 +120,7 @@ AWE.I18n.de_DE = function(module) {
 
       list: {
         header: "Armeeübersicht",
+        flavor: "Ha, alle meine Armeen auf einen Blick: Die erfahrensten kampferprobtesten Armeen oben auf und die Frischlinge hinten an. Los jetzt, auf in den Kampf!",
         none:   "Du besitzt derzeit keine Armeen.",
         table: {
           name:     "Name",
