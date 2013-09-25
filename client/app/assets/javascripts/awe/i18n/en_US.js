@@ -120,6 +120,7 @@ AWE.I18n.en_US = function(module) {
 
       list: {
         header: "Armies overview",
+        flavor: "Ha, all my armies at a glance! Experienced ones at the top and new ones at the bottom. Now lets get to it!",
         none:   "You don't currently have any armies.",
 
         table: {
