@@ -584,25 +584,15 @@ AWE.UI.Ember = (function(module) {
     },  
 
     regionPressed: function() {
-      var regionId = this.getPath('army.region_id');
-      var region = AWE.Map.Manager.getRegion(regionId);
-      if (region != null) {
-        var mapController = WACKADOO.activateMapController(true);
-        WACKADOO.closeAllModalDialogs();
-        mapController.centerRegion(region);
-      }
+      var mapController = WACKADOO.activateMapController(true);
+      WACKADOO.closeAllModalDialogs();
+      mapController.centerRegionAndMarkArmy(this.get('army'));
     },
 
-    namePressed: function(event) {
-      var self = this;
-      var locationId = this.getPath('army.location_id');
-      var location = AWE.Map.Manager.getLocation(locationId);
-
-      if (location != null) {
-        var mapController = WACKADOO.activateMapController(true);
-        WACKADOO.closeAllModalDialogs();
-        mapController.centerLocation(location);
-      }
+    namePressed: function() {
+      var mapController = WACKADOO.activateMapController(true);
+      WACKADOO.closeAllModalDialogs();
+      mapController.centerLocationAndMarkArmy(this.get('army'));
     },
 
     armyStatus: function() {
