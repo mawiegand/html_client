@@ -1021,9 +1021,11 @@ AWE.Controller = function (module) {
         that.setSelectedArmy(army);
       }
       else if (army.get('region')) {
-        AWE.Map.Manager.fetchLocationsForRegion(army.get('region'), function () {
-          that.moveTo(army.get('location'), true);
-          that.setSelectedArmy(army);
+        AWE.Map.Manager.fetchSingleNodeById(army.get('region').nodeId(), function () {
+          AWE.Map.Manager.fetchLocationsForRegion(army.get('region'), function () {
+            that.moveTo(army.get('location'), true);
+            that.setSelectedArmy(army);
+          });
         });
       }
       else {
