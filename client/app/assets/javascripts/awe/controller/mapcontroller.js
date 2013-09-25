@@ -1022,17 +1022,17 @@ AWE.Controller = function (module) {
       }
       else if (army.get('region')) {
         AWE.Map.Manager.fetchLocationsForRegion(army.get('region'), function () {
-          var location = army.get('location');
-          debugger;
           that.moveTo(army.get('location'), true);
           that.setSelectedArmy(army);
         });
       }
       else {
         AWE.Map.Manager.fetchSingleRegionById(army.get('region_id'), function (region) {
-          AWE.Map.Manager.fetchLocationsForRegion(region, function () {
-            that.moveTo(army.get('location'), true);
-            that.setSelectedArmy(army);
+          AWE.Map.Manager.fetchSingleNodeById(region.nodeId(), function () {
+            AWE.Map.Manager.fetchLocationsForRegion(region, function () {
+              that.moveTo(army.get('location'), true);
+              that.setSelectedArmy(army);
+            });
           });
         });
       }
