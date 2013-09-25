@@ -1016,6 +1016,7 @@ AWE.Controller = function (module) {
     }
 
     that.centerLocationAndMarkArmy = function (army) {
+      debugger;
       if (army.get('location')) {
         that.moveTo(army.get('location'), true);
         that.setSelectedArmy(army);
@@ -1028,7 +1029,7 @@ AWE.Controller = function (module) {
       }
       else {
         AWE.Map.Manager.fetchSingleRegionById(army.get('region_id'), function (region) {
-          AWE.Map.Manager.fetchLocationsForRegion(army.get('region'), function () {
+          AWE.Map.Manager.fetchLocationsForRegion(region, function () {
             that.moveTo(army.get('location'), true);
             that.setSelectedArmy(army);
           });
