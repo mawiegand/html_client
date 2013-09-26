@@ -154,7 +154,12 @@ AWE.GS = (function(module) {
     setNotifiedAvancedInMundaneRank: function() {
       this.set('notified_mundane_rank', (this.get('mundane_rank') || 0));
     },
-    
+
+    baseRegion: function() {
+      return AWE.Map.Manager.getRegion(this.get('base_region_id'));
+    }.property('base_region_id').cacheable(),
+
+
     //
     // //// MESSAGING //////////////////////////////////////////////////////// 
     //

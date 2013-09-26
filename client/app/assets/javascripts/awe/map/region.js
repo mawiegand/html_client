@@ -35,6 +35,7 @@ AWE.Map = (function(module) {
     var _terrain_id = spec.terrain_id || 0;
     
     var _fortress_id = spec.fortress_id || 0;
+    var _fortress_level = spec._fortress_level || 0;
     var _settlementLevel = spec.settlement_level || 0;
     var _settlementScore = spec.settlement_score || 0;
     var _invitationCode = spec.invitation_code || 0;
@@ -108,8 +109,12 @@ AWE.Map = (function(module) {
     that.isOwn = function() {
       return _ownerId === AWE.GS.CharacterManager.getCurrentCharacter().id;
     }
-        
-    /** returns the id of the alliance owning the region (owner of fortress). 0 for 
+
+    that.isOwnedByNpc = function() {
+      return _ownerId === 1;
+    }
+
+    /** returns the id of the alliance owning the region (owner of fortress). 0 for
      * no alliance. */
     that.allianceId = function() { return _allianceId; }
 
@@ -219,7 +224,7 @@ AWE.Map = (function(module) {
     };
     
     that.toString = function (traverse) {
-      var string = " Region with id: " + _id + " name: " + name + " for node: qt" + _node.path() + ".";
+      var string = " Region with id: " + _id + " name: " + name + " for node: qt" + (_node ? _node.path() : '-') + ".";
       return string;
     }
     
