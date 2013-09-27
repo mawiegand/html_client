@@ -206,7 +206,7 @@ Ember.registerBoundHelper("formatDatetime", function(datetime) {
  * @name Handlebars.Helper.formatDatetime
  */
 Ember.registerBoundHelper("formatPercentage", function(percentage) {
-  return "" + (percentage*100) + "%";
+  return "" + (round(percentage*1000)/10.0) + "%";
 });
 
 /** calculates and returns the cost for speeding up a construction job
