@@ -131,7 +131,7 @@ AWE.UI = (function(module) {
         _bonusLabelView.setFrame(AWE.Geometry.createRect(162, 83, 100, 24));      
         this.addChild(_bonusLabelView);
       }
-      _bonusLabelView.setText('' + (location.settlement() ? Math.floor((location.settlement().get('defense_bonus') || 0)*100)+"%" : '-'));
+      _bonusLabelView.setText('' + (location.settlement() ? Math.floor((location.settlement().get('present_defense_bonus') || 0)*100)+"%" : '-'));
 
                 
       if (!_settlementView) {

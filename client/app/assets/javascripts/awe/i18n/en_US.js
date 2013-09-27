@@ -602,6 +602,8 @@ AWE.I18n.en_US = function(module) {
 
       population:'Population',
       defenseBonus:'Combat Bonus',
+      max:'max',
+      condition:'Condition',
       founded:'Founded',
 
 
