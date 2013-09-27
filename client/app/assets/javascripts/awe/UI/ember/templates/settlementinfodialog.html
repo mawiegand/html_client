@@ -7,7 +7,8 @@
       
       <p><b>{{t general.demigod}}:</b> {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
       <p><b>{{t settlement.founded}}:</b> {{formatDatetime settlement.created_at}}</p>
-      <p><b>{{t settlement.defenseBonus}}:</b> {{formatPercentage settlement.defense_bonus}}</p>
+      <p><b>{{t settlement.defenseBonus}}:</b> {{formatPercentage settlement.present_defense_bonus}} / {{t settlement.max}}: {{formatPercentage settlement.defense_bonus}}</p>
+      <p><b>{{t settlement.condition}}:</b> {{formatPercentage settlement.condition}}</p>
       <p><b>{{t settlement.population}}:</b> {{settlement.score}}</p>
 
       
