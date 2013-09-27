@@ -150,7 +150,7 @@ AWE.GS = (function(module) {
     }.property('garrison_id').cacheable(),  
     
     present_defense_bonus: function() {
-      return this.get('condition') * this.get('defense_bonus');
+      return (this.get('condition') || 0.0) * (this.get('defense_bonus') || 0.0);
     }.property('condition', 'defense_bonus'),
     
     owner: function() {
