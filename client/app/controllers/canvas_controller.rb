@@ -1,3 +1,5 @@
+require 'identity_provider/access'
+
 class CanvasController < ApplicationController
 
   def show
@@ -13,14 +15,19 @@ class CanvasController < ApplicationController
     
     data = decode_facebook_hash(@signed_request)
 
-#    if !params[:code].blank?
-#      data = ActiveSupport::JSON.decode(Base64.decode64(params[:code]))
-#      logger.debug "Code: #{ code.inspect }"
-#    end
+#   if !params[:code].blank?
+#     data = ActiveSupport::JSON.decode(Base64.decode64(params[:code]))
+#     logger.debug "Code: #{ code.inspect }"
+#   end
     
     logger.debug "Facebook Data: #{data.inspect}."    
     
-    @facebook_user = data["user_id"]    unless data.nil? || data["user_id"].blank?
+    @facebook_user = data.nil? || data["user_id"].blank? ? nil :  data["user_id"]    
+    
+    if @facebook_user
+      access = IdentityProvider::Access.new(identity_provider_base_url: CLIENT_CONFIG['identity_provider_base_url'])
+      @access_data = access.obtain_access_token(@facebook_user)
+    end
   end
   
   
@@ -44,7 +51,12 @@ class CanvasController < ApplicationController
 
         logger.debug "Facebook Data: #{data.inspect}."    
 
-        @facebook_user = data["user_id"]    unless data.nil? || data["user_id"].blank?
+        @facebook_user = data.nil? || data["user_id"].blank? ? nil :  data["user_id"]    
+    
+        if @facebook_user
+          access = IdentityProvider::Access.new(identity_provider_base_url: CLIENT_CONFIG['identity_provider_base_url'])
+          @access_data = access.obtain_access_token(@facebook_user)
+        end
     
     
     render action: "show"
