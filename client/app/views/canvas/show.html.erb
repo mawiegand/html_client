@@ -5,10 +5,8 @@
 
 
   
-<% if @facebook_user %>
-  Hello User <%= @facebook_user %>
-  
-  <script>
+<% if !@facebook_user.nil? %>
+<script>
   window.name = JSON.stringify({
     accessToken:        <%= @access_data['access_token'] %>,
     expiration:         <%= @access_data['expires_in'] %>, 
@@ -16,8 +14,7 @@
   });  
   
   top.location.href='<%= client_path %>'</script>");
-  </script>
-  
+</script>
 <% else %>
 <script> top.location.href='<%= raw @auth_url %>'</script>");</script>
 <% end %>

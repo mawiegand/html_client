@@ -24,7 +24,7 @@ class CanvasController < ApplicationController
     
     @facebook_user = data.nil? || data["user_id"].blank? ? nil :  data["user_id"]    
     
-    if @facebook_user
+    if !@facebook_user.nil?
       access = IdentityProvider::Access.new(identity_provider_base_url: CLIENT_CONFIG['identity_provider_base_url'])
       @access_data = access.obtain_access_token(@facebook_user)
     end
@@ -53,7 +53,7 @@ class CanvasController < ApplicationController
 
         @facebook_user = data.nil? || data["user_id"].blank? ? nil :  data["user_id"]    
     
-        if @facebook_user
+        if !@facebook_user.nil?
           access = IdentityProvider::Access.new(identity_provider_base_url: CLIENT_CONFIG['identity_provider_base_url'])
           @access_data = access.obtain_access_token(@facebook_user)
         end
@@ -68,6 +68,8 @@ class CanvasController < ApplicationController
       return nil   if signed_request.blank?
       
       signature, encoded_hash = signed_request.split('.')
+      
+      encoded_hash = encoded_hash + "=" * (6 - encoded_hash.size % 6) unless encoded_hash.size % 6 == 0
       ActiveSupport::JSON.decode(Base64.decode64(encoded_hash))
     end
 
