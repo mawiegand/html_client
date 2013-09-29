@@ -12,9 +12,10 @@
     expiration:         <%= @access_data['expires_in'] %>, 
     client_id:          "WACKADOO-FBCANVAS",
     fbPlayerId:         "<%= @facebook_user %>",
+    fbRunInCanvas:      true,
   });  
   
-  top.location.href="https://test1.wack-a-doo.com/client";
+  window.location.href="https://test1.wack-a-doo.com/client";
 </script>
 <% else %>
 <script> top.location.href='<%= raw @auth_url %>'</script>
