@@ -76,7 +76,7 @@ AWE.Util.TimeCorrection = (function(module) {
         log('TIME_CORRECTION MEASUREMENT-GT', remoteTime.getTime(), localTime.getTime(), requestEndTime.getTime());
         log('TIME_CORRECTION NEW_LAG', newLag, 'duration', duration, 'normalized', normalized, 'difference', difference, 'lag before', my.remoteLag);
       }
-      if (AWE.Config.TIME_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_INFO) {      
+      if (AWE.Config.TIME_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
         log('LAG: '+(newLag < 0.0 ? "-" : ""),
                     'HOURS:',   Math.floor(Math.abs(newLag / (1000*60*60))),   
                     'MINUTES:', Math.floor(Math.abs(newLag / (1000*60)))%60,   

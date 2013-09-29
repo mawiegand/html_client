@@ -720,24 +720,27 @@ AWE.UI.Ember = (function(module) {
       AWE.Action.Manager.queueAction(action, function(status) {
         if (status === AWE.Net.OK) {
           // aktualisieren
-          // character
-          var currentCharacter = AWE.GS.game.get('currentCharacter')
-          AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-            AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
-              log('-----> SET NEW BASE NODE');
-              currentCharacter.set('base_node', node);
-              WACKADOO.mapScreenController.setModelChanged();
+          AWE.Map.Manager.updateNode(oldRegion.node(), true, function(node) {
+            AWE.Map.Manager.updateRegionForNode(node, function (region) {
+              AWE.Map.Manager.fetchLocationsForRegion(region, function() {
+                WACKADOO.mapScreenController.setModelChanged();
+                WACKADOO.mapScreenController.setMaptreeChanged();
+              });
             });
           });
-          // beide locations
-          AWE.Map.Manager.fetchLocationsForRegion(oldRegion, function() {
-            WACKADOO.mapScreenController.setModelChanged();
-            log('-----> OLD LOCATION UPDATED', location, 'IN REGION', oldRegion);
-          });
-          AWE.Map.Manager.fetchLocationsForRegion(newRegion, function() {
-            WACKADOO.mapScreenController.setModelChanged();
-            log('-----> NEW LOCATION UPDATED', location, 'IN REGION', newRegion);
-            AWE.GS.SettlementManager.updateSettlementsOfCharacter(currentCharacter.getId());
+          // character
+          AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+            var region = AWE.Map.Manager.getRegion(newRegion.id());
+            AWE.Map.Manager.updateNode(region.node(), true, function(node) {
+              var currentCharacter = AWE.GS.game.get('currentCharacter');
+              currentCharacter.set('base_node', node);
+              AWE.Map.Manager.updateRegionForNode(node, function (region) {
+                AWE.Map.Manager.fetchLocationsForRegion(region, function() {
+                  WACKADOO.mapScreenController.setModelChanged();
+                  WACKADOO.mapScreenController.setMaptreeChanged();
+                });
+              });
+            });
           });
           // ggf. artefakt
           // garrison army
@@ -764,7 +767,6 @@ AWE.UI.Ember = (function(module) {
     
     moveToRegionClicked: function() {
       var self = this;
-
       self.set('message', null);
       self.set('moving', true);
       var newRegionName = self.get('newRegionName');
