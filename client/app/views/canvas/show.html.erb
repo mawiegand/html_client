@@ -14,7 +14,7 @@
     fbPlayerId:         "<%= @facebook_user %>",
   });  
   
-  top.location.href="https://test1.wack-a-doo.com/client";
+  window.location.href="https://test1.wack-a-doo.com/client";
 </script>
 <% else %>
 <script> top.location.href='<%= raw @auth_url %>'</script>
