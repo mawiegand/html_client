@@ -8,7 +8,7 @@
 <% if !@facebook_user.nil? %>
 <script>
   window.name = JSON.stringify({
-    accessToken:        <%= @access_data['access_token'] %>,
+    accessToken:        "<%= @access_data['access_token'] %>",
     expiration:         <%= @access_data['expires_in'] %>, 
     client_id:          'WACKADOO-FBCANVAS',
   });  
