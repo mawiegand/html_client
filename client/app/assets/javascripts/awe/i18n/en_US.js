@@ -586,6 +586,11 @@ AWE.I18n.en_US = function(module) {
         title:'Not enough credits',
         message:"Unfortunately you don't have enough credits to do that. Visit the credit shop to buy more 5D platinum credits.",
       },
+      notenoughgoldenfrogs: {
+        getGoldenFrogs: 'Get Golden Frogs',
+        title:'Not enough golden frogs',
+        message:"Unfortunately you don't have enough golden frogs to do that. Just buy some.",
+      },
       error:{
         heading:"Server Error",
         message:"There's a problem with the Shop. Please try again later.",

@@ -600,6 +600,11 @@ AWE.I18n.de_DE = function(module) {
         title: 'Nicht genug Credits',
         message: 'Leider hast Du nicht genug Credits. Besuche den Credit Shop, um mehr 5D Platinum Credits zu kaufen.',
       },
+      notenoughgoldenfrogs: {
+        getGoldenFrogs: 'Hol Dir Kröten',
+        title: 'Nicht genug Kröten',
+        message: 'Leider hast Du nicht genug Kröten. Kauf Dir direkt ein paar.',
+      },
       error: {
         heading: "Server Fehler",
         message: "Es gibt ein Problem mit dem Shop. Bitte versuche es später noch einmal.",

@@ -6,7 +6,10 @@
 var AWE = AWE || {};
 
 AWE.GS = (function(module) {
-  
+
+  module.CURRENCY_CREDITS = 0;
+  module.CURRENCY_GOLDEN_FROGS = 1;
+
   module.Shop = module.Entity.extend({
     resourceOffers: null,
     bonusOffers: null,
