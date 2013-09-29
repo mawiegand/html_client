@@ -69,8 +69,8 @@ class CanvasController < ApplicationController
       
       signature, encoded_hash = signed_request.split('.')
       
-      encoded_hash = encoded_hash + "=" * (6 - encoded_hash.size % 6) unless encoded_hash.size % 6 == 0
-      ActiveSupport::JSON.decode(Base64.decode64(encoded_hash))
+      encoded_hash += "=" * (4 - encoded_hash.length.modulo(4))
+      ActiveSupport::JSON.decode(Base64.decode64(encoded_hash.tr('-_','+/')))
     end
 
 end
