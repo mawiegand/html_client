@@ -5,8 +5,17 @@
 
 
   
-<% if @facebook_user %>
-  Hello User <%= @facebook_user %>
+<% if !@facebook_user.nil? %>
+<script>
+  window.name = JSON.stringify({
+    accessToken:        "<%= @access_data['access_token'] %>",
+    expiration:         <%= @access_data['expires_in'] %>, 
+    client_id:          "WACKADOO-FBCANVAS",
+    fbPlayerId:         "<%= @facebook_user %>",
+  });  
+  
+  top.location.href="https://test1.wack-a-doo.com/client";
+</script>
 <% else %>
-<script> top.location.href='<%= raw @auth_url %>'</script>");</script>
+<script> top.location.href='<%= raw @auth_url %>'</script>
 <% end %>

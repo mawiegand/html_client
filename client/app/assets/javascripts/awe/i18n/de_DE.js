@@ -623,6 +623,8 @@ AWE.I18n.de_DE = function(module) {
       
       population: 'Bewohner',
       defenseBonus: 'Kampfbonus',
+      max:'Maximum',
+      condition:'Zustand',
       founded: 'Gründung',
 
       

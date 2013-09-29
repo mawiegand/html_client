@@ -181,7 +181,7 @@ AWE.UI = (function(module) {
         _rankLabelView.setFrame(AWE.Geometry.createRect(162, 83, 100, 24));      
         this.addChild(_rankLabelView);
       }
-      _rankLabelView.setText('' + (settlement ? Math.floor((settlement.get('defense_bonus') || 0)*100)+"%" : '-'));
+      _rankLabelView.setText('' + (settlement ? Math.floor((settlement.get('present_defense_bonus') || 0)*100)+"%" : '-'));
 
       
       
