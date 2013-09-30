@@ -170,7 +170,7 @@ AWE.UI = (function(module) {
       if (!rightOfWayIcon) {
         rightOfWayIcon = AWE.UI.createImageView();
         rightOfWayIcon.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage("map/army/target_background"));
-        rightOfWayIcon.setFrame(AWE.Geometry.createRect(56, 76, 32, 32));
+        rightOfWayIcon.setFrame(AWE.Geometry.createRect(42, 87, 32, 32));
         rightOfWayIcon.setContentMode(module.setContentModeNone);
         this.addChild(rightOfWayIcon); 
       }
@@ -199,7 +199,7 @@ AWE.UI = (function(module) {
 
       if (!my.infoContainer) {
         my.infoContainer = AWE.UI.createMultiLineContainer();
-        my.infoContainer.initWithController(my.controller, AWE.Geometry.createRect(122,4,100,0));
+        my.infoContainer.initWithController(my.controller, AWE.Geometry.createRect(152,20,100,0));
         this.addChild(my.infoContainer);
       }
       
