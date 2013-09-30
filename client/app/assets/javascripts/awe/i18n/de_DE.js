@@ -557,7 +557,7 @@ AWE.I18n.de_DE = function(module) {
     shop: {
       button:'Shop',
       title: 'Fundgrube',
-      currentCreditAmount: 'Du besitzt derzeit   ein Guthaben von',
+      currentCreditAmount: 'Du besitzt derzeit ein Guthaben von',
       credits: 'Credits',
       platinumCredits: '5D Platinum Credits',
       for: 'für',
@@ -581,6 +581,7 @@ AWE.I18n.de_DE = function(module) {
       lifetime: 'Lifetime',
       current: "Aktuelle",
       platinumCredit: "Platinum Credits",
+      specialOffer: "Katapultstart",
       offers: "Angebote",
       loading: "Shop wird geladen",
       unreachable: "Der Shop ist vorübergehend nicht erreichbar!",
@@ -616,6 +617,8 @@ AWE.I18n.de_DE = function(module) {
         platinumAccountMessage: "Der Platinum Account wurde aktiviert. Platinum Features sind ab sofort freigeschaltet.",
         bonusHeader: "Juhuu!",
         bonusMessage: "Der Bonus wurde aktiviert und wird Deinem Stamm helfen seinen Wohlstand zu mehren.",
+        cashHeader: "Perfekt!",
+        cashMessage: "Das Starterpaket wurde erfolgreich zu Deinem Account hinzugefügt.",
       },
     },
     

@@ -279,6 +279,50 @@ AWE.Controller = (function(module) {
           }
         },
 
+        buySpecialOfferPressed: function(offerId) {
+
+          var offer = AWE.GS.SpecialOfferManager.getSpecialOffer(offerId);
+          var price = offer.get('price');
+
+          var creditAmount = this.getPath('shop.creditAmount') || 0;
+          if (creditAmount < price) {
+            log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
+            that.presentNotEnoughCreditsWarning();
+            return ;
+          }
+
+          AWE.GS.ShopManager.buySpecialOffer(offerId, function(transaction) { // success handler
+            if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
+              var info = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.specialHeader'),
+                message: AWE.I18n.lookupTranslation('shop.buyConfirmation.specialMessage'),
+              });
+
+              AWE.GS.SpecialOfferManager.updateSpecialOffer(offerId, null, function(specialOffer) {
+                AWE.GS.ShopManager.getShop().set('specialOffer', specialOffer);
+              });
+
+              that.applicationController.presentModalDialog(info);
+              AWE.GS.ShopManager.fetchCreditAmount(function(){
+                that.setModelChanged();
+              });
+              AWE.GS.ResourcePoolManager.updateResourcePool(null, function(){
+                that.setModelChanged();
+              });
+              AWE.GS.SettlementManager.updateSettlementsOfCharacter(AWE.GS.game.getPath('currentCharacter.id'));
+            }
+            else {
+              that.presentNotEnoughCreditsWarning();
+            }
+          }, function() {                                   // error handler
+            var info = AWE.UI.Ember.InfoDialog.create({
+              heading: AWE.I18n.lookupTranslation('shop.error.heading'),
+              message: AWE.I18n.lookupTranslation('shop.error.message'),
+            });
+            that.applicationController.presentModalDialog(info);
+          })
+        },
+
         buyPlatinumOfferPressed: function(offerId) {
           
           var creditAmount = this.getPath('shop.creditAmount') || 0;

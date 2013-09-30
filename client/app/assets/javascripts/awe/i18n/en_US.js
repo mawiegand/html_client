@@ -564,6 +564,7 @@ AWE.I18n.en_US = function(module) {
       resourceOffers:'Golden Frog offers',
       platinumFunction:'Platinum function',
       platinumOffers:'Platinum account',
+      specialOffer: "Starter package",
       bonusOffers:"Bonus Packages",
       production:'Production',
       duration:'Duration',
@@ -602,6 +603,8 @@ AWE.I18n.en_US = function(module) {
         platinumAccountMessage:"Your character has been credited with a Platinum Account. Platinum features will be available immediately.",
         bonusHeader:"Yeaha!",
         bonusMessage:"The bonus effect has been unlocked and will help your clan to prosper.",
+        specialHeader:"Perfect!",
+        specialMessage:"Congratulations! The special offer items have been credited to your account.",
       },
     },
 

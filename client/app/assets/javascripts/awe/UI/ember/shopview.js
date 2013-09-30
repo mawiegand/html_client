@@ -14,8 +14,28 @@ AWE.UI.Ember = (function(module) {
     
     init: function() {
       this._super();
-      
-      // TODO add onfocus event to capture event when user comes back from bytro shop
+
+      var shop = AWE.GS.ShopManager.getShop();
+
+      AWE.GS.ShopManager.fetchCreditAmount(function() {
+        shop.set('loading', false);
+        shop.set('enabled', true);
+      },function() {
+        shop.set('loading', false);
+        shop.set('enabled', false);
+      });
+      AWE.GS.BonusOfferManager.updateBonusOffers(null, function(result) {
+        shop.set('bonusOffers', AWE.GS.BonusOfferManager.getBonusOffers());
+      });
+      AWE.GS.ResourceOfferManager.updateResourceOffers(null, function(result) {
+        shop.set('resourceOffers', AWE.GS.ResourceOfferManager.getResourceOffers());
+      });
+      AWE.GS.PlatinumOfferManager.updatePlatinumOffers(null, function(result) {
+        shop.set('platinumOffers', AWE.GS.PlatinumOfferManager.getPlatinumOffers());
+      });
+      AWE.GS.SpecialOfferManager.updateSpecialOffers(null, function(result) {
+        shop.set('specialOffer', AWE.GS.SpecialOfferManager.getSpecialOffers()[0]);
+      });
     },
 
     shop: null,
@@ -29,6 +49,7 @@ AWE.UI.Ember = (function(module) {
     resourceOffersBinding: 'shop.resourceOffers',
     bonusOffersBinding: 'shop.bonusOffers',
     platinumOffersBinding: 'shop.platinumOffers',
+    specialOfferBinding: 'shop.specialOffer',
 
     creditAmountBinding: 'shop.creditAmount',
 
@@ -43,11 +64,19 @@ AWE.UI.Ember = (function(module) {
     buyBonusOfferPressed: function() {
       log('Action not connected: buyOfferWasPressed.');
     },
-    
+
     buyPlatinumOfferPressed: function() {
       log('Action not connected: buyOfferWasPressed.');
     },
-    
+
+    buySpecialOfferPressed: function() {
+      log('Action not connected: buyOfferWasPressed.');
+    },
+
+    specialOfferHelpPressed: function() {
+      window.open(AWE.Config.APP_SUPPORT_BASE + '/info/special_offer', '_blank');
+    },
+
     platinumHelpPressed: function() {
       window.open(AWE.Config.SHOP_SERVER_BASE + 'info', '_blank');
     },
@@ -96,7 +125,17 @@ AWE.UI.Ember = (function(module) {
       return this.get('offer').resource_effect !== null;
     }.property('offer.resource_effect'),    
   });
-  
+
+  module.ShopSpecialOffer = Ember.View.extend({
+    templateName: 'shop-special-offer',
+
+    offer: null,
+
+    buySpecialOfferPressed: function() {
+      this.get('parentView').buySpecialOfferPressed(this.getPath('offer.id'));
+    },
+  });
+
   module.ShopPlatinumOffer = Ember.View.extend({
     templateName: 'shop-platinum-offer',
     

@@ -13,6 +13,7 @@ AWE.GS = (function(module) {
   module.Shop = module.Entity.extend({
     resourceOffers: null,
     bonusOffers: null,
+    specialOffer: null,
     platinumOffers: null,
     creditAmount: null,
     
@@ -32,23 +33,6 @@ AWE.GS = (function(module) {
     that.init = function() {
       
       my.shop = module.Shop.create();
-      
-      that.fetchCreditAmount(function(){
-        my.shop.set('loading', false);
-        my.shop.set('enabled', true);        
-      },function(){
-        my.shop.set('loading', false);
-        my.shop.set('enabled', false);
-      });
-      AWE.GS.BonusOfferManager.updateBonusOffers(null, function(result) {
-        my.shop.set('bonusOffers', AWE.GS.BonusOfferManager.getBonusOffers());
-      });
-      AWE.GS.ResourceOfferManager.updateResourceOffers(null, function(result) {
-        my.shop.set('resourceOffers', AWE.GS.ResourceOfferManager.getResourceOffers());
-      });
-      AWE.GS.PlatinumOfferManager.updatePlatinumOffers(null, function(result) {
-        my.shop.set('platinumOffers', AWE.GS.PlatinumOfferManager.getPlatinumOffers());
-      });
     };
     
     that.getShop = function(){
@@ -117,7 +101,31 @@ AWE.GS = (function(module) {
         }
       });
     }
-    
+
+    that.buySpecialOffer = function(offerId, successCallback, errorCallback) {
+      var offer = module.SpecialOfferManager.getSpecialOffer(offerId);
+      if (offer) {
+        offer.set('isBuying', true);
+      }
+      var transaction = AWE.Action.Shop.createOfferTransaction(offerId, 'special_offer');
+      transaction.send(function(status) {
+        if (offer) {
+          offer.set('isBuying', false);
+        }
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          AWE.GS.SpecialOfferManager.updateSpecialOffers();
+          if (successCallback) {
+            successCallback(transaction.data());
+          }
+        }
+        else {
+          if (errorCallback) {
+            errorCallback();
+          }
+        }
+      });
+    }
+
     that.buyPlatinumOffer = function(offerId, successCallback, errorCallback) {
       var offer = module.PlatinumOfferManager.getPlatinumOffer(offerId);
       if (offer) {
