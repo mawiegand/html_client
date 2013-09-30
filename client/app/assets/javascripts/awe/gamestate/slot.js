@@ -218,7 +218,7 @@ AWE.GS = (function(module) {
       for (var l = 1; l <= this.get('levelAfterJobs'); l++) {
         time += this.calcProductionTime(l);
       }
-      return time;
+      return time / 4.0;
     }.property('levelAfterJobs', 'buildingType.production_time', 'queue.speed').cacheable(),  
      
     conversionTime: function() {

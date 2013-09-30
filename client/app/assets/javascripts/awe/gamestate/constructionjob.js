@@ -82,7 +82,7 @@ AWE.GS = (function(module) {
       for (var l = 1; l <= this.get('level_before'); l++) {
         time += building.calcProductionTime(l);
       }
-      return time;
+      return time / 4.0;
     }.property('slot', 'slot.building', 'level_before', 'buildingType.production_time', 'queue.speed').cacheable(),
         
     parsedFinishingDate: function() {
