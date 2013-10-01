@@ -27,6 +27,11 @@ AWE.GS = (function(module) {
     ends_at: null,
     duration: null,
     bonus: null,
+    currency: 0,
+
+    frogCurrency: function() {
+      return this.get('currency') == AWE.GS.CURRENCY_GOLDEN_FROGS;
+    }.property('currency').cacheable(),
     
     isBuying: false,  // set to true while communicating with the shop on purchase
     
@@ -69,7 +74,15 @@ AWE.GS = (function(module) {
       AWE.Ext.applyFunctionToElements(that.getEntities(), function(offer){
         if (offer) offers.push(offer);
       });
-      return offers;
+
+      return offers.sort(function(a, b) {
+        if (a.get('resource_id') == b.get('resource_id')) {
+          return a.get('bonus') - b.get('bonus');
+        }
+        else {
+          return a.get('resource_id') - b.get('resource_id');
+        }
+      });
     }
     
     that.lastUpdate = function() {

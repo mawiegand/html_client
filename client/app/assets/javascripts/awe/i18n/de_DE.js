@@ -558,6 +558,7 @@ AWE.I18n.de_DE = function(module) {
       button:'Shop',
       title: 'Fundgrube',
       currentCreditAmount: 'Du besitzt derzeit ein Guthaben von',
+      credit: 'Credit',
       credits: 'Credits',
       platinumCredits: '5D Platinum Credits',
       for: 'für',
@@ -565,9 +566,10 @@ AWE.I18n.de_DE = function(module) {
       buyCredits: 'Jetzt aufladen',
       article: 'Artikel',
       description: 'Beschreibung',
-      price: 'Credits',
+      price: 'Preis',
       activating: "Senden...",
       buy: 'Aktivieren',
+      buy2: "Kaufen",
       action: 'Aktion',
       extend: 'Verlängern',
       resourceOffers: "Krötenpakete",
@@ -588,6 +590,11 @@ AWE.I18n.de_DE = function(module) {
 
       goldenFrog: "Kröte",
       goldenFrogs: "Kröten",
+
+      frog: "Kröte",
+      frogs: "Kröten",
+
+      bonusOfferDescription: "Exklusiv für dich zum Start!",
 
       platinumDescription:
         "Der Platinum Account bietet Dir " +

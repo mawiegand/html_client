@@ -549,6 +549,7 @@ AWE.I18n.en_US = function(module) {
       button:'Shop',
       title:'Shop',
       currentCreditAmount:'Your credit is currently',
+      credit:'Credit',
       credits:'Credits',
       platinumCredits:'5D platinum credits',
       for:'for',
@@ -556,9 +557,10 @@ AWE.I18n.en_US = function(module) {
       buyCredits:'Buy now',
       article:'Article',
       description:'Description',
-      price:'Credits',
+      price:'Price',
       activating:'Sending',
       buy:'Acitvate',
+      buy2:'Buy',
       action:'Action',
       extend:'Extend',
       resourceOffers:'Golden Frog offers',
@@ -581,6 +583,11 @@ AWE.I18n.en_US = function(module) {
 
       goldenFrog:"Golden Frog",
       goldenFrogs:"Golden Frogs",
+
+      frog:"Frog",
+      frogs:"Frogs",
+
+      bonusOfferDescription: "Exclusive for you!",
 
       notenoughcredits:{
         getCredits:'Get credits',
