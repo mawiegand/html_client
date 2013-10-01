@@ -656,8 +656,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }
       this.set('startupArguments', window.name);
       window.name = "";                                 // unset variables
-    
-      
+          
       var useDevToken = window.facebookCheat && window.facebookCheat === true;
       var accessToken = null;
       

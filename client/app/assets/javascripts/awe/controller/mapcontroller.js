@@ -172,9 +172,6 @@ AWE.Controller = function (module) {
       inspectorViews.mapTypeToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
       _stages[3].addChild(inspectorViews.mapTypeToggleButtonView.displayObject());
 
-      inspectorViews.encyclopediaButtonView = AWE.UI.createEncyclopediaButtonView();
-      inspectorViews.encyclopediaButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
-      _stages[3].addChild(inspectorViews.encyclopediaButtonView.displayObject());
 
       inspectorViews.armyListButtonView = AWE.UI.createArmyListButtonView();
       inspectorViews.armyListButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
@@ -197,6 +194,7 @@ AWE.Controller = function (module) {
       $("body").append('<div class="link-pane"><a href="' + AWE.Config.EXTERNAL_FACEBOOK_URL + '" target="_blank"><img class="fb-icon" src="' + AWE.Config.RAILS_ASSET_PATH + 'icons/fb.png" /></a> &nbsp; ' +
         '                       <a href="' + AWE.Config.EXTERNAL_FORUM_URL + '" target="_blank">Forum</a> &nbsp; ' +
         '                       <a href="' + AWE.Config.EXTERNAL_MANUAL_URL + '" target="_blank">Manual</a> &nbsp; ' +
+        '                       <a href="#" onClick="WACKADOO.openEncyclopedia()">Enzyklop&auml;die</a> &nbsp; ' +
         '                       <a href="#" onClick="WACKADOO.reload()">Reload</a></div>');
       window.WACKADOO.addDomElement($('.link-pane'), false);
       window.WACKADOO.addDomElement(zoomSlider.getContainer(), true);
@@ -1036,6 +1034,44 @@ AWE.Controller = function (module) {
 
     that.centerLocation = function (location) {
       that.moveTo(location, true);
+    }
+
+    that.centerLocationAndMarkArmy = function (army) {
+      if (army.get('location')) {
+        that.moveTo(army.get('location'), true);
+        that.setSelectedArmy(army);
+      }
+      else if (army.get('region')) {
+        AWE.Map.Manager.fetchSingleNodeById(army.get('region').nodeId(), function () {
+          AWE.Map.Manager.fetchLocationsForRegion(army.get('region'), function () {
+            that.moveTo(army.get('location'), true);
+            that.setSelectedArmy(army);
+          });
+        });
+      }
+      else {
+        AWE.Map.Manager.fetchSingleRegionById(army.get('region_id'), function (region) {
+          AWE.Map.Manager.fetchSingleNodeById(region.nodeId(), function () {
+            AWE.Map.Manager.fetchLocationsForRegion(region, function () {
+              that.moveTo(army.get('location'), true);
+              that.setSelectedArmy(army);
+            });
+          });
+        });
+      }
+    }
+
+    that.centerRegionAndMarkArmy = function (army) {
+      if (army.get('region')) {
+        that.moveTo(army.get('region'), true);
+        that.setSelectedArmy(army);
+      }
+      else {
+        AWE.Map.Manager.fetchSingleRegionById(army.get('region_id'), function (region) {
+          that.moveTo(army.get('region'), true);
+          that.setSelectedArmy(army);
+        });
+      }
     }
 
     that.centerRegion = function (region) {
@@ -2239,8 +2275,8 @@ AWE.Controller = function (module) {
 
     var setFortressPosition = function (view, frame) {
       view.setCenter(AWE.Geometry.createPoint(
-        frame.origin.x + frame.size.width / 2,
-        frame.origin.y + frame.size.height / 2 - 14
+        frame.origin.x + frame.size.width / 2 ,
+        frame.origin.y + frame.size.height / 2 - 34
       ));
     }
 
@@ -3496,11 +3532,8 @@ AWE.Controller = function (module) {
       if (inspectorViews.mapTypeToggleButtonView) {
         inspectorViews.mapTypeToggleButtonView.setOrigin(AWE.Geometry.createPoint(20 + 46, _windowSize.height - 154));
       }
-      if (inspectorViews.encyclopediaButtonView) {
-        inspectorViews.encyclopediaButtonView.setOrigin(AWE.Geometry.createPoint(20 + 114, _windowSize.height - 101));
-      }
       if (inspectorViews.armyListButtonView) {
-        inspectorViews.armyListButtonView.setOrigin(AWE.Geometry.createPoint(20 + 190, _windowSize.height - 101));
+        inspectorViews.armyListButtonView.setOrigin(AWE.Geometry.createPoint(20 + 114, _windowSize.height - 101));
       }
 
       return true;

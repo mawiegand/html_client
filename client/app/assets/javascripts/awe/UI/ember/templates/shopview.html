@@ -13,7 +13,7 @@
             <p>{{ t shop.currentCreditAmount }} <b>{{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }}</b> {{ t shop.platinumCredits }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="simple-button float-right platinum" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span></p>
             
             {{#if resourceOffers}}
-            <h3>{{ t shop.resourceOffers }}</h3>
+              <h3>{{ t shop.resourceOffers }}</h3>
                       
               <div class="platinum-button" {{action "buyCreditsPressed" target="parentView"}}>
                 <p>{{t shop.current}}</p><p>{{t shop.platinumCredit}}</p><p>{{t shop.offers}}</p>
@@ -36,7 +36,14 @@
                 </div>
               </div>
             </div>
-            
+
+            {{#if specialOffer}}
+              <div class="clearfix"></div>
+              <div style="text-align: right;" class="help-icon" {{action "specialOfferHelpPressed"}}></div></h3>
+
+              {{view AWE.UI.Ember.ShopSpecialOffer offerBinding="specialOffer" shopBinding="shop" classNames="special-offer"}}
+            {{/if}}
+
             {{#if platinumOffers}}
             
               <div class="clearfix"></div>
@@ -71,7 +78,6 @@
                 {{view AWE.UI.Ember.ShopBonusOffer offerBinding="this" shopBinding="shop" classNames="bonus-offer"}}
               {{/each}}
             {{/if}}
-
           {{/unless}}
         {{/if}}
         
@@ -112,6 +118,17 @@
   </div>
 </script>
 
+<script type="text/x-handlebars" data-template-name="shop-special-offer">
+  <div class="bonus-offer-description">{{ t shop.specialOffer}}</div>
+  <div class="bonus-offer-button">
+    {{#if offer.isBuying}}
+      {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{t shop.activating }}
+    {{else}}
+      <div class="simple-button" {{action "buySpecialOfferPressed"}}>{{t shop.buy }}</div>
+    {{/if}}
+  </div>
+</script>
+
 <script type="text/x-handlebars" data-template-name="shop-platinum-offer">
   <div class="bonus-offer-description">{{ t shop.platinumOffers}}</div>
   <div class="bonus-offer-duration">{{ offerDurationDays }} {{t general.days}}</div>
@@ -140,6 +157,12 @@
   <div class="advisor girl"></div>
   <h1>{{t shop.notenoughcredits.title}}</h1>
   <p>{{t shop.notenoughcredits.message}}</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="not-enough-goldenfrogs-info">
+  <div class="advisor girl"></div>
+  <h1>{{t shop.notenoughgoldenfrogs.title}}</h1>
+  <p>{{t shop.notenoughgoldenfrogs.message}}</p>
 </script>
 
 

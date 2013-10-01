@@ -207,7 +207,7 @@ AWE.UI = (function(module) {
       }
       var settlement = my.location.settlement();
       _infoText1View.setText('' + (settlement ? settlement.get('score') : my.location.settlementScore()));
-      _infoText2View.setText('' + (settlement ? Math.floor((settlement.get('defense_bonus') || 0)*100)+"%" : '-'));      
+      _infoText2View.setText('' + (settlement ? Math.floor((settlement.get('present_defense_bonus') || 0)*100)+"%" : '-'));      
 
       if (!_infoText3View && my.location.garrisonArmy() && my.location.garrisonArmy().get('isSuspended')) {
         _infoText3View = AWE.UI.createLabelView();

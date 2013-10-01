@@ -120,14 +120,18 @@ AWE.I18n.en_US = function(module) {
 
       list: {
         header: "Armies overview",
+        flavor: "Ha, all my armies at a glance! Experienced ones at the top and new ones at the bottom. Now lets get to it!",
         none:   "You don't currently have any armies.",
 
         table: {
           name:     "Name",
           region:   "Region",
           status:   "Status",
+          rank:     "Rank",
+          ap:       "AP",
           size:     "Size",
-          size_max: "Maxmimum",
+          max_size: "Maxmimum",
+          info:     "Info",
         },
 
         status: {
@@ -560,6 +564,7 @@ AWE.I18n.en_US = function(module) {
       resourceOffers:'Golden Frog offers',
       platinumFunction:'Platinum function',
       platinumOffers:'Platinum account',
+      specialOffer: "Starter package",
       bonusOffers:"Bonus Packages",
       production:'Production',
       duration:'Duration',
@@ -582,6 +587,11 @@ AWE.I18n.en_US = function(module) {
         title:'Not enough credits',
         message:"Unfortunately you don't have enough credits to do that. Visit the credit shop to buy more 5D platinum credits.",
       },
+      notenoughgoldenfrogs: {
+        getGoldenFrogs: 'Get Golden Frogs',
+        title:'Not enough golden frogs',
+        message:"Unfortunately you don't have enough golden frogs to do that. Just buy some.",
+      },
       error:{
         heading:"Server Error",
         message:"There's a problem with the Shop. Please try again later.",
@@ -593,6 +603,8 @@ AWE.I18n.en_US = function(module) {
         platinumAccountMessage:"Your character has been credited with a Platinum Account. Platinum features will be available immediately.",
         bonusHeader:"Yeaha!",
         bonusMessage:"The bonus effect has been unlocked and will help your clan to prosper.",
+        specialHeader:"Perfect!",
+        specialMessage:"Congratulations! The special offer items have been credited to your account.",
       },
     },
 
@@ -600,6 +612,8 @@ AWE.I18n.en_US = function(module) {
 
       population:'Population',
       defenseBonus:'Combat Bonus',
+      max:'max',
+      condition:'Condition',
       founded:'Founded',
 
 
@@ -1141,6 +1155,7 @@ AWE.I18n.en_US = function(module) {
       criticalChance:"chance",
       cannotBeTrained:"Cannot be trained by players.",
       experienceForLostUnits: "XP per lost unit",
+      experienceFactor: "XP factor",
 
       commandPointsAbbreviation:"CP",
       buildingTime:"Build time",

@@ -36,30 +36,36 @@ AWE.Config = (function(module) {
     "map/tiles/desert512":    AWE.Config.RAILS_ASSET_PATH + 'tiles/desert512.jpg',
     "map/tiles/swamp512":     AWE.Config.RAILS_ASSET_PATH + 'tiles/swamp512.jpg',
 
+    "map/hill/forest":        AWE.Config.RAILS_ASSET_PATH + 'settlements/hill/hill_forest.png',
+    "map/hill/plain":         AWE.Config.RAILS_ASSET_PATH + 'settlements/hill/hill_plain.png',
+    "map/hill/mountains":     AWE.Config.RAILS_ASSET_PATH + 'settlements/hill/hill_mountains.png',
+    "map/hill/desert":        AWE.Config.RAILS_ASSET_PATH + 'settlements/hill/hill_desert.png',
+    "map/hill/swamp":         AWE.Config.RAILS_ASSET_PATH + 'settlements/hill/hill_swamp.png',
+    "map/hill/label":         AWE.Config.RAILS_ASSET_PATH + 'settlements/hill/hill_label.png',
 
     "map/fortress/small":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/fortresssmall.png',
     "map/fortress/middle":    AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/fortressmiddle.png',
     "map/fortress/large":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/fortresslarge.png',
 
-    "map/fortress/2/small":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/2/fortresssmall.png',
-    "map/fortress/2/middle":    AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/2/fortressmiddle.png',
-    "map/fortress/2/large":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/2/fortresslarge.png',
+    "map/fortress/2/small":   AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/2/fortresssmall.png',
+    "map/fortress/2/middle":  AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/2/fortressmiddle.png',
+    "map/fortress/2/large":   AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/2/fortresslarge.png',
 
-    "map/fortress/3/small":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/3/fortresssmall.png',
-    "map/fortress/3/middle":    AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/3/fortressmiddle.png',
-    "map/fortress/3/large":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/3/fortresslarge.png',
+    "map/fortress/3/small":   AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/3/fortresssmall.png',
+    "map/fortress/3/middle":  AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/3/fortressmiddle.png',
+    "map/fortress/3/large":   AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/3/fortresslarge.png',
 
-    "map/fortress/4/small":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/4/fortresssmall.png',
-    "map/fortress/4/middle":    AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/4/fortressmiddle.png',
-    "map/fortress/4/large":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/4/fortresslarge.png',
+    "map/fortress/4/small":   AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/4/fortresssmall.png',
+    "map/fortress/4/middle":  AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/4/fortressmiddle.png',
+    "map/fortress/4/large":   AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/4/fortresslarge.png',
 
     "map/colony/small":       AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/colonysmall.png',
     "map/colony/middle":      AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/colonymiddle.png',
     "map/colony/big":         AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/colonybig.png',
 
-    "map/colony/1/small":       AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/1/colonysmall.png',
-    "map/colony/1/middle":      AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/1/colonymiddle.png',
-    "map/colony/1/big":         AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/1/colonybig.png',
+    "map/colony/1/small":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/1/colonysmall.png',
+    "map/colony/1/middle":    AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/1/colonymiddle.png',
+    "map/colony/1/big":       AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/1/colonybig.png',
 
     "map/outpost/small":      AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/outpostsmall.png',
     "map/outpost/middle":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/outpostmiddle.png',
@@ -67,7 +73,7 @@ AWE.Config = (function(module) {
 
     "map/emptyslot" :         AWE.Config.RAILS_ASSET_PATH + 'white_icon.png',
 
-    "map/icon/bubble":         AWE.Config.RAILS_ASSET_PATH + 'icons/bubble.png',
+    "map/icon/bubble":        AWE.Config.RAILS_ASSET_PATH + 'icons/bubble.png',
 
     "map/army":               AWE.Config.RAILS_ASSET_PATH + 'army.png',
 

@@ -14,6 +14,9 @@ AWE.UI = (function(module) {
     var _node = null;
     
     var _imageView = null;
+    var _hillView = null;
+    var _hillImageName = null;
+    var _flagBackground = null;
     var _labelView = null;
     var _selectShape = null;
     var _flagView = null;
@@ -45,8 +48,8 @@ AWE.UI = (function(module) {
       _node = node;
       
       this.setFrame(AWE.Geometry.createRect(0,0,
-                                            AWE.Config.MAPPING_FORTRESS_SIZE,
-                                            AWE.Config.MAPPING_FORTRESS_SIZE + 5));
+                                            AWE.Config.MAP_FORTRESS_SIZE,
+                                            AWE.Config.MAP_FORTRESS_SIZE+10)); // + label
       that.recalcView();
     };
     
@@ -54,6 +57,59 @@ AWE.UI = (function(module) {
 
       var allianceId = _node.region().allianceId();
       var allianceColor = _node.region().allianceColor();
+
+
+      // HILL IMAGE /////////////////////////////////////////////////////////
+      var terrainId = _node.region().terrainId();
+      var newHillImageName = 'map/hill/plain';
+      if (terrainId == 1) {
+        newHillImageName = 'map/hill/forest';
+      }
+      else if (terrainId == 2) {
+        newHillImageName = 'map/hill/mountains';
+      }
+      else if (terrainId == 3) {
+        newHillImageName = 'map/hill/desert';
+      }
+      else if (terrainId == 4) {
+        newHillImageName = 'map/hill/swamp';
+      }
+      
+      if (newHillImageName != _hillImageName && _hillView) {
+        this.removeChild(_hillView);
+        this.removeChild(_flagBackground);
+        _hillView = null;
+        _flagBackground = null;
+      }
+      _hillImageName = newHillImageName;
+
+      if (!_hillView) {
+        _hillView = AWE.UI.createImageView();
+        _hillView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_hillImageName));
+        _hillView.setContentMode(module.ViewContentModeFit);
+        _hillView.setFrame(AWE.Geometry.createRect((AWE.Config.MAP_FORTRESS_SIZE-AWE.Config.MAP_FORTRESS_HILL_WIDTH)/2.0, 
+                                                   AWE.Config.MAP_FORTRESS_SIZE-AWE.Config.MAP_FORTRESS_HILL_HEIGHT+20, 
+                                                   AWE.Config.MAP_FORTRESS_HILL_WIDTH, 
+                                                   AWE.Config.MAP_FORTRESS_HILL_HEIGHT));
+        _hillView.onClick = that.onClick;
+        _hillView.onDoubleClick = that.onDoubleClick;
+        _hillView.onMouseOver = that.onMouseOver;
+        _hillView.onMouseOut = that.onMouseOut;
+        this.addChildAt(_hillView, 0);
+        
+        _flagBackground = AWE.UI.createImageView();
+        _flagBackground.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage('map/hill/label'));
+        _flagBackground.setContentMode(module.ViewContentModeFit);
+        _flagBackground.setFrame(AWE.Geometry.createRect(AWE.Config.MAP_FORTRESS_SIZE/2.0-9, 
+                                                         AWE.Config.MAP_FORTRESS_SIZE-14, 
+                                                         26, 18));
+        _flagBackground.onClick = that.onClick;
+        _flagBackground.onDoubleClick = that.onDoubleClick;
+        _flagBackground.onMouseOver = that.onMouseOver;
+        _flagBackground.onMouseOut = that.onMouseOut;
+        this.addChildAt(_flagBackground, 1);
+      }
+      
 
       // FORTRESS IMAGE //////////////////////////////////////////////////////
       var level = AWE.Util.Rules.normalizedLevel(_node.region().fortressLevel(), AWE.GS.SETTLEMENT_TYPE_FORTRESS);
@@ -72,19 +128,19 @@ AWE.UI = (function(module) {
         _imageView = null;
       }
       _fortressImageName = newFortressImageName;
-
+      
       if (!_imageView) {
         _imageView = AWE.UI.createImageView();
         _imageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_fortressImageName));
         _imageView.setContentMode(module.ViewContentModeFit);
-        _imageView.setFrame(AWE.Geometry.createRect(0, 4, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
+        _imageView.setFrame(AWE.Geometry.createRect(0, 4, AWE.Config.MAP_FORTRESS_SIZE, AWE.Config.MAP_FORTRESS_SIZE));
         _imageView.onClick = that.onClick;
         _imageView.onDoubleClick = that.onDoubleClick;
         _imageView.onMouseOver = that.onMouseOver;
         _imageView.onMouseOut = that.onMouseOut;
-        this.addChildAt(_imageView, 0);
+        this.addChildAt(_imageView, 2);
       }
-
+      
 
       // SELECT SHAPE ////////////////////////////////////////////////////////     
       if (!_selectShape && (this.selected() || this.hovered())) {
@@ -92,11 +148,12 @@ AWE.UI = (function(module) {
         selectGraphics.setStrokeStyle(1);
         selectGraphics.beginStroke(Graphics.getRGB(0,0,0));
         selectGraphics.beginFill(Graphics.getRGB(255,0,0));
-        selectGraphics.drawEllipse(0, 0, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2);
+        selectGraphics.drawEllipse(0, 0, AWE.Config.MAP_FORTRESS_HILL_WIDTH, AWE.Config.MAP_FORTRESS_HILL_WIDTH / 3.0);
         // _selectShape.cache(-AWE.Config.MAPPING_FORTRESS_SIZE/2, +20, 2*AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE);
         _selectShape = AWE.UI.createShapeView();
         _selectShape.initWithControllerAndGraphics(my.controller, selectGraphics);
-        _selectShape.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE / 2 + 6, AWE.Config.MAPPING_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE / 2));
+        _selectShape.setFrame(AWE.Geometry.createRect(-17, AWE.Config.MAP_FORTRESS_SIZE / 2 + 20, 
+                                                      AWE.Config.MAP_FORTRESS_HILL_WIDTH, AWE.Config.MAP_FORTRESS_HILL_WIDTH / 3.0));
         this.addChildAt(_selectShape, 0);
       }     
       else if (_selectShape && !this.selected() && !this.hovered()) {
@@ -112,7 +169,9 @@ AWE.UI = (function(module) {
       if (!_flagView && allianceId) {
         _flagView = AWE.UI.createAllianceFlagView();
         _flagView.initWithController(my.controller);
-        _flagView.setFrame(AWE.Geometry.createRect(27, 39, 8, 13));
+        _flagView.setFrame(AWE.Geometry.createRect(AWE.Config.MAP_FORTRESS_SIZE/2.0-3, 
+                                                   AWE.Config.MAP_FORTRESS_SIZE-9, 
+                                                   9, 9));
         _flagView.setAllianceId(allianceId);
         _flagView.setAllianceColor(allianceColor);
         _flagView.setDirection('down');
@@ -133,7 +192,7 @@ AWE.UI = (function(module) {
       if (!_labelView) {
         _labelView = AWE.UI.createLabelView();
         _labelView.initWithControllerAndLabel(my.controller, "owner", true);
-        _labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAPPING_FORTRESS_SIZE + 6, AWE.Config.MAPPING_FORTRESS_SIZE, 20));      
+        _labelView.setFrame(AWE.Geometry.createRect(0, AWE.Config.MAP_FORTRESS_SIZE + 12, AWE.Config.MAP_FORTRESS_SIZE, 20));      
         _labelView.onClick = that.onClick;
         _labelView.onDoubleClick = that.onDoubleClick;
         _labelView.onMouseOver = that.onMouseOver;

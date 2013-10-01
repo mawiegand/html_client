@@ -149,6 +149,10 @@ AWE.GS = (function(module) {
       return module.ArmyManager.getArmy(this.get('garrison_id'));
     }.property('garrison_id').cacheable(),  
     
+    present_defense_bonus: function() {
+      return (this.get('condition') || 0.0) * (this.get('defense_bonus') || 0.0);
+    }.property('condition', 'defense_bonus'),
+    
     owner: function() {
       return module.CharacterManager.getCharacter(this.get('owner_id'));
     },  

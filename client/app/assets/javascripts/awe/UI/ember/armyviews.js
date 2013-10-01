@@ -525,6 +525,16 @@ AWE.UI.Ember = (function(module) {
         }
       }
 
+      for (var i = 0; i < list.length; ++i) {
+        for (var j = 0; j < list.length; ++j) {
+          var _army = list[i];
+          if (list[i].get('exp') > list[j].get('exp')) {
+            list[i] = list[j];
+            list[j] = _army;
+          }
+        }
+      }
+
       return list;
     }.property('controller'),
 
@@ -561,7 +571,7 @@ AWE.UI.Ember = (function(module) {
       }
     }.observes('army', 'army.region_id'),
 
-    namePressed: function() {
+    infoPressed: function() {
       var army = this.getPath('army');
       if (!army) {
         return ;
@@ -574,13 +584,15 @@ AWE.UI.Ember = (function(module) {
     },  
 
     regionPressed: function() {
-      var regionId = this.getPath('army.region_id');
-      var region = AWE.Map.Manager.getRegion(regionId);
-      if (region != null) {
-        var mapController = WACKADOO.activateMapController(true);
-        WACKADOO.closeAllModalDialogs();
-        mapController.centerRegion(region);
-      }
+      var mapController = WACKADOO.activateMapController(true);
+      WACKADOO.closeAllModalDialogs();
+      mapController.centerRegionAndMarkArmy(this.get('army'));
+    },
+
+    namePressed: function() {
+      var mapController = WACKADOO.activateMapController(true);
+      WACKADOO.closeAllModalDialogs();
+      mapController.centerLocationAndMarkArmy(this.get('army'));
     },
 
     armyStatus: function() {

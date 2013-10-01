@@ -120,13 +120,17 @@ AWE.I18n.de_DE = function(module) {
 
       list: {
         header: "Armeeübersicht",
+        flavor: "Ha, alle meine Armeen auf einen Blick: Die erfahrensten kampferprobtesten Armeen oben auf und die Frischlinge hinten an. Los jetzt, auf in den Kampf!",
         none:   "Du besitzt derzeit keine Armeen.",
         table: {
           name:     "Name",
           region:   "Region",
+          rank:     "Rang",
+          ap:       "AP",
           status:   "Status",
           size:     "Größe",
           max_size: "Maximum",
+          info:     "Info",
         },
 
         status: {
@@ -553,7 +557,7 @@ AWE.I18n.de_DE = function(module) {
     shop: {
       button:'Shop',
       title: 'Fundgrube',
-      currentCreditAmount: 'Du besitzt derzeit   ein Guthaben von',
+      currentCreditAmount: 'Du besitzt derzeit ein Guthaben von',
       credits: 'Credits',
       platinumCredits: '5D Platinum Credits',
       for: 'für',
@@ -577,6 +581,7 @@ AWE.I18n.de_DE = function(module) {
       lifetime: 'Lifetime',
       current: "Aktuelle",
       platinumCredit: "Platinum Credits",
+      specialOffer: "Katapultstart",
       offers: "Angebote",
       loading: "Shop wird geladen",
       unreachable: "Der Shop ist vorübergehend nicht erreichbar!",
@@ -596,6 +601,11 @@ AWE.I18n.de_DE = function(module) {
         title: 'Nicht genug Credits',
         message: 'Leider hast Du nicht genug Credits. Besuche den Credit Shop, um mehr 5D Platinum Credits zu kaufen.',
       },
+      notenoughgoldenfrogs: {
+        getGoldenFrogs: 'Hol Dir Kröten',
+        title: 'Nicht genug Kröten',
+        message: 'Leider hast Du nicht genug Kröten. Kauf Dir direkt ein paar.',
+      },
       error: {
         heading: "Server Fehler",
         message: "Es gibt ein Problem mit dem Shop. Bitte versuche es später noch einmal.",
@@ -607,6 +617,8 @@ AWE.I18n.de_DE = function(module) {
         platinumAccountMessage: "Der Platinum Account wurde aktiviert. Platinum Features sind ab sofort freigeschaltet.",
         bonusHeader: "Juhuu!",
         bonusMessage: "Der Bonus wurde aktiviert und wird Deinem Stamm helfen seinen Wohlstand zu mehren.",
+        cashHeader: "Perfekt!",
+        cashMessage: "Das Starterpaket wurde erfolgreich zu Deinem Account hinzugefügt.",
       },
     },
     
@@ -614,6 +626,8 @@ AWE.I18n.de_DE = function(module) {
       
       population: 'Bewohner',
       defenseBonus: 'Kampfbonus',
+      max:'Maximum',
+      condition:'Zustand',
       founded: 'Gründung',
 
       
@@ -1149,6 +1163,7 @@ AWE.I18n.de_DE = function(module) {
       criticalChance: "Chance",
       cannotBeTrained: "Kann nicht von Spielern trainiert werden.",
       experienceForLostUnits: "XP pro verlorener Einheit",
+      experienceFactor: "XP-Faktor",
 
       commandPointsAbbreviation: "KP",
       buildingTime: "Bauzeit",

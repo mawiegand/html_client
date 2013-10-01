@@ -1,6 +1,8 @@
 <script type="text/x-handlebars" data-template-name="encyclopedia-building">
 
-  <h1>{{local building.name}}</h1>
+  <h1>
+    <div class="base-screen"><div {{bindAttr class=":building-option-image :size1 building.symbolic_id :level1 :ency"}}></div></div>
+    {{local building.name}}</h1>
   
   {{#unless building.demolishable}}
     <p><b>{{t general.warning}}:</b> {{t building.info.notDemolishable}}</p>
@@ -110,7 +112,7 @@
   {{t encyclopedia.attack}}: {{unit.attack}}<br/>
   {{t encyclopedia.defense}}: {{unit.armor}}<br/>
   {{t encyclopedia.criticalDamage}}: {{unit.critical_hit_damage}} ({{t encyclopedia.criticalChance}}: {{unit.critical_hit_chance}})<br/>
-  {{t encyclopedia.experienceForLostUnits}}: {{experienceForLostUnits}}
+  {{t encyclopedia.experienceForLostUnits}}: {{experienceForLostUnits}}<br/>
 </script>
 
 

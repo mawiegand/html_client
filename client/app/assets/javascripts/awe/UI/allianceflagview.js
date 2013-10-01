@@ -84,7 +84,6 @@ AWE.UI = (function(module) {
           _allianceId !== _oldAllianceId ||
           _allianceColor !== _oldAllianceColor) { // no view, color changed or -if not cached- size changed
 
-        log('hier');
         var color = _allianceId ? AWE.GS.AllianceManager.colorForAlliance(_allianceId, _allianceColor) : { r: 255, g: 255, b: 255 };
         
         if (cacheIt) {

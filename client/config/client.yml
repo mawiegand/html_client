@@ -11,6 +11,7 @@ defaults: &defaults
   jabber_id: "none"
   jabber_pwd: "none"
   
+  identity_provider_base_url: 'https://wack-a-doo.de/identity_provider'
   
   
 development:

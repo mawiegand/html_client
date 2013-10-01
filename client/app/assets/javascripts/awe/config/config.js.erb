@@ -78,7 +78,11 @@ AWE.Config = (function(module) {
   module.FORTRESS_LEVEL_DIVISOR =  3;
   module.OUTPOST_LEVEL_DIVISOR  = 10;
 
-  module.MAPPING_FORTRESS_SIZE  = 64;
+  module.MAPPING_FORTRESS_SIZE    =  64;
+
+  module.MAP_FORTRESS_SIZE        =  96;
+  module.MAP_FORTRESS_HILL_WIDTH  = 128;
+  module.MAP_FORTRESS_HILL_HEIGHT =  68;
 
   module.MAP_ARMY_WIDTH  =  96;
   module.MAP_ARMY_HEIGHT = 105;
@@ -136,6 +140,9 @@ AWE.Config = (function(module) {
   module.SHOP_ENABLED = <%= CLIENT_CONFIG['shop_enabled'] ? 'true' : 'false' %>;
   module.SHOP_HOSTNAME = "<%= CLIENT_CONFIG['shop_callback_hostname'] %>";
 
+  module.CASH_RESOURCE_ID = 3;
+  module.CASH_SYMBOLIC_RESOURCE_ID = 'resource_cash';
+
   module.USE_TUTORIAL = true;  // switch to enable/disable tutorial
   module.TUTORIAL_STATE_REFRESH_INTERVAL = 5 * 1000;
   module.TUTORIAL_STATE_DELAY_INTERVAL   = 10 * 1000;
@@ -178,6 +185,8 @@ AWE.Config = (function(module) {
 
   module.PLAYER_INVITATION_BASE   = module.PORTAL_ROOT + '/player_invitation/';
   module.ALLIANCE_INVITATION_BASE = module.PORTAL_ROOT + '/alliance_invitation/';
+
+  module.APP_SUPPORT_BASE ='https://ios.wack-a-doo.com/' + AWE.Settings.lang;
 
   return module;
 

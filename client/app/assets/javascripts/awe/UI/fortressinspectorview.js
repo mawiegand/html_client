@@ -31,6 +31,8 @@ AWE.UI = (function(module) {
     var _newArmyButtonView = null;
     
     var _fortressImageName = null;
+    var _hillImageName = null;
+    
 
 
     my = my || {};
@@ -39,6 +41,8 @@ AWE.UI = (function(module) {
     
     my.fortressView = null;
     my.fortressFlagView = null;
+    my.flagBackground = null;
+    my.hillView = null;
 
     that = module.createInspectorView(spec, my);
 
@@ -181,7 +185,9 @@ AWE.UI = (function(module) {
         _rankLabelView.setFrame(AWE.Geometry.createRect(162, 83, 100, 24));      
         this.addChild(_rankLabelView);
       }
-      _rankLabelView.setText('' + (settlement ? Math.floor((settlement.get('defense_bonus') || 0)*100)+"%" : '-'));
+      _rankLabelView.setText('' + (settlement ? Math.floor((settlement.get('present_defense_bonus') || 0)*100)+"%" : '-'));
+
+
 
       
       
@@ -197,20 +203,65 @@ AWE.UI = (function(module) {
         newFortressImageName = imageId > 0 ? 'map/fortress/' + imageId + '/large' : 'map/fortress/large';
       }
 
-      if (newFortressImageName != _fortressImageName && my.fortressView) {
+      var terrainId = region.terrainId();
+      var newHillImageName = 'map/hill/plain';
+      if (terrainId == 1) {
+        newHillImageName = 'map/hill/forest';
+      }
+      else if (terrainId == 2) {
+        newHillImageName = 'map/hill/mountains';
+      }
+      else if (terrainId == 3) {
+        newHillImageName = 'map/hill/desert';
+      }
+      else if (terrainId == 4) {
+        newHillImageName = 'map/hill/swamp';
+      }
+
+      if ((newFortressImageName != _fortressImageName || 
+           newHillImageName != _hillImageName) && my.fortressView) {
         my.container.removeChild(my.fortressView);
         my.fortressView = null;
+        my.hillView = null;
+        my.flagBackground = null;
       }
       _fortressImageName = newFortressImageName;
+      _hillImageName = newHillImageName;
 
       if (!my.fortressView) {
         var container = AWE.UI.createContainer();
         container.initWithController(my.controller);
         container.setFrame(AWE.Geometry.createRect(0,0,144,144));
         
+        my.hillView = AWE.UI.createImageView();
+        my.hillView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_hillImageName));
+        my.hillView.setContentMode(module.ViewContentModeFit);
+        my.hillView.setFrame(AWE.Geometry.createRect(6, 
+                                                     AWE.Config.MAP_FORTRESS_SIZE-AWE.Config.MAP_FORTRESS_HILL_HEIGHT+24, 
+                                                     AWE.Config.MAP_FORTRESS_HILL_WIDTH, 
+                                                     AWE.Config.MAP_FORTRESS_HILL_HEIGHT));
+        my.hillView.onClick = that.onClick;
+        my.hillView.onDoubleClick = that.onDoubleClick;
+        my.hillView.onMouseOver = that.onMouseOver;
+        my.hillView.onMouseOut = that.onMouseOut;
+        container.addChild(my.hillView);
+
+        my.flagBackground = AWE.UI.createImageView();
+        my.flagBackground.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage('map/hill/label'));
+        my.flagBackground.setContentMode(module.ViewContentModeFit);
+        my.flagBackground.setFrame(AWE.Geometry.createRect(AWE.Config.MAP_FORTRESS_HILL_WIDTH/2.0+6-9, 
+                                                         AWE.Config.MAP_FORTRESS_SIZE-12, 
+                                                         26, 18));
+        my.flagBackground.onClick = that.onClick;
+        my.flagBackground.onDoubleClick = that.onDoubleClick;
+        my.flagBackground.onMouseOver = that.onMouseOver;
+        my.flagBackground.onMouseOut = that.onMouseOut;
+        container.addChild(my.flagBackground);
+      
+        
         my.fortressView = AWE.UI.createImageView();
         my.fortressView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_fortressImageName));
-        my.fortressView.setFrame(AWE.Geometry.createRect(32, 36, AWE.Config.MAPPING_FORTRESS_SIZE*1.2, AWE.Config.MAPPING_FORTRESS_SIZE*1.2));
+        my.fortressView.setFrame(AWE.Geometry.createRect(23, 34, AWE.Config.MAP_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
         
         container.addChild(my.fortressView);
         
@@ -219,7 +270,7 @@ AWE.UI = (function(module) {
         
         my.fortressFlagView = AWE.UI.createAllianceFlagView();
         my.fortressFlagView.initWithController(my.controller);
-        my.fortressFlagView.setFrame(AWE.Geometry.createRect(65, 60, 12, 20));
+        my.fortressFlagView.setFrame(AWE.Geometry.createRect(67, 90, 9, 9));
         my.fortressFlagView.setDirection('down');
         my.fortressFlagView.setAllianceId(allianceId);
         my.fortressFlagView.setAllianceColor(allianceColor);

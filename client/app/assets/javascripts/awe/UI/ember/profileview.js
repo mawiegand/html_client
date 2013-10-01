@@ -96,12 +96,12 @@ AWE.UI.Ember = (function(module) {
             characterBinding: "parentView.parentView.character"
           })
         },
-//        { key:   "tab4",
-//          title: AWE.I18n.lookupTranslation('profile.movingTab'),
-//          view:  AWE.UI.Ember.MovingView.extend({
-//            characterBinding: "parentView.parentView.character"
-//          })
-//        },
+        { key:   "tab4",
+          title: AWE.I18n.lookupTranslation('profile.movingTab'),
+          view:  AWE.UI.Ember.MovingView.extend({
+            characterBinding: "parentView.parentView.character"
+          })
+        }
       ]);
       
       this._super();
@@ -714,17 +714,39 @@ AWE.UI.Ember = (function(module) {
       });
     },
     
-    moveToRegion: function(regionName, regionPassword) {
-      var action = AWE.Action.Settlement.createMoveSettlementToRegionAction(regionName, regionPassword);
+    moveToRegion: function(oldRegion, newRegion, password) {
+      var self = this;
+      var action = AWE.Action.Settlement.createMoveSettlementToRegionAction(newRegion.name(), password);
       AWE.Action.Manager.queueAction(action, function(status) {
         if (status === AWE.Net.OK) {
-          //\TODO UPDATE SETTLEMENT, NAVIGATION (TOP RIGHT)
-          /*var location = AWE.Map.Manager.getLocation(self.getPath('character.base_location_id'));
-           AWE.Map.Manager.fetchLocationsForRegion(location.region(), function() {
-           that.setModelChanged();
-           log('LOCATION UPDATED', location, 'IN REGION', location.region());
-           });
-           AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id());*/
+          // aktualisieren
+          AWE.Map.Manager.updateNode(oldRegion.node(), true, function(node) {
+            AWE.Map.Manager.updateRegionForNode(node, function (region) {
+              AWE.Map.Manager.fetchLocationsForRegion(region, function() {
+                WACKADOO.mapScreenController.setModelChanged();
+                WACKADOO.mapScreenController.setMaptreeChanged();
+              });
+            });
+          });
+          // character
+          AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+            var region = AWE.Map.Manager.getRegion(newRegion.id());
+            AWE.Map.Manager.updateNode(region.node(), true, function(node) {
+              var currentCharacter = AWE.GS.game.get('currentCharacter');
+              currentCharacter.set('base_node', node);
+              AWE.Map.Manager.updateRegionForNode(node, function (region) {
+                AWE.Map.Manager.fetchLocationsForRegion(region, function() {
+                  WACKADOO.mapScreenController.setModelChanged();
+                  WACKADOO.mapScreenController.setMaptreeChanged();
+                });
+              });
+            });
+          });
+          // ggf. artefakt
+          // garrison army
+          AWE.GS.ArmyManager.updateArmiesInRegion(newRegion.id(), null, function() {
+            WACKADOO.mapScreenController.setModelChanged();
+          });
         }
         else if (status === AWE.Net.CONFLICT) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
@@ -745,19 +767,19 @@ AWE.UI.Ember = (function(module) {
     
     moveToRegionClicked: function() {
       var self = this;
-
       self.set('message', null);
       self.set('moving', true);
-      var regionName = self.get('newRegionName');
-      self.displayRegion(regionName, function(region) {
-        var regionPassword = '';
-        if (self.getPath('character.alliance_id') !== region.allianceId()) {
+      var newRegionName = self.get('newRegionName');
+      var oldRegion = self.getPath('character.baseRegion');
+      self.displayRegion(newRegionName, function(newRegion) {
+        var password = '';
+        if (!newRegion.isOwnedByNpc() && self.getPath('character.alliance_id') !== newRegion.allianceId()) {
           var passwordDialog = AWE.UI.Ember.TextInputDialog.create({
             heading: AWE.I18n.lookupTranslation('profile.moving.movingPasswordCaption'),
             controller: self,
             okPressed: function() {
-              regionPassword = this.getPath('input');
-              self.moveToRegion(regionName, regionPassword);
+              password = this.getPath('input');
+              self.moveToRegion(oldRegion, newRegion, password);
               this.destroy();
             },
             cancelPressed: function() {
@@ -771,11 +793,11 @@ AWE.UI.Ember = (function(module) {
             templateName: 'info-dialog',
             classNames: ['confirmation-dialog'],
             heading: AWE.I18n.lookupTranslation('profile.moving.confirmation.caption'),
-            message: AWE.I18n.lookupTranslation('profile.moving.confirmation.message1') + region.name() + AWE.I18n.lookupTranslation('profile.moving.confirmation.message2'),
+            message: AWE.I18n.lookupTranslation('profile.moving.confirmation.message1') + newRegion.name() + AWE.I18n.lookupTranslation('profile.moving.confirmation.message2'),
             cancelText: AWE.I18n.lookupTranslation('profile.moving.confirmation.cancel'),
             okText: AWE.I18n.lookupTranslation('profile.moving.confirmation.ok'),
             okPressed: function() {
-              self.moveToRegion(regionName, '');
+              self.moveToRegion(oldRegion, newRegion, '');
               this.destroy();
             },
             cancelPressed: function() {

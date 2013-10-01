@@ -372,7 +372,7 @@ h3 {
   top: 0;
   left: 0;
   height: 16px;
-  width: 166px;
+  width: 250px;
   border-bottom-right-radius: 5px;
   background-color: rgba(0,0,0,0.5);
   text-shadow: none;
@@ -1170,6 +1170,14 @@ h1.slot-tooltip {
   background-position: -120px 0px;
 }
 
+
+.encyclopedia-view .building-option-image.ency {
+  width: 120px;
+  height:150px;
+  margin-left: 0px;
+  float: left;
+  background-position: -120px 0px;
+}
 
 .encyclopedia-view .details {
   float:left;
@@ -5270,8 +5278,12 @@ a.trading-carts-speedup-button:hover {
 
 .army-list-view .advisor { 
   position: absolute;
-  left: 660px;
-  top: -60px;
+  right: 45px;
+  top: 70px;
+}
+
+.army-list-view .citation {
+  margin-right: 140px;
 }
 
 #army-list-dialog a.close {
@@ -5279,8 +5291,8 @@ a.trading-carts-speedup-button:hover {
   background: url('<%= asset_path("ui/close_button.png") %>');
   width: 50px;
   height: 46px;
-  right: 180px;
-  top: 26px;
+  right: 22px;
+  top: 22px;
 }
 
 #army-list-dialog a.close:hover {
@@ -5295,7 +5307,7 @@ a.trading-carts-speedup-button:hover {
   border-collapse: separate;
   border-spacing: 0;
   border-bottom:0;
-  margin: 100px auto 0px auto;
+  margin: 0 auto 0 auto;
 }
   
 .army-list-table-wrapper .army-list-table {
@@ -5349,20 +5361,32 @@ a.trading-carts-speedup-button:hover {
 }
 
 .army-list-table .region {
-  width:20%;
+  width:22%;
+}
+
+.army-list-table .rank {
+  width:7%;
+}
+
+.army-list-table .ap {
+  width:7%;
 }
 
 .army-list-table .status {
-  width:20%;
+  width:12%;
 }
 
 .army-list-table .size {
-  width:33%;
+  width:17%;
+}
+
+.army-list-table .info {
+  width:7%;
 }
 
 .army-list-table td {
   text-align: center;
-  font-size: 15px;
+  font-size: 13px;
   vertical-align: middle;
 }
 
