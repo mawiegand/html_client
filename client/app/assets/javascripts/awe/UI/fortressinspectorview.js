@@ -107,8 +107,6 @@ AWE.UI = (function(module) {
       var allianceId       = region ? region.allianceId()  : null;
       var allianceColor    = region ? region.allianceColor()  : null;
       var isOwnRegion      = region.isOwn();
-      
-      log("init", region, region.allianceId(), region.allianceColor(), allianceId, allianceColor);
 
       this.setAllianceId(allianceId);
       this.setAllianceColor(allianceColor);
@@ -270,7 +268,7 @@ AWE.UI = (function(module) {
       
         // FORTRESS FLAG ///////////////////////////////////////////////////////////    
         
-        if (allianceId) { // Bug: unfortunately, views inside the inspector seem not to update if needsUpdate is set :-(
+        if (allianceId && allianceId > 0) { // Bug: unfortunately, views inside the inspector seem not to update if needsUpdate is set :-(
           my.fortressFlagView = AWE.UI.createAllianceFlagView();
           my.fortressFlagView.initWithController(my.controller);
           my.fortressFlagView.setAllianceId(allianceId);
