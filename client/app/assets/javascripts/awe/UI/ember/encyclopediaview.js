@@ -135,7 +135,7 @@ AWE.UI.Ember = (function(module) {
       AWE.Ext.applyFunctionToElements(costs, function(cost) {
         sum += parseInt(cost);
       });
-      return Math.floor(sum * 0.08);
+      return Math.floor(Math.floor(sum * 0.08) * this.getPath('unit.experience_factor'));
     }.property('unit').cacheable(),
     
   });  
