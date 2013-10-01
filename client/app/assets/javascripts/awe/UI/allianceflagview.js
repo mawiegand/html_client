@@ -85,9 +85,9 @@ AWE.UI = (function(module) {
           _allianceColor !== _oldAllianceColor) { // no view, color changed or -if not cached- size changed
 
         var color = _allianceId ? AWE.GS.AllianceManager.colorForAlliance(_allianceId, _allianceColor) : { r: 255, g: 255, b: 255 };
-        
+                
         if (cacheIt) {
-          if (!_flagShapeView || _allianceId !== _oldAllianceId) {
+          if (!_flagShapeView || _allianceId !== _oldAllianceId || _allianceColor !== _oldAllianceColor) {
             if (_flagShapeView) {
               this.removeChild(_flagShapeView);
               _flagShapeView = null;
@@ -241,6 +241,7 @@ AWE.UI = (function(module) {
       }
 
       var color = allianceId ? AWE.GS.AllianceManager.colorForAlliance(allianceId, allianceColor) : { r: 255, g: 255, b: 255 };
+            
       var flagShapeGraphics = new Graphics();
         
       flagShapeGraphics.setStrokeStyle(1);
