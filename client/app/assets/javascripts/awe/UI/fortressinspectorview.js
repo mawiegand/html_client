@@ -219,11 +219,12 @@ AWE.UI = (function(module) {
       }
 
       if ((newFortressImageName != _fortressImageName || 
-           newHillImageName != _hillImageName) && my.fortressView) {
-        my.container.removeChild(my.fortressView);
+           newHillImageName != _hillImageName ||
+           (my.fortressFlagView && allianceId != my.fortressFlagView.allianceId())) && my.fortressView) {
         my.fortressView = null;
         my.hillView = null;
         my.flagBackground = null;
+        my.fortressFlagView = null;
       }
       _fortressImageName = newFortressImageName;
       _hillImageName = newHillImageName;
@@ -264,25 +265,20 @@ AWE.UI = (function(module) {
         my.fortressView.setFrame(AWE.Geometry.createRect(23, 34, AWE.Config.MAP_FORTRESS_SIZE, AWE.Config.MAPPING_FORTRESS_SIZE));
         
         container.addChild(my.fortressView);
-        
       
         // FORTRESS FLAG ///////////////////////////////////////////////////////////    
         
-        my.fortressFlagView = AWE.UI.createAllianceFlagView();
-        my.fortressFlagView.initWithController(my.controller);
-        my.fortressFlagView.setFrame(AWE.Geometry.createRect(67, 90, 9, 9));
-        my.fortressFlagView.setDirection('down');
-        my.fortressFlagView.setAllianceId(allianceId);
-        my.fortressFlagView.setAllianceColor(allianceColor);
-        container.addChild(my.fortressFlagView);
-        
+        if (allianceId && allianceId > 0) { // Bug: unfortunately, views inside the inspector seem not to update if needsUpdate is set :-(
+          my.fortressFlagView = AWE.UI.createAllianceFlagView();
+          my.fortressFlagView.initWithController(my.controller);
+          my.fortressFlagView.setAllianceId(allianceId);
+          my.fortressFlagView.setAllianceColor(allianceColor);
+          my.fortressFlagView.setDirection('down');
+          my.fortressFlagView.setFrame(AWE.Geometry.createRect(67, 90, 9, 9)); // due to the bug, setFrame needs to be the last call, because it initiates an updateView
+          container.addChild(my.fortressFlagView);
+        }
         this.setInspectedObjectView(container);
-      }
-      
-      if (my.fortressFlagView && allianceId != my.fortressFlagView.allianceId()) {
-        my.fortressFlagView.setAllianceId(allianceId);
-        my.fortressFlagView.setAllianceColor(allianceColor);
-      }
+      }      
     }
         
     that.region = function() {
