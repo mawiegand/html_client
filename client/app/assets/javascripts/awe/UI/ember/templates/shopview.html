@@ -103,7 +103,13 @@
 <script type="text/x-handlebars" data-template-name="shop-bonus-offer">
   <div class="bonus-offer-description">+{{ formatAsPercent offer.bonus }} {{t shop.production }} {{ resourceName }}</div>
   <div class="bonus-offer-duration">{{ offer.duration }}h</div>
-  <div class="bonus-offer-price">{{ offer.price}}  {{ offer.currencyString}}</div>
+  <div class="bonus-offer-price">{{ offer.price}}
+    {{#if offer.frogCurrency}}
+      <img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/toad-wide.png" alt="" />
+    {{else}}
+      <img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/credits.png" alt="" />
+    {{/if}}
+  </div>
   <div class="bonus-offer-end">
     {{#if offer.resource_effect }}
       {{ formatDatetime offer.resource_effect.finished_at }}

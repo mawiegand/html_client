@@ -29,23 +29,8 @@ AWE.GS = (function(module) {
     bonus: null,
     currency: 0,
 
-    currencyString: function() {
-      if (this.get('price') == 1) {
-        if (this.get('currency') == AWE.GS.CURRENCY_GOLDEN_FROGS) {
-          return AWE.I18n.lookupTranslation('shop.frog');
-        }
-        else {
-          return AWE.I18n.lookupTranslation('shop.credit');
-        }
-      }
-      else {
-        if (this.get('currency') == AWE.GS.CURRENCY_GOLDEN_FROGS) {
-          return AWE.I18n.lookupTranslation('shop.frogs');
-        }
-        else {
-          return AWE.I18n.lookupTranslation('shop.credits');
-        }
-      }
+    frogCurrency: function() {
+      return this.get('currency') == AWE.GS.CURRENCY_GOLDEN_FROGS;
     }.property('currency').cacheable(),
     
     isBuying: false,  // set to true while communicating with the shop on purchase
