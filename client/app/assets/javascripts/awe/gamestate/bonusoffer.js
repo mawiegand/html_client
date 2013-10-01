@@ -30,11 +30,21 @@ AWE.GS = (function(module) {
     currency: 0,
 
     currencyString: function() {
-      if (this.get('currency') == AWE.GS.CURRENCY_GOLDEN_FROGS) {
-        return AWE.I18n.lookupTranslation('shop.goldenFrogs');
+      if (this.get('price') == 1) {
+        if (this.get('currency') == AWE.GS.CURRENCY_GOLDEN_FROGS) {
+          return AWE.I18n.lookupTranslation('shop.frog');
+        }
+        else {
+          return AWE.I18n.lookupTranslation('shop.credit');
+        }
       }
       else {
-        return AWE.I18n.lookupTranslation('shop.credits');
+        if (this.get('currency') == AWE.GS.CURRENCY_GOLDEN_FROGS) {
+          return AWE.I18n.lookupTranslation('shop.frogs');
+        }
+        else {
+          return AWE.I18n.lookupTranslation('shop.credits');
+        }
       }
     }.property('currency').cacheable(),
     
@@ -79,7 +89,15 @@ AWE.GS = (function(module) {
       AWE.Ext.applyFunctionToElements(that.getEntities(), function(offer){
         if (offer) offers.push(offer);
       });
-      return offers;
+
+      return offers.sort(function(a, b) {
+        if (a.get('resource_id') == b.get('resource_id')) {
+          return a.get('bonus') - b.get('bonus');
+        }
+        else {
+          return a.get('resource_id') - b.get('resource_id');
+        }
+      });
     }
     
     that.lastUpdate = function() {

@@ -558,6 +558,7 @@ AWE.I18n.de_DE = function(module) {
       button:'Shop',
       title: 'Fundgrube',
       currentCreditAmount: 'Du besitzt derzeit ein Guthaben von',
+      credit: 'Credit',
       credits: 'Credits',
       platinumCredits: '5D Platinum Credits',
       for: 'für',
@@ -588,6 +589,9 @@ AWE.I18n.de_DE = function(module) {
 
       goldenFrog: "Kröte",
       goldenFrogs: "Kröten",
+
+      frog: "Kröte",
+      frogs: "Kröten",
 
       platinumDescription:
         "Der Platinum Account bietet Dir " +
