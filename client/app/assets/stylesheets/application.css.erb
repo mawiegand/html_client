@@ -4410,6 +4410,73 @@ a.trading-carts-speedup-button:hover {
   text-align: center;
 }
 
+.special-offer {
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  padding: 10px;
+  margin-bottom: 10px;
+
+  background: #e5541d; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff7139', endColorstr='#e5541d'); /* for IE */
+  background: linear-gradient(top, #ff7139 0%,  #e5541d 100%);
+  background: -moz-linear-gradient(top,  #ff7139,  #e5541d); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#ff7139,  #e5541d);
+
+  color: #eee;
+  text-shadow: grey 0px 1px 1px;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.special-offer .simple-button {
+  border-color:white;
+}
+
+.simple-button:hover {
+  color: #ff8251;
+}
+
+.special-offer .bonus-offer-button {
+  width: 85px;
+  display: inline-block;
+  text-align: center;
+}
+
+.special-offer .bonus-offer-description {
+  width:340px;
+}
+
+.special-offer .bonus-offer-price {
+  width:120px;
+}
+
+.special-offer-header span {
+  width:55%;
+  font-size:34px;
+  color: #e5541d;
+  text-shadow: #ff7139 0px 0px 3px;
+  font-weight:bold;
+  position:absolute;
+  bottom:0;
+  text-align:center;
+}
+
+.special-offer-header .help-icon {
+  position:absolute;
+  right:0;
+  bottom:10px;
+}
+
+.special-offer-header {
+  position:relative;
+  height:108px;
+  margin-right: 10px;
+  margin-bottom: 0;
+  background-size:50% 50%;
+  background: url('<%= asset_path("shop/shop_button.png") %>') no-repeat 70%;
+}
+
 .bonus-offer {
   -moz-border-radius: 7px;
   border-radius:      7px;
@@ -4441,7 +4508,7 @@ a.trading-carts-speedup-button:hover {
 }
 
 .bonus-offer-description {
-  width: 190px;
+  width: 185px;
   display: inline-block;
 }
 
@@ -4452,7 +4519,7 @@ a.trading-carts-speedup-button:hover {
 
 .bonus-offer-price {
   text-align: center;
-  width: 70px;
+  width: 80px;
   display: inline-block;
 }
 
@@ -4463,7 +4530,7 @@ a.trading-carts-speedup-button:hover {
 }
 
 .bonus-offer-button {
-  width: 90px;
+  width: 85px;
   display: inline-block;
   text-align: center;
 }

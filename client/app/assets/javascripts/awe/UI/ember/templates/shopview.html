@@ -39,7 +39,10 @@
 
             {{#if specialOffer}}
               <div class="clearfix"></div>
-              <div style="text-align: right;" class="help-icon" {{action "specialOfferHelpPressed"}}></div></h3>
+              <div class="special-offer-header">
+                <span>{{t shop.bonusOfferDescription}}</span>
+                <div style="text-align: right;" class="help-icon" {{action "specialOfferHelpPressed"}}></div>
+              </div>
 
               {{view AWE.UI.Ember.ShopSpecialOffer offerBinding="specialOffer" shopBinding="shop" classNames="special-offer"}}
             {{/if}}
@@ -52,7 +55,7 @@
               <div class="bonus-offer-header">
                 <div class="bonus-offer-description">{{ t shop.description }}</div>
                 <div class="bonus-offer-duration">{{ t shop.duration }}</div>
-                <div class="bonus-offer-price">{{ t shop.price }}</div>
+                <div class="bonus-offer-price">{{ t shop.credits }}</div>
                 <div class="bonus-offer-end">{{ t shop.expiry }}</div>
                 <div class="bonus-offer-button">{{ t shop.action }}</div>
               </div>
@@ -103,7 +106,13 @@
 <script type="text/x-handlebars" data-template-name="shop-bonus-offer">
   <div class="bonus-offer-description">+{{ formatAsPercent offer.bonus }} {{t shop.production }} {{ resourceName }}</div>
   <div class="bonus-offer-duration">{{ offer.duration }}h</div>
-  <div class="bonus-offer-price">{{ offer.price}} </div>
+  <div class="bonus-offer-price">{{ offer.price}}
+    {{#if offer.frogCurrency}}
+      <img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/toad-wide.png" alt="" />
+    {{else}}
+      <img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/credits.png" alt="" />
+    {{/if}}
+  </div>
   <div class="bonus-offer-end">
     {{#if offer.resource_effect }}
       {{ formatDatetime offer.resource_effect.finished_at }}
@@ -120,11 +129,18 @@
 
 <script type="text/x-handlebars" data-template-name="shop-special-offer">
   <div class="bonus-offer-description">{{ t shop.specialOffer}}</div>
+  <div class="bonus-offer-price">{{ offer.price}}
+    {{#if offer.frogCurrency}}
+      <img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/toad-wide.png" alt="" />
+    {{else}}
+      <img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/credits.png" alt="" />
+    {{/if}}
+  </div>
   <div class="bonus-offer-button">
     {{#if offer.isBuying}}
       {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{t shop.activating }}
     {{else}}
-      <div class="simple-button" {{action "buySpecialOfferPressed"}}>{{t shop.buy }}</div>
+      <div class="simple-button" {{action "buySpecialOfferPressed"}}>{{t shop.buy2 }}</div>
     {{/if}}
   </div>
 </script>
@@ -132,7 +148,7 @@
 <script type="text/x-handlebars" data-template-name="shop-platinum-offer">
   <div class="bonus-offer-description">{{ t shop.platinumOffers}}</div>
   <div class="bonus-offer-duration">{{ offerDurationDays }} {{t general.days}}</div>
-  <div class="bonus-offer-price">{{ offer.price}} </div>
+  <div class="bonus-offer-price">{{ offer.price}}</div>
   <div class="bonus-offer-end">
     {{#if platinumExpiration }}
       {{#if lifetime }}
