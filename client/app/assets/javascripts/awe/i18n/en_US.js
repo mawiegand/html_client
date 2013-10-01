@@ -1155,6 +1155,7 @@ AWE.I18n.en_US = function(module) {
       criticalChance:"chance",
       cannotBeTrained:"Cannot be trained by players.",
       experienceForLostUnits: "XP per lost unit",
+      experienceFactor: "XP factor",
 
       commandPointsAbbreviation:"CP",
       buildingTime:"Build time",
