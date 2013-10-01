@@ -556,7 +556,7 @@ AWE.I18n.en_US = function(module) {
       buyCredits:'Buy now',
       article:'Article',
       description:'Description',
-      price:'Credits',
+      price:'Price',
       activating:'Sending',
       buy:'Acitvate',
       action:'Action',

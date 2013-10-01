@@ -52,7 +52,7 @@
               <div class="bonus-offer-header">
                 <div class="bonus-offer-description">{{ t shop.description }}</div>
                 <div class="bonus-offer-duration">{{ t shop.duration }}</div>
-                <div class="bonus-offer-price">{{ t shop.price }}</div>
+                <div class="bonus-offer-price">{{ t shop.credits }}</div>
                 <div class="bonus-offer-end">{{ t shop.expiry }}</div>
                 <div class="bonus-offer-button">{{ t shop.action }}</div>
               </div>
@@ -103,7 +103,7 @@
 <script type="text/x-handlebars" data-template-name="shop-bonus-offer">
   <div class="bonus-offer-description">+{{ formatAsPercent offer.bonus }} {{t shop.production }} {{ resourceName }}</div>
   <div class="bonus-offer-duration">{{ offer.duration }}h</div>
-  <div class="bonus-offer-price">{{ offer.price}} </div>
+  <div class="bonus-offer-price">{{ offer.price}}  {{ offer.currencyString}}</div>
   <div class="bonus-offer-end">
     {{#if offer.resource_effect }}
       {{ formatDatetime offer.resource_effect.finished_at }}
@@ -132,7 +132,7 @@
 <script type="text/x-handlebars" data-template-name="shop-platinum-offer">
   <div class="bonus-offer-description">{{ t shop.platinumOffers}}</div>
   <div class="bonus-offer-duration">{{ offerDurationDays }} {{t general.days}}</div>
-  <div class="bonus-offer-price">{{ offer.price}} </div>
+  <div class="bonus-offer-price">{{ offer.price}}</div>
   <div class="bonus-offer-end">
     {{#if platinumExpiration }}
       {{#if lifetime }}

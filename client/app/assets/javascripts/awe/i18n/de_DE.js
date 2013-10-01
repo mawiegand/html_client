@@ -565,7 +565,7 @@ AWE.I18n.de_DE = function(module) {
       buyCredits: 'Jetzt aufladen',
       article: 'Artikel',
       description: 'Beschreibung',
-      price: 'Credits',
+      price: 'Preis',
       activating: "Senden...",
       buy: 'Aktivieren',
       action: 'Aktion',

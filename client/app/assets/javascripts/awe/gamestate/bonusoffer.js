@@ -27,6 +27,16 @@ AWE.GS = (function(module) {
     ends_at: null,
     duration: null,
     bonus: null,
+    currency: 0,
+
+    currencyString: function() {
+      if (this.get('currency') == AWE.GS.CURRENCY_GOLDEN_FROGS) {
+        return AWE.I18n.lookupTranslation('shop.goldenFrogs');
+      }
+      else {
+        return AWE.I18n.lookupTranslation('shop.credits');
+      }
+    }.property('currency').cacheable(),
     
     isBuying: false,  // set to true while communicating with the shop on purchase
     
