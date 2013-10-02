@@ -2245,7 +2245,7 @@ AWE.Controller = function (module) {
     }
 
     var setArmyPosition = function (view, pos, army) {
-      view.setCenter(AWE.Geometry.createPoint(pos.x + view.frame().size.width / 4, pos.y - view.frame().size.height / 2));
+      view.setCenter(AWE.Geometry.createPoint(pos.x + view.frame().size.width * 0.7, pos.y - view.frame().size.height / 2));
 
       if (army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
 
