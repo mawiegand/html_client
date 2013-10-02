@@ -182,7 +182,7 @@ AWE.Controller = (function(module) {
               var info = AWE.UI.Ember.InfoDialog.create({
                 heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
                 message: AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
-              });      
+              });
               that.applicationController.presentModalDialog(info);
             }
             else {
@@ -220,11 +220,11 @@ AWE.Controller = (function(module) {
 
             AWE.GS.ShopManager.buyBonusOffer(offerId, function(transaction) { // success handler
               if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
-                var info = AWE.UI.Ember.InfoDialog.create({
-                  heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusHeader'),
-                  message: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusMessage'),
-                });
-                that.applicationController.presentModalDialog(info);
+//                var info = AWE.UI.Ember.InfoDialog.create({
+//                  heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusHeader'),
+//                  message: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusMessage'),
+//                });
+//                that.applicationController.presentModalDialog(info);
               }
               else {
                 that.presentNotEnoughCreditsWarning();
@@ -255,11 +255,11 @@ AWE.Controller = (function(module) {
 
             AWE.GS.ShopManager.buyBonusOffer(offerId, function(transaction) { // success handler
               if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
-                var info = AWE.UI.Ember.InfoDialog.create({
-                  heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusHeader'),
-                  message: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusMessage'),
-                });
-                that.applicationController.presentModalDialog(info);
+//                var info = AWE.UI.Ember.InfoDialog.create({
+//                  heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusHeader'),
+//                  message: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusMessage'),
+//                });
+//                that.applicationController.presentModalDialog(info);
               }
               else {
                 that.presentNotEnoughGoldenFrogsWarning();
@@ -337,11 +337,11 @@ AWE.Controller = (function(module) {
           
           AWE.GS.ShopManager.buyPlatinumOffer(offerId, function(transaction) { // success handler
             if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
-              var info = AWE.UI.Ember.InfoDialog.create({
-                heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.platinumAccountHeader'),
-                message: AWE.I18n.lookupTranslation('shop.buyConfirmation.platinumAccountMessage'),
-              });      
-              that.applicationController.presentModalDialog(info);
+//              var info = AWE.UI.Ember.InfoDialog.create({
+//                heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.platinumAccountHeader'),
+//                message: AWE.I18n.lookupTranslation('shop.buyConfirmation.platinumAccountMessage'),
+//              });
+//              that.applicationController.presentModalDialog(info);
             }
             else {
               that.presentNotEnoughCreditsWarning();
