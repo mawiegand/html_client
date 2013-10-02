@@ -1037,7 +1037,7 @@ AWE.I18n.de_DE = function(module) {
       },
       
       moving: {
-        info1: "Hier kannst Du die Position Deiner Hauptsiedlung auf der Karte verändern. Es gibt 2 Arten des Umziehens, und Du kannst jede davon nur einmal benutzen.",
+        info1: "Hier kannst Du die Position Deiner Hauptsiedlung auf der Karte verändern. Jeder Spieler kann die Hauptsiedlung einmalig umziehen.",
         info2: "Du kannst nicht in Regionen ziehen, um die gerade gekämpft wird, oder die vor kurzem erobert wurden.",
         specificMovingCaption: "Gezieltes Umziehen",
         presentRegion: "Aktuelle Region",
