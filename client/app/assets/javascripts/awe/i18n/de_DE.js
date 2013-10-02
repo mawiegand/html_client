@@ -569,6 +569,7 @@ AWE.I18n.de_DE = function(module) {
       price: 'Preis',
       activating: "Senden...",
       buy: 'Aktivieren',
+      buy2: "Kaufen",
       action: 'Aktion',
       extend: 'Verlängern',
       resourceOffers: "Krötenpakete",
@@ -592,6 +593,8 @@ AWE.I18n.de_DE = function(module) {
 
       frog: "Kröte",
       frogs: "Kröten",
+
+      bonusOfferDescription: "Exklusiv für dich zum Start!",
 
       platinumDescription:
         "Der Platinum Account bietet Dir " +
