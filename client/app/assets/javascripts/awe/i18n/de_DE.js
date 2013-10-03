@@ -362,7 +362,7 @@ AWE.I18n.de_DE = function(module) {
           "Festungen können eingenommen werden, indem man einen Kampf um sie gewinnt",
           "Es ist nicht möglich, zwei Lagerstätten in einer Region zu gründen. Die Bevölkerung will abwechselungsreiche Ziele für den Wochenendbesuch!",
           "Ein Wirrkopf behauptet, die Erde sei rund, er hätte es selbst im Traum gesehen. Was für ein Schwachsinn, natürlich ist die Erde flach! Und hört an allen vier Seiten einfach auf!",
-          "Wenn Du nach Wissen über die Funktionsweise der Welt, Gebäude und Einheiten strebst, dann sie in der Enzyklopädie nach. Zu finden ist der Knopf unten links auf der Weltkarte.",
+          "Wenn Du nach Wissen über die Funktionsweise der Welt, Gebäude und Einheiten strebst, dann sie in der Enzyklopädie nach. Zu finden ist die Enzyklopädie oben links im Menü auf der Weltkarte.",
           "Ein bärtiger Greis teilt sein Wissen über die Wettervorhersagekunst: \"Abendrot - Gutwetterbot!\" - \"Außer, natürlich, vor schlechten Tagen,\" fügst Du abgeklärt hinzu.",
           "Angeblich soll im Westen vor kurzem eine Armee spurlos verschwunden und von der Welt verschluckt worden sein. Man sollte sich besser fernhalten.",
           "In den Festungen kann ein Steuersatz von 5 bis 15% Prozent von allen Siedlungen der Region erhoben werden. Dies ist ein Naturgesetz; Steuern über oder unter diesen Grenzen würden den Zorn der Götter heraufbeschwören und den Weltuntergang auslösen.",
