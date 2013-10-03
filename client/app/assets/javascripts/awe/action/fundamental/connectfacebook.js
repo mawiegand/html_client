@@ -9,7 +9,7 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Fundamental = (function(module) {
   
-  module.createConnectFacebookAction = function(fbPlayerId, fbAccessToken) {
+  module.createConnectFacebookAction = function(fbPlayerId, fbAccessToken, my) {
       
     // private attributes and methods //////////////////////////////////////
     
