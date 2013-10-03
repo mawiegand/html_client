@@ -170,7 +170,7 @@ AWE.Controller = (function(module) {
             FB.ui({
                 method: 'pay',
                 action: 'purchaseitem',
-                product: 'https://test1.wack-a-doo.de/game_server/assets/fb_payments/30credits.html',
+                product: 'https://ios.wack-a-doo.com/de/info/platinum_credits',
 //                quantity: 10,                 // optional, defaults to 1
 //                request_id: 'YOUR_REQUEST_ID' // optional, must be unique for each payment
               },
