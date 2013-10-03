@@ -159,7 +159,10 @@ AWE.GS = (function(module) {
       return AWE.Map.Manager.getRegion(this.get('base_region_id'));
     }.property('base_region_id').cacheable(),
 
-
+    isConnectedToFacebook: function() {
+      return this.get('facebook_player_id') !== undefined && this.get('facebook_player_id') !== null;
+    }.property('facebook_player_id').cacheable(),
+    
     //
     // //// MESSAGING //////////////////////////////////////////////////////// 
     //
