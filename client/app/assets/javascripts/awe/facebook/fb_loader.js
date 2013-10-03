@@ -53,7 +53,7 @@ AWE.Facebook = (function(module) {
       FB.api('/me', function(repsonse) {    // check, it's really connected
         if (!response || response.error) {  
           if (repeat) {                     // in case status was cached,
-            loginAndConnect(false);         // try again once more! -
+            loginAndConnect();              // try again once more! -
           }
         }
         else {
@@ -79,6 +79,7 @@ AWE.Facebook = (function(module) {
     }
     
     var loginAndConnect = function() {
+      AWE.Log.Debug('FACEBOOK: now call login', response);
       FB.login(function(response) {
         AWE.Log.Debug('FACEBOOK: login response', response);
         if (response.authResponse) {
