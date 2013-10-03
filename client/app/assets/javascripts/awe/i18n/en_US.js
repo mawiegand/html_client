@@ -1042,6 +1042,8 @@ AWE.I18n.en_US = function(module) {
 					ok: "Move!",
 				},
 				movingErrorHeading: "Error",
+        movingNoTargetFoundHeading: "Region not found",
+        movingNoTargetFoundMessage: "There seems to be no region with this name. Did you spelled the name correctly?",
         movingNotFoundMessage: "There is already one of your settlements in the target region!",
         movingForbiddenMessage: "The password is wrong. Try again!",
         movingConflictMessage: "The fortress in the target region is in a fight or was just captured!",
