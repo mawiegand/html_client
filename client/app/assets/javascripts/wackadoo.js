@@ -657,14 +657,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this.set('startupArguments', window.name);
       window.name = "";                                 // unset variables
           
-      var useDevToken = window.facebookCheat && window.facebookCheat === true;
       var accessToken = null;
       
-      if (useDevToken) {
-        accessToken = AWE.Config.DEV_ACCESS_TOKEN;
-        args = args || {};
-      }
-      else if (!args || !args.accessToken) {
+      if (!args || !args.accessToken) {
         // alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
         document.location.href = AWE.Config.PORTAL_ROOT;
         return ;
