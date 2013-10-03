@@ -28,6 +28,8 @@ AWE.Facebook = (function(module) {
       
       module.initialized = true;
       initializing = false;
+      
+      AWE.Log.Debug('FACEBOOK: initialized facebook sdk');
     };
 
     // Load the SDK asynchronously
