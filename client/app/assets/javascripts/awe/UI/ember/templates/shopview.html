@@ -10,7 +10,13 @@
           {{#unless shopEnabled }}
             <p>{{t shop.unreachable}}</p>
           {{else}}
-            <p>{{ t shop.currentCreditAmount }} <b>{{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }}</b> {{ t shop.platinumCredits }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="simple-button float-right platinum" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span></p>
+            <p>{{ t shop.currentCreditAmount }} <b>{{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }}</b> {{ t shop.platinumCredits }}
+              {{#if AWE.Facebook.initialized}}
+              <span class="simple-button float-right platinum" {{action "fbPaymentsPressed" target="parentView"}}>{{ t shop.buyCredits }} mit FB</span>
+              {{else}}
+              <span class="simple-button float-right platinum" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span>
+              {{/if}}
+            </p>
             
             {{#if resourceOffers}}
               <h3>{{ t shop.resourceOffers }}</h3>
