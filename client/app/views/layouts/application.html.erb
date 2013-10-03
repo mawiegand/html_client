@@ -30,6 +30,9 @@
 </head>
 
 <body>
+  
+  <div id="fb-root"></div>
+  
   <div id="loaddialog-wrapper" class="center-helper">
     <div class="loaddialog">
         <div class="loaddialog-progressbar">
@@ -48,8 +51,6 @@
 <% elsif !Rails.env.production? %>
   <div class="<%= Rails.env %>" id="environment"><%= Rails.env %></div>
 <% end %>
-
-<div id="fb-root"></div>
 
 
 </body>
