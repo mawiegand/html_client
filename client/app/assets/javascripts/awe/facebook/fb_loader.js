@@ -6,7 +6,7 @@ AWE.Facebook = (function(module) {
   var initializing = false;
   
   module.initialized  = false;
-  module.defaultScope = {scope: 'email,user_likes'}; 
+  module.defaultScope = {scope: 'email'}; 
   
   module.init = function() {
     
@@ -49,13 +49,40 @@ AWE.Facebook = (function(module) {
 
   module.connnectCharacter = function(character) {
     
+    var fetchMeAndConnect = function(authResponse, repeat) {
+      FB.api('/me', function(repsonse) {    // check, it's really connected
+        if (!response || response.error) {  
+          if (repeat) {                     // in case status was cached,
+            loginAndConnect(false);         // try again once more! -
+          }
+        }
+        else {
+          var fbPlayerId    = authResponse.userID;
+          var fbAccessToken = authResponse.accessToken;
+
+          AWE.Log.Debug('FACEBOOK: everything seems, fine, sending information to server. Me:', response)
+          
+          var action = AWE.Action.Fundamental.createConnectFacebookAction(fbPlayerId, fbAccessToken);
+          AWE.Action.Manager.queueAction(action, function(status) {
+            if (status === AWE.Net.CONFLICT) {
+              AWE.Log.Debug('FACEBOOK: conflict, id already connected with someone else.')
+            }
+            else if (status === AWE.Net.OK) {
+              AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, null);
+            }
+            else {
+              AWE.Log.Debug('FACEBOOK: unkown error, could not connect.')
+            }
+          });
+        }
+      });
+    }
+    
     var loginAndConnect = function() {
       FB.login(function(response) {
         AWELog.Debug('FACEBOOK: login response', response);
         if (response.authResponse) {
-          FB.api('/me', function(repsonse) {
-            alert(response.name);
-          });
+          fetchMeAndConnect(response.authResponse, false);
         }
         // do nothing, if user does not authorize the app
       }, module.defaultScope);
@@ -67,6 +94,7 @@ AWE.Facebook = (function(module) {
     }
     FB.getLoginStatus(function(response) {
       if (response.status === 'connected') {
+        fetchMeAndConnect(response.authResponse, true);
         AWE.Log.Debug('FACEBOOK: user is signed in to facebook and authorized the app');
       } else if (response.status === 'not_authorized') {
         AWE.Log.Debug('FACEBOOK: user is signed in to facebook but did not authorize the app yet');
@@ -75,7 +103,7 @@ AWE.Facebook = (function(module) {
         AWE.Log.Debug('FACEBOOK: user is NOT signed in to facebook');
         loginAndConnect();
       }
-    });
+    }, true); // force reload of login status
   }
     
   return module;
