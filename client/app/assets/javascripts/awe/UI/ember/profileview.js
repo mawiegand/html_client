@@ -555,7 +555,17 @@ AWE.UI.Ember = (function(module) {
           }
         });
       }        
-    },    
+    },
+    
+    connectFacebookPressed: function() {
+      AWE.Log.Debug('FACEBOOK: connect to fb pressed');
+      if (!AWE.Facebook.initialized) {
+        AWE.Log.debug('FACEBOOK: was not initialized!');
+        return ;
+      }
+      
+      AWE.Facebook.connnectCharacter(AWE.GS.game.getPath('currentCharacter'));
+    },   
   });
 
   /** 
