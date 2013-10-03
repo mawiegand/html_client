@@ -289,6 +289,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
      * doing anything wit the app controller. */
     loadAssets: function() {
       var self = this;
+      
+      AWE.Facebook.init();
 
       /** does final initialization after loading has finished */
       var postLoading = function() {
