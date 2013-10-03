@@ -122,7 +122,7 @@ AWE.Util = (function(module) {
       
     //  log('UNCLUTTER GROUP ', group.length, 'SCALE', scaleFactor);
     
-      var simplify = group.length > 10;
+      var simplify = group.length > 12;
   
       var minBounceStart = Math.min( 4.0 * scaleFactor,  20.0) * (simplify ? 2 : 1);
       var maxBounceStart = Math.min(10.0 * scaleFactor,  80.0) * (simplify ? 2 : 1);
@@ -130,7 +130,7 @@ AWE.Util = (function(module) {
   
       // idea: faster algorithm with just 1 or 2 loops and larger movement
       
-      var repetitions = simplify ? 2 : 4;
+      var repetitions = simplify ? AWE.Config.MAP_NUM_UNCLUTTER_ITERATIONS : AWE.Config.MAP_NUM_UNCLUTTER_ITERATIONS +2;
       
       for (var i=0; i < repetitions; i++) { // 
     

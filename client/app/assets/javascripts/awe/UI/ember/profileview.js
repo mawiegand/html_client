@@ -685,6 +685,10 @@ AWE.UI.Ember = (function(module) {
     newRegionName: null,
     
     moving: false,
+
+    alreadyMoved: function() {
+      return AWE.GS.game.getPath('currentCharacter.moved_at') != null;
+    }.property('AWE.GS.game.currentCharacter.moved_at').cacheable(),
     
     init: function() {
       this._super();
@@ -751,7 +755,21 @@ AWE.UI.Ember = (function(module) {
         else if (status === AWE.Net.CONFLICT) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
             heading: AWE.I18n.lookupTranslation('profile.moving.movingErrorHeading'),
-            message: AWE.I18n.lookupTranslation('profile.moving.movingErrorWrongPassword'),
+            message: AWE.I18n.lookupTranslation('profile.moving.movingConflictMessage'),
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
+        else if (status === AWE.Net.FORBIDDEN) {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('profile.moving.movingErrorHeading'),
+            message: AWE.I18n.lookupTranslation('profile.moving.movingForbiddenMessage'),
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
+        else if (status === AWE.Net.NOT_FOUND) {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('profile.moving.movingErrorHeading'),
+            message: AWE.I18n.lookupTranslation('profile.moving.movingNotFoundMessage'),
           });
           WACKADOO.presentModalDialog(dialog);
         }
