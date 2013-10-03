@@ -710,16 +710,26 @@ AWE.UI.Ember = (function(module) {
     }.property(),
     
     displayRegion: function(regionName, callback) {
+      var self = this;
       AWE.Map.Manager.fetchSingleRegionById(regionName, function(region) {
-        var mapController = WACKADOO.activateMapController(true);
-        WACKADOO.closeAllModalDialogs();
-        mapController.centerRegion(region);
-        if (callback) callback(region);
+        if (region.id() == 0) {
+          self.set('moving', false);
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('profile.moving.movingNoTargetFoundHeading'),
+            message: AWE.I18n.lookupTranslation('profile.moving.movingNoTargetFoundMessage'),
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
+        else {
+          var mapController = WACKADOO.activateMapController(true);
+          WACKADOO.closeAllModalDialogs();
+          mapController.centerRegion(region);
+          if (callback) callback(region);
+        }
       });
     },
     
     moveToRegion: function(oldRegion, newRegion, password) {
-      var self = this;
       var action = AWE.Action.Settlement.createMoveSettlementToRegionAction(newRegion.name(), password);
       AWE.Action.Manager.queueAction(action, function(status) {
         if (status === AWE.Net.OK) {
