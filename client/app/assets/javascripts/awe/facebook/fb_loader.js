@@ -50,7 +50,7 @@ AWE.Facebook = (function(module) {
   module.connnectCharacter = function(character) {
     
     var fetchMeAndConnect = function(authResponse, repeat) {
-      FB.api('/me', function(repsonse) {    // check, it's really connected
+      FB.api('/me', function(response) {    // check, it's really connected
         if (!response || response.error) {  
           if (repeat) {                     // in case status was cached,
             loginAndConnect();              // try again once more! -
