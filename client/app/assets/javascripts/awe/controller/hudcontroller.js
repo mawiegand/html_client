@@ -166,12 +166,9 @@ AWE.Controller = (function(module) {
         },
 
         buyFbOfferPressed: function() {
-          if (AWE.Facebook.initialized) {
+          AWE.Facebook.init(function() {
             AWE.Facebook.buyFbOffer(offerId, function() {}, function() {});
-          }
-          else {
-            alert('Nicht mit FB verbunden');
-          }
+          });
         },
         
         buyResourceOfferPressed: function(offerId) {
