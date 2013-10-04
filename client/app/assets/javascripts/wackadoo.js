@@ -680,7 +680,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.requestUrl = args.requestUrl;
       AWE.Settings.playerInvitation = args.playerInvitation;
       AWE.Settings.allianceInvitation = args.allianceInvitation;
-      
+      AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
+
       AWE.Log.Debug('SETTINGS', AWE.Settings);
       AWE.Log.Debug('ARGS', args);
       

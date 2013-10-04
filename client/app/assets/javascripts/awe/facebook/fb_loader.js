@@ -76,7 +76,43 @@ AWE.Facebook = (function(module) {
        fjs.parentNode.insertBefore(js, fjs);
      }(document, 'script', 'facebook-jssdk'));
   }
-    
+
+  module.buyFbOffer = function(offerId, success, error) {
+
+    var verifyOrderHandler = function(data) {
+      if (data.status == "completed") {
+        var fbVerifyOrderAction = AWE.Action.Shop.createFbVerifyOrderAction(data.payment_id, data.signed_request);
+        fbVerifyOrderAction.send(function (status) {
+          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+            if (success) {
+              success();
+            }
+          }
+          else {
+            if (error) {
+              error('credit buchung nicht erfolgreich');
+            }
+          }
+        });
+      }
+      else {
+        if (error) {
+          error('fb zahlung nicht erfolgreich');
+        }
+      }
+    };
+
+
+    FB.ui({
+        method:  'pay',
+        action:  'purchaseitem',
+        product: 'https://test1.wack-a-doo.de/game_server/shop/fb_credit_offers/1',
+      },
+      verifyOrderHandler
+    );
+  };
+  
+
   return module;
 
 }(AWE.Facebook || {}));
