@@ -377,8 +377,8 @@ AWE.Controller = (function(module) {
       AWE.Facebook.init(function() {
         AWE.Facebook.buyFbOffer(offer, function() {
           var info = AWE.UI.Ember.InfoDialog.create({
-            heading: 'Erfolg', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
-            message: 'Buchung erfolgt!', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
+            heading: AWE.I18n.lookupTranslation('shop.fbPaymentSuccess.header'),
+            message: AWE.I18n.lookupTranslation('shop.fbPaymentSuccess.message'),
           });
           that.applicationController.presentModalDialog(info);
           AWE.GS.ShopManager.fetchCreditAmount(function(){
@@ -387,23 +387,15 @@ AWE.Controller = (function(module) {
         }, function(errorCode) {
           if (errorCode == AWE.Net.UNPROCESSABLE) {
             var info = AWE.UI.Ember.InfoDialog.create({
-              heading: 'Fehler', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
-              message: 'Die Credits konnten nicht gebucht werden. Wende dich bitte an den Support!' // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
+              heading: AWE.I18n.lookupTranslation('shop.fbPaymentBytroError.header'),
+              message: AWE.I18n.lookupTranslation('shop.fbPaymentBytroError.message'),
             });
             that.applicationController.presentModalDialog(info);
           }
           else if (errorCode == AWE.Net.BAD_REQUEST) {
             var info = AWE.UI.Ember.InfoDialog.create({
-              heading: 'Fehler', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
-              message: 'Die Buchung konnte wegen eines Fehlers von Facebook nicht durchgeführt werden. Versuch es noch einmal!' // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
-            });
-            that.applicationController.presentModalDialog(info);
-          }
-          else {
-            alert(errorCode);
-            var info = AWE.UI.Ember.InfoDialog.create({
-              heading: 'Fehler', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
-              message: 'Closed pressed' // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
+              heading: AWE.I18n.lookupTranslation('shop.fbPaymentError.header'),
+              message: AWE.I18n.lookupTranslation('shop.fbPaymentError.message'),
             });
             that.applicationController.presentModalDialog(info);
           }

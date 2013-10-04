@@ -625,8 +625,23 @@ AWE.I18n.de_DE = function(module) {
         platinumAccountMessage: "Der Platinum Account wurde aktiviert. Platinum Features sind ab sofort freigeschaltet.",
         bonusHeader: "Juhuu!",
         bonusMessage: "Der Bonus wurde aktiviert und wird Deinem Stamm helfen seinen Wohlstand zu mehren.",
-        cashHeader: "Perfekt!",
-        cashMessage: "Das Starterpaket wurde erfolgreich zu Deinem Account hinzugefügt.",
+        specialHeader: "Perfekt!",
+        specialMessage: "Das Starterpaket wurde erfolgreich zu Deinem Account hinzugefügt.",
+      },
+
+      fbPaymentSuccess: {
+        header: "Credits gebucht",
+        message: "Die Platinum-Credits wurden auf Deinem Konto gutgeschrieben und stehen dir direkt zur Verfügung.",
+      },
+
+      fbPaymentBytroError: {
+        header: "Buchungsfehler",
+        message: 'Die Credits konnten nicht gebucht werden. Wende dich bitte an den Support!',
+      },
+
+      fbPaymentError: {
+        header: "Allgemeiner Fehler",
+        message: 'Die Buchung konnte wegen eines Fehlers von Facebook nicht durchgeführt werden. Versuch es noch einmal!',
       },
     },
     
