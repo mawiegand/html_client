@@ -74,7 +74,26 @@ AWE.Facebook = (function(module) {
   module.buyFbOffer = function(offerId, success, error) {
 
     var verifyOrderHandler = function(data) {
-      alert(data.signed_request);
+      if (data.status == "completed") {
+        var fbVerifyOrderAction = AWE.Action.Shop.createFbVerifyOrderAction(data.payment_id, data.signed_request);
+        fbVerifyOrderAction.send(function (status) {
+          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+            if (success) {
+              success();
+            }
+          }
+          else {
+            if (error) {
+              error('credit buchung nicht erfolgreich');
+            }
+          }
+        });
+      }
+      else {
+        if (error) {
+          error('fb zahlung nicht erfolgreich');
+        }
+      }
     };
 
 

@@ -167,7 +167,19 @@ AWE.Controller = (function(module) {
 
         buyFbOfferPressed: function() {
           AWE.Facebook.init(function() {
-            AWE.Facebook.buyFbOffer(1, function() {}, function() {});
+            AWE.Facebook.buyFbOffer(1, function() {
+              var info = AWE.UI.Ember.InfoDialog.create({
+                heading: 'Erfolg', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
+                message: 'Buchung erfolgt!', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
+              });
+              that.applicationController.presentModalDialog(info);
+            }, function(errorString) {
+              var info = AWE.UI.Ember.InfoDialog.create({
+                heading: 'Fehler', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
+                message: errorString, // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
+              });
+              that.applicationController.presentModalDialog(info);
+            });
           });
         },
         
