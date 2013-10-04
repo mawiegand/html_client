@@ -92,11 +92,11 @@ AWE.Facebook = (function(module) {
     }
   }
 
-  module.buyFbOffer = function(offerId, success, error) {
+  module.buyFbOffer = function(offer, success, error) {
 
     var verifyOrderHandler = function(data) {
       if (data.status == "completed") {
-        var fbVerifyOrderAction = AWE.Action.Shop.createFbVerifyOrderAction(offerId, data.payment_id, data.signed_request);
+        var fbVerifyOrderAction = AWE.Action.Shop.createFbVerifyOrderAction(offer.get('id'), data.payment_id, data.signed_request);
         fbVerifyOrderAction.send(function (status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
             if (success) {
@@ -120,7 +120,7 @@ AWE.Facebook = (function(module) {
     FB.ui({
         method:  'pay',
         action:  'purchaseitem',
-        product: 'https://test1.wack-a-doo.de/game_server/shop/fb_credit_offers/1',
+        product:  offer.get('url'),
       },
       verifyOrderHandler
     );

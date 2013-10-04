@@ -165,44 +165,6 @@ AWE.Controller = (function(module) {
           AWE.GS.ShopManager.openCreditShopWindow()
         },
 
-        buyFbOfferPressed: function() {
-          AWE.Facebook.init(function() {
-            AWE.Facebook.buyFbOffer(1, function() {
-              var info = AWE.UI.Ember.InfoDialog.create({
-                heading: 'Erfolg', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
-                message: 'Buchung erfolgt!', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
-              });
-              that.applicationController.presentModalDialog(info);
-              AWE.GS.ShopManager.fetchCreditAmount(function(){
-                that.setModelChanged();
-              });
-            }, function(errorCode) {
-              if (errorCode == AWE.Net.UNPROCESSABLE) {
-                var info = AWE.UI.Ember.InfoDialog.create({
-                  heading: 'Fehler', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
-                  message: 'Die Credits konnten nicht gebucht werden. Wende dich bitte an den Support!' // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
-                });
-                that.applicationController.presentModalDialog(info);
-              }
-              else if (errorCode == AWE.Net.BAD_REQUEST) {
-                var info = AWE.UI.Ember.InfoDialog.create({
-                  heading: 'Fehler', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
-                  message: 'Die Buchung konnte wegen eines Fehlers von Facebook nicht durchgeführt werden. Versuch es noch einmal!' // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
-                });
-                that.applicationController.presentModalDialog(info);
-              }
-              else {
-                alert(errorCode);
-                var info = AWE.UI.Ember.InfoDialog.create({
-                  heading: 'Fehler', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
-                  message: 'Closed pressed' // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
-                });
-                that.applicationController.presentModalDialog(info);
-              }
-            });
-          });
-        },
-        
         buyResourceOfferPressed: function(offerId) {
           
           var creditAmount = this.getPath('shop.creditAmount') || 0;
@@ -410,6 +372,44 @@ AWE.Controller = (function(module) {
       
       that.applicationController.presentModalDialog(shopDialog);
     };
+
+    that.buyFbOfferPressed = function(offer) {
+      AWE.Facebook.init(function() {
+        AWE.Facebook.buyFbOffer(offer, function() {
+          var info = AWE.UI.Ember.InfoDialog.create({
+            heading: 'Erfolg', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
+            message: 'Buchung erfolgt!', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
+          });
+          that.applicationController.presentModalDialog(info);
+          AWE.GS.ShopManager.fetchCreditAmount(function(){
+            that.setModelChanged();
+          });
+        }, function(errorCode) {
+          if (errorCode == AWE.Net.UNPROCESSABLE) {
+            var info = AWE.UI.Ember.InfoDialog.create({
+              heading: 'Fehler', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
+              message: 'Die Credits konnten nicht gebucht werden. Wende dich bitte an den Support!' // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
+            });
+            that.applicationController.presentModalDialog(info);
+          }
+          else if (errorCode == AWE.Net.BAD_REQUEST) {
+            var info = AWE.UI.Ember.InfoDialog.create({
+              heading: 'Fehler', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
+              message: 'Die Buchung konnte wegen eines Fehlers von Facebook nicht durchgeführt werden. Versuch es noch einmal!' // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
+            });
+            that.applicationController.presentModalDialog(info);
+          }
+          else {
+            alert(errorCode);
+            var info = AWE.UI.Ember.InfoDialog.create({
+              heading: 'Fehler', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
+              message: 'Closed pressed' // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
+            });
+            that.applicationController.presentModalDialog(info);
+          }
+        });
+      });
+    },
     
     that.rankingButtonClicked = function() {
       var dialog = AWE.UI.Ember.RankingDialog.create();
