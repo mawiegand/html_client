@@ -96,13 +96,12 @@ AWE.Facebook = (function(module) {
           }
         });
       }
-      else
+      else {
         if (error) {
           error(400);
         }
       }
-    };
-
+    }
 
     FB.ui({
         method:  'pay',
