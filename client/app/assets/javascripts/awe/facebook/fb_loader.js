@@ -8,7 +8,8 @@ AWE.Facebook = (function(module) {
   
   module.initialized  = false;
   module.defaultScope = {scope: 'email'}; 
-  module.status = 'unkown';
+  module.status       = 'unkown';                // status of fbuser; 'unkonwn' -> not initialized, 'connected', etc.
+  module.cachedAuthRepsonse = null;              // last auth-response received from facebook.
   
   module.init = function(onSuccess) {
     
@@ -44,6 +45,7 @@ AWE.Facebook = (function(module) {
 
       FB.Event.subscribe('auth.authResponseChange', function(response) {
         module.status = response.status;
+        module.cachedAuthResponse = response;
       });
     
       module.initialized = true;
@@ -113,7 +115,7 @@ AWE.Facebook = (function(module) {
     
     var considerStatusAndConnect = function() {
       if (module.status == 'connected') {
-        fetchMeAndConnect();
+        fetchMeAndConnect(module.cachedAuthResponse);
       }
       else {
         loginAndConnect();
