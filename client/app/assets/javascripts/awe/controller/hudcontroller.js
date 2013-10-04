@@ -165,7 +165,7 @@ AWE.Controller = (function(module) {
           AWE.GS.ShopManager.openCreditShopWindow()
         },
 
-        buyFbOfferPressed: function(offerId) {
+        buyFbCreditOfferPressed: function() {
           if (AWE.Facebook.initialized) {
             AWE.Facebook.buyFbOffer(offerId, function() {}, function() {});
           }
