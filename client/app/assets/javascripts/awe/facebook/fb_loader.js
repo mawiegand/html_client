@@ -41,18 +41,23 @@ AWE.Facebook = (function(module) {
       });
       // Additional initialization code such as adding Event Listeners goes here
       
+
+      FB.Event.subscribe('auth.authResponseChange', function(response) {
+        module.status = response.status;
+      });
+    
       module.initialized = true;
       initializing = false;
-      
+    
       AWE.Ext.applyFunction(initCallbacks, function(callback) {
         if (callback) {
           callback();
         }
       });
-      
+    
       AWE.Log.Debug('FACEBOOK: initialized facebook sdk');
     };
-
+    
     // Load the SDK asynchronously
     (function(d, s, id){
        var js, fjs = d.getElementsByTagName(s)[0];
