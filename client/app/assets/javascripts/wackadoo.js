@@ -290,7 +290,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     loadAssets: function() {
       var self = this;
       
-      AWE.Facebook.init();
+      //AWE.Facebook.init();
 
       /** does final initialization after loading has finished */
       var postLoading = function() {

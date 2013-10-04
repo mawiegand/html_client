@@ -4,11 +4,23 @@ var AWE = window.AWE || {};
 AWE.Facebook = (function(module) {
   
   var initializing = false;
+  var initCallbacks = [];
   
   module.initialized  = false;
   module.defaultScope = {scope: 'email'}; 
+  module.status       = 'unkown';                // status of fbuser; 'unkonwn' -> not initialized, 'connected', etc.
+  module.cachedAuthRepsonse = null;              // last auth-response received from facebook.
   
-  module.init = function() {
+  module.init = function(onSuccess) {
+    
+    if (onSuccess) {
+      if (module.initialized) {                  // execute callback immediately, if FB already initialized
+        onSuccess();
+      }
+      else {
+        initCallbacks.push(onSuccess);
+      }
+    }
     
     if (!module.initialized && !initializing) {
       initializing = true;
@@ -23,19 +35,31 @@ AWE.Facebook = (function(module) {
       
       // init the FB JS SDK
       FB.init({
-        appId      : '127037377498922',                    // App ID from the app dashboard
+        appId      : '127037377498922',          // App ID from the app dashboard
         channelUrl : '//'+AWE.Config.SERVER_ROOT+'client/channel.html', // Channel file for x-domain comms
-        status     : false,                                // Don't check Facebook Login status
-        xfbml      : false                                 //  Don't look for social plugins on the page
+        status     : true,                       // Check Facebook Login status
+        xfbml      : false                       // Don't look for social plugins on the page
       });
       // Additional initialization code such as adding Event Listeners goes here
       
+
+      FB.Event.subscribe('auth.authResponseChange', function(response) {
+        module.status = response.status;
+        module.cachedAuthResponse = response;
+      });
+    
       module.initialized = true;
       initializing = false;
-      
+    
+      AWE.Ext.applyFunction(initCallbacks, function(callback) {
+        if (callback) {
+          callback();
+        }
+      });
+    
       AWE.Log.Debug('FACEBOOK: initialized facebook sdk');
     };
-
+    
     // Load the SDK asynchronously
     (function(d, s, id){
        var js, fjs = d.getElementsByTagName(s)[0];
@@ -106,22 +130,28 @@ AWE.Facebook = (function(module) {
       }, module.defaultScope);
     }
     
+    var considerStatusAndConnect = function() {
+      if (module.status == 'connected') {
+        fetchMeAndConnect(module.cachedAuthResponse);
+      }
+      else {
+        loginAndConnect();
+      } 
+    }
+    
     if (character.get('isConnectedToFacebook')) {
       AWE.Log.Debug('FACEBOOK: user is already connected with facebook');
       return ;
     }
-    FB.getLoginStatus(function(response) {
-      if (response.status === 'connected') {
-        fetchMeAndConnect(response.authResponse, true);
-        AWE.Log.Debug('FACEBOOK: user is signed in to facebook and authorized the app');
-      } else if (response.status === 'not_authorized') {
-        AWE.Log.Debug('FACEBOOK: user is signed in to facebook but did not authorize the app yet');
-        loginAndConnect();
-      } else {
-        AWE.Log.Debug('FACEBOOK: user is NOT signed in to facebook');
-        loginAndConnect();
-      }
-    }, true); // force reload of login status
+    
+    if (module.status == 'unkown') {
+      AWE.Facebook.init(function() {
+        considerStatusAndConnect();
+      });
+    }
+    else {
+      considerStatusAndConnect();
+    }
   }
     
   return module;
