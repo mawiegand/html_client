@@ -9,14 +9,13 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Shop = (function(module) {
   
-  module.createFbVerifyOrderAction = function(paymentId, signedRequest) {
+  module.createFbVerifyOrderAction = function(paymentId, signedRequest, my) {
 
     // private attributes and methods //////////////////////////////////////
 
     var that;
 
     // protected attributes and methods ////////////////////////////////////
-
     my = my || {};
 
 
