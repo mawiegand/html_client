@@ -9,7 +9,7 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Shop = (function(module) {
   
-  module.createFbVerifyOrderAction = function(paymentId, signedRequest, my) {
+  module.createFbVerifyOrderAction = function(offerId, paymentId, signedRequest, my) {
 
     // private attributes and methods //////////////////////////////////////
 
@@ -26,6 +26,7 @@ AWE.Action.Shop = (function(module) {
     that.getRequestBody = function() {
       return {
         fb_verify_order_action: {
+          offer_id: offerId,
           payment_id: paymentId,
           signed_request: signedRequest,
         }

@@ -82,7 +82,7 @@ AWE.Facebook = (function(module) {
 
     var verifyOrderHandler = function(data) {
       if (data.status == "completed") {
-        var fbVerifyOrderAction = AWE.Action.Shop.createFbVerifyOrderAction(data.payment_id, data.signed_request);
+        var fbVerifyOrderAction = AWE.Action.Shop.createFbVerifyOrderAction(offerId, data.payment_id, data.signed_request);
         fbVerifyOrderAction.send(function (status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
             if (success) {
