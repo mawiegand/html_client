@@ -160,8 +160,8 @@ AWE.GS = (function(module) {
     }.property('base_region_id').cacheable(),
 
     isConnectedToFacebook: function() {
-      return this.get('facebook_player_id') !== undefined && this.get('facebook_player_id') !== null;
-    }.property('facebook_player_id').cacheable(),
+      return this.get('fb_player_id') !== undefined && this.get('fb_player_id') !== null;
+    }.property('fb_player_id').cacheable(),
     
     //
     // //// MESSAGING //////////////////////////////////////////////////////// 

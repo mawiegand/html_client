@@ -10,6 +10,7 @@ AWE.Facebook = (function(module) {
   module.defaultScope = {scope: 'email'}; 
   module.status       = 'unkown';                // status of fbuser; 'unkonwn' -> not initialized, 'connected', etc.
   module.cachedAuthRepsonse = null;              // last auth-response received from facebook.
+  module.isRunningInCanvas  = false;
   
   
   /** call this method to initialize facebook or make sure it's initialized. 
@@ -76,6 +77,19 @@ AWE.Facebook = (function(module) {
        js.src = "//connect.facebook.net/"+sdkLocale+"/all.js";
        fjs.parentNode.insertBefore(js, fjs);
      }(document, 'script', 'facebook-jssdk'));
+  }
+  
+  module.updateFBCanvasSize = function() {
+    if (module.isRunningInCanvas && module.initialized) {
+      FB.Canvas.setAutoGrow(false);
+      FB.Canvas.setSize({width: 200, height: 200});
+    }
+  }
+  
+  module.setDoneLoading = function() {
+    if (module.isRunningInCanvas && module.initialized) {
+      FB.Canvas.setDoneLoading();
+    }
   }
 
   module.buyFbOffer = function(offer, success, error) {
