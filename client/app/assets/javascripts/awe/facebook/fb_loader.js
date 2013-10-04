@@ -52,7 +52,8 @@ AWE.Facebook = (function(module) {
       
       FB.Event.subscribe('auth.authResponseChange', function(response) {
         module.status = response.status;
-        module.cachedAuthResponse = response;
+        module.cachedAuthResponse = response.authResponse;
+        AWE.Log.Debug('FACEBOOK: authResponseChanged', response.status, response);
       });
     
       module.initialized = true;
@@ -72,7 +73,7 @@ AWE.Facebook = (function(module) {
        var js, fjs = d.getElementsByTagName(s)[0];
        if (d.getElementById(id)) {return;}
        js = d.createElement(s); js.id = id;
-       js.src = "//connect.facebook.net/'+sdkLocale+'/all.js";
+       js.src = "//connect.facebook.net/"+sdkLocale+"/all.js";
        fjs.parentNode.insertBefore(js, fjs);
      }(document, 'script', 'facebook-jssdk'));
   }
@@ -90,18 +91,17 @@ AWE.Facebook = (function(module) {
           }
           else {
             if (error) {
-              error('credit buchung nicht erfolgreich');
+              error(status);
             }
           }
         });
       }
       else {
         if (error) {
-          error('fb zahlung nicht erfolgreich');
+          error(AWE.Net.NOT_MODIFIED);
         }
       }
-    };
-
+    }
 
     FB.ui({
         method:  'pay',
@@ -110,8 +110,7 @@ AWE.Facebook = (function(module) {
       },
       verifyOrderHandler
     );
-  };
-  
+  }
 
   return module;
 
