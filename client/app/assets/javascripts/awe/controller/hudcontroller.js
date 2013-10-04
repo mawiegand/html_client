@@ -173,6 +173,9 @@ AWE.Controller = (function(module) {
                 message: 'Buchung erfolgt!', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
               });
               that.applicationController.presentModalDialog(info);
+              AWE.GS.ShopManager.fetchCreditAmount(function(){
+                that.setModelChanged();
+              });
             }, function(errorCode) {
               if (errorCode == AWE.Net.UNPROCESSABLE) {
                 var info = AWE.UI.Ember.InfoDialog.create({
