@@ -167,7 +167,7 @@ AWE.Controller = (function(module) {
 
         buyFbOfferPressed: function() {
           AWE.Facebook.init(function() {
-            AWE.Facebook.buyFbOffer(offerId, function() {}, function() {});
+            AWE.Facebook.buyFbOffer(1, function() {}, function() {});
           });
         },
         
