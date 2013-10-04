@@ -56,7 +56,7 @@ AWE.UI.Ember = (function(module) {
     buyCreditsPressed: function() {
       log('Action not connected: buyCreditsWasPressed.');
     },
-    
+
     buyResourceOfferPressed: function() {
       log('Action not connected: buyOfferWasPressed.');
     },
