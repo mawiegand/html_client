@@ -93,18 +93,8 @@ AWE.Facebook = (function(module) {
       AWE.Log.Debug('FACEBOOK: user is already connected with facebook');
       return ;
     }
-    FB.getLoginStatus(function(response) {
-      if (response.status === 'connected') {
-        fetchMeAndConnect(response.authResponse, true);
-        AWE.Log.Debug('FACEBOOK: user is signed in to facebook and authorized the app');
-      } else if (response.status === 'not_authorized') {
-        AWE.Log.Debug('FACEBOOK: user is signed in to facebook but did not authorize the app yet');
-        loginAndConnect();
-      } else {
-        AWE.Log.Debug('FACEBOOK: user is NOT signed in to facebook');
-        loginAndConnect();
-      }
-    }, true); // force reload of login status
+
+    loginAndConnect();
   }
     
   return module;
