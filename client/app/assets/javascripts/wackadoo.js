@@ -290,7 +290,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     loadAssets: function() {
       var self = this;
       
-      //AWE.Facebook.init();
+      if (AWE.Facebook.isRunningInCanvas) {
+        AWE.Facebook.init();
+      }
 
       /** does final initialization after loading has finished */
       var postLoading = function() {
@@ -334,6 +336,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         self.startRunloop();
         self.readyToRun();                            // ready to run
         self.showStartupDialogs();
+        
+        AWE.Facebook.updateFBCanvasSize();  // updates size of canvas, iff running in canvas
+        AWE.Facebook.setDoneLoading();      // track loading time, iff running in canvas
         
         if (AWE.Config.CHAT_SHOW) {
           self.initChat();
@@ -681,6 +686,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.playerInvitation = args.playerInvitation;
       AWE.Settings.allianceInvitation = args.allianceInvitation;
       AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
+
+      AWE.Facebook.isRunningInCanvas = AWE.Settings.fbRunInCanvas;
 
       AWE.Log.Debug('SETTINGS', AWE.Settings);
       AWE.Log.Debug('ARGS', args);
