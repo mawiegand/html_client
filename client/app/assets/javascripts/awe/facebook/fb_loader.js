@@ -82,7 +82,7 @@ AWE.Facebook = (function(module) {
   module.updateFBCanvasSize = function() {
     if (module.isRunningInCanvas && module.initialized) {
       //FB.Canvas.setSize({width: 600, height: 320});
-      //FB.Canvas.setAutoGrow(1000);
+      FB.Canvas.setAutoGrow(false);
     }
   }
   
