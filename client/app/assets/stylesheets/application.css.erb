@@ -4511,6 +4511,188 @@ a.trading-carts-speedup-button:hover {
   margin-top: 24px;
 }
 
+.catapult-start-dialog {
+  position: absolute;
+  margin-top:100px;
+  margin-left: -290px;
+  padding:0;
+  z-index:256;
+
+  width: 580px;
+  height: 724px;
+}
+
+.catapult-start-dialog.de_DE {
+  background: url('<%= asset_path("special_offer/de_dialog.png") %>') no-repeat;
+}
+
+.catapult-start-dialog.en_US {
+  background: url('<%= asset_path("special_offer/en_dialog.png") %>') no-repeat;
+}
+
+.catapult-start-dialog .exclusive {
+  position: absolute;
+  top: 266px;
+  left: 174px;
+  width: 334px;
+
+  font-size:24px;
+  line-height: 45px;
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+}
+
+.catapult-start-dialog .offer-content {
+  position: absolute;
+  top: 350px;
+  right: 27px;
+  width: 193px;
+}
+
+.catapult-start-dialog .offer-content table {
+  width: 100%;
+  height:244px;
+}
+
+.catapult-start-dialog .offer-content table,
+.catapult-start-dialog .offer-content table tr,
+.catapult-start-dialog .offer-content table td {
+  padding:0;
+  margin:0;
+}
+
+.catapult-start-dialog .offer-content table td {
+  height: 60px;
+  color: #fff;
+  font-size: 16px;
+  text-shadow: none;
+  vertical-align:middle;
+}
+
+
+.catapult-start-dialog .title {
+  font-weight: bold;
+  font-size:20px;
+  text-shadow: grey 0px 1px 1px;
+}
+
+.catapult-start-dialog .buy-button {
+  position: absolute;
+  bottom: 40px;
+  right: 27px;
+  width: 250px;
+  height: 68px;
+}
+
+.catapult-start-dialog.de_DE .buy-button {
+  background: url('<%= asset_path("special_offer/de_buy.png") %>');
+}
+
+.catapult-start-dialog.en_US .buy-button {
+  background: url('<%= asset_path("special_offer/en_buy.png") %>');
+}
+
+.catapult-start-dialog .box {
+  position: absolute;
+  bottom: 114px;
+  left:18px;
+  width: 262px;
+  height: 192px;
+  background: url('<%= asset_path("special_offer/box.png") %>');
+}
+
+.catapult-start-dialog .star {
+  position: absolute;
+  top: 370px;
+  left: 4px;
+  width: 266px;
+  height: 180px;
+  background: url('<%= asset_path("special_offer/star.png") %>');
+}
+
+.catapult-start-dialog .price {
+  position: absolute;
+  bottom: 52px;
+  left: 100px;
+  width: 100px;
+  height: 52px;
+
+  font-weight: bold;
+  font-size: 48px;
+  color: #e5541d;
+}
+
+.catapult-start-dialog a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.catapult-start-dialog a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+.facebook-credit-offer-dialog {
+  margin-top: 40px;
+}
+
+.facebook-credit-offer-dialog a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+.facebook-credit-offer-dialog a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.facebook-credit-offer-dialog .list-element {
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  background: #0075ff; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #e9f3c3 0%,  #ddf1a4 100%);
+  background: -moz-linear-gradient(top,  #e9f3c3,  #ddf1a4); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#e9f3c3,  #ddf1a4);
+  margin-bottom: 10px;
+
+  color: #000;
+  text-shadow:none;
+  position:relative;
+}
+
+.facebook-credit-offer-dialog .list-element a {
+  color:#000
+  text-shadow:none;
+  text-decoration:underline;
+}
+
+.facebook-credit-offer-dialog .list-element a:hover {
+  color:#000;
+  text-shadow:grey 0px 0px 1px;
+  text-decoration:none;
+}
+
+
+.facebook-credit-offer-dialog .list-element img {
+  width: 48px;
+  height: 48px;
+}
+
+.facebook-credit-offer-dialog .list-element .right-side {
+  position:absolute;
+  right:7px;
+  top:10px;
+  }
+
 .settlement-dialog-pane h1 {
   font-size: 2em;
   font-weight: 300;

@@ -564,6 +564,7 @@ AWE.I18n.de_DE = function(module) {
       for: 'für',
       updateCredits: 'Aktualisieren',
       buyCredits: 'Jetzt aufladen',
+      buyCreditsThroughFacebook: 'Jetzt aufladen mit FB',
       article: 'Artikel',
       description: 'Beschreibung',
       price: 'Preis',

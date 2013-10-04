@@ -91,18 +91,17 @@ AWE.Facebook = (function(module) {
           }
           else {
             if (error) {
-              error('credit buchung nicht erfolgreich');
+              error(status);
             }
           }
         });
       }
       else {
         if (error) {
-          error('fb zahlung nicht erfolgreich');
+          error(AWE.Net.NOT_MODIFIED);
         }
       }
-    };
-
+    }
 
     FB.ui({
         method:  'pay',
@@ -111,8 +110,7 @@ AWE.Facebook = (function(module) {
       },
       verifyOrderHandler
     );
-  };
-  
+  }
 
   return module;
 
