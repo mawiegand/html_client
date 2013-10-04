@@ -510,6 +510,7 @@ AWE.UI.Ember = (function(module) {
       this.set('changePasswordMessage', '');
     }.observes('password', 'passwordConfirmation'),
             
+            
     changeSameIPPressed: function() {
       var self = this;
       self.set('changingSameIP', true);
@@ -558,8 +559,31 @@ AWE.UI.Ember = (function(module) {
     },
     
     connectFacebookPressed: function() {
+      var self = this;
+      this.set('connectFacebookMessage', '');
+      
       AWE.Log.Debug('FACEBOOK: connect to fb pressed');
-      AWE.Facebook.connnectCharacter(AWE.GS.game.getPath('currentCharacter'));
+      AWE.Facebook.connnectCharacter(AWE.GS.game.getPath('currentCharacter'), function()
+      {
+        AWE.Log.Debug('FACEBOOK: connected to fb.');
+      },
+      function(status) {
+        if (status == 'loginBreak') {
+          AWE.Log.Debug('FACEBOOK: could not sign in to facebook.');
+        }
+        else if (status == AWE.Net.Conflict) {
+          AWE.Log.Debug('FACEBOOK: facebook user is already connected to another character.');
+          self.set('connectFacebookMessage', AWE.I18n.lookupTranslation('profile.settings.fbUserIdAlreadyInUse'));
+        }
+        else if (status == AWE.Net.Forbidden) {
+          AWE.Log.Debug('FACEBOOK: character is already connected to another facebook user.');
+          self.set('connectFacebookMessage', AWE.I18n.lookupTranslation('profile.settings.characterAlreadyConnected'));
+        }
+        else {
+          AWE.Log.Debug('FACEBOOK: unkown error.');
+          self.set('connectFacebookMessage', AWE.I18n.lookupTranslation('profile.settings.connectionDidFail'));
+        }
+      });
     },   
   });
 

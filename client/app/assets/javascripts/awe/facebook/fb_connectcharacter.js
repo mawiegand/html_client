@@ -3,10 +3,12 @@ var AWE = window.AWE || {};
 
 AWE.Facebook = (function(module) {
   
-  var fetchMeAndConnect = function(authResponse) {
+  var fetchMeAndConnect = function(authResponse, onSuccess, onFailure) {
     FB.api('/me', function(response) {    // check, it's really connected
       if (!response || response.error) {  
-        // call onFailure handler
+        if (onFailure) {
+          onFailure(400);
+        }
       }
       else {
         var fbPlayerId    = authResponse.userID;
@@ -16,37 +18,46 @@ AWE.Facebook = (function(module) {
         
         var action = AWE.Action.Fundamental.createConnectFacebookAction(fbPlayerId, fbAccessToken);
         AWE.Action.Manager.queueAction(action, function(status) {
-          if (status === AWE.Net.CONFLICT) {
-            AWE.Log.Debug('FACEBOOK: conflict, id already connected with someone else.')
-          }
-          else if (status === AWE.Net.OK) {
-            AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, null);
+          if (status === AWE.Net.OK) {
+            AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+              if (onSuccess) {
+                onSuccess();
+              }
+            });
           }
           else {
-            AWE.Log.Debug('FACEBOOK: unkown error, could not connect.')
+            AWE.Log.Debug('FACEBOOK: error, could not connect', status);
+            if (onFailure) {
+              onFailure(status)
+            }
           }
         });
       }
     });
   }
   
-  var loginAndConnect = function() {
+  var loginAndConnect = function(onSuccess, onFailure) {
     AWE.Log.Debug('FACEBOOK: now call login');
     FB.login(function(response) {
       AWE.Log.Debug('FACEBOOK: login response', response);
       if (response.authResponse) {
         fetchMeAndConnect(response.authResponse, false);
       }
+      else {
+        if (onFailure) {
+          onFailure('loginBreak');
+        }
+      }
       // do nothing, if user does not authorize the app
     }, module.defaultScope);
   }
   
-  var considerStatusAndConnect = function() {
+  var considerStatusAndConnect = function(onSuccess, onFailure) {
     if (module.status == 'connected') {
-      fetchMeAndConnect(module.cachedAuthResponse);
+      fetchMeAndConnect(module.cachedAuthResponse, onSuccess, onFailure);
     }
     else {
-      loginAndConnect();
+      loginAndConnect(onSuccess, onFailure);
     } 
   }
   
@@ -54,7 +65,7 @@ AWE.Facebook = (function(module) {
   
   /** connects a facebook user to the currenctCharacter IFF
    * the character hasn't been connected, yet. */
-  module.connnectCharacter = function(character) {
+  module.connnectCharacter = function(character, onSuccess, onFailure) {
 
     if (character.get('isConnectedToFacebook')) {
       AWE.Log.Debug('FACEBOOK: user is already connected with facebook');
@@ -63,11 +74,11 @@ AWE.Facebook = (function(module) {
     
     if (module.status == 'unkown') {
       AWE.Facebook.init(function() {
-        considerStatusAndConnect();
+        considerStatusAndConnect(onSuccess, onFailure);
       });
     }
     else {
-      considerStatusAndConnect();
+      considerStatusAndConnect(onSuccess, onFailure);
     }
   }
     

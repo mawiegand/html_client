@@ -947,9 +947,12 @@ AWE.I18n.en_US = function(module) {
       
       settings: {
         connectToFacebookHeading: 'Go Social!',
-        youAreConnectedToFacebook: "You're already connected with Facebook and ready to play Wack-A-Doo in Facebook.",
+        youAreConnectedToFacebook: "You're already connected with Facebook and ready to play Wack-A-Doo in Facebook: <a href='https://apps.facebook.com/wack-a-doo' target='_blank'>https://apps.facebook.com/wack-a-doo</a>.<br/>Got a wrong connection? Please contact support (support@5dlab.com).",
         connectToFacebookAdvice: "Connect your character with your facebook account, play Wack-A-Doo inside facebook and make use of it's social features!",
         connectToFacebook: 'Connect to Facebook',
+        fbUserIdAlreadyInUse: 'This facebook account is already connected to another character.',
+        characterAlreadyConnected: 'Your character is already connected to facebook.',
+        connectionDidFail: "Sorry, this didn't work out as expected.",
       },
 
       customization:{
