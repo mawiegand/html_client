@@ -10,7 +10,7 @@ AWE.Facebook = (function(module) {
   module.defaultScope = {scope: 'email'}; 
   module.status       = 'unkown';                // status of fbuser; 'unkonwn' -> not initialized, 'connected', etc.
   module.cachedAuthRepsonse = null;              // last auth-response received from facebook.
-  mdoule.isRunningInCanvas  = false;
+  module.isRunningInCanvas  = false;
   
   
   /** call this method to initialize facebook or make sure it's initialized. 
