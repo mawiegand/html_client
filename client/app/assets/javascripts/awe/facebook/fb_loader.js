@@ -4,11 +4,22 @@ var AWE = window.AWE || {};
 AWE.Facebook = (function(module) {
   
   var initializing = false;
+  var initCallbacks = [];
   
   module.initialized  = false;
   module.defaultScope = {scope: 'email'}; 
+  module.status = 'unkown';
   
-  module.init = function() {
+  module.init = function(onSuccess) {
+    
+    if (onSuccess) {
+      if (module.initialized) {                  // execute callback immediately, if FB already initialized
+        onSuccess();
+      }
+      else {
+        initCallbacks.push(onSuccess);
+      }
+    }
     
     if (!module.initialized && !initializing) {
       initializing = true;
@@ -23,15 +34,21 @@ AWE.Facebook = (function(module) {
       
       // init the FB JS SDK
       FB.init({
-        appId      : '127037377498922',                    // App ID from the app dashboard
+        appId      : '127037377498922',          // App ID from the app dashboard
         channelUrl : '//'+AWE.Config.SERVER_ROOT+'client/channel.html', // Channel file for x-domain comms
-        status     : false,                                // Don't check Facebook Login status
-        xfbml      : false                                 //  Don't look for social plugins on the page
+        status     : true,                       // Check Facebook Login status
+        xfbml      : false                       // Don't look for social plugins on the page
       });
       // Additional initialization code such as adding Event Listeners goes here
       
       module.initialized = true;
       initializing = false;
+      
+      AWE.Ext.applyFunction(initCallbacks, function(callback) {
+        if (callback) {
+          callback();
+        }
+      });
       
       AWE.Log.Debug('FACEBOOK: initialized facebook sdk');
     };
@@ -89,12 +106,28 @@ AWE.Facebook = (function(module) {
       }, module.defaultScope);
     }
     
+    var considerStatusAndConnect = function() {
+      if (module.status == 'connected') {
+        fetchMeAndConnect();
+      }
+      else {
+        loginAndConnect();
+      } 
+    }
+    
     if (character.get('isConnectedToFacebook')) {
       AWE.Log.Debug('FACEBOOK: user is already connected with facebook');
       return ;
     }
-
-    loginAndConnect();
+    
+    if (module.status == 'unkown') {
+      AWE.Facebook.init(function() {
+        considerStatusAndConnect();
+      });
+    }
+    else {
+      considerStatusAndConnect();
+    }
   }
     
   return module;
