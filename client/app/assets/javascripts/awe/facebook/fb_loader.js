@@ -98,7 +98,7 @@ AWE.Facebook = (function(module) {
       }
       else
         if (error) {
-          error(data.status);
+          error(400);
         }
       }
     };

@@ -181,11 +181,18 @@ AWE.Controller = (function(module) {
                 });
                 that.applicationController.presentModalDialog(info);
               }
+              else if (errorCode == AWE.Net.BAD_REQUEST) {
+                var info = AWE.UI.Ember.InfoDialog.create({
+                  heading: 'Fehler', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
+                  message: 'Die Buchung konnte wegen eines Fehlers von Facebook nicht durchgeführt werden. Versuch es noch einmal!' // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
+                });
+                that.applicationController.presentModalDialog(info);
+              }
               else {
                 alert(errorCode);
                 var info = AWE.UI.Ember.InfoDialog.create({
                   heading: 'Fehler', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
-                  message: 'Die Credits konnten nicht gebucht werden. Wende dich bitte an den Support!' // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
+                  message: 'Closed pressed' // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
                 });
                 that.applicationController.presentModalDialog(info);
               }
