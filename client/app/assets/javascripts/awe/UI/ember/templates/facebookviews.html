@@ -9,10 +9,10 @@
     <div class="facebook-credit-offer-dialog modal-dialog-pane">
       <a class="close" href="#" {{action "closePressed" target="parentView"}}></a>
 
-      <h1>Buy Credit Through Facebook</h1>
+      <h1>{{t shop.buyCreditsThroughFacebook}}</h1>
 
       {{#each offer in offers}}
-        {{view AWE.UI.Ember.FacebookCreditOfferView offer="offer"}}
+        {{view AWE.UI.Ember.FacebookCreditOfferView offerBinding="offer"}}
       {{/each}}
     </div>
   </div>
@@ -23,8 +23,8 @@
     <img {{bindAttr src="offer.image_url" alt="offer.title"}}>
     {{offer.amount}} {{offer.title}}
     <div class="right-side">
-      {{price}}
-      <div class="simple-button" {{action "buyOffer"}}>BUY</div>
+      EUR {{price}}
+      <div class="simple-button" {{action "buyOffer"}}>{{t shop.buy2}}</div>
     </div>
   </div>
 </script>

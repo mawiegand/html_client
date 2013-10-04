@@ -41,12 +41,12 @@ AWE.UI.Ember = (function(module) {
     offer: null,
 
     buyOffer: function() {
-      alert(this.getPath('offer.id'));
+      var offerId = this.getPath('offer.id');
+      // TODO: Buy Credits
     },
 
     price: function() {
-      // get error here since offer is undefined
-      return this.getPath('offer.prices')[0];
+      return JSON.parse(this.getPath('offer.prices'))[0]["EUR"];
     }.property('offer.prices'),
   });
 

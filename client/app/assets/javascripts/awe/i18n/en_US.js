@@ -555,7 +555,7 @@ AWE.I18n.en_US = function(module) {
       for:'for',
       updateCredits:'Update',
       buyCredits:'Buy now',
-      buyCredits:'Buy credits through FB',
+      buyCreditsThroughFacebook:'Buy credits through FB',
       article:'Article',
       description:'Description',
       price:'Price',
