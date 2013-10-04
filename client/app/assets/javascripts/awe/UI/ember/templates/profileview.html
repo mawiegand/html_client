@@ -195,10 +195,19 @@
   </p>
   <p class="red-color">{{changePasswordMessage}}</p>
   
+  
+  
+  
   <h2>{{t profile.settings.connectToFacebookHeading}}</h2>
-  <p>
-    <span class="simple-button" {{action "connectFacebookPressed"}}>{{t profile.settings.connectToFacebook}}</span>
-  </p>
+  {{#if character.isConnectedToFacebook}}
+    <p>{{t profile.settings.youAreConnectedToFacebook}}</p>
+  {{else}}
+    <p>{{t profile.settings.connectToFacebookAdvice}}}</p>
+    <p>
+      <span class="simple-button right-align" {{action "connectFacebookPressed"}}>{{t profile.settings.connectToFacebook}}</span>
+    </p>
+  {{/if}}
+
   
   
   <h2>{{t profile.customization.changeSameIPCaption}}</h2>

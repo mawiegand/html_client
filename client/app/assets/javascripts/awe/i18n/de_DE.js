@@ -636,7 +636,6 @@ AWE.I18n.de_DE = function(module) {
       max:'Maximum',
       condition:'Zustand',
       founded: 'Gründung',
-
       
       customization: {
         chooseName: "Deinen Namen wählen",
@@ -956,6 +955,14 @@ AWE.I18n.de_DE = function(module) {
         lagTolerable: "Diese Zeitdifferenz ist tolerabel.",
         lagUntolerable1: "Bitte stelle Deine Rechneruhr auf die korrekte Uhrzeit",
         lagUntolerable2: "oder schalte den automatischen Abgleich mit der Internetzeit an, sofern Dein Betriebssystem diese Möglichkeit bietet. Die Reaktivität des Spiels und Deine Nutzungserfahrung würden dadurch deutlich verbessert.",
+      },
+      
+      
+      settings: {
+        connectToFacebookHeading: 'Sei Sozial!',
+        isConnectedToFacebook: 'Du bist bereits mit Facebook verknüpft und kannst Wack-A-Doo jetzt auch in Facebook spielen.',
+        connectToFacebookAdvice: 'Verknüpfe Deinen Character jetzt mit Deinem Facebook Account. Du kannst dann auch innerhalb von Facebook spielen und weitere soziale Funktionen nutzen.',
+        connectToFacebook: 'Verbinden',
       },
       
       customization: {
