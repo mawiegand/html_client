@@ -70,7 +70,7 @@ AWE.Controller = (function(module) {
     that.getStages = function() {
       return [
         { stage: _stage,         mouseOverEvents: true},
-        { stage: _resourceStage, mouseOverEvents: true},
+        { stage: _resourceStage, mouseOverEvents: true}
       ];
     };
     
@@ -165,19 +165,9 @@ AWE.Controller = (function(module) {
           AWE.GS.ShopManager.openCreditShopWindow()
         },
 
-        fbPaymentsPressed: function() {
+        buyFbOfferPressed: function(offerId) {
           if (AWE.Facebook.initialized) {
-            FB.ui({
-                method:  'pay',
-                action:  'purchaseitem',
-                product: 'https://test1.wack-a-doo.de/game_server/assets/fb_payments/30credits.html',
-//                quantity: 10,                 // optional, defaults to 1
-//                request_id: 'YOUR_REQUEST_ID' // optional, must be unique for each payment
-              },
-              function(data) {
-                alert(data);
-              }
-            );
+            AWE.Facebook.buyFbOffer(offerId, function() {}, function() {});
           }
           else {
             alert('Nicht mit FB verbunden');

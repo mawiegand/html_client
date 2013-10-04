@@ -45,6 +45,23 @@ AWE.Facebook = (function(module) {
        fjs.parentNode.insertBefore(js, fjs);
      }(document, 'script', 'facebook-jssdk'));
   }
+
+
+  module.buyFbOffer = function(offerId, success, error) {
+
+    var verifyOrderHandler = function(data) {
+      alert(data.signed_request);
+    };
+
+
+    FB.ui({
+        method:  'pay',
+        action:  'purchaseitem',
+        product: 'https://test1.wack-a-doo.de/game_server/shop/fb_credit_offers/1',
+      },
+      verifyOrderHandler
+    );
+  };
   
 
   module.connnectCharacter = function(character) {
