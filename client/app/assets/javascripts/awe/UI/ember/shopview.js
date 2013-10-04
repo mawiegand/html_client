@@ -132,7 +132,9 @@ AWE.UI.Ember = (function(module) {
     offer: null,
 
     buySpecialOfferPressed: function() {
-      this.get('parentView').buySpecialOfferPressed(this.getPath('offer.id'));
+      var dialog = AWE.UI.Ember.CatapultStartDialog.create({ offer: this.get('offer'), parent: this});
+      WACKADOO.presentModalDialog(dialog);
+      return false;
     },
   });
 
@@ -166,6 +168,38 @@ AWE.UI.Ember = (function(module) {
     active: function() {
       return this.get('platinumExpiration') !== null;
     }.property('AWE.GS.game.currentCharacter.premium_expiration'),
+  });
+  
+  module.CatapultStartDialog = module.Dialog.extend({
+    templateName: 'catapult-start-dialog',
+    offer: null,
+
+    closePressed: function() {
+      this.destroy();
+      return false;
+    },
+
+    offerTitle: function() {
+      return AWE.GS.RulesManager.getRules().special_offer.display_strings[AWE.Settings.locale][0];
+    }.property(),
+
+    offerResources: function() {
+      return AWE.GS.RulesManager.getRules().special_offer.display_strings[AWE.Settings.locale][1];
+    }.property(),
+
+    offerFrogs: function() {
+      return AWE.GS.RulesManager.getRules().special_offer.display_strings[AWE.Settings.locale][2];
+    }.property(),
+
+    offerTime: function() {
+      return AWE.GS.RulesManager.getRules().special_offer.display_strings[AWE.Settings.locale][3];
+    }.property(),
+
+    buyPressed: function() {
+      this.getPath('parent.parentView').buySpecialOfferPressed(this.getPath('offer.id'));
+      this.destroy();
+      return false;
+    },
   });
   
   return module;

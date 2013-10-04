@@ -188,7 +188,31 @@
 </script>
 
 
-
-
-
-
+<script type="text/x-handlebars" data-template-name="catapult-start-dialog">
+  <div class="modal-dialog-background"></div>
+  <div class="horizontal-center-helper">
+    <div {{bindAttr class=":catapult-start-dialog AWE.Settings.locale"}}>
+      <a class="close" href="#" {{action "closePressed" target="parentView"}}></a>  
+      <div class="exclusive">{{t shop.bonusOfferDescription}}</div>
+      <div class="offer-content">
+        <table>
+          <tr><td class="title">{{offerTitle}}</td></tr>
+          <tr><td class="resources">{{offerResources}}</td></tr>
+          <tr><td class="frogs">{{offerFrogs}}</td></tr>
+          <tr><td class="time">{{offerTime}}</td></tr>
+        </table>
+      </div>
+      <div class="buy-button clickable" {{action "buyPressed"}}></div>
+      <div class="star"></div>
+      <div class="box"></div>
+      <div class="price">
+        {{offer.price}}
+        {{#if offer.frogCurrency}}
+        <img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/toad-wide.png" alt="" />
+        {{else}}
+        <img src="{{ unbound AWE.Config.RAILS_ASSET_PATH }}icons/credits.png" alt="" />
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</script>
