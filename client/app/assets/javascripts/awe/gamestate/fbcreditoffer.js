@@ -12,26 +12,13 @@ AWE.GS = (function(module) {
   module.FbCreditOfferAccess = {};
     
   module.FbCreditOffer = module.Entity.extend({
-    typeName: 'BonusOffer',
+    typeName: 'FbCreditOffer',
     
     title: null,
-    price: null,
-    
-    resource_id: null,
-    started_at: null,
-    ends_at: null,
-    duration: null,
-    bonus: null,
-    currency: 0,
-
-    frogCurrency: function() {
-      return this.get('currency') == AWE.GS.CURRENCY_GOLDEN_FROGS;
-    }.property('currency').cacheable(),
+    prices: null,
     
     isBuying: false,  // set to true while communicating with the shop on purchase
-    
-    resource_effect: null,
-  });     
+  });
     
   // ///////////////////////////////////////////////////////////////////////
   //
@@ -71,12 +58,7 @@ AWE.GS = (function(module) {
       });
 
       return offers.sort(function(a, b) {
-        if (a.get('resource_id') == b.get('resource_id')) {
-          return a.get('bonus') - b.get('bonus');
-        }
-        else {
-          return a.get('resource_id') - b.get('resource_id');
-        }
+        return a.get('amount') - b.get('amount');
       });
     }
     
@@ -94,7 +76,7 @@ AWE.GS = (function(module) {
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
     that.updateFbCreditOffer = function(id, updateType, callback) {
-      var url = AWE.Config.SHOP_SERVER_BASE + 'fb_credit_offer/' + id;
+      var url = AWE.Config.SHOP_SERVER_BASE + 'fb_credit_offers/' + id;
       return my.updateEntity(url, id, updateType, callback); 
     };
     
@@ -125,18 +107,6 @@ AWE.GS = (function(module) {
     return that;
       
   }());
-    
-  // ///////////////////////////////////////////////////////////////////////
-  //
-  //   ACTIVE JOB
-  //
-  // ///////////////////////////////////////////////////////////////////////    
-    
-  module.ActiveRecourceEffect = module.Entity.extend({
-    typeName: 'ActiveRecourceEffect',
-    
-    // add attributes
-  });    
 
   return module;
   
