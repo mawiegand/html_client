@@ -571,11 +571,11 @@ AWE.UI.Ember = (function(module) {
         if (status == 'loginBreak') {
           AWE.Log.Debug('FACEBOOK: could not sign in to facebook.');
         }
-        else if (status == AWE.Net.Conflict) {
+        else if (status == AWE.Net.CONFLICT) {
           AWE.Log.Debug('FACEBOOK: facebook user is already connected to another character.');
           self.set('connectFacebookMessage', AWE.I18n.lookupTranslation('profile.settings.fbUserIdAlreadyInUse'));
         }
-        else if (status == AWE.Net.Forbidden) {
+        else if (status == AWE.Net.FORBIDDEN) {
           AWE.Log.Debug('FACEBOOK: character is already connected to another facebook user.');
           self.set('connectFacebookMessage', AWE.I18n.lookupTranslation('profile.settings.characterAlreadyConnected'));
         }

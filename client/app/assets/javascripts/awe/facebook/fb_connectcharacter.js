@@ -7,7 +7,7 @@ AWE.Facebook = (function(module) {
     FB.api('/me', function(response) {    // check, it's really connected
       if (!response || response.error) {  
         if (onFailure) {
-          onFailure(400);
+          onFailure(AWE.Net.BAD_REQUEST);
         }
       }
       else {
