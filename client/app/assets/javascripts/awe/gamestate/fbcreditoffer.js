@@ -93,14 +93,14 @@ AWE.GS = (function(module) {
     /** returns true, if update is executed, returns false, if request did 
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */
-    that.updateBonusOffer = function(id, updateType, callback) {
+    that.updateFbCreditOffer = function(id, updateType, callback) {
       var url = AWE.Config.SHOP_SERVER_BASE + 'fb_credit_offer/' + id;
       return my.updateEntity(url, id, updateType, callback); 
     };
     
     /** updates all jobs for the current queue. Calls the callback with a
      * list of all the updated jobs. */
-    that.updateBonusOffers = function(updateType, callback) {
+    that.updateFbCreditOffers = function(updateType, callback) {
       var url = AWE.Config.SHOP_SERVER_BASE + 'fb_credit_offers';
       return my.fetchEntitiesFromURL(
         url,                                               // url to fetch from

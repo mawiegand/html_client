@@ -4636,6 +4636,63 @@ a.trading-carts-speedup-button:hover {
   background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
+.facebook-credit-offer-dialog {
+  margin-top: 40px;
+}
+
+.facebook-credit-offer-dialog a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+.facebook-credit-offer-dialog a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.facebook-credit-offer-dialog .list-element {
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  background: #0075ff; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #e9f3c3 0%,  #ddf1a4 100%);
+  background: -moz-linear-gradient(top,  #e9f3c3,  #ddf1a4); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#e9f3c3,  #ddf1a4);
+  margin-bottom: 10px;
+
+  color: #000;
+  text-shadow:none;
+  position:relative;
+}
+
+.facebook-credit-offer-dialog .list-element a {
+  color:#000
+  text-shadow:none;
+  text-decoration:underline;
+}
+
+.facebook-credit-offer-dialog .list-element a:hover {
+  color:#000;
+  text-shadow:grey 0px 0px 1px;
+  text-decoration:none;
+}
+
+
+.facebook-credit-offer-dialog .list-element img {
+  width: 48px;
+  height: 48px;
+}
+
+.facebook-credit-offer-dialog .list-element .right-side {
+  position:absolute;
+  right:7px;
+  top:10px;
+  }
+
 .settlement-dialog-pane h1 {
   font-size: 2em;
   font-weight: 300;

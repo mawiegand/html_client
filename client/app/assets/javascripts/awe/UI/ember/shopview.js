@@ -36,6 +36,9 @@ AWE.UI.Ember = (function(module) {
       AWE.GS.SpecialOfferManager.updateSpecialOffers(null, function(result) {
         shop.set('specialOffer', AWE.GS.SpecialOfferManager.getSpecialOffers()[0]);
       });
+      AWE.GS.FbCreditOfferManager.updateFbCreditOffers(null, function(result) {
+        shop.set('fbCreditOffers', AWE.GS.FbCreditOfferManager.getFbCreditOffers());
+      });
     },
 
     shop: null,
@@ -50,6 +53,7 @@ AWE.UI.Ember = (function(module) {
     bonusOffersBinding: 'shop.bonusOffers',
     platinumOffersBinding: 'shop.platinumOffers',
     specialOfferBinding: 'shop.specialOffer',
+    fbCreditOffersBinding: 'shop.fbCreditOffers',
 
     creditAmountBinding: 'shop.creditAmount',
 
@@ -71,6 +75,12 @@ AWE.UI.Ember = (function(module) {
 
     buySpecialOfferPressed: function() {
       log('Action not connected: buyOfferWasPressed.');
+    },
+
+    buyFbCreditOfferPressed:function() {
+      var dialog = AWE.UI.Ember.FacebookCreditOfferDialog.create();
+      WACKADOO.presentModalDialog(dialog);
+      return false;
     },
 
     specialOfferHelpPressed: function() {

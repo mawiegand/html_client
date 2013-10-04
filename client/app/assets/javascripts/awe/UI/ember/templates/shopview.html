@@ -12,10 +12,11 @@
           {{else}}
             <p>{{ t shop.currentCreditAmount }} <b>{{view AWE.UI.Ember.WheelOrValueView valueBinding="shop.creditAmount" }}</b> {{ t shop.platinumCredits }}
               {{#if AWE.Settings.fbRunInCanvas}}
-              <span class="simple-button float-right platinum" {{action "buyFbOfferPressed" target="parentView"}}>{{ t shop.buyCredits }} mit FB</span>
+              <span class="simple-button float-right platinum" {{action "buyFbCreditOfferPressed"}}>{{ t shop.buyCreditsThroughFacebook }} </span>
               {{else}}
               <span class="simple-button float-right platinum" {{action "buyCreditsPressed" target="parentView"}}>{{ t shop.buyCredits }}</span>
               {{/if}}
+              <span class="simple-button float-right platinum" {{action "buyFbCreditOfferPressed"}}>{{ t shop.buyCreditsThroughFacebook }} </span>
             </p>
             
             {{#if resourceOffers}}

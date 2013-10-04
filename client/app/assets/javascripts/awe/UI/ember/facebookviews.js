@@ -14,6 +14,42 @@ AWE.UI  = AWE.UI     || {};
 
 AWE.UI.Ember = (function(module) {
 
+  module.FacebookCreditOfferDialog = module.Dialog.extend({
+    templateName: 'facebook-credit-offer-dialog',
+
+    init: function() {
+      //AWE.GS.FbCreditOfferManager.updateFbCreditOffers(null, function(result) {
+      //  this.get
+      //});
+      this._super();
+    },
+
+    offers: function() {
+      var shop = AWE.GS.ShopManager.getShop();
+      var fbOffers = shop.get('fbCreditOffers');
+      return fbOffers;
+    }.property(),
+
+    closePressed: function() {
+      this.destroy();
+      return false;
+    },
+  });
+
+  module.FacebookCreditOfferView = Ember.View.extend({
+    templateName: 'facebook-credit-offer-view',
+    offer: null,
+
+    buyOffer: function() {
+      alert(this.getPath('offer.id'));
+    },
+
+    price: function() {
+      // get error here since offer is undefined
+      return this.getPath('offer.prices')[0];
+    }.property('offer.prices'),
+  });
+
   module.FacebookSubcribeView = Ember.View.extend({
     templateName: 'facebook-subscribe-view',
   });
