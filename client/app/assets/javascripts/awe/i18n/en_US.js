@@ -622,8 +622,7 @@ AWE.I18n.en_US = function(module) {
       max:'max',
       condition:'Condition',
       founded:'Founded',
-
-
+      
       customization: {
         chooseName: "Choose your name",
         changeName: "Change your name",
@@ -943,6 +942,13 @@ AWE.I18n.en_US = function(module) {
         lagTolerable:"This deviation is tolerable.",
         lagUntolerable1:"Please set your system clock to the correct time.",
         lagUntolerable2:"Otherwise, enable automatic internet time synchronization if your operation system provides this feature. Your responsiveness and your user experience would both improve significantly. ",
+      },
+      
+      settings: {
+        connectToFacebookHeading: 'Go Social!',
+        isConnectedToFacebook: "You're already connected with Facebook and ready to play Wack-A-Doo in Facebook.",
+        connectToFacebookAdvice: "Connect your character with your facebook account, play Wack-A-Doo inside facebook and make use of it's social features!",
+        connectToFacebook: 'Connect to Facebook',
       },
 
       customization:{

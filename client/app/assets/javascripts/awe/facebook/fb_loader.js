@@ -11,6 +11,14 @@ AWE.Facebook = (function(module) {
   module.status       = 'unkown';                // status of fbuser; 'unkonwn' -> not initialized, 'connected', etc.
   module.cachedAuthRepsonse = null;              // last auth-response received from facebook.
   
+  
+  /** call this method to initialize facebook or make sure it's initialized. 
+   * Can be called multiple times with different onSuccess handlers.
+   * This method can be used as a wrapper around any other facebook task;
+   * if fb is already initialized, it will immediately execute onSuccess,
+   * otherwise, it will initialize fb and call onSuccess as soon as fb is
+   * ready. 
+   */
   module.init = function(onSuccess) {
     
     if (onSuccess) {
@@ -42,7 +50,6 @@ AWE.Facebook = (function(module) {
       });
       // Additional initialization code such as adding Event Listeners goes here
       
-
       FB.Event.subscribe('auth.authResponseChange', function(response) {
         module.status = response.status;
         module.cachedAuthResponse = response;
@@ -69,7 +76,6 @@ AWE.Facebook = (function(module) {
        fjs.parentNode.insertBefore(js, fjs);
      }(document, 'script', 'facebook-jssdk'));
   }
-
 
   module.buyFbOffer = function(offerId, success, error) {
 
@@ -107,72 +113,6 @@ AWE.Facebook = (function(module) {
   };
   
 
-  module.connnectCharacter = function(character) {
-    
-    var fetchMeAndConnect = function(authResponse, repeat) {
-      FB.api('/me', function(response) {    // check, it's really connected
-        if (!response || response.error) {  
-          if (repeat) {                     // in case status was cached,
-            loginAndConnect();              // try again once more! -
-          }
-        }
-        else {
-          var fbPlayerId    = authResponse.userID;
-          var fbAccessToken = authResponse.accessToken;
-
-          AWE.Log.Debug('FACEBOOK: everything seems, fine, sending information to server. Me:', response)
-          
-          var action = AWE.Action.Fundamental.createConnectFacebookAction(fbPlayerId, fbAccessToken);
-          AWE.Action.Manager.queueAction(action, function(status) {
-            if (status === AWE.Net.CONFLICT) {
-              AWE.Log.Debug('FACEBOOK: conflict, id already connected with someone else.')
-            }
-            else if (status === AWE.Net.OK) {
-              AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, null);
-            }
-            else {
-              AWE.Log.Debug('FACEBOOK: unkown error, could not connect.')
-            }
-          });
-        }
-      });
-    }
-    
-    var loginAndConnect = function() {
-      AWE.Log.Debug('FACEBOOK: now call login');
-      FB.login(function(response) {
-        AWE.Log.Debug('FACEBOOK: login response', response);
-        if (response.authResponse) {
-          fetchMeAndConnect(response.authResponse, false);
-        }
-        // do nothing, if user does not authorize the app
-      }, module.defaultScope);
-    }
-    
-    var considerStatusAndConnect = function() {
-      if (module.status == 'connected') {
-        fetchMeAndConnect(module.cachedAuthResponse);
-      }
-      else {
-        loginAndConnect();
-      } 
-    }
-    
-    if (character.get('isConnectedToFacebook')) {
-      AWE.Log.Debug('FACEBOOK: user is already connected with facebook');
-      return ;
-    }
-    
-    if (module.status == 'unkown') {
-      AWE.Facebook.init(function() {
-        considerStatusAndConnect();
-      });
-    }
-    else {
-      considerStatusAndConnect();
-    }
-  }
-    
   return module;
 
 }(AWE.Facebook || {}));
