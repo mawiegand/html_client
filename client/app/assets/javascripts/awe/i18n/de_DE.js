@@ -965,6 +965,7 @@ AWE.I18n.de_DE = function(module) {
         connectToFacebook: 'Verbinden',
       },
       
+      
       customization: {
         changeAvatar: "Deinen Avatar ändern",
         presentAvatar: "Aktueller Avatar",
