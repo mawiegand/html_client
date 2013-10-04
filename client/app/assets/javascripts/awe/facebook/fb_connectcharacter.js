@@ -41,7 +41,7 @@ AWE.Facebook = (function(module) {
     FB.login(function(response) {
       AWE.Log.Debug('FACEBOOK: login response', response);
       if (response.authResponse) {
-        fetchMeAndConnect(response.authResponse, false);
+        fetchMeAndConnect(response.authResponse, false, onSuccess, onFailure);
       }
       else {
         if (onFailure) {
