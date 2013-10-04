@@ -52,7 +52,7 @@ AWE.Facebook = (function(module) {
       
       FB.Event.subscribe('auth.authResponseChange', function(response) {
         module.status = response.status;
-        module.cachedAuthResponse = response;
+        module.cachedAuthResponse = response.authResponse;
         AWE.Log.Debug('FACEBOOK: authResponseChanged', response.status, response);
       });
     
