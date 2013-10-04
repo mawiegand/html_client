@@ -41,8 +41,7 @@ AWE.UI.Ember = (function(module) {
     offer: null,
 
     buyOffer: function() {
-      var offerId = this.getPath('offer.id');
-      // TODO: Buy Credits
+      WACKADOO.hudController.buyFbOfferPressed(this.get('offer'));
     },
 
     price: function() {
