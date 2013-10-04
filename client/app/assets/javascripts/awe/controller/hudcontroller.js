@@ -399,14 +399,6 @@ AWE.Controller = (function(module) {
             });
             that.applicationController.presentModalDialog(info);
           }
-          else {
-            alert(errorCode);
-            var info = AWE.UI.Ember.InfoDialog.create({
-              heading: 'Fehler', // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
-              message: 'Closed pressed' // AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
-            });
-            that.applicationController.presentModalDialog(info);
-          }
         });
       });
     },
