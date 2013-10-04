@@ -614,6 +614,22 @@ AWE.I18n.en_US = function(module) {
         specialHeader:"Perfect!",
         specialMessage:"Congratulations! The special offer items have been credited to your account.",
       },
+
+      fbPaymentSuccess: {
+        header: "Credits booked",
+        message: "Your character has been credited with desired credit amount.",
+      },
+
+      fbPaymentBytroError: {
+        header: "Booking failure",
+        message: 'The Credits could not be credited to your account. Please contact support!',
+      },
+
+      fbPaymentError: {
+        header: "Booking failure",
+        message: 'The Transaction could not be Started due to a Facebook error.',
+      },
+
     },
 
     settlement:{
