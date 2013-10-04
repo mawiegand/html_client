@@ -961,7 +961,7 @@ AWE.I18n.de_DE = function(module) {
       
       settings: {
         connectToFacebookHeading: 'Sei Sozial!',
-        isConnectedToFacebook: 'Du bist bereits mit Facebook verknüpft und kannst Wack-A-Doo jetzt auch in Facebook spielen.',
+        youAreConnectedToFacebook: 'Du bist bereits mit Facebook verknüpft und kannst Wack-A-Doo jetzt auch in Facebook spielen.',
         connectToFacebookAdvice: 'Verknüpfe Deinen Character jetzt mit Deinem Facebook Account. Du kannst dann auch innerhalb von Facebook spielen und weitere soziale Funktionen nutzen.',
         connectToFacebook: 'Verbinden',
       },

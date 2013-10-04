@@ -947,7 +947,7 @@ AWE.I18n.en_US = function(module) {
       
       settings: {
         connectToFacebookHeading: 'Go Social!',
-        isConnectedToFacebook: "You're already connected with Facebook and ready to play Wack-A-Doo in Facebook.",
+        youAreConnectedToFacebook: "You're already connected with Facebook and ready to play Wack-A-Doo in Facebook.",
         connectToFacebookAdvice: "Connect your character with your facebook account, play Wack-A-Doo inside facebook and make use of it's social features!",
         connectToFacebook: 'Connect to Facebook',
       },
