@@ -49,6 +49,7 @@
   <%= javascript_include_tag    "awe-controller" %>
   <%= javascript_include_tag    "awe-action" %>
   <%= javascript_include_tag    "awe-application" %>
+  <%= javascript_include_tag    "awe-facebook" %>
   
   <%= javascript_include_tag    "wackadoo" %>
 
@@ -71,12 +72,6 @@
     <img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/995608782/?value=0&amp;label=4F4CCOqdgwQQzpHf2gM&amp;guid=ON&amp;script=0"/>
     </div>
     </noscript>  
-  <% end %>
-
-  <% if @use_facebook %>
-    <script type="text/javascript">
-      facebookCheat = true;
-    </script>
   <% end %>
 
   <!-- end scripts -->

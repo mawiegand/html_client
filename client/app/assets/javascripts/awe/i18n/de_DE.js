@@ -362,7 +362,7 @@ AWE.I18n.de_DE = function(module) {
           "Festungen können eingenommen werden, indem man einen Kampf um sie gewinnt",
           "Es ist nicht möglich, zwei Lagerstätten in einer Region zu gründen. Die Bevölkerung will abwechselungsreiche Ziele für den Wochenendbesuch!",
           "Ein Wirrkopf behauptet, die Erde sei rund, er hätte es selbst im Traum gesehen. Was für ein Schwachsinn, natürlich ist die Erde flach! Und hört an allen vier Seiten einfach auf!",
-          "Wenn Du nach Wissen über die Funktionsweise der Welt, Gebäude und Einheiten strebst, dann sie in der Enzyklopädie nach. Zu finden ist der Knopf unten links auf der Weltkarte.",
+          "Wenn Du nach Wissen über die Funktionsweise der Welt, Gebäude und Einheiten strebst, dann sie in der Enzyklopädie nach. Zu finden ist die Enzyklopädie oben links im Menü auf der Weltkarte.",
           "Ein bärtiger Greis teilt sein Wissen über die Wettervorhersagekunst: \"Abendrot - Gutwetterbot!\" - \"Außer, natürlich, vor schlechten Tagen,\" fügst Du abgeklärt hinzu.",
           "Angeblich soll im Westen vor kurzem eine Armee spurlos verschwunden und von der Welt verschluckt worden sein. Man sollte sich besser fernhalten.",
           "In den Festungen kann ein Steuersatz von 5 bis 15% Prozent von allen Siedlungen der Region erhoben werden. Dies ist ein Naturgesetz; Steuern über oder unter diesen Grenzen würden den Zorn der Götter heraufbeschwören und den Weltuntergang auslösen.",
@@ -564,6 +564,7 @@ AWE.I18n.de_DE = function(module) {
       for: 'für',
       updateCredits: 'Aktualisieren',
       buyCredits: 'Jetzt aufladen',
+      buyCreditsThroughFacebook: 'Jetzt aufladen mit FB',
       article: 'Artikel',
       description: 'Beschreibung',
       price: 'Preis',
@@ -624,8 +625,23 @@ AWE.I18n.de_DE = function(module) {
         platinumAccountMessage: "Der Platinum Account wurde aktiviert. Platinum Features sind ab sofort freigeschaltet.",
         bonusHeader: "Juhuu!",
         bonusMessage: "Der Bonus wurde aktiviert und wird Deinem Stamm helfen seinen Wohlstand zu mehren.",
-        cashHeader: "Perfekt!",
-        cashMessage: "Das Starterpaket wurde erfolgreich zu Deinem Account hinzugefügt.",
+        specialHeader: "Perfekt!",
+        specialMessage: "Das Starterpaket wurde erfolgreich zu Deinem Account hinzugefügt.",
+      },
+
+      fbPaymentSuccess: {
+        header: "Credits gebucht",
+        message: "Die Platinum-Credits wurden auf Deinem Konto gutgeschrieben und stehen dir direkt zur Verfügung.",
+      },
+
+      fbPaymentBytroError: {
+        header: "Buchungsfehler",
+        message: 'Die Credits konnten nicht gebucht werden. Wende dich bitte an den Support!',
+      },
+
+      fbPaymentError: {
+        header: "Allgemeiner Fehler",
+        message: 'Die Buchung konnte wegen eines Fehlers von Facebook nicht durchgeführt werden. Versuch es noch einmal!',
       },
     },
     
@@ -636,7 +652,6 @@ AWE.I18n.de_DE = function(module) {
       max:'Maximum',
       condition:'Zustand',
       founded: 'Gründung',
-
       
       customization: {
         chooseName: "Deinen Namen wählen",
@@ -958,6 +973,18 @@ AWE.I18n.de_DE = function(module) {
         lagUntolerable2: "oder schalte den automatischen Abgleich mit der Internetzeit an, sofern Dein Betriebssystem diese Möglichkeit bietet. Die Reaktivität des Spiels und Deine Nutzungserfahrung würden dadurch deutlich verbessert.",
       },
       
+      
+      settings: {
+        connectToFacebookHeading: 'Sei Sozial!',
+        youAreConnectedToFacebook: 'Du bist bereits mit Facebook verknüpft und kannst Wack-A-Doo jetzt auch in Facebook spielen: <a href="https://apps.facebook.com/wack-a-doo" target="_blank">https://apps.facebook.com/wack-a-doo</a>.<br/>Falsch verbunden? Bitte kontaktiere den Support (support@5dlab.com).',
+        connectToFacebookAdvice: 'Verknüpfe Deinen Character jetzt mit Deinem Facebook Account. Du kannst dann auch innerhalb von Facebook spielen und weitere soziale Funktionen nutzen.',
+        connectToFacebook: 'Verbinden',
+        fbUserIdAlreadyInUse: 'Mit diesem Facebook Account ist bereits ein anderer Charakter verbunden.',
+        characterAlreadyConnected: 'Dein Character ist bereits mit einem Facebook Account verbunden.',
+        connectionDidFail: 'Sorry, das hat nicht geklappt.',
+      },
+      
+      
       customization: {
         changeAvatar: "Deinen Avatar ändern",
         presentAvatar: "Aktueller Avatar",
@@ -1037,9 +1064,10 @@ AWE.I18n.de_DE = function(module) {
       },
       
       moving: {
-        info1: "Hier kannst Du die Position Deiner Hauptsiedlung auf der Karte verändern. Es gibt 2 Arten des Umziehens, und Du kannst jede davon nur einmal benutzen.",
+        info1: "Hier kannst Du die Position Deiner Hauptsiedlung auf der Karte verändern. Jeder Spieler kann die Hauptsiedlung einmalig umziehen.",
         info2: "Du kannst nicht in Regionen ziehen, um die gerade gekämpft wird, oder die vor kurzem erobert wurden.",
         specificMovingCaption: "Gezieltes Umziehen",
+        alreadyMoved: "Du bist bereits einmal umgezogen.",
         presentRegion: "Aktuelle Region",
         enterSpecificRegion: "Angabe des Regionsnamen",
         specififcRegionAdvice: "Du kannst den Namen der Region in die Du ziehen möchtest angeben. Gehört die Region einem anderen Spieler, der nicht Teil deiner Allianz ist, musst du zusätzlich noch ein Passwort nennen",
@@ -1052,8 +1080,12 @@ AWE.I18n.de_DE = function(module) {
 					cancel: "Nein, doch nicht",
 					ok: "Umziehen!",
 				},
-				movingErrorHeading: "Umzugsfehler",
-				movingErrorWrongPassword: "Das eingegebene Passwort war nicht korrekt! Versuch es noch einmal!",
+        movingErrorHeading: "Umzugsfehler",
+        movingNoTargetFoundHeading: "Region nicht gefunden",
+        movingNoTargetFoundMessage: "Eine Region mit dem Namen scheint es nicht zu geben. Hast Du den Regionennamen richtig geschrieben?",
+        movingNotFoundMessage: "In der Region ist bereits eine Siedlung von dir!",
+        movingForbiddenMessage: "Das Passwort ist verkehrt. Probier noch mal!",
+        movingConflictMessage: "Die Festung ist im Kampf oder wurde gerade erst erobert. Probier es später noch mal!",
         movingError: "Dein Umzug konnte aus unbekannten Gründen nicht vollzogen werden. Bitte versuch es später noch einmal.",
       },
     },

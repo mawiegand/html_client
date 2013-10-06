@@ -289,6 +289,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
      * doing anything wit the app controller. */
     loadAssets: function() {
       var self = this;
+      
+      if (AWE.Facebook.isRunningInCanvas) {
+        AWE.Facebook.init();
+      }
 
       /** does final initialization after loading has finished */
       var postLoading = function() {
@@ -332,6 +336,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         self.startRunloop();
         self.readyToRun();                            // ready to run
         self.showStartupDialogs();
+        
+        AWE.Facebook.updateFBCanvasSize();  // updates size of canvas, iff running in canvas
+        AWE.Facebook.setDoneLoading();      // track loading time, iff running in canvas
         
         if (AWE.Config.CHAT_SHOW) {
           self.initChat();
@@ -657,14 +664,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this.set('startupArguments', window.name);
       window.name = "";                                 // unset variables
           
-      var useDevToken = window.facebookCheat && window.facebookCheat === true;
       var accessToken = null;
       
-      if (useDevToken) {
-        accessToken = AWE.Config.DEV_ACCESS_TOKEN;
-        args = args || {};
-      }
-      else if (!args || !args.accessToken) {
+      if (!args || !args.accessToken) {
         // alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
         document.location.href = AWE.Config.PORTAL_ROOT;
         return ;
@@ -683,7 +685,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.requestUrl = args.requestUrl;
       AWE.Settings.playerInvitation = args.playerInvitation;
       AWE.Settings.allianceInvitation = args.allianceInvitation;
-      
+      AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
+
+      AWE.Facebook.isRunningInCanvas = AWE.Settings.fbRunInCanvas;
+
       AWE.Log.Debug('SETTINGS', AWE.Settings);
       AWE.Log.Debug('ARGS', args);
       

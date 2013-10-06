@@ -510,6 +510,7 @@ AWE.UI.Ember = (function(module) {
       this.set('changePasswordMessage', '');
     }.observes('password', 'passwordConfirmation'),
             
+            
     changeSameIPPressed: function() {
       var self = this;
       self.set('changingSameIP', true);
@@ -555,7 +556,35 @@ AWE.UI.Ember = (function(module) {
           }
         });
       }        
-    },    
+    },
+    
+    connectFacebookPressed: function() {
+      var self = this;
+      this.set('connectFacebookMessage', '');
+      
+      AWE.Log.Debug('FACEBOOK: connect to fb pressed');
+      AWE.Facebook.connnectCharacter(AWE.GS.game.getPath('currentCharacter'), function()
+      {
+        AWE.Log.Debug('FACEBOOK: connected to fb.');
+      },
+      function(status) {
+        if (status == 'loginBreak') {
+          AWE.Log.Debug('FACEBOOK: could not sign in to facebook.');
+        }
+        else if (status == AWE.Net.CONFLICT) {
+          AWE.Log.Debug('FACEBOOK: facebook user is already connected to another character.');
+          self.set('connectFacebookMessage', AWE.I18n.lookupTranslation('profile.settings.fbUserIdAlreadyInUse'));
+        }
+        else if (status == AWE.Net.FORBIDDEN) {
+          AWE.Log.Debug('FACEBOOK: character is already connected to another facebook user.');
+          self.set('connectFacebookMessage', AWE.I18n.lookupTranslation('profile.settings.characterAlreadyConnected'));
+        }
+        else {
+          AWE.Log.Debug('FACEBOOK: unkown error.');
+          self.set('connectFacebookMessage', AWE.I18n.lookupTranslation('profile.settings.connectionDidFail'));
+        }
+      });
+    },   
   });
 
   /** 
@@ -685,6 +714,10 @@ AWE.UI.Ember = (function(module) {
     newRegionName: null,
     
     moving: false,
+
+    alreadyMoved: function() {
+      return AWE.GS.game.getPath('currentCharacter.moved_at') != null;
+    }.property('AWE.GS.game.currentCharacter.moved_at').cacheable(),
     
     init: function() {
       this._super();
@@ -706,16 +739,26 @@ AWE.UI.Ember = (function(module) {
     }.property(),
     
     displayRegion: function(regionName, callback) {
+      var self = this;
       AWE.Map.Manager.fetchSingleRegionById(regionName, function(region) {
-        var mapController = WACKADOO.activateMapController(true);
-        WACKADOO.closeAllModalDialogs();
-        mapController.centerRegion(region);
-        if (callback) callback(region);
+        if (region.id() == 0) {
+          self.set('moving', false);
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('profile.moving.movingNoTargetFoundHeading'),
+            message: AWE.I18n.lookupTranslation('profile.moving.movingNoTargetFoundMessage'),
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
+        else {
+          var mapController = WACKADOO.activateMapController(true);
+          WACKADOO.closeAllModalDialogs();
+          mapController.centerRegion(region);
+          if (callback) callback(region);
+        }
       });
     },
     
     moveToRegion: function(oldRegion, newRegion, password) {
-      var self = this;
       var action = AWE.Action.Settlement.createMoveSettlementToRegionAction(newRegion.name(), password);
       AWE.Action.Manager.queueAction(action, function(status) {
         if (status === AWE.Net.OK) {
@@ -751,7 +794,21 @@ AWE.UI.Ember = (function(module) {
         else if (status === AWE.Net.CONFLICT) {
           var dialog = AWE.UI.Ember.InfoDialog.create({
             heading: AWE.I18n.lookupTranslation('profile.moving.movingErrorHeading'),
-            message: AWE.I18n.lookupTranslation('profile.moving.movingErrorWrongPassword'),
+            message: AWE.I18n.lookupTranslation('profile.moving.movingConflictMessage'),
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
+        else if (status === AWE.Net.FORBIDDEN) {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('profile.moving.movingErrorHeading'),
+            message: AWE.I18n.lookupTranslation('profile.moving.movingForbiddenMessage'),
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
+        else if (status === AWE.Net.NOT_FOUND) {
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('profile.moving.movingErrorHeading'),
+            message: AWE.I18n.lookupTranslation('profile.moving.movingNotFoundMessage'),
           });
           WACKADOO.presentModalDialog(dialog);
         }

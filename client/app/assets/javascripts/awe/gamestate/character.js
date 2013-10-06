@@ -69,6 +69,8 @@ AWE.GS = (function(module) {
     avatar_obj: null,
 
     tutorial_finished_at: null,
+    
+    fb_player_id: null,
 
     avatar: function() {
       if(this.get('avatar_obj') == null) {
@@ -159,7 +161,10 @@ AWE.GS = (function(module) {
       return AWE.Map.Manager.getRegion(this.get('base_region_id'));
     }.property('base_region_id').cacheable(),
 
-
+    isConnectedToFacebook: function() {
+      return this.get('fb_player_id') !== undefined && this.get('fb_player_id') !== null && this.get('fb_player_id') != "";
+    }.property('fb_player_id').cacheable(),
+    
     //
     // //// MESSAGING //////////////////////////////////////////////////////// 
     //

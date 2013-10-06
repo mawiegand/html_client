@@ -15,7 +15,9 @@ AWE.Log = (function(module) {
       return ;
     }
     else {
-      window.log(arguments);
+      if (console.log) {
+        console.log(arguments);
+      }
     }
   }
   

@@ -13,6 +13,11 @@
     client_id:          "WACKADOO-FBCANVAS",
     fbPlayerId:         "<%= @facebook_user %>",
     fbRunInCanvas:      true,
+    
+    locale:             "<%= @facebook_user_data['locale']  || 'en_US' %>",
+    country:            "<%= @facebook_user_data['country'] || "" %>",
+    referer:            "<%= @referer %>",
+    requestUrl:         window.location.href,
   });  
   
   window.location.href="https://test1.wack-a-doo.com/client";

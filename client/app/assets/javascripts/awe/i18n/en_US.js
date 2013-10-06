@@ -431,9 +431,9 @@ AWE.I18n.en_US = function(module) {
       founded:"Founded",
       leader:"Leader",
       description:"Description",
-      changeDescriptionDialogCaption: 'Gib deine neue Allianzbeschreibung ein.',
-      changeDescription: 'Ändere Beschreibung',
-      missingDescription: 'Hier könnte eure Allianzbeschreibung stehen.',
+      changeDescriptionDialogCaption: 'Please enter your alliance description.',
+      changeDescription: 'Edit description',
+      missingDescription: 'Please enter your alliance description.',
       autoJoin: "Auto join",
       autoJoinDescription: "Automatically join",
       autoJoinActivated: "Activated",
@@ -459,7 +459,7 @@ AWE.I18n.en_US = function(module) {
       saveReservation: 'Save reservation',
       kickMember:'Kick',
       report: 'Melden',
-      sendApplication: 'Bewerbung einreichen',
+      sendApplication: 'Submit application',
       bonus: 'Bonus',
       ofMax: 'of maximum',
 
@@ -528,12 +528,12 @@ AWE.I18n.en_US = function(module) {
         error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
       },
       confirmApplication: {
-        heading: "Bewerbung bestätigen",
-        message: "Willst Du Dich wirklich bei dieser Allianz bewerben?",
-        cancel: "Nein, doch nicht",
-        ok: "Ja, wirklich.",
-        success: "Bewerbung war erfolgreich",
-        error: "Die Bewerbung wurde aus unbekanntem Grund nicht ausgeführt.",
+        heading: "Confirm application",
+        message: "Do you really want to apply to this alliance?",
+        cancel: "Not right now.",
+        ok: "Yes.",
+        success: "Application successful.",
+        error: "Something went wrong with the application.",
       },
     },
 
@@ -555,6 +555,7 @@ AWE.I18n.en_US = function(module) {
       for:'for',
       updateCredits:'Update',
       buyCredits:'Buy now',
+      buyCreditsThroughFacebook:'Buy credits through FB',
       article:'Article',
       description:'Description',
       price:'Price',
@@ -613,6 +614,22 @@ AWE.I18n.en_US = function(module) {
         specialHeader:"Perfect!",
         specialMessage:"Congratulations! The special offer items have been credited to your account.",
       },
+
+      fbPaymentSuccess: {
+        header: "Credits booked",
+        message: "Your character has been credited with desired credit amount.",
+      },
+
+      fbPaymentBytroError: {
+        header: "Booking failure",
+        message: 'The Credits could not be credited to your account. Please contact support!',
+      },
+
+      fbPaymentError: {
+        header: "Booking failure",
+        message: 'The Transaction could not be Started due to a Facebook error.',
+      },
+
     },
 
     settlement:{
@@ -622,8 +639,7 @@ AWE.I18n.en_US = function(module) {
       max:'max',
       condition:'Condition',
       founded:'Founded',
-
-
+      
       customization: {
         chooseName: "Choose your name",
         changeName: "Change your name",
@@ -881,7 +897,7 @@ AWE.I18n.en_US = function(module) {
         resourceProductionInfo3:"taxes currently being raised on the bonus production.",
         setTaxRate:"Enter the new tax rate (5%-15%).",
         artifact: "Artifact",
-        movingPassword: "Umzugspasswort",
+        movingPassword: "Movement password",
       },
       error:{
         serverDidNotAcceptTaxRate:"The server did not accept the tax rate change.",
@@ -944,6 +960,16 @@ AWE.I18n.en_US = function(module) {
         lagUntolerable1:"Please set your system clock to the correct time.",
         lagUntolerable2:"Otherwise, enable automatic internet time synchronization if your operation system provides this feature. Your responsiveness and your user experience would both improve significantly. ",
       },
+      
+      settings: {
+        connectToFacebookHeading: 'Go Social!',
+        youAreConnectedToFacebook: "You're already connected with Facebook and ready to play Wack-A-Doo in Facebook: <a href='https://apps.facebook.com/wack-a-doo' target='_blank'>https://apps.facebook.com/wack-a-doo</a>.<br/>Got a wrong connection? Please contact support (support@5dlab.com).",
+        connectToFacebookAdvice: "Connect your character with your facebook account, play Wack-A-Doo inside facebook and make use of it's social features!",
+        connectToFacebook: 'Connect to Facebook',
+        fbUserIdAlreadyInUse: 'This facebook account is already connected to another character.',
+        characterAlreadyConnected: 'Your character is already connected to facebook.',
+        connectionDidFail: "Sorry, this didn't work out as expected.",
+      },
 
       customization:{
         changeAvatar: 'Change avatar',
@@ -983,19 +1009,19 @@ AWE.I18n.en_US = function(module) {
         changeSameIPButton:"Change the List",
         changeSameIIPChanged:"List has been saved.",
 
-        description: 'Beschreibung',
-        changeDescriptionDialogCaption: 'Gib deine neue Characterbeschreibung ein.',
-        changeDescription: 'Ändere Beschreibung',
-        missingDescription: 'Hier könnte Deine Characterbeschreibung stehen.',
-        report: 'Melden',
+        description: 'Character description',
+        changeDescriptionDialogCaption: 'Please enter your character description.',
+        changeDescription: 'Edit description',
+        missingDescription: 'Please enter your character description.',
+        report: 'Report',
 
         confirmReport: {
           heading: "Melden bestätigen",
-          message: "Willst Du wirklich die Character Beschreibung melden?",
-          cancel: "Nein, doch nicht",
-          ok: "Ja, wirklich.",
-          success: "Meldung war erfolgreich",
-          error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
+          message: "Do you really want to report this character description?",
+          cancel: "Not right now",
+          ok: "Yes.",
+          success: "Report successful",
+          error: "Something went wrong with the report.",
         },
 
         errors:{
@@ -1025,24 +1051,29 @@ AWE.I18n.en_US = function(module) {
       },
       
       moving: {
-        info1: "Hier kannst Du die Position Deiner Hauptsiedlung auf der Karte verändern. Es gibt 2 Arten des Umziehens, und Du kannst jede davon nur einmal benutzen.",
-        info2: "Du kannst nicht in Regionen ziehen, um die gerade gekämpft wird, oder die vor kurzem erobert wurden.",
-        specificMovingCaption: "Gezieltes Umziehen",
-        presentRegion: "Aktuelle Region",
-        enterSpecificRegion: "Angabe des Regionsnamen",
-        specififcRegionAdvice: "Du kannst den Namen der Region in die Du ziehen möchtest angeben. Gehört die Region einem anderen Spieler, der nicht Teil deiner Allianz ist, musst du zusätzlich noch ein Passwort nennen",
-        moveButton: "Umziehen",
-        movingPasswordCaption: "Gib das Umzugspasswort ein.",
+        info1: "You can move with your home settlement into another region.",
+        info2: "You can not move into a region that is in battle or a region with an owner change in the last 12 hours.",
+        specificMovingCaption: "Selective Moving",
+        alreadyMoved: "You already moved to another place.",
+        presentRegion: "Current region",
+        enterSpecificRegion: "Enter the name of the region",
+        specififcRegionAdvice: "You have to enter the name of the region you want to move to. If this region is controlled by another alliance, you have to enter a password.",
+        moveButton: "Move",
+        movingPasswordCaption: "Please enter move password.",
 				confirmation: {
-					caption: "Umzug bestätigen",
-					message1: "Willst Du wirklich in die Region ",
-					message2: " umziehen?",
-					cancel: "Nein, doch nicht",
-					ok: "Umziehen!",
+					caption: "Confirm move.",
+					message1: "Do you really want to move to ",
+					message2: " ?",
+					cancel: "No, not right now",
+					ok: "Move!",
 				},
-				movingErrorHeading: "Umzugsfehler",
-				movingErrorWrongPassword: "Das eingegebene Passwort war nicht korrekt! Versuch es noch einmal!",
-        movingError: "Dein Umzug konnte aus unbekannten Gründen nicht vollzogen werden. Bitte versuch es später noch einmal.",
+				movingErrorHeading: "Error",
+        movingNoTargetFoundHeading: "Region not found",
+        movingNoTargetFoundMessage: "There seems to be no region with this name. Did you spelled the name correctly?",
+        movingNotFoundMessage: "There is already one of your settlements in the target region!",
+        movingForbiddenMessage: "The password is wrong. Try again!",
+        movingConflictMessage: "The fortress in the target region is in a fight or was just captured!",
+        movingError: "Something went wrong. Please try again later.",
       },
     },
 

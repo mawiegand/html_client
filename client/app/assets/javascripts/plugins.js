@@ -3,7 +3,7 @@
 
 window.log = function f(){ 
   
-//  return ;
+  return ;
   
   log.history = log.history || []; 
   log.history.push(arguments); 

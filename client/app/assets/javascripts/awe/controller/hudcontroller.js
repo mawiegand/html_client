@@ -70,7 +70,7 @@ AWE.Controller = (function(module) {
     that.getStages = function() {
       return [
         { stage: _stage,         mouseOverEvents: true},
-        { stage: _resourceStage, mouseOverEvents: true},
+        { stage: _resourceStage, mouseOverEvents: true}
       ];
     };
     
@@ -164,7 +164,7 @@ AWE.Controller = (function(module) {
         buyCreditsPressed: function(evt) {
           AWE.GS.ShopManager.openCreditShopWindow()
         },
-        
+
         buyResourceOfferPressed: function(offerId) {
           
           var creditAmount = this.getPath('shop.creditAmount') || 0;
@@ -182,7 +182,7 @@ AWE.Controller = (function(module) {
               var info = AWE.UI.Ember.InfoDialog.create({
                 heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.cashHeader'),
                 message: AWE.I18n.lookupTranslation('shop.buyConfirmation.cashMessage'),
-              });      
+              });
               that.applicationController.presentModalDialog(info);
             }
             else {
@@ -220,11 +220,11 @@ AWE.Controller = (function(module) {
 
             AWE.GS.ShopManager.buyBonusOffer(offerId, function(transaction) { // success handler
               if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
-                var info = AWE.UI.Ember.InfoDialog.create({
-                  heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusHeader'),
-                  message: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusMessage'),
-                });
-                that.applicationController.presentModalDialog(info);
+//                var info = AWE.UI.Ember.InfoDialog.create({
+//                  heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusHeader'),
+//                  message: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusMessage'),
+//                });
+//                that.applicationController.presentModalDialog(info);
               }
               else {
                 that.presentNotEnoughCreditsWarning();
@@ -255,11 +255,11 @@ AWE.Controller = (function(module) {
 
             AWE.GS.ShopManager.buyBonusOffer(offerId, function(transaction) { // success handler
               if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
-                var info = AWE.UI.Ember.InfoDialog.create({
-                  heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusHeader'),
-                  message: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusMessage'),
-                });
-                that.applicationController.presentModalDialog(info);
+//                var info = AWE.UI.Ember.InfoDialog.create({
+//                  heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusHeader'),
+//                  message: AWE.I18n.lookupTranslation('shop.buyConfirmation.bonusMessage'),
+//                });
+//                that.applicationController.presentModalDialog(info);
               }
               else {
                 that.presentNotEnoughGoldenFrogsWarning();
@@ -337,11 +337,11 @@ AWE.Controller = (function(module) {
           
           AWE.GS.ShopManager.buyPlatinumOffer(offerId, function(transaction) { // success handler
             if (transaction.state === AWE.Action.Shop.STATE_CLOSED) {
-              var info = AWE.UI.Ember.InfoDialog.create({
-                heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.platinumAccountHeader'),
-                message: AWE.I18n.lookupTranslation('shop.buyConfirmation.platinumAccountMessage'),
-              });      
-              that.applicationController.presentModalDialog(info);
+//              var info = AWE.UI.Ember.InfoDialog.create({
+//                heading: AWE.I18n.lookupTranslation('shop.buyConfirmation.platinumAccountHeader'),
+//                message: AWE.I18n.lookupTranslation('shop.buyConfirmation.platinumAccountMessage'),
+//              });
+//              that.applicationController.presentModalDialog(info);
             }
             else {
               that.presentNotEnoughCreditsWarning();
@@ -372,6 +372,36 @@ AWE.Controller = (function(module) {
       
       that.applicationController.presentModalDialog(shopDialog);
     };
+
+    that.buyFbOfferPressed = function(offer) {
+      AWE.Facebook.init(function() {
+        AWE.Facebook.buyFbOffer(offer, function() {
+          var info = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('shop.fbPaymentSuccess.header'),
+            message: AWE.I18n.lookupTranslation('shop.fbPaymentSuccess.message'),
+          });
+          that.applicationController.presentModalDialog(info);
+          AWE.GS.ShopManager.fetchCreditAmount(function(){
+            that.setModelChanged();
+          });
+        }, function(errorCode) {
+          if (errorCode == AWE.Net.UNPROCESSABLE) {
+            var info = AWE.UI.Ember.InfoDialog.create({
+              heading: AWE.I18n.lookupTranslation('shop.fbPaymentBytroError.header'),
+              message: AWE.I18n.lookupTranslation('shop.fbPaymentBytroError.message'),
+            });
+            that.applicationController.presentModalDialog(info);
+          }
+          else if (errorCode == AWE.Net.BAD_REQUEST) {
+            var info = AWE.UI.Ember.InfoDialog.create({
+              heading: AWE.I18n.lookupTranslation('shop.fbPaymentError.header'),
+              message: AWE.I18n.lookupTranslation('shop.fbPaymentError.message'),
+            });
+            that.applicationController.presentModalDialog(info);
+          }
+        });
+      });
+    },
     
     that.rankingButtonClicked = function() {
       var dialog = AWE.UI.Ember.RankingDialog.create();
