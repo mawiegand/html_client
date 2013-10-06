@@ -23,6 +23,8 @@ class CanvasController < ApplicationController
     logger.debug "Facebook Data: #{data.inspect}."    
     
     @facebook_user = data.nil? || data["user_id"].blank? ? nil :  data["user_id"]    
+    @facebook_user_data = data.nil? ? nil : (data["user"] || {})    
+    @referer = request.referer  || @"facebook.canvas"
     
     if !@facebook_user.nil?
       access = IdentityProvider::Access.new(identity_provider_base_url: CLIENT_CONFIG['identity_provider_base_url'])
@@ -52,6 +54,8 @@ class CanvasController < ApplicationController
         logger.debug "Facebook Data: #{data.inspect}."    
 
         @facebook_user = data.nil? || data["user_id"].blank? ? nil :  data["user_id"]    
+        @facebook_user_data = data.nil? ? nil : (data["user"] || {})
+        @referer = request.referer  || @"facebook.canvas"
     
         if !@facebook_user.nil?
           access = IdentityProvider::Access.new(identity_provider_base_url: CLIENT_CONFIG['identity_provider_base_url'])
