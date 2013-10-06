@@ -555,6 +555,7 @@ AWE.I18n.en_US = function(module) {
       for:'for',
       updateCredits:'Update',
       buyCredits:'Buy now',
+      buyCreditsThroughFacebook:'Buy credits through FB',
       article:'Article',
       description:'Description',
       price:'Price',
@@ -613,6 +614,22 @@ AWE.I18n.en_US = function(module) {
         specialHeader:"Perfect!",
         specialMessage:"Congratulations! The special offer items have been credited to your account.",
       },
+
+      fbPaymentSuccess: {
+        header: "Credits booked",
+        message: "Your character has been credited with desired credit amount.",
+      },
+
+      fbPaymentBytroError: {
+        header: "Booking failure",
+        message: 'The Credits could not be credited to your account. Please contact support!',
+      },
+
+      fbPaymentError: {
+        header: "Booking failure",
+        message: 'The Transaction could not be Started due to a Facebook error.',
+      },
+
     },
 
     settlement:{
@@ -622,8 +639,7 @@ AWE.I18n.en_US = function(module) {
       max:'max',
       condition:'Condition',
       founded:'Founded',
-
-
+      
       customization: {
         chooseName: "Choose your name",
         changeName: "Change your name",
@@ -943,6 +959,16 @@ AWE.I18n.en_US = function(module) {
         lagTolerable:"This deviation is tolerable.",
         lagUntolerable1:"Please set your system clock to the correct time.",
         lagUntolerable2:"Otherwise, enable automatic internet time synchronization if your operation system provides this feature. Your responsiveness and your user experience would both improve significantly. ",
+      },
+      
+      settings: {
+        connectToFacebookHeading: 'Go Social!',
+        youAreConnectedToFacebook: "You're already connected with Facebook and ready to play Wack-A-Doo in Facebook: <a href='https://apps.facebook.com/wack-a-doo' target='_blank'>https://apps.facebook.com/wack-a-doo</a>.<br/>Got a wrong connection? Please contact support (support@5dlab.com).",
+        connectToFacebookAdvice: "Connect your character with your facebook account, play Wack-A-Doo inside facebook and make use of it's social features!",
+        connectToFacebook: 'Connect to Facebook',
+        fbUserIdAlreadyInUse: 'This facebook account is already connected to another character.',
+        characterAlreadyConnected: 'Your character is already connected to facebook.',
+        connectionDidFail: "Sorry, this didn't work out as expected.",
       },
 
       customization:{

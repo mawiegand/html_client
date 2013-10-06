@@ -155,6 +155,8 @@ AWE.UI.Ember = (function(module) {
       var costs = this.slotCosts(); /*this.getPath('job.slot.building.costs');*/
       var diff  = [];
 
+      if(this.get('active')) return [];
+
       for(i = 0; i < costs.length; ++i) {
         var symbolic_id = costs[i].resourceType.symbolic_id; /*AWE.GS.RulesManager.getRules().getResourceType(i).symbolic_id;*/
         var remaining   = parseInt(costs[i].amount) - this.getPath('pool.'+symbolic_id+'_present');

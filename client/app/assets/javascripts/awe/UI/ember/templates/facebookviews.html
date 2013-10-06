@@ -3,5 +3,30 @@
 </script>
 
 
+<script type="text/x-handlebars" data-template-name="facebook-credit-offer-dialog">
+  <div class="modal-dialog-background"></div>
+  <div class="horizontal-center-helper">
+    <div class="facebook-credit-offer-dialog modal-dialog-pane">
+      <a class="close" href="#" {{action "closePressed" target="parentView"}}></a>
+
+      <h1>{{t shop.buyCreditsThroughFacebook}}</h1>
+
+      {{#each offer in offers}}
+        {{view AWE.UI.Ember.FacebookCreditOfferView offerBinding="offer"}}
+      {{/each}}
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="facebook-credit-offer-view">
+  <div class="list-element">
+    <img {{bindAttr src="offer.image_url" alt="offer.title"}}>
+    {{offer.title}}
+    <div class="right-side">
+      EUR {{price}}
+      <div class="simple-button" {{action "buyOffer"}}>{{t shop.buy2}}</div>
+    </div>
+  </div>
+</script>
 
 

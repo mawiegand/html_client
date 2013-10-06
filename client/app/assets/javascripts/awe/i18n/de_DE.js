@@ -564,6 +564,7 @@ AWE.I18n.de_DE = function(module) {
       for: 'für',
       updateCredits: 'Aktualisieren',
       buyCredits: 'Jetzt aufladen',
+      buyCreditsThroughFacebook: 'Jetzt aufladen mit FB',
       article: 'Artikel',
       description: 'Beschreibung',
       price: 'Preis',
@@ -624,8 +625,23 @@ AWE.I18n.de_DE = function(module) {
         platinumAccountMessage: "Der Platinum Account wurde aktiviert. Platinum Features sind ab sofort freigeschaltet.",
         bonusHeader: "Juhuu!",
         bonusMessage: "Der Bonus wurde aktiviert und wird Deinem Stamm helfen seinen Wohlstand zu mehren.",
-        cashHeader: "Perfekt!",
-        cashMessage: "Das Starterpaket wurde erfolgreich zu Deinem Account hinzugefügt.",
+        specialHeader: "Perfekt!",
+        specialMessage: "Das Starterpaket wurde erfolgreich zu Deinem Account hinzugefügt.",
+      },
+
+      fbPaymentSuccess: {
+        header: "Credits gebucht",
+        message: "Die Platinum-Credits wurden auf Deinem Konto gutgeschrieben und stehen dir direkt zur Verfügung.",
+      },
+
+      fbPaymentBytroError: {
+        header: "Buchungsfehler",
+        message: 'Die Credits konnten nicht gebucht werden. Wende dich bitte an den Support!',
+      },
+
+      fbPaymentError: {
+        header: "Allgemeiner Fehler",
+        message: 'Die Buchung konnte wegen eines Fehlers von Facebook nicht durchgeführt werden. Versuch es noch einmal!',
       },
     },
     
@@ -636,7 +652,6 @@ AWE.I18n.de_DE = function(module) {
       max:'Maximum',
       condition:'Zustand',
       founded: 'Gründung',
-
       
       customization: {
         chooseName: "Deinen Namen wählen",
@@ -957,6 +972,18 @@ AWE.I18n.de_DE = function(module) {
         lagUntolerable1: "Bitte stelle Deine Rechneruhr auf die korrekte Uhrzeit",
         lagUntolerable2: "oder schalte den automatischen Abgleich mit der Internetzeit an, sofern Dein Betriebssystem diese Möglichkeit bietet. Die Reaktivität des Spiels und Deine Nutzungserfahrung würden dadurch deutlich verbessert.",
       },
+      
+      
+      settings: {
+        connectToFacebookHeading: 'Sei Sozial!',
+        youAreConnectedToFacebook: 'Du bist bereits mit Facebook verknüpft und kannst Wack-A-Doo jetzt auch in Facebook spielen: <a href="https://apps.facebook.com/wack-a-doo" target="_blank">https://apps.facebook.com/wack-a-doo</a>.<br/>Falsch verbunden? Bitte kontaktiere den Support (support@5dlab.com).',
+        connectToFacebookAdvice: 'Verknüpfe Deinen Character jetzt mit Deinem Facebook Account. Du kannst dann auch innerhalb von Facebook spielen und weitere soziale Funktionen nutzen.',
+        connectToFacebook: 'Verbinden',
+        fbUserIdAlreadyInUse: 'Mit diesem Facebook Account ist bereits ein anderer Charakter verbunden.',
+        characterAlreadyConnected: 'Dein Character ist bereits mit einem Facebook Account verbunden.',
+        connectionDidFail: 'Sorry, das hat nicht geklappt.',
+      },
+      
       
       customization: {
         changeAvatar: "Deinen Avatar ändern",
