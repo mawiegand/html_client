@@ -90,7 +90,7 @@ class CanvasController < ApplicationController
         logger.debug "fb_locale #{ fb_locale } lang_mapping #{ lang_mapping.inspect }."
 
         if !fb_locale.blank?
-          lang = fb_locale[0..2]
+          lang = fb_locale[0..1]
           @locale = lang_mapping[lang]
           logger.debug "locale #{ @locale } lang #{ lang }."
         end
