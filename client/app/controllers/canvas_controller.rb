@@ -36,12 +36,16 @@ class CanvasController < ApplicationController
     
     fb_locale = @facebook_user_data['locale'];
     
+    logger.debug "fb_locale #{ fb_locale } lang_mapping #{ lang_mapping.inspect }."
+    
     if !fb_locale.blank?
       lang = fb_locale[0..1]
       @locale = lang_mapping[lang]
+      logger.debug "locale #{ @locale } lang #{ lang }."
     end
     
     @locale = default_locale    if @locale.nil?
+    logger.debug "after locale #{ @locale }."
     
     if !@facebook_user.nil?
       access = IdentityProvider::Access.new(identity_provider_base_url: CLIENT_CONFIG['identity_provider_base_url'])
@@ -82,13 +86,17 @@ class CanvasController < ApplicationController
         default_locale = "en_US";
 
         fb_locale = @facebook_user_data['locale'];
+        
+        logger.debug "fb_locale #{ fb_locale } lang_mapping #{ lang_mapping.inspect }."
 
         if !fb_locale.blank?
           lang = fb_locale[0..2]
           @locale = lang_mapping[lang]
+          logger.debug "locale #{ @locale } lang #{ lang }."
         end
 
         @locale = default_locale    if @locale.nil?
+        logger.debug "after locale #{ @locale }."
     
         if !@facebook_user.nil?
           access = IdentityProvider::Access.new(identity_provider_base_url: CLIENT_CONFIG['identity_provider_base_url'])
