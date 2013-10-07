@@ -27,8 +27,8 @@ class CanvasController < ApplicationController
     @referer = request.referer  || "facebook.canvas"
     
     lang_mapping = {
-      "de": "de_DE",
-      "en": "en_US",
+      "de"=> "de_DE",
+      "en"=> "en_US",
     }
     
     default_locale = "en_US";
