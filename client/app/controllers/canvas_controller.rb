@@ -26,6 +26,7 @@ class CanvasController < ApplicationController
     @facebook_user_data = data.nil? ? nil : (data["user"] || {})    
     @referer = request.referer  || "facebook.canvas"
     
+    
     lang_mapping = {
       "de"=> "de_DE",
       "en"=> "en_US",
@@ -33,7 +34,7 @@ class CanvasController < ApplicationController
     
     default_locale = "en_US";
     
-    fb_locale = @fb_user_data['locale'];
+    fb_locale = @facebook_user_data['locale'];
     
     if !fb_locale.blank?
       lang = fb_locale[0..1]
@@ -80,7 +81,7 @@ class CanvasController < ApplicationController
 
         default_locale = "en_US";
 
-        fb_locale = @fb_user_data['locale'];
+        fb_locale = @facebook_user_data['locale'];
 
         if !fb_locale.blank?
           lang = fb_locale[0..2]
