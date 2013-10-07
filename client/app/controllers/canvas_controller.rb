@@ -26,6 +26,22 @@ class CanvasController < ApplicationController
     @facebook_user_data = data.nil? ? nil : (data["user"] || {})    
     @referer = request.referer  || "facebook.canvas"
     
+    lang_mapping = {
+      "de": "de_DE",
+      "en": "en_US",
+    }
+    
+    default_locale = "en_US";
+    
+    fb_locale = @fb_user_data['locale'];
+    
+    if !fb_locale.blank?
+      lang = fb_locale[0..2]
+      @locale = lang_mapping[lang]
+    end
+    
+    @locale = default_locale    if @locale.nil?
+    
     if !@facebook_user.nil?
       access = IdentityProvider::Access.new(identity_provider_base_url: CLIENT_CONFIG['identity_provider_base_url'])
       @access_data = access.obtain_access_token(@facebook_user)
@@ -56,6 +72,22 @@ class CanvasController < ApplicationController
         @facebook_user = data.nil? || data["user_id"].blank? ? nil :  data["user_id"]    
         @facebook_user_data = data.nil? ? nil : (data["user"] || {})
         @referer = request.referer  || "facebook.canvas"
+        
+        lang_mapping = {
+          "de": "de_DE",
+          "en": "en_US",
+        }
+
+        default_locale = "en_US";
+
+        fb_locale = @fb_user_data['locale'];
+
+        if !fb_locale.blank?
+          lang = fb_locale[0..2]
+          @locale = lang_mapping[lang]
+        end
+
+        @locale = default_locale    if @locale.nil?
     
         if !@facebook_user.nil?
           access = IdentityProvider::Access.new(identity_provider_base_url: CLIENT_CONFIG['identity_provider_base_url'])
