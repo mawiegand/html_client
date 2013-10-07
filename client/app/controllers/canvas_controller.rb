@@ -36,7 +36,7 @@ class CanvasController < ApplicationController
     fb_locale = @fb_user_data['locale'];
     
     if !fb_locale.blank?
-      lang = fb_locale[0..2]
+      lang = fb_locale[0..1]
       @locale = lang_mapping[lang]
     end
     
