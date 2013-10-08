@@ -23,7 +23,7 @@
 
 console.log('window.name', window.name);
 
-self.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
+window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
   var _numLoadedAssets = 0, _numAssets = 0; // this uses a closure for private, not-bindable vars
 
@@ -50,8 +50,8 @@ self.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     reload: function() {
-      self.name = this.get('startupArguments');
-      self.location.reload();
+      window.name = this.get('startupArguments');
+      window.location.reload();
     },
   
     /** the application's runloop. Does basic stuff needed by the application and then hands over
@@ -119,7 +119,7 @@ self.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               this.destroy();
             },            
           });
-          self.presentModalDialog(dialog);      
+          self.presentModalDialog(dialog);
         }
         else {
           AWE.Log.Debug('ERROR: could not fetch latest announcement.')
@@ -657,18 +657,17 @@ self.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       
       this._super();
 
-      console.log('window', 'self', window, self, self.name);
-      console.log('JSON.parse(self.name )', JSON.parse(self.name ));
-
       var args = null;
       try {
-        args = JSON.parse(self.name ) //|| "{}")
-        AWE.Log.Debug('window.name, parsed window.name', self.name, args);
+        console.log('start parsing');
+        args = JSON.parse(window.name);
+        console.log('finished parsing');
+        AWE.Log.Debug('window.name, parsed window.name', window.name, args);
       }
       catch (e) {
       }
-      this.set('startupArguments', self.name);
-      self.name = "empty";                                 // unset variables
+      this.set('startupArguments', window.name);
+      window.name = "empty";                                 // unset variables
           
       var accessToken = null;
       
