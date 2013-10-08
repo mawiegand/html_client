@@ -657,7 +657,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var args = null;
       try {
         args = JSON.parse(window.name ) //|| "{}")
-//      AWE.Log.Debug('window.name, parsed window.name', window.name, args)
+//        AWE.Log.Debug('window.name, parsed window.name', window.name, args);
+        AWE.Log.Debug('window', 'self', window, self);
       }
       catch (e) {
       }
