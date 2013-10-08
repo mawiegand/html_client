@@ -20,7 +20,8 @@
  * @extends AWE.Application.MultiStageApplication
  * @name WACKADOO
  */
-window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
+
+self.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
   var _numLoadedAssets = 0, _numAssets = 0; // this uses a closure for private, not-bindable vars
 
@@ -47,8 +48,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     reload: function() {
-      window.name = this.get('startupArguments');
-      window.location.reload();
+      self.name = this.get('startupArguments');
+      self.location.reload();
     },
   
     /** the application's runloop. Does basic stuff needed by the application and then hands over
