@@ -21,8 +21,7 @@
  * @name WACKADOO
  */
 
-console.log('debug: start');
-console.log('window', 'self', window, self);
+console.log('window.name', window.name);
 
 self.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 

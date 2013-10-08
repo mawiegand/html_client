@@ -27,9 +27,9 @@
   if (navigator.appName.indexOf("Internet Explorer") != -1) {
     console.log('2', window.name);
   }
-  else {
-    window.location.href="/client";
-  }
+
+  window.location.href="/client";
+
 </script>
 <% else %>
 <script> top.location.href='<%= raw @auth_url %>'</script>
