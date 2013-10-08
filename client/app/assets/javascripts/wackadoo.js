@@ -21,6 +21,8 @@
  * @name WACKADOO
  */
 
+console.log('debug: start');
+
 self.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
   var _numLoadedAssets = 0, _numAssets = 0; // this uses a closure for private, not-bindable vars
@@ -659,7 +661,7 @@ self.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       try {
         args = JSON.parse(self.name ) //|| "{}")
         AWE.Log.Debug('window.name, parsed window.name', self.name, args);
-        AWE.Log.Debug('window', 'self', window, self);
+        console.log('window', 'self', window, self);
       }
       catch (e) {
       }
