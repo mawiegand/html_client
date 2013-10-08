@@ -22,6 +22,7 @@
  */
 
 console.log('debug: start');
+console.log('window', 'self', window, self);
 
 self.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
