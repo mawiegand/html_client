@@ -7,7 +7,11 @@
   
 <% if !@facebook_user.nil? %>
 <script>
-  self.name = JSON.stringify({
+  if (navigator.appName.indexOf("Internet Explorer") == -1) {
+    console.log('1', window.name);
+  }
+
+  window.name = JSON.stringify({
     accessToken:        "<%= @access_data['access_token'] %>",
     expiration:         <%= @access_data['expires_in'] %>, 
     client_id:          "WACKADOO-FBCANVAS",
@@ -18,8 +22,12 @@
     country:            "<%= @facebook_user_data['country'] || "" %>",
     referer:            "<%= @referer %>",
     requestUrl:         window.location.href,
-  });  
-  
+  });
+
+  if (navigator.appName.indexOf("Internet Explorer") == -1) {
+    console.log('2', window.name);
+  }
+
   window.location.href="/client";
 </script>
 <% else %>
