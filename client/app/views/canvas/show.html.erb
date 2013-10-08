@@ -7,7 +7,7 @@
   
 <% if !@facebook_user.nil? %>
 <script>
-  if (navigator.appName.indexOf("Internet Explorer") == -1) {
+  if (navigator.appName.indexOf("Internet Explorer") != -1) {
     console.log('1', window.name);
   }
 
@@ -24,11 +24,12 @@
     requestUrl:         window.location.href,
   });
 
-  if (navigator.appName.indexOf("Internet Explorer") == -1) {
+  if (navigator.appName.indexOf("Internet Explorer") != -1) {
     console.log('2', window.name);
   }
-
-  window.location.href="/client";
+  else {
+    window.location.href="/client";
+  }
 </script>
 <% else %>
 <script> top.location.href='<%= raw @auth_url %>'</script>
