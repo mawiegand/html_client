@@ -662,7 +662,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       catch (e) {
       }
       this.set('startupArguments', window.name);
-      window.name = "";                                 // unset variables
+      window.name = "empty";                                 // unset variables
           
       var accessToken = null;
       
