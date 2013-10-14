@@ -6,7 +6,7 @@ class ClientController < ApplicationController
     @do_tracking  = params.has_key? "signup"
   end
 
-  def update
+  def create
     @title = "Wack-A-Doo"
 
     @do_tracking  = params.has_key? "signup"
