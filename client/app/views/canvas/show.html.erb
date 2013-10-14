@@ -7,9 +7,6 @@
   
 <% if !@facebook_user.nil? %>
 <script>
-  if (navigator.appName.indexOf("Internet Explorer") != -1) {
-    console.log('1', window.name);
-  }
 
   var fbArgs = JSON.stringify({
     accessToken:        "<%= @access_data['access_token'] %>",
@@ -23,12 +20,6 @@
     referer:            "<%= @referer %>",
     requestUrl:         window.location.href,
   });
-
-  if (navigator.appName.indexOf("Internet Explorer") != -1) {
-    console.log('2', window.name);
-  }
-
-//  window.location.href="/client";
 
   $('<form style="display:none;" id="clientstarter" action="/client.html" method="POST">' +
       '  <input type="hidden" name="fb_args" value="' + encodeURIComponent(fbArgs) + '" />' +
