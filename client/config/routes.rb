@@ -10,6 +10,8 @@ Client::Application.routes.draw do
     end
   end
 
+  resource :client, :only => [ :create ]
+
   root :to => 'client#show'
   match :index, :to => 'client#show'
   match '/:locale' => 'client#show'
