@@ -5,18 +5,18 @@ Client::Application.routes.draw do
   scope "/client" do
     resource :canvas,  :only => [ :show, :create ]
     scope "(:locale)", :locale => /en|de/ do
-      match :index, :to => 'client#show'
-      root :to => 'client#show'
+      #match :index, :to => 'client#show'
+      #root :to => 'client#show'
     end
   end
 
-  resource :client, :only => [ :create ]
+  resource :client, :only => [ :show, :create ]
 
-  root :to => 'client#show'
-  match :index, :to => 'client#show'
-  match '/:locale' => 'client#show'
-    
-  
+  #root :to => 'client#show'
+  #match :index, :to => 'client#show'
+  #match '/:locale' => 'client#show'
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
