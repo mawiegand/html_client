@@ -5,12 +5,12 @@ Client::Application.routes.draw do
   scope "/client" do
     resource :canvas,  :only => [ :show, :create ]
     scope "(:locale)", :locale => /en|de/ do
-      match :index, :to => 'client#show'
-      root :to => 'client#show'
+      #match :index, :to => 'client#show'
+      #root :to => 'client#show'
     end
   end
 
-  resource :client, :only => [ :create ]
+  resource :client, :controller => 'client', :only => [ :show, :create ]
 
   root :to => 'client#show'
   match :index, :to => 'client#show'
