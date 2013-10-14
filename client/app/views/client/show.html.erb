@@ -53,14 +53,12 @@
   
   <%= javascript_include_tag    "wackadoo" %>
 
-  <% unless @fb_args.nil? %>
-    <script type="text/javascript">
-      /* <![CDATA[ */
-      var fbArgs = '<%= @fb_args %>';
-      console.log('fbargs', fbArgs);
-      /* ]]> */
-    </script>
-  <% end %>
+  <script type="text/javascript">
+    /* <![CDATA[ */
+    var fbArgs = '<%= @fb_args %>';
+    console.log('fbargs', fbArgs);
+    /* ]]> */
+  </script>
 
   <% if @do_tracking %>
     <script type="text/javascript">
