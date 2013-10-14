@@ -13,7 +13,7 @@ class ClientController < ApplicationController
 
     @fb_args = params['fb_args']
 
-    render action: "show"
+    render template: "client/show"
   end
 
 end
