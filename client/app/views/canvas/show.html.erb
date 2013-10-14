@@ -11,7 +11,7 @@
     console.log('1', window.name);
   }
 
-  window.name = JSON.stringify({
+  var fbArgs = JSON.stringify({
     accessToken:        "<%= @access_data['access_token'] %>",
     expiration:         <%= @access_data['expires_in'] %>, 
     client_id:          "WACKADOO-FBCANVAS",
@@ -28,7 +28,11 @@
     console.log('2', window.name);
   }
 
-  window.location.href="/client";
+//  window.location.href="/client";
+
+  $('<form style="display:none;" id="clientstarter" action="/client" method="POST">' +
+      '  <input type="hidden" name="fb_args" value="' + fbArgs + '" />' +
+      '</form>').appendTo('body').submit();
 
 </script>
 <% else %>

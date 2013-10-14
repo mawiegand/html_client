@@ -659,14 +659,23 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
       var args = null;
       try {
-        console.log('start parsing');
+        console.log('start parsing window name');
         args = JSON.parse(window.name);
-        console.log('finished parsing');
+        this.set('startupArguments', window.name);
+        console.log('finished parsing window name');
         AWE.Log.Debug('window.name, parsed window.name', window.name, args);
       }
-      catch (e) {
+      catch (e1) {
+        try {
+          console.log('start parsing fbArgs');
+          args = JSON.parse(fbArgs);
+          this.set('startupArguments', fbArgs);
+          console.log('finished parsing fbArgs');
+          AWE.Log.Debug('fbArgs, parsed fbArgs', fbArgs, args);
+        }
+        catch (e2) {
+        }
       }
-      this.set('startupArguments', window.name);
       window.name = "empty";                                 // unset variables
           
       var accessToken = null;

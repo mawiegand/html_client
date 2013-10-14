@@ -4,7 +4,16 @@ class ClientController < ApplicationController
     @title = "Wack-A-Doo"
     
     @do_tracking  = params.has_key? "signup"
-    
+  end
+
+  def update
+    @title = "Wack-A-Doo"
+
+    @do_tracking  = params.has_key? "signup"
+
+    @fb_args = params['fb_args']
+
+    render action: "show"
   end
 
 end

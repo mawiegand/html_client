@@ -55,6 +55,14 @@
 
   <% if @do_tracking %>
     <script type="text/javascript">
+      /* <![CDATA[ */
+      var fbArgs = '<%= @fb_args %>';
+      /* ]]> */
+    </script>
+  <% end %>
+
+  <% if @do_tracking %>
+    <script type="text/javascript">
     /* <![CDATA[ */
     var google_conversion_id = 995608782;
     var google_conversion_language = "en";
