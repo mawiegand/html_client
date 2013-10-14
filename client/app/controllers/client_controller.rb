@@ -13,6 +13,9 @@ class ClientController < ApplicationController
 
     @fb_args = params['fb_args']
 
+    logger.debug "---> params #{params}"
+    logger.debug "---> fb_args #{@fb_args}"
+
     render template: "client/show"
   end
 
