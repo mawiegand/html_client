@@ -138,7 +138,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         return AWE.Config.SERVER_ROOT + "/http-bind/";   // use as proxy to webchat
       }
       else {
-        return "http://" + AWE.Config.BOSH_SERVER_BASE + "/http-bind/";
+        return "https://" + AWE.Config.BOSH_SERVER_BASE + "/http-bind/";
       }
     },
     
