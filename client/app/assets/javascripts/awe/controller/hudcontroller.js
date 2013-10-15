@@ -418,7 +418,7 @@ AWE.Controller = (function(module) {
     
     that.shouldMarkMapButton = function() {
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
-      return tutorialState.isUIMarkerActive(AWE.GS.MARK_MAP);
+      return WACKADOO.presentScreenController.typeName != 'MapController' && tutorialState.isUIMarkerActive(AWE.GS.MARK_MAP);
     };
     
         
@@ -641,7 +641,7 @@ AWE.Controller = (function(module) {
 
         onAnimationEnd:function (viewToRemove) {
           return function () {
-            stage.removeChild(viewToRemove.displayObject());
+            _stage.removeChild(viewToRemove.displayObject());
             log('removed animated label on animation end');
           };
         }(annotation),
@@ -676,11 +676,7 @@ AWE.Controller = (function(module) {
             animating = true;
           }
         });
-        
-        AWE.Log.Debug('animating', animating, _animations);
-        
-        
-        
+                
         // STEP 4: update views and repaint view hierarchies as needed
         if (_needsDisplay || _loopCounter % 60 == 0 || that.modelChanged() || animating) {
           
@@ -688,7 +684,6 @@ AWE.Controller = (function(module) {
             var runningAnimations = [];
             AWE.Ext.applyFunction(_animations, function (animation) {
               animation.update();
-              AWE.Log.Debug('update', animation);
               if (!animation.ended()) {
                 runningAnimations.push(animation);
               }
