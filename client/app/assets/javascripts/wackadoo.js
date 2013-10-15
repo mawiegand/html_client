@@ -696,6 +696,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.allianceInvitation = args.allianceInvitation;
       AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
 
+      AWE.Log.Debug('debug', AWE.Settings.locale, AWE.Settings.lang, args.locale, args.locale.substr(0, 2));
+
       AWE.Facebook.isRunningInCanvas = AWE.Settings.fbRunInCanvas;
 
       AWE.Log.Debug('SETTINGS', AWE.Settings);
