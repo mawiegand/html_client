@@ -22,7 +22,8 @@ class CanvasController < ApplicationController
     
     logger.info "Facebook Data: #{data.inspect}."    
     
-    @facebook_user = data.nil? || data["user_id"].blank? ? nil :  data["user_id"]    
+    @facebook_user  = data.nil? || data["user_id"].blank? ? nil :  data["user_id"]    
+    @facebook_token = data.nil? || data["oauth_token"].blank? ? nil :  data["oauth_token"]    
     @facebook_user_data = data.nil? ? nil : (data["user"] || {})    
     @referer = request.referer  || "facebook.canvas"
     
@@ -49,7 +50,7 @@ class CanvasController < ApplicationController
     
     if !@facebook_user.nil?
       access = IdentityProvider::Access.new(identity_provider_base_url: CLIENT_CONFIG['identity_provider_base_url'])
-      @access_data = access.obtain_access_token(@facebook_user)
+      @access_data = access.obtain_access_token(@facebook_user, @facebook_token)
     end
   end
   
@@ -75,6 +76,7 @@ class CanvasController < ApplicationController
     logger.info "Facebook Data: #{data.inspect}."
 
     @facebook_user = data.nil? || data["user_id"].blank? ? nil :  data["user_id"]
+    @facebook_token = data.nil? || data["oauth_token"].blank? ? nil :  data["oauth_token"]    
     @facebook_user_data = data.nil? ? nil : (data["user"] || {})
     @referer = request.referer  || "facebook.canvas"
 
@@ -100,7 +102,7 @@ class CanvasController < ApplicationController
 
     if !@facebook_user.nil?
       access = IdentityProvider::Access.new(identity_provider_base_url: CLIENT_CONFIG['identity_provider_base_url'])
-      @access_data = access.obtain_access_token(@facebook_user)
+      @access_data = access.obtain_access_token(@facebook_user, @facebook_token)
     end
 
     

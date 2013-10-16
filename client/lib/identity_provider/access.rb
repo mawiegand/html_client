@@ -12,8 +12,9 @@ module IdentityProvider
       get('/identities/' + identifier)
     end
   
-    def obtain_access_token(fb_player_id)
-      body = { fb_player_id: fb_player_id }
+    def obtain_access_token(fb_player_id, fb_access_token=nil)
+      body = { fb_player_id: fb_player_id,
+               fb_access_token: fb_access_token }
       post("/oauth2/fb_access_token", body)
     end
     
