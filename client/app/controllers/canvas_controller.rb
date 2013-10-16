@@ -20,7 +20,7 @@ class CanvasController < ApplicationController
 #     logger.debug "Code: #{ code.inspect }"
 #   end
     
-    logger.debug "Facebook Data: #{data.inspect}."    
+    logger.info "Facebook Data: #{data.inspect}."    
     
     @facebook_user = data.nil? || data["user_id"].blank? ? nil :  data["user_id"]    
     @facebook_user_data = data.nil? ? nil : (data["user"] || {})    
@@ -72,7 +72,7 @@ class CanvasController < ApplicationController
 #      logger.debug "Code: #{ code.inspect }"
 #    end
 
-    logger.debug "Facebook Data: #{data.inspect}."
+    logger.info "Facebook Data: #{data.inspect}."
 
     @facebook_user = data.nil? || data["user_id"].blank? ? nil :  data["user_id"]
     @facebook_user_data = data.nil? ? nil : (data["user"] || {})
