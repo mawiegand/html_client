@@ -3,7 +3,11 @@
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="center-helper">
     <div class="modal-dialog-pane z-layer-4 welcome-dialog">
-      <h1>{{t welcome.heading}}</h1>
+      {{#if characterName }}
+        <h1>{{t welcome.headingWithName}} {{characterName}}!</h1>
+      {{else}}
+        <h1>{{t welcome.heading}}</h1>
+      {{/if}}
       <h2>{{t welcome.headingPlan}}</h2>
       <img {{bindAttr src="imageSrc"}}></img>
       <h2>{{t welcome.headingSituation}}</h2>
