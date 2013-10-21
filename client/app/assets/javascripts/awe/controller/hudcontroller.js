@@ -168,8 +168,14 @@ AWE.Controller = (function(module) {
         
         shop: AWE.GS.ShopManager.getShop(),
         
-        buyCreditsPressed: function(evt) {
-          AWE.GS.ShopManager.openCreditShopWindow()
+        buyCreditsPressed: function() {
+          if (AWE.Facebook.isRunningInCanvas) {
+            var dialog = AWE.UI.Ember.FacebookCreditOfferDialog.create();
+            WACKADOO.presentModalDialog(dialog);
+          }
+          else {
+            AWE.GS.ShopManager.openCreditShopWindow();
+          }
         },
 
         buyResourceOfferPressed: function(offerId) {
