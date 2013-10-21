@@ -137,7 +137,14 @@ AWE.Controller = (function(module) {
         cancelText:          AWE.I18n.lookupTranslation('general.cancel'),
         okText:              AWE.I18n.lookupTranslation('shop.notenoughcredits.getCredits'),
         okPressed:           function() {
-          AWE.GS.ShopManager.openCreditShopWindow();
+          if (AWE.Facebook.isRunningInCanvas) {
+            var dialog = AWE.UI.Ember.FacebookCreditOfferDialog.create();
+            WACKADOO.presentModalDialog(dialog);
+          }
+          else {
+            AWE.GS.ShopManager.openCreditShopWindow();
+          }
+
           this.destroy();
         },
         cancelPressed:       function() { this.destroy(); },
