@@ -64,6 +64,10 @@ AWE.UI = (function(module) {
       my.container.height = my.frame.size.height;
     }
     
+    that.getSettlementButtonView = function() {
+      return _villageImageView;
+    }
+    
     that.recalcView = function() {
 
       var character = AWE.GS.game.get('currentCharacter');
@@ -336,7 +340,6 @@ AWE.UI = (function(module) {
         _heroHeadImageView.setNeedsDisplay();
         _heroHeadImageView.setNeedsLayout();
       }
-
 
       if (character.get('female') && _presentGender === "male") {
         // TODO: update on change of avatar, not only gender.

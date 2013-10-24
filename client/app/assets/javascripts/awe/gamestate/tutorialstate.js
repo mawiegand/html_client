@@ -172,7 +172,7 @@ AWE.GS = (function(module) {
           }
         }
       });
-
+      
       return activeQuestState;
     },
 
