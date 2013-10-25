@@ -32,6 +32,9 @@ AWE.Controller = (function(module) {
     
     var _modelChanged = false;   ///< true, if anything in the model changed    
     var HUDViews = {};
+    var _animations = [];
+    
+    that.animatedMarker = null;
     
     
     // ///////////////////////////////////////////////////////////////////////
@@ -73,6 +76,10 @@ AWE.Controller = (function(module) {
         { stage: _resourceStage, mouseOverEvents: true}
       ];
     };
+    
+    that.addAnimation = function (animation) {
+      _animations.push(animation);
+    }
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -130,7 +137,14 @@ AWE.Controller = (function(module) {
         cancelText:          AWE.I18n.lookupTranslation('general.cancel'),
         okText:              AWE.I18n.lookupTranslation('shop.notenoughcredits.getCredits'),
         okPressed:           function() {
-          AWE.GS.ShopManager.openCreditShopWindow();
+          if (AWE.Facebook.isRunningInCanvas) {
+            var dialog = AWE.UI.Ember.FacebookCreditOfferDialog.create();
+            WACKADOO.presentModalDialog(dialog);
+          }
+          else {
+            AWE.GS.ShopManager.openCreditShopWindow();
+          }
+
           this.destroy();
         },
         cancelPressed:       function() { this.destroy(); },
@@ -161,8 +175,14 @@ AWE.Controller = (function(module) {
         
         shop: AWE.GS.ShopManager.getShop(),
         
-        buyCreditsPressed: function(evt) {
-          AWE.GS.ShopManager.openCreditShopWindow()
+        buyCreditsPressed: function() {
+          if (AWE.Facebook.isRunningInCanvas) {
+            var dialog = AWE.UI.Ember.FacebookCreditOfferDialog.create();
+            WACKADOO.presentModalDialog(dialog);
+          }
+          else {
+            AWE.GS.ShopManager.openCreditShopWindow();
+          }
         },
 
         buyResourceOfferPressed: function(offerId) {
@@ -407,6 +427,13 @@ AWE.Controller = (function(module) {
       var dialog = AWE.UI.Ember.RankingDialog.create();
       this.applicationController.presentModalDialog(dialog);      
     };
+    
+    
+    that.shouldMarkMapButton = function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return WACKADOO.presentScreenController.typeName != 'MapController' && tutorialState.isUIMarkerActive(AWE.GS.MARK_MAP);
+    };
+    
         
 
     // ///////////////////////////////////////////////////////////////////////
@@ -565,6 +592,27 @@ AWE.Controller = (function(module) {
         if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || !HUDViews.mainControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
           stageNeedsUpdate = that.updateHUD() || stageNeedsUpdate; 
         }
+        
+        if (HUDViews.mainControlsView) {
+          var mark = that.shouldMarkMapButton();
+          var view = HUDViews.mainControlsView.getSettlementButtonView();
+
+          if (view && mark && !that.animatedMarker) {
+            var marker = AWE.UI.createMarkerView();
+            marker.initWithControllerAndMarkedView(that, view);
+            that.animatedMarker = that.addBouncingAnnotationLabel(view, marker, 10000000, AWE.Geometry.createPoint(70, 0));
+
+            stageNeedsUpdate = true;
+          }
+          else if (view && !mark && that.animatedMarker) {
+            that.animatedMarker.cancel();
+            that.animatedMarker.update();
+            that.animatedMarker = null;
+    
+            stageNeedsUpdate = true;
+          }
+        }
+        
         // update hierarchies and check which stages need to be redrawn
         stageNeedsUpdate = propUpdates(HUDViews) || stageNeedsUpdate;
 
@@ -582,6 +630,39 @@ AWE.Controller = (function(module) {
         that.setNeedsLayout(); 
       }
     };
+    
+    that.addBouncingAnnotationLabel = function (annotatedView, annotation, duration, offset, stage) {
+      duration = duration || 10000;
+      offset = offset || AWE.Geometry.createPoint(0, -50);
+
+      var bounceHeight = 50;
+      var bounceDuration = 1000.0;
+
+      _stage.addChild(annotation.displayObject());
+
+      var animation = AWE.UI.createTimedAnimation({
+        view:annotation,
+        duration:duration,
+
+        updateView:function () {
+          return function (view, elapsed) {
+            var height = (Math.sin(elapsed * duration / bounceDuration * 2.0 * Math.PI) / 2.0 + 0.5) * bounceHeight;
+            view.setOrigin(AWE.Geometry.createPoint(annotatedView.frame().origin.x + offset.x,
+              annotatedView.frame().origin.y + offset.y - height));
+          };
+        }(),
+
+        onAnimationEnd:function (viewToRemove) {
+          return function () {
+            _stage.removeChild(viewToRemove.displayObject());
+            log('removed animated label on animation end');
+          };
+        }(annotation),
+      });
+
+      that.addAnimation(animation);
+      return animation;
+    }
     
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -601,10 +682,30 @@ AWE.Controller = (function(module) {
         // STEP 3: layout canvas & stages according to possibly changed window size (TODO: clean this!)
         that.layoutIfNeeded();   
         
+        // STEP 3b: animations
+        var animating = false;
+        AWE.Ext.applyFunction(_animations, function (animation) {
+          if (animation.animating()) {
+            animating = true;
+          }
+        });
+                
         // STEP 4: update views and repaint view hierarchies as needed
-        if (_needsDisplay || _loopCounter % 60 == 0 || that.modelChanged()) {
+        if (_needsDisplay || _loopCounter % 60 == 0 || that.modelChanged() || animating) {
+          
+          if (true) {
+            var runningAnimations = [];
+            AWE.Ext.applyFunction(_animations, function (animation) {
+              animation.update();
+              if (!animation.ended()) {
+                runningAnimations.push(animation);
+              }
+            });
+            _animations = runningAnimations;
+          }
+          
           // STEP 4b: create, remove and update all views according to visible parts of model      
-          var updateNeeded = that.updateViewHierarchy();      
+          var updateNeeded = that.updateViewHierarchy() || animating;      
           if (updateNeeded ) { // TODO: remove true, update only, if necessary 
             _stage.update();
             _resourceStage.update();

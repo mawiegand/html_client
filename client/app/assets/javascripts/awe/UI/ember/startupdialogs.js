@@ -12,11 +12,18 @@ AWE.UI.Ember = (function(module) {
   module.WelcomeDialog = module.InfoDialog.extend({
     templateName: 'welcome-dialog',
     
+    characterName: null,
+    
+    init: function() {
+      this._super();
+      this.set('characterName', AWE.GS.game.getPath('currentCharacter.name'));
+    }, 
+    
     imageSrc: function() {
       log('IMAGE SOURCE')
       return AWE.I18n.lookupTranslation('welcome.image');
-      
     }.property('templateName'),
+    
   });
 
 

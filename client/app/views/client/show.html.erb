@@ -20,11 +20,32 @@
   <footer>
   </footer>
   
-   <script type="text/javascript" >
-        ENV = {
-          //RAISE_ON_DEPRECATION = true,
-        };
-    </script>
+  <script type="text/javascript" >
+    ENV = {
+      //RAISE_ON_DEPRECATION = true,
+    };
+
+    var fbArgs = decodeURIComponent('<%= @fb_args %>');
+
+    var AWE = window.AWE || {};
+    AWE.Settings = AWE.Settings || {};
+
+    var my_args = {};
+
+    try {
+      my_args = JSON.parse(window.name);
+    }
+    catch (e1) {
+      try {
+        my_args = JSON.parse(fbArgs);
+      }
+      catch (e2) {
+      }
+    }
+
+    AWE.Settings.lang = my_args.locale ? my_args.locale.substr(0, 2) : 'en';
+
+  </script>
 
   <!-- Load ember JS. For debugging-purposes: not minified. -->
   <%= javascript_include_tag    "ember-0.9.8.1" %>

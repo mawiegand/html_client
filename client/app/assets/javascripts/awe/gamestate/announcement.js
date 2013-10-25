@@ -63,6 +63,7 @@ AWE.GS = (function(module) {
       var self = this;
       var characterId = AWE.GS.CharacterManager.getCurrentCharacter().getId();
       var url = AWE.Config.FUNDAMENTAL_SERVER_BASE + 'announcements/recent';
+      console.log('----> debug', url, AWE.Settings.lang);
       return my.fetchEntitiesFromURL(
         url, 
         my.queue, 

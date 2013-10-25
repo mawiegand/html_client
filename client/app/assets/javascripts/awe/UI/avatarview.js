@@ -47,7 +47,6 @@ AWE.UI = (function(module) {
 
       /* probably optional. Skip adding element to avoid errors on runtime */
       if(partNr == 0 || isNaN(partNr)) {
-        AWE.Log.Debug("partNr is either 0 or NaN " + partNr);
         return;
       }
 

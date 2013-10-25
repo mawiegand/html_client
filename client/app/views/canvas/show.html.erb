@@ -7,20 +7,24 @@
   
 <% if !@facebook_user.nil? %>
 <script>
-  window.name = JSON.stringify({
+
+  var fbArgs = JSON.stringify({
     accessToken:        "<%= @access_data['access_token'] %>",
     expiration:         <%= @access_data['expires_in'] %>, 
     client_id:          "WACKADOO-FBCANVAS",
     fbPlayerId:         "<%= @facebook_user %>",
     fbRunInCanvas:      true,
     
-    locale:             "<%= @facebook_user_data['locale']  || 'en_US' %>",
+    locale:             "<%= @locale %>",
     country:            "<%= @facebook_user_data['country'] || "" %>",
     referer:            "<%= @referer %>",
     requestUrl:         window.location.href,
-  });  
-  
-  window.location.href="https://test1.wack-a-doo.com/client";
+  });
+
+  $('<form style="display:none;" id="clientstarter" action="/client.html" method="POST">' +
+      '  <input type="hidden" name="fb_args" value="' + encodeURIComponent(fbArgs) + '" />' +
+      '</form>').appendTo('body').submit();
+
 </script>
 <% else %>
 <script> top.location.href='<%= raw @auth_url %>'</script>

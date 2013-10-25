@@ -20,6 +20,9 @@
  * @extends AWE.Application.MultiStageApplication
  * @name WACKADOO
  */
+
+console.log('window.name', window.name);
+
 window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
   var _numLoadedAssets = 0, _numAssets = 0; // this uses a closure for private, not-bindable vars
@@ -116,7 +119,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               this.destroy();
             },            
           });
-          self.presentModalDialog(dialog);      
+          self.presentModalDialog(dialog);
         }
         else {
           AWE.Log.Debug('ERROR: could not fetch latest announcement.')
@@ -135,7 +138,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         return AWE.Config.SERVER_ROOT + "/http-bind/";   // use as proxy to webchat
       }
       else {
-        return "http://" + AWE.Config.BOSH_SERVER_BASE + "/http-bind/";
+        return "https://" + AWE.Config.BOSH_SERVER_BASE + "/http-bind/";
       }
     },
     
@@ -653,16 +656,22 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       // return;
       
       this._super();
-      
+
       var args = null;
       try {
-        args = JSON.parse(window.name ) //|| "{}")
-//      AWE.Log.Debug('window.name, parsed window.name', window.name, args)
+        args = JSON.parse(window.name);
+        this.set('startupArguments', window.name);
       }
-      catch (e) {
+      catch (e1) {
+        try {
+          args = JSON.parse(fbArgs);
+          this.set('startupArguments', fbArgs);
+        }
+        catch (e2) {
+        }
       }
-      this.set('startupArguments', window.name);
-      window.name = "";                                 // unset variables
+      window.name = "empty";                                 // unset variables
+      fbArgs = "empty";
           
       var accessToken = null;
       
@@ -686,6 +695,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.playerInvitation = args.playerInvitation;
       AWE.Settings.allianceInvitation = args.allianceInvitation;
       AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
+
+      AWE.Log.Debug('debug', AWE.Settings.locale, AWE.Settings.lang, args.locale, args.locale.substr(0, 2));
 
       AWE.Facebook.isRunningInCanvas = AWE.Settings.fbRunInCanvas;
 
