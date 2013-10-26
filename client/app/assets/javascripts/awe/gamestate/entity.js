@@ -387,11 +387,11 @@ AWE.GS = (function(module) /** @lends AWE.GS */ {
         var lastUpdate = entity.lastUpdateAt(updateType);  // last update (requested from server) for this particular type
         if (serverUpdate.getTime() > lastUpdate.getTime()) {
           modifiedSince = lastUpdate;
-//          log('>> GAMESTATE UPDATE: Using LOCAL UPDATE timestamp (loc/sever):', lastUpdate, serverUpdate);
+          AWE.Log.Debug('>> GAMESTATE UPDATE: Using LOCAL UPDATE timestamp (loc/sever):', lastUpdate, serverUpdate, entity.typeName);
         }
         else {
           modifiedSince = serverUpdate;
-//          log('>> GAMESTATE UPDATE: Using SERVER UPDATED AT timestamp (loc/server):', lastUpdate, serverUpdate);          
+          AWE.Log.Debug('>> GAMESTATE UPDATE: Using SERVER UPDATED AT timestamp (loc/server):', lastUpdate, serverUpdate, entity.typeName);          
         }
       }
       var newRequest = my.fetchEntitiesFromURL(url, my.runningUpdatesPerId, id, updateType, modifiedSince, function(entity, statusCode, xhr, serverTime) {
