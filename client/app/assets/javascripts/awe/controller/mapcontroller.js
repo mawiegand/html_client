@@ -687,22 +687,19 @@ AWE.Controller = function (module) {
     
     that.toggleArmyVisibility = function() {
       hideOtherArmies = !hideOtherArmies;
-    }
+    };
 
     that.armyListButtonClicked = function() {
-      log("armyBtn clicked");
 /*      var dialog = AWE.UI.Ember.ArmyListDialog.create({
         controller: this.that,
       });*/
-      var dialog = AWE.UI.Ember.TutorialSettleDialog.create(
-        {
-          controller: this.that/*,
-          view: setAndUpdateSettlement*/
-        }
+    
+	  var dialog = AWE.UI.Ember.TutorialSettleDialog.create(
+        { controller: this.that }
       );
 
-      that.applicationController.presentModalDialog(dialog);
-    }
+	  that.applicationController.presentModalDialog(dialog);
+    };
 
     that.armyInfoButtonClicked = function (army) {
       if (!army) {

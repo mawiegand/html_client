@@ -1,10 +1,12 @@
 <script type="text/x-handlebars" data-template-name="tutorialsettle-info-dialog">
-    <div 
-      style="position: absolute; top :300px; left: 300px; background: #080; height: 100px; width: 300px; z-index: 1000;"
-    >
-      <p>
-        hello world, its time to settle here
-      </p>
-      <a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>  
-    </div>
+
+{{#if styles}}
+	<div {{bindAttr style="styles"}}>
+		<p>
+			"hey guy, please, please lets settle here! i am to old to walk some more miles..." :)
+		</p>
+		<a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>  
+	</div>
+{{/if}}
+
 </script>
