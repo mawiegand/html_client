@@ -321,15 +321,18 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
        // $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
   
   
-        var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+        var tutorialState     = AWE.GS.TutorialStateManager.getTutorialState();
+        var hasBase           = !!AWE.GS.CharacterManager.getCurrentCharacter().get('base_node');
+        var startInSettlement = hasBase && AWE.Config.USE_TUTORIAL && (
+          tutorialState && tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID) &&
+          tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED);
         
-        if (!AWE.Config.USE_TUTORIAL ||
-            (tutorialState &&
-             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID) &&
-             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') >= AWE.GS.QUEST_STATUS_FINISHED)) {
+        if (!startInSettlement) {
           self.activateMapController();
-          var node = AWE.GS.CharacterManager.getCurrentCharacter().get('base_node');
-          controller.moveTo(node);
+          if (hasBase) {
+            var node = AWE.GS.CharacterManager.getCurrentCharacter().get('base_node');
+            controller.moveTo(node);
+          }
         }
         else {
           var locationId = AWE.GS.CharacterManager.getCurrentCharacter().get('base_location_id');
@@ -393,6 +396,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
                   assetLoaded();
                 });
               }
+              
+              AWE.Config.Cohort.configFromCharacter(currentCharacter);
           
               if (currentCharacter.get('base_node_id')) {
                 _numAssets +=1;
@@ -406,7 +411,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               if (AWE.Config.USE_TUTORIAL) {
                 _numAssets += 2;
                 AWE.GS.TutorialManager.updateTutorial(function(tutorial, statusCode) {
-                  if (statusCode === AWE.Net.OK) {
+                  if (statusCode === AWE.Net.OK || statusCode === AWE.Net.NOT_MODIFIED) {
                     AWE.Log.Debug('Tutorial', tutorial);
                     assetLoaded();
                 
