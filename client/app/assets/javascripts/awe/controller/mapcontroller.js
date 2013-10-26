@@ -680,9 +680,16 @@ AWE.Controller = function (module) {
     }
 
     that.armyListButtonClicked = function() {
-      var dialog = AWE.UI.Ember.ArmyListDialog.create({
+      log("armyBtn clicked");
+/*      var dialog = AWE.UI.Ember.ArmyListDialog.create({
         controller: this.that,
-      });
+      });*/
+      var dialog = AWE.UI.Ember.TutorialSettleDialog.create(
+        {
+          controller: this.that/*,
+          view: setAndUpdateSettlement*/
+        }
+      );
 
       that.applicationController.presentModalDialog(dialog);
     }
