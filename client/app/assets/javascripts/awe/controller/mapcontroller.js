@@ -645,6 +645,16 @@ AWE.Controller = function (module) {
     //
     // ///////////////////////////////////////////////////////////////////////
 
+    that.welcomeDialogClosed = function() {
+      if (!AWE.GS.CharacterManager.getCurrentCharacter().get('base_node')) {
+        var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.CharacterManager.getCurrentCharacter().get('id')) || [];
+        if (armies[0]) {
+          alert (armies[0])
+          this.centerLocationAndMarkArmy(armies[0]);
+        }
+      }
+    }
+
     that.switchMapMode = function (realMap) {
       log("SWITCH MAP MODE", realMap);
       mapMode = realMap ? AWE.UI.MAP_MODE_REAL : AWE.UI.MAP_MODE_TERRAIN;

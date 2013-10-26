@@ -79,10 +79,16 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     showWelcomeDialog: function() {
+      var self = this;
+      
       var dialog = AWE.UI.Ember.WelcomeDialog.create({
         okPressed:    function() {
           AWE.GS.TutorialStateManager.checkForNewQuests();
           this.destroy();
+          
+          if (self.mapControllerActive()) {
+            self.get('presentScreenController').welcomeDialogClosed();
+          }
         },            
       });
       this.presentModalDialog(dialog);      
@@ -117,6 +123,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             okPressed:    function() {
               AWE.GS.TutorialStateManager.checkForNewQuests();
               this.destroy();
+
+              if (self.mapControllerActive()) {
+                self.get('presentScreenController').welcomeDialogClosed();
+              }
             },            
           });
           self.presentModalDialog(dialog);
@@ -406,6 +416,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
                   AWE.Log.Debug("Node", node)
                   assetLoaded();
                 });
+              } 
+              else {
+                _numAssets +=1;
+                AWE.GS.ArmyManager.updateArmiesForCharacter(currentCharacter.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
+                  assetLoaded();
+                });
               }
 
               if (AWE.Config.USE_TUTORIAL) {
@@ -484,6 +500,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (this.get('presentScreenController') === this.get('mapScreenController')) {
         var node = AWE.GS.game.getPath('currentCharacter.base_node');
         if (node) {
+          
+          
           this.get('presentScreenController').moveTo(node, true);
         }
       }
