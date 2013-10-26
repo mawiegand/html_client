@@ -647,10 +647,11 @@ AWE.Controller = function (module) {
 
     that.welcomeDialogClosed = function() {
       if (!AWE.GS.CharacterManager.getCurrentCharacter().get('base_node')) {
-        var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.CharacterManager.getCurrentCharacter().get('id')) || [];
-        if (armies[0]) {
-          alert (armies[0])
-          this.centerLocationAndMarkArmy(armies[0]);
+        var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.CharacterManager.getCurrentCharacter().get('id'));
+        var army = AWE.Util.hashFirst(armies);
+        AWE.Log.Debug ("ARMY",army)
+        if (army) {
+          this.centerLocationAndMarkArmy(army);
         }
       }
     }
@@ -1044,9 +1045,10 @@ AWE.Controller = function (module) {
       }
       else {
         AWE.Map.Manager.fetchSingleRegionById(army.get('region_id'), function (region) {
-          AWE.Map.Manager.fetchSingleNodeById(region.nodeId(), function () {
+          AWE.Map.Manager.fetchSingleNodeById(region.nodeId(), function (node) {
             AWE.Map.Manager.fetchLocationsForRegion(region, function () {
-              that.moveTo(army.get('location'), true);
+              // AWE.Log.Debug('MoveTo Location', army.get('location'), army.get('location').region(), army.get('location').region().node(), region.nodeId());
+              that.moveTo(node);
               that.setSelectedArmy(army);
             });
           });
