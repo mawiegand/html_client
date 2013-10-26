@@ -7,7 +7,7 @@ class CanvasController < ApplicationController
     
     @app_id = "127037377498922"
     @canvas_page = "http://apps.facebook.com/wack-a-doo"
-    @auth_url = "https://www.facebook.com/dialog/oauth?client_id=#{ @app_id }&redirect_uri=#{ URI::escape(@canvas_page) }"
+    @auth_url = "https://www.facebook.com/dialog/oauth?client_id=#{ @app_id }&scope=email&redirect_uri=#{ URI::escape(@canvas_page) }"
 
     @signed_request = params[:signed_request] || ""
     
@@ -60,7 +60,7 @@ class CanvasController < ApplicationController
 
     @app_id = "127037377498922"
     @canvas_page = "http://apps.facebook.com/wack-a-doo"
-    @auth_url = "https://www.facebook.com/dialog/oauth?client_id=#{ @app_id }&redirect_uri=#{ URI::escape(@canvas_page) }"
+    @auth_url = "https://www.facebook.com/dialog/oauth?client_id=#{ @app_id }&scope=email&redirect_uri=#{ URI::escape(@canvas_page) }"
 
     @signed_request = params[:signed_request] || ""
 
