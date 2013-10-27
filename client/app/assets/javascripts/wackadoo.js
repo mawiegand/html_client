@@ -316,7 +316,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         Ember.Handlebars.bootstrap();                  // Bootstrap Ember a second time to parse the newly loaded templates.
 
         var tutorialState     = AWE.GS.TutorialStateManager.getTutorialState();
-        var hasBase           = !!AWE.GS.CharacterManager.getCurrentCharacter().get('base_node');
+        var hasBase           = !!AWE.GS.CharacterManager.getCurrentCharacter().get('base_node_id');
         var startInSettlement = hasBase && AWE.Config.USE_TUTORIAL && (
           tutorialState && tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID) &&
             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED);
