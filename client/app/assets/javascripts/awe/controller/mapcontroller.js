@@ -668,10 +668,18 @@ AWE.Controller = function (module) {
       if (!AWE.GS.CharacterManager.getCurrentCharacter().get('base_node')) {
         var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.CharacterManager.getCurrentCharacter().get('id'));
         var army = AWE.Util.hashFirst(armies);
-        AWE.Log.Debug ("ARMY",army)
+        AWE.Log.Debug ("ARMY", army);
         if (army) {
-          this.centerLocationAndMarkArmy(army);
+          this.centerLocationAndMarkArmy(army, function() {
+            _readyForUI = true;
+          });
         }
+        else {
+          _readyForUI = true;
+        }
+      }
+      else {
+        _readyForUI = true;
       }
     }
 
@@ -1049,16 +1057,22 @@ AWE.Controller = function (module) {
       that.moveTo(location, true);
     }
 
-    that.centerLocationAndMarkArmy = function (army) {
+    that.centerLocationAndMarkArmy = function (army, callback) {
       if (army.get('location')) {
         that.moveTo(army.get('location'), true);
         that.setSelectedArmy(army);
+        if (callback) {
+          callback();
+        }
       }
       else if (army.get('region')) {
         AWE.Map.Manager.fetchSingleNodeById(army.get('region').nodeId(), function () {
           AWE.Map.Manager.fetchLocationsForRegion(army.get('region'), function () {
             that.moveTo(army.get('location'), true);
             that.setSelectedArmy(army);
+            if (callback) {
+              callback();
+            }
           });
         });
       }
@@ -1069,6 +1083,9 @@ AWE.Controller = function (module) {
               // AWE.Log.Debug('MoveTo Location', army.get('location'), army.get('location').region(), army.get('location').region().node(), region.nodeId());
               that.moveTo(node);
               that.setSelectedArmy(army);
+              if (callback) {
+                callback();
+              }
             });
           });
         });
@@ -3422,10 +3439,6 @@ AWE.Controller = function (module) {
         }
         else {
           _viewPortChanged = false;
-        }
-
-        if (!_readyForUI && !_camera.isMoving()) {
-          _readyForUI = true;
         }
 
         // STEP 1: determine visible area (may have changed through user interaction)
