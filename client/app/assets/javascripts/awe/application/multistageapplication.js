@@ -51,8 +51,8 @@ AWE.Application = (function(module) {
     var nextMouseOverTest = new Date(1970).getTime();
     var mouseOverTestTimeout = 200; // test every x ms
 
-    var _uiEnabled;
-    var _hideHud;
+    var _uiEnabled = false;
+    var _hideHud = true;
 
     return /** @lends AWE.Application.MultiStageApplication# */ {
       

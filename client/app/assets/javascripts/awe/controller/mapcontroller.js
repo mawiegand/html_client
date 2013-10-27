@@ -218,7 +218,7 @@ AWE.Controller = function (module) {
     };
 
     that.readyForUI = function() {
-      return _readyForUI;
+      return _readyForUI && AWE.GS.SettlementManager.getHomeBaseOfCharacter(AWE.GS.game.get('currentCharacter')) != null;
     };
 
     that.enableUI = function() {

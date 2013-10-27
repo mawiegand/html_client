@@ -321,7 +321,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           tutorialState && tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID) &&
             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED);
 
-        var hud = AWE.Controller.createHUDController(!hasBase);
+        var hud = AWE.Controller.createHUDController();
         hud.init();
         self.setHudController(hud);
         

@@ -7,7 +7,7 @@ var AWE = AWE || {};
 
 AWE.Controller = (function(module) {
           
-  module.createHUDController = function(hidden, anchor) {
+  module.createHUDController = function(anchor) {
     
     var _stage  = null;          ///< easelJS stage for displaying the HUD
     var _canvas = null;          ///< canvas elements for the four stages
@@ -31,7 +31,7 @@ AWE.Controller = (function(module) {
     var HUDViews = {};
     var _animations = [];
 
-    var _hideCanvas = hidden;
+    var _hideCanvas = true;
     var _canvasIsHidden = true;  // hud is hidden per css
     var _animationDuration = 1000;
     
@@ -129,6 +129,7 @@ AWE.Controller = (function(module) {
 
     that.showHud = function() {
       _hideCanvas = false;
+      _needsLayout = true;
     }
 
     // ///////////////////////////////////////////////////////////////////////
