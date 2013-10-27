@@ -3566,6 +3566,7 @@ AWE.Controller = function (module) {
 					var character = AWE.GS.CharacterManager.getCurrentCharacter();
 					var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(character.get('id'));
 					var army = AWE.Util.hashFirst(armies);
+					if (army) {
 					var aView = armyViews[army.get('id')];
 
 					if (aView) {
@@ -3577,6 +3578,7 @@ AWE.Controller = function (module) {
 							window.dialog.setOrigin(aView.frame().origin);
 						}
 					}
+				  }
 		  
           //_stages[3].update();
           // STEP 4d: register this frame, recalc and display present framerate (rendered frames per second)
