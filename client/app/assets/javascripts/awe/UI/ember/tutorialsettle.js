@@ -13,7 +13,6 @@ AWE.UI.Ember = (function(module) {
 	  {
 		  // tpl name == data-tempalte-name in view
 		  templateName: 'tutorialsettle-info-dialog',
-			
 			originX: 0,
 			originY: 0,
 			isDestroyed: false,
@@ -21,16 +20,8 @@ AWE.UI.Ember = (function(module) {
 			// @todo: move static data to css & add css class
 		  styles : function() {
 			  var style = 
-			  	'background: #cc8;' +
-					'position: absolute;' + 
-					'padding: 5px;' + 
-					'height: 150px;' + 
-					'width: 300px;' +
 					'top: ' + (this.get('originY') || 100) + 'px;' + 
-					'left: ' + (this.get('originX') + 100 || 100) + 'px;' + // + 100 means vector for container
-					'border: 2px solid #995;' + 
-					'border-radius: 10px;' +
-					'z-index: 1000;';
+					'left: ' + (this.get('originX') + 100 || 100) + 'px;'; // + 100 means vector for container
 			  return style;
 		  }.property('originX', 'originY'),
 			

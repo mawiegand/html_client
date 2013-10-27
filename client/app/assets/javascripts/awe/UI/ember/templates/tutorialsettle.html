@@ -1,10 +1,12 @@
 <script type="text/x-handlebars" data-template-name="tutorialsettle-info-dialog">
 	{{#if styles}}
-		<div {{bindAttr style="styles"}}>
-			<p>
-				"hey guy, please, please lets settle here! i am to old to walk some more miles..." :)
-				{{t tutorial.step.settle }}
-			</p>
+		<div class="dom-quest-container" {{bindAttr style="styles"}}>
+			<div class="tutorial-dialog">
+				<div class="inner-border">
+					<p>{{t tutorial.step.settle }}</p>
+REPLACE ME : "hey guy, please, please lets settle here! i am to old to walk some more miles..." :)
+				</div>
+			</div>
 		</div>
 	{{/if}}
 </script>
