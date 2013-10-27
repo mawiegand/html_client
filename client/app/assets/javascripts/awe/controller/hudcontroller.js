@@ -33,7 +33,7 @@ AWE.Controller = (function(module) {
 
     var _hideCanvas = true;
     var _canvasIsHidden = true;  // hud is hidden per css
-    var _animationDuration = 1000;
+    var _animationDuration = 800;
     
     that.animatedMarker = null;
     
@@ -103,15 +103,15 @@ AWE.Controller = (function(module) {
         if (_hideCanvas && !_canvasIsHidden) {
           AWE.Log.Debug('hide canvas');
           _canvasIsHidden = true;
-          $('#hud-canvas').delay(600).animate({right: "-380px"}, _animationDuration, 'easeOutElastic');
-          $('#resource-canvas').delay(600).animate({top: "-42px"}, _animationDuration, 'easeOutElastic');
+          $('#hud-canvas').delay(600).animate({right: "-380px"}, _animationDuration, 'easeOutBack');
+          $('#resource-canvas').delay(600).animate({top: "-42px"}, _animationDuration, 'easeOutBack');
           that.setNeedsDisplay();
         }
         else if (!_hideCanvas && _canvasIsHidden) {
           AWE.Log.Debug('display canvas canvas');
           _canvasIsHidden = false;
-          $('#hud-canvas').delay(600).animate({right: "0px"}, _animationDuration, 'easeOutElastic');
-          $('#resource-canvas').delay(600).animate({top: "30px"}, _animationDuration, 'easeOutElastic');
+          $('#hud-canvas').delay(600).animate({right: "0px"}, _animationDuration, 'easeOutBack');
+          $('#resource-canvas').delay(600).animate({top: "30px"}, _animationDuration, 'easeOutBack');
           that.setNeedsDisplay();
         }
       }
