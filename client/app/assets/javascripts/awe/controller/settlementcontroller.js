@@ -23,7 +23,9 @@ AWE.Controller = (function(module) {
     var _viewNeedsUpdate = false;  
     var _modelChanged = false;
     var _becameVisible = false;
-    var _lastCleanup = null;
+
+    var _readyForUI = false;
+    var _welcomeDialogClosed = false;
           
     var that = module.createScreenController(anchor); // create base object
     
@@ -202,14 +204,21 @@ AWE.Controller = (function(module) {
       this.removeView();
       this.visible = false;
     };
-    
-    
+
+    that.readyForUI = function() {
+      return _readyForUI && _welcomeDialogClosed;
+    };
+
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Actions
     //
     // /////////////////////////////////////////////////////////////////////// 
-    
+
+    that.welcomeDialogClosed = function() {
+      _welcomeDialogClosed = true;
+    }
+
     that.previousSettlementPressed = function() {
       var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
       var previousSettlement = AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(settlement);
@@ -1265,6 +1274,7 @@ AWE.Controller = (function(module) {
           AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
             AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
               log('updated jobs in construction queue', jobs);
+              _readyForUI = true;
             });
           });
         });

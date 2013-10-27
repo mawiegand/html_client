@@ -385,10 +385,6 @@ AWE.Application = (function(module) {
           if (!_uiEnabled && this.get('presentScreenController').readyForUI()) {
             _uiEnabled = true;
             this.get('presentScreenController').enableUI();
-          }
-
-          if (_uiEnabled && _hideHud && AWE.GS.SettlementManager.getHomeBaseOfCharacter(AWE.GS.game.get('currentCharacter')) != null) {
-            _hideHud = false;
             this.get('hudController').showHud();
           }
 
@@ -573,7 +569,7 @@ AWE.Application = (function(module) {
             this.append(controller);
             controller.applicationController = this;
             controller.viewDidAppear();
-            _uiEnabled = false;
+            controller.enableUI();
           }
         }
       },
