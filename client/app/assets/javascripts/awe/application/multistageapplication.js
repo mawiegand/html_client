@@ -569,7 +569,9 @@ AWE.Application = (function(module) {
             this.append(controller);
             controller.applicationController = this;
             controller.viewDidAppear();
-            controller.enableUI();
+            if (_uiEnabled) {
+              controller.enableUI();
+            }
           }
         }
       },

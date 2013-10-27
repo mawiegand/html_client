@@ -224,8 +224,8 @@ AWE.Controller = function (module) {
 
     that.enableUI = function() {
       if (!_uiEnabled) {
-        $(zoomSlider.getContainer()).animate({opacity: 1}, 1000);
-        $('#controls-canvas').animate({left: "0px"}, 1000, 'easeOutElastic');
+        $(zoomSlider.getContainer()).delay(600).animate({opacity: 1}, 1000);
+        $('#controls-canvas').delay(600).animate({left: "0px"}, 1000, 'easeOutElastic');
         _uiEnabled = true;
       }
     };
