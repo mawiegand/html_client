@@ -9,19 +9,32 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
   module.TutorialSettleDialog = module.Dialog.extend(
-    {
-      // tpl name == data-tempalte-name in view
-      templateName: 'tutorialsettle-info-dialog',
-      // init parent
-      init: function() {
-        this._super();
-      },
-      
-      // close dialog element
-      okClicked: function() {
-        this.destroy();
-      }
-    }
+	  {
+		  // tpl name == data-tempalte-name in view
+		  templateName: 'tutorialsettle-info-dialog',
+		  
+		  styles : function() {
+			  var style = 
+			  	'background: #cc8;' +
+				'position: relative;' + 
+				'padding: 5px;' + 
+				'height: 150px;' + 
+				'width: 400px;' +
+				'top: 300px;' + 
+				'left: 300px;' + 
+				'border: 2px solid #995;' + 
+				'z-index: 1000;';
+			  return style;
+		  }.property('style'),
+		  // init parent
+		  init: function() {
+		    this._super();
+		  },
+		  // close dialog element
+		  okClicked: function() {
+		    this.destroy();
+		  }
+	  }
   );
   return module;  
 
