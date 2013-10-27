@@ -388,7 +388,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       _numAssets +=1;
       AWE.GS.RulesManager.updateRules(function(rules, statusCode) {
         if (statusCode === AWE.Net.OK) {
-          AWE.Log.Debug('Rules', rules);
 
           _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
           AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
@@ -408,7 +407,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
                 _numAssets +=1;
                 AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
                   AWE.GS.CharacterManager.getCurrentCharacter().set('base_node', node);
-                  AWE.Log.Debug("Node", node)
                   assetLoaded();
                 });
               } 
@@ -423,11 +421,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
                 _numAssets += 2;
                 AWE.GS.TutorialManager.updateTutorial(function(tutorial, statusCode) {
                   if (statusCode === AWE.Net.OK || statusCode === AWE.Net.NOT_MODIFIED) {
-                    AWE.Log.Debug('Tutorial', tutorial);
                     assetLoaded();
                 
                     AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
-                      AWE.Log.Debug("TutorialState", tutorialState);
                       assetLoaded();
                     });
                   }
@@ -441,7 +437,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               _numAssets += 1;
               AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
                 if (statusCode === AWE.Net.OK) {
-                  AWE.Log.Debug('RESOURCE_POOL', resourcePool);
                   assetLoaded();
                 }
                 else {
@@ -453,7 +448,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               _numAssets += 1;
               AWE.GS.RoundInfoManager.updateRoundInfo(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
                 if (statusCode === AWE.Net.OK) {
-                  AWE.Log.Debug('ROUND_INFO', AWE.GS.game.roundInfo);
                   assetLoaded();
                 }
                 else {
@@ -702,7 +696,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         accessToken = args.accessToken ; 
       }                            // || AWE.Config.DEV_ACCESS_TOKEN || null;
       
-      AWE.Log.Debug('access', accessToken);
+//      AWE.Log.Debug('access', accessToken);
             
       var expiration  = parseInt(args.expiration || "3600");           // asume one hour validity as default
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;
@@ -717,9 +711,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Log.Debug('debug', AWE.Settings.locale, AWE.Settings.lang, args.locale, args.locale.substr(0, 2));
 
       AWE.Facebook.isRunningInCanvas = AWE.Settings.fbRunInCanvas;
-
-      AWE.Log.Debug('SETTINGS', AWE.Settings);
-      AWE.Log.Debug('ARGS', args);
       
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,

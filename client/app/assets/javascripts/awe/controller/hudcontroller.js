@@ -101,12 +101,14 @@ AWE.Controller = (function(module) {
     that.layoutIfNeeded = function() {
       if (_needsLayout) {
         if (_hideCanvas && !_canvasIsHidden) {
+          AWE.Log.Debug('hide canvas');
           _canvasIsHidden = true;
           $('#hud-canvas').delay(600).animate({right: "-380px"}, _animationDuration, 'easeOutElastic');
           $('#resource-canvas').delay(600).animate({top: "-42px"}, _animationDuration, 'easeOutElastic');
           that.setNeedsDisplay();
         }
         else if (!_hideCanvas && _canvasIsHidden) {
+          AWE.Log.Debug('display canvas canvas');
           _canvasIsHidden = false;
           $('#hud-canvas').delay(600).animate({right: "0px"}, _animationDuration, 'easeOutElastic');
           $('#resource-canvas').delay(600).animate({top: "30px"}, _animationDuration, 'easeOutElastic');
@@ -128,8 +130,10 @@ AWE.Controller = (function(module) {
     // ///////////////////////////////////////////////////////////////////////     
 
     that.showHud = function() {
-      _hideCanvas = false;
-      _needsLayout = true;
+      if (_hideCanvas) {
+        _hideCanvas = false;
+        _needsLayout = true;
+      }
     }
 
     // ///////////////////////////////////////////////////////////////////////

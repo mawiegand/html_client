@@ -382,11 +382,13 @@ AWE.Application = (function(module) {
           if (this.get('notificationController')) this.get('notificationController').runloop();
           this.get('presentScreenController').runloop(); // hand over control to present screen controller
 
+
           if (!_uiEnabled && this.get('presentScreenController').readyForUI()) {
+            AWE.Log.Debug('UI has been enabled.');
             _uiEnabled = true;
             this.get('presentScreenController').enableUI();
             this.get('hudController').showHud();
-          }
+          } 
 
           // TODO: Game State Runloop!
           

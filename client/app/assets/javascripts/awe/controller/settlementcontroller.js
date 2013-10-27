@@ -24,7 +24,6 @@ AWE.Controller = (function(module) {
     var _modelChanged = false;
     var _becameVisible = false;
 
-    var _readyForUI = false;
     var _welcomeDialogClosed = false;
           
     var that = module.createScreenController(anchor); // create base object
@@ -206,7 +205,13 @@ AWE.Controller = (function(module) {
     };
 
     that.readyForUI = function() {
-      return _readyForUI && _welcomeDialogClosed;
+      if (_welcomeDialogClosed && that.view) {
+        var slots = that.view.get('slots');
+        if (slots && AWE.Ext.isArray(slots) && AWE.Util.arrayCount(slots) > 0) {
+          return true;
+        }
+      }
+      return false;
     };
 
     // ///////////////////////////////////////////////////////////////////////
@@ -1274,7 +1279,6 @@ AWE.Controller = (function(module) {
           AWE.GS.SlotManager.updateSlotsAtSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(slots) {
             AWE.GS.ConstructionJobManager.updateJobsOfQueue(queueId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(jobs){
               log('updated jobs in construction queue', jobs);
-              _readyForUI = true;
             });
           });
         });
