@@ -224,8 +224,8 @@ AWE.Controller = function (module) {
 
     that.enableUI = function() {
       if (!_uiEnabled) {
-        $(zoomSlider.getContainer()).animate({opacity: 1}, 1000);
-        $('#controls-canvas').animate({left: "0px"}, 1000, 'easeOutElastic');
+        $(zoomSlider.getContainer()).delay(600).animate({opacity: 1}, 1000);
+        $('#controls-canvas').delay(600).animate({left: "0px"}, 1000, 'easeOutElastic');
         _uiEnabled = true;
       }
     };
@@ -751,29 +751,39 @@ AWE.Controller = function (module) {
     };
 
     that.armyMoveButtonClicked = function (armyAnnotationView) {
-      // actionObjekt erstellen
-      currentAction = {
-        typeName:'moveAction',
-        army:armyAnnotationView.army(),
-        clickedView:armyAnnotationView.annotatedView(),
-        // armyAnnotationView: armyAnnotationView,
+      if (armyAnnotationView.army().get('hasHomebaseFounder')) {
+        alert('move great chief');
       }
+      else {
+        // actionObjekt erstellen
+        currentAction = {
+          typeName:'moveAction',
+          army:armyAnnotationView.army(),
+          clickedView:armyAnnotationView.annotatedView(),
+          // armyAnnotationView: armyAnnotationView,
+        }
 
-      armyAnnotationView.setActionMode('moveTargetSelection');
-      _actionViewChanged = true;
+        armyAnnotationView.setActionMode('moveTargetSelection');
+        _actionViewChanged = true;
+      }
     };
 
     that.armyAttackButtonClicked = function (armyAnnotationView) {
-      // actionObjekt erstellen
-      currentAction = {
-        typeName:'attackAction',
-        army:armyAnnotationView.army(),
-        clickedView:armyAnnotationView.annotatedView(),
-        // armyAnnotationView: armyAnnotationView,
+      if (armyAnnotationView.army().get('hasHomebaseFounder')) {
+        alert('attack great chief');
       }
+      else {
+        // actionObjekt erstellen
+        currentAction = {
+          typeName:'attackAction',
+          army:armyAnnotationView.army(),
+          clickedView:armyAnnotationView.annotatedView(),
+          // armyAnnotationView: armyAnnotationView,
+        }
 
-      armyAnnotationView.setActionMode('attackTargetSelection');
-      _actionViewChanged = true;
+        armyAnnotationView.setActionMode('attackTargetSelection');
+        _actionViewChanged = true;
+      }
     };
 
 
@@ -1319,17 +1329,22 @@ AWE.Controller = function (module) {
     var runningStanceAction = false;
 
     that.stanceButtonClicked = function(army) {
-      if (!runningStanceAction) {
-        runningStanceAction = true;
+      if (army.get('hasHomebaseFounder')) {
+        alert('retreat');
+      }
+      else {
+        if (!runningStanceAction) {
+          runningStanceAction = true;
 
-        var newStance = army.get('stance') === 0 ? 1 : 0;
-        var action = AWE.Action.Military.createChangeArmyStanceAction(army, newStance);
-        AWE.Action.Manager.queueAction(action, function() {
-          AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (army) {
-            that.setModelChanged();
+          var newStance = army.get('stance') === 0 ? 1 : 0;
+          var action = AWE.Action.Military.createChangeArmyStanceAction(army, newStance);
+          AWE.Action.Manager.queueAction(action, function() {
+            AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (army) {
+              that.setModelChanged();
+            });
+            runningStanceAction = false;
           });
-          runningStanceAction = false;
-        });
+        }
       }
     };
 
