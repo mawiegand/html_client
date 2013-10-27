@@ -884,44 +884,74 @@ AWE.Controller = function (module) {
     }
 
     that.armyFoundSettlementButtonClicked = function (armyAnnotationView) {
-      armyAnnotationView.setActionMode('foundSettlement');
-      _actionViewChanged = true;
+      if (armyAnnotationView.army().get('hasHomebaseFounder')) {
+        armyAnnotationView.setActionMode('foundSettlement');
+        _actionViewChanged = true;
 
-      var dialog = AWE.UI.Ember.FoundSettlementDialog.create({
-        army:armyAnnotationView.army(),
+        var army = armyAnnotationView.army();
+        var location = AWE.Map.Manager.getLocation(army.getPath('location_id'));
 
-        foundPressed:function (evt) {
-          var army = this.get('army');
-          var location = AWE.Map.Manager.getLocation(this.getPath('army.location_id'));
-
-          if (!army || !location) {
-            that.handleError("ClientError", "Der Außenposten konnte leider nicht gegründet werden. Die Daten in Deinem Client sind veraltet. Bitte versuch es gleich noch mal oder kontaktiere den Support, wenn es sich um einen Fehler handelt.");
-            armyAnnotationView.setActionMode('');
-            return;
-          }
-
-          var action = AWE.Action.Military.createFoundOutpostAction(army, location);
-          action.send(function (status) {
-            armyAnnotationView.setActionMode('');
-            if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
-              AWE.Map.Manager.fetchLocationsForRegion(location.region(), function () {
-                that.setModelChanged();
-                log('LOCATION UPDATED', location, 'IN REGION', location.region());
-              });
-              AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id());
-            }
-            else {
-              that.handleError(status, "Der Außenposten konnte leider nicht gegründet werden. Bitte versuch es gleich noch mal oder kontaktiere den Support, wenn es sich um einen Fehler handelt.");
-            }
-          });
-          this.destroy();
-        },
-        cancelPressed:function (evt) {
+        if (!army || !location) {
+          that.handleError("ClientError", "Der Außenposten konnte leider nicht gegründet werden. Die Daten in Deinem Client sind veraltet. Bitte versuch es gleich noch mal oder kontaktiere den Support, wenn es sich um einen Fehler handelt.");
           armyAnnotationView.setActionMode('');
-          this.destroy();
-        },
-      });
-      that.applicationController.presentModalDialog(dialog);
+          return;
+        }
+
+        var action = AWE.Action.Military.createFoundHomebaseAction(army, location);
+        action.send(function (status) {
+          armyAnnotationView.setActionMode('');
+          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+            AWE.Map.Manager.fetchLocationsForRegion(location.region(), function () {
+              that.setModelChanged();
+              log('LOCATION UPDATED', location, 'IN REGION', location.region());
+            });
+            AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id());
+          }
+          else {
+            that.handleError(status, "Der Außenposten konnte leider nicht gegründet werden. Bitte versuch es gleich noch mal oder kontaktiere den Support, wenn es sich um einen Fehler handelt.");
+          }
+        });
+      }
+      else {
+        armyAnnotationView.setActionMode('foundSettlement');
+        _actionViewChanged = true;
+
+        var dialog = AWE.UI.Ember.FoundSettlementDialog.create({
+          army:armyAnnotationView.army(),
+
+          foundPressed:function (evt) {
+            var army = this.get('army');
+            var location = AWE.Map.Manager.getLocation(this.getPath('army.location_id'));
+
+            if (!army || !location) {
+              that.handleError("ClientError", "Der Außenposten konnte leider nicht gegründet werden. Die Daten in Deinem Client sind veraltet. Bitte versuch es gleich noch mal oder kontaktiere den Support, wenn es sich um einen Fehler handelt.");
+              armyAnnotationView.setActionMode('');
+              return;
+            }
+
+            var action = AWE.Action.Military.createFoundOutpostAction(army, location);
+            action.send(function (status) {
+              armyAnnotationView.setActionMode('');
+              if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+                AWE.Map.Manager.fetchLocationsForRegion(location.region(), function () {
+                  that.setModelChanged();
+                  log('LOCATION UPDATED', location, 'IN REGION', location.region());
+                });
+                AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id());
+              }
+              else {
+                that.handleError(status, "Der Außenposten konnte leider nicht gegründet werden. Bitte versuch es gleich noch mal oder kontaktiere den Support, wenn es sich um einen Fehler handelt.");
+              }
+            });
+            this.destroy();
+          },
+          cancelPressed:function (evt) {
+            armyAnnotationView.setActionMode('');
+            this.destroy();
+          },
+        });
+        that.applicationController.presentModalDialog(dialog);
+      }
     };
 
 

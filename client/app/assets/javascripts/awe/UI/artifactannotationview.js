@@ -57,9 +57,6 @@ AWE.UI = (function(module) {
         my.frame.size.width = 192;
         my.frame.size.height = 128;
       }
-      
-      this.updateButtonVisibility();
-      this.updateButtonState();
     };
 
     that.updateView = function () {
@@ -67,89 +64,13 @@ AWE.UI = (function(module) {
       _super.updateView();
     }
     
-    that.updateButtonVisibility = function() {
-//      if (!_armyView.selected()) {
-//        _moveButtonView.setVisible(false);
-//        _attackButtonView.setVisible(false);
-//        _cancelButtonView.setVisible(false);
-//        _retreatButtonView.setVisible(false);
-//        _battleInfoButtonView.setVisible(false);
-//        _foundButtonView.setVisible(false);
-//      }
-//      else if (_army.isOwn() && (_army.get('mode') === null || _army.get('mode') === AWE.Config.ARMY_MODE_IDLE)) { // 0 -> idle or null -> unkown
-//        _moveButtonView.setVisible(true);
-//        _attackButtonView.setVisible(true);
-//        _foundButtonView.setVisible(_army.get('hasSettlementFounder'));
-//        _cancelButtonView.setVisible(false);
-//        _retreatButtonView.setVisible(false);
-//        _battleInfoButtonView.setVisible(false);
-//      }
-//      else if (_army.isOwn() && _army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
-//        _moveButtonView.setVisible(false);
-//        _attackButtonView.setVisible(false);
-//        _foundButtonView.setVisible(false);
-//        _cancelButtonView.setVisible(true);
-//        _retreatButtonView.setVisible(false);
-//        _battleInfoButtonView.setVisible(false);
-//      }
-//      else if (_army.isOwn() && _army.get('isFighting')) {
-//        _moveButtonView.setVisible(false);
-//        _attackButtonView.setVisible(false);
-//        _cancelButtonView.setVisible(false);
-//        _foundButtonView.setVisible(false);
-//        // _retreatButtonView.setVisible(true);
-//        _retreatButtonView.setVisible(false);
-//        _battleInfoButtonView.setVisible(true);
-//      }
-//      else if (_army.get('isFighting')) {
-//        _moveButtonView.setVisible(false);
-//        _attackButtonView.setVisible(false);
-//        _foundButtonView.setVisible(false);
-//        _cancelButtonView.setVisible(false);
-//        _retreatButtonView.setVisible(false);
-//        _battleInfoButtonView.setVisible(true);
-//      }
-//      else {
-//        _moveButtonView.setVisible(false);
-//        _attackButtonView.setVisible(false);
-//        _foundButtonView.setVisible(false);
-//        _cancelButtonView.setVisible(false);
-//        _retreatButtonView.setVisible(false);
-//        _battleInfoButtonView.setVisible(false);
-//      }
-    }
-    
-    that.updateButtonState = function() {
-//      _moveButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('isFighting'));
-//      _attackButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('isFighting'));
-//      _foundButtonView.setEnabled(
-//        _army.canFoundSettlementAtPresentLocationNow()
-//      );
-//      _retreatButtonView.setEnabled(_army.get('isFighting'));
-//
-//      _moveButtonView.setSelected(_actionMode === 'moveTargetSelection');
-//      _attackButtonView.setSelected(_actionMode === 'attackTargetSelection');
-//      _foundButtonView.setSelected(_actionMode === 'foundSettlement');
-//      _retreatButtonView.setSelected(_army.get('battle_retreat'));
-    }
-    
     that.recalcView = function() {
       
-      // buttons
-//      _stanceButtonView.setVisible(false); // NO third button at present
-//      this.updateButtonVisibility();
-//      if (_army.isOwn() && _armyView.selected()) {
-//        this.updateButtonState();
-//      }
-//
-//      // rank image
-//      _rankImageView.setImage(AWE.UI.ImageCache.getImage("map/army/rank" + Math.min(4, Math.floor((_army.get('rank') || 0) / 5 + 1))));
-//
       // info view
       if (_backgroundShapeView) {
         this.removeChild(_backgroundShapeView);
       }
-//
+
       _infoText1View.setText(_artifact.get('name'));
 
       if (!_infoText2View && _artifact.get('initiated')) {
