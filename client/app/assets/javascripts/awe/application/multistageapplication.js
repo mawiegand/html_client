@@ -384,10 +384,13 @@ AWE.Application = (function(module) {
 
 
           if (!_uiEnabled && this.get('presentScreenController').readyForUI()) {
-            AWE.Log.Debug('UI has been enabled.');
-            _uiEnabled = true;
-            this.get('presentScreenController').enableUI();
-            this.get('hudController').showHud();
+            
+            if (AWE.GS.CharacterManager.getCurrentCharacter().get('base_node_id')) {
+              AWE.Log.Debug('UI has been enabled.');
+              _uiEnabled = true;
+              this.get('presentScreenController').enableUI();
+              this.get('hudController').showHud();
+            }
           } 
 
           // TODO: Game State Runloop!
@@ -623,8 +626,9 @@ AWE.Application = (function(module) {
         this.modalDialogs.push(dialog);
         dialog.append();
       },
+      
       presentDomOverlay: function(dialog) {
-        this.setModal(false);
+        this.modalDialogs.push(dialog);
 				dialog.append();
       },
 			

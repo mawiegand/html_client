@@ -3559,32 +3559,32 @@ AWE.Controller = function (module) {
           }
 
 
-/*
-					// add dom data for tutorial bubble
-					// @todo check for tutorialStep isActive()
-					var character = AWE.GS.CharacterManager.getCurrentCharacter();
-					var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(character.get('id'));
-					var army = AWE.Util.hashFirst(armies);
-					if (army) {
-  					var aView = armyViews[army.get('id')];
-
-  					if (aView) {
-  						if (!window.dialog) {
-  				  		window.dialog = AWE.UI.Ember.TutorialSettleDialog.create({controller : this.that});
-  							that.applicationController.presentDomOverlay(window.dialog);
-  						}
-  						if (window.dialog.originDiffers(aView.frame().origin.x, aView.frame().origin.y)) {
-  							window.dialog.setOrigin(aView.frame().origin);
-  						}
-  					}
-				  }*/
-		  
           //_stages[3].update();
           // STEP 4d: register this frame, recalc and display present framerate (rendered frames per second)
           this.updateFPS();
           this.updateDebug();
         }
 
+
+				// add dom data for tutorial bubble
+				// @todo check for tutorialStep isActive()
+				var character = AWE.GS.CharacterManager.getCurrentCharacter();
+				var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(character.get('id'));
+				var army = AWE.Util.hashFirst(armies);
+				if (army) {
+					var aView = armyViews[army.get('id')];
+
+					if (aView) {
+						if (!window.dialog) {
+				  		window.dialog = AWE.UI.Ember.TutorialSettleDialog.create({controller : that});
+							that.applicationController.presentDomOverlay(window.dialog);
+						}
+						var origin = aView.frame().origin;
+						if (window.dialog.originDiffers(origin.x, origin.y)) {
+							window.dialog.setOrigin(origin);
+						}
+					}
+			  }
 
         // STEP 5: cleanup & prepare for next loop: everything has been processed and changed...
         _modelChanged = false;

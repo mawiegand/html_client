@@ -23,7 +23,7 @@ AWE.UI.Ember = (function(module) {
 					'top: ' + (this.get('originY') || 100) + 'px;' + 
 					'left: ' + (this.get('originX') + 100 || 100) + 'px;'; // + 100 means vector for container
 			  return style;
-		  }.property('originX', 'originY'),
+		  }.property('originX', 'originY').cacheable(),
 			
 		  // init parent
 		  init: function() {
