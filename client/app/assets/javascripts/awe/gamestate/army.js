@@ -145,7 +145,7 @@ AWE.GS = (function(module) {
     
     armyCategory: function() {
       var art = parseFloat(this.get('unitcategory_artillery_strength') || "0.0");
-      var cav = parseFloat(this.get('unitcategory_cavalry_strength')   || "0.0");
+      var cav = parseFloat(this.get('unitcategory_cavalry_strength')   || "0.0") + parseFloat(this.get('unitcategory_special_strength')   || "0.0");
       var inf = parseFloat(this.get('unitcategory_infantry_strength')  || "0.0");
       var total = (art + cav + inf) || 1.0;   
             
