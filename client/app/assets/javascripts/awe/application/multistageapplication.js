@@ -573,6 +573,7 @@ AWE.Application = (function(module) {
             this.append(controller);
             controller.applicationController = this;
             controller.viewDidAppear();
+            _uiEnabled = false;
           }
         }
       },
