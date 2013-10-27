@@ -32,6 +32,7 @@ AWE.Controller = function (module) {
     var _viewPortChanged = false;
     var _timeout = false;
     var _readyForUI = false;
+    var _uiEnabled = false;
 
     var _animations = [];
 
@@ -222,8 +223,11 @@ AWE.Controller = function (module) {
     };
 
     that.enableUI = function() {
-      $(zoomSlider.getContainer()).delay(1000).animate({opacity: 1}, 1000);
-      $('#controls-canvas').delay(1000).animate({left: "0px"}, 1000, 'easeOutElastic');
+      if (!_uiEnabled) {
+        $(zoomSlider.getContainer()).animate({opacity: 1}, 1000);
+        $('#controls-canvas').animate({left: "0px"}, 1000, 'easeOutElastic');
+        _uiEnabled = true;
+      }
     };
 
     // ///////////////////////////////////////////////////////////////////////

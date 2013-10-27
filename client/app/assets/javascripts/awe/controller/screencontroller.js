@@ -96,6 +96,9 @@ AWE.Controller = (function(module) {
       return true;
     };
 
+    that.welcomeDialogClosed = function() {
+    }
+
     that.enableUI = function() {
     };
 

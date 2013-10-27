@@ -102,14 +102,14 @@ AWE.Controller = (function(module) {
       if (_needsLayout) {
         if (_hideCanvas && !_canvasIsHidden) {
           _canvasIsHidden = true;
-          $('#hud-canvas').delay(_animationDuration).animate({right: "-380px"}, _animationDuration, 'easeOutElastic');
-          $('#resource-canvas').delay(_animationDuration).animate({top: "-42px"}, _animationDuration, 'easeOutElastic');
+          $('#hud-canvas').animate({right: "-380px"}, _animationDuration, 'easeOutElastic');
+          $('#resource-canvas').animate({top: "-42px"}, _animationDuration, 'easeOutElastic');
           that.setNeedsDisplay();
         }
         else if (!_hideCanvas && _canvasIsHidden) {
           _canvasIsHidden = false;
-          $('#hud-canvas').delay(_animationDuration).animate({right: "0px"}, _animationDuration, 'easeOutElastic');
-          $('#resource-canvas').delay(_animationDuration).animate({top: "30px"}, _animationDuration, 'easeOutElastic');
+          $('#hud-canvas').animate({right: "0px"}, _animationDuration, 'easeOutElastic');
+          $('#resource-canvas').animate({top: "30px"}, _animationDuration, 'easeOutElastic');
           that.setNeedsDisplay();
         }
       }

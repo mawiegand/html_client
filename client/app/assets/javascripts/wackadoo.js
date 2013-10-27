@@ -86,10 +86,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           AWE.GS.TutorialStateManager.checkForNewQuests();
           this.destroy();
           
-          if (self.mapControllerActive()) {
-            self.get('presentScreenController').welcomeDialogClosed();
-          }
-        },            
+          self.get('presentScreenController').welcomeDialogClosed();
+        },
       });
       this.presentModalDialog(dialog);      
     },
@@ -124,10 +122,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               AWE.GS.TutorialStateManager.checkForNewQuests();
               this.destroy();
 
-              if (self.mapControllerActive()) {
-                self.get('presentScreenController').welcomeDialogClosed();
-              }
-            },            
+              self.get('presentScreenController').welcomeDialogClosed();
+            },
           });
           self.presentModalDialog(dialog);
         }
