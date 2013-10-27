@@ -315,7 +315,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         
         Ember.Handlebars.bootstrap();                  // Bootstrap Ember a second time to parse the newly loaded templates.
 
-        var hud = AWE.Controller.createHUDController();
+        var tutorialState     = AWE.GS.TutorialStateManager.getTutorialState();
+        var hasBase           = !!AWE.GS.CharacterManager.getCurrentCharacter().get('base_node');
+        var startInSettlement = hasBase && AWE.Config.USE_TUTORIAL && (
+          tutorialState && tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID) &&
+            tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED);
+
+        var hud = AWE.Controller.createHUDController(!hasBase);
         hud.init();
         self.setHudController(hud);
         
@@ -329,14 +335,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       
        // $('#zoomin').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, true); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
        // $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
-  
-  
-        var tutorialState     = AWE.GS.TutorialStateManager.getTutorialState();
-        var hasBase           = !!AWE.GS.CharacterManager.getCurrentCharacter().get('base_node');
-        var startInSettlement = hasBase && AWE.Config.USE_TUTORIAL && (
-          tutorialState && tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID) &&
-          tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED);
-        
+
         if (!startInSettlement) {
           self.activateMapController();
           if (hasBase) {

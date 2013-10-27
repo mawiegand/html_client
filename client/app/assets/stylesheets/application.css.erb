@@ -434,10 +434,18 @@ h3 {
   z-index: 3;
 }
 
+#controls-canvas {
+  position: absolute;
+  top: 0px;
+  left: -220px;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+}
 
 #hud-canvas {
   position: absolute;
-  right: 0px;
+  right: -380px;
   top: 0px;
   width: 380px;
   height: 260px;
@@ -447,7 +455,7 @@ h3 {
 #resource-canvas {
   position: absolute;
   left: 0px;
-  top: 30px;
+  top: -42px;
   width: 800px;
   height: 42px;
   z-index: 9;
@@ -533,7 +541,9 @@ h3 {
   width: 20px;
   height: 360px;
   z-index: 201;
+  opacity: 0;
 }
+
 .zoom_slider .slider_bar {
   border: 1px solid #c7c4c4;
   -webkit-border-radius: 4px;

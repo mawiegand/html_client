@@ -31,6 +31,7 @@ AWE.Controller = function (module) {
     var _disableArmies = false;
     var _viewPortChanged = false;
     var _timeout = false;
+    var _readyForUI = false;
 
     var _animations = [];
 
@@ -73,6 +74,7 @@ AWE.Controller = function (module) {
     var actionViews = {};
     var targetViews = {};
     var inspectorViews = {};
+    var controlsViews = {};
     that.animatedMarker = null;
 
     var zoomSlider = undefined;
@@ -131,6 +133,13 @@ AWE.Controller = function (module) {
       _stages[3].onClick = function () {
       };   // we generate our own clicks
 
+      // layer for the controls buttons
+      root.append('<canvas id="controls-canvas"></canvas>');
+      _canvas[4] = root.find('#controls-canvas')[0];
+      _stages[4] = new Stage(_canvas[4]);
+      _stages[4].onClick = function () {
+      };   // we generate our own clicks
+
 //      root.append('<div style="position:abolute; left:0; top:20px; width:50px; height:50px; background-color:#F00;">A</div>');
 
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
@@ -154,26 +163,25 @@ AWE.Controller = function (module) {
         $(zoomSlider.getContainer()).remove();
       });
 
-
       if (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM) {
-        inspectorViews.tempToggleButtonView = AWE.UI.createTempToggleButtonView();
-        inspectorViews.tempToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
-        _stages[3].addChild(inspectorViews.tempToggleButtonView.displayObject());
+        controlsViews.tempToggleButtonView = AWE.UI.createTempToggleButtonView();
+        controlsViews.tempToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
+        _stages[4].addChild(controlsViews.tempToggleButtonView.displayObject());
       }
 
-      inspectorViews.mapButtonsBackgroundView = AWE.UI.createImageView();
-      inspectorViews.mapButtonsBackgroundView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage('ui/button/map/background'));
-      inspectorViews.mapButtonsBackgroundView.setFrame(AWE.Geometry.createRect(0, 0, 190, 150));
-      _stages[3].addChild(inspectorViews.mapButtonsBackgroundView.displayObject());
+      controlsViews.mapButtonsBackgroundView = AWE.UI.createImageView();
+      controlsViews.mapButtonsBackgroundView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage('ui/button/map/background'));
+      controlsViews.mapButtonsBackgroundView.setFrame(AWE.Geometry.createRect(0, 0, 190, 150));
+      _stages[4].addChild(controlsViews.mapButtonsBackgroundView.displayObject());
 
-      inspectorViews.mapTypeToggleButtonView = AWE.UI.createMapTypeToggleButtonView();
-      inspectorViews.mapTypeToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
-      _stages[3].addChild(inspectorViews.mapTypeToggleButtonView.displayObject());
+      controlsViews.mapTypeToggleButtonView = AWE.UI.createMapTypeToggleButtonView();
+      controlsViews.mapTypeToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
+      _stages[4].addChild(controlsViews.mapTypeToggleButtonView.displayObject());
 
 
-      inspectorViews.armyListButtonView = AWE.UI.createArmyListButtonView();
-      inspectorViews.armyListButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
-      _stages[3].addChild(inspectorViews.armyListButtonView.displayObject());
+      controlsViews.armyListButtonView = AWE.UI.createArmyListButtonView();
+      controlsViews.armyListButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
+      _stages[4].addChild(controlsViews.armyListButtonView.displayObject());
 
     };
     
@@ -183,7 +191,8 @@ AWE.Controller = function (module) {
         { stage:_stages[0], mouseOverEvents:false, transparent:true},
         { stage:_stages[1], mouseOverEvents:true },
         { stage:_stages[2], mouseOverEvents:true },
-        { stage:_stages[3], mouseOverEvents:true }
+        { stage:_stages[3], mouseOverEvents:true },
+        { stage:_stages[4], mouseOverEvents:true }
       ];
     };
 
@@ -198,7 +207,7 @@ AWE.Controller = function (module) {
       window.WACKADOO.addDomElement(zoomSlider.getContainer(), true);
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height())); // prevents distortion in case window has resized while displaying another screen
       zoomSlider.subscribeToDOMEvents();
-    }
+    };
 
     that.viewWillDisappear = function () {
       $(zoomSlider.getContainer()).remove();
@@ -206,7 +215,16 @@ AWE.Controller = function (module) {
       window.WACKADOO.removeDomElement($('.link-pane'));
       window.WACKADOO.removeDomElement(zoomSlider.getContainer());
       zoomSlider.unsubscribeDOMEvents();
-    }
+    };
+
+    that.readyForUI = function() {
+      return _readyForUI;
+    };
+
+    that.enableUI = function() {
+      $(zoomSlider.getContainer()).delay(1000).animate({opacity: 1}, 1000);
+      $('#controls-canvas').delay(1000).animate({left: "0px"}, 1000, 'easeOutElastic');
+    };
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -474,13 +492,14 @@ AWE.Controller = function (module) {
 
           _canvas[3].width = _windowSize.width;
           _canvas[3].height = _windowSize.height;
+
+          _canvas[4].width = _windowSize.width;
+          _canvas[4].height = _windowSize.height;
         }
-        ;
         that.setNeedsDisplay();
       }
-      ;
       _needsLayout = false;
-    }
+    };
 
     /** set to true in case the whole window needs to be repainted. */
     that.setNeedsDisplay = function () {
@@ -3201,17 +3220,29 @@ AWE.Controller = function (module) {
       if (inspectorViews.inspector) {
         inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 430, _windowSize.height - 234));
       }
-      if (inspectorViews.tempToggleButtonView) {
-        inspectorViews.tempToggleButtonView.setOrigin(AWE.Geometry.createPoint(180 + 20, _windowSize.height - 68));
+
+      return true;
+    };
+
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Controls Stage
+    //
+    // ///////////////////////////////////////////////////////////////////////
+
+    that.updateControlsViews = function () {
+      if (controlsViews.tempToggleButtonView) {
+        controlsViews.tempToggleButtonView.setOrigin(AWE.Geometry.createPoint(180 + 20, _windowSize.height - 68));
       }
-      if (inspectorViews.mapButtonsBackgroundView) {
-        inspectorViews.mapButtonsBackgroundView.setOrigin(AWE.Geometry.createPoint(20, _windowSize.height - 160));
+      if (controlsViews.mapButtonsBackgroundView) {
+        controlsViews.mapButtonsBackgroundView.setOrigin(AWE.Geometry.createPoint(20, _windowSize.height - 160));
       }
-      if (inspectorViews.mapTypeToggleButtonView) {
-        inspectorViews.mapTypeToggleButtonView.setOrigin(AWE.Geometry.createPoint(20 + 46, _windowSize.height - 154));
+      if (controlsViews.mapTypeToggleButtonView) {
+        controlsViews.mapTypeToggleButtonView.setOrigin(AWE.Geometry.createPoint(20 + 46, _windowSize.height - 154));
       }
-      if (inspectorViews.armyListButtonView) {
-        inspectorViews.armyListButtonView.setOrigin(AWE.Geometry.createPoint(20 + 114, _windowSize.height - 101));
+      if (controlsViews.armyListButtonView) {
+        controlsViews.armyListButtonView.setOrigin(AWE.Geometry.createPoint(20 + 114, _windowSize.height - 101));
       }
 
       return true;
@@ -3249,7 +3280,7 @@ AWE.Controller = function (module) {
 
       return function (nodes, visibleArea) {
 
-        var stagesNeedUpdate = [false, false, false, false]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
+        var stagesNeedUpdate = [false, false, false, false, false]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
 
         // rebuild individual hieararchies
         if (_windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
@@ -3275,6 +3306,10 @@ AWE.Controller = function (module) {
           stagesNeedUpdate[3] = that.updateInspectorViews() || stagesNeedUpdate[3];
         }
 
+        if (_windowChanged || _actionViewChanged) { // TODO: only update at start and when something might have changed (object selected, etc.)
+          stagesNeedUpdate[4] = that.updateControlsViews() || stagesNeedUpdate[4];
+        }
+
         // log('Update:                   ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
         // log('propagate update');
@@ -3289,6 +3324,7 @@ AWE.Controller = function (module) {
         stagesNeedUpdate[1] = propUpdates(movementArrowViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[2] = propUpdates(actionViews) || stagesNeedUpdate[2];
         stagesNeedUpdate[3] = propUpdates(inspectorViews) || stagesNeedUpdate[3];
+        stagesNeedUpdate[4] = propUpdates(controlsViews) || stagesNeedUpdate[4];
 
         // log('Update after propagation: ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
@@ -3388,6 +3424,10 @@ AWE.Controller = function (module) {
           _viewPortChanged = false;
         }
 
+        if (!_readyForUI && !_camera.isMoving()) {
+          _readyForUI = true;
+        }
+
         // STEP 1: determine visible area (may have changed through user interaction)
         var visibleArea = that.vc2mc(AWE.Geometry.createRect(0, 0, _windowSize.width, _windowSize.height));
 
@@ -3436,7 +3476,8 @@ AWE.Controller = function (module) {
             regionViews,
             [fortressViews, artifactViews, armyViews, locationViews, movementArrowViews],
             [actionViews, targetViews],
-            inspectorViews
+            inspectorViews,
+            controlsViews
           ];
 
           for (var i = 0; i < _stages.length; i++) {
