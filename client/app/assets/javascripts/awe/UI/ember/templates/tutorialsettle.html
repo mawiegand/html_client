@@ -1,12 +1,10 @@
 <script type="text/x-handlebars" data-template-name="tutorialsettle-info-dialog">
-
-{{#if styles}}
-	<div {{bindAttr style="styles"}}>
-		<p>
-			"hey guy, please, please lets settle here! i am to old to walk some more miles..." :)
-		</p>
-		<a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>  
-	</div>
-{{/if}}
-
+	{{#if styles}}
+		<div {{bindAttr style="styles"}}>
+			<p>
+				"hey guy, please, please lets settle here! i am to old to walk some more miles..." :)
+				{{t tutorial.step.settle }}
+			</p>
+		</div>
+	{{/if}}
 </script>

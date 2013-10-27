@@ -722,15 +722,15 @@ AWE.Controller = function (module) {
     };
 
     that.armyListButtonClicked = function() {
-/*      var dialog = AWE.UI.Ember.ArmyListDialog.create({
+			var dialog = AWE.UI.Ember.ArmyListDialog.create({
         controller: this.that,
-      });*/
-    
+      });
+			/*
 	  var dialog = AWE.UI.Ember.TutorialSettleDialog.create(
-        { controller: this.that }
-      );
+			{ controller: this.that }
+		);*/
 
-	  that.applicationController.presentModalDialog(dialog);
+			that.applicationController.presentModalDialog(dialog);
     };
 
     that.armyInfoButtonClicked = function (army) {
@@ -3467,7 +3467,6 @@ AWE.Controller = function (module) {
       };
 
     })();  
-    
 
     that.runloop = function () {
 
@@ -3562,6 +3561,23 @@ AWE.Controller = function (module) {
             }
           }
 
+					// add dom data for tutorial bubble
+					// @todo check for tutorialStep isActive()
+					var character = AWE.GS.CharacterManager.getCurrentCharacter();
+					var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(character.get('id'));
+					var army = AWE.Util.hashFirst(armies);
+					var aView = armyViews[army.get('id')];
+
+					if (aView) {
+						if (!window.dialog) {
+				  		window.dialog = AWE.UI.Ember.TutorialSettleDialog.create({controller : this.that});
+							that.applicationController.presentDomOverlay(window.dialog);
+						}
+						if (window.dialog.originDiffers(aView.frame().origin.x, aView.frame().origin.y)) {
+							window.dialog.setOrigin(aView.frame().origin);
+						}
+					}
+		  
           //_stages[3].update();
           // STEP 4d: register this frame, recalc and display present framerate (rendered frames per second)
           this.updateFPS();

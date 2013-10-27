@@ -621,6 +621,11 @@ AWE.Application = (function(module) {
         this.modalDialogs.push(dialog);
         dialog.append();
       },
+      presentDomOverlay: function(dialog) {
+        this.setModal(false);
+				dialog.append();
+      },
+			
       
       modalDialogOpen: function() {
         return this.get('isModal');

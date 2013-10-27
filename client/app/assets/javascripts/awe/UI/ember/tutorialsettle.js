@@ -8,32 +8,60 @@ var AWE = AWE || {};
 AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
+	
   module.TutorialSettleDialog = module.Dialog.extend(
 	  {
 		  // tpl name == data-tempalte-name in view
 		  templateName: 'tutorialsettle-info-dialog',
-		  
+			
+			originX: 0,
+			originY: 0,
+			isDestroyed: false,
+		  // returns origin style data
+			// @todo: move static data to css & add css class
 		  styles : function() {
 			  var style = 
 			  	'background: #cc8;' +
-				'position: relative;' + 
-				'padding: 5px;' + 
-				'height: 150px;' + 
-				'width: 400px;' +
-				'top: 300px;' + 
-				'left: 300px;' + 
-				'border: 2px solid #995;' + 
-				'z-index: 1000;';
+					'position: absolute;' + 
+					'padding: 5px;' + 
+					'height: 150px;' + 
+					'width: 300px;' +
+					'top: ' + (this.get('originY') || 100) + 'px;' + 
+					'left: ' + (this.get('originX') + 100 || 100) + 'px;' + // + 100 means vector for container
+					'border: 2px solid #995;' + 
+					'border-radius: 10px;' +
+					'z-index: 1000;';
 			  return style;
-		  }.property('style'),
+		  }.property('originX', 'originY'),
+			
 		  // init parent
 		  init: function() {
 		    this._super();
 		  },
+			
 		  // close dialog element
 		  okClicked: function() {
 		    this.destroy();
-		  }
+		  },
+
+		  setOrigin: function(coords) {
+				this.set('originX', coords.x);
+				this.set('originY', coords.y);
+		  },
+			
+		  getOrigin: function() {
+				return AWE.Geometry.createPoint(this.get('originX'), this.get('originY'));
+		  },
+
+			// calculates changes from last update => only update when a minimum of 20 is moved
+			originDiffers: function(x, y) {
+				var minDifference = 0;
+				return (
+					Math.abs(this.get('originX') - x) > minDifference
+					|| Math.abs(this.get('originY') - y) > minDifference
+				);
+			}
+
 	  }
   );
   return module;  
