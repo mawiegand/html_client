@@ -3566,25 +3566,28 @@ AWE.Controller = function (module) {
         }
 
 
-				// add dom data for tutorial bubble
-				// @todo check for tutorialStep isActive()
-				var character = AWE.GS.CharacterManager.getCurrentCharacter();
-				var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(character.get('id'));
-				var army = AWE.Util.hashFirst(armies);
-				if (army) {
-					var aView = armyViews[army.get('id')];
-
-					if (aView) {
-						if (!window.dialog) {
-				  		window.dialog = AWE.UI.Ember.TutorialSettleDialog.create({controller : that});
-							that.applicationController.presentDomOverlay(window.dialog);
-						}
-						var origin = aView.frame().origin;
-						if (window.dialog.originDiffers(origin.x, origin.y)) {
-							window.dialog.setOrigin(origin);
-						}
-					}
-			  }
+//
+//        Steffens Code
+//
+//				// add dom data for tutorial bubble
+//				// @todo check for tutorialStep isActive()
+//				var character = AWE.GS.CharacterManager.getCurrentCharacter();
+//				var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(character.get('id'));
+//				var army = AWE.Util.hashFirst(armies);
+//				if (army) {
+//					var aView = armyViews[army.get('id')];
+//
+//					if (aView) {
+//						if (!window.dialog) {
+//				  		window.dialog = AWE.UI.Ember.TutorialSettleDialog.create({controller : that});
+//							that.applicationController.presentDomOverlay(window.dialog);
+//						}
+//						var origin = aView.frame().origin;
+//						if (window.dialog.originDiffers(origin.x, origin.y)) {
+//							window.dialog.setOrigin(origin);
+//						}
+//					}
+//			  }
 
         // STEP 5: cleanup & prepare for next loop: everything has been processed and changed...
         _modelChanged = false;
