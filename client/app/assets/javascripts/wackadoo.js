@@ -299,7 +299,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     loadAssets: function() {
       var self = this;
       
-      if (AWE.Facebook.isRunningInCanvas) {
+      if (AWE.Facebook.isFbPlayer) {
         AWE.Facebook.init();
       }
 
@@ -709,7 +709,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Log.Debug('debug', AWE.Settings.locale, AWE.Settings.lang, args.locale, args.locale.substr(0, 2));
 
       AWE.Facebook.isRunningInCanvas = AWE.Settings.fbRunInCanvas;
-      
+      AWE.Facebook.isFbPlayer = !!args.fbPlayerId;
+
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
         expiration: (new Date()).add(expiration-120).seconds(),
