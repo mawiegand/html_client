@@ -669,8 +669,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       
       this._super();
 
-      debugger;
-
       var args = null;
       try {
         args = JSON.parse(window.name);
@@ -690,7 +688,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var accessToken = null;
       
       if (!args || !args.accessToken) {
-        alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
+//        alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
         document.location.href = AWE.Config.PORTAL_ROOT;
         return ;
       }
@@ -698,8 +696,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         accessToken = args.accessToken ; 
       }                            // || AWE.Config.DEV_ACCESS_TOKEN || null;
       
-      AWE.Log.Debug('access', accessToken);
-            
       var expiration  = parseInt(args.expiration || "3600");           // asume one hour validity as default
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;
       AWE.Settings.lang = args.locale ? args.locale.substr(0, 2) : AWE.Config.DEFAULT_LANG;
