@@ -230,7 +230,7 @@ AWE.Controller = (function(module) {
           var price = offer.get('price');
           var currency = offer.get('currency');
 
-          if (currency ===  AWE.GS.Shop.CURRENCY_CREDITS) {
+          if (currency ===  AWE.GS.CURRENCY_CREDITS) {
             var creditAmount = this.getPath('shop.creditAmount') || 0;
             if (creditAmount < price) {
               log('CREDIT AMOUNT', creditAmount, 'PRICE', price);
