@@ -106,7 +106,7 @@ AWE.UI.Ember = (function(module) {
     templateName: 'interactive-building-slot',
     mouseX: 0,
     mouseY: 0,
-    timeout: 100,    // tooltip timeout in ms
+    timeout: 600,    // tooltip timeout in ms
 		settlement: null,
 		slot:       null,
 		
