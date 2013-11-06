@@ -38,7 +38,7 @@
       {{/if}}
     </p>
   {{else}}
-    <h1 class="slot-tooltip">{{t settlement.buildings.tooltip.empty.heading}}</h1>
+    <h1 class="slot-tooltip">{{buildingSlotView.slotTypeHeader}}</h1>
     {{#if buildingSlotView.buildingCategoryNames }}
       {{t settlement.buildings.tooltip.empty.categoriesStart }}{{localizedList buildingSlotView.buildingCategoryNames }}{{t settlement.buildings.tooltip.empty.categoriesEnd }}
       <br>{{t settlement.buildings.tooltip.empty.maxLevel }}: {{ buildingSlotView.maxLevel }}.

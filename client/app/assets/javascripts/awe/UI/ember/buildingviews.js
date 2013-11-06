@@ -179,6 +179,14 @@ AWE.UI.Ember = (function(module) {
       var slot = this.get('slot');
       return slot ? slot.slotType().max_level : null;
     }.property('slot.slot_num', 'slot.settlement_id' ),
+
+    slotTypeHeader: function() {
+      var slot = this.get('slot');
+      var maxLevel = slot ? slot.slotType().max_level : 10;
+      return parseInt(maxLevel) > 10 ?
+        AWE.I18n.lookupTranslation('settlement.buildings.tooltip.empty.large') :
+        AWE.I18n.lookupTranslation('settlement.buildings.tooltip.empty.small');
+    }.property('slot.slot_num'),
 		
   });
 
