@@ -989,8 +989,17 @@ h3 {
 }
 
 h1.slot-tooltip {
-  font-size: 1.6em;
-  margin-bottom: 8px;
+  color: #fff;
+  padding: 0px;
+  font-size: 16px;
+  margin: 0px;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.building-slot-tooltip-wrapper {
+  font-size:14px;
+  min-width: 260px;
 }
 
 
@@ -3301,12 +3310,12 @@ table .datetime {
 .fortress-picture .mouse-over, 
 .base-picture .mouse-over {
   position: absolute;
-  width: 360px;
-  height: 160px;
+  /*width: 360px;*/
+  /*height: 160px;*/
   z-index:10;
   padding: 16px;
   border-radius: 11px;
-  padding-right: 140px;
+  margin-top:-100px;
 }
 
 .fortress-picture .mouse-over {
@@ -3331,15 +3340,6 @@ table .datetime {
 .base-picture .mouse-over p {
 }
 
-
-
-.outpost-picture .mouse-over .advisor, 
-.fortress-picture .mouse-over .advisor, 
-.base-picture .mouse-over .advisor {
-  position: absolute;
-  left: 360px;
-  top: -10px;
-}
 
 .mouse-over.construction-detail {
   width:240px;
