@@ -125,7 +125,29 @@ AWE.Facebook = (function(module) {
       },
       verifyOrderHandler
     );
-  }
+  };
+
+  module.sendUserStory = function(symbolicId, success, error) {
+
+    var userStory = AWE.GS.Rules.getFacebookUserStoryWithSymbolicId(symbolicId);
+
+    if (userStory) {
+      FB.api('/me/wack-a-doo:' + userStory.action, 'post', { object: userStory.url }, function(response) {
+        if (!response || response.error) {
+          if (error) {
+            error();
+          }
+        } else {
+          if (success) {
+            success();
+          }
+        }
+      });
+    }
+    else {
+      AWE.Log.Debug('User Story not found ', symbolicId);
+    }
+  };
 
   return module;
 
