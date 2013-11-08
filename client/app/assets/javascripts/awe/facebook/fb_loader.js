@@ -127,15 +127,17 @@ AWE.Facebook = (function(module) {
     );
   };
 
-  module.sendUserStory = function(symbolicId, success, error) {
+  module.postUserStory = function(symbolicId, success, error) {
 
-    var userStory = AWE.GS.Rules.getFacebookUserStoryWithSymbolicId(symbolicId);
+    var userStory = AWE.GS.RulesManager.getRules().getFacebookUserStoryWithSymbolicId(symbolicId);
 
     if (userStory) {
-      FB.api('/me/wack-a-doo:' + userStory.action, 'post', { object: userStory.url }, function(response) {
+      var storyObject = {};
+      storyObject[userStory.type] = userStory.url;
+      FB.api('/me/wack-a-doo:' + userStory.action, 'post', storyObject, function(response) {
         if (!response || response.error) {
           if (error) {
-            error();
+            error(response.error);
           }
         } else {
           if (success) {
@@ -145,7 +147,9 @@ AWE.Facebook = (function(module) {
       });
     }
     else {
-      AWE.Log.Debug('User Story not found ', symbolicId);
+      if (error) {
+        error('User Story not found ', symbolicId);
+      }
     }
   };
 
