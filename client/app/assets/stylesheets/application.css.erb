@@ -2128,7 +2128,8 @@ span.bonus {
 .queue-list {
   position: absolute;
   top: 100px;
-  left: 770px;
+  /*left: 770px;*/
+  left:0px; /* TEST VALUE; REMOVE!!! */
   z-index: 0;
   text-shadow: none;
 }
@@ -3238,14 +3239,19 @@ table .datetime {
 }
 
 .outpost-picture, 
-.fortress-picture, 
-.base-picture {
+.fortress-pictu {
   position: relative;
   float: left;
   width: 800px;
   height: 600px;
 } 
 
+.base-picture {
+  position: relative;
+  float: left;
+  width: 1280px;
+  height: 844px;
+} 
 
 .outpost-picture-right, 
 .base-picture-right {
@@ -4062,184 +4068,200 @@ table .datetime {
   right: 0px;
 }
 
-/** row 1 */
+.base-picture .large-building.slot1 {
+  top:  20px;
+  left: 635px;
+}
+
+.base-picture .large-building.slot2 {
+  top:  172px;
+  left: 635px;
+}
+
+.base-picture .large-building.slot3 {
+  top:  324px;
+  left: 635px;
+}
+
+.base-picture .large-building.slot4 {
+  top: 476px;
+  left: 635px;
+}
+
+
+/** col 1 (1. on the ride side of the middle */
 .base-picture .small-building.slot5 {
-  top:   50px;
-  left:  40px;
+  top: 40px;
+  left: 775px;
 }
 .base-picture .small-building.slot6 {
-  top:   50px;
-  left: 120px;
+  top: 146px;
+  left: 775px;
 }
 .base-picture .small-building.slot7 {
-  top:   50px;
-  left: 200px;
+  top: 252px;
+  left: 775px;
 }
 .base-picture .small-building.slot8 {
-  top:   50px;
-  left: 280px;
+  top: 357px;
+  left: 775px;
 }
 .base-picture .small-building.slot9 {
-  top:   50px;
-  left: 360px;
+  top: 463px;
+  left: 775px;
 }
+
+
+/* col 2 */
 .base-picture .small-building.slot10 {
-  top:   50px;
-  left: 440px;
+  top: 110px;
+  left: 875px;
 }
 .base-picture .small-building.slot11 {
-  top:   50px;
-  left: 520px;
+  top: 216px;
+  left: 875px;
 }
 .base-picture .small-building.slot12 {
-  top:   50px;
-  left: 600px;
+  top: 322px;
+  left: 875px;
 }
 .base-picture .small-building.slot13 {
-  top:   50px;
-  left: 680px;
+  top: 428px;
+  left: 875px;
 }
 
-/** row 2 */
+/** col 3 */
 .base-picture .small-building.slot14 {
-  top:  145px;
-  left:  40px;
+  top:  170px;
+  left: 975px;
 }
 .base-picture .small-building.slot15 {
-  top:  145px;
-  left: 120px;
+  top:  276px;
+  left: 975px;
 }
 .base-picture .small-building.slot16 {
-  top:  145px;
-  left: 200px;
+  top:  382px;
+  left: 975px;
 }
-.base-picture .large-building.slot1 {
-  top:  155px;
-  left: 280px;
-}
-.base-picture .large-building.slot2 {
-  top:  155px;
-  left: 400px;
-}
+
+/** col 4 */
 .base-picture .small-building.slot17 {
-  top:  145px;
-  left: 520px;
+  top:  260px;
+  left: 1075px;
 }
 .base-picture .small-building.slot18 {
-  top:  145px;
-  left: 600px;
+  top:  366px;
+  left: 1075px;
 }
+
+/** col 5, outer right */
 .base-picture .small-building.slot19 {
-  top:  145px;
-  left: 680px;
+  top:  320px;
+  left: 1175px;
 }
 
 
-/** row 3 */
+/***** COLS ON THE LEFT SIDE */
+/** col 1 left */
+/** col 1 (1. on the ride side of the middle */
 .base-picture .small-building.slot20 {
-  top:  240px;
-  left:  40px;
+  top: 40px;
+  left: 535px;
 }
 .base-picture .small-building.slot21 {
-  top:  240px;
-  left: 120px;
+  top: 146px;
+  left: 535px;
 }
 .base-picture .small-building.slot22 {
-  top:  240px;
-  left: 200px;
+  top: 252px;
+  left: 535px;
 }
-/** large slot1 */
-/** large slot2 */
 .base-picture .small-building.slot23 {
-  top:  240px;
-  left: 520px;
+  top: 357px;
+  left: 535px;
 }
 .base-picture .small-building.slot24 {
-  top:  240px;
-  left: 600px;
+  top: 463px;
+  left: 535px;
 }
+
+/* col 2 left */
 .base-picture .small-building.slot25 {
-  top:  240px;
-  left: 680px;
+  top: 20px;
+  left: 435px;
 }
-
-
-/** row 4 */
 .base-picture .small-building.slot26 {
-  top:  335px;
-  left:  40px;
+  top:  126px;
+  left: 435px;
 }
 .base-picture .small-building.slot27 {
-  top:  335px;
-  left: 120px;
+  top:  232px;
+  left: 435px;
 }
 .base-picture .small-building.slot28 {
-  top:  335px;
-  left: 200px;
+  top:  338px;
+  left: 435px;
 }
-.base-picture .large-building.slot3 {
-  top:  290px;
-  left: 280px;
-}
-.base-picture .large-building.slot4 {
-  top:  290px;
-  left: 400px;
-}
+
 .base-picture .small-building.slot29 {
-  top:  335px;
-  left: 520px;
+  top:  444px;
+  left: 435px;
 }
+
+/** col 3 left */
 .base-picture .small-building.slot30 {
-  top:  335px;
-  left: 600px;
+  top: 40px;
+  left: 335px;
 }
 .base-picture .small-building.slot31 {
-  top:  335px;
-  left: 680px;
+  top: 146px;
+  left: 335px;
 }
-
-
-/** row 5 */
 .base-picture .small-building.slot32 {
-  top:  430px;
-  left:  40px;
+  top: 252px;
+  left: 335px;
 }
 .base-picture .small-building.slot33 {
-  top:  430px;
-  left: 120px;
+  top: 357px;
+  left: 335px;
 }
 .base-picture .small-building.slot34 {
-  top:  430px;
-  left: 200px;
+  top: 463px;
+  left: 335px;
 }
+
+/* col 4 left */
 .base-picture .small-building.slot35 {
-  top:  430px;
-  left: 280px;
+  top:  206px;
+  left: 235px;
 }
 .base-picture .small-building.slot36 {
-  top:  430px;
-  left: 360px;
+  top:  312px;
+  left: 235px;
 }
 .base-picture .small-building.slot37 {
-  top:  430px;
-  left: 440px;
+  top:  418px;
+  left: 235px;
 }
+
+/* col 5 left */
 .base-picture .small-building.slot38 {
-  top:  430px;
-  left: 520px;
+  top:  266px;
+  left: 135px;
 }
 .base-picture .small-building.slot39 {
-  top:  430px;
-  left: 600px;
+  top:  372px;
+  left: 135px;
 }
+
+/** col 6 left */
 .base-picture .small-building.slot40 {
-  top:  430px;
-  left: 680px;
+  top:  326px;
+  left: 35px;
 }
 
 
-
-
+/****** OUTPOST */
 /** row 1 */
 .outpost-picture .small-building.slot3 {
   top:  145px;
