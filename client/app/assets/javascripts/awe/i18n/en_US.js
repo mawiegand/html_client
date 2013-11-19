@@ -700,6 +700,8 @@ AWE.I18n.en_US = function(module) {
           upgradePossible:'This building could be upgraded:',
           empty:{
             heading:'Empty lot',
+            small: 'Small lot',
+            large: 'Large lot',
             categoriesStart:'You can build ',
             categoriesEnd:' here.',
             maxLevel:'Maximum level',

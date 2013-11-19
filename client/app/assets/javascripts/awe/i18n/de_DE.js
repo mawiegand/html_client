@@ -727,6 +727,8 @@ AWE.I18n.de_DE = function(module) {
           upgradePossible: 'Dieses Gebäude kann verbessert werden:',
           empty: {
             heading: 'Freier Bauplatz',
+            large: "Großer Bauplatz",
+            small: "Kleiner Bauplatz",
             categoriesStart: 'Hier können ',
             categoriesEnd:   ' gebaut werden.',
             maxLevel: 'Maximale Stufe',
