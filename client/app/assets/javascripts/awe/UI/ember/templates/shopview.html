@@ -89,9 +89,11 @@
                 <div class="bonus-offer-end">{{ t shop.expiry }}</div>
                 <div class="bonus-offer-button">{{ t shop.action }}</div>
               </div>
+              <div class="bonus-offer-wrapper">
               {{#each bonusOffers}}
                 {{view AWE.UI.Ember.ShopBonusOffer offerBinding="this" shopBinding="shop" classNames="bonus-offer"}}
               {{/each}}
+              </div>
             {{/if}}
           {{/unless}}
         {{/if}}
