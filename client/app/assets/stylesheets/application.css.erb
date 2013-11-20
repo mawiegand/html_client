@@ -1196,6 +1196,19 @@ h1.slot-tooltip {
   background-color: #FFF;    
 }
 
+.character-profile-view a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 20px;
+  top: 26px;
+}
+
+.character-profile-view a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
 .character-profile-view input[type="text"] {
   width: 450px;
   margin-right: 0px;  
