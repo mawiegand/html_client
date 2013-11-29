@@ -286,10 +286,13 @@ AWE.UI = (function(module) {
       if (AWE.GS.game.get('currentCharacter')) {
         var settlement = AWE.GS.SettlementManager.getHomeBaseOfCharacter(AWE.GS.game.get('currentCharacter'));
         if (!settlement) {
-          var self = this;
-          AWE.GS.SettlementManager.updateHomeBaseOfCharacter(AWE.GS.game.get('currentCharacter'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-            self.setNeedsUpdate();
-          });
+          if (AWE.GS.game.getPath('currentCharacter.base_node_id')) {
+            var self = this;
+          
+            AWE.GS.SettlementManager.updateHomeBaseOfCharacter(AWE.GS.game.get('currentCharacter'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+              self.setNeedsUpdate();
+            });
+          }
         }
         else {
           var level = AWE.Util.Rules.normalizedLevel(settlement.get('level'), settlement.get('type_id'));

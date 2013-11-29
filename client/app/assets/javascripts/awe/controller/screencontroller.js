@@ -92,7 +92,16 @@ AWE.Controller = (function(module) {
      * @name AWE.Controller.ScreenController#handleArtificialMouseOut */
     that.handleArtificialMouseOut = function() {};
 
-    
+    that.readyForUI = function() {
+      return true;
+    };
+
+    that.welcomeDialogClosed = function() {
+    }
+
+    that.enableUI = function() {
+    };
+
     that.runloop = function() {
     };
 

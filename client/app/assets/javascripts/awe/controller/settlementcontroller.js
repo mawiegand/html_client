@@ -23,7 +23,8 @@ AWE.Controller = (function(module) {
     var _viewNeedsUpdate = false;  
     var _modelChanged = false;
     var _becameVisible = false;
-    var _lastCleanup = null;
+
+    var _welcomeDialogClosed = false;
           
     var that = module.createScreenController(anchor); // create base object
     
@@ -202,14 +203,27 @@ AWE.Controller = (function(module) {
       this.removeView();
       this.visible = false;
     };
-    
-    
+
+    that.readyForUI = function() {
+      if (_welcomeDialogClosed && that.view) {
+        var slots = that.view.get('slots');
+        if (slots && AWE.Ext.isArray(slots) && AWE.Util.arrayCount(slots) > 0) {
+          return true;
+        }
+      }
+      return false;
+    };
+
     // ///////////////////////////////////////////////////////////////////////
     //
     //   Actions
     //
     // /////////////////////////////////////////////////////////////////////// 
-    
+
+    that.welcomeDialogClosed = function() {
+      _welcomeDialogClosed = true;
+    }
+
     that.previousSettlementPressed = function() {
       var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
       var previousSettlement = AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(settlement);

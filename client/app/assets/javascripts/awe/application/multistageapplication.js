@@ -50,7 +50,9 @@ AWE.Application = (function(module) {
     var stageHovered=-1;
     var nextMouseOverTest = new Date(1970).getTime();
     var mouseOverTestTimeout = 200; // test every x ms
-    
+
+    var _uiEnabled = false;
+    var _hideHud = true;
 
     return /** @lends AWE.Application.MultiStageApplication# */ {
       
@@ -100,27 +102,6 @@ AWE.Application = (function(module) {
           log('Mouse up event in multi stage application controller.');
           self.handleMouseUp(evt);
         });
-        ///DEBUG
-        /*$('body').mouseup(function(evt) { 
-          log("got body mouse up");
-        });
-        bla = this;
-        $('body').mousemove(function(evt) {
-          bla.sendEventToDom(evt);
-        });
-        $('body').mouseover(function(evt) {
-          bla.sendEventToDom(evt);
-        });
-        $('body').click(function(evt) {
-          console.error("click asdf");
-          bla.sendEventToDom(evt);
-        });
-        $('body').mouseenter(function(evt) {
-          bla.sendEventToDom(evt);
-        });
-        $('body').mouseleave(function(evt) {
-          bla.sendEventToDom(evt);
-        });*/
 
         // register controller to receive window-resize events (from browser window) 
         // in order to adapt it's own window / display area
@@ -207,7 +188,7 @@ AWE.Application = (function(module) {
 
         if (target) {
           if (target && target.view && target.view.onClick) { // TODO: in our view layer: propagate clicks upwards along responder chain.
-            log('click on target', target.view, target.view.typeName())
+            log('click on target', target.view, target.view.typeName());
             if (target.view.enabled()) { 
               log("click forwarded to target.view.onClick(..)");
               target.view.onClick(evt); // TODO: I think this is wrong; we somehow need to get the relative coordinates in.
@@ -400,7 +381,18 @@ AWE.Application = (function(module) {
           if (this.get('hudController')) this.get('hudController').runloop();
           if (this.get('notificationController')) this.get('notificationController').runloop();
           this.get('presentScreenController').runloop(); // hand over control to present screen controller
-          
+
+
+          if (!_uiEnabled && this.get('presentScreenController').readyForUI()) {
+            
+            if (AWE.GS.CharacterManager.getCurrentCharacter().get('base_node_id')) {
+              AWE.Log.Debug('UI has been enabled.');
+              _uiEnabled = true;
+              this.get('presentScreenController').enableUI();
+              this.get('hudController').showHud();
+            }
+          } 
+
           // TODO: Game State Runloop!
           
           if (this.lastRunloopRun.getTime() + 1000 < new Date().getTime()) {
@@ -582,6 +574,9 @@ AWE.Application = (function(module) {
             this.append(controller);
             controller.applicationController = this;
             controller.viewDidAppear();
+            if (_uiEnabled) {
+              controller.enableUI();
+            }
           }
         }
       },
@@ -631,6 +626,12 @@ AWE.Application = (function(module) {
         this.modalDialogs.push(dialog);
         dialog.append();
       },
+      
+      presentDomOverlay: function(dialog) {
+        this.modalDialogs.push(dialog);
+				dialog.append();
+      },
+			
       
       modalDialogOpen: function() {
         return this.get('isModal');

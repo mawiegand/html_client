@@ -554,6 +554,20 @@ AWE.I18n.de_DE = function(module) {
       headingSituation: 'Die Situation',
       formattedText: '<p>Du bist ein <b>Halbgott</b> und hast gerade einen kleinen, Dir folgenden Stamm von Steinzeithöhlenmenschen davon überzeugt, ihre Höhle zu verlassen und ab jetzt in einer hochmodernen Siedlung zu leben. Leider hat der glorreiche Stammesführer aber bisher nur eine pompöse Hütte für sich selbst bauen lassen.</p><p>Ein kleines Tutorial wird Dich als Halbgott durch die ersten Schwierigkeiten Deiner neuen Herrschaft führen. Tatsächlich bedeutet die Führung eines Stammes mehr als nur die eigene Häuptlingshütte auszubauen, aber das wirst Du schon herausfinden...</p> <p><b>Viel Spaß!</p>',
     },
+
+    facebook: {
+      postOnFacebook: 'Auf Facebook posten',
+      nextLevel: {
+        success: {
+          header: 'Facebook',
+          message: 'Dein Rangaufstieg wurde auf Facebook gepostet',
+        },
+        error: {
+          header: 'Facebook',
+          message: 'Dein Rangaufstieg konnte wegen eines unbekannten Fehlers nicht auf Facebook gepostet werden.',
+        },
+      }
+    },
     
     shop: {
       button:'Shop',
@@ -713,6 +727,8 @@ AWE.I18n.de_DE = function(module) {
           upgradePossible: 'Dieses Gebäude kann verbessert werden:',
           empty: {
             heading: 'Freier Bauplatz',
+            large: "Großer Bauplatz",
+            small: "Kleiner Bauplatz",
             categoriesStart: 'Hier können ',
             categoriesEnd:   ' gebaut werden.',
             maxLevel: 'Maximale Stufe',

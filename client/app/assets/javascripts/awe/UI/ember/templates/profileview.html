@@ -194,20 +194,20 @@
      {{/if}}  
   </p>
   <p class="red-color">{{changePasswordMessage}}</p>
-  
-  
-  
-  
-  <h2>{{t profile.settings.connectToFacebookHeading}}</h2>
-  {{#if character.isConnectedToFacebook}}
-    <p>{{{t profile.settings.youAreConnectedToFacebook}}}</p>
-  {{else}}
-    <p>{{t profile.settings.connectToFacebookAdvice}}}</p>
-    <p>
-      <span class="simple-button right-align" {{action "connectFacebookPressed"}}>{{t profile.settings.connectToFacebook}}</span>
-    </p>
-    <p class="red-color">{{connectFacebookMessage}}</p>
-  {{/if}}
+
+
+  {{#unless AWE.Facebook.isRunningInCanvas}}
+    <h2>{{t profile.settings.connectToFacebookHeading}}</h2>
+    {{#if character.isConnectedToFacebook}}
+      <p>{{{t profile.settings.youAreConnectedToFacebook}}}</p>
+    {{else}}
+      <p>{{t profile.settings.connectToFacebookAdvice}}}</p>
+      <p>
+        <span class="simple-button right-align" {{action "connectFacebookPressed"}}>{{t profile.settings.connectToFacebook}}</span>
+      </p>
+      <p class="red-color">{{connectFacebookMessage}}</p>
+    {{/if}}
+  {{/unless}}
 
   
   

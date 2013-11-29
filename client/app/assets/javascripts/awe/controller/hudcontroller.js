@@ -27,12 +27,13 @@ AWE.Controller = (function(module) {
     _super.append = function(f) { return function() { f.apply(that); }; }(that.append);
     _super.remove = function(f) { return function() { f.apply(that); }; }(that.remove);
     
-    var _loopCounter = 0;        ///< counts every cycle through the loop
-    var _frameCounter = 0;       ///< counts every rendered frame
-    
-    var _modelChanged = false;   ///< true, if anything in the model changed    
+    var _modelChanged = false;   ///< true, if anything in the model changed
     var HUDViews = {};
     var _animations = [];
+
+    var _hideCanvas = true;
+    var _canvasIsHidden = true;  // hud is hidden per css
+    var _animationDuration = 800;
     
     that.animatedMarker = null;
     
@@ -98,15 +99,24 @@ AWE.Controller = (function(module) {
     /** reset the size of the "window" (canvas) in case its dimension has 
      * changed. */
     that.layoutIfNeeded = function() {
-      if (_needsLayout) {   ///// WRONG: no _needsLayout after zooming!!!
-  /*      if (_canvas.width != _windowSize.width || _canvas.height != _windowSize.height) {
-          _canvas.width  = _windowSize.width;
-          _canvas.height = _windowSize.height;
-        };
-        that.setNeedsDisplay();*/
-      };
+      if (_needsLayout) {
+        if (_hideCanvas && !_canvasIsHidden) {
+          AWE.Log.Debug('hide canvas');
+          _canvasIsHidden = true;
+          $('#hud-canvas').delay(600).animate({right: "-380px"}, _animationDuration, 'easeOutBack');
+          $('#resource-canvas').delay(600).animate({top: "-42px"}, _animationDuration, 'easeOutBack');
+          that.setNeedsDisplay();
+        }
+        else if (!_hideCanvas && _canvasIsHidden) {
+          AWE.Log.Debug('display canvas canvas');
+          _canvasIsHidden = false;
+          $('#hud-canvas').delay(600).animate({right: "0px"}, _animationDuration, 'easeOutBack');
+          $('#resource-canvas').delay(600).animate({top: "30px"}, _animationDuration, 'easeOutBack');
+          that.setNeedsDisplay();
+        }
+      }
       _needsLayout = false;
-    }
+    };
     
     /** set to true in case the whole window needs to be repainted. */
     that.setNeedsDisplay = function() { 
@@ -118,6 +128,13 @@ AWE.Controller = (function(module) {
     //   Mouse-Over and Object Selection
     //
     // ///////////////////////////////////////////////////////////////////////     
+
+    that.showHud = function() {
+      if (_hideCanvas) {
+        _hideCanvas = false;
+        _needsLayout = true;
+      }
+    }
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -680,8 +697,8 @@ AWE.Controller = (function(module) {
         that.updateModel();
                 
         // STEP 3: layout canvas & stages according to possibly changed window size (TODO: clean this!)
-        that.layoutIfNeeded();   
-        
+        that.layoutIfNeeded();
+
         // STEP 3b: animations
         var animating = false;
         AWE.Ext.applyFunction(_animations, function (animation) {

@@ -8,6 +8,18 @@ var AWE = window.AWE || {};
 
 
 AWE.Config = (function(module) {
+  
+  module.Cohort = Ember.Object.create({
+    startsWithSettler: false,
+    
+    configFromCharacter: function(character) {
+      if (!character) {
+        return ;
+      }
+      this.set('startsWithSettler', (character.get('start_variant') || 0) === 2);
+    },
+  });
+  
 
   // automatically determine the server to use -> same origin policy
   module.HOSTNAME    = document.location.host ;

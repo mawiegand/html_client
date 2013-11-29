@@ -11,6 +11,8 @@ AWE.UI.Ember = (function(module) {
     
   module.CharacterProgressDialog = module.Dialog.extend({
     templateName: 'character-progress-dialog',
+
+    posting: false,
     
     character: null,
         
@@ -34,7 +36,33 @@ AWE.UI.Ember = (function(module) {
     
     allianceIdObserver: function() {
       this.setAndUpdateAlliance();
-    }.observes('character.alliance_id'),  
+    }.observes('character.alliance_id'),
+
+    userStoriesEnabled: function() {
+      return AWE.GS.RulesManager.getRules().app_control.facebook_user_stories == 1;
+    }.property(),
+
+    postNextLevelToFacebook: function() {
+      var self = this;
+      self.set('posting', true);
+      AWE.Facebook.postUserStory('user_story_reached_next_level', function() {
+        self.set('posting', false);
+        AWE.Log.Debug('User Story sent');
+        var dialog = AWE.UI.Ember.InfoDialog.create({
+          heading: AWE.I18n.lookupTranslation('facebook.nextLevel.success.header'),
+          message: AWE.I18n.lookupTranslation('facebook.nextLevel.success.message'),
+        });
+        WACKADOO.presentModalDialog(dialog);
+      }, function(error) {
+        self.set('posting', false);
+        AWE.Log.Debug('User Story not sent', error);
+        var dialog = AWE.UI.Ember.InfoDialog.create({
+          heading: AWE.I18n.lookupTranslation('facebook.nextLevel.error.header'),
+          message: AWE.I18n.lookupTranslation('facebook.nextLevel.error.message'),
+        });
+        WACKADOO.presentModalDialog(dialog);
+      });
+    },
     
   });
   

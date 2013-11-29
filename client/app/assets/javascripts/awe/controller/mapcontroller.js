@@ -32,6 +32,8 @@ AWE.Controller = function (module) {
     var _disableArmies = false;
     var _viewPortChanged = false;
     var _timeout = false;
+    var _readyForUI = false;
+    var _uiEnabled = false;
 
     var _animations = [];
 
@@ -75,6 +77,7 @@ AWE.Controller = function (module) {
     var actionViews = {};
     var targetViews = {};
     var inspectorViews = {};
+    var controlsViews = {};
     that.animatedMarker = null;
 
     var zoomSlider = undefined;
@@ -133,6 +136,13 @@ AWE.Controller = function (module) {
       _stages[3].onClick = function () {
       };   // we generate our own clicks
 
+      // layer for the controls buttons
+      root.append('<canvas id="controls-canvas"></canvas>');
+      _canvas[4] = root.find('#controls-canvas')[0];
+      _stages[4] = new Stage(_canvas[4]);
+      _stages[4].onClick = function () {
+      };   // we generate our own clicks
+
 //      root.append('<div style="position:abolute; left:0; top:20px; width:50px; height:50px; background-color:#F00;">A</div>');
 
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
@@ -156,26 +166,25 @@ AWE.Controller = function (module) {
         $(zoomSlider.getContainer()).remove();
       });
 
-
       if (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM) {
-        inspectorViews.tempToggleButtonView = AWE.UI.createTempToggleButtonView();
-        inspectorViews.tempToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
-        _stages[3].addChild(inspectorViews.tempToggleButtonView.displayObject());
+        controlsViews.tempToggleButtonView = AWE.UI.createTempToggleButtonView();
+        controlsViews.tempToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
+        _stages[4].addChild(controlsViews.tempToggleButtonView.displayObject());
       }
 
-      inspectorViews.mapButtonsBackgroundView = AWE.UI.createImageView();
-      inspectorViews.mapButtonsBackgroundView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage('ui/button/map/background'));
-      inspectorViews.mapButtonsBackgroundView.setFrame(AWE.Geometry.createRect(0, 0, 190, 150));
-      _stages[3].addChild(inspectorViews.mapButtonsBackgroundView.displayObject());
+      controlsViews.mapButtonsBackgroundView = AWE.UI.createImageView();
+      controlsViews.mapButtonsBackgroundView.initWithControllerAndImage(that, AWE.UI.ImageCache.getImage('ui/button/map/background'));
+      controlsViews.mapButtonsBackgroundView.setFrame(AWE.Geometry.createRect(0, 0, 190, 150));
+      _stages[4].addChild(controlsViews.mapButtonsBackgroundView.displayObject());
 
-      inspectorViews.mapTypeToggleButtonView = AWE.UI.createMapTypeToggleButtonView();
-      inspectorViews.mapTypeToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
-      _stages[3].addChild(inspectorViews.mapTypeToggleButtonView.displayObject());
+      controlsViews.mapTypeToggleButtonView = AWE.UI.createMapTypeToggleButtonView();
+      controlsViews.mapTypeToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
+      _stages[4].addChild(controlsViews.mapTypeToggleButtonView.displayObject());
 
 
-      inspectorViews.armyListButtonView = AWE.UI.createArmyListButtonView();
-      inspectorViews.armyListButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
-      _stages[3].addChild(inspectorViews.armyListButtonView.displayObject());
+      controlsViews.armyListButtonView = AWE.UI.createArmyListButtonView();
+      controlsViews.armyListButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
+      _stages[4].addChild(controlsViews.armyListButtonView.displayObject());
 
     };
     
@@ -185,7 +194,8 @@ AWE.Controller = function (module) {
         { stage:_stages[0], mouseOverEvents:false, transparent:true},
         { stage:_stages[1], mouseOverEvents:true },
         { stage:_stages[2], mouseOverEvents:true },
-        { stage:_stages[3], mouseOverEvents:true }
+        { stage:_stages[3], mouseOverEvents:true },
+        { stage:_stages[4], mouseOverEvents:true }
       ];
     };
 
@@ -200,7 +210,7 @@ AWE.Controller = function (module) {
       window.WACKADOO.addDomElement(zoomSlider.getContainer(), true);
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height())); // prevents distortion in case window has resized while displaying another screen
       zoomSlider.subscribeToDOMEvents();
-    }
+    };
 
     that.viewWillDisappear = function () {
       $(zoomSlider.getContainer()).remove();
@@ -208,7 +218,19 @@ AWE.Controller = function (module) {
       window.WACKADOO.removeDomElement($('.link-pane'));
       window.WACKADOO.removeDomElement(zoomSlider.getContainer());
       zoomSlider.unsubscribeDOMEvents();
-    }
+    };
+
+    that.readyForUI = function() {
+      return _readyForUI && !_camera.isMoving();
+    };
+
+    that.enableUI = function() {
+      if (!_uiEnabled) {
+        $(zoomSlider.getContainer()).delay(600).animate({opacity: 1}, 1000);
+        $('#controls-canvas').delay(600).animate({left: "0px"}, 1000, 'easeOutElastic');
+        _uiEnabled = true;
+      }
+    };
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -476,13 +498,14 @@ AWE.Controller = function (module) {
 
           _canvas[3].width = _windowSize.width;
           _canvas[3].height = _windowSize.height;
+
+          _canvas[4].width = _windowSize.width;
+          _canvas[4].height = _windowSize.height;
         }
-        ;
         that.setNeedsDisplay();
       }
-      ;
       _needsLayout = false;
-    }
+    };
 
     /** set to true in case the whole window needs to be repainted. */
     that.setNeedsDisplay = function () {
@@ -647,6 +670,22 @@ AWE.Controller = function (module) {
     //
     // ///////////////////////////////////////////////////////////////////////
 
+    that.welcomeDialogClosed = function() {
+      if (!AWE.GS.CharacterManager.getCurrentCharacter().get('base_node')) {
+        var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(AWE.GS.CharacterManager.getCurrentCharacter().get('id'));
+        var army = AWE.Util.hashFirst(armies);
+        AWE.Log.Debug ("ARMY", army);
+        if (army) {
+          this.centerLocationAndMarkArmy(army, function() {
+            _readyForUI = true;
+          });
+        }
+      }
+      else {
+        _readyForUI = true;
+      }
+    }
+
     that.switchMapMode = function (realMap) {
       log("SWITCH MAP MODE", realMap);
       mapMode = realMap ? AWE.UI.MAP_MODE_REAL : AWE.UI.MAP_MODE_TERRAIN;
@@ -679,15 +718,19 @@ AWE.Controller = function (module) {
     
     that.toggleArmyVisibility = function() {
       hideOtherArmies = !hideOtherArmies;
-    }
+    };
 
     that.armyListButtonClicked = function() {
-      var dialog = AWE.UI.Ember.ArmyListDialog.create({
+			var dialog = AWE.UI.Ember.ArmyListDialog.create({
         controller: this.that,
       });
+			/*
+	  var dialog = AWE.UI.Ember.TutorialSettleDialog.create(
+			{ controller: this.that }
+		);*/
 
-      that.applicationController.presentModalDialog(dialog);
-    }
+			that.applicationController.presentModalDialog(dialog);
+    };
 
     that.armyInfoButtonClicked = function (army) {
       if (!army) {
@@ -726,29 +769,39 @@ AWE.Controller = function (module) {
     };
 
     that.armyMoveButtonClicked = function (armyAnnotationView) {
-      // actionObjekt erstellen
-      currentAction = {
-        typeName:'moveAction',
-        army:armyAnnotationView.army(),
-        clickedView:armyAnnotationView.annotatedView(),
-        // armyAnnotationView: armyAnnotationView,
+      if (armyAnnotationView.army().get('hasHomebaseFounder')) {
+        alert('move great chief');
       }
+      else {
+        // actionObjekt erstellen
+        currentAction = {
+          typeName:'moveAction',
+          army:armyAnnotationView.army(),
+          clickedView:armyAnnotationView.annotatedView(),
+          // armyAnnotationView: armyAnnotationView,
+        }
 
-      armyAnnotationView.setActionMode('moveTargetSelection');
-      _actionViewChanged = true;
+        armyAnnotationView.setActionMode('moveTargetSelection');
+        _actionViewChanged = true;
+      }
     };
 
     that.armyAttackButtonClicked = function (armyAnnotationView) {
-      // actionObjekt erstellen
-      currentAction = {
-        typeName:'attackAction',
-        army:armyAnnotationView.army(),
-        clickedView:armyAnnotationView.annotatedView(),
-        // armyAnnotationView: armyAnnotationView,
+      if (armyAnnotationView.army().get('hasHomebaseFounder')) {
+        alert('attack great chief');
       }
+      else {
+        // actionObjekt erstellen
+        currentAction = {
+          typeName:'attackAction',
+          army:armyAnnotationView.army(),
+          clickedView:armyAnnotationView.annotatedView(),
+          // armyAnnotationView: armyAnnotationView,
+        }
 
-      armyAnnotationView.setActionMode('attackTargetSelection');
-      _actionViewChanged = true;
+        armyAnnotationView.setActionMode('attackTargetSelection');
+        _actionViewChanged = true;
+      }
     };
 
 
@@ -863,44 +916,74 @@ AWE.Controller = function (module) {
     }
 
     that.armyFoundSettlementButtonClicked = function (armyAnnotationView) {
-      armyAnnotationView.setActionMode('foundSettlement');
-      _actionViewChanged = true;
+      if (armyAnnotationView.army().get('hasHomebaseFounder')) {
+        armyAnnotationView.setActionMode('foundSettlement');
+        _actionViewChanged = true;
 
-      var dialog = AWE.UI.Ember.FoundSettlementDialog.create({
-        army:armyAnnotationView.army(),
+        var army = armyAnnotationView.army();
+        var location = AWE.Map.Manager.getLocation(army.getPath('location_id'));
 
-        foundPressed:function (evt) {
-          var army = this.get('army');
-          var location = AWE.Map.Manager.getLocation(this.getPath('army.location_id'));
-
-          if (!army || !location) {
-            that.handleError("ClientError", "Der Außenposten konnte leider nicht gegründet werden. Die Daten in Deinem Client sind veraltet. Bitte versuch es gleich noch mal oder kontaktiere den Support, wenn es sich um einen Fehler handelt.");
-            armyAnnotationView.setActionMode('');
-            return;
-          }
-
-          var action = AWE.Action.Military.createFoundOutpostAction(army, location);
-          action.send(function (status) {
-            armyAnnotationView.setActionMode('');
-            if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
-              AWE.Map.Manager.fetchLocationsForRegion(location.region(), function () {
-                that.setModelChanged();
-                log('LOCATION UPDATED', location, 'IN REGION', location.region());
-              });
-              AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id());
-            }
-            else {
-              that.handleError(status, "Der Außenposten konnte leider nicht gegründet werden. Bitte versuch es gleich noch mal oder kontaktiere den Support, wenn es sich um einen Fehler handelt.");
-            }
-          });
-          this.destroy();
-        },
-        cancelPressed:function (evt) {
+        if (!army || !location) {
+          that.handleError("ClientError", "Der Außenposten konnte leider nicht gegründet werden. Die Daten in Deinem Client sind veraltet. Bitte versuch es gleich noch mal oder kontaktiere den Support, wenn es sich um einen Fehler handelt.");
           armyAnnotationView.setActionMode('');
-          this.destroy();
-        },
-      });
-      that.applicationController.presentModalDialog(dialog);
+          return;
+        }
+
+        var action = AWE.Action.Military.createFoundHomebaseAction(army, location);
+        action.send(function (status) {
+          armyAnnotationView.setActionMode('');
+          if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+            AWE.Map.Manager.fetchLocationsForRegion(location.region(), function () {
+              that.setModelChanged();
+              log('LOCATION UPDATED', location, 'IN REGION', location.region());
+            });
+            AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id());
+          }
+          else {
+            that.handleError(status, "Der Außenposten konnte leider nicht gegründet werden. Bitte versuch es gleich noch mal oder kontaktiere den Support, wenn es sich um einen Fehler handelt.");
+          }
+        });
+      }
+      else {
+        armyAnnotationView.setActionMode('foundSettlement');
+        _actionViewChanged = true;
+
+        var dialog = AWE.UI.Ember.FoundSettlementDialog.create({
+          army:armyAnnotationView.army(),
+
+          foundPressed:function (evt) {
+            var army = this.get('army');
+            var location = AWE.Map.Manager.getLocation(this.getPath('army.location_id'));
+
+            if (!army || !location) {
+              that.handleError("ClientError", "Der Außenposten konnte leider nicht gegründet werden. Die Daten in Deinem Client sind veraltet. Bitte versuch es gleich noch mal oder kontaktiere den Support, wenn es sich um einen Fehler handelt.");
+              armyAnnotationView.setActionMode('');
+              return;
+            }
+
+            var action = AWE.Action.Military.createFoundOutpostAction(army, location);
+            action.send(function (status) {
+              armyAnnotationView.setActionMode('');
+              if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+                AWE.Map.Manager.fetchLocationsForRegion(location.region(), function () {
+                  that.setModelChanged();
+                  log('LOCATION UPDATED', location, 'IN REGION', location.region());
+                });
+                AWE.GS.SettlementManager.updateSettlementsAtLocation(location.id());
+              }
+              else {
+                that.handleError(status, "Der Außenposten konnte leider nicht gegründet werden. Bitte versuch es gleich noch mal oder kontaktiere den Support, wenn es sich um einen Fehler handelt.");
+              }
+            });
+            this.destroy();
+          },
+          cancelPressed:function (evt) {
+            armyAnnotationView.setActionMode('');
+            this.destroy();
+          },
+        });
+        that.applicationController.presentModalDialog(dialog);
+      }
     };
 
 
@@ -1036,25 +1119,35 @@ AWE.Controller = function (module) {
       that.moveTo(location, true);
     }
 
-    that.centerLocationAndMarkArmy = function (army) {
+    that.centerLocationAndMarkArmy = function (army, callback) {
       if (army.get('location')) {
         that.moveTo(army.get('location'), true);
         that.setSelectedArmy(army);
+        if (callback) {
+          callback();
+        }
       }
       else if (army.get('region')) {
         AWE.Map.Manager.fetchSingleNodeById(army.get('region').nodeId(), function () {
           AWE.Map.Manager.fetchLocationsForRegion(army.get('region'), function () {
             that.moveTo(army.get('location'), true);
             that.setSelectedArmy(army);
+            if (callback) {
+              callback();
+            }
           });
         });
       }
       else {
         AWE.Map.Manager.fetchSingleRegionById(army.get('region_id'), function (region) {
-          AWE.Map.Manager.fetchSingleNodeById(region.nodeId(), function () {
+          AWE.Map.Manager.fetchSingleNodeById(region.nodeId(), function (node) {
             AWE.Map.Manager.fetchLocationsForRegion(region, function () {
-              that.moveTo(army.get('location'), true);
+              // AWE.Log.Debug('MoveTo Location', army.get('location'), army.get('location').region(), army.get('location').region().node(), region.nodeId());
+              that.moveTo(node);
               that.setSelectedArmy(army);
+              if (callback) {
+                callback();
+              }
             });
           });
         });
@@ -1254,17 +1347,22 @@ AWE.Controller = function (module) {
     var runningStanceAction = false;
 
     that.stanceButtonClicked = function(army) {
-      if (!runningStanceAction) {
-        runningStanceAction = true;
+      if (army.get('hasHomebaseFounder')) {
+        alert('retreat');
+      }
+      else {
+        if (!runningStanceAction) {
+          runningStanceAction = true;
 
-        var newStance = army.get('stance') === 0 ? 1 : 0;
-        var action = AWE.Action.Military.createChangeArmyStanceAction(army, newStance);
-        AWE.Action.Manager.queueAction(action, function() {
-          AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (army) {
-            that.setModelChanged();
+          var newStance = army.get('stance') === 0 ? 1 : 0;
+          var action = AWE.Action.Military.createChangeArmyStanceAction(army, newStance);
+          AWE.Action.Manager.queueAction(action, function() {
+            AWE.GS.ArmyManager.updateArmy(army.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function (army) {
+              that.setModelChanged();
+            });
+            runningStanceAction = false;
           });
-          runningStanceAction = false;
-        });
+        }
       }
     };
 
@@ -3523,17 +3621,29 @@ AWE.Controller = function (module) {
       if (inspectorViews.inspector) {
         inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 430, _windowSize.height - 234));
       }
-      if (inspectorViews.tempToggleButtonView) {
-        inspectorViews.tempToggleButtonView.setOrigin(AWE.Geometry.createPoint(180 + 20, _windowSize.height - 68));
+
+      return true;
+    };
+
+
+    // ///////////////////////////////////////////////////////////////////////
+    //
+    //   Controls Stage
+    //
+    // ///////////////////////////////////////////////////////////////////////
+
+    that.updateControlsViews = function () {
+      if (controlsViews.tempToggleButtonView) {
+        controlsViews.tempToggleButtonView.setOrigin(AWE.Geometry.createPoint(180 + 20, _windowSize.height - 68));
       }
-      if (inspectorViews.mapButtonsBackgroundView) {
-        inspectorViews.mapButtonsBackgroundView.setOrigin(AWE.Geometry.createPoint(20, _windowSize.height - 160));
+      if (controlsViews.mapButtonsBackgroundView) {
+        controlsViews.mapButtonsBackgroundView.setOrigin(AWE.Geometry.createPoint(20, _windowSize.height - 160));
       }
-      if (inspectorViews.mapTypeToggleButtonView) {
-        inspectorViews.mapTypeToggleButtonView.setOrigin(AWE.Geometry.createPoint(20 + 46, _windowSize.height - 154));
+      if (controlsViews.mapTypeToggleButtonView) {
+        controlsViews.mapTypeToggleButtonView.setOrigin(AWE.Geometry.createPoint(20 + 46, _windowSize.height - 154));
       }
-      if (inspectorViews.armyListButtonView) {
-        inspectorViews.armyListButtonView.setOrigin(AWE.Geometry.createPoint(20 + 114, _windowSize.height - 101));
+      if (controlsViews.armyListButtonView) {
+        controlsViews.armyListButtonView.setOrigin(AWE.Geometry.createPoint(20 + 114, _windowSize.height - 101));
       }
 
       return true;
@@ -3571,7 +3681,7 @@ AWE.Controller = function (module) {
 
       return function (nodes, visibleArea) {
 
-        var stagesNeedUpdate = [false, false, false, false]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
+        var stagesNeedUpdate = [false, false, false, false, false]; // replace true with false as soon as stage 1 and 2 are implemented correctly.
 
         // rebuild individual hieararchies
         if (_windowChanged || this.modelChanged() || (oldVisibleArea && !visibleArea.equals(oldVisibleArea))) {
@@ -3597,6 +3707,10 @@ AWE.Controller = function (module) {
           stagesNeedUpdate[3] = that.updateInspectorViews() || stagesNeedUpdate[3];
         }
 
+        if (_windowChanged || _actionViewChanged) { // TODO: only update at start and when something might have changed (object selected, etc.)
+          stagesNeedUpdate[4] = that.updateControlsViews() || stagesNeedUpdate[4];
+        }
+
         // log('Update:                   ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
         // log('propagate update');
@@ -3611,6 +3725,7 @@ AWE.Controller = function (module) {
         stagesNeedUpdate[1] = propUpdates(movementArrowViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[2] = propUpdates(actionViews) || stagesNeedUpdate[2];
         stagesNeedUpdate[3] = propUpdates(inspectorViews) || stagesNeedUpdate[3];
+        stagesNeedUpdate[4] = propUpdates(controlsViews) || stagesNeedUpdate[4];
 
         // log('Update after propagation: ', stagesNeedUpdate[0], stagesNeedUpdate[1], stagesNeedUpdate[2], stagesNeedUpdate[3])
 
@@ -3687,7 +3802,6 @@ AWE.Controller = function (module) {
       };
 
     })();  
-    
 
     that.runloop = function () {
 
@@ -3758,7 +3872,8 @@ AWE.Controller = function (module) {
             regionViews,
             [fortressViews, artifactViews, armyViews, locationViews, movementArrowViews],
             [actionViews, targetViews],
-            inspectorViews
+            inspectorViews,
+            controlsViews
           ];
 
           for (var i = 0; i < _stages.length; i++) {
@@ -3781,12 +3896,36 @@ AWE.Controller = function (module) {
             }
           }
 
+
           //_stages[3].update();
           // STEP 4d: register this frame, recalc and display present framerate (rendered frames per second)
           this.updateFPS();
           this.updateDebug();
         }
 
+
+//
+//        Steffens Code
+//
+//				// add dom data for tutorial bubble
+//				// @todo check for tutorialStep isActive()
+//				var character = AWE.GS.CharacterManager.getCurrentCharacter();
+//				var armies = AWE.GS.ArmyManager.getArmiesOfCharacter(character.get('id'));
+//				var army = AWE.Util.hashFirst(armies);
+//				if (army) {
+//					var aView = armyViews[army.get('id')];
+//
+//					if (aView) {
+//						if (!window.dialog) {
+//				  		window.dialog = AWE.UI.Ember.TutorialSettleDialog.create({controller : that});
+//							that.applicationController.presentDomOverlay(window.dialog);
+//						}
+//						var origin = aView.frame().origin;
+//						if (window.dialog.originDiffers(origin.x, origin.y)) {
+//							window.dialog.setOrigin(origin);
+//						}
+//					}
+//			  }
 
         // STEP 5: cleanup & prepare for next loop: everything has been processed and changed...
         _modelChanged = false;

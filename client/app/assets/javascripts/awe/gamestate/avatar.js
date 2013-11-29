@@ -49,11 +49,21 @@ AWE.GS = function (module) {
     },*/
 
     getPart: function(part) {
-      /* TODO: check if avatar_rules has a key "part" */
+      
       var rules  = this.get('avatar_rules');
+      
+      if (!rules || !rules.offset || rules.offset[part] == undefined) {
+        return ""
+      }
+      
       var result = "";
-      var cursor = rules.offset[part];
+      var cursor = rules.offset[part] || 0;
       var a_str  = this.get('avatar_string');
+      
+      if (!a_str) {
+        return "";
+      }
+      
       var chars  = rules.chars[part];
 
       for(var i = 0; i < chars; ++i) {

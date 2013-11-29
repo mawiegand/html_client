@@ -7,10 +7,11 @@ AWE.Facebook = (function(module) {
   var initCallbacks = [];
   
   module.initialized  = false;
-  module.defaultScope = {scope: 'email'}; 
+  module.defaultScope = {scope: 'email,publish_actions'};
   module.status       = 'unkown';                // status of fbuser; 'unkonwn' -> not initialized, 'connected', etc.
   module.cachedAuthRepsonse = null;              // last auth-response received from facebook.
-  module.isRunningInCanvas  = false;
+  module.isRunningInCanvas  = false;             // running inside of facebook
+  module.isFbPlayer         = false;             // running inside or outside of facebook with user logged in via fb
   
   
   /** call this method to initialize facebook or make sure it's initialized. 
@@ -124,7 +125,33 @@ AWE.Facebook = (function(module) {
       },
       verifyOrderHandler
     );
-  }
+  };
+
+  module.postUserStory = function(symbolicId, success, error) {
+
+    var userStory = AWE.GS.RulesManager.getRules().getFacebookUserStoryWithSymbolicId(symbolicId);
+
+    if (userStory) {
+      var storyObject = {};
+      storyObject[userStory.type] = userStory.url;
+      FB.api('/me/wack-a-doo:' + userStory.action, 'post', storyObject, function(response) {
+        if (!response || response.error) {
+          if (error) {
+            error(response.error);
+          }
+        } else {
+          if (success) {
+            success();
+          }
+        }
+      });
+    }
+    else {
+      if (error) {
+        error('User Story not found ', symbolicId);
+      }
+    }
+  };
 
   return module;
 
