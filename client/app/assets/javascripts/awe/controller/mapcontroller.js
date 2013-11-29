@@ -3053,38 +3053,28 @@ AWE.Controller = function (module) {
           var armiesByTarget = null;
           var armiesByAlliance = null;
           var armyGroups = null;
-          if(Object.keys(armies).length > 10)
+          if (Object.keys(armies).length > 10)
           {
             armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armiesToRender);
-            if(armyGroups === null) {
+            if (Object.keys(armiesByTarget[null]).length > 10) {
+              armiesByAlliance = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armiesByTarget[null]);
+              armyGroups = $.extend({}, armiesByTarget, armiesByAlliance);
+            }
+            if (armyGroups === null) {
               armyGroups = armiesByTarget;
             }
           }
-           
-          /*if(Object.keys(armies).length > 10)
-          {
-              armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armiesToRender);
-              if(typeof armiesByTarget[null] !== 'undefined' && Object.keys(armiesByTarget[null]).length > 10)
-              {
-                armiesByAlliance = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armiesByTarget[null]);
-                //armiesByTarget[null] = 'undefined';
-                armyGroups = armiesByTarget.concat(armiesByAlliance);
-              }
-              if(armyGroups === null) {
-                armyGroups = armiesByTarget;
-              }
-          }*/
+
           var fortressView = fortressViews[nodes[i].id()];
           var position = fortressView ? AWE.Geometry.createPoint(
-            fortressView.center().x, fortressView.center().y
-          ) : AWE.Geometry.createPoint(
-            frame.origin.x + frame.size.width / 2,
-            frame.origin.y + frame.size.height / 2
-          );
-          
+                  fortressView.center().x, fortressView.center().y
+                  ) : AWE.Geometry.createPoint(
+                  frame.origin.x + frame.size.width / 2,
+                  frame.origin.y + frame.size.height / 2
+                  );
+
           processArmyGroupsAtPos(armyGroups, fortressView, position, frame);
           processArmiesAtPos(armiesToRender, settlementView, position, frame);
-          //processArmiesAtPos(armies, settlementView, position, frame);
         }
 
         if (that.areArmiesAtSettlementsVisible(frame) &&
@@ -3094,37 +3084,28 @@ AWE.Controller = function (module) {
             if (!location || !location.position()) continue;
             var armies = location.getArmies();       // armies at location
             var armiesToRender = jQuery.extend(true, {}, armies); // Create deep copy
-          var armiesByTarget = null;
-          var armiesByAlliance = null;
-          var armyGroups = null;
-          if(Object.keys(armies).length > 10)
-          {
-            armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armiesToRender);
-            if(armyGroups === null) {
-              armyGroups = armiesByTarget;
-            }
-          }
-          /*if(Object.keys(armies).length > 10)
-          {
+            var armiesByTarget = null;
+            var armiesByAlliance = null;
+            var armyGroups = null;
+            if (Object.keys(armies).length > 10)
+            {
               armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armiesToRender);
-              if(typeof armiesByTarget[null] !== 'undefined' && Object.keys(armiesByTarget[null]).length > 10)
-              {
+              if (Object.keys(armiesByTarget[null]).length > 10) {
                 armiesByAlliance = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armiesByTarget[null]);
-                //armiesByTarget[null] = 'undefined';
-                armyGroups = armiesByTarget.concat(armiesByAlliance);
+                armyGroups = $.extend({}, armiesByTarget, armiesByAlliance);
               }
-              if(armyGroups === null) {
+              if (armyGroups === null) {
                 armyGroups = armiesByTarget;
               }
-          }*/
+            }
+            
             var settlementView = locationViews[location.id()];
             var position = settlementView ? AWE.Geometry.createPoint(
-              settlementView.center().x, settlementView.center().y
-            ) : that.mc2vc(location.position());
+                    settlementView.center().x, settlementView.center().y
+                    ) : that.mc2vc(location.position());
             
             processArmyGroupsAtPos(armyGroups, settlementView, position, frame);
             processArmiesAtPos(armiesToRender, settlementView, position, frame);
-            //processArmiesAtPos(armies, settlementView, position, frame);
           }
         }
       }
