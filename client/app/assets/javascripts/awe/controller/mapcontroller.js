@@ -3049,15 +3049,31 @@ AWE.Controller = function (module) {
 
         if (that.areArmiesAtFortressVisible(frame) && nodes[i].isLeaf() && nodes[i].region()) {
           var armies = nodes[i].region().getArmiesAtFortress();       // armies at fortress
+          var armiesToRender = jQuery.extend(true, {}, armies); // Create deep copy
           var armiesByTarget = null;
-          if(Object.keys(armies).length > 1)
-            {
-              armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armies);
-              /*if(Object.keys(armiesByTarget[null]).length > 1)
-              {
-                var armiesByAlliance = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armiesByTarget[null]);
-              }*/
+          var armiesByAlliance = null;
+          var armyGroups = null;
+          if(Object.keys(armies).length > 10)
+          {
+            armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armiesToRender);
+            if(armyGroups === null) {
+              armyGroups = armiesByTarget;
+            }
           }
+           
+          /*if(Object.keys(armies).length > 10)
+          {
+              armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armiesToRender);
+              if(typeof armiesByTarget[null] !== 'undefined' && Object.keys(armiesByTarget[null]).length > 10)
+              {
+                armiesByAlliance = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armiesByTarget[null]);
+                //armiesByTarget[null] = 'undefined';
+                armyGroups = armiesByTarget.concat(armiesByAlliance);
+              }
+              if(armyGroups === null) {
+                armyGroups = armiesByTarget;
+              }
+          }*/
           var fortressView = fortressViews[nodes[i].id()];
           var position = fortressView ? AWE.Geometry.createPoint(
             fortressView.center().x, fortressView.center().y
@@ -3065,14 +3081,10 @@ AWE.Controller = function (module) {
             frame.origin.x + frame.size.width / 2,
             frame.origin.y + frame.size.height / 2
           );
-          if(armiesByTarget !== null)
-          {
-            processArmyGroupsAtPos(armiesByTarget, fortressView, position, frame);
-          }
-          else
-          {
-            processArmiesAtPos(armies, fortressView, position, frame);
-          }
+          
+          processArmyGroupsAtPos(armyGroups, fortressView, position, frame);
+          processArmiesAtPos(armiesToRender, settlementView, position, frame);
+          //processArmiesAtPos(armies, settlementView, position, frame);
         }
 
         if (that.areArmiesAtSettlementsVisible(frame) &&
@@ -3081,33 +3093,38 @@ AWE.Controller = function (module) {
             var location = nodes[i].region().location(loc);
             if (!location || !location.position()) continue;
             var armies = location.getArmies();       // armies at location
-            
-            var armiesByTarget = null;
-            if(Object.keys(armies).length > 1)
-            {
-              armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armies);
-              //console.log(Object.keys(armies).length);
-              /*if(Object.keys(armiesByTarget[null]).length > 1 && typeof armiesByTarget[null] !== 'undefined')
-              {
-                console.log("It works");
-                console.log(Object.keys(armiesByTarget[null]).length);
-                var armiesByAlliance = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armiesByTarget[null]);
-                console.log("Alliance");
-                console.log(Object.keys(armiesByAlliance).length);
-              }*/
+            var armiesToRender = jQuery.extend(true, {}, armies); // Create deep copy
+          var armiesByTarget = null;
+          var armiesByAlliance = null;
+          var armyGroups = null;
+          if(Object.keys(armies).length > 10)
+          {
+            armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armiesToRender);
+            if(armyGroups === null) {
+              armyGroups = armiesByTarget;
             }
+          }
+          /*if(Object.keys(armies).length > 10)
+          {
+              armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armiesToRender);
+              if(typeof armiesByTarget[null] !== 'undefined' && Object.keys(armiesByTarget[null]).length > 10)
+              {
+                armiesByAlliance = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armiesByTarget[null]);
+                //armiesByTarget[null] = 'undefined';
+                armyGroups = armiesByTarget.concat(armiesByAlliance);
+              }
+              if(armyGroups === null) {
+                armyGroups = armiesByTarget;
+              }
+          }*/
             var settlementView = locationViews[location.id()];
             var position = settlementView ? AWE.Geometry.createPoint(
               settlementView.center().x, settlementView.center().y
             ) : that.mc2vc(location.position());
-            if(armiesByTarget !== null)
-            {
-              processArmyGroupsAtPos(armiesByTarget, settlementView, position, frame);
-            }
-            else
-            {
-              processArmiesAtPos(armies, settlementView, position, frame);
-            }
+            
+            processArmyGroupsAtPos(armyGroups, settlementView, position, frame);
+            processArmiesAtPos(armiesToRender, settlementView, position, frame);
+            //processArmiesAtPos(armies, settlementView, position, frame);
           }
         }
       }

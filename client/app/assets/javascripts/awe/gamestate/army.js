@@ -376,7 +376,7 @@ AWE.GS = (function(module) {
     }
     that.groupArmiesByTarget = function(armies) {
       var armiesByTarget = new Array();
-      AWE.Ext.applyFunctionToElements(armies, function(army) {
+      AWE.Ext.applyFunctionToHash(armies, function(armyId, army) {
         if (!army.isGarrison())
         {
           if(typeof armiesByTarget[army.get('target_location_id')] === 'undefined')
@@ -384,6 +384,7 @@ AWE.GS = (function(module) {
             armiesByTarget[army.get('target_location_id')] = new Array();
           }
           armiesByTarget[army.get('target_location_id')].pushObject(army);
+          delete armies[armyId];
         }
       });
       return armiesByTarget;
@@ -400,6 +401,7 @@ AWE.GS = (function(module) {
               armiesByAllianceOrOwner[army.get('alliance_tag')] = new Array();
             }
             armiesByAllianceOrOwner[army.get('alliance_tag')].pushObject(army);
+            delete armies[armyId];
           }
           else
           {
@@ -408,6 +410,7 @@ AWE.GS = (function(module) {
               armiesByAllianceOrOwner[army.get('owner_name')] = new Array();
             }
             armiesByAllianceOrOwner[army.get('owner_name')].pushObject(army);
+            delete armies[armyId];
           }
         }
       });
