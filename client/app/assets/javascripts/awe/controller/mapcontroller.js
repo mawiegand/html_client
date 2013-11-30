@@ -2900,6 +2900,7 @@ AWE.Controller = function (module) {
         armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies || _disableArmies);
 
         initViewsWithBasePosition(armies, pos);
+        initViewsWithGroupBasePosition(armyGroups, pos);
         unclutter(armies, armyGroups, settlement, pos, frame);
 
         for (var key in armies) {
@@ -2960,48 +2961,7 @@ AWE.Controller = function (module) {
             }
           }
         }
-      };
-
-      var processArmyGroupsAtPos = function (armies, armyGroups, settlement, pos, frame) {
-
-        /*var filterArmies = function(armies, hideOthers) {
-          if (AWE.Config.DONT_RENDER_ARMIES) {
-            return {};
-          }
-          if (!hideOthers) {
-            return armies;
-          }
-          var filtered = {};
-          for (var key in armies) {
-            if (armies.hasOwnProperty(key)) {
-              var army = armies[key];
-              if (army.isOwn() || army.get('npc')) {
-                filtered[key] = army;
-              }
-            }
-          }
-          return filtered;
-        };*/
-
-        if (_viewPortChanged) {
-          _disableArmies = _disableArmies || (AWE.Util.hashCount(armyGroupViews) > AWE.Config.DONT_RENDER_ARMIES_THRESHOLD_IF_MOVING);
-        }
-        else if(_disableArmies && !_timeout) {
-          _timeout = true;
-          setTimeout(function() {
-            _timeout = false;
-            if (!_viewPortChanged && _disableArmies) {
-              _disableArmies = false;
-              that.setModelChanged();
-            }
-          }, 200);
-        }
-
-        //armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies || _disableArmies);
-
-        initViewsWithGroupBasePosition(armyGroups, pos);
-        unclutter(armies, armyGroups, settlement, pos, frame);
-
+        
         for (var key in armyGroups) {
           if (armyGroups.hasOwnProperty(key) && armyGroups[key][0] !== undefined && !armyGroups[key][0].isGarrison()) {
             var army = armyGroups[key][0];
@@ -3091,7 +3051,6 @@ AWE.Controller = function (module) {
                   frame.origin.y + frame.size.height / 2
                   );
 
-          processArmyGroupsAtPos(armiesToRender, armyGroups, fortressView, position, frame);
           processArmiesAtPos(armiesToRender, armyGroups, settlementView, position, frame);
         }
 
@@ -3122,7 +3081,6 @@ AWE.Controller = function (module) {
                     settlementView.center().x, settlementView.center().y
                     ) : that.mc2vc(location.position());
             
-            processArmyGroupsAtPos(armiesToRender, armyGroups, settlementView, position, frame);
             processArmiesAtPos(armiesToRender, armyGroups, settlementView, position, frame);
           }
         }
