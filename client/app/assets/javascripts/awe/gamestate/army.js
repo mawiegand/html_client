@@ -377,7 +377,7 @@ AWE.GS = (function(module) {
     that.groupArmiesByTarget = function(armies) {
       var armiesByTarget = new Array();
       AWE.Ext.applyFunctionToHash(armies, function(armyId, army) {
-        if (!army.isGarrison()) {
+        if (!army.isGarrison() && !army.get('selected')) {
           if (typeof armiesByTarget[army.get('target_location_id')] === 'undefined') {
             armiesByTarget[army.get('target_location_id')] = new Array();
           }
@@ -391,7 +391,7 @@ AWE.GS = (function(module) {
       var armiesByAllianceOrOwner = new Array();
       AWE.Ext.applyFunctionToHash(armies, function(armyId, army) {
         if (typeof army !== 'undefined') {
-          if (!army.isGarrison()) {
+          if (!army.isGarrison() && !army.get('selected')) {
             if (army.get('alliance_tag') !== null) {
               if (typeof armiesByAllianceOrOwner[army.get('alliance_tag')] === 'undefined') {
                 armiesByAllianceOrOwner[army.get('alliance_tag')] = new Array();

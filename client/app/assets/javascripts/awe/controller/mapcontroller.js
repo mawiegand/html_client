@@ -1429,6 +1429,7 @@ AWE.Controller = function (module) {
     that.setSelectedArmy = function (army) {
       var armyId = army.get('id');
       var view = armyViews[armyId];
+      army.set('selected', true);
       if (view) {
         if (_selectedView) {
           _unselectView(_selectedView);
@@ -3056,7 +3057,7 @@ AWE.Controller = function (module) {
           if (Object.keys(armies).length > 10)
           {
             armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armiesToRender);
-            if (Object.keys(armiesByTarget[null]).length > 10) {
+            if (typeof armiesByTarget[null] !== 'undefined' && Object.keys(armiesByTarget[null]).length > 10) {
               armiesByAlliance = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armiesByTarget[null]);
               armyGroups = $.extend({}, armiesByTarget, armiesByAlliance);
             }
@@ -3090,7 +3091,7 @@ AWE.Controller = function (module) {
             if (Object.keys(armies).length > 10)
             {
               armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armiesToRender);
-              if (Object.keys(armiesByTarget[null]).length > 10) {
+              if (typeof armiesByTarget[null] !== 'undefined' && Object.keys(armiesByTarget[null]).length > 10) {
                 armiesByAlliance = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armiesByTarget[null]);
                 armyGroups = $.extend({}, armiesByTarget, armiesByAlliance);
               }
