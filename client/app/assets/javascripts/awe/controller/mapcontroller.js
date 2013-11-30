@@ -2667,15 +2667,32 @@ AWE.Controller = function (module) {
       var newArmyGroupViews = {};
       var newMovementArrowViews = {};
 
-      var unclutter = function (armies, settlement, centerPos, frame) {
-        if (armies === null || armies === undefined) {
+      var unclutter = function (armies, armyGroups, settlement, centerPos, frame) {
+        /*if (armies === null || armies === undefined || armyGroups === null || armyGroups === undefined) {
           return;
-        }
+        }*/
         var views = [];
         AWE.Ext.applyFunctionToElements(armies, function (element) {
           if (!element.isGarrison()) {
             var view = armyViews[element.getId()] 
             view = view ? view : newArmyViews[element.getId()];
+            if (view) {
+              views.push({
+                view:view,
+                moveable:true,
+                id:view.army().getId(),
+                centerX:view.center().x,
+                centerY:view.center().y,
+                width:view.frame().size.width,
+                height:view.frame().size.height,
+              });
+            }
+          }
+        });
+        AWE.Ext.applyFunctionToElements(armyGroups, function (element) {
+          if (element[0] !== undefined && !element[0].isGarrison()) {
+            var view = armyGroupViews[element[0].getId()] 
+            view = view ? view : newArmyGroupViews[element[0].getId()];
             if (view) {
               views.push({
                 view:view,
@@ -2845,7 +2862,7 @@ AWE.Controller = function (module) {
         }
       }
 
-      var processArmiesAtPos = function (armies, settlement, pos, frame) {
+      var processArmiesAtPos = function (armies, armyGroups, settlement, pos, frame) {
 
         var filterArmies = function(armies, hideOthers) {
           if (AWE.Config.DONT_RENDER_ARMIES) {
@@ -2883,7 +2900,7 @@ AWE.Controller = function (module) {
         armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies || _disableArmies);
 
         initViewsWithBasePosition(armies, pos);
-        unclutter(armies, settlement, pos, frame);
+        unclutter(armies, armyGroups, settlement, pos, frame);
 
         for (var key in armies) {
           if (armies.hasOwnProperty(key) && !armies[key].isGarrison()) {
@@ -2945,7 +2962,7 @@ AWE.Controller = function (module) {
         }
       };
 
-      var processArmyGroupsAtPos = function (armyGroups, settlement, pos, frame) {
+      var processArmyGroupsAtPos = function (armies, armyGroups, settlement, pos, frame) {
 
         /*var filterArmies = function(armies, hideOthers) {
           if (AWE.Config.DONT_RENDER_ARMIES) {
@@ -2983,7 +3000,7 @@ AWE.Controller = function (module) {
         //armies = filterArmies(armies, AWE.Config.DONT_RENDER_OTHER_ARMIES || hideOtherArmies || _disableArmies);
 
         initViewsWithGroupBasePosition(armyGroups, pos);
-        unclutterGroup(armyGroups, settlement, pos, frame);
+        unclutter(armies, armyGroups, settlement, pos, frame);
 
         for (var key in armyGroups) {
           if (armyGroups.hasOwnProperty(key) && armyGroups[key][0] !== undefined && !armyGroups[key][0].isGarrison()) {
@@ -3074,8 +3091,8 @@ AWE.Controller = function (module) {
                   frame.origin.y + frame.size.height / 2
                   );
 
-          processArmyGroupsAtPos(armyGroups, fortressView, position, frame);
-          processArmiesAtPos(armiesToRender, settlementView, position, frame);
+          processArmyGroupsAtPos(armiesToRender, armyGroups, fortressView, position, frame);
+          processArmiesAtPos(armiesToRender, armyGroups, settlementView, position, frame);
         }
 
         if (that.areArmiesAtSettlementsVisible(frame) &&
@@ -3105,8 +3122,8 @@ AWE.Controller = function (module) {
                     settlementView.center().x, settlementView.center().y
                     ) : that.mc2vc(location.position());
             
-            processArmyGroupsAtPos(armyGroups, settlementView, position, frame);
-            processArmiesAtPos(armiesToRender, settlementView, position, frame);
+            processArmyGroupsAtPos(armiesToRender, armyGroups, settlementView, position, frame);
+            processArmiesAtPos(armiesToRender, armyGroups, settlementView, position, frame);
           }
         }
       }
