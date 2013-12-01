@@ -3263,7 +3263,7 @@ AWE.Controller = function (module) {
 
           armyUpdates[annotatedView.army().getId()] = annotatedView.army();
         }
-        else if (annotatedView.typeName() === 'ArmyGroupView') {
+        /*else if (annotatedView.typeName() === 'ArmyGroupView') {
           annotationView = AWE.UI.createArmyGroupAnnotationView();
           annotationView.initWithControllerAndView(that, annotatedView);
           annotationView.onMoveButtonClick = (function (self) {
@@ -3309,7 +3309,7 @@ AWE.Controller = function (module) {
           })(that);
 
           armyUpdates[annotatedView.army().getId()] = annotatedView.army();
-        }
+        }*/
         else if (annotatedView.typeName() === 'BaseView' || annotatedView.typeName() === 'OutpostView') {
           annotationView = AWE.UI.createBaseAnnotationView();
           annotationView.initWithControllerAndView(that, annotatedView);
