@@ -75,6 +75,10 @@ AWE.UI = (function(module) {
     };
     
     /** overwritten view methods */
+    that.setSelected = function(selected) {
+      _army.set('selected', selected);
+      _super.setSelected(selected);
+    }
     
     that.initWithControllerAndArmy = function(controller, army, frame) {
       that.initWithController(controller, frame);
