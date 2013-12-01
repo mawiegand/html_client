@@ -411,6 +411,23 @@ AWE.GS = (function(module) {
       });
       return armiesByAllianceOrOwner;
     }
+    that.groupArmies = function(armies) {
+      var armiesByTarget = null;
+      var armiesByAlliance = null;
+      var armyGroups = null;
+      if (Object.keys(armies).length > 10)
+      {
+        armiesByTarget = that.groupArmiesByTarget(armies);
+        if (typeof armiesByTarget[null] !== 'undefined' && Object.keys(armiesByTarget[null]).length > 10) {
+          armiesByAlliance = that.groupArmiesByAllianceOrOwner(armiesByTarget[null]);
+          armyGroups = $.extend({}, armiesByTarget, armiesByAlliance);
+        }
+        if (armyGroups === null) {
+          armyGroups = armiesByTarget;
+        }
+      }
+      return armyGroups;
+    }
     that.getArmiesOfCharacter = function(id) { 
       return AWE.GS.ArmyAccess.getAllForOwner_id(id)
     }   

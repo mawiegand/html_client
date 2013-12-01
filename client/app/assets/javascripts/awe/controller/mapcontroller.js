@@ -2989,20 +2989,7 @@ AWE.Controller = function (module) {
         if (that.areArmiesAtFortressVisible(frame) && nodes[i].isLeaf() && nodes[i].region()) {
           var armies = nodes[i].region().getArmiesAtFortress();       // armies at fortress
           var armiesToRender = jQuery.extend(true, {}, armies); // Create deep copy
-          var armiesByTarget = null;
-          var armiesByAlliance = null;
-          var armyGroups = null;
-          if (Object.keys(armies).length > 10)
-          {
-            armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armiesToRender);
-            if (typeof armiesByTarget[null] !== 'undefined' && Object.keys(armiesByTarget[null]).length > 10) {
-              armiesByAlliance = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armiesByTarget[null]);
-              armyGroups = $.extend({}, armiesByTarget, armiesByAlliance);
-            }
-            if (armyGroups === null) {
-              armyGroups = armiesByTarget;
-            }
-          }
+          var armyGroups = AWE.GS.ArmyManager.groupArmies(armiesToRender);
 
           var fortressView = fortressViews[nodes[i].id()];
           var position = fortressView ? AWE.Geometry.createPoint(
@@ -3022,20 +3009,7 @@ AWE.Controller = function (module) {
             if (!location || !location.position()) continue;
             var armies = location.getArmies();       // armies at location
             var armiesToRender = jQuery.extend(true, {}, armies); // Create deep copy
-            var armiesByTarget = null;
-            var armiesByAlliance = null;
-            var armyGroups = null;
-            if (Object.keys(armies).length > 10)
-            {
-              armiesByTarget = AWE.GS.ArmyManager.groupArmiesByTarget(armiesToRender);
-              if (typeof armiesByTarget[null] !== 'undefined' && Object.keys(armiesByTarget[null]).length > 10) {
-                armiesByAlliance = AWE.GS.ArmyManager.groupArmiesByAllianceOrOwner(armiesByTarget[null]);
-                armyGroups = $.extend({}, armiesByTarget, armiesByAlliance);
-              }
-              if (armyGroups === null) {
-                armyGroups = armiesByTarget;
-              }
-            }
+            var armyGroups = AWE.GS.ArmyManager.groupArmies(armiesToRender);
             
             var settlementView = locationViews[location.id()];
             var position = settlementView ? AWE.Geometry.createPoint(
@@ -3161,7 +3135,7 @@ AWE.Controller = function (module) {
 
       return targetArmies;
     };
-
+    
     that.updateActionViews = function () {
 
       // helper method for creating the appropriate annotation view
