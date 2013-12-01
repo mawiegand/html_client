@@ -105,6 +105,7 @@ AWE.Config = (function(module) {
 
     "map/army/base/own":      AWE.Config.RAILS_ASSET_PATH + 'army/base_own.png',
     "map/army/base/other":    AWE.Config.RAILS_ASSET_PATH + 'army/base.png',
+    "map/army/base/group":    AWE.Config.RAILS_ASSET_PATH + 'army/base_group.png',
     
     "map/army/rank1":         AWE.Config.RAILS_ASSET_PATH + 'army/rank1.png',
     "map/army/rank2":         AWE.Config.RAILS_ASSET_PATH + 'army/rank2.png',

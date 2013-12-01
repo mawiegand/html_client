@@ -82,7 +82,7 @@ AWE.UI = (function(module) {
       
 
       
-      var baseImage = /*army.isOwn() ? AWE.UI.ImageCache.getImage('map/army/base/own') : */AWE.UI.ImageCache.getImage('map/army/base/other')
+      var baseImage = /*army.isOwn() ? AWE.UI.ImageCache.getImage('map/army/base/own') : */AWE.UI.ImageCache.getImage('map/army/base/group')
       _baseImage = AWE.UI.createImageView();
       _baseImage.initWithControllerAndImage(controller, baseImage);
       _baseImage.setFrame(AWE.Geometry.createRect(-15, -21, 128, 128));
