@@ -1599,7 +1599,7 @@ AWE.Controller = function (module) {
           addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
         }
       }
-      if (view.typeName() === 'ArmyGroupView') {
+      else if (view.typeName() === 'ArmyGroupView') {
         if (that.markMoveOwnArmy()) {
           var annotationView = view.annotationView();
           addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
@@ -3507,7 +3507,7 @@ AWE.Controller = function (module) {
             var annotationView = view.annotationView();
             addMarkerToView(annotationView, AWE.Geometry.createPoint(-17, -23));
           }
-          if (_selectedView.typeName() === 'ArmyGroupView' && that.markMoveOwnArmy()) {
+          else if (_selectedView.typeName() === 'ArmyGroupView' && that.markMoveOwnArmy()) {
             var annotationView = _selectedView.annotationView();
             addMarkerToView(annotationView, AWE.Geometry.createPoint(20, -70));
           }
@@ -3657,6 +3657,7 @@ AWE.Controller = function (module) {
         stagesNeedUpdate[1] = propUpdates(locationViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(artifactViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(armyViews) || stagesNeedUpdate[1];
+        stagesNeedUpdate[1] = propUpdates(armyGroupViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[1] = propUpdates(movementArrowViews) || stagesNeedUpdate[1];
         stagesNeedUpdate[2] = propUpdates(actionViews) || stagesNeedUpdate[2];
         stagesNeedUpdate[3] = propUpdates(inspectorViews) || stagesNeedUpdate[3];
@@ -3692,11 +3693,12 @@ AWE.Controller = function (module) {
       var numRegionViews = AWE.Util.hashCount(regionViews);
       var numFortressViews = AWE.Util.hashCount(fortressViews);
       var numArmyViews = AWE.Util.hashCount(armyViews);
+      var numArmyGroupViews = AWE.Util.hashCount(armyGroupViews);
       var numArtifactViews = AWE.Util.hashCount(artifactViews);
       var numLocationViews = AWE.Util.hashCount(locationViews);
 
       $("#debug2").html('&nbsp; Number of visible views: ' + numRegionViews + '/' + numFortressViews +
-        '/' + numLocationViews + '/' + numArmyViews + '/' + numArtifactViews + '/' + ' (regions, fortresses, locations, armies, artifacts)');
+        '/' + numLocationViews + '/' + numArmyViews + '/' + numArmyGroupViews + '/' + numArtifactViews + '/' + ' (regions, fortresses, locations, armies, artifacts)');
     };
 
 
@@ -3805,7 +3807,7 @@ AWE.Controller = function (module) {
           // STEP 4c: update (repaint) those stages, that have changed (one view that needsDisplay triggers repaint of whole stage)
           var viewsInStages = [
             regionViews,
-            [fortressViews, artifactViews, armyViews, locationViews, movementArrowViews],
+            [fortressViews, artifactViews, armyViews, armyGroupViews, locationViews, movementArrowViews],
             [actionViews, targetViews],
             inspectorViews,
             controlsViews
