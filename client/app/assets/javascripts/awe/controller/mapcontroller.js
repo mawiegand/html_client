@@ -2778,6 +2778,12 @@ AWE.Controller = function (module) {
           if (armyGroups.hasOwnProperty(key) && armyGroups[key][0] !== undefined && !armyGroups[key][0].isGarrison()) {
             var army = armyGroups[key][0];
             var view = armyGroupViews[army.getId()];
+            
+            for (var i in armyGroups[key]) {
+              if (armyGroups[key].hasOwnProperty(i) && armyGroups[key][i] !== undefined) {
+                armyGroups[key][i].set('armyGroupViewId', army.getId())
+              }
+            }
 
             if (view) {
               // beginner tutorial hack for adding jumping arrow to own army:
@@ -3447,7 +3453,7 @@ AWE.Controller = function (module) {
               var targetedView = armyLocation.isFortress() ? fortressViews[armyLocation.node().id()] : locationViews[armyLocation.id()];
             }
             else {
-              var targetedView = armyViews[targetArmy.getId()];
+              var targetedView = (targetArmy.get('armyGroupViewId') !== undefined) ? armyGroupViews[targetArmy.get('armyGroupViewId')] : armyViews[targetArmy.getId()];
             }
 
             if (AWE.Config.MAP_LOCATION_TYPE_CODES[armyLocation.settlementTypeId()] === 'fortress') {
