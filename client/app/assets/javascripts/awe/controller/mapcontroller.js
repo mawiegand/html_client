@@ -2722,45 +2722,6 @@ AWE.Controller = function (module) {
         objectUnclutterer.setViews(views);
         objectUnclutterer.unclutter();
       }
-      
-      var unclutterGroup = function (armyGroups, settlement, centerPos, frame) {
-        if (armyGroups === null || armyGroups === undefined) {
-          return;
-        }
-        var views = [];
-        AWE.Ext.applyFunctionToElements(armyGroups, function (element) {
-          if (element[0] !== undefined && !element[0].isGarrison()) {
-            var view = armyGroupViews[element[0].getId()] 
-            view = view ? view : newArmyGroupViews[element[0].getId()];
-            if (view) {
-              views.push({
-                view:view,
-                moveable:true,
-                id:view.army().getId(),
-                centerX:view.center().x,
-                centerY:view.center().y,
-                width:view.frame().size.width,
-                height:view.frame().size.height,
-              });
-            }
-          }
-        });
-        if (views.length === 0) {
-          return;
-        }
-        if (settlement) {
-          views.push({
-            view:settlement,
-            moveable:false,
-            id:"fortress",
-          });
-        }
-        var objectUnclutterer = AWE.Util.ObjectUnclutterer.create({
-          scaleFactor:Math.max(frame.size.width / 256.0, 0.2),
-        });
-        objectUnclutterer.setViews(views);
-        objectUnclutterer.unclutter();
-      }
 
       var initViewsWithBasePosition = function (armies, pos) {
         for (var key in armies) {
