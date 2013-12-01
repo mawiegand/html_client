@@ -2668,9 +2668,9 @@ AWE.Controller = function (module) {
       var newMovementArrowViews = {};
 
       var unclutter = function (armies, armyGroups, settlement, centerPos, frame) {
-        /*if (armies === null || armies === undefined || armyGroups === null || armyGroups === undefined) {
+        if ((armies === null || armies === undefined) && (armyGroups === null || armyGroups === undefined)) {
           return;
-        }*/
+        }
         var views = [];
         AWE.Ext.applyFunctionToElements(armies, function (element) {
           if (!element.isGarrison()) {
