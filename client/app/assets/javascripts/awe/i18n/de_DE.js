@@ -1210,6 +1210,7 @@ AWE.I18n.de_DE = function(module) {
     },
     
     encyclopedia: {
+      encyclopedia: 'Enzyklopädie',
       selectCategory: 'Bitte wähle eine Kategorie und ein Thema aus.',
       productionTime: "Produktionszeit",
       hitpoints: "Lebenspunkte",

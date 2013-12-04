@@ -202,7 +202,7 @@ AWE.Controller = function (module) {
       $("body").append('<div class="link-pane"><a href="' + AWE.Config.EXTERNAL_FACEBOOK_URL + '" target="_blank"><img class="fb-icon" src="' + AWE.Config.RAILS_ASSET_PATH + 'icons/fb.png" /></a> &nbsp; ' +
         '                       <a href="' + AWE.Config.EXTERNAL_FORUM_URL + '" target="_blank">Forum</a> &nbsp; ' +
         '                       <a href="' + AWE.Config.EXTERNAL_MANUAL_URL + '" target="_blank">Manual</a> &nbsp; ' +
-        '                       <a href="#" onClick="WACKADOO.openEncyclopedia()">Enzyklop&auml;die</a> &nbsp; ' +
+        '                       <a href="#" onClick="WACKADOO.openEncyclopedia()">' + AWE.I18n.lookupTranslation('encyclopedia.encyclopedia') + '</a> &nbsp; ' +
         '                       <a href="#" onClick="WACKADOO.reload()">Reload</a></div>');
       window.WACKADOO.addDomElement($('.link-pane'), false);
       window.WACKADOO.addDomElement(zoomSlider.getContainer(), true);
