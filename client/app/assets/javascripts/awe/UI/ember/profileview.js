@@ -33,6 +33,15 @@ AWE.UI.Ember = (function(module) {
     tabViews:      null,
     currentView:   null,
     presentTab:    null,
+
+    tabContentClass: function() {
+      if (AWE.Facebook.isRunningInCanvas) {
+        return 'tab-content tab-content-scrollable';
+      }
+      else {
+        return 'tab-content';
+      }
+    }.property(),
     
     
     init: function() {

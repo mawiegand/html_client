@@ -6,7 +6,7 @@
       {{/each}}
   </ul>  
     
-  <div class="tab-content">
+  <div {{bindAttr class="tabContentClass"}}>
     {{view Ember.ContainerView currentViewBinding="currentView"}}
   </div>
 
@@ -16,15 +16,15 @@
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="horizontal-center-helper">
     <div class="modal-dialog-pane z-layer-4 character-profile-view">
+
+      <a {{action "closePressed"}} class="close clickable"></a>
+
       {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner" width=120 height=120}}
 
       <h1>{{t profile.youAre }}: {{character.name}}</h1>
       
       {{view AWE.UI.Ember.ProfileTabView characterBinding="character" allianceBinding="alliance" }}
 
-      <hr/>
-
-      <div class="icon-button ok-button" {{action "closePressed"}}>{{t general.close}}</div>
     </div>
   </div>
 </script>
@@ -104,7 +104,7 @@
 
 <script type="text/x-handlebars" data-template-name="character-progress-bar-view">
 
-  <div style="width:100%; height: 20px; position: relative; background: #EEF; border: 1px solid black; margin-top: 70px; margin-bottom: 80px;">
+  <div style="width:99%; height: 20px; position: relative; background: #EEF; border: 1px solid black; margin-top: 70px; margin-bottom: 80px;">
     <div style="position:absolute; top: 0; left: 0; width: 100px; height: 90px; margin-top: -70px; border-left: 1px solid black; margin-left: -1px; padding-left: 3px;">
       <div style="height: 70px; font-size: 14px;">{{t profile.rank.start}}</div>
       <div>0 {{t profile.rank.experienceAbbreviation}}</div>
