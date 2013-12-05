@@ -14,7 +14,16 @@ AWE.UI.Ember = (function(module) {
     
     tutorialState: null,
     
-    questStatesBinding: 'tutorialState.notClosedQuestStates',  
+    questStatesBinding: 'tutorialState.notClosedQuestStates',
+
+    questListBodyClass: function() {
+      if (AWE.Facebook.isRunningInCanvas) {
+        return 'quest-list-scrollable';
+      }
+      else {
+        return '';
+      }
+    }.property(),
     
     redeemButtonPressed: function(questState) {
 //      log('--> redeem Button Pressed', questState)

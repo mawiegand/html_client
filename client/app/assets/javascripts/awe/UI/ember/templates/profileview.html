@@ -6,7 +6,7 @@
       {{/each}}
   </ul>  
     
-  <div class="tab-content">
+  <div {{bindAttr class="tabContentClass"}}>
     {{view Ember.ContainerView currentViewBinding="currentView"}}
   </div>
 

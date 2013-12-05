@@ -16,10 +16,55 @@
         <div class="quest-list-item-show"></div>
       </div>
 
-      <div class="quest-list-body">
-        {{#each questStates}}
-          {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
-        {{/each}}
+      <div {{bindAttr class="questListBodyClass" }}>
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
+      {{#each questStates}}
+      {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+      {{/each}}
       </div>
             
       <div class="button ok-button" {{action "okPressed"}}>{{t general.ok}}</div>
