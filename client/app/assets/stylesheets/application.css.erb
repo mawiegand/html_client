@@ -1107,7 +1107,7 @@ h1.slot-tooltip {
   position: absolute; 
   margin-left: -400px;
   margin-top: -300px;  
-  width: 800px; 
+  width: 820px; 
   min-height: 300px;
   background-color: #FFF;    
 }
@@ -1117,7 +1117,7 @@ h1.slot-tooltip {
   background: url('<%= asset_path("ui/close_button.png") %>');
   width: 50px;
   height: 46px;
-  right: 24px;
+  right: 10px;
   top: 26px;
 }
 
@@ -1140,6 +1140,11 @@ h1.slot-tooltip {
   float: left;
   padding-right: 10px;
   width: 140px;
+}
+
+.encyclopedia-view-scrollable .overview, .details{
+  overflow:auto;
+  height:600px;
 }
 
 .encyclopedia-view .overview .enc-button {
@@ -1184,6 +1189,8 @@ h1.slot-tooltip {
   padding-left: 8px;
   border-left: 1px solid black;
   width: 620px;
+  overflow:auto;
+  height:600px;
 }
 
 .character-profile-view {
@@ -1194,6 +1201,19 @@ h1.slot-tooltip {
   width: 700px; 
   min-height: 300px;
   background-color: #FFF;    
+}
+
+.character-profile-view a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 20px;
+  top: 26px;
+}
+
+.character-profile-view a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
 .character-profile-view input[type="text"] {
@@ -1294,8 +1314,13 @@ h1.slot-tooltip {
 
 .tab-content {
   clear:left;
-  padding: 16px 8px 24px 8px;
+  padding: 16px 5px 24px 5px;
   border: 1px solid black;
+}
+
+.tab-content-scrollable {
+  height:500px;
+  overflow:auto;
 }
 
 .character-profile-view .tab-content {
@@ -4926,6 +4951,11 @@ a.trading-carts-speedup-button:hover {
   text-align: center;
 }
 
+.bonus-offer-wrapper {
+  height:400px;
+  overflow: auto;
+}
+
 #platinum-description {
   padding: 10px;
 }
@@ -4934,7 +4964,7 @@ a.trading-carts-speedup-button:hover {
   position: absolute; 
   margin-left: -300px;
   margin-top: 10px;
-  width: 600px; min-height: 100px;
+  width: 630px; min-height: 100px;
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
   z-index:256;
@@ -5445,7 +5475,8 @@ a.trading-carts-speedup-button:hover {
   position: absolute; 
   margin-left: -300px;
   margin-top: 80px;
-  width: 600px; min-height: 100px;
+  width: 630px; min-height: 100px;
+  height: 600px;
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
   z-index:256;
@@ -5465,6 +5496,12 @@ a.trading-carts-speedup-button:hover {
 
 .quest-list-body {
   margin-bottom: 40px;
+}
+
+.quest-list-scrollable {
+  margin-bottom: 10px;
+  overflow: auto;
+  height: 410px;
 }
 
 .quest-list-item.girl {
@@ -5781,7 +5818,7 @@ a.trading-carts-speedup-button:hover {
   
 .army-list-table-wrapper {
   overflow:auto;
-  height: 600px; /* I took this value because of .army-list-view */
+  height: 500px; /* I took this value because of .army-list-view */
 }
 
 .army-list-table th {

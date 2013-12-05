@@ -925,7 +925,7 @@ AWE.I18n.en_US = function(module) {
       progressTab:"Progress",
       customizationTab:"Customization",
       optionsTab:"Options",
-      movingTab: "Umziehen",
+      movingTab: "Moving",
 
       rank:{
         start:"Start",
@@ -1185,6 +1185,7 @@ AWE.I18n.en_US = function(module) {
     },
 
     encyclopedia:{
+      encyclopedia: 'Encyclopedia',
       selectCategory: 'Select a category and a topic, please.',
       productionTime:"Training time",
       hitpoints:"Hitpoints",
