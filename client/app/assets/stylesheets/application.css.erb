@@ -1665,8 +1665,7 @@ loaddialog-positioner {
   min-width: 1024px;
   width: 100%;
   overflow-x: hidden;
-  background: url('<%= asset_path("settlements/base/base_background_repeat.jpg") %>');
-  background-repeat: repeat;  
+  background-color: #888;
   height: 100%;
 }   
    
@@ -3263,33 +3262,20 @@ table .datetime {
   margin: 0px;
 }
 
-.outpost-picture, 
-.fortress-pictu {
+.fortress-picture {
   position: relative;
   float: left;
   width: 800px;
   height: 600px;
-} 
+}
 
+.outpost-picture,
 .base-picture {
   position: relative;
   float: left;
-  width: 1280px;
+  width: 100%;
   height: 844px;
-} 
-
-.outpost-picture-right, 
-.base-picture-right {
-  position: absolute;
-  height: 960px;
-  left: 1280px;
-  width: 1200px;
-  margin-right: -1200px;
-  top: -220px;
-  background: url('<%= asset_path("settlements/base/base_background_right.jpg") %>');
-  background-repeat: repeat-x;
 }
-
 
 .fortress-picture {
   background: url('<%= asset_path("settlements/fortress/fortress_background.png") %>');
@@ -3299,16 +3285,16 @@ table .datetime {
 .base-picture {
   margin-top: 100px;
   overflow: visible;
-} 
+}
 
 .outpost-background-picture,
 .base-background-picture {
-  background: url('<%= asset_path("settlements/base/base_background_1280.jpg") %>');
-  background-repeat: no-repeat;
+  background: url('<%= asset_path("settlements/base/base_background.jpg") %>');
+  background-repeat: repeat-x;
   position: absolute;
   left: 0px;
   top: -220px;
-  width: 1280px;
+  width: 100%;
   height: 960px;
   z-index: 0;
 }
