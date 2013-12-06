@@ -1680,7 +1680,7 @@ loaddialog-positioner {
   z-index:5; 
 }
 
-.settlement-dialog-window {
+.settlement-dialog-window, .settlement-dialog-window2 {
   position: absolute; 
   margin-left: 20px;
   margin-top:  60px;
@@ -1688,6 +1688,10 @@ loaddialog-positioner {
   padding: 0px;
   z-index:26;
 } 
+
+.settlement-dialog-window2 {
+  margin-top:-20px;
+}
 
 .fortress-screen .settlement-dialog-window {
   margin-top: 160px;
@@ -1715,6 +1719,20 @@ loaddialog-positioner {
   min-height: 480px;
   padding: 6px 49px 6px 49px;
   background-image: url('<%= asset_path("ui/settlement/details_window_tile.png") %>');
+}
+
+.settlement-dialog-window2 .settlement-dialog-pane { 
+  width: 660px; 
+  height: 480px;
+  padding: 6px 49px 6px 49px;
+  background-image: url('<%= asset_path("ui/settlement/details_window_tile.png") %>');
+}
+
+.settlement-dialog-window2 .settlement-dialog-pane .wrapper { 
+  width:680px;
+  height: 450px;
+  margin-top:30px;
+  overflow:auto;
 }
 
 .settlement-dialog-pane a.close {
