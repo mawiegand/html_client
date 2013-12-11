@@ -16,7 +16,7 @@
         <div class="quest-list-item-show"></div>
       </div>
 
-      <div class="quest-list-body">
+      <div {{bindAttr class="questListBodyClass" }}>
         {{#each questStates}}
           {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
         {{/each}}

@@ -182,6 +182,15 @@ AWE.UI.Ember = (function(module) {
     displayResources: false,
     displayBuildings: false,
     displayUnits:     false,
+
+    encyclopediaViewClass: function() {
+      if (AWE.Facebook.isRunningInCanvas) {
+        return 'encyclopedia-view-scrollable';
+      }
+      else {
+        return '';
+      }
+    }.property(),
     
     resourceTypes: function () {
       var rules = this.get('rules');

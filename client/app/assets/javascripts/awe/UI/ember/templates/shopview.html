@@ -59,6 +59,7 @@
               {{view AWE.UI.Ember.ShopSpecialOffer offerBinding="specialOffer" shopBinding="shop" classNames="special-offer"}}
             {{/if}}
 
+            <div {{bindAttr class="offerWrapperClass" }} >
             {{#if platinumOffers}}
             
               <div class="clearfix"></div>
@@ -93,6 +94,7 @@
                 {{view AWE.UI.Ember.ShopBonusOffer offerBinding="this" shopBinding="shop" classNames="bonus-offer"}}
               {{/each}}
             {{/if}}
+            </div>
           {{/unless}}
         {{/if}}
         
