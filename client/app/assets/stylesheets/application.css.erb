@@ -588,6 +588,9 @@ h3 {
   box-shadow:         3px 3px 2px 2px #333;
 }
 
+.settlement-info-dialog-pane.modal-dialog-pane {
+  margin-top:-170px;
+}
 
 
 .modal-dialog-pane .icon-button, .modal-dialog-pane .button {
@@ -1159,12 +1162,10 @@ h1.slot-tooltip {
   float: left;
   padding-right: 10px;
   width: 140px;
+  height: 600px;
+  overflow:auto;
 }
 
-.encyclopedia-view-scrollable .overview, .details{
-  overflow:auto;
-  height:600px;
-}
 
 .encyclopedia-view .overview .enc-button {
   text-decoration: none;
@@ -1184,6 +1185,11 @@ h1.slot-tooltip {
 
 .encyclopedia-view .overview .enc-category:hover {
   text-decoration: underline;
+}
+
+.encyclopedia-details-wrapper {
+  height:510px;
+  overflow:auto;
 }
 
 .encyclopedia-view .building-option-image {
@@ -1207,8 +1213,7 @@ h1.slot-tooltip {
   float:left;
   padding-left: 8px;
   border-left: 1px solid black;
-  width: 620px;
-  overflow:auto;
+  width: 660px;
   height:600px;
 }
 
@@ -1702,7 +1707,7 @@ loaddialog-positioner {
   z-index:5; 
 }
 
-.settlement-dialog-window {
+.settlement-dialog-window, .settlement-dialog-window2 {
   position: absolute; 
   margin-left: 20px;
   margin-top:  60px;
@@ -1710,6 +1715,10 @@ loaddialog-positioner {
   padding: 0px;
   z-index:26;
 } 
+
+.settlement-dialog-window2 {
+  margin-top:-20px;
+}
 
 .fortress-screen .settlement-dialog-window {
   margin-top: 160px;
@@ -1737,6 +1746,20 @@ loaddialog-positioner {
   min-height: 480px;
   padding: 6px 49px 6px 49px;
   background-image: url('<%= asset_path("ui/settlement/details_window_tile.png") %>');
+}
+
+.settlement-dialog-window2 .settlement-dialog-pane { 
+  width: 660px; 
+  height: 480px;
+  padding: 6px 49px 6px 49px;
+  background-image: url('<%= asset_path("ui/settlement/details_window_tile.png") %>');
+}
+
+.settlement-dialog-window2 .settlement-dialog-pane .wrapper { 
+  width:680px;
+  height: 450px;
+  margin-top:30px;
+  overflow:auto;
 }
 
 .settlement-dialog-pane a.close {
@@ -5504,7 +5527,7 @@ button.fb-button {
   margin-left: -300px;
   margin-top: 80px;
   width: 630px; min-height: 100px;
-  height: 600px;
+  /*height: 600px;*/
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
   z-index:256;

@@ -1,8 +1,8 @@
 <script type="text/x-handlebars" data-template-name="encyclopedia-building">
 
-  <h1>
+    <h1>{{local building.name}}</h1>
+  <div class="encyclopedia-details-wrapper">
     <div class="base-screen"><div {{bindAttr class=":building-option-image :size1 building.symbolic_id :level1 :ency"}}></div></div>
-    {{local building.name}}</h1>
   
   {{#unless building.demolishable}}
     <p><b>{{t general.warning}}:</b> {{t building.info.notDemolishable}}</p>
@@ -93,6 +93,7 @@
       </tr>
     {{/each}}
   </table>
+</div>
 </script>
 
 

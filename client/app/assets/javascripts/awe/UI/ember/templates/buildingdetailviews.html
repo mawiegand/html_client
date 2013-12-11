@@ -128,10 +128,11 @@
 
 <script type="text/x-handlebars" data-template-name="settlement-dialog-building-details">
   <div class="settlement-dialog-background"></div>
-  <div class="settlement-dialog-window helvetica-light">
+  <div class="settlement-dialog-window2 helvetica-light">
     <div class="settlement-dialog-header settlement-dialog-building-details"></div>
     <div class="settlement-dialog-pane settlement-dialog-building-details">
       <a {{action "cancelPressed" }} class="close" title="{{t general.close}}"></a>
+      <div class="wrapper">
       {{view AWE.UI.Ember.BuildingView classNames="building-option-image" buildingBinding="building"}}
       <div class="building-description-box">
         {{#if building.level }}
@@ -467,7 +468,9 @@
         {{view AWE.UI.Ember.PlayerToPlayerTradeView settlementBinding="building.slot.settlement" controllerBinding="controller"}}
       <hr class="clearfix" />
         {{view AWE.UI.Ember.FrogTradeView controllerBinding="controller"}}
-      {{/if}}
+        {{/if}}
+
+      </div>
 
     </div>
     <div class="settlement-dialog-footer settlement-dialog-building-details"></div>
