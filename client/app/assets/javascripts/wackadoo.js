@@ -21,8 +21,6 @@
  * @name WACKADOO
  */
 
-console.log('window.name', window.name);
-
 window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
   var _numLoadedAssets = 0, _numAssets = 0; // this uses a closure for private, not-bindable vars
