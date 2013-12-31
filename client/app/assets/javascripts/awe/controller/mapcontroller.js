@@ -767,6 +767,27 @@ AWE.Controller = function (module) {
       });
       that.applicationController.presentModalDialog(dialog);
     };
+    
+    that.armyGroupAttackClicked = function (currentAction, armyGroup) {
+      if (!armyGroup) {
+        return;
+      }
+
+      var dialog = AWE.UI.Ember.ArmyGroupAttackDialog.create({
+        armyGroup:armyGroup,
+        attackerArmy: currentAction.army,
+        armyView: currentAction.clickedView,
+        mapController: that,
+        controller: this.that,
+
+        changeStanceCallback:function () {
+          if (inspectorViews.inspector) {
+            inspectorViews.inspector.updateView();
+          }
+        },
+      }, callback = armyAttackTargetClicked);
+      that.applicationController.presentModalDialog(dialog);
+    };
 
     that.armyMoveButtonClicked = function (armyAnnotationView) {
       if (armyAnnotationView.army().get('hasHomebaseFounder')) {
@@ -1520,16 +1541,21 @@ AWE.Controller = function (module) {
           }
         }
         else if (currentAction.typeName === 'attackAction') {
-          var targetArmies = getTargetArmies(currentAction.army);
+          if (view.typeName() === 'ArmyGroupView') {
+            that.armyGroupAttackClicked(currentAction, view.armyGroup());
+          }
+          else {
+            var targetArmies = getTargetArmies(currentAction.army);
 
-          for (var key in targetArmies) {
-            if (targetArmies.hasOwnProperty(key)) {
-              var targetArmy = targetArmies[key];
+            for (var key in targetArmies) {
+              if (targetArmies.hasOwnProperty(key)) {
+                var targetArmy = targetArmies[key];
 
-              if (view.army && view.army() === targetArmy
-                || view.location && view.location().garrisonArmy() === targetArmy) {
-                actionCompleted = true;
-                break;
+                if (view.army && view.army() === targetArmy
+                  || view.location && view.location().garrisonArmy() === targetArmy) {
+                  actionCompleted = true;
+                  break;
+                }
               }
             }
           }

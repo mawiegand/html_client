@@ -675,11 +675,22 @@ AWE.UI.Ember = (function(module) {
       }
     }.observes('army', 'army.region_id'),
 
+    infoPressed: function() {
+      var army = this.getPath('army');
+      if (!army) {
+        return ;
+      }   
+      var dialog = AWE.UI.Ember.ArmyInfoDialog.create({
+        army: army,
+      }); 
+      dialog.showModal();    
+      return false; // prevent default behavior
+    },
+    
     namePressed: function() {
       var mapController = WACKADOO.activateMapController(true);
       WACKADOO.closeAllModalDialogs();
       mapController.centerLocationAndMarkArmy(this.get('army'));
-      AWE.Log.Debug(this.get('army').name + ": " + this.get('army').getPath('selected'));
     },  
 
     regionPressed: function() {
@@ -706,6 +717,31 @@ AWE.UI.Ember = (function(module) {
       // Do we need to check another stance here or a default value?
     }.property('army.updated_at'),
 
+  });
+  
+  module.ArmyGroupAttackDialog = AWE.UI.Ember.ArmyGroupInfoDialog.extend({
+    templateName: "army-group-attack-view",
+    attackerArmy: null,
+    armyView: null,
+    
+    targetArmy: function(army) {
+      if(callback) {
+        callback(this.get('attackerArmy'), army, this.get('armyView'));
+      }
+    }
+  });
+  
+  module.ArmyGroupAttackItem = AWE.UI.Ember.ArmyGroupItem.extend({
+    templateName: "army-group-attack-item",
+    
+    namePressed: function() {
+      var parentView = this.get('parentView');
+      var army = this.get('army');
+      WACKADOO.closeAllModalDialogs();
+      if (parentView) {
+         parentView.targetArmy(army);
+      }
+    },
   });
 
   module.ArmyView = AWE.UI.Ember.Pane.extend({
