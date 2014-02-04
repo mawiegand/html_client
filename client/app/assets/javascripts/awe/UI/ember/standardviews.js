@@ -73,7 +73,7 @@ AWE.UI.Ember = (function(module) {
     mouseY: 0,
 
     updatePosition: function() {
-      var posX = this.get('mouseX') + 20; // - parent.$().offset().left + 10;
+      var posX = this.get('mouseX') - 140; // - parent.$().offset().left + 10;
       var posY = this.get('mouseY') + 16; // - parent.$().offset().top + 18;
 
       if (posY > 460) {

@@ -588,6 +588,9 @@ h3 {
   box-shadow:         3px 3px 2px 2px #333;
 }
 
+.settlement-info-dialog-pane.modal-dialog-pane {
+  margin-top:-170px;
+}
 
 
 .modal-dialog-pane .icon-button, .modal-dialog-pane .button {
@@ -1126,7 +1129,7 @@ h1.slot-tooltip {
   position: absolute; 
   margin-left: -400px;
   margin-top: -300px;  
-  width: 800px; 
+  width: 820px; 
   min-height: 300px;
   background-color: #FFF;    
 }
@@ -1136,7 +1139,7 @@ h1.slot-tooltip {
   background: url('<%= asset_path("ui/close_button.png") %>');
   width: 50px;
   height: 46px;
-  right: 24px;
+  right: 10px;
   top: 26px;
 }
 
@@ -1159,7 +1162,10 @@ h1.slot-tooltip {
   float: left;
   padding-right: 10px;
   width: 140px;
+  height: 600px;
+  overflow:auto;
 }
+
 
 .encyclopedia-view .overview .enc-button {
   text-decoration: none;
@@ -1179,6 +1185,11 @@ h1.slot-tooltip {
 
 .encyclopedia-view .overview .enc-category:hover {
   text-decoration: underline;
+}
+
+.encyclopedia-details-wrapper {
+  height:510px;
+  overflow:auto;
 }
 
 .encyclopedia-view .building-option-image {
@@ -1202,7 +1213,8 @@ h1.slot-tooltip {
   float:left;
   padding-left: 8px;
   border-left: 1px solid black;
-  width: 620px;
+  width: 660px;
+  height:600px;
 }
 
 .character-profile-view {
@@ -1213,6 +1225,19 @@ h1.slot-tooltip {
   width: 700px; 
   min-height: 300px;
   background-color: #FFF;    
+}
+
+.character-profile-view a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 20px;
+  top: 26px;
+}
+
+.character-profile-view a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
 }
 
 .character-profile-view input[type="text"] {
@@ -1313,8 +1338,13 @@ h1.slot-tooltip {
 
 .tab-content {
   clear:left;
-  padding: 16px 8px 24px 8px;
+  padding: 16px 5px 24px 5px;
   border: 1px solid black;
+}
+
+.tab-content-scrollable {
+  height:500px;
+  overflow:auto;
 }
 
 .character-profile-view .tab-content {
@@ -1663,8 +1693,7 @@ loaddialog-positioner {
   min-width: 1024px;
   width: 100%;
   overflow-x: hidden;
-  background: url('<%= asset_path("settlements/base/base_background_repeat.jpg") %>');
-  background-repeat: repeat;  
+  background-color: #888;
   height: 100%;
 }   
    
@@ -1678,7 +1707,7 @@ loaddialog-positioner {
   z-index:5; 
 }
 
-.settlement-dialog-window {
+.settlement-dialog-window, .settlement-dialog-window2 {
   position: absolute; 
   margin-left: 20px;
   margin-top:  60px;
@@ -1686,6 +1715,10 @@ loaddialog-positioner {
   padding: 0px;
   z-index:26;
 } 
+
+.settlement-dialog-window2 {
+  margin-top:-20px;
+}
 
 .fortress-screen .settlement-dialog-window {
   margin-top: 160px;
@@ -1713,6 +1746,20 @@ loaddialog-positioner {
   min-height: 480px;
   padding: 6px 49px 6px 49px;
   background-image: url('<%= asset_path("ui/settlement/details_window_tile.png") %>');
+}
+
+.settlement-dialog-window2 .settlement-dialog-pane { 
+  width: 660px; 
+  height: 480px;
+  padding: 6px 49px 6px 49px;
+  background-image: url('<%= asset_path("ui/settlement/details_window_tile.png") %>');
+}
+
+.settlement-dialog-window2 .settlement-dialog-pane .wrapper { 
+  width:680px;
+  height: 450px;
+  margin-top:30px;
+  overflow:auto;
 }
 
 .settlement-dialog-pane a.close {
@@ -2151,7 +2198,7 @@ span.bonus {
 .queue-list {
   position: absolute;
   top: 100px;
-  left: 770px;
+  left: 950px;
   z-index: 0;
   text-shadow: none;
 }
@@ -2868,7 +2915,7 @@ span.bonus {
 }
 
 .alliance-screen-picture {
-  background: url('<%= asset_path("settlements/base/base_background_1280.jpg") %>');
+  background: url('<%= asset_path("settlements/base/base_background.jpg") %>');
   background-repeat: no-repeat;
   margin-top: -100px;
   width: 1280px;
@@ -3260,28 +3307,20 @@ table .datetime {
   margin: 0px;
 }
 
-.outpost-picture, 
-.fortress-picture, 
-.base-picture {
+.fortress-picture {
   position: relative;
   float: left;
   width: 800px;
   height: 600px;
-} 
-
-
-.outpost-picture-right, 
-.base-picture-right {
-  position: absolute;
-  height: 960px;
-  left: 1280px;
-  width: 1200px;
-  margin-right: -1200px;
-  top: -220px;
-  background: url('<%= asset_path("settlements/base/base_background_right.jpg") %>');
-  background-repeat: repeat-x;
 }
 
+.outpost-picture,
+.base-picture {
+  position: relative;
+  float: left;
+  width: 800px;
+  height: 1024px;
+}
 
 .fortress-picture {
   background: url('<%= asset_path("settlements/fortress/fortress_background.png") %>');
@@ -3291,17 +3330,18 @@ table .datetime {
 .base-picture {
   margin-top: 100px;
   overflow: visible;
-} 
+}
 
 .outpost-background-picture,
 .base-background-picture {
-  background: url('<%= asset_path("settlements/base/base_background_1280.jpg") %>');
-  background-repeat: no-repeat;
+  background: url('<%= asset_path("settlements/base/base_background.jpg") %>');
+  background-position: -160px 0;
+  background-repeat: repeat-x;
   position: absolute;
   left: 0px;
   top: -220px;
-  width: 1280px;
-  height: 960px;
+  width: 1000%;
+  height: 1024px;
   z-index: 0;
 }
 
@@ -4076,184 +4116,201 @@ table .datetime {
   right: 0px;
 }
 
-/** row 1 */
+.base-picture .large-building.slot1 {
+  top:  20px;
+  left: 525px;
+}
+
+.base-picture .large-building.slot2 {
+  top:  60px;
+  left: 645px;
+}
+
+.base-picture .large-building.slot3 {
+  top:  170px;
+  left: 525px;
+}
+
+.base-picture .large-building.slot4 {
+  top: 210px;
+  left: 645px;
+}
+
+/** 11. col */
 .base-picture .small-building.slot5 {
-  top:   50px;
-  left:  40px;
+  top:  180px;
+  left: 845px;
 }
 .base-picture .small-building.slot6 {
-  top:   50px;
-  left: 120px;
+  top:  300px;
+  left: 845px;
 }
+
 .base-picture .small-building.slot7 {
-  top:   50px;
-  left: 200px;
+  top:  420px;
+  left: 845px;
 }
+
+/** 1. col right */
 .base-picture .small-building.slot8 {
-  top:   50px;
-  left: 280px;
+  top: 140px;
+  left: 765px;
 }
 .base-picture .small-building.slot9 {
-  top:   50px;
-  left: 360px;
+  top: 260px;
+  left: 765px;
 }
 .base-picture .small-building.slot10 {
-  top:   50px;
-  left: 440px;
+  top: 380px;
+  left: 765px;
 }
+
+
+/** 2. col right */
 .base-picture .small-building.slot11 {
-  top:   50px;
-  left: 520px;
+  top: 330px;
+  left: 685px;
 }
 .base-picture .small-building.slot12 {
-  top:   50px;
-  left: 600px;
-}
-.base-picture .small-building.slot13 {
-  top:   50px;
-  left: 680px;
+  top: 450px;
+  left: 685px;
 }
 
-/** row 2 */
-.base-picture .small-building.slot14 {
-  top:  145px;
-  left:  40px;
+
+/** 3. col */
+.base-picture .small-building.slot13 {
+  top: 330px;
+  left: 605px;
 }
+.base-picture .small-building.slot14 {
+  top: 450px;
+  left: 605px;
+}
+
+
+/** 4. col */
 .base-picture .small-building.slot15 {
-  top:  145px;
-  left: 120px;
+  top: 320px;
+  left: 525px;
 }
 .base-picture .small-building.slot16 {
-  top:  145px;
-  left: 200px;
+  top: 440px;
+  left: 525px;
 }
-.base-picture .large-building.slot1 {
-  top:  155px;
-  left: 280px;
-}
-.base-picture .large-building.slot2 {
-  top:  155px;
-  left: 400px;
-}
+
+
+/** 5.col */
 .base-picture .small-building.slot17 {
-  top:  145px;
-  left: 520px;
+  top:  60px;
+  left: 445px;
 }
 .base-picture .small-building.slot18 {
-  top:  145px;
-  left: 600px;
+  top:  180px;
+  left: 445px;
 }
 .base-picture .small-building.slot19 {
-  top:  145px;
-  left: 680px;
+  top:  300px;
+  left: 445px;
 }
-
-
-/** row 3 */
 .base-picture .small-building.slot20 {
-  top:  240px;
-  left:  40px;
+  top:  420px;
+  left: 445px;
 }
+
+
+/** 6. col */
 .base-picture .small-building.slot21 {
-  top:  240px;
-  left: 120px;
+  top:  20px;
+  left: 365px;
 }
 .base-picture .small-building.slot22 {
-  top:  240px;
-  left: 200px;
+  top:  140px;
+  left: 365px;
 }
-/** large slot1 */
-/** large slot2 */
 .base-picture .small-building.slot23 {
-  top:  240px;
-  left: 520px;
+  top: 260px;
+  left: 365px;
 }
 .base-picture .small-building.slot24 {
-  top:  240px;
-  left: 600px;
+  top: 380px;
+  left: 365px;
 }
 .base-picture .small-building.slot25 {
-  top:  240px;
-  left: 680px;
+  top:  500px;
+  left: 365px;
 }
 
-
-/** row 4 */
+/** 7. col */
 .base-picture .small-building.slot26 {
-  top:  335px;
-  left:  40px;
+  top: 60px;
+  left: 285px;
 }
 .base-picture .small-building.slot27 {
-  top:  335px;
-  left: 120px;
+  top: 180px;
+  left: 285px;
 }
 .base-picture .small-building.slot28 {
-  top:  335px;
-  left: 200px;
-}
-.base-picture .large-building.slot3 {
-  top:  290px;
-  left: 280px;
-}
-.base-picture .large-building.slot4 {
-  top:  290px;
-  left: 400px;
+  top: 300px;
+  left: 285px;
 }
 .base-picture .small-building.slot29 {
-  top:  335px;
-  left: 520px;
+  top: 420px;
+  left: 285px;
 }
+
+/** 8. col */
 .base-picture .small-building.slot30 {
-  top:  335px;
-  left: 600px;
+  top:  20px;
+  left: 205px;
 }
 .base-picture .small-building.slot31 {
-  top:  335px;
-  left: 680px;
+  top:  140px;
+  left: 205px;
 }
-
-
-/** row 5 */
 .base-picture .small-building.slot32 {
-  top:  430px;
-  left:  40px;
+  top:  260px;
+  left: 205px;
 }
 .base-picture .small-building.slot33 {
-  top:  430px;
-  left: 120px;
+  top:  380px;
+  left: 205px;
 }
 .base-picture .small-building.slot34 {
-  top:  430px;
-  left: 200px;
+  top:  500px;
+  left: 205px;
 }
+
+/** 9. col */
 .base-picture .small-building.slot35 {
-  top:  430px;
-  left: 280px;
+  top: 120px;
+  left: 125px;
 }
 .base-picture .small-building.slot36 {
-  top:  430px;
-  left: 360px;
+  top: 240px;
+  left: 125px;
 }
 .base-picture .small-building.slot37 {
-  top:  430px;
-  left: 440px;
+  top: 360px;
+  left: 125px;
 }
 .base-picture .small-building.slot38 {
-  top:  430px;
-  left: 520px;
+  top: 480px;
+  left: 125px;
 }
+
+/** 10. col */
 .base-picture .small-building.slot39 {
-  top:  430px;
-  left: 600px;
+  top: 280px;
+  left: 45px;
 }
 .base-picture .small-building.slot40 {
-  top:  430px;
-  left: 680px;
+  top:  400px;
+  left: 45px;
 }
 
 
 
-
+/****** OUTPOST */
 /** row 1 */
 .outpost-picture .small-building.slot3 {
   top:  145px;
@@ -4918,6 +4975,11 @@ a.trading-carts-speedup-button:hover {
   text-align: center;
 }
 
+.bonus-offer-wrapper {
+  height:400px;
+  overflow: auto;
+}
+
 #platinum-description {
   padding: 10px;
 }
@@ -4926,7 +4988,7 @@ a.trading-carts-speedup-button:hover {
   position: absolute; 
   margin-left: -300px;
   margin-top: 10px;
-  width: 600px; min-height: 100px;
+  width: 630px; min-height: 100px;
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
   z-index:256;
@@ -5464,7 +5526,8 @@ button.fb-button {
   position: absolute; 
   margin-left: -300px;
   margin-top: 80px;
-  width: 600px; min-height: 100px;
+  width: 630px; min-height: 100px;
+  /*height: 600px;*/
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
   z-index:256;
@@ -5484,6 +5547,12 @@ button.fb-button {
 
 .quest-list-body {
   margin-bottom: 40px;
+}
+
+.quest-list-scrollable {
+  margin-bottom: 10px;
+  overflow: auto;
+  height: 410px;
 }
 
 .quest-list-item.girl {
@@ -5818,7 +5887,7 @@ div.dom-quest-container div.tutorial-dialog {
   
 .army-list-table-wrapper {
   overflow:auto;
-  height: 600px; /* I took this value because of .army-list-view */
+  height: 500px; /* I took this value because of .army-list-view */
 }
 
 .army-list-table th {

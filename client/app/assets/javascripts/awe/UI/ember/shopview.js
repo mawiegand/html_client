@@ -100,6 +100,15 @@ AWE.UI.Ember = (function(module) {
     closePressed: function() {
       log('Action not connected: closedWasPressed.');
     },
+
+    offerWrapperClass: function() {
+      if (AWE.Facebook.isRunningInCanvas) {
+        return 'bonus-offer-wrapper';
+      }
+      else {
+        return '';
+      }
+    }.property(),
   });
   
   module.ShopResourceOffer = Ember.View.extend({
