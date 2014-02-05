@@ -43,7 +43,7 @@ AWE.UI = (function(module) {
 
     var _battleView = null;
     var _protectionView = null;
-    var _animation  = null;
+    var _animation  = {};
     var _stance = null;
     var _stanceView = null;
     var _baseImage = null;
@@ -293,7 +293,6 @@ AWE.UI = (function(module) {
         log('WARNING: army group view without an associated army group object.');
         return null;
       }
-      
       if (_armyGroup[0].get("npc") && AWE.Config.DISABLE_NPC_IMAGES) {
         if (_armyGroup[0].get('id') % 3 == 0) {
           return this.createAmazonSpriteSheet(_armyGroup[0].get('id'));
@@ -480,14 +479,20 @@ AWE.UI = (function(module) {
       }
 
       if (!(_armyGroup[0].get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) && (_stance === null || _armyGroup[0].get("stance") !== _stance || !_animation)) {
-        var data = null; 
+        var data = {}; 
+        data[0] = this.createAmazonSpriteSheet(_armyGroup[0].get('id'));
+        data[1] = this.createWarriorSpriteSheet(_armyGroup[0].get('id'));
+        data[2] = this.createChefSpriteSheet(_armyGroup[0].get('id'));
+        
+        for(var i = 0; i < 3; i++)
+        {
         var spriteSheet = null;
         var newAnimation = AWE.UI.createAnimatedSpriteView();
         
         _stance = _armyGroup[0].get('stance');
         
-        data = this.prepareSpriteSheet();
-        spriteSheet = new SpriteSheet(data);
+        
+        spriteSheet = new SpriteSheet(data[i]);
         newAnimation.initWithControllerAndSpriteSheet(that, spriteSheet);
         
         if (_armyGroup[0].get('mode') == 1) { // 1: walking
@@ -500,16 +505,25 @@ AWE.UI = (function(module) {
           newAnimation.animation().gotoAndPlay('stand');
         }
         newAnimation.snapToPixel = true;
-        newAnimation.setFrame(AWE.Geometry.createRect(-23, -35, 128, 128));
+        if(i == 0) {
+          newAnimation.setFrame(AWE.Geometry.createRect(-33, -35, 118, 128));
+        }
+        else if(i == 1) {
+          newAnimation.setFrame(AWE.Geometry.createRect(-13, -35, 138, 128));
+        }
+        else {
+          newAnimation.setFrame(AWE.Geometry.createRect(-23, -35, 128, 128));
+        }
         newAnimation.onClick = that.onClick;
         newAnimation.onDoubleClick = that.onDoubleClick;
         newAnimation.onMouseOver = that.onMouseOver;
         newAnimation.onMouseOut  = that.onMouseOut;
-        if (_animation) {
-          this.removeChild(_animation);
+        if (_animation[i]) {
+          this.removeChild(_animation[i]);
         }           
         this.addChild(newAnimation);           
-        _animation = newAnimation;
+        _animation[i] = newAnimation;
+    }
       }
 
       if (_armyGroup[0].get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) {
@@ -540,14 +554,16 @@ AWE.UI = (function(module) {
       }
       else {
         log('CHECK ANIMATION')
-        if      (_armyGroup[0].get("mode") === 0 && _animation.animation().currentAnimation !== 'stand' && _animation.animation().currentAnimation !== 'toStand') {        // 0: standing!, 1: walking, 2: fighting
-          _animation.animation().gotoAndPlay('toStand');
-        }
-        else if (_armyGroup[0].get("mode") === 1 && _animation.animation().currentAnimation !== 'walk' && _animation.animation().currentAnimation !== 'toWalk') {       // 0: standing!, 1: walking, 2: fighting
-          _animation.animation().gotoAndPlay('toWalk');
-        }
-        else if (_armyGroup[0].get("mode") === 2 && _animation.animation().currentAnimation !== 'fight') {     // 0: standing!, 1: walking, 2: fighting
-          _animation.animation().gotoAndPlay('fight');
+        for(var i = 0; i < 3; i++) {
+          if (_armyGroup[0].get("mode") === 0 && _animation[i].animation().currentAnimation !== 'stand' && _animation[i].animation().currentAnimation !== 'toStand') {        // 0: standing!, 1: walking, 2: fighting
+            _animation[i].animation().gotoAndPlay('toStand');
+          }
+          else if (_armyGroup[0].get("mode") === 1 && _animation[i].animation().currentAnimation !== 'walk' && _animation[i].animation().currentAnimation !== 'toWalk') {       // 0: standing!, 1: walking, 2: fighting
+            _animation[i].animation().gotoAndPlay('toWalk');
+          }
+          else if (_armyGroup[0].get("mode") === 2 && _animation[i].animation().currentAnimation !== 'fight') {     // 0: standing!, 1: walking, 2: fighting
+            _animation[i].animation().gotoAndPlay('fight');
+          }
         }
       }               
     }
