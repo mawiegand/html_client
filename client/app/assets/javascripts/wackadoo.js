@@ -128,122 +128,110 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
 
     reconnectChat: function() {
-	    disconnectMini();
-	    this.initChat(true);
+      return;
+      disconnectMini();
+      this.initChat(true);
     },
-    
-    boshHost: function() {
-      
-      if (AWE.Config.IE || AWE.Config.FF) {
-        return AWE.Config.SERVER_ROOT + "/http-bind/";   // use as proxy to webchat
-      }
-      else {
-        return "https://" + AWE.Config.BOSH_SERVER_BASE + "/http-bind/";
-      }
-    },
-    
+
     initChat: function(reconnect) {
-	    reconnect = reconnect || false;
-      DEVELOPER = 'on'
-      
-      var jappix_addBuddyMini = addBuddyMini; // jappix is in global namespace :-(
+      MINI_5D_NON_CLOSEABLE_GROUPCHATS = [];
+      MINI_5D_NO_USERLIST_GROUPCHATS   = [];
 
-      
-/*      addBuddyMini = function(xid, hash, nick, groupchat, subscription) {
-        var filter             = [ 'global', 'help' ] ;
-        
-        var shouldAdd = true ;
-        filter.forEach(function(channel) {
-          var start = groupchat.slice(0, channel.length);
-          shouldAdd = shouldAdd && channel !== start;
-        });
-        
-        if (!shouldAdd) {
-          return false ;
-        }
-        else {
-          return jappix_addBuddyMini(xid, hash, nick, groupchat, subscription);
-        }
-      };    */
-      
-      var identifier  = AWE.GS.game.currentCharacter.get('identifier');
-      var tag         = AWE.GS.game.currentCharacter.get('alliance_tag');
-      var name        = AWE.GS.game.currentCharacter.get('name');
-      var accessToken = AWE.Net.currentUserCredentials.get('access_token');
-      
-      var base        = AWE.Config.JABBER_SERVER_BASE;
-    
-      // we're using a standalone js-script (MPL licensed)
-      // extracted from JAPPIX. details can be found in this pull request:
-      // https://github.com/jappix/jappix/pull/110
+      var base = AWE.Config.JABBER_SERVER_BASE;
+      var groupChats = [ ];
+      var groupChatsSuggest = [ ];
 
-      HOST_MAIN      = base;
-      HOST_MUC       = "conference."+base;
-      HOST_PUBSUB    = "pubsub."    +base;
-      HOST_VJUD      = "vjud."      +base;
-      HOST_ANONYMOUS = "anonymous." +base;
-      HOST_BOSH      = this.boshHost();
-      
       var character = AWE.GS.game && AWE.GS.game.get('currentCharacter');
       var firstStart= character && character.get('beginner');
       var beginner  = character && character.get('chat_beginner');
       var insider   = character && character.get('insider');
       var openPane  = character && character.get('open_chat_pane');  // whether or not to open a chat pane initially
-      
-      MINI_GROUPCHATS                  = tag ? [ tag+"@conference."+base ] : [];
-      MINI_5D_NON_CLOSEABLE_GROUPCHATS = tag ? [ tag+"@conference."+base ] : [];
-      MINI_SUGGEST_GROUPCHATS          = [ 'help@conference.'+base, "global@conference."+base, 'handel@conference.'+base, 'plauderhöhle@conference.'+base, 'whisperingcavern@conference.'+base ];              
-             
+
+      if (AWE.GS.game.currentCharacter.get('alliance_tag')) {
+        groupChats.push(AWE.GS.game.currentCharacter.get('alliance_tag')+"@conference."+base);
+        groupChatsSuggest.push(AWE.GS.game.currentCharacter.get('alliance_tag')+"@conference."+base);
+        MINI_5D_NON_CLOSEABLE_GROUPCHATS = [AWE.GS.game.currentCharacter.get('alliance_tag')+"@conference."+base ];
+      }
+      groupChatsSuggest.push("help@conference."+base, "global@conference."+base, "handel@conference."+base);
+
       if (insider) {
-        MINI_GROUPCHATS.push( "insider@conference."+base );
-        MINI_SUGGEST_GROUPCHATS.push( "insider@conference."+base );
-      }
-      
-      var locale = AWE.Settings.locale || AWE.Config.DEFAULT_LOCALE;
-      if (locale && locale === "de_DE") {
-        MINI_GROUPCHATS.push( "plauderhöhle@conference."+base );
-      }
-      else {
-        MINI_GROUPCHATS.push( "whisperingcavern@conference."+base );        
-      }
-      
-      if (character && character.hasStaffRole('help')) {
-        MINI_GROUPCHATS.push("help@conference."+base, "beginner@conference."+base );
-        MINI_SUGGEST_GROUPCHATS.push( "beginner@conference."+base )
-        MINI_5D_NON_CLOSEABLE_GROUPCHATS.push( "help@conference."+base );
-      }
-      
-      if (beginner) {
-        MINI_GROUPCHATS.push( "beginner@conference."+base );
-        MINI_5D_NON_CLOSEABLE_GROUPCHATS.push( "beginner@conference."+base );        
-      }
-      else {
-        MINI_GROUPCHATS.push( "global@conference."+base );        
+        groupChats.push("insider@conference."+base);
+        groupChatsSuggest.push("insider@conference."+base);
       }
 
-      MINI_5D_NO_USERLIST_GROUPCHATS     = [ 'help@conference.'+base, 'global@conference.'+base, 'insider@conference.'+base, 'beginner@conference.'+base  ];      
-      if (character && character.hasStaffRole('help')) {
-        MINI_5D_NO_USERLIST_GROUPCHATS     = [ ];
+      var locale = AWE.Settings.locale || AWE.Config.DEFAULT_LOCALE;
+      if (locale && locale === "de_DE") {
+        groupChats.push("plauderhöhle@conference."+base);
+      } else {
+        groupChats.push("whisperingcavern@conference."+base);
       }
-      MINI_5D_STAFF_POSTFIXES            = [ '| 5D', '@mod', '@admin', '@staff' ];
-      
-      JAPPIX_STATIC = 'jappix/'
-      
-      // Define chats here
-      MINI_CHATS = [];
-      
-      // Add an animation
-      MINI_ANIMATE = false;
-      
-      // Define the user nickname
-      MINI_NICKNAME = (name || "ChatUser") + (tag ? " | "+tag : "");
-      
-      // Random user nickname (if no nickname)
-      MINI_RANDNICK = true;
-      
-      // Override the default session resource
-      MINI_RESOURCE = "WackadooChat" + Math.floor(Math.random()*100000);
-      
+
+      if (character && character.hasStaffRole('help')) {
+        groupChats.push("help@conference."+base, "beginner@conference."+base );
+        groupChatsSuggest.push("beginner@conference."+base);
+        MINI_5D_NON_CLOSEABLE_GROUPCHATS.push("help@conference."+base);
+      }
+
+      if (beginner) {
+        groupChats.push("beginner@conference."+base);
+        MINI_5D_NON_CLOSEABLE_GROUPCHATS.push("beginner@conference."+base);
+      }
+      else {
+        groupChats.push("global@conference."+base);
+      }
+
+      MINI_5D_NO_USERLIST_GROUPCHATS.push("help@conference."+base, "global@conference."+base, "insider@conference."+base, "beginner@conference."+base);
+      if (character && character.hasStaffRole('help')) {
+        MINI_5D_NO_USERLIST_GROUPCHATS = [];
+      }
+      MINI_5D_STAFF_POSTFIXES = ['| 5d', '@mod', '@admin', '@staff']; // lowercase check!
+
+      if ("https:" == document.location.protocol) {
+          HOST_BOSH = "https://" + AWE.Config.BOSH_SERVER_BASE + "/http-bind/";
+      } else {
+          HOST_BOSH = "http://" + AWE.Config.BOSH_SERVER_BASE + "/http-bind/";
+      }
+      HOST_MUC       = "conference."+base;
+      HOST_PUBSUB    = "pubsub."    +base;
+      HOST_VJUD      = "vjud."      +base;
+      HOST_ANONYMOUS = "anonymous." +base;
+
+      JappixMini.launch({
+          connection: {
+              user:     AWE.GS.game.currentCharacter.get('identifier'),
+              password: AWE.Net.currentUserCredentials.get('access_token'),
+              domain:   base,
+              resource: "WackadooChat" + Math.floor(Math.random()*100000)
+          },
+
+          application: {
+              network: {
+                  autoconnect: true
+              },
+
+              interface: {
+                  showpane: true,
+                  animate: true
+              },
+
+              user: {
+                  random_nickname: true,
+                  nickname: (AWE.GS.game.currentCharacter.get('name') || "ChatUser") + (AWE.GS.game.currentCharacter.get('alliance_tag') ? " | "+AWE.GS.game.currentCharacter.get('alliance_tag') : ""),
+              },
+
+              chat: {
+                  open: [],
+              },
+
+              groupchat: {
+                  open: groupChats,
+                  open_passwords: [],
+                  suggest: groupChatsSuggest,
+                  suggest_passwords: []
+              }
+          }
+      });
+/*
       // Connect the user (autoconnect, show_pane, domain, username, password)
       // Notice: put true/false to autoconnect and show_pane
       // Notice: exclude "user" and "password" if using anonymous login
@@ -266,9 +254,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           this.addDomElement(('.jm_roster'), false);
           this.addDomElement(('.jm_send-messages'), false);
           this.addDomElement(('.jm_chat-content form'), false);
-  	  }
-    },   
-    
+  	  }*/
+    },
+
     showStartupDialogs: function() {
       
       if (AWE.GS.game.getPath('currentCharacter.beginner') === false) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
