@@ -10504,17 +10504,29 @@ var JappixMini = (function () {
             var last_type = last.attr('data-type');
             var grouped = false;
             var header = '';
-            
+
+            /* Begin 5D Mod Add */
+            var css = '';
+            if (nick) {
+              var staffUser = self.UserIs5DStaff(MINI_5D_STAFF_POSTFIXES, nick);
+              if (staffUser) {
+                css = 'jm_5d_staff_user';
+              }
+            }
+            /* End 5D Mod Add */
+
             if((last_xid == xid) && (message_type == last_type) && ((stamp - last_stamp) <= 1800)) {
                 grouped = true;
             } else {
                 // Write the message date
                 if(nick)
                     header += '<span class="jm_date">' + time + '</span>';
-                
+
                 // Write the buddy name at the top of the message group
                 if(type == 'groupchat')
-                    header += '<b class="jm_name" style="color: ' + JappixCommon.generateColor(nick) + ';" data-xid="' + JappixCommon.encodeQuotes(xid) + '">' + nick.htmlEnc() + '</b>';
+                    /* Begin 5D Mod Change */
+                    header += '<b class="jm_name" data-xid="' + JappixCommon.encodeQuotes(xid) + '">' + nick.htmlEnc() + '</b>';
+                    /* End 5D Mod Change */
                 else if(nick == 'me')
                     header += '<b class="jm_name jm_me" data-xid="' + JappixCommon.encodeQuotes(xid) + '">' + JappixCommon._e("You") + '</b>';
                 else
@@ -10563,7 +10575,7 @@ var JappixMini = (function () {
             if(grouped) {
                 jQuery('#jappix_mini #chat-' + hash + ' div.jm_received-messages div.jm_group:last').append(body);
             } else {
-                jQuery('#jappix_mini #chat-' + hash + ' div.jm_chatstate_typing').before('<div class="jm_group jm_' + message_type + '" data-type="' + message_type + '" data-stamp="' + stamp + '">' + header + body + '</div>');
+                jQuery('#jappix_mini #chat-' + hash + ' div.jm_chatstate_typing').before('<div class="jm_group jm_' + message_type + ' ' + css +'" data-type="' + message_type + '" data-stamp="' + stamp + '">' + header + body + '</div>');
             }
             
             // Scroll to this message
@@ -11377,7 +11389,7 @@ var JappixMini = (function () {
       return false;
     }
 
-    self.NicknameEndsWithPostfix5D = function(postfix_list, user) {
+    self.UserIs5DStaff = function(postfix_list, user) {
       if (postfix_list && postfix_list.length) {
         for(var g=0; g < postfix_list.length; g++) {
           if (user.toLowerCase().indexOf(postfix_list[g]) != -1) {
@@ -11426,7 +11438,7 @@ var JappixMini = (function () {
                     var hideUsers = self.ListContainsGroupchat5D(MINI_5D_NO_USERLIST_GROUPCHATS, bare_xid)
 
                     // B) Determine, whether or not this is a staff user
-                    var staffUser = self.NicknameEndsWithPostfix5D(MINI_5D_STAFF_POSTFIXES, nick);
+                    var staffUser = self.UserIs5DStaff(MINI_5D_STAFF_POSTFIXES, nick);
 
                     JappixConsole.info('JAPPIX ADD BUDDY TO', groupchat, 'HIDE USERLIST IN', MINI_5D_NO_USERLIST_GROUPCHATS, ' hideUsers: ', hideUsers, ' staffUser: ', staffUser);
 
@@ -11501,7 +11513,7 @@ var JappixMini = (function () {
 
         try {
             /* Begin 5D Mod Add */
-            var staffUser = self.NicknameEndsWithPostfix5D(MINI_5D_STAFF_POSTFIXES, nick);
+            var staffUser = self.UserIs5DStaff(MINI_5D_STAFF_POSTFIXES, nick);
             /* End 5D Mod Add */
 
             // Buddy: start
