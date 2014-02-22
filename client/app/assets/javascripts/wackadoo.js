@@ -334,7 +334,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         AWE.Facebook.updateFBCanvasSize();  // updates size of canvas, iff running in canvas
         AWE.Facebook.setDoneLoading();      // track loading time, iff running in canvas
         
-        self.initChat();
         if (AWE.Config.CHAT_SHOW) {
           self.initChat();
         }
