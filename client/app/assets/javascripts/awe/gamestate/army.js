@@ -145,7 +145,7 @@ AWE.GS = (function(module) {
     
     armyCategory: function() {
       var art = parseFloat(this.get('unitcategory_artillery_strength') || "0.0");
-      var cav = parseFloat(this.get('unitcategory_cavalry_strength')   || "0.0");
+      var cav = parseFloat(this.get('unitcategory_cavalry_strength')   || "0.0") + parseFloat(this.get('unitcategory_special_strength')   || "0.0");
       var inf = parseFloat(this.get('unitcategory_infantry_strength')  || "0.0");
       var total = (art + cav + inf) || 1.0;   
             
@@ -201,19 +201,19 @@ AWE.GS = (function(module) {
     relation: function() {
       return module.Relation.relationTo(this.get('owner_id'), this.get('alliance_id'));
     },
-    
+
     hasSettlementFounder: function() {
       var details = this.get('details');
       if (details === null) {
         return false;
-      } 
+      }
       var rules = AWE.GS.RulesManager.getRules();
       var numSettlementFounders = 0;
       rules.unit_types.forEach(function(unit_type) {
         if (unit_type.can_create !== undefined && unit_type.can_create !== null &&
-            unit_type.can_create.length > 0 &&
-            details[unit_type.db_field] !== undefined && details[unit_type.db_field] !== null &&
-            details[unit_type.db_field] > 0) {
+          unit_type.can_create.length > 0 && unit_type.can_create.indexOf(3) >= 0 &&
+          details[unit_type.db_field] !== undefined && details[unit_type.db_field] !== null &&
+          details[unit_type.db_field] > 0) {
           numSettlementFounders += details[unit_type.db_field];
         }
       });
@@ -222,7 +222,29 @@ AWE.GS = (function(module) {
       }
       return numSettlementFounders > 0;
     }.property('details.updated_at', 'updated_at').cacheable(),
-    
+
+    hasHomebaseFounder: function() {
+      AWE.Log.Debug('UNIT CAN FOUND HOMEBASES ???');
+      var details = this.get('details');
+      if (details === null) {
+        return false;
+      }
+      var rules = AWE.GS.RulesManager.getRules();
+      var numSettlementFounders = 0;
+      rules.unit_types.forEach(function(unit_type) {
+        if (unit_type.can_create !== undefined && unit_type.can_create !== null &&
+          unit_type.can_create.length > 0 && unit_type.can_create.indexOf(2) >= 0 &&
+          details[unit_type.db_field] !== undefined && details[unit_type.db_field] !== null &&
+          details[unit_type.db_field] > 0) {
+          numSettlementFounders += details[unit_type.db_field];
+        }
+      });
+      if (numSettlementFounders > 0) {
+        AWE.Log.Debug('UNIT CAN FOUND HOMEBASES', numSettlementFounders);
+      }
+      return numSettlementFounders > 0;
+    }.property('details.updated_at', 'updated_at').cacheable(),
+
     isReadyToFoundSettlement: function() {
       return this.get('hasSettlementFounder') && this.get('ap_present') >= 1 && !this.get('isFighting') && !this.get('isMoving') && !this.isGarrison();
     },
@@ -231,12 +253,17 @@ AWE.GS = (function(module) {
      * an decides, whether or not the army can found an settlement
      * at the present location JUST NOW (given available action points,
      * settlement points, etc.) */
+    canFoundHomebaseAtPresentLocationNow: function() {
+      // TODO check settlement count to be 0
+      return this.get('hasHomebaseFounder') && this.get('ap_present') >= 1 && !this.get('isFighting') && !this.get('isMoving') && !this.isGarrison();
+    },
+
     canFoundSettlementAtPresentLocationNow: function() {
       var owner    = AWE.GS.CharacterManager.getCharacter(this.get('owner_id'));
       var location = AWE.Map.Manager.getLocation(this.get('location_id'));
       return this.isReadyToFoundSettlement() && owner && owner.canFoundSettlement() && location && location.canFoundSettlementHere(owner);
     },
-    
+
     calcMinExpOfRank: function(rank) {
       rank = rank || 0;
 

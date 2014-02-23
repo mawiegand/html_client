@@ -20,6 +20,18 @@
 
       <p>{{t profile.rank.progress.text}}</p>
 
+      {{#if userStoriesEnabled}}
+        {{#if posting}}
+          <button class="fb-button">
+            {{view AWE.UI.Ember.ActivityIndicatorView classNames="activity-indicator-small-white"}}
+          </button>
+        {{else}}
+          <button {{action "postNextLevelToFacebook"}} class="fb-button">
+            {{t facebook.postOnFacebook}}
+          </button>
+        {{/if}}
+      {{/if}}
+
       <a class="icon-button ok-button" href="#" {{action "okClicked"}}>{{t general.ok}}</a>     
     </div>
   </div>

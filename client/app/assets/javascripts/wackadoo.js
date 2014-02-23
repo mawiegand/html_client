@@ -77,11 +77,15 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
     
     showWelcomeDialog: function() {
+      var self = this;
+      
       var dialog = AWE.UI.Ember.WelcomeDialog.create({
         okPressed:    function() {
           AWE.GS.TutorialStateManager.checkForNewQuests();
           this.destroy();
-        },            
+          
+          self.get('presentScreenController').welcomeDialogClosed();
+        },
       });
       this.presentModalDialog(dialog);      
     },
@@ -115,7 +119,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
             okPressed:    function() {
               AWE.GS.TutorialStateManager.checkForNewQuests();
               this.destroy();
-            },            
+
+              self.get('presentScreenController').welcomeDialogClosed();
+            },
           });
           self.presentModalDialog(dialog);
         }
@@ -291,7 +297,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     loadAssets: function() {
       var self = this;
       
-      if (AWE.Facebook.isRunningInCanvas) {
+      if (AWE.Facebook.isFbPlayer) {
         AWE.Facebook.init();
       }
 
@@ -302,6 +308,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         $('#debug2').html("Initialization done.");
         
         Ember.Handlebars.bootstrap();                  // Bootstrap Ember a second time to parse the newly loaded templates.
+
+        var tutorialState     = AWE.GS.TutorialStateManager.getTutorialState();
+        var hasBase           = !!AWE.GS.CharacterManager.getCurrentCharacter().get('base_node_id');
+        var startInSettlement = hasBase && AWE.Config.USE_TUTORIAL && (
+          tutorialState && tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID) &&
+            tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED);
 
         var hud = AWE.Controller.createHUDController();
         hud.init();
@@ -317,14 +329,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       
        // $('#zoomin').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, true); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
        // $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
-  
-  
-        var tutorialState     = AWE.GS.TutorialStateManager.getTutorialState();
-        var hasBase           = !!AWE.GS.CharacterManager.getCurrentCharacter().get('base_node');
-        var startInSettlement = hasBase && AWE.Config.USE_TUTORIAL && (
-          tutorialState && tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID) &&
-          tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED);
-        
+
         if (!startInSettlement) {
           self.activateMapController();
           if (hasBase) {
@@ -381,7 +386,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       _numAssets +=1;
       AWE.GS.RulesManager.updateRules(function(rules, statusCode) {
         if (statusCode === AWE.Net.OK) {
-          AWE.Log.Debug('Rules', rules);
 
           _numAssets += 1;  // ok, current character is not really an asset, but it needs to be loaded necessarily as first thing at start
           AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
@@ -401,7 +405,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
                 _numAssets +=1;
                 AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
                   AWE.GS.CharacterManager.getCurrentCharacter().set('base_node', node);
-                  AWE.Log.Debug("Node", node)
+                  assetLoaded();
+                });
+              } 
+              else {
+                _numAssets +=1;
+                AWE.GS.ArmyManager.updateArmiesForCharacter(currentCharacter.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
                   assetLoaded();
                 });
               }
@@ -410,11 +419,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
                 _numAssets += 2;
                 AWE.GS.TutorialManager.updateTutorial(function(tutorial, statusCode) {
                   if (statusCode === AWE.Net.OK || statusCode === AWE.Net.NOT_MODIFIED) {
-                    AWE.Log.Debug('Tutorial', tutorial);
                     assetLoaded();
                 
                     AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
-                      AWE.Log.Debug("TutorialState", tutorialState);
                       assetLoaded();
                     });
                   }
@@ -428,7 +435,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               _numAssets += 1;
               AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
                 if (statusCode === AWE.Net.OK) {
-                  AWE.Log.Debug('RESOURCE_POOL', resourcePool);
                   assetLoaded();
                 }
                 else {
@@ -440,7 +446,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               _numAssets += 1;
               AWE.GS.RoundInfoManager.updateRoundInfo(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(resourcePool, statusCode) {
                 if (statusCode === AWE.Net.OK) {
-                  AWE.Log.Debug('ROUND_INFO', AWE.GS.game.roundInfo);
                   assetLoaded();
                 }
                 else {
@@ -482,6 +487,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (this.get('presentScreenController') === this.get('mapScreenController')) {
         var node = AWE.GS.game.getPath('currentCharacter.base_node');
         if (node) {
+          
+          
           this.get('presentScreenController').moveTo(node, true);
         }
       }
@@ -679,7 +686,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var accessToken = null;
       
       if (!args || !args.accessToken) {
-        // alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
+//        alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
         document.location.href = AWE.Config.PORTAL_ROOT;
         return ;
       }
@@ -687,8 +694,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         accessToken = args.accessToken ; 
       }                            // || AWE.Config.DEV_ACCESS_TOKEN || null;
       
-      AWE.Log.Debug('access', accessToken);
-            
       var expiration  = parseInt(args.expiration || "3600");           // asume one hour validity as default
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;
       AWE.Settings.lang = args.locale ? args.locale.substr(0, 2) : AWE.Config.DEFAULT_LANG;
@@ -702,10 +707,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Log.Debug('debug', AWE.Settings.locale, AWE.Settings.lang, args.locale, args.locale.substr(0, 2));
 
       AWE.Facebook.isRunningInCanvas = AWE.Settings.fbRunInCanvas;
+      AWE.Facebook.isFbPlayer = !!args.fbPlayerId;
 
-      AWE.Log.Debug('SETTINGS', AWE.Settings);
-      AWE.Log.Debug('ARGS', args);
-      
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
         expiration: (new Date()).add(expiration-120).seconds(),

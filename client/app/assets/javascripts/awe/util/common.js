@@ -64,6 +64,8 @@ AWE.Util = (function(module) {
 
   module.hashFirst = function(_hash) {
     var value = null;
+    _hash = _hash || {};
+    
     for (var key in _hash) {
       if (_hash.hasOwnProperty(key)) {
         value = _hash[key];
