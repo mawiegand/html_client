@@ -8,7 +8,7 @@ var AWE = window.AWE || {};
 
 AWE.Log = (function(module) {
   
-  module.DEBUG_DISABLED = false;
+  module.DEBUG_DISABLED = true;
   
   module.Debug = function() {
     if (module.DEBUG_DISABLED) { 
@@ -64,6 +64,8 @@ AWE.Util = (function(module) {
 
   module.hashFirst = function(_hash) {
     var value = null;
+    _hash = _hash || {};
+    
     for (var key in _hash) {
       if (_hash.hasOwnProperty(key)) {
         value = _hash[key];

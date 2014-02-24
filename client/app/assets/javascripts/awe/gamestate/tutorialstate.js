@@ -150,8 +150,11 @@ AWE.GS = (function(module) {
       var activeQuestState = null;
 
       AWE.Ext.applyFunction(openQuestStates, function(questState) {
+        
 
         var quest = questState.get('quest');
+
+        if (quest) {
 
         if (quest.tutorial) {
           var qPrio = quest.priority;
@@ -170,6 +173,7 @@ AWE.GS = (function(module) {
               (!activeQuestState || qPrio > aPrio || (qPrio == aPrio && questState.getId() < activeQuestState.getId()))) {
             activeQuestState = questState;
           }
+        }
         }
       });
       
@@ -1320,7 +1324,7 @@ AWE.GS = (function(module) {
       AWE.Ext.applyFunction(openQuestStates, function(questState) {
         // log('---> checkForCustomTestRewards questState', questState, questState.get('quest'));
         var quest = questState.get('quest');
-        if (quest.reward_tests &&
+        if (quest && quest.reward_tests &&
             quest.reward_tests.custom_test &&
             quest.reward_tests.custom_test.id &&
             quest.reward_tests.custom_test.id == testId) {

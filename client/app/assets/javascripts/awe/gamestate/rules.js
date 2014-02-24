@@ -239,7 +239,21 @@ AWE.GS = (function(module) {
       return assignmentTypes;
     },
 
-		extractIds: function(collection) {
+    getFacebookUserStoryWithSymbolicId: function(symbolicId) {
+      var userStories = this.get('facebook_user_stories');
+
+      for (var i = 0; i < userStories.length; i++) {
+        var userStory = userStories[i];
+        if (userStory['symbolic_id'] === symbolicId) {
+          return userStory;
+        }
+      }
+      log('ERROR: requested non-existing userStory ' + symbolicId);
+
+      return null;
+    },
+
+    extractIds: function(collection) {
 		  return collection.getEach('id'); // "getEach" is supplied by ember
 		},
   });     

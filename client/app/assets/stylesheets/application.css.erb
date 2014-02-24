@@ -434,10 +434,18 @@ h3 {
   z-index: 3;
 }
 
+#controls-canvas {
+  position: absolute;
+  top: 0px;
+  left: -220px;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+}
 
 #hud-canvas {
   position: absolute;
-  right: 0px;
+  right: -380px;
   top: 0px;
   width: 380px;
   height: 260px;
@@ -447,7 +455,7 @@ h3 {
 #resource-canvas {
   position: absolute;
   left: 0px;
-  top: 30px;
+  top: -42px;
   width: 800px;
   height: 42px;
   z-index: 9;
@@ -533,7 +541,9 @@ h3 {
   width: 20px;
   height: 360px;
   z-index: 201;
+  opacity: 0;
 }
+
 .zoom_slider .slider_bar {
   border: 1px solid #c7c4c4;
   -webkit-border-radius: 4px;
@@ -982,8 +992,17 @@ h3 {
 }
 
 h1.slot-tooltip {
-  font-size: 1.6em;
-  margin-bottom: 8px;
+  color: #fff;
+  padding: 0px;
+  font-size: 16px;
+  margin: 0px;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.building-slot-tooltip-wrapper {
+  font-size:14px;
+  min-width: 260px;
 }
 
 
@@ -1428,12 +1447,15 @@ h1.slot-tooltip {
 .unit-image.uc-2.large {
   background: url('<%= asset_path("units/unit_thrower.png") %>');
 }
+.unit-image.uc-3.tiny,
 .unit-image.uc-1.tiny {
   background: url('<%= asset_path("units/unit_light_cavalry-tiny.png") %>');
 }
+.unit-image.uc-3.large,
 .unit-image.uc-1.large {
   background: url('<%= asset_path("units/unit_light_cavalry.png") %>');
 }
+
 
 .unit-image.unit_warrior {
   background: url('<%= asset_path("units/unit_warrior.png") %>');
@@ -1531,6 +1553,7 @@ h1.slot-tooltip {
   background: url('<%= asset_path("units/unit_light_cavalry_4-tiny.png") %>');
 }
 
+.unit-image.tiny.unit_great_chief,
 .unit-image.tiny.unit_little_chief {
   background: url('<%= asset_path("units/unit_little_chief-tiny.png") %>');
 }
@@ -1670,8 +1693,7 @@ loaddialog-positioner {
   min-width: 1024px;
   width: 100%;
   overflow-x: hidden;
-  background: url('<%= asset_path("settlements/base/base_background_repeat.jpg") %>');
-  background-repeat: repeat;  
+  background-color: #888;
   height: 100%;
 }   
    
@@ -2176,7 +2198,7 @@ span.bonus {
 .queue-list {
   position: absolute;
   top: 100px;
-  left: 770px;
+  left: 950px;
   z-index: 0;
   text-shadow: none;
 }
@@ -2893,7 +2915,7 @@ span.bonus {
 }
 
 .alliance-screen-picture {
-  background: url('<%= asset_path("settlements/base/base_background_1280.jpg") %>');
+  background: url('<%= asset_path("settlements/base/base_background.jpg") %>');
   background-repeat: no-repeat;
   margin-top: -100px;
   width: 1280px;
@@ -3285,28 +3307,20 @@ table .datetime {
   margin: 0px;
 }
 
-.outpost-picture, 
-.fortress-picture, 
-.base-picture {
+.fortress-picture {
   position: relative;
   float: left;
   width: 800px;
   height: 600px;
-} 
-
-
-.outpost-picture-right, 
-.base-picture-right {
-  position: absolute;
-  height: 960px;
-  left: 1280px;
-  width: 1200px;
-  margin-right: -1200px;
-  top: -220px;
-  background: url('<%= asset_path("settlements/base/base_background_right.jpg") %>');
-  background-repeat: repeat-x;
 }
 
+.outpost-picture,
+.base-picture {
+  position: relative;
+  float: left;
+  width: 800px;
+  height: 1024px;
+}
 
 .fortress-picture {
   background: url('<%= asset_path("settlements/fortress/fortress_background.png") %>');
@@ -3316,17 +3330,18 @@ table .datetime {
 .base-picture {
   margin-top: 100px;
   overflow: visible;
-} 
+}
 
 .outpost-background-picture,
 .base-background-picture {
-  background: url('<%= asset_path("settlements/base/base_background_1280.jpg") %>');
-  background-repeat: no-repeat;
+  background: url('<%= asset_path("settlements/base/base_background.jpg") %>');
+  background-position: -160px 0;
+  background-repeat: repeat-x;
   position: absolute;
   left: 0px;
   top: -220px;
-  width: 1280px;
-  height: 960px;
+  width: 1000%;
+  height: 1024px;
   z-index: 0;
 }
 
@@ -3335,12 +3350,12 @@ table .datetime {
 .fortress-picture .mouse-over, 
 .base-picture .mouse-over {
   position: absolute;
-  width: 360px;
-  height: 160px;
+  /*width: 360px;*/
+  /*height: 160px;*/
   z-index:10;
   padding: 16px;
   border-radius: 11px;
-  padding-right: 140px;
+  margin-top:-100px;
 }
 
 .fortress-picture .mouse-over {
@@ -3365,15 +3380,6 @@ table .datetime {
 .base-picture .mouse-over p {
 }
 
-
-
-.outpost-picture .mouse-over .advisor, 
-.fortress-picture .mouse-over .advisor, 
-.base-picture .mouse-over .advisor {
-  position: absolute;
-  left: 360px;
-  top: -10px;
-}
 
 .mouse-over.construction-detail {
   width:240px;
@@ -4110,184 +4116,201 @@ table .datetime {
   right: 0px;
 }
 
-/** row 1 */
+.base-picture .large-building.slot1 {
+  top:  20px;
+  left: 525px;
+}
+
+.base-picture .large-building.slot2 {
+  top:  60px;
+  left: 645px;
+}
+
+.base-picture .large-building.slot3 {
+  top:  170px;
+  left: 525px;
+}
+
+.base-picture .large-building.slot4 {
+  top: 210px;
+  left: 645px;
+}
+
+/** 11. col */
 .base-picture .small-building.slot5 {
-  top:   50px;
-  left:  40px;
+  top:  180px;
+  left: 845px;
 }
 .base-picture .small-building.slot6 {
-  top:   50px;
-  left: 120px;
+  top:  300px;
+  left: 845px;
 }
+
 .base-picture .small-building.slot7 {
-  top:   50px;
-  left: 200px;
+  top:  420px;
+  left: 845px;
 }
+
+/** 1. col right */
 .base-picture .small-building.slot8 {
-  top:   50px;
-  left: 280px;
+  top: 140px;
+  left: 765px;
 }
 .base-picture .small-building.slot9 {
-  top:   50px;
-  left: 360px;
+  top: 260px;
+  left: 765px;
 }
 .base-picture .small-building.slot10 {
-  top:   50px;
-  left: 440px;
+  top: 380px;
+  left: 765px;
 }
+
+
+/** 2. col right */
 .base-picture .small-building.slot11 {
-  top:   50px;
-  left: 520px;
+  top: 330px;
+  left: 685px;
 }
 .base-picture .small-building.slot12 {
-  top:   50px;
-  left: 600px;
-}
-.base-picture .small-building.slot13 {
-  top:   50px;
-  left: 680px;
+  top: 450px;
+  left: 685px;
 }
 
-/** row 2 */
-.base-picture .small-building.slot14 {
-  top:  145px;
-  left:  40px;
+
+/** 3. col */
+.base-picture .small-building.slot13 {
+  top: 330px;
+  left: 605px;
 }
+.base-picture .small-building.slot14 {
+  top: 450px;
+  left: 605px;
+}
+
+
+/** 4. col */
 .base-picture .small-building.slot15 {
-  top:  145px;
-  left: 120px;
+  top: 320px;
+  left: 525px;
 }
 .base-picture .small-building.slot16 {
-  top:  145px;
-  left: 200px;
+  top: 440px;
+  left: 525px;
 }
-.base-picture .large-building.slot1 {
-  top:  155px;
-  left: 280px;
-}
-.base-picture .large-building.slot2 {
-  top:  155px;
-  left: 400px;
-}
+
+
+/** 5.col */
 .base-picture .small-building.slot17 {
-  top:  145px;
-  left: 520px;
+  top:  60px;
+  left: 445px;
 }
 .base-picture .small-building.slot18 {
-  top:  145px;
-  left: 600px;
+  top:  180px;
+  left: 445px;
 }
 .base-picture .small-building.slot19 {
-  top:  145px;
-  left: 680px;
+  top:  300px;
+  left: 445px;
 }
-
-
-/** row 3 */
 .base-picture .small-building.slot20 {
-  top:  240px;
-  left:  40px;
+  top:  420px;
+  left: 445px;
 }
+
+
+/** 6. col */
 .base-picture .small-building.slot21 {
-  top:  240px;
-  left: 120px;
+  top:  20px;
+  left: 365px;
 }
 .base-picture .small-building.slot22 {
-  top:  240px;
-  left: 200px;
+  top:  140px;
+  left: 365px;
 }
-/** large slot1 */
-/** large slot2 */
 .base-picture .small-building.slot23 {
-  top:  240px;
-  left: 520px;
+  top: 260px;
+  left: 365px;
 }
 .base-picture .small-building.slot24 {
-  top:  240px;
-  left: 600px;
+  top: 380px;
+  left: 365px;
 }
 .base-picture .small-building.slot25 {
-  top:  240px;
-  left: 680px;
+  top:  500px;
+  left: 365px;
 }
 
-
-/** row 4 */
+/** 7. col */
 .base-picture .small-building.slot26 {
-  top:  335px;
-  left:  40px;
+  top: 60px;
+  left: 285px;
 }
 .base-picture .small-building.slot27 {
-  top:  335px;
-  left: 120px;
+  top: 180px;
+  left: 285px;
 }
 .base-picture .small-building.slot28 {
-  top:  335px;
-  left: 200px;
-}
-.base-picture .large-building.slot3 {
-  top:  290px;
-  left: 280px;
-}
-.base-picture .large-building.slot4 {
-  top:  290px;
-  left: 400px;
+  top: 300px;
+  left: 285px;
 }
 .base-picture .small-building.slot29 {
-  top:  335px;
-  left: 520px;
+  top: 420px;
+  left: 285px;
 }
+
+/** 8. col */
 .base-picture .small-building.slot30 {
-  top:  335px;
-  left: 600px;
+  top:  20px;
+  left: 205px;
 }
 .base-picture .small-building.slot31 {
-  top:  335px;
-  left: 680px;
+  top:  140px;
+  left: 205px;
 }
-
-
-/** row 5 */
 .base-picture .small-building.slot32 {
-  top:  430px;
-  left:  40px;
+  top:  260px;
+  left: 205px;
 }
 .base-picture .small-building.slot33 {
-  top:  430px;
-  left: 120px;
+  top:  380px;
+  left: 205px;
 }
 .base-picture .small-building.slot34 {
-  top:  430px;
-  left: 200px;
+  top:  500px;
+  left: 205px;
 }
+
+/** 9. col */
 .base-picture .small-building.slot35 {
-  top:  430px;
-  left: 280px;
+  top: 120px;
+  left: 125px;
 }
 .base-picture .small-building.slot36 {
-  top:  430px;
-  left: 360px;
+  top: 240px;
+  left: 125px;
 }
 .base-picture .small-building.slot37 {
-  top:  430px;
-  left: 440px;
+  top: 360px;
+  left: 125px;
 }
 .base-picture .small-building.slot38 {
-  top:  430px;
-  left: 520px;
+  top: 480px;
+  left: 125px;
 }
+
+/** 10. col */
 .base-picture .small-building.slot39 {
-  top:  430px;
-  left: 600px;
+  top: 280px;
+  left: 45px;
 }
 .base-picture .small-building.slot40 {
-  top:  430px;
-  left: 680px;
+  top:  400px;
+  left: 45px;
 }
 
 
 
-
+/****** OUTPOST */
 /** row 1 */
 .outpost-picture .small-building.slot3 {
   top:  145px;
@@ -5447,6 +5470,33 @@ a.trading-carts-speedup-button:hover {
   background-image: url('<%= asset_path("icons/activityindicator_small.svg") %>');
 }
 
+.activity-indicator-small-white {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-image: url('<%= asset_path("icons/activityindicator_small_white.svg") %>');
+}
+
+button.fb-button {
+  background-color: rgba(255,255,255,0.0);
+  border: none;
+  background-image: url('<%= asset_path 'icons/fb-button.png' %>');
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  width: 217px;
+  height: 43px;
+
+  color: #FFF;
+  text-shadow: inset rgba(0,0,0,.5) -1px -1px 0px;
+  font-weight: bold;
+  cursor: pointer;
+
+  line-height: 18px;
+  font-size: 15px;
+
+  padding-left: 50px;
+}
+
 
 
 
@@ -5692,6 +5742,24 @@ a.trading-carts-speedup-button:hover {
   font-size: 24px;
 }
 
+.dom-quest-container {
+	position: absolute;
+	padding: 5px;
+	height: 150px;
+	width: 300px;
+	z-index: 1000;
+	margin: 0;
+}
+
+div.dom-quest-container div.tutorial-dialog {
+	width: 100%;
+	height: 100%;
+	padding: 5px;
+	background: #fff;
+	border: 3px solid #000;
+	border-radius: 4px;
+	color: #999;
+}
 
 .facebook-iframe {
   width: 500px;

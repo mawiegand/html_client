@@ -211,6 +211,17 @@ AWE.UI = (function(module) {
         _foundButtonView.setVisible(false);
         _stanceButtonView.setVisible(false);
       }
+      else if (_army.isOwn() && _army.get('hasHomebaseFounder') && _army.get('mode') === AWE.Config.ARMY_MODE_IDLE) { // 0 -> idle or null -> unkown
+        _backgroundView.setVisible(true);
+        _moveButtonView.setVisible(true);
+        _attackButtonView.setVisible(true);
+        _cancelButtonView.setVisible(false);
+//        _retreatButtonView.setVisible(false);
+        _battleInfoButtonView.setVisible(false);
+        _battleInfoButtonBackgroundView.setVisible(false);
+        _foundButtonView.setVisible(true);
+        _stanceButtonView.setVisible(true);
+      }
       else if (_army.isOwn() && (_army.get('mode') === null || _army.get('mode') === AWE.Config.ARMY_MODE_IDLE)) { // 0 -> idle or null -> unkown
         _backgroundView.setVisible(true);
         _moveButtonView.setVisible(true);
@@ -272,7 +283,7 @@ AWE.UI = (function(module) {
       _moveButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('isFighting'));
       _attackButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('isFighting') && !_army.get('isMoving'));
       _foundButtonView.setEnabled(
-        _army.canFoundSettlementAtPresentLocationNow()
+        _army.canFoundSettlementAtPresentLocationNow() || _army.canFoundHomebaseAtPresentLocationNow()
       );
       _stanceButtonView.setEnabled(!_army.get('isFighting'));
 //      _retreatButtonView.setEnabled(_army.get('isFighting'));
