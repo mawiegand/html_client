@@ -128,24 +128,34 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
 
     reconnectChat: function() {
-      return;
-      disconnectMini();
-      this.initChat(true);
+      JappixMini.disconnect();
+      $('jappix_mini').remove();
+      this.initChat();
     },
 
-    initChat: function(reconnect) {
+    initChat: function() {
       MINI_5D_NON_CLOSEABLE_GROUPCHATS = [];
       MINI_5D_NO_USERLIST_GROUPCHATS   = [];
 
       var base = AWE.Config.JABBER_SERVER_BASE;
-      var groupChats = [ ];
-      var groupChatsSuggest = [ ];
+      var groupChats = [];
+      var groupChatsSuggest = [];
 
       var character = AWE.GS.game && AWE.GS.game.get('currentCharacter');
       var firstStart= character && character.get('beginner');
       var beginner  = character && character.get('chat_beginner');
       var insider   = character && character.get('insider');
       var openPane  = character && character.get('open_chat_pane');  // whether or not to open a chat pane initially
+
+      if (AWE.Config.IN_DEVELOPMENT_MODE) {
+        AWE.Log.Debug('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
+        var identifier  = AWE.Config.JABBER_DEVELOPMENT_JID;
+        var accessToken = AWE.Config.JABBER_DEVELOPMENT_PWD;
+      }
+      else {
+        var identifier  = AWE.GS.game.currentCharacter.get('identifier');
+        var accessToken = AWE.Net.currentUserCredentials.get('access_token');
+      }
 
       if (AWE.GS.game.currentCharacter.get('alliance_tag')) {
         groupChats.push(AWE.GS.game.currentCharacter.get('alliance_tag')+"@conference."+base);
@@ -198,8 +208,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
       JappixMini.launch({
           connection: {
-              user:     AWE.GS.game.currentCharacter.get('identifier'),
-              password: AWE.Net.currentUserCredentials.get('access_token'),
+              user:     identifier,
+              password: accessToken,
               domain:   base,
               resource: "WackadooChat" + Math.floor(Math.random()*100000)
           },
@@ -210,7 +220,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               },
 
               interface: {
-                  showpane: true,
+                  showpane: !firstStart && openPane,
                   animate: true
               },
 
@@ -231,30 +241,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
               }
           }
       });
-/*
-      // Connect the user (autoconnect, show_pane, domain, username, password)
-      // Notice: put true/false to autoconnect and show_pane
-      // Notice: exclude "user" and "password" if using anonymous login
-            
-      if (AWE.Config.IN_DEVELOPMENT_MODE) {
-        AWE.Log.Debug('JABBER LOGIN FOR DEVELOPMENT MODE:', AWE.Config.JABBER_DEVELOPMENT_JID);
-        launchMini(true, openPane, base, AWE.Config.JABBER_DEVELOPMENT_JID, AWE.Config.JABBER_DEVELOPMENT_PWD);
-      }
-      else {
-        launchMini(true, !firstStart && openPane, base, identifier, accessToken); // !firststart
-      }
-
-  	  if (!reconnect) {
-          this.addDomElement(('.jm_prompt'), false);      
-          this.addDomElement(('.jm_starter'), false);
-          this.addDomElement(('.jm_pane'), false);
-          this.addDomElement(('.jm_chat-content'), false);
-          this.addDomElement(('.jm_conversation'), false);
-          this.addDomElement(('.jm_conversations'), false);
-          this.addDomElement(('.jm_roster'), false);
-          this.addDomElement(('.jm_send-messages'), false);
-          this.addDomElement(('.jm_chat-content form'), false);
-  	  }*/
     },
 
     showStartupDialogs: function() {
@@ -333,7 +319,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         
         AWE.Facebook.updateFBCanvasSize();  // updates size of canvas, iff running in canvas
         AWE.Facebook.setDoneLoading();      // track loading time, iff running in canvas
-        
+
         if (AWE.Config.CHAT_SHOW) {
           self.initChat();
         }
