@@ -25,10 +25,6 @@
         {{view AWE.UI.Ember.ConstructionQueueView controllerBinding="controller" classNames="queue-list" queuesBinding="queues.collection"}}
       {{/if}}
       
-      {{#if displayQuestAdvisor}}
-        <div class="settlement-quest-advisor" {{action "questAdvisorClicked"}}></div>
-      {{/if}}
-
       {{#if selectedSlot}}
         {{#if selectedSlot.building }}
           {{view AWE.UI.Ember.BuildingDetailsDialog controllerBinding="controller" slotBinding="selectedSlot" buildingBinding="selectedSlot.building"}}
