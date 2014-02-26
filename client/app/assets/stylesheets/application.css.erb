@@ -2875,14 +2875,9 @@ span.bonus {
   left: 0px;
   right: 0px;
   top: 0px;
-  background: url('<%= asset_path("settlements/base/base_background_repeat.jpg") %>');
-  background-repeat: repeat;  
+  background-color: #888;
   width: 100%;
   min-height: 100%;
-}
-
-.alliance-screen.own-alliance {
-  background-color: #DFD;
 }
 
 .alliance-pane {   
@@ -2906,22 +2901,15 @@ span.bonus {
 
 .alliance-screen-background {
   z-index: 0;
-  margin-top: -100px;
+  margin-top: -120px;
   height: 960px;
   margin-bottom: -860px;
   width: 100%;
-  background: url('<%= asset_path("settlements/base/base_background_right.jpg") %>');
-  background-repeat: repeat-x;
 }
 
-.alliance-screen-picture {
-  background: url('<%= asset_path("settlements/base/base_background.jpg") %>');
-  background-repeat: no-repeat;
-  margin-top: -100px;
-  width: 1280px;
-  height: 960px;
-  z-index: 0;
-  
+.base-background-picture.alliance-screen-picture {
+  position: static;
+  width: 100%;
 }
 
 .character-profile-view .alliance-banner,
