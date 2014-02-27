@@ -3036,9 +3036,9 @@ li.shout .sender {
   top: 72px;  
 }
 
-.outpost-screen .settlement-info-box.expanded,
-.fortress-screen .settlement-info-box.expanded, 
-.base-screen .settlement-info-box.expanded {
+.outpost-screen .settlement-info-box-dialog,
+.fortress-screen .settlement-info-box-dialog, 
+.base-screen .settlement-info-box-dialog {
   width: 640px;
   min-height:640px;
   background-color: white;
@@ -3052,11 +3052,11 @@ li.shout .sender {
   border-radius: 9px;
 }
 
-.fortress-screen .settlement-info-box.expanded {
+.fortress-screen .settlement-info-box-dialog {
   min-height:750px; 
 }
 
-.outpost-screen .settlement-info-box.expanded {
+.outpost-screen .settlement-info-box-dialog {
   min-height:720px; 
 }
 
@@ -3096,9 +3096,12 @@ li.shout .sender {
   float: right;
 }
 
+.settlement-info-box-dialog-content {
+	margin-top: 50px;
+}
 
 .change-settlement-name {
-  margin: 7px 10px 0px 0px;
+  margin: 18px 10px 0px 0px;
   float: right;
 }
 
@@ -3267,9 +3270,9 @@ li.shout .sender {
 
 
 
-.outpost-screen .settlement-info-box.expanded h1,
-.base-screen .settlement-info-box.expanded h1,
-.fortress-screen .settlement-info-box.expanded h1 {
+.outpost-screen .settlement-info-box-dialog h1,
+.base-screen .settlement-info-box-dialog h1,
+.fortress-screen .settlement-info-boxdialog h1 {
   font-size: 20px; 
 }
 
@@ -4379,6 +4382,13 @@ table .datetime {
   width: 700px;
 }
 
+.settlement-info-box-dialog-pane.modal-dialog-pane {
+  position: absolute;
+  left: 80px; top: 90px;
+  margin: 0px;
+  width: 700px;
+}
+
 .resource-details-dialog-pane td.number {
   padding-left: 20px;
 }
@@ -5029,7 +5039,8 @@ a.trading-carts-speedup-button:hover {
 .ranking-view a.close,
 .resource-details-dialog-pane a.close,
 .effect-details-dialog-pane a.close,
-.artifact-info-view a.close {
+.artifact-info-view a.close,
+.settlement-info-box-dialog-pane a.close {
   position: absolute;
   background: url('<%= asset_path("ui/close_button.png") %>');
   width: 50px;
@@ -5047,6 +5058,10 @@ a.trading-carts-speedup-button:hover {
   left: 650px;
 }
 
+.settlement-info-box-dialog-pane a.close {
+  left: 670px;
+}
+
 .effect-details-dialog-pane a.close {
   left: 380px;
 }
@@ -5059,6 +5074,7 @@ a.trading-carts-speedup-button:hover {
 .shop-dialog-pane a.close:hover,
 .ranking-view a.close:hover,
 .resource-details-dialog-pane a.close:hover,
+.settlement-info-box-dialog-pane a.close:hover,
 .effect-details-dialog-pane a.close:hover,
 .artifact-info-view a.close:hover {
   background: url('<%= asset_path("ui/close_button-hovered.png") %>');
