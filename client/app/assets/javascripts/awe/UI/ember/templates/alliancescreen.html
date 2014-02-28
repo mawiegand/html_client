@@ -36,12 +36,12 @@
     <p> {{t alliance.founded }}: {{ creation }}</p>
     <p> {{t alliance.leader }}: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="alliance.leader" displayAlliance=false}}</p>
     {{#if ownAlliance}}
-      <p> {{t alliance.leaderVote }} {{view Ember.Select contentBinding="alliance.members" selectionBinding="candidate" optionLabelPath="content.name" optionValuePath="content.id" value=alliance.vote_candidate_id}} </p>
+      <p> {{t alliance.leaderVote }} {{view Ember.Select contentBinding="alliance.members" selectionBinding="candidate" optionLabelPath="content.name" optionValuePath="content.id" selectionBinding="alliance.vote_candidate_id"}} </p>
     {{/if}}
     
 		<p>
 			{{#if isNotAllianceMember}}
-			  <div class="simple-button" style="min-height: 10px;" {{action "sendAllianceApplication"}}>{{t alliance.sendApplication}}</div>
+			  <div class="simple-button" style="min-height: 10px;" {{action "sendAllianceApplication"}}>{{t alliance.sendApplication}}</div><
         {{#if applicationMessage}}
           <div class="red-color">{{applicationMessage}}</div>
         {{/if}}
