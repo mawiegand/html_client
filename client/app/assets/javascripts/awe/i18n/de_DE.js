@@ -438,6 +438,7 @@ AWE.I18n.de_DE = function(module) {
 
       founded: 'Gründung',
       leader: 'Anführer',
+      leaderVote: 'Deine Stimme',
       description: 'Beschreibung',
       changeDescriptionDialogCaption: 'Gib deine neue Allianzbeschreibung ein.',
       changeDescription: 'Ändere Beschreibung',
@@ -448,6 +449,8 @@ AWE.I18n.de_DE = function(module) {
       autoJoinDeactivated: "Deaktiviert",
       autoJoinFailedHead: 'Fehlgeschlagen',
       autoJoinFailedText: 'Konnte Einstellung nicht ändern. Bitte wende dich an einen Administrator sollte das Problem weiterhin bestehen.',
+      allianceLeaderVoteFailedHead: 'Allianz Anführer Wahl',
+      allianceLeaderVoteFailedText: 'Konnte Allianz Anführer Wahl nicht durchführen. Bitte wende dich an einen Administrator sollte das Problem weiterhin bestehen.',
       joinRandomAlliance: 'Zufälliger Allianz beitreten',
       joinRandomAllianceDescription: 'Den Server eine Allianz für dich finden lassen',
       joinRandomAllianceButtonLabel: 'Allianz suchen',
