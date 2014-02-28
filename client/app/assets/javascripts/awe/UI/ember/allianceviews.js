@@ -40,6 +40,12 @@ AWE.UI.Ember = (function(module) {
     controller: null,
     alliance:   null,
 		candidate:  null,
+		
+    ownAlliance: function() {
+      var allianceId = this.getPath('alliance.id');
+      var ownAllyId = AWE.GS.game.getPath('currentCharacter.alliance_id');
+      return allianceId && allianceId === ownAllyId;
+    }.property('alliance.id', 'AWE.GS.game.currentCharacter.alliance_id').cacheable(),
     
     creation: function() {
       return AWE.Util.createTimeString(this.getPath('alliance.created_at'));
