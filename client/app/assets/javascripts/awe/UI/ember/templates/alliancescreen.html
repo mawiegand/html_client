@@ -35,7 +35,9 @@
     <h1>{{ alliance.name }} [{{ alliance.tag }}]</h1>
     <p> {{t alliance.founded }}: {{ creation }}</p>
 		<p> {{t alliance.leader }}: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="alliance.leader" displayAlliance=false}}</p>
-		<p> {{t alliance.leaderVote }} {{view Ember.Select contentBinding="alliance.members" selectionBinding="candidate" optionLabelPath="content.name" optionValuePath="alliance.leader"}}</p>
+		{{#if ownAlliance}}
+		  <p> {{t alliance.leaderVote }} {{view Ember.Select contentBinding="alliance.members" selectionBinding="candidate" optionLabelPath="content.name" optionValuePath="alliance.leader"}}</p>
+		{{/if}}
 		
 		<p>
 			{{#if isNotAllianceMember}}
