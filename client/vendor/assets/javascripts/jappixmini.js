@@ -12473,4 +12473,4 @@ var launchMini = JappixMini.process;
 // Configuration
 XML_LANG = 'en';
 JAPPIX_VERSION = jQuery.trim('One [1.0.1]');
-JAPPIX_STATIC = '/jappix/';
+JAPPIX_STATIC = 'https://wack-a-doo.com/jappix/';
