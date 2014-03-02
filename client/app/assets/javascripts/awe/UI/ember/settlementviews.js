@@ -74,11 +74,91 @@ AWE.UI.Ember = (function(module) {
     
     hashableConstructionQueuesBinding: "settlement.hashableQueues",
     hashableTrainingQueuesBinding: "settlement.hashableTrainingQueues",
-    
-    classNameBindings: ['expanded'],
-    
+        
     settlement: null,
-    expanded: false,
+    
+//    defenseBonusBinding: Ember.Binding.notNull("settlement.defense_bonus", "0"),
+            
+    click: function() {
+      var dialog = AWE.UI.Ember.SettlementInfoBoxDialog.create({
+        settlement: this.get('settlement'),
+      });
+      WACKADOO.presentModalDialog(dialog);
+    },
+    
+    defenseBonus: function() {
+      return (this.getPath('settlement.defense_bonus') || 0) * 100;
+    }.property('settlement.defense_bonus'),
+            
+    buildingQueue: function() {
+      var queues = this.getPath('hashableConstructionQueues.collection');
+      return this.findQueueOfType(queues, 'queue_buildings');
+    }.property('hashableConstructionQueues.changedAt').cacheable(),
+    
+    buildingSpeed: function() {
+      var speed = this.getPath('buildingQueue.speed');
+      return speed ? speed * 100 : 0;
+    }.property('buildingQueue.speed').cacheable(),
+    
+		
+    infantryTrainingQueue: function() {
+      var queues = this.getPath('hashableTrainingQueues.collection');
+      return this.findQueueOfType(queues, 'queue_infantry');
+    }.property('hashableTrainingQueues.changedAt').cacheable(),
+    
+    infantryTrainingSpeed: function() {
+      var speed = this.getPath('infantryTrainingQueue.speed');
+      return speed ? speed * 100 : 0;
+    }.property('infantryTrainingQueue.speed').cacheable(),   
+
+
+    cavalryTrainingQueue: function() {
+      var queues = this.getPath('hashableTrainingQueues.collection');
+      return this.findQueueOfType(queues, 'queue_cavalry');
+    }.property('hashableTrainingQueues.changedAt').cacheable(),
+    
+    cavalryTrainingSpeed: function() {
+      var speed = this.getPath('cavalryTrainingQueue.speed');
+      return speed ? speed * 100 : 0;
+    }.property('cavalryTrainingQueue.speed').cacheable(),   
+    
+    
+    artilleryTrainingQueue: function() {
+      var queues = this.getPath('hashableTrainingQueues.collection');
+      return this.findQueueOfType(queues, 'queue_artillery');
+    }.property('hashableTrainingQueues.changedAt').cacheable(),
+    
+    artilleryTrainingSpeed: function() {
+      var speed = this.getPath('artilleryTrainingQueue.speed');
+      return speed ? speed * 100 : 0;
+    }.property('artilleryTrainingQueue.speed').cacheable(),  
+    
+    
+    siegeTrainingQueue: function() {
+      var queues = this.getPath('hashableTrainingQueues.collection');
+      return this.findQueueOfType(queues, 'queue_siege');
+    }.property('hashableTrainingQueues.changedAt').cacheable(),
+    
+    siegeTrainingSpeed: function() {
+      var speed = this.getPath('siegeTrainingQueue.speed');
+      return speed ? speed * 100 : 0;
+    }.property('siegeTrainingQueue.speed').cacheable(),  
+    
+    findQueueOfType: function(queues, symtype) {
+      queues = queues ? queues.filter(function(item) {
+        return item.getPath('queueType.symbolic_id') === symtype; 
+      }) : null;
+      return queues && queues.length === 1 ? queues[0] : null ;
+    },
+  });
+	
+  module.SettlementInfoBoxDialog = module.Dialog.extend({
+    templateName: 'settlement-info-box-dialog',
+		
+    hashableConstructionQueuesBinding: "settlement.hashableQueues",
+    hashableTrainingQueuesBinding: "settlement.hashableTrainingQueues",
+        
+    settlement: null,
     
     lastError: null, 
     
@@ -160,15 +240,6 @@ AWE.UI.Ember = (function(module) {
     },
     
 //    defenseBonusBinding: Ember.Binding.notNull("settlement.defense_bonus", "0"),
-            
-    click: function() {
-      if (this.get('expanded') === false) {
-        this.set('expanded', true);
-      }
-      else {
-        this.set('expanded', false);
-      }
-    },       
     
     defenseBonus: function() {
       return (this.getPath('settlement.defense_bonus') || 0) * 100;
@@ -319,8 +390,11 @@ AWE.UI.Ember = (function(module) {
       return queues && queues.length === 1 ? queues[0] : null ;
     },
     
-    
-  });
+    okPressed: function() {
+      this.destroy();
+      return false;
+    },
+	});
   
   module.SettlementAbandonDialog = Ember.View.extend({
     templateName: "settlement-abandon-dialog",

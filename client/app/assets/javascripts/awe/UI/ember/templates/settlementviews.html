@@ -1,8 +1,6 @@
 <!-- templates that are shared among the different settlement types -->
 
 <script type="text/x-handlebars" data-template-name="settlement-info-box">
-  {{#unless expanded}}
-    
     <h1>{{settlement.name}}</h1>
     
     <p>&nbsp;&nbsp;<span title="{{t settlement.info.combatBonus}}.">{{t settlement.info.combatBonusAbbreviation}} +{{formatNumber defenseBonus places="0"}}%</span> | 
@@ -18,9 +16,13 @@
         &nbsp; <span class="resource-icon {{unbound resourceType.symbolic_id}}">&nbsp;</span>   <span {{bindAttr title="localizedDetails"}}> {{formatNumber rate maxPlaces="2"}}/h</span> 
       {{/each}}
     </p>  
+</script>
 
-  {{else}}
-  
+<script type="text/x-handlebars" data-template-name="settlement-info-box-dialog">
+  <div class="modal-dialog-background"></div>
+	<div class="modal-dialog-pane settlement-info-box-dialog-pane">
+	<a {{action "okPressed"}} class="close clickable"></a>
+	<div class="settlement-info-box-dialog-content">
     <div class="change-settlement-name">
       {{#if changingName }}
         &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
@@ -127,10 +129,9 @@
       <p class="clearfix" {{action catchClick}}>{{ unbound AWE.Config.PLAYER_INVITATION_BASE }}{{ unbound settlement.regionInvitationCode }}</p>
       <p>{{t settlement.info.movingPassword}}: {{settlement.regionMovingPassword}}</p>
     {{/if}}
-
-    <div class="float-right up-icon" title="{{t settlement.info.clickToMinimize}}">&nbsp;</div>
-
-  {{/unless}}
+		</div>
+		</div>
+	</div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="settlement-abandon-dialog">

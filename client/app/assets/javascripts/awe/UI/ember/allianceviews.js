@@ -39,11 +39,32 @@ AWE.UI.Ember = (function(module) {
     
     controller: null,
     alliance:   null,
+		candidate:  null,
+		
+    ownAlliance: function() {
+      var allianceId = this.getPath('alliance.id');
+      var ownAllyId = AWE.GS.game.getPath('currentCharacter.alliance_id');
+      return allianceId && allianceId === ownAllyId;
+    }.property('alliance.id', 'AWE.GS.game.currentCharacter.alliance_id').cacheable(),
     
     creation: function() {
       return AWE.Util.createTimeString(this.getPath('alliance.created_at'));
     }.property('alliance.created_at').cacheable(),
     
+    changeAllianceLeaderVote: function() {
+		  var self = this;
+      var action = AWE.Action.Fundamental.createAllianceLeaderVoteAction(this.getPath('alliance.id'), this.getPath('candidate.id'));
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        if (statusCode !== 200) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+						/* TODO: Change error dialog content! */
+            heading: AWE.I18n.lookupTranslation('alliance.allianceLeaderVoteFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.allianceLeaderVoteFailedText'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+      });
+    }.observes('candidate'),
     
     invitationLinkPressed: function() {
       

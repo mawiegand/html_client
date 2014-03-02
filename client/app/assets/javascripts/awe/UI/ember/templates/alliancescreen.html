@@ -1,7 +1,7 @@
 <script type="text/x-handlebars" data-template-name="alliance-screen">
-<div {{bindAttr class="ownAlliance:own-alliance :helvetica-light :alliance-screen"}}>
+<div {{bindAttr class=":helvetica-light :alliance-screen"}}>
   <div class="alliance-screen-background">
-    <div class="alliance-screen-picture"></div>
+    <div class="base-background-picture alliance-screen-picture"></div>
   </div>
 
   <div class="alliance-pane">
@@ -34,10 +34,14 @@
   <div class="alliance-infobox clearfix">
     <h1>{{ alliance.name }} [{{ alliance.tag }}]</h1>
     <p> {{t alliance.founded }}: {{ creation }}</p>
-		<p> {{t alliance.leader }}: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="alliance.leader" displayAlliance=false}}</p>
+    <p> {{t alliance.leader }}: {{view AWE.UI.Ember.LinkedCharacterView characterBinding="alliance.leader" displayAlliance=false}}</p>
+    {{#if ownAlliance}}
+      <p> {{t alliance.leaderVote }} {{view Ember.Select contentBinding="alliance.members" selectionBinding="candidate" optionLabelPath="content.name" optionValuePath="content.id" selectionBinding="alliance.vote_candidate_id"}} </p>
+    {{/if}}
+    
 		<p>
 			{{#if isNotAllianceMember}}
-			  <div class="simple-button" style="min-height: 10px;" {{action "sendAllianceApplication"}}>{{t alliance.sendApplication}}</div>
+			  <div class="simple-button" style="min-height: 10px;" {{action "sendAllianceApplication"}}>{{t alliance.sendApplication}}</div><
         {{#if applicationMessage}}
           <div class="red-color">{{applicationMessage}}</div>
         {{/if}}
