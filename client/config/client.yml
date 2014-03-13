@@ -26,7 +26,7 @@ test:
 
 staging:
   <<: *defaults
-  bosh_server_base:    "test1.wack-a-doo.de"
+  bosh_server_base:    "https://test1.wack-a-doo.de"
   jabber_server_base:  "gs99.5dlab.com"
   portal_server_base:  "test1.wack-a-doo.de"
   shop_callback_hostname: "test1"
