@@ -598,7 +598,7 @@ Authors: Valérian Saliou, Julien, hunterjm, Kloadut
 #jappix_mini div.jm_disabled input.jm_send-messages,
 #jappix_mini div.jm_disabled a.jm_pane,
 #jappix_mini a.jm_switch.jm_nonav {
-	background: #f3f3f3 !important;
+	/*background: #f3f3f3 !important; no need*/
 }
 
 #jappix_mini div.jm_disabled input.jm_send-messages {
