@@ -10078,7 +10078,7 @@ var JappixMini = (function () {
                                     var this_sub_sel = jQuery(this);
 
                                     /* Begin 5D Mod Add */
-                                    console.log("CLICKED CHANNEL", $(this), this); // 5D DEBUG
+                                    JappixConsole.log("CLICKED CHANNEL", $(this), this); // 5D DEBUG
                                     /* End 5D Mod Add */
 
                                     // Chat?

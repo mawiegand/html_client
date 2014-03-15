@@ -636,15 +636,14 @@ Authors: Valérian Saliou, Julien, hunterjm, Kloadut
 }
 
 #jappix_mini div.jm_roster div.jm_buddies {
-	width: 100%;
 	max-height: 300px;
 	min-height: 100px;
-	padding: 5px 0;
+	margin: 0 4px
 	overflow: auto;
+	background-color: #FFFFFF;
 }
 
 #jappix_mini div.jm_roster div.jm_grouped {
-	margin: 2px 0;
 	border-color: #000000;
 	border-style: solid;
 	border-width: 1px 0 0 0;
@@ -654,7 +653,6 @@ Authors: Valérian Saliou, Julien, hunterjm, Kloadut
 	margin-bottom: 2px;
 	padding: 4px 8px 0;
 	font-weight: bold;
-	color: #FFFFFF;
 }
 
 #jappix_mini div.jm_roster div.jm_grouped a.jm_5d_staff_user {
@@ -665,7 +663,6 @@ Authors: Valérian Saliou, Julien, hunterjm, Kloadut
 	outline-style: none;
 	padding: 6px;
 	display: block;
-	color: #FFFFFF;
 }
 
 #jappix_mini a.jm_friend.jm_offline {
