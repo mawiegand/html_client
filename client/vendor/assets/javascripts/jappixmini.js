@@ -11418,7 +11418,7 @@ var JappixMini = (function () {
 
             // Element
             var element = '#jappix_mini a#friend-' + hash;
-            
+
             // Yet added?
             if(JappixCommon.exists(element)) {
                 jQuery(element).remove();
@@ -11433,20 +11433,6 @@ var JappixMini = (function () {
 
                 // Must add a groupchat group?
                 if(!JappixCommon.exists(path)) {
-                    /* Begin 5D Mod Add */
-                    // A) Determine whether or not this is a channel, where users should be hidden
-                    var hideUsers = self.ListContainsGroupchat5D(MINI_5D_NO_USERLIST_GROUPCHATS, bare_xid)
-
-                    // B) Determine, whether or not this is a staff user
-                    var staffUser = self.UserIs5DStaff(MINI_5D_STAFF_POSTFIXES, nick);
-
-                    JappixConsole.info('JAPPIX ADD BUDDY TO', groupchat, 'HIDE USERLIST IN', MINI_5D_NO_USERLIST_GROUPCHATS, ' hideUsers: ', hideUsers, ' staffUser: ', staffUser);
-
-                    if (hideUsers && !staffUser) {
-                      return false; // 5D MOD: don't add to buddy list
-                    }
-                    /* End 5D Mod Add */
-
                     jQuery('#jappix_mini div.jm_roster div.jm_buddies').append(
                         '<div class="jm_grouped jm_grouped_groupchat" data-xid="' + escape(bare_xid) + '">' + 
                             '<div class="jm_name">' + JappixCommon.getXIDNick(groupchat).htmlEnc() + '</div>' + 
@@ -11465,7 +11451,21 @@ var JappixMini = (function () {
                     );
                 }
             }
-            
+
+            /* Begin 5D Mod Add */
+            // A) Determine whether or not this is a channel, where users should be hidden
+            var hideUsers = self.ListContainsGroupchat5D(MINI_5D_NO_USERLIST_GROUPCHATS, bare_xid)
+
+            // B) Determine, whether or not this is a staff user
+            var staffUser = self.UserIs5DStaff(MINI_5D_STAFF_POSTFIXES, nick);
+
+            JappixConsole.info('JAPPIX ADD BUDDY TO', groupchat, 'HIDE USERLIST IN', MINI_5D_NO_USERLIST_GROUPCHATS, ' hideUsers: ', hideUsers, ' staffUser: ', staffUser);
+
+            if (hideUsers && !staffUser) {
+              return false; // 5D MOD: don't add to buddy list
+            }
+            /* End 5D Mod Add */
+
             // Append this buddy content
             var code = self.codeAddBuddy(
                 nick,

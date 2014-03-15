@@ -194,7 +194,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         groupChats.push("global@conference."+base);
       }
 
-      MINI_5D_NO_USERLIST_GROUPCHATS.push("help@conference."+base, "global@conference."+base, "insider@conference."+base, "beginner@conference."+base);
+      MINI_5D_NO_USERLIST_GROUPCHATS.push("global@conference."+base, "insider@conference."+base);
       if (character && character.hasStaffRole('help')) {
         MINI_5D_NO_USERLIST_GROUPCHATS = [];
       }
