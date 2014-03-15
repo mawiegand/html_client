@@ -8716,7 +8716,10 @@ var JappixMini = (function () {
             var resources_obj = {};
 
             // Is this a groupchat?
-            if(JappixCommon.exists('#jappix_mini div.jm_conversation[data-type="groupchat"][data-xid="' + JappixCommon.encodeQuotes(xid) + '"]')) {
+            /* Begin 5D Mod Change */
+            /* Fix für Räume mit umlauten */
+            if(JappixCommon.exists('#jappix_mini div.jm_conversation[data-type="groupchat"][data-hash="' + hex_md5(xid) + '"]')) {
+            /* End 5D Mod Change */
                 xid = from;
             }
 
@@ -8977,7 +8980,7 @@ var JappixMini = (function () {
                     var groupchat_hash = hash;
                     xid = from;
                     hash = hex_md5(xid);
-                    
+
                     // Process this groupchat user presence
                     var log_message;
 
