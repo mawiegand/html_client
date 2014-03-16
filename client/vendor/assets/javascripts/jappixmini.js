@@ -64,121 +64,122 @@ var Origin = (function () {
 
 })();
 
-var JappixOrigin = Origin;// jXHR.js (JSON-P XHR)
+var JappixOrigin = Origin;
+// jXHR.js (JSON-P XHR)
 // v0.1 (c) Kyle Simpson
 // License: MIT
 // modified by gueron Jonathan to work with strophe lib
 // for http://www.iadvize.com
 
 (function(global){
-	var SETTIMEOUT = global.setTimeout, // for better compression
-		doc = global.document,
-		callback_counter = 0;
-		
-	global.jXHR = function() {
-		var script_url,
-			script_loaded,
-			jsonp_callback,
-			scriptElem,
-			publicAPI = null;
-			
-		function removeScript() { try { scriptElem.parentNode.removeChild(scriptElem); } catch (err) { } }
-			
-		function reset() {
-			script_loaded = false;
-			script_url = "";
-			removeScript();
-			scriptElem = null;
-			fireReadyStateChange(0);
-		}
-		
-		function ThrowError(msg) {
-			try { 
-				publicAPI.onerror.call(publicAPI,msg,script_url); 
-			} catch (err) { 
-				//throw new Error(msg); 
-			}
-		}
+    var SETTIMEOUT = global.setTimeout, // for better compression
+        doc = global.document,
+        callback_counter = 0;
 
-		function handleScriptLoad() {
-			if ((this.readyState && this.readyState!=="complete" && this.readyState!=="loaded") || script_loaded) { return; }
-			this.onload = this.onreadystatechange = null; // prevent memory leak
-			script_loaded = true;
-			if (publicAPI.readyState !== 4) ThrowError("handleScriptLoad: Script failed to load ["+script_url+"].");
-			removeScript();
-		}
-		
-		function parseXMLString(xmlStr) {
-			var xmlDoc = null;
-			if(window.DOMParser) {
-				var parser = new DOMParser();
-				xmlDoc = parser.parseFromString(xmlStr,"text/xml");
-			}
-			else {
-				xmlDoc = new ActiveXObject("Microsoft.XMLDOM"); 
-				xmlDoc.async="false";
-				xmlDoc.loadXML(xmlStr);
-			}
-			return xmlDoc;
-		}
-		
-		function fireReadyStateChange(rs,args) {
-		
-			args = args || [];
-			publicAPI.readyState = rs;
-			if (rs == 4) {
-				publicAPI.responseText = args[0].reply;
-				publicAPI.responseXML = parseXMLString(args[0].reply);
-			}
-			if (typeof publicAPI.onreadystatechange === "function") publicAPI.onreadystatechange.apply(publicAPI,args);
-		}
-				
-		publicAPI = {
-			onerror:null,
-			onreadystatechange:null,
-			readyState:0,
-			status:200,
-			responseBody: null,
-			responseText: null,
-			responseXML: null,
-			open:function(method,url){
-				reset();
-				var internal_callback = "cb"+(callback_counter++);
-				(function(icb){
-					global.jXHR[icb] = function() {
-						try { fireReadyStateChange.call(publicAPI,4,arguments); } 
-						catch(err) { 
-							publicAPI.readyState = -1;
-							ThrowError("Script failed to run ["+script_url+"]."); 
-						}
-						global.jXHR[icb] = null;
-					};
-				})(internal_callback);
-				script_url = url + '?callback=?jXHR&data=';
-				script_url = script_url.replace(/=\?jXHR/,"=jXHR."+internal_callback);
-				fireReadyStateChange(1);
-			},
-			send:function(data){
-				script_url = script_url + encodeURIComponent(data);
-				SETTIMEOUT(function(){
-					scriptElem = doc.createElement("script");
-					scriptElem.setAttribute("type","text/javascript");
-					scriptElem.onload = scriptElem.onreadystatechange = function(){handleScriptLoad.call(scriptElem);};
-					scriptElem.setAttribute("src",script_url);
-					doc.getElementsByTagName("head")[0].appendChild(scriptElem);
-				},0);
-				fireReadyStateChange(2);
-			},
-			abort:function(){},
-			setRequestHeader:function(){}, // noop
-			getResponseHeader:function(){return "";}, // basically noop
-			getAllResponseHeaders:function(){return [];} // ditto
-		};
+    global.jXHR = function() {
+        var script_url,
+            script_loaded,
+            jsonp_callback,
+            scriptElem,
+            publicAPI = null;
 
-		reset();
-		
-		return publicAPI;
-	};
+        function removeScript() { try { scriptElem.parentNode.removeChild(scriptElem); } catch (err) { } }
+
+        function reset() {
+            script_loaded = false;
+            script_url = "";
+            removeScript();
+            scriptElem = null;
+            fireReadyStateChange(0);
+        }
+
+        function ThrowError(msg) {
+            try {
+                publicAPI.onerror.call(publicAPI,msg,script_url);
+            } catch (err) {
+                //throw new Error(msg);
+            }
+        }
+
+        function handleScriptLoad() {
+            if ((this.readyState && this.readyState!=="complete" && this.readyState!=="loaded") || script_loaded) { return; }
+            this.onload = this.onreadystatechange = null; // prevent memory leak
+            script_loaded = true;
+            if (publicAPI.readyState !== 4) ThrowError("handleScriptLoad: Script failed to load ["+script_url+"].");
+            removeScript();
+        }
+
+        function parseXMLString(xmlStr) {
+            var xmlDoc = null;
+            if(window.DOMParser) {
+                var parser = new DOMParser();
+                xmlDoc = parser.parseFromString(xmlStr,"text/xml");
+            }
+            else {
+                xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+                xmlDoc.async="false";
+                xmlDoc.loadXML(xmlStr);
+            }
+            return xmlDoc;
+        }
+
+        function fireReadyStateChange(rs,args) {
+
+            args = args || [];
+            publicAPI.readyState = rs;
+            if (rs == 4) {
+                publicAPI.responseText = args[0].reply;
+                publicAPI.responseXML = parseXMLString(args[0].reply);
+            }
+            if (typeof publicAPI.onreadystatechange === "function") publicAPI.onreadystatechange.apply(publicAPI,args);
+        }
+
+        publicAPI = {
+            onerror:null,
+            onreadystatechange:null,
+            readyState:0,
+            status:200,
+            responseBody: null,
+            responseText: null,
+            responseXML: null,
+            open:function(method,url){
+                reset();
+                var internal_callback = "cb"+(callback_counter++);
+                (function(icb){
+                    global.jXHR[icb] = function() {
+                        try { fireReadyStateChange.call(publicAPI,4,arguments); }
+                        catch(err) {
+                            publicAPI.readyState = -1;
+                            ThrowError("Script failed to run ["+script_url+"].");
+                        }
+                        global.jXHR[icb] = null;
+                    };
+                })(internal_callback);
+                script_url = url + '?callback=?jXHR&data=';
+                script_url = script_url.replace(/=\?jXHR/,"=jXHR."+internal_callback);
+                fireReadyStateChange(1);
+            },
+            send:function(data){
+                script_url = script_url + encodeURIComponent(data);
+                SETTIMEOUT(function(){
+                    scriptElem = doc.createElement("script");
+                    scriptElem.setAttribute("type","text/javascript");
+                    scriptElem.onload = scriptElem.onreadystatechange = function(){handleScriptLoad.call(scriptElem);};
+                    scriptElem.setAttribute("src",script_url);
+                    doc.getElementsByTagName("head")[0].appendChild(scriptElem);
+                },0);
+                fireReadyStateChange(2);
+            },
+            abort:function(){},
+            setRequestHeader:function(){}, // noop
+            getResponseHeader:function(){return "";}, // basically noop
+            getAllResponseHeaders:function(){return [];} // ditto
+        };
+
+        reset();
+
+        return publicAPI;
+    };
 })(window);
 // License: PD
 
@@ -199,12 +200,12 @@ var Base64 = (function () {
             var chr1, chr2, chr3;
             var enc1, enc2, enc3, enc4;
             var i = 0;
-        
+
             do {
                 chr1 = input.charCodeAt(i++);
                 chr2 = input.charCodeAt(i++);
                 chr3 = input.charCodeAt(i++);
-                
+
                 enc1 = chr1 >> 2;
                 enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
                 enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
@@ -215,14 +216,14 @@ var Base64 = (function () {
                 } else if (isNaN(chr3)) {
                     enc4 = 64;
                 }
-                
+
                 output = output + keyStr.charAt(enc1) + keyStr.charAt(enc2) +
                     keyStr.charAt(enc3) + keyStr.charAt(enc4);
             } while (i < input.length);
-            
+
             return output;
         },
-        
+
         /**
          * Decodes a base64 string.
          * @param {String} input The string to decode.
@@ -232,22 +233,22 @@ var Base64 = (function () {
             var chr1, chr2, chr3;
             var enc1, enc2, enc3, enc4;
             var i = 0;
-            
+
             // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
             input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-            
+
             do {
                 enc1 = keyStr.indexOf(input.charAt(i++));
                 enc2 = keyStr.indexOf(input.charAt(i++));
                 enc3 = keyStr.indexOf(input.charAt(i++));
                 enc4 = keyStr.indexOf(input.charAt(i++));
-                
+
                 chr1 = (enc1 << 2) | (enc2 >> 4);
                 chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
                 chr3 = ((enc3 & 3) << 6) | enc4;
-                
+
                 output = output + String.fromCharCode(chr1);
-                
+
                 if (enc3 != 64) {
                     output = output + String.fromCharCode(chr2);
                 }
@@ -255,13 +256,14 @@ var Base64 = (function () {
                     output = output + String.fromCharCode(chr3);
                 }
             } while (i < input.length);
-            
+
             return output;
         }
     };
 
     return obj;
-})();/*
+})();
+/*
 
 Jappix - An open social platform
 This is the JSJaC library for Jappix (from trunk)
@@ -276,7 +278,7 @@ Authors: Stefan Strigler, Valérian Saliou, Zash, Maranda
 /**
  * @fileoverview Magic dependency loading. Taken from script.aculo.us
  * and modified to break it.
- * @author Stefan Strigler steve@zeank.in-berlin.de 
+ * @author Stefan Strigler steve@zeank.in-berlin.de
  * @version $Revision$
  */
 
@@ -334,29 +336,29 @@ XmlHttp.create = function () {
       // Able to use CORS?
       if (window.XMLHttpRequest) {
         var req = new XMLHttpRequest();
-        
+
         if (req.withCredentials !== undefined)
           return req;
       }
-      
+
       // Fallback on JSONP
-    	return new jXHR();
+      return new jXHR();
     }
     // Might be local-domain?
     if (window.XMLHttpRequest) {
       var req = new XMLHttpRequest();
-      
+
       // some versions of Moz do not support the readyState property
       // and the onreadystate event so we patch it!
       if (req.readyState == null) {
-	req.readyState = 1;
-	req.addEventListener("load", function () {
-			       req.readyState = 4;
-			       if (typeof req.onreadystatechange == "function")
-				 req.onreadystatechange();
-			     }, false);
+  req.readyState = 1;
+  req.addEventListener("load", function () {
+             req.readyState = 4;
+             if (typeof req.onreadystatechange == "function")
+                  req.onreadystatechange();
+           }, false);
       }
-      
+
       return req;
     }
     if (window.ActiveXObject) {
@@ -375,7 +377,7 @@ XmlHttp.create = function () {
 XmlHttp.getPrefix = function() {
   if (XmlHttp.prefix) // I know what you did last summer
     return XmlHttp.prefix;
- 
+
   var prefixes = ["MSXML2", "Microsoft", "MSXML", "MSXML3"];
   var o;
   for (var i = 0; i < prefixes.length; i++) {
@@ -386,7 +388,7 @@ XmlHttp.getPrefix = function() {
     }
     catch (ex) {};
   }
- 
+
   throw new Error("Could not find an installed XML parser");
 };
 
@@ -409,17 +411,17 @@ XmlDocument.create = function (name,ns) {
       // some versions of Moz do not support the readyState property
       // and the onreadystate event so we patch it!
       if (doc.readyState == null) {
-	doc.readyState = 1;
-	doc.addEventListener("load", function () {
-			       doc.readyState = 4;
-			       if (typeof doc.onreadystatechange == "function")
-				 doc.onreadystatechange();
-			     }, false);
+  doc.readyState = 1;
+  doc.addEventListener("load", function () {
+             doc.readyState = 4;
+             if (typeof doc.onreadystatechange == "function")
+         doc.onreadystatechange();
+           }, false);
       }
     } else if (window.ActiveXObject) {
       doc = new ActiveXObject(XmlDocument.getPrefix() + ".DomDocument");
     }
-   
+
     if (!doc.documentElement || doc.documentElement.tagName != name ||
         (doc.documentElement.namespaceURI &&
          doc.documentElement.namespaceURI != ns)) {
@@ -431,7 +433,7 @@ XmlDocument.create = function (name,ns) {
               doc.appendChild(doc.createElement(name));
           } catch (dex) {
             doc = document.implementation.createDocument(ns,name,null);
-           
+
             if (doc.documentElement == null)
               doc.appendChild(doc.createElement(name));
 
@@ -442,7 +444,7 @@ XmlDocument.create = function (name,ns) {
             }
           }
         }
-   
+
     return doc;
   }
   catch (ex) { }
@@ -467,7 +469,7 @@ XmlDocument.getPrefix = function() {
     }
     catch (ex) {};
   }
- 
+
   throw new Error("Could not find an installed XML parser");
 };
 
@@ -481,14 +483,14 @@ if (typeof(Document) != 'undefined' && window.DOMParser) {
    * @private
    */
   Document.prototype.loadXML = function (s) {
-	
+
     // parse the string to a new doc
     var doc2 = (new DOMParser()).parseFromString(s, "text/xml");
-	
+
     // remove all initial children
     while (this.hasChildNodes())
       this.removeChild(this.lastChild);
-		
+
     // insert and import nodes
     for (var i = 0; i < doc2.childNodes.length; i++) {
       this.appendChild(this.importNode(doc2.childNodes[i], true));
@@ -575,7 +577,7 @@ String.prototype.htmlEnc = function() {
 String.prototype.revertHtmlEnc = function() {
   if(!this)
     return this;
-  
+
   var str = this.replace(/&amp;/gi,'&');
   str = str.replace(/&lt;/gi,'<');
   str = str.replace(/&gt;/gi,'>');
@@ -596,11 +598,11 @@ String.prototype.revertHtmlEnc = function() {
 Date.jab2date = function(ts) {
   // Timestamp
   if(!isNaN(ts))
-  	return new Date(ts * 1000);
-  
+    return new Date(ts * 1000);
+
   // Get the UTC date
   var date = new Date(Date.UTC(ts.substr(0,4),ts.substr(5,2)-1,ts.substr(8,2),ts.substr(11,2),ts.substr(14,2),ts.substr(17,2)));
-  
+
   if (ts.substr(ts.length-6,1) != 'Z') { // there's an offset
     var date_offset = date.getTimezoneOffset() * 60 * 1000;
     var offset = new Date();
@@ -1341,7 +1343,7 @@ function utf8t2d(t)
       }
   return d;
 }
-  
+
 // returns plaintext from an array of bytesrepresenting dezimal numbers, which
 // represent an UTF-8 encoded text; browser which does not understand unicode
 // like NN401 will show "?"-signs instead
@@ -1458,7 +1460,7 @@ function cnonce(size) {
 
 JSJAC_HAVEKEYS = true;          // whether to use keys
 JSJAC_NKEYS    = 16;            // number of keys to generate
-JSJAC_INACTIVITY = 300;         // qnd hack to make suspend/resume 
+JSJAC_INACTIVITY = 300;         // qnd hack to make suspend/resume
                                     // work more smoothly with polling
 JSJAC_ERR_COUNT = 10;           // number of retries in case of connection
                                     // errors
@@ -1473,8 +1475,8 @@ JSJAC_ALLOW_PLAIN = true;       // whether to allow plaintext logins
 JSJAC_ALLOW_SCRAM = false;      // allow usage of SCRAM-SHA-1 authentication; please note that it is quite slow so it is disable by default
 
 // Options specific to HTTP Binding (BOSH)
-JSJACHBC_MAX_HOLD = 1;          // default for number of connections held by 
-                                    // connection manager 
+JSJACHBC_MAX_HOLD = 1;          // default for number of connections held by
+                                    // connection manager
 JSJACHBC_MAX_WAIT = 20;        // default 'wait' param - how long an idle connection
                                     // should be held by connection manager
 
@@ -1528,7 +1530,7 @@ JSJaCJSON.toString = function (obj) {
         v = x[i];
         f = s[typeof v];
         if (f) {
-	  try {
+    try {
             v = f(v);
             if (typeof v == 'string') {
               if (b) {
@@ -1537,8 +1539,8 @@ JSJaCJSON.toString = function (obj) {
               a[a.length] = v;
               b = true;
             }
-	  } catch(e) { 
-	  }
+    } catch(e) {
+    }
         }
       }
       a[a.length] = ']';
@@ -1564,7 +1566,7 @@ JSJaCJSON.toString = function (obj) {
             v = x[i];
             f = s[typeof v];
             if (f) {
-	      try {
+        try {
                 v = f(v);
                 if (typeof v == 'string') {
                   if (b) {
@@ -1573,12 +1575,12 @@ JSJaCJSON.toString = function (obj) {
                   a.push(s.string(i), ':', v);
                   b = true;
                 }
-	      } catch(e) {
-	      }
+        } catch(e) {
+        }
             }
           }
         }
-         
+
         a[a.length] = '}';
         return a.join('');
       }
@@ -1606,7 +1608,7 @@ switch (typeof(obj)) {
    return s.object(obj);
  case 'array':
    return s.array(obj);
-   
+
  }
 };
 
@@ -1780,7 +1782,7 @@ JSJaCJID.prototype.clone = function() {
  */
 JSJaCJID.prototype.isEntity = function(jid) {
   if (typeof jid == 'string')
-	  jid = (new JSJaCJID(jid));
+    jid = (new JSJaCJID(jid));
   jid.removeResource();
   return (this.clone().removeResource().toString() === jid.toString());
 };
@@ -2526,7 +2528,7 @@ JSJaCIQ.prototype.setQuery = function(xmlns) {
     query = this.getDoc().createElementNS(xmlns,'query');
   } catch (e) {
     query = this.getDoc().createElement('query');
-	query.setAttribute('xmlns',xmlns);
+  query.setAttribute('xmlns',xmlns);
   }
   this.getNode().appendChild(query);
   return query;
@@ -2746,7 +2748,7 @@ function JSJaCError(code,type,condition) {
  * @constructor
  * @param {Function} func The hash function to be used for creating the keys
  * @param {Debugger} oDbg Reference to debugger implementation [optional]
- */									 
+ */
 function JSJaCKeys(func,oDbg) {
   var seed = Math.random();
 
@@ -2995,30 +2997,30 @@ JSJaCConnection.prototype.connected = function() { return this._connected; };
  */
 JSJaCConnection.prototype.disconnect = function() {
   this._setStatus('disconnecting');
- 
+
   if (!this.connected())
     return;
   this._connected = false;
- 
+
   clearInterval(this._interval);
   clearInterval(this._inQto);
- 
+
   if (this._timeout)
     clearTimeout(this._timeout); // remove timer
- 
+
   var slot = this._getFreeSlot();
   // Intentionally synchronous
   this._req[slot] = this._setupRequest(false);
- 
+
   request = this._getRequestString(false, true);
- 
+
   this.oDbg.log("Disconnecting: " + request,4);
   this._req[slot].r.send(request);
- 
+
   try {
     DataStore.removeDB(MINI_HASH, 'jsjac', 'state');
   } catch (e) {}
- 
+
   this.oDbg.log("Disconnected: "+this._req[slot].r.responseText,2);
   this._handleEvent('ondisconnect');
 };
@@ -3228,9 +3230,9 @@ JSJaCConnection.prototype.resumeFromData = function(data) {
       this._handleEvent('onresume');
       setTimeout(JSJaC.bind(this._resume, this),this.getPollInterval());
       this._interval = setInterval(JSJaC.bind(this._checkQueue, this),
-				   JSJAC_CHECKQUEUEINTERVAL);
+           JSJAC_CHECKQUEUEINTERVAL);
       this._inQto = setInterval(JSJaC.bind(this._checkInQ, this),
-				JSJAC_CHECKINQUEUEINTERVAL);
+        JSJAC_CHECKINQUEUEINTERVAL);
     }
 
     return (this._connected === true);
@@ -3363,7 +3365,7 @@ JSJaCConnection.prototype.status = function() { return this._status; };
  */
 JSJaCConnection.prototype.suspend = function(has_pause) {
   var data = this.suspendToData(has_pause);
-  
+
   try {
     var c = DataStore.setDB(MINI_HASH, 'jsjac', 'state', JSJaCJSON.toString(data));
     return c;
@@ -3380,7 +3382,7 @@ JSJaCConnection.prototype.suspend = function(has_pause) {
  * @type Object
  */
 JSJaCConnection.prototype.suspendToData = function(has_pause) {
-  
+
   // remove timers
   if(has_pause) {
     clearTimeout(this._timeout);
@@ -3389,7 +3391,7 @@ JSJaCConnection.prototype.suspendToData = function(has_pause) {
 
     this._suspend();
   }
-  
+
   var u = ('_connected,_keys,_ID,_inQ,_pQueue,_regIDs,_errcnt,_inactivity,domain,username,resource,jid,fulljid,_sid,_httpbase,_timerval,_is_polling').split(',');
   u = u.concat(this._getSuspendVars());
   var s = new Object();
@@ -3406,12 +3408,12 @@ JSJaCConnection.prototype.suspendToData = function(has_pause) {
 
     s[u[i]] = o;
   }
-  
+
   if(has_pause) {
     this._connected = false;
     this._setStatus('suspending');
   }
-  
+
   return s;
 };
 
@@ -3802,8 +3804,8 @@ JSJaCConnection.prototype._handleEvent = function(event,arg) {
         if (arg) {
           if (arg.pType) { // it's a packet
             if ((!arg.getNode().hasChildNodes() && aEvent.childName != '*') ||
-				(arg.getNode().hasChildNodes() &&
-				 !arg.getChild(aEvent.childName, aEvent.childNS)))
+        (arg.getNode().hasChildNodes() &&
+         !arg.getChild(aEvent.childName, aEvent.childNS)))
               continue;
             if (aEvent.type != '*' &&
                 arg.getType() != aEvent.type)
@@ -3916,7 +3918,7 @@ JSJaCConnection.prototype._parseStreamFeatures = function(doc) {
         this._handleEvent('ondisconnect');
         return false;
     }
-    
+
     this.mechs = new Object();
     var lMec1 = doc.getElementsByTagName("mechanisms");
     this.has_sasl = false;
@@ -3935,7 +3937,7 @@ JSJaCConnection.prototype._parseStreamFeatures = function(doc) {
         this.oDbg.log("No support for SASL detected",2);
         return false;
     }
-    
+
     // Get the server CAPS (if available)
     this.server_caps=null;
     var sCaps = doc.getElementsByTagName("c");
@@ -3943,13 +3945,13 @@ JSJaCConnection.prototype._parseStreamFeatures = function(doc) {
       var c_sCaps=sCaps.item(i);
       var x_sCaps=c_sCaps.getAttribute("xmlns");
       var v_sCaps=c_sCaps.getAttribute("ver");
-      
+
       if ((x_sCaps == NS_CAPS) && v_sCaps) {
         this.server_caps=v_sCaps;
         break;
       }
     }
-    
+
     return true;
 };
 
@@ -4354,13 +4356,13 @@ JSJaCHttpBindingConnection.prototype._getStreamID = function(req) {
     return;
   }
   var body = req.responseXML.documentElement;
-  
+
   // any session error?
   if(body.getAttribute('type') == 'terminate') {
     this._handleEvent('onerror',JSJaCError('503','cancel','service-unavailable'));
     return;
   }
-  
+
   // extract stream id used for non-SASL authentication
   if (body.getAttribute('authid')) {
     this.streamid = body.getAttribute('authid');
@@ -4503,18 +4505,18 @@ JSJaCHttpBindingConnection.prototype._parseResponse = function(req) {
     }
   } catch (e) {
     this.oDbg.log("XMLHttpRequest error: status not available", 1);
-	  this._errcnt++;
-	  if (this._errcnt > JSJAC_ERR_COUNT) {
-	    // abort
-	    this._abort();
-	  } else {
+    this._errcnt++;
+    if (this._errcnt > JSJAC_ERR_COUNT) {
+      // abort
+      this._abort();
+    } else {
       if (this.connected()) {
-	      this.oDbg.log("repeating ("+this._errcnt+")",1);
+        this.oDbg.log("repeating ("+this._errcnt+")",1);
 
-	      this._setStatus('proto_error_fallback');
+        this._setStatus('proto_error_fallback');
 
-	      // schedule next tick
-	      setTimeout(JSJaC.bind(this._resume, this),
+        // schedule next tick
+        setTimeout(JSJaC.bind(this._resume, this),
                    this.getPollInterval());
       }
     }
@@ -4523,7 +4525,7 @@ JSJaCHttpBindingConnection.prototype._parseResponse = function(req) {
 
   var body = r.responseXML.documentElement;
   if (!body || body.tagName != 'body' ||
-	  body.namespaceURI != 'http://jabber.org/protocol/httpbind') {
+    body.namespaceURI != 'http://jabber.org/protocol/httpbind') {
     this.oDbg.log("invalid response:\n" + r.responseText,1);
 
     clearTimeout(this._timeout); // remove timer
@@ -4536,7 +4538,7 @@ JSJaCHttpBindingConnection.prototype._parseResponse = function(req) {
 
     this._setStatus('internal_server_error');
     this._handleEvent('onerror',
-		      JSJaCError('500','wait','internal-server-error'));
+          JSJaCError('500','wait','internal-server-error'));
 
     return null;
   }
@@ -4636,7 +4638,7 @@ JSJaCHttpBindingConnection.prototype._reInitStreamWait = function(req, cb) {
         var featuresNL = doc.getElementsByTagName('stream:features');
         for (var i=0, l=featuresNL.length; i<l; i++) {
             if (featuresNL.item(i).namespaceURI == 'http://etherx.jabber.org/streams' ||
-                featuresNL.item(i).getAttribute('xmlns') == 
+                featuresNL.item(i).getAttribute('xmlns') ==
                 'http://etherx.jabber.org/streams') {
                 var features = featuresNL.item(i);
                 break;
@@ -4646,7 +4648,7 @@ JSJaCHttpBindingConnection.prototype._reInitStreamWait = function(req, cb) {
             var bind = features.getElementsByTagName('bind');
             for (var i=0, l=bind.length; i<l; i++) {
                 if (bind.item(i).namespaceURI == 'urn:ietf:params:xml:ns:xmpp-bind' ||
-                    bind.item(i).getAttribute('xmlns') == 
+                    bind.item(i).getAttribute('xmlns') ==
                     'urn:ietf:params:xml:ns:xmpp-bind') {
                     bind = bind.item(i);
                     break;
@@ -4656,7 +4658,7 @@ JSJaCHttpBindingConnection.prototype._reInitStreamWait = function(req, cb) {
     }
     this.oDbg.log(features);
     this.oDbg.log(bind);
-    
+
     if (features) {
         if (bind) {
             cb();
@@ -5219,189 +5221,189 @@ JSJaCWebSocketConnection.prototype._sendRaw = function(xml, cb, arg) {
  * @license MIT License <http://www.opensource.org/licenses/mit-license.php>
  */
 (function ($) {
-	'use strict';
+    'use strict';
 
-	var escape = /["\\\x00-\x1f\x7f-\x9f]/g,
-		meta = {
-			'\b': '\\b',
-			'\t': '\\t',
-			'\n': '\\n',
-			'\f': '\\f',
-			'\r': '\\r',
-			'"' : '\\"',
-			'\\': '\\\\'
-		},
-		hasOwn = Object.prototype.hasOwnProperty;
+    var escape = /["\\\x00-\x1f\x7f-\x9f]/g,
+        meta = {
+            '\b': '\\b',
+            '\t': '\\t',
+            '\n': '\\n',
+            '\f': '\\f',
+            '\r': '\\r',
+            '"' : '\\"',
+            '\\': '\\\\'
+        },
+        hasOwn = Object.prototype.hasOwnProperty;
 
-	/**
-	 * jQuery.toJSON
-	 * Converts the given argument into a JSON representation.
-	 *
-	 * @param o {Mixed} The json-serializable *thing* to be converted
-	 *
-	 * If an object has a toJSON prototype, that will be used to get the representation.
-	 * Non-integer/string keys are skipped in the object, as are keys that point to a
-	 * function.
-	 *
-	 */
-	$.toJSON = typeof JSON === 'object' && JSON.stringify ? JSON.stringify : function (o) {
-		if (o === null) {
-			return 'null';
-		}
+    /**
+     * jQuery.toJSON
+     * Converts the given argument into a JSON representation.
+     *
+     * @param o {Mixed} The json-serializable *thing* to be converted
+     *
+     * If an object has a toJSON prototype, that will be used to get the representation.
+     * Non-integer/string keys are skipped in the object, as are keys that point to a
+     * function.
+     *
+     */
+    $.toJSON = typeof JSON === 'object' && JSON.stringify ? JSON.stringify : function (o) {
+        if (o === null) {
+            return 'null';
+        }
 
-		var pairs, k, name, val,
-			type = $.type(o);
+        var pairs, k, name, val,
+            type = $.type(o);
 
-		if (type === 'undefined') {
-			return undefined;
-		}
+        if (type === 'undefined') {
+            return undefined;
+        }
 
-		// Also covers instantiated Number and Boolean objects,
-		// which are typeof 'object' but thanks to $.type, we
-		// catch them here. I don't know whether it is right
-		// or wrong that instantiated primitives are not
-		// exported to JSON as an {"object":..}.
-		// We choose this path because that's what the browsers did.
-		if (type === 'number' || type === 'boolean') {
-			return String(o);
-		}
-		if (type === 'string') {
-			return $.quoteString(o);
-		}
-		if (typeof o.toJSON === 'function') {
-			return $.toJSON(o.toJSON());
-		}
-		if (type === 'date') {
-			var month = o.getUTCMonth() + 1,
-				day = o.getUTCDate(),
-				year = o.getUTCFullYear(),
-				hours = o.getUTCHours(),
-				minutes = o.getUTCMinutes(),
-				seconds = o.getUTCSeconds(),
-				milli = o.getUTCMilliseconds();
+        // Also covers instantiated Number and Boolean objects,
+        // which are typeof 'object' but thanks to $.type, we
+        // catch them here. I don't know whether it is right
+        // or wrong that instantiated primitives are not
+        // exported to JSON as an {"object":..}.
+        // We choose this path because that's what the browsers did.
+        if (type === 'number' || type === 'boolean') {
+            return String(o);
+        }
+        if (type === 'string') {
+            return $.quoteString(o);
+        }
+        if (typeof o.toJSON === 'function') {
+            return $.toJSON(o.toJSON());
+        }
+        if (type === 'date') {
+            var month = o.getUTCMonth() + 1,
+                day = o.getUTCDate(),
+                year = o.getUTCFullYear(),
+                hours = o.getUTCHours(),
+                minutes = o.getUTCMinutes(),
+                seconds = o.getUTCSeconds(),
+                milli = o.getUTCMilliseconds();
 
-			if (month < 10) {
-				month = '0' + month;
-			}
-			if (day < 10) {
-				day = '0' + day;
-			}
-			if (hours < 10) {
-				hours = '0' + hours;
-			}
-			if (minutes < 10) {
-				minutes = '0' + minutes;
-			}
-			if (seconds < 10) {
-				seconds = '0' + seconds;
-			}
-			if (milli < 100) {
-				milli = '0' + milli;
-			}
-			if (milli < 10) {
-				milli = '0' + milli;
-			}
-			return '"' + year + '-' + month + '-' + day + 'T' +
-				hours + ':' + minutes + ':' + seconds +
-				'.' + milli + 'Z"';
-		}
+            if (month < 10) {
+                month = '0' + month;
+            }
+            if (day < 10) {
+                day = '0' + day;
+            }
+            if (hours < 10) {
+                hours = '0' + hours;
+            }
+            if (minutes < 10) {
+                minutes = '0' + minutes;
+            }
+            if (seconds < 10) {
+                seconds = '0' + seconds;
+            }
+            if (milli < 100) {
+                milli = '0' + milli;
+            }
+            if (milli < 10) {
+                milli = '0' + milli;
+            }
+            return '"' + year + '-' + month + '-' + day + 'T' +
+                hours + ':' + minutes + ':' + seconds +
+                '.' + milli + 'Z"';
+        }
 
-		pairs = [];
+        pairs = [];
 
-		if ($.isArray(o)) {
-			for (k = 0; k < o.length; k++) {
-				pairs.push($.toJSON(o[k]) || 'null');
-			}
-			return '[' + pairs.join(',') + ']';
-		}
+        if ($.isArray(o)) {
+            for (k = 0; k < o.length; k++) {
+                pairs.push($.toJSON(o[k]) || 'null');
+            }
+            return '[' + pairs.join(',') + ']';
+        }
 
-		// Any other object (plain object, RegExp, ..)
-		// Need to do typeof instead of $.type, because we also
-		// want to catch non-plain objects.
-		if (typeof o === 'object') {
-			for (k in o) {
-				// Only include own properties,
-				// Filter out inherited prototypes
-				if (hasOwn.call(o, k)) {
-					// Keys must be numerical or string. Skip others
-					type = typeof k;
-					if (type === 'number') {
-						name = '"' + k + '"';
-					} else if (type === 'string') {
-						name = $.quoteString(k);
-					} else {
-						continue;
-					}
-					type = typeof o[k];
+        // Any other object (plain object, RegExp, ..)
+        // Need to do typeof instead of $.type, because we also
+        // want to catch non-plain objects.
+        if (typeof o === 'object') {
+            for (k in o) {
+                // Only include own properties,
+                // Filter out inherited prototypes
+                if (hasOwn.call(o, k)) {
+                    // Keys must be numerical or string. Skip others
+                    type = typeof k;
+                    if (type === 'number') {
+                        name = '"' + k + '"';
+                    } else if (type === 'string') {
+                        name = $.quoteString(k);
+                    } else {
+                        continue;
+                    }
+                    type = typeof o[k];
 
-					// Invalid values like these return undefined
-					// from toJSON, however those object members
-					// shouldn't be included in the JSON string at all.
-					if (type !== 'function' && type !== 'undefined') {
-						val = $.toJSON(o[k]);
-						pairs.push(name + ':' + val);
-					}
-				}
-			}
-			return '{' + pairs.join(',') + '}';
-		}
-	};
+                    // Invalid values like these return undefined
+                    // from toJSON, however those object members
+                    // shouldn't be included in the JSON string at all.
+                    if (type !== 'function' && type !== 'undefined') {
+                        val = $.toJSON(o[k]);
+                        pairs.push(name + ':' + val);
+                    }
+                }
+            }
+            return '{' + pairs.join(',') + '}';
+        }
+    };
 
-	/**
-	 * jQuery.evalJSON
-	 * Evaluates a given json string.
-	 *
-	 * @param str {String}
-	 */
-	$.evalJSON = typeof JSON === 'object' && JSON.parse ? JSON.parse : function (str) {
-		/*jshint evil: true */
-		return eval('(' + str + ')');
-	};
+    /**
+     * jQuery.evalJSON
+     * Evaluates a given json string.
+     *
+     * @param str {String}
+     */
+    $.evalJSON = typeof JSON === 'object' && JSON.parse ? JSON.parse : function (str) {
+        /*jshint evil: true */
+        return eval('(' + str + ')');
+    };
 
-	/**
-	 * jQuery.secureEvalJSON
-	 * Evals JSON in a way that is *more* secure.
-	 *
-	 * @param str {String}
-	 */
-	$.secureEvalJSON = typeof JSON === 'object' && JSON.parse ? JSON.parse : function (str) {
-		var filtered =
-			str
-			.replace(/\\["\\\/bfnrtu]/g, '@')
-			.replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
-			.replace(/(?:^|:|,)(?:\s*\[)+/g, '');
+    /**
+     * jQuery.secureEvalJSON
+     * Evals JSON in a way that is *more* secure.
+     *
+     * @param str {String}
+     */
+    $.secureEvalJSON = typeof JSON === 'object' && JSON.parse ? JSON.parse : function (str) {
+        var filtered =
+            str
+            .replace(/\\["\\\/bfnrtu]/g, '@')
+            .replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']')
+            .replace(/(?:^|:|,)(?:\s*\[)+/g, '');
 
-		if (/^[\],:{}\s]*$/.test(filtered)) {
-			/*jshint evil: true */
-			return eval('(' + str + ')');
-		}
-		throw new SyntaxError('Error parsing JSON, source is not valid.');
-	};
+        if (/^[\],:{}\s]*$/.test(filtered)) {
+            /*jshint evil: true */
+            return eval('(' + str + ')');
+        }
+        throw new SyntaxError('Error parsing JSON, source is not valid.');
+    };
 
-	/**
-	 * jQuery.quoteString
-	 * Returns a string-repr of a string, escaping quotes intelligently.
-	 * Mostly a support function for toJSON.
-	 * Examples:
-	 * >>> jQuery.quoteString('apple')
-	 * "apple"
-	 *
-	 * >>> jQuery.quoteString('"Where are we going?", she asked.')
-	 * "\"Where are we going?\", she asked."
-	 */
-	$.quoteString = function (str) {
-		if (str.match(escape)) {
-			return '"' + str.replace(escape, function (a) {
-				var c = meta[a];
-				if (typeof c === 'string') {
-					return c;
-				}
-				c = a.charCodeAt();
-				return '\\u00' + Math.floor(c / 16).toString(16) + (c % 16).toString(16);
-			}) + '"';
-		}
-		return '"' + str + '"';
-	};
+    /**
+     * jQuery.quoteString
+     * Returns a string-repr of a string, escaping quotes intelligently.
+     * Mostly a support function for toJSON.
+     * Examples:
+     * >>> jQuery.quoteString('apple')
+     * "apple"
+     *
+     * >>> jQuery.quoteString('"Where are we going?", she asked.')
+     * "\"Where are we going?\", she asked."
+     */
+    $.quoteString = function (str) {
+        if (str.match(escape)) {
+            return '"' + str.replace(escape, function (a) {
+                var c = meta[a];
+                if (typeof c === 'string') {
+                    return c;
+                }
+                c = a.charCodeAt();
+                return '\\u00' + Math.floor(c / 16).toString(16) + (c % 16).toString(16);
+            }) + '"';
+        }
+        return '"' + str + '"';
+    };
 
 }(jQuery));
 /**
@@ -5416,131 +5418,131 @@ JSJaCWebSocketConnection.prototype._sendRaw = function(xml, cb, arg) {
  **/
 
 jQuery.fn.extend({
-	everyTime: function(interval, label, fn, times) {
-		return this.each(function() {
-			jQuery.timer.add(this, interval, label, fn, times);
-		});
-	},
-	oneTime: function(interval, label, fn) {
-		return this.each(function() {
-			jQuery.timer.add(this, interval, label, fn, 1);
-		});
-	},
-	stopTime: function(label, fn) {
-		return this.each(function() {
-			jQuery.timer.remove(this, label, fn);
-		});
-	}
+    everyTime: function(interval, label, fn, times) {
+        return this.each(function() {
+            jQuery.timer.add(this, interval, label, fn, times);
+        });
+    },
+    oneTime: function(interval, label, fn) {
+        return this.each(function() {
+            jQuery.timer.add(this, interval, label, fn, 1);
+        });
+    },
+    stopTime: function(label, fn) {
+        return this.each(function() {
+            jQuery.timer.remove(this, label, fn);
+        });
+    }
 });
 
 jQuery.extend({
-	timer: {
-		global: [],
-		guid: 1,
-		dataKey: "jQuery.timer",
-		regex: /^([0-9]+(?:\.[0-9]*)?)\s*(.*s)?$/,
-		powers: {
-			// Yeah this is major overkill...
-			'ms': 1,
-			'cs': 10,
-			'ds': 100,
-			's': 1000,
-			'das': 10000,
-			'hs': 100000,
-			'ks': 1000000
-		},
-		timeParse: function(value) {
-			if (value == undefined || value == null)
-				return null;
-			var result = this.regex.exec(jQuery.trim(value.toString()));
-			if (result[2]) {
-				var num = parseFloat(result[1]);
-				var mult = this.powers[result[2]] || 1;
-				return num * mult;
-			} else {
-				return value;
-			}
-		},
-		add: function(element, interval, label, fn, times) {
-			var counter = 0;
+    timer: {
+        global: [],
+        guid: 1,
+        dataKey: "jQuery.timer",
+        regex: /^([0-9]+(?:\.[0-9]*)?)\s*(.*s)?$/,
+        powers: {
+            // Yeah this is major overkill...
+            'ms': 1,
+            'cs': 10,
+            'ds': 100,
+            's': 1000,
+            'das': 10000,
+            'hs': 100000,
+            'ks': 1000000
+        },
+        timeParse: function(value) {
+            if (value == undefined || value == null)
+                return null;
+            var result = this.regex.exec(jQuery.trim(value.toString()));
+            if (result[2]) {
+                var num = parseFloat(result[1]);
+                var mult = this.powers[result[2]] || 1;
+                return num * mult;
+            } else {
+                return value;
+            }
+        },
+        add: function(element, interval, label, fn, times) {
+            var counter = 0;
 
-			if (jQuery.isFunction(label)) {
-				if (!times)
-					times = fn;
-				fn = label;
-				label = interval;
-			}
+            if (jQuery.isFunction(label)) {
+                if (!times)
+                    times = fn;
+                fn = label;
+                label = interval;
+            }
 
-			interval = jQuery.timer.timeParse(interval);
+            interval = jQuery.timer.timeParse(interval);
 
-			if (typeof interval != 'number' || isNaN(interval) || interval < 0)
-				return;
+            if (typeof interval != 'number' || isNaN(interval) || interval < 0)
+                return;
 
-			if (typeof times != 'number' || isNaN(times) || times < 0)
-				times = 0;
+            if (typeof times != 'number' || isNaN(times) || times < 0)
+                times = 0;
 
-			times = times || 0;
+            times = times || 0;
 
-			var timers = jQuery.data(element, this.dataKey) || jQuery.data(element, this.dataKey, {});
+            var timers = jQuery.data(element, this.dataKey) || jQuery.data(element, this.dataKey, {});
 
-			if (!timers[label])
-				timers[label] = {};
+            if (!timers[label])
+                timers[label] = {};
 
-			fn.timerID = fn.timerID || this.guid++;
+            fn.timerID = fn.timerID || this.guid++;
 
-			var handler = function() {
-				if ((++counter > times && times !== 0) || fn.call(element, counter) === false)
-					jQuery.timer.remove(element, label, fn);
-			};
+            var handler = function() {
+                if ((++counter > times && times !== 0) || fn.call(element, counter) === false)
+                    jQuery.timer.remove(element, label, fn);
+            };
 
-			handler.timerID = fn.timerID;
+            handler.timerID = fn.timerID;
 
-			if (!timers[label][fn.timerID])
-				timers[label][fn.timerID] = window.setInterval(handler,interval);
+            if (!timers[label][fn.timerID])
+                timers[label][fn.timerID] = window.setInterval(handler,interval);
 
-			this.global.push( element );
+            this.global.push( element );
 
-		},
-		remove: function(element, label, fn) {
-			var timers = jQuery.data(element, this.dataKey), ret;
+        },
+        remove: function(element, label, fn) {
+            var timers = jQuery.data(element, this.dataKey), ret;
 
-			if ( timers ) {
+            if ( timers ) {
 
-				if (!label) {
-					for ( label in timers )
-						this.remove(element, label, fn);
-				} else if ( timers[label] ) {
-					if ( fn ) {
-						if ( fn.timerID ) {
-							window.clearInterval(timers[label][fn.timerID]);
-							delete timers[label][fn.timerID];
-						}
-					} else {
-						for ( var fn in timers[label] ) {
-							window.clearInterval(timers[label][fn]);
-							delete timers[label][fn];
-						}
-					}
+                if (!label) {
+                    for ( label in timers )
+                        this.remove(element, label, fn);
+                } else if ( timers[label] ) {
+                    if ( fn ) {
+                        if ( fn.timerID ) {
+                            window.clearInterval(timers[label][fn.timerID]);
+                            delete timers[label][fn.timerID];
+                        }
+                    } else {
+                        for ( var fn in timers[label] ) {
+                            window.clearInterval(timers[label][fn]);
+                            delete timers[label][fn];
+                        }
+                    }
 
-					for ( ret in timers[label] ) break;
-					if ( !ret ) {
-						ret = null;
-						delete timers[label];
-					}
-				}
+                    for ( ret in timers[label] ) break;
+                    if ( !ret ) {
+                        ret = null;
+                        delete timers[label];
+                    }
+                }
 
-				for ( ret in timers ) break;
-				if ( !ret )
-					jQuery.removeData(element, this.dataKey);
-			}
-		}
-	}
+                for ( ret in timers ) break;
+                if ( !ret )
+                    jQuery.removeData(element, this.dataKey);
+            }
+        }
+    }
 });
 
 jQuery(window).bind("unload", function() {
-	jQuery.each(jQuery.timer.global, function(index, item) {
-		jQuery.timer.remove(item);
-	});
+    jQuery.each(jQuery.timer.global, function(index, item) {
+        jQuery.timer.remove(item);
+    });
 });
 /*!
  * jQuery.ScrollTo
@@ -5561,169 +5563,169 @@ jQuery(window).bind("unload", function() {
     }
 }(function ($) {
 
-	var $scrollTo = $.scrollTo = function( target, duration, settings ) {
-		return $(window).scrollTo( target, duration, settings );
-	};
+    var $scrollTo = $.scrollTo = function( target, duration, settings ) {
+        return $(window).scrollTo( target, duration, settings );
+    };
 
-	$scrollTo.defaults = {
-		axis:'xy',
-		duration: parseFloat($.fn.jquery) >= 1.3 ? 0 : 1,
-		limit:true
-	};
+    $scrollTo.defaults = {
+        axis:'xy',
+        duration: parseFloat($.fn.jquery) >= 1.3 ? 0 : 1,
+        limit:true
+    };
 
-	// Returns the element that needs to be animated to scroll the window.
-	// Kept for backwards compatibility (specially for localScroll & serialScroll)
-	$scrollTo.window = function( scope ) {
-		return $(window)._scrollable();
-	};
+    // Returns the element that needs to be animated to scroll the window.
+    // Kept for backwards compatibility (specially for localScroll & serialScroll)
+    $scrollTo.window = function( scope ) {
+        return $(window)._scrollable();
+    };
 
-	// Hack, hack, hack :)
-	// Returns the real elements to scroll (supports window/iframes, documents and regular nodes)
-	$.fn._scrollable = function() {
-		return this.map(function() {
-			var elem = this,
-				isWin = !elem.nodeName || $.inArray( elem.nodeName.toLowerCase(), ['iframe','#document','html','body'] ) != -1;
+    // Hack, hack, hack :)
+    // Returns the real elements to scroll (supports window/iframes, documents and regular nodes)
+    $.fn._scrollable = function() {
+        return this.map(function() {
+            var elem = this,
+                isWin = !elem.nodeName || $.inArray( elem.nodeName.toLowerCase(), ['iframe','#document','html','body'] ) != -1;
 
-				if (!isWin)
-					return elem;
+                if (!isWin)
+                    return elem;
 
-			var doc = (elem.contentWindow || elem).document || elem.ownerDocument || elem;
+            var doc = (elem.contentWindow || elem).document || elem.ownerDocument || elem;
 
-			return /webkit/i.test(navigator.userAgent) || doc.compatMode == 'BackCompat' ?
-				doc.body :
-				doc.documentElement;
-		});
-	};
+            return /webkit/i.test(navigator.userAgent) || doc.compatMode == 'BackCompat' ?
+                doc.body :
+                doc.documentElement;
+        });
+    };
 
-	$.fn.scrollTo = function( target, duration, settings ) {
-		if (typeof duration == 'object') {
-			settings = duration;
-			duration = 0;
-		}
-		if (typeof settings == 'function')
-			settings = { onAfter:settings };
+    $.fn.scrollTo = function( target, duration, settings ) {
+        if (typeof duration == 'object') {
+            settings = duration;
+            duration = 0;
+        }
+        if (typeof settings == 'function')
+            settings = { onAfter:settings };
 
-		if (target == 'max')
-			target = 9e9;
+        if (target == 'max')
+            target = 9e9;
 
-		settings = $.extend( {}, $scrollTo.defaults, settings );
-		// Speed is still recognized for backwards compatibility
-		duration = duration || settings.duration;
-		// Make sure the settings are given right
-		settings.queue = settings.queue && settings.axis.length > 1;
+        settings = $.extend( {}, $scrollTo.defaults, settings );
+        // Speed is still recognized for backwards compatibility
+        duration = duration || settings.duration;
+        // Make sure the settings are given right
+        settings.queue = settings.queue && settings.axis.length > 1;
 
-		if (settings.queue)
-			// Let's keep the overall duration
-			duration /= 2;
-		settings.offset = both( settings.offset );
-		settings.over = both( settings.over );
+        if (settings.queue)
+            // Let's keep the overall duration
+            duration /= 2;
+        settings.offset = both( settings.offset );
+        settings.over = both( settings.over );
 
-		return this._scrollable().each(function() {
-			// Null target yields nothing, just like jQuery does
-			if (target == null) return;
+        return this._scrollable().each(function() {
+            // Null target yields nothing, just like jQuery does
+            if (target == null) return;
 
-			var elem = this,
-				$elem = $(elem),
-				targ = target, toff, attr = {},
-				win = $elem.is('html,body');
+            var elem = this,
+                $elem = $(elem),
+                targ = target, toff, attr = {},
+                win = $elem.is('html,body');
 
-			switch (typeof targ) {
-				// A number will pass the regex
-				case 'number':
-				case 'string':
-					if (/^([+-]=?)?\d+(\.\d+)?(px|%)?$/.test(targ)) {
-						targ = both( targ );
-						// We are done
-						break;
-					}
-					// Relative selector, no break!
-					targ = $(targ,this);
-					if (!targ.length) return;
-				case 'object':
-					// DOMElement / jQuery
-					if (targ.is || targ.style)
-						// Get the real position of the target
-						toff = (targ = $(targ)).offset();
-			}
-			
-			var offset = $.isFunction(settings.offset) && settings.offset(elem, targ) || settings.offset;
-			
-			$.each( settings.axis.split(''), function( i, axis ) {
-				var Pos	= axis == 'x' ? 'Left' : 'Top',
-					pos = Pos.toLowerCase(),
-					key = 'scroll' + Pos,
-					old = elem[key],
-					max = $scrollTo.max(elem, axis);
+            switch (typeof targ) {
+                // A number will pass the regex
+                case 'number':
+                case 'string':
+                    if (/^([+-]=?)?\d+(\.\d+)?(px|%)?$/.test(targ)) {
+                        targ = both( targ );
+                        // We are done
+                        break;
+                    }
+                    // Relative selector, no break!
+                    targ = $(targ,this);
+                    if (!targ.length) return;
+                case 'object':
+                    // DOMElement / jQuery
+                    if (targ.is || targ.style)
+                        // Get the real position of the target
+                        toff = (targ = $(targ)).offset();
+            }
 
-				if (toff) {// jQuery / DOMElement
-					attr[key] = toff[pos] + ( win ? 0 : old - $elem.offset()[pos] );
+            var offset = $.isFunction(settings.offset) && settings.offset(elem, targ) || settings.offset;
 
-					// If it's a dom element, reduce the margin
-					if (settings.margin) {
-						attr[key] -= parseInt(targ.css('margin'+Pos)) || 0;
-						attr[key] -= parseInt(targ.css('border'+Pos+'Width')) || 0;
-					}
+            $.each( settings.axis.split(''), function( i, axis ) {
+                var Pos = axis == 'x' ? 'Left' : 'Top',
+                    pos = Pos.toLowerCase(),
+                    key = 'scroll' + Pos,
+                    old = elem[key],
+                    max = $scrollTo.max(elem, axis);
 
-					attr[key] += offset[pos] || 0;
+                if (toff) {// jQuery / DOMElement
+                    attr[key] = toff[pos] + ( win ? 0 : old - $elem.offset()[pos] );
 
-					if(settings.over[pos])
-						// Scroll to a fraction of its width/height
-						attr[key] += targ[axis=='x'?'width':'height']() * settings.over[pos];
-				} else {
-					var val = targ[pos];
-					// Handle percentage values
-					attr[key] = val.slice && val.slice(-1) == '%' ?
-						parseFloat(val) / 100 * max
-						: val;
-				}
+                    // If it's a dom element, reduce the margin
+                    if (settings.margin) {
+                        attr[key] -= parseInt(targ.css('margin'+Pos)) || 0;
+                        attr[key] -= parseInt(targ.css('border'+Pos+'Width')) || 0;
+                    }
 
-				// Number or 'number'
-				if (settings.limit && /^\d+$/.test(attr[key]))
-					// Check the limits
-					attr[key] = attr[key] <= 0 ? 0 : Math.min( attr[key], max );
+                    attr[key] += offset[pos] || 0;
 
-				// Queueing axes
-				if (!i && settings.queue) {
-					// Don't waste time animating, if there's no need.
-					if (old != attr[key])
-						// Intermediate animation
-						animate( settings.onAfterFirst );
-					// Don't animate this axis again in the next iteration.
-					delete attr[key];
-				}
-			});
+                    if(settings.over[pos])
+                        // Scroll to a fraction of its width/height
+                        attr[key] += targ[axis=='x'?'width':'height']() * settings.over[pos];
+                } else {
+                    var val = targ[pos];
+                    // Handle percentage values
+                    attr[key] = val.slice && val.slice(-1) == '%' ?
+                        parseFloat(val) / 100 * max
+                        : val;
+                }
 
-			animate( settings.onAfter );
+                // Number or 'number'
+                if (settings.limit && /^\d+$/.test(attr[key]))
+                    // Check the limits
+                    attr[key] = attr[key] <= 0 ? 0 : Math.min( attr[key], max );
 
-			function animate( callback ) {
-				$elem.animate( attr, duration, settings.easing, callback && function() {
-					callback.call(this, targ, settings);
-				});
-			};
+                // Queueing axes
+                if (!i && settings.queue) {
+                    // Don't waste time animating, if there's no need.
+                    if (old != attr[key])
+                        // Intermediate animation
+                        animate( settings.onAfterFirst );
+                    // Don't animate this axis again in the next iteration.
+                    delete attr[key];
+                }
+            });
 
-		}).end();
-	};
+            animate( settings.onAfter );
 
-	// Max scrolling position, works on quirks mode
-	// It only fails (not too badly) on IE, quirks mode.
-	$scrollTo.max = function( elem, axis ) {
-		var Dim = axis == 'x' ? 'Width' : 'Height',
-			scroll = 'scroll'+Dim;
+            function animate( callback ) {
+                $elem.animate( attr, duration, settings.easing, callback && function() {
+                    callback.call(this, targ, settings);
+                });
+            };
 
-		if (!$(elem).is('html,body'))
-			return elem[scroll] - $(elem)[Dim.toLowerCase()]();
+        }).end();
+    };
 
-		var size = 'client' + Dim,
-			html = elem.ownerDocument.documentElement,
-			body = elem.ownerDocument.body;
+    // Max scrolling position, works on quirks mode
+    // It only fails (not too badly) on IE, quirks mode.
+    $scrollTo.max = function( elem, axis ) {
+        var Dim = axis == 'x' ? 'Width' : 'Height',
+            scroll = 'scroll'+Dim;
 
-		return Math.max( html[scroll], body[scroll] )
-			 - Math.min( html[size]  , body[size]   );
-	};
+        if (!$(elem).is('html,body'))
+            return elem[scroll] - $(elem)[Dim.toLowerCase()]();
 
-	function both( val ) {
-		return $.isFunction(val) || typeof val == 'object' ? val : { top:val, left:val };
-	};
+        var size = 'client' + Dim,
+            html = elem.ownerDocument.documentElement,
+            body = elem.ownerDocument.body;
+
+        return Math.max( html[scroll], body[scroll] )
+             - Math.min( html[size]  , body[size]   );
+    };
+
+    function both( val ) {
+        return $.isFunction(val) || typeof val == 'object' ? val : { top:val, left:val };
+    };
 
     // AMD requirement
     return $scrollTo;
@@ -5759,17 +5761,17 @@ var System = (function () {
 
         try {
             var url = window.location.href;
-            
+
             // If the URL has variables, remove them
             if(url.indexOf('?') != -1)
                 url = url.split('?')[0];
             if(url.indexOf('#') != -1)
                 url = url.split('#')[0];
-            
+
             // No "/" at the end
             if(!url.match(/(.+)\/$/))
                 url += '/';
-            
+
             return url;
         } catch(e) {
             Console.error('System.location', e);
@@ -5980,57 +5982,58 @@ var BOSH_SAME_ORIGIN = false;
 
 // XMPP error stanzas
 function STANZA_ERROR(code, type, cond) {
-	if(window == this) {
-		return new STANZA_ERROR(code, type, cond);
-	}
-	
-	this.code = code;
-	this.type = type;
-	this.cond = cond;
+    if(window == this) {
+        return new STANZA_ERROR(code, type, cond);
+    }
+
+    this.code = code;
+    this.type = type;
+    this.cond = cond;
 }
 
 var ERR_BAD_REQUEST =
-	STANZA_ERROR('400', 'modify', 'bad-request');
+    STANZA_ERROR('400', 'modify', 'bad-request');
 var ERR_CONFLICT =
-	STANZA_ERROR('409', 'cancel', 'conflict');
+    STANZA_ERROR('409', 'cancel', 'conflict');
 var ERR_FEATURE_NOT_IMPLEMENTED =
-	STANZA_ERROR('501', 'cancel', 'feature-not-implemented');
+    STANZA_ERROR('501', 'cancel', 'feature-not-implemented');
 var ERR_FORBIDDEN =
-	STANZA_ERROR('403', 'auth',   'forbidden');
+    STANZA_ERROR('403', 'auth',   'forbidden');
 var ERR_GONE =
-	STANZA_ERROR('302', 'modify', 'gone');
+    STANZA_ERROR('302', 'modify', 'gone');
 var ERR_INTERNAL_SERVER_ERROR =
-	STANZA_ERROR('500', 'wait',   'internal-server-error');
+    STANZA_ERROR('500', 'wait',   'internal-server-error');
 var ERR_ITEM_NOT_FOUND =
-	STANZA_ERROR('404', 'cancel', 'item-not-found');
+    STANZA_ERROR('404', 'cancel', 'item-not-found');
 var ERR_JID_MALFORMED =
-	STANZA_ERROR('400', 'modify', 'jid-malformed');
+    STANZA_ERROR('400', 'modify', 'jid-malformed');
 var ERR_NOT_ACCEPTABLE =
-	STANZA_ERROR('406', 'modify', 'not-acceptable');
+    STANZA_ERROR('406', 'modify', 'not-acceptable');
 var ERR_NOT_ALLOWED =
-	STANZA_ERROR('405', 'cancel', 'not-allowed');
+    STANZA_ERROR('405', 'cancel', 'not-allowed');
 var ERR_NOT_AUTHORIZED =
-	STANZA_ERROR('401', 'auth',   'not-authorized');
+    STANZA_ERROR('401', 'auth',   'not-authorized');
 var ERR_PAYMENT_REQUIRED =
-	STANZA_ERROR('402', 'auth',   'payment-required');
+    STANZA_ERROR('402', 'auth',   'payment-required');
 var ERR_RECIPIENT_UNAVAILABLE =
-	STANZA_ERROR('404', 'wait',   'recipient-unavailable');
+    STANZA_ERROR('404', 'wait',   'recipient-unavailable');
 var ERR_REDIRECT =
-	STANZA_ERROR('302', 'modify', 'redirect');
+    STANZA_ERROR('302', 'modify', 'redirect');
 var ERR_REGISTRATION_REQUIRED =
-	STANZA_ERROR('407', 'auth',   'registration-required');
+    STANZA_ERROR('407', 'auth',   'registration-required');
 var ERR_REMOTE_SERVER_NOT_FOUND =
-	STANZA_ERROR('404', 'cancel', 'remote-server-not-found');
+    STANZA_ERROR('404', 'cancel', 'remote-server-not-found');
 var ERR_REMOTE_SERVER_TIMEOUT =
-	STANZA_ERROR('504', 'wait',   'remote-server-timeout');
+    STANZA_ERROR('504', 'wait',   'remote-server-timeout');
 var ERR_RESOURCE_CONSTRAINT =
-	STANZA_ERROR('500', 'wait',   'resource-constraint');
+    STANZA_ERROR('500', 'wait',   'resource-constraint');
 var ERR_SERVICE_UNAVAILABLE =
-	STANZA_ERROR('503', 'cancel', 'service-unavailable');
+    STANZA_ERROR('503', 'cancel', 'service-unavailable');
 var ERR_SUBSCRIPTION_REQUIRED =
-	STANZA_ERROR('407', 'auth',   'subscription-required');
+    STANZA_ERROR('407', 'auth',   'subscription-required');
 var ERR_UNEXPECTED_REQUEST =
-	STANZA_ERROR('400', 'wait',   'unexpected-request');
+    STANZA_ERROR('400', 'wait',   'unexpected-request');
+
 /*
 
 Jappix - An open social platform
@@ -6058,7 +6061,7 @@ var DataStore = (function () {
     self._persistent_emulated = {};
 
 
-	/**
+    /**
      * Common: storage adapter
      * @public
      * @param {object} storage_native
@@ -6195,7 +6198,7 @@ var DataStore = (function () {
             try {
                 return self.storageDB.getItem(dbID + '_' + type + '_' + id);
             }
-            
+
             catch(e) {
                 Console.error('Error while getting a temporary database entry (' + dbID + ' -> ' + type + ' -> ' + id + ')', e);
             }
@@ -6225,7 +6228,7 @@ var DataStore = (function () {
 
                 return true;
             }
-            
+
             catch(e) {
                 Console.error('Error while writing a temporary database entry (' + dbID + ' -> ' + type + ' -> ' + id + ')', e);
             }
@@ -6251,10 +6254,10 @@ var DataStore = (function () {
         try {
             try {
                 self.storageDB.removeItem(dbID + '_' + type + '_' + id);
-                
+
                 return true;
             }
-            
+
             catch(e) {
                 Console.error('Error while removing a temporary database entry (' + dbID + ' -> ' + type + ' -> ' + id + ')', e);
             }
@@ -6267,7 +6270,7 @@ var DataStore = (function () {
     };
 
 
-	/**
+    /**
      * Temporary: used to check a database entry exists
      * @public
      * @param {string} dbID
@@ -6296,15 +6299,15 @@ var DataStore = (function () {
         try {
             try {
                 self.storageDB.clear();
-                
+
                 Console.info('Temporary database cleared.');
-                
+
                 return true;
             }
-            
+
             catch(e) {
                 Console.error('Error while clearing temporary database', e);
-                
+
                 return false;
             }
         } catch(e) {
@@ -6327,7 +6330,7 @@ var DataStore = (function () {
             // Try to write something
             self.storagePersistent.setItem('haspersistent_check', 'ok');
             self.storagePersistent.removeItem('haspersistent_check');
-            
+
             has_persistent = true;
         } catch(e) {
             Console.error('DataStore.hasPersistent', e);
@@ -6352,10 +6355,10 @@ var DataStore = (function () {
             try {
                 return self.storagePersistent.getItem(dbID + '_' + type + '_' + id);
             }
-            
+
             catch(e) {
                 Console.error('Error while getting a persistent database entry (' + dbID + ' -> ' + type + ' -> ' + id + ')', e);
-                
+
                 return null;
             }
         } catch(e) {
@@ -6379,24 +6382,24 @@ var DataStore = (function () {
         try {
             try {
                 self.storagePersistent.setItem(dbID + '_' + type + '_' + id, value);
-                
+
                 return true;
             }
-            
+
             // Database might be full
             catch(e) {
                 Console.warn('Retrying: could not write a persistent database entry (' + dbID + ' -> ' + type + ' -> ' + id + ')', e);
-                
+
                 // Flush it!
                 self.flushPersistent();
-                
+
                 // Set the item again
                 try {
                     self.storagePersistent.setItem(dbID + ' -> ' + type + '_' + id, value);
-                    
+
                     return true;
                 }
-                
+
                 // New error!
                 catch(_e) {
                     Console.error('Aborted: error while writing a persistent database entry (' + dbID + ' -> ' + type + ' -> ' + id + ')', _e);
@@ -6411,7 +6414,7 @@ var DataStore = (function () {
     };
 
 
-	/**
+    /**
      * Persistent: used to remove a database entry
      * @public
      * @param {string} dbID
@@ -6427,7 +6430,7 @@ var DataStore = (function () {
 
                 return true;
             }
-            
+
             catch(e) {
                 Console.error('Error while removing a persistent database entry (' + dbID + ' -> ' + type + ' -> ' + id + ')', e);
             }
@@ -6472,10 +6475,10 @@ var DataStore = (function () {
                 self.storagePersistent.clear();
 
                 Console.info('Persistent database cleared.');
-                
+
                 return true;
             }
-            
+
             catch(e) {
                 Console.error('Error while clearing persistent database', e);
             }
@@ -6500,19 +6503,19 @@ var DataStore = (function () {
             try {
                 // Get the stored session entry
                 var session = self.getPersistent('global', 'session', 1);
-                
+
                 // Reset the persistent database
                 self.resetPersistent();
-                
+
                 // Restaure the stored session entry
                 if(session)
                     self.setPersistent('global', 'session', 1, session);
-                
+
                 Console.info('Persistent database flushed.');
-                
+
                 return true;
             }
-            
+
             catch(e) {
                 Console.error('Error while flushing persistent database', e);
             }
@@ -6532,128 +6535,130 @@ var DataStore = (function () {
 
 })();
 
-var JappixDataStore = DataStore;/* BROWSER DETECT
+var JappixDataStore = DataStore;
+
+/* BROWSER DETECT
  * http://www.quirksmode.org/js/detect.html
  * License: dual-licensed under MPLv2 and the original license
  */
 
 var BrowserDetect = {
-	init: function () {
-		this.browser = this.searchString(this.dataBrowser) || "An unknown browser";
-		this.version = this.searchVersion(navigator.userAgent)
-			|| this.searchVersion(navigator.appVersion)
-			|| "an unknown version";
-		this.OS = this.searchString(this.dataOS) || "an unknown OS";
-	},
-	
-	searchString: function (data) {
-		for (var i=0;i<data.length;i++)	{
-			var dataString = data[i].string;
-			var dataProp = data[i].prop;
-			this.versionSearchString = data[i].versionSearch || data[i].identity;
-			if (dataString) {
-				if (dataString.indexOf(data[i].subString) != -1)
-					return data[i].identity;
-			}
-			else if (dataProp)
-				return data[i].identity;
-		}
-	},
-	
-	searchVersion: function (dataString) {
-		var index = dataString.indexOf(this.versionSearchString);
-		if (index == -1) return;
-		return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
-	},
-	
-	dataBrowser: [
-		{
-			string: navigator.userAgent,
-			subString: "Chrome",
-			identity: "Chrome"
-		},
-		{ 	string: navigator.userAgent,
-			subString: "OmniWeb",
-			versionSearch: "OmniWeb/",
-			identity: "OmniWeb"
-		},
-		{
-			string: navigator.vendor,
-			subString: "Apple",
-			identity: "Safari",
-			versionSearch: "Version"
-		},
-		{
-			prop: window.opera,
-			identity: "Opera"
-		},
-		{
-			string: navigator.vendor,
-			subString: "iCab",
-			identity: "iCab"
-		},
-		{
-			string: navigator.vendor,
-			subString: "KDE",
-			identity: "Konqueror"
-		},
-		{
-			string: navigator.userAgent,
-			subString: "Firefox",
-			identity: "Firefox"
-		},
-		{
-			string: navigator.vendor,
-			subString: "Camino",
-			identity: "Camino"
-		},
-		{		// for newer Netscapes (6+)
-			string: navigator.userAgent,
-			subString: "Netscape",
-			identity: "Netscape"
-		},
-		{
-			string: navigator.userAgent,
-			subString: "MSIE",
-			identity: "Explorer",
-			versionSearch: "MSIE"
-		},
-		{
-			string: navigator.userAgent,
-			subString: "Gecko",
-			identity: "Mozilla",
-			versionSearch: "rv"
-		},
-		{ 		// for older Netscapes (4-)
-			string: navigator.userAgent,
-			subString: "Mozilla",
-			identity: "Netscape",
-			versionSearch: "Mozilla"
-		}
-	],
-	
-	dataOS : [
-		{
-			string: navigator.platform,
-			subString: "Win",
-			identity: "Windows"
-		},
-		{
-			string: navigator.platform,
-			subString: "Mac",
-			identity: "Mac"
-		},
-		{
-			   string: navigator.userAgent,
-			   subString: "iPhone",
-			   identity: "iPhone/iPod"
-	    },
-		{
-			string: navigator.platform,
-			subString: "Linux",
-			identity: "Linux"
-		}
-	]
+    init: function () {
+        this.browser = this.searchString(this.dataBrowser) || "An unknown browser";
+        this.version = this.searchVersion(navigator.userAgent)
+            || this.searchVersion(navigator.appVersion)
+            || "an unknown version";
+        this.OS = this.searchString(this.dataOS) || "an unknown OS";
+    },
+
+    searchString: function (data) {
+        for (var i=0;i<data.length;i++) {
+            var dataString = data[i].string;
+            var dataProp = data[i].prop;
+            this.versionSearchString = data[i].versionSearch || data[i].identity;
+            if (dataString) {
+                if (dataString.indexOf(data[i].subString) != -1)
+                    return data[i].identity;
+            }
+            else if (dataProp)
+                return data[i].identity;
+        }
+    },
+
+    searchVersion: function (dataString) {
+        var index = dataString.indexOf(this.versionSearchString);
+        if (index == -1) return;
+        return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
+    },
+
+    dataBrowser: [
+        {
+            string: navigator.userAgent,
+            subString: "Chrome",
+            identity: "Chrome"
+        },
+        {   string: navigator.userAgent,
+            subString: "OmniWeb",
+            versionSearch: "OmniWeb/",
+            identity: "OmniWeb"
+        },
+        {
+            string: navigator.vendor,
+            subString: "Apple",
+            identity: "Safari",
+            versionSearch: "Version"
+        },
+        {
+            prop: window.opera,
+            identity: "Opera"
+        },
+        {
+            string: navigator.vendor,
+            subString: "iCab",
+            identity: "iCab"
+        },
+        {
+            string: navigator.vendor,
+            subString: "KDE",
+            identity: "Konqueror"
+        },
+        {
+            string: navigator.userAgent,
+            subString: "Firefox",
+            identity: "Firefox"
+        },
+        {
+            string: navigator.vendor,
+            subString: "Camino",
+            identity: "Camino"
+        },
+        {       // for newer Netscapes (6+)
+            string: navigator.userAgent,
+            subString: "Netscape",
+            identity: "Netscape"
+        },
+        {
+            string: navigator.userAgent,
+            subString: "MSIE",
+            identity: "Explorer",
+            versionSearch: "MSIE"
+        },
+        {
+            string: navigator.userAgent,
+            subString: "Gecko",
+            identity: "Mozilla",
+            versionSearch: "rv"
+        },
+        {       // for older Netscapes (4-)
+            string: navigator.userAgent,
+            subString: "Mozilla",
+            identity: "Netscape",
+            versionSearch: "Mozilla"
+        }
+    ],
+
+    dataOS : [
+        {
+            string: navigator.platform,
+            subString: "Win",
+            identity: "Windows"
+        },
+        {
+            string: navigator.platform,
+            subString: "Mac",
+            identity: "Mac"
+        },
+        {
+               string: navigator.userAgent,
+               subString: "iPhone",
+               identity: "iPhone/iPod"
+        },
+        {
+            string: navigator.platform,
+            subString: "Linux",
+            identity: "Linux"
+        }
+    ]
 };
 
 BrowserDetect.init();
@@ -6744,7 +6749,7 @@ var Common = (function () {
     var self = {};
 
 
-	/**
+    /**
      * Checks if an element exists in the DOM
      * @public
      * @param {string} path
@@ -6851,15 +6856,15 @@ var Common = (function () {
                 // Groupchat
                 if(type == 'groupchat')
                     return xid + '@' + HOST_MUC;
-                
+
                 // One-to-one chat
                 if(xid.indexOf('.') == -1)
                     return xid + '@' + HOST_MAIN;
-                
+
                 // It might be a gateway?
                 return xid;
             }
-            
+
             // Nothing special (yet bare XID)
             return xid;
         } catch(e) {
@@ -6886,7 +6891,7 @@ var Common = (function () {
     };
 
 
-	/**
+    /**
      * Replaces '%s' to a given value for a translated string
      * @public
      * @param {string} string
@@ -6916,13 +6921,13 @@ var Common = (function () {
         try {
             if(!given_char || !str)
                 return '';
-            
+
             var char_index = str.lastIndexOf(given_char);
             var str_return = str;
-            
+
             if(char_index >= 0)
                 str_return = str.substr(char_index + 1);
-            
+
             return str_return;
         } catch(e) {
             Console.error('Common.strAfterLast', e);
@@ -6944,7 +6949,7 @@ var Common = (function () {
         try {
             // Get the index of our char to explode
             var index = toStr.indexOf(toEx);
-            
+
             // We split if necessary the string
             if(index !== -1) {
                 if(i === 0)
@@ -6952,7 +6957,7 @@ var Common = (function () {
                 else
                     toStr = toStr.substr(index + 1);
             }
-            
+
             // We return the value
             return toStr;
         } catch(e) {
@@ -7022,7 +7027,7 @@ var Common = (function () {
     };
 
 
-	/**
+    /**
      * nodepreps an XMPP node
      * @public
      * @param {string} node
@@ -7082,11 +7087,11 @@ var Common = (function () {
         try {
             // Cut the resource
             xid = self.cutResource(xid);
-            
+
             // Launch nodeprep
             if(xid.indexOf('@') != -1)
                 xid = self.nodeprep(self.getXIDNick(xid)) + '@' + self.getXIDHost(xid);
-            
+
             return xid;
         } catch(e) {
             Console.error('Common.bareXID', e);
@@ -7107,11 +7112,11 @@ var Common = (function () {
             // Normalizes the XID
             var full = self.bareXID(xid);
             var resource = self.thisResource(xid);
-            
+
             // Any resource?
             if(resource)
                 full += '/' + resource;
-            
+
             return full;
         } catch(e) {
             Console.error('Common.fullXID', e);
@@ -7132,7 +7137,7 @@ var Common = (function () {
             // Gateway nick?
             if(aXID.match(/\\40/))
                 return self.explodeThis('\\40', aXID, 0);
-            
+
             return self.explodeThis('@', aXID, 0);
         } catch(e) {
             Console.error('Common.getXIDNick', e);
@@ -7141,7 +7146,7 @@ var Common = (function () {
     };
 
 
-	/**
+    /**
      * Gets the host from a XID
      * @public
      * @param {string} aXID
@@ -7206,7 +7211,7 @@ var Common = (function () {
     };
 
 
-	/**
+    /**
      * Gets the full XID of the user
      * @public
      * @return {string}
@@ -7218,7 +7223,7 @@ var Common = (function () {
             if(con.username && con.domain) {
                 return con.username + '@' + con.domain;
             }
-            
+
             return '';
         } catch(e) {
             Console.error('Common.getXID', e);
@@ -7244,15 +7249,15 @@ var Common = (function () {
                 '00236b',
                 '4e005c'
             );
-            
+
             var number = 0;
-            
+
             for(var i = 0; i < xid.length; i++) {
                 number += xid.charCodeAt(i);
             }
-            
+
             var color = '#' + colors[number % (colors.length)];
-            
+
             return color;
         } catch(e) {
             Console.error('Common.generateColor', e);
@@ -7294,11 +7299,11 @@ var Common = (function () {
 
         try {
             var from = stanza.getFrom();
-            
+
             // No from, we assume this is our XID
             if(!from)
                 from = self.getXID();
-            
+
             return from;
         } catch(e) {
             Console.error('Common.getStanzaFrom', e);
@@ -7319,11 +7324,11 @@ var Common = (function () {
             // Negative number (without first 0)
             if(i > -10 && i < 0)
                 return '-0' + (i * -1);
-            
+
             // Positive number (without first 0)
             if(i < 10 && i >= 0)
                 return '0' + i;
-            
+
             // All is okay
             return i;
         } catch(e) {
@@ -7387,7 +7392,7 @@ var Common = (function () {
     };
 
 
-	/**
+    /**
      * Converts a XML document to a string
      * @public
      * @param {object} xmlData
@@ -7402,7 +7407,7 @@ var Common = (function () {
             if(window.XMLSerializer) {
                 xml_str = (new XMLSerializer()).serializeToString(xmlData);
             }
-            
+
             // For Internet Explorer
             if(window.ActiveXObject) {
                 xml_str = xmlData.xml;
@@ -7429,21 +7434,21 @@ var Common = (function () {
             if(!sXML) {
                 return '';
             }
-            
+
             // Add the XML tag
             if(!sXML.match(/^<\?xml/i)) {
                 sXML = '<?xml version="1.0"?>' + sXML;
             }
-            
+
             // Parse it!
             if(window.DOMParser) {
                 return (new DOMParser()).parseFromString(sXML, 'text/xml');
             }
-            
+
             if(window.ActiveXObject) {
                 var oXML = new ActiveXObject('Microsoft.XMLDOM');
                 oXML.loadXML(sXML);
-                
+
                 return oXML;
             }
         } catch(e) {
@@ -7465,7 +7470,7 @@ var Common = (function () {
 
         try {
             var timer = 0;
-            
+
             return function(callback, ms) {
                 clearTimeout(timer);
                 timer = setTimeout(callback, ms);
@@ -7511,7 +7516,7 @@ var DateUtils = (function () {
     self.presence_last_activity = 0;
 
 
-	/**
+    /**
      * Gets a stamp from a date
      * @public
      * @param {Date} date
@@ -7572,7 +7577,7 @@ var DateUtils = (function () {
             // Last activity not yet initialized?
             if(self.last_activity === 0)
                 return 0;
-            
+
             return self.getTimeStamp() - self.last_activity;
         } catch(e) {
             Console.error('DateUtils.getLastActivity', e);
@@ -7592,7 +7597,7 @@ var DateUtils = (function () {
             // Last presence stamp not yet initialized?
             if(self.presence_last_activity === 0)
                 return 0;
-            
+
             return self.getTimeStamp() - self.presence_last_activity;
         } catch(e) {
             Console.error('DateUtils.getPresenceLast', e);
@@ -7601,7 +7606,7 @@ var DateUtils = (function () {
     };
 
 
-	/**
+    /**
      * Generates the time for XMPP
      * @public
      * @param {string} location
@@ -7615,7 +7620,7 @@ var DateUtils = (function () {
             // Initialize
             var jInit = new Date();
             var year, month, day, hours, minutes, seconds;
-            
+
             // Gets the UTC date
             if(location == 'utc') {
                 year = jInit.getUTCFullYear();
@@ -7625,7 +7630,7 @@ var DateUtils = (function () {
                 minutes = jInit.getUTCMinutes();
                 seconds = jInit.getUTCSeconds();
             }
-            
+
             // Gets the local date
             else {
                 year = jInit.getFullYear();
@@ -7635,7 +7640,7 @@ var DateUtils = (function () {
                 minutes = jInit.getMinutes();
                 seconds = jInit.getSeconds();
             }
-            
+
             // Generates the date string
             var jDate = year + '-';
             jDate += Common.padZero(month + 1) + '-';
@@ -7643,7 +7648,7 @@ var DateUtils = (function () {
             jDate += Common.padZero(hours) + ':';
             jDate += Common.padZero(minutes) + ':';
             jDate += Common.padZero(seconds) + 'Z';
-            
+
             // Returns the date string
             return jDate;
         } catch(e) {
@@ -7665,7 +7670,7 @@ var DateUtils = (function () {
             var time = Common.padZero(init.getHours()) + ':';
             time += Common.padZero(init.getMinutes()) + ':';
             time += Common.padZero(init.getSeconds());
-            
+
             return time;
         } catch(e) {
             Console.error('DateUtils.getCompleteTime', e);
@@ -7685,26 +7690,26 @@ var DateUtils = (function () {
             // Get the date
             var date = new Date();
             var offset = date.getTimezoneOffset();
-            
+
             // Default vars
             var sign = '';
             var hours = 0;
             var minutes = 0;
-            
+
             // Process a neutral offset
             if(offset < 0) {
                 offset = offset * -1;
                 sign = '+';
             }
-            
+
             // Get the values
             var n_date = new Date(offset * 60 * 1000);
             hours = n_date.getHours() - 1;
             minutes = n_date.getMinutes();
-            
+
             // Process the TZO
             tzo = sign + Common.padZero(hours) + ':' + Common.padZero(minutes);
-            
+
             // Return the processed value
             return tzo;
         } catch(e) {
@@ -7745,7 +7750,7 @@ var DateUtils = (function () {
         try {
             var date = Date.jab2date(to_parse);
             var parsed = date.toLocaleDateString() + ' (' + date.toLocaleTimeString() + ')';
-            
+
             return parsed;
         } catch(e) {
             Console.error('DateUtils.parse', e);
@@ -7765,7 +7770,7 @@ var DateUtils = (function () {
         try {
             var date = Date.jab2date(to_parse);
             var parsed = date.toLocaleDateString();
-            
+
             return parsed;
         } catch(e) {
             Console.error('DateUtils.parseDay', e);
@@ -7774,7 +7779,7 @@ var DateUtils = (function () {
     };
 
 
-	/**
+    /**
      * Parses a XMPP date (hh-mm-ss) into an human-readable one
      * @public
      * @param {string} to_parse
@@ -7785,7 +7790,7 @@ var DateUtils = (function () {
         try {
             var date = Date.jab2date(to_parse);
             var parsed = date.toLocaleTimeString();
-            
+
             return parsed;
         } catch(e) {
             Console.error('DateUtils.parseTime', e);
@@ -7807,32 +7812,32 @@ var DateUtils = (function () {
             var current_date = Date.jab2date(self.getXMPPTime('utc'));
             var current_day = current_date.getDate();
             var current_stamp = current_date.getTime();
-            
+
             // Parse the given date
             var old_date = Date.jab2date(to_parse);
             var old_day = old_date.getDate();
             var old_stamp = old_date.getTime();
             var old_time = old_date.toLocaleTimeString();
-            
+
             // Get the day number between the two dates
             var days = Math.round((current_stamp - old_stamp) / 86400000);
-            
+
             // Invalid date?
             if(isNaN(old_stamp) || isNaN(days))
                 return self.getCompleteTime();
-            
+
             // Is it today?
             if(current_day == old_day)
                 return old_time;
-            
+
             // It is yesterday?
             if(days <= 1)
                 return Common._e("Yesterday") + ' - ' + old_time;
-            
+
             // Is it less than a week ago?
             if(days <= 7)
                 return Common.printf(Common._e("%s days ago"), days) + ' - ' + old_time;
-            
+
             // Another longer period
             return old_date.toLocaleDateString() + ' - ' + old_time;
         } catch(e) {
@@ -7853,23 +7858,23 @@ var DateUtils = (function () {
         try {
             // Initialize
             var delay, d_delay;
-            
+
             // Read the delay
             d_delay = jQuery(node).find('delay[xmlns="' + NS_URN_DELAY + '"]:first').attr('stamp');
-            
+
             // New delay (valid XEP)
             if(d_delay)
                 delay = d_delay;
-            
+
             // Old delay (obsolete XEP!)
             else {
                 // Try to read the old-school delay
                 var x_delay = jQuery(node).find('x[xmlns="' + NS_DELAY + '"]:first').attr('stamp');
-                
+
                 if(x_delay)
                     delay = x_delay.replace(/^(\w{4})(\w{2})(\w{2})T(\w{2}):(\w{2}):(\w{2})Z?(\S+)?/, '$1-$2-$3T$4:$5:$6Z$7');
             }
-            
+
             return delay;
         } catch(e) {
             Console.error('DateUtils.readMessageDelay', e);
@@ -7919,25 +7924,25 @@ var Links = (function () {
 
         try {
             var target;
-            
+
             // Links style
             if(!style)
                 style = '';
             else
                 style = ' style="' + style + '"';
-            
+
             // Open in new tabs
             if(mode != 'xhtml-im')
                 target = ' target="_blank"';
             else
                 target = '';
-            
+
             // XMPP address
             string = string.replace(/(\s|<br \/>|^)(([a-zA-Z0-9\._-]+)@([a-zA-Z0-9\.\/_-]+))(,|\s|$)/gi, '$1<a href="xmpp:$2" target="_blank"' + style + '>$2</a>$5');
-            
+
             // Simple link
             string = string.replace(/(\s|<br \/>|^|\()((https?|ftp|file|xmpp|irc|mailto|vnc|webcal|ssh|ldap|smb|magnet|spotify)(:)([^<>'"\s\)]+))/gim, '$1<a href="$2"' + target + style + '>$2</a>');
-            
+
             return string;
         } catch(e) {
             Console.error('Links.apply', e);
@@ -7966,39 +7971,39 @@ Authors: Valérian Saliou, hunterjm, Camaran, regilero, Kloadut, Maranda
 */
 
 // Jappix Mini globals
-var MINI_DISCONNECT				= false;
-var MINI_AUTOCONNECT			= false;
-var MINI_SHOWPANE				= false;
-var MINI_INITIALIZED			= false;
-var MINI_ROSTER_INIT			= false;
+var MINI_DISCONNECT             = false;
+var MINI_AUTOCONNECT            = false;
+var MINI_SHOWPANE               = false;
+var MINI_INITIALIZED            = false;
+var MINI_ROSTER_INIT            = false;
 var MINI_ROSTER_NOGROUP         = 'jm_nogroup';
-var MINI_ANONYMOUS				= false;
-var MINI_ANIMATE				= false;
-var MINI_RANDNICK				= false;
-var MINI_GROUPCHAT_PRESENCE		= false;
-var MINI_DISABLE_MOBILE			= false;
-var MINI_NICKNAME				= '';
-var MINI_TITLE					= null;
-var MINI_DOMAIN					= null;
-var MINI_USER					= null;
-var MINI_PASSWORD				= null;
-var MINI_HASH					= null;
-var MINI_ACTIVE					= null;
-var MINI_RECONNECT				= 0;
-var MINI_RECONNECT_MAX			= 100;
+var MINI_ANONYMOUS              = false;
+var MINI_ANIMATE                = false;
+var MINI_RANDNICK               = false;
+var MINI_GROUPCHAT_PRESENCE     = false;
+var MINI_DISABLE_MOBILE         = false;
+var MINI_NICKNAME               = '';
+var MINI_TITLE                  = null;
+var MINI_DOMAIN                 = null;
+var MINI_USER                   = null;
+var MINI_PASSWORD               = null;
+var MINI_HASH                   = null;
+var MINI_ACTIVE                 = null;
+var MINI_RECONNECT              = 0;
+var MINI_RECONNECT_MAX          = 100;
 var MINI_RECONNECT_INTERVAL     = 1;
 var MINI_PIXEL_STREAM_DURATION  = 300;
 var MINI_PIXEL_STREAM_INTERVAL  = 7200;
-var MINI_QUEUE					= [];
-var MINI_CHATS					= [];
-var MINI_GROUPCHATS				= [];
-var MINI_SUGGEST_CHATS			= [];
-var MINI_SUGGEST_GROUPCHATS		= [];
-var MINI_SUGGEST_PASSWORDS		= [];
-var MINI_PASSWORDS				= [];
-var MINI_PRIORITY				= 1;
-var MINI_RESOURCE				= JAPPIX_RESOURCE + ' Mini';
-var MINI_ERROR_LINK				= 'http://forum.uga-agga.de/bugs-feedback-f237/';
+var MINI_QUEUE                  = [];
+var MINI_CHATS                  = [];
+var MINI_GROUPCHATS             = [];
+var MINI_SUGGEST_CHATS          = [];
+var MINI_SUGGEST_GROUPCHATS     = [];
+var MINI_SUGGEST_PASSWORDS      = [];
+var MINI_PASSWORDS              = [];
+var MINI_PRIORITY               = 1;
+var MINI_RESOURCE               = JAPPIX_RESOURCE + ' Mini';
+var MINI_ERROR_LINK             = 'http://forum.wack-a-doo.com/forum/wack-a-doo/bugs-feedback';
 
 // 5D MODS
 var MINI_5D_HIDE_SUGGEST_OTHER_CHAT_PROMPT = true;
@@ -8018,7 +8023,7 @@ var JappixMini = (function () {
     var self = {};
 
 
-	/**
+    /**
      * Setups connection handlers
      * @public
      * @param {object} con
@@ -8054,7 +8059,7 @@ var JappixMini = (function () {
 
             // Check BOSH origin
             BOSH_SAME_ORIGIN = Origin.isSame(oArgs.httpbase);
-            
+
             // We create the new http-binding connection
             con = new JSJaCHttpBindingConnection({
                 httpbase: (HOST_BOSH_MINI || HOST_BOSH)
@@ -8071,18 +8076,18 @@ var JappixMini = (function () {
                 // Randomize resource?
                 random_resource = JappixDataStore.getDB(MINI_HASH, 'jappix-mini', 'resource');
             }
-            
+
             if(!random_resource) {
                 random_resource = MINI_RESOURCE + ' (' + (new Date()).getTime() + ')';
             }
-            
+
             // We retrieve what the user typed in the login inputs
             oArgs = {};
             oArgs.secure = true;
             oArgs.xmllang = XML_LANG;
             oArgs.resource = random_resource;
             oArgs.domain = domain;
-            
+
             // Store the resource (for reconnection)
             if(store_resource) {
                 JappixDataStore.setDB(MINI_HASH, 'jappix-mini', 'resource', random_resource);
@@ -8093,50 +8098,50 @@ var JappixMini = (function () {
                 // Anonymous mode disabled?
                 if(!JappixCommon.allowedAnonymous()) {
                     JappixConsole.warn('Not allowed to use anonymous mode.');
-                    
+
                     // Notify this error
                     self.notifyError();
-                    
+
                     return false;
                 }
-                
+
                 // Bad domain?
                 else if(JappixCommon.lockHost() && (domain != HOST_ANONYMOUS)) {
                     JappixConsole.warn('Not allowed to connect to this anonymous domain: ' + domain);
-                    
+
                     // Notify this error
                     self.notifyError();
-                    
+
                     return false;
                 }
-                
+
                 oArgs.authtype = 'saslanon';
             }
-            
+
             // Normal login
             else {
                 // Bad domain?
                 if(JappixCommon.lockHost() && (domain != HOST_MAIN)) {
                     JappixConsole.warn('Not allowed to connect to this main domain: ' + domain);
-                    
+
                     // Notify this error
                     self.notifyError();
-                    
+
                     return false;
                 }
-                
+
                 // No nickname?
                 if(!MINI_NICKNAME) {
                     MINI_NICKNAME = user;
                 }
-                
+
                 oArgs.username = user;
                 oArgs.pass = password;
             }
-            
+
             // We connect !
             con.connect(oArgs);
-            
+
             JappixConsole.info('Jappix Mini is connecting...');
         } catch(e) {
             JappixConsole.error('JappixMini.connect', e);
@@ -8239,17 +8244,17 @@ var JappixMini = (function () {
             // Save the actual Jappix Mini DOM
             JappixDataStore.setDB(MINI_HASH, 'jappix-mini', 'dom', jQuery('#jappix_mini').html());
             JappixDataStore.setDB(MINI_HASH, 'jappix-mini', 'nickname', MINI_NICKNAME);
-            
+
             // Save the scrollbar position
             var scroll_position = '';
             var scroll_hash = jQuery('#jappix_mini div.jm_conversation:has(a.jm_pane.jm_clicked)').attr('data-hash');
-            
+
             if(scroll_hash) {
                 scroll_position = document.getElementById('received-' + scroll_hash).scrollTop + '';
             }
-            
+
             JappixDataStore.setDB(MINI_HASH, 'jappix-mini', 'scroll', scroll_position);
-            
+
             // Suspend connection
             if(JappixCommon.isConnected()) {
                 con.suspend(false);
@@ -8257,7 +8262,7 @@ var JappixMini = (function () {
                 JappixDataStore.setDB(MINI_HASH, 'jappix-mini', 'reconnect', ((MINI_RECONNECT === 0) ? 0 : (MINI_RECONNECT - 1)));
                 self.serializeQueue();
             }
-            
+
             JappixConsole.info('Jappix Mini session save tool launched.');
         } catch(e) {
             JappixConsole.error('JappixMini.saveSession', e);
@@ -8266,7 +8271,7 @@ var JappixMini = (function () {
     };
 
 
-	/**
+    /**
      * Flushes Jappix Mini storage database
      * @public
      * @param {string} r_override
@@ -8308,24 +8313,24 @@ var JappixMini = (function () {
             if(!JappixCommon.isConnected()) {
                 return false;
             }
-            
+
             JappixConsole.info('Jappix Mini is disconnecting...');
-            
+
             // Change markers
             MINI_DISCONNECT = true;
             MINI_INITIALIZED = false;
 
             // Flush storage
             self.flushStorage();
-            
+
             // Add disconnection handler
             con.registerHandler('ondisconnect', function() {
                 self.disconnected();
             });
-            
+
             // Disconnect the user
             con.disconnect();
-            
+
             return false;
         } catch(e) {
             JappixConsole.error('JappixMini.disconnect', e);
@@ -8346,7 +8351,7 @@ var JappixMini = (function () {
             if(!MINI_DISCONNECT || MINI_INITIALIZED) {
                 // Reset reconnect timer
                 jQuery('#jappix_mini').stopTime();
-                
+
                 // Try to reconnect after a while
                 if(MINI_INITIALIZED && (MINI_RECONNECT++ < MINI_RECONNECT_MAX)) {
                     // Set timer
@@ -8372,7 +8377,7 @@ var JappixMini = (function () {
                     JappixConsole.info('Jappix Mini is giving up. Server seems to be down.');
                 }
             }
-            
+
             // Normal disconnection?
             else {
                 launchMini(false, MINI_SHOWPANE, MINI_DOMAIN, MINI_USER, MINI_PASSWORD);
@@ -8403,7 +8408,7 @@ var JappixMini = (function () {
             if(jQuery(err).is('error')) {
                 // Notify this error
                 self.disconnected();
-                
+
                 JappixConsole.error('First level error received.');
             }
         } catch(e) {
@@ -8423,43 +8428,43 @@ var JappixMini = (function () {
 
         try {
             var type = msg.getType();
-            
+
             // This is a message Jappix can handle
             if((type == 'chat') || (type == 'normal') || (type == 'groupchat') || !type) {
                 // Get the packet data
                 var node = msg.getNode();
                 var subject = jQuery.trim(msg.getSubject());
                 var body = subject ? subject : jQuery.trim(msg.getBody());
-                
+
                 // Get the sender data
                 var from = JappixCommon.fullXID(JappixCommon.getStanzaFrom(msg));
                 var xid = JappixCommon.bareXID(from);
                 var hash = hex_md5(xid);
-                
+
                 // Any attached message body?
                 if(body) {
                     // Get more sender data
                     var use_xid = xid;
                     var nick = JappixCommon.thisResource(from);
-                    
+
                     // Read the delay
                     var delay = JappixDateUtils.readMessageDelay(node);
                     var d_stamp;
-                    
+
                     // Manage this delay
                     if(delay) {
                         time = JappixDateUtils.relative(delay);
                         d_stamp = Date.jab2date(delay);
                     }
-                    
+
                     else {
                         time = JappixDateUtils.getCompleteTime();
                         d_stamp = new Date();
                     }
-                    
+
                     // Get the stamp
                     var stamp = JappixDateUtils.extractStamp(d_stamp);
-                    
+
                     // Is this a groupchat private message?
                     if(JappixCommon.exists('#jappix_mini #chat-' + hash + '[data-type="groupchat"]')) {
                         // Regenerate some stuffs
@@ -8467,98 +8472,98 @@ var JappixMini = (function () {
                             xid = from;
                             hash = hex_md5(xid);
                         }
-                        
+
                         // XID to use for a groupchat
                         else {
                             use_xid = from;
                         }
                     }
-                    
+
                     // Message type
                     var message_type = 'user-message';
-                    
+
                     // Grouphat values
                     if(type == 'groupchat') {
                         // Old message
                         if(msg.getChild('delay', NS_URN_DELAY) || msg.getChild('x', NS_DELAY)) {
                             message_type = 'old-message';
                         }
-                        
+
                         // System message?
                         if(!nick || subject) {
                             nick = '';
                             message_type = 'system-message';
                         }
                     }
-                    
+
                     // Chat values
                     else {
                         nick = jQuery('#jappix_mini a#friend-' + hash).text().revertHtmlEnc();
-                        
+
                         // No nickname?
                         if(!nick) {
                             // If the roster does not give us any nick the user may have send us a nickname to use with his first message
                             // @see http://xmpp.org/extensions/xep-0172.html
                             var unknown_entry = jQuery('#jappix_mini a.jm_unknown[data-xid="' + xid + '"]');
-                            
+
                             if(unknown_entry.size() > 0) {
                                 nick =  unknown_entry.attr('data-nick');
                             } else {
                                 var msgnick = msg.getNick();
                                 nick = JappixCommon.getXIDNick(xid);
-                                
+
                                 if(msgnick) {
                                     // If there is a nickname in the message which differs from the jid-extracted nick then tell it to the user
                                     if(nick != msgnick)
                                          nick = msgnick + ' (' + nick + ')';
                                 }
-                                
+
                                 // Push that unknown guy in a temporary roster entry
                                 unknown_entry = jQuery('<a class="jm_unknown jm_offline" href="#"></a>').attr('data-nick', nick).attr('data-xid', xid);
                                 unknown_entry.appendTo('#jappix_mini div.jm_roster div.jm_buddies');
                              }
                         }
                     }
-                    
+
                     // Define the target div
                     var target = '#jappix_mini #chat-' + hash;
-                    
+
                     // Create the chat if it does not exist
                     if(!JappixCommon.exists(target) && (type != 'groupchat')) {
                         self.chat(type, xid, nick, hash);
                     }
-                    
+
                     // Display the message
                     self.displayMessage(type, body, use_xid, nick, hash, time, stamp, message_type);
-                    
+
                     // Notify the user if not focused & the message is not a groupchat old one
                     if((!jQuery(target + ' a.jm_chat-tab').hasClass('jm_clicked') || !JappixCommon.isFocused() || (MINI_ACTIVE != hash)) && (message_type == 'user-message')) {
                         // Play a sound
                         if(type != 'groupchat') {
                             self.soundPlay();
                         }
-                        
+
                         // Show a notification bubble
                         self.notifyMessage(hash);
                     }
-                    
+
                     JappixConsole.log('Message received from: ' + from);
                 }
-                
+
                 // Chatstate groupchat filter
                 if(JappixCommon.exists('#jappix_mini #chat-' + hash + '[data-type="groupchat"]')) {
                     xid = from;
                     hash = hex_md5(xid);
                 }
-                
+
                 // Reset current chatstate
                 self.resetChatstate(xid, hash, type);
-                
+
                 // Apply new chatstate (if supported)
                 if(jQuery(node).find('active[xmlns="' + NS_CHATSTATES + '"]').size() || jQuery(node).find('composing[xmlns="' + NS_CHATSTATES + '"]').size()) {
                     // Set marker to tell other user supports chatstates
                     jQuery('#jappix_mini #chat-' + hash + ' input.jm_send-messages').attr('data-chatstates', 'true');
-                    
+
                     // Composing?
                     if(jQuery(node).find('composing[xmlns="' + NS_CHATSTATES + '"]').size()) {
                         self.displayChatstate('composing', xid, hash, type);
@@ -8572,7 +8577,7 @@ var JappixMini = (function () {
     };
 
 
-	/**
+    /**
      * Handles the incoming IQs
      * @public
      * @param {object} iq
@@ -8588,45 +8593,45 @@ var JappixMini = (function () {
             var iqType = iq.getType();
             var iqNode = iq.getNode();
             var iqQuery;
-            
+
             // Build the response
             var iqResponse = new JSJaCIQ();
-            
+
             iqResponse.setID(iqID);
             iqResponse.setTo(iqFrom);
             iqResponse.setType('result');
-            
+
             // Software version query
             if((iqQueryXMLNS == NS_VERSION) && (iqType == 'get')) {
                 /* REF: http://xmpp.org/extensions/xep-0092.html */
-                
+
                 iqQuery = iqResponse.setQuery(NS_VERSION);
-                
+
                 iqQuery.appendChild(iq.buildNode('name', {'xmlns': NS_VERSION}, 'Jappix Mini'));
                 iqQuery.appendChild(iq.buildNode('version', {'xmlns': NS_VERSION}, JAPPIX_VERSION));
                 iqQuery.appendChild(iq.buildNode('os', {'xmlns': NS_VERSION}, navigator.platform));
-                
+
                 con.send(iqResponse);
-                
+
                 JappixConsole.log('Received software version query: ' + iqFrom);
             }
-            
+
             // Roster push
             else if((iqQueryXMLNS == NS_ROSTER) && (iqType == 'set')) {
                 // Display the friend
                 self.handleRoster(iq);
-                
+
                 con.send(iqResponse);
-                
+
                 JappixConsole.log('Received a roster push.');
             }
-            
+
             // Disco info query
             else if((iqQueryXMLNS == NS_DISCO_INFO) && (iqType == 'get')) {
                 /* REF: http://xmpp.org/extensions/xep-0030.html */
-                
+
                 iqQuery = iqResponse.setQuery(NS_DISCO_INFO);
-                
+
                 // We set the name of the client
                 iqQuery.appendChild(iq.appendNode('identity', {
                     'category': 'client',
@@ -8634,7 +8639,7 @@ var JappixMini = (function () {
                     'name': 'Jappix Mini',
                     'xmlns': NS_DISCO_INFO
                 }));
-                
+
                 // We set all the supported features
                 var fArray = [
                     NS_DISCO_INFO,
@@ -8644,52 +8649,52 @@ var JappixMini = (function () {
                     NS_VERSION,
                     NS_URN_TIME
                 ];
-                
+
                 for(var i in fArray) {
                     iqQuery.appendChild(iq.buildNode('feature', {'var': fArray[i], 'xmlns': NS_DISCO_INFO}));
                 }
-                
+
                 con.send(iqResponse);
-                
+
                 JappixConsole.log('Received a disco#infos query.');
             }
-            
+
             // User time query
             else if(jQuery(iqNode).find('time').size() && (iqType == 'get')) {
                 /* REF: http://xmpp.org/extensions/xep-0202.html */
-                
+
                 var iqTime = iqResponse.appendNode('time', {'xmlns': NS_URN_TIME});
                 iqTime.appendChild(iq.buildNode('tzo', {'xmlns': NS_URN_TIME}, JappixDateUtils.getTZO()));
                 iqTime.appendChild(iq.buildNode('utc', {'xmlns': NS_URN_TIME}, JappixDateUtils.getXMPPTime('utc')));
-                
+
                 con.send(iqResponse);
-                
+
                 JappixConsole.log('Received local time query: ' + iqFrom);
             }
-            
+
             // Ping
             else if(jQuery(iqNode).find('ping').size() && (iqType == 'get')) {
                 /* REF: http://xmpp.org/extensions/xep-0199.html */
-                
+
                 con.send(iqResponse);
-                
+
                 JappixConsole.log('Received a ping: ' + iqFrom);
             }
-            
+
             // Not implemented
             else if(!jQuery(iqNode).find('error').size() && ((iqType == 'get') || (iqType == 'set'))) {
                 // Append stanza content
                 for(var c = 0; c < iqNode.childNodes.length; c++) {
                     iqResponse.getNode().appendChild(iqNode.childNodes.item(c).cloneNode(true));
                 }
-                
+
                 // Append error content
                 var iqError = iqResponse.appendNode('error', {'xmlns': NS_CLIENT, 'code': '501', 'type': 'cancel'});
                 iqError.appendChild(iq.buildNode('feature-not-implemented', {'xmlns': NS_STANZAS}));
                 iqError.appendChild(iq.buildNode('text', {'xmlns': NS_STANZAS}, JappixCommon._e("The feature requested is not implemented by the recipient or server and therefore cannot be processed.")));
-                
+
                 con.send(iqResponse);
-                
+
                 JappixConsole.log('Received an unsupported IQ query from: ' + iqFrom);
             }
         } catch(e) {
@@ -8814,7 +8819,7 @@ var JappixMini = (function () {
     };
 
 
-	/**
+    /**
      * Removes a given presence resource for an user
      * @public
      * @param {string} xid
@@ -8884,7 +8889,7 @@ var JappixMini = (function () {
                             cur_xml      = JappixCommon.XMLFromString(cur_pr);
                             cur_priority = jQuery(cur_xml).find('priority').text();
                             cur_priority = !isNaN(cur_priority) ? parseInt(cur_priority) : 0;
-                            
+
                             // Higher priority?
                             if((cur_priority >= max_priority) || (max_priority === null)) {
                                 max_priority = cur_priority;
@@ -8957,22 +8962,22 @@ var JappixMini = (function () {
                     case 'xa':
                     case 'dnd':
                         break;
-                    
+
                     default:
                         show = 'available';
-                        
+
                         break;
                 }
             }
-            
+
             // Is this a groupchat presence?
             var groupchat_path = '#jappix_mini #chat-' + hash + '[data-type="groupchat"]';
             var is_groupchat = false;
-            
+
             if(JappixCommon.exists(groupchat_path)) {
                 // Groupchat exists
                 is_groupchat = true;
-                
+
                 // Groupchat buddy presence (not me)
                 if(resource != unescape(jQuery(groupchat_path).attr('data-nick'))) {
                     // Regenerate some stuffs
@@ -9004,20 +9009,20 @@ var JappixMini = (function () {
                     }
                 }
             }
-            
+
             // Friend path
             var chat = '#jappix_mini #chat-' + hash;
             var friend = '#jappix_mini a#friend-' + hash;
             var send_input = chat + ' input.jm_send-messages';
-            
+
             // Is this friend online?
             if(show == 'unavailable') {
                 // Offline marker
                 jQuery(friend).addClass('jm_offline').removeClass('jm_online jm_hover');
-                
+
                 // Hide the friend just to be safe since the search uses .hide() and .show() which can override the CSS display attribute
                 jQuery(friend).hide();
-                
+
                 // Disable the chat tools
                 if(is_groupchat) {
                     jQuery(chat).addClass('jm_disabled').attr('data-init', 'false');
@@ -9026,7 +9031,7 @@ var JappixMini = (function () {
             } else {
                 // Online marker
                 jQuery(friend).removeClass('jm_offline').addClass('jm_online');
-                
+
                 // Check against search string
                 var search = jQuery('#jappix_mini div.jm_roster div.jm_search input.jm_searchbox').val();
                 var regex = new RegExp('((^)|( ))' + JappixCommon.escapeRegex(search), 'gi');
@@ -9037,7 +9042,7 @@ var JappixMini = (function () {
                 } else {
                     jQuery(friend).show();
                 }
-                
+
                 // Enable the chat input
                 if(is_groupchat) {
                     jQuery(chat).removeClass('jm_disabled');
@@ -9047,7 +9052,7 @@ var JappixMini = (function () {
 
             // Change the show presence of this buddy
             jQuery(friend + ' span.jm_presence, ' + chat + ' span.jm_presence').attr('class', 'jm_presence jm_images jm_' + show);
-            
+
             // Update the presence counter
             self.updateRoster();
 
@@ -9077,57 +9082,57 @@ var JappixMini = (function () {
             var room = JappixCommon.bareXID(from);
             var hash = hex_md5(room);
             var resource = JappixCommon.thisResource(from);
-            
+
             // Is it a valid server presence?
             var valid = false;
-            
+
             if(!resource || (resource == unescape(jQuery('#jappix_mini #chat-' + hash + '[data-type="groupchat"]').attr('data-nick')))) {
                 valid = true;
             }
-            
+
             // Password required?
             if(valid && jQuery(xml).find('error[type="auth"] not-authorized').size()) {
                 // Create a new prompt
                 self.openPrompt(JappixCommon.printf(JappixCommon._e("This room (%s) is protected with a password."), room));
-                
+
                 // When prompt submitted
                 jQuery('#jappix_popup div.jm_prompt form').submit(function() {
                     try {
                         // Read the value
                         var password = self.closePrompt();
-                        
+
                         // Any submitted chat to join?
                         if(password) {
                             // Send the password
                             self.presence('', '', '', '', from, password, true, self.handleMUC);
-                            
+
                             // Focus on the pane again
                             self.switchPane('chat-' + hash, hash);
                         }
                     }
-                    
+
                     catch(e) {}
-                    
+
                     finally {
                         return false;
                     }
                 });
-                
+
                 return;
             }
-            
+
             // Nickname conflict?
             else if(valid && jQuery(xml).find('error[type="cancel"] conflict').size()) {
                 // New nickname
                 var nickname = resource + '_';
-                
+
                 // Send the new presence
                 self.presence('', '', '', '', room + '/' + nickname, '', true, self.handleMUC);
-                
+
                 // Update the nickname marker
                 jQuery('#jappix_mini #chat-' + hash).attr('data-nick', escape(nickname));
             }
-            
+
             // Handle normal presence
             else {
                 // Start the initial timer
@@ -9145,7 +9150,7 @@ var JappixMini = (function () {
     };
 
 
-	/**
+    /**
      * Updates the user presence
      * @public
      * @param {string} type
@@ -9162,7 +9167,7 @@ var JappixMini = (function () {
 
         try {
             var pr = new JSJaCPresence();
-            
+
             // Add the attributes
             if(to)
                 pr.setTo(to);
@@ -9182,25 +9187,25 @@ var JappixMini = (function () {
             // Special presence elements
             if(password || limit_history) {
                 var x = pr.appendNode('x', {'xmlns': NS_MUC});
-                
+
                 // Any password?
                 if(password) {
                     x.appendChild(pr.buildNode('password', {'xmlns': NS_MUC}, password));
                 }
-                
+
                 // Any history limit?
                 if(limit_history) {
                     x.appendChild(pr.buildNode('history', {'maxstanzas': 10, 'seconds': 86400, 'xmlns': NS_MUC}));
                 }
             }
-            
+
             // Send the packet
             if(handler) {
                 con.send(pr, handler);
             } else {
                 con.send(pr);
             }
-            
+
             JappixConsole.info('Presence sent (to: ' + (to || 'none') + ', show: ' + (show || 'none') + ', type: ' + (type || 'none') + ')');
         } catch(e) {
             JappixConsole.error('JappixMini.presence', e);
@@ -9222,43 +9227,43 @@ var JappixMini = (function () {
             var xid = aForm.xid.value;
             var type = aForm.type.value;
             var hash = hex_md5(xid);
-            
+
             if(body && xid) {
                 // Send the message
                 var aMsg = new JSJaCMessage();
-                
+
                 // If the roster does not give us any nick the user may have send us a nickname to use with his first message
                 // @see http://xmpp.org/extensions/xep-0172.html
                 var known_roster_entry = jQuery('#jappix_mini a.jm_friend[data-xid="' + xid + '"]');
-                
+
                 if(known_roster_entry.size() === 0) {
                     var subscription = known_roster_entry.attr('data-sub');
-                    
+
                     // The other may not know my nickname if we do not have both a roster entry, or if he doesn't have one
                     if(('both' != subscription) && ('from' != subscription)) {
                         aMsg.setNick(MINI_NICKNAME);
                     }
                 }
-                
+
                 // Message data
                 aMsg.setTo(xid);
                 aMsg.setType(type);
                 aMsg.setBody(body);
-                
+
                 // Chatstate
                 aMsg.appendNode('active', {'xmlns': NS_CHATSTATES});
-                
+
                 // Send it!
                 self.enqueue(aMsg);
-                
+
                 // Clear the input
                 aForm.body.value = '';
-                
+
                 // Display the message we sent
                 if(type != 'groupchat') {
                     self.displayMessage(type, body, JappixCommon.getXID(), 'me', hash, JappixDateUtils.getCompleteTime(), JappixDateUtils.getTimeStamp(), 'user-message');
                 }
-                
+
                 JappixConsole.log('Message (' + type + ') sent to: ' + xid);
             }
         } catch(e) {
@@ -9342,7 +9347,7 @@ var JappixMini = (function () {
     };
 
 
-	/**
+    /**
      * Unserializes and update the queue storage
      * @public
      * @return {undefined}
@@ -9399,22 +9404,22 @@ var JappixMini = (function () {
             var tab = '#jappix_mini #chat-' + hash + ' a.jm_chat-tab';
             var notify = tab + ' span.jm_notify';
             var notify_middle = notify + ' span.jm_notify_middle';
-            
+
             // Notification box not yet added?
             if(!JappixCommon.exists(notify)) {
                 jQuery(tab).append(
-                    '<span class="jm_notify">' + 
-                        '<span class="jm_notify_left jm_images"></span>' + 
-                        '<span class="jm_notify_middle">0</span>' + 
-                        '<span class="jm_notify_right jm_images"></span>' + 
+                    '<span class="jm_notify">' +
+                        '<span class="jm_notify_left jm_images"></span>' +
+                        '<span class="jm_notify_middle">0</span>' +
+                        '<span class="jm_notify_right jm_images"></span>' +
                     '</span>'
                 );
             }
-            
+
             // Increment the notification number
             var number = parseInt(jQuery(notify_middle).text());
             jQuery(notify_middle).text(number + 1);
-            
+
             // Update the notification counters
             self.notifyCounters();
         } catch(e) {
@@ -9434,10 +9439,10 @@ var JappixMini = (function () {
         try {
             // Replace the Jappix Mini DOM content
             jQuery('#jappix_mini').html(
-                '<div class="jm_starter">' + 
-                    '<a class="jm_pane jm_button jm_images" href="' + MINI_ERROR_LINK + '" target="_blank" title="' + JappixCommon._e("Click here to solve the error") + '">' + 
-                        '<span class="jm_counter jm_error jm_images">' + JappixCommon._e("Error") + '</span>' + 
-                    '</a>' + 
+                '<div class="jm_starter">' +
+                    '<a class="jm_pane jm_button jm_images" href="' + MINI_ERROR_LINK + '" target="_blank" title="' + JappixCommon._e("Click here to solve the error") + '">' +
+                        '<span class="jm_counter jm_error jm_images">' + JappixCommon._e("Error") + '</span>' +
+                    '</a>' +
                 '</div>'
             );
         } catch(e) {
@@ -9457,37 +9462,37 @@ var JappixMini = (function () {
         try {
             // Count the number of notifications
             var number = 0;
-            
+
             jQuery('#jappix_mini span.jm_notify span.jm_notify_middle').each(function() {
                 number = number + parseInt(jQuery(this).text());
             });
-            
+
             // Update the notification link counters
             jQuery('#jappix_mini a.jm_switch').removeClass('jm_notifnav');
-            
+
             if(number) {
                 // Left?
                 if(jQuery('#jappix_mini div.jm_conversation:visible:first').prevAll().find('span.jm_notify').size())
                     jQuery('#jappix_mini a.jm_switch.jm_left').addClass('jm_notifnav');
-                
+
                 // Right?
                 if(jQuery('#jappix_mini div.jm_conversation:visible:last').nextAll().find('span.jm_notify').size())
                     jQuery('#jappix_mini a.jm_switch.jm_right').addClass('jm_notifnav');
             }
-            
+
             // No saved title? Abort!
             if(MINI_TITLE === null) {
                 return;
             }
-            
+
             // Page title code
             var title = MINI_TITLE;
-            
+
             // No new stuffs? Reset the title!
             if(number) {
                 title = '[' + number + '] ' + title;
             }
-            
+
             // Apply the title
             document.title = title;
         } catch(e) {
@@ -9497,7 +9502,7 @@ var JappixMini = (function () {
     };
 
 
-	/**
+    /**
      * Clears the notifications
      * @public
      * @param {string} hash
@@ -9510,13 +9515,13 @@ var JappixMini = (function () {
             if(!JappixCommon.isFocused()) {
                 return false;
             }
-            
+
             // Remove the notifications counter
             jQuery('#jappix_mini #chat-' + hash + ' span.jm_notify').remove();
-            
+
             // Update the global counters
             self.notifyCounters();
-            
+
             return true;
         } catch(e) {
             JappixConsole.error('JappixMini.clearNotifications', e);
@@ -9580,45 +9585,45 @@ var JappixMini = (function () {
             if(number_visible != number_visible_dom) {
                 // Show hidden chats
                 jQuery('#jappix_mini div.jm_conversation:hidden').show();
-                
+
                 // Get total number of chats
                 var number_total = jQuery('#jappix_mini div.jm_conversation').size();
-                
+
                 // Must add the overflow switcher?
                 if(number_visible < number_total) {
                     // Create the overflow handler?
                     if(!jQuery('#jappix_mini a.jm_switch').size()) {
                         // Add the navigation links
                         jQuery('#jappix_mini div.jm_conversations').before(
-                            '<a class="jm_switch jm_left jm_pane jm_images" href="#">' + 
-                                '<span class="jm_navigation jm_images"></span>' + 
+                            '<a class="jm_switch jm_left jm_pane jm_images" href="#">' +
+                                '<span class="jm_navigation jm_images"></span>' +
                             '</a>'
                         );
-                        
+
                         jQuery('#jappix_mini div.jm_conversations').after(
-                            '<a class="jm_switch jm_right jm_pane jm_images" href="#">' + 
-                                '<span class="jm_navigation jm_images"></span>' + 
+                            '<a class="jm_switch jm_right jm_pane jm_images" href="#">' +
+                                '<span class="jm_navigation jm_images"></span>' +
                             '</a>'
                         );
-                        
+
                         // Add the click events
                         self.overflowEvents();
                     }
-                    
+
                     // Show first visible chats
                     var first_visible = jQuery('#jappix_mini div.jm_conversation:visible:first').index();
                     var index_visible = number_visible - first_visible - 1;
 
                     jQuery('#jappix_mini div.jm_conversation:visible:gt(' + index_visible + ')').hide();
-                    
+
                     // Close the opened chat
                     if(jQuery('#jappix_mini div.jm_conversation:hidden a.jm_pane.jm_clicked').size()) {
                         self.switchPane();
                     }
-                    
+
                     // Update navigation buttons
                     jQuery('#jappix_mini a.jm_switch').removeClass('jm_nonav');
-                    
+
                     if(!jQuery('#jappix_mini div.jm_conversation:visible:first').prev().size()) {
                         jQuery('#jappix_mini a.jm_switch.jm_left').addClass('jm_nonav');
                     }
@@ -9627,7 +9632,7 @@ var JappixMini = (function () {
                         jQuery('#jappix_mini a.jm_switch.jm_right').addClass('jm_nonav');
                     }
                 }
-                
+
                 // Must remove the overflow switcher?
                 else {
                     jQuery('#jappix_mini a.jm_switch').remove();
@@ -9656,54 +9661,54 @@ var JappixMini = (function () {
                 if(this_sel.hasClass('jm_nonav')) {
                     return false;
                 }
-                
+
                 var hide_this = '';
                 var show_this = '';
-                
+
                 // Go left?
                 if(this_sel.is('.jm_left')) {
                     show_this = jQuery('#jappix_mini div.jm_conversation:visible:first').prev();
-                    
+
                     if(show_this.size()) {
                         hide_this = jQuery('#jappix_mini div.jm_conversation:visible:last');
                     }
                 }
-                
+
                 // Go right?
                 else {
                     show_this = jQuery('#jappix_mini div.jm_conversation:visible:last').next();
-                    
+
                     if(show_this.size()) {
                         hide_this = jQuery('#jappix_mini div.jm_conversation:visible:first');
                     }
                 }
-                
+
                 // Update overflow content
                 if(show_this && show_this.size()) {
                     // Hide
                     if(hide_this && hide_this.size()) {
                         hide_this.hide();
-                        
+
                         // Close the opened chat
                         if(hide_this.find('a.jm_pane').hasClass('jm_clicked')) {
                             self.switchPane();
                         }
                     }
-                    
+
                     // Show
                     show_this.show();
-                    
+
                     // Update navigation buttons
                     jQuery('#jappix_mini a.jm_switch').removeClass('jm_nonav');
-                    
+
                     if((this_sel.is('.jm_right') && !show_this.next().size()) || (this_sel.is('.jm_left') && !show_this.prev().size())) {
                         this_sel.addClass('jm_nonav');
                     }
-                    
+
                     // Update notification counters
                     self.notifyCounters();
                 }
-                
+
                 return false;
             });
         } catch(e) {
@@ -9731,7 +9736,7 @@ var JappixMini = (function () {
 
             // Reset DOM storage (free memory)
             JappixDataStore.removeDB(MINI_HASH, 'jappix-mini', 'dom');
-            
+
             // Invalid stored DOM?
             if(dom && isNaN(jQuery(dom).find('a.jm_pane.jm_button span.jm_counter').text())) {
                 dom = null;
@@ -9747,61 +9752,61 @@ var JappixMini = (function () {
 
                 // Read the old nickname
                 MINI_NICKNAME = JappixDataStore.getDB(MINI_HASH, 'jappix-mini', 'nickname');
-                
+
                 // Marker
                 suspended = true;
                 MINI_ROSTER_INIT = true;
             }
-            
+
             // New DOM?
             else {
-                dom = '<div class="jm_position">' + 
-                        '<div class="jm_conversations"></div>' + 
-                        
-                        '<div class="jm_starter">' + 
-                            '<div class="jm_roster">' + 
-                                '<div class="jm_actions">' + 
-                                    '<a class="jm_logo jm_images" href="https://mini.jappix.com/" target="_blank"></a>' + 
-                                    '<a class="jm_one-action jm_join jm_images" title="' + JappixCommon._e("Join a chat") + '" href="#"></a>' + 
-                                    '<a class="jm_one-action jm_status" title="' + JappixCommon._e("Status") + '" href="#">' + 
-                                        '<span class="jm_presence jm_images jm_available"></span>' + 
-                                    '</a>' + 
-                                    
-                                    '<div class="jm_status_picker">' + 
-                                        '<a href="#" data-status="available">' + 
-                                            '<span class="jm_presence jm_images jm_available"></span>' + 
-                                            '<span class="jm_show_text">' + JappixCommon._e("Available") + '</span>' + 
-                                        '</a>' + 
-                                        
-                                        '<a href="#" data-status="away">' + 
-                                            '<span class="jm_presence jm_images jm_away"></span>' + 
-                                            '<span class="jm_show_text">' + JappixCommon._e("Away") + '</span>' + 
-                                        '</a>' + 
-                                        
-                                        '<a href="#" data-status="dnd">' + 
-                                            '<span class="jm_presence jm_images jm_dnd"></span>' + 
-                                            '<span class="jm_show_text">' + JappixCommon._e("Busy") + '</span>' + 
-                                        '</a>' + 
-                                        
-                                        '<a href="#" data-status="unavailable">' + 
-                                            '<span class="jm_presence jm_images jm_unavailable"></span>' + 
-                                            '<span class="jm_show_text">' + JappixCommon._e("Offline") + '</span>' + 
-                                        '</a>' + 
-                                    '</div>' + 
-                                '</div>' + 
-                                '<div class="jm_buddies"></div>' + 
-                                '<div class="jm_search">' + 
-                                    '<input type="text" class="jm_searchbox jm_images" placeholder="' + JappixCommon._e("Filter") + '" data-value="" />' + 
-                                '</div>' + 
-                            '</div>' + 
-                            
-                            '<a class="jm_pane jm_button jm_images" href="#">' + 
-                                '<span class="jm_counter jm_images">' + JappixCommon._e("Please wait...") + '</span>' + 
-                            '</a>' + 
-                        '</div>' + 
+                dom = '<div class="jm_position">' +
+                        '<div class="jm_conversations"></div>' +
+
+                        '<div class="jm_starter">' +
+                            '<div class="jm_roster">' +
+                                '<div class="jm_actions">' +
+                                    '<a class="jm_logo jm_images" href="https://mini.jappix.com/" target="_blank"></a>' +
+                                    '<a class="jm_one-action jm_join jm_images" title="' + JappixCommon._e("Join a chat") + '" href="#"></a>' +
+                                    '<a class="jm_one-action jm_status" title="' + JappixCommon._e("Status") + '" href="#">' +
+                                        '<span class="jm_presence jm_images jm_available"></span>' +
+                                    '</a>' +
+
+                                    '<div class="jm_status_picker">' +
+                                        '<a href="#" data-status="available">' +
+                                            '<span class="jm_presence jm_images jm_available"></span>' +
+                                            '<span class="jm_show_text">' + JappixCommon._e("Available") + '</span>' +
+                                        '</a>' +
+
+                                        '<a href="#" data-status="away">' +
+                                            '<span class="jm_presence jm_images jm_away"></span>' +
+                                            '<span class="jm_show_text">' + JappixCommon._e("Away") + '</span>' +
+                                        '</a>' +
+
+                                        '<a href="#" data-status="dnd">' +
+                                            '<span class="jm_presence jm_images jm_dnd"></span>' +
+                                            '<span class="jm_show_text">' + JappixCommon._e("Busy") + '</span>' +
+                                        '</a>' +
+
+                                        '<a href="#" data-status="unavailable">' +
+                                            '<span class="jm_presence jm_images jm_unavailable"></span>' +
+                                            '<span class="jm_show_text">' + JappixCommon._e("Offline") + '</span>' +
+                                        '</a>' +
+                                    '</div>' +
+                                '</div>' +
+                                '<div class="jm_buddies"></div>' +
+                                '<div class="jm_search">' +
+                                    '<input type="text" class="jm_searchbox jm_images" placeholder="' + JappixCommon._e("Filter") + '" data-value="" />' +
+                                '</div>' +
+                            '</div>' +
+
+                            '<a class="jm_pane jm_button jm_images" href="#">' +
+                                '<span class="jm_counter jm_images">' + JappixCommon._e("Please wait...") + '</span>' +
+                            '</a>' +
+                        '</div>' +
                       '</div>';
             }
-            
+
             // Create the DOM
             jQuery('#layers').append('<div id="jappix_mini" style="display: none;" dir="' + (JappixCommon.isRTL() ? 'rtl' : 'ltr') + '">' + dom + '</div>');
 
@@ -9809,7 +9814,7 @@ var JappixMini = (function () {
             jQuery('#jappix_mini a.jm_status.active, #jappix_mini a.jm_join.active').removeClass('active');
             jQuery('#jappix_mini div.jm_status_picker').hide();
             jQuery('#jappix_mini div.jm_chan_suggest').remove();
-            
+
             // Chat navigation overflow events
             self.overflowEvents();
 
@@ -9843,37 +9848,37 @@ var JappixMini = (function () {
                     JappixConsole.debug('JappixMini.create[timer]', 'Done auto-updating ads.');
                 });
             }
-            
+
             // CSS refresh (Safari display bug when restoring old DOM)
             jQuery('#jappix_mini div.jm_starter').css('float', 'right');
             jQuery('#jappix_mini div.jm_conversations, #jappix_mini div.jm_conversation, #jappix_mini a.jm_switch').css('float', 'left');
-            
+
             // The click events
             jQuery('#jappix_mini a.jm_button').click(function() {
                 // Using a try/catch override IE issues
                 try {
                     // Presence counter
                     var counter = '#jappix_mini a.jm_pane.jm_button span.jm_counter';
-                    
+
                     // Cannot open the roster?
                     if(jQuery(counter).text() == JappixCommon._e("Please wait...")) {
                         return false;
                     }
-                    
+
                     // Not yet connected?
                     if(jQuery(counter).text() == JappixCommon._e("Chat")) {
                         // Remove the animated bubble
                         jQuery('#jappix_mini div.jm_starter span.jm_animate').remove();
-                        
+
                         // Add a waiting marker
                         jQuery(counter).text(JappixCommon._e("Please wait..."));
-                        
+
                         // Launch the connection!
                         self.connect(domain, user, password);
-                        
+
                         return false;
                     }
-                    
+
                     // Normal actions
                     if(!jQuery(this).hasClass('jm_clicked')) {
                         self.showRoster();
@@ -9881,9 +9886,9 @@ var JappixMini = (function () {
                         self.hideRoster();
                     }
                 }
-                
+
                 catch(e) {}
-                
+
                 finally {
                     return false;
                 }
@@ -9896,7 +9901,7 @@ var JappixMini = (function () {
                     var is_active = this_sel.hasClass('active');
 
                     jQuery('#jappix_mini div.jm_actions a').blur().removeClass('active');
-                    
+
                     if(is_active) {
                         jQuery('#jappix_mini div.jm_status_picker').hide();
                     } else {
@@ -9905,9 +9910,9 @@ var JappixMini = (function () {
                         this_sel.addClass('active');
                     }
                 }
-                
+
                 catch(e) {}
-                
+
                 finally {
                     return false;
                 }
@@ -9920,56 +9925,56 @@ var JappixMini = (function () {
 
                     // Generate an array of presence change XIDs
                     var pr_xid = [''];
-                    
+
                     jQuery('#jappix_mini div.jm_conversation[data-type="groupchat"]').each(function() {
                         var this_sub_sel = jQuery(this);
                         pr_xid.push(unescape(this_sub_sel.attr('data-xid')) + '/' + unescape(this_sub_sel.attr('data-nick')));
                     });
-                    
+
                     // Loop on XIDs
                     var new_status = this_sel.data('status');
-                    
+
                     jQuery.each(pr_xid, function(key, value) {
                         switch(new_status) {
                             case 'available':
                                 self.presence('', '', '', '', value);
                                 break;
-                            
+
                             case 'away':
                                 self.presence('', 'away', '', '', value);
                                 break;
-                            
+
                             case 'dnd':
                                 self.presence('', 'dnd', '', '', value);
                                 break;
-                            
+
                             case 'unavailable':
                                 self.disconnect();
                                 break;
-                            
+
                             default:
                                 self.presence('', '', '', '', value);
                                 break;
                         }
                     });
-                    
+
                     // Switch the status
                     if(new_status != 'unavailable') {
                         jQuery('#jappix_mini a.jm_status span').removeClass('jm_available jm_away jm_dnd jm_unavailable')
                                                                .addClass('jm_' + this_sel.data('status'));
-                        
+
                         jQuery('#jappix_mini div.jm_status_picker').hide();
                         jQuery('#jappix_mini a.jm_status').blur().removeClass('active');
                     }
                 }
-                
+
                 catch(e) {}
-                
+
                 finally {
                     return false;
                 }
             });
-            
+
             jQuery('#jappix_mini div.jm_actions a.jm_join').click(function() {
                 // Using a try/catch override IE issues
                 try {
@@ -9979,98 +9984,98 @@ var JappixMini = (function () {
                     if((MINI_SUGGEST_CHATS && MINI_SUGGEST_CHATS.length) || (MINI_SUGGEST_GROUPCHATS && MINI_SUGGEST_GROUPCHATS.length)) {
                         var is_active = this_sel.hasClass('active');
                         jQuery('#jappix_mini div.jm_actions a').blur().removeClass('active');
-                        
+
                         if(is_active) {
                             jQuery('#jappix_mini div.jm_chan_suggest').remove();
                         } else {
                             // Button style
                             jQuery('#jappix_mini div.jm_status_picker').hide();
                             this_sel.addClass('active');
-                            
+
                             // Generate selector code
                             var chans_html = '';
-                            
+
                             // Generate the groupchat links HTML
                             for(var i = 0; i < MINI_SUGGEST_GROUPCHATS.length; i++) {
                                 // Empty value?
                                 if(!MINI_SUGGEST_GROUPCHATS[i]) {
                                     continue;
                                 }
-                                
+
                                 // Using a try/catch override IE issues
                                 try {
                                     var chat_room = JappixCommon.bareXID(JappixCommon.generateXID(MINI_SUGGEST_GROUPCHATS[i], 'groupchat'));
                                     var chat_pwd = MINI_SUGGEST_PASSWORDS[i] || '';
-                                    
-                                    chans_html += 
-                                    '<a class="jm_suggest_groupchat" href="#" data-xid="' + escape(chat_room) + '" data-pwd="' + escape(chat_pwd) + '">' + 
-                                        '<span class="jm_chan_icon jm_images"></span>' + 
-                                        '<span class="jm_chan_name">' + JappixCommon.getXIDNick(chat_room).htmlEnc() + '</span>' + 
+
+                                    chans_html +=
+                                    '<a class="jm_suggest_groupchat" href="#" data-xid="' + escape(chat_room) + '" data-pwd="' + escape(chat_pwd) + '">' +
+                                        '<span class="jm_chan_icon jm_images"></span>' +
+                                        '<span class="jm_chan_name">' + JappixCommon.getXIDNick(chat_room).htmlEnc() + '</span>' +
                                     '</a>';
                                 }
-                                
+
                                 catch(e) {}
                             }
-                            
+
                             // Any separation space to add?
                             if(chans_html) {
                                 chans_html += '<div class="jm_space"></div>';
                             }
-                            
+
                             // Generate the chat links HTML
                             for(var j = 0; j < MINI_SUGGEST_CHATS.length; j++) {
                                 // Empty value?
                                 if(!MINI_SUGGEST_CHATS[j]) {
                                     continue;
                                 }
-                                
+
                                 // Using a try/catch override IE issues
                                 try {
                                     // Read current chat values
                                     var chat_xid = JappixCommon.bareXID(JappixCommon.generateXID(MINI_SUGGEST_CHATS[j], 'chat'));
                                     var chat_hash = hex_md5(chat_xid);
                                     var chat_nick = jQuery('#jappix_mini a#friend-' + chat_hash).attr('data-nick');
-                                    
+
                                     // Get current chat nickname
                                     if(!chat_nick) {
                                         chat_nick = JappixCommon.getXIDNick(chat_xid);
                                     } else {
                                         chat_nick = unescape(chat_nick);
                                     }
-                                    
+
                                     // Generate HTML for current chat
-                                    chans_html += 
-                                    '<a class="jm_suggest_chat" href="#" data-xid="' + escape(chat_xid) + '">' + 
-                                        '<span class="jm_chan_icon jm_images"></span>' + 
-                                        '<span class="jm_chan_name">' + JappixCommon.getXIDNick(chat_nick).htmlEnc() + '</span>' + 
+                                    chans_html +=
+                                    '<a class="jm_suggest_chat" href="#" data-xid="' + escape(chat_xid) + '">' +
+                                        '<span class="jm_chan_icon jm_images"></span>' +
+                                        '<span class="jm_chan_name">' + JappixCommon.getXIDNick(chat_nick).htmlEnc() + '</span>' +
                                     '</a>';
                                 }
-                                
+
                                 catch(e) {}
                             }
-                            
+
                             // Any separation space to add?
                             if(chans_html) {
                                 chans_html += '<div class="jm_space"></div>';
                             }
-                            
+
                             // Append selector code
                             jQuery('#jappix_mini div.jm_actions').append(
-                                '<div class="jm_chan_suggest">' + 
-                                    chans_html + 
-                                    
+                                '<div class="jm_chan_suggest">' +
+                                    chans_html +
+
                                     /* Begin 5D Mod CHange */
                                     /* 5D MOD : INTRODUCED IF TO GIVE OPTION: NO OTHER SUGGEST PROMPT: */
                                     (MINI_5D_HIDE_SUGGEST_OTHER_CHAT_PROMPT ? '' :
-                                      '<a class="jm_suggest_prompt" href="#">' + 
-                                          '<span class="jm_chan_icon"></span>' + 
-                                          '<span class="jm_chan_name">' + JappixCommon._e("Other") + '</span>' + 
+                                      '<a class="jm_suggest_prompt" href="#">' +
+                                          '<span class="jm_chan_icon"></span>' +
+                                          '<span class="jm_chan_name">' + JappixCommon._e("Other") + '</span>' +
                                       '</a>'
-                                    ) + 
+                                    ) +
                                     /* End 5D Mod Change */
                                 '</div>'
                             );
-                            
+
                             // Click events
                             jQuery('#jappix_mini div.jm_chan_suggest a').click(function() {
                                 // Using a try/catch override IE issues
@@ -10084,56 +10089,56 @@ var JappixMini = (function () {
                                     // Chat?
                                     if(this_sub_sel.is('.jm_suggest_chat')) {
                                         var current_chat = unescape(this_sub_sel.attr('data-xid'));
-                                        
+
                                         self.chat('chat', current_chat, this_sub_sel.find('span.jm_chan_name').text(), hex_md5(current_chat));
                                     }
-                                    
+
                                     // Groupchat?
                                     else if(this_sub_sel.is('.jm_suggest_groupchat')) {
                                         var current_groupchat = unescape(this_sub_sel.attr('data-xid'));
                                         var current_password = this_sub_sel.attr('data-pwd') || null;
-                                        
+
                                         if(current_password)
                                             current_password = unescape(current_password);
-                                        
+
                                         self.chat('groupchat', current_groupchat, this_sub_sel.find('span.jm_chan_name').text(), hex_md5(current_groupchat), current_password);
                                     }
-                                    
+
                                     // Default prompt?
                                     else {
                                         self.groupchatPrompt();
                                     }
                                 }
-                                
+
                                 catch(e) {
                                   /* Begin 5D Mod Add */
                                   JappixConsole.log('in jappix mini, catched exception', e); // 5D MOD: DEBUG OUTPUT
                                   /* End 5D Mod Add */
                                 }
-                                
+
                                 finally {
                                     return false;
                                 }
                             });
-                            
+
                             // Adapt chan suggest height
                             self.adaptRoster();
                         }
                     }
-                    
+
                     // Default action
                     else {
                         self.groupchatPrompt();
                     }
                 }
-                
+
                 catch(e) {}
-                
+
                 finally {
                     return false;
                 }
             });
-            
+
             // Updates the roster with only searched terms
             jQuery('#jappix_mini div.jm_roster div.jm_search input.jm_searchbox').keyup(function(e) {
                 var this_sel = jQuery(this);
@@ -10142,51 +10147,51 @@ var JappixMini = (function () {
                 if((e.keyCode == 38) || (e.keyCode == 40)) {
                     return;
                 }
-                
+
                 // Escape key pressed?
                 if(e.keyCode == 27) {
                     this_sel.val('');
                 }
-                
+
                 // Save current value
                 this_sel.attr('data-value', this_sel.val());
-                
+
                 // Don't filter at each key up (faster for computer)
                 var _this = this;
-                
+
                 JappixCommon.typewatch()(function() {
                     // Using a try/catch to override IE issues
                     try {
                         // Get values
                         var search = jQuery(_this).val();
                         var regex = new RegExp('((^)|( ))' + JappixCommon.escapeRegex(search), 'gi');
-                        
+
                         // Reset results
                         jQuery('#jappix_mini a.jm_friend.jm_hover').removeClass('jm_hover');
                         jQuery('#jappix_mini div.jm_roster div.jm_grouped').show();
-                        
+
                         // If there is no search, we don't need to loop over buddies
                         if(!search) {
                             jQuery('#jappix_mini div.jm_roster div.jm_buddies a.jm_online').show();
 
                             // Update groups visibility
                             self.updateGroups();
-                            
+
                             return;
                         }
-                        
+
                         // Filter buddies
                         jQuery('#jappix_mini div.jm_roster div.jm_buddies a.jm_online').each(function() {
                             var this_sub_sel = jQuery(this);
                             var nick = unescape(this_sub_sel.data('nick'));
-                            
+
                             if(nick.match(regex)) {
                                 this_sub_sel.show();
                             } else {
                                 this_sub_sel.hide();
                             }
                         });
-                        
+
                         // Filter groups
                         jQuery('#jappix_mini div.jm_roster div.jm_grouped').each(function() {
                             var this_sub_sel = jQuery(this);
@@ -10195,26 +10200,26 @@ var JappixMini = (function () {
                                 this_sub_sel.hide();
                             }
                         });
-                        
+
                         // Focus on the first buddy
                         jQuery('#jappix_mini div.jm_roster div.jm_buddies a.jm_online:visible:first').addClass('jm_hover');
                     }
-                    
+
                     catch(e) {}
-                    
+
                     finally {
                         return false;
                     }
                 }, 500);
             });
-            
+
             // Roster navigation
             jQuery(document).keydown(function(e) {
                 // Cannot work if roster is not opened
                 if(jQuery('#jappix_mini div.jm_roster').is(':hidden')) {
                     return;
                 }
-                
+
                 // Up/Down keys
                 if((e.keyCode == 38) || (e.keyCode == 40)) {
                     // Hover the last/first buddy
@@ -10225,22 +10230,22 @@ var JappixMini = (function () {
                             jQuery('#jappix_mini a.jm_online:visible:first').addClass('jm_hover');
                         }
                     }
-                    
+
                     // Hover the previous/next buddy
                     else if(jQuery('#jappix_mini a.jm_online:visible').size() > 1) {
                         var hover_index = jQuery('#jappix_mini a.jm_online:visible').index(jQuery('a.jm_hover'));
-                        
+
                         // Up (decrement) or down (increment)?
                         if(e.keyCode == 38) {
                             hover_index--;
                         } else {
                             hover_index++;
                         }
-                        
+
                         if(!hover_index) {
                             hover_index = 0;
                         }
-                        
+
                         // No buddy before/after?
                         if(!jQuery('#jappix_mini a.jm_online:visible').eq(hover_index).size()) {
                             if(e.keyCode == 38) {
@@ -10249,22 +10254,22 @@ var JappixMini = (function () {
                                 hover_index = 0;
                             }
                         }
-                        
+
                         // Hover the previous/next buddy
                         jQuery('#jappix_mini a.jm_friend.jm_hover').removeClass('jm_hover');
                         jQuery('#jappix_mini a.jm_online:visible').eq(hover_index).addClass('jm_hover');
                     }
-                    
+
                     // Scroll to the hovered buddy (if out of limits)
                     jQuery('#jappix_mini div.jm_roster div.jm_buddies').scrollTo(jQuery('#jappix_mini a.jm_online.jm_hover'), 0, {margin: true});
-                    
+
                     return false;
                 }
-                
+
                 // Enter key
                 if((e.keyCode == 13) && jQuery('#jappix_mini a.jm_friend.jm_hover').size()) {
                     jQuery('#jappix_mini a.jm_friend.jm_hover').click();
-                    
+
                     return false;
                 }
             });
@@ -10282,7 +10287,7 @@ var JappixMini = (function () {
                 try {
                     // Get key value
                     var key_value = jQuery.trim(String.fromCharCode(evt.which));
-                    
+
                     // Re-focus on opened chat?
                     if(key_value) {
                         // Path to chat input
@@ -10304,21 +10309,21 @@ var JappixMini = (function () {
                     }
                 } catch(e) {}
             });
-            
+
             // Hides the roster when clicking away of Jappix Mini
             jQuery(document).click(function(evt) {
                 if(!jQuery(evt.target).parents('#jappix_mini').size() && !JappixCommon.exists('#jappix_popup')) {
                     self.hideRoster();
                 }
             });
-            
+
             // Hides all panes double clicking away of Jappix Mini
             jQuery(document).dblclick(function(evt) {
                 if(!jQuery(evt.target).parents('#jappix_mini').size() && !JappixCommon.exists('#jappix_popup')) {
                     self.switchPane();
                 }
             });
-            
+
             // Suspended session resumed?
             if(suspended) {
                 // Initialized marker
@@ -10339,28 +10344,28 @@ var JappixMini = (function () {
                     // Simulate a network error to get the same silent reconnect effect
                     self.disconnected();
                 }
-                
+
                 // Restore chat input values
                 jQuery('#jappix_mini div.jm_conversation input.jm_send-messages').each(function() {
                     var this_sub_sel = jQuery(this);
                     var chat_value = this_sub_sel.attr('data-value');
-                    
+
                     if(chat_value) {
                         this_sub_sel.val(chat_value);
                     }
                 });
-                
+
                 // Restore roster filter value
                 var search_box = jQuery('#jappix_mini div.jm_roster div.jm_search input.jm_searchbox');
                 var filter_value = search_box.attr('data-value');
-                
+
                 if(filter_value) {
                     search_box.val(filter_value).keyup();
                 }
-                
+
                 // Restore buddy events
                 self.eventsBuddy('#jappix_mini a.jm_friend');
-                
+
                 // Restore chat click events
                 jQuery('#jappix_mini div.jm_conversation').each(function() {
                     var this_sub_sel = jQuery(this);
@@ -10369,37 +10374,37 @@ var JappixMini = (function () {
 
                 // Restore init marker on all groupchats
                 jQuery('#jappix_mini div.jm_conversation[data-type="groupchat"]').attr('data-init', 'true');
-                
+
                 // Scroll down to the last message
                 var scroll_hash = jQuery('#jappix_mini div.jm_conversation:has(a.jm_pane.jm_clicked)').attr('data-hash');
                 var scroll_position = JappixDataStore.getDB(MINI_HASH, 'jappix-mini', 'scroll');
-                
+
                 // Any scroll position?
                 if(scroll_position) {
                     scroll_position = parseInt(scroll_position);
                 }
-                
+
                 if(scroll_hash) {
                     // Use a timer to override the DOM lag issue
                     jQuery(document).oneTime(200, function() {
                         self.messageScroll(scroll_hash, scroll_position);
                     });
                 }
-                
+
                 // Update notification counters
                 self.notifyCounters();
             }
-            
+
             // Can auto-connect?
             else if(MINI_AUTOCONNECT) {
                 self.connect(domain, user, password);
             }
-            
+
             // Cannot auto-connect?
             else {
                 // Chat text
                 jQuery('#jappix_mini a.jm_pane.jm_button span.jm_counter').text(JappixCommon._e("Chat"));
-                
+
                 // Must animate?
                 if(MINI_ANIMATE) {
                     // Add content
@@ -10415,7 +10420,7 @@ var JappixMini = (function () {
     };
 
 
-	/**
+    /**
      * Buddy events
      * @public
      * @param {string} path
@@ -10433,14 +10438,14 @@ var JappixMini = (function () {
                     var this_sel = jQuery(this);
                     self.chat('chat', unescape(this_sel.attr('data-xid')), unescape(this_sel.attr('data-nick')), this_sel.attr('data-hash'));
                 }
-                
+
                 catch(e) {}
-                
+
                 finally {
                     return false;
                 }
             });
-            
+
             // Restore buddy hover events
             selector.hover(function() {
                 jQuery('#jappix_mini a.jm_friend.jm_hover').removeClass('jm_hover');
@@ -10448,19 +10453,19 @@ var JappixMini = (function () {
             }, function() {
                 jQuery(this).removeClass('jm_hover');
             });
-            
+
             // Restore buddy mousedown events
             selector.mousedown(function() {
                 jQuery('#jappix_mini a.jm_friend.jm_hover').removeClass('jm_hover');
                 jQuery(this).addClass('jm_hover');
             });
-            
+
             // Restore buddy focus events
             selector.focus(function() {
                 jQuery('#jappix_mini a.jm_friend.jm_hover').removeClass('jm_hover');
                 jQuery(this).addClass('jm_hover');
             });
-            
+
             // Restore buddy blur events
             selector.blur(function() {
                 jQuery(this).removeClass('jm_hover');
@@ -10490,15 +10495,15 @@ var JappixMini = (function () {
         try {
             // Generate path
             var path = '#chat-' + hash;
-            
+
             // Can scroll?
             var cont_scroll = document.getElementById('received-' + hash);
             var can_scroll = false;
-            
+
             if(!cont_scroll.scrollTop || ((cont_scroll.clientHeight + cont_scroll.scrollTop) == cont_scroll.scrollHeight)) {
                 can_scroll = true;
             }
-            
+
             // Remove the previous message border if needed
             var last = jQuery(path + ' div.jm_group:last');
             var last_stamp = parseInt(last.attr('data-stamp'));
@@ -10535,20 +10540,20 @@ var JappixMini = (function () {
                 else
                     header += '<b class="jm_name jm_him" data-xid="' + JappixCommon.encodeQuotes(xid) + '">' + nick.htmlEnc() + '</b>';
             }
-            
+
             // Apply the /me command
             var me_command = false;
-            
+
             if(body.match(/^\/me /i)) {
                 body = body.replace(/^\/me /i, nick + ' ');
-                
+
                 // Marker
                 me_command = true;
             }
-            
+
             // HTML-encode the message
             body = body.htmlEnc();
-            
+
             // Apply the smileys
             body = body.replace(/(;-?\))(\s|$)/gi, self.smiley('wink', '$1'))
                        .replace(/(:-?3)(\s|$)/gi, self.smiley('waii', '$1'))
@@ -10558,29 +10563,29 @@ var JappixMini = (function () {
                        .replace(/(:-?\))(\s|$)/gi, self.smiley('smile', '$1'))
                        .replace(/(\^_?\^)(\s|$)/gi, self.smiley('happy', '$1'))
                        .replace(/(:-?D)(\s|$)/gi, self.smiley('grin', '$1'));
-            
+
             // Format the text
             body = body.replace(/(^|\s|>|\()((\*)([^<>'"\*]+)(\*))($|\s|<|\))/gi, '$1<b>$2</b>$6')
                        .replace(/(^|\s|>|\()((\/)([^<>'"\/]+)(\/))($|\s|<|\))/gi, '$1<em>$2</em>$6')
                        .replace(/(^|\s|>|\()((_)([^<>'"_]+)(_))($|\s|<|\))/gi, '$1<span style="text-decoration: underline;">$2</span>$6');
-            
+
             // Filter the links
             body = JappixLinks.apply(body, 'mini');
-            
+
             // Generate the message code
             if(me_command) {
                 body = '<em>' + body + '</em>';
             }
-            
+
             body = '<p>' + body + '</p>';
-            
+
             // Create the message
             if(grouped) {
                 jQuery('#jappix_mini #chat-' + hash + ' div.jm_received-messages div.jm_group:last').append(body);
             } else {
                 jQuery('#jappix_mini #chat-' + hash + ' div.jm_chatstate_typing').before('<div class="jm_group jm_' + message_type + ' ' + css +'" data-type="' + message_type + '" data-stamp="' + stamp + '">' + header + body + '</div>');
             }
-            
+
             // Scroll to this message
             if(can_scroll) {
                 self.messageScroll(hash);
@@ -10606,37 +10611,37 @@ var JappixMini = (function () {
             self.hideRoster();
             jQuery('#jappix_mini a.jm_pane').removeClass('jm_clicked');
             jQuery('#jappix_mini div.jm_chat-content').hide();
-            
+
             // Show the asked element
             if(element && (element != 'roster')) {
                 var current = '#jappix_mini #' + element;
-                
+
                 // Navigate to this chat
                 if(jQuery(current).size() && jQuery(current).is(':hidden')) {
                     var click_nav = '';
-                    
+
                     // Before or after?
                     if(jQuery('#jappix_mini div.jm_conversation:visible:first').prevAll().is('#' + element))
                         click_nav = jQuery('#jappix_mini a.jm_switch.jm_left');
                     else
                         click_nav = jQuery('#jappix_mini a.jm_switch.jm_right');
-                    
+
                     // Click previous or next
                     if(click_nav) {
                         while(jQuery(current).is(':hidden') && !click_nav.hasClass('jm_nonav'))
                             click_nav.click();
                     }
                 }
-                
+
                 // Show it
                 jQuery(current + ' a.jm_pane').addClass('jm_clicked');
                 jQuery(current + ' div.jm_chat-content').show();
-                
+
                 // Use a timer to override the DOM lag issue
                 jQuery(document).oneTime(10, function() {
                     jQuery(current + ' input.jm_send-messages').focus();
                 });
-                
+
                 // Scroll to the last message & adapt chat
                 if(hash) {
                     self.messageScroll(hash);
@@ -10661,12 +10666,12 @@ var JappixMini = (function () {
 
         try {
             var id = document.getElementById('received-' + hash);
-            
+
             // No defined position?
             if(!position) {
                 position = id.scrollHeight;
             }
-            
+
             id.scrollTop = position;
         } catch(e) {
             JappixConsole.error('JappixMini.messageScroll', e);
@@ -10689,47 +10694,47 @@ var JappixMini = (function () {
             var prompt = '#jappix_popup div.jm_prompt';
             var input = prompt + ' form input';
             var value_input = input + '[type="text"]';
-            
+
             // Remove the existing prompt
             self.closePrompt();
-            
+
             // Add the prompt
             jQuery('body').append(
-                '<div id="jappix_popup" dir="' + (JappixCommon.isRTL() ? 'rtl' : 'ltr') + '">' + 
-                    '<div class="jm_prompt">' + 
-                        '<form>' + 
-                            text + 
-                            '<input class="jm_text" type="text" value="" />' + 
-                            '<input class="jm_submit" type="submit" value="' + JappixCommon._e("Submit") + '" />' + 
-                            '<input class="jm_submit" type="reset" value="' + JappixCommon._e("Cancel") + '" />' + 
-                            '<div class="jm_clear"></div>' + 
-                        '</form>' + 
-                    '</div>' + 
+                '<div id="jappix_popup" dir="' + (JappixCommon.isRTL() ? 'rtl' : 'ltr') + '">' +
+                    '<div class="jm_prompt">' +
+                        '<form>' +
+                            text +
+                            '<input class="jm_text" type="text" value="" />' +
+                            '<input class="jm_submit" type="submit" value="' + JappixCommon._e("Submit") + '" />' +
+                            '<input class="jm_submit" type="reset" value="' + JappixCommon._e("Cancel") + '" />' +
+                            '<div class="jm_clear"></div>' +
+                        '</form>' +
+                    '</div>' +
                 '</div>'
             );
-            
+
             // Vertical center
             var vert_pos = '-' + ((jQuery(prompt).height() / 2) + 10) + 'px';
             jQuery(prompt).css('margin-top', vert_pos);
-            
+
             // Apply the value?
             if(value) {
                 jQuery(value_input).val(value);
             }
-            
+
             // Focus on the input
             jQuery(document).oneTime(10, function() {
                 jQuery(value_input).focus();
             });
-            
+
             // Cancel event
             jQuery(input + '[type="reset"]').click(function() {
                 try {
                     self.closePrompt();
                 }
-                
+
                 catch(e) {}
-                
+
                 finally {
                     return false;
                 }
@@ -10741,7 +10746,7 @@ var JappixMini = (function () {
     };
 
 
-	/**
+    /**
      * Returns the prompt value
      * @public
      * @return {string}
@@ -10751,10 +10756,10 @@ var JappixMini = (function () {
         try {
             // Read the value
             var value = jQuery('#jappix_popup div.jm_prompt form input').val();
-            
+
             // Remove the popup
             jQuery('#jappix_popup').remove();
-            
+
             return value;
         } catch(e) {
             JappixConsole.error('JappixMini.closePrompt', e);
@@ -10773,25 +10778,25 @@ var JappixMini = (function () {
         try {
             // Create a new prompt
             self.openPrompt(JappixCommon._e("Please enter the group chat address to join."));
-            
+
             // When prompt submitted
             jQuery('#jappix_popup div.jm_prompt form').submit(function() {
                 try {
                     // Read the value
                     var join_this = self.closePrompt();
-                    
+
                     // Any submitted chat to join?
                     if(join_this) {
                         // Get the chat room to join
                         chat_room = JappixCommon.bareXID(JappixCommon.generateXID(join_this, 'groupchat'));
-                        
+
                         // Create a new groupchat
                         self.chat('groupchat', chat_room, JappixCommon.getXIDNick(chat_room), hex_md5(chat_room));
                     }
                 }
-                
+
                 catch(e) {}
-                
+
                 finally {
                     return false;
                 }
@@ -10827,44 +10832,44 @@ var JappixMini = (function () {
                     // Random nickname?
                     if(!MINI_NICKNAME && MINI_RANDNICK)
                         MINI_NICKNAME = self.randomNick();
-                    
+
                     nickname = MINI_NICKNAME;
 
                     // No nickname?
                     if(!nickname) {
                         // Create a new prompt
                         self.openPrompt(JappixCommon.printf(JappixCommon._e("Please enter your nickname to join %s."), xid));
-                        
+
                         // When prompt submitted
                         jQuery('#jappix_popup div.jm_prompt form').submit(function() {
                             try {
                                 // Read the value
                                 var nickname = self.closePrompt();
-                                
+
                                 // Update the stored one
                                 if(nickname) {
                                     MINI_NICKNAME = nickname;
                                 }
-                                
+
                                 // Launch it again!
                                 self.chat(type, xid, nick, hash, pwd);
                             }
-                            
+
                             catch(e) {}
-                            
+
                             finally {
                                 return false;
                             }
                         });
-                        
+
                         return;
                     }
                 }
 
                 // Create the HTML markup
-                var html = '<div class="jm_conversation jm_type_' + type + '" id="chat-' + hash + '" data-xid="' + escape(xid) + '" data-type="' + type + '" data-nick="' + escape(nick) + '" data-hash="' + hash + '" data-origin="' + escape(JappixCommon.cutResource(xid)) + '">' + 
-                        '<div class="jm_chat-content">' + 
-                            '<div class="jm_actions">' + 
+                var html = '<div class="jm_conversation jm_type_' + type + '" id="chat-' + hash + '" data-xid="' + escape(xid) + '" data-type="' + type + '" data-nick="' + escape(nick) + '" data-hash="' + hash + '" data-origin="' + escape(JappixCommon.cutResource(xid)) + '">' +
+                        '<div class="jm_chat-content">' +
+                            '<div class="jm_actions">' +
                                 '<span class="jm_nick">' + nick + '</span>';
 
                 // Check if the chat/groupchat exists
@@ -10878,7 +10883,7 @@ var JappixMini = (function () {
                       /* End 5D Mod Add */
                         if(xid == JappixCommon.bareXID(JappixCommon.generateXID(MINI_GROUPCHATS[g], 'groupchat'))) {
                             groupchat_exists = true;
-                            
+
                             break;
                         }
                       /* Begin 5D Mod Add */
@@ -10906,7 +10911,7 @@ var JappixMini = (function () {
                     for(var c in MINI_CHATS) {
                         if(xid == JappixCommon.bareXID(JappixCommon.generateXID(MINI_CHATS[c], 'chat'))) {
                             chat_exists = true;
-                            
+
                             break;
                         }
                     }
@@ -10919,35 +10924,35 @@ var JappixMini = (function () {
                     html += '<a class="jm_one-action jm_close jm_images" title="' + JappixCommon._e("Close") + '" href="#"></a>';
                 }
 
-                html += 
-                    '</div>' + 
-                        '<div class="jm_pix_stream"></div>' + 
+                html +=
+                    '</div>' +
+                        '<div class="jm_pix_stream"></div>' +
 
-                        '<div class="jm_received-messages" id="received-' + hash + '">' + 
-                            '<div class="jm_chatstate_typing">' + JappixCommon.printf(JappixCommon._e("%s is typing..."), nick.htmlEnc()) + '</div>' + 
-                        '</div>' + 
-                        
-                        '<form action="#" method="post">' + 
-                            '<input type="text" class="jm_send-messages" name="body" autocomplete="off" placeholder="' + JappixCommon._e("Chat") + '" data-value="" />' + 
-                            '<input type="hidden" name="xid" value="' + xid + '" />' + 
-                            '<input type="hidden" name="type" value="' + type + '" />' + 
-                        '</form>' + 
-                    '</div>' + 
-                    
-                    '<a class="jm_pane jm_chat-tab jm_images" href="#">' + 
-                        '<span class="jm_name">' + nick.htmlEnc() + '</span>' + 
-                    '</a>' + 
+                        '<div class="jm_received-messages" id="received-' + hash + '">' +
+                            '<div class="jm_chatstate_typing">' + JappixCommon.printf(JappixCommon._e("%s is typing..."), nick.htmlEnc()) + '</div>' +
+                        '</div>' +
+
+                        '<form action="#" method="post">' +
+                            '<input type="text" class="jm_send-messages" name="body" autocomplete="off" placeholder="' + JappixCommon._e("Chat") + '" data-value="" />' +
+                            '<input type="hidden" name="xid" value="' + xid + '" />' +
+                            '<input type="hidden" name="type" value="' + type + '" />' +
+                        '</form>' +
+                    '</div>' +
+
+                    '<a class="jm_pane jm_chat-tab jm_images" href="#">' +
+                        '<span class="jm_name">' + nick.htmlEnc() + '</span>' +
+                    '</a>' +
                 '</div>';
 
                 jQuery('#jappix_mini div.jm_conversations').prepend(html);
-                
+
                 // Get the presence of this friend
                 if(type != 'groupchat') {
                     var selector = jQuery('#jappix_mini a#friend-' + hash + ' span.jm_presence');
 
                     // Default presence
                     var show = 'available';
-                    
+
                     // Read the presence
                     if(selector.hasClass('jm_unavailable') || !selector.size()) {
                         show = 'unavailable';
@@ -10964,7 +10969,7 @@ var JappixMini = (function () {
                     // Create the presence marker
                     jQuery(current + ' a.jm_chat-tab').prepend('<span class="jm_presence jm_images jm_' + show + '"></span>');
                 }
-                
+
                 // The chat events
                 self.chatEvents(type, xid, hash);
 
@@ -10973,7 +10978,7 @@ var JappixMini = (function () {
                     // Add nickname & init values
                     jQuery(current).attr('data-nick', escape(nickname))
                                    .attr('data-init', 'false');
-                    
+
                     // Send the first groupchat presence
                     self.presence('', '', '', '', xid + '/' + nickname, pwd, true, self.handleMUC);
                 }
@@ -11009,12 +11014,12 @@ var JappixMini = (function () {
 
         try {
             var current_sel = jQuery('#jappix_mini #chat-' + hash);
-            
+
             // Submit the form
             current_sel.find('form').submit(function() {
                 return self.sendMessage(this);
             });
-            
+
             // Click on the tab
             current_sel.find('a.jm_chat-tab').click(function() {
                 // Using a try/catch override IE issues
@@ -11023,21 +11028,21 @@ var JappixMini = (function () {
                     if(!jQuery(this).hasClass('jm_clicked')) {
                         // Show it!
                         self.switchPane('chat-' + hash, hash);
-                        
+
                         // Clear the eventual notifications
                         self.clearNotifications(hash);
                     } else {
                         self.switchPane();
                     }
                 }
-                
+
                 catch(e) {}
-                
+
                 finally {
                     return false;
                 }
             });
-            
+
             // Click on the close button
             current_sel.find('div.jm_actions').click(function(evt) {
                 // Using a try/catch override IE issues
@@ -11048,18 +11053,18 @@ var JappixMini = (function () {
                         if(type != 'groupchat') {
                             self.sendChatstate('gone', xid, hash);
                         }
-                        
+
                         current_sel.stopTime().remove();
-                        
+
                         // Quit the groupchat?
                         if(type == 'groupchat') {
                             // Send an unavailable presence
                             self.presence('unavailable', '', '', '', xid + '/' + unescape(current_sel.attr('data-nick')));
-                            
+
                             // Remove this groupchat!
                             self.removeGroupchat(xid);
                         }
-                        
+
                         // Update chat overflow
                         self.updateOverflow();
                     } else {
@@ -11067,34 +11072,34 @@ var JappixMini = (function () {
                         current_sel.find('a.jm_chat-tab.jm_clicked').click();
                     }
                 }
-                
+
                 catch(e) {}
-                
+
                 finally {
                     return false;
                 }
             });
-            
+
             // Focus on the chat input
             current_sel.find('input.jm_send-messages').focus(function() {
                 self.clearNotifications(hash);
             })
-            
+
             // Change on the chat input
             .keyup(function() {
                 var this_sel = jQuery(this);
                 this_sel.attr('data-value', this_sel.val());
             })
-            
+
             // Chat tabulate or escape press
             .keydown(function(e) {
                 // Tabulate?
                 if(e.keyCode == 9) {
                     self.switchChat();
-                    
+
                     return false;
                 }
-                
+
                 // Escape?
                 if(e.keyCode == 27) {
                     if(current_sel.find('a.jm_close').size()) {
@@ -11104,28 +11109,28 @@ var JappixMini = (function () {
                         } else if(current_sel.prev('div.jm_conversation').size()) {
                             current_sel.prev('div.jm_conversation').find('a.jm_pane').click();
                         }
-                        
+
                         // Close current chat
                         current_sel.find('a.jm_close').click();
                     }
-                    
+
                     return false;
                 }
             });
-            
+
             // Focus/Blur events
             jQuery('#jappix_mini #chat-' + hash + ' input.jm_send-messages').focus(function() {
                 // Store active chat
                 MINI_ACTIVE = hash;
             })
-            
+
             .blur(function() {
                 // Reset active chat
                 if(MINI_ACTIVE == hash) {
                     MINI_ACTIVE = null;
                 }
             });
-            
+
             // Chatstate events
             self.eventsChatstate(xid, hash, type);
         } catch(e) {
@@ -11146,28 +11151,28 @@ var JappixMini = (function () {
             if(jQuery('#jappix_mini div.jm_conversation').size() <= 1) {
                 return;
             }
-            
+
             // Get the current chat index
             var chat_index = jQuery('#jappix_mini div.jm_conversation:has(a.jm_pane.jm_clicked)').index();
             chat_index++;
-            
+
             if(!chat_index) {
                 chat_index = 0;
             }
-            
+
             // No chat after?
             if(!jQuery('#jappix_mini div.jm_conversation').eq(chat_index).size()) {
                 chat_index = 0;
             }
-            
+
             // Avoid disabled chats
             while(jQuery('#jappix_mini div.jm_conversation').eq(chat_index).hasClass('jm_disabled')) {
                 chat_index++;
             }
-            
+
             // Show the next chat
             var chat_hash = jQuery('#jappix_mini div.jm_conversation').eq(chat_index).attr('data-hash');
-            
+
             if(chat_hash) {
                 self.switchPane('chat-' + chat_hash, chat_hash);
             }
@@ -11178,7 +11183,7 @@ var JappixMini = (function () {
     };
 
 
-	/**
+    /**
      * Shows the roster
      * @public
      * @return {undefined}
@@ -11192,7 +11197,7 @@ var JappixMini = (function () {
 
             // Update groups visibility
             self.updateGroups();
-            
+
             jQuery(document).oneTime(10, function() {
                 jQuery('#jappix_mini div.jm_roster div.jm_search input.jm_searchbox').focus();
             });
@@ -11213,11 +11218,11 @@ var JappixMini = (function () {
         try {
             // Close the roster pickers
             jQuery('#jappix_mini a.jm_status.active, #jappix_mini a.jm_join.active').click();
-            
+
             // Hide the roster box
             jQuery('#jappix_mini div.jm_roster').hide();
             jQuery('#jappix_mini a.jm_button').removeClass('jm_clicked');
-            
+
             // Clear the search box and show all online contacts
             jQuery('#jappix_mini div.jm_roster div.jm_search input.jm_searchbox').val('').attr('data-value', '');
             jQuery('#jappix_mini div.jm_roster div.jm_grouped').show();
@@ -11241,7 +11246,7 @@ var JappixMini = (function () {
         try {
             // Remove the groupchat private chats & the groupchat buddies from the roster
             jQuery('#jappix_mini div.jm_conversation[data-origin="' + escape(JappixCommon.cutResource(xid)) + '"], #jappix_mini div.jm_roster div.jm_grouped[data-xid="' + escape(xid) + '"]').remove();
-            
+
             // Update the presence counter
             self.updateRoster();
         } catch(e) {
@@ -11261,56 +11266,56 @@ var JappixMini = (function () {
         try {
             // Update the marker
             MINI_INITIALIZED = true;
-            
+
             // Send the initial presence
             self.presence();
-            
+
             // Join the groupchats (first)
             for(var i = 0; i < MINI_GROUPCHATS.length; i++) {
                 // Empty value?
                 if(!MINI_GROUPCHATS[i]) {
                     continue;
                 }
-                
+
                 // Using a try/catch override IE issues
                 try {
                     // Current chat room
                     var chat_room = JappixCommon.bareXID(JappixCommon.generateXID(MINI_GROUPCHATS[i], 'groupchat'));
-                    
+
                     // Open the current chat
                     self.chat('groupchat', chat_room, JappixCommon.getXIDNick(chat_room), hex_md5(chat_room), MINI_PASSWORDS[i], MINI_SHOWPANE);
                 }
-                
+
                 catch(e) {}
             }
-            
+
             // Join the chats (then)
             for(var j = 0; j < MINI_CHATS.length; j++) {
                 // Empty value?
                 if(!MINI_CHATS[j]) {
                     continue;
                 }
-                
+
                 // Using a try/catch override IE issues
                 try {
                     // Current chat user
                     var chat_xid = JappixCommon.bareXID(JappixCommon.generateXID(MINI_CHATS[j], 'chat'));
                     var chat_hash = hex_md5(chat_xid);
                     var chat_nick = jQuery('#jappix_mini a#friend-' + chat_hash).attr('data-nick');
-                    
+
                     if(!chat_nick) {
                         chat_nick = JappixCommon.getXIDNick(chat_xid);
                     } else {
                         chat_nick = unescape(chat_nick);
                     }
-                    
+
                     // Open the current chat
                     self.chat('chat', chat_xid, chat_nick, chat_hash);
                 }
-                
+
                 catch(e) {}
             }
-            
+
             // Must show the roster?
             if(!MINI_AUTOCONNECT && !MINI_GROUPCHATS.length && !MINI_CHATS.length) {
                 jQuery(document).oneTime(10, function() {
@@ -11403,7 +11408,7 @@ var JappixMini = (function () {
       return false;
     }
 
-	/**
+    /**
      * Displays a roster buddy
      * @public
      * @param {string} xid
@@ -11437,8 +11442,8 @@ var JappixMini = (function () {
                 // Must add a groupchat group?
                 if(!JappixCommon.exists(path)) {
                     jQuery('#jappix_mini div.jm_roster div.jm_buddies').append(
-                        '<div class="jm_grouped jm_grouped_groupchat" data-xid="' + escape(bare_xid) + '">' + 
-                            '<div class="jm_name">' + JappixCommon.getXIDNick(groupchat).htmlEnc() + '</div>' + 
+                        '<div class="jm_grouped jm_grouped_groupchat" data-xid="' + escape(bare_xid) + '">' +
+                            '<div class="jm_name">' + JappixCommon.getXIDNick(groupchat).htmlEnc() + '</div>' +
                         '</div>'
                     );
                 }
@@ -11448,8 +11453,8 @@ var JappixMini = (function () {
                 // Must add a roster group?
                 if(!JappixCommon.exists(path)) {
                     jQuery('#jappix_mini div.jm_roster div.jm_buddies').append(
-                        '<div class="jm_grouped jm_grouped_roster" data-name="' + escape(group) + '">' + 
-                            '<div class="jm_name">' + group.htmlEnc() + '</div>' + 
+                        '<div class="jm_grouped jm_grouped_roster" data-name="' + escape(group) + '">' +
+                            '<div class="jm_name">' + group.htmlEnc() + '</div>' +
                         '</div>'
                     );
                 }
@@ -11476,13 +11481,13 @@ var JappixMini = (function () {
                 xid,
                 subscription
             );
-            
+
             if(groupchat || group) {
                 jQuery(path).append(code);
             } else {
                 jQuery(path).prepend(code);
             }
-            
+
             // Need to hide this buddy?
             if(jQuery('#jappix_mini div.jm_actions a.jm_toggle_view.jm_toggled').size()) {
                 jQuery(element).filter('.jm_offline').hide();
@@ -11490,7 +11495,7 @@ var JappixMini = (function () {
 
             // Events on this buddy
             self.eventsBuddy(element);
-            
+
             return true;
         } catch(e) {
             JappixConsole.error('JappixMini.addBuddy', e);
@@ -11535,7 +11540,7 @@ var JappixMini = (function () {
             buddy_str += '<span class="jm_presence jm_images jm_unavailable"></span>';
             buddy_str += nick.htmlEnc();
             buddy_str += '<span class="jm_jingle_icon jm_images"></span>';
-            
+
             // Buddy: end
             buddy_str += '</a>';
         } catch(e) {
@@ -11559,14 +11564,14 @@ var JappixMini = (function () {
         try {
             // Remove the buddy from the roster
             jQuery('#jappix_mini a#friend-' + hash).remove();
-            
+
             // Empty group?
             var group = '#jappix_mini div.jm_roster div.jm_grouped_groupchat[data-xid="' + escape(groupchat) + '"]';
-            
+
             if(groupchat && !jQuery(group + ' a.jm_friend').size()) {
                 jQuery(group).remove();
             }
-            
+
             return true;
         } catch(e) {
             JappixConsole.error('JappixMini.removeBuddy', e);
@@ -11589,7 +11594,7 @@ var JappixMini = (function () {
             iq.setType('get');
             iq.setQuery(NS_ROSTER);
             con.send(iq, self.handleRoster);
-            
+
             JappixConsole.info('Getting roster...');
         } catch(e) {
             JappixConsole.error('JappixMini.getRoster', e);
@@ -11615,7 +11620,7 @@ var JappixMini = (function () {
             // Added to sort buddies by name
             buddies = {};
             pointer = {};
-            
+
             // Parse the roster
             jQuery(iq.getQuery()).find('item').each(function() {
                 var this_sub_sel = jQuery(this);
@@ -11624,7 +11629,7 @@ var JappixMini = (function () {
                 current = this_sub_sel;
                 xid = current.attr('jid');
                 subscription = current.attr('subscription');
-                
+
                 // Not a gateway
                 if(!JappixCommon.isGateway(xid)) {
                     // Read current values
@@ -11633,7 +11638,7 @@ var JappixMini = (function () {
 
                     // No name defined?
                     if(!nick)  nick = JappixCommon.getXIDNick(xid);
-                    
+
                     // Populate buddy array
                     cur_buddy = [];
 
@@ -11705,7 +11710,7 @@ var JappixMini = (function () {
             if(!MINI_INITIALIZED) {
                 self.initialize();
             }
-            
+
             JappixConsole.info('Roster got.');
         } catch(e) {
             JappixConsole.error('JappixMini.handleRoster', e);
@@ -11714,7 +11719,7 @@ var JappixMini = (function () {
     };
 
 
-	/**
+    /**
      * Adapts the roster height to the window
      * @public
      * @return {undefined}
@@ -11725,7 +11730,7 @@ var JappixMini = (function () {
             // Adapt buddy list height
             var roster_height = jQuery(window).height() - 85;
             jQuery('#jappix_mini div.jm_roster div.jm_buddies').css('max-height', roster_height);
-            
+
             // Adapt chan suggest height
             var suggest_height = jQuery('#jappix_mini div.jm_roster').height() - 46;
             jQuery('#jappix_mini div.jm_chan_suggest').css('max-height', suggest_height);
@@ -11765,7 +11770,7 @@ var JappixMini = (function () {
                 'Yoy',
                 'Raz'
             ];
-            
+
             // Second nickname block
             var second_arr = [
                 'io',
@@ -11787,7 +11792,7 @@ var JappixMini = (function () {
                 'ima',
                 'omi'
             ];
-            
+
             // Last nickname block
             var last_arr = [
                 't',
@@ -11809,12 +11814,12 @@ var JappixMini = (function () {
                 'ro',
                 'ri'
             ];
-            
+
             // Select random values from the arrays
-            var rand_nick = JappixCommon.randomArrayValue(first_arr)  + 
-                            JappixCommon.randomArrayValue(second_arr) + 
+            var rand_nick = JappixCommon.randomArrayValue(first_arr)  +
+                            JappixCommon.randomArrayValue(second_arr) +
                             JappixCommon.randomArrayValue(last_arr);
-            
+
             return rand_nick;
         } catch(e) {
             JappixConsole.error('JappixMini.randomNick', e);
@@ -11836,26 +11841,26 @@ var JappixMini = (function () {
         try {
             var user_type = jQuery('#jappix_mini #chat-' + hash).attr('data-type');
             var user_storage = jQuery('#jappix_mini #chat-' + hash + ' input.jm_send-messages');
-            
+
             // If the friend client supports chatstates and is online
             if((user_type == 'groupchat') || ((user_type == 'chat') && user_storage.attr('data-chatstates') && !JappixCommon.exists('#jappix_mini a#friend-' + hash + '.jm_offline'))) {
                 // Already sent?
                 if(user_storage.attr('data-chatstate') == state) {
                     return;
                 }
-                
+
                 // Store the state
                 user_storage.attr('data-chatstate', state);
-                
+
                 // Send the state
                 var aMsg = new JSJaCMessage();
                 aMsg.setTo(xid);
                 aMsg.setType(user_type);
-                
+
                 aMsg.appendNode(state, {'xmlns': NS_CHATSTATES});
-                
+
                 con.send(aMsg);
-                
+
                 JappixConsole.log('Sent ' + state + ' chatstate to ' + xid);
             }
         } catch(e) {
@@ -11881,14 +11886,14 @@ var JappixMini = (function () {
             if(type == 'groupchat') {
                 return;
             }
-            
+
             // Composing?
             if(state == 'composing') {
                 jQuery('#jappix_mini #chat-' + hash + ' div.jm_chatstate_typing').css('visibility', 'visible');
             } else {
                 self.resetChatstate(xid, hash, type);
             }
-            
+
             JappixConsole.log('Received ' + state + ' chatstate from ' + xid);
         } catch(e) {
             JappixConsole.error('JappixMini.displayChatstate', e);
@@ -11912,7 +11917,7 @@ var JappixMini = (function () {
             if(type == 'groupchat') {
                 return;
             }
-            
+
             jQuery('#jappix_mini #chat-' + hash + ' div.jm_chatstate_typing').css('visibility', 'hidden');
         } catch(e) {
             JappixConsole.error('JappixMini.resetChatstate', e);
@@ -11921,7 +11926,7 @@ var JappixMini = (function () {
     };
 
 
-	/**
+    /**
      * Adds the chatstate events
      * @public
      * @param {string} xid
@@ -11936,7 +11941,7 @@ var JappixMini = (function () {
             if(type == 'groupchat') {
                 return;
             }
-            
+
             jQuery('#jappix_mini #chat-' + hash + ' input.jm_send-messages').keyup(function(e) {
                 var this_sel = jQuery(this);
 
@@ -11945,27 +11950,27 @@ var JappixMini = (function () {
                     if(this_sel.val() && (this_sel.attr('data-composing') != 'on')) {
                         // We change the state detect input
                         this_sel.attr('data-composing', 'on');
-                        
+
                         // We send the friend a "composing" chatstate
                         self.sendChatstate('composing', xid, hash);
                     }
-                    
+
                     // Stopped composing a message
                     else if(!this_sel.val() && (this_sel.attr('data-composing') == 'on')) {
                         // We change the state detect input
                         this_sel.attr('data-composing', 'off');
-                        
+
                         // We send the friend an "active" chatstate
                         self.sendChatstate('active', xid, hash);
                     }
                 }
             })
-            
+
             .change(function() {
                 // Reset the composing database entry
                 jQuery(this).attr('data-composing', 'off');
             })
-            
+
             .focus(function() {
                 var this_sel = jQuery(this);
 
@@ -11973,7 +11978,7 @@ var JappixMini = (function () {
                 if(this_sel.is(':disabled')) {
                     return;
                 }
-                
+
                 // Nothing in the input, user is active
                 if(!this_sel.val()) {
                     self.sendChatstate('active', xid, hash);
@@ -11981,7 +11986,7 @@ var JappixMini = (function () {
                     self.sendChatstate('composing', xid, hash);
                 }
             })
-            
+
             .blur(function() {
                 var this_sel = jQuery(this);
 
@@ -11989,7 +11994,7 @@ var JappixMini = (function () {
                 if(this_sel.is(':disabled')) {
                     return;
                 }
-                
+
                 // Nothing in the input, user is inactive
                 if(!this_sel.val()) {
                     self.sendChatstate('inactive', xid, hash);
@@ -12016,22 +12021,22 @@ var JappixMini = (function () {
             if((BrowserDetect.browser == 'Explorer') && (BrowserDetect.version < 9)) {
                 return false;
             }
-            
+
             // Append the sound container
             if(!JappixCommon.exists('#jappix_mini #jm_audio')) {
                 jQuery('#jappix_mini').append(
-                    '<div id="jm_audio">' + 
-                        '<audio preload="auto">' + 
-                            '<source src="' + JAPPIX_STATIC + 'snd/receive-message.mp3" />' + 
-                            '<source src="' + JAPPIX_STATIC + 'snd/receive-message.oga" />' + 
-                        '</audio>' + 
+                    '<div id="jm_audio">' +
+                        '<audio preload="auto">' +
+                            '<source src="' + JAPPIX_STATIC + 'snd/receive-message.mp3" />' +
+                            '<source src="' + JAPPIX_STATIC + 'snd/receive-message.oga" />' +
+                        '</audio>' +
                     '</div>'
                 );
             }
-            
+
             // Play the sound
             var audio_select = document.getElementById('jm_audio').getElementsByTagName('audio')[0];
-            
+
             // Avoids Safari bug (2011 and less versions)
             try {
                 audio_select.load();
@@ -12057,7 +12062,7 @@ var JappixMini = (function () {
 
         try {
             var conversation_sel = jQuery('#jappix_mini div.jm_conversation');
-            
+
             if(conversation_path) {
                 conversation_sel = conversation_sel.filter(conversation_path);
             }
@@ -12157,10 +12162,10 @@ var JappixMini = (function () {
                                 JappixConsole.log('JappixMini.updatePixStream', 'Fetch fresh pixel stream from server');
 
                                 pix_stream_sel.html(
-                                    '<ins class="adsbygoogle"' + 
-                                         'style="display:block;width:320px;height:50px;"' + 
-                                         'data-ad-client="' + JappixCommon.encodeQuotes(GADS_CLIENT) + '"' + 
-                                         'data-ad-slot="' + JappixCommon.encodeQuotes(GADS_SLOT) + '"></ins>' + 
+                                    '<ins class="adsbygoogle"' +
+                                         'style="display:block;width:320px;height:50px;"' +
+                                         'data-ad-client="' + JappixCommon.encodeQuotes(GADS_CLIENT) + '"' +
+                                         'data-ad-slot="' + JappixCommon.encodeQuotes(GADS_SLOT) + '"></ins>' +
                                     '<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>'
                                 );
                             }
@@ -12351,57 +12356,57 @@ var JappixMini = (function () {
             if(priority !== undefined) {
                 MINI_PRIORITY = priority;
             }
-            
+
             // Anonymous mode?
             if(!user || !password) {
                 MINI_ANONYMOUS = true;
             } else {
                 MINI_ANONYMOUS = false;
             }
-            
+
             // Autoconnect (only if storage available to avoid floods)?
             if(autoconnect && JappixDataStore.hasDB()) {
                 MINI_AUTOCONNECT = true;
             } else {
                 MINI_AUTOCONNECT = false;
             }
-            
+
             // Show pane?
             if(show_pane) {
                 MINI_SHOWPANE = true;
             } else {
                 MINI_SHOWPANE = false;
             }
-            
+
             // Remove Jappix Mini
             jQuery('#jappix_mini').remove();
-            
+
             // Reconnect?
             if(MINI_RECONNECT) {
                 JappixConsole.log('Trying to reconnect (try: ' + MINI_RECONNECT + ')!');
-                
+
                 return self.create(domain, user, password);
             }
-            
+
             // Load the Mini stylesheet
             self.loadStylesheet();
-            
+
             // Disables the browser HTTP-requests stopper
             jQuery(document).keydown(function(e) {
                 if((e.keyCode == 27) && !JappixSystem.isDeveloper()) {
                     return false;
                 }
             });
-            
+
             // Save the page title
             MINI_TITLE = document.title;
-            
+
             // Adapts the content to the window size
             jQuery(window).resize(function() {
                 self.adaptRoster();
                 self.updateOverflow();
             });
-            
+
             // Logouts when Jappix is closed
             if(BrowserDetect.browser == 'Opera') {
                 // Emulates onbeforeunload on Opera (link clicked)
@@ -12411,22 +12416,22 @@ var JappixMini = (function () {
                     // Link attributes
                     var href = this_sel.attr('href') || '';
                     var target = this_sel.attr('target') || '';
-                    
+
                     // Not new window or JS link
                     if(href && !href.match(/^#/i) && !target.match(/_blank|_new/i)) {
                         self.saveSession();
                     }
                 });
-                
+
                 // Emulates onbeforeunload on Opera (form submitted)
                 jQuery('form:not([onsubmit])').submit(self.saveSession);
             }
-            
+
             jQuery(window).bind('beforeunload', self.saveSession);
-            
+
             // Create the Jappix Mini DOM content
             self.create(domain, user, password);
-            
+
             JappixConsole.log('Welcome to Jappix Mini! Happy coding in developer mode!');
         } catch(e) {
             JappixConsole.error('JappixMini.process', e);
