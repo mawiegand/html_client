@@ -643,6 +643,20 @@ Authors: Valérian Saliou, Julien, hunterjm, Kloadut
   background-color: #FFFFFF;
 }
 
+#jappix_mini div.jm_roster div.jm_buddies::-webkit-scrollbar {
+  width: 10px;
+}
+
+#jappix_mini div.jm_roster div.jm_buddies::-webkit-scrollbar-track {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+#jappix_mini div.jm_roster div.jm_buddies::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
 #jappix_mini div.jm_roster div.jm_grouped {
   border-color: #000000;
   border-style: solid;
