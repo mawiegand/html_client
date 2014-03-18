@@ -438,6 +438,10 @@ AWE.Application = (function(module) {
           log('catched by DOM ELEMENT');
           return;
         }
+        if ($(evt.target).parents('div#jappix_mini').length) {
+          log('catched by jappix');
+          return;
+        }
         var controller = this.get('presentScreenController');
         if (!this.get('isModal') && controller && controller.onMouseDown) {
           controller.onMouseDown(evt);
@@ -452,7 +456,10 @@ AWE.Application = (function(module) {
         if (pageX && pageY && this.isCatchedByDomElement(pageX, pageY, evt.type)) {
           return;
         }
-        
+        if ($(evt.target).parents('div#jappix_mini').length) {
+          log('catched by jappix');
+          return;
+        }
         var controller = this.get('presentScreenController');
         if (!this.get('isModal') && controller && controller.onMouseWheel) {   
           controller.onMouseWheel(evt);
