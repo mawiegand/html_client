@@ -10,7 +10,7 @@
             {{#view AWE.UI.Ember.ConstructionJobView controllerBinding="controller" jobBinding="this" classNames="queue-job"}}
               {{view AWE.UI.Ember.BuildingView classNames="queue-job-image" buildingBinding="job.slot.buildingAfterJob" levelBinding="job.level_after" settlementBinding="job.slot.settlement" }}
               <div class="queue-job-text">    
-                {{#if "mouseInView" }}
+                {{#if "enableTooltip" }}
                 {{view AWE.UI.Ember.ToolTipView templateName="construction-queue-detail-view" classNames="mouse-over construction-detail queue-detail-view-wrapper" mouseYBinding="mouseY" mouseXBinding="mouseX" costsBinding="requiredResources" diffsBinding="diffResources" poolBinding="pool" actionInfoBinding="action" }}
                   
                 {{/if}}

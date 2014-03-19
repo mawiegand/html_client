@@ -114,8 +114,21 @@ AWE.UI.Ember = (function(module) {
 
     /* mouse hover for building details */
     mouseInView: false,
+    enableTooltip: false,
+    timeout: 800,    // tooltip timeout in ms
+    
+    showTooltip: function() {
+      if (this.get('mouseInView') === true) {  // only show tooltip, if the mouse is still in view
+        this.set('enableTooltip', true);
+      }
+    },
+    
     mouseEnter: function(event) {
+      var self = this;
       this.set('mouseInView', true);
+      setTimeout(function() {
+        self.showTooltip();
+      }, this.get('timeout'));
       this.set('elementUnderCursor', event.target);
     },  
     mouseMove: function(event) {
@@ -125,6 +138,7 @@ AWE.UI.Ember = (function(module) {
     },
     mouseLeave: function(event) {
       this.set('mouseInView', false);
+      this.set('enableTooltip', false);
     }, 
 
     /* return slot costs for conversion or upgrade */
