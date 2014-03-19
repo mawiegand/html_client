@@ -115,7 +115,7 @@ AWE.UI.Ember = (function(module) {
     /* mouse hover for building details */
     mouseInView: false,
     enableTooltip: false,
-    timeout: 800,    // tooltip timeout in ms
+    timeout: 1500,    // tooltip timeout in ms
     
     showTooltip: function() {
       if (this.get('mouseInView') === true) {  // only show tooltip, if the mouse is still in view
