@@ -1,5 +1,5 @@
 /**
- * @fileOverview 
+ * @fileOverview
  * Customized application controller for the WACK-A-DOO client.
  *
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany.
@@ -16,7 +16,7 @@
 /**
  * Customized Application controller for WACKADOO client
  *
- * @class 
+ * @class
  * @extends AWE.Application.MultiStageApplication
  * @name WACKADOO
  */
@@ -28,30 +28,30 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 //  Ember.LOG_BINDINGS = true;
 
   return /** @lends WACKADOO# */ {
-    
+
     startupArguments: null,
-    
+
     mapScreenController:        null,
-    allianceScreenController:   null,  
+    allianceScreenController:   null,
     messageCenterController:    null,
 
-    settlementScreenController: null,    
+    settlementScreenController: null,
     baseScreenController:       null,
     fortressScreenController:   null,
     outpostScreenController:    null,
-    
+
     sessionEnded: false,
-  
+
     /** custom object initialization goes here. */
     init: function() {
       this._super();
     },
-    
+
     reload: function() {
       window.name = this.get('startupArguments');
       window.location.reload();
     },
-  
+
     /** the application's runloop. Does basic stuff needed by the application and then hands over
      * control to the view controller that has to do all the real work. The idea behind implementing
      * the runloop inside view controllers is to spread the application logic for different screens
@@ -59,7 +59,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
      * classes. That is, each screen should be able to implement it's own application logic, so that
      * it can choose the best technique for the particular task (e.g. canvas for the map, basic HTML
      * for sending and receiving messages.) */
-    runloop: function() { 
+    runloop: function() {
       if (!this.get('readyForRunloop')) {
         $('#debug2').html('Loading Assets. Progress: ' + _numLoadedAssets + ' / ' + _numAssets);
       }
@@ -67,51 +67,51 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         //this.get('hudController').setNeedsLayout();
         //this.get('hudController').setNeedsDisplay();
       }
-      
+
       if (!this.get('sessionEnded') && AWE.Net.currentUserCredentials.expiration.getTime() < new Date().getTime()) {
         this.set('sessionEnded', true);
         document.location.href = AWE.Config.PORTAL_ROOT;
       }
-      
+
       this._super();
     },
-    
+
     showWelcomeDialog: function() {
       var self = this;
-      
+
       var dialog = AWE.UI.Ember.WelcomeDialog.create({
         okPressed:    function() {
           AWE.GS.TutorialStateManager.checkForNewQuests();
           this.destroy();
-          
+
           self.get('presentScreenController').welcomeDialogClosed();
         },
       });
-      this.presentModalDialog(dialog);      
+      this.presentModalDialog(dialog);
     },
-    
+
     openEncyclopedia: function() {
       var dialog = AWE.UI.Ember.EncyclopediaView.create();
-      this.presentModalDialog(dialog);      
+      this.presentModalDialog(dialog);
     },
-    
+
     showQuestListDialog: function() {
       var dialog = AWE.UI.Ember.QuestListView.create({
         tutorialState: AWE.GS.TutorialStateManager.getTutorialState(),
       });
-      this.presentModalDialog(dialog);      
+      this.presentModalDialog(dialog);
       AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
         // AWE.Log.Debug('---> tutorial state geladen', tutorialState, statusCode);
       });
     },
-    
+
     showAnnouncement: function() {
       var self = this;
-      
+
       /*
       var dialog = AWE.UI.Ember.TutorialEndDialog.create();
       self.presentModalDialog(dialog); */
-      
+
       AWE.GS.AnnouncementManager.updateAnnouncement(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(announcement, statusCode) {
         if (statusCode === AWE.Net.OK) {
           var dialog = AWE.UI.Ember.AnnouncementDialog.create({
@@ -135,6 +135,27 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       JappixMini.disconnect();
       $('jappix_mini').remove();
       this.initChat();
+    },
+
+    chatRoom: function(room, type) {
+      if(!JappixCommon.isConnected()) {
+        return;
+      }
+
+      var chat_room = JappixCommon.generateXID(room.toLowerCase(), 'groupchat');
+      if (type == 'join') {
+        setTimeout(function(){
+          JappixMini.chat('groupchat', chat_room, room, hex_md5(chat_room), '', true);
+        }, 10000);
+        MINI_SUGGEST_GROUPCHATS.push(chat_room);
+      } else if (type == 'leave') {
+        JappixMini.removeGroupchat(chat_room);
+
+        var removeID = MINI_SUGGEST_GROUPCHATS.indexOf(chat_room);
+        if (removeID != -1) {
+          MINI_SUGGEST_GROUPCHATS.splice(removeID, 1);
+        }
+      }
     },
 
     initChat: function() {
@@ -248,29 +269,29 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
 
     showStartupDialogs: function() {
-      
+
       if (AWE.GS.game.getPath('currentCharacter.beginner') === false) { // in case the character is not already set (bug!), show the welcome dialog to make sure, new players always see it.
         this.showAnnouncement();
       }
       else {
         this.showWelcomeDialog();
       }
-      
+
       if (AWE.GS.game.currentCharacter && !AWE.GS.game.currentCharacter.get('reached_game')) {
         // track conversion: character reached the game (and pressed a button!)
         var action = AWE.Action.Fundamental.createTrackCharacterConversionAction("reached_game");
-        action.send();   
-      }  
-      
+        action.send();
+      }
+
     },
-  
-    /** loads and initializes needed modules. 
-     * Caution: 
+
+    /** loads and initializes needed modules.
+     * Caution:
      * initialization is done asynchronously! check _initialized = true before
      * doing anything wit the app controller. */
     loadAssets: function() {
       var self = this;
-      
+
       if (AWE.Facebook.isFbPlayer) {
         AWE.Facebook.init();
       }
@@ -280,7 +301,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         $('#loaddialog-wrapper').remove();
 
         $('#debug2').html("Initialization done.");
-        
+
         Ember.Handlebars.bootstrap();                  // Bootstrap Ember a second time to parse the newly loaded templates.
 
         var tutorialState     = AWE.GS.TutorialStateManager.getTutorialState();
@@ -292,15 +313,15 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         var hud = AWE.Controller.createHUDController();
         hud.init();
         self.setHudController(hud);
-        
+
         AWE.Map.Manager.init(2, function() {              // initialize the map manager (fetches data!)
           AWE.UI.rootNode = AWE.Map.Manager.rootNode();
         });
-        
+
         var controller = AWE.Controller.createMapController('#layers');
         controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
         self.set('mapScreenController', controller);
-      
+
        // $('#zoomin').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, true); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
        // $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
 
@@ -315,11 +336,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           var locationId = AWE.GS.CharacterManager.getCurrentCharacter().get('base_location_id');
           self.activateBaseController({locationId: locationId});
         }
-        
+
         self.startRunloop();
         self.readyToRun();                            // ready to run
         self.showStartupDialogs();
-        
+
         AWE.Facebook.updateFBCanvasSize();  // updates size of canvas, iff running in canvas
         AWE.Facebook.setDoneLoading();      // track loading time, iff running in canvas
 
@@ -327,19 +348,19 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           self.initChat();
         }
       }
-      
-  
+
+
       /** callback executed for each asset that completely loaded. */
       var assetLoaded = function() {
         _numLoadedAssets += 1;
         $('div.loaddialog-progress').css('width', '' + Math.floor(Math.pow(_numLoadedAssets / _numAssets, 2.0) * 100) + '%');
         if (_numLoadedAssets === _numAssets) {           // have loaded all assets?
-          postLoading(); 
+          postLoading();
         }
       };
-              
+
       _numLoadedAssets = _numAssets = 0;
-      
+
       // /// REGISTER AND COUNT IMAGES AND TEMPLATES ////
 
       AWE.UI.ImageCache.init();                   // initializes the central image cache
@@ -355,8 +376,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           assetLoaded();
         });
       }
-      // /// DONE ///      
-      
+      // /// DONE ///
+
       _numAssets +=1;
       AWE.GS.RulesManager.updateRules(function(rules, statusCode) {
         if (statusCode === AWE.Net.OK) {
@@ -372,16 +393,16 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
                   assetLoaded();
                 });
               }
-              
+
               AWE.Config.Cohort.configFromCharacter(currentCharacter);
-          
+
               if (currentCharacter.get('base_node_id')) {
                 _numAssets +=1;
                 AWE.Map.Manager.fetchSingleNodeById(currentCharacter.get('base_node_id'), function(node) {
                   AWE.GS.CharacterManager.getCurrentCharacter().set('base_node', node);
                   assetLoaded();
                 });
-              } 
+              }
               else {
                 _numAssets +=1;
                 AWE.GS.ArmyManager.updateArmiesForCharacter(currentCharacter.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(entity, statusCode) {
@@ -394,7 +415,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
                 AWE.GS.TutorialManager.updateTutorial(function(tutorial, statusCode) {
                   if (statusCode === AWE.Net.OK || statusCode === AWE.Net.NOT_MODIFIED) {
                     assetLoaded();
-                
+
                     AWE.GS.TutorialStateManager.updateTutorialState(function(tutorialState, statusCode) {
                       assetLoaded();
                     });
@@ -444,7 +465,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           throw "ABORT Due to Failure to load rules.";
         }
       });
-      
+
       for (var k in AWE.Config.IMAGE_CACHE_LOAD_LIST) {     // and preload assets
         if (AWE.Config.IMAGE_CACHE_LOAD_LIST.hasOwnProperty(k)) {
           AWE.UI.ImageCache.loadImage(k, AWE.Config.IMAGE_CACHE_LOAD_LIST[k], function(name) {
@@ -455,14 +476,14 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
       AWE.Util.TemplateLoader.loadAllTemplates(); // doing this last makes sure _numLoadedAssets may not accidently equal _numAssets before all requests have been started
     },
-    
-    
+
+
     baseButtonClicked: function() {
       if (this.get('presentScreenController') === this.get('mapScreenController')) {
         var node = AWE.GS.game.getPath('currentCharacter.base_node');
         if (node) {
-          
-          
+
+
           this.get('presentScreenController').moveTo(node, true);
         }
       }
@@ -470,43 +491,43 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         this.activateMapController();
       }
     },
-    
+
     baseButtonDoubleClicked: function() {
       this.activateBaseController();
-    },    
-    
+    },
+
     characterButtonClicked: function() {
       var dialog = AWE.UI.Ember.ProfileView.create({
         characterBinding: 'AWE.GS.game.currentCharacter',
       });
-      this.presentModalDialog(dialog);      
+      this.presentModalDialog(dialog);
     },
-    
+
     messagesButtonClicked: function() {
       this.activateMessagesController();
     },
-    
+
     presentResourceDetailsDialog: function() {
       var dialog = AWE.UI.Ember.ResourceDetailsDialog.create({
         pool: AWE.GS.ResourcePoolManager.getResourcePool(),
       });
       this.presentModalDialog(dialog);
     },
-    
-    
+
+
     // ///////////////////////////////////////////////////////////////////////
     //
     //  SWITCH SCREEN CONTROLLER
     //
-    // /////////////////////////////////////////////////////////////////////// 
-    
+    // ///////////////////////////////////////////////////////////////////////
+
     // it's not necessary to have three different controllers for the different
     // settlement types, as the settlement controller will handle a switch
     // from a settlement of one type to a settlement of another type gracefully.
     // But there is one benefit of using different controllers: it allows
     // the user to switch faster between different settlements, as the most time
-    // is needed to recreate a view for another type. Having three different 
-    // controllers (with the correct view already associated and created), 
+    // is needed to recreate a view for another type. Having three different
+    // controllers (with the correct view already associated and created),
     // completely removes the need for recreating the view.
     //
     // a small glitch: when you enter an outpost from the map, the base-controller
@@ -527,7 +548,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         this.activateBaseController({ settlementId: settlement.get('id')});
       }
     },
-    
+
     activateBaseController: function(reference) {
       reference = reference ||  { locationId: AWE.GS.game.getPath('currentCharacter.base_location_id') };
       var baseController = this.get('baseScreenController');
@@ -546,12 +567,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }
       this.setScreenController(baseController);
     },
-   
+
     baseControllerActive: function() {
       return (this.get('presentScreenController') === this.get('outpostScreenController') && this.get('outpostScreenController')) ||(this.get('presentScreenController') === this.get('baseScreenController') && this.get('baseScreenController')) || (this.get('presentScreenController') === this.get('fortressScreenController') && this.get('fortressScreenController'));
     },
-      
-       
+
     activateFortressController: function(reference) {
       var fortressController = this.get('fortressScreenController');
       if (!fortressController) {
@@ -571,8 +591,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         AWE.Log.Debug('ERROR: no fortress to enter specified.')
       }
       this.setScreenController(fortressController);
-    },   
-    
+    },
+
     activateOutpostController: function(reference) {
       var outpostController = this.get('outpostScreenController');
       if (!outpostController) {
@@ -592,8 +612,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         AWE.Log.Debug('ERROR: no outpost to enter specified.')
       }
       this.setScreenController(outpostController);
-    },   
-   
+    },
+
     activateMessagesController: function(args) {
       args = args || {};
       var messageCenterController = this.get('messageCenterController');
@@ -601,22 +621,22 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         messageCenterController = AWE.Controller.createMessageCenterController('#layers');
         this.set('messageCenterController', messageCenterController);
       }
-      this.setScreenController(messageCenterController);      
+      this.setScreenController(messageCenterController);
       if (args.recipient !== undefined && args.recipient !== null) {
         messageCenterController.createDraftTo(args.recipient.name);
       }
     },
-    
+
     activateMapController: function(preventZoomingToLastSelection) {
       var controller = this.get('mapScreenController');
       this.setScreenController(controller, preventZoomingToLastSelection);
       return controller;
     },
-    
+
     mapControllerActive: function() {
       return this.get('presentScreenController') === this.get('mapScreenController');
     },
-       
+
     activateAllianceController: function(alliance_id) {
       var allianceController = this.get('allianceScreenController');
       if (!allianceController) {
@@ -626,19 +646,19 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       allianceController.setAllianceId(alliance_id);
       this.setScreenController(allianceController);
     },
-    
-    
+
+
     showBrowserSelection: function() {
       document.location.href = AWE.Config.PORTAL_ROOT + '/browser.html';
     },
 
     /** starts the app when the document is ready. */
     ready: function() {
-      
+
       /** uncomment the following two lines to print translation table and exit */
       // AWE.I18n.printTranslationTable();
       // return;
-      
+
       this._super();
 
       var args = null;
@@ -656,18 +676,18 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }
       window.name = "empty";                                 // unset variables
       fbArgs = "empty";
-          
+
       var accessToken = null;
-      
+
       if (!args || !args.accessToken) {
 //        alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
         document.location.href = AWE.Config.PORTAL_ROOT;
         return ;
       }
       else {
-        accessToken = args.accessToken ; 
+        accessToken = args.accessToken ;
       }                            // || AWE.Config.DEV_ACCESS_TOKEN || null;
-      
+
       var expiration  = parseInt(args.expiration || "3600");           // asume one hour validity as default
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;
       AWE.Settings.lang = args.locale ? args.locale.substr(0, 2) : AWE.Config.DEFAULT_LANG;
@@ -686,10 +706,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
         expiration: (new Date()).add(expiration-120).seconds(),
-      });      
-            
+      });
+
       AWE.Net.init();                                                  // initialize the network stack
-      
+
       if (!AWE.Config.BROWSER_CHECK_ENABLED || AWE.Util.Browser.checkRequirements()) {
         this.loadAssets();
       }

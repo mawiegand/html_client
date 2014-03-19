@@ -12,7 +12,6 @@ AWE.Action.Fundamental = (function(module) {
   module.runUpdatesAfterAllianceChange = function() {
     var characterId = AWE.GS.game.getPath('currentCharacter.id');
     AWE.GS.CharacterManager.updateCurrentCharacter(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
-      WACKADOO.reconnectChat();
       var allianceId = AWE.GS.game.getPath('currentCharacter.alliance_id');
       if (allianceId) {
         AWE.GS.AllianceManager.updateAlliance(AWE.GS.game.getPath('currentCharacter.alliance_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
@@ -68,6 +67,7 @@ AWE.Action.Fundamental = (function(module) {
     that.postProcess = function(statusCode) {
       if (statusCode === AWE.Net.CREATED) {
         module.runUpdatesAfterAllianceChange();
+        WACKADOO.chatRoom(my.allianceTag, 'join');
       }
     };
 
@@ -115,6 +115,7 @@ AWE.Action.Fundamental = (function(module) {
     that.postProcess = function(statusCode) {
       if (statusCode === AWE.Net.OK || statusCode === AWE.Net.CREATED) {
         module.runUpdatesAfterAllianceChange();
+        WACKADOO.chatRoom(my.allianceTag, 'join');
       }
     };
     return that;
@@ -203,6 +204,7 @@ AWE.Action.Fundamental = (function(module) {
     that.postProcess = function(statusCode) {
       if (statusCode === AWE.Net.OK || statusCode === AWE.Net.CREATED) {
         module.runUpdatesAfterAllianceChange();
+        WACKADOO.chatRoom(AWE.GS.AllianceManager.getAlliance(my.allianceId).tag, 'leave');
       }
     };
   

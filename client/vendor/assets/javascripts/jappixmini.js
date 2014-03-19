@@ -11255,7 +11255,6 @@ var JappixMini = (function () {
 
     };
 
-
     /**
      * Initializes Jappix Mini
      * @public
@@ -12015,6 +12014,10 @@ var JappixMini = (function () {
      * @return {boolean}
      */
     self.soundPlay = function() {
+
+        /* Begin 5D Mod Add */
+        return false;
+        /* End 5D Mod Add */
 
         try {
             // Not supported!
