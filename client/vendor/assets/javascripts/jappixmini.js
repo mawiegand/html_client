@@ -10516,9 +10516,8 @@ var JappixMini = (function () {
             /* Begin 5D Mod Add */
             var css = '';
             if (nick) {
-              var staffUser = self.UserIs5DStaff(MINI_5D_STAFF_POSTFIXES, nick);
-              if (staffUser) {
-                css = 'jm_5d_staff_user';
+              if (self.UserIs5DStaff(MINI_5D_STAFF_POSTFIXES, nick)) {
+                css = ' jm_5d_staff_user';
               }
             }
             /* End 5D Mod Add */
@@ -10570,7 +10569,13 @@ var JappixMini = (function () {
                        .replace(/(^|\s|>|\()((_)([^<>'"_]+)(_))($|\s|<|\))/gi, '$1<span style="text-decoration: underline;">$2</span>$6');
 
             // Filter the links
-            body = JappixLinks.apply(body, 'mini');
+            /* Begin 5D Mod Add */
+            if (nick) {
+              if (self.UserIs5DStaff(MINI_5D_STAFF_POSTFIXES, nick)) {
+                body = JappixLinks.apply(body, 'mini');
+              }
+            }
+            /* End 5D Mod Add */
 
             // Generate the message code
             if(me_command) {
