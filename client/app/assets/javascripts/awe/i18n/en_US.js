@@ -743,6 +743,8 @@ AWE.I18n.en_US = function(module) {
         duration:"Duration",
         total:"Total",
         recruit:"Recruit ",
+        nextUnit:"Next Unit",
+        all:"All",
         hurryTooltip:"Use some of your Golden Frogs to train your units twice as fast. The cost will depend on how much training time is left. ",
         hurryIndicator:"x2",
 

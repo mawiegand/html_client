@@ -62,8 +62,8 @@
           <div class="training-queue-job-text">    
             <p>{{ job.remaining }} {{local job.unitType.name }}</p>
             {{#if job.active_job }}
-            <p>Next Unit: {{job.parsedFinishingActiveDate }}</p>
-            <p>All: {{ job.parsedFinishingTotalDate }}</p>
+            <p>{{t settlement.training.nextUnit}}: {{job.parsedFinishingActiveDate }}</p>
+            <p>{{t settlement.training.all}}: {{ job.parsedFinishingTotalDate }}</p>
             {{/if}}
           </div>  
           <p class="queue-job-button finish-button">

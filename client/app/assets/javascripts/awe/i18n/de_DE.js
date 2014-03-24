@@ -771,6 +771,8 @@ AWE.I18n.de_DE = function(module) {
         duration: "Dauer",
         total: "Total",
         recruit: "Rekrutiere ",
+        nextUnit:"Nächste Einheit",
+        all:"Alle",
         hurryTooltip: "Gib Goldkröten aus um Einheiten doppelt so schnell zu rekrutieren. Die Kosten hängen von der verbleibenden Rekrutierungszeit ab.",
         hurryIndicator: "x2",
 
