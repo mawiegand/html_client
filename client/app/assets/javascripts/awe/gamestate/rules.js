@@ -24,16 +24,25 @@ AWE.GS = (function(module) {
       
     version: null,
     settlement_types: null,
-		victory_types: null,
+    victory_types: null,
     unit_types: null,
     unit_categories: null,
-		building_types: null,
-		building_categories: null,
-		resource_types: null,
-		queue_types: null,
-		queue_categories: null,
-		alliance_max_members: 0,
-		artifact_types: null,
+    building_types: null,
+    building_categories: null,
+    resource_types: null,
+    queue_types: null,
+    queue_categories: null,
+    alliance_max_members: 0,
+    artifact_types: null,
+    diplomacy_relation_types: null,
+    
+    getDiplomacyRelationType: function(id) {
+      var diplomacyRelationType = this.get('diplomacy_relation_types')[id];
+      if (diplomacyRelationType === undefined || !diplomacyRelationType) {
+        log('ERROR: requested non-existing diplomacy relation type ' + diplomacyRelationType);
+      }
+      return diplomacyRelationType;    
+    },
 		
     getArtifactType: function(id) {
       var artifactType = this.get('artifact_types')[id];
@@ -79,14 +88,14 @@ AWE.GS = (function(module) {
       return unitType;    
     },
     
-		getUnitTypesWithCategories: function(categoryIds, includeUntrainable) {
-		  var unitTypes = this.get('unit_types').filter(function(item, index, self) {  // "filter" is ember-supplied
-		    return (includeUntrainable || item['trainable']) && categoryIds.indexOf(item['category']) >= 0; // indexOf returns -1 in case the element is not in the array
-		  });
-		  return unitTypes;
-		},
-		
-		getUnitTypeWithSymbolicId: function(symbolicId) {
+    getUnitTypesWithCategories: function(categoryIds, includeUntrainable) {
+      var unitTypes = this.get('unit_types').filter(function(item, index, self) {  // "filter" is ember-supplied
+        return (includeUntrainable || item['trainable']) && categoryIds.indexOf(item['category']) >= 0; // indexOf returns -1 in case the element is not in the array
+      });
+      return unitTypes;
+    },
+    
+    getUnitTypeWithSymbolicId: function(symbolicId) {
       var unitTypes = this.get('unit_types');
       
       for (var i = 0; i < unitTypes.length; i++) {

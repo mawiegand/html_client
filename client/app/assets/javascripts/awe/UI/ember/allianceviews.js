@@ -371,6 +371,29 @@ AWE.UI.Ember = (function(module) {
     },    
   });
   
+  module.DiplomacyRelationListView = Ember.View.extend({
+    templateName: 'diplomacy-relation-list',
+    
+    controller: null,
+    alliance:   null,
+  });
+  
+  module.DiplomacyRelationView = Ember.View.extend({
+    templateName: 'diplomacy-relation',
+    
+    diplomacySourceRelation:  null,
+    alliance:                 null,
+    controller:               null,
+    
+    targetAllianceName: function() {
+      return AWE.GS.AllianceManager.getAlliance(this.getPath('diplomacySourceRelation.target_alliance_id')).getPath('name');
+    }.property('diplomacySourceRelation.target_alliance_id').cacheable(),
+    
+    status: function() {
+      return AWE.Util.Rules.lookupTranslation(AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).name)
+    }.property('diplomacySourceRelation.diplomacy_status').cacheable(),
+  });
+  
   module.AllianceManagementView = Ember.View.extend({
     templateName: 'alliance-management',
     controller:    null,

@@ -435,6 +435,8 @@ AWE.I18n.en_US = function(module) {
       changeDescriptionDialogCaption: 'Please enter your alliance description.',
       changeDescription: 'Edit description',
       missingDescription: 'Please enter your alliance description.',
+      diplomacyRelation: "Diplomatie Beziehungen",
+      diplomacyRelationWithAlliance: " mit der Allianz ",
       autoJoin: "Auto join",
       autoJoinDescription: "Automatically join",
       autoJoinActivated: "Activated",

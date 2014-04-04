@@ -443,6 +443,8 @@ AWE.I18n.de_DE = function(module) {
       changeDescriptionDialogCaption: 'Gib deine neue Allianzbeschreibung ein.',
       changeDescription: 'Ändere Beschreibung',
 			missingDescription: 'Hier könnte eure Allianzbeschreibung stehen.',
+      diplomacyRelation: "Diplomatie Beziehungen",
+      diplomacyRelationWithAlliance: " mit der Allianz ",
       autoJoin: "Automatisch beitreten",
       autoJoinDescription: "Automatisch beitreten",
       autoJoinActivated: "Aktiviert",

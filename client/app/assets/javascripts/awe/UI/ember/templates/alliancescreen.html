@@ -8,6 +8,8 @@
     {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner"}}
     {{view AWE.UI.Ember.AllianceInfoBoxView controllerBinding="controller" allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader"}}
     {{#if ownAlliance}}
+      {{view AWE.UI.Ember.DiplomacyRelationListView controllerBinding="controller" diplomacySourceRelationsBinding="alliance.diplomacySourceRelations"
+                                               allianceBinding="alliance"}}
       {{#if isAllianceLeader}}
         {{view AWE.UI.Ember.AllianceAutoJoinView controllerBinding="controller" allianceBinding="alliance"}}
         <hr>
@@ -21,10 +23,6 @@
     <hr>
     {{view AWE.UI.Ember.AllianceMemberListView controllerBinding="controller" charactersBinding="alliance.members"
                                                allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader"}}
-
-    <h1>{{t alliance.progress.header}}</h1>
-    <p>{{t alliance.progress.description}}</p>
-    {{view AWE.UI.Ember.AllianceVictoryView controllerBinding="controller" allianceBinding="alliance"}}
   </div>
 </div>
 </script>
@@ -105,6 +103,25 @@
       </ul>
     </div>
   </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="diplomacy-relation-list">
+  <div class="diplomacy-relation-list">
+    <h1>{{t alliance.diplomacyRelation }}</h1>
+    <div class="stone-panel">
+      <ul>
+        {{#each diplomacySourceRelations}}
+          {{view AWE.UI.Ember.DiplomacyRelationView tagName="li" diplomacySourceRelationBinding="this" allianceBinding="view.alliance"
+                                                 isCurrentCharacterAllianceLeaderBinding="view.isAllianceLeader"
+                                                 controllerBinding="controller"}}
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="diplomacy-relation">
+  {{status}}{{t alliance.diplomacyRelationWithAlliance }}{{targetAllianceName}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-auto-join">
