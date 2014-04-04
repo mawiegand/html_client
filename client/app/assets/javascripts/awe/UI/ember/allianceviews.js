@@ -374,8 +374,8 @@ AWE.UI.Ember = (function(module) {
   module.DiplomacyRelationListView = Ember.View.extend({
     templateName: 'diplomacy-relation-list',
     
-    controller: null,
-    alliance:   null,
+    controller:     null,
+    alliance:       null,
   });
   
   module.DiplomacyRelationView = Ember.View.extend({
@@ -404,6 +404,26 @@ AWE.UI.Ember = (function(module) {
       var duration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).duration;
       return createAt.add({seconds: duration}).toLocaleString();
     }.property('diplomacySourceRelation.diplomacy_status').cacheable(),
+  });
+  
+  module.CreateDiplomacyRelationView = Ember.View.extend({
+    controller:     null,
+    alliance:       null,
+    newTargetAllianceName: null,
+    
+    createDiplomacyRelation: function() {
+      var self = this;
+      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(this.getPath('alliance.id'), this.getPath('newTargetAllianceName'));
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        if (statusCode !== 200) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.allianceLeaderVoteFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.allianceLeaderVoteFailedText'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+      });
+    },
   });
   
   module.AllianceManagementView = Ember.View.extend({

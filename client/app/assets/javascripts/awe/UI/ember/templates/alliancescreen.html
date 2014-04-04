@@ -9,7 +9,7 @@
     {{view AWE.UI.Ember.AllianceInfoBoxView controllerBinding="controller" allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader"}}
     {{#if ownAlliance}}
       {{view AWE.UI.Ember.DiplomacyRelationListView controllerBinding="controller" diplomacySourceRelationsBinding="alliance.diplomacySourceRelations"
-                                               allianceBinding="alliance"}}
+                                               allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader"}}
       {{#if isAllianceLeader}}
         {{view AWE.UI.Ember.AllianceAutoJoinView controllerBinding="controller" allianceBinding="alliance"}}
         <hr>
@@ -116,12 +116,21 @@
                                                  controllerBinding="controller"}}
         {{/each}}
       </ul>
+      {{#if isAllianceLeader}}
+      <hr>
+      {{view AWE.UI.Ember.CreateDiplomacyRelationView controllerBinding="controller" allianceBinding="alliance"}}
+      {{/if}}
     </div>
   </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="diplomacy-relation">
   {{status}}{{t alliance.diplomacyRelationWithAlliance }}<a href="#" class="alliance-link" {{action allianceClicked}}>{{targetAllianceName}}</a>{{t alliance.diplomacyRelationEnds}}{{ends}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="create-diplomacy-relation">
+  {{t alliance.createDiplomacyRelationText1}}{{view Ember.TextField class="text-field" placeholder="Alliance" type="text" valueBinding="newTargetAllianceName"}}
+  {{t alliance.createDiplomacyRelationText2}}<div class="icon-button ok-button" {{action "createDiplomacyRelation"}}>{{t alliance.createDiplomacyRelationButton}}</div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-auto-join">
