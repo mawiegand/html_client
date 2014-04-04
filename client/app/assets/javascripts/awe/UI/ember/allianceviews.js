@@ -389,8 +389,20 @@ AWE.UI.Ember = (function(module) {
       return AWE.GS.AllianceManager.getAlliance(this.getPath('diplomacySourceRelation.target_alliance_id')).getPath('name');
     }.property('diplomacySourceRelation.target_alliance_id').cacheable(),
     
+    allianceClicked: function() {
+      WACKADOO.activateAllianceController(this.getPath('diplomacySourceRelation.target_alliance_id'));
+      WACKADOO.closeAllModalDialogs();
+      return false; // prevent default behavior
+    },
+    
     status: function() {
-      return AWE.Util.Rules.lookupTranslation(AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).name)
+      return AWE.Util.Rules.lookupTranslation(AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).name);
+    }.property('diplomacySourceRelation.diplomacy_status').cacheable(),
+    
+    ends: function() {
+      var createAt = Date.parseISODate(this.getPath('diplomacySourceRelation.created_at'));
+      var duration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).duration;
+      return createAt.add({seconds: duration}).toLocaleString();
     }.property('diplomacySourceRelation.diplomacy_status').cacheable(),
   });
   

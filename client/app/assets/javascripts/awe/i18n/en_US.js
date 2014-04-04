@@ -437,6 +437,7 @@ AWE.I18n.en_US = function(module) {
       missingDescription: 'Please enter your alliance description.',
       diplomacyRelation: "Diplomatie Beziehungen",
       diplomacyRelationWithAlliance: " mit der Allianz ",
+      diplomacyRelationEnds: " endet am ",
       autoJoin: "Auto join",
       autoJoinDescription: "Automatically join",
       autoJoinActivated: "Activated",

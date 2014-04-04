@@ -121,7 +121,7 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="diplomacy-relation">
-  {{status}}{{t alliance.diplomacyRelationWithAlliance }}{{targetAllianceName}}
+  {{status}}{{t alliance.diplomacyRelationWithAlliance }}<a href="#" class="alliance-link" {{action allianceClicked}}>{{targetAllianceName}}</a>{{t alliance.diplomacyRelationEnds}}{{ends}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-auto-join">
