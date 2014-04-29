@@ -8,7 +8,6 @@
       <div class="advisor chef tiny"></div>      
 
       <h1>{{t tutorial.questList}}</h1>
-
       <div class="quest-list-header">
         <div class="quest-list-item-name">{{ t tutorial.name }}</div>
         <div class="quest-list-item-status">{{ t tutorial.status }}</div>
@@ -28,7 +27,6 @@
   </div>
 </script>
 
-
 <script type="text/x-handlebars" data-template-name="quest-list-entry-view">
         <div class="quest-list-item-name">
           {{#if questState.quest.tutorial}}
@@ -42,7 +40,8 @@
               {{#if questState.redeeming}}
                 {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
               {{else}}
-                <div class="simple-button" {{action "redeemButtonPressed" }}>{{t tutorial.rewardLink }}</div>
+                <div class="simple-button" {{action "redeemButtonPressed" }}>{{t tutorial.rewardLink }}
+                </div>
               {{/if}}
             {{/if}}
         </div>
@@ -141,12 +140,10 @@
 <script type="text/x-handlebars" data-template-name="quest-dialog">
   <div class="modal-dialog-background"></div>
   <div class="horizontal-center-helper">
-    <div class="quest-dialog-bg">
-      <div class="quest-dialog-advisor">
+    <div {{bindAttr class="quest.tutorial:tutorial :modal-dialog-pane :quest-dialog"}}>
+      <div {{bindAttr class="quest.advisor :inner-border :clearfix"}}>
 
-      <div {{bindAttr class="advisor"}} id="quest-dialog-advisor"></div>
-      
-      <div class="quest-dialog-text">
+      <div {{bindAttr class="advisor"}}></div>
       {{#if quest.tutorial}}
         {{view Ember.View templateName="tutorial-dialog-header" tagName="h1" finishedBinding="finished" modeStartBinding="modeStart" modeEndBinding="modeEnd" modeExistingBinding="modeExisting"}}
       {{else}}
@@ -154,88 +151,90 @@
       {{/if}}
       
       {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
-        
       {{#if quest.rewards}}
-   </div>
-      
-      <div class="quest-dialog-reward">
+      <hr class="clear" />
+      <div>
         {{#if finished}}
-          <div class="quest-scip-button">
+          <div class="quest-redeem-button">
             {{#unless redeeming}}
-              <div class="quest-simple-button" {{action "redeemLaterButtonPressed" }}></div>
+              <div class="simple-button" {{action "redeemLaterButtonPressed" }}>{{t tutorial.redeemLater }}</div>
             {{/unless}}
           </div>
         {{else}}
+          <div class="quest-redeem-button">
+            {{t tutorial.reward }}
+          </div>
         {{/if}}
-        <ul class="quest-dialog-rewards-items">      
+        <div class="quest-rewards">      
         {{#if finished}}
           {{#if quest.rewards.resource_rewards}}
             {{#each quest.rewards.resource_rewards}}
-              <li class="quest-reward-item">
+              <div class="quest-reward-item">
                 <div class="quest-reward-item-image finished">
-                  <span class="quest-resource-icon {{unbound this.resource}} finished">&nbsp;</span>
+                  <span class="resource-icon {{unbound this.resource}} finished">&nbsp;</span>
                 </div>
-                <div class="quest-reward-item-number finished">{{this.amount}}</div>
-              </li>
+                <div class="quest-reward-item-amount finished">{{this.amount}}</div>
+              </div>
             {{/each}}
           {{/if}}
           {{#if quest.rewards.unit_rewards}}
             {{#each quest.rewards.unit_rewards}}
-              <li class="quest-reward-item">
+              <div class="quest-reward-item">
                 <div class="quest-reward-item-image finished">
                   <span class="unit-icon {{unbound this.unit}} finished">&nbsp;</span>
                 </div>
-                <div class="quest-reward-item-number finished">{{this.amount}}</div>
-              </li>
+                <div class="quest-reward-item-amount finished">{{this.amount}}</div>
+              </div>
             {{/each}}
           {{/if}}
           {{#if quest.rewards.experience_reward}}
-            <li class="quest-reward-item">
+            <div class="quest-reward-item">
               <div class="quest-reward-item-image finished">
                 <span class="xp-icon finished">&nbsp;</span>
               </div>
-              <div class="quest-reward-item-number finished">{{quest.rewards.experience_reward}}</div>
-            </li>
+              <div class="quest-reward-item-amount finished">{{quest.rewards.experience_reward}}</div>
+            </div>
           {{/if}}
         {{else}}
           {{#if quest.rewards.resource_rewards}}
             {{#each quest.rewards.resource_rewards}}
-              <li class="quest-reward-item">
+              <div class="quest-reward-item">
                 <div class="quest-reward-item-image">
-                  <span class="quest-resource-icon {{unbound this.resource}}">&nbsp;</span>
+                  <span class="resource-icon {{unbound this.resource}}">&nbsp;</span>
                 </div>
-                <div class="quest-reward-item-number">{{this.amount}}</div>
-              </li>
+                <div class="quest-reward-item-amount">{{this.amount}}</div>
+              </div>
             {{/each}}
           {{/if}}
           {{#if quest.rewards.unit_rewards}}
             {{#each quest.rewards.unit_rewards}}
-              <li class="quest-reward-item">
+              <div class="quest-reward-item">
                 <div class="quest-reward-item-image">
                   <span class="unit-icon {{unbound this.unit}}">&nbsp;</span>
                 </div>
-                <div class="quest-reward-item-number">{{this.amount}}</div>
-              </li>
+                <div class="quest-reward-item-amount">{{this.amount}}</div>
+              </div>
             {{/each}}
           {{/if}}
           {{#if quest.rewards.experience_reward}}
-            <li class="quest-reward-item">
+            <div class="quest-reward-item">
               <div class="quest-reward-item-image">
                 <span class="xp-icon">&nbsp;</span>
               </div>
-              <div class="quest-reward-item-number">{{quest.rewards.experience_reward}}</div>
-            </li>
+              <div class="quest-reward-item-amount">{{quest.rewards.experience_reward}}</div>
+            </div>
           {{/if}}
         {{/if}}
-     </ul>
+        </div>
       </div>
       {{/if}}
 
 
-        <div class="quest-dialog-button" {{action "okPressed"}}>
+        <div class="button ok-button clearfix" {{action "okPressed"}}>
           {{#if redeeming}}
             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
           {{else}}
+            {{t general.ok}}
           {{/if}}
         </div>
         <div class="quest-item-nr">#{{questState.questNr}}</div>
@@ -243,7 +242,6 @@
 
       </div>
     </div>
-      <div class="dialog-reward-bg"></div>
   </div>
 </script>
 
