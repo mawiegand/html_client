@@ -11533,7 +11533,9 @@ var JappixMini = (function () {
             buddy_str += '<a class="jm_friend jm_offline jm_friend-' + hash + (staffUser ? ' jm_5d_staff_user' : '');
             /* End 5D Mod Change */
               buddy_str += '" id="friend-' + hash;
-              buddy_str += '" title="' + JappixCommon.encodeQuotes(xid) + '"';
+              /* Begin 5D Change */
+              buddy_str += '" title=""';
+              /* Begin 5D Change */
               buddy_str += '" data-xid="' + escape(xid) + '"';
               buddy_str += '" data-nick="' + escape(nick) + '"';
               buddy_str += '" data-hash="' + hash + '"';

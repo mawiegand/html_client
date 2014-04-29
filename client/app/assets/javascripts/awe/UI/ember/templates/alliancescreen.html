@@ -84,12 +84,35 @@
 
 <script type="text/x-handlebars" data-template-name="alliance-member">
   {{view AWE.UI.Ember.LinkedCharacterWithRankView characterBinding="character" displayAlliance=false}}
+
+
+
+
+{{#if character.isActiv}} 
+<div class="isActiv" > </div>
+
+
+{{else}} {{#if character.isAway}}
+<div class="isAway" > </div>
+
+
+{{else}} {{#if character.isOff}}
+<div class="isOff" > </div>
+
+ {{/if}}
+ {{/if}}
+ {{/if}}
+
+
+
+
   {{#if isCurrentCharacterAllianceLeader}}
     {{#unless isLeader}}
       <a href="#" {{action "kickMember"}}>{{t alliance.kickMember}}</a>
     {{/unless}}
   {{/if}}
 </script>
+
 
 <script type="text/x-handlebars" data-template-name="alliance-member-list">
   <div class="alliance-member-list">
@@ -101,6 +124,7 @@
           {{view AWE.UI.Ember.AllianceMemberView tagName="li" characterBinding="this" allianceBinding="view.alliance"
                                                  isCurrentCharacterAllianceLeaderBinding="view.isAllianceLeader"
                                                  controllerBinding="controller"}}
+                                                 
         {{/each}}
       </ul>
     </div>
