@@ -8,7 +8,6 @@
       <div class="advisor chef tiny"></div>      
 
       <h1>{{t tutorial.questList}}</h1>
-
       <div class="quest-list-header">
         <div class="quest-list-item-name">{{ t tutorial.name }}</div>
         <div class="quest-list-item-status">{{ t tutorial.status }}</div>
@@ -41,7 +40,8 @@
               {{#if questState.redeeming}}
                 {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
               {{else}}
-                <div class="simple-button" {{action "redeemButtonPressed" }}>{{t tutorial.rewardLink }}</div>
+                <div class="simple-button" {{action "redeemButtonPressed" }}>{{t tutorial.rewardLink }}
+                </div>
               {{/if}}
             {{/if}}
         </div>
@@ -151,7 +151,6 @@
       {{/if}}
       
       {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
-        
       {{#if quest.rewards}}
       <hr class="clear" />
       <div>
