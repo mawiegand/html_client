@@ -119,6 +119,186 @@ AWE.UI.Ember = (function(module) {
         return 'advisor ' + this.getPath('quest.advisor') + '-quest-start';
       }
     }.property('quest.advisor', 'finished').cacheable(),
+
+    
+
+    didInsertElement: function(){
+      console.log("test before rotateQuest");
+      
+      var finished = this.get('finished');
+
+      if(!finished){
+        return ;
+      }
+      else {
+
+      var angle = 0;
+       setInterval(function(){
+         angle+=1;
+         
+         $(".dialog-reward-bg").rotate(angle);
+       },20);
+
+        $(".dialog-reward-bg").animate({
+            width: '2200px',
+            height: '2200px',
+            top: '-1100px',
+            left: '-1100px'
+        },1000)
+
+        $(".quest-dialog-bg").animate({
+            height: '500px',
+            width: '1000px',
+            top: '-250px',
+            left: '-500px'
+        },{
+            duration: 600,
+            easing: 'easeOutElastic'
+        });
+
+        $("quest-dialog-text").delay(300).animate({
+            opacity: '1'
+        },150)
+
+        $("#quest-dialog-advisor").delay(300).animate({
+            opacity: '1'
+        },150)
+
+        var c=450;
+        var size=92;
+        var rel=0;
+        var random=250;
+        var abstand=55;
+
+        var liElements=document.getElementsByClassName('item');
+
+        var r=Math.ceil(Math.random() * 100)+random;
+        $('.quest-reward-item:nth-child(1) img').delay(c).animate({
+            width: size+'px',
+            height: size+'px',
+            top: rel+'px',
+            left: rel+'px',
+            opacity: '1'
+        }, {
+            duration: r,
+            easing: 'easeOutBack'
+        });
+
+        $('.quest-reward-item:nth-child(4) img').delay(c+abstand).animate({
+            width: size+'px',
+            height: size+'px',
+            top: rel+'px',
+            left: rel+'px',
+            opacity: '1'
+        }, {
+            duration: r,
+            easing: 'easeOutBack'
+        });
+
+        if(liElements.length!=3){
+            $('.quest-reward-item:nth-child(2) img').delay(c+abstand*2).animate({
+                width: size+'px',
+                height: size+'px',
+                top: rel+'px',
+                left: rel+'px',
+                opacity: '1'
+            }, {
+                duration: r,
+                easing: 'easeOutBack'
+            });
+        }
+
+        $('.quest-reward-item:nth-child(3) img').delay(c+abstand*3).animate({
+            width: size+'px',
+            height: size+'px',
+            top: rel+'px',
+            left: rel+'px',
+            opacity: '1'
+        }, {
+            duration: r,
+            easing: 'easeOutBack'
+        });
+
+        if(liElements.length==3){
+            $('.quest-reward-item:nth-child(2) img').delay(c+abstand*4).animate({
+                width: size+'px',
+                height: size+'px',
+                top: rel+'px',
+                left: rel+'px',
+                opacity: '1'
+            }, {
+                duration: r,
+                easing: 'easeOutBack'
+            });
+        }
+
+        c=c+400;
+
+        var bottomFE=40;
+
+        $(".quest-reward-item:nth-child(1) .number").delay(c).animate({
+            fontSize: '42px',
+            bottom: bottomFE+'px',
+            left:'0'
+        },{
+            duration: 150,
+            easing: 'easeOutBack'
+        });
+
+        $(".quest-reward-item:nth-child(4) .number").delay(c+abstand).animate({
+            fontSize: '42px',
+            bottom: bottomFE+'px',
+            left:'0'
+        },{
+            duration: 150,
+            easing: 'easeOutBack'
+        });
+
+        if(liElements.length!=3){
+            $(".quest-reward-item:nth-child(2) .number").delay(c+abstand*2).animate({
+                fontSize: '42px',
+                bottom: bottomFE+'px',
+                left:'0'
+            },{
+                duration: 150,
+                easing: 'easeOutBack'
+            });
+        }
+
+        $(".quest-reward-item:nth-child(3) .number").delay(c+abstand*3).animate({
+            fontSize: '42px',
+            bottom: bottomFE+'px',
+            left:'0'
+        },{
+            duration: 150,
+            easing: 'easeOutBack'
+        });
+
+        if(liElements.length==3){
+            $(".quest-reward-item:nth-child(2) .number").delay(c+abstand*4).animate({
+                fontSize: '42px',
+                bottom: bottomFE+'px',
+                left:'0'
+            },{
+                duration: 150,
+                easing: 'easeOutBack'
+            });
+        }
+
+        $(".quest-dialog-button").delay(c).animate({
+            width: '172px',
+            height: '129px',
+            top: '70.2%',
+            left: '62%'
+        }, {
+            duration: 250,
+            easing: 'easeOutBack'
+       
+    })
+   console.log("test after rotateQuest");
+    }
+    }
+
   });  
   
   module.QuestView = Ember.View.extend({
