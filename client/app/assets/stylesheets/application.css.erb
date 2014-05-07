@@ -3113,8 +3113,10 @@ li.shout .sender {
 
 .xp-icon.large, .xp-icon.finished {
   display: inline-block;
-  width: 48px; height: 48px;
-  background-image: url("<%= asset_path 'icons/xp_large.png' %>");
+  position: relative;
+  top: -12px;
+  width: 92px; height: 75px;
+  background-image: url("<%= asset_path 'icons/xp-xl.png' %>");
 }
 
 .xp-icon.middle {
@@ -6262,6 +6264,14 @@ hurry-button:hover {
   width: 545px;
   position: absolute;
   left: 222px;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
 #quest-dialog-advisor{
@@ -6297,6 +6307,14 @@ hurry-button:hover {
   top: 256px;
   width: 455px;
   height: 139px;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
 .quest-dialog-button{
@@ -6315,15 +6333,39 @@ hurry-button:hover {
   -ms-transition: background-image 0.3s;
   -o-transition: background-image 0.3s;
   transition: background-image 0.3s;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
 .quest-dialog-button:hover{
     background-image: url('<%= asset_path("quest-dialog-button-active.png") %>');
+    
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none;
+    user-select: none;
 }
 
 .quest-dialog-button:active{
   top: 352px;
   left: 398px;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
 .quest-dialog-rewards-items{
@@ -6334,11 +6376,27 @@ hurry-button:hover {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
 .reward-recource-icon{
   display: inline-block;
   width: 92px; height: 92px;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
 .quest-resource-icon{
@@ -6346,18 +6404,50 @@ hurry-button:hover {
   width: 92px;
   height: 92px;
   background-size: 100% 100%;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
 .quest-resource-icon.resource_stone{
   background-image: url('<%= asset_path("icons/stone-xl.png") %>');
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
 .quest-resource-icon.resource_wood{
   background-image: url('<%= asset_path("icons/wood-xl.png") %>');
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
 .quest-resource-icon.resource_fur{
   background-image: url('<%= asset_path("icons/fur-xl.png") %>');
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
 .quest-reward-item-number{
@@ -6370,10 +6460,25 @@ hurry-button:hover {
   left: 1px;
   text-align: right;
   z-index: 200;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
 .quest-reward-item-number:before{
   content: "+";
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
 .quest-dialog-text h1, .quest-dialog-text h3{
@@ -6403,6 +6508,14 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 .quest-simple-button{
   width:74px;
   height:74px;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
 
@@ -6413,18 +6526,36 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   background-size: 100%;
   display: inline-block;
   position: absolute;
-  top: -217px;
-  right: -72px;
+  top: -228px;
+  right: -85px;
+  transition: background-image 0.3s;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
 .quest-scip-button:hover{
   background-image: url('<%= asset_path("quest-x-button-hover.png") %>');
+  transition: background-image 0.3s;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
 .quest-scip-button:active{
   background-image: url('<%= asset_path("quest-x-button-hover.png") %>');
-  top: -215px;
-  right: -74px;
+  top: -226px;
+  right: -87px;
 }
 
 .dialog-reward-bg{
@@ -6440,4 +6571,15 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   -webkit-animation-duration: 0.5s;
   -webkit-animation-iteration-count: infinite;
   -webkit-transition-timing-function: linear;
+}
+
+.quest-resource-icon.resource_cash {
+  background-image: url("<%= asset_path 'icons/toad-xl.png' %>");
+}
+
+.unit-xl-icon {
+  display: inline-block;
+  width: 92px;
+  height: 92px;
+  background: url('/client/assets/icons/unit_default-xl.png');
 }
