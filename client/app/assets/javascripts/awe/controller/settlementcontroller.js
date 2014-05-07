@@ -239,10 +239,40 @@ AWE.Controller = (function(module) {
       if (nextSettlement) {
         log('NEXT SETTLEMENT', nextSettlement.get('id'));
         WACKADOO.activateSettlementController(nextSettlement);
-      }      
+      }
     }
-    
-    
+
+    that.onMouseWheel = function (evt) {
+      if ($(evt.target).parents('div.wrapper').length || $(evt.target).hasClass('wrapper')) {
+        if ($(evt.target).hasClass('wrapper')) {
+          target = $(evt.target);
+        } else {
+          target = $(evt.target).parents('div.wrapper');
+        }
+        
+        if (target.prop('scrollHeight') == target.prop('clientHeight')) {
+          return;
+        }
+
+        delta = that.mouseWheelDelta(evt);
+        if (delta > 0) {
+          if (target.prop('scrollHeight') <= target.prop('clientHeight') + target.prop('scrollTop')) { 
+            evt.preventDefault();
+          }
+        } else if (delta < 0) {
+          if (target.prop('scrollTop') <= 0) { 
+            evt.preventDefault();
+          }
+        }
+      }
+    }
+
+    that.mouseWheelDelta = function(evt) {
+      if (evt.originalEvent.deltaY) return evt.originalEvent.deltaY;
+      if (evt.originalEvent.detail) return evt.originalEvent.detail;
+      if (evt.originalEvent && evt.originalEvent.wheelDelta) return evt.originalEvent.wheelDelta * -1;
+    }
+
     that.slotClicked = function(slot) {
       that.view.set('selectedSlot', slot);
       if (slot.getPath('building.unlockedAssignments')) {

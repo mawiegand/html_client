@@ -228,7 +228,7 @@ AWE.UI.Ember = (function(module) {
       if (parentView) {
         parentView.kickMember(this.get('character'));
       }
-      return false; // prevent default action!
+      return false; //prevent default action!
     },
     
   });

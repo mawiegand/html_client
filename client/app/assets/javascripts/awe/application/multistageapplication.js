@@ -465,7 +465,25 @@ AWE.Application = (function(module) {
         if (pageX && pageY && this.isCatchedByDomElement(pageX, pageY, evt.type)) {
           return;
         }
-        if ($(evt.target).parents('div#jappix_mini').length) {
+
+        if ($(evt.target).parents('div#jappix_mini').length || $(evt.target).hasClass('jm_received-messages')) {
+          if ($(evt.target).hasClass('jm_received-messages')) {
+            target = $(evt.target);
+          } else {
+            target = $(evt.target).parents('div.jm_received-messages')
+          };
+
+          delta = this.mouseWheelDelta(evt);
+          if (delta > 0) {
+            if (target.prop('scrollHeight') <= target.prop('clientHeight') + target.prop('scrollTop')) { 
+              evt.preventDefault();
+            }
+          } else if (delta < 0) {
+            if (target.prop('scrollTop') <= 0) { 
+              evt.preventDefault();
+            }
+          }
+
           log('catched by jappix');
           return;
         }
@@ -473,6 +491,13 @@ AWE.Application = (function(module) {
         if (!this.get('isModal') && controller && controller.onMouseWheel) {
           controller.onMouseWheel(evt);
         }
+      },
+
+
+      mouseWheelDelta: function(evt) {
+        if (evt.originalEvent.deltaY) return evt.originalEvent.deltaY;
+        if (evt.originalEvent.detail) return evt.originalEvent.detail;
+        if (evt.originalEvent && evt.originalEvent.wheelDelta) return evt.originalEvent.wheelDelta * -1;
       },
 
 
