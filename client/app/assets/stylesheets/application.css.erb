@@ -3114,9 +3114,9 @@ li.shout .sender {
 .xp-icon.large, .xp-icon.finished {
   display: inline-block;
   position: relative;
-  top: -12px;
-  width: 92px; height: 75px;
+  width: 100%; height: 100%;
   background-image: url("<%= asset_path 'icons/xp-xl.png' %>");
+  background-size: 100%;
 }
 
 .xp-icon.middle {
@@ -3169,7 +3169,7 @@ li.shout .sender {
 
 .resource-icon.finished {
   display: inline-block;
-  width: 92px; height: 92px;
+  width: 100%; height: 100%;
 }
 
 .resource-icon.resource_wood.large,
@@ -5730,18 +5730,18 @@ button.fb-button {
   display: inline-block;
   margin: 0;
   padding: 0;
-  /* background: blue; */
-  top: 17px;
+  top: 15px;
+  left: 2px;
   position: relative;
   }
 }
 
 .quest-reward-item-image, .quest-reward-item-amount, .quest-reward-item-image.finished{
   height: 92px;
+  width: 92px;
   font-size: 24px;
   position: relative;
-  width: 92px;
-  left: 9px;
+  left: 4px;
 }
 
 .dom-quest-container {
@@ -6248,14 +6248,16 @@ hurry-button:hover {
 
 .quest-dialog-bg{
   position: absolute;
-  height: 500px;
-  width: 1000px;
+  height: 0px;
+  width: 0px;
+  
+  top: 250px;
+  left: 0px;
   
   background-image: url('<%= asset_path("quest-dialog-bg.png") %>');
   background-color: none;
   border: none;
-  
-  left: -500px;
+  background-size: 100%;
   
   z-index: 260;
 }
@@ -6280,6 +6282,8 @@ hurry-button:hover {
   position: absolute;
   top: 69px;
   right: 17px;
+  
+  opacity: 0;
 }
 
 .quest-dialog-text{
@@ -6296,6 +6300,7 @@ hurry-button:hover {
   text-align: left;
   font-size: 15px;
   text-decoration: none;
+  opacity: 0;
 }
 
 .quest-dialog-reward{
@@ -6315,14 +6320,16 @@ hurry-button:hover {
   /* Rules below not implemented in browsers yet */
   -o-user-select: none;
   user-select: none;
+  
+  opacity: 0;
 }
 
 .quest-dialog-button{
   position: absolute;
-  width: 172px;
-  height: 129px;
-  top: 348px;
-  left: 394px;
+  width: 0px;
+  height: 0px;
+  top: 413px;
+  left: 483px;
   border: none;
   box-shadow: none;
   z-index: 25;
@@ -6371,7 +6378,7 @@ hurry-button:hover {
 .quest-dialog-rewards-items{
   width: 455px;
   height: 139px;
-  overflow: hidden;
+  overflow: visible;
   position: absolute;
   list-style-type: none;
   margin: 0;
@@ -6400,9 +6407,10 @@ hurry-button:hover {
 }
 
 .quest-resource-icon{
+  position: relative;
   display: inline-block;
-  width: 92px;
-  height: 92px;
+  width: 100%;
+  height: 100%;
   background-size: 100% 100%;
   
   -webkit-user-select: none; /* Chrome/Safari */
@@ -6451,15 +6459,17 @@ hurry-button:hover {
 }
 
 .quest-reward-item-number{
+  width:110px;
+  height: 53px;
   font-family: 'Freckle Face', 'cursive';
   text-shadow: none;
   color: #dcdcbf;
-  font-size: 38px;
+  font-size: 0px;
   position: relative;
-  top: -40px;
-  left: 1px;
-  text-align: right;
+  top: 70px;
+  text-align: center;
   z-index: 200;
+  overflow: hidden;
   
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
@@ -6468,6 +6478,7 @@ hurry-button:hover {
   /* Rules below not implemented in browsers yet */
   -o-user-select: none;
   user-select: none;
+  left: 12px;
 }
 
 .quest-reward-item-number:before{
@@ -6562,10 +6573,10 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   position: absolute;
   background-image: url('/client/assets/quest-dialog-light.png');
   background-size: 100%;
-  width: 2200px;
-  height: 2200px;
-  top: -877px;
-  left: -1100px;
+  width: 0px;
+  height: 0px;
+  top: 250px;
+  left: 0px;
   z-index: 256;
   -webkit-animation-name: rotate;
   -webkit-animation-duration: 0.5s;
@@ -6606,4 +6617,14 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   width: 28px;
   height: 28px;
   background-image: url('<%= asset_path("red.png") %>');
+}
+
+.quest-reward-item-icon{
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  top: 49px;
+  left: 50px;
+  display: inline-block;
+  overflow: hidden;
 }

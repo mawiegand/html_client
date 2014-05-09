@@ -173,7 +173,9 @@
             {{#each quest.rewards.resource_rewards}}
               <li class="quest-reward-item">
                 <div class="quest-reward-item-image finished">
-                  <span class="quest-resource-icon {{unbound this.resource}} finished">&nbsp;</span>
+                   <div class="quest-reward-item-icon">
+                      <span class="quest-resource-icon {{unbound this.resource}} finished">&nbsp;</span>
+                   </div>
                 </div>
                 <div class="quest-reward-item-number finished">{{this.amount}}</div>
               </li>
@@ -183,7 +185,9 @@
             {{#each quest.rewards.unit_rewards}}
               <li class="quest-reward-item">
                 <div class="quest-reward-item-image finished">
+                   <div class="quest-reward-item-icon">
                   <span class="unit-icon {{unbound this.unit}} finished">&nbsp;</span>
+               </div>
                 </div>
                 <div class="quest-reward-item-number finished">{{this.amount}}</div>
               </li>
@@ -192,8 +196,10 @@
           {{#if quest.rewards.experience_reward}}
             <li class="quest-reward-item">
               <div class="quest-reward-item-image finished">
+                 <div class="quest-reward-item-icon">
                 <span class="xp-icon finished">&nbsp;</span>
               </div>
+           </div>
               <div class="quest-reward-item-number finished">{{quest.rewards.experience_reward}}</div>
             </li>
           {{/if}}
@@ -202,7 +208,9 @@
             {{#each quest.rewards.resource_rewards}}
               <li class="quest-reward-item">
                 <div class="quest-reward-item-image">
+                   <div class="quest-reward-item-icon">
                   <span class="quest-resource-icon {{unbound this.resource}}">&nbsp;</span>
+               </div>
                 </div>
                 <div class="quest-reward-item-number">{{this.amount}}</div>
               </li>
@@ -212,7 +220,9 @@
             {{#each quest.rewards.unit_rewards}}
               <li class="quest-reward-item">
                 <div class="quest-reward-item-image">
+                   <div class="quest-reward-item-icon">
                   <span class="unit-xl-icon">&nbsp;</span>
+               </div>
                 </div>
                 <div class="quest-reward-item-number">{{this.amount}}</div>
               </li>
@@ -221,7 +231,9 @@
           {{#if quest.rewards.experience_reward}}
             <li class="quest-reward-item">
               <div class="quest-reward-item-image">
+                 <div class="quest-reward-item-icon">
                 <span class="xp-icon finished">&nbsp;</span>
+             </div>
               </div>
               <div class="quest-reward-item-number">{{quest.rewards.experience_reward}}</div>
             </li>
