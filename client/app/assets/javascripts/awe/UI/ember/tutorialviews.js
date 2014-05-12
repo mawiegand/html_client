@@ -136,92 +136,69 @@ AWE.UI.Ember = (function(module) {
        setInterval(function(){
          angle+=1;
          
-         $(".dialog-reward-bg").rotate(angle);
+         /*$(".dialog-reward-bg").rotate(angle);*/
        },20);
-         
-        $(".dialog-reward-bg").animate({
-            width: '2200px',
-            height: '2200px',
-            top: '-850px',
-            left: '-1100px'
-        },1000)
+        if($(window).width() >= 1024){
+          $(".dialog-reward-bg").animate({
+              width: '2200px',
+              height: '2200px',
+              top: '-850px',
+              left: '-1100px'
+          },1000)
 
-        $(".quest-dialog-bg").animate({
-            height: '500px',
-            width: '1000px',
-            top: '0px',
-            left: '-500px'
-        },{
-            duration: 600,
-            easing: 'easeOutElastic'
-        });
+          $(".quest-dialog-bg").animate({
+              height: '500px',
+              width: '1000px',
+              top: '0px',
+              left: '-500px'
+          },{
+              duration: 600,
+              easing: 'easeOutElastic'
+          });
 
-        $(".quest-dialog-text").delay(600).animate({
-            opacity: '1'
-        },150)
+          $(".quest-dialog-text").delay(600).animate({
+              opacity: '1'
+          },150)
         
-        $(".quest-dialog-reward").delay(600).animate({
-            opacity: '1'
-        },150)
+          $(".quest-dialog-reward").delay(600).animate({
+              opacity: '1'
+          },150)
 
-        $("#quest-dialog-advisor").delay(600).animate({
-            opacity: '1'
-        },150)
+          $("#quest-dialog-advisor").delay(600).animate({
+              opacity: '1'
+          },150)
 
-        var c=750;
-        var size=92;
-        var rel=0;
-        var random=250;
-        var abstand=55;
+          var c=750;
+          var size=92;
+          var rel=0;
+          var random=250;
+          var abstand=55;
 
-        var liElements=document.getElementsByClassName('item');
+          var liElements=document.getElementsByClassName('item');
 
-        var r=Math.ceil(Math.random() * 100)+random;
-        $('.quest-dialog-rewards-items li:eq(0) .quest-reward-item-icon').delay(c).animate({
-            width: '92px',
-            height: '92px',
-            top: '0px',
-            left: '0px',
-            opacity: '1'
-        }, {
-            duration: r,
-            easing: 'easeOutBack'
-        });
+          var r=Math.ceil(Math.random() * 100)+random;
+          $('.quest-dialog-rewards-items li:eq(0) .quest-reward-item-icon').delay(c).animate({
+              width: '92px',
+              height: '92px',
+              top: '0px',
+              left: '0px',
+              opacity: '1'
+          }, {
+              duration: r,
+              easing: 'easeOutBack'
+          });
      
-        $('.quest-dialog-rewards-items li:eq(3) .quest-reward-item-icon').delay(c+abstand).animate({
-            width: '92px',
-            height: '92px',
-            top: '0px',
-            left: '0px',
-            opacity: '1'
-        }, {
-            duration: r,
-            easing: 'easeOutBack'
-        });
+          $('.quest-dialog-rewards-items li:eq(3) .quest-reward-item-icon').delay(c+abstand).animate({
+              width: '92px',
+              height: '92px',
+              top: '0px',
+              left: '0px',
+              opacity: '1'
+          }, {
+              duration: r,
+              easing: 'easeOutBack'
+          });
         
-        $('.quest-dialog-rewards-items li:eq(1) .quest-reward-item-icon').delay(c+abstand*2).animate({
-            width: '92px',
-            height: '92px',
-            top: '0px',
-            left: '0px',
-            opacity: '1'
-        }, {
-            duration: r,
-            easing: 'easeOutBack'
-        });
-
-        $('.quest-dialog-rewards-items li:eq(2) .quest-reward-item-icon').delay(c+abstand*3).animate({
-            width: '92px',
-            height: '92px',
-            top: '0px',
-            left: '0px',
-            opacity: '1'
-        }, {
-            duration: r,
-            easing: 'easeOutBack'
-        });
-
-        if(liElements.length==3){
           $('.quest-dialog-rewards-items li:eq(1) .quest-reward-item-icon').delay(c+abstand*2).animate({
               width: '92px',
               height: '92px',
@@ -232,32 +209,36 @@ AWE.UI.Ember = (function(module) {
               duration: r,
               easing: 'easeOutBack'
           });
-        }
 
-        c=c+400;
+          $('.quest-dialog-rewards-items li:eq(2) .quest-reward-item-icon').delay(c+abstand*3).animate({
+              width: '92px',
+              height: '92px',
+              top: '0px',
+              left: '0px',
+              opacity: '1'
+          }, {
+              duration: r,
+              easing: 'easeOutBack'
+          });
 
-        var bottomFE=49;
+          if(liElements.length==3){
+            $('.quest-dialog-rewards-items li:eq(1) .quest-reward-item-icon').delay(c+abstand*2).animate({
+                width: '92px',
+                height: '92px',
+                top: '0px',
+                left: '0px',
+                opacity: '1'
+            }, {
+                duration: r,
+                easing: 'easeOutBack'
+            });
+          }
 
-        $(".quest-dialog-rewards-items li:eq(0) .quest-reward-item-number").delay(c).animate({
-            fontSize: '42px',
-            top: bottomFE+'px',
-            background:'green'
-        },{
-            duration: 150,
-            easing: 'easeOutBack'
-        });
+          c=c+400;
 
-        $(".quest-dialog-rewards-items li:eq(3) .quest-reward-item-number").delay(c+abstand).animate({
-            fontSize: '42px',
-            top: bottomFE+'px',
-            background:'green'
-        },{
-            duration: 150,
-            easing: 'easeOutBack'
-        });
+          var bottomFE=49;
 
-        if(liElements.length!=3){
-          $(".quest-dialog-rewards-items li:eq(1) .quest-reward-item-number").delay(c+abstand*2).animate({
+          $(".quest-dialog-rewards-items li:eq(0) .quest-reward-item-number").delay(c).animate({
               fontSize: '42px',
               top: bottomFE+'px',
               background:'green'
@@ -265,19 +246,8 @@ AWE.UI.Ember = (function(module) {
               duration: 150,
               easing: 'easeOutBack'
           });
-        }
 
-        $(".quest-dialog-rewards-items li:eq(2) .quest-reward-item-number").delay(c+abstand*3).animate({
-            fontSize: '42px',
-            top: bottomFE+'px',
-            background:'green'
-        },{
-            duration: 150,
-            easing: 'easeOutBack'
-        });
-
-        if(liElements.length==3){
-          $(".quest-dialog-rewards-items li:eq(1) .quest-reward-item-number").delay(c+abstand*2).animate({
+          $(".quest-dialog-rewards-items li:eq(3) .quest-reward-item-number").delay(c+abstand).animate({
               fontSize: '42px',
               top: bottomFE+'px',
               background:'green'
@@ -285,18 +255,384 @@ AWE.UI.Ember = (function(module) {
               duration: 150,
               easing: 'easeOutBack'
           });
-        }
 
-        $(".quest-dialog-button").delay(1500).animate({
-            width: '172px',
-            height: '129px',
-            top: '349px',
-            left: '397px'
-        }, {
-            duration: 250,
-            easing: 'easeOutBack'
+          if(liElements.length!=3){
+            $(".quest-dialog-rewards-items li:eq(1) .quest-reward-item-number").delay(c+abstand*2).animate({
+                fontSize: '42px',
+                top: bottomFE+'px',
+                background:'green'
+            },{
+                duration: 150,
+                easing: 'easeOutBack'
+            });
+          }
+
+          $(".quest-dialog-rewards-items li:eq(2) .quest-reward-item-number").delay(c+abstand*3).animate({
+              fontSize: '42px',
+              top: bottomFE+'px',
+              background:'green'
+          },{
+              duration: 150,
+              easing: 'easeOutBack'
+          });
+
+          if(liElements.length==3){
+            $(".quest-dialog-rewards-items li:eq(1) .quest-reward-item-number").delay(c+abstand*2).animate({
+                fontSize: '42px',
+                top: bottomFE+'px',
+                background:'green'
+            },{
+                duration: 150,
+                easing: 'easeOutBack'
+            });
+          }
+
+          $(".quest-dialog-button").delay(1500).animate({
+              width: '172px',
+              height: '129px',
+              top: '349px',
+              left: '397px'
+          }, {
+              duration: 250,
+              easing: 'easeOutBack'
        
-    })
+      })
+      
+      
+    }
+    else if($(window).width() >= 720){
+      $(".dialog-reward-bg").animate({
+          width: '2200px',
+          height: '2200px',
+          top: '-850px',
+          left: '-1100px'
+      },1000)
+
+      $(".quest-dialog-bg").animate({
+          height: '477px',
+          width: '650px',
+          top: '0px',
+          left: '-325px'
+      },{
+          duration: 600,
+          easing: 'easeOutElastic'
+      });
+
+      $(".quest-dialog-text").delay(600).animate({
+          opacity: '1'
+      },150)
+    
+      $(".quest-dialog-reward").delay(600).animate({
+          opacity: '1'
+      },150)
+
+      $("#quest-dialog-advisor").delay(600).animate({
+          opacity: '1'
+      },150)
+
+      var c=750;
+      var size=92;
+      var rel=0;
+      var random=250;
+      var abstand=55;
+
+      var liElements=document.getElementsByClassName('item');
+
+      var r=Math.ceil(Math.random() * 100)+random;
+      $('.quest-dialog-rewards-items li:eq(0) .quest-reward-item-icon').delay(c).animate({
+          width: '92px',
+          height: '92px',
+          top: '0px',
+          left: '0px',
+          opacity: '1'
+      }, {
+          duration: r,
+          easing: 'easeOutBack'
+      });
+ 
+      $('.quest-dialog-rewards-items li:eq(3) .quest-reward-item-icon').delay(c+abstand).animate({
+          width: '92px',
+          height: '92px',
+          top: '0px',
+          left: '0px',
+          opacity: '1'
+      }, {
+          duration: r,
+          easing: 'easeOutBack'
+      });
+    
+      $('.quest-dialog-rewards-items li:eq(1) .quest-reward-item-icon').delay(c+abstand*2).animate({
+          width: '92px',
+          height: '92px',
+          top: '0px',
+          left: '0px',
+          opacity: '1'
+      }, {
+          duration: r,
+          easing: 'easeOutBack'
+      });
+
+      $('.quest-dialog-rewards-items li:eq(2) .quest-reward-item-icon').delay(c+abstand*3).animate({
+          width: '92px',
+          height: '92px',
+          top: '0px',
+          left: '0px',
+          opacity: '1'
+      }, {
+          duration: r,
+          easing: 'easeOutBack'
+      });
+
+      if(liElements.length==3){
+        $('.quest-dialog-rewards-items li:eq(1) .quest-reward-item-icon').delay(c+abstand*2).animate({
+            width: '92px',
+            height: '92px',
+            top: '0px',
+            left: '0px',
+            opacity: '1'
+        }, {
+            duration: r,
+            easing: 'easeOutBack'
+        });
+      }
+
+      c=c+400;
+
+      var bottomFE=49;
+
+      $(".quest-dialog-rewards-items li:eq(0) .quest-reward-item-number").delay(c).animate({
+          fontSize: '42px',
+          top: bottomFE+'px',
+          background:'green'
+      },{
+          duration: 150,
+          easing: 'easeOutBack'
+      });
+
+      $(".quest-dialog-rewards-items li:eq(3) .quest-reward-item-number").delay(c+abstand).animate({
+          fontSize: '42px',
+          top: bottomFE+'px',
+          background:'green'
+      },{
+          duration: 150,
+          easing: 'easeOutBack'
+      });
+
+      if(liElements.length!=3){
+        $(".quest-dialog-rewards-items li:eq(1) .quest-reward-item-number").delay(c+abstand*2).animate({
+            fontSize: '42px',
+            top: bottomFE+'px',
+            background:'green'
+        },{
+            duration: 150,
+            easing: 'easeOutBack'
+        });
+      }
+
+      $(".quest-dialog-rewards-items li:eq(2) .quest-reward-item-number").delay(c+abstand*3).animate({
+          fontSize: '42px',
+          top: bottomFE+'px',
+          background:'green'
+      },{
+          duration: 150,
+          easing: 'easeOutBack'
+      });
+
+      if(liElements.length==3){
+        $(".quest-dialog-rewards-items li:eq(1) .quest-reward-item-number").delay(c+abstand*2).animate({
+            fontSize: '42px',
+            top: bottomFE+'px',
+            background:'green'
+        },{
+            duration: 150,
+            easing: 'easeOutBack'
+        });
+      }
+
+      $(".quest-dialog-button").delay(1500).animate({
+          width: '172px',
+          height: '129px',
+          top: '337px',
+          left: '230px'
+      }, {
+          duration: 250,
+          easing: 'easeOutBack'
+   
+      })
+    }
+    else
+    {
+      
+      
+      $(".dialog-reward-bg").animate({
+          width: '1000px',
+          height: '1000px',
+          top: '-340px',
+          left: '-500px'
+      },1000)
+
+      $(".quest-dialog-bg").animate({
+          height: '320px',
+          width: '436px',
+          top: '0px',
+          left: '-218px'
+      },{
+          duration: 600,
+          easing: 'easeOutElastic'
+      });
+
+      $(".quest-dialog-text").delay(600).animate({
+          opacity: '1'
+      },150)
+    
+      $(".quest-dialog-reward").delay(600).animate({
+          opacity: '1'
+      },150)
+
+      $("#quest-dialog-advisor").delay(600).animate({
+          opacity: '1'
+      },150)
+
+      var c=750;
+      var size=66;
+      var rel=0;
+      var random=250;
+      var abstand=55;
+
+      var liElements=document.getElementsByClassName('item');
+
+      var r=Math.ceil(Math.random() * 100)+random;
+      $('.quest-dialog-rewards-items li:eq(0) .quest-reward-item-icon').delay(c).animate({
+          width: size+'px',
+          height: size+'px',
+          top: '0px',
+          left: '0px',
+          opacity: '1'
+      }, {
+          duration: r,
+          easing: 'easeOutBack'
+      });
+ 
+      $('.quest-dialog-rewards-items li:eq(3) .quest-reward-item-icon').delay(c+abstand).animate({
+          width: size+'px',
+          height: size+'px',
+          top: '0px',
+          left: '0px',
+          opacity: '1'
+      }, {
+          duration: r,
+          easing: 'easeOutBack'
+      });
+    
+      $('.quest-dialog-rewards-items li:eq(1) .quest-reward-item-icon').delay(c+abstand*2).animate({
+          width: size+'px',
+          height: size+'px',
+          top: '0px',
+          left: '0px',
+          opacity: '1'
+      }, {
+          duration: r,
+          easing: 'easeOutBack'
+      });
+
+      $('.quest-dialog-rewards-items li:eq(2) .quest-reward-item-icon').delay(c+abstand*3).animate({
+          width: size+'px',
+          height: size+'px',
+          top: '0px',
+          left: '0px',
+          opacity: '1'
+      }, {
+          duration: r,
+          easing: 'easeOutBack'
+      });
+
+      if(liElements.length==3){
+        $('.quest-dialog-rewards-items li:eq(1) .quest-reward-item-icon').delay(c+abstand*2).animate({
+            width: size+'px',
+            height: size+'px',
+            top: '0px',
+            left: '0px',
+            opacity: '1'
+        }, {
+            duration: r,
+            easing: 'easeOutBack'
+        });
+      }
+
+      c=c+400;
+
+      var bottomFE=40;
+      var fs=25;
+      var leftFE=-12;
+
+      $(".quest-dialog-rewards-items li:eq(0) .quest-reward-item-number").delay(c).animate({
+          fontSize: fs+'px',
+          top: bottomFE+'px',
+          background:'green',
+          left: leftFE+'px'
+      },{
+          duration: 150,
+          easing: 'easeOutBack'
+      });
+
+      $(".quest-dialog-rewards-items li:eq(3) .quest-reward-item-number").delay(c+abstand).animate({
+          fontSize: fs+'px',
+          top: bottomFE+'px',
+          background:'green',
+          left: leftFE+'px'
+      },{
+          duration: 150,
+          easing: 'easeOutBack'
+      });
+
+      if(liElements.length!=3){
+        $(".quest-dialog-rewards-items li:eq(1) .quest-reward-item-number").delay(c+abstand*2).animate({
+            fontSize: fs+'px',
+            top: bottomFE+'px',
+            background:'green',
+          left: leftFE+'px'
+        },{
+            duration: 150,
+            easing: 'easeOutBack'
+        });
+      }
+
+      $(".quest-dialog-rewards-items li:eq(2) .quest-reward-item-number").delay(c+abstand*3).animate({
+          fontSize: fs+'px',
+          top: bottomFE+'px',
+          background:'green',
+          left: leftFE+'px'
+      },{
+          duration: 150,
+          easing: 'easeOutBack'
+      });
+
+      if(liElements.length==3){
+        $(".quest-dialog-rewards-items li:eq(1) .quest-reward-item-number").delay(c+abstand*2).animate({
+            fontSize: fs+'px',
+            top: bottomFE+'px',
+            background:'green',
+            left: leftFE+'px'
+        },{
+            duration: 150,
+            easing: 'easeOutBack'
+        });
+      }
+
+      $(".quest-dialog-button").delay(1500).animate({
+          width: '106px',
+          height: '74px',
+          top: '230px',
+          left: '81px'
+      }, {
+          duration: 250,
+          easing: 'easeOutBack'
+   
+      })
+      
+      
+    } 
+        
    console.log("test after rotateQuest");
     }
     }

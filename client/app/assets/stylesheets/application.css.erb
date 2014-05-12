@@ -6246,15 +6246,12 @@ hurry-button:hover {
   h2, h3 { page-break-after: avoid; }
 }
 
-.quest-dialog-bg{
+.quest-dialog-bg{  
   position: absolute;
   height: 0px;
   width: 0px;
+  top: 238px;
   
-  top: 250px;
-  left: 0px;
-  
-  background-image: url('<%= asset_path("quest-dialog-bg.png") %>');
   background-color: none;
   border: none;
   background-size: 100%;
@@ -6280,8 +6277,8 @@ hurry-button:hover {
   width: 199px;
   height: 191px;
   position: absolute;
-  top: 69px;
-  right: 17px;
+  top: 63px;
+  right: 186px;
   
   opacity: 0;
 }
@@ -6291,8 +6288,6 @@ hurry-button:hover {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   position: absolute;
-  top: 95px;
-  left: 44px;
   width: 257px;
   height: 83px;
   padding: 17px;
@@ -6308,8 +6303,6 @@ hurry-button:hover {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   position: absolute;
-  left: 44px;
-  top: 256px;
   width: 455px;
   height: 139px;
   
@@ -6328,8 +6321,6 @@ hurry-button:hover {
   position: absolute;
   width: 0px;
   height: 0px;
-  top: 413px;
-  left: 483px;
   border: none;
   box-shadow: none;
   z-index: 25;
@@ -6571,7 +6562,6 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 
 .dialog-reward-bg{
   position: absolute;
-  background-image: url('/client/assets/quest-dialog-light.png');
   background-size: 100%;
   width: 0px;
   height: 0px;
@@ -6627,4 +6617,169 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   left: 50px;
   display: inline-block;
   overflow: hidden;
+}
+
+.advisor.chef{
+  background: url('<%= asset_path("advisors/head_chef_colored_small.png") %>');
+}
+
+@media (max-width : 719px) {
+  .quest-dialog-bg{
+    background-image: url("<%= asset_path('quest-dialog-bg-small.png') %>");
+  }
+  
+  .dialog-reward-bg{
+    background-image: url('/client/assets/quest-dialog-light-middle.png');
+    top: 142px;
+  }
+  
+  .quest-dialog-text{
+    top: 52px;
+    left: -157px;
+    width: 160px;
+    height: 47px;
+  }
+  
+  .quest-dialog-text h1{
+    font-size: 12px;
+  }
+  
+  .quest-dialog-text h3{
+    font-size: 12px;
+  }
+  
+  .quest-dialog-text p.citation.clearfix{
+    font-size: 10px;
+  }
+  
+  .quest-dialog-text{
+    font-size: 10px;
+  }
+  
+  .quest-dialog-reward{
+    left: -157px;
+    top: 159px;
+    height: 90px;
+    width: 302px;
+  }
+  
+  #quest-dialog-advisor{
+    height: 126px;
+    position: absolute;
+    top: 52px;
+    right: 378px;
+    opacity: 0;
+    background-size: 100% 100%;
+    width: 130px;
+  }
+  
+  .quest-dialog-rewards-items{
+    width: 302px;
+    height: 92px;
+  }
+  
+  .quest-reward-item{
+    width: 72px;
+    height: 76px;
+    text-align: center;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    top: 9px;
+    left: 2px;
+    position: relative;
+  }
+  
+  .quest-reward-item-icon{
+    width: 0;
+    height: 0;
+    top: 33px;
+    left: 33px;
+  }
+  
+  .quest-reward-item-number{
+    top: 62px;
+    left: -12px;
+  }
+  
+  .quest-scip-button{
+    top: -155px;
+    right: -60px;
+    width: 59px;
+    height: 59px;
+  }
+  
+  .quest-scip-button:active{
+    top: -153px;
+    right: -62px;
+    width: 59px;
+    height: 59px;
+  }
+  
+  .quest-dialog-button{
+    width: 0px;
+    height: 0px;
+    top: 267px;
+    left: 134px;
+  }
+}
+
+@media (min-width : 720px) and (max-width : 999px){
+  .quest-dialog-bg{
+    background-image: url("<%= asset_path('quest-dialog-bg-middle.png') %>");
+  }
+  
+  .dialog-reward-bg{
+    background-image: url('/client/assets/quest-dialog-light-middle.png');
+  }
+  
+  .quest-dialog-button{
+    top: 401px;
+    left: 316px;
+  }
+  
+  .quest-dialog-reward{
+    left: -130px;
+    top: 236px;
+  }
+  
+  #quest-dialog-advisor{
+    top: 63px;
+    right: 186px;
+  }
+  
+  .quest-dialog-text{
+    top: 86px;
+    left: -130px;
+  }
+}
+
+@media (min-width : 1000px) {
+  .quest-dialog-bg{
+    background-image: url("<%= asset_path("quest-dialog-bg.png") %>");
+  }
+  
+  .dialog-reward-bg{
+    background-image: url('/client/assets/quest-dialog-light.png');
+  }
+  
+  .quest-dialog-button{
+    top: 413px;
+    left: 483px;
+  }
+  
+  .quest-dialog-reward{
+    left: 48px;
+    top: 247px;
+  }
+  
+  #quest-dialog-advisor{
+    top: 72px;
+    right: 24px;
+  }
+  
+  .quest-dialog-text{
+    top: 91px;
+    left: 48px;
+  }
 }
