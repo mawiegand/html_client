@@ -416,6 +416,8 @@ AWE.UI.Ember = (function(module) {
   });
   
   module.CreateDiplomacyRelationView = Ember.View.extend({
+    templateName: 'create-diplomacy-relation',
+
     controller:     null,
     alliance:       null,
     newTargetAllianceName: null,
