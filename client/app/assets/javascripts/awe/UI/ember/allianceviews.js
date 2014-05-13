@@ -386,7 +386,16 @@ AWE.UI.Ember = (function(module) {
     controller:               null,
     
     targetAllianceName: function() {
-      return AWE.GS.AllianceManager.getAlliance(this.getPath('diplomacySourceRelation.target_alliance_id')).getPath('name');
+      var targetAllianceId = this.getPath('diplomacySourceRelation.target_alliance_id');
+      var targetAlliance = AWE.GS.AllianceManager.getAlliance(targetAllianceId);
+      if (targetAlliance) {
+        return targetAlliance.getPath('name');
+      }
+      else {
+        AWE.GS.AllianceManager.updateAlliance(targetAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_AGGREGATE, function() {
+          that.setNeedsUpdate();
+        });
+      }
     }.property('diplomacySourceRelation.target_alliance_id').cacheable(),
     
     allianceClicked: function() {
