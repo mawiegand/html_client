@@ -409,10 +409,39 @@ AWE.UI.Ember = (function(module) {
     }.property('diplomacySourceRelation.diplomacy_status').cacheable(),
     
     ends: function() {
-      var createAt = Date.parseISODate(this.getPath('diplomacySourceRelation.created_at'));
+      var createdAt = Date.parseISODate(this.getPath('diplomacySourceRelation.created_at'));
       var duration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).duration;
-      return createAt.add({seconds: duration}).toLocaleString();
+      return createdAt.add({seconds: duration}).toLocaleString();
     }.property('diplomacySourceRelation.diplomacy_status').cacheable(),
+    
+    enableNextStatusButton: function() {
+      var manual = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).min;
+      var duration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).duration;
+      var ends = Date.parseISODate(this.getPath('diplomacySourceRelation.created_at')).add({seconds: duration});
+      
+      return manual && (ends <= new Date());
+    }.property('diplomacySourceRelation.diplomacy_status').cacheable(),
+    
+    nextStatus: function() {
+      var nextRelationId = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).next_relations[0];
+      return AWE.Util.Rules.lookupTranslation(AWE.GS.RulesManager.getRules().getDiplomacyRelationType(nextRelationId).name);
+    }.property('diplomacySourceRelation.diplomacy_status').cacheable(),
+        
+    nextDiplomacyRelation: function() {
+      var self = this;
+      var targetAllianceName = this.get('targetAllianceName');
+      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(this.getPath('diplomacySourceRelation.source_alliance_id'), targetAllianceName);
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        if (statusCode !== 200) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            /* TODO Change Error message */
+            heading: AWE.I18n.lookupTranslation('alliance.allianceLeaderVoteFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.allianceLeaderVoteFailedText'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+      });
+    },
   });
   
   module.CreateDiplomacyRelationView = Ember.View.extend({
@@ -428,6 +457,7 @@ AWE.UI.Ember = (function(module) {
       AWE.Action.Manager.queueAction(action, function(statusCode) {
         if (statusCode !== 200) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            /* TODO Change Error message */
             heading: AWE.I18n.lookupTranslation('alliance.allianceLeaderVoteFailedHead'),
             message: AWE.I18n.lookupTranslation('alliance.allianceLeaderVoteFailedText'),
           }); 
