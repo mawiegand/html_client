@@ -126,8 +126,10 @@
 
 <script type="text/x-handlebars" data-template-name="diplomacy-relation">
   {{status}}{{t alliance.diplomacyRelationWithAlliance }}<a href="#" class="alliance-link" {{action allianceClicked}}>{{targetAllianceName}}</a>{{t alliance.diplomacyRelationEnds}}{{ends}}
-  {{#if enableNextStatusButton}}
-    <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "nextDiplomacyRelation"}}>{{nextStatus}}</div>
+  {{#if isCurrentCharacterAllianceLeader}}
+    {{#if enableNextStatusButton}}
+      <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "nextDiplomacyRelation"}}>{{nextStatus}}</div>
+    {{/if}}
   {{/if}}
 </script>
 

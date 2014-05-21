@@ -434,9 +434,8 @@ AWE.UI.Ember = (function(module) {
       AWE.Action.Manager.queueAction(action, function(statusCode) {
         if (statusCode !== 200) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
-            /* TODO Change Error message */
-            heading: AWE.I18n.lookupTranslation('alliance.allianceLeaderVoteFailedHead'),
-            message: AWE.I18n.lookupTranslation('alliance.allianceLeaderVoteFailedText'),
+            heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedText'),
           }); 
           WACKADOO.presentModalDialog(errorDialog);
         }
@@ -455,11 +454,17 @@ AWE.UI.Ember = (function(module) {
       var self = this;
       var action = AWE.Action.Fundamental.createDiplomacyRelationAction(this.getPath('alliance.id'), this.getPath('newTargetAllianceName'));
       AWE.Action.Manager.queueAction(action, function(statusCode) {
-        if (statusCode !== 200) {
+        if (statusCode == 404) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
-            /* TODO Change Error message */
-            heading: AWE.I18n.lookupTranslation('alliance.allianceLeaderVoteFailedHead'),
-            message: AWE.I18n.lookupTranslation('alliance.allianceLeaderVoteFailedText'),
+            heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedTargetAllianceNotFoundText'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+        else {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedText'),
           }); 
           WACKADOO.presentModalDialog(errorDialog);
         }
