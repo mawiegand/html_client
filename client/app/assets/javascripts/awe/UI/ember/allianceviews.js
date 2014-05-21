@@ -454,7 +454,10 @@ AWE.UI.Ember = (function(module) {
       var self = this;
       var action = AWE.Action.Fundamental.createDiplomacyRelationAction(this.getPath('alliance.id'), this.getPath('newTargetAllianceName'));
       AWE.Action.Manager.queueAction(action, function(statusCode) {
-        if (statusCode == 404) {
+        if (statusCode == 200) {
+          
+        }
+        else if (statusCode == 404) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
             heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
             message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedTargetAllianceNotFoundText'),
