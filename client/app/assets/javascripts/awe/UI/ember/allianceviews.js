@@ -383,22 +383,23 @@ AWE.UI.Ember = (function(module) {
     
     diplomacySourceRelation:  null,
     alliance:                 null,
+    targetAlliance:           null,
     controller:               null,
     
     targetAllianceName: function() {
+      var self = this;
       var targetAllianceId = this.getPath('diplomacySourceRelation.target_alliance_id');
       var targetAlliance = AWE.GS.AllianceManager.getAlliance(targetAllianceId);
       if (targetAlliance) {
         return targetAlliance.getPath('name');
       }
       else {
-        AWE.GS.AllianceManager.updateAlliance(targetAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_AGGREGATE, function() {
-          that.setNeedsUpdate();
-          return targetAlliance.getPath('name');
+        AWE.GS.AllianceManager.updateAlliance(targetAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_AGGREGATE, function(result) {
+          self.set('targetAlliance', result)
         });
       }
       
-    }.property('diplomacySourceRelation.target_alliance_id').cacheable(),
+    }.property('diplomacySourceRelation.target_alliance_id', 'targetAlliance').cacheable(),
     
     allianceClicked: function() {
       WACKADOO.activateAllianceController(this.getPath('diplomacySourceRelation.target_alliance_id'));
