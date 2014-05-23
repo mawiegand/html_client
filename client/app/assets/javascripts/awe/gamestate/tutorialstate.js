@@ -286,6 +286,10 @@ AWE.GS = (function(module) {
     finished: function() {
       return this.get('status') === module.QUEST_STATUS_FINISHED;
     }.property('status').cacheable(),
+
+    rewardDisplayed: function() {
+      return typeof this.get('mark_reward_displayed') !== "undefined" && this.get('mark_reward_displayed') !== null;
+    }.property('mark_reward_displayed').cacheable(),
     
     checkForRewards: function() {
       

@@ -126,19 +126,18 @@ AWE.UI.Ember = (function(module) {
       console.log("test before rotateQuest");
       
       var finished = this.get('finished');
+      var displayed = this.get('rewardDisplayed');
+ 
 
-      if(!finished){
-        return ;
-      }
-      else {
-
-      var angle = 0;
+        if($(window).width() >= 1023){
+          
+           if(finished){ //##################################
+           var angle = 0;
        setInterval(function(){
          angle+=1;
          
-         /*$(".dialog-reward-bg").rotate(angle);*/
+         $(".dialog-reward-bg").rotate(angle);
        },20);
-        if($(window).width() >= 1023){
           $(".dialog-reward-bg").animate({
               width: '2200px',
               height: '2200px',
@@ -155,6 +154,8 @@ AWE.UI.Ember = (function(module) {
               duration: 500,
               easing: 'easeOutElastic'
           });
+        
+        } //#################################################
 
           $(".quest-dialog-bg").animate({
               height: '477px',
@@ -165,7 +166,7 @@ AWE.UI.Ember = (function(module) {
               duration: 500,
               easing: 'easeOutElastic'
           });
-
+             
           var c=400;
           var size=92;
           var rel=0;
@@ -298,13 +299,21 @@ AWE.UI.Ember = (function(module) {
     }
     else
     {
-      
+      if(finished){ //##################################
+       var angle = 0;
+       setInterval(function(){
+         angle+=1;
+         
+         $(".dialog-reward-bg").rotate(angle);
+       },20);
+
       $(".dialog-reward-bg").animate({
           width: '1000px',
           height: '1000px',
           top: '-340px',
           left: '-500px'
       },1000)
+       } //##################################
 
       $(".quest-dialog-bg").animate({
           height: '320px',
@@ -315,6 +324,8 @@ AWE.UI.Ember = (function(module) {
           duration: 600,
           easing: 'easeOutElastic'
       });
+
+
 
       var c=400;
       var size=66;
@@ -457,7 +468,7 @@ AWE.UI.Ember = (function(module) {
     } 
         
    console.log("test after rotateQuest");
-    }
+    
     }
 
   });  

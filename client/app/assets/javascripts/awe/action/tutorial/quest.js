@@ -189,6 +189,52 @@ AWE.Action.Tutorial = (function(module) {
   
     return that;
   };
+
+//#################
+//#################
+  module.createQuestRewardDisplayedAction = function(questStateId, my) {
+      
+    // private attributes and methods //////////////////////////////////////
+    
+    var that;
+    
+  
+    // protected attributes and methods ////////////////////////////////////
+  
+    my = my || {};
+    my.questStateId = questStateId;
+    
+    // public attributes and methods ///////////////////////////////////////
+    
+    that = AWE.Action.createAction(my);    
+    
+    that.getRequestBody = function() {
+      var requestBody = {
+        tutorial_quest: {
+          status: AWE.GS.QUEST_STATUS_DISPLAYED,
+        }
+      };
+      return requestBody;
+    }
+    
+    that.getURL = function() {
+      return AWE.Config.TUTORIAL_SERVER_BASE + 'quests/' + my.questStateId;
+    }
+  
+    that.getHTTPMethod = function() {
+      return 'PUT';
+    }
+    
+    that.postProcess = function(statusCode, xhr) {
+    }
+  
+    that.questStateId = function() {
+      return my.questStateId;
+    }
+  
+    return that;
+  };
+
   
   return module;
   
