@@ -140,9 +140,11 @@
 
 <script type="text/x-handlebars" data-template-name="quest-dialog">
   <div class="modal-dialog-background">
-    <div class="horizontal-center-helper">
-      <div class="modal-dialog-spinning-background"></div>
-    </div>
+    {{#if spinningBackground}}
+      <div class="horizontal-center-helper">
+        <div class="modal-dialog-spinning-background"></div>
+      </div>
+    {{/if}}
   </div>
   <div class="horizontal-center-helper">
   

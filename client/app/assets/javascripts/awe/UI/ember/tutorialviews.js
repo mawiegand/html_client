@@ -74,6 +74,9 @@ AWE.UI.Ember = (function(module) {
     questBinding: 'questState.quest',
     questState: null,
     redeeming: false,
+    spinningBackground: false,
+    popupAnimations: false,
+    spinningAnimation: false,
 
     finished: function() {
       return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
@@ -120,354 +123,140 @@ AWE.UI.Ember = (function(module) {
       }
     }.property('quest.advisor', 'finished').cacheable(),
 
-    
-
+  
+      
+    /** runs the popup animations */
     didInsertElement: function() {
       
       // Display full animations for a Reward Dialog that hasn't been displayed before.
       
-      var finished = this.get('finished');
-      var displayed = this.getPath('questState.rewardDisplayed');
- 
-      if($(window).width() >= 1023) {  // that's not a good option! may run in window / frame / div
-        if (finished /* && !displayed*/) {  //##################################
-          var angle = 0;
-          /*setInterval(function()  {
-            angle+=1;
-            $(".dialog-reward-bg").rotate(angle);
-         },20);*/
-          
-        /*  $(".dialog-reward-bg").animate({
-              width: '2200px',
-              height: '2200px',
-              top: '-850px',
-              left: '-1100px'
-          },800)  */
-          
-          $(".dialog-reward-bg-leafs").animate({
+      var popupAnimations = this.get('popupAnimations');
+      var spinningAnimation = this.get('spinningAnimation');
+      var compressedVersion = $(window).width() < 1024; // that's not a good option! may run in window / frame / div
+      var self = this;
+                    
+      if (popupAnimations) {
+        
+        // prepare the dialog for animation
+        self.$('.quest-dialog-text > *').hide();
+        // TODO: set sizes to zero
+        
+      
+        if (!compressedVersion) {
+          self.$(".dialog-reward-bg-leafs").delay(100).animate({
             width: '977px',
             height: '493px',
             left: '-487px',
             top: '-9px'
           },{
-              duration: 500,
-              easing: 'easeOutElastic'
+            duration: 800,
+            easing: 'easeOutElastic'
           });
+        }
         
-        } //#################################################
-
-          $(".quest-dialog-bg").animate({
-              height: '477px',
-              width: '650px',
-              top: '0px',
-              left: '-325px'
-          },{
-              duration: 500,
-              easing: 'easeOutElastic'
-          });
-             
-          var c=400;
-          var size=92;
-          var rel=0;
-          var random=250;
-          var abstand=55;
-
-          var liElements=document.getElementsByClassName('item');
-
-          var r=Math.ceil(Math.random() * 100)+random;
-          $('.quest-dialog-rewards-items li:eq(0) .quest-reward-item-icon').delay(c).animate({
-              width: '83.6%',
-              height: '81%',
-              top: '0px',
-              left: '0px',
-              opacity: '1'
-          }, {
-              duration: r,
-              easing: 'easeOutBack'
-          });
-     
-          $('.quest-dialog-rewards-items li:eq(3) .quest-reward-item-icon').delay(c+abstand).animate({
-              width: '83.6%',
-              height: '81%',
-              top: '0px',
-              left: '0px',
-              opacity: '1'
-          }, {
-              duration: r,
-              easing: 'easeOutBack'
-          });
-        
-          $('.quest-dialog-rewards-items li:eq(1) .quest-reward-item-icon').delay(c+abstand*2).animate({
-              width: '83.6%',
-              height: '81%',
-              top: '0px',
-              left: '0px',
-              opacity: '1'
-          }, {
-              duration: r,
-              easing: 'easeOutBack'
-          });
-
-          $('.quest-dialog-rewards-items li:eq(2) .quest-reward-item-icon').delay(c+abstand*3).animate({
-              width: '83.6%',
-              height: '81%',
-              top: '0px',
-              left: '0px',
-              opacity: '1'
-          }, {
-              duration: r,
-              easing: 'easeOutBack'
-          });
-
-          if(liElements.length==3){
-            $('.quest-dialog-rewards-items li:eq(1) .quest-reward-item-icon').delay(c+abstand*2).animate({
+        self.$(".quest-dialog-bg").delay(100).animate({
+          height: '477px',
+          width: '650px',
+          top: '0px',
+          left: '-325px'
+        }, {
+          duration: 800,
+          easing: 'easeOutElastic',
+          complete: function() {
+            
+            var random  = 250;
+            var abstand = 250;
+            var base    = 100;
+    
+            self.$('.quest-dialog-text > *').show();
+            
+            self.$('.quest-dialog-rewards-items li').each(function(index) {
+              var r = Math.ceil(Math.random() * random)+base;
+              var d = ((index+1) % 2) * index * abstand/4 + (index % 2) * (abstand - index*abstand/4);
+              
+              self.$(this).find('.quest-reward-item-icon').delay(d).animate({
                 width: '83.6%',
                 height: '81%',
                 top: '0px',
                 left: '0px',
                 opacity: '1'
-            }, {
+              }, {
                 duration: r,
                 easing: 'easeOutBack'
+              });
+              
+              self.$(this).find(".quest-reward-item-number").delay(d+abstand/2).animate({
+                opacity: 1.0,
+              },{
+                duration: r / 2,
+              });
+              
             });
-          }
-
-          c=c+165;
-
-          var bottomFE=49;
-
-          $(".quest-dialog-rewards-items li:eq(0) .quest-reward-item-number").delay(c).animate({
-              fontSize: '42px',
-              top: bottomFE+'px',
-              background:'green'
-          },{
-              duration: 150,
-              easing: 'easeOutBack'
-          });
-
-          $(".quest-dialog-rewards-items li:eq(3) .quest-reward-item-number").delay(c+abstand).animate({
-              fontSize: '42px',
-              top: bottomFE+'px',
-              background:'green'
-          },{
-              duration: 150,
-              easing: 'easeOutBack'
-          });
-
-          if(liElements.length!=3){
-            $(".quest-dialog-rewards-items li:eq(1) .quest-reward-item-number").delay(c+abstand*2).animate({
-                fontSize: '42px',
-                top: bottomFE+'px',
-                background:'green'
-            },{
-                duration: 150,
-                easing: 'easeOutBack'
-            });
-          }
-
-          $(".quest-dialog-rewards-items li:eq(2) .quest-reward-item-number").delay(c+abstand*3).animate({
-              fontSize: '42px',
-              top: bottomFE+'px',
-              background:'green'
-          },{
-              duration: 150,
-              easing: 'easeOutBack'
-          });
-
-          if(liElements.length==3){
-            $(".quest-dialog-rewards-items li:eq(1) .quest-reward-item-number").delay(c+abstand*2).animate({
-                fontSize: '42px',
-                top: bottomFE+'px',
-                background:'green'
-            },{
-                duration: 150,
-                easing: 'easeOutBack'
-            });
-          }
-
-          $(".quest-dialog-button").delay(730).animate({
+            
+            self.$(".quest-dialog-button").delay(base+abstand+random).animate({
               width: '26.5%',
               height: '27.1%',
               top: '69%',
               left: '70%'
-          }, {
+            }, {
               duration: 250,
-              easing: 'easeOutBack'
-       
-      }) 
-    }
-    else
-    {
-      if (finished) { //##################################
-       var angle = 0;
-       setInterval(function(){
-         angle+=1;
-         
-         $(".dialog-reward-bg").rotate(angle);
-       },20);
-
-      $(".dialog-reward-bg").animate({
-          width: '1000px',
-          height: '1000px',
-          top: '-340px',
-          left: '-500px'
-      },1000)
-       } //##################################
-
-      $(".quest-dialog-bg").animate({
-          height: '320px',
-          width: '436px',
-          top: '0px',
-          left: '-218px'
-      },{
-          duration: 600,
-          easing: 'easeOutElastic'
-      });
-
-
-
-      var c=400;
-      var size=66;
-      var rel=0;
-      var random=250;
-      var abstand=55;
-
-      var liElements=document.getElementsByClassName('item');
-
-      var r=Math.ceil(Math.random() * 100)+random;
-      $('.quest-dialog-rewards-items li:eq(0) .quest-reward-item-icon').delay(c).animate({
-          width: size+'px',
-          height: size+'px',
-          top: '0px',
-          left: '0px',
-          opacity: '1'
-      }, {
-          duration: r,
-          easing: 'easeOutBack'
-      });
- 
-      $('.quest-dialog-rewards-items li:eq(3) .quest-reward-item-icon').delay(c+abstand).animate({
-          width: size+'px',
-          height: size+'px',
-          top: '0px',
-          left: '0px',
-          opacity: '1'
-      }, {
-          duration: r,
-          easing: 'easeOutBack'
-      });
-    
-      $('.quest-dialog-rewards-items li:eq(1) .quest-reward-item-icon').delay(c+abstand*2).animate({
-          width: size+'px',
-          height: size+'px',
-          top: '0px',
-          left: '0px',
-          opacity: '1'
-      }, {
-          duration: r,
-          easing: 'easeOutBack'
-      });
-
-      $('.quest-dialog-rewards-items li:eq(2) .quest-reward-item-icon').delay(c+abstand*3).animate({
-          width: size+'px',
-          height: size+'px',
-          top: '0px',
-          left: '0px',
-          opacity: '1'
-      }, {
-          duration: r,
-          easing: 'easeOutBack'
-      });
-
-      if(liElements.length==3){
-        $('.quest-dialog-rewards-items li:eq(1) .quest-reward-item-icon').delay(c+abstand*2).animate({
-            width: size+'px',
-            height: size+'px',
-            top: '0px',
-            left: '0px',
-            opacity: '1'
-        }, {
-            duration: r,
-            easing: 'easeOutBack'
+              easing: 'easeOutBack',
+              complete: function() {
+                if (spinningAnimation) {
+                  self.set('spinningBackground', true);
+                }   
+              }
+            });
+          },
         });
       }
-
-      c=c+165;
-
-      var bottomFE=40;
-      var fs=25;
-      var leftFE=-12;
-
-      $(".quest-dialog-rewards-items li:eq(0) .quest-reward-item-number").delay(c).animate({
-          fontSize: fs+'px',
-          top: bottomFE+'px',
-          background:'green',
-          left: leftFE+'px'
-      },{
-          duration: 150,
-          easing: 'easeOutBack'
-      });
-
-      $(".quest-dialog-rewards-items li:eq(3) .quest-reward-item-number").delay(c+abstand).animate({
-          fontSize: fs+'px',
-          top: bottomFE+'px',
-          background:'green',
-          left: leftFE+'px'
-      },{
-          duration: 150,
-          easing: 'easeOutBack'
-      });
-
-      if(liElements.length!=3){
-        $(".quest-dialog-rewards-items li:eq(1) .quest-reward-item-number").delay(c+abstand*2).animate({
-            fontSize: fs+'px',
-            top: bottomFE+'px',
-            background:'green',
-          left: leftFE+'px'
-        },{
-            duration: 150,
-            easing: 'easeOutBack'
-        });
-      }
-
-      $(".quest-dialog-rewards-items li:eq(2) .quest-reward-item-number").delay(c+abstand*3).animate({
-          fontSize: fs+'px',
-          top: bottomFE+'px',
-          background:'green',
-          left: leftFE+'px'
-      },{
-          duration: 150,
-          easing: 'easeOutBack'
-      });
-
-      if(liElements.length==3){
-        $(".quest-dialog-rewards-items li:eq(1) .quest-reward-item-number").delay(c+abstand*2).animate({
-            fontSize: fs+'px',
-            top: bottomFE+'px',
-            background:'green',
-            left: leftFE+'px'
-        },{
-            duration: 150,
-            easing: 'easeOutBack'
-        });
-      }
-
-      $(".quest-dialog-button").delay(730).animate({
-          width: '106px',
-          height: '74px',
-          top: '71%',
-          left: '70%'
-      }, {
-          duration: 250,
-          easing: 'easeOutBack'
-   
-      })
+      else {
       
-      
-    } 
+        if (!compressedVersion) {
+          self.$(".dialog-reward-bg-leafs").css({
+            width: '977px',
+            height: '493px',
+            left: '-487px',
+            top: '-9px'
+          });
+        }
         
-   console.log("test after rotateQuest");
-    
+        self.$(".quest-dialog-bg").css({
+          height: '477px',
+          width: '650px',
+          top: '0px',
+          left: '-325px'
+        })
+            
+        self.$('.quest-dialog-rewards-items li .quest-reward-item-icon').css({
+          width: '83.6%',
+          height: '81%',
+          top: '0px',
+          left: '0px',
+          opacity: '1'
+        });
+              
+        self.$(".quest-dialog-rewards-items li .quest-reward-item-number").css({
+          opacity: 1.0,
+        });
+                          
+        self.$(".quest-dialog-button").delay(50).animate({
+          width: '26.5%',
+          height: '27.1%',
+          top: '69%',
+          left: '70%'
+        }, {
+          duration: 250,
+          easing: 'easeOutBack',
+          complete: function() {
+            if (spinningAnimation) {
+              self.set('spinningBackground', true);
+            }   
+          }
+        });
+        
+      }
+        
     }
 
   });  
