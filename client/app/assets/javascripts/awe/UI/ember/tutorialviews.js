@@ -132,17 +132,17 @@ AWE.UI.Ember = (function(module) {
       if($(window).width() >= 1023) {  // that's not a good option! may run in window / frame / div
         if (finished /* && !displayed*/) {  //##################################
           var angle = 0;
-          setInterval(function()  {
+          /*setInterval(function()  {
             angle+=1;
             $(".dialog-reward-bg").rotate(angle);
-         },20);
+         },20);*/
           
-          $(".dialog-reward-bg").animate({
+        /*  $(".dialog-reward-bg").animate({
               width: '2200px',
               height: '2200px',
               top: '-850px',
               left: '-1100px'
-          },800)
+          },800)  */
           
           $(".dialog-reward-bg-leafs").animate({
             width: '977px',

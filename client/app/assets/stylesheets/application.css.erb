@@ -571,7 +571,17 @@ h3 {
 .horizontal-center-helper { position: absolute; left: 50%; top: 0; }
 
 
-.modal-dialog-background { position: fixed; background-color: #333; opacity: 0.6; top: 0px; bottom:0px; width: 100%; z-index:255; }
+.modal-dialog-background { 
+  position: fixed; 
+  background-color: #333; 
+  opacity: 0.6; 
+  top: 0px; 
+  bottom:0px; 
+  width: 100%; 
+  z-index:255; 
+  overflow: hidden;
+}
+
 .modal-dialog-pane { 
   position: absolute; 
   margin-left: -300px;
@@ -6567,19 +6577,25 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   transition: background-image 0s;
 }
 
-.dialog-reward-bg{
-  position: absolute;
+
+.modal-dialog-spinning-background {
   background-size: 100%;
-  width: 0px;
-  height: 0px;
-  top: 250px;
-  left: 0px;
-  z-index: 256;
-  -webkit-animation-name: rotate;
-  -webkit-animation-duration: 0.5s;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-transition-timing-function: linear;
+  
+  width: 2200px;
+  height: 2200px;
+  margin-top: -850px;
+  margin-left: -1100px;
+  
+  -webkit-animation:spin 6s linear infinite;
+  -moz-animation:spin 6s linear infinite;
+  -ms-animation:spin 6s linear infinite;
+  animation:spin 6s linear infinite;
 }
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@-ms-keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 .quest-resource-icon.resource_cash {
   background-image: url("<%= asset_path 'icons/toad-xl.png' %>");
@@ -6634,7 +6650,7 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   background-image: url("<%= asset_path("quest-dialog-bg-middle.png") %>");
 }
 
-.dialog-reward-bg{
+.modal-dialog-spinning-background {
   background-image: url('/client/assets/quest-dialog-light.png');
 }
 
