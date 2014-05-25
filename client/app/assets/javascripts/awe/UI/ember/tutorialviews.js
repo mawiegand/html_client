@@ -130,7 +130,7 @@ AWE.UI.Ember = (function(module) {
       var displayed = this.getPath('questState.rewardDisplayed');
  
       if($(window).width() >= 1023) {  // that's not a good option! may run in window / frame / div
-        if (finished && /*!displayed*/) {  //##################################
+        if (finished /* && !displayed*/) {  //##################################
           var angle = 0;
           setInterval(function()  {
             angle+=1;
