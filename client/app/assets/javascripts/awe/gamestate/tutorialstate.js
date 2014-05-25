@@ -288,8 +288,8 @@ AWE.GS = (function(module) {
     }.property('status').cacheable(),
 
     rewardDisplayed: function() {
-      return typeof this.get('mark_reward_displayed') !== "undefined" && this.get('mark_reward_displayed') !== null;
-    }.property('mark_reward_displayed').cacheable(),
+      return typeof this.get('reward_displayed_at') !== "undefined" && this.get('reward_displayed_at') !== null;
+    }.property('reward_displayed_at').cacheable(),
     
     checkForRewards: function() {
       
@@ -1497,6 +1497,9 @@ AWE.GS = (function(module) {
       if (questState.get('status') === AWE.GS.QUEST_STATUS_NEW) {      
         that.setQuestDisplayed(questState);
       }
+      if (!questState.get('rewardDisplayed')) {
+        this.setQuestRewardDisplayed(questState);
+      }
     }
     
     that.showQuestFinishedDialog = function(questState) {
@@ -1522,6 +1525,21 @@ AWE.GS = (function(module) {
         },
       });          
       WACKADOO.presentModalDialog(dialog);
+      
+      if (!questState.get('rewardDisplayed')) {
+        this.setQuestRewardDisplayed(questState);
+      }
+    }
+    
+    that.setQuestRewardDisplayed = function(questState) {
+      var questRewardDisplayedAction = AWE.Action.Tutorial.createQuestRewardDisplayedAction(questState.getId());
+      questRewardDisplayedAction.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          that.updateTutorialState(function() {
+            questState.set('reward_displayed_at',  questState.get('reward_displayed_at') || new Date());
+          });
+        }
+      });
     }
     
     that.setQuestDisplayed = function(questState) {

@@ -210,19 +210,19 @@ AWE.Action.Tutorial = (function(module) {
     
     that.getRequestBody = function() {
       var requestBody = {
-        tutorial_quest: {
-          status: AWE.GS.QUEST_STATUS_DISPLAYED,
+        action_tutorial_mark_quest_reward_displayed_action: {
+          quest_id: my.questStateId,
         }
       };
       return requestBody;
     }
     
     that.getURL = function() {
-      return AWE.Config.TUTORIAL_SERVER_BASE + 'quests/' + my.questStateId;
+      return AWE.Config.ACTION_SERVER_BASE + 'tutorial/mark_quest_reward_displayed_actions';
     }
   
     that.getHTTPMethod = function() {
-      return 'PUT';
+      return 'POST';
     }
     
     that.postProcess = function(statusCode, xhr) {

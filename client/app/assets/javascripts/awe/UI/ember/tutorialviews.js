@@ -122,22 +122,21 @@ AWE.UI.Ember = (function(module) {
 
     
 
-    didInsertElement: function(){
-      console.log("test before rotateQuest");
+    didInsertElement: function() {
+      
+      // Display full animations for a Reward Dialog that hasn't been displayed before.
       
       var finished = this.get('finished');
-      var displayed = this.get('rewardDisplayed');
+      var displayed = this.getPath('questState.rewardDisplayed');
  
-
-        if($(window).width() >= 1023){
+      if($(window).width() >= 1023) {  // that's not a good option! may run in window / frame / div
+        if (finished && /*!displayed*/) {  //##################################
+          var angle = 0;
+          setInterval(function()  {
+            angle+=1;
+            $(".dialog-reward-bg").rotate(angle);
+         },20);
           
-           if(finished){ //##################################
-           var angle = 0;
-       setInterval(function(){
-         angle+=1;
-         
-         $(".dialog-reward-bg").rotate(angle);
-       },20);
           $(".dialog-reward-bg").animate({
               width: '2200px',
               height: '2200px',
@@ -299,7 +298,7 @@ AWE.UI.Ember = (function(module) {
     }
     else
     {
-      if(finished){ //##################################
+      if (finished) { //##################################
        var angle = 0;
        setInterval(function(){
          angle+=1;
