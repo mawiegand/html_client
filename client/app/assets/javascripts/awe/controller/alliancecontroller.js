@@ -57,6 +57,15 @@ AWE.Controller = (function(module) {
         AWE.GS.CharacterManager.updateMembersOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
       }
     }
+    
+    that.updateDiplomacyRelations = function(allianceId) {
+      if (!allianceId) { return ; }
+      var relations = AWE.GS.DiplomacyRelationManager.getDiplomacyRelationsOfAlliance(allianceId);
+      if ((!relations || relations.length == 0) ||
+          (relations && AWE.GS.DiplomacyRelationManager.lastUpdateAtForSourceAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
+        AWE.GS.DiplomacyRelationManager.updateDiplomacyRelationsOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      }
+    }
 
     that.updateShouts = function(allianceId, forceUpdate) {
       var self = this;
@@ -97,6 +106,7 @@ AWE.Controller = (function(module) {
       that.updateAlliance(this.allianceId);
       that.updateMembers(this.allianceId);
       if (this.allianceId == AWE.GS.game.currentCharacter.alliance_id) {
+        that.updateDiplomacyRelations(this.allianceId);
         that.updateShouts(this.allianceId);     // side-effect: starts another update, if older than 60s
       }
     }

@@ -40,6 +40,11 @@ AWE.GS = (function(module) {
       return id ? AWE.GS.CharacterAccess.getHashableCollectionForAlliance_id(id) : null;
     }.property('id').cacheable(),
     
+    hashableDiplomacySourceRelations: function() {
+      var id = this.get('id');
+      return id ? AWE.GS.DiplomacyRelationAccess.getHashableCollectionForSource_alliance_id(id) : null;
+    }.property('id').cacheable(),
+    
     membersCount: function() {
       var members = this.get('members');
       return members.filter(function(member) {
@@ -50,6 +55,10 @@ AWE.GS = (function(module) {
     members: function() {
       return this.getPath('hashableMembers.collection');
     }.property('hashableMembers.changedAt').cacheable(),
+    
+    diplomacySourceRelations: function() {
+      return this.getPath('hashableDiplomacySourceRelations.collection');
+    }.property('hashableDiplomacySourceRelations.changedAt').cacheable(),
     
     shouts: function() {
       log('SHOUTS')
