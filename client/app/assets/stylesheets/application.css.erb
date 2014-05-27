@@ -1613,6 +1613,6760 @@ h1.slot-tooltip {
   background-size: 100% 100%;
   width: 20%;
   height: 22%;
+  top: 2%;
+  position: absolute;
+  right: 0%;
+}
+
+.advisor.chef, .advisor.chef-quest-start { 
+  background: url('<%= asset_path("advisors/quest-dialog-chef.png") %>');
+}
+.advisor.chef.tiny { 
+  background: url('<%= asset_path("advisors/head_chef_colored_tiny.png") %>');
+}
+
+.advisor.chef.scetched{
+  background: url('<%= asset_path("advisors/quest-advisor-scetched-chef.png") %>');
+  background-size: 100% 100%;
+  width: 20%;
+  height: 22%;
+  top: 1%;
+  right: 35%;
+  position: absolute;
+}
+
+.advisor.neanderthal { 
+  background: url('<%= asset_path("advisors/head_neanderthal_colored_small.png") %>');
+}
+
+.advisor.girl-quest-start { 
+  background: url('<%= asset_path("advisors/quest-dialog-girl.png") %>');
+}
+
+.advisor.girl-quest-end { 
+  background: url('<%= asset_path("advisors/head_girl_colored_small_quest_end.png") %>');
+}
+
+.advisor.girl.scetched{
+  background: url('<%= asset_path("advisors/quest-advisor-scetched-girl.png") %>');
+  background-size: 100% 100%;
+  width: 20%;
+  height: 22%;
+  top: 2%;
+  right: 18%;
+  position: absolute;
+}
+
+.advisor.warrior-quest-end { 
+  background: url('<%= asset_path("advisors/head_warrior_colored_small_quest_end.png") %>');
+}
+.advisor.chef-quest-end { 
+  background: url('<%= asset_path("advisors/head_chef_colored_small_quest_end.png") %>');
+}
+
+
+.controls-bar {
+  width: 100%;
+  margin: 8px 0px 0px 0px;
+  padding: 0px;
+}
+
+
+
+#text-input-dialog h1 {
+  font-size: 24px;
+}
+
+#army-details, #shop { 
+  margin-left: -250px;
+  margin-top: -150px;
+  width: 500px; height: 400px;
+}
+
+.loaddialog {
+  position: absolute;
+  width: 800px;
+  margin-left: -400px;
+  height: 400px;
+  margin-top: -200px;
+  overflow: hidden;
+}
+
+loaddialog-positioner {
+  position: relative;
+  top: 0px; left: 0px;
+}
+
+.loaddialog-heading {
+  position: absolute;
+  left: 225px; top: 310px;
+  font-size: 27px;
+  line-height: 27px;
+  font-weight: normal;
+}
+
+.loaddialog-progressbar {
+  position: absolute;
+  left: 50px;
+  top: 50px;
+  width: 665px; height: 300px;
+  background: url('<%= asset_path("splashscreen/crack_sw.jpg") %>');
+} 
+
+.loaddialog-progress {
+  width: 0%; height: 100%;
+  background: url('<%= asset_path("splashscreen/crack_color.jpg") %>');
+  overflow:hidden;
+}
+
+.loaddialog-image {
+  position: absolute;
+  width: 241px; height: 304px;
+  margin-top: 60px;
+  margin-left: 510px;
+}
+
+
+/* ===== non-semantic helper classes ========================================
+   Settlement Dialogs
+   ========================================================================== */
+
+
+.settlement-screen {
+  min-height: 2400px; /** just a hack until the background problem is solved */
+}
+
+.settlement-screen.outpost-screen,
+.settlement-screen.base-screen {
+  min-width: 1024px;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: #000;
+  height: 100%;
+}   
+   
+   
+.settlement-dialog-background { 
+  position: absolute; 
+  background-color: #333; 
+  opacity: 0.0; 
+  width: 100%; 
+  min-height: 100%; 
+  z-index:5; 
+}
+
+.settlement-dialog-window, .settlement-dialog-window2 {
+  position: absolute; 
+  margin-left: 20px;
+  margin-top:  60px;
+  width: 758px; 
+  padding: 0px;
+  z-index:26;
+}
+
+.fortress-screen .settlement-dialog-window {
+  margin-top: 160px;
+}
+
+.settlement-dialog-header { 
+  margin-left: 2px;
+  width: 758px; 
+  height: 40px;
+  padding: 0;
+  background-image: url('<%= asset_path("ui/settlement/details_window_header.png") %>');
+}
+
+.settlement-dialog-footer { 
+  margin-left: 2px;
+  margin-bottom:  0px;
+  width: 758px; 
+  height: 40px;
+  padding: 0;
+  background-image: url('<%= asset_path("ui/settlement/details_window_footer.png") %>');
+}
+
+.settlement-dialog-pane { 
+  width: 660px; 
+  min-height: 480px;
+  padding: 6px 49px 6px 49px;
+  background-image: url('<%= asset_path("ui/settlement/details_window_tile.png") %>');
+}
+
+.settlement-dialog-window2 .settlement-dialog-pane { 
+  width: 660px; 
+  height: 530px;
+  padding: 6px 49px 6px 49px;
+  background-image: url('<%= asset_path("ui/settlement/details_window_tile.png") %>');
+}
+
+.settlement-dialog-window2 .settlement-dialog-pane .wrapper { 
+  width:680px;
+  height: 500px;
+  margin-top:30px;
+  overflow:auto;
+}
+
+.settlement-dialog-pane a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.settlement-dialog-pane a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+.settlement-dialog-pane a.close:hover {
+  opacity: 0.6;
+}
+
+.settlement-dialog-pane a.upgrade, 
+.settlement-dialog-pane a.initiate {
+  margin-top: 6px;
+  color: #bbe166;
+  float: right;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid #bbe166;
+  border-radius: 5px;
+  padding: 4px 10px;
+  background-color: #FdfFFa;
+}
+
+.settlement-dialog-pane .upgrade, 
+.settlement-dialog-pane .initiate {
+  margin-top: 6px;
+  color: #333;
+  float: right;
+  display: block;
+  text-decoration: none;
+}
+
+.settlement-dialog-pane .destroy.disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.settlement-dialog-pane a.destroy {
+  margin-top: 6px;
+  color: #E6BBAA;
+  float: right;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid #E6BBAA;
+  border-radius: 5px;
+  padding: 4px 10px;
+  background-color: #FFFDFA;
+}
+
+.settlement-dialog-pane .destroy {
+  margin-top: 6px;
+  color: #333;
+  float: right;
+  display: block;
+  text-decoration: none;
+}
+
+.settlement-dialog-pane a.upgrade:hover, .settlement-dialog-pane a.initiate:hover, .settlement-dialog-pane a.destroy:hover {
+  opacity: 0.6;
+}
+
+.settlement-dialog-pane a img {
+  width: 22px;
+  height: 22px;
+}
+
+
+.settlement-dialog-select-building.settlement-dialog-footer {
+  margin-bottom: 400px; 
+}
+
+
+span.bonus {
+  color: #bbe166;
+}
+
+.building-option-details {
+  display: inline-block;
+  width: 0px;
+  margin: 0px;
+  padding: 0px;
+  margin-left: -4px;
+}
+
+.building-option-details.same {
+  width: 100%;
+  float: left;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.building-option {
+  display: inline-block;
+  width: 117px;
+  height: 170px;
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  border: 2px solid #E2E2E2;
+  padding: 10px;
+  margin-right: 2px;
+  margin-bottom: 8px;
+  
+  cursor: pointer; 
+  vertical-align: top;
+  
+  background: #ddf1a4; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #e9f3c3 0%,  #ddf1a4 100%);
+  background: -moz-linear-gradient(top,  #e9f3c3,  #ddf1a4); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#e9f3c3,  #ddf1a4);
+}
+
+.building-option p {
+  margin: 0px 0px 0px 0px;
+  padding: 0px;
+  text-align: center;
+  font-size: 12px;
+  height: 32px;
+}
+
+.building-option-action {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  height: 184px; 
+}
+
+.requirement-group ul {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+
+.training-option.requirement-unmet,
+.building-option.requirement-unmet {
+  background: #ecd8ce; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #f6eae5 0%,  #ecd8ce 100%);
+  background: -moz-linear-gradient(top,  #f6eae5,  #ecd8ce); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#f6eae5,  #ecd8ce);
+}
+
+.settlement-dialog-building-details .building-option-image {
+  float: left;
+}
+
+.settlement-dialog-building-details .building-option-image.next-level {
+  float: right;
+}
+
+.building-category {
+  margin-top: -24px;
+  font-style: italic;
+  padding-bottom: 16px;
+}
+
+.settlement-dialog-building-details .building-description-box {
+  float: left;
+  min-height: 150px;
+  width: 500px;
+  margin-left: 20px;
+  display: inline-block;
+}
+
+
+
+
+
+
+.building-option:hover {
+  background: #f8fbee; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #ffffff 0%,  #f8fbee 100%);
+  background: -moz-linear-gradient(top,  #ffffff,  #f8fbee); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#ffffff,  #f8fbee);
+  
+  cursor: pointer;
+}
+
+.fortress-screen .building-option-image {
+  width: 53px;
+  height: 101px;
+  margin-left: 23px;
+}
+
+.fortress-screen .building-option-image.building_fortress_fortification {
+  width: 120px;
+  height: 90px;
+  margin-left: 0px;
+  margin-top: 30px;
+} 
+
+.outpost-screen .building-option-image,
+.base-screen .building-option-image {
+  width: 120px;
+  height:150px;
+  margin-left: 0px;
+  background: url('<%= asset_path("settlements/base/building_category_large_building.png") %>');
+}
+
+.outpost-screen .settlement-dialog-select-building .building-option-image,
+.base-screen .settlement-dialog-select-building .building-option-image {
+  margin-top: -8px;
+  margin-bottom: 2px;
+}
+
+.base-screen .settlement-quest-advisor {
+  position: absolute;
+  top: 420px;
+  left: 1080px;
+  width: 135px;
+  height: 199px;
+  background: url('<%= asset_path("advisors/amazon.png") %>');
+  cursor: pointer;
+}
+
+
+/** image for base and outpost buildings */
+.building-option-image.building_quarry {
+  background: url('<%= asset_path("settlements/base/building_quarry_large.png") %>');
+}
+.building-option-image.building_quarry_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_quarry_large.png") %>');
+}
+.building-option-image.building_chief_cottage {
+  background: url('<%= asset_path("settlements/base/building_chief_cottage_large.png") %>');
+}
+.building-option-image.building_logger   {
+  background: url('<%= asset_path("settlements/base/building_logger_large.png") %>');
+}
+.building-option-image.building_logger_2   {
+  background: url('<%= asset_path("settlements/base/building_copper_logger_large.png") %>');
+}
+.building-option-image.building_barracks {
+  background: url('<%= asset_path("settlements/base/building_barracks_large.png") %>');
+}
+.building-option-image.building_campfire {
+  background: url('<%= asset_path("settlements/base/building_campfire_large.png") %>');
+}
+.building-option-image.building_alliance_hall {
+  background: url('<%= asset_path("settlements/base/building_alliance_hall_large.png") %>');
+}
+.building-option-image.building_tavern {
+  background: url('<%= asset_path("settlements/base/building_tavern_large.png") %>');
+}
+.building-option-image.building_special_gatherer {
+  background: url('<%= asset_path("settlements/base/building_special_gatherer_large.png") %>');
+}
+.building-option-image.building_cottage  {
+  background: url('<%= asset_path("settlements/base/building_cottage_large.png") %>');
+}
+.building-option-image.building_cottage_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_cottage_large.png") %>');
+}
+.building-option-image.building_firing_range {
+  background: url('<%= asset_path("settlements/base/building_firing_range_large.png") %>');
+}
+.building-option-image.building_furrier  {
+  background: url('<%= asset_path("settlements/base/building_furrier_large.png") %>');
+}
+.building-option-image.building_furrier_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_furrier_large.png") %>');
+}
+.building-option-image.building_gatherer {
+  background: url('<%= asset_path("settlements/base/building_gatherer_large.png") %>');
+}
+.building-option-image.building_stud     {
+  background: url('<%= asset_path("settlements/base/building_stud_large.png") %>');
+}
+.building-option-image.building_workshop {
+  background: url('<%= asset_path("settlements/base/building_workshop_large.png") %>');
+}
+.building-option-image.building_storage {
+  background: url('<%= asset_path("settlements/base/building_storage_large.png") %>');
+}
+.building-option-image.building_storage_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_storage_large.png") %>');
+}
+.building-option-image.building_copper_smelter {
+  background: url('<%= asset_path("settlements/base/building_copper_smelter_large.png") %>');
+}
+.building-option-image.building_garrison {
+  background: url('<%= asset_path("settlements/base/building_garrison_large.png") %>');
+}
+.building-option-image.building_command_post {
+  background: url('<%= asset_path("settlements/base/building_command_post_large.png") %>');
+}
+.building-option-image.building_training_cave {
+  background: url('<%= asset_path("settlements/base/building_training_cave_large.png") %>');
+}
+.building-option-image.building_artifact_stand {
+  background: url('<%= asset_path("settlements/base/building_artifact_stand_large.png") %>');
+}
+
+
+/** special colony buildings */
+.building-option-image.building_haunt {
+  background: url('<%= asset_path("settlements/colony/building_haunt_large.png") %>');
+}
+.building-option-image.building_altar {
+  background: url('<%= asset_path("settlements/colony/building_altar_large.png") %>');
+}
+.building-option-image.building_field_camp {
+  background: url('<%= asset_path("settlements/colony/building_field_camp_large.png") %>');
+}
+
+/** image for building_siege_tower */
+.building-option-image.building_siege_tower {
+  background: url('<%= asset_path("settlements/fortress/building_siege_tower_small.png") %>');
+}
+/** image for building_infantry_tower */
+.building-option-image.building_infantry_tower {
+  background: url('<%= asset_path("settlements/fortress/building_infantry_tower_small.png") %>');
+}
+/** image for building_artillery_tower */
+.building-option-image.building_artillery_tower {
+  background: url('<%= asset_path("settlements/fortress/building_artillery_tower_small.png") %>');
+} 
+/** image for building_cavalry_tower */
+.building-option-image.building_cavalry_tower {
+  background: url('<%= asset_path("settlements/fortress/building_cavalry_tower_small.png") %>');
+}
+/** image for building_fortress_fortification*/
+.building-option-image.building_fortress_fortification {
+  background: url('<%= asset_path("settlements/fortress/fortress_main_building_small.png") %>');
+}
+
+.building-option-image .level {
+  font-size: 24px;
+  border: 4px solid #444;
+  background-color: #BBB;
+  border-radius: 9px;
+  color: #444;
+  width: 32px;
+  padding: 8px 0px;
+  text-align: center;
+}
+
+
+.outpost-screen .building-option-image.size1,
+.base-screen .building-option-image.size1 {
+  background-position: -120px 0px;
+}
+.outpost-screen .building-option-image.size2,
+.base-screen .building-option-image.size2 {
+  background-position: -240px 0px;
+}
+.outpost-screen .building-option-image.size3,
+.base-screen .building-option-image.size3 {
+  background-position: -360px 0px;
+}
+.outpost-screen .building-option-image.size4,
+.base-screen .building-option-image.size4 {
+  background-position: -480px 0px;
+}
+.outpost-screen .building-option-image.size5,
+.base-screen .building-option-image.size5 {
+  background-position: -600px 0px;
+}
+.outpost-screen .building-option-image.size6,
+.base-screen .building-option-image.size6 {
+  background-position: -720px 0px;
+}
+
+
+.fortress-screen .building-option-image.size1 {
+  background-position: -53px 0px;
+}
+.fortress-screen .building-option-image.size2 {
+  background-position: -106px 0px;
+}
+.fortress-screen .building-option-image.size3 {
+  background-position: -159px 0px;
+}
+
+.fortress-screen .building-option-image.building_fortress_fortification.size1, .fortress-screen .queue-image.building_fortress_fortification.size1 {
+  background-position: -0px 0px;
+}
+.fortress-screen .building-option-image.building_fortress_fortification.size2, .fortress-screen .queue-image.building_fortress_fortification.size1 {
+  background-position: -120px 0px;
+}
+.fortress-screen .building-option-image.building_fortress_fortification.size3, .fortress-screen .queue-image.building_fortress_fortification.size1 {
+  background-position: -240 0px;
+}
+
+
+.training-option {
+  float: left;
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+  padding: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  word-wrap: break-word;
+  border: 2px solid #E2E2E2;
+  background: #ddf1a4; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #e9f3c3 0%,  #ddf1a4 100%);
+  background: -moz-linear-gradient(top,  #e9f3c3,  #ddf1a4); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#e9f3c3,  #ddf1a4);
+}
+
+.training-option.selected,
+.training-option:hover {
+  background: #f8fbee; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #ffffff 0%,  #f8fbee 100%);
+  background: -moz-linear-gradient(top,  #ffffff,  #f8fbee); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#ffffff,  #f8fbee);
+}
+
+
+
+
+.queue-list {
+  position: absolute;
+  top: 160px;
+  left: 950px;
+  z-index: 0;
+  text-shadow: none;
+}
+
+.queue-list-pane {
+  padding: 6px 10px 10px 10px;
+  width: 260px;
+  margin: 20px;
+  background-color: rgba(0,0,0,0.6);
+  -moz-border-radius: 12px;
+  border-radius:      12px;
+}
+
+.queue-length {
+  float:right;
+  color: #fff;
+}
+.queue-list h1 {
+  color: #fff;
+  padding: 0px;
+  font-size: 16px;
+  margin: 0px;
+  margin-bottom: 6px;
+}
+
+
+.queue-job-list {
+  height: 338px;
+}
+
+.queue-job-list.capacity-0 {
+  height: 338px;
+}
+.queue-job-list.capacity-1 {
+  height: 85px;
+}
+.queue-job-list.capacity-2 {
+  height: 169px;
+}
+.queue-job-list.capacity-3 {
+  height: 254px;
+}
+.queue-job-list.capacity-4 {
+  height: 338px;
+}
+.queue-job-list.capacity-5 {
+  height: 423px;
+}
+.queue-job-list.capacity-6 {
+  height: 507px;
+}
+
+
+.queue-job-list.empty {
+  height: 30px;
+}
+
+.queue-job {
+  float: left;
+  width: 240px;
+  height: 60px;
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  border: 1px solid gray;
+  padding: 10px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  
+  background: #f8fbee; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #ffffff 0%,  #f8fbee 100%);
+  background: -moz-linear-gradient(top,  #ffffff,  #f8fbee); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#ffffff,  #f8fbee);
+}
+
+.queue-job p {
+  margin: 0px;
+}
+
+.queue-job.first {
+  background: #ecd8ce; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #f6eae5 0%,  #ecd8ce 100%);
+  background: -moz-linear-gradient(top,  #f6eae5,  #ecd8ce); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#f6eae5,  #ecd8ce);
+  
+}
+
+.queue-job.active {
+  background: #ddf1a4; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #e9f3c3 0%,  #ddf1a4 100%);
+  background: -moz-linear-gradient(top,  #e9f3c3,  #ddf1a4); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#e9f3c3,  #ddf1a4);
+}
+
+.queue-job-image {
+  float: left;
+}
+
+.fortress-screen .queue-list {
+  top: 260px;
+}
+
+.fortress-screen .queue-job-image {
+  width: 53px;
+  height: 101px;
+  margin: -32px 6px 0px -8px;
+}
+
+.outpost-screen .queue-job-image,
+.base-screen .queue-job-image {
+  width: 72px;
+  height: 90px;
+  margin: -14px 0px 0px -10px ;
+}
+
+
+.queue-job-text {
+  float: left;
+  width: 170px;
+  font-size: 12px;
+}
+
+.queue-job-text .progress-bar-border {
+  float: left;
+  overflow: visible;
+  width: 100px;
+  display: inline-block;
+  white-space: nowrap;
+  border: 1px solid white;
+  padding: 1px;
+}
+
+.queue-job-text .progress-bar {
+  overflow: visible;
+  background-color: #FFF;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.queue-job-text p {
+  display: block-inline;
+}
+
+.queue-job-text .building {
+  float: left;
+  width: 170px;
+}
+
+.queue-job-text .finished {
+  float: left;
+  width: 66px;
+  text-align: right;
+  padding: 2px 0px;
+  height: 20px;
+}
+
+.queue-job-text p.duration {
+  float: left;
+  width: 100px;
+  overflow: hidden;
+  padding: 2px;
+  height: 20px;
+}
+
+.queue-job-button {
+  font-size: 14px;
+  float: right;
+  width: 80px;
+  height: 24px;
+  padding-top: 6px;
+  text-align: right;
+}
+
+.queue-job-button.frog-trade {
+  width:90px;
+}
+
+.queue-job-button.cancel {
+  float: left;
+  width: 60px;
+  cursor: pointer;
+}
+
+.queue-job-button.finish-button {
+  width: 100px;
+}
+
+.queue-detail-view-wrapper {
+  height:auto !important;
+}
+
+.queue-detail-view > p {
+  line-height:24px;
+}
+
+.queue-detail-view table {
+  width:100%;
+}
+
+.queue-detail-view table tr td {
+  text-align:right;
+}
+
+.training-queue-list-pane .queue-job-button.finish-button {
+  width: 130px;
+}
+
+.queue-job-button a {
+  padding: 2px 6px;
+  color: #333;
+  border-radius: 3px;
+  background-color: #f8fbee;
+  text-decoration: none;
+  border: 1px solid #333;
+  margin: -2px;
+}
+
+.first .queue-job-button a {
+  background-color: #ecd8ce;
+}
+
+.active .queue-job-button a {
+  background-color: #ddf1a4;
+}
+
+.queue-job-button a:hover, .frog-trade-button-inline .simple-button:hover {
+  background-color: white;
+}
+
+.training-queue-list input[type="text"] {
+  width: 80px;
+  margin: 20px 10px 6px 0px;
+}
+
+.training-queue-list-pane {
+  
+}
+
+.training-queue-job {
+  float: left;
+  width: 240px;
+  height: 80px;
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  border: 2px solid #E2E2E2;
+  padding: 10px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  
+  background: #f8fbee; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #ffffff 0%,  #f8fbee 100%);
+  background: -moz-linear-gradient(top,  #ffffff,  #f8fbee); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#ffffff,  #f8fbee);
+}
+
+.training-queue-job p {
+  margin: 0px;
+}
+
+.training-queue-job.first {
+  background: #ecd8ce; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #f6eae5 0%,  #ecd8ce 100%);
+  background: -moz-linear-gradient(top,  #f6eae5,  #ecd8ce); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#f6eae5,  #ecd8ce);
+}
+
+.training-queue-job.active {
+  background: #ddf1a4; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #e9f3c3 0%,  #ddf1a4 100%);
+  background: -moz-linear-gradient(top,  #e9f3c3,  #ddf1a4); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#e9f3c3,  #ddf1a4);
+}
+
+
+
+.training-queue-job-text {
+  float: left;
+  width: 240px;
+  height: 60px;
+}
+
+.training-queue-job-button {
+  clear: both;
+  font-size: 14px;
+  float: right;
+  width: 80px;
+  height: 24px;
+  padding-top: 6px;
+  text-align: right;
+}
+
+.training-queue-job-button a {
+  padding: 2px 8px;
+  color: #333;
+  border-radius: 3px;
+  background-color: #BBF;
+  text-decoration: none;
+  border: 1px solid #333;
+  margin: -2px;
+}
+
+.first .training-queue-job-button a {
+  background-color: #FBB;
+}
+
+.active .training-queue-job-button a {
+  background-color: #BFB;
+}
+
+.training-queue-job-button a:hover {
+  background-color: white;
+}
+
+.stone-panel.standard-assignment,
+.stone-panel.special-assignment {
+  min-height: 34px;
+  padding-top: 20px;
+}
+
+.stone-panel.standard-assignment:hover,
+.stone-panel.special-assignment:hover {
+  border: 1px solid orange;
+  
+  -moz-box-shadow: inset 0 0 0px 1px orange;
+  -webkit-box-shadow: inset 0 0 0px 1px orange;
+  box-shadow: inner 0 0 0px 1px orange;
+}
+
+.stone-panel .assignment-details {
+  margin-top: 0px;
+
+  background-color: rgba(255,255,255,0.4);
+  
+  border-radius: 3px;
+  
+  padding: 6px 8px 6px 8px;
+  border: 1px solid #EBEBEB;
+}
+
+.assignment-icon {
+  float: left;
+  width: 54px;
+  height: 18px;
+  overflow: visible;
+}
+
+.assignment-icon div {
+  background-image: url('<%= asset_path("ui/settlement/assignment_icon_work.png") %>');
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 64px;
+  height: 64px;
+  margin-top: -21px;
+  margin-left: -10px;
+  margin-right: -2px;
+}
+
+.assignment-icon div.girl {
+  background-image: url('<%= asset_path("ui/settlement/assignment_icon_work.png") %>');
+}
+.assignment-icon div.warrior {
+  background-image: url('<%= asset_path("ui/settlement/assignment_icon_fight.png") %>');
+}
+.assignment-icon div.chef {
+  background-image: url('<%= asset_path("ui/settlement/assignment_icon_special.png") %>');
+}
+
+
+
+.stone-panel.standard-assignment {
+  margin-bottom: 12px;
+}
+
+.standard-assignment .advisor,
+.special-assignment .advisor {
+  margin-left: -10px;
+}
+
+.assignment-collapse-table .assignment-header-cell {
+  width: 260px;
+}
+
+.assignment-collapse-table .assignment-progress-cell {
+  width: 260px;
+}
+
+.assignment-collapse-table .assignment-button-cell {
+  width: 140px;
+  text-align: right;
+}
+
+.assignment-details .up-icon {
+  float: right;
+  height: 21px;
+}
+
+
+.assignment-progress-bar-border {
+  overflow: visible;
+  width: 250px;
+  display: inline-block;
+  white-space: nowrap;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 1px;
+}
+
+.assignment-progress-bar {
+  overflow: visible;
+  background-color: #BC4;
+  display: inline-block;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.girl .assignment-progress-bar {
+  background-color: #BC4;
+}
+.warrior .assignment-progress-bar {
+  background-color: #F94;
+}
+.chef .assignment-progress-bar {
+  background-color: #AC4;
+}
+
+
+/** image for building_siege_tower */
+.queue-job-image.building_siege_tower {
+  background: url('<%= asset_path("settlements/fortress/building_siege_tower_small.png") %>');
+}
+/** image for building_infantry_tower */
+.queue-job-image.building_infantry_tower {
+  background: url('<%= asset_path("settlements/fortress/building_infantry_tower_small.png") %>');
+}
+/** image for building_artillery_tower */
+.queue-job-image.building_artillery_tower {
+  background: url('<%= asset_path("settlements/fortress/building_artillery_tower_small.png") %>');
+}	
+/** image for building_cavalry_tower */
+.queue-job-image.building_cavalry_tower {
+  background: url('<%= asset_path("settlements/fortress/building_cavalry_tower_small.png") %>');
+}
+/** image for building_fortress_fortification*/
+.queue-job-image.building_fortress_fortification {
+  background: url('<%= asset_path("settlements/fortress/fortress_main_building_small.png") %>');
+}
+
+.fortress-screen .queue-job-image.size1 {
+  background-position: -53px 0px;
+}
+.fortress-screen .queue-job-image.size2 {
+  background-position: -106px 0px;
+}
+.fortress-screen .queue-job-image.size3 {
+  background-position: -159px 0px;
+}
+
+
+
+.outpost-screen .queue-job-image,
+.base-screen .queue-job-image {
+  background: url('<%= asset_path("settlements/base/building_category_large_building_small.png") %>');  /** the default images for this category. important: contains the image displayed for empty slots! */
+}
+.queue-job-image.building_quarry {
+  background: url('<%= asset_path("settlements/base/building_quarry_large_small.png") %>');
+}
+.queue-job-image.building_quarry_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_quarry_large_small.png") %>');
+}
+.queue-job-image.building_chief_cottage {
+  background: url('<%= asset_path("settlements/base/building_chief_cottage_large_small.png") %>');
+}
+.queue-job-image.building_logger{
+  background: url('<%= asset_path("settlements/base/building_logger_large_small.png") %>');
+}
+.queue-job-image.building_logger_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_logger_large_small.png") %>');
+}
+.queue-job-image.building_barracks {
+  background: url('<%= asset_path("settlements/base/building_barracks_large_small.png") %>');
+}
+.queue-job-image.building_campfire {
+  background: url('<%= asset_path("settlements/base/building_campfire_large_small.png") %>');
+}
+.queue-job-image.building_alliance_hall {
+  background: url('<%= asset_path("settlements/base/building_alliance_hall_large_small.png") %>');
+}
+.queue-job-image.building_tavern {
+  background: url('<%= asset_path("settlements/base/building_tavern_large_small.png") %>');
+}
+.queue-job-image.building_special_gatherer {
+  background: url('<%= asset_path("settlements/base/building_special_gatherer_large_small.png") %>');
+}
+.queue-job-image.building_cottage  {
+  background: url('<%= asset_path("settlements/base/building_cottage_large_small.png") %>');
+}
+.queue-job-image.building_cottage_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_cottage_large_small.png") %>');
+}
+.queue-job-image.building_firing_range {
+  background: url('<%= asset_path("settlements/base/building_firing_range_large_small.png") %>');
+}
+.queue-job-image.building_furrier  {
+  background: url('<%= asset_path("settlements/base/building_furrier_large_small.png") %>');
+}
+.queue-job-image.building_furrier_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_furrier_large_small.png") %>');
+}
+.queue-job-image.building_gatherer {
+  background: url('<%= asset_path("settlements/base/building_gatherer_large_small.png") %>');
+}
+.queue-job-image.building_stud     {
+  background: url('<%= asset_path("settlements/base/building_stud_large_small.png") %>');
+}
+.queue-job-image.building_workshop {
+  background: url('<%= asset_path("settlements/base/building_workshop_large_small.png") %>');
+}
+.queue-job-image.building_storage {
+  background: url('<%= asset_path("settlements/base/building_storage_large_small.png") %>');
+}
+.queue-job-image.building_storage_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_storage_large_small.png") %>');
+}
+.queue-job-image.building_copper_smelter {
+  background: url('<%= asset_path("settlements/base/building_copper_smelter_large_small.png") %>');
+}
+.queue-job-image.building_command_post {
+  background: url('<%= asset_path("settlements/base/building_command_post_large_small.png") %>');
+}
+.queue-job-image.building_training_cave {
+  background: url('<%= asset_path("settlements/base/building_training_cave_large_small.png") %>');
+}
+.queue-job-image.building_artifact_stand {
+  background: url('<%= asset_path("settlements/base/building_artifact_stand_large_small.png") %>');
+}
+/** colony buildings */
+.queue-job-image.building_haunt {
+  background: url('<%= asset_path("settlements/colony/building_haunt_large_small.png") %>');
+}
+.queue-job-image.building_altar {
+  background: url('<%= asset_path("settlements/colony/building_altar_large_small.png") %>');
+}
+.queue-job-image.building_field_camp {
+  background: url('<%= asset_path("settlements/colony/building_field_camp_large_small.png") %>');
+}
+
+
+.outpost-screen .queue-job-image.size1,
+.base-screen .queue-job-image.size1 {
+  background-position: -72px 0px;
+}
+.outpost-screen .queue-job-image.size2,
+.base-screen .queue-job-image.size2 {
+  background-position: -144px 0px;
+}
+.outpost-screen .queue-job-image.size3,
+.base-screen .queue-job-image.size3 {
+  background-position: -216px 0px;
+}
+.outpost-screen .queue-job-image.size4,
+.base-screen .queue-job-image.size4 {
+  background-position: -288px 0px;
+}
+.outpost-screen .queue-job-image.size5,
+.base-screen .queue-job-image.size5 {
+  background-position: -360px 0px;
+}
+.outpost-screen .queue-job-image.size6,
+.base-screen .queue-job-image.size6 {
+  background-position: -432px 0px;
+}
+
+.base-screen .queue-job-image.building_chief_cottage.level1,
+.base-screen .queue-job-image.building_alliance_hall.level1,
+.base-screen .queue-job-image.building_tavern.level1,
+.base-screen .queue-job-image.building_special_gatherer.level1,
+.base-screen .queue-job-image.building_artifact_stand.level1 {
+  background-position:  -72px 0px;
+}
+.base-screen .queue-job-image.building_chief_cottage.level2,
+.base-screen .queue-job-image.building_alliance_hall.level2,
+.base-screen .queue-job-image.building_tavern.level2,
+.base-screen .queue-job-image.building_special_gatherer.level2,
+.base-screen .queue-job-image.building_artifact_stand.level2 {
+  background-position: -144px 0px;
+}
+.base-screen .queue-job-image.building_chief_cottage.level3,
+.base-screen .queue-job-image.building_alliance_hall.level3,
+.base-screen .queue-job-image.building_tavern.level3,
+.base-screen .queue-job-image.building_special_gatherer.level3,
+.base-screen .queue-job-image.building_artifact_stand.level3 {
+  background-position: -216px 0px;
+}
+.base-screen .queue-job-image.building_chief_cottage.level4,
+.base-screen .queue-job-image.building_chief_cottage.level5,
+.base-screen .queue-job-image.building_alliance_hall.level4,
+.base-screen .queue-job-image.building_tavern.level4,
+.base-screen .queue-job-image.building_special_gatherer.level4,
+.base-screen .queue-job-image.building_artifact_stand.level4 {
+  background-position: -288px 0px;
+}
+.base-screen .queue-job-image.building_chief_cottage.level6,
+.base-screen .queue-job-image.building_chief_cottage.level7,
+.base-screen .queue-job-image.building_alliance_hall.level5,
+.base-screen .queue-job-image.building_tavern.level5,
+.base-screen .queue-job-image.building_special_gatherer.level5,
+.base-screen .queue-job-image.building_artifact_stand.level5 {
+  background-position: -360px 0px;
+}
+.base-screen .queue-job-image.building_chief_cottage.level8,
+.base-screen .queue-job-image.building_chief_cottage.level9,
+.base-screen .queue-job-image.building_alliance_hall.level6,
+.base-screen .queue-job-image.building_tavern.level6,
+.base-screen .queue-job-image.building_special_gatherer.level6,
+.base-screen .queue-job-image.building_artifact_stand.level6 {
+  background-position: -432px 0px;
+}
+.base-screen .queue-job-image.building_chief_cottage.level10,
+.base-screen .queue-job-image.building_alliance_hall.level7,
+.base-screen .queue-job-image.building_tavern.level7,
+.base-screen .queue-job-image.building_special_gatherer.level7,
+.base-screen .queue-job-image.building_artifact_stand.level7 {
+  background-position: -504px 0px;
+}
+.base-screen .queue-job-image.building_chief_cottage.level11,
+.base-screen .queue-job-image.building_chief_cottage.level12,
+.base-screen .queue-job-image.building_chief_cottage.level13,
+.base-screen .queue-job-image.building_chief_cottage.level14,
+.base-screen .queue-job-image.building_alliance_hall.level8,
+.base-screen .queue-job-image.building_tavern.level8,
+.base-screen .queue-job-image.building_special_gatherer.level8,
+.base-screen .queue-job-image.building_artifact_stand.level8 {
+  background-position: -576px 0px;
+}
+.base-screen .queue-job-image.building_chief_cottage.level15,
+.base-screen .queue-job-image.building_chief_cottage.level16,
+.base-screen .queue-job-image.building_chief_cottage.level17,
+.base-screen .queue-job-image.building_chief_cottage.level18,
+.base-screen .queue-job-image.building_alliance_hall.level9,
+.base-screen .queue-job-image.building_tavern.level9,
+.base-screen .queue-job-image.building_special_gatherer.level9,
+.base-screen .queue-job-image.building_artifact_stand.level9 {
+  background-position: -648px 0px;
+}  
+.base-screen .queue-job-image.building_chief_cottage.level19,
+.base-screen .queue-job-image.building_chief_cottage.level20,
+.base-screen .queue-job-image.building_alliance_hall.level10,
+.base-screen .queue-job-image.building_tavern.level10,
+.base-screen .queue-job-image.building_special_gatherer.level10,
+.base-screen .queue-job-image.building_artifact_stand.level10 {
+  background-position: -720px 0px;
+}
+
+
+
+/* ===== non-semantic helper classes ========================================
+   Alliance Screen
+   ========================================================================== */
+
+
+.alliance-screen {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  background-color: #000;
+  width: 100%;
+  min-height: 100%;
+}
+
+.alliance-pane {   
+  margin-left: 50px;
+  margin-top: 150px;
+  margin-bottom: 300px;
+  width:800px;
+  min-height: 400px;
+  background-color: #FFF;  
+  padding: 16px 20px 16px 20px;
+  border-radius: 12px;
+  z-index: 2;
+}
+
+.alliance-pane .alliance-banner {
+  float: left;
+  width: 200px;
+  height: 200px;
+  margin-top: -35px;
+}
+
+.alliance-screen-background {
+  z-index: 0;
+  margin-top: -120px;
+  height: 960px;
+  margin-bottom: -860px;
+  width: 100%;
+}
+
+.base-background-picture.alliance-screen-picture {
+  position: static;
+  width: 100%;
+}
+
+.character-profile-view .alliance-banner,
+.settlement-info-dialog-pane .alliance-banner,
+.character-info-dialog-pane .alliance-banner {
+  float: right;
+  width: 120px;
+  height: 120px;
+  margin-top: -30px;
+}
+
+.character-info-dialog-pane .character-head {
+  float:left;
+}
+
+input[type="text"],
+.alliance-pane input[type="text"] {
+  font-size: 24px;
+  height: 36px;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  margin-right: 30px;
+}
+
+input[type="text"].resource-amount {
+  font-size: 16px;
+  height: 24px;
+  width: 80px;
+  margin: 4px 8px 4px 4px;
+}
+
+input[type="text"].small-text-field {
+  font-size: 16px;
+  height: 24px;
+  width: 160px;
+  margin-right: 10px;
+}
+
+.alliance-description textarea, .character-description textarea {
+  width: 600px;
+}
+
+.alliance-description p, .character-description p {
+  word-wrap:break-word;
+}
+
+
+.alliance-management input[type="text"] {
+  width: 220px;
+}
+
+.shout-box input[type="text"] {
+  width: 500px;
+}
+
+.shout-box ul {
+  padding: 0px;
+}
+
+li.shout {
+  list-style-type:none;
+  background-color: #DFD;
+  border-radius: 8px;
+  padding: 8px 16px;
+  margin-bottom: 4px;
+  width: 70%;
+  font-style: italic;
+  font-size: 14px;
+  color: #999;
+}
+
+li.shout.leader {
+  background-color: #FDD;
+}
+
+li.shout.own {
+  margin-left: 26%;
+  background-color: #DDD;
+}
+
+li.shout.own.leader {
+  background-color: #FDD;
+}
+
+li.shout .text {
+  font-style: normal;
+  font-size: 18px;
+  color: #333;
+}
+
+li.shout .sender {
+  font-weight: bold;
+}
+
+
+
+/* ===== non-semantic helper classes ========================================
+   Fortess Screen
+   ========================================================================== */
+
+.settlement-info-box {
+  z-index: 5;
+  cursor: pointer;
+  background-image: url("<%= asset_path 'ui/settlement/info_box.png' %>");
+  width: 538px;
+  height: 83px;
+}
+
+.settlement-info-box:hover {
+  background-image: url("<%= asset_path 'ui/settlement/info_box-hovered.png' %>");
+}
+
+.fortress-picture .settlement-info-box,
+.outpost-screen .settlement-info-box,
+.base-screen .settlement-info-box {
+  font-size: 12px;
+  width: 518px;
+  height: 71px;
+  padding: 6px 10px 6px 10px;
+  color: white;
+  text-shadow: none;
+  position: absolute;
+  left: 57px;
+  top: 72px;  
+}
+
+.outpost-screen .settlement-info-box-dialog,
+.fortress-screen .settlement-info-box-dialog, 
+.base-screen .settlement-info-box-dialog {
+  width: 640px;
+  min-height:640px;
+  background-color: white;
+  background-image: none;
+  color: #333;
+  text-shadow: none;
+  font-size: 14px;
+  z-index: 7;
+  left: 17px;
+  top: 71px;
+  border-radius: 9px;
+}
+
+.fortress-screen .settlement-info-box-dialog {
+  min-height:750px; 
+}
+
+.outpost-screen .settlement-info-box-dialog {
+  min-height:720px; 
+}
+
+
+.settlement-switch {
+  z-index: 6;
+  position: absolute;
+  width: 47px;
+  height: 83px;
+  border-radius: 3px;
+}
+
+.settlement-switch.previous {
+  top: 72px;
+  left: 20px;
+  background-image: url("<%= asset_path 'ui/settlement/switch_left.png' %>");  
+}
+.settlement-switch.next {
+  top: 72px;
+  left: 585px;
+  background-image: url("<%= asset_path 'ui/settlement/switch_right.png' %>");    
+}
+
+.settlement-switch:hover {
+  cursor: pointer;
+}
+
+.settlement-switch.previous:hover {
+  background-image: url("<%= asset_path 'ui/settlement/switch_left-hovered.png' %>");  
+}
+
+.settlement-switch.next:hover {
+  background-image: url("<%= asset_path 'ui/settlement/switch_right-hovered.png' %>");    
+}
+
+.float-right {
+  float: right;
+}
+
+.settlement-info-box-dialog-content {
+	margin-top: 50px;
+}
+
+.change-settlement-name {
+  margin: 18px 10px 0px 0px;
+  float: right;
+}
+
+.change-settlement-name  .resource-icon {
+  margin: 1px;
+}
+
+.xp-icon {
+  display: inline-block;
+  width: 24px; height: 24px;
+  background-image: url("<%= asset_path 'icons/xp_small.png' %>");
+}
+
+.xp-icon.large, .xp-icon.finished {
+  display: inline-block;
+  position: relative;
+  width: 100%; height: 100%;
+  background-image: url("<%= asset_path 'icons/xp-xl.png' %>");
+  background-size: 100%;
+}
+
+.xp-icon.middle {
+  display: inline-block;
+  width: 36px; height: 36px;
+  background-image: url("<%= asset_path 'icons/xp_middle.png' %>");
+}
+
+.resource-icon {
+  display: inline-block;
+  width: 24px; height: 24px;
+}
+
+.resource-icon.large {
+  display: inline-block;
+  width: 48px; height: 48px;
+}
+
+.resource-icon.middle {
+  display: inline-block;
+  width: 36px; height: 36px;
+}
+
+.resource-icon.resource_wood {
+  background-image: url("<%= asset_path 'icons/wood.png' %>");
+}
+.resource-icon.resource_stone {
+  background-image: url("<%= asset_path 'icons/stone.png' %>");
+}
+.resource-icon.resource_fur {
+  background-image: url("<%= asset_path 'icons/fur.png' %>");
+}
+.resource-icon.resource_cash {
+  background-image: url("<%= asset_path 'icons/toad.png' %>");
+}
+
+.resource-icon.resource_wood.middle {
+  background-image: url("<%= asset_path 'icons/wood-middle.png' %>");
+}
+.resource-icon.resource_stone.middle {
+  background-image: url("<%= asset_path 'icons/stone-middle.png' %>");
+}
+.resource-icon.resource_fur.middle {
+  background-image: url("<%= asset_path 'icons/fur-middle.png' %>");
+}
+.resource-icon.resource_cash.middle {
+  background-image: url("<%= asset_path 'icons/toad-middle.png' %>");
+}
+
+
+.resource-icon.finished {
+  display: inline-block;
+  width: 100%; height: 100%;
+}
+
+.resource-icon.resource_wood.large,
+.resource-icon.resource_wood.finished {
+  background-image: url("<%= asset_path 'icons/wood-xl.png' %>");
+}
+
+.resource-icon.resource_stone.large,
+.resource-icon.resource_stone.finished {
+  background-image: url("<%= asset_path 'icons/stone-xl.png' %>");
+}
+
+.resource-icon.resource_fur.large,
+.resource-icon.resource_fur.finished {
+  background-image: url("<%= asset_path 'icons/fur-xl.png' %>");
+}
+
+.resource-icon.resource_cash.large,
+.resource-icon.resource_cash.finished {
+  background-image: url("<%= asset_path 'icons/toad-large.png' %>");
+}
+
+.unit-icon {
+  display: inline-block;
+  width: 24px; height: 24px;
+  background: url('<%= asset_path("icons/unit_default-small.png") %>');
+}
+
+.unit-icon.unit_clubbers {
+}
+
+.unit-icon.finished {
+  display: inline-block;
+  width: 48px; height: 48px;
+  background: url('<%= asset_path("icons/unit_default-large.png") %>');
+}
+
+.unit-icon.unit_clubbers.finished {
+}
+
+.down-icon {
+  display: inline-block;
+  width: 21px; height: 21px;
+  margin: 0; padding: 0;
+  background-image: url("<%= asset_path 'icons/down.png' %>");
+}
+
+.outpost-screen .left-icon,
+.base-screen .left-icon {
+  background-image: url("<%= asset_path 'icons/left-white.png' %>");  
+}
+
+.outpost-screen .right-icon,
+.base-screen .right-icon {
+  background-image: url("<%= asset_path 'icons/right-white.png' %>");  
+}
+
+
+
+.up-icon {
+  display: inline-block;
+  width: 21px; height: 21px;
+  margin: 0; padding: 0;
+  background-image: url("<%= asset_path 'icons/up.png' %>");
+}
+
+.help-icon {
+  display: inline-block;
+  width: 27px; height: 27px;
+  margin: -6px 0px -5px 0px; padding: 0;
+  background-image: url("<%= asset_path 'icons/help.png' %>");
+  cursor: pointer;
+}
+
+.settlment-info-box .change-name:hover,
+.army-info-view .change-name:hover {
+  text-decoration:underline;
+  color: #DDF;
+}
+
+
+.stone-panel {
+  background-image: url("<%= asset_path 'ui/settlement/background_stone_repeat.jpg' %>");
+  background-repeat: repeat;
+  
+  border-radius: 3px;
+  
+  padding: 10px;
+  border: 1px solid #E2E2E2;
+  
+  -moz-box-shadow: inset 0 0 0px 1px #FFF;
+  -webkit-box-shadow: inset 0 0 0px 1px #FFF;
+  box-shadow: inner 0 0 0px 1px #FFF;
+}
+
+
+
+
+.outpost-screen .settlement-info-box-dialog h1,
+.base-screen .settlement-info-box-dialog h1,
+.fortress-screen .settlement-info-boxdialog h1 {
+  font-size: 20px; 
+}
+
+table .number {
+  text-align: right;
+}
+
+table .datetime {
+  text-align: center;
+}
+
+
+.fortress-picture-spacer, .base-picture-spacer, .outpost-picture-spacer {
+  width: 360px;
+  height: 110px;
+  float: right;
+}
+
+.fortress-screen .settlement-info-box h1,
+.outpost-screen .settlement-info-box h1,
+.base-screen .settlement-info-box h1 {
+  font-size: 16px;
+  margin: 0px;
+}
+
+.fortress-picture {
+  position: relative;
+  float: left;
+  width: 800px;
+  height: 600px;
+}
+
+.outpost-picture,
+.base-picture {
+  position: relative;
+  float: left;
+  width: 800px;
+  height: 1024px;
+}
+
+.fortress-picture {
+  background: url('<%= asset_path("settlements/fortress/fortress_background.png") %>');
+} 
+
+.outpost-picture,
+.base-picture {
+  margin-top: 100px;
+  overflow: visible;
+}
+
+.outpost-background-picture,
+.base-background-picture {
+  background: url('<%= asset_path("settlements/base/base_background.jpg") %>');
+  background-position: -160px 0;
+  background-repeat: repeat-x;
+  position: absolute;
+  left: 0px;
+  top: -220px;
+  width: 1000%;
+  height: 1350px;
+  z-index: 0;
+}
+
+
+.outpost-picture .mouse-over, 
+.fortress-picture .mouse-over, 
+.base-picture .mouse-over {
+  position: absolute;
+  /*width: 360px;*/
+  /*height: 160px;*/
+  z-index:10;
+  padding: 16px;
+  border-radius: 11px;
+  margin-top: -100px;
+  pointer-events: none;
+  background-color: rgba(0,0,0,0.4);
+  color: white;
+  text-shadow: none;
+}
+
+.outpost-picture .mouse-over h1, 
+.fortress-picture .mouse-over h1, 
+.base-picture .mouse-over h1 {
+  margin-top: 0px;
+}
+
+.outpost-picture .mouse-over p ,
+.fortress-picture .mouse-over p,
+.base-picture .mouse-over p {
+}
+
+
+.mouse-over.construction-detail {
+  width:240px;
+  padding-right:16px !important;
+  margin-left: -450px;
+  /*left:0px !important;*/
+  z-index:10;
+  height:120px;
+}
+
+.mouse-over.construction-detail p,
+.mouse-over.construction-detail h1 {
+  z-index:10;
+}
+
+.fortress-picture .background {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 0;
+}
+
+.fortress-picture .buildings {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 800px;
+  height: 600px;
+  z-index: 1;
+  background: url('<%= asset_path("settlements/fortress/fortress_buildings.png") %>');
+}
+
+
+.fortress-picture .wall {
+  position: absolute;
+  top: 360px;
+  left: 0px;
+  width: 800px;
+  height: 240px;
+  z-index: 3;
+  background: url('<%= asset_path("settlements/fortress/fortress_wall.png") %>');
+}
+
+.outpost-picture .small-building,
+.base-picture .small-building {
+/*  border: 1px solid black;*/
+  position: absolute;
+  width: 80px;
+  height: 120px;
+/*  z-index: 2;*/
+  border-radius: 5px;
+  background: url('<%= asset_path("settlements/base/building_category_small_building.png") %>');  /** the default images for this category. important: contains the image displayed for empty slots! */
+}
+
+.outpost-picture .large-building,
+.base-picture .large-building {
+/*  border: 1px solid black;*/
+  position: absolute;
+  width: 120px;
+  height: 150px;
+/*  z-index: 2;*/
+  border-radius: 5px;
+  background: url('<%= asset_path("settlements/base/building_category_large_building.png") %>');  /** the default images for this category. important: contains the image displayed for empty slots! */
+}
+
+
+/** general settings for towers and default image (will be used as long as theres no specific image for a particular building type ) */
+.fortress-picture .tower {
+  position: absolute;
+  width: 238px;
+  height: 454px;
+  z-index: 2;
+  background: url('<%= asset_path("settlements/fortress/building_category_fortress_tower.png") %>');  /** the default images for this category. important: contains the image displayed for empty slots! */
+}
+
+
+
+/** position of left tower */
+.fortress-picture .tower-left {
+  top: 24px;
+  left: 0px;
+}
+
+/** position of right tower */
+.fortress-picture .tower-right {
+  top: 100px;
+  right: 0px;
+}
+
+.constructing, 
+.outpost-picture .level.constructing,
+.fortress-picture .level.constructing, 
+.base-picture .level.constructing {
+  color: #3F3;
+}
+
+.destructing, 
+.outpost-picture .level.destructing,
+.fortress-picture .level.destructing,
+.base-picture .level.destructing {
+  color: #E6BBAA;
+}
+
+/** image for building_siege_tower */
+.fortress-picture .tower.building_siege_tower {
+  background: url('<%= asset_path("settlements/fortress/building_siege_tower.png") %>');
+}
+/** image for building_infantry_tower */
+.fortress-picture .tower.building_infantry_tower {
+  background: url('<%= asset_path("settlements/fortress/building_infantry_tower.png") %>');
+}
+/** image for building_artillery_tower */
+.fortress-picture .tower.building_artillery_tower {
+  background: url('<%= asset_path("settlements/fortress/building_artillery_tower.png") %>');
+}	
+/** image for building_cavalry_tower */
+.fortress-picture .tower.building_cavalry_tower {
+  background: url('<%= asset_path("settlements/fortress/building_cavalry_tower.png") %>');
+}
+
+/** base: large slots */
+.large-building.building_quarry {
+  background: url('<%= asset_path("settlements/base/building_quarry_large.png") %>');
+}
+.large-building.building_quarry_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_quarry_large.png") %>');
+}
+.large-building.building_chief_cottage {
+  background: url('<%= asset_path("settlements/base/building_chief_cottage_large.png") %>');
+}
+.large-building.building_logger   {
+  background: url('<%= asset_path("settlements/base/building_logger_large.png") %>');
+}
+.large-building.building_logger_2   {
+  background: url('<%= asset_path("settlements/base/building_copper_logger_large.png") %>');
+}
+.large-building.building_barracks {
+  background: url('<%= asset_path("settlements/base/building_barracks_large.png") %>');
+}
+.large-building.building_campfire {
+  background: url('<%= asset_path("settlements/base/building_campfire_large.png") %>');
+}
+.large-building.building_cottage  {
+  background: url('<%= asset_path("settlements/base/building_cottage_large.png") %>');
+}
+.large-building.building_cottage_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_cottage_large.png") %>');
+}
+.large-building.building_firing_range {
+  background: url('<%= asset_path("settlements/base/building_firing_range_large.png") %>');
+}
+.large-building.building_furrier  {
+  background: url('<%= asset_path("settlements/base/building_furrier_large.png") %>');
+}
+.large-building.building_furrier_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_furrier_large.png") %>');
+}
+.large-building.building_gatherer {
+  background: url('<%= asset_path("settlements/base/building_gatherer_large.png") %>');
+}
+.large-building.building_stud     {
+  background: url('<%= asset_path("settlements/base/building_stud_large.png") %>');
+}
+.large-building.building_workshop {
+  background: url('<%= asset_path("settlements/base/building_workshop_large.png") %>');
+}
+.large-building.building_storage {
+  background: url('<%= asset_path("settlements/base/building_storage_large.png") %>');
+}
+.large-building.building_storage_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_storage_large.png") %>');
+}
+.large-building.building_garrison {
+  background: url('<%= asset_path("settlements/base/building_garrison_large.png") %>');
+}
+.large-building.building_command_post {
+  background: url('<%= asset_path("settlements/base/building_command_post_large.png") %>');
+}
+.large-building.building_training_cave {
+  background: url('<%= asset_path("settlements/base/building_training_cave_large.png") %>');
+}
+
+/** no copper smelter on large spots! */
+
+.large-building.building_haunt {
+  background: url('<%= asset_path("settlements/colony/building_haunt_large.png") %>');
+}
+.large-building.building_altar {
+  background: url('<%= asset_path("settlements/colony/building_altar_large.png") %>');
+}
+.large-building.building_field_camp {
+  background: url('<%= asset_path("settlements/colony/building_field_camp_large.png") %>');
+}
+
+/** base: small slots */
+.small-building.building_quarry {
+  background: url('<%= asset_path("settlements/base/building_quarry_small.png") %>');
+}
+.small-building.building_quarry_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_quarry_small.png") %>');
+}
+.small-building.building_logger   {
+  background: url('<%= asset_path("settlements/base/building_logger_small.png") %>');
+}
+.small-building.building_logger_2   {
+  background: url('<%= asset_path("settlements/base/building_copper_logger_small.png") %>');
+}
+.small-building.building_barracks {
+  background: url('<%= asset_path("settlements/base/building_barracks_small.png") %>');
+}
+.small-building.building_campfire {
+  background: url('<%= asset_path("settlements/base/building_campfire_small.png") %>');
+}
+.small-building.building_alliance_hall {
+  background: url('<%= asset_path("settlements/base/building_alliance_hall_small.png") %>');
+}
+.small-building.building_tavern {
+  background: url('<%= asset_path("settlements/base/building_tavern_small.png") %>');
+}
+.small-building.building_special_gatherer {
+  background: url('<%= asset_path("settlements/base/building_special_gatherer_small.png") %>');
+}
+.small-building.building_cottage  {
+  background: url('<%= asset_path("settlements/base/building_cottage_small.png") %>');
+}
+.small-building.building_cottage_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_cottage_small.png") %>');
+}
+.small-building.building_firing_range {
+  background: url('<%= asset_path("settlements/base/building_firing_range_small.png") %>');
+}
+.small-building.building_furrier  {
+  background: url('<%= asset_path("settlements/base/building_furrier_small.png") %>');
+}
+.small-building.building_furrier_2  {
+  background: url('<%= asset_path("settlements/base/building_copper_furrier_small.png") %>');
+}
+.small-building.building_gatherer {
+  background: url('<%= asset_path("settlements/base/building_gatherer_small.png") %>');
+}
+.small-building.building_stud     {
+  background: url('<%= asset_path("settlements/base/building_stud_small.png") %>');
+}
+.small-building.building_workshop {
+  background: url('<%= asset_path("settlements/base/building_workshop_small.png") %>');
+}
+.small-building.building_storage {
+  background: url('<%= asset_path("settlements/base/building_storage_small.png") %>');
+}
+.small-building.building_storage_2 {
+  background: url('<%= asset_path("settlements/base/building_copper_storage_small.png") %>');
+}
+.small-building.building_copper_smelter {
+  background: url('<%= asset_path("settlements/base/building_copper_smelter_small.png") %>');
+}
+.small-building.building_garrison {
+  background: url('<%= asset_path("settlements/base/building_garrison_small.png") %>');
+}
+.small-building.building_training_cave {
+  background: url('<%= asset_path("settlements/base/building_training_cave_small.png") %>');
+}
+.small-building.building_artifact_stand {
+  background: url('<%= asset_path("settlements/base/building_artifact_stand_small.png") %>');
+}
+
+.outpost-picture .level, 
+.fortress-picture .level, 
+.base-picture .level {
+  background-color: #BBB;
+  color: #444;
+  text-align: center;
+}
+
+.fortress-picture .level {
+  font-size: 24px;
+  border: 4px solid #444;
+  border-radius: 9px;
+  width: 32px;
+  padding: 8px 0px;
+}
+
+.outpost-picture .level,
+.base-picture .level {
+  font-size: 12px;
+  border: 2px solid #444;
+  border-radius: 4px;
+  width: 16px;
+  padding: 4px 0px;
+}
+
+
+
+.fortress-picture .tower .level {
+  margin-top: 320px;
+  margin-left: 170px;
+}
+
+.fortress-picture .wall .level {
+  margin-top: 130px;
+  margin-left: 460px;
+}
+
+
+.fortress-picture .buildings.size2 {
+  background-position: -800px  -0px;
+}
+.fortress-picture .buildings.size3 {
+  background-position: -1600px -0px;
+}
+
+
+.fortress-picture .tower.size1 {
+  background-position: -238px 0px;
+}
+.fortress-picture .tower.size2 {
+  background-position: -476px 0px;
+}
+.fortress-picture .tower.size3 {
+  background-position: -714px 0px;
+}
+
+
+
+.fortress-picture .tower:hover {
+  background-position: 0px -454px;
+  cursor: pointer;
+}
+.fortress-picture .tower.size1:hover {
+  background-position: -238px -454px;
+}
+.fortress-picture .tower.size2:hover {
+  background-position: -476px -454px;
+}
+.fortress-picture .tower.size3:hover {
+  background-position: -714px -454px;
+}
+
+.outpost-picture .small-building .level,
+.base-picture .small-building .level {
+  position: absolute;
+  left:   2px;
+  bottom: 6px;
+}
+
+.outpost-picture .large-building .level,
+.base-picture .large-building .level {
+  position: absolute;
+  right: 10px;
+  top:   10px;
+}
+
+
+.base-picture .small-building.building_artifact_stand.level1 {
+  background-position: -80px 0px;
+}
+.base-picture .small-building.building_artifact_stand.level2 {
+  background-position: -160px 0px;
+}
+.base-picture .small-building.building_artifact_stand.level3 {
+  background-position: -240px 0px;
+}
+.base-picture .small-building.building_artifact_stand.level4 {
+  background-position: -320px 0px;
+}
+.base-picture .small-building.building_artifact_stand.level5 {
+  background-position: -400px 0px;
+}
+.base-picture .small-building.building_artifact_stand.level6 {
+  background-position: -480px 0px;
+}
+.base-picture .small-building.building_artifact_stand.level7 {
+  background-position: -560px 0px;
+}
+.base-picture .small-building.building_artifact_stand.level8 {
+  background-position: -640px 0px;
+}
+.base-picture .small-building.building_artifact_stand.level9 {
+  background-position: -720px 0px;
+}
+.base-picture .small-building.building_artifact_stand.level10 {
+  background-position: -800px 0px;
+}
+
+.base-screen .building-option-image.building_artifact_stand.level1 {
+  background-position: -120px 0px;
+}
+.building-option-image.building_artifact_stand.level2 {
+  background-position: -240px 0px;
+}
+.building-option-image.building_artifact_stand.level3 {
+  background-position: -360px 0px;
+}
+.building-option-image.building_artifact_stand.level4 {
+  background-position: -480px 0px;
+}
+.building-option-image.building_artifact_stand.level5 {
+  background-position: -600px 0px;
+}
+.building-option-image.building_artifact_stand.level6 {
+  background-position: -720px 0px;
+}
+.building-option-image.building_artifact_stand.level7 {
+  background-position: -840px 0px;
+}
+.building-option-image.building_artifact_stand.level8 {
+  background-position: -960px 0px;
+}
+.building-option-image.building_artifact_stand.level9 {
+  background-position: -1080px 0px;
+}
+.building-option-image.building_artifact_stand.level10 {
+  background-position: -1200px 0px;
+}
+
+
+.base-picture .small-building.building_alliance_hall.level1 {
+  background-position: -80px 0px;
+}
+.base-picture .small-building.building_alliance_hall.level2 {
+  background-position: -160px 0px;
+}
+.base-picture .small-building.building_alliance_hall.level3 {
+  background-position: -240px 0px;
+}
+.base-picture .small-building.building_alliance_hall.level4 {
+  background-position: -320px 0px;
+}
+.base-picture .small-building.building_alliance_hall.level5 {
+  background-position: -400px 0px;
+}
+.base-picture .small-building.building_alliance_hall.level6 {
+  background-position: -480px 0px;
+}
+.base-picture .small-building.building_alliance_hall.level7 {
+  background-position: -560px 0px;
+}
+.base-picture .small-building.building_alliance_hall.level8 {
+  background-position: -640px 0px;
+}
+.base-picture .small-building.building_alliance_hall.level9 {
+  background-position: -720px 0px;
+}
+.base-picture .small-building.building_alliance_hall.level10 {
+  background-position: -800px 0px;
+}
+
+
+.base-picture .small-building.building_tavern.level1 {
+  background-position: -80px 0px;
+}
+.base-picture .small-building.building_tavern.level2 {
+  background-position: -160px 0px;
+}
+.base-picture .small-building.building_tavern.level3 {
+  background-position: -240px 0px;
+}
+.base-picture .small-building.building_tavern.level4 {
+  background-position: -320px 0px;
+}
+.base-picture .small-building.building_tavern.level5 {
+  background-position: -400px 0px;
+}
+.base-picture .small-building.building_tavern.level6 {
+  background-position: -480px 0px;
+}
+.base-picture .small-building.building_tavern.level7 {
+  background-position: -560px 0px;
+}
+.base-picture .small-building.building_tavern.level8 {
+  background-position: -640px 0px;
+}
+.base-picture .small-building.building_tavern.level9 {
+  background-position: -720px 0px;
+}
+.base-picture .small-building.building_tavern.level10 {
+  background-position: -800px 0px;
+}
+
+
+.base-picture .small-building.building_special_gatherer.level1 {
+  background-position: -80px 0px;
+}
+.base-picture .small-building.building_special_gatherer.level2 {
+  background-position: -160px 0px;
+}
+.base-picture .small-building.building_special_gatherer.level3 {
+  background-position: -240px 0px;
+}
+.base-picture .small-building.building_special_gatherer.level4 {
+  background-position: -320px 0px;
+}
+.base-picture .small-building.building_special_gatherer.level5 {
+  background-position: -400px 0px;
+}
+.base-picture .small-building.building_special_gatherer.level6 {
+  background-position: -480px 0px;
+}
+.base-picture .small-building.building_special_gatherer.level7 {
+  background-position: -560px 0px;
+}
+.base-picture .small-building.building_special_gatherer.level8 {
+  background-position: -640px 0px;
+}
+.base-picture .small-building.building_special_gatherer.level9 {
+  background-position: -720px 0px;
+}
+.base-picture .small-building.building_special_gatherer.level10 {
+  background-position: -800px 0px;
+}
+
+
+.base-picture .large-building.building_chief_cottage.level1 {
+  background-position: -120px 0px;
+}
+.base-picture .large-building.building_chief_cottage.level2 {
+  background-position: -240px 0px;
+}
+.base-picture .large-building.building_chief_cottage.level3 {
+  background-position: -360px 0px;
+}
+.base-picture .large-building.building_chief_cottage.level4,
+.base-picture .large-building.building_chief_cottage.level5 {
+  background-position: -480px 0px;
+}
+.base-picture .large-building.building_chief_cottage.level6,
+.base-picture .large-building.building_chief_cottage.level7 {
+  background-position: -600px 0px;
+}
+.base-picture .large-building.building_chief_cottage.level8,
+.base-picture .large-building.building_chief_cottage.level9 {
+  background-position: -720px 0px;
+}
+.base-picture .large-building.building_chief_cottage.level10 {
+  background-position: -840px 0px;
+}
+.base-picture .large-building.building_chief_cottage.level11,
+.base-picture .large-building.building_chief_cottage.level12,
+.base-picture .large-building.building_chief_cottage.level13,
+.base-picture .large-building.building_chief_cottage.level14 {
+  background-position: -960px 0px;
+}
+.base-picture .large-building.building_chief_cottage.level15,
+.base-picture .large-building.building_chief_cottage.level16,
+.base-picture .large-building.building_chief_cottage.level17,
+.base-picture .large-building.building_chief_cottage.level18 {
+  background-position: -1080px 0px;
+}
+.base-picture .large-building.building_chief_cottage.level19,
+.base-picture .large-building.building_chief_cottage.level20 {
+  background-position: -1200px 0px;
+}
+
+
+.base-screen .building-option-image.building_chief_cottage.level1,
+.base-screen .building-option-image.building_alliance_hall.level1,
+.building-option-image.building_tavern.level1,
+.building-option-image.building_special_gatherer.level1 {
+  background-position: -120px 0px;
+}
+.building-option-image.building_chief_cottage.level2,
+.building-option-image.building_alliance_hall.level2,
+.building-option-image.building_tavern.level2,
+.building-option-image.building_special_gatherer.level2 {
+  background-position: -240px 0px;
+}
+.base-screen .building-option-image.building_chief_cottage.level3,
+.building-option-image.building_alliance_hall.level3,
+.building-option-image.building_tavern.level3,
+.building-option-image.building_special_gatherer.level3 {
+  background-position: -360px 0px;
+}
+.building-option-image.building_chief_cottage.level4,
+.building-option-image.building_chief_cottage.level5,
+.building-option-image.building_alliance_hall.level4,
+.building-option-image.building_tavern.level4,
+.building-option-image.building_special_gatherer.level4 {
+  background-position: -480px 0px;
+}
+.building-option-image.building_chief_cottage.level6,
+.building-option-image.building_chief_cottage.level7,
+.building-option-image.building_alliance_hall.level5,
+.building-option-image.building_tavern.level5,
+.building-option-image.building_special_gatherer.level5 {
+  background-position: -600px 0px;
+}
+.building-option-image.building_chief_cottage.level8,
+.building-option-image.building_chief_cottage.level9,
+.building-option-image.building_alliance_hall.level6,
+.building-option-image.building_tavern.level6,
+.building-option-image.building_special_gatherer.level6 {
+  background-position: -720px 0px;
+}
+.building-option-image.building_chief_cottage.level10,
+.building-option-image.building_alliance_hall.level7,
+.building-option-image.building_tavern.level7,
+.building-option-image.building_special_gatherer.level7 {
+  background-position: -840px 0px;
+}
+.building-option-image.building_chief_cottage.level11,
+.building-option-image.building_chief_cottage.level12,
+.building-option-image.building_chief_cottage.level13,
+.building-option-image.building_chief_cottage.level14,
+.building-option-image.building_alliance_hall.level8,
+.building-option-image.building_tavern.level8,
+.building-option-image.building_special_gatherer.level8 {
+  background-position: -960px 0px;
+}
+.building-option-image.building_chief_cottage.level15,
+.building-option-image.building_chief_cottage.level16,
+.building-option-image.building_chief_cottage.level17,
+.building-option-image.building_chief_cottage.level18,
+.building-option-image.building_alliance_hall.level9,
+.building-option-image.building_tavern.level9,
+.building-option-image.building_special_gatherer.level9 {
+  background-position: -1080px 0px;
+}
+.building-option-image.building_chief_cottage.level19,
+.building-option-image.building_chief_cottage.level20,
+.building-option-image.building_alliance_hall.level10,
+.building-option-image.building_tavern.level10,
+.building-option-image.building_special_gatherer.level10 {
+  background-position: -1200px 0px;
+}
+
+
+
+.outpost-picture .small-building.size1,
+.base-picture .small-building.size1 {
+  background-position: -80px 0px;
+}
+.outpost-picture .small-building.size2,
+.base-picture .small-building.size2 {
+  background-position: -160px 0px;
+}
+.outpost-picture .small-building.size3,
+.base-picture .small-building.size3 {
+  background-position: -240px 0px;
+}
+
+.outpost-picture .large-building.size1,
+.base-picture .large-building.size1 {
+  background-position: -120px 0px;
+}
+.outpost-picture .large-building.size2,
+.base-picture .large-building.size2 {
+  background-position: -240px 0px;
+}
+.outpost-picture .large-building.size3,
+.base-picture .large-building.size3 {
+  background-position: -360px 0px;
+}
+.outpost-picture .large-building.size4,
+.base-picture .large-building.size4 {
+  background-position: -480px 0px;
+}
+.outpost-picture .large-building.size5,
+.base-picture .large-building.size5 {
+  background-position: -600px 0px;
+}
+.outpost-picture .large-building.size6,
+.base-picture .large-building.size6 {
+  background-position: -720px 0px;
+}
+
+.outpost-picture .small-building:hover,
+.base-picture .small-building:hover {
+  margin-left: -4px; 
+  margin-top: -4px;
+  border: 4px solid orange;
+  cursor: pointer;
+}
+.base-picture .small-building.size1:hover {
+}
+.base-picture .small-building.size2:hover {
+}
+.base-picture .small-building.size3:hover {
+}
+
+.outpost-picture .large-building:hover,
+.base-picture .large-building:hover {
+  margin-left: -4px; 
+  margin-top: -4px;
+  border: 4px solid orange;
+  cursor: pointer;
+}
+.base-picture .large-building.size1:hover {
+}
+.base-picture .large-building.size2:hover {
+}
+.base-picture .large-building.size3:hover {
+}
+.base-picture .large-building.size4:hover {
+}
+.base-picture .large-building.size5:hover {
+}
+.base-picture .large-building.size6:hover {
+}
+
+
+
+
+
+
+.fortress-picture .wall {
+	background-position: 0px -360px;
+}
+.fortress-picture .wall.size2 {
+	background-position: -800px -360px;
+}
+.fortress-picture .wall.size3 {
+	background-position: -1600px -360px;
+}
+
+.fortress-picture .wall:hover {
+	cursor: pointer;
+	background-position: 0px -960px;
+}
+.fortress-picture .wall.size2:hover {
+	background-position: -800px -960px;
+}
+.fortress-picture .wall.size3:hover {
+	background-position: -1600px -960px;
+}
+
+
+/** position of slots in base view */
+.outpost-picture .small-building,
+.base-picture .small-building {
+  top:  200px;
+  right: 0;
+}
+.outpost-picture .large-building,
+.base-picture .large-building {
+  top:  200px;
+  right: 0px;
+}
+
+.base-picture .large-building.slot1 {
+  top:  60px;
+  left: 525px;
+}
+
+.base-picture .large-building.slot2 {
+  top:  60px;
+  left: 645px;
+}
+
+.base-picture .large-building.slot3 {
+  top:  210px;
+  left: 525px;
+}
+
+.base-picture .large-building.slot4 {
+  top: 210px;
+  left: 645px;
+}
+
+/** 11. col */
+.base-picture .small-building.slot5 {
+  top:  180px;
+  left: 845px;
+}
+.base-picture .small-building.slot6 {
+  top:  300px;
+  left: 845px;
+}
+
+.base-picture .small-building.slot7 {
+  top:  420px;
+  left: 845px;
+}
+
+/** 1. col right */
+.base-picture .small-building.slot8 {
+  top: 140px;
+  left: 765px;
+}
+.base-picture .small-building.slot9 {
+  top: 260px;
+  left: 765px;
+}
+.base-picture .small-building.slot10 {
+  top: 380px;
+  left: 765px;
+}
+
+
+/** 2. col right */
+.base-picture .small-building.slot11 {
+  top: 360px;
+  left: 685px;
+}
+.base-picture .small-building.slot12 {
+  top: 480px;
+  left: 685px;
+}
+
+
+/** 3. col */
+.base-picture .small-building.slot13 {
+  top: 400px;
+  left: 605px;
+}
+.base-picture .small-building.slot14 {
+  top: 520px;
+  left: 605px;
+}
+
+
+/** 4. col */
+.base-picture .small-building.slot15 {
+  top: 360px;
+  left: 525px;
+}
+.base-picture .small-building.slot16 {
+  top: 480px;
+  left: 525px;
+}
+
+
+/** 5.col */
+.base-picture .small-building.slot17 {
+  top:  60px;
+  left: 445px;
+}
+.base-picture .small-building.slot18 {
+  top:  180px;
+  left: 445px;
+}
+.base-picture .small-building.slot19 {
+  top:  300px;
+  left: 445px;
+}
+.base-picture .small-building.slot20 {
+  top:  420px;
+  left: 445px;
+}
+
+
+/** 6. col */
+.base-picture .small-building.slot21 {
+  top:  20px;
+  left: 365px;
+}
+.base-picture .small-building.slot22 {
+  top:  140px;
+  left: 365px;
+}
+.base-picture .small-building.slot23 {
+  top: 260px;
+  left: 365px;
+}
+.base-picture .small-building.slot24 {
+  top: 380px;
+  left: 365px;
+}
+.base-picture .small-building.slot25 {
+  top:  500px;
+  left: 365px;
+}
+
+/** 7. col */
+.base-picture .small-building.slot26 {
+  top: 60px;
+  left: 285px;
+}
+.base-picture .small-building.slot27 {
+  top: 180px;
+  left: 285px;
+}
+.base-picture .small-building.slot28 {
+  top: 300px;
+  left: 285px;
+}
+.base-picture .small-building.slot29 {
+  top: 420px;
+  left: 285px;
+}
+
+/** 8. col */
+.base-picture .small-building.slot30 {
+  top:  20px;
+  left: 205px;
+}
+.base-picture .small-building.slot31 {
+  top:  140px;
+  left: 205px;
+}
+.base-picture .small-building.slot32 {
+  top:  260px;
+  left: 205px;
+}
+.base-picture .small-building.slot33 {
+  top:  380px;
+  left: 205px;
+}
+.base-picture .small-building.slot34 {
+  top:  500px;
+  left: 205px;
+}
+
+/** 9. col */
+.base-picture .small-building.slot35 {
+  top: 120px;
+  left: 125px;
+}
+.base-picture .small-building.slot36 {
+  top: 240px;
+  left: 125px;
+}
+.base-picture .small-building.slot37 {
+  top: 360px;
+  left: 125px;
+}
+.base-picture .small-building.slot38 {
+  top: 480px;
+  left: 125px;
+}
+
+/** 10. col */
+.base-picture .small-building.slot39 {
+  top: 280px;
+  left: 45px;
+}
+.base-picture .small-building.slot40 {
+  top:  400px;
+  left: 45px;
+}
+
+
+
+/****** OUTPOST */
+/** row 1 */
+.outpost-picture .small-building.slot3 {
+  top:  145px;
+  left: 120px;
+}
+.outpost-picture .small-building.slot4 {
+  top:  145px;
+  left: 200px;
+}
+.outpost-picture .small-building.slot5 {
+  top:  145px;
+  left: 280px;
+}
+.outpost-picture .small-building.slot6 {
+  top:  145px;
+  left: 360px;
+}
+.outpost-picture .small-building.slot7 {
+  top:  145px;
+  left: 440px;
+}
+.outpost-picture .large-building.slot1 {
+  top:  145px;
+  left: 520px;
+}
+
+/** row 2 */
+.outpost-picture .small-building.slot8 {
+  top:  335px;
+  left: 120px;
+}
+.outpost-picture .small-building.slot9 {
+  top:  335px;
+  left: 200px;
+}
+.outpost-picture .small-building.slot10 {
+  top:  335px;
+  left: 280px;
+}
+.outpost-picture .small-building.slot11 {
+  top:  335px;
+  left: 360px;
+}
+.outpost-picture .small-building.slot12 {
+  top:  335px;
+  left: 440px;
+}
+.outpost-picture .large-building.slot2 {
+  top:  290px;
+  left: 520px;
+}
+
+
+
+
+.army-view-unit-list {
+  width: 100%;
+  margin: 20px 0px 20px 0px;
+}
+
+.character-progress-dialog-pane,
+.army-info-dialog .modal-dialog-pane { 
+  margin-top:-300px;
+  width: 700px;
+  margin-left: -350px;
+}
+
+.found-settlement-dialog {
+  margin-top: 80px;
+  width: 700px;
+  margin-left: 80px;  
+}
+
+.resource-details-dialog-pane.modal-dialog-pane {
+  position: absolute;
+  left: 80px; top: 90px;
+  margin: 0px;
+  width: 700px;
+}
+
+.settlement-info-box-dialog-pane.modal-dialog-pane {
+  position: absolute;
+  left: 80px; top: 90px;
+  margin: 0px;
+  width: 700px;
+}
+
+.resource-details-dialog-pane td.number {
+  padding-left: 20px;
+}
+
+.resource-details-dialog-pane th {
+  text-align: right;
+}
+
+.effect-details-dialog-pane.modal-dialog-pane {
+  position: absolute;
+  margin-left: -225px;
+  top: 100px;
+  width: 410px;
+}
+
+.effect-details-dialog-pane td.number {
+  padding-right: 10px;
+}
+
+.effect-wheel {
+  text-align: center;
+  width: 100%;
+}
+
+.artifact-info-view {
+  top: 200px;
+}
+
+a.artifact-speedup-button,
+a.trading-carts-speedup-button {
+  padding: 2px 6px;
+  color: #333;
+  border-radius: 3px;
+  text-decoration: none;
+  border: 1px solid #333;
+  margin: -2px;
+}
+
+a.artifact-speedup-button:hover,
+a.trading-carts-speedup-button:hover {
+  color: #000;
+  border: 1px solid #000;
+}
+
+.army-info-view {
+  display: inline-block;
+  width: 100%;
+}
+
+.army-info-view .header,
+.artifact-info-view .header {
+  width: 100%;
+}
+
+.army-info-view .change-name {
+  font-size: 16px;
+}
+
+.army-view-property-list {
+  float: left;
+}
+
+.table-list th {
+  text-align: left;
+  font-weight: normal;
+  padding: 1px 1px 1px 1px;
+}
+
+.army-view-unit-list .table-list td,
+.army-view-unit-list .table-list th {
+  text-align: center;
+}
+
+.table-list td {
+  padding-top: 5px;
+  text-align: right;
+}
+
+#army-create-form {
+  margin-left: -350px;
+  margin-top: 100px;
+  width: 700px; min-height: 400px;
+  padding: 4px 4px 4px 4px;
+  z-index:256;
+}
+
+#army-change-form {
+  margin-left: -300px;
+  margin-top: 150px;
+  width: 600px; min-height: 200px;
+}
+
+#army-create-form .inner-border {
+  border: 8px solid #F94;
+  background-color: rgba(255, 144, 64, 0.15);
+  border-radius: 11px;
+  margin: 0;
+  padding: 4px 14px 14px 14px;
+}
+
+
+
+#army-create-form table td, #army-change-form table td {
+  text-align: center;
+  padding: 3px 20px 3px 20px;
+}
+
+#army-create-form table th.garrison, #army-change-form table th.garrison {
+  text-align: left;
+  padding-right: 20px;
+}
+
+#army-create-form table th.other, #army-change-form table th.other {
+  text-align: center;
+  padding-left: 20px;
+}
+
+#army-create-form table td.unit, #army-change-form table td.unit {
+  text-align: left;
+  padding-left: 0px;
+  padding-right: 40px;
+}
+
+#army-create-form table td .units-field, #army-change-form table td .units-field {
+  width: 40px;
+  text-align: right;
+}
+
+#army-create-form table td.center, #army-change-form table td.center{
+  text-align: center;
+}
+
+#army-create-form table tr.line, #army-change-form table tr.line {
+  border-top: 1px solid #ccc;
+}
+
+#army-create-form a.close, #army-change-form a.close {
+  position: absolute;
+  background: url('<%= asset_path("icons/cross_small.png") %>');
+  width: 36px;
+  height: 36px;
+  right: 12px;
+  top: 10px;
+}
+
+#army-create-form a.close:hover, #army-change-form a.close:hover {
+  opacity: 0.6;
+}
+
+.helvetica-light {
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", 
+               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", 
+               "Tahoma", "Geneva", "Arial", sans-serif; 
+  font-weight:300; 
+  font-stretch:normal;
+}
+
+.helvetica-regular {
+  font-family: "HelveticaNeue", "Helvetica Neue", "HelveticaNeueRoman", 
+               "HelveticaNeue-Roman", "Helvetica Neue Roman", 
+               'TeXGyreHerosRegular', "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; 
+  font-weight:400; 
+  font-stretch:normal; 
+}
+
+.shop-dialog-pane .simple-button.float-right {
+  margin-right: 1px;
+  padding: 2px 4px 2px 4px;
+  display: inline-block;
+  min-height: 22px;
+  margin-top: -4px;
+}
+
+.shop-dialog-pane .platinum {
+  background: #F0E8D9; /* for non-css3 browsers */
+  
+  border: 1px solid #E2D6BC;
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #ffffff 0%,  #F0E8D9 100%);
+  background: -moz-linear-gradient(top,  #ffffff,  #F0E8D9); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#ffffff,  #F0E8D9);
+}
+
+.shop-dialog-pane h1 {
+  font-size: 3em;
+  font-weight: 300;
+  margin-bottom: 18px;
+  margin-top: 24px;
+}
+
+.catapult-start-dialog {
+  position: absolute;
+  margin-top:100px;
+  margin-left: -290px;
+  padding:0;
+  z-index:256;
+
+  width: 580px;
+  height: 724px;
+}
+
+.catapult-start-dialog.de_DE {
+  background: url('<%= asset_path("special_offer/de_dialog.png") %>') no-repeat;
+}
+
+.catapult-start-dialog.en_US {
+  background: url('<%= asset_path("special_offer/en_dialog.png") %>') no-repeat;
+}
+
+.catapult-start-dialog .exclusive {
+  position: absolute;
+  top: 266px;
+  left: 174px;
+  width: 334px;
+
+  font-size:24px;
+  line-height: 45px;
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+}
+
+.catapult-start-dialog .offer-content {
+  position: absolute;
+  top: 350px;
+  right: 27px;
+  width: 193px;
+}
+
+.catapult-start-dialog .offer-content table {
+  width: 100%;
+  height:244px;
+}
+
+.catapult-start-dialog .offer-content table,
+.catapult-start-dialog .offer-content table tr,
+.catapult-start-dialog .offer-content table td {
+  padding:0;
+  margin:0;
+}
+
+.catapult-start-dialog .offer-content table td {
+  height: 60px;
+  color: #fff;
+  font-size: 16px;
+  text-shadow: none;
+  vertical-align:middle;
+}
+
+
+.catapult-start-dialog .title {
+  font-weight: bold;
+  font-size:20px;
+  text-shadow: grey 0px 1px 1px;
+}
+
+.catapult-start-dialog .buy-button {
+  position: absolute;
+  bottom: 40px;
+  right: 27px;
+  width: 250px;
+  height: 68px;
+}
+
+.catapult-start-dialog.de_DE .buy-button {
+  background: url('<%= asset_path("special_offer/de_buy.png") %>');
+}
+
+.catapult-start-dialog.en_US .buy-button {
+  background: url('<%= asset_path("special_offer/en_buy.png") %>');
+}
+
+.catapult-start-dialog .box {
+  position: absolute;
+  bottom: 114px;
+  left:18px;
+  width: 262px;
+  height: 192px;
+  background: url('<%= asset_path("special_offer/box.png") %>');
+}
+
+.catapult-start-dialog .star {
+  position: absolute;
+  top: 370px;
+  left: 4px;
+  width: 266px;
+  height: 180px;
+  background: url('<%= asset_path("special_offer/star.png") %>');
+}
+
+.catapult-start-dialog .price {
+  position: absolute;
+  bottom: 52px;
+  left: 100px;
+  width: 100px;
+  height: 52px;
+
+  font-weight: bold;
+  font-size: 48px;
+  color: #e5541d;
+}
+
+.catapult-start-dialog a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.catapult-start-dialog a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+.facebook-credit-offer-dialog {
+  margin-top: 40px;
+  margin-left:-270px;
+}
+
+.facebook-credit-offer-dialog a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+.facebook-credit-offer-dialog a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.facebook-credit-offer-dialog .list-element {
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  background: #0075ff; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #e9f3c3 0%,  #ddf1a4 100%);
+  background: -moz-linear-gradient(top,  #e9f3c3,  #ddf1a4); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#e9f3c3,  #ddf1a4);
+  margin-bottom: 10px;
+
+  color: #000;
+  text-shadow:none;
+  position:relative;
+}
+
+.facebook-credit-offer-dialog .list-element a {
+  color:#000;
+  text-shadow:none;
+  text-decoration:underline;
+}
+
+.facebook-credit-offer-dialog .list-element a:hover {
+  color:#000;
+  text-shadow:grey 0px 0px 1px;
+  text-decoration:none;
+}
+
+
+.facebook-credit-offer-dialog .list-element img {
+  width: 48px;
+  height: 48px;
+  margin-right:10px;
+}
+
+.facebook-credit-offer-dialog .list-element .right-side {
+  position:absolute;
+  right:7px;
+  top:10px;
+  }
+
+.facebook-credit-offer-dialog .list-element .right-side div {
+  margin-left:30px;
+  text-align:left;
+}
+
+.settlement-dialog-pane h1 {
+  font-size: 2em;
+  font-weight: 300;
+  margin-bottom: 24px;
+  margin-top: 12px;
+}
+
+
+.settlement-dialog-pane h2,
+.shop-dialog-pane h2 {
+  font-size: 1.6em;
+  font-weight: 300;
+}
+
+.settlement-dialog-pane h3,
+.shop-dialog-pane h3 {
+  font-size: 1.4em;
+  font-weight: 300;
+  margin-bottom: 12px;
+}
+
+
+
+
+
+.resource-offer {
+  float: left;
+  width: 140px;
+  height: 100px;
+  
+  background: url('<%= asset_path("shop/button_cash_package.png") %>');
+  margin-right: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  
+  color: #c83;
+}
+
+.resource-offer:hover {
+  background: url('<%= asset_path("shop/button_cash_package_hover.png") %>');
+  color: #ea5;
+}
+
+.resource-offer p {
+  font-size: 15px;
+  line-height: 17px;
+  margin-top: 6px;
+}
+
+.frog-trade {
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  padding: 10px;
+  margin-bottom: 10px;
+
+  background: #f8fbee; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #ffffff 0%,  #f8fbee 100%);
+  background: -moz-linear-gradient(top,  #ffffff,  #f8fbee); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#ffffff,  #f8fbee);
+}
+
+.frog-trade-description {
+  width: 470px;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.frog-trade-button {
+  width: 90px;
+  display: inline-block;
+  text-align: center;
+}
+
+.frog-trade-button-inline {
+  width: 90px;
+  text-align: center;
+}
+
+.special-offer {
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  padding: 10px;
+  margin-bottom: 10px;
+
+  background: #e5541d; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff7139', endColorstr='#e5541d'); /* for IE */
+  background: linear-gradient(top, #ff7139 0%,  #e5541d 100%);
+  background: -moz-linear-gradient(top,  #ff7139,  #e5541d); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#ff7139,  #e5541d);
+
+  color: #eee;
+  text-shadow: grey 0px 1px 1px;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.special-offer .simple-button {
+  border-color:white;
+}
+
+.simple-button:hover {
+  color: #ff8251;
+}
+
+.special-offer .bonus-offer-button {
+  width: 85px;
+  display: inline-block;
+  text-align: center;
+}
+
+.special-offer .bonus-offer-description {
+  width:340px;
+}
+
+.special-offer .bonus-offer-price {
+  width:120px;
+}
+
+.special-offer-header span {
+  width:55%;
+  font-size:34px;
+  color: #e5541d;
+  text-shadow: #ff7139 0px 0px 3px;
+  font-weight:bold;
+  position:absolute;
+  bottom:0;
+  text-align:center;
+}
+
+.special-offer-header .help-icon {
+  position:absolute;
+  right:0;
+  bottom:10px;
+}
+
+.special-offer-header {
+  position:relative;
+  height:108px;
+  margin-right: 10px;
+  margin-bottom: 0;
+  background: url('<%= asset_path("shop/shop_button.png") %>') no-repeat 70%;
+}
+
+.bonus-offer {
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  padding: 10px;
+  margin-bottom: 10px;
+
+  background: #ecd8ce; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #f6eae5 0%,  #ecd8ce 100%);
+  background: -moz-linear-gradient(top,  #f6eae5,  #ecd8ce); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#f6eae5,  #ecd8ce);
+}
+
+.bonus-offer.active {
+  background: #ddf1a4; /* for non-css3 browsers */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
+  background: linear-gradient(top, #e9f3c3 0%,  #ddf1a4 100%);
+  background: -moz-linear-gradient(top,  #e9f3c3,  #ddf1a4); /* for firefox 3.6+ */
+  background: -webkit-linear-gradient(#e9f3c3,  #ddf1a4);
+}
+
+.bonus-offer-header {
+  padding: 8px;
+  font-size: 1.1em;
+  font-weight:300; 
+  font-stretch:normal; 
+}
+
+.bonus-offer-description {
+  width: 185px;
+  display: inline-block;
+}
+
+.bonus-offer-duration {
+  width: 60px;
+  display: inline-block;
+}
+
+.bonus-offer-price {
+  text-align: center;
+  width: 80px;
+  display: inline-block;
+}
+
+.bonus-offer-end {
+  width: 140px;
+  display: inline-block;
+  text-align: center;
+}
+
+.bonus-offer-button {
+  width: 85px;
+  display: inline-block;
+  text-align: center;
+}
+
+.bonus-offer-wrapper {
+  height:400px;
+  overflow: auto;
+}
+
+#platinum-description {
+  padding: 10px;
+}
+
+.shop-dialog-pane { 
+  position: absolute; 
+  margin-left: -300px;
+  margin-top: 10px;
+  width: 630px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 16px 20px 16px 20px;
+  z-index:256;
+
+  -moz-border-radius: 12px;
+  border-radius:      12px;
+  -moz-box-shadow:    3px 3px 2px 2px #333;
+  -webkit-box-shadow: 3px 3px 2px 2px #333;
+  box-shadow:         3px 3px 2px 2px #333;
+}
+
+
+
+
+
+.platinum-button {
+  color: #c83;
+  width: 140px;
+  height: 80px;
+  float: right;
+  text-align: center;
+  vertical-align: middle;
+  margin-right: 0px;
+  padding: 10px 0px 10px 0px;
+  background: url('<%= asset_path("shop/button_platinum.png") %>');
+}
+
+.platinum-button p {
+  margin: 3px 0px 3px 0px;
+}
+
+.platinum-button:hover {
+  color: #ea5;
+  background: url('<%= asset_path("shop/button_platinum_hover.png") %>');
+}
+
+
+.ranking-view .advisor { 
+  position: absolute;
+  left: 660px;
+  top: -60px;
+}
+
+
+
+
+
+#army-create-form a.close,
+.shop-dialog-pane a.close,
+.ranking-view a.close,
+.resource-details-dialog-pane a.close,
+.effect-details-dialog-pane a.close,
+.artifact-info-view a.close,
+.settlement-info-box-dialog-pane a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  left: 610px;  /* this is an error; must be measured from the right and everything would be fine */
+  top: 26px;
+}
+
+.shop-dialog-pane a.close {
+  left: 576px;
+  top: 16px;
+}
+
+.resource-details-dialog-pane a.close {
+  left: 650px;
+}
+
+.settlement-info-box-dialog-pane a.close {
+  left: 670px;
+}
+
+.effect-details-dialog-pane a.close {
+  left: 380px;
+}
+
+.artifact-info-view a.close {
+  left: 560px;
+}
+
+#army-create-form a.close:hover,
+.shop-dialog-pane a.close:hover,
+.ranking-view a.close:hover,
+.resource-details-dialog-pane a.close:hover,
+.settlement-info-box-dialog-pane a.close:hover,
+.effect-details-dialog-pane a.close:hover,
+.artifact-info-view a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+.effect-details-table th.name {
+  width: 180px;
+}
+
+.effect-details-table th.resource {
+  width: 50px;
+}
+
+.effect-details-table tr.sum {
+  border-top: 1px solid #ccc;
+}
+
+.ranking-table {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0px auto 0px auto;
+  width: 800px;
+}
+
+.participant-table {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0px 0px 10px 0px;
+}
+
+.participant-table th {
+  background-color: #787da8;  
+  color: #fff;
+  padding: 4px 4px 4px 4px;
+  font-size: 14px;
+  text-shadow: none;
+}
+
+.ranking-table th {
+  background-color: #787da8;  
+  color: #fff;
+  padding: 4px 4px 4px 4px;
+  font-size: 14px;
+  text-shadow: none;
+}
+
+.ranking-table th.clickable {
+  color: #ddf;
+}
+
+.ranking-table th.clickable:hover {
+  color: #333666;
+}
+
+.ranking-table th.sortOrder {
+  color: #333666;
+}
+
+.ranking-table tr:nth-child(even) {
+  background-color: rgba(160, 160, 192, 0.15);
+}
+
+.ranking-table td {
+  height: 20px;
+  font-size: 14px;
+  padding: 2px 4px 2px 4px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ranking-table td.number {
+  padding: 2px 8px 2px 0px;
+}
+
+.ranking-table .rank {
+  width: 42px;
+}
+
+.ranking-table .character {
+  width: 148px;
+}
+
+.ranking-table .overall {
+  width: 58px;
+}
+
+.ranking-table .resource {
+  width: 88px;
+}
+
+.ranking-table .likes {
+  width: 64px;
+}
+
+.ranking-table .victories {
+  width: 42px;
+}
+
+.ranking-table .victory-ratio {
+  width: 104px;
+}
+
+.ranking-table .kills {
+  width: 106px;
+}
+
+.ranking-table .experience {
+  width: 74px;
+}
+
+.ranking-table .rank2 {
+  width: 48px;
+}
+
+.ranking-table .alliance {
+  width: 72px;
+}
+
+.ranking-table .fortress {
+  width: 80px;
+}
+
+.ranking-table .overall2 {
+  width: 76px;
+}
+
+.ranking-table .resource2 {
+  width: 98px;
+}
+
+.ranking-table .kills2 {
+  width: 112px;
+}
+
+.ranking-table .members {
+  width: 80px;
+}
+
+.ranking-table .region-members {
+  width: 78px;
+}
+
+.ranking-table .tax {
+  width: 84px;
+}
+
+.ranking-table .income {
+  width: 130px;
+}
+
+.ranking-table .defense {
+  width: 170px;
+}
+
+.ranking-table .artifacts {
+  width: 94px;
+}
+
+.ranking-table .artifact {
+  width: 94px;
+}
+
+.ranking-table .owner {
+  width: 170px;
+}
+
+.ranking-table .region {
+  width: 170px;
+}
+
+.ranking-table .capture {
+  width: 170px;
+}
+
+.ranking-table .initiation {
+  width: 170px;
+}
+
+.participant-table td {
+  font-size: 14px;
+  padding: 4px 4px 4px 4px;
+}
+
+.participant-table td.inner-table {
+  padding: 0px;
+}
+
+.participant-table th:first-child, .ranking-table th:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.participant-table th:last-child, .ranking-table th:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.participant-table td.right-line {
+  border-right: 1px solid #ccc;
+}
+
+.participant-inner-table td {
+  padding: 4px 4px 4px 4px;
+  font-size: 14px;
+}
+
+
+.participant div {
+  display: inline-block;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.participant-name {
+  width: 100px;
+}
+
+.participant-owner {
+  width: 120px;
+}
+
+.participant-size {
+  width: 50px;
+  text-align: center;
+}
+
+.participant-strength {
+  width: 50px;
+  text-align: center;
+}
+
+.participant-exp {
+  width: 80px;
+  text-align: center;
+}
+
+.participant-retreat {
+  width: 0px;
+}
+
+.participants-left {
+  display: inline-block;
+  border-right: 1px solid #ccc;
+}
+
+.participants-right {
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.battle-ratio {
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.battle-ratio-left {
+  background-color: #cfc;
+  display: inline-block;
+  height: 32px;
+}
+
+.battle-ratio-right {
+  background-color: #fcc;
+  display: inline-block;
+  height: 32px;
+}
+
+.battle-ratio-left-text {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 5px;
+  width: 870px;
+}
+
+.battle-ratio-right-text {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: right;
+  padding: 5px;
+  width: 870px;
+}
+
+.battle-time {
+  margin-top: 20px;
+}
+
+.battle-dialog-pane {
+  position: absolute; 
+  margin-left: -445px;
+  margin-top: -240px;
+  width: 890px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 16px 20px 16px 20px;
+  z-index:256;
+
+  -moz-border-radius: 12px;
+  border-radius:      12px;
+  -moz-box-shadow:    3px 3px 2px 2px #333;
+  -webkit-box-shadow: 3px 3px 2px 2px #333;
+  box-shadow:         3px 3px 2px 2px #333;
+}
+
+
+.battle-dialog-pane a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+.battle-dialog-pane a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+.attack-dialog-pane {
+  position: absolute; 
+  margin-left: -370px;
+  margin-top: -200px;
+  width: 700px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 16px 20px 16px 20px;
+  z-index:258;
+
+  -moz-border-radius: 12px;
+  border-radius:      12px;
+  -moz-box-shadow:    3px 3px 2px 2px #333;
+  -webkit-box-shadow: 3px 3px 2px 2px #333;
+  box-shadow:         3px 3px 2px 2px #333;
+}
+
+.attack-dialog-pane .icon-button {
+  margin-left: 20px;
+}
+
+.attack-participant-table {
+  width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0px 0px 10px 0px;
+}
+
+.attack-participant-table th {
+  background-color: #555;  
+  color: #fff;
+  padding: 4px 4px 4px 4px;
+}
+
+.attack-participant-table th.left {
+  border-top-left-radius: 10px;
+  border-bottom-left-radsius: 10px;
+}
+
+.attack-participant-table th.right {
+  border-top-right-radius: 10px;
+  border-bottom-right-rasdius: 10px;
+}
+
+.attack-participant-table td {
+  padding: 4px 4px 4px 14px;
+}
+
+.attack-participant-faction {
+  width: 200px;
+}
+
+.attack-participant-spinwheel {
+  width: 400px;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.attack-participant-faction .own-character {
+  font-weight: bold;
+}
+
+.activity-indicator-small {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-image: url('<%= asset_path("icons/activityindicator_small.svg") %>');
+}
+
+.activity-indicator-small-white {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-image: url('<%= asset_path("icons/activityindicator_small_white.svg") %>');
+}
+
+button.fb-button {
+  background-color: rgba(255,255,255,0.0);
+  border: none;
+  background-image: url('<%= asset_path 'icons/fb-button.png' %>');
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  width: 217px;
+  height: 43px;
+
+  color: #FFF;
+  text-shadow: inset rgba(0,0,0,.5) -1px -1px 0px;
+  font-weight: bold;
+  cursor: pointer;
+
+  line-height: 18px;
+  font-size: 15px;
+
+  padding-left: 50px;
+}
+
+
+
+
+.quest-answer-field {
+  display: inline;
+}
+
+.tutorial-end-dialog {
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: 80px;
+  width: 800px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 4px 4px 4px 4px;
+  z-index:256;
+}
+
+.tutorial-end-dialog .inner-border {
+  border: 8px solid #BBB;
+  background-color: rgba(176, 176, 176, 0.15);
+  border-radius: 11px;
+  margin: 0;
+  padding: 4px 14px 14px 14px;
+}
+
+.quest-list-view {
+  position: absolute;
+  margin-left: -431px;
+  margin-top: -16px;
+  width: 825px;
+  /* min-height: 100px; */
+  height: 650px;
+  background-image: url('/client/assets/quest-selection-bg.png');
+  padding: 16px 20px 16px 20px;
+  z-index: 256;
+  background-size: 100% 100%;
+  background-color: initial;
+  box-shadow: none;
+  overflow: scroll;
+  border-radius: 0px;
+}
+
+.quest-list-content{
+  position: relative;
+  width: 64%;
+  height: 71%;
+  top: 15%;
+  left: 17%;
+}
+
+.quest-list-header{
+  display: none;
+}
+
+.quest-list-items{
+  height: 71%;
+  overflow: scroll;
+  top: 23%;
+  overflow: hidden;
+  position: absolute;
+}
+
+.quest-list-view .advisor, .tutorial-end-dialog .advisor {
+  float: right;
+}
+
+.quest-list-items > div{
+  overflow: scroll;
+  height: 100%;
+}
+
+.quest-list-item {
+  background-color: #FBB;
+  -moz-border-radius: 7px;
+  border-radius:      7px;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.quest-list-body {
+  margin-bottom: 40px;
+}
+
+.quest-list-scrollable {
+  margin-bottom: 10px;
+  overflow: auto;
+  height: 410px;
+}
+
+.quest-list-item.girl {
+  background-color: #BC4;
+}
+.quest-list-item.chef {
+  background-color: #AAC;
+}
+.quest-list-item.warrior {
+  background-color: #F94;
+}
+.quest-list-item.chef.tutorial ,
+.quest-list-item.warrior.tutorial ,
+.quest-list-item.girl.tutorial {
+  background-color: #DBD;
+}
+
+
+.quest-list-header {
+  padding: 20px 10px 4px 10px;
+  font-weight: bold;
+}
+
+.quest-item-nr {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  font-size: 14px;
+  font-weight: lighter;
+  color: #BBB;
+}
+
+.quest-list-item-name {
+  width: 320px;
+  display: inline-block;
+}
+
+.quest-list-item-status {
+  text-align: center;
+  width: 80px;
+  display: inline-block;
+}
+
+.quest-list-item-reward {
+  text-align: center;
+  width: 80px;
+  display: inline-block;
+}
+
+.quest-list-item-show {
+  text-align: center;
+  width: 80px;
+  display: inline-block;
+}
+
+.quest-start-dialog, .quest-finished-dialog, .quest-info-dialog, .quest-dialog {
+  position: absolute; 
+  margin-left: -366px;
+  margin-top: 50px;
+  width: 780px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 4px 4px 4px 4px;
+  z-index:256;
+}
+
+
+.quest-dialog .inner-border {
+  border: 8px solid #BBB;
+  background-color: rgba(176, 176, 176, 0.15);
+  border-radius: 11px;
+  margin: 0;
+  padding: 4px 14px 14px 14px;
+}
+
+.tutorial-end-dialog .ok-button,
+.quest-list-view .ok-button,
+.quest-dialog .ok-button {
+  border: solid 2px #BC4;
+  background-color: #FFF;
+  margin: -2px;
+  font-weight: bold;
+  color: #BC4;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.quest-list-view .ok-button:hover,
+.quest-dialog .ok-button:hover {
+  border-width: 4px;
+  margin: -4px;
+}
+
+.quest-dialog .inner-border.girl, .tutorial-end-dialog .inner-border.girl {
+  border-color: #BC4;
+  background-color: rgba(176, 192, 64, 0.15);
+}
+.quest-dialog .inner-border.chef {
+  border-color: #AAC;
+  background-color: rgba(160, 160, 192, 0.15);
+}
+.quest-dialog .inner-border.warrior {
+  border-color: #F94;
+  background-color: rgba(255, 144, 64, 0.15);
+}
+.quest-dialog.tutorial .inner-border {
+  border-color: #DBD;
+  background-color: rgba(208, 176, 208, 0.15);
+}
+
+.quest-dialog .girl .ok-button {
+  border-color: #BC4;
+  color: #BC4;
+}
+.quest-dialog .chef .ok-button {
+  border-color: #AAC;
+  color: #AAC;
+}
+.quest-dialog .warrior .ok-button {
+  border-color: #F94;
+  color: #F94;
+}
+.quest-dialog.tutorial .ok-button {
+  border-color: #DBD;
+  color: #DBD;
+}
+
+.quest-dialog .description-image-army {
+  float: left;
+  margin: 0px 14px 14px 0px;
+  width: 317px;
+  height: 287px;
+  background-image: url('<%= asset_path("newarmybutton.png") %>');
+}
+
+.quest-dialog .description-image-settlement {
+  float: left;
+  margin: 0px 14px 14px 0px;
+  width: 263px;
+  height: 173px;
+  background-image: url('<%= asset_path("settlementbutton.png") %>');
+}
+
+.quest-dialog .description-image-attack {
+  float: left;
+  margin: 0px 14px 14px 0px;
+  width: 338px;
+  height: 281px;
+  background-image: url('<%= asset_path("attacknpc.png") %>');
+}
+
+
+
+.quest-start-dialog .advisor, .quest-finished-dialog .advisor, .quest-info-dialog .advisor, .quest-dialog .advisor { 
+  float:right;
+  margin-left: 4px;
+  margin-right: -22px;
+  margin-top: -30px;
+}
+
+.quest-dialog .citation {
+  color: #999;
+}
+
+.quest-rewards {
+  width: 560px;
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+}
+
+.quest-redeem-button {
+  float: right;
+}
+
+.quest-dialog-rewards-items {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  position: absolute;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.quest-reward-item {
+  width: 24%;
+  height: 79%;
+  text-align: center;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  top: 15px;
+  left: 2px;
+  position: relative;
+  }
+}
+
+.quest-reward-item-image, .quest-reward-item-amount, .quest-reward-item-image.finished{
+  height: 92px;
+  width: 92px;
+  font-size: 24px;
+  position: relative;
+  left: 4px;
+}
+
+.dom-quest-container {
+	position: absolute;
+	padding: 5px;
+	height: 150px;
+	width: 300px;
+	z-index: 1000;
+	margin: 0;
+}
+
+div.dom-quest-container div.tutorial-dialog {
+	width: 100%;
+	height: 100%;
+	padding: 5px;
+	background: #fff;
+	border: 3px solid #000;
+	border-radius: 4px;
+	color: #999;
+}
+
+.facebook-iframe {
+  width: 500px;
+  height: 30px;
+  display: inline-block;
+  padding: 8px 0px 0px 0px;
+}
+
+
+#environment {
+  position: absolute;
+  width: 200px;
+  height: 32px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 20px;
+  font-weight: bold;
+  left: 50%;
+  margin-left: -100px;
+  top: 5px;
+  text-align: center; 
+  z-index: 90000;
+}
+
+#environment.development {
+  border-color: #0a0;
+  color: #0a0;
+}
+
+#environment.staging {
+  border-color: #cc0;
+  color: #cc0;
+}
+
+#environment.production {
+  border-color: #a00;
+  color: #a00;
+}
+
+#army-create-form .buttons, #army-change-form .buttons {
+  margin-top: 24px;
+  text-align: right;
+}
+
+#army-create-form .button {
+  border: solid 2px #F94;
+  margin: -2px;
+  font-weight: bold;
+  color: #F94;
+  padding-left: 20px;
+  padding-right: 20px;
+  float: none;
+  background-color: #FFF;  
+}
+
+#army-change-form .button {
+  border: solid 2px #777;
+  margin: -2px;
+  font-weight: bold;
+  color: #777;
+  padding-left: 20px;
+  padding-right: 20px;
+  float: none;
+}
+
+#army-create-form .button:hover, #army-change-form .button:hover {
+  border-width: 4px;
+  margin: -4px;
+}
+
+.army-list-view {
+  font-size: 16px;
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: 80px;  
+  width: 800px; 
+  min-height: 600px;
+  background-color: #FFF;    
+}
+
+.army-list-view .advisor { 
+  position: absolute;
+  right: 45px;
+  top: 70px;
+}
+
+.army-list-view .citation {
+  margin-right: 140px;
+}
+
+#army-list-dialog a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 22px;
+  top: 22px;
+}
+
+#army-list-dialog a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+.army-list-table.head {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-bottom:0;
+  margin: 0 auto 0 auto;
+}
+  
+.army-list-table-wrapper .army-list-table {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-top:0;
+  margin: 0px auto 0px auto;
+}
+  
+.army-list-table-wrapper {
+  overflow:auto;
+  height: 500px; /* I took this value because of .army-list-view */
+}
+
+.army-list-table th {
+  background-color: #787da8;  
+  color: #fff;
+  padding: 4px 4px 4px 4px;
+  font-size: 14px;
+  text-shadow: none;
+}
+
+.army-list-table th:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.army-list-table th:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.army-list-table th.clickable {
+  color: #ddf;
+}
+
+.army-list-table th.clickable:hover {
+  color: #333666;
+}
+
+.army-list-table .army-view {
+  width:7%;
+}
+
+.army-list-table .name {
+  width:20%;
+}
+
+.army-list-table .region {
+  width:22%;
+}
+
+.army-list-table .rank {
+  width:7%;
+}
+
+.army-list-table .ap {
+  width:7%;
+}
+
+.army-list-table .status {
+  width:12%;
+}
+
+.army-list-table .size {
+  width:17%;
+}
+
+.army-list-table .info {
+  width:7%;
+}
+
+.army-list-table td {
+  text-align: center;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.army-list-table-wrapper .army-list-table tr:nth-child(even) {
+  background-color: rgba(160, 160, 192, 0.15);
+}
+
+#resource-exchange-dialog .resource-exchange-input {
+  width:100px;
+}
+  
+#resource-exchange-dialog .green-color .resource-exchange-input {
+  color: #9D9;
+}
+
+#resource-exchange-dialog .red-color .resource-exchange-input {
+  color: #F77;
+}
+
+#resource-exchange-dialog .bold .resource-exchange-input {
+  font-weight: bold;
+}
+
+#resource-exchange-dialog a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 24px;
+  top: 26px;
+}
+
+#resource-exchange-dialog a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+#resource-exchange-dialog .right {
+  float:right;
+}
+
+#resource-exchange-dialog table {
+  width:100%;
+}
+
+#resource-exchange-dialog table th, #resource-exchange-dialog table td {
+  text-align:left;
+}
+
+#resource-exchange-dialog table tr .remaining {
+  text-align:right;
+  /*width:160px;*/
+}
+
+#resource-exchange-dialog span.number {
+  display:block;
+  text-align:right;
+  width:100px;
+}
+
+#resource-exchange-dialog table tr td, #resource-exchange-dialog table tr th {
+  vertical-align:middle;
+}
+
+#resource-exchange-dialog table tr th {
+  font-size:18px;
+}
+
+#resource-exchange-dialog .left {
+  float:left;
+}
+
+#resource-exchange-dialog .right {
+  float:right;
+}
+
+#resource-exchange-dialog .no-bg-repeat {
+  background-repeat:no-repeat;
+}
+
+.hurry-button {
+  font-size: 14px;
+  width: 130px;
+  height: 24px;
+  padding-top: 6px;
+  background-color:#fff;
+}
+
+hurry-button:hover {
+}
+
+.hurry-button a {
+  padding: 2px 6px;
+  color: #333;
+  border-radius: 3px;
+  text-decoration: none;
+  border: 1px solid #333;
+  margin: -2px;
+}
+
+.hurry-button a:hover {
+  border-color: #000;
+  color: #000;
+  background-color: #BBF;
+}
+
+.simple-button:hover {
+}
+.z-layer-5 {
+  z-index: 512;
+}
+
+.z-layer-6 {
+  z-index: 768;
+}
+
+
+.ui-marker-div {
+  position:absolute;
+  top: 0;
+  left: 0;
+  padding:0;
+  width:  96px;
+  height: 96px;
+}
+
+.ui-marker-image {
+  position:absolute;
+  padding:0;
+  width:  48px;
+  height: 48px;
+  background-size:  100%;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  z-index: 9;
+}
+
+.ui-marker-image:hover {
+  opacity: 1.0;
+}
+
+.ui-marker-image.up {
+  top: 0px;
+  left: 24px;
+  background-image: url('<%= asset_path("ui/arrow/up_arrow.png") %>');
+}
+
+.ui-marker-image.right {
+  top: 24px;
+  left: 48px;
+  background-image: url('<%= asset_path("ui/arrow/right_arrow.png") %>');
+}
+
+.ui-marker-image.down {
+  top: 48px;
+  left: 24px;
+  background-image: url('<%= asset_path("ui/arrow/down_arrow.png") %>');
+}
+
+.ui-marker-image.left {
+  top: 24px;
+  left: 0px;
+  background-image: url('<%= asset_path("ui/arrow/left_arrow.png") %>');
+}
+
+
+
+.bubble-wrap {
+  position:relative;
+  margin: auto auto;
+  margin-top:40px;
+  padding:0;
+  width:  43px;
+  height: 53px; /* bubble height+10px*/
+}
+
+.bubble {
+  position:absolute;
+  top: 0px;
+  left: 0px;
+  padding:0;
+  width:  43px;
+  height: 43px;
+  background-size:  100%;
+  background-image: url('<%= asset_path("icons/bubble.png") %>');
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
+
+.bubble.invisible {
+  background-image: none;
+}
+
+.bubble.hidden {
+  display: none;
+}
+
+.bubble-resource {
+  position:relative;
+  margin-top: 10px;
+  margin-left: 10px;
+  z-index: 20;
+  display: inline-block;
+}
+
+.bubble-xp, .bubble-amount {
+  z-index: 20;
+  visibility: hidden;
+  vertical-align: top;
+}
+
+.bubble-amount {
+  font-weight: bold;
+  color: black;
+  text-shadow: white 1px 1px 1px;
+}
+
+.small-bubble {
+  top: 0px;
+  left: 0px;
+  width:24px;
+  height:24px;
+  position:absolute;
+  border-radius:24px;
+  float:left;
+  margin-top: 48px;
+  margin-left: 33px;
+  padding:0;
+  background-size:  100%;
+  background-image: url('<%= asset_path("icons/bubble.png") %>');
+}
+
+
+
+
+
+  /* ==|== media queries ======================================================
+     EXAMPLE Media Query for Responsive Design.
+     This example overrides the primary ('mobile first') styles
+     Modify as content requires.
+     ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+  /* Style adjustments for viewports that meet the condition */
+}
+
+
+
+/* ==|== non-semantic helper classes ========================================
+   Please define your styles before this section.
+   ========================================================================== */
+
+/* For image replacement */
+.ir { display: block; border: 0; text-indent: -999em; overflow: hidden; background-color: transparent; background-repeat: no-repeat; text-align: left; direction: ltr; *line-height: 0; }
+.ir br { display: none; }
+
+/* Hide from both screenreaders and browsers: h5bp.com/u */
+.hidden { display: none !important; visibility: hidden; }
+
+/* Hide only visually, but have it available for screenreaders: h5bp.com/v */
+.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+
+/* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: h5bp.com/p */
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
+
+/* Hide visually and from screenreaders, but maintain layout */
+.invisible { visibility: hidden; }
+
+/* Contain floats: h5bp.com/q */
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { *zoom: 1; }
+
+
+/* ==|== print styles =======================================================
+   Print styles.
+   Inlined to avoid required HTTP connection: h5bp.com/r
+   ========================================================================== */
+
+@media print {
+  * { background: transparent !important; color: black !important; box-shadow:none !important; text-shadow: none !important; filter:none !important; -ms-filter: none !important; } /* Black prints faster: h5bp.com/s */
+  a, a:visited { text-decoration: underline; }
+  a[href]:after { content: " (" attr(href) ")"; }
+  abbr[title]:after { content: " (" attr(title) ")"; }
+  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }  /* Don't show links for images, or javascript/internal links */
+  pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+  thead { display: table-header-group; } /* h5bp.com/t */
+  tr, img { page-break-inside: avoid; }
+  img { max-width: 100% !important; }
+  @page { margin: 0.5cm; }
+  p, h2, h3 { orphans: 3; widows: 3; }
+  h2, h3 { page-break-after: avoid; }
+}
+
+.quest-dialog-bg{  
+  position: absolute;
+  height: 0px;
+  width: 0px;
+  top: 238px;
+  margin: 0 auto;
+  left:-50%;
+  
+  background-color: none;
+  border: none;
+  background-size: 100% 100%;
+  
+  z-index: 260;
+}
+
+.quest-dialog-advisor{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+
+#quest-dialog-advisor{
+  width: 29%;
+  height: 39%;
+  position: absolute;
+  top: 16%;
+  right: 11%;
+  background-size: 100% 100%;
+  
+  opacity: 1;
+}
+
+.quest-dialog-text{
+  background-image: url('<%= asset_path("dialog-textfield2.png") %>');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  position: absolute;
+  width: 42%;
+  height: 18%;
+  padding: 17px;
+  overflow: scroll;
+  text-align: left;
+  font-size: 15px;
+  text-decoration: none;
+  opacity: 1;
+  top: 17%;
+  left: 14%;
+  color: rgba(220, 220, 191, 0);
+}
+
+.quest-dialog-reward{
+  background-image: url('<%= asset_path("dialog-textfield1.png") %>');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  position: absolute;
+  width: 71%;
+  height: 28%;
+  left: 14.5%;
+  top: 50%;
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+  
+  opacity: 1;
+}
+
+.quest-dialog-button{
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  border: none;
+  box-shadow: none;
+  z-index: 25;
+  background-image: url('<%= asset_path("quest-dialog-button.png") %>');
+  background-size: 100%;
+  -webkit-transition: background-image 0.3s;
+  -moz-transition: background-image 0.3s;
+  -ms-transition: background-image 0.3s;
+  -o-transition: background-image 0.3s;
+  transition: background-image 0.3s;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+
+.quest-dialog-button:hover{
+    background-image: url('<%= asset_path("quest-dialog-button-active.png") %>');
+    
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none;
+    user-select: none;
+}
+
+.quest-dialog-button:active{
+  
+  background-image: url('<%= asset_path("quest-dialog-button-active2.png") %>');
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+  
+  transition: background 0s;
+}
+
+.reward-recource-icon{
+  display: inline-block;
+  width: 92px; height: 92px;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+
+.quest-resource-icon{
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  background-size: 100% 100%;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+
+.quest-resource-icon.resource_stone{
+  background-image: url('<%= asset_path("icons/stone-xl.png") %>');
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+
+.quest-resource-icon.resource_wood{
+  background-image: url('<%= asset_path("icons/wood-xl.png") %>');
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+
+.quest-resource-icon.resource_fur{
+  background-image: url('<%= asset_path("icons/fur-xl.png") %>');
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+
+.quest-reward-item-number{
+  display: block;
+  width:110px;
+  height: 53px;
+  font-family: 'Freckle Face', 'cursive';
+  text-shadow: none;
+  color: #dcdcbf;
+  font-size: 42px;
+  position: relative;
+  top: 50px;
+  text-align: center;
+  z-index: 200;
+  overflow: hidden;
+  opacity: 0;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+  left: 12px;
+}
+
+.quest-reward-item-number:before{
+  content: "+";
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+
+.quest-dialog-text h1, .quest-dialog-text h3{
+  font-size:129%;
+  font-family: 'Freckle Face', 'cursive';
+  text-shadow: none;
+  color: #dcdcbf;
+  font-weight: 0;
+  margin: 0;
+}
+
+.quest-dialog-text h3{
+  margin-top: 20px;
+  font-size :124%;
+}
+
+p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
+  font-family: 'Asap', 'sans-serif';
+  text-align: left;
+  text-shadow: none;
+  color: #dcdcbf;
+  line-height: 1.15;
+  font-size: 94%;
+  margin: 4px 0;
+}
+
+.quest-simple-button{
+  width: 100%;
+  height: 100%;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+
+
+.quest-scip-button{
+  width: 17%;
+  height: 59%;
+  background-image: url('<%= asset_path("quest-x-button.png") %>');
+  background-size: 100%;
+  display: inline-block;
+  position: absolute;
+  top: -159%;
+  right: -14%;
+  transition: background-image 0.3s;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+
+.quest-scip-button:hover{
+  background-image: url('<%= asset_path("quest-x-button-hover.png") %>');
+  transition: background-image 0.3s;
+  
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+
+.quest-scip-button:active{
+  background-image: url('<%= asset_path("quest-x-button-active.png") %>');
+  top: -159%;
+  right: -14%;
+  transition: background-image 0s;
+}
+
+
+.modal-dialog-spinning-background {
+  background-size: 100%;
+  
+  width: 2200px;
+  height: 2200px;
+  margin-top: -850px;
+  margin-left: -1100px;
+  
+  -webkit-animation:spin 6s linear infinite;
+  -moz-animation:spin 6s linear infinite;
+  -ms-animation:spin 6s linear infinite;
+  animation:spin 6s linear infinite;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@-ms-keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+.quest-resource-icon.resource_cash {
+  background-image: url("<%= asset_path 'icons/toad-xl.png' %>");
+}
+
+.unit-xl-icon {
+  display: inline-block;
+  width: 92px;
+  height: 92px;
+  background: url('/client/assets/icons/unit_default-xl.png');
+}
+
+.isActiv{
+  display: inline-block;
+  vertical-align: bottom;
+  width:28px;
+  height:28px;
+  background-image: url('<%= asset_path("green.png") %>');
+}
+
+.isAway{
+  display: inline-block;
+  vertical-align: bottom;
+  width: 28px;
+  height: 28px;
+  background-image: url('<%= asset_path("yellow.png") %>');
+}
+
+.isOff{
+  display: inline-block;
+  vertical-align: bottom;
+  width: 28px;
+  height: 28px;
+  background-image: url('<%= asset_path("red.png") %>');
+}
+
+.quest-reward-item-icon{
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  top: 49px;
+  left: 50px;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.advisor.chef{
+  background: url('<%= asset_path("advisors/head_chef_colored_small.png") %>');
+}
+
+.quest-dialog-bg{
+  background-image: url("<%= asset_path("quest-dialog-bg-middle.png") %>");
+}
+
+.modal-dialog-spinning-background {
+  background-image: url('/client/assets/quest-dialog-light.png');
+}
+
+.quest-dialog-button{
+  top: 80%;
+  left: 84%;
+}
+
+@media (max-width : 800px) {
+  .quest-dialog-text h1, .quest-dialog-text h3{
+    font-size: 13px;
+    font-family: 'Freckle Face', 'cursive';
+    text-shadow: none;
+    color: #dcdcbf;
+    font-weight: 0;
+    margin: 0;
+  }
+
+  .quest-dialog-text h3{
+    margin-top: 20px;
+    font-size : 12px;
+  }
+
+  p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
+    font-family: 'Asap', 'sans-serif';
+    text-align: left;
+    text-shadow: none;
+    color: #dcdcbf;
+    line-height: 1.15;
+    font-size: 11px;
+    margin: 4px 0;/*
+ * This is a manifest file that'll automatically include all the stylesheets available in this directory
+ * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
+ * the top of the compiled file, but it's generally better to create a new file per style scope.
+ *= require_self
+ *= require_tree . 
+*/
+
+
+/*
+ * HTML5 Boilerplate
+ *
+ * What follows is the result of much research on cross-browser styling.
+ * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
+ * Kroc Camen, and the H5BP dev community and team.
+ *
+ * Detailed information about this CSS: h5bp.com/css
+ *
+ * ==|== normalize ==========================================================
+ */
+
+
+/* =============================================================================
+   HTML5 display definitions
+   ========================================================================== */
+
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section { display: block; }
+audio, canvas, video { display: inline-block; *display: inline; *zoom: 1; }
+audio:not([controls]) { display: none; }
+[hidden] { display: none; }
+
+
+/* =============================================================================
+   Base
+   ========================================================================== */
+
+/*
+ * 1. Correct text resizing oddly in IE6/7 when body font-size is set using em units
+ * 2. Prevent iOS text size adjust on device orientation change, without disabling user zoom: h5bp.com/g
+ */
+
+html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+
+html, button, input, select, textarea { font-family: sans-serif; color: #222; }
+
+body { margin: 0; font-size: 1em; line-height: 1.4; }
+
+/*
+ * Remove text-shadow in selection highlight: h5bp.com/i
+ * These selection declarations have to be separate
+ * Also: hot pink! (or customize the background color to match your design)
+ */
+
+::-moz-selection { background: #DDD; color: #fff; text-shadow: none; }
+::selection { background: #DDD; color: #fff; text-shadow: none; }
+
+
+/* =============================================================================
+   Links
+   ========================================================================== */
+
+a { color: #00e; }
+a:visited { color: #551a8b; }
+a:hover { color: #06e; }
+a:focus { outline: thin dotted; }
+
+/* Improve readability when focused and hovered in all browsers: h5bp.com/h */
+a:hover, a:active { outline: 0; }
+
+
+/* =============================================================================
+   Typography
+   ========================================================================== */
+
+abbr[title] { border-bottom: 1px dotted; }
+
+b, strong { font-weight: bold; }
+
+blockquote { margin: 1em 40px; }
+
+dfn { font-style: italic; }
+
+hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; }
+
+ins { background: #ff9; color: #000; text-decoration: none; }
+
+mark { background: #ff0; color: #000; font-style: italic; font-weight: bold; }
+
+/* Redeclare monospace font family: h5bp.com/j */
+pre, code, kbd, samp { font-family: monospace, serif; _font-family: 'courier new', monospace; font-size: 1em; }
+
+/* Improve readability of pre-formatted text in all browsers */
+pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
+
+q { quotes: none; }
+q:before, q:after { content: ""; content: none; }
+
+small { font-size: 85%; }
+
+/* Position subscript and superscript content without affecting line-height: h5bp.com/k */
+sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+sup { top: -0.5em; }
+sub { bottom: -0.25em; }
+
+
+/* =============================================================================
+   Lists
+   ========================================================================== */
+
+ul, ol { margin: 1em 0; padding: 0 0 0 40px; }
+dd { margin: 0 0 0 40px; }
+nav ul, nav ol { list-style: none; list-style-image: none; margin: 0; padding: 0; }
+
+
+/* =============================================================================
+   Embedded content
+   ========================================================================== */
+
+/*
+ * 1. Improve image quality when scaled in IE7: h5bp.com/d
+ * 2. Remove the gap between images and borders on image containers: h5bp.com/i/440
+ */
+
+img { border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; }
+
+/*
+ * Correct overflow not hidden in IE9
+ */
+
+svg:not(:root) { overflow: hidden; }
+
+
+/* =============================================================================
+   Figures
+   ========================================================================== */
+
+figure { margin: 0; }
+
+
+/* =============================================================================
+   Forms
+   ========================================================================== */
+
+form { margin: 0; }
+fieldset { border: 0; margin: 0; padding: 0; }
+
+/* Indicate that 'label' will shift focus to the associated form element */
+label { cursor: pointer; }
+
+/*
+ * 1. Correct color not inheriting in IE6/7/8/9
+ * 2. Correct alignment displayed oddly in IE6/7
+ */
+
+legend { border: 0; *margin-left: -7px; padding: 0; white-space: normal; }
+
+/*
+ * 1. Correct font-size not inheriting in all browsers
+ * 2. Remove margins in FF3/4 S5 Chrome
+ * 3. Define consistent vertical alignment display in all browsers
+ */
+
+button, input, select, textarea { font-size: 100%; margin: 0; vertical-align: baseline; *vertical-align: middle; }
+
+/*
+ * 1. Define line-height as normal to match FF3/4 (set using !important in the UA stylesheet)
+ */
+
+button, input { line-height: normal; }
+
+/*
+ * 1. Display hand cursor for clickable form elements
+ * 2. Allow styling of clickable form elements in iOS
+ * 3. Correct inner spacing displayed oddly in IE7 (doesn't effect IE6)
+ */
+
+button, input[type="button"], input[type="reset"], input[type="submit"] { cursor: pointer; -webkit-appearance: button; *overflow: visible; }
+
+/*
+ * Re-set default cursor for disabled elements
+ */
+
+button[disabled], input[disabled] { cursor: default; }
+
+/*
+ * Consistent box sizing and appearance
+ */
+
+input[type="checkbox"], input[type="radio"] { box-sizing: border-box; padding: 0; *width: 13px; *height: 13px; }
+input[type="search"] { -webkit-appearance: textfield; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box; }
+input[type="search"]::-webkit-search-decoration, input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+/*
+ * Remove inner padding and border in FF3/4: h5bp.com/l
+ */
+
+button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; }
+
+/*
+ * 1. Remove default vertical scrollbar in IE6/7/8/9
+ * 2. Allow only vertical resizing
+ */
+
+textarea { overflow: auto; vertical-align: top; resize: vertical; }
+
+/* Colors for form validity */
+input:valid, textarea:valid {  }
+input:invalid, textarea:invalid { background-color: #f0dddd; }
+
+
+/* =============================================================================
+   Tables
+   ========================================================================== */
+
+table { border-collapse: collapse; border-spacing: 0; }
+td { vertical-align: top; }
+
+
+/* =============================================================================
+   Chrome Frame Prompt
+   ========================================================================== */
+
+.chromeframe { margin: 0.2em 0; background: #ccc; color: black; padding: 0.2em 0; }
+
+
+/* ==|== primary styles =====================================================
+   Author: Patrick Fox, Sascha Lange
+   ========================================================================== */
+
+@font-face {
+    font-family: 'MgOpenModataBold';
+    src: url('fonts/mgopenmodatabold-webfont.eot');
+    src: url('fonts/mgopenmodatabold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/mgopenmodatabold-webfont.woff') format('woff'),
+         url('fonts/mgopenmodatabold-webfont.ttf') format('truetype'),
+         url('fonts/mgopenmodatabold-webfont.svg#MgOpenModataBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MgOpenModataRegular';
+    src: url('fonts/mgopenmodataregular-webfont.eot');
+    src: url('fonts/mgopenmodataregular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/mgopenmodataregular-webfont.woff') format('woff'),
+         url('fonts/mgopenmodataregular-webfont.ttf') format('truetype'),
+         url('fonts/mgopenmodataregular-webfont.svg#MgOpenModataRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MgOpenModataOblique';
+    src: url('fonts/mgopenmodataoblique-webfont.eot');
+    src: url('fonts/mgopenmodataoblique-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/mgopenmodataoblique-webfont.woff') format('woff'),
+         url('fonts/mgopenmodataoblique-webfont.ttf') format('truetype'),
+         url('fonts/mgopenmodataoblique-webfont.svg#MgOpenModataOblique') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'VAGRundschriftDRegular';
+    src: url('fonts/vagrundschriftd-webfont.eot');
+    src: url('fonts/vagrundschriftd-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/vagrundschriftd-webfont.woff') format('woff'),
+         url('fonts/vagrundschriftd-webfont.ttf') format('truetype'),
+         url('fonts/vagrundschriftd-webfont.svg#VAGRundschriftDRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  text-shadow: white 0px 1px 1px;
+  color: #555;
+}
+
+
+a { color: #787da8; text-decoration: none; }
+a:visited { color: #787da8; }
+a:hover { color: #333666; text-decoration: underline;}
+a:focus { outline: thin dotted; }
+
+
+h1 {
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", 
+               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", 
+               "Tahoma", "Geneva", "Arial", sans-serif; 
+  font-weight:300; 
+  font-stretch:normal;
+  font-size: 2.2em;
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", 
+               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", 
+               "Tahoma", "Geneva", "Arial", sans-serif; 
+  font-weight:300; 
+  font-stretch:normal;
+  font-size: 1.6em;
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", 
+               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", 
+               "Tahoma", "Geneva", "Arial", sans-serif; 
+  font-weight:300; 
+  font-stretch:normal;
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+
+.inline {
+  display: inline-block;
+}
+
+.red-color {
+  color: #F77;
+}
+.red-background {
+  background-color: #FDD;
+}
+
+.green-color {
+  color: #9D9;
+}
+.green-background {
+  background-color: #DFD;
+}
+
+.yellow-color {
+  color: #FFD;
+}
+
+.blue-color {
+  color: #DDF;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.right {
+  text-aling: right;
+}
+
+.clickable {
+  cursor: pointer;  
+}
+
+#layers {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+#screen-content {
+  width: 100%;
+  height: 100%;
+}
+
+
+.link-pane {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 16px;
+  width: 250px;
+  border-bottom-right-radius: 5px;
+  background-color: rgba(0,0,0,0.5);
+  text-shadow: none;
+  font-size: 12px;
+  padding: 2px 6px 2px 6px;
+  color: white;
+  z-index: 10001;
+}
+
+.link-pane a {
+  text-decoration: none;
+  color: white;
+}
+
+.link-pane a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.link-pane .fb-icon {
+  width: 16px; 
+  margin-top:-3px;
+}
+
+#map-tile-canvas {
+  background-color: #777;
+  position: absolute;
+  top: 0px;
+  left: 0px; 
+  width: 100%;
+  height: 100%;
+  z-index: 0;   /*   <-------------------   */
+}
+
+#gaming-pieces-canvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#annotation-canvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+#inspector-canvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+
+#controls-canvas {
+  position: absolute;
+  top: 0px;
+  left: -220px;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+}
+
+#hud-canvas {
+  position: absolute;
+  right: -380px;
+  top: 0px;
+  width: 380px;
+  height: 260px;
+  z-index: 10;
+}
+
+#resource-canvas {
+  position: absolute;
+  left: 0px;
+  top: -42px;
+  width: 800px;
+  height: 42px;
+  z-index: 9;
+}
+
+
+.z-layer-3 {
+  z-index: 512;
+}
+
+.z-layer-4 {
+  z-index: 768;
+}
+
+.change-army-name-dialog .z-layer-3 {
+  z-index: 800;
+}
+
+.change-army-name-dialog .z-layer-4 {
+  z-index: 900;
+}
+
+#debug {
+  display: none;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 24px;
+  height: 20px;
+  z-index: 1000;
+  background-color: #333;
+  color: #FFF;
+  text-align: right;
+}
+
+#debug2 {
+  display: none;
+  position: absolute;
+  top: 10px;
+  left: 40px;
+  width: 1000px;
+  height: 20px;
+  z-index: 1000;
+  background-color: #333;
+  color: #FFF;
+}
+
+#zoomin {
+  position: absolute;
+  top: 40px;
+  left: 10px;
+  width: 80px;
+  height: 20px;
+  z-index: 200;
+}
+
+#zoomout {
+  position: absolute;
+  top: 40px;
+  left: 100px;
+  width: 100px;
+  height: 20px;
+  z-index: 200;
+}
+
+/* slider definitions */
+.slider_container {
+  position: relative;
+}
+.slider_slider {
+  position: absolute;
+   z-index: 2;
+}
+.slider_bar {
+  position: absolute;
+  z-index: 1;
+}
+/* zoom slider definitions */
+.zoom_slider {
+  position: absolute;
+  top: 100px;
+  left: 32px;
+  width: 20px;
+  height: 360px;
+  z-index: 201;
+  opacity: 0;
+}
+
+.zoom_slider .slider_bar {
+  border: 1px solid #c7c4c4;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  background-color: white;
+  top: 0px;
+  left: 5px;
+  width: 10px;
+  height: 400px;
+}
+/*slider done*/
+
+#templates {
+  display: none;
+}
+
+.clear {
+  clear: both;
+}
+
+
+.center-helper { position: absolute; left: 50%; top: 50%; }
+
+.horizontal-center-helper { position: absolute; left: 50%; top: 0; }
+
+
+.modal-dialog-background { 
+  position: fixed; 
+  background-color: #333; 
+  opacity: 0.6; 
+  top: 0px; 
+  bottom:0px; 
+  width: 100%; 
+  z-index:255; 
+  overflow: hidden;
+}
+
+.modal-dialog-pane { 
+  position: absolute; 
+  margin-left: -300px;
+  margin-top: -50px;
+  width: 600px; min-height: 100px;
+  background-color: #FFF;  
+  padding: 16px 20px 16px 20px;
+  z-index:256;
+
+  -moz-border-radius: 12px;
+  border-radius:      12px;
+  -moz-box-shadow:    3px 3px 2px 2px #333;
+  -webkit-box-shadow: 3px 3px 2px 2px #333;
+  box-shadow:         3px 3px 2px 2px #333;
+}
+
+.settlement-info-dialog-pane.modal-dialog-pane {
+  margin-top:-170px;
+}
+
+
+.modal-dialog-pane .icon-button, .modal-dialog-pane .button {
+  float: right;
+}
+
+.modal-dialog-pane input[type="text"], .modal-dialog-pane input[type="password"] {
+  font-size: 20px;
+  height: 28px;
+  border-radius: 5px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.background-clear {
+  background-color: rgba(255,255,255,0);
+}
+
+.message-center {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  overflow: hidden;
+  min-width: 500px;
+  min-height: 300px;
+}
+
+.message-center .header {
+  position: relative;
+  left: 0px;
+  right: 0px;
+  height: 139px;
+  border-bottom: 1px solid gray;
+}
+
+.message-center #inbox-control,
+.message-center #actions {
+  float: left;
+  margin-top: 106px;
+}
+
+.message-center #inbox-control {
+  width: 266px;
+}
+
+.message-center #inbox-control div,
+.message-center #actions div {
+  display: inline-block;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.message-center #actions div.inactive {
+  cursor: default;
+  color: #AAA;
+  font-style: italic;
+}
+
+.message-center #inbox-control div:hover,
+.message-center #actions div:hover {
+  color: #FA0;
+}
+.message-center #actions div.inactive:hover {
+  color: #AAA;
+}
+
+.message-center .list {
+  position: absolute;
+  display: inline-block;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  top: 140px;
+  bottom: 0px;
+  left: 0px;
+  width: 265px;
+  border-right: 1px solid gray;
+}
+
+.message-center .list h1 {
+  font-size: 16px;
+  margin: 1px 0px 0px 0px;
+  padding: 0px 4px;
+  border-bottom: 1px solid #BBB;
+  background: #DDF;
+}
+
+.message-center .list .message-header {
+  border-bottom: 1px solid #BBB;
+  padding: 4px;
+}
+
+.message-center .list .message-header.selected {
+  background-color: #FA0;
+  color: white;
+}
+
+.message-header .sender.unread  {
+  font-weight: bold;
+}
+
+.message-header .subject.unread  {
+  font-weight: bold;
+}
+
+.message-header.selected .sender {
+}
+
+
+.message-header .time {
+  float: right;
+  color: #AAF;
+}
+
+.message-header.selected .time {
+  color: white;
+}
+
+
+.message-header .subject {
+}
+.message-header.selected .subject {
+}
+
+.message-center .detail {
+  position: absolute;
+  display: inline-block;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  top: 140px;
+  bottom: 0px;
+  left: 266px;
+  right: 0px;
+}
+
+.message-center .message {
+  padding: 24px;
+  overflow-x: scroll;  
+}
+
+.message-center .message table {
+}
+
+
+.message-center .message table tr {
+  
+}
+
+.message-center .message table th {
+  text-align: right;
+  color: #999;
+  padding-right: 16px;
+}
+
+.message-center .message table td {
+  text-align: left;
+  padding: 5px 5px 5px 5px;
+}
+
+/* ===== non-semantic helper classes ========================================
+   Message Center Battle Report
+   ========================================================================== */
+
+.message-center .battle_report {
+  margin: 5px 5px 5px 5px;
+  padding: 5px 5px 5px 5px;
+  vertical-align: middle;
+}
+
+.message-center .battle_report td {
+  vertical-align: middle;
+}
+
+.message-center .battle_report .block,
+.message-center .battle_report .round_block {
+  display: inline-block;
+  border-radius: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #9b9b9b;
+  margin: 5px 5px 5px 5px;
+  padding: 5px 5px 5px 5px;
+  background-color: white;
+}
+.message-center .battle_report .unit_name_text {
+  display: inline-block;
+  height: 12px;
+  padding-left: 5px;
+}
+
+.message-center .battle_report .round_block {
+  background-color: #f6f6f6;
+}
+
+.message-center .battle_report .block h2,
+.message-center .battle_report .round_block h2 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+.message-center .battle_report .block h3,
+.message-center .battle_report .round_block h3 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px
+}
+
+.message-center .battle_report .bar_container {
+  display: inline-block;
+  position: relative;
+  width: 200px;
+  height:22px;
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  background-color: #e4e4e4;
+  border-radius: 5px;
+}
+.message-center .battle_report .bar_text_padding {
+  display: inline-block;
+  position: relative;
+  margin: 0px 0px 0px 0px;
+  padding: 0px 5px 0px 5px;
+  /*color: black;
+  background-color: orange;*/
+}
+.message-center .battle_report hr {
+  border: 0px;
+  height: 1px;
+  color: #9b9b9b;
+  background-color: #9b9b9b; 
+}
+.message-center .battle_report .bar, 
+.message-center .battle_report .survivor_bar,
+.message-center .battle_report .dead_bar,
+.message-center .battle_report .damage_bar,
+.message-center .battle_report .xp_bar,
+.message-center .battle_report .xp_bar_bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 20px;
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #2d8900;
+  background-color: #becd05;
+  z-index: 1;
+  float: left;
+}
+.message-center .battle_report .survivor_bar {
+  border-color: #2d8900;
+  background-color: #becd05;
+}
+.message-center .battle_report .dead_bar {
+  border-color: #aa6a1e;
+  background-color: #f99b2c;
+}
+.message-center .battle_report .damage_bar {
+  border-color: #9b3f1b;
+  background-color: #f9662c;
+}
+.message-center .battle_report .xp_bar {
+  border-color: #467ca5;
+  background-color: #61abe4;
+}
+.message-center .battle_report .xp_bar_bg {
+  border-color: #9b3f1b;
+  background-color: #f9662c;
+}
+.message-center .battle_report .bar_numbers {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  text-align:center;
+  display: inline-block;
+  float: left;
+  z-index: 12;
+  /*color: white;*/
+}
+
+/* ===== JAPPIX 5D MOD ===== */
+
+#jappix_mini .jm_grouped .jm_friend.jm_5d_staff_user {
+  font-weight: bold;
+}
+
+/* ===== non-semantic helper classes ========================================
+   Edit Message
+   ========================================================================== */
+
+.message-edit {
+  padding: 0px;
+  margin-top: 1px;
+  margin-left: 1px;
+  height: 100%;
+}
+
+.message-edit-menue {
+  background: -webkit-gradient(linear, left top, left bottom, from(#DADADA), to(#AAA)); /* for webkit browsers */
+  background: -moz-linear-gradient(top,  #DADADA,  #AAA); /* for firefox 3.6+ */ 
+  width: 100%;
+  height: 60px;
+}
+
+.message-edit-commands, div.message-edit-title, div.message-edit-fill {
+  float: left;
+  width: 33%;
+  height: 60px;
+  padding-top: 20px;
+} 
+  
+.message-edit-title {
+  text-align: center;
+}
+
+.message-edit table {
+  width: 96%;
+}
+
+.message-edit table th { 
+  text-align: right;
+  padding-right: 10px;
+  width: 100px;
+}
+
+.message-edit table td {
+  text-align: left;
+}
+
+.message-edit table td input {
+  width: 100%;
+}
+
+.message-edit-header {
+  background-color: #EEE;
+  width: 100%;
+  margin:0px;  
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding-bottom: 20px;
+}
+
+.message-edit textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 6px;
+}
+
+#text-input-dialog { 
+  position: absolute; 
+  margin-left: -80px;
+  margin-top: -80px;
+  width: 400px; height: 200px;
+  background-color: #FCC; 
+}
+
+/** standard dialog buttons */
+.button, .icon-button {
+  display: inline-block;
+  min-height: 36px;
+  padding: 4px 8px 4px 4px;
+  font-size: 28px;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.simple-button {
+  display: inline;
+  min-height: 28px;
+  padding: 2px 2px 2px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid #777;  
+}
+
+.simple-button:hover {
+  border-color: #000;
+  color: #000;
+}
+
+.icon-button {
+  padding: 4px 8px 4px 48px;
+}
+
+.icon-button:hover, .button:hover {
+  border: 2px solid #777;
+  margin: -2px;
+}
+
+h1.slot-tooltip {
+  color: #fff;
+  padding: 0px;
+  font-size: 16px;
+  margin: 0px;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.building-slot-tooltip-wrapper {
+  font-size:14px;
+  min-width: 300px;
+}
+
+
+.ok-button:hover {
+  border-color: #9D9;
+}
+
+.ok-button {
+  color: #9D9;
+}
+
+.icon-button.ok-button {
+  background: url('<%= asset_path("icons/cross_green_small.png") %>') no-repeat left center;  
+}
+
+.icon-button.shuffle-button {
+  background: url('<%= asset_path("icons/dice.png") %>') no-repeat left center;  
+}
+
+.icon-button.close-button {
+  background: url('<%= asset_path("icons/cross_small.png") %>') no-repeat left center;
+}
+
+.icon-button.cancel-button {
+  background: url('<%= asset_path("icons/cross_red_small.png") %>') no-repeat left center;
+}
+
+.icon-button.cash-button-large {
+  background: url('<%= asset_path("icons/toad-large.png") %>') no-repeat left center;
+  padding-left:55px;
+}
+
+.image-button {
+  width: 197px;
+  height: 40px;
+  cursor: pointer;
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  text-shadow: none;
+  background: url('<%= asset_path("ui/orange_button-normal.png") %>') no-repeat;  
+}
+.image-button:hover {
+  background: url('<%= asset_path("ui/orange_button-hovered.png") %>') no-repeat;  
+}
+
+.news-archive-link,
+.news-archive-link:visited {
+  float: right;
+  color: #AAA;
+  text-decoration: none;
+  padding-right: 24px;
+  padding-top: 10px;
+  font-weight: normal;
+}
+
+.news-archive-link:hover {
+  color: #FA0;
+  text-decoration: underline;
+}
+
+.welcome-dialog .image-button {
+  float: right; 
+}
+
+
+.cancel-button {
+  color: #F77;
+}
+
+.cancel-button:hover {
+  border-color: #F77;
+}
+
+.button.inactive {
+  color: gray;
+  font-style: italic;
+}
+
+.button.impossible {
+  color: red;
+}
+
+/** standard info dialog */
+.info-dialog { 
+  font-size: 18px;
+  position: absolute; 
+  margin-left: -350px;
+  margin-top: -100px;
+  width: 700px; 
+  min-height: 200px;
+  background-color: #FFF;  
+}
+
+.announcement-dialog {
+  font-size: 16px;
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: -300px;  
+  margin-bottom: 100px;
+  width: 800px; 
+  min-height: 300px;
+  background-color: #FFF;    
+}
+
+.welcome-dialog {
+  font-size: 16px;
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: -300px;  
+  width: 800px; 
+  min-height: 300px;
+  background-color: #FFF;    
+}
+.welcome-dialog h2 {
+  margin-bottom: 0px;
+}
+
+.welcome-dialog img {
+  margin-top: -6px;
+}
+
+.encyclopedia-view {
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: -300px;  
+  width: 820px; 
+  min-height: 300px;
+  background-color: #FFF;    
+}
+
+.encyclopedia-view a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 10px;
+  top: 26px;
+}
+
+.encyclopedia-view a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+.encyclopedia-element {
+  font-size: 12px;
+  margin-left:10px;
+}
+
+.encyclopedia-view .unit-image {
+  float: right;
+  margin: 0px 0px 10px 20px;
+}
+
+
+.encyclopedia-view .overview {
+  float: left;
+  padding-right: 10px;
+  width: 140px;
+  height: 600px;
+  overflow:auto;
+}
+
+
+.encyclopedia-view .overview .enc-button {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.encyclopedia-view .overview .enc-button:hover {
+  text-decoration: underline;
+}
+
+.encyclopedia-view .overview .enc-category {
+  text-decoration: none;
+  cursor: pointer;
+  color: #333;
+  font-weight: bold;
+}
+
+.encyclopedia-view .overview .enc-category:hover {
+  text-decoration: underline;
+}
+
+.encyclopedia-details-wrapper {
+  height:510px;
+  overflow:auto;
+}
+
+.encyclopedia-view .building-option-image {
+  width: 120px;
+  height:150px;
+  margin-left: 0px;
+  float: right;
+  background-position: -120px 0px;
+}
+
+
+.encyclopedia-view .building-option-image.ency {
+  width: 120px;
+  height:150px;
+  margin-left: 0px;
+  float: left;
+  background-position: -120px 0px;
+}
+
+.encyclopedia-view .details {
+  float:left;
+  padding-left: 8px;
+  border-left: 1px solid black;
+  width: 660px;
+  height:600px;
+}
+
+.character-profile-view {
+  font-size: 16px;
+  position: absolute; 
+  margin-left: -350px;
+  margin-top: 100px;  
+  width: 700px; 
+  min-height: 300px;
+  background-color: #FFF;    
+}
+
+.character-profile-view a.close {
+  position: absolute;
+  background: url('<%= asset_path("ui/close_button.png") %>');
+  width: 50px;
+  height: 46px;
+  right: 20px;
+  top: 26px;
+}
+
+.character-profile-view a.close:hover {
+  background: url('<%= asset_path("ui/close_button-hovered.png") %>');
+}
+
+.character-profile-view input[type="text"] {
+  width: 450px;
+  margin-right: 0px;  
+}
+
+.character-profile-view input[type="password"] {
+  width: 220px; 
+}
+
+.ranking-view {
+  font-size: 16px;
+  position: absolute; 
+  margin-left: -400px;
+  margin-top: 80px;  
+  width: 800px; 
+  min-height: 600px;
+  background-color: #FFF;    
+}
+
+.advisor { 
+  width: 256px;
+  height: 256px;
+  margin-top:-30px;
+}
+
+.advisor.tiny { 
+  width: 96px;
+  height: 96px;
+  margin-top:-12px;
+}
+
+.advisor.neanderthal { 
+  width: 196px;
+  height: 196px;
+  margin-top:-10px;
+}
+
+.advisor { 
+  float:left;
+}
+
+.tab-bar li {
+  z-index: 99;
+  float: left;
+  display: table-cell;
+  border-color: #AAA;
+  border-width: 1px;
+  border-style: solid solid none solid;
+  margin: 0px;
+  padding: 10px 4px 10px 4px;
+  min-width: 100px;
+  text-align: center;
+  border-radius: 6px 6px 0px 0px;
+  background-color: white;
+  color: #AAA;
+}
+
+.tab-bar li:hover {
+  background-color: #FAFAFF;
+  cursor: pointer;
+  color: #FA0;
+}
+.tab-bar li.current:hover {
+  background-color: #FFF;
+  cursor: auto;
+  color: #333;  
+}
+
+
+.tab-bar li:first-of-type {
+  margin-left: 20px;
+  font-weight: bold;
+}
+
+.tab-bar li.current:first-of-type {
+  margin-left: 19px;
+}
+
+.tab-bar li.current {
+  z-index: 100;
+  font-weight: bold;
+  min-width: 102px;
+  padding: 11px 5px 11px 5px;
+  margin: -1px;
+  border-color: black;
+  border-bottom: 1px hidden;
+  color: #333;
+}
+
+.tab-bar {
+  height: 2em;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tab-content {
+  clear:left;
+  padding: 16px 5px 24px 5px;
+  border: 1px solid black;
+}
+
+.tab-content-scrollable {
+  height:500px;
+  overflow:auto;
+}
+
+.character-profile-view .tab-content {
+  border-style: solid none none none;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.tab-view {
+  width: 100%;
+}
+
+.ranking-view .tab-content {
+  border-style: solid none none none;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+
+.character-progress-dialog-pane .advisor,
+.found-settlement-dialog .advisor,
+.army-info-view .advisor {
+  float:right;
+  margin-left: 10px;
+  margin-right: -100px;
+}
+
+.artifact-info-view .advisor {
+  margin-top: 30px;
+  float:right;
+  margin-left: 10px;
+  margin-right: -100px;
+}
+
+
+.army-info-view .advisor.neanderthal {
+  float:right;
+  margin-left: 10px;
+  margin-right: -60px;
+}
+
+#army-create-form .advisor.warrior {
+  margin-left: -100px;
+  margin-top: -60px;
+}
+
+.tutorial-end-dialog .advisor.warrior {
+  float: left;
+  margin-left: -80px;
+}
+.tutorial-end-dialog .advisor.chef {
+  float: right;
+  margin-top: -50px;
+  margin-right: -80px;
+}
+.tutorial-end-dialog .chef {
+  text-align:right;
+}
+.tutorial-end-dialog .advisor.girl {
+  margin-top: -60px;
+  margin-left: -80px;
+  float: left;
+}
+.tutorial-end-dialog .p5 {
+  margin-top: 30px;
+}
+.citation {
+  color: #AAA;
+  font-style: italic;
+  text-align: right;
+}
+#army-create-form .citation {
+  text-align: left;
+}
+
+.unit-image {
+  display: inline-block;
+  border: 1px solid #777;
+}
+.unit-image.tiny {
+  border-radius: 3px;
+  width: 32px; height: 32px;
+  background: url('<%= asset_path("units/unit-tiny.png") %>');
+}
+.unit-image.large {
+  border-radius: 7px;
+  width: 256px; height: 256px;
+  background: url('<%= asset_path("units/unit.png") %>');
+}
+
+.unit-image.uc-0.tiny {
+  background: url('<%= asset_path("units/unit_clubbers-tiny.png") %>');
+}
+.unit-image.uc-0.large {
+  background: url('<%= asset_path("units/unit_clubbers.png") %>');
+}
+.unit-image.uc-2.tiny {
+  background: url('<%= asset_path("units/unit_thrower-tiny.png") %>');
+}
+.unit-image.uc-2.large {
+  background: url('<%= asset_path("units/unit_thrower.png") %>');
+}
+.unit-image.uc-3.tiny,
+.unit-image.uc-1.tiny {
+  background: url('<%= asset_path("units/unit_light_cavalry-tiny.png") %>');
+}
+.unit-image.uc-3.large,
+.unit-image.uc-1.large {
+  background: url('<%= asset_path("units/unit_light_cavalry.png") %>');
+}
+
+
+.unit-image.unit_warrior {
+  background: url('<%= asset_path("units/unit_warrior.png") %>');
+}
+
+.unit-image.unit_clubbers {
+  background: url('<%= asset_path("units/unit_clubbers.png") %>');
+}
+
+.unit-image.unit_clubbers_2 {
+  background: url('<%= asset_path("units/unit_clubbers_2.png") %>');
+}
+
+.unit-image.unit_clubbers_3 {
+  background: url('<%= asset_path("units/unit_clubbers_3.png") %>');
+}
+
+.unit-image.unit_tree_huggers {
+  background: url('<%= asset_path("units/unit_tree_huggers.png") %>');
+}
+
+.unit-image.unit_light_cavalry {
+  background: url('<%= asset_path("units/unit_light_cavalry.png") %>');
+}
+
+.unit-image.unit_light_cavalry_2 {
+  background: url('<%= asset_path("units/unit_light_cavalry_2.png") %>');
+}
+
+.unit-image.unit_light_cavalry_3 {
+  background: url('<%= asset_path("units/unit_light_cavalry_3.png") %>');
+}
+
+.unit-image.unit_light_cavalry_4 {
+  background: url('<%= asset_path("units/unit_light_cavalry_4.png") %>');
+}
+
+.unit-image.unit_little_chief {
+  background: url('<%= asset_path("units/unit_little_chief.png") %>');
+}
+
+.unit-image.unit_neandertaler {
+  background: url('<%= asset_path("units/unit_neandertaler.png") %>');
+}
+
+.unit-image.unit_thrower {
+  background: url('<%= asset_path("units/unit_thrower.png") %>');
+}
+
+.unit-image.unit_thrower_2 {
+  background: url('<%= asset_path("units/unit_thrower_2.png") %>');
+}
+
+.unit-image.unit_thrower_3 {
+  background: url('<%= asset_path("units/unit_thrower_3.png") %>');
+}
+
+.unit-image.unit_thrower_4 {
+  background: url('<%= asset_path("units/unit_thrower_4.png") %>');
+}
+
+.unit-image.tiny.unit_warrior {
+  background: url('<%= asset_path("units/unit_warrior-tiny.png") %>');
+}
+
+.unit-image.tiny.unit_clubbers {
+  background: url('<%= asset_path("units/unit_clubbers-tiny.png") %>');
+}
+
+.unit-image.tiny.unit_clubbers_2 {
+  background: url('<%= asset_path("units/unit_clubbers_2-tiny.png") %>');
+}
+
+.unit-image.tiny.unit_clubbers_3 {
+  background: url('<%= asset_path("units/unit_clubbers_3-tiny.png") %>');
+}
+
+.unit-image.tiny.unit_tree_huggers {
+  background: url('<%= asset_path("units/unit_tree_huggers-tiny.png") %>');
+}
+
+.unit-image.tiny.unit_light_cavalry {
+  background: url('<%= asset_path("units/unit_light_cavalry-tiny.png") %>');
+}
+
+.unit-image.tiny.unit_light_cavalry_2 {
+  background: url('<%= asset_path("units/unit_light_cavalry_2-tiny.png") %>');
+}
+
+.unit-image.tiny.unit_light_cavalry_3 {
+  background: url('<%= asset_path("units/unit_light_cavalry_3-tiny.png") %>');
+}
+
+.unit-image.tiny.unit_light_cavalry_4 {
+  background: url('<%= asset_path("units/unit_light_cavalry_4-tiny.png") %>');
+}
+
+.unit-image.tiny.unit_great_chief,
+.unit-image.tiny.unit_little_chief {
+  background: url('<%= asset_path("units/unit_little_chief-tiny.png") %>');
+}
+
+.unit-image.tiny.unit_neandertaler {
+  background: url('<%= asset_path("units/unit_neandertaler-tiny.png") %>');
+}
+
+.unit-image.tiny.unit_thrower {
+  background: url('<%= asset_path("units/unit_thrower-tiny.png") %>');
+}
+
+.unit-image.tiny.unit_thrower_2 {
+  background: url('<%= asset_path("units/unit_thrower_2-tiny.png") %>');
+}
+
+.unit-image.tiny.unit_thrower_3 {
+  background: url('<%= asset_path("units/unit_thrower_3-tiny.png") %>');
+}
+
+.unit-image.tiny.unit_thrower_4 {
+  background: url('<%= asset_path("units/unit_thrower_4-tiny.png") %>');
+}
+
+
+
+.advisor.girl { 
+  background: url('<%= asset_path("advisors/head_girl_colored_small.png") %>');
+}
+.advisor.girl.tiny { 
+  background: url('<%= asset_path("advisors/head_girl_colored_tiny.png") %>');
+}
+
+.advisor.warrior { 
+  background: url('<%= asset_path("advisors/head_warrior_colored_small.png") %>');
+}
+
+.advisor.warrior-quest-start { 
+  background: url('<%= asset_path("advisors/quest-dialog-warrior.png") %>');
+}
+.advisor.warrior.tiny { 
+  background: url('<%= asset_path("advisors/head_warrior_colored_tiny.png") %>');
+}
+  
+.advisor.warrior.scetched{
+  background: url('<%= asset_path("advisors/quest-advisor-scetched-warrior.png") %>');
+  background-size: 100% 100%;
+  width: 20%;
+  height: 22%;
   top: 6%;
   position: absolute;
   right: 0%;
@@ -5589,7 +12343,6 @@ button.fb-button {
   height: 71%;
   top: 15%;
   left: 17%;
-  overflow: hidden;
 }
 
 .quest-list-header{
@@ -6779,4 +13532,71 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 .quest-list-content h1{
   font-family: 'Freckle Face', cursive;
   color: #643a13;
+}
+
+.quest-list-button{
+  background-image: url('/client/assets/quest-list-x-button.png');
+  background-size: 100% 100%;
+  color: #fff;
+  text-shadow: none;
+  display: inline-block;
+  position: absolute;
+  top: -8%;
+}
+
+.quest-list-button:hover;{
+  background-image: url('/client/assets/quest-list-x-button-hover.png');
+}
+
+.quest-list-button:active{
+  background-image: url('/client/assets/quest-list-x-button-active.png');
+}
+  }
+}
+
+@media (min-width : 1023px) {
+  .dialog-reward-bg-leafs{
+    width: 0px;
+    height: 0px;
+    left: 0px;
+    top: 241px;
+    background-image: url('/client/assets/quest-dialog-bg.png');
+    background-size: 100% 100%;
+    position: absolute;
+    z-index: 259;
+  }
+  
+}
+
+.scetched{
+  background-size: 100% 100%;
+}
+
+
+.quest-list-content h1{
+  font-family: 'Freckle Face', cursive;
+  color: #643a13;
+}
+
+.quest-list-button{
+  background-image: url('/client/assets/quest-list-x-button.png');
+  background-size: 100% 100%;
+  color: #fff;
+  text-shadow: none;
+  display: inline-block;
+  position: absolute;
+  width: 8%;
+  height: 10%;
+  right: -11%;
+  top: -4%;
+  transition: background-image 0.2s;
+}
+
+.quest-list-button:hover{
+  background-image: url('/client/assets/quest-list-x-button-hover.png');
+  transition: background-image 0.2s;
+}
+
+.quest-list-button:active{
+  background-image: url('/client/assets/quest-list-x-button-active.png');
 }
