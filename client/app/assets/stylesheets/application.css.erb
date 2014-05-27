@@ -1607,12 +1607,34 @@ h1.slot-tooltip {
 .advisor.warrior.tiny { 
   background: url('<%= asset_path("advisors/head_warrior_colored_tiny.png") %>');
 }
+  
+.advisor.warrior.scetched{
+  background: url('<%= asset_path("advisors/quest-advisor-scetched-warrior.png") %>');
+  background-size: 100% 100%;
+  width: 20%;
+  height: 22%;
+  top: 6%;
+  position: absolute;
+  right: 0%;
+}
+
 .advisor.chef, .advisor.chef-quest-start { 
   background: url('<%= asset_path("advisors/quest-dialog-chef.png") %>');
 }
 .advisor.chef.tiny { 
   background: url('<%= asset_path("advisors/head_chef_colored_tiny.png") %>');
 }
+
+.advisor.chef.scetched{
+  background: url('<%= asset_path("advisors/quest-advisor-scetched-chef.png") %>');
+  background-size: 100% 100%;
+  width: 20%;
+  height: 22%;
+  top: 5%;
+  right: 35%;
+  position: absolute;
+}
+
 .advisor.neanderthal { 
   background: url('<%= asset_path("advisors/head_neanderthal_colored_small.png") %>');
 }
@@ -1624,6 +1646,17 @@ h1.slot-tooltip {
 .advisor.girl-quest-end { 
   background: url('<%= asset_path("advisors/head_girl_colored_small_quest_end.png") %>');
 }
+
+.advisor.girl.scetched{
+  background: url('<%= asset_path("advisors/quest-advisor-scetched-girl.png") %>');
+  background-size: 100% 100%;
+  width: 20%;
+  height: 22%;
+  top: 6%;
+  right: 18%;
+  position: absolute;
+}
+
 .advisor.warrior-quest-end { 
   background: url('<%= asset_path("advisors/head_warrior_colored_small_quest_end.png") %>');
 }
@@ -5534,18 +5567,50 @@ button.fb-button {
 }
 
 .quest-list-view {
-  position: absolute; 
-  margin-left: -300px;
-  margin-top: 80px;
-  width: 630px; min-height: 100px;
-  /*height: 600px;*/
-  background-color: #FFF;  
+  position: absolute;
+  margin-left: -431px;
+  margin-top: -16px;
+  width: 825px;
+  /* min-height: 100px; */
+  height: 650px;
+  background-image: url('/client/assets/quest-selection-bg.png');
   padding: 16px 20px 16px 20px;
-  z-index:256;
+  z-index: 256;
+  background-size: 100% 100%;
+  background-color: initial;
+  box-shadow: none;
+  overflow: scroll;
+  border-radius: 0px;
+}
+
+.quest-list-content{
+  position: relative;
+  width: 64%;
+  height: 71%;
+  top: 15%;
+  left: 17%;
+  overflow: hidden;
+}
+
+.quest-list-header{
+  display: none;
+}
+
+.quest-list-items{
+  height: 78%;
+  overflow: scroll;
+  top: 23%;
+  overflow: hidden;
+  position: absolute;
 }
 
 .quest-list-view .advisor, .tutorial-end-dialog .advisor {
   float: right;
+}
+
+.quest-list-items > div{
+  overflow: scroll;
+  height: 100%;
 }
 
 .quest-list-item {
@@ -6704,4 +6769,14 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
     z-index: 259;
   }
   
+}
+
+.scetched{
+  background-size: 100% 100%;
+}
+
+
+.quest-list-content h1{
+  font-family: 'Freckle Face', cursive;
+  color: #643a13;
 }
