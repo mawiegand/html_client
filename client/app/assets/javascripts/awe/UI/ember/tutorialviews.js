@@ -25,13 +25,7 @@ AWE.UI.Ember = (function(module) {
       }
     }.property(),
     
-    redeemButtonPressed: function(questState) {
-//      log('--> redeem Button Pressed', questState)
-      questState.set('redeeming', true);
-      AWE.GS.TutorialStateManager.redeemRewards(questState, null, function() {
-        questState.set('redeeming', false);
-      });
-    },
+    
     
     showQuestInfoPressed: function(quest) {
 //      log('--> show Quest Info Button Pressed', quest)
@@ -50,10 +44,7 @@ AWE.UI.Ember = (function(module) {
     questState: null,
 
   
-    redeemButtonPressed: function() {
-      // log('---> QuestListEntryView redeemButtonPressed', this.get('questState'));
-      this.get('parentView').redeemButtonPressed(this.get('questState'));
-    },
+    
   
     showQuestInfoPressed: function() {
       // log('---> QuestListEntryView showQuestInfoPressed', this.getPath('questState.quest'));
