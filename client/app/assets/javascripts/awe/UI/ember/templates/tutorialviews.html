@@ -41,7 +41,11 @@
           {{/if}}
           {{local questState.questName}}
         </div>
-        <div class="quest-list-item-status">{{questState.statusString}}</div>
+        {{#if finished}}
+        <div class="quest-list-item-status"> finished </div>
+        {{else}}
+        <div class="quest-list-item-status"> open </div>
+        {{/if}}
         
         <div class="quest-list-item-reward">
             {{#if questState.finished}}

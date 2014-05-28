@@ -45,7 +45,6 @@ AWE.UI.Ember = (function(module) {
 
   
     
-  
     showQuestInfoPressed: function() {
       // log('---> QuestListEntryView showQuestInfoPressed', this.getPath('questState.quest'));
       this.get('parentView').showQuestInfoPressed(this.getPath('questState.quest'));
