@@ -225,6 +225,17 @@ AWE.Config = (function(module) {
     "screen/reward/items/wood":   AWE.Config.RAILS_ASSET_PATH + 'icons/wood-xl.png',
     "screen/reward/items/xp":   AWE.Config.RAILS_ASSET_PATH + 'icons/xp-xl.png',
     "screen/reward/items/unit":   AWE.Config.RAILS_ASSET_PATH + 'icons/unit_default-xl.png',
+    "screen/reward/icon/info/normal":   AWE.Config.RAILS_ASSET_PATH + 'reward-dialog-info-button.png',
+    "screen/reward/icon/info/active":   AWE.Config.RAILS_ASSET_PATH + 'reward-dialog-info-button-active.png',
+    
+    "screen/quest/icon/checked":   AWE.Config.RAILS_ASSET_PATH + 'quest-finished-icon.png',
+    "screen/quest/icon/close/normal":   AWE.Config.RAILS_ASSET_PATH + 'quest-list-x-button.png',
+    "screen/quest/icon/close/hovered":   AWE.Config.RAILS_ASSET_PATH + 'quest-list-x-button-hover.png',
+    "screen/quest/icon/close/active":   AWE.Config.RAILS_ASSET_PATH + 'quest-list-x-button-active.png',
+    "screen/quest/list/background/chef":   AWE.Config.RAILS_ASSET_PATH + 'quest-list-bg-name-chef.png',
+    "screen/quest/list/background/girl":   AWE.Config.RAILS_ASSET_PATH + 'quest-list-bg-name-girl.png',
+    "screen/quest/list/background/warrior":   AWE.Config.RAILS_ASSET_PATH + 'quest-list-bg-name-warrior.png',
+    "screen/quest/background":   AWE.Config.RAILS_ASSET_PATH + 'quest-selection-bg.png',
 
     "hud/main/background":       AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_background.png',
     "hud/main/body":             AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_body.png',

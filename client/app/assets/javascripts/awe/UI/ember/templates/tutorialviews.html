@@ -34,7 +34,6 @@
 
 <script type="text/x-handlebars" data-template-name="quest-list-entry-view">
     <div class="" {{action "showQuestInfoPressed" }}>
-    {{t tutorial.showQuestLink }}
         <div class="quest-list-item-name">
           {{#if questState.quest.tutorial}}
             Tutorial:
@@ -42,9 +41,9 @@
           {{local questState.questName}}
         </div>
         {{#if finished}}
-        <div class="quest-list-item-status"> finished </div>
+        <div class="quest-list-item-status-finished"> </div>
         {{else}}
-        <div class="quest-list-item-status"> open </div>
+        <div class="quest-list-item-status-open"> </div>
         {{/if}}
         
         <div class="quest-list-item-reward">
@@ -172,6 +171,9 @@
       {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
         
       {{#if quest.rewards}}
+      
+      <div class="quest-dialog-info-button"></div>
+      
    </div>
       
       <div class="quest-dialog-reward">

@@ -3251,8 +3251,8 @@ li.shout .sender {
 
 .unit-icon.finished {
   display: inline-block;
-  width: 48px; height: 48px;
-  background: url('<%= asset_path("icons/unit_default-large.png") %>');
+  width: 92px; height: 92px;
+  background: url('<%= asset_path("icons/unit_default-xl.png") %>');
 }
 
 .unit-icon.unit_clubbers.finished {
@@ -5601,6 +5601,7 @@ button.fb-button {
   top: 23%;
   overflow: hidden;
   position: absolute;
+  width: 100%;
 }
 
 .quest-list-view .advisor, .tutorial-end-dialog .advisor {
@@ -5613,11 +5614,7 @@ button.fb-button {
 }
 
 .quest-list-item {
-  background-color: #FBB;
-  -moz-border-radius: 7px;
-  border-radius:      7px;
-  padding: 10px;
-  margin-bottom: 8px;
+  margin: 1.7% 0;
 }
 
 .quest-list-body {
@@ -5631,13 +5628,22 @@ button.fb-button {
 }
 
 .quest-list-item.girl {
-  background-color: #BC4;
+   background-image: url('/client/assets/quest-list-bg-name-girl.png');
+   background-size: 100% 100%;
+   line-height: 1;
+   height:13%;
 }
 .quest-list-item.chef {
-  background-color: #AAC;
+  background-image: url('/client/assets/quest-list-bg-name-chef.png');
+  background-size: 100% 100%;
+  line-height: 1;
+  height:13%;
 }
 .quest-list-item.warrior {
-  background-color: #F94;
+  background-image: url('/client/assets/quest-list-bg-name-warrior.png');
+  background-size: 100% 100%;
+  height:13%;
+  line-height: 1;
 }
 .quest-list-item.chef.tutorial ,
 .quest-list-item.warrior.tutorial ,
@@ -5661,8 +5667,16 @@ button.fb-button {
 }
 
 .quest-list-item-name {
-  width: 320px;
+  width: 74%;
   display: inline-block;
+  font-family: 'Freckle Face', cursive;
+  color: #fdf6d4;
+  text-shadow: none;
+  position: relative;
+  top: 5px;
+  font-size: 25px;
+  margin: 0 0 0 4%;
+  padding: 0;
 }
 
 .quest-list-item-status {
@@ -13599,4 +13613,35 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 
 .quest-list-button:active{
   background-image: url('/client/assets/quest-list-x-button-active.png');
+}
+
+.quest-list-item-status-finished{
+  width: 27px;
+  height: 26px;
+  display: inline-block;
+  font-family: 'Freckle Face', cursive;
+  color: #fdf6d4;
+  text-shadow: none;
+  position: relative;
+  top: 6px;
+  right: -74px;
+  font-size: 25px;
+  padding: 0;
+  background-image: url('/client/assets/quest-finished-icon.png');
+  background-size: 100% 100%;
+  display: inline-block;
+}
+
+.quest-dialog-info-button{
+  background-image: url('/client/assets/reward-dialog-info-button.png');
+  width: 7%;
+  height: 21%;
+  position: absolute;
+  top: 6%;
+  right: 3%;
+  background-size: 100% 100%;
+}
+
+.quest-dialog-info-button:hover{
+  background-image: url('/client/assets/reward-dialog-info-button-active.png');
 }
