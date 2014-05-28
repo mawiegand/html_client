@@ -6,10 +6,10 @@
 
   <div class="alliance-pane">
     {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner"}}
-    {{view AWE.UI.Ember.AllianceInfoBoxView controllerBinding="controller" allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader"}}
+    {{view AWE.UI.Ember.AllianceInfoBoxView controllerBinding="controller" allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader" isNotAllianceMemberBinding="isNotAllianceMember"}}
+    {{view AWE.UI.Ember.DiplomacyRelationListView controllerBinding="controller" diplomacySourceRelationsBinding="alliance.diplomacySourceRelations"
+                                             allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader" isNotAllianceMemberBinding="isNotAllianceMember"}}
     {{#if ownAlliance}}
-      {{view AWE.UI.Ember.DiplomacyRelationListView controllerBinding="controller" diplomacySourceRelationsBinding="alliance.diplomacySourceRelations"
-                                               allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader"}}
       {{#if isAllianceLeader}}
         {{view AWE.UI.Ember.AllianceAutoJoinView controllerBinding="controller" allianceBinding="alliance"}}
         <hr>
@@ -143,6 +143,15 @@
       {{#if isAllianceLeader}}
       <hr>
       {{view AWE.UI.Ember.CreateDiplomacyRelationView controllerBinding="controller" allianceBinding="alliance"}}
+      {{/if}}
+      {{#if isNotAllianceMember}}
+        {{#if isAllianceLeaderOfDifferentAlliance}}
+          <hr>
+          <div class="icon-button ok-button" {{action "createDiplomacyRelationWithAlliance"}}>{{t alliance.createDiplomacyRelationWithAllianceButton}}</div>
+          {{#if diplomacyRelationMessage}}
+            <div class="red-color">{{diplomacyRelationMessage}}</div>
+          {{/if}}
+        {{/if}}
       {{/if}}
     </div>
   </div>
