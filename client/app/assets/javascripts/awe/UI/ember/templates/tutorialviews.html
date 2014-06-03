@@ -157,6 +157,7 @@
   <div class="horizontal-center-helper">
   
     <div class="quest-dialog-bg">
+       <div class="quest-dialog-info-button"></div>
       <div class="quest-dialog-advisor">
 
       <div {{bindAttr class="advisor"}} id="quest-dialog-advisor"></div>
@@ -171,8 +172,6 @@
       {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
         
       {{#if quest.rewards}}
-      
-      <div class="quest-dialog-info-button"></div>
       
    </div>
       

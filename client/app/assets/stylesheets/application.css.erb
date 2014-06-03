@@ -1120,12 +1120,15 @@ h1.slot-tooltip {
 
 .welcome-dialog {
   font-size: 16px;
-  position: absolute; 
+  position: absolute;
   margin-left: -400px;
-  margin-top: -300px;  
-  width: 800px; 
+  margin-top: -300px;
+  width: 800px;
   min-height: 300px;
-  background-color: #FFF;    
+  background-color: #FFF;
+  border-radius: 0px;
+  border-color: orange;
+  background-color: #fcf6d8; 
 }
 .welcome-dialog h2 {
   margin-bottom: 0px;
@@ -13638,14 +13641,38 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 
 .quest-dialog-info-button{
   background-image: url('/client/assets/reward-dialog-info-button.png');
-  width: 7%;
-  height: 21%;
+  width: 11.3%;
+  height: 15.5%;
   position: absolute;
-  top: 6%;
-  right: 3%;
+  top: 12%;
+  right: 34%;
+  z-index: 2;
   background-size: 100% 100%;
+  transition: background-image 0.2s;
 }
 
 .quest-dialog-info-button:hover{
   background-image: url('/client/assets/reward-dialog-info-button-active.png');
+  transition: background-image 0.2s;
+}
+
+.quest-dialog-info-button:active{
+  background-image: url('/client/assets/reward-dialog-info-button-active2.png');
+}
+
+@media (max-width : 960px){
+  .quest-list-view{
+    height: 346px;
+    width: 436px;
+    right: -238px;
+  }
+  
+  .quest-list-content h1 {
+    font-size: 19px;
+  }
+  
+  .quest-list-item-name {
+    top: 2px;
+    font-size: 18px;
+  }
 }
