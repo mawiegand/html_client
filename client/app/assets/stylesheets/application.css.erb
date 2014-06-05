@@ -1111,7 +1111,7 @@ h1.slot-tooltip {
   font-size: 16px;
   position: absolute; 
   margin-left: -400px;
-  margin-top: -300px;  
+  margin-top: -220px;
   margin-bottom: 100px;
   width: 800px; 
   min-height: 300px;
@@ -1125,13 +1125,55 @@ h1.slot-tooltip {
   margin-top: -300px;
   width: 800px;
   min-height: 300px;
-  background-color: #FFF;
   border-radius: 0px;
   border-color: orange;
-  background-color: #fcf6d8; 
+  border-width: 11px;
+  background-color: #fcf6d8;
+  border-style: solid;
+  font-family: 'Freckle Face', cursive;
 }
+
+@media (max-width : 960px){
+  .welcome-dialog {
+  font-size: 12px;
+  color: #643a13;
+  position: absolute;
+  margin-left: -212px;
+  margin-top: -162px;
+  width: 380px;
+  height: 269px;
+  min-height: 0px;
+  border-radius: 0px;
+  border-color: orange;
+  border-width: 11px;
+  background-color: #fcf6d8;
+  border-style: solid;
+  font-family: 'Freckle Face', cursive;
+  overflow: scroll;
+  }
+  
+  .welcome-dialog img{
+    width: 100%;
+  }
+  
+  .facebook-iframe {
+  width: 86px;
+  height: 30px;
+  display: inline-block;
+  padding: 8px 0px 0px 0px;
+  position: relative;
+  right: -187px;
+  top: 11px;
+  }
+}
+
+.welcome-dialog h1 {
+  font-family: 'Freckle Face', cursive;
+}
+
 .welcome-dialog h2 {
   margin-bottom: 0px;
+  font-family: 'Freckle Face', cursive;
 }
 
 .welcome-dialog img {
@@ -13648,11 +13690,6 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   right: 34%;
   z-index: 2;
   background-size: 100% 100%;
-  transition: background-image 0.2s;
-}
-
-.quest-dialog-info-button:hover{
-  background-image: url('/client/assets/reward-dialog-info-button-active.png');
   transition: background-image 0.2s;
 }
 
