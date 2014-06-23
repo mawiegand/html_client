@@ -2,31 +2,31 @@
   <div class="modal-dialog-background"></div>
   <div class="horizontal-center-helper">
     <div class="modal-dialog-pane quest-list-view">
-       
+
        <div class="quest-list-content">
-          
+
           <div class="advisor warrior scetched"></div>
           <div class="advisor girl scetched"></div>
-          <div class="advisor chef scetched"></div>   
-             
+          <div class="advisor chef scetched"></div>
+
           <h1>{{t tutorial.questList}}</h1>
-          
-       
+
+
           <div class="quest-list-header">
              <div class="quest-list-item-show"></div>
           </div>
-         
+
          <div class="quest-list-items">
           <div {{bindAttr class="questListBodyClass" }}>
              {{#each questStates}}
              {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item"     classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
              {{/each}}
           </div>
-            
+
        </div>
       <div class="quest-list-button" {{action "okPressed"}}></div>
       </div>
-      
+
     </div>
   </div>
 </script>
@@ -45,12 +45,12 @@
         {{else}}
         <div class="quest-list-item-status-open"> </div>
         {{/if}}
-        
+
         <div class="quest-list-item-reward">
             {{#if questState.finished}}
               {{#if questState.redeeming}}
                 {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-             
+
               {{/if}}
             {{/if}}
         </div>
@@ -59,13 +59,13 @@
 
 
 <script type="text/x-handlebars" data-template-name="quest-view">
-      <p class="citation clearfix">
+      <!--<p class="citation clearfix">
       {{#unless questState.finished}}
         {{local quest.flavour}}
       {{else}}
         {{local quest.reward_flavour}}
       {{/unless}}
-      </p>
+      </p>-->
       <h3>
         {{#if questState.finished}}
           {{#unless quest.tutorial }}
@@ -75,14 +75,14 @@
           {{local quest.task}}
         {{/if}}
       </h3>
-      {{#if questState.finished}}
+      <!--{{#if questState.finished}}
         {{#if quest.reward_text}}Tipp:{{/if}} {{local quest.reward_text}}
       {{else}}
         {{#if newArmyQuest}}<div class="description-image-army"></div>{{/if}}}
         {{#if toSettlementQuest}}<div class="description-image-settlement"></div>{{/if}}}
         {{#if attackQuest}}<div class="description-image-attack"></div>{{/if}}}
         {{local quest.description}}
-      {{/if}}
+      {{/if}}-->
 
       {{#if quest.reward_tests.textbox_test }}
         {{#unless finished}}
@@ -96,7 +96,7 @@
           </div>
           {{#if error}}
             <p>{{t tutorial.quest.error}}</p>
-          {{/if}} 
+          {{/if}}
         {{/unless}}
       {{/if}}
 </script>
@@ -114,7 +114,7 @@
         {{#if modeExisting}}
           {{t tutorial.quest.info.header }}
         {{else}}
-          {{#if parentView.header}} 
+          {{#if parentView.header}}
             {{parentView.header}}
           {{else}}
             {{t tutorial.quest.info.header }}
@@ -133,12 +133,12 @@
       {{t tutorial.task.start.header }}
     {{else}}
       {{#if modeEnd}}
-        {{t tutorial.task.end.header }} 
+        {{t tutorial.task.end.header }}
       {{else}}
         {{#if modeExisting}}
-          {{t tutorial.task.info.header }} 
+          {{t tutorial.task.info.header }}
         {{else}}
-          {{t tutorial.task.info.header }}  
+          {{t tutorial.task.info.header }}
         {{/if}}
       {{/if}}
     {{/if}}
@@ -155,26 +155,26 @@
     {{/if}}
   </div>
   <div class="horizontal-center-helper">
-  
+
     <div class="quest-dialog-bg">
-       <div class="quest-dialog-info-button"></div>
       <div class="quest-dialog-advisor">
 
       <div {{bindAttr class="advisor"}} id="quest-dialog-advisor"></div>
-      
-      <div class="quest-dialog-text">
+
+      <div class="quest-dialog-text" {{action "showDescriptonButtonPressed"}}>
+        <div class="quest-dialog-info-button"></div>
       {{#if quest.tutorial}}
         {{view Ember.View templateName="tutorial-dialog-header" tagName="h1" finishedBinding="finished" modeStartBinding="modeStart" modeEndBinding="modeEnd" modeExistingBinding="modeExisting"}}
       {{else}}
         {{view Ember.View templateName="quest-dialog-header" tagName="h1" finishedBinding="finished" modeStartBinding="modeStart" modeEndBinding="modeEnd" modeExistingBinding="modeExisting"}}
       {{/if}}
-      
+
       {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
-        
+
       {{#if quest.rewards}}
-      
+
    </div>
-      
+
       <div class="quest-dialog-reward">
         {{#if finished}}
           <div class="quest-scip-button">
@@ -184,7 +184,7 @@
           </div>
         {{else}}
         {{/if}}
-        <ul class="quest-dialog-rewards-items">      
+        <ul class="quest-dialog-rewards-items">
         {{#if finished}}
           {{#if quest.rewards.resource_rewards}}
             {{#each quest.rewards.resource_rewards}}
@@ -272,7 +272,7 @@
 
       </div>
     </div>
-   
+
     <div class="dialog-reward-bg-leafs"></div>
 
 
@@ -292,12 +292,39 @@
   </div>
 </script>
 
+<script type="text/x-handlebars" data-template-name="quest-description-dialog">
+  <div class="modal-dialog-background z-layer-3"></div>
+  <div class="center-helper">
+    <div class="modal-dialog-pane z-layer-4 welcome-dialog quest-description-dialog">
+      <h1>
+      {{#unless questState.finished}}
+        {{local quest.flavour}}
+      {{else}}
+        {{local quest.reward_flavour}}
+      {{/unless}}
+      </h1>
+
+      {{#if questState.finished}}
+        {{#if quest.reward_text}}Tipp:{{/if}} {{local quest.reward_text}}
+      {{else}}
+        {{#if newArmyQuest}}<div class="description-image-army"></div>{{/if}}}
+        {{#if toSettlementQuest}}<div class="description-image-settlement"></div>{{/if}}}
+        {{#if attackQuest}}<div class="description-image-attack"></div>{{/if}}}
+        {{local quest.description}}
+      {{/if}}
+      <div>
+          <div class="image-button image-ok-button" {{action "okPressed"}}>{{t general.ok}}</div>
+      </div>
+    </div>
+  </div>
+</script>
+
 <script type="text/x-handlebars" data-template-name="tutorial-end-dialog">
   <div class="modal-dialog-background"></div>
   <div class="horizontal-center-helper">
     <div class="modal-dialog-pane tutorial-end-dialog">
       <div class="inner-border girl clearfix">
-        
+
         <div class="advisor warrior"></div>
         <h1>{{t tutorial.end.header}}</h1>
         <p>{{t tutorial.end.p1}}</p>
@@ -308,12 +335,12 @@
         <p class="chef">{{t tutorial.end.p3}}</p>
         <p class="chef">{{t tutorial.end.p4}}</p>
         <div class="clearfix"></div>
-                
+
         <div class="advisor girl"></div>
         <p class="p5">{{t tutorial.end.p5}}</p>
         <p>{{t tutorial.end.p6}}</p>
         <div class="clearfix"></div>
-          
+
         <div class="button ok-button clearfix" {{action "okPressed"}}>
           {{#if redeeming}}
             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
