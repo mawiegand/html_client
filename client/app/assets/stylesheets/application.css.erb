@@ -1126,11 +1126,26 @@ h1.slot-tooltip {
   width: 800px;
   min-height: 300px;
   border-radius: 0px;
-  border-color: orange;
-  border-width: 11px;
+  border-image: url('/client/assets/popup_border.png') 99 99 99 99 repeat;
+  border-width: 49px;
   background-color: #fcf6d8;
   border-style: solid;
   font-family: 'Freckle Face', cursive;
+  font-size: 16px;
+  color: #643a13;
+  position: absolute;
+  margin-left: -400px;
+  margin-top: -300px;
+  width: 800px;
+  min-height: 300px;
+  border-radius: 0px;
+  border-image: url('/client/assets/popup_border.png') 99 99 99 99 fill repeat;
+  border-width: 49px;
+  background-color: transparent;
+  border-style: solid;
+  font-family: 'Freckle Face', cursive;
+  padding: 0px;
+  box-shadow: -10px 10px 0px rgb(0, 0, 0, 0.2);
 }
 
 @media (max-width : 960px){
@@ -5694,12 +5709,6 @@ button.fb-button {
   line-height: 1;
   width: 95%;
 }
-.quest-list-item.chef.tutorial ,
-.quest-list-item.warrior.tutorial ,
-.quest-list-item.girl.tutorial {
-  background-color: #DBD;
-}
-
 
 .quest-list-header {
   padding: 20px 10px 4px 10px;
@@ -13683,11 +13692,11 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 
 .quest-dialog-info-button{
   background-image: url('/client/assets/reward-dialog-info-button.png');
-  width: 11.3%;
-  height: 15.5%;
+  width: 3.3%;
+  height: 6.5%;
   position: absolute;
-  top: 12%;
-  right: 34%;
+  top: 19%;
+  right: 40%;
   z-index: 2;
   background-size: 100% 100%;
   transition: background-image 0.2s;
