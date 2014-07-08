@@ -74,6 +74,9 @@ AWE.UI.Ember = (function(module) {
     questBinding: 'questState.quest',
     questState: null,
     redeeming: false,
+    spinningBackground: false,
+    popupAnimations: false,
+    spinningAnimation: false,
 
     finished: function() {
       return this.getPath('questState.status') === AWE.GS.QUEST_STATUS_FINISHED;
@@ -119,6 +122,143 @@ AWE.UI.Ember = (function(module) {
         return 'advisor ' + this.getPath('quest.advisor') + '-quest-start';
       }
     }.property('quest.advisor', 'finished').cacheable(),
+
+  
+      
+    /** runs the popup animations */
+    didInsertElement: function() {
+      
+      // Display full animations for a Reward Dialog that hasn't been displayed before.
+      
+      var popupAnimations = this.get('popupAnimations');
+      var spinningAnimation = this.get('spinningAnimation');
+      var compressedVersion = $(window).width() < 1024; // that's not a good option! may run in window / frame / div
+      var self = this;
+                    
+      if (popupAnimations) {
+        
+        // prepare the dialog for animation
+        self.$('.quest-dialog-text > *').hide();
+        // TODO: set sizes to zero
+        
+      
+        if (!compressedVersion) {
+          self.$(".dialog-reward-bg-leafs").delay(100).animate({
+            width: '977px',
+            height: '493px',
+            left: '-487px',
+            top: '-9px'
+          },{
+            duration: 800,
+            easing: 'easeOutElastic'
+          });
+        }
+        
+        self.$(".quest-dialog-bg").delay(100).animate({
+          height: '477px',
+          width: '650px',
+          top: '0px',
+          left: '-325px'
+        }, {
+          duration: 800,
+          easing: 'easeOutElastic',
+          complete: function() {
+            
+            var random  = 250;
+            var abstand = 250;
+            var base    = 100;
+    
+            self.$('.quest-dialog-text > *').show();
+            
+            self.$('.quest-dialog-rewards-items li').each(function(index) {
+              var r = Math.ceil(Math.random() * random)+base;
+              var d = ((index+1) % 2) * index * abstand/4 + (index % 2) * (abstand - index*abstand/4);
+              
+              self.$(this).find('.quest-reward-item-icon').delay(d).animate({
+                width: '83.6%',
+                height: '81%',
+                top: '0px',
+                left: '0px',
+                opacity: '1'
+              }, {
+                duration: r,
+                easing: 'easeOutBack'
+              });
+              
+              self.$(this).find(".quest-reward-item-number").delay(d+abstand/2).animate({
+                opacity: 1.0,
+              },{
+                duration: r / 2,
+              });
+              
+            });
+            
+            self.$(".quest-dialog-button").delay(base+abstand+random).animate({
+              width: '26.5%',
+              height: '27.1%',
+              top: '69%',
+              left: '70%'
+            }, {
+              duration: 250,
+              easing: 'easeOutBack',
+              complete: function() {
+                if (spinningAnimation) {
+                  self.set('spinningBackground', true);
+                }   
+              }
+            });
+          },
+        });
+      }
+      else {
+      
+        if (!compressedVersion) {
+          self.$(".dialog-reward-bg-leafs").css({
+            width: '977px',
+            height: '493px',
+            left: '-487px',
+            top: '-9px'
+          });
+        }
+        
+        self.$(".quest-dialog-bg").css({
+          height: '477px',
+          width: '650px',
+          top: '0px',
+          left: '-325px'
+        })
+            
+        self.$('.quest-dialog-rewards-items li .quest-reward-item-icon').css({
+          width: '83.6%',
+          height: '81%',
+          top: '0px',
+          left: '0px',
+          opacity: '1'
+        });
+              
+        self.$(".quest-dialog-rewards-items li .quest-reward-item-number").css({
+          opacity: 1.0,
+        });
+                          
+        self.$(".quest-dialog-button").delay(50).animate({
+          width: '26.5%',
+          height: '27.1%',
+          top: '69%',
+          left: '70%'
+        }, {
+          duration: 250,
+          easing: 'easeOutBack',
+          complete: function() {
+            if (spinningAnimation) {
+              self.set('spinningBackground', true);
+            }   
+          }
+        });
+        
+      }
+        
+    }
+
   });  
   
   module.QuestView = Ember.View.extend({

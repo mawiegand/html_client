@@ -6,7 +6,9 @@
 
   <div class="alliance-pane">
     {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner"}}
-    {{view AWE.UI.Ember.AllianceInfoBoxView controllerBinding="controller" allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader"}}
+    {{view AWE.UI.Ember.AllianceInfoBoxView controllerBinding="controller" allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader" isNotAllianceMemberBinding="isNotAllianceMember"}}
+    {{view AWE.UI.Ember.DiplomacyRelationListView controllerBinding="controller" diplomacySourceRelationsBinding="alliance.diplomacySourceRelations"
+                                             allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader" isNotAllianceMemberBinding="isNotAllianceMember"}}
     {{#if ownAlliance}}
       {{#if isAllianceLeader}}
         {{view AWE.UI.Ember.AllianceAutoJoinView controllerBinding="controller" allianceBinding="alliance"}}
@@ -21,10 +23,6 @@
     <hr>
     {{view AWE.UI.Ember.AllianceMemberListView controllerBinding="controller" charactersBinding="alliance.members"
                                                allianceBinding="alliance" isAllianceLeaderBinding="isAllianceLeader"}}
-
-    <h1>{{t alliance.progress.header}}</h1>
-    <p>{{t alliance.progress.description}}</p>
-    {{view AWE.UI.Ember.AllianceVictoryView controllerBinding="controller" allianceBinding="alliance"}}
   </div>
 </div>
 </script>
@@ -84,12 +82,35 @@
 
 <script type="text/x-handlebars" data-template-name="alliance-member">
   {{view AWE.UI.Ember.LinkedCharacterWithRankView characterBinding="character" displayAlliance=false}}
+
+
+
+
+{{#if character.isActiv}} 
+<div class="isActiv" > </div>
+
+
+{{else}} {{#if character.isAway}}
+<div class="isAway" > </div>
+
+
+{{else}} {{#if character.isOff}}
+<div class="isOff" > </div>
+
+ {{/if}}
+ {{/if}}
+ {{/if}}
+
+
+
+
   {{#if isCurrentCharacterAllianceLeader}}
     {{#unless isLeader}}
       <a href="#" {{action "kickMember"}}>{{t alliance.kickMember}}</a>
     {{/unless}}
   {{/if}}
 </script>
+
 
 <script type="text/x-handlebars" data-template-name="alliance-member-list">
   <div class="alliance-member-list">
@@ -101,10 +122,53 @@
           {{view AWE.UI.Ember.AllianceMemberView tagName="li" characterBinding="this" allianceBinding="view.alliance"
                                                  isCurrentCharacterAllianceLeaderBinding="view.isAllianceLeader"
                                                  controllerBinding="controller"}}
+                                                 
         {{/each}}
       </ul>
     </div>
   </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="diplomacy-relation-list">
+  <div class="diplomacy-relation-list">
+    <h1>{{t alliance.diplomacyRelation }}</h1>
+    <div class="stone-panel">
+      <ul>
+        {{#each diplomacySourceRelations}}
+          {{view AWE.UI.Ember.DiplomacyRelationView tagName="li" diplomacySourceRelationBinding="this" allianceBinding="view.alliance"
+                                                 isCurrentCharacterAllianceLeaderBinding="view.isAllianceLeader"
+                                                 controllerBinding="controller"}}
+        {{/each}}
+      </ul>
+      {{#if isAllianceLeader}}
+      <hr>
+      {{view AWE.UI.Ember.CreateDiplomacyRelationView controllerBinding="controller" allianceBinding="alliance"}}
+      {{/if}}
+      {{#if isNotAllianceMember}}
+        {{#if isAllianceLeaderOfDifferentAlliance}}
+          <hr>
+          <div class="icon-button ok-button" {{action "createDiplomacyRelationWithAlliance"}}>{{t alliance.createDiplomacyRelationWithAllianceButton}}</div>
+          {{#if diplomacyRelationMessage}}
+            <div class="red-color">{{diplomacyRelationMessage}}</div>
+          {{/if}}
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="diplomacy-relation">
+  {{status}}{{t alliance.diplomacyRelationWithAlliance }}<a href="#" class="alliance-link" {{action allianceClicked}}>{{targetAllianceName}}</a>{{t alliance.diplomacyRelationEnds}}{{ends}}
+  {{#if isCurrentCharacterAllianceLeader}}
+    {{#if enableNextStatusButton}}
+      <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "nextDiplomacyRelation"}}>{{nextStatus}}</div>
+    {{/if}}
+  {{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="create-diplomacy-relation">
+  {{t alliance.createDiplomacyRelationText1}}{{view Ember.TextField class="text-field" placeholder="Alliance" type="text" valueBinding="newTargetAllianceName"}}
+  {{t alliance.createDiplomacyRelationText2}}<div class="icon-button ok-button" {{action "createDiplomacyRelation"}}>{{t alliance.createDiplomacyRelationButton}}</div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-auto-join">

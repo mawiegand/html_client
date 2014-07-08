@@ -32,6 +32,10 @@ AWE.UI.Ember = (function(module) {
       return allianceId && allianceId === ownAllyId;
     }.property('alliance.id', 'AWE.GS.game.currentCharacter.alliance_id').cacheable(),
     
+    isNotAllianceMember: function() {
+      var currentCharacter = AWE.GS.game.get('currentCharacter');
+      return currentCharacter.get('alliance_id') !== this.get('alliance').getId();
+    }.property('alliance', 'AWE.GS.game.currentCharacter.alliance_id').cacheable(),    
   });
   
   module.AllianceInfoBoxView = Ember.View.extend({
@@ -163,11 +167,6 @@ AWE.UI.Ember = (function(module) {
       });        
     },
 
-    isNotAllianceMember: function() {
-      var currentCharacter = AWE.GS.game.get('currentCharacter');
-      return currentCharacter.get('alliance_id') !== this.get('alliance').getId();
-    }.property('alliance', 'AWE.GS.game.currentCharacter.alliance_id').cacheable(),
-    
     sendAllianceApplication: function() {
       this.set('applicationMessage', null);
       var confirmationDialog = AWE.UI.Ember.Dialog.create({
@@ -228,7 +227,7 @@ AWE.UI.Ember = (function(module) {
       if (parentView) {
         parentView.kickMember(this.get('character'));
       }
-      return false; // prevent default action!
+      return false; //prevent default action!
     },
     
   });
@@ -369,6 +368,186 @@ AWE.UI.Ember = (function(module) {
       }
       return false; // prevent default behavior
     },    
+  });
+  
+  module.DiplomacyRelationListView = Ember.View.extend({
+    templateName: 'diplomacy-relation-list',
+    
+    controller:     null,
+    alliance:       null,
+
+    isAllianceLeaderOfDifferentAlliance: function() {
+      var currentCharacter = AWE.GS.game.get('currentCharacter');
+      var currentCharacterId = AWE.GS.game.getPath('currentCharacter.id');
+      var currentCharacterAllianceId = currentCharacter.get('alliance_id');
+      if (currentCharacterAllianceId) {
+        var currentCharacterAlliance = AWE.GS.AllianceManager.getAlliance(currentCharacterAllianceId);
+        if (currentCharacterAlliance) {
+          return currentCharacterAlliance.getPath('leader_id') === currentCharacterId;
+        }
+        else {
+          AWE.GS.AllianceManager.updateAlliance(currentCharacterAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_AGGREGATE, function(result) {
+            currentCharacterAlliance = result;
+            return currentCharacterAlliance.getPath('leader_id') === currentCharacterId;
+          });
+        }
+      }
+      else {
+        return false;
+      }
+    }.property('alliance', 'AWE.GS.game.currentCharacter.alliance_id', 'currentCharacterAlliance.leader_id').cacheable(),
+    
+    createDiplomacyRelationWithAlliance: function() {
+      this.set('diplomacyRelationMessage', null);
+      var confirmationDialog = AWE.UI.Ember.Dialog.create({
+        templateName: 'info-dialog',
+
+        classNames: ['confirmation-dialog'],
+      
+        controller: this,
+        
+        heading:    AWE.I18n.lookupTranslation('alliance.confirmDiplomacyRelation.heading'), 
+        message:    AWE.I18n.lookupTranslation('alliance.confirmDiplomacyRelation.message'),
+        
+        cancelText: AWE.I18n.lookupTranslation('alliance.confirmDiplomacyRelation.cancel'),
+        okText:     AWE.I18n.lookupTranslation('alliance.confirmDiplomacyRelation.ok'),
+       
+        okPressed: function() {
+          var controller = this.get('controller');
+          if (controller) {
+            controller.processCreateDiplomacyRelationWithAlliance();
+          }
+          this.destroy();
+        },
+        
+        cancelPressed: function() { this.destroy(); }
+      });
+      WACKADOO.presentModalDialog(confirmationDialog);
+    },
+
+    processCreateDiplomacyRelationWithAlliance: function() {
+      var self = this;
+      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(AWE.GS.game.getPath('currentCharacter.alliance_id'), self.getPath('alliance.name'));
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        if (statusCode === 200) {
+          
+        }
+        else if (statusCode === 404) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedTargetAllianceNotFoundText'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+        else {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedText'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+      });
+    },
+  });
+  
+  module.DiplomacyRelationView = Ember.View.extend({
+    templateName: 'diplomacy-relation',
+    
+    diplomacySourceRelation:  null,
+    alliance:                 null,
+    targetAlliance:           null,
+    controller:               null,
+    
+    targetAllianceName: function() {
+      var self = this;
+      var targetAllianceId = this.getPath('diplomacySourceRelation.target_alliance_id');
+      var targetAlliance = AWE.GS.AllianceManager.getAlliance(targetAllianceId);
+      if (targetAlliance) {
+        return targetAlliance.getPath('name');
+      }
+      else {
+        AWE.GS.AllianceManager.updateAlliance(targetAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_AGGREGATE, function(result) {
+          self.set('targetAlliance', result)
+        });
+      }
+      
+    }.property('diplomacySourceRelation.target_alliance_id', 'targetAlliance').cacheable(),
+    
+    allianceClicked: function() {
+      WACKADOO.activateAllianceController(this.getPath('diplomacySourceRelation.target_alliance_id'));
+      WACKADOO.closeAllModalDialogs();
+      return false; // prevent default behavior
+    },
+    
+    status: function() {
+      return AWE.Util.Rules.lookupTranslation(AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).name);
+    }.property('diplomacySourceRelation.diplomacy_status').cacheable(),
+    
+    ends: function() {
+      var createdAt = Date.parseISODate(this.getPath('diplomacySourceRelation.created_at'));
+      var duration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).duration;
+      return createdAt.add({seconds: duration}).toLocaleString();
+    }.property('diplomacySourceRelation.diplomacy_status').cacheable(),
+    
+    enableNextStatusButton: function() {
+      var manual = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).min;
+      var duration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).duration;
+      var ends = Date.parseISODate(this.getPath('diplomacySourceRelation.created_at')).add({seconds: duration});
+      
+      return manual && (ends <= new Date());
+    }.property('diplomacySourceRelation.diplomacy_status').cacheable(),
+    
+    nextStatus: function() {
+      var nextRelationId = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).next_relations[0];
+      return AWE.Util.Rules.lookupTranslation(AWE.GS.RulesManager.getRules().getDiplomacyRelationType(nextRelationId).name);
+    }.property('diplomacySourceRelation.diplomacy_status').cacheable(),
+        
+    nextDiplomacyRelation: function() {
+      var self = this;
+      var targetAllianceName = this.get('targetAllianceName');
+      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(this.getPath('diplomacySourceRelation.source_alliance_id'), targetAllianceName);
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        if (statusCode !== 200) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedText'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+      });
+    },
+  });
+  
+  module.CreateDiplomacyRelationView = Ember.View.extend({
+    templateName: 'create-diplomacy-relation',
+
+    controller:     null,
+    alliance:       null,
+    newTargetAllianceName: null,
+    
+    createDiplomacyRelation: function() {
+      var self = this;
+      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(this.getPath('alliance.id'), this.getPath('newTargetAllianceName'));
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        if (statusCode == 200) {
+          
+        }
+        else if (statusCode == 404) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedTargetAllianceNotFoundText'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+        else {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedText'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+      });
+    },
   });
   
   module.AllianceManagementView = Ember.View.extend({

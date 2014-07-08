@@ -286,6 +286,10 @@ AWE.GS = (function(module) {
     finished: function() {
       return this.get('status') === module.QUEST_STATUS_FINISHED;
     }.property('status').cacheable(),
+
+    rewardDisplayed: function() {
+      return typeof this.get('reward_displayed_at') !== "undefined" && this.get('reward_displayed_at') !== null;
+    }.property('reward_displayed_at').cacheable(),
     
     checkForRewards: function() {
       
@@ -1484,14 +1488,21 @@ AWE.GS = (function(module) {
       // log('---> showQuestInfoDialog');
       
       var questState = AWE.GS.TutorialStateManager.getTutorialState().questStateWithQuestId(quest.id);
+      var applaud = questState.get('finished') && !questState.get('rewardDisplayed');
+          
       var infoDialog = AWE.UI.Ember.QuestDialog.create({
         modeExisting: true,
         questState: questState,
+        spinningAnimation: applaud,
+        popupAnimations: applaud,
       });
       WACKADOO.presentModalDialog(infoDialog);      
 
       if (questState.get('status') === AWE.GS.QUEST_STATUS_NEW) {      
         that.setQuestDisplayed(questState);
+      }
+      if (applaud) {
+        this.setQuestRewardDisplayed(questState);
       }
     }
     
@@ -1500,10 +1511,15 @@ AWE.GS = (function(module) {
       if (!that.tutorialEnabled()) return;
 
       // log('---> showQuestFinishedDialog');
+      
+      var applaud = questState.get('finished') && !questState.get('rewardDisplayed');
 
       var dialog = AWE.UI.Ember.QuestDialog.create({
         modeEnd: true,
         questState: questState,
+        spinningAnimation: applaud,
+        popupAnimations: applaud,
+
         okPressed: function() {
           that.checkForNewQuests();
           this._super();
@@ -1518,6 +1534,21 @@ AWE.GS = (function(module) {
         },
       });          
       WACKADOO.presentModalDialog(dialog);
+      
+      if (applaud) {
+        this.setQuestRewardDisplayed(questState);
+      }
+    }
+    
+    that.setQuestRewardDisplayed = function(questState) {
+      var questRewardDisplayedAction = AWE.Action.Tutorial.createQuestRewardDisplayedAction(questState.getId());
+      questRewardDisplayedAction.send(function(status) {
+        if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+          that.updateTutorialState(function() {
+            questState.set('reward_displayed_at',  questState.get('reward_displayed_at') || new Date());
+          });
+        }
+      });
     }
     
     that.setQuestDisplayed = function(questState) {
