@@ -61,16 +61,14 @@
 <script type="text/x-handlebars" data-template-name="quest-view">
       <!--<p class="citation clearfix">
       {{#unless questState.finished}}
-        {{local quest.flavour}}
+        {{local quest.flavour}}1
       {{else}}
         {{local quest.reward_flavour}}
       {{/unless}}
       </p>-->
       <h3>
         {{#if questState.finished}}
-          {{#unless quest.tutorial }}
-            {{t tutorial.quest.end.task}} {{local quest.task}}
-          {{/unless}}
+          {{t tutorial.quest.end.task}} {{local quest.task}}
         {{else}}
           {{local quest.task}}
         {{/if}}
