@@ -303,7 +303,13 @@ AWE.UI.Ember = (function(module) {
           // mapController.centerRegion(region);
         // });
       // }
-    // },    
+    // },
+  	ownAlliance: function() {
+	  var character = this.get('character');
+	  var current = AWE.GS.CharacterManager.getCurrentCharacter();
+	
+      return character.get('alliance_id') === current.get('alliance_id')
+    }.property()
   });
   
   return module;

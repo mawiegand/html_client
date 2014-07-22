@@ -9,7 +9,7 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Fundamental = (function(module) {
   
-  module.createAllianceLeaderVoteAction = function(allianceId, candidateId, my) {
+  module.createAllianceLeaderVoteAction = function(allianceId, candidateId, voterId, my) {
       
     // private attributes and methods //////////////////////////////////////
     
@@ -29,6 +29,7 @@ AWE.Action.Fundamental = (function(module) {
         alliance_leader_vote_action: {
           alliance_id: allianceId,
           candidate_id: candidateId,
+		  voter_id: voterId
         }
       };
     }

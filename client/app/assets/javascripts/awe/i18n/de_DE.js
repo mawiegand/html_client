@@ -569,6 +569,7 @@ AWE.I18n.de_DE = function(module) {
     welcome: {
       heading: 'Willkomen bei Wack-a-Doo!',
       headingWithName: 'Willkomen bei Wack-a-Doo,',
+	  welcomeBackWithName: 'Herzlich willkommen zurück,',
       headingPlan: 'Der Plan',
       image: AWE.Config.RAILS_ASSET_PATH + 'whatdoido_de_DE.jpeg',
       headingSituation: 'Die Situation',

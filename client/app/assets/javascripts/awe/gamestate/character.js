@@ -27,6 +27,7 @@ AWE.GS = (function(module) {
     identifier: null,               ///< unique identifier assigned by identity_provider
     premium_account: false,         ///< whether this account presently is a premium account
     name: null,                     ///< name of the character
+    random: null,
 
     lvel: null,                    ///< level of the character. can be increased by gaining further experience
     exp: null,                      ///< experience of the character

@@ -44,6 +44,13 @@ AWE.UI.Ember = (function(module) {
     controller: null,
     alliance:   null,
     candidate:  null,
+
+	candidate: function(){	  
+	  candidate_id = AWE.GS.game.getPath('currentCharacter.voted_for_candidate_id');
+	  candidate = AWE.GS.CharacterManager.getCharacter(candidate_id);
+	  console.log(candidate);
+	  return candidate
+	}.property(),
     
     ownAlliance: function() {
       var allianceId = this.getPath('alliance.id');
@@ -57,7 +64,7 @@ AWE.UI.Ember = (function(module) {
     
     changeAllianceLeaderVote: function() {
       var self = this;
-      var action = AWE.Action.Fundamental.createAllianceLeaderVoteAction(this.getPath('alliance.id'), this.getPath('candidate.id'));
+      var action = AWE.Action.Fundamental.createAllianceLeaderVoteAction(this.getPath('alliance.id'), this.getPath('candidate.id'), AWE.GS.game.get('currentCharacter').id);
       AWE.Action.Manager.queueAction(action, function(statusCode) {
         if (statusCode !== 200) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({

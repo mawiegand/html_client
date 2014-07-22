@@ -4,7 +4,7 @@
     <div class="modal-dialog-pane character-info-dialog-pane">
       {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner" width=120 height=120}}
       
-      {{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar"}}
+      {{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar"}}	  
 
       <h1>{{view AWE.UI.Ember.LinkedCharacterView characterBinding="character" linkCharacter=false}}</h1>
 
@@ -27,11 +27,16 @@
           {{else}}
 			      {{t profile.customization.missingDescription}}
           {{/if}}
+		  
           <br>
           <a {{action "sendUserContentReport"}}>{{t profile.customization.report}}</a>
         </p>
 		  </div>
-      
+      <p>
+		{{#if ownAlliance}}
+		  <b>Random:</b> {{character.random}}
+		{{/if}}
+	  </p>
       <p><b>{{t profile.totalPopulation}}:</b> {{character.score}} &nbsp; 
          <b>{{t profile.fortresses}}:</b> {{character.fortress_count}}</p>
          

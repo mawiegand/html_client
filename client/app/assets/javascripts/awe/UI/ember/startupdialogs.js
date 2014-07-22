@@ -30,6 +30,10 @@ AWE.UI.Ember = (function(module) {
   module.AnnouncementDialog = module.InfoDialog.extend({
     templateName: 'announcement-dialog',
     announcement: null,
+	init: function() {
+      this._super();
+      this.set('characterName', AWE.GS.game.getPath('currentCharacter.name'));
+    }
   });  
        
       
