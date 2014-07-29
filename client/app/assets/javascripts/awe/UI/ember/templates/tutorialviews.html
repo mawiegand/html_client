@@ -2,6 +2,7 @@
   <div class="modal-dialog-background"></div>
   <div class="horizontal-center-helper">
     <div class="modal-dialog-pane quest-list-view">
+<<<<<<< HEAD
        
        <div class="quest-list-content">
           
@@ -22,6 +23,26 @@
              {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item"     classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
              {{/each}}
           </div>
+=======
+
+      <div class="advisor warrior tiny"></div>
+      <div class="advisor girl tiny"></div>
+      <div class="advisor chef tiny"></div>      
+
+      <h1>{{t tutorial.questList}}</h1>
+      <div class="quest-list-header">
+        <div class="quest-list-item-name">{{ t tutorial.name }}</div>
+        <div class="quest-list-item-status">{{ t tutorial.status }}</div>
+        <div class="quest-list-item-reward"></div>
+        <div class="quest-list-item-show"></div>
+      </div>
+
+      <div {{bindAttr class="questListBodyClass" }}>
+        {{#each questStates}}
+          {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+        {{/each}}
+      </div>
+>>>>>>> c90179613d7e889d590e445fc132496b0c6ba1e9
             
        </div>
       <div class="quest-list-button" {{action "okPressed"}}></div>
@@ -50,7 +71,13 @@
             {{#if questState.finished}}
               {{#if questState.redeeming}}
                 {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+<<<<<<< HEAD
              
+=======
+              {{else}}
+                <div class="simple-button" {{action "redeemButtonPressed" }}>{{t tutorial.rewardLink }}
+                </div>
+>>>>>>> c90179613d7e889d590e445fc132496b0c6ba1e9
               {{/if}}
             {{/if}}
         </div>
@@ -170,7 +197,6 @@
       {{/if}}
       
       {{view AWE.UI.Ember.QuestView questBinding="quest" questStateBinding="questState"}}
-        
       {{#if quest.rewards}}
       
    </div>

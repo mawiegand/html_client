@@ -38,9 +38,9 @@ staging:
 
 production:
   <<: *defaults
-  bosh_server_base:    "gs05.wack-a-doo.com"
-  jabber_server_base:  "jabber5.wack-a-doo.com"
+  bosh_server_base:    "gs06.wack-a-doo.com"
+  jabber_server_base:  "jabber6.wack-a-doo.com"
   portal_server_base:  "wack-a-doo.de"
-  shop_callback_hostname: "gs05"
+  shop_callback_hostname: "gs06"
   like_system_enabled: true  
 

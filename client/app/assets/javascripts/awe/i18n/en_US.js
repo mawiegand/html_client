@@ -444,6 +444,7 @@ AWE.I18n.en_US = function(module) {
       diplomacyFailedText: 'Konnte Diplomatie Beziehung nicht erstellen. Bitte wende dich an einen Administrator sollte das Problem weiterhin bestehen.',
       diplomacyFailedTargetAllianceNotFoundText: 'Konnte die angegebene Allianz nicht finden. Diplomatie Beziehung wurde nicht erstellt.',
       diplomacyRelationCreatePlaceholder: "Allianz",
+      createDiplomacyRelationWithAllianceButton: "Ultimatum stellen",
       createDiplomacyRelationButton: "Erstellen",
       autoJoin: "Auto join",
       autoJoinDescription: "Automatically join",
@@ -547,6 +548,12 @@ AWE.I18n.en_US = function(module) {
         ok: "Yes.",
         success: "Application successful.",
         error: "Something went wrong with the application.",
+      },
+      confirmDiplomacyRelation: {
+        heading: "Änderung der Diplomatie bestätigen",
+        message: "Willst Du wirklich die Beziehung zwischen Deiner und dieser Allianz ändern?",
+        cancel: "Nein, doch nicht",
+        ok: "Ja, wirklich.",
       },
     },
 
