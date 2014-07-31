@@ -689,6 +689,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }                            // || AWE.Config.DEV_ACCESS_TOKEN || null;
 
       Sample.safariOnly = true;
+      Sample.setEndpoint("/psiori/event")
       Sample.setAppToken("Wackadoo-GS06");
       Sample.track("test_event", { event_category : "test",
                                    debug : true });
