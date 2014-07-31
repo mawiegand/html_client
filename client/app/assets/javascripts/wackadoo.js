@@ -688,6 +688,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         accessToken = args.accessToken ;
       }                            // || AWE.Config.DEV_ACCESS_TOKEN || null;
 
+      Sample.safariOnly = true;
+      Sample.setAppToken("Wackadoo-GS06");
+      Sample.track("test_event", { event_category : "test",
+                                   debug : true });
+
       var expiration  = parseInt(args.expiration || "3600");           // asume one hour validity as default
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;
       AWE.Settings.lang = args.locale ? args.locale.substr(0, 2) : AWE.Config.DEFAULT_LANG;
