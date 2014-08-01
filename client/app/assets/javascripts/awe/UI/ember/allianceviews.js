@@ -375,6 +375,7 @@ AWE.UI.Ember = (function(module) {
     
     controller:     null,
     alliance:       null,
+    relationFound:  null,
 
     isAllianceLeaderOfDifferentAlliance: function() {
       var currentCharacter = AWE.GS.game.get('currentCharacter');
@@ -396,6 +397,20 @@ AWE.UI.Ember = (function(module) {
         return false;
       }
     }.property('alliance', 'AWE.GS.game.currentCharacter.alliance_id', 'currentCharacterAlliance.leader_id').cacheable(),
+    
+    noRelationExists: function() {
+      var self = this;
+      var relations = this.getPath('alliance.diplomacySourceRelations');
+      var found = false;
+      
+      relations.forEach(function(item) {
+        if (item.getPath('target_alliance_id') === AWE.GS.game.getPath('currentCharacter.alliance_id')) {
+	  found = true;
+        }
+      });
+      self.set('relationFound', found);
+      return !self.get('relationFound');
+    }.property('relationFound', 'alliance', 'alliance.diplomacySourceRelations', 'AWE.GS.game.currentCharacter.alliance_id').cacheable(),
     
     createDiplomacyRelationWithAlliance: function() {
       this.set('diplomacyRelationMessage', null);
