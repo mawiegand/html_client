@@ -146,10 +146,12 @@
       {{/if}}
       {{#if isNotAllianceMember}}
         {{#if isAllianceLeaderOfDifferentAlliance}}
-          <hr>
-          <div class="icon-button ok-button" {{action "createDiplomacyRelationWithAlliance"}}>{{t alliance.createDiplomacyRelationWithAllianceButton}}</div>
-          {{#if diplomacyRelationMessage}}
-            <div class="red-color">{{diplomacyRelationMessage}}</div>
+          {{#if noRelationExists}}
+            <hr>
+            <div class="icon-button ok-button" {{action "createDiplomacyRelationWithAlliance"}}>{{t alliance.createDiplomacyRelationWithAllianceButton}}</div>
+            {{#if diplomacyRelationMessage}}
+              <div class="red-color">{{diplomacyRelationMessage}}</div>
+            {{/if}}
           {{/if}}
         {{/if}}
       {{/if}}
