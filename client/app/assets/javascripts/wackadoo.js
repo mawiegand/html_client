@@ -309,6 +309,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         var startInSettlement = hasBase && AWE.Config.USE_TUTORIAL && (
           tutorialState && tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID) &&
             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED);
+        var identifier        = AWE.GS.CharacterManager.getCurrentCharacter().get('identifier');
 
         var hud = AWE.Controller.createHUDController();
         hud.init();
@@ -343,6 +344,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
         AWE.Facebook.updateFBCanvasSize();  // updates size of canvas, iff running in canvas
         AWE.Facebook.setDoneLoading();      // track loading time, iff running in canvas
+
+        Sample.setUserId(identifier);
+        Sample.track('started', { event_category: 'session'});
 
         if (AWE.Config.CHAT_SHOW) {
           self.initChat();
@@ -677,10 +681,17 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       window.name = "empty";                                 // unset variables
       fbArgs = "empty";
 
+      Sample.safariOnly = true;
+      Sample.setEndpoint("/psiori/event")
+      Sample.setAppToken("Wackadoo-GS06");
+      Sample.sessionStart();
+      Sample.autoPing(30);
+
       var accessToken = null;
 
       if (!args || !args.accessToken) {
-//        alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
+        Sample.track('start_failed', { event_category: 'session'});
+//      alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
         document.location.href = AWE.Config.PORTAL_ROOT;
         return ;
       }
@@ -688,11 +699,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         accessToken = args.accessToken ;
       }                            // || AWE.Config.DEV_ACCESS_TOKEN || null;
 
-      Sample.safariOnly = true;
-      Sample.setEndpoint("/psiori/event")
-      Sample.setAppToken("Wackadoo-GS06");
-      Sample.track("test_event", { event_category : "test",
-                                   debug : true });
+
 
       var expiration  = parseInt(args.expiration || "3600");           // asume one hour validity as default
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;
