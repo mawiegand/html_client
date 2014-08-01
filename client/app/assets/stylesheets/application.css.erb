@@ -13755,7 +13755,8 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   width: 29.7%;
   position: absolute;
   z-index: 258;
-  top: -64%;
+  opacity: 0;
+  top: 42%;
   left: -33%;
   height: 129%;
 }
@@ -13768,6 +13769,7 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   color: #fdf6d4;
   text-shadow: none;
   font-family: 'Freckle Face','regular';
+  opacity: 0;
 }
 
 .level-up-header{
@@ -13798,50 +13800,34 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 }
 
 .level-up-scip-button{
-  width: 21.5%;
-  height: 24.4%;
-  left: 74%;
+  width: 0%;
+  height: 0%;
+  left: 84.3%;
+  top: 92.2%;
+  overflow: hidden;
 }
 
-@media (min-width : 961px){
-
-  .level-up-dialog-bg{
-    background-image: url('/client/assets/levelup/level-up-background.png');
-    background-size: 100% 100%;
-    width: 800px;
-    height: 524px;
-    left: -350px;
-    position: relative;
-    z-index: 256;
-    top: -229px;
-  }
-  
-  .level-up-dialog-bg-text{
-    font-size: 108%;
-  }
+.level-up-dialog-bg{
+  width: 0px;
+  height: 0px;
+  left: 0px;
+  top: 0px;
+  overflow: visible;
+  position: relative;
+  background-image: url('/client/assets/levelup/level-up-background.png');
+  background-size: 100% 100%;
+  z-index: 256;
 }
 
 @media (max-width : 960px){
-
-  .level-up-dialog-bg{
-    background-image: url('/client/assets/levelup/level-up-background.png');
-    background-size: 100% 100%;
-    width: 460px;
-    height: 304px;
-    left: -198px;
-    position: relative;
-    z-index: 256;
-    top: -140px;
-  }
   
   .level-up-dialog-bg-text{
-    font-size: 65%;
     top: 18%;
     font-family: 'Asap', 'sans-serif';
   }
   
   .center-helper {
-    left: 44%;
+    /*left: 44%;*/
   }
   
   .level-up-spinning-background.modal-dialog-spinning-background{

@@ -116,8 +116,9 @@ AWE.UI.Ember = (function(module) {
         return 'advisor ' + this.getPath('quest.advisor') + '-quest-start';
       }
     }.property('quest.advisor', 'finished').cacheable(),
-
-
+    
+    
+   
 
     /** runs the popup animations */
     didInsertElement: function() {
@@ -128,6 +129,7 @@ AWE.UI.Ember = (function(module) {
       var spinningAnimation = this.get('spinningAnimation');
       var compressedVersion = $(window).width() < 1024; // that's not a good option! may run in window / frame / div
       var self = this;
+    
 
       if (popupAnimations) {
 
@@ -147,7 +149,7 @@ AWE.UI.Ember = (function(module) {
             easing: 'easeOutElastic'
           });
         }
-
+        
         self.$(".quest-dialog-bg").delay(100).animate({
           height: '477px',
           width: '650px',
