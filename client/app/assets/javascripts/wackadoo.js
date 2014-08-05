@@ -681,9 +681,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       window.name = "empty";                                 // unset variables
       fbArgs = "empty";
 
-      Sample.safariOnly = true;
       Sample.setEndpoint("/psiori/event")
-      Sample.setAppToken("Wackadoo-GS06");
+      Sample.setAppToken("wad-rt82-fhjk-18");
       Sample.sessionStart();
       Sample.autoPing(30);
 
