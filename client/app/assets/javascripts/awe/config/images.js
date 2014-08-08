@@ -237,12 +237,12 @@ AWE.Config = (function(module) {
     "hud/main/glass/hovered":    AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_glass-hovered.png',
     "hud/main/name/normal":      AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_name_button.png',
     "hud/main/name/hovered":     AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_name_button-hovered.png',
-    "hud/main/messages/normal":  AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_messages_button.png',
-    "hud/main/messages/hovered": AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_messages_button-hovered.png',
-    "hud/main/ranking/normal":   AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_ranking_button.png',
-    "hud/main/ranking/hovered":  AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_ranking_button-hovered.png',
-    "hud/main/quests/normal":    AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_quests_button.png',
-    "hud/main/quests/hovered":   AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_quests_button-hovered.png',
+    "hud/main/messages/normal":  AWE.Config.RAILS_ASSET_PATH + 'ui/chat-button.png',
+    "hud/main/messages/hovered": AWE.Config.RAILS_ASSET_PATH + 'ui/chat-button-hovered.png',
+    "hud/main/ranking/normal":   AWE.Config.RAILS_ASSET_PATH + 'ui/rancing-button.png',
+    "hud/main/ranking/hovered":  AWE.Config.RAILS_ASSET_PATH + 'ui/rancing-button-hovered.png',
+    "hud/main/quests/normal":    AWE.Config.RAILS_ASSET_PATH + 'ui/quest-list-button.png',
+    "hud/main/quests/hovered":   AWE.Config.RAILS_ASSET_PATH + 'ui/quest-list-button-hovered.png',
 
     "hud/callout":               AWE.Config.RAILS_ASSET_PATH + 'ui/hud/hud_callout.png',
 
