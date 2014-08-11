@@ -501,7 +501,13 @@ AWE.UI.Ember = (function(module) {
     ends: function() {
       var createdAt = Date.parseISODate(this.getPath('diplomacySourceRelation.created_at'));
       var duration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).duration;
-      return createdAt.add({seconds: duration}).toLocaleString();
+      var timeString = createdAt.add({seconds: duration}).toLocaleString();
+      if (this.getPath('diplomacySourceRelation.diplomacy_status') == 2) {
+        return AWE.I18n.lookupTranslation('alliance.diplomacyRelationEndsWar1') + timeString + AWE.I18n.lookupTranslation('alliance.diplomacyRelationEndsWar2');
+      }
+      else {
+        return AWE.I18n.lookupTranslation('alliance.diplomacyRelationEnds') + timeString;
+      }
     }.property('diplomacySourceRelation.diplomacy_status').cacheable(),
     
     enableNextStatusButton: function() {
@@ -539,6 +545,12 @@ AWE.UI.Ember = (function(module) {
     controller:     null,
     alliance:       null,
     newTargetAllianceName: null,
+    
+    ultimatumEnds: function() {
+      var duration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(1).duration;
+      var now = new Date();
+      return now.add({seconds: duration}).toLocaleString();
+    }.property().cacheable(),
     
     createDiplomacyRelation: function() {
       var self = this;
