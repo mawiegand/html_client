@@ -58,7 +58,7 @@ AWE.Controller = (function(module) {
       _stage.onClick = function() {};
       
       _canvas.width = 380;
-      _canvas.height = 260;
+      _canvas.height = $(window).height();
 
       _resourceCanvas = root.find('#resource-canvas')[0];
       _resourceStage = new Stage(_resourceCanvas);
