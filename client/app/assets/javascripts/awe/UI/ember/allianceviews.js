@@ -501,21 +501,36 @@ AWE.UI.Ember = (function(module) {
     ends: function() {
       var createdAt = Date.parseISODate(this.getPath('diplomacySourceRelation.created_at'));
       var duration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).duration;
-      var timeString = createdAt.add({seconds: duration}).toLocaleString();
+      
       if (this.getPath('diplomacySourceRelation.diplomacy_status') == 2) {
-        return AWE.I18n.lookupTranslation('alliance.diplomacyRelationEndsWar1') + timeString + AWE.I18n.lookupTranslation('alliance.diplomacyRelationEndsWar2');
+        var victim = !(this.getPath('diplomacySourceRelation.initiator'));
+        var victimDecrease = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).decrease_duration_for_victim;
+        if (victim && victimDecrease) {
+          duration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).victim_duration;
+        }
+        
+        return AWE.I18n.lookupTranslation('alliance.diplomacyRelationEndsWar1') + createdAt.add({seconds: duration}).toLocaleString(); + AWE.I18n.lookupTranslation('alliance.diplomacyRelationEndsWar2');
       }
       else {
-        return AWE.I18n.lookupTranslation('alliance.diplomacyRelationEnds') + timeString;
+        return AWE.I18n.lookupTranslation('alliance.diplomacyRelationEnds') + createdAt.add({seconds: duration}).toLocaleString();
       }
     }.property('diplomacySourceRelation.diplomacy_status').cacheable(),
     
     enableNextStatusButton: function() {
       var manual = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).min;
+      
       var duration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).duration;
       var ends = Date.parseISODate(this.getPath('diplomacySourceRelation.created_at')).add({seconds: duration});
+      var durationReached = manual && (ends <= new Date());
       
-      return manual && (ends <= new Date());
+      var victim = !(this.getPath('diplomacySourceRelation.initiator'));
+      var victimDecrease = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).decrease_duration_for_victim;
+      var victimDuration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('diplomacySourceRelation.diplomacy_status')).victim_duration;
+      var victimEnds = Date.parseISODate(this.getPath('diplomacySourceRelation.created_at')).add({seconds: victimDuration});
+      
+      var victimDurationReached = manual && victim && victimDecrease && (victimEnds <= new Date());
+      
+      return durationReached || victimDurationReached;
     }.property('diplomacySourceRelation.diplomacy_status').cacheable(),
     
     nextStatus: function() {
