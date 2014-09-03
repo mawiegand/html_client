@@ -54,8 +54,17 @@ AWE.UI.Ember = (function(module) {
     creation: function() {
       return AWE.Util.createTimeString(this.getPath('alliance.created_at'));
     }.property('alliance.created_at').cacheable(),
+
+    setLeaderVoteSelection: function(){
+      var vote_candidate_id = this.getPath('alliance.vote_candidate_id');
+      var members = this.getPath("alliance.hashableMembers.hash");
+      if (members[vote_candidate_id]){
+        this.set("candidate", members[vote_candidate_id]);
+      }
+    }.observes("alliance.members"),
     
     changeAllianceLeaderVote: function() {
+      if( this.getPath('alliance.vote_candidate_id') === this.getPath('candidate.id') ) { return; }
       var self = this;
       var action = AWE.Action.Fundamental.createAllianceLeaderVoteAction(this.getPath('alliance.id'), this.getPath('candidate.id'));
       AWE.Action.Manager.queueAction(action, function(statusCode) {
