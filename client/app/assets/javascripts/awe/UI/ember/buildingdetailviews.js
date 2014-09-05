@@ -332,9 +332,16 @@ AWE.UI.Ember = (function(module) {
     
     leaveAlliance: function() {
       var self = this;
+      var message = AWE.I18n.lookupTranslation('alliance.confirmLeave.message');
+      var hours = this.getPath("character.hoursUntilAllianceRejoinAllowed");      
+      if(hours !== 0){
+        var string = AWE.I18n.lookupTranslation('alliance.confirmLeave.message2');
+        message += string.format(hours);
+      }
+
       var dialog = AWE.UI.Ember.InfoDialog.create({
         heading:    AWE.I18n.lookupTranslation('alliance.confirmLeave.heading'),
-        message:    AWE.I18n.lookupTranslation('alliance.confirmLeave.message'),
+        message:    message,
         allianceId: this.getPath('character.alliance_id'),
         
         cancelPressed: function() {
@@ -362,6 +369,11 @@ AWE.UI.Ember = (function(module) {
       this.resetError();
       WACKADOO.presentModalDialog(dialog);
     },
+
+    joinAllianceNotAllowedText: function(){
+      var string = AWE.I18n.lookupTranslation('alliance.joinAllianceNotAllowedText');
+      return string.format(Date.parse(this.getPath("character.cannot_join_alliance_until")).toLocaleString());
+    }.property("character.cannot_join_alliance_until"),
   
     joinAlliance: function() {
       var self     = this;
