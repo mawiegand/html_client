@@ -9,7 +9,7 @@ AWE.Action = AWE.Action || {};
 
 AWE.Action.Fundamental = (function(module) {
   
-  module.createDiplomacyRelationAction = function(sourceAllianceId, targetAllianceName, my) {
+  module.createDiplomacyRelationAction = function(sourceAllianceId, targetAllianceName, newRelation, my) {
       
     // private attributes and methods //////////////////////////////////////
     
@@ -29,6 +29,7 @@ AWE.Action.Fundamental = (function(module) {
         diplomacy_relation_action: {
           source_alliance_id: sourceAllianceId,
           target_alliance_name: targetAllianceName,
+          new_relation: newRelation ? 1 : 0,
         }
       };
     }

@@ -414,7 +414,7 @@ AWE.UI.Ember = (function(module) {
       
       relations.forEach(function(item) {
         if (item.getPath('target_alliance_id') === AWE.GS.game.getPath('currentCharacter.alliance_id')) {
-	  found = true;
+          found = true;
         }
       });
       self.set('relationFound', found);
@@ -451,12 +451,18 @@ AWE.UI.Ember = (function(module) {
 
     processCreateDiplomacyRelationWithAlliance: function() {
       var self = this;
-      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(AWE.GS.game.getPath('currentCharacter.alliance_id'), self.getPath('alliance.name'));
+      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(AWE.GS.game.getPath('currentCharacter.alliance_id'), self.getPath('alliance.name'), true);
       AWE.Action.Manager.queueAction(action, function(statusCode) {
-        if (statusCode === 200) {
-          
+        if (statusCode === AWE.Net.OK) {
         }
-        else if (statusCode === 404) {
+        else if (statusCode === AWE.Net.CONFLICT) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedRelationAlreadyExists'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+        else if (statusCode === AWE.Net.NOT_FOUND) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
             heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
             message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedTargetAllianceNotFoundText'),
@@ -550,7 +556,7 @@ AWE.UI.Ember = (function(module) {
     nextDiplomacyRelation: function() {
       var self = this;
       var targetAllianceName = this.get('targetAllianceName');
-      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(this.getPath('diplomacySourceRelation.source_alliance_id'), targetAllianceName);
+      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(this.getPath('diplomacySourceRelation.source_alliance_id'), targetAllianceName, false);
       AWE.Action.Manager.queueAction(action, function(statusCode) {
         if (statusCode !== 200) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
@@ -578,12 +584,18 @@ AWE.UI.Ember = (function(module) {
     
     createDiplomacyRelation: function() {
       var self = this;
-      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(this.getPath('alliance.id'), this.getPath('newTargetAllianceName'));
+      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(this.getPath('alliance.id'), this.getPath('newTargetAllianceName'), true);
       AWE.Action.Manager.queueAction(action, function(statusCode) {
-        if (statusCode == 200) {
-          
+        if (statusCode === AWE.Net.OK) {
         }
-        else if (statusCode == 404) {
+        else if (statusCode === AWE.Net.CONFLICT) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedRelationAlreadyExists'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+        else if (statusCode === AWE.Net.NOT_FOUND) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
             heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
             message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedTargetAllianceNotFoundText'),
