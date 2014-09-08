@@ -454,6 +454,7 @@ AWE.I18n.de_DE = function(module) {
       createDiplomacyRelationText4: " enden.",
       diplomacyFailedHead: 'Diplomatie Beziehung',
       diplomacyFailedText: 'Konnte Diplomatie Beziehung nicht erstellen. Bitte wende dich an einen Administrator sollte das Problem weiterhin bestehen.',
+      diplomacyFailedRelationAlreadyExists: 'Eine Diplomatie Beziehung mit dieser Allianz besteht bereits.',
       diplomacyFailedTargetAllianceNotFoundText: 'Konnte die angegebene Allianz nicht finden. Diplomatie Beziehung wurde nicht erstellt.',
       diplomacyRelationCreatePlaceholder: "Allianz",
       createDiplomacyRelationWithAllianceButton: "Ultimatum stellen",
