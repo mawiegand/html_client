@@ -1,92 +1,76 @@
 <script type="text/x-handlebars" data-template-name="character-info-dialog">
   <div class="modal-dialog-background"></div>
   <div class="center-helper">
-    <div class="modal-dialog-pane character-info-dialog-pane">
-      {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner" width=120 height=120}}
-      
-      {{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar"}}
+    <div class="modal-dialog-pane-new character-info-dialog-pane">
+      <div class="modal-dialog-container">
+        <h1>{{character.name}}</h1>
+        <a href="#" {{action "closeDialog"}}>
+          <div class="modal-dialog-close"></div>
+        </a>
+        <div class="avatar">
+          {{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar" width="150" height="154"}}
+        </div>
 
-      <h1>{{view AWE.UI.Ember.LinkedCharacterView characterBinding="character" linkCharacter=false}}</h1>
+        <h2>{{local character.mundaneTitle.name}}</h2>
+        <div class="modal-dialog-buttons">
+          <div class="populationIcon"></div>
+          <div class="modal-dialog-buttons-text">{{character.score}}</div>
+          <div class="battleIcon"></div>
+          <div class="modal-dialog-buttons-text">{{character.battle_count}}</div>
+          <div class="fortressIcon"></div>
+          <div class="modal-dialog-buttons-text">{{character.fortress_count}}</div>
+        </div>
+        <div class="modal-dialog-blue-button-big">
+          {{alliance.name}}
+        </div>
 
-      <p>{{#if character.female}}{{t general.demigoddess}},{{else}}{{t general.demigod}},{{/if}} 
-         <b>{{local character.mundaneTitle.name}}</b> {{t general.and}} <b>{{local character.sacredTitle.name}}</b><br/>
-         {{t profile.playingSince}}: {{formatDatetime character.created_at}}
-         {{#if character.insider}}
-           <b>Wack-A-Doo Insider</b>
-         {{/if}}
-      </p>
-
-			<div class="character-description">
-				<p>
-          <b>{{t profile.customization.description }}:</b><br>
-          {{#if message}}
-            <div class="red-color">{{message}}</div>
+        {{#if AWE.Config.LIKE_ENABLED}}
+          <div class="likes-count">
+            {{character.received_likes_count}}
+          </div>
+          {{#if displayLikeSystemButtons}}
+           {{#if updatingLikes }}
+             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+           {{else}}
+             <a class="clickable" {{action "sendLike"}} {{bindAttr title="likeAmountText"}}>
+              <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-left">
+                <div class="thumbUp"></div>
+              </div>
+             </a>            
+            {{/if}}
+          {{else}}
+            <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-left">
+              <div class="thumbUp"></div>
+            </div>
           {{/if}}
+          <div class="dislikes-count">
+            {{character.received_dislikes_count}}
+          </div>
+          {{#if displayLikeSystemButtons}} 
+           {{#if updatingLikes }}
+             {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+           {{else}}
+             <a class="clickable" {{action "sendDislike"}} {{bindAttr title="dislikeAmountText"}}>
+              <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-right">
+                <div class="thumbDown"></div>
+              </div>
+             </a>
+            {{/if}}
+           {{else}}
+            <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-right">
+              <div class="thumbDown"></div>
+            </div>
+          {{/if}}
+        {{/if}}
+
+        <div class="modal-dialog-text">
           {{#if character.description}}
             {{{ showDescription }}}
           {{else}}
-			      {{t profile.customization.missingDescription}}
+            {{t profile.customization.missingDescription}}
           {{/if}}
-          <br>
-          <a {{action "sendUserContentReport"}}>{{t profile.customization.report}}</a>
-        </p>
-		  </div>
-      
-      <p><b>{{t profile.totalPopulation}}:</b> {{character.score}} &nbsp; 
-         <b>{{t profile.fortresses}}:</b> {{character.fortress_count}}</p>
-         
-      <p><b>{{t profile.battles}}:</b> {{character.battle_count}} ({{t profile.victories}}: {{ character.victories }}, {{t profile.defeats}}: {{ character.defeats }})</p>
-
-      <p><b>{{t profile.homeSettlement}}:</b>
-        {{#if homeSettlement}}
-          <a class="clickable" {{action "basePressed"}}>{{homeSettlement.name}}</a> ({{homeSettlement.score}} {{t settlement.population}})
-        {{else}}
-          {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-        {{/if}}
-      </p>
-    
-      
-      {{#if AWE.Config.LIKE_ENABLED}} 
-        <p>
-           {{character.received_likes_count}}
-           <b> Likes</b>
-           {{#if displayLikeSystemButtons}}
-             {{#if updatingLikes }}
-               {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-             {{else}}
-               <a class="clickable" {{action "sendLike"}} {{bindAttr title="likeAmountText"}}>sende Like</a>
-             {{/if}}
-           {{/if}} &nbsp;
-           {{character.received_dislikes_count}}
-           <b> Dislikes</b>
-           {{#if displayLikeSystemButtons}} 
-             {{#if updatingLikes }}
-               {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-             {{else}}
-               <a class="clickable" {{action "sendDislike"}} {{bindAttr title="dislikeAmountText"}}>sende Dislike</a>
-             {{/if}}
-           {{/if}}
-        </p>
-      {{/if}}
-      
-      <p><b>{{t profile.history}}:</b><br />
-      {{#if loadingHistory }}
-        {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-      {{else}}
-        {{#if historyEvents}}
-          {{#each historyEvents}}
-          {{local this.localized_description}}<br />
-          {{/each}}
-        {{else}}
-          {{t profile.emptyHistory}}}<br />
-        {{/if}}
-      {{/if}}
-      </p>
-      
-      <a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>     
-      {{#if character}}
-        <a class="button" href="#" {{action "sendMessageClicked"}}>{{t profile.sendMessage}}</a>  
-      {{/if}}   
+        </div>
+      </div>
     </div>
   </div>
 </script>

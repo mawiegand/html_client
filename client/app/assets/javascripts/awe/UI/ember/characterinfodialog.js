@@ -176,7 +176,9 @@ AWE.UI.Ember = (function(module) {
       this.setAndUpdateHomeSettlement();
     }.observes('character.base_location_id'),        
     
-
+    closeDialog: function() {
+      this.destroy();
+    },
     
     okClicked: function() {
       this.destroy();
