@@ -472,6 +472,7 @@ AWE.I18n.de_DE = function(module) {
       joinRandomAllianceButtonLabel: 'Allianz suchen',
       joinRandomAllianceFailedHead: 'Beitritt fehlgeschlagen',
       joinRandomAllianceFailedText: 'Konnte keiner Allianz beitreten. Bitte wende dich an einen Administrator sollte das Problem weiterhin bestehen.',
+      joinAllianceNotAllowedText: 'Allianzbeitritt erst wieder möglich am {0}',
       management: 'Geheime Allianzlosung',
       reservation: 'Reservierung für die nächste Runde',
       reservationDescription: 'Als Allianzanführer kannst Du Deine Allianz für die nächste Runde reservieren. Um die Reservierung in der nächsten ' +
@@ -546,6 +547,7 @@ AWE.I18n.de_DE = function(module) {
       confirmLeave: {
         heading: "Allianz verlassen",
         message: "Möchtest Du Deine Allianz wirklich verlassen?",
+        message2: " Achtung! Beim Verlassen kannst du erst in {0} Stunden einer anderen Allianz beitreten.",
       },
       confirmReport: {
         heading: "Melden bestätigen",

@@ -464,6 +464,7 @@ AWE.I18n.en_US = function(module) {
       joinRandomAllianceButtonLabel: 'Find alliance',
       joinRandomAllianceFailedHead: 'Join Alliance Failed',
       joinRandomAllianceFailedText: 'Could not join a random alliance. Please contact an administrator if the problem persists',
+      joinAllianceNotAllowedText: 'Joining another alliance not allowed until {0}.',
       management:"Secret alliance slogan",
       reservation: 'Reservation for next round',
       reservationDescription: 'As the leader of an alliance, you can reserve your alliance for the next round. To redeem a reservation in the next round you willll need the alliance tag and password.',
@@ -537,6 +538,8 @@ AWE.I18n.en_US = function(module) {
       confirmLeave:{
         heading:"Leave Alliance",
         message:"Are you sure about leaving your alliance?",
+        message2: " Attention! If you leave now you cannot join another alliance for the next {0} hours.",
+
       },
       confirmReport: {
         heading: "Melden bestätigen",

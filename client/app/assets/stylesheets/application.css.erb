@@ -598,10 +598,161 @@ h3 {
   box-shadow:         3px 3px 2px 2px #333;
 }
 
-.settlement-info-dialog-pane.modal-dialog-pane {
-  margin-top:-170px;
+.modal-dialog-pane-new { 
+  position: absolute; 
+  margin-left: -315px;
+  margin-top: -233px;
+  width: 630px; /* attention: + padding! */ 
+  height: 466px;
+  box-sizing: border-box;
+  z-index:256;
+  padding: 0px 20px 0px 30px;
+  background-image: url("<%= asset_path 'ui/DialogBox.png' %>");
 }
 
+.modal-dialog-buttons-text{
+  display: inline-block;
+  margin-right: 15px;
+}
+.populationIcon{
+  display: inline-block;
+  background-image: url("<%= asset_path 'ui/populationIcon.png' %>");
+  width: 44px;
+  height: 52px;
+}
+.fortressIcon{
+  display: inline-block;
+  background-image: url("<%= asset_path 'ui/fortressIcon.png' %>");
+  width: 52px;
+  height: 52px;
+}
+.battleIcon{
+  display: inline-block;
+  background-image: url("<%= asset_path 'ui/battleIcon.png' %>");
+  width: 56px;
+  height: 52px;
+}
+
+.modal-dialog-pane-new .avatar{
+  position: absolute;
+  top: 35px;
+  left: 13px;
+}
+
+.modal-dialog-pane-new h1{
+  color:#eae0c2;
+  font-size:129%;
+  font-family: 'Freckle Face', 'cursive';
+  text-shadow: none;
+  position: absolute;
+}
+
+.modal-dialog-container{
+  position: relative;
+}
+
+.modal-dialog-pane-new h2, .modal-dialog-buttons{
+  color:#735e3b;
+  font-size:129%;
+  font-family: 'Freckle Face', 'cursive';
+  text-shadow: none;
+  position: absolute;
+  top: 80px;
+  left:258px;
+}
+
+.modal-dialog-buttons{
+  top: 140px;
+}
+
+.modal-dialog-blue-button-big{
+  background-image: url("<%= asset_path 'ui/blueButtonBig.png' %>");
+  width: 166px;
+  height: 44px;
+  position: absolute;
+  top: 256px;
+  left: 20px;
+  color: #FFF;
+  font-size: 129%;
+  text-align: center;
+  font-family: 'Freckle Face', 'cursive';
+  line-height: 44px;
+}
+
+.modal-dialog-blue-button-small{
+  background-image: url("<%= asset_path 'ui/blueButtonSmall.png' %>");
+  width: 124px;
+  height: 44px;
+  position: absolute;
+  top: 256px;
+  color: #FFF;
+  font-size: 129%;
+  text-align: center;
+  font-family: 'Freckle Face', 'cursive';
+  line-height: 44px;
+}
+
+.modal-dialog-blue-button-small-right{
+  right: 50px;
+}
+
+.modal-dialog-blue-button-small-left{
+  left: 250px;
+}
+
+.likes-count{
+  position: absolute;
+  top: 220px;
+  left: 306px;
+  color: #3576b2;
+  font-size: 129%;
+  font-family: 'Freckle Face', 'cursive';
+}
+
+.dislikes-count{
+  position: absolute;
+  top: 220px;
+  right: 108px;
+  color: #3576b2;
+  font-size: 129%;
+  font-family: 'Freckle Face', 'cursive';
+}
+
+.thumbUp{
+  background-image: url("<%= asset_path 'ui/thumbUp.png' %>");
+  width: 34px;
+  height: 34px;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.thumbDown{
+  background-image: url("<%= asset_path 'ui/thumbDown.png' %>");
+  width: 34px;
+  height: 34px;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.modal-dialog-text{
+  color:#735e3b;
+  position: absolute;
+  top:325px;
+  left:20px;
+}
+
+.modal-dialog-close{
+  background-image: url("<%= asset_path 'ui/closeButton.png' %>");
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 10px;
+  right: 0px;
+}
+
+.modal-dialog-close:hover{
+  background-image: url("<%= asset_path 'ui/closeButtonHovered.png' %>");
+}
 
 .modal-dialog-pane .icon-button, .modal-dialog-pane .button {
   float: right;
@@ -2920,14 +3071,14 @@ span.bonus {
 
 .character-profile-view .alliance-banner,
 .settlement-info-dialog-pane .alliance-banner,
-.character-info-dialog-pane .alliance-banner {
+.alliance-banner {
   float: right;
   width: 120px;
   height: 120px;
   margin-top: -30px;
 }
 
-.character-info-dialog-pane .character-head {
+.character-head {
   float:left;
 }
 
