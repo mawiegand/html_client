@@ -9,7 +9,7 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
     
-  module.CharacterInfoDialog = module.Dialog.extend({
+  module.CharacterInfoDialog = module.PopUpDialog.extend({
     templateName: 'character-info-dialog',
     
     characterId: null,
@@ -174,11 +174,7 @@ AWE.UI.Ember = (function(module) {
     
     baseLocationIdObserver: function() {
       this.setAndUpdateHomeSettlement();
-    }.observes('character.base_location_id'),        
-    
-    closeDialog: function() {
-      this.destroy();
-    },
+    }.observes('character.base_location_id'),
     
     okClicked: function() {
       this.destroy();
