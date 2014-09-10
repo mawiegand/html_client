@@ -31,7 +31,11 @@ AWE.UI.Ember = (function(module) {
       this.setAndUpdateHomeSettlement(); 
 
       this.set('ownResourcePool', AWE.GS.ResourcePoolManager.getResourcePool());     
-    },    
+    },
+
+    isOwn: function() {
+      return this.get("characterId") === AWE.GS.game.getPath('currentCharacter.id');
+    }.property(),
     
     showDescription: function() {
       return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/g, '<br />');
@@ -282,6 +286,7 @@ AWE.UI.Ember = (function(module) {
     WACKADOO.activateMessagesController({ recipient: character });
     WACKADOO.closeAllModalDialogs();
     return false;// prevent default behavior
+
     },
     
     // settlementPressed: function() {
