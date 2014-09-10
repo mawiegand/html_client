@@ -17,6 +17,9 @@
     <div class="modal-dialog-blue-button-big">
       {{alliance.name}}
     </div>
+  {{else}}
+    <div class="modal-dialog-blue-button-big modal-dialog-blue-button-big-transparent">
+    </div>
   {{/if}}
 
   {{#if AWE.Config.LIKE_ENABLED}}
@@ -66,7 +69,9 @@
     {{#if character.description}}
       {{{ showDescription }}}
     {{else}}
-      {{t profile.customization.missingDescription}}
+      {{#if isOwn}}
+        {{t profile.customization.missingDescription}}
+      {{/if}}
     {{/if}}
   </div>
 </script>
