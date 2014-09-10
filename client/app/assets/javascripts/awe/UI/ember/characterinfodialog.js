@@ -273,13 +273,15 @@ AWE.UI.Ember = (function(module) {
     },
     
     sendMessageClicked: function() {
-      var character = this.get('character')
-      if (!character) {
-        return false;
-      }
-      WACKADOO.activateMessagesController({ recipient: character });
-      WACKADOO.closeAllModalDialogs();
-      return false; // prevent default behavior
+    //alert("Hello Mail click!!!!");
+    var character = this.get('character');
+    if(!character)
+    {
+    	return false;
+    }
+    WACKADOO.activateMessagesController({ recipient: character });
+    WACKADOO.closeAllModalDialogs();
+    return false;// prevent default behavior
     },
     
     // settlementPressed: function() {

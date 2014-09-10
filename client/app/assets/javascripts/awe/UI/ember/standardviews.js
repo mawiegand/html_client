@@ -115,6 +115,13 @@ AWE.UI.Ember = (function(module) {
     closeDialog: function() {
       this.destroy();
     },
+     onClose: null,
+    destroy: function() {
+      if (this.onClose) {
+        this.onClose(this);
+      }
+      this._super();
+    },
   });
 
   /**

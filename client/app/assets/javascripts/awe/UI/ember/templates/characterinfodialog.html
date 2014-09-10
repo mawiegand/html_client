@@ -57,11 +57,11 @@
       </div>
     {{/if}}
   {{/if}}
-
+<a class="clickable" {{action "sendMessageClicked"}}>
   <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-right">
     <div class="mail-icon"></div>
   </div>
-
+</a>
   <div class="modal-dialog-text">
     {{#if character.description}}
       {{{ showDescription }}}
