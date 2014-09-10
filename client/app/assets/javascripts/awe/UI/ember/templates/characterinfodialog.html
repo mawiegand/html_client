@@ -6,16 +6,18 @@
 
   <h2>{{local character.mundaneTitle.name}}</h2>
   <div class="modal-dialog-buttons">
-    <div class="populationIcon"></div>
-    <div class="modal-dialog-buttons-text">{{character.score}}</div>
     <div class="battleIcon"></div>
     <div class="modal-dialog-buttons-text">{{character.battle_count}}</div>
+    <div class="populationIcon"></div>
+    <div class="modal-dialog-buttons-text">{{character.score}}</div>
     <div class="fortressIcon"></div>
     <div class="modal-dialog-buttons-text">{{character.fortress_count}}</div>
   </div>
-  <div class="modal-dialog-blue-button-big">
-    {{alliance.name}}
-  </div>
+  {{#if alliance}}
+    <div class="modal-dialog-blue-button-big">
+      {{alliance.name}}
+    </div>
+  {{/if}}
 
   {{#if AWE.Config.LIKE_ENABLED}}
     <div class="likes-count">
@@ -44,17 +46,21 @@
        {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
      {{else}}
        <a class="clickable" {{action "sendDislike"}} {{bindAttr title="dislikeAmountText"}}>
-        <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-right">
+        <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-middle">
           <div class="thumbDown"></div>
         </div>
        </a>
       {{/if}}
      {{else}}
-      <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-right">
+      <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-middle">
         <div class="thumbDown"></div>
       </div>
     {{/if}}
   {{/if}}
+
+  <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-right">
+    <div class="mail-icon"></div>
+  </div>
 
   <div class="modal-dialog-text">
     {{#if character.description}}

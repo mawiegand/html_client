@@ -271,6 +271,20 @@ td { vertical-align: top; }
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'hvd_comic_serif_proregular';
+    src: url("<%= asset_path('HVD_Comic_Serif_Pro-webfont.eot') %>");
+    src: url("<%= asset_path('HVD_Comic_Serif_Pro-webfont.eot?#iefix') %>") format('embedded-opentype'),
+         url("<%= asset_path('HVD_Comic_Serif_Pro-webfont.woff') %>") format('woff'),
+         url("<%= asset_path('HVD_Comic_Serif_Pro-webfont.ttf') %>") format('truetype'),
+         url("<%= asset_path('HVD_Comic_Serif_Pro-webfont.svg#hvd_comic_serif_proregular') %>") format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
 html, body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   text-shadow: white 0px 1px 1px;
@@ -598,12 +612,13 @@ h3 {
   box-shadow:         3px 3px 2px 2px #333;
 }
 
-.modal-dialog-pane-new { 
+.modal-dialog-pane-new {
+  font-family: 'hvd_comic_serif_proregular', 'cursive';
   position: absolute; 
-  margin-left: -315px;
-  margin-top: -233px;
-  width: 630px; /* attention: + padding! */ 
-  height: 466px;
+  margin-left: -338px;
+  margin-top: -250px;
+  width: 676px; /* attention: + padding! */ 
+  height: 500px;
   box-sizing: border-box;
   z-index:256;
   padding: 0px 20px 0px 30px;
@@ -613,38 +628,51 @@ h3 {
 .modal-dialog-buttons-text{
   display: inline-block;
   margin-right: 15px;
+  vertical-align: middle;
 }
 .populationIcon{
   display: inline-block;
   background-image: url("<%= asset_path 'ui/populationIcon.png' %>");
   width: 44px;
   height: 52px;
+  vertical-align: middle;
 }
 .fortressIcon{
   display: inline-block;
   background-image: url("<%= asset_path 'ui/fortressIcon.png' %>");
-  width: 52px;
-  height: 52px;
+  width: 60px;
+  height: 56px;
+  vertical-align: middle;
 }
 .battleIcon{
   display: inline-block;
   background-image: url("<%= asset_path 'ui/battleIcon.png' %>");
-  width: 56px;
-  height: 52px;
+  width: 44px;
+  height: 40px;
+  vertical-align: middle;
 }
 
 .modal-dialog-pane-new .avatar{
   position: absolute;
-  top: 35px;
+  top: 49px;
   left: 13px;
 }
 
 .modal-dialog-pane-new h1{
   color:#eae0c2;
-  font-size:129%;
-  font-family: 'Freckle Face', 'cursive';
+  font-size: 28px;
+  margin-top: 5px;
+  font-family: 'hvd_comic_serif_proregular', 'cursive';
   text-shadow: none;
   position: absolute;
+}
+
+.moving-dialog .z-layer-3 {
+  z-index: 800;
+}
+
+.moving-dialog .z-layer-4 {
+  z-index: 900;
 }
 
 .modal-dialog-container{
@@ -653,106 +681,122 @@ h3 {
 
 .modal-dialog-pane-new h2, .modal-dialog-buttons{
   color:#735e3b;
-  font-size:129%;
-  font-family: 'Freckle Face', 'cursive';
+  font-size:28px;
+  font-family: 'hvd_comic_serif_proregular', 'cursive';
   text-shadow: none;
   position: absolute;
   top: 80px;
-  left:258px;
+  left:210px;
 }
 
 .modal-dialog-buttons{
   top: 140px;
+  display: table-cell;
 }
 
 .modal-dialog-blue-button-big{
   background-image: url("<%= asset_path 'ui/blueButtonBig.png' %>");
-  width: 166px;
-  height: 44px;
+  width: 180px;
+  height: 48px;
   position: absolute;
   top: 256px;
-  left: 20px;
+  left: 13px;
   color: #FFF;
   font-size: 129%;
   text-align: center;
   font-family: 'Freckle Face', 'cursive';
-  line-height: 44px;
+  line-height: 48px;
 }
 
 .modal-dialog-blue-button-small{
   background-image: url("<%= asset_path 'ui/blueButtonSmall.png' %>");
-  width: 124px;
-  height: 44px;
+  width: 136px;
+  height: 48px;
   position: absolute;
   top: 256px;
   color: #FFF;
   font-size: 129%;
   text-align: center;
   font-family: 'Freckle Face', 'cursive';
-  line-height: 44px;
+  line-height: 48px;
 }
 
 .modal-dialog-blue-button-small-right{
-  right: 50px;
+  right: 10px;
+}
+
+.modal-dialog-blue-button-small-middle{
+  left: 338px;
 }
 
 .modal-dialog-blue-button-small-left{
-  left: 250px;
+  left: 198px;
 }
 
 .likes-count{
   position: absolute;
-  top: 220px;
-  left: 306px;
+  top: 205px;
+  left: 258px;
   color: #3576b2;
-  font-size: 129%;
-  font-family: 'Freckle Face', 'cursive';
+  font-size: 38px;
+  font-family: 'hvd_comic_serif_proregular', 'cursive';
 }
 
 .dislikes-count{
   position: absolute;
-  top: 220px;
-  right: 108px;
+  top: 205px;
+  right: 209px;
   color: #3576b2;
-  font-size: 129%;
-  font-family: 'Freckle Face', 'cursive';
+  font-size: 38px;
+  font-family: 'hvd_comic_serif_proregular', 'cursive';
 }
 
 .thumbUp{
   background-image: url("<%= asset_path 'ui/thumbUp.png' %>");
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 40px;
   display: inline-block;
   margin-top: 5px;
 }
 
 .thumbDown{
   background-image: url("<%= asset_path 'ui/thumbDown.png' %>");
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 40px;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+.mail-icon{
+  background-image: url("<%= asset_path 'ui/mailIcon.png' %>");
+  width: 44px;
+  height: 32px;
   display: inline-block;
   margin-top: 5px;
 }
 
 .modal-dialog-text{
+  font-family: 'Montserrat', sans-serif;
   color:#735e3b;
   position: absolute;
   top:325px;
   left:20px;
+  font-size: 22px;
+  text-shadow: none;
 }
 
 .modal-dialog-close{
   background-image: url("<%= asset_path 'ui/closeButton.png' %>");
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   position: absolute;
   top: 10px;
   right: 0px;
 }
 
-.modal-dialog-close:hover{
+/*.modal-dialog-close:hover{
   background-image: url("<%= asset_path 'ui/closeButtonHovered.png' %>");
-}
+}*/
 
 .modal-dialog-pane .icon-button, .modal-dialog-pane .button {
   float: right;
