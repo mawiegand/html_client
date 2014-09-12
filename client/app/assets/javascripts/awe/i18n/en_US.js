@@ -1384,6 +1384,7 @@ AWE.I18n.en_US = function(module) {
     menu: {
       manual: "Manual",
       logout: "Log out",
+      header: "Menu",
     }, 
   };
   

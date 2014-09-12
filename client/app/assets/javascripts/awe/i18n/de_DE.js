@@ -1406,7 +1406,8 @@ AWE.I18n.de_DE = function(module) {
 
     menu: {
       manual: "Handbuch",
-      logout: "Logout"
+      logout: "Logout",
+      header: "Menu",
     },    
   }
   
