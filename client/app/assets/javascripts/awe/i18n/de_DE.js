@@ -1277,7 +1277,9 @@ AWE.I18n.de_DE = function(module) {
       productionInfo: {
         header: "Rohstoffproduktion im Herrschaftsgebiet",
         amount: "Menge",
+        bonus: "Bonus",
         productionRate: "Produktionsrate",
+        production: "Produktion",
         dailyProduction: "Tagesproduktion",
         capacity: "Lagerkapazität",
         capacityReachedIn: "Lager voll in",
@@ -1400,6 +1402,11 @@ AWE.I18n.de_DE = function(module) {
       initiated: "Eingeweiht",
       nextPage: "Nächste Seite",
       previousPage: "Vorige Seite",
+    },
+
+    menu: {
+      manual: "Handbuch",
+      logout: "Logout"
     },    
   }
   

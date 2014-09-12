@@ -11,6 +11,7 @@ AWE.UI.Ember = (function(module) {
     
   module.CharacterInfoDialog = module.PopUpDialog.extend({
     templateName: 'character-info-dialog',
+    classNames: ['character-info-dialog'],
     
     characterId: null,
     character: null,

@@ -1255,7 +1255,9 @@ AWE.I18n.en_US = function(module) {
       productionInfo:{
         header: "Resource production in your empire",
         amount: "Amount",
+        bonus: "Bonus",
         productionRate: "Production rate",
+        production: "Production",
         dailyProduction: "Daily production",
         capacity: "Storage capacity",
         capacityReachedIn: "Capacity reached in",
@@ -1378,6 +1380,11 @@ AWE.I18n.en_US = function(module) {
       nextPage: "Next page",
       previousPage: "Previous page",
     },
+
+    menu: {
+      manual: "Manual",
+      logout: "Log out",
+    }, 
   };
   
   return module;

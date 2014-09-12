@@ -203,7 +203,7 @@ AWE.Controller = function (module) {
         '                       <a href="' + AWE.Config.EXTERNAL_FORUM_URL + '" target="_blank">Forum</a> &nbsp; ' +
         '                       <a href="' + AWE.Config.EXTERNAL_MANUAL_URL + '" target="_blank">Manual</a> &nbsp; ' +
         '                       <a href="#" onClick="WACKADOO.openEncyclopedia()">' + AWE.I18n.lookupTranslation('encyclopedia.encyclopedia') + '</a> &nbsp; ' +
-        '                       <a href="#" onClick="WACKADOO.reload()">Reload</a></div>');
+        '                       <a href="#" onClick="WACKADOO.reload()">Reload</a> &nbsp; <a href="#" onClick="AWE.UI.Ember.MainMenuDialog.create().open()">Menu</a></div>');
       window.WACKADOO.addDomElement($('.link-pane'), false);
       window.WACKADOO.addDomElement(zoomSlider.getContainer(), true);
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height())); // prevents distortion in case window has resized while displaying another screen
