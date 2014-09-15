@@ -1254,12 +1254,15 @@ AWE.Controller = function (module) {
 
 
     that.changeArmyButtonClicked = function (army) {
+    alert("Hello Army  click!!!!");
       if (!army) return;
 
       var location = army.get('location');
       if (!location) return;
 
-      var dialog = AWE.UI.Ember.ArmyChangeDialog.create({
+      var dialog = AWE.UI.Ember.ArmyNewChangeDialog.create({});
+      WACKADOO.presentModalDialog(dialog);
+      /*AWE.UI.Ember.ArmyChangeDialog.create({
         locationId:location.id(),
         changePressed:function (evt) {
           if (this.get('garrisonOverfull')) {
@@ -1295,12 +1298,12 @@ AWE.Controller = function (module) {
           this.destroy();
         },
         loading:false,
-      });
+      });*/
       // armies are set after create to trigger observer in view
-      dialog.set('garrisonArmy', location.garrisonArmy()),
-        dialog.set('otherArmy', army),
+      /*dialog.set('garrisonArmy', location.garrisonArmy()),
+        dialog.set('otherArmy', army),*/
 
-        that.applicationController.presentModalDialog(dialog);
+        /*that.applicationController.presentModalDialog(dialog);*/
     }
 
     var runningRetreatAction = false;
