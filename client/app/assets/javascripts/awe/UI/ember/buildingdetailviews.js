@@ -372,7 +372,7 @@ AWE.UI.Ember = (function(module) {
 
     joinAllianceNotAllowedText: function(){
       var string = AWE.I18n.lookupTranslation('alliance.joinAllianceNotAllowedText');
-      return string.format(Date.parse(this.getPath("character.cannot_join_alliance_until")).toLocaleString());
+      return string.format(AWE.Util.localizedDateTime(this.getPath("character.cannot_join_alliance_until")));
     }.property("character.cannot_join_alliance_until"),
   
     joinAlliance: function() {
