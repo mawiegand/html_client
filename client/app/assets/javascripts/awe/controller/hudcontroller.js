@@ -550,24 +550,29 @@ AWE.Controller = (function(module) {
       if (!HUDViews.stoneView) {
         
         var detailsHandler = function() {
-          WACKADOO.presentResourceDetailsDialog();
+          var resourceName = this.resourceName;
+          var dialog = AWE.UI.Ember.ResourceInformationDialog.create({resourceName: resourceName})
+          WACKADOO.presentModalDialog(dialog);
         };
         
         HUDViews.stoneView = AWE.UI.createResourceBubbleView();
         HUDViews.stoneView.initWithControllerAndResourceImage(that, "resource/icon/stone/large", "resource_stone");
         HUDViews.stoneView.setOrigin(AWE.Geometry.createPoint(10, 0));
+        HUDViews.stoneView.resourceName = "resource_stone";
         HUDViews.stoneView.onClick = detailsHandler;
         _resourceStage.addChild(HUDViews.stoneView.displayObject());       
 
         HUDViews.woodView = AWE.UI.createResourceBubbleView();
         HUDViews.woodView.initWithControllerAndResourceImage(that, "resource/icon/wood/large", "resource_wood");
         HUDViews.woodView.setOrigin(AWE.Geometry.createPoint(216, 0));
+        HUDViews.woodView.resourceName = "resource_wood";
         HUDViews.woodView.onClick = detailsHandler;
         _resourceStage.addChild(HUDViews.woodView.displayObject()); 
         
         HUDViews.furView = AWE.UI.createResourceBubbleView();
         HUDViews.furView.initWithControllerAndResourceImage(that, "resource/icon/fur/large", "resource_fur");
         HUDViews.furView.setOrigin(AWE.Geometry.createPoint(422, 0));
+        HUDViews.furView.resourceName = "resource_fur";
         HUDViews.furView.onClick = detailsHandler;
         _resourceStage.addChild(HUDViews.furView.displayObject()); 
       }

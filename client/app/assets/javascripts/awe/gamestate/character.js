@@ -324,6 +324,32 @@ AWE.GS = (function(module) {
       return allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
     }.property('alliance_id').cacheable(),
 
+    hoursUntilAllianceRejoinAllowed: function(){
+      var is_at_war = this.getPath("alliance.is_at_war");
+
+      var created_at = Date.parse(this.get("created_at"));
+      var twenty_days_ago = Date.today().setTimeToNow().addDays(-20);
+
+      if(created_at.isAfter(twenty_days_ago)){
+        return 0;
+      }else if(created_at.isBefore(twenty_days_ago) && !is_at_war){
+        return 12;
+      }else if(created_at.isBefore(twenty_days_ago) && is_at_war){
+        return 24;
+      }
+
+    }.property('created_at'),
+
+    canJoinAlliance: function(){
+      var date = Date.parse(this.get('cannot_join_alliance_until'));
+      return date.isBefore(Date.today().setTimeToNow()); 
+    }.property('cannot_join_alliance_until'),
+
+    dateUntilAllianceRejoinAllowed: function(){
+      var hours = this.get("hoursUntilAllianceRejoinAllowed");
+      return Date.today().setTimeToNow().addHours(hours);
+    },
+
     specialAssignment: function() {
       var latestDate = AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds();
       var specialAssignments = this.get('enumerableSpecialAssignments');

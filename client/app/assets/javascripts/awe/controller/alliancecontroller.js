@@ -105,8 +105,8 @@ AWE.Controller = (function(module) {
     that.updateModel = function() {
       that.updateAlliance(this.allianceId);
       that.updateMembers(this.allianceId);
+      that.updateDiplomacyRelations(this.allianceId);
       if (this.allianceId == AWE.GS.game.currentCharacter.alliance_id) {
-        that.updateDiplomacyRelations(this.allianceId);
         that.updateShouts(this.allianceId);     // side-effect: starts another update, if older than 60s
       }
     }

@@ -442,16 +442,22 @@ AWE.I18n.de_DE = function(module) {
       description: 'Beschreibung',
       changeDescriptionDialogCaption: 'Gib deine neue Allianzbeschreibung ein.',
       changeDescription: 'Ändere Beschreibung',
-			missingDescription: 'Hier könnte eure Allianzbeschreibung stehen.',
+      missingDescription: 'Hier könnte eure Allianzbeschreibung stehen.',
       diplomacyRelation: "Diplomatie Beziehungen",
       diplomacyRelationWithAlliance: " mit der Allianz ",
       diplomacyRelationEnds: " endet am ",
+      diplomacyRelationEndsWar1: ". Kapitulation ab ",
+      diplomacyRelationEndsWar2: " möglich.",
       createDiplomacyRelationText1: "Stelle ",
       createDiplomacyRelationText2: " ein Ultimatum.",
+      createDiplomacyRelationText3: "Es würde am ",
+      createDiplomacyRelationText4: " enden.",
       diplomacyFailedHead: 'Diplomatie Beziehung',
       diplomacyFailedText: 'Konnte Diplomatie Beziehung nicht erstellen. Bitte wende dich an einen Administrator sollte das Problem weiterhin bestehen.',
+      diplomacyFailedRelationAlreadyExists: 'Eine Diplomatie Beziehung mit dieser Allianz besteht bereits.',
       diplomacyFailedTargetAllianceNotFoundText: 'Konnte die angegebene Allianz nicht finden. Diplomatie Beziehung wurde nicht erstellt.',
       diplomacyRelationCreatePlaceholder: "Allianz",
+      createDiplomacyRelationWithAllianceButton: "Ultimatum stellen",
       createDiplomacyRelationButton: "Erstellen",
       autoJoin: "Automatisch beitreten",
       autoJoinDescription: "Automatisch beitreten",
@@ -466,6 +472,7 @@ AWE.I18n.de_DE = function(module) {
       joinRandomAllianceButtonLabel: 'Allianz suchen',
       joinRandomAllianceFailedHead: 'Beitritt fehlgeschlagen',
       joinRandomAllianceFailedText: 'Konnte keiner Allianz beitreten. Bitte wende dich an einen Administrator sollte das Problem weiterhin bestehen.',
+      joinAllianceNotAllowedText: 'Allianzbeitritt erst wieder möglich am {0}',
       management: 'Geheime Allianzlosung',
       reservation: 'Reservierung für die nächste Runde',
       reservationDescription: 'Als Allianzanführer kannst Du Deine Allianz für die nächste Runde reservieren. Um die Reservierung in der nächsten ' +
@@ -540,6 +547,7 @@ AWE.I18n.de_DE = function(module) {
       confirmLeave: {
         heading: "Allianz verlassen",
         message: "Möchtest Du Deine Allianz wirklich verlassen?",
+        message2: " Achtung! Beim Verlassen kannst du erst in {0} Stunden einer anderen Allianz beitreten.",
       },
       confirmReport: {
         heading: "Melden bestätigen",
@@ -556,6 +564,12 @@ AWE.I18n.de_DE = function(module) {
         ok: "Ja, wirklich.",
         success: "Bewerbung war erfolgreich",
         error: "Die Bewerbung wurde aus unbekanntem Grund nicht ausgeführt.",
+      },
+      confirmDiplomacyRelation: {
+        heading: "Änderung der Diplomatie bestätigen",
+        message: "Willst Du wirklich die Beziehung zwischen Deiner und dieser Allianz ändern?",
+        cancel: "Nein, doch nicht",
+        ok: "Ja, wirklich.",
       },
     },
 
@@ -1263,7 +1277,9 @@ AWE.I18n.de_DE = function(module) {
       productionInfo: {
         header: "Rohstoffproduktion im Herrschaftsgebiet",
         amount: "Menge",
+        bonus: "Bonus",
         productionRate: "Produktionsrate",
+        production: "Produktion",
         dailyProduction: "Tagesproduktion",
         capacity: "Lagerkapazität",
         capacityReachedIn: "Lager voll in",
@@ -1386,6 +1402,12 @@ AWE.I18n.de_DE = function(module) {
       initiated: "Eingeweiht",
       nextPage: "Nächste Seite",
       previousPage: "Vorige Seite",
+    },
+
+    menu: {
+      manual: "Handbuch",
+      logout: "Logout",
+      header: "Menu",
     },    
   }
   

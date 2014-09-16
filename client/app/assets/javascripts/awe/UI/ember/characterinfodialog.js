@@ -9,8 +9,9 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
     
-  module.CharacterInfoDialog = module.Dialog.extend({
+  module.CharacterInfoDialog = module.PopUpDialog.extend({
     templateName: 'character-info-dialog',
+    classNames: ['character-info-dialog'],
     
     characterId: null,
     character: null,
@@ -31,7 +32,11 @@ AWE.UI.Ember = (function(module) {
       this.setAndUpdateHomeSettlement(); 
 
       this.set('ownResourcePool', AWE.GS.ResourcePoolManager.getResourcePool());     
-    },    
+    },
+
+    isOwn: function() {
+      return this.get("characterId") === AWE.GS.game.getPath('currentCharacter.id');
+    }.property(),
     
     showDescription: function() {
       return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/g, '<br />');
@@ -174,9 +179,7 @@ AWE.UI.Ember = (function(module) {
     
     baseLocationIdObserver: function() {
       this.setAndUpdateHomeSettlement();
-    }.observes('character.base_location_id'),        
-    
-
+    }.observes('character.base_location_id'),
     
     okClicked: function() {
       this.destroy();
@@ -275,13 +278,16 @@ AWE.UI.Ember = (function(module) {
     },
     
     sendMessageClicked: function() {
-      var character = this.get('character')
-      if (!character) {
-        return false;
-      }
-      WACKADOO.activateMessagesController({ recipient: character });
-      WACKADOO.closeAllModalDialogs();
-      return false; // prevent default behavior
+    //alert("Hello Mail click!!!!");
+    var character = this.get('character');
+    if(!character)
+    {
+    	return false;
+    }
+    WACKADOO.activateMessagesController({ recipient: character });
+    WACKADOO.closeAllModalDialogs();
+    return false;// prevent default behavior
+
     },
     
     // settlementPressed: function() {

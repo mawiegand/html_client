@@ -438,12 +438,18 @@ AWE.I18n.en_US = function(module) {
       diplomacyRelation: "Diplomatie Beziehungen",
       diplomacyRelationWithAlliance: " mit der Allianz ",
       diplomacyRelationEnds: " endet am ",
+      diplomacyRelationEndsWar1: ". Kapitulation ab ",
+      diplomacyRelationEndsWar2: " möglich.",
       createDiplomacyRelationText1: "Stelle ",
       createDiplomacyRelationText2: " ein Ultimatum.",
+      createDiplomacyRelationText3: "Es würde am ",
+      createDiplomacyRelationText4: " enden.",
       diplomacyFailedHead: 'Diplomatie Beziehung',
       diplomacyFailedText: 'Konnte Diplomatie Beziehung nicht erstellen. Bitte wende dich an einen Administrator sollte das Problem weiterhin bestehen.',
+      diplomacyFailedRelationAlreadyExists: 'Diplomacy Relation with this alliance already exists.',
       diplomacyFailedTargetAllianceNotFoundText: 'Konnte die angegebene Allianz nicht finden. Diplomatie Beziehung wurde nicht erstellt.',
       diplomacyRelationCreatePlaceholder: "Allianz",
+      createDiplomacyRelationWithAllianceButton: "Ultimatum stellen",
       createDiplomacyRelationButton: "Erstellen",
       autoJoin: "Auto join",
       autoJoinDescription: "Automatically join",
@@ -458,6 +464,7 @@ AWE.I18n.en_US = function(module) {
       joinRandomAllianceButtonLabel: 'Find alliance',
       joinRandomAllianceFailedHead: 'Join Alliance Failed',
       joinRandomAllianceFailedText: 'Could not join a random alliance. Please contact an administrator if the problem persists',
+      joinAllianceNotAllowedText: 'Joining another alliance not allowed until {0}.',
       management:"Secret alliance slogan",
       reservation: 'Reservation for next round',
       reservationDescription: 'As the leader of an alliance, you can reserve your alliance for the next round. To redeem a reservation in the next round you willll need the alliance tag and password.',
@@ -531,6 +538,8 @@ AWE.I18n.en_US = function(module) {
       confirmLeave:{
         heading:"Leave Alliance",
         message:"Are you sure about leaving your alliance?",
+        message2: " Attention! If you leave now you cannot join another alliance for the next {0} hours.",
+
       },
       confirmReport: {
         heading: "Melden bestätigen",
@@ -547,6 +556,12 @@ AWE.I18n.en_US = function(module) {
         ok: "Yes.",
         success: "Application successful.",
         error: "Something went wrong with the application.",
+      },
+      confirmDiplomacyRelation: {
+        heading: "Änderung der Diplomatie bestätigen",
+        message: "Willst Du wirklich die Beziehung zwischen Deiner und dieser Allianz ändern?",
+        cancel: "Nein, doch nicht",
+        ok: "Ja, wirklich.",
       },
     },
 
@@ -1240,7 +1255,9 @@ AWE.I18n.en_US = function(module) {
       productionInfo:{
         header: "Resource production in your empire",
         amount: "Amount",
+        bonus: "Bonus",
         productionRate: "Production rate",
+        production: "Production",
         dailyProduction: "Daily production",
         capacity: "Storage capacity",
         capacityReachedIn: "Capacity reached in",
@@ -1363,6 +1380,12 @@ AWE.I18n.en_US = function(module) {
       nextPage: "Next page",
       previousPage: "Previous page",
     },
+
+    menu: {
+      manual: "Manual",
+      logout: "Log out",
+      header: "Menu",
+    }, 
   };
   
   return module;

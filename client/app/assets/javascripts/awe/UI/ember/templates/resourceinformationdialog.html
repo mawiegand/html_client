@@ -1,0 +1,27 @@
+<script type="text/x-handlebars" data-template-name="resource-information-dialog">
+  <h1>{{local name}}</h1>
+  <div class="modal-dialog-body resource-information-dialog-pane no-scrolling">
+    <div class="row row1">
+      <div class="cell cell-50 stone-big"></div>
+      <div class="cell cell-50 info-box">
+        <p class="amount">{{amount}} / {{capacity}}</p>
+        <div>
+          <p class="production-title">{{t resource.productionInfo.production}}:</p>
+          <p class="production-value">{{formatNumber productionRate maxPlaces="1"}}/h</p>
+        </div>
+        <div>
+          <p class="bonus-title">{{t resource.productionInfo.bonus}}:</p>
+          <p class="bonus-value">{{formatAsPercent bonus maxPlaces="0"}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row row2">
+      <div class="cell">
+        <div class="description">
+          {{local description}}
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
