@@ -1078,7 +1078,119 @@ h3 {
   margin: 0;
   text-align: right;
 }
+/* == CHANGE ARMY == */
 
+.change-army-dialog-pane
+{
+	width: 626px;
+	height: 426px;
+}
+
+.modal-dialog-green-button-small-right{
+	background:url("<%= asset_path 'ui/button_green_middle@2x~iphone.png' %>");
+	right: 38px;
+	top: 38px;
+	text-align: center;
+	line-height: 15px;
+	font-size: 15px;
+	font-family: 'hvd_comic_serif_proregular', 'cursive';
+	width: 180px;
+	height: 52px;
+}
+
+.modal-dialog-green-button-small-text
+{
+	margin: auto;  
+  	position: absolute;
+  	left:5px;
+  	right: 0;
+  	top: 10px;
+  	bottom: 0;
+	
+}
+
+.army-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.sword-icon {
+  background:url("<%= asset_path 'ui/units_swordsman@2x~iphone.png' %>")no-repeat center center;
+  position: absolute;
+  left: 30px;
+  top: 87px;
+}
+
+.cavalry-icon {
+  background:url("<%= asset_path 'ui/units_cavalry@2x~iphone.png' %>") no-repeat center center;
+  position: absolute;
+  left: 120px;
+  top: 87px;
+}
+
+.archer-icon {
+  background:url("<%= asset_path 'ui/units_archer@2x~iphone.png' %>") no-repeat center center;
+  position: absolute;
+  left: 215px;
+  top: 87px;
+}
+
+.total-text
+{
+  margin: 0;
+  float: left;
+  font-size: 32px;
+  position: absolute;
+  left: 300px;
+  top: 87px;
+}
+
+.units-text
+{
+  position: absolute;
+  left: 465px;
+  top: 87px;
+}
+
+.infantry-strength-text
+{
+  position: absolute;
+  left: 25px;
+  top: 127px;
+  font-size: 24px;
+}
+
+.cavalry-strength-text
+{
+  position: absolute;
+  left: 115px;
+  top: 127px;
+  font-size: 24px;
+}
+
+.archer-strength-text
+{
+  position: absolute;
+  left: 210px;
+  top: 127px;
+  font-size: 24px;
+}
+
+.total-strength-text
+{
+  position: absolute;
+  left: 320px;
+  top: 127px;
+  font-size: 24px;
+}
+
+.units-strength-text
+{
+  position: absolute;
+  left: 445px;
+  top: 127px;
+  font-size: 24px;
+}
 /* == MENU == */
 
 .menu-dialog-pane .main-menu-button {
@@ -1088,8 +1200,8 @@ h3 {
   color: rgb(256,256,256);
   text-align: center;
   margin: auto;
-  line-height: 64px;
-  font-size: 30px;
+  line-height: 10px;
+  font-size: 15px;
 }
 
 .menu-dialog-pane .main-menu-button:hover {
