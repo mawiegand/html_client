@@ -17,9 +17,23 @@ AWE.UI.Ember = (function(module) {
 	otherArmy: null,
   });
   
+  module.ArmyNewCreateDialog = module.PopUpDialog.extend({
+    templateName: 'army-new-create-dialog',
+    
+    locationId: null,
+    garrisonArmy: null,
+	otherArmy: null,
+  });
+  
+  
+  module.ArmyAbstractView  = Ember.View.extend ({
+  });
+  
+  module.ArmyCreateView    = module.ArmyAbstractView.extend({
+  });
   
 
-  module.ArmyNewChangeView = Ember.View.extend ({
+  module.ArmyNewChangeView = module.ArmyAbstractView.extend ({
     templateName: 'army-new-change-content-view',
 
     unitTypesChange: null,
