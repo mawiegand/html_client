@@ -347,7 +347,7 @@ AWE.GS = (function(module) {
       var dateString = this.get('cannot_join_alliance_until');
       
       if (!dateString) {
-        return false;
+        return true;
       }
       
       var date = Date.parseISODate(dateString).getTime();
