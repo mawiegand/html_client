@@ -124,6 +124,18 @@ AWE.GS = (function(module) {
       return assignmentType;
     },
 
+    getAssignmentWithSymbolicId: function(symbolicId) {
+      var assignmentTypes = this.get('assignment_types');
+      
+      for (var i = 0; i < assignmentTypes.length; i++) {
+        var assignmentType = assignmentTypes[i];
+        if (assignmentType['symbolic_id'] === symbolicId) {
+          return assignmentType;
+        }
+      }
+      log('ERROR: requested non-existing assignment type ' + symbolicId);
+    },
+
     getSpecialAssignmentType: function(id) {
       var assignmentType = this.get('special_assignment_types')[id];
       if (assignmentType === undefined || !assignmentType) {

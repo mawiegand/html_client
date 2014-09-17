@@ -9,22 +9,6 @@ var AWE = AWE || {};
 AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
-
-  module.TabButtonView = Ember.View.extend({
-    tagName:    'li',
-    classNames: ['tab-button-view'],
-    classNameBindings: ['current'],
-    key:        null,
-    
-    click: function() {
-      this.get('parentView').selectTabByKey(this.get('key'));
-    },
-    
-    current: function() {
-      return this.get('key') === this.getPath('parentView.presentTab.key');
-    }.property('key', 'parentView.presentTab.key'),
-    
-  });
   
   module.ProfileTabView = module.TabView.extend({
     

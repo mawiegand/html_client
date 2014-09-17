@@ -745,10 +745,47 @@ h3 {
 .modal-dialog-pane-new h1{
   color:#eae0c2;
   font-size: 28px;
-  margin-top: 5px;
+  margin-top: 10px;
   font-family: 'hvd_comic_serif_proregular', 'cursive';
   text-shadow: none;
-  position: absolute;
+}
+
+.tab-bar-new .cell{
+  float: left;
+}
+
+.tab-bar-new{
+  color: #FFF;
+  text-align: center;
+  line-height: 52px;
+  font-size: 20px;
+}
+
+.tab-bar-new .left-menu-button {
+  background:url("<%= asset_path 'dialogs/buttons/Button_Left_Inactive@2x~iPhone.png' %>") no-repeat center center;
+}
+
+.tab-bar-new .left-menu-button:hover, .tab-bar-new .left-menu-button.current{
+  background:url("<%= asset_path 'dialogs/buttons/Button_Left_Active@2x~iPhone.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.tab-bar-new .middle-menu-button {
+  background:url("<%= asset_path 'dialogs/buttons/Button_Middle_Inactive@2x~iPhone.png' %>") no-repeat center center;
+}
+
+.tab-bar-new .middle-menu-button:hover, .tab-bar-new .middle-menu-button.current {
+  background:url("<%= asset_path 'dialogs/buttons/Button_Middle_Active@2x~iPhone.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.tab-bar-new .right-menu-button {
+  background:url("<%= asset_path 'dialogs/buttons/Button_Right_Inactive@2x~iPhone.png' %>") no-repeat center center;
+}
+
+.tab-bar-new .right-menu-button:hover, .tab-bar-new .right-menu-button.current {
+  background:url("<%= asset_path 'dialogs/buttons/Button_Right_Active@2x~iPhone.png' %>") no-repeat center center;
+  cursor: pointer;
 }
 
 .popup-header-center{
@@ -901,7 +938,7 @@ h3 {
   width: 32px;
   height: 32px;
   position: absolute;
-  top: 10px;
+  top: 5px;
   right: 0px;
   z-index:300;
 }
@@ -952,7 +989,7 @@ h3 {
 
 .resource-information-dialog-pane .row1 {
   height: 168px;
-  margin: 20px 0 0 0;
+  margin: 30px 0 0 0;
 }
 
 .resource-information-dialog-pane .info-box {
@@ -1005,7 +1042,7 @@ h3 {
   cursor: pointer;
 }
 
-.menu-dialog-pane .main-menu-button a{
+.menu-dialog-pane a, .menu-dialog-pane a:hover{
   color: #FFF;
   text-decoration: none;
 }
@@ -1016,6 +1053,230 @@ h3 {
 
 .menu-dialog-pane .row5 {
   margin: 25px 0 0 0;
+}
+
+/* == ASSIGNMENTS == */
+
+.assignments-dialog .tab-bar-new{
+  width: 597px;
+  margin: 30px 0 0 20px;
+}
+
+.assignments-dialog-pane .row2{
+  width: 593px;
+  margin: 28px 0 0 36px;
+}
+
+.assignments-dialog-pane .row3{
+  width: 593px;
+  margin: 57px 0 0 36px;
+}
+
+.assignments-dialog-pane .menu-button {
+  width: 188px;
+  height: 52px;
+  color: rgb(256,256,256);
+  text-align: center;
+  margin: auto;
+  line-height: 52px;
+  font-size: 20px;
+}
+
+.assignments-dialog-pane a, .assignments-dialog-pane a:hover{
+  color: #FFF;
+  text-decoration: none;
+}
+
+.assignments-dialog-pane .assignment_icon{
+  margin: auto;
+}
+
+.assignments-dialog-pane .assignment_stone{
+  background:url("<%= asset_path 'dialogs/items/grey/item_stone_big_grey/item_stone_big_grey@2x~iphone.png' %>") no-repeat center center;
+  width: 60px;
+  height: 48px;
+}
+
+.assignments-dialog-pane .assignment_wood{
+  background:url("<%= asset_path 'dialogs/items/grey/item_wood_grey/item_wood_grey@2x~iphone.png' %>") no-repeat center center;
+  width: 64px;
+  height: 48px;
+}
+
+.assignments-dialog-pane .assignment_fur{
+  background:url("<%= asset_path 'dialogs/items/grey/item_fur_grey/item_fur_grey@2x~iphone.png' %>") no-repeat center center;
+  width: 60px;
+  height: 68px;
+}
+
+.assignments-dialog-pane .assignment_barroombrawl{
+  background:url("<%= asset_path 'dialogs/items/grey/item_warrior_grey/item_warrior_grey@2x~iphone.png' %>") no-repeat right bottom;;
+  width: 88px;
+  height: 92px;
+}
+
+.assignments-dialog-pane .assignment_raid{
+  background:url("<%= asset_path 'dialogs/items/grey/item_clubman_grey/item_clubman_grey@2x~iphone.png' %>") no-repeat right bottom;;
+  width: 88px;
+  height: 92px;
+}
+
+.assignments-dialog-pane .assignment_mushrooms{
+  background:url("<%= asset_path 'dialogs/items/grey/item_wood_toad_grey/item_wood_toad_grey@2x~iphone.png' %>") no-repeat center center;
+  width: 60px;
+  height: 64px;
+}
+
+.assignments-dialog-pane .assignment_hunt{
+  background:url("<%= asset_path 'dialogs/items/grey/item_dinosaur_grey/item_dinosaur_grey@2x~iphone.png' %>") no-repeat right bottom;
+  width: 88px;
+  height: 92px;
+}
+
+.assignments-dialog-pane .assignment_fishing{
+  background:url("<%= asset_path 'dialogs/items/grey/item_stone_toad_grey/item_stone_toad_grey@2x~iphone.png' %>") no-repeat center center;
+  width: 68px;
+  height: 56px;
+}
+
+.assignments-dialog-pane .assignment_caravan{
+  background:url("<%= asset_path 'dialogs/items/grey/item_stonecart_grey/item_stonecart_grey@2x~iphone.png' %>") no-repeat center center;
+  width: 88px;
+  height: 56px;
+}
+
+.assignments-dialog-pane .assignment_expedition{
+  background:url("<%= asset_path 'dialogs/items/grey/item_clubs_grey/item_clubs_grey@2x~iphone.png' %>") no-repeat center center;
+  width: 68px;
+  height: 64px;
+}
+
+.assignments-dialog-pane .assignment_stone.is-active{
+  background:url("<%= asset_path 'dialogs/items/normal/item_stone_big/item_stone_big@2x~iphone.png' %>") no-repeat center center;
+  width: 60px;
+  height: 48px;
+}
+
+.assignments-dialog-pane .assignment_wood.is-active{
+  background:url("<%= asset_path 'dialogs/items/normal/item_wood_big/item_wood_big@2x~iphone.png' %>") no-repeat center center;
+  width: 64px;
+  height: 48px;
+}
+
+.assignments-dialog-pane .assignment_fur.is-active{
+  background:url("<%= asset_path 'dialogs/items/normal/item_fur/item_fur@2x~iphone.png' %>") no-repeat center center;
+  width: 60px;
+  height: 68px;
+}
+
+.assignments-dialog-pane .assignment_barroombrawl.is-active{
+  background:url("<%= asset_path 'dialogs/items/normal/item_warrior/item_warrior@2x~iphone.png' %>") no-repeat right bottom;;
+  width: 88px;
+  height: 92px;
+}
+
+.assignments-dialog-pane .assignment_raid.is-active{
+  background:url("<%= asset_path 'dialogs/items/normal/item_clubman/item_clubman@2x~iphone.png' %>") no-repeat right bottom;;
+  width: 88px;
+  height: 92px;
+}
+
+.assignments-dialog-pane .assignment_mushrooms.is-active{
+  background:url("<%= asset_path 'dialogs/items/normal/item_wood_toad/item_wood_toad@2x~iphone.png' %>") no-repeat center center;
+  width: 60px;
+  height: 64px;
+}
+
+.assignments-dialog-pane .assignment_hunt.is-active{
+  background:url("<%= asset_path 'dialogs/items/normal/item_dinosaur/item_dinosaur@2x~iphone.png' %>") no-repeat right bottom;
+  width: 88px;
+  height: 92px;
+}
+
+.assignments-dialog-pane .assignment_fishing.is-active{
+  background:url("<%= asset_path 'dialogs/items/normal/item_stone_toad/item_stone_toad@2x~iphone.png' %>") no-repeat center center;
+  width: 68px;
+  height: 56px;
+}
+
+.assignments-dialog-pane .assignment_caravan.is-active{
+  background:url("<%= asset_path 'dialogs/items/normal/item_stonecart/item_stonecart@2x~iphone.png' %>") no-repeat center center;
+  width: 88px;
+  height: 56px;
+}
+
+.assignments-dialog-pane .assignment_expedition.is-active{
+  background:url("<%= asset_path 'dialogs/items/normal/item_clubs/item_clubs@2x~iphone.png' %>") no-repeat center center;;
+  width: 68px;
+  height: 64px;
+}
+
+
+.assignments-dialog-pane .item{
+  background:url("<%= asset_path 'dialogs/backgrounds/background_item_grey/background_item_grey@2x~iphone.png' %>") no-repeat center center;
+  width: 88px;
+  height: 92px;
+}
+
+.assignments-dialog-pane .item.is-active{
+  background:url("<%= asset_path 'dialogs/backgrounds/background_item_blue/background_item_blue@2x~iphone.png' %>") no-repeat center center;
+}
+
+.assignments-dialog-pane .assigment-item-wrapper{
+  display: table-cell;
+  width: 88px;
+  height: 92px;
+  top: -36px;
+  vertical-align: middle;
+  position: relative;
+}
+
+.assignments-dialog-pane .info{
+  background:url("<%= asset_path 'ui/Info_Box@2x~iPhone.png' %>") no-repeat center center;
+  width: 28px;
+  height: 36px;
+  position: relative;
+  top: -10px;
+  left: -10px;
+  color: #fff;
+  text-align: center;
+  line-height: 36px;
+  font-size: 24px;
+  font-family: "Freckle Face";
+  visibility:hidden;
+}
+
+.assignments-dialog-pane .info.is-active{
+  visibility: visible;
+}
+
+.assignments-dialog-pane .progress{
+  background:url("<%= asset_path 'dialogs/progressbars/progress_item_grey/progress_item_grey@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 52px;
+  position: relative;
+  top: -53px;
+  left: -10px;
+  z-index: -5;
+}
+
+.assignments-dialog-pane .progress-bar{
+  background:url("<%= asset_path 'dialogs/progressbars/progress_item_blue/progress_item_blue@2x~iphone.png' %>") no-repeat center center;
+  height: 52px;
+}
+
+.assignments-dialog-pane .progress-text{
+  width: 108px;
+  height: 52px;
+  position: relative;
+  top: -52px;
+  text-align: center;
+  line-height: 52px;
+  color: #FFF;
+}
+
+.assignments-dialog-pane .cell-20{
+  float:left;
 }
 
 .modal-dialog-pane .icon-button, .modal-dialog-pane .button {
