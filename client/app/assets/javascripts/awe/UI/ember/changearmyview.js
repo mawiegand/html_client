@@ -17,36 +17,27 @@ AWE.UI.Ember = (function(module) {
 	otherArmy: null,
   });
   
-  module.ArmyNewCreateDialog = module.PopUpDialog.extend({
+ /* module.ArmyNewCreateDialog = module.PopUpDialog.extend({
     templateName: 'army-new-create-dialog',
     
     locationId: null,
     garrisonArmy: null,
 	otherArmy: null,
-  });
+  });*/
   
   
   module.ArmyAbstractView  = Ember.View.extend ({
-  });
   
-  module.ArmyCreateView    = module.ArmyAbstractView.extend({
-  });
-  
-
-  module.ArmyNewChangeView = module.ArmyAbstractView.extend ({
-    templateName: 'army-new-change-content-view',
-
-    unitTypesChange: null,
-    garrisonArmy: null,
-    otherArmy: null,
     locationId: null,
+    garrisonArmy: null,
     
-	garrisonArmyObserver: function() {
+    garrisonArmyObserver: function() {
       if (this.get('garrisonArmy')) {
         AWE.GS.ArmyManager.updateArmy(this.get('garrisonArmy').getId(), module.ENTITY_UPDATE_TYPE_FULL);
       }
     }.observes('garrisonArmy'),
 
+    unitTypesChange: null,
 
     garrisonSum: function(){
       var sum = 0;
@@ -108,6 +99,14 @@ AWE.UI.Ember = (function(module) {
       this._super();      
     },
     
+  
+  
+  });
+  
+  module.ArmyNewChangeView = module.ArmyAbstractView.extend ({
+    templateName: 'army-new-change-content-view',
+	
+	garrisonArmy: null,
     otherArmy: null,
     otherArmyObserver: function() {
       if (this.get('otherArmy')) {
@@ -157,8 +156,81 @@ AWE.UI.Ember = (function(module) {
       log('ERROR Action not connected: changeWasPressed.');
     },
   
-     
-  });
+});
+  
+ /* module.ArmyNewCreateView = module.ArmyAbstractView.extend({
+  
+  templateName: 'army-new-create-content-view'',
+    
+    init: function() {
+      var self = this;
+      this._super();
+      this.set('loadingSettlement', true);
+      AWE.GS.SettlementManager.updateSettlementsAtLocation(this.get('locationId'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlements) {
+        self.set('loadingSettlement', false);
+      });
+    },
+    
+    loadingSettlement: false,
+      
+    settlement: function() {
+      return AWE.GS.SettlementManager.getSettlementAtLocation(this.get('locationId'))
+    }.property('hashableSettlements.changedAt').cacheable(),
+    
+    remainingArmies: function() {
+      var commandPoints = (this.getPath('settlement.command_points') || 0);
+      var armiesCount   = (this.getPath('settlement.armies_count') || 0) - 1;    // without garrison army
+      return commandPoints > armiesCount ? commandPoints - armiesCount : 0;
+    }.property('settlement.command_points', 'settlement.armies_count').cacheable(),
+    
+    hashableSettlements: function() {
+      var locationId = this.get('locationId');
+      // log('---> hashableSettlements', AWE.GS.SettlementAccess.getHashableCollectionForLocation_id(locationId));
+      return AWE.GS.SettlementAccess.getHashableCollectionForLocation_id(locationId);
+    }.property('locationId').cacheable(),          
+
+    unitTypes: function() {
+      var list = [];
+      var details = this.getPath('garrisonArmy.details');
+      var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
+      if (details) { log('build list')
+        AWE.Ext.applyFunction(unitTypes, function(unitType) {
+          if (details[unitType.db_field] !== undefined && details[unitType.db_field] > 0) {
+            list.push(Ember.Object.create({
+              name: unitType.name,
+              symbolic_id: unitType.db_field, 
+              allUnits: details[unitType.db_field],
+              garrisonUnits: details[unitType.db_field],
+              otherUnits: 0,
+            }));
+          }
+        });
+      }
+      log("LIST", list, details);
+      return list;
+    }.property('garrisonArmy.details.@each', 'unitTypesChange').cacheable(),
+
+    unitQuantities: function() {
+      var unitQuantities = {};
+      var unitTypes = this.get('unitTypes');
+      unitTypes.forEach(function(unitType) {
+        var quantity = unitType.get('otherUnits');
+        if (quantity > 0) {
+          unitQuantities[unitType.get('symbolic_id')] = quantity; 
+        }
+      });
+      return unitQuantities;
+    },
+    
+    otherArmySizeMaxBinding: 'settlement.army_size_max',    
+    
+    armyName: '',
+    
+    createPressed: function() {
+      log('ERROR Action not connected: createWasPressed.');
+    },
+  
+  });*/
   
   return module;
     

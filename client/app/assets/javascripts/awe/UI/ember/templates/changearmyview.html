@@ -1,6 +1,6 @@
 <script type="text/x-handlebars" data-template-name="army-new-change-dialog">
   <h1>{{t army.change.header}}</h1>
-    {{garrisonArmy.owner_name}} : {{ garrisonArmy.locationId }}
+    <!--{{garrisonArmy.owner_name}} : {{ garrisonArmy.locationId }}-->
    <div class="modal-dialog-body change-army-dialog-pane no-scrolling">
    	{{view AWE.UI.Ember.ArmyNewChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" }}
    </div>
@@ -23,24 +23,19 @@
     	<p class="total-text">Total<!--{{t profile.rank.total}}--></p>
     	<p class="total-text units-text">Units<!--{{t encyclopedia.units}}--></p>
     	<p class="total-text infantry-strength-text">
-    		<!--<script id="infantry-strength" type="text/x-placeholder"></script>-->
-    		5.000
+    		{{otherArmy.unitcategory_infantry_strength}}<!--5.000-->
     	 </p>
     	 <p class="total-text cavalry-strength-text">
-    		<!--<script id="infantry-strength" type="text/x-placeholder"></script>-->
-    		1.355
+    		{{otherArmy.unitcategory_cavalry_strength}}<!--1.355-->
     	 </p>
     	 <p class="total-text archer-strength-text">
-    		<!--<script id="infantry-strength" type="text/x-placeholder"></script>-->
-    		996
+    		{{otherArmy.unitcategory_artillery_strength}}<!--996-->
     	 </p>
     	 <p class="total-text total-strength-text">
-    		<!--<script id="infantry-strength" type="text/x-placeholder"></script>-->
-    		7.351
+    		{{otherArmy.size_present}}<!--7.351-->
     	 </p>
     	 <p class="total-text units-strength-text">
-    		<!--<script id="infantry-strength" type="text/x-placeholder"></script>-->
-    		7.351/9.000
+    		{{otherArmy.size_present}}<!--7.351-->/{{otherArmy.size_max}}<!--9.000-->
     	 </p>
 </script>
      
