@@ -125,17 +125,17 @@ AWE.UI.Ember = (function(module) {
      
       this.set('tabViews', [
         { key:   "tab1",
-          title: AWE.I18n.lookupTranslation('profile.progressTab'), 
+          title: AWE.I18n.lookupTranslation('dialogs.assignments.quests'), 
           view:  AWE.UI.Ember.AssignmentsTab,
           buttonClass: "left-menu-button"
         }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
         { key:   "tab2",
-          title: AWE.I18n.lookupTranslation('profile.customizationTab'), 
+          title: AWE.I18n.lookupTranslation('dialogs.assignments.special_quests'), 
           view:  AWE.UI.Ember.AssignmentsTab,
           buttonClass: "middle-menu-button"
         },
         { key:   "tab3",
-          title: AWE.I18n.lookupTranslation('profile.optionsTab'), 
+          title: AWE.I18n.lookupTranslation('dialogs.assignments.gossip'), 
           view:  AWE.UI.Ember.AssignmentsTab,
           buttonClass: "right-menu-button"
         }

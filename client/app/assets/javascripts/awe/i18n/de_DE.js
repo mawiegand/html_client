@@ -1408,7 +1408,15 @@ AWE.I18n.de_DE = function(module) {
       manual: "Handbuch",
       logout: "Logout",
       header: "Menu",
-    },    
+    },
+
+    dialogs:{
+      assignments: {
+        quests: "Aufträge",
+        special_quests: "Spezialaufträge",
+        gossip: "Gerüchte"
+      }
+    },
   }
   
   return module;

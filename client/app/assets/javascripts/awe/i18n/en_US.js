@@ -1385,7 +1385,15 @@ AWE.I18n.en_US = function(module) {
       manual: "Manual",
       logout: "Log out",
       header: "Menu",
-    }, 
+    },
+
+    dialogs:{
+      assignments: {
+        quests: "Quests",
+        special_quests: "Special Quests",
+        gossip: "Gossip"
+      }
+    },
   };
   
   return module;
