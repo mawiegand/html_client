@@ -158,6 +158,44 @@ AWE.UI.Ember = (function(module) {
   
 });
   
+  module.ArmyChangeTabView = module.TabViewNew.extend({
+
+   init: function() {
+
+     this.set('tabViews', [
+       { key:   "tab1",
+         title: "TestTab1", 
+         view:  module.ArmyChangeInfantryView
+       }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
+       { key:   "tab2",
+         title: "TestTab2", 
+         view:  module.ArmyChangeArtilleryView
+       },
+       { key:   "tab3",
+         title: "TestTab3", 
+         view: module.ArmyChangeCavalryView 
+       }
+     ]);
+
+     this._super();
+   },
+ });
+ 
+   module.ArmyChangeInfantryView  = Ember.View.extend ({
+   
+   		templateName: 'army-new-change-tab1-view',
+   });
+   
+   module.ArmyChangeArtilleryView  = Ember.View.extend ({
+   
+   		templateName: 'army-new-change-tab2-view',
+   });
+   
+   module.ArmyChangeCavalryView  = Ember.View.extend ({
+   
+   		templateName: 'army-new-change-tab3-view',
+   });
+ 
  /* module.ArmyNewCreateView = module.ArmyAbstractView.extend({
   
   templateName: 'army-new-create-content-view'',

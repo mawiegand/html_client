@@ -9,7 +9,6 @@
    
    
 <script type="text/x-handlebars" data-template-name="army-new-change-content-view">   
-        <p><b>Test: {{ garrisonArmy.owner_name }}</b></p>
 		<div class="modal-dialog-blue-button-small modal-dialog-green-button-small-right">
 			<div class="modal-dialog-green-button-small-text">{{t army.change.header}}
 			</div>
@@ -37,7 +36,19 @@
     	 <p class="total-text units-strength-text">
     		{{otherArmy.size_present}}<!--7.351-->/{{otherArmy.size_max}}<!--9.000-->
     	 </p>
+    	 
+    	  {{view AWE.UI.Ember.ArmyChangeTabView}}
 </script>
-     
-    
+
+<script type="text/x-handlebars" data-template-name="army-new-change-tab1-view">   
+     <p><b>Test: Tab1 View</b></p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-new-change-tab2-view">   
+     <p><b>Test: Tab2 View</b></p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-new-change-tab3-view">   
+     <p><b>Test: Tab3 View</b></p>
+</script>
 
