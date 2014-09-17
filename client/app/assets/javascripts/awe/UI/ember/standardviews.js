@@ -354,6 +354,32 @@ AWE.UI.Ember = (function(module) {
   module.TabViewNew = module.TabView.extend({
     templateName: 'tab-view-new',
     classNames:   'tab-view-new',
+
+    cellClass: function(){
+      return "cell-" + Math.round(100 / this.get("tabViews").length);
+    }.property("tabViews"),
+  });
+
+  module.TabButtonView = Ember.View.extend({
+    tagName:    'li',
+    classNames: ['tab-button-view'],
+    classNameBindings: ['current', "buttonClass"],
+    key:        null,
+    buttonClass:  null,
+    
+    click: function() {
+      this.get('parentView').selectTabByKey(this.get('key'));
+    },
+ 
+    current: function() {
+      return this.get('key') === this.getPath('parentView.presentTab.key');
+    }.property('key', 'parentView.presentTab.key'),
+    
+  });
+
+  module.TabButtonViewNew = module.TabButtonView.extend({
+    tagName: "div",
+    classNames: ["tab-button-view-new"]
   });
 
   return module;

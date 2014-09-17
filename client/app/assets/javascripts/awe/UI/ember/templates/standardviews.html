@@ -14,11 +14,14 @@
 
 <script type="text/x-handlebars" data-template-name="tab-view-new">
   
-  <ul class="tab-bar-new">
-    {{#each tabViews}}
-      {{#view AWE.UI.Ember.TabButtonView keyBinding="key" titleBinding="title" }}{{title}}{{/view}}
+  <div class="tab-bar-new">
+    {{#each tab in tabViews}}
+      <div {{bindAttr class=":cell view.cellClass"}}>
+        {{#view AWE.UI.Ember.TabButtonViewNew keyBinding="tab.key" titleBinding="tab.title" buttonClassBinding="tab.buttonClass"}}{{tab.title}}{{/view}}
+      </div>
     {{/each}}
-  </ul>  
+    <div class="clearfix"></div>
+  </div>  
     
   {{view Ember.ContainerView currentViewBinding="currentView"}}
 </script>

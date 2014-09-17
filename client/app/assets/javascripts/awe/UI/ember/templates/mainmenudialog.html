@@ -3,45 +3,47 @@
 <div class="modal-dialog-body menu-dialog-pane no-scrolling">
   <div class="row row1">
     <div class="cell">
-      <div class="main-menu-button no-selection">
         <a {{bindAttr href="AWE.Config.EXTERNAL_FACEBOOK_URL"}} target="_blank">
-          Facebook
+          <div class="main-menu-button no-selection">
+              Facebook
+          </div>
         </a>
-      </div>
     </div>
   </div>
   <div class="row row2">
     <div class="cell">
-      <div class="main-menu-button no-selection">
-        <a {{bindAttr href="AWE.Config.EXTERNAL_FORUM_URL"}} target="_blank">
-          Forum
-        </a>
-      </div>
+      <a {{bindAttr href="AWE.Config.EXTERNAL_FORUM_URL"}} target="_blank">
+        <div class="main-menu-button no-selection">
+            Forum
+        </div>
+      </a>
     </div>
   </div>
   <div class="row row3">
     <div class="cell">
-      <div class="main-menu-button no-selection">
-        <a {{bindAttr href="AWE.Config.EXTERNAL_MANUAL_URL"}} target="_blank">
-          {{t menu.manual}}
-        </a>
-      </div>
+      <a {{bindAttr href="AWE.Config.EXTERNAL_MANUAL_URL"}} target="_blank">
+        <div class="main-menu-button no-selection">
+            {{t menu.manual}}
+        </div>
+      </a>
     </div>
   </div>
   <div class="row row4">
     <div class="cell">
-      <div class="main-menu-button no-selection">
-        <a href="#" onClick="WACKADOO.openEncyclopedia()">{{t encyclopedia.encyclopedia}}</a> 
-      </div>
+        <a href="#" onClick="WACKADOO.openEncyclopedia()">
+          <div class="main-menu-button no-selection">
+            {{t encyclopedia.encyclopedia}}
+          </div>
+        </a> 
     </div>
   </div>
   <div class="row row5">
     <div class="cell">
-      <div class="main-menu-button no-selection">
-        <a href="#" onClick="window.location.reload()">
-        {{t menu.logout}}
-        </a>        
-      </div>
+      <a href="#" onClick="window.location.reload()">
+        <div class="main-menu-button no-selection">
+          {{t menu.logout}}
+        </div>
+      </a>        
     </div>
   </div>
 </div>
