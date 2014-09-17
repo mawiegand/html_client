@@ -25,59 +25,6 @@ AWE.UI.Ember = (function(module) {
     }.property('key', 'parentView.presentTab.key'),
     
   });
-
-  module.TabView = Ember.View.extend({
-    templateName: 'tab-view',
-    classNames:   'tab-view',
-
-    tabViews:      null,
-    currentView:   null,
-    presentTab:    null,
-
-    tabContentClass: function() {
-      if (AWE.Facebook.isRunningInCanvas) {
-        return 'tab-content tab-content-scrollable';
-      }
-      else {
-        return 'tab-content';
-      }
-    }.property(),
-    
-    
-    init: function() {
-      var tabViews = this.get('tabViews');
-      this.selectTabByNumber(0);
-      this._super();
-    },
-    
-    selectTabByKey: function(key) {
-      var tabViews = this.get('tabViews');
-      var tab = tabViews ? tabViews.findProperty('key', key) : null;
-      if (tab) {
-        this.setTab(tab);
-      }
-    },
-
-    selectTabByNumber: function(n) {
-      var tabViews = this.get('tabViews');
-      if (tabViews && tabViews.length > n) {
-        this.setTab(tabViews[n]);
-      };
-    },
-    
-    setTab: function(tab) {
-      var presentTab = this.get('presentTab');
-      var oldView    = this.get('currentView');
-      if (presentTab !== tab) {
-        this.set('presentTab',  tab);
-        this.set('currentView', tab.view.create());
-        if (oldView) {
-          oldView.destroy();
-        }
-      }
-    },
-    
-  });
   
   module.ProfileTabView = module.TabView.extend({
     
