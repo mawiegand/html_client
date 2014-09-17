@@ -1,4 +1,27 @@
+<script type="text/x-handlebars" data-template-name="tab-view">
+  
+  <ul class="tab-bar">
+    {{#each tabViews}}
+      {{#view AWE.UI.Ember.TabButtonView keyBinding="key" titleBinding="title" }}{{title}}{{/view}}
+    {{/each}}
+  </ul>  
+    
+  <div {{bindAttr class="tabContentClass"}}>
+    {{view Ember.ContainerView currentViewBinding="currentView"}}
+  </div>
 
+</script>
+
+<script type="text/x-handlebars" data-template-name="tab-view-new">
+  
+  <ul class="tab-bar-new">
+    {{#each tabViews}}
+      {{#view AWE.UI.Ember.TabButtonView keyBinding="key" titleBinding="title" }}{{title}}{{/view}}
+    {{/each}}
+  </ul>  
+    
+  {{view Ember.ContainerView currentViewBinding="currentView"}}
+</script>
 
 
 <script type="text/x-handlebars" data-template-name="linked-character-spinning-view">
