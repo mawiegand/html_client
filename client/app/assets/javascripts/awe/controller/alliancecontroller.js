@@ -132,7 +132,7 @@ AWE.Controller = (function(module) {
         return null;
       }
 
-      allianceScreen = AWE.UI.Ember.AllianceScreenView.create({
+      allianceScreen = AWE.UI.Ember.AllianceView.create({
         controller: this,
         alliance:   alliance,
       });

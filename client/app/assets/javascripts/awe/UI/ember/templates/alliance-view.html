@@ -1,21 +1,35 @@
 <script type="text/x-handlebars" data-template-name="alliance-view">
-	<h1>Allianceview</h1>
-	<div class="alliance-banner">
-    	
-  	</div>
-  	<div class="alliance-information">
-  		<h2>Allianzname</h2>
-  		<h3>Invitelink:</h3>
-  		<a href="#">httPARDY HARD</a>
+<h1>Alliance</h1>
+    <div class="alliance-container">
+        {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner"}}
 
-  		<h3>Slogan:</h3>
-  		<input type="text" />
+        {{#if ownAlliance}}
+        <div class="alliance-about">
+            <h3>{{alliance.name}}</h3>
+            <div class="alliance-information">
+                <h4>Invitelink:</h4>
+                <div class="alliance-invite-link"{{action invitationLinkPressed}}>{{ unbound AWE.Config.ALLIANCE_INVITATION_BASE }}{{ unbound alliance.invitation_code }}</div>
+            </div>
+            {{#if isAllianceLeader}}
+            <div class="alliance-management">
+                <div class="alliance-slogan">
+                    <h4>Slogan:</h4>
+                    <input type="text" />
+                </div>
 
-  		<h3>Aufnahme:</h3>
-  		<div class="status-toggle">
-  		</div>
-  	</div>
-  	<div class="alliance-text">
-  	Dis hir some alliance täxt
-  	</div>
+                <div class="alliance-accept">
+                    <h4>Aufnahme:</h4>
+                    <div class="alliance-status-toggle">
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+        </div>
+        {{/if}}
+        <div class="alliance-text">
+            My money's in that office, right? If she start giving me some bullshit about 
+            it ain't there
+        </div>
+    </div>
+
 </script>
