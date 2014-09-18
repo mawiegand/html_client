@@ -19,6 +19,8 @@
 
         alliance: null,
 
+        password: null,
+
 
     isAllianceLeader: function() {
         var leaderId = this.getPath('alliance.leader_id');
@@ -37,37 +39,15 @@
       return currentCharacter.get('alliance_id') !== this.get('alliance').getId();
     }.property('alliance', 'AWE.GS.game.currentCharacter.alliance_id').cacheable(),
 
+    invitationLinkPressed: function() {
+      
+      console.log(this.getPath('alliance'));
+    },
     open: function() {
       WACKADOO.presentModalDialog(this);
     }
 
 });
-
-module.AllianceMemberView = module.PopUpDialog.extend({
-    templateName: 'alliance-member',
-
-    character:  null,
-    alliance:   null,
-    controller: null,
-
-    isLeader: function() {
-      var cid      = this.getPath('character.id');
-      var leaderId = this.getPath('alliance.leader_id');
-      return cid !== undefined && cid !== null && cid === leaderId;
-  }.property('character.id', 'alliance.leader_id'),
-
-  kickMember: function() {
-      var parentView = this.get('parentView');
-      if (parentView) {
-        parentView.kickMember(this.get('character'));
-    }
-          return false; //prevent default action!
-      },
-
-      open: function() {
-          WACKADOO.presentModalDialog(this);
-      }
-  });
 return module;
 
 }(AWE.UI.Ember || {}));

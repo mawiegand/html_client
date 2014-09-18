@@ -1,5 +1,6 @@
 <script type="text/x-handlebars" data-template-name="alliance-view">
 <h1>Alliance</h1>
+{{view AWE.UI.Ember.AssignmentTabView characterBinding="character" allianceBinding="alliance" }}
     <div class="alliance-container">
         {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner"}}
 
@@ -8,18 +9,19 @@
             <h3>{{alliance.name}}</h3>
             <div class="alliance-information">
                 <h4>Invitelink:</h4>
-                <div class="alliance-invite-link"{{action invitationLinkPressed}}>{{ unbound AWE.Config.ALLIANCE_INVITATION_BASE }}{{ unbound alliance.invitation_code }}</div>
+                <div class="alliance-invite-link">
+                {{ unbound AWE.Config.ALLIANCE_INVITATION_BASE }}{{ unbound alliance.invitation_code }}</div>
             </div>
             {{#if isAllianceLeader}}
             <div class="alliance-management">
                 <div class="alliance-slogan">
                     <h4>Slogan:</h4>
-                    <input type="text" />
+                    <input type="text" value={{unbound alliance.password}} />
                 </div>
 
                 <div class="alliance-accept">
                     <h4>Aufnahme:</h4>
-                    <div class="alliance-status-toggle">
+                    <div class="alliance-status-toggle" {{action "setAutoJoin"}}>
                     </div>
                 </div>
             </div>
