@@ -131,9 +131,10 @@ AWE.UI.Ember = (function(module) {
               allUnits: garrisonDetails[unitType.db_field] + otherDetails[unitType.db_field],
               garrisonUnits: garrisonDetails[unitType.db_field],
               otherUnits: otherDetails[unitType.db_field],
+              unitCategory: unitType.category,
             }));
           }
-        });
+    	 });
       }
       // log("LIST", list, details);
       return list;
@@ -160,20 +161,27 @@ AWE.UI.Ember = (function(module) {
   
   module.ArmyChangeTabView = module.TabViewNew.extend({
 
-   init: function() {
+    locationId: null,
+    garrisonArmy: null,
+	  otherArmy: null,
+	  unitTypes: null,
+    init: function() {
 
      this.set('tabViews', [
        { key:   "tab1",
-         title: "TestTab1", 
-         view:  module.ArmyChangeInfantryView
+         title: "Infantry", 
+         view:  module.ArmyChangeInfantryView,
+         buttonClass: "left-menu-button"
        }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
        { key:   "tab2",
-         title: "TestTab2", 
-         view:  module.ArmyChangeArtilleryView
+         title: "Artillery", 
+         view:  module.ArmyChangeArtilleryView,
+         buttonClass: "middle-menu-button"
        },
        { key:   "tab3",
-         title: "TestTab3", 
-         view: module.ArmyChangeCavalryView 
+         title: "Cavelery", 
+         view: module.ArmyChangeCavalryView,
+         buttonClass: "right-menu-button"
        }
      ]);
 
@@ -181,94 +189,60 @@ AWE.UI.Ember = (function(module) {
    },
  });
  
+
+module.ArmyRangeView  = Ember.View.extend ({  
+    //templateName: 'army-range-view',
+    unitType: null,
+
+});
+
    module.ArmyChangeInfantryView  = Ember.View.extend ({
    
-   		templateName: 'army-new-change-tab1-view',
+   	templateName: 'army-new-change-tab1-view',
+   	
+    garrisonArmyBinding: "parentView.parentView.garrisonArmy",
+    otherArmyArmyBinding: "parentView.parentView.otherArmy",
+    locationIdBinding: "parentView.parentView.locationId",
+    unitTypesBinding: "parentView.parentView.unitTypes",
+
+     //infantry
+    unityTypeID: 0,
+    
+   	activeArmyTypen: function()
+   	{
+   		var list = [];
+   		var unitTypes = this.get('unitTypes');
+   		var self = this;
+   		
+   		unitTypes.forEach(function(unitType) {
+   			if(unitType.garrisonUnits > 0 || unitType.otherUnits > 0)
+   			{
+   			//infantry
+   				if(unitType.unitCategory == self.get("unityTypeID"))
+   					list.push(unitType);
+   			}
+        /*var difference = unitType.get('otherUnits') - otherDetails[unitType.get('symbolic_id')];
+        if (difference != 0) {
+          unitDifferences[unitType.get('symbolic_id')] = difference; 
+        }
+      */});
+      
+      	return list;
+     	//return this.get('unitTypes');//[this.get('garrisonArmyBinding.owner_name'), "ArmyType2", "ArmyType3", "ArmyType4"];
+   		}.property('garrisonArmy.details.@each', 'otherArmy.details.@each', 'unitTypesChange').cacheable(),
    });
    
-   module.ArmyChangeArtilleryView  = Ember.View.extend ({
+   module.ArmyChangeArtilleryView  = module.ArmyChangeInfantryView.extend ({
    
    		templateName: 'army-new-change-tab2-view',
+   		unityTypeID: 2,
    });
    
-   module.ArmyChangeCavalryView  = Ember.View.extend ({
+   module.ArmyChangeCavalryView  = module.ArmyChangeInfantryView.extend ({
    
    		templateName: 'army-new-change-tab3-view',
+   		unityTypeID: 1,
    });
- 
- /* module.ArmyNewCreateView = module.ArmyAbstractView.extend({
-  
-  templateName: 'army-new-create-content-view'',
-    
-    init: function() {
-      var self = this;
-      this._super();
-      this.set('loadingSettlement', true);
-      AWE.GS.SettlementManager.updateSettlementsAtLocation(this.get('locationId'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlements) {
-        self.set('loadingSettlement', false);
-      });
-    },
-    
-    loadingSettlement: false,
-      
-    settlement: function() {
-      return AWE.GS.SettlementManager.getSettlementAtLocation(this.get('locationId'))
-    }.property('hashableSettlements.changedAt').cacheable(),
-    
-    remainingArmies: function() {
-      var commandPoints = (this.getPath('settlement.command_points') || 0);
-      var armiesCount   = (this.getPath('settlement.armies_count') || 0) - 1;    // without garrison army
-      return commandPoints > armiesCount ? commandPoints - armiesCount : 0;
-    }.property('settlement.command_points', 'settlement.armies_count').cacheable(),
-    
-    hashableSettlements: function() {
-      var locationId = this.get('locationId');
-      // log('---> hashableSettlements', AWE.GS.SettlementAccess.getHashableCollectionForLocation_id(locationId));
-      return AWE.GS.SettlementAccess.getHashableCollectionForLocation_id(locationId);
-    }.property('locationId').cacheable(),          
-
-    unitTypes: function() {
-      var list = [];
-      var details = this.getPath('garrisonArmy.details');
-      var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
-      if (details) { log('build list')
-        AWE.Ext.applyFunction(unitTypes, function(unitType) {
-          if (details[unitType.db_field] !== undefined && details[unitType.db_field] > 0) {
-            list.push(Ember.Object.create({
-              name: unitType.name,
-              symbolic_id: unitType.db_field, 
-              allUnits: details[unitType.db_field],
-              garrisonUnits: details[unitType.db_field],
-              otherUnits: 0,
-            }));
-          }
-        });
-      }
-      log("LIST", list, details);
-      return list;
-    }.property('garrisonArmy.details.@each', 'unitTypesChange').cacheable(),
-
-    unitQuantities: function() {
-      var unitQuantities = {};
-      var unitTypes = this.get('unitTypes');
-      unitTypes.forEach(function(unitType) {
-        var quantity = unitType.get('otherUnits');
-        if (quantity > 0) {
-          unitQuantities[unitType.get('symbolic_id')] = quantity; 
-        }
-      });
-      return unitQuantities;
-    },
-    
-    otherArmySizeMaxBinding: 'settlement.army_size_max',    
-    
-    armyName: '',
-    
-    createPressed: function() {
-      log('ERROR Action not connected: createWasPressed.');
-    },
-  
-  });*/
   
   return module;
     

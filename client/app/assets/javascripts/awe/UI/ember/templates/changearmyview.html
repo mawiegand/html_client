@@ -1,7 +1,7 @@
 <script type="text/x-handlebars" data-template-name="army-new-change-dialog">
   <h1>{{t army.change.header}}</h1>
     <!--{{garrisonArmy.owner_name}} : {{ garrisonArmy.locationId }}-->
-   <div class="modal-dialog-body change-army-dialog-pane no-scrolling">
+   <div class="modal-dialog-body change-army-dialog-pane scrolling">
    	{{view AWE.UI.Ember.ArmyNewChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" }}
    </div>
 </script>
@@ -37,18 +37,48 @@
     		{{otherArmy.size_present}}<!--7.351-->/{{otherArmy.size_max}}<!--9.000-->
     	 </p>
     	 
-    	  {{view AWE.UI.Ember.ArmyChangeTabView}}
+    	 <div class="army-tab-view">
+    	 	{{view AWE.UI.Ember.ArmyChangeTabView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes"}}
+    	</div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="army-new-change-tab1-view">   
-     <p><b>Test: Tab1 View</b></p>
+     {{#each armyType in activeArmyTypen}}
+
+{{#view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType" }}
+         Test Range!!!{{unitType.symbolic_id}}
+        {{/view }}
+
+     <div class="army-type-cell">
+     	<div {{bindAttr class="armyType.symbolic_id :cell-icon"}}> </div>
+     	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
+     	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
+     </div>
+     {{/each}}
+
 </script>
 
 <script type="text/x-handlebars" data-template-name="army-new-change-tab2-view">   
-     <p><b>Test: Tab2 View</b></p>
+     {{#each armyType in activeArmyTypen}}
+     <div class="army-type-cell">
+     
+     	<div {{bindAttr class="armyType.symbolic_id :cell-icon"}}> </div>
+     	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
+     	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
+     	<!--Test!!!            {{armyType.otherUnits}}   {{armyType.name.en_US}} {{armyType.unitCategory}}-->
+     </div>
+     {{/each}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="army-new-change-tab3-view">   
-     <p><b>Test: Tab3 View</b></p>
+     {{#each armyType in activeArmyTypen}}
+     <div class="army-type-cell">
+     
+     	<div {{bindAttr class="armyType.symbolic_id :cell-icon"}}> </div>
+     	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
+     	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
+     	<!--Test!!!            {{armyType.otherUnits}}   {{armyType.name.en_US}} {{armyType.unitCategory}}-->
+     </div>
+     {{/each}}
 </script>
 
