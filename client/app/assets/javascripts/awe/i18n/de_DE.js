@@ -1415,7 +1415,12 @@ AWE.I18n.de_DE = function(module) {
         quests: "Aufträge",
         special_quests: "Spezialaufträge",
         gossip: "Gerüchte"
-      }
+      },
+      move:{
+        heading: "Umziehen",
+        description: "Hier steht wie man umziehen kann.",
+        to: "nach"
+      },
     },
   }
   

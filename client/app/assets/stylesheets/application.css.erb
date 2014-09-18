@@ -594,6 +594,7 @@ h3 {
   width: 100%; 
   z-index:256; 
   overflow: hidden;
+  left:0;
 }
 
 .modal-dialog-pane { 
@@ -633,6 +634,11 @@ h3 {
   position: absolute;
   top: 52px;
   font-size: 25px;
+}
+
+.text-input-dialog-body{
+  width: 389px;
+  margin: 149px auto;
 }
 
 .modal-dialog-heading {
@@ -803,6 +809,7 @@ h3 {
 
 .modal-dialog-container{
   position: relative;
+  height: 479px;
 }
 
 .modal-dialog-pane-new h2, .modal-dialog-buttons{
@@ -981,6 +988,54 @@ h3 {
   padding-left: 83px;
 }
 
+/* == MOVE == */
+
+.move-button{
+  background:url("<%= asset_path 'dialogs/buttons/button_green_middle/button_green_middle@2x~iphone.png' %>") no-repeat center center;
+  width: 180px;
+  height: 52px;
+  color: #FFF;
+  text-align: center;
+}
+
+.moving-dialog .footer-wrapper{
+  position: absolute;
+  bottom: 0;
+  text-align: right;
+  width: 100%;
+}
+
+.moving-dialog .description{
+  color: rgb(112,92,48);
+  padding: 0 20px 0 20px;
+  margin: 20px 0 0 3px;
+  font-family: "Montserrat";
+  font-weight: normal;
+  font-size: 23px;
+}
+
+.moving-dialog .button-wrapper{
+  position: absolute;
+  bottom: 56px;
+  right: 50px;
+}
+
+.moving-dialog input[type="text"] {
+  width: 355px!important;
+  margin-right: 0px!important;
+  border: 0!important;
+  border-radius: 0!important;
+  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  padding: 2px!important;
+  margin-left: 13px!important;
+}
+
+.moving-dialog .input-wrapper{
+  position: absolute;
+  right: 50px;
+  bottom: 142px;
+}
+
 /* == RESOURCE INFO == */
 
 .stone-big {
@@ -1029,7 +1084,7 @@ h3 {
 .menu-dialog-pane .main-menu-button {
   width: 480px;
   height: 64px;
-  background:url("<%= asset_path 'ui/button_menu_blue@2x~iPhone.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'dialogs/buttons/button_menu_blue@2x~iPhone.png' %>") no-repeat center center;
   color: rgb(256,256,256);
   text-align: center;
   margin: auto;
@@ -1038,7 +1093,7 @@ h3 {
 }
 
 .menu-dialog-pane .main-menu-button:hover {
-  background:url("<%= asset_path 'ui/button_menu_blue_up@2x~iPhone.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'dialogs/buttons/button_menu_blue_up@2x~iPhone.png' %>") no-repeat center center;
   cursor: pointer;
 }
 
