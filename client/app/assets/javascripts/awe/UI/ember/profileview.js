@@ -680,7 +680,7 @@ AWE.UI.Ember = (function(module) {
 
     presentRegionNotFoundMessage: function(){
       this.set('moving', false);
-      var dialog = AWE.UI.Ember.PopUpDialog.create({
+      var dialog = AWE.UI.Ember.InfoDialog.create({
         heading: AWE.I18n.lookupTranslation('profile.moving.movingNoTargetFoundHeading'),
         message: AWE.I18n.lookupTranslation('profile.moving.movingNoTargetFoundMessage'),
       });
