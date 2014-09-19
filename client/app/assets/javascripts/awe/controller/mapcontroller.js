@@ -1254,7 +1254,6 @@ AWE.Controller = function (module) {
 
 
     that.changeArmyButtonClicked = function (army) {
-    alert("Hello Army  click!!!!" + army.getPath('owner_name'));
       if (!army) return;
 
       var location = army.get('location');

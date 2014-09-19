@@ -1078,7 +1078,16 @@ h3 {
   margin: 0;
   text-align: right;
 }
+
 /* == CHANGE ARMY == */
+
+.army-type-range
+{
+  position: absolute;
+  left: 220px;
+  width: 250px;
+  height: 74px;
+}
 
 /*== Infantry==*/
 .cell-icon.unit_warrior
@@ -1224,6 +1233,7 @@ h3 {
 	font-family: 'hvd_comic_serif_proregular', 'cursive';
 	width: 180px;
 	height: 52px;
+  cursor: pointer;
 }
 
 .modal-dialog-green-button-small-text
@@ -1235,6 +1245,9 @@ h3 {
   	top: 10px;
   	bottom: 0;
 	
+}
+.modal-dialog-green-button-small-right:hover {
+ background: url('<%= asset_path("ui/tab_middle_active@2x~iphone.png") %>') no-repeat;  
 }
 
 .army-icon {
