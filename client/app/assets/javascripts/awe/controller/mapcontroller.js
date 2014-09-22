@@ -1029,7 +1029,46 @@ AWE.Controller = function (module) {
         removeMarker();
       }
 
-      var dialog = AWE.UI.Ember.ArmyCreateDialog.create({
+      var dialog = AWE.UI.Ember.ArmyNewCreateDialog.create({
+        locationId: location.id(),
+        /*create*/changePressed: function (evt) {
+          if (this.get('garrisonOverfull')) {
+            var errorDialog = AWE.UI.Ember.InfoDialog.create({
+              heading:AWE.I18n.lookupTranslation('army.form.errors.garrison'),
+              message:AWE.I18n.lookupTranslation('army.form.errors.message'),
+            });
+            that.applicationController.presentModalDialog(errorDialog);
+          }
+          else if (this.get('otherOverfull')) {
+            var errorDialog = AWE.UI.Ember.InfoDialog.create({
+              heading:AWE.I18n.lookupTranslation('army.form.errors.new'),
+              message:AWE.I18n.lookupTranslation('army.form.errors.message'),
+            });
+            that.applicationController.presentModalDialog(errorDialog);
+          }
+          else {
+            var unitQuantities = this.unitQuantities();
+            var armyName = this.get('armyName');
+            if (!AWE.Util.hashEmpty(unitQuantities)) {
+              //debugger
+              createArmyCreateAction(location, unitQuantities, armyName, (function (self) {
+                return function () {
+                  self.destroy();
+                }
+              })(this));
+              this.set('loading', true);
+            }
+            else {
+              this.destroy();
+            }
+          }
+        },
+        cancelPressed:function (evt) {
+          this.destroy();
+          that.updateUIMarker();
+        },
+        loading:false,
+      });/*AWE.UI.Ember.ArmyCreateDialog.create({
         locationId: location.id(),
         createPressed: function (evt) {
           if (this.get('garrisonOverfull')) {
@@ -1067,7 +1106,7 @@ AWE.Controller = function (module) {
           that.updateUIMarker();
         },
         loading:false,
-      });
+      });*/
       // garrisonArmy is set after create to trigger observer in view
       dialog.set('garrisonArmy', location.garrisonArmy()),
 

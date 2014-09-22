@@ -1,16 +1,27 @@
+<script type="text/x-handlebars" data-template-name="army-new-create-dialog">
+  <h1>{{t army.create.header}}</h1>
+   <div class="modal-dialog-body change-army-dialog-pane scrolling">
+    {{view AWE.UI.Ember.ArmyNewChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes"}}
+    {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" placeholder="New Army" classNames="army-name-field" }}
+   </div>
+</script>
+
 <script type="text/x-handlebars" data-template-name="army-new-change-dialog">
   <h1>{{t army.change.header}}</h1>
     <!--{{garrisonArmy.owner_name}} : {{ garrisonArmy.locationId }}-->
    <div class="modal-dialog-body change-army-dialog-pane scrolling">
-   	{{view AWE.UI.Ember.ArmyNewChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes"}}
+   	{{view AWE.UI.Ember.ArmyNewChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes" isCreateArmyBinding="isCreateArmy"}}
    </div>
 </script>
    
-   
-   
 <script type="text/x-handlebars" data-template-name="army-new-change-content-view">   
 		<div class="modal-dialog-blue-button-small modal-dialog-green-button-small-right">
-			<div class="modal-dialog-green-button-small-text" {{action "changePressed" target="parentView"}}>{{t army.change.header}}
+			<div class="modal-dialog-green-button-small-text" {{action "changePressed" target="parentView"}}>
+            {{#if isCreateArmy }}
+                {{t army.create.header}}
+            {{else}}
+                {{t army.change.header}}
+            {{/if}}
 		      </div>
     	</div>
     	<div class="army-icon sword-icon">
