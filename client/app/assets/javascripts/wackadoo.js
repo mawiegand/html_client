@@ -501,7 +501,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
 
     characterButtonClicked: function() {
-      var dialog = AWE.UI.Ember.ProfileView.create({
+      var dialog = AWE.UI.Ember./*ProfileView*/ProfileNewView.create({
         characterBinding: 'AWE.GS.game.currentCharacter',
       });
       this.presentModalDialog(dialog);
