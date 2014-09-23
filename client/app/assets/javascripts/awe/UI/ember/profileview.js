@@ -9,6 +9,137 @@ var AWE = AWE || {};
 AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
+//NEW DIALOGS START
+/**
+   * @class
+   *
+   * View that allows the user to edit his profile.
+   *   
+   * @name AWE.UI.Ember.ProfileView 
+   */
+  module.ProfileNewView = module.PopUpDialog.extend( /** @lends AWE.UI.Ember.ProfileView# */ {
+    templateName: 'character-new-profile-view',
+    
+    character: null,
+    alliance:  null,
+    allianceMember: null,
+
+    onClose:   null,
+    
+    // FIXME hack for users that have already changed their name before reached the appropriate quest 
+    characterObserver: function() {
+      var characterId = this.getPath('character.id') || null;
+      if (characterId && this.getPath('character.name_change_count') > 0) {
+        AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_profile');
+      }       
+    }.observes('character.id'),
+    
+    setAndUpdateAlliance: function() {
+      var allianceId = this.getPath('character.alliance_id');
+      var self = this;
+      if (!allianceId) {
+        return ;
+      }
+      var alliance = AWE.GS.AllianceManager.getAlliance(allianceId);
+      this.set('alliance', alliance);
+      AWE.GS.AllianceManager.updateAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {
+        self.set('alliance', result);
+      });
+    },     
+    
+    allianceIdObserver: function() {
+      this.setAndUpdateAlliance();
+    }.observes('character.alliance_id'),  
+    
+    closePressed: function() {
+      this.destroy();
+    },
+    
+    destroy: function() {
+      if (this.onClose) {
+        this.onClose(this);
+      }
+      this._super();      
+    },
+  });
+
+module.ProfileNewTabView = module.TabViewNew.extend({
+
+    character: null,
+    alliance:  null,
+    allianceMember: null,
+
+    init: function() {
+
+     this.set('tabViews', [
+       { key:   "tab1",
+         title: "Info", 
+         view:  module.ProfileNewInfoView.extend({ 
+            characterBinding: "parentView.parentView.character", 
+            allianceBinding:  "parentView.parentView.alliance", 
+          }),
+         buttonClass: "left-menu-button"
+       }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
+       { key:   "tab2",
+         title: "Rank", 
+         view:  module.ProfileNewRangView.extend({ 
+            characterBinding: "parentView.parentView.character", 
+            allianceBinding:  "parentView.parentView.alliance", 
+          }),
+         buttonClass: "middle-menu-button"
+       },
+       { key:   "tab3",
+         title: "Customize", 
+         view: module.ProfileNewCustomizeView.extend({ 
+            characterBinding: "parentView.parentView.character", 
+            allianceBinding:  "parentView.parentView.alliance", 
+          }),
+         buttonClass: "right-menu-button"
+       }
+     ]);
+
+     this._super();
+   },
+ });
+
+module.ProfileNewInfoView  = Ember.View.extend ({
+   
+    templateName: 'profile-info-tab1-view',
+    
+    character: null,
+    alliance:  null,
+
+    showDescription: function() {
+      return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/g, '<br />');
+    }.property('character.description'),
+
+   });
+   
+module.ProfileNewRangView  = Ember.View.extend  ({
+   
+    templateName: 'profile-rank-tab2-view',
+
+    character: null,
+    alliance:  null,
+   });
+   
+module.ProfileNewCustomizeView  = Ember.View.extend  ({
+   
+    templateName: 'profile-customize-tab3-view',
+
+    character: null,
+    alliance:  null,
+   });
+
+module.ProfileDescriptionTextfield = Ember.TextField.extend({
+    //classNames: ["create-army-dialog-name"],
+  });
+Ember.Handlebars.registerHelper('ts', function (key) {
+  return Ember.I18n.t(key);
+});
+//NEW DIALOGS END
+
+
   
   module.ProfileTabView = module.TabView.extend({
     

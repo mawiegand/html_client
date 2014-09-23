@@ -1,3 +1,100 @@
+<!-- NEW DIALOGS START-->
+
+        
+        <script type="text/x-handlebars" data-template-name="character-new-profile-view">
+           <h1 class="modal-dialog-heading">{{character.name}}</h1>
+            <div class="modal-dialog-body profile-info-self-dialog-pane scrolling">
+              <div class="profile-tab-view">
+                {{view AWE.UI.Ember.ProfileNewTabView characterBinding="character" allianceBinding="alliance" allianceMemberBinding="allianceMember" }}
+              </div>
+            </div>
+
+        <!-- DIALOG END -->
+</script>
+
+<script type="text/x-handlebars" data-template-name="profile-info-tab1-view">   
+
+        <div class="row row2">
+          <div class="cell cell-30 avatar">{{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar" width="150" height="154"}}</div>
+          <div class="cell cell-80">
+            <div class="line line1">
+              <div class="clubs">
+                <div class="clubs-icon"></div>
+                <div class="clubs-value">{{character.battle_count}}</div>
+              </div>
+              <div class="guy">
+                <div class="guy-icon"></div>
+                <div class="guy-value">{{character.score}}</div>
+              </div>
+              <div class="thing">
+                <div class="thing-icon"></div>
+                <div class="thing-value">{{character.fortress_count}}</div>
+              </div>
+            </div>
+            <div class="line line2">
+              <div class="thumb-up">
+                <div class="thumb-up-icon"></div>
+                <div class="thumb-up-value">{{character.received_likes_count}}</div>
+              </div>
+              <div class="thumb-down">
+                <div class="thumb-down-icon"></div>
+                <div class="thumb-down-value">{{character.received_dislikes_count}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row row3">
+          <div class="cell">
+            <p class="description">
+             <!-- {{t profile.customization.missingDescription}}-->
+              {{view AWE.UI.Ember.ProfileDescriptionTextfield valueBinding="character.description" placeholder="Test" classNames="description" }}
+
+           <!-- {{#if character.description}}
+                {{{ showDescription }}}
+            {{else}}
+                {{t profile.customization.missingDescription}}
+            {{/if}}--></p>
+          </div>
+        </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="profile-rank-tab2-view">   
+  <div class="row row2">
+          <div class="cell cell-50 current-rank">
+            <div class="current-rank-title">Current Rank</div>
+            <div class="current-rank-value">Altameisenanbeter</div>
+          </div>
+          <div class="cell cell-50 next-rank">
+            <div class="next-rank-title">Next Rank</div>
+            <div class="next-rank-value">Ammonitenanlocker</div>
+          </div>
+        </div>
+        <div class="row row3">
+          <div class="cell rank-background">
+            <!--<div class="rank-background"></div>-->
+            <div class="rank-bar"><div class="progress-value">70% Progress</div></div>
+          </div>
+        </div>
+        <div class="row row4">
+          <div class="cell cell-50 current-level">
+            <div class="current-level-title">Current Level:</div>
+            <div class="current-level-value">7.390</div>
+            <div class="resource-icon-xp xp"></div>
+          </div>
+          <div class="cell cell-50 next-level">
+            <div class="next-level-title">Next Level:</div>
+            <div class="next-level-value">10.000</div>
+            <div class="resource-icon-xp xp"></div>
+          </div>
+        </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="profile-customize-tab3-view">   
+
+</script>
+<!--NEW DIALOGS END-->
+
+
 <script type="text/x-handlebars" data-template-name="character-profile-view">
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="horizontal-center-helper">

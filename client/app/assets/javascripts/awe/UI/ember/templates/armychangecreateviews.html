@@ -1,0 +1,102 @@
+<script type="text/x-handlebars" data-template-name="army-new-create-dialog">
+  <h1>{{t army.create.header}}</h1>
+   <div class="modal-dialog-body change-army-dialog-pane scrolling">
+
+        {{#if remainingArmies }}
+            {{view AWE.UI.Ember.ArmyNewChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes"}}
+            {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" placeholder="New Army" classNames="create-army-dialog-name" }}
+        {{else}}
+            {{ t army.create.error }}
+        {{/if}}
+
+   </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-new-change-dialog">
+  <h1>{{t army.change.header}}</h1>
+    <!--{{garrisonArmy.owner_name}} : {{ garrisonArmy.locationId }}-->
+   <div class="modal-dialog-body change-army-dialog-pane scrolling">
+
+   	{{view AWE.UI.Ember.ArmyNewChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes" isCreateArmyBinding="isCreateArmy"}}
+
+   </div>
+</script>
+   
+<script type="text/x-handlebars" data-template-name="army-new-change-content-view">   
+		<div class="modal-dialog-blue-button-small modal-dialog-green-button-small-right">
+			<div class="modal-dialog-green-button-small-text" {{action "changePressed" target="parentView"}}>
+            {{#if isCreateArmy }}
+                {{t army.create.header}}
+            {{else}}
+                {{t army.change.header}}
+            {{/if}}
+		      </div>
+    	</div>
+    	<div class="army-icon sword-icon">
+    	</div>
+    	<div class="army-icon cavalry-icon">
+    	</div>
+    	<div class="army-icon archer-icon">
+    	</div>
+    	<p class="total-text">Total<!--{{t profile.rank.total}}--></p>
+    	<p class="total-text units-text">Units<!--{{t encyclopedia.units}}--></p>
+    	<p class="total-text infantry-strength-text">
+    		{{infatry_strength}}<!--5.000-->
+    	 </p>
+    	 <p class="total-text cavalry-strength-text">
+    		{{cavalry_strength}}<!--1.355-->
+    	 </p>
+    	 <p class="total-text archer-strength-text">
+    		{{archer_strength}}<!--996-->
+    	 </p>
+    	 <p class="total-text total-strength-text">
+    		{{total_army_strength}}<!--7.351-->
+    	 </p>
+    	 <p class="total-text units-strength-text">
+    		{{totalArmyUnits}}<!--7.351-->/{{garrisonArmy.size_max}}<!--9.000-->
+    	 </p>
+    	 
+    	 <div class="army-tab-view">
+    	 	{{view AWE.UI.Ember.ArmyChangeTabView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes"}}
+    	</div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-new-change-tab1-view">   
+     {{#each armyType in activeArmyTypen}}
+         <div class="army-type-cell" >
+                {{view AWE.UI.Ember.ArmyUnitInfoView unitTypeBinding="armyType"}}
+         	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
+         	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
+            {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType"}}
+         </div>
+     {{/each}}
+
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-new-change-tab2-view">   
+     {{#each armyType in activeArmyTypen}}
+     <div class="army-type-cell">
+     	{{view AWE.UI.Ember.ArmyUnitInfoView unitTypeBinding="armyType"}}
+     	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
+     	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
+     	 {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType"}}
+     </div>
+     {{/each}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-new-change-tab3-view">   
+     {{#each armyType in activeArmyTypen}}
+     <div class="army-type-cell">
+     	{{view AWE.UI.Ember.ArmyUnitInfoView unitTypeBinding="armyType"}}
+     	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
+     	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
+     	 {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType"}}
+     </div>
+     {{/each}}
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="unit-info-click"> 
+    <div {{bindAttr class="armyType.symbolic_id :cell-icon"}} {{action "openDialog"}}>
+    </div>
+</script>
