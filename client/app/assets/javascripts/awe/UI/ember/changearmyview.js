@@ -96,8 +96,9 @@ AWE.UI.Ember = (function(module) {
     init: function() {
       this._super();      
     },
-//Functions in parent
+    //garrison and other army types
     unitTypes: function() {
+     
       var list = [];
       var garrisonDetails = this.getPath('garrisonArmy.details');
       var otherDetails = this.getPath('otherArmy.details');
@@ -115,6 +116,7 @@ AWE.UI.Ember = (function(module) {
               otherUnits: otherDetails[unitType.db_field],
               unitCategory: unitType.category,
               unitAttack: unitType.attack,
+              unitID: unitType.id,
             }));
 
           }
@@ -191,6 +193,7 @@ AWE.UI.Ember = (function(module) {
               otherUnits: 0,
               unitCategory: unitType.category,
               unitAttack: unitType.attack,
+              unitID: unitType.id,
             }));
 
           }
@@ -223,6 +226,7 @@ AWE.UI.Ember = (function(module) {
   });
   
   module.ArmyNameTextfield = Ember.TextField.extend({
+    //classNames: ["create-army-dialog-name"],
   });
 
   module.ArmyAbstractView  = Ember.View.extend ({
@@ -350,7 +354,9 @@ module.ArmyRangeView  = Ember.TextField.extend({
 
     setNewValues: function(){
       var value = this.getPath("unitType.allUnits") - this.get("value");
+      var other = this.get("value");
       this.setPath('unitType.garrisonUnits', value);
+      this.setPath('unitType.otherUnits', other);
     }.observes("value"),
     
     allToGarrison: function(){
@@ -402,7 +408,7 @@ module.ArmyRangeView  = Ember.TextField.extend({
    		var self = this;
    		unitTypes.forEach(function(unitType) {
    			if(unitType.garrisonUnits > 0 || unitType.otherUnits > 0)
-   			{//debugger
+   			{
    			//infantry
    				if(unitType.unitCategory == self.get("unityTypeID"))
    					list.push(unitType);
@@ -423,6 +429,29 @@ module.ArmyRangeView  = Ember.TextField.extend({
    
    		templateName: 'army-new-change-tab3-view',
    		unityTypeID: 1,
+   });
+
+  //view to take click from unit icon
+   module.ArmyUnitInfoView  = Ember.View.extend ({
+      templateName: 'unit-info-click',
+      unitType: null,
+      openDialog: function()
+      {
+        var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
+        var unitTypeLocalObject = this.get("unitType");
+
+        unitTypes.forEach(function(rulesUnitType) 
+        {
+          if(rulesUnitType.id == unitTypeLocalObject.get('unitID'))//cavalery
+            {
+              var dialog = AWE.UI.Ember.EncyclopediaUnitNewView.create({unit: rulesUnitType});
+              WACKADOO.presentModalDialog(dialog);
+              return false;
+            }
+        });
+        return false; // prevent default behavior
+      },
+
    });
   
   return module;

@@ -1,8 +1,14 @@
 <script type="text/x-handlebars" data-template-name="army-new-create-dialog">
   <h1>{{t army.create.header}}</h1>
    <div class="modal-dialog-body change-army-dialog-pane scrolling">
-    {{view AWE.UI.Ember.ArmyNewChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes"}}
-    {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" placeholder="New Army" classNames="army-name-field" }}
+
+        {{#if remainingArmies }}
+            {{view AWE.UI.Ember.ArmyNewChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes"}}
+            {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" placeholder="New Army" classNames="create-army-dialog-name" }}
+        {{else}}
+            {{ t army.create.error }}
+        {{/if}}
+
    </div>
 </script>
 
@@ -10,7 +16,9 @@
   <h1>{{t army.change.header}}</h1>
     <!--{{garrisonArmy.owner_name}} : {{ garrisonArmy.locationId }}-->
    <div class="modal-dialog-body change-army-dialog-pane scrolling">
+
    	{{view AWE.UI.Ember.ArmyNewChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes" isCreateArmyBinding="isCreateArmy"}}
+
    </div>
 </script>
    
@@ -45,7 +53,7 @@
     		{{total_army_strength}}<!--7.351-->
     	 </p>
     	 <p class="total-text units-strength-text">
-    		{{totalArmyUnits}}<!--7.351-->/{{otherArmy.size_max}}<!--9.000-->
+    		{{totalArmyUnits}}<!--7.351-->/{{garrisonArmy.size_max}}<!--9.000-->
     	 </p>
     	 
     	 <div class="army-tab-view">
@@ -55,12 +63,11 @@
 
 <script type="text/x-handlebars" data-template-name="army-new-change-tab1-view">   
      {{#each armyType in activeArmyTypen}}
-         <div class="army-type-cell">
-         	<div {{bindAttr class="armyType.symbolic_id :cell-icon"}}> </div>
+         <div class="army-type-cell" >
+                {{view AWE.UI.Ember.ArmyUnitInfoView unitTypeBinding="armyType"}}
          	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
          	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
             {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType"}}
-
          </div>
      {{/each}}
 
@@ -69,8 +76,7 @@
 <script type="text/x-handlebars" data-template-name="army-new-change-tab2-view">   
      {{#each armyType in activeArmyTypen}}
      <div class="army-type-cell">
-     
-     	<div {{bindAttr class="armyType.symbolic_id :cell-icon"}}> </div>
+     	{{view AWE.UI.Ember.ArmyUnitInfoView unitTypeBinding="armyType"}}
      	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
      	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
      	 {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType"}}
@@ -81,8 +87,7 @@
 <script type="text/x-handlebars" data-template-name="army-new-change-tab3-view">   
      {{#each armyType in activeArmyTypen}}
      <div class="army-type-cell">
-     
-     	<div {{bindAttr class="armyType.symbolic_id :cell-icon"}}> </div>
+     	{{view AWE.UI.Ember.ArmyUnitInfoView unitTypeBinding="armyType"}}
      	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
      	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
      	 {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType"}}
@@ -90,3 +95,8 @@
      {{/each}}
 </script>
 
+
+<script type="text/x-handlebars" data-template-name="unit-info-click"> 
+    <div {{bindAttr class="armyType.symbolic_id :cell-icon"}} {{action "openDialog"}}>
+    </div>
+</script>

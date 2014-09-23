@@ -1378,7 +1378,10 @@ AWE.Controller = function (module) {
           this.destroy();
         },
         loading:false,
-      });*/
+      });
+      WACKADOO.presentModalDialog(dialog);
+      dialog.set('garrisonArmy', location.garrisonArmy());
+      dialog.set('otherArmy', army);*/
       // armies are set after create to trigger observer in view
 
         /*that.applicationController.presentModalDialog(dialog);*/
