@@ -58,28 +58,28 @@
 <script type="text/x-handlebars" data-template-name="profile-rank-tab2-view">   
   <div class="row row2">
           <div class="cell cell-50 current-rank">
-            <div class="current-rank-title">Current Rank</div>
+            <div class="current-rank-title">{{t profile.rank.currentRank}}: {{character.mundane_rank}}</div>
             <div class="current-rank-value">{{local character.mundaneTitle.name }}</div>
           </div>
           <div class="cell cell-50 next-rank">
-            <div class="next-rank-title">Next Rank</div>
+            <div class="next-rank-title">{{t profile.rank.nextRank}}: {{nextMundaneRank.rule.id}}</div>
             <div class="next-rank-value">{{local character.nextMundaneTitle.name }}</div>
           </div>
         </div>
         <div class="row row3">
           <div class="cell rank-background" >
             <!--<div class="rank-background"></div>-->
-            <div class="rank-bar" {{bindAttr style="barWidth"}}><div class="progress-value">{{progressBarPosition}} Progress</div></div>
+            <div class="rank-bar" {{bindAttr style="barWidth"}}><div class="progress-value">{{progressBarPosition}} {{t profile.rank.progressBar }}</div></div>
           </div>
         </div>
         <div class="row row4">
           <div class="cell cell-50 current-level">
-            <div class="current-level-title">Current Level:</div>
+            <div class="current-level-title">{{t profile.rank.currentLevel}}:</div>
             <div class="current-level-value">{{character.exp}}</div>
             <div class="resource-icon-xp xp"></div>
           </div>
           <div class="cell cell-50 next-level">
-            <div class="next-level-title">Next Level:</div>
+            <div class="next-level-title">{{t profile.rank.nextLevel}}:</div>
             <div class="next-level-value">{{nextMundaneRank.rule.exp}}</div>
             <div class="resource-icon-xp xp"></div>
           </div>

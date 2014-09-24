@@ -960,6 +960,11 @@ AWE.I18n.en_US = function(module) {
       movingTab: "Moving",
 
       rank:{
+        currentRank:"Current Rank",
+        nextRank:"Next Rank",
+        currentLevel:"Current Level",
+        nextLevel:"Next Level",
+        progressBar:"Progress",
         start:"Start",
         experience:"Experience",
         experienceAbbreviation:"XP",
