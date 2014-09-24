@@ -46,14 +46,11 @@
         <div class="row row3">
           <div class="cell">
             <p class="description">
-             <!-- {{t profile.customization.missingDescription}}-->
-              {{view AWE.UI.Ember.ProfileDescriptionTextfield valueBinding="character.description" placeholder="Test" classNames="description" }}
-
-           <!-- {{#if character.description}}
-                {{{ showDescription }}}
-            {{else}}
-                {{t profile.customization.missingDescription}}
-            {{/if}}--></p>
+              {{view AWE.UI.Ember.ProfileDescriptionTextarea valueBinding="character.description" characterBinding="character" classNames="description-text-area" }}
+              <div class="modal-dialog-blue-button-small modal-dialog-green-button-small-right modal-dialog-green-button-small-text description-change-button" {{action "changeDescriptionPressed" target="view"}}>
+            Change discription
+          </div>
+      </div>
           </div>
         </div>
 </script>

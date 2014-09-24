@@ -113,6 +113,25 @@ module.ProfileNewInfoView  = Ember.View.extend ({
       return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/g, '<br />');
     }.property('character.description'),
 
+    processNewDescription: function(newDescription) {
+      var self = this;
+      var action = AWE.Action.Fundamental.createChangeCharacterDescriptionAction(newDescription);
+      AWE.Action.Manager.queueAction(action, function(status) {
+        if (status === AWE.Net.OK) {
+          self.set('message', null);
+        }
+        else {
+          self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeDescriptionError'));
+        }
+      });        
+    },
+
+    changeDescriptionPressed: function() {
+      debugger
+      this.processNewDescription(this.getPath('character.description'));
+   
+    },
+
    });
    
 module.ProfileNewRangView  = Ember.View.extend  ({
@@ -131,12 +150,22 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
     alliance:  null,
    });
 
-module.ProfileDescriptionTextfield = Ember.TextField.extend({
-    //classNames: ["create-army-dialog-name"],
+module.ProfileDescriptionTextarea = Ember.TextArea.extend({
+
+  character: null,
+  placeholder : function () {
+      if(this.getPath('character.discription'))
+      {
+        return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/g, '<br />');
+      }
+      else
+      {
+        return AWE.I18n.lookupTranslation('profile.customization.missingDescription');
+      }
+    }.property('character.description'),
+
   });
-Ember.Handlebars.registerHelper('ts', function (key) {
-  return Ember.I18n.t(key);
-});
+
 //NEW DIALOGS END
 
 
