@@ -985,6 +985,11 @@ AWE.I18n.de_DE = function(module) {
       movingTab: "Umziehen",
 
       rank: {
+        currentRank:"Aktuelle Rang",
+        nextRank:"Nächster Rang",
+        currentLevel:"Aktuelle Stufe",
+        nextLevel:"Nächster Stufe",
+        progressBar:"Fortschritt",
         start: "Beginn",
         experience: "Erfahrung",
         experienceAbbreviation: "XP",
