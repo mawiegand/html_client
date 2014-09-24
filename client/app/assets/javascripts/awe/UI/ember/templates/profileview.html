@@ -59,28 +59,28 @@
   <div class="row row2">
           <div class="cell cell-50 current-rank">
             <div class="current-rank-title">Current Rank</div>
-            <div class="current-rank-value">Altameisenanbeter</div>
+            <div class="current-rank-value">{{local character.mundaneTitle.name }}</div>
           </div>
           <div class="cell cell-50 next-rank">
             <div class="next-rank-title">Next Rank</div>
-            <div class="next-rank-value">Ammonitenanlocker</div>
+            <div class="next-rank-value">{{local character.nextMundaneTitle.name }}</div>
           </div>
         </div>
         <div class="row row3">
-          <div class="cell rank-background">
+          <div class="cell rank-background" >
             <!--<div class="rank-background"></div>-->
-            <div class="rank-bar"><div class="progress-value">70% Progress</div></div>
+            <div class="rank-bar" {{bindAttr style="barWidth"}}><div class="progress-value">{{progressBarPosition}} Progress</div></div>
           </div>
         </div>
         <div class="row row4">
           <div class="cell cell-50 current-level">
             <div class="current-level-title">Current Level:</div>
-            <div class="current-level-value">7.390</div>
+            <div class="current-level-value">{{character.exp}}</div>
             <div class="resource-icon-xp xp"></div>
           </div>
           <div class="cell cell-50 next-level">
             <div class="next-level-title">Next Level:</div>
-            <div class="next-level-value">10.000</div>
+            <div class="next-level-value">{{nextMundaneRank.rule.exp}}</div>
             <div class="resource-icon-xp xp"></div>
           </div>
         </div>

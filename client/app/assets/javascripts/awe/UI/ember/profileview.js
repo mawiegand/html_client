@@ -100,6 +100,13 @@ module.ProfileNewTabView = module.TabViewNew.extend({
 
      this._super();
    },
+
+   characterObserver: function() {
+      var characterId = this.getPath('character.id') || null;
+      if (characterId) {
+        AWE.GS.CharacterManager.updateCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      }       
+    }.observes('character.id'),
  });
 
 module.ProfileNewInfoView  = Ember.View.extend ({
@@ -129,7 +136,6 @@ module.ProfileNewInfoView  = Ember.View.extend ({
     changeDescriptionPressed: function() {
       debugger
       this.processNewDescription(this.getPath('character.description'));
-   
     },
 
    });
@@ -140,7 +146,60 @@ module.ProfileNewRangView  = Ember.View.extend  ({
 
     character: null,
     alliance:  null,
+
+    progressBarPosition: null,
+    
+    maxExp:              null,
+        
+    nextMundaneRanks: function() {
+      var ranks   = AWE.GS.RulesManager.getRules().character_ranks.mundane;
+      var present = this.getPath('character.mundane_rank');
+      
+      if (present === undefined || present === null) {
+        return [];
+      }
+      
+      var infos = [];
+      for (var i=Math.max(present,1); i < ranks.length; i++) { // don't display first rank (Zero Experience)
+        infos.push({
+          rule:        ranks[i],
+          position:    ranks[i].exp,
+          presentRank: i === present,
+        });
+        if (i !== present && ranks[i].settlement_points > 0) {
+          break ;
+        }
+      }
+      
+      var maxExp = infos[infos.length-1].position;
+      var minExp = infos[0].position;
+      infos.forEach(function(item) {
+        item.position = (1.0 - item.position/(1.0*maxExp)) * 100 + "%";
+      });
+      
+      var ownPosition = (((this.getPath('character.exp') - minExp)*100)/(maxExp - minExp));
+      var ownCustomOwnProgress =  parseInt(ownPosition) + "%";
+      //(1.0 - (this.getPath('character.exp') || 0)/(1.0*maxExp))*100 + "%";
+      this.set('progressBarPosition', ownCustomOwnProgress);
+      
+      this.set('maxExp', maxExp);
+      return infos;
+    }.property('character.exp').cacheable(),
+
+    nextMundaneRank: function(){
+      var ranks = this.get('nextMundaneRanks');
+      return ranks[ranks.length - 1];
+
+    }.property('character.exp').cacheable(),
+
+    barWidth: function(){
+      this.get('nextMundaneRanks');
+      return "background-size: "+ this.get('progressBarPosition') + " 100%";
+    }.property().cacheable(),
+
    });
+
+  
    
 module.ProfileNewCustomizeView  = Ember.View.extend  ({
    
@@ -740,7 +799,6 @@ module.ProfileDescriptionTextarea = Ember.TextArea.extend({
       this.set('progressBarPosition', ownPosition);
       
       this.set('maxExp', maxExp);
-      
       return infos;
     }.property('character.exp').cacheable(),
     
