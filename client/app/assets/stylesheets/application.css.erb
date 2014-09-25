@@ -1411,7 +1411,7 @@ h3 {
   top: 208px;
   height: 100px;
   font-size: 20px;
-  width: 558px;
+  width: 588px;
   margin-right: 0px!important;
   border: 0!important;
   border-radius: 0!important;
@@ -1421,6 +1421,7 @@ h3 {
   resize: none;
   color: rgb(112,92,48);
   background-color: rgb(255,255,255);
+  left: 4px;
 }
 
 .profile-tab-view
@@ -1636,6 +1637,181 @@ h3 {
   color: rgb(256,256,256);
   line-height: 1.9em;
   font-size: 1.0em;
+}
+
+/* == PROFILE CUSTOMIZE SELF == */
+
+::-webkit-input-placeholder {
+   color: rgb(113,93,49);
+}
+
+:-moz-placeholder {
+   color: rgb(113,93,49);
+}
+
+::-moz-placeholder {  
+   color: rgb(113,93,49);
+}
+
+:-ms-input-placeholder {  
+   color: rgb(113,93,49);
+}
+
+.toggle-gender
+{
+  height: 112px;
+  width: 32px;
+  position: absolute;
+  right: 362px;
+  top: 88px;
+}
+.toggle-on
+{
+  height: 56px;
+  width: 32px;
+  background:url("<%= asset_path 'ui/Toggle_On@2x~iPhone.png' %>") no-repeat left center;
+}
+.toggle-off
+{
+  height: 56px;
+  width: 32px;
+  background:url("<%= asset_path 'ui/Toggle_Off@2x~iPhone.png' %>") no-repeat left center;
+}
+.female
+{
+  position: absolute;
+  left: 6px;
+  bottom: 14px;
+  height: 28px;
+  width: 20px;
+  background:url("<%= asset_path 'ui/icon_female@2x~iphone.png' %>") no-repeat left center;
+}
+.male
+{
+  position: absolute;
+  left: 4px;
+  top: 14px;
+  height: 28px;
+  width: 24px;
+  background:url("<%= asset_path 'ui/icon_male_@2x~iphone.png' %>") no-repeat left center;
+}
+
+.change-character-item
+{
+  display: inline-block;
+  height: 60px;
+  width: 320px;
+}
+
+.change-character-item-titel
+{
+  display: inline-block;
+  height: 60px;
+  width: 158px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 60px;
+  position: relative;
+  left: 10px;
+  bottom: 10px;
+}
+
+.change-character-item-button-left
+{
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  top: 8px;
+  left: 12px;
+  width: 58px;
+  height: 42px;
+  background:url("<%= asset_path 'ui/button_blue_short_change@2x~iphone.png' %>") no-repeat left center;
+}
+.change-character-item-button-right
+{
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  top: 8px;
+  left: 0px;
+  width: 58px;
+  height: 42px;
+  background:url("<%= asset_path 'ui/button_blue_short_change@2x~iphone.png' %>") no-repeat left center;
+}
+
+.change-character-item-button-label-left
+{
+  width: 24px;
+  height: 32px;
+  background:url("<%= asset_path 'ui/icon_arrow_single_left@2x~iphone.png' %>") no-repeat left center;
+  position: relative;
+  left: 16px;
+  top: 3px;
+}
+
+.change-character-item-button-label-right
+{
+  width: 24px;
+  height: 32px;
+  background:url("<%= asset_path 'ui/icon_arrow_single_right@2x~iphone.png' %>") no-repeat left center;
+  position: relative;
+  left: 16px;
+  top: 3px;
+}
+
+.rowcustomize .customavatar
+{
+  position: absolute;
+  left: 38px;
+  top: 30px;
+}
+.name-change-button
+{
+  position: absolute;
+  left: 306px;
+  top: 146px;
+  width: 308px;
+  height: 52px;
+  background:url("<%= asset_path 'ui/button_green_wide@2x~iphone.png' %>") no-repeat left center;
+  color: white;
+  font-size: 15px;
+  text-align: center;
+  line-height: 48px;
+  cursor: pointer;
+}
+
+.name-change-button:hover
+{
+  background:url("<%= asset_path 'ui/button_green_wide@2x~iphone.png' %>") no-repeat left center;
+}
+
+.profile-info-self-dialog-pane .rowcustomize
+{
+  height: 160px;
+}
+
+.profile-info-self-dialog-pane .rowcustomizesettings
+{
+  height: 186px;
+}
+
+.row2 input[type="text"] {
+  position: absolute;
+  top: 90px;
+  right: 28px;
+  height: 32px;
+  font-size: 20px;
+  width: 296px;
+  margin-right: 0px!important;
+  border: 0!important;
+  border-radius: 0!important;
+  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  padding: 2px!important;
+  margin-left: 13px!important;
+  resize: none;
+  color: rgb(112,92,48);
+  /*background-color: rgb(255,255,255);*/
+  background:url("<%= asset_path 'ui/background_input_big@2x~iphone.png' %>") no-repeat left center;
 }
 
 /* == ASSIGNMENTS == */

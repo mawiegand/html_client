@@ -87,7 +87,105 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="profile-customize-tab3-view">   
+<div class="row row2 rowcustomize">
+    <div class="cell cell-30 avatar">
+        {{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="customavatar" width="150" height="154"}}
+    </div>
+        {{view AWE.UI.Ember.UserNameTextfield valueBinding="characterName" placeholder=character.name classNames="newname" }}
+    <div class="name-change-button" {{action "changeNamePressed" target="view"}}>
+          Change Name
+      </div>
+      <div class="toggle-gender" {{action "changeGenderPressed" target="view"}}>
+        <div {{bindAttr class="toggleTopStyle"}}>
+            <div class="male">
+            </div>
+        </div>
+        <div {{bindAttr class="toggleBottomStyle"}}>
+            <div class="female">
+            </div>
+        </div>
+    </div>
+</div>
+{{view AWE.UI.Ember.ProfileNewCustomizeSettingsView}}
 
+</script>
+
+<script type="text/x-handlebars" data-template-name="profile-customize-settings-view">   
+        <div class="row row3 rowcustomizesettings">
+
+          <div class="change-character-item">
+            <div class="change-character-item-button-left">
+                <div class="change-character-item-button-label-left">
+                </div>
+            </div>
+            <div class="change-character-item-titel">Eyes</div>
+            <div class="change-character-item-button-right">
+                <div class="change-character-item-button-label-right">
+                </div>
+            </div>
+          </div>
+
+          <div class="change-character-item">
+            <div class="change-character-item-button-left">
+                <div class="change-character-item-button-label-left">
+                </div>
+            </div>
+            <div class="change-character-item-titel">Hair</div>
+            <div class="change-character-item-button-right">
+                <div class="change-character-item-button-label-right">
+                </div>
+            </div>
+          </div>
+
+          <div class="change-character-item">
+            <div class="change-character-item-button-left">
+                <div class="change-character-item-button-label-left">
+                </div>
+            </div>
+            <div class="change-character-item-titel">Mouth</div>
+            <div class="change-character-item-button-right">
+                <div class="change-character-item-button-label-right">
+                </div>
+            </div>
+          </div>
+
+          <div class="change-character-item">
+            <div class="change-character-item-button-left">
+                <div class="change-character-item-button-label-left">
+                </div>
+            </div>
+            <div class="change-character-item-titel">Beard</div>
+            <div class="change-character-item-button-right">
+                <div class="change-character-item-button-label-right">
+                </div>
+            </div>
+          </div>
+
+          <div class="change-character-item">
+            <div class="change-character-item-button-left">
+                <div class="change-character-item-button-label-left">
+                </div>
+            </div>
+            <div class="change-character-item-titel">Tattoos</div>
+            <div class="change-character-item-button-right">
+                <div class="change-character-item-button-label-right">
+                </div>
+            </div>
+          </div>
+
+          <div class="change-character-item">
+            <div class="change-character-item-button-left">
+                <div class="change-character-item-button-label-left">
+                </div>
+            </div>
+            <div class="change-character-item-titel">Symbols</div>
+            <div class="change-character-item-button-right">
+                <div class="change-character-item-button-label-right">
+                </div>
+            </div>
+          </div>
+
+        </div>
 </script>
 <!--NEW DIALOGS END-->
 

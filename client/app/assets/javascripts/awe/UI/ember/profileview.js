@@ -134,7 +134,8 @@ module.ProfileNewInfoView  = Ember.View.extend ({
     },
 
     changeDescriptionPressed: function() {
-      debugger
+      //debugger
+     // this.setPath('character.avatar_string', 'f1010101100002');
       this.processNewDescription(this.getPath('character.description'));
     },
 
@@ -207,6 +208,59 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
 
     character: null,
     alliance:  null,
+    characterName: '',
+
+    isGenderM: true,
+    changeGenderPressed: function() {
+
+      if(this.get('isGenderM'))
+      {
+        this.set('isGenderM', false);
+      }
+      else
+      {
+        this.set('isGenderM', true);
+      }
+      //debugger
+     // this.setPath('character.avatar_string', 'f1010101100002');
+      //this.processNewDescription(this.getPath('character.description'));
+    },
+
+    toggleTopStyle: function(){
+      
+      if(this.get('isGenderM'))
+      {
+        return "toggle-on";
+      }
+      else
+      {
+        return "toggle-off";
+      }
+
+    }.property('isGenderM').cacheable(),
+
+    toggleBottomStyle: function(){
+
+      if(this.get('isGenderM'))
+      {
+        return "toggle-off";
+      }
+      else
+      {
+        return "toggle-on";
+      }
+
+    }.property('isGenderM').cacheable(),
+
+   });
+
+module.ProfileNewCustomizeSettingsView  = Ember.View.extend  ({
+   
+    templateName: 'profile-customize-settings-view',
+
+    character: null,
+    alliance:  null,
+
    });
 
 module.ProfileDescriptionTextarea = Ember.TextArea.extend({
@@ -223,6 +277,10 @@ module.ProfileDescriptionTextarea = Ember.TextArea.extend({
       }
     }.property('character.description'),
 
+  });
+
+module.UserNameTextfield = Ember.TextField.extend({
+    //classNames: ["create-army-dialog-name"],
   });
 
 //NEW DIALOGS END
