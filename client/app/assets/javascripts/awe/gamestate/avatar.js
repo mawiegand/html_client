@@ -44,8 +44,8 @@ AWE.GS = function (module) {
     },
 
     /*init: function() {
-      this.set('avatar_string', 'm0010102102102');
-      //this.set('avatar_string', 'f1010101100002');
+      //this.set('avatar_string', 'm0010102102102');
+      this.set('avatar_string', 'f1010101100002');
     },*/
 
     getPart: function(part) {
