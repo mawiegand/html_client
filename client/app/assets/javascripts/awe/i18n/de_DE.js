@@ -1435,6 +1435,19 @@ AWE.I18n.de_DE = function(module) {
         description: "Hier steht wie man umziehen kann.",
         to: "nach"
       },
+      },
+      alliance: {
+        alliance: "Allianz",
+        info: "Info",
+        members: "Mitglieder",
+        diplomacy: "Diplomatie",
+        apply: "Bewerben",
+
+        allianceInfo: {
+          slogan: "Losung:",
+          autoJoin: "Aufnahme:"
+        }
+      }
     },
   }
   
