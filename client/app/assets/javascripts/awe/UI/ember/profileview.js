@@ -477,6 +477,7 @@ AWE.UI.Ember = (function(module) {
       else {
         var self = this;
         var action = AWE.Action.Fundamental.createChangePasswordAction(this.get('password'));
+        debugger;
         AWE.Action.Manager.queueAction(action, function(status) {
           self.set('changingPassword', false);
           if (status === AWE.Net.OK) {

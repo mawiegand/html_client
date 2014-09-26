@@ -1415,6 +1415,18 @@ AWE.I18n.de_DE = function(module) {
         quests: "Aufträge",
         special_quests: "Spezialaufträge",
         gossip: "Gerüchte"
+      },
+      alliance: {
+        alliance: "Allianz",
+        info: "Info",
+        members: "Mitglieder",
+        diplomacy: "Diplomatie",
+        apply: "Bewerben",
+
+        allianceInfo: {
+          slogan: "Losung:",
+          autoJoin: "Aufnahme:"
+        }
       }
     },
   }

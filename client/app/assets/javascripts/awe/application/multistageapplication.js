@@ -597,10 +597,10 @@ AWE.Application = (function(module) {
               hoveredView = null;
               stageHovered = -1;
             }
+            //debugger;
             rootController.viewWillDisappear();
             this.remove(rootController);
             rootController.viewDidDisappear();
-
             if (rootController.typeName == 'SettlementController' && controller.typeName == 'MapController' && !preventZoomingToLastSelection === true) {
               var settlement = AWE.GS.SettlementManager.getSettlement(rootController.settlementId);
               if (!controller.selectedView() || (controller.selectedView().location && controller.selectedView().location() != settlement.get('location'))) {
