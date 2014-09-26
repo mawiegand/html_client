@@ -1621,6 +1621,10 @@ h3 {
 
 /* == ALLIANCE == */
 
+.tab-view {
+  margin-left: 5px;
+}
+
 .alliance-container {
   position: absolute;
   top: 120px;
@@ -1712,6 +1716,41 @@ h3 {
   font-size: 20px;
   color: white;
   background:url("<%= asset_path 'dialogs/buttons/button_green_wide/button_green_wide@2x~iphone.png' %>") no-repeat center center;
+}
+
+.alliance-toggle {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  font-size: 0.7em;
+  text-align: center;
+  float: left;
+  width: 54px;
+  height: 32px;
+  line-height: 1.6em;
+}
+
+.alliance-toggle-on.is-toggle-on{
+  color: #F2E0C2;
+  background:url("<%= asset_path 'dialogs/buttons/button_toggle_on/button_toggle_on@2x~iPhone.png' %>") no-repeat left center;
+}
+
+.alliance-toggle-off.is-toggle-on{
+  color: #735e3b;
+  background:url("<%= asset_path 'dialogs/buttons/button_toggle_off/button_toggle_off@2x~iPhone.png' %>") no-repeat left center;
+}
+.alliance-toggle-on{
+  color: #735e3b;
+  background:url("<%= asset_path 'dialogs/buttons/button_toggle_off/button_toggle_off@2x~iPhone.png' %>") no-repeat left center;
+}
+
+.alliance-toggle-off {
+  color: #F2E0C2;
+  background:url("<%= asset_path 'dialogs/buttons/button_toggle_on/button_toggle_on@2x~iPhone.png' %>") no-repeat left center;
 }
 
 
