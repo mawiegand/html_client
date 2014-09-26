@@ -31,6 +31,7 @@
 
                 <div class="alliance-accept">
                     <h4>{{t dialogs.alliance.allianceInfo.autoJoin}}</h4>
+                    {{alliance.password}}
                     <div class="alliance-status-toggle" {{action "setAutoJoin"}}>
                         <div {{bindAttr class=":alliance-toggle :alliance-toggle-off isToggleOn"}}>
                             OFF
@@ -53,7 +54,6 @@
 
 <script type="text/x-handlebars" data-template-name="alliance-members-tab">
   <div class="alliance-container">
-    {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
   </div>
 </script>
 
