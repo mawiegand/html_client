@@ -1460,7 +1460,12 @@ AWE.I18n.de_DE = function(module) {
           slogan: "Losung:",
           autoJoin: "Aufnahme:"
         }
-      }
+      },
+      move:{
+        heading: "Umziehen",
+        description: "Hier steht wie man umziehen kann.",
+        to: "nach"
+      },
     },
   }
   
