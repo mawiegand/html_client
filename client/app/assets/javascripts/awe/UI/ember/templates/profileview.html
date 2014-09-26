@@ -58,7 +58,7 @@
 <script type="text/x-handlebars" data-template-name="profile-rank-tab2-view">   
   <div class="row row2">
           <div class="cell cell-50 current-rank">
-            <div class="current-rank-title">{{t profile.rank.currentRank}}: {{character.mundane_rank}}</div>
+            <div class="current-rank-title">{{t profile.rank.currentRank}}: {{currentMundaneRank}}</div>
             <div class="current-rank-value">{{local character.mundaneTitle.name }}</div>
           </div>
           <div class="cell cell-50 next-rank">
@@ -91,22 +91,30 @@
     <div class="cell cell-30 avatar">
         {{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="customavatar" width="150" height="154"}}
     </div>
-        {{view AWE.UI.Ember.UserNameTextfield valueBinding="characterName" placeholder=character.name classNames="newname" }}
-    <div class="name-change-button" {{action "changeNamePressed" target="view"}}>
-          Change Name
+        {{view AWE.UI.Ember.UserNameTextfield valueBinding="characterNameInput" placeholder=character.name classNames="newname" }}
+    {{#if firstTwoNameChange}}
+      <div class="name-change-button" {{action "changeNamePressed" target="view"}}>
+            Change Name
       </div>
-      <div class="toggle-gender" {{action "changeGenderPressed" target="view"}}>
-        <div {{bindAttr class="toggleTopStyle"}}>
-            <div class="male">
-            </div>
-        </div>
-        <div {{bindAttr class="toggleBottomStyle"}}>
-            <div class="female">
-            </div>
-        </div>
+    {{else}}
+      <div class="name-change-button-gold" {{action "changeNamePressed" target="view"}}>
+        <div class="item-price">{{nameChangeCosts}}</div>
+        <div class="item-toad"></div>
+        <div class="name-change-button-gold-titel"> Change Name</div>
+      </div>
+    {{/if}}
+    <div class="toggle-gender" {{action "changeGenderPressed" target="view"}}>
+      <div {{bindAttr class="toggleTopStyle"}}>
+          <div class="male">
+          </div>
+      </div>
+      <div {{bindAttr class="toggleBottomStyle"}}>
+          <div class="female">
+          </div>
+      </div>
     </div>
 </div>
-{{view AWE.UI.Ember.ProfileNewCustomizeSettingsView}}
+{{view AWE.UI.Ember.ProfileNewCustomizeSettingsView characterBinding="character" allianceBinding="alliance"}}
 
 </script>
 
@@ -114,76 +122,78 @@
         <div class="row row3 rowcustomizesettings">
 
           <div class="change-character-item">
-            <div class="change-character-item-button-left">
+            <div class="change-character-item-button-left" {{action "changeEyesPressedLeft" target="view"}}>
                 <div class="change-character-item-button-label-left">
                 </div>
             </div>
             <div class="change-character-item-titel">Eyes</div>
-            <div class="change-character-item-button-right">
+            <div class="change-character-item-button-right" {{action "changeEyesPressedRight" target="view"}}>
                 <div class="change-character-item-button-label-right">
                 </div>
             </div>
           </div>
 
           <div class="change-character-item">
-            <div class="change-character-item-button-left">
+            <div class="change-character-item-button-left" {{action "changeHairPressedLeft" target="view"}}>
                 <div class="change-character-item-button-label-left">
                 </div>
             </div>
             <div class="change-character-item-titel">Hair</div>
-            <div class="change-character-item-button-right">
+            <div class="change-character-item-button-right" {{action "changeHairPressedRight" target="view"}}>
                 <div class="change-character-item-button-label-right">
                 </div>
             </div>
           </div>
 
           <div class="change-character-item">
-            <div class="change-character-item-button-left">
+            <div class="change-character-item-button-left" {{action "changeMouthPressedLeft" target="view"}}>
                 <div class="change-character-item-button-label-left">
                 </div>
             </div>
             <div class="change-character-item-titel">Mouth</div>
-            <div class="change-character-item-button-right">
+            <div class="change-character-item-button-right" {{action "changeMouthPressedRight" target="view"}}>
                 <div class="change-character-item-button-label-right">
                 </div>
             </div>
           </div>
 
           <div class="change-character-item">
-            <div class="change-character-item-button-left">
+            <div class="change-character-item-button-left" {{action "changeBeardPressedLeft" target="view"}}>
                 <div class="change-character-item-button-label-left">
                 </div>
             </div>
-            <div class="change-character-item-titel">Beard</div>
-            <div class="change-character-item-button-right">
+            <div class="change-character-item-titel">{{#if isMale}}Beard{{else}}Ketten{{/if}}</div>
+            <div class="change-character-item-button-right" {{action "changeBeardPressedRight" target="view"}}>
                 <div class="change-character-item-button-label-right">
                 </div>
             </div>
           </div>
 
           <div class="change-character-item">
-            <div class="change-character-item-button-left">
+            <div class="change-character-item-button-left" {{action "changeTattoosPressedLeft" target="view"}}>
                 <div class="change-character-item-button-label-left">
                 </div>
             </div>
             <div class="change-character-item-titel">Tattoos</div>
-            <div class="change-character-item-button-right">
+            <div class="change-character-item-button-right" {{action "changeTattoosPressedRight" target="view"}}>
                 <div class="change-character-item-button-label-right">
                 </div>
             </div>
           </div>
 
+          {{#if isMale}}
           <div class="change-character-item">
-            <div class="change-character-item-button-left">
+            <div class="change-character-item-button-left" {{action "changeSymbolsPressedLeft" target="view"}}>
                 <div class="change-character-item-button-label-left">
                 </div>
             </div>
             <div class="change-character-item-titel">Symbols</div>
-            <div class="change-character-item-button-right">
+            <div class="change-character-item-button-right" {{action "changeSymbolsPressedRight" target="view"}}>
                 <div class="change-character-item-button-label-right">
                 </div>
             </div>
           </div>
+           {{/if}}
 
         </div>
 </script>
