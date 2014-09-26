@@ -1,37 +1,58 @@
 <script type="text/x-handlebars" data-template-name="alliance-view">
-<h1>Alliance</h1>
-{{view AWE.UI.Ember.AssignmentTabView characterBinding="character" allianceBinding="alliance" }}
-    <div class="alliance-container">
-        {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner"}}
+    <h1>{{t dialogs.alliance.alliance}}</h1>
+    {{view AWE.UI.Ember.AllianceTabView allianceBinding = "alliance" controllerBinding = "controller"}}
+</script>
 
+<script type="text/x-handlebars" data-template-name="alliance-info-tab">
+  <div class="alliance-container">
+
+    {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner"}}
+
+
+    <div class="alliance-about">
+        <h3>{{alliance.name}}</h3>
         {{#if ownAlliance}}
-        <div class="alliance-about">
-            <h3>{{alliance.name}}</h3>
-            <div class="alliance-information">
-                <h4>Invitelink:</h4>
-                <div class="alliance-invite-link">
+        <div class="alliance-information">
+            <h4>Invitelink:</h4>
+            <div class="alliance-invite-link">
                 {{ unbound AWE.Config.ALLIANCE_INVITATION_BASE }}{{ unbound alliance.invitation_code }}</div>
             </div>
+            {{else}}
+            <div class="alliance-join-button" {{action "sendAllianceApplication"}}>
+                {{t dialogs.alliance.apply}}
+            </div>
+            {{/if}}
             {{#if isAllianceLeader}}
             <div class="alliance-management">
                 <div class="alliance-slogan">
-                    <h4>Slogan:</h4>
-                    <input type="text" value={{unbound alliance.password}} />
+                    <h4>{{t dialogs.alliance.allianceInfo.slogan}}</h4>
+                    {{view AWE.UI.Ember.AlliancePasswordInputField class="alliance-password" maxlength=5 type="text" allianceBinding="alliance"}} 
                 </div>
 
                 <div class="alliance-accept">
-                    <h4>Aufnahme:</h4>
+                    <h4>{{t dialogs.alliance.allianceInfo.autoJoin}}</h4>
+                    {{alliance.password}}
                     <div class="alliance-status-toggle" {{action "setAutoJoin"}}>
                     </div>
                 </div>
             </div>
             {{/if}}
         </div>
-        {{/if}}
+        
         <div class="alliance-text">
             My money's in that office, right? If she start giving me some bullshit about 
             it ain't there
         </div>
     </div>
+</script>
 
+<script type="text/x-handlebars" data-template-name="alliance-members-tab">
+  <div class="alliance-container">
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="alliance-diplomacy-tab">
+  <div class="alliance-container">
+
+  </div>
 </script>
