@@ -137,6 +137,10 @@ AWE.UI.Ember = (function(module) {
     cancelPressed: function() { alert ('Action not connected: okPressed.'); },
   });
 
+  module.TextInputDialogNew = module.TextInputDialog.extend({
+    templateName: 'text-input-dialog-new',
+  });
+
   module.TextAreaInputDialog = module.Dialog.extend({
     templateName: 'textarea-input-dialog',
     heading: 'set a heading',

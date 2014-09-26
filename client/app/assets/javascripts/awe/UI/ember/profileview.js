@@ -647,9 +647,9 @@ AWE.UI.Ember = (function(module) {
         
   });  
   
-  module.MovingView = Ember.View.extend({
+  module.MovingView = module.PopUpDialog.extend({
+    classNames: ['moving-dialog'],
     templateName: 'moving-view',
-    
     character: null,
     homeRegion: null,
     newRegionName: null,
@@ -678,25 +678,34 @@ AWE.UI.Ember = (function(module) {
     homeRegionName: function() {
       return this.homeRegion.name();
     }.property(),
+
+    presentRegionNotFoundMessage: function(){
+      this.set('moving', false);
+      var dialog = AWE.UI.Ember.InfoDialog.create({
+        heading: AWE.I18n.lookupTranslation('profile.moving.movingNoTargetFoundHeading'),
+        message: AWE.I18n.lookupTranslation('profile.moving.movingNoTargetFoundMessage'),
+      });
+      WACKADOO.presentModalDialog(dialog);
+    },
     
     displayRegion: function(regionName, callback) {
       var self = this;
-      AWE.Map.Manager.fetchSingleRegionById(regionName, function(region) {
-        if (region.id() == 0) {
-          self.set('moving', false);
-          var dialog = AWE.UI.Ember.InfoDialog.create({
-            heading: AWE.I18n.lookupTranslation('profile.moving.movingNoTargetFoundHeading'),
-            message: AWE.I18n.lookupTranslation('profile.moving.movingNoTargetFoundMessage'),
-          });
-          WACKADOO.presentModalDialog(dialog);
-        }
-        else {
-          var mapController = WACKADOO.activateMapController(true);
-          WACKADOO.closeAllModalDialogs();
-          mapController.centerRegion(region);
-          if (callback) callback(region);
-        }
-      });
+      if(regionName){
+        AWE.Map.Manager.fetchSingleRegionById(regionName, function(region) {
+          if (region.id() == 0) {
+            self.set('moving', false);
+            self.presentRegionNotFoundMessage();
+          }
+          else {
+            var mapController = WACKADOO.activateMapController(true);
+            WACKADOO.closeAllModalDialogs();
+            mapController.centerRegion(region);
+            if (callback) callback(region);
+          }
+        });
+      }else{
+        self.presentRegionNotFoundMessage();
+      }
     },
     
     moveToRegion: function(oldRegion, newRegion, password) {
@@ -772,7 +781,7 @@ AWE.UI.Ember = (function(module) {
       self.displayRegion(newRegionName, function(newRegion) {
         var password = '';
         if (!newRegion.isOwnedByNpc() && self.getPath('character.alliance_id') !== newRegion.allianceId()) {
-          var passwordDialog = AWE.UI.Ember.TextInputDialog.create({
+          var passwordDialog = AWE.UI.Ember.TextInputDialogNew.create({
             heading: AWE.I18n.lookupTranslation('profile.moving.movingPasswordCaption'),
             controller: self,
             okPressed: function() {
