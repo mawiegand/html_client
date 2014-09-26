@@ -513,6 +513,7 @@ AWE.I18n.de_DE = function(module) {
 
       error: {
         blankPassword: "Ein leeres Passwort zu setzen ist nicht möglich.",
+        specialChars: "Es sind nur Zahlen und Buchstaben erlaubt",
         failedToSetPassword: "Das Allianzpasswort zu setzen ist aus unbekannten Grund gescheitert.",
         kickHeading: "Geht nicht!",
         kickMessage: "Dieses Mitglied kann nicht von Dir rausgeworfen werden.",
@@ -1432,7 +1433,6 @@ AWE.I18n.de_DE = function(module) {
           slogan: "Losung:",
           autoJoin: "Aufnahme:"
         }
-      }
       },
       move:{
         heading: "Umziehen",
