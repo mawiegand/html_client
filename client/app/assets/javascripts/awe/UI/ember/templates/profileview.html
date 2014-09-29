@@ -48,7 +48,7 @@
             <p class="description">
               {{view AWE.UI.Ember.ProfileDescriptionTextarea valueBinding="character.description" characterBinding="character" classNames="description-text-area" }}
               <div class="modal-dialog-blue-button-small modal-dialog-green-button-small-right modal-dialog-green-button-small-text description-change-button" {{action "changeDescriptionPressed" target="view"}}>
-            Change discription
+            {{t profile.customization.changeDescriptionCaption}}
           </div>
       </div>
           </div>
@@ -100,7 +100,7 @@
       <div class="name-change-button-gold" {{action "changeNamePressed" target="view"}}>
         <div class="item-price">{{nameChangeCosts}}</div>
         <div class="item-toad"></div>
-        <div class="name-change-button-gold-titel"> Change Name</div>
+        <div class="name-change-button-gold-titel">{{t profile.customization.changeNameCaption}}</div>
       </div>
     {{/if}}
     <div class="toggle-gender" {{action "changeGenderPressed" target="view"}}>
@@ -126,7 +126,7 @@
                 <div class="change-character-item-button-label-left">
                 </div>
             </div>
-            <div class="change-character-item-titel">Eyes</div>
+            <div class="change-character-item-titel">{{t profile.customization.customEyes}}</div>
             <div class="change-character-item-button-right" {{action "changeEyesPressedRight" target="view"}}>
                 <div class="change-character-item-button-label-right">
                 </div>
@@ -138,7 +138,7 @@
                 <div class="change-character-item-button-label-left">
                 </div>
             </div>
-            <div class="change-character-item-titel">Hair</div>
+            <div class="change-character-item-titel">{{t profile.customization.customHair}}</div>
             <div class="change-character-item-button-right" {{action "changeHairPressedRight" target="view"}}>
                 <div class="change-character-item-button-label-right">
                 </div>
@@ -150,7 +150,7 @@
                 <div class="change-character-item-button-label-left">
                 </div>
             </div>
-            <div class="change-character-item-titel">Mouth</div>
+            <div class="change-character-item-titel">{{t profile.customization.customMouth}}</div>
             <div class="change-character-item-button-right" {{action "changeMouthPressedRight" target="view"}}>
                 <div class="change-character-item-button-label-right">
                 </div>
@@ -162,7 +162,7 @@
                 <div class="change-character-item-button-label-left">
                 </div>
             </div>
-            <div class="change-character-item-titel">{{#if isMale}}Beard{{else}}Ketten{{/if}}</div>
+            <div class="change-character-item-titel">{{#if isMale}}{{t profile.customization.customBeard}}{{else}}{{t profile.customization.customChains}}{{/if}}</div>
             <div class="change-character-item-button-right" {{action "changeBeardPressedRight" target="view"}}>
                 <div class="change-character-item-button-label-right">
                 </div>
@@ -174,7 +174,7 @@
                 <div class="change-character-item-button-label-left">
                 </div>
             </div>
-            <div class="change-character-item-titel">Tattoos</div>
+            <div class="change-character-item-titel">{{t profile.customization.customTattoos}}</div>
             <div class="change-character-item-button-right" {{action "changeTattoosPressedRight" target="view"}}>
                 <div class="change-character-item-button-label-right">
                 </div>
@@ -187,7 +187,7 @@
                 <div class="change-character-item-button-label-left">
                 </div>
             </div>
-            <div class="change-character-item-titel">Symbols</div>
+            <div class="change-character-item-titel">{{t profile.customization.customSymbols}}</div>
             <div class="change-character-item-button-right" {{action "changeSymbolsPressedRight" target="view"}}>
                 <div class="change-character-item-button-label-right">
                 </div>
