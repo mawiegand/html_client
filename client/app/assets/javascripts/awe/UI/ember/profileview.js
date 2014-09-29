@@ -258,7 +258,7 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
 
               character: that.get("character"),
               heading:    AWE.I18n.lookupTranslation('profile.customization.changeGender'), 
-              message:    AWE.I18n.lookupTranslation('profile.customization.changeGenderCaption') + " " + this.get('genderChangeCosts'),
+              message:    AWE.I18n.lookupTranslation('profile.customization.changeGenderCaption') + " " + this.get('genderChangeCosts') + " " + AWE.I18n.lookupTranslation('profile.customization.customToads'),
               
               cancelText: AWE.I18n.lookupTranslation('alliance.confirmReport.cancel'),
               okText:     AWE.I18n.lookupTranslation('alliance.confirmReport.ok'),
