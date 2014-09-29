@@ -10,6 +10,123 @@ AWE.UI = AWE.UI || {};
 AWE.UI.Ember = (function(module) {
 
 
+  //NEW DIALOGS START
+
+//need custom tabs for army info
+  module.TabArmyInfoView = module.TabViewNew.extend({
+    templateName: 'tab-view-army-info',
+    classNames:   'tab-view-army-info',
+
+    cellClass: function(){
+      return "cell-" + Math.round(100 / (this.get("tabViews").length - 1));
+    }.property("tabViews"),
+  });
+
+  module.TabButtonArmyInfoView = module.TabButtonViewNew.extend({
+    tagName: "div",
+    classNames: ["tab-button-view-new"],
+    isTitelTab: false
+  });
+
+  module.ArmyInfoDialogNew = module.PopUpDialog.extend({
+    templateName: 'army-new-info-dialog',
+
+    army: null,
+    owner: null,
+    
+    displayHeading: true,
+    
+    ownerObserver: function() {
+      var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('army.owner_id'));
+      var self = this;
+      this.set('owner', owner);
+      if (!owner) {
+        AWE.GS.CharacterManager.updateCharacter(this.getPath('army.owner_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+          self.set('owner', character);
+        });
+      }
+    }.observes('army', 'army.owner_id'),
+
+  });
+
+  module.ArmyInfoNewTabView = module.TabArmyInfoView.extend({
+
+    character: null,
+    alliance:  null,
+    allianceMember: null,
+
+    init: function() {
+
+     this.set('tabViews', [
+       { key:   "tab1",
+         title: "Garrison", 
+         view:  module.GarrisonInfoView.extend({ 
+          }),
+         isTitelTab: true,
+         buttonClass: "header-menu-button-military"
+       }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
+       { key:   "tab2",
+         title: "Infantry", 
+         view:  module.InfantryInfoView.extend({ 
+          }),
+         isTitelTab: false,
+         buttonClass: "middle-menu-button-military"
+       },
+       { key:   "tab3",
+         title: "Artillery", 
+         view:  module.ArtileryInfoView.extend({ 
+          }),
+         isTitelTab: false,
+         buttonClass: "middle-menu-button-military"
+       },
+       { key:   "tab4",
+         title: "Cavalery", 
+         view:  module.CavaleryInfoView.extend({ 
+          }),
+         isTitelTab: false,
+         buttonClass: "middle-menu-button-military"
+       },
+       { key:   "tab5",
+         title: "Special Units", 
+         view:  module.SpecialUnitInfoView.extend({ 
+          }),
+         isTitelTab: false,
+         buttonClass: "middle-menu-button-military"
+       }
+     ]);
+
+     this._super();
+   },
+
+ });
+
+module.GarrisonInfoView  = Ember.View.extend ({
+  templateName: 'army-info-tab1-view',
+
+});
+
+module.InfantryInfoView  = Ember.View.extend ({
+  templateName: 'army-info-tab2-view',
+
+});
+
+module.ArtileryInfoView  = Ember.View.extend ({
+  templateName: 'army-info-tab3-view',
+
+});
+
+module.CavaleryInfoView  = Ember.View.extend ({
+  templateName: 'army-info-tab4-view',
+
+});
+
+module.SpecialUnitInfoView  = Ember.View.extend ({
+  templateName: 'army-info-tab5-view',
+
+});
+
+  //NEW DIALOGS END
+
   module.ArmyInfoDialog = AWE.UI.Ember.InfoDialog.extend({
     classNames: ['army-info-dialog'],
     contentTemplateName: 'army-info-dialog',

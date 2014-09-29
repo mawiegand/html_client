@@ -127,6 +127,9 @@
 
 
 <script type="text/x-handlebars" data-template-name="settlement-dialog-building-details">
+{{#if building.garrisonArmy }}
+        {{view AWE.UI.Ember.ArmyInfoDialogNew armyBinding="building.garrisonArmy" displayHeading=false}}
+      {{/if}}
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-window2 helvetica-light">
     <div class="settlement-dialog-header settlement-dialog-building-details"></div>

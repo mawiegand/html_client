@@ -238,3 +238,63 @@
     <td class="info"><a class="clickable" {{action "infoPressed"}}>{{t army.list.table.info}}</a></td>
   </tr>
 </script>
+
+<script type="text/x-handlebars" data-template-name="army-new-info-dialog">
+  <h1 class="modal-dialog-heading">Military</h1>
+   <div class="modal-dialog-body change-army-dialog-pane scrolling">
+    {{view AWE.UI.Ember.ArmyInfoNewTabView}}
+   </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="tab-view-army-info">
+  
+  <div class="tab-bar-new-military">
+    {{#each tab in tabViews}}
+      {{#if tab.isTitelTab}}
+        <div {{bindAttr class=".cell"}}>
+        
+        {{#view AWE.UI.Ember.TabButtonArmyInfoView keyBinding="tab.key" titleBinding="tab.title" buttonClassBinding="tab.buttonClass"}}{{tab.title}}
+            <div class="swords-icon"></div>
+        {{/view}}
+      </div>
+      {{else}}
+        <div {{bindAttr class=":cell view.cellClass"}}>
+          {{#view AWE.UI.Ember.TabButtonArmyInfoView keyBinding="tab.key" titleBinding="tab.title" buttonClassBinding="tab.buttonClass"}}{{tab.title}}{{/view}}
+        </div>
+      {{/if}}
+    {{/each}}
+    <div class="clearfix"></div>
+  </div>  
+    
+  {{view Ember.ContainerView currentViewBinding="currentView"}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-info-tab1-view">   
+  <div class="cell-icon unit_warrior military"></div>
+  <div class="cell-icon unit_warrior military"></div>
+  <div class="cell-icon unit_warrior military"></div>
+  <div class="cell-icon unit_warrior military"></div>
+  <div class="cell-icon unit_warrior military"></div>
+  <div class="cell-icon unit_warrior military"></div>
+  <div class="cell-icon unit_warrior military"></div>
+
+  <div class="cell-icon unit_warrior military"></div>
+  <div class="cell-icon unit_warrior military"></div>
+  <div class="cell-icon unit_warrior military"></div>
+  <div class="cell-icon unit_warrior military"></div>
+  <div class="cell-icon unit_warrior military"></div>
+  <div class="cell-icon unit_warrior military"></div>
+  <div class="cell-icon unit_warrior military"></div>
+</script>
+<script type="text/x-handlebars" data-template-name="army-info-tab2-view">   
+
+</script>
+<script type="text/x-handlebars" data-template-name="army-info-tab3-view">   
+
+</script>
+<script type="text/x-handlebars" data-template-name="army-info-tab4-view">   
+
+</script>
+<script type="text/x-handlebars" data-template-name="army-info-tab5-view">   
+
+</script>
