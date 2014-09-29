@@ -1,3 +1,205 @@
+<!-- NEW DIALOGS START-->
+
+        
+        <script type="text/x-handlebars" data-template-name="character-new-profile-view">
+           <h1 class="modal-dialog-heading">{{character.name}}</h1>
+            <div class="modal-dialog-body profile-info-self-dialog-pane scrolling">
+              <div class="profile-tab-view">
+                {{view AWE.UI.Ember.ProfileNewTabView characterBinding="character" allianceBinding="alliance" allianceMemberBinding="allianceMember" }}
+              </div>
+            </div>
+
+        <!-- DIALOG END -->
+</script>
+
+<script type="text/x-handlebars" data-template-name="profile-info-tab1-view">   
+
+        <div class="row row2">
+          <div class="cell cell-30 avatar">{{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar" width="150" height="154"}}</div>
+          <div class="cell cell-80">
+            <div class="line line1">
+              <div class="clubs">
+                <div class="clubs-icon"></div>
+                <div class="clubs-value">{{character.battle_count}}</div>
+              </div>
+              <div class="guy">
+                <div class="guy-icon"></div>
+                <div class="guy-value">{{character.score}}</div>
+              </div>
+              <div class="thing">
+                <div class="thing-icon"></div>
+                <div class="thing-value">{{character.fortress_count}}</div>
+              </div>
+            </div>
+            <div class="line line2">
+              <div class="thumb-up">
+                <div class="thumb-up-icon"></div>
+                <div class="thumb-up-value">{{character.received_likes_count}}</div>
+              </div>
+              <div class="thumb-down">
+                <div class="thumb-down-icon"></div>
+                <div class="thumb-down-value">{{character.received_dislikes_count}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row row3">
+          <div class="cell">
+            <p class="description">
+              {{view AWE.UI.Ember.ProfileDescriptionTextarea valueBinding="character.description" characterBinding="character" classNames="description-text-area" }}
+              <div class="modal-dialog-blue-button-small modal-dialog-green-button-small-right modal-dialog-green-button-small-text description-change-button" {{action "changeDescriptionPressed" target="view"}}>
+            {{t profile.customization.changeDescriptionCaption}}
+          </div>
+      </div>
+          </div>
+        </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="profile-rank-tab2-view">   
+  <div class="row row2">
+          <div class="cell cell-50 current-rank">
+            <div class="current-rank-title">{{t profile.rank.currentRank}}: {{currentMundaneRank}}</div>
+            <div class="current-rank-value">{{local character.mundaneTitle.name }}</div>
+          </div>
+          <div class="cell cell-50 next-rank">
+            <div class="next-rank-title">{{t profile.rank.nextRank}}: {{nextMundaneRank.rule.id}}</div>
+            <div class="next-rank-value">{{local character.nextMundaneTitle.name }}</div>
+          </div>
+        </div>
+        <div class="row row3">
+          <div class="cell rank-background" >
+            <!--<div class="rank-background"></div>-->
+            <div class="rank-bar" {{bindAttr style="barWidth"}}><div class="progress-value">{{progressBarPosition}} {{t profile.rank.progressBar }}</div></div>
+          </div>
+        </div>
+        <div class="row row4">
+          <div class="cell cell-50 current-level">
+            <div class="current-level-title">{{t profile.rank.currentLevel}}:</div>
+            <div class="current-level-value">{{character.exp}}</div>
+            <div class="resource-icon-xp xp"></div>
+          </div>
+          <div class="cell cell-50 next-level">
+            <div class="next-level-title">{{t profile.rank.nextLevel}}:</div>
+            <div class="next-level-value">{{nextMundaneRank.rule.exp}}</div>
+            <div class="resource-icon-xp xp"></div>
+          </div>
+        </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="profile-customize-tab3-view">   
+<div class="row row2 rowcustomize">
+    <div class="cell cell-30 avatar">
+        {{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="customavatar" width="150" height="154"}}
+    </div>
+        {{view AWE.UI.Ember.UserNameTextfield valueBinding="characterNameInput" placeholder=character.name classNames="newname" }}
+    {{#if firstTwoNameChange}}
+      <div class="name-change-button" {{action "changeNamePressed" target="view"}}>
+            Change Name
+      </div>
+    {{else}}
+      <div class="name-change-button-gold" {{action "changeNamePressed" target="view"}}>
+        <div class="item-price">{{nameChangeCosts}}</div>
+        <div class="item-toad"></div>
+        <div class="name-change-button-gold-titel">{{t profile.customization.changeNameCaption}}</div>
+      </div>
+    {{/if}}
+    <div class="toggle-gender" {{action "changeGenderPressed" target="view"}}>
+      <div {{bindAttr class="toggleTopStyle"}}>
+          <div class="male">
+          </div>
+      </div>
+      <div {{bindAttr class="toggleBottomStyle"}}>
+          <div class="female">
+          </div>
+      </div>
+    </div>
+</div>
+{{view AWE.UI.Ember.ProfileNewCustomizeSettingsView characterBinding="character" allianceBinding="alliance"}}
+
+</script>
+
+<script type="text/x-handlebars" data-template-name="profile-customize-settings-view">   
+        <div class="row row3 rowcustomizesettings">
+
+          <div class="change-character-item">
+            <div class="change-character-item-button-left" {{action "changeEyesPressedLeft" target="view"}}>
+                <div class="change-character-item-button-label-left">
+                </div>
+            </div>
+            <div class="change-character-item-titel">{{t profile.customization.customEyes}}</div>
+            <div class="change-character-item-button-right" {{action "changeEyesPressedRight" target="view"}}>
+                <div class="change-character-item-button-label-right">
+                </div>
+            </div>
+          </div>
+
+          <div class="change-character-item">
+            <div class="change-character-item-button-left" {{action "changeHairPressedLeft" target="view"}}>
+                <div class="change-character-item-button-label-left">
+                </div>
+            </div>
+            <div class="change-character-item-titel">{{t profile.customization.customHair}}</div>
+            <div class="change-character-item-button-right" {{action "changeHairPressedRight" target="view"}}>
+                <div class="change-character-item-button-label-right">
+                </div>
+            </div>
+          </div>
+
+          <div class="change-character-item">
+            <div class="change-character-item-button-left" {{action "changeMouthPressedLeft" target="view"}}>
+                <div class="change-character-item-button-label-left">
+                </div>
+            </div>
+            <div class="change-character-item-titel">{{t profile.customization.customMouth}}</div>
+            <div class="change-character-item-button-right" {{action "changeMouthPressedRight" target="view"}}>
+                <div class="change-character-item-button-label-right">
+                </div>
+            </div>
+          </div>
+
+          <div class="change-character-item">
+            <div class="change-character-item-button-left" {{action "changeBeardPressedLeft" target="view"}}>
+                <div class="change-character-item-button-label-left">
+                </div>
+            </div>
+            <div class="change-character-item-titel">{{#if isMale}}{{t profile.customization.customBeard}}{{else}}{{t profile.customization.customChains}}{{/if}}</div>
+            <div class="change-character-item-button-right" {{action "changeBeardPressedRight" target="view"}}>
+                <div class="change-character-item-button-label-right">
+                </div>
+            </div>
+          </div>
+
+          <div class="change-character-item">
+            <div class="change-character-item-button-left" {{action "changeTattoosPressedLeft" target="view"}}>
+                <div class="change-character-item-button-label-left">
+                </div>
+            </div>
+            <div class="change-character-item-titel">{{t profile.customization.customTattoos}}</div>
+            <div class="change-character-item-button-right" {{action "changeTattoosPressedRight" target="view"}}>
+                <div class="change-character-item-button-label-right">
+                </div>
+            </div>
+          </div>
+
+          {{#if isMale}}
+          <div class="change-character-item">
+            <div class="change-character-item-button-left" {{action "changeSymbolsPressedLeft" target="view"}}>
+                <div class="change-character-item-button-label-left">
+                </div>
+            </div>
+            <div class="change-character-item-titel">{{t profile.customization.customSymbols}}</div>
+            <div class="change-character-item-button-right" {{action "changeSymbolsPressedRight" target="view"}}>
+                <div class="change-character-item-button-label-right">
+                </div>
+            </div>
+          </div>
+           {{/if}}
+
+        </div>
+</script>
+<!--NEW DIALOGS END-->
+
+
 <script type="text/x-handlebars" data-template-name="character-profile-view">
   <div class="modal-dialog-background z-layer-3"></div>
   <div class="horizontal-center-helper">

@@ -9,6 +9,563 @@ var AWE = AWE || {};
 AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
+//NEW DIALOGS START
+/**
+   * @class
+   *
+   * View that allows the user to edit his profile.
+   *   
+   * @name AWE.UI.Ember.ProfileView 
+   */
+  module.ProfileNewView = module.PopUpDialog.extend( /** @lends AWE.UI.Ember.ProfileView# */ {
+    templateName: 'character-new-profile-view',
+    
+    character: null,
+    alliance:  null,
+    allianceMember: null,
+
+    onClose:   null,
+    
+    // FIXME hack for users that have already changed their name before reached the appropriate quest 
+    characterObserver: function() {
+      var characterId = this.getPath('character.id') || null;
+      if (characterId && this.getPath('character.name_change_count') > 0) {
+        AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_profile');
+      }       
+    }.observes('character.id'),
+    
+    setAndUpdateAlliance: function() {
+      var allianceId = this.getPath('character.alliance_id');
+      var self = this;
+      if (!allianceId) {
+        return ;
+      }
+      var alliance = AWE.GS.AllianceManager.getAlliance(allianceId);
+      this.set('alliance', alliance);
+      AWE.GS.AllianceManager.updateAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(result) {
+        self.set('alliance', result);
+      });
+    },     
+    
+    allianceIdObserver: function() {
+      this.setAndUpdateAlliance();
+    }.observes('character.alliance_id'),  
+
+    closeDialog: function() {
+      var self = this;
+          var action = AWE.Action.Fundamental.createChangeAvatarAction(self.getPath('character.avatar_string'));
+
+          AWE.Action.Manager.queueAction(action, function(statusCode) {
+            if(statusCode == 200) {
+              AWE.GS.CharacterManager.updateCurrentCharacter();
+              self.destroy();
+            }
+            else {
+              var errorDialog = AWE.UI.Ember.InfoDialog.create({
+                heading: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.heading'),
+                message: AWE.I18n.lookupTranslation('profile.customization.errors.changeFailed.text'),
+              });
+              WACKADOO.presentModalDialog(errorDialog);
+            }
+          });
+      this._super();
+    },
+  });
+
+module.ProfileNewTabView = module.TabViewNew.extend({
+
+    character: null,
+    alliance:  null,
+    allianceMember: null,
+
+    init: function() {
+
+     this.set('tabViews', [
+       { key:   "tab1",
+         title: "Info", 
+         view:  module.ProfileNewInfoView.extend({ 
+            characterBinding: "parentView.parentView.character", 
+            allianceBinding:  "parentView.parentView.alliance", 
+          }),
+         buttonClass: "left-menu-button"
+       }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
+       { key:   "tab2",
+         title: "Rank", 
+         view:  module.ProfileNewRangView.extend({ 
+            characterBinding: "parentView.parentView.character", 
+            allianceBinding:  "parentView.parentView.alliance", 
+          }),
+         buttonClass: "middle-menu-button"
+       },
+       { key:   "tab3",
+         title: "Customize", 
+         view: module.ProfileNewCustomizeView.extend({ 
+            characterBinding: "parentView.parentView.character", 
+            allianceBinding:  "parentView.parentView.alliance", 
+          }),
+         buttonClass: "right-menu-button"
+       }
+     ]);
+
+     this._super();
+   },
+
+   characterObserver: function() {
+      var characterId = this.getPath('character.id') || null;
+      if (characterId) {
+        AWE.GS.CharacterManager.updateCharacter(characterId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      }       
+    }.observes('character.id'),
+
+ });
+
+module.ProfileNewInfoView  = Ember.View.extend ({
+   
+    templateName: 'profile-info-tab1-view',
+    
+    character: null,
+    alliance:  null,
+
+    showDescription: function() {
+      return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/g, '<br />');
+    }.property('character.description'),
+
+    processNewDescription: function(newDescription) {
+      var self = this;
+      var action = AWE.Action.Fundamental.createChangeCharacterDescriptionAction(newDescription);
+      AWE.Action.Manager.queueAction(action, function(status) {
+        if (status === AWE.Net.OK) {
+          self.set('message', null);
+        }
+        else {
+          self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeDescriptionError'));
+        }
+      });        
+    },
+
+    changeDescriptionPressed: function() {
+      //debugger
+     // this.setPath('character.avatar_string', 'f1010101100002');
+      this.processNewDescription(this.getPath('character.description'));
+    },
+
+   });
+   
+module.ProfileNewRangView  = Ember.View.extend  ({
+   
+    templateName: 'profile-rank-tab2-view',
+
+    character: null,
+    alliance:  null,
+
+    progressBarPosition: null,
+    
+    maxExp:              null,
+        
+    nextMundaneRanks: function() {
+      var ranks   = AWE.GS.RulesManager.getRules().character_ranks.mundane;
+      var present = this.getPath('character.mundane_rank');
+      
+      if (present === undefined || present === null) {
+        return [];
+      }
+      
+      var infos = [];
+      for (var i=Math.max(present,1); i < ranks.length; i++) { // don't display first rank (Zero Experience)
+        infos.push({
+          rule:        ranks[i],
+          position:    ranks[i].exp,
+          presentRank: i === present,
+        });
+        if (i !== present && ranks[i].settlement_points > 0) {
+          break ;
+        }
+      }
+      
+      var maxExp = infos[infos.length-1].position;
+      var minExp = infos[0].position;
+
+      if(minExp > this.getPath('character.exp'))//prevent wrong progress on lvl 1
+        minExp = 0;
+
+      infos.forEach(function(item) {
+        item.position = (1.0 - item.position/(1.0*maxExp)) * 100 + "%";
+      });
+      
+      var ownPosition = (((this.getPath('character.exp') - minExp)*100)/(maxExp - minExp));
+
+      if(ownPosition < 0)//prevent negative progress
+        ownPosition = 0;
+
+      var ownCustomOwnProgress =  parseInt(ownPosition) + "%";
+      //(1.0 - (this.getPath('character.exp') || 0)/(1.0*maxExp))*100 + "%";
+      this.set('progressBarPosition', ownCustomOwnProgress);
+      
+      this.set('maxExp', maxExp);
+      return infos;
+    }.property('character.exp').cacheable(),
+
+    currentMundaneRank: function(){
+      var rank = this.getPath('character.mundane_rank');
+      if(rank < 1)
+        return 1;
+      else
+        return rank;
+    }.property('character.exp').cacheable(),
+
+    nextMundaneRank: function(){
+      var ranks = this.get('nextMundaneRanks');
+      return ranks[ranks.length - 1];
+
+    }.property('character.exp').cacheable(),
+
+    barWidth: function(){
+      this.get('nextMundaneRanks');
+      return "background-size: "+ this.get('progressBarPosition') + " 100%";
+    }.property().cacheable(),
+
+   });
+
+  
+   
+module.ProfileNewCustomizeView  = Ember.View.extend  ({
+   
+    templateName: 'profile-customize-tab3-view',
+
+    character: null,
+    alliance:  null,
+    characterNameInput: '',
+
+    changingName:     false,
+    changingGender:   false,
+
+    //isGenderM: true,
+    changeGenderPressed: function() {
+        if(this.get('firstTwoGenderChange'))
+        {
+          this.changeGenderPressedOld();
+        }
+        else
+        {
+            var that = this;
+              var confirmationDialog = AWE.UI.Ember.Dialog.create({
+              templateName: 'info-dialog',
+
+              classNames: ['confirmation-dialog'],
+
+              //change gender on OK
+              genderChangeCosts: that.get("genderChangeCosts"),
+
+              character: that.get("character"),
+              heading:    AWE.I18n.lookupTranslation('profile.customization.changeGender'), 
+              message:    AWE.I18n.lookupTranslation('profile.customization.changeGenderCaption') + " " + this.get('genderChangeCosts') + " " + AWE.I18n.lookupTranslation('profile.customization.customToads'),
+              
+              cancelText: AWE.I18n.lookupTranslation('alliance.confirmReport.cancel'),
+              okText:     AWE.I18n.lookupTranslation('alliance.confirmReport.ok'),
+             
+              changeGenderPressedOld: that.get("changeGenderPressedOld"),
+
+              okPressed: function() {
+                this.changeGenderPressedOld();
+                this.destroy();
+              },
+              
+              cancelPressed: function() { this.destroy(); },
+              
+            });
+            WACKADOO.presentModalDialog(confirmationDialog);
+        }
+    },
+
+    genderChangeCosts: function() {
+      return AWE.GS.RulesManager.getRules().change_character_gender.amount;
+    }.property().cacheable(),
+
+    genderChangeResource: function() {
+      var resourceId = AWE.GS.RulesManager.getRules().change_character_gender.resource_id;
+      return AWE.GS.RulesManager.getRules().getResourceType(resourceId).symbolic_id;
+    }.property().cacheable(),
+
+    firstTwoGenderChange: function() {
+      var count = this.getPath('character.gender_change_count');
+      return count === undefined || count === null || count < 2;
+    }.property('character.gender_change_count'), 
+    
+    changeGenderPressedOld: function() {
+
+      var female = this.getPath('character.female');
+      var newGender = female ? "male" : "female";
+      var self = this;
+      var changeCounter = this.getPath('character.gender_change_count');
+
+      this.set('message', null);  
+      this.set('changingGender', true);
+      
+      var action = AWE.Action.Fundamental.createChangeCharacterGenderAction(newGender);
+      AWE.Action.Manager.queueAction(action, function(status) {
+        self.set('changingGender', false);
+        if (status === AWE.Net.OK) {
+          if (changeCounter > 0) {
+            AWE.GS.ResourcePoolManager.updateResourcePool();
+          }
+        }
+        else if (status === AWE.Net.FORBIDDEN) {
+          self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeGenderCost'))
+        }
+        else {
+          self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeGenderError'));
+        }
+      });        
+    },
+
+    toggleTopStyle: function(){
+
+      if(this.getPath('character.gender') === "male")
+      {
+        return "toggle-on";
+      }
+      else
+      {
+        return "toggle-off";
+      }
+
+    }.property('character.gender').cacheable(),
+
+    toggleBottomStyle: function(){
+
+      if(this.getPath('character.gender') === "male")
+      {
+        return "toggle-off";
+      }
+      else
+      {
+        return "toggle-on";
+      }
+
+    }.property('character.gender').cacheable(),
+
+    nameChangeCosts: function() {
+      return AWE.GS.RulesManager.getRules().change_character_name.amount;
+    }.property().cacheable(),
+    
+    nameChangeResource: function() {
+      var resourceId = AWE.GS.RulesManager.getRules().change_character_name.resource_id;
+      return AWE.GS.RulesManager.getRules().getResourceType(resourceId).symbolic_id;
+    }.property().cacheable(),
+    
+    firstTwoNameChange: function() { 
+      var count = this.getPath('character.name_change_count');
+      return count === undefined || count === null || count < AWE.GS.RulesManager.getRules().change_character_name.free_changes;
+    }.property('character.name_change_count'), 
+    
+    changeNamePressed: function() {
+      this.set('message', null);
+      this.processNewName(this.getPath('characterNameInput'));
+    },
+    
+
+    processNewName: function(newName) {
+      
+      if (!newName || newName.length < 3) {
+        this.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.nameTooShort'));
+      }
+      else if (!newName || newName.length > 12) {
+        this.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.nameTooLong'));
+      }
+      else if (newName === this.getPath('character.name')) {
+        this.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.nameNoChange'));
+      }      
+      else {  // now, really send the name
+        var self = this;
+        var changeCounter = this.getPath('character.name_change_count');
+        this.set('changingName', true);
+        var action = AWE.Action.Fundamental.createChangeCharacterNameAction(newName);
+        AWE.Action.Manager.queueAction(action, function(status) {
+          self.set('changingName', false);
+          if (status === AWE.Net.OK) {
+            AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_profile');
+            if (changeCounter > 0) {
+              AWE.GS.ResourcePoolManager.updateResourcePool();
+            }
+          }
+          else if (status === AWE.Net.CONFLICT) {
+            self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.nameTaken'))
+          }
+          else if (status === AWE.Net.FORBIDDEN) {
+            self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeNameCost'))
+          }
+          else {
+            self.set('message', AWE.I18n.lookupTranslation('profile.customization.errors.changeNameError'));
+          }
+        });        
+      }
+    },
+
+   });
+
+module.ProfileNewCustomizeSettingsView  = Ember.View.extend  ({
+   
+    templateName: 'profile-customize-settings-view',
+
+    character: null,
+    alliance:  null,
+    isMale: function()
+    {
+      if(this.getPath('character.gender') === "male")
+        return true;
+      else
+        return false;
+    }.property('character.gender'),
+
+    changeAvatarString: function(avatarPart, isNext){
+      var avatarString = this.getPath('character.avatar_string');
+      var gender = (avatarString.charAt(0) == 'm' ? 'male' : 'female');
+      var parts = AWE.GS.RulesManager.getRules().avatar_config[gender];
+      var currentPart = null;
+      var maxCount = null;
+      var numChars = null;
+      var charOffset = null;
+      var isOptional = null;
+
+      for(part in parts) { 
+        if(part === avatarPart)
+        {
+          currentPart = parts[part];
+          maxCount = parts[part].max + 1;
+          numChars = parts[part].num_chars;
+          isOptional = parts[part].optional;
+          charOffset = this.getPath('character.avatar_obj.avatar_rules.offset')[part];
+        }
+      }
+
+      var partValue = parseInt(avatarString.substring(charOffset, charOffset + numChars));
+
+      if(isNext)//check next or previous
+      {
+        partValue = (partValue + 1)%maxCount;
+        //check if optional, don't show 0 part if optional false
+        if(!isOptional && partValue === 0)
+        {
+          partValue = (partValue + 1)%maxCount;
+        }
+      }
+      else
+      {
+        partValue = (partValue - 1)%maxCount;
+        if(partValue < 0)//don't use negative
+          partValue = maxCount - 1;
+        //check if optional, don't show 0 part if optional false
+        if(!isOptional && partValue === 0)
+        {
+          partValue = (partValue - 1)%maxCount;
+          if(partValue < 0)//don't use negative
+            partValue = maxCount - 1;
+        }
+      }
+
+      var newAvatarString = avatarString.substring(0, charOffset) + this.numString(partValue, numChars) + avatarString.substring(charOffset+numChars);
+      this.setPath('character.avatar_string', newAvatarString);
+      //debugger
+    },
+
+    numString: function(n,numC){
+      if(numC > 1)
+        return n > 9 ? "" + n: "0" + n;
+      else
+        return "" + n;
+},
+
+    changeEyesPressedLeft: function() {
+      
+      this.changeAvatarString("eyes", false);
+    },
+
+    changeEyesPressedRight: function() {
+      
+      this.changeAvatarString("eyes", true);
+    },
+
+    changeMouthPressedLeft: function() {
+      
+      this.changeAvatarString("mouths", false);
+    },
+
+    changeMouthPressedRight: function() {
+      
+      this.changeAvatarString("mouths", true);
+    },
+
+    changeTattoosPressedLeft: function() {
+      
+      this.changeAvatarString("tattoos", false);
+    },
+
+    changeTattoosPressedRight: function() {
+      
+      this.changeAvatarString("tattoos", true);
+    },
+
+    changeHairPressedLeft: function() {
+      
+      this.changeAvatarString("hairs", false);
+    },
+
+    changeHairPressedRight: function() {
+      
+      this.changeAvatarString("hairs", true);
+    },
+
+    changeBeardPressedLeft: function() {
+      if(this.get('isMale'))
+        this.changeAvatarString("beards", false);
+      else
+        this.changeAvatarString("chains", false);
+    },
+
+    changeBeardPressedRight: function() {
+      
+      if(this.get('isMale'))
+        this.changeAvatarString("beards", true);
+      else
+        this.changeAvatarString("chains", true);
+
+    },
+
+    changeSymbolsPressedLeft: function() {
+      
+      this.changeAvatarString("veilchens", false);
+    },
+
+    changeSymbolsPressedRight: function() {
+      
+      this.changeAvatarString("veilchens", true);
+    },
+
+   });
+
+module.ProfileDescriptionTextarea = Ember.TextArea.extend({
+
+  character: null,
+  placeholder : function () {
+      if(this.getPath('character.discription'))
+      {
+        return $('<div/>').text(this.getPath('character.description')).html().replace(/\n/g, '<br />');
+      }
+      else
+      {
+        return AWE.I18n.lookupTranslation('profile.customization.missingDescription');
+      }
+    }.property('character.description'),
+
+  });
+
+module.UserNameTextfield = Ember.TextField.extend({
+    //classNames: ["create-army-dialog-name"],
+  });
+
+//NEW DIALOGS END
+
+
   
   module.ProfileTabView = module.TabView.extend({
     
@@ -580,7 +1137,6 @@ AWE.UI.Ember = (function(module) {
       this.set('progressBarPosition', ownPosition);
       
       this.set('maxExp', maxExp);
-      
       return infos;
     }.property('character.exp').cacheable(),
     

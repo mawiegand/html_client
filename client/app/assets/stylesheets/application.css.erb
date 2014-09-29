@@ -744,7 +744,7 @@ h3 {
 
 .modal-dialog-pane-new .avatar{
   position: absolute;
-  top: 49px;
+  top: 30px;
   left: 13px;
 }
 
@@ -1393,6 +1393,486 @@ h3 {
 
 .menu-dialog-pane .row5 {
   margin: 25px 0 0 0;
+}
+
+
+/* == PROFILE INFO SELF == */
+
+.description-change-button
+{
+  position: absolute;
+  left: 400px;
+  top: 490px;
+  line-height: 50px;
+  font-size: 14px;
+}
+
+.description-text-area/* input[type="text"] */{
+  position: absolute;
+  top: 208px;
+  height: 100px;
+  font-size: 20px;
+  width: 588px;
+  margin-right: 0px!important;
+  border: 0!important;
+  border-radius: 0!important;
+  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  padding: 2px!important;
+  margin-left: 13px!important;
+  resize: none;
+  color: rgb(112,92,48);
+  background-color: rgb(255,255,255);
+  left: 4px;
+}
+
+.profile-tab-view
+{
+  position: relative;
+  top: 28px;
+  width: 640px;
+}
+
+.description {
+  color: rgb(112,92,48);
+  font-size: 1.0em;
+  padding: 0 20px 0 20px;
+  margin: 20px 0 0 0;
+  font-family: 'hvd_comic_serif_proregular', 'cursive';
+}
+
+.profile-info-self-dialog-pane .row1 {
+  margin: 20px 0 20px 0;
+}
+.profile-info-self-dialog-pane .row2 {
+  height: 70px;
+}
+
+.profile-info-self-dialog-pane .button {
+  width: 184px;
+  height: 48px;
+
+  color: rgb(256,256,256);
+  font-size: 2em;
+  text-align: center;
+  line-height: 45px;
+  margin: auto;
+}
+
+.profile-info-self-dialog-pane .rank {
+  background:url("<%= asset_path 'ui/button_profile_blue@2x~iPhone.png' %>") no-repeat center center;
+}
+
+.profile-info-self-dialog-pane .rank:hover {
+  background:url("<%= asset_path 'ui/button_profile_blue_up@2x~iPhone.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.profile-info-self-dialog-pane .info {
+  background:url("<%= asset_path 'ui/button_profile_orange@2x~iPhone.png' %>") no-repeat center center;
+}
+
+.profile-info-self-dialog-pane .info:hover {
+  background:url("<%= asset_path 'ui/button_profile_orange_up@2x~iPhone.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.profile-info-self-dialog-pane .avatar {
+  width: 144px;
+  height: 152px;
+  /*background:url("<%= asset_path 'ui/graphic_profile_avatar@2x~iPhone.png' %>") no-repeat center center;*/
+}
+
+.profile-info-self-dialog-pane .line {
+  padding: 0 20px 0 20px;
+  text-align: center;
+}
+
+.profile-info-self-dialog-pane .line1 {
+  color: rgb(112,92,48);
+  font-size: 1.3em;
+}
+
+.profile-info-self-dialog-pane .line2 {
+  color: rgb(53,118,178);
+  font-size: 2em;
+}
+
+.profile-info-self-dialog-pane .line1 div,
+.profile-info-self-dialog-pane .line2 div {
+  display: inline-block;
+  height: 65px;
+}
+
+.profile-info-self-dialog-pane .clubs-value,
+.profile-info-self-dialog-pane .guy-value,
+.profile-info-self-dialog-pane .thing-value,
+.profile-info-self-dialog-pane .thumb-up-value,
+.profile-info-self-dialog-pane .thumb-down-value {
+  display: inline-block;
+  line-height: 10px;
+  vertical-align: middle;
+}
+
+.profile-info-self-dialog-pane .thumb-up,
+.profile-info-self-dialog-pane .thumb-down {
+  margin: 0 20px 0 20px;
+}
+
+.profile-info-self-dialog-pane .clubs-icon {
+  width: 48px;
+  /*height: 40px;*/
+  background:url("<%= asset_path 'ui/graphic_profile_clubs@2x~iPhone.png' %>") no-repeat center center;
+  display: inline-block;
+}
+
+.profile-info-self-dialog-pane .guy-icon {
+  width: 48px;
+  /*height: 56px;*/
+  background:url("<%= asset_path 'ui/graphic_profile_guy@2x~iPhone.png' %>") no-repeat center center;
+  display: inline-block;
+}
+
+.profile-info-self-dialog-pane .thing-icon {
+  width: 64px;
+  /*height: 56px;*/
+  background:url("<%= asset_path 'ui/graphic_profile_thing@2x~iPhone.png' %>") no-repeat center center;
+  display: inline-block;
+}
+
+.profile-info-self-dialog-pane .thumb-up-icon {
+  width: 40px;
+  /*height: 40px;*/
+  background:url("<%= asset_path 'ui/graphic_thumb_up@2x~iPhone.png' %>") no-repeat center 2px;
+  display: inline-block;
+}
+
+.profile-info-self-dialog-pane .thumb-down-icon {
+  width: 40px;
+  /*height: 40px;*/
+  background:url("<%= asset_path 'ui/graphic_thumb_down@2x~iPhone.png' %>") no-repeat center 18px;
+  display: inline-block;
+}
+
+/* == PROFILE RANK SELF == */
+
+.xp {
+  background:url("<%= asset_path 'ui/graphic_resource_xp_small@2x~iPhone.png' %>") no-repeat;
+}
+
+.resource-icon-xp
+{
+  width: 32px;
+  height: 32px;
+}
+
+.profile-rank-self-dialog-pane .row1 {
+  margin: 20px 0 20px 0;
+}
+.profile-rank-self-dialog-pane .row3 {
+  height: 48px;
+  margin: 20px 0 20px 0;
+ }
+
+.profile-rank-self-dialog-pane .button {
+  width: 184px;
+  height: 48px;
+
+  color: rgb(256,256,256);
+  font-size: 2em;
+  text-align: center;
+  line-height: 45px;
+  margin: auto;
+}
+
+.current-rank,
+.next-rank,
+.current-level,
+.next-level {
+  padding: 0 20px 0 20px;
+  font-size: 0.8em;
+}
+
+.current-rank-title,
+.next-rank-title {
+  color: rgb(112,92,48);
+}
+
+.current-rank-value,
+.next-rank-value {
+  color: rgb(154,148,138);
+}
+
+.current-level-title,
+.next-level-title {
+  color: rgb(112,92,48);
+  line-height: 2em;
+  vertical-align: top;
+}
+
+.current-level-value,
+.next-level-value {
+  color: rgb(154,148,138);
+  line-height: 2em;
+  vertical-align: top;
+}
+
+.current-level div,
+.next-level div {
+  display: inline-block;
+}
+
+.rank-background {
+  background:url("<%= asset_path 'ui/graphic_profile_rank_background@2x~iPhone.png' %>") no-repeat center center;
+}
+
+.rank-bar {
+  width: 560px;
+  height: 48px;
+  background:url("<%= asset_path 'ui/graphic_profile_rank_bar@2x~iPhone.png' %>") no-repeat left center;
+  background-size: 80% 100%;
+  text-align: center;
+  margin:auto;
+}
+
+.progress-value {
+  color: rgb(256,256,256);
+  line-height: 1.9em;
+  font-size: 1.0em;
+}
+
+/* == PROFILE CUSTOMIZE SELF == */
+
+::-webkit-input-placeholder {
+   color: rgb(113,93,49);
+}
+
+:-moz-placeholder {
+   color: rgb(113,93,49);
+}
+
+::-moz-placeholder {  
+   color: rgb(113,93,49);
+}
+
+:-ms-input-placeholder {  
+   color: rgb(113,93,49);
+}
+
+
+
+.toggle-gender
+{
+  height: 112px;
+  width: 32px;
+  position: absolute;
+  right: 362px;
+  top: 88px;
+}
+.toggle-on
+{
+  height: 56px;
+  width: 32px;
+  background:url("<%= asset_path 'ui/Toggle_On@2x~iPhone.png' %>") no-repeat left center;
+}
+.toggle-off
+{
+  height: 56px;
+  width: 32px;
+  background:url("<%= asset_path 'ui/Toggle_Off@2x~iPhone.png' %>") no-repeat left center;
+}
+.female
+{
+  position: absolute;
+  left: 6px;
+  bottom: 14px;
+  height: 28px;
+  width: 20px;
+  background:url("<%= asset_path 'ui/icon_female@2x~iphone.png' %>") no-repeat left center;
+}
+.male
+{
+  position: absolute;
+  left: 4px;
+  top: 14px;
+  height: 28px;
+  width: 24px;
+  background:url("<%= asset_path 'ui/icon_male_@2x~iphone.png' %>") no-repeat left center;
+}
+
+.change-character-item
+{
+  display: inline-block;
+  height: 60px;
+  width: 320px;
+}
+
+.change-character-item-titel
+{
+  display: inline-block;
+  height: 60px;
+  width: 158px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 60px;
+  position: relative;
+  left: 10px;
+  bottom: 10px;
+}
+
+.change-character-item-button-left
+{
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  top: 8px;
+  left: 12px;
+  width: 58px;
+  height: 42px;
+  background:url("<%= asset_path 'ui/button_blue_short_change@2x~iphone.png' %>") no-repeat left center;
+}
+.change-character-item-button-right
+{
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  top: 8px;
+  left: 0px;
+  width: 58px;
+  height: 42px;
+  background:url("<%= asset_path 'ui/button_blue_short_change@2x~iphone.png' %>") no-repeat left center;
+}
+
+.change-character-item-button-label-left
+{
+  width: 24px;
+  height: 32px;
+  background:url("<%= asset_path 'ui/icon_arrow_single_left@2x~iphone.png' %>") no-repeat left center;
+  position: relative;
+  left: 16px;
+  top: 3px;
+}
+
+.change-character-item-button-label-right
+{
+  width: 24px;
+  height: 32px;
+  background:url("<%= asset_path 'ui/icon_arrow_single_right@2x~iphone.png' %>") no-repeat left center;
+  position: relative;
+  left: 16px;
+  top: 3px;
+}
+
+.rowcustomize .customavatar
+{
+  position: absolute;
+  left: 38px;
+  top: 30px;
+}
+
+.item-toad
+{
+  display: inline-block;
+  position: relative;
+  left: -4px;
+  top: 4px;
+  width: 24px;
+  height: 24px;
+  background:url("<%= asset_path 'ui/item_toads~iphone.png' %>") no-repeat left center;
+}
+
+.item-price
+{
+  display: inline-block;
+  width: auto;
+  height: 20px;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  line-height: 20px;
+  text-shadow:  1px  1px 1px rgb(112,94,62),
+                  1px -1px 1px rgb(112,94,62),
+                 -1px  1px 1px rgb(112,94,62),
+                 -1px -1px 1px rgb(112,94,62);
+}
+
+.name-change-button-gold-titel
+{
+  position: relative;
+  bottom: 5px;
+  width: 188px;
+  height: 20px;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  line-height: 18px;
+  text-shadow:  1px  1px 1px rgb(112,94,62),
+                  1px -1px 1px rgb(112,94,62),
+                 -1px  1px 1px rgb(112,94,62),
+                 -1px -1px 1px rgb(112,94,62);
+}
+
+.name-change-button-gold
+{
+  position: absolute;
+  left: 374px;
+  top: 134px;
+  width: 180px;
+  height: 64px;
+  background:url("<%= asset_path 'ui/button_gold_big@2x~iphone.png' %>") no-repeat left center;
+  color: white;
+  font-size: 15px;
+  text-align: center;
+  line-height: 38px;
+  cursor: pointer;
+}
+
+.name-change-button
+{
+  position: absolute;
+  left: 306px;
+  top: 146px;
+  width: 308px;
+  height: 52px;
+  background:url("<%= asset_path 'ui/button_green_wide@2x~iphone.png' %>") no-repeat left center;
+  color: white;
+  font-size: 15px;
+  text-align: center;
+  line-height: 48px;
+  cursor: pointer;
+}
+
+.name-change-button:hover
+{
+  background:url("<%= asset_path 'ui/button_green_wide@2x~iphone.png' %>") no-repeat left center;
+}
+
+.profile-info-self-dialog-pane .rowcustomize
+{
+  height: 160px;
+}
+
+.profile-info-self-dialog-pane .rowcustomizesettings
+{
+  height: 186px;
+}
+
+.row2 input[type="text"] {
+  position: absolute;
+  top: 90px;
+  right: 28px;
+  height: 32px;
+  font-size: 20px;
+  width: 296px;
+  margin-right: 0px!important;
+  border: 0!important;
+  border-radius: 0!important;
+  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  padding: 2px!important;
+  margin-left: 13px!important;
+  resize: none;
+  color: rgb(112,92,48);
+  /*background-color: rgb(255,255,255);*/
+  background:url("<%= asset_path 'ui/background_input_big@2x~iphone.png' %>") no-repeat left center;
 }
 
 /* == ASSIGNMENTS == */
