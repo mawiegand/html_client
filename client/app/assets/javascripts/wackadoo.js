@@ -643,6 +643,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
     activateAllianceController: function(alliance_id) {
       var allianceScreen = null;
+      debugger;
       var alliance = AWE.GS.AllianceManager.getAlliance(alliance_id);
       if (!alliance) {
         return null;
