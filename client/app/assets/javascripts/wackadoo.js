@@ -642,27 +642,27 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
 
     activateAllianceController: function(alliance_id) {
-      var allianceScreen = null;
-      debugger;
-      var alliance = AWE.GS.AllianceManager.getAlliance(alliance_id);
-      if (!alliance) {
-        return null;
-      }
-
-      allianceScreen = AWE.UI.Ember.AllianceView.create({
-        alliance:   alliance
-      });
-
-      WACKADOO.presentModalDialog(allianceScreen);
-      
-      // var allianceController = this.get('allianceScreenController');
-      // if (!allianceController) {
-      //   allianceController = AWE.Controller.createAllianceController('#layers');
-      //   this.set('allianceScreenController', allianceController);
+      // var allianceScreen = null;
+      // debugger;
+      // var alliance = AWE.GS.AllianceManager.getAlliance(alliance_id);
+      // if (!alliance) {
+      //   return null;
       // }
-      // allianceController.setAllianceId(alliance_id);
-      // allianceController.createView();
-      // this.setScreenController(allianceController);
+
+      // allianceScreen = AWE.UI.Ember.AllianceView.create({
+      //   alliance:   alliance
+      // });
+
+      // WACKADOO.presentModalDialog(allianceScreen);
+      
+      var allianceController = this.get('allianceScreenController');
+      if (!allianceController) {
+        allianceController = AWE.Controller.createAllianceController('#layers');
+        this.set('allianceScreenController', allianceController);
+      }
+      allianceController.setAllianceId(alliance_id);
+      allianceController.createView();
+      this.setScreenController(allianceController);
     },
 
 

@@ -2172,10 +2172,10 @@ h3 {
 .alliance-text {
   float: left;
   vertical-align: bottom;
-  padding: 20px 0 0 40px;
+  padding: 15px 0 0 40px;
   width: 85%;
   color: #735e3b;
-  font-family: 'Montserrat' sans-serif;
+  font-family: 'hvd_comic_serif_proregular', 'cursive';
   font-size: 0.7em;
 }
 
@@ -2233,7 +2233,70 @@ h3 {
   background:url("<%= asset_path 'dialogs/buttons/button_toggle_on/button_toggle_on@2x~iPhone.png' %>") no-repeat left center;
 }
 
+.alliance-description {
+  border: none;
+  width: 100%;
+  height: 115px;
+  font-family: 'hvd_comic_serif_proregular', 'cursive';
+  color: #735e3b;
+  font-size: 0.9em;
+  resize: none;
+}
 
+.alliance-description:focus {
+  border: none;
+  background-color: white;
+  width: 100%;
+  height: 115px;
+  color: black;
+}
+
+
+/* == Alliance Members Screen == */
+.alliance-member-container {
+  text-align: center;
+}
+
+.alliance-member-container h3 {
+  font-size: 0.9em;
+  font-family: 'hvd_comic_serif_proregular', 'cursive';
+}
+
+.alliance-member-container table {
+  margin-left: 15px;
+}
+
+.alliance-member-container .membersTable-name {
+  padding-left: 20px;
+  font-size: 0.9em;
+  text-align: left;
+  width: 361px;
+  height: 40px;
+  background:url("<%= asset_path 'dialogs/backgrounds/background_textfield_brown_light_big/background_textfield_brown_light_big@2x~iphone.png' %>") no-repeat left center;
+}
+
+.alliance-member-container .membersTable-name .status-dot {
+  float: right;
+  margin: 5px 20px;
+}
+
+.alliance-member-container .membersTable-button {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  font-size: 0.9em;
+  width: 200px;
+  height: 40px;
+  background:url("<%= asset_path 'dialogs/backgrounds/background_textfield_brown_light_small/background_textfield_brown_light_small@2x~iphone.png' %>") no-repeat left center;
+}
+
+.alliance-member-container .membersTable-button.inactive {
+  color: grey;
+}
 
 
 /* == SPECIFIC SCREEN CSS END == */
@@ -8247,7 +8310,7 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   vertical-align: bottom;
   width:28px;
   height:28px;
-  background-image: url('<%= asset_path("green.png") %>');
+  background-image: url('<%= asset_path("dialogs/specials/dot_green/dot_green@2x~iphone.png") %>');
 }
 
 .isAway{
@@ -8255,7 +8318,7 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   vertical-align: bottom;
   width: 28px;
   height: 28px;
-  background-image: url('<%= asset_path("yellow.png") %>');
+  background-image: url('<%= asset_path("dialogs/specials/dot_yellow/dot_yellow@2x~iphone.png") %>');
 }
 
 .isOff{
@@ -8263,7 +8326,7 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   vertical-align: bottom;
   width: 28px;
   height: 28px;
-  background-image: url('<%= asset_path("red.png") %>');
+  background-image: url('<%= asset_path("dialogs/specials/dot_red/dot_red@2x~iphone.png") %>');
 }
 
 .quest-reward-item-icon{
