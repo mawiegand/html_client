@@ -91,7 +91,7 @@
     <div class="cell cell-30 avatar">
         {{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="customavatar" width="150" height="154"}}
     </div>
-        {{view AWE.UI.Ember.UserNameTextfield valueBinding="characterNameInput" placeholder=character.name classNames="newname" }}
+        {{view AWE.UI.Ember.UserNameTextfield valueBinding="character.name" classNames="newname" }}
     {{#if firstTwoNameChange}}
       <div class="name-change-button" {{action "changeNamePressed" target="view"}}>
             Change Name

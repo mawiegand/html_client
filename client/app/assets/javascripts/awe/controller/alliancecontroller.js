@@ -127,7 +127,6 @@ AWE.Controller = (function(module) {
       
       var allianceScreen = null;
       var alliance = AWE.GS.AllianceManager.getAlliance(that.allianceId);
-
       if (!alliance) {
         return null;
       }

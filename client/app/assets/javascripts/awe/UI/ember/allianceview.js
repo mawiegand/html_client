@@ -74,6 +74,10 @@ AWE.UI.Ember = (function(module) {
 
     open: function() {
       WACKADOO.presentModalDialog(this);
+    },
+
+    onClose: function() {
+      //WACKADOO.activateMapController(true);
     }
 
   });
