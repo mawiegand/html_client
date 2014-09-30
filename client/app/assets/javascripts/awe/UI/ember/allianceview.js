@@ -210,7 +210,26 @@ AWE.UI.Ember = (function(module) {
 
     isToggleOn: function(){
       return this.getPath("alliance.auto_join_disabled");
-    }.property("alliance.auto_join_disabled")
+    }.property("alliance.auto_join_disabled"),
+
+    processNewDescription: function() {
+      var self = this;
+      var action = AWE.Action.Fundamental.createChangeAllianceDescriptionAction(this.getPath('alliance.description'), this.get('alliance'));
+      AWE.Action.Manager.queueAction(action, function(status) {
+        if (status === AWE.Net.OK) {
+          self.set('message', null);
+        }
+        else if (status === AWE.Net.FORBIDDEN) {
+          self.set('message', AWE.I18n.lookupTranslation('alliance.error.changeDescriptionForbidden'));
+        }
+        else if (status === AWE.Net.CONFLICT) {
+          self.set('message', AWE.I18n.lookupTranslation('alliance.error.changeDescriptionConflict'));
+        }
+        else {
+          self.set('message', AWE.I18n.lookupTranslation('alliance.error.changeDescriptionError'));
+        }
+      });        
+    },
 
   });
 
@@ -219,7 +238,176 @@ AWE.UI.Ember = (function(module) {
     templateName: 'alliance-members-tab',
     classNames: ['alliance-members-tab'],
 
-    alliance: null
+    alliance: null,
+    noLeader: true,
+    candidate: null,
+
+    isAllianceLeader: function() {
+      var leaderId = this.getPath('alliance.leader_id');
+      var characterId = AWE.GS.game.getPath('currentCharacter.id');
+      return leaderId && leaderId === characterId;
+    }.property('alliance.leader_id', 'AWE.GS.game.currentCharacter.id').cacheable(),
+
+    ownAlliance: function() {
+      var allianceId = this.getPath('alliance.id');
+      var ownAllyId = AWE.GS.game.getPath('currentCharacter.alliance_id');
+      return allianceId && allianceId === ownAllyId;
+    }.property('alliance.id', 'AWE.GS.game.currentCharacter.alliance_id').cacheable(),
+
+    kickMember: function(character) {
+      var currentCharacter = AWE.GS.game.get('currentCharacter');
+      var alliance         = this.get('alliance');
+      var allianceId       = this.getPath('alliance.id');
+
+      if (character        === undefined || character        === null ||
+          alliance         === undefined || alliance         === null ||
+          currentCharacter === undefined || currentCharacter === null) {
+
+        var dialog = AWE.UI.Ember.Dialog.create({
+          contentTemplateName: 'info-dialog',
+          
+          heading:             AWE.I18n.lookupTranslation('error.genericClientHeading'),
+          message:             AWE.I18n.lookupTranslation('error.genericClientMessage'),
+          
+          cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+          okPressed:           null,
+          cancelPressed:       function() { this.destroy(); },
+        });          
+        WACKADOO.presentModalDialog(dialog);
+
+      }
+      else if (character.get('alliance_id')        !== allianceId ||
+               currentCharacter.get('alliance_id') !== allianceId ||
+               currentCharacter.get('id')          !== alliance.get('leader_id') ||
+               character.get('id')                 === alliance.get('leader_id')) {
+
+        var dialog = AWE.UI.Ember.Dialog.create({
+          contentTemplateName: 'info-dialog',
+          
+          heading:             AWE.I18n.lookupTranslation('alliance.error.kickHeading'),
+          message:             AWE.I18n.lookupTranslation('alliance.error.kickMessage'),
+          
+          cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+          okPressed:           null,
+          cancelPressed:       function() { this.destroy(); },
+        });          
+        WACKADOO.presentModalDialog(dialog);
+
+      }
+      else {
+        var confirmationDialog = AWE.UI.Ember.Dialog.create({
+          templateName: 'info-dialog',
+
+          classNames: ['confirmation-dialog'],
+        
+          heading:    AWE.I18n.lookupTranslation('alliance.confirmKick.heading'), 
+          message:    AWE.I18n.lookupTranslation('alliance.confirmKick.message1')  + character.get('name') + AWE.I18n.lookupTranslation('alliance.confirmKick.message2'),
+          
+          cancelText: AWE.I18n.lookupTranslation('alliance.confirmKick.cancel'),
+          okText:     AWE.I18n.lookupTranslation('alliance.confirmKick.ok'),
+        
+          okPressed:  function() {
+            var self = this;
+            var action = AWE.Action.Fundamental.createKickAllianceMemberAction(character.get('id'), allianceId);
+            action.send(function(status) {
+              self.destroy();      
+              if (status === AWE.Net.OK || status === AWE.Net.CREATED) {    // 200 OK
+                log(status, "Member kicked.");
+              }
+              else {
+                log(status, "The server did not accept the kick member command.");
+                var dialog = AWE.UI.Ember.InfoDialog.create({
+                  contentTemplateName: 'server-command-failed-info',
+                  cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+                  okPressed:           null,
+                  cancelPressed:       function() { this.destroy(); },
+                });          
+                WACKADOO.presentModalDialog(dialog);
+              } 
+            });     
+          },
+          cancelPressed: function() { this.destroy(); }
+        });
+        WACKADOO.presentModalDialog(confirmationDialog);
+      }
+      return false; // prevent default behavior
+    },
+
+    setLeaderVoteSelection: function(character){
+      var characterId = character.id;
+      var members = this.getPath("alliance.hashableMembers.hash");
+      if (members[characterId]){
+        this.set("candidate", members[characterId]);
+      }
+    },
+
+    changeAllianceLeaderVote: function() {
+      if( this.getPath('alliance.vote_candidate_id') === this.getPath('candidate.id') ) { return; }
+      var self = this;
+      var action = AWE.Action.Fundamental.createAllianceLeaderVoteAction(this.getPath('alliance.id'), this.getPath('candidate.id'));
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        if (statusCode !== 200) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.allianceLeaderVoteFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.allianceLeaderVoteFailedText'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+      });
+    }.observes('candidate'),
+
+    updateView: function() {
+      this.rerender();
+    }.observes('alliance.leaderId'),
+
+  });
+
+  module.AllianceMember = Ember.View.extend({
+    templateName: 'alliance-member',
+    classNames: ['alliance-member'],
+
+    character: null,
+    alliance:   null,
+    controller: null,
+    noLeader: false,
+    
+    isLeader: function() {
+      var cid      = this.getPath('character.id');
+      var leaderId = this.getPath('alliance.leader_id');
+      return cid !== undefined && cid !== null && cid === leaderId;
+    }.property('character.id', 'alliance.leader_id'),
+    
+    kickMember: function() {
+      var parentView = this.get('parentView');
+      if (parentView) {
+        parentView.kickMember(this.get('character'));
+      }
+      return false; //prevent default action!
+    },
+
+    setLeaderVoteSelection: function() {
+      var parentView = this.get('parentView');
+      if(parentView) {
+        parentView.setLeaderVoteSelection(this.get('character'));
+      }
+    },
+
+    showCurrentCharacter: function() {
+      if(this.get('noLeader') && this.get('isLeader'))
+      {
+        return false;
+      }
+      return true;
+    }.property('isLeader', 'noLeader'),
+
+    currentCharacterVote: function() {
+      if(this.getPath('character.id') === this.getPath('alliance.vote_candidate_id'))
+      {
+        return true;
+      }
+      return false;
+    }.property('alliance.vote_candidate_id', 'character.id'),
+
 
   });
 

@@ -43,17 +43,72 @@
             </div>
             {{/if}}
         </div>
-        
+        {{#if isAllianceLeader}}
         <div class="alliance-text">
-            My money's in that office, right? If she start giving me some bullshit about 
-            it ain't there
+            {{view Ember.TextArea class="alliance-description" maxlength=AWE.Config.DESCRIPTION_MAX_LENGTH type="text" allianceBinding="alliance" valueBinding="alliance.description" focusOutBinding="processNewDescription"}}
         </div>
+        {{else}}
+        <div class="alliance-text">
+            {{alliance.description}}
+        </div>
+        {{/if}}
     </div>
 </script>
 
+<script type="text/x-handlebars" data-template-name="alliance-member">
+    {{#if showCurrentCharacter}}
+        <td class="membersTable-name">
+            {{view AWE.UI.Ember.LinkedCharacterView characterBinding="character" displayAlliance=false}}
+            {{#if character.isActiv}} 
+                <span class="status-dot isActiv" > </span>
+
+
+            {{else}}
+                {{#if character.isAway}}
+                    <span class="status-dot isAway" > </span>
+
+
+                {{else}}
+                    {{#if character.isOff}}
+                        <span class="status-dot isOff" > </span>
+                    {{/if}}
+                {{/if}}
+            {{/if}}
+        </td>
+        {{#if ownAlliance}}
+            {{#if isCurrentCharacterAllianceLeader}}
+                {{#if isLeader}}
+                    {{#if currentCharacterVote}}
+                    <td class="membersTable-button inactive">{{t alliance.leaderVoted}}</td>
+                    {{else}}
+                    <td {{action "setLeaderVoteSelection"}} class="membersTable-button">{{t alliance.leaderVote}}</td>
+                    {{/if}}
+                {{else}}
+                    <td {{action "kickMember"}} class="membersTable-button">{{t alliance.kickMember}}</td>
+                {{/if}}
+            {{else}}
+                {{#if currentCharacterVote}}
+                <td class="membersTable-button inactive">{{t alliance.leaderVoted}}</td>
+                {{else}}
+                <td {{action "setLeaderVoteSelection"}} class="membersTable-button">{{t alliance.leaderVote}}</td>
+                {{/if}}
+            {{/if}}
+        {{/if}}
+    {{/if}}
+</script>
+
 <script type="text/x-handlebars" data-template-name="alliance-members-tab">
-  <div class="alliance-container">
-    {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+  <div class="alliance-member-container">
+    <h3>{{t dialogs.alliance.allianceMembers.leader}}</h3>
+    <table>
+        {{view AWE.UI.Ember.AllianceMember tagName="tr" characterBinding="alliance.leader" allianceBinding="view.alliance" isCurrentCharacterAllianceLeaderBinding="view.isAllianceLeader" ownAllianceBinding="view.ownAlliance" controllerBinding="controller"}}
+    </table>
+    <h3>{{t dialogs.alliance.allianceMembers.members}}</h3>
+    <table>
+        {{#each alliance.members}}
+            {{view AWE.UI.Ember.AllianceMember noLeaderBinding="view.noLeader" tagName="tr" characterBinding="this" allianceBinding="view.alliance" isCurrentCharacterAllianceLeaderBinding="view.isAllianceLeader" ownAllianceBinding="view.ownAlliance" controllerBinding="controller"}}
+        {{/each}}
+    </table>
   </div>
 </script>
 

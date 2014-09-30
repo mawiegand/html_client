@@ -136,7 +136,6 @@ AWE.UI.Ember = (function(module) {
       var allianceId = entry.get('alliance_id');
       if (allianceId != null) {
         WACKADOO.activateAllianceController(allianceId);
-        debugger;
         WACKADOO.closeAllModalDialogs();
       }
       return false; // prevent default behavior

@@ -218,7 +218,7 @@ AWE.UI.Ember = (function(module) {
     },
   });
 
-  module.AllianceMemberView = Ember.View.extend({
+  module.AllianceMembersView = Ember.View.extend({
     templateName: 'alliance-member',
     
     character:  null,

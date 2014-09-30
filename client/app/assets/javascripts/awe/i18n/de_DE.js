@@ -439,6 +439,7 @@ AWE.I18n.de_DE = function(module) {
       founded: 'Gründung',
       leader: 'Anführer',
       leaderVote: 'Deine Stimme',
+      leaderVoted: 'Gewählt',
       description: 'Beschreibung',
       changeDescriptionDialogCaption: 'Gib deine neue Allianzbeschreibung ein.',
       changeDescription: 'Ändere Beschreibung',
@@ -1436,7 +1437,6 @@ AWE.I18n.de_DE = function(module) {
         description: "Hier steht wie man umziehen kann.",
         to: "nach"
       },
-      },
       alliance: {
         alliance: "Allianz",
         info: "Info",
@@ -1447,7 +1447,11 @@ AWE.I18n.de_DE = function(module) {
         allianceInfo: {
           slogan: "Losung:",
           autoJoin: "Aufnahme:"
-        }
+        },
+        allianceMembers: {
+          leader: "Anführer",
+          members: "Mitglieder",
+        },
       },
       move:{
         heading: "Umziehen",
