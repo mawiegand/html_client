@@ -34,7 +34,8 @@ AWE.UI.Ember = (function(module) {
     //army: null,
     garrisonArmy: null,
     owner: null,
-    
+    building: null,
+
     displayHeading: true,
     
     ownerObserver: function() {
@@ -57,6 +58,7 @@ AWE.UI.Ember = (function(module) {
     allianceMember: null,
     unitTypes: null,
     garrisonArmy: null,
+    building: null,
 
     init: function() {
 
@@ -73,6 +75,7 @@ AWE.UI.Ember = (function(module) {
        { key:   "tab2",
          title: "Infantry", 
          view:  module.InfantryInfoView.extend({ 
+          buildingBinding: "parentView.parentView.building",
           }),
          isTitelTab: false,
          buttonClass: "middle-menu-button-military"
@@ -116,21 +119,48 @@ module.GarrisonInfoView  = module.ArmyChangeInfantryView.extend ({
 module.InfantryInfoView  = Ember.View.extend ({
   templateName: 'army-info-tab2-view',
 
+  building: null,
+  unitCategory: 0,
+
+  allUnitTypesForCategory: function()
+  {
+    var self = this;
+    var units = [];
+    var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
+
+    AWE.Ext.applyFunction(unitTypes, function(unitType) {
+        if(unitType.category == self.get('unitCategory') && unitType.id != 13)
+        {
+          //units[unitType.id] = unitType;
+          units.push(Ember.Object.create({
+              name: unitType.name,
+              symbolic_id: unitType.db_field, 
+              unitID: unitType.id,
+            }));
+        }
+      });
+   debugger
+    return units;
+  }.property().cacheable(),
+
 });
 
-module.ArtileryInfoView  = Ember.View.extend ({
+module.ArtileryInfoView  = module.InfantryInfoView.extend ({
   templateName: 'army-info-tab3-view',
 
+  unitCategory: 2,
 });
 
-module.CavaleryInfoView  = Ember.View.extend ({
+module.CavaleryInfoView  = module.InfantryInfoView.extend ({
   templateName: 'army-info-tab4-view',
 
+  unitCategory: 1,
 });
 
-module.SpecialUnitInfoView  = Ember.View.extend ({
+module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
   templateName: 'army-info-tab5-view',
 
+  unitCategory: 4,
 });
 
 module.ArmyUnitInfoButtonView = module.ArmyUnitInfoView.extend({

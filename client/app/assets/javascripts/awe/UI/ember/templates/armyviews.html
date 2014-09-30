@@ -242,7 +242,7 @@
 <script type="text/x-handlebars" data-template-name="army-new-info-dialog">
   <h1 class="modal-dialog-heading">Military</h1>
    <div class="modal-dialog-body change-army-dialog-pane scrolling">
-    {{view AWE.UI.Ember.ArmyInfoNewTabView unitTypesBinding="unitTypes" garrisonArmyBinding="garrisonArmy"}}
+    {{view AWE.UI.Ember.ArmyInfoNewTabView unitTypesBinding="unitTypes" garrisonArmyBinding="garrisonArmy" buildingBinding="building"}}
    </div>
 </script>
 
@@ -287,14 +287,34 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="army-info-tab2-view">   
-
+    {{#each armyType in allUnitTypesForCategory}}
+        <div class="military-big"> 
+        <div {{bindAttr class="armyType.symbolic_id :cell-icon-big"}} >
+        </div>
+      </div>
+    {{/each}}
 </script>
 <script type="text/x-handlebars" data-template-name="army-info-tab3-view">   
-
+    {{#each armyType in allUnitTypesForCategory}}
+        <div class="military-big"> 
+        <div {{bindAttr class="armyType.symbolic_id :cell-icon-big"}} >
+        </div>
+      </div>
+    {{/each}}
 </script>
 <script type="text/x-handlebars" data-template-name="army-info-tab4-view">   
-
+    {{#each armyType in allUnitTypesForCategory}}
+        <div class="military-big"> 
+        <div {{bindAttr class="armyType.symbolic_id :cell-icon-big"}} >
+        </div>
+      </div>
+    {{/each}}
 </script>
 <script type="text/x-handlebars" data-template-name="army-info-tab5-view">   
-
+    {{#each armyType in allUnitTypesForCategory}}
+        <div class="military-big"> 
+        <div {{bindAttr class="armyType.symbolic_id :cell-icon-big"}} >
+        </div>
+      </div>
+    {{/each}}
 </script>

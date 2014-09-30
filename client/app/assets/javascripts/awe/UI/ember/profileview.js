@@ -234,7 +234,7 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
 
     character: null,
     alliance:  null,
-    characterNameInput: '',
+    changedInput: null,
 
     changingName:     false,
     changingGender:   false,
@@ -360,7 +360,7 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
     
     changeNamePressed: function() {
       this.set('message', null);
-      this.processNewName(this.getPath('characterNameInput'));
+      this.processNewName(this.getPath('changedInput'));
     },
     
 
@@ -561,6 +561,12 @@ module.ProfileDescriptionTextarea = Ember.TextArea.extend({
 
 module.UserNameTextfield = Ember.TextField.extend({
     //classNames: ["create-army-dialog-name"],
+    valueBinding: Ember.Binding.oneWay("parentView.character.name"),
+    changedInput: null,
+    updateChangedInput: function()
+    {
+      this.set('changedInput', this.get('value'));
+    }.observes('value'),
   });
 
 //NEW DIALOGS END
