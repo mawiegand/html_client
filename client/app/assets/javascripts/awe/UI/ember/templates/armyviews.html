@@ -242,7 +242,7 @@
 <script type="text/x-handlebars" data-template-name="army-new-info-dialog">
   <h1 class="modal-dialog-heading">Military</h1>
    <div class="modal-dialog-body change-army-dialog-pane scrolling">
-    {{view AWE.UI.Ember.ArmyInfoNewTabView}}
+    {{view AWE.UI.Ember.ArmyInfoNewTabView unitTypesBinding="unitTypes" garrisonArmyBinding="garrisonArmy"}}
    </div>
 </script>
 
@@ -270,22 +270,22 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="army-info-tab1-view">   
-  <div class="cell-icon unit_warrior military"></div>
-  <div class="cell-icon unit_warrior military"></div>
-  <div class="cell-icon unit_warrior military"></div>
-  <div class="cell-icon unit_warrior military"></div>
-  <div class="cell-icon unit_warrior military"></div>
-  <div class="cell-icon unit_warrior military"></div>
-  <div class="cell-icon unit_warrior military"></div>
+  {{#each armyType in activeArmyTypen}}
 
-  <div class="cell-icon unit_warrior military"></div>
-  <div class="cell-icon unit_warrior military"></div>
-  <div class="cell-icon unit_warrior military"></div>
-  <div class="cell-icon unit_warrior military"></div>
-  <div class="cell-icon unit_warrior military"></div>
-  <div class="cell-icon unit_warrior military"></div>
-  <div class="cell-icon unit_warrior military"></div>
+      <div class="military"> 
+        <div {{bindAttr class="armyType.symbolic_id :cell-icon"}} >
+          {{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}
+        </div>
+        <div class="military-count">x {{armyType.garrisonUnits}}</div>
+      </div>
+
+  {{/each}}
 </script>
+
+<script type="text/x-handlebars" data-template-name="army-info-button">   
+  <div class="military-info" {{action "openDialog"}}>i</div>
+</script>
+
 <script type="text/x-handlebars" data-template-name="army-info-tab2-view">   
 
 </script>

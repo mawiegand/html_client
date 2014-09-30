@@ -1084,15 +1084,45 @@ h3 {
 
 /* == MILITARY == */
 
-.cell-icon.unit_warrior.military
+.military
 {
   position: relative;
   left: 18px;
   top: 40px;
   float: left;
   width: 84px;
-  height: 88px;
+  height: 110px;
   display: inline-block;
+}
+
+.military-info
+{
+  background:url("<%= asset_path 'dialogs/backgrounds/background_info_box_medium/background_info_box@2x~iphone.png' %>") no-repeat center center;
+  width: 20px;
+  height: 28px;
+  position: relative;
+  right: 6px;
+  bottom: 8px;
+  font-size: 18px;
+  text-align: center;
+  line-height: 28px;
+  color: rgb(255,255,255) !important;
+  cursor: pointer;
+}
+
+.military-count
+{
+  background:url("<%= asset_path 'dialogs/backgrounds/background_unit_counter/background_unit_counter@2x~iphone.png' %>") no-repeat center center;
+  width: 76px;
+  height: 70px;
+  position: relative;
+  z-index: -2;
+  top: 42px;
+  left: 10px;
+  line-height: 70px;
+  text-align: center;
+  color: rgb(255,255,255);
+  font-size: 18px;
 }
 
 .tab-bar-new-military .cell{

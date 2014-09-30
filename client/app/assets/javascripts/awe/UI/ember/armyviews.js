@@ -28,24 +28,25 @@ AWE.UI.Ember = (function(module) {
     isTitelTab: false
   });
 
-  module.ArmyInfoDialogNew = module.PopUpDialog.extend({
+  module.ArmyInfoDialogNew = module.ArmyNewCreateDialog.extend({
     templateName: 'army-new-info-dialog',
 
-    army: null,
+    //army: null,
+    garrisonArmy: null,
     owner: null,
     
     displayHeading: true,
     
     ownerObserver: function() {
-      var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('army.owner_id'));
+      var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('garrisonArmy.owner_id'));
       var self = this;
       this.set('owner', owner);
       if (!owner) {
-        AWE.GS.CharacterManager.updateCharacter(this.getPath('army.owner_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+        AWE.GS.CharacterManager.updateCharacter(this.getPath('garrisonArmy.owner_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
           self.set('owner', character);
         });
       }
-    }.observes('army', 'army.owner_id'),
+    }.observes('garrisonArmy', 'garrisonArmy.owner_id'),
 
   });
 
@@ -54,13 +55,17 @@ AWE.UI.Ember = (function(module) {
     character: null,
     alliance:  null,
     allianceMember: null,
+    unitTypes: null,
+    garrisonArmy: null,
 
     init: function() {
 
      this.set('tabViews', [
        { key:   "tab1",
          title: "Garrison", 
-         view:  module.GarrisonInfoView.extend({ 
+         view:  module.GarrisonInfoView.extend({
+         unitTypesBinding: "parentView.parentView.unitTypes",
+         garrisonArmyBinding: "parentView.parentView.garrisonArmy",
           }),
          isTitelTab: true,
          buttonClass: "header-menu-button-military"
@@ -100,9 +105,12 @@ AWE.UI.Ember = (function(module) {
 
  });
 
-module.GarrisonInfoView  = Ember.View.extend ({
+module.GarrisonInfoView  = module.ArmyChangeInfantryView.extend ({
   templateName: 'army-info-tab1-view',
 
+  isAllUnits: true,
+  garrisonArmy: null,
+  unitTypes: null,
 });
 
 module.InfantryInfoView  = Ember.View.extend ({
@@ -123,6 +131,11 @@ module.CavaleryInfoView  = Ember.View.extend ({
 module.SpecialUnitInfoView  = Ember.View.extend ({
   templateName: 'army-info-tab5-view',
 
+});
+
+module.ArmyUnitInfoButtonView = module.ArmyUnitInfoView.extend({
+  templateName: 'army-info-button',
+  unitType: null,
 });
 
   //NEW DIALOGS END
