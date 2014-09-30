@@ -622,6 +622,42 @@ AWE.Application = (function(module) {
         }
       },
 
+      activateController: function(controller) {
+        var rootController = this.get('presentScreenController');
+        if (controller != rootController) {
+          if (rootController) {
+            if (hoveredView) {
+              if (hoveredView.onMouseOut && stageHovered >= 0 && this.get('allStages')[stageHovered].mouseOverEvents) {
+                hoveredView.onMouseOut(new MouseEvent("onMouseOut", mouseX, mouseY, hoveredView));
+              }
+              hoveredView = null;
+              stageHovered = -1;
+            }
+            debugger;
+            //rootController.viewWillDisappear();
+            //this.remove(rootController);
+            //rootController.viewDidDisappear();
+            if (rootController.typeName == 'SettlementController' && controller.typeName == 'MapController' && !preventZoomingToLastSelection === true) {
+              var settlement = AWE.GS.SettlementManager.getSettlement(rootController.settlementId);
+              if (!controller.selectedView() || (controller.selectedView().location && controller.selectedView().location() != settlement.get('location'))) {
+                controller.centerSettlement(settlement);
+              }
+              controller.setSelectedSettlement(settlement);
+            }
+          }
+          this.set('presentScreenController', controller);
+          if (controller) {
+            controller.viewWillAppear();
+            this.append(controller);
+            controller.applicationController = this;
+            controller.viewDidAppear();
+            if (_uiEnabled) {
+              controller.enableUI();
+            }
+          }
+        }
+      },
+
       setHudController: function(controller) {
         var presentHudController = this.get('hudController');
         log('in set hud controller', controller);

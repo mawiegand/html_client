@@ -234,7 +234,6 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
 
     character: null,
     alliance:  null,
-    characterNameInput: '',
 
     changingName:     false,
     changingGender:   false,
@@ -360,7 +359,7 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
     
     changeNamePressed: function() {
       this.set('message', null);
-      this.processNewName(this.getPath('characterNameInput'));
+      this.processNewName(this.getPath('character.name'));
     },
     
 

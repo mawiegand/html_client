@@ -218,7 +218,7 @@ AWE.UI.Ember = (function(module) {
     
     otherArmySizeMaxBinding: 'settlement.army_size_max',    
     
-    armyName: '',
+    armyName: 'New Army',
 
     changePressed: function() {
       log('ERROR Action not connected: changeWasPressed.');

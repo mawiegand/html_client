@@ -642,16 +642,14 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
 
     activateAllianceController: function(alliance_id) {
-      // var allianceScreen = null;
-      // debugger;
-      // var alliance = AWE.GS.AllianceManager.getAlliance(alliance_id);
-      // if (!alliance) {
-      //   return null;
+      // var allianceController = this.get('allianceScreenController');
+      // if (!allianceController) {
+      //   allianceController = AWE.Controller.createAllianceController('#layers');
+      //   this.set('allianceScreenController', allianceController);
       // }
 
-      // allianceScreen = AWE.UI.Ember.AllianceView.create({
-      //   alliance:   alliance
-      // });
+      // allianceController.setAllianceId(alliance_id);
+      // var allianceScreen = allianceController.createView();
 
       // WACKADOO.presentModalDialog(allianceScreen);
       

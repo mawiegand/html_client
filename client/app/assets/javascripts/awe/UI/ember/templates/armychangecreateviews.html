@@ -4,7 +4,7 @@
 
         {{#if remainingArmies }}
             {{view AWE.UI.Ember.ArmyNewChangeView garrisonArmyBinding="garrisonArmy" otherArmyBinding="otherArmy" locationIdBinding="locationId" unitTypesBinding="unitTypes"}}
-            {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" placeholder="New Army" classNames="create-army-dialog-name" }}
+            {{view AWE.UI.Ember.ArmyNameTextfield valueBinding="armyName" classNames="create-army-dialog-name" }}
         {{else}}
             {{ t army.create.error }}
         {{/if}}
