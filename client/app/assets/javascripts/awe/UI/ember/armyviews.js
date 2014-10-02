@@ -10,9 +10,17 @@ AWE.UI = AWE.UI || {};
 AWE.UI.Ember = (function(module) {
 
 
-  //NEW DIALOGS START
+//NEW DIALOGS START
+//Recruitment job dialog start
+  module.ArmyRecruitmentJobView = module.PopUpDialog.extend({
+    templateName: 'army-recruitment-view',
+
+    unitType: null,
+    });
+//Recruitment job dialog end
 
 //need custom tabs for army info
+//tabs start
   module.TabArmyInfoView = module.TabViewNew.extend({
     templateName: 'tab-view-army-info',
     classNames:   'tab-view-army-info',
@@ -27,7 +35,8 @@ AWE.UI.Ember = (function(module) {
     classNames: ["tab-button-view-new"],
     isTitelTab: false
   });
-
+//tab end
+//military Recruitment dialog start
   module.ArmyInfoDialogNew = module.ArmyNewCreateDialog.extend({
     templateName: 'army-new-info-dialog',
 
@@ -38,6 +47,16 @@ AWE.UI.Ember = (function(module) {
 
     displayHeading: true,
     
+    settlement: null,
+  
+    setSettlment: function(){
+      this.set('settlement',this.getPath('garrisonArmy.homeSettlement'));
+    }.observes('garrisonArmy'),
+
+    trainingQueues: function() {
+           return this.getPath('settlement.hashableTrainingQueues.collection');
+        }.property('settlement', 'settlement.hashableTrainingQueues.changedAt').cacheable(),
+
     ownerObserver: function() {
       var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('garrisonArmy.owner_id'));
       var self = this;
@@ -59,6 +78,8 @@ AWE.UI.Ember = (function(module) {
     unitTypes: null,
     garrisonArmy: null,
     building: null,
+    settlement: null,
+    trainingQueues: null,
 
     init: function() {
 
@@ -76,6 +97,9 @@ AWE.UI.Ember = (function(module) {
          title: "Infantry", 
          view:  module.InfantryInfoView.extend({ 
           buildingBinding: "parentView.parentView.building",
+          garrisonArmyBinding: "parentView.parentView.garrisonArmy",
+          settlementBinding: "parentView.parentView.settlement",
+          trainingQueuesBinding: "parentView.parentView.trainingQueues",
           }),
          isTitelTab: false,
          buttonClass: "middle-menu-button-military"
@@ -83,6 +107,10 @@ AWE.UI.Ember = (function(module) {
        { key:   "tab3",
          title: "Artillery", 
          view:  module.ArtileryInfoView.extend({ 
+          buildingBinding: "parentView.parentView.building",
+          garrisonArmyBinding: "parentView.parentView.garrisonArmy",
+          settlementBinding: "parentView.parentView.settlement",
+          trainingQueuesBinding: "parentView.parentView.trainingQueues",
           }),
          isTitelTab: false,
          buttonClass: "middle-menu-button-military"
@@ -90,6 +118,10 @@ AWE.UI.Ember = (function(module) {
        { key:   "tab4",
          title: "Cavalery", 
          view:  module.CavaleryInfoView.extend({ 
+          buildingBinding: "parentView.parentView.building",
+          garrisonArmyBinding: "parentView.parentView.garrisonArmy",
+          settlementBinding: "parentView.parentView.settlement",
+          trainingQueuesBinding: "parentView.parentView.trainingQueues",
           }),
          isTitelTab: false,
          buttonClass: "middle-menu-button-military"
@@ -97,6 +129,10 @@ AWE.UI.Ember = (function(module) {
        { key:   "tab5",
          title: "Special Units", 
          view:  module.SpecialUnitInfoView.extend({ 
+          buildingBinding: "parentView.parentView.building",
+          garrisonArmyBinding: "parentView.parentView.garrisonArmy",
+          settlementBinding: "parentView.parentView.settlement",
+          trainingQueuesBinding: "parentView.parentView.trainingQueues",
           }),
          isTitelTab: false,
          buttonClass: "middle-menu-button-military"
@@ -120,7 +156,23 @@ module.InfantryInfoView  = Ember.View.extend ({
   templateName: 'army-info-tab2-view',
 
   building: null,
-  unitCategory: 0,
+  garrisonArmy: null,
+  unitCategory: 2,//category is 0, but queueID 2
+  settlement: null,
+  trainingQueues: null,
+  queue: null,
+  setQueue: function(){
+    var self = this;
+    var trainingQueuesCurrent = self.get('trainingQueues');
+    trainingQueuesCurrent.forEach(function(queueCurrent) {
+        var queueType = queueCurrent.get('queueType');
+        
+        if(queueType.id == self.get('unitCategory'))
+        {
+          self.set('queue', queueCurrent);
+        }
+      });
+  }.observes('garrisonArmy'),
 
   allUnitTypesForCategory: function()
   {
@@ -139,36 +191,275 @@ module.InfantryInfoView  = Ember.View.extend ({
             }));
         }
       });
-   debugger
     return units;
-  }.property().cacheable(),
+  }.property().cacheable(), 
 
+  trainableUnitTypes: function() {
+      var queueType = this.getPath('queue.queueType');
+      var rules     = AWE.GS.RulesManager.getRules();
+      if (!queueType || !queueType.produces) {
+        return null;
+      }
+      var options = AWE.GS.RulesManager.getRules().getUnitTypesWithCategories(queueType.produces);
+      var self = this;
+      var result = options.filter(function(unitType) {
+        return !self.impossibleToTrainDueToMaxRequirement(unitType);
+      });
+       
+      return result && result.length > 0 ? result : null;
+  }.property('queue.queueType').cacheable(),
+    
+    
+  impossibleToTrainDueToMaxRequirement: function(unitType) {
+      var settlement = this.getPath('queue.settlement');
+      var character = settlement ? settlement.owner() : null;
+      var reqGroups = unitType.requirementGroups || [];
+      var maxFail = true;
+      log('RECALC IMPOSSIBLE DUE TO MAX REQUIREMENT');
+      reqGroups.forEach(function(group) {
+        maxFail = maxFail && AWE.Util.Rules.requirementGroupFailsDueToMaxRequirement(group, settlement, character, null, false); // DO NOT CONSIDER JOBS IN QUEUE
+      });
+      return maxFail;
+    },    
+
+  createJobPressed: function(evt) {
+      this.get('controller').trainingCreateClicked(this.get('queue'), this.getPath('selectedUnitButton.unitType.id'), this.get('number'));
+    },
+
+  resourceExchangePressed: function() { 
+      var dialog = AWE.UI.Ember.ResourceExchangeDialog.create(); 
+      WACKADOO.presentModalDialog(dialog); 
+      return false; 
+    },
+
+  trainingButtonUIMarker: function() {
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_TRAINING_DIALOG_FLOW) && this.get('selectedUnitButton') != null;
+    }.property('selectedUnitButton', 'queue.jobs_count', 'AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+
+});
+
+module.ArmyUnitBigButtonView  = Ember.View.extend ({
+    templateName: 'army-icon-big-button',
+    unitType: null,
+    queue: null,
+
+    openDialog: function()
+      {
+        var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
+        var unitTypeLocalObject = this.get("unitType");
+        var self = this;
+        unitTypes.forEach(function(rulesUnitType) 
+        {
+          if(rulesUnitType.id == unitTypeLocalObject.id)//cavalery
+            {
+              var dialog = AWE.UI.Ember.EncyclopediaUnitNewView.create({unit: rulesUnitType});
+              WACKADOO.presentModalDialog(dialog);
+              return false;
+            }
+        });
+        return false; // prevent default behavior
+      },
+
+    openJobDialog: function()
+      {
+          var dialog = AWE.UI.Ember.ArmyRecruitmentJobView.create({});
+          WACKADOO.presentModalDialog(dialog);
+          return false;
+      },
+
+    unmetRequirementGroups: function() {
+      var settlement = this.getPath('queue.settlement');
+      var character = settlement ? settlement.owner() : null;
+      var failed =  AWE.Util.Rules.failedRequirementGroups(this.getPath('unitType.requirementGroups'), settlement, character, null, false); // do NOT consider construction jobs in building queue
+      return failed || []
+    }.property('unitType', 'queue.settlement.hashableSlots.collection@each.level', 'queue.settlement.hashableSlots.changedAt'),
+
+
+    /** bool for indicating whether or not all requirements for constructin
+     * this building are met. */
+    requirementsMet: function() {
+     var unmetRequirements = this.get('unmetRequirementGroups');
+      return !unmetRequirements || unmetRequirements.length === 0;
+    }.property('unmetRequirementGroups', 'unmetRequirementGroups.length'), 
+    
+    requirementUnmet: function() {
+      return !this.get('requirementsMet');
+    }.property('requirementsMet'),
+
+    selectedUnitButton: null,
+    number: "1",
+
+    costs: function() {
+        var unitType = this.get('unitType');
+        return unitType && unitType.costs ? AWE.Util.Rules.lookupResourceCosts(unitType.costs) : null;
+    }.property('unitType').cacheable(),
+    
+    getStoneCosts: function()
+    {
+      var resourceCosts = this.get('costs');
+      var self = this;
+      var stoneCost = 0;
+
+      resourceCosts.forEach(function(resource){
+        var resourceType = resource.resourceType;
+        if(resourceType.id == 0)
+        {
+          stoneCost = resource.amount;
+        }
+      });
+      return stoneCost;
+    }.property('costs').cacheable(),
+
+    getWoodCosts: function()
+    {
+      var resourceCosts = this.get('costs');
+      var self = this;
+      var woodCost = 0;
+
+      resourceCosts.forEach(function(resource){
+        var resourceType = resource.resourceType;
+        if(resourceType.id == 1)
+        {
+          woodCost = resource.amount;
+        }
+      });
+      return woodCost;
+
+    }.property('costs').cacheable(),
+
+    getFurCosts: function()
+    {
+      var resourceCosts = this.get('costs');
+      var self = this;
+      var furCost = 0;
+
+      resourceCosts.forEach(function(resource){
+        var resourceType = resource.resourceType;
+        if(resourceType.id == 2)
+        {
+          furCost = resource.amount;
+        }
+      });
+      return furCost;
+
+    }.property('costs').cacheable(),
+
+    totalCosts: function() {
+        return AWE.Util.Rules.multipliedResourceCosts(this.get('costs'), this.get('number') || 0.0);
+    }.property('costs', 'number').cacheable(),
+
+    getLevel: function()
+    {
+        var unitID = this.getPath('unitType.id');
+        var lvl = 0;
+        switch(unitID)
+        {
+          //infantry
+          case 0:
+            lvl = 1;
+            break;
+          case 1:
+            lvl = 2;
+            break;
+          case 2:
+            lvl = 3;
+            break;
+          case 3:
+            lvl = 4;
+            break;
+          case 4:
+            lvl = 5;
+            break;
+            //archer
+          case 5:
+            lvl = 1;
+            break;
+          case 6:
+            lvl = 2;
+            break;
+          case 7:
+            lvl = 3;
+            break;
+          case 8:
+            lvl = 4;
+            break;
+            //cavalery
+          case 9:
+            lvl = 1;
+            break;
+          case 10:
+            lvl = 2;
+            break;
+          case 11:
+            lvl = 3;
+            break;
+          case 12:
+            lvl = 4;
+            break;
+            //special
+          case 14:
+            lvl = 1;
+            break;
+          case 15:
+            lvl = 2;
+            break;
+        }
+        return lvl;
+    }.property('unitType').cacheable(),
+
+    productionTime: function() {
+      var unitType = this.get('unitType');
+      var speed    = this.getPath('queue.speed') || 1.0;
+      log('SPEED', this.getPath('queue.speed'));
+      return unitType ? this.formatSeconds(AWE.Util.Rules.calculateProductionTime(unitType.production_time, speed)) : null;
+    }.property('queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.
+
+    formatSeconds: function (seconds)
+    {
+      var date = new Date(1970,0,1);
+      date.setSeconds(seconds);
+      return date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+    },
+
+    totalProductionTime: function() {
+        var productionTime  = this.get('productionTime');
+        var number          = this.get('number')
+        return productionTime && number > 0 ? productionTime * number : null;
+    }.property('productionTime', 'number').cacheable(), 
+
+
+   });
+
+module.ArmyUnitResourceInfoView  = module.ArmyUnitBigButtonView.extend ({
+    templateName: 'army-resource-info',
 });
 
 module.ArtileryInfoView  = module.InfantryInfoView.extend ({
   templateName: 'army-info-tab3-view',
 
-  unitCategory: 2,
+  unitCategory: 3,//category is 1, but queueID 3
 });
 
 module.CavaleryInfoView  = module.InfantryInfoView.extend ({
   templateName: 'army-info-tab4-view',
 
-  unitCategory: 1,
+  unitCategory: 4,//category is 2, but queueID 4
 });
 
 module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
   templateName: 'army-info-tab5-view',
 
-  unitCategory: 4,
+  unitCategory: 6,//category is 4, but queueID 6
 });
 
 module.ArmyUnitInfoButtonView = module.ArmyUnitInfoView.extend({
   templateName: 'army-info-button',
   unitType: null,
 });
+//military Recruitment dialog end
 
-  //NEW DIALOGS END
+//NEW DIALOGS END
 
   module.ArmyInfoDialog = AWE.UI.Ember.InfoDialog.extend({
     classNames: ['army-info-dialog'],

@@ -242,7 +242,7 @@
 <script type="text/x-handlebars" data-template-name="army-new-info-dialog">
   <h1 class="modal-dialog-heading">Military</h1>
    <div class="modal-dialog-body change-army-dialog-pane scrolling">
-    {{view AWE.UI.Ember.ArmyInfoNewTabView unitTypesBinding="unitTypes" garrisonArmyBinding="garrisonArmy" buildingBinding="building"}}
+    {{view AWE.UI.Ember.ArmyInfoNewTabView unitTypesBinding="unitTypes" garrisonArmyBinding="garrisonArmy" buildingBinding="building" settlementBinding="settlement" trainingQueuesBinding="trainingQueues"}}
    </div>
 </script>
 
@@ -286,35 +286,95 @@
   <div class="military-info" {{action "openDialog"}}>i</div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="army-info-tab2-view">   
-    {{#each armyType in allUnitTypesForCategory}}
-        <div class="military-big"> 
-        <div {{bindAttr class="armyType.symbolic_id :cell-icon-big"}} >
+<script type="text/x-handlebars" data-template-name="army-icon-big-button">   
+{{#if requirementsMet}}
+  <div class="military-big"> 
+        <div {{bindAttr class="armyType.db_field :cell-icon-big"}} {{action "openDialog"}}>
         </div>
+        {{view AWE.UI.Ember.ArmyUnitResourceInfoView unitTypeBinding="unitType" queueBinding="queue"}}
       </div>
+{{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-resource-info">   
+  <div class="military-costs-background" {{action "openJobDialog"}}> 
+
+    <div class="military-costs-row">
+      <div class="cost-text-titel">Level {{getLevel}}}</div>
+    </div>
+    <div class="military-costs-row">
+      <div class="military-costs-half-row">
+        <div class="cost-icon-small-stone"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{getStoneCosts}}</div>
+      </div>
+    </div>
+    <div class="military-costs-row">
+      <div class="military-costs-half-row">
+        <div class="cost-icon-small-wood"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{getWoodCosts}}</div>
+      </div>
+    </div>
+    <div class="military-costs-row">
+      <div class="military-costs-half-row">
+        <div class="cost-icon-small-fur"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{getFurCosts}}</div>
+      </div>
+    </div>
+    <div class="military-costs-row">
+      <div class="military-costs-half-row">
+        <div class="cost-item-small-uhr"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{productionTime}}</div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-info-tab2-view">   
+    {{#each armyType in trainableUnitTypes}}
+        {{view AWE.UI.Ember.ArmyUnitBigButtonView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
     {{/each}}
 </script>
+
 <script type="text/x-handlebars" data-template-name="army-info-tab3-view">   
-    {{#each armyType in allUnitTypesForCategory}}
-        <div class="military-big"> 
-        <div {{bindAttr class="armyType.symbolic_id :cell-icon-big"}} >
-        </div>
-      </div>
+    {{#each armyType in trainableUnitTypes}}
+        {{view AWE.UI.Ember.ArmyUnitBigButtonView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
     {{/each}}
 </script>
 <script type="text/x-handlebars" data-template-name="army-info-tab4-view">   
-    {{#each armyType in allUnitTypesForCategory}}
-        <div class="military-big"> 
-        <div {{bindAttr class="armyType.symbolic_id :cell-icon-big"}} >
-        </div>
-      </div>
+    {{#each armyType in trainableUnitTypes}}
+         {{view AWE.UI.Ember.ArmyUnitBigButtonView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
     {{/each}}
 </script>
 <script type="text/x-handlebars" data-template-name="army-info-tab5-view">   
-    {{#each armyType in allUnitTypesForCategory}}
-        <div class="military-big"> 
-        <div {{bindAttr class="armyType.symbolic_id :cell-icon-big"}} >
-        </div>
-      </div>
+    {{#each armyType in trainableUnitTypes}}
+         {{view AWE.UI.Ember.ArmyUnitBigButtonView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
     {{/each}}
 </script>
+
+<!-- RECRUITMENT-->
+<script type="text/x-handlebars" data-template-name="army-recruitment-view">   
+  <div class="unit-image-wrapper">
+    <div class="unit-image-new">
+      <div class="count-text-big-background">
+        <div class="count-text-big count-text-jobs">12</div>
+      </div>
+    </div>
+  </div>
+  <div class="unit-description jobs-description">
+    Att: 500 <br/>
+    Def: 320 <br/>
+    HP: 400 <br/>
+    Typ: Infantry </br>
+    Crit: 447 <br/>
+  </div>
+  <div class="military-costs-green-background"></div>
+</script>
+
