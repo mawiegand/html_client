@@ -1432,6 +1432,18 @@ AWE.I18n.de_DE = function(module) {
         special_quests: "Spezialaufträge",
         gossip: "Gerüchte"
       },
+      alliance: {
+        alliance: "Allianz",
+        info: "Info",
+        members: "Mitglieder",
+        diplomacy: "Diplomatie",
+        apply: "Bewerben",
+
+        allianceInfo: {
+          slogan: "Losung:",
+          autoJoin: "Aufnahme:"
+        }
+      },
       move:{
         heading: "Umziehen",
         description: "Hier steht wie man umziehen kann.",

@@ -64,6 +64,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         $('#debug2').html('Loading Assets. Progress: ' + _numLoadedAssets + ' / ' + _numAssets);
       }
       else {
+        //this.get('hudController').setNeedsLayout();
         //this.get('hudController').setNeedsDisplay();
       }
 
@@ -504,7 +505,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
 
     characterButtonClicked: function() {
-      var dialog = AWE.UI.Ember./*ProfileView*/ProfileNewView.create({
+      var dialog = AWE.UI.Ember.ProfileView.create({
         characterBinding: 'AWE.GS.game.currentCharacter',
       });
       this.presentModalDialog(dialog);
