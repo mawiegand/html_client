@@ -135,8 +135,8 @@ AWE.UI.Ember = (function(module) {
       var entry = evt.context;
       var allianceId = entry.get('alliance_id');
       if (allianceId != null) {
-        WACKADOO.activateAllianceController(allianceId);
         WACKADOO.closeAllModalDialogs();
+        WACKADOO.activateAllianceController(allianceId);
       }
       return false; // prevent default behavior
     },
@@ -417,9 +417,9 @@ AWE.UI.Ember = (function(module) {
     
     alliancePressed: function(evt) {
       var entry = evt.context;
-      debugger;
-      WACKADOO.activateAllianceController(entry.get('alliance_id'));
+      //debugger;
       WACKADOO.closeAllModalDialogs();
+      WACKADOO.activateAllianceController(entry.get('alliance_id'));
       return false; // prevent default behavior
     },
   });
@@ -704,9 +704,8 @@ AWE.UI.Ember = (function(module) {
       var entry = evt.context;
       var allianceId = entry.getPath('alliance_id');
       if (allianceId != null) {
-        WACKADOO.activateAllianceController(allianceId);
-        debugger;
         WACKADOO.closeAllModalDialogs();
+        WACKADOO.activateAllianceController(allianceId);
       }
       return false; // prevent default behavior
     },
