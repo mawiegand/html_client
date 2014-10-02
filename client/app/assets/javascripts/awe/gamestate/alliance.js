@@ -105,10 +105,11 @@ AWE.GS = (function(module) {
     }
 
     // public attributes and methods ///////////////////////////////////////
-  
     that = module.createEntityManager(my);
       
-    that.getAlliance = function(id) { return that.getEntity(id); };
+    that.getAlliance = function(id) {
+      return that.getEntity(id);
+    };
     
   
     /** returns true, if update is executed, returns false, if request did 

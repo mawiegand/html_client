@@ -246,6 +246,10 @@ AWE.UI.Ember = (function(module) {
     noLeader: true,
     candidate: null,
 
+    init: function() {
+      this._super();
+    },
+
     isAllianceLeader: function() {
       var leaderId = this.getPath('alliance.leader_id');
       var characterId = AWE.GS.game.getPath('currentCharacter.id');

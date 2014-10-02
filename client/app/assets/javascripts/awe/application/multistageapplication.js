@@ -60,6 +60,7 @@ AWE.Application = (function(module) {
       notificationController: null,
 
       presentScreenController: null,
+      allianceScreenController: null,
       readyForRunloop: false,
 
       runloopStartedAt: null,
@@ -402,6 +403,10 @@ AWE.Application = (function(module) {
             }
           }
 
+          if(this.get('allianceScreenController')) {
+            this.get('allianceScreenController').runloop();
+          }
+
           // TODO: Game State Runloop!
 
           if (this.lastRunloopRun.getTime() + 1000 < new Date().getTime()) {
@@ -623,7 +628,7 @@ AWE.Application = (function(module) {
       },
 
       activateController: function(controller) {
-        var rootController = this.get('presentScreenController');
+        var rootController = this.get('allianceScreenController');
         if (controller != rootController) {
           if (rootController) {
             if (hoveredView) {
@@ -633,25 +638,16 @@ AWE.Application = (function(module) {
               hoveredView = null;
               stageHovered = -1;
             }
-            debugger;
-            //rootController.viewWillDisappear();
-            //this.remove(rootController);
-            //rootController.viewDidDisappear();
-            if (rootController.typeName == 'SettlementController' && controller.typeName == 'MapController' && !preventZoomingToLastSelection === true) {
-              var settlement = AWE.GS.SettlementManager.getSettlement(rootController.settlementId);
-              if (!controller.selectedView() || (controller.selectedView().location && controller.selectedView().location() != settlement.get('location'))) {
-                controller.centerSettlement(settlement);
-              }
-              controller.setSelectedSettlement(settlement);
-            }
           }
-          this.set('presentScreenController', controller);
+          this.set('allianceScreenController', controller);
           if (controller) {
             controller.viewWillAppear();
             this.append(controller);
             controller.applicationController = this;
+            debugger;
             controller.viewDidAppear();
             if (_uiEnabled) {
+              debugger;
               controller.enableUI();
             }
           }
