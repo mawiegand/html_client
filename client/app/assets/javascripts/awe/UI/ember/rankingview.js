@@ -136,7 +136,7 @@ AWE.UI.Ember = (function(module) {
       var allianceId = entry.get('alliance_id');
       if (allianceId != null) {
         WACKADOO.closeAllModalDialogs();
-        WACKADOO.activateAllianceController(allianceId);
+        WACKADOO.showAllianceDialog(allianceId);
       }
       return false; // prevent default behavior
     },
@@ -419,7 +419,7 @@ AWE.UI.Ember = (function(module) {
       var entry = evt.context;
       //debugger;
       WACKADOO.closeAllModalDialogs();
-      WACKADOO.activateAllianceController(entry.get('alliance_id'));
+      WACKADOO.showAllianceDialog(entry.get('alliance_id'));
       return false; // prevent default behavior
     },
   });

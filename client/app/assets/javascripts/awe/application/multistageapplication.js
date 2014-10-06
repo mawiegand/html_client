@@ -403,10 +403,6 @@ AWE.Application = (function(module) {
             }
           }
 
-          if(this.get('allianceScreenController')) {
-            this.get('allianceScreenController').runloop();
-          }
-
           // TODO: Game State Runloop!
 
           if (this.lastRunloopRun.getTime() + 1000 < new Date().getTime()) {
@@ -621,33 +617,6 @@ AWE.Application = (function(module) {
             controller.applicationController = this;
             controller.viewDidAppear();
             if (_uiEnabled) {
-              controller.enableUI();
-            }
-          }
-        }
-      },
-
-      activateController: function(controller) {
-        var rootController = this.get('allianceScreenController');
-        if (controller != rootController) {
-          if (rootController) {
-            if (hoveredView) {
-              if (hoveredView.onMouseOut && stageHovered >= 0 && this.get('allStages')[stageHovered].mouseOverEvents) {
-                hoveredView.onMouseOut(new MouseEvent("onMouseOut", mouseX, mouseY, hoveredView));
-              }
-              hoveredView = null;
-              stageHovered = -1;
-            }
-          }
-          this.set('allianceScreenController', controller);
-          if (controller) {
-            controller.viewWillAppear();
-            this.append(controller);
-            controller.applicationController = this;
-            debugger;
-            controller.viewDidAppear();
-            if (_uiEnabled) {
-              debugger;
               controller.enableUI();
             }
           }
