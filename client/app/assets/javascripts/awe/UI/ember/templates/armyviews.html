@@ -242,7 +242,7 @@
 <script type="text/x-handlebars" data-template-name="army-new-info-dialog">
   <h1 class="modal-dialog-heading">Military</h1>
    <div class="modal-dialog-body change-army-dialog-pane scrolling">
-    {{view AWE.UI.Ember.ArmyInfoNewTabView unitTypesBinding="unitTypes" garrisonArmyBinding="garrisonArmy" buildingBinding="building" settlementBinding="settlement" trainingQueuesBinding="trainingQueues"}}
+    {{view AWE.UI.Ember.ArmyInfoNewTabView unitTypesBinding="unitTypes" garrisonArmyBinding="garrisonArmy" controllerBinding="controller" settlementBinding="settlement" trainingQueuesBinding="trainingQueues"}}
    </div>
 </script>
 
@@ -291,7 +291,7 @@
   <div class="military-big"> 
         <div {{bindAttr class="armyType.db_field :cell-icon-big"}} {{action "openDialog"}}>
         </div>
-        {{view AWE.UI.Ember.ArmyUnitResourceInfoView unitTypeBinding="unitType" queueBinding="queue"}}
+        {{view AWE.UI.Ember.ArmyUnitResourceInfoView unitTypeBinding="unitType" controllerBinding="controller" queueBinding="queue"}}
       </div>
 {{/if}}
 </script>
@@ -339,29 +339,29 @@
 
 <script type="text/x-handlebars" data-template-name="army-info-tab2-view">   
     {{#each armyType in trainableUnitTypes}}
-        {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
+        {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" controllerBinding="parentView.controller" queueBinding="parentView.queue"}}
     {{/each}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="army-info-tab3-view">   
     {{#each armyType in trainableUnitTypes}}
-        {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
+        {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" controllerBinding="parentView.controller" queueBinding="parentView.queue"}}
     {{/each}}
 </script>
 <script type="text/x-handlebars" data-template-name="army-info-tab4-view">   
     {{#each armyType in trainableUnitTypes}}
-         {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
+         {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" controllerBinding="parentView.controller" queueBinding="parentView.queue"}}
     {{/each}}
 </script>
 <script type="text/x-handlebars" data-template-name="army-info-tab5-view">   
     {{#each armyType in trainableUnitTypes}}
-         {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
+         {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" controllerBinding="parentView.controller" queueBinding="parentView.queue"}}
     {{/each}}
 </script>
 
 <!-- RECRUITMENT-->
 <script type="text/x-handlebars" data-template-name="army-recruitment-view">   
-    {{view AWE.UI.Ember.ArmyRecruitmentJobInfoView unitTypeBinding="unitType" queueBinding="queue"}}
+    {{view AWE.UI.Ember.ArmyRecruitmentJobInfoView unitTypeBinding="unitType" controllerBinding="controller" queueBinding="queue"}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="army-recruitment-info-view">   
@@ -373,13 +373,13 @@
     </div>
   </div>
   <div class="unit-description jobs-description">
-    Att: {{unitType.attack}} <br/>
-    Def:  {{unitType.armor}}<br/>
-    HP: {{unitType.hitpoints}} <br/>
-    Typ: {{getUnitCategoryName}} </br>
-    Crit: {{unitType.critical_hit_damage}} % <br/>
+    {{t encyclopedia.attackAbbreviation}}: {{unitType.attack}} <br/>
+    {{t encyclopedia.defenseAbbreviation}}:  {{unitType.armor}}<br/>
+    {{t encyclopedia.hitpointsAbbreviation}}: {{unitType.hitpoints}} <br/>
+     {{t ranking.type}}: {{getUnitCategoryName}} </br>
+    {{t encyclopedia.criticalDamageAbbreviation}}: {{unitType.critical_hit_damage}} % <br/>
   </div>
-  <div class="military-costs-green-background">
+  <div class="military-costs-green-background" {{action "setupJobPressed"}}>
     <div class="military-costs-row military-costs-row-all">
       <div class="military-costs-half-row">
         <div class="cost-icon-small-stone"></div>

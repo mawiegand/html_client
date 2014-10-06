@@ -35,7 +35,6 @@ AWE.UI.Ember = (function(module) {
     //army: null,
     garrisonArmy: null,
     owner: null,
-    building: null,
 
     displayHeading: true,
     
@@ -69,7 +68,6 @@ AWE.UI.Ember = (function(module) {
     allianceMember: null,
     unitTypes: null,
     garrisonArmy: null,
-    building: null,
     settlement: null,
     trainingQueues: null,
 
@@ -88,7 +86,7 @@ AWE.UI.Ember = (function(module) {
        { key:   "tab2",
          title: "Infantry", 
          view:  module.InfantryInfoView.extend({ 
-          buildingBinding: "parentView.parentView.building",
+          controllerBinding: "parentView.parentView.controller",
           garrisonArmyBinding: "parentView.parentView.garrisonArmy",
           settlementBinding: "parentView.parentView.settlement",
           trainingQueuesBinding: "parentView.parentView.trainingQueues",
@@ -99,7 +97,7 @@ AWE.UI.Ember = (function(module) {
        { key:   "tab3",
          title: "Artillery", 
          view:  module.ArtileryInfoView.extend({ 
-          buildingBinding: "parentView.parentView.building",
+          controllerBinding: "parentView.parentView.controller",
           garrisonArmyBinding: "parentView.parentView.garrisonArmy",
           settlementBinding: "parentView.parentView.settlement",
           trainingQueuesBinding: "parentView.parentView.trainingQueues",
@@ -110,7 +108,7 @@ AWE.UI.Ember = (function(module) {
        { key:   "tab4",
          title: "Cavalery", 
          view:  module.CavaleryInfoView.extend({ 
-          buildingBinding: "parentView.parentView.building",
+          controllerBinding: "parentView.parentView.controller",
           garrisonArmyBinding: "parentView.parentView.garrisonArmy",
           settlementBinding: "parentView.parentView.settlement",
           trainingQueuesBinding: "parentView.parentView.trainingQueues",
@@ -121,7 +119,7 @@ AWE.UI.Ember = (function(module) {
        { key:   "tab5",
          title: "Special Units", 
          view:  module.SpecialUnitInfoView.extend({ 
-          buildingBinding: "parentView.parentView.building",
+          controllerBinding: "parentView.parentView.controller",
           garrisonArmyBinding: "parentView.parentView.garrisonArmy",
           settlementBinding: "parentView.parentView.settlement",
           trainingQueuesBinding: "parentView.parentView.trainingQueues",
@@ -147,11 +145,11 @@ module.GarrisonInfoView  = module.ArmyChangeInfantryView.extend ({
 module.InfantryInfoView  = Ember.View.extend ({
   templateName: 'army-info-tab2-view',
 
-  building: null,
   garrisonArmy: null,
   unitCategory: 2,//category is 0, but queueID 2
   settlement: null,
   trainingQueues: null,
+  controller: null,
   queue: null,
   setQueue: function(){
     var self = this;
@@ -235,6 +233,7 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
     templateName: 'army-icon-big-button',
     unitType: null,
     queue: null,
+    controller: null,
 
     openDialog: function()
       {
@@ -257,9 +256,11 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
       {
           var unitTypeObject = this.get("unitType");
           var queueObject = this.get('queue');
+          var controllerLocal = this.get('controller');
           var dialog = AWE.UI.Ember.ArmyRecruitmentJobView.create({
             unitType: unitTypeObject,
             queue: queueObject,
+            controller: controllerLocal,
           });
           WACKADOO.presentModalDialog(dialog);
           return false;
@@ -499,6 +500,7 @@ module.ArmyUnitInfoButtonView = module.ArmyUnitInfoView.extend({
    
     unitType: null,
     queue: null,
+    controller: null,
 
     });
   module.ArmyRecruitmentJobInfoView = module.ArmyUnitResourceView.extend({
@@ -509,16 +511,23 @@ module.ArmyUnitInfoButtonView = module.ArmyUnitInfoView.extend({
       var localUnitType = this.get('unitType');
       var unitTypeCategoryName = '';
       if(localUnitType.category == 0)
-        unitTypeCategoryName = "Infantry";
+        unitTypeCategoryName = AWE.I18n.lookupTranslation('encyclopedia.infantry');//"Infantry";
       else if(localUnitType.category == 1)
-        unitTypeCategoryName = "Cavalery";
+        unitTypeCategoryName = AWE.I18n.lookupTranslation('encyclopedia.cavalery');//"Cavalery";
       else if(localUnitType.category == 2)
-        unitTypeCategoryName = "Artillery";
+        unitTypeCategoryName = AWE.I18n.lookupTranslation('encyclopedia.artillery');//"Artillery";
       else if(localUnitType.category == 4)
-        unitTypeCategoryName = "Special Units";
+        unitTypeCategoryName = AWE.I18n.lookupTranslation('encyclopedia.specialUnits');//"Special Units";
 
       return unitTypeCategoryName;
     }.property().cacheable(),
+
+    setupJobPressed: function()
+      {
+        
+        this.get('controller').trainingCreateClicked(this.get('queue'), this.getPath('unitType.id'), this.get('number'));
+        this.get('parentView').destroy();
+      },
     });
 
   module.JobsRangeView  = Ember.TextField.extend({

@@ -1265,6 +1265,15 @@ AWE.I18n.de_DE = function(module) {
       experienceForLostUnits: "XP pro verlorener Einheit",
       experienceFactor: "XP-Faktor",
 
+      attackAbbreviation: "Att",
+      defenseAbbreviation: "Def",
+      hitpointsAbbreviation: "HP",
+      criticalDamageAbbreviation: "Crit",
+      infantry: "Infantry",
+      artillery: "Artillery",
+      cavalery: "Cavalery",
+      specialUnits: "Special Units",
+
       commandPointsAbbreviation: "KP",
       buildingTime: "Bauzeit",
 
