@@ -3,7 +3,7 @@
  * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
  * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require_self
- *= require_tree . 
+ *= require_tree .
 */
 
 
@@ -299,30 +299,30 @@ a:focus { outline: thin dotted; }
 
 
 h1 {
-  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", 
-               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", 
-               "Tahoma", "Geneva", "Arial", sans-serif; 
-  font-weight:300; 
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light",
+               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica",
+               "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight:300;
   font-stretch:normal;
   font-size: 2.2em;
   margin-bottom: 16px;
 }
 
 h2 {
-  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", 
-               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", 
-               "Tahoma", "Geneva", "Arial", sans-serif; 
-  font-weight:300; 
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light",
+               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica",
+               "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight:300;
   font-stretch:normal;
   font-size: 1.6em;
   margin-bottom: 12px;
 }
 
 h3 {
-  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", 
-               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", 
-               "Tahoma", "Geneva", "Arial", sans-serif; 
-  font-weight:300; 
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light",
+               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica",
+               "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight:300;
   font-stretch:normal;
   font-size: 1.2em;
   margin-bottom: 8px;
@@ -364,7 +364,7 @@ h3 {
 }
 
 .clickable {
-  cursor: pointer;  
+  cursor: pointer;
 }
 
 #layers {
@@ -407,7 +407,7 @@ h3 {
 }
 
 .link-pane .fb-icon {
-  width: 16px; 
+  width: 16px;
   margin-top:-3px;
 }
 
@@ -415,7 +415,7 @@ h3 {
   background-color: #777;
   position: absolute;
   top: 0px;
-  left: 0px; 
+  left: 0px;
   width: 100%;
   height: 100%;
   z-index: 0;   /*   <-------------------   */
@@ -585,23 +585,23 @@ h3 {
 .horizontal-center-helper { position: absolute; left: 50%; top: 0; }
 
 
-.modal-dialog-background { 
-  position: fixed; 
-  background-color: #333; 
-  opacity: 0.6; 
-  top: 0px; 
-  bottom:0px; 
-  width: 100%; 
-  z-index:256; 
+.modal-dialog-background {
+  position: fixed;
+  background-color: #333;
+  opacity: 0.6;
+  top: 0px;
+  bottom:0px;
+  width: 100%;
+  z-index:256;
   overflow: hidden;
 }
 
-.modal-dialog-pane { 
-  position: absolute; 
+.modal-dialog-pane {
+  position: absolute;
   margin-left: -300px;
   margin-top: -50px;
   width: 600px; min-height: 100px;
-  background-color: #FFF;  
+  background-color: #FFF;
   padding: 16px 20px 16px 20px;
   z-index:256;
 
@@ -617,10 +617,10 @@ h3 {
   font-size: 28px;
   color: #735e3b;
   text-shadow: none;
-  position: absolute; 
+  position: absolute;
   margin-left: -338px;
   margin-top: -250px;
-  width: 676px; /* attention: + padding! */ 
+  width: 676px; /* attention: + padding! */
   height: 500px;
   box-sizing: border-box;
   z-index:256;
@@ -630,6 +630,7 @@ h3 {
 
 .modal-dialog-body {
   height: 424px;
+  width: 100%;
   position: absolute;
   top: 52px;
   font-size: 25px;
@@ -773,14 +774,95 @@ h3 {
   font-size:28px;
   font-family: 'hvd_comic_serif_proregular', 'cursive';
   text-shadow: none;
+  //position: absolute;
+  //top: 80px;
+  //left:210px;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-dialog-pane {
+  font-size: 20px;
+  color: #AAA;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-dialog-pane h2 {
+  left: 20px;
+  position: relative;
+  margin-bottom: 0;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-tag {
+  width: 200px;
+  left: 18px;
+  position: relative;
+  float: left;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-password {
+  width: 200px;
+  left: 20px;
+  position: relative;
+  float: left;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-submit {
+  top: 16px;
+  left: 20px;
+  position: relative;
+  float: left;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-submit-random {
+  left: 20px;
+  position: relative;
+  float: left;
+  width: 100%;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-submit-leave {
+  width: 100%;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-submit-random div {
+  position: relative;
+  margin: 0 auto;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-submit-leave div {
+  position: relative;
+  margin: 0 auto;
+}
+
+.modal-dialog-pane-new .activity-indicator-small {
   position: absolute;
-  top: 80px;
-  left:210px;
+  top: 17px;
+  left: 20px;
+}
+
+.modal-dialog-pane-new .modal-dialog-text {
+  margin-left: 20px;
+  position: relative;
+  font-size: 20px;
+  padding-bottom: 10px;
+}
+
+input[type="text"], .alliance-diplomacy-dialog-pane-input input[type="text"] {
+  width: 180px !important;
 }
 
 .modal-dialog-buttons{
   top: 140px;
   display: table-cell;
+}
+
+.modal-dialog-green-button-big {
+  background-image: url("<%= asset_path 'ui/greenButtonBig.png' %>");
+  width: 180px;
+  height: 48px;
+  color: #FFF;
+  font-size: 129%;
+  text-align: center;
+  font-family: 'Freckle Face', 'cursive';
+  line-height: 48px;
 }
 
 .modal-dialog-blue-button-big{
@@ -1154,7 +1236,7 @@ h3 {
 
 .message-center .message {
   padding: 24px;
-  overflow-x: scroll;  
+  overflow-x: scroll;
 }
 
 .message-center .message table {
@@ -1162,7 +1244,7 @@ h3 {
 
 
 .message-center .message table tr {
-  
+
 }
 
 .message-center .message table th {
@@ -1247,9 +1329,9 @@ h3 {
   border: 0px;
   height: 1px;
   color: #9b9b9b;
-  background-color: #9b9b9b; 
+  background-color: #9b9b9b;
 }
-.message-center .battle_report .bar, 
+.message-center .battle_report .bar,
 .message-center .battle_report .survivor_bar,
 .message-center .battle_report .dead_bar,
 .message-center .battle_report .damage_bar,
@@ -1321,7 +1403,7 @@ h3 {
 
 .message-edit-menue {
   background: -webkit-gradient(linear, left top, left bottom, from(#DADADA), to(#AAA)); /* for webkit browsers */
-  background: -moz-linear-gradient(top,  #DADADA,  #AAA); /* for firefox 3.6+ */ 
+  background: -moz-linear-gradient(top,  #DADADA,  #AAA); /* for firefox 3.6+ */
   width: 100%;
   height: 60px;
 }
@@ -1331,8 +1413,8 @@ h3 {
   width: 33%;
   height: 60px;
   padding-top: 20px;
-} 
-  
+}
+
 .message-edit-title {
   text-align: center;
 }
@@ -1341,7 +1423,7 @@ h3 {
   width: 96%;
 }
 
-.message-edit table th { 
+.message-edit table th {
   text-align: right;
   padding-right: 10px;
   width: 100px;
@@ -1358,7 +1440,7 @@ h3 {
 .message-edit-header {
   background-color: #EEE;
   width: 100%;
-  margin:0px;  
+  margin:0px;
   border-top: 1px solid black;
   border-bottom: 1px solid black;
   padding-bottom: 20px;
@@ -1375,12 +1457,12 @@ h3 {
   padding: 6px;
 }
 
-#text-input-dialog { 
-  position: absolute; 
+#text-input-dialog {
+  position: absolute;
   margin-left: -80px;
   margin-top: -80px;
   width: 400px; height: 200px;
-  background-color: #FCC; 
+  background-color: #FCC;
 }
 
 /** standard dialog buttons */
@@ -1399,7 +1481,7 @@ h3 {
   padding: 2px 2px 2px 2px;
   cursor: pointer;
   border-radius: 4px;
-  border: 1px solid #777;  
+  border: 1px solid #777;
 }
 
 .simple-button:hover {
@@ -1440,11 +1522,11 @@ h1.slot-tooltip {
 }
 
 .icon-button.ok-button {
-  background: url('<%= asset_path("icons/cross_green_small.png") %>') no-repeat left center;  
+  background: url('<%= asset_path("icons/cross_green_small.png") %>') no-repeat left center;
 }
 
 .icon-button.shuffle-button {
-  background: url('<%= asset_path("icons/dice.png") %>') no-repeat left center;  
+  background: url('<%= asset_path("icons/dice.png") %>') no-repeat left center;
 }
 
 .icon-button.close-button {
@@ -1468,10 +1550,10 @@ h1.slot-tooltip {
   font-size: 24px;
   text-align: center;
   text-shadow: none;
-  background: url('<%= asset_path("ui/orange_button-normal.png") %>') no-repeat;  
+  background: url('<%= asset_path("ui/orange_button-normal.png") %>') no-repeat;
 }
 .image-button:hover {
-  background: url('<%= asset_path("ui/orange_button-hovered.png") %>') no-repeat;  
+  background: url('<%= asset_path("ui/orange_button-hovered.png") %>') no-repeat;
 }
 
 .news-archive-link,
@@ -1490,7 +1572,7 @@ h1.slot-tooltip {
 }
 
 .welcome-dialog .image-button {
-  float: right; 
+  float: right;
 }
 
 
@@ -1512,35 +1594,35 @@ h1.slot-tooltip {
 }
 
 /** standard info dialog */
-.info-dialog { 
+.info-dialog {
   font-size: 18px;
-  position: absolute; 
+  position: absolute;
   margin-left: -350px;
   margin-top: -100px;
-  width: 700px; 
+  width: 700px;
   min-height: 200px;
-  background-color: #FFF;  
+  background-color: #FFF;
 }
 
 .announcement-dialog {
   font-size: 16px;
-  position: absolute; 
+  position: absolute;
   margin-left: -400px;
-  margin-top: -300px;  
+  margin-top: -300px;
   margin-bottom: 100px;
-  width: 800px; 
+  width: 800px;
   min-height: 300px;
-  background-color: #FFF;    
+  background-color: #FFF;
 }
 
 .welcome-dialog {
   font-size: 16px;
-  position: absolute; 
+  position: absolute;
   margin-left: -400px;
-  margin-top: -300px;  
-  width: 800px; 
+  margin-top: -300px;
+  width: 800px;
   min-height: 300px;
-  background-color: #FFF;    
+  background-color: #FFF;
 }
 .welcome-dialog h2 {
   margin-bottom: 0px;
@@ -1551,12 +1633,12 @@ h1.slot-tooltip {
 }
 
 .encyclopedia-view {
-  position: absolute; 
+  position: absolute;
   margin-left: -400px;
-  margin-top: -300px;  
-  width: 820px; 
+  margin-top: -300px;
+  width: 820px;
   min-height: 300px;
-  background-color: #FFF;    
+  background-color: #FFF;
 }
 
 .encyclopedia-view a.close {
@@ -1644,12 +1726,12 @@ h1.slot-tooltip {
 
 .character-profile-view {
   font-size: 16px;
-  position: absolute; 
+  position: absolute;
   margin-left: -350px;
-  margin-top: 100px;  
-  width: 700px; 
+  margin-top: 100px;
+  width: 700px;
   min-height: 300px;
-  background-color: #FFF;    
+  background-color: #FFF;
 }
 
 .character-profile-view a.close {
@@ -1667,42 +1749,42 @@ h1.slot-tooltip {
 
 .character-profile-view input[type="text"] {
   width: 450px;
-  margin-right: 0px;  
+  margin-right: 0px;
 }
 
 .character-profile-view input[type="password"] {
-  width: 220px; 
+  width: 220px;
 }
 
 .ranking-view {
   font-size: 16px;
-  position: absolute; 
+  position: absolute;
   margin-left: -400px;
-  margin-top: 80px;  
-  width: 800px; 
+  margin-top: 80px;
+  width: 800px;
   min-height: 600px;
-  background-color: #FFF;    
+  background-color: #FFF;
 }
 
-.advisor { 
+.advisor {
   width: 256px;
   height: 256px;
   margin-top:-30px;
 }
 
-.advisor.tiny { 
+.advisor.tiny {
   width: 96px;
   height: 96px;
   margin-top:-12px;
 }
 
-.advisor.neanderthal { 
+.advisor.neanderthal {
   width: 196px;
   height: 196px;
   margin-top:-10px;
 }
 
-.advisor { 
+.advisor {
   float:left;
 }
 
@@ -1730,7 +1812,7 @@ h1.slot-tooltip {
 .tab-bar li.current:hover {
   background-color: #FFF;
   cursor: auto;
-  color: #333;  
+  color: #333;
 }
 
 
@@ -2005,39 +2087,39 @@ h1.slot-tooltip {
 
 
 
-.advisor.girl { 
+.advisor.girl {
   background: url('<%= asset_path("advisors/head_girl_colored_small.png") %>');
 }
-.advisor.girl.tiny { 
+.advisor.girl.tiny {
   background: url('<%= asset_path("advisors/head_girl_colored_tiny.png") %>');
 }
-.advisor.warrior, .advisor.warrior-quest-start { 
+.advisor.warrior, .advisor.warrior-quest-start {
   background: url('<%= asset_path("advisors/quest-dialog-warrior.png") %>');
 }
-.advisor.warrior.tiny { 
+.advisor.warrior.tiny {
   background: url('<%= asset_path("advisors/head_warrior_colored_tiny.png") %>');
 }
-.advisor.chef, .advisor.chef-quest-start { 
+.advisor.chef, .advisor.chef-quest-start {
   background: url('<%= asset_path("advisors/quest-dialog-chef.png") %>');
 }
-.advisor.chef.tiny { 
+.advisor.chef.tiny {
   background: url('<%= asset_path("advisors/head_chef_colored_tiny.png") %>');
 }
-.advisor.neanderthal { 
+.advisor.neanderthal {
   background: url('<%= asset_path("advisors/head_neanderthal_colored_small.png") %>');
 }
 
-.advisor.girl-quest-start { 
+.advisor.girl-quest-start {
   background: url('<%= asset_path("advisors/quest-dialog-girl.png") %>');
 }
 
-.advisor.girl-quest-end { 
+.advisor.girl-quest-end {
   background: url('<%= asset_path("advisors/head_girl_colored_small_quest_end.png") %>');
 }
-.advisor.warrior-quest-end { 
+.advisor.warrior-quest-end {
   background: url('<%= asset_path("advisors/head_warrior_colored_small_quest_end.png") %>');
 }
-.advisor.chef-quest-end { 
+.advisor.chef-quest-end {
   background: url('<%= asset_path("advisors/head_chef_colored_small_quest_end.png") %>');
 }
 
@@ -2054,7 +2136,7 @@ h1.slot-tooltip {
   font-size: 24px;
 }
 
-#army-details, #shop { 
+#army-details, #shop {
   margin-left: -250px;
   margin-top: -150px;
   width: 500px; height: 400px;
@@ -2088,7 +2170,7 @@ loaddialog-positioner {
   top: 50px;
   width: 665px; height: 300px;
   background: url('<%= asset_path("splashscreen/crack_sw.jpg") %>');
-} 
+}
 
 .loaddialog-progress {
   width: 0%; height: 100%;
@@ -2120,23 +2202,23 @@ loaddialog-positioner {
   overflow-x: hidden;
   background-color: #000;
   height: 100%;
-}   
-   
-   
-.settlement-dialog-background { 
-  position: absolute; 
-  background-color: #333; 
-  opacity: 0.0; 
-  width: 100%; 
-  min-height: 100%; 
-  z-index:5; 
+}
+
+
+.settlement-dialog-background {
+  position: absolute;
+  background-color: #333;
+  opacity: 0.0;
+  width: 100%;
+  min-height: 100%;
+  z-index:5;
 }
 
 .settlement-dialog-window, .settlement-dialog-window2 {
-  position: absolute; 
+  position: absolute;
   margin-left: 20px;
   margin-top:  60px;
-  width: 758px; 
+  width: 758px;
   padding: 0px;
   z-index:26;
 }
@@ -2145,38 +2227,38 @@ loaddialog-positioner {
   margin-top: 160px;
 }
 
-.settlement-dialog-header { 
+.settlement-dialog-header {
   margin-left: 2px;
-  width: 758px; 
+  width: 758px;
   height: 40px;
   padding: 0;
   background-image: url('<%= asset_path("ui/settlement/details_window_header.png") %>');
 }
 
-.settlement-dialog-footer { 
+.settlement-dialog-footer {
   margin-left: 2px;
   margin-bottom:  0px;
-  width: 758px; 
+  width: 758px;
   height: 40px;
   padding: 0;
   background-image: url('<%= asset_path("ui/settlement/details_window_footer.png") %>');
 }
 
-.settlement-dialog-pane { 
-  width: 660px; 
+.settlement-dialog-pane {
+  width: 660px;
   min-height: 480px;
   padding: 6px 49px 6px 49px;
   background-image: url('<%= asset_path("ui/settlement/details_window_tile.png") %>');
 }
 
-.settlement-dialog-window2 .settlement-dialog-pane { 
-  width: 660px; 
+.settlement-dialog-window2 .settlement-dialog-pane {
+  width: 660px;
   height: 530px;
   padding: 6px 49px 6px 49px;
   background-image: url('<%= asset_path("ui/settlement/details_window_tile.png") %>');
 }
 
-.settlement-dialog-window2 .settlement-dialog-pane .wrapper { 
+.settlement-dialog-window2 .settlement-dialog-pane .wrapper {
   width:680px;
   height: 500px;
   margin-top:30px;
@@ -2200,7 +2282,7 @@ loaddialog-positioner {
   opacity: 0.6;
 }
 
-.settlement-dialog-pane a.upgrade, 
+.settlement-dialog-pane a.upgrade,
 .settlement-dialog-pane a.initiate {
   margin-top: 6px;
   color: #bbe166;
@@ -2214,7 +2296,7 @@ loaddialog-positioner {
   background-color: #FdfFFa;
 }
 
-.settlement-dialog-pane .upgrade, 
+.settlement-dialog-pane .upgrade,
 .settlement-dialog-pane .initiate {
   margin-top: 6px;
   color: #333;
@@ -2260,7 +2342,7 @@ loaddialog-positioner {
 
 
 .settlement-dialog-select-building.settlement-dialog-footer {
-  margin-bottom: 400px; 
+  margin-bottom: 400px;
 }
 
 
@@ -2293,10 +2375,10 @@ span.bonus {
   padding: 10px;
   margin-right: 2px;
   margin-bottom: 8px;
-  
-  cursor: pointer; 
+
+  cursor: pointer;
   vertical-align: top;
-  
+
   background: #ddf1a4; /* for non-css3 browsers */
 
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
@@ -2317,7 +2399,7 @@ span.bonus {
   position: relative;
   margin: 0;
   padding: 0;
-  height: 184px; 
+  height: 184px;
 }
 
 .requirement-group ul {
@@ -2372,7 +2454,7 @@ span.bonus {
   background: linear-gradient(top, #ffffff 0%,  #f8fbee 100%);
   background: -moz-linear-gradient(top,  #ffffff,  #f8fbee); /* for firefox 3.6+ */
   background: -webkit-linear-gradient(#ffffff,  #f8fbee);
-  
+
   cursor: pointer;
 }
 
@@ -2387,7 +2469,7 @@ span.bonus {
   height: 90px;
   margin-left: 0px;
   margin-top: 30px;
-} 
+}
 
 .outpost-screen .building-option-image,
 .base-screen .building-option-image {
@@ -2514,7 +2596,7 @@ span.bonus {
 /** image for building_artillery_tower */
 .building-option-image.building_artillery_tower {
   background: url('<%= asset_path("settlements/fortress/building_artillery_tower_small.png") %>');
-} 
+}
 /** image for building_cavalry_tower */
 .building-option-image.building_cavalry_tower {
   background: url('<%= asset_path("settlements/fortress/building_cavalry_tower_small.png") %>');
@@ -2687,7 +2769,7 @@ span.bonus {
   padding: 10px;
   margin-right: 5px;
   margin-bottom: 5px;
-  
+
   background: #f8fbee; /* for non-css3 browsers */
 
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
@@ -2707,7 +2789,7 @@ span.bonus {
   background: linear-gradient(top, #f6eae5 0%,  #ecd8ce 100%);
   background: -moz-linear-gradient(top,  #f6eae5,  #ecd8ce); /* for firefox 3.6+ */
   background: -webkit-linear-gradient(#f6eae5,  #ecd8ce);
-  
+
 }
 
 .queue-job.active {
@@ -2860,7 +2942,7 @@ span.bonus {
 }
 
 .training-queue-list-pane {
-  
+
 }
 
 .training-queue-job {
@@ -2873,7 +2955,7 @@ span.bonus {
   padding: 10px;
   margin-right: 5px;
   margin-bottom: 5px;
-  
+
   background: #f8fbee; /* for non-css3 browsers */
 
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
@@ -2953,7 +3035,7 @@ span.bonus {
 .stone-panel.standard-assignment:hover,
 .stone-panel.special-assignment:hover {
   border: 1px solid orange;
-  
+
   -moz-box-shadow: inset 0 0 0px 1px orange;
   -webkit-box-shadow: inset 0 0 0px 1px orange;
   box-shadow: inner 0 0 0px 1px orange;
@@ -2963,9 +3045,9 @@ span.bonus {
   margin-top: 0px;
 
   background-color: rgba(255,255,255,0.4);
-  
+
   border-radius: 3px;
-  
+
   padding: 6px 8px 6px 8px;
   border: 1px solid #EBEBEB;
 }
@@ -3068,7 +3150,7 @@ span.bonus {
 /** image for building_artillery_tower */
 .queue-job-image.building_artillery_tower {
   background: url('<%= asset_path("settlements/fortress/building_artillery_tower_small.png") %>');
-}	
+}
 /** image for building_cavalry_tower */
 .queue-job-image.building_cavalry_tower {
   background: url('<%= asset_path("settlements/fortress/building_cavalry_tower_small.png") %>');
@@ -3274,7 +3356,7 @@ span.bonus {
 .base-screen .queue-job-image.building_special_gatherer.level9,
 .base-screen .queue-job-image.building_artifact_stand.level9 {
   background-position: -648px 0px;
-}  
+}
 .base-screen .queue-job-image.building_chief_cottage.level19,
 .base-screen .queue-job-image.building_chief_cottage.level20,
 .base-screen .queue-job-image.building_alliance_hall.level10,
@@ -3301,13 +3383,13 @@ span.bonus {
   min-height: 100%;
 }
 
-.alliance-pane {   
+.alliance-pane {
   margin-left: 50px;
   margin-top: 150px;
   margin-bottom: 300px;
   width:800px;
   min-height: 400px;
-  background-color: #FFF;  
+  background-color: #FFF;
   padding: 16px 20px 16px 20px;
   border-radius: 12px;
   z-index: 2;
@@ -3454,11 +3536,11 @@ li.shout .sender {
   text-shadow: none;
   position: absolute;
   left: 57px;
-  top: 72px;  
+  top: 72px;
 }
 
 .outpost-screen .settlement-info-box-dialog,
-.fortress-screen .settlement-info-box-dialog, 
+.fortress-screen .settlement-info-box-dialog,
 .base-screen .settlement-info-box-dialog {
   width: 640px;
   min-height:640px;
@@ -3474,11 +3556,11 @@ li.shout .sender {
 }
 
 .fortress-screen .settlement-info-box-dialog {
-  min-height:750px; 
+  min-height:750px;
 }
 
 .outpost-screen .settlement-info-box-dialog {
-  min-height:720px; 
+  min-height:720px;
 }
 
 
@@ -3493,12 +3575,12 @@ li.shout .sender {
 .settlement-switch.previous {
   top: 72px;
   left: 20px;
-  background-image: url("<%= asset_path 'ui/settlement/switch_left.png' %>");  
+  background-image: url("<%= asset_path 'ui/settlement/switch_left.png' %>");
 }
 .settlement-switch.next {
   top: 72px;
   left: 585px;
-  background-image: url("<%= asset_path 'ui/settlement/switch_right.png' %>");    
+  background-image: url("<%= asset_path 'ui/settlement/switch_right.png' %>");
 }
 
 .settlement-switch:hover {
@@ -3506,11 +3588,11 @@ li.shout .sender {
 }
 
 .settlement-switch.previous:hover {
-  background-image: url("<%= asset_path 'ui/settlement/switch_left-hovered.png' %>");  
+  background-image: url("<%= asset_path 'ui/settlement/switch_left-hovered.png' %>");
 }
 
 .settlement-switch.next:hover {
-  background-image: url("<%= asset_path 'ui/settlement/switch_right-hovered.png' %>");    
+  background-image: url("<%= asset_path 'ui/settlement/switch_right-hovered.png' %>");
 }
 
 .float-right {
@@ -3644,12 +3726,12 @@ li.shout .sender {
 
 .outpost-screen .left-icon,
 .base-screen .left-icon {
-  background-image: url("<%= asset_path 'icons/left-white.png' %>");  
+  background-image: url("<%= asset_path 'icons/left-white.png' %>");
 }
 
 .outpost-screen .right-icon,
 .base-screen .right-icon {
-  background-image: url("<%= asset_path 'icons/right-white.png' %>");  
+  background-image: url("<%= asset_path 'icons/right-white.png' %>");
 }
 
 
@@ -3679,12 +3761,12 @@ li.shout .sender {
 .stone-panel {
   background-image: url("<%= asset_path 'ui/settlement/background_stone_repeat.jpg' %>");
   background-repeat: repeat;
-  
+
   border-radius: 3px;
-  
+
   padding: 10px;
   border: 1px solid #E2E2E2;
-  
+
   -moz-box-shadow: inset 0 0 0px 1px #FFF;
   -webkit-box-shadow: inset 0 0 0px 1px #FFF;
   box-shadow: inner 0 0 0px 1px #FFF;
@@ -3696,7 +3778,7 @@ li.shout .sender {
 .outpost-screen .settlement-info-box-dialog h1,
 .base-screen .settlement-info-box-dialog h1,
 .fortress-screen .settlement-info-boxdialog h1 {
-  font-size: 20px; 
+  font-size: 20px;
 }
 
 table .number {
@@ -3738,7 +3820,7 @@ table .datetime {
 
 .fortress-picture {
   background: url('<%= asset_path("settlements/fortress/fortress_background.png") %>');
-} 
+}
 
 .outpost-picture,
 .base-picture {
@@ -3760,8 +3842,8 @@ table .datetime {
 }
 
 
-.outpost-picture .mouse-over, 
-.fortress-picture .mouse-over, 
+.outpost-picture .mouse-over,
+.fortress-picture .mouse-over,
 .base-picture .mouse-over {
   position: absolute;
   /*width: 360px;*/
@@ -3776,8 +3858,8 @@ table .datetime {
   text-shadow: none;
 }
 
-.outpost-picture .mouse-over h1, 
-.fortress-picture .mouse-over h1, 
+.outpost-picture .mouse-over h1,
+.fortress-picture .mouse-over h1,
 .base-picture .mouse-over h1 {
   margin-top: 0px;
 }
@@ -3876,14 +3958,14 @@ table .datetime {
   right: 0px;
 }
 
-.constructing, 
+.constructing,
 .outpost-picture .level.constructing,
-.fortress-picture .level.constructing, 
+.fortress-picture .level.constructing,
 .base-picture .level.constructing {
   color: #3F3;
 }
 
-.destructing, 
+.destructing,
 .outpost-picture .level.destructing,
 .fortress-picture .level.destructing,
 .base-picture .level.destructing {
@@ -3901,7 +3983,7 @@ table .datetime {
 /** image for building_artillery_tower */
 .fortress-picture .tower.building_artillery_tower {
   background: url('<%= asset_path("settlements/fortress/building_artillery_tower.png") %>');
-}	
+}
 /** image for building_cavalry_tower */
 .fortress-picture .tower.building_cavalry_tower {
   background: url('<%= asset_path("settlements/fortress/building_cavalry_tower.png") %>');
@@ -4052,8 +4134,8 @@ table .datetime {
   background: url('<%= asset_path("settlements/base/building_artifact_stand_small.png") %>');
 }
 
-.outpost-picture .level, 
-.fortress-picture .level, 
+.outpost-picture .level,
+.fortress-picture .level,
 .base-picture .level {
   background-color: #BBB;
   color: #444;
@@ -4453,7 +4535,7 @@ table .datetime {
 
 .outpost-picture .small-building:hover,
 .base-picture .small-building:hover {
-  margin-left: -4px; 
+  margin-left: -4px;
   margin-top: -4px;
   border: 4px solid orange;
   cursor: pointer;
@@ -4467,7 +4549,7 @@ table .datetime {
 
 .outpost-picture .large-building:hover,
 .base-picture .large-building:hover {
-  margin-left: -4px; 
+  margin-left: -4px;
   margin-top: -4px;
   border: 4px solid orange;
   cursor: pointer;
@@ -4780,7 +4862,7 @@ table .datetime {
 }
 
 .character-progress-dialog-pane,
-.army-info-dialog .modal-dialog-pane { 
+.army-info-dialog .modal-dialog-pane {
   margin-top:-300px;
   width: 700px;
   margin-left: -350px;
@@ -4789,7 +4871,7 @@ table .datetime {
 .found-settlement-dialog {
   margin-top: 80px;
   width: 700px;
-  margin-left: 80px;  
+  margin-left: 80px;
 }
 
 .resource-details-dialog-pane.modal-dialog-pane {
@@ -4956,19 +5038,19 @@ a.trading-carts-speedup-button:hover {
 }
 
 .helvetica-light {
-  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", 
-               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", 
-               "Tahoma", "Geneva", "Arial", sans-serif; 
-  font-weight:300; 
+  font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light",
+               "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica",
+               "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight:300;
   font-stretch:normal;
 }
 
 .helvetica-regular {
-  font-family: "HelveticaNeue", "Helvetica Neue", "HelveticaNeueRoman", 
-               "HelveticaNeue-Roman", "Helvetica Neue Roman", 
-               'TeXGyreHerosRegular', "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; 
-  font-weight:400; 
-  font-stretch:normal; 
+  font-family: "HelveticaNeue", "Helvetica Neue", "HelveticaNeueRoman",
+               "HelveticaNeue-Roman", "Helvetica Neue Roman",
+               'TeXGyreHerosRegular', "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight:400;
+  font-stretch:normal;
 }
 
 .shop-dialog-pane .simple-button.float-right {
@@ -4981,7 +5063,7 @@ a.trading-carts-speedup-button:hover {
 
 .shop-dialog-pane .platinum {
   background: #F0E8D9; /* for non-css3 browsers */
-  
+
   border: 1px solid #E2D6BC;
 
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eef3da', endColorstr='#e5f1c3'); /* for IE */
@@ -5215,12 +5297,12 @@ a.trading-carts-speedup-button:hover {
   float: left;
   width: 140px;
   height: 100px;
-  
+
   background: url('<%= asset_path("shop/button_cash_package.png") %>');
   margin-right: 10px;
   margin-bottom: 10px;
   text-align: center;
-  
+
   color: #c83;
 }
 
@@ -5358,8 +5440,8 @@ a.trading-carts-speedup-button:hover {
 .bonus-offer-header {
   padding: 8px;
   font-size: 1.1em;
-  font-weight:300; 
-  font-stretch:normal; 
+  font-weight:300;
+  font-stretch:normal;
 }
 
 .bonus-offer-description {
@@ -5399,12 +5481,12 @@ a.trading-carts-speedup-button:hover {
   padding: 10px;
 }
 
-.shop-dialog-pane { 
-  position: absolute; 
+.shop-dialog-pane {
+  position: absolute;
   margin-left: -300px;
   margin-top: 10px;
   width: 630px; min-height: 100px;
-  background-color: #FFF;  
+  background-color: #FFF;
   padding: 16px 20px 16px 20px;
   z-index:256;
 
@@ -5441,7 +5523,7 @@ a.trading-carts-speedup-button:hover {
 }
 
 
-.ranking-view .advisor { 
+.ranking-view .advisor {
   position: absolute;
   left: 660px;
   top: -60px;
@@ -5527,7 +5609,7 @@ a.trading-carts-speedup-button:hover {
 }
 
 .participant-table th {
-  background-color: #787da8;  
+  background-color: #787da8;
   color: #fff;
   padding: 4px 4px 4px 4px;
   font-size: 14px;
@@ -5535,7 +5617,7 @@ a.trading-carts-speedup-button:hover {
 }
 
 .ranking-table th {
-  background-color: #787da8;  
+  background-color: #787da8;
   color: #fff;
   padding: 4px 4px 4px 4px;
   font-size: 14px;
@@ -5791,11 +5873,11 @@ a.trading-carts-speedup-button:hover {
 }
 
 .battle-dialog-pane {
-  position: absolute; 
+  position: absolute;
   margin-left: -445px;
   margin-top: -240px;
   width: 890px; min-height: 100px;
-  background-color: #FFF;  
+  background-color: #FFF;
   padding: 16px 20px 16px 20px;
   z-index:256;
 
@@ -5821,11 +5903,11 @@ a.trading-carts-speedup-button:hover {
 }
 
 .attack-dialog-pane {
-  position: absolute; 
+  position: absolute;
   margin-left: -370px;
   margin-top: -200px;
   width: 700px; min-height: 100px;
-  background-color: #FFF;  
+  background-color: #FFF;
   padding: 16px 20px 16px 20px;
   z-index:258;
 
@@ -5850,7 +5932,7 @@ a.trading-carts-speedup-button:hover {
 }
 
 .attack-participant-table th {
-  background-color: #555;  
+  background-color: #555;
   color: #fff;
   padding: 4px 4px 4px 4px;
 }
@@ -5926,11 +6008,11 @@ button.fb-button {
 }
 
 .tutorial-end-dialog {
-  position: absolute; 
+  position: absolute;
   margin-left: -400px;
   margin-top: 80px;
   width: 800px; min-height: 100px;
-  background-color: #FFF;  
+  background-color: #FFF;
   padding: 4px 4px 4px 4px;
   z-index:256;
 }
@@ -5944,12 +6026,12 @@ button.fb-button {
 }
 
 .quest-list-view {
-  position: absolute; 
+  position: absolute;
   margin-left: -300px;
   margin-top: 80px;
   width: 630px; min-height: 100px;
   /*height: 600px;*/
-  background-color: #FFF;  
+  background-color: #FFF;
   padding: 16px 20px 16px 20px;
   z-index:256;
 }
@@ -6030,11 +6112,11 @@ button.fb-button {
 }
 
 .quest-start-dialog, .quest-finished-dialog, .quest-info-dialog, .quest-dialog {
-  position: absolute; 
+  position: absolute;
   margin-left: -366px;
   margin-top: 50px;
   width: 780px; min-height: 100px;
-  background-color: #FFF;  
+  background-color: #FFF;
   padding: 4px 4px 4px 4px;
   z-index:256;
 }
@@ -6126,7 +6208,7 @@ button.fb-button {
 
 
 
-.quest-start-dialog .advisor, .quest-finished-dialog .advisor, .quest-info-dialog .advisor, .quest-dialog .advisor { 
+.quest-start-dialog .advisor, .quest-finished-dialog .advisor, .quest-info-dialog .advisor, .quest-dialog .advisor {
   float:right;
   margin-left: 4px;
   margin-right: -22px;
@@ -6222,7 +6304,7 @@ div.dom-quest-container div.tutorial-dialog {
   left: 50%;
   margin-left: -100px;
   top: 5px;
-  text-align: center; 
+  text-align: center;
   z-index: 90000;
 }
 
@@ -6254,7 +6336,7 @@ div.dom-quest-container div.tutorial-dialog {
   padding-left: 20px;
   padding-right: 20px;
   float: none;
-  background-color: #FFF;  
+  background-color: #FFF;
 }
 
 #army-change-form .button {
@@ -6274,15 +6356,15 @@ div.dom-quest-container div.tutorial-dialog {
 
 .army-list-view {
   font-size: 16px;
-  position: absolute; 
+  position: absolute;
   margin-left: -400px;
-  margin-top: 80px;  
-  width: 800px; 
+  margin-top: 80px;
+  width: 800px;
   min-height: 600px;
-  background-color: #FFF;    
+  background-color: #FFF;
 }
 
-.army-list-view .advisor { 
+.army-list-view .advisor {
   position: absolute;
   right: 45px;
   top: 70px;
@@ -6315,7 +6397,7 @@ div.dom-quest-container div.tutorial-dialog {
   border-bottom:0;
   margin: 0 auto 0 auto;
 }
-  
+
 .army-list-table-wrapper .army-list-table {
   width: 100%;
   border: 1px solid #ccc;
@@ -6326,14 +6408,14 @@ div.dom-quest-container div.tutorial-dialog {
   border-top:0;
   margin: 0px auto 0px auto;
 }
-  
+
 .army-list-table-wrapper {
   overflow:auto;
   height: 500px; /* I took this value because of .army-list-view */
 }
 
 .army-list-table th {
-  background-color: #787da8;  
+  background-color: #787da8;
   color: #fff;
   padding: 4px 4px 4px 4px;
   font-size: 14px;
@@ -6403,7 +6485,7 @@ div.dom-quest-container div.tutorial-dialog {
 #resource-exchange-dialog .resource-exchange-input {
   width:100px;
 }
-  
+
 #resource-exchange-dialog .green-color .resource-exchange-input {
   color: #9D9;
 }
@@ -6686,18 +6768,18 @@ hurry-button:hover {
   h2, h3 { page-break-after: avoid; }
 }
 
-.quest-dialog-bg{  
+.quest-dialog-bg{
   position: absolute;
   height: 0px;
   width: 0px;
   top: 238px;
   margin: 0 auto;
   left:-50%;
-  
+
   background-color: none;
   border: none;
   background-size: 100% 100%;
-  
+
   z-index: 260;
 }
 
@@ -6705,7 +6787,7 @@ hurry-button:hover {
   width: 100%;
   height: 100%;
   position: absolute;
-  
+
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+ */
@@ -6722,7 +6804,7 @@ hurry-button:hover {
   top: 16%;
   right: 11%;
   background-size: 100% 100%;
-  
+
   opacity: 1;
 }
 
@@ -6760,7 +6842,7 @@ hurry-button:hover {
   /* Rules below not implemented in browsers yet */
   -o-user-select: none;
   user-select: none;
-  
+
   opacity: 1;
 }
 
@@ -6778,7 +6860,7 @@ hurry-button:hover {
   -ms-transition: background-image 0.3s;
   -o-transition: background-image 0.3s;
   transition: background-image 0.3s;
-  
+
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+ */
@@ -6790,7 +6872,7 @@ hurry-button:hover {
 
 .quest-dialog-button:hover{
     background-image: url('<%= asset_path("quest-dialog-button-active.png") %>');
-    
+
     -webkit-user-select: none; /* Chrome/Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+ */
@@ -6801,9 +6883,9 @@ hurry-button:hover {
 }
 
 .quest-dialog-button:active{
-  
+
   background-image: url('<%= asset_path("quest-dialog-button-active2.png") %>');
-  
+
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+ */
@@ -6811,14 +6893,14 @@ hurry-button:hover {
   /* Rules below not implemented in browsers yet */
   -o-user-select: none;
   user-select: none;
-  
+
   transition: background 0s;
 }
 
 .reward-recource-icon{
   display: inline-block;
   width: 92px; height: 92px;
-  
+
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+ */
@@ -6834,7 +6916,7 @@ hurry-button:hover {
   width: 100%;
   height: 100%;
   background-size: 100% 100%;
-  
+
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+ */
@@ -6846,7 +6928,7 @@ hurry-button:hover {
 
 .quest-resource-icon.resource_stone{
   background-image: url('<%= asset_path("icons/stone-xl.png") %>');
-  
+
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+ */
@@ -6858,7 +6940,7 @@ hurry-button:hover {
 
 .quest-resource-icon.resource_wood{
   background-image: url('<%= asset_path("icons/wood-xl.png") %>');
-  
+
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+ */
@@ -6870,7 +6952,7 @@ hurry-button:hover {
 
 .quest-resource-icon.resource_fur{
   background-image: url('<%= asset_path("icons/fur-xl.png") %>');
-  
+
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+ */
@@ -6894,7 +6976,7 @@ hurry-button:hover {
   z-index: 200;
   overflow: hidden;
   opacity: 0;
-  
+
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+ */
@@ -6943,7 +7025,7 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 .quest-simple-button{
   width: 100%;
   height: 100%;
-  
+
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+ */
@@ -6964,7 +7046,7 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
   top: -159%;
   right: -14%;
   transition: background-image 0.3s;
-  
+
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+ */
@@ -6977,7 +7059,7 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 .quest-scip-button:hover{
   background-image: url('<%= asset_path("quest-x-button-hover.png") %>');
   transition: background-image 0.3s;
-  
+
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+ */
@@ -6997,12 +7079,12 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
 
 .modal-dialog-spinning-background {
   background-size: 100%;
-  
+
   width: 2200px;
   height: 2200px;
   margin-top: -850px;
   margin-left: -1100px;
-  
+
   -webkit-animation:spin 6s linear infinite;
   -moz-animation:spin 6s linear infinite;
   -ms-animation:spin 6s linear infinite;
@@ -7113,5 +7195,5 @@ p.citation.clearfix, .quest-dialog-text p, .quest-dialog-text{
     position: absolute;
     z-index: 259;
   }
-  
+
 }

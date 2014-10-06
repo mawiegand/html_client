@@ -2,7 +2,7 @@ var AWE = AWE || {};
 AWE.I18n = AWE.I18n || {};
 
 AWE.I18n.en_US = function(module) {
-    
+
   module.localizedStrings = {
 
     general:{
@@ -36,7 +36,7 @@ AWE.I18n.en_US = function(module) {
 
       demigod:'Demigod',
       demigoddess:"Demigoddess",
-      
+
       neanderthal: "Neanderthal",
 
       playerName:"Player name",
@@ -353,7 +353,7 @@ AWE.I18n.en_US = function(module) {
         notEnoughBuildingSlots:"You cannot create any new buildings right now. You need to upgrade your main building to do this - either the chieftan's hut in the main settlement or the meeting place in a camp.",
         notEnoughCash:"You don't have enough Golden Frogs to carry out this action.",
       },
-      
+
       gossip: {
         heading: "Gossip",
         advice: [
@@ -420,13 +420,21 @@ AWE.I18n.en_US = function(module) {
       memberOf:"You are currently a member of the alliance ",
       joinAllianceHeader: "Join alliance",
       joinAllianceButton: "Join alliance",
+      joinAllianceButtonNew: "join",
+      joinRandomAllianceButtonNew: "join",
       joinAllianceText:"Join an existing alliance by entering their alliance tag and the secret alliance slogan.",
       createAlliance:"Found alliance",
       createAllianceText:"Found a new alliance with yourself as the leader.",
+      createAllianceButtonNew: 'set up',
+      createAllianceFailedHead: 'Found alliance failed',
       redeemAllianceReservationHeader: "Alliance reservation",
       redeemAllianceReservationButton: "Redeem alliance reservation",
       redeemAllianceReservationText: "Redeem an alliance reservation from the last round. Enter the alliance tag and secret reservation password.",
+      leaveAllianceFailedHead: 'Leave alliance failed',
       leave:"Leave",
+      name: "Alliancename",
+      tag: "Alliance Tag",
+      password: "Password",
 
       founded:"Founded",
       leader:"Leader",
@@ -435,6 +443,7 @@ AWE.I18n.en_US = function(module) {
       changeDescriptionDialogCaption: 'Please enter your alliance description.',
       changeDescription: 'Edit description',
       missingDescription: 'Please enter your alliance description.',
+      diplomacy: "Diplomacy",
       diplomacyRelation: "Diplomatie Beziehungen",
       diplomacyRelationWithAlliance: " mit der Allianz ",
       diplomacyRelationEnds: " endet am ",
@@ -668,7 +677,7 @@ AWE.I18n.en_US = function(module) {
       max:'max',
       condition:'Condition',
       founded:'Founded',
-      
+
       customization: {
         chooseName: "Choose your name",
         changeName: "Change your name",
@@ -891,7 +900,7 @@ AWE.I18n.en_US = function(module) {
               resource_fur: "You don't have sufficient fur to start the assignment.",
               resource_cash: "You don't have sufficient toads to start the assignment.",
               armies: "You don't have sufficient units to start the assignment.",
-            }  
+            }
           }
         }
       },
@@ -993,7 +1002,7 @@ AWE.I18n.en_US = function(module) {
         lagUntolerable1:"Please set your system clock to the correct time.",
         lagUntolerable2:"Otherwise, enable automatic internet time synchronization if your operation system provides this feature. Your responsiveness and your user experience would both improve significantly. ",
       },
-      
+
       settings: {
         connectToFacebookHeading: 'Go Social!',
         youAreConnectedToFacebook: "You're already connected with Facebook and ready to play Wack-A-Doo in Facebook: <a href='https://apps.facebook.com/wack-a-doo' target='_blank'>https://apps.facebook.com/wack-a-doo</a>.<br/>Got a wrong connection? Please contact support (support@5dlab.com).",
@@ -1071,7 +1080,7 @@ AWE.I18n.en_US = function(module) {
           changePasswordInvalid:"This password doesn't meet the Wack-a-Doo requirements. Please choose another password.",
           changePasswordUnknown:"Your password could not be changed right now. Please try again later.",
           changePasswordNoMatch:"The two passwords you've entered don't match. Please try again.",
-          
+
           changeDescriptionError: "Die Character Beschreibung konnte aus unbekanntem Grund nicht geändert werden.",
 
           changeSameIIUnknown: "The list can't be changed right now. Please try again later.",
@@ -1082,7 +1091,7 @@ AWE.I18n.en_US = function(module) {
           },
         },
       },
-      
+
       moving: {
         info1: "You can move with your home settlement into another region.",
         info2: "You can not move into a region that is in battle or a region with an owner change in the last 12 hours.",
@@ -1324,7 +1333,7 @@ AWE.I18n.en_US = function(module) {
         },
       },
     },
-    
+
     effects: {
       effects: "Bonuses",
       type0: "Shop",
@@ -1385,10 +1394,10 @@ AWE.I18n.en_US = function(module) {
       manual: "Manual",
       logout: "Log out",
       header: "Menu",
-    }, 
+    },
   };
-  
+
   return module;
-  
+
 }(AWE.I18n.en_US || {});
 
