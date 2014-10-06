@@ -68,10 +68,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         //this.get('hudController').setNeedsDisplay();
       }
 
-      if(this.get('allianceScreenController')) {
-        this.get('allianceScreenController').runloop();
-      }
-
       if (!this.get('sessionEnded') && AWE.Net.currentUserCredentials.expiration.getTime() < new Date().getTime()) {
         this.set('sessionEnded', true);
         document.location.href = AWE.Config.PORTAL_ROOT;
@@ -645,21 +641,20 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       return this.get('presentScreenController') === this.get('mapScreenController');
     },
 
-    activateAllianceController: function(alliance_id) {
-      var allianceController = this.get('allianceScreenController');
-      if (!allianceController) {
-        allianceController = AWE.Controller.createAllianceController('#layers');
-        this.set('allianceScreenController', allianceController);
-      }
+    showAllianceDialog: function(alliance_id) {
+      this.get('hudController').activeAllianceId = alliance_id;
+      var alliance = null;
+      AWE.GS.AllianceManager.updateAlliance(alliance_id, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+        alliance = AWE.GS.AllianceManager.getAlliance(alliance_id);
+        allianceScreen = AWE.UI.Ember.AllianceView.create({
+          alliance: alliance,
+        });
 
-      allianceController.setAllianceId(alliance_id);
-      var allianceScreen = allianceController.createView();
-
-      allianceController.updateModel();
-
-      allianceScreen.open();
+        WACKADOO.presentModalDialog(allianceScreen);
+      });
       
-      //this.activateController(allianceController);
+      
+      
     },
 
 

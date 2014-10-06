@@ -36,6 +36,7 @@ AWE.Controller = (function(module) {
     var _animationDuration = 800;
     
     that.animatedMarker = null;
+
     
     
     // ///////////////////////////////////////////////////////////////////////
@@ -465,7 +466,24 @@ AWE.Controller = (function(module) {
     //
     //   Remote Data Handling
     //
-    // /////////////////////////////////////////////////////////////////////// 
+    // ///////////////////////////////////////////////////////////////////////
+
+    that.activeAllianceId = null;
+
+    that.updateAlliance = function() {
+      var alliance = AWE.GS.AllianceManager.getAlliance(that.activeAllianceId);
+      if ((!alliance && that.activeAllianceId) || (alliance && alliance.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
+        AWE.GS.AllianceManager.updateAlliance(that.activeAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      }
+      var members = AWE.GS.CharacterManager.getMembersOfAlliance(that.activeAllianceId);
+      if ((!members || members.length == 0) || (members && AWE.GS.CharacterManager.lastUpdateAtForAllianceId(that.activeAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
+        AWE.GS.CharacterManager.updateMembersOfAlliance(that.activeAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      }
+      var relations = AWE.GS.DiplomacyRelationManager.getDiplomacyRelationsOfAlliance(that.activeAllianceId);
+      if ((!relations || relations.length == 0) || (relations && AWE.GS.DiplomacyRelationManager.lastUpdateAtForSourceAllianceId(that.activeAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
+        AWE.GS.DiplomacyRelationManager.updateDiplomacyRelationsOfAlliance(that.activeAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      }
+    } 
     
     that.modelChanged = function() { return _modelChanged; }
     
@@ -529,6 +547,8 @@ AWE.Controller = (function(module) {
             });
           }
         }
+
+
       };
     }());     
     
@@ -700,6 +720,9 @@ AWE.Controller = (function(module) {
         
         // STEP 2: update Model
         that.updateModel();
+        if(that.activeAllianceId) {
+          that.updateAlliance();
+        }
                 
         // STEP 3: layout canvas & stages according to possibly changed window size (TODO: clean this!)
         that.layoutIfNeeded();

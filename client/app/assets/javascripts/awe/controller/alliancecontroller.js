@@ -41,7 +41,7 @@ AWE.Controller = (function(module) {
     
     //that.getStages = function() { return []; }
     
-    that.updateAlliance = function(allianceId) {
+    that.updateAlliance = function(allianceId, callback) {
       var alliance = AWE.GS.AllianceManager.getAlliance(allianceId);
       if ((!alliance && allianceId) ||
           (alliance && alliance.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
@@ -102,8 +102,8 @@ AWE.Controller = (function(module) {
     // }
     
     
-    that.updateModel = function() {
-      that.updateAlliance(this.allianceId);
+    that.updateModel = function(callback) {
+      that.updateAlliance(this.allianceId, callback);
       that.updateMembers(this.allianceId);
       that.updateDiplomacyRelations(this.allianceId);
       if (this.allianceId == AWE.GS.game.currentCharacter.alliance_id) {
@@ -127,6 +127,7 @@ AWE.Controller = (function(module) {
       
       var allianceScreen = null;
       var alliance = AWE.GS.AllianceManager.getAlliance(that.allianceId);
+      
       if (!alliance) {
         return null;
       }
@@ -146,7 +147,8 @@ AWE.Controller = (function(module) {
       }
       this.view = this.createView();
       if (this.view) {
-        this.view.appendTo('#main-screen-controller');  
+        WACKADOO.presentModalDialog(this.view);
+        //this.view.appendTo('#main-screen-controller');  
       }    
     }
     
@@ -154,10 +156,10 @@ AWE.Controller = (function(module) {
       this.allianceId = allianceId;
     }
     
-    // that.viewDidAppear = function() {
-    //   this.visible = true;
-    //   this.appendView();
-    // };
+    that.viewDidAppear = function() {
+      this.visible = true;
+      this.appendView();
+    };
     
     // that.viewWillDisappear = function() {
     //   this.removeView();
