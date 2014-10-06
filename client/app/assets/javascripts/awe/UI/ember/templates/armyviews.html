@@ -338,6 +338,9 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="army-info-tab2-view">   
+    {{#each queue.hashableJobs.collection }}
+        {{view AWE.UI.Ember.ArmyTrainingJobNewView controllerBinding="controller" jobBinding="this"}}
+    {{/each}}
     {{#each armyType in trainableUnitTypes}}
         {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" controllerBinding="parentView.controller" queueBinding="parentView.queue"}}
     {{/each}}
@@ -415,5 +418,13 @@
   </div>
 
   {{view AWE.UI.Ember.JobsRangeView numberBinding="number"}}
+</script>
+<!--Job Statusbar-->
+<script type="text/x-handlebars" data-template-name="army-job-cell">   
+    {{#if job.active_job }}
+      <div class="army-type-cell army-type-cell-jobs">Test Cell Active!!!</div>
+    {{else}}
+      <div class="army-type-cell army-type-cell-jobs">Test Cell NOT Active!!!</div>
+    {{/if}}
 </script>
 

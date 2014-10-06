@@ -438,9 +438,6 @@ module.ArmyUnitResourceView  = Ember.View.extend ({
 
     formatSeconds: function (seconds)
     {
-      //var date = new Date(1970,0,1);
-      //date.setSeconds(seconds);
-      //return date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
       var t = new Date(1970,0,1);
       t.setSeconds(seconds);
       var s = t.toTimeString().substr(0,8);
@@ -542,6 +539,91 @@ module.ArmyUnitInfoButtonView = module.ArmyUnitInfoView.extend({
   });
 //Recruitment job dialog end
 
+module.ArmyTrainingJobNewView = Ember.View.extend ({
+  templateName: 'army-job-cell',
+  job: null,
+  controller: null,
+
+  timeRemaining: null,
+    timer:         null,
+    
+    cancelJobPressed: function(evt) {
+      this.get('controller').trainingCancelClicked(this.get('job'));
+    },
+    
+    speedupJobPressed: function(event) {
+      this.get('controller').trainingSpeedupClicked(this.get('job'));
+    },
+    
+    
+    active: function() {
+      return this.get('job').active_job !== null;
+    }.property('job.active_job'),   
+    
+    first: function() {
+      var jobCollection = this.getPath('parentView.queue.hashableJobs.collection');
+      return jobCollection && jobCollection[0] && jobCollection[0] === this.get('job')
+    }.property('parentView.queue.hashableJobs.changedAt'),    
+    
+    calcTimeRemaining: function() {
+      var finishedAt = this.getPath('job.active_job.finished_total_at');
+      if (!finishedAt) {
+        return ;
+      }
+      var finish = Date.parseISODate(finishedAt);
+      var now = new Date();
+      var remaining = (finish.getTime() - now.getTime()) / 1000.0;
+      remaining = remaining < 0 ? 0 : remaining;
+      this.set('timeRemaining', remaining);
+    },
+    
+    isTrainingSpeedupPossible: function() {
+      return this.getPath('active') && !this.getPath('job.hurried') && AWE.Util.Rules.isTrainingSpeedupPossible(this.getPath('timeRemaining'));
+    }.property('timeRemaining', 'active'),
+
+
+    finished: function() {
+      var t = this.get('timeRemaining');
+      return t !== undefined && t !== null && t <= 0;
+    }.property('timeRemaining'),    
+    
+    startTimer: function() {
+      var timer = this.get('timer');
+      if (!timer) {
+        timer = setInterval((function(self) {
+          return function() {
+            self.calcTimeRemaining();
+          };
+        }(this)), 1000);
+        this.set('timer', timer);
+      }
+    },
+    
+    stopTimer: function() {
+      var timer = this.get('timer');
+      if (timer) {
+        clearInterval(timer);
+        this.set('timer', null);
+      }
+    },
+    
+    startTimerOnBecommingActive: function() {
+      var active = this.get('active');
+      if (active && this.get('timer')) {
+        this.startTimer();
+      }
+      return ;
+    }.observes('active'),
+    
+    
+    didInsertElement: function() {
+      this.startTimer();
+    },
+    
+    willDestroyElement: function() {
+      this.stopTimer();
+    },
+});
 //NEW DIALOGS END
 
   module.ArmyInfoDialog = AWE.UI.Ember.InfoDialog.extend({
