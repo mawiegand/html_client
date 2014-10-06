@@ -331,7 +331,7 @@
         <div class="cost-item-small-uhr"></div>
       </div>
       <div class="military-costs-half-row">
-        <div class="cost-text-small">{{productionTime}}</div>
+        <div class="cost-text-small">{{formattedProductioTime}}</div>
       </div>
     </div>
   </div>
@@ -339,42 +339,81 @@
 
 <script type="text/x-handlebars" data-template-name="army-info-tab2-view">   
     {{#each armyType in trainableUnitTypes}}
-        {{view AWE.UI.Ember.ArmyUnitBigButtonView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
+        {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
     {{/each}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="army-info-tab3-view">   
     {{#each armyType in trainableUnitTypes}}
-        {{view AWE.UI.Ember.ArmyUnitBigButtonView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
+        {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
     {{/each}}
 </script>
 <script type="text/x-handlebars" data-template-name="army-info-tab4-view">   
     {{#each armyType in trainableUnitTypes}}
-         {{view AWE.UI.Ember.ArmyUnitBigButtonView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
+         {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
     {{/each}}
 </script>
 <script type="text/x-handlebars" data-template-name="army-info-tab5-view">   
     {{#each armyType in trainableUnitTypes}}
-         {{view AWE.UI.Ember.ArmyUnitBigButtonView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
+         {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" queueBinding="parentView.queue"}}
     {{/each}}
 </script>
 
 <!-- RECRUITMENT-->
 <script type="text/x-handlebars" data-template-name="army-recruitment-view">   
+    {{view AWE.UI.Ember.ArmyRecruitmentJobInfoView unitTypeBinding="unitType" queueBinding="queue"}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-recruitment-info-view">   
   <div class="unit-image-wrapper">
-    <div class="unit-image-new">
+    <div {{bindAttr class="unitType.db_field :unit-image-new"}}>
       <div class="count-text-big-background">
-        <div class="count-text-big count-text-jobs">12</div>
+        <div class="count-text-big count-text-jobs">{{number}}</div>
       </div>
     </div>
   </div>
   <div class="unit-description jobs-description">
-    Att: 500 <br/>
-    Def: 320 <br/>
-    HP: 400 <br/>
-    Typ: Infantry </br>
-    Crit: 447 <br/>
+    Att: {{unitType.attack}} <br/>
+    Def:  {{unitType.armor}}<br/>
+    HP: {{unitType.hitpoints}} <br/>
+    Typ: {{getUnitCategoryName}} </br>
+    Crit: {{unitType.critical_hit_damage}} % <br/>
   </div>
-  <div class="military-costs-green-background"></div>
+  <div class="military-costs-green-background">
+    <div class="military-costs-row military-costs-row-all">
+      <div class="military-costs-half-row">
+        <div class="cost-icon-small-stone"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{getTotalStoneCosts}}</div>
+      </div>
+    </div>
+    <div class="military-costs-row military-costs-row-all">
+      <div class="military-costs-half-row">
+        <div class="cost-icon-small-wood"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{getTotalWoodCosts}}</div>
+      </div>
+    </div>
+    <div class="military-costs-row military-costs-row-all">
+      <div class="military-costs-half-row">
+        <div class="cost-icon-small-fur"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{getTotalFurCosts}}</div>
+      </div>
+    </div>
+    <div class="military-costs-row military-costs-row-all">
+      <div class="military-costs-half-row">
+        <div class="cost-item-small-uhr"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{formattedTotalProductioTime}}</div>
+      </div>
+    </div>
+  </div>
+
+  {{view AWE.UI.Ember.JobsRangeView numberBinding="number"}}
 </script>
 

@@ -11,14 +11,6 @@ AWE.UI.Ember = (function(module) {
 
 
 //NEW DIALOGS START
-//Recruitment job dialog start
-  module.ArmyRecruitmentJobView = module.PopUpDialog.extend({
-    templateName: 'army-recruitment-view',
-
-    unitType: null,
-    });
-//Recruitment job dialog end
-
 //need custom tabs for army info
 //tabs start
   module.TabArmyInfoView = module.TabViewNew.extend({
@@ -223,7 +215,7 @@ module.InfantryInfoView  = Ember.View.extend ({
     },    
 
   createJobPressed: function(evt) {
-      this.get('controller').trainingCreateClicked(this.get('queue'), this.getPath('selectedUnitButton.unitType.id'), this.get('number'));
+      this.get('controller').trainingCreateClicked(this.get('queue'),  this.get('number'));
     },
 
   resourceExchangePressed: function() { 
@@ -234,12 +226,12 @@ module.InfantryInfoView  = Ember.View.extend ({
 
   trainingButtonUIMarker: function() {
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
-      return tutorialState.isUIMarkerActive(AWE.GS.MARK_TRAINING_DIALOG_FLOW) && this.get('selectedUnitButton') != null;
-    }.property('selectedUnitButton', 'queue.jobs_count', 'AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
+      return tutorialState.isUIMarkerActive(AWE.GS.MARK_TRAINING_DIALOG_FLOW) ;
+    }.property('queue.jobs_count', 'AWE.GS.TutorialLocalState.lastUpdate').cacheable(),
 
 });
 
-module.ArmyUnitBigButtonView  = Ember.View.extend ({
+module.ArmyUnitResourceView  = Ember.View.extend ({
     templateName: 'army-icon-big-button',
     unitType: null,
     queue: null,
@@ -263,7 +255,12 @@ module.ArmyUnitBigButtonView  = Ember.View.extend ({
 
     openJobDialog: function()
       {
-          var dialog = AWE.UI.Ember.ArmyRecruitmentJobView.create({});
+          var unitTypeObject = this.get("unitType");
+          var queueObject = this.get('queue');
+          var dialog = AWE.UI.Ember.ArmyRecruitmentJobView.create({
+            unitType: unitTypeObject,
+            queue: queueObject,
+          });
           WACKADOO.presentModalDialog(dialog);
           return false;
       },
@@ -287,7 +284,6 @@ module.ArmyUnitBigButtonView  = Ember.View.extend ({
       return !this.get('requirementsMet');
     }.property('requirementsMet'),
 
-    selectedUnitButton: null,
     number: "1",
 
     costs: function() {
@@ -296,54 +292,78 @@ module.ArmyUnitBigButtonView  = Ember.View.extend ({
     }.property('unitType').cacheable(),
     
     getStoneCosts: function()
-    {
-      var resourceCosts = this.get('costs');
-      var self = this;
-      var stoneCost = 0;
-
-      resourceCosts.forEach(function(resource){
-        var resourceType = resource.resourceType;
-        if(resourceType.id == 0)
-        {
-          stoneCost = resource.amount;
-        }
-      });
+    {    
+      var stoneCost = this.getCostsForResource(0);
       return stoneCost;
     }.property('costs').cacheable(),
 
     getWoodCosts: function()
     {
-      var resourceCosts = this.get('costs');
-      var self = this;
-      var woodCost = 0;
-
-      resourceCosts.forEach(function(resource){
-        var resourceType = resource.resourceType;
-        if(resourceType.id == 1)
-        {
-          woodCost = resource.amount;
-        }
-      });
+      var woodCost = this.getCostsForResource(1);
       return woodCost;
 
     }.property('costs').cacheable(),
 
     getFurCosts: function()
     {
-      var resourceCosts = this.get('costs');
-      var self = this;
-      var furCost = 0;
-
-      resourceCosts.forEach(function(resource){
-        var resourceType = resource.resourceType;
-        if(resourceType.id == 2)
-        {
-          furCost = resource.amount;
-        }
-      });
+      var furCost = this.getCostsForResource(2);
       return furCost;
 
     }.property('costs').cacheable(),
+
+    getTotalStoneCosts: function()
+    { 
+      var stoneCost = this.getTotalCostsForResource(0);
+      return stoneCost;
+    }.property('totalCosts').cacheable(),
+
+    getTotalWoodCosts: function()
+    {
+      var woodCost = this.getTotalCostsForResource(1);
+      return woodCost;
+
+    }.property('totalCosts').cacheable(),
+
+    getTotalFurCosts: function()
+    {
+      var furCost = this.getTotalCostsForResource(2);
+      return furCost;
+
+    }.property('totalCosts').cacheable(),
+
+    getCostsForResource: function(res)
+    {
+      var resId = parseInt(res);
+      var resourceCosts = this.get('costs');
+      var self = this;
+      var resourceCost = 0;
+
+      resourceCosts.forEach(function(resource){
+        var resourceType = resource.resourceType;
+        if(resourceType.id == resId)
+        {
+          resourceCost = resource.amount;
+        }
+      });
+      return resourceCost;
+    },
+
+    getTotalCostsForResource: function(res)
+    {
+      var resId = parseInt(res);
+      var resourceCosts = this.get('totalCosts');
+      var self = this;
+      var resourceCost = 0;
+
+      resourceCosts.forEach(function(resource){
+        var resourceType = resource.resourceType;
+        if(resourceType.id == resId)
+        {
+          resourceCost = resource.amount;
+        }
+      });
+      return resourceCost;
+    },
 
     totalCosts: function() {
         return AWE.Util.Rules.multipliedResourceCosts(this.get('costs'), this.get('number') || 0.0);
@@ -412,14 +432,20 @@ module.ArmyUnitBigButtonView  = Ember.View.extend ({
       var unitType = this.get('unitType');
       var speed    = this.getPath('queue.speed') || 1.0;
       log('SPEED', this.getPath('queue.speed'));
-      return unitType ? this.formatSeconds(AWE.Util.Rules.calculateProductionTime(unitType.production_time, speed)) : null;
+      return unitType ? AWE.Util.Rules.calculateProductionTime(unitType.production_time, speed) : null;
     }.property('queue.speed').cacheable(),   ///< TODO : also update, when queue's speedup changes.
 
     formatSeconds: function (seconds)
     {
-      var date = new Date(1970,0,1);
-      date.setSeconds(seconds);
-      return date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+      //var date = new Date(1970,0,1);
+      //date.setSeconds(seconds);
+      //return date.toTimeString().replace(/.*(\d{2}:\d{2}:\d{2}).*/, "$1");
+      var t = new Date(1970,0,1);
+      t.setSeconds(seconds);
+      var s = t.toTimeString().substr(0,8);
+      if(seconds > 86399)
+        s = Math.floor((t - Date.parse("1/1/70")) / 3600000) + s.substr(2);
+      return s;
     },
 
     totalProductionTime: function() {
@@ -428,10 +454,17 @@ module.ArmyUnitBigButtonView  = Ember.View.extend ({
         return productionTime && number > 0 ? productionTime * number : null;
     }.property('productionTime', 'number').cacheable(), 
 
+    formattedProductioTime: function(){
+      return this.formatSeconds(this.get('productionTime'));
+    }.property('productionTime').cacheable(),
+
+    formattedTotalProductioTime: function(){
+      return this.formatSeconds(this.get('totalProductionTime'));
+    }.property('totalProductionTime').cacheable(),
 
    });
 
-module.ArmyUnitResourceInfoView  = module.ArmyUnitBigButtonView.extend ({
+module.ArmyUnitResourceInfoView  = module.ArmyUnitResourceView.extend ({
     templateName: 'army-resource-info',
 });
 
@@ -456,8 +489,49 @@ module.SpecialUnitInfoView  = module.InfantryInfoView.extend ({
 module.ArmyUnitInfoButtonView = module.ArmyUnitInfoView.extend({
   templateName: 'army-info-button',
   unitType: null,
+
 });
 //military Recruitment dialog end
+
+//Recruitment job dialog start
+  module.ArmyRecruitmentJobView = module.PopUpDialog.extend({
+    templateName: 'army-recruitment-view',
+   
+    unitType: null,
+    queue: null,
+
+    });
+  module.ArmyRecruitmentJobInfoView = module.ArmyUnitResourceView.extend({
+    templateName: 'army-recruitment-info-view',
+
+    getUnitCategoryName: function()
+    {
+      var localUnitType = this.get('unitType');
+      var unitTypeCategoryName = '';
+      if(localUnitType.category == 0)
+        unitTypeCategoryName = "Infantry";
+      else if(localUnitType.category == 1)
+        unitTypeCategoryName = "Cavalery";
+      else if(localUnitType.category == 2)
+        unitTypeCategoryName = "Artillery";
+      else if(localUnitType.category == 4)
+        unitTypeCategoryName = "Special Units";
+
+      return unitTypeCategoryName;
+    }.property().cacheable(),
+    });
+
+  module.JobsRangeView  = Ember.TextField.extend({
+    classNames: ["jobs-range-slider"],
+    attributeBindings: ["min", "max"],
+    min: 1,
+    type: "range",
+    max: function(){
+      return 1000;
+    }.property().cacheable(),
+    valueBinding: "number",
+  });
+//Recruitment job dialog end
 
 //NEW DIALOGS END
 
