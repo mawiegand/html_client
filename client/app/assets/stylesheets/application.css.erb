@@ -2301,15 +2301,85 @@ h3 {
 /* == Alliance Diplomacy Screen == */
 
 .alliance-diplomacy-container {
+  margin-left: 15px;
+}
 
+.alliance-diplomacy-container h3 {
+  font-size: 0.9em;
+  font-family: 'hvd_comic_serif_proregular', 'cursive';
+  margin-bottom: 0;
+  margin-top: 8px;
+}
+
+.alliance-ultimatum-new {
+  margin-top: 12px;
+  display: block;
+  float: left;
+}
+
+.alliance-ultimatum-duration {
+  text-align: center;
+}
+
+.alliance-ultimatum, .alliance-war, .alliance-capitulation {
+  display: block;
+  float: left;
+}
+
+.public-information{
+  position: absolute;
+  margin-top: 70px;
+}
+
+.alliance-diplomacy-first {
+  width: 208px;
+  float: left;
+  clear: both;
+}
+
+.alliance-diplomacy-second {
+  width: 200px;
+  float: left;
+}
+
+.alliance-diplomacy-third {
+  float: right;
+  width: 150px;
+}
+
+.alliance-ultimatum-new-inputfield {
+  width: 175px;
+  height: 26px;
 }
 
 .alliance-diplomacy-name {
+  width: 200px;
+  height: 40px;
+  padding-left: 10px;
   background: url("<%= asset_path 'dialogs/backgrounds/background_textfield_brown_light_small.png' %>") no-repeat left center;
 }
 
 .alliance-diplomacy-timer {
+  width: 184px;
+  height: 40px;
+  color: white;
+  text-align: center;
   background: url("<%= asset_path 'dialogs/backgrounds/background_textfield_brown_dark.png' %>") no-repeat left center;
+}
+
+.alliance-ultimatum-button {
+  width: 180px;
+  height: 52px;
+  font-size: 0.7em;
+  color: white;
+  background: url("<%= asset_path 'dialogs/buttons/button_green_medium.png' %>") no-repeat left center;
+  text-align: center;
+  cursor: pointer;
+}
+
+.alliance-war .alliance-ultimatum-button {
+  margin-top: 36px;
+  position: absolute;
 }
 
 

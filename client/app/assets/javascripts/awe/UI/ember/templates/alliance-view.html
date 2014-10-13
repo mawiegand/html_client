@@ -117,48 +117,54 @@
     {{#if isAllianceLeader}}
         <div class="alliance-ultimatum-new">
           <div class="alliance-diplomacy-first alliance-ultimatum-new-input">
-            {{view Ember.TextField class="alliance-ultimatum-new-inputfield" type="text"}}
+            {{view Ember.TextField class="alliance-ultimatum-new-inputfield" type="text" value="POLIC"}}
           </div>
           <div class="alliance-diplomacy-second alliance-ultimatum-duration">
             24h
           </div>
-          <div class="alliance-diplomacy-third alliance-ultimatum-button">
-            issue ultimatum
+          <div class="alliance-diplomacy-third">
+            <div class="alliance-ultimatum-button">
+              issue ultimatum
+            </div>
           </div>
         </div>
     {{/if}}
-    <div class="alliance-ultimatum">
-        <div class="alliance-diplomacy-first">
-          <h2 class="alliance-diplomacy-title">Title</h2>
-          <div class="alliance-diplomacy-name">Name</div>
-        </div>
-        <div class="alliance-diplomacy-second">
-          <h2 class="alliance-diplomacy-title">Title</h2>
-          <div class="alliance-diplomacy-timer">Timer</div>
-        </div>
-    </div>
-    <div class="alliance-war">
-        <div class="alliance-diplomacy-first">
-          <h2 class="alliance-diplomacy-title">Title</h2>
-          <div class="alliance-diplomacy-name">Name</div>
-        </div>
-        <div class="alliance-diplomacy-second">
-          <h2 class="alliance-diplomacy-title">Title</h2>
-          <div class="alliance-diplomacy-timer">Timer</div>
-        </div>
-        <div class="alliance-diplomacy-third alliance-ultimatum-button">
-            give up
-        </div>
-    </div>
-    <div class="alliance-capitulation">
-        <div class="alliance-diplomacy-first">
-          <h2 class="alliance-diplomacy-title">Title</h2>
-          <div class="alliance-diplomacy-name">Name</div>
-        </div>
-        <div class="alliance-diplomacy-second">
-          <h2 class="alliance-diplomacy-title">Title</h2>
-          <div class="alliance-diplomacy-timer">Timer</div>
-        </div>
+    <div class="public-information">
+      <div class="alliance-ultimatum">
+          <div class="alliance-diplomacy-first">
+            <h3 class="alliance-diplomacy-title">Ultimatum:</h3>
+            <div class="alliance-diplomacy-name">POLIC</div>
+          </div>
+          <div class="alliance-diplomacy-second">
+            <h3 class="alliance-diplomacy-title">End:</h3>
+            <div class="alliance-diplomacy-timer">20h 10min</div>
+          </div>
+      </div>
+      <div class="alliance-war">
+          <div class="alliance-diplomacy-first">
+            <h3 class="alliance-diplomacy-title">War:</h3>
+            <div class="alliance-diplomacy-name">HUUIII</div>
+          </div>
+          <div class="alliance-diplomacy-second">
+            <h3 class="alliance-diplomacy-title">End:</h3>
+            <div class="alliance-diplomacy-timer">9h 12min</div>
+          </div>
+          <div class="alliance-diplomacy-third">
+              <div class="alliance-ultimatum-button">
+                give up
+              </div>
+            </div>
+      </div>
+      <div class="alliance-capitulation">
+          <div class="alliance-diplomacy-first">
+            <h3 class="alliance-diplomacy-title">Capitulation:</h3>
+            <div class="alliance-diplomacy-name">NAME</div>
+          </div>
+          <div class="alliance-diplomacy-second">
+            <h3 class="alliance-diplomacy-title">End:</h3>
+            <div class="alliance-diplomacy-timer">12h 42min</div>
+          </div>
+      </div>
     </div>
   </div>
 </script>
