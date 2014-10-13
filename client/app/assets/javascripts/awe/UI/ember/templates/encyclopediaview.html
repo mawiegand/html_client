@@ -114,6 +114,31 @@
   {{t encyclopedia.defense}}: {{unit.armor}}<br/>
   {{t encyclopedia.criticalDamage}}: {{unit.critical_hit_damage}} ({{t encyclopedia.criticalChance}}: {{unit.critical_hit_chance}})<br/>
   {{t encyclopedia.experienceForLostUnits}}: {{experienceForLostUnits}}<br/>
+
+  <div class="simple-button" {{action unitButtonClicked}}>Info</div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="encyclopedia-unit-new">
+  <div class="popup-dialog-header">
+    <a href="#" {{action "closeDialog"}}>
+      <div class="modal-dialog-back"></div>
+    </a>
+    <h1 class="popup-header-center" >{{local unit.name}}</h1>
+  </div>
+
+  <div class="unit-image-wrapper">
+    <div class="unit-image-new"></div>
+  </div>
+  <div class="unit-description">
+    Att: {{unit.attack}}<br/>
+    HP: {{unit.hitpoints}}<br/>
+    Def: {{unit.armor}}<br/>
+    Crit: {{unit.critical_hit_damage}} <br/>
+  </div>
+
+  <div class="modal-dialog-text">
+    {{local unit.description}}
+  </div>
 </script>
 
 
@@ -135,6 +160,8 @@
       <li>{{t encyclopedia.resource.notStealable}}</li>
     {{/if}} 
   </ul>
+
+  <div class="simple-button" {{action AWE.UI.Ember.EncyclopediaUnitView.unitButtonClicked}}>Info</div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="encyclopedia-view">
@@ -188,8 +215,7 @@
             {{/if}}
           {{/if}}
         {{/if}}
-      </div>
-      
+      </div> 
       
     </div>
   </div>

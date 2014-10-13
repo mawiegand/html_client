@@ -36,6 +36,7 @@ AWE.Controller = (function(module) {
     var _animationDuration = 800;
     
     that.animatedMarker = null;
+
     
     
     // ///////////////////////////////////////////////////////////////////////
@@ -465,7 +466,24 @@ AWE.Controller = (function(module) {
     //
     //   Remote Data Handling
     //
-    // /////////////////////////////////////////////////////////////////////// 
+    // ///////////////////////////////////////////////////////////////////////
+
+    that.activeAllianceId = null;
+
+    that.updateAlliance = function() {
+      var alliance = AWE.GS.AllianceManager.getAlliance(that.activeAllianceId);
+      if ((!alliance && that.activeAllianceId) || (alliance && alliance.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
+        AWE.GS.AllianceManager.updateAlliance(that.activeAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      }
+      var members = AWE.GS.CharacterManager.getMembersOfAlliance(that.activeAllianceId);
+      if ((!members || members.length == 0) || (members && AWE.GS.CharacterManager.lastUpdateAtForAllianceId(that.activeAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
+        AWE.GS.CharacterManager.updateMembersOfAlliance(that.activeAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      }
+      var relations = AWE.GS.DiplomacyRelationManager.getDiplomacyRelationsOfAlliance(that.activeAllianceId);
+      if ((!relations || relations.length == 0) || (relations && AWE.GS.DiplomacyRelationManager.lastUpdateAtForSourceAllianceId(that.activeAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
+        AWE.GS.DiplomacyRelationManager.updateDiplomacyRelationsOfAlliance(that.activeAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      }
+    } 
     
     that.modelChanged = function() { return _modelChanged; }
     
@@ -529,6 +547,8 @@ AWE.Controller = (function(module) {
             });
           }
         }
+
+
       };
     }());     
     
@@ -550,24 +570,29 @@ AWE.Controller = (function(module) {
       if (!HUDViews.stoneView) {
         
         var detailsHandler = function() {
-          WACKADOO.presentResourceDetailsDialog();
+          var resourceName = this.resourceName;
+          var dialog = AWE.UI.Ember.ResourceInformationDialog.create({resourceName: resourceName})
+          WACKADOO.presentModalDialog(dialog);
         };
         
         HUDViews.stoneView = AWE.UI.createResourceBubbleView();
         HUDViews.stoneView.initWithControllerAndResourceImage(that, "resource/icon/stone/large", "resource_stone");
         HUDViews.stoneView.setOrigin(AWE.Geometry.createPoint(10, 0));
+        HUDViews.stoneView.resourceName = "resource_stone";
         HUDViews.stoneView.onClick = detailsHandler;
         _resourceStage.addChild(HUDViews.stoneView.displayObject());       
 
         HUDViews.woodView = AWE.UI.createResourceBubbleView();
         HUDViews.woodView.initWithControllerAndResourceImage(that, "resource/icon/wood/large", "resource_wood");
         HUDViews.woodView.setOrigin(AWE.Geometry.createPoint(216, 0));
+        HUDViews.woodView.resourceName = "resource_wood";
         HUDViews.woodView.onClick = detailsHandler;
         _resourceStage.addChild(HUDViews.woodView.displayObject()); 
         
         HUDViews.furView = AWE.UI.createResourceBubbleView();
         HUDViews.furView.initWithControllerAndResourceImage(that, "resource/icon/fur/large", "resource_fur");
         HUDViews.furView.setOrigin(AWE.Geometry.createPoint(422, 0));
+        HUDViews.furView.resourceName = "resource_fur";
         HUDViews.furView.onClick = detailsHandler;
         _resourceStage.addChild(HUDViews.furView.displayObject()); 
       }
@@ -695,6 +720,9 @@ AWE.Controller = (function(module) {
         
         // STEP 2: update Model
         that.updateModel();
+        if(that.activeAllianceId) {
+          that.updateAlliance();
+        }
                 
         // STEP 3: layout canvas & stages according to possibly changed window size (TODO: clean this!)
         that.layoutIfNeeded();

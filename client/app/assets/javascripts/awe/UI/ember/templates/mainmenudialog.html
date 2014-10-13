@@ -1,0 +1,50 @@
+<script type="text/x-handlebars" data-template-name="main-menu-dialog">
+<h1>{{t menu.header}}</h1>
+<div class="modal-dialog-body menu-dialog-pane no-scrolling">
+  <div class="row row1">
+    <div class="cell">
+        <a {{bindAttr href="AWE.Config.EXTERNAL_FACEBOOK_URL"}} target="_blank">
+          <div class="main-menu-button no-selection">
+              Facebook
+          </div>
+        </a>
+    </div>
+  </div>
+  <div class="row row2">
+    <div class="cell">
+      <a {{bindAttr href="AWE.Config.EXTERNAL_FORUM_URL"}} target="_blank">
+        <div class="main-menu-button no-selection">
+            Forum
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="row row3">
+    <div class="cell">
+      <a {{bindAttr href="AWE.Config.EXTERNAL_MANUAL_URL"}} target="_blank">
+        <div class="main-menu-button no-selection">
+            {{t menu.manual}}
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="row row4">
+    <div class="cell">
+        <a href="#" onClick="WACKADOO.openEncyclopedia()">
+          <div class="main-menu-button no-selection">
+            {{t encyclopedia.encyclopedia}}
+          </div>
+        </a> 
+    </div>
+  </div>
+  <div class="row row5">
+    <div class="cell">
+      <a href="#" onClick="window.location.reload()">
+        <div class="main-menu-button no-selection">
+          {{t menu.logout}}
+        </div>
+      </a>        
+    </div>
+  </div>
+</div>
+</script>

@@ -10,6 +10,7 @@ AWE.UI = AWE.UI || {};
 AWE.UI.Ember = (function(module) {
 
   module.templates = module.templates || [];
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/assignmentsdialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/startupdialogs.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/artifactviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/alliancescreen.html');
@@ -27,6 +28,7 @@ AWE.UI.Ember = (function(module) {
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/fortressscreen.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/profileview.html');  
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/rankingview.html');  
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/mainmenudialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/messagecenter.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/settlementviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/shopview.html');
@@ -36,6 +38,7 @@ AWE.UI.Ember = (function(module) {
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/playertoplayertradeview.html');  
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/settlementinfodialog.html');  
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/characterinfodialog.html');  
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/resourceinformationdialog.html');  
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/resourcedetailsdialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/resourceexchangedialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/foundsettlementdialog.html');
@@ -43,6 +46,8 @@ AWE.UI.Ember = (function(module) {
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/characterprogressdialog.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/assignmentviews.html');
   module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/tutorialsettle.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/armychangecreateviews.html');
+  module.templates.push(AWE.Config.RAILS_ASSET_PATH + 'awe/UI/ember/templates/alliance-view.html');
 
   return module;
     

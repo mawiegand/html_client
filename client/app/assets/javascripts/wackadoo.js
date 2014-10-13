@@ -64,7 +64,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         $('#debug2').html('Loading Assets. Progress: ' + _numLoadedAssets + ' / ' + _numAssets);
       }
       else {
-        //this.get('hudController').setNeedsLayout();
         //this.get('hudController').setNeedsDisplay();
       }
 
@@ -501,7 +500,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
 
     characterButtonClicked: function() {
-      var dialog = AWE.UI.Ember.ProfileView.create({
+      var dialog = AWE.UI.Ember./*ProfileView*/ProfileNewView.create({
         characterBinding: 'AWE.GS.game.currentCharacter',
       });
       this.presentModalDialog(dialog);
@@ -641,14 +640,20 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       return this.get('presentScreenController') === this.get('mapScreenController');
     },
 
-    activateAllianceController: function(alliance_id) {
-      var allianceController = this.get('allianceScreenController');
-      if (!allianceController) {
-        allianceController = AWE.Controller.createAllianceController('#layers');
-        this.set('allianceScreenController', allianceController);
-      }
-      allianceController.setAllianceId(alliance_id);
-      this.setScreenController(allianceController);
+    showAllianceDialog: function(alliance_id) {
+      this.get('hudController').activeAllianceId = alliance_id;
+      var alliance = null;
+      AWE.GS.AllianceManager.updateAlliance(alliance_id, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+        alliance = AWE.GS.AllianceManager.getAlliance(alliance_id);
+        allianceScreen = AWE.UI.Ember.AllianceView.create({
+          alliance: alliance,
+        });
+
+        WACKADOO.presentModalDialog(allianceScreen);
+      });
+      
+      
+      
     },
 
 

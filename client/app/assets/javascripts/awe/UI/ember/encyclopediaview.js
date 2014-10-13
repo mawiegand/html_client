@@ -119,7 +119,12 @@ AWE.UI.Ember = (function(module) {
       }
     }.property('building').cacheable(),
 
-  });  
+  });
+
+  module.EncyclopediaUnitNewView = module.PopUpDialog.extend({
+    templateName: 'encyclopedia-unit-new',
+    classNames: ['encyclopedia-unit-new'],   
+  }); 
 
   module.EncyclopediaUnitView = Ember.View.extend({
     unit: null,
@@ -138,6 +143,12 @@ AWE.UI.Ember = (function(module) {
       return Math.floor(Math.floor(sum * 0.08) * this.getPath('unit.experience_factor'));
     }.property('unit').cacheable(),
     
+    unitButtonClicked: function() {
+      var unit = this.get("unit");
+      var dialog = AWE.UI.Ember.EncyclopediaUnitNewView.create({unit: unit});
+      WACKADOO.presentModalDialog(dialog);
+      return false; // prevent default behavior
+    },
   });  
 
 

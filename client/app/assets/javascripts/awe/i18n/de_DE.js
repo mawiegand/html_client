@@ -439,6 +439,7 @@ AWE.I18n.de_DE = function(module) {
       founded: 'Gründung',
       leader: 'Anführer',
       leaderVote: 'Deine Stimme',
+      leaderVoted: 'Gewählt',
       description: 'Beschreibung',
       changeDescriptionDialogCaption: 'Gib deine neue Allianzbeschreibung ein.',
       changeDescription: 'Ändere Beschreibung',
@@ -513,6 +514,7 @@ AWE.I18n.de_DE = function(module) {
 
       error: {
         blankPassword: "Ein leeres Passwort zu setzen ist nicht möglich.",
+        specialChars: "Es sind nur Zahlen und Buchstaben erlaubt",
         failedToSetPassword: "Das Allianzpasswort zu setzen ist aus unbekannten Grund gescheitert.",
         kickHeading: "Geht nicht!",
         kickMessage: "Dieses Mitglied kann nicht von Dir rausgeworfen werden.",
@@ -985,6 +987,11 @@ AWE.I18n.de_DE = function(module) {
       movingTab: "Umziehen",
 
       rank: {
+        currentRank:"Aktuelle Rang",
+        nextRank:"Nächster Rang",
+        currentLevel:"Aktuelle Stufe",
+        nextLevel:"Nächster Stufe",
+        progressBar:"Fortschritt",
         start: "Beginn",
         experience: "Erfahrung",
         experienceAbbreviation: "XP",
@@ -1044,6 +1051,7 @@ AWE.I18n.de_DE = function(module) {
         presentName: "Aktueller Name",
         chooseNameCaption: 'Namen wählen',
         changeNameCaption: 'Namen ändern',
+        changeDescriptionCaption: 'Beschreibung ändern',
         nameChangeAdvice: 'Bitte wähle Deinen Namen mit Bedacht, idealerweise passt der Name in die Steinzeit. Der Name muss einzigartig in Wackadoo sein.',
         nameChangeFreeAdvice: 'Zweimal kannst Du Deinen Namen kostenlos ändern, jede weitere Änderung kostet ein paar Kröten um Missbrauch zu verhindern.',
         nameChangeCostAdvice: 'Du hast Deinen Namen bereits mehrmals geändert. Eine weitere Namensänderung ist natürlich möglich, kostet aber zur Verhinderung von Missbrauch 20 Kröten.',
@@ -1056,6 +1064,14 @@ AWE.I18n.de_DE = function(module) {
         genderChangeCostAdvice: 'Du hast die Einstellung Deines Geschlechts bereits mehrfach geändert. Eine weitere Änderung der Geschlechtseinstellung ist möglich, kostet aber zur Verhinderung von Missbrauch 20 Kröten.',
         male: "männlich",
         female: "weiblich",
+        customEyes:'Augen',
+        customMouth: 'Mund',
+        customHair: 'Haare',
+        customBeard: 'Bart',
+        customChains: 'Ketten',
+        customTattoos: 'Tattoos',
+        customSymbols: 'Symbole',
+        customToads: 'Kröten',
 
         changePasswordCaption: "Änderung des Passwortes",
         changePasswordAdvice: "Hier kannst Du Dein Passwort ändern. Das Passwort muss eine Länge von 6 bis 40 Zeichen haben.",
@@ -1277,7 +1293,9 @@ AWE.I18n.de_DE = function(module) {
       productionInfo: {
         header: "Rohstoffproduktion im Herrschaftsgebiet",
         amount: "Menge",
+        bonus: "Bonus",
         productionRate: "Produktionsrate",
+        production: "Produktion",
         dailyProduction: "Tagesproduktion",
         capacity: "Lagerkapazität",
         capacityReachedIn: "Lager voll in",
@@ -1400,7 +1418,42 @@ AWE.I18n.de_DE = function(module) {
       initiated: "Eingeweiht",
       nextPage: "Nächste Seite",
       previousPage: "Vorige Seite",
-    },    
+    },
+
+    menu: {
+      manual: "Handbuch",
+      logout: "Logout",
+      header: "Menu",
+    },
+
+    dialogs:{
+      assignments: {
+        quests: "Aufträge",
+        special_quests: "Spezialaufträge",
+        gossip: "Gerüchte"
+      },
+      alliance: {
+        alliance: "Allianz",
+        info: "Info",
+        members: "Mitglieder",
+        diplomacy: "Diplomatie",
+        apply: "Bewerben",
+
+        allianceInfo: {
+          slogan: "Losung:",
+          autoJoin: "Aufnahme:"
+        },
+        allianceMembers: {
+          leader: "Anführer",
+          members: "Mitglieder",
+        },
+      },
+      move:{
+        heading: "Umziehen",
+        description: "Hier steht wie man umziehen kann.",
+        to: "nach"
+      },
+    },
   }
   
   return module;

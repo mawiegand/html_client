@@ -120,7 +120,7 @@ AWE.UI = (function(module) {
         _flagFrameView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/main/banner/large"));
         _flagFrameView.setFrame(AWE.Geometry.createRect(192, 167, 76, 77));
         _flagFrameView.onClick = function() { 
-          WACKADOO.activateAllianceController(allianceId);   
+          WACKADOO.showAllianceDialog(allianceId);   
         }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
         this.addChild(_flagFrameView, 4);
 
@@ -131,7 +131,7 @@ AWE.UI = (function(module) {
         _flagView.setAllianceColor(allianceColor);
         _flagView.setTagVisible(true);
         _flagView.onClick = function() { 
-          WACKADOO.activateAllianceController(allianceId);   
+          WACKADOO.showAllianceDialog(allianceId);   
         }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
         this.addChild(_flagView, 5);
       }

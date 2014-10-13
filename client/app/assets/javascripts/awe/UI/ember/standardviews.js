@@ -40,7 +40,7 @@ AWE.UI.Ember = (function(module) {
     tagClicked: function() {
       var character = this.get('character')
       var army = this.get('army');
-      WACKADOO.activateAllianceController(character ? character.get('alliance_id') : army.get('alliance_id'));
+      WACKADOO.showAllianceDialog(character ? character.get('alliance_id') : army.get('alliance_id'));
       WACKADOO.closeAllModalDialogs();
       return false; // prevent default behavior
     },
@@ -108,6 +108,24 @@ AWE.UI.Ember = (function(module) {
 
   /**
    * @class
+   * @name AWE.UI.Ember.PopUpDialog
+   */
+  module.PopUpDialog = Ember.View.extend({
+    layoutName: "popup-dialog",
+    closeDialog: function() {
+      this.destroy();
+    },
+    onClose: null,
+    destroy: function() {
+      if (this.onClose) {
+        this.onClose(this);
+      }
+      this._super();
+    },
+  });
+
+  /**
+   * @class
    * @name AWE.UI.Ember.TextInputDialog
    */
   module.TextInputDialog = module.Dialog.extend({
@@ -117,6 +135,10 @@ AWE.UI.Ember = (function(module) {
     inputMaxLength: null,
     okPressed: function() { alert ('Action not connected: okPressed.'); },
     cancelPressed: function() { alert ('Action not connected: okPressed.'); },
+  });
+
+  module.TextInputDialogNew = module.TextInputDialog.extend({
+    templateName: 'text-input-dialog-new',
   });
 
   module.TextAreaInputDialog = module.Dialog.extend({
@@ -280,6 +302,89 @@ AWE.UI.Ember = (function(module) {
     },
   });
 
+  module.TabView = Ember.View.extend({
+    templateName: 'tab-view',
+    classNames:   'tab-view',
+
+    tabViews:      null,
+    currentView:   null,
+    presentTab:    null,
+
+    tabContentClass: function() {
+      if (AWE.Facebook.isRunningInCanvas) {
+        return 'tab-content tab-content-scrollable';
+      }
+      else {
+        return 'tab-content';
+      }
+    }.property(),
+    
+    
+    init: function() {
+      var tabViews = this.get('tabViews');
+      this.selectTabByNumber(0);
+      this._super();
+    },
+    
+    selectTabByKey: function(key) {
+      var tabViews = this.get('tabViews');
+      var tab = tabViews ? tabViews.findProperty('key', key) : null;
+      if (tab) {
+        this.setTab(tab);
+      }
+    },
+
+    selectTabByNumber: function(n) {
+      var tabViews = this.get('tabViews');
+      if (tabViews && tabViews.length > n) {
+        this.setTab(tabViews[n]);
+      };
+    },
+    
+    setTab: function(tab) {
+      var presentTab = this.get('presentTab');
+      var oldView    = this.get('currentView');
+      if (presentTab !== tab) {
+        this.set('presentTab',  tab);
+        this.set('currentView', tab.view.create());
+        if (oldView) {
+          oldView.destroy();
+        }
+      }
+    },
+    
+  });
+
+  module.TabViewNew = module.TabView.extend({
+    templateName: 'tab-view-new',
+    classNames:   'tab-view-new',
+
+    cellClass: function(){
+      return "cell-" + Math.round(100 / this.get("tabViews").length);
+    }.property("tabViews"),
+  });
+
+  module.TabButtonView = Ember.View.extend({
+    tagName:    'li',
+    classNames: ['tab-button-view'],
+    classNameBindings: ['current', "buttonClass"],
+    key:        null,
+    buttonClass:  null,
+    
+    click: function() {
+      this.get('parentView').selectTabByKey(this.get('key'));
+    },
+ 
+    current: function() {
+      return this.get('key') === this.getPath('parentView.presentTab.key');
+    }.property('key', 'parentView.presentTab.key'),
+    
+  });
+
+  module.TabButtonViewNew = module.TabButtonView.extend({
+    tagName: "div",
+    classNames: ["tab-button-view-new"]
+  });
 
   return module;
 

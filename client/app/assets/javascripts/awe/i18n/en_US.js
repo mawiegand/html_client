@@ -960,6 +960,11 @@ AWE.I18n.en_US = function(module) {
       movingTab: "Moving",
 
       rank:{
+        currentRank:"Current Rank",
+        nextRank:"Next Rank",
+        currentLevel:"Current Level",
+        nextLevel:"Next Level",
+        progressBar:"Progress",
         start:"Start",
         experience:"Experience",
         experienceAbbreviation:"XP",
@@ -1017,6 +1022,7 @@ AWE.I18n.en_US = function(module) {
         presentName:"Current name",
         chooseNameCaption:'Choose name',
         changeNameCaption:'Change name',
+        changeDescriptionCaption: 'Change description',
         nameChangeAdvice:'Choose your name carefully! Ideally it should fit in with the Stone Age environment. Your name must also be unique in Wack-a-Doo.',
         nameChangeFreeAdvice:'You have two free chances to change your name, after which each name change will cost a couple of Golden Frogs. This is to prevent misuse. ',
         nameChangeCostAdvice:"You've already changed your name twice! You can change it again, but to prevent misuse doing so will cost you 20 Golden Frogs.",
@@ -1029,6 +1035,14 @@ AWE.I18n.en_US = function(module) {
         genderChangeCostAdvice:'You have already changed your gender setting twice! You can change it again, but to prevent misuse doing so will cost you 20 Golden Frogs.',
         male:"Male",
         female:"Female",
+        customEyes:'Eyes',
+        customMouth: 'Mouth',
+        customHair: 'Hair',
+        customBeard: 'Beard',
+        customChains: 'Chains',
+        customTattoos: 'Tattoos',
+        customSymbols: 'Symbols',
+        customToads: 'Toads',
 
         changePasswordCaption:"Change Password",
         changePasswordAdvice:"You can change your password here. The password must be between 6 and 40 characters long.",
@@ -1255,7 +1269,9 @@ AWE.I18n.en_US = function(module) {
       productionInfo:{
         header: "Resource production in your empire",
         amount: "Amount",
+        bonus: "Bonus",
         productionRate: "Production rate",
+        production: "Production",
         dailyProduction: "Daily production",
         capacity: "Storage capacity",
         capacityReachedIn: "Capacity reached in",
@@ -1377,6 +1393,25 @@ AWE.I18n.en_US = function(module) {
       initiated: "Initiated",
       nextPage: "Next page",
       previousPage: "Previous page",
+    },
+
+    menu: {
+      manual: "Manual",
+      logout: "Log out",
+      header: "Menu",
+    },
+
+    dialogs:{
+      assignments: {
+        quests: "Quests",
+        special_quests: "Special Quests",
+        gossip: "Gossip"
+      },
+      move:{
+        heading: "Move",
+        description: "This explains how to move.",
+        to: "move to"
+      },
     },
   };
   
