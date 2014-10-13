@@ -113,7 +113,52 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-diplomacy-tab">
-  <div class="alliance-container">
-
+  <div class="alliance-diplomacy-container">
+    {{#if isAllianceLeader}}
+        <div class="alliance-ultimatum-new">
+          <div class="alliance-diplomacy-first alliance-ultimatum-new-input">
+            {{view Ember.TextField class="alliance-ultimatum-new-inputfield" type="text"}}
+          </div>
+          <div class="alliance-diplomacy-second alliance-ultimatum-duration">
+            24h
+          </div>
+          <div class="alliance-diplomacy-third alliance-ultimatum-button">
+            issue ultimatum
+          </div>
+        </div>
+    {{/if}}
+    <div class="alliance-ultimatum">
+        <div class="alliance-diplomacy-first">
+          <h2 class="alliance-diplomacy-title">Title</h2>
+          <div class="alliance-diplomacy-name">Name</div>
+        </div>
+        <div class="alliance-diplomacy-second">
+          <h2 class="alliance-diplomacy-title">Title</h2>
+          <div class="alliance-diplomacy-timer">Timer</div>
+        </div>
+    </div>
+    <div class="alliance-war">
+        <div class="alliance-diplomacy-first">
+          <h2 class="alliance-diplomacy-title">Title</h2>
+          <div class="alliance-diplomacy-name">Name</div>
+        </div>
+        <div class="alliance-diplomacy-second">
+          <h2 class="alliance-diplomacy-title">Title</h2>
+          <div class="alliance-diplomacy-timer">Timer</div>
+        </div>
+        <div class="alliance-diplomacy-third alliance-ultimatum-button">
+            give up
+        </div>
+    </div>
+    <div class="alliance-capitulation">
+        <div class="alliance-diplomacy-first">
+          <h2 class="alliance-diplomacy-title">Title</h2>
+          <div class="alliance-diplomacy-name">Name</div>
+        </div>
+        <div class="alliance-diplomacy-second">
+          <h2 class="alliance-diplomacy-title">Title</h2>
+          <div class="alliance-diplomacy-timer">Timer</div>
+        </div>
+    </div>
   </div>
 </script>

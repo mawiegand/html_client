@@ -424,7 +424,13 @@ AWE.UI.Ember = (function(module) {
     templateName: 'alliance-diplomacy-tab',
     classNames: ['alliance-diplomacy-tab'],
 
-    alliance: null
+    alliance: null,
+
+    isAllianceLeader: function() {
+      var leaderId = this.getPath('alliance.leader_id');
+      var characterId = AWE.GS.game.getPath('currentCharacter.id');
+      return leaderId && leaderId === characterId;
+    }.property('alliance.leader_id', 'AWE.GS.game.currentCharacter.id').cacheable(),
 
   });
   return module;
