@@ -234,6 +234,7 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
 
     character: null,
     alliance:  null,
+    changedInput: null,
 
     changingName:     false,
     changingGender:   false,
@@ -359,7 +360,7 @@ module.ProfileNewCustomizeView  = Ember.View.extend  ({
     
     changeNamePressed: function() {
       this.set('message', null);
-      this.processNewName(this.getPath('character.name'));
+      this.processNewName(this.getPath('changedInput'));
     },
     
 
@@ -1039,7 +1040,6 @@ module.UserNameTextfield = Ember.TextField.extend({
       else {
         var self = this;
         var action = AWE.Action.Fundamental.createChangePasswordAction(this.get('password'));
-        debugger;
         AWE.Action.Manager.queueAction(action, function(status) {
           self.set('changingPassword', false);
           if (status === AWE.Net.OK) {
