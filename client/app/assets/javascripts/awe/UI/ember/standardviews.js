@@ -40,7 +40,7 @@ AWE.UI.Ember = (function(module) {
     tagClicked: function() {
       var character = this.get('character')
       var army = this.get('army');
-      WACKADOO.activateAllianceController(character ? character.get('alliance_id') : army.get('alliance_id'));
+      WACKADOO.showAllianceDialog(character ? character.get('alliance_id') : army.get('alliance_id'));
       WACKADOO.closeAllModalDialogs();
       return false; // prevent default behavior
     },

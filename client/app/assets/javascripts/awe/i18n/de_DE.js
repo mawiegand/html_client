@@ -439,6 +439,7 @@ AWE.I18n.de_DE = function(module) {
       founded: 'Gründung',
       leader: 'Anführer',
       leaderVote: 'Deine Stimme',
+      leaderVoted: 'Gewählt',
       description: 'Beschreibung',
       changeDescriptionDialogCaption: 'Gib deine neue Allianzbeschreibung ein.',
       changeDescription: 'Ändere Beschreibung',
@@ -513,6 +514,7 @@ AWE.I18n.de_DE = function(module) {
 
       error: {
         blankPassword: "Ein leeres Passwort zu setzen ist nicht möglich.",
+        specialChars: "Es sind nur Zahlen und Buchstaben erlaubt",
         failedToSetPassword: "Das Allianzpasswort zu setzen ist aus unbekannten Grund gescheitert.",
         kickHeading: "Geht nicht!",
         kickMessage: "Dieses Mitglied kann nicht von Dir rausgeworfen werden.",
@@ -1438,6 +1440,22 @@ AWE.I18n.de_DE = function(module) {
         quests: "Aufträge",
         special_quests: "Spezialaufträge",
         gossip: "Gerüchte"
+      },
+      alliance: {
+        alliance: "Allianz",
+        info: "Info",
+        members: "Mitglieder",
+        diplomacy: "Diplomatie",
+        apply: "Bewerben",
+
+        allianceInfo: {
+          slogan: "Losung:",
+          autoJoin: "Aufnahme:"
+        },
+        allianceMembers: {
+          leader: "Anführer",
+          members: "Mitglieder",
+        },
       },
       move:{
         heading: "Umziehen",
