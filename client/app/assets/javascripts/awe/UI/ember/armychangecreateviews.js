@@ -400,17 +400,21 @@ module.ArmyRangeView  = Ember.TextField.extend({
 
      //infantry
     unityTypeID: 0,
-    
+    //return all units if needed
+    isAllUnits: false,
+
    	activeArmyTypen: function()
    	{
+
    		var list = [];
    		var unitTypes = this.get('unitTypes');
    		var self = this;
    		unitTypes.forEach(function(unitType) {
+       
    			if(unitType.garrisonUnits > 0 || unitType.otherUnits > 0)
    			{
    			//infantry
-   				if(unitType.unitCategory == self.get("unityTypeID"))
+   				if(unitType.unitCategory == self.get("unityTypeID") || self.get('isAllUnits'))
    					list.push(unitType);
    			}
       });

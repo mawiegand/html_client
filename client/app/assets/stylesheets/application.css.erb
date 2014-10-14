@@ -672,6 +672,9 @@ h3 {
 .cell-20 {
   width:20%;
 }
+.cell-25 {
+  width:25%;
+}
 .cell-30 {
   width:30%;
 }
@@ -974,7 +977,7 @@ h3 {
 }
 
 .unit-image-new{
-  background-image: url("<%= asset_path 'ui/unit.png' %>");
+  /*background-image: url("<%= asset_path 'ui/unit.png' %>");*/
   width: 200px;
   height: 200px;
 }
@@ -1091,6 +1094,434 @@ h3 {
   text-align: right;
 }
 
+/* == JOBS == */
+.army-type-cell.army-type-cell-jobs
+{
+  position: relative;
+  top: 40px;
+  display: inline-block;
+}
+/*== Infantry Huge==*/
+.unit-image-new.unit_warrior
+{
+  background:url("<%= asset_path 'dialogs/units/base/infantry_base_huge/infantry_base_huge@2x~iphone.png' %>") no-repeat center center;
+}
+.unit-image-new.unit_clubbers
+{
+  background:url("<%= asset_path 'dialogs/units/infantry/infantry_club_huge/infantry_club_huge_normal/infantry_club_huge_normal@2x~iphone.png' %>") no-repeat center center;
+}
+.unit-image-new.unit_clubbers_2
+{
+  background:url("<%= asset_path 'dialogs/units/infantry/infantry_club_huge/infantry_club_huge_stone/infantry_club_huge_stone@2x~iphone.png' %>") no-repeat center center;
+}
+.unit-image-new.unit_clubbers_3
+{
+  background:url("<%= asset_path 'dialogs/units/infantry/infantry_club_huge/infantry_club_huge_bronze/infantry_club_huge_bronze@2x~iphone.png' %>") no-repeat center center;
+}
+.unit-image-new.unit_tree_huggers
+{
+  background:url("<%= asset_path 'dialogs/units/infantry/infantry_club_huge/infantry_club_huge_gold/infantry_club_huge_gold@2x~iphone.png' %>") no-repeat center center;
+}
+/*== Artillery Huge==*/
+.unit-image-new.unit_thrower
+{
+  background:url("<%= asset_path 'dialogs/units/artillery/artillery_huge/artillery_huge_normal/artillery_huge_normal@2x~iphone.png' %>") no-repeat center center;
+}
+.unit-image-new.unit_thrower_2
+{
+  background:url("<%= asset_path 'dialogs/units/artillery/artillery_huge/artillery_huge_stone/artillery_huge_stone@2x~iphone.png' %>") no-repeat center center;
+}
+.unit-image-new.unit_thrower_3
+{
+  background:url("<%= asset_path 'dialogs/units/artillery/artillery_huge/artillery_huge_bronze/artillery_huge_bronze@2x~iphone.png' %>") no-repeat center center;
+}
+.unit-image-new.unit_thrower_4
+{
+   background:url("<%= asset_path 'dialogs/units/artillery/artillery_huge/artillery_huge_gold/artillery_huge_gold@2x~iphone.png' %>") no-repeat center center;
+}
+/*== Cavalry Huge==*/
+.unit-image-new.unit_light_cavalry
+{
+  background:url("<%= asset_path 'dialogs/units/cavalry/cavalry_huge/cavalry_huge_normal/cavalry_huge_normal@2x~iphone.png' %>") no-repeat center center;
+}
+.unit-image-new.unit_light_cavalry_2
+{
+  background:url("<%= asset_path 'dialogs/units/cavalry/cavalry_huge/cavalry_huge_stone/cavalry_huge_stone@2x~iphone.png' %>") no-repeat center center;
+}
+.unit-image-new.unit_light_cavalry_3
+{
+  background:url("<%= asset_path 'dialogs/units/cavalry/cavalry_huge/cavalry_huge_bronze/cavalry_huge_bronze@2x~iphone.png' %>") no-repeat center center;
+}
+.unit-image-new.unit_light_cavalry_4
+{
+  background:url("<%= asset_path 'dialogs/units/cavalry/cavalry_huge/cavalry_huge_gold/cavalry_huge_gold@2x~iphone.png' %>") no-repeat center center;
+}
+/*== Special==*/
+.unit-image-new.unit_little_chief
+{
+  background:url("<%= asset_path 'dialogs/units/little_chief/little_chief_huge/little_chief_huge@2x~iphone.png' %>") no-repeat center center;
+}
+.unit-image-new.unit_great_chief
+{
+  background:url("<%= asset_path 'dialogs/units/little_chief/little_chief_huge/little_chief_huge@2x~iphone.png' %>") no-repeat center center;
+}
+
+.jobs-range-slider
+{
+  position: relative;
+  top: 164px;
+  left: 74px;
+  width: 292px;
+  height: 50px;
+}
+
+.military-costs-row.military-costs-row-all
+{
+  height: 40px;
+  left: 8px;
+}
+.unit-description.jobs-description
+{
+  font-size: 26px;
+}
+.military-costs-green-background
+{
+  background:url("<%= asset_path 'dialogs/backgrounds/background_buildingupgrade_costs/background_buildingupgrade_cost@2x~iphone.png' %>") no-repeat center center;
+  width: 184px;
+  height: 200px;
+  position: relative;
+  top: 278px;
+  left: 434px;
+}
+
+.count-text-big
+{
+  color: white;
+  font-size: 42px;
+  text-align: center;
+  line-height: 52px;
+}
+
+.count-text-big.count-text-jobs
+{
+  position: relative;
+}
+
+.count-text-big-background
+{
+  background:url("<%= asset_path 'dialogs/backgrounds/background_textfield_grey_m/background_textfield_grey_m@2x~iphone.png' %>") no-repeat center center;
+  width: 186px;
+  height: 44px;
+  position: relative;
+  top: 150px;
+  left: 10px;
+}
+/* == MILITARY == */
+
+/*== Infantry==*/
+.cell-icon-big.unit_warrior
+{
+  background:url("<%= asset_path 'dialogs/units/base/infantry_base_big/infantry_base_big@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  z-index: +2;
+}
+.cell-icon-big.unit_clubbers
+{
+  background:url("<%= asset_path 'dialogs/units/infantry/infantry_club_big/infantry_club_big_normal/infantry_club_big_normal@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  z-index: +2;
+}
+.cell-icon-big.unit_clubbers_2
+{
+  background:url("<%= asset_path 'dialogs/units/infantry/infantry_club_big/infantry_club_big_stone/infantry_club_big_stone@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  z-index: +2;
+}
+.cell-icon-big.unit_clubbers_3
+{
+  background:url("<%= asset_path 'dialogs/units/infantry/infantry_club_big/infantry_club_big_bronze/infantry_club_big_bronze@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  z-index: +2;
+}
+.cell-icon-big.unit_tree_huggers
+{
+  background:url("<%= asset_path 'dialogs/units/infantry/infantry_club_big/infantry_club_big_gold/infantry_club_big_gold@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  z-index: +2;
+}
+.cell-icon-big.unit_neanderthal{}
+/*== Artillery==*/
+.cell-icon-big.unit_thrower
+{
+  background:url("<%= asset_path 'dialogs/units/artillery/artillery_big/artillery_big_normal/artillery_big_normal@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  z-index: +2;
+}
+.cell-icon-big.unit_thrower_2
+{
+  background:url("<%= asset_path 'dialogs/units/artillery/artillery_big/artillery_big_stone/artillery_big_stone@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  z-index: +2;
+}
+.cell-icon-big.unit_thrower_3
+{
+  background:url("<%= asset_path 'dialogs/units/artillery/artillery_big/artillery_big_bronze/artillery_big_bronze@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  z-index: +2;
+}
+.cell-icon-big.unit_thrower_4
+{
+  background:url("<%= asset_path 'dialogs/units/artillery/artillery_big/artillery_big_gold/artillery_big_gold@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  z-index: +2;
+}
+/*== Cavalry==*/
+.cell-icon-big.unit_light_cavalry
+{
+  background:url("<%= asset_path 'dialogs/units/cavalry/cavalry_big/cavalry_big_normal/cavalry_big_normal@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  z-index: +2;
+}
+.cell-icon-big.unit_light_cavalry_2
+{
+  background:url("<%= asset_path 'dialogs/units/cavalry/cavalry_big/cavalry_big_silver/cavalry_big_silver@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  z-index: +2;
+}
+.cell-icon-big.unit_light_cavalry_3
+{
+  background:url("<%= asset_path 'dialogs/units/cavalry/cavalry_big/cavalry_big_bronze/cavalry_big_bronze@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  z-index: +2;
+}
+.cell-icon-big.unit_light_cavalry_4
+{
+  background:url("<%= asset_path 'dialogs/units/cavalry/cavalry_big/cavalry_big_gold/cavalry_big_gold@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  z-index: +2;
+}
+/*== Special==*/
+.cell-icon-big.unit_little_chief
+{
+  background:url("<%= asset_path 'dialogs/units/little_chief/little_chief_big/little_chief_big@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  z-index: +2;
+}
+.cell-icon-big.unit_great_chief
+{
+  background:url("<%= asset_path 'dialogs/units/little_chief/little_chief_big/little_chief_big@2x~iphone.png' %>") no-repeat center center;
+  width: 108px;
+  height: 108px;
+  position: relative;
+  z-index: +2;
+}
+
+.military-costs-background
+{
+  position: relative;
+  width: 144px;
+  height: 172px;
+  right: 22px;
+  bottom: 24px;
+  float: left;
+  display: inline-block;
+  background:url("<%= asset_path 'dialogs/backgrounds/background_costs/background_costs@2x~iphone.png' %>") no-repeat center center;
+}
+.military-costs-row
+{
+  width: 100%;
+  height: 28px;
+  position: relative;
+  top: 23px;
+  left: 4px;
+}
+.military-costs-half-row
+{
+  width: 24%;
+  height: 28px;
+  float: left;
+  position: relative;
+  left: 10px;
+}
+
+.cost-item-small-uhr
+{
+  width: 32px;
+  height: 24px;
+  position: relative;
+  margin: 0 auto;
+  background:url("<%= asset_path 'dialogs/items/normal/item_uhr_small/icon_hourglass_small@2x~iPhone.png' %>") no-repeat center center;
+}
+
+.cost-icon-small-stone
+{
+  width: 32px;
+  height: 24px;
+  position: relative;
+  margin: 0 auto;
+  background:url("<%= asset_path 'dialogs/items/normal/item_stone_small/item_stone_small@2x~iphone.png' %>") no-repeat center center;
+}
+
+.cost-icon-small-wood
+{
+  width: 32px;
+  height: 24px;
+  position: relative;
+  margin: 0 auto;
+  background:url("<%= asset_path 'dialogs/items/normal/item_wood_small/item_wood_small@2x~iphone.png' %>") no-repeat center center;
+}
+
+.cost-icon-small-fur
+{
+  width: 32px;
+  height: 28px;
+  position: relative;
+  margin: 0 auto;
+  background:url("<%= asset_path 'dialogs/items/normal/item_fur_small/item_fur_small@2x~iphone.png' %>") no-repeat center center;
+}
+
+.cost-text-small
+{
+  color: white;
+  font-size: 20px;
+  text-align: start;
+  line-height: 28px;
+}
+
+.cost-text-titel
+{
+  color: white;
+  font-size: 26px;
+  text-align: center;
+  line-height: 28px;
+}
+
+.military-big
+{
+  position: relative;
+  left: 44px;
+  top: 40px;
+  width: 144px;
+  height: 110px;
+  float: left;
+  display: inline-block;
+}
+
+.military
+{
+  position: relative;
+  left: 18px;
+  top: 40px;
+  float: left;
+  width: 84px;
+  height: 110px;
+  display: inline-block;
+}
+
+.military-info
+{
+  background:url("<%= asset_path 'dialogs/backgrounds/background_info_box_medium/background_info_box@2x~iphone.png' %>") no-repeat center center;
+  width: 20px;
+  height: 28px;
+  position: relative;
+  right: 6px;
+  bottom: 8px;
+  font-size: 18px;
+  text-align: center;
+  line-height: 28px;
+  color: rgb(255,255,255) !important;
+  cursor: pointer;
+}
+
+.military-count
+{
+  background:url("<%= asset_path 'dialogs/backgrounds/background_unit_counter/background_unit_counter@2x~iphone.png' %>") no-repeat center center;
+  width: 76px;
+  height: 70px;
+  position: relative;
+  z-index: -2;
+  top: 42px;
+  left: 10px;
+  line-height: 70px;
+  text-align: center;
+  color: rgb(255,255,255);
+  font-size: 18px;
+}
+
+.tab-bar-new-military .cell{
+  float: left;
+  width: 146px;
+  position: relative;
+  left: 32px;
+}
+
+.tab-bar-new-military{
+  color: #FFF;
+  text-align: center;
+  line-height: 52px;
+  font-size: 20px;
+  position: relative;
+  right: 12px;
+  top: 28px;
+}
+
+.tab-bar-new-military .swords-icon {
+  background:url("<%= asset_path 'ui/Swords@2x~iPhone.png' %>") no-repeat center center;
+  width: 180px;
+  height: 32px;
+  position: absolute;
+  bottom: 64px;
+  right: 234px;
+}
+
+
+.tab-bar-new-military .middle-menu-button-military {
+  background:url("<%= asset_path 'dialogs/buttons/button_blue_medium/button_blue_short@2x~iphone.png' %>") no-repeat center center;
+  font-size: 17px;
+}
+
+.tab-bar-new-military .middle-menu-button-military:hover, .tab-bar-new-military .middle-menu-button-military.current {
+  background:url("<%= asset_path 'dialogs/tabs/tab_small_active/tab_small_active@2x~iphone.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.tab-bar-new-military .header-menu-button-military {
+  background:url("<%= asset_path 'dialogs/buttons/button_blue_xxl/button_blue_xxl@2x~iphone.png' %>") no-repeat center center;
+}
+
+.tab-bar-new-military .header-menu-button-military:hover, .tab-bar-new-military .header-menu-button-military.current{
+  background:url("<%= asset_path 'dialogs/buttons/button_orange_xxl/button_orange_xxl@2x~iPhone.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
 /* == CHANGE AND CREATE ARMY == */
 
 .change-army-dialog-pane input[type="text"] {
@@ -1105,6 +1536,7 @@ h3 {
   font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
   padding: 2px!important;
   margin-left: 13px!important;
+  color: rgb(113,93,49);
 }
 
 .army-type-range
@@ -1223,7 +1655,7 @@ h3 {
 	position: absolute;
 	left: 15px;
 }
-
+/*== Special==*/
 
 .army-type-cell
 {
@@ -1654,7 +2086,7 @@ h3 {
 
 /* == PROFILE CUSTOMIZE SELF == */
 
-::-webkit-input-placeholder {
+/*::-webkit-input-placeholder {
    color: rgb(113,93,49);
 }
 
@@ -1668,7 +2100,7 @@ h3 {
 
 :-ms-input-placeholder {  
    color: rgb(113,93,49);
-}
+}*/
 
 
 
