@@ -1099,19 +1099,77 @@ h3 {
 
 /* == JOBS == */
 
+.progress-value.progress-value-unit-training{
+  line-height: 38px;
+  text-align: start;
+  position: relative;
+  left: 46px;
+}
+
+.icon-speed-up{
+  background:url("<%= asset_path 'dialogs/buttons/icons/icon_speed_up.png' %>") no-repeat center center;
+  width: 32px;
+  height: 28px;
+}
+
+.icon-speed-up.icon-speed-up-unit-queue{
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 50px;
+  top: 10px;
+}
+
+.icon-toad{
+  background:url("<%= asset_path 'dialogs/buttons/icons/icon_toad.png' %>") no-repeat left center;
+  width: 32px;
+  height: 28px;
+}
+
+.icon-toad.icon-toad-unit-queue{
+  position: relative;
+  display: inline-block;
+  float: left;
+  top: 10px;
+}
+
+.name-change-button-gold-titel.speed-up-button-titel{
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: auto;
+  line-height: 60px;
+}
+
+.gold-button-queue{
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 116px;
+  height: 52px;
+  top: 7px;
+  background:url("<%= asset_path 'dialogs/buttons/button_gold.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
 .cancel-button-queue{
   position: relative;
   display: inline-block;
   float: left;
-  width: 72px;
+  width: 102px;
   height: 52px;
+  top: 7px;
   background:url("<%= asset_path 'dialogs/buttons/button_cancel.png' %>") no-repeat center center;
+  cursor: pointer;
 }
 
 .cancel-button-icon{
  background:url("<%= asset_path 'dialogs/window/close_button.png' %>") no-repeat center center; 
  width: 32px;
  height: 32px;
+ position: relative;
+ left: 36px;
+ top: 8px;
 }
 
 .cell-icon-unit-queue{
@@ -1133,9 +1191,19 @@ h3 {
   text-align: center;
 }
 
-.rank-background-job {
+.queue-unit-info-text {
+  position: relative;
+  display: inline-block;
+  float: left;
+  line-height: 68px;
+  width: auto;
+  left: 10px;
+  text-align: center;
+}
+
+.training-background-job {
   background:url("<%= asset_path 'dialogs/progressbars/progress_unit_grey.png' %>") no-repeat center center;
-  width: 248px;
+  width: 192px;
   height: 44px;
   position: relative;
   display: inline-block;
@@ -1143,13 +1211,29 @@ h3 {
   top: 10px;
 }
 
-.rank-bar-job {
-  width: 248px;
+.training-bar-job {
+  width: 192px;
   height: 44px;
   background:url("<%= asset_path 'dialogs/progressbars/progress_unit_green.png' %>") no-repeat left center;
-  background-size: 80% 100%;
+  background-size: 100% 100%;
   text-align: center;
   margin:auto;
+}
+
+.training-unit-bar{
+  width: 188px;
+  height: 4px;
+  position: relative;
+  left: 2px;
+  background-color: red;
+}
+
+.training-unit-bar-empty{
+  width: 192px;
+  height: 30px;
+  position: relative;
+  display: inline-block;
+  float: left;
 }
 
 .army-type-cell.army-type-cell-jobs

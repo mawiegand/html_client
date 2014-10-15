@@ -555,14 +555,26 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
       this.get('controller').trainingSpeedupClicked(this.get('job'));
     },
     
-    
+    remainingQuantity: function(){
+      var totalQuantity = this.getPath('job.quantity');
+      var finishedQuantity = this.getPath('job.quantity_finished');
+      return (totalQuantity - finishedQuantity);
+    }.property('job.quantity_finished').cacheable(),
+
+    isArmySizeMax: function()
+    {
+      var army = this.getPath('parentView.garrisonArmy');
+      return (army.size_max <= army.size_present);
+
+    }.property('parentView.garrisonArmy').cacheable(),
+
     active: function() {
       return this.get('job').active_job !== null;
     }.property('job.active_job'),   
     
     first: function() {
       var jobCollection = this.getPath('parentView.queue.hashableJobs.collection');
-      return jobCollection && jobCollection[0] && jobCollection[0] === this.get('job')
+      return jobCollection && jobCollection[0] && jobCollection[0] === this.get('job');
     }.property('parentView.queue.hashableJobs.changedAt'),    
     
     calcTimeRemaining: function() {
@@ -622,6 +634,21 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
     
     willDestroyElement: function() {
       this.stopTimer();
+    },
+
+    formatedRemainingTime: function(){
+      var remTime = this.get('timeRemaining');
+      return this.formatSecondsForJob(remTime);
+    }.property('timeRemaining').cacheable(),
+
+    formatSecondsForJob: function (seconds)
+    {
+      var t = new Date(1970,0,1);
+      t.setSeconds(seconds);
+      var s = t.toTimeString().substr(0,8);
+      if(seconds > 86399)
+        s = Math.floor((t - Date.parse("1/1/70")) / 3600000) + s.substr(2);
+      return s;
     },
 });
 //NEW DIALOGS END

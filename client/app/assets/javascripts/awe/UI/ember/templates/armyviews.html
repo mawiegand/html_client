@@ -241,7 +241,7 @@
 
 <script type="text/x-handlebars" data-template-name="army-new-info-dialog">
   <h1 class="modal-dialog-heading">Military</h1>
-   <div class="modal-dialog-body change-army-dialog-pane">
+   <div class="modal-dialog-body change-army-dialog-pane scrolling">
     {{view AWE.UI.Ember.ArmyInfoNewTabView unitTypesBinding="unitTypes" garrisonArmyBinding="garrisonArmy" controllerBinding="controller" settlementBinding="settlement" trainingQueuesBinding="trainingQueues"}}
    </div>
 </script>
@@ -421,16 +421,35 @@
 </script>
 <!--Job Statusbar-->
 <script type="text/x-handlebars" data-template-name="army-job-cell">   
-    {{#if job.active_job }}
       <div class="army-type-cell army-type-cell-jobs">
-        <div class=" cell-icon-unit-queue"><div class="cell-icon unit_clubbers"></div></div>
-        <div class="queue-unit-count">2000</div>
-        <div class="cell rank-background-job" ><div class="rank-bar-job"><div class="progress-value">12:50:42</div></div></div>
-        <div class="cancel-button-queue"><div class="cancel-button-icon"></div></div>
+        <div class=" cell-icon-unit-queue"><div {{bindAttr class="job.unitType.db_field :cell-icon"}}></div></div>
+        <div class="queue-unit-count">{{remainingQuantity}}</div>
+        {{#if active}}
+            <div class="cell training-background-job" >
+                <div class="training-bar-job">
+                  <div class="training-unit-bar"></div>
+                  <div class="progress-value progress-value-unit-training">{{formatedRemainingTime}}</div>
+                </div>
+            </div>
+        {{else}}
+            {{#if first}}
+                {{#if isArmySizeMax}}
+                    <div class="queue-unit-info-text">Maximum army size reached!</div>
+                {{else}}
+                   <div class="queue-unit-info-text">Waiting for resources!</div>
+                {{/if}}
+            {{else}}
+               <div class="training-unit-bar-empty"></div>
+            {{/if}}
+        {{/if}}
+        <div class="cancel-button-queue" {{action "cancelJobPressed"}}><div class="cancel-button-icon"></div></div>
+        {{#if isTrainingSpeedupPossible}}
+          <div class="gold-button-queue" {{action "speedupJobPressed"}}>
+              <div class="icon-speed-up icon-speed-up-unit-queue"></div>
+              <div class="name-change-button-gold-titel speed-up-button-titel">{{trainingSpeedupCost timeRemaining}}</div>
+              <div class="icon-toad icon-toad-unit-queue"></div>
+          </div>
+        {{/if}}
       </div>
-      
-    {{else}}
-      <div class="army-type-cell army-type-cell-jobs">Test Cell NOT Active!!!</div>
-    {{/if}}
 </script>
 
