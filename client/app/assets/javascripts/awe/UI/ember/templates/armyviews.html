@@ -423,7 +423,7 @@
 <script type="text/x-handlebars" data-template-name="army-job-cell">   
       <div class="army-type-cell army-type-cell-jobs">
         <div class=" cell-icon-unit-queue"><div {{bindAttr class="job.unitType.db_field :cell-icon"}}></div></div>
-        <div class="queue-unit-count">{{remainingQuantity}}</div>
+        <div class="queue-unit-count">{{job.remaining}}</div>
         {{#if active}}
             <div class="cell training-background-job" >
                 <div class="training-bar-job">

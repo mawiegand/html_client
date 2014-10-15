@@ -554,12 +554,6 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
     speedupJobPressed: function(event) {
       this.get('controller').trainingSpeedupClicked(this.get('job'));
     },
-    
-    remainingQuantity: function(){
-      var totalQuantity = this.getPath('job.quantity');
-      var finishedQuantity = this.getPath('job.quantity_finished');
-      return (totalQuantity - finishedQuantity);
-    }.property('job.quantity_finished').cacheable(),
 
     isArmySizeMax: function()
     {
@@ -578,7 +572,7 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
     }.property('parentView.queue.hashableJobs.changedAt'),    
     
     calcTimeRemaining: function() {
-      var finishedAt = this.getPath('job.active_job.finished_total_at');
+      var finishedAt = this.getPath('job.active_job.finished_total_at');//finished_active_at
       if (!finishedAt) {
         return ;
       }
