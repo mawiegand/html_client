@@ -184,6 +184,10 @@ AWE.UI.Ember = (function(module) {
     okClicked: function() {
       this.destroy();
     },
+
+    openAlliance: function() {
+      WACKADOO.showAllianceDialog(this.getPath("alliance.id"));
+    },
     
     sendLike: function() {
       var characterId = this.get('characterId');
