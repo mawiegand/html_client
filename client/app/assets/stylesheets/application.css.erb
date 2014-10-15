@@ -1098,10 +1098,42 @@ h3 {
 
 /* == JOBS == */
 
+.cancel-button-queue{
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 72px;
+  height: 52px;
+  background:url("<%= asset_path 'dialogs/buttons/button_cancel.png' %>") no-repeat center center;
+}
+
+.cell-icon-unit-queue{
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 64px;
+  height: 68px;
+  left: 10px;
+}
+
+.queue-unit-count {
+  position: relative;
+  display: inline-block;
+  float: left;
+  line-height: 68px;
+  width: 124px;
+  left: 10px;
+  text-align: center;
+}
+
 .rank-background-job {
   background:url("<%= asset_path 'dialogs/progressbars/progress_unit_grey.png' %>") no-repeat center center;
   width: 248px;
   height: 44px;
+  position: relative;
+  display: inline-block;
+  float: left;
+  top: 10px;
 }
 
 .rank-bar-job {
