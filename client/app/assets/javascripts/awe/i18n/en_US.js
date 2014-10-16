@@ -116,6 +116,8 @@ AWE.I18n.en_US = function(module) {
     },
 
     army:{
+      maximumArmySizeReached: "Maximum army size reached!",
+      waitingForResources: "Waiting for resources!",
       newArmy:"New Army",
 
       list: {
@@ -1247,10 +1249,12 @@ AWE.I18n.en_US = function(module) {
       defenseAbbreviation: "Def",
       hitpointsAbbreviation: "HP",
       criticalDamageAbbreviation: "Crit",
+      garrison: "Garrison",
       infantry: "Infantry",
       artillery: "Artillery",
       cavalery: "Cavalery",
       specialUnits: "Special Units",
+      military: "Military",
 
       commandPointsAbbreviation:"CP",
       buildingTime:"Build time",
