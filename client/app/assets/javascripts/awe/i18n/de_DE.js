@@ -440,7 +440,7 @@ AWE.I18n.de_DE = function(module) {
 
       founded: 'Gründung',
       leader: 'Anführer',
-      leaderVote: 'Deine Stimme',
+      leaderVote: 'Wählen',
       leaderVoted: 'Gewählt',
       description: 'Beschreibung',
       changeDescriptionDialogCaption: 'Gib deine neue Allianzbeschreibung ein.',
