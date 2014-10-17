@@ -178,7 +178,6 @@ AWE.UI.Ember = (function(module) {
     
     errorMessage:  null,
     sending:       false,
-    
     init: function(args) {
       var resourceTypes = AWE.GS.RulesManager.getRules().resource_types;
       
@@ -191,7 +190,7 @@ AWE.UI.Ember = (function(module) {
           });
         }
       });
-      
+
       this.set('resources', resources);
       this._super(args);
     },
@@ -552,7 +551,8 @@ module.SendResourceRangeView  = Ember.TextField.extend({
     max: function(){
       return 1000;
     }.property().cacheable(),
-    valueBinding: "number",
+    test: function(){debugger
+      return true;}.observes('value'),
   });
 //NEW DIALOGS END
 

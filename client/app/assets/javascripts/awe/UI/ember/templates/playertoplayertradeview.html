@@ -141,19 +141,21 @@
     <div class="modal-dialog-body-trade player-to-player-trade-cell">
       <div class="recipient-text">Recipient</div>
       <div class="player-to-player-trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield}}</div>
-      <div class="modal-dialog-blue-button-small modal-dialog-green-button-small-right submit-trade-button">
+      <div class="modal-dialog-blue-button-small modal-dialog-green-button-small-right submit-trade-button" {{action "sendPressed"}}>
             submit
           </div>
     </div>
     <div class="modal-dialog-body-trade player-to-player-trade-cell">
-      <div class="recipient-text cart-info-text">2000 / 5000 Karren (7000 total)</div>
+      <div class="recipient-text cart-info-text">{{ settlement.trading_carts_used }} / {{ settlement.trading_carts }} Karren ({{settlement.availableTradingCarts}} total)</div>
     </div>
+
+    {{#each resourceType in resources}}
     <div class="modal-dialog-body-trade player-to-player-trade-cell assignments-dialog-pane">
       <div class="assignment_stone is-active send"></div>
-      <div class="send-resource-range-view-cell">{{view AWE.UI.Ember.SendResourceRangeView numberBinding="number"}}</div>
+      <div class="send-resource-range-view-cell">{{view AWE.UI.Ember.SendResourceRangeView valueBinding="resourceType.amount"}}</div>
       <div class="recipient-text count-text">300000</div>
     </div>
-    <div class="modal-dialog-body-trade player-to-player-trade-cell assignments-dialog-pane">
+   <!-- <div class="modal-dialog-body-trade player-to-player-trade-cell assignments-dialog-pane">
       <div class="assignment_wood is-active send"></div>
       <div class="send-resource-range-view-cell">{{view AWE.UI.Ember.SendResourceRangeView numberBinding="number"}}</div>
       <div class="recipient-text count-text">300000</div>
@@ -162,7 +164,8 @@
       <div class="assignment_fur is-active send"></div>
       <div class="send-resource-range-view-cell">{{view AWE.UI.Ember.SendResourceRangeView numberBinding="number"}}</div>
       <div class="recipient-text count-text">300000</div>
-    </div>
+    </div>-->
+    {{/each}}
     <div class="modal-dialog-body-trade player-to-player-trade-cell" style="text-align: end; line-height: 50px; right: 38px;
 ">900000 / 999990</div>
 </script>
