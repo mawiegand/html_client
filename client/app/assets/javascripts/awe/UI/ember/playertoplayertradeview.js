@@ -514,12 +514,12 @@ module.ResourceExchangeNewView = module.ResourceExchangeDialog.extend({
 
 module.ResourceTextfield = Ember.TextField.extend({
     //classNames: ["create-army-dialog-name"],
-    valueBinding: '',//Ember.Binding.oneWay("parentView.character.name"),
-    changedInput: null,
-    updateChangedInput: function()
+    //valueBinding: '',//Ember.Binding.oneWay("parentView.character.name"),
+    //changedInput: null,
+    /*updateChangedInput: function()
     {
       this.set('changedInput', this.get('value'));
-    }.observes('value'),
+    }.observes('value'),*/
   });
 //NEW DIALOGS END
 

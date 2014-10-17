@@ -147,23 +147,26 @@
           <div class="trade-resource-icon assignments-dialog-pane">
             <div class="assignment_stone is-active trade"></div>
           </div>
-          <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield changedInputBinding="changedInput" classNames="newname" }}</div>
+          <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield valueBinding="newStoneValue"}}</div>
         </div>
         <div class="trade-resources-inputfield-row">
           <div class="trade-resource-icon assignments-dialog-pane">
             <div class="assignment_wood is-active trade"></div>
           </div>
-          <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield changedInputBinding="changedInput" classNames="newname" }}</div>
+          <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield valueBinding="newWoodValue"}}</div>
         </div>
         <div class="trade-resources-inputfield-row">
           <div class="trade-resource-icon assignments-dialog-pane">
             <div class="assignment_fur is-active trade"></div>
           </div>
-          <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield changedInputBinding="changedInput" classNames="newname" }}</div>
+          <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield valueBinding="newFurValue"}}</div>
         </div>
         <div class="trade-resources-inputfield-row trade-text-bottom">Entering 0 in all fields distributes Resources Evently.</div>
     </div>
     <div class="modal-dialog-body-trade trade-view-right-cell">
+      {{#if loadingInit}}
+        {{view AWE.UI.Ember.WheelOrValueView valueBinding="null"}}&nbsp;&nbsp;&nbsp;{{t resource.exchange.loading}}
+      {{else}}
         <div class="trade-text-row">Du kannst deine Rohstoffe für 2 Kröten neu verteilen. Dabei ändert sich nicht die Gesammtanzahl deiner Rohstoffe, sondern nur wie sie auf 3 Rohstoffe verteilt sind.</div>
         <div class="trade-premium-button-row">
             <div class="name-change-button-gold trade-gold">
@@ -172,6 +175,7 @@
               <div class="name-change-button-gold-titel">Trade</div>
             </div>
         </div>
+        {{/if}}
       </div>
 </script>
 <!--NEW DIALOGS END-->
