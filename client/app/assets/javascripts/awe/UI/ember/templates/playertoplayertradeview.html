@@ -142,8 +142,37 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="trade-tab3-view">   
-    <div class="modal-dialog-body-trade trade-view-left-cell">Test Left</div>
-    <div class="modal-dialog-body-trade trade-view-right-cell">Test Right</div>
+    <div class="modal-dialog-body-trade trade-view-left-cell">
+        <div class="trade-resources-inputfield-row">
+          <div class="trade-resource-icon assignments-dialog-pane">
+            <div class="assignment_stone is-active trade"></div>
+          </div>
+          <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield changedInputBinding="changedInput" classNames="newname" }}</div>
+        </div>
+        <div class="trade-resources-inputfield-row">
+          <div class="trade-resource-icon assignments-dialog-pane">
+            <div class="assignment_wood is-active trade"></div>
+          </div>
+          <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield changedInputBinding="changedInput" classNames="newname" }}</div>
+        </div>
+        <div class="trade-resources-inputfield-row">
+          <div class="trade-resource-icon assignments-dialog-pane">
+            <div class="assignment_fur is-active trade"></div>
+          </div>
+          <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield changedInputBinding="changedInput" classNames="newname" }}</div>
+        </div>
+        <div class="trade-resources-inputfield-row trade-text-bottom">Entering 0 in all fields distributes Resources Evently.</div>
+    </div>
+    <div class="modal-dialog-body-trade trade-view-right-cell">
+        <div class="trade-text-row">Du kannst deine Rohstoffe für 2 Kröten neu verteilen. Dabei ändert sich nicht die Gesammtanzahl deiner Rohstoffe, sondern nur wie sie auf 3 Rohstoffe verteilt sind.</div>
+        <div class="trade-premium-button-row">
+            <div class="name-change-button-gold trade-gold">
+              <div class="item-price">2</div>
+              <div class="item-toad"></div>
+              <div class="name-change-button-gold-titel">Trade</div>
+            </div>
+        </div>
+      </div>
 </script>
 <!--NEW DIALOGS END-->
 
