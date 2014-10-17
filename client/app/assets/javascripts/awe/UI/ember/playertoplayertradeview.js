@@ -543,6 +543,17 @@ module.ResourceTextfield = Ember.TextField.extend({
       this.set('changedInput', this.get('value'));
     }.observes('value'),*/
   });
+
+module.SendResourceRangeView  = Ember.TextField.extend({
+    classNames: ["resource-range-slider"],
+    attributeBindings: ["min", "max"],
+    min: 1,
+    type: "range",
+    max: function(){
+      return 1000;
+    }.property().cacheable(),
+    valueBinding: "number",
+  });
 //NEW DIALOGS END
 
   return module;
