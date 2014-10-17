@@ -507,7 +507,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
 
     messagesButtonClicked: function() {
-      this.activateMessagesController();
+      var dialog = AWE.UI.Ember.MailDialog.create({
+      });
+      this.presentModalDialog(dialog);
     },
 
     presentResourceDetailsDialog: function() {
@@ -651,9 +653,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
         WACKADOO.presentModalDialog(allianceScreen);
       });
-      
-      
-      
+
+
+
     },
 
 
