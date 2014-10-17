@@ -419,6 +419,9 @@ AWE.UI.Ember = (function(module) {
 
   });
 
+  module.AllianceDiplomacyWar = Ember.View.extend({
+    templateName: 'alliance-diplomacy-war',
+  })
   //Diplomacy View Controller
   module.AllianceDiplomacyTab = Ember.View.extend({
     templateName: 'alliance-diplomacy-tab',

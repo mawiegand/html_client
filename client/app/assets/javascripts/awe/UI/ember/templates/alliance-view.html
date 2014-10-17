@@ -113,7 +113,7 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-diplomacy-tab">
-  <div class="alliance-diplomacy-container">
+  <div class="alliance-diplomacy-container no-scrolling">
     {{#if isAllianceLeader}}
         <div class="alliance-ultimatum-new">
           <div class="alliance-diplomacy-first alliance-ultimatum-new-input">
@@ -129,7 +129,7 @@
           </div>
         </div>
     {{/if}}
-    <div class="public-information">
+    <div class="public-information scrolling">
       <div class="alliance-ultimatum">
           <div class="alliance-diplomacy-first">
             <h3 class="alliance-diplomacy-title">Ultimatum:</h3>
@@ -143,17 +143,15 @@
       <div class="alliance-war">
           <div class="alliance-diplomacy-first">
             <h3 class="alliance-diplomacy-title">War:</h3>
-            <div class="alliance-diplomacy-name">HUUIII</div>
           </div>
           <div class="alliance-diplomacy-second">
             <h3 class="alliance-diplomacy-title">End:</h3>
-            <div class="alliance-diplomacy-timer">9h 12min</div>
           </div>
-          <div class="alliance-diplomacy-third">
-              <div class="alliance-ultimatum-button">
-                give up
-              </div>
-            </div>
+          {{view AWE.UI.Ember.AllianceDiplomacyWar}}
+          {{view AWE.UI.Ember.AllianceDiplomacyWar}}
+          {{view AWE.UI.Ember.AllianceDiplomacyWar}}
+          {{view AWE.UI.Ember.AllianceDiplomacyWar}}
+          {{view AWE.UI.Ember.AllianceDiplomacyWar}}
       </div>
       <div class="alliance-capitulation">
           <div class="alliance-diplomacy-first">
@@ -166,5 +164,18 @@
           </div>
       </div>
     </div>
+  </div>
+</script>
+<script type="text/x-handlebars" data-template-name="alliance-diplomacy-war">
+  <div class="alliance-diplomacy-first">
+    <div class="alliance-diplomacy-name">HUUIII</div>
+  </div>
+  <div class="alliance-diplomacy-second">
+    <div class="alliance-diplomacy-timer">9h 12min</div>
+  </div>
+  <div class="alliance-diplomacy-third">
+      <div class="alliance-ultimatum-button">
+        give up
+      </div>
   </div>
 </script>
