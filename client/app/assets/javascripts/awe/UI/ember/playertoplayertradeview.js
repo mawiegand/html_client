@@ -375,6 +375,29 @@ module.ResourceExchangeDialog = Ember.View.extend({//module.Dialog.extend({
       return this.get('remaining')
     }.property('newStoneValue', 'newWoodValue', 'newFurValue', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present').cacheable(),
 
+    checkStoneDiff: function()
+    {
+      this.get('getRemaining');
+      this.get('getSum');
+      this.get('getNewSum');
+      this.get('getStoneDiff');
+    }.observes('newStoneValue'),
+
+    checkWoodDiff: function()
+    {
+      this.get('getRemaining');
+      this.get('getSum');
+      this.get('getNewSum');
+      this.get('getWoodDiff');
+    }.observes('newWoodValue'),
+
+    checkFurDiff: function()
+    {
+      this.get('getRemaining');
+      this.get('getSum');
+      this.get('getNewSum');
+      this.get('getFurDiff');
+    }.observes('newFurValue'),
     /* html classes */
     /* doesn't work for some reason */
     /*remainingClass: function() {
@@ -409,7 +432,6 @@ module.ResourceExchangeDialog = Ember.View.extend({//module.Dialog.extend({
             /* update resources in client */
             AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
               parent.set('loadingSend', false);
-              parent.destroy();
             });
           }
           else if (statusCode == AWE.Net.CONFLICT) {
@@ -477,7 +499,7 @@ module.TradeNewTabView = module.TabViewNew.extend({
          buttonClass: "middle-menu-button"
        },
        { key:   "tab3",
-         title: "Trade", 
+         title: AWE.I18n.lookupTranslation('settlement.trade.trade'), 
          view: module.ResourceExchangeNewView.extend({ 
             settlementBinding: "parentView.parentView.settlement", 
             controllerBinding:  "parentView.parentView.controller", 

@@ -127,7 +127,7 @@
 </script>
 <!--NEW DIALOGS START-->
 <script type="text/x-handlebars" data-template-name="player-to-player-trade-view-new">
-  <h1 class="modal-dialog-heading">Trade</h1>
+  <h1 class="modal-dialog-heading">{{t settlement.trade.trade}}</h1>
    <div class="modal-dialog-body modal-dialog-body-trade scrolling">
     {{view AWE.UI.Ember.TradeNewTabView controllerBinding="controller" settlementBinding="settlement"}}
    </div>
@@ -161,18 +161,18 @@
           </div>
           <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield valueBinding="newFurValue"}}</div>
         </div>
-        <div class="trade-resources-inputfield-row trade-text-bottom">Entering 0 in all fields distributes Resources Evently.</div>
+        <div class="trade-resources-inputfield-row trade-text-bottom">{{t settlement.trade.distrEvently}}</div>
     </div>
     <div class="modal-dialog-body-trade trade-view-right-cell">
       {{#if loadingInit}}
         {{view AWE.UI.Ember.WheelOrValueView valueBinding="null"}}&nbsp;&nbsp;&nbsp;{{t resource.exchange.loading}}
       {{else}}
-        <div class="trade-text-row">Du kannst deine Rohstoffe für 2 Kröten neu verteilen. Dabei ändert sich nicht die Gesammtanzahl deiner Rohstoffe, sondern nur wie sie auf 3 Rohstoffe verteilt sind.</div>
+        <div class="trade-text-row">{{t settlement.trade.resourceTradeInfo}}</div>
         <div class="trade-premium-button-row">
-            <div class="name-change-button-gold trade-gold">
-              <div class="item-price">2</div>
+            <div class="name-change-button-gold trade-gold" {{action "exchangeClicked"}}>
+              <div class="item-price">{{cost}}</div>
               <div class="item-toad"></div>
-              <div class="name-change-button-gold-titel">Trade</div>
+              <div class="name-change-button-gold-titel">{{t settlement.trade.trade}}</div>
             </div>
         </div>
         {{/if}}
