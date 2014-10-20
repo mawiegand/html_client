@@ -1442,6 +1442,7 @@ AWE.I18n.de_DE = function(module) {
       manual: "Handbuch",
       logout: "Logout",
       header: "Menu",
+      reload: "Aktualisieren",
     },
 
     dialogs:{
