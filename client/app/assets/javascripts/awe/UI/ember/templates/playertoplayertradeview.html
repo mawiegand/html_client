@@ -139,54 +139,44 @@
 
 <script type="text/x-handlebars" data-template-name="trade-tab2-view">   
     <div class="modal-dialog-body-trade player-to-player-trade-cell">
-      <div class="recipient-text">Recipient</div>
-      <div class="player-to-player-trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield}}</div>
+      <div class="recipient-text">{{t settlement.trade.recipient}}</div>
+      <div class="player-to-player-trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield valueBinding="recipientName"}}</div>
       <div class="modal-dialog-blue-button-small modal-dialog-green-button-small-right submit-trade-button" {{action "sendPressed"}}>
-            submit
+            {{t settlement.trade.submit}}
           </div>
     </div>
     <div class="modal-dialog-body-trade player-to-player-trade-cell">
-      <div class="recipient-text cart-info-text">{{ settlement.trading_carts_used }} / {{ settlement.trading_carts }} Karren ({{settlement.availableTradingCarts}} total)</div>
+      <div class="recipient-text cart-info-text">{{ numCarts }} / {{ settlement.availableTradingCarts }} {{t settlement.trade.carts}} ({{settlement.trading_carts}} total)</div>
     </div>
 
     {{#each resourceType in resources}}
     <div class="modal-dialog-body-trade player-to-player-trade-cell assignments-dialog-pane">
-      <div class="assignment_stone is-active send"></div>
-      <div class="send-resource-range-view-cell">{{view AWE.UI.Ember.SendResourceRangeView valueBinding="resourceType.amount"}}</div>
-      <div class="recipient-text count-text">300000</div>
+      <div {{bindAttr class="resourceType.type.symbolic_id :is-active :trade :send"}}></div>
+      <div class="send-resource-range-view-cell">{{view AWE.UI.Ember.SendResourceRangeView valueBinding="resourceType.amount" resourceTypeBinding="resourceType" settlementBinding="parentView.settlement" maxAmountBinding="parentView.maxAmount" currentIDBinding="parentView.currentID"}}</div>
+      <div class="recipient-text count-text">{{resourceType.amount}}</div>
     </div>
-   <!-- <div class="modal-dialog-body-trade player-to-player-trade-cell assignments-dialog-pane">
-      <div class="assignment_wood is-active send"></div>
-      <div class="send-resource-range-view-cell">{{view AWE.UI.Ember.SendResourceRangeView numberBinding="number"}}</div>
-      <div class="recipient-text count-text">300000</div>
-    </div>
-    <div class="modal-dialog-body-trade player-to-player-trade-cell assignments-dialog-pane">
-      <div class="assignment_fur is-active send"></div>
-      <div class="send-resource-range-view-cell">{{view AWE.UI.Ember.SendResourceRangeView numberBinding="number"}}</div>
-      <div class="recipient-text count-text">300000</div>
-    </div>-->
     {{/each}}
     <div class="modal-dialog-body-trade player-to-player-trade-cell" style="text-align: end; line-height: 50px; right: 38px;
-">900000 / 999990</div>
+">{{totalAmount}} / {{maxAmount}}</div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="trade-tab3-view">   
     <div class="modal-dialog-body-trade trade-view-left-cell">
         <div class="trade-resources-inputfield-row">
           <div class="trade-resource-icon assignments-dialog-pane">
-            <div class="assignment_stone is-active trade"></div>
+            <div class="resource_stone is-active trade"></div>
           </div>
           <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield valueBinding="newStoneValue"}}</div>
         </div>
         <div class="trade-resources-inputfield-row">
           <div class="trade-resource-icon assignments-dialog-pane">
-            <div class="assignment_wood is-active trade"></div>
+            <div class="resource_wood is-active trade"></div>
           </div>
           <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield valueBinding="newWoodValue"}}</div>
         </div>
         <div class="trade-resources-inputfield-row">
           <div class="trade-resource-icon assignments-dialog-pane">
-            <div class="assignment_fur is-active trade"></div>
+            <div class="resource_fur is-active trade"></div>
           </div>
           <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield valueBinding="newFurValue"}}</div>
         </div>

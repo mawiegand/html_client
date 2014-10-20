@@ -186,7 +186,7 @@ AWE.UI.Ember = (function(module) {
         if (item.tradable) {
           resources.push({
             type:   item,
-            amount: null,
+            amount: 0,
           });
         }
       });
@@ -194,6 +194,53 @@ AWE.UI.Ember = (function(module) {
       this.set('resources', resources);
       this._super(args);
     },
+
+    currentID: null,
+
+    setupResourceValues: function(){
+      var currentResourcesNum = this.get('maxAmount') - this.get('totalAmount');
+      var isOverfill = (currentResourcesNum < 0);
+      var self = this;
+      if(isOverfill)
+      {
+        /*var toBeChanged =[];
+        var sum = 0;
+        self.get('resources').forEach(function(resource) {
+          if(resource.type.id != self.get('currentID'))
+          {
+            toBeChanged.push(resource.amount);
+            sum+= parseInt(resource.amount);
+          }
+        });
+
+        mustAmount = Math.floor((sum + currentResourcesNum)/2);*/
+        resources = [];
+        var i = 0;
+        self.get('resources').forEach(function(resource) {
+
+         /* if(resource.type.id != self.get('currentID'))
+          {
+            resource.amount = mustAmount;
+            self.setPath('resources.'+i+'.amount', mustAmount);
+          }*/
+          if(resource.type.id == self.get('currentID'))
+          {
+             self.setPath('resources.'+i+'.amount', (parseInt(resource.amount) + currentResourcesNum));
+          }
+          i+=1;
+        });
+      }
+      return true;
+    }.observes('resources.@each.amount'),
+
+    /*changeCallbackFromSlider: function(){
+      this.get('setupResourceValues');
+    }.observes('resources.@each.amount'),*/
+
+    maxAmount: function() {
+      var aviableTradingCards = this.getPath('settlement.availableTradingCarts');
+      return Math.ceil(Math.abs(aviableTradingCards) * 10.0)
+    }.property('settlement.availableTradingCarts').cacheable(),
     
     totalAmount: function() {
       var resources = this.get('resources') || [];
@@ -490,7 +537,7 @@ module.TradeNewTabView = module.TabViewNew.extend({
          buttonClass: "left-menu-button"
        }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
        { key:   "tab2",
-         title: "Send", 
+         title: AWE.I18n.lookupTranslation('settlement.trade.send'), 
          view:  module.PlayerToPlayerTradeNewView.extend({ 
             settlementBinding: "parentView.parentView.settlement", 
             controllerBinding:  "parentView.parentView.controller", 
@@ -541,18 +588,31 @@ module.ResourceTextfield = Ember.TextField.extend({
     {
       this.set('changedInput', this.get('value'));
     }.observes('value'),*/
+    placeholder : function () {
+    return AWE.I18n.lookupTranslation('general.playerName');
+  }.property().cacheable(),
   });
 
 module.SendResourceRangeView  = Ember.TextField.extend({
     classNames: ["resource-range-slider"],
     attributeBindings: ["min", "max"],
-    min: 1,
+    resourceType: null,
+    settlement: null,
+    min: 0,
     type: "range",
+    maxAmount: null,
+    currentID: null,
     max: function(){
-      return 1000;
-    }.property().cacheable(),
-    test: function(){debugger
-      return true;}.observes('value'),
+      return this.get("maxAmount");
+    }.property('maxAmount').cacheable(),
+    onValueChanged: function(){
+      this.set('currentID', this.getPath('resourceType.type.id'));
+      return true;
+    }.observes('value'),
+    onAmountChanged: function(){
+      this.set('value', this.getPath('resourceType.amount'));
+      return true;
+    }.observes('resourceType.amount'),
   });
 //NEW DIALOGS END
 

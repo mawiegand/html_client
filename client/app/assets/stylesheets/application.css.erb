@@ -1171,22 +1171,31 @@ h3 {
   float: left;
 }
 
-.assignments-dialog-pane .assignment_stone.is-active.trade
+.assignments-dialog-pane .resource_stone.is-active.trade
 {
+  background:url("<%= asset_path 'dialogs/items/normal/item_stone_big.png' %>") no-repeat center center;
+  width: 60px;
+  height: 48px;
   position: absolute;
   bottom: 0px;
   left: 75px;
 }
 
-.assignments-dialog-pane .assignment_wood.is-active.trade
+.assignments-dialog-pane .resource_wood.is-active.trade
 {
+  background:url("<%= asset_path 'dialogs/items/normal/item_wood_big.png' %>") no-repeat center center;
+  width: 60px;
+  height: 48px;
   position: absolute;
   bottom: 0px; 
   left: 75px;
 }
 
-.assignments-dialog-pane .assignment_fur.is-active.trade
+.assignments-dialog-pane .resource_fur.is-active.trade
 {
+  background:url("<%= asset_path 'dialogs/items/normal/item_fur_big.png' %>") no-repeat center center;
+  width: 60px;
+  height: 68px;
   position: absolute;
   bottom: -18px;
   left: 75px;
@@ -1286,7 +1295,7 @@ h3 {
   left: 12px;
 }
 
-.assignments-dialog-pane .assignment_stone.is-active.send
+.assignments-dialog-pane .resource_stone.is-active.trade.send
 {
   position: relative;
   left: -20px;
@@ -1295,7 +1304,7 @@ h3 {
   display: inline-block;
 }
 
-.assignments-dialog-pane .assignment_wood.is-active.send
+.assignments-dialog-pane .resource_wood.is-active.trade.send
 {
   position: relative;
   left: -20px;
@@ -1304,13 +1313,14 @@ h3 {
   display: inline-block;
 }
 
-.assignments-dialog-pane .assignment_fur.is-active.send
+.assignments-dialog-pane .resource_fur.is-active.trade.send
 {
   position: relative;
   left: -20px;
   width: 20%;
   float: left;
   display: inline-block;
+  bottom: 0px;
 }
 
 .send-resource-range-view-cell
