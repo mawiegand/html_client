@@ -116,6 +116,8 @@ AWE.I18n.en_US = function(module) {
     },
 
     army:{
+      maximumArmySizeReached: "Maximum army size reached!",
+      waitingForResources: "Waiting for resources!",
       newArmy:"New Army",
 
       list: {
@@ -788,6 +790,11 @@ AWE.I18n.en_US = function(module) {
       },
 
       trade:{
+        trade: "Trade",
+        distrEvently: "Entering 0 in all fields distributes them evenly",
+        resourceTradeInfo: "You can redistribute your resources for 2 golden frogs. This does not change your total Resource amount, just the distribution among the 3 types.",
+
+        submit: "Submit",
         sendResources:"Send resources",
         cartsEnRoute:"Trading carts en route",
         recipient:"Recipient",
@@ -1247,10 +1254,12 @@ AWE.I18n.en_US = function(module) {
       defenseAbbreviation: "Def",
       hitpointsAbbreviation: "HP",
       criticalDamageAbbreviation: "Crit",
+      garrison: "Garrison",
       infantry: "Infantry",
       artillery: "Artillery",
       cavalery: "Cavalery",
       specialUnits: "Special Units",
+      military: "Military",
 
       commandPointsAbbreviation:"CP",
       buildingTime:"Build time",
@@ -1408,6 +1417,7 @@ AWE.I18n.en_US = function(module) {
       manual: "Manual",
       logout: "Log out",
       header: "Menu",
+      reload: "Reload",
     },
 
     dialogs:{

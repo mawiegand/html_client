@@ -1096,8 +1096,394 @@ h3 {
   margin: 0;
   text-align: right;
 }
+/* == TRADE == */
 
+.modal-dialog-body.modal-dialog-body-trade{
+  top: 75px;
+  height: 400px;
+  width: 100%;
+}
+
+.trade-view-left-cell
+{
+  top: 0px;
+  position: relative;
+  height: 348px;
+  width: 67%;
+  display: inline-block;
+  float: left;
+}
+
+.trade-view-right-cell
+{
+  top: 10px;
+  position: relative;
+  height: 338px;
+  width: 33%;
+  display: inline-block;
+  float: left;
+}
+
+.trade-text-row
+{
+  position: relative;
+  width: 100%;
+  height: 75%;
+  display: inline-block;
+  float: left;
+  line-height: 24px;
+  font-size: 20px;
+}
+
+.trade-premium-button-row
+{
+  position: relative;
+  width: 100%;
+  height: 25%;
+  display: inline-block;
+  float: left;
+}
+
+.trade-resources-inputfield-row
+{
+  position: relative;
+  width: 100%;
+  height: 25%;
+  display: inline-block;
+  float: left;
+}
+
+.trade-resources-inputfield-row.trade-text-bottom
+{
+  height: 16%;
+  top: 28px;
+  left: 14px;
+  line-height: 24px;
+  font-size: 20px;
+}
+
+.trade-resource-icon
+{
+  position: relative;
+  width: 50%;
+  height: 100%;
+  display: inline-block;
+  float: left;
+}
+
+.assignments-dialog-pane .resource_stone.is-active.trade
+{
+  background:url("<%= asset_path 'dialogs/items/normal/item_stone_big.png' %>") no-repeat center center;
+  width: 60px;
+  height: 48px;
+  position: absolute;
+  bottom: 0px;
+  left: 75px;
+}
+
+.assignments-dialog-pane .resource_wood.is-active.trade
+{
+  background:url("<%= asset_path 'dialogs/items/normal/item_wood_big.png' %>") no-repeat center center;
+  width: 60px;
+  height: 48px;
+  position: absolute;
+  bottom: 0px; 
+  left: 75px;
+}
+
+.assignments-dialog-pane .resource_fur.is-active.trade
+{
+  background:url("<%= asset_path 'dialogs/items/normal/item_fur_big.png' %>") no-repeat center center;
+  width: 60px;
+  height: 68px;
+  position: absolute;
+  bottom: -18px;
+  left: 75px;
+}
+
+.trade-inputfield
+{
+  position: relative;
+  width: 50%;
+  height: 100%;
+  display: inline-block;
+  float: left;
+}
+
+.trade-inputfield input[type="text"] {
+  position: absolute;
+  bottom: 0px;
+  height: 46px;
+  font-size: 30px;
+  width: 174px;
+  margin-right: 0px!important;
+  border: 0!important;
+  border-radius: 0!important;
+  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  padding: 2px!important;
+  margin-left: 13px!important;
+  resize: none;
+  color: rgb(112,92,48);
+  text-align: right;
+}
+.name-change-button-gold.trade-gold
+{
+  left: 4px;
+  top: 14px;
+}
+
+/* == PLAYER TO PLAYER TRADE == */
+
+.player-to-player-trade-cell
+{
+  top: 0px;
+  position: relative;
+  width: 100%;
+  height: 58px;
+  display: inline-block;
+  float: left;
+}
+
+.player-to-player-trade-inputfield input[type="text"] {
+  position: relative;
+  top: 12px;
+  right: 32px;
+  height: 30px;
+  font-size: 22px;
+  width: 254px;
+  margin-right: 0px!important;
+  border: 0!important;
+  border-radius: 0!important;
+  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  padding: 2px!important;
+  margin-left: 13px!important;
+  resize: none;
+  color: rgb(112,92,48);
+  text-align: right;
+  display: inline-block;
+  float: left;
+}
+
+.modal-dialog-green-button-small-right.submit-trade-button
+{
+  position: relative;
+  right: 18px;
+  top: 5px;
+  line-height: 50px;
+  font-size: 14px;
+  float: left;
+  display: inline-block;
+}
+
+.recipient-text
+{
+  position: relative;
+  height: 58px;
+  width: 170px;
+  float: left;
+  display: inline-block;
+  text-align: center;
+  left: -10px;
+  line-height: 58px;
+  color: rgb(146,141,130);
+}
+
+.recipient-text.cart-info-text
+{
+  width: 100%;
+  text-align: left;
+  left: 12px;
+}
+
+.assignments-dialog-pane .resource_stone.is-active.trade.send
+{
+  position: relative;
+  left: -20px;
+  width: 20%;
+  float: left;
+  display: inline-block;
+}
+
+.assignments-dialog-pane .resource_wood.is-active.trade.send
+{
+  position: relative;
+  left: -20px;
+  width: 20%;
+  float: left;
+  display: inline-block;
+}
+
+.assignments-dialog-pane .resource_fur.is-active.trade.send
+{
+  position: relative;
+  left: -20px;
+  width: 20%;
+  float: left;
+  display: inline-block;
+  bottom: 0px;
+}
+
+.send-resource-range-view-cell
+{
+  display: inline-block;
+  float: left;
+  position: relative;
+  width: 50%;
+}
+
+.resource-range-slider
+{
+  position: relative;
+  width: 292px;
+  height: 60px;
+}
+
+.recipient-text.count-text
+{
+  width: 30%;
+  text-align: center;
+  left: 12px;
+  display: inline-block;
+  float: left;
+}
 /* == JOBS == */
+
+.progress-value.progress-value-unit-training{
+  line-height: 38px;
+  text-align: start;
+  position: relative;
+  left: 46px;
+}
+
+.icon-speed-up{
+  background:url("<%= asset_path 'dialogs/buttons/icons/icon_speed_up.png' %>") no-repeat center center;
+  width: 32px;
+  height: 28px;
+}
+
+.icon-speed-up.icon-speed-up-unit-queue{
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 50px;
+  top: 10px;
+}
+
+.icon-toad{
+  background:url("<%= asset_path 'dialogs/buttons/icons/icon_toad.png' %>") no-repeat left center;
+  width: 32px;
+  height: 28px;
+}
+
+.icon-toad.icon-toad-unit-queue{
+  position: relative;
+  display: inline-block;
+  float: left;
+  top: 10px;
+}
+
+.name-change-button-gold-titel.speed-up-button-titel{
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: auto;
+  line-height: 60px;
+}
+
+.gold-button-queue{
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 116px;
+  height: 52px;
+  top: 7px;
+  background:url("<%= asset_path 'dialogs/buttons/button_gold.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.cancel-button-queue{
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 102px;
+  height: 52px;
+  top: 7px;
+  background:url("<%= asset_path 'dialogs/buttons/button_cancel.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.cancel-button-icon{
+ background:url("<%= asset_path 'dialogs/window/close_button.png' %>") no-repeat center center; 
+ width: 32px;
+ height: 32px;
+ position: relative;
+ left: 36px;
+ top: 8px;
+}
+
+.cell-icon-unit-queue{
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 64px;
+  height: 68px;
+  left: 10px;
+}
+
+.queue-unit-count {
+  position: relative;
+  display: inline-block;
+  float: left;
+  line-height: 68px;
+  width: 124px;
+  left: 10px;
+  text-align: center;
+}
+
+.queue-unit-info-text {
+  position: relative;
+  display: inline-block;
+  float: left;
+  line-height: 68px;
+  width: auto;
+  left: 10px;
+  text-align: center;
+}
+
+.training-background-job {
+  background:url("<%= asset_path 'dialogs/progressbars/progress_unit_grey.png' %>") no-repeat center center;
+  width: 192px;
+  height: 44px;
+  position: relative;
+  display: inline-block;
+  float: left;
+  top: 10px;
+}
+
+.training-bar-job {
+  width: 192px;
+  height: 44px;
+  background:url("<%= asset_path 'dialogs/progressbars/progress_unit_green.png' %>") no-repeat left center;
+  text-align: center;
+  position: relative;
+}
+
+.training-unit-bar{
+  width: 188px;
+  height: 4px;
+  position: relative;
+  left: 2px;
+  background-color: red;
+}
+
+.training-unit-bar-empty{
+  width: 192px;
+  height: 30px;
+  position: relative;
+  display: inline-block;
+  float: left;
+}
+
 .army-type-cell.army-type-cell-jobs
 {
   position: relative;
@@ -1827,8 +2213,8 @@ h3 {
   color: rgb(256,256,256);
   text-align: center;
   margin: auto;
-  line-height: 10px;
-  font-size: 15px;
+  line-height: 56px;
+  font-size: 30px;
 }
 
 .menu-dialog-pane .main-menu-button:hover {
@@ -1842,11 +2228,11 @@ h3 {
 }
 
 .menu-dialog-pane .row1 {
-  margin: 35px 0 0 0;
+  margin: 22px 0 0 0;
 }
 
 .menu-dialog-pane .row5 {
-  margin: 25px 0 0 0;
+  margin: 0 0 0 0;
 }
 
 

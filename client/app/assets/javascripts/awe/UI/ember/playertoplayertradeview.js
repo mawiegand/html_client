@@ -14,7 +14,6 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
 
-
   /** @class
    * @name AWE.UI.Ember.TradingCartActionView */  
   module.TradingCartActionView = Ember.View.extend( /** @lends AWE.UI.Ember.TradingCartActionView# */ {
@@ -179,7 +178,6 @@ AWE.UI.Ember = (function(module) {
     
     errorMessage:  null,
     sending:       false,
-    
     init: function(args) {
       var resourceTypes = AWE.GS.RulesManager.getRules().resource_types;
       
@@ -188,14 +186,61 @@ AWE.UI.Ember = (function(module) {
         if (item.tradable) {
           resources.push({
             type:   item,
-            amount: null,
+            amount: 0,
           });
         }
       });
-      
+
       this.set('resources', resources);
       this._super(args);
     },
+
+    currentID: null,
+
+    setupResourceValues: function(){
+      var currentResourcesNum = this.get('maxAmount') - this.get('totalAmount');
+      var isOverfill = (currentResourcesNum < 0);
+      var self = this;
+      if(isOverfill)
+      {
+        /*var toBeChanged =[];
+        var sum = 0;
+        self.get('resources').forEach(function(resource) {
+          if(resource.type.id != self.get('currentID'))
+          {
+            toBeChanged.push(resource.amount);
+            sum+= parseInt(resource.amount);
+          }
+        });
+
+        mustAmount = Math.floor((sum + currentResourcesNum)/2);*/
+        resources = [];
+        var i = 0;
+        self.get('resources').forEach(function(resource) {
+
+         /* if(resource.type.id != self.get('currentID'))
+          {
+            resource.amount = mustAmount;
+            self.setPath('resources.'+i+'.amount', mustAmount);
+          }*/
+          if(resource.type.id == self.get('currentID'))
+          {
+             self.setPath('resources.'+i+'.amount', (parseInt(resource.amount) + currentResourcesNum));
+          }
+          i+=1;
+        });
+      }
+      return true;
+    }.observes('resources.@each.amount'),
+
+    /*changeCallbackFromSlider: function(){
+      this.get('setupResourceValues');
+    }.observes('resources.@each.amount'),*/
+
+    maxAmount: function() {
+      var aviableTradingCards = this.getPath('settlement.availableTradingCarts');
+      return Math.ceil(Math.abs(aviableTradingCards) * 10.0)
+    }.property('settlement.availableTradingCarts').cacheable(),
     
     totalAmount: function() {
       var resources = this.get('resources') || [];
@@ -295,6 +340,281 @@ AWE.UI.Ember = (function(module) {
       return false;
     },
   });
+
+
+  //NEW DIALOGS START
+//Added resourceexchangedialog, was not found from other file
+module.ResourceExchangeDialog = Ember.View.extend({//module.Dialog.extend({
+    templateName: 'resource-exchange-dialog',
+    loadingInit: null,    /* init loading */
+    loadingSend: null,    /* exchange loading */
+
+    /* resource pool */
+    pool: null,
+
+    /* new selected min values */
+    newStoneValue: null,
+    newWoodValue: null,
+    newFurValue: null,
+
+    /* remaining resources */
+    remaining: null,
+
+    /* sum of resources */
+    sum: null,
+
+    init: function() {
+      this._super();
+      this.set('loadingInit', true);
+      var self = this;
+
+      /* jump to top */
+     // $('html, body').animate({ scrollTop: 0 }, 'slow');
+
+      AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
+        self.set('loadingInit', false);
+        self.set('pool', AWE.GS.ResourcePoolManager.getResourcePool());
+        self.set('newStoneValue', 0);
+        self.set('newWoodValue', 0);
+        self.set('newFurValue', 0);
+      });
+    },
+
+    cost: function() {
+      return AWE.GS.RulesManager.getRules().resource_exchange.amount;
+    }.property().cacheable(),
+
+    /* properties */
+    getSum: function() {
+      this.set('sum', this.getPath('pool.resource_stone_present') + this.getPath('pool.resource_wood_present') + this.getPath('pool.resource_fur_present'));
+      return this.get('sum');
+    }.property('pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present').cacheable(),
+
+    getNewSum: function() {
+      this.set('newSum', (parseInt(this.get('newStoneValue')) || 0) + (parseInt(this.get('newWoodValue')) || 0) + (parseInt(this.get('newFurValue')) || 0));
+      return this.get('newSum');
+    }.property('newStoneValue', 'newWoodValue', 'newFurValue').cacheable(),
+
+    getStoneDiff: function () {
+      if(parseInt(this.get('newStoneValue')) > this.getPath('pool.resource_stone_capacity')) {
+        this.set('newStoneValue', parseInt(this.getPath('pool.resource_stone_capacity')));
+      }
+      return (parseInt(this.get('newStoneValue')) || 0) - this.getPath('pool.resource_stone_present'); 
+    }.property('pool.resource_stone_present', 'newStoneValue').cacheable(),
+
+    getWoodDiff: function () {
+      if(parseInt(this.get('newWoodValue')) > this.getPath('pool.resource_wood_capacity')) {
+        this.set('newWoodValue', parseInt(this.getPath('pool.resource_wood_capacity')));
+      }
+      return (parseInt(this.get('newWoodValue')) || 0) - this.getPath('pool.resource_wood_present'); 
+    }.property('pool.resource_wood_present', 'newWoodValue').cacheable(),
+
+    getFurDiff: function () {
+      if(parseInt(this.get('newFurValue')) > this.getPath('pool.resource_fur_capacity')) {
+        this.set('newFurValue', parseInt(this.getPath('pool.resource_fur_capacity')));
+      }
+      return (parseInt(this.get('newFurValue')) || 0) - this.getPath('pool.resource_fur_present'); 
+    }.property('pool.resource_fur_present', 'newFurValue').cacheable(),
+
+    getRemaining: function() {
+      this.set('remaining', this.get('sum') - (parseInt(this.get('newStoneValue')) || 0) - (parseInt(this.get('newWoodValue')) || 0) - (parseInt(this.get('newFurValue')) || 0));
+      return this.get('remaining')
+    }.property('newStoneValue', 'newWoodValue', 'newFurValue', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present').cacheable(),
+
+    checkStoneDiff: function()
+    {
+      this.get('getRemaining');
+      this.get('getSum');
+      this.get('getNewSum');
+      this.get('getStoneDiff');
+    }.observes('newStoneValue'),
+
+    checkWoodDiff: function()
+    {
+      this.get('getRemaining');
+      this.get('getSum');
+      this.get('getNewSum');
+      this.get('getWoodDiff');
+    }.observes('newWoodValue'),
+
+    checkFurDiff: function()
+    {
+      this.get('getRemaining');
+      this.get('getSum');
+      this.get('getNewSum');
+      this.get('getFurDiff');
+    }.observes('newFurValue'),
+    /* html classes */
+    /* doesn't work for some reason */
+    /*remainingClass: function() {
+      return (this.get('remaining') < 0 ? 'red-color' : '');
+    }.property('remaining'),*/
+
+    /* actions */
+    exchangeClicked: function() {
+      if (isNaN(parseInt(this.get('newStoneValue'))) || isNaN(parseInt(this.get('newWoodValue'))) || isNaN(parseInt(this.get('newFurValue')))) {
+        var errorDialog = AWE.UI.Ember.InfoDialog.create({
+          heading: AWE.I18n.lookupTranslation('resource.exchange.errors.noinput.heading'),
+          message: AWE.I18n.lookupTranslation('resource.exchange.errors.noinput.text'),
+        });
+        WACKADOO.presentModalDialog(errorDialog);
+      }
+
+      else if(parseInt(this.get('remaining'))  < 0) {
+        var errorDialog = AWE.UI.Ember.InfoDialog.create({
+          heading: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.heading'),
+          message: AWE.I18n.lookupTranslation('resource.exchange.errors.toomuch.text'),
+        });
+        WACKADOO.presentModalDialog(errorDialog);
+      }
+
+      else {
+        this.set('loadingSend', true);
+        var self = this;
+        var action = AWE.Action.Fundamental.createTradeResourcesAction(self.get('newStoneValue'), self.get('newWoodValue'), self.get('newFurValue'));
+        AWE.Action.Manager.queueAction(action, function(statusCode) {
+          var parent = self;
+          if(statusCode == 200) {
+            /* update resources in client */
+            AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
+              parent.set('loadingSend', false);
+            });
+          }
+          else if (statusCode == AWE.Net.CONFLICT) {
+            var errorDialog = AWE.UI.Ember.InfoDialog.create({
+              heading: AWE.I18n.lookupTranslation('resource.exchange.errors.noFrogs.heading'),
+              message: AWE.I18n.lookupTranslation('resource.exchange.errors.noFrogs.text'),
+            });
+            WACKADOO.presentModalDialog(errorDialog);
+            self.destroy();
+          }
+          else {
+            var errorDialog = AWE.UI.Ember.InfoDialog.create({
+              heading: AWE.I18n.lookupTranslation('resource.exchange.errors.failed.heading'),
+              message: AWE.I18n.lookupTranslation('resource.exchange.errors.failed.text'),
+            });
+            WACKADOO.presentModalDialog(errorDialog);
+            self.destroy();
+          }
+        });
+      }
+
+      return false;
+    },
+
+    resetClicked: function() {
+      this.init();
+      return false;
+    },
+
+    cancelClicked: function() {
+      this.destroy();
+      return false;
+    },
+  });
+
+module.TradeNewView = module.PopUpDialog.extend( /** @lends AWE.UI.Ember.ProfileView# */ {
+    templateName: 'player-to-player-trade-view-new',
+    settlement: null,
+    controller: null,
+
+  });
+
+module.TradeNewTabView = module.TabViewNew.extend({
+
+    settlement: null,
+    controller: null,
+
+    init: function() {
+
+     this.set('tabViews', [
+       { key:   "tab1",
+         title: "Update", 
+         view:  module.TradingCartActionNewView.extend({ 
+            settlementBinding: "parentView.parentView.settlement", 
+            controllerBinding:  "parentView.parentView.controller", 
+          }),
+         buttonClass: "left-menu-button"
+       }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
+       { key:   "tab2",
+         title: AWE.I18n.lookupTranslation('settlement.trade.send'), 
+         view:  module.PlayerToPlayerTradeNewView.extend({ 
+            settlementBinding: "parentView.parentView.settlement", 
+            controllerBinding:  "parentView.parentView.controller", 
+          }),
+         buttonClass: "middle-menu-button"
+       },
+       { key:   "tab3",
+         title: AWE.I18n.lookupTranslation('settlement.trade.trade'), 
+         view: module.ResourceExchangeNewView.extend({ 
+            settlementBinding: "parentView.parentView.settlement", 
+            controllerBinding:  "parentView.parentView.controller", 
+          }),
+         buttonClass: "right-menu-button"
+       }
+     ]);
+
+     this._super();
+   },
+
+ });
+
+module.TradingCartActionNewView = module.TradingCartActionView.extend({
+  templateName: 'trade-tab1-view',
+  settlement: null,
+  controller: null,
+
+   });
+
+module.PlayerToPlayerTradeNewView = module.PlayerToPlayerTradeView.extend({
+  templateName: 'trade-tab2-view',
+  settlement: null,
+  controller: null,
+
+   });
+
+module.ResourceExchangeNewView = module.ResourceExchangeDialog.extend({
+  templateName: 'trade-tab3-view',
+  settlement: null,
+  controller: null,
+
+   });
+
+module.ResourceTextfield = Ember.TextField.extend({
+    //classNames: ["create-army-dialog-name"],
+    //valueBinding: '',//Ember.Binding.oneWay("parentView.character.name"),
+    //changedInput: null,
+    /*updateChangedInput: function()
+    {
+      this.set('changedInput', this.get('value'));
+    }.observes('value'),*/
+    placeholder : function () {
+    return AWE.I18n.lookupTranslation('general.playerName');
+  }.property().cacheable(),
+  });
+
+module.SendResourceRangeView  = Ember.TextField.extend({
+    classNames: ["resource-range-slider"],
+    attributeBindings: ["min", "max"],
+    resourceType: null,
+    settlement: null,
+    min: 0,
+    type: "range",
+    maxAmount: null,
+    currentID: null,
+    max: function(){
+      return this.get("maxAmount");
+    }.property('maxAmount').cacheable(),
+    onValueChanged: function(){
+      this.set('currentID', this.getPath('resourceType.type.id'));
+      return true;
+    }.observes('value'),
+    onAmountChanged: function(){
+      this.set('value', this.getPath('resourceType.amount'));
+      return true;
+    }.observes('resourceType.amount'),
+  });
+//NEW DIALOGS END
 
   return module;
     

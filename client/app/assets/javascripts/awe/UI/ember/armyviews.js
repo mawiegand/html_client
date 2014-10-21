@@ -75,7 +75,7 @@ AWE.UI.Ember = (function(module) {
 
      this.set('tabViews', [
        { key:   "tab1",
-         title: "Garrison", 
+         title: AWE.I18n.lookupTranslation('encyclopedia.garrison'), 
          view:  module.GarrisonInfoView.extend({
          unitTypesBinding: "parentView.parentView.unitTypes",
          garrisonArmyBinding: "parentView.parentView.garrisonArmy",
@@ -84,7 +84,7 @@ AWE.UI.Ember = (function(module) {
          buttonClass: "header-menu-button-military"
        }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
        { key:   "tab2",
-         title: "Infantry", 
+         title: AWE.I18n.lookupTranslation('encyclopedia.infantry'), 
          view:  module.InfantryInfoView.extend({ 
           controllerBinding: "parentView.parentView.controller",
           garrisonArmyBinding: "parentView.parentView.garrisonArmy",
@@ -95,7 +95,7 @@ AWE.UI.Ember = (function(module) {
          buttonClass: "middle-menu-button-military"
        },
        { key:   "tab3",
-         title: "Artillery", 
+         title: AWE.I18n.lookupTranslation('encyclopedia.artillery'), 
          view:  module.ArtileryInfoView.extend({ 
           controllerBinding: "parentView.parentView.controller",
           garrisonArmyBinding: "parentView.parentView.garrisonArmy",
@@ -106,7 +106,7 @@ AWE.UI.Ember = (function(module) {
          buttonClass: "middle-menu-button-military"
        },
        { key:   "tab4",
-         title: "Cavalery", 
+         title: AWE.I18n.lookupTranslation('encyclopedia.cavalery'), 
          view:  module.CavaleryInfoView.extend({ 
           controllerBinding: "parentView.parentView.controller",
           garrisonArmyBinding: "parentView.parentView.garrisonArmy",
@@ -117,7 +117,7 @@ AWE.UI.Ember = (function(module) {
          buttonClass: "middle-menu-button-military"
        },
        { key:   "tab5",
-         title: "Special Units", 
+         title: AWE.I18n.lookupTranslation('encyclopedia.specialUnits'), 
          view:  module.SpecialUnitInfoView.extend({ 
           controllerBinding: "parentView.parentView.controller",
           garrisonArmyBinding: "parentView.parentView.garrisonArmy",
@@ -540,12 +540,15 @@ module.ArmyUnitInfoButtonView = module.ArmyUnitInfoView.extend({
 //Recruitment job dialog end
 
 module.ArmyTrainingJobNewView = Ember.View.extend ({
-  templateName: 'army-job-cell',
-  job: null,
-  controller: null,
+    templateName: 'army-job-cell',
+    job: null,
+    controller: null,
 
-  timeRemaining: null,
+    timeRemaining: null,
     timer:         null,
+
+    activeJobRemainingFactor: null,
+    totalJobsRemainingFactor: null,
     
     cancelJobPressed: function(evt) {
       this.get('controller').trainingCancelClicked(this.get('job'));
@@ -554,19 +557,26 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
     speedupJobPressed: function(event) {
       this.get('controller').trainingSpeedupClicked(this.get('job'));
     },
-    
-    
+
+    isArmySizeMax: function()
+    {
+      var army = this.getPath('parentView.garrisonArmy');
+      return (army.size_max <= army.size_present);
+
+    }.property('parentView.garrisonArmy').cacheable(),
+
     active: function() {
       return this.get('job').active_job !== null;
     }.property('job.active_job'),   
     
     first: function() {
       var jobCollection = this.getPath('parentView.queue.hashableJobs.collection');
-      return jobCollection && jobCollection[0] && jobCollection[0] === this.get('job')
+      return jobCollection && jobCollection[0] && jobCollection[0] === this.get('job');
     }.property('parentView.queue.hashableJobs.changedAt'),    
     
     calcTimeRemaining: function() {
-      var finishedAt = this.getPath('job.active_job.finished_total_at');
+      var finishedAt = this.getPath('job.active_job.finished_total_at');//finished_active_at
+      var finishedActiveAt = this.getPath('job.active_job.finished_active_at');
       if (!finishedAt) {
         return ;
       }
@@ -575,8 +585,46 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
       var remaining = (finish.getTime() - now.getTime()) / 1000.0;
       remaining = remaining < 0 ? 0 : remaining;
       this.set('timeRemaining', remaining);
+
+      var finishActive = Date.parseISODate(finishedActiveAt);
+      var now = new Date();
+      var remainingActive = (finishActive.getTime() - now.getTime()) / 1000.0;
+      remainingActive = remainingActive < 0 ? 0 : remainingActive;
+
+      var createdTotalAt = Date.parseISODate(this.getPath('job.active_job.started_total_at'));
+      var createdActiveAt = Date.parseISODate(this.getPath('job.active_job.started_active_at'));
+
+      var comleteTotalTime = finish.getTime() - createdTotalAt.getTime();
+      var completeActiveTime = finishActive.getTime() - createdActiveAt.getTime();
+      if(comleteTotalTime == 0)
+      {
+        comleteTotalTime = 1;
+      }
+
+      if(completeActiveTime == 0)
+      {
+        completeActiveTime = 1;
+      }
+
+      var remainingTotalFactor = remaining/((comleteTotalTime)/(1000.0));
+      var remainingActiveFactor = remainingActive/((completeActiveTime)/(1000.0));
+      
+      this.set('activeJobRemainingFactor', (1 - remainingActiveFactor));
+      this.set('totalJobsRemainingFactor', (1 - remainingTotalFactor));
+    //totalJobsRemainingFactor: null,
     },
+
+    totalBarWidth: function(){
+      var progress = parseInt(this.get('totalJobsRemainingFactor')*192);
+      //return "background-size: "+ progress + "%" + " 100%";
+      return "width: "+ progress + "px";
+    }.property('totalJobsRemainingFactor').cacheable(),
     
+    activeBarWidth: function(){
+      var progress = parseInt(this.get('activeJobRemainingFactor')*188);//188 width of training progress bar
+      return "width: "+ progress + "px";
+    }.property('activeJobRemainingFactor').cacheable(),
+
     isTrainingSpeedupPossible: function() {
       return this.getPath('active') && !this.getPath('job.hurried') && AWE.Util.Rules.isTrainingSpeedupPossible(this.getPath('timeRemaining'));
     }.property('timeRemaining', 'active'),
@@ -622,6 +670,21 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
     
     willDestroyElement: function() {
       this.stopTimer();
+    },
+
+    formatedRemainingTime: function(){
+      var remTime = this.get('timeRemaining');
+      return this.formatSecondsForJob(remTime);
+    }.property('timeRemaining').cacheable(),
+
+    formatSecondsForJob: function (seconds)
+    {
+      var t = new Date(1970,0,1);
+      t.setSeconds(seconds);
+      var s = t.toTimeString().substr(0,8);
+      if(seconds > 86399)
+        s = Math.floor((t - Date.parse("1/1/70")) / 3600000) + s.substr(2);
+      return s;
     },
 });
 //NEW DIALOGS END

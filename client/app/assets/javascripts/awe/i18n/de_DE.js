@@ -116,6 +116,8 @@ AWE.I18n.de_DE = function(module) {
     },    
    
     army: {
+      maximumArmySizeReached: "Maximale Armeegröße erreicht!",
+      waitingForResources: "Warte auf Rohstoffe!",
       newArmy: "Neue Armee",
 
       list: {
@@ -438,7 +440,7 @@ AWE.I18n.de_DE = function(module) {
 
       founded: 'Gründung',
       leader: 'Anführer',
-      leaderVote: 'Deine Stimme',
+      leaderVote: 'Wählen',
       leaderVoted: 'Gewählt',
       description: 'Beschreibung',
       changeDescriptionDialogCaption: 'Gib deine neue Allianzbeschreibung ein.',
@@ -817,6 +819,11 @@ AWE.I18n.de_DE = function(module) {
       },
 
       trade: {
+        trade: "Handel",
+        distrEvently: "0 in allen Feldern verteilt die Resourcen gleichmäßig",
+        resourceTradeInfo: "Du kannst deine Rohstoffe für 2 Kröten neu verteilen. Dabei ändert sich nicht die Gesammtanzahl deiner Rohstoffe, sondern nur wie sie auf 3 Rohstoffe verteilt sind.",
+
+        submit: "Senden",
         sendResources: "Rohstoffe versenden",
         cartsEnRoute: "Handelskarren unterwegs",
         recipient: "Empfänger",
@@ -1271,10 +1278,12 @@ AWE.I18n.de_DE = function(module) {
       defenseAbbreviation: "Def",
       hitpointsAbbreviation: "HP",
       criticalDamageAbbreviation: "Crit",
+      garrison: "Garrison",
       infantry: "Infantry",
       artillery: "Artillery",
       cavalery: "Cavalery",
       specialUnits: "Special Units",
+      military: "Military",
 
       commandPointsAbbreviation: "KP",
       buildingTime: "Bauzeit",
@@ -1433,6 +1442,7 @@ AWE.I18n.de_DE = function(module) {
       manual: "Handbuch",
       logout: "Logout",
       header: "Menu",
+      reload: "Aktualisieren",
     },
 
     dialogs:{
