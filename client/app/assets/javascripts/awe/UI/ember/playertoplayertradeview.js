@@ -529,7 +529,7 @@ module.TradeNewTabView = module.TabViewNew.extend({
 
      this.set('tabViews', [
        { key:   "tab1",
-         title: "Update", 
+         title: AWE.I18n.lookupTranslation('settlement.trade.update'), 
          view:  module.TradingCartActionNewView.extend({ 
             settlementBinding: "parentView.parentView.settlement", 
             controllerBinding:  "parentView.parentView.controller", 
@@ -559,7 +559,41 @@ module.TradeNewTabView = module.TabViewNew.extend({
 
  });
 
-module.TradingCartActionNewView = module.TradingCartActionView.extend({
+module.InOutboundTabView = module.TabViewNew.extend({
+
+    settlement: null,
+    controller: null,
+
+    init: function() {
+
+     this.set('tabViews', [
+       { key:   "tab1",
+         title: AWE.I18n.lookupTranslation('settlement.trade.outbound'),
+         view:  module.OutboundTab.extend({ 
+            settlementBinding: "parentView.parentView.settlement", 
+            controllerBinding:  "parentView.parentView.controller", 
+          }),
+         buttonClass: "left-menu-button-subtab trade-status"
+       }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
+       { key:   "tab2",
+         title: AWE.I18n.lookupTranslation('settlement.trade.inbound'),
+         view:  module.InboundTab.extend({ 
+            settlementBinding: "parentView.parentView.settlement", 
+            controllerBinding:  "parentView.parentView.controller", 
+          }),
+         buttonClass: "right-menu-button-subtab trade-status"
+       }
+     ]);
+
+     this._super();
+   },
+   cellClass: function(){
+      return "cell-" + Math.round(100 / this.get("tabViews").length);
+    }.property("tabViews"),
+
+ });
+
+module.TradingCartActionNewView = Ember.View.extend({
   templateName: 'trade-tab1-view',
   settlement: null,
   controller: null,
@@ -614,6 +648,85 @@ module.SendResourceRangeView  = Ember.TextField.extend({
       return true;
     }.observes('resourceType.amount'),
   });
+
+module.OutboundTab = Ember.View.extend({
+    templateName: "outbound-tab-view",
+    });
+module.InboundTab = Ember.View.extend({
+    templateName: "inbound-tab-view",
+    });
+module.TradingCartActionCellView = module.TradingCartActionView.extend({
+    templateName: "trading-cart-action-new-view",
+
+    timeRemaining: null,
+    timer:         null,
+
+    calcTimeRemaining: function() {
+      var finishedAt = null;//this.getPath('job.active_job.finished_total_at');
+      if(this.getPath('tradingCartAction.returning'))
+        {
+          finishedAt = this.getPath('tradingCartAction.returned_at');
+        }
+        else
+        {
+          finishedAt = this.getPath('tradingCartAction.target_reached_at');
+        }
+      if (!finishedAt) {
+        return ;
+      }
+      var finish = Date.parseISODate(finishedAt);
+      var now = new Date();
+      var remaining = (finish.getTime() - now.getTime()) / 1000.0;
+      remaining = remaining < 0 ? 0 : remaining;
+      this.set('timeRemaining', remaining);
+      //debugger
+    //totalJobsRemainingFactor: null,
+    },
+
+    startTimer: function() {
+      var timer = this.get('timer');
+      if (!timer) {
+        timer = setInterval((function(self) {
+          return function() {
+            self.calcTimeRemaining();
+          };
+        }(this)), 1000);
+        this.set('timer', timer);
+      }
+    },
+
+    stopTimer: function() {
+      var timer = this.get('timer');
+      if (timer) {
+        clearInterval(timer);
+        this.set('timer', null);
+      }
+    },
+
+    didInsertElement: function() {
+      this.startTimer();
+    },
+    
+    willDestroyElement: function() {
+      this.stopTimer();
+    },
+
+    formatedRemainingTime: function(){
+      var remTime = this.get('timeRemaining');
+      return this.formatSecondsForJob(remTime);
+    }.property('timeRemaining').cacheable(),
+
+    formatSecondsForJob: function (seconds)
+    {
+      var t = new Date(1970,0,1);
+      t.setSeconds(seconds);
+      var s = t.toTimeString().substr(0,8);
+      if(seconds > 86399)
+        s = Math.floor((t - Date.parse("1/1/70")) / 3600000) + s.substr(2);
+      return s;
+    },
+
+    });
 //NEW DIALOGS END
 
   return module;
