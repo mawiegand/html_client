@@ -823,6 +823,7 @@ AWE.I18n.de_DE = function(module) {
         distrEvently: "0 in allen Feldern verteilt die Resourcen gleichmäßig",
         resourceTradeInfo: "Du kannst deine Rohstoffe für 2 Kröten neu verteilen. Dabei ändert sich nicht die Gesammtanzahl deiner Rohstoffe, sondern nur wie sie auf 3 Rohstoffe verteilt sind.",
 
+        update: "Update",
         submit: "Senden",
         sendResources: "Rohstoffe versenden",
         cartsEnRoute: "Handelskarren unterwegs",
@@ -831,7 +832,8 @@ AWE.I18n.de_DE = function(module) {
         enRoute: "Ausgehende Karren",
         carts: "Karren",
         timeOfArrival: "Ankunftszeit",
-        inbound: "Eingehende Karren",
+        inbound: "Eingehende",
+        outbound: "Ausgehende",
         sending: "senden",
         empty: "leer",
         cargo: "Ladung",
