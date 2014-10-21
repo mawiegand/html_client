@@ -419,21 +419,56 @@ AWE.UI.Ember = (function(module) {
 
   });
 
-  module.AllianceDiplomacyWar = Ember.View.extend({
-    templateName: 'alliance-diplomacy-war',
+  module.AllianceDiplomacyRow = Ember.View.extend({
+    templateName: 'alliance-diplomacy-row',
+    classNames: 'alliance-row',
+    ultimatum: null
   })
   //Diplomacy View Controller
   module.AllianceDiplomacyTab = Ember.View.extend({
     templateName: 'alliance-diplomacy-tab',
-    classNames: ['alliance-diplomacy-tab'],
+    classNames: ['alliance-diplomacy-tab', 'no-scrolling'],
 
     alliance: null,
 
     isAllianceLeader: function() {
+      this.createDiplomacyRelation();
+      debugger
       var leaderId = this.getPath('alliance.leader_id');
       var characterId = AWE.GS.game.getPath('currentCharacter.id');
       return leaderId && leaderId === characterId;
     }.property('alliance.leader_id', 'AWE.GS.game.currentCharacter.id').cacheable(),
+
+    createDiplomacyRelation: function() {
+      var self = this;
+      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(this.getPath('alliance.id'), 'MUUUAR', true);
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        debugger
+        if (statusCode === AWE.Net.OK) {
+        }
+        else if (statusCode === AWE.Net.CONFLICT) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedRelationAlreadyExists'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+        else if (statusCode === AWE.Net.NOT_FOUND) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedTargetAllianceNotFoundText'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+        else {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('alliance.diplomacyFailedHead'),
+            message: AWE.I18n.lookupTranslation('alliance.diplomacyFailedText'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+        }
+      });
+    },
 
   });
   return module;

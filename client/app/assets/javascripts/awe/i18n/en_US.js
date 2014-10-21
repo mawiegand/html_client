@@ -1416,6 +1416,22 @@ AWE.I18n.en_US = function(module) {
         special_quests: "Special Quests",
         gossip: "Gossip"
       },
+      alliance: {
+        alliance: "Alliance",
+        info: "Info",
+        members: "Members",
+        diplomacy: "Diplomacy",
+        apply: "Apply",
+
+        allianceInfo: {
+          slogan: "Slogan",
+          autoJoin: "AutoJoin"
+        },
+        allianceMembers: {
+          leader: "Leader",
+          members: "Members",
+        },
+      },
       move:{
         heading: "Move",
         description: "This explains how to move.",

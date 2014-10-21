@@ -113,7 +113,7 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="alliance-diplomacy-tab">
-  <div class="alliance-diplomacy-container no-scrolling">
+  <div class="alliance-diplomacy-container">
     {{#if isAllianceLeader}}
         <div class="alliance-ultimatum-new">
           <div class="alliance-diplomacy-first alliance-ultimatum-new-input">
@@ -129,44 +129,44 @@
           </div>
         </div>
     {{/if}}
-    <div class="public-information scrolling">
+    <div class="public-information">
       <div class="alliance-ultimatum">
-          <div class="alliance-diplomacy-first">
-            <h3 class="alliance-diplomacy-title">Ultimatum:</h3>
-            <div class="alliance-diplomacy-name">POLIC</div>
-          </div>
-          <div class="alliance-diplomacy-second">
-            <h3 class="alliance-diplomacy-title">End:</h3>
-            <div class="alliance-diplomacy-timer">20h 10min</div>
-          </div>
+          <div class="alliance-diplomacy-title">
+            <div class="alliance-diplomacy-first">
+              <h3>War:</h3>
+            </div>
+            <div class="alliance-diplomacy-second">
+              <h3>End:</h3>
+            </div>
+          {{view AWE.UI.Ember.AllianceDiplomacyRow}}
+        </div>
       </div>
       <div class="alliance-war">
+        <div class="alliance-diplomacy-title">
           <div class="alliance-diplomacy-first">
-            <h3 class="alliance-diplomacy-title">War:</h3>
+            <h3>War:</h3>
           </div>
           <div class="alliance-diplomacy-second">
-            <h3 class="alliance-diplomacy-title">End:</h3>
+            <h3>End:</h3>
           </div>
-          {{view AWE.UI.Ember.AllianceDiplomacyWar}}
-          {{view AWE.UI.Ember.AllianceDiplomacyWar}}
-          {{view AWE.UI.Ember.AllianceDiplomacyWar}}
-          {{view AWE.UI.Ember.AllianceDiplomacyWar}}
-          {{view AWE.UI.Ember.AllianceDiplomacyWar}}
+        </div>
+          {{view AWE.UI.Ember.AllianceDiplomacyRow}}
       </div>
       <div class="alliance-capitulation">
-          <div class="alliance-diplomacy-first">
-            <h3 class="alliance-diplomacy-title">Capitulation:</h3>
-            <div class="alliance-diplomacy-name">NAME</div>
-          </div>
-          <div class="alliance-diplomacy-second">
-            <h3 class="alliance-diplomacy-title">End:</h3>
-            <div class="alliance-diplomacy-timer">12h 42min</div>
-          </div>
+        <div class="alliance-diplomacy-title">
+            <div class="alliance-diplomacy-first">
+              <h3>War:</h3>
+            </div>
+            <div class="alliance-diplomacy-second">
+              <h3>End:</h3>
+            </div>
+          {{view AWE.UI.Ember.AllianceDiplomacyRow}}
+        </div>
       </div>
     </div>
   </div>
 </script>
-<script type="text/x-handlebars" data-template-name="alliance-diplomacy-war">
+<script type="text/x-handlebars" data-template-name="alliance-diplomacy-row">
   <div class="alliance-diplomacy-first">
     <div class="alliance-diplomacy-name">HUUIII</div>
   </div>
