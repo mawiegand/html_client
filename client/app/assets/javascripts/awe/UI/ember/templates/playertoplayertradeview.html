@@ -133,8 +133,39 @@
    </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="trade-tab1-view">   
-    TAB1
+<script type="text/x-handlebars" data-template-name="trade-tab1-view">  
+  <div class="tab-position"> 
+    {{view AWE.UI.Ember.InOutboundTabView controllerBinding="controller" settlementBinding="settlement"}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="trading-cart-action-new-view">
+  <div class="trade-action-cell">
+    <div class="background-textfield-grey-m background-textfield-trade-action-m tab-bar-new textfield-grey-text-white">TestPlayer1</div>
+    <div class="background-textfield-grey-s background-textfield-trade-action-s tab-bar-new textfield-grey-text-white">13:20:50</div>
+    <div class="background-textfield-grey-s background-textfield-trade-action-s tab-bar-new textfield-grey-text-white">141 carts</div>
+    <div class="button-gold button-trade-action">
+      <div class="icon-speed-up icon-speed-up-trade-action"></div>
+      <div class="name-change-button-gold-titel trade-action-titel">2</div>
+      <div class="icon-toad icon-toad-trade-action"></div>
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="outbound-tab-view">   
+    {{#if settlement.enumerableOutgoingTradingCartActions}}
+      {{#each settlement.enumerableOutgoingTradingCartActions}}
+        {{view AWE.UI.Ember.TradingCartActionCellView settlementBinding="view.settlement" tradingCartActionBinding="this"}}
+      {{/each}}
+    {{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="inbound-tab-view">   
+    {{#if settlement.enumerableIncomingTradingCartActions}}
+      {{#each settlement.enumerableIncomingTradingCartActions}}
+        {{view AWE.UI.Ember.TradingCartActionCellView settlementBinding="view.settlement" tradingCartActionBinding="this"}}
+      {{/each}}
+    {{/if}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="trade-tab2-view">   

@@ -559,7 +559,41 @@ module.TradeNewTabView = module.TabViewNew.extend({
 
  });
 
-module.TradingCartActionNewView = module.TradingCartActionView.extend({
+module.InOutboundTabView = module.TabViewNew.extend({
+
+    settlement: null,
+    controller: null,
+
+    init: function() {
+
+     this.set('tabViews', [
+       { key:   "tab1",
+         title: "Outbound", 
+         view:  module.OutboundTab.extend({ 
+            settlementBinding: "parentView.parentView.settlement", 
+            controllerBinding:  "parentView.parentView.controller", 
+          }),
+         buttonClass: "left-menu-button-subtab trade-status"
+       }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
+       { key:   "tab2",
+         title: "Inbound", 
+         view:  module.InboundTab.extend({ 
+            settlementBinding: "parentView.parentView.settlement", 
+            controllerBinding:  "parentView.parentView.controller", 
+          }),
+         buttonClass: "right-menu-button-subtab trade-status"
+       }
+     ]);
+
+     this._super();
+   },
+   cellClass: function(){
+      return "cell-" + Math.round(100 / this.get("tabViews").length);
+    }.property("tabViews"),
+
+ });
+
+module.TradingCartActionNewView = Ember.View.extend({
   templateName: 'trade-tab1-view',
   settlement: null,
   controller: null,
@@ -614,6 +648,16 @@ module.SendResourceRangeView  = Ember.TextField.extend({
       return true;
     }.observes('resourceType.amount'),
   });
+
+module.OutboundTab = Ember.View.extend({
+    templateName: "outbound-tab-view",
+    });
+module.InboundTab = Ember.View.extend({
+    templateName: "inbound-tab-view",
+    });
+module.TradingCartActionCellView = module.TradingCartActionView.extend({
+    templateName: "trading-cart-action-new-view",
+    });
 //NEW DIALOGS END
 
   return module;
