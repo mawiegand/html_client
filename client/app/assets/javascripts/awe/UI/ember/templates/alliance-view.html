@@ -129,46 +129,60 @@
           </div>
         </div>
     {{/if}}
-    <div class="public-information">
-      <div class="alliance-ultimatum">
-          <div class="alliance-diplomacy-title">
-            <div class="alliance-diplomacy-first">
-              <h3>War:</h3>
+    {{#if relationsFound}}
+      {{#if relationsAtUltimatum}}
+        <div class="public-information">
+          <div class="alliance-ultimatum">
+              <div class="alliance-diplomacy-title">
+                <div class="alliance-diplomacy-first">
+                  <h3>Ultimatum:</h3>
+                </div>
+                <div class="alliance-diplomacy-second">
+                  <h3>End:</h3>
+                </div>
+              {{#each relationsAtUltimatum}}
+                {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this"}}
+              {{/each}}
             </div>
-            <div class="alliance-diplomacy-second">
-              <h3>End:</h3>
-            </div>
-          {{view AWE.UI.Ember.AllianceDiplomacyRow}}
-        </div>
-      </div>
-      <div class="alliance-war">
-        <div class="alliance-diplomacy-title">
-          <div class="alliance-diplomacy-first">
-            <h3>War:</h3>
           </div>
-          <div class="alliance-diplomacy-second">
-            <h3>End:</h3>
+        {{/if}}
+      {{#if relationsAtWar}}
+          <div class="alliance-war">
+            <div class="alliance-diplomacy-title">
+              <div class="alliance-diplomacy-first">
+                <h3>War:</h3>
+              </div>
+              <div class="alliance-diplomacy-second">
+                <h3>End:</h3>
+              </div>
+            </div>
+            {{#each relationsAtWar}}
+              {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this"}}
+            {{/each}}
+          </div>
+      {{/if}}
+      {{#if relationsAtCapitulation}}
+          <div class="alliance-capitulation">
+            <div class="alliance-diplomacy-title">
+                <div class="alliance-diplomacy-first">
+                  <h3>Capitulation:</h3>
+                </div>
+                <div class="alliance-diplomacy-second">
+                  <h3>End:</h3>
+                </div>
+              {{#each relationsAtCapitulation}}
+                {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this"}}
+              {{/each}}
+            </div>
           </div>
         </div>
-          {{view AWE.UI.Ember.AllianceDiplomacyRow}}
-      </div>
-      <div class="alliance-capitulation">
-        <div class="alliance-diplomacy-title">
-            <div class="alliance-diplomacy-first">
-              <h3>War:</h3>
-            </div>
-            <div class="alliance-diplomacy-second">
-              <h3>End:</h3>
-            </div>
-          {{view AWE.UI.Ember.AllianceDiplomacyRow}}
-        </div>
-      </div>
-    </div>
+        {{/if}}
+    {{/if}}
   </div>
 </script>
 <script type="text/x-handlebars" data-template-name="alliance-diplomacy-row">
   <div class="alliance-diplomacy-first">
-    <div class="alliance-diplomacy-name">HUUIII</div>
+    <div class="alliance-diplomacy-name">{{targetAlliance.name}}</div>
   </div>
   <div class="alliance-diplomacy-second">
     <div class="alliance-diplomacy-timer">9h 12min</div>

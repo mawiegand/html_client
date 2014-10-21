@@ -422,7 +422,19 @@ AWE.UI.Ember = (function(module) {
   module.AllianceDiplomacyRow = Ember.View.extend({
     templateName: 'alliance-diplomacy-row',
     classNames: 'alliance-row',
-    ultimatum: null
+    ultimatum: null,
+
+    init: function() {
+      AWE.GS.AllianceManager.updateAlliance(targetId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      this._super();
+    },
+
+    targetAlliance: function() {
+      var targetId = this.getPath('ultimatum.target_alliance_id');
+      AWE.GS.AllianceManager.updateAlliance(targetId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+        return AWE.GS.AllianceManager.getAlliance(targetId);
+      });
+    }.property(),
   })
   //Diplomacy View Controller
   module.AllianceDiplomacyTab = Ember.View.extend({
@@ -432,8 +444,6 @@ AWE.UI.Ember = (function(module) {
     alliance: null,
 
     isAllianceLeader: function() {
-      this.createDiplomacyRelation();
-      debugger
       var leaderId = this.getPath('alliance.leader_id');
       var characterId = AWE.GS.game.getPath('currentCharacter.id');
       return leaderId && leaderId === characterId;
@@ -469,6 +479,61 @@ AWE.UI.Ember = (function(module) {
         }
       });
     },
+
+    relationsFound: function() {
+      var self = this;
+      var relations = this.getPath('alliance.diplomacySourceRelations');
+      var found = false;
+      
+      relations.forEach(function(item) {
+        if (item.getPath('source_alliance_id') === self.getPath('alliance.id')) {
+          found = true;
+        }
+      });
+      return found;
+    }.property('relationFound', 'alliance', 'alliance.diplomacySourceRelations', 'AWE.GS.game.currentCharacter.alliance_id').cacheable(),
+
+    relationsAtUltimatum: function() {
+      var self = this;
+      var ultimatumRelations = [];
+      var relations = this.getPath('alliance.diplomacySourceRelations');
+
+      relations.forEach(function(item) {
+        //TODO
+        if (item.getPath('source_alliance_id') === self.getPath('alliance.id')) {
+          ultimatumRelations.push(item);
+        }
+      });
+      return ultimatumRelations;
+    }.property(),
+
+    relationsAtWar: function() {
+      var self = this;
+      var warRelations = [];
+      var relations = this.getPath('alliance.diplomacySourceRelations');
+
+      relations.forEach(function(item) {
+        //TODO
+        if (item.getPath('source_alliance_id') === self.getPath('alliance.id')) {
+          warRelations.push(item);
+        }
+      });
+      return warRelations;
+    }.property(),
+
+    relationsAtCapitulation: function() {
+      var self = this;
+      var capitulationRelations = [];
+      var relations = this.getPath('alliance.diplomacySourceRelations');
+
+      relations.forEach(function(item) {
+        //TODO
+        if (item.getPath('source_alliance_id') === self.getPath('alliance.id')) {
+          capitulationRelations.push(item);
+        }
+      });
+      return capitulationRelations;
+    }.property(),
 
   });
   return module;
