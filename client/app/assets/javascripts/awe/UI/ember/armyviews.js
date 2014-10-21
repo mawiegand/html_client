@@ -9,8 +9,188 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
 
+module.ArmyInfoDialog = AWE.UI.Ember.InfoDialog.extend({
+    classNames: ['army-info-dialog'],
+    contentTemplateName: 'army-info-dialog',
+    
+    army: null,  
+      
+    arguments: {    // this must be improved; at least, we need bindings here. better: get rid of the arguments object
+//      army: null,
+      isSaving: false,
+    },
+    
+/*    init: function(args) {
+      this._super(args);
+      this.setPath('arguments.army', this.get('army'));
+    },
+    
+   armyObserver: function() {
+      this.setPath('arguments.army', this.get('army'));
+    }.observes('army'), */
+    
+    changeStanceCallback: null,
+    changeNameCallback: null,
+        
+    changeNamePressed: function(event) {
+          
+      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
+        classNames: ['change-army-name-dialog'],
+        heading: AWE.I18n.lookupTranslation('army.form.changeNameHeading'),
+        input: this.getPath('army.name'),
+        army: this.getPath('army'),
+        
+        okPressed: function() {
+          var callback = this.getPath('parentView.changeNameCallback');
+          var action   = AWE.Action.Military.createChangeArmyNameAction(this.get('army'), this.get('input'));
+          AWE.Action.Manager.queueAction(action, function() {
+            if (callback) {
+              callback();
+            }
+          });  
+          this.destroy();            
+        },
+        cancelPressed: function() { this.destroy(); }
+      });
+      WACKADOO.presentModalDialog(changeDialog);
+    },
+
+    changeStancePressed: function(event) {
+      var self = this;
+      var callback = this.get('changeStanceCallback');
+      var army = this.getPath('army');
+
+      // isSaving = true
+      this.setPath('arguments.isSaving', true);
+       
+      var newStance = this.getPath('army.stance') === 0 ? 1 : 0;
+      var action = AWE.Action.Military.createChangeArmyStanceAction(army, newStance);
+      AWE.Action.Manager.queueAction(action, function() {
+        AWE.GS.ArmyManager.updateArmy(army.getId(), null, function() {
+          self.setPath('arguments.isSaving', false);
+          if (callback) {
+            callback();
+          }
+        });
+      });  
+    },
+    
+    locationPressed: function(event) {
+      var self = this;
+//      log('---> army.homeSettlement', this.getPath('army.homeSettlement'));
+//      log('---> army.homeSettlement.location', this.getPath('army.homeSettlement.location'));
+      var location = this.getPath('army.homeSettlement.location');
+      
+      if (location != null) {
+        var mapController = WACKADOO.activateMapController(true);
+        WACKADOO.closeAllModalDialogs();
+        mapController.centerLocation(location);
+      }
+    },
+  });
+
+module.ArmyInfoView = Ember.View.extend({
+    templateName: "army-info-view",
+    
+    army: null,
+    owner: null,
+    
+    displayHeading: true,
+    
+    ownerObserver: function() {
+      var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('army.owner_id'));
+      var self = this;
+      this.set('owner', owner);
+      if (!owner) {
+        AWE.GS.CharacterManager.updateCharacter(this.getPath('army.owner_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+          self.set('owner', character);
+        });
+      }
+    }.observes('army', 'army.owner_id'),
+
+    displayUnits: function() {
+      return !this.getPath('army.garrison') || this.get('isOwnArmy');
+    }.property('garrison').cacheable(),
+    
+    isChangeNamePossible: function() {
+      return !this.getPath('army.isGarrisonProp') && this.get('isOwnArmy');
+    }.property('army.isGarrisonProp', 'isOwnArmy').cacheable(),
+    
+    isOwnArmy: function() {
+      var army = this.get('army'); 
+      return army ? army.isOwn() : false;
+    }.property('army.owner_id').cacheable(),
+    
+    isAlliedArmy: function() {
+      var army = this.get('army'); 
+      return army ? army.isRelationAtLeast(RELATION_TYPE_ALLIED) : false;
+    }.property('army.owner_id', 'army.alliance_id').cacheable(),    
+    
+    armyObserver: function() {   /// TODO: hm, what was the intention behind doing this with an observer????
+      if (this.get('army')) {
+        AWE.GS.ArmyManager.updateArmy(this.getPath('army.id'), module.ENTITY_UPDATE_TYPE_FULL);
+      }
+    }.observes('army'),
+
+    units: function() {
+      var list = [];
+      var army = this.get('army');
+      var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
+      if (army && army.details) { log('build list')
+        AWE.Ext.applyFunction(unitTypes, function(unitType) {
+          if (army.details[unitType.db_field] !== undefined && army.details[unitType.db_field] > 0) {
+            list.push({ name: AWE.Util.Rules.lookupTranslation(unitType.name), number: army.details[unitType.db_field], unitType: unitType, unitID: unitType.id, symbolic_id: unitType.db_field }) ;
+          }
+        });
+      }
+      return list;
+    }.property('army.details', 'army.details.@each').cacheable(),
+    
+    haveDetailsBinding: Ember.Binding.bool('army.details'),
+    
+    message: function() {
+      var own = this.get('isOwnArmy');
+      var advisor = this.get('advisor') || 'warrior';
+      if (own === undefined || own === null) {
+        return null; // return nothing, if value hasn't been computed so far.
+      }
+      return this.get('isOwnArmy') ? AWE.I18n.lookupTranslation('army.messages.own.'+advisor) : AWE.I18n.lookupTranslation('army.messages.other.'+advisor);
+    }.property('isOwnArmy').cacheable(),
+    
+    nextAPTimeString: function() {
+      var own  = this.get('isOwnArmy');
+      var next = this.getPath('army.ap_next');
+      return own && next ? AWE.Util.localizedTime(next) : null;
+    }.property('isOwnArmy', 'ap_next'),
+    
+    advisor: function() {
+      var category = this.getPath('army.armyCategory') || 'infantry';
+      if (category === 'artillery') {
+        return 'girl';
+      }
+      else if (category === 'cavalry') {
+        return 'chef';
+      }
+      return 'warrior';
+    }.property('army.armyCategory').cacheable(),
+    
+    locationName: function() {
+      return this.getPath('army.location').settlement().get('name');
+    }.property('army.location').cacheable(),
+  });
 
 //NEW DIALOGS START
+
+//army info dialog
+module.ArmyInfoNewDialog = module.PopUpDialog.extend({
+  templateName: 'army-new-info-dialog'
+
+});
+
+module.ArmyInfoNewView = module.ArmyInfoView.extend({
+  templateName:   'army-new-info-view'
+});
+
 //need custom tabs for army info
 //tabs start
   module.TabArmyInfoView = module.TabViewNew.extend({
@@ -29,8 +209,8 @@ AWE.UI.Ember = (function(module) {
   });
 //tab end
 //military Recruitment dialog start
-  module.ArmyInfoDialogNew = module.ArmyNewCreateDialog.extend({
-    templateName: 'army-new-info-dialog',
+  module.MilitaryInfoDialogNew = module.ArmyNewCreateDialog.extend({
+    templateName: 'military-new-info-dialog',
 
     //army: null,
     garrisonArmy: null,
@@ -688,177 +868,6 @@ module.ArmyTrainingJobNewView = Ember.View.extend ({
     },
 });
 //NEW DIALOGS END
-
-  module.ArmyInfoDialog = AWE.UI.Ember.InfoDialog.extend({
-    classNames: ['army-info-dialog'],
-    contentTemplateName: 'army-info-dialog',
-    
-    army: null,  
-      
-    arguments: {    // this must be improved; at least, we need bindings here. better: get rid of the arguments object
-//      army: null,
-      isSaving: false,
-    },
-    
-/*    init: function(args) {
-      this._super(args);
-      this.setPath('arguments.army', this.get('army'));
-    },
-    
-   armyObserver: function() {
-      this.setPath('arguments.army', this.get('army'));
-    }.observes('army'), */
-    
-    changeStanceCallback: null,
-    changeNameCallback: null,
-        
-    changeNamePressed: function(event) {
-          
-      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
-        classNames: ['change-army-name-dialog'],
-        heading: AWE.I18n.lookupTranslation('army.form.changeNameHeading'),
-        input: this.getPath('army.name'),
-        army: this.getPath('army'),
-        
-        okPressed: function() {
-          var callback = this.getPath('parentView.changeNameCallback');
-          var action   = AWE.Action.Military.createChangeArmyNameAction(this.get('army'), this.get('input'));
-          AWE.Action.Manager.queueAction(action, function() {
-            if (callback) {
-              callback();
-            }
-          });  
-          this.destroy();            
-        },
-        cancelPressed: function() { this.destroy(); }
-      });
-      WACKADOO.presentModalDialog(changeDialog);
-    },
-
-    changeStancePressed: function(event) {
-      var self = this;
-      var callback = this.get('changeStanceCallback');
-      var army = this.getPath('army');
-
-      // isSaving = true
-      this.setPath('arguments.isSaving', true);
-       
-      var newStance = this.getPath('army.stance') === 0 ? 1 : 0;
-      var action = AWE.Action.Military.createChangeArmyStanceAction(army, newStance);
-      AWE.Action.Manager.queueAction(action, function() {
-        AWE.GS.ArmyManager.updateArmy(army.getId(), null, function() {
-          self.setPath('arguments.isSaving', false);
-          if (callback) {
-            callback();
-          }
-        });
-      });  
-    },
-    
-    locationPressed: function(event) {
-      var self = this;
-//      log('---> army.homeSettlement', this.getPath('army.homeSettlement'));
-//      log('---> army.homeSettlement.location', this.getPath('army.homeSettlement.location'));
-      var location = this.getPath('army.homeSettlement.location');
-      
-      if (location != null) {
-        var mapController = WACKADOO.activateMapController(true);
-        WACKADOO.closeAllModalDialogs();
-        mapController.centerLocation(location);
-      }
-    },
-  });
-
-  
-  module.ArmyInfoView = Ember.View.extend({
-    templateName: "army-info-view",
-    
-    army: null,
-    owner: null,
-    
-    displayHeading: true,
-    
-    ownerObserver: function() {
-      var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('army.owner_id'));
-      var self = this;
-      this.set('owner', owner);
-      if (!owner) {
-        AWE.GS.CharacterManager.updateCharacter(this.getPath('army.owner_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
-          self.set('owner', character);
-        });
-      }
-    }.observes('army', 'army.owner_id'),
-
-    displayUnits: function() {
-      return !this.getPath('army.garrison') || this.get('isOwnArmy');
-    }.property('garrison').cacheable(),
-    
-    isChangeNamePossible: function() {
-      return !this.getPath('army.isGarrisonProp') && this.get('isOwnArmy');
-    }.property('army.isGarrisonProp', 'isOwnArmy').cacheable(),
-    
-    isOwnArmy: function() {
-      var army = this.get('army'); 
-      return army ? army.isOwn() : false;
-    }.property('army.owner_id').cacheable(),
-    
-    isAlliedArmy: function() {
-      var army = this.get('army'); 
-      return army ? army.isRelationAtLeast(RELATION_TYPE_ALLIED) : false;
-    }.property('army.owner_id', 'army.alliance_id').cacheable(),    
-    
-    armyObserver: function() {   /// TODO: hm, what was the intention behind doing this with an observer????
-      if (this.get('army')) {
-        AWE.GS.ArmyManager.updateArmy(this.getPath('army.id'), module.ENTITY_UPDATE_TYPE_FULL);
-      }
-    }.observes('army'),
-
-    units: function() {
-      var list = [];
-      var army = this.get('army');
-      var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
-      if (army && army.details) { log('build list')
-        AWE.Ext.applyFunction(unitTypes, function(unitType) {
-          if (army.details[unitType.db_field] !== undefined && army.details[unitType.db_field] > 0) {
-            list.push({ name: AWE.Util.Rules.lookupTranslation(unitType.name), number: army.details[unitType.db_field], unitType: unitType }) ;
-          }
-        });
-      }
-      return list;
-    }.property('army.details', 'army.details.@each').cacheable(),
-    
-    haveDetailsBinding: Ember.Binding.bool('army.details'),
-    
-    message: function() {
-      var own = this.get('isOwnArmy');
-      var advisor = this.get('advisor') || 'warrior';
-      if (own === undefined || own === null) {
-        return null; // return nothing, if value hasn't been computed so far.
-      }
-      return this.get('isOwnArmy') ? AWE.I18n.lookupTranslation('army.messages.own.'+advisor) : AWE.I18n.lookupTranslation('army.messages.other.'+advisor);
-    }.property('isOwnArmy').cacheable(),
-    
-    nextAPTimeString: function() {
-      var own  = this.get('isOwnArmy');
-      var next = this.getPath('army.ap_next');
-      return own && next ? AWE.Util.localizedTime(next) : null;
-    }.property('isOwnArmy', 'ap_next'),
-    
-    advisor: function() {
-      var category = this.getPath('army.armyCategory') || 'infantry';
-      if (category === 'artillery') {
-        return 'girl';
-      }
-      else if (category === 'cavalry') {
-        return 'chef';
-      }
-      return 'warrior';
-    }.property('army.armyCategory').cacheable(),
-    
-    locationName: function() {
-      return this.getPath('army.location').settlement().get('name');
-    }.property('army.location').cacheable(),
-  });
   
   module.ArmyDialog = module.Dialog.extend({
 

@@ -735,7 +735,7 @@ AWE.Controller = function (module) {
         return;
       }
 
-      var dialog = AWE.UI.Ember.ArmyInfoDialog.create({
+      var dialog = AWE.UI.Ember./*ArmyInfoDialog*/ArmyInfoNewDialog.create({
         army:army,
 
         changeStanceCallback:function () {
@@ -744,7 +744,10 @@ AWE.Controller = function (module) {
           }
         },
       });
-      dialog.showModal();
+      WACKADOO.presentModalDialog(dialog);
+      //dialog.set('garrisonArmy', location.garrisonArmy());
+      //dialog.set('army', army);
+      //dialog.showModal();
     };
 
     that.armyMoveButtonClicked = function (armyAnnotationView) {

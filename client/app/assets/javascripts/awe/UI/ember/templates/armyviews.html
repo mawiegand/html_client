@@ -239,7 +239,7 @@
   </tr>
 </script>
 
-<script type="text/x-handlebars" data-template-name="army-new-info-dialog">
+<script type="text/x-handlebars" data-template-name="military-new-info-dialog">
   <h1 class="modal-dialog-heading">{{t encyclopedia.military}}</h1>
    <div class="modal-dialog-body change-army-dialog-pane scrolling">
     {{view AWE.UI.Ember.ArmyInfoNewTabView unitTypesBinding="unitTypes" garrisonArmyBinding="garrisonArmy" controllerBinding="controller" settlementBinding="settlement" trainingQueuesBinding="trainingQueues"}}
@@ -461,4 +461,47 @@
         {{/if}}
       </div>
 </script>
+<!--Army info dialog-->
 
+<script type="text/x-handlebars" data-template-name="army-new-info-dialog">
+  <h1 class="modal-dialog-heading">{{army.name}}</h1>
+   <div class="modal-dialog-body modal-dialog-body-info scrolling">
+      {{view AWE.UI.Ember.ArmyInfoNewView armyBinding="army"}}
+   </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-new-info-view">
+  <div class="army-info-buttons-cell profile-info-self-dialog-pane">
+    <div class="rank army-info"></div>
+    <div class="rank army-info"></div>
+  </div>
+  <div class="army-info-state-cell">
+    <div class="text-cell-left">Home settlement:</div><div class="text-cell-right">Tardis</div>
+    <div class="text-cell-left">Experiance:</div><div class="text-cell-right">12325</div>
+    <div class="text-cell-left">Rank:</div><div class="text-cell-right">10</div>
+    <div class="text-cell-left">AP:</div><div class="text-cell-right">1/4</div>
+  </div>
+  <div class="army-info-attack-stats-cell">
+     <div class="army-icon sword-icon">
+      </div>
+      <div class="army-icon cavalry-icon">
+      </div>
+      <div class="army-icon archer-icon">
+      </div>
+  </div>
+    {{#if displayUnits}}
+            {{#if haveDetails}}
+              <div class="army-info-icons-cell">
+                  {{#each unit in units}}
+                      <div class="army-info-icon"> 
+                        <div {{bindAttr class="unit.symbolic_id :cell-icon"}} >
+                            {{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="unit"}}
+                        </div>
+                      </div>
+                  {{/each}}
+              </div>
+            {{else}}
+            {{/if}}
+    {{else}}
+    {{/if}}
+</script>

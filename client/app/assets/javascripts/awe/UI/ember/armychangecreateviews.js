@@ -443,10 +443,11 @@ module.ArmyRangeView  = Ember.TextField.extend({
       {
         var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
         var unitTypeLocalObject = this.get("unitType");
+        var id = this.getPath("unitType.unitID");
 
         unitTypes.forEach(function(rulesUnitType) 
         {
-          if(rulesUnitType.id == unitTypeLocalObject.get('unitID'))//cavalery
+          if(rulesUnitType.id == id)//cavalery
             {
               var dialog = AWE.UI.Ember.EncyclopediaUnitNewView.create({unit: rulesUnitType});
               WACKADOO.presentModalDialog(dialog);
