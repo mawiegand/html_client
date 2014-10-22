@@ -413,9 +413,18 @@ module.ArmyRangeView  = Ember.TextField.extend({
        
    			if(unitType.garrisonUnits > 0 || unitType.otherUnits > 0)
    			{
-   			//infantry
+   			//infantry and special unit
    				if(unitType.unitCategory == self.get("unityTypeID") || self.get('isAllUnits'))
-   					list.push(unitType);
+          {
+   					  list.push(unitType);
+          }
+          else
+          {
+            if((unitType.unitCategory == 4) && (self.get("unityTypeID") == 0))
+            {
+              list.push(unitType);
+            }
+          }
    			}
       });
       

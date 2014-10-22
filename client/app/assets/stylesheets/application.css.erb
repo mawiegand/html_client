@@ -2023,14 +2023,81 @@ h3 {
   background:url("<%= asset_path 'dialogs/buttons/button_orange_xxl.png' %>") no-repeat center center;
   cursor: pointer;
 }
+
 /* == ARMY INFO == */
-.profile-info-self-dialog-pane .rank.army-info {
+
+.button-blue-info-wide-titel{
+  color: #FFF;
+  text-align: center;
+  line-height: 100px;
+  font-size: 25px;
+}
+
+.army-info-text-grey {
+position: relative;
+float: left;
+display: inline-block;
+text-align: center;
+color: rgb(146,141,130);
+width: auto;
+}
+
+.army-stats-info-cell
+{
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 100%;
+  bottom: 8px;
+  height: 52px;
+}
+
+.sword-icon.army-info-sword-icon {
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 50%;
+  left: 0px;
+  top: 0px;
+}
+
+.cavalry-icon.army-info-cavalry-icon {
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 50%;
+  left: 0px;
+  top: 0px;
+}
+
+.archer-icon.army-info-archer-icon {
+  position: relative;
+  display: inline-block;
+  float: left;
+  width: 50%;
+  left: 0px;
+  top: 0px;
+}
+
+.button-blue-info-wide.army-info-button{
   width: 300px;
   height: 100px;
   position: relative;
   display: inline-block;
   float: left;
   left: 16px;
+}
+
+.button-blue-info-wide{
+  background:url("<%= asset_path 'dialogs/buttons/button_blue_info_wide.png' %>") no-repeat center center;
+  width: 248px;
+  height: 52px;
+  cursor: pointer;
+}
+
+.button-blue-info-wide:hover{
+  background:url("<%= asset_path 'dialogs/buttons/button_blue_info_wide_active.png' %>") no-repeat center center;
+  cursor: pointer;
 }
 
 .modal-dialog-body.modal-dialog-body-info{
@@ -2067,9 +2134,9 @@ h3 {
   position: relative;
   display: inline-block;
   float: left;
-  width: 40%;
+  width: 46%;
   text-align: right;
-  padding-right: 126px;
+  padding-right: 55px;
 }
 
 .text-cell-right{
@@ -2077,6 +2144,7 @@ h3 {
   display: inline-block;
   float: left;
   width: auto;
+  color: rgb(146,141,130);
 }
 
 .army-info-icons-cell{
