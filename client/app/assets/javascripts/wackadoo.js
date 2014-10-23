@@ -641,19 +641,23 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
 
     showAllianceDialog: function(alliance_id) {
-      this.get('hudController').activeAllianceId = alliance_id;
+      var self = this;
+      //Prepare
+      this.get('hudController').activeAlliances.push(alliance_id);
+      //this.get('hudController').activeAlliances.push(3);
+
       var alliance = null;
       AWE.GS.AllianceManager.updateAlliance(alliance_id, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
         alliance = AWE.GS.AllianceManager.getAlliance(alliance_id);
+        alliance.getPath('diplomacySourceRelations').forEach(function(relation){
+          self.get('hudController').activeAlliances.push(relation.getPath('target_alliance_id'));
+        })
         allianceScreen = AWE.UI.Ember.AllianceView.create({
           alliance: alliance,
         });
 
         WACKADOO.presentModalDialog(allianceScreen);
-      });
-      
-      
-      
+      });      
     },
 
 

@@ -432,7 +432,7 @@ AWE.I18n.en_US = function(module) {
 
       founded:"Founded",
       leader:"Leader",
-      leaderVote: 'Deine Stimme',
+      leaderVote: 'Vote',
       description:"Description",
       changeDescriptionDialogCaption: 'Please enter your alliance description.',
       changeDescription: 'Edit description',
@@ -480,7 +480,7 @@ AWE.I18n.en_US = function(module) {
       changePassword:'Save new password',
       saveReservation: 'Save reservation',
       kickMember:'Kick',
-      report: 'Melden',
+      report: 'Report',
       sendApplication: 'Submit application',
       bonus: 'Bonus',
       ofMax: 'of maximum',
@@ -1440,6 +1440,14 @@ AWE.I18n.en_US = function(module) {
         allianceMembers: {
           leader: "Leader",
           members: "Members",
+        },
+        allianceDiplomacy: {
+          placeHolder: "Insert Tag",
+          issueUltimatum: "Issue ultimatum",
+          ultimatum: "Ultimatum",
+          war: "War",
+          capitulation: "Capitulation",
+          end: "End",
         },
       },
       move:{
