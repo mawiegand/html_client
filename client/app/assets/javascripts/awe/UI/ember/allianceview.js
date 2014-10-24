@@ -442,6 +442,7 @@ AWE.UI.Ember = (function(module) {
         AWE.GS.AllianceManager.updateAlliance(targetAllianceId, AWE.GS.ENTITY_UPDATE_TYPE_AGGREGATE, function(result) {
           self.set('targetAlliance', result)
         });
+        return "Loading";
       }
       
     }.property('diplomacySourceRelation.target_alliance_id', 'targetAlliance').cacheable(),
