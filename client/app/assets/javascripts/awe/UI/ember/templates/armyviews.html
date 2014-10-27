@@ -273,17 +273,17 @@
   {{#each armyType in activeArmyTypen}}
 
       <div class="military"> 
-        <div {{bindAttr class="armyType.symbolic_id :cell-icon"}} >
           {{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}
-        </div>
         <div class="military-count">x {{armyType.garrisonUnits}}</div>
       </div>
 
   {{/each}}
 </script>
-
-<script type="text/x-handlebars" data-template-name="army-info-button">   
-  <div class="military-info" {{action "openDialog"}}>i</div>
+<!-- Army Info Icon-->
+<script type="text/x-handlebars" data-template-name="army-info-button"> 
+  <div {{bindAttr class="unitType.symbolic_id :cell-icon" }} {{action "openDialog"}}>  
+      <div class="military-info" {{action "openDialog"}}>i</div>
+  </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="army-icon-big-button">   
@@ -501,11 +501,9 @@
             {{#if haveDetails}}
               <div class="army-info-icons-cell">
                   {{#each unit in units}}
-                      <div class="army-info-icon"> 
-                        <div {{bindAttr class="unit.symbolic_id :cell-icon"}} >
+                     <div class="army-info-icon"> 
                             {{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="unit"}}
-                            <p class="army-info-count-text army-info-count-text-position">{{unit.number}}</p>
-                        </div>
+                            <div class="army-info-count-text army-info-count-text-position">{{unit.number}}</div>
                       </div>
                   {{/each}}
               </div>
