@@ -1468,6 +1468,14 @@ AWE.I18n.de_DE = function(module) {
           leader: "Anführer",
           members: "Mitglieder",
         },
+        allianceDiplomacy: {
+          placeHolder: "Tag eingeben",
+          issueUltimatum: "Ultimatum stellen",
+          ultimatum: "Ultimatum",
+          war: "Krieg",
+          capitulation: "Kapitulation",
+          end: "Endet",
+        },
       },
       move:{
         heading: "Umziehen",
