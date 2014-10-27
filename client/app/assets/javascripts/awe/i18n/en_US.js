@@ -168,7 +168,7 @@ AWE.I18n.en_US = function(module) {
         rank:"Rank",
         rankDescription:"Having a higher rank makes your troops more effective. Your army has to gain experience in order to achieve a higher rank.",
         rankUpAt:"Rank up at",
-        experience:"experience",
+        experience:"Experience",
         experienceDescription:"You gain experience when your own troops die, not when you kill those of the enemy. The reason? You only learn from your mistakes.",
         stance:"Help to defend the fortress or settlement if they're attacked.",
         demigod:"Demigod",

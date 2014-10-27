@@ -184,14 +184,40 @@ module.ArmyInfoView = Ember.View.extend({
 //army info dialog
 module.ArmyInfoNewDialog = module.PopUpDialog.extend({
   templateName: 'army-new-info-dialog'
-
 });
 
 module.ArmyInfoNewView = module.ArmyInfoView.extend({
-  templateName:   'army-new-info-view'
+  templateName:   'army-new-info-view',
+
+
+  nameClicked: function() {
+      var character = this.get('owner');
+      var army = this.get('army');
+      var characterId = character ? character.get('id') : (army ? army.get('owner_id') : null);
+      if (!characterId) {
+        return false;
+      }
+      var dialog = AWE.UI.Ember.CharacterInfoDialog.create({
+        characterId: characterId,
+      });
+      WACKADOO.presentModalDialog(dialog);
+      return false; // prevent default behavior
+    },
+  openAlliance: function() {
+      var character = this.get('owner');
+      if(!character)
+        return false;
+
+      var alliance = character.getAlliance();
+
+      if(!alliance)
+        return false;
+      
+      WACKADOO.showAllianceDialog(alliance.id);
+    }
 });
 
-//need custom tabs for army info
+//need custom tabs for military info
 //tabs start
   module.TabArmyInfoView = module.TabViewNew.extend({
     templateName: 'tab-view-army-info',

@@ -472,27 +472,29 @@
 
 <script type="text/x-handlebars" data-template-name="army-new-info-view">
   <div class="army-info-buttons-cell">
-    <div class="button-blue-info-wide army-info-button"><div class="button-blue-info-wide-titel">{{owner.name}}</div></div>
-    <div class="button-blue-info-wide army-info-button"><div class="button-blue-info-wide-titel">MAFIA</div></div>
+    <div class="button-blue-info-wide army-info-button" {{action "nameClicked"}}><div class="button-blue-info-wide-titel">{{owner.name}}</div></div>
+    {{#if owner.alliance_tag}}
+      <div class="button-blue-info-wide army-info-button" {{action "openAlliance"}}><div class="button-blue-info-wide-titel">{{owner.alliance_tag}}</div></div>
+    {{/if}}
   </div>
   <div class="army-info-state-cell">
-    <div class="text-cell-left">Home settlement:</div><div class="text-cell-right">Tardis</div>
-    <div class="text-cell-left">Experiance:</div><div class="text-cell-right">12325</div>
-    <div class="text-cell-left">Rank:</div><div class="text-cell-right">10</div>
-    <div class="text-cell-left">AP:</div><div class="text-cell-right">1/4</div>
+    <div class="text-cell-left">{{t army.details.homeSettlement}}:</div><div class="text-cell-right">{{army.homeSettlement.name}}</div>
+    <div class="text-cell-left">{{t army.details.experience}}:</div><div class="text-cell-right">{{army.exp}}</div>
+    <div class="text-cell-left">{{t army.details.rank}}:</div><div class="text-cell-right">{{army.rankToDisplay}}</div>
+    <div class="text-cell-left">{{t army.details.actionPoints}}:</div><div class="text-cell-right">{{army.ap_present}}/{{army.ap_max}}</div>
   </div>
   <div class="army-info-attack-stats-cell">
     <div class="army-stats-info-cell">
        <div class="army-icon sword-icon army-info-sword-icon"></div>
-       <div class="army-info-text-grey">5000</div>
+       <div class="army-info-text-grey">{{formatNumber army.unitcategory_infantry_strength places="0"}}</div>
     </div>
     <div class="army-stats-info-cell">
       <div class="army-icon cavalry-icon army-info-cavalry-icon"></div>
-      <div class="army-info-text-grey">1358</div>
+      <div class="army-info-text-grey">{{formatNumber army.unitcategory_cavalry_strength places="0"}}</div>
     </div>
     <div class="army-stats-info-cell">
       <div class="army-icon archer-icon army-info-archer-icon"></div>
-      <div class="army-info-text-grey">996</div>
+      <div class="army-info-text-grey">{{formatNumber army.unitcategory_artillery_strength places="0"}}</div>
     </div>
   </div>
     {{#if displayUnits}}
@@ -502,6 +504,7 @@
                       <div class="army-info-icon"> 
                         <div {{bindAttr class="unit.symbolic_id :cell-icon"}} >
                             {{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="unit"}}
+                            <p class="army-info-count-text army-info-count-text-position">{{unit.number}}</p>
                         </div>
                       </div>
                   {{/each}}
