@@ -8,6 +8,28 @@ var AWE = AWE || {};
 AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
+
+  module.AssignmentsInfoDialog = module.PopUpDialog.extend({
+    templateName: 'assignments-dialog-info',
+    classNames: ['assignments-dialog-info'],
+
+    assignmentType: null,
+
+    init: function() {
+      this._super();
+      this.set('assignments', AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments'));
+      this.set('currentCharacter', AWE.GS.game.get('currentCharacter'));
+    },
+
+    open: function(){
+      WACKADOO.presentModalDialog(this);
+    },
+  });
+
+  module.AssignmentNewInfoView = module.AssignmentView.extend({
+    templateName: 'assignments-dialog-view-new',
+  });
+
     
   module.AssignmentsDialog = module.PopUpDialog.extend({
     templateName: 'assignments-dialog',
@@ -45,6 +67,15 @@ AWE.UI.Ember = (function(module) {
       clearTimeout(this._timer);
       this._super();
     },
+
+    openDialog: function(){
+      if(this.get('isActive'))
+        {
+          var currentAssignmentType = this.get('assignmentRule');
+          var dialog = AWE.UI.Ember.AssignmentsInfoDialog.create({assignmentType: currentAssignmentType});
+          WACKADOO.presentModalDialog(dialog);
+        }
+     },
 
     assignmentRule: function(){
       return AWE.GS.RulesManager.getRules().getAssignmentWithSymbolicId(this.get("assignmentType"));

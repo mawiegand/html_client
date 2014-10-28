@@ -695,6 +695,12 @@ module.ArmyUnitInfoButtonView = module.ArmyUnitInfoView.extend({
   unitType: null,
 
 });
+
+module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
+  templateName: 'army-icon-small',
+  unitType: null,
+
+});
 //military Recruitment dialog end
 
 //Recruitment job dialog start

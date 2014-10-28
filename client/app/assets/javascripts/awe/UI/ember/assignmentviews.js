@@ -173,11 +173,11 @@ AWE.UI.Ember = function(module) {
 
 
     didInsertElement: function() {
-      this.startTimer();
+      //this.startTimer();
     },
 
     willDestroyElement: function() {
-      this.stopTimer();
+      //this.stopTimer();
     },
 
     costs: function() {
@@ -204,6 +204,9 @@ AWE.UI.Ember = function(module) {
           depositsResult.push(Ember.Object.create({
             amount:   amount,
             unitType: item,
+            unitID: item.id,
+            symbolic_id: item.db_field,
+
           }));
         }
       });
@@ -238,6 +241,8 @@ AWE.UI.Ember = function(module) {
             rewardResult.push(Ember.Object.create({
               amount:   item.amount,
               unitType: unitType,
+              unitID: unitType.id,
+              symbolic_id: unitType.db_field,
             }));
           }
         });

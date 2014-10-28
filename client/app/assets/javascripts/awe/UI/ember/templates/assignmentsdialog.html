@@ -42,7 +42,7 @@
 
 <script type="text/x-handlebars" data-template-name="assignment-item">
 
-<div {{bindAttr class=":item isActive"}}>
+<div {{bindAttr class=":item isActive"}}{{action "openDialog"}}>
   <div {{bindAttr class=":info isActive"}}>i</div>
   <div class="assigment-item-wrapper">
     <div {{bindAttr class="assignmentType :assignment_icon isActive"}}></div>
@@ -54,4 +54,68 @@
     </div>
   {{/if}}
 </div>
+</script>
+
+<!--Assignments info dialog -->
+<script type="text/x-handlebars" data-template-name="assignments-dialog-info">
+  <div class="popup-dialog-header">
+    <a href="#" {{action "closeDialog"}}>
+      <div class="modal-dialog-back"></div>
+    </a>
+    <h1 class="popup-header-center" >Assignments</h1>
+  </div>
+  <div class="modal-dialog-body modal-dialog-assignments-info scrolling">
+    {{view AWE.UI.Ember.AssignmentNewInfoView assignmentTypeBinding="assignmentType"}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="assignments-dialog-view-new">
+  <div class="description-cell description-text">{{local assignmentType.description}}</div>
+  <div class="info-cell">
+    <div class="cell-50 row-50">
+    <div class="titel">{{t settlement.assignment.unitDeposits}}:</div>
+    {{#if unitDeposits}}
+          {{#each unit in unitDeposits}}
+            <div class="assignments-unit-info-icon"> 
+                {{view AWE.UI.Ember.ArmyUnitSmallInfoButtonView unitTypeBinding="unit"}}
+                <div class="assignments-count-text">{{unit.amount}}</div>
+            </div>
+          {{/each}}
+      {{/if}}
+    </div>
+    <div class="cell-50 row-50 assignments-dialog-pane">
+    <div class="titel">{{t settlement.assignment.costs}}:</div>
+      {{#if costs}}
+        {{#each cost in costs}}
+          <div class="assignments-resource-info-icon-cell"> 
+            <div class="assignments-resource-icon-cell"><div {{bindAttr class="cost.resourceType.symbolic_id :medium"}}></div></div>
+            <div class="assignments-count-text resource-count">{{cost.amount}}</div>
+          </div>
+        {{/each}}
+      {{/if}}
+    </div>
+    <div class="cell-50 row-50 assignments-dialog-pane">
+      <div class="titel" style="
+    left: -26px;
+">{{t settlement.assignment.rewards}}:</div>
+        {{#each resource in resourceRewards}}
+          <div class="assignments-resource-info-icon-cell" style="
+    left: -26px;
+"> 
+            <div class="assignments-resource-icon-cell"><div {{bindAttr class="resource.resourceType.symbolic_id :medium"}}></div></div>
+            <div class="assignments-count-text resource-count">{{resource.amount}}</div>
+          </div>
+        {{/each}}
+        {{#each unit in unitRewards}}
+          <div class="assignments-unit-info-icon"> 
+                {{view AWE.UI.Ember.ArmyUnitSmallInfoButtonView unitTypeBinding="unit"}}
+                <div class="assignments-count-text">{{unit.amount}}</div>
+            </div>
+        {{/each}}
+        {{#if settlement.assignment.experience_reward }}
+          <span class="xp-icon" title="XP">&nbsp;</span> {{assignmentType.rewards.experience_reward}} &nbsp;
+        {{/if }}
+    </div>
+    <div class="cell-50 row-50">cell4</div>
+  </div>
 </script>
