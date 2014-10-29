@@ -317,6 +317,14 @@ AWE.UI.Ember = (function(module) {
       
       this.get('controller').sendTradingCarts(settlementId, recipientName, resources, function(status) {
         if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
+          self.set('recipientName', '');
+          var i = 0;
+          self.get('resources').forEach(function(resource) {
+
+              self.setPath('resources.'+i+'.amount', 0);
+              i+=1;
+          });
+
         }
         else if (status === AWE.Net.NOT_FOUND) {
           self.set('errorMessage', AWE.I18n.lookupTranslation('settlement.trade.error.recipientSelf'));          
