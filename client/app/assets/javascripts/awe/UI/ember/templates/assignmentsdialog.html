@@ -1,41 +1,41 @@
 <script type="text/x-handlebars" data-template-name="assignments-dialog">
   <h1>{{t settlement.assignment.assignments}}</h1>
-  {{view AWE.UI.Ember.AssignmentTabView characterBinding="character" allianceBinding="alliance" }}
+  {{view AWE.UI.Ember.AssignmentTabView controllerBinding="controller" characterBinding="character" allianceBinding="alliance" }}
 </script>
 
 <script type="text/x-handlebars" data-template-name="assignments-tab">
   <div class="row row2">
     <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView assignmentType="assignment_stone"}}
+      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" assignmentType="assignment_stone"}}
     </div>
     <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView assignmentType="assignment_wood"}}
+      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" assignmentType="assignment_wood"}}
     </div>
     <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView assignmentType="assignment_fur"}}
+      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" assignmentType="assignment_fur"}}
     </div>
     <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView assignmentType="assignment_barroombrawl"}}
+      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" assignmentType="assignment_barroombrawl"}}
     </div>
     <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView assignmentType="assignment_raid"}}
+      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" assignmentType="assignment_raid"}}
     </div>
   </div>
   <div class="row row3">
     <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView assignmentType="assignment_mushrooms"}}
+      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" assignmentType="assignment_mushrooms"}}
     </div>
     <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView assignmentType="assignment_hunt"}}
+      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" assignmentType="assignment_hunt"}}
     </div>
     <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView assignmentType="assignment_fishing"}}
+      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" assignmentType="assignment_fishing"}}
     </div>
     <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView assignmentType="assignment_caravan"}}
+      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" assignmentType="assignment_caravan"}}
     </div>
     <div class="cell-20">
-      {{view AWE.UI.Ember.AssignmentItemView assignmentType="assignment_expedition"}}
+      {{view AWE.UI.Ember.AssignmentItemView controllerBinding="controller" assignmentType="assignment_expedition"}}
     </div>
   </div>
 </script>
@@ -62,10 +62,10 @@
     <a href="#" {{action "closeDialog"}}>
       <div class="modal-dialog-back"></div>
     </a>
-    <h1 class="popup-header-center" >Assignments</h1>
+    <h1 class="popup-header-center" >{{t settlement.assignment.assignments}}</h1>
   </div>
   <div class="modal-dialog-body modal-dialog-assignments-info scrolling">
-    {{view AWE.UI.Ember.AssignmentNewInfoView assignmentTypeBinding="assignmentType"}}
+    {{view AWE.UI.Ember.AssignmentNewInfoView assignmentTypeBinding="assignmentType" controllerBinding="controller"}}
   </div>
 </script>
 
@@ -95,13 +95,9 @@
       {{/if}}
     </div>
     <div class="cell-50 row-50 assignments-dialog-pane">
-      <div class="titel" style="
-    left: -26px;
-">{{t settlement.assignment.rewards}}:</div>
+      <div class="titel" style="left: -26px;">{{t settlement.assignment.rewards}}:</div>
         {{#each resource in resourceRewards}}
-          <div class="assignments-resource-info-icon-cell" style="
-    left: -26px;
-"> 
+          <div class="assignments-resource-info-icon-cell" style="left: -26px;"> 
             <div class="assignments-resource-icon-cell"><div {{bindAttr class="resource.resourceType.symbolic_id :medium"}}></div></div>
             <div class="assignments-count-text resource-count">{{resource.amount}}</div>
           </div>
@@ -112,10 +108,35 @@
                 <div class="assignments-count-text">{{unit.amount}}</div>
             </div>
         {{/each}}
-        {{#if settlement.assignment.experience_reward }}
-          <span class="xp-icon" title="XP">&nbsp;</span> {{assignmentType.rewards.experience_reward}} &nbsp;
+        {{#if isXPReward}}
+          <div class="assignments-unit-info-icon"> 
+            <div class="xp resource-icon-xp" style="height: 36px;"></div>
+            <div class="assignments-count-text">{{assignmentType.rewards.experience_reward}}</div>
+          </div>
         {{/if }}
     </div>
-    <div class="cell-50 row-50">cell4</div>
+    <div class="cell-50 row-50">
+
+    {{#if isActive }}
+          {{#unless isHalved }}
+            {{#if halving }}
+            {{else}}
+              <div class="name-change-button-gold assignment-gold" {{action "speedupPressed"}}>
+                <div class="item-price">{{speedupCosts}}</div>
+                <div class="item-toad"></div>
+                <div class="name-change-button-gold-titel">{{t settlement.assignment.hurry}}</div>
+              </div>
+            {{/if}}
+          {{/unless }}
+        {{else}}
+          {{#if starting }}
+          {{else}}
+            <div class="green-large-button assignment-start-button-pos" {{action "startPressed"}}>
+              <div class="white-large-text">{{t settlement.assignment.start}}</div>
+              <div class="white-normal-text">{{formatDuration assignmentType.duration}}</div>
+            </div>
+          {{/if}}
+        {{/if}}
+    </div>
   </div>
 </script>

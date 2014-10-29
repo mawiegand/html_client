@@ -10,6 +10,12 @@ AWE.UI.Ember = function(module) {
     controller: null,
     currentCharacter: null,
 
+    //test open dialog
+    openDialog: function(){
+        var dialog = AWE.UI.Ember.AssignmentsDialog.create({controller: this.get('controller')});
+        WACKADOO.presentModalDialog(dialog);
+     },
+
     assignmentTypes: function() {
       if (this.get('building')) {
         return this.get('building').currentAssignmentTypes();
