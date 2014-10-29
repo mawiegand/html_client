@@ -302,6 +302,7 @@ AWE.I18n.en_US = function(module) {
       tradingCarts:"Trading carts",
       commandPoints:"Command points",
       garrison:"Garrison army",
+      population: "Population",
       populationAbbreviation:"Pop",
       buildingTime:"Building time",
       storageCapacity:"Storage capacity",
@@ -1457,6 +1458,11 @@ AWE.I18n.en_US = function(module) {
         description: "This explains how to move.",
         to: "move to"
       },
+      upgrade:{
+        heading: "Building Upgrade",
+        upgrade: "Upgrade",
+        level: "Level",
+      }
     },
   };
   
