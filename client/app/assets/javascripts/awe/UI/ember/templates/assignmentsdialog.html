@@ -73,8 +73,8 @@
   <div class="description-cell description-text">{{local assignmentType.description}}</div>
   <div class="info-cell">
     <div class="cell-50 row-50">
-    <div class="titel">{{t settlement.assignment.unitDeposits}}:</div>
     {{#if unitDeposits}}
+    <div class="titel">{{t settlement.assignment.unitDeposits}}:</div>
           {{#each unit in unitDeposits}}
             <div class="assignments-unit-info-icon"> 
                 {{view AWE.UI.Ember.ArmyUnitSmallInfoButtonView unitTypeBinding="unit"}}
@@ -84,8 +84,8 @@
       {{/if}}
     </div>
     <div class="cell-50 row-50 assignments-dialog-pane">
-    <div class="titel">{{t settlement.assignment.costs}}:</div>
       {{#if costs}}
+       <div class="titel">{{t settlement.assignment.costs}}:</div>
         {{#each cost in costs}}
           <div class="assignments-resource-info-icon-cell"> 
             <div class="assignments-resource-icon-cell"><div {{bindAttr class="cost.resourceType.symbolic_id :medium"}}></div></div>
@@ -118,6 +118,11 @@
     <div class="cell-50 row-50">
 
     {{#if isActive }}
+          <div class="cell training-background-job assignment-progress" >
+                <div class="training-bar-job" {{bindAttr style="progressBarWidth"}}>
+                  <div class="progress-value progress-value-assignment-progress">{{formatDuration timeRemaining}}</div>
+                </div>
+            </div>
           {{#unless isHalved }}
             {{#if halving }}
             {{else}}

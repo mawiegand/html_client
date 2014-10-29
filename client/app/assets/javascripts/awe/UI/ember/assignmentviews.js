@@ -86,6 +86,12 @@ AWE.UI.Ember = function(module) {
 
     speedupCosts: 2,
 
+    totalBarWidth: function(){
+      var progress = 192;
+      //return "background-size: "+ progress + "%" + " 100%";
+      return "width: "+ progress + "px";
+    }.property().cacheable(),
+
     progressBarWidth: function() {
       var currentInterval = AWE.GS.TimeManager.estimatedServerTime().getTime() - Date.parseISODate(this.getPath('assignment.started_at')).getTime();
       var jobInterval     = Date.parseISODate(this.getPath('assignment.ended_at')).getTime() - Date.parseISODate(this.getPath('assignment.started_at')).getTime();
@@ -179,11 +185,11 @@ AWE.UI.Ember = function(module) {
 
 
     didInsertElement: function() {
-      //this.startTimer();
+      this.startTimer();
     },
 
     willDestroyElement: function() {
-      //this.stopTimer();
+      this.stopTimer();
     },
 
     costs: function() {
