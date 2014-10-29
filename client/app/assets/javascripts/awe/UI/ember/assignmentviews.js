@@ -273,7 +273,9 @@ AWE.UI.Ember = function(module) {
 
     init: function() {
       this._super();
-      log('#### sa view', this);
+      this.set('specialAssignment', AWE.GS.game.getPath('currentCharacter.specialAssignment'));
+      this.set('currentCharacter', AWE.GS.game.get('currentCharacter'));
+      //log('#### sa view', this);
     },
 
     assignmentType: function() {
@@ -314,7 +316,7 @@ AWE.UI.Ember = function(module) {
       }
     }.property('isHalved', 'specialAssignment.type_id', 'parentView.specialAssignments.changedAt').cacheable(),
 
-    startPressed: function() {
+    startPressed: function() {debugger
       var self = this;
       this.set('starting', true);
       this.get('controller').specialAssignmentStartPressed(this.get('specialAssignment'), function() {

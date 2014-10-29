@@ -61,6 +61,18 @@ AWE.UI.Ember = (function(module) {
 
   });
 
+  //special assignments tab
+  module.SpecialAssignmentsTab = module.SpecialAssignmentView.extend({
+    templateName: 'assignments-view-special-tab-new',
+    classNames: ['assignments-view-special-tab-new', "assignments-dialog-info"],
+    /*init: function() {
+      this._super();
+      this.set('specialAssignment', AWE.GS.game.getPath('currentCharacter.specialAssignment'));
+      this.set('currentCharacter', AWE.GS.game.get('currentCharacter'));
+    },*/
+
+  });
+
   module.AssignmentItemView = Ember.View.extend({
     templateName: 'assignment-item',
     classNames: ['assignment-item'],
@@ -167,19 +179,20 @@ AWE.UI.Ember = (function(module) {
           title: AWE.I18n.lookupTranslation('dialogs.assignments.quests'), 
           view:  AWE.UI.Ember.AssignmentsTab,
           buttonClass: "left-menu-button",
-          controllerBinding: "parentView.controller"
+          controllerBinding: "parentView.controller",
         }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
         { key:   "tab2",
           title: AWE.I18n.lookupTranslation('dialogs.assignments.special_quests'), 
-          view:  AWE.UI.Ember.AssignmentsTab,
+          view:  AWE.UI.Ember.SpecialAssignmentsTab.extend({ 
+            controllerBinding: "parentView.parentView.controller",
+          }),
           buttonClass: "middle-menu-button",
-          controllerBinding: "parentView.controller"
         },
         { key:   "tab3",
           title: AWE.I18n.lookupTranslation('dialogs.assignments.gossip'), 
           view:  AWE.UI.Ember.AssignmentsTab,
           buttonClass: "right-menu-button",
-          controllerBinding: "parentView.controller"
+          controllerBinding: "parentView.controller",
         }
       ]);
       
