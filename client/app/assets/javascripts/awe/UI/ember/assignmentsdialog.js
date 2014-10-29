@@ -129,7 +129,7 @@ AWE.UI.Ember = (function(module) {
       this.set('timeRemaining', remaining);
       self = this;
       this._timer = setTimeout(function(){ self.calcTimeRemaining(); }, 1000)
-    },
+    }.observes('assignment.ended_at'),
 
     isActive: function(){
       var types = this.get("currentAssignmentTypes");
