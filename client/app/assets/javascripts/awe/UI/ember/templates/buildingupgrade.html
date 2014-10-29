@@ -13,7 +13,9 @@
           </h3>
         </div>
         {{#if currentPopulation}}
-          {{t building.populationAbbreviation}}: {{currentPopulation}}
+          <div class="populationDetail">
+            <div class="item population-icon"></div> {{currentPopulation}}
+          </div>
         {{/if}}
         {{#if building.experienceOrResourceProduction}}
           <table class="resources-table">

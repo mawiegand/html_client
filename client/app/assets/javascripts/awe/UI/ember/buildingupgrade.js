@@ -56,7 +56,7 @@ AWE.UI.Ember = (function(module) {
 
 // == Building Details ==
     currentProductions: function() {
-      return this.getPath("building.productions");
+      return this.get("building").getProductionsForLevel(this.get("currentLevel"));
     }.property("building.productions"),
 
     selectedProductions: function() {
@@ -64,7 +64,7 @@ AWE.UI.Ember = (function(module) {
     }.property("building", "selectedLevel"),
 
     currentCapacity: function() {
-      return this.getPath("building.capacity");
+      return this.get("building").getCapacityForLevel(this.get("currentLevel"));
     }.property("building.capacity"),
 
     selectedCapacity: function() {
@@ -72,15 +72,21 @@ AWE.UI.Ember = (function(module) {
     }.property("building", "selectedLevel"),
 
     currentPopulation: function() {
-      return this.getPath("building.population");
+      if(this.get("currentProductions").length > 3) {
+        return false;
+      }
+      return this.get("building").getPopulationForLevel(this.get("currentLevel"));
     }.property("building.population"),
 
     selectedPopulation: function() {
+      if(this.get("selectedProductions").length > 3) {
+        return false;
+      }
       return this.get("building").getPopulationForLevel(this.get("selectedLevel"));
     }.property("building", "selectedLevel"),
 
     currentProductionBoni: function() {
-      return this.getPath("building.productionBoni");
+      return this.get("building").getProductionBoniForLevel(this.get("currentLevel"));
     }.property("building.productionBoni"),
 
     selectedProductionBoni: function() {
