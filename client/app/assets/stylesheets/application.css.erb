@@ -6958,6 +6958,17 @@ table .datetime {
   background: url('<%= asset_path("settlements/base/building_category_small_building.png") %>');  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
 
+.small-building .click-area,
+.large-building .click-area
+{
+  background-color: rgba(255,255,255,0.3);
+  width: 80%;
+  height: 70%;
+  top: 10%;
+  left: 10%;
+  position: absolute;
+}
+
 .outpost-picture .large-building,
 .base-picture .large-building {
 /*  border: 1px solid black;*/
@@ -7568,27 +7579,23 @@ table .datetime {
   background-position: -720px 0px;
 }
 
-.outpost-picture .small-building:hover,
-.base-picture .small-building:hover {
+.outpost-picture .large-building.hover,
+.base-picture .large-building.hover,
+.outpost-picture .small-building.hover,
+.base-picture .small-building.hover {
   margin-left: -4px; 
   margin-top: -4px;
   border: 4px solid orange;
   cursor: pointer;
-}
-.base-picture .small-building.size1:hover {
-}
-.base-picture .small-building.size2:hover {
-}
-.base-picture .small-building.size3:hover {
 }
 
-.outpost-picture .large-building:hover,
-.base-picture .large-building:hover {
-  margin-left: -4px; 
-  margin-top: -4px;
-  border: 4px solid orange;
-  cursor: pointer;
+.base-picture .small-building.size1.hover {
 }
+.base-picture .small-building.size2.hover {
+}
+.base-picture .small-building.size3.hover {
+}
+
 .base-picture .large-building.size1:hover {
 }
 .base-picture .large-building.size2:hover {
