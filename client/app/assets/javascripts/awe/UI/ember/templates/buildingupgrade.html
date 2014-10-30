@@ -1,0 +1,141 @@
+<script type="text/x-handlebars" data-template-name="upgrade-view">
+  <h1>{{t dialogs.upgrade.heading}}</h1>
+  <div class="upgrade-container">
+    <div class="first collumn">
+      <div class="row-first-half"}}>
+        <div {{bindAttr class="currentBuildingClass currentBuildingImageLevel :big-building :buildingUpgradeImage"}}>
+        </div>
+      </div>
+      <div class="row-second-half">
+        <div class="cell-header">
+          <h3 class="level-title">
+            {{t dialogs.upgrade.level}} {{currentLevel}}
+          </h3>
+        </div>
+        {{#if currentPopulation}}
+          <div class="populationDetail">
+            <div class="item population-icon"></div> {{currentPopulation}}
+          </div>
+        {{/if}}
+        {{#if building.experienceOrResourceProduction}}
+          <table class="resources-table">
+          {{#each currentProductions}}
+            {{view AWE.UI.Ember.ResourceProductionView productionBinding="this" tagName="tr"}}
+          {{/each}}
+          </table>
+        {{/if}}
+        {{#if currentCapacity}}
+          {{t building.capacity}}:
+          <table class="resources-table">
+          {{#each currentCapacity}}
+            {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="this" tagName="tr"}}
+          {{/each}}
+          </table>
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="second collumn">
+      <div class="row-first-half upgrade-arrow">
+      </div>
+      <div class="row-second-half">
+        <div class="upgrade-button" {{action "upgradePressed"}}>
+          <div class="cell-header">
+            <h3 class="button-title">
+              {{t dialogs.upgrade.upgrade}}
+            </h3>
+          </div>
+          <table class="resources-table">
+            {{#each upgradeCosts}}
+              {{view AWE.UI.Ember.ResourceCostsView resourceBinding="this" tagName="tr"}}
+            {{/each}}
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="third collumn">
+      <div class="row-first-half">
+        <div {{bindAttr class="selectedBuildingClass selectedBuildingImageLevel :big-building :buildingUpgradeImage"}}>
+        </div>
+      </div>
+      <div class="row-second-half">
+        <div class="cell-header">
+          {{#unless isMinimumSelected}}
+            <span class="change-level left" {{action "decreaseStepsFurther"}}></span>
+          {{/unless}}
+          <h3 class="level-title">
+            {{t dialogs.upgrade.level}} {{selectedLevel}}
+          </h3>
+          {{#unless isMaximumSelected}}
+            <span class="change-level right" {{action "increaseStepsFurther"}}></span>
+          {{/unless}}
+        </div>
+        {{#if selectedPopulation}}
+          <div class="populationDetail">
+            <div class="item population-icon"></div> {{selectedPopulation}}
+          </div>
+        {{/if}}
+        {{#if selectedProductions}}
+          <table class="resources-table">
+          {{#each selectedProductions}}
+            {{view AWE.UI.Ember.ResourceProductionView productionBinding="this" tagName="tr"}}
+          {{/each}}
+          </table>
+        {{/if}}
+        {{#if selectedCapacity}}
+          {{t building.capacity}}:
+          <table class="resources-table">
+            {{#each selectedCapacity}}
+              {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="this" tagName="tr"}}
+            {{/each}}
+          </table>
+        {{/if}}
+        {{#if selectedProductionBoni}}
+          <table class="resources-table">
+            {{#each selectedProductionBoni}}
+              {{view AWE.UI.Ember.ResourceBonusView bonusBinding="this" tagName="tr"}}
+            {{/each}}
+          </table>
+        {{/if}}
+        {{#if building.unlockedDiplomacyNextLevel}}
+          <p>{{t building.info.unlockJoinAlliance}}</p>
+        {{/if}}
+        {{#if building.unlockedAllianceCreationNextLevel}}
+          <p>{{t building.info.unlockCreateAlliance}}</p>
+        {{/if}}   
+        {{#if building.unlockedPlayerToPlayerTradeNextLevel}}
+          <p>{{t building.info.unlockTrade}}</p>
+        {{/if}}    
+        {{#if building.tradingCartsNextLevel}}
+          <p>{{t building.tradingCarts}}: {{building.tradingCartsNextLevel}}</p>
+        {{/if}} 
+        {{#if building.commandPointsNextLevel}}
+          <p>{{t building.commandPoints}}: {{building.commandPointsNextLevel}}</p>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="upgrade-resource">
+  <td {{bindAttr class="resourceName :item :small"}}></td>
+  <td class="amount">{{resourceAmount}}</td>
+</script>
+
+<script type="text/x-handlebars" data-template-name="production-resource">
+  <td {{bindAttr class="resourceName :item :small"}}></td>
+  <td class="rate">{{productionRate}}/h</td>
+</script>
+
+<script type="text/x-handlebars" data-template-name="capacity-resource">
+  <td {{bindAttr class="resourceName :item :small"}}></td>
+  <td class="capacity">{{capacitySize}}</td>
+</script>
+
+<script type="text/x-handlebars" data-template-name="bonus-resource">
+  {{#if bonusSize}}
+    <td {{bindAttr class="resourceName :item :small"}}></td>
+    <td class="bonus">+{{bonusSize}}%</td>
+  {{/if}}
+</script>
