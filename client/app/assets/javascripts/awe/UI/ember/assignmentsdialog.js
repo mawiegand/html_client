@@ -65,12 +65,10 @@ AWE.UI.Ember = (function(module) {
   module.SpecialAssignmentsTab = module.SpecialAssignmentView.extend({
     templateName: 'assignments-view-special-tab-new',
     classNames: ['assignments-view-special-tab-new', "assignments-dialog-info"],
-    /*init: function() {
-      this._super();
-      this.set('specialAssignment', AWE.GS.game.getPath('currentCharacter.specialAssignment'));
-      this.set('currentCharacter', AWE.GS.game.get('currentCharacter'));
-    },*/
+  });
 
+  module.GossipTab = Ember.View.extend({
+    templateName: 'assignments-tab-gossip',
   });
 
   module.AssignmentItemView = Ember.View.extend({
@@ -190,9 +188,8 @@ AWE.UI.Ember = (function(module) {
         },
         { key:   "tab3",
           title: AWE.I18n.lookupTranslation('dialogs.assignments.gossip'), 
-          view:  AWE.UI.Ember.AssignmentsTab,
+          view:  AWE.UI.Ember.GossipTab,
           buttonClass: "right-menu-button",
-          controllerBinding: "parentView.controller",
         }
       ]);
       
