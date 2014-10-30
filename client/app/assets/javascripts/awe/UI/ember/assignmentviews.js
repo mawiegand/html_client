@@ -316,7 +316,7 @@ AWE.UI.Ember = function(module) {
       }
     }.property('isHalved', 'specialAssignment.type_id', 'parentView.specialAssignments.changedAt').cacheable(),
 
-    startPressed: function() {debugger
+    startPressed: function() {
       var self = this;
       this.set('starting', true);
       this.get('controller').specialAssignmentStartPressed(this.get('specialAssignment'), function() {
