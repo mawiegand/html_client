@@ -368,7 +368,7 @@ h3 {
 }
 
 #layers {
-  overflow: hidden;
+ /* overflow: hidden;*/
   position: absolute;
   left: 0px;
   top: 0px;
@@ -1884,7 +1884,14 @@ h3 {
   background:url("<%= asset_path 'dialogs/items/normal/icon_hourglass_small.png' %>") no-repeat center center;
 }
 
-.cost-icon-small-stone
+.cost-item-xs-uhr
+{
+  width: 16px;
+  height: 12px;
+  background:url("<%= asset_path 'dialogs/items/normal/icon_hourglass_xs.png' %>") no-repeat center center;
+}
+
+.resource_stone.small
 {
   width: 32px;
   height: 24px;
@@ -1893,7 +1900,7 @@ h3 {
   background:url("<%= asset_path 'dialogs/items/normal/item_stone_small.png' %>") no-repeat center center;
 }
 
-.cost-icon-small-wood
+.resource_wood.small
 {
   width: 32px;
   height: 24px;
@@ -1902,7 +1909,7 @@ h3 {
   background:url("<%= asset_path 'dialogs/items/normal/item_wood_small.png' %>") no-repeat center center;
 }
 
-.cost-icon-small-fur
+.resource_fur.small
 {
   width: 32px;
   height: 28px;
@@ -3525,6 +3532,221 @@ width: auto;
   position: relative;
   left: 65px;
 }
+/* == BUILDING SELECTION ==*/
+
+.modal-dialog-body.modal-dialog-building-selection{
+  top: 45px;
+  height: 420px;
+  width: 100%;
+}
+
+.building-selection-cell
+{
+  width: 100%;
+}
+
+.building-selection-resource-cell
+{
+  width: 64px;
+  height: 18px;
+  display: inline-block;
+  position: relative;
+  float: left;
+  bottom: 38px;
+  left: 20px;
+}
+
+.building-selection-resource-cell .count-text
+{
+  font-size: 14px;
+  color: white;
+  width: auto;
+  bottom: 2px;
+  left: 18px;
+  position: relative;
+}
+
+.building-option-details.same.building-option-details-new-view
+{
+  width: 27%;
+  height: 150px;
+  position: relative;
+  float: left;
+  display: inline-block;
+  padding-left: 34px;
+  padding-top: 34px;
+}
+
+.building-option-details.building-option-details-new-view
+{
+  width: 27%;
+  height: 150px;
+  position: relative;
+  float: left;
+  display: inline-block;
+  padding-left: 34px;
+  padding-top: 34px;
+}
+
+.building-background
+{
+  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection.png' %>") no-repeat center center;
+  width: 164px;
+  height: 148px;
+  cursor: pointer;
+}
+
+.building-background:hover
+{
+  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection_active.png' %>") no-repeat center center;
+}
+
+.building-position
+{
+  position: relative;
+  bottom: 38px;
+}
+
+.building_stud.small
+{
+  background:url("<%= asset_path 'buildings/base/building_stud/small/building_stud_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_alliance_hall.small
+{
+  background:url("<%= asset_path 'buildings/base/building_alliance_hall/small/building_alliance_hall_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_altar.small
+{
+  background:url("<%= asset_path 'buildings/base/building_altar/small/building_altar_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_artifact_stand.small
+{
+  background:url("<%= asset_path 'buildings/base/building_artifact_stand/small/building_artifact_stand_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_barracks.small
+{
+  background:url("<%= asset_path 'buildings/base/building_barracks/small/building_barracks_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_campfire.small
+{
+  background:url("<%= asset_path 'buildings/base/building_campfire/small/building_campfire_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_command_post.small
+{
+  background:url("<%= asset_path 'buildings/base/building_command_post/small/building_command_post_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_copper_smelter.small
+{
+  background:url("<%= asset_path 'buildings/base/building_copper_smelter/small/building_copper_smelter_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_cottage.small
+{
+  background:url("<%= asset_path 'buildings/base/building_cottage/small/building_cottage_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_field_camp.small
+{
+  background:url("<%= asset_path 'buildings/base/building_field_camp/small/building_field_camp_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_firing_range.small
+{
+  background:url("<%= asset_path 'buildings/base/building_firing_range/small/building_firing_range_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_furrier.small
+{
+  background:url("<%= asset_path 'buildings/base/building_furrier/small/building_furrier_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_garrison.small
+{
+  background:url("<%= asset_path 'buildings/base/building_garrison/small/building_garrison_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_gatherer.small
+{
+  background:url("<%= asset_path 'buildings/base/building_gatherer/small/building_gatherer_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_haunt.small
+{
+  background:url("<%= asset_path 'buildings/base/building_haunt/small/building_haunt_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_logger.small
+{
+  background:url("<%= asset_path 'buildings/base/building_logger/small/building_logger_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_quarry.small
+{
+  background:url("<%= asset_path 'buildings/base/building_quarry/small/building_quarry_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_storage.small
+{
+  background:url("<%= asset_path 'buildings/base/building_storage/small/building_storage_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_tavern.small
+{
+  background:url("<%= asset_path 'buildings/base/building_tavern/small/building_tavern_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
+.building_training_cave.small
+{
+  background:url("<%= asset_path 'buildings/base/building_training_cave/small/building_training_cave_small.png' %>") no-repeat center center;
+  width: 160px;
+  height: 128px;
+}
+
 /* == ALLIANCE == */
 
 ::-webkit-scrollbar { 
@@ -3948,6 +4170,30 @@ width: auto;
   width: 24px;
   height: 24px;
   background: url("<%= asset_path 'dialogs/items/normal/item_toads_small.png' %>") no-repeat center center;
+}
+
+.item.resource_stone.xs {
+  width: 16px;
+  height: 12px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_stone_xs.png' %>") no-repeat center center;
+}
+
+.item.resource_wood.xs {
+  width: 16px;
+  height: 12px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_wood_xs.png' %>") no-repeat center center;
+}
+
+.item.resource_fur.xs {
+  width: 14px;
+  height: 16px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_fur_xs.png' %>") no-repeat center center;
+}
+
+.item.resource_cash.xs {
+  width: 12px;
+  height: 12px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_toads_xs.png' %>") no-repeat center center;
 }
 
 .item.population-icon {
