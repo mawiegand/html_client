@@ -10,6 +10,12 @@ AWE.UI.Ember = function(module) {
     controller: null,
     currentCharacter: null,
 
+    //test open dialog
+    openDialog: function(){
+        var dialog = AWE.UI.Ember.AssignmentsDialog.create({controller: this.get('controller')});
+        WACKADOO.presentModalDialog(dialog);
+     },
+
     assignmentTypes: function() {
       if (this.get('building')) {
         return this.get('building').currentAssignmentTypes();
@@ -79,6 +85,12 @@ AWE.UI.Ember = function(module) {
     }.property('assignment').cacheable(),
 
     speedupCosts: 2,
+
+    totalBarWidth: function(){
+      var progress = 192;
+      //return "background-size: "+ progress + "%" + " 100%";
+      return "width: "+ progress + "px";
+    }.property().cacheable(),
 
     progressBarWidth: function() {
       var currentInterval = AWE.GS.TimeManager.estimatedServerTime().getTime() - Date.parseISODate(this.getPath('assignment.started_at')).getTime();
@@ -204,6 +216,9 @@ AWE.UI.Ember = function(module) {
           depositsResult.push(Ember.Object.create({
             amount:   amount,
             unitType: item,
+            unitID: item.id,
+            symbolic_id: item.db_field,
+
           }));
         }
       });
@@ -238,6 +253,8 @@ AWE.UI.Ember = function(module) {
             rewardResult.push(Ember.Object.create({
               amount:   item.amount,
               unitType: unitType,
+              unitID: unitType.id,
+              symbolic_id: unitType.db_field,
             }));
           }
         });

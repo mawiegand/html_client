@@ -8,14 +8,44 @@ var AWE = AWE || {};
 AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
+
+  module.AssignmentsInfoDialog = module.PopUpDialog.extend({
+    templateName: 'assignments-dialog-info',
+    classNames: ['assignments-dialog-info'],
+
+    assignmentType: null,
+
+    init: function() {
+      this._super();
+      this.set('assignments', AWE.GS.game.getPath('currentCharacter.hashableStandardAssignments'));
+      this.set('currentCharacter', AWE.GS.game.get('currentCharacter'));
+    },
+
+    open: function(){
+      WACKADOO.presentModalDialog(this);
+    },
+  });
+
+  module.AssignmentNewInfoView = module.AssignmentView.extend({
+    templateName: 'assignments-dialog-view-new',
+
+    isXPReward: function(){
+      var count = this.getPath("assignmentType.rewards.experience_reward");
+      if(count && count > 0)
+        return true;
+      else
+        return false;
+    }.property().cacheable(),
+  });
+
     
   module.AssignmentsDialog = module.PopUpDialog.extend({
     templateName: 'assignments-dialog',
     classNames: ['assignments-dialog'],
 
-    open: function(){
+    /*open: function(){
       WACKADOO.presentModalDialog(this);
-    },
+    },*/
   });
 
   module.AssignmentsTab = Ember.View.extend({
@@ -45,6 +75,15 @@ AWE.UI.Ember = (function(module) {
       clearTimeout(this._timer);
       this._super();
     },
+
+    openDialog: function(){
+      if(this.get('isActive'))
+        {
+          var currentAssignmentType = this.get('assignmentRule');
+          var dialog = AWE.UI.Ember.AssignmentsInfoDialog.create({assignmentType: currentAssignmentType, controller: this.get('controller')});
+          WACKADOO.presentModalDialog(dialog);
+        }
+     },
 
     assignmentRule: function(){
       return AWE.GS.RulesManager.getRules().getAssignmentWithSymbolicId(this.get("assignmentType"));
@@ -127,17 +166,20 @@ AWE.UI.Ember = (function(module) {
         { key:   "tab1",
           title: AWE.I18n.lookupTranslation('dialogs.assignments.quests'), 
           view:  AWE.UI.Ember.AssignmentsTab,
-          buttonClass: "left-menu-button"
+          buttonClass: "left-menu-button",
+          controllerBinding: "parentView.controller"
         }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
         { key:   "tab2",
           title: AWE.I18n.lookupTranslation('dialogs.assignments.special_quests'), 
           view:  AWE.UI.Ember.AssignmentsTab,
-          buttonClass: "middle-menu-button"
+          buttonClass: "middle-menu-button",
+          controllerBinding: "parentView.controller"
         },
         { key:   "tab3",
           title: AWE.I18n.lookupTranslation('dialogs.assignments.gossip'), 
           view:  AWE.UI.Ember.AssignmentsTab,
-          buttonClass: "right-menu-button"
+          buttonClass: "right-menu-button",
+          controllerBinding: "parentView.controller"
         }
       ]);
       
