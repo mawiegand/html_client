@@ -3607,6 +3607,7 @@ width: auto;
   bottom: 38px;
 }
 
+/*
 .building_stud.small
 {
   background:url("<%= asset_path 'buildings/base/building_stud/small/building_stud_small.png' %>") no-repeat center center;
@@ -3746,7 +3747,7 @@ width: auto;
   width: 160px;
   height: 128px;
 }
-
+*/
 /* == ALLIANCE == */
 
 ::-webkit-scrollbar { 
@@ -7481,7 +7482,7 @@ table .datetime {
 
 /*Wacky Lab*/
 .building_altar.small-building {
-  background: url('<%= asset_path("buildings/base/building_altar/small/building_altar_small.png") %>') no-repeat;
+  background: url('<%= asset_path("buildings/base/building_altar/small/building_altar_small.png") %>') no-repeat center center;
 }
 
 .small-building.size0 {
@@ -7580,6 +7581,14 @@ table .datetime {
 .small-building.building_artifact_stand {
   background: url('<%= asset_path("settlements/base/building_artifact_stand_small.png") %>');
 }*/
+
+.building-selection-image {
+  position: relative !important;
+  z-index: 2;
+  border-radius: 0 !important;
+  top: initial !important;
+  border: none !important;
+}
 
 .outpost-picture .level, 
 .fortress-picture .level, 
