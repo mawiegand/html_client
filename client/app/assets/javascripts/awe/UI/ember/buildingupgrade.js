@@ -25,12 +25,12 @@ AWE.UI.Ember = (function(module) {
 
     currentBuildingImageLevel: function() {
       var imageLevel = AWE.Config.BuildingImageLibrary.getImageLevelForBuilding(this.get("currentBuildingClass"), this.get("currentLevel"));
-      return "level" + imageLevel;
+      return "size" + imageLevel;
     }.property("currentLevel"),
 
     selectedBuildingImageLevel: function() {
       var imageLevel = AWE.Config.BuildingImageLibrary.getImageLevelForBuilding(this.get("currentBuildingClass"), this.get("selectedLevel"));
-      return "level" + imageLevel;
+      return "size" + imageLevel;
     }.property("selectedLevel"),
 
     currentLevel: function() {
