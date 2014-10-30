@@ -73,6 +73,32 @@
 </script>
 
 
+<script type="text/x-handlebars" data-template-name="building-option-details-new-view">
+   <div class="building-selection-cell">
+      <div {{action "optionClicked" target="parentView"}} class="building-background">
+        <div {{bindAttr class="building.buildingType.symbolic_id :small-building :building-position :building-selection-image"}}>
+          <div class="info-big-background building-info-button">i</div>
+        </div>
+        {{#each building.costsOfNextLevel}}
+          <div class="building-selection-resource-cell">
+            <div {{bindAttr class="resourceType.symbolic_id :item :xs"}}>
+              <div class="count-text">
+                  {{amount}}
+              </div>
+            </div>
+          </div>     
+        {{/each}}
+        <div class="building-selection-resource-cell">
+          <div class="cost-item-xs-uhr">
+            <div class="count-text">
+                {{formatDuration building.productionTimeOfNextLevel}}
+            </div>
+          </div>
+        </div>
+      </div>
+   </div>
+</script>
+
 <script type="text/x-handlebars" data-template-name="settlement-dialog-select-building">
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-window">
@@ -100,6 +126,21 @@
     </div>
     <div class="settlement-dialog-footer settlement-dialog-select-building"></div>
   </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="settlement-new-dialog-select-building">
+  <div class="popup-dialog-header">
+    <h1 class="popup-header-center" >{{t settlement.buildings.select.heading }}</h1>
+  </div>
+  <div class="modal-dialog-body modal-dialog-building-selection scrolling">
+    {{view AWE.UI.Ember.SelectBuildingNewView controllerBinding="controller" slotBinding="slot"}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="settlement-new-view-select-building">
+  {{#each constructionOptions}}
+      {{view AWE.UI.Ember.BuildingOptionDetailNewView buildingBinding="this"}}
+  {{/each}}
 </script>
 
 

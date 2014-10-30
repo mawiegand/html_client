@@ -368,7 +368,7 @@ h3 {
 }
 
 #layers {
-  overflow: hidden;
+ /* overflow: hidden;*/
   position: absolute;
   left: 0px;
   top: 0px;
@@ -1884,7 +1884,14 @@ h3 {
   background:url("<%= asset_path 'dialogs/items/normal/icon_hourglass_small.png' %>") no-repeat center center;
 }
 
-.cost-icon-small-stone
+.cost-item-xs-uhr
+{
+  width: 16px;
+  height: 12px;
+  background:url("<%= asset_path 'dialogs/items/normal/icon_hourglass_xs.png' %>") no-repeat center center;
+}
+
+.resource_stone.small
 {
   width: 32px;
   height: 24px;
@@ -1893,7 +1900,7 @@ h3 {
   background:url("<%= asset_path 'dialogs/items/normal/item_stone_small.png' %>") no-repeat center center;
 }
 
-.cost-icon-small-wood
+.resource_wood.small
 {
   width: 32px;
   height: 24px;
@@ -1902,7 +1909,7 @@ h3 {
   background:url("<%= asset_path 'dialogs/items/normal/item_wood_small.png' %>") no-repeat center center;
 }
 
-.cost-icon-small-fur
+.resource_fur.small
 {
   width: 32px;
   height: 28px;
@@ -3177,10 +3184,14 @@ width: auto;
   position: relative;
 }
 
-.assignments-dialog-pane .info{
+.info-big-background
+{
   background:url("<%= asset_path 'dialogs/backgrounds/background_info_box_big.png' %>") no-repeat center center;
   width: 28px;
   height: 36px;
+}
+
+.assignments-dialog-pane .info{
   position: relative;
   top: -10px;
   left: -10px;
@@ -3524,6 +3535,89 @@ width: auto;
   text-align: start;
   position: relative;
   left: 65px;
+}
+/* == BUILDING SELECTION ==*/
+
+.modal-dialog-body.modal-dialog-building-selection{
+  top: 45px;
+  height: 420px;
+  width: 100%;
+}
+
+.building-selection-cell
+{
+  width: 100%;
+}
+
+.building-selection-resource-cell
+{
+  width: 64px;
+  height: 18px;
+  display: inline-block;
+  position: relative;
+  float: left;
+  bottom: 38px;
+  left: 20px;
+}
+
+.building-selection-resource-cell .count-text
+{
+  font-size: 14px;
+  color: white;
+  width: auto;
+  bottom: 2px;
+  left: 18px;
+  position: relative;
+}
+
+.building-option-details.same.building-option-details-new-view
+{
+  width: 27%;
+  height: 150px;
+  position: relative;
+  float: left;
+  display: inline-block;
+  padding-left: 34px;
+  padding-top: 34px;
+}
+
+.building-option-details.building-option-details-new-view
+{
+  width: 27%;
+  height: 150px;
+  position: relative;
+  float: left;
+  display: inline-block;
+  padding-left: 34px;
+  padding-top: 34px;
+}
+
+.building-background
+{
+  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection.png' %>") no-repeat center center;
+  width: 164px;
+  height: 148px;
+  cursor: pointer;
+}
+
+.building-background:hover
+{
+  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection_active.png' %>") no-repeat center center;
+}
+
+.building-position
+{
+  position: relative;
+  bottom: 38px;
+}
+
+.building-info-button
+{
+  position: relative;
+  left: 145px;
+  top: 33px;
+  color: white;
+  text-align: center;
 }
 /* == ALLIANCE == */
 
@@ -3948,6 +4042,30 @@ width: auto;
   width: 24px;
   height: 24px;
   background: url("<%= asset_path 'dialogs/items/normal/item_toads_small.png' %>") no-repeat center center;
+}
+
+.item.resource_stone.xs {
+  width: 16px;
+  height: 12px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_stone_xs.png' %>") no-repeat center center;
+}
+
+.item.resource_wood.xs {
+  width: 16px;
+  height: 12px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_wood_xs.png' %>") no-repeat center center;
+}
+
+.item.resource_fur.xs {
+  width: 14px;
+  height: 16px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_fur_xs.png' %>") no-repeat center center;
+}
+
+.item.resource_cash.xs {
+  width: 12px;
+  height: 12px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_toads_xs.png' %>") no-repeat center center;
 }
 
 .item.population-icon {
@@ -5075,7 +5193,7 @@ loaddialog-positioner {
   min-width: 1024px;
   width: 100%;
   overflow-x: hidden;
-  background-color: #000;
+  background-color: #41660C;
   height: 100%;
 }   
    
@@ -5369,167 +5487,6 @@ span.bonus {
   background: url('<%= asset_path("advisors/amazon.png") %>');
   cursor: pointer;
 }
-
-/** ==== NEW BUILDINGS === **/
-
-/**  ==  Buildings Big  == **/
-
-.big-building {
-  width: 280px;
-  height: 256px; 
-}
-
-/*Gatherer*/
-.building_gatherer.big-building {
-  background: url('<%= asset_path("buildings/base/building_gatherer/big/building_gatherer_big.png") %>') no-repeat;
-}
-
-/*Barracks*/
-.building_barracks.big-building {
-  background: url('<%= asset_path("buildings/base/building_barracks/big/building_barracks_big.png") %>') no-repeat;
-}
-
-/*Cottage*/
-.building_cottage.big-building {
-  background: url('<%= asset_path("buildings/base/building_cottage/big/building_cottage_big.png") %>') no-repeat;
-}
-
-/*Tavern*/
-.building_tavern.big-building {
-  background: url('<%= asset_path("buildings/base/building_tavern/big/building_tavern_big.png") %>') no-repeat;
-}
-
-/*Storeage*/
-.building_storage.big-building {
-  background: url('<%= asset_path("buildings/base/building_storage/big/building_storage_big.png") %>') no-repeat;
-}
-
-/*Campfire*/
-.building_campfire.big-building {
-  background: url('<%= asset_path("buildings/base/building_campfire/big/building_campfire_big.png") %>') no-repeat;
-}
-
-/*Quarry*/
-.building_quarry.big-building {
-  background: url('<%= asset_path("buildings/base/building_quarry/big/building_quarry_big.png") %>') no-repeat;
-}
-
-/*Logger*/
-.building_logger.big-building {
-  background: url('<%= asset_path("buildings/base/building_logger/big/building_logger_big.png") %>') no-repeat;
-}
-
-/*Training Cave*/
-.building_training_cave.big-building {
-  background: url('<%= asset_path("buildings/base/building_training_cave/big/building_training_cave_big.png") %>') no-repeat;
-}
-
-/*Furrier*/
-.building_furrier.big-building {
-  background: url('<%= asset_path("buildings/base/building_furrier/big/building_furrier_big.png") %>') no-repeat;
-}
-
-/*Artifact Cave*/
-.building_artifact_stand.big-building {
-  background: url('<%= asset_path("buildings/base/building_artifact_stand/big/building_artifact_stand_big.png") %>') no-repeat;
-}
-
-/*Copper Smelter*/
-.building_copper_smelter.big-building {
-  background: url('<%= asset_path("buildings/base/building_copper_smelter/big/building_copper_smelter_big.png") %>') no-repeat;
-}
-
-/*Firing Range*/
-.building_firing_range.big-building {
-  background: url('<%= asset_path("buildings/base/building_firing_range/big/building_firing_range_big.png") %>') no-repeat;
-}
-
-/*Alliance Hall*/
-.building_alliance_hall.big-building {
-  background: url('<%= asset_path("buildings/base/building_alliance_hall/big/building_alliance_hall_big.png") %>') no-repeat;
-}
-
-/*Cottage 2*/
-.building_cottage_2.big-building {
-  background: url('<%= asset_path("buildings/base/building_cottage/big/building_cottage_big.png") %>') no-repeat;
-}
-
-/*Storeage 2*/
-.building_storage_2.big-building {
-  background: url('<%= asset_path("buildings/base/building_storage/big/building_storage_big.png") %>') no-repeat;
-}
-
-/*Quarry 2*/
-.building_quarry_2.big-building {
-  background: url('<%= asset_path("buildings/base/building_quarry/big/building_quarry_big.png") %>') no-repeat;
-}
-
-/*Logger 2*/
-.building_logger_2.big-building {
-  background: url('<%= asset_path("buildings/base/building_logger/big/building_logger_big.png") %>') no-repeat;
-}
-
-/*Stud*/
-.building_stud.big-building {
-  background: url('<%= asset_path("buildings/base/building_stud/big/building_stud_big.png") %>') no-repeat;
-}
-
-/*Command Post*/
-.building_command_post.big-building {
-  background: url('<%= asset_path("buildings/base/building_command_post/big/building_command_post_big.png") %>') no-repeat;
-}
-
-/*Furrier 2*/
-.building_furrier_2.big-building {
-  background: url('<%= asset_path("buildings/base/building_furrier/big/building_furrier_big.png") %>') no-repeat;
-}
-
-/*Garison*/
-.building_garrison.big-building {
-  background: url('<%= asset_path("buildings/base/building_garrison/big/building_garrison_big.png") %>') no-repeat;
-}
-
-/*Haunt*/
-.building_haunt.big-building {
-  background: url('<%= asset_path("buildings/base/building_haunt/big/building_haunt_big.png") %>') no-repeat;
-}
-
-/*Field Camp*/
-.building_field_camp.big-building {
-  background: url('<%= asset_path("buildings/base/building_field_camp/big/building_field_camp_big.png") %>') no-repeat;
-}
-
-/*Wacky Lab*/
-.building_altar.big-building {
-  background: url('<%= asset_path("buildings/base/building_altar/big/building_altar_big.png") %>') no-repeat;
-}
-
-.big-building.level0 {
-  background-position: 0 0;
-}
-.big-building.level1 {
-  background-position: -320px 0;
-}
-.big-building.level2 {
-  background-position: -640px 0;
-}
-.big-building.level3 {
-  background-position: -960px 0;
-}
-.big-building.level4 {
-  background-position: 0 -256px;
-}
-.big-building.level5 {
-  background-position: -320px -256px;
-}
-.big-building.level6 {
-  background-position: -640px -256px;
-}
-.big-building.level7 {
-  background-position: -960px -256px;
-}
-
-/**  ==  Buildings Small  == **/
 
 
 /** image for base and outpost buildings */
@@ -6859,18 +6816,18 @@ table .datetime {
 
 .outpost-picture,
 .base-picture {
-  margin-top: 100px;
+  margin-top: 210px;
   overflow: visible;
 }
 
 .outpost-background-picture,
 .base-background-picture {
-  background: url('<%= asset_path("backgrounds/background_settlement.png") %>');
-  background-position: -160px 0;
-  background-repeat: repeat-x;
+  background: url('<%= asset_path("backgrounds/background_settlement.jpg") %>');
+  /*background-position: -160px 0;*/
+  background-repeat: no-repeat;
   position: absolute;
   left: 0px;
-  top: -220px;
+  top: -210px;
   width: 1000%;
   height: 1350px;
   z-index: 0;
@@ -6951,11 +6908,11 @@ table .datetime {
 .base-picture .small-building {
 /*  border: 1px solid black;*/
   position: absolute;
-  width: 80px;
-  height: 120px;
+  width: 160px;
+  height: 128px;
 /*  z-index: 2;*/
   border-radius: 5px;
-  background: url('<%= asset_path("settlements/base/building_category_small_building.png") %>');  /** the default images for this category. important: contains the image displayed for empty slots! */
+  background: url('<%= asset_path("buildings/base/construction_spot_big.png") %>') no-repeat center center;  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
 
 .small-building .click-area,
@@ -6973,8 +6930,8 @@ table .datetime {
 .base-picture .large-building {
 /*  border: 1px solid black;*/
   position: absolute;
-  width: 120px;
-  height: 150px;
+  width: 160px;
+  height: 128px;
 /*  z-index: 2;*/
   border-radius: 5px;
   background: url('<%= asset_path("settlements/base/building_category_large_building.png") %>');  /** the default images for this category. important: contains the image displayed for empty slots! */
@@ -7109,7 +7066,334 @@ table .datetime {
   background: url('<%= asset_path("settlements/colony/building_field_camp_large.png") %>');
 }
 
-/** base: small slots */
+/** ==== NEW BUILDINGS === **/
+
+/**  ==  Buildings Big  == **/
+
+.big-building {
+  width: 280px;
+  height: 256px; 
+}
+
+/*Chief Cottage*/
+.building_chief_cottage.big-building {
+  background: url('<%= asset_path("buildings/base/building_chief_cottage/big/building_chief_cottage_big.png") %>') no-repeat;
+}
+
+/*Gatherer*/
+.building_gatherer.big-building {
+  background: url('<%= asset_path("buildings/base/building_gatherer/big/building_gatherer_big.png") %>') no-repeat;
+}
+
+/*Barracks*/
+.building_barracks.big-building {
+  background: url('<%= asset_path("buildings/base/building_barracks/big/building_barracks_big.png") %>') no-repeat;
+}
+
+/*Cottage*/
+.building_cottage.big-building {
+  background: url('<%= asset_path("buildings/base/building_cottage/big/building_cottage_big.png") %>') no-repeat;
+}
+
+/*Tavern*/
+.building_tavern.big-building {
+  background: url('<%= asset_path("buildings/base/building_tavern/big/building_tavern_big.png") %>') no-repeat;
+}
+
+/*Storeage*/
+.building_storage.big-building {
+  background: url('<%= asset_path("buildings/base/building_storage/big/building_storage_big.png") %>') no-repeat;
+}
+
+/*Campfire*/
+.building_campfire.big-building {
+  background: url('<%= asset_path("buildings/base/building_campfire/big/building_campfire_big.png") %>') no-repeat;
+}
+
+/*Quarry*/
+.building_quarry.big-building {
+  background: url('<%= asset_path("buildings/base/building_quarry/big/building_quarry_big.png") %>') no-repeat;
+}
+
+/*Logger*/
+.building_logger.big-building {
+  background: url('<%= asset_path("buildings/base/building_logger/big/building_logger_big.png") %>') no-repeat;
+}
+
+/*Training Cave*/
+.building_training_cave.big-building {
+  background: url('<%= asset_path("buildings/base/building_training_cave/big/building_training_cave_big.png") %>') no-repeat;
+}
+
+/*Furrier*/
+.building_furrier.big-building {
+  background: url('<%= asset_path("buildings/base/building_furrier/big/building_furrier_big.png") %>') no-repeat;
+}
+
+/*Artifact Cave*/
+.building_artifact_stand.big-building {
+  background: url('<%= asset_path("buildings/base/building_artifact_stand/big/building_artifact_stand_big.png") %>') no-repeat;
+}
+
+/*Copper Smelter*/
+.building_copper_smelter.big-building {
+  background: url('<%= asset_path("buildings/base/building_copper_smelter/big/building_copper_smelter_big.png") %>') no-repeat;
+}
+
+/*Firing Range*/
+.building_firing_range.big-building {
+  background: url('<%= asset_path("buildings/base/building_firing_range/big/building_firing_range_big.png") %>') no-repeat;
+}
+
+/*Alliance Hall*/
+.building_alliance_hall.big-building {
+  background: url('<%= asset_path("buildings/base/building_alliance_hall/big/building_alliance_hall_big.png") %>') no-repeat;
+}
+
+/*Cottage 2*/
+.building_cottage_2.big-building {
+  background: url('<%= asset_path("buildings/base/building_cottage/big/building_cottage_big.png") %>') no-repeat;
+}
+
+/*Storeage 2*/
+.building_storage_2.big-building {
+  background: url('<%= asset_path("buildings/base/building_storage/big/building_storage_big.png") %>') no-repeat;
+}
+
+/*Quarry 2*/
+.building_quarry_2.big-building {
+  background: url('<%= asset_path("buildings/base/building_quarry/big/building_quarry_big.png") %>') no-repeat;
+}
+
+/*Logger 2*/
+.building_logger_2.big-building {
+  background: url('<%= asset_path("buildings/base/building_logger/big/building_logger_big.png") %>') no-repeat;
+}
+
+/*Stud*/
+.building_stud.big-building {
+  background: url('<%= asset_path("buildings/base/building_stud/big/building_stud_big.png") %>') no-repeat;
+}
+
+/*Command Post*/
+.building_command_post.big-building {
+  background: url('<%= asset_path("buildings/base/building_command_post/big/building_command_post_big.png") %>') no-repeat;
+}
+
+/*Furrier 2*/
+.building_furrier_2.big-building {
+  background: url('<%= asset_path("buildings/base/building_furrier/big/building_furrier_big.png") %>') no-repeat;
+}
+
+/*Garison*/
+.building_garrison.big-building {
+  background: url('<%= asset_path("buildings/base/building_garrison/big/building_garrison_big.png") %>') no-repeat;
+}
+
+/*Haunt*/
+.building_haunt.big-building {
+  background: url('<%= asset_path("buildings/base/building_haunt/big/building_haunt_big.png") %>') no-repeat;
+}
+
+/*Field Camp*/
+.building_field_camp.big-building {
+  background: url('<%= asset_path("buildings/base/building_field_camp/big/building_field_camp_big.png") %>') no-repeat;
+}
+
+/*Wacky Lab*/
+.building_altar.big-building {
+  background: url('<%= asset_path("buildings/base/building_altar/big/building_altar_big.png") %>') no-repeat;
+}
+
+.big-building.size0 {
+  background-position: 0 0;
+}
+.big-building.size1 {
+  background-position: -320px 0;
+}
+.big-building.size2 {
+  background-position: -640px 0;
+}
+.big-building.size3 {
+  background-position: -960px 0;
+}
+.big-building.size4 {
+  background-position: 0 -256px;
+}
+.big-building.size5 {
+  background-position: -320px -256px;
+}
+.big-building.size6 {
+  background-position: -640px -256px;
+}
+.big-building.size7 {
+  background-position: -960px -256px;
+}
+
+/**  ==  Buildings Small  == **/
+
+.small-building {
+  width: 160px;
+  height: 128px; 
+}
+
+/*Cief Cottage*/
+.building_chief_cottage.small-building {
+  background: url('<%= asset_path("buildings/base/building_chief_cottage/small/building_chief_cottage_small.png") %>') no-repeat;
+}
+
+/*Gatherer*/
+.building_gatherer.small-building {
+  background: url('<%= asset_path("buildings/base/building_gatherer/small/building_gatherer_small.png") %>') no-repeat;
+}
+
+/*Barracks*/
+.building_barracks.small-building {
+  background: url('<%= asset_path("buildings/base/building_barracks/small/building_barracks_small.png") %>') no-repeat;
+}
+
+/*Cottage*/
+.building_cottage.small-building {
+  background: url('<%= asset_path("buildings/base/building_cottage/small/building_cottage_small.png") %>') no-repeat;
+}
+
+/*Tavern*/
+.building_tavern.small-building {
+  background: url('<%= asset_path("buildings/base/building_tavern/small/building_tavern_small.png") %>') no-repeat;
+}
+
+/*Storeage*/
+.building_storage.small-building {
+  background: url('<%= asset_path("buildings/base/building_storage/small/building_storage_small.png") %>') no-repeat;
+}
+
+/*Campfire*/
+.building_campfire.small-building {
+  background: url('<%= asset_path("buildings/base/building_campfire/small/building_campfire_small.png") %>') no-repeat;
+}
+
+/*Quarry*/
+.building_quarry.small-building {
+  background: url('<%= asset_path("buildings/base/building_quarry/small/building_quarry_small.png") %>') no-repeat;
+}
+
+/*Logger*/
+.building_logger.small-building {
+  background: url('<%= asset_path("buildings/base/building_logger/small/building_logger_small.png") %>') no-repeat;
+}
+
+/*Training Cave*/
+.building_training_cave.small-building {
+  background: url('<%= asset_path("buildings/base/building_training_cave/small/building_training_cave_small.png") %>') no-repeat;
+}
+
+/*Furrier*/
+.building_furrier.small-building {
+  background: url('<%= asset_path("buildings/base/building_furrier/small/building_furrier_small.png") %>') no-repeat;
+}
+
+/*Artifact Cave*/
+.building_artifact_stand.small-building {
+  background: url('<%= asset_path("buildings/base/building_artifact_stand/small/building_artifact_stand_small.png") %>') no-repeat;
+}
+
+/*Copper Smelter*/
+.building_copper_smelter.small-building {
+  background: url('<%= asset_path("buildings/base/building_copper_smelter/small/building_copper_smelter_small.png") %>') no-repeat;
+}
+
+/*Firing Range*/
+.building_firing_range.small-building {
+  background: url('<%= asset_path("buildings/base/building_firing_range/small/building_firing_range_small.png") %>') no-repeat;
+}
+
+/*Alliance Hall*/
+.building_alliance_hall.small-building {
+  background: url('<%= asset_path("buildings/base/building_alliance_hall/small/building_alliance_hall_small.png") %>') no-repeat;
+}
+
+/*Cottage 2*/
+.building_cottage_2.small-building {
+  background: url('<%= asset_path("buildings/base/building_cottage/small/building_cottage_small.png") %>') no-repeat;
+}
+
+/*Storeage 2*/
+.building_storage_2.small-building {
+  background: url('<%= asset_path("buildings/base/building_storage/small/building_storage_small.png") %>') no-repeat;
+}
+
+/*Quarry 2*/
+.building_quarry_2.small-building {
+  background: url('<%= asset_path("buildings/base/building_quarry/small/building_quarry_small.png") %>') no-repeat;
+}
+
+/*Logger 2*/
+.building_logger_2.small-building {
+  background: url('<%= asset_path("buildings/base/building_logger/small/building_logger_small.png") %>') no-repeat;
+}
+
+/*Stud*/
+.building_stud.small-building {
+  background: url('<%= asset_path("buildings/base/building_stud/small/building_stud_small.png") %>') no-repeat;
+}
+
+/*Command Post*/
+.building_command_post.small-building {
+  background: url('<%= asset_path("buildings/base/building_command_post/small/building_command_post_small.png") %>') no-repeat;
+}
+
+/*Furrier 2*/
+.building_furrier_2.small-building {
+  background: url('<%= asset_path("buildings/base/building_furrier/small/building_furrier_small.png") %>') no-repeat;
+}
+
+/*Garison*/
+.building_garrison.small-building {
+  background: url('<%= asset_path("buildings/base/building_garrison/small/building_garrison_small.png") %>') no-repeat;
+}
+
+/*Haunt*/
+.building_haunt.small-building {
+  background: url('<%= asset_path("buildings/base/building_haunt/small/building_haunt_small.png") %>') no-repeat;
+}
+
+/*Field Camp*/
+.building_field_camp.small-building {
+  background: url('<%= asset_path("buildings/base/building_field_camp/small/building_field_camp_small.png") %>') no-repeat;
+}
+
+/*Wacky Lab*/
+.building_altar.small-building {
+  background: url('<%= asset_path("buildings/base/building_altar/small/building_altar_small.png") %>') no-repeat center center;
+}
+
+.small-building.size0 {
+  background-position: 0 0;
+}
+.small-building.size1 {
+  background-position: -160px 0;
+}
+.small-building.size2 {
+  background-position: -320px 0;
+}
+.small-building.size3 {
+  background-position: -480px 0;
+}
+.small-building.size4 {
+  background-position: 0 -128px;
+}
+.small-building.size5 {
+  background-position: -160px -128px;
+}
+.small-building.size6 {
+  background-position: -320px -128px;
+}
+.small-building.size7 {
+  background-position: -480px -128px;
+}
+
+/*
+/** base: small slots *
 .small-building.building_quarry {
   background: url('<%= asset_path("settlements/base/building_quarry_small.png") %>');
 }
@@ -7178,13 +7462,22 @@ table .datetime {
 }
 .small-building.building_artifact_stand {
   background: url('<%= asset_path("settlements/base/building_artifact_stand_small.png") %>');
+}*/
+
+.building-selection-image {
+  position: relative !important;
+  z-index: 2;
+  border-radius: 0 !important;
+  top: initial !important;
+  border: none !important;
 }
 
 .outpost-picture .level, 
 .fortress-picture .level, 
 .base-picture .level {
-  background-color: #BBB;
-  color: #444;
+  /*background-color: #BBB;
+  color: #444;*/
+  color: white;
   text-align: center;
 }
 
@@ -7198,11 +7491,14 @@ table .datetime {
 
 .outpost-picture .level,
 .base-picture .level {
-  font-size: 12px;
-  border: 2px solid #444;
-  border-radius: 4px;
+  font-size: 24px;
+  font-family: 'Freckle Face', 'cursive';
+  text-shadow: none;
+  /*border: 2px solid #444;
+  border-radius: 4px;*/
   width: 16px;
   padding: 4px 0px;
+  z-index: 1;
 }
 
 
@@ -7255,8 +7551,8 @@ table .datetime {
 .outpost-picture .small-building .level,
 .base-picture .small-building .level {
   position: absolute;
-  left:   2px;
-  bottom: 6px;
+  left:   18px;
+  bottom: 15px;
 }
 
 .outpost-picture .large-building .level,
@@ -7330,7 +7626,7 @@ table .datetime {
 }
 
 
-.base-picture .small-building.building_alliance_hall.level1 {
+/*.base-picture .small-building.building_alliance_hall.level1 {
   background-position: -80px 0px;
 }
 .base-picture .small-building.building_alliance_hall.level2 {
@@ -7424,7 +7720,7 @@ table .datetime {
 .base-picture .small-building.building_special_gatherer.level10 {
   background-position: -800px 0px;
 }
-
+*/
 
 .base-picture .large-building.building_chief_cottage.level1 {
   background-position: -120px 0px;
@@ -7541,41 +7837,32 @@ table .datetime {
 
 
 
-.outpost-picture .small-building.size1,
-.base-picture .small-building.size1 {
+.outpost-picture .small-building.size1{
   background-position: -80px 0px;
 }
-.outpost-picture .small-building.size2,
-.base-picture .small-building.size2 {
+.outpost-picture .small-building.size2{
   background-position: -160px 0px;
 }
-.outpost-picture .small-building.size3,
-.base-picture .small-building.size3 {
+.outpost-picture .small-building.size3{
   background-position: -240px 0px;
 }
 
-.outpost-picture .large-building.size1,
-.base-picture .large-building.size1 {
+.outpost-picture .large-building.size1{
   background-position: -120px 0px;
 }
-.outpost-picture .large-building.size2,
-.base-picture .large-building.size2 {
+.outpost-picture .large-building.size2{
   background-position: -240px 0px;
 }
-.outpost-picture .large-building.size3,
-.base-picture .large-building.size3 {
+.outpost-picture .large-building.size3{
   background-position: -360px 0px;
 }
-.outpost-picture .large-building.size4,
-.base-picture .large-building.size4 {
+.outpost-picture .large-building.size4{
   background-position: -480px 0px;
 }
-.outpost-picture .large-building.size5,
-.base-picture .large-building.size5 {
+.outpost-picture .large-building.size5{
   background-position: -600px 0px;
 }
-.outpost-picture .large-building.size6,
-.base-picture .large-building.size6 {
+.outpost-picture .large-building.size6{
   background-position: -720px 0px;
 }
 
@@ -7648,198 +7935,215 @@ table .datetime {
   right: 0px;
 }
 
-.base-picture .large-building.slot1 {
-  top:  60px;
-  left: 525px;
+/* == 1. Row == */
+
+.base-picture .small-building.slot1 {
+  top:  35px;
+  left: 25px;
 }
 
-.base-picture .large-building.slot2 {
-  top:  60px;
-  left: 645px;
+.base-picture .small-building.slot2 {
+  top:  35px;
+  left: 188px;
 }
 
-.base-picture .large-building.slot3 {
-  top:  210px;
-  left: 525px;
+.base-picture .small-building.slot3 {
+  top:  35px;
+  left: 351px;
 }
 
-.base-picture .large-building.slot4 {
-  top: 210px;
-  left: 645px;
+.base-picture .small-building.slot4 {
+  top: 35px;
+  left: 514px;
 }
 
-/** 11. col */
 .base-picture .small-building.slot5 {
-  top:  180px;
-  left: 845px;
+  top:  35px;
+  left: 677px;
 }
 .base-picture .small-building.slot6 {
-  top:  300px;
-  left: 845px;
+  top:  35px;
+  left: 840px;
 }
+
+/* == 2. Row == */
 
 .base-picture .small-building.slot7 {
-  top:  420px;
-  left: 845px;
+  top:  92px;
+  left: 106px;
 }
 
-/** 1. col right */
 .base-picture .small-building.slot8 {
-  top: 140px;
-  left: 765px;
+  top:  92px;
+  left: 269px;
 }
+
 .base-picture .small-building.slot9 {
-  top: 260px;
-  left: 765px;
+  top:  92px;
+  left: 432px;
 }
+
 .base-picture .small-building.slot10 {
-  top: 380px;
-  left: 765px;
+  top: 92px;
+  left: 595px;
 }
 
-
-/** 2. col right */
 .base-picture .small-building.slot11 {
-  top: 360px;
-  left: 685px;
+  top:  92px;
+  left: 758px;
 }
+
+
+/* == 3. Row == */
+
 .base-picture .small-building.slot12 {
-  top: 480px;
-  left: 685px;
+  top:  149px;
+  left: 25px;
 }
 
-
-/** 3. col */
 .base-picture .small-building.slot13 {
-  top: 400px;
-  left: 605px;
+  top:  149px;
+  left: 188px;
 }
+
 .base-picture .small-building.slot14 {
-  top: 520px;
-  left: 605px;
+  top:  149px;
+  left: 351px;
 }
 
-
-/** 4. col */
 .base-picture .small-building.slot15 {
-  top: 360px;
-  left: 525px;
+  top:  149px;
+  left: 514px;
 }
+
 .base-picture .small-building.slot16 {
-  top: 480px;
-  left: 525px;
+  top: 149px;
+  left: 677px;
 }
 
-
-/** 5.col */
 .base-picture .small-building.slot17 {
-  top:  60px;
-  left: 445px;
+  top:  149px;
+  left: 840px;
 }
+
+/* == 4. Row == */
+
 .base-picture .small-building.slot18 {
-  top:  180px;
-  left: 445px;
+  top:  206px;
+  left: 106px;
 }
+
 .base-picture .small-building.slot19 {
-  top:  300px;
-  left: 445px;
+  top:  206px;
+  left: 269px;
 }
+
 .base-picture .small-building.slot20 {
-  top:  420px;
-  left: 445px;
+  top:  206px;
+  left: 432px;
 }
 
-
-/** 6. col */
 .base-picture .small-building.slot21 {
-  top:  20px;
-  left: 365px;
+  top:  206px;
+  left: 595px;
 }
+
 .base-picture .small-building.slot22 {
-  top:  140px;
-  left: 365px;
+  top: 206px;
+  left: 758px;
 }
+
+
+/* == 5. Row == */
+
 .base-picture .small-building.slot23 {
-  top: 260px;
-  left: 365px;
+  top:  263px;
+  left: 25px;
 }
 .base-picture .small-building.slot24 {
-  top: 380px;
-  left: 365px;
+  top:  263px;
+  left: 188px;
 }
+
 .base-picture .small-building.slot25 {
-  top:  500px;
-  left: 365px;
+  top:  263px;
+  left: 351px;
 }
 
-/** 7. col */
 .base-picture .small-building.slot26 {
-  top: 60px;
-  left: 285px;
+  top:  263px;
+  left: 514px;
 }
+
 .base-picture .small-building.slot27 {
-  top: 180px;
-  left: 285px;
+  top:  263px;
+  left: 677px;
 }
+
 .base-picture .small-building.slot28 {
-  top: 300px;
-  left: 285px;
+  top: 263px;
+  left: 840px;
 }
+
+
+/* == 6. Row == */
+
+
 .base-picture .small-building.slot29 {
-  top: 420px;
-  left: 285px;
+  top:  320px;
+  left: 106px;
 }
 
-/** 8. col */
 .base-picture .small-building.slot30 {
-  top:  20px;
-  left: 205px;
-}
-.base-picture .small-building.slot31 {
-  top:  140px;
-  left: 205px;
-}
-.base-picture .small-building.slot32 {
-  top:  260px;
-  left: 205px;
-}
-.base-picture .small-building.slot33 {
-  top:  380px;
-  left: 205px;
-}
-.base-picture .small-building.slot34 {
-  top:  500px;
-  left: 205px;
+  top:  320px;
+  left: 269px;
 }
 
-/** 9. col */
+.base-picture .small-building.slot31 {
+  top:  320px;
+  left: 432px;
+}
+
+.base-picture .small-building.slot32 {
+  top:  320px;
+  left: 595px;
+}
+
+.base-picture .small-building.slot33 {
+  top:  320px;
+  left: 758px;
+}
+
+/* == 7. Row == */
+
+.base-picture .small-building.slot34 {
+  top: 377px;
+  left: 25px;
+}
+
 .base-picture .small-building.slot35 {
-  top: 120px;
-  left: 125px;
+  top:  377px;
+  left: 188px;
 }
 .base-picture .small-building.slot36 {
-  top: 240px;
-  left: 125px;
+  top:  377px;
+  left: 351px;
 }
+
 .base-picture .small-building.slot37 {
-  top: 360px;
-  left: 125px;
+  top:  377px;
+  left: 514px;
 }
+
 .base-picture .small-building.slot38 {
-  top: 480px;
-  left: 125px;
+  top:  377px;
+  left: 677px;
 }
 
-/** 10. col */
 .base-picture .small-building.slot39 {
-  top: 280px;
-  left: 45px;
+  top:  377px;
+  left: 840px;
 }
-.base-picture .small-building.slot40 {
-  top:  400px;
-  left: 45px;
-}
-
 
 
 /****** OUTPOST */

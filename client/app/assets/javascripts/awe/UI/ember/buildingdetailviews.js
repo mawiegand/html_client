@@ -49,6 +49,24 @@ AWE.UI.Ember = (function(module) {
     }.property('slot.building_id', 'slot.settlement'),  
   });  
 
+module.SelectBuildingNewDialog = module.PopUpDialog.extend({
+    templateName: 'settlement-new-dialog-select-building',
+
+    open: function(){
+      WACKADOO.presentModalDialog(this);
+    },
+
+    closeDialog: function() {
+      this.get('controller').unselectSlot();
+      this.destroy();
+    },
+  });
+
+module.SelectBuildingNewView = module.SelectBuildingDialog.extend( /** @lends AWE.UI.Ember.SelectBuildingDialog# */ {
+    templateName: "settlement-new-view-select-building",
+     
+  });  
+
   /** @class
    * @name AWE.UI.Ember.BuildingOptionView */
   module.BuildingOptionView = module.HoverableView.extend( /** @lends AWE.UI.Ember.BuildingOptionView# */ {
@@ -107,6 +125,12 @@ AWE.UI.Ember = (function(module) {
     same: function() {
       return this.getPath('building.buildingId') === this.getPath('hovered.buildingId');
     }.property('building', 'hovered').cacheable(),
+  });
+
+  module.BuildingOptionDetailNewView = module.BuildingOptionDetailView.extend({
+    templateName:      "building-option-details-new-view",
+    classNames: ['building-option-details-new-view'],
+    
   });
    
   module.GeneralResourceView = Ember.View.extend({

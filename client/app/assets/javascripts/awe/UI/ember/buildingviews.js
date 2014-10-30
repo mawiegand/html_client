@@ -45,11 +45,21 @@ AWE.UI.Ember = (function(module) {
 		typeBinding:  'building.type',
 		mouseInView:  false,
 
-    classNameBindings: ['mouseInView:hover', 'size1:size1', 'size2:size2', 'size3:size3',  'size4:size4',  'size5:size5',  'size6:size6', 'type', 'slotLayoutId', 'levelClassName'],
+    classNameBindings: ['mouseInView:hover', 'size', 'type', 'slotLayoutId', 'levelClassName'],
 
     levelClassName: function() {
       return "level"+this.get('level');
     }.property('level').cacheable(),
+
+    size: function() {
+      if(this.get("building"))
+      {
+        var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
+        var imageLevel = AWE.Config.BuildingImageLibrary.getImageLevelForBuilding(buildingId, this.get("level"));
+        return "size" + imageLevel;
+      }
+      return false;
+    }.property("building"),
 
     size1: function() {
       var level = this.get('level');
