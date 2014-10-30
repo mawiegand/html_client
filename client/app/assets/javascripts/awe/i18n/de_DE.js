@@ -299,6 +299,7 @@ AWE.I18n.de_DE = function(module) {
       tradingCarts:   'Handelskarren',
       commandPoints:  'Kommandopunkte',
       garrison: "Garnison",
+      population: "Bevölkerung",
       populationAbbreviation: "Bev",
       buildingTime: "Bauzeit",
       storageCapacity: "Lagerkapazität",
@@ -1482,6 +1483,11 @@ AWE.I18n.de_DE = function(module) {
         description: "Hier steht wie man umziehen kann.",
         to: "nach"
       },
+      upgrade:{
+        heading: "Gebäude ausbauen",
+        upgrade: "Ausbauen",
+        level: "Stufe",
+      }
     },
   }
   

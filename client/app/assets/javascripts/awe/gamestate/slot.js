@@ -128,11 +128,35 @@ AWE.GS = (function(module) {
 
 		productionsNextLevel: function() {
 		  var production            = this.getPath('buildingType.production');
-		  var settlementProductions = this.getPath('slot.settlement.resourceProductions')
+		  var settlementProductions = this.getPath('slot.settlement.resourceProductions');
 		  var nextLevel             = this.get('nextLevel');
 		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, nextLevel, settlementProductions) : null;
 		}.property('nextLevel', 'buildingType').cacheable(),
+
+    // === Marc ===
+
+    getProductionsForLevel: function(level) {
+      var production            = this.getPath('buildingType.production');
+      var settlementProductions = this.getPath('slot.settlement.resourceProductions');
+      return production ? AWE.Util.Rules.evaluateResourceProduction(production, level, settlementProductions) : null;
+    },
+
+    getCapacityForLevel: function(level) {
+      var capacity  = this.getPath('buildingType.capacity');
+      return capacity ? AWE.Util.Rules.evaluateResourceCapacity(capacity, level, true) : null;
+    },
+
+    getPopulationForLevel: function(level) {
+      return this.calcPopulation(level);
+    },
+
+    getProductionBoniForLevel: function(level) {
+      var boni      = this.getPath('buildingType.production_bonus');
+      return boni ? AWE.Util.Rules.evaluateResourceProductionBoni(boni, level, true) : null;
+    },
 		
+    // ============
+
 		experienceProduction: function() {
 		  var experienceProduction = this.getPath('buildingType.experience_production');
 		  var level                = this.get('level');

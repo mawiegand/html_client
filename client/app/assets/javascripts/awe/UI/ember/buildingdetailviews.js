@@ -137,7 +137,12 @@ AWE.UI.Ember = (function(module) {
     },
                       
     upgradeClicked: function(event) {
-      this.get('controller').constructionUpgradeClicked(this.get('slot'));
+      var dialog = AWE.UI.Ember.UpgradeView.create({
+        slot: this.get('slot'),
+        controller: this.get('controller'),
+      });
+      WACKADOO.presentModalDialog(dialog);
+      //this.get('controller').constructionUpgradeClicked(this.get('slot'));
     },         
     
     destroyClicked: function(event) {
