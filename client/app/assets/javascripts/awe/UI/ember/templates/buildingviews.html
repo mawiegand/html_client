@@ -7,9 +7,6 @@
     {{#if slot.building.underDestruction}}
       <div class="construction-area back"></div>
       <div class="level destructing">{{slot.building.level}}</div>
-    {{else}}
-      {{view AWE.UI.Ember.BubbleView slotBinding="slot"}}
-      <div class="level">{{slot.building.level}}</div>
     {{/if}}
   {{/if}}
   <div {{bindAttr class="size type :building-image"}}></div>
@@ -18,6 +15,9 @@
   {{else}}
     {{#if slot.building.underDestruction}}
         <div class="construction-area front"></div>
+    {{else}}
+      {{view AWE.UI.Ember.BubbleView slotBinding="slot"}}
+      <div class="level">{{slot.building.level}}</div>
     {{/if}}
   {{/if}}
 {{/if}}

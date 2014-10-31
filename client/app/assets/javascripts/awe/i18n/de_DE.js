@@ -294,7 +294,7 @@ AWE.I18n.de_DE = function(module) {
       cost:           'Kosten',
       duration:       'Dauer',
       produces:       'Produziert',
-      capacity:       'Lagerkapazität',
+      capacity:       'Kapazität',
       productionBoni: 'Produktionsbonus',
       tradingCarts:   'Handelskarren',
       commandPoints:  'Kommandopunkte',

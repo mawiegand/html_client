@@ -59,7 +59,7 @@ AWE.UI.Ember = (function(module) {
         return "size" + imageLevel;
       }
       return false;
-    }.property("building"),
+    }.property("building", 'level'),
 
     size1: function() {
       var level = this.get('level');
