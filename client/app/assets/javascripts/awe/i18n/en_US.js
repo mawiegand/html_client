@@ -297,7 +297,7 @@ AWE.I18n.en_US = function(module) {
       cost:"Cost",
       duration:"Duration",
       produces:"Produces",
-      capacity:"Storage capacity",
+      capacity:"Capacity",
       productionBoni:"Production bonus",
       tradingCarts:"Trading carts",
       commandPoints:"Command points",

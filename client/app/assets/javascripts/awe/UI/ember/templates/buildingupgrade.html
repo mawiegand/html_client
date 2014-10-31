@@ -12,12 +12,13 @@
             {{t dialogs.upgrade.level}} {{currentLevel}}
           </h3>
         </div>
+        <div class="cell-body scrolling">
         {{#if currentPopulation}}
-          <div class="populationDetail">
-            <div class="item population-icon"></div> {{currentPopulation}}
-          </div>
+            <div class="populationDetail">
+              <div class="item population-icon"></div> {{currentPopulation}}
+            </div>
         {{/if}}
-        {{#if building.experienceOrResourceProduction}}
+        {{#if currentProductions}}
           <table class="resources-table">
           {{#each currentProductions}}
             {{view AWE.UI.Ember.ResourceProductionView productionBinding="this" tagName="tr"}}
@@ -32,6 +33,7 @@
           {{/each}}
           </table>
         {{/if}}
+        </div>
       </div>
     </div>
 
@@ -71,10 +73,11 @@
             <span class="change-level right" {{action "increaseStepsFurther"}}></span>
           {{/unless}}
         </div>
+        <div class="cell-body scrolling"
         {{#if selectedPopulation}}
-          <div class="populationDetail">
-            <div class="item population-icon"></div> {{selectedPopulation}}
-          </div>
+            <div class="populationDetail">
+              <div class="item population-icon"></div> {{selectedPopulation}}
+            </div>
         {{/if}}
         {{#if selectedProductions}}
           <table class="resources-table">
@@ -98,21 +101,7 @@
             {{/each}}
           </table>
         {{/if}}
-        {{#if building.unlockedDiplomacyNextLevel}}
-          <p>{{t building.info.unlockJoinAlliance}}</p>
-        {{/if}}
-        {{#if building.unlockedAllianceCreationNextLevel}}
-          <p>{{t building.info.unlockCreateAlliance}}</p>
-        {{/if}}   
-        {{#if building.unlockedPlayerToPlayerTradeNextLevel}}
-          <p>{{t building.info.unlockTrade}}</p>
-        {{/if}}    
-        {{#if building.tradingCartsNextLevel}}
-          <p>{{t building.tradingCarts}}: {{building.tradingCartsNextLevel}}</p>
-        {{/if}} 
-        {{#if building.commandPointsNextLevel}}
-          <p>{{t building.commandPoints}}: {{building.commandPointsNextLevel}}</p>
-        {{/if}}
+        </div>
       </div>
     </div>
   </div>
@@ -129,8 +118,10 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="capacity-resource">
-  <td {{bindAttr class="resourceName :item :small"}}></td>
-  <td class="capacity">{{capacitySize}}</td>
+  {{#if resourceName}}
+    <td {{bindAttr class="resourceName :item :small"}}></td>
+    <td class="capacity">{{capacitySize}}</td>
+  {{/if}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="bonus-resource">

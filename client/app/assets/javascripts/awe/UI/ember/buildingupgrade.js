@@ -73,14 +73,14 @@ AWE.UI.Ember = (function(module) {
 
     currentPopulation: function() {
       if(this.get("currentProductions").length > 3) {
-        return false;
+        //return false;
       }
       return this.get("building").getPopulationForLevel(this.get("currentLevel"));
     }.property("building.population"),
 
     selectedPopulation: function() {
       if(this.get("selectedProductions").length > 3) {
-        return false;
+        //return false;
       }
       return this.get("building").getPopulationForLevel(this.get("selectedLevel"));
     }.property("building", "selectedLevel"),
@@ -150,7 +150,12 @@ AWE.UI.Ember = (function(module) {
     capacity: null,
 
     resourceName: function() {
-      return this.getPath("capacity.resourceType.symbolic_id");
+      var symbolicId = this.getPath("capacity.resourceType.symbolic_id");
+      if(symbolicId === "resource_cash")
+      {
+        return false;
+      }
+      return symbolicId; 
     }.property("capacity.resourceType.symbolic_id"),
 
     capacitySize: function() {
