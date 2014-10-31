@@ -6822,7 +6822,7 @@ table .datetime {
 
 .outpost-background-picture,
 .base-background-picture {
-  background: url('<%= asset_path("backgrounds/background_settlement.jpg") %>');
+  background: url('<%= asset_path("backgrounds/Grid_Overview_01.jpg") %>');
   /*background-position: -160px 0;*/
   background-repeat: no-repeat;
   position: absolute;
@@ -6924,6 +6924,7 @@ table .datetime {
   top: 10%;
   left: 10%;
   position: absolute;
+  pointer-events:auto;
 }
 
 .outpost-picture .large-building,
@@ -7231,6 +7232,9 @@ table .datetime {
 }
 
 /**  ==  Buildings Small  == **/
+.small-building {
+  pointer-events:none;
+}
 
 .building-image {
   position: absolute;
