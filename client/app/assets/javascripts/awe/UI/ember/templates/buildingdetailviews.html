@@ -77,7 +77,7 @@
    <div class="building-selection-cell">
       <div class="info-big-background building-info-button" {{action "onInfoClicked"}}>i</div>
       <div {{action "optionClicked" target="parentView"}} class="building-background">
-        <div {{bindAttr class="building.buildingType.symbolic_id :small-building :building-position :building-selection-image"}}>  
+        <div {{bindAttr class="building.buildingType.symbolic_id :building-image :building-position :building-selection-image"}}>  
         </div>
         {{#each building.costsOfNextLevel}}
           <div class="building-selection-resource-cell">
