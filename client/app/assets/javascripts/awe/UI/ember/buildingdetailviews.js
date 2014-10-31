@@ -130,7 +130,25 @@ module.SelectBuildingNewView = module.SelectBuildingDialog.extend( /** @lends AW
   module.BuildingOptionDetailNewView = module.BuildingOptionDetailView.extend({
     templateName:      "building-option-details-new-view",
     classNames: ['building-option-details-new-view'],
+
+    onInfoClicked: function()
+    {
+      var dialog = AWE.UI.Ember.BuildingOptionDetailNewDialog.create({building: this.get('building')});
+      WACKADOO.presentModalDialog(dialog);
+    },
     
+  });
+
+  module.BuildingOptionDetailNewDialog = module.PopUpDialog.extend({
+    templateName:      "building-option-details-new-dialog",
+    classNames: ['building-option-details-new-dialog'],
+    
+  });
+
+   module.BuildingOptionDetailNewDialogView = module.BuildingOptionDetailView.extend({
+    templateName:      "building-option-details-new-dialog-view",
+    classNames: ['building-option-details-new-dialog-view'],
+
   });
    
   module.GeneralResourceView = Ember.View.extend({
