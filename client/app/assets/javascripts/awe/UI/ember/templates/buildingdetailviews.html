@@ -76,7 +76,7 @@
 <script type="text/x-handlebars" data-template-name="building-option-details-new-view">
    <div class="building-selection-cell">
       <div {{action "optionClicked" target="parentView"}} class="building-background">
-        <div {{bindAttr class="building.buildingType.symbolic_id :small-building :building-position :building-selection-image"}}>
+        <div {{bindAttr class="building.buildingType.symbolic_id :building-image :building-position :building-selection-image"}}>
           <div class="info-big-background building-info-button">i</div>
         </div>
         {{#each building.costsOfNextLevel}}
