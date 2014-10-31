@@ -9,9 +9,11 @@ AWE.Controller = function (module) {
 
   module.createMapController = function (anchor) {
 
-    var _stages = new Array(4);  ///< four easelJS stages for displaying background, objects and HUD
+    //var _stages = new Array(4);  ///< four easelJS stages for displaying background, objects and HUD
+    var _stages = new Array(3);  ///< four easelJS stages for displaying background, objects and HUD
     var _sortStages = [];
-    var _canvas = new Array(4);  ///< canvas elements for the four stages
+    //var _canvas = new Array(4);  ///< canvas elements for the four stages
+    var _canvas = new Array(3);  ///< canvas elements for the four stages
 
     var _selectedView = null;    ///< there can be only one selected view!
     var _hoveredView = null;
@@ -135,11 +137,13 @@ AWE.Controller = function (module) {
       };   // we generate our own clicks
 
       // layer for the controls buttons
+      /*
       root.append('<canvas id="controls-canvas"></canvas>');
       _canvas[4] = root.find('#controls-canvas')[0];
       _stages[4] = new Stage(_canvas[4]);
       _stages[4].onClick = function () {
       };   // we generate our own clicks
+      */
 
 //      root.append('<div style="position:abolute; left:0; top:20px; width:50px; height:50px; background-color:#F00;">A</div>');
 
@@ -154,6 +158,7 @@ AWE.Controller = function (module) {
         viewport:initialFrameModelCoordinates
       });
 
+      /*
       //zoom slider
       $("body").append('<div class="zoom_slider"><div class="slider_container"><img src="' + AWE.Config.RAILS_ASSET_PATH + 'ui/slider.png" class="slider_slider"><div class="slider_bar"></div><div>');
       $("body").find(".zoom_slider").each(function (i, value) {
@@ -163,7 +168,7 @@ AWE.Controller = function (module) {
         zoomSlider = AWE.UI.createSlider(value, true, true, that.handleZoomSliderValueUpdate);
         $(zoomSlider.getContainer()).remove();
       });
-
+  
       if (AWE.Config.MAP_USE_GOOGLE || AWE.Config.MAP_USE_OSM) {
         controlsViews.tempToggleButtonView = AWE.UI.createTempToggleButtonView();
         controlsViews.tempToggleButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 48, 48));
@@ -183,7 +188,7 @@ AWE.Controller = function (module) {
       controlsViews.armyListButtonView = AWE.UI.createArmyListButtonView();
       controlsViews.armyListButtonView.initWithController(that, AWE.Geometry.createRect(0, 0, 68, 70));
       _stages[4].addChild(controlsViews.armyListButtonView.displayObject());
-
+*/
     };
     
 
@@ -192,12 +197,13 @@ AWE.Controller = function (module) {
         { stage:_stages[0], mouseOverEvents:false, transparent:true},
         { stage:_stages[1], mouseOverEvents:true },
         { stage:_stages[2], mouseOverEvents:true },
-        { stage:_stages[3], mouseOverEvents:true },
-        { stage:_stages[4], mouseOverEvents:true }
+        { stage:_stages[3], mouseOverEvents:true }//,
+        //{ stage:_stages[4], mouseOverEvents:true }
       ];
     };
 
     that.viewDidAppear = function () {
+      /*
       $("body").append(zoomSlider.getContainer());
       $("body").append('<div class="link-pane"><a href="' + AWE.Config.EXTERNAL_FACEBOOK_URL + '" target="_blank"><img class="fb-icon" src="' + AWE.Config.RAILS_ASSET_PATH + 'icons/fb.png" /></a> &nbsp; ' +
         '                       <a href="' + AWE.Config.EXTERNAL_FORUM_URL + '" target="_blank">Forum</a> &nbsp; ' +
@@ -206,16 +212,19 @@ AWE.Controller = function (module) {
         '                       <a href="#" onClick="WACKADOO.reload()">Reload</a> &nbsp; <a href="#" onClick="AWE.UI.Ember.MainMenuDialog.create().open()">Menu</a></div>');
       window.WACKADOO.addDomElement($('.link-pane'), false);
       window.WACKADOO.addDomElement(zoomSlider.getContainer(), true);
+      */
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height())); // prevents distortion in case window has resized while displaying another screen
-      zoomSlider.subscribeToDOMEvents();
+      //zoomSlider.subscribeToDOMEvents();
     };
 
     that.viewWillDisappear = function () {
+      /*
       $(zoomSlider.getContainer()).remove();
       $('.link-pane').remove();
       window.WACKADOO.removeDomElement($('.link-pane'));
       window.WACKADOO.removeDomElement(zoomSlider.getContainer());
       zoomSlider.unsubscribeDOMEvents();
+      */
     };
 
     that.readyForUI = function() {
@@ -224,8 +233,8 @@ AWE.Controller = function (module) {
 
     that.enableUI = function() {
       if (!_uiEnabled) {
-        $(zoomSlider.getContainer()).delay(600).animate({opacity: 1}, 1000);
-        $('#controls-canvas').delay(600).animate({left: "0px"}, 1000, 'easeOutElastic');
+        //$(zoomSlider.getContainer()).delay(600).animate({opacity: 1}, 1000);
+        //$('#controls-canvas').delay(600).animate({left: "0px"}, 1000, 'easeOutElastic');
         _uiEnabled = true;
       }
     };
@@ -497,8 +506,8 @@ AWE.Controller = function (module) {
           _canvas[3].width = _windowSize.width;
           _canvas[3].height = _windowSize.height;
 
-          _canvas[4].width = _windowSize.width;
-          _canvas[4].height = _windowSize.height;
+          //_canvas[4].width = _windowSize.width;
+          //_canvas[4].height = _windowSize.height;
         }
         that.setNeedsDisplay();
       }

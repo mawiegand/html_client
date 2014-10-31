@@ -9,8 +9,10 @@ AWE.Controller = (function(module) {
           
   module.createHUDController = function(anchor) {
     
-    var _stage  = null;          ///< easelJS stage for displaying the HUD
-    var _canvas = null;          ///< canvas elements for the four stages
+    var _stageLeft  = null;          ///< easelJS stage for displaying the HUD
+    var _canvasLeft = null;          ///< canvas elements for the hud
+    var _stageRight  = null;          ///< easelJS stage for displaying the HUD
+    var _canvasRight = null;          ///< canvas elements for the hud
     var _resourceStage  = null;
     var _resourceCanvas = null;
     
@@ -51,15 +53,23 @@ AWE.Controller = (function(module) {
     that.init = function() {
       _super.init();    
       var root = that.rootElement();  
-      root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas"></canvas>');
+      root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas-left"></canvas><canvas id="hud-canvas-right"></canvas>');
       
-      // HUD layer ("static", not zoomable, not moveable)
-      _canvas = root.find('#hud-canvas')[0];
-      _stage = new Stage(_canvas);
-      _stage.onClick = function() {};
+      // HUD layers ("static", not zoomable, not moveable)
       
-      _canvas.width = 380;
-      _canvas.height = 260;
+      _canvasLeft = root.find('#hud-canvas-left')[0];
+      _stageLeft = new Stage(_canvasLeft);
+      _stageLeft.onClick = function() {};
+      
+      _canvasLeft.width = 120;
+      _canvasLeft.height = 370;
+      
+      _canvasRight = root.find('#hud-canvas-right')[0];
+      _stageRight = new Stage(_canvasRight);
+      _stageRight.onClick = function() {};
+      
+      _canvasRight.width = 380;
+      _canvasRight.height = 260;
 
       _resourceCanvas = root.find('#resource-canvas')[0];
       _resourceStage = new Stage(_resourceCanvas);
@@ -74,7 +84,8 @@ AWE.Controller = (function(module) {
     
     that.getStages = function() {
       return [
-        { stage: _stage,         mouseOverEvents: true},
+        { stage: _stageLeft,         mouseOverEvents: true},
+        { stage: _stageRight,         mouseOverEvents: true},
         { stage: _resourceStage, mouseOverEvents: true}
       ];
     };
@@ -104,14 +115,16 @@ AWE.Controller = (function(module) {
         if (_hideCanvas && !_canvasIsHidden) {
           AWE.Log.Debug('hide canvas');
           _canvasIsHidden = true;
-          $('#hud-canvas').delay(600).animate({right: "-380px"}, _animationDuration, 'easeOutBack');
+          $('#hud-canvas-left').delay(600).animate({left: "-380px"}, _animationDuration, 'easeOutBack');
+          $('#hud-canvas-right').delay(600).animate({right: "-380px"}, _animationDuration, 'easeOutBack');
           $('#resource-canvas').delay(600).animate({top: "-42px"}, _animationDuration, 'easeOutBack');
           that.setNeedsDisplay();
         }
         else if (!_hideCanvas && _canvasIsHidden) {
           AWE.Log.Debug('display canvas canvas');
           _canvasIsHidden = false;
-          $('#hud-canvas').delay(600).animate({right: "0px"}, _animationDuration, 'easeOutBack');
+          $('#hud-canvas-left').delay(600).animate({left: "0px"}, _animationDuration, 'easeOutBack');
+          $('#hud-canvas-right').delay(600).animate({right: "0px"}, _animationDuration, 'easeOutBack');
           $('#resource-canvas').delay(600).animate({top: "30px"}, _animationDuration, 'easeOutBack');
           that.setNeedsDisplay();
         }
@@ -142,6 +155,44 @@ AWE.Controller = (function(module) {
     //   Action Handling
     //
     // ///////////////////////////////////////////////////////////////////////
+    
+    that.menuButtonClicked = function() {
+      AWE.UI.Ember.MainMenuDialog.create().open();
+    }
+    
+    that.strategicTerrainButtonClicked = function() {
+      if (WACKADOO.switchMapModeClicked(false)) {
+        HUDViews.leftHUDControlsView.mapModeSwitched(false);
+      }
+      else log('Could not get map controller in HUD controller.strategicTerrainButtonClicked.');
+    }
+    
+    that.normalTerrainButtonClicked = function() {
+      if (WACKADOO.switchMapModeClicked(true)) {
+        HUDViews.leftHUDControlsView.mapModeSwitched(true);
+      }
+      else log('Could not get map controller in HUD controller.normalTerrainButtonClicked.');
+    }
+    
+    that.gamingPieceSelectorButtonClicked = function() {
+      WACKADOO.gamingPieceSelectorClicked();
+    }
+    
+    that.switchToSettlementButtonClicked = function() {
+      var baseControllerActive = WACKADOO.baseControllerActive();
+      WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+      if (baseControllerActive) {
+        AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button1');
+      } 
+    }
+    
+    that.switchToSettlementButtonDoubleClicked = function() {
+      var baseControllerActive = WACKADOO.baseControllerActive();
+      WACKADOO.baseButtonDoubleClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+      if (!baseControllerActive) {
+        AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button2');
+      } 
+    }
     
     var shopDialog = null;
     
@@ -182,6 +233,16 @@ AWE.Controller = (function(module) {
       });
       that.applicationController.presentModalDialog(info);
     }
+    
+    that.buyCreditsClicked = function() {
+      if (AWE.Facebook.isRunningInCanvas) {
+        var dialog = AWE.UI.Ember.FacebookCreditOfferDialog.create();
+        WACKADOO.presentModalDialog(dialog);
+      }
+      else {
+        AWE.GS.ShopManager.openCreditShopWindow();
+      }
+    };
 
     that.ingameShopButtonClicked = function() {
       
@@ -193,15 +254,7 @@ AWE.Controller = (function(module) {
         
         shop: AWE.GS.ShopManager.getShop(),
         
-        buyCreditsPressed: function() {
-          if (AWE.Facebook.isRunningInCanvas) {
-            var dialog = AWE.UI.Ember.FacebookCreditOfferDialog.create();
-            WACKADOO.presentModalDialog(dialog);
-          }
-          else {
-            AWE.GS.ShopManager.openCreditShopWindow();
-          }
-        },
+        buyCreditsPressed: that.buyCreditsClicked,
 
         buyResourceOfferPressed: function(offerId) {
           
@@ -689,42 +742,71 @@ AWE.Controller = (function(module) {
     // ///////////////////////////////////////////////////////////////////////    
     
     that.updateHUD = function() { 
-      
+            
       if (!HUDViews.mainControlsView) {
         HUDViews.mainControlsView = AWE.UI.createMainControlsView();
         HUDViews.mainControlsView.initWithController(that);
-        _stage.addChild(HUDViews.mainControlsView.displayObject());
+        _stageRight.addChild(HUDViews.mainControlsView.displayObject());
       }
-      HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(20, 20));
+      HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(20, 20));      
       
+      // Resource Views      
       if (!HUDViews.stoneView) {
         
-        var detailsHandler = function() {
-          var resourceName = this.resourceName;
-          var dialog = AWE.UI.Ember.ResourceInformationDialog.create({resourceName: resourceName})
-          WACKADOO.presentModalDialog(dialog);
+        var resourceDetailsHandler = function() {
+          var resourceName = this.resourceName();
+          var dialog = AWE.UI.Ember.ResourceInformationDialog.create({resourceName: resourceName});
+          WACKADOO.presentModalDialog(dialog);          
+        }; 
+        
+        var cashDetailsHandler = function() {
+          that.ingameShopButtonClicked();          
         };
         
+        var spacingX = 10;
+        var xOffset = spacingX;
+        var resourceViewWidth = 180;
+        var resourceViewHeight = 42;
+        
         HUDViews.stoneView = AWE.UI.createResourceBubbleView();
-        HUDViews.stoneView.initWithControllerAndResourceImage(that, "resource/icon/stone/large", "resource_stone");
-        HUDViews.stoneView.setOrigin(AWE.Geometry.createPoint(10, 0));
-        HUDViews.stoneView.resourceName = "resource_stone";
-        HUDViews.stoneView.onClick = detailsHandler;
+        HUDViews.stoneView.initWithControllerResourceNameColorsAndFrame(that, "stone", 
+          { topColor: "#89B1D0", bottomColor: "#425460" });
+        HUDViews.stoneView.setFrame(AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
+        HUDViews.stoneView.onClick = resourceDetailsHandler;
         _resourceStage.addChild(HUDViews.stoneView.displayObject());       
+        
+        xOffset += resourceViewWidth + spacingX;
 
         HUDViews.woodView = AWE.UI.createResourceBubbleView();
-        HUDViews.woodView.initWithControllerAndResourceImage(that, "resource/icon/wood/large", "resource_wood");
-        HUDViews.woodView.setOrigin(AWE.Geometry.createPoint(216, 0));
-        HUDViews.woodView.resourceName = "resource_wood";
-        HUDViews.woodView.onClick = detailsHandler;
+        HUDViews.woodView.initWithControllerResourceNameColorsAndFrame(that, "wood", 
+          { topColor: "#D7CC98", bottomColor: "#806322" },
+          AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
+        HUDViews.woodView.onClick = resourceDetailsHandler;
         _resourceStage.addChild(HUDViews.woodView.displayObject()); 
         
+        xOffset += resourceViewWidth + spacingX - 10;
+        
         HUDViews.furView = AWE.UI.createResourceBubbleView();
-        HUDViews.furView.initWithControllerAndResourceImage(that, "resource/icon/fur/large", "resource_fur");
-        HUDViews.furView.setOrigin(AWE.Geometry.createPoint(422, 0));
-        HUDViews.furView.resourceName = "resource_fur";
-        HUDViews.furView.onClick = detailsHandler;
-        _resourceStage.addChild(HUDViews.furView.displayObject()); 
+        HUDViews.furView.initWithControllerResourceNameColorsAndFrame(that, "fur", 
+          { topColor: "#A45341", bottomColor: "#521103" },
+          AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
+        HUDViews.furView.onClick = resourceDetailsHandler;
+        _resourceStage.addChild(HUDViews.furView.displayObject());
+        
+        xOffset += resourceViewWidth + spacingX - 5;                
+        HUDViews.toadsView = AWE.UI.createResourceCashBubbleView();
+        HUDViews.toadsView.initWithControllerColorsAndFrame(that,
+          { topColor: "#94BE57", bottomColor: "#658434" },
+          AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
+        HUDViews.toadsView.onClick = cashDetailsHandler;
+        _resourceStage.addChild(HUDViews.toadsView.displayObject()); 
+      }
+            
+      // Left HUD View
+      if (!HUDViews.leftHUDControlsView) {
+        HUDViews.leftHUDControlsView = AWE.UI.createLeftHUDControlsView();
+        HUDViews.leftHUDControlsView.initWithController(that);
+        _stageLeft.addChild(HUDViews.leftHUDControlsView.displayObject());
       }
       
       return true; 
@@ -890,7 +972,8 @@ AWE.Controller = (function(module) {
           // STEP 4b: create, remove and update all views according to visible parts of model      
           var updateNeeded = that.updateViewHierarchy() || animating;      
           if (updateNeeded ) { // TODO: remove true, update only, if necessary 
-            _stage.update();
+            _stageLeft.update();
+            _stageRight.update();
             _resourceStage.update();
             AWE.Ext.applyFunctionToElements(HUDViews, function(view) {
               view.notifyRedraw();

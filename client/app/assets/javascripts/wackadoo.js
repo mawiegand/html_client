@@ -320,7 +320,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
         var controller = AWE.Controller.createMapController('#layers');
         controller.init(AWE.Geometry.createRect(-30000000,-30000000,60000000,60000000));  // TODO init with users main location
-        self.set('mapScreenController', controller);
+        self.set('mapScreenController', controller);          
 
        // $('#zoomin').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, true); });   //controller.zoom(.1, true)});   // TODO: this is linked to the map controller and will send events even in case the controller's gone
        // $('#zoomout').click(function(){ WACKADOO.get('presentScreenController').zoom(0.1, false); }); //controller.zoom(.1, false)});
@@ -492,6 +492,20 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }
       else {
         this.activateMapController();
+      }
+    },
+    
+    switchMapModeClicked: function(mapModeNormal) {
+      if (this.get('presentScreenController') === this.get('mapScreenController')) {
+        this.get('presentScreenController').switchMapMode(mapModeNormal);
+        return true;
+      }
+      return false;
+    },
+    
+    gamingPieceSelectorClicked: function() {
+      if (this.get('presentScreenController') === this.get('mapScreenController')) {
+        this.get('presentScreenController').armyListButtonClicked();
       }
     },
 
