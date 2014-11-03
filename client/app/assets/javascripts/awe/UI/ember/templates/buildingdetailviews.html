@@ -113,21 +113,21 @@
 
 <script type="text/x-handlebars" data-template-name="building-option-details-new-dialog-view">
   <div class="row row1">
-          <div class="cell cell-50 building-main-level2"></div>
+          <div class="cell cell-50 building-main-level2">
+            <div {{bindAttr class="building.buildingType.symbolic_id :big-building"}}></div>
+          </div>
           <div class="cell cell-50 info-box">
             <ul class="resource-list">
-              <li><div class="resource-icon stone"></div><div class="resource-amount">500</div></li>
-              <li><div class="resource-icon wood"></div><div class="resource-amount">320</div></li>
-              <li><div class="resource-icon fur"></div><div class="resource-amount">400</div></li>
-              <li><div class="resource-icon xp"></div><div class="resource-amount">650</div></li>
-              <li><div class="resource-icon toad"></div><div class="resource-amount">447</div></li>
+                {{#each building.costsOfNextLevel}}
+                  <li><div {{bindAttr class="resourceType.symbolic_id :item :small :building-resource-icon"}}></div><div class="resource-amount">{{amount}}</div></li>
+                {{/each}}
             </ul>
           </div>
     </div>
 
     <div class="row row2">
               <div class="cell">
-                <p class="description">Hier kommen ganz viele Infos über dieses tolle Gebäude, dass du da oben siehst und es kommt noch mehr Text der dir gefällt.</p>
+                <div class="description">{{local building.description}}</div>
               </div>
     </div>
 </script>
