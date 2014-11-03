@@ -213,3 +213,49 @@
   </div>
 </div>
 </script>
+
+<!-- New Message Center Dialogs and Views-->
+<script type="text/x-handlebars" data-template-name="message-center-dialog">
+  <h1>Mails</h1>
+  {{view AWE.UI.Ember.MessageCenterTabView controllerBinding="controller" characterBinding="character" allianceBinding="alliance"}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="message-center-inbox-tab">
+  <div class="modal-dialog-body mail-inbox-dialog-pane modal-dialog-inbox-tab-body scrolling">
+    <div class="row row2">
+          <ul class="mail-list">
+            {{#each messageBox.sortedEntries}}
+              <li class="mail-list-entry unread">
+                <div class="mail-avatar-holder"><div class="mail-avatar-image avatar1"></div></div>
+                <div class="mail-content-holder"><div class="mail-player-name">Wacky_User123</div><div class="mail-subject">Hallooo...</div></div>
+                <div class="mail-date-holder"><div class="mail-date">5.6.2014</div></div>
+              </li>
+            {{/each}}
+          </ul>
+        </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="message-center-outbox-tab">
+  <div class="modal-dialog-body modal-dialog-outbox-tab-body scrolling">
+    OUTBOX
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="message-center-new-message-tab">
+  <div class="modal-dialog-body modal-dialog-new-message-tab-body scrolling">
+    NEWMESSAGE
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="mail-tab1">
+  {{view AWE.UI.Ember.InboxTab controllerBinding="controller" characterBinding="character" allianceBinding="alliance"}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="mail-tab2">
+  {{view AWE.UI.Ember.OutboxTab controllerBinding="controller" characterBinding="character" allianceBinding="alliance"}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="mail-tab3">
+  {{view AWE.UI.Ember.NewMessageNewView controllerBinding="controller" characterBinding="character" allianceBinding="alliance"}}
+</script>

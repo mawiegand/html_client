@@ -324,6 +324,112 @@ AWE.UI.Ember = (function(module) {
 
   });
 
+// New Message Center Views and Dialogs
+  module.MessageCenterNewDialog = module.PopUpDialog.extend({
+    templateName: 'message-center-dialog',
+    classNames: ['message-center-dialog'],
+
+    character: null,
+    alliance: null,
+
+    /*open: function(){
+      WACKADOO.presentModalDialog(this);
+    },*/
+
+
+  });
+
+
+
+  module.MessageCenterTabView = module.TabViewNew.extend({
+
+    character: null,
+    alliance: null,
+
+    init: function() {
+      this.set('tabViews', [
+        { key:   "tab1",
+          title: "Inbox", 
+          view:  AWE.UI.Ember.MailTab1.extend({
+            controllerBinding: "parentView.parentView.controller",
+            characterBinding: "parentView.parentView.character",
+            allianceBinding: "parentView.parentView.alliance",
+          }),
+          buttonClass: "left-menu-button",
+          
+        }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
+        { key:   "tab2",
+          title: "Outbox", 
+          view:  AWE.UI.Ember.MailTab2,
+          buttonClass: "middle-menu-button",
+          controllerBinding: 'parentView.controller',
+          characterBinding: 'parentView.character',
+          allianceBinding: 'parentView.alliance',
+        },
+        { key:   "tab3",
+          title: "New Mail", 
+          view:  AWE.UI.Ember.MailTab3,
+          buttonClass: "right-menu-button",
+          controllerBinding: 'parentView.controller',
+          characterBinding: 'parentView.character',
+          allianceBinding: 'parentView.alliance',
+        }
+      ]);
+      
+      this._super();
+    },
+  });
+
+  module.InboxTab = module.MessageCenterView.extend({
+    templateName: 'message-center-inbox-tab',
+
+    updateControllerCurrentView: function(){
+      this.get('controller').messageView = this;
+    }.observes('controller'),
+  });
+
+  module.OutboxTab = module.MessageCenterView.extend({
+    templateName: 'message-center-outbox-tab',
+
+    display: 'outbox',
+
+    updateControllerCurrentView: function(){
+      this.getPath('controller').messageView = this;
+    }.observes('controller'),
+  });
+
+  module.NewMessageNewView = module.MessageCenterView.extend({
+    templateName: 'message-center-new-message-tab',
+
+    display: '',
+    controller: null,
+  });
+
+  module.MailTab1 = Ember.View.extend({
+    templateName: 'mail-tab1',
+
+    character: null,
+    alliance: null,
+
+    debugTest: function(){
+      debugger
+      return true;
+    }.observes('character'),
+
+  });
+  module.MailTab2 = Ember.View.extend({
+    templateName: 'mail-tab2',
+
+    character: null,
+    alliance: null,
+  });
+  module.MailTab3 = Ember.View.extend({
+     templateName: 'mail-tab3',
+
+    character: null,
+    alliance: null,
+  });
+
   return module;
     
 }(AWE.UI.Ember || {}));
