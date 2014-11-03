@@ -55,6 +55,11 @@ AWE.UI.Ember = (function(module) {
     name: function(){
       return this.getPath("resource.name");
     }.property("resource"),
+
+    resourceClassName: function(){
+      var className = this.getPath("resource.name.en_US").toLowerCase() + "-big";
+      return className;
+    }.property("resource"),
     
   });
   

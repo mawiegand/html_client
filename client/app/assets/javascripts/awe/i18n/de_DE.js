@@ -2,9 +2,9 @@ var AWE = AWE || {};
 AWE.I18n = AWE.I18n || {};
 
 AWE.I18n.de_DE = function(module) {
-
+    
   module.localizedStrings = {
-
+ 
     general: {
       open:     'öffnen',
       close:    'schließen',
@@ -28,7 +28,7 @@ AWE.I18n.de_DE = function(module) {
       processing: 'Verarbeiten...',
       unknown:  'Unbekannt',
       naivePlural: 'n',
-
+      
       perHour:  'pro Stunde',
       perHourSym: '/h',
       days: 'Tage',
@@ -47,7 +47,7 @@ AWE.I18n.de_DE = function(module) {
       startup: {
         loading: 'Lade....',
       },
-
+      
       shoutBox: {
         heading: 'Shout Box',
         ago:     'alt',
@@ -57,7 +57,7 @@ AWE.I18n.de_DE = function(module) {
         archive: "Archiv",
       },
     },
-
+    
     server: {
       error: {
         failedAction: {
@@ -66,7 +66,7 @@ AWE.I18n.de_DE = function(module) {
         },
       },
     },
-
+        
     battle: {
       attack: {
         heading: "Kampfvorschau",
@@ -98,7 +98,7 @@ AWE.I18n.de_DE = function(module) {
           armyDisbanded: "Aufgelöste Armee",
           armyDisbandedDescription: "das passiert, wenn die Heimatsiedlung einer Armee verloren geht",
         },
-      },
+      },        
       messages: {
         own: {
           winning: [
@@ -113,9 +113,11 @@ AWE.I18n.de_DE = function(module) {
         },
         other: "Du willst da doch nicht etwa mitmischen, oder?",
       },
-    },
-
+    },    
+   
     army: {
+      maximumArmySizeReached: "Maximale Armeegröße erreicht!",
+      waitingForResources: "Warte auf Rohstoffe!",
       newArmy: "Neue Armee",
 
       list: {
@@ -280,11 +282,11 @@ AWE.I18n.de_DE = function(module) {
         loadingMessage: "Erzeuge Armee...",
       },
       change: {
-        header: "Einheiten der Armee ändern",
+        header: "Einheiten der Armee ändern", 
         loadingMessage: "Ändere Armee...",
       },
     },
-
+    
     building: {
       xpProduction:   'XP-Produktion',
       requirements:   'Voraussetzung',
@@ -292,11 +294,12 @@ AWE.I18n.de_DE = function(module) {
       cost:           'Kosten',
       duration:       'Dauer',
       produces:       'Produziert',
-      capacity:       'Lagerkapazität',
+      capacity:       'Kapazität',
       productionBoni: 'Produktionsbonus',
       tradingCarts:   'Handelskarren',
       commandPoints:  'Kommandopunkte',
       garrison: "Garnison",
+      population: "Bevölkerung",
       populationAbbreviation: "Bev",
       buildingTime: "Bauzeit",
       storageCapacity: "Lagerkapazität",
@@ -353,7 +356,7 @@ AWE.I18n.de_DE = function(module) {
         notEnoughBuildingSlots: "Du kannst derzeit nicht mehr Gebäude bauen. Es wird zuvor eine höhere Stufe der Hauptgebäudes (Häuptlingshütte in Siedlungen, Versammlungsplatz in Lagerstätten) benötigt.",
         notEnoughCash: "Du hast nicht genug Kröten, um diese Aktion auszuführen.",
       },
-
+      
       gossip: {
         heading: "Gerüchteküche",
         advice: [
@@ -387,18 +390,18 @@ AWE.I18n.de_DE = function(module) {
       }
 
     },
-
+    
     error: {
       stringMissing: '(Fehler: Fehlender Text!)',
       genericClientHeading: "Client Fehler",
       genericClientMessage: "Es ist ein Fehler bei Deiner Aktion aufgetaucht. Bitte kontaktiere den Support, wenn dieser Fehler auch nach einem Neuladen bestehen bleibt.",
       genericServer: "Der Server hat die Aktion nicht angenommen.",
     },
-
+    
     map: {
       regions: 'Regionen',
       arriving: 'Ankommen...',
-
+      
       button: {
         attack:         "Angriff",
         newArmy:        "Neue Armee",
@@ -428,30 +431,31 @@ AWE.I18n.de_DE = function(module) {
       memberOf: "Du bist derzeit ein Mitglied der Allianz ",
       joinAllianceHeader: "Allianzbeitritt",
       joinAllianceButton: "Allianz beitreten",
-      joinAllianceButtonNew: "join",
-      joinRandomAllianceButtonNew: "join",
+      joinAllianceButtonNew: "Beitreten",
+      joinRandomAllianceButtonNew: "Beitreten",
       joinAllianceText: "Tritt einer existierenden Allianz bei, indem Du ihr Kürzel und das geheime Allianzpasswort eingibst.",
       createAlliance: "Allianz gründen",
       createAllianceText: "Gründe eine neue Allianz, mit Dir als Anführer.",
-      createAllianceButtonNew: 'set up',
+      createAllianceButtonNew: 'Gründen',
       createAllianceFailedHead: 'Gründung fehlgeschlagen',
       redeemAllianceReservationHeader: "Allianzreservierung",
       redeemAllianceReservationButton: "Allianzreservierung einlösen",
       redeemAllianceReservationText: "Löse die Reservierung einer Allianz aus einer vergangenen Runde ein, indem Du ihr Kürzel und das geheime Reservierungspasswort eingibst.",
       leaveAllianceFailedHead: 'Verlassen der Allianz fehlgeschlagen',
       leave: "Verlassen",
-      name: "Alliancename",
-      tag: "Alliance Tag",
+      name: "Allianz Name",
+      tag: "Allianz Tag",
       password: "Passwort",
 
       founded: 'Gründung',
       leader: 'Anführer',
-      leaderVote: 'Deine Stimme',
+      leaderVote: 'Wählen',
+      leaderVoted: 'Gewählt',
       description: 'Beschreibung',
       changeDescriptionDialogCaption: 'Gib deine neue Allianzbeschreibung ein.',
       changeDescription: 'Ändere Beschreibung',
       missingDescription: 'Hier könnte eure Allianzbeschreibung stehen.',
-      diplomacy: "Diplomacy",
+      diplomacy: "Diplomatie",
       diplomacyRelation: "Diplomatie Beziehungen",
       diplomacyRelationWithAlliance: " mit der Allianz ",
       diplomacyRelationEnds: " endet am ",
@@ -504,7 +508,7 @@ AWE.I18n.de_DE = function(module) {
       invitationLink: 'Einladungslink',
       invitationLinkDescription: 'Ladet neue Spieler direkt in das Allianzgebiet ein. Wenn sich ein neuer Spieler über diesen Link registriert, wird seine Hauptsiedlung in einer Region platziert, die von der Allianz beherrscht wird. Einfach markieren und kopieren oder per Email versenden.',
       invitationLinkSendByMail: 'Per Mail versenden',
-
+      
       progress: {
         header: 'Siegesfortschritt',
         description: 'Die aktuelle Spielrunde kann von einer Allianz gewonnen werden, indem eines der folgenden Siegkriterien erreicht und über einen bestimmten Zeitraum gehalten wird.',
@@ -522,6 +526,7 @@ AWE.I18n.de_DE = function(module) {
 
       error: {
         blankPassword: "Ein leeres Passwort zu setzen ist nicht möglich.",
+        specialChars: "Es sind nur Zahlen und Buchstaben erlaubt",
         failedToSetPassword: "Das Allianzpasswort zu setzen ist aus unbekannten Grund gescheitert.",
         kickHeading: "Geht nicht!",
         kickMessage: "Dieses Mitglied kann nicht von Dir rausgeworfen werden.",
@@ -604,7 +609,7 @@ AWE.I18n.de_DE = function(module) {
         },
       }
     },
-
+    
     shop: {
       button:'Shop',
       title: 'Fundgrube',
@@ -631,7 +636,7 @@ AWE.I18n.de_DE = function(module) {
       production: 'Produktion',
       duration: 'Dauer',
       expiry: 'Ablauf',
-      frog_trade: 'Reisender Händler: schneller Rohstofftausch',
+      frog_trade: 'Reisender Händler: schneller Rohstofftausch', 
       lifetime: 'Lifetime',
       current: "Aktuelle",
       platinumCredit: "Platinum Credits",
@@ -695,15 +700,15 @@ AWE.I18n.de_DE = function(module) {
         message: 'Die Buchung konnte wegen eines Fehlers von Facebook nicht durchgeführt werden. Versuch es noch einmal!',
       },
     },
-
+    
     settlement: {
-
+      
       population: 'Bewohner',
       defenseBonus: 'Kampfbonus',
       max:'Maximum',
       condition:'Zustand',
       founded: 'Gründung',
-
+      
       customization: {
         chooseName: "Deinen Namen wählen",
         changeName: "Deinen Namen ändern",
@@ -712,7 +717,7 @@ AWE.I18n.de_DE = function(module) {
         nameChangeAdvice: 'Die allererste Änderung des Namens im Spiel ist kostenlos, jede weitere Änderung kostet ein paar Kröten.',
 
         changeNameDialogCaption: "Gib den neuen Namen ein.",
-
+        
         errors: {
           nameTooShort: "Viel zu kurz. Der Name muss mindestens 3 Zeichen enthalten.",
           nameTooLong: "Viel zu lang. Der Name darf höchstens 16 Zeichen enthalten.",
@@ -740,22 +745,22 @@ AWE.I18n.de_DE = function(module) {
       },
 
       buildings: {
-
+        
         category: 'Kategorie',
         level: 'Stufe',
         Level: 'Stufe',
-
+        
         details: {
           enables: 'Ermöglicht',
           speedup: 'Beschleunigt',
           noUpgrade: 'Kein weiterer Ausbau möglich.',
         },
-
+        
         select: {
           heading: 'Gebäude auswählen',
           missingRequirements: 'Kann wegen folgender <span class="red-color">fehlender Voraussetzungen</span> derzeit nicht gebaut werden',
         },
-
+        
         tooltip: {
           costOfNextLevel: 'Kosten für',
           noUpgrade: 'Kein weiterer Ausbau möglich.',
@@ -771,7 +776,7 @@ AWE.I18n.de_DE = function(module) {
             advise:  'Klicken, um ein neues Gebäude zu bauen.'
           },
         },
-
+        
         missingReqWarning: {
           start: "Hey! Du kannst hier jetzt kein Gebäude vom Typ",
           end: "bauen. Die folgenden Vorrausetzungen sind nicht erfüllt",
@@ -824,6 +829,12 @@ AWE.I18n.de_DE = function(module) {
       },
 
       trade: {
+        trade: "Handel",
+        distrEvently: "0 in allen Feldern verteilt die Resourcen gleichmäßig",
+        resourceTradeInfo: "Du kannst deine Rohstoffe für 2 Kröten neu verteilen. Dabei ändert sich nicht die Gesammtanzahl deiner Rohstoffe, sondern nur wie sie auf 3 Rohstoffe verteilt sind.",
+
+        update: "Update",
+        submit: "Senden",
         sendResources: "Rohstoffe versenden",
         cartsEnRoute: "Handelskarren unterwegs",
         recipient: "Empfänger",
@@ -831,7 +842,8 @@ AWE.I18n.de_DE = function(module) {
         enRoute: "Ausgehende Karren",
         carts: "Karren",
         timeOfArrival: "Ankunftszeit",
-        inbound: "Eingehende Karren",
+        inbound: "Eingehende",
+        outbound: "Ausgehende",
         sending: "senden",
         empty: "leer",
         cargo: "Ladung",
@@ -971,7 +983,7 @@ AWE.I18n.de_DE = function(module) {
         couldNotChangeTaxRate: "Gib eine Zahl zwischen 5 und 15 ein.",
       },
     },
-
+    
     profile: {
       youAre: "Du bist",
       playingSince: "dabei seit",
@@ -984,7 +996,7 @@ AWE.I18n.de_DE = function(module) {
       battles: "Kämpfe",
       victories: "Siege",
       defeats: "Niederlagen",
-
+      
       history: "Geschichte",
       emptyHistory: "keine Ereignisse vorhanden",
 
@@ -994,6 +1006,11 @@ AWE.I18n.de_DE = function(module) {
       movingTab: "Umziehen",
 
       rank: {
+        currentRank:"Aktuelle Rang",
+        nextRank:"Nächster Rang",
+        currentLevel:"Aktuelle Stufe",
+        nextLevel:"Nächster Stufe",
+        progressBar:"Fortschritt",
         start: "Beginn",
         experience: "Erfahrung",
         experienceAbbreviation: "XP",
@@ -1027,8 +1044,8 @@ AWE.I18n.de_DE = function(module) {
         lagUntolerable1: "Bitte stelle Deine Rechneruhr auf die korrekte Uhrzeit",
         lagUntolerable2: "oder schalte den automatischen Abgleich mit der Internetzeit an, sofern Dein Betriebssystem diese Möglichkeit bietet. Die Reaktivität des Spiels und Deine Nutzungserfahrung würden dadurch deutlich verbessert.",
       },
-
-
+      
+      
       settings: {
         connectToFacebookHeading: 'Sei Sozial!',
         youAreConnectedToFacebook: 'Du bist bereits mit Facebook verknüpft und kannst Wack-A-Doo jetzt auch in Facebook spielen: <a href="https://apps.facebook.com/wack-a-doo" target="_blank">https://apps.facebook.com/wack-a-doo</a>.<br/>Falsch verbunden? Bitte kontaktiere den Support (support@5dlab.com).',
@@ -1038,8 +1055,8 @@ AWE.I18n.de_DE = function(module) {
         characterAlreadyConnected: 'Dein Character ist bereits mit einem Facebook Account verbunden.',
         connectionDidFail: 'Sorry, das hat nicht geklappt.',
       },
-
-
+      
+      
       customization: {
         changeAvatar: "Deinen Avatar ändern",
         presentAvatar: "Aktueller Avatar",
@@ -1053,6 +1070,7 @@ AWE.I18n.de_DE = function(module) {
         presentName: "Aktueller Name",
         chooseNameCaption: 'Namen wählen',
         changeNameCaption: 'Namen ändern',
+        changeDescriptionCaption: 'Beschreibung ändern',
         nameChangeAdvice: 'Bitte wähle Deinen Namen mit Bedacht, idealerweise passt der Name in die Steinzeit. Der Name muss einzigartig in Wackadoo sein.',
         nameChangeFreeAdvice: 'Zweimal kannst Du Deinen Namen kostenlos ändern, jede weitere Änderung kostet ein paar Kröten um Missbrauch zu verhindern.',
         nameChangeCostAdvice: 'Du hast Deinen Namen bereits mehrmals geändert. Eine weitere Namensänderung ist natürlich möglich, kostet aber zur Verhinderung von Missbrauch 20 Kröten.',
@@ -1065,6 +1083,14 @@ AWE.I18n.de_DE = function(module) {
         genderChangeCostAdvice: 'Du hast die Einstellung Deines Geschlechts bereits mehrfach geändert. Eine weitere Änderung der Geschlechtseinstellung ist möglich, kostet aber zur Verhinderung von Missbrauch 20 Kröten.',
         male: "männlich",
         female: "weiblich",
+        customEyes:'Augen',
+        customMouth: 'Mund',
+        customHair: 'Haare',
+        customBeard: 'Bart',
+        customChains: 'Ketten',
+        customTattoos: 'Tattoos',
+        customSymbols: 'Symbole',
+        customToads: 'Kröten',
 
         changePasswordCaption: "Änderung des Passwortes",
         changePasswordAdvice: "Hier kannst Du Dein Passwort ändern. Das Passwort muss eine Länge von 6 bis 40 Zeichen haben.",
@@ -1077,7 +1103,7 @@ AWE.I18n.de_DE = function(module) {
         changeSameIPAdvice: 'Wenn Du mit mehreren Spielern über die gleiche IP-Adresse Wack-A-Doo spielst, gib hier die Spielernamen Komma getrennt ein. Nähere Infos findest Du hier: <a href="http://wiki.wack-a-doo.de/x/index.php?title=Mehrere_Spieler_unter_derselben_IP-Adresse&action=edit&redlink=1" target="_blank">Wiki</a>',
         changeSameIPButton: "Liste ändern",
         changeSameIIPChanged: "Die Liste wurde gespeichert.",
-
+        
         description: 'Beschreibung',
         changeDescriptionDialogCaption: 'Gib deine neue Characterbeschreibung ein.',
         changeDescription: 'Ändere Beschreibung',
@@ -1092,7 +1118,7 @@ AWE.I18n.de_DE = function(module) {
           success: "Meldung war erfolgreich",
           error: "Die Meldung wurde aus unbekanntem Grund nicht ausgeführt.",
         },
-
+        
         errors: {
           nameTooShort: "Viel zu kurz. Der Name muss mindestens 3 Zeichen enthalten.",
           nameTooLong: "Viel zu lang. Der Name darf höchstens 12 Zeichen enthalten.",
@@ -1109,7 +1135,7 @@ AWE.I18n.de_DE = function(module) {
           changePasswordNoMatch: "Die Passwörter stimmen nicht überein. Bitte versuche es noch einmal.",
 
           changeDescriptionError: "Die Character Beschreibung konnte aus unbekanntem Grund nicht geändert werden.",
-
+          
           changeSameIIUnknown: "Die Liste konnte aus unbekannten Gründen nicht geändert werden. Bitte versuche es später noch einmal.",
           changeFailed: {
             heading: 'Avatar speichern fehlgeschlagen',
@@ -1117,7 +1143,7 @@ AWE.I18n.de_DE = function(module) {
           },
         },
       },
-
+      
       moving: {
         info1: "Hier kannst Du die Position Deiner Hauptsiedlung auf der Karte verändern. Jeder Spieler kann die Hauptsiedlung einmalig umziehen.",
         info2: "Du kannst nicht in Regionen ziehen, um die gerade gekämpft wird, oder die vor kurzem erobert wurden.",
@@ -1144,7 +1170,7 @@ AWE.I18n.de_DE = function(module) {
         movingError: "Dein Umzug konnte aus unbekannten Gründen nicht vollzogen werden. Bitte versuch es später noch einmal.",
       },
     },
-
+    
     tutorial: {
       questList:        "Aktuelle Quests",
       name:             "Auftrag",
@@ -1171,7 +1197,7 @@ AWE.I18n.de_DE = function(module) {
           header:       "Tutorial Auftrag (erledigt)",
         },
       },
-
+      
       quest: {
         info: {
           header:       "Quest (offen)",
@@ -1215,7 +1241,7 @@ AWE.I18n.de_DE = function(module) {
         },
       }
     },
-
+    
     messaging: {
       inbox:            "Eingang",
       outbox:           "Ausgang",
@@ -1246,7 +1272,7 @@ AWE.I18n.de_DE = function(module) {
       yourMessage: "deine Nachricht",
       system: "System",
     },
-
+    
     encyclopedia: {
       encyclopedia: 'Enzyklopädie',
       selectCategory: 'Bitte wähle eine Kategorie und ein Thema aus.',
@@ -1260,6 +1286,17 @@ AWE.I18n.de_DE = function(module) {
       experienceForLostUnits: "XP pro verlorener Einheit",
       experienceFactor: "XP-Faktor",
 
+      attackAbbreviation: "Att",
+      defenseAbbreviation: "Def",
+      hitpointsAbbreviation: "HP",
+      criticalDamageAbbreviation: "Crit",
+      garrison: "Garrison",
+      infantry: "Infantry",
+      artillery: "Artillery",
+      cavalery: "Cavalery",
+      specialUnits: "Special Units",
+      military: "Military",
+
       commandPointsAbbreviation: "KP",
       buildingTime: "Bauzeit",
 
@@ -1271,7 +1308,7 @@ AWE.I18n.de_DE = function(module) {
       smallBuilding: 'Benötigt kleinen oder großen Bauplatz',
       specialBuilding: 'Benötigt kleinen Bauplatz',
       fortressBuilding: 'Nur in Festungen',
-
+    
       resource: {
         taxable: "Auf diesen Rohstoff werden Steuern erhoben.",
         notTaxable1: "Auf diesen Rohstoff werden ",
@@ -1298,7 +1335,7 @@ AWE.I18n.de_DE = function(module) {
         effects: "Effekte",
         baseProduction: "Basisproduktion",
         full: "voll",
-
+    
         help1: "Rohstoffe werden durch",
         help2: "in der Hauptsiedlung und in Lagerstätten produziert oder in Festungen als",
         help3: "eingenommen. In dieser Übersicht angezeigte Boni wirken im gesamten Herrschaftsgebiet auf die",
@@ -1364,7 +1401,7 @@ AWE.I18n.de_DE = function(module) {
       characterEffectsNotAvailable: "Keine Spieler-Boni vorhanden.",
       allianceEffectsNotAvailable: "Keine Allianz-Boni vorhanden.",
     },
-
+    
     likesystem: {
       notEnoughLikeAmount: "Du hast zu wenig Likes um einen Like zu senden.",
       notEnoughDislikeAmount: "Du hast zu wenig Dislikes um einen Dislike zu senden.",
@@ -1374,7 +1411,7 @@ AWE.I18n.de_DE = function(module) {
       dislikesAvailable: "Dislikes verfügbar",
       info: "Es steht nur eine begrenzte Menge von Likes und Dislikes zur Verfügung. Nach dem Gebrauch regeneriert sich der Vorrat langsam.",
     },
-
+    
     ranking: {
       header: "Ranglisten",
       characters: "Spieler",
@@ -1417,10 +1454,53 @@ AWE.I18n.de_DE = function(module) {
       manual: "Handbuch",
       logout: "Logout",
       header: "Menu",
+      reload: "Aktualisieren",
+    },
+
+    dialogs:{
+      assignments: {
+        quests: "Aufträge",
+        special_quests: "Spezialaufträge",
+        gossip: "Gerüchte"
+      },
+      alliance: {
+        alliance: "Allianz",
+        info: "Info",
+        members: "Mitglieder",
+        diplomacy: "Diplomatie",
+        apply: "Bewerben",
+
+        allianceInfo: {
+          slogan: "Losung:",
+          autoJoin: "Aufnahme:"
+        },
+        allianceMembers: {
+          leader: "Anführer",
+          members: "Mitglieder",
+        },
+        allianceDiplomacy: {
+          placeHolder: "Tag eingeben",
+          issueUltimatum: "Ultimatum stellen",
+          ultimatum: "Ultimatum",
+          war: "Krieg",
+          capitulation: "Kapitulation",
+          end: "Endet",
+        },
+      },
+      move:{
+        heading: "Umziehen",
+        description: "Hier steht wie man umziehen kann.",
+        to: "nach"
+      },
+      upgrade:{
+        heading: "Gebäude ausbauen",
+        upgrade: "Ausbauen",
+        level: "Stufe",
+      }
     },
   }
-
+  
   return module;
-
+  
 }(AWE.I18n.de_DE || {});
 

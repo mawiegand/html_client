@@ -1,10 +1,20 @@
 <script type="text/x-handlebars" data-template-name="interactive-building-slot">
 {{#if "slot.building"}}
   {{#if slot.building.underConstruction}}
+    <div class="construction-area back"></div>
     <div class="level constructing">{{slot.building.level}}</div>
   {{else}}
     {{#if slot.building.underDestruction}}
+      <div class="construction-area back"></div>
       <div class="level destructing">{{slot.building.level}}</div>
+    {{/if}}
+  {{/if}}
+  <div {{bindAttr class="size type :building-image"}}></div>
+  {{#if slot.building.underConstruction}}
+    <div class="construction-area front"></div>
+  {{else}}
+    {{#if slot.building.underDestruction}}
+        <div class="construction-area front"></div>
     {{else}}
       {{view AWE.UI.Ember.BubbleView slotBinding="slot"}}
       <div class="level">{{slot.building.level}}</div>
@@ -14,8 +24,11 @@
 {{#if slot.uiMarker}}
   {{view AWE.UI.Ember.UIMarker direction=3 top=30 left=70}}
 {{/if}}
+  {{view AWE.UI.Ember.SlotClickArea slotBinding="slot"}}
 </script>
 
+<script type="text/x-handlebars" data-template-name="click-area">
+</script>
 
 <script type="text/x-handlebars" data-template-name="building-slot-tooltip">
   <div class="building-slot-tooltip-wrapper"

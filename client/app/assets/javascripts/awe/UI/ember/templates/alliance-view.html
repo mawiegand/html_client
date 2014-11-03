@@ -1,0 +1,197 @@
+<script type="text/x-handlebars" data-template-name="alliance-view">
+    <h1>{{t dialogs.alliance.alliance}}</h1>
+    {{view AWE.UI.Ember.AllianceTabView allianceBinding = "alliance" controllerBinding = "controller"}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="alliance-info-tab">
+  <div class="alliance-container">
+
+    {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner"}}
+
+
+    <div class="alliance-about">
+        <h3>{{alliance.name}}</h3>
+        {{#if ownAlliance}}
+        <div class="alliance-information">
+            <h4>Invitelink:</h4>
+            <div class="alliance-invite-link">
+                {{ unbound AWE.Config.ALLIANCE_INVITATION_BASE }}{{ unbound alliance.invitation_code }}</div>
+            </div>
+            {{else}}
+            <div class="alliance-join-button" {{action "sendAllianceApplication"}}>
+                {{t dialogs.alliance.apply}}
+            </div>
+            {{/if}}
+            {{#if isAllianceLeader}}
+            <div class="alliance-management">
+                <div class="alliance-slogan">
+                    <h4>{{t dialogs.alliance.allianceInfo.slogan}}</h4>
+                    {{view AWE.UI.Ember.AlliancePasswordInputField class="alliance-password" maxlength=5 type="text" allianceBinding="alliance"}} 
+                </div>
+
+                <div class="alliance-accept">
+                    <h4>{{t dialogs.alliance.allianceInfo.autoJoin}}</h4>
+                    <div class="alliance-status-toggle" {{action "setAutoJoin"}}>
+                        <div {{bindAttr class=":alliance-toggle :alliance-toggle-off isToggleOn"}}>
+                            OFF
+                        </div>
+                        <div {{bindAttr class=":alliance-toggle :alliance-toggle-on isToggleOn"}}>
+                            ON
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+        </div>
+        {{#if isAllianceLeader}}
+        <div class="alliance-text">
+            {{view Ember.TextArea class="alliance-description" maxlength=AWE.Config.DESCRIPTION_MAX_LENGTH type="text" allianceBinding="alliance" valueBinding="alliance.description" focusOutBinding="processNewDescription"}}
+        </div>
+        {{else}}
+        <div class="alliance-text">
+            {{alliance.description}}
+        </div>
+        {{/if}}
+    </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="alliance-member">
+    {{#if showCurrentCharacter}}
+        <td class="membersTable-name">
+            {{view AWE.UI.Ember.LinkedCharacterView characterBinding="character" displayAlliance=false}}
+            {{#if character.isActiv}} 
+                <span class="status-dot isActiv" > </span>
+
+
+            {{else}}
+                {{#if character.isAway}}
+                    <span class="status-dot isAway" > </span>
+
+
+                {{else}}
+                    {{#if character.isOff}}
+                        <span class="status-dot isOff" > </span>
+                    {{/if}}
+                {{/if}}
+            {{/if}}
+        </td>
+        {{#if ownAlliance}}
+            {{#if isCurrentCharacterAllianceLeader}}
+                {{#if isLeader}}
+                    {{#if currentCharacterVote}}
+                    <td class="membersTable-button inactive">{{t alliance.leaderVoted}}</td>
+                    {{else}}
+                    <td {{action "setLeaderVoteSelection"}} class="membersTable-button">{{t alliance.leaderVote}}</td>
+                    {{/if}}
+                {{else}}
+                    <td {{action "kickMember"}} class="membersTable-button">{{t alliance.kickMember}}</td>
+                {{/if}}
+            {{else}}
+                {{#if currentCharacterVote}}
+                <td class="membersTable-button inactive">{{t alliance.leaderVoted}}</td>
+                {{else}}
+                <td {{action "setLeaderVoteSelection"}} class="membersTable-button">{{t alliance.leaderVote}}</td>
+                {{/if}}
+            {{/if}}
+        {{/if}}
+    {{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="alliance-members-tab">
+  <div class="alliance-member-container">
+    <h3>{{t dialogs.alliance.allianceMembers.leader}}</h3>
+    <table>
+        {{view AWE.UI.Ember.AllianceMember tagName="tr" characterBinding="alliance.leader" allianceBinding="view.alliance" isCurrentCharacterAllianceLeaderBinding="view.isAllianceLeader" ownAllianceBinding="view.ownAlliance" controllerBinding="controller"}}
+    </table>
+    <h3>{{t dialogs.alliance.allianceMembers.members}}</h3>
+    <table>
+        {{#each alliance.members}}
+            {{view AWE.UI.Ember.AllianceMember noLeaderBinding="view.noLeader" tagName="tr" characterBinding="this" allianceBinding="view.alliance" isCurrentCharacterAllianceLeaderBinding="view.isAllianceLeader" ownAllianceBinding="view.ownAlliance" controllerBinding="controller"}}
+        {{/each}}
+    </table>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="alliance-diplomacy-tab">
+  <div class="alliance-diplomacy-container">
+    {{#if isAllianceLeader}}
+        <div class="alliance-ultimatum-new">
+          <div class="alliance-diplomacy-first alliance-ultimatum-new-input">
+            {{view Ember.TextField class="alliance-ultimatum-new-inputfield" type="text" valueBinding="targetAlliance"}}
+          </div>
+          <div class="alliance-diplomacy-second alliance-ultimatum-duration">
+            {{ultimatumDuration}}
+          </div>
+          <div class="alliance-diplomacy-third">
+            <div class="alliance-ultimatum-button" {{action "createDiplomacyRelation"}}>
+              {{t dialogs.alliance.allianceDiplomacy.issueUltimatum}}
+            </div>
+          </div>
+        </div>
+    {{/if}}
+    {{#if relationsFound}}
+      {{#if relationsAtUltimatum}}
+        <div class="public-information scrolling">
+          <div class="alliance-ultimatum">
+              <div class="alliance-diplomacy-title">
+                <div class="alliance-diplomacy-first">
+                  <h3>{{t dialogs.alliance.allianceDiplomacy.ultimatum}}:</h3>
+                </div>
+                <div class="alliance-diplomacy-second">
+                  <h3>{{t dialogs.alliance.allianceDiplomacy.end}}:</h3>
+                </div>
+              {{#each relationsAtUltimatum}}
+                {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this" allianceBinding="view.alliance"}}
+              {{/each}}
+            </div>
+          </div>
+        {{/if}}
+      {{#if relationsAtWar}}
+          <div class="alliance-war">
+            <div class="alliance-diplomacy-title">
+              <div class="alliance-diplomacy-first">
+                <h3>{{t dialogs.alliance.allianceDiplomacy.war}}:</h3>
+              </div>
+              <div class="alliance-diplomacy-second">
+                <h3>{{t dialogs.alliance.allianceDiplomacy.end}}:</h3>
+              </div>
+            </div>
+            {{#each relationsAtWar}}
+              {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this" allianceBinding="view.alliance"}}
+            {{/each}}
+          </div>
+      {{/if}}
+      {{#if relationsAtCapitulation}}
+          <div class="alliance-capitulation">
+            <div class="alliance-diplomacy-title">
+                <div class="alliance-diplomacy-first">
+                  <h3>{{t dialogs.alliance.allianceDiplomacy.capitulation}}:</h3>
+                </div>
+                <div class="alliance-diplomacy-second">
+                  <h3>{{t dialogs.alliance.allianceDiplomacy.end}}:</h3>
+                </div>
+              {{#each relationsAtCapitulation}}
+                {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this" allianceBinding="view.alliance"}}
+              {{/each}}
+            </div>
+          </div>
+        </div>
+        {{/if}}
+    {{/if}}
+  </div>
+</script>
+<script type="text/x-handlebars" data-template-name="alliance-diplomacy-row">
+  <div class="alliance-diplomacy-first" {{action "allianceClicked"}}>
+    <div class="alliance-diplomacy-name">{{targetAllianceTag}}</div>
+  </div>
+  <div class="alliance-diplomacy-second">
+    <div class="alliance-diplomacy-timer">{{ultimatumTimeString}}</div>
+  </div>
+  <div class="alliance-diplomacy-third">
+  {{#if warGiveUp}}
+      <div class="alliance-ultimatum-button" {{action "giveUp"}}>
+        give up
+      </div>
+  {{/if}}
+  </div>
+</script>

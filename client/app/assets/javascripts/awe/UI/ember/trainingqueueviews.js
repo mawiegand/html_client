@@ -128,7 +128,7 @@ AWE.UI.Ember = (function(module) {
     finished: function() {
       var t = this.get('timeRemaining');
       return t !== undefined && t !== null && t <= 0;
-    }.property('timeRemaining'),    
+    }.property('timeRemaining'),   
     
     startTimer: function() {
       var timer = this.get('timer');

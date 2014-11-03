@@ -43,12 +43,23 @@ AWE.UI.Ember = (function(module) {
     
 		levelBinding: 'building.level',
 		typeBinding:  'building.type',
+		mouseInView:  false,
 
-    classNameBindings: ['size1:size1', 'size2:size2', 'size3:size3',  'size4:size4',  'size5:size5',  'size6:size6', 'type', 'slotLayoutId', 'levelClassName'],
+    classNameBindings: ['mouseInView:hover', 'slotLayoutId', 'levelClassName'],
 
     levelClassName: function() {
       return "level"+this.get('level');
     }.property('level').cacheable(),
+
+    size: function() {
+      if(this.get("building"))
+      {
+        var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
+        var imageLevel = AWE.Config.BuildingImageLibrary.getImageLevelForBuilding(buildingId, this.get("level"));
+        return "size" + imageLevel;
+      }
+      return false;
+    }.property("building", 'level'),
 
     size1: function() {
       var level = this.get('level');
@@ -99,6 +110,51 @@ AWE.UI.Ember = (function(module) {
 
 
   });
+  
+  module.SlotClickArea = Ember.View.extend({
+    templateName: 'click-area',
+    classNames: 'click-area',
+   
+    mouseEnter: function(event) {
+      var self = this;
+      var parent = this.get("parentView");
+      
+      parent.set('mouseInView', true);  // need to set this because showTooltip is called delayed and there we need to check, whether the mouse left the view during the meantime
+      setTimeout(function() {
+        parent.showTooltip();
+      }, parent.get('timeout'));
+    },
+    
+    mouseMove: function(event) {
+      var parent = this.get("parentView");
+      
+      parent.set('mouseX', event.pageX);
+      parent.set('mouseY', event.pageY);
+    },
+    
+    mouseLeave: function(event) {
+      var parent = this.get("parentView");
+      
+      parent.set('mouseInView', false);
+      parent.setPath('parentView.hoveredBuildingSlotView', null);
+    },
+    
+  
+    click: function(event) {
+      var parent = this.get("parentView");
+      
+      var slot = parent.get('slot');
+		  var controller = parent.getPath('parentView.controller');
+		  
+		  if (controller) {
+		    controller.slotClicked(slot);
+		  }
+		  else {
+		    log('In Interactive Building View: no controller found!');
+		  }
+		},
+    
+  });
 
   /** @class
    * @name AWE.UI.Ember.BuildingSlotView */  
@@ -112,8 +168,6 @@ AWE.UI.Ember = (function(module) {
 		
 		buildingBinding: 'slot.building',
 				
-		mouseInView: false,
-
     init: function() {
       this._super();
     },
@@ -124,35 +178,6 @@ AWE.UI.Ember = (function(module) {
       }
     },
   
-    mouseEnter: function(event) {
-      var self = this;
-      this.set('mouseInView', true);  // need to set this because showTooltip is called delayed and there we need to check, whether the mouse left the view during the meantime
-      setTimeout(function() {
-        self.showTooltip();
-      }, this.get('timeout'));
-    },
-    mouseMove: function(event) {
-      this.set('mouseX', event.pageX);
-      this.set('mouseY', event.pageY);
-    },
-    mouseLeave: function(event) {
-      this.set('mouseInView', false);
-      this.setPath('parentView.hoveredBuildingSlotView', null);
-    },
-    
-  
-    click: function(event) {
-      var slot = this.get('slot');
-		  var controller = this.getPath('parentView.controller');
-		  
-		  if (controller) {
-		    controller.slotClicked(slot);
-		  }
-		  else {
-		    log('In Interactive Building View: no controller found!');
-		  }
-		},  
-		
     slotLayoutId: function() {
       var slotNum = this.getPath('slot.slot_num');
       return slotNum ? "slot"+slotNum : null;

@@ -49,6 +49,24 @@ AWE.UI.Ember = (function(module) {
     }.property('slot.building_id', 'slot.settlement'),  
   });  
 
+module.SelectBuildingNewDialog = module.PopUpDialog.extend({
+    templateName: 'settlement-new-dialog-select-building',
+
+    open: function(){
+      WACKADOO.presentModalDialog(this);
+    },
+
+    closeDialog: function() {
+      this.get('controller').unselectSlot();
+      this.destroy();
+    },
+  });
+
+module.SelectBuildingNewView = module.SelectBuildingDialog.extend( /** @lends AWE.UI.Ember.SelectBuildingDialog# */ {
+    templateName: "settlement-new-view-select-building",
+     
+  });  
+
   /** @class
    * @name AWE.UI.Ember.BuildingOptionView */
   module.BuildingOptionView = module.HoverableView.extend( /** @lends AWE.UI.Ember.BuildingOptionView# */ {
@@ -108,6 +126,30 @@ AWE.UI.Ember = (function(module) {
       return this.getPath('building.buildingId') === this.getPath('hovered.buildingId');
     }.property('building', 'hovered').cacheable(),
   });
+
+  module.BuildingOptionDetailNewView = module.BuildingOptionDetailView.extend({
+    templateName:      "building-option-details-new-view",
+    classNames: ['building-option-details-new-view'],
+
+    onInfoClicked: function()
+    {
+      var dialog = AWE.UI.Ember.BuildingOptionDetailNewDialog.create({building: this.get('building')});
+      WACKADOO.presentModalDialog(dialog);
+    },
+    
+  });
+
+  module.BuildingOptionDetailNewDialog = module.PopUpDialog.extend({
+    templateName:      "building-option-details-new-dialog",
+    classNames: ['building-option-details-new-dialog'],
+    
+  });
+
+   module.BuildingOptionDetailNewDialogView = module.BuildingOptionDetailView.extend({
+    templateName:      "building-option-details-new-dialog-view",
+    classNames: ['building-option-details-new-dialog-view'],
+
+  });
    
   module.GeneralResourceView = Ember.View.extend({
     tagName:      'span', 
@@ -137,7 +179,12 @@ AWE.UI.Ember = (function(module) {
     },
                       
     upgradeClicked: function(event) {
-      this.get('controller').constructionUpgradeClicked(this.get('slot'));
+      var dialog = AWE.UI.Ember.UpgradeView.create({
+        slot: this.get('slot'),
+        controller: this.get('controller'),
+      });
+      WACKADOO.presentModalDialog(dialog);
+      //this.get('controller').constructionUpgradeClicked(this.get('slot'));
     },         
     
     destroyClicked: function(event) {
@@ -372,7 +419,7 @@ AWE.UI.Ember = (function(module) {
 
     joinAllianceNotAllowedText: function(){
       var string = AWE.I18n.lookupTranslation('alliance.joinAllianceNotAllowedText');
-      return string.format(Date.parse(this.getPath("character.cannot_join_alliance_until")).toLocaleString());
+      return string.format(AWE.Util.localizedDateTime(this.getPath("character.cannot_join_alliance_until")));
     }.property("character.cannot_join_alliance_until"),
   
     joinAlliance: function() {

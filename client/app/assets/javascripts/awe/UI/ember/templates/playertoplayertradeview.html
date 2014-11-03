@@ -125,6 +125,123 @@
   <p>{{t settlement.trade.frogTradeDescription}}</p>
 
 </script>
+<!--NEW DIALOGS START-->
+<script type="text/x-handlebars" data-template-name="player-to-player-trade-view-new">
+  <h1 class="modal-dialog-heading">{{t settlement.trade.trade}}</h1>
+   <div class="modal-dialog-body modal-dialog-body-trade scrolling">
+    {{view AWE.UI.Ember.TradeNewTabView controllerBinding="controller" settlementBinding="settlement"}}
+   </div>
+</script>
 
+<script type="text/x-handlebars" data-template-name="trade-tab1-view">  
+  <div class="tab-position"> 
+    {{view AWE.UI.Ember.InOutboundTabView controllerBinding="controller" settlementBinding="settlement"}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="trading-cart-action-new-view">
+  <div class="trade-action-cell">
+    {{#if outgoing}}
+      <div class="background-textfield-grey-m background-textfield-trade-action-m tab-bar-new textfield-grey-text-white">{{recipient.name}}</div>
+    {{else}}
+      <div class="background-textfield-grey-m background-textfield-trade-action-m tab-bar-new textfield-grey-text-white">{{sender.name}}</div>
+    {{/if}}
+    
+    <div class="background-textfield-grey-s background-textfield-trade-action-s tab-bar-new textfield-grey-text-white">
+      {{#if tradingCartAction.returning}}
+        {{formatedRemainingTime}}
+      {{else}}
+        {{formatedRemainingTime}}
+      {{/if}}
+    </div>
+    <div class="background-textfield-grey-s background-textfield-trade-action-s tab-bar-new textfield-grey-text-white">{{tradingCartAction.num_carts}} {{t settlement.trade.carts}}</div>
+    {{#if hurrying}}
+    {{else}}
+    <div class="button-gold button-trade-action" {{action "speedupPressed"}}>
+      <div class="icon-speed-up icon-speed-up-trade-action"></div>
+      <div class="name-change-button-gold-titel trade-action-titel">{{speedupCosts}}</div>
+      <div class="icon-toad icon-toad-trade-action"></div>
+    </div>
+     {{/if}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="outbound-tab-view">   
+    {{#if settlement.enumerableOutgoingTradingCartActions}}
+      {{#each settlement.enumerableOutgoingTradingCartActions}}
+        {{view AWE.UI.Ember.TradingCartActionCellView settlementBinding="view.settlement" tradingCartActionBinding="this"}}
+      {{/each}}
+    {{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="inbound-tab-view">   
+    {{#if settlement.enumerableIncomingTradingCartActions}}
+      {{#each settlement.enumerableIncomingTradingCartActions}}
+        {{view AWE.UI.Ember.TradingCartActionCellView settlementBinding="view.settlement" tradingCartActionBinding="this"}}
+      {{/each}}
+    {{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="trade-tab2-view">   
+    <div class="modal-dialog-body-trade player-to-player-trade-cell">
+      <div class="recipient-text">{{t settlement.trade.recipient}}</div>
+      <div class="player-to-player-trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield valueBinding="recipientName"}}</div>
+      <div class="modal-dialog-blue-button-small modal-dialog-green-button-small-right submit-trade-button" {{action "sendPressed"}}>
+            {{t settlement.trade.submit}}
+          </div>
+    </div>
+    <div class="modal-dialog-body-trade player-to-player-trade-cell">
+      <div class="recipient-text cart-info-text">{{ numCarts }} / {{ settlement.availableTradingCarts }} {{t settlement.trade.carts}} ({{settlement.trading_carts}} total)</div>
+    </div>
+
+    {{#each resourceType in resources}}
+    <div class="modal-dialog-body-trade player-to-player-trade-cell assignments-dialog-pane">
+      <div {{bindAttr class="resourceType.type.symbolic_id :is-active :trade :send"}}></div>
+      <div class="send-resource-range-view-cell">{{view AWE.UI.Ember.SendResourceRangeView valueBinding="resourceType.amount" resourceTypeBinding="resourceType" settlementBinding="parentView.settlement" maxAmountBinding="parentView.maxAmount" currentIDBinding="parentView.currentID"}}</div>
+      <div class="recipient-text count-text">{{resourceType.amount}}</div>
+    </div>
+    {{/each}}
+    <div class="modal-dialog-body-trade player-to-player-trade-cell" style="text-align: end; line-height: 50px; right: 38px;
+">{{totalAmount}} / {{maxAmount}}</div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="trade-tab3-view">   
+    <div class="modal-dialog-body-trade trade-view-left-cell">
+        <div class="trade-resources-inputfield-row">
+          <div class="trade-resource-icon assignments-dialog-pane">
+            <div class="resource_stone is-active trade"></div>
+          </div>
+          <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield valueBinding="newStoneValue"}}</div>
+        </div>
+        <div class="trade-resources-inputfield-row">
+          <div class="trade-resource-icon assignments-dialog-pane">
+            <div class="resource_wood is-active trade"></div>
+          </div>
+          <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield valueBinding="newWoodValue"}}</div>
+        </div>
+        <div class="trade-resources-inputfield-row">
+          <div class="trade-resource-icon assignments-dialog-pane">
+            <div class="resource_fur is-active trade"></div>
+          </div>
+          <div class="trade-inputfield">{{view AWE.UI.Ember.ResourceTextfield valueBinding="newFurValue"}}</div>
+        </div>
+        <div class="trade-resources-inputfield-row trade-text-bottom">{{t settlement.trade.distrEvently}}</div>
+    </div>
+    <div class="modal-dialog-body-trade trade-view-right-cell">
+      {{#if loadingInit}}
+        {{view AWE.UI.Ember.WheelOrValueView valueBinding="null"}}&nbsp;&nbsp;&nbsp;{{t resource.exchange.loading}}
+      {{else}}
+        <div class="trade-text-row">{{t settlement.trade.resourceTradeInfo}}</div>
+        <div class="trade-premium-button-row">
+            <div class="name-change-button-gold trade-gold" {{action "exchangeClicked"}}>
+              <div class="item-price">{{cost}}</div>
+              <div class="item-toad"></div>
+              <div class="name-change-button-gold-titel">{{t settlement.trade.trade}}</div>
+            </div>
+        </div>
+        {{/if}}
+      </div>
+</script>
+<!--NEW DIALOGS END-->
 
 

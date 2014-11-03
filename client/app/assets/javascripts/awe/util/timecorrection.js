@@ -41,7 +41,7 @@ AWE.Util.TimeCorrection = (function(module) {
     };
     
     that.localToServerTime = function(localDate) {
-      var serverTime = localDate.clone().addMilliseconds(-this.estimateLag());
+      var serverTime = localDate.clone().addMilliseconds(-this.estimatedLag());
       if (AWE.Config.TIME_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
         log('TIME_CORRECTION LOCAL TIME', localDate, 'TO SERVER TIME', serverTime, 'elag', this.estimatedLag());
       }
@@ -49,7 +49,7 @@ AWE.Util.TimeCorrection = (function(module) {
     }
     
     that.serverToLocalTime = function(serverDate) {
-      var localTime = serverDate.clone().addMilliseconds(this.estimateLag());
+      var localTime = serverDate.clone().addMilliseconds(this.estimatedLag());
       if (AWE.Config.TIME_DEBUG_LEVEL >= AWE.Config.DEBUG_LEVEL_DEBUG) {
         log('TIME_CORRECTION SERVER TIME', serverDate, 'TO LOCAL TIME', localTime, 'elag', this.estimatedLag());
       }

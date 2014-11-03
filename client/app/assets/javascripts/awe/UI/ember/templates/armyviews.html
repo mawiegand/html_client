@@ -238,3 +238,283 @@
     <td class="info"><a class="clickable" {{action "infoPressed"}}>{{t army.list.table.info}}</a></td>
   </tr>
 </script>
+
+<script type="text/x-handlebars" data-template-name="military-new-info-dialog">
+  <h1 class="modal-dialog-heading">{{t encyclopedia.military}}</h1>
+   <div class="modal-dialog-body change-army-dialog-pane scrolling">
+    {{view AWE.UI.Ember.ArmyInfoNewTabView unitTypesBinding="unitTypes" garrisonArmyBinding="garrisonArmy" controllerBinding="controller" settlementBinding="settlement" trainingQueuesBinding="trainingQueues"}}
+   </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="tab-view-army-info">
+  
+  <div class="tab-bar-new-military">
+    {{#each tab in tabViews}}
+      {{#if tab.isTitelTab}}
+        <div {{bindAttr class=".cell"}}>
+        
+        {{#view AWE.UI.Ember.TabButtonArmyInfoView keyBinding="tab.key" titleBinding="tab.title" buttonClassBinding="tab.buttonClass"}}{{tab.title}}
+            <div class="swords-icon"></div>
+        {{/view}}
+      </div>
+      {{else}}
+        <div {{bindAttr class=":cell view.cellClass"}}>
+          {{#view AWE.UI.Ember.TabButtonArmyInfoView keyBinding="tab.key" titleBinding="tab.title" buttonClassBinding="tab.buttonClass"}}{{tab.title}}{{/view}}
+        </div>
+      {{/if}}
+    {{/each}}
+    <div class="clearfix"></div>
+  </div>  
+    
+  {{view Ember.ContainerView currentViewBinding="currentView"}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-info-tab1-view">   
+  {{#each armyType in activeArmyTypen}}
+
+      <div class="military"> 
+          {{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}
+        <div class="military-count">x {{armyType.garrisonUnits}}</div>
+      </div>
+
+  {{/each}}
+</script>
+<!-- Army Info Icon-->
+<script type="text/x-handlebars" data-template-name="army-info-button"> 
+  <div {{bindAttr class="unitType.symbolic_id :cell-icon" }} {{action "openDialog"}}>  
+      <div class="military-info" {{action "openDialog"}}>i</div>
+  </div>
+</script>
+
+<!-- Army small Info Icon-->
+<script type="text/x-handlebars" data-template-name="army-icon-small"> 
+  <div {{bindAttr class="unitType.symbolic_id :cell-icon-small" }}>  
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-icon-big-button">   
+{{#if requirementsMet}}
+  <div class="military-big"> 
+        <div {{bindAttr class="armyType.db_field :cell-icon-big"}} {{action "openDialog"}}>
+        </div>
+        {{view AWE.UI.Ember.ArmyUnitResourceInfoView unitTypeBinding="unitType" controllerBinding="controller" queueBinding="queue"}}
+      </div>
+{{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-resource-info">   
+  <div class="military-costs-background" {{action "openJobDialog"}}> 
+
+    <div class="military-costs-row">
+      <div class="cost-text-titel">{{t building.level}} {{getLevel}}}</div>
+    </div>
+    <div class="military-costs-row">
+      <div class="military-costs-half-row">
+        <div class="resource_stone small"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{getStoneCosts}}</div>
+      </div>
+    </div>
+    <div class="military-costs-row">
+      <div class="military-costs-half-row">
+        <div class="resource_wood small"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{getWoodCosts}}</div>
+      </div>
+    </div>
+    <div class="military-costs-row">
+      <div class="military-costs-half-row">
+        <div class="resource_fur small"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{getFurCosts}}</div>
+      </div>
+    </div>
+    <div class="military-costs-row">
+      <div class="military-costs-half-row">
+        <div class="cost-item-small-uhr"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{formattedProductioTime}}</div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-info-tab2-view">   
+    {{#each queue.hashableJobs.collection }}
+        {{view AWE.UI.Ember.ArmyTrainingJobNewView controllerBinding="controller" jobBinding="this"}}
+    {{/each}}
+    {{#each armyType in trainableUnitTypes}}
+        {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" controllerBinding="parentView.controller" queueBinding="parentView.queue"}}
+    {{/each}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-info-tab3-view">   
+    {{#each queue.hashableJobs.collection }}
+        {{view AWE.UI.Ember.ArmyTrainingJobNewView controllerBinding="controller" jobBinding="this"}}
+    {{/each}}
+    {{#each armyType in trainableUnitTypes}}
+        {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" controllerBinding="parentView.controller" queueBinding="parentView.queue"}}
+    {{/each}}
+</script>
+<script type="text/x-handlebars" data-template-name="army-info-tab4-view">   
+    {{#each queue.hashableJobs.collection }}
+        {{view AWE.UI.Ember.ArmyTrainingJobNewView controllerBinding="controller" jobBinding="this"}}
+    {{/each}}
+    {{#each armyType in trainableUnitTypes}}
+         {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" controllerBinding="parentView.controller" queueBinding="parentView.queue"}}
+    {{/each}}
+</script>
+<script type="text/x-handlebars" data-template-name="army-info-tab5-view">   
+    {{#each queue.hashableJobs.collection }}
+        {{view AWE.UI.Ember.ArmyTrainingJobNewView controllerBinding="controller" jobBinding="this"}}
+    {{/each}}
+    {{#each armyType in trainableUnitTypes}}
+         {{view AWE.UI.Ember.ArmyUnitResourceView unitTypeBinding="armyType" controllerBinding="parentView.controller" queueBinding="parentView.queue"}}
+    {{/each}}
+</script>
+
+<!-- RECRUITMENT-->
+<script type="text/x-handlebars" data-template-name="army-recruitment-view">   
+    {{view AWE.UI.Ember.ArmyRecruitmentJobInfoView unitTypeBinding="unitType" controllerBinding="controller" queueBinding="queue"}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-recruitment-info-view">   
+  <div class="unit-image-wrapper">
+    <div {{bindAttr class="unitType.db_field :unit-image-new"}}>
+      <div class="count-text-big-background">
+        <div class="count-text-big count-text-jobs">{{number}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="unit-description jobs-description">
+    {{t encyclopedia.attackAbbreviation}}: {{unitType.attack}} <br/>
+    {{t encyclopedia.defenseAbbreviation}}:  {{unitType.armor}}<br/>
+    {{t encyclopedia.hitpointsAbbreviation}}: {{unitType.hitpoints}} <br/>
+     {{t ranking.type}}: {{getUnitCategoryName}} </br>
+    {{t encyclopedia.criticalDamageAbbreviation}}: {{unitType.critical_hit_damage}} % <br/>
+  </div>
+  <div class="military-costs-green-background" {{action "setupJobPressed"}}>
+    <div class="military-costs-row military-costs-row-all">
+      <div class="military-costs-half-row">
+        <div class="resource_stone small"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{getTotalStoneCosts}}</div>
+      </div>
+    </div>
+    <div class="military-costs-row military-costs-row-all">
+      <div class="military-costs-half-row">
+        <div class="resource_wood small"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{getTotalWoodCosts}}</div>
+      </div>
+    </div>
+    <div class="military-costs-row military-costs-row-all">
+      <div class="military-costs-half-row">
+        <div class="resource_fur small"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{getTotalFurCosts}}</div>
+      </div>
+    </div>
+    <div class="military-costs-row military-costs-row-all">
+      <div class="military-costs-half-row">
+        <div class="cost-item-small-uhr"></div>
+      </div>
+      <div class="military-costs-half-row">
+        <div class="cost-text-small">{{formattedTotalProductioTime}}</div>
+      </div>
+    </div>
+  </div>
+
+  {{view AWE.UI.Ember.JobsRangeView numberBinding="number"}}
+</script>
+<!--Job Statusbar-->
+<script type="text/x-handlebars" data-template-name="army-job-cell">   
+      <div class="army-type-cell army-type-cell-jobs">
+        <div class=" cell-icon-unit-queue"><div {{bindAttr class="job.unitType.db_field :cell-icon"}}></div></div>
+        <div class="queue-unit-count">{{job.remaining}}</div>
+        {{#if active}}
+            <div class="cell training-background-job" >
+                <div class="training-bar-job" {{bindAttr style="totalBarWidth"}}>
+                  <div class="training-unit-bar" {{bindAttr style="activeBarWidth"}}></div>
+                  <div class="progress-value progress-value-unit-training">{{formatedRemainingTime}}</div>
+                </div>
+            </div>
+        {{else}}
+            {{#if first}}
+                {{#if isArmySizeMax}}
+                    <div class="queue-unit-info-text">{{t army.maximumArmySizeReached}}</div>
+                {{else}}
+                   <div class="queue-unit-info-text">{{t army.waitingForResources}}</div>
+                {{/if}}
+            {{else}}
+               <div class="training-unit-bar-empty"></div>
+            {{/if}}
+        {{/if}}
+        <div class="cancel-button-queue" {{action "cancelJobPressed"}}><div class="cancel-button-icon"></div></div>
+        {{#if isTrainingSpeedupPossible}}
+          <div class="gold-button-queue" {{action "speedupJobPressed"}}>
+              <div class="icon-speed-up icon-speed-up-unit-queue"></div>
+              <div class="name-change-button-gold-titel speed-up-button-titel">{{trainingSpeedupCost timeRemaining}}</div>
+              <div class="icon-toad icon-toad-unit-queue"></div>
+          </div>
+        {{/if}}
+      </div>
+</script>
+<!--Army info dialog-->
+
+<script type="text/x-handlebars" data-template-name="army-new-info-dialog">
+  <h1 class="modal-dialog-heading">{{army.name}}</h1>
+   <div class="modal-dialog-body modal-dialog-body-info scrolling">
+      {{view AWE.UI.Ember.ArmyInfoNewView armyBinding="army"}}
+   </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="army-new-info-view">
+  <div class="army-info-buttons-cell">
+    <div class="button-blue-info-wide army-info-button" {{action "nameClicked"}}><div class="button-blue-info-wide-titel">{{owner.name}}</div></div>
+    {{#if owner.alliance_tag}}
+      <div class="button-blue-info-wide army-info-button" {{action "openAlliance"}}><div class="button-blue-info-wide-titel">{{owner.alliance_tag}}</div></div>
+    {{/if}}
+  </div>
+  <div class="army-info-state-cell">
+    <div class="text-cell-left">{{t army.details.homeSettlement}}:</div><div class="text-cell-right">{{army.homeSettlement.name}}</div>
+    <div class="text-cell-left">{{t army.details.experience}}:</div><div class="text-cell-right">{{army.exp}}</div>
+    <div class="text-cell-left">{{t army.details.rank}}:</div><div class="text-cell-right">{{army.rankToDisplay}}</div>
+    <div class="text-cell-left">{{t army.details.actionPoints}}:</div><div class="text-cell-right">{{army.ap_present}}/{{army.ap_max}}</div>
+  </div>
+  <div class="army-info-attack-stats-cell">
+    <div class="army-stats-info-cell">
+       <div class="army-icon sword-icon army-info-sword-icon"></div>
+       <div class="army-info-text-grey">{{formatNumber army.unitcategory_infantry_strength places="0"}}</div>
+    </div>
+    <div class="army-stats-info-cell">
+      <div class="army-icon cavalry-icon army-info-cavalry-icon"></div>
+      <div class="army-info-text-grey">{{formatNumber army.unitcategory_cavalry_strength places="0"}}</div>
+    </div>
+    <div class="army-stats-info-cell">
+      <div class="army-icon archer-icon army-info-archer-icon"></div>
+      <div class="army-info-text-grey">{{formatNumber army.unitcategory_artillery_strength places="0"}}</div>
+    </div>
+  </div>
+    {{#if displayUnits}}
+            {{#if haveDetails}}
+              <div class="army-info-icons-cell">
+                  {{#each unit in units}}
+                     <div class="army-info-icon"> 
+                            {{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="unit"}}
+                            <div class="army-info-count-text army-info-count-text-position">{{unit.number}}</div>
+                      </div>
+                  {{/each}}
+              </div>
+            {{else}}
+            {{/if}}
+    {{else}}
+    {{/if}}
+</script>

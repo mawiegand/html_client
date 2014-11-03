@@ -2,7 +2,7 @@ var AWE = AWE || {};
 AWE.I18n = AWE.I18n || {};
 
 AWE.I18n.en_US = function(module) {
-
+    
   module.localizedStrings = {
 
     general:{
@@ -36,7 +36,7 @@ AWE.I18n.en_US = function(module) {
 
       demigod:'Demigod',
       demigoddess:"Demigoddess",
-
+      
       neanderthal: "Neanderthal",
 
       playerName:"Player name",
@@ -116,6 +116,8 @@ AWE.I18n.en_US = function(module) {
     },
 
     army:{
+      maximumArmySizeReached: "Maximum army size reached!",
+      waitingForResources: "Waiting for resources!",
       newArmy:"New Army",
 
       list: {
@@ -166,7 +168,7 @@ AWE.I18n.en_US = function(module) {
         rank:"Rank",
         rankDescription:"Having a higher rank makes your troops more effective. Your army has to gain experience in order to achieve a higher rank.",
         rankUpAt:"Rank up at",
-        experience:"experience",
+        experience:"Experience",
         experienceDescription:"You gain experience when your own troops die, not when you kill those of the enemy. The reason? You only learn from your mistakes.",
         stance:"Help to defend the fortress or settlement if they're attacked.",
         demigod:"Demigod",
@@ -295,11 +297,12 @@ AWE.I18n.en_US = function(module) {
       cost:"Cost",
       duration:"Duration",
       produces:"Produces",
-      capacity:"Storage capacity",
+      capacity:"Capacity",
       productionBoni:"Production bonus",
       tradingCarts:"Trading carts",
       commandPoints:"Command points",
       garrison:"Garrison army",
+      population: "Population",
       populationAbbreviation:"Pop",
       buildingTime:"Building time",
       storageCapacity:"Storage capacity",
@@ -353,7 +356,7 @@ AWE.I18n.en_US = function(module) {
         notEnoughBuildingSlots:"You cannot create any new buildings right now. You need to upgrade your main building to do this - either the chieftan's hut in the main settlement or the meeting place in a camp.",
         notEnoughCash:"You don't have enough Golden Frogs to carry out this action.",
       },
-
+      
       gossip: {
         heading: "Gossip",
         advice: [
@@ -438,7 +441,7 @@ AWE.I18n.en_US = function(module) {
 
       founded:"Founded",
       leader:"Leader",
-      leaderVote: 'Deine Stimme',
+      leaderVote: 'Vote',
       description:"Description",
       changeDescriptionDialogCaption: 'Please enter your alliance description.',
       changeDescription: 'Edit description',
@@ -487,7 +490,7 @@ AWE.I18n.en_US = function(module) {
       changePassword:'Save new password',
       saveReservation: 'Save reservation',
       kickMember:'Kick',
-      report: 'Melden',
+      report: 'Report',
       sendApplication: 'Submit application',
       bonus: 'Bonus',
       ofMax: 'of maximum',
@@ -677,7 +680,7 @@ AWE.I18n.en_US = function(module) {
       max:'max',
       condition:'Condition',
       founded:'Founded',
-
+      
       customization: {
         chooseName: "Choose your name",
         changeName: "Change your name",
@@ -797,6 +800,12 @@ AWE.I18n.en_US = function(module) {
       },
 
       trade:{
+        trade: "Trade",
+        distrEvently: "Entering 0 in all fields distributes them evenly",
+        resourceTradeInfo: "You can redistribute your resources for 2 golden frogs. This does not change your total Resource amount, just the distribution among the 3 types.",
+
+        update: "Update",
+        submit: "Submit",
         sendResources:"Send resources",
         cartsEnRoute:"Trading carts en route",
         recipient:"Recipient",
@@ -805,6 +814,7 @@ AWE.I18n.en_US = function(module) {
         carts:"Carts",
         timeOfArrival:"Time of arrival",
         inbound:"Inbound",
+        outbound: "Outbound",
         sending:"Sending",
         empty:"empty",
         cargo:"cargo",
@@ -900,7 +910,7 @@ AWE.I18n.en_US = function(module) {
               resource_fur: "You don't have sufficient fur to start the assignment.",
               resource_cash: "You don't have sufficient toads to start the assignment.",
               armies: "You don't have sufficient units to start the assignment.",
-            }
+            }  
           }
         }
       },
@@ -969,6 +979,11 @@ AWE.I18n.en_US = function(module) {
       movingTab: "Moving",
 
       rank:{
+        currentRank:"Current Rank",
+        nextRank:"Next Rank",
+        currentLevel:"Current Level",
+        nextLevel:"Next Level",
+        progressBar:"Progress",
         start:"Start",
         experience:"Experience",
         experienceAbbreviation:"XP",
@@ -1002,7 +1017,7 @@ AWE.I18n.en_US = function(module) {
         lagUntolerable1:"Please set your system clock to the correct time.",
         lagUntolerable2:"Otherwise, enable automatic internet time synchronization if your operation system provides this feature. Your responsiveness and your user experience would both improve significantly. ",
       },
-
+      
       settings: {
         connectToFacebookHeading: 'Go Social!',
         youAreConnectedToFacebook: "You're already connected with Facebook and ready to play Wack-A-Doo in Facebook: <a href='https://apps.facebook.com/wack-a-doo' target='_blank'>https://apps.facebook.com/wack-a-doo</a>.<br/>Got a wrong connection? Please contact support (support@5dlab.com).",
@@ -1026,6 +1041,7 @@ AWE.I18n.en_US = function(module) {
         presentName:"Current name",
         chooseNameCaption:'Choose name',
         changeNameCaption:'Change name',
+        changeDescriptionCaption: 'Change description',
         nameChangeAdvice:'Choose your name carefully! Ideally it should fit in with the Stone Age environment. Your name must also be unique in Wack-a-Doo.',
         nameChangeFreeAdvice:'You have two free chances to change your name, after which each name change will cost a couple of Golden Frogs. This is to prevent misuse. ',
         nameChangeCostAdvice:"You've already changed your name twice! You can change it again, but to prevent misuse doing so will cost you 20 Golden Frogs.",
@@ -1038,6 +1054,14 @@ AWE.I18n.en_US = function(module) {
         genderChangeCostAdvice:'You have already changed your gender setting twice! You can change it again, but to prevent misuse doing so will cost you 20 Golden Frogs.',
         male:"Male",
         female:"Female",
+        customEyes:'Eyes',
+        customMouth: 'Mouth',
+        customHair: 'Hair',
+        customBeard: 'Beard',
+        customChains: 'Chains',
+        customTattoos: 'Tattoos',
+        customSymbols: 'Symbols',
+        customToads: 'Toads',
 
         changePasswordCaption:"Change Password",
         changePasswordAdvice:"You can change your password here. The password must be between 6 and 40 characters long.",
@@ -1080,7 +1104,7 @@ AWE.I18n.en_US = function(module) {
           changePasswordInvalid:"This password doesn't meet the Wack-a-Doo requirements. Please choose another password.",
           changePasswordUnknown:"Your password could not be changed right now. Please try again later.",
           changePasswordNoMatch:"The two passwords you've entered don't match. Please try again.",
-
+          
           changeDescriptionError: "Die Character Beschreibung konnte aus unbekanntem Grund nicht geändert werden.",
 
           changeSameIIUnknown: "The list can't be changed right now. Please try again later.",
@@ -1091,7 +1115,7 @@ AWE.I18n.en_US = function(module) {
           },
         },
       },
-
+      
       moving: {
         info1: "You can move with your home settlement into another region.",
         info2: "You can not move into a region that is in battle or a region with an owner change in the last 12 hours.",
@@ -1238,6 +1262,17 @@ AWE.I18n.en_US = function(module) {
       experienceForLostUnits: "XP per lost unit",
       experienceFactor: "XP factor",
 
+      attackAbbreviation: "Att",
+      defenseAbbreviation: "Def",
+      hitpointsAbbreviation: "HP",
+      criticalDamageAbbreviation: "Crit",
+      garrison: "Garrison",
+      infantry: "Infantry",
+      artillery: "Artillery",
+      cavalery: "Cavalery",
+      specialUnits: "Special Units",
+      military: "Military",
+
       commandPointsAbbreviation:"CP",
       buildingTime:"Build time",
 
@@ -1333,7 +1368,7 @@ AWE.I18n.en_US = function(module) {
         },
       },
     },
-
+    
     effects: {
       effects: "Bonuses",
       type0: "Shop",
@@ -1394,10 +1429,53 @@ AWE.I18n.en_US = function(module) {
       manual: "Manual",
       logout: "Log out",
       header: "Menu",
+      reload: "Reload",
+    },
+
+    dialogs:{
+      assignments: {
+        quests: "Quests",
+        special_quests: "Special Quests",
+        gossip: "Gossip"
+      },
+      alliance: {
+        alliance: "Alliance",
+        info: "Info",
+        members: "Members",
+        diplomacy: "Diplomacy",
+        apply: "Apply",
+
+        allianceInfo: {
+          slogan: "Slogan",
+          autoJoin: "AutoJoin"
+        },
+        allianceMembers: {
+          leader: "Leader",
+          members: "Members",
+        },
+        allianceDiplomacy: {
+          placeHolder: "Insert Tag",
+          issueUltimatum: "Issue ultimatum",
+          ultimatum: "Ultimatum",
+          war: "War",
+          capitulation: "Capitulation",
+          end: "End",
+        },
+      },
+      move:{
+        heading: "Move",
+        description: "This explains how to move.",
+        to: "move to"
+      },
+      upgrade:{
+        heading: "Building Upgrade",
+        upgrade: "Upgrade",
+        level: "Level",
+      }
     },
   };
-
+  
   return module;
-
+  
 }(AWE.I18n.en_US || {});
 

@@ -735,7 +735,7 @@ AWE.Controller = function (module) {
         return;
       }
 
-      var dialog = AWE.UI.Ember.ArmyInfoDialog.create({
+      var dialog = AWE.UI.Ember./*ArmyInfoDialog*/ArmyInfoNewDialog.create({
         army:army,
 
         changeStanceCallback:function () {
@@ -744,7 +744,10 @@ AWE.Controller = function (module) {
           }
         },
       });
-      dialog.showModal();
+      WACKADOO.presentModalDialog(dialog);
+      //dialog.set('garrisonArmy', location.garrisonArmy());
+      //dialog.set('army', army);
+      //dialog.showModal();
     };
 
     that.armyMoveButtonClicked = function (armyAnnotationView) {
@@ -1029,7 +1032,46 @@ AWE.Controller = function (module) {
         removeMarker();
       }
 
-      var dialog = AWE.UI.Ember.ArmyCreateDialog.create({
+      var dialog = AWE.UI.Ember.ArmyNewCreateDialog.create({
+        locationId: location.id(),
+        /*create*/changePressed: function (evt) {
+          if (this.get('garrisonOverfull')) {
+            var errorDialog = AWE.UI.Ember.InfoDialog.create({
+              heading:AWE.I18n.lookupTranslation('army.form.errors.garrison'),
+              message:AWE.I18n.lookupTranslation('army.form.errors.message'),
+            });
+            that.applicationController.presentModalDialog(errorDialog);
+          }
+          else if (this.get('otherOverfull')) {
+            var errorDialog = AWE.UI.Ember.InfoDialog.create({
+              heading:AWE.I18n.lookupTranslation('army.form.errors.new'),
+              message:AWE.I18n.lookupTranslation('army.form.errors.message'),
+            });
+            that.applicationController.presentModalDialog(errorDialog);
+          }
+          else {
+            var unitQuantities = this.unitQuantities();
+            var armyName = this.get('armyName');
+            if (!AWE.Util.hashEmpty(unitQuantities)) {
+              //debugger
+              createArmyCreateAction(location, unitQuantities, armyName, (function (self) {
+                return function () {
+                  self.destroy();
+                }
+              })(this));
+              this.set('loading', true);
+            }
+            else {
+              this.destroy();
+            }
+          }
+        },
+        cancelPressed:function (evt) {
+          this.destroy();
+          that.updateUIMarker();
+        },
+        loading:false,
+      });/*AWE.UI.Ember.ArmyCreateDialog.create({
         locationId: location.id(),
         createPressed: function (evt) {
           if (this.get('garrisonOverfull')) {
@@ -1067,7 +1109,7 @@ AWE.Controller = function (module) {
           that.updateUIMarker();
         },
         loading:false,
-      });
+      });*/
       // garrisonArmy is set after create to trigger observer in view
       dialog.set('garrisonArmy', location.garrisonArmy()),
 
@@ -1259,7 +1301,51 @@ AWE.Controller = function (module) {
       var location = army.get('location');
       if (!location) return;
 
-      var dialog = AWE.UI.Ember.ArmyChangeDialog.create({
+      var dialog = AWE.UI.Ember.ArmyNewChangeDialog.create({
+      
+        locationId:location.id(),
+        changePressed:function (evt) {//green CHANGE button in change army view
+          if (this.get('garrisonOverfull')) {
+            var errorDialog = AWE.UI.Ember.InfoDialog.create({
+              heading:AWE.I18n.lookupTranslation('army.form.errors.garrison'),
+              message:AWE.I18n.lookupTranslation('army.form.errors.message'),
+            });
+            that.applicationController.presentModalDialog(errorDialog);
+          }
+          else if (this.get('otherOverfull')) {
+            var errorDialog = AWE.UI.Ember.InfoDialog.create({
+              heading:AWE.I18n.lookupTranslation('army.form.errors.other'),
+              message:AWE.I18n.lookupTranslation('army.form.errors.message'),
+            });
+            that.applicationController.presentModalDialog(errorDialog);
+          }
+          else {
+            var unitDifferences = this.unitDifferences();
+            if (!AWE.Util.hashEmpty(unitDifferences)) {
+              createArmyChangeAction(location, army, unitDifferences, (function (self) {
+                return function () {
+                  self.destroy();
+                }
+              })(this));
+              this.set('loading', true);
+            }
+            else {
+              this.destroy();
+            }
+          }
+        },
+        cancelPressed:function (evt) {
+          this.destroy();
+        },
+        loading:false,
+      
+      });
+      WACKADOO.presentModalDialog(dialog);
+      dialog.set('garrisonArmy', location.garrisonArmy());
+      dialog.set('otherArmy', army);
+
+      
+      /*AWE.UI.Ember.ArmyChangeDialog.create({
         locationId:location.id(),
         changePressed:function (evt) {
           if (this.get('garrisonOverfull')) {
@@ -1296,11 +1382,12 @@ AWE.Controller = function (module) {
         },
         loading:false,
       });
+      WACKADOO.presentModalDialog(dialog);
+      dialog.set('garrisonArmy', location.garrisonArmy());
+      dialog.set('otherArmy', army);*/
       // armies are set after create to trigger observer in view
-      dialog.set('garrisonArmy', location.garrisonArmy()),
-        dialog.set('otherArmy', army),
 
-        that.applicationController.presentModalDialog(dialog);
+        /*that.applicationController.presentModalDialog(dialog);*/
     }
 
     var runningRetreatAction = false;

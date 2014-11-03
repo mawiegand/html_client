@@ -185,21 +185,21 @@ Ember.registerBoundHelper("formatDuration", function(seconds) {
  * @name Handlebars.Helper.formatTime
  */
 Ember.registerBoundHelper("formatTime", function(datetime) {
-  return Date.parseISODate(datetime).toString('HH:mm:ss');
+  return datetime ? Date.parseISODate(datetime).toString('HH:mm:ss') : "";
 });
 
 /** TODO: extracts and formats the date component of the given date and time. 
  * @name Handlebars.Helper.formatDate
  */
 Ember.registerBoundHelper("date", function(datetime) {
-  return Date.parseISODate(datetime).toString('dd.MM');
+  return datetime ? Date.parseISODate(datetime).toString('dd.MM') : "";
 });
 
 /** TODO: extracts and formats the given date and time. 
  * @name Handlebars.Helper.formatDatetime
  */
 Ember.registerBoundHelper("formatDatetime", function(datetime) {
-  return Date.parseISODate(datetime).toString('dd.MM. HH:mm:ss');
+  return datetime ? Date.parseISODate(datetime).toString('dd.MM. HH:mm:ss') : "";
 });
 
 /** TODO: extracts and formats the given date and time. 

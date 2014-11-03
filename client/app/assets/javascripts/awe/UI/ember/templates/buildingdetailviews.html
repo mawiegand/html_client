@@ -73,6 +73,65 @@
 </script>
 
 
+<script type="text/x-handlebars" data-template-name="building-option-details-new-view">
+   <div class="building-selection-cell">
+      <div class="info-big-background building-info-button" {{action "onInfoClicked"}}>i</div>
+      <div {{action "optionClicked" target="parentView"}} class="building-background">
+        <div {{bindAttr class="building.buildingType.symbolic_id :building-image :building-position :building-selection-image"}}>  
+        </div>
+        {{#each building.costsOfNextLevel}}
+          <div class="building-selection-resource-cell">
+            <div {{bindAttr class="resourceType.symbolic_id :item :xs"}}>
+              <div class="count-text">
+                  {{amount}}
+              </div>
+            </div>
+          </div>     
+        {{/each}}
+        <div class="building-selection-resource-cell">
+          <div class="cost-item-xs-uhr">
+            <div class="count-text">
+                {{formatDuration building.productionTimeOfNextLevel}}
+            </div>
+          </div>
+        </div>
+      </div>
+   </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="building-option-details-new-dialog">
+  <div class="popup-dialog-header">
+        <a href="#" {{action "closeDialog"}}>
+          <div class="modal-dialog-back"></div>
+        </a>
+        <h1 class="popup-header-center" >{{local building.name}}</h1>
+  </div>
+  <div class="modal-dialog-body building-information-dialog-pane scrolling">
+    {{view AWE.UI.Ember.BuildingOptionDetailNewDialogView buildingBinding="building"}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="building-option-details-new-dialog-view">
+  <div class="row row1">
+          <div class="cell cell-50 building-main-level2"></div>
+          <div class="cell cell-50 info-box">
+            <ul class="resource-list">
+              <li><div class="resource-icon stone"></div><div class="resource-amount">500</div></li>
+              <li><div class="resource-icon wood"></div><div class="resource-amount">320</div></li>
+              <li><div class="resource-icon fur"></div><div class="resource-amount">400</div></li>
+              <li><div class="resource-icon xp"></div><div class="resource-amount">650</div></li>
+              <li><div class="resource-icon toad"></div><div class="resource-amount">447</div></li>
+            </ul>
+          </div>
+    </div>
+
+    <div class="row row2">
+              <div class="cell">
+                <p class="description">Hier kommen ganz viele Infos über dieses tolle Gebäude, dass du da oben siehst und es kommt noch mehr Text der dir gefällt.</p>
+              </div>
+    </div>
+</script>
+
 <script type="text/x-handlebars" data-template-name="settlement-dialog-select-building">
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-window">
@@ -102,6 +161,21 @@
   </div>
 </script>
 
+<script type="text/x-handlebars" data-template-name="settlement-new-dialog-select-building">
+  <div class="popup-dialog-header">
+    <h1 class="popup-header-center" >{{t settlement.buildings.select.heading }}</h1>
+  </div>
+  <div class="modal-dialog-body modal-dialog-building-selection scrolling">
+    {{view AWE.UI.Ember.SelectBuildingNewView controllerBinding="controller" slotBinding="slot"}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="settlement-new-view-select-building">
+  {{#each constructionOptions}}
+      {{view AWE.UI.Ember.BuildingOptionDetailNewView buildingBinding="this"}}
+  {{/each}}
+</script>
+
 
 <script type="text/x-handlebars" data-template-name="building-cost-view">
   {{t building.cost}}:
@@ -127,6 +201,13 @@
 
 
 <script type="text/x-handlebars" data-template-name="settlement-dialog-building-details">
+{{#if building.garrisonArmy }}
+        {{view AWE.UI.Ember.MilitaryInfoDialogNew garrisonArmyBinding="building.garrisonArmy" controllerBinding="controller" displayHeading=false}}
+{{/if}}
+      
+{{#if building.unlockedPlayerToPlayerTrade}}
+        {{view AWE.UI.Ember.TradeNewView settlementBinding="building.slot.settlement" controllerBinding="controller" displayHeading=false}}
+{{/if}}
   <div class="settlement-dialog-background"></div>
   <div class="settlement-dialog-window2 helvetica-light">
     <div class="settlement-dialog-header settlement-dialog-building-details"></div>
@@ -460,7 +541,7 @@
 
       {{#if building.unlockedDiplomacy}}
       <hr class="clearfix">
-        {{view AWE.UI.Ember.DiplomacyView unlockedAllianceCreationBinding="building.unlockedAllianceCreation"}}
+        {{view AWE.UI.Ember.AllianceDiplomacyDialog unlockedAllianceCreationBinding="building.unlockedAllianceCreation"}}
       {{/if}}
 
       {{#if building.unlockedPlayerToPlayerTrade}}

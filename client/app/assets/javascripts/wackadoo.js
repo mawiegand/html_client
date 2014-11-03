@@ -64,7 +64,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         $('#debug2').html('Loading Assets. Progress: ' + _numLoadedAssets + ' / ' + _numAssets);
       }
       else {
-        //this.get('hudController').setNeedsLayout();
         //this.get('hudController').setNeedsDisplay();
       }
 
@@ -309,6 +308,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         var startInSettlement = hasBase && AWE.Config.USE_TUTORIAL && (
           tutorialState && tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID) &&
             tutorialState.questStateWithQuestId(AWE.Config.TUTORIAL_MAP_QUEST_ID).get('status') < AWE.GS.QUEST_STATUS_FINISHED);
+        var identifier        = AWE.GS.CharacterManager.getCurrentCharacter().get('identifier');
 
         var hud = AWE.Controller.createHUDController();
         hud.init();
@@ -343,6 +343,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
         AWE.Facebook.updateFBCanvasSize();  // updates size of canvas, iff running in canvas
         AWE.Facebook.setDoneLoading();      // track loading time, iff running in canvas
+
+        Sample.setUserId(identifier);
+        Sample.track('started', { event_category: 'session'});
 
         if (AWE.Config.CHAT_SHOW) {
           self.initChat();
@@ -497,7 +500,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
 
     characterButtonClicked: function() {
-      var dialog = AWE.UI.Ember.ProfileView.create({
+      var dialog = AWE.UI.Ember./*ProfileView*/ProfileNewView.create({
         characterBinding: 'AWE.GS.game.currentCharacter',
       });
       this.presentModalDialog(dialog);
@@ -637,14 +640,24 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       return this.get('presentScreenController') === this.get('mapScreenController');
     },
 
-    activateAllianceController: function(alliance_id) {
-      var allianceController = this.get('allianceScreenController');
-      if (!allianceController) {
-        allianceController = AWE.Controller.createAllianceController('#layers');
-        this.set('allianceScreenController', allianceController);
-      }
-      allianceController.setAllianceId(alliance_id);
-      this.setScreenController(allianceController);
+    showAllianceDialog: function(alliance_id) {
+      var self = this;
+      //Prepare
+      this.get('hudController').activeAlliances.push(alliance_id);
+      //this.get('hudController').activeAlliances.push(3);
+
+      var alliance = null;
+      AWE.GS.AllianceManager.updateAlliance(alliance_id, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+        alliance = AWE.GS.AllianceManager.getAlliance(alliance_id);
+        alliance.getPath('diplomacySourceRelations').forEach(function(relation){
+          self.get('hudController').activeAlliances.push(relation.getPath('target_alliance_id'));
+        })
+        allianceScreen = AWE.UI.Ember.AllianceView.create({
+          alliance: alliance,
+        });
+
+        WACKADOO.presentModalDialog(allianceScreen);
+      });      
     },
 
 
@@ -677,16 +690,23 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       window.name = "empty";                                 // unset variables
       fbArgs = "empty";
 
+      Sample.setEndpoint("/psiori/event")
+      Sample.setAppToken("wad-rt82-fhjk-18");
+      Sample.sessionStart();
+      Sample.autoPing(30);
+
       var accessToken = null;
 
       if (!args || !args.accessToken) {
-//        alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
+        Sample.track('start_failed', { event_category: 'session'});
+//      alert('FATAL ERROR: Invalid Credentials. Please contact the support staff.');
         document.location.href = AWE.Config.PORTAL_ROOT;
         return ;
       }
       else {
         accessToken = args.accessToken ;
       }                            // || AWE.Config.DEV_ACCESS_TOKEN || null;
+
 
       var expiration  = parseInt(args.expiration || "3600");           // asume one hour validity as default
       AWE.Settings.locale = args.locale || AWE.Config.DEFAULT_LOCALE;
