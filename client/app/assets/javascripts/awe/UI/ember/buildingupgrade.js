@@ -55,43 +55,7 @@ AWE.UI.Ember = (function(module) {
 
 
 // == Building Details ==
-    currentProductions: function() {
-      return this.get("building").getProductionsForLevel(this.get("currentLevel"));
-    }.property("building.productions"),
-
-    selectedProductions: function() {
-      return this.get("building").getProductionsForLevel(this.get("selectedLevel"));
-    }.property("building", "selectedLevel"),
-
-    currentCapacity: function() {
-      return this.get("building").getCapacityForLevel(this.get("currentLevel"));
-    }.property("building.capacity"),
-
-    selectedCapacity: function() {
-      return this.get("building").getCapacityForLevel(this.get("selectedLevel"));
-    }.property("building", "selectedLevel"),
-
-    currentPopulation: function() {
-      if(this.get("currentProductions").length > 3) {
-        //return false;
-      }
-      return this.get("building").getPopulationForLevel(this.get("currentLevel"));
-    }.property("building.population"),
-
-    selectedPopulation: function() {
-      if(this.get("selectedProductions").length > 3) {
-        //return false;
-      }
-      return this.get("building").getPopulationForLevel(this.get("selectedLevel"));
-    }.property("building", "selectedLevel"),
-
-    currentProductionBoni: function() {
-      return this.get("building").getProductionBoniForLevel(this.get("currentLevel"));
-    }.property("building.productionBoni"),
-
-    selectedProductionBoni: function() {
-      return this.get("building").getProductionBoniForLevel(this.get("selectedLevel"));
-    }.property("building", "selectedLevel"),
+    
 
 // == End ==
 
@@ -116,6 +80,29 @@ AWE.UI.Ember = (function(module) {
     },
 
   });
+
+  module.BuildingDetailsView = Ember.View.extend({
+    templateName: 'building-details-view',
+    building:null,
+    level: null,
+
+    buildingProductions: function() {
+      return this.get("building").getProductionsForLevel(this.get("level"));
+    }.property("building", "level"),
+
+    buildingCapacity: function() {
+      return this.get("building").getCapacityForLevel(this.get("level"));
+    }.property("building", "level"),
+
+    buildingPopulation: function() {
+      return this.get("building").getPopulationForLevel(this.get("level"));
+    }.property("building", "level"),
+
+    buildingProductionBoni: function() {
+      return this.get("building").getProductionBoniForLevel(this.get("level"));
+    }.property("building", "level"),
+
+  }); 
 
   module.ResourceCostsView = Ember.View.extend({
     templateName: 'upgrade-resource',

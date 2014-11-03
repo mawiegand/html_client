@@ -13,26 +13,7 @@
           </h3>
         </div>
         <div class="cell-body scrolling">
-        {{#if currentPopulation}}
-            <div class="populationDetail">
-              <div class="item population-icon"></div> {{currentPopulation}}
-            </div>
-        {{/if}}
-        {{#if currentProductions}}
-          <table class="resources-table">
-          {{#each currentProductions}}
-            {{view AWE.UI.Ember.ResourceProductionView productionBinding="this" tagName="tr"}}
-          {{/each}}
-          </table>
-        {{/if}}
-        {{#if currentCapacity}}
-          {{t building.capacity}}:
-          <table class="resources-table">
-          {{#each currentCapacity}}
-            {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="this" tagName="tr"}}
-          {{/each}}
-          </table>
-        {{/if}}
+        {{view AWE.UI.Ember.BuildingDetailsView buildingBinding="building" levelBinding="currentLevel"}}
         </div>
       </div>
     </div>
@@ -74,37 +55,41 @@
           {{/unless}}
         </div>
         <div class="cell-body scrolling"
-        {{#if selectedPopulation}}
-            <div class="populationDetail">
-              <div class="item population-icon"></div> {{selectedPopulation}}
-            </div>
-        {{/if}}
-        {{#if selectedProductions}}
-          <table class="resources-table">
-          {{#each selectedProductions}}
-            {{view AWE.UI.Ember.ResourceProductionView productionBinding="this" tagName="tr"}}
-          {{/each}}
-          </table>
-        {{/if}}
-        {{#if selectedCapacity}}
-          {{t building.capacity}}:
-          <table class="resources-table">
-            {{#each selectedCapacity}}
-              {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="this" tagName="tr"}}
-            {{/each}}
-          </table>
-        {{/if}}
-        {{#if selectedProductionBoni}}
-          <table class="resources-table">
-            {{#each selectedProductionBoni}}
-              {{view AWE.UI.Ember.ResourceBonusView bonusBinding="this" tagName="tr"}}
-            {{/each}}
-          </table>
-        {{/if}}
+          {{view AWE.UI.Ember.BuildingDetailsView buildingBinding="building" levelBinding="selectedLevel"}}
         </div>
       </div>
     </div>
   </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="building-details-view">
+  {{#if buildingPopulation}}
+      <div class="populationDetail">
+        <div class="item population-icon"></div> {{buildingPopulation}}
+      </div>
+  {{/if}}
+  {{#if buildingProductions}}
+    <table class="resources-table">
+    {{#each buildingProductions}}
+      {{view AWE.UI.Ember.ResourceProductionView productionBinding="this" tagName="tr"}}
+    {{/each}}
+    </table>
+  {{/if}}
+  {{#if buildingCapacity}}
+    {{t building.capacity}}:
+    <table class="resources-table">
+      {{#each buildingCapacity}}
+        {{view AWE.UI.Ember.ResourceCapacityView capacityBinding="this" tagName="tr"}}
+      {{/each}}
+    </table>
+  {{/if}}
+  {{#if buildingProductionBoni}}
+    <table class="resources-table">
+      {{#each buildingProductionBoni}}
+        {{view AWE.UI.Ember.ResourceBonusView bonusBinding="this" tagName="tr"}}
+      {{/each}}
+    </table>
+  {{/if}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="upgrade-resource">
