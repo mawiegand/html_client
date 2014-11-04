@@ -329,11 +329,15 @@ AWE.Config = (function(module) {
     "hud/button/message/hover" :    AWE.Config.RAILS_ASSET_PATH + 'hud/message_button/message_button_hovered.png',
     "hud/button/plus_button" :    AWE.Config.RAILS_ASSET_PATH + 'hud/plus_button/plus_button.png',
     "hud/button/quest_list/normal" :    AWE.Config.RAILS_ASSET_PATH + 'hud/quest_list_button/quest_list_button.png',
-    "hud/button/quest_list/hovered" :    AWE.Config.RAILS_ASSET_PATH + 'hud/quest_list_button/quest_list_button_hovered.png',
+    "hud/button/quest_list/hover" :    AWE.Config.RAILS_ASSET_PATH + 'hud/quest_list_button/quest_list_button_hovered.png',
     "hud/button/ranking/normal" :    AWE.Config.RAILS_ASSET_PATH + 'hud/ranking_button/ranking_button.png',
     "hud/button/ranking/hover" :    AWE.Config.RAILS_ASSET_PATH + 'hud/ranking_button/ranking_button_hovered.png',
     "hud/button/settlement/normal" :    AWE.Config.RAILS_ASSET_PATH + 'hud/settlement_button/settlement_button.png',
     "hud/button/settlement/hover" :    AWE.Config.RAILS_ASSET_PATH + 'hud/settlement_button/settlement_button_hovered.png',
+    
+    "hud/profile/levelbutton/background"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_background/avatar_background.png',
+    "hud/profile/levelbutton/foreground"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_level_background/avatar_level_background.png',
+    "hud/profile/namelabel/background"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_label_background/avatar_label_background.png',
 
     "resource/icon/wood/middle" :    AWE.Config.RAILS_ASSET_PATH + 'icons/wood-middle.png',
     "resource/icon/stone/middle":    AWE.Config.RAILS_ASSET_PATH + 'icons/stone-middle.png',

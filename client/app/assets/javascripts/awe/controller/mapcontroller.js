@@ -87,6 +87,7 @@ AWE.Controller = function (module) {
     var currentAction = null;
 
     var mapMode = AWE.UI.MAP_MODE_TERRAIN; //  display game graphics
+    var currentMapTypeIndex = 0;
     
     var hideOtherArmies = !AWE.GS.game.getPath('currentCharacter.finishedTutorial');
 
@@ -696,6 +697,7 @@ AWE.Controller = function (module) {
     that.switchMapMode = function (realMap) {
       log("SWITCH MAP MODE", realMap);
       mapMode = realMap ? AWE.UI.MAP_MODE_REAL : AWE.UI.MAP_MODE_TERRAIN;
+      currentMapTypeIndex = mapMode;
       AWE.Ext.applyFunctionToElements(regionViews, function (view) {
         view.setMapMode(mapMode);
       });
@@ -703,6 +705,12 @@ AWE.Controller = function (module) {
 
     that.switchMapType = function (mapTypeIndex) {
       log("SWITCH MAP TYPE", hideOtherArmies);
+      
+      if (mapTypeIndex === undefined) {
+        mapTypeIndex = currentMapTypeIndex;
+        mapTypeIndex = mapTypeIndex < 3 ? mapTypeIndex + 1 : 0;
+        currentMapTypeIndex = mapTypeIndex;
+      }
 
       if(mapTypeIndex == 0) {
         mapMode = AWE.UI.MAP_MODE_TERRAIN;

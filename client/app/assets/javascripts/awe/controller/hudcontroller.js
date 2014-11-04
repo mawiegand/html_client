@@ -13,6 +13,8 @@ AWE.Controller = (function(module) {
     var _canvasLeft = null;          ///< canvas elements for the hud
     var _stageRight  = null;          ///< easelJS stage for displaying the HUD
     var _canvasRight = null;          ///< canvas elements for the hud
+    var _stageProfile  = null;          ///< easelJS stage for displaying the HUD
+    var _canvasProfile = null;          ///< canvas elements for the hud
     var _resourceStage  = null;
     var _resourceCanvas = null;
     
@@ -53,7 +55,7 @@ AWE.Controller = (function(module) {
     that.init = function() {
       _super.init();    
       var root = that.rootElement();  
-      root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas-left"></canvas><canvas id="hud-canvas-right"></canvas>');
+      root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas-profile"></canvas><canvas id="hud-canvas-left"></canvas><canvas id="hud-canvas-right"></canvas>');
       
       // HUD layers ("static", not zoomable, not moveable)
       
@@ -68,8 +70,15 @@ AWE.Controller = (function(module) {
       _stageRight = new Stage(_canvasRight);
       _stageRight.onClick = function() {};
       
-      _canvasRight.width = 380;
-      _canvasRight.height = 260;
+      _canvasRight.width = 70;
+      _canvasRight.height = 114;
+      
+      _canvasProfile = root.find('#hud-canvas-profile')[0];
+      _stageProfile = new Stage(_canvasProfile);
+      _stageProfile.onClick = function() {};
+      
+      _canvasProfile.width = 268;
+      _canvasProfile.height = 200;
 
       _resourceCanvas = root.find('#resource-canvas')[0];
       _resourceStage = new Stage(_resourceCanvas);
@@ -86,6 +95,7 @@ AWE.Controller = (function(module) {
       return [
         { stage: _stageLeft,         mouseOverEvents: true},
         { stage: _stageRight,         mouseOverEvents: true},
+        { stage: _stageProfile,         mouseOverEvents: true},
         { stage: _resourceStage, mouseOverEvents: true}
       ];
     };
@@ -115,16 +125,18 @@ AWE.Controller = (function(module) {
         if (_hideCanvas && !_canvasIsHidden) {
           AWE.Log.Debug('hide canvas');
           _canvasIsHidden = true;
-          $('#hud-canvas-left').delay(600).animate({left: "-380px"}, _animationDuration, 'easeOutBack');
-          $('#hud-canvas-right').delay(600).animate({right: "-380px"}, _animationDuration, 'easeOutBack');
+          $('#hud-canvas-left').delay(600).animate({left: "-120px"}, _animationDuration, 'easeOutBack');
+          $('#hud-canvas-right').delay(600).animate({right: "-70px"}, _animationDuration, 'easeOutBack');
+          $('#hud-canvas-profile').delay(600).animate({right: "-268px"}, _animationDuration, 'easeOutBack');
           $('#resource-canvas').delay(600).animate({top: "-42px"}, _animationDuration, 'easeOutBack');
           that.setNeedsDisplay();
         }
         else if (!_hideCanvas && _canvasIsHidden) {
           AWE.Log.Debug('display canvas canvas');
           _canvasIsHidden = false;
-          $('#hud-canvas-left').delay(600).animate({left: "0px"}, _animationDuration, 'easeOutBack');
-          $('#hud-canvas-right').delay(600).animate({right: "0px"}, _animationDuration, 'easeOutBack');
+          $('#hud-canvas-left').delay(600).animate({left: "10px"}, _animationDuration, 'easeOutBack');
+          $('#hud-canvas-right').delay(600).animate({right: "7px"}, _animationDuration, 'easeOutBack');
+          $('#hud-canvas-profile').delay(600).animate({right: "0px"}, _animationDuration, 'easeOutBack');
           $('#resource-canvas').delay(600).animate({top: "30px"}, _animationDuration, 'easeOutBack');
           that.setNeedsDisplay();
         }
@@ -154,51 +166,9 @@ AWE.Controller = (function(module) {
     //
     //   Action Handling
     //
-    // ///////////////////////////////////////////////////////////////////////
-    
-    that.menuButtonClicked = function() {
-      AWE.UI.Ember.MainMenuDialog.create().open();
-    }
-    
-    that.strategicTerrainButtonClicked = function() {
-      if (WACKADOO.switchMapModeClicked(false)) {
-        HUDViews.leftHUDControlsView.mapModeSwitched(false);
-      }
-      else log('Could not get map controller in HUD controller.strategicTerrainButtonClicked.');
-    }
-    
-    that.normalTerrainButtonClicked = function() {
-      if (WACKADOO.switchMapModeClicked(true)) {
-        HUDViews.leftHUDControlsView.mapModeSwitched(true);
-      }
-      else log('Could not get map controller in HUD controller.normalTerrainButtonClicked.');
-    }
-    
-    that.gamingPieceSelectorButtonClicked = function() {
-      WACKADOO.gamingPieceSelectorClicked();
-    }
-    
-    that.switchToSettlementButtonClicked = function() {
-      var baseControllerActive = WACKADOO.baseControllerActive();
-      WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
-      if (baseControllerActive) {
-        AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button1');
-      } 
-    }
-    
-    that.switchToSettlementButtonDoubleClicked = function() {
-      var baseControllerActive = WACKADOO.baseControllerActive();
-      WACKADOO.baseButtonDoubleClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
-      if (!baseControllerActive) {
-        AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button2');
-      } 
-    }
+    // ///////////////////////////////////////////////////////////////////////        
     
     var shopDialog = null;
-    
-    that.questsButtonClicked = function() {
-      WACKADOO.showQuestListDialog();      
-    }
     
     that.presentNotEnoughCreditsWarning = function() {
       var info = AWE.UI.Ember.InfoDialog.create({
@@ -492,20 +462,81 @@ AWE.Controller = (function(module) {
           }
         });
       });
-    },
+    };      
+    
+    that.notifyAboutNewScreenController = function(controller) {
+      if (controller && HUDViews.leftHUDControlsView) {
+        var mode = controller.typeName === "SettlementController" ? AWE.UI.HUDModeSettlement : AWE.UI.HUDModeMap;
+        HUDViews.leftHUDControlsView.setHUDMode(mode);
+      }
+      
+      // TODO Mail view -> hide buttons
+    };
     
     that.rankingButtonClicked = function() {
       var dialog = AWE.UI.Ember.RankingDialog.create();
       this.applicationController.presentModalDialog(dialog);      
     };
-    
-    
+        
     that.shouldMarkMapButton = function() {
       var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
       return WACKADOO.presentScreenController.typeName != 'MapController' && tutorialState.isUIMarkerActive(AWE.GS.MARK_MAP);
     };
+      
+    that.menuButtonClicked = function() {
+      AWE.UI.Ember.MainMenuDialog.create().open();
+    };
     
-        
+    that.switchMapModeButtonClicked = function() {
+      WACKADOO.switchMapTypeClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.      
+    };    
+    
+    that.gamingPieceSelectorButtonClicked = function() {
+      WACKADOO.gamingPieceSelectorClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+    };
+    
+    that.switchToSettlementButtonClicked = function() {
+      var baseControllerActive = WACKADOO.baseControllerActive();
+      WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+      if (baseControllerActive) {
+        AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button1');
+      } 
+    };
+    
+    that.switchToSettlementButtonDoubleClicked = function() {
+      var baseControllerActive = WACKADOO.baseControllerActive();
+      WACKADOO.baseButtonDoubleClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+      if (!baseControllerActive) {
+        AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button2');
+      } 
+    };
+    
+    that.switchToMapButtonClicked = function() {
+      WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+    };
+    
+    that.mailButtonClicked = function() {
+      WACKADOO.messagesButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+    };       
+    
+    that.questsButtonClicked = function() {
+      WACKADOO.showQuestListDialog(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.   
+    };
+    
+    that.recruitButtonClicked = function() {
+      var dialog = AWE.UI.Ember.ArmyInfoDialogNew.create();
+	  this.applicationController.presentModalDialog(dialog);
+    };  
+    
+    that.avatarImageClicked = function() {
+      WACKADOO.characterButtonClicked();
+    }
+    that.avatarLabelClicked = function() {
+      WACKADOO.characterButtonClicked();
+    }
+    that.avatarLevelClicked = function() {
+      WACKADOO.characterButtonClicked();
+    }
 
     // ///////////////////////////////////////////////////////////////////////
     //
@@ -553,7 +584,7 @@ AWE.Controller = (function(module) {
         
         if (lastResourcesUpdate.getTime() + AWE.Config.RESOURCES_REFRESH_INTERVAL < new Date().getTime()) {
           lastResourcesUpdate = new Date();
-          if (HUDViews.mainControlsView) {
+          if (HUDViews.stoneView) {
             AWE.GS.ResourcePoolManager.updateResourcePool(AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
               that.setModelChanged(); // always re-paint, if new data available
               log('U: updated resource');
@@ -611,16 +642,9 @@ AWE.Controller = (function(module) {
     //
     // ///////////////////////////////////////////////////////////////////////    
     
-    that.updateHUD = function() { 
-            
-      if (!HUDViews.mainControlsView) {
-        HUDViews.mainControlsView = AWE.UI.createMainControlsView();
-        HUDViews.mainControlsView.initWithController(that);
-        _stageRight.addChild(HUDViews.mainControlsView.displayObject());
-      }
-      HUDViews.mainControlsView.setOrigin(AWE.Geometry.createPoint(20, 20));      
+    that.updateHUD = function() {                         
       
-      // Resource Views      
+      // Resource HUD Views      
       if (!HUDViews.stoneView) {
         
         var resourceDetailsHandler = function() {
@@ -671,12 +695,26 @@ AWE.Controller = (function(module) {
         HUDViews.toadsView.onClick = cashDetailsHandler;
         _resourceStage.addChild(HUDViews.toadsView.displayObject()); 
       }
+      
+      // Profile HUD View
+      if (!HUDViews.profileControlsView) {
+        HUDViews.profileControlsView = AWE.UI.createProfileHUDControlsView();
+        HUDViews.profileControlsView.initWithController(that);
+        _stageProfile.addChild(HUDViews.profileControlsView.displayObject());        
+      }
             
       // Left HUD View
       if (!HUDViews.leftHUDControlsView) {
         HUDViews.leftHUDControlsView = AWE.UI.createLeftHUDControlsView();
         HUDViews.leftHUDControlsView.initWithController(that);
         _stageLeft.addChild(HUDViews.leftHUDControlsView.displayObject());
+      }
+      
+      // Right HUD View
+      if (!HUDViews.rightHUDControlsView) {
+        HUDViews.rightHUDControlsView = AWE.UI.createRightHUDControlsView();
+        HUDViews.rightHUDControlsView.initWithController(that);
+        _stageRight.addChild(HUDViews.rightHUDControlsView.displayObject());
       }
       
       return true; 
@@ -839,6 +877,7 @@ AWE.Controller = (function(module) {
           if (updateNeeded ) { // TODO: remove true, update only, if necessary 
             _stageLeft.update();
             _stageRight.update();
+            _stageProfile.update();
             _resourceStage.update();
             AWE.Ext.applyFunctionToElements(HUDViews, function(view) {
               view.notifyRedraw();

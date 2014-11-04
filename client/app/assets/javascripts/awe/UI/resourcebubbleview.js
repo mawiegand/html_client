@@ -57,7 +57,7 @@ AWE.UI = (function(module) {
       
       my.container.x = my.frame.origin.x;
       my.container.y = my.frame.origin.y;
-      my.container.width  = my.frame.size.height;
+      my.container.width  = my.frame.size.width;
       my.container.height = my.frame.size.height;
     }
     
