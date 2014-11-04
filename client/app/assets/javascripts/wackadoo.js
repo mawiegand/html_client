@@ -495,12 +495,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       }
     },
     
-    switchMapModeClicked: function(mapModeNormal) {
+    switchMapTypeClicked: function() {
       if (this.get('presentScreenController') === this.get('mapScreenController')) {
-        this.get('presentScreenController').switchMapMode(mapModeNormal);
-        return true;
+        this.get('presentScreenController').switchMapType();        
       }
-      return false;
     },
     
     gamingPieceSelectorClicked: function() {
@@ -554,7 +552,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     activateSettlementController: function(settlement) {
       if (settlement.get('type_id') === AWE.GS.SETTLEMENT_TYPE_FORTRESS) {
         AWE.Log.Debug('ACTIVATE FORTRESS CONTROLLER');
-        this.activateFortressController({ settlementId: settlement.get('id')});
+        this.activateFortressController({ settlementId: settlement.get('id')});        
       }
       else if (settlement.get('type_id') === AWE.GS.SETTLEMENT_TYPE_OUTPOST) {
         AWE.Log.Debug('ACTIVATE OUTPOST CONTROLLER');
@@ -583,6 +581,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         AWE.Log.Debug('ERROR: no base to enter specified.')
       }
       this.setScreenController(baseController);
+      
+      var hudController = this.get('hudController');
+      if (hudController && hudController.notifyAboutNewScreenController !== undefined) {
+        hudController.notifyAboutNewScreenController(baseController);
+      }
     },
 
     baseControllerActive: function() {
@@ -608,6 +611,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         AWE.Log.Debug('ERROR: no fortress to enter specified.')
       }
       this.setScreenController(fortressController);
+      
+      var hudController = this.get('hudController');
+      if (hudController && hudController.notifyAboutNewScreenController !== undefined) {
+        hudController.notifyAboutNewScreenController(fortressController);
+      }
     },
 
     activateOutpostController: function(reference) {
@@ -629,6 +637,11 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         AWE.Log.Debug('ERROR: no outpost to enter specified.')
       }
       this.setScreenController(outpostController);
+      
+      var hudController = this.get('hudController');
+      if (hudController && hudController.notifyAboutNewScreenController !== undefined) {
+        hudController.notifyAboutNewScreenController(outpostController);
+      }
     },
 
     activateMessagesController: function(args) {
@@ -674,11 +687,22 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
          
          WACKADOO.presentModalDialog(messageDialog);
       }
+      
+      var hudController = this.get('hudController');
+      if (hudController && hudController.notifyAboutNewScreenController !== undefined) {
+        hudController.notifyAboutNewScreenController(messageCenterController);
+      }
     },
 
     activateMapController: function(preventZoomingToLastSelection) {
       var controller = this.get('mapScreenController');
       this.setScreenController(controller, preventZoomingToLastSelection);
+      
+      var hudController = this.get('hudController');
+      if (hudController && hudController.notifyAboutNewScreenController !== undefined) {
+        hudController.notifyAboutNewScreenController(controller);
+      }
+      
       return controller;
     },
 

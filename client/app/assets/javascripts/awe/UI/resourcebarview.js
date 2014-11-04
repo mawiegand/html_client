@@ -20,6 +20,7 @@ AWE.UI = (function(module) {
     var _bottomColor = null;
     var _progressShape = null;
     var _amountText = null;
+    var _amountTextShadow = null;
     var _barWidth = 0;
     var _barHeight = 0;
     var _cornerRadius = 10;
@@ -56,16 +57,6 @@ AWE.UI = (function(module) {
       
       _backgroundBitmap = new Bitmap();
       _backgroundBitmap.view = that;
-      _backgroundBitmap.onMouseOver = function(evt){
-        if (_backgroundBitmap.view.onMouseOver) {
-          _backgroundBitmap.view.onMouseOver(evt);
-        }
-      };
-      _backgroundBitmap.onMouseOut = function(evt){
-        if (_backgroundBitmap.view.onMouseOut) {
-          _backgroundBitmap.view.onMouseOut(evt);
-        }
-      };
       _backgroundBitmap.onClick = function(evt){
         if (_backgroundBitmap.view.onClick) {
           _backgroundBitmap.view.onClick(evt);
@@ -78,33 +69,31 @@ AWE.UI = (function(module) {
       _progressShape = new Shape();
       
       _progressShape.onClick = function() { 
-          if (that.onClick) {
-            that.onClick() 
-          }
+        if (that.onClick) {
+          that.onClick() 
         }
-        _progressShape.onMouseOver = function() {
-          if (that.onMouseOver) {
-            that.onMouseOver();
-          }
-        }
-        _progressShape.onMouseOut = function() {
-          if (that.onMouseOut) {
-            that.onMouseOut();
-          }
-        }
+      }        
       
       my.container.addChild(_progressShape);
       
       _amountText = new Text("", "bold 16px HVDComicSerifPro", "#fff");
-      //_amountText = new Text("", "10px Arial", "#fff");
       _amountText.textAlign = "left";
       _amountText.textBaseline = "middle";
       _amountText.x = 20;
       _amountText.y = _barHeight / 2;
       _amountText.view = that;
-      _amountText.onMouseOver = function(event) { that.onMouseOver(event); }
-      _amountText.onMouseOut =  function(event) { that.onMouseOut(event); }
-      my.container.addChild(_amountText);    
+      _amountText.onClick = function() { if (that.onClick) that.onClick(); }      
+      
+      _amountTextShadow = new Text("", "bold 17px HVDComicSerifPro", "#000");
+      _amountTextShadow.textAlign = "left";
+      _amountTextShadow.textBaseline = "middle";
+      _amountTextShadow.x = 20;
+      _amountTextShadow.y = _barHeight / 2;
+      _amountTextShadow.view = that;
+      _amountTextShadow.onClick = function() { if (that.onClick) that.onClick(); }
+      
+      my.container.addChild(_amountTextShadow);          
+      my.container.addChild(_amountText);
       
       my.container.x = my.frame.origin.x;
       my.container.y = my.frame.origin.y;
@@ -115,7 +104,8 @@ AWE.UI = (function(module) {
     }
     
     that.setAmountWithCapacity = function(amount, capacity) {
-      _amountText.text = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      _amountText.text = amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      _amountTextShadow.text = _amountText.text;
       var progress = amount / capacity;
       my.progressAmountPercent = progress || 0;
       if (my.progressAmountPercent < 0) my.progressAmountPercent = 0;

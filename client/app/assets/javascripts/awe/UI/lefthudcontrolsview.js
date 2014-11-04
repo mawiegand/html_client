@@ -21,9 +21,7 @@ AWE.UI = (function(module) {
     var _rankingButton;
     
     // Map only buttons
-    var _normalTerrainButton;
-    var _strategicTerrainButton;    
-    var _mapModeNormal = true;
+    var _mapModeButton;
     var _gamingPieceSelectorButton;
     var _switchToSettlementButton;
     
@@ -68,7 +66,7 @@ AWE.UI = (function(module) {
         _menuButton = AWE.UI.createButtonView();
         _menuButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/menu/normal"));
         _menuButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/menu/hover"), module.CONTROL_STATE_HOVERED);
-        _menuButton.setFrame(AWE.Geometry.createRect(10, 0, 52, 52));
+        _menuButton.setFrame(AWE.Geometry.createRect(0, 0, 52, 52));
         _menuButton.onClick = function() {
           my.controller.menuButtonClicked();
         };
@@ -79,7 +77,7 @@ AWE.UI = (function(module) {
         _rankingButton = AWE.UI.createButtonView();
         _rankingButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/ranking/normal"));
         _rankingButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/ranking/hover"), module.CONTROL_STATE_HOVERED);
-        _rankingButton.setFrame(AWE.Geometry.createRect(10, 62, 52, 52));
+        _rankingButton.setFrame(AWE.Geometry.createRect(0, 62, 52, 52));
         _rankingButton.onClick = function() {
           my.controller.rankingButtonClicked();
         };
@@ -88,41 +86,37 @@ AWE.UI = (function(module) {
       
       if (_hudMode === module.HUDModeMap)
       {
-        // show map buttons
+        // hide settlement buttons
         
-        if (_mapModeNormal)
-        {
-          if (!_strategicTerrainButton) {
-            _strategicTerrainButton = AWE.UI.createButtonView();
-            _strategicTerrainButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/map_mountains/normal"));
-            _strategicTerrainButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/map_mountains/hover"), module.CONTROL_STATE_HOVERED);
-            _strategicTerrainButton.setFrame(AWE.Geometry.createRect(10, 144, 52, 52));
-            _strategicTerrainButton.onClick = function() {
-              my.controller.strategicTerrainButtonClicked();
-            };
-            this.addChild(_strategicTerrainButton);
-          }
+        if (_switchToMapButton) {
+          this.removeChild(_switchToMapButton);
+          _switchToMapButton = null;
         }
-        else
-        {
-          if (!_normalTerrainButton) {
-            _normalTerrainButton = AWE.UI.createButtonView();
-            // TODO: FIND CORRECT ASSET!
-            _normalTerrainButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/compass/normal"));
-            _normalTerrainButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/compass/hover"), module.CONTROL_STATE_HOVERED);
-            _normalTerrainButton.setFrame(AWE.Geometry.createRect(10, 144, 52, 52));
-            _normalTerrainButton.onClick = function() {
-              my.controller.normalTerrainButtonClicked();
-            };
-            this.addChild(_normalTerrainButton);
-          }
+        
+        if (_recruitButton) {
+          this.removeChild(_recruitButton);
+          _recruitButton = null;
         }
+        
+        // show map buttons        
+        
+        
+        if (!_mapModeButton) {
+          _mapModeButton = AWE.UI.createButtonView();
+          _mapModeButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/map_mountains/normal"));
+          _mapModeButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/map_mountains/hover"), module.CONTROL_STATE_HOVERED);
+          _mapModeButton.setFrame(AWE.Geometry.createRect(0, 144, 52, 52));
+          _mapModeButton.onClick = function() {
+            my.controller.switchMapModeButtonClicked();
+          };
+          this.addChild(_mapModeButton);
+        }        
         
         if (!_gamingPieceSelectorButton) {
           _gamingPieceSelectorButton = AWE.UI.createButtonView();
           _gamingPieceSelectorButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/army_menu/normal"));
           _gamingPieceSelectorButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/army_menu/hover"), module.CONTROL_STATE_HOVERED);
-          _gamingPieceSelectorButton.setFrame(AWE.Geometry.createRect(10, 208, 52, 52));
+          _gamingPieceSelectorButton.setFrame(AWE.Geometry.createRect(0, 208, 52, 52));
           _gamingPieceSelectorButton.onClick = function() {
             my.controller.gamingPieceSelectorButtonClicked();
           };
@@ -133,7 +127,7 @@ AWE.UI = (function(module) {
           _switchToSettlementButton = AWE.UI.createButtonView();
           _switchToSettlementButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/settlement/normal"));
           _switchToSettlementButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/settlement/hover"), module.CONTROL_STATE_HOVERED);
-          _switchToSettlementButton.setFrame(AWE.Geometry.createRect(10, 270, 100, 94));
+          _switchToSettlementButton.setFrame(AWE.Geometry.createRect(0, 270, 100, 94));
           _switchToSettlementButton.onClick = function() {
             my.controller.switchToSettlementButtonClicked();
           };
@@ -145,13 +139,28 @@ AWE.UI = (function(module) {
       }
       else if (_hudMode === module.HUDModeSettlement)
       {
+        // hide map buttons
+        
+        if (_mapModeButton) {
+          this.removeChild(_mapModeButton);
+          _mapModeButton = null;
+        }
+        if (_gamingPieceSelectorButton) {
+          this.removeChild(_gamingPieceSelectorButton);
+          _gamingPieceSelectorButton = null;
+        }
+        if (_switchToSettlementButton) {
+          this.removeChild(_switchToSettlementButton);
+          _switchToSettlementButton = null;
+        }
+        
         // show settlement buttons
         
         if (!_recruitButton) {
           _recruitButton = AWE.UI.createButtonView();
           _recruitButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/army/normal"));
           _recruitButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/army/hover"), module.CONTROL_STATE_HOVERED);
-          _recruitButton.setFrame(AWE.Geometry.createRect(10, 208, 52, 52));
+          _recruitButton.setFrame(AWE.Geometry.createRect(0, 208, 52, 52));
           _recruitButton.onClick = function() {
             my.controller.recruitButtonClicked();
           };
@@ -175,49 +184,10 @@ AWE.UI = (function(module) {
     that.setHUDMode = function(mode)
     {
       if (_hudMode !== mode)
-      {
+      {                                
         _hudMode = mode;
         
-        if (_hudMode === module.HUDModeMap)
-        {
-          // remove settlement buttons
-          if (_recruitButton)
-          {
-            this.removeChild(_recruitButton);
-            _recruitButton = null;
-          }
-          if (_switchToMapButton)
-          {
-            this.removeChild(_switchToMapButton);
-            _switchToMapButon = null;
-          }
-        }
-        else if (_hudMode === module.HUDModeSettlement)
-        {    
-          // remove map buttons
-          if (_normalTerrainButton)
-          {
-            this.removeChild(_normalTerrainButton);
-            _normalTerrainButton = null;
-          }
-          if (_strategicTerrainButton)
-          {
-            this.removeChild(_strategicTerrainButton);
-            _strategicTerrainButton = null;
-          }
-          if (_gamingPieceSelectorButton)
-          {
-            this.removeChild(_gamingPieceSelectorButton);
-            _gamingPieceSelectorButton = null;
-          }
-          if (_switchToSettlementButton)
-          {
-            this.removeChild(_switchToSettlementButton);
-            _switchToSettlementButton = null;
-          }
-        }
-        
-        this.recalcView();
+        this.setNeedsUpdate();    
       }
     }
     
@@ -225,23 +195,6 @@ AWE.UI = (function(module) {
       this.recalcView();            
       
       _super.updateView();
-    }
-    
-    that.mapModeSwitched = function(mapMode) {
-      if (_mapModeNormal)
-      {
-        this.removeChild(_strategicTerrainButton);
-        _strategicTerrainButton = null;
-      }
-      else
-      {
-        this.removeChild(_normalTerrainButton);
-        _normalTerrainButton = null;
-      }
-      
-      _mapModeNormal = mapMode;
-      
-      this.recalcView();
     }
     
     /** checks for itself whether the view needs an update */
