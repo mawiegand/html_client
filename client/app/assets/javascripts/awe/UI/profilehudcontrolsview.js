@@ -15,6 +15,7 @@ AWE.UI = (function(module) {
     var _presentAvatarString = null;
     var _nameLabelButton;
     var _levelButton;
+    var _allianceButton;
     
     var _currentCharacterRank = 0;
     var _currentCharacterProgress = 0;
@@ -50,6 +51,7 @@ AWE.UI = (function(module) {
     that.recalcView = function() {
     
       var character = AWE.GS.game.get('currentCharacter');
+      var allianceId = character.get('alliance_id');
 
       if (!_avatarView || AWE.GS.game.getPath('currentCharacter.avatar_string') != _presentAvatarString) {
 
@@ -99,6 +101,25 @@ AWE.UI = (function(module) {
         _currentCharacterProgress = rankAndProgress.progress;
         _levelButton.setRankAndProgress(_currentCharacterRank, _currentCharacterProgress);            
       } 
+      
+      if (!_allianceButton && character && allianceId) {
+        _allianceButton = AWE.UI.createButtonIconView();
+        _allianceButton.initWithControllerImageAndIcon(my.controller, 
+          AWE.UI.ImageCache.getImage("hud/profile/alliance/button"),
+          AWE.UI.ImageCache.getImage("hud/profile/alliance/icon")
+        );
+        _allianceButton.setFrame(AWE.Geometry.createRect(162, 170, 96, 96));        
+        _allianceButton.onClick = function() {
+          my.controller.allianceFlagClicked(allianceId);
+        };
+        this.addChild(_allianceButton);
+      }
+      
+      if (_allianceButton && character && (allianceId === undefined || allianceId === null || allianceId === 0)) {
+        this.removeChild(_allianceButton);
+        _allianceButton = null;
+      }
+      
     };      
     
     that.calculateCharacterProgress = function() {
@@ -131,7 +152,7 @@ AWE.UI = (function(module) {
         if(ownPosition < 0)//prevent negative progress
           ownPosition = 0;
           
-        return { rank: presentRank + 1, progress: ownPosition };
+        return { rank: presentRank, progress: ownPosition };
       }
       
       return { rank: 0, progress: 0 };
@@ -147,11 +168,17 @@ AWE.UI = (function(module) {
     that.updateIfNeeded = function() {
       var changed = false;
       
-      var rankAndProgress = this.calculateCharacterProgress();
-      if (rankAndProgress.rank !== _currentCharacterRank || rankAndProgress.progress !== _currentCharacterProgress) {
-        _currentCharacterRank = rankAndProgress.rank;
-        _currentCharacterProgress = rankAndProgress.progress;
+      if (AWE.GS.game.getPath('currentCharacter.avatar_string') != _presentAvatarString) {
         changed = true;
+      }
+      
+      if (!changed) {
+        var rankAndProgress = this.calculateCharacterProgress();
+        if (rankAndProgress.rank !== _currentCharacterRank || rankAndProgress.progress !== _currentCharacterProgress) {
+          _currentCharacterRank = rankAndProgress.rank;
+          _currentCharacterProgress = rankAndProgress.progress;
+          changed = true;
+        }            
       }
       
       if (changed) { 

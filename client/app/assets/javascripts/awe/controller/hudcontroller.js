@@ -78,7 +78,7 @@ AWE.Controller = (function(module) {
       _stageProfile.onClick = function() {};
       
       _canvasProfile.width = 268;
-      _canvasProfile.height = 200;
+      _canvasProfile.height = 266;
 
       _resourceCanvas = root.find('#resource-canvas')[0];
       _resourceStage = new Stage(_resourceCanvas);
@@ -529,13 +529,17 @@ AWE.Controller = (function(module) {
     };  
     
     that.avatarImageClicked = function() {
-      WACKADOO.characterButtonClicked();
+      WACKADOO.characterButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.   
     }
     that.avatarLabelClicked = function() {
-      WACKADOO.characterButtonClicked();
+      WACKADOO.characterButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.   
     }
     that.avatarLevelClicked = function() {
-      WACKADOO.characterButtonClicked();
+      WACKADOO.characterButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.   
+    }
+    
+    that.allianceFlagClicked = function(allianceId) {      
+      WACKADOO.showAllianceDialog(allianceId); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.   
     }
 
     // ///////////////////////////////////////////////////////////////////////

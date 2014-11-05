@@ -340,6 +340,15 @@ AWE.Config = (function(module) {
     "hud/profile/levelbutton/background"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_background/avatar_background.png',
     "hud/profile/levelbutton/foreground"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_level_background/avatar_level_background.png',
     "hud/profile/namelabel/background"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_label_background/avatar_label_background.png',
+    
+    "hud/profile/alliance/button"  : AWE.Config.RAILS_ASSET_PATH + 'hud/alliance_button/alliance_button.png',
+    "hud/profile/alliance/icon"    : AWE.Config.RAILS_ASSET_PATH + 'hud/alliance_flag/alliance_flag.png',
+    
+    "hud/top/background"    : AWE.Config.RAILS_ASSET_PATH + 'hud/topbar/topbar.png',
+    "hud/top/arrow/left"    : AWE.Config.RAILS_ASSET_PATH + 'hud/topbar/topbar_arrow_left.png',
+    "hud/top/arrow/right"   : AWE.Config.RAILS_ASSET_PATH + 'hud/topbar/topbar_arrow_right.png',
+    "hud/top/center"        : AWE.Config.RAILS_ASSET_PATH + 'hud/topbar/topbar_center.png',
+    "hud/top/info"          : AWE.Config.RAILS_ASSET_PATH + 'hud/topbar/topbar_info.png',
 
     "resource/icon/wood/middle" :    AWE.Config.RAILS_ASSET_PATH + 'icons/wood-middle.png',
     "resource/icon/stone/middle":    AWE.Config.RAILS_ASSET_PATH + 'icons/stone-middle.png',

@@ -277,7 +277,7 @@ AWE.UI = (function(module) {
           my.fortressFlagView.setFrame(AWE.Geometry.createRect(67, 90, 9, 9)); // due to the bug, setFrame needs to be the last call, because it initiates an updateView
           container.addChild(my.fortressFlagView);
         }
-        this.setInspectedObjectView(container);
+//        this.setInspectedObjectView(container);
       }      
     }
         
