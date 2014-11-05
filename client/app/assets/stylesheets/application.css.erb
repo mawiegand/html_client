@@ -3746,8 +3746,10 @@ width: auto;
 }
 
 .building-information-dialog-pane .info-box {
-  text-align: center;
-  vertical-align: middle;
+  /*text-align: center;
+  vertical-align: middle;*/
+  float: left;
+  font-size: 18px;
 }
 .building-option-details.building-option-details-new-dialog-view
 {
@@ -4240,6 +4242,12 @@ width: auto;
   background-size: 32px;
 }
 
+.population-detail {
+  width:100%;
+  position: relative;
+  text-align: center;
+}
+
 .change-level {
   cursor: pointer;
 }
@@ -4254,6 +4262,58 @@ width: auto;
   position: absolute;
   left: -30%;
   bottom: -20%;
+}
+
+/* == Building Details == */
+.building-info-image {
+  float: left;
+}
+
+.building-details {
+  position: relative;
+}
+
+.economy-details, .military-details{
+  position: relative;
+  float: left;
+  width: 50%;
+  height: 75%;
+}
+
+.economy-details.is-single-military-row{
+  display: none;
+}
+
+.military-details.is-single-economy-row {
+  display: none;
+}
+
+.economy-details.is-single-economy-row{
+  width: 100%;
+  text-align: center;
+}
+
+.military-details.is-single-military-row {
+  width: 100%;
+  text-align: center;
+}
+
+.unlock-details {
+  position: relative;
+  width: 100%;
+  margin-left: 20px;
+}
+
+.queue_infantry {
+  background: url("<%= asset_path 'dialogs/specials/units_swordsman.png' %>") no-repeat center center;
+}
+
+.queue_artillery {
+  background: url("<%= asset_path 'dialogs/specials/units_archer.png' %>") no-repeat center center;
+}
+
+.queue_cavalry {
+  background: url("<%= asset_path 'dialogs/specials/units_cavalry.png' %>") no-repeat center center;
 }
 
 /* == SPECIFIC SCREEN CSS END == */

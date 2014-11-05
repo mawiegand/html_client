@@ -282,6 +282,11 @@ AWE.Controller = (function(module) {
       that.updateStandardAssignmentsFromServer();
       that.updateSpecialAssignmentsFromServer();
       this.updateUIMarker();
+      if(slot.get("building"))
+      {
+        var dialog = AWE.UI.Ember.BuildingOptionDetailNewDialog.create({building: slot.get('building'), level: slot.getPath('building.levelAfterJobs')});
+        WACKADOO.presentModalDialog(dialog);
+      }
     }
     
     that.unselectSlot = function() {

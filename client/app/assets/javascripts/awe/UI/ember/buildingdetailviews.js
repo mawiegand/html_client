@@ -149,6 +149,11 @@ module.SelectBuildingNewView = module.SelectBuildingDialog.extend( /** @lends AW
     templateName:      "building-option-details-new-dialog-view",
     classNames: ['building-option-details-new-dialog-view'],
 
+    buildingImageLevel: function() {
+      var imageLevel = AWE.Config.BuildingImageLibrary.getImageLevelForBuilding(this.getPath("building.buildingType.symbolic_id"), this.get("level"));
+      return "size" + imageLevel;
+    }.property("building", "level"),
+
   });
    
   module.GeneralResourceView = Ember.View.extend({

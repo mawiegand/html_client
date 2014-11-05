@@ -8,6 +8,7 @@ AWE.UI.Ember = (function(module) {
     slot: null,
     controller: null,
     stepsFurther: 0,
+    smallDetailTemplate: true,
 
     building: function() {
       return this.getPath("slot.building");
@@ -52,14 +53,6 @@ AWE.UI.Ember = (function(module) {
       return this.get("selectedLevel") === this.get("slot").slotType().max_level;
     }.property("selectedLevel"),
 
-
-
-// == Building Details ==
-    
-
-// == End ==
-
-
     upgradeCosts: function() {
       return this.getPath("building.costsOfNextLevel");
     }.property("building.costsOfNextLevel"),
@@ -83,24 +76,146 @@ AWE.UI.Ember = (function(module) {
 
   module.BuildingDetailsView = Ember.View.extend({
     templateName: 'building-details-view',
-    building:null,
-    level: null,
+    classNames: ['building-details'],
+    classBinding: "smallTemplate",
+    building: null,
+    level: 1,
+    smallTemplate: false,
 
     buildingProductions: function() {
-      return this.get("building").getProductionsForLevel(this.get("level"));
+      var productions = this.get("building").getProductionsForLevel(this.get("level"));
+      if(productions.length > 0)
+      {
+        return productions;
+      }
+      return false;
     }.property("building", "level"),
 
     buildingCapacity: function() {
-      return this.get("building").getCapacityForLevel(this.get("level"));
+      var capacity = this.get("building").getCapacityForLevel(this.get("level"));
+      if(capacity)
+      {
+        return capacity;
+      }
+      return false;
     }.property("building", "level"),
 
     buildingPopulation: function() {
-      return this.get("building").getPopulationForLevel(this.get("level"));
+      var population = this.get("building").getPopulationForLevel(this.get("level"));
+      if(population)
+      {
+        return population;
+      }
+      return false;
     }.property("building", "level"),
 
     buildingProductionBoni: function() {
-      return this.get("building").getProductionBoniForLevel(this.get("level"));
+      var boni = this.get("building").getProductionBoniForLevel(this.get("level"));
+      if(boni.length > 0)
+      {
+        return boni;
+      }
+      return false;
     }.property("building", "level"),
+
+    buildingMilitarySpeedupQueues: function() {
+      var returnQueues = [];
+      var queues = this.get("building").calculateSpeedupQueues(this.get("level"));
+      queues.forEach(function(queue) {
+        if(queue.queueType.symbolic_id !== "queue_buildings")
+        {
+          returnQueues.push(queue);
+        }
+      });
+      if(returnQueues.length > 0)
+      {
+        return returnQueues;
+      }
+      return false;
+    }.property("building", "level"),
+
+    buildingConstructionSpeedupQueue: function() {
+      var returnQueue;
+      var queues = this.get("building").calculateSpeedupQueues(this.get("level"));
+      queues.forEach(function(queue) {
+        if(queue.queueType.symbolic_id === "queue_buildings")
+        {
+          returnQueue = queue;
+        }
+      });
+      if(returnQueue)
+      {
+        return returnQueue;
+      }
+      return false;
+    }.property("building", "level"),
+
+    buildingTradeCarts: function() {
+      var carts = this.get("building").calcTradingCarts(this.get("level"));
+      return carts;
+    }.property("building", "level"),
+
+    buildingGarrisonBonus: function() {
+      var bonus = this.get('building').getGarrisonBonusForLevel(this.get('level'));
+      return bonus;
+    }.property("building", "level"),
+
+    buildingArmyBonus: function() {
+      var bonus = this.get('building').getArmyBonusForLevel(this.get('level'));
+      return bonus;
+    }.property("building", "level"),
+
+    buildingDefenseBonus: function() {
+      var bonus = 100 * this.get('building').getDefenseBonusForLevel(this.get('level'));
+      return bonus;
+    }.property("building", "level"),
+
+    containsMilitaryInfo: function() {
+      if(this.get("buildingMilitarySpeedupQueues") || this.get("buildingGarrisonBonus") || this.get("buildingArmyBonus") || this.get("buildingDefenseBonus"))
+      {
+        return true;
+      }
+      return false;
+    }.property("buildingMilitarySpeedupQueues", "buildingGarrisonBonus", "buildingArmyBonus", "buildingDefenseBonus"),
+
+    containsEconomyInfo: function() {
+      if(this.get("buildingProductions") || this.get("buildingCapacity") || this.get("buildingConstructionSpeedupQueue") || this.get("buildingProductionBoni"))
+      {
+        return true;
+      }
+      return false;
+    }.property("buildingProductions", "buildingProductionBoni", "buildingConstructionSpeedupQueue", "buildingCapacity"),
+
+
+    isSingleMilitaryRow: function() {
+      if(this.get("containsMilitaryInfo"))
+      {
+        if(this.get("containsEconomyInfo"))
+        {
+          return false;
+        }
+        return true;
+      }
+      return false;
+    }.property("containsEconomyInfo", "containsMilitaryInfo"),
+
+    isSingleEconomyRow: function() {
+      if(this.get("containsEconomyInfo"))
+      {
+        if(this.get("containsMilitaryInfo"))
+        {
+          return false;
+        }
+        return true;
+      }
+      return false;
+    }.property("containsEconomyInfo", "containsMilitaryInfo"),
+
+  });
+
+  module.BuildingUnlocksView = Ember.View.extend({
+    templateName: 'building-unlocks-view',
+    building: null,
 
   }); 
 
@@ -163,6 +278,28 @@ AWE.UI.Ember = (function(module) {
       if(this.getPath("bonus.bonus") > 0)
       {
         return this.getPath("bonus.bonus");
+      }
+      return false;
+    }.property("bonus"),
+
+  });
+
+  module.UnitSpeedUpView = Ember.View.extend({
+    templateName: 'unit-speedup',
+    queue: null,
+
+    unitName: function() {
+      if(this.getPath("queue.queueType.symbolic_id") === "queue_building")
+      {
+        return false;
+      }
+      return this.getPath("queue.queueType.symbolic_id");
+    }.property("bonus.resourceType.symbolic_id"),
+
+    speedup: function() {
+      if(this.getPath("queue.speedup") > 0)
+      {
+        return this.getPath("queue.speedup");
       }
       return false;
     }.property("bonus"),

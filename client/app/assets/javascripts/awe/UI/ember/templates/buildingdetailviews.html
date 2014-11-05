@@ -107,29 +107,31 @@
         <h1 class="popup-header-center" >{{local building.name}}</h1>
   </div>
   <div class="modal-dialog-body building-information-dialog-pane scrolling">
-    {{view AWE.UI.Ember.BuildingOptionDetailNewDialogView buildingBinding="building"}}
+    {{view AWE.UI.Ember.BuildingOptionDetailNewDialogView buildingBinding="building" levelBinding="level"}}
   </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="building-option-details-new-dialog-view">
   <div class="row row1">
-          <div class="cell cell-50 building-main-level2">
-            <div {{bindAttr class="building.buildingType.symbolic_id :big-building"}}></div>
-          </div>
-          <div class="cell cell-50 info-box">
-            <ul class="resource-list">
-                {{#each building.costsOfNextLevel}}
-                  <li><div {{bindAttr class="resourceType.symbolic_id :item :small :building-resource-icon"}}></div><div class="resource-amount">{{amount}}</div></li>
-                {{/each}}
-            </ul>
-          </div>
-    </div>
-
+    <div class="row row1">
+      <div class="cell cell-50 building-info-image">
+        <div {{bindAttr class="building.buildingType.symbolic_id buildingImageLevel :big-building"}}>
+        </div>
+      </div>
+      <div class="cell cell-50 info-box">
+        {{view AWE.UI.Ember.BuildingDetailsView buildingBinding="building" levelBinding="level"}}
+      </div>
+    </div> <!-- closes row 1 2-->
     <div class="row row2">
-              <div class="cell">
-                <div class="description">{{local building.description}}</div>
-              </div>
+      {{view AWE.UI.Ember.BuildingUnlocksView buildingBinding="building" levelBinding="level"}}
     </div>
+  </div> <!-- closes row 1 1-->
+
+  <div class="row row2">
+    <div class="cell">
+      <div class="description">{{local building.description}}</div>
+    </div>
+  </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="settlement-dialog-select-building">
