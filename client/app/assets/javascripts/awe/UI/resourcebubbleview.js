@@ -185,6 +185,7 @@ AWE.UI = (function(module) {
       }
     };       
         
+        
     return that;
   };
     

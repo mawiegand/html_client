@@ -133,6 +133,8 @@ AWE.Controller = function (module) {
       // layer for the object inspector
       root.append('<canvas id="inspector-canvas"></canvas>');
       _canvas[3] = root.find('#inspector-canvas')[0];
+      _canvas[3].width = 340;
+      _canvas[3].height = 60;
       _stages[3] = new Stage(_canvas[3]);
       _stages[3].onClick = function () {
       };   // we generate our own clicks
@@ -502,10 +504,7 @@ AWE.Controller = function (module) {
           _canvas[1].height = _windowSize.height;
 
           _canvas[2].width = _windowSize.width;
-          _canvas[2].height = _windowSize.height;
-
-          _canvas[3].width = _windowSize.width;
-          _canvas[3].height = _windowSize.height;
+          _canvas[2].height = _windowSize.height;          
 
           //_canvas[4].width = _windowSize.width;
           //_canvas[4].height = _windowSize.height;
@@ -3381,9 +3380,9 @@ AWE.Controller = function (module) {
     // ///////////////////////////////////////////////////////////////////////
 
     that.updateInspectorViews = function () {
-      if (inspectorViews.inspector) {
+      /*if (inspectorViews.inspector) {
         inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 430, _windowSize.height - 234));
-      }
+      }*/
 
       return true;
     };
