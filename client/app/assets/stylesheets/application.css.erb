@@ -653,6 +653,7 @@ h3 {
 
 .modal-dialog-body {
   height: 424px;
+  width: 100%;
   position: absolute;
   top: 52px;
   font-size: 25px;
@@ -776,8 +777,8 @@ h3 {
 
 .modal-dialog-pane-new h1{
   color:#eae0c2;
-  font-size: 28px;
-  margin-top: 10px;
+  font-size: 28px !important;
+  margin-top: 10px !important;
   font-family: 'hvd_comic_serif_proregular', 'cursive';
   text-shadow: none;
 }
@@ -863,14 +864,97 @@ h3 {
   font-size:28px;
   font-family: 'hvd_comic_serif_proregular', 'cursive';
   text-shadow: none;
+  //position: absolute;
+  //top: 80px;
+  //left:210px;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-dialog-pane {
+  font-size: 20px;
+  color: #AAA;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-dialog-pane h2 {
+  left: 20px;
+  position: relative;
+  margin-bottom: 0;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-tag {
+  width: 200px;
+  left: 18px;
+  position: relative;
+  float: left;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-password {
+  width: 200px;
+  left: 20px;
+  position: relative;
+  float: left;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-submit {
+  top: 16px;
+  left: 20px;
+  position: relative;
+  float: left;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-submit-random {
+  left: 20px;
+  position: relative;
+  float: left;
+  width: 100%;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-submit-leave {
+  width: 100%;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-submit-random div {
+  position: relative;
+  margin: 0 auto;
+}
+
+.modal-dialog-pane-new .alliance-diplomacy-submit-leave div {
+  position: relative;
+  margin: 0 auto;
+}
+
+.modal-dialog-pane-new .activity-indicator-small {
   position: absolute;
+  top: 17px;
+  left: 20px;
   top: 80px;
   left:210px;
+}
+
+.modal-dialog-pane-new .modal-dialog-text {
+  margin-left: 20px;
+  position: relative;
+  font-size: 20px;
+  padding-bottom: 10px;
+}
+
+.alliance-diplomacy-dialog-pane-input {
+  width: 180px !important;
 }
 
 .modal-dialog-buttons{
   top: 140px;
   display: table-cell;
+}
+
+.modal-dialog-green-button-big {
+  background-image: url("<%= asset_path 'ui/greenButtonBig.png' %>");
+  width: 180px;
+  height: 48px;
+  color: #FFF;
+  font-size: 129%;
+  text-align: center;
+  font-family: 'Freckle Face', 'cursive';
+  line-height: 48px;
 }
 
 .modal-dialog-blue-button-big{
@@ -3733,13 +3817,18 @@ width: auto;
 
 .building-background
 {
-  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection_disabled.png' %>") no-repeat center center;
   width: 164px;
   height: 148px;
   cursor: pointer;
 }
 
-.building-background:hover
+.is-construction-possible.building-background
+{
+  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection.png' %>") no-repeat center center;
+}
+
+.is-construction-possible.building-background:hover
 {
   background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection_active.png' %>") no-repeat center center;
 }
@@ -3779,8 +3868,10 @@ width: auto;
 }
 
 .building-information-dialog-pane .info-box {
-  text-align: center;
-  vertical-align: middle;
+  /*text-align: center;
+  vertical-align: middle;*/
+  float: left;
+  font-size: 18px;
 }
 .building-option-details.building-option-details-new-dialog-view
 {
@@ -4170,6 +4261,7 @@ width: auto;
 
 .cell-body {
   height: 156px;
+  font-size: 20px;
 }
 
 .level-title {
@@ -4273,6 +4365,12 @@ width: auto;
   background-size: 32px;
 }
 
+.population-detail {
+  width:100%;
+  position: relative;
+  text-align: center;
+}
+
 .change-level {
   cursor: pointer;
 }
@@ -4287,6 +4385,58 @@ width: auto;
   position: absolute;
   left: -30%;
   bottom: -20%;
+}
+
+/* == Building Details == */
+.building-info-image {
+  float: left;
+}
+
+.building-details {
+  position: relative;
+}
+
+.economy-details, .military-details{
+  position: relative;
+  float: left;
+  width: 50%;
+  height: 75%;
+}
+
+.economy-details.is-single-military-row{
+  display: none;
+}
+
+.military-details.is-single-economy-row {
+  display: none;
+}
+
+.economy-details.is-single-economy-row{
+  width: 100%;
+  text-align: center;
+}
+
+.military-details.is-single-military-row {
+  width: 100%;
+  text-align: center;
+}
+
+.unlock-details {
+  position: relative;
+  width: 100%;
+  margin-left: 20px;
+}
+
+.queue_infantry {
+  background: url("<%= asset_path 'dialogs/specials/units_swordsman.png' %>") no-repeat center center;
+}
+
+.queue_artillery {
+  background: url("<%= asset_path 'dialogs/specials/units_archer.png' %>") no-repeat center center;
+}
+
+.queue_cavalry {
+  background: url("<%= asset_path 'dialogs/specials/units_cavalry.png' %>") no-repeat center center;
 }
 
 /* == SPECIFIC SCREEN CSS END == */
@@ -5392,16 +5542,16 @@ loaddialog-positioner {
   overflow-x: hidden;
   background-color: #41660C;
   height: 100%;
-}   
-   
-   
-.settlement-dialog-background { 
-  position: absolute; 
-  background-color: #333; 
-  opacity: 0.0; 
-  width: 100%; 
-  min-height: 100%; 
-  z-index:5; 
+}
+
+
+.settlement-dialog-background {
+  position: absolute;
+  background-color: #333;
+  opacity: 0.0;
+  width: 100%;
+  min-height: 100%;
+  z-index:5;
 }
 
 .settlement-dialog-window, .settlement-dialog-window2 {

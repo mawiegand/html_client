@@ -131,11 +131,19 @@ module.SelectBuildingNewView = module.SelectBuildingDialog.extend( /** @lends AW
     templateName:      "building-option-details-new-view",
     classNames: ['building-option-details-new-view'],
 
+    building: null,
+
     onInfoClicked: function()
     {
       var dialog = AWE.UI.Ember.BuildingOptionDetailNewDialog.create({building: this.get('building')});
       WACKADOO.presentModalDialog(dialog);
     },
+
+    isConstructionPossible: function()
+    {
+      var requirements = this.get("building").requirementsMet();
+      return requirements
+    }.property("building"),
     
   });
 
@@ -148,6 +156,11 @@ module.SelectBuildingNewView = module.SelectBuildingDialog.extend( /** @lends AW
    module.BuildingOptionDetailNewDialogView = module.BuildingOptionDetailView.extend({
     templateName:      "building-option-details-new-dialog-view",
     classNames: ['building-option-details-new-dialog-view'],
+
+    buildingImageLevel: function() {
+      var imageLevel = AWE.Config.BuildingImageLibrary.getImageLevelForBuilding(this.getPath("building.buildingType.symbolic_id"), this.get("level"));
+      return "size" + imageLevel;
+    }.property("building", "level"),
 
   });
    

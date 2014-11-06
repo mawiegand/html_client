@@ -154,6 +154,21 @@ AWE.GS = (function(module) {
       var boni      = this.getPath('buildingType.production_bonus');
       return boni ? AWE.Util.Rules.evaluateResourceProductionBoni(boni, level, true) : null;
     },
+
+    getDefenseBonusForLevel: function(level) {
+      var bonus = this.getPath('buildingType.abilities.defense_bonus');
+      return bonus ? AWE.Util.Rules.evaluateDefenseBonus(bonus, level) : null;
+    },
+
+    getGarrisonBonusForLevel: function(level) {
+      var bonus = this.getPath('buildingType.abilities.garrison_size_bonus');
+      return bonus ? AWE.Util.Rules.evaluateGarrisonBoni(bonus, level) : null;
+    },
+
+    getArmyBonusForLevel: function(level) {
+      var bonus = this.getPath('buildingType.abilities.army_size_bonus');
+      return bonus ? AWE.Util.Rules.evaluateArmyBoni(bonus, level) : null;
+    },
 		
     // ============
 
