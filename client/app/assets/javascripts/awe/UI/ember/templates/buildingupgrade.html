@@ -103,10 +103,19 @@
       </table>
   {{/if}}
   {{#if buildingConstructionSpeedupQueue}}
-      {{t constructionTime}}: {{buildingConstructionSpeedupQueue}}
+    <div>{{t building.buildingTime}}: {{buildingConstructionSpeedupQueue.speedup}}%</div>
   {{/if}}
   {{#if building.commandPoints}}
-      <p>{{t building.commandPoints}}: {{building.commandPoints}}</p>
+    <div>{{t building.commandPoints}}: {{building.commandPoints}}</div>
+  {{/if}}
+  {{#if buildingGarrisonBonus}}
+    <div>{{t building.garrisonBonus}}: +{{buildingGarrisonBonus}}</div>
+  {{/if}}
+  {{#if buildingArmyBonus}}
+    <div>{{t building.armyBonus}}: +{{buildingArmyBonus}}</div>
+  {{/if}}
+  {{#if buildingDefenseBonus}}
+    <div>{{t building.defenseBonus}}: {{buildingDefenseBonus}}%</div>
   {{/if}}
 {{else}}
   {{#if buildingPopulation}}

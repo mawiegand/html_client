@@ -3700,13 +3700,18 @@ width: auto;
 
 .building-background
 {
-  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection_disabled.png' %>") no-repeat center center;
   width: 164px;
   height: 148px;
   cursor: pointer;
 }
 
-.building-background:hover
+.is-construction-possible.building-background
+{
+  background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection.png' %>") no-repeat center center;
+}
+
+.is-construction-possible.building-background:hover
 {
   background:url("<%= asset_path 'dialogs/backgrounds/background_building_selection_active.png' %>") no-repeat center center;
 }
@@ -4139,6 +4144,7 @@ width: auto;
 
 .cell-body {
   height: 156px;
+  font-size: 20px;
 }
 
 .level-title {
