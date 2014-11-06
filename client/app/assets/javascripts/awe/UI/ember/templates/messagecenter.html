@@ -299,6 +299,27 @@
 
 <!-- New Message Center Dialogs and Views-->
 <script type="text/x-handlebars" data-template-name="message-read-dialog">
-  <h1>Mails</h1>
-
+  <div class="popup-dialog-header">
+        <a href="#" {{action "closeDialog"}}>
+          <div class="modal-dialog-back"></div>
+        </a>
+        <h1 class="popup-header-center" >Mail</h1>
+  </div>
+    <div class="modal-dialog-body read-mail-dialog-pane no-scrolling">
+        <div class="row row1 tab-bar-new">
+          <div class="cell cell-33"><div class="left-menu-button">{{t messaging.reply}}</div></div>
+          <div class="cell cell-33"><div class="middle-menu-button">{{t messaging.forward}}</div></div>
+          <div class="cell cell-33"><div class="right-menu-button" {{action "deleteClicked"}}>{{t messaging.delete}}</div></div>
+        </div>
+        <div class="row row2">
+          <div class="cell cell-66"><div class="player-name">{{message.sender.name}}</div></div>
+          <div class="cell cell-33"><div class="date">{{timeString}}</div></div>
+        </div>
+        <div class="row row3">
+          <div class="cell"><div class="subject">{{message.subject}}</div></div>
+        </div>
+        <div class="row row4">
+          <div class="cell"><div class="content">{{{message.message.body}}}</div></div>
+        </div>
+ </div>
 </script>

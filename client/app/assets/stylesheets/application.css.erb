@@ -714,6 +714,9 @@ h3 {
 .cell-60 {
   width:60%;
 }
+.cell-66 {
+  width:66%;
+}
 .cell-70 {
   width:70%;
 }
@@ -2745,6 +2748,85 @@ width: auto;
   margin: -11px 0 0 18px;
 }
 
+/* == READ MAIL == */
+
+.button-read {
+  color: rgb(256,256,256);
+  font-size: 25px;
+  text-align: center;
+  line-height: 58px;
+  margin: auto;
+}
+
+.read-mail-dialog-pane .row1 {
+  margin: 20px 0 20px 0;
+}
+
+.read-mail-dialog-pane .content {
+  width: 576px;
+  height: 230px;
+  background:url("dialogs/backgrounds/background_mail_input_content.png") no-repeat center center;
+  background-size: 100% 100%;
+  font-size: 20px;
+  color: rgb(91,91,91);
+  padding-left: 16px;
+  padding-top: 8px;
+  position: relative;
+  left: 14px;
+  overflow: scroll;
+  line-height: 22px;
+}
+
+.read-mail-dialog-pane .modal-dialog-heading {
+  float: none;
+  display: inline-block;
+}
+
+.read-mail-dialog-pane .player-name {
+  width: 388px;
+  height: 40px;
+  background:url("dialogs/backgrounds/background_mail_sender.png") no-repeat left center;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 18px;
+  color: rgb(91,91,91);
+  padding: 0 0 0 20px;
+  line-height: 40px;
+  position: relative;
+  left: 12px;
+  overflow: hidden;
+  float: left;
+}
+.read-mail-dialog-pane .date {
+  width: 184px;
+  height: 40px;
+  background:url("dialogs/backgrounds/background_mail_date.png") no-repeat left center;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 18px;
+  color: rgb(91,91,91);
+  line-height: 40px;
+  text-align: center;
+  position: relative;
+  left: 2px;
+  float: left;
+}
+
+.read-mail-dialog-pane .subject {
+  width: 572px;
+  height: 40px;
+  background:url("dialogs/backgrounds/background_mail_subject.png") no-repeat left center;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 18px;
+  color: rgb(91,91,91);
+  padding: 0 0 0 20px;
+  line-height: 40px;
+  position: relative;
+  left: 12px;
+  overflow: hidden;
+}
+
 
 /* == PROFILE INFO SELF == */
 
@@ -2813,7 +2895,6 @@ width: auto;
 }
 
 .profile-info-self-dialog-pane .rank:hover {
-  /*background:url("<%= asset_path 'ui/button_profile_blue_up@2x~iPhone.png' %>") no-repeat center center;*/
   cursor: pointer;
 }
 
@@ -2822,14 +2903,12 @@ width: auto;
 }
 
 .profile-info-self-dialog-pane .info:hover {
-  /*background:url("<%= asset_path 'ui/button_profile_orange_up@2x~iPhone.png' %>") no-repeat center center;*/
   cursor: pointer;
 }
 
 .profile-info-self-dialog-pane .avatar {
   width: 144px;
   height: 152px;
-  /*background:url("<%= asset_path 'ui/graphic_profile_avatar@2x~iPhone.png' %>") no-repeat center center;*/
 }
 
 .profile-info-self-dialog-pane .line {

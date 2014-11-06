@@ -341,8 +341,22 @@ AWE.UI.Ember = (function(module) {
 
   // New Message Read Dialog
   module.MessageReadDialog = module.PopUpDialog.extend({
-    //templateName: 'message-center-dialog',
+    templateName: 'message-read-dialog',
     //classNames: ['message-center-dialog'],
+
+    timeString: function() {
+      return AWE.Util.localizedDateTime(this.getPath('message.created_at'));
+    }.property('message.created_at').cacheable(),
+
+    closeDialog: function() {
+      this.destroy();
+    },
+
+    deleteClicked: function() {
+      var selectedMessageEntry = this.get('message');
+      AWE.Action.Messaging.createDeleteMessageAction(selectedMessageEntry).send();
+      this.destroy();
+    },
   });
 
 
@@ -449,10 +463,17 @@ AWE.UI.Ember = (function(module) {
       return true;
     }.observes('message'),*/
     onClickEntry: function(){
-
-      var dialog = AWE.UI.Ember.MessageReadDialog.create({message: this.get('message'),});
+      var messageEntry = this.get('message');
+      if (messageEntry && !messageEntry.get('message')) {
+        messageEntry.fetchMessage();
+      }
+      var dialog = AWE.UI.Ember.MessageReadDialog.create({message: messageEntry,});
       WACKADOO.presentModalDialog(dialog);
-      debugger
+      
+      if (!messageEntry || messageEntry.get('read')) {  // already marked as read?
+        return ;
+      }
+      AWE.Action.Messaging.createMarkMessageReadAction(messageEntry).send();
     }
   });
 

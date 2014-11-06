@@ -618,7 +618,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
 
     activateMessagesController: function(args) {
-      /*args = args || {};
+     /* args = args || {};
       var messageCenterController = this.get('messageCenterController');
       if (!messageCenterController) {
         messageCenterController = AWE.Controller.createMessageCenterController('#layers');
@@ -656,7 +656,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         }
          /*Added from controller end*/
          
-          WACKADOO.presentModalDialog(messageDialog);
+         WACKADOO.presentModalDialog(messageDialog);
       }
     },
 
