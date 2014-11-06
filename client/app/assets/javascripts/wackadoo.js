@@ -618,7 +618,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
     },
 
     activateMessagesController: function(args) {
-      args = args || {};
+      /*args = args || {};
       var messageCenterController = this.get('messageCenterController');
       if (!messageCenterController) {
         messageCenterController = AWE.Controller.createMessageCenterController('#layers');
@@ -627,6 +627,36 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       this.setScreenController(messageCenterController);
       if (args.recipient !== undefined && args.recipient !== null) {
         messageCenterController.createDraftTo(args.recipient.name);
+      }*/
+      /*Added from controller start*/
+      var character   = AWE.GS.CharacterManager.getCurrentCharacter();
+      var allianceId  = character.get('alliance_id');
+      var alliance    = allianceId ? AWE.GS.AllianceManager.getAlliance(allianceId) : null;
+
+      args = args || {};
+      if (args.recipient !== undefined && args.recipient !== null)
+      {
+          //New message dialog
+      }
+      else
+      {
+        /*Added from controller end*/
+
+        messageDialog = AWE.UI.Ember.MessageCenterNewDialog.create({
+            controller: this.get('hudController'),    
+            character: character,
+            alliance:  alliance,
+          });
+
+         /*Added from controller start*/
+        if (!alliance && allianceId) { // fetch alliance from server if it's not available yet
+          AWE.GS.AllianceManager.updateAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function() {
+            messageDialog.set('alliance', AWE.GS.AllianceManager.getAlliance(allianceId));
+          });
+        }
+         /*Added from controller end*/
+         
+          WACKADOO.presentModalDialog(messageDialog);
       }
     },
 
