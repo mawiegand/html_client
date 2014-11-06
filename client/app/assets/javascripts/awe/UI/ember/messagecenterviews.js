@@ -339,6 +339,12 @@ AWE.UI.Ember = (function(module) {
 
   });
 
+  // New Message Read Dialog
+  module.MessageReadDialog = module.PopUpDialog.extend({
+    //templateName: 'message-center-dialog',
+    //classNames: ['message-center-dialog'],
+  });
+
 
 
   module.MessageCenterTabView = module.TabViewNew.extend({
@@ -360,19 +366,21 @@ AWE.UI.Ember = (function(module) {
         }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
         { key:   "tab2",
           title: "Outbox", 
-          view:  AWE.UI.Ember.MailTab2,
+          view:  AWE.UI.Ember.MailTab2.extend({
+            controllerBinding: "parentView.parentView.controller",
+            characterBinding: "parentView.parentView.character",
+            allianceBinding: "parentView.parentView.alliance",
+          }),
           buttonClass: "middle-menu-button",
-          controllerBinding: 'parentView.controller',
-          characterBinding: 'parentView.character',
-          allianceBinding: 'parentView.alliance',
         },
         { key:   "tab3",
           title: "New Mail", 
-          view:  AWE.UI.Ember.MailTab3,
+          view:  AWE.UI.Ember.MailTab3.extend({
+            controllerBinding: "parentView.parentView.controller",
+            characterBinding: "parentView.parentView.character",
+            allianceBinding: "parentView.parentView.alliance",
+          }),
           buttonClass: "right-menu-button",
-          controllerBinding: 'parentView.controller',
-          characterBinding: 'parentView.character',
-          allianceBinding: 'parentView.alliance',
         }
       ]);
       
@@ -411,11 +419,6 @@ AWE.UI.Ember = (function(module) {
     character: null,
     alliance: null,
 
-    debugTest: function(){
-      debugger
-      return true;
-    }.observes('character'),
-
   });
   module.MailTab2 = Ember.View.extend({
     templateName: 'mail-tab2',
@@ -428,6 +431,29 @@ AWE.UI.Ember = (function(module) {
 
     character: null,
     alliance: null,
+  });
+
+  module.MessageEntry = Ember.View.extend({
+     templateName: 'message-entry',
+     classNames: 'read sent',
+
+     //character: 'AWE.GS.CharacterManager.getCharacter(characterId)',
+
+     //var character = AWE.GS.CharacterManager.getCharacter(characterId);
+     message: null,
+     timeString: function() {
+      return AWE.Util.localizedDateTime(this.getPath('message.created_at'));
+    }.property('message.created_at').cacheable(),
+     /*debugTest: function(){
+      debugger
+      return true;
+    }.observes('message'),*/
+    onClickEntry: function(){
+
+      var dialog = AWE.UI.Ember.MessageReadDialog.create({message: this.get('message'),});
+      WACKADOO.presentModalDialog(dialog);
+      debugger
+    }
   });
 
   return module;
