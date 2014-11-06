@@ -62,6 +62,7 @@ AWE.UI = (function(module) {
       
       my.node            = node;
       my.inspectedObject = node.region();
+      
 
       this.recalcView();
     };
@@ -126,7 +127,7 @@ AWE.UI = (function(module) {
         };
         this.addChildAt(_newArmyButtonView, 2);
       }
-      
+      /*
       if (!_nameLabelView) {
         _nameLabelView = AWE.UI.createLabelView();
         _nameLabelView.initWithControllerAndLabel(my.controller);
@@ -138,7 +139,10 @@ AWE.UI = (function(module) {
       var name = region.name();
       if (_nameLabelView.text() != name) {
         _nameLabelView.setText(name);
-      }
+      }*/
+      
+      var name = region.name();
+      that.setText(name);
       
       if (!_ownerLabelView) {
         _ownerLabelView = AWE.UI.createLabelView();

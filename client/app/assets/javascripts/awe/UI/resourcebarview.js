@@ -109,7 +109,7 @@ AWE.UI = (function(module) {
       var progress = amount / capacity;
       my.progressAmountPercent = progress || 0;
       if (my.progressAmountPercent < 0) my.progressAmountPercent = 0;
-      if (my.progressAmountPercent > 1) my.progressAmountPercent = 1;
+      if (my.progressAmountPercent > 1) my.progressAmountPercent = 1;      
       this.redrawProgressBar();
     }    
 
@@ -121,7 +121,12 @@ AWE.UI = (function(module) {
           .beginLinearGradientFill([_topColor,_bottomColor], [0, 1], 0, 0, 0, _barHeight)
           .drawRoundRect(3, 3, (_barWidth - 6) * my.progressAmountPercent, _barHeight - 6, _cornerRadius);
       }
-    }        
+    }     
+    
+    that.updateView = function() {
+      _super.updateView();
+      this.redrawProgressBar();
+    }   
         
     that.displayObject = function() 
     {

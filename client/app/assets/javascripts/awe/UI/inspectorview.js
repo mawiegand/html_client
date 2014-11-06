@@ -13,13 +13,11 @@ AWE.UI = (function(module) {
 
     var that;
     
-    var _textLabel;
-    
     my = my || {};
     
     my.typeName              = 'InspectorView';
     
-    my.backgroundBitmap      = null;   // the translucent - black pull-out rectangle hodling the textual information 
+    my.backgroundAndLabelButton = null;
         
     my.infoButtonView        = null;
     my.centerButtonView      = null;
@@ -57,30 +55,27 @@ AWE.UI = (function(module) {
       _super.initWithController(controller, frame);      
       my.allianceId = allianceId;
       
-      _backgroundBitmap = AWE.UI.createImageView();
-      _backgroundBitmap.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("hud/top/background"));
-      _backgroundBitmap.setFrame(AWE.Geometry.createRect(0, 0, 340, 60));
-      this.addChild(_backgroundBitmap);    
-      
-      //_textLabel = new Text("", "bold 16px HVDComicSerifPro", "#fff");
-      _textLabel = AWE.UI.createLabelView();
-      _textLabel.initWithControllerAndLabel(my.controller);
-      _textLabel.setTextAlign("center");
-      _textLabel.setFrame(AWE.Geometry.createRect(42, 10, 218, 50));
-      _textLabel.onClick = function() { 
-        if (that.onFlagClicked) that.onFlagClicked(); 
-      }            
-      this.addChild(_textLabel);      
+      my.backgroundAndLabelButton = AWE.UI.createButtonView();
+      my.backgroundAndLabelButton.initWithControllerTextAndImage(my.controller, "", 
+        AWE.UI.ImageCache.getImage("hud/top/background"), AWE.Geometry.createRect(0, 0, 340, 60), 
+        "bold 20px HVDComicSerifPro");
+      my.backgroundAndLabelButton.setTextPos(130, null);
+      if (that.onFlagClicked) {
+        my.backgroundAndLabelButton.onClick = function() {         
+          that.onFlagClicked(my.inspectedObject);
+        };
+      }
+      this.addChild(my.backgroundAndLabelButton);            
     };
     
     that.setText = function(text) {
-      if (_textLabel) {
-        _textLabel.setText(text);      
+      if (my.backgroundAndLabelButton) {
+        my.backgroundAndLabelButton.setText(text);      
       }
     }
     
     that.getText = function() {
-      if (_textLabel) return _textLabel.text();
+      if (my.backgroundAndLabelButton) return my.backgroundAndLabelButton.text();
       return null;
     }
     
@@ -105,36 +100,7 @@ AWE.UI = (function(module) {
       my.skimButtonsEnabled = state;
     }
     
-    that.recalcView = function() {                           
-
-/*
-      var allianceId = my.allianceId
-      var allianceColor = my.allianceColor
-      if (my.flagView && my.flagView.allianceId() !== allianceId) {
-        this.removeChild(my.flagView);
-//      this.removeChild(my.flagFrameView);
-        my.flagView = null;
-        my.flagFrameView = null;
-      }
-      if (!my.flagView) {
-        // Allicance Flag
-        if (allianceId) {
-          my.flagView = AWE.UI.createAllianceFlagView();
-          my.flagView.initWithController(my.controller);
-          my.flagView.setFrame(AWE.Geometry.createRect(299, 146, 48, 46));
-          my.flagView.setAllianceId(allianceId);
-          my.flagView.setAllianceColor(allianceColor);
-          my.flagView.setTagVisible(false);
-          my.flagView.onClick = function() { 
-            if (that.onFlagClicked) {
-              that.onFlagClicked(allianceId);
-            };
-          };
-          this.addChildAt(my.flagView, 10);          
-        } 
-        
-      }
-*/            
+    that.recalcView = function() {
       
       if (!my.centerButtonView) {
         my.centerButtonView = AWE.UI.createButtonView();
@@ -163,7 +129,7 @@ AWE.UI = (function(module) {
       if (!my.prevButtonView && my.skimButtonsEnabled) {
         my.prevButtonView = AWE.UI.createButtonView();
         my.prevButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/top/arrow/left"));
-        my.prevButtonView.setFrame(AWE.Geometry.createRect(5, 14, 32, 32));
+        my.prevButtonView.setFrame(AWE.Geometry.createRect(15, 14, 32, 32));
         my.prevButtonView.onClick = function() {
           if (that.onPreviousButtonClick) {
             that.onPreviousButtonClick(my.inspectedObject) 
