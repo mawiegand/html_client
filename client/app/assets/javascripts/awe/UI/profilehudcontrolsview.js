@@ -94,13 +94,13 @@ AWE.UI = (function(module) {
         _levelButton.onClick = function() {
           my.controller.avatarLevelClicked();
         };
-        this.addChild(_levelButton);
-        
-        var rankAndProgress = this.calculateCharacterProgress();
-        _currentCharacterRank = rankAndProgress.rank;
-        _currentCharacterProgress = rankAndProgress.progress;
-        _levelButton.setRankAndProgress(_currentCharacterRank, _currentCharacterProgress);            
+        this.addChild(_levelButton);                
       } 
+      
+      var rankAndProgress = this.calculateCharacterProgress();
+      _currentCharacterRank = rankAndProgress.rank;
+      _currentCharacterProgress = rankAndProgress.progress;
+      _levelButton.setRankAndProgress(_currentCharacterRank, _currentCharacterProgress);            
       
       if (!_allianceButton && character && allianceId) {
         _allianceButton = AWE.UI.createButtonIconView();

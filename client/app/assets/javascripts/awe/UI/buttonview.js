@@ -39,8 +39,10 @@ AWE.UI = (function(module) {
     }
 
     
-    that.initWithControllerTextAndImage = function(controller, text, image, frame) {
+    that.initWithControllerTextAndImage = function(controller, text, image, frame, font) {
       _super.initWithController(controller, frame);
+      
+      font = font || "10px Arial";
       
       my.container = new Container();
       
@@ -63,7 +65,7 @@ AWE.UI = (function(module) {
       _imageView.onMouseOut =  function(event) { that.onMouseOut(event); }
       my.container.addChild(_imageView.displayObject());
       
-      _labelText2 = new Text(text, "10px Arial", "#000");
+      _labelText2 = new Text(text, font, "#000");
       _labelText2.textAlign = "center";
       _labelText2.textBaseline = "middle";
       _labelText2.x = my.frame.size.width / 2;
@@ -73,7 +75,7 @@ AWE.UI = (function(module) {
       _labelText2.onMouseOut =  function(event) { that.onMouseOut(event); }
       my.container.addChild(_labelText2);
     
-      _labelText = new Text(text, "10px Arial", "#fff");
+      _labelText = new Text(text, font, "#fff");
       _labelText.textAlign = "center";
       _labelText.textBaseline = "middle";
       _labelText.x = my.frame.size.width / 2;
@@ -85,6 +87,8 @@ AWE.UI = (function(module) {
     
       my.container.x = my.frame.origin.x;
       my.container.y = my.frame.origin.y;
+      my.container.width = my.frame.size.width;
+      my.container.height = my.frame.size.height;
     }
     
     that.updateView = function() {

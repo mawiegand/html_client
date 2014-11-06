@@ -26,7 +26,7 @@ AWE.UI = (function(module) {
     var _sizeType2LabelView = null;
     var _sizeType3LabelView = null;
     
-    var _stanceView = null;
+    //var _stanceView = null;
 
     var _reinforceButtonView = null;
     
@@ -100,7 +100,7 @@ AWE.UI = (function(module) {
                                         army.get('mode') === 0);
       }
 
-      if (!_nameLabelView) {
+      /*if (!_nameLabelView) {
         _nameLabelView = AWE.UI.createLabelView();
         _nameLabelView.initWithControllerAndLabel(my.controller);
         _nameLabelView.setFrame(AWE.Geometry.createRect(31, 25, 160, 36));      
@@ -112,8 +112,11 @@ AWE.UI = (function(module) {
       
       if (army.get('name') !== _nameLabelView.text()) {
         _nameLabelView.setText(army.get('name'));
+      }*/
+      
+      if (army.get('name') !== that.getText()) {
+        that.setText(army.get('name'));
       }
-
 
       if (!_apLabelView) {
         _apLabelView = AWE.UI.createLabelView();
@@ -185,7 +188,7 @@ AWE.UI = (function(module) {
       }
       _sizeType3LabelView.setText(Math.floor(army.get('unitcategory_artillery_strength')).toString());
             
-      if (!_stanceView || army.get('stance') != _stance) {
+      /*if (!_stanceView || army.get('stance') != _stance) {
         _stance = army.get('stance');
         // Image view für held
         var stance = army.get('stance') || 0;
@@ -223,7 +226,7 @@ AWE.UI = (function(module) {
         _stanceView.initWithControllerAndImage(my.controller, stanceImage);
         _stanceView.setFrame(AWE.Geometry.createRect(0 + offX, 0 + offY, 144, 144));
         this.setInspectedObjectView(_stanceView);
-      }
+      }*/
     };
 
         

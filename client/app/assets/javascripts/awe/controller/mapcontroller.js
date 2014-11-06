@@ -3383,10 +3383,11 @@ AWE.Controller = function (module) {
     // ///////////////////////////////////////////////////////////////////////
 
     that.updateInspectorViews = function () {
-      /*if (inspectorViews.inspector) {
-        inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 430, _windowSize.height - 234));
-      }*/
-
+    /*
+      if (inspectorViews.inspector) {
+        inspectorViews.inspector.setOrigin(AWE.Geometry.createPoint(_windowSize.width - 430, _windowSize.height - 234));        
+      }
+*/
       return true;
     };
 

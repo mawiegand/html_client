@@ -1018,7 +1018,7 @@ AWE.Controller = (function(module) {
             _stageRight.update();
             _stageProfile.update();
             _resourceStage.update();
-            AWE.Ext.applyFunctionToElements(HUDViews, function(view) {
+            AWE.Ext.applyFunctionToElements(HUDViews, function(view) {            
               view.notifyRedraw();
             });
           }

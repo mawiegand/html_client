@@ -31,10 +31,8 @@ AWE.UI = (function(module) {
     
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
-      layoutSubviews: AWE.Ext.superior(that, "layoutSubviews"),
-      setFrame: AWE.Ext.superior(that, "setFrame"),
-      setEnabled: AWE.Ext.superior(that, "setEnabled"),
-      setVisible: AWE.Ext.superior(that, "setVisible"),
+      updateView: AWE.Ext.superior(that, "updateView"),
+      updateIfNeeded: AWE.Ext.superior(that, "updateIfNeeded"),
     }
     
     that.onMouseOver = function() { 
@@ -161,13 +159,16 @@ AWE.UI = (function(module) {
       var pool = AWE.GS.ResourcePoolManager.getResourcePool();
       if (pool) {
         changed = changed || pool.presentAmount(my.resourceName)     !== my.amount;
-        changed = changed || pool.get(my.resourceName + '_capacity') !== my.capacity;
+        changed = changed || pool.get(my.resourceName + '_capacity') !== my.capacity;        
       }
       
-      if (changed) {
-       // log(">> NEED TO UPDATE BUBBLE DUE TO CHANGED RESOURCE PRODUCTION: " + my.resourceName);
+      if (changed) {        
+        // log(">> NEED TO UPDATE BUBBLE DUE TO CHANGED RESOURCE PRODUCTION: " + my.resourceName);
         this.setNeedsUpdate();
+        my.amountProgressView.setNeedsUpdate();
       }
+      
+      _super.updateIfNeeded();
     }  
     
     that.resourceName = function() {
