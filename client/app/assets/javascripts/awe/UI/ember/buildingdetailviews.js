@@ -135,7 +135,7 @@ module.SelectBuildingNewView = module.SelectBuildingDialog.extend( /** @lends AW
 
     onInfoClicked: function()
     {
-      var dialog = AWE.UI.Ember.BuildingOptionDetailNewDialog.create({building: this.get('building')});
+      var dialog = AWE.UI.Ember.BuildingOptionDetailNewDialog.create({building: this.get('building'), level: 1});
       WACKADOO.presentModalDialog(dialog);
     },
 
@@ -205,7 +205,13 @@ module.SelectBuildingNewView = module.SelectBuildingDialog.extend( /** @lends AW
     },         
     
     conversionClicked: function(event) {
-      this.get('controller').constructionConvertClicked(this.get('slot'));
+      var dialog = AWE.UI.Ember.UpgradeView.create({
+        slot: this.get('slot'),
+        controller: this.get('controller'),
+        conversionView: true,
+      });
+      WACKADOO.presentModalDialog(dialog);
+      //this.get('controller').constructionConvertClicked(this.get('slot'));
     },
     
     destroyClasses: function() {

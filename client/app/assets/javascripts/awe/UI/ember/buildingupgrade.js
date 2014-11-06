@@ -9,6 +9,7 @@ AWE.UI.Ember = (function(module) {
     controller: null,
     stepsFurther: 0,
     smallDetailTemplate: true,
+    conversionView: false,
 
     building: function() {
       return this.getPath("slot.building");
@@ -39,6 +40,10 @@ AWE.UI.Ember = (function(module) {
     }.property("slot.building.levelAfterJobs"),
 
     selectedLevel: function() {
+      if(this.get("conversionView"))
+      {
+        return this.getPath("building.converted.level");
+      }
       if(this.get("currentLevel") !== this.get("slot").slotType().max_level) {
         return this.get("currentLevel") + 1 + this.get("stepsFurther");
       }
@@ -54,11 +59,22 @@ AWE.UI.Ember = (function(module) {
     }.property("selectedLevel"),
 
     upgradeCosts: function() {
+      if(this.get("conversionView"))
+      {
+        return this.getPath("building.conversionCosts");
+      }
       return this.getPath("building.costsOfNextLevel");
-    }.property("building.costsOfNextLevel"),
+    }.property("building"),
 
     upgradePressed: function() {
-      this.get('controller').constructionUpgradeClicked(this.get('slot'));
+      if(this.get("conversionView"))
+      {
+        this.get('controller').constructionConvertClicked(this.get('slot'));
+      }
+      else
+      {
+        this.get('controller').constructionUpgradeClicked(this.get('slot'));
+      }
       WACKADOO.closeAllModalDialogs();
     },
 
@@ -81,14 +97,28 @@ AWE.UI.Ember = (function(module) {
     building: null,
     level: 1,
     smallTemplate: false,
+    conversion: false,
 
     buildingProductions: function() {
+      if(this.get("buildingResourceProductions") || this.get("buildingExperienceProductions"))
+      {
+        return true;
+      }
+      return false;
+    }.property("buildingResourceProductions", "buildingExperienceProduction"),
+
+    buildingResourceProductions: function() {
       var productions = this.get("building").getProductionsForLevel(this.get("level"));
       if(productions.length > 0)
       {
         return productions;
       }
       return false;
+    }.property("building", "level"),
+
+    buildingExperienceProductions: function() {
+      var productions = this.get("building").getExperienceProductionForLevel(this.get("level"));
+      return productions;
     }.property("building", "level"),
 
     buildingCapacity: function() {
@@ -216,6 +246,26 @@ AWE.UI.Ember = (function(module) {
   module.BuildingUnlocksView = Ember.View.extend({
     templateName: 'building-unlocks-view',
     building: null,
+
+    buildingUnlockAllianceCreation: function() {
+      return this.getPath("building.unlockedAllianceCreation");
+    }.property("building"),
+
+    buildingUnlockDiplomacy: function() {
+      return this.getPath("building.unlockDiplomacyNextLevel");
+    }.property("building"),
+
+  }); 
+
+  module.BuildingRequirementsView = Ember.View.extend({
+    templateName: 'building-requirements-view',
+    classNames: ['building-requirements'],
+    building: null,
+
+    unmetRequirementGroups: function() {
+      var groups = this.get("building").unmetRequirementGroups();
+      return groups ? groups : false;
+    }.property("building"),
 
   }); 
 

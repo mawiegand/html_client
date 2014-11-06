@@ -1056,7 +1056,7 @@ h3 {
 }
 
 .encyclopedia-unit-new .modal-dialog-text{
-  top: 290px;
+  top: 230px;
   left: 20px;
   font-size: 25px;
   box-sizing: border-box;
@@ -1822,8 +1822,8 @@ h3 {
   width: 186px;
   height: 44px;
   position: relative;
-  top: 150px;
-  left: 10px;
+  top: 152px;
+  left: 4px;
 }
 /* == MILITARY == */
 
@@ -4135,7 +4135,6 @@ width: auto;
 
 .cell-header {
   margin-top: 5px;
-  margin-bottom: 10px;
   position: relative;
   width: 100%;
   height: 40px;
@@ -4214,6 +4213,12 @@ width: auto;
   width: 24px;
   height: 24px;
   background: url("<%= asset_path 'dialogs/items/normal/item_toads_small.png' %>") no-repeat center center;
+}
+
+.item.resource_xp.small {
+  width: 32px;
+  height: 24px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_xp.png' %>") no-repeat center center;
 }
 
 .item.resource_stone.xs {
@@ -4304,10 +4309,11 @@ width: auto;
   text-align: center;
 }
 
-.unlock-details {
+.unlock-details, .building-requirements {
   position: relative;
   width: 100%;
   margin-left: 20px;
+  margin-bottom: 5px;
 }
 
 .queue_infantry {

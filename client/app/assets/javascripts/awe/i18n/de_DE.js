@@ -1500,6 +1500,11 @@ AWE.I18n.de_DE = function(module) {
         heading: "Gebäude ausbauen",
         upgrade: "Ausbauen",
         level: "Stufe",
+      },
+      convert:{
+        heading: "Gebäude umwandeln",
+        upgrade: "Umwandeln",
+        level: "Stufe",
       }
     },
   }
