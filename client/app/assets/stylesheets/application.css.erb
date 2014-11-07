@@ -7267,7 +7267,7 @@ table .datetime {
   height: 128px;
 /*  z-index: 2;*/
   border-radius: 5px;
-  background: url('<%= asset_path("buildings/base/construction_spot_big.png") %>') no-repeat center center;  /** the default images for this category. important: contains the image displayed for empty slots! */
+  background: url('<%= asset_path("buildings/base/grid_base.png") %>') no-repeat center center;  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
 
 .small-building .click-area,
@@ -7729,28 +7729,28 @@ table .datetime {
 }
 
 .building-image.size0 {
-  background-position: 0 0;
+  background-position: 0 -8px;
 }
 .building-image.size1 {
-  background-position: -160px 0;
+  background-position: -160px -8px;
 }
 .building-image.size2 {
-  background-position: -320px 0;
+  background-position: -320px -8px;
 }
 .building-image.size3 {
-  background-position: -480px 0;
+  background-position: -480px -8px;
 }
 .building-image.size4 {
-  background-position: 0 -128px;
+  background-position: 0 -136px;
 }
 .building-image.size5 {
-  background-position: -160px -128px;
+  background-position: -160px -136px;
 }
 .building-image.size6 {
-  background-position: -320px -128px;
+  background-position: -320px -136px;
 }
 .building-image.size7 {
-  background-position: -480px -128px;
+  background-position: -480px -136px;
 }
 
 /* == Construction Images == */
@@ -8248,9 +8248,7 @@ table .datetime {
 .base-picture .large-building.hover,
 .outpost-picture .small-building.hover,
 .base-picture .small-building.hover {
-  margin-left: -4px; 
-  margin-top: -4px;
-  border: 4px solid orange;
+  background: url('<%= asset_path("buildings/base/grid_base_hover.png") %>') no-repeat center center;
   cursor: pointer;
 }
 
