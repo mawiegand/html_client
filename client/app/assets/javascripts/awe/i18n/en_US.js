@@ -1475,6 +1475,11 @@ AWE.I18n.en_US = function(module) {
         heading: "Building Upgrade",
         upgrade: "Upgrade",
         level: "Level",
+      },
+      convert:{
+        heading: "Building Convert",
+        convert: "Convert",
+        level: "Level",
       }
     },
   };

@@ -169,6 +169,12 @@ AWE.GS = (function(module) {
       var bonus = this.getPath('buildingType.abilities.army_size_bonus');
       return bonus ? AWE.Util.Rules.evaluateArmyBoni(bonus, level) : null;
     },
+
+    getExperienceProductionForLevel: function(level) {
+      var experienceProduction = this.getPath('buildingType.experience_production');
+      level = level || 0;
+      return experienceProduction ? AWE.GS.Util.parseAndEval(experienceProduction, level) : null;
+    },
 		
     // ============
 
