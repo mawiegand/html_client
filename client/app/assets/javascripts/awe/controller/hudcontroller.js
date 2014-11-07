@@ -570,8 +570,7 @@ AWE.Controller = (function(module) {
     };
     that.discardDraft = function() {
       var view = that.messageView;
-      view.set('newMessage', null);
-      view.hideForm();
+      view.destroyDialog();
     };
     
     
@@ -584,7 +583,7 @@ AWE.Controller = (function(module) {
           self.discardDraft();
         }
         else if (status === AWE.Net.NOT_FOUND) {
-          self.view.setRecipientIsUnknown(true);
+          //self.view.setRecipientIsUnknown(true);
         }
         else {
           log(status, "ERROR: The server did not accept the message.");

@@ -637,6 +637,8 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (args.recipient !== undefined && args.recipient !== null)
       {
           //New message dialog
+          var dialog = AWE.UI.Ember.MessageWriteDialog.create({});
+          WACKADOO.presentModalDialog(dialog);
       }
       else
       {

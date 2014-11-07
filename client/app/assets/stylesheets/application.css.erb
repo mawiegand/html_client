@@ -2645,11 +2645,6 @@ width: auto;
   height: 344px;
 }
 
-.modal-dialog-body.modal-dialog-new-message-tab-body
-{
-  top: 100px;
-}
-
 .mail-inbox-dialog-pane .row1,
 .mail-outbox-dialog-pane .row1{
   margin: 20px 0 10px 0;
@@ -2746,6 +2741,95 @@ width: auto;
   width: 72px;
   height: 72px;
   margin: -11px 0 0 18px;
+}
+
+/* == NEW MAIL == */
+
+.alliance-ultimatum-button.send-mail-button
+{
+  font-size: 20px;
+  left: 4px;
+  position: relative;
+}
+
+.modal-dialog-body.modal-dialog-new-message-tab-body
+{
+  top: 115px;
+  height: 344px;
+  overflow: hidden;
+}
+
+.new-mail-dialog-pane .row1 {
+  margin: 20px 0 20px 0;
+}
+
+.player-name-input input[type="text"] {
+  height: 32px;
+  font-size: 20px;
+  width: 296px;
+  margin-right: 0px!important;
+  border: 0!important;
+  border-radius: 0!important;
+  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  padding: 2px!important;
+  margin-left: 13px!important;
+  resize: none;
+  color: rgb(91,91,91);
+  background-color: white;
+}
+.new-mail-dialog-pane .send {
+  background:url("images/button_mail_send@2x~iPhone.png") no-repeat center center;
+}
+
+.new-mail-dialog-pane .send:hover {
+  background:url("images/button_mail_send_up@2x~iPhone.png") no-repeat center center;
+  cursor: pointer;
+}
+
+.new-mail-dialog-pane .player-name {
+  width: 374px;
+  height: 32px;
+  background-color: white;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 1.2em;
+  color: rgb(91,91,91);
+  padding: 0 0 0 10px;
+}
+
+.player-subject-input input[type="text"] {
+  height: 32px;
+  font-size: 20px;
+  width: 584px;
+  margin-right: 0px!important;
+  border: 0!important;
+  border-radius: 0!important;
+  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  padding: 2px!important;
+  margin-left: 13px!important;
+  resize: none;
+  color: rgb(91,91,91);
+  background-color: white;
+}
+
+.new-mail-dialog-pane .player-subject {
+  background-size: 100% 100%;
+}
+
+.new-mail-dialog-pane .content {
+  width: 584px;
+  height: 244px;
+  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  background-color: white;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 20px;
+  color: rgb(91,91,91);
+  resize: none;
+  overflow: scroll;
+  margin-left: 13px;
+  margin-top: 4px;
+  line-height: 22px;
 }
 
 /* == READ MAIL == */
