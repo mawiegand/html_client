@@ -467,7 +467,138 @@ AWE.Controller = (function(module) {
     //   Remote Data Handling
     //
     // ///////////////////////////////////////////////////////////////////////
+    /*Added from controller start*/
+    that.messageView = null;
+    that.updateMessageCenter = function() {
+      var view = that.messageView;
 
+      if (view) {
+        var display = view.get('display');
+
+        if (display === "outbox") {
+
+          var outbox = AWE.GS.CharacterManager.getCurrentCharacter().get('outbox');
+          if (!outbox) {
+            AWE.GS.CharacterManager.getCurrentCharacter().fetchOutbox(function(outboxes, status) {
+              if (status === AWE.Net.NOT_FOUND || !outboxes) {
+                log('ERROR: outboxes of current character not found on server.');
+              } 
+              else { 
+                outbox = AWE.GS.CharacterManager.getCurrentCharacter().get('outbox');
+                if (outbox) {
+                  outbox.fetchEntries();
+                }
+                else {
+                  log('ERROR: no outbox found.');
+                }
+              }
+            });
+          }
+          else if (outbox && outbox.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime()) { // timeout
+            AWE.GS.OutboxManager.updateMessageBox(outbox.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(outbox, status) {
+          
+              if (outbox && outbox.getId() && status !== AWE.Net.NOT_MODIFIED) {
+                outbox.fetchEntries()
+              }
+            });
+          }
+          
+        }
+        else if (display === "archive") {
+          
+          var archive = AWE.GS.CharacterManager.getCurrentCharacter().get('archive');
+          if (!archive) {
+            AWE.GS.CharacterManager.getCurrentCharacter().fetchArchive(function(archives, status) {
+              if (status === AWE.Net.NOT_FOUND || !archives) {
+                log('ERROR: archives of current character not found on server.');
+              } 
+              else { 
+                archive = AWE.GS.CharacterManager.getCurrentCharacter().get('archive');
+                if (archive) {
+                  archive.fetchEntries();
+                }
+                else {
+                  log('ERROR: no archive found.');
+                }
+              }
+            });
+          }
+          else if (archive && archive.lastUpdateAt(AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime()) { // timeout
+            AWE.GS.ArchiveManager.updateMessageBox(archive.get('id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(archive, status) {
+          
+              if (archive && archive.getId() && status !== AWE.Net.NOT_MODIFIED) {
+                archive.fetchEntries()
+              }
+            });
+          }
+          
+        }
+        else {
+          AWE.GS.InboxManager.triggerInboxAutoUpdate();
+        }
+      }
+    };
+
+    //Message actions
+    that.inboxClicked = function() {
+      var view = that.messageView;
+      view.hideForm(); // make sure, form is hidden
+      view.switchTo('inbox');
+    };
+    that.outboxClicked = function() {
+      var view = that.messageView;
+      view.hideForm(); // make sure, form is hidden
+      view.switchTo('outbox');
+    };
+    that.archiveClicked = function() {
+      var view = that.messageView;
+      view.hideForm(); // make sure, form is hidden
+      view.switchTo('archive');
+    };
+    that.newClicked = function() {
+      var view = that.messageView;
+      view.showForm();
+    };
+    that.newAllianceMessageClicked = function() {
+      var view = that.messageView;
+      view.showAllianceMessageForm();
+    };
+    that.createDraftTo = function(recipientName) {
+      var view = that.messageView;
+      view.showForm();
+      view.setPath('newMessage.recipient', recipientName);
+    };
+    that.discardDraft = function() {
+      var view = that.messageView;
+      view.set('newMessage', null);
+      view.hideForm();
+    };
+    
+    
+    that.sendMessage = function(message) {
+      var self = this;
+      action = AWE.Action.Messaging.createSendMessageAction(message);
+      action.send(function(status, jqXHR) {
+        log('SENT MESSAGE, STATUS', status);
+        if (status === AWE.Net.CREATED || status === AWE.Net.OK) {
+          self.discardDraft();
+        }
+        else if (status === AWE.Net.NOT_FOUND) {
+          self.view.setRecipientIsUnknown(true);
+        }
+        else {
+          log(status, "ERROR: The server did not accept the message.");
+          var dialog = AWE.UI.Ember.InfoDialog.create({
+            contentTemplateName: 'server-command-failed-info',
+            cancelText:          AWE.I18n.lookupTranslation('settlement.buildings.missingReqWarning.cancelText'),
+            okPressed:           null,
+            cancelPressed:       function() { this.destroy(); },
+          });          
+          WACKADOO.presentModalDialog(dialog);
+        }
+      });
+    };
+    /*Added from controller end*/
     that.activeAlliances = [];
 
     that.updateAlliance = function(allianceId) {
@@ -724,6 +855,11 @@ AWE.Controller = (function(module) {
           that.activeAlliances.forEach(function(allianceId){
             that.updateAlliance(allianceId);
           });
+        }
+
+        if(that.messageView != null)
+        {
+          that.updateMessageCenter();
         }
         
                 
