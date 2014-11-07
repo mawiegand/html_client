@@ -225,7 +225,7 @@
     <div class="row row2">
           <ul class="mail-list">
             {{#each messageBox.sortedEntries}}
-              {{view AWE.UI.Ember.MessageEntry messageBinding="this"}}
+              {{view AWE.UI.Ember.MessageEntry messageBinding="this" controllerBinding="view.controller"}}
             {{/each}}
           </ul>
         </div>
@@ -237,7 +237,7 @@
     <div class="row row2">
           <ul class="mail-list">
             {{#each messageBox.sortedEntries}}
-              {{view AWE.UI.Ember.MessageEntry messageBinding="this"}}
+              {{view AWE.UI.Ember.MessageEntry messageBinding="this" controllerBinding="view.controller"}}
             {{/each}}
           </ul>
         </div>
