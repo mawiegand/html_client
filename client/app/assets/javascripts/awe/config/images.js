@@ -98,6 +98,7 @@ AWE.Config = (function(module) {
     "map/army/npc/stanceMedium":    AWE.Config.RAILS_ASSET_PATH + 'army/neandertaler_size2_144.png',
     "map/army/npc/stanceLarge":     AWE.Config.RAILS_ASSET_PATH + 'army/neandertaler_size3_144.png',
 
+    "map/army/npc/stance":     AWE.Config.RAILS_ASSET_PATH + 'army/neandertaler.png',
 
     "map/army/npc/small":     AWE.Config.RAILS_ASSET_PATH + 'army/neandertaler_size1.png',
     "map/army/npc/medium":    AWE.Config.RAILS_ASSET_PATH + 'army/neandertaler_size2.png',
@@ -444,7 +445,7 @@ AWE.Config = (function(module) {
     "map/army/chef/stanceAggressive",
     "map/army/chef/stanceDefensive",
   ];
-  
+
   return module;
   
 }(AWE.Config || {}));

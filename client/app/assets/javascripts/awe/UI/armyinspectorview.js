@@ -194,16 +194,17 @@ AWE.UI = (function(module) {
               
         var stanceImage = null;
         if (army.get("npc")) {
-          var size = army.get('size_present') || 0;
-          if (size >= 800) {
-            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/stanceLarge');
-          }
-          else if (size >= 100) {
-            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/stanceMedium');
-          }
-          else {
-            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/stanceSmall');
-          }
+//          var size = army.get('size_present') || 0;
+//          if (size >= 800) {
+//            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/stanceLarge');
+//          }
+//          else if (size >= 100) {
+//            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/stanceMedium');
+//          }
+//          else {
+//            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/stanceSmall');
+//          }
+            stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/stance');
         }
         else {
           var armyCategory = army.get('armyCategory');
