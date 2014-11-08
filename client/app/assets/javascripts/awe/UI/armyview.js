@@ -291,15 +291,8 @@ AWE.UI = (function(module) {
 
     that.createNeanderthalSpriteSheet = function(number) {
       var image = "map/army/animation/neanderthal";
-      var standFrame = 0;
+      var standFrame = 1;
       number = number || Math.floor(Math.random()*1000);
-
-      switch (_army.get('stance') || 0) {
-          case 0:  standFrame = 0; break;
-          case 1:  standFrame = 1; break;
-          case 2:  standFrame = 2; break;
-          default: standFrame = 0;
-      }
 
       return {
           images: [AWE.UI.ImageCache.getImage(image).src],
@@ -313,14 +306,14 @@ AWE.UI = (function(module) {
               walk:   {
                   frames:    [3, 4, 5, 6, 7, 8],
                   next:      'walk',
-                  frequency: 2,
+                  frequency: 1.5,
               },
               fight:  {
                   frames: [].concat(
                       multiplyArray([9, 10, 11, 12, 13],      (number % 3)+2),
-                      multiplyArray([0,0,0,0,0,0,0,0,0], (number % 2)+1),
+                      multiplyArray([1, 1, 2, 2, 1, 1, 1, 0, 0, 1, 1], (number % 2)+1),
                       multiplyArray([9, 10, 11, 12, 13],      (number % 3)+1),
-                      multiplyArray([0,0,0,0,0,0,0,0,0], (number % 5)+4)
+                      multiplyArray([1, 1, 0, 0, 1, 1, 1, 2, 2, 1, 1], (number % 5)+4)
                   ),
                   next:   'fight',
               },
@@ -330,7 +323,12 @@ AWE.UI = (function(module) {
                   frequency: 2,
               },
               stand: {
-                  frames:    [ standFrame ],    // actually has no transition
+                frames: [ standFrame ].concat(
+                    multiplyArray([standFrame], (number % 167)+23),
+                    multiplyArray([standFrame+1], (number % 2)+4),
+                    multiplyArray([standFrame], (number % 123)+13),
+                    multiplyArray([standFrame-1, standFrame-1], (number % 2)+1)
+                ),
                   next: 'stand',
                   frequency: 1,
               },
