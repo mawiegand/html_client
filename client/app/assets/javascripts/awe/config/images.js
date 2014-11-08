@@ -80,7 +80,8 @@ AWE.Config = (function(module) {
     "map/army/animation":     AWE.Config.RAILS_ASSET_PATH + 'army/warrior_animation_final_128.png',
     "map/army/animation/amazon": AWE.Config.RAILS_ASSET_PATH + 'army/amazon_animation_montage.png',
     "map/army/animation/chef":   AWE.Config.RAILS_ASSET_PATH + 'army/chef_animation_montage.png',
-    
+    "map/army/animation/neanderthal":   AWE.Config.RAILS_ASSET_PATH + 'army/neandertaler_animation_montage.png',
+
     "map/army/stanceAggressive": AWE.Config.RAILS_ASSET_PATH + 'army/warrior_pose_2_144.png',
     "map/army/stanceDefensive":  AWE.Config.RAILS_ASSET_PATH + 'army/warrior_pose_1_144.png',
     "map/army/stanceNeutral":    AWE.Config.RAILS_ASSET_PATH + 'army/warrior_pose_1_144.png',

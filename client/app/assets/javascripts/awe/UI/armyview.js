@@ -288,30 +288,64 @@ AWE.UI = (function(module) {
         },
       };      
     }
-    
+
+    that.createNeanderthalSpriteSheet = function(number) {
+      var image = "map/army/animation/neanderthal";
+      var standFrame = 0;
+      number = number || Math.floor(Math.random()*1000);
+
+      switch (_army.get('stance') || 0) {
+          case 0:  standFrame = 0; break;
+          case 1:  standFrame = 1; break;
+          case 2:  standFrame = 2; break;
+          default: standFrame = 0;
+      }
+
+      return {
+          images: [AWE.UI.ImageCache.getImage(image).src],
+          frames: {width:128, height:128},
+          animations: {
+              toWalk: {
+                  frames: multiplyArray([standFrame], number % 4).concat([ standFrame ]),  // no transition, but random delay to prevent units from walking in sync
+                  next:   'walk',
+                  frequency: 1,
+              },
+              walk:   {
+                  frames:    [3, 4, 5, 6, 7, 8],
+                  next:      'walk',
+                  frequency: 2,
+              },
+              fight:  {
+                  frames: [].concat(
+                      multiplyArray([9, 10, 11, 12, 13],      (number % 3)+2),
+                      multiplyArray([0,0,0,0,0,0,0,0,0], (number % 2)+1),
+                      multiplyArray([9, 10, 11, 12, 13],      (number % 3)+1),
+                      multiplyArray([0,0,0,0,0,0,0,0,0], (number % 5)+4)
+                  ),
+                  next:   'fight',
+              },
+              toStand: {
+                  frames:    [ standFrame ],    // actually has no transition
+                  next:      'stand',
+                  frequency: 2,
+              },
+              stand: {
+                  frames:    [ standFrame ],    // actually has no transition
+                  next: 'stand',
+                  frequency: 1,
+              },
+          },
+      };
+    }
+
     that.prepareSpriteSheet = function() {
       if (!_army) {
         log('WARNING: army view without an associated army object.');
         return null;
       }
       
-      if (_army.get("npc") && AWE.Config.DISABLE_NPC_IMAGES) {
-        if (_army.get('id') % 3 == 0) {
-          return this.createAmazonSpriteSheet(_army.get('id'));
-        }
-        else if (_army.get('id') % 3 == 1) {
-          return this.createChefSpriteSheet(_army.get('id'));
-        }
-        return this.createWarriorSpriteSheet(_army.get('id'));
-      }
-      else if (AWE.Config.DISABLE_NPC_IMAGES) {
-        if (_army.get('id') % 3 == 0) {
-          return this.createAmazonSpriteSheet(_army.get('id'));
-        }
-        else if (_army.get('id') % 3 == 1) {
-          return this.createChefSpriteSheet(_army.get('id'));
-        }
-        return this.createWarriorSpriteSheet(_army.get('id'));
+      if (_army.get("npc")) {
+        return this.createNeanderthalSpriteSheet(_army.get('id'));
       }
       else {
         var armyCategory = _army.get('armyCategory');
@@ -479,7 +513,7 @@ AWE.UI = (function(module) {
         _protectionView = null;
       }
 
-      if (!(_army.get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) && (_stance === null || _army.get("stance") !== _stance || !_animation)) {
+      if (_stance === null || _army.get("stance") !== _stance || !_animation) {
         var data = null; 
         var spriteSheet = null;
         var newAnimation = AWE.UI.createAnimatedSpriteView();
@@ -512,44 +546,15 @@ AWE.UI = (function(module) {
         _animation = newAnimation;
       }
 
-      if (_army.get("npc") && !AWE.Config.DISABLE_NPC_IMAGES) {
-        var stanceImage;
-        var size = _army.get('size_present') || 0;
-        if (size >= 800) {
-          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/large');
-        }
-        else if (size >= 100) {
-          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/medium');
-        }
-        else {
-          stanceImage = AWE.UI.ImageCache.getImage('map/army/npc/small');
-        }
-        
-        if (!_stanceView) {
-          _stanceView = AWE.UI.createImageView();        
-          _stanceView.initWithControllerAndImage(my.controller, stanceImage);
-
-          _stanceView.setFrame(AWE.Geometry.createRect(-6, -7, 96, 96));
-          _stanceView.onClick = that.onClick;
-          _stanceView.onDoubleClick = that.onDoubleClick;
-          _stanceView.onMouseOver = that.onMouseOver;
-          _stanceView.onMouseOut = that.onMouseOut;
-          this.addChild(_stanceView);        
-        }
-        _stanceView.setImage(stanceImage);
+      if (_army.get("mode") === 0 && _animation.animation().currentAnimation !== 'stand' && _animation.animation().currentAnimation !== 'toStand') {        // 0: standing!, 1: walking, 2: fighting
+        _animation.animation().gotoAndPlay('toStand');
       }
-      else {
-        log('CHECK ANIMATION')
-        if      (_army.get("mode") === 0 && _animation.animation().currentAnimation !== 'stand' && _animation.animation().currentAnimation !== 'toStand') {        // 0: standing!, 1: walking, 2: fighting
-          _animation.animation().gotoAndPlay('toStand');
-        }
-        else if (_army.get("mode") === 1 && _animation.animation().currentAnimation !== 'walk' && _animation.animation().currentAnimation !== 'toWalk') {       // 0: standing!, 1: walking, 2: fighting
-          _animation.animation().gotoAndPlay('toWalk');
-        }
-        else if (_army.get("mode") === 2 && _animation.animation().currentAnimation !== 'fight') {     // 0: standing!, 1: walking, 2: fighting
-          _animation.animation().gotoAndPlay('fight');
-        }
-      }               
+      else if (_army.get("mode") === 1 && _animation.animation().currentAnimation !== 'walk' && _animation.animation().currentAnimation !== 'toWalk') {       // 0: standing!, 1: walking, 2: fighting
+        _animation.animation().gotoAndPlay('toWalk');
+      }
+      else if (_army.get("mode") === 2 && _animation.animation().currentAnimation !== 'fight') {     // 0: standing!, 1: walking, 2: fighting
+        _animation.animation().gotoAndPlay('fight');
+      }
     }
     
     that.setAnnotationView = function(annotationView) {
