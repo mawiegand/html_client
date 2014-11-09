@@ -74,18 +74,6 @@ AWE.UI = (function(module) {
         _hillView.onMouseOver = that.onMouseOver;
         _hillView.onMouseOut = that.onMouseOut;
         this.addChildAt(_hillView, 0);
-//
-//        _flagBackground = AWE.UI.createImageView();
-//        _flagBackground.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage('map/hill/label'));
-//        _flagBackground.setContentMode(module.ViewContentModeFit);
-//        _flagBackground.setFrame(AWE.Geometry.createRect(AWE.Config.MAP_FORTRESS_SIZE/2.0-9,
-//                AWE.Config.MAP_FORTRESS_SIZE-14,
-//            26, 18));
-//        _flagBackground.onClick = that.onClick;
-//        _flagBackground.onDoubleClick = that.onDoubleClick;
-//        _flagBackground.onMouseOver = that.onMouseOver;
-//        _flagBackground.onMouseOut = that.onMouseOut;
-//        this.addChildAt(_flagBackground, 1);
       }
 
 
