@@ -126,6 +126,45 @@
 </script>
 
 
+<!--
+  // buttons for all buildings
+    var _infoButtonView = null;
+    var _upgradeButtonView = null; // if buildingLevel < maxBuildingLevel      
+    var _destroyButtonView = null; // if demolishable
+    
+    // buttons for specific buildings
+    var _convertButtonView    = null; // quarry, logger, furrier, small hut, storage
+    var _assignmentButtonView = null; // tavern
+    var _diplomacyButtonView  = null; // campfire
+    var _tradeButtonView      = null; // storage, storage_2
+    var _artifactButtonView   = null; // artifact_stand
+    var _militaryButtonView   = null; // barracks -> infantry tab, stud -> cavalry tab, firing range -> artillery tab
+    
+    // building construction view
+    var _constructionView = null;    
+-->
+
+<script type="text/x-handlebars" data-template-name="settlement-building-annotation">
+  <div class="building-annotation-view">
+    <a class="clickable" {{action "infoClicked"}}>
+      <div class="buildling-info-button-background"></div>
+      <div class="buildling-info-button-icon">i</div>
+    </a>
+    {{#if building.upgradable}}          
+      {{#unless sendingUpgrade}}
+        <a class="clickable" {{action "upgradeClicked"}} title="{{t building.tooltip.clickToUpgrade}}">
+          <div class="buildling-updgrad-button-background"></div>
+          <div class="buildling-upgrade-button-icon"></div>
+        </a>
+        {{#if upgradeUIMarker}}
+          {{view AWE.UI.Ember.UIMarker direction=2 top="-100" left=10}}
+        {{/if}}      
+      {{/unless}}
+    {{/if}}
+  </div>
+</script>
+
+
 <script type="text/x-handlebars" data-template-name="settlement-dialog-building-details">
 {{#if building.garrisonArmy }}
         {{view AWE.UI.Ember.ArmyInfoDialogNew garrisonArmyBinding="building.garrisonArmy" controllerBinding="controller" displayHeading=false}}
