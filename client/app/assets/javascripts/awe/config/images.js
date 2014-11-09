@@ -61,15 +61,15 @@ AWE.Config = (function(module) {
 
     "map/colony/small":       AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/colonysmall.png',
     "map/colony/middle":      AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/colonymiddle.png',
-    "map/colony/big":         AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/colonybig.png',
+    "map/colony/large":         AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/colonylarge.png',
 
     "map/colony/1/small":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/1/colonysmall.png',
     "map/colony/1/middle":    AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/1/colonymiddle.png',
-    "map/colony/1/big":       AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/1/colonybig.png',
+    "map/colony/1/large":       AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/1/colonylarge.png',
 
     "map/outpost/small":      AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/outpostsmall.png',
     "map/outpost/middle":     AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/outpostmiddle.png',
-    "map/outpost/big":        AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/outpostlarge.png',
+    "map/outpost/large":        AWE.Config.RAILS_ASSET_PATH + 'settlements/image_sets/0/outpostlarge.png',
 
     "map/emptyslot" :         AWE.Config.RAILS_ASSET_PATH + 'white_icon.png',
 
