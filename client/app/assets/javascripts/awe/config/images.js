@@ -264,7 +264,7 @@ AWE.Config = (function(module) {
     "hud/inspector/button/prev/hovered":  AWE.Config.RAILS_ASSET_PATH + 'ui/inspector/inspector_prev_button-hovered.png',
 
     "hud/inspector/button/reinforce/normal":   AWE.Config.RAILS_ASSET_PATH + 'ui/inspector/inspector_reinforce_button.png',
-    "hud/inspector/button/reinforce/hovered":  AWE.Config.RAILS_ASSET_PATH + 'ui/inspector/inspector_reinforce_button-hovered.png',
+    "hud/inspector/button/reinforce/hovered":  AWE.Config.RAILS_ASSET_PATH + 'ui/inspector/inspector_reinforce_button-hovered.png',        
 
     "hud/annotation/panel1":                     AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_panel_1_button.png',
     "hud/annotation/panel3":                     AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_panel_3_buttons.png',
@@ -336,6 +336,11 @@ AWE.Config = (function(module) {
     "hud/button/ranking/hover" :    AWE.Config.RAILS_ASSET_PATH + 'hud/ranking_button/ranking_button_hovered.png',
     "hud/button/settlement/normal" :    AWE.Config.RAILS_ASSET_PATH + 'hud/settlement_button/settlement_button.png',
     "hud/button/settlement/hover" :    AWE.Config.RAILS_ASSET_PATH + 'hud/settlement_button/settlement_button_hovered.png',
+    
+    "hud/button/blue"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/button_blue/button_blue.png',
+    "hud/button/green"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/button_green/button_green.png',
+    
+    "hud/icon/upgrade"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_upgrade/icon_upgrade.png',
     
     "hud/profile/levelbutton/background"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_background/avatar_background.png',
     "hud/profile/levelbutton/foreground"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_level_background/avatar_level_background.png',

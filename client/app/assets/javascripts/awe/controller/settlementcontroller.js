@@ -25,7 +25,7 @@ AWE.Controller = (function(module) {
     var _becameVisible = false;
 
     var _welcomeDialogClosed = false;
-          
+    
     var that = module.createScreenController(anchor); // create base object
     
     that.typeName = 'SettlementController';
@@ -52,7 +52,7 @@ AWE.Controller = (function(module) {
      * @function
      * @name AWE.Controller.SettlementController#init */
     that.init = function(initialFrameModelCoordinates) {
-      _super.init();       
+      _super.init();        
       that.updateGossipIfNecessary();     
     };   
     
@@ -292,7 +292,7 @@ AWE.Controller = (function(module) {
     that.unselectSlot = function() {
       that.view.setPath('selectedSlot.uiMarker', false);
       that.view.set('selectedSlot', null);
-      this.updateUIMarker();
+      this.updateUIMarker();      
     }
     
     // construction actions //////////////////////////////////////////////////
