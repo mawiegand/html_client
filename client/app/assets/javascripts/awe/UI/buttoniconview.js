@@ -66,7 +66,7 @@ AWE.UI = (function(module) {
       _iconImageView = AWE.UI.createImageView();
       _iconImageView.initWithControllerAndImage(controller, icon);
       _iconImageView.setContentMode(module.ViewContentModeFit);
-      _iconImageView.setFrame((image.width - icon.width) / 2, (image.height - icon.height) / 2, icon.width, icon.height);
+      _iconImageView.setFrame(AWE.Geometry.createRect((image.width - icon.width) / 2, (image.height - icon.height) / 2, icon.width, icon.height));
       _iconImageView.onClick = function() { 
         if (that.enabled()) {
           that.onClick() 
