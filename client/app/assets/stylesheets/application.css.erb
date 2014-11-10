@@ -792,9 +792,10 @@ h3 {
 }
 
 .modal-dialog-pane-new .avatar{
-  position: absolute;
-  top: 30px;
-  left: 13px;
+  position: relative;
+  margin-left: 13px;
+  float: left;
+  display: inline-block;
 }
 
 .modal-dialog-pane-new h1{
@@ -803,6 +804,12 @@ h3 {
   margin-top: 10px !important;
   font-family: 'hvd_comic_serif_proregular', 'cursive';
   text-shadow: none;
+  display: inline-block;
+}
+
+.character-detail {
+  display: inline-block;
+  float: left;
 }
 
 .tab-bar-new .cell{
@@ -814,6 +821,7 @@ h3 {
   text-align: center;
   line-height: 52px;
   font-size: 20px;
+  margin-left: 10px;
 }
 
 .tab-bar-new .left-menu-button-subtab {
@@ -2654,7 +2662,7 @@ width: auto;
 
 .modal-dialog-body.modal-dialog-inbox-tab-body
 {
-  top: 115px;
+  top: 125px;
   height: 344px;
 }
 
@@ -2937,7 +2945,7 @@ width: auto;
 {
   position: absolute;
   left: 400px;
-  top: 490px;
+  top: 390px;
   line-height: 50px;
   font-size: 14px;
 }
@@ -3944,7 +3952,7 @@ width: auto;
 /* == BUILDING SELECTION ==*/
 
 .modal-dialog-body.modal-dialog-building-selection{
-  top: 45px;
+  top: 55px;
   height: 420px;
   width: 100%;
 }
@@ -4039,7 +4047,7 @@ width: auto;
 
 .modal-dialog-body.building-information-dialog-pane
 {
-  top: 46px;
+  top: 56px;
   width: 624px;
   height: 420px;
 }
@@ -8752,57 +8760,64 @@ table .datetime {
 }
 
 
-/****** OUTPOST */
+/* ==== OUTPOST NEW ==== */
+
+.outpost-picture .small-building.slot1 {
+  top:  206px;
+  left: 432px;
+}
+
+.outpost-picture .small-building.slot2 {
+  top:  92px;
+  left: 432px;
+}
+
+
 /** row 1 */
 .outpost-picture .small-building.slot3 {
-  top:  145px;
-  left: 120px;
+  top:  149px;
+  left: 188px;
 }
+
 .outpost-picture .small-building.slot4 {
-  top:  145px;
-  left: 200px;
+  top:  149px;
+  left: 351px;
 }
 .outpost-picture .small-building.slot5 {
-  top:  145px;
-  left: 280px;
+  top:  149px;
+  left: 514px;
 }
 .outpost-picture .small-building.slot6 {
-  top:  145px;
-  left: 360px;
-}
-.outpost-picture .small-building.slot7 {
-  top:  145px;
-  left: 440px;
-}
-.outpost-picture .large-building.slot1 {
-  top:  145px;
-  left: 520px;
+  top: 149px;
+  left: 677px;
 }
 
 /** row 2 */
-.outpost-picture .small-building.slot8 {
-  top:  335px;
-  left: 120px;
+.outpost-picture .small-building.slot7 {
+  top:  206px;
+  left: 269px;
 }
+.outpost-picture .small-building.slot8 {
+  top:  206px;
+  left: 595px;
+}
+
+/** row 3 */
 .outpost-picture .small-building.slot9 {
-  top:  335px;
-  left: 200px;
+  top:  263px;
+  left: 188px;
 }
 .outpost-picture .small-building.slot10 {
-  top:  335px;
-  left: 280px;
+  top:  263px;
+  left: 351px;
 }
 .outpost-picture .small-building.slot11 {
-  top:  335px;
-  left: 360px;
+  top:  263px;
+  left: 514px;
 }
 .outpost-picture .small-building.slot12 {
-  top:  335px;
-  left: 440px;
-}
-.outpost-picture .large-building.slot2 {
-  top:  290px;
-  left: 520px;
+  top:  263px;
+  left: 677px;
 }
 
 

@@ -2,7 +2,6 @@
 
 <script type="text/x-handlebars" data-template-name="outpost-screen">
 <div class="outpost-screen settlement-screen">
-  <div class="outpost-picture-spacer"></div>
   <div class="outpost-picture">
     <div class="outpost-background-picture"></div>
     {{#if "settlement"}}
@@ -16,9 +15,7 @@
           {{view AWE.UI.Ember.BuildingSlotView  classNames="small-building" slotBinding="this" settlementBinding="view.settlement"}}
         {{/each}}
         
-        {{#each largeSlots}}
-          {{view AWE.UI.Ember.BuildingSlotView  classNames="large-building" slotBinding="this" settlementBinding="view.settlement"}}
-        {{/each}}
+        
       {{/if}}
       
       {{#if queues }}
