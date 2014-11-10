@@ -14,8 +14,6 @@ AWE.UI = (function(module) {
     var _node = null;
     
     var _imageView = null;
-    var _hillView = null;
-    var _hillImageName = null;
     var _flagBackground = null;
     var _labelView = null;
     var _selectShape = null;
@@ -36,47 +34,6 @@ AWE.UI = (function(module) {
       var allianceId = _node.region().allianceId();
       var allianceColor = _node.region().allianceColor();
 
-
-      // HILL IMAGE /////////////////////////////////////////////////////////
-      var terrainId = _node.region().terrainId();
-      var newHillImageName = 'map/hill/plain';
-      if (terrainId == 1) {
-        newHillImageName = 'map/hill/forest';
-      }
-      else if (terrainId == 2) {
-        newHillImageName = 'map/hill/mountains';
-      }
-      else if (terrainId == 3) {
-        newHillImageName = 'map/hill/desert';
-      }
-      else if (terrainId == 4) {
-        newHillImageName = 'map/hill/swamp';
-      }
-
-      if (newHillImageName != _hillImageName && _hillView) {
-        this.removeChild(_hillView);
-        this.removeChild(_flagBackground);
-        _hillView = null;
-        _flagBackground = null;
-      }
-      _hillImageName = newHillImageName;
-
-      if (!_hillView) {
-        _hillView = AWE.UI.createImageView();
-        _hillView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_hillImageName));
-        _hillView.setContentMode(module.ViewContentModeFit);
-        _hillView.setFrame(AWE.Geometry.createRect((AWE.Config.MAP_FORTRESS_SIZE-AWE.Config.MAP_FORTRESS_HILL_WIDTH)/2.0,
-                AWE.Config.MAP_FORTRESS_SIZE-AWE.Config.MAP_FORTRESS_HILL_HEIGHT+20,
-            AWE.Config.MAP_FORTRESS_HILL_WIDTH,
-            AWE.Config.MAP_FORTRESS_HILL_HEIGHT));
-        _hillView.onClick = that.onClick;
-        _hillView.onDoubleClick = that.onDoubleClick;
-        _hillView.onMouseOver = that.onMouseOver;
-        _hillView.onMouseOut = that.onMouseOut;
-        this.addChildAt(_hillView, 0);
-      }
-
-
       // FORTRESS IMAGE //////////////////////////////////////////////////////
       var level = AWE.Util.Rules.normalizedLevel(_node.region().fortressLevel(), AWE.GS.SETTLEMENT_TYPE_FORTRESS);
       var imageId = 0; //_node.region().imageId();
@@ -85,15 +42,15 @@ AWE.UI = (function(module) {
 
       if (level > 7) {
         newFortressImageName = imageId > 0 ? 'map/fortress/' + imageId + '/large' : 'map/fortress/large';
-        flagFrame = AWE.Geometry.createRect(70, 12, 24, 16);
+        flagFrame = AWE.Geometry.createRect(70, 32, 24, 16);
       }
       else if (level > 3) {
         newFortressImageName = imageId > 0 ? 'map/fortress/' + imageId + '/middle' : 'map/fortress/middle';
-        flagFrame = AWE.Geometry.createRect(64, 14, 24, 16);
+        flagFrame = AWE.Geometry.createRect(64, 34, 24, 16);
       }
       else {
         newFortressImageName = imageId > 0 ? 'map/fortress/' + imageId + '/small' : 'map/fortress/small';
-        flagFrame = AWE.Geometry.createRect(34, 14, 24, 16);
+        flagFrame = AWE.Geometry.createRect(36, 32, 24, 16);
       }
 
       if (newFortressImageName != _fortressImageName && _imageView) {
@@ -107,12 +64,12 @@ AWE.UI = (function(module) {
         _imageView = AWE.UI.createImageView();
         _imageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(_fortressImageName));
         _imageView.setContentMode(module.ViewContentModeFit);
-        _imageView.setFrame(AWE.Geometry.createRect(0, 4, AWE.Config.MAP_FORTRESS_SIZE, AWE.Config.MAP_FORTRESS_SIZE));
+        _imageView.setFrame(AWE.Geometry.createRect(0, 26, AWE.Config.MAP_FORTRESS_SIZE, AWE.Config.MAP_FORTRESS_SIZE));
         _imageView.onClick = that.onClick;
         _imageView.onDoubleClick = that.onDoubleClick;
         _imageView.onMouseOver = that.onMouseOver;
         _imageView.onMouseOut = that.onMouseOut;
-        this.addChildAt(_imageView, 1);
+        this.addChildAt(_imageView, 0);
       }
 
       // FLAG VIEW ///////////////////////////////////////////////////////////
@@ -128,7 +85,7 @@ AWE.UI = (function(module) {
         _flagView.onDoubleClick = that.onDoubleClick;
         _flagView.onMouseOver = that.onMouseOver;
         _flagView.onMouseOut = that.onMouseOut;
-        this.addChildAt(_flagView, 1);
+        this.addChildAt(_flagView, 0);
       }
 
 //      if (_flagView && allianceId != _flagView.allianceId()) {
