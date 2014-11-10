@@ -26,7 +26,14 @@ AWE.GS = (function(module) {
     
     diplomacy_status: null,
     
-    initiator: false
+    initiator: false,
+
+    ultimatumTime: function() {
+      var ultimatumCreation = AWE.GS.TimeManager.serverToLocalTime(new Date(this.get('created_at')));
+      var currentStateTimeInSeconds = Math.round(Math.abs(new Date() - ultimatumCreation)/1000);
+      var currentStateRulesDuration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.get('diplomacy_status')).duration;
+      return currentStateRulesDuration - currentStateTimeInSeconds;
+    },
   });
 
     
@@ -63,7 +70,19 @@ AWE.GS = (function(module) {
     that.lastUpdateAtForSourceAllianceId = function(allianceId, updateType) {
       return module.DiplomacyRelationAccess.lastUpdateForSource_alliance_id(allianceId, updateType);// modified after
     };
-    
+
+    that.updateAllDiplomacyRelationsOfAlliance = function(allianceId) {
+      var relations = AWE.GS.DiplomacyRelationAccess.getEnumerableForSource_alliance_id(allianceId);
+      if (that.lastUpdateAtForSourceAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime()) { // have alliance id, but no corresponding alliance
+        AWE.Ext.applyFunction(relations, function(relation) {
+          if (relation.ultimatumTime() < 0) {
+            that.updateDiplomacyRelation(relation.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+          }
+        });
+        that.updateDiplomacyRelationsOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
+      }
+    };
+
     /** returns true, if update is executed, returns false, if request did 
      * fail (e.g. connection error) or is unnecessary (e.g. already underway).
      */

@@ -453,16 +453,23 @@ AWE.UI.Ember = (function(module) {
       return false; // prevent default behavior
     },
 
-    ultimatumTime: function() {
+    calcUltimatumTime: function() {
       var ultimatumCreation = AWE.GS.TimeManager.serverToLocalTime(new Date(this.getPath('ultimatum.created_at')));
       var currentStateTimeInSeconds = Math.round(Math.abs(new Date() - ultimatumCreation)/1000);
-      var currentStateRulesDuration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('ultimatum.diplomacy_status')).duration;
-      var currentStateDuration = AWE.Util.secondsToDuration(currentStateRulesDuration - currentStateTimeInSeconds);
-      return currentStateDuration;
+      if (this.getPath('ultimatum.diplomacy_status')) {
+        var currentStateRulesDuration = AWE.GS.RulesManager.getRules().getDiplomacyRelationType(this.getPath('ultimatum.diplomacy_status')).duration;
+        var currentStateDuration = AWE.Util.secondsToDuration(currentStateRulesDuration - currentStateTimeInSeconds);
+        this.set('ultimatumTime', currentStateDuration);
+      }
+      else {
+        this.set('ultimatumTime', {h: 0, m: 0, s: 0});
+      }
     },
 
+    ultimatumTime: {h: 0, m: 0, s: 0},
+
     ultimatumTimeString: function() {
-      var duration = this.ultimatumTime();
+      var duration = this.get('ultimatumTime');
       var time = {}
       time.h = duration.h + "h ";
       time.m = duration.m + "min";
@@ -501,6 +508,37 @@ AWE.UI.Ember = (function(module) {
         }
       });
     },
+
+    timer: null,
+
+    startTimer: function() {
+      var timer = this.get('timer');
+      if (!timer) {
+        timer = setInterval((function(self) {
+          return function() {
+            self.calcUltimatumTime();
+          };
+        }(this)), 10000);
+        this.set('timer', timer);
+      }
+    },
+
+    stopTimer: function() {
+      var timer = this.get('timer');
+      if (timer) {
+        clearInterval(timer);
+        this.set('timer', null);
+      }
+    },
+
+    didInsertElement: function() {
+      this.calcUltimatumTime();
+      this.startTimer();
+    },
+
+    willDestroyElement: function() {
+      this.stopTimer();
+    },
   })
 
   //Diplomacy View Controller
@@ -510,6 +548,10 @@ AWE.UI.Ember = (function(module) {
 
     alliance: null,
     targetAlliance: "",
+
+    didInsertElement: function() {
+      AWE.GS.DiplomacyRelationManager.updateAllDiplomacyRelationsOfAlliance(AWE.GS.game.getPath('currentCharacter.alliance_id'));
+    },
 
     isAllianceLeader: function() {
       var leaderId = this.getPath('alliance.leader_id');

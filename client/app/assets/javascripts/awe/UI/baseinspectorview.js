@@ -147,7 +147,7 @@ AWE.UI = (function(module) {
           modifier = "middle";
         }
         else {
-          modifier = "big";
+          modifier = "large";
         }
 
         if (my.settlementType === 'outpost') {
