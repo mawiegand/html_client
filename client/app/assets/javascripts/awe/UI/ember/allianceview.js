@@ -474,17 +474,21 @@ AWE.UI.Ember = (function(module) {
       time.h = duration.h + "h ";
       time.m = duration.m + "min";
 
-      if(duration.h === 0) {
+      if(duration.h <= 0) {
         time.h = "";
       }
 
       if(duration.m < 10) {
         time.m = "0" + time.m;
+        if(duration.m < 0)
+        {
+          time.m = "";
+        }
       }
 
       var timeString = time.h + time.m;
       return timeString;
-    }.property('ultimatumTime.m'),
+    }.property('ultimatumTime'),
 
     warGiveUp: function() {
       return this.getPath('ultimatum.diplomacy_status') === 2 && this.get('ultimatumTimeString') === "00min";
@@ -496,8 +500,8 @@ AWE.UI.Ember = (function(module) {
 
     nextDiplomacyRelation: function() {
       var self = this;
-      var targetAllianceName = this.get('targetAlliance').name;
-      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(self.getPath('alliance.id'), targetAllianceName, false);
+      var targetAllianceTag = this.get('targetAllianceTag');
+      var action = AWE.Action.Fundamental.createDiplomacyRelationAction(self.getPath('alliance.id'), targetAllianceTag, false);
       AWE.Action.Manager.queueAction(action, function(statusCode) {
         if (statusCode !== 200) {
           var errorDialog = AWE.UI.Ember.InfoDialog.create({
