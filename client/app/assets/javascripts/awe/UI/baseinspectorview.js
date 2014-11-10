@@ -16,17 +16,7 @@ AWE.UI = (function(module) {
     
     my.typeName = 'BaseInspectorView';
     my.settlementType = null;
-        
-    var _nameLabelView = null;
-    var _ownerLabelView = null;
-    var _scoreLabelView = null;
-    var _bonusLabelView = null;
-    
-    var _newArmyButtonView = null;
-
-    var _settlementView = null;
-
-    
+            
     that = module.createInspectorView(spec, my);
 
     var _super = {
@@ -70,32 +60,10 @@ AWE.UI = (function(module) {
       
       _super.recalcView();
       
-      if (!_newArmyButtonView && isOwnLocation && location != null && location.garrisonArmy() != null && !location.garrisonArmy().get('isFighting')) {
-        _newArmyButtonView = AWE.UI.createButtonView();
-        _newArmyButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/inspector/button/reinforce/normal"));
-        _newArmyButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/inspector/button/reinforce/hovered"), module.CONTROL_STATE_HOVERED);
-        _newArmyButtonView.setFrame(AWE.Geometry.createRect(346, 0, 68, 66));
-        _newArmyButtonView.onClick = function() {
-          if (that.onNewArmyButtonClick) {
-            that.onNewArmyButtonClick(location);
-          }
-        };
-        this.addChildAt(_newArmyButtonView, 2);
+      if (location.name() !== that.getText()) {
+        that.setText(location.settlement() ? location.settlement().get('name') : location.name());
       }
 
-      if (_newArmyButtonView && isOwnLocation && location != null && location.garrisonArmy() != null && location.garrisonArmy().get('isFighting')) {
-        this.removeChild(_newArmyButtonView);
-      }
-      
-      if (!_nameLabelView) {
-        _nameLabelView = AWE.UI.createLabelView();
-        _nameLabelView.initWithControllerAndLabel(my.controller);
-        _nameLabelView.setFrame(AWE.Geometry.createRect(31, 30, 160, 36));      
-        _nameLabelView.setFont('19px "Helvetica Neue", Helvetica, Arial');
-        _nameLabelView.setTextAlign("left");
-        this.addChild(_nameLabelView);
-      }
-      
       if (location.name() !== _nameLabelView.text()) {
         _nameLabelView.setText(location.settlement() ? location.settlement().get('name') : location.name());
       }

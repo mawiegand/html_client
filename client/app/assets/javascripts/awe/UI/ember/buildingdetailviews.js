@@ -48,6 +48,65 @@ AWE.UI.Ember = (function(module) {
       return result && result.length > 0 ? result : null;
     }.property('slot.building_id', 'slot.settlement'),  
   });  
+  
+  /** @class
+   * @name AWE.UI.Ember.BuildingAnnotationView */
+  module.BuildingAnnotationView = Ember.View.extend( /** @lends AWE.UI.Ember.BuildingAnnotationView# */ {
+    templateName: "settlement-building-annotation",    
+    
+    sendingUpgradeBinding: 'controller.status.sendingUpgrade',
+    sendingDestroyBinding: 'controller.status.sendingDestroy',
+    sendingConvertBinding: 'controller.status.sendingConvert',
+    
+    infoClicked: function(event) {
+      var slot = this.get('slot');
+      debugger;
+      this.get('controller').constructionInfoClicked(this.get('slot'));
+    },
+    
+    upgradeClicked: function(event) {
+      this.get('controller').constructionUpgradeClicked(this.get('slot'));
+    },         
+    
+    destroyClicked: function(event) {
+      this.get('controller').constructionDestroyClicked(this.get('slot'));
+    },         
+    
+    conversionClicked: function(event) {
+      this.get('controller').constructionConvertClicked(this.get('slot'));
+    },
+    
+    assignmentClicked: function(event) {
+      this.get('controller').constructionAssignmentClicked(this.get('slot'));
+    },
+    
+    diplomacyClicked: function(event) {
+      this.get('controller').constructionDiplomacyClicked(this.get('slot'));
+    },
+    
+    resourceExchangePressed: function() {
+      var dialog = AWE.UI.Ember.ResourceExchangeDialog.create();
+      WACKADOO.presentModalDialog(dialog);
+      return false;
+    },
+    
+    artifactClicked: function(event) {
+      this.get('controller').constructionArtifactClicked(this.get('slot'));
+    },
+    
+    militaryClicked: function(event) {
+      this.get('controller').constructionMilitaryClicked(this.get('slot'));
+    },
+    
+    constructionCoinsClicked: function(event) {
+      this.get('controller').constructionCoinsClicked(this.get('slot'));
+    },
+    
+    constructionCancelClicked: function(event) {
+      this.get('controller').constructionCancelClicked(this.get('slot'));
+    },        
+    
+  });  
 
 module.SelectBuildingNewDialog = module.PopUpDialog.extend({
     templateName: 'settlement-new-dialog-select-building',

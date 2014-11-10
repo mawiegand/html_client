@@ -21,9 +21,9 @@
         {{view AWE.UI.Ember.ConstructionQueueView controllerBinding="controller" classNames="queue-list" queuesBinding="queues.collection"}}
       {{/if}}
       
-      {{#if selectedSlot}}
+      {{#if selectedSlot}}        
         {{#if selectedSlot.building }}
-          {{view AWE.UI.Ember.BuildingDetailsDialog controllerBinding="controller" slotBinding="selectedSlot" buildingBinding="selectedSlot.building"}}
+          <!--{{view AWE.UI.Ember.BuildingAnnotationView controllerBinding="controller" slotBinding="selectedSlot"}}-->
         {{else}}
           {{view AWE.UI.Ember.SelectBuildingNewDialog controllerBinding="controller" slotBinding="selectedSlot"}}
         {{/if}}
