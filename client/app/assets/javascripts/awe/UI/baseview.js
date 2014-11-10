@@ -77,32 +77,41 @@ AWE.UI = (function(module) {
       }
       
 
-      if (!_poleShape) {      
-        var _poleGraphics = new Graphics();
-        _poleGraphics.setStrokeStyle(1);
-        _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
-        _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
-        _poleGraphics.drawRoundRect(0, 0, 2, 26, 0);
-        _poleShape = AWE.UI.createShapeView();
-        _poleShape.initWithControllerAndGraphics(my.controller, _poleGraphics);
-        _poleShape.setFrame(AWE.Geometry.createRect(46, 0, 2, 48));
-        this.addChildAt(_poleShape, 0);
-      }
-      
+//      if (!_poleShape) {
+//        var _poleGraphics = new Graphics();
+//        _poleGraphics.setStrokeStyle(1);
+//        _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
+//        _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
+//        _poleGraphics.drawRoundRect(0, 0, 2, 26, 0);
+//        _poleShape = AWE.UI.createShapeView();
+//        _poleShape.initWithControllerAndGraphics(my.controller, _poleGraphics);
+//        _poleShape.setFrame(AWE.Geometry.createRect(46, 0, 2, 48));
+//        this.addChildAt(_poleShape, 0);
+//      }
+
       // BASE IMAGE //////////////////////////////////////////////////////
+      // disable divine supporter images
       var divineSupporterImage = _location.divineSupporterImage();
-      var newSettlementImageName = divineSupporterImage ? 'map/colony/1/small' : 'map/colony/small';
       var level = AWE.Util.Rules.normalizedLevel(_location.settlementLevel(), _location.settlementTypeId());
-  
-      if (level > 3) {
-        newSettlementImageName = divineSupporterImage ? 'map/colony/1/middle' : 'map/colony/middle';
-      }
+      var newSettlementImageName;
+      var flagFrame;
+
       if (level > 7) {
-        newSettlementImageName = divineSupporterImage ? 'map/colony/1/big' : 'map/colony/big';
+        newSettlementImageName = divineSupporterImage ? 'map/colony/1/large' : 'map/colony/large';
+        flagFrame = AWE.Geometry.createRect(4, 2, 16, 10);
+      }
+      else if (level > 3) {
+        newSettlementImageName = divineSupporterImage ? 'map/colony/1/middle' : 'map/colony/middle';
+        flagFrame = AWE.Geometry.createRect(4, 5, 16, 10);
+      }
+      else {
+        newSettlementImageName = divineSupporterImage ? 'map/colony/1/small' : 'map/colony/small';
+        flagFrame = AWE.Geometry.createRect(44, 12, 16, 10);
       }
       
       if (newSettlementImageName != _settlementImageName && _imageView) {
         this.removeChild(_imageView);
+        this.removeChild(_flagView);
         _imageView = null;
       }
       _settlementImageName = newSettlementImageName;
@@ -120,6 +129,16 @@ AWE.UI = (function(module) {
         this.addChildAt(_imageView, 0);
       }
 
+      if (!_flagView) {
+        _flagView = AWE.UI.createAllianceFlagView();
+        _flagView.initWithController(my.controller);
+        _flagView.setFrame(flagFrame);
+        _flagView.setAllianceId(allianceId);
+        _flagView.setAllianceColor(allianceColor);
+        _flagView.setDirection('right');
+        that.addChildAt(_flagView, 0);
+      }
+
       // LABEL VIEW ///////////////////////////////////////////////////////////    
       if (!_labelView) {
         _labelView = AWE.UI.createLabelView();
@@ -133,16 +152,6 @@ AWE.UI = (function(module) {
         AWE.GS.game.getPath('currentCharacter.id') == _location.ownerId() ? _labelView.setColor('#000') : _labelView.setColor('#FFF');
         AWE.GS.game.getPath('currentCharacter.id') == _location.ownerId() ? _labelView.setBackground('rgba(255, 255, 255, 0.5)') : _labelView.setBackground(true);
       }  
-      
-      if (!_flagView) {
-        _flagView = AWE.UI.createAllianceFlagView();
-        _flagView.initWithController(my.controller);
-        _flagView.setFrame(AWE.Geometry.createRect(18, 0, 28, 16));
-        _flagView.setAllianceId(allianceId);
-        _flagView.setAllianceColor(allianceColor);
-        _flagView.setDirection('left');
-        that.addChild(_flagView);
-      }
       
       if (allianceId != _flagView.allianceId()) {
         _flagView.setAllianceId(allianceId);

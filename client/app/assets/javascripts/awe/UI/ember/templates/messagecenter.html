@@ -281,7 +281,7 @@
 
 <script type="text/x-handlebars" data-template-name="message-center-new-message-tab">
   <div class="modal-dialog-body modal-dialog-new-message-tab-body scrolling">
-    NEWMESSAGE
+    {{view AWE.UI.Ember.MessageWriteView controllerBinding="controller"}}
   </div>
 </script>
 
@@ -299,6 +299,64 @@
 
 <!-- New Message Center Dialogs and Views-->
 <script type="text/x-handlebars" data-template-name="message-read-dialog">
-  <h1>Mails</h1>
+  <div class="popup-dialog-header">
+        <a href="#" {{action "closeDialog"}}>
+          <div class="modal-dialog-back"></div>
+        </a>
+        <h1 class="popup-header-center" >Mail</h1>
+  </div>
+    <div class="modal-dialog-body read-mail-dialog-pane no-scrolling">
+        <div class="row row1 tab-bar-new">
+          <div class="cell cell-33">
+            {{#if isInbox}}
+            <div class="left-menu-button">{{t messaging.reply}}</div>
+            {{/if}}
+          </div>
+          <div class="cell cell-33"><div class="middle-menu-button" {{action "forwardClicked"}}>{{t messaging.forward}}</div></div>
+          <div class="cell cell-33"><div class="right-menu-button" {{action "deleteClicked"}}>{{t messaging.delete}}</div></div>
+        </div>
+        <div class="row row2">
+          <div class="cell cell-66"><div class="player-name">{{message.sender.name}}</div></div>
+          <div class="cell cell-33"><div class="date">{{timeString}}</div></div>
+        </div>
+        <div class="row row3">
+          <div class="cell"><div class="subject">{{message.subject}}</div></div>
+        </div>
+        <div class="row row4">
+          <div class="cell"><div class="content">{{{message.message.body}}}</div></div>
+        </div>
+ </div>
+</script>
 
+<script type="text/x-handlebars" data-template-name="message-write-view">
+    <div class="new-mail-dialog-pane no-scrolling">
+        <div class="row player-name-input">
+          <div class="cell cell-66">
+            {{view Ember.TextField valueBinding="recipientValue" placeholderBinding="playerNamePlaceholder"}}
+          </div>
+          <div class="cell cell-33"><div class="alliance-ultimatum-button send-mail-button" {{action "submitMessage"}}>{{t messaging.send}}</div></div>
+        </div>
+        <div class="row player-subject-input">
+          <div class="cell">
+            {{view Ember.TextField valueBinding="subjectValue" placeholderBinding="subjectPlaceholder"}}</div>
+        </div>
+        <div class="row row3">
+          <div class="cell">
+            {{view Ember.TextArea classNames="content" valueBinding="bodyValue" }}
+          </div>
+        </div>
+    </div>
+</script>
+
+<!-- Write Message Dialog-->
+<script type="text/x-handlebars" data-template-name="message-write-dialog">
+  <div class="popup-dialog-header">
+        <a href="#" {{action "closeDialog"}}>
+          <div class="modal-dialog-back"></div>
+        </a>
+        <h1 class="popup-header-center" >WackyUser_12345</h1>
+ </div>
+ <div class="modal-dialog-body modal-dialog-new-message-tab-body scrolling" style="top: 80px;">
+    {{view AWE.UI.Ember.MessageWriteView}}
+  </div>
 </script>

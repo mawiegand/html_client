@@ -463,10 +463,11 @@ h3 {
 
 #inspector-canvas {
   position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
+  top: 100px;
+  left: 50%;
+  width: 340px;
+  height: 60px;
+  margin-left: -170px;
   z-index: 3;
 }
 
@@ -479,12 +480,30 @@ h3 {
   z-index: 4;
 }
 
-#hud-canvas {
+#hud-canvas-right {
   position: absolute;
-  right: -380px;
+  right: -70px;
+  bottom: 276px;
+  width: 70px;
+  height: 114px;
+  z-index: 10;
+}
+
+#hud-canvas-left {
+  position: absolute;
+  left: -120px;
+  bottom: 20px;
+  width: 120px;
+  height: 370px;
+  z-index: 10;
+}
+
+#hud-canvas-profile {
+  position: absolute;
+  right: -268px;
   top: 0px;
-  width: 380px;
-  height: 260px;
+  width: 268px;
+  height: 266px;
   z-index: 10;
 }
 
@@ -713,6 +732,9 @@ h3 {
 }
 .cell-60 {
   width:60%;
+}
+.cell-66 {
+  width:66%;
 }
 .cell-70 {
   width:70%;
@@ -2642,11 +2664,6 @@ width: auto;
   height: 344px;
 }
 
-.modal-dialog-body.modal-dialog-new-message-tab-body
-{
-  top: 100px;
-}
-
 .mail-inbox-dialog-pane .row1,
 .mail-outbox-dialog-pane .row1{
   margin: 20px 0 10px 0;
@@ -2745,6 +2762,174 @@ width: auto;
   margin: -11px 0 0 18px;
 }
 
+/* == NEW MAIL == */
+
+.alliance-ultimatum-button.send-mail-button
+{
+  font-size: 20px;
+  left: 4px;
+  position: relative;
+}
+
+.modal-dialog-body.modal-dialog-new-message-tab-body
+{
+  top: 115px;
+  height: 344px;
+  overflow: hidden;
+}
+
+.new-mail-dialog-pane .row1 {
+  margin: 20px 0 20px 0;
+}
+
+.player-name-input input[type="text"] {
+  height: 32px;
+  font-size: 20px;
+  width: 296px;
+  margin-right: 0px!important;
+  border: 0!important;
+  border-radius: 0!important;
+  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  padding: 2px!important;
+  margin-left: 13px!important;
+  resize: none;
+  color: rgb(91,91,91);
+  background-color: white;
+}
+.new-mail-dialog-pane .send {
+  background:url("images/button_mail_send@2x~iPhone.png") no-repeat center center;
+}
+
+.new-mail-dialog-pane .send:hover {
+  background:url("images/button_mail_send_up@2x~iPhone.png") no-repeat center center;
+  cursor: pointer;
+}
+
+.new-mail-dialog-pane .player-name {
+  width: 374px;
+  height: 32px;
+  background-color: white;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 1.2em;
+  color: rgb(91,91,91);
+  padding: 0 0 0 10px;
+}
+
+.player-subject-input input[type="text"] {
+  height: 32px;
+  font-size: 20px;
+  width: 584px;
+  margin-right: 0px!important;
+  border: 0!important;
+  border-radius: 0!important;
+  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  padding: 2px!important;
+  margin-left: 13px!important;
+  resize: none;
+  color: rgb(91,91,91);
+  background-color: white;
+}
+
+.new-mail-dialog-pane .player-subject {
+  background-size: 100% 100%;
+}
+
+.new-mail-dialog-pane .content {
+  width: 584px;
+  height: 244px;
+  font-family: 'hvd_comic_serif_proregular', 'cursive'!important;
+  background-color: white;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 20px;
+  color: rgb(91,91,91);
+  resize: none;
+  overflow: scroll;
+  margin-left: 13px;
+  margin-top: 4px;
+  line-height: 22px;
+}
+
+/* == READ MAIL == */
+
+.button-read {
+  color: rgb(256,256,256);
+  font-size: 25px;
+  text-align: center;
+  line-height: 58px;
+  margin: auto;
+}
+
+.read-mail-dialog-pane .row1 {
+  margin: 20px 0 20px 0;
+}
+
+.read-mail-dialog-pane .content {
+  width: 576px;
+  height: 230px;
+  background:url("dialogs/backgrounds/background_mail_input_content.png") no-repeat center center;
+  background-size: 100% 100%;
+  font-size: 20px;
+  color: rgb(91,91,91);
+  padding-left: 16px;
+  padding-top: 8px;
+  position: relative;
+  left: 14px;
+  overflow: scroll;
+  line-height: 22px;
+}
+
+.read-mail-dialog-pane .modal-dialog-heading {
+  float: none;
+  display: inline-block;
+}
+
+.read-mail-dialog-pane .player-name {
+  width: 388px;
+  height: 40px;
+  background:url("dialogs/backgrounds/background_mail_sender.png") no-repeat left center;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 18px;
+  color: rgb(91,91,91);
+  padding: 0 0 0 20px;
+  line-height: 40px;
+  position: relative;
+  left: 12px;
+  overflow: hidden;
+  float: left;
+}
+.read-mail-dialog-pane .date {
+  width: 184px;
+  height: 40px;
+  background:url("dialogs/backgrounds/background_mail_date.png") no-repeat left center;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 18px;
+  color: rgb(91,91,91);
+  line-height: 40px;
+  text-align: center;
+  position: relative;
+  left: 2px;
+  float: left;
+}
+
+.read-mail-dialog-pane .subject {
+  width: 572px;
+  height: 40px;
+  background:url("dialogs/backgrounds/background_mail_subject.png") no-repeat left center;
+  background-size: 100% 100%;
+  border: 0;
+  font-size: 18px;
+  color: rgb(91,91,91);
+  padding: 0 0 0 20px;
+  line-height: 40px;
+  position: relative;
+  left: 12px;
+  overflow: hidden;
+}
+
 
 /* == PROFILE INFO SELF == */
 
@@ -2813,7 +2998,6 @@ width: auto;
 }
 
 .profile-info-self-dialog-pane .rank:hover {
-  /*background:url("<%= asset_path 'ui/button_profile_blue_up@2x~iPhone.png' %>") no-repeat center center;*/
   cursor: pointer;
 }
 
@@ -2822,14 +3006,12 @@ width: auto;
 }
 
 .profile-info-self-dialog-pane .info:hover {
-  /*background:url("<%= asset_path 'ui/button_profile_orange_up@2x~iPhone.png' %>") no-repeat center center;*/
   cursor: pointer;
 }
 
 .profile-info-self-dialog-pane .avatar {
   width: 144px;
   height: 152px;
-  /*background:url("<%= asset_path 'ui/graphic_profile_avatar@2x~iPhone.png' %>") no-repeat center center;*/
 }
 
 .profile-info-self-dialog-pane .line {
@@ -6712,6 +6894,54 @@ span.bonus {
   background-position: -720px 0px;
 }
 
+
+
+/* == BUILDING ANNOTATION BUTTONS == */
+
+.building-annotation-view {
+  position: relative;
+  top: 10px;
+  left: 10px;
+  width: 200px;
+  height: 250px;
+}
+
+.buildling-info-button-background {
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  background-image: url("<%= asset_path 'hud/button_blue/button_blue.png' %>");
+  width: 52px;
+  height: 54px;
+}
+
+.buildling-info-button-icon {
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  text-align: center;
+  vertical-align: middle;
+  width: 52px;
+  height: 54px;
+}
+
+.buildling-upgrade-button-background {
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  background-image: url("<%= asset_path 'hud/button_green/button_green.png' %>");
+  width: 52px;
+  height: 54px;
+}
+
+.buildling-upgrade-button-icon {
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  background-image: url("<%= asset_path 'hud/icon_upgrade/icon_upgrade.png' %>");
+  width: 52px;
+  height: 54px;
+}
 
 
 /* ===== non-semantic helper classes ========================================

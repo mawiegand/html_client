@@ -16,7 +16,6 @@ AWE.UI = (function(module) {
     var _imageView = null;
     var _labelView = null;
     var _selectShape = null;
-    var _poleShape = null;
     var _battleView = null;
     var _suspensionView = null;
     var _flagView = null;
@@ -72,32 +71,27 @@ AWE.UI = (function(module) {
         _selectShape.setAlpha(this.selected() ? 1. : 0.2);
       }
       
-
-      if (!_poleShape) {      
-        var _poleGraphics = new Graphics();
-        _poleGraphics.setStrokeStyle(1);
-        _poleGraphics.beginStroke(Graphics.getRGB(0,0,0));
-        _poleGraphics.beginFill(Graphics.getRGB(32, 32, 32));
-        _poleGraphics.drawRoundRect(0, 0, 2, 48, 0);
-        _poleShape = AWE.UI.createShapeView();
-        _poleShape.initWithControllerAndGraphics(my.controller, _poleGraphics);
-        _poleShape.setFrame(AWE.Geometry.createRect(44, 0, 2, 48));
-        this.addChildAt(_poleShape, 0);
-      }
-
       // BASE IMAGE //////////////////////////////////////////////////////
-      var newSettlementImageName = 'map/outpost/small';
+      var newSettlementImageName;
+      var flagFrame;
       var level = AWE.Util.Rules.normalizedLevel(_location.settlementLevel(), _location.settlementTypeId());
 
-      if (level > 3) {
-        newSettlementImageName = 'map/outpost/middle';
-      }
       if (level > 7) {
-        newSettlementImageName = 'map/outpost/big';
+        newSettlementImageName = 'map/outpost/large';
+        flagFrame = AWE.Geometry.createRect(30, 2, 16, 10);
+      }
+      else if (level > 3) {
+        newSettlementImageName = 'map/outpost/middle';
+        flagFrame = AWE.Geometry.createRect(34, 2, 16, 10);
+      }
+      else {
+        flagFrame = AWE.Geometry.createRect(42, 8, 16, 10);
+        newSettlementImageName = 'map/outpost/small';
       }
 
       if (newSettlementImageName != _settlementImageName && _imageView) {
         this.removeChild(_imageView);
+        this.removeChild(_flagView);
         _imageView = null;
       }
       _settlementImageName = newSettlementImageName;
@@ -114,6 +108,16 @@ AWE.UI = (function(module) {
         this.addChildAt(_imageView, 0);
       }
 
+      if (!_flagView) {
+        _flagView = AWE.UI.createAllianceFlagView();
+        _flagView.initWithController(my.controller);
+        _flagView.setFrame(flagFrame);
+        _flagView.setAllianceId(allianceId);
+        _flagView.setAllianceColor(allianceColor);
+        _flagView.setDirection('right');
+        that.addChildAt(_flagView, 0);
+      }
+
       if (!_labelView) {
         _labelView = AWE.UI.createLabelView();
         _labelView.initWithControllerAndLabel(my.controller, "owner", true);
@@ -126,16 +130,6 @@ AWE.UI = (function(module) {
         AWE.GS.game.getPath('currentCharacter.id') == _location.ownerId() ? _labelView.setColor('#000') : _labelView.setColor('#FFF');
         AWE.GS.game.getPath('currentCharacter.id') == _location.ownerId() ? _labelView.setBackground('rgba(255, 255, 255, 0.5)') : _labelView.setBackground(true);
       }  
-      
-      if (!_flagView) {
-        _flagView = AWE.UI.createAllianceFlagView();
-        _flagView.initWithController(my.controller);
-        _flagView.setFrame(AWE.Geometry.createRect(16, 0, 28, 16));
-        _flagView.setAllianceId(allianceId);
-        _flagView.setAllianceColor(allianceColor);
-        _flagView.setDirection('left');
-        that.addChild(_flagView);
-      }
       
       if (allianceId != _flagView.allianceId()) {
         _flagView.setAllianceId(allianceId);

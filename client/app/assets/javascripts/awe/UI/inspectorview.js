@@ -1,100 +1,29 @@
 /* Authors: Sascha Lange <sascha@5dlab.com>,
- *          Patrick Fox  <patrick@5dlab.com>
- * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
+ *          Patrick Fox  <patrick@5dlab.com>,
+ *          Jona Boeddinghaus <jona@5dlab.com>
+ * Copyright (C) 2012-2014 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
 
 var AWE = AWE || {};
 
-AWE.UI = (function(module) {
-          
-  module.createInspectorBubbleView = function(spec, my) {
-
-    my = my || {};
-
-    var that = module.createButtonView(spec, my);
-
-    my.typeName   = "InspectorBubbleView";
-    my.objectView = null;
-    
-    my.foregroundImage = null;
-    my.backgroundImage = null;
-    
-    my.connectEvents = function(view) {
-      if (view) {
-        view.onClick = function() { 
-          if (that.enabled()) {
-            that.onClick();
-          }
-        }; 
-        view.onDoubleClick = function() { 
-          if (that.enabled()) {
-            that.onDoubleClick(); 
-          }
-        };
-        view.onMouseOver = function(event) { that.onMouseOver(event);  }
-        view.onMouseOut  = function(event) { that.onMouseOut(event);   }
-      }
-    };
-
-    var _super = {}
-
-    that.initWithControllerAndImage = function(controller, backgroundImage, foregroundImage, frame) {
-      this.initWithControllerTextAndImage(controller, null, foregroundImage, frame);
-      
-      var bgImage = module.createImageView();
-      bgImage.initWithControllerAndImage(controller, backgroundImage);
-      
-      my.container.addChildAt(bgImage.displayObject(), 0);
-      my.connectEvents(bgImage);
-      
-      my.foregroundImage = foregroundImage;
-      my.backgroundImage = backgroundImage;
-    }
-    
-    that.setObjectView = function(objectView) {
-      if (my.objectView) {
-        my.container.removeChild(my.objectView.displayObject());
-      }
-      if (objectView) {
-        my.connectEvents(objectView);     
-     
-        var index = 1;
-        AWE.Ext.applyFunction(objectView.displayObject(), function(obj){
-          my.container.addChildAt(obj, index++);
-        });
-      }
-      my.objectView = objectView;
-    }
-    
-    that.getObjectView = function(objectView) {
-      return my.objectView;
-    }
-
-    return that;
-  };          
+AWE.UI = (function(module) {                     
           
   module.createInspectorView = function(spec, my) {
 
     var that;
-
+    
     my = my || {};
     
     my.typeName              = 'InspectorView';
     
-    my.backgroundShapeView   = null;   // the translucent - black pull-out rectangle hodling the textual information 
+    my.backgroundAndLabelButton = null;
         
-    my.inspectorFrame        = null;   // the solid body of the inspector
-    my.flagView              = null;
-    my.flagFrameView         = null;
-
     my.infoButtonView        = null;
+    my.centerButtonView      = null;
     my.prevButtonView        = null;
     my.nextButtonView        = null;
-
-
-    my.inspectedObjectView   = null;   // will hold a reference to the view visualizing the inspected object 
-    my.inspectorBubbleView   = null;   // the pressable glass pane that'll consist of solid backgound, the inspectedObjectView and the covering glass view
+    
   
     my.skimButtonsEnabled    = false;  // whether or not to display previous and next button
     
@@ -125,15 +54,31 @@ AWE.UI = (function(module) {
     that.initWithControllerAndAllianceId = function(controller, allianceId, frame) {
       _super.initWithController(controller, frame);      
       my.allianceId = allianceId;
+      
+      my.backgroundAndLabelButton = AWE.UI.createButtonView();
+      my.backgroundAndLabelButton.initWithControllerTextAndImage(my.controller, "", 
+        AWE.UI.ImageCache.getImage("hud/top/background"), AWE.Geometry.createRect(0, 0, 340, 60), 
+        "bold 20px HVDComicSerifPro");
+      my.backgroundAndLabelButton.setTextPos(130, null);
+      if (that.onFlagClicked) {
+        my.backgroundAndLabelButton.onClick = function() {         
+          that.onFlagClicked(my.inspectedObject);
+        };
+      }
+      this.addChild(my.backgroundAndLabelButton);            
     };
     
-    that.setInspectedObjectView = function(inspectedObjectView) {
-      my.inspectedObjectView = inspectedObjectView;
-      if (my.inspectorBubbleView) {
-        my.inspectorBubbleView.setObjectView(inspectedObjectView);
+    that.setText = function(text) {
+      if (my.backgroundAndLabelButton) {
+        my.backgroundAndLabelButton.setText(text);      
       }
     }
-
+    
+    that.getText = function() {
+      if (my.backgroundAndLabelButton) return my.backgroundAndLabelButton.text();
+      return null;
+    }
+    
     that.setAllianceId = function(allianceId) {
       if (my.allianceId !== allianceId) {
         my.allianceId = allianceId;
@@ -156,80 +101,35 @@ AWE.UI = (function(module) {
     }
     
     that.recalcView = function() {
-            
-   /*   if (!my.backgroundShapeView) {
-        var backgroundShapeGraphics = new Graphics();
-        backgroundShapeGraphics.setStrokeStyle(0);
-        backgroundShapeGraphics.beginFill('rgba(0, 0, 0 ,0.5)');
-        backgroundShapeGraphics.drawRoundRect(0, 14, 230, 100, 6);
-        my.backgroundShapeView = AWE.UI.createShapeView();
-        my.backgroundShapeView.initWithControllerAndGraphics(my.controller, backgroundShapeGraphics);
-        my.backgroundShapeView.setFrame(AWE.Geometry.createRect(0, 0, 230, 100));
-        this.addChildAt(my.backgroundShapeView, 0);
-      }  */
       
-      if (!my.inspectorFrame) {
-        my.inspectorFrame = AWE.UI.createImageView();
-        my.inspectorFrame.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/inspector/body"));
-        my.inspectorFrame.setFrame(AWE.Geometry.createRect(0, 0, 414, 204));
-        this.addChild(my.inspectorFrame);
+      if (!my.centerButtonView) {
+        my.centerButtonView = AWE.UI.createButtonView();
+        my.centerButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/top/center"));
+        my.centerButtonView.setFrame(AWE.Geometry.createRect(228, 16, 28, 28));
+        my.centerButtonView.onClick = function() {
+          if (that.onCenterButtonClick) {
+            that.onCenterButtonClick(my.inspectedObject);
+          }
+        };
+        this.addChild(my.centerButtonView);
       }
 
-      var allianceId = my.allianceId
-      var allianceColor = my.allianceColor
-      if (my.flagView && my.flagView.allianceId() !== allianceId) {
-        this.removeChild(my.flagView);
-//      this.removeChild(my.flagFrameView);
-        my.flagView = null;
-        my.flagFrameView = null;
-      }
-      if (!my.flagView) {
-        // Allicance Flag
-        if (allianceId) {
-          my.flagView = AWE.UI.createAllianceFlagView();
-          my.flagView.initWithController(my.controller);
-          my.flagView.setFrame(AWE.Geometry.createRect(299, 146, 48, 46));
-          my.flagView.setAllianceId(allianceId);
-          my.flagView.setAllianceColor(allianceColor);
-          my.flagView.setTagVisible(false);
-          my.flagView.onClick = function() { 
-            if (that.onFlagClicked) {
-              that.onFlagClicked(allianceId);
-            };
-          };
-          this.addChildAt(my.flagView, 10);
-          
-/*        my.flagFrameView = AWE.UI.createImageView();
-          my.flagFrameView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/banner/small"));
-          my.flagFrameView.setFrame(AWE.Geometry.createRect(149, 0, 61, 78));
-          my.flagView.onClick = function() { 
-            WACKADOO.activateAllianceController(allianceId);   
-          }; // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
-          this.addChildAt(my.flagFrameView, 11); */
-        } 
-        
-      }
-
-      // buttons oben
       if (!my.infoButtonView) {
         my.infoButtonView = AWE.UI.createButtonView();
-        my.infoButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/inspector/button/info/normal"));
-        my.infoButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/inspector/button/info/hovered"), module.CONTROL_STATE_HOVERED);
-        my.infoButtonView.setFrame(AWE.Geometry.createRect(228, 0, 68, 66));
+        my.infoButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/top/info"));
+        my.infoButtonView.setFrame(AWE.Geometry.createRect(265, 16, 28, 28));
         my.infoButtonView.onClick = function() {
           if (that.onInventoryButtonClick) {
             that.onInventoryButtonClick(my.inspectedObject);
           }
         };
         this.addChild(my.infoButtonView);
-      }
+      }            
 
       if (!my.prevButtonView && my.skimButtonsEnabled) {
-        // button unten
         my.prevButtonView = AWE.UI.createButtonView();
-        my.prevButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/inspector/button/prev/normal"));
-        my.prevButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/inspector/button/prev/hovered"), module.CONTROL_STATE_HOVERED);
-        my.prevButtonView.setFrame(AWE.Geometry.createRect(228, 115, 68, 56));
+        my.prevButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/top/arrow/left"));
+        my.prevButtonView.setFrame(AWE.Geometry.createRect(15, 14, 32, 32));
         my.prevButtonView.onClick = function() {
           if (that.onPreviousButtonClick) {
             that.onPreviousButtonClick(my.inspectedObject) 
@@ -244,9 +144,8 @@ AWE.UI = (function(module) {
   
       if (!my.nextButtonView && my.skimButtonsEnabled) {
         my.nextButtonView = AWE.UI.createButtonView();
-        my.nextButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/inspector/button/next/normal"));
-        my.nextButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/inspector/button/next/hovered"), module.CONTROL_STATE_HOVERED);
-        my.nextButtonView.setFrame(AWE.Geometry.createRect(346, 115, 68, 56));
+        my.nextButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/top/arrow/right"));
+        my.nextButtonView.setFrame(AWE.Geometry.createRect(303, 14, 32, 32));
         my.nextButtonView.onClick = function() {
           if (that.onNextButtonClick) {
             that.onNextButtonClick(my.inspectedObject) 
@@ -257,29 +156,7 @@ AWE.UI = (function(module) {
       else if (my.nextButtonView && !my.skimButtonsEnabled) {
         this.removeChild(my.nextButtonView);
         my.nextButtonView = null;
-      }
-      
-      if (!my.inspectorBubbleView) {
-        my.inspectorBubbleView = AWE.UI.createInspectorBubbleView();
-        my.inspectorBubbleView.initWithControllerAndImage(my.controller, 
-                                                          AWE.UI.ImageCache.getImage("hud/inspector/inset"),
-                                                          AWE.UI.ImageCache.getImage("hud/inspector/glass/normal"));
-        my.inspectorBubbleView.setImageForState(AWE.UI.ImageCache.getImage("hud/inspector/glass/hovered"), module.CONTROL_STATE_HOVERED);
-        my.inspectorBubbleView.setFrame(AWE.Geometry.createRect(250, 9, 144, 146));
-
-        my.inspectorBubbleView.onClick = function() { 
-          if (that.onCenterButtonClick) {
-            that.onCenterButtonClick(my.inspectedObject);
-          }
-        };
-        
-        
-        if (my.inspectedObjectView) {
-          my.inspectorBubbleView.setObjectView(inspectedObjectView);
-        }
-        
-        this.addChild(my.inspectorBubbleView);
-      }      
+      }                                  
       
     }
         
