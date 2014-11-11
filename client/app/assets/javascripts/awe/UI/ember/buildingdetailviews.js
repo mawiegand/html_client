@@ -54,11 +54,8 @@ AWE.UI.Ember = (function(module) {
   module.BuildingAnnotationView = Ember.View.extend( /** @lends AWE.UI.Ember.BuildingAnnotationView# */ {
     templateName: "settlement-building-annotation",    
     
-<<<<<<< HEAD
     classNameBindings: ['slotAnnotationPosition'],
     
-=======
->>>>>>> 68e86a6254190d2bfb9187c2f30a235d87fe616b
     sendingUpgradeBinding: 'controller.status.sendingUpgrade',
     sendingDestroyBinding: 'controller.status.sendingDestroy',
     sendingConvertBinding: 'controller.status.sendingConvert',
@@ -112,7 +109,12 @@ AWE.UI.Ember = (function(module) {
     
     constructionCancelClicked: function(event) {
       this.get('controller').constructionCancelClicked(this.get('slot'));
-    },        
+    },     
+    
+    /*progressBarWidth: function() {
+      return 'width: 100px;';
+    },*/
+    progressBarWidth: '100px;',   
     
   });  
 
