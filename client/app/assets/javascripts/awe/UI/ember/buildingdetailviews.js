@@ -64,6 +64,10 @@ AWE.UI.Ember = (function(module) {
       var slotNum = this.getPath('slot.slot_num');
       return slotNum ? "slot"+slotNum : null;
     }.property('slot.slot_num').cacheable(),
+
+    isMilitary: function() {
+      return this.get("building").isMilitaryBuilding();
+    }.property("building").cacheable(),
     
     infoClicked: function(event) {
       var slot = this.get('slot');
@@ -121,7 +125,13 @@ AWE.UI.Ember = (function(module) {
     },
     
     militaryClicked: function(event) {
-      this.get('controller').constructionMilitaryClicked(this.get('slot'));
+      var dialog = AWE.UI.Ember.MilitaryInfoDialogNew.create({
+        garrisonArmy: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).get('garrison'),
+        controller: WACKADOO.presentScreenController,
+        settlement: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).getPath('garrison.homeSettlement')
+      });
+      WACKADOO.presentModalDialog(dialog);
+      //this.get('controller').constructionMilitaryClicked(this.get('slot'));
     },
     
     constructionCoinsClicked: function(event) {
