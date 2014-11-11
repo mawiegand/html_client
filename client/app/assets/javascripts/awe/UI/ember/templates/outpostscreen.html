@@ -23,9 +23,10 @@
       {{/if}}
 
       {{#if selectedSlot}}
-        {{#if selectedSlot.building }}
-          {{view AWE.UI.Ember.BuildingAnnotationView classNames="small-building" controllerBinding="controller" slotBinding="selectedSlot" buildingBinding="selectedSlot.building"}}
-        
+        {{#if selectedSlot.building}}
+          {{#unless selectedSlot.building.underConstruction}}
+            {{view AWE.UI.Ember.BuildingAnnotationView classNames="small-building" controllerBinding="controller" slotBinding="selectedSlot" buildingBinding="selectedSlot.building"}}
+          {{/unless}}
         {{/if}}
       {{/if}}
     
