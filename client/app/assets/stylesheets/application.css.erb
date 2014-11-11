@@ -6898,49 +6898,134 @@ span.bonus {
 
 /* == BUILDING ANNOTATION BUTTONS == */
 
-.building-annotation-view {
-  position: relative;
-  top: 10px;
-  left: 10px;
-  width: 200px;
-  height: 250px;
+.building-annotation-background {
+  position: absolute;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  background-size: 32px;
+  pointer-events:auto;
 }
 
-.buildling-info-button-background {
+.building-annotation-icon {
   position: absolute;
-  top: 50px;
-  left: 10px;
-  background-image: url("<%= asset_path 'hud/button_blue/button_blue.png' %>");
-  width: 52px;
-  height: 54px;
+  z-index: 11;
+  width: 32px;
+  height: 32px;
+  background-size: 32px;
+  pointer-events:auto;
 }
 
-.buildling-info-button-icon {
-  position: absolute;
-  top: 50px;
-  left: 10px;
+.building-info-button-background {
+  top: 60px;
+  left: 0px;
+  background-image: url("<%= asset_path 'hud/button_info/colored/button_info_colored.png' %>");
+}
+
+.building-info-button-icon {
+  top: 60px;
+  left: 0px;
+  color: white;
+  font-size: 42px;
+  line-height: 52px;
   text-align: center;
   vertical-align: middle;
-  width: 52px;
-  height: 54px;
 }
 
-.buildling-upgrade-button-background {
-  position: absolute;
-  top: 50px;
-  left: 10px;
-  background-image: url("<%= asset_path 'hud/button_green/button_green.png' %>");
-  width: 52px;
-  height: 54px;
+.building-upgrade-button-background {
+  top: 80px;
+  left: 40px;
+  background-image: url("<%= asset_path 'hud/button_upgrade/colored/button_upgrade_colored.png' %>");
 }
 
-.buildling-upgrade-button-icon {
-  position: absolute;
-  top: 50px;
-  left: 10px;
+.building-upgrade-button-icon {
+  top: 80px;
+  left: 40px;
   background-image: url("<%= asset_path 'hud/icon_upgrade/icon_upgrade.png' %>");
-  width: 52px;
-  height: 54px;
+}
+
+.building-convert-button-background {
+  top: 80px;
+  left: 80px;
+  background-image: url("<%= asset_path 'hud/button_convert/colored/button_convert_colored.png' %>");
+}
+
+.building-convert-button-icon {
+  top: 80px;
+  left: 80px;
+  background-image: url("<%= asset_path 'hud/icon_convert/icon_convert.png' %>");
+}
+
+.building-destroy-button-background {
+  top: 60px;
+  left: 120px;
+  background-image: url("<%= asset_path 'hud/button_demolish/colored/button_demolish_colored.png' %>");
+}
+
+.building-destroy-button-icon {
+  top: 60px;
+  left: 120px;
+  background-image: url("<%= asset_path 'hud/icon_demolish/icon_demolish.png' %>");
+}
+
+.building-assignment-button-background {
+  top: 80px;
+  left: 80px;
+  background-image: url("<%= asset_path 'hud/button_assignment/colored/button_assignment_colored.png' %>");
+}
+
+.building-assignment-button-icon {
+  top: 80px;
+  left: 80px;
+  background-image: url("<%= asset_path 'hud/icon_assignment/icon_assignment.png' %>");
+}
+
+.building-diplomacy-button-background {
+  top: 80px;
+  left: 80px;
+  background-image: url("<%= asset_path 'hud/button_diplomacy/colored/button_diplomacy_colored.png' %>");
+}
+
+.building-diplomacy-button-icon {
+  top: 80px;
+  left: 80px;
+  background-image: url("<%= asset_path 'hud/icon_diplomacy/icon_diplomacy.png' %>");
+}
+
+.building-trade-button-background {
+  top: 80px;
+  left: 80px;
+  background-image: url("<%= asset_path 'hud/button_trade/colored/button_trade_colored.png' %>");
+}
+
+.building-trade-button-icon {
+  top: 80px;
+  left: 80px;
+  background-image: url("<%= asset_path 'hud/icon_trade/icon_trade.png' %>");
+}
+
+.building-artifact-button-background {
+  top: 80px;
+  left: 80px;
+  background-image: url("<%= asset_path 'hud/button_artifact/colored/button_artifact_colored.png' %>");
+}
+
+.building-artifact-button-icon {
+  top: 80px;
+  left: 80px;
+  background-image: url("<%= asset_path 'hud/icon_artifact/icon_artifact.png' %>");
+}
+
+.building-army-button-background {
+  top: 80px;
+  left: 80px;
+  background-image: url("<%= asset_path 'hud/button_army/colored/button_army_colored.png' %>");
+}
+
+.building-army-button-icon {
+  top: 80px;
+  left: 80px;
+  background-image: url("<%= asset_path 'hud/icon_army/icon_army.png' %>");
 }
 
 
