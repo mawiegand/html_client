@@ -298,7 +298,7 @@ App.BuildingView = Ember.View.extend({
   model: null, 
   hovered: false,
 
-  classNameBindings: ['small:size1', 'middle:size2', 'large:size3', 'hovered'],
+  classNameBindings: ['small:size1', 'middle:size2', 'large:size3', 'hovered', 'building.building_type.symbolic_id'],
 
   small: function() {
     return this.get('level') > 0 && this.get('level') < 4;

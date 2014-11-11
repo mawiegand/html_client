@@ -2,14 +2,13 @@
 
 <script type="text/x-handlebars" data-template-name="fortress-screen">
 <div class="fortress-screen settlement-screen">
-  <div class="fortress-picture-spacer"></div>
   <div class="fortress-picture">
     {{#if "settlement"}}
       {{#if "haveSlots"}}
-        {{view AWE.UI.Ember.BuildingView classNames="buildings" levelBinding="wall.building.level"}}
-        {{view AWE.UI.Ember.BuildingSlotView  classNames="tower tower-left" slotBinding="leftTower" settlementBinding="settlement"}}
-        {{view AWE.UI.Ember.BuildingSlotView  classNames="tower tower-right" slotBinding="rightTower" settlementBinding="settlement"}}
-        {{view AWE.UI.Ember.BuildingSlotView  classNames="wall" slotBinding="wall" settlementBinding="settlement"}}
+        
+        {{view AWE.UI.Ember.BuildingSlotView  classNames="tower tower-left small-building" slotBinding="leftTower" settlementBinding="settlement"}}
+        {{view AWE.UI.Ember.BuildingSlotView  classNames="tower tower-right small-building" slotBinding="rightTower" settlementBinding="settlement"}}
+        {{view AWE.UI.Ember.BuildingSlotView  classNames="wall small-building" slotBinding="wall" settlementBinding="settlement"}}
       {{/if}}
       {{#if queues }}
         {{view AWE.UI.Ember.ConstructionQueueView controllerBinding="controller" classNames="queue-list" queuesBinding="queues.collection"}}
@@ -25,7 +24,7 @@
         {{#if selectedSlot.building }}
           {{view AWE.UI.Ember.BuildingDetailsDialog controllerBinding="controller" slotBinding="selectedSlot" buildingBinding="selectedSlot.building"}}
         {{else}}
-          {{view AWE.UI.Ember.SelectBuildingDialog controllerBinding="controller" slotBinding="selectedSlot"}}
+          {{view AWE.UI.Ember.SelectBuildingNewDialog controllerBinding="controller" slotBinding="selectedSlot"}}
         {{/if}}
       {{/if}}
     

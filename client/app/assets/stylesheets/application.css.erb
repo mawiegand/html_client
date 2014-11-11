@@ -6140,6 +6140,12 @@ span.bonus {
 /** image for building_fortress_fortification*/
 .building-option-image.building_fortress_fortification {
   background: url('<%= asset_path("settlements/fortress/fortress_main_building_small.png") %>');
+  background: url('<%= asset_path("buildings/base/building_garrison/small/building_garrison_small.png") %>') no-repeat;
+}
+
+.building-image.building_fortress_fortification {
+  background: url('<%= asset_path("settlements/fortress/fortress_main_building_small.png") %>');
+  background: url('<%= asset_path("buildings/base/building_garrison/small/building_garrison_small.png") %>') no-repeat;
 }
 
 .building-option-image .level {
@@ -6713,7 +6719,7 @@ span.bonus {
   background: url('<%= asset_path("settlements/base/building_category_large_building_small.png") %>');  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
 .queue-job-image.building_quarry {
-  background: url('<%= asset_path("settlements/base/building_quarry_large_small.png") %>');
+  background: url('<%= asset_path("bui/base/building_quarry_large_small.png") %>');
 }
 .queue-job-image.building_quarry_2 {
   background: url('<%= asset_path("settlements/base/building_copper_quarry_large_small.png") %>');
@@ -6758,7 +6764,7 @@ span.bonus {
   background: url('<%= asset_path("settlements/base/building_copper_furrier_large_small.png") %>');
 }
 .queue-job-image.building_gatherer {
-  background: url('<%= asset_path("settlements/base/building_gatherer_large_small.png") %>');
+  background: url('<%= asset_path("buildings/base/building_gatherer/tiny/building_gatherer_tiny.png") %>');
 }
 .queue-job-image.building_stud     {
   background: url('<%= asset_path("settlements/base/building_stud_large_small.png") %>');
@@ -6789,14 +6795,20 @@ span.bonus {
   background: url('<%= asset_path("settlements/colony/building_haunt_large_small.png") %>');
 }
 .queue-job-image.building_altar {
-  background: url('<%= asset_path("settlements/colony/building_altar_large_small.png") %>');
+  background: url('<%= asset_path("buildings/base/building_altar/tiny/building_altar_tiny.png") %>');
 }
 .queue-job-image.building_field_camp {
   background: url('<%= asset_path("settlements/colony/building_field_camp_large_small.png") %>');
 }
 
+.outpost-screen .queue-job-image,
+.base-screen .queue-job-image {
+  background-position: 50%;
+  background-repeat: no-repeat; 
+}
 
-.outpost-screen .queue-job-image.size1,
+
+/*.outpost-screen .queue-job-image.size1,
 .base-screen .queue-job-image.size1 {
   background-position: -72px 0px;
 }
@@ -6819,9 +6831,9 @@ span.bonus {
 .outpost-screen .queue-job-image.size6,
 .base-screen .queue-job-image.size6 {
   background-position: -432px 0px;
-}
+}*/
 
-.base-screen .queue-job-image.building_chief_cottage.level1,
+/*.base-screen .queue-job-image.building_chief_cottage.level1,
 .base-screen .queue-job-image.building_alliance_hall.level1,
 .base-screen .queue-job-image.building_tavern.level1,
 .base-screen .queue-job-image.building_special_gatherer.level1,
@@ -6900,7 +6912,7 @@ span.bonus {
 .base-screen .queue-job-image.building_special_gatherer.level10,
 .base-screen .queue-job-image.building_artifact_stand.level10 {
   background-position: -720px 0px;
-}
+}*/
 
 
 
@@ -7389,8 +7401,9 @@ table .datetime {
 .fortress-picture {
   position: relative;
   float: left;
-  width: 800px;
-  height: 600px;
+  width: 1000%;
+  height: 1024px;
+  background-repeat: no-repeat;
 }
 
 .outpost-picture,
@@ -7403,6 +7416,7 @@ table .datetime {
 
 .fortress-picture {
   background: url('<%= asset_path("settlements/fortress/fortress_background.png") %>');
+  background: url('<%= asset_path("backgrounds/background_settlement.jpg") %>') no-repeat;
 } 
 
 .outpost-picture,
@@ -7494,11 +7508,25 @@ table .datetime {
   width: 800px;
   height: 240px;
   z-index: 3;
-  background: url('<%= asset_path("settlements/fortress/fortress_wall.png") %>');
+  top: 320px;
+  left: 400px;
+}
+
+/** position of left tower */
+.fortress-picture .tower-left {
+  top: 320px;
+  left: 239px;
+}
+
+/** position of right tower */
+.fortress-picture .tower-right {
+  top: 320px;
+  left: 561px;
 }
 
 .outpost-picture .small-building,
-.base-picture .small-building {
+.base-picture .small-building,
+.fortress-picture .small-building {
 /*  border: 1px solid black;*/
   position: absolute;
   width: 160px;
@@ -7534,25 +7562,11 @@ table .datetime {
 
 /** general settings for towers and default image (will be used as long as theres no specific image for a particular building type ) */
 .fortress-picture .tower {
-  position: absolute;
+ /*position: absolute;
   width: 238px;
   height: 454px;
   z-index: 2;
   background: url('<%= asset_path("settlements/fortress/building_category_fortress_tower.png") %>');  /** the default images for this category. important: contains the image displayed for empty slots! */
-}
-
-
-
-/** position of left tower */
-.fortress-picture .tower-left {
-  top: 24px;
-  left: 0px;
-}
-
-/** position of right tower */
-.fortress-picture .tower-right {
-  top: 100px;
-  right: 0px;
 }
 
 .constructing, 
@@ -7569,22 +7583,22 @@ table .datetime {
   color: #E6BBAA;
 }
 
-/** image for building_siege_tower */
+/** image for building_siege_tower *
 .fortress-picture .tower.building_siege_tower {
   background: url('<%= asset_path("settlements/fortress/building_siege_tower.png") %>');
 }
-/** image for building_infantry_tower */
+/** image for building_infantry_tower *
 .fortress-picture .tower.building_infantry_tower {
   background: url('<%= asset_path("settlements/fortress/building_infantry_tower.png") %>');
 }
-/** image for building_artillery_tower */
+/** image for building_artillery_tower *
 .fortress-picture .tower.building_artillery_tower {
   background: url('<%= asset_path("settlements/fortress/building_artillery_tower.png") %>');
 }	
-/** image for building_cavalry_tower */
+/** image for building_cavalry_tower *
 .fortress-picture .tower.building_cavalry_tower {
   background: url('<%= asset_path("settlements/fortress/building_cavalry_tower.png") %>');
-}
+} */
 
 /** base: large slots */
 .large-building.building_quarry {
@@ -7680,7 +7694,8 @@ table .datetime {
 }
 
 /*Barracks*/
-.building_barracks.big-building {
+.building_barracks.big-building,
+.building_infantry_tower.big-building {
   background: url('<%= asset_path("buildings/base/building_barracks/big/building_barracks_big.png") %>') no-repeat;
 }
 
@@ -7735,7 +7750,8 @@ table .datetime {
 }
 
 /*Firing Range*/
-.building_firing_range.big-building {
+.building_firing_range.big-building,
+.building_artillery_tower.big-building {
   background: url('<%= asset_path("buildings/base/building_firing_range/big/building_firing_range_big.png") %>') no-repeat;
 }
 
@@ -7765,7 +7781,8 @@ table .datetime {
 }
 
 /*Stud*/
-.building_stud.big-building {
+.building_stud.big-building,
+.building_cavalry_tower.big-building {
   background: url('<%= asset_path("buildings/base/building_stud/big/building_stud_big.png") %>') no-repeat;
 }
 
@@ -7780,6 +7797,7 @@ table .datetime {
 }
 
 /*Garison*/
+.building_fortress_fortification.big-building,
 .building_garrison.big-building {
   background: url('<%= asset_path("buildings/base/building_garrison/big/building_garrison_big.png") %>') no-repeat;
 }
@@ -7847,7 +7865,8 @@ table .datetime {
 }
 
 /*Barracks*/
-.building_barracks.building-image {
+.building_barracks.building-image,
+.building_infantry_tower.building-image {
   background: url('<%= asset_path("buildings/base/building_barracks/small/building_barracks_small.png") %>') no-repeat;
 }
 
@@ -8008,6 +8027,8 @@ table .datetime {
   background: url('<%= asset_path("buildings/base/under_construction/front/under_construction_front.png") %>') no-repeat center center;
 }
 
+
+
 /*
 /** base: small slots *
 .small-building.building_quarry {
@@ -8097,16 +8118,9 @@ table .datetime {
   text-align: center;
 }
 
-.fortress-picture .level {
-  font-size: 24px;
-  border: 4px solid #444;
-  border-radius: 9px;
-  width: 32px;
-  padding: 8px 0px;
-}
-
 .outpost-picture .level,
-.base-picture .level {
+.base-picture .level,
+.fortress-picture .level {
   font-size: 24px;
   font-family: 'Freckle Face', 'cursive';
   text-shadow: none;
@@ -8119,14 +8133,10 @@ table .datetime {
 
 
 
-.fortress-picture .tower .level {
-  margin-top: 320px;
-  margin-left: 170px;
-}
-
+.fortress-picture .tower .level,
 .fortress-picture .wall .level {
-  margin-top: 130px;
-  margin-left: 460px;
+  margin-top: -5px;
+  margin-left: 25px;
 }
 
 
@@ -8485,7 +8495,8 @@ table .datetime {
 .outpost-picture .large-building.hover,
 .base-picture .large-building.hover,
 .outpost-picture .small-building.hover,
-.base-picture .small-building.hover {
+.base-picture .small-building.hover,
+.fortress-picture .small-building.hover {
   background: url('<%= asset_path("buildings/base/grid_base_hover.png") %>') no-repeat center center;
   cursor: pointer;
 }
@@ -8514,9 +8525,9 @@ table .datetime {
 
 
 
-
+/*
 .fortress-picture .wall {
-	background-position: 0px -360px;
+	background-position: 0px 0px;
 }
 .fortress-picture .wall.size2 {
 	background-position: -800px -360px;
@@ -8534,7 +8545,7 @@ table .datetime {
 }
 .fortress-picture .wall.size3:hover {
 	background-position: -1600px -960px;
-}
+}*/
 
 
 /** position of slots in base view */
@@ -8763,12 +8774,12 @@ table .datetime {
 /* ==== OUTPOST NEW ==== */
 
 .outpost-picture .small-building.slot1 {
-  top:  206px;
+  top:  92px;
   left: 432px;
 }
 
 .outpost-picture .small-building.slot2 {
-  top:  92px;
+  top:  206px;
   left: 432px;
 }
 

@@ -45,7 +45,7 @@ AWE.UI.Ember = (function(module) {
 		typeBinding:  'building.type',
 		mouseInView:  false,
 
-    classNameBindings: ['mouseInView:hover', 'slotLayoutId', 'levelClassName'],
+    classNameBindings: ['mouseInView:hover', 'slotLayoutId', 'levelClassName', 'type'],
 
     levelClassName: function() {
       return "level"+this.get('level');
