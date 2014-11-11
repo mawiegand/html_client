@@ -697,11 +697,8 @@ AWE.Controller = (function(module) {
       if ((!members || members.length == 0) || (members && AWE.GS.CharacterManager.lastUpdateAtForAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
         AWE.GS.CharacterManager.updateMembersOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
       }
-      var relations = AWE.GS.DiplomacyRelationManager.getDiplomacyRelationsOfAlliance(allianceId);
-      if ((!relations || relations.length == 0) || (relations && AWE.GS.DiplomacyRelationManager.lastUpdateAtForSourceAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
-        AWE.GS.DiplomacyRelationManager.updateDiplomacyRelationsOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
-      }
-    } 
+      AWE.GS.DiplomacyRelationManager.updateAllDiplomacyRelationsOfAlliance(allianceId);
+    }
     
     that.modelChanged = function() { return _modelChanged; }
     

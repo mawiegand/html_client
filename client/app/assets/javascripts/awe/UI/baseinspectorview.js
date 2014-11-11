@@ -63,7 +63,6 @@ AWE.UI = (function(module) {
       if (location.name() !== that.getText()) {
         that.setText(location.settlement() ? location.settlement().get('name') : location.name());
       }
-      
     };
     
     
