@@ -139,8 +139,6 @@ AWE.UI.Ember = (function(module) {
 
 
     invitationLinkPressed: function() {
-
-      console.log(this.getPath('alliance'));
     },
 
 

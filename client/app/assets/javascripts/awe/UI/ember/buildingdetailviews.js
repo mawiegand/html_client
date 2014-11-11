@@ -54,40 +54,66 @@ AWE.UI.Ember = (function(module) {
   module.BuildingAnnotationView = Ember.View.extend( /** @lends AWE.UI.Ember.BuildingAnnotationView# */ {
     templateName: "settlement-building-annotation",    
     
+    classNameBindings: ['slotAnnotationPosition'],
+    
     sendingUpgradeBinding: 'controller.status.sendingUpgrade',
     sendingDestroyBinding: 'controller.status.sendingDestroy',
     sendingConvertBinding: 'controller.status.sendingConvert',
     
+    slotAnnotationPosition: function() {
+      var slotNum = this.getPath('slot.slot_num');
+      return slotNum ? "slot"+slotNum : null;
+    }.property('slot.slot_num').cacheable(),
+    
     infoClicked: function(event) {
       var slot = this.get('slot');
-      debugger;
       this.get('controller').constructionInfoClicked(this.get('slot'));
     },
     
     upgradeClicked: function(event) {
-      this.get('controller').constructionUpgradeClicked(this.get('slot'));
+      var dialog = AWE.UI.Ember.UpgradeView.create({
+        slot: this.get('slot'),
+        controller: this.get('controller')
+      });
+      WACKADOO.presentModalDialog(dialog);
+      //this.get('controller').constructionUpgradeClicked(this.get('slot'));
     },         
     
     destroyClicked: function(event) {
       this.get('controller').constructionDestroyClicked(this.get('slot'));
-    },         
+    },
     
     conversionClicked: function(event) {
-      this.get('controller').constructionConvertClicked(this.get('slot'));
+      var dialog = AWE.UI.Ember.UpgradeView.create({
+        slot: this.get('slot'),
+        controller: this.get('controller'),
+        conversionView: true,
+      });
+      WACKADOO.presentModalDialog(dialog);
+      //this.get('controller').constructionConvertClicked(this.get('slot'));
     },
     
     assignmentClicked: function(event) {
-      this.get('controller').constructionAssignmentClicked(this.get('slot'));
+      var dialog = AWE.UI.Ember.AssignmentsDialog.create({
+        controller: this.get('controller')
+      });
+      WACKADOO.presentModalDialog(dialog);
+      //this.get('controller').constructionAssignmentClicked(this.get('slot'));
     },
     
     diplomacyClicked: function(event) {
-      this.get('controller').constructionDiplomacyClicked(this.get('slot'));
+      var dialog = AWE.UI.Ember.AllianceDiplomacyDialog.create({
+        unlockedAllianceCreation: this.getPath('building.unlockedAllianceCreation')
+      });
+      WACKADOO.presentModalDialog(dialog);
+      //this.get('controller').constructionDiplomacyClicked(this.get('slot'));
     },
     
-    resourceExchangePressed: function() {
-      var dialog = AWE.UI.Ember.ResourceExchangeDialog.create();
+    tradeClicked: function() {
+      var dialog = AWE.UI.Ember.TradeNewView.create({
+          settlement: this.getPath('building.slot.settlement'),
+          controller: this.get("controller")});
       WACKADOO.presentModalDialog(dialog);
-      return false;
     },
     
     artifactClicked: function(event) {
@@ -104,7 +130,12 @@ AWE.UI.Ember = (function(module) {
     
     constructionCancelClicked: function(event) {
       this.get('controller').constructionCancelClicked(this.get('slot'));
-    },        
+    },     
+    
+    /*progressBarWidth: function() {
+      return 'width: 100px;';
+    },*/
+    progressBarWidth: '100px;',   
     
   });  
 

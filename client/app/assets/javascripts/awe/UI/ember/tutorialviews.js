@@ -34,7 +34,6 @@ AWE.UI.Ember = (function(module) {
     },
     
     showQuestInfoPressed: function(quest) {
-      console.log('--> show Quest Info Button Pressed', quest)
       AWE.GS.TutorialStateManager.showQuestInfoDialog(quest);
     },
     
@@ -51,12 +50,10 @@ AWE.UI.Ember = (function(module) {
 
   
     redeemButtonPressed: function() {
-      // log('---> QuestListEntryView redeemButtonPressed', this.get('questState'));
       this.get('parentView').redeemButtonPressed(this.get('questState'));
     },
   
     showQuestInfoPressed: function() {
-       console.log('---> QuestListEntryView showQuestInfoPressed', this.getPath('questState.quest'));
       this.get('parentView').showQuestInfoPressed(this.getPath('questState.quest'));
     },
   
