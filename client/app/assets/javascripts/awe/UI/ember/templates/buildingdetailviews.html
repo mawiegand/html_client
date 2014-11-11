@@ -212,7 +212,7 @@
     // buttons for specific buildings
     var _convertButtonView    = null; // quarry, logger, furrier, small hut, storage
     var _assignmentButtonView = null; // tavern
-    var _diplomacyButtonView  = null; // campfire
+    var _diplomacyButtonView  = null; // campfire    
     var _tradeButtonView      = null; // storage, storage_2
     var _artifactButtonView   = null; // artifact_stand
     var _militaryButtonView   = null; // barracks -> infantry tab, stud -> cavalry tab, firing range -> artillery tab
@@ -221,24 +221,52 @@
     var _constructionView = null;    
 -->
 
-<script type="text/x-handlebars" data-template-name="settlement-building-annotation">
-  <div class="building-annotation-view">
-    <a class="clickable" {{action "infoClicked"}}>
-      <div class="buildling-info-button-background"></div>
-      <div class="buildling-info-button-icon">i</div>
-    </a>
-    {{#if building.upgradable}}          
-      {{#unless sendingUpgrade}}
-        <a class="clickable" {{action "upgradeClicked"}} title="{{t building.tooltip.clickToUpgrade}}">
-          <div class="buildling-updgrad-button-background"></div>
-          <div class="buildling-upgrade-button-icon"></div>
-        </a>
-        {{#if upgradeUIMarker}}
-          {{view AWE.UI.Ember.UIMarker direction=2 top="-100" left=10}}
-        {{/if}}      
+<script type="text/x-handlebars" data-template-name="settlement-building-annotation">  
+    <div class="building-annotation-background building-info-button-background" {{action "infoClicked"}}>&nbsp;</div>
+    <div class="building-annotation-icon building-info-button-icon" {{action "infoClicked"}}>&nbsp;</div>
+  {{#if building.upgradable}}          
+    {{#unless sendingUpgrade}}
+      <div class="building-annotation-background building-upgrade-button-background" {{action "upgradeClicked"}}>&nbsp;</div>
+      <div class="building-annotation-icon building-upgrade-button-icon" {{action "upgradeClicked"}}>&nbsp;</div>
+      {{#if upgradeUIMarker}}
+        {{view AWE.UI.Ember.UIMarker direction=2 top="-100" left=10}}
+      {{/if}}      
+    {{/unless}}
+  {{/if}}  
+  {{#unless building.underConversion}}
+    {{#if building.convertable }}
+      {{#unless sendingConvert }}
+        <div class="building-annotation-background building-convert-button-background" {{action "conversionClicked"}}>&nbsp;</div>
+        <div class="building-annotation-icon building-convert-button-icon" {{action "conversionClicked"}}>&nbsp;</div>
       {{/unless}}
     {{/if}}
-  </div>
+  {{/unless}}  
+  {{#if building.destroyable}}
+    {{#unless sendingDestroy}}
+      <div class="building-annotation-background building-destroy-button-background" {{action "destroyClicked"}}>&nbsp;</div>
+      <div class="building-annotation-icon building-destroy-button-icon" {{action "destroyClicked"}}>&nbsp;</div>
+    {{/unless}}
+  {{/if}}
+  {{#if building.unlockedAssignments}} <!-- CORRECT ??? -->
+    <div class="building-annotation-background building-assignment-button-background" {{action "assignmentClicked"}}>&nbsp;</div>
+    <div class="building-annotation-icon building-assignment-button-icon" {{action "assignmentClicked"}}>&nbsp;</div>
+  {{/if}}
+  {{#if building.unlockedDiplomacy}} <!-- CORRECT ??? -->
+    <div class="building-annotation-background building-diplomacy-button-background" {{action "diplomacyClicked"}}>&nbsp;</div>
+    <div class="building-annotation-icon building-diplomacy-button-icon" {{action "diplomacyClicked"}}>&nbsp;</div>
+  {{/if}}
+  {{#if building.unlockedPlayerToPlayerTrade}} <!-- CORRECT ??? -->
+    <div class="building-annotation-background building-trade-button-background" {{action "tradeClicked"}}>&nbsp;</div>
+    <div class="building-annotation-icon building-trade-button-icon" {{action "tradeClicked"}}>&nbsp;</div>
+  {{/if}}
+  {{#if building.unlockedArtifactInitiation}} <!-- CORRECT ??? -->
+    <div class="building-annotation-background building-artifact-button-background" {{action "artifactClicked"}}>&nbsp;</div>
+    <div class="building-annotation-icon building-artifact-button-icon" {{action "artifactClicked"}}>&nbsp;</div>
+  {{/if}}
+  {{#if building.garrisonArmy}} <!-- CORRECT ??? -->
+    <div class="building-annotation-background building-army-button-background" {{action "militaryClicked"}}>&nbsp;</div>
+    <div class="building-annotation-icon building-army-button-icon" {{action "militaryClicked"}}>&nbsp;</div>
+  {{/if}}
 </script>
 
 

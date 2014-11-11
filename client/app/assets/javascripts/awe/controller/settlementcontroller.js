@@ -281,12 +281,7 @@ AWE.Controller = (function(module) {
       that.updateAllTrainingQueuesAndJobs();
       that.updateStandardAssignmentsFromServer();
       that.updateSpecialAssignmentsFromServer();
-      this.updateUIMarker();
-      if(slot.get("building"))
-      {
-        var dialog = AWE.UI.Ember.BuildingOptionDetailNewDialog.create({building: slot.get('building'), level: slot.getPath('building.levelAfterJobs')});
-        WACKADOO.presentModalDialog(dialog);
-      }
+      this.updateUIMarker();      
     }
     
     that.unselectSlot = function() {
@@ -296,6 +291,13 @@ AWE.Controller = (function(module) {
     }
     
     // construction actions //////////////////////////////////////////////////
+    
+    that.constructionInfoClicked = function(slot) {
+      if(slot.get("building")) {
+        var dialog = AWE.UI.Ember.BuildingOptionDetailNewDialog.create({building: slot.get('building'), level: slot.getPath('building.levelAfterJobs')});
+        WACKADOO.presentModalDialog(dialog);
+      }
+    }
     
     var createAndSendConstructionJob = function(slot, buildingId, jobType, levelBefore, levelAfter) {
       

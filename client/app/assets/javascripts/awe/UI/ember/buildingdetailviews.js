@@ -54,13 +54,19 @@ AWE.UI.Ember = (function(module) {
   module.BuildingAnnotationView = Ember.View.extend( /** @lends AWE.UI.Ember.BuildingAnnotationView# */ {
     templateName: "settlement-building-annotation",    
     
+    classNameBindings: ['slotAnnotationPosition'],
+    
     sendingUpgradeBinding: 'controller.status.sendingUpgrade',
     sendingDestroyBinding: 'controller.status.sendingDestroy',
     sendingConvertBinding: 'controller.status.sendingConvert',
     
+    slotAnnotationPosition: function() {
+      var slotNum = this.getPath('slot.slot_num');
+      return slotNum ? "slot"+slotNum : null;
+    }.property('slot.slot_num').cacheable(),
+    
     infoClicked: function(event) {
       var slot = this.get('slot');
-      debugger;
       this.get('controller').constructionInfoClicked(this.get('slot'));
     },
     
@@ -84,10 +90,9 @@ AWE.UI.Ember = (function(module) {
       this.get('controller').constructionDiplomacyClicked(this.get('slot'));
     },
     
-    resourceExchangePressed: function() {
+    tradeClicked: function() {
       var dialog = AWE.UI.Ember.ResourceExchangeDialog.create();
       WACKADOO.presentModalDialog(dialog);
-      return false;
     },
     
     artifactClicked: function(event) {
