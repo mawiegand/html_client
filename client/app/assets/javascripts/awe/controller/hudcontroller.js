@@ -524,8 +524,12 @@ AWE.Controller = (function(module) {
     };
     
     that.recruitButtonClicked = function() {
-      var dialog = AWE.UI.Ember.ArmyInfoDialogNew.create();
-	  this.applicationController.presentModalDialog(dialog);
+      var dialog = AWE.UI.Ember.MilitaryInfoDialogNew.create({
+        garrisonArmy: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).get('garrison'),
+        controller: WACKADOO.presentScreenController,
+        settlement: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).getPath('garrison.homeSettlement')
+      });
+	    WACKADOO.presentModalDialog(dialog);
     };  
     
     that.avatarImageClicked = function() {

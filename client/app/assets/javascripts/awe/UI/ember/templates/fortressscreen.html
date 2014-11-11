@@ -23,8 +23,6 @@
       {{#if selectedSlot}}
         {{#if selectedSlot.building }}
           {{view AWE.UI.Ember.BuildingAnnotationView classNames="small-building" controllerBinding="controller" slotBinding="selectedSlot" buildingBinding="selectedSlot.building"}}
-        {{else}}
-          {{view AWE.UI.Ember.SelectBuildingNewDialog controllerBinding="controller" slotBinding="selectedSlot"}}
         {{/if}}
       {{/if}}
     
