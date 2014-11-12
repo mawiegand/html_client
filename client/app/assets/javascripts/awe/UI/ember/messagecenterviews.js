@@ -492,7 +492,8 @@ AWE.UI.Ember = (function(module) {
 
     destroyDialog: function()
     {
-      this.destroy();
+      //destroy message center dialog after success submit
+      this.getPath('parentView.parentView.parentView.parentView').destroy()
     },
   });
 
@@ -531,7 +532,7 @@ AWE.UI.Ember = (function(module) {
       debugger
       return true;
     }.observes('message'),*/
-    onClickEntry: function(){
+    onClickEntry: function(){debugger
       var messageEntry = this.get('message');
       if (messageEntry && !messageEntry.get('message')) {
         messageEntry.fetchMessage();

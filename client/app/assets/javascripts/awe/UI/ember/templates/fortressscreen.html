@@ -9,18 +9,7 @@
         {{view AWE.UI.Ember.BuildingSlotView  classNames="tower tower-left small-building" slotBinding="leftTower" settlementBinding="settlement"}}
         {{view AWE.UI.Ember.BuildingSlotView  classNames="tower tower-right small-building" slotBinding="rightTower" settlementBinding="settlement"}}
         {{view AWE.UI.Ember.BuildingSlotView  classNames="wall small-building" slotBinding="wall" settlementBinding="settlement"}}
-      {{/if}}
-      {{#if queues }}
-        {{view AWE.UI.Ember.ConstructionQueueView controllerBinding="controller" classNames="queue-list" queuesBinding="queues.collection"}}
-      {{/if}}
-
-      <div class="topbar-info-box settlement">
-        {{#if shouldDisplaySettlementSwitch}} 
-          <div class="settlement-switch previous"  {{action  nextSettlementPressed target="controller"}}>&nbsp;</div>
-          <div class="settlement-switch next"      {{action  previousSettlementPressed target="controller"}}>&nbsp;</div>  
-        {{/if}}
-        <div class="topbar-info-text">{{settlement.name}}</div>      
-      </div>      
+      {{/if}}           
 
       {{#if selectedSlot}}
         {{#if selectedSlot.building }}
@@ -33,6 +22,15 @@
       {{/if}}    
     {{/if}}
   </div>
+  {{#if "settlement"}}
+    <div class="topbar-info-box settlement">
+      {{#if shouldDisplaySettlementSwitch}} 
+        <div class="settlement-switch previous"  {{action  nextSettlementPressed target="controller"}}>&nbsp;</div>
+        <div class="settlement-switch next"      {{action  previousSettlementPressed target="controller"}}>&nbsp;</div>  
+      {{/if}}
+      <div class="topbar-info-text">{{settlement.name}}</div>      
+    </div> 
+  {{/if}}
 </div>
 </script>
 

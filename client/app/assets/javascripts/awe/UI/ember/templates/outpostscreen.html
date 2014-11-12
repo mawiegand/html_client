@@ -14,12 +14,7 @@
         {{#each smallSlots}}
           {{view AWE.UI.Ember.BuildingSlotView  classNames="small-building" slotBinding="this" settlementBinding="view.settlement"}}
         {{/each}}
-        
-        
-      {{/if}}
-      
-      {{#if queues }}
-        {{view AWE.UI.Ember.ConstructionQueueView controllerBinding="controller" classNames="queue-list" queuesBinding="queues.collection"}}
+                
       {{/if}}
 
       {{#if selectedSlot}}
@@ -31,16 +26,18 @@
       {{#if "hoveredBuildingSlotView" }}
         {{view AWE.UI.Ember.ToolTipView templateName="building-slot-tooltip" classNames="mouse-over" mouseXBinding="hoveredBuildingSlotView.mouseX" mouseYBinding="hoveredBuildingSlotView.mouseY" buildingBinding="hoveredBuildingSlotView.slot.building" buildingSlotViewBinding="hoveredBuildingSlotView" }}
       {{/if}}      
-    </div>
+      
+    {{/if}}
+  </div>
     
+  {{#if "settlement"}}
     <div class="topbar-info-box settlement">
       {{#if shouldDisplaySettlementSwitch}} 
         <div class="settlement-switch previous"  {{action  nextSettlementPressed target="controller"}}>&nbsp;</div>
         <div class="settlement-switch next"      {{action  previousSettlementPressed target="controller"}}>&nbsp;</div>  
       {{/if}}
       <div class="topbar-info-text">{{settlement.name}}</div>      
-    </div> 
-      
+    </div>       
   {{/if}}
 </div>
 </script>
