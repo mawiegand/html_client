@@ -62,7 +62,11 @@ AWE.UI.Ember = (function(module) {
     
     slotAnnotationPosition: function() {
       var slotNum = this.getPath('slot.slot_num');
-      return slotNum ? "slot"+slotNum : null;
+      if(slotNum !== undefined)
+      {
+        return "slot" + slotNum;
+      }
+      return null;
     }.property('slot.slot_num').cacheable(),
 
     isMilitary: function() {
