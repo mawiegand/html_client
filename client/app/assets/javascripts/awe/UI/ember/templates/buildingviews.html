@@ -12,6 +12,7 @@
   <div {{bindAttr class="size type :building-image"}}></div>
   {{#if slot.building.underConstruction}}
     <div class="construction-area front"></div>
+    {{view AWE.UI.Ember.ConstructionProgressView slotBinding="slot"}}
   {{else}}
     {{#if slot.building.underDestruction}}
         <div class="construction-area front"></div>
@@ -24,14 +25,28 @@
 {{#if slot.uiMarker}}
   {{view AWE.UI.Ember.UIMarker direction=3 top=30 left=70}}
 {{/if}}
-  {{view AWE.UI.Ember.SlotClickArea slotBinding="slot"}}
+  {{view AWE.UI.Ember.SlotClickArea slotBinding="slot"}}  
 </script>
 
 <script type="text/x-handlebars" data-template-name="click-area">  
 </script>
 
 <script type="text/x-handlebars" data-template-name="construction-progress">
-  <div class="construction-progress-wrapper">    
+  <div class="construction-progress-wrapper">
+    {{#if slot.isSelected }}
+      {{#if isConstructionSpeedupPossible }}
+        <div class="construction-progress-coins background" {{action "finishJobPressed"}}>&nbsp;</div>
+        <div class="construction-progress-coins label" {{action "finishJobPressed"}}>{{constructionSpeedupCost}}</div>
+      {{/if}}
+      {{#if job.cancelable }}
+        <div class="construction-progress-cancel background" {{action "cancelJobPressed"}}>&nbsp;</div>
+        <div class="construction-progress-cancel icon" {{action "cancelJobPressed"}}>&nbsp;</div>
+      {{/if}}
+    {{/if}}
+    <div class="construction-progress-bar">      
+      <span class="construction-progress-bar-level" {{bindAttr style="progressBarWidth"}}>&nbsp;</span>
+      <span class="construction-progress-bar-label">{{formatDuration timeRemaining}}</span>
+    </div>
   </div>
 </script>
 
