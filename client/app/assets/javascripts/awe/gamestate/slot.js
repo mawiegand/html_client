@@ -797,6 +797,8 @@ AWE.GS = (function(module) {
 
     uiMarker: false,
     
+    isSeletected: false,
+    
     bindings: null,
     
     init: function(spec) {
