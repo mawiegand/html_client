@@ -202,25 +202,6 @@
   {{/if}}
 </script>
 
-
-<!--
-  // buttons for all buildings
-    var _infoButtonView = null;
-    var _upgradeButtonView = null; // if buildingLevel < maxBuildingLevel      
-    var _destroyButtonView = null; // if demolishable
-    
-    // buttons for specific buildings
-    var _convertButtonView    = null; // quarry, logger, furrier, small hut, storage
-    var _assignmentButtonView = null; // tavern
-    var _diplomacyButtonView  = null; // campfire    
-    var _tradeButtonView      = null; // storage, storage_2
-    var _artifactButtonView   = null; // artifact_stand
-    var _militaryButtonView   = null; // barracks -> infantry tab, stud -> cavalry tab, firing range -> artillery tab
-    
-    // building construction view
-    var _constructionView = null;    
--->
-
 <script type="text/x-handlebars" data-template-name="settlement-building-annotation">  
     <div class="building-annotation-background building-info-button-background" {{action "infoClicked"}}>&nbsp;</div>
     <div class="building-annotation-icon building-info-button-icon" {{action "infoClicked"}}>&nbsp;</div>
@@ -267,12 +248,6 @@
     <div class="building-annotation-background building-army-button-background" {{action "militaryClicked"}}>&nbsp;</div>
     <div class="building-annotation-icon building-army-button-icon" {{action "militaryClicked"}}>&nbsp;</div>
   {{/if}}
-  
-  <!--<div class="assignment-progress-bar-border">
-    <div class="assignment-progress-bar" {{bindAttr style="progressBarWidth"}}>
-      test
-    </div>
-  </div>-->
 </script>
 
 
