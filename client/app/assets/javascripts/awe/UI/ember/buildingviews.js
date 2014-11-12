@@ -175,8 +175,8 @@ AWE.UI.Ember = (function(module) {
     },  
     
     isSlotSelected: function() {
-      return this.getPath('parentView.slot.isSelected');
-    }.property('parentView.slot.isSelected'),
+      return this.getPath('parentView.parentView.selectedSlot.slot_num') === this.getPath('slot.slot_num');
+    }.property('parentView.parentView.selectedSlot.slot_num', 'slot.slot_num'),
     
     isConstructionSpeedupPossible: function() {
       return this.getPath('job.active_job') && this.getPath('job.buildingType.buyable') && AWE.Util.Rules.isConstructionSpeedupPossible(this.get('timeRemaining'));
@@ -225,6 +225,11 @@ AWE.UI.Ember = (function(module) {
     active: function() {
       return this.getPath('job.active_job') !== null;
     }.property('job.active_job'),
+    
+    first: function() {
+      var jobCollection = this.getPath('parentView.queue.hashableJobs.collection');
+      return jobCollection && jobCollection[0] && jobCollection[0] === this.get('job')
+    }.property('parentView.queue.hashableJobs.changedAt'),    
     
     startTimerOnBecommingActive: function() {
       var active = this.get('active');
