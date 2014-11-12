@@ -159,13 +159,24 @@ AWE.UI.Ember = (function(module) {
   module.ConstructionProgressView = Ember.View.extend({
     templateName: 'construction-progress',
     
+    slot: null,
     job: null,
     timer: null,    
     timeRemaining: null,  
     
     init: function(spec) {
-      this._super(spec);            
+      this._super(spec);  
+      
+      var slot = this.getPath('parentView.slot');
+      this.set('slot', slot);
+      
+      var sortedJobs = this.getPath('parentView.slot.building.sortedJobs');
+      this.set('job', sortedJobs[0]);          
     },  
+    
+    isSlotSelected: function() {
+      return this.getPath('parentView.slot.isSelected');
+    }.property('parentView.slot.isSelected'),
     
     isConstructionSpeedupPossible: function() {
       return this.getPath('job.active_job') && this.getPath('job.buildingType.buyable') && AWE.Util.Rules.isConstructionSpeedupPossible(this.get('timeRemaining'));
@@ -223,7 +234,7 @@ AWE.UI.Ember = (function(module) {
       return ;
     }.observes('active'),        
     
-    progressBarWidth: function(){
+    progressBarWidth: function() {
       var remaining = this.get('timeRemaining') || 999999999;
       var total = this.getPath('job.productionTime') || 1;
       var ratio = 1.0 - (remaining / (1.0*total));
@@ -231,9 +242,7 @@ AWE.UI.Ember = (function(module) {
       return 'width: ' + Math.ceil(100 * ratio) + '%;';
     }.property('timeRemaining', 'job.productionTime'),
     
-    didInsertElement: function() {
-      var sortedJobs = this.getPath('parentView.slot.building.sortedJobs');
-      this.set('job', sortedJobs[0]);
+    didInsertElement: function() {      
       this.startTimer();
     },
     

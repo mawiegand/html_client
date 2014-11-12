@@ -70,8 +70,8 @@ AWE.UI.Ember = (function(module) {
     }.property('slot.slot_num').cacheable(),
 
     isMilitary: function() {
-      return this.get("building").isMilitaryBuilding();
-    }.property("building").cacheable(),
+      return this.get('building').isMilitaryBuilding();
+    }.property('building').cacheable(),
     
     infoClicked: function(event) {
       var slot = this.get('slot');
@@ -154,12 +154,7 @@ AWE.UI.Ember = (function(module) {
     
     constructionCancelClicked: function(event) {
       this.get('controller').constructionCancelClicked(this.get('slot'));
-    },     
-    
-    /*progressBarWidth: function() {
-      return 'width: 100px;';
-    },*/
-    progressBarWidth: '100px;',   
+    },      
     
   });  
 
