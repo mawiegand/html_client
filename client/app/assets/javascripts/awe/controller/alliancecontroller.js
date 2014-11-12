@@ -58,15 +58,6 @@ AWE.Controller = (function(module) {
       }
     }
     
-    that.updateDiplomacyRelations = function(allianceId) {
-      if (!allianceId) { return ; }
-      var relations = AWE.GS.DiplomacyRelationManager.getDiplomacyRelationsOfAlliance(allianceId);
-      if ((!relations || relations.length == 0) ||
-          (relations && AWE.GS.DiplomacyRelationManager.lastUpdateAtForSourceAllianceId(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL).getTime() + 60000 < new Date().getTime())) { // have alliance id, but no corresponding alliance
-        AWE.GS.DiplomacyRelationManager.updateDiplomacyRelationsOfAlliance(allianceId, AWE.GS.ENTITY_UPDATE_TYPE_FULL);
-      }
-    }
-
     // that.updateShouts = function(allianceId, forceUpdate) {
     //   var self = this;
     //   if (forceUpdate === undefined) { 
@@ -105,7 +96,6 @@ AWE.Controller = (function(module) {
     that.updateModel = function(callback) {
       that.updateAlliance(this.allianceId, callback);
       that.updateMembers(this.allianceId);
-      that.updateDiplomacyRelations(this.allianceId);
       if (this.allianceId == AWE.GS.game.currentCharacter.alliance_id) {
         //that.updateShouts(this.allianceId);     // side-effect: starts another update, if older than 60s
       }
@@ -177,12 +167,15 @@ AWE.Controller = (function(module) {
     // };    
 
     that.runloop = function() {
+
+      AWE.Log.Debug('runloop');
+
       //this.updateDebug();
 
       if (!this.view && this.allianceId) {
-        this.updateAlliance(this.allianceId);  // trigger alliance update, if it's not already there.
+//        this.updateAlliance(this.allianceId);  // trigger alliance update, if it's not already there.
         //this.appendView();
-        that.updateModel();         
+        that.updateModel();
       }
       
   //    log('ALLIANCE SCREEN', this.visible, this.view, this.allianceId, AWE.GS.AllianceManager.getAlliance(that.allianceId))

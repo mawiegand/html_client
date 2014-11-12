@@ -129,7 +129,9 @@ AWE.Map = (function(module) {
     that.imageId = function() { return _imageId; }
 
     that.divineSupporterImage = function() {
-      return _imageId === 1;
+      return false;
+      // disable divine supporter due to new image sets
+      // return _imageId === 1;
     }
 
     /** returns the right of way of the location. */

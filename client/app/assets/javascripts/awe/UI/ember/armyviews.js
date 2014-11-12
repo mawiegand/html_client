@@ -252,7 +252,7 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
 
     trainingQueues: function() {
            return this.getPath('settlement.hashableTrainingQueues.collection');
-        }.property('settlement', 'settlement.hashableTrainingQueues.changedAt').cacheable(),
+    }.property('settlement', 'settlement.hashableTrainingQueues.changedAt').cacheable(),
 
     ownerObserver: function() {
       var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('garrisonArmy.owner_id'));

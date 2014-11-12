@@ -2,7 +2,6 @@
 
 <script type="text/x-handlebars" data-template-name="outpost-screen">
 <div class="outpost-screen settlement-screen">
-  <div class="outpost-picture-spacer"></div>
   <div class="outpost-picture">
     <div class="outpost-background-picture"></div>
     {{#if "settlement"}}
@@ -16,9 +15,7 @@
           {{view AWE.UI.Ember.BuildingSlotView  classNames="small-building" slotBinding="this" settlementBinding="view.settlement"}}
         {{/each}}
         
-        {{#each largeSlots}}
-          {{view AWE.UI.Ember.BuildingSlotView  classNames="large-building" slotBinding="this" settlementBinding="view.settlement"}}
-        {{/each}}
+        
       {{/if}}
       
       {{#if queues }}
@@ -26,10 +23,8 @@
       {{/if}}
 
       {{#if selectedSlot}}
-        {{#if selectedSlot.building }}
-          {{view AWE.UI.Ember.BuildingDetailsDialog controllerBinding="controller" slotBinding="selectedSlot" buildingBinding="selectedSlot.building"}}
-        {{else}}
-          {{view AWE.UI.Ember.SelectBuildingDialog controllerBinding="controller" slotBinding="selectedSlot"}}
+        {{#if selectedSlot.building}}
+          {{view AWE.UI.Ember.BuildingAnnotationView classNames="small-building" controllerBinding="controller" slotBinding="selectedSlot" buildingBinding="selectedSlot.building"}}
         {{/if}}
       {{/if}}
     
@@ -37,12 +32,15 @@
         {{view AWE.UI.Ember.ToolTipView templateName="building-slot-tooltip" classNames="mouse-over" mouseXBinding="hoveredBuildingSlotView.mouseX" mouseYBinding="hoveredBuildingSlotView.mouseY" buildingBinding="hoveredBuildingSlotView.slot.building" buildingSlotViewBinding="hoveredBuildingSlotView" }}
       {{/if}}      
     </div>
-  
-    {{#if shouldDisplaySettlementSwitch}}
-      <div class="settlement-switch previous"  {{action  nextSettlementPressed target="controller"}}>&nbsp;</div>
-      <div class="settlement-switch next"      {{action  previousSettlementPressed target="controller"}}>&nbsp;</div>  
-    {{/if}}  
-    {{view AWE.UI.Ember.SettlementInfoBoxView classNames="settlement-info-box" settlementBinding="settlement" controller="this"}}
+    
+    <div class="topbar-info-box settlement">
+      {{#if shouldDisplaySettlementSwitch}} 
+        <div class="settlement-switch previous"  {{action  nextSettlementPressed target="controller"}}>&nbsp;</div>
+        <div class="settlement-switch next"      {{action  previousSettlementPressed target="controller"}}>&nbsp;</div>  
+      {{/if}}
+      <div class="topbar-info-text">{{settlement.name}}</div>      
+    </div> 
+      
   {{/if}}
 </div>
 </script>

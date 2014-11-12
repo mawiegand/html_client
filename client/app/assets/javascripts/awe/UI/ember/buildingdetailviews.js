@@ -48,6 +48,106 @@ AWE.UI.Ember = (function(module) {
       return result && result.length > 0 ? result : null;
     }.property('slot.building_id', 'slot.settlement'),  
   });  
+  
+  /** @class
+   * @name AWE.UI.Ember.BuildingAnnotationView */
+  module.BuildingAnnotationView = Ember.View.extend( /** @lends AWE.UI.Ember.BuildingAnnotationView# */ {
+    templateName: "settlement-building-annotation",    
+    
+    classNameBindings: ['slotAnnotationPosition'],
+    
+    sendingUpgradeBinding: 'controller.status.sendingUpgrade',
+    sendingDestroyBinding: 'controller.status.sendingDestroy',
+    sendingConvertBinding: 'controller.status.sendingConvert',
+    
+    slotAnnotationPosition: function() {
+      var slotNum = this.getPath('slot.slot_num');
+      return slotNum ? "slot"+slotNum : null;
+    }.property('slot.slot_num').cacheable(),
+
+    isMilitary: function() {
+      return this.get("building").isMilitaryBuilding();
+    }.property("building").cacheable(),
+    
+    infoClicked: function(event) {
+      var slot = this.get('slot');
+      this.get('controller').constructionInfoClicked(this.get('slot'));
+    },
+    
+    upgradeClicked: function(event) {
+      var dialog = AWE.UI.Ember.UpgradeView.create({
+        slot: this.get('slot'),
+        controller: this.get('controller')
+      });
+      WACKADOO.presentModalDialog(dialog);
+      //this.get('controller').constructionUpgradeClicked(this.get('slot'));
+    },         
+    
+    destroyClicked: function(event) {
+      this.get('controller').constructionDestroyClicked(this.get('slot'));
+    },
+    
+    conversionClicked: function(event) {
+      var dialog = AWE.UI.Ember.UpgradeView.create({
+        slot: this.get('slot'),
+        controller: this.get('controller'),
+        conversionView: true,
+      });
+      WACKADOO.presentModalDialog(dialog);
+      //this.get('controller').constructionConvertClicked(this.get('slot'));
+    },
+    
+    assignmentClicked: function(event) {
+      var dialog = AWE.UI.Ember.AssignmentsDialog.create({
+        controller: this.get('controller')
+      });
+      WACKADOO.presentModalDialog(dialog);
+      //this.get('controller').constructionAssignmentClicked(this.get('slot'));
+    },
+    
+    diplomacyClicked: function(event) {
+      var dialog = AWE.UI.Ember.AllianceDiplomacyDialog.create({
+        unlockedAllianceCreation: this.getPath('building.unlockedAllianceCreation')
+      });
+      WACKADOO.presentModalDialog(dialog);
+      //this.get('controller').constructionDiplomacyClicked(this.get('slot'));
+    },
+    
+    tradeClicked: function() {
+      var dialog = AWE.UI.Ember.TradeNewView.create({
+          settlement: this.getPath('building.slot.settlement'),
+          controller: this.get("controller")});
+      WACKADOO.presentModalDialog(dialog);
+    },
+    
+    artifactClicked: function(event) {
+      this.get('controller').constructionArtifactClicked(this.get('slot'));
+    },
+    
+    militaryClicked: function(event) {
+      var dialog = AWE.UI.Ember.MilitaryInfoDialogNew.create({
+        garrisonArmy: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).get('garrison'),
+        controller: WACKADOO.presentScreenController,
+        settlement: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).getPath('garrison.homeSettlement')
+      });
+      WACKADOO.presentModalDialog(dialog);
+      //this.get('controller').constructionMilitaryClicked(this.get('slot'));
+    },
+    
+    constructionCoinsClicked: function(event) {
+      this.get('controller').constructionCoinsClicked(this.get('slot'));
+    },
+    
+    constructionCancelClicked: function(event) {
+      this.get('controller').constructionCancelClicked(this.get('slot'));
+    },     
+    
+    /*progressBarWidth: function() {
+      return 'width: 100px;';
+    },*/
+    progressBarWidth: '100px;',   
+    
+  });  
 
 module.SelectBuildingNewDialog = module.PopUpDialog.extend({
     templateName: 'settlement-new-dialog-select-building',

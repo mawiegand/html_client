@@ -1,4 +1,4 @@
-/* Author: Patrick Fox <patrick@5dlab.com>
+/* Author: Patrick Fox <patrick@5dlab.com>, Jona Boeddinghaus <jona@5dlab.com>
  * Copyright (C) 2012 5D Lab GmbH, Freiburg, Germany
  * Do not copy, do not distribute. All rights reserved.
  */
@@ -12,44 +12,99 @@ AWE.UI = (function(module) {
     my = my || {};
     
     my.typeName = "ResourceBubbleView";
-    my.resourceImageName;
 
-    my.resourceImageView = null;
-    my.amountView        = null;
-    my.rateView          = null;
-    my.capacityView      = null;
-    my.capacityLabelView = null;
+    my.resourceImageView    = null;
+    my.amountProgressView   = null;    
     
     my.amount   = null;
-    my.rate     = null;
     my.capacity = null;
     
     my.resourceName;
+    my.colors = null;
         
-    var that = module.createButtonView(spec, my);
+    my.container = null;
+    my.shadowEnabled = true;
+        
+    var that = module.createView(spec, my);
+    
+    var _resourceName = "";
     
     var _super = {
-      initWithControllerTextAndImage: AWE.Ext.superior(that, "initWithControllerTextAndImage"),
-      updateView:                     AWE.Ext.superior(that, "updateView"),
-      updateIfNeeded:                 AWE.Ext.superior(that, "updateIfNeeded"),
+      initWithController: AWE.Ext.superior(that, "initWithController"),
+      updateView: AWE.Ext.superior(that, "updateView"),
+      updateIfNeeded: AWE.Ext.superior(that, "updateIfNeeded"),
     }
     
-    that.initWithControllerAndResourceImage = function(controller, imageName, resourceName, frame) {
-      _super.initWithControllerTextAndImage(controller, "",
-                                            AWE.UI.ImageCache.getImage("hud/bubble/normal"),
-                                            frame || AWE.Geometry.createRect(0, 0, 200, 38));
-      this.setImageForState(AWE.UI.ImageCache.getImage("hud/bubble/hovered"), module.CONTROL_STATE_HOVERED);
-      my.resourceImageName = imageName;
-      my.resourceName = resourceName;
+    that.onMouseOver = function() { 
+      that.setHovered(true);  
+    }
+    that.onMouseOut =  function() {
+      that.setHovered(false); 
+    }
+    
+    that.initWithControllerResourceNameColorsAndFrame = function(controller, resourceName, colors, frame) {
+      _super.initWithController(controller, frame);
+      
+      my.container = new Container();
+      
+      my.resourceName = 'resource_' + resourceName;
+      _resourceName = resourceName;
+      my.colors = colors;
       
       this.recalcView();
+      
+      my.container.x = my.frame.origin.x;
+      my.container.y = my.frame.origin.y;
+      my.container.width  = my.frame.size.width;
+      my.container.height = my.frame.size.height;
     }
     
     that.recalcView = function() {
+      if (!my.amountProgressView) {
+        my.amountProgressView = AWE.UI.createResourceBarView();
+        my.amountProgressView.initWithControllerColorsAndFrame(
+          my.controller, 
+          { topColor: my.colors.topColor, bottomColor: my.colors.bottomColor },
+          AWE.Geometry.createRect(50, 10, 140, 24)
+        );
+        my.container.addChild(my.amountProgressView.displayObject());     
+        my.amountProgressView.onClick = function() { 
+          if (that.enabled()) {
+            that.onClick() 
+          }
+        }
+        my.amountProgressView.onMouseOver = function() {
+          if (that.onMouseOver) {
+            that.onMouseOver();
+          }
+        }
+        my.amountProgressView.onMouseOut = function() {
+          if (that.onMouseOut) {
+            that.onMouseOut();
+          }
+        }
+      }
+      
       if (!my.resourceImageView) {
         my.resourceImageView = AWE.UI.createImageView();
-        my.resourceImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage(my.resourceImageName));
-        my.resourceImageView.setFrame(AWE.Geometry.createRect(12, 3, 32, 32));
+        my.resourceImageView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/resourcebars/" + _resourceName + "/item"));
+        if (_resourceName === "fur")
+        {
+          //my.resourceImageView.setFrame(AWE.Geometry.createRect(15, 0, 48, 52));
+          my.resourceImageView.setFrame(AWE.Geometry.createRect(22, 0, 39, 42));
+        }
+        else if (_resourceName === "stone")
+        {
+          my.resourceImageView.setFrame(AWE.Geometry.createRect(8, 2, 52, 40));
+        }
+        else if (_resourceName === "cash")
+        {
+          my.resourceImageView.setFrame(AWE.Geometry.createRect(18, 0, 42, 42));
+        }
+        else if (_resourceName === "wood")
+        {
+          my.resourceImageView.setFrame(AWE.Geometry.createRect(5, 6, 52, 36));
+        }
         my.container.addChild(my.resourceImageView.displayObject());     
         my.resourceImageView.onClick = function() { 
           if (that.enabled()) {
@@ -66,109 +121,8 @@ AWE.UI = (function(module) {
             that.onMouseOut();
           }
         }
-      } 
-
-      if (!my.amountView) {
-        my.amountView = AWE.UI.createLabelView();
-        my.amountView.initWithControllerAndLabel(my.controller);
-        my.amountView.setTextAlign("left");
-        my.amountView.setFont("italic bold 16px Arial");
-        my.amountView.setColor('rgb(255,255,255)');
-        my.amountView.setFrame(AWE.Geometry.createRect(58, 5, 80, 16));      
-        my.container.addChild(my.amountView.displayObject());
-        my.amountView.onClick = function() { 
-          if (that.enabled()) {
-            that.onClick() 
-          }
-        }
-        my.amountView.onMouseOver = function() {
-          if (that.onMouseOver) {
-            that.onMouseOver();
-          }
-        }
-        my.amountView.onMouseOut = function() {
-          if (that.onMouseOut) {
-            that.onMouseOut();
-          }
-        }
-      }
-
-      if (!my.rateView) {
-        my.rateView = AWE.UI.createLabelView();
-        my.rateView.initWithControllerAndLabel(my.controller);
-        my.rateView.setTextAlign("right");
-        my.rateView.setFont("italic 12px Arial");
-        my.rateView.setColor('rgb(255,255,255)');
-        my.rateView.setFrame(AWE.Geometry.createRect(130, 9, 57, 12));      
-        my.container.addChild(my.rateView.displayObject());
-        my.rateView.onClick = function() { 
-          if (that.enabled()) {
-            that.onClick() 
-          }
-        }
-        my.rateView.onMouseOver = function() {
-          if (that.onMouseOver) {
-            that.onMouseOver();
-          }
-        }
-        my.rateView.onMouseOut = function() {
-          if (that.onMouseOut) {
-            that.onMouseOut();
-          }
-        }
-      }
-
-      if (!my.capacityLabelView) {
-        my.capacityLabelView = AWE.UI.createLabelView();
-        my.capacityLabelView.initWithControllerAndLabel(my.controller);
-        my.capacityLabelView.setTextAlign("left");
-        my.capacityLabelView.setFont("italic 12px Arial");
-        my.capacityLabelView.setColor('rgb(255,255,255)');
-        my.capacityLabelView.setFrame(AWE.Geometry.createRect(56, 21, 40, 12));      
-        my.capacityLabelView.setText('MAX:');
-        my.container.addChild(my.capacityLabelView.displayObject());
-        my.capacityLabelView.onClick = function() { 
-          if (that.enabled()) {
-            that.onClick() 
-          }
-        }
-        my.capacityLabelView.onMouseOver = function() {
-          if (that.onMouseOver) {
-            that.onMouseOver();
-          }
-        }
-        my.capacityLabelView.onMouseOut = function() {
-          if (that.onMouseOut) {
-            that.onMouseOut();
-          }
-        }
-      }
-
-      if (!my.capacityView) {
-        my.capacityView = AWE.UI.createLabelView();
-        my.capacityView.initWithControllerAndLabel(my.controller);
-        my.capacityView.setTextAlign("left");
-        my.capacityView.setFont("12px Arial");
-        my.capacityView.setColor('rgb(255,255,255)');
-        my.capacityView.setFrame(AWE.Geometry.createRect(90, 21, 80, 12));      
-        my.container.addChild(my.capacityView.displayObject());
-        my.capacityView.onClick = function() { 
-          if (that.enabled()) {
-            that.onClick() 
-          }
-        }
-        my.capacityView.onMouseOver = function() {
-          if (that.onMouseOver) {
-            that.onMouseOver();
-          }
-        }
-        my.capacityView.onMouseOut = function() {
-          if (that.onMouseOut) {
-            that.onMouseOut();
-          }
-        }
-
-      }
+      }                                                  
+                  
       that.setValues();
     }
 
@@ -176,22 +130,21 @@ AWE.UI = (function(module) {
       var pool = AWE.GS.ResourcePoolManager.getResourcePool();
       if (pool) {
         my.amount = pool.presentAmount(my.resourceName);
-        my.rate = AWE.Util.Rules.roundProductionRate(pool.get(my.resourceName+'_production_rate'));
-        my.capacity = pool.get(my.resourceName+'_capacity');
+        my.capacity = pool.get(my.resourceName + '_capacity');
         
-        my.amountView.setText(""+my.amount);
-        my.rateView.setText("+"+my.rate+"/h");
-        my.capacityView.setText(""+Math.floor(my.capacity));
+        my.amountProgressView.setAmountWithCapacity(my.amount, my.capacity);
         
+        /*
         if (pool.full(my.resourceName)) {
-          my.amountView.setColor('rgb(255,0,0)');
+          my.amountProgressView.setColor('rgb(255,0,0)');
         }
         else if (pool.nearlyFull(my.resourceName)) {
-          my.amountView.setColor('rgb(255,128,0)');
+          my.amountProgressView.setColor('rgb(255,128,0)');
         }
         else {
-          my.amountView.setColor('rgb(255,255,255)');
+          my.amountProgressView.setColor('rgb(255,255,255)');
         }
+        */
       }
     }
     
@@ -205,20 +158,34 @@ AWE.UI = (function(module) {
       var changed = false;
       var pool = AWE.GS.ResourcePoolManager.getResourcePool();
       if (pool) {
-        changed = changed || pool.presentAmount(my.resourceName)                      !== my.amount;
-        changed = changed || Math.floor(pool.get(my.resourceName+'_production_rate')) !== my.rate;
-        changed = changed || pool.get(my.resourceName+'_capacity')                    !== my.capacity;
+        changed = changed || pool.presentAmount(my.resourceName)     !== my.amount;
+        changed = changed || pool.get(my.resourceName + '_capacity') !== my.capacity;        
       }
       
-      if (changed) {
-       // log(">> NEED TO UPDATE BUBBLE DUE TO CHANGED RESOURCE PRODUCTION: " + my.resourceName);
+      if (changed) {        
+        // log(">> NEED TO UPDATE BUBBLE DUE TO CHANGED RESOURCE PRODUCTION: " + my.resourceName);
         this.setNeedsUpdate();
+        my.amountProgressView.setNeedsUpdate();
       }
+      
       _super.updateIfNeeded();
-    }    
+    }  
+    
+    that.resourceName = function() {
+      return my.resourceName;
+    }
+    
+    that.displayObject = function() {
+      return my.container;
+    }
         
     that.onClick = function() {
-    };        
+      log('button on click');
+      if (that.enabled()) {
+        my.controller.buttonClicked(that);
+      }
+    };       
+        
         
     return that;
   };

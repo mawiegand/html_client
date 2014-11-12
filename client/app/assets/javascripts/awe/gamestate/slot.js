@@ -175,6 +175,19 @@ AWE.GS = (function(module) {
       level = level || 0;
       return experienceProduction ? AWE.GS.Util.parseAndEval(experienceProduction, level) : null;
     },
+
+    isMilitaryBuilding: function() {
+      var self = this;
+      var isMilitary = false;
+      var military = AWE.Config.MILITARY_BUILDINGS;
+      military.forEach(function(type) {
+        if(self.getPath('buildingType.symbolic_id') === type)
+        {
+          isMilitary = true;
+        }
+      });
+      return isMilitary;
+    },
 		
     // ============
 
