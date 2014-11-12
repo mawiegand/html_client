@@ -155,6 +155,93 @@ AWE.UI.Ember = (function(module) {
 		},
     
   });
+  
+  module.ConstructionProgressView = Ember.View.extend({
+    templateName: 'construction-progress',
+    
+    job: null,
+    timer: null,    
+    timeRemaining: null,  
+    
+    init: function(spec) {
+      this._super(spec);            
+    },  
+    
+    isConstructionSpeedupPossible: function() {
+      return this.getPath('job.active_job') && this.getPath('job.buildingType.buyable') && AWE.Util.Rules.isConstructionSpeedupPossible(this.get('timeRemaining'));
+    }.property('timeRemaining', 'job.active_job'),
+    
+    cancelJobPressed: function(event) {
+      this.getPath('parentView.parentView.controller').constructionCancelClicked(this.get('job'));
+    },
+    
+    finishJobPressed: function(event) {
+      this.getPath('parentView.parentView.controller').constructionFinishClicked(this.get('job'));
+    },
+    
+    calcTimeRemaining: function() {
+      var finishedAt = this.getPath('job.active_job.finished_at');
+      if (!finishedAt) {
+        return ;
+      }
+      var finish = Date.parseISODate(finishedAt);
+      var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
+      var remaining = (finish.getTime() - now.getTime()) / 1000.0;
+      remaining = remaining < 0 ? 0 : remaining;
+      this.set('timeRemaining', remaining);
+    },
+    
+    startTimer: function() {
+      var timer = this.get('timer');
+      if (!timer) {
+        timer = setInterval((function(self) {
+          return function() {
+            self.calcTimeRemaining();
+          };
+        }(this)), 1000);
+        this.set('timer', timer);
+      }
+    },
+    
+    stopTimer: function() {
+      var timer = this.get('timer');
+      if (timer) {
+        clearInterval(timer);
+        this.set('timer', null);
+      }
+    },
+    
+    active: function() {
+      return this.getPath('job.active_job') !== null;
+    }.property('job.active_job'),
+    
+    startTimerOnBecommingActive: function() {
+      var active = this.get('active');
+      if (active && this.get('timer')) {
+        this.startTimer();
+      }
+      return ;
+    }.observes('active'),        
+    
+    progressBarWidth: function(){
+      var remaining = this.get('timeRemaining') || 999999999;
+      var total = this.getPath('job.productionTime') || 1;
+      var ratio = 1.0 - (remaining / (1.0*total));
+      ratio = ratio < 0 ? 0 : (ratio > 1 ? 1 : ratio);
+      return 'width: ' + Math.ceil(100 * ratio) + '%;';
+    }.property('timeRemaining', 'job.productionTime'),
+    
+    didInsertElement: function() {
+      var sortedJobs = this.getPath('parentView.slot.building.sortedJobs');
+      this.set('job', sortedJobs[0]);
+      this.startTimer();
+    },
+    
+    willDestroyElement: function() {
+      this.stopTimer();
+    },
+    
+  });  
 
   /** @class
    * @name AWE.UI.Ember.BuildingSlotView */  
