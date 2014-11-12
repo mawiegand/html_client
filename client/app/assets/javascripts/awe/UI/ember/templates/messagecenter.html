@@ -225,7 +225,7 @@
     <div class="row row2">
           <ul class="mail-list">
             {{#each messageBox.sortedEntries}}
-              {{view AWE.UI.Ember.MessageEntry messageBinding="this" controllerBinding="view.controller"}}
+              {{view AWE.UI.Ember.MessageEntry messageBinding="this" controllerBinding="view.controller" parentViewBinding="view"}}
             {{/each}}
           </ul>
         </div>
@@ -237,7 +237,7 @@
     <div class="row row2">
           <ul class="mail-list">
             {{#each messageBox.sortedEntries}}
-              {{view AWE.UI.Ember.MessageEntry messageBinding="this" controllerBinding="view.controller"}}
+              {{view AWE.UI.Ember.MessageEntry messageBinding="this" controllerBinding="view.controller" parentViewBinding="view"}}
             {{/each}}
           </ul>
         </div>
@@ -309,7 +309,7 @@
         <div class="row row1 tab-bar-new">
           <div class="cell cell-33">
             {{#if isInbox}}
-            <div class="left-menu-button">{{t messaging.reply}}</div>
+             <div class="left-menu-button" {{action "replyClicked"}}>{{t messaging.reply}}</div>
             {{/if}}
           </div>
           <div class="cell cell-33"><div class="middle-menu-button" {{action "forwardClicked"}}>{{t messaging.forward}}</div></div>
@@ -354,9 +354,9 @@
         <a href="#" {{action "closeDialog"}}>
           <div class="modal-dialog-back"></div>
         </a>
-        <h1 class="popup-header-center" >WackyUser_12345</h1>
+        <h1 class="popup-header-center" >{{recipient}}</h1>
  </div>
  <div class="modal-dialog-body modal-dialog-new-message-tab-body scrolling" style="top: 80px;">
-    {{view AWE.UI.Ember.MessageWriteView}}
+    {{view AWE.UI.Ember.MessageWriteView controllerBinding="controller"}}
   </div>
 </script>
