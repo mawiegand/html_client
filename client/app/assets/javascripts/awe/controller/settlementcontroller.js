@@ -275,7 +275,6 @@ AWE.Controller = (function(module) {
 
     that.slotClicked = function(slot) {
       that.view.set('selectedSlot', slot);
-      that.view.setPath('selectedSlot.isSelected', true);
       if (slot.getPath('building.unlockedAssignments')) {
         that.updateGossipIfNecessary();
       }
@@ -294,7 +293,6 @@ AWE.Controller = (function(module) {
     
     that.unselectSlot = function() {
       that.view.setPath('selectedSlot.uiMarker', false);
-      that.view.setPath('selectedSlot.isSelected', false);
       that.view.set('selectedSlot', null);
       this.updateUIMarker();      
     }

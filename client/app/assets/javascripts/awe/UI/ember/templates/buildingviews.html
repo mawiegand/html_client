@@ -36,17 +36,19 @@
     {{#if isSlotSelected }}
       {{#if isConstructionSpeedupPossible }}
         <div class="construction-progress-coins background" {{action "finishJobPressed"}}>&nbsp;</div>
-        <div class="construction-progress-coins label" {{action "finishJobPressed"}}>99</div> <!-- TODO cost to finish -->
+        <div class="construction-progress-coins label" {{action "finishJobPressed"}}>{{constructionSpeedupCost timeRemaining}}</div>
       {{/if}}
       {{#if job.cancelable }}
         <div class="construction-progress-cancel background" {{action "cancelJobPressed"}}>&nbsp;</div>
         <div class="construction-progress-cancel icon" {{action "cancelJobPressed"}}>&nbsp;</div>
       {{/if}}
     {{/if}}
-    <div class="construction-progress-bar">      
-      <span class="construction-progress-bar-level" {{bindAttr style="progressBarWidth"}}>&nbsp;</span>
-      <span class="construction-progress-bar-label">{{formatDuration timeRemaining}}</span>
-    </div>
+    {{#if active}}
+      <div class="construction-progress-bar">      
+        <span class="construction-progress-bar-level" {{bindAttr style="progressBarWidth"}}>&nbsp;</span>
+        <span class="construction-progress-bar-label">{{formatDuration timeRemaining}}</span>
+      </div>
+    {{/if}}
   </div>
 </script>
 
