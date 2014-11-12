@@ -202,13 +202,14 @@ AWE.Config = (function(module) {
   module.APP_SUPPORT_BASE ='https://ios.wack-a-doo.com/' + AWE.Settings.lang;
 
   module.MILITARY_BUILDINGS = [
-    "building_barracks",
-    "building_firing_range",
-    "building_stud",
-    "building_garrison",
-    "building_infantry_tower",
-    "building_artillery_tower",
-    "building_cavalry_tower"
+    ["building_barracks", 1],
+    ["building_firing_range", 2],
+    ["building_stud", 3],
+    ["building_garrison" , 0],
+    ["building_infantry_tower", 1],
+    ["building_artillery_tower", 2],
+    ["building_cavalry_tower", 3],
+    ["building_campfire", 4]
   ]
 
   return module;

@@ -245,6 +245,8 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
     displayHeading: true,
     
     settlement: null,
+
+    startTab: 0,
   
     setSettlment: function(){
       this.set('settlement',this.getPath('garrisonArmy.homeSettlement'));
@@ -276,6 +278,7 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
     garrisonArmy: null,
     settlement: null,
     trainingQueues: null,
+    startTab: 0,
 
     init: function() {
 
@@ -337,6 +340,10 @@ module.ArmyInfoNewView = module.ArmyInfoView.extend({
 
      this._super();
    },
+
+   changeTab: function() {
+    this.selectTabByNumber(this.get("startTab"));
+   }.observes("startTab"),
 
  });
 

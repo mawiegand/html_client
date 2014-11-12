@@ -181,7 +181,7 @@ AWE.GS = (function(module) {
       var isMilitary = false;
       var military = AWE.Config.MILITARY_BUILDINGS;
       military.forEach(function(type) {
-        if(self.getPath('buildingType.symbolic_id') === type)
+        if(self.getPath('buildingType.symbolic_id') === type[0])
         {
           isMilitary = true;
         }

@@ -129,10 +129,20 @@ AWE.UI.Ember = (function(module) {
     },
     
     militaryClicked: function(event) {
+      var building = this.getPath("slot.building.buildingType.symbolic_id");
+      var military = AWE.Config.MILITARY_BUILDINGS;
+      var startTab = 0;
+      military.forEach(function(type) {
+        if(building === type[0])
+        {
+          startTab = type[1];
+        }
+      });
       var dialog = AWE.UI.Ember.MilitaryInfoDialogNew.create({
         garrisonArmy: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).get('garrison'),
         controller: WACKADOO.presentScreenController,
-        settlement: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).getPath('garrison.homeSettlement')
+        settlement: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).getPath('garrison.homeSettlement'),
+        startTab: startTab
       });
       WACKADOO.presentModalDialog(dialog);
       //this.get('controller').constructionMilitaryClicked(this.get('slot'));
