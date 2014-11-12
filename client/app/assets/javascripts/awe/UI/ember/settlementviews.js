@@ -61,6 +61,13 @@ AWE.UI.Ember = (function(module) {
       var settlement = this.get('settlement');
       return settlement && settlement !== AWE.GS.SettlementManager.getPreviousSettlementOfCharacter(settlement);
     }.property('settlement.owner_id'),
+    
+    infoClicked: function() {
+      var dialog = AWE.UI.Ember.SettlementInfoBoxDialog.create({
+        settlement: this.get('settlement'),
+      });
+      WACKADOO.presentModalDialog(dialog);
+    },
 
   });
 

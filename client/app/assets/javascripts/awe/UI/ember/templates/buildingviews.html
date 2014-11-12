@@ -33,10 +33,10 @@
 
 <script type="text/x-handlebars" data-template-name="construction-progress">
   <div class="construction-progress-wrapper">
-    {{#if slot.isSelected }}
+    {{#if isSlotSelected }}
       {{#if isConstructionSpeedupPossible }}
         <div class="construction-progress-coins background" {{action "finishJobPressed"}}>&nbsp;</div>
-        <div class="construction-progress-coins label" {{action "finishJobPressed"}}>{{constructionSpeedupCost}}</div>
+        <div class="construction-progress-coins label" {{action "finishJobPressed"}}>99</div> <!-- TODO cost to finish -->
       {{/if}}
       {{#if job.cancelable }}
         <div class="construction-progress-cancel background" {{action "cancelJobPressed"}}>&nbsp;</div>
