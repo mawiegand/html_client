@@ -14,11 +14,13 @@
         {{view AWE.UI.Ember.ConstructionQueueView controllerBinding="controller" classNames="queue-list" queuesBinding="queues.collection"}}
       {{/if}}
 
-      {{#if shouldDisplaySettlementSwitch}}
-        <div class="settlement-switch previous"  {{action  nextSettlementPressed target="controller"}}>&nbsp;</div>
-        <div class="settlement-switch next"      {{action  previousSettlementPressed target="controller"}}>&nbsp;</div>  
-      {{/if}}
-      {{view AWE.UI.Ember.SettlementInfoBoxView classNames="settlement-info-box fortress" settlementBinding="settlement"}}
+      <div class="topbar-info-box settlement">
+        {{#if shouldDisplaySettlementSwitch}} 
+          <div class="settlement-switch previous"  {{action  nextSettlementPressed target="controller"}}>&nbsp;</div>
+          <div class="settlement-switch next"      {{action  previousSettlementPressed target="controller"}}>&nbsp;</div>  
+        {{/if}}
+        <div class="topbar-info-text">{{settlement.name}}</div>      
+      </div>      
 
       {{#if selectedSlot}}
         {{#if selectedSlot.building }}
