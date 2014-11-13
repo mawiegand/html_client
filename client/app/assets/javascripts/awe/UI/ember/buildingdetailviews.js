@@ -62,12 +62,16 @@ AWE.UI.Ember = (function(module) {
     
     slotAnnotationPosition: function() {
       var slotNum = this.getPath('slot.slot_num');
-      return slotNum ? "slot"+slotNum : null;
+      if(slotNum !== undefined)
+      {
+        return "slot" + slotNum;
+      }
+      return null;
     }.property('slot.slot_num').cacheable(),
 
     isMilitary: function() {
-      return this.get("building").isMilitaryBuilding();
-    }.property("building").cacheable(),
+      return this.get('building').isMilitaryBuilding();
+    }.property('building').cacheable(),
     
     infoClicked: function(event) {
       var slot = this.get('slot');
@@ -125,10 +129,20 @@ AWE.UI.Ember = (function(module) {
     },
     
     militaryClicked: function(event) {
+      var building = this.getPath("slot.building.buildingType.symbolic_id");
+      var military = AWE.Config.MILITARY_BUILDINGS;
+      var startTab = 0;
+      military.forEach(function(type) {
+        if(building === type[0])
+        {
+          startTab = type[1];
+        }
+      });
       var dialog = AWE.UI.Ember.MilitaryInfoDialogNew.create({
         garrisonArmy: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).get('garrison'),
         controller: WACKADOO.presentScreenController,
-        settlement: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).getPath('garrison.homeSettlement')
+        settlement: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).getPath('garrison.homeSettlement'),
+        startTab: startTab
       });
       WACKADOO.presentModalDialog(dialog);
       //this.get('controller').constructionMilitaryClicked(this.get('slot'));
@@ -140,12 +154,7 @@ AWE.UI.Ember = (function(module) {
     
     constructionCancelClicked: function(event) {
       this.get('controller').constructionCancelClicked(this.get('slot'));
-    },     
-    
-    /*progressBarWidth: function() {
-      return 'width: 100px;';
-    },*/
-    progressBarWidth: '100px;',   
+    },      
     
   });  
 

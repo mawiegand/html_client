@@ -6976,7 +6976,7 @@ span.bonus {
 .building-convert-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_convert/colored/button_convert_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
 }
 
 .building-convert-button-icon {
@@ -7000,31 +7000,32 @@ span.bonus {
 .building-assignment-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_assignment/colored/button_assignment_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
 }
 
 .building-assignment-button-icon {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/icon_assignment/icon_assignment.png' %>");
+  background: url("<%= asset_path 'hud/icon_assignment/icon_assignment.png' %>") no-repeat center center;
+  background-size: 15px;
 }
 
 .building-diplomacy-button-background {
-  top: 80px;
-  left: 80px;
-  background-image: url("<%= asset_path 'hud/button_diplomacy/colored/button_diplomacy_colored.png' %>");
+  top: 60px;
+  left: 120px;
+  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
 }
 
 .building-diplomacy-button-icon {
-  top: 80px;
-  left: 80px;
+  top: 60px;
+  left: 120px;
   background-image: url("<%= asset_path 'hud/icon_diplomacy/icon_diplomacy.png' %>");
 }
 
 .building-trade-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_trade/colored/button_trade_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
 }
 
 .building-trade-button-icon {
@@ -7036,19 +7037,20 @@ span.bonus {
 .building-artifact-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_artifact/colored/button_artifact_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
 }
 
 .building-artifact-button-icon {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/icon_artifact/icon_artifact.png' %>");
+  background: url("<%= asset_path 'hud/icon_artifact/icon_artifact.png' %>") no-repeat center center;
+  background-size: 15px;
 }
 
 .building-army-button-background {
   top: 80px;
   left: 80px;
-  background-image: url("<%= asset_path 'hud/button_army/colored/button_army_colored.png' %>");
+  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
 }
 
 .building-army-button-icon {
@@ -7058,149 +7060,106 @@ span.bonus {
 }
 
 
-/* == BUILDING ANNOTATION BUTTONS == */
+/* == BUILDING ANNOTATION CONSTRUCTION PROGRESS == */
 
-.building-annotation-view {
-  position: relative;
-  top: 10px;
-  left: 10px;
-  width: 200px;
-  height: 250px;
+.construction-progress-wrapper {
+  position: absolute;
+  top: -30px;
+  left: 40px;
+  pointer-events:auto;
 }
 
-.buildling-info-button-background {
+.construction-progress-coins {
   position: absolute;
-  top: 50px;
-  left: 10px;
-  background-image: url("<%= asset_path 'hud/button_blue/button_blue.png' %>");
-  width: 52px;
-  height: 54px;
+  top: 0px;
+  left: 5px;
+  width: 32px;
+  height: 32px;
 }
 
-.buildling-info-button-icon {
+.construction-progress-coins.background {
+  background-image: url("<%= asset_path 'hud/resourcebars/resourcebar_toads/resourcebar_toads_item.png' %>");
+  background-size: 32px;
+}
+
+.construction-progress-coins.label {
+  font-family: "HVDComicSerifPro";
+  color: white;
+  font-size: 18px;  
+  text-align: left;
+  margin-top: 16px;
+  text-shadow:  1px  1px 1px rgb(112,94,62),
+                  1px -1px 1px rgb(112,94,62),
+                 -1px  1px 1px rgb(112,94,62),
+                 -1px -1px 1px rgb(112,94,62);
+}
+
+.construction-progress-cancel {
   position: absolute;
-  top: 50px;
-  left: 10px;
+  top: 0px;
+  left: 48px;
+  width: 32px;
+  height: 32px;
+}
+
+.construction-progress-cancel.background {
+  background-image: url("<%= asset_path 'hud/button_demolish/colored/button_demolish_colored.png' %>");
+  background-size: 32px;
+}
+
+.construction-progress-cancel.icon {
+  background: url("<%= asset_path 'hud/icon_cancel/icon_cancel.png' %>") 7px 7px no-repeat;
+  background-size: 18px;
+}
+
+.construction-progress-bar {
+  position: absolute;
+  top: 35px;
+  width: 82px;
+  height: 14px;    
+  background-image: url("<%= asset_path 'hud/resourcebars/resourcebar_empty_small.png' %>");    
+}
+
+.construction-progress-bar > span.construction-progress-bar-level {
+  display: block;
+  height: 12px;
+  position: absolute;
+  top: 1px;
+  overflow: hidden;  
+  -webkit-border-top-right-radius: 10px;
+  -webkit-border-bottom-right-radius: 10px;
+  -moz-border-radius-topright: 10px;
+  -moz-border-radius-bottomright: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  -webkit-border-top-left-radius: 10px;
+  -webkit-border-bottom-left-radius: 10px;
+  -moz-border-radius-topleft: 10px;
+  -moz-border-radius-bottomleft: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  background-color: #ffc361;
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #ffc361),color-stop(1, #9e743a));
+  background-image: -webkit-linear-gradient(top, #ffc361, #9e743a); 
+  background-image: -moz-linear-gradient(top, #ffc361, #9e743a);
+  background-image: -ms-linear-gradient(top, #ffc361, #9e743a);
+  background-image: -o-linear-gradient(top, #ffc361, #9e743a);  
+  -webkit-box-shadow: inset 0 2px 9px  rgba(255,255,255,0.3), inset 0 -2px 6px rgba(0,0,0,0.4);
+  -moz-box-shadow: inset 0 2px 9px  rgba(255,255,255,0.3), inset 0 -2px 6px rgba(0,0,0,0.4);  
+}
+
+.construction-progress-bar-label {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 82px;
+  height: 14px;
+  font-family: "HVDComicSerifPro";
+  color: white;
+  font-size: 10px;  
   text-align: center;
-  vertical-align: middle;
-  width: 52px;
-  height: 54px;
+  vertical-align: middle;  
 }
-
-.buildling-upgrade-button-background {
-  position: absolute;
-  top: 50px;
-  left: 10px;
-  background-image: url("<%= asset_path 'hud/button_green/button_green.png' %>");
-  width: 52px;
-  height: 54px;
-}
-
-.buildling-upgrade-button-icon {
-  position: absolute;
-  top: 50px;
-  left: 10px;
-  background-image: url("<%= asset_path 'hud/icon_upgrade/icon_upgrade.png' %>");
-  width: 52px;
-  height: 54px;
-}
-
-
-/* == BUILDING ANNOTATION BUTTONS == */
-
-.building-annotation-view {
-  position: relative;
-  top: 10px;
-  left: 10px;
-  width: 200px;
-  height: 250px;
-}
-
-.buildling-info-button-background {
-  position: absolute;
-  top: 50px;
-  left: 10px;
-  background-image: url("<%= asset_path 'hud/button_blue/button_blue.png' %>");
-  width: 52px;
-  height: 54px;
-}
-
-.buildling-info-button-icon {
-  position: absolute;
-  top: 50px;
-  left: 10px;
-  text-align: center;
-  vertical-align: middle;
-  width: 52px;
-  height: 54px;
-}
-
-.buildling-upgrade-button-background {
-  position: absolute;
-  top: 50px;
-  left: 10px;
-  background-image: url("<%= asset_path 'hud/button_green/button_green.png' %>");
-  width: 52px;
-  height: 54px;
-}
-
-.buildling-upgrade-button-icon {
-  position: absolute;
-  top: 50px;
-  left: 10px;
-  background-image: url("<%= asset_path 'hud/icon_upgrade/icon_upgrade.png' %>");
-  width: 52px;
-  height: 54px;
-}
-
-
-/* == BUILDING ANNOTATION BUTTONS == */
-
-.building-annotation-view {
-  position: relative;
-  top: 10px;
-  left: 10px;
-  width: 200px;
-  height: 250px;
-}
-
-.buildling-info-button-background {
-  position: absolute;
-  top: 50px;
-  left: 10px;
-  background-image: url("<%= asset_path 'hud/button_blue/button_blue.png' %>");
-  width: 52px;
-  height: 54px;
-}
-
-.buildling-info-button-icon {
-  position: absolute;
-  top: 50px;
-  left: 10px;
-  text-align: center;
-  vertical-align: middle;
-  width: 52px;
-  height: 54px;
-}
-
-.buildling-upgrade-button-background {
-  position: absolute;
-  top: 50px;
-  left: 10px;
-  background-image: url("<%= asset_path 'hud/button_green/button_green.png' %>");
-  width: 52px;
-  height: 54px;
-}
-
-.buildling-upgrade-button-icon {
-  position: absolute;
-  top: 50px;
-  left: 10px;
-  background-image: url("<%= asset_path 'hud/icon_upgrade/icon_upgrade.png' %>");
-  width: 52px;
-  height: 54px;
-}
-
 
 /* ===== non-semantic helper classes ========================================
    Alliance Screen
@@ -7405,6 +7364,15 @@ li.shout .sender {
   font-size: 20px; 
   font-weight: bold; 
   color: #fff;
+}
+
+.topbar-info-button {
+  position: absolute;
+  right: 30px;
+  top: 15px;
+  background-image: url("<%= asset_path 'hud/topbar/topbar_info.png' %>");
+  width: 28px;
+  height: 28px;
 }
 
 .settlement-switch {
@@ -7735,25 +7703,23 @@ table .datetime {
 }
 
 
-.fortress-picture .wall {
-  position: absolute;
-  top: 360px;
-  left: 0px;
-  width: 800px;
-  height: 240px;
+.fortress-picture .wall,
+.fortress-picture .building-gui.slot0 {
   z-index: 3;
   top: 320px;
   left: 400px;
 }
 
 /** position of left tower */
-.fortress-picture .tower-left {
+.fortress-picture .tower-left,
+.fortress-picture .building-gui.slot1 {
   top: 320px;
   left: 239px;
 }
 
 /** position of right tower */
-.fortress-picture .tower-right {
+.fortress-picture .tower-right,
+.fortress-picture .building-gui.slot2 {
   top: 320px;
   left: 561px;
 }
@@ -8796,60 +8762,75 @@ table .datetime {
   right: 0px;
 }
 
+.building-gui {
+  position: absolute;
+}
+
 /* == 1. Row == */
 
-.base-picture .small-building.slot1 {
+.base-picture .small-building.slot1,
+.base-picture .building-gui.slot1 {
   top:  35px;
   left: 25px;
 }
 
-.base-picture .small-building.slot2 {
+.base-picture .small-building.slot2,
+.base-picture .building-gui.slot2 {
   top:  35px;
   left: 188px;
 }
 
-.base-picture .small-building.slot3 {
+.base-picture .small-building.slot3,
+.base-picture .building-gui.slot3 {
   top:  35px;
   left: 351px;
 }
 
-.base-picture .small-building.slot4 {
+.base-picture .small-building.slot4,
+.base-picture .building-gui.slot4 {
   top: 35px;
   left: 514px;
 }
 
-.base-picture .small-building.slot5 {
+.base-picture .small-building.slot5,
+.base-picture .building-gui.slot5 {
   top:  35px;
   left: 677px;
 }
-.base-picture .small-building.slot6 {
+.base-picture .small-building.slot6,
+.base-picture .building-gui.slot6 {
   top:  35px;
   left: 840px;
 }
 
 /* == 2. Row == */
 
-.base-picture .small-building.slot7 {
+.base-picture .small-building.slot7,
+.base-picture .building-gui.slot7 {
   top:  92px;
   left: 106px;
 }
 
-.base-picture .small-building.slot8 {
+.base-picture .small-building.slot8,
+.base-picture .building-gui.slot8 {
   top:  92px;
   left: 269px;
 }
 
-.base-picture .small-building.slot9 {
+.base-picture .small-building.slot9,
+.base-picture .building-gui.slot9 {
   top:  92px;
   left: 432px;
 }
 
-.base-picture .small-building.slot10 {
+.base-picture .small-building.slot10,
+.base-picture .building-gui.slot10 {
   top: 92px;
   left: 595px;
 }
 
-.base-picture .small-building.slot11 {
+.base-picture .small-building.slot11,
+.base-picture .building-gui.slot11 {
   top:  92px;
   left: 758px;
 }
@@ -8857,59 +8838,70 @@ table .datetime {
 
 /* == 3. Row == */
 
-.base-picture .small-building.slot12 {
+.base-picture .small-building.slot12,
+.base-picture .building-gui.slot12 {
   top:  149px;
   left: 25px;
 }
 
-.base-picture .small-building.slot13 {
+.base-picture .small-building.slot13,
+.base-picture .building-gui.slot13 {
   top:  149px;
   left: 188px;
 }
 
-.base-picture .small-building.slot14 {
+.base-picture .small-building.slot14,
+.base-picture .building-gui.slot14 {
   top:  149px;
   left: 351px;
 }
 
-.base-picture .small-building.slot15 {
+.base-picture .small-building.slot15,
+.base-picture .building-gui.slot15 {
   top:  149px;
   left: 514px;
 }
 
-.base-picture .small-building.slot16 {
+.base-picture .small-building.slot16,
+.base-picture .building-gui.slot16 {
   top: 149px;
   left: 677px;
 }
 
-.base-picture .small-building.slot17 {
+.base-picture .small-building.slot17,
+.base-picture .building-gui.slot17 {
   top:  149px;
   left: 840px;
 }
 
 /* == 4. Row == */
 
-.base-picture .small-building.slot18 {
+.base-picture .small-building.slot18,
+.base-picture .building-gui.slot18 {
   top:  206px;
   left: 106px;
 }
 
-.base-picture .small-building.slot19 {
+.base-picture .small-building.slot19,
+.base-picture .building-gui.slot19 {
   top:  206px;
   left: 269px;
 }
 
-.base-picture .small-building.slot20 {
+.base-picture .small-building.slot20,
+.base-picture .building-gui.slot20 {
   top:  206px;
   left: 432px;
 }
 
-.base-picture .small-building.slot21 {
+.base-picture .small-building.slot21,
+.base-picture .building-gui.slot21 {
   top:  206px;
   left: 595px;
 }
 
-.base-picture .small-building.slot22 {
+.base-picture .small-building.slot22,
+.base-picture .building-gui.slot22 {
   top: 206px;
   left: 758px;
 }
@@ -8917,31 +8909,37 @@ table .datetime {
 
 /* == 5. Row == */
 
-.base-picture .small-building.slot23 {
+.base-picture .small-building.slot23,
+.base-picture .building-gui.slot23 {
   top:  263px;
   left: 25px;
 }
-.base-picture .small-building.slot24 {
+.base-picture .small-building.slot24,
+.base-picture .building-gui.slot24 {
   top:  263px;
   left: 188px;
 }
 
-.base-picture .small-building.slot25 {
+.base-picture .small-building.slot25,
+.base-picture .building-gui.slot25 {
   top:  263px;
   left: 351px;
 }
 
-.base-picture .small-building.slot26 {
+.base-picture .small-building.slot26,
+.base-picture .building-gui.slot26 {
   top:  263px;
   left: 514px;
 }
 
-.base-picture .small-building.slot27 {
+.base-picture .small-building.slot27,
+.base-picture .building-gui.slot27 {
   top:  263px;
   left: 677px;
 }
 
-.base-picture .small-building.slot28 {
+.base-picture .small-building.slot28,
+.base-picture .building-gui.slot28 {
   top: 263px;
   left: 840px;
 }
@@ -8950,58 +8948,69 @@ table .datetime {
 /* == 6. Row == */
 
 
-.base-picture .small-building.slot29 {
+.base-picture .small-building.slot29,
+.base-picture .building-gui.slot29 {
   top:  320px;
   left: 106px;
 }
 
-.base-picture .small-building.slot30 {
+.base-picture .small-building.slot30,
+.base-picture .building-gui.slot30 {
   top:  320px;
   left: 269px;
 }
 
-.base-picture .small-building.slot31 {
+.base-picture .small-building.slot31,
+.base-picture .building-gui.slot31 {
   top:  320px;
   left: 432px;
 }
 
-.base-picture .small-building.slot32 {
+.base-picture .small-building.slot32,
+.base-picture .building-gui.slot32 {
   top:  320px;
   left: 595px;
 }
 
-.base-picture .small-building.slot33 {
+.base-picture .small-building.slot33,
+.base-picture .building-gui.slot33 {
   top:  320px;
   left: 758px;
 }
 
 /* == 7. Row == */
 
-.base-picture .small-building.slot34 {
+.base-picture .small-building.slot34,
+.base-picture .building-gui.slot34 {
   top: 377px;
   left: 25px;
 }
 
-.base-picture .small-building.slot35 {
+.base-picture .small-building.slot35,
+.base-picture .building-gui.slot35 {
   top:  377px;
   left: 188px;
 }
-.base-picture .small-building.slot36 {
+.base-picture .small-building.slot36,
+.base-picture .building-gui.slot36 {
   top:  377px;
   left: 351px;
 }
 
-.base-picture .small-building.slot37 {
+.base-picture .small-building.slot37,
+.base-picture .building-gui.slot37 {
   top:  377px;
   left: 514px;
 }
 
-.base-picture .small-building.slot38 {
+.base-picture .small-building.slot38,
+.base-picture .building-gui.slot38 {
   top:  377px;
   left: 677px;
 }
 
-.base-picture .small-building.slot39 {
+.base-picture .small-building.slot39,
+.base-picture .building-gui.slot39 {
   top:  377px;
   left: 840px;
 }
@@ -9009,60 +9018,72 @@ table .datetime {
 
 /* ==== OUTPOST NEW ==== */
 
-.outpost-picture .small-building.slot1 {
+.outpost-picture .small-building.slot1,
+.outpost-picture .building-gui.slot1 {
   top:  92px;
   left: 432px;
 }
 
-.outpost-picture .small-building.slot2 {
+.outpost-picture .small-building.slot2,
+.outpost-picture .building-gui.slot2 {
   top:  206px;
   left: 432px;
 }
 
 
 /** row 1 */
-.outpost-picture .small-building.slot3 {
+.outpost-picture .small-building.slot3,
+.outpost-picture .building-gui.slot3 {
   top:  149px;
   left: 188px;
 }
 
-.outpost-picture .small-building.slot4 {
+.outpost-picture .small-building.slot4,
+.outpost-picture .building-gui.slot4 {
   top:  149px;
   left: 351px;
 }
-.outpost-picture .small-building.slot5 {
+.outpost-picture .small-building.slot5,
+.outpost-picture .building-gui.slot5 {
   top:  149px;
   left: 514px;
 }
-.outpost-picture .small-building.slot6 {
+.outpost-picture .small-building.slot6,
+.outpost-picture .building-gui.slot6 {
   top: 149px;
   left: 677px;
 }
 
 /** row 2 */
-.outpost-picture .small-building.slot7 {
+.outpost-picture .small-building.slot7,
+.outpost-picture .building-gui.slot7 {
   top:  206px;
   left: 269px;
 }
-.outpost-picture .small-building.slot8 {
+.outpost-picture .small-building.slot8,
+.outpost-picture .building-gui.slot8 {
   top:  206px;
   left: 595px;
 }
 
 /** row 3 */
-.outpost-picture .small-building.slot9 {
+.outpost-picture .small-building.slot9,
+.outpost-picture .building-gui.slot9 {
   top:  263px;
   left: 188px;
 }
-.outpost-picture .small-building.slot10 {
+.outpost-picture .small-building.slot10,
+.outpost-picture .building-gui.slot10 {
   top:  263px;
   left: 351px;
 }
-.outpost-picture .small-building.slot11 {
+.outpost-picture .small-building.slot11,
+.outpost-picture .building-gui.slot11 {
   top:  263px;
   left: 514px;
 }
-.outpost-picture .small-building.slot12 {
+.outpost-picture .small-building.slot12,
+.outpost-picture .building-gui.slot12 {
   top:  263px;
   left: 677px;
 }
