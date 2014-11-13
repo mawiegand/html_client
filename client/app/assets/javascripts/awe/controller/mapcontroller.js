@@ -131,7 +131,7 @@ AWE.Controller = function (module) {
 
 
       // layer for the object inspector
-      root.append('<canvas id="inspector-canvas"></canvas>');
+      root.append('<canvas id="inspector-canvas" class="topbar-info-box"></canvas>');
       _canvas[3] = root.find('#inspector-canvas')[0];
       _canvas[3].width = 340;
       _canvas[3].height = 60;

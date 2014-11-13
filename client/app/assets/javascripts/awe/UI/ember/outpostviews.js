@@ -40,7 +40,7 @@ AWE.UI.Ember = (function(module) /** @lend AWE.UI.Ember */ {
 		
     smallSlots: function() {
       var slots = this.get('slots');
-      return slots && slots.length > 0 ? slots.slice(3,slots.length) : null;
+      return slots && slots.length > 0 ? slots.slice(1,slots.length) : null;
     }.property('slots').cacheable(),		
 						
 	});

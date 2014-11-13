@@ -3,15 +3,16 @@
   <div class="avatar">
     {{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar" width="150" height="154"}}
   </div>
-
-  <h2>{{local character.mundaneTitle.name}}</h2>
-  <div class="modal-dialog-buttons">
-    <div class="battleIcon"></div>
-    <div class="modal-dialog-buttons-text">{{character.battle_count}}</div>
-    <div class="populationIcon"></div>
-    <div class="modal-dialog-buttons-text">{{character.score}}</div>
-    <div class="fortressIcon"></div>
-    <div class="modal-dialog-buttons-text">{{character.fortress_count}}</div>
+  <div class="character-details">
+    <h2>{{local character.mundaneTitle.name}}</h2>
+    <div class="modal-dialog-buttons">
+      <div class="battleIcon"></div>
+      <div class="modal-dialog-buttons-text">{{character.battle_count}}</div>
+      <div class="populationIcon"></div>
+      <div class="modal-dialog-buttons-text">{{character.score}}</div>
+      <div class="fortressIcon"></div>
+      <div class="modal-dialog-buttons-text">{{character.fortress_count}}</div>
+    </div>
   </div>
   {{#if alliance}}
     <div class="modal-dialog-blue-button-big clickable" {{action "openAlliance"}}>
