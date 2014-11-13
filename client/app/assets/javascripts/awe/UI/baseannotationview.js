@@ -79,7 +79,7 @@ AWE.UI = (function(module) {
           AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue"), 
           AWE.UI.ImageCache.getImage("hud/annotation/button/enter/normal")
         );
-        enterButton.setFrame(AWE.Geometry.createRect(20, -25, 64, 64));
+        enterButton.setFrame(AWE.Geometry.createRect(-20, 35, 48, 48));
         enterButton.onClick = function() {
           that.onEnterButtonClick();
           AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button2');
@@ -101,7 +101,7 @@ AWE.UI = (function(module) {
           AWE.UI.ImageCache.getImage("hud/annotation/button/background/red"), 
           AWE.UI.ImageCache.getImage("hud/annotation/button/attack/normal")
         );
-        attackButton.setFrame(AWE.Geometry.createRect(-17, 22, 64, 64));
+        attackButton.setFrame(AWE.Geometry.createRect(40, 80, 48, 48));
         attackButton.onClick = function() { if (attackButton.enabled()) { that.onAttackButtonClick(that); } }
         this.addChild(attackButton);
       }
@@ -114,10 +114,12 @@ AWE.UI = (function(module) {
       }
 
       if (!_battleInfoButtonView) {
-        _battleInfoButtonView = AWE.UI.createButtonView();
-        _battleInfoButtonView.initWithControllerTextAndImage(my.controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/battleinfo/normal"));
-        _battleInfoButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/battleinfo/hover"), module.CONTROL_STATE_HOVERED);
-        _battleInfoButtonView.setFrame(AWE.Geometry.createRect(152, 86, 48, 48));
+        _battleInfoButtonView = AWE.UI.createButtonIconView();
+        _battleInfoButtonView.initWithControllerImageAndIcon(my.controller,
+          AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue"), 
+          AWE.UI.ImageCache.getImage("hud/icon/info")
+        );
+        _battleInfoButtonView.setFrame(AWE.Geometry.createRect(110, 86, 48, 48));
         _battleInfoButtonView.onClick = function() {
           if (_battleInfoButtonView.enabled() && my.location.garrisonArmy()) {
             that.onBattleInfoButtonClick(my.location.garrisonArmy());
