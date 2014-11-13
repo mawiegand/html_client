@@ -75,15 +75,7 @@ AWE.UI = (function(module) {
         };
         _levelForegroundImage.image = AWE.UI.ImageCache.getImage("hud/profile/levelbutton/foreground");
         my.container.addChild(_levelForegroundImage);
-      }
-            
-      if (!_levelArcShape) {
-        _levelArcShape = new Shape();
-        _levelArcShape.onClick = function() {
-          that.onClick();
-        }
-        my.container.addChild(_levelArcShape);
-      }
+      }                  
       
       if (!_levelTextShadow) {
         _levelTextShadow = new Text("123", "bold 24px HVDComicSerifPro", "#0247a6");
@@ -118,9 +110,16 @@ AWE.UI = (function(module) {
       _super.setFrame(frame);     
     }   
     
-    that.redrawLevelProgress = function() {
-      _levelArcShape.graphics.clear();
+    that.redrawLevelProgress = function() {            
       if (_levelProgress > 0) {
+        if (!_levelArcShape) {
+          _levelArcShape = new Shape();
+          _levelArcShape.onClick = function() {
+            that.onClick();
+          }
+          my.container.addChild(_levelArcShape);
+        }
+      
         var startX = _frameWidth / 2;
         var startY = _frameHeight / 2;
         var innerRadius = 26;
@@ -128,6 +127,7 @@ AWE.UI = (function(module) {
         var startRadians = Math.PI/180.0 - Math.PI/2;
         var endRadians = (_levelProgress / _levelProgressMax) * 2*Math.PI - Math.PI/2;
       
+        _levelArcShape.graphics.clear();
         _levelArcShape.graphics.setStrokeStyle(1);    
         _levelArcShape.graphics.beginFill("#9fddf8");
         _levelArcShape.graphics.beginStroke("#9fddf8");    
@@ -136,6 +136,12 @@ AWE.UI = (function(module) {
         _levelArcShape.graphics.arc(startX, startY, innerRadius, endRadians, startRadians, true); 
         _levelArcShape.graphics.closePath();
         _levelArcShape.graphics.endFill();
+      }
+      else {
+        if (_levelArcShape) {
+          my.container.removeChild(_levelArcShape);
+          _levelArcShape = null;
+        }
       }
     }   
     
