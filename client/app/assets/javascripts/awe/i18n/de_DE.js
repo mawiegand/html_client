@@ -888,6 +888,7 @@ AWE.I18n.de_DE = function(module) {
       },
 
       artifact: {
+        noArtifact: "Kein Artefakt vorhanden",
         costs: "Kosten",
         duration: "Dauer",
         start: "Start",

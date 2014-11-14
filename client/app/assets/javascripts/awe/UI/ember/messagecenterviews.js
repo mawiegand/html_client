@@ -566,10 +566,7 @@ AWE.UI.Ember = (function(module) {
      timeString: function() {
       return AWE.Util.localizedDateTime(this.getPath('message.created_at'));
     }.property('message.created_at').cacheable(),
-     /*debugTest: function(){
-      debugger
-      return true;
-    }.observes('message'),*/
+     
     onClickEntry: function(){
       var self = this;
       var messageEntry = this.get('message');

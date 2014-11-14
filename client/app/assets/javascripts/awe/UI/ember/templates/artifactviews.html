@@ -125,3 +125,44 @@
   {{/if}}
 
 </script>
+
+<script type="text/x-handlebars" data-template-name="artifact-initiation-dialog">
+  <h1>Artifact Initiation</h1>
+  <div class="modal-dialog-body artifact-initiation-dialog-pane scrolling">
+    {{view AWE.UI.Ember.ArtifactInitiationNewView controllerBinding="controller" settlementBinding="settlement" artifactBinding="artifact"}}
+   </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="artifact-initiation-new-view"> 
+  {{#if artifact}}
+    <div class="cell-icon">
+      {{#if artifact.initiated}}
+        <div {{bindAttr class=":item :item-padding artifact.artifactType.symbolic_id :is-active"}}></div>
+      {{else}}
+        <div {{bindAttr class=":item :item-padding artifact.artifactType.symbolic_id"}}></div>
+      {{/if}}
+    </div>
+    <div class="cell-stats">
+      {{#if artifact.initiated}}
+      {{else}}
+       <div class="military-costs-green-background artifact-costs-green-background" {{action "startInitiationPressed1"}}>
+          {{#each artifact.initiationCosts}}
+            <div class="cost-row">
+              <div class="cost-half-row">
+                  <div {{bindAttr class="resourceType.symbolic_id :small"}}></div>
+              </div>
+              <div class="cost-half-row">
+                <div class="cost-text">{{amount}}</div>
+              </div>
+            </div>
+          {{/each}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="cell-info">
+      <p>{{{description}}}</p>
+    </div>
+  {{else}}
+    <p>{{t settlement.artifact.noArtifact}}</p>
+  {{/if}}
+</script>
