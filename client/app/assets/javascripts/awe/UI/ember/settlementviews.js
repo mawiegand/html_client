@@ -152,7 +152,7 @@ AWE.UI.Ember = (function(module) {
     },
   });
 	
-  module.SettlementInfoBoxDialog = module.Dialog.extend({
+  module.SettlementInfoBoxDialog = module.PopUpDialog.extend({
     templateName: 'settlement-info-box-dialog',
 		
     hashableConstructionQueuesBinding: "settlement.hashableQueues",
@@ -176,8 +176,12 @@ AWE.UI.Ember = (function(module) {
     firstNameChange: function() { 
       var count = this.getPath('settlement.name_change_count');
       return count === undefined || count === null || count < this.getPath('settlement.type').change_name_cost.free_changes;
-    }.property('settlement.name_change_count'), 
-    
+    }.property('settlement.name_change_count'),
+
+    isOutOrFortress: function() {
+      return (this.settlement.isOutpost || this.settlement.isFortress);
+    },
+
     changeNamePressed: function(event) {
       this.set('message', null);
       var changeDialog = AWE.UI.Ember.TextInputDialog.create({
@@ -251,8 +255,13 @@ AWE.UI.Ember = (function(module) {
       var lastChange = this.getPath('settlement.tax_changed_at');
       return lastChange === undefined || lastChange === null || Date.parseISODate(lastChange).add(1).hours().getTime() < new Date().getTime();
     }.property('settlement.tax_changed_at'),
-    
+
     changeTaxPressed: function(event) {
+      if (!this.changeTaxPossible) {
+        this.showErrorTax(AWE.I18n.lookupTranslation('settlement.info.taxRateChangeNotPossible'));
+        return;
+      }
+
       var self = this;
       
       this.set('lastError', null);
@@ -274,12 +283,12 @@ AWE.UI.Ember = (function(module) {
                 log('changed tax rate');
               }
               else {
-                self.set('lastError', AWE.I18n.lookupTranslation('settlement.error.serverDidNotAcceptTaxRate'));
+                self.showErrorTax(AWE.I18n.lookupTranslation('settlement.error.serverDidNotAcceptTaxRate'));
               }
             });  
           }
           else {
-            self.set('lastError', AWE.I18n.lookupTranslation('settlement.error.couldNotChangeTaxRate'));
+            self.showErrorTax(AWE.I18n.lookupTranslation('settlement.error.couldNotChangeTaxRate'));
           }
           this.destroy();            
         },
@@ -289,6 +298,14 @@ AWE.UI.Ember = (function(module) {
       event.preventDefault();
       
       return false;
+    },
+
+    showErrorTax: function(message) {
+      errorDialog = AWE.UI.Ember.InfoDialog.create({
+        heading: AWE.I18n.lookupTranslation('settlement.error.couldNotChangeTaxRateHead'),
+        message: message
+      });
+      WACKADOO.presentModalDialog(errorDialog);
     },
     
     invitationLinkPressed: function() {
@@ -326,6 +343,29 @@ AWE.UI.Ember = (function(module) {
         }
       });
       WACKADOO.presentModalDialog(abandonDialog);
+    },
+
+   invationPressed: function() {
+      var self = this;
+      var invationDialog = AWE.UI.Ember.SettlementInvationDialog.create({
+        settlement: this.get('settlement'),
+
+       linkPressed: function() {
+          var mailWindow = window.open('mailto:?' +
+          encodeURI('subject=' + AWE.I18n.lookupTranslation('settlement.invitationLink.mailSubject') +'&') +
+          encodeURI('body=' + AWE.I18n.lookupTranslation('settlement.invitationLink.mailBody') + AWE.Config.PLAYER_INVITATION_BASE + this.getPath('settlement.regionInvitationCode')));
+          mailWindow.close();
+
+          event.preventDefault();
+          return false;
+        },
+
+        okPressed: function() {
+          this.destroy();
+          WACKADOO.modalDialogClosed();
+        }
+      });
+      WACKADOO.presentModalDialog(invationDialog);
     },
             
     buildingQueue: function() {
@@ -401,6 +441,12 @@ AWE.UI.Ember = (function(module) {
     
     loading: null,
     error: null,
+  });
+
+  module.SettlementInvationDialog = Ember.View.extend({
+    templateName: "settlement-invation-dialog",
+
+    settlement: null
   });
   
   return module;

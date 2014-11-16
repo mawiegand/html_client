@@ -297,7 +297,7 @@ AWE.I18n.de_DE = function(module) {
       capacity:       'Lagerkapazität',
       productionBoni: 'Produktionsbonus',
       tradingCarts:   'Handelskarren',
-      commandPoints:  'Kommandopunkte',
+      commandPoints:  'Kommandop.',
       garrison: "Garnison",
       populationAbbreviation: "Bev",
       buildingTime: "Bauzeit",
@@ -728,6 +728,7 @@ AWE.I18n.de_DE = function(module) {
       },
 
       abandon: {
+        abandon: "Aufgeben",
         header: "Lagerstätte aufgeben",
         text: "Wenn Du knapp an Siedlungspunkten bist, kannst Du diese Lagerstätte aufgeben. Sie geht dann in den Besitz der Neandertaler über und ist anschließend für andere Spieler übernehmbar.",
         send: "Lagerstätte aufgeben!",
@@ -812,8 +813,12 @@ AWE.I18n.de_DE = function(module) {
       },
 
       military: {
+        yes: "Ja",
+        no: "Nein",
+        takeOverTitle: "Übernehmbar",
         takeOver: "Diese Siedlung kann von anderen Spielern geklaut werden.",
         noTakeOver: "Diese Siedlung kann nicht übernommen werden!",
+        destroyableTitle: "Zerstörbar",
         destroyable: "Diese Siedlung kann von anderen Spielern zerstört werden.",
         notDestroyable: "Diese Siedlung kann nicht zerstört werden!",
       },
@@ -938,7 +943,7 @@ AWE.I18n.de_DE = function(module) {
         combatBonus: "Kampfbonus für alle Armeen, die auf der Seite dieser Siedlung kämpfen.",
         combatBonusInfo: "Wenn die Siedlung an einem Kampf beteiligt ist, wirkt der Kampfbonus auf den Verteidigungswert aller Truppen, die auf der Seite dieser Festung kämpfen; egal, ob sie innerhalb oder außerhalb der Mauern stationiert sind.",
         combatBonusAbbreviation: "KB",
-        buildingSpeed: "Baugeschwindigkeit",
+        buildingSpeed: "Baugeschwind.",
         buildingSpeedAbbreviation: "G",
         meleeTrainingSpeed: "Rekrutierunggeschwindigkeit von Nahkämpfern",
         meleeTrainingSpeedAbbreviation: "N",
@@ -950,7 +955,7 @@ AWE.I18n.de_DE = function(module) {
         commandPointsHelp: "Jede Armee benötigt einen Kommandopunkt. Der Kommandopunkt hängt an der Siedlung.",
         buildings: "Gebäude",
         changeName: "Namen ändern",
-        availableBuildingSlots: "Verfügbare Gebäudeplätze",
+        availableBuildingSlots: "Gebäudeplätze",
         speedUpInfo: "Die Bau- bzw. Rekrutierungsgeschwindigkeit kann durch den Ausbau oder Bau von zusätzlichen Einheitengebäuden oder Hütten erhöht werden.",
         taxRate: "Steuersatz",
         taxRateChangeInfo: "Der Steuersatz, die Du hier setzt, gilt für die komplette Region und alle ihre Einwohner.",
@@ -967,10 +972,13 @@ AWE.I18n.de_DE = function(module) {
         setTaxRate: "Gib den neuen Steuersatz ein (5-15%).",
         artifact: "Artefakt",
         movingPassword: "Umzugspasswort",
+        move: "Umzug",
+        productions: "Produktion"
       },
       error: {
         serverDidNotAcceptTaxRate: "Der Server hat die Änderung des Steuersatzes nicht akzeptiert.",
         couldNotChangeTaxRate: "Gib eine Zahl zwischen 5 und 15 ein.",
+        couldNotChangeTaxRateHead: "Fehler beim ändern des Steuersatzes"
       },
     },
     

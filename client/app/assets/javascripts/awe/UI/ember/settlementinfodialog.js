@@ -9,15 +9,15 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
     
-  module.SettlementInfoDialog = module.Dialog.extend({
+  module.SettlementInfoDialog = module.PopUpDialog.extend({
     templateName: 'settlement-info-dialog',
-    
+
     locationId: null,
-    
+
     settlement: null,
     owner: null,
     alliance: null,
-    
+
     setAndUpdateSettlement: function() {
       var locationId = this.get('locationId');
       var self = this;
@@ -30,8 +30,8 @@ AWE.UI.Ember = (function(module) {
         log('U: settlement at location_id', locationId);
         self.set('settlement', AWE.GS.SettlementManager.getSettlementAtLocation(locationId));
       });
-    },    
-    
+    },
+
     setAndUpdateOwner: function() {
       var characterId = this.getPath('settlement.owner_id');
       var self = this;
@@ -57,7 +57,7 @@ AWE.UI.Ember = (function(module) {
         self.set('alliance', result);
       });
     },   
-    
+
     ownerIdObserver: function() {
       this.setAndUpdateOwner();
     }.observes('settlement.owner_id'),
@@ -68,8 +68,28 @@ AWE.UI.Ember = (function(module) {
     
     locationIdObserver: function() {
       this.setAndUpdateSettlement();
-    }.observes('locationId'),     
-    
+    }.observes('locationId'),
+
+    characterPressed: function() {
+      var characterId = this.getPath('settlement.owner_id');
+      if (characterId != null) {
+        var dialog = AWE.UI.Ember.CharacterInfoDialog.create({
+          characterId: characterId,
+        });
+        WACKADOO.closeAllModalDialogs();
+        WACKADOO.presentModalDialog(dialog);
+      }
+      return false; // prevent default behavior
+    },
+
+    alliancePressed: function() {
+      var allianceId = this.getPath('settlement.alliance_id');
+      if (allianceId != null) {
+        WACKADOO.closeAllModalDialogs();
+        WACKADOO.showAllianceDialog(allianceId);
+      }
+      return false; // prevent default behavior
+    },
     
     init: function() {
       this._super();      
@@ -87,7 +107,3 @@ AWE.UI.Ember = (function(module) {
   return module;
     
 }(AWE.UI.Ember || {}));
-
-
-
-

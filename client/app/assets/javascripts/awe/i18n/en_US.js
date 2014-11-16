@@ -700,6 +700,7 @@ AWE.I18n.en_US = function(module) {
       },
 
       abandon: {
+        abandon: "abandon",
         header: "Abandon Camp",
         text: "If you are short of settlement points you can abandon your camp. The Neanderthals will take possession and other players can occupy the camp.",
         send: "Abandon Camp!",
@@ -783,8 +784,12 @@ AWE.I18n.en_US = function(module) {
       },
 
       military:{
+        yes: "Yes",
+        no: "No",
+        takeOverTitle: "Takeoverable",
         takeOver:"This settlement can be stolen by other players.",
         noTakeOver:"This settlement cannot be taken over!",
+        destroyableTitle: "Destroyable",
         destroyable:"This settlement can be destroyed by other players.",
         notDestroyable:"This settlement cannot be destroyed!",
       },
@@ -911,6 +916,7 @@ AWE.I18n.en_US = function(module) {
         combatBonus:"Combat bonus for all armies fighting on this side of the settlement.",
         combatBonusInfo:"If the settlement is involved in a fight, the combat bonus will influence the defense value of all units that are fighting on this side of the settlement, no matter whether they are inside or outside the walls.",
         combatBonusAbbreviation:"CB",
+        recruitmentspeed: 'Recruitmentspeed',
         buildingSpeed:"Building speed",
         buildingSpeedAbbreviation:"B",
         meleeTrainingSpeed:"Training speed of melee units",
@@ -940,10 +946,13 @@ AWE.I18n.en_US = function(module) {
         setTaxRate:"Enter the new tax rate (5%-15%).",
         artifact: "Artifact",
         movingPassword: "Movement password",
+        move: "Move",
+        productions: "Productions"
       },
       error:{
         serverDidNotAcceptTaxRate:"The server did not accept the tax rate change.",
         couldNotChangeTaxRate:"Enter a number between 5 and 15.",
+        couldNotChangeTaxRateHead: "Failed to Change Tax"
       },
     },
 
