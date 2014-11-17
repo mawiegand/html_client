@@ -258,6 +258,11 @@ AWE.UI.Ember = function(module) {
     }.property(),
 
    });
+
+module.ArtifactBonusNewView = module.ArtifactBonusView.extend({
+    templateName: 'artifact-bonus-new-view',
+
+    });
 /*New artifact dialogs and views END*/
 
   return module;

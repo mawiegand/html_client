@@ -143,26 +143,97 @@
       {{/if}}
     </div>
     <div class="cell-stats">
+      {{view AWE.UI.Ember.ArtifactBonusNewView artifactBinding="artifact"}}
       {{#if artifact.initiated}}
+      <!-- From military progress bau button and from assigments progressbar -->
       {{else}}
-       <div class="military-costs-green-background artifact-costs-green-background" {{action "startInitiationPressed1"}}>
-          {{#each artifact.initiationCosts}}
-            <div class="cost-row">
-              <div class="cost-half-row">
-                  <div {{bindAttr class="resourceType.symbolic_id :small"}}></div>
-              </div>
-              <div class="cost-half-row">
-                <div class="cost-text">{{amount}}</div>
+       <p>
+         <div class="cost-cell">
+           <div class="military-costs-green-background artifact-costs-green-background" style="display: inline-block;float: left;" {{action "startInitiationPressed1"}}>
+              {{#each artifact.initiationCosts}}
+                <div class="cost-row">
+                  <div class="cost-half-row">
+                      <div {{bindAttr class="resourceType.symbolic_id :small"}}></div>
+                  </div>
+                  <div class="cost-half-row">
+                    <div class="cost-text">{{amount}}</div>
+                  </div>
+                </div>
+              {{/each}}
+              <div class="cost-row">
+                <div class="cost-half-row">
+                      <div class="cost-item-small-uhr"></div>
+                  </div>
+                  <div class="cost-half-row">
+                    <div class="cost-text">{{formatDuration artifact.initiationDuration}}</div>
+                  </div>
               </div>
             </div>
-          {{/each}}
-        </div>
+          </div>
+        </p>
       {{/if}}
     </div>
     <div class="cell-info">
-      <p>{{{description}}}</p>
+      {{{description}}}
     </div>
   {{else}}
     <p>{{t settlement.artifact.noArtifact}}</p>
+  {{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="artifact-bonus-new-view"> 
+  <p style="display: inline-block;float: left;">
+    {{#if characterProductionBonuses}}
+      Effect:
+      {{#each characterProductionBonuses}}
+        <div class="cost-row">
+          <div class="cost-half-row">
+            <div {{bindAttr class="resourceType.symbolic_id :small"}}></div>
+          </div>
+          <div class="cost-half-row">
+            <div class="cost-text">+{{formatAsPercent bonus}}</div>
+          </div>
+        </div>
+      {{/each}}<br/>
+    {{/if}}
+
+    {{#if allianceProductionBonuses}}
+      Alliance:
+      {{#each allianceProductionBonuses}}
+        <div class="cost-row">
+          <div class="cost-half-row">
+            <div {{bindAttr class="resourceType.symbolic_id :small"}}></div>
+          </div>
+          <div class="cost-half-row">
+            <div class="cost-text">+{{formatAsPercent bonus}}</div>
+          </div>
+        </div>
+      {{/each}}<br/>
+    {{/if}}
+  </p>
+
+  <p>
+    {{#if characterConstructionBonuses}}
+      Effect:<br/>
+      {{#each characterConstructionBonuses}}
+        +{{formatAsPercent bonus}} &nbsp;
+      {{/each}}<br/>
+    {{/if}}
+
+    {{#if allianceConstructionBonuses}}
+      Alliance:<br/>
+      {{#each allianceConstructionBonuses}}
+        +{{formatAsPercent bonus}} &nbsp;
+      {{/each}}<br/>
+    {{/if}}
+  </p>
+
+  {{#if artifact.isOwnProp}}
+    {{#if artifact.experienceProduction}}
+      <p>{{t building.produces}} ({{t general.perHour}}):
+        <span class="xp-icon" title="XP">&nbsp;</span>
+        {{artifact.experienceProduction}}  &nbsp;
+      </p>
+    {{/if}}
   {{/if}}
 </script>
