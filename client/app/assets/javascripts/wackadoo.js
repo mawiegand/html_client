@@ -688,10 +688,25 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
          WACKADOO.presentModalDialog(messageDialog);
       }
       
+      /*var hudController = this.get('hudController');
+      if (hudController && hudController.notifyAboutNewScreenController !== undefined) {
+        hudController.notifyAboutNewScreenController(messageCenterController);
+      }
+      
       var hudController = this.get('hudController');
       if (hudController && hudController.notifyAboutNewScreenController !== undefined) {
         hudController.notifyAboutNewScreenController(messageCenterController);
       }
+      
+      var hudController = this.get('hudController');
+      if (hudController && hudController.notifyAboutNewScreenController !== undefined) {
+        hudController.notifyAboutNewScreenController(messageCenterController);
+      }
+      
+      var hudController = this.get('hudController');
+      if (hudController && hudController.notifyAboutNewScreenController !== undefined) {
+        hudController.notifyAboutNewScreenController(messageCenterController);
+      }*/
     },
 
     activateMapController: function(preventZoomingToLastSelection) {

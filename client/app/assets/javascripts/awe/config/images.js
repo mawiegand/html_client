@@ -270,18 +270,14 @@ AWE.Config = (function(module) {
     "hud/annotation/panel3":                     AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_panel_3_buttons.png',
     "hud/annotation/panel4":                     AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_panel_4_buttons.png',
     "hud/annotation/panel5":                     AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_panel_5_buttons.png',
-    "hud/annotation/button/attack/normal":       AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_attack.png',
-    "hud/annotation/button/attack/active":       AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_attack_active.png',
-    "hud/annotation/button/attack/hover":        AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_attack_hover.png',
+    "hud/annotation/button/attack/normal":       AWE.Config.RAILS_ASSET_PATH + 'hud/icon_attack/icon_attack.png',
     "hud/annotation/button/battleinfo/normal":   AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_battleinfo.png',
     "hud/annotation/button/battleinfo/active":   AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_battleinfo_active.png',
     "hud/annotation/button/battleinfo/hover":    AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_battleinfo_hover.png',
     "hud/annotation/button/defense/normal":      AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_defense.png',
     "hud/annotation/button/defense/active":      AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_defense_active.png',
     "hud/annotation/button/defense/hover":       AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_defense_hover.png',
-    "hud/annotation/button/enter/normal":        AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_enter.png',
-    "hud/annotation/button/enter/active":        AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_enter_active.png',
-    "hud/annotation/button/enter/hover":         AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_enter_hover.png',
+    "hud/annotation/button/enter/normal":        AWE.Config.RAILS_ASSET_PATH + 'hud/icon_enter/icon_enter.png',
     "hud/annotation/button/info/normal":         AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_info.png',
     "hud/annotation/button/info/active":         AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_info_active.png',
     "hud/annotation/button/info/hover":          AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_info_hover.png',
@@ -296,6 +292,9 @@ AWE.Config = (function(module) {
     "hud/annotation/button/settle/normal":       AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_settle.png',
     "hud/annotation/button/settle/active":       AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_settle_active.png',
     "hud/annotation/button/settle/hover":        AWE.Config.RAILS_ASSET_PATH + 'ui/annotation/hud_button_settle_hover.png',
+    
+    "hud/annotation/button/background/blue":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_info/colored/button_info_colored.png',
+    "hud/annotation/button/background/red":        AWE.Config.RAILS_ASSET_PATH + 'hud/button_move/colored/button_move_colored.png',
 
 
     "hud/bubble/normal":      AWE.Config.RAILS_ASSET_PATH + 'ui/resource_bubble.png',
@@ -336,11 +335,9 @@ AWE.Config = (function(module) {
     "hud/button/ranking/hover" :    AWE.Config.RAILS_ASSET_PATH + 'hud/ranking_button/ranking_button_hovered.png',
     "hud/button/settlement/normal" :    AWE.Config.RAILS_ASSET_PATH + 'hud/settlement_button/settlement_button.png',
     "hud/button/settlement/hover" :    AWE.Config.RAILS_ASSET_PATH + 'hud/settlement_button/settlement_button_hovered.png',
-    
-    "hud/button/blue"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/button_blue/button_blue.png',
-    "hud/button/green"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/button_green/button_green.png',
-    
+
     "hud/icon/upgrade"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_upgrade/icon_upgrade.png',
+    "hud/icon/info"       :                  AWE.Config.RAILS_ASSET_PATH + 'hud/icon_info/icon_info.png',
     
     "hud/profile/levelbutton/background"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_background/avatar_background.png',
     "hud/profile/levelbutton/foreground"    :    AWE.Config.RAILS_ASSET_PATH + 'hud/avatar_level_background/avatar_level_background.png',

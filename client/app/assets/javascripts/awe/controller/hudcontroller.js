@@ -512,7 +512,11 @@ AWE.Controller = (function(module) {
     };
     
     that.switchToMapButtonClicked = function() {
+      var baseControllerActive = WACKADOO.baseControllerActive();
       WACKADOO.baseButtonClicked(); // TODO: this is a hack. HUD must be connected by screen controller or should go to application controller.
+      if (baseControllerActive) {
+        AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button1');
+      } 
     };
     
     that.mailButtonClicked = function() {
@@ -524,8 +528,12 @@ AWE.Controller = (function(module) {
     };
     
     that.recruitButtonClicked = function() {
-      var dialog = AWE.UI.Ember.ArmyInfoDialogNew.create();
-	  this.applicationController.presentModalDialog(dialog);
+      var dialog = AWE.UI.Ember.MilitaryInfoDialogNew.create({
+        garrisonArmy: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).get('garrison'),
+        controller: WACKADOO.presentScreenController,
+        settlement: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId).getPath('garrison.homeSettlement')
+      });
+	    WACKADOO.presentModalDialog(dialog);
     };  
     
     that.avatarImageClicked = function() {
@@ -882,13 +890,13 @@ AWE.Controller = (function(module) {
         
         var stageNeedsUpdate = true;     // replace true with false as soon as stage 1 and 2 are implemented correctly.
                         
-        if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || !HUDViews.mainControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
+        if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || !HUDViews.leftHUDControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
           stageNeedsUpdate = that.updateHUD() || stageNeedsUpdate; 
         }
         
-        if (HUDViews.mainControlsView) {
+        if (HUDViews.leftHUDControlsView) {
           var mark = that.shouldMarkMapButton();
-          var view = HUDViews.mainControlsView.getSettlementButtonView();
+          var view = HUDViews.leftHUDControlsView.getSwitchToMapOrSettlementButton();
 
           if (view && mark && !that.animatedMarker) {
             var marker = AWE.UI.createMarkerView();
@@ -931,7 +939,7 @@ AWE.Controller = (function(module) {
       var bounceHeight = 50;
       var bounceDuration = 1000.0;
 
-      _stage.addChild(annotation.displayObject());
+      _stageLeft.addChild(annotation.displayObject());
 
       var animation = AWE.UI.createTimedAnimation({
         view:annotation,
@@ -947,7 +955,7 @@ AWE.Controller = (function(module) {
 
         onAnimationEnd:function (viewToRemove) {
           return function () {
-            _stage.removeChild(viewToRemove.displayObject());
+            _stageLeft.removeChild(viewToRemove.displayObject());
             log('removed animated label on animation end');
           };
         }(annotation),

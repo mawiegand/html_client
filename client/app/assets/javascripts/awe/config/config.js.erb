@@ -82,7 +82,8 @@ AWE.Config = (function(module) {
 
   module.DEV_ALLIANCE_ID = 1;
 
-  module.TIME_DIFF_RANGE = 2; // TODO problem with slot refresh if less than 2
+  module.TIME_DIFF_RANGE = 1; // TODO problem with slot refresh if less than 2
+                              // this todo is 2 years old. is it still a problem?
 
   module.NET_AUTO_DETECT_REDIRECT_FLAWS = false ;
 
@@ -199,6 +200,17 @@ AWE.Config = (function(module) {
   module.ALLIANCE_INVITATION_BASE = module.PORTAL_ROOT + '/alliance_invitation/';
 
   module.APP_SUPPORT_BASE ='https://ios.wack-a-doo.com/' + AWE.Settings.lang;
+
+  module.MILITARY_BUILDINGS = [
+    ["building_barracks", 1],
+    ["building_firing_range", 2],
+    ["building_stud", 3],
+    ["building_garrison" , 0],
+    ["building_infantry_tower", 1],
+    ["building_artillery_tower", 2],
+    ["building_cavalry_tower", 3],
+    ["building_campfire", 4]
+  ]
 
   return module;
 

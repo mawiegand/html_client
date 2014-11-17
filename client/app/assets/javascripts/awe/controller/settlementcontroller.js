@@ -282,11 +282,13 @@ AWE.Controller = (function(module) {
       that.updateStandardAssignmentsFromServer();
       that.updateSpecialAssignmentsFromServer();
       this.updateUIMarker();
-      if(slot.get("building"))
+      if(!slot.get("building"))
       {
-        var dialog = AWE.UI.Ember.BuildingOptionDetailNewDialog.create({building: slot.get('building'), level: slot.getPath('building.levelAfterJobs')});
+        var dialog = AWE.UI.Ember.SelectBuildingNewDialog.create({
+          controller: this,
+          slot: slot});
         WACKADOO.presentModalDialog(dialog);
-      }
+      }  
     }
     
     that.unselectSlot = function() {
@@ -296,6 +298,13 @@ AWE.Controller = (function(module) {
     }
     
     // construction actions //////////////////////////////////////////////////
+    
+    that.constructionInfoClicked = function(slot) {
+      if(slot.get("building")) {
+        var dialog = AWE.UI.Ember.BuildingOptionDetailNewDialog.create({building: slot.get('building'), level: slot.getPath('building.levelAfterJobs')});
+        WACKADOO.presentModalDialog(dialog);
+      }
+    }
     
     var createAndSendConstructionJob = function(slot, buildingId, jobType, levelBefore, levelAfter) {
       
@@ -410,7 +419,8 @@ AWE.Controller = (function(module) {
       var buildingId = building.get('buildingId');
       if (building.requirementsMet()) {
         createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE);      
-        this.unselectSlot();
+        WACKADOO.closeAllModalDialogs();
+        //this.unselectSlot();
       }
       else {
         var dialog = AWE.UI.Ember.InfoDialog.create({
@@ -1393,7 +1403,6 @@ AWE.Controller = (function(module) {
               _becameVisible)) {
                 
           AWE.GS.SettlementManager.updateSettlement(that.settlementId, AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(settlement) {
-            log('updated settlement', settlement);
             if (settlement && settlement.getId()) {
               that.updateAllConstructionQueuesJobsAndSlots();
               if (that.view && that.view.get('selectedSlot')) {  // check view again, may have become invisible during meantime
@@ -1423,20 +1432,17 @@ AWE.Controller = (function(module) {
     // /////////////////////////////////////////////////////////////////////// 
 
     var pendingConstructionJobUpdates = {};
-    
+
     that.updateOldJobsInConstructionQueues = function(queues) {
       if (queues) {
         queues.forEach(function(queue) {
-          if (!queue) {
-            log('queue was undefined');
-          }
-          else {
+          if (queue) {
             var jobs = AWE.GS.ConstructionJobManager.getJobsInQueue(queue.getId());
             jobs.forEach(function(job) {
               if (job.get('active_job')) {
                 var jobId = job.getId();
                 pendingConstructionJobUpdates[jobId] = pendingConstructionJobUpdates[jobId] > 0 ? pendingConstructionJobUpdates[jobId] : AWE.Config.TIME_DIFF_RANGE;
-                if (Date.parseISODate(job.get('active_job').finished_at).add({seconds: pendingConstructionJobUpdates[jobId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
+                if (Date.parseISODate(job.get('active_job').finished_at).add({seconds: pendingConstructionJobUpdates[jobId]}) < AWE.GS.TimeManager.estimatedServerTime().seconds()) {
                   pendingConstructionJobUpdates[jobId] *= 2;
                   that.updateConstructionQueueSlotAndJobs(queue.getId());
                   that.updateAllTrainingQueues();
@@ -1454,16 +1460,13 @@ AWE.Controller = (function(module) {
     that.updateOldJobsInTrainingQueues = function(queues) {
       if (queues) {
         queues.forEach(function(queue) {
-          if (!queue) {
-            log('training queue was undefined');
-          }
-          else {
+          if (queue) {
             var jobs = AWE.GS.TrainingJobManager.getJobsInQueue(queue.getId());
             jobs.forEach(function(job) {
               if (job.get('active_job')) {
                 var jobId = job.getId();
                 pendingTrainingJobUpdates[jobId] = pendingTrainingJobUpdates[jobId] > 0 ? pendingTrainingJobUpdates[jobId] : AWE.Config.TIME_DIFF_RANGE;
-                if (Date.parseISODate(job.get('active_job').finished_active_at).add({seconds: pendingTrainingJobUpdates[jobId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
+                if (Date.parseISODate(job.get('active_job').finished_active_at).add({seconds: pendingTrainingJobUpdates[jobId]}) < AWE.GS.TimeManager.estimatedServerTime().seconds()) {
                   pendingTrainingJobUpdates[jobId] *= 2;
                   that.updateTrainingQueueAndJobs(queue.getId());
                 }
@@ -1480,7 +1483,7 @@ AWE.Controller = (function(module) {
       if (artifact && !artifact.get('initiated') && artifact.get('initiation')) {
         var initiation = artifact.get('initiation');
         pendingInitiationUpdate = pendingInitiationUpdate > 0 ? pendingInitiationUpdate : AWE.Config.TIME_DIFF_RANGE;
-        if (Date.parseISODate(initiation.finished_at).add({seconds: pendingInitiationUpdate}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
+        if (Date.parseISODate(initiation.finished_at).add({seconds: pendingInitiationUpdate}) < AWE.GS.TimeManager.estimatedServerTime().seconds()) {
           pendingInitiationUpdate *= 2;
           AWE.GS.ArtifactManager.updateArtifact(artifact.getId(), AWE.GS.ENTITY_UPDATE_TYPE_FULL);
         }
@@ -1495,7 +1498,7 @@ AWE.Controller = (function(module) {
           if (assignment.get('ended_at')) {
             var assignmentId = assignment.getId();
             pendingStandardAssignmentUpdates[assignmentId] = pendingStandardAssignmentUpdates[assignmentId] > 0 ? pendingStandardAssignmentUpdates[assignmentId] : AWE.Config.TIME_DIFF_RANGE;
-            if (Date.parseISODate(assignment.get('ended_at')).add({seconds: pendingStandardAssignmentUpdates[assignmentId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
+            if (Date.parseISODate(assignment.get('ended_at')).add({seconds: pendingStandardAssignmentUpdates[assignmentId]}) < AWE.GS.TimeManager.estimatedServerTime().seconds()) {
               pendingStandardAssignmentUpdates[assignmentId] *= 2;
               that.updateStandardAssignmentsFromServer();
               AWE.GS.ArmyManager.updateArmiesAtLocation(that.locationId, AWE.GS.ENTITY_UPDATE_TYPE_SHORT, function() {
@@ -1515,7 +1518,7 @@ AWE.Controller = (function(module) {
         if (assignment.get('displayed_until')) {
           var assignmentId = assignment.getId();
           pendingSpecialAssignmentUpdates[assignmentId] = pendingSpecialAssignmentUpdates[assignmentId] > 0 ? pendingSpecialAssignmentUpdates[assignmentId] : AWE.Config.TIME_DIFF_RANGE;
-          if (Date.parseISODate(assignment.get('displayed_until')).add({seconds: pendingSpecialAssignmentUpdates[assignmentId]}) < AWE.GS.TimeManager.estimatedServerTime().add(-1).seconds()) {
+          if (Date.parseISODate(assignment.get('displayed_until')).add({seconds: pendingSpecialAssignmentUpdates[assignmentId]}) < AWE.GS.TimeManager.estimatedServerTime().seconds()) {
             pendingSpecialAssignmentUpdates[assignmentId] *= 2;
             lastSpecialAssignmentUpdate = AWE.GS.TimeManager.estimatedServerTime();
             that.updateSpecialAssignmentsFromServer();

@@ -197,6 +197,10 @@ AWE.UI = (function(module) {
       _super.updateView();
     }
     
+    that.getSwitchToMapOrSettlementButton = function() {
+      return _switchToMapButton ? _switchToMapButton : _switchToSettlementButton;
+    }
+    
     /** checks for itself whether the view needs an update */
     that.updateIfNeeded = function() {
       var changed = false;
