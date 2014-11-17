@@ -139,9 +139,9 @@ AWE.Application = (function(module) {
 
 
         first.target.dispatchEvent(simulatedEvent);
-        if (type === 'mousemove') {  
-          event.preventDefault();
-        }
+        //if (type === 'mousemove' && this.get('presentScreenController').nativeScrolling()) {  
+          //event.preventDefault();
+        //}
       },
 
       /** custom object initialization goes here. */
