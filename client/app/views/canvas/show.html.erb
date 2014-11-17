@@ -20,6 +20,14 @@
     referer:            "<%= @referer %>",
     requestUrl:         window.location.href,
   });
+  
+  Sample.setEndpoint("/psiori/event")
+  Sample.setAppToken("wad-rt82-fhjk-18");
+  Sample.setPlatform(Sample.PLATFORM_FACEBOOK);
+  Sample.setFacebookId("<%= @facebook_user %>");
+  Sample.setLocale("<%= @locale %>");
+  Sample.sessionStart();
+  Sample.signIn("<%= @access_data['identifier'] %>")
 
   $('<form style="display:none;" id="clientstarter" action="/client.html" method="POST">' +
       '  <input type="hidden" name="fb_args" value="' + encodeURIComponent(fbArgs) + '" />' +
