@@ -46,7 +46,6 @@ AWE.Application = (function(module) {
   module.MultiStageApplication = Ember.Application.extend(function() {
 
     var oldMouseX = 0, mouseX = 0, mouseY = 0, oldMouseY = 0;
-    var lastX = 0, lastY = 0;
     var hoveredView=null;
     var stageHovered=-1;
     var nextMouseOverTest = new Date(1970).getTime();
@@ -602,7 +601,6 @@ AWE.Application = (function(module) {
           $('body').mousedown(function(evt) {
             if (!(evt.metaKey) && isAndroid) return;
           //$('#layers').mousedown(function(evt) {
-            console.log("mousedown");
             self.onMouseDown(evt);
           });
         }
