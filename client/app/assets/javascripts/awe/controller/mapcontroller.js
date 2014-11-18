@@ -1794,14 +1794,15 @@ AWE.Controller = function (module) {
 
       }
       else if (view.typeName() === 'ArtifactView') {
-        inspectorViews.inspector = AWE.UI.createArtifactInspectorView();
+        //radik@5dlab.com uncommit
+        /*inspectorViews.inspector = AWE.UI.createArtifactInspectorView();
         inspectorViews.inspector.initWithControllerAndArtifact(that, view.artifact());
 
         inspectorViews.inspector.onInventoryButtonClick = (function (self) {
           return function (artifact) {
             self.artifactInfoButtonClicked(artifact);
           }
-        })(that);
+        })(that);*/
       }
       else if (view.typeName() === 'BaseView' || view.typeName() === 'OutpostView') {
         inspectorViews.inspector = AWE.UI.createBaseInspectorView();
@@ -3067,6 +3068,10 @@ AWE.Controller = function (module) {
               self.battleInfoButtonClicked(army);
             }
           })(that);
+          
+          annotationView.onNewArmyButtonClick = function (location) {
+            that.newArmyButtonClicked(location);
+          };
 
           // Todo: respect update time (if already updated, wait some time)
           var location = annotatedView.location();
@@ -3163,6 +3168,10 @@ AWE.Controller = function (module) {
               self.battleInfoButtonClicked(army);
             }
           })(that);
+          
+          annotationView.onNewArmyButtonClick = function (location) {
+            that.newArmyButtonClicked(location);
+          };
 
           if (annotatedView.location()) {
             AWE.GS.SettlementManager.updateSettlementsAtLocation(annotatedView.location().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function () {

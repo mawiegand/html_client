@@ -345,7 +345,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         AWE.Facebook.setDoneLoading();      // track loading time, iff running in canvas
 
         Sample.setUserId(identifier);
-        Sample.track('started', { event_category: 'session'});
+        Sample.track('started', 'session');
 
         if (AWE.Config.CHAT_SHOW) {
           self.initChat();
@@ -775,11 +775,6 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       window.name = "empty";                                 // unset variables
       fbArgs = "empty";
 
-      Sample.setEndpoint("/psiori/event")
-      Sample.setAppToken("wad-rt82-fhjk-18");
-      Sample.sessionStart();
-      Sample.autoPing(30);
-
       var accessToken = null;
 
       if (!args || !args.accessToken) {
@@ -807,6 +802,18 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
       AWE.Facebook.isRunningInCanvas = AWE.Settings.fbRunInCanvas;
       AWE.Facebook.isFbPlayer = !!args.fbPlayerId;
+      
+      Sample.setEndpoint("/psiori/event")
+      Sample.setAppToken("wad-rt82-fhjk-18");
+      
+      if (AWE.Facebook.isRunningInCanvas)
+      {
+        Sample.setFacebookId(args.fbPlayerId || null);
+        Sample.setPlatform(Sample.PLATFORM_FACEBOOK);
+      }
+
+      Sample.sessionStart();
+      Sample.autoPing(30);
 
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
