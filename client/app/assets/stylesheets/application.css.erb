@@ -754,6 +754,9 @@ h3 {
 .cell-70 {
   width:70%;
 }
+.cell-75 {
+  width:75%;
+}
 .cell-80 {
   width:80%;
 }
@@ -1127,6 +1130,17 @@ h3 {
 
 .modal-dialog-close:hover{
   background-image: url("<%= asset_path 'ui/closeButtonHovered.png' %>");
+}
+
+
+.modal-dialog-settings {
+  background-image: url("<%= asset_path 'dialogs/window/cogwheel.png' %>");
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  top: 10px;
+  right: 40px;
+  z-index:300;
 }
 
 .modal-dialog-back{
@@ -5899,6 +5913,170 @@ loaddialog-positioner {
   margin-bottom: 400px; 
 }
 
+.settlement-info-dialog-pane .button {
+	height: 52px;
+	width: 248px;
+}
+
+.settlement-info-dialog-pane .button-left {
+	background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide.png") %>') no-repeat center center;
+}
+
+.settlement-info-dialog-pane .button-left:hover {
+	background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide_active.png") %>') no-repeat center center;
+	cursor: pointer;
+}
+
+.settlement-info-dialog-pane .button-right {
+	background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide.png") %>') no-repeat center center;
+}
+
+.settlement-info-dialog-pane .button-right:hover {
+	background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide_active.png") %>') no-repeat center center;
+	cursor: pointer;
+}
+
+.settlement-info-dialog-pane .row1 {
+	margin: 20px 0 20px 0;
+}
+
+.settlement-info-dialog-pane .row2 {
+	margin: 55px 0 0 0;
+}
+
+.settlement-info-dialog-pane .titles {
+	text-align: right;
+	padding: 0 20px 0 0;
+}
+
+.settlement-info-dialog-pane .values {
+	text-align: left;
+	padding: 0 0 0 20px;
+}
+
+.settlement-info-dialog-pane .population-title,
+.settlement-info-dialog-pane .defense-boni-title,
+.settlement-info-dialog-pane .condition-title,
+.settlement-info-dialog-pane .takeover-title,
+.settlement-info-dialog-pane .destory-title {
+	color: rgb(112,92,48);
+	font-size: 1.3em;
+}
+
+.settlement-info-dialog-pane .population-value,
+.settlement-info-dialog-pane .defense-boni-value,
+.settlement-info-dialog-pane .condition-value,
+.settlement-info-dialog-pane .takeover-value,
+.settlement-info-dialog-pane .destory-value {
+	color: rgb(154,148,138);
+	font-size: 1.3em;
+}
+
+.settlement-info-box-dialog-pane .button-left {
+	background:url('<%= asset_path("dialogs/buttons/button_green_medium.png") %>') no-repeat center center;
+}
+
+.settlement-info-box-dialog-pane .button-left:hover {
+	background:url('<%= asset_path("dialogs/buttons/button_green_medium_pressed.png") %>') no-repeat center center;
+	cursor: pointer;
+}
+
+.settlement-info-box-dialog-pane .button-right {
+	background:url('<%= asset_path("dialogs/buttons/button_green_medium.png") %>') no-repeat center center;
+}
+
+.settlement-info-box-dialog-pane .button-right:hover {
+	background:url('<%= asset_path("dialogs/buttons/button_green_medium_pressed.png") %>') no-repeat center center;
+	cursor: pointer;
+}
+
+.settlement-info-box-dialog-pane {
+    padding: 0 10px;
+}
+.settlement-info-box-dialog-pane .row1 {
+    margin-top: 20px;
+}
+.settlement-info-box-dialog-pane .row2 {
+    margin-top: 20px;
+}
+.settlement-info-box-dialog-pane .row3 {
+    margin-top: 20px;
+}
+.settlement-info-box-dialog-pane .row4 {
+    margin-top: 20px;
+}
+.settlement-info-box-dialog-pane .row4 table {
+    width: 100%;
+}
+.settlement-info-box-dialog-pane .row4 table td.info {
+    color: rgb(112,92,48);
+    text-align: right;
+    width: 200px;
+}
+.settlement-info-box-dialog-pane .row4 table td {
+    color: rgb(154,148,138);
+    text-align: center;
+    width: 200px;
+}
+.settlement-info-box-dialog-pane .row5 {
+    margin-top: 20px;
+}
+
+.settlement-info-box-dialog-pane .title {
+    color: rgb(112,92,48);
+    text-align: right;
+    width: 235px;
+}
+.settlement-info-box-dialog-pane .value {
+	color: rgb(154,148,138);
+    text-align: left;
+    padding-left: 5px;
+}
+
+.settlement-info-box-dialog-pane .row1_1 .title,
+.settlement-info-box-dialog-pane .row1_2 .title,
+.settlement-info-box-dialog-pane .row1_3 .title {
+    width: 230px;
+}
+.settlement-info-box-dialog-pane .row1_1 .value,
+.settlement-info-box-dialog-pane .row1_2 .value,
+.settlement-info-box-dialog-pane .row1_3 .value {
+    width: 63px;
+}
+
+.settlement-info-box-dialog-pane .row1_4 .title,
+.settlement-info-box-dialog-pane .row1_5 .title,
+.settlement-info-box-dialog-pane .row1_6 .title {
+    width: 220px;
+}
+.settlement-info-box-dialog-pane .row1_4 .value,
+.settlement-info-box-dialog-pane .row1_5 .value,
+.settlement-info-box-dialog-pane .row1_6 .value {
+    width: 73px;
+}
+
+
+.settlement-info-box-dialog-pane .row2 {
+	color: rgb(154,148,138);^
+}
+.settlement-info-box-dialog-pane .row2 .title {
+	color: rgb(112,92,48);
+}
+.settlement-info-box-dialog-pane .row2 .army-icon {
+	display: inline-block;
+}
+
+.settlement-info-box-dialog-pane .row2 .infantry {
+  background:url("<%= asset_path 'dialogs/specials/units_swordsman.png' %>")no-repeat center center;
+}
+
+.settlement-info-box-dialog-pane .row2 .cavalry {
+  background:url("<%= asset_path 'dialogs/specials/units_cavalry.png' %>") no-repeat center center;
+}
+
+.settlement-info-box-dialog-pane .row2 .artillery {
+  background:url("<%= asset_path 'dialogs/specials/units_archer.png' %>") no-repeat center center;
+}
 
 span.bonus {
   color: #bbe166;

@@ -167,6 +167,11 @@
     <div class="center-helper">
       <div class="modal-dialog-pane-new z-layer-4">
         <div class="modal-dialog-container">
+          {{#if settingsDialog }}
+          <a href="#" {{action "settingsDialog"}}>
+            <div class="modal-dialog-settings"></div>
+          </a>
+          {{/if}}
           <a href="#" {{action "closeDialog"}}>
             <div class="modal-dialog-close"></div>
           </a>

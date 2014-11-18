@@ -742,6 +742,7 @@ AWE.I18n.de_DE = function(module) {
       },
 
       abandon: {
+        abandon: "Aufgeben",
         header: "Lagerstätte aufgeben",
         text: "Wenn Du knapp an Siedlungspunkten bist, kannst Du diese Lagerstätte aufgeben. Sie geht dann in den Besitz der Neandertaler über und ist anschließend für andere Spieler übernehmbar.",
         send: "Lagerstätte aufgeben!",
@@ -826,8 +827,12 @@ AWE.I18n.de_DE = function(module) {
       },
 
       military: {
+        yes: "Ja",
+        no: "Nein",
+        takeOverTitle: "Übernehmbar",
         takeOver: "Diese Siedlung kann von anderen Spielern geklaut werden.",
         noTakeOver: "Diese Siedlung kann nicht übernommen werden!",
+        destroyableTitle: "Zerstörbar",
         destroyable: "Diese Siedlung kann von anderen Spielern zerstört werden.",
         notDestroyable: "Diese Siedlung kann nicht zerstört werden!",
       },
@@ -981,10 +986,13 @@ AWE.I18n.de_DE = function(module) {
         setTaxRate: "Gib den neuen Steuersatz ein (5-15%).",
         artifact: "Artefakt",
         movingPassword: "Umzugspasswort",
+        move: "Umzug",
+        productions: "Produktion"
       },
       error: {
         serverDidNotAcceptTaxRate: "Der Server hat die Änderung des Steuersatzes nicht akzeptiert.",
         couldNotChangeTaxRate: "Gib eine Zahl zwischen 5 und 15 ein.",
+        couldNotChangeTaxRateHead: "Fehler beim ändern des Steuersatzes"
       },
     },
     
