@@ -53,7 +53,10 @@ AWE.Controller = (function(module) {
      * the playing pieces (armies, fortresses, settlements), and 
      * the HUD. */
     that.init = function() {
-      _super.init();    
+      _super.init();
+
+      var view = AWE.UI.Ember.HUDViews.create();
+      view.append();  
       var root = that.rootElement();  
       root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas-profile"></canvas><canvas id="hud-canvas-left"></canvas><canvas id="hud-canvas-right"></canvas>');
       
