@@ -25,13 +25,18 @@
   Sample.setAppToken("wad-rt82-fhjk-18");
   Sample.setPlatform(Sample.PLATFORM_FACEBOOK);
   Sample.setFacebookId("<%= @facebook_user %>");
+  Sample.setUserId("<%= @access_data['identifier'] %>");
   Sample.setLocale("<%= @locale %>");
+  Sample.signIn();
   Sample.sessionStart();
-  Sample.signIn("<%= @access_data['identifier'] %>")
+  
+  setTimeout(function() {
 
-  $('<form style="display:none;" id="clientstarter" action="/client.html" method="POST">' +
+    $('<form style="display:none;" id="clientstarter" action="/client.html" method="POST">' +
       '  <input type="hidden" name="fb_args" value="' + encodeURIComponent(fbArgs) + '" />' +
       '</form>').appendTo('body').submit();
+      
+  }, 2000);
 
 </script>
 <% else %>
