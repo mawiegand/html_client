@@ -3817,6 +3817,7 @@ width: auto;
   left: 30px;
 }
 
+.artifact-info-dialog-pane .cost-cell,
 .artifact-initiation-dialog-pane .cost-cell
 {
   width: 225px;
@@ -3825,6 +3826,7 @@ width: auto;
   float: left;
 }
 
+.artifact-info-dialog-pane .cost-half-row,
 .artifact-initiation-dialog-pane .cost-half-row
 {
   width: 26%;
@@ -3834,6 +3836,7 @@ width: auto;
   left: 10px;
 }
 
+.artifact-info-dialog-pane .cost-half-row-effect,
 .artifact-initiation-dialog-pane .cost-half-row-effect
 {
   width: 26%;
@@ -3843,6 +3846,7 @@ width: auto;
   left: 50px;
 }
 
+.artifact-info-dialog-pane .cost-row,
 .artifact-initiation-dialog-pane .cost-row
 {
   width: 100%;
@@ -3852,6 +3856,7 @@ width: auto;
   left: 4px;
 }
 
+.artifact-info-dialog-pane .cost-text,
 .artifact-initiation-dialog-pane .cost-text
 {
   color: rgb(146,141,130) !important;
@@ -3865,63 +3870,79 @@ width: auto;
   top: 0px;
 }
 
+.artifact-info-dialog-pane .item,
 .artifact-initiation-dialog-pane .item{
-  width: 128px;
-  height: 128px;
+  width: 200px;
+  height: 200px;
 }
+.artifact-info-dialog-pane .item-padding,
 .artifact-initiation-dialog-pane .item-padding{
-  padding-left: 100px;
+  padding-left: 70px;
 }
+
+.artifact-info-dialog-pane .item.artifact_0,
 .artifact-initiation-dialog-pane .item.artifact_0{
-  background:url("<%= asset_path 'artifact/artefakt_tnt.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_tnt_inactive.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_0.is-active,
 .artifact-initiation-dialog-pane .item.artifact_0.is-active{
-  background:url("<%= asset_path 'artifact/artefakt_tnt_aktiviert.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_tnt_active.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_1,
 .artifact-initiation-dialog-pane .item.artifact_1{
-  background:url("<%= asset_path 'artifact/artefakt_steinrad.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_stonewheel_inactive.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_1.is-active,
 .artifact-initiation-dialog-pane .item.artifact_1.is-active{
-  background:url("<%= asset_path 'artifact/artefakt_steinrad_aktiviert.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_stonewheel_active.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_2,
 .artifact-initiation-dialog-pane .item.artifact_2{
-  background:url("<%= asset_path 'artifact/artefakt_streitaxt.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_axe_inactive.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_2.is-active,
 .artifact-initiation-dialog-pane .item.artifact_2.is-active{
-  background:url("<%= asset_path 'artifact/artefakt_streitaxt_aktiviert.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_axe_active.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_3,
 .artifact-initiation-dialog-pane .item.artifact_3{
-  background:url("<%= asset_path 'artifact/artefakt_monolith.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/articat_monolith_inactive.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_3.is-active,
 .artifact-initiation-dialog-pane .item.artifact_3.is-active{
-  background:url("<%= asset_path 'artifact/artefakt_monolith_aktiviert.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/articat_monolith_active.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_4,
 .artifact-initiation-dialog-pane .item.artifact_4{
-  background:url("<%= asset_path 'artifact/artefakt_osterei.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_easteregg_inactive.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_4.is-active,
 .artifact-initiation-dialog-pane .item.artifact_4.is-active{
-  background:url("<%= asset_path 'artifact/artefakt_osterei_aktiviert.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_easteregg_active.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_5,
 .artifact-initiation-dialog-pane .item.artifact_5{
-  background:url("<%= asset_path 'artifact/artefakt_hammer.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_hammer_inactive.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_5.is-active,
 .artifact-initiation-dialog-pane .item.artifact_5.is-active{
-  background:url("<%= asset_path 'artifact/artefakt_hammer_aktiviert.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_hammer_active.png' %>") no-repeat center center;
 }
 
 .artifact-initiation-dialog-pane .cell-icon{
   width: 38%;
+  height: 200px;
   display: inline-block;
   float: left;
 }
@@ -3931,6 +3952,55 @@ width: auto;
   float: left;
 }
 .artifact-initiation-dialog-pane .cell-info{
+  width: 95%;
+  display: inline-block;
+  float: left;
+  padding-left: 15px;
+  line-height: 28px;
+}
+
+/* info */
+.artifact-info-dialog-pane .bonus-cell
+{
+  display: inline-block;
+  float: left;
+  width: 45%;
+}
+
+.artifact-info-dialog-pane .button-name
+{
+  width: 192px;
+  height: 52px;
+  position: relative;
+  display: inline-block;
+  float: left;
+  top: 25px;
+  right: 25px;
+}
+
+.artifact-info-dialog-pane .button-alliance
+{
+  width: 184px;
+  height: 56px;
+  position: relative;
+  display: inline-block;
+  float: left;
+  top: 24px;
+  right: 14px;
+}
+
+.artifact-info-dialog-pane .cell-icon{
+  width: 38%;
+  height: 200px;
+  display: inline-block;
+  float: left;
+}
+.artifact-info-dialog-pane .cell-stats{
+  width: 62%;
+  display: inline-block;
+  float: left;
+}
+.artifact-info-dialog-pane .cell-info{
   width: 95%;
   display: inline-block;
   float: left;

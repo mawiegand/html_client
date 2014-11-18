@@ -260,15 +260,54 @@ AWE.UI.Ember = function(module) {
       }
     }.observes('artifact', 'artifact.owner_id'),
 
-    debugTest: function(){
+    /*debugTest: function(){
       debugger
       return true;
-    }.property(),
+    }.property(),*/
 
    });
 
 module.ArtifactBonusNewView = module.ArtifactBonusView.extend({
     templateName: 'artifact-bonus-new-view',
+
+    });
+
+//Info dialog
+module.ArtifactInfoNewDialog = module.PopUpDialog.extend({
+    templateName: 'artifact-info-new-dialog',
+
+    });
+module.ArtifactInfoNewView = module.ArtifactInfoDialog.extend({
+    templateName: 'artifact-info-new-view',
+
+    nameClicked: function() {
+      var character = this.get('owner');
+      var characterId = character ? character.get('id') : null;
+      if (!characterId) {
+        return false;
+      }
+      var dialog = AWE.UI.Ember.CharacterInfoDialog.create({
+        characterId: characterId,
+      });
+      WACKADOO.presentModalDialog(dialog);
+      return false; // prevent default behavior
+    },
+    openAlliance: function() {
+      var character = this.get('owner');
+      if(!character)
+        return false;
+
+      var alliance = character.getAlliance();
+
+      if(!alliance)
+        return false;
+      
+      WACKADOO.showAllianceDialog(alliance.id);
+    }
+
+    });
+module.ArtifactBonusInfoNewView = module.ArtifactBonusNewView.extend({
+    templateName: 'artifact-bonus-info-new-view',
 
     });
 /*New artifact dialogs and views END*/
