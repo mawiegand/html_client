@@ -56,7 +56,7 @@ AWE.Controller = (function(module) {
       _super.init();
 
       var view = AWE.UI.Ember.HUDViews.create();
-      view.append();  
+      //view.append();  
       var root = that.rootElement();  
       root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas-profile"></canvas><canvas id="hud-canvas-left"></canvas><canvas id="hud-canvas-right"></canvas>');
       
