@@ -16,15 +16,10 @@ AWE.UI = (function(module) {
     
     var _actionMode = null;
 
-    var _backgroundView = null;
-    var _backgroundView3 = null;
-    var _backgroundView4 = null;
-
     // selected
     var _stanceButtonView = null;    
     var _moveButtonView = null;    
     var _attackButtonView = null;    
-    var _battleInfoButtonBackgroundView = null;
     var _battleInfoButtonView = null;    
     var _foundButtonView = null;
     var _cancelButtonView = null;    
@@ -58,16 +53,6 @@ AWE.UI = (function(module) {
       _super.initWithController(controller, frame);
       _armyView = view;
       _army = view.army();
-
-      _backgroundView3 = AWE.UI.createImageView();
-      _backgroundView3.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("hud/annotation/panel3"));
-      _backgroundView3.setFrame(AWE.Geometry.createRect(-20, -40, 154, 230));
-      this.addChild(_backgroundView3);
-
-      _backgroundView4 = AWE.UI.createImageView();
-      _backgroundView4.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("hud/annotation/panel4"));
-      _backgroundView4.setFrame(AWE.Geometry.createRect(-20, -40, 154, 230));
-      this.addChild(_backgroundView4);
 
       _stanceButtonView = AWE.UI.createButtonView();
       _stanceButtonView.initWithControllerTextAndImage(controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/defense/normal"));
@@ -120,11 +105,6 @@ AWE.UI = (function(module) {
 //        }
 //      }
 //      this.addChild(_retreatButtonView);
-
-      _battleInfoButtonBackgroundView = AWE.UI.createImageView();
-      _battleInfoButtonBackgroundView.initWithControllerAndImage(controller, AWE.UI.ImageCache.getImage("hud/annotation/panel1"));
-      _battleInfoButtonBackgroundView.setFrame(AWE.Geometry.createRect(150, 84, 53, 53));
-      this.addChild(_battleInfoButtonBackgroundView);
 
       _battleInfoButtonView = AWE.UI.createButtonView();
       _battleInfoButtonView.initWithControllerTextAndImage(controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/battleinfo/normal"));
@@ -201,79 +181,65 @@ AWE.UI = (function(module) {
     
     that.updateButtonVisibility = function() {
       if (!_armyView.selected()) {
-        _backgroundView.setVisible(false);
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);        
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(false);
-        _battleInfoButtonBackgroundView.setVisible(false);
         _foundButtonView.setVisible(false);
         _stanceButtonView.setVisible(false);
       }
       else if (_army.isOwn() && _army.get('hasHomebaseFounder') && _army.get('mode') === AWE.Config.ARMY_MODE_IDLE) { // 0 -> idle or null -> unkown
-        _backgroundView.setVisible(true);
         _moveButtonView.setVisible(true);
         _attackButtonView.setVisible(true);
         _cancelButtonView.setVisible(false);
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(false);
-        _battleInfoButtonBackgroundView.setVisible(false);
         _foundButtonView.setVisible(true);
         _stanceButtonView.setVisible(true);
       }
       else if (_army.isOwn() && (_army.get('mode') === null || _army.get('mode') === AWE.Config.ARMY_MODE_IDLE)) { // 0 -> idle or null -> unkown
-        _backgroundView.setVisible(true);
         _moveButtonView.setVisible(true);
         _attackButtonView.setVisible(true);
         _cancelButtonView.setVisible(false);
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(false);
-        _battleInfoButtonBackgroundView.setVisible(false);
         _foundButtonView.setVisible(_army.get('hasSettlementFounder'));
         _stanceButtonView.setVisible(true);
       }
       else if (_army.isOwn() && _army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
-        _backgroundView.setVisible(true);
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(true);
         _cancelButtonView.setVisible(true);
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(false);
-        _battleInfoButtonBackgroundView.setVisible(false);
         _foundButtonView.setVisible(false);
         _stanceButtonView.setVisible(true);
       }
       else if (_army.isOwn() && _army.get('isFighting')) {
-        _backgroundView.setVisible(true);
         _moveButtonView.setVisible(true);
         _attackButtonView.setVisible(true);
         _cancelButtonView.setVisible(false);    
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(true);
-        _battleInfoButtonBackgroundView.setVisible(true);
         _foundButtonView.setVisible(false);
         _stanceButtonView.setVisible(true);
       }
       else if (_army.get('isFighting')) {
-        _backgroundView.setVisible(false);
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(true);
-        _battleInfoButtonBackgroundView.setVisible(true);
         _foundButtonView.setVisible(false);
         _stanceButtonView.setVisible(false);
       }
       else {
-        _backgroundView.setVisible(false);
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(false);
-        _battleInfoButtonBackgroundView.setVisible(false);
         _foundButtonView.setVisible(false);
         _stanceButtonView.setVisible(false);
       }
@@ -297,15 +263,6 @@ AWE.UI = (function(module) {
     }
     
     that.recalcView = function() {
-
-      if (_foundButtonView.visible()) {
-        _backgroundView = _backgroundView4;
-        _backgroundView3.setVisible(false);
-      }
-      else {
-        _backgroundView = _backgroundView3;
-        _backgroundView4.setVisible(false);
-      }
       
       // buttons
       this.updateButtonVisibility();
