@@ -346,7 +346,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         AWE.Facebook.setDoneLoading();      // track loading time, iff running in canvas
 
         Sample.setUserId(identifier);
-        Sample.track('started', { event_category: 'session'});
+        Sample.track('started', 'session');
 
         if (AWE.Config.CHAT_SHOW) {
           self.initChat();
