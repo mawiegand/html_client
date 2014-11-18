@@ -864,6 +864,7 @@ AWE.I18n.en_US = function(module) {
       },
 
       artifact: {
+        noArtifact: "You don't have an artifact",
         costs: "Costs",
         duration: "Duration",
         start: "Start",
@@ -1318,8 +1319,8 @@ AWE.I18n.en_US = function(module) {
         dailyProduction: "Daily production",
         capacity: "Storage capacity",
         capacityReachedIn: "Capacity reached in",
-        characterEffects: "Player Bonuses",
-        allianceEffects: "Alliance Bonuses",
+        characterEffects: "Effect",
+        allianceEffects: "Alliance",
         effects: "Effects",
         baseProduction: "Base production",
         full: "Full",

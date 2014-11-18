@@ -118,6 +118,14 @@ AWE.UI.Ember = function(module) {
       }
     },
 
+    progressBarWidth: function() {
+      var currentInterval = AWE.GS.TimeManager.estimatedServerTime().getTime() - Date.parseISODate(this.getPath('artifact.initiation.started_at')).getTime();
+      var jobInterval     = Date.parseISODate(this.getPath('artifact.initiation.ended_at')).getTime() - Date.parseISODate(this.getPath('artifact.initiation.started_at')).getTime();
+      var progression = jobInterval != 0 ? currentInterval / jobInterval : -1;
+      progression = progression < 0 ? 0 : (progression > 1 ? 1 : progression);
+      return 'width: ' + Math.ceil(250 * progression) + 'px;';
+    }.property('timeRemaining').cacheable(),
+
     stopTimer: function() {
       var timer = this.get('timer');
       if (timer) {
@@ -209,6 +217,61 @@ AWE.UI.Ember = function(module) {
       return bonuses;
     }.property('artifact.type_id').cacheable(),
   });
+
+/*New artifact dialogs and views START*/
+  module.ArtifactInitiationDialog = module.PopUpDialog.extend({
+    templateName: 'artifact-initiation-dialog',
+
+    settlement: null,
+    controller: null,
+    artifactBinding: 'AWE.GS.game.currentArtifact',
+  });
+
+   module.ArtifactInitiationNewView = module.ArtifactInitiationView.extend({
+    templateName: 'artifact-initiation-new-view',
+
+    artifact: null,
+
+    owner: null,
+    
+    description: function() {
+      var artifact = this.get('artifact');
+      if (artifact != null) {
+        var type = artifact.get('artifactType');
+      }
+      if (type != null) {
+        if (artifact.initiated) {
+          return AWE.Util.Rules.lookupTranslation(type.description_initiated);
+        }
+        else {
+          return AWE.Util.Rules.lookupTranslation(type.description);
+        }
+      }
+    }.property('artifact').cacheable(),
+    
+    ownerObserver: function() {
+      var owner = AWE.GS.CharacterManager.getCharacter(this.getPath('artifact.owner_id'));
+      var self = this;
+      this.set('owner', owner);
+      if (!owner) {
+        AWE.GS.CharacterManager.updateCharacter(this.getPath('artifact.owner_id'), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function(character) {
+          self.set('owner', character);
+        });
+      }
+    }.observes('artifact', 'artifact.owner_id'),
+
+    debugTest: function(){
+      debugger
+      return true;
+    }.property(),
+
+   });
+
+module.ArtifactBonusNewView = module.ArtifactBonusView.extend({
+    templateName: 'artifact-bonus-new-view',
+
+    });
+/*New artifact dialogs and views END*/
 
   return module;
 

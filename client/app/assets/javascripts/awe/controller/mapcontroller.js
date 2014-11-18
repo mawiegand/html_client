@@ -1794,14 +1794,15 @@ AWE.Controller = function (module) {
 
       }
       else if (view.typeName() === 'ArtifactView') {
-        inspectorViews.inspector = AWE.UI.createArtifactInspectorView();
+        //radik@5dlab.com uncommit
+        /*inspectorViews.inspector = AWE.UI.createArtifactInspectorView();
         inspectorViews.inspector.initWithControllerAndArtifact(that, view.artifact());
 
         inspectorViews.inspector.onInventoryButtonClick = (function (self) {
           return function (artifact) {
             self.artifactInfoButtonClicked(artifact);
           }
-        })(that);
+        })(that);*/
       }
       else if (view.typeName() === 'BaseView' || view.typeName() === 'OutpostView') {
         inspectorViews.inspector = AWE.UI.createBaseInspectorView();
