@@ -21,7 +21,7 @@ AWE.UI = (function(module) {
     var battleButton = null;    
     var _battleInfoButtonView = null;
     
-    var _newArmyButtonView = null; // TODO
+    var _newArmyButtonView = null;
 
     //  hovered
     var _infoText1View = null;    
@@ -42,6 +42,8 @@ AWE.UI = (function(module) {
     my.infoContainer = null;
 
     that = module.createContainer(spec, my);
+    
+    that.onNewArmyButtonClick = null;
 
     var _super = {
       initWithController: AWE.Ext.superior(that, "initWithController"),
@@ -134,6 +136,27 @@ AWE.UI = (function(module) {
 //      }
 //
 
+      if (!_newArmyButtonView && isOwnLocation && my.region.location(0) != null && my.region.location(0).garrisonArmy() != null && !my.region.location(0).garrisonArmy().get('isFighting')) {
+        _newArmyButtonView = AWE.UI.createButtonIconView();
+        _newArmyButtonView.initWithControllerImageAndIcon(my.controller,
+          AWE.UI.ImageCache.getImage("hud/annotation/button/background/purple"), 
+          AWE.UI.ImageCache.getImage("hud/icon/army"),
+          AWE.Geometry.createRect(170, 35, 64, 64)
+        );
+        _newArmyButtonView.onClick = function() {
+          if (that.onNewArmyButtonClick) {
+            that.onNewArmyButtonClick(my.region.location(0));
+          }
+        };
+        this.addChild(_newArmyButtonView);
+      }
+      if (_newArmyButtonView) {
+        _newArmyButtonView.setVisible(my.fortressView.selected());
+      }
+
+      if (_newArmyButtonView && isOwnLocation && my.region.location(0) != null && my.region.location(0).garrisonArmy() != null && my.region.location(0).garrisonArmy().get('isFighting')) {
+        this.removeChild(_newArmyButtonView);
+      }
 
       if (!_battleInfoButtonView) {
         _battleInfoButtonView = AWE.UI.createButtonIconView();

@@ -38,6 +38,8 @@ AWE.UI = (function(module) {
 
     that = module.createContainer(spec, my);
     
+    that.onNewArmyButtonClick = null;
+    
     my.typeName = 'BaseAnnotationView';
     my.baseView = null;
     my.location = null;
@@ -132,6 +134,28 @@ AWE.UI = (function(module) {
       
       if (_battleInfoButtonView) {
         _battleInfoButtonView.setVisible(my.baseView.selected() && my.location.garrisonArmy() && my.location.garrisonArmy().get('isFighting'));
+      }
+      
+      if (!_newArmyButtonView && isOwnLocation && my.location != null && my.location.garrisonArmy() != null && !my.location.garrisonArmy().get('isFighting')) {
+        _newArmyButtonView = AWE.UI.createButtonIconView();
+        _newArmyButtonView.initWithControllerImageAndIcon(my.controller,
+          AWE.UI.ImageCache.getImage("hud/annotation/button/background/purple"), 
+          AWE.UI.ImageCache.getImage("hud/icon/army"),
+          AWE.Geometry.createRect(170, 35, 64, 64)
+        );
+        _newArmyButtonView.onClick = function() {
+          if (that.onNewArmyButtonClick) {
+            that.onNewArmyButtonClick(my.location);
+          }
+        };
+        this.addChild(_newArmyButtonView);
+      }
+      if (_newArmyButtonView) {
+        _newArmyButtonView.setVisible(my.baseView.selected());
+      }
+
+      if (_newArmyButtonView && isOwnLocation && my.location != null && my.location.garrisonArmy() != null && my.location.garrisonArmy().get('isFighting')) {
+        this.removeChild(_newArmyButtonView);
       }
 
 
