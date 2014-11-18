@@ -3068,6 +3068,10 @@ AWE.Controller = function (module) {
               self.battleInfoButtonClicked(army);
             }
           })(that);
+          
+          annotationView.onNewArmyButtonClick = function (location) {
+            that.newArmyButtonClicked(location);
+          };
 
           // Todo: respect update time (if already updated, wait some time)
           var location = annotatedView.location();
@@ -3164,6 +3168,10 @@ AWE.Controller = function (module) {
               self.battleInfoButtonClicked(army);
             }
           })(that);
+          
+          annotationView.onNewArmyButtonClick = function (location) {
+            that.newArmyButtonClicked(location);
+          };
 
           if (annotatedView.location()) {
             AWE.GS.SettlementManager.updateSettlementsAtLocation(annotatedView.location().id(), AWE.GS.ENTITY_UPDATE_TYPE_FULL, function () {
