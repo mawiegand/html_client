@@ -163,6 +163,31 @@ AWE.UI.Ember = (function(module) {
     lastError: null, 
     
     changingName: false,
+
+    settingsDialog: function() {
+      this.set('message', null);
+      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
+        classNames: ['change-army-name-dialog'],
+        heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'),
+        input: this.getPath('settlement.name'),
+        inputMaxLength: 16,
+        controller: this,
+
+        okPressed: function() {
+          var controller = this.get('controller');
+          if (controller) {
+            controller.processNewName(this.getPath('input'));
+          }
+          this.destroy();
+        },
+
+        cancelPressed: function() { this.destroy(); },
+      });
+      WACKADOO.presentModalDialog(changeDialog);
+      event.preventDefault();
+
+      return false;
+    },
     
     nameChangeCosts: function() {
       return this.getPath('settlement.type').change_name_cost.amount;

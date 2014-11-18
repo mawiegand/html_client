@@ -76,7 +76,6 @@ AWE.UI.Ember = (function(module) {
         var dialog = AWE.UI.Ember.CharacterInfoDialog.create({
           characterId: characterId,
         });
-        WACKADOO.closeAllModalDialogs();
         WACKADOO.presentModalDialog(dialog);
       }
       return false; // prevent default behavior
@@ -85,7 +84,6 @@ AWE.UI.Ember = (function(module) {
     alliancePressed: function() {
       var allianceId = this.getPath('settlement.alliance_id');
       if (allianceId != null) {
-        WACKADOO.closeAllModalDialogs();
         WACKADOO.showAllianceDialog(allianceId);
       }
       return false; // prevent default behavior
