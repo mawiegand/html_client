@@ -20,6 +20,8 @@ AWE.UI = (function(module) {
     var attackButton = null;
     var battleButton = null;    
     var _battleInfoButtonView = null;
+    
+    var _newArmyButtonView = null; // TODO
 
     //  hovered
     var _infoText1View = null;    
@@ -78,9 +80,9 @@ AWE.UI = (function(module) {
         enterButton = AWE.UI.createButtonIconView();
         enterButton.initWithControllerImageAndIcon(my.controller,
           AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue"), 
-          AWE.UI.ImageCache.getImage("hud/annotation/button/enter/normal")
+          AWE.UI.ImageCache.getImage("hud/annotation/button/enter/normal"),
+          AWE.Geometry.createRect(-20, 35, 64, 64)
         );
-        enterButton.setFrame(AWE.Geometry.createRect(-20, 35, 64, 64));
         enterButton.onClick = function() { that.onEnterButtonClick(); }
         this.addChild(enterButton);
       }
@@ -96,9 +98,9 @@ AWE.UI = (function(module) {
         attackButton = AWE.UI.createButtonIconView();
         attackButton.initWithControllerImageAndIcon(my.controller,
           AWE.UI.ImageCache.getImage("hud/annotation/button/background/red"), 
-          AWE.UI.ImageCache.getImage("hud/annotation/button/attack/normal")
+          AWE.UI.ImageCache.getImage("hud/annotation/button/attack/normal"),
+          AWE.Geometry.createRect(40, 80, 64, 64)
         );
-        attackButton.setFrame(AWE.Geometry.createRect(40, 80, 64, 64));
         attackButton.onClick = function() {
           if (attackButton.enabled()) {
             that.onAttackButtonClick(that);
@@ -137,9 +139,9 @@ AWE.UI = (function(module) {
         _battleInfoButtonView = AWE.UI.createButtonIconView();
         _battleInfoButtonView.initWithControllerImageAndIcon(my.controller,
           AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue"), 
-          AWE.UI.ImageCache.getImage("hud/icon/info")
+          AWE.UI.ImageCache.getImage("hud/icon/info"),
+          AWE.Geometry.createRect(110, 86, 64, 64)
         );
-        _battleInfoButtonView.setFrame(AWE.Geometry.createRect(110, 86, 64, 64));
         _battleInfoButtonView.onClick = function() {
           if (_battleInfoButtonView.enabled() && my.region.location(0) && my.region.location(0).garrisonArmy()) {
             that.onBattleInfoButtonClick(my.region.location(0).garrisonArmy());
