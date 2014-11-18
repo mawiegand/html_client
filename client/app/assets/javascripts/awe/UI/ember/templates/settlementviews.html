@@ -144,6 +144,29 @@
       <p class="clearfix" {{action catchClick}}>{{ unbound AWE.Config.PLAYER_INVITATION_BASE }}{{ unbound settlement.regionInvitationCode }}</p>
       <p>{{t settlement.info.movingPassword}}: {{settlement.regionMovingPassword}}</p>
       <div class="icon-button ok-button" {{action "okPressed"}}>{{t general.ok}}</div>
+      <div class="icon-button cancel-button" {{action "cancelPressed"}}>{{t general.cancel}}</div>
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="settlement-name-change-dialog">
+  <div class="modal-dialog-background z-layer-3"></div>
+  <div class="center-helper">
+    <div class="modal-dialog-pane z-layer-4 name-change-dialog">
+      <h1>{{#if firstNameChange}}{{t settlement.customization.chooseNameCaption}}{{else}}{{t settlement.customization.changeNameCaption}}{{/if}}</h1>
+      <p>
+      {{#if firstNameChange}}
+        {{t settlement.customization.nameChangeAdvice}}
+      {{else}}
+        {{t settlement.customization.changeNameDesc}} {{nameChangeCosts}} <span class="resource-icon {{unbound nameChangeResource}}">&nbsp;</span>&nbsp;
+      {{/if}}
+      </p>
+      <h4>{{t settlement.customization.changeNameDialogCaption}}</h4>
+      {{view Ember.TextField class="text-field" maxlength=inputMaxLength placeholder="Name" type="text" valueBinding="input"}}
+      <div class="controls-bar">
+        <div class="icon-button ok-button" {{action "okPressed"}}>{{t general.change}}</div>
+        <div class="icon-button cancel-button" {{action "cancelPressed"}}>{{t general.cancel}}</div>
+      </div>
     </div>
   </div>
 </script>

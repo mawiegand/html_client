@@ -704,6 +704,7 @@ AWE.I18n.de_DE = function(module) {
         changeName: "Deinen Namen ändern",
         chooseNameCaption: 'Siedlungsnamen wählen',
         changeNameCaption: 'Siedlungsnamen ändern',
+        changeNameDesc: 'Siedlungsnamen ändern für',
         nameChangeAdvice: 'Die allererste Änderung des Namens im Spiel ist kostenlos, jede weitere Änderung kostet ein paar Kröten.',
 
         changeNameDialogCaption: "Gib den neuen Namen ein.",

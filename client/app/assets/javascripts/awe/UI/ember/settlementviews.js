@@ -166,12 +166,25 @@ AWE.UI.Ember = (function(module) {
 
     settingsDialog: function() {
       this.set('message', null);
-      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
-        classNames: ['change-army-name-dialog'],
-        heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'),
+      var changeDialog = AWE.UI.Ember.SettlementNameChangeDialog.create({
+        settlement: this.get('settlement'),
         input: this.getPath('settlement.name'),
         inputMaxLength: 16,
         controller: this,
+
+        firstNameChange: function() {
+          var count = this.getPath('settlement.name_change_count');
+          return count === undefined || count === null || count < this.getPath('settlement.type').change_name_cost.free_changes;
+        }.property('settlement.name_change_count'),
+
+        nameChangeCosts: function() {
+          return this.getPath('settlement.type').change_name_cost.amount;
+        }.property('settlement').cacheable(),
+
+        nameChangeResource: function() {
+          var resourceId = this.getPath('settlement.type').change_name_cost.resource_id;
+          return AWE.GS.RulesManager.getRules().getResourceType(resourceId).symbolic_id;
+        }.property('settlement').cacheable(),
 
         okPressed: function() {
           var controller = this.get('controller');
@@ -188,48 +201,9 @@ AWE.UI.Ember = (function(module) {
 
       return false;
     },
-    
-    nameChangeCosts: function() {
-      return this.getPath('settlement.type').change_name_cost.amount;
-    }.property('settlement').cacheable(),
-    
-    nameChangeResource: function() {
-      var resourceId = this.getPath('settlement.type').change_name_cost.resource_id;
-      return AWE.GS.RulesManager.getRules().getResourceType(resourceId).symbolic_id;
-    }.property('settlement').cacheable(),
-    
-    firstNameChange: function() { 
-      var count = this.getPath('settlement.name_change_count');
-      return count === undefined || count === null || count < this.getPath('settlement.type').change_name_cost.free_changes;
-    }.property('settlement.name_change_count'),
 
     isOutOrFortress: function() {
       return (this.settlement.isOutpost || this.settlement.isFortress);
-    },
-
-    changeNamePressed: function(event) {
-      this.set('message', null);
-      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
-        classNames: ['change-army-name-dialog'],
-        heading: AWE.I18n.lookupTranslation('settlement.customization.changeNameDialogCaption'),
-        input: this.getPath('settlement.name'),
-        inputMaxLength: 16,
-        controller: this,
-        
-        okPressed: function() {
-          var controller = this.get('controller');
-          if (controller) {
-            controller.processNewName(this.getPath('input'));
-          }
-          this.destroy();            
-        },
-        
-        cancelPressed: function() { this.destroy(); },
-      });
-      WACKADOO.presentModalDialog(changeDialog);
-      event.preventDefault();
-      
-      return false;
     },
     
     processNewName: function(newName) {
@@ -473,7 +447,12 @@ AWE.UI.Ember = (function(module) {
 
     settlement: null
   });
-  
+
+  module.SettlementNameChangeDialog = Ember.View.extend({
+    templateName: "settlement-name-change-dialog",
+
+    settlement: null
+  });
   return module;
     
 }(AWE.UI.Ember || {}));
