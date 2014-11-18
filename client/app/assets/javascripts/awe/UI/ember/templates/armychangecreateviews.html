@@ -64,7 +64,7 @@
 <script type="text/x-handlebars" data-template-name="army-new-change-tab1-view">   
      {{#each armyType in activeArmyTypen}}
          <div class="army-type-cell" >
-                {{view AWE.UI.Ember.ArmyUnitInfoView unitTypeBinding="armyType"}}
+                {{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}
          	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
          	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
             {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType"}}
@@ -76,7 +76,7 @@
 <script type="text/x-handlebars" data-template-name="army-new-change-tab2-view">   
      {{#each armyType in activeArmyTypen}}
      <div class="army-type-cell">
-     	{{view AWE.UI.Ember.ArmyUnitInfoView unitTypeBinding="armyType"}}
+     	{{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}
      	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
      	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
      	 {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType"}}
@@ -87,7 +87,7 @@
 <script type="text/x-handlebars" data-template-name="army-new-change-tab3-view">   
      {{#each armyType in activeArmyTypen}}
      <div class="army-type-cell">
-     	{{view AWE.UI.Ember.ArmyUnitInfoView unitTypeBinding="armyType"}}
+     	{{view AWE.UI.Ember.ArmyUnitInfoButtonView unitTypeBinding="armyType"}}
      	<p class="army-garrison-count">{{armyType.garrisonUnits}}</p>
      	<p class="army-garrison-count army-other-count">{{armyType.otherUnits}}</p>
      	 {{view AWE.UI.Ember.ArmyRangeView unitTypeBinding="armyType"}}

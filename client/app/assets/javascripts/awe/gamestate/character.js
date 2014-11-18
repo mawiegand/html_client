@@ -79,23 +79,23 @@ AWE.GS = (function(module) {
        if(this.get('lastactiv') == "green") { 
         var green = true;
         return  green;
-      };
+      }
     }.property('lastactiv').cacheable(),
 
 
     isAway: function(){
       if(this.get('lastactiv') == "yellow"){
-      var yellow = true;
-    return yellow;
-  }
+        var yellow = true;
+        return yellow;
+      }
     }.property('lastactiv').cacheable(),
 
 
     isOff: function(){
       if(this.get('lastactiv') == "red"){
         var red = true;
-      return red;
-    }
+        return red;
+      }
     }.property('lastactiv').cacheable(),
     
 

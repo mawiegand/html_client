@@ -213,3 +213,150 @@
   </div>
 </div>
 </script>
+
+<!-- New Message Center Dialogs and Views-->
+<script type="text/x-handlebars" data-template-name="message-center-dialog">
+  <h1>Mails</h1>
+  {{view AWE.UI.Ember.MessageCenterTabView controllerBinding="controller" characterBinding="character" allianceBinding="alliance"}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="message-center-inbox-tab">
+  <div class="modal-dialog-body mail-inbox-dialog-pane modal-dialog-inbox-tab-body scrolling">
+    <div class="row row2">
+          <ul class="mail-list">
+            {{#each messageBox.sortedEntries}}
+              {{view AWE.UI.Ember.MessageEntry messageBinding="this" controllerBinding="view.controller" parentViewBinding="view"}}
+            {{/each}}
+          </ul>
+        </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="message-center-outbox-tab">
+  <div class="modal-dialog-body mail-outbox-dialog-pane modal-dialog-outbox-tab-body scrolling">
+    <div class="row row2">
+          <ul class="mail-list">
+            {{#each messageBox.sortedEntries}}
+              {{view AWE.UI.Ember.MessageEntry messageBinding="this" controllerBinding="view.controller" parentViewBinding="view"}}
+            {{/each}}
+          </ul>
+        </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="message-entry">
+  <li {{bindAttr class=":mail-list-entry message.unread"}}>
+      <div class="mail-avatar-holder">
+        {{#if parentView.displayingOutbox}}
+           <div class="mail-avatar-image avatar1">{{view AWE.UI.Ember.AvatarView avatarStringBinding="message.recipient.avatar_string" width="76" height="76"}}</div>
+        {{else}}
+          {{#if parentView.displayingInbox}}
+            {{#if message.sender_id}}
+                <div class="mail-avatar-image avatar1">{{view AWE.UI.Ember.AvatarView avatarStringBinding="message.sender.avatar_string" width="76" height="76"}}</div>
+            {{else}}
+                
+            {{/if}}
+          {{/if}}
+        {{/if}}
+      </div>
+
+      <div class="mail-content-holder" {{action "onClickEntry"}}>
+        {{#if parentView.displayingOutbox}}
+            <div class="mail-player-name">{{message.recipient.name}}</div>
+        {{else}}
+          {{#if parentView.displayingInbox}}
+            {{#if message.sender_id}}
+                <div class="mail-player-name">{{message.sender.name}}</div>
+            {{else}}
+                <div class="mail-player-name">{{t messaging.system}}</div>
+            {{/if}}
+          {{/if}}
+        {{/if}}
+          
+            <div class="mail-subject">{{message.subject}}</div>
+      </div>
+      <div class="mail-date-holder"><div class="mail-date">{{timeString}}</div></div>
+  </li>
+</script>
+
+<script type="text/x-handlebars" data-template-name="message-center-new-message-tab">
+  <div class="modal-dialog-body modal-dialog-new-message-tab-body scrolling">
+    {{view AWE.UI.Ember.MessageWriteView controllerBinding="controller"}}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="mail-tab1">
+  {{view AWE.UI.Ember.InboxTab controllerBinding="controller" characterBinding="character" allianceBinding="alliance"}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="mail-tab2">
+  {{view AWE.UI.Ember.OutboxTab controllerBinding="controller" characterBinding="character" allianceBinding="alliance"}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="mail-tab3">
+  {{view AWE.UI.Ember.NewMessageNewView controllerBinding="controller" characterBinding="character" allianceBinding="alliance"}}
+</script>
+
+<!-- New Message Center Dialogs and Views-->
+<script type="text/x-handlebars" data-template-name="message-read-dialog">
+  <div class="popup-dialog-header">
+        <a href="#" {{action "closeDialog"}}>
+          <div class="modal-dialog-back"></div>
+        </a>
+        <h1 class="popup-header-center" >Mail</h1>
+  </div>
+    <div class="modal-dialog-body read-mail-dialog-pane no-scrolling">
+        <div class="row row1 tab-bar-new">
+          <div class="cell cell-33">
+            {{#if isInbox}}
+             <div class="left-menu-button" {{action "replyClicked"}}>{{t messaging.reply}}</div>
+            {{/if}}
+          </div>
+          <div class="cell cell-33"><div class="middle-menu-button" {{action "forwardClicked"}}>{{t messaging.forward}}</div></div>
+          <div class="cell cell-33"><div class="right-menu-button" {{action "deleteClicked"}}>{{t messaging.delete}}</div></div>
+        </div>
+        <div class="row row2">
+          <div class="cell cell-66"><div class="player-name">{{message.sender.name}}</div></div>
+          <div class="cell cell-33"><div class="date">{{timeString}}</div></div>
+        </div>
+        <div class="row row3">
+          <div class="cell"><div class="subject">{{message.subject}}</div></div>
+        </div>
+        <div class="row row4">
+          <div class="cell"><div class="content">{{{message.message.body}}}</div></div>
+        </div>
+ </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="message-write-view">
+    <div class="new-mail-dialog-pane no-scrolling">
+        <div class="row player-name-input">
+          <div class="cell cell-66">
+            {{view Ember.TextField valueBinding="recipientValue" placeholderBinding="playerNamePlaceholder"}}
+          </div>
+          <div class="cell cell-33"><div class="alliance-ultimatum-button send-mail-button" {{action "submitMessage"}}>{{t messaging.send}}</div></div>
+        </div>
+        <div class="row player-subject-input">
+          <div class="cell">
+            {{view Ember.TextField valueBinding="subjectValue" placeholderBinding="subjectPlaceholder"}}</div>
+        </div>
+        <div class="row row3">
+          <div class="cell">
+            {{view Ember.TextArea classNames="content" valueBinding="bodyValue" }}
+          </div>
+        </div>
+    </div>
+</script>
+
+<!-- Write Message Dialog-->
+<script type="text/x-handlebars" data-template-name="message-write-dialog">
+  <div class="popup-dialog-header">
+        <a href="#" {{action "closeDialog"}}>
+          <div class="modal-dialog-back"></div>
+        </a>
+        <h1 class="popup-header-center" >{{recipient}}</h1>
+ </div>
+ <div class="modal-dialog-body modal-dialog-new-message-tab-body scrolling" style="top: 80px;">
+    {{view AWE.UI.Ember.MessageWriteView controllerBinding="controller"}}
+  </div>
+</script>

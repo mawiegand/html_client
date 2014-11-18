@@ -96,6 +96,24 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
   module.evaluateResourceCosts = function(costHash, level, boni, all) {
     return _evaluateResourceCosts(costHash, level, all, true);    
   };
+
+
+  /** ==== MARC ==== */
+
+  module.evaluateGarrisonBoni = function(definitions, level, all) {
+    return _evaluateGarrisonBoni(definitions, level, all);
+  };
+
+  module.evaluateArmyBoni = function(definitions, level, all) {
+    return _evaluateArmyBoni(definitions, level, all);
+  };
+
+  module.evaluateDefenseBonus = function(definitions, level, all) {
+    return _evaluateDefenseBonus(definitions, level, all);
+  };
+
+
+  /* ================ */
   
   /** does the same as the method before but does NOT evaluate formulas.    
    * @function
@@ -499,7 +517,43 @@ AWE.Util.Rules = (function(module) /** @lends AWE.Util.Rules */ {
 	  });
     return costs;
   };
+
+
+
+// ==== MARC =====
+  var _evaluateGarrisonBoni = function(definition, level, all, evaluate) {
+    definition  = definition || {}
+    level        = level || 0;
+    var bonus;
+
+    bonus = AWE.GS.Util.parseAndEval(definition, level);
+    
+    return bonus;
+  };
+
+  var _evaluateArmyBoni = function(definition, level, all, evaluate) {
+    definition  = definition || {}
+    level        = level || 0;
+    var bonus;
+
+    bonus = AWE.GS.Util.parseAndEval(definition, level);
+    
+    return bonus;
+  };
+
+  var _evaluateDefenseBonus = function(definition, level, all, evaluate) {
+    definition  = definition || {}
+    level        = level || 0;
+    var bonus;
+
+    bonus = AWE.GS.Util.parseAndEval(definition, level);
+    
+    return bonus;
+  };
   
+//============
+
+
   var _calculateAndEvaluateProductionTime = function(baseTime, level, speed, evaluate) {
     baseTime = baseTime || null;
     level    = level || 0;

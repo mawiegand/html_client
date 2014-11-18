@@ -20,7 +20,6 @@ AWE.UI = (function(module) {
     var attackButton = null;
     var battleButton = null;    
     var _battleInfoButtonView = null;
-    var _backgroundView3 = null;
 
     //  hovered
     var _infoText1View = null;    
@@ -28,7 +27,6 @@ AWE.UI = (function(module) {
     var _infoText3View = null;
 
     var _backgroundShapeView = null;
-    var _battleInfoButtonBackgroundView = null;
 
     var rightOfWayIcon = null;
     
@@ -66,9 +64,8 @@ AWE.UI = (function(module) {
         attackButton.setEnabled(my.region.location(0) && my.region.location(0).garrisonArmy() && !my.region.location(0).garrisonArmy().get('empty') && !my.region.location(0).garrisonArmy().get('isSuspended'));
       }
       
-      if (_battleInfoButtonView) {
+      if (_battleInfoButtonView) {        
         _battleInfoButtonView.setVisible(my.fortressView.selected() && my.region.location(0) && my.region.location(0).garrisonArmy() && my.region.location(0).garrisonArmy().get('isFighting'));
-        _battleInfoButtonBackgroundView.setVisible(my.fortressView.selected() && my.region.location(0) && my.region.location(0).garrisonArmy() && my.region.location(0).garrisonArmy().get('isFighting'));
       }
     }
     
@@ -77,22 +74,13 @@ AWE.UI = (function(module) {
       var currentCharacter = AWE.GS.CharacterManager.getCurrentCharacter();
       var isOwnLocation = my.region.ownerId() === currentCharacter.get('id');
 
-      if (!_backgroundView3) {
-        _backgroundView3 = AWE.UI.createImageView();
-        _backgroundView3.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/annotation/panel3"));
-        _backgroundView3.setFrame(AWE.Geometry.createRect(-20, -40, 154, 230));
-        this.addChild(_backgroundView3);
-      }
-      if (_backgroundView3) {
-        _backgroundView3.setVisible(my.fortressView.selected() && isOwnLocation);
-      }
-
       if (!enterButton && my.region.ownerId() === currentCharacter.get('id')) {
-        enterButton = AWE.UI.createButtonView();
-        enterButton.initWithControllerTextAndImage(my.controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/enter/normal"));
-        enterButton.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/enter/hover"), module.CONTROL_STATE_HOVERED);
-        enterButton.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/enter/active"), module.CONTROL_STATE_SELECTED);
-        enterButton.setFrame(AWE.Geometry.createRect(20, -25, 48, 48));
+        enterButton = AWE.UI.createButtonIconView();
+        enterButton.initWithControllerImageAndIcon(my.controller,
+          AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue"), 
+          AWE.UI.ImageCache.getImage("hud/annotation/button/enter/normal")
+        );
+        enterButton.setFrame(AWE.Geometry.createRect(-20, 35, 64, 64));
         enterButton.onClick = function() { that.onEnterButtonClick(); }
         this.addChild(enterButton);
       }
@@ -105,11 +93,12 @@ AWE.UI = (function(module) {
       }
       
       if (!attackButton && isOwnLocation) { // check ongoing battle
-        attackButton = AWE.UI.createButtonView();
-        attackButton.initWithControllerTextAndImage(my.controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/attack/normal"));
-        attackButton.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/attack/hover"), module.CONTROL_STATE_HOVERED);
-        attackButton.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/attack/active"), module.CONTROL_STATE_SELECTED);
-        attackButton.setFrame(AWE.Geometry.createRect(-17, 22, 48, 48));
+        attackButton = AWE.UI.createButtonIconView();
+        attackButton.initWithControllerImageAndIcon(my.controller,
+          AWE.UI.ImageCache.getImage("hud/annotation/button/background/red"), 
+          AWE.UI.ImageCache.getImage("hud/annotation/button/attack/normal")
+        );
+        attackButton.setFrame(AWE.Geometry.createRect(40, 80, 64, 64));
         attackButton.onClick = function() {
           if (attackButton.enabled()) {
             that.onAttackButtonClick(that);
@@ -143,19 +132,14 @@ AWE.UI = (function(module) {
 //      }
 //
 
-      if (!_battleInfoButtonBackgroundView) {
-        _battleInfoButtonBackgroundView = AWE.UI.createImageView();
-        _battleInfoButtonBackgroundView.initWithControllerAndImage(my.controller, AWE.UI.ImageCache.getImage("hud/annotation/panel1"));
-        _battleInfoButtonBackgroundView.setFrame(AWE.Geometry.createRect(150, 84, 53, 53));
-        this.addChild(_battleInfoButtonBackgroundView);
-      }
-
 
       if (!_battleInfoButtonView) {
-        _battleInfoButtonView = AWE.UI.createButtonView();
-        _battleInfoButtonView.initWithControllerTextAndImage(my.controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/battleinfo/normal"));
-        _battleInfoButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/battleinfo/hover"), module.CONTROL_STATE_HOVERED);
-        _battleInfoButtonView.setFrame(AWE.Geometry.createRect(152, 86, 48, 48));
+        _battleInfoButtonView = AWE.UI.createButtonIconView();
+        _battleInfoButtonView.initWithControllerImageAndIcon(my.controller,
+          AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue"), 
+          AWE.UI.ImageCache.getImage("hud/icon/info")
+        );
+        _battleInfoButtonView.setFrame(AWE.Geometry.createRect(110, 86, 64, 64));
         _battleInfoButtonView.onClick = function() {
           if (_battleInfoButtonView.enabled() && my.region.location(0) && my.region.location(0).garrisonArmy()) {
             that.onBattleInfoButtonClick(my.region.location(0).garrisonArmy());

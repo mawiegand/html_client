@@ -1,0 +1,50 @@
+<script type="text/x-handlebars" data-template-name="alliance-diplomacy-dialog">
+<h1>{{t alliance.diplomacy}}</h1>
+<div class="modal-dialog-body alliance-diplomacy-dialog-pane no-scrolling">
+  {{#if character.alliance_id}}
+    <h2>{{t alliance.membershipHeader}}</h2>
+    <div class="modal-dialog-text">{{t alliance.memberOf}} [{{character.alliance_tag}}].</div>
+    <div class="alliance-diplomacy-submit-leave">
+      <div class="modal-dialog-green-button-big center" {{action "leaveAlliance"}}>{{#if ongoingActionLeave}}{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{/if}}{{t alliance.leave}}</div>
+    </div>
+  {{else}}
+    {{#if character.canJoinAlliance}}
+      <h2>{{t alliance.joinAllianceHeader}}:</h2>
+      <div class="alliance-diplomacy-tag">
+        <span>{{t alliance.tag}}:</span><br />
+        {{view Ember.TextField class="small-text-field alliance-diplomacy-dialog-pane-input" placeholder="" type="text" valueBinding="joinAllianceTag"}}
+      </div>
+      <div class="alliance-diplomacy-password">
+        <span>{{t alliance.password}}:</span><br />
+        {{view Ember.TextField class="small-text-field alliance-diplomacy-dialog-pane-input" placeholder="" type="text" valueBinding="joinAlliancePassword"}}
+      </div>
+      <div class="alliance-diplomacy-submit">
+        <div class="modal-dialog-green-button-big" {{action "joinAlliance"}}>{{#if ongoingActionJoin}}{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{/if}}{{t alliance.joinAllianceButtonNew}}</div>
+      </div>
+      <div class="clearfix"></div>
+
+      <h2>{{t alliance.createAlliance}}:</h2>
+      <div class="alliance-diplomacy-tag">
+        <span>{{t alliance.tag}}:</span><br />
+        {{view Ember.TextField class="small-text-field alliance-diplomacy-dialog-pane-input" placeholder="" type="text" valueBinding="newAllianceTag"}}
+      </div>
+      <div class="alliance-diplomacy-password">
+        <span>{{t alliance.name}}:</span><br />
+        {{view Ember.TextField class="small-text-field alliance-diplomacy-dialog-pane-input" placeholder="" type="text" valueBinding="newAllianceName"}}
+      </div>
+      <div class="alliance-diplomacy-submit">
+        <div class="modal-dialog-green-button-big" {{action "createAlliance"}}>{{#if ongoingActionCreate}}{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{/if}}{{t alliance.createAllianceButtonNew}}</div>
+      </div>
+      <div class="clearfix"></div>
+
+      <h2>{{t alliance.joinRandomAlliance}}:</h2>
+      <div class="alliance-diplomacy-submit-random">
+        <div class="modal-dialog-green-button-big center" {{action "joinRandomAlliance"}}>{{#if ongoingActionRandom}}{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}{{/if}}{{t alliance.joinRandomAllianceButtonNew}}</div>
+      </div>
+    {{else}}
+      <h2>{{t alliance.membershipHeader}}:</h2>
+      <div class="modal-dialog-text">{{joinAllianceNotAllowedText}}.</div>
+    {{/if}}
+  {{/if}}
+</div>
+</script>

@@ -413,9 +413,18 @@ module.ArmyRangeView  = Ember.TextField.extend({
        
    			if(unitType.garrisonUnits > 0 || unitType.otherUnits > 0)
    			{
-   			//infantry
+   			//infantry and special unit
    				if(unitType.unitCategory == self.get("unityTypeID") || self.get('isAllUnits'))
-   					list.push(unitType);
+          {
+   					  list.push(unitType);
+          }
+          else
+          {
+            if((unitType.unitCategory == 4) && (self.get("unityTypeID") == 0))
+            {
+              list.push(unitType);
+            }
+          }
    			}
       });
       
@@ -443,10 +452,11 @@ module.ArmyRangeView  = Ember.TextField.extend({
       {
         var unitTypes = AWE.GS.RulesManager.getRules().get('unit_types');
         var unitTypeLocalObject = this.get("unitType");
+        var id = this.getPath("unitType.unitID");
 
         unitTypes.forEach(function(rulesUnitType) 
         {
-          if(rulesUnitType.id == unitTypeLocalObject.get('unitID'))//cavalery
+          if(rulesUnitType.id == id)//cavalery
             {
               var dialog = AWE.UI.Ember.EncyclopediaUnitNewView.create({unit: rulesUnitType});
               WACKADOO.presentModalDialog(dialog);

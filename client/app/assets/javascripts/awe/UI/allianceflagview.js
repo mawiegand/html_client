@@ -109,7 +109,7 @@ AWE.UI = (function(module) {
               }
             }
           }
-          AWE.Log.Debug('resize flag shape view');
+//          AWE.Log.Debug('resize flag shape view');
           _flagShapeView.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
         }
         else {
@@ -119,8 +119,8 @@ AWE.UI = (function(module) {
           }
           
           var _flagShapeGraphics = new Graphics();
-          _flagShapeGraphics.setStrokeStyle(1);
-          _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
+//          _flagShapeGraphics.setStrokeStyle(0);
+//          _flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
           _flagShapeGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
           if (_direction === 'down') {
             _flagShapeGraphics.moveTo(0, 0).lineTo(my.frame.size.width, 0).lineTo(my.frame.size.width / 2, my.frame.size.height).lineTo(0, 0);
@@ -128,7 +128,10 @@ AWE.UI = (function(module) {
           else if (_direction === 'left') {
             _flagShapeGraphics.moveTo(my.frame.size.width, 0).lineTo(my.frame.size.width, my.frame.size.height).lineTo(0, my.frame.size.height / 2).lineTo(my.frame.size.width, 0);
           }
-      
+          else if (_direction === 'right') {
+            _flagShapeGraphics.moveTo(0, 0).lineTo(0, my.frame.size.height).lineTo(my.frame.size.width, my.frame.size.height / 2).lineTo(0, 0);
+          }
+
           _flagShapeView = AWE.UI.createShapeView();
           _flagShapeView.initWithControllerAndGraphics(my.controller, _flagShapeGraphics);
           _flagShapeView.setFrame(AWE.Geometry.createRect(0, 0, my.frame.size.width, my.frame.size.height));
@@ -244,7 +247,7 @@ AWE.UI = (function(module) {
             
       var flagShapeGraphics = new Graphics();
         
-      flagShapeGraphics.setStrokeStyle(1);
+//      flagShapeGraphics.setStrokeStyle(1);
       //flagShapeGraphics.beginStroke('rgb(0, 0, 0)');
       flagShapeGraphics.beginFill('rgb('+color.r+','+color.g+','+color.b+')');
 
@@ -253,6 +256,9 @@ AWE.UI = (function(module) {
       }
       else if (_direction === 'left') {
         flagShapeGraphics.moveTo(width, 0).lineTo(width,height).lineTo(0, height / 2).lineTo(width, 0);
+      }
+      else if (_direction === 'right') {
+        flagShapeGraphics.moveTo(0, 0).lineTo(width, height / 2).lineTo(0, height).lineTo(0, 0);
       }
 
       var flagShapeView = AWE.UI.createShapeView();

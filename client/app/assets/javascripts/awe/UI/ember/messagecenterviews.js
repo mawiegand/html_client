@@ -324,6 +324,274 @@ AWE.UI.Ember = (function(module) {
 
   });
 
+// New Message Center Views and Dialogs
+  module.MessageCenterNewDialog = module.PopUpDialog.extend({
+    templateName: 'message-center-dialog',
+    classNames: ['message-center-dialog'],
+
+    character: null,
+    alliance: null,
+  });
+
+    // New Message Write Dialog
+  module.MessageWriteDialog = module.PopUpDialog.extend({
+    templateName: 'message-write-dialog',
+
+    closeDialog: function() {
+      this.destroy();
+    },
+
+    destroyDialog: function()
+    {
+      //destroy message center dialog after success submit
+      this.destroy();
+    },
+  });
+
+  // New Message Read Dialog
+  module.MessageReadDialog = module.PopUpDialog.extend({
+    templateName: 'message-read-dialog',
+    //classNames: ['message-center-dialog'],
+    timeString: function() {
+      return AWE.Util.localizedDateTime(this.getPath('message.created_at'));
+    }.property('message.created_at').cacheable(),
+
+    closeDialog: function() {
+      this.destroy();
+    },
+
+    deleteClicked: function() {
+      var selectedMessageEntry = this.get('message');
+      AWE.Action.Messaging.createDeleteMessageAction(selectedMessageEntry).send();
+      this.destroy();
+    },
+
+    forwardClicked: function() {
+      var currentController = this.get('controller');
+      var dialog = AWE.UI.Ember.MessageWriteDialog.create({
+        controller: currentController,
+
+        subject:   'Fwd: ' + (this.getPath('message.subject') || ''),
+        body:      ' \n\n\n---- On  ' + AWE.Util.localizedDateTime(this.getPath('message.created_at')) + ' ' +
+                    (this.getPath('message.sender.name') || 'Sytem') + ' wrote to ' +
+                    this.getPath('message.recipient.name') + ':\n\n' +
+                    AWE.Util.htmlToAscii(this.getPath('message.message.body')),
+      });
+      this.setPath('parentView.parentView.childView', dialog);
+      
+      WACKADOO.presentModalDialog(dialog);
+    },
+
+    replyClicked: function() {
+      var currentController = this.get('controller');
+      var dialog = AWE.UI.Ember.MessageWriteDialog.create({
+        controller: currentController,
+
+        recipient: this.getPath('message.sender.name'),  
+        subject:   'Re: ' + (this.getPath('message.subject') || ''),
+        body:      ' \n\n\n---- On  ' + AWE.Util.localizedDateTime(this.getPath('message.created_at')) + ' ' +
+                    (this.getPath('message.sender.name') || 'someone') + ' wrote:\n\n' +
+                    AWE.Util.htmlToAscii(this.getPath('message.message.body')),
+      });
+      this.setPath('parentView.parentView.childView', dialog);
+      
+      WACKADOO.presentModalDialog(dialog);
+    },
+
+  });
+
+  // New Message Write View
+  module.MessageWriteView = Ember.View.extend({
+    templateName: 'message-write-view',
+
+    init: function() {
+      this._super();
+
+      this.set('recipientValue', this.getPath('parentView.recipient'));
+      this.set('subjectValue', this.getPath('parentView.subject'));
+      this.set('bodyValue', this.getPath('parentView.body'));
+    },
+
+    playerNamePlaceholder: function(){
+      return AWE.I18n.lookupTranslation('general.playerName');
+    }.property(),
+
+    subjectPlaceholder: function(){
+      return AWE.I18n.lookupTranslation('messaging.subject');
+    }.property(),
+
+    recipientValue: null,
+    subjectValue: null,
+    bodyValue: null,
+
+    submitMessage: function() {
+      var sendNewMessage = null;
+      sendNewMessage = module.NewMessage.create({
+        recipient: this.get('recipientValue'),  
+        subject:   this.get('subjectValue'),
+        body:      this.get('bodyValue'),
+        sender_id: AWE.GS.CharacterManager.getCurrentCharacter().get('id'),
+      });
+    this.get("controller").sendMessage(sendNewMessage);
+    },
+
+  });
+
+
+  module.MessageCenterTabView = module.TabViewNew.extend({
+
+    character: null,
+    alliance: null,
+
+    init: function() {
+      this.set('tabViews', [
+        { key:   "tab1",
+          title: AWE.I18n.lookupTranslation('messaging.inbox'), 
+          view:  AWE.UI.Ember.MailTab1.extend({
+            controllerBinding: "parentView.parentView.controller",
+            characterBinding: "parentView.parentView.character",
+            allianceBinding: "parentView.parentView.alliance",
+          }),
+          buttonClass: "left-menu-button",
+          
+        }, // remember: we need an extra parentView to escape the ContainerView used to display tabs!
+        { key:   "tab2",
+          title: AWE.I18n.lookupTranslation('messaging.outbox'), 
+          view:  AWE.UI.Ember.MailTab2.extend({
+            controllerBinding: "parentView.parentView.controller",
+            characterBinding: "parentView.parentView.character",
+            allianceBinding: "parentView.parentView.alliance",
+          }),
+          buttonClass: "middle-menu-button",
+        },
+        { key:   "tab3",
+          title: AWE.I18n.lookupTranslation('messaging.newMessage'), 
+          view:  AWE.UI.Ember.MailTab3.extend({
+            controllerBinding: "parentView.parentView.controller",
+            characterBinding: "parentView.parentView.character",
+            allianceBinding: "parentView.parentView.alliance",
+          }),
+          buttonClass: "right-menu-button",
+        }
+      ]);
+      
+      this._super();
+    },
+  });
+
+  module.InboxTab = module.MessageCenterView.extend({
+    templateName: 'message-center-inbox-tab',
+
+    childView: null,
+
+    updateControllerCurrentView: function(){
+      this.get('controller').messageView = this;
+    }.observes('controller'),
+
+    destroyDialog: function()
+    {
+      var viewToDestroy = this.get('childView');
+      if(viewToDestroy != null)
+      {
+        viewToDestroy.destroy();
+      }
+    },
+  });
+
+  module.OutboxTab = module.MessageCenterView.extend({
+    templateName: 'message-center-outbox-tab',
+
+    display: 'outbox',
+    childView: null,
+
+    updateControllerCurrentView: function(){
+      this.getPath('controller').messageView = this;
+    }.observes('controller'),
+
+    destroyDialog: function()
+    {
+      var viewToDestroy = this.get('childView');
+      if(viewToDestroy != null)
+      {
+        viewToDestroy.destroy();
+      }
+    },
+  });
+
+  module.NewMessageNewView = module.MessageCenterView.extend({
+    templateName: 'message-center-new-message-tab',
+
+    display: '',
+    controller: null,
+
+    updateControllerCurrentView: function(){
+      this.getPath('controller').messageView = this;
+    }.observes('controller'),
+
+    destroyDialog: function()
+    {
+      //destroy message center dialog after success submit
+      this.getPath('parentView.parentView.parentView.parentView').destroy()
+    },
+  });
+
+  module.MailTab1 = Ember.View.extend({
+    templateName: 'mail-tab1',
+
+    character: null,
+    alliance: null,
+
+  });
+  module.MailTab2 = Ember.View.extend({
+    templateName: 'mail-tab2',
+
+    character: null,
+    alliance: null,
+  });
+  module.MailTab3 = Ember.View.extend({
+     templateName: 'mail-tab3',
+
+    character: null,
+    alliance: null,
+  });
+
+  module.MessageEntry = Ember.View.extend({
+     templateName: 'message-entry',
+     classNames: 'read sent',
+
+     //character: 'AWE.GS.CharacterManager.getCharacter(characterId)',
+
+     //var character = AWE.GS.CharacterManager.getCharacter(characterId);
+     message: null,
+     timeString: function() {
+      return AWE.Util.localizedDateTime(this.getPath('message.created_at'));
+    }.property('message.created_at').cacheable(),
+     /*debugTest: function(){
+      debugger
+      return true;
+    }.observes('message'),*/
+    onClickEntry: function(){
+      var self = this;
+      var messageEntry = this.get('message');
+      var currentController = this.get('controller');
+      if (messageEntry && !messageEntry.get('message')) {
+        messageEntry.fetchMessage();
+      }
+      var dialog = AWE.UI.Ember.MessageReadDialog.create({
+        message: messageEntry,
+        isInbox: this.getPath('parentView.displayingInbox'),
+        controller: currentController,
+        parentView: self,
+      });
+      WACKADOO.presentModalDialog(dialog);
+      
+      if (!messageEntry || messageEntry.get('read')) {  // already marked as read?
+        return ;
+      }
+      AWE.Action.Messaging.createMarkMessageReadAction(messageEntry).send();
+    }
+  });
+
   return module;
     
 }(AWE.UI.Ember || {}));

@@ -128,11 +128,69 @@ AWE.GS = (function(module) {
 
 		productionsNextLevel: function() {
 		  var production            = this.getPath('buildingType.production');
-		  var settlementProductions = this.getPath('slot.settlement.resourceProductions')
+		  var settlementProductions = this.getPath('slot.settlement.resourceProductions');
 		  var nextLevel             = this.get('nextLevel');
 		  return production ? AWE.Util.Rules.evaluateResourceProduction(production, nextLevel, settlementProductions) : null;
 		}.property('nextLevel', 'buildingType').cacheable(),
+
+    // === Marc ===
+
+    getProductionsForLevel: function(level) {
+      var production            = this.getPath('buildingType.production');
+      var settlementProductions = this.getPath('slot.settlement.resourceProductions');
+      return production ? AWE.Util.Rules.evaluateResourceProduction(production, level, settlementProductions) : null;
+    },
+
+    getCapacityForLevel: function(level) {
+      var capacity  = this.getPath('buildingType.capacity');
+      return capacity ? AWE.Util.Rules.evaluateResourceCapacity(capacity, level, true) : null;
+    },
+
+    getPopulationForLevel: function(level) {
+      return this.calcPopulation(level);
+    },
+
+    getProductionBoniForLevel: function(level) {
+      var boni      = this.getPath('buildingType.production_bonus');
+      return boni ? AWE.Util.Rules.evaluateResourceProductionBoni(boni, level, true) : null;
+    },
+
+    getDefenseBonusForLevel: function(level) {
+      var bonus = this.getPath('buildingType.abilities.defense_bonus');
+      return bonus ? AWE.Util.Rules.evaluateDefenseBonus(bonus, level) : null;
+    },
+
+    getGarrisonBonusForLevel: function(level) {
+      var bonus = this.getPath('buildingType.abilities.garrison_size_bonus');
+      return bonus ? AWE.Util.Rules.evaluateGarrisonBoni(bonus, level) : null;
+    },
+
+    getArmyBonusForLevel: function(level) {
+      var bonus = this.getPath('buildingType.abilities.army_size_bonus');
+      return bonus ? AWE.Util.Rules.evaluateArmyBoni(bonus, level) : null;
+    },
+
+    getExperienceProductionForLevel: function(level) {
+      var experienceProduction = this.getPath('buildingType.experience_production');
+      level = level || 0;
+      return experienceProduction ? AWE.GS.Util.parseAndEval(experienceProduction, level) : null;
+    },
+
+    isMilitaryBuilding: function() {
+      var self = this;
+      var isMilitary = false;
+      var military = AWE.Config.MILITARY_BUILDINGS;
+      military.forEach(function(type) {
+        if(self.getPath('buildingType.symbolic_id') === type[0])
+        {
+          isMilitary = true;
+        }
+      });
+      return isMilitary;
+    },
 		
+    // ============
+
 		experienceProduction: function() {
 		  var experienceProduction = this.getPath('buildingType.experience_production');
 		  var level                = this.get('level');

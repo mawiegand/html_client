@@ -43,12 +43,23 @@ AWE.UI.Ember = (function(module) {
     
 		levelBinding: 'building.level',
 		typeBinding:  'building.type',
+		mouseInView:  false,
 
-    classNameBindings: ['size1:size1', 'size2:size2', 'size3:size3',  'size4:size4',  'size5:size5',  'size6:size6', 'type', 'slotLayoutId', 'levelClassName'],
+    classNameBindings: ['mouseInView:hover', 'slotLayoutId', 'levelClassName', 'type'],
 
     levelClassName: function() {
       return "level"+this.get('level');
     }.property('level').cacheable(),
+
+    size: function() {
+      if(this.get("building"))
+      {
+        var buildingId = AWE.GS.RulesManager.getRules().building_types[this.getPath("building.buildingId")].symbolic_id;
+        var imageLevel = AWE.Config.BuildingImageLibrary.getImageLevelForBuilding(buildingId, this.get("level"));
+        return "size" + imageLevel;
+      }
+      return false;
+    }.property("building", 'level'),
 
     size1: function() {
       var level = this.get('level');
@@ -99,6 +110,152 @@ AWE.UI.Ember = (function(module) {
 
 
   });
+  
+  module.SlotClickArea = Ember.View.extend({
+    templateName: 'click-area',
+    classNames: 'click-area',
+   
+    mouseEnter: function(event) {
+      var self = this;
+      var parent = this.get("parentView");
+      
+      parent.set('mouseInView', true);  // need to set this because showTooltip is called delayed and there we need to check, whether the mouse left the view during the meantime
+      setTimeout(function() {
+        parent.showTooltip();
+      }, parent.get('timeout'));
+    },
+    
+    mouseMove: function(event) {
+      var parent = this.get("parentView");
+      
+      parent.set('mouseX', event.pageX);
+      parent.set('mouseY', event.pageY);
+    },
+    
+    mouseLeave: function(event) {
+      var parent = this.get("parentView");
+      
+      parent.set('mouseInView', false);
+      parent.setPath('parentView.hoveredBuildingSlotView', null);
+    },
+    
+  
+    click: function(event) {
+      var parent = this.get("parentView");
+      
+      var slot = parent.get('slot');
+		  var controller = parent.getPath('parentView.controller');
+		  
+		  if (controller) {
+		    controller.slotClicked(slot);
+		  }
+		  else {
+		    log('In Interactive Building View: no controller found!');
+		  }
+		},
+    
+  });
+  
+  module.ConstructionProgressView = Ember.View.extend({
+    templateName: 'construction-progress',
+    
+    slot: null,
+    job: null,
+    timer: null,    
+    timeRemaining: null,  
+    
+    init: function(spec) {
+      this._super(spec);  
+      
+      var slot = this.getPath('parentView.slot');
+      this.set('slot', slot);
+      
+      var sortedJobs = this.getPath('parentView.slot.building.sortedJobs');
+      this.set('job', sortedJobs[0]);          
+    },  
+    
+    isSlotSelected: function() {
+      return this.getPath('parentView.parentView.selectedSlot.slot_num') === this.getPath('slot.slot_num');
+    }.property('parentView.parentView.selectedSlot.slot_num', 'slot.slot_num'),
+    
+    isConstructionSpeedupPossible: function() {
+      return this.getPath('job.active_job') && this.getPath('job.buildingType.buyable') && AWE.Util.Rules.isConstructionSpeedupPossible(this.get('timeRemaining'));
+    }.property('timeRemaining', 'job.active_job'),
+    
+    cancelJobPressed: function(event) {
+      this.getPath('parentView.parentView.controller').constructionCancelClicked(this.get('job'));
+    },
+    
+    finishJobPressed: function(event) {
+      this.getPath('parentView.parentView.controller').constructionFinishClicked(this.get('job'));
+    },
+    
+    calcTimeRemaining: function() {
+      var finishedAt = this.getPath('job.active_job.finished_at');
+      if (!finishedAt) {
+        return ;
+      }
+      var finish = Date.parseISODate(finishedAt);
+      var now = AWE.GS.TimeManager.estimatedServerTime(); // now on server
+      var remaining = (finish.getTime() - now.getTime()) / 1000.0;
+      remaining = remaining < 0 ? 0 : remaining;
+      this.set('timeRemaining', remaining);
+    },
+    
+    startTimer: function() {
+      var timer = this.get('timer');
+      if (!timer) {
+        timer = setInterval((function(self) {
+          return function() {
+            self.calcTimeRemaining();
+          };
+        }(this)), 1000);
+        this.set('timer', timer);
+      }
+    },
+    
+    stopTimer: function() {
+      var timer = this.get('timer');
+      if (timer) {
+        clearInterval(timer);
+        this.set('timer', null);
+      }
+    },
+    
+    active: function() {
+      return this.getPath('job.active_job') !== null;
+    }.property('job.active_job'),
+    
+    first: function() {
+      var jobCollection = this.getPath('parentView.queue.hashableJobs.collection');
+      return jobCollection && jobCollection[0] && jobCollection[0] === this.get('job')
+    }.property('parentView.queue.hashableJobs.changedAt'),    
+    
+    startTimerOnBecommingActive: function() {
+      var active = this.get('active');
+      if (active && this.get('timer')) {
+        this.startTimer();
+      }
+      return ;
+    }.observes('active'),        
+    
+    progressBarWidth: function() {
+      var remaining = this.get('timeRemaining') || 999999999;
+      var total = this.getPath('job.productionTime') || 1;
+      var ratio = 1.0 - (remaining / (1.0*total));
+      ratio = ratio < 0 ? 0 : (ratio > 1 ? 1 : ratio);
+      return 'width: ' + Math.ceil(100 * ratio) + '%;';
+    }.property('timeRemaining', 'job.productionTime'),
+    
+    didInsertElement: function() {      
+      this.startTimer();
+    },
+    
+    willDestroyElement: function() {
+      this.stopTimer();
+    },
+    
+  });  
 
   /** @class
    * @name AWE.UI.Ember.BuildingSlotView */  
@@ -112,8 +269,6 @@ AWE.UI.Ember = (function(module) {
 		
 		buildingBinding: 'slot.building',
 				
-		mouseInView: false,
-
     init: function() {
       this._super();
     },
@@ -124,35 +279,6 @@ AWE.UI.Ember = (function(module) {
       }
     },
   
-    mouseEnter: function(event) {
-      var self = this;
-      this.set('mouseInView', true);  // need to set this because showTooltip is called delayed and there we need to check, whether the mouse left the view during the meantime
-      setTimeout(function() {
-        self.showTooltip();
-      }, this.get('timeout'));
-    },
-    mouseMove: function(event) {
-      this.set('mouseX', event.pageX);
-      this.set('mouseY', event.pageY);
-    },
-    mouseLeave: function(event) {
-      this.set('mouseInView', false);
-      this.setPath('parentView.hoveredBuildingSlotView', null);
-    },
-    
-  
-    click: function(event) {
-      var slot = this.get('slot');
-		  var controller = this.getPath('parentView.controller');
-		  
-		  if (controller) {
-		    controller.slotClicked(slot);
-		  }
-		  else {
-		    log('In Interactive Building View: no controller found!');
-		  }
-		},  
-		
     slotLayoutId: function() {
       var slotNum = this.getPath('slot.slot_num');
       return slotNum ? "slot"+slotNum : null;

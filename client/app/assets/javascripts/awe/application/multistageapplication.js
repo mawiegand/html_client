@@ -50,6 +50,8 @@ AWE.Application = (function(module) {
     var stageHovered=-1;
     var nextMouseOverTest = new Date(1970).getTime();
     var mouseOverTestTimeout = 200; // test every x ms
+    var lastDistance = 0;
+    var multiTouch = false;
 
     var _uiEnabled = false;
     var _hideHud = true;
@@ -83,6 +85,65 @@ AWE.Application = (function(module) {
 
       domElements: [], //< contains the list of dom elements that can also catch mouse events
 
+
+      touchHandler: function(event) {
+        var touches = event.changedTouches,
+        first = touches[0],
+        delta = 1,
+        type = "";
+        switch(event.type) {
+          case "touchstart": type = "mousedown"; break;
+          case "touchmove":  type="mousemove"; break;        
+          case "touchend":   type="mouseup"; break;
+          default: return;
+        }
+    
+        if (event.type === "touchstart") {
+          if (event.touches.length > 1) {
+            var xdist = (event.touches[0].pageX - event.touches[1].pageX);
+            var ydist = (event.touches[0].pageY - event.touches[1].pageY)
+            lastDistance = Math.sqrt(xdist * xdist + ydist * ydist);
+            multiTouch = true;
+          } else {
+            multiTouch = false;
+          }
+        }   
+        if (event.type === "touchmove") {
+          if (event.touches.length > 1) {
+            var xdist = (event.touches[0].pageX - event.touches[1].pageX);
+            var ydist = (event.touches[0].pageY - event.touches[1].pageY)
+            var newDistance = Math.sqrt(xdist * xdist + ydist * ydist);
+            delta = Math.round(lastDistance-newDistance);  
+            if (delta === 0 || delta === undefined) {
+              event.preventDefault();
+              return;
+            }   
+            lastDistance = newDistance;
+            type = "mousewheel";  
+          }
+        }
+        if (!(type === "mousewheel") && multiTouch) {
+          event.preventDefault();
+          return;
+        }
+        //initMouseEvent(type, canBubble, cancelable, view, clickCount, 
+        //           screenX, screenY, clientX, clientY, ctrlKey, 
+        //           altKey, shiftKey, metaKey, button, relatedTarget);
+        console.log(type);
+        var simulatedEvent = document.createEvent("MouseEvent");
+        simulatedEvent.initMouseEvent(type, true, true, window, delta, 
+                              first.screenX, first.screenY, 
+                              first.clientX, first.clientY, false, 
+                              false, false, false, 0/*left*/, null);
+
+
+
+        first.target.dispatchEvent(simulatedEvent);
+        if (type === 'mousemove') {  
+          event.preventDefault();
+        }
+      },
+
       /** custom object initialization goes here. */
       init: function() {
         var self = this;
@@ -108,6 +169,11 @@ AWE.Application = (function(module) {
         $(window).resize(function(evt){
           self.onResize(evt);
         });
+
+        document.addEventListener("touchstart", self.touchHandler, true);
+        document.addEventListener("touchmove", self.touchHandler, true);
+        document.addEventListener("touchend", self.touchHandler, true);
+        document.addEventListener("touchcancel", self.touchHandler, true); 
       },
 
       /**
@@ -180,14 +246,12 @@ AWE.Application = (function(module) {
         var allStages = this.get('allStages');
         // TODO: can we use stage.mouseX here or should we better apply the stage-transformations to pageX?
 
-        var target = null, relX, relY;
+        var target = null;
         for (var layer=0; layer < allStages.length && !target; layer++) {
           // targetLayer = layer;
           if (allStages[layer].stage.mouseInBounds && !allStages[layer].transparent) {
             var stage = allStages[layer].stage;
-            target = stage.getObjectUnderPoint(stage.mouseX, stage.mouseY); // TODO: don't use absolute evt.pageX here, right?!
-            relX= stage.mouseX;  // store coordinates in stage's local coordinate system
-            relY= stage.mouseY;
+            target = stage.getObjectUnderPoint(evt.pageX-stage.canvas.offsetLeft, evt.pageY-stage.canvas.offsetTop); // TODO: don't use absolute evt.pageX here, right?!
           }
         }
 
@@ -238,14 +302,12 @@ AWE.Application = (function(module) {
         var allStages = this.get('allStages');
         // TODO: can we use stage.mouseX here or should we better apply the stage-transformations to pageX?
 
-        var target = null, relX, relY;
+        var target = null;
         for (var layer=0; layer < allStages.length && !target; layer++) {
           // targetLayer = layer;
           if (allStages[layer].stage.mouseInBounds && !allStages[layer].transparent) {
             var stage = allStages[layer].stage;
-            target = stage.getObjectUnderPoint(stage.mouseX, stage.mouseY); // TODO: don't use absolute evt.pageX here, right?!
-            relX= stage.mouseX;  // store coordinates in stage's local coordinate system
-            relY= stage.mouseY;
+            target = stage.getObjectUnderPoint(evt.pageX-stage.canvas.offsetLeft, evt.pageY-stage.canvas.offsetTop); // TODO: don't use absolute evt.pageX here, right?!
           }
         }
 
@@ -527,6 +589,11 @@ AWE.Application = (function(module) {
 
       bindEventHandlers: function(controller) {
         var self = this;
+
+        var allStages = this.get('allStages');
+        for (var layer=0; layer < allStages.length; layer++) {
+          Touch.enable(allStages[layer].stage);
+        }  
 
         if (controller.onMouseDown) {
           // register controller to receive mouse-down events in screen

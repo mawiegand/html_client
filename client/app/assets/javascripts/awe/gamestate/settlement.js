@@ -80,6 +80,7 @@ AWE.GS = (function(module) {
     hashableOutgoingCarts: null,
     
     hashableSlots: null,
+    selectedSlotNumber: null,
         
     init: function(spec) {
       log('INIT settlement');

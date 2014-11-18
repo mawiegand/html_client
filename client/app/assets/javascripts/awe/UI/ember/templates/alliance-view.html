@@ -131,21 +131,20 @@
     {{/if}}
     {{#if relationsFound}}
       {{#if relationsAtUltimatum}}
-        <div class="public-information scrolling">
-          <div class="alliance-ultimatum">
-              <div class="alliance-diplomacy-title">
-                <div class="alliance-diplomacy-first">
-                  <h3>{{t dialogs.alliance.allianceDiplomacy.ultimatum}}:</h3>
-                </div>
-                <div class="alliance-diplomacy-second">
-                  <h3>{{t dialogs.alliance.allianceDiplomacy.end}}:</h3>
-                </div>
-              {{#each relationsAtUltimatum}}
-                {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this" allianceBinding="view.alliance"}}
-              {{/each}}
+        <div class="alliance-ultimatum">
+          <div class="alliance-diplomacy-title">
+            <div class="alliance-diplomacy-first">
+              <h3>{{t dialogs.alliance.allianceDiplomacy.ultimatum}}:</h3>
             </div>
+            <div class="alliance-diplomacy-second">
+              <h3>{{t dialogs.alliance.allianceDiplomacy.end}}:</h3>
+            </div>
+            {{#each relationsAtUltimatum}}
+              {{view AWE.UI.Ember.AllianceDiplomacyRow ultimatumBinding="this" allianceBinding="view.alliance"}}
+            {{/each}}
           </div>
-        {{/if}}
+        </div>
+      {{/if}}
       {{#if relationsAtWar}}
           <div class="alliance-war">
             <div class="alliance-diplomacy-title">
