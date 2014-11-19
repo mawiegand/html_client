@@ -33,11 +33,6 @@ AWE.UI.Ember = (function(module) /** @lend AWE.UI.Ember */ {
       return slots && slots.length > 0 ? slots[0] : null;
     }.property('slots').cacheable(),
 		
-    largeSlots: function() {
-      var slots = this.get('slots');
-      return slots && slots.length > 0 ? slots.slice(1,3) : null; // TODO: let the controller set this from the AWE.Config settings
-    }.property('slots').cacheable(),		
-		
     smallSlots: function() {
       var slots = this.get('slots');
       return slots && slots.length > 0 ? slots.slice(1,slots.length) : null;

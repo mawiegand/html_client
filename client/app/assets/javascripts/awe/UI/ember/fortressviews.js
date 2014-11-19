@@ -22,23 +22,15 @@ AWE.UI.Ember = (function(module) {
 	module.FortressView = AWE.UI.Ember.SettlementView.extend( /** @lends AWE.UI.FortressView# */ {
     templateName : "fortress-screen",
 			    
-    wall: function() {
+    wallSlot: function() {
       var slots = this.get('slots');
-      var slot = slots && slots.length > 0 ? slots[0] : null;
-      log('SLOT', slot ? slot.get('slot_num') : null, slot ? slot.get('building_id') : null, slot ? slot.get('level') : null, slot)
-      return slot;
+      return slots && slots.length > 0 ? slots[0] : null;
     }.property('slots').cacheable(),
 		
-    leftTower: function() {
+    smallSlots: function() {
       var slots = this.get('slots');
-      return slots && slots.length > 0 ? slots[1] : null;
-    }.property('slots').cacheable(),		
-		
-    rightTower: function() {
-      var slots = this.get('slots');
-      log('RIGHT TOWER', slots)
-      return slots && slots.length > 0 ? slots[2] : null;
-    }.property('slots').cacheable(),		
+      return slots && slots.length > 0 ? slots.slice(1,slots.length) : null;
+    }.property('slots').cacheable(),	
 				
 	});
 
