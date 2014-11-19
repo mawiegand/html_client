@@ -54,43 +54,48 @@ AWE.UI = (function(module) {
       _armyView = view;
       _army = view.army();
 
-      _stanceButtonView = AWE.UI.createButtonView();
-      _stanceButtonView.initWithControllerTextAndImage(controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/defense/normal"));
-      _stanceButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/defense/hover"), module.CONTROL_STATE_HOVERED);
-      _stanceButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/defense/active"), module.CONTROL_STATE_SELECTED);
-      _stanceButtonView.setFrame(AWE.Geometry.createRect(-10, 82, 48, 48));
+      _stanceButtonView = AWE.UI.createButtonIconView();
+      _stanceButtonView.initWithControllerImageAndIcon(controller,
+        AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue"), 
+        AWE.UI.ImageCache.getImage("hud/annotation/button/defense/normal"),
+        AWE.Geometry.createRect(-10, 82, 64, 64)
+      );
       _stanceButtonView.onClick = function() { if (_stanceButtonView.enabled()) { that.onStanceButtonClick(_army); } }
       this.addChild(_stanceButtonView);
 
-      _moveButtonView = AWE.UI.createButtonView();
-      _moveButtonView.initWithControllerTextAndImage(controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/move/normal"));
-      _moveButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/move/hover"), module.CONTROL_STATE_HOVERED);
-      _moveButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/move/active"), module.CONTROL_STATE_SELECTED);
-      _moveButtonView.setFrame(AWE.Geometry.createRect(20, -25, 48, 48));
+      _moveButtonView = AWE.UI.createButtonIconView();
+      _moveButtonView.initWithControllerImageAndIcon(controller,
+        AWE.UI.ImageCache.getImage("hud/annotation/button/background/green"), 
+        AWE.UI.ImageCache.getImage("hud/annotation/button/move/normal"),
+        AWE.Geometry.createRect(20, -25, 64, 64)
+      );
       _moveButtonView.onClick = function() { if (_moveButtonView.enabled()) { that.onMoveButtonClick(that); } }
       this.addChild(_moveButtonView);
       
-      _foundButtonView = AWE.UI.createButtonView();
-      _foundButtonView.initWithControllerTextAndImage(controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/settle/normal"));
-      _foundButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/settle/hover"), module.CONTROL_STATE_HOVERED);
-      _foundButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/settle/active"), module.CONTROL_STATE_SELECTED);
-      _foundButtonView.setFrame(AWE.Geometry.createRect(25, 118, 48, 48));
+      _foundButtonView = AWE.UI.createButtonIconView();
+      _foundButtonView.initWithControllerImageAndIcon(controller,
+        AWE.UI.ImageCache.getImage("hud/annotation/button/background/purple"), 
+        AWE.UI.ImageCache.getImage("hud/annotation/button/move/normal"),
+        AWE.Geometry.createRect(25, 118, 64, 64)
+      );
       _foundButtonView.onClick = function() { if (_foundButtonView.enabled()) { that.onFoundButtonClick(that); } }
       this.addChild(_foundButtonView);      
       
-      _cancelButtonView = AWE.UI.createButtonView();
-      _cancelButtonView.initWithControllerTextAndImage(controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/moving/normal"));
-      _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/moving/hover"), module.CONTROL_STATE_HOVERED);
-//      _cancelButtonView.setImageForState(AWE.UI.ImageCache.getImage("ui/button/standard/pressed"), module.CONTROL_STATE_SELECTED);
-      _cancelButtonView.setFrame(AWE.Geometry.createRect(20, -25, 48, 48));
+      _cancelButtonView = AWE.UI.createButtonIconView();
+      _cancelButtonView.initWithControllerImageAndIcon(controller,
+        AWE.UI.ImageCache.getImage("hud/annotation/button/background/purple"), 
+        AWE.UI.ImageCache.getImage("hud/annotation/button/move/normal"),
+        AWE.Geometry.createRect(20, -25, 64, 64)
+      );
       _cancelButtonView.onClick = function() { if (_cancelButtonView.enabled()) { that.onCancelMoveButtonClick(that); } }
       this.addChild(_cancelButtonView);
       
-      _attackButtonView = AWE.UI.createButtonView();
-      _attackButtonView.initWithControllerTextAndImage(controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/attack/normal"));
-      _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/attack/hover"), module.CONTROL_STATE_HOVERED);
-      _attackButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/attack/active"), module.CONTROL_STATE_SELECTED);
-      _attackButtonView.setFrame(AWE.Geometry.createRect(-17, 22, 48, 48));
+      _attackButtonView = AWE.UI.createButtonIconView();
+        _attackButtonView.initWithControllerImageAndIcon(controller,
+          AWE.UI.ImageCache.getImage("hud/annotation/button/background/red"), 
+          AWE.UI.ImageCache.getImage("hud/annotation/button/attack/normal"),
+          AWE.Geometry.createRect(-17, 22, 64, 64)
+        );
       _attackButtonView.onClick = function() { if (_attackButtonView.enabled()) { that.onAttackButtonClick(that); } }
       this.addChild(_attackButtonView);
       
@@ -106,10 +111,12 @@ AWE.UI = (function(module) {
 //      }
 //      this.addChild(_retreatButtonView);
 
-      _battleInfoButtonView = AWE.UI.createButtonView();
-      _battleInfoButtonView.initWithControllerTextAndImage(controller, '', AWE.UI.ImageCache.getImage("hud/annotation/button/battleinfo/normal"));
-      _battleInfoButtonView.setImageForState(AWE.UI.ImageCache.getImage("hud/annotation/button/battleinfo/hover"), module.CONTROL_STATE_HOVERED);
-      _battleInfoButtonView.setFrame(AWE.Geometry.createRect(152, 86, 48, 48));
+      _battleInfoButtonView = AWE.UI.createButtonIconView();
+      _battleInfoButtonView.initWithControllerImageAndIcon(controller,
+        AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue"), 
+        AWE.UI.ImageCache.getImage("hud/icon/info"),
+        AWE.Geometry.createRect(152, 86, 64, 64)
+      );
       _battleInfoButtonView.onClick = function() {
         if (_battleInfoButtonView.enabled()) {
           that.onBattleInfoButtonClick(_army);

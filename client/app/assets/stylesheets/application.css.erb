@@ -43,7 +43,11 @@ html { font-size: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 10
 
 html, button, input, select, textarea { font-family: sans-serif; color: #222; }
 
-body { margin: 0; font-size: 1em; line-height: 1.4; }
+body {
+  margin: 0;
+  font-size: 1em;
+  line-height: 1.4;
+}
 
 /*
  * Remove text-shadow in selection highlight: h5bp.com/i
@@ -477,7 +481,7 @@ h3 {
 }
 
 #controls-canvas {
-  position: absolute;
+  position: fixed;
   top: 0px;
   left: -220px;
   width: 100%;
@@ -486,7 +490,7 @@ h3 {
 }
 
 #hud-canvas-right {
-  position: absolute;
+  position: fixed;
   right: -70px;
   top: 492px;
   width: 70px;
@@ -495,7 +499,7 @@ h3 {
 }
 
 #hud-canvas-left {
-  position: absolute;
+  position: fixed;
   left: -120px;
   bottom: 20px;
   width: 120px;
@@ -503,8 +507,14 @@ h3 {
   z-index: 10;
 }
 
+.settlement-map-button {
+  width: 500px;
+  height: 500px;
+  background-color: yellow;
+}
+
 #hud-canvas-profile {
-  position: absolute;
+  position: fixed;
   right: -268px;
   top: 0px;
   width: 268px;
@@ -513,7 +523,7 @@ h3 {
 }
 
 #resource-canvas {
-  position: absolute;
+  position: fixed;
   left: 0px;
   top: -42px;
   width: 800px;
@@ -744,6 +754,9 @@ h3 {
 .cell-70 {
   width:70%;
 }
+.cell-75 {
+  width:75%;
+}
 .cell-80 {
   width:80%;
 }
@@ -792,7 +805,7 @@ h3 {
   display: inline-block;
   background-image: url("<%= asset_path 'ui/battleIcon.png' %>");
   width: 44px;
-  height: 40px;
+  height: 44px;
   vertical-align: middle;
 }
 
@@ -1117,6 +1130,17 @@ h3 {
 
 .modal-dialog-close:hover{
   background-image: url("<%= asset_path 'ui/closeButtonHovered.png' %>");
+}
+
+
+.modal-dialog-settings {
+  background-image: url("<%= asset_path 'dialogs/window/cogwheel.png' %>");
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  top: 10px;
+  right: 40px;
+  z-index:300;
 }
 
 .modal-dialog-back{
@@ -2950,7 +2974,7 @@ width: auto;
 {
   position: absolute;
   left: 400px;
-  top: 390px;
+  top: 470px;
   line-height: 50px;
   font-size: 14px;
 }
@@ -3004,6 +3028,11 @@ width: auto;
   text-align: center;
   line-height: 45px;
   margin: auto;
+}
+
+.character-details {
+  position: relative;
+  float: left;
 }
 
 .profile-info-self-dialog-pane .rank {
@@ -3769,6 +3798,219 @@ width: auto;
   font-size: 20px;
   line-height: 25px;
   padding: 20px;
+}
+
+/*== ARTIFACTS ==*/
+
+.gold-button-queue.artefact-speedup-button
+{
+  top: 90px;
+  left: 70px;
+}
+
+.progress-value.progress-value-artifact-progress
+{
+  line-height: 44px;
+  text-align: start;
+  position: relative;
+  left: 40px;
+}
+
+.cell.training-background-job.artifact-progress
+{
+  top: 60px;
+  left: 30px;
+}
+
+.artifact-info-dialog-pane .cost-cell,
+.artifact-initiation-dialog-pane .cost-cell
+{
+  width: 225px;
+  height: 200px;
+  display: inline-block;
+  float: left;
+}
+
+.artifact-info-dialog-pane .cost-half-row,
+.artifact-initiation-dialog-pane .cost-half-row
+{
+  width: 26%;
+  height: 28px;
+  float: left;
+  position: relative;
+  left: 10px;
+}
+
+.artifact-info-dialog-pane .cost-half-row-effect,
+.artifact-initiation-dialog-pane .cost-half-row-effect
+{
+  width: 26%;
+  height: 28px;
+  float: left;
+  position: relative;
+  left: 50px;
+}
+
+.artifact-info-dialog-pane .cost-row,
+.artifact-initiation-dialog-pane .cost-row
+{
+  width: 100%;
+  height: 36px;
+  position: relative;
+  top: 23px;
+  left: 4px;
+}
+
+.artifact-info-dialog-pane .cost-text,
+.artifact-initiation-dialog-pane .cost-text
+{
+  color: rgb(146,141,130) !important;
+  display: inline-block;
+  float: left;
+}
+
+.military-costs-green-background.artifact-costs-green-background
+{
+  left: 40px;
+  top: 0px;
+}
+
+.artifact-info-dialog-pane .item,
+.artifact-initiation-dialog-pane .item{
+  width: 200px;
+  height: 200px;
+}
+.artifact-info-dialog-pane .item-padding,
+.artifact-initiation-dialog-pane .item-padding{
+  padding-left: 70px;
+}
+
+.artifact-info-dialog-pane .item.artifact_0,
+.artifact-initiation-dialog-pane .item.artifact_0{
+  background:url("<%= asset_path 'artifacts_big/artifact_tnt_inactive.png' %>") no-repeat center center;
+}
+
+.artifact-info-dialog-pane .item.artifact_0.is-active,
+.artifact-initiation-dialog-pane .item.artifact_0.is-active{
+  background:url("<%= asset_path 'artifacts_big/artifact_tnt_active.png' %>") no-repeat center center;
+}
+
+.artifact-info-dialog-pane .item.artifact_1,
+.artifact-initiation-dialog-pane .item.artifact_1{
+  background:url("<%= asset_path 'artifacts_big/artifact_stonewheel_inactive.png' %>") no-repeat center center;
+}
+
+.artifact-info-dialog-pane .item.artifact_1.is-active,
+.artifact-initiation-dialog-pane .item.artifact_1.is-active{
+  background:url("<%= asset_path 'artifacts_big/artifact_stonewheel_active.png' %>") no-repeat center center;
+}
+
+.artifact-info-dialog-pane .item.artifact_2,
+.artifact-initiation-dialog-pane .item.artifact_2{
+  background:url("<%= asset_path 'artifacts_big/artifact_axe_inactive.png' %>") no-repeat center center;
+}
+
+.artifact-info-dialog-pane .item.artifact_2.is-active,
+.artifact-initiation-dialog-pane .item.artifact_2.is-active{
+  background:url("<%= asset_path 'artifacts_big/artifact_axe_active.png' %>") no-repeat center center;
+}
+
+.artifact-info-dialog-pane .item.artifact_3,
+.artifact-initiation-dialog-pane .item.artifact_3{
+  background:url("<%= asset_path 'artifacts_big/articat_monolith_inactive.png' %>") no-repeat center center;
+}
+
+.artifact-info-dialog-pane .item.artifact_3.is-active,
+.artifact-initiation-dialog-pane .item.artifact_3.is-active{
+  background:url("<%= asset_path 'artifacts_big/articat_monolith_active.png' %>") no-repeat center center;
+}
+
+.artifact-info-dialog-pane .item.artifact_4,
+.artifact-initiation-dialog-pane .item.artifact_4{
+  background:url("<%= asset_path 'artifacts_big/artifact_easteregg_inactive.png' %>") no-repeat center center;
+}
+
+.artifact-info-dialog-pane .item.artifact_4.is-active,
+.artifact-initiation-dialog-pane .item.artifact_4.is-active{
+  background:url("<%= asset_path 'artifacts_big/artifact_easteregg_active.png' %>") no-repeat center center;
+}
+
+.artifact-info-dialog-pane .item.artifact_5,
+.artifact-initiation-dialog-pane .item.artifact_5{
+  background:url("<%= asset_path 'artifacts_big/artifact_hammer_inactive.png' %>") no-repeat center center;
+}
+
+.artifact-info-dialog-pane .item.artifact_5.is-active,
+.artifact-initiation-dialog-pane .item.artifact_5.is-active{
+  background:url("<%= asset_path 'artifacts_big/artifact_hammer_active.png' %>") no-repeat center center;
+}
+
+.artifact-initiation-dialog-pane .cell-icon{
+  width: 38%;
+  height: 200px;
+  display: inline-block;
+  float: left;
+}
+.artifact-initiation-dialog-pane .cell-stats{
+  width: 58%;
+  display: inline-block;
+  float: left;
+}
+.artifact-initiation-dialog-pane .cell-info{
+  width: 95%;
+  display: inline-block;
+  float: left;
+  padding-left: 15px;
+  line-height: 28px;
+}
+
+/* info */
+.artifact-info-dialog-pane .bonus-cell
+{
+  display: inline-block;
+  float: left;
+  width: 45%;
+}
+
+.artifact-info-dialog-pane .button-name
+{
+  width: 192px;
+  height: 52px;
+  position: relative;
+  display: inline-block;
+  float: left;
+  top: 25px;
+  right: 25px;
+}
+
+.artifact-info-dialog-pane .button-alliance
+{
+  width: 184px;
+  height: 56px;
+  position: relative;
+  display: inline-block;
+  float: left;
+  top: 24px;
+  right: 14px;
+}
+
+.artifact-info-dialog-pane .cell-icon{
+  width: 38%;
+  height: 200px;
+  display: inline-block;
+  float: left;
+}
+.artifact-info-dialog-pane .cell-stats{
+  width: 62%;
+  display: inline-block;
+  float: left;
+}
+.artifact-info-dialog-pane .cell-info{
+  width: 95%;
+  display: inline-block;
+  float: left;
+  padding-left: 15px;
+  line-height: 28px;
 }
 
 /*== Infantry==*/
@@ -5159,9 +5401,9 @@ h1.slot-tooltip {
 .welcome-dialog {
   font-size: 16px;
   position: absolute; 
-  margin-left: -400px;
-  margin-top: -300px;  
-  width: 800px; 
+  margin-left: -348px;
+  margin-top: -165px;  
+  width: 676px; 
   min-height: 300px;
   background-color: #FFF;    
 }
@@ -5301,9 +5543,9 @@ h1.slot-tooltip {
   font-size: 16px;
   position: absolute; 
   margin-left: -400px;
-  margin-top: 80px;  
-  width: 800px; 
-  min-height: 600px;
+  margin-top: 0px;  
+  width: 676px; 
+  max-height: 500px;
   background-color: #FFF;    
 }
 
@@ -5409,6 +5651,8 @@ h1.slot-tooltip {
   border-style: solid none none none;
   padding-left: 0px;
   padding-right: 0px;
+  overflow: scroll;
+  height: 300px;
 }
 
 
@@ -5887,6 +6131,170 @@ loaddialog-positioner {
   margin-bottom: 400px; 
 }
 
+.settlement-info-dialog-pane .button {
+	height: 52px;
+	width: 248px;
+}
+
+.settlement-info-dialog-pane .button-left {
+	background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide.png") %>') no-repeat center center;
+}
+
+.settlement-info-dialog-pane .button-left:hover {
+	background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide_active.png") %>') no-repeat center center;
+	cursor: pointer;
+}
+
+.settlement-info-dialog-pane .button-right {
+	background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide.png") %>') no-repeat center center;
+}
+
+.settlement-info-dialog-pane .button-right:hover {
+	background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide_active.png") %>') no-repeat center center;
+	cursor: pointer;
+}
+
+.settlement-info-dialog-pane .row1 {
+	margin: 20px 0 20px 0;
+}
+
+.settlement-info-dialog-pane .row2 {
+	margin: 55px 0 0 0;
+}
+
+.settlement-info-dialog-pane .titles {
+	text-align: right;
+	padding: 0 20px 0 0;
+}
+
+.settlement-info-dialog-pane .values {
+	text-align: left;
+	padding: 0 0 0 20px;
+}
+
+.settlement-info-dialog-pane .population-title,
+.settlement-info-dialog-pane .defense-boni-title,
+.settlement-info-dialog-pane .condition-title,
+.settlement-info-dialog-pane .takeover-title,
+.settlement-info-dialog-pane .destory-title {
+	color: rgb(112,92,48);
+	font-size: 1.3em;
+}
+
+.settlement-info-dialog-pane .population-value,
+.settlement-info-dialog-pane .defense-boni-value,
+.settlement-info-dialog-pane .condition-value,
+.settlement-info-dialog-pane .takeover-value,
+.settlement-info-dialog-pane .destory-value {
+	color: rgb(154,148,138);
+	font-size: 1.3em;
+}
+
+.settlement-info-box-dialog-pane .button-left {
+	background:url('<%= asset_path("dialogs/buttons/button_green_medium.png") %>') no-repeat center center;
+}
+
+.settlement-info-box-dialog-pane .button-left:hover {
+	background:url('<%= asset_path("dialogs/buttons/button_green_medium_pressed.png") %>') no-repeat center center;
+	cursor: pointer;
+}
+
+.settlement-info-box-dialog-pane .button-right {
+	background:url('<%= asset_path("dialogs/buttons/button_green_medium.png") %>') no-repeat center center;
+}
+
+.settlement-info-box-dialog-pane .button-right:hover {
+	background:url('<%= asset_path("dialogs/buttons/button_green_medium_pressed.png") %>') no-repeat center center;
+	cursor: pointer;
+}
+
+.settlement-info-box-dialog-pane {
+    padding: 0 10px;
+}
+.settlement-info-box-dialog-pane .row1 {
+    margin-top: 20px;
+}
+.settlement-info-box-dialog-pane .row2 {
+    margin-top: 20px;
+}
+.settlement-info-box-dialog-pane .row3 {
+    margin-top: 20px;
+}
+.settlement-info-box-dialog-pane .row4 {
+    margin-top: 20px;
+}
+.settlement-info-box-dialog-pane .row4 table {
+    width: 100%;
+}
+.settlement-info-box-dialog-pane .row4 table td.info {
+    color: rgb(112,92,48);
+    text-align: right;
+    width: 200px;
+}
+.settlement-info-box-dialog-pane .row4 table td {
+    color: rgb(154,148,138);
+    text-align: center;
+    width: 200px;
+}
+.settlement-info-box-dialog-pane .row5 {
+    margin-top: 20px;
+}
+
+.settlement-info-box-dialog-pane .title {
+    color: rgb(112,92,48);
+    text-align: right;
+    width: 235px;
+}
+.settlement-info-box-dialog-pane .value {
+	color: rgb(154,148,138);
+    text-align: left;
+    padding-left: 5px;
+}
+
+.settlement-info-box-dialog-pane .row1_1 .title,
+.settlement-info-box-dialog-pane .row1_2 .title,
+.settlement-info-box-dialog-pane .row1_3 .title {
+    width: 230px;
+}
+.settlement-info-box-dialog-pane .row1_1 .value,
+.settlement-info-box-dialog-pane .row1_2 .value,
+.settlement-info-box-dialog-pane .row1_3 .value {
+    width: 63px;
+}
+
+.settlement-info-box-dialog-pane .row1_4 .title,
+.settlement-info-box-dialog-pane .row1_5 .title,
+.settlement-info-box-dialog-pane .row1_6 .title {
+    width: 220px;
+}
+.settlement-info-box-dialog-pane .row1_4 .value,
+.settlement-info-box-dialog-pane .row1_5 .value,
+.settlement-info-box-dialog-pane .row1_6 .value {
+    width: 73px;
+}
+
+
+.settlement-info-box-dialog-pane .row2 {
+	color: rgb(154,148,138);^
+}
+.settlement-info-box-dialog-pane .row2 .title {
+	color: rgb(112,92,48);
+}
+.settlement-info-box-dialog-pane .row2 .army-icon {
+	display: inline-block;
+}
+
+.settlement-info-box-dialog-pane .row2 .infantry {
+  background:url("<%= asset_path 'dialogs/specials/units_swordsman.png' %>")no-repeat center center;
+}
+
+.settlement-info-box-dialog-pane .row2 .cavalry {
+  background:url("<%= asset_path 'dialogs/specials/units_cavalry.png' %>") no-repeat center center;
+}
+
+.settlement-info-box-dialog-pane .row2 .artillery {
+  background:url("<%= asset_path 'dialogs/specials/units_archer.png' %>") no-repeat center center;
+}
 
 span.bonus {
   color: #bbe166;
@@ -7045,7 +7453,7 @@ span.bonus {
   top: 80px;
   left: 80px;
   background: url("<%= asset_path 'hud/icon_artifact/icon_artifact.png' %>") no-repeat center center;
-  background-size: 15px;
+  background-size: 32px;
 }
 
 .building-army-button-background {
@@ -7111,6 +7519,24 @@ span.bonus {
 .construction-progress-cancel.icon {
   background: url("<%= asset_path 'hud/icon_cancel/icon_cancel.png' %>") 7px 7px no-repeat;
   background-size: 18px;
+}
+
+.construction-progress-frogtrade {
+  position: absolute;
+  top: 0px;
+  left: 5px;
+  width: 32px;
+  height: 32px;
+}
+
+.construction-progress-frogtrade.background {
+  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-size: 32px;
+}
+
+.construction-progress-frogtrade.icon {
+  background: url("<%= asset_path 'hud/icon_convert/icon_convert.png' %>") no-repeat;
+  background-size: 32px;
 }
 
 .construction-progress-bar {
@@ -7358,7 +7784,7 @@ li.shout .sender {
 
 
 .topbar-info-text {
-  width: 100%;
+  width: 90%;
   margin-top: 13px;
   text-align: center;
   font-family: HVDComicSerifPro; 
@@ -7369,7 +7795,7 @@ li.shout .sender {
 
 .topbar-info-button {
   position: absolute;
-  right: 30px;
+  right: 45px;
   top: 15px;
   background-image: url("<%= asset_path 'hud/topbar/topbar_info.png' %>");
   width: 28px;
@@ -7408,6 +7834,12 @@ li.shout .sender {
 
 .change-settlement-name  .resource-icon {
   margin: 1px;
+}
+
+.construction-bonus {
+  width: 40px; 
+  height: 40px;
+  background-image: url("<%= asset_path 'icons/construction_bonus.png' %>");
 }
 
 .xp-icon {
@@ -9761,8 +10193,8 @@ a.trading-carts-speedup-button:hover {
 
 .ranking-view .advisor { 
   position: absolute;
-  left: 660px;
-  top: -60px;
+  left: 634px;
+  top: -26px;
 }
 
 
@@ -9833,7 +10265,7 @@ a.trading-carts-speedup-button:hover {
   border-collapse: separate;
   border-spacing: 0;
   margin: 0px auto 0px auto;
-  width: 800px;
+  width: 678px;
 }
 
 .participant-table {
@@ -10101,7 +10533,7 @@ a.trading-carts-speedup-button:hover {
   font-weight: bold;
   text-align: right;
   padding: 5px;
-  width: 870px;
+  width: 669px;
 }
 
 .battle-time {
@@ -10110,9 +10542,10 @@ a.trading-carts-speedup-button:hover {
 
 .battle-dialog-pane {
   position: absolute; 
-  margin-left: -445px;
+  margin-left: -354px;
   margin-top: -240px;
-  width: 890px; min-height: 100px;
+  width: 676px;
+  min-height: 100px;
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
   z-index:256;
@@ -10592,10 +11025,10 @@ div.dom-quest-container div.tutorial-dialog {
 .army-list-view {
   font-size: 16px;
   position: absolute; 
-  margin-left: -400px;
-  margin-top: 80px;  
-  width: 800px; 
-  min-height: 600px;
+  margin-left: -365px;
+  margin-top: 15px;  
+  width: 676px; 
+  max-height: 500px;
   background-color: #FFF;    
 }
 
@@ -10646,7 +11079,7 @@ div.dom-quest-container div.tutorial-dialog {
   
 .army-list-table-wrapper {
   overflow:auto;
-  height: 500px; /* I took this value because of .army-list-view */
+  height: 300px; /* I took this value because of .army-list-view */
 }
 
 .army-list-table th {

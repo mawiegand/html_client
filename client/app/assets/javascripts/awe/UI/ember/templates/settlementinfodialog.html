@@ -1,37 +1,41 @@
 <script type="text/x-handlebars" data-template-name="settlement-info-dialog">
-  <div class="modal-dialog-background"></div>
-  <div class="center-helper">
-    <div class="modal-dialog-pane settlement-info-dialog-pane">
-      {{view AWE.UI.Ember.AllianceBannerView allianceBinding="alliance" classNames="alliance-banner" width=120 height=120}}
-      <h1>{{settlement.name}}</h1>
-      
-      <p><b>{{t general.demigod}}:</b> {{view AWE.UI.Ember.LinkedCharacterView characterBinding="owner"}}</p>
-      <p><b>{{t settlement.founded}}:</b> {{formatDatetime settlement.created_at}}</p>
-      <p><b>{{t settlement.defenseBonus}}:</b> {{formatPercentage settlement.present_defense_bonus}} / {{t settlement.max}}: {{formatPercentage settlement.defense_bonus}}</p>
-      <p><b>{{t settlement.condition}}:</b> {{formatPercentage settlement.condition}}</p>
-      <p><b>{{t settlement.population}}:</b> {{settlement.score}}</p>
-
-      
-      <p>
+  <h1>{{settlement.name}}</h1>
+  <div class="modal-dialog-body settlement-info-dialog-pane scrolling">
+    <div class="row row1">
+      <div class="tab-bar-new">
+        <div class="cell cell-50">
+          <div class="tab-button-view tab-button-view-new button-left" {{action "characterPressed" }}>{{owner.name}}</div>
+        </div>
+        <div class="cell cell-50">
+          <div class="tab-button-view tab-button-view-new button-right" {{action "alliancePressed" }}>{{owner.alliance_tag}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="row row2">
+      <div class="row">
+        <div class="cell cell-50 titles population-title">{{t settlement.population}}:</div>
+        <div class="cell cell-50 values population-value">{{settlement.score}}</div>
+      </div>
+      <div class="row">
+        <div class="cell cell-50 titles population-title">{{t settlement.defenseBonus}}:</div>
+        <div class="cell cell-50 values population-value">{{formatPercentage settlement.present_defense_bonus}}</div>
+      </div>
+      <div class="row">
+        <div class="cell cell-50 titles population-title">{{t settlement.condition}}:</div>
+        <div class="cell cell-50 values population-value">{{formatPercentage settlement.condition}}</div>
+      </div>
       {{#if settlement.typeIsConquerable}}
-        {{#if settlement.canBeTakenOver}}
-          <b>{{t settlement.military.takeOver}}</b><br/>
-        {{else}}
-          <b>{{t settlement.military.noTakeOver}}</b><br/>
-        {{/if}}
+        <div class="row">
+          <div class="cell cell-50 titles takeover-title">{{t settlement.military.takeOverTitle}}:</div>
+          <div class="cell cell-50 values takeover-value">{{#if settlement.canBeTakenOver}}{{t settlement.military.yes}}{{else}}{{t settlement.military.no}}{{/if}}</div>
+        </div>
       {{/if}}
-      
       {{#if settlement.typeIsDestroyable}}
-        {{#if settlement.canBeDestroyed}}
-          <b>{{t settlement.military.destroyable}}.</b>
-        {{else}}
-          <b>{{t settlement.military.notDestroyable}}</b>
-        {{/if}}
+        <div class="row">
+          <div class="cell cell-50 titles takeover-title">{{t settlement.military.destroyableTitle}}:</div>
+          <div class="cell cell-50 values takeover-value">{{#if settlement.canBeDestroyed}}{{t settlement.military.yes}}{{else}}{{t settlement.military.no}}{{/if}}</div>
+        </div>
       {{/if}}
-      </p>
-            
-      <a class="icon-button ok-button" href="#" {{action "okClicked"}}>ok</a>  
     </div>
   </div>
 </script>
-
