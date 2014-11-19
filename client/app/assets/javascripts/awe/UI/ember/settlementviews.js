@@ -300,6 +300,29 @@ AWE.UI.Ember = (function(module) {
       
       var changeDialog = module.PopUpDialog.create({
         templateName: 'tax-change-new-dialog',
+
+        settlement: this.get('settlement'),
+        valueText: this.getPath('settlement.taxPercentage'),
+
+        okTaxPressed:  function() {
+          var number = parseInt(this.get('valueText') || "0");
+          log('OK_PRESSED', self,this, this.get('valueText'), number)
+          if (number >= 5 && number <= 15) {
+            var action = AWE.Action.Settlement.createChangeTaxRateAction(self.get('settlement'), number/100.0);
+            AWE.Action.Manager.queueAction(action, function(statusCode) {
+              if (statusCode === 200 || statusCode === 203) {
+                log('changed tax rate');
+              }
+              else {
+                self.showErrorTax(AWE.I18n.lookupTranslation('settlement.error.serverDidNotAcceptTaxRate'));
+              }
+            });  
+          }
+          else {
+            self.showErrorTax(AWE.I18n.lookupTranslation('settlement.error.couldNotChangeTaxRate'));
+          }
+          this.destroy();            
+        },
       });
       /*AWE.UI.Ember.TextInputDialog.create({
         classNames: ['change-army-name-dialog'],
@@ -475,22 +498,15 @@ AWE.UI.Ember = (function(module) {
     classNames: ["taxes-range-slider"],
     attributeBindings: ["min", "max"],
     type: "range",
-    /*resourceType: null,
+    min: 5,
+    max: 15,
     settlement: null,
-    min: 0, 
-    maxAmount: null,
-    currentID: null,
-    max: function(){
-      return this.get("maxAmount");
-    }.property('maxAmount').cacheable(),
+
     onValueChanged: function(){
-      this.set('currentID', this.getPath('resourceType.type.id'));
+      var number = parseInt(this.get('value') || "0");
+      this.setPath('parentView.valueText', number);
       return true;
     }.observes('value'),
-    onAmountChanged: function(){
-      this.set('value', this.getPath('resourceType.amount'));
-      return true;
-    }.observes('resourceType.amount'),*/
   });
   
   module.SettlementAbandonDialog = Ember.View.extend({

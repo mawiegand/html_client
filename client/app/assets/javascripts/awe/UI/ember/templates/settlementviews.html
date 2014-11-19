@@ -156,15 +156,14 @@
         Hier steht die Erklärung was Steuern sind, was man damit alles anstellen kann und man muss nicht einmal eine Steuererklärung schreiben. Ist das nicht toll?
       </div>
       <div class="cell-slider">
-        <div class="slider-value-text">15%</div>
-        {{view AWE.UI.Ember.TaxesRangeView}}
+        <div class="slider-value-text">{{valueText}}%</div>
+        {{view AWE.UI.Ember.TaxesRangeView valueBinding="settlement.taxPercentage" settlementBinding="settlement"}}
       </div>
       <div class="cell-confirm-button">
-        <div class="confirm-green-button">
+        <div class="confirm-green-button" {{action "okTaxPressed"}}>
           <div class="confirm-button-icon confirm-button-tax-icon"></div>
         </div>
       </div>
-
    </div>
 </script>
 
