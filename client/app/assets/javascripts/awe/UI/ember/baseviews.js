@@ -27,7 +27,7 @@ AWE.UI.Ember = (function(module) /** @lend AWE.UI.Ember */ {
    */
 	module.BaseView = AWE.UI.Ember.SettlementView.extend( /** @lends AWE.UI.Ember.BaseView# */ {
     templateName : "base-screen",
-    
+
     wallSlot: function() {
       var slots = this.get('slots');
       return slots && slots.length > 0 ? slots[0] : null;

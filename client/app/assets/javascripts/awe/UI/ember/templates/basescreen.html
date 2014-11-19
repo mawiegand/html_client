@@ -4,7 +4,7 @@
 <div class="base-screen settlement-screen">
   {{!-- <div class="base-picture-spacer"></div> --}}
   <div class="base-picture">
-    <div class="base-background-picture"></div>
+    <div class="base-background-picture" {{action  unselectSlot}}></div>
     {{#if "settlement"}}
       {{#if "haveSlots"}}
         {{view AWE.UI.Ember.BuildingView classNames="wallTop" levelBinding="wallSlot.building.level"}}

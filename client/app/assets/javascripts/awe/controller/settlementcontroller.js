@@ -274,7 +274,15 @@ AWE.Controller = (function(module) {
     }
 
     that.slotClicked = function(slot) {
-      that.view.set('selectedSlot', slot);
+      var prevSlot = that.view.getPath('selectedSlot');
+      if(slot.id === that.view.getPath('selectedSlot.id'))
+      {
+        that.unselectSlot();
+      }
+      else
+      {
+        that.view.set('selectedSlot', slot);
+      }
       if (slot.getPath('building.unlockedAssignments')) {
         that.updateGossipIfNecessary();
       }
@@ -284,10 +292,17 @@ AWE.Controller = (function(module) {
       this.updateUIMarker();
       if(!slot.get("building"))
       {
-        var dialog = AWE.UI.Ember.SelectBuildingNewDialog.create({
-          controller: this,
-          slot: slot});
-        WACKADOO.presentModalDialog(dialog);
+        if(prevSlot && prevSlot.get("building"))
+        {
+          that.unselectSlot();
+        }
+        else
+        {
+          var dialog = AWE.UI.Ember.SelectBuildingNewDialog.create({
+            controller: this,
+            slot: slot});
+          WACKADOO.presentModalDialog(dialog);
+        }
       }  
     }
     

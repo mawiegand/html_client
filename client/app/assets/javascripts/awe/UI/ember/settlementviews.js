@@ -69,6 +69,10 @@ AWE.UI.Ember = (function(module) {
       WACKADOO.presentModalDialog(dialog);
     },
 
+    unselectSlot: function(){ 
+      WACKADOO.presentScreenController.unselectSlot();
+    },
+
   });
 
   /** 
