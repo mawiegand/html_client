@@ -1016,12 +1016,12 @@ AWE.Controller = function (module) {
 
     that.artifactInfoButtonClicked = function (artifact) {
       if (!artifact) return;
-
-      var dialog = AWE.UI.Ember.ArtifactInfoDialog.create({
+      var dialog = AWE.UI.Ember.ArtifactInfoNewDialog.create({});
+      /*var dialog = AWE.UI.Ember.ArtifactInfoDialog.create({
         closePressed:function (evt) {
           this.destroy();
         },
-      });
+      });*/
 
       dialog.set('artifact', artifact);
 

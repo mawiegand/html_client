@@ -864,6 +864,8 @@ AWE.I18n.en_US = function(module) {
       },
 
       artifact: {
+        artifactInfo: "Artifact Info",
+        artifactInitiation: "Artifact Initiation",
         noArtifact: "You don't have an artifact",
         costs: "Costs",
         duration: "Duration",
