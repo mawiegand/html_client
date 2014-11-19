@@ -323,6 +323,11 @@ AWE.UI.Ember = (function(module) {
           }
           this.destroy();            
         },
+
+        isFortress: function(){
+          var number = parseInt(this.getPath('settlement.type'));
+          return number === 1;
+        }.property('settlement.type').cacheable(),
       });
       /*AWE.UI.Ember.TextInputDialog.create({
         classNames: ['change-army-name-dialog'],
