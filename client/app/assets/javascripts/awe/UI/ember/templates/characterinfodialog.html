@@ -1,80 +1,82 @@
 <script type="text/x-handlebars" data-template-name="character-info-dialog">
   <h1>{{character.name}}</h1>
-  <div class="avatar">
-    {{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar" width="150" height="154"}}
-  </div>
-  <div class="character-details">
-    <h2>{{local character.mundaneTitle.name}}</h2>
-    <div class="modal-dialog-buttons">
-      <div class="battleIcon"></div>
-      <div class="modal-dialog-buttons-text">{{character.battle_count}}</div>
-      <div class="populationIcon"></div>
-      <div class="modal-dialog-buttons-text">{{character.score}}</div>
-      <div class="fortressIcon"></div>
-      <div class="modal-dialog-buttons-text">{{character.fortress_count}}</div>
+  <div class="character-info-container">
+    <div class="avatar">
+      {{view AWE.UI.Ember.AvatarView avatarStringBinding="character.avatar_string" classNames="avatar" width="150" height="154"}}
     </div>
-  </div>
-  {{#if alliance}}
-    <div class="modal-dialog-blue-button-big clickable" {{action "openAlliance"}}>
-      {{alliance.tag}}
+    <div class="character-details">
+      <h2>{{local character.mundaneTitle.name}}</h2>
+      <div class="modal-dialog-buttons">
+        <div class="battleIcon"></div>
+        <div class="modal-dialog-buttons-text">{{character.battle_count}}</div>
+        <div class="populationIcon"></div>
+        <div class="modal-dialog-buttons-text">{{character.score}}</div>
+        <div class="fortressIcon"></div>
+        <div class="modal-dialog-buttons-text">{{character.fortress_count}}</div>
+      </div>
     </div>
-  {{else}}
-    <div class="modal-dialog-blue-button-big modal-dialog-blue-button-big-transparent">
-    </div>
-  {{/if}}
+    {{#if alliance}}
+      <div class="modal-dialog-blue-button-big clickable" {{action "openAlliance"}}>
+        {{alliance.tag}}
+      </div>
+    {{else}}
+      <div class="modal-dialog-blue-button-big modal-dialog-blue-button-big-transparent">
+      </div>
+    {{/if}}
 
-  {{#if AWE.Config.LIKE_ENABLED}}
-    <div class="likes-count">
-      {{character.received_likes_count}}
-    </div>
-    {{#if displayLikeSystemButtons}}
-     {{#if updatingLikes }}
-       {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-     {{else}}
-       <a class="clickable" {{action "sendLike"}} {{bindAttr title="likeAmountText"}}>
+    {{#if AWE.Config.LIKE_ENABLED}}
+      <div class="likes-count">
+        {{character.received_likes_count}}
+      </div>
+      {{#if displayLikeSystemButtons}}
+       {{#if updatingLikes }}
+         {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+       {{else}}
+         <a class="clickable" {{action "sendLike"}} {{bindAttr title="likeAmountText"}}>
+          <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-left">
+            <div class="thumbUp"></div>
+          </div>
+         </a>            
+        {{/if}}
+      {{else}}
         <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-left">
           <div class="thumbUp"></div>
         </div>
-       </a>            
       {{/if}}
-    {{else}}
-      <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-left">
-        <div class="thumbUp"></div>
+      <div class="dislikes-count">
+        {{character.received_dislikes_count}}
       </div>
-    {{/if}}
-    <div class="dislikes-count">
-      {{character.received_dislikes_count}}
-    </div>
-    {{#if displayLikeSystemButtons}} 
-     {{#if updatingLikes }}
-       {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-     {{else}}
-       <a class="clickable" {{action "sendDislike"}} {{bindAttr title="dislikeAmountText"}}>
+      {{#if displayLikeSystemButtons}} 
+       {{#if updatingLikes }}
+         {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
+       {{else}}
+         <a class="clickable" {{action "sendDislike"}} {{bindAttr title="dislikeAmountText"}}>
+          <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-middle">
+            <div class="thumbDown"></div>
+          </div>
+         </a>
+        {{/if}}
+       {{else}}
         <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-middle">
           <div class="thumbDown"></div>
         </div>
-       </a>
       {{/if}}
-     {{else}}
-      <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-middle">
-        <div class="thumbDown"></div>
-      </div>
     {{/if}}
-  {{/if}}
-<a class="clickable" {{action "sendMessageClicked"}}>
-  <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-right">
-    <div class="mail-icon"></div>
-  </div>
-</a>
+  <a class="clickable" {{action "sendMessageClicked"}}>
+    <div class="modal-dialog-blue-button-small modal-dialog-blue-button-small-right">
+      <div class="mail-icon"></div>
+    </div>
+  </a>
 
-  <div class="modal-dialog-text">
-    {{#if character.description}}
-      {{{ showDescription }}}
-    {{else}}
-      {{#if isOwn}}
-        {{t profile.customization.missingDescription}}
+    <div class="modal-dialog-text">
+      {{#if character.description}}
+        {{{ showDescription }}}
+      {{else}}
+        {{#if isOwn}}
+          {{t profile.customization.missingDescription}}
+        {{/if}}
       {{/if}}
-    {{/if}}
+    </div>
   </div>
 </script>
 
