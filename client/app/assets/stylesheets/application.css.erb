@@ -492,7 +492,7 @@ h3 {
 #hud-canvas-right {
   position: fixed;
   right: -70px;
-  bottom: 276px;
+  top: 492px;
   width: 70px;
   height: 114px;
   z-index: 10;
@@ -7581,6 +7581,24 @@ span.bonus {
 .construction-progress-cancel.icon {
   background: url("<%= asset_path 'hud/icon_cancel/icon_cancel.png' %>") 7px 7px no-repeat;
   background-size: 18px;
+}
+
+.construction-progress-frogtrade {
+  position: absolute;
+  top: 0px;
+  left: 5px;
+  width: 32px;
+  height: 32px;
+}
+
+.construction-progress-frogtrade.background {
+  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-size: 32px;
+}
+
+.construction-progress-frogtrade.icon {
+  background: url("<%= asset_path 'hud/icon_convert/icon_convert.png' %>") no-repeat;
+  background-size: 32px;
 }
 
 .construction-progress-bar {
