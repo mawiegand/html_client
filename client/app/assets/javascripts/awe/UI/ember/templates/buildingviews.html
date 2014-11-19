@@ -34,21 +34,39 @@
 <script type="text/x-handlebars" data-template-name="construction-progress">
   <div class="construction-progress-wrapper">
     {{#if isSlotSelected }}
-      {{#if isConstructionSpeedupPossible }}
-        <div class="construction-progress-coins background" {{action "finishJobPressed"}}>&nbsp;</div>
-        <div class="construction-progress-coins label" {{action "finishJobPressed"}}>{{constructionSpeedupCost timeRemaining}}</div>
+      {{#if isFrogTradePossible}}
+        <div class="construction-progress-frogtrade background" {{action "resourceExchangePressed"}}>&nbsp;</div>
+        <div class="construction-progress-frogtrade icon" {{action "resourceExchangePressed"}}>&nbsp;</div>                  
+      {{else}}
+        {{#if isConstructionSpeedupPossible }}
+          <div class="construction-progress-coins background" {{action "finishJobPressed"}}>&nbsp;</div>
+          <div class="construction-progress-coins label" {{action "finishJobPressed"}}>{{constructionSpeedupCost timeRemaining}}</div>
+        {{/if}}
       {{/if}}
       {{#if job.cancelable }}
         <div class="construction-progress-cancel background" {{action "cancelJobPressed"}}>&nbsp;</div>
         <div class="construction-progress-cancel icon" {{action "cancelJobPressed"}}>&nbsp;</div>
       {{/if}}
     {{/if}}
-    {{#if active}}
-      <div class="construction-progress-bar">      
-        <span class="construction-progress-bar-level" {{bindAttr style="progressBarWidth"}}>&nbsp;</span>
-        <span class="construction-progress-bar-label">{{formatDuration timeRemaining}}</span>
-      </div>
-    {{/if}}
+        
+    <div class="construction-progress-bar">      
+      <span class="construction-progress-bar-level" {{bindAttr style="progressBarWidth"}}>&nbsp;</span>
+      <span class="construction-progress-bar-label">        
+          {{#if active}}
+            {{#if finished}}
+              {{t settlement.construction.finishing}}...
+            {{else}}
+              {{formatDuration timeRemaining}}
+            {{/if}}
+          {{else}}                    
+            {{#if waitingForResources}}
+              {{t settlement.construction.insufficentResources}}!
+            {{else}}
+              {{positionInQueueText}}
+            {{/if}}            
+          {{/if}}                        
+      </span>
+    </div>
   </div>
 </script>
 
