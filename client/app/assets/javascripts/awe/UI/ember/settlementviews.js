@@ -325,9 +325,9 @@ AWE.UI.Ember = (function(module) {
         },
 
         isFortress: function(){
-          var number = parseInt(this.getPath('settlement.type'));
+          var number = parseInt(this.getPath('settlement.type.id'));
           return number === 1;
-        }.property('settlement.type').cacheable(),
+        }.property('settlement.type.id').cacheable(),
       });
       /*AWE.UI.Ember.TextInputDialog.create({
         classNames: ['change-army-name-dialog'],
