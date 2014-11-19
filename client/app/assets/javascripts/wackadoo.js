@@ -782,7 +782,13 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           if (typeof sessionStorage !== "undefined" && 
               typeof sessionStorage.startupArguments !== "undefined")
           {
-            args = sessionStorage.startupArguments;
+            try {
+              args = JSON.parse(sessionStorage.startupArguments);
+              this.set('startupArguments', sessionStorage.startupArguments);
+            }
+            catch (e3) {
+              
+            }
           }
         }
       }
@@ -800,7 +806,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       else {
         if (typeof sessionStorage !== "undefined") 
         {
-          sessionStorage.startupArguments = args;
+          sessionStorage.startupArguments = this.get('startupArguments');
         }
         accessToken = args.accessToken ;
       }                            // || AWE.Config.DEV_ACCESS_TOKEN || null;
