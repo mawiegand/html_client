@@ -837,6 +837,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         Sample.setPlatform(Sample.PLATFORM_FACEBOOK);
       }
 
+      if(navigator.userAgent.toLowerCase().indexOf("mac"))
+      {
+        var styleSheet = document.styleSheets[0];
+        styleSheet.insertRule(".welcome-dialog { width: 100px; }", styleSheet.rules.length);
+      }
+
       Sample.sessionStart();
       Sample.autoPing(30);
 

@@ -5464,10 +5464,12 @@ h1.slot-tooltip {
   font-size: 16px;
   position: absolute; 
   margin-left: -348px;
-  margin-top: -165px;  
+  margin-top: -250px;  
   width: 676px; 
+  max-height: 470px;
   min-height: 300px;
-  background-color: #FFF;    
+  background-color: #FFF;   
+  overflow: scroll; 
 }
 .welcome-dialog h2 {
   margin-bottom: 0px;
@@ -5475,6 +5477,7 @@ h1.slot-tooltip {
 
 .welcome-dialog img {
   margin-top: -6px;
+  width: 670px;
 }
 
 .encyclopedia-view {
@@ -8254,16 +8257,6 @@ table .datetime {
   background: url('<%= asset_path("settlements/base/building_category_large_building.png") %>');  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
 
-
-/** general settings for towers and default image (will be used as long as theres no specific image for a particular building type ) */
-.fortress-picture .tower {
- /*position: absolute;
-  width: 238px;
-  height: 454px;
-  z-index: 2;
-  background: url('<%= asset_path("settlements/fortress/building_category_fortress_tower.png") %>');  /** the default images for this category. important: contains the image displayed for empty slots! */
-}
-
 .constructing, 
 .outpost-picture .level.constructing,
 .fortress-picture .level.constructing, 
@@ -8829,6 +8822,30 @@ table .datetime {
 }
 
 
+.fortress-picture .small-building.slot1,
+.fortress-picture .building-gui.slot1 {
+  top:  92px;
+  left: 432px;
+}
+
+.fortress-picture .small-building.slot2,
+.fortress-picture .building-gui.slot2 {
+  top:  206px;
+  left: 269px;
+}
+
+.fortress-picture .small-building.slot3,
+.fortress-picture .building-gui.slot3 {
+  top:  206px;
+  left: 432px;
+}
+
+.fortress-picture .small-building.slot4,
+.fortress-picture .building-gui.slot4 {
+  top:  206px;
+  left: 595px;
+}
+
 
 .fortress-picture .tower .level,
 .fortress-picture .wall .level {
@@ -9243,6 +9260,9 @@ table .datetime {
 .fortress-picture .wall.size3:hover {
 	background-position: -1600px -960px;
 }*/
+
+
+
 
 
 /** position of slots in base view */
