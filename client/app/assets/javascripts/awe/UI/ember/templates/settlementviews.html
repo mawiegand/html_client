@@ -148,3 +148,28 @@
   </div>
 </script>
 
+<!-- Taxes change dialog -->
+<script type="text/x-handlebars" data-template-name="tax-change-new-dialog">
+  <h1>{{t settlement.info.tax}}</h1>
+  <div class="modal-dialog-body tax-dialog-pane scrolling">
+      <div class="cell-info">
+      {{#if isFortress}}
+        Hier steht die Erklärung was Steuern sind, was man damit alles anstellen kann und man muss nicht einmal eine Steuererklärung schreiben. Ist das nicht toll?
+      {{else}}
+        Placeholder for tax change NOT ALLOWED!!!
+      {{/if}}
+      </div>
+      {{#if isFortress}}
+        <div class="cell-slider">
+          <div class="slider-value-text">{{valueText}}%</div>
+          {{view AWE.UI.Ember.TaxesRangeView valueBinding="settlement.taxPercentage" settlementBinding="settlement"}}
+        </div>
+        <div class="cell-confirm-button">
+          <div class="confirm-green-button" {{action "okTaxPressed"}}>
+            <div class="confirm-button-icon confirm-button-tax-icon"></div>
+          </div>
+        </div>
+      {{/if}}
+   </div>
+</script>
+
