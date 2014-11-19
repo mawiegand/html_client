@@ -289,7 +289,7 @@ AWE.UI.Ember = (function(module) {
     }.property('settlement.tax_changed_at'),
 
     changeTaxPressed: function(event) {
-      if (!this.changeTaxPossible) {
+      if (!this.get("changeTaxPossible")) {
         this.showErrorTax(AWE.I18n.lookupTranslation('settlement.info.taxRateChangeNotPossible'));
         return;
       }

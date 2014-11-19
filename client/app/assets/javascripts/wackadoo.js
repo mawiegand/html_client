@@ -836,10 +836,15 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         Sample.setPlatform(Sample.PLATFORM_FACEBOOK);
       }
 
-      if(navigator.userAgent.toLowerCase().indexOf("mac"))
+      if(navigator.userAgent.toLowerCase().indexOf("android") > 0)
       {
         var styleSheet = document.styleSheets[0];
-        styleSheet.insertRule(".welcome-dialog { width: 100px; }", styleSheet.rules.length);
+        styleSheet.insertRule(".welcome-dialog { width: 676px; margin-top: -165px; margin-left: -348px; }", styleSheet.rules.length);
+        styleSheet.insertRule(".ranking-view { width: 676px; margin-top: 0px; max-height: 500px; min-height: 0; }", styleSheet.rules.length);
+        styleSheet.insertRule(".ranking-view .tab-content { overflow: scroll; height: 300px; }", styleSheet.rules.length);
+        styleSheet.insertRule(".ranking-view .advisor { left: 634px; top: -26px; }", styleSheet.rules.length);
+        styleSheet.insertRule(".ranking-table { width: 676px; }", styleSheet.rules.length);
+        styleSheet.insertRule(".army-list-view { width: 676px; height: 500px; min-height: 500px; margin-top: 15px; margin-left: -365px; }", styleSheet.rules.length);
       }
 
       Sample.sessionStart();
