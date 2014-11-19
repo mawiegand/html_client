@@ -489,7 +489,7 @@ AWE.UI = (function(module) {
         _battleView.onDoubleClick = that.onDoubleClick;
         _battleView.onMouseOver = that.onMouseOver;
         _battleView.onMouseOut = that.onMouseOut;
-        this.addChildAt(_battleView,0);
+        this.addChildAt(_battleView,100);
       }
       else if (!_army.get('isFighting') && _battleView) {
         this.removeChild(_battleView);

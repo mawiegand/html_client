@@ -125,7 +125,12 @@ AWE.UI.Ember = (function(module) {
     },
     
     artifactClicked: function(event) {
-      this.get('controller').constructionArtifactClicked(this.get('slot'));
+      //this.get('controller').constructionArtifactClicked(this.get('slot'));
+      var dialog = AWE.UI.Ember.ArtifactInitiationDialog.create({
+        controller: WACKADOO.presentScreenController,
+        settlement: AWE.GS.SettlementManager.getSettlement(WACKADOO.presentScreenController.settlementId),
+      });
+      WACKADOO.presentModalDialog(dialog);
     },
     
     militaryClicked: function(event) {

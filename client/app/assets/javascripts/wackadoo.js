@@ -51,6 +51,15 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       window.name = this.get('startupArguments');
       window.location.reload();
     },
+    
+    logout: function() {
+      window.name = "empty";
+      if (typeof sessionStorage !== "undefined")
+      {
+        sessionStorage.startupArguments = null;
+      }
+      window.location.reload()
+    },
 
     /** the application's runloop. Does basic stuff needed by the application and then hands over
      * control to the view controller that has to do all the real work. The idea behind implementing
@@ -345,7 +354,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         AWE.Facebook.setDoneLoading();      // track loading time, iff running in canvas
 
         Sample.setUserId(identifier);
-        Sample.track('started', { event_category: 'session'});
+        Sample.track('started', 'session');
 
         if (AWE.Config.CHAT_SHOW) {
           self.initChat();
@@ -770,15 +779,21 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
           this.set('startupArguments', fbArgs);
         }
         catch (e2) {
+          if (typeof sessionStorage !== "undefined" && 
+              typeof sessionStorage.startupArguments !== "undefined")
+          {
+            try {
+              args = JSON.parse(sessionStorage.startupArguments);
+              this.set('startupArguments', sessionStorage.startupArguments);
+            }
+            catch (e3) {
+              
+            }
+          }
         }
       }
       window.name = "empty";                                 // unset variables
       fbArgs = "empty";
-
-      Sample.setEndpoint("/psiori/event")
-      Sample.setAppToken("wad-rt82-fhjk-18");
-      Sample.sessionStart();
-      Sample.autoPing(30);
 
       var accessToken = null;
 
@@ -789,6 +804,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         return ;
       }
       else {
+        if (typeof sessionStorage !== "undefined") 
+        {
+          sessionStorage.startupArguments = this.get('startupArguments');
+        }
         accessToken = args.accessToken ;
       }                            // || AWE.Config.DEV_ACCESS_TOKEN || null;
 
@@ -807,6 +826,18 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
 
       AWE.Facebook.isRunningInCanvas = AWE.Settings.fbRunInCanvas;
       AWE.Facebook.isFbPlayer = !!args.fbPlayerId;
+      
+      Sample.setEndpoint("/psiori/event")
+      Sample.setAppToken("wad-rt82-fhjk-18");
+      
+      if (AWE.Facebook.isRunningInCanvas)
+      {
+        Sample.setFacebookId(args.fbPlayerId || null);
+        Sample.setPlatform(Sample.PLATFORM_FACEBOOK);
+      }
+
+      Sample.sessionStart();
+      Sample.autoPing(30);
 
       AWE.Net.currentUserCredentials = AWE.Net.UserCredentials.create({
         access_token: accessToken,
