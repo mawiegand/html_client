@@ -53,25 +53,30 @@ AWE.Controller = (function(module) {
      * the playing pieces (armies, fortresses, settlements), and 
      * the HUD. */
     that.init = function() {
-      _super.init();    
+      _super.init();
+
+      var view = AWE.UI.Ember.HUDViews.create();
+      //view.append();  
       var root = that.rootElement();  
       root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas-profile"></canvas><canvas id="hud-canvas-left"></canvas><canvas id="hud-canvas-right"></canvas>');
       
+
+
       // HUD layers ("static", not zoomable, not moveable)
       
       _canvasLeft = root.find('#hud-canvas-left')[0];
       _stageLeft = new Stage(_canvasLeft);
       _stageLeft.onClick = function() {};
       
-      _canvasLeft.width = 120;
-      _canvasLeft.height = 370;
+      _canvasLeft.width = 120*AWE.Settings.hudScale;
+      _canvasLeft.height = 370*AWE.Settings.hudScale;
       
       _canvasRight = root.find('#hud-canvas-right')[0];
       _stageRight = new Stage(_canvasRight);
       _stageRight.onClick = function() {};
       
-      _canvasRight.width = 70;
-      _canvasRight.height = 114;
+      _canvasRight.width = 70*AWE.Settings.hudScale;
+      _canvasRight.height = 134*AWE.Settings.hudScale;
       
       _canvasProfile = root.find('#hud-canvas-profile')[0];
       _stageProfile = new Stage(_canvasProfile);
@@ -79,6 +84,8 @@ AWE.Controller = (function(module) {
       
       _canvasProfile.width = 268;
       _canvasProfile.height = 266;
+      //_stageProfile.scaleX = 0.5;
+      //_stageProfile.scaleY = 0.5;
 
       _resourceCanvas = root.find('#resource-canvas')[0];
       _resourceStage = new Stage(_resourceCanvas);
@@ -87,6 +94,8 @@ AWE.Controller = (function(module) {
       _resourceCanvas.width  = 800;
       _resourceCanvas.height = 42;
       
+
+
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setNeedsLayout();
     };   
@@ -112,6 +121,7 @@ AWE.Controller = (function(module) {
     
     that.onResize = function() {
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
+      $('#hud-canvas-right').css('top', $(window).height()*0.5);
     }
     
     /** set to true in case the window needs to be layouted again (e.g. after
@@ -122,6 +132,15 @@ AWE.Controller = (function(module) {
      * changed. */
     that.layoutIfNeeded = function() {
       if (_needsLayout) {
+        $('#hud-canvas-right').css('top', $(window).height()*0.5);
+        $('#hud-canvas-left').css('height', 370*AWE.Settings.hudScale);
+        $('#hud-canvas-left').css('width', 120*AWE.Settings.hudScale);
+        $('#hud-canvas-right').css('height', 134*AWE.Settings.hudScale);
+        $('#hud-canvas-right').css('width', 70*AWE.Settings.hudScale);
+        $('#hud-canvas-profile').css('height', 266*AWE.Settings.hudScale);
+        $('#hud-canvas-profile').css('width', 268*AWE.Settings.hudScale);
+        $('#resource-canvas').css('height', 42*AWE.Settings.hudScale);
+        $('#resource-canvas').css('width', 800*AWE.Settings.hudScale);
         if (_hideCanvas && !_canvasIsHidden) {
           AWE.Log.Debug('hide canvas');
           _canvasIsHidden = true;
@@ -141,6 +160,7 @@ AWE.Controller = (function(module) {
           that.setNeedsDisplay();
         }
       }
+
       _needsLayout = false;
     };
     

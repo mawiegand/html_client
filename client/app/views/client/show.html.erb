@@ -31,7 +31,7 @@
     AWE.Settings = AWE.Settings || {};
 
     var my_args = {};
-
+    
     try {
       my_args = JSON.parse(window.name);
     }
@@ -40,8 +40,18 @@
         my_args = JSON.parse(fbArgs);
       }
       catch (e2) {
+        if (typeof sessionStorage !== "undefined" && 
+            typeof sessionStorage.startupArguments !== "undefined")
+        {
+          try {
+            my_args = JSON.parse(sessionStorage.startupArguments);
+          }
+          catch (e3) {
+          }
+        }
       }
     }
+    
 
     AWE.Settings.lang = my_args.locale ? my_args.locale.substr(0, 2) : 'en';
 

@@ -19,119 +19,98 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="settlement-info-box-dialog">
-  <div class="modal-dialog-background"></div>
-	<div class="modal-dialog-pane settlement-info-box-dialog-pane">
-	<a {{action "okPressed"}} class="close clickable"></a>
-	<div class="settlement-info-box-dialog-content">
-    <div class="change-settlement-name">
-      {{#if changingName }}
-        &nbsp;{{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-      {{else}}
-        <span class="simple-button" title="{{t settlement.customization.nameChangeAdvice}}" {{action "changeNamePressed"}}>{{#if firstNameChange}}{{t settlement.customization.chooseNameCaption}}{{else}}{{t settlement.customization.changeNameCaption}} {{nameChangeCosts}}<span class="resource-icon {{unbound nameChangeResource}}">&nbsp;</span>&nbsp;{{/if}}</span>
-      {{/if}}
+  <h1>{{settlement.name}}</h1>
+  <div class="modal-dialog-body settlement-info-box-dialog-pane scrolling">
+    <div class="row row1">
+      <div class="cell cell-50">
+        <div class="row1_1">
+          <div class="cell title">{{t settlement.defenseBonus}}:</div>
+          <div class="cell value">{{formatPercentage settlement.present_defense_bonus}}</div>
+        </div>
+        <div class="row1_2">
+          <div class="cell title">{{t settlement.condition}}:</div>
+          <div class="cell value">{{formatPercentage settlement.condition}}</div>
+        </div>
+        <div class="row1_3">
+          <div class="cell title">{{t settlement.info.buildingSpeed}}:</div>
+          <div class="cell value">{{formatNumber buildingSpeed maxPlaces="0"}}%</div>
+        </div>
+      </div>
+      <div class="cell cell-50">
+        <div class="row1_4">
+          <div class="cell title">{{t settlement.population}}:</div>
+          <div class="cell value">{{settlement.score}}</div>
+        </div>
+        <div class="row1_5">
+          <div class="cell title">{{t building.commandPoints}}:</div>
+          <div class="cell value">{{settlement.commandPointsUsed}}/{{settlement.command_points}}</div>
+        </div>
+        <div class="row1_6">
+          <div class="cell title">{{t settlement.info.availableBuildingSlots}}: </div>
+          <div class="cell value">{{settlement.availableBuildingSlots}}</div>
+        </div>
+      </div>
     </div>
-    <h1>{{settlement.name}}</h1>
-
-    <p class="red-color">{{message}}</p>
-
-    <p>{{t settlement.info.availableBuildingSlots}}: {{settlement.availableBuildingSlots}} &nbsp;{{t settlement.population}}: {{settlement.score}}</p>
-    <p>{{t settlement.defenseBonus}}: {{formatNumber defenseBonus places="0"}}<span class="help-icon" title="{{t settlement.info.combatBonusInfo}}.">&nbsp;</span></p>
-
-    <table>
-      <tr>
-        <td>{{t settlement.info.buildingSpeed}}:</td><td class="number"> {{formatNumber buildingSpeed maxPlaces="0"}}% </td>
-      </tr>
-      <tr> 
-        <td>{{t settlement.info.meleeTrainingSpeed}}:</td><td class="number"> {{formatNumber infantryTrainingSpeed maxPlaces="0"}}%</td> 
-      </tr>
-      <tr>
-        <td>{{t settlement.info.ridersTrainingSpeed}}:</td><td class="number"> {{formatNumber cavalryTrainingSpeed maxPlaces="0"}}%</td> 
-      </tr>
-      <tr>
-        <td>{{t settlement.info.rangedTrainingSpeed}}:</td><td class="number"> {{formatNumber artilleryTrainingSpeed maxPlaces="0"}}%</td> 
-      </tr>
-    </table>
-    <p>{{t settlement.info.speedUpInfo}}</p>
-    
-    <p>
-      <span title="{{t settlement.info.commandPointsInfo}}">{{t building.commandPoints}}: {{settlement.commandPointsUsed}} / {{settlement.command_points}}</span>
-    
-    <span class="help-icon" title="{{t settlement.info.commandPointsHelp}}">&nbsp;</span></p>
-
-    <p>{{t settlement.info.taxRate}}:{{formatNumber settlement.taxPercentage}}%
-      {{#if settlement.owns_region }}
-        {{#if changeTaxPossible }}
-          <a href="#" {{action "changeTaxPressed"}}>{{t settlement.info.change}}</a><span class="help-icon" title="{{t settlement.info.taxRateChangeInfo}}">&nbsp;</span>
-        {{else}}
-          {{t settlement.info.taxRateChangeNotPossible}}
+    <div class="row row2">
+      <div class="cell">
+        <span class="title">{{t settlement.info.recruitmentspeed}}:</span>
+        <span class="army-icon infantry"></span> {{formatNumber infantryTrainingSpeed maxPlaces="0"}}%
+        <span class="army-icon cavalry"></span> {{formatNumber cavalryTrainingSpeed maxPlaces="0"}}%
+        <span class="army-icon artillery"></span> {{formatNumber artilleryTrainingSpeed maxPlaces="0"}}%
+      </div>
+    </div>
+    <div class="row row3">
+      <div class="tab-bar-new">
+        <div class="cell cell-50">
+          <div class="tab-button-view tab-button-view-new button-left">{{t settlement.info.move}}</div>
+        </div>
+        <div class="cell cell-50">
+          <div class="tab-button-view tab-button-view-new button-right" {{action "changeTaxPressed"}}>{{t settlement.info.tax}} {{formatNumber settlement.taxPercentage}}%</div>
+        </div>
+      </div>
+    </div>
+    <div class="row row4">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            {{#each settlement.resourceProductions}}
+            <th><span class="resource-icon {{unbound resourceType.symbolic_id}} middle" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span></th>
+            {{/each}}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="info">{{t settlement.info.productions}}:</td>
+            {{#each settlement.resourceProductions}}
+            <td class="number">{{formatNumber rate maxPlaces="2"}}/h</td>
+            {{/each}}
+          </tr>
+          <tr>
+            <td class="info">{{t settlement.info.bonus}}:</td>
+            {{#each settlement.resourceProductions}}
+            <td class="number">{{formatNumber bonusAbs maxPlaces="2"}}/h</td>
+            {{/each}}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  {{#if isOutOrFortress }}
+  <div class="row row5">
+      <div class="tab-bar-new">
+        {{#if settlement.isOutpost }}
+        <div class="cell cell-50">
+          <div class="tab-button-view tab-button-view-new button-left" {{action abandonOutpostPressed}}>{{t settlement.abandon.abandon}}</div>
+        </div>
         {{/if}}
-      {{else}}
-        <span class="help-icon" title="{{t settlement.info.taxRateHelp}}">&nbsp;</span>
-      {{/if}}
-    </p>
-
-    {{#if settlement.artifact }}
-      <p>{{t settlement.info.artifact}}: {{settlement.artifact.name}}</p>
+        {{#if settlement.isFortress }}
+        <div class="cell cell-50">
+          <div class="tab-button-view tab-button-view-new button-right" {{action invationPressed}}>{{t settlement.invitationLink.header}}</div>
+      </div>
+        {{/if}}
+    </div>
     {{/if}}
-
-    {{#if lastError}} <p class="red-color">{{lastError}}</p>{{/if}}
-
-    <h2>{{t settlement.info.resourceProduction}}</h2>
-    <table>
-      <tr>
-       <th></th>
-        {{#each settlement.resourceProductions}}
-          <th><span class="resource-icon {{unbound resourceType.symbolic_id}} middle" {{bindAttr title="{{local resourceType.name}}"}}>&nbsp;</span></th> 
-        {{/each}}
-      </tr>
-      <tr>
-       <td>{{t settlement.info.buildings}}</td>
-        {{#each settlement.resourceProductions}}
-          <td class="number">{{formatNumber base maxPlaces="2"}}/h</td> 
-        {{/each}}
-      </tr>
-      <tr>
-       <td>+ {{t settlement.info.bonus}}</td>
-        {{#each settlement.resourceProductions}}
-          <td class="number">{{formatNumber bonusAbs maxPlaces="2"}}/h</td> 
-        {{/each}}
-      </tr>
-      <tr>
-       <td>{{#if settlement.owns_region}}+{{else}}-{{/if}} {{t settlement.info.tax}} </td>
-        {{#each settlement.resourceProductions}}
-          <td class="number">{{formatNumber tax maxPlaces="2"}}/h</td> 
-        {{/each}}
-      </tr>
-      <tr>
-       <td>= {{t settlement.info.result}}</td>
-        {{#each settlement.resourceProductions}}
-          <td class="number">{{formatNumber rate maxPlaces="2"}}/h</td> 
-        {{/each}}
-      </tr>
-    </table>
-    
-    <p>{{t settlement.info.resourceProductionInfo1}} {{t settlement.info.resourceProductionInfo2}} {{t settlement.info.resourceProductionInfo3}}.</p>
-	
-	  {{#if settlement.isOutpost }}   
-      <h2>{{t settlement.abandon.header}}</h2>
-      <p>{{t settlement.abandon.text}}</p>
-      {{#unless settlement.garrison.isFighting}}
-        <div class="simple-button" style="min-height: 10px; margin-right: 100px;" {{action abandonOutpostPressed}}>{{t settlement.abandon.send}}</div>
-      {{else}}
-      <p>{{t settlement.abandon.fighting}}</p>
-      {{/unless}}      
-    {{/if}}
-	
-    {{#if settlement.isFortress }}
-      <h2>{{t settlement.invitationLink.header}}</h2>
-      <p>{{t settlement.invitationLink.text}}</p>
-      <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action invitationLinkPressed}}>{{t settlement.invitationLink.send}}</div>      
-      <p class="clearfix" {{action catchClick}}>{{ unbound AWE.Config.PLAYER_INVITATION_BASE }}{{ unbound settlement.regionInvitationCode }}</p>
-      <p>{{t settlement.info.movingPassword}}: {{settlement.regionMovingPassword}}</p>
-    {{/if}}
-		</div>
-		</div>
-	</div>
+  </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="settlement-abandon-dialog">
@@ -151,6 +130,20 @@
           <div class="icon-button cancel-button" {{action "cancelPressed"}}>{{t general.cancel}}</div>
         {{/if}}
       {{/if}}
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="settlement-invation-dialog">
+  <div class="modal-dialog-background z-layer-3"></div>
+  <div class="center-helper">
+    <div class="modal-dialog-pane z-layer-4 invation-dialog">
+      <h1>{{t settlement.invitationLink.header}}</h1>
+      <p>{{t settlement.invitationLink.text}}</p>
+      <div class="simple-button float-right" style="min-height: 10px; margin-right: 100px;" {{action "linkPressed"}}>{{t settlement.invitationLink.send}}</div>
+      <p class="clearfix" {{action catchClick}}>{{ unbound AWE.Config.PLAYER_INVITATION_BASE }}{{ unbound settlement.regionInvitationCode }}</p>
+      <p>{{t settlement.info.movingPassword}}: {{settlement.regionMovingPassword}}</p>
+      <div class="icon-button ok-button" {{action "okPressed"}}>{{t general.ok}}</div>
     </div>
   </div>
 </script>

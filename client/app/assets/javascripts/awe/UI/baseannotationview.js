@@ -20,6 +20,8 @@ AWE.UI = (function(module) {
     var battleButton = null;
     
     var _battleInfoButtonView = null;
+    
+    var _newArmyButtonView = null;
 
     //  hovered
     var _infoText1View = null;    
@@ -35,6 +37,8 @@ AWE.UI = (function(module) {
     my = my || {};
 
     that = module.createContainer(spec, my);
+    
+    that.onNewArmyButtonClick = null;
     
     my.typeName = 'BaseAnnotationView';
     my.baseView = null;
@@ -77,9 +81,9 @@ AWE.UI = (function(module) {
         enterButton = AWE.UI.createButtonIconView();
         enterButton.initWithControllerImageAndIcon(my.controller,
           AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue"), 
-          AWE.UI.ImageCache.getImage("hud/annotation/button/enter/normal")
+          AWE.UI.ImageCache.getImage("hud/annotation/button/enter/normal"),
+          AWE.Geometry.createRect(-20, 35, 64, 64)
         );
-        enterButton.setFrame(AWE.Geometry.createRect(-20, 35, 48, 48));
         enterButton.onClick = function() {
           that.onEnterButtonClick();
           AWE.GS.TutorialStateManager.checkForCustomTestRewards('test_settlement_button2');
@@ -99,9 +103,9 @@ AWE.UI = (function(module) {
         attackButton = AWE.UI.createButtonIconView();
         attackButton.initWithControllerImageAndIcon(my.controller,
           AWE.UI.ImageCache.getImage("hud/annotation/button/background/red"), 
-          AWE.UI.ImageCache.getImage("hud/annotation/button/attack/normal")
+          AWE.UI.ImageCache.getImage("hud/annotation/button/attack/normal"),
+          AWE.Geometry.createRect(40, 80, 64, 64)
         );
-        attackButton.setFrame(AWE.Geometry.createRect(40, 80, 48, 48));
         attackButton.onClick = function() { if (attackButton.enabled()) { that.onAttackButtonClick(that); } }
         this.addChild(attackButton);
       }
@@ -117,9 +121,9 @@ AWE.UI = (function(module) {
         _battleInfoButtonView = AWE.UI.createButtonIconView();
         _battleInfoButtonView.initWithControllerImageAndIcon(my.controller,
           AWE.UI.ImageCache.getImage("hud/annotation/button/background/blue"), 
-          AWE.UI.ImageCache.getImage("hud/icon/info")
+          AWE.UI.ImageCache.getImage("hud/icon/info"),
+          AWE.Geometry.createRect(110, 86, 64, 64)
         );
-        _battleInfoButtonView.setFrame(AWE.Geometry.createRect(110, 86, 48, 48));
         _battleInfoButtonView.onClick = function() {
           if (_battleInfoButtonView.enabled() && my.location.garrisonArmy()) {
             that.onBattleInfoButtonClick(my.location.garrisonArmy());
@@ -130,6 +134,28 @@ AWE.UI = (function(module) {
       
       if (_battleInfoButtonView) {
         _battleInfoButtonView.setVisible(my.baseView.selected() && my.location.garrisonArmy() && my.location.garrisonArmy().get('isFighting'));
+      }
+      
+      if (!_newArmyButtonView && isOwnLocation && my.location != null && my.location.garrisonArmy() != null && !my.location.garrisonArmy().get('isFighting')) {
+        _newArmyButtonView = AWE.UI.createButtonIconView();
+        _newArmyButtonView.initWithControllerImageAndIcon(my.controller,
+          AWE.UI.ImageCache.getImage("hud/annotation/button/background/purple"), 
+          AWE.UI.ImageCache.getImage("hud/icon/army"),
+          AWE.Geometry.createRect(170, 35, 64, 64)
+        );
+        _newArmyButtonView.onClick = function() {
+          if (that.onNewArmyButtonClick) {
+            that.onNewArmyButtonClick(my.location);
+          }
+        };
+        this.addChild(_newArmyButtonView);
+      }
+      if (_newArmyButtonView) {
+        _newArmyButtonView.setVisible(my.baseView.selected());
+      }
+
+      if (_newArmyButtonView && isOwnLocation && my.location != null && my.location.garrisonArmy() != null && my.location.garrisonArmy().get('isFighting')) {
+        this.removeChild(_newArmyButtonView);
       }
 
 
