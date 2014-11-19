@@ -33,18 +33,18 @@
     var my_args = {};
     
     try {
-      args = JSON.parse(window.name);
+      my_args = JSON.parse(window.name);
     }
     catch (e1) {
       try {
-        args = JSON.parse(fbArgs);
+        my_args = JSON.parse(fbArgs);
       }
       catch (e2) {
         if (typeof sessionStorage !== "undefined" && 
             typeof sessionStorage.startupArguments !== "undefined")
         {
           try {
-            args = JSON.parse(sessionStorage.startupArguments);
+            my_args = JSON.parse(sessionStorage.startupArguments);
           }
           catch (e3) {
           }
