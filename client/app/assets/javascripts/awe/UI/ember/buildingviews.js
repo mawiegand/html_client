@@ -164,15 +164,40 @@ AWE.UI.Ember = (function(module) {
     timer: null,    
     timeRemaining: null,  
     
+    pool: null,
+    disableFrogTrade: false,
+    
     init: function(spec) {
       this._super(spec);  
       
       var slot = this.getPath('parentView.slot');
-      this.set('slot', slot);
+      this.set('slot', slot);            
+      
+      var settlement = slot.get('settlement');
+      this.set('settlement', settlement);      
       
       var sortedJobs = this.getPath('parentView.slot.building.sortedJobs');
-      this.set('job', sortedJobs[0]);          
+      this.set('job', sortedJobs[0]);            
     },  
+    
+    positionInQueue: function() {
+      var settlement = this.get('settlement');
+      var jobCollection = settlement.queues();
+      var i = 0;
+      if (jobCollection && jobCollection[0]) {
+        var jobs = jobCollection[0].getPath('hashableJobs.collection');
+        for (; i < jobs.length; i++) {
+          if (jobs[i] && jobs[i].getPath('slot.slot_num') === this.getPath('slot.slot_num')) {            
+            break;
+          }
+        }
+      }
+      return i;
+    }.property('settlement.hashableQueues.changedAt'),    
+    
+    positionInQueueText: function() {      
+      return "In Queue: " + this.get('positionInQueue');
+    }.property('positionInQueue'),    
     
     isSlotSelected: function() {
       return this.getPath('parentView.parentView.selectedSlot.slot_num') === this.getPath('slot.slot_num');
@@ -227,9 +252,14 @@ AWE.UI.Ember = (function(module) {
     }.property('job.active_job'),
     
     first: function() {
-      var jobCollection = this.getPath('parentView.queue.hashableJobs.collection');
-      return jobCollection && jobCollection[0] && jobCollection[0] === this.get('job')
-    }.property('parentView.queue.hashableJobs.changedAt'),    
+      var position = this.get('positionInQueue');
+      return position === 0;
+    }.property('positionInQueue'),    
+    
+    finished: function() {
+      var t = this.get('timeRemaining');
+      return t !== undefined && t !== null && t <= 0;
+    }.property('timeRemaining'),
     
     startTimerOnBecommingActive: function() {
       var active = this.get('active');
@@ -249,11 +279,143 @@ AWE.UI.Ember = (function(module) {
     
     didInsertElement: function() {      
       this.startTimer();
+      this.initPool();
     },
     
     willDestroyElement: function() {
       this.stopTimer();
     },
+    
+    /* return slot costs for conversion or upgrade */
+    slotCosts: function() {
+      /* TODO: the calculation of costs should be placed at the job object (model!!) */
+
+      /* check if is upgrade or conversion */
+      if(this.getPath('job.slot.building.underConversion')) {
+        /** this assumes the conversion to be the only job on this slot in the queue.
+            presently, this assumption is save, since the client does not allow for a conversion
+            if there's already an ongoing job on the same slot. */
+        return this.getPath('job.slot.building.conversionCosts');
+      }
+      if (this.getPath('job.slot.building.underDestruction')) {
+        return []; // destructions are free!
+      } 
+      else {       // upgrade and creation jobs
+        return this.getPath('job.slot.building').calcCosts(this.getPath('job.level_after')); // level after should be right...
+      }
+    },
+    
+    /* button should be available if
+     *  - insufficient resources
+     *  - sum required resources <= sum user resources
+     *  - if required resources <= capacity
+     *  - is first and not active
+     *  - user has enough cash for frog trade
+     */
+    isFrogTradePossible: function() {
+      
+      if (AWE.Config.QUICK_TRADE_ON_JOB_ENABLED === false) {
+        return false;
+      }
+
+      /* disable fast frog trade button on conversion, see
+       * html_client issue #69 */
+      if(this.getPath('job.slot.building.underConversion')) {
+        return false;
+      }
+
+      if (this.get('first') && !this.get('active') && (this.getPath('pool.resource_cash_present') >= AWE.GS.RulesManager.getRules().resource_exchange.amount) && !this.get('disableFrogTrade')) {
+        var costs        = this.slotCosts(); /*this.getPath('job.slot.building.costs');*/
+        var sum_required = 0;
+        var self = this;
+        
+        for (i = 0; i < costs.length; ++i) {
+          /* sum up pool */
+          sum_required += costs[i].amount;
+
+          /* check if required resources <= capacity */
+          if(costs[i].amount > self.getPath('pool.'+costs[i].resourceType.symbolic_id+'_capacity'))  {
+            return false;
+          }
+        }
+
+        var sum_pool = self.getPath('pool.resource_wood_present') + self.getPath('pool.resource_stone_present') + self.getPath('pool.resource_fur_present');
+
+        /* check if required resources <= capacity */
+        if (sum_required > sum_pool) {
+          return false;
+        }
+
+        return true;
+      }
+      else {
+        return false;
+      }
+    }.property('job', 'job.active_job', 'active', 'first', 'pool', 'pool.resource_stone_present', 'pool.resource_wood_present', 'pool.resource_fur_present', 'pool.resource_cash_present', 'disableFrogTrade').cacheable(),
+    
+    /** the following action must be moved to the settlement controller. 
+     * here's the wrong place for it. */
+    resourceExchangePressed: function() {
+      var self = this;
+      var costs = this.slotCosts();
+
+      /* ensure that the frogTradeButton will not be clicked twice */
+      if(this.get('disableFrogTrade') == true) {
+        log('ERROR: frog trade was clicked twice');
+        return false;
+      }
+
+      this.set('disableFrogTrade', true);
+
+      /* TODO: re-write createTradeResourcesAction controller to receive an array instead
+       * of 3 parameters */
+      var action = AWE.Action.Fundamental.createTradeResourcesAction(
+          (costs[0] ? costs[0].amount : 0),
+          (costs[1] ? costs[1].amount : 0),
+          (costs[2] ? costs[2].amount : 0),
+          this.job.getId());
+      AWE.Action.Manager.queueAction(action, function(statusCode) {
+        var parent = self;
+        if(statusCode == 200) {
+          /* update resources in client */
+          AWE.GS.ResourcePoolManager.updateResourcePool(null, function() {
+            /* TODO: Perhaps add a notification of success? */
+            AWE.GS.ConstructionJobManager.updateJob(self.getPath('job.id'));
+            self.get('controller').updateConstructionQueueSlotAndJobs(self.getPath('job.queue_id'));    
+            self.set('disableFrogTrade', true); // was successful, keep disabled
+          });
+        }   
+        else if (statusCode == AWE.Net.CONFLICT) {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('resource.exchange.errors.noFrogs.heading'),
+            message: AWE.I18n.lookupTranslation('resource.exchange.errors.noFrogs.text'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+          self.set('disableFrogTrade', false);          
+        }   
+        else {
+          var errorDialog = AWE.UI.Ember.InfoDialog.create({
+            heading: AWE.I18n.lookupTranslation('resource.exchange.errors.failed.heading'),
+            message: AWE.I18n.lookupTranslation('resource.exchange.errors.failed.text'),
+          }); 
+          WACKADOO.presentModalDialog(errorDialog);
+          self.set('disableFrogTrade', false);
+        }   
+      }); 
+    },
+    
+    initPool: function() {
+      this.set('pool', AWE.GS.ResourcePoolManager.getResourcePool());
+    },
+    
+    building: function() {
+      if (this.getPath('job.job_type') == AWE.GS.CONSTRUCTION_JOB_TYPE_CONVERT) {
+        return this.getPath('job.slot.building.converted');
+      }
+      else {
+        return this.getPath('job.slot.building');
+      } 
+    }.property('id').cacheable(), 
     
   });  
 
