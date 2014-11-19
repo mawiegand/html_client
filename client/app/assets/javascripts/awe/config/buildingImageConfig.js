@@ -10,7 +10,7 @@ var AWE = window.AWE || {};
 AWE.Config = (function(module) {
   
   module.BuildingImageLibrary = {
-    building_chief_cottage: {
+    building_chief_cottage: {  // das sollten arrays sein! dann könnte man fragen, wie viele level es gibt.
         0: 0,
         1: 0,
         2: 1,
@@ -725,7 +725,17 @@ AWE.Config = (function(module) {
     },
 
     getImageLevelForBuilding: function(building, level) {
-        return this[building][level];
+      console.log(building, level);
+      var def = "building_gatherer";
+      if (typeof this[building] === "undefined")
+      {
+        building = def;
+      }
+      if (typeof this[building][level] === "undefined")
+      {
+        level = 1; // level one _must_ be there...
+      }
+      return this[building][level];
     }
   }
   return module;
