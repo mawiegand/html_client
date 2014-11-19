@@ -205,7 +205,7 @@
 <script type="text/x-handlebars" data-template-name="settlement-building-annotation">  
     <div class="building-annotation-background building-info-button-background" {{action "infoClicked"}}>&nbsp;</div>
     <div class="building-annotation-icon building-info-button-icon" {{action "infoClicked"}}>&nbsp;</div>
-  {{#unless building.underConstruction}}
+
     {{#if building.upgradable}}          
       {{#unless sendingUpgrade}}
         <div class="building-annotation-background building-upgrade-button-background" {{action "upgradeClicked"}}>&nbsp;</div>
@@ -215,7 +215,7 @@
         {{/if}}      
       {{/unless}}
     {{/if}}
-  {{/unless}}  
+
   {{#unless building.underConversion}}
     {{#if building.convertable }}
       {{#unless sendingConvert }}
@@ -431,7 +431,7 @@
               {{/if}}
             </a>
           {{/if}}
-          <h3>{{t building.upgrade.upgradeStart}} {{local building.name }} {{t building.upgrade.toAuf}} {{t building.level}} {{ building.nextLevel }} {{t building.upgrade.upgradeEnd}}</h3>
+          <h3>{{t building.upgrade.upgradeStart}} {{local building.name}} {{t building.upgrade.toAuf}} {{t building.level}} {{ building.nextLevel }} {{t building.upgrade.upgradeEnd}}</h3>
 
           {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building" levelBinding="building.nextLevel"}}
   
