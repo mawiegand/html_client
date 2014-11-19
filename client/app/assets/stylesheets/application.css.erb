@@ -6044,7 +6044,7 @@ loaddialog-positioner {
 
 .settlement-screen.outpost-screen,
 .settlement-screen.base-screen,
-.fortress-screen.settlement-screen {
+.settlement-screen.fortress-screen {
   min-width: 1024px;
   width: 100%;
   overflow-x: hidden;
@@ -8095,36 +8095,21 @@ table .datetime {
   margin: 0px;
 }
 
-.fortress-picture {
-  position: relative;
-  float: left;
-  width: 1000%;
-  height: 1024px;
-  background-repeat: no-repeat;
-}
 
+.fortress-picture,
 .outpost-picture,
 .base-picture {
   position: relative;
   float: left;
   width: 800px;
   height: 1024px;
-}
-
-.fortress-picture {
-  background: url('<%= asset_path("settlements/fortress/fortress_background.png") %>');
-  background: url('<%= asset_path("backgrounds/background_settlement.jpg") %>') no-repeat;
-} 
-
-.outpost-picture,
-.base-picture {
   margin-top: 210px;
   overflow: visible;
 }
 
+.fortress-background-picture,
 .outpost-background-picture,
 .base-background-picture {
-  background: url('<%= asset_path("backgrounds/Grid_Overview_01.jpg") %>');
   background: url('<%= asset_path("backgrounds/background_settlement.jpg") %>');
   
   /*background-position: -160px 0;*/
