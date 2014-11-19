@@ -35,12 +35,16 @@
   <div class="construction-progress-wrapper">
     {{#if isSlotSelected }}
       {{#if isFrogTradePossible}}
-        <div class="construction-progress-frogtrade background" {{action "resourceExchangePressed"}}>&nbsp;</div>
-        <div class="construction-progress-frogtrade icon" {{action "resourceExchangePressed"}}>&nbsp;</div>                  
+        {{#if first}}
+          <div class="construction-progress-frogtrade background" {{action "resourceExchangePressed"}}>&nbsp;</div>
+          <div class="construction-progress-frogtrade icon" {{action "resourceExchangePressed"}}>&nbsp;</div>  
+        {{/if}}                
       {{else}}
         {{#if isConstructionSpeedupPossible }}
-          <div class="construction-progress-coins background" {{action "finishJobPressed"}}>&nbsp;</div>
-          <div class="construction-progress-coins label" {{action "finishJobPressed"}}>{{constructionSpeedupCost timeRemaining}}</div>
+          {{#if first}}
+            <div class="construction-progress-coins background" {{action "finishJobPressed"}}>&nbsp;</div>
+            <div class="construction-progress-coins label" {{action "finishJobPressed"}}>{{constructionSpeedupCost timeRemaining}}</div>
+          {{/if}}
         {{/if}}
       {{/if}}
       {{#if job.cancelable }}
