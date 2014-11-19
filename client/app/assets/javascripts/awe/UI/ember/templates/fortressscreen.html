@@ -3,7 +3,6 @@
 <script type="text/x-handlebars" data-template-name="fortress-screen">
 <div class="fortress-screen settlement-screen">
   <div class="fortress-picture">
-    <div class="outpost-background-picture"></div>
     {{#if "settlement"}}
       {{#if "haveSlots"}}
         {{view AWE.UI.Ember.BuildingSlotView  classNames="tower tower-left small-building" slotBinding="leftTower" settlementBinding="settlement"}}
