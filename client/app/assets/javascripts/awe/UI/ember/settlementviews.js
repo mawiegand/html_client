@@ -289,8 +289,8 @@ AWE.UI.Ember = (function(module) {
     }.property('settlement.tax_changed_at'),
 
     changeTaxPressed: function(event) {
-      if (!this.changeTaxPossible) {
-        this.showErrorTax(AWE.I18n.lookupTranslation('settlement.info.taxRateChangeNotPossible'));
+      if (!this.get('changeTaxPossible')) {
+          this.showErrorTax(AWE.I18n.lookupTranslation('settlement.info.taxRateChangeNotPossible'));
         return;
       }
 
@@ -298,7 +298,10 @@ AWE.UI.Ember = (function(module) {
       
       this.set('lastError', null);
       
-      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
+      var changeDialog = module.PopUpDialog.create({
+        templateName: 'tax-change-new-dialog',
+      });
+      /*AWE.UI.Ember.TextInputDialog.create({
         classNames: ['change-army-name-dialog'],
         
         heading:    AWE.I18n.lookupTranslation('settlement.info.setTaxRate'),
@@ -325,7 +328,7 @@ AWE.UI.Ember = (function(module) {
           this.destroy();            
         },
         cancelPressed: function() { this.destroy(); }
-      });
+      });*/
       WACKADOO.presentModalDialog(changeDialog);
       event.preventDefault();
       
@@ -467,6 +470,28 @@ AWE.UI.Ember = (function(module) {
       return false;
     },
 	});
+
+  module.TaxesRangeView  = Ember.TextField.extend({
+    classNames: ["taxes-range-slider"],
+    attributeBindings: ["min", "max"],
+    type: "range",
+    /*resourceType: null,
+    settlement: null,
+    min: 0, 
+    maxAmount: null,
+    currentID: null,
+    max: function(){
+      return this.get("maxAmount");
+    }.property('maxAmount').cacheable(),
+    onValueChanged: function(){
+      this.set('currentID', this.getPath('resourceType.type.id'));
+      return true;
+    }.observes('value'),
+    onAmountChanged: function(){
+      this.set('value', this.getPath('resourceType.amount'));
+      return true;
+    }.observes('resourceType.amount'),*/
+  });
   
   module.SettlementAbandonDialog = Ember.View.extend({
     templateName: "settlement-abandon-dialog",
