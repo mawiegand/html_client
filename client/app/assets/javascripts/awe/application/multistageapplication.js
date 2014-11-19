@@ -155,7 +155,6 @@ AWE.Application = (function(module) {
 
         $('body').mousemove(function(event) {
           if (!(event.metaKey) && isAndroid) return;
-          console.log("mousemove: "+ event.timeStamp);
           mouseX = event.pageX;
           mouseY = event.pageY;
         });
