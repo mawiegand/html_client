@@ -205,8 +205,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var locale = AWE.Settings.locale || AWE.Config.DEFAULT_LOCALE;
       if (locale && locale === "de_DE") {
         groupChats.push("plauderhöhle@conference."+base);
+        groupChatsSuggest.push("plauderhöhle@conference."+base);
       } else {
         groupChats.push("whisperingcavern@conference."+base);
+        groupChatsSuggest.push("whisperingcavern@conference."+base);
       }
 
       if (character && character.hasStaffRole('help')) {
