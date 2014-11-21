@@ -336,7 +336,7 @@ AWE.Controller = (function(module) {
       
       var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
       var space = settlement.get('availableBuildingSlots');
-      
+
       
       if (space <= 0 && jobType === AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE) {
         var dialog = AWE.UI.Ember.InfoDialog.create({
@@ -361,7 +361,7 @@ AWE.Controller = (function(module) {
         }
         
         // log('---> level', slot.getPath('building.level'));
-        
+
         var createJobAction = AWE.Action.Construction.createJobCreateAction(queue, slot.getId(), buildingId, jobType, levelBefore, levelAfter);
         createJobAction.send(function(status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {

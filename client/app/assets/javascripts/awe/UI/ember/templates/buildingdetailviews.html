@@ -212,7 +212,10 @@
         <div class="building-annotation-icon building-upgrade-button-icon" {{action "upgradeClicked"}}>&nbsp;</div>
         {{#if upgradeUIMarker}}
           {{view AWE.UI.Ember.UIMarker direction=2 top="-100" left=10}}
-        {{/if}}      
+        {{/if}}
+      {{else}}
+        <div class="building-annotation-background building-upgrade-button-background" style="opacity: 0.5;">&nbsp;</div>
+        <div class="building-annotation-icon building-upgrade-button-icon" style="opacity: 0.5;">&nbsp;</div>
       {{/unless}}
     {{/if}}
 
@@ -221,6 +224,9 @@
       {{#unless sendingConvert }}
         <div class="building-annotation-background building-convert-button-background" {{action "conversionClicked"}}>&nbsp;</div>
         <div class="building-annotation-icon building-convert-button-icon" {{action "conversionClicked"}}>&nbsp;</div>
+      {{else}}
+        <div class="building-annotation-background building-convert-button-background" style="opacity: 0.5;">&nbsp;</div>
+        <div class="building-annotation-icon building-convert-button-icon" style="opacity: 0.5;">&nbsp;</div>
       {{/unless}}
     {{/if}}
   {{/unless}}
@@ -234,6 +240,9 @@
           <div class="building-annotation-background building-destroy-button-background" style="opacity: 0.5;">&nbsp;</div>
           <div class="building-annotation-icon building-destroy-button-icon" style="opacity: 0.5;">&nbsp;</div>
         {{/if}}
+      {{else}}
+        <div class="building-annotation-background building-destroy-button-background" style="opacity: 0.5;">&nbsp;</div>
+        <div class="building-annotation-icon building-destroy-button-icon" style="opacity: 0.5;">&nbsp;</div>
       {{/unless}}
     {{/if}}
   {{/unless}}
