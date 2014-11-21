@@ -158,9 +158,7 @@ AWE.UI.Ember = (function(module) {
   
   module.ConstructionProgressView = Ember.View.extend({
     templateName: 'construction-progress',
-    
-    slot: null,
-    job: null,
+
     timer: null,    
     timeRemaining: null,  
     
@@ -168,18 +166,35 @@ AWE.UI.Ember = (function(module) {
     disableFrogTrade: false,
     
     init: function(spec) {
-      this._super(spec);  
-      
-      var slot = this.getPath('parentView.slot');
-      this.set('slot', slot);            
-      
-      var settlement = slot.get('settlement');
-      this.set('settlement', settlement);      
-      
-      var sortedJobs = this.getPath('parentView.slot.building.sortedJobs');
-      this.set('job', sortedJobs[0]);            
+      this._super(spec);            
     },  
-    
+
+    job: function(){
+      var sortedJobs = this.getPath('slot.building.sortedJobs');
+      if(sortedJobs && sortedJobs.length > 0)
+      {
+        var currentJob = sortedJobs[0];
+        return currentJob;
+      }
+      else
+      {
+        return null;
+      }
+    }.property('slot.building.sortedJobs.@each').cacheable(),
+
+    lastJob: function(){
+      var sortedJobs = this.getPath('slot.building.sortedJobs');
+      if(sortedJobs && sortedJobs.length > 0)
+      {
+        var last = sortedJobs[sortedJobs.length - 1];
+        return last;
+      }
+      else
+      {
+        return null;
+      }
+    }.property('slot.building.sortedJobs.@each').cacheable(),
+
     positionInQueue: function() {
       var settlement = this.get('settlement');
       var jobCollection = settlement.queues();
@@ -208,7 +223,7 @@ AWE.UI.Ember = (function(module) {
     }.property('timeRemaining', 'job.active_job'),
     
     cancelJobPressed: function(event) {
-      this.getPath('parentView.parentView.controller').constructionCancelClicked(this.get('job'));
+      this.getPath('parentView.parentView.controller').constructionCancelClicked(this.get('lastJob'));
     },
     
     finishJobPressed: function(event) {

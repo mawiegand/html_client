@@ -1,5 +1,9 @@
 <script type="text/x-handlebars" data-template-name="interactive-building-slot">
 {{#if "slot.building"}}
+  {{#if slot.building.underConversion}}
+    <div class="construction-area back"></div>
+    <div class="level constructing">{{slot.building.level}}</div>
+  {{/if}}
   {{#if slot.building.underConstruction}}
     <div class="construction-area back"></div>
     <div class="level constructing">{{slot.building.level}}</div>
@@ -10,9 +14,13 @@
     {{/if}}
   {{/if}}
   <div {{bindAttr class="size type :building-image"}}></div>
+  {{#if slot.building.underConversion}}
+    <div class="construction-area front"></div>
+    {{view AWE.UI.Ember.ConstructionProgressView slotBinding="slot" settlementBinding="settlement"}}
+  {{/if}}
   {{#if slot.building.underConstruction}}
     <div class="construction-area front"></div>
-    {{view AWE.UI.Ember.ConstructionProgressView slotBinding="slot"}}
+    {{view AWE.UI.Ember.ConstructionProgressView slotBinding="slot" settlementBinding="settlement"}}
   {{else}}
     {{#if slot.building.underDestruction}}
         <div class="construction-area front"></div>
@@ -47,7 +55,7 @@
           {{/if}}
         {{/if}}
       {{/if}}
-      {{#if job.cancelable }}
+      {{#if lastJob.cancelable }}
         <div class="construction-progress-cancel background" {{action "cancelJobPressed"}}>&nbsp;</div>
         <div class="construction-progress-cancel icon" {{action "cancelJobPressed"}}>&nbsp;</div>
       {{/if}}
