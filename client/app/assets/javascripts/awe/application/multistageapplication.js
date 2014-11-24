@@ -111,7 +111,7 @@ AWE.Application = (function(module) {
           }
         }   
         if (event.type === "touchmove") {
-          if (event.touches.length > 1) {
+          if (event.touches.length > 1) {            
             var xdist = (event.touches[0].pageX - event.touches[1].pageX);
             var ydist = (event.touches[0].pageY - event.touches[1].pageY)
             var newDistance = Math.sqrt(xdist * xdist + ydist * ydist);
@@ -121,7 +121,7 @@ AWE.Application = (function(module) {
               return;
             }   
             lastDistance = newDistance;
-            event.type = "mousewheel";  
+            type = "mousewheel";  
           }
         }
         if (!(type === "mousewheel") && multiTouch) {
@@ -257,13 +257,13 @@ AWE.Application = (function(module) {
 
         if (target) {
           if (target && target.view && target.view.onClick) { // TODO: in our view layer: propagate clicks upwards along responder chain.
-            log('click on target', target.view, target.view.typeName());
+            log('click on target'+ target.view+' '+ target.view.typeName());
             if (target.view.enabled()) {
               log("click forwarded to target.view.onClick(..)");
               target.view.onClick(evt); // TODO: I think this is wrong; we somehow need to get the relative coordinates in.
             }
             else {
-              log('click on disabled view.');
+              console.log('click on disabled view.');
             }
           }
           else if (target && target.onClick) {
@@ -599,6 +599,7 @@ AWE.Application = (function(module) {
           // register controller to receive mouse-down events in screen
           $('body').mousedown(function(evt) {
             if (!(evt.metaKey) && isAndroid) return;
+            log(evt.type);
           //$('#layers').mousedown(function(evt) {
             self.onMouseDown(evt);
           });
@@ -609,7 +610,7 @@ AWE.Application = (function(module) {
           // register controller to receive mouse-down events in screen
           $('body').mouseleave(function(evt) {
             if (!(evt.metaKey) && isAndroid) return;
-            console.log("mouseleave");
+            log("mouseleave");
             self.onMouseLeave(evt);
           });
         }
@@ -617,11 +618,13 @@ AWE.Application = (function(module) {
         // register controller to receive mouse-wheel events in screen
         if (controller.onMouseWheel) {
           $(window).bind('mousewheel', function(evt) {
+            if (!(evt.metaKey) && isAndroid) return;
             self.onMouseWheel(evt);
           });
 
           // register controller to receive mouse-wheel events in screen (mozilla)
           $(window).bind('DOMMouseScroll', function(evt) {
+            if (!(evt.metaKey) && isAndroid) return;
             self.onMouseWheel(evt);
           });
         }
@@ -718,6 +721,8 @@ AWE.Application = (function(module) {
       },
 
       closeAllModalDialogs: function() {
+        console.log(new Date().getTime()-this.lastClick);
+        if (new Date().getTime()-this.lastClick < 1000) return;
         while (this.modalDialogs.length > 0) {
          this.modalDialogs[this.modalDialogs.length-1].destroy();
         }

@@ -95,7 +95,6 @@ AWE.Controller = (function(module) {
       _resourceCanvas.height = 42;
       
 
-
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
       that.setNeedsLayout();
     };   
