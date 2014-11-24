@@ -723,7 +723,7 @@ AWE.Application = (function(module) {
 
       closeAllModalDialogs: function() {
         console.log(new Date().getTime()-this.lastClick);
-        if (new Date().getTime()-this.lastClick < 1000) return;
+        if (new Date().getTime()-this.lastClick < 500) return;
         while (this.modalDialogs.length > 0) {
          this.modalDialogs[this.modalDialogs.length-1].destroy();
         }
