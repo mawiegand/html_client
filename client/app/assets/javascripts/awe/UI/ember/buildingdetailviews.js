@@ -77,6 +77,11 @@ AWE.UI.Ember = (function(module) {
       var slot = this.get('slot');
       this.get('controller').constructionInfoClicked(this.get('slot'));
     },
+
+    isEmpty: function()
+    {
+      return (this.getPath('building.hashableJobs.collection').length === 0);
+    }.property('building.hashableJobs.collection.length').cacheable(),
     
     upgradeClicked: function(event) {
       var dialog = AWE.UI.Ember.UpgradeView.create({

@@ -205,8 +205,10 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       var locale = AWE.Settings.locale || AWE.Config.DEFAULT_LOCALE;
       if (locale && locale === "de_DE") {
         groupChats.push("plauderhöhle@conference."+base);
+        groupChatsSuggest.push("plauderhöhle@conference."+base);
       } else {
         groupChats.push("whisperingcavern@conference."+base);
+        groupChatsSuggest.push("whisperingcavern@conference."+base);
       }
 
       if (character && character.hasStaffRole('help')) {
@@ -821,6 +823,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.playerInvitation = args.playerInvitation;
       AWE.Settings.allianceInvitation = args.allianceInvitation;
       AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
+      AWE.Settings.hudScale = 1;
 
       AWE.Log.Debug('debug', AWE.Settings.locale, AWE.Settings.lang, args.locale, args.locale.substr(0, 2));
 
@@ -845,6 +848,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         styleSheet.insertRule(".ranking-view .advisor { left: 634px; top: -26px; }", styleSheet.rules.length);
         styleSheet.insertRule(".ranking-table { width: 676px; }", styleSheet.rules.length);
         styleSheet.insertRule(".army-list-view { width: 676px; height: 500px; min-height: 500px; margin-top: 15px; margin-left: -365px; }", styleSheet.rules.length);
+        styleSheet.insertRule(".shop-dialog-pane { height: 500px; margin-top: 100px; overflow: scroll; }", styleSheet.rules.length);
       }
 
       Sample.sessionStart();

@@ -274,7 +274,15 @@ AWE.Controller = (function(module) {
     }
 
     that.slotClicked = function(slot) {
-      that.view.set('selectedSlot', slot);
+      var prevSlot = that.view.getPath('selectedSlot');
+      if(slot.id === that.view.getPath('selectedSlot.id'))
+      {
+        that.unselectSlot();
+      }
+      else
+      {
+        that.view.set('selectedSlot', slot);
+      }
       if (slot.getPath('building.unlockedAssignments')) {
         that.updateGossipIfNecessary();
       }
@@ -284,10 +292,17 @@ AWE.Controller = (function(module) {
       this.updateUIMarker();
       if(!slot.get("building"))
       {
-        var dialog = AWE.UI.Ember.SelectBuildingNewDialog.create({
-          controller: this,
-          slot: slot});
-        WACKADOO.presentModalDialog(dialog);
+        if(prevSlot && prevSlot.get("building"))
+        {
+          that.unselectSlot();
+        }
+        else
+        {
+          var dialog = AWE.UI.Ember.SelectBuildingNewDialog.create({
+            controller: this,
+            slot: slot});
+          WACKADOO.presentModalDialog(dialog);
+        }
       }  
     }
     
@@ -321,7 +336,7 @@ AWE.Controller = (function(module) {
       
       var settlement = AWE.GS.SettlementManager.getSettlement(that.settlementId);
       var space = settlement.get('availableBuildingSlots');
-      
+
       
       if (space <= 0 && jobType === AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE) {
         var dialog = AWE.UI.Ember.InfoDialog.create({
@@ -346,7 +361,7 @@ AWE.Controller = (function(module) {
         }
         
         // log('---> level', slot.getPath('building.level'));
-        
+
         var createJobAction = AWE.Action.Construction.createJobCreateAction(queue, slot.getId(), buildingId, jobType, levelBefore, levelAfter);
         createJobAction.send(function(status) {
           if (status === AWE.Net.OK || status === AWE.Net.CREATED) {
@@ -418,6 +433,7 @@ AWE.Controller = (function(module) {
 
       var buildingId = building.get('buildingId');
       if (building.requirementsMet()) {
+
         createAndSendConstructionJob(slot, buildingId, AWE.GS.CONSTRUCTION_JOB_TYPE_CREATE);      
         WACKADOO.closeAllModalDialogs();
         //this.unselectSlot();

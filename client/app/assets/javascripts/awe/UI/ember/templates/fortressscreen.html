@@ -3,11 +3,18 @@
 <script type="text/x-handlebars" data-template-name="fortress-screen">
 <div class="fortress-screen settlement-screen">
   <div class="fortress-picture">
+    <div class="fortress-background-picture"></div>
     {{#if "settlement"}}
       {{#if "haveSlots"}}
-        {{view AWE.UI.Ember.BuildingSlotView  classNames="tower tower-left small-building" slotBinding="leftTower" settlementBinding="settlement"}}
-        {{view AWE.UI.Ember.BuildingSlotView  classNames="tower tower-right small-building" slotBinding="rightTower" settlementBinding="settlement"}}
-        {{view AWE.UI.Ember.BuildingSlotView  classNames="wall small-building" settlementBinding="settlement"}}
+        {{view AWE.UI.Ember.BuildingView classNames="wallTop" levelBinding="wallSlot.building.level"}}
+        {{view AWE.UI.Ember.BuildingView classNames="wallLeft" levelBinding="wallSlot.building.level"}}
+        {{view AWE.UI.Ember.BuildingView classNames="wallRight" levelBinding="wallSlot.building.level"}}
+        {{view AWE.UI.Ember.BuildingSlotView  classNames="wall" slotBinding="wallSlot" settlementBinding="settlement"}}
+    
+        {{#each smallSlots}}
+          {{view AWE.UI.Ember.BuildingSlotView  classNames="small-building" slotBinding="this" settlementBinding="view.settlement"}}
+        {{/each}}
+            
       {{/if}}           
 
       {{#if selectedSlot}}

@@ -46,12 +46,14 @@ AWE.Application = (function(module) {
   module.MultiStageApplication = Ember.Application.extend(function() {
 
     var oldMouseX = 0, mouseX = 0, mouseY = 0, oldMouseY = 0;
+    var lastX = 0, lastY = 0;
     var hoveredView=null;
     var stageHovered=-1;
     var nextMouseOverTest = new Date(1970).getTime();
     var mouseOverTestTimeout = 200; // test every x ms
     var lastDistance = 0;
     var multiTouch = false;
+    var isAndroid = navigator.userAgent.toLowerCase().indexOf('android') >= 0;
 
     var _uiEnabled = false;
     var _hideHud = true;
@@ -95,6 +97,7 @@ AWE.Application = (function(module) {
           case "touchstart": type = "mousedown"; break;
           case "touchmove":  type="mousemove"; break;        
           case "touchend":   type="mouseup"; break;
+          case "touchcancel": type="mouseleave"; break;
           default: return;
         }
     
@@ -129,19 +132,15 @@ AWE.Application = (function(module) {
         //initMouseEvent(type, canBubble, cancelable, view, clickCount, 
         //           screenX, screenY, clientX, clientY, ctrlKey, 
         //           altKey, shiftKey, metaKey, button, relatedTarget);
-        console.log(type);
         var simulatedEvent = document.createEvent("MouseEvent");
         simulatedEvent.initMouseEvent(type, true, true, window, delta, 
                               first.screenX, first.screenY, 
                               first.clientX, first.clientY, false, 
-                              false, false, false, 0/*left*/, null);
+                              false, false, true, 0/*left*/, null);
 
 
 
         first.target.dispatchEvent(simulatedEvent);
-        if (type === 'mousemove') {  
-          event.preventDefault();
-        }
       },
 
       /** custom object initialization goes here. */
@@ -155,11 +154,14 @@ AWE.Application = (function(module) {
         this.set('modalDialogs', []);
 
         $('body').mousemove(function(event) {
+          if (!(event.metaKey) && isAndroid) return;
           mouseX = event.pageX;
           mouseY = event.pageY;
         });
         // register controller to receive click events in screen
         $('#layers').mouseup(function(evt) {
+          if (!(evt.metaKey) && isAndroid) return;
+          console.log("mouseup"+ evt.pageX+ evt.pageY);
           log('Mouse up event in multi stage application controller.');
           self.handleMouseUp(evt);
         });
@@ -598,7 +600,9 @@ AWE.Application = (function(module) {
         if (controller.onMouseDown) {
           // register controller to receive mouse-down events in screen
           $('body').mousedown(function(evt) {
+            if (!(evt.metaKey) && isAndroid) return;
           //$('#layers').mousedown(function(evt) {
+            console.log("mousedown");
             self.onMouseDown(evt);
           });
         }
@@ -607,6 +611,8 @@ AWE.Application = (function(module) {
         if (controller.onMouseLeave) {
           // register controller to receive mouse-down events in screen
           $('body').mouseleave(function(evt) {
+            if (!(evt.metaKey) && isAndroid) return;
+            console.log("mouseleave");
             self.onMouseLeave(evt);
           });
         }

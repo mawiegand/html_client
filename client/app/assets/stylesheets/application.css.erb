@@ -492,7 +492,7 @@ h3 {
 #hud-canvas-right {
   position: fixed;
   right: -70px;
-  bottom: 276px;
+  top: 492px;
   width: 70px;
   height: 114px;
   z-index: 10;
@@ -3789,7 +3789,6 @@ width: auto;
 }
 .gossip-text-field
 {
-  background-color: white;
   width: 85%;
   height: 70%;
   top: 20px;
@@ -3822,6 +3821,7 @@ width: auto;
   left: 30px;
 }
 
+.artifact-info-dialog-pane .cost-cell,
 .artifact-initiation-dialog-pane .cost-cell
 {
   width: 225px;
@@ -3830,6 +3830,7 @@ width: auto;
   float: left;
 }
 
+.artifact-info-dialog-pane .cost-half-row,
 .artifact-initiation-dialog-pane .cost-half-row
 {
   width: 26%;
@@ -3839,6 +3840,7 @@ width: auto;
   left: 10px;
 }
 
+.artifact-info-dialog-pane .cost-half-row-effect,
 .artifact-initiation-dialog-pane .cost-half-row-effect
 {
   width: 26%;
@@ -3848,6 +3850,7 @@ width: auto;
   left: 50px;
 }
 
+.artifact-info-dialog-pane .cost-row,
 .artifact-initiation-dialog-pane .cost-row
 {
   width: 100%;
@@ -3857,6 +3860,7 @@ width: auto;
   left: 4px;
 }
 
+.artifact-info-dialog-pane .cost-text,
 .artifact-initiation-dialog-pane .cost-text
 {
   color: rgb(146,141,130) !important;
@@ -3870,63 +3874,79 @@ width: auto;
   top: 0px;
 }
 
+.artifact-info-dialog-pane .item,
 .artifact-initiation-dialog-pane .item{
-  width: 128px;
-  height: 128px;
+  width: 200px;
+  height: 200px;
 }
+.artifact-info-dialog-pane .item-padding,
 .artifact-initiation-dialog-pane .item-padding{
-  padding-left: 100px;
+  padding-left: 70px;
 }
+
+.artifact-info-dialog-pane .item.artifact_0,
 .artifact-initiation-dialog-pane .item.artifact_0{
-  background:url("<%= asset_path 'artifact/artefakt_tnt.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_tnt_inactive.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_0.is-active,
 .artifact-initiation-dialog-pane .item.artifact_0.is-active{
-  background:url("<%= asset_path 'artifact/artefakt_tnt_aktiviert.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_tnt_active.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_1,
 .artifact-initiation-dialog-pane .item.artifact_1{
-  background:url("<%= asset_path 'artifact/artefakt_steinrad.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_stonewheel_inactive.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_1.is-active,
 .artifact-initiation-dialog-pane .item.artifact_1.is-active{
-  background:url("<%= asset_path 'artifact/artefakt_steinrad_aktiviert.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_stonewheel_active.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_2,
 .artifact-initiation-dialog-pane .item.artifact_2{
-  background:url("<%= asset_path 'artifact/artefakt_streitaxt.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_axe_inactive.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_2.is-active,
 .artifact-initiation-dialog-pane .item.artifact_2.is-active{
-  background:url("<%= asset_path 'artifact/artefakt_streitaxt_aktiviert.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_axe_active.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_3,
 .artifact-initiation-dialog-pane .item.artifact_3{
-  background:url("<%= asset_path 'artifact/artefakt_monolith.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/articat_monolith_inactive.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_3.is-active,
 .artifact-initiation-dialog-pane .item.artifact_3.is-active{
-  background:url("<%= asset_path 'artifact/artefakt_monolith_aktiviert.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/articat_monolith_active.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_4,
 .artifact-initiation-dialog-pane .item.artifact_4{
-  background:url("<%= asset_path 'artifact/artefakt_osterei.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_easteregg_inactive.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_4.is-active,
 .artifact-initiation-dialog-pane .item.artifact_4.is-active{
-  background:url("<%= asset_path 'artifact/artefakt_osterei_aktiviert.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_easteregg_active.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_5,
 .artifact-initiation-dialog-pane .item.artifact_5{
-  background:url("<%= asset_path 'artifact/artefakt_hammer.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_hammer_inactive.png' %>") no-repeat center center;
 }
 
+.artifact-info-dialog-pane .item.artifact_5.is-active,
 .artifact-initiation-dialog-pane .item.artifact_5.is-active{
-  background:url("<%= asset_path 'artifact/artefakt_hammer_aktiviert.png' %>") no-repeat center center;
+  background:url("<%= asset_path 'artifacts_big/artifact_hammer_active.png' %>") no-repeat center center;
 }
 
 .artifact-initiation-dialog-pane .cell-icon{
   width: 38%;
+  height: 200px;
   display: inline-block;
   float: left;
 }
@@ -3941,6 +3961,117 @@ width: auto;
   float: left;
   padding-left: 15px;
   line-height: 28px;
+}
+
+/* info */
+.artifact-info-dialog-pane .bonus-cell
+{
+  display: inline-block;
+  float: left;
+  width: 45%;
+}
+
+.artifact-info-dialog-pane .button-name
+{
+  width: 192px;
+  height: 52px;
+  position: relative;
+  display: inline-block;
+  float: left;
+  top: 25px;
+  right: 25px;
+}
+
+.artifact-info-dialog-pane .button-alliance
+{
+  width: 184px;
+  height: 56px;
+  position: relative;
+  display: inline-block;
+  float: left;
+  top: 24px;
+  right: 14px;
+}
+
+.artifact-info-dialog-pane .cell-icon{
+  width: 38%;
+  height: 200px;
+  display: inline-block;
+  float: left;
+}
+.artifact-info-dialog-pane .cell-stats{
+  width: 62%;
+  display: inline-block;
+  float: left;
+}
+.artifact-info-dialog-pane .cell-info{
+  width: 95%;
+  display: inline-block;
+  float: left;
+  padding-left: 15px;
+  line-height: 28px;
+}
+
+/*== TAXES==*/
+.tax-dialog-pane .cell-info
+{
+  width: 94%;
+  height: auto;
+  min-height: 277px;
+  padding: 20px;
+  line-height: 26px;
+}
+
+.tax-dialog-pane .cell-slider
+{
+  width: 65%;
+  display: inline-block;
+  float: left;
+
+}
+.confirm-button-icon.confirm-button-tax-icon
+{
+  width: 96px;
+  height: 72px;
+}
+
+.tax-dialog-pane .slider-value-text
+{
+  text-align: center;
+}
+
+.tax-dialog-pane .cell-confirm-button
+{
+  width: 30%;
+  display: inline-block;
+  float: left;
+  position: relative;
+  left: 98px;
+  top: 18px;
+}
+
+.confirm-green-button
+{
+  background:url("<%= asset_path 'dialogs/buttons/button_green_short.png' %>") no-repeat center center;
+  width: 96px;
+  height: 76px;
+  cursor: pointer;
+}
+
+.confirm-button-icon
+{
+  background:url("<%= asset_path 'dialogs/buttons/icons/icon_confirm.png' %>") no-repeat center center;
+  width: 52px;
+  height: 44px;
+}
+
+.tax-dialog-pane .taxes-range-slider
+{
+  position: relative;
+  width: 292px;
+  height: 60px;
+  left: 55px;
+  bottom: 20px;
 }
 
 /*== Infantry==*/
@@ -5914,7 +6045,7 @@ loaddialog-positioner {
 
 .settlement-screen.outpost-screen,
 .settlement-screen.base-screen,
-.fortress-screen.settlement-screen {
+.settlement-screen.fortress-screen {
   min-width: 1024px;
   width: 100%;
   overflow-x: hidden;
@@ -6485,13 +6616,11 @@ span.bonus {
 }
 /** image for building_fortress_fortification*/
 .building-option-image.building_fortress_fortification {
-  background: url('<%= asset_path("settlements/fortress/fortress_main_building_small.png") %>');
-  background: url('<%= asset_path("buildings/base/building_garrison/small/building_garrison_small.png") %>') no-repeat;
+  background: url('<%= asset_path("buildings/base/building_chief_cottage/small/building_chief_cottage_small.png") %>') no-repeat;
 }
 
 .building-image.building_fortress_fortification {
-  background: url('<%= asset_path("settlements/fortress/fortress_main_building_small.png") %>');
-  background: url('<%= asset_path("buildings/base/building_garrison/small/building_garrison_small.png") %>') no-repeat;
+  background: url('<%= asset_path("buildings/base/building_chief_cottage/small/building_chief_cottage_small.png") %>') no-repeat;
 }
 
 .building-option-image .level {
@@ -7045,7 +7174,7 @@ span.bonus {
 }
 /** image for building_fortress_fortification*/
 .queue-job-image.building_fortress_fortification {
-  background: url('<%= asset_path("settlements/fortress/fortress_main_building_small.png") %>');
+  background: url('<%= asset_path("buildings/base/building_chief_cottage/small/building_chief_cottage_small.png") %>') no-repeat;
 }
 
 .fortress-screen .queue-job-image.size1 {
@@ -7451,6 +7580,24 @@ span.bonus {
 .construction-progress-cancel.icon {
   background: url("<%= asset_path 'hud/icon_cancel/icon_cancel.png' %>") 7px 7px no-repeat;
   background-size: 18px;
+}
+
+.construction-progress-frogtrade {
+  position: absolute;
+  top: 0px;
+  left: 5px;
+  width: 32px;
+  height: 32px;
+}
+
+.construction-progress-frogtrade.background {
+  background-image: url("<%= asset_path 'hud/button_action/colored/button_action_colored.png' %>");
+  background-size: 32px;
+}
+
+.construction-progress-frogtrade.icon {
+  background: url("<%= asset_path 'hud/icon_convert/icon_convert.png' %>") no-repeat;
+  background-size: 32px;
 }
 
 .construction-progress-bar {
@@ -7947,36 +8094,21 @@ table .datetime {
   margin: 0px;
 }
 
-.fortress-picture {
-  position: relative;
-  float: left;
-  width: 1000%;
-  height: 1024px;
-  background-repeat: no-repeat;
-}
 
+.fortress-picture,
 .outpost-picture,
 .base-picture {
   position: relative;
   float: left;
   width: 800px;
   height: 1024px;
-}
-
-.fortress-picture {
-  background: url('<%= asset_path("settlements/fortress/fortress_background.png") %>');
-  background: url('<%= asset_path("backgrounds/background_settlement.jpg") %>') no-repeat;
-} 
-
-.outpost-picture,
-.base-picture {
   margin-top: 210px;
   overflow: visible;
 }
 
+.fortress-background-picture,
 .outpost-background-picture,
 .base-background-picture {
-  background: url('<%= asset_path("backgrounds/Grid_Overview_01.jpg") %>');
   background: url('<%= asset_path("backgrounds/background_settlement.jpg") %>');
   
   /*background-position: -160px 0;*/
@@ -8032,44 +8164,7 @@ table .datetime {
   z-index:10;
 }
 
-.fortress-picture .background {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 0;
-}
 
-.fortress-picture .buildings {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 800px;
-  height: 600px;
-  z-index: 1;
-  background: url('<%= asset_path("settlements/fortress/fortress_buildings.png") %>');
-}
-
-
-.fortress-picture .wall,
-.fortress-picture .building-gui.slot0 {
-  z-index: 3;
-  top: 320px;
-  left: 400px;
-}
-
-/** position of left tower */
-.fortress-picture .tower-left,
-.fortress-picture .building-gui.slot1 {
-  top: 320px;
-  left: 239px;
-}
-
-/** position of right tower */
-.fortress-picture .tower-right,
-.fortress-picture .building-gui.slot2 {
-  top: 320px;
-  left: 561px;
-}
 
 .outpost-picture .small-building,
 .base-picture .small-building,
@@ -8104,16 +8199,6 @@ table .datetime {
 /*  z-index: 2;*/
   border-radius: 5px;
   background: url('<%= asset_path("settlements/base/building_category_large_building.png") %>');  /** the default images for this category. important: contains the image displayed for empty slots! */
-}
-
-
-/** general settings for towers and default image (will be used as long as theres no specific image for a particular building type ) */
-.fortress-picture .tower {
- /*position: absolute;
-  width: 238px;
-  height: 454px;
-  z-index: 2;
-  background: url('<%= asset_path("settlements/fortress/building_category_fortress_tower.png") %>');  /** the default images for this category. important: contains the image displayed for empty slots! */
 }
 
 .constructing, 
@@ -8187,6 +8272,9 @@ table .datetime {
 .large-building.building_gatherer {
   background: url('<%= asset_path("settlements/base/building_gatherer_large.png") %>');
 }
+.large-building.building_special_gatherer {
+  background: url('<%= asset_path("settlements/base/building_special_gatherer_large.png") %>');
+}
 .large-building.building_stud     {
   background: url('<%= asset_path("settlements/base/building_stud_large.png") %>');
 }
@@ -8231,6 +8319,7 @@ table .datetime {
 }
 
 /*Chief Cottage*/
+.building_fortress_fortification.big-building,
 .building_chief_cottage.big-building {
   background: url('<%= asset_path("buildings/base/building_chief_cottage/big/building_chief_cottage_big.png") %>') no-repeat;
 }
@@ -8238,6 +8327,11 @@ table .datetime {
 /*Gatherer*/
 .building_gatherer.big-building {
   background: url('<%= asset_path("buildings/base/building_gatherer/big/building_gatherer_big.png") %>') no-repeat;
+}
+
+/*Special Gatherer*/
+.building_special_gatherer.big-building {
+  background: url('<%= asset_path("buildings/base/building_special_gatherer/big/building_special_gatherer_big.png") %>') no-repeat;
 }
 
 /*Barracks*/
@@ -8344,7 +8438,6 @@ table .datetime {
 }
 
 /*Garison*/
-.building_fortress_fortification.big-building,
 .building_garrison.big-building {
   background: url('<%= asset_path("buildings/base/building_garrison/big/building_garrison_big.png") %>') no-repeat;
 }
@@ -8410,6 +8503,12 @@ table .datetime {
 .building_gatherer.building-image {
   background: url('<%= asset_path("buildings/base/building_gatherer/small/building_gatherer_small.png") %>') no-repeat;
 }
+
+/*Special Gatherer*/
+.building_special_gatherer.building-image {
+  background: url('<%= asset_path("buildings/base/building_special_gatherer/small/building_special_gatherer_small.png") %>') no-repeat;
+}
+
 
 /*Barracks*/
 .building_barracks.building-image,
@@ -8680,6 +8779,30 @@ table .datetime {
   z-index: 1;
 }
 
+
+.fortress-picture .small-building.slot1,
+.fortress-picture .building-gui.slot1 {
+  top:  92px;
+  left: 432px;
+}
+
+.fortress-picture .small-building.slot2,
+.fortress-picture .building-gui.slot2 {
+  top:  206px;
+  left: 269px;
+}
+
+.fortress-picture .small-building.slot3,
+.fortress-picture .building-gui.slot3 {
+  top:  206px;
+  left: 432px;
+}
+
+.fortress-picture .small-building.slot4,
+.fortress-picture .building-gui.slot4 {
+  top:  206px;
+  left: 595px;
+}
 
 
 .fortress-picture .tower .level,
@@ -9095,6 +9218,9 @@ table .datetime {
 .fortress-picture .wall.size3:hover {
 	background-position: -1600px -960px;
 }*/
+
+
+
 
 
 /** position of slots in base view */

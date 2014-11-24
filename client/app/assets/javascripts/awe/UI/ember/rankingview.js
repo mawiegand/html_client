@@ -117,10 +117,21 @@ AWE.UI.Ember = (function(module) {
       var entry = evt.context;
       var characterId = entry.get('character_id');
       if (characterId != null) {
-        var dialog = AWE.UI.Ember.CharacterInfoDialog.create({
-          characterId: characterId,
-        });
-        WACKADOO.presentModalDialog(dialog);      
+        var currentCharacterId = AWE.GS.game.currentCharacter.get('id');
+        if(characterId === currentCharacterId)
+        {
+          var dialog = AWE.UI.Ember./*ProfileView*/ProfileNewView.create({
+             characterBinding: 'AWE.GS.game.currentCharacter',
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }
+        else
+        {
+          var dialog = AWE.UI.Ember.CharacterInfoDialog.create({
+            characterId: characterId,
+          });
+          WACKADOO.presentModalDialog(dialog);
+        }      
       }     
       return false; // prevent default behavior
     },

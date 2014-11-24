@@ -69,6 +69,10 @@ AWE.UI.Ember = (function(module) {
       WACKADOO.presentModalDialog(dialog);
     },
 
+    unselectSlot: function(){ 
+      WACKADOO.presentScreenController.unselectSlot();
+    },
+
   });
 
   /** 
@@ -289,8 +293,8 @@ AWE.UI.Ember = (function(module) {
     }.property('settlement.tax_changed_at'),
 
     changeTaxPressed: function(event) {
-      if (!this.get("changeTaxPossible")) {
-        this.showErrorTax(AWE.I18n.lookupTranslation('settlement.info.taxRateChangeNotPossible'));
+      if (!this.get('changeTaxPossible')) {
+          this.showErrorTax(AWE.I18n.lookupTranslation('settlement.info.taxRateChangeNotPossible'));
         return;
       }
 
@@ -298,7 +302,38 @@ AWE.UI.Ember = (function(module) {
       
       this.set('lastError', null);
       
-      var changeDialog = AWE.UI.Ember.TextInputDialog.create({
+      var changeDialog = module.PopUpDialog.create({
+        templateName: 'tax-change-new-dialog',
+
+        settlement: this.get('settlement'),
+        valueText: this.getPath('settlement.taxPercentage'),
+
+        okTaxPressed:  function() {
+          var number = parseInt(this.get('valueText') || "0");
+          log('OK_PRESSED', self,this, this.get('valueText'), number)
+          if (number >= 5 && number <= 15) {
+            var action = AWE.Action.Settlement.createChangeTaxRateAction(self.get('settlement'), number/100.0);
+            AWE.Action.Manager.queueAction(action, function(statusCode) {
+              if (statusCode === 200 || statusCode === 203) {
+                log('changed tax rate');
+              }
+              else {
+                self.showErrorTax(AWE.I18n.lookupTranslation('settlement.error.serverDidNotAcceptTaxRate'));
+              }
+            });  
+          }
+          else {
+            self.showErrorTax(AWE.I18n.lookupTranslation('settlement.error.couldNotChangeTaxRate'));
+          }
+          this.destroy();            
+        },
+
+        isFortress: function(){
+          var number = parseInt(this.getPath('settlement.type.id'));
+          return number === 1;
+        }.property('settlement.type.id').cacheable(),
+      });
+      /*AWE.UI.Ember.TextInputDialog.create({
         classNames: ['change-army-name-dialog'],
         
         heading:    AWE.I18n.lookupTranslation('settlement.info.setTaxRate'),
@@ -325,7 +360,7 @@ AWE.UI.Ember = (function(module) {
           this.destroy();            
         },
         cancelPressed: function() { this.destroy(); }
-      });
+      });*/
       WACKADOO.presentModalDialog(changeDialog);
       event.preventDefault();
       
@@ -467,6 +502,21 @@ AWE.UI.Ember = (function(module) {
       return false;
     },
 	});
+
+  module.TaxesRangeView  = Ember.TextField.extend({
+    classNames: ["taxes-range-slider"],
+    attributeBindings: ["min", "max"],
+    type: "range",
+    min: 5,
+    max: 15,
+    settlement: null,
+
+    onValueChanged: function(){
+      var number = parseInt(this.get('value') || "0");
+      this.setPath('parentView.valueText', number);
+      return true;
+    }.observes('value'),
+  });
   
   module.SettlementAbandonDialog = Ember.View.extend({
     templateName: "settlement-abandon-dialog",

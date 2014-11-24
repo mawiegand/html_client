@@ -205,30 +205,44 @@
 <script type="text/x-handlebars" data-template-name="settlement-building-annotation">  
     <div class="building-annotation-background building-info-button-background" {{action "infoClicked"}}>&nbsp;</div>
     <div class="building-annotation-icon building-info-button-icon" {{action "infoClicked"}}>&nbsp;</div>
-  {{#unless building.underConstruction}}
+
     {{#if building.upgradable}}          
       {{#unless sendingUpgrade}}
         <div class="building-annotation-background building-upgrade-button-background" {{action "upgradeClicked"}}>&nbsp;</div>
         <div class="building-annotation-icon building-upgrade-button-icon" {{action "upgradeClicked"}}>&nbsp;</div>
         {{#if upgradeUIMarker}}
           {{view AWE.UI.Ember.UIMarker direction=2 top="-100" left=10}}
-        {{/if}}      
+        {{/if}}
+      {{else}}
+        <div class="building-annotation-background building-upgrade-button-background" style="opacity: 0.5;">&nbsp;</div>
+        <div class="building-annotation-icon building-upgrade-button-icon" style="opacity: 0.5;">&nbsp;</div>
       {{/unless}}
     {{/if}}
-  {{/unless}}  
+
   {{#unless building.underConversion}}
     {{#if building.convertable }}
       {{#unless sendingConvert }}
         <div class="building-annotation-background building-convert-button-background" {{action "conversionClicked"}}>&nbsp;</div>
         <div class="building-annotation-icon building-convert-button-icon" {{action "conversionClicked"}}>&nbsp;</div>
+      {{else}}
+        <div class="building-annotation-background building-convert-button-background" style="opacity: 0.5;">&nbsp;</div>
+        <div class="building-annotation-icon building-convert-button-icon" style="opacity: 0.5;">&nbsp;</div>
       {{/unless}}
     {{/if}}
   {{/unless}}
   {{#unless building.underDestruction}}
     {{#if building.destroyable}}
       {{#unless sendingDestroy}}
-        <div class="building-annotation-background building-destroy-button-background" {{action "destroyClicked"}}>&nbsp;</div>
-        <div class="building-annotation-icon building-destroy-button-icon" {{action "destroyClicked"}}>&nbsp;</div>
+        {{#if isEmpty}}
+          <div class="building-annotation-background building-destroy-button-background" {{action "destroyClicked"}}>&nbsp;</div>
+          <div class="building-annotation-icon building-destroy-button-icon" {{action "destroyClicked"}}>&nbsp;</div>
+        {{else}}
+          <div class="building-annotation-background building-destroy-button-background" style="opacity: 0.5;">&nbsp;</div>
+          <div class="building-annotation-icon building-destroy-button-icon" style="opacity: 0.5;">&nbsp;</div>
+        {{/if}}
+      {{else}}
+        <div class="building-annotation-background building-destroy-button-background" style="opacity: 0.5;">&nbsp;</div>
+        <div class="building-annotation-icon building-destroy-button-icon" style="opacity: 0.5;">&nbsp;</div>
       {{/unless}}
     {{/if}}
   {{/unless}}
@@ -431,7 +445,7 @@
               {{/if}}
             </a>
           {{/if}}
-          <h3>{{t building.upgrade.upgradeStart}} {{local building.name }} {{t building.upgrade.toAuf}} {{t building.level}} {{ building.nextLevel }} {{t building.upgrade.upgradeEnd}}</h3>
+          <h3>{{t building.upgrade.upgradeStart}} {{local building.name}} {{t building.upgrade.toAuf}} {{t building.level}} {{ building.nextLevel }} {{t building.upgrade.upgradeEnd}}</h3>
 
           {{view AWE.UI.Ember.BuildingView classNames="building-option-image next-level" buildingBinding="building" levelBinding="building.nextLevel"}}
   
