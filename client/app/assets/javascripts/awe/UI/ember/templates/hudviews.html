@@ -1,5 +1,9 @@
 <script type="text/x-handlebars" data-template-name="hud-view">
   <div class="settlement-map-button">
-  	Map
+  	<div class="menu-hud-button menu-hud-button-position" {{action "menuClicked"}}></div>
+  	<div class="ranking-hud-button ranking-hud-button-position" {{action "rankingClicked"}}></div>
+  	<div class="map-mountains-hud-button map-mountains-hud-button-position" {{action "switchMapModeClicked"}}></div>
+  	<div class="army-menu-hud-button army-menu-hud-button-position" {{action "recruitClicked"}}></div>
+  	<div class="settelement-hud-button settlement-hud-button-position"></div>
   </div>
 </script>

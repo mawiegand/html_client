@@ -12,6 +12,22 @@ module.HUDViews = Ember.View.extend({
 	templateName: 'hud-view',
 	
 	controller: null,
+
+	menuClicked: function(){
+		this.get('controller').menuButtonClicked();
+	},
+
+	rankingClicked: function(){
+		this.get('controller').rankingButtonClicked();
+	},
+
+	switchMapModeClicked: function(){
+		this.get('controller').switchMapModeButtonClicked();
+	},
+
+	recruitClicked: function(){
+		this.get('controller').recruitButtonClicked();
+	},
 });
 
 return module;
