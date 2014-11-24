@@ -41,6 +41,12 @@
             {{#each upgradeCosts}}
               {{view AWE.UI.Ember.ResourceCostsView resourceBinding="this" tagName="tr"}}
             {{/each}}
+            <td class="cost-item-small-uhr"></td>
+            {{#if conversionView}}
+              <td class="amount">{{formatDuration building.conversionTime}}</td>
+            {{else}}
+              <td class="amount">{{formatDuration building.productionTimeOfNextLevel}}</td>
+            {{/if}}
           </table>
         </div>
       </div>

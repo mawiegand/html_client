@@ -307,7 +307,10 @@ AWE.Controller = (function(module) {
     }
     
     that.unselectSlot = function() {
-      that.view.setPath('selectedSlot.uiMarker', false);
+      if(that.view.get('selectedSlot'))
+      {
+         that.view.setPath('selectedSlot.uiMarker', false);
+      }
       that.view.set('selectedSlot', null);
       this.updateUIMarker();      
     }
