@@ -46,6 +46,8 @@ AWE.UI = (function(module) {
       my.container.y = my.frame.origin.y;
       my.container.width  = my.frame.size.width;
       my.container.height = my.frame.size.height;      
+      my.container.scaleX = AWE.Settings.hudScale;
+      my.container.scaleY = AWE.Settings.hudScale;
     }
     
     that.recalcView = function() {
@@ -76,7 +78,11 @@ AWE.UI = (function(module) {
         _nameLabelButton = AWE.UI.createButtonView();
         _nameLabelButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/profile/namelabel/background"));
         _nameLabelButton.setFrame(AWE.Geometry.createRect(65, 105, 176, 48));
-        _nameLabelButton.setFont("bold 20px HVDComicSerifPro");
+        if (AWE.Settings.hudScale > 0.9) {
+          _nameLabelButton.setFont("bold 20px HVDComicSerifPro");
+        } else {
+          _nameLabelButton.setFont("bold 15px HVDComicSerifPro");
+        }
         _nameLabelButton.onClick = function() {
           my.controller.avatarLabelClicked();
         };              

@@ -82,17 +82,15 @@ AWE.Controller = (function(module) {
       _stageProfile = new Stage(_canvasProfile);
       _stageProfile.onClick = function() {};
       
-      _canvasProfile.width = 268;
-      _canvasProfile.height = 266;
-      //_stageProfile.scaleX = 0.5;
-      //_stageProfile.scaleY = 0.5;
+      _canvasProfile.width = 268*AWE.Settings.hudScale;
+      _canvasProfile.height = 266*AWE.Settings.hudScale;
 
       _resourceCanvas = root.find('#resource-canvas')[0];
       _resourceStage = new Stage(_resourceCanvas);
       _resourceStage.onClick = function() {};
       
-      _resourceCanvas.width  = 800;
-      _resourceCanvas.height = 42;
+      _resourceCanvas.width  = 800*AWE.Settings.hudScale;
+      _resourceCanvas.height = 42*AWE.Settings.hudScale;
       
 
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
@@ -120,7 +118,6 @@ AWE.Controller = (function(module) {
     
     that.onResize = function() {
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
-      $('#hud-canvas-right').css('top', $(window).height()*0.5);
     }
     
     /** set to true in case the window needs to be layouted again (e.g. after
@@ -155,7 +152,7 @@ AWE.Controller = (function(module) {
           $('#hud-canvas-left').delay(600).animate({left: "10px"}, _animationDuration, 'easeOutBack');
           $('#hud-canvas-right').delay(600).animate({right: "7px"}, _animationDuration, 'easeOutBack');
           $('#hud-canvas-profile').delay(600).animate({right: "0px"}, _animationDuration, 'easeOutBack');
-          $('#resource-canvas').delay(600).animate({top: "30px"}, _animationDuration, 'easeOutBack');
+          $('#resource-canvas').delay(600).animate({top: 30*AWE.Settings.hudScale}, _animationDuration, 'easeOutBack');
           that.setNeedsDisplay();
         }
       }
@@ -815,10 +812,10 @@ AWE.Controller = (function(module) {
           that.ingameShopButtonClicked();          
         };
         
-        var spacingX = 10;
+        var spacingX = 10*AWE.Settings.hudScale;
         var xOffset = spacingX;
-        var resourceViewWidth = 180;
-        var resourceViewHeight = 42;
+        var resourceViewWidth = 180*AWE.Settings.hudScale;
+        var resourceViewHeight = 42*AWE.Settings.hudScale;
         
         HUDViews.stoneView = AWE.UI.createResourceBubbleView();
         HUDViews.stoneView.initWithControllerResourceNameColorsAndFrame(that, "stone", 

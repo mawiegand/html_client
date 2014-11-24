@@ -821,12 +821,16 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       AWE.Settings.playerInvitation = args.playerInvitation;
       AWE.Settings.allianceInvitation = args.allianceInvitation;
       AWE.Settings.fbRunInCanvas = !!args.fbRunInCanvas;
-      AWE.Settings.hudScale = 1;
-
+      var isAndroid = navigator.userAgent.toLowerCase().indexOf('android') >= 0;
+      if (isAndroid) {
+        AWE.Settings.hudScale = 0.6;
+      } else {
+        AWE.Settings.hudScale = 1;
+      }
       var theRules = document.styleSheets[0].cssRules
       for (n in theRules)
       {
-        if (theRules[n].selectorText === ".modal-dialog-pane-new") {
+        if (theRules[n].selectorText === ".modal-dialog-pane-new" || theRules[n].selectorText === ".modal-dialog-pane") {
             theRules[n].style.zoom = AWE.Settings.hudScale;
         }
       }
