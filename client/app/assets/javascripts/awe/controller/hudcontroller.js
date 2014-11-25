@@ -844,7 +844,8 @@ AWE.Controller = (function(module) {
         var xOffset = spacingX;
         var resourceViewWidth = 180;
         var resourceViewHeight = 42;
-        
+        var root = that.rootElement(); 
+
         HUDViews.stoneView = AWE.UI.createResourceBubbleView();
         HUDViews.stoneView.initWithControllerResourceNameColorsAndFrame(that, "stone", 
           { topColor: "#89B1D0", bottomColor: "#425460" });
@@ -852,7 +853,7 @@ AWE.Controller = (function(module) {
         HUDViews.stoneView.onClick = function(){};//resourceDetailsHandler;
         _resourceStage.addChild(HUDViews.stoneView.displayObject()); 
 
-        //add div for click start
+        //add div for click 
         var stoneDiv = document.createElement('DIV');
         stoneDiv.style.position = 'fixed';
         stoneDiv.style.top   = 30 + 'px';
@@ -862,9 +863,7 @@ AWE.Controller = (function(module) {
         stoneDiv.style.cursor = 'pointer';
         stoneDiv.style.zIndex = '50';
         stoneDiv.onclick = resourceDetailsStone;//HUDViews.stoneView.onClick;
-        var root = that.rootElement(); 
-        root.append(stoneDiv);
-        //add div end      
+        root.append(stoneDiv); 
         
         xOffset += resourceViewWidth + spacingX;
 
@@ -875,7 +874,7 @@ AWE.Controller = (function(module) {
         HUDViews.woodView.onClick = function(){};//resourceDetailsHandler;
         _resourceStage.addChild(HUDViews.woodView.displayObject()); 
         
-        //add div for click start
+        //add div for click 
         var woodDiv = document.createElement('DIV');
         woodDiv.style.position = 'fixed';
         woodDiv.style.top   = 30 + 'px';
@@ -885,9 +884,7 @@ AWE.Controller = (function(module) {
         woodDiv.style.cursor = 'pointer';
         woodDiv.style.zIndex = '50';
         woodDiv.onclick = resourceDetailsWood;//HUDViews.stoneView.onClick;
-        var root = that.rootElement(); 
         root.append(woodDiv);
-        //add div end 
 
         xOffset += resourceViewWidth + spacingX - 10;
         
@@ -898,7 +895,7 @@ AWE.Controller = (function(module) {
         HUDViews.furView.onClick = function(){};//resourceDetailsHandler;
         _resourceStage.addChild(HUDViews.furView.displayObject());
         
-        //add div for click start
+        //add div for click
         var furDiv = document.createElement('DIV');
         furDiv.style.position = 'fixed';
         furDiv.style.top   = 30 + 'px';
@@ -908,9 +905,7 @@ AWE.Controller = (function(module) {
         furDiv.style.cursor = 'pointer';
         furDiv.style.zIndex = '50';
         furDiv.onclick = resourceDetailsFur;//HUDViews.stoneView.onClick;
-        var root = that.rootElement(); 
         root.append(furDiv);
-        //add div end 
 
         xOffset += resourceViewWidth + spacingX - 5;                
         HUDViews.toadsView = AWE.UI.createResourceCashBubbleView();
@@ -930,7 +925,6 @@ AWE.Controller = (function(module) {
         toadsDiv.style.cursor = 'pointer';
         toadsDiv.style.zIndex = '50';
         toadsDiv.onclick = cashDetailsHandler;//HUDViews.stoneView.onClick;
-        var root = that.rootElement(); 
         root.append(toadsDiv);
         //add div end  
       }
