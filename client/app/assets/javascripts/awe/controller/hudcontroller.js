@@ -10,6 +10,7 @@ AWE.Controller = (function(module) {
   module.createHUDController = function(anchor) {
     
     var _domLeft = null;
+    var _domRight = null;
     var _stageLeft  = null;          ///< easelJS stage for displaying the HUD
     var _canvasLeft = null;          ///< canvas elements for the hud
     var _stageRight  = null;          ///< easelJS stage for displaying the HUD
@@ -56,13 +57,22 @@ AWE.Controller = (function(module) {
     that.init = function() {
       _super.init();
 
-      _domLeft = AWE.UI.Ember.HUDViews.create({
+      _domLeft = AWE.UI.Ember.LeftHUDView.create({
         controller: this,
+      });
+
+      var character = AWE.GS.CharacterManager.getCurrentCharacter();
+      var tutorialState = AWE.GS.TutorialStateManager.getTutorialState();
+      _domRight = AWE.UI.Ember.RightHUDView.create({
+        controller: this,
+        character: character,
+        tutorialState: tutorialState,
       });
       //view.append();  
       var root = that.rootElement();  
-      root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas-profile"></canvas><canvas id="hud-canvas-right"></canvas>');
+      root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas-profile"></canvas>');
       _domLeft.appendTo(root);
+      _domRight.appendTo(root);
 
 
       // HUD layers ("static", not zoomable, not moveable)
@@ -74,12 +84,12 @@ AWE.Controller = (function(module) {
       _canvasLeft.width = 120*AWE.Settings.hudScale;
       _canvasLeft.height = 370*AWE.Settings.hudScale;*/
       
-      _canvasRight = root.find('#hud-canvas-right')[0];
+      /*_canvasRight = root.find('#hud-canvas-right')[0];
       _stageRight = new Stage(_canvasRight);
       _stageRight.onClick = function() {};
       
       _canvasRight.width = 70*AWE.Settings.hudScale;
-      _canvasRight.height = 114*AWE.Settings.hudScale;
+      _canvasRight.height = 114*AWE.Settings.hudScale;*/
       
       _canvasProfile = root.find('#hud-canvas-profile')[0];
       _stageProfile = new Stage(_canvasProfile);
@@ -106,7 +116,7 @@ AWE.Controller = (function(module) {
     that.getStages = function() {
       return [
         //{ stage: _stageLeft,         mouseOverEvents: true},
-        { stage: _stageRight,         mouseOverEvents: true},
+        //{ stage: _stageRight,         mouseOverEvents: true},
         { stage: _stageProfile,         mouseOverEvents: true},
         { stage: _resourceStage, mouseOverEvents: true}
       ];
@@ -124,7 +134,7 @@ AWE.Controller = (function(module) {
     
     that.onResize = function() {
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
-      $('#hud-canvas-right').css('top', $(window).height()*0.5);
+      //$('#hud-canvas-right').css('top', $(window).height()*0.5);
     }
     
     /** set to true in case the window needs to be layouted again (e.g. after
@@ -135,11 +145,11 @@ AWE.Controller = (function(module) {
      * changed. */
     that.layoutIfNeeded = function() {
       if (_needsLayout) {
-        $('#hud-canvas-right').css('top', $(window).height()*0.5);
+        //$('#hud-canvas-right').css('top', $(window).height()*0.5);
         //$('#hud-canvas-left').css('height', 370*AWE.Settings.hudScale);
         //$('#hud-canvas-left').css('width', 120*AWE.Settings.hudScale);
-        $('#hud-canvas-right').css('height', 114*AWE.Settings.hudScale);
-        $('#hud-canvas-right').css('width', 70*AWE.Settings.hudScale);
+        //$('#hud-canvas-right').css('height', 114*AWE.Settings.hudScale);
+        //$('#hud-canvas-right').css('width', 70*AWE.Settings.hudScale);
         $('#hud-canvas-profile').css('height', 266*AWE.Settings.hudScale);
         $('#hud-canvas-profile').css('width', 268*AWE.Settings.hudScale);
         $('#resource-canvas').css('height', 42*AWE.Settings.hudScale);
@@ -149,7 +159,8 @@ AWE.Controller = (function(module) {
           _canvasIsHidden = true;
           //$('#hud-canvas-left').delay(600).animate({left: "-120px"}, _animationDuration, 'easeOutBack');
           $('#left-dom-hud').delay(600).animate({left: "-120px"}, _animationDuration, 'easeOutBack');
-          $('#hud-canvas-right').delay(600).animate({right: "-70px"}, _animationDuration, 'easeOutBack');
+          //$('#hud-canvas-right').delay(600).animate({right: "-70px"}, _animationDuration, 'easeOutBack');
+          $('#right-dom-hud').delay(600).animate({right: "-70px"}, _animationDuration, 'easeOutBack');
           $('#hud-canvas-profile').delay(600).animate({right: "-268px"}, _animationDuration, 'easeOutBack');
           $('#resource-canvas').delay(600).animate({top: "-42px"}, _animationDuration, 'easeOutBack');
           that.setNeedsDisplay();
@@ -159,7 +170,8 @@ AWE.Controller = (function(module) {
           _canvasIsHidden = false;
           //$('#hud-canvas-left').delay(600).animate({left: "10px"}, _animationDuration, 'easeOutBack');
           $('#left-dom-hud').delay(600).animate({left: "10px"}, _animationDuration, 'easeOutBack');
-          $('#hud-canvas-right').delay(600).animate({right: "7px"}, _animationDuration, 'easeOutBack');
+          //$('#hud-canvas-right').delay(600).animate({right: "7px"}, _animationDuration, 'easeOutBack');
+          $('#right-dom-hud').delay(600).animate({right: "7px"}, _animationDuration, 'easeOutBack');
           $('#hud-canvas-profile').delay(600).animate({right: "0px"}, _animationDuration, 'easeOutBack');
           $('#resource-canvas').delay(600).animate({top: "30px"}, _animationDuration, 'easeOutBack');
           that.setNeedsDisplay();
@@ -944,11 +956,11 @@ AWE.Controller = (function(module) {
       }*/
       
       // Right HUD View
-      if (!HUDViews.rightHUDControlsView) {
+      /*if (!HUDViews.rightHUDControlsView) {
         HUDViews.rightHUDControlsView = AWE.UI.createRightHUDControlsView();
         HUDViews.rightHUDControlsView.initWithController(that);
         _stageRight.addChild(HUDViews.rightHUDControlsView.displayObject());
-      }
+      }*/
       
       return true; 
     };
@@ -984,7 +996,7 @@ AWE.Controller = (function(module) {
         
         var stageNeedsUpdate = true;     // replace true with false as soon as stage 1 and 2 are implemented correctly.
                         
-        if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || /*!HUDViews.leftHUDControlsView*/!HUDViews.rightHUDControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
+        if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || /*!HUDViews.leftHUDControlsView*/!HUDViews.profileControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
           stageNeedsUpdate = that.updateHUD() || stageNeedsUpdate; 
         }
         
@@ -1114,7 +1126,7 @@ AWE.Controller = (function(module) {
           var updateNeeded = that.updateViewHierarchy() || animating;      
           if (updateNeeded ) { // TODO: remove true, update only, if necessary 
             //_stageLeft.update();
-            _stageRight.update();
+            //_stageRight.update();
             _stageProfile.update();
             _resourceStage.update();
             AWE.Ext.applyFunctionToElements(HUDViews, function(view) {            

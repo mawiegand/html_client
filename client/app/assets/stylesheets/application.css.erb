@@ -506,6 +506,67 @@ h3 {
   height: 370px;
   z-index: 10;
 }
+/* == NEW DOM RIGHT HUD START== */
+.right-hud {
+  width: 70px;
+  height: 114px;
+  position: fixed;
+  bottom: 0px;
+  z-index: 50;
+  pointer-events: none;
+  right: -70px;
+}
+
+.right-hud div{
+  pointer-events: all;
+}
+
+.message-hud-button{
+  width: 52px;
+  height: 52px;
+  background:url("<%= asset_path 'hud/message_button/message_button.png' %>") no-repeat center center;
+}
+.message-hud-button-position{
+  bottom: 240px;
+  left: 0px;
+  position: relative;
+}
+.message-hud-button:hover{
+  background:url("<%= asset_path 'hud/message_button/message_button_hovered.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.quest-list-hud-button{
+  width: 52px;
+  height: 52px;
+  background:url("<%= asset_path 'hud/quest_list_button/quest_list_button.png' %>") no-repeat center center;
+}
+.quest-list-hud-button-position{
+  bottom: 228px;
+  left: 0px;
+  position: relative;
+}
+.quest-list-hud-button:hover{
+  background:url("<%= asset_path 'hud/quest_list_button/quest_list_button_hovered.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.count-indicator-background{
+  width: 34px;
+  height: 32px;
+  background:url("<%= asset_path 'hud/count_indicator/count_indicator.png' %>") no-repeat center center;
+}
+.count-indicator-background-position{
+  top: 10px;
+  left: 40px;
+  position: relative;
+  text-align: center;
+  line-height: 30px;
+  font-family: "HVDComicSerifPro";
+  color: white;
+}
+/* == NEW DOM RIGHT HUD END== */
+
 /* == NEW DOM LEFT HUD START== */
 .settlement-map-button {
   width: 120px;
