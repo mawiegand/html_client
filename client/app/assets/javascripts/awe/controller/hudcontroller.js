@@ -70,7 +70,7 @@ AWE.Controller = (function(module) {
       });
       //view.append();  
       var root = that.rootElement();  
-      root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas-profile"></canvas><canvas id="hud-canvas-right"></canvas>');
+      root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas-profile"></canvas>');
       _domLeft.appendTo(root);
       _domRight.appendTo(root);
 
