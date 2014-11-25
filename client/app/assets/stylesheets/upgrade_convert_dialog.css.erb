@@ -1,0 +1,239 @@
+/* == Upgrade Building == */
+.upgrade-container {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+.upgrade-container h3 {
+  display: inline-block;
+  position: relative;
+  margin-top: 0;
+  -webkit-margin-after: 0;
+  font-size: 1.1em;
+  font-family: 'hvd_comic_serif_proregular', 'cursive';
+}
+
+.upgrade-container .collumn{
+  text-align: center;
+  float: left;
+  width: 33%;
+  height: 400px;
+}
+
+.upgrade-container .row-first-half {
+  width: 100%;
+  height: 50%;
+  position: relative;
+}
+
+.upgrade-container .row-second-half {
+  width: 100%;
+  height: 50%;
+}
+
+.cell-header {
+  margin-top: 5px;
+  position: relative;
+  width: 100%;
+  height: 40px;
+  display: block;
+}
+
+.cell-body {
+  height: 156px;
+  font-size: 20px;
+}
+
+.level-title {
+  position: absolute !important;
+  left: 20%;
+}
+
+.upgrade-arrow {
+  background: url("<%= asset_path 'dialogs/specials/arrow_right_wide.png' %>") no-repeat center center;
+}
+
+.change-level {
+  top: 10%;
+  position: absolute;
+}
+
+.change-level.right {
+  width: 24px;
+  height: 32px;
+  background: url("<%= asset_path 'dialogs/specials/arrow_right.png' %>") no-repeat center center;
+  right: 5%;
+}
+
+.change-level.left {
+  width: 24px;
+  height: 32px;
+  background: url("<%= asset_path 'dialogs/specials/arrow_left.png' %>") no-repeat center center;
+  left: 5%;
+}
+
+.upgrade-button {
+  color: white;
+  display: inline-block;
+  cursor: pointer;
+  width: 180px;
+  height: 200px;
+  background: url("<%= asset_path 'dialogs/buttons/button_green_high.png' %>") no-repeat center center;
+}
+
+.upgrade-button-disable{
+  color: white;
+  display: inline-block;
+  width: 180px;
+  height: 200px;
+  background: url("<%= asset_path 'dialogs/buttons/button_grey_high.png' %>") no-repeat center center;
+}
+
+.resources-table {
+  display: inline-block;
+}
+
+.resources-table tr{
+  line-height: 30px;
+}
+
+.item.resource_stone.small {
+  width: 32px;
+  height: 24px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_stone_small.png' %>") no-repeat center center;
+}
+
+.item.resource_wood.small {
+  width: 32px;
+  height: 24px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_wood_small.png' %>") no-repeat center center;
+}
+
+.item.resource_fur.small {
+  width: 28px;
+  height: 32px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_fur_small.png' %>") no-repeat center center;
+}
+
+.item.resource_cash.small {
+  width: 24px;
+  height: 24px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_toads_small.png' %>") no-repeat center center;
+}
+
+.item.resource_xp.small {
+  width: 32px;
+  height: 24px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_xp.png' %>") no-repeat center center;
+}
+
+.item.resource_stone.xs {
+  width: 16px;
+  height: 12px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_stone_xs.png' %>") no-repeat center center;
+}
+
+.item.resource_wood.xs {
+  width: 16px;
+  height: 12px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_wood_xs.png' %>") no-repeat center center;
+}
+
+.item.resource_fur.xs {
+  width: 14px;
+  height: 16px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_fur_xs.png' %>") no-repeat center center;
+}
+
+.item.resource_cash.xs {
+  width: 12px;
+  height: 12px;
+  background: url("<%= asset_path 'dialogs/items/normal/item_toads_xs.png' %>") no-repeat center center;
+}
+
+.item.population-icon {
+  width: 24px;
+  height: 32px;
+  display: inline-block;
+  background: url("<%= asset_path 'dialogs/specials/people_identifier.png' %>") no-repeat center center;
+  background-size: 32px;
+}
+
+.population-detail {
+  width:100%;
+  position: relative;
+  text-align: center;
+}
+
+.change-level {
+  cursor: pointer;
+}
+
+.first .buildingUpgradeImage {
+  position: absolute;
+  left: -10%;
+  bottom: -20%;
+}
+
+.third .buildingUpgradeImage {
+  position: absolute;
+  left: -30%;
+  bottom: -20%;
+}
+
+/* == Building Details == */
+.building-info-image {
+  float: left;
+}
+
+.building-details {
+  position: relative;
+}
+
+.economy-details, .military-details{
+  position: relative;
+  float: left;
+  width: 50%;
+  height: 75%;
+}
+
+.economy-details.is-single-military-row{
+  display: none;
+}
+
+.military-details.is-single-economy-row {
+  display: none;
+}
+
+.economy-details.is-single-economy-row{
+  width: 100%;
+  text-align: center;
+}
+
+.military-details.is-single-military-row {
+  width: 100%;
+  text-align: center;
+}
+
+.unlock-details, .building-requirements {
+  position: relative;
+  width: 100%;
+  margin-left: 20px;
+  margin-bottom: 5px;
+}
+
+.queue_infantry {
+  background: url("<%= asset_path 'dialogs/specials/units_swordsman.png' %>") no-repeat center center;
+}
+
+.queue_artillery {
+  background: url("<%= asset_path 'dialogs/specials/units_archer.png' %>") no-repeat center center;
+}
+
+.queue_cavalry {
+  background: url("<%= asset_path 'dialogs/specials/units_cavalry.png' %>") no-repeat center center;
+}
