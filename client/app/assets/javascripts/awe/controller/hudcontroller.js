@@ -9,8 +9,9 @@ AWE.Controller = (function(module) {
           
   module.createHUDController = function(anchor) {
     
-    //var _stageLeft  = null;          ///< easelJS stage for displaying the HUD
-    //var _canvasLeft = null;          ///< canvas elements for the hud
+    var _domLeft = null;
+    var _stageLeft  = null;          ///< easelJS stage for displaying the HUD
+    var _canvasLeft = null;          ///< canvas elements for the hud
     var _stageRight  = null;          ///< easelJS stage for displaying the HUD
     var _canvasRight = null;          ///< canvas elements for the hud
     var _stageProfile  = null;          ///< easelJS stage for displaying the HUD
@@ -55,13 +56,13 @@ AWE.Controller = (function(module) {
     that.init = function() {
       _super.init();
 
-      var view = AWE.UI.Ember.HUDViews.create({
+      _domLeft = AWE.UI.Ember.HUDViews.create({
         controller: this,
       });
       //view.append();  
       var root = that.rootElement();  
       root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas-profile"></canvas><canvas id="hud-canvas-right"></canvas>');
-      view.appendTo(root);
+      _domLeft.appendTo(root);
 
 
       // HUD layers ("static", not zoomable, not moveable)
@@ -147,6 +148,7 @@ AWE.Controller = (function(module) {
           AWE.Log.Debug('hide canvas');
           _canvasIsHidden = true;
           //$('#hud-canvas-left').delay(600).animate({left: "-120px"}, _animationDuration, 'easeOutBack');
+          $('#left-dom-hud').delay(600).animate({left: "-120px"}, _animationDuration, 'easeOutBack');
           $('#hud-canvas-right').delay(600).animate({right: "-70px"}, _animationDuration, 'easeOutBack');
           $('#hud-canvas-profile').delay(600).animate({right: "-268px"}, _animationDuration, 'easeOutBack');
           $('#resource-canvas').delay(600).animate({top: "-42px"}, _animationDuration, 'easeOutBack');
@@ -156,6 +158,7 @@ AWE.Controller = (function(module) {
           AWE.Log.Debug('display canvas canvas');
           _canvasIsHidden = false;
           //$('#hud-canvas-left').delay(600).animate({left: "10px"}, _animationDuration, 'easeOutBack');
+          $('#left-dom-hud').delay(600).animate({left: "10px"}, _animationDuration, 'easeOutBack');
           $('#hud-canvas-right').delay(600).animate({right: "7px"}, _animationDuration, 'easeOutBack');
           $('#hud-canvas-profile').delay(600).animate({right: "0px"}, _animationDuration, 'easeOutBack');
           $('#resource-canvas').delay(600).animate({top: "30px"}, _animationDuration, 'easeOutBack');
@@ -487,10 +490,11 @@ AWE.Controller = (function(module) {
     };      
     
     that.notifyAboutNewScreenController = function(controller) {
-      /*if (controller && HUDViews.leftHUDControlsView) {
+      if (controller && /*HUDViews.leftHUDControlsView*/_domLeft) {
         var mode = controller.typeName === "SettlementController" ? AWE.UI.HUDModeSettlement : AWE.UI.HUDModeMap;
-        HUDViews.leftHUDControlsView.setHUDMode(mode);
-      }*/
+        //HUDViews.leftHUDControlsView.setHUDMode(mode);
+        _domLeft.setHUDMode(mode);
+      }
       
       // TODO Mail view -> hide buttons
     };
@@ -912,7 +916,7 @@ AWE.Controller = (function(module) {
         
         var stageNeedsUpdate = true;     // replace true with false as soon as stage 1 and 2 are implemented correctly.
                         
-        if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) /*|| !HUDViews.leftHUDControlsView*/) { // TODO: only update at start and when something might have changed (object selected, etc.)
+        if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || /*!HUDViews.leftHUDControlsView*/!HUDViews.rightHUDControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
           stageNeedsUpdate = that.updateHUD() || stageNeedsUpdate; 
         }
         
@@ -961,7 +965,7 @@ AWE.Controller = (function(module) {
       var bounceHeight = 50;
       var bounceDuration = 1000.0;
 
-     // _stageLeft.addChild(annotation.displayObject());
+      //_stageLeft.addChild(annotation.displayObject());
 
       var animation = AWE.UI.createTimedAnimation({
         view:annotation,
@@ -977,7 +981,7 @@ AWE.Controller = (function(module) {
 
         onAnimationEnd:function (viewToRemove) {
           return function () {
-           // _stageLeft.removeChild(viewToRemove.displayObject());
+            //_stageLeft.removeChild(viewToRemove.displayObject());
             log('removed animated label on animation end');
           };
         }(annotation),

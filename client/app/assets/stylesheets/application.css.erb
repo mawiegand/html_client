@@ -514,6 +514,7 @@ h3 {
   bottom: 0px;
   z-index: 50;
   pointer-events: none;
+  left: -120px;
 }
 
 .settlement-map-button div{
@@ -532,6 +533,21 @@ h3 {
 }
 .settelement-hud-button:hover{
   background:url("<%= asset_path 'hud/settlement_button/settlement_button_hovered.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.map-hud-button{
+  width: 100px;
+  height: 94px;
+  background:url("<%= asset_path 'hud/map_button/map_button.png' %>") no-repeat center center;
+}
+.map-hud-button-position{
+  top: 72px;
+  left: 12px;
+  position: relative;
+}
+.map-hud-button:hover{
+  background:url("<%= asset_path 'hud/map_button/map_button_hovered.png' %>") no-repeat center center;
   cursor: pointer;
 }
 
@@ -600,6 +616,13 @@ h3 {
   height: 52px;
   background:url("<%= asset_path 'hud/army_button/army_button.png' %>") no-repeat center center;
 }
+
+.army-hud-button-position{
+  position: relative;
+  top: 62px;
+  left: 12px;
+}
+
 .army-hud-button:hover{
   background:url("<%= asset_path 'hud/army_button/army_button_hovered.png' %>") no-repeat center center;
   cursor: pointer;
