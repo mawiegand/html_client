@@ -9,6 +9,7 @@ AWE.Controller = (function(module) {
           
   module.createHUDController = function(anchor) {
     
+    var _domLeft = null;
     var _stageLeft  = null;          ///< easelJS stage for displaying the HUD
     var _canvasLeft = null;          ///< canvas elements for the hud
     var _stageRight  = null;          ///< easelJS stage for displaying the HUD
@@ -55,25 +56,23 @@ AWE.Controller = (function(module) {
     that.init = function() {
       _super.init();
 
-      var view = AWE.UI.Ember.HUDViews.create({
+      _domLeft = AWE.UI.Ember.HUDViews.create({
         controller: this,
       });
-       
+      //view.append();  
       var root = that.rootElement();  
-      root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas-profile"></canvas><canvas id="hud-canvas-left"></canvas><canvas id="hud-canvas-right"></canvas>');
-      
-      debugger;
-      root.append(view); 
+      root.append('<canvas id="resource-canvas"></canvas><canvas id="hud-canvas-profile"></canvas><canvas id="hud-canvas-right"></canvas>');
+      _domLeft.appendTo(root);
 
 
       // HUD layers ("static", not zoomable, not moveable)
       
-      _canvasLeft = root.find('#hud-canvas-left')[0];
+     /* _canvasLeft = root.find('#hud-canvas-left')[0];
       _stageLeft = new Stage(_canvasLeft);
       _stageLeft.onClick = function() {};
       
       _canvasLeft.width = 120*AWE.Settings.hudScale;
-      _canvasLeft.height = 370*AWE.Settings.hudScale;
+      _canvasLeft.height = 370*AWE.Settings.hudScale;*/
       
       _canvasRight = root.find('#hud-canvas-right')[0];
       _stageRight = new Stage(_canvasRight);
@@ -106,7 +105,7 @@ AWE.Controller = (function(module) {
     
     that.getStages = function() {
       return [
-        { stage: _stageLeft,         mouseOverEvents: true},
+        //{ stage: _stageLeft,         mouseOverEvents: true},
         { stage: _stageRight,         mouseOverEvents: true},
         { stage: _stageProfile,         mouseOverEvents: true},
         { stage: _resourceStage, mouseOverEvents: true}
@@ -137,8 +136,8 @@ AWE.Controller = (function(module) {
     that.layoutIfNeeded = function() {
       if (_needsLayout) {
         $('#hud-canvas-right').css('top', $(window).height()*0.5);
-        $('#hud-canvas-left').css('height', 370*AWE.Settings.hudScale);
-        $('#hud-canvas-left').css('width', 120*AWE.Settings.hudScale);
+        //$('#hud-canvas-left').css('height', 370*AWE.Settings.hudScale);
+        //$('#hud-canvas-left').css('width', 120*AWE.Settings.hudScale);
         $('#hud-canvas-right').css('height', 114*AWE.Settings.hudScale);
         $('#hud-canvas-right').css('width', 70*AWE.Settings.hudScale);
         $('#hud-canvas-profile').css('height', 266*AWE.Settings.hudScale);
@@ -148,7 +147,8 @@ AWE.Controller = (function(module) {
         if (_hideCanvas && !_canvasIsHidden) {
           AWE.Log.Debug('hide canvas');
           _canvasIsHidden = true;
-          $('#hud-canvas-left').delay(600).animate({left: "-120px"}, _animationDuration, 'easeOutBack');
+          //$('#hud-canvas-left').delay(600).animate({left: "-120px"}, _animationDuration, 'easeOutBack');
+          $('#left-dom-hud').delay(600).animate({left: "-120px"}, _animationDuration, 'easeOutBack');
           $('#hud-canvas-right').delay(600).animate({right: "-70px"}, _animationDuration, 'easeOutBack');
           $('#hud-canvas-profile').delay(600).animate({right: "-268px"}, _animationDuration, 'easeOutBack');
           $('#resource-canvas').delay(600).animate({top: "-42px"}, _animationDuration, 'easeOutBack');
@@ -157,7 +157,8 @@ AWE.Controller = (function(module) {
         else if (!_hideCanvas && _canvasIsHidden) {
           AWE.Log.Debug('display canvas canvas');
           _canvasIsHidden = false;
-          $('#hud-canvas-left').delay(600).animate({left: "10px"}, _animationDuration, 'easeOutBack');
+          //$('#hud-canvas-left').delay(600).animate({left: "10px"}, _animationDuration, 'easeOutBack');
+          $('#left-dom-hud').delay(600).animate({left: "10px"}, _animationDuration, 'easeOutBack');
           $('#hud-canvas-right').delay(600).animate({right: "7px"}, _animationDuration, 'easeOutBack');
           $('#hud-canvas-profile').delay(600).animate({right: "0px"}, _animationDuration, 'easeOutBack');
           $('#resource-canvas').delay(600).animate({top: "30px"}, _animationDuration, 'easeOutBack');
@@ -489,9 +490,10 @@ AWE.Controller = (function(module) {
     };      
     
     that.notifyAboutNewScreenController = function(controller) {
-      if (controller && HUDViews.leftHUDControlsView) {
+      if (controller && /*HUDViews.leftHUDControlsView*/_domLeft) {
         var mode = controller.typeName === "SettlementController" ? AWE.UI.HUDModeSettlement : AWE.UI.HUDModeMap;
-        HUDViews.leftHUDControlsView.setHUDMode(mode);
+        //HUDViews.leftHUDControlsView.setHUDMode(mode);
+        _domLeft.setHUDMode(mode);
       }
       
       // TODO Mail view -> hide buttons
@@ -810,6 +812,24 @@ AWE.Controller = (function(module) {
       // Resource HUD Views      
       if (!HUDViews.stoneView) {
         
+        var resourceDetailsStone = function() {
+          var resourceName = 'resource_stone';
+          var dialog = AWE.UI.Ember.ResourceInformationDialog.create({resourceName: resourceName});
+          WACKADOO.presentModalDialog(dialog);          
+        }; 
+
+        var resourceDetailsWood = function() {
+          var resourceName = 'resource_wood';
+          var dialog = AWE.UI.Ember.ResourceInformationDialog.create({resourceName: resourceName});
+          WACKADOO.presentModalDialog(dialog);          
+        };
+
+        var resourceDetailsFur = function() {
+          var resourceName = 'resource_fur';
+          var dialog = AWE.UI.Ember.ResourceInformationDialog.create({resourceName: resourceName});
+          WACKADOO.presentModalDialog(dialog);          
+        };
+
         var resourceDetailsHandler = function() {
           var resourceName = this.resourceName();
           var dialog = AWE.UI.Ember.ResourceInformationDialog.create({resourceName: resourceName});
@@ -824,13 +844,26 @@ AWE.Controller = (function(module) {
         var xOffset = spacingX;
         var resourceViewWidth = 180;
         var resourceViewHeight = 42;
-        
+        var root = that.rootElement(); 
+
         HUDViews.stoneView = AWE.UI.createResourceBubbleView();
         HUDViews.stoneView.initWithControllerResourceNameColorsAndFrame(that, "stone", 
           { topColor: "#89B1D0", bottomColor: "#425460" });
         HUDViews.stoneView.setFrame(AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
-        HUDViews.stoneView.onClick = resourceDetailsHandler;
-        _resourceStage.addChild(HUDViews.stoneView.displayObject());       
+        HUDViews.stoneView.onClick = function(){};//resourceDetailsHandler;
+        _resourceStage.addChild(HUDViews.stoneView.displayObject()); 
+
+        //add div for click 
+        var stoneDiv = document.createElement('DIV');
+        stoneDiv.style.position = 'fixed';
+        stoneDiv.style.top   = 30 + 'px';
+        stoneDiv.style.left  = 20 + 'px';
+        stoneDiv.style.width = '180px';
+        stoneDiv.style.height = '34px';
+        stoneDiv.style.cursor = 'pointer';
+        stoneDiv.style.zIndex = '50';
+        stoneDiv.onclick = resourceDetailsStone;//HUDViews.stoneView.onClick;
+        root.append(stoneDiv); 
         
         xOffset += resourceViewWidth + spacingX;
 
@@ -838,25 +871,62 @@ AWE.Controller = (function(module) {
         HUDViews.woodView.initWithControllerResourceNameColorsAndFrame(that, "wood", 
           { topColor: "#D7CC98", bottomColor: "#806322" },
           AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
-        HUDViews.woodView.onClick = resourceDetailsHandler;
+        HUDViews.woodView.onClick = function(){};//resourceDetailsHandler;
         _resourceStage.addChild(HUDViews.woodView.displayObject()); 
         
+        //add div for click 
+        var woodDiv = document.createElement('DIV');
+        woodDiv.style.position = 'fixed';
+        woodDiv.style.top   = 30 + 'px';
+        woodDiv.style.left  = 205 + 'px';
+        woodDiv.style.width = '180px';
+        woodDiv.style.height = '34px';
+        woodDiv.style.cursor = 'pointer';
+        woodDiv.style.zIndex = '50';
+        woodDiv.onclick = resourceDetailsWood;//HUDViews.stoneView.onClick;
+        root.append(woodDiv);
+
         xOffset += resourceViewWidth + spacingX - 10;
         
         HUDViews.furView = AWE.UI.createResourceBubbleView();
         HUDViews.furView.initWithControllerResourceNameColorsAndFrame(that, "fur", 
           { topColor: "#A45341", bottomColor: "#521103" },
           AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
-        HUDViews.furView.onClick = resourceDetailsHandler;
+        HUDViews.furView.onClick = function(){};//resourceDetailsHandler;
         _resourceStage.addChild(HUDViews.furView.displayObject());
         
+        //add div for click
+        var furDiv = document.createElement('DIV');
+        furDiv.style.position = 'fixed';
+        furDiv.style.top   = 30 + 'px';
+        furDiv.style.left  = 400 + 'px';
+        furDiv.style.width = '180px';
+        furDiv.style.height = '34px';
+        furDiv.style.cursor = 'pointer';
+        furDiv.style.zIndex = '50';
+        furDiv.onclick = resourceDetailsFur;//HUDViews.stoneView.onClick;
+        root.append(furDiv);
+
         xOffset += resourceViewWidth + spacingX - 5;                
         HUDViews.toadsView = AWE.UI.createResourceCashBubbleView();
         HUDViews.toadsView.initWithControllerColorsAndFrame(that,
           { topColor: "#94BE57", bottomColor: "#658434" },
           AWE.Geometry.createRect(xOffset, 0, resourceViewWidth, resourceViewHeight));
-        HUDViews.toadsView.onClick = cashDetailsHandler;
-        _resourceStage.addChild(HUDViews.toadsView.displayObject()); 
+        HUDViews.toadsView.onClick = function(){};//cashDetailsHandler;
+        _resourceStage.addChild(HUDViews.toadsView.displayObject());
+
+        //add div for click start
+        var toadsDiv = document.createElement('DIV');
+        toadsDiv.style.position = 'fixed';
+        toadsDiv.style.top   = 30 + 'px';
+        toadsDiv.style.left  = 570 + 'px';
+        toadsDiv.style.width = '180px';
+        toadsDiv.style.height = '34px';
+        toadsDiv.style.cursor = 'pointer';
+        toadsDiv.style.zIndex = '50';
+        toadsDiv.onclick = cashDetailsHandler;//HUDViews.stoneView.onClick;
+        root.append(toadsDiv);
+        //add div end  
       }
       
       // Profile HUD View
@@ -867,11 +937,11 @@ AWE.Controller = (function(module) {
       }
             
       // Left HUD View
-      if (!HUDViews.leftHUDControlsView) {
+      /*if (!HUDViews.leftHUDControlsView) {
         HUDViews.leftHUDControlsView = AWE.UI.createLeftHUDControlsView();
         HUDViews.leftHUDControlsView.initWithController(that);
         _stageLeft.addChild(HUDViews.leftHUDControlsView.displayObject());
-      }
+      }*/
       
       // Right HUD View
       if (!HUDViews.rightHUDControlsView) {
@@ -914,11 +984,11 @@ AWE.Controller = (function(module) {
         
         var stageNeedsUpdate = true;     // replace true with false as soon as stage 1 and 2 are implemented correctly.
                         
-        if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || !HUDViews.leftHUDControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
+        if ((oldWindowSize && !oldWindowSize.equals(_windowSize)) || /*!HUDViews.leftHUDControlsView*/!HUDViews.rightHUDControlsView) { // TODO: only update at start and when something might have changed (object selected, etc.)
           stageNeedsUpdate = that.updateHUD() || stageNeedsUpdate; 
         }
         
-        if (HUDViews.leftHUDControlsView) {
+        /*if (HUDViews.leftHUDControlsView) {
           var mark = that.shouldMarkMapButton();
           var view = HUDViews.leftHUDControlsView.getSwitchToMapOrSettlementButton();
 
@@ -936,7 +1006,7 @@ AWE.Controller = (function(module) {
     
             stageNeedsUpdate = true;
           }
-        }
+        }*/
         
         // update hierarchies and check which stages need to be redrawn
         stageNeedsUpdate = propUpdates(HUDViews) || stageNeedsUpdate;
@@ -963,7 +1033,7 @@ AWE.Controller = (function(module) {
       var bounceHeight = 50;
       var bounceDuration = 1000.0;
 
-      _stageLeft.addChild(annotation.displayObject());
+      //_stageLeft.addChild(annotation.displayObject());
 
       var animation = AWE.UI.createTimedAnimation({
         view:annotation,
@@ -979,7 +1049,7 @@ AWE.Controller = (function(module) {
 
         onAnimationEnd:function (viewToRemove) {
           return function () {
-            _stageLeft.removeChild(viewToRemove.displayObject());
+            //_stageLeft.removeChild(viewToRemove.displayObject());
             log('removed animated label on animation end');
           };
         }(annotation),
@@ -1043,7 +1113,7 @@ AWE.Controller = (function(module) {
           // STEP 4b: create, remove and update all views according to visible parts of model      
           var updateNeeded = that.updateViewHierarchy() || animating;      
           if (updateNeeded ) { // TODO: remove true, update only, if necessary 
-            _stageLeft.update();
+            //_stageLeft.update();
             _stageRight.update();
             _stageProfile.update();
             _resourceStage.update();

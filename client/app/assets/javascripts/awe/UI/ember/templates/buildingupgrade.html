@@ -22,7 +22,8 @@
         </div>
       </div>
     </div>
-
+    
+  {{#if isMinimumSelected}}
     <div class="second collumn">
       <div class="row-first-half upgrade-arrow">
       </div>
@@ -41,10 +42,46 @@
             {{#each upgradeCosts}}
               {{view AWE.UI.Ember.ResourceCostsView resourceBinding="this" tagName="tr"}}
             {{/each}}
+            <td class="cost-item-small-uhr"></td>
+            {{#if conversionView}}
+              <td class="amount">{{formatDuration building.conversionTime}}</td>
+            {{else}}
+              <td class="amount">{{formatDuration building.productionTimeOfNextLevel}}</td>
+            {{/if}}
           </table>
         </div>
       </div>
     </div>
+  {{else}}
+  <div class="second collumn">
+      <div class="row-first-half upgrade-arrow">
+      </div>
+      <div class="row-second-half">
+        <div class="upgrade-button-disable">
+          <div class="cell-header">
+            <h3 class="button-title">
+              {{#if conversionView}}
+                {{t building.upgrade.conversion}}
+              {{else}}
+                {{t building.upgrade.upgrade}}
+              {{/if}}
+            </h3>
+          </div>
+          <table class="resources-table">
+            {{#each upgradeCosts}}
+              {{view AWE.UI.Ember.ResourceCostsView resourceBinding="this" tagName="tr"}}
+            {{/each}}
+            <td class="cost-item-small-uhr"></td>
+            {{#if conversionView}}
+              <td class="amount">{{formatDuration building.conversionTime}}</td>
+            {{else}}
+              <td class="amount">{{formatDuration building.productionTimeOfNextLevel}}</td>
+            {{/if}}
+          </table>
+        </div>
+      </div>
+    </div>
+  {{/if}}
 
     <div class="third collumn">
       <div class="row-first-half">
