@@ -8,8 +8,8 @@ AWE.UI = AWE.UI || {};
 
 AWE.UI.Ember = (function(module) {
 
-module.HUDViews = Ember.View.extend({
-	templateName: 'hud-view',
+module.LeftHUDView = Ember.View.extend({
+	templateName: 'left-hud-view',
 	
 	controller: null,
 	mode: null,
@@ -52,6 +52,31 @@ module.HUDViews = Ember.View.extend({
 	switchToMap: function(){
 		this.get('controller').switchToMapButtonClicked();
 	},
+});
+
+module.RightHUDView = Ember.View.extend({
+	templateName: 'right-hud-view',
+	
+	controller: null,
+	character: null,
+	tutorialState: null,
+
+	getUnreadMessageCount: function(){
+		return this.getPath('character.inbox.unread_messages_count');
+	}.property('character.inbox.unread_messages_count').cacheable(),
+
+	getNotClosedQuest: function(){
+		return this.getPath('tutorialState.notClosedQuestStateCount');
+	}.property('tutorialState.notClosedQuestStateCount').cacheable(),
+
+	mailClicked: function(){
+		this.get('controller').mailButtonClicked();
+	},
+
+	questsClicked: function(){
+		this.get('controller').questsButtonClicked();
+	},
+	
 });
 
 return module;
