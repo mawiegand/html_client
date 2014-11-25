@@ -5,7 +5,7 @@
 
 
 var AWE = window.AWE || {};
-var AWE.Settings = AWE.Settings || {};
+AWE.Settings = AWE.Settings || {};
 
 AWE.Settings = (function(module) { 
 

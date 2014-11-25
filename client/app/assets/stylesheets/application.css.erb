@@ -506,12 +506,128 @@ h3 {
   height: 370px;
   z-index: 10;
 }
-
+/* == NEW DOM LEFT HUD START== */
 .settlement-map-button {
-  width: 500px;
-  height: 500px;
-  background-color: yellow;
+  width: 120px;
+  height: 400px;
+  position: fixed;
+  bottom: 0px;
+  z-index: 50;
+  pointer-events: none;
+  left: -120px;
 }
+
+.settlement-map-button div{
+  pointer-events: all;
+}
+
+.settelement-hud-button{
+  width: 100px;
+  height: 94px;
+  background:url("<%= asset_path 'hud/settlement_button/settlement_button.png' %>") no-repeat center center;
+}
+.settlement-hud-button-position{
+  top: 72px;
+  left: 12px;
+  position: relative;
+}
+.settelement-hud-button:hover{
+  background:url("<%= asset_path 'hud/settlement_button/settlement_button_hovered.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.map-hud-button{
+  width: 100px;
+  height: 94px;
+  background:url("<%= asset_path 'hud/map_button/map_button.png' %>") no-repeat center center;
+}
+.map-hud-button-position{
+  top: 72px;
+  left: 12px;
+  position: relative;
+}
+.map-hud-button:hover{
+  background:url("<%= asset_path 'hud/map_button/map_button_hovered.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.menu-hud-button{
+  width: 52px;
+  height: 52px;
+  background:url("<%= asset_path 'hud/menu_button/menu_button.png' %>") no-repeat center center;
+}
+.menu-hud-button-position{
+  position: relative;
+  top: 10px;
+  left: 12px;
+}
+.menu-hud-button:hover{
+  background:url("<%= asset_path 'hud/menu_button/menu_button_hovered.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.ranking-hud-button{
+  width: 52px;
+  height: 52px;
+  background:url("<%= asset_path 'hud/ranking_button/ranking_button.png' %>") no-repeat center center;
+}
+.ranking-hud-button-position{
+  position: relative;
+  top: 20px;
+  left: 12px;
+}
+.ranking-hud-button:hover{
+  background:url("<%= asset_path 'hud/ranking_button/ranking_button_hovered.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.map-mountains-hud-button{
+  width: 52px;
+  height: 52px;
+  background:url("<%= asset_path 'hud/map_mountains_button/map_mountains_button.png' %>") no-repeat center center;
+}
+.map-mountains-hud-button-position{
+  position: relative;
+  top: 50px;
+  left: 12px;
+}
+.map-mountains-hud-button:hover{
+  background:url("<%= asset_path 'hud/map_mountains_button/map_mountains_button_hovered.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.army-menu-hud-button-position{
+  position: relative;
+  top: 62px;
+  left: 12px;
+}
+.army-menu-hud-button{
+  width: 52px;
+  height: 52px;
+  background:url("<%= asset_path 'hud/army_menu_button/army_menu_button.png' %>") no-repeat center center;
+}
+.army-menu-hud-button:hover{
+  background:url("<%= asset_path 'hud/army_menu_button/army_menu_button_hovered.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+
+.army-hud-button{
+  width: 52px;
+  height: 52px;
+  background:url("<%= asset_path 'hud/army_button/army_button.png' %>") no-repeat center center;
+}
+
+.army-hud-button-position{
+  position: relative;
+  top: 62px;
+  left: 12px;
+}
+
+.army-hud-button:hover{
+  background:url("<%= asset_path 'hud/army_button/army_button_hovered.png' %>") no-repeat center center;
+  cursor: pointer;
+}
+/* == NEW DOM LEFT HUD END== */
 
 #hud-canvas-profile {
   position: fixed;
@@ -4798,6 +4914,14 @@ width: auto;
   background: url("<%= asset_path 'dialogs/buttons/button_green_high.png' %>") no-repeat center center;
 }
 
+.upgrade-button-disable{
+  color: white;
+  display: inline-block;
+  width: 180px;
+  height: 200px;
+  background: url("<%= asset_path 'dialogs/buttons/button_grey_high.png' %>") no-repeat center center;
+}
+
 .resources-table {
   display: inline-block;
 }
@@ -6339,7 +6463,7 @@ loaddialog-positioner {
 
 
 .settlement-info-box-dialog-pane .row2 {
-	color: rgb(154,148,138);^
+	color: rgb(154,148,138);
 }
 .settlement-info-box-dialog-pane .row2 .title {
 	color: rgb(112,92,48);
