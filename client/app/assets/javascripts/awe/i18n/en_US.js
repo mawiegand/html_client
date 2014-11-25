@@ -446,6 +446,7 @@ AWE.I18n.en_US = function(module) {
       founded:"Founded",
       leader:"Leader",
       leaderVote: 'Vote',
+      leaderVoted: 'Voted',
       description:"Description",
       changeDescriptionDialogCaption: 'Please enter your alliance description.',
       changeDescription: 'Edit description',
