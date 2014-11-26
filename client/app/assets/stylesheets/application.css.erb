@@ -6382,12 +6382,23 @@ button.fb-button {
   padding: 4px 14px 14px 14px;
 }
 
+.quest-list {
+  position: absolute;
+  top: 20%;
+}
+
+.quest-list-background{
+  background-image: url('<%= asset_path("quest-selection-bg.png") %>');
+  width: 780px;
+  height: 613px;
+}
+
 .quest-list-view {
   position: absolute; 
   margin-left: -300px;
   margin-top: 80px;
-  width: 630px; min-height: 100px;
-  /*height: 600px;*/
+  width: 630px;
+  height: 600px;
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
   z-index:256;
