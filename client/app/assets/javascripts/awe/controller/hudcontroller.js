@@ -95,15 +95,15 @@ AWE.Controller = (function(module) {
       _stageProfile = new Stage(_canvasProfile);
       _stageProfile.onClick = function() {};
       
-      _canvasProfile.width = 268*AWE.Settings.hudScale;
-      _canvasProfile.height = 266*AWE.Settings.hudScale;
+      _canvasProfile.width = 268;
+      _canvasProfile.height = 266;
 
       _resourceCanvas = root.find('#resource-canvas')[0];
       _resourceStage = new Stage(_resourceCanvas);
       _resourceStage.onClick = function() {};
       
-      _resourceCanvas.width  = 800*AWE.Settings.hudScale;
-      _resourceCanvas.height = 42*AWE.Settings.hudScale;
+      _resourceCanvas.width  = 800;
+      _resourceCanvas.height = 42;
       
 
       that.setWindowSize(AWE.Geometry.createSize($(window).width(), $(window).height()));
@@ -848,10 +848,10 @@ AWE.Controller = (function(module) {
           that.ingameShopButtonClicked();          
         };
         
-        var spacingX = 10*AWE.Settings.hudScale;
+        var spacingX = 10;
         var xOffset = spacingX;
-        var resourceViewWidth = 180*AWE.Settings.hudScale;
-        var resourceViewHeight = 42*AWE.Settings.hudScale;
+        var resourceViewWidth = 180;
+        var resourceViewHeight = 42;
         var root = that.rootElement();
         
         HUDViews.stoneView = AWE.UI.createResourceBubbleView();
