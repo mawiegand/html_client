@@ -827,7 +827,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       if (isAndroid) {
         AWE.Settings.hudScale = 0.6;
       } else {
-        AWE.Settings.hudScale = 1;
+        AWE.Settings.hudScale = 0.5;
       }
       var styleSheets = document.styleSheets;
       for (n in styleSheets)
