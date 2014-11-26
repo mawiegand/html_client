@@ -60,11 +60,14 @@ AWE.UI = (function(module) {
         AWE.UI.ImageCache.getImage("hud/top/background"), AWE.Geometry.createRect(0, 0, 340, 60), 
         "bold 16px HVDComicSerifPro");
       my.backgroundAndLabelButton.setTextPos(140, null);
-      if (that.onFlagClicked) {
-        my.backgroundAndLabelButton.onClick = function() {         
-          that.onFlagClicked(my.inspectedObject);
+     // if (that.onFlagClicked) {
+        my.backgroundAndLabelButton.onClick = function() {    
+        if (that.onInventoryButtonClick) {
+            that.onInventoryButtonClick(my.inspectedObject);
+          }     
+          //that.onFlagClicked(my.inspectedObject);
         };
-      }
+      //}
       this.addChild(my.backgroundAndLabelButton);            
     };
     
@@ -105,7 +108,7 @@ AWE.UI = (function(module) {
       if (!my.centerButtonView) {
         my.centerButtonView = AWE.UI.createButtonView();
         my.centerButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/top/center"));
-        my.centerButtonView.setFrame(AWE.Geometry.createRect(228, 16, 28, 28));
+        my.centerButtonView.setFrame(AWE.Geometry.createRect(265, 16, 28, 28));//(228, 16, 28, 28));
         my.centerButtonView.onClick = function() {
           if (that.onCenterButtonClick) {
             that.onCenterButtonClick(my.inspectedObject);
@@ -117,7 +120,7 @@ AWE.UI = (function(module) {
       if (!my.infoButtonView) {
         my.infoButtonView = AWE.UI.createButtonView();
         my.infoButtonView.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/top/info"));
-        my.infoButtonView.setFrame(AWE.Geometry.createRect(265, 16, 28, 28));
+        my.infoButtonView.setFrame(AWE.Geometry.createRect(228, 16, 28, 28));//(265, 16, 28, 28));
         my.infoButtonView.onClick = function() {
           if (that.onInventoryButtonClick) {
             that.onInventoryButtonClick(my.inspectedObject);
