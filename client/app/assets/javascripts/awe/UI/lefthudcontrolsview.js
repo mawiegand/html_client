@@ -58,6 +58,9 @@ AWE.UI = (function(module) {
       my.container.y = my.frame.origin.y;
       my.container.width  = my.frame.size.height;
       my.container.height = my.frame.size.height;
+      my.container.scaleX = AWE.Settings.hudScale;
+      my.container.scaleY = AWE.Settings.hudScale;
+
     }
     
     that.recalcView = function() {
@@ -66,7 +69,7 @@ AWE.UI = (function(module) {
         _menuButton = AWE.UI.createButtonView();
         _menuButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/menu/normal"));
         _menuButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/menu/hover"), module.CONTROL_STATE_HOVERED);
-        _menuButton.setFrame(AWE.Geometry.createRect(0, 0, 52*AWE.Settings.hudScale, 52*AWE.Settings.hudScale));
+        _menuButton.setFrame(AWE.Geometry.createRect(0, 0, 52, 52));
         _menuButton.onClick = function() {
           my.controller.menuButtonClicked();
         };
@@ -77,7 +80,7 @@ AWE.UI = (function(module) {
         _rankingButton = AWE.UI.createButtonView();
         _rankingButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/ranking/normal"));
         _rankingButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/ranking/hover"), module.CONTROL_STATE_HOVERED);
-        _rankingButton.setFrame(AWE.Geometry.createRect(0, 62*AWE.Settings.hudScale, 52*AWE.Settings.hudScale, 52*AWE.Settings.hudScale));
+        _rankingButton.setFrame(AWE.Geometry.createRect(0, 62, 52, 52));
         _rankingButton.onClick = function() {
           my.controller.rankingButtonClicked();
         };
@@ -105,7 +108,7 @@ AWE.UI = (function(module) {
           _mapModeButton = AWE.UI.createButtonView();
           _mapModeButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/map_mountains/normal"));
           _mapModeButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/map_mountains/hover"), module.CONTROL_STATE_HOVERED);
-          _mapModeButton.setFrame(AWE.Geometry.createRect(0, 144*AWE.Settings.hudScale, 52*AWE.Settings.hudScale, 52*AWE.Settings.hudScale));
+          _mapModeButton.setFrame(AWE.Geometry.createRect(0, 144, 52, 52));
           _mapModeButton.onClick = function() {
             my.controller.switchMapModeButtonClicked();
           };
@@ -116,7 +119,7 @@ AWE.UI = (function(module) {
           _gamingPieceSelectorButton = AWE.UI.createButtonView();
           _gamingPieceSelectorButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/army_menu/normal"));
           _gamingPieceSelectorButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/army_menu/hover"), module.CONTROL_STATE_HOVERED);
-          _gamingPieceSelectorButton.setFrame(AWE.Geometry.createRect(0, 208*AWE.Settings.hudScale, 52*AWE.Settings.hudScale, 52*AWE.Settings.hudScale));
+          _gamingPieceSelectorButton.setFrame(AWE.Geometry.createRect(0, 208, 52, 52));
           _gamingPieceSelectorButton.onClick = function() {
             my.controller.gamingPieceSelectorButtonClicked();
           };
@@ -127,7 +130,7 @@ AWE.UI = (function(module) {
           _switchToSettlementButton = AWE.UI.createButtonView();
           _switchToSettlementButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/settlement/normal"));
           _switchToSettlementButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/settlement/hover"), module.CONTROL_STATE_HOVERED);
-          _switchToSettlementButton.setFrame(AWE.Geometry.createRect(0, 270*AWE.Settings.hudScale, 100*AWE.Settings.hudScale, 94*AWE.Settings.hudScale));
+          _switchToSettlementButton.setFrame(AWE.Geometry.createRect(0, 270, 100, 94));
           _switchToSettlementButton.onClick = function() {
             my.controller.switchToSettlementButtonClicked();
           };
@@ -160,7 +163,7 @@ AWE.UI = (function(module) {
           _recruitButton = AWE.UI.createButtonView();
           _recruitButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/army/normal"));
           _recruitButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/army/hover"), module.CONTROL_STATE_HOVERED);
-          _recruitButton.setFrame(AWE.Geometry.createRect(0, 208*AWE.Settings.hudScale, 52*AWE.Settings.hudScale, 52*AWE.Settings.hudScale));
+          _recruitButton.setFrame(AWE.Geometry.createRect(0, 208, 52, 52));
           _recruitButton.onClick = function() {
             my.controller.recruitButtonClicked();
           };
@@ -171,7 +174,7 @@ AWE.UI = (function(module) {
           _switchToMapButton = AWE.UI.createButtonView();
           _switchToMapButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/map/normal"));
           _switchToMapButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/map/hover"), module.CONTROL_STATE_HOVERED);
-          _switchToMapButton.setFrame(AWE.Geometry.createRect(10*AWE.Settings.hudScale, 270*AWE.Settings.hudScale, 100*AWE.Settings.hudScale, 94*AWE.Settings.hudScale));
+          _switchToMapButton.setFrame(AWE.Geometry.createRect(10, 270, 100, 94));
           _switchToMapButton.onClick = function() {
             my.controller.switchToMapButtonClicked();
           };

@@ -112,6 +112,7 @@ AWE.UI.Ember = (function(module) {
    */
   module.PopUpDialog = Ember.View.extend({
     layoutName: "popup-dialog",
+    
     closeDialog: function() {
       this.destroy();
     },

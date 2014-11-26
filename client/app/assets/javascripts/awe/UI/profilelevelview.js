@@ -56,7 +56,7 @@ AWE.UI = (function(module) {
     that.recalcView = function() {          
 
       if (!_levelBackgroundImage) {
-        _levelBackgroundImage = new Bitmap();        
+        _levelBackgroundImage = new Bitmap();   
         _levelBackgroundImage.view = that;
         _levelBackgroundImage.onClick = function() {
           that.onClick();
@@ -67,7 +67,7 @@ AWE.UI = (function(module) {
       
       if (!_levelForegroundImage) {
         _levelForegroundImage = new Bitmap();
-        _levelForegroundImage.x = 10;
+        _levelForegroundImage.x = 10
         _levelForegroundImage.y = 10;
         _levelForegroundImage.view = that;
         _levelForegroundImage.onClick = function() {
