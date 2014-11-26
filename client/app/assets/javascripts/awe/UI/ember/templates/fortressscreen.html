@@ -2,6 +2,9 @@
 
 <script type="text/x-handlebars" data-template-name="fortress-screen">
 <div class="fortress-screen settlement-screen">
+  <div class="settlement-left">
+    <div class="settlement-inner-left">&nbsp;</div>
+  </div>
   <div class="fortress-picture">
     <div class="fortress-background-picture"></div>
     {{#if "settlement"}}
@@ -28,6 +31,21 @@
       {{/if}}    
     {{/if}}
   </div>
+  
+  <div class="settlement-right">
+    <div class="settlement-inner-right">&nbsp;</div>
+  </div>
+  
+  <div class="settlement-footer">
+    <div class="settlement-left-footer">
+      <div class="settlement-inner-left-footer">&nbsp;</div>      
+    </div>
+    <div class="settlement-center-footer">&nbsp;</div>
+    <div class="settlement-right-footer">
+      <div class="settlement-inner-right-footer">&nbsp;</div>      
+    </div>
+  </div>
+  
   {{#if "settlement"}}
     <div class="topbar-info-box settlement">
       {{#if shouldDisplaySettlementSwitch}} 
@@ -38,6 +56,7 @@
       <div class="topbar-info-button" {{action  infoClicked}}>&nbsp;</div>
     </div> 
   {{/if}}
+  
 </div>
 </script>
 

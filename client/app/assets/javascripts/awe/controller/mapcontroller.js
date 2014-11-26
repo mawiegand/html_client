@@ -3133,6 +3133,12 @@ AWE.Controller = function (module) {
             }
           })(that);
 
+          annotationView.onChangeArmyButtonClick = (function (self) {
+            return function (view) {
+              self.changeArmyButtonClicked(view.army());
+            }
+          })(that);
+
           annotationView.onRetreatButtonClick = (function (self) {
             return function (army) {
               self.armyRetreatButtonClicked(army);

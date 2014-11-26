@@ -22,7 +22,8 @@ AWE.UI = (function(module) {
     var _attackButtonView = null;    
     var _battleInfoButtonView = null;    
     var _foundButtonView = null;
-    var _cancelButtonView = null;    
+    var _cancelButtonView = null;
+    var _changeArmyButtonView = null;    
     var _rankImageView = null;   
     
     var _backgroundShapeView = null;
@@ -98,6 +99,15 @@ AWE.UI = (function(module) {
         );
       _attackButtonView.onClick = function() { if (_attackButtonView.enabled()) { that.onAttackButtonClick(that); } }
       this.addChild(_attackButtonView);
+
+      _changeArmyButtonView = AWE.UI.createButtonIconView();
+        _changeArmyButtonView.initWithControllerImageAndIcon(controller,
+          AWE.UI.ImageCache.getImage("hud/annotation/button/background/purple"), 
+          AWE.UI.ImageCache.getImage("hud/icon/army"),
+          AWE.Geometry.createRect(31, 124, 64, 64)
+        );
+      _changeArmyButtonView.onClick = function() { if (_changeArmyButtonView.enabled()) { that.onChangeArmyButtonClick(that); } }
+      this.addChild(_changeArmyButtonView);
       
 //      _retreatButtonView = AWE.UI.createButtonView();
 //      _retreatButtonView.initWithControllerTextAndImage(controller, AWE.I18n.lookupTranslation('map.button.retreat'), AWE.UI.ImageCache.getImage("ui/button/standard/normal"));
@@ -164,6 +174,8 @@ AWE.UI = (function(module) {
     
     that.onAttackButtonClick = function() {};
     
+    that.onChangeArmyButtonClick = function() {};
+
     that.onRetreatButtonClick = function() {
       log('onRetreatButtonClick');
     };
@@ -190,6 +202,7 @@ AWE.UI = (function(module) {
       if (!_armyView.selected()) {
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(false);
+        _changeArmyButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);        
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(false);
@@ -199,15 +212,27 @@ AWE.UI = (function(module) {
       else if (_army.isOwn() && _army.get('hasHomebaseFounder') && _army.get('mode') === AWE.Config.ARMY_MODE_IDLE) { // 0 -> idle or null -> unkown
         _moveButtonView.setVisible(true);
         _attackButtonView.setVisible(true);
+        _changeArmyButtonView.setVisible(true);
         _cancelButtonView.setVisible(false);
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(false);
         _foundButtonView.setVisible(true);
         _stanceButtonView.setVisible(true);
       }
+      else if (_army.isOwn() && (_army.get('mode') === null || _army.get('mode') === AWE.Config.ARMY_MODE_IDLE) && _army.getPath('homeSettlement.location_id') == _army.get('location_id')) { // 0 -> idle or null -> unkown
+        _moveButtonView.setVisible(true);
+        _attackButtonView.setVisible(true);
+        _changeArmyButtonView.setVisible(true);
+        _cancelButtonView.setVisible(false);
+//        _retreatButtonView.setVisible(false);
+        _battleInfoButtonView.setVisible(false);
+        _foundButtonView.setVisible(_army.get('hasSettlementFounder'));
+        _stanceButtonView.setVisible(true);
+      }
       else if (_army.isOwn() && (_army.get('mode') === null || _army.get('mode') === AWE.Config.ARMY_MODE_IDLE)) { // 0 -> idle or null -> unkown
         _moveButtonView.setVisible(true);
         _attackButtonView.setVisible(true);
+        _changeArmyButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(false);
@@ -217,6 +242,7 @@ AWE.UI = (function(module) {
       else if (_army.isOwn() && _army.get('mode') === AWE.Config.ARMY_MODE_MOVING) {
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(true);
+        _changeArmyButtonView.setVisible(false);
         _cancelButtonView.setVisible(true);
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(false);
@@ -226,6 +252,7 @@ AWE.UI = (function(module) {
       else if (_army.isOwn() && _army.get('isFighting')) {
         _moveButtonView.setVisible(true);
         _attackButtonView.setVisible(true);
+        _changeArmyButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);    
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(true);
@@ -235,6 +262,7 @@ AWE.UI = (function(module) {
       else if (_army.get('isFighting')) {
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(false);
+        _changeArmyButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(true);
@@ -244,6 +272,7 @@ AWE.UI = (function(module) {
       else {
         _moveButtonView.setVisible(false);
         _attackButtonView.setVisible(false);
+        _changeArmyButtonView.setVisible(false);
         _cancelButtonView.setVisible(false);
 //        _retreatButtonView.setVisible(false);
         _battleInfoButtonView.setVisible(false);
@@ -255,6 +284,7 @@ AWE.UI = (function(module) {
     that.updateButtonState = function() {
       _moveButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('isFighting'));
       _attackButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('isFighting') && !_army.get('isMoving'));
+      //_changeArmyButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('isFighting') && !_army.get('isMoving'));
       _foundButtonView.setEnabled(
         _army.canFoundSettlementAtPresentLocationNow() || _army.canFoundHomebaseAtPresentLocationNow()
       );
@@ -263,6 +293,7 @@ AWE.UI = (function(module) {
       
       _moveButtonView.setSelected(_actionMode === 'moveTargetSelection');
       _attackButtonView.setSelected(_actionMode === 'attackTargetSelection');
+      //_changeArmyButtonView.setSelected(_actionMode === 'attackTargetSelection');
       _foundButtonView.setSelected(_actionMode === 'foundSettlement');
       _stanceButtonView.setSelected(_army.get('stance') == 1);
 
