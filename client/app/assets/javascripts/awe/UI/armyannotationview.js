@@ -284,7 +284,7 @@ AWE.UI = (function(module) {
     that.updateButtonState = function() {
       _moveButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('isFighting'));
       _attackButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('isFighting') && !_army.get('isMoving'));
-      _changeArmyButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('isFighting') && !_army.get('isMoving'));
+      //_changeArmyButtonView.setEnabled(_army.get('ap_present') >= 1.0 && !_army.get('isFighting') && !_army.get('isMoving'));
       _foundButtonView.setEnabled(
         _army.canFoundSettlementAtPresentLocationNow() || _army.canFoundHomebaseAtPresentLocationNow()
       );
@@ -293,7 +293,7 @@ AWE.UI = (function(module) {
       
       _moveButtonView.setSelected(_actionMode === 'moveTargetSelection');
       _attackButtonView.setSelected(_actionMode === 'attackTargetSelection');
-      _changeArmyButtonView.setSelected(_actionMode === 'attackTargetSelection');
+      //_changeArmyButtonView.setSelected(_actionMode === 'attackTargetSelection');
       _foundButtonView.setSelected(_actionMode === 'foundSettlement');
       _stanceButtonView.setSelected(_army.get('stance') == 1);
 
