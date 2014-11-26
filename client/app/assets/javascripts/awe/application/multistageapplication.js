@@ -160,7 +160,6 @@ AWE.Application = (function(module) {
         // register controller to receive click events in screen
         $('#layers').mouseup(function(evt) {
           if (!(evt.metaKey) && isAndroid) return;
-          console.log("mouseup"+ evt.pageX+ evt.pageY);
           log('Mouse up event in multi stage application controller.');
           self.handleMouseUp(evt);
         });

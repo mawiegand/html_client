@@ -829,12 +829,16 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
       } else {
         AWE.Settings.hudScale = 1;
       }
-      var theRules = document.styleSheets[0].cssRules
-      for (n in theRules)
+      var styleSheets = document.styleSheets;
+      for (n in styleSheets)
       {
-        if (theRules[n].selectorText === ".modal-dialog-pane-new" || theRules[n].selectorText === ".modal-dialog-pane") {
-            theRules[n].style.zoom = AWE.Settings.hudScale;
-        }
+        var theRules = styleSheets[n].cssRules;
+        for (m in theRules)
+        {
+          if (theRules[m].selectorText === ".modal-dialog-pane-new" || theRules[m].selectorText === ".modal-dialog-pane" || theRules[m].selectorText === ".right-hud" || theRules[m].selectorText === ".settlement-map-button") {
+            theRules[m].style.zoom = AWE.Settings.hudScale;
+          }
+        }       
       }
 
       AWE.Log.Debug('debug', AWE.Settings.locale, AWE.Settings.lang, args.locale, args.locale.substr(0, 2));
