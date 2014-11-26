@@ -358,6 +358,10 @@ h3 {
   margin-top:-3px;
 }
 
+canvas{
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
 #map-tile-canvas {
   background-color: #777;
   position: absolute;
@@ -415,7 +419,7 @@ h3 {
   right: -70px;
   top: 492px;
   width: 70px;
-  height: 114px;
+  height: 14px;
   z-index: 10;
 }
 
@@ -758,6 +762,7 @@ h3 {
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
   z-index:256;
+  zoom:1;
 
   -moz-border-radius: 12px;
   border-radius:      12px;
@@ -776,10 +781,15 @@ h3 {
   margin-top: -250px;
   width: 676px; /* attention: + padding! */ 
   height: 500px;
+  zoom:1;
   box-sizing: border-box;
   z-index:256;
   padding: 0px 20px 0px 30px;
   background: url("<%= asset_path 'ui/DialogBox.png' %>") no-repeat;
+}
+
+.android {
+  zoom: 0.5;
 }
 
 .modal-dialog-body {
