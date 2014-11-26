@@ -1,24 +1,21 @@
 <script type="text/x-handlebars" data-template-name="character-progress-dialog">
   <div class="modal-dialog-background"></div>
   <div class="center-helper">
-    <div class="modal-dialog-pane character-progress-dialog-pane">
-
-      <div class="advisor girl"></div>
-      <h1>{{t profile.rank.progress.dialogHeader}}</h1>
-      
-      <p class="citation">
+    <div class="level-up-dialog">
+       
+      <div class="level-up-girl"></div>
+       
+      <div class="level-up-header"></div> 
+       
+      <div class="level-up-dialog-bg">
+         
+      <p class="level-up-dialog-bg-text">
         {{#if character.female}}{{t general.demigoddess}},{{else}}{{t general.demigod}},{{/if}} 
         {{t profile.rank.progress.flavour1}}    
         <b>{{local character.mundaneTitle.name}}</b> {{t profile.rank.progress.flavour2}}<br/><br/>
         {{t profile.rank.progress.flavour3}}          
         <b>{{local character.nextMundaneTitle.name}}</b> {{t profile.rank.progress.flavour4}}      
       </p>
-      
-      <br/><br/>
-      
-      {{view  AWE.UI.Ember.CharacterProgressBarView characterBinding="character"}}
-
-      <p>{{t profile.rank.progress.text}}</p>
 
       {{#if userStoriesEnabled}}
         {{#if posting}}
@@ -31,9 +28,11 @@
           </button>
         {{/if}}
       {{/if}}
-
-      <a class="icon-button ok-button" href="#" {{action "okClicked"}}>{{t general.ok}}</a>     
+      <a class="quest-dialog-button level-up-scip-button" href="#" {{action "okClicked"}}>
+         <div class="quest-simple-button"></div>
+      </a>
+    </div>
+    <div class="level-up-spinning-background modal-dialog-spinning-background"></div>   
     </div>
   </div>
 </script>
-
