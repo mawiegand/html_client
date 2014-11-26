@@ -39,6 +39,8 @@ AWE.UI = (function(module) {
       my.container.y = my.frame.origin.y;
       my.container.width  = my.frame.size.width;
       my.container.height = my.frame.size.height;
+      my.container.scaleX = AWE.Settings.hudScale;
+      my.container.scaleY = AWE.Settings.hudScale;
     }
     
     that.recalcView = function() {
@@ -47,7 +49,7 @@ AWE.UI = (function(module) {
         _mailButton = AWE.UI.createButtonView();
         _mailButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/message/normal"));
         _mailButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/message/hover"), module.CONTROL_STATE_HOVERED);
-        _mailButton.setFrame(AWE.Geometry.createRect(0, 0, 52*AWE.Settings.hudScale, 52*AWE.Settings.hudScale));
+        _mailButton.setFrame(AWE.Geometry.createRect(0, 0, 52, 52));
         _mailButton.onClick = function() {
           my.controller.mailButtonClicked();
         };
@@ -59,7 +61,7 @@ AWE.UI = (function(module) {
         if (!_mailCountButton) {
           _mailCountButton = AWE.UI.createButtonView();
           _mailCountButton.initWithControllerTextAndImage(my.controller, ''+unread, AWE.UI.ImageCache.getImage("hud/button/count_indicator"));
-          _mailCountButton.setFrame(AWE.Geometry.createRect(37*AWE.Settings.hudScale, 10*AWE.Settings.hudScale, 34*AWE.Settings.hudScale, 32*AWE.Settings.hudScale));
+          _mailCountButton.setFrame(AWE.Geometry.createRect(37, 10, 34, 32));
           _mailCountButton.setFont("bold 16px HVDComicSerifPro");
           _mailCountButton.setShadowEnabled(true);
           this.addChild(_mailCountButton);
@@ -74,7 +76,7 @@ AWE.UI = (function(module) {
         _questsButton = AWE.UI.createButtonView();
         _questsButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/button/quest_list/normal"));
         _questsButton.setImageForState(AWE.UI.ImageCache.getImage("hud/button/quest_list/hover"), module.CONTROL_STATE_HOVERED);
-        _questsButton.setFrame(AWE.Geometry.createRect(0, 62*AWE.Settings.hudScale, 52*AWE.Settings.hudScale, 52*AWE.Settings.hudScale));
+        _questsButton.setFrame(AWE.Geometry.createRect(0, 82, 52, 52));
         _questsButton.onClick = function() {
           my.controller.questsButtonClicked();
         };
@@ -87,7 +89,7 @@ AWE.UI = (function(module) {
           if (!_questsCountButton) {
             _questsCountButton = AWE.UI.createButtonView();
             _questsCountButton.initWithControllerTextAndImage(my.controller, ''+allQuestStates, AWE.UI.ImageCache.getImage("hud/button/count_indicator"));
-            _questsCountButton.setFrame(AWE.Geometry.createRect(37*AWE.Settings.hudScale, 72*AWE.Settings.hudScale, 34*AWE.Settings.hudScale, 32*AWE.Settings.hudScale));
+            _questsCountButton.setFrame(AWE.Geometry.createRect(37, 92, 34, 32));
             _questsCountButton.setFont("bold 16px HVDComicSerifPro");
             _questsCountButton.setShadowEnabled(true);
             this.addChild(_questsCountButton);

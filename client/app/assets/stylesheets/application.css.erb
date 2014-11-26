@@ -369,6 +369,10 @@ h3 {
   margin-top:-3px;
 }
 
+canvas{
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
 #map-tile-canvas {
   background-color: #777;
   position: absolute;
@@ -426,7 +430,7 @@ h3 {
   right: -70px;
   top: 492px;
   width: 70px;
-  height: 114px;
+  height: 14px;
   z-index: 10;
 }
 
@@ -769,6 +773,7 @@ h3 {
   background-color: #FFF;  
   padding: 16px 20px 16px 20px;
   z-index:256;
+  zoom:1;
 
   -moz-border-radius: 12px;
   border-radius:      12px;
@@ -787,10 +792,15 @@ h3 {
   margin-top: -250px;
   width: 676px; /* attention: + padding! */ 
   height: 500px;
+  zoom:1;
   box-sizing: border-box;
   z-index:256;
   padding: 0px 20px 0px 30px;
   background: url("<%= asset_path 'ui/DialogBox.png' %>") no-repeat;
+}
+
+.android {
+  zoom: 0.5;
 }
 
 .modal-dialog-body {
@@ -2545,44 +2555,44 @@ loaddialog-positioner {
 }
 
 .settlement-info-dialog-pane .button {
-	height: 52px;
-	width: 248px;
+  height: 52px;
+  width: 248px;
 }
 
 .settlement-info-dialog-pane .button-left {
-	background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide.png") %>') no-repeat center center;
+  background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide.png") %>') no-repeat center center;
 }
 
 .settlement-info-dialog-pane .button-left:hover {
-	background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide_active.png") %>') no-repeat center center;
-	cursor: pointer;
+  background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide_active.png") %>') no-repeat center center;
+  cursor: pointer;
 }
 
 .settlement-info-dialog-pane .button-right {
-	background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide.png") %>') no-repeat center center;
+  background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide.png") %>') no-repeat center center;
 }
 
 .settlement-info-dialog-pane .button-right:hover {
-	background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide_active.png") %>') no-repeat center center;
-	cursor: pointer;
+  background:url('<%= asset_path("dialogs/buttons/button_blue_info_wide_active.png") %>') no-repeat center center;
+  cursor: pointer;
 }
 
 .settlement-info-dialog-pane .row1 {
-	margin: 20px 0 20px 0;
+  margin: 20px 0 20px 0;
 }
 
 .settlement-info-dialog-pane .row2 {
-	margin: 55px 0 0 0;
+  margin: 55px 0 0 0;
 }
 
 .settlement-info-dialog-pane .titles {
-	text-align: right;
-	padding: 0 20px 0 0;
+  text-align: right;
+  padding: 0 20px 0 0;
 }
 
 .settlement-info-dialog-pane .values {
-	text-align: left;
-	padding: 0 0 0 20px;
+  text-align: left;
+  padding: 0 0 0 20px;
 }
 
 .settlement-info-dialog-pane .population-title,
@@ -2590,8 +2600,8 @@ loaddialog-positioner {
 .settlement-info-dialog-pane .condition-title,
 .settlement-info-dialog-pane .takeover-title,
 .settlement-info-dialog-pane .destory-title {
-	color: rgb(112,92,48);
-	font-size: 1.3em;
+  color: rgb(112,92,48);
+  font-size: 1.3em;
 }
 
 .settlement-info-dialog-pane .population-value,
@@ -2599,26 +2609,26 @@ loaddialog-positioner {
 .settlement-info-dialog-pane .condition-value,
 .settlement-info-dialog-pane .takeover-value,
 .settlement-info-dialog-pane .destory-value {
-	color: rgb(154,148,138);
-	font-size: 1.3em;
+  color: rgb(154,148,138);
+  font-size: 1.3em;
 }
 
 .settlement-info-box-dialog-pane .button-left {
-	background:url('<%= asset_path("dialogs/buttons/button_green_medium.png") %>') no-repeat center center;
+  background:url('<%= asset_path("dialogs/buttons/button_green_medium.png") %>') no-repeat center center;
 }
 
 .settlement-info-box-dialog-pane .button-left:hover {
-	background:url('<%= asset_path("dialogs/buttons/button_green_medium_pressed.png") %>') no-repeat center center;
-	cursor: pointer;
+  background:url('<%= asset_path("dialogs/buttons/button_green_medium_pressed.png") %>') no-repeat center center;
+  cursor: pointer;
 }
 
 .settlement-info-box-dialog-pane .button-right {
-	background:url('<%= asset_path("dialogs/buttons/button_green_medium.png") %>') no-repeat center center;
+  background:url('<%= asset_path("dialogs/buttons/button_green_medium.png") %>') no-repeat center center;
 }
 
 .settlement-info-box-dialog-pane .button-right:hover {
-	background:url('<%= asset_path("dialogs/buttons/button_green_medium_pressed.png") %>') no-repeat center center;
-	cursor: pointer;
+  background:url('<%= asset_path("dialogs/buttons/button_green_medium_pressed.png") %>') no-repeat center center;
+  cursor: pointer;
 }
 
 .settlement-info-box-dialog-pane {
@@ -2659,7 +2669,7 @@ loaddialog-positioner {
     width: 235px;
 }
 .settlement-info-box-dialog-pane .value {
-	color: rgb(154,148,138);
+  color: rgb(154,148,138);
     text-align: left;
     padding-left: 5px;
 }
@@ -2688,13 +2698,13 @@ loaddialog-positioner {
 
 
 .settlement-info-box-dialog-pane .row2 {
-	color: rgb(154,148,138);
+  color: rgb(154,148,138);
 }
 .settlement-info-box-dialog-pane .row2 .title {
-	color: rgb(112,92,48);
+  color: rgb(112,92,48);
 }
 .settlement-info-box-dialog-pane .row2 .army-icon {
-	display: inline-block;
+  display: inline-block;
 }
 
 .settlement-info-box-dialog-pane .row2 .infantry {
@@ -3517,7 +3527,7 @@ span.bonus {
 /** image for building_artillery_tower */
 .queue-job-image.building_artillery_tower {
   background: url('<%= asset_path("settlements/fortress/building_artillery_tower_small.png") %>');
-}	
+} 
 /** image for building_cavalry_tower */
 .queue-job-image.building_cavalry_tower {
   background: url('<%= asset_path("settlements/fortress/building_cavalry_tower_small.png") %>');
@@ -4235,7 +4245,7 @@ li.shout .sender {
 }
 
 .settlement-info-box-dialog-content {
-	margin-top: 50px;
+  margin-top: 50px;
 }
 
 .change-settlement-name {
@@ -4645,7 +4655,7 @@ table .datetime {
 /** image for building_artillery_tower *
 .fortress-picture .tower.building_artillery_tower {
   background: url('<%= asset_path("settlements/fortress/building_artillery_tower.png") %>');
-}	
+} 
 /** image for building_cavalry_tower *
 .fortress-picture .tower.building_cavalry_tower {
   background: url('<%= asset_path("settlements/fortress/building_cavalry_tower.png") %>');
@@ -5250,24 +5260,24 @@ table .datetime {
 
 /*
 .fortress-picture .wall {
-	background-position: 0px 0px;
+  background-position: 0px 0px;
 }
 .fortress-picture .wall.size2 {
-	background-position: -800px -360px;
+  background-position: -800px -360px;
 }
 .fortress-picture .wall.size3 {
-	background-position: -1600px -360px;
+  background-position: -1600px -360px;
 }
 
 .fortress-picture .wall:hover {
-	cursor: pointer;
-	background-position: 0px -960px;
+  cursor: pointer;
+  background-position: 0px -960px;
 }
 .fortress-picture .wall.size2:hover {
-	background-position: -800px -960px;
+  background-position: -800px -960px;
 }
 .fortress-picture .wall.size3:hover {
-	background-position: -1600px -960px;
+  background-position: -1600px -960px;
 }*/
 
 
@@ -6713,22 +6723,22 @@ button.fb-button {
 }
 
 .dom-quest-container {
-	position: absolute;
-	padding: 5px;
-	height: 150px;
-	width: 300px;
-	z-index: 1000;
-	margin: 0;
+  position: absolute;
+  padding: 5px;
+  height: 150px;
+  width: 300px;
+  z-index: 1000;
+  margin: 0;
 }
 
 div.dom-quest-container div.tutorial-dialog {
-	width: 100%;
-	height: 100%;
-	padding: 5px;
-	background: #fff;
-	border: 3px solid #000;
-	border-radius: 4px;
-	color: #999;
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 4px;
+  color: #999;
 }
 
 .facebook-iframe {
