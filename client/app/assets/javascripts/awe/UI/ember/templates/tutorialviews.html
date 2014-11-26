@@ -2,45 +2,77 @@
   <div class="modal-dialog-background"></div>
   <div class="horizontal-center-helper">
     <div class="modal-dialog-pane quest-list-view">
-    <div class="quest-list-background"></div> 
+       
+       <div class="quest-list-content">
+
+          <div class="advisor warrior scetched"></div>
+          <div class="advisor girl scetched"></div>
+          <div class="advisor chef scetched"></div>
+
+          <h1>{{t tutorial.questList}}</h1>
+
+
+          <div class="quest-list-header">
+             <div class="quest-list-item-show"></div>
+          </div>
+
+         <div class="quest-list-items">
+          <div {{bindAttr class="questListBodyClass" }}>
+             {{#each questStates}}
+             {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item"     classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
+             {{/each}}
+          </div>
+          
       <div class="advisor warrior tiny"></div>
       <div class="advisor girl tiny"></div>
       <div class="advisor chef tiny"></div>      
 
-      
+      <h1>{{t tutorial.questList}}</h1>
+      <div class="quest-list-header">
+        <div class="quest-list-item-name">{{ t tutorial.name }}</div>
+        <div class="quest-list-item-status">{{ t tutorial.status }}</div>
+        <div class="quest-list-item-reward"></div>
+        <div class="quest-list-item-show"></div>
+      </div>
 
-      <div {{bindAttr class="questListBodyClass :quest-list" }}>
+      <div {{bindAttr class="questListBodyClass" }}>
         {{#each questStates}}
           {{view AWE.UI.Ember.QuestListEntryView questStateBinding="this" class="quest-list-item" classNameBindings="questState.quest.tutorial questState.quest.advisor" }}</td>
         {{/each}}
       </div>
-            
-      <div class="button ok-button" {{action "okPressed"}}>{{t general.ok}}</div>
       
+       </div>
+      <div class="quest-list-button" {{action "okPressed"}}></div>
+      </div>
+
     </div>
   </div>
 </script>
 
 
 <script type="text/x-handlebars" data-template-name="quest-list-entry-view">
+    <div class="" {{action "showQuestInfoPressed" }}>
         <div class="quest-list-item-name">
           {{#if questState.quest.tutorial}}
             Tutorial:
           {{/if}}
           {{local questState.questName}}
         </div>
-        <div class="quest-list-item-status">{{questState.statusString}}</div>
+        {{#if finished}}
+        <div class="quest-list-item-status-finished"> </div>
+        {{else}}
+        <div class="quest-list-item-status-open"> </div>
+        {{/if}}
+
         <div class="quest-list-item-reward">
             {{#if questState.finished}}
               {{#if questState.redeeming}}
                 {{view AWE.UI.Ember.WheelOrValueView valueBinding="false"}}
-              {{else}}
-                <div class="simple-button" {{action "redeemButtonPressed" }}>{{t tutorial.rewardLink }}
-                </div>
+
               {{/if}}
             {{/if}}
         </div>
-        <div class="quest-list-item-show"><div class="simple-button" {{action "showQuestInfoPressed" }}>{{t tutorial.showQuestLink }}</div></div>
+       </div>
 </script>
 
 
