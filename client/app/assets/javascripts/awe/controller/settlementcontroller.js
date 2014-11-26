@@ -168,6 +168,7 @@ AWE.Controller = (function(module) {
         settlementScreen = viewClass.create({
           controller :   this,
           settlement:    settlement,
+          classNames: ["settlement-container"],
         });
       }
       else {
