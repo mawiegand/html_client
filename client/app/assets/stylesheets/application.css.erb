@@ -4434,24 +4434,48 @@ table .datetime {
   margin: 0px;
 }
 
+.settlement-left {
+  width:50%;    
+  float:left;
+  margin-right:-512px;
+}
+.settlement-inner-left {
+  height: 747px;
+  margin-right:512px;
+  background-image: url("<%= asset_path 'backgrounds/background_settlement_repetition.jpg' %>");
+  background-repeat: repeat-x;  
+  background-position: right;
+}
+
+.settlement-right {
+  width:50%;
+  height: 1024px;
+  float:right;
+  margin-left:-512px;
+}
+.settlement-inner-right {
+  height: 747px;
+  margin-left:512px;
+  background-image: url("<%= asset_path 'backgrounds/background_settlement_repetition.jpg' %>");
+  background-repeat: repeat-x;
+  background-position: left;
+}
+
 
 .fortress-picture,
 .outpost-picture,
 .base-picture {
   position: relative;
   float: left;
-  width: 800px;
+  width: 1024px;  
   height: 1024px;
   margin-top: 210px;
-  overflow: visible;
 }
 
 .fortress-background-picture,
 .outpost-background-picture,
 .base-background-picture {
   background: url('<%= asset_path("backgrounds/background_settlement.jpg") %>');
-  
-  /*background-position: -160px 0;*/
   background-repeat: no-repeat;
   position: absolute;
   left: 0px;
@@ -4459,6 +4483,52 @@ table .datetime {
   width: 1000%;
   height: 1350px;
   z-index: 0;
+}
+
+.settlement-footer {
+  clear: both;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 747px;
+}
+
+.settlement-left-footer {
+  width: 50%; 
+  height: 100%;   
+  float: left;
+  margin-right: -512px;
+}
+.settlement-inner-left-footer {
+  height: 100%;
+  margin-right: 512px;
+  background-image: url("<%= asset_path 'backgrounds/background_settlement_repetition.jpg' %>");
+  background-repeat: repeat;  
+  background-position: right top;
+}
+
+.settlement-center-footer {
+  width: 1024px;
+  height: 100%;
+  float: left;
+  background-image: url("<%= asset_path 'backgrounds/background_settlement_repetition.jpg' %>");
+  background-repeat: repeat-y;
+  background-position: top;
+  position: relative;
+}
+
+.settlement-right-footer {
+  width: 50%;
+  height: 100%;
+  float: right;
+  margin-left: -512px;
+}
+.settlement-inner-right-footer {
+  height: 100%;
+  margin-left: 512px;
+  background-image: url("<%= asset_path 'backgrounds/background_settlement_repetition.jpg' %>");
+  background-repeat: repeat;
+  background-position: left top;
 }
 
 
