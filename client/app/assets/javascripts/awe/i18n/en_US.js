@@ -1177,13 +1177,13 @@ AWE.I18n.en_US = function(module) {
 
       task:{
         info:{
-          header:"Tutorial task (open)",
+          header:"Task:",
         },
         start:{
           header:"New tutorial task",
         },
         end:{
-          header:"Tutorial taks (finished)",
+          header:"Task (finished)",
         },
       },
 
