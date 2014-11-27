@@ -53,9 +53,6 @@
 <script type="text/x-handlebars" data-template-name="quest-list-entry-view">
     <div class="" {{action "showQuestInfoPressed" }}>
         <div class="quest-list-item-name">
-          {{#if questState.quest.tutorial}}
-            Tutorial:
-          {{/if}}
           {{local questState.questName}}
         </div>
         {{#if finished}}
