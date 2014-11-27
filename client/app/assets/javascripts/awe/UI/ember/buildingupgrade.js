@@ -75,7 +75,7 @@ AWE.UI.Ember = (function(module) {
       {
         this.get('controller').constructionUpgradeClicked(this.get('slot'));
       }
-      WACKADOO.closeAllModalDialogs();
+      this.destroy();
     },
 
     increaseStepsFurther: function() {
