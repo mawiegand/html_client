@@ -20,7 +20,9 @@
 <script type="text/x-handlebars" data-template-name="right-hud-view">
   <div class="right-hud" id="right-dom-hud">
   	<div class="message-hud-button message-hud-button-position" {{action "mailClicked"}}>
-  		<div class="count-indicator-background count-indicator-background-position">{{getUnreadMessageCount}}</div>
+      {{#if getUnreadMessageCount}}
+  		  <div class="count-indicator-background count-indicator-background-position">{{getUnreadMessageCount}}</div>
+      {{/if}}
   	</div>
   	<div class="quest-list-hud-button quest-list-hud-button-position" {{action "questsClicked"}}>
   		<div class="count-indicator-background count-indicator-background-position">{{getNotClosedQuest}}</div>

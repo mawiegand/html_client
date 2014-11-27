@@ -733,7 +733,7 @@ AWE.Config = (function(module) {
       }
       if (typeof this[building][level] === "undefined")
       {
-        level = 1; // level one _must_ be there...
+        level = 0; // level zero _must_ be there...
       }
       return this[building][level];
     }

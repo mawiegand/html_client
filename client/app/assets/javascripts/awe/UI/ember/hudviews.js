@@ -66,7 +66,12 @@ module.RightHUDView = Ember.View.extend({
 	tutorialState: null,
 
 	getUnreadMessageCount: function(){
-		return this.getPath('character.inbox.unread_messages_count');
+		var unreadMessages = this.getPath('character.inbox.unread_messages_count');
+		if(unreadMessages > 0)
+		{
+			return unreadMessages;
+		}
+		return false;		
 	}.property('character.inbox.unread_messages_count').cacheable(),
 
 	getNotClosedQuest: function(){
