@@ -835,7 +835,12 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         var theRules = styleSheets[n].cssRules;
         for (m in theRules)
         {
-          if (theRules[m].selectorText === ".modal-dialog-pane-new" || theRules[m].selectorText === ".modal-dialog-pane" || theRules[m].selectorText === ".right-hud" || theRules[m].selectorText === ".settlement-map-button") {
+          if (theRules[m].selectorText === ".modal-dialog-pane-new" 
+            || theRules[m].selectorText === ".modal-dialog-pane" 
+            || theRules[m].selectorText === ".right-hud" 
+            || theRules[m].selectorText === ".settlement-map-button" 
+            || theRules[m].selectorText === ".shop-dialog-pane" 
+            || theRules[m].selectorText === ".topbar-info-box") {
             theRules[m].style.zoom = AWE.Settings.hudScale;
           }
         }       

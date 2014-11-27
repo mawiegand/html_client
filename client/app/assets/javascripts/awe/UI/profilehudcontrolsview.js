@@ -132,6 +132,7 @@ AWE.UI = (function(module) {
         allianceDiv.style.right  = 10 + 'px';
         allianceDiv.style.width = '96px';
         allianceDiv.style.height = '96px';
+        allianceDiv.style.zoom = AWE.Settings.hudScale;
         allianceDiv.style.cursor = 'pointer';
         allianceDiv.style.zIndex = '50';
         allianceDiv.onclick = function() {
