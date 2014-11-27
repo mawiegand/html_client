@@ -78,7 +78,7 @@ AWE.UI = (function(module) {
       }                  
       
       if (!_levelTextShadow) {
-        _levelTextShadow = new Text("123", "bold 24px HVDComicSerifPro", "#0247a6");
+        _levelTextShadow = new Text("123", "24px hvd_comic_serif_proregular", "#0247a6");
         _levelTextShadow.textAlign = "center";
         _levelTextShadow.textBaseline = "middle";
         _levelTextShadow.x = _frameWidth / 2;
@@ -91,7 +91,7 @@ AWE.UI = (function(module) {
       } 
 
       if (!_levelText) {
-        _levelText = new Text("123", "bold 22px HVDComicSerifPro", "#f5f8e3");
+        _levelText = new Text("123", "22px hvd_comic_serif_proregular", "#f5f8e3");
         _levelText.textAlign = "center";
         _levelText.textBaseline = "middle";
         _levelText.x = _frameWidth / 2;
