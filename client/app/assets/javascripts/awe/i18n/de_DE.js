@@ -1204,26 +1204,30 @@ AWE.I18n.de_DE = function(module) {
 
       task: {
         info: {
-          header:       "Tutorial Auftrag (offen)",
+          header:       "",
+          task:         "Auftrag:"
         },
         start: {
-          header:       "Neuer Tutorial Auftrag",
+          header:       "",
+          task:         "Neuer Auftrag:",
         },
         end: {
-          header:       "Tutorial Auftrag (erledigt)",
+          header:       "",
+          task:         "Erledigt:",
         },
       },
       
       quest: {
         info: {
-          header:       "Quest (offen)",
+          header:       "",
+          task:         "Auftrag:"
         },
         start: {
-          header:       "Neue Quest",
-          task:         "Dein Auftrag:",
+          header:       "",
+          task:         "Neuer Auftrag:",
         },
         end: {
-          header:       "Quest (erledigt)",
+          header:       "",
           bonus:        "Du erhältst folgende Boni:",
           resources:    "Ressourcen",
           units:        "Einheiten",
