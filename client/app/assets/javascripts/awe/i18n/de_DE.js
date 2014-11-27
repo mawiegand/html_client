@@ -975,7 +975,7 @@ AWE.I18n.de_DE = function(module) {
         availableBuildingSlots: "Verfügbare Gebäudeplätze",
         speedUpInfo: "Die Bau- bzw. Rekrutierungsgeschwindigkeit kann durch den Ausbau oder Bau von zusätzlichen Einheitengebäuden oder Hütten erhöht werden.",
         taxRate: "Steuersatz",
-        taxRateChangeInfo: "Der Steuersatz, die Du hier setzt, gilt für die komplette Region und alle ihre Einwohner.",
+        taxRateChangeInfo: "Der Steuersatz, den Du hier setzt, gilt für die komplette Region und alle ihre Einwohner.",
         taxRateChangeNotPossible: "Die nächste Änderung ist eine Stunde nach der letzten Änderung möglich",
         taxRateHelp: "Der Steuersatz wird vom Besitzer der Festung in der Region festgesetzt. Das Minimum sind 5%, der Standardwert und das Maximum sind 15%. Du findest den Steuersatz ungerecht? Verbünde dich mit den anderen Bewohnern der Region gegen den Unterdrücker. Er hat es bestimmt verdient. Nimm die Festung ein und ziehe die Steuern für dich selbst ein.",
         change: "ändern",
