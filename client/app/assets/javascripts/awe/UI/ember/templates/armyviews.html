@@ -382,7 +382,8 @@
     {{view AWE.UI.Ember.ArmyRecruitmentJobInfoView unitTypeBinding="unitType" controllerBinding="controller" queueBinding="queue"}}
 </script>
 
-<script type="text/x-handlebars" data-template-name="army-recruitment-info-view">   
+<script type="text/x-handlebars" data-template-name="army-recruitment-info-view">
+  <h1>{{local unitType.name}}</h1>
   <div class="unit-image-wrapper">
     <div {{bindAttr class="unitType.db_field :unit-image-new"}}>
       <div class="count-text-big-background">
