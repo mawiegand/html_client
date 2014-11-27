@@ -707,6 +707,10 @@ module.ArmyUnitSmallInfoButtonView = module.ArmyUnitInfoView.extend({
   templateName: 'army-icon-small',
   unitType: null,
 
+  unitClass: function() {
+    return "unit_" + this.getPath("unitType.unitType.symbolic_id");
+  }.property(),
+
 });
 //military Recruitment dialog end
 
