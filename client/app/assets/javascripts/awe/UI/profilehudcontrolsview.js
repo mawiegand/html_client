@@ -46,8 +46,6 @@ AWE.UI = (function(module) {
       my.container.y = my.frame.origin.y;
       my.container.width  = my.frame.size.width;
       my.container.height = my.frame.size.height;      
-      my.container.scaleX = AWE.Settings.hudScale;
-      my.container.scaleY = AWE.Settings.hudScale;
     }
     
     that.recalcView = function() {
@@ -65,10 +63,11 @@ AWE.UI = (function(module) {
         //add div for click 
         var profileDiv = document.createElement('DIV');
         profileDiv.style.position = 'fixed';
-        profileDiv.style.top   = 30 + 'px';
-        profileDiv.style.right  = 28 + 'px';
-        profileDiv.style.width = '235px';
-        profileDiv.style.height = '120px';
+        profileDiv.style.top   = 30+'px';
+        profileDiv.style.right  = 28+'px';
+        profileDiv.style.width = 235+'px';
+        profileDiv.style.height = 120+'px';
+        profileDiv.style.zoom = AWE.Settings.hudScale;
         profileDiv.style.cursor = 'pointer';
         profileDiv.style.zIndex = '50';
         profileDiv.onclick = function() { 

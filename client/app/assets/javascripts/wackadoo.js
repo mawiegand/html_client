@@ -855,8 +855,9 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         Sample.setPlatform(Sample.PLATFORM_FACEBOOK);
       }
 
-      if(navigator.userAgent.toLowerCase().indexOf("android") > 0)
+      /*if(navigator.userAgent.toLowerCase().indexOf("android") >= 0)
       {
+        alert('Hi');
         var styleSheet = document.styleSheets[0];
         styleSheet.insertRule(".welcome-dialog { width: 676px; margin-top: -165px; margin-left: -348px; }", styleSheet.rules.length);
         styleSheet.insertRule(".ranking-view { width: 676px; margin-top: 0px; max-height: 500px; min-height: 0; }", styleSheet.rules.length);
@@ -865,7 +866,7 @@ window.WACKADOO = AWE.Application.MultiStageApplication.create(function() {
         styleSheet.insertRule(".ranking-table { width: 676px; }", styleSheet.rules.length);
         styleSheet.insertRule(".army-list-view { width: 676px; height: 500px; min-height: 500px; margin-top: 15px; margin-left: -365px; }", styleSheet.rules.length);
         styleSheet.insertRule(".shop-dialog-pane { height: 500px; margin-top: 100px; overflow: scroll; }", styleSheet.rules.length);
-      }
+      }*/
 
       Sample.sessionStart();
       Sample.autoPing(30);
