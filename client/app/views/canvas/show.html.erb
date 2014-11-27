@@ -20,16 +20,19 @@
     referer:            "<%= @referer %>",
     requestUrl:         window.location.href,
   });
-  
-  Sample.setEndpoint("/psiori/event")
-  Sample.setAppToken("wad-rt82-fhjk-18");
-  Sample.setPlatform(Sample.PLATFORM_FACEBOOK);
-  Sample.setFacebookId("<%= @facebook_user %>");
-  Sample.setUserId("<%= @access_data['user_identifer'] %>");
-  Sample.setLocale("<%= @locale %>");
-  Sample.signIn();
-  Sample.sessionStart();
-  
+
+  if (Sample.getPlatform() != Sample.PLATFORM_ANDROID)
+  {
+      Sample.setEndpoint("/psiori/event")
+      Sample.setAppToken("wad-rt82-fhjk-18");
+      Sample.setPlatform(Sample.PLATFORM_FACEBOOK);
+      Sample.setFacebookId("<%= @facebook_user %>");
+      Sample.setUserId("<%= @access_data['user_identifer'] %>");
+      Sample.setLocale("<%= @locale %>");
+      Sample.signIn();
+      Sample.sessionStart();
+  }
+
   setTimeout(function() {
 
     $('<form style="display:none;" id="clientstarter" action="/client.html" method="POST">' +

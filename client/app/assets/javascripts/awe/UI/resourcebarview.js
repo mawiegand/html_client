@@ -76,7 +76,7 @@ AWE.UI = (function(module) {
       
       my.container.addChild(_progressShape);
       
-      _amountText = new Text("", "bold 16px HVDComicSerifPro", "#fff");
+      _amountText = new Text("", "16px hvd_comic_serif_proregular", "#fff");
       _amountText.textAlign = "left";
       _amountText.textBaseline = "middle";
       _amountText.x = 20;
@@ -84,7 +84,7 @@ AWE.UI = (function(module) {
       _amountText.view = that;
       _amountText.onClick = function() { if (that.onClick) that.onClick(); }      
       
-      _amountTextShadow = new Text("", "bold 17px HVDComicSerifPro", "#000");
+      _amountTextShadow = new Text("", "17px hvd_comic_serif_proregular", "#000");
       _amountTextShadow.textAlign = "left";
       _amountTextShadow.textBaseline = "middle";
       _amountTextShadow.x = 20;

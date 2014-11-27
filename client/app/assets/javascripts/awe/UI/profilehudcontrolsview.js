@@ -94,9 +94,9 @@ AWE.UI = (function(module) {
         _nameLabelButton.initWithControllerTextAndImage(my.controller, null, AWE.UI.ImageCache.getImage("hud/profile/namelabel/background"));
         _nameLabelButton.setFrame(AWE.Geometry.createRect(65, 105, 176, 48));
         if (AWE.Settings.hudScale > 0.9) {
-          _nameLabelButton.setFont("bold 20px HVDComicSerifPro");
+          _nameLabelButton.setFont("18px hvd_comic_serif_proregular");
         } else {
-          _nameLabelButton.setFont("bold 15px HVDComicSerifPro");
+          _nameLabelButton.setFont("14px hvd_comic_serif_proregular");
         }
         _nameLabelButton.onClick = function() {
           //my.controller.avatarLabelClicked();

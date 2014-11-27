@@ -16,15 +16,15 @@
   <div {{bindAttr class="size type :building-image"}}></div>
   {{#if slot.building.underConversion}}
     <div class="construction-area front"></div>
-    {{view AWE.UI.Ember.ConstructionProgressView slotBinding="slot" settlementBinding="settlement"}}
+    {{view AWE.UI.Ember.ConstructionProgressView slotBinding="slot" settlementBinding="settlement" controllerBinding="controller"}}
   {{/if}}
   {{#if slot.building.underConstruction}}
     <div class="construction-area front"></div>
-    {{view AWE.UI.Ember.ConstructionProgressView slotBinding="slot" settlementBinding="settlement"}}
+    {{view AWE.UI.Ember.ConstructionProgressView slotBinding="slot" settlementBinding="settlement" controllerBinding="controller"}}
   {{else}}
     {{#if slot.building.underDestruction}}
         <div class="construction-area front"></div>
-        {{view AWE.UI.Ember.ConstructionProgressView slotBinding="slot" settlementBinding="settlement"}}
+        {{view AWE.UI.Ember.ConstructionProgressView slotBinding="slot" settlementBinding="settlement" controllerBinding="controller"}}
     {{else}}
       {{view AWE.UI.Ember.BubbleView slotBinding="slot"}}
       <div class="level">{{slot.building.level}}</div>
